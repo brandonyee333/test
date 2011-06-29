@@ -22,23 +22,25 @@ ${theme.include(body_top_include)}
 	<a href="#main-content" id="skip-to-content"><@liferay.language key="skip-to-content" /></a>
 
 	<header id="banner" role="banner">
-		<hgroup id="heading">
+		<div id="heading">
 			<h1 class="company-title">
 				<a class="logo" href="${company_url}" title="<@liferay.language key="go-to" /> ${company_name}">
 					<span>${company_name}</span>
 				</a>
 			</h1>
 
-			<h2 class="community-title">
-				<a href="${community_default_url}" title="<@liferay.language key="go-to" /> ${community_name}">
-					<span>${community_name}</span>
-				</a>
-			</h2>
+			<subline id="subheading">
+				<h2 class="community-title">
+					<a href="${community_default_url}" title="<@liferay.language key="go-to" /> ${community_name}">
+						<span>${community_name}</span>
+					</a>
+				</h2>
 
-			<h3 class="page-title">
-				<span>${the_title}</span>
-			</h3>
-		</hgroup>
+				<h3 class="page-title">
+					<span>${the_title}</span>
+				</h3>
+			</subline>
+		</div>
 
 		<#if !is_signed_in>
 			<a href="${sign_in_url}" id="sign-in" rel="nofollow">${sign_in_text}</a>
