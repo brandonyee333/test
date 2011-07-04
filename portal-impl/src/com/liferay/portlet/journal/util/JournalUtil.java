@@ -27,7 +27,6 @@ import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringPool;
@@ -78,7 +77,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Stack;
 
@@ -397,31 +395,19 @@ public class JournalUtil {
 		}
 	}
 
-	public static Map<Locale, String> getEmailArticleBodyMap(
-		PortletPreferences preferences, boolean update) {
+	public static boolean getEmailArticleAddedEnabled(
+		PortletPreferences preferences) {
 
-		String bodyProperty = "emailArticleAddedBody";
-		String bodyPropertyKey =
-			PropsKeys.JOURNAL_EMAIL_ARTICLE_ADDED_BODY;
+		String emailArticleAddedEnabled = preferences.getValue(
+			"emailArticleAddedEnabled", StringPool.BLANK);
 
-		if (update) {
-			bodyProperty = "emailArticleUpdatedBody";
-			bodyPropertyKey =
-				PropsKeys.JOURNAL_EMAIL_ARTICLE_UPDATED_BODY;
+		if (Validator.isNotNull(emailArticleAddedEnabled)) {
+			return GetterUtil.getBoolean(emailArticleAddedEnabled);
 		}
-
-		Map<Locale, String> map = LocalizationUtil.getLocalizationMap(
-			preferences, bodyProperty);
-
-		Locale defaultLocale = LocaleUtil.getDefault();
-		String defaultValue = map.get(defaultLocale);
-
-		if (Validator.isNull(defaultValue)) {
-			map.put(defaultLocale, ContentUtil.get(PropsUtil.get(
-				bodyPropertyKey)));
+		else {
+			return GetterUtil.getBoolean(PropsUtil.get(
+				PropsKeys.JOURNAL_EMAIL_ARTICLE_ADDED_ENABLED));
 		}
-
-		return map;
 	}
 
 	public static String getEmailArticleAddedSubject(
@@ -439,53 +425,11 @@ public class JournalUtil {
 		}
 	}
 
-	public static Map<Locale, String> getEmailArticleSubjectMap(
-		PortletPreferences preferences, boolean update) {
-
-		String subjectProperty = "emailArticleAddedSubject";
-		String subjectPropertyKey =
-			PropsKeys.JOURNAL_EMAIL_ARTICLE_ADDED_SUBJECT;
-
-		if (update) {
-			subjectProperty = "emailArticleUpdatedSubject";
-			subjectPropertyKey =
-				PropsKeys.JOURNAL_EMAIL_ARTICLE_UPDATED_SUBJECT;
-		}
-
-		Map<Locale, String> map = LocalizationUtil.getLocalizationMap(
-			preferences, subjectProperty);
-
-		Locale defaultLocale = LocaleUtil.getDefault();
-		String defaultValue = map.get(defaultLocale);
-
-		if (Validator.isNull(defaultValue)) {
-			map.put(defaultLocale, ContentUtil.get(PropsUtil.get(
-				subjectPropertyKey)));
-		}
-
-		return map;
-	}
-
-	public static boolean getEmailArticleAddedEnabled(
+	public static String getEmailArticleApprovalDeniedBody(
 		PortletPreferences preferences) {
 
-		String emailArticleAddedEnabled = preferences.getValue(
-			"emailArticleAddedEnabled", StringPool.BLANK);
-
-		if (Validator.isNotNull(emailArticleAddedEnabled)) {
-			return GetterUtil.getBoolean(emailArticleAddedEnabled);
-		}
-		else {
-			return GetterUtil.getBoolean(PropsUtil.get(
-				PropsKeys.JOURNAL_EMAIL_ARTICLE_ADDED_ENABLED));
-		}
-	}
-
-	public static String getEmailArticleApprovalDeniedBody(
-		PortletPreferences preferences, String languageId) {
-
 		String emailArticleApprovalDeniedBody = preferences.getValue(
-			"emailArticleApprovalDeniedBody_" + languageId, StringPool.BLANK);
+			"emailArticleApprovalDeniedBody", StringPool.BLANK);
 
 		if (Validator.isNotNull(emailArticleApprovalDeniedBody)) {
 			return emailArticleApprovalDeniedBody;
@@ -512,11 +456,10 @@ public class JournalUtil {
 	}
 
 	public static String getEmailArticleApprovalDeniedSubject(
-		PortletPreferences preferences, String languageId) {
+		PortletPreferences preferences) {
 
 		String emailArticleApprovalDeniedSubject = preferences.getValue(
-			"emailArticleApprovalDeniedSubject_" + languageId,
-			StringPool.BLANK);
+			"emailArticleApprovalDeniedSubject", StringPool.BLANK);
 
 		if (Validator.isNotNull(emailArticleApprovalDeniedSubject)) {
 			return emailArticleApprovalDeniedSubject;
@@ -528,10 +471,10 @@ public class JournalUtil {
 	}
 
 	public static String getEmailArticleApprovalGrantedBody(
-		PortletPreferences preferences, String languageId) {
+		PortletPreferences preferences) {
 
 		String emailArticleApprovalGrantedBody = preferences.getValue(
-			"emailArticleApprovalGrantedBody_" + languageId, StringPool.BLANK);
+			"emailArticleApprovalGrantedBody", StringPool.BLANK);
 
 		if (Validator.isNotNull(emailArticleApprovalGrantedBody)) {
 			return emailArticleApprovalGrantedBody;
@@ -558,11 +501,10 @@ public class JournalUtil {
 	}
 
 	public static String getEmailArticleApprovalGrantedSubject(
-		PortletPreferences preferences, String languageId) {
+		PortletPreferences preferences) {
 
 		String emailArticleApprovalGrantedSubject = preferences.getValue(
-			"emailArticleApprovalGrantedSubject_" + languageId,
-			StringPool.BLANK);
+			"emailArticleApprovalGrantedSubject", StringPool.BLANK);
 
 		if (Validator.isNotNull(emailArticleApprovalGrantedSubject)) {
 			return emailArticleApprovalGrantedSubject;
@@ -574,11 +516,10 @@ public class JournalUtil {
 	}
 
 	public static String getEmailArticleApprovalRequestedBody(
-		PortletPreferences preferences, String languageId) {
+		PortletPreferences preferences) {
 
 		String emailArticleApprovalRequestedBody = preferences.getValue(
-			"emailArticleApprovalRequestedBody_" + languageId,
-			StringPool.BLANK);
+			"emailArticleApprovalRequestedBody", StringPool.BLANK);
 
 		if (Validator.isNotNull(emailArticleApprovalRequestedBody)) {
 			return emailArticleApprovalRequestedBody;
@@ -605,11 +546,10 @@ public class JournalUtil {
 	}
 
 	public static String getEmailArticleApprovalRequestedSubject(
-		PortletPreferences preferences, String languageId) {
+		PortletPreferences preferences) {
 
 		String emailArticleApprovalRequestedSubject = preferences.getValue(
-			"emailArticleApprovalRequestedSubject_" + languageId,
-			StringPool.BLANK);
+			"emailArticleApprovalRequestedSubject", StringPool.BLANK);
 
 		if (Validator.isNotNull(emailArticleApprovalRequestedSubject)) {
 			return emailArticleApprovalRequestedSubject;
@@ -621,10 +561,10 @@ public class JournalUtil {
 	}
 
 	public static String getEmailArticleReviewBody(
-		PortletPreferences preferences, String languageId) {
+		PortletPreferences preferences) {
 
 		String emailArticleReviewBody = preferences.getValue(
-			"emailArticleReviewBody_" + languageId, StringPool.BLANK);
+			"emailArticleReviewBody", StringPool.BLANK);
 
 		if (Validator.isNotNull(emailArticleReviewBody)) {
 			return emailArticleReviewBody;
@@ -651,10 +591,10 @@ public class JournalUtil {
 	}
 
 	public static String getEmailArticleReviewSubject(
-		PortletPreferences preferences, String languageId) {
+		PortletPreferences preferences) {
 
 		String emailArticleReviewSubject = preferences.getValue(
-			"emailArticleReviewSubject_" + languageId, StringPool.BLANK);
+			"emailArticleReviewSubject", StringPool.BLANK);
 
 		if (Validator.isNotNull(emailArticleReviewSubject)) {
 			return emailArticleReviewSubject;

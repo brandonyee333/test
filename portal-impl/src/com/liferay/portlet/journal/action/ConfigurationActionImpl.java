@@ -14,10 +14,8 @@
 
 package com.liferay.portlet.journal.action;
 
-import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.servlet.SessionErrors;
-import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -38,30 +36,26 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 
 		String tabs2 = ParamUtil.getString(actionRequest, "tabs2");
 
-		String cmd = ParamUtil.getString(actionRequest, Constants.CMD);
-
-		if (!cmd.equals("updateLanguage")) {
-			if (tabs2.equals("email-from")) {
-				validateEmailFrom(actionRequest);
-			}
-			else if (tabs2.equals("web-content-added-email")) {
-				validateEmailArticleAdded(actionRequest);
-			}
-			else if (tabs2.equals("web-content-approval-denied-email")) {
-				validateEmailArticleApprovalDenied(actionRequest);
-			}
-			else if (tabs2.equals("web-content-approval-granted-email")) {
-				validateEmailArticleApprovalGranted(actionRequest);
-			}
-			else if (tabs2.equals("web-content-approval-requested-email")) {
-				validateEmailArticleApprovalRequested(actionRequest);
-			}
-			else if (tabs2.equals("web-content-review-email")) {
-				validateEmailArticleReview(actionRequest);
-			}
-			else if (tabs2.equals("web-content-updated-email")) {
-				validateEmailArticleUpdated(actionRequest);
-			}
+		if (tabs2.equals("email-from")) {
+			validateEmailFrom(actionRequest);
+		}
+		else if (tabs2.equals("web-content-added-email")) {
+			validateEmailArticleAdded(actionRequest);
+		}
+		else if (tabs2.equals("web-content-approval-denied-email")) {
+			validateEmailArticleApprovalDenied(actionRequest);
+		}
+		else if (tabs2.equals("web-content-approval-granted-email")) {
+			validateEmailArticleApprovalGranted(actionRequest);
+		}
+		else if (tabs2.equals("web-content-approval-requested-email")) {
+			validateEmailArticleApprovalRequested(actionRequest);
+		}
+		else if (tabs2.equals("web-content-review-email")) {
+			validateEmailArticleReview(actionRequest);
+		}
+		else if (tabs2.equals("web-content-updated-email")) {
+			validateEmailArticleUpdated(actionRequest);
 		}
 
 		super.processAction(portletConfig, actionRequest, actionResponse);
@@ -70,17 +64,10 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 	protected void validateEmailArticleAdded(ActionRequest actionRequest)
 		throws Exception {
 
-		String currentLanguageId = LanguageUtil.getLanguageId(actionRequest);
-
-		if (Validator.isNotNull(
-			actionRequest.getParameter("currentLanguageId"))) {
-			currentLanguageId = actionRequest.getParameter("currentLanguageId");
-		}
-
 		String emailArticleAddedSubject = getParameter(
-			actionRequest, "emailArticleAddedSubject_" + currentLanguageId);
+			actionRequest, "emailArticleAddedSubject");
 		String emailArticleAddedBody = getParameter(
-			actionRequest, "emailArticleAddedBody_" + currentLanguageId);
+			actionRequest, "emailArticleAddedBody");
 
 		if (Validator.isNull(emailArticleAddedSubject)) {
 			SessionErrors.add(actionRequest, "emailArticleAddedSubject");
@@ -164,17 +151,10 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 	protected void validateEmailArticleUpdated(ActionRequest actionRequest)
 		throws Exception {
 
-		String currentLanguageId = LanguageUtil.getLanguageId(actionRequest);
-
-		if (Validator.isNotNull(
-			actionRequest.getParameter("currentLanguageId"))) {
-			currentLanguageId = actionRequest.getParameter("currentLanguageId");
-		}
-
 		String emailArticleUpdatedSubject = getParameter(
-			actionRequest, "emailArticleUpdatedSubject_" + currentLanguageId);
+			actionRequest, "emailArticleUpdatedSubject");
 		String emailArticleUpdatedBody = getParameter(
-			actionRequest, "emailArticleUpdatedBody_" + currentLanguageId);
+			actionRequest, "emailArticleUpdatedBody");
 
 		if (Validator.isNull(emailArticleUpdatedSubject)) {
 			SessionErrors.add(actionRequest, "emailArticleUpdatedSubject");
