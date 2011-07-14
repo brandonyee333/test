@@ -1176,3 +1176,5 @@ Liferay.Service.registerClass(
 		updatePage: true
 	}
 );
+
+Liferay.Service.register("Liferay.Service.Device", "com.liferay.portal.mobile.service");
