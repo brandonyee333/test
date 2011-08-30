@@ -49,7 +49,8 @@ long folderId = GetterUtil.getLong((String)request.getAttribute("view.jsp-folder
 					'<portlet:namespace />folderId': '<%= String.valueOf(folderId) %>',
 					'<portlet:namespace />searchFolderId': '<%= String.valueOf(folderId) %>',
 					'<portlet:namespace />keywords': document.<portlet:namespace />fm1.<portlet:namespace />keywords.value,
-					'<portlet:namespace />viewDisplayStyleButtons': <%= Boolean.TRUE.toString() %>
+					'<portlet:namespace />viewDisplayStyleButtons': '<%= Boolean.TRUE.toString() %>',
+					'<portlet:namespace />redirect': '<%= currentURL %>'
 				}
 			}
 		);
