@@ -8,7 +8,7 @@
 	<classpathentry excluding="**/.svn/**|.svn/" kind="src" path="support-tomcat/src"/>
 	<classpathentry excluding="**/.svn/**|.svn/" kind="src" path="util-bridges/src"/>
 	<classpathentry excluding="**/.svn/**|.svn/" kind="src" path="util-java/src"/>
-	<!--<classpathentry excluding="**/.svn/**|.svn/" kind="src" path="util-java/test"/>-->
+	<!--<classpathentry excluding="**/.svn/**|.svn/" kind="src" path="util-java/test"/> -->
 	<classpathentry excluding="**/.svn/**|.svn/" kind="src" path="util-taglib/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/development/activation.jar"/>
@@ -292,5 +292,14 @@
 	<classpathentry kind="lib" path="lib/portal/xpp3.jar"/>
 	<classpathentry kind="lib" path="lib/portal/xstream.jar"/>
 	<classpathentry kind="lib" path="lib/portal/xuggle-xuggler.jar"/>
+	<classpathentry kind="lib" path="lib/portal/modeshape-common.jar"/>
+	<classpathentry kind="lib" path="lib/portal/modeshape-graph.jar"/>
+	<classpathentry kind="lib" path="lib/portal/modeshape-jcr-api.jar"/>
+	<classpathentry kind="lib" path="lib/portal/modeshape-jcr.jar"/>
+	<classpathentry kind="lib" path="lib/portal/modeshape-repository.jar"/>
+	<classpathentry kind="lib" path="lib/portal/modeshape-cnd.jar"/>
+	<classpathentry kind="lib" path="lib/portal/modeshape-search-lucene.jar"/>
+	<classpathentry kind="lib" path="lib/portal/lucene-regex.jar"/>
+	<classpathentry kind="lib" path="lib/portal/lucene-misc.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
