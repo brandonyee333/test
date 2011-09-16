@@ -63,7 +63,7 @@ public class AssignMembersOrganizationTest extends BaseTestCase {
 
 					try {
 						if (selenium.isVisible(
-									"//div[@class='lfr-component lfr-menu-list']/ul/li[3]/a")) {
+									"//div[@class='lfr-component lfr-menu-list']/ul/li[1]/a")) {
 							break;
 						}
 					}
@@ -74,23 +74,13 @@ public class AssignMembersOrganizationTest extends BaseTestCase {
 				}
 
 				selenium.saveScreenShotAndSource();
-				selenium.clickAt("//div[@class='lfr-component lfr-menu-list']/ul/li[3]/a",
-					RuntimeVariables.replace("All Organizations"));
+				assertEquals(RuntimeVariables.replace("Users and Organizations"),
+					selenium.getText(
+						"//div[@class='lfr-component lfr-menu-list']/ul/li[1]/a"));
+				selenium.clickAt("//div[@class='lfr-component lfr-menu-list']/ul/li[1]/a",
+					RuntimeVariables.replace("Users and Organizations"));
 				selenium.waitForPageToLoad("30000");
 				selenium.saveScreenShotAndSource();
-
-				boolean basic1Visible = selenium.isVisible("link=\u00ab Basic");
-
-				if (!basic1Visible) {
-					label = 2;
-
-					continue;
-				}
-
-				selenium.clickAt("link=\u00ab Basic",
-					RuntimeVariables.replace("\u00ab Basic"));
-
-			case 2:
 
 				for (int second = 0;; second++) {
 					if (second >= 60) {
@@ -117,8 +107,8 @@ public class AssignMembersOrganizationTest extends BaseTestCase {
 				selenium.waitForPageToLoad("30000");
 				selenium.saveScreenShotAndSource();
 				assertEquals(RuntimeVariables.replace("Actions"),
-					selenium.getText("//td[8]/span/ul/li/strong/a/span"));
-				selenium.clickAt("//td[8]/span/ul/li/strong/a/span",
+					selenium.getText("//td[4]/span/ul/li/strong/a/span"));
+				selenium.clickAt("//td[4]/span/ul/li/strong/a/span",
 					RuntimeVariables.replace("Actions"));
 
 				for (int second = 0;; second++) {
@@ -154,7 +144,7 @@ public class AssignMembersOrganizationTest extends BaseTestCase {
 				boolean basic2Visible = selenium.isVisible("link=\u00ab Basic");
 
 				if (!basic2Visible) {
-					label = 3;
+					label = 2;
 
 					continue;
 				}
@@ -162,7 +152,7 @@ public class AssignMembersOrganizationTest extends BaseTestCase {
 				selenium.clickAt("link=\u00ab Basic",
 					RuntimeVariables.replace("\u00ab Basic"));
 
-			case 3:
+			case 2:
 				selenium.type("//input[@name='_125_keywords']",
 					RuntimeVariables.replace("userfn"));
 				selenium.saveScreenShotAndSource();

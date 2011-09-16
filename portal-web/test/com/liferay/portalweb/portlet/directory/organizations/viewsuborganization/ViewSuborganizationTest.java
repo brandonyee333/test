@@ -98,6 +98,8 @@ public class ViewSuborganizationTest extends BaseTestCase {
 					selenium.getText("//tr[4]/td[5]/a"));
 				assertEquals(RuntimeVariables.replace("United States"),
 					selenium.getText("//tr[4]/td[6]/a"));
+				assertEquals(RuntimeVariables.replace("Actions"),
+					selenium.getText("//tr[4]/td[7]/span/ul/li/strong/a"));
 				selenium.clickAt("//tr[4]/td[7]/span/ul/li/strong/a",
 					RuntimeVariables.replace("Actions"));
 

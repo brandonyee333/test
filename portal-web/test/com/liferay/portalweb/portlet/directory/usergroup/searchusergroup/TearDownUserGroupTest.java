@@ -51,7 +51,7 @@ public class TearDownUserGroupTest extends BaseTestCase {
 				selenium.waitForPageToLoad("30000");
 				selenium.saveScreenShotAndSource();
 				selenium.clickAt("link=Users and Organizations",
-					RuntimeVariables.replace(""));
+					RuntimeVariables.replace("Users and Organizations"));
 				selenium.waitForPageToLoad("30000");
 				selenium.saveScreenShotAndSource();
 				selenium.clickAt("link=View", RuntimeVariables.replace("View"));
@@ -63,7 +63,7 @@ public class TearDownUserGroupTest extends BaseTestCase {
 
 					try {
 						if (selenium.isVisible(
-									"//div[@class='lfr-component lfr-menu-list']/ul/li[4]/a")) {
+									"//div[@class='lfr-component lfr-menu-list']/ul/li[2]/a")) {
 							break;
 						}
 					}
@@ -76,8 +76,8 @@ public class TearDownUserGroupTest extends BaseTestCase {
 				selenium.saveScreenShotAndSource();
 				assertEquals(RuntimeVariables.replace("User Groups"),
 					selenium.getText(
-						"//div[@class='lfr-component lfr-menu-list']/ul/li[4]/a"));
-				selenium.clickAt("//div[@class='lfr-component lfr-menu-list']/ul/li[4]/a",
+						"//div[@class='lfr-component lfr-menu-list']/ul/li[2]/a"));
+				selenium.clickAt("//div[@class='lfr-component lfr-menu-list']/ul/li[2]/a",
 					RuntimeVariables.replace("User Groups"));
 				selenium.waitForPageToLoad("30000");
 				selenium.saveScreenShotAndSource();
@@ -91,6 +91,8 @@ public class TearDownUserGroupTest extends BaseTestCase {
 					continue;
 				}
 
+				assertEquals(RuntimeVariables.replace("Actions"),
+					selenium.getText("//td[4]/span/ul/li/strong/a"));
 				selenium.clickAt("//td[4]/span/ul/li/strong/a",
 					RuntimeVariables.replace("Actions"));
 
@@ -131,33 +133,8 @@ public class TearDownUserGroupTest extends BaseTestCase {
 					RuntimeVariables.replace("\u00ab Back"));
 				selenium.waitForPageToLoad("30000");
 				selenium.saveScreenShotAndSource();
-				selenium.clickAt("link=View", RuntimeVariables.replace("View"));
-
-				for (int second = 0;; second++) {
-					if (second >= 60) {
-						fail("timeout");
-					}
-
-					try {
-						if (selenium.isVisible(
-									"//div[@class='lfr-component lfr-menu-list']/ul/li[4]/a")) {
-							break;
-						}
-					}
-					catch (Exception e) {
-					}
-
-					Thread.sleep(1000);
-				}
-
-				selenium.saveScreenShotAndSource();
-				assertEquals(RuntimeVariables.replace("User Groups"),
-					selenium.getText(
-						"//div[@class='lfr-component lfr-menu-list']/ul/li[4]/a"));
-				selenium.clickAt("//div[@class='lfr-component lfr-menu-list']/ul/li[4]/a",
-					RuntimeVariables.replace("User Groups"));
-				selenium.waitForPageToLoad("30000");
-				selenium.saveScreenShotAndSource();
+				assertEquals(RuntimeVariables.replace("Actions"),
+					selenium.getText("//td[4]/span/ul/li/strong/a"));
 				selenium.clickAt("//td[4]/span/ul/li/strong/a",
 					RuntimeVariables.replace("Actions"));
 
@@ -197,7 +174,7 @@ public class TearDownUserGroupTest extends BaseTestCase {
 
 					try {
 						if (selenium.isVisible(
-									"//div[@class='lfr-component lfr-menu-list']/ul/li[4]/a")) {
+									"//div[@class='lfr-component lfr-menu-list']/ul/li[2]/a")) {
 							break;
 						}
 					}
@@ -210,8 +187,8 @@ public class TearDownUserGroupTest extends BaseTestCase {
 				selenium.saveScreenShotAndSource();
 				assertEquals(RuntimeVariables.replace("User Groups"),
 					selenium.getText(
-						"//div[@class='lfr-component lfr-menu-list']/ul/li[4]/a"));
-				selenium.clickAt("//div[@class='lfr-component lfr-menu-list']/ul/li[4]/a",
+						"//div[@class='lfr-component lfr-menu-list']/ul/li[2]/a"));
+				selenium.clickAt("//div[@class='lfr-component lfr-menu-list']/ul/li[2]/a",
 					RuntimeVariables.replace("User Groups"));
 				selenium.waitForPageToLoad("30000");
 				selenium.saveScreenShotAndSource();
@@ -225,6 +202,8 @@ public class TearDownUserGroupTest extends BaseTestCase {
 					continue;
 				}
 
+				assertEquals(RuntimeVariables.replace("Actions"),
+					selenium.getText("//td[4]/span/ul/li/strong/a"));
 				selenium.clickAt("//td[4]/span/ul/li/strong/a",
 					RuntimeVariables.replace("Actions"));
 
@@ -265,33 +244,8 @@ public class TearDownUserGroupTest extends BaseTestCase {
 					RuntimeVariables.replace("\u00ab Back"));
 				selenium.waitForPageToLoad("30000");
 				selenium.saveScreenShotAndSource();
-				selenium.clickAt("link=View", RuntimeVariables.replace("View"));
-
-				for (int second = 0;; second++) {
-					if (second >= 60) {
-						fail("timeout");
-					}
-
-					try {
-						if (selenium.isVisible(
-									"//div[@class='lfr-component lfr-menu-list']/ul/li[4]/a")) {
-							break;
-						}
-					}
-					catch (Exception e) {
-					}
-
-					Thread.sleep(1000);
-				}
-
-				selenium.saveScreenShotAndSource();
-				assertEquals(RuntimeVariables.replace("User Groups"),
-					selenium.getText(
-						"//div[@class='lfr-component lfr-menu-list']/ul/li[4]/a"));
-				selenium.clickAt("//div[@class='lfr-component lfr-menu-list']/ul/li[4]/a",
-					RuntimeVariables.replace("User Groups"));
-				selenium.waitForPageToLoad("30000");
-				selenium.saveScreenShotAndSource();
+				assertEquals(RuntimeVariables.replace("Actions"),
+					selenium.getText("//td[4]/span/ul/li/strong/a"));
 				selenium.clickAt("//td[4]/span/ul/li/strong/a",
 					RuntimeVariables.replace("Actions"));
 
@@ -331,7 +285,7 @@ public class TearDownUserGroupTest extends BaseTestCase {
 
 					try {
 						if (selenium.isVisible(
-									"//div[@class='lfr-component lfr-menu-list']/ul/li[4]/a")) {
+									"//div[@class='lfr-component lfr-menu-list']/ul/li[2]/a")) {
 							break;
 						}
 					}
@@ -344,8 +298,8 @@ public class TearDownUserGroupTest extends BaseTestCase {
 				selenium.saveScreenShotAndSource();
 				assertEquals(RuntimeVariables.replace("User Groups"),
 					selenium.getText(
-						"//div[@class='lfr-component lfr-menu-list']/ul/li[4]/a"));
-				selenium.clickAt("//div[@class='lfr-component lfr-menu-list']/ul/li[4]/a",
+						"//div[@class='lfr-component lfr-menu-list']/ul/li[2]/a"));
+				selenium.clickAt("//div[@class='lfr-component lfr-menu-list']/ul/li[2]/a",
 					RuntimeVariables.replace("User Groups"));
 				selenium.waitForPageToLoad("30000");
 				selenium.saveScreenShotAndSource();
@@ -359,6 +313,8 @@ public class TearDownUserGroupTest extends BaseTestCase {
 					continue;
 				}
 
+				assertEquals(RuntimeVariables.replace("Actions"),
+					selenium.getText("//td[4]/span/ul/li/strong/a"));
 				selenium.clickAt("//td[4]/span/ul/li/strong/a",
 					RuntimeVariables.replace("Actions"));
 
@@ -399,33 +355,8 @@ public class TearDownUserGroupTest extends BaseTestCase {
 					RuntimeVariables.replace("\u00ab Back"));
 				selenium.waitForPageToLoad("30000");
 				selenium.saveScreenShotAndSource();
-				selenium.clickAt("link=View", RuntimeVariables.replace("View"));
-
-				for (int second = 0;; second++) {
-					if (second >= 60) {
-						fail("timeout");
-					}
-
-					try {
-						if (selenium.isVisible(
-									"//div[@class='lfr-component lfr-menu-list']/ul/li[4]/a")) {
-							break;
-						}
-					}
-					catch (Exception e) {
-					}
-
-					Thread.sleep(1000);
-				}
-
-				selenium.saveScreenShotAndSource();
-				assertEquals(RuntimeVariables.replace("User Groups"),
-					selenium.getText(
-						"//div[@class='lfr-component lfr-menu-list']/ul/li[4]/a"));
-				selenium.clickAt("//div[@class='lfr-component lfr-menu-list']/ul/li[4]/a",
-					RuntimeVariables.replace("User Groups"));
-				selenium.waitForPageToLoad("30000");
-				selenium.saveScreenShotAndSource();
+				assertEquals(RuntimeVariables.replace("Actions"),
+					selenium.getText("//td[4]/span/ul/li/strong/a"));
 				selenium.clickAt("//td[4]/span/ul/li/strong/a",
 					RuntimeVariables.replace("Actions"));
 
@@ -465,7 +396,7 @@ public class TearDownUserGroupTest extends BaseTestCase {
 
 					try {
 						if (selenium.isVisible(
-									"//div[@class='lfr-component lfr-menu-list']/ul/li[4]/a")) {
+									"//div[@class='lfr-component lfr-menu-list']/ul/li[2]/a")) {
 							break;
 						}
 					}
@@ -478,8 +409,8 @@ public class TearDownUserGroupTest extends BaseTestCase {
 				selenium.saveScreenShotAndSource();
 				assertEquals(RuntimeVariables.replace("User Groups"),
 					selenium.getText(
-						"//div[@class='lfr-component lfr-menu-list']/ul/li[4]/a"));
-				selenium.clickAt("//div[@class='lfr-component lfr-menu-list']/ul/li[4]/a",
+						"//div[@class='lfr-component lfr-menu-list']/ul/li[2]/a"));
+				selenium.clickAt("//div[@class='lfr-component lfr-menu-list']/ul/li[2]/a",
 					RuntimeVariables.replace("User Groups"));
 				selenium.waitForPageToLoad("30000");
 				selenium.saveScreenShotAndSource();
@@ -493,6 +424,8 @@ public class TearDownUserGroupTest extends BaseTestCase {
 					continue;
 				}
 
+				assertEquals(RuntimeVariables.replace("Actions"),
+					selenium.getText("//td[4]/span/ul/li/strong/a"));
 				selenium.clickAt("//td[4]/span/ul/li/strong/a",
 					RuntimeVariables.replace("Actions"));
 
@@ -533,33 +466,8 @@ public class TearDownUserGroupTest extends BaseTestCase {
 					RuntimeVariables.replace("\u00ab Back"));
 				selenium.waitForPageToLoad("30000");
 				selenium.saveScreenShotAndSource();
-				selenium.clickAt("link=View", RuntimeVariables.replace("View"));
-
-				for (int second = 0;; second++) {
-					if (second >= 60) {
-						fail("timeout");
-					}
-
-					try {
-						if (selenium.isVisible(
-									"//div[@class='lfr-component lfr-menu-list']/ul/li[4]/a")) {
-							break;
-						}
-					}
-					catch (Exception e) {
-					}
-
-					Thread.sleep(1000);
-				}
-
-				selenium.saveScreenShotAndSource();
-				assertEquals(RuntimeVariables.replace("User Groups"),
-					selenium.getText(
-						"//div[@class='lfr-component lfr-menu-list']/ul/li[4]/a"));
-				selenium.clickAt("//div[@class='lfr-component lfr-menu-list']/ul/li[4]/a",
-					RuntimeVariables.replace("User Groups"));
-				selenium.waitForPageToLoad("30000");
-				selenium.saveScreenShotAndSource();
+				assertEquals(RuntimeVariables.replace("Actions"),
+					selenium.getText("//td[4]/span/ul/li/strong/a"));
 				selenium.clickAt("//td[4]/span/ul/li/strong/a",
 					RuntimeVariables.replace("Actions"));
 
@@ -599,7 +507,7 @@ public class TearDownUserGroupTest extends BaseTestCase {
 
 					try {
 						if (selenium.isVisible(
-									"//div[@class='lfr-component lfr-menu-list']/ul/li[4]/a")) {
+									"//div[@class='lfr-component lfr-menu-list']/ul/li[2]/a")) {
 							break;
 						}
 					}
@@ -612,8 +520,8 @@ public class TearDownUserGroupTest extends BaseTestCase {
 				selenium.saveScreenShotAndSource();
 				assertEquals(RuntimeVariables.replace("User Groups"),
 					selenium.getText(
-						"//div[@class='lfr-component lfr-menu-list']/ul/li[4]/a"));
-				selenium.clickAt("//div[@class='lfr-component lfr-menu-list']/ul/li[4]/a",
+						"//div[@class='lfr-component lfr-menu-list']/ul/li[2]/a"));
+				selenium.clickAt("//div[@class='lfr-component lfr-menu-list']/ul/li[2]/a",
 					RuntimeVariables.replace("User Groups"));
 				selenium.waitForPageToLoad("30000");
 				selenium.saveScreenShotAndSource();
@@ -627,6 +535,8 @@ public class TearDownUserGroupTest extends BaseTestCase {
 					continue;
 				}
 
+				assertEquals(RuntimeVariables.replace("Actions"),
+					selenium.getText("//td[4]/span/ul/li/strong/a"));
 				selenium.clickAt("//td[4]/span/ul/li/strong/a",
 					RuntimeVariables.replace("Actions"));
 
@@ -667,33 +577,8 @@ public class TearDownUserGroupTest extends BaseTestCase {
 					RuntimeVariables.replace("\u00ab Back"));
 				selenium.waitForPageToLoad("30000");
 				selenium.saveScreenShotAndSource();
-				selenium.clickAt("link=View", RuntimeVariables.replace("View"));
-
-				for (int second = 0;; second++) {
-					if (second >= 60) {
-						fail("timeout");
-					}
-
-					try {
-						if (selenium.isVisible(
-									"//div[@class='lfr-component lfr-menu-list']/ul/li[4]/a")) {
-							break;
-						}
-					}
-					catch (Exception e) {
-					}
-
-					Thread.sleep(1000);
-				}
-
-				selenium.saveScreenShotAndSource();
-				assertEquals(RuntimeVariables.replace("User Groups"),
-					selenium.getText(
-						"//div[@class='lfr-component lfr-menu-list']/ul/li[4]/a"));
-				selenium.clickAt("//div[@class='lfr-component lfr-menu-list']/ul/li[4]/a",
-					RuntimeVariables.replace("User Groups"));
-				selenium.waitForPageToLoad("30000");
-				selenium.saveScreenShotAndSource();
+				assertEquals(RuntimeVariables.replace("Actions"),
+					selenium.getText("//td[4]/span/ul/li/strong/a"));
 				selenium.clickAt("//td[4]/span/ul/li/strong/a",
 					RuntimeVariables.replace("Actions"));
 
