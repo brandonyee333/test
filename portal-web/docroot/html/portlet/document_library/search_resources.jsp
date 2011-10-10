@@ -199,7 +199,7 @@ int total = 0;
 									PortletURL tempRowURL = liferayPortletResponse.createRenderURL();
 
 									tempRowURL.setParameter("struts_action", "/document_library/view_file_entry");
-									tempRowURL.setParameter("redirect", currentURL);
+									tempRowURL.setParameter("redirect", redirect);
 									tempRowURL.setParameter("fileEntryId", String.valueOf(fileEntry.getFileEntryId()));
 
 									request.setAttribute("view_entries.jsp-fileEntry", fileEntry);
@@ -237,7 +237,7 @@ int total = 0;
 							PortletURL rowURL = liferayPortletResponse.createRenderURL();
 
 							rowURL.setParameter("struts_action", "/document_library/view_file_entry");
-							rowURL.setParameter("redirect", currentURL);
+							rowURL.setParameter("redirect", redirect);
 							rowURL.setParameter("fileEntryId", String.valueOf(fileEntry.getFileEntryId()));
 
 							for (String columnName : entryColumns) {
@@ -298,7 +298,7 @@ int total = 0;
 	</c:if>
 
 	<%
-	PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(pageContext, "search") + ": " + keywords, currentURL);
+	PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(pageContext, "search") + ": " + keywords, redirect);
 	%>
 
 	<aui:script>
