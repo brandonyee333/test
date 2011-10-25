@@ -154,7 +154,7 @@ public class AddDefaultDocumentLibraryStructuresAction extends SimpleAction {
 
 		addDLFileEntryType(
 			userId, groupId, "Video", "Video Document Type",
-			"Default Videos's Metadata Set", serviceContext);
+			"Default Video's Metadata Set", serviceContext);
 	}
 
 	protected void addDLRawMetadataStructures(
