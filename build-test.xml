@@ -3098,6 +3098,8 @@ executable ZIP file.
 			</then>
 		</if>
 
+		<antcall target="rebuild-database-hsql" inheritAll="false" />
+
 		<parallel>
 			<exec dir="${simple.server.bin.dir}" executable="${simple.server.start.executable}" resolveexecutable="true">
 				<arg line="${simple.server.start.executable.arg.line}" />
