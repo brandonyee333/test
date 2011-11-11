@@ -17,6 +17,8 @@
 <%@ include file="/html/portlet/bookmarks/init.jsp" %>
 
 <%
+String mergeRedirect = ParamUtil.getString(request, "mergeRedirect");
+
 String redirect = ParamUtil.getString(request, "redirect");
 
 BookmarksFolder folder = (BookmarksFolder)request.getAttribute(WebKeys.BOOKMARKS_FOLDER);
@@ -129,6 +131,14 @@ long parentFolderId = BeanParamUtil.getLong(folder, request, "parentFolderId", B
 
 	function <portlet:namespace />saveFolder() {
 		document.<portlet:namespace />fm.<portlet:namespace /><%= Constants.CMD %>.value = "<%= (folder == null) ? Constants.ADD : Constants.UPDATE %>";
+		if(document.<portlet:namespace />fm.<portlet:namespace />mergeWithParentFolderCheckbox){
+
+			var ismerge = document.getElementById("<portlet:namespace />mergeWithParentFolderCheckbox");
+
+			if(ismerge.checked){
+				 document.<portlet:namespace />fm.<portlet:namespace />redirect.value = "<%= mergeRedirect %>";
+			}
+		}
 		submitForm(document.<portlet:namespace />fm);
 	}
 
