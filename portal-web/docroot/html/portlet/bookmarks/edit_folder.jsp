@@ -17,7 +17,7 @@
 <%@ include file="/html/portlet/bookmarks/init.jsp" %>
 
 <%
-String mergeredirect = ParamUtil.getString(request, "mergeredirect");
+String mergeRedirect = ParamUtil.getString(request, "mergeRedirect");
 
 String redirect = ParamUtil.getString(request, "redirect");
 
@@ -36,7 +36,6 @@ long parentFolderId = BeanParamUtil.getLong(folder, request, "parentFolderId", B
 
 <aui:form action="<%= editFolderURL %>" method="post" name="fm" onSubmit='<%= "event.preventDefault(); " + renderResponse.getNamespace() + "saveFolder();" %>'>
 	<aui:input name="<%= Constants.CMD %>" type="hidden" />
-	<aui:input name="merge" type="hidden" value="<%= redirect %>" />
 	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 	<aui:input name="folderId" type="hidden" value="<%= folderId %>" />
 	<aui:input name="parentFolderId" type="hidden" value="<%= parentFolderId %>" />
@@ -137,7 +136,7 @@ long parentFolderId = BeanParamUtil.getLong(folder, request, "parentFolderId", B
 			var ismerge = document.getElementById("<portlet:namespace />mergeWithParentFolderCheckbox");
 
 			if(ismerge.checked){
-				 document.getElementById("<portlet:namespace />merge").value = "<%= mergeredirect %>";
+				 document.<portlet:namespace />fm.<portlet:namespace />redirect.value = "<%= mergeRedirect %>";
 			}
 		}
 		submitForm(document.<portlet:namespace />fm);

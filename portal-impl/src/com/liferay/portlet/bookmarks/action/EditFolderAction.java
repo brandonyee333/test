@@ -59,9 +59,7 @@ public class EditFolderAction extends PortletAction {
 				deleteFolder(actionRequest);
 			}
 
-			String merge = ParamUtil.getString(actionRequest, "merge");
-
-			sendRedirect(actionRequest, actionResponse, merge);
+			sendRedirect(actionRequest, actionResponse);
 		}
 		catch (Exception e) {
 			if (e instanceof NoSuchFolderException ||
