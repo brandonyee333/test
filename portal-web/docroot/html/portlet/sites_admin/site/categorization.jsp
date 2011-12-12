@@ -1,3 +1,4 @@
+<%--
 /**
  * Copyright (c) 2000-2011 Liferay, Inc. All rights reserved.
  *
@@ -11,28 +12,24 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
+--%>
 
-package com.liferay.portal.repository;
+<%@ include file="/html/portlet/sites_admin/init.jsp" %>
 
-import com.liferay.portal.repository.cmis.search.CMISQueryBuilderTest;
+<%
+Group liveGroup = (Group)request.getAttribute("site.liveGroup");
+%>
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+<liferay-ui:error-marker key="errorSection" value="categorization" />
 
-/**
- * @author Alexander Chow
- */
-public class RepositoryTestSuite extends TestSuite {
+<aui:model-context bean="<%= liveGroup %>" model="<%= Group.class %>" />
 
-	public static Test suite() {
-		TestSuite testSuite = new TestSuite();
+<liferay-ui:asset-categories-error />
 
-		testSuite.addTestSuite(CheckInCheckOutTest.class);
-		testSuite.addTestSuite(RepositoryTest.class);
+<liferay-ui:asset-tags-error />
 
-		testSuite.addTestSuite(CMISQueryBuilderTest.class);
+<aui:fieldset>
+	<aui:input name="categories" type="assetCategories" />
 
-		return new RepositoryTestSetup(testSuite);
-	}
-
-}
+	<aui:input name="tags" type="assetTags" />
+</aui:fieldset>

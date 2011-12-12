@@ -40,6 +40,7 @@ import com.liferay.portal.model.Group;
 import com.liferay.portal.model.GroupConstants;
 import com.liferay.portal.model.Layout;
 import com.liferay.portal.model.LayoutConstants;
+import com.liferay.portal.model.LayoutSet;
 import com.liferay.portal.model.MembershipRequest;
 import com.liferay.portal.model.MembershipRequestConstants;
 import com.liferay.portal.security.auth.PrincipalException;
@@ -462,6 +463,31 @@ public class EditGroupAction extends PortletAction {
 			SitesUtil.applyLayoutSetPrototypes(
 				liveGroup, publicLayoutSetPrototypeId,
 				privateLayoutSetPrototypeId, serviceContext);
+		}
+		else {
+			LayoutSet privateLayoutSet = liveGroup.getPrivateLayoutSet();
+
+			boolean privateLayoutSetPrototypeLinkEnabled = ParamUtil.getBoolean(
+				serviceContext, "privateLayoutSetPrototypeLinkEnabled");
+
+			if (privateLayoutSetPrototypeLinkEnabled !=
+					privateLayoutSet.getLayoutSetPrototypeLinkEnabled()) {
+
+				LayoutSetServiceUtil.updateLayoutSetPrototypeLinkEnabled(
+					liveGroupId, true, privateLayoutSetPrototypeLinkEnabled);
+			}
+
+			boolean publicLayoutSetPrototypeLinkEnabled = ParamUtil.getBoolean(
+				serviceContext, "publicLayoutSetPrototypeLinkEnabled");
+
+			LayoutSet publicLayoutSet = liveGroup.getPublicLayoutSet();
+
+			if (publicLayoutSetPrototypeLinkEnabled !=
+					publicLayoutSet.getLayoutSetPrototypeLinkEnabled()) {
+
+				LayoutSetServiceUtil.updateLayoutSetPrototypeLinkEnabled(
+					liveGroupId, false, publicLayoutSetPrototypeLinkEnabled);
+			}
 		}
 
 		// Staging

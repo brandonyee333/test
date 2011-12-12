@@ -33,8 +33,6 @@ import com.liferay.portal.model.LayoutConstants;
 import com.liferay.portal.model.LayoutSet;
 import com.liferay.portal.model.LayoutSetPrototype;
 import com.liferay.portal.model.Lock;
-import com.liferay.portal.model.ResourceConstants;
-import com.liferay.portal.model.ResourcePermission;
 import com.liferay.portal.model.UserGroup;
 import com.liferay.portal.model.impl.VirtualLayout;
 import com.liferay.portal.security.permission.PermissionChecker;
@@ -44,8 +42,9 @@ import com.liferay.portal.service.LayoutLocalServiceUtil;
 import com.liferay.portal.service.LayoutSetLocalServiceUtil;
 import com.liferay.portal.service.LayoutSetPrototypeLocalServiceUtil;
 import com.liferay.portal.service.LockLocalServiceUtil;
-import com.liferay.portal.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.service.UserGroupLocalServiceUtil;
+import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portal.service.persistence.LayoutSetUtil;
 import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
@@ -186,7 +185,7 @@ public class LayoutLocalServiceVirtualLayoutsAdvice
 			PortletDataHandlerKeys.IGNORE_LAST_PUBLISH_DATE,
 			new String[] {Boolean.TRUE.toString()});
 		parameterMap.put(
-			PortletDataHandlerKeys.LAYOUT_SET_PROTOTYPE_INHERITED,
+			PortletDataHandlerKeys.LAYOUT_SET_PROTOTYPE_LINK_ENABLED,
 			new String[] {Boolean.TRUE.toString()});
 		parameterMap.put(
 			PortletDataHandlerKeys.PERMISSIONS,
@@ -233,24 +232,7 @@ public class LayoutLocalServiceVirtualLayoutsAdvice
 		return parameterMap;
 	}
 
-	protected long getOwnerUserId(
-			PermissionChecker permissionChecker,
-			LayoutSetPrototype layoutSetPrototype)
-		throws PortalException, SystemException {
-
-		ResourcePermission resourcePermission =
-			ResourcePermissionLocalServiceUtil.getResourcePermission(
-				layoutSetPrototype.getCompanyId(),
-				LayoutSetPrototype.class.getName(),
-				ResourceConstants.SCOPE_INDIVIDUAL,
-				String.valueOf(layoutSetPrototype.getLayoutSetPrototypeId()),
-				permissionChecker.getOwnerRoleId());
-
-		return resourcePermission.getOwnerId();
-	}
-
 	protected void importLayoutSetPrototype(
-			PermissionChecker permissionChecker,
 			LayoutSetPrototype layoutSetPrototype, long groupId,
 			boolean privateLayout, Map<String, String[]> parameterMap)
 		throws PortalException, SystemException {
@@ -286,7 +268,8 @@ public class LayoutLocalServiceVirtualLayoutsAdvice
 			newFile = true;
 		}
 
-		long userId = getOwnerUserId(permissionChecker, layoutSetPrototype);
+		long userId = UserLocalServiceUtil.getDefaultUserId(
+			layoutSetPrototype.getCompanyId());
 
 		LayoutLocalServiceUtil.importLayouts(
 			userId, groupId, privateLayout, parameterMap, file);
@@ -322,19 +305,35 @@ public class LayoutLocalServiceVirtualLayoutsAdvice
 			return;
 		}
 
-		LayoutSetPrototype layoutSetPrototype =
-			LayoutSetPrototypeLocalServiceUtil.getLayoutSetPrototypeByUuid(
-				layoutSet.getLayoutSetPrototypeUuid());
-
 		UnicodeProperties settingsProperties =
 			layoutSet.getSettingsProperties();
 
 		long lastMergeTime = GetterUtil.getLong(
 			settingsProperties.getProperty("last-merge-time"));
 
+		LayoutSetPrototype layoutSetPrototype =
+			LayoutSetPrototypeLocalServiceUtil.getLayoutSetPrototypeByUuid(
+				layoutSet.getLayoutSetPrototypeUuid());
+
 		Date modifiedDate = layoutSetPrototype.getModifiedDate();
 
 		if (lastMergeTime >= modifiedDate.getTime()) {
+			return;
+		}
+
+		LayoutSet layoutSetPrototypeLayoutSet =
+			layoutSetPrototype.getLayoutSet();
+
+		UnicodeProperties layoutSetPrototypeSettingsProperties =
+			layoutSetPrototypeLayoutSet.getSettingsProperties();
+
+		int mergeFailCount = GetterUtil.getInteger(
+			layoutSetPrototypeSettingsProperties.getProperty(
+				"merge-fail-count"));
+
+		if (mergeFailCount >
+				PropsValues.LAYOUT_SET_PROTOTYPE_MERGE_FAIL_THRESHOLD) {
+
 			return;
 		}
 
@@ -345,8 +344,31 @@ public class LayoutLocalServiceVirtualLayoutsAdvice
 				LayoutLocalServiceVirtualLayoutsAdvice.class.getName(),
 				String.valueOf(layoutSet.getLayoutSetId()), owner, false);
 
+			// Double deep check
+
 			if (!owner.equals(lock.getOwner())) {
-				return;
+				Date createDate = lock.getCreateDate();
+
+				if (((System.currentTimeMillis() - createDate.getTime()) >=
+						PropsValues.LAYOUT_SET_PROTOTYPE_MERGE_LOCK_MAX_TIME)) {
+
+					// Acquire lock if the lock is older than the lock max time
+
+					lock = LockLocalServiceUtil.lock(
+						LayoutLocalServiceVirtualLayoutsAdvice.class.getName(),
+						String.valueOf(layoutSet.getLayoutSetId()),
+						lock.getOwner(), owner, false);
+
+					// Check if acquiring the lock succeeded or if another
+					// process has the lock
+
+					if (!owner.equals(lock.getOwner())) {
+						return;
+					}
+				}
+				else {
+					return;
+				}
 			}
 		}
 		catch (Exception e) {
@@ -364,13 +386,23 @@ public class LayoutLocalServiceVirtualLayoutsAdvice
 			}
 
 			importLayoutSetPrototype(
-				permissionChecker, layoutSetPrototype, layoutSet.getGroupId(),
+				layoutSetPrototype, layoutSet.getGroupId(),
 				layoutSet.isPrivateLayout(), parameterMap);
 
 			settingsProperties.setProperty(
 				"last-merge-time", String.valueOf(modifiedDate.getTime()));
 
 			LayoutSetLocalServiceUtil.updateLayoutSet(layoutSet, false);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			layoutSetPrototypeSettingsProperties.setProperty(
+				"merge-fail-count", String.valueOf(++mergeFailCount));
+
+			// Invoke updateImpl so that we do not trigger the listeners
+
+			LayoutSetUtil.updateImpl(layoutSetPrototypeLayoutSet, false);
 		}
 		finally {
 			LockLocalServiceUtil.unlock(

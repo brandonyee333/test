@@ -165,6 +165,10 @@ public interface Portal {
 			HttpServletRequest request, Portlet portlet)
 		throws PortalException, SystemException;
 
+	public void addPortletDefaultResource(
+			long companyId, Layout layout, Portlet portlet)
+		throws PortalException, SystemException;
+
 	/**
 	 * Adds the preserved parameters doAsGroupId and refererPlid to the URL,
 	 * optionally adding doAsUserId and doAsUserLanguageId as well.
