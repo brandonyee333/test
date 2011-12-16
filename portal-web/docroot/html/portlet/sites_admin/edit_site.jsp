@@ -136,11 +136,11 @@ else if (layoutSetPrototype != null) {
 	%>
 
 	<liferay-ui:form-navigator
+		backURL="<%= backURL %>"
 		categoryNames="<%= _CATEGORY_NAMES %>"
 		categorySections="<%= categorySections %>"
 		jspPath="/html/portlet/sites_admin/site/"
 		showButtons="<%= true %>"
-		backURL="<%= backURL %>"
 	/>
 </aui:form>
 

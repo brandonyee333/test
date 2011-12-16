@@ -88,11 +88,11 @@ String[][] categorySections = {mainSections, identificationSections, miscellaneo
 	</liferay-util:buffer>
 
 	<liferay-ui:form-navigator
+		backURL="<%= backURL %>"
 		categoryNames="<%= _CATEGORY_NAMES %>"
 		categorySections="<%= categorySections %>"
 		htmlTop="<%= htmlTop %>"
 		jspPath="/html/portlet/users_admin/organization/"
-		backURL="<%= backURL %>"
 	/>
 </aui:form>
 
