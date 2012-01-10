@@ -163,7 +163,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 					new String[] {
 						<#list finderColsList as finderCol>
 							${serviceBuilder.getPrimitiveObj("${finderCol.type}")}.class.getName()
-	
+
 							<#if finderCol_has_next>
 								,
 							</#if>
@@ -172,16 +172,16 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 
 					<#if columnBitmaskEnabled>
 						,
-	
+
 						<#list finderColsList as finderCol>
 							${entity.name}ModelImpl.${finderCol.name?upper_case}_COLUMN_BITMASK
-	
+
 							<#if finderCol_has_next>
 								|
 							</#if>
 						</#list>
 					</#if>
-	
+
 					);
 			</#if>
 
@@ -657,6 +657,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 
 							<#if finder.hasArrayableOperator()>
 								args = (Object[])FinderCacheUtil.getResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_${finder.name?upper_case}_ARGS, args, this);
+
 								if (args != null) {
 									FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_${finder.name?upper_case}, args);
 									FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_${finder.name?upper_case}, args);
@@ -686,6 +687,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 
 							<#if finder.hasArrayableOperator()>
 								args = (Object[])FinderCacheUtil.getResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_${finder.name?upper_case}_ARGS, args, this);
+
 								if (args != null) {
 									FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_${finder.name?upper_case}, args);
 									FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_${finder.name?upper_case}, args);
@@ -1551,7 +1553,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 									<#list finderColsList as finderCol>
 										<#if finderCol.hasArrayableOperator()>
 											Object[] arrayableFinderArgs;
-											for(${finderCol.type} finderColName : ${finderCol.names}){
+											for (${finderCol.type} finderColName : ${finderCol.names}) {
 
 												arrayableFinderArgs = new Object[] {
 													<#list finderColsList as subFinderCol>
@@ -2811,8 +2813,8 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 						<#list finderColsList as finderCol>
 							<#if finderCol.hasArrayableOperator()>
 								Object[] arrayableFinderArgs;
-								for(${finderCol.type} finderColName : ${finderCol.names}){
-	
+								for (${finderCol.type} finderColName : ${finderCol.names}) {
+
 									arrayableFinderArgs = new Object[] {
 										<#list finderColsList as subFinderCol>
 											<#if subFinderCol.hasArrayableOperator()>
@@ -2820,13 +2822,13 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 											<#else>
 												${subFinderCol.name}
 											</#if>
-	
+
 											<#if subFinderCol_has_next>
 												,
 											</#if>
 										</#list>
 									};
-	
+
 									FinderCacheUtil.putResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_${finder.name?upper_case}_ARGS, arrayableFinderArgs, finderArgs);
 								}
 							</#if>
