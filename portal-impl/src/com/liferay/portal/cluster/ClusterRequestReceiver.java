@@ -26,6 +26,8 @@ import com.liferay.portal.kernel.cluster.FutureClusterResponses;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
+import com.liferay.portal.kernel.util.NamedThreadFactory;
+import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Serializable;
@@ -33,6 +35,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.jgroups.Channel;
 import org.jgroups.ChannelException;
@@ -49,8 +53,23 @@ public class ClusterRequestReceiver extends BaseReceiver {
 		_clusterExecutorImpl = clusterExecutorImpl;
 	}
 
+	public void destroy() {
+		_executorService.shutdownNow();
+	}
+
+	public void initialize() {
+		_executorService = Executors.newSingleThreadExecutor(
+			new NamedThreadFactory(
+				ClusterRequestReceiver.class.getName() + "_serial", 
+				Thread.NORM_PRIORITY, PortalClassLoaderUtil.getClassLoader()));
+	}
+
 	@Override
 	public void receive(Message message) {
+		if (!_clusterExecutorImpl.isInitialized()) {
+			return;
+		}
+
 		org.jgroups.Address sourceAddress = message.getSrc();
 
 		Channel controlChannel = _clusterExecutorImpl.getControlChannel();
@@ -78,7 +97,10 @@ public class ClusterRequestReceiver extends BaseReceiver {
 		if (obj instanceof ClusterRequest) {
 			ClusterRequest clusterRequest = (ClusterRequest)obj;
 
-			processClusterRequest(clusterRequest, sourceAddress, localAddress);
+			ClusterRequestReceiver.RequestTask requestTask = new RequestTask(
+				clusterRequest, sourceAddress, localAddress);
+
+			_executorService.execute(requestTask);
 		}
 		else if (obj instanceof ClusterNodeResponse) {
 			ClusterNodeResponse clusterNodeResponse = (ClusterNodeResponse)obj;
@@ -96,7 +118,7 @@ public class ClusterRequestReceiver extends BaseReceiver {
 	public void viewAccepted(View view) {
 		super.viewAccepted(view);
 
-		if (_lastView == null) {
+		if (_lastView == null || !_clusterExecutorImpl.isInitialized()) {
 			_lastView = view;
 
 			return;
@@ -385,6 +407,29 @@ public class ClusterRequestReceiver extends BaseReceiver {
 		ClusterRequestReceiver.class);
 
 	private ClusterExecutorImpl _clusterExecutorImpl;
+	private volatile ExecutorService _executorService;
 	private volatile View _lastView;
+
+	private class RequestTask implements Runnable {
+
+		public RequestTask(
+			ClusterRequest clusterRequest, org.jgroups.Address sourceAddress,
+			org.jgroups.Address localAddress) {
+
+			_clusterRequest = clusterRequest;
+			_sourceAddress = sourceAddress;
+			_localAddress = localAddress;
+		}
+
+		public void run() {
+			processClusterRequest(
+				_clusterRequest, _sourceAddress, _localAddress);
+		}
+
+		private ClusterRequest _clusterRequest;
+		private org.jgroups.Address _localAddress;
+		private org.jgroups.Address _sourceAddress;
+
+	}
 
 }

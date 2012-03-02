@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.cluster.ClusterNodeResponse;
 import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.cluster.FutureClusterResponses;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.executor.PortalExecutorManagerUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.InetAddressUtil;
@@ -49,6 +50,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
 
 import org.jgroups.ChannelException;
 import org.jgroups.JChannel;
@@ -90,6 +93,8 @@ public class ClusterExecutorImpl
 		}
 
 		_controlChannel.close();
+		_parallelExecutorService.shutdownNow();
+		_clusterRequestReceiver.destroy();
 	}
 
 	public FutureClusterResponses execute(ClusterRequest clusterRequest)
@@ -188,9 +193,17 @@ public class ClusterExecutorImpl
 			_log.error("Unable to determine local network address", se);
 		}
 
+		_clusterRequestReceiver.initialize();
+
+		_parallelExecutorService =
+			PortalExecutorManagerUtil.getPortalExecutor(
+				ClusterExecutorImpl.class.getName() + "_parallel");
+
 		memberJoined(_localAddress, _localClusterNode);
 
 		sendNotifyRequest();
+
+		_countDownLatch.countDown();
 	}
 
 	public boolean isClusterNodeAlive(Address address) {
@@ -269,7 +282,8 @@ public class ClusterExecutorImpl
 
 	protected void fireClusterEvent(ClusterEvent clusterEvent) {
 		for (ClusterEventListener listener : _clusterEventListeners) {
-			listener.processClusterEvent(clusterEvent);
+			_parallelExecutorService.submit(
+				new ClusterEventTask(listener, clusterEvent));
 		}
 	}
 
@@ -289,12 +303,12 @@ public class ClusterExecutorImpl
 		String controlProperty = controlProperties.getProperty(
 			PropsKeys.CLUSTER_LINK_CHANNEL_PROPERTIES_CONTROL);
 
-		ClusterRequestReceiver clusterRequestReceiver =
-			new ClusterRequestReceiver(this);
+		 _clusterRequestReceiver = new ClusterRequestReceiver(this);
 
 		try {
 			_controlChannel = createJChannel(
-				controlProperty, clusterRequestReceiver, _DEFAULT_CLUSTER_NAME);
+				controlProperty, _clusterRequestReceiver, 
+				_DEFAULT_CLUSTER_NAME);
 		}
 		catch (ChannelException ce) {
 			_log.error(ce, ce);
@@ -329,6 +343,10 @@ public class ClusterExecutorImpl
 			throw new SystemException(
 				"Unable to determine local network address", e);
 		}
+	}
+
+	protected boolean isInitialized() {
+		return _countDownLatch.getCount() == 0;
 	}
 
 	protected boolean isShortcutLocalMethod() {
@@ -496,13 +514,35 @@ public class ClusterExecutorImpl
 		new CopyOnWriteArrayList<ClusterEventListener>();
 	private Map<String, Address> _clusterNodeAddresses =
 		new ConcurrentHashMap<String, Address>();
-	private JChannel _controlChannel;
+	private ClusterRequestReceiver _clusterRequestReceiver;
+	private volatile JChannel _controlChannel;
+	private CountDownLatch _countDownLatch = new CountDownLatch(1);
 	private Map<String, FutureClusterResponses> _futureClusterResponses =
 		new WeakValueConcurrentHashMap<String, FutureClusterResponses>();
 	private Map<Address, ClusterNode> _liveInstances =
 		new ConcurrentHashMap<Address, ClusterNode>();
-	private Address _localAddress;
-	private ClusterNode _localClusterNode;
-	private boolean _shortcutLocalMethod;
+	private volatile Address _localAddress;
+	private volatile ClusterNode _localClusterNode;
+	private ExecutorService _parallelExecutorService;
+	private volatile boolean _shortcutLocalMethod;
+
+	private class ClusterEventTask implements Runnable {
+
+		public ClusterEventTask(
+			ClusterEventListener clusterEventListener, 
+			ClusterEvent clusterEvent) {
+
+			_clusterEvent = clusterEvent;
+			_clusterEventListener = clusterEventListener;
+		}
+
+		public void run() {
+			_clusterEventListener.processClusterEvent(_clusterEvent);
+		}
+
+		private ClusterEvent _clusterEvent;
+		private ClusterEventListener _clusterEventListener;
+
+	}
 
 }
