@@ -203,6 +203,8 @@ public class AutoLoginFilter extends BasePortalFilter {
 						request, response, session, credentials);
 
 					if (loginRemoteUser != null) {
+						session.setAttribute(WebKeys.CUSTOM_AUTH_ENABLED, true);
+
 						request = new ProtectedServletRequest(
 							request, loginRemoteUser);
 

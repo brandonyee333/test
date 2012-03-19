@@ -152,6 +152,13 @@ public class PortalRequestProcessor extends TilesRequestProcessor {
 			session.removeAttribute(WebKeys.BASIC_AUTH_ENABLED);
 		}
 
+		Boolean customAuthEnable = (Boolean)session.getAttribute(
+				WebKeys.CUSTOM_AUTH_ENABLED);
+
+		if (customAuthEnable != null) {
+			session.removeAttribute(WebKeys.CUSTOM_AUTH_ENABLED);
+		}
+
 		String path = super.processPath(request, response);
 
 		ActionMapping actionMapping =
@@ -159,10 +166,31 @@ public class PortalRequestProcessor extends TilesRequestProcessor {
 
 		Action action = StrutsActionRegistryUtil.getAction(path);
 
+		boolean isCustomAuthEnable =
+			(customAuthEnable != null) && customAuthEnable;
+
 		if (((basicAuthEnabled != null) && basicAuthEnabled.booleanValue()) ||
-			((actionMapping == null) && (action == null))) {
+			((actionMapping == null) && (action == null)) ||
+			isCustomAuthEnable) {
 
 			String lastPath = getLastPath(request);
+
+			if (isCustomAuthEnable) {
+				long companyId = PortalUtil.getCompanyId(request);
+
+				String defaultLoginPage = null;
+
+				try {
+					defaultLoginPage = PrefsPropsUtil.getString(
+						companyId, PropsKeys.DEFAULT_LANDING_PAGE_PATH);
+				} catch (SystemException e) {
+					_log.error(e, e);
+				}
+
+				if (Validator.isNotNull(defaultLoginPage)) {
+					lastPath = defaultLoginPage;
+				}
+			}
 
 			if (_log.isDebugEnabled()) {
 				_log.debug("Last path " + lastPath);
