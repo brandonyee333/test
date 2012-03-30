@@ -21,7 +21,32 @@ Folder folder = (Folder)request.getAttribute(WebKeys.DOCUMENT_LIBRARY_FOLDER);
 
 long folderId = BeanParamUtil.getLong(folder, request, "folderId", DLFolderConstants.DEFAULT_PARENT_FOLDER_ID);
 
-long groupId = ParamUtil.getLong(request, "groupId");
+long searchFolderIds = ParamUtil.getLong(request, "searchFolderIds");
+
+long[] folderIdsArray = null;
+
+long groupId = ParamUtil.getLong(request, FileEntryDisplayTerms.SELECTED_GROUP_ID);
+
+if (groupId == 0) {
+	groupId = ParamUtil.getLong(request, "groupId");
+}
+
+if (folderId > 0) {
+	folderIdsArray = new long[] {folderId};
+
+	folder = DLAppServiceUtil.getFolder(folderId);
+}
+else {
+	long defaultFolderId = DLFolderConstants.getFolderId(groupId, DLFolderConstants.getDataRepositoryId(groupId, searchFolderIds));
+
+	List<Long> folderIds = DLAppServiceUtil.getSubfolderIds(groupId, searchFolderIds);
+
+	folderIds.add(0, defaultFolderId);
+
+	folderIdsArray = StringUtil.split(StringUtil.merge(folderIds), 0L);
+}
+
+String keywords = ParamUtil.getString(request, "keywords");
 
 long repositoryId = groupId;
 
@@ -29,18 +54,36 @@ if (folder != null) {
 	repositoryId = folder.getRepositoryId();
 }
 
+int entryStart = ParamUtil.getInteger(request, "entryStart");
+int entryEnd = ParamUtil.getInteger(request, "entryEnd", PropsValues.SEARCH_CONTAINER_PAGE_DEFAULT_DELTA);
+
 PortletURL portletURL = renderResponse.createRenderURL();
 
 portletURL.setParameter("struts_action", "/journal/select_document_library");
 portletURL.setParameter("folderId", String.valueOf(folderId));
 portletURL.setParameter("groupId", String.valueOf(groupId));
-
+_log.info(portletURL.toString());
 if (folder != null) {
 	DLUtil.addPortletBreadcrumbEntries(folder, request, renderResponse);
 }
+
 %>
 
 <aui:form method="post" name="fm">
+
+	<%
+		FileEntrySearch fileEntrySearchContainer = new FileEntrySearch(renderRequest, portletURL);
+
+		FileEntryDisplayTerms displayTerms = (FileEntryDisplayTerms)fileEntrySearchContainer.getDisplayTerms();
+		FileEntrySearchTerms searchTerms = (FileEntrySearchTerms)fileEntrySearchContainer.getSearchTerms();
+		displayTerms.setSelectedGroupId(groupId);
+	%>
+
+	<liferay-ui:search-form
+		page="/html/portlet/journal/file_entry_search.jsp"
+		searchContainer="<%= fileEntrySearchContainer %>"
+	/>
+
 	<liferay-ui:header
 		title="folders"
 	/>
@@ -129,84 +172,138 @@ if (folder != null) {
 	headerNames.add("locked");
 	headerNames.add(StringPool.BLANK);
 
-	searchContainer = new SearchContainer(renderRequest, null, null, "cur2", SearchContainer.DEFAULT_DELTA, portletURL, headerNames, "there-are-no-documents-in-this-folder");
+	fileEntrySearchContainer = new FileEntrySearch(renderRequest, displayTerms, searchTerms, "cur2", SearchContainer.DEFAULT_DELTA, portletURL, headerNames, "there-are-no-documents-in-this-folder");
 
-	total = DLAppServiceUtil.getFileEntriesCount(groupId, folderId);
+	try {
 
-	searchContainer.setTotal(total);
+		SearchContext searchContext = SearchContextFactory.getInstance(request);
 
-	results = DLAppServiceUtil.getFileEntries(repositoryId, folderId, searchContainer.getStart(), searchContainer.getEnd());
+		searchContext.setAttribute("groupId",groupId);
+		searchContext.setAttribute("paginationType", "regular");
+		searchContext.setEnd(entryEnd);
+		searchContext.setFolderIds(folderIdsArray);
+		searchContext.setGroupIds(new long[] {groupId});
+		searchContext.setKeywords(keywords);
+		searchContext.setStart(entryStart);
 
-	searchContainer.setResults(results);
+		searchContext.setScopeStrict(false);
 
-	resultRows = searchContainer.getResultRows();
+		Hits hits = DLAppServiceUtil.search(repositoryId, searchContext);
 
-	for (int i = 0; i < results.size(); i++) {
-		FileEntry fileEntry = (FileEntry)results.get(i);
+		results = new ArrayList();
 
-		ResultRow row = new ResultRow(fileEntry, fileEntry.getFileEntryId(), i);
+		fileEntrySearchContainer.getResultRows().clear();
 
-		String rowHREF = DLUtil.getPreviewURL(fileEntry, fileEntry.getFileVersion(), themeDisplay, StringPool.BLANK, false, true);
+		resultRows = fileEntrySearchContainer.getResultRows();
 
-		// Title
+		Document[] docs = hits.getDocs();
 
-		StringBundler sb = new StringBundler(10);
+		if (docs != null) {
+			for (Document doc : docs) {
 
-		sb.append("<img alt=\"\" align=\"left\" border=\"0\" src=\"");
+				// Folder and document
 
-		DLFileShortcut fileShortcut = null;
+				long fileEntryId = GetterUtil.getLong(doc.get(Field.ENTRY_CLASS_PK));
 
-		String thumbnailSrc = DLUtil.getThumbnailSrc(fileEntry, fileShortcut, themeDisplay);
+				FileEntry fileEntry = null;
 
-		sb.append(thumbnailSrc);
-		sb.append("\" style=\"");
+				try {
+					fileEntry = DLAppLocalServiceUtil.getFileEntry(fileEntryId);
+				}
+				catch (Exception e) {
+					if (_log.isWarnEnabled()) {
+						_log.warn("Documents and Media search index is stale and contains file entry {" + fileEntryId + "}");
+					}
 
-		String thumbnailStyle = DLUtil.getThumbnailStyle();
+					continue;
+				}
 
-		sb.append(thumbnailStyle);
-		sb.append("\">");
-		sb.append(fileEntry.getTitle());
+				results.add(fileEntry);
+			}
 
-		row.addText(sb.toString(), rowHREF);
-
-		// Statistics
-
-		row.addText(TextFormatter.formatKB(fileEntry.getSize(), locale) + "k", rowHREF);
-
-		if (PropsValues.DL_FILE_ENTRY_READ_COUNT_ENABLED) {
-			row.addText(String.valueOf(fileEntry.getReadCount()), rowHREF);
+			if (docs.length == 0) {
+				request.removeAttribute(WebKeys.DOCUMENT_LIBRARY_FOLDER);
+			}
 		}
 
-		// Locked
+		total = hits.getLength();
 
-		boolean isCheckedOut = fileEntry.isCheckedOut();
+		fileEntrySearchContainer.setResults(results);
+		fileEntrySearchContainer.setTotal(total);
 
-		row.addText(LanguageUtil.get(pageContext, isCheckedOut ? "yes" : "no"), rowHREF);
+		for (int i = 0; i < results.size(); i++) {
+			FileEntry fileEntry = (FileEntry)results.get(i);
 
-		// Action
+			ResultRow row = new ResultRow(fileEntry, fileEntry.getFileEntryId(), i);
 
-		sb.setIndex(0);
+			String rowHREF = DLUtil.getPreviewURL(fileEntry, fileEntry.getFileVersion(), themeDisplay, StringPool.BLANK, false, true);
 
-		sb.append("Liferay.Util.getOpener().");
-		sb.append(renderResponse.getNamespace());
-		sb.append("selectDocumentLibrary('");
-		sb.append(themeDisplay.getPathContext());
-		sb.append(DLUtil.getPreviewURL(fileEntry, fileEntry.getFileVersion(), themeDisplay, StringPool.BLANK, false, false));
-		sb.append("', '");
-		sb.append(fileEntry.getUuid());
-		sb.append("', '");
-		sb.append(fileEntry.getTitle());
-		sb.append("', '");
-		sb.append(fileEntry.getVersion());
-		sb.append("'); Liferay.Util.getWindow().close();");
+			// Title
 
-		row.addButton("right", SearchEntry.DEFAULT_VALIGN, LanguageUtil.get(pageContext, "choose"), sb.toString());
+			StringBundler sb = new StringBundler(10);
 
-		// Add result row
+			sb.append("<img alt=\"\" align=\"left\" border=\"0\" src=\"");
 
-		resultRows.add(row);
+			DLFileShortcut fileShortcut = null;
+
+			String thumbnailSrc = DLUtil.getThumbnailSrc(fileEntry, fileShortcut, themeDisplay);
+
+			sb.append(thumbnailSrc);
+			sb.append("\" style=\"");
+
+			String thumbnailStyle = DLUtil.getThumbnailStyle();
+
+			sb.append(thumbnailStyle);
+			sb.append("\">");
+			sb.append(fileEntry.getTitle());
+
+			row.addText(sb.toString(), rowHREF);
+
+			// Statistics
+
+			row.addText(TextFormatter.formatKB(fileEntry.getSize(), locale) + "k", rowHREF);
+
+			if (PropsValues.DL_FILE_ENTRY_READ_COUNT_ENABLED) {
+				row.addText(String.valueOf(fileEntry.getReadCount()), rowHREF);
+			}
+
+			// Locked
+
+			boolean isCheckedOut = fileEntry.isCheckedOut();
+
+			row.addText(LanguageUtil.get(pageContext, isCheckedOut ? "yes" : "no"), rowHREF);
+
+			// Action
+
+			sb.setIndex(0);
+
+			sb.append("Liferay.Util.getOpener().");
+			sb.append(renderResponse.getNamespace());
+			sb.append("selectDocumentLibrary('");
+			sb.append(themeDisplay.getPathContext());
+			sb.append(DLUtil.getPreviewURL(fileEntry, fileEntry.getFileVersion(), themeDisplay, StringPool.BLANK, false, false));
+			sb.append("', '");
+			sb.append(fileEntry.getUuid());
+			sb.append("', '");
+			sb.append(fileEntry.getTitle());
+			sb.append("', '");
+			sb.append(fileEntry.getVersion());
+			sb.append("'); Liferay.Util.getWindow().close();");
+
+			row.addButton("right", SearchEntry.DEFAULT_VALIGN, LanguageUtil.get(pageContext, "choose"), sb.toString());
+
+			// Add result row
+
+			resultRows.add(row);
+		}
+	}
+	catch (Exception e) {
+		_log.error(e, e);
 	}
 	%>
 
-	<liferay-ui:search-iterator searchContainer="<%= searchContainer %>" />
+	<liferay-ui:search-iterator searchContainer="<%= fileEntrySearchContainer %>" />
 </aui:form>
+<%!
+private static Log _log = LogFactoryUtil.getLog("portal-web.docroot.html.portlet.journal.select_document_library_jsp");
+%>
