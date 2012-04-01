@@ -285,7 +285,7 @@ public class XhtmlTranslationVisitor implements ASTVisitor {
 		for (ASTNode curNode : astNodes) {
 			append(open);
 
-			if(curNode != null) {
+			if (curNode != null) {
 				curNode.accept(this);
 			}
 
