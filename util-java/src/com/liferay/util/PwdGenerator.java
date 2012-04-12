@@ -81,7 +81,7 @@ public class PwdGenerator {
 		StringBuilder sb = new StringBuilder(length);
 
 		for (int i = 0; i < length; i++) {
-			sb.append(key.charAt((int)(Math.random() * key.length())));
+			sb.append(key.charAt((int)(getRandomNumber() * key.length())));
 		}
 
 		String password = sb.toString();
@@ -117,6 +117,20 @@ public class PwdGenerator {
 		return password;
 	}
 
+    private static double getRandomNumber () {
+    	try {
+            SecureRandom sr = SecureRandom.getInstance(SECURE_RANDOM_ALGORITHM);
+            return sr.nextDouble();        
+        } catch (NoSuchAlgorithmException e) {
+        	if (_log.isErrorEnabled()) {
+        		_log.error("Error generating secure" +
+        				" random with algrorithm : "+SECURE_RANDOM_ALGORITHM, e);
+        	}
+        }
+        
+        return Math.random();
+    }
+    
 	private static Log _log = LogFactoryUtil.getLog(PwdGenerator.class);
 
 }
