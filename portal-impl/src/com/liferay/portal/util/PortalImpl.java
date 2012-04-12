@@ -2976,37 +2976,29 @@ public class PortalImpl implements Portal {
 			sb.append(PropsValues.WEB_SERVER_HOST);
 		}
 
-		if (!secure) {
-			if (PropsValues.WEB_SERVER_HTTP_PORT == -1) {
-				if ((serverPort != Http.HTTP_PORT) &&
-					(serverPort != Http.HTTPS_PORT)) {
-
-					sb.append(StringPool.COLON);
-					sb.append(serverPort);
-				}
+		if (Http.HTTP.equals(PropsValues.WEB_SERVER_PROTOCOL) 
+				&& PropsValues.WEB_SERVER_HTTP_PORT != -1) {
+			
+			if (PropsValues.WEB_SERVER_HTTP_PORT != Http.HTTP_PORT) {
+				sb.append(StringPool.COLON);
+				sb.append(PropsValues.WEB_SERVER_HTTP_PORT);
 			}
-			else {
-				if (PropsValues.WEB_SERVER_HTTP_PORT != Http.HTTP_PORT) {
-					sb.append(StringPool.COLON);
-					sb.append(PropsValues.WEB_SERVER_HTTP_PORT);
-				}
-			}
+			
 		}
-
-		if (secure) {
-			if (PropsValues.WEB_SERVER_HTTPS_PORT == -1) {
-				if ((serverPort != Http.HTTP_PORT) &&
-					(serverPort != Http.HTTPS_PORT)) {
-
-					sb.append(StringPool.COLON);
-					sb.append(serverPort);
-				}
+		else if (Http.HTTPS.equals(PropsValues.WEB_SERVER_PROTOCOL) 
+				&& PropsValues.WEB_SERVER_HTTPS_PORT != -1) {
+			
+			if (PropsValues.WEB_SERVER_HTTPS_PORT != Http.HTTPS_PORT) {
+				sb.append(StringPool.COLON);
+				sb.append(PropsValues.WEB_SERVER_HTTPS_PORT);				
 			}
-			else {
-				if (PropsValues.WEB_SERVER_HTTPS_PORT != Http.HTTPS_PORT) {
-					sb.append(StringPool.COLON);
-					sb.append(PropsValues.WEB_SERVER_HTTPS_PORT);
-				}
+			
+		}
+		else {
+			if ((secure && serverPort != Http.HTTPS_PORT)
+					|| (!secure && serverPort != Http.HTTP_PORT)) {
+				sb.append(StringPool.COLON);
+				sb.append(serverPort);
 			}
 		}
 
