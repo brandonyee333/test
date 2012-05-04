@@ -113,20 +113,20 @@ public class RSSAction extends PortletAction {
 				PortalUtil.getUserName(
 					assetEntry.getUserId(), assetEntry.getUserName()));
 
+			String languageId = LanguageUtil.getLanguageId(portletRequest);
+
 			String value = null;
 
 			if (displayStyle.equals(RSSUtil.DISPLAY_STYLE_TITLE)) {
 				value = StringPool.BLANK;
 			}
 			else {
-				value = assetEntry.getSummary();
+				value = assetEntry.getSummary(languageId, true);
 			}
 
 			SyndEntry syndEntry = new SyndEntryImpl();
 
 			syndEntry.setAuthor(author);
-
-			String languageId = LanguageUtil.getLanguageId(portletRequest);
 
 			syndEntry.setTitle(assetEntry.getTitle(languageId, true));
 
