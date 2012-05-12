@@ -1402,7 +1402,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 
 			// Social
 
-			if (!page.isMinorEdit()) {
+			if (!page.isMinorEdit() || PropsValues.WIKI_PAGE_ADD_ACTIVITY_ON_MINOR_EDIT) {
 				int activity = WikiActivityKeys.ADD_PAGE;
 
 				if (page.getVersion() > WikiPageConstants.VERSION_DEFAULT) {
