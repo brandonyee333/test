@@ -27,86 +27,92 @@ import java.sql.ResultSet;
  */
 public class UpgradeVirtualHost extends UpgradeProcess {
 
-	protected void addVirtualHost(
-			long virtualHostId, long companyId, long layoutSetId,
-			String hostname)
-		throws Exception {
+    protected void addVirtualHost(
+            long virtualHostId, long companyId, long layoutSetId,
+            String hostname)
+            throws Exception {
 
-		runSQL(
-			"insert into VirtualHost (virtualHostId, companyId, layoutSetId, " +
-				"hostname) values (" + virtualHostId + ", " + companyId +
-					", " + layoutSetId + ", '" + hostname + "')");
-	}
+        runSQL(
+                "insert into VirtualHost (virtualHostId, companyId, layoutSetId, " +
+                        "hostname) values (" + virtualHostId + ", " + companyId +
+                        ", " + layoutSetId + ", '" + hostname + "')");
+    }
 
-	@Override
-	protected void doUpgrade() throws Exception {
-		updateCompany();
-		updateLayoutSet();
-	}
+    @Override
+    protected void doUpgrade() throws Exception {
+        updateCompany();
+        updateLayoutSet();
+    }
 
-	protected void updateCompany() throws Exception {
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+    protected void updateCompany() throws Exception {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
+        try {
+            con = DataAccess.getUpgradeOptimizedConnection();
 
+            /*
 			ps = con.prepareStatement(
 				"select companyId, virtualHost from Company where " +
 					"virtualHost != ? and virtualHost is not null");
 
 			ps.setString(1, StringPool.BLANK);
+            */
 
-			rs = ps.executeQuery();
+            // ARENA
+            ps = con.prepareStatement(
+                    "select companyId, virtualHost from Company where virtualHost is not null");
 
-			while (rs.next()) {
-				long companyId = rs.getLong("companyId");
-				String hostname = rs.getString("virtualHost");
+            rs = ps.executeQuery();
 
-				long virtualHostId = increment();
+            while (rs.next()) {
+                long companyId = rs.getLong("companyId");
+                String hostname = rs.getString("virtualHost");
 
-				addVirtualHost(virtualHostId, companyId, 0, hostname);
-			}
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
-		}
+                long virtualHostId = increment();
 
-		runSQL("alter table Company drop column virtualHost");
-	}
+                addVirtualHost(virtualHostId, companyId, 0, hostname);
+            }
+        }
+        finally {
+            DataAccess.cleanUp(con, ps, rs);
+        }
 
-	protected void updateLayoutSet() throws Exception {
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+        runSQL("alter table Company drop column virtualHost");
+    }
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
+    protected void updateLayoutSet() throws Exception {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
 
-			ps = con.prepareStatement(
-				"select layoutSetId, companyId, virtualHost from LayoutSet " +
-					"where virtualHost != ? and virtualHost is not null");
+        try {
+            con = DataAccess.getUpgradeOptimizedConnection();
 
-			ps.setString(1, StringPool.BLANK);
+            ps = con.prepareStatement(
+                    "select layoutSetId, companyId, virtualHost from LayoutSet " +
+                            "where virtualHost != ? and virtualHost is not null");
 
-			rs = ps.executeQuery();
+            ps.setString(1, StringPool.BLANK);
 
-			while (rs.next()) {
-				long layoutSetId = rs.getLong("layoutSetId");
-				long companyId = rs.getLong("companyId");
-				String hostname = rs.getString("virtualHost");
+            rs = ps.executeQuery();
 
-				long virtualHostId = increment();
+            while (rs.next()) {
+                long layoutSetId = rs.getLong("layoutSetId");
+                long companyId = rs.getLong("companyId");
+                String hostname = rs.getString("virtualHost");
 
-				addVirtualHost(virtualHostId, companyId, layoutSetId, hostname);
-			}
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
-		}
+                long virtualHostId = increment();
 
-		runSQL("alter table LayoutSet drop column virtualHost");
-	}
+                addVirtualHost(virtualHostId, companyId, layoutSetId, hostname);
+            }
+        }
+        finally {
+            DataAccess.cleanUp(con, ps, rs);
+        }
+
+        runSQL("alter table LayoutSet drop column virtualHost");
+    }
 
 }
