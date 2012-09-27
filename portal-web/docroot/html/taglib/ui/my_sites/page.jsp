@@ -17,7 +17,7 @@
 <%@ include file="/html/taglib/init.jsp" %>
 
 <%
-int max = GetterUtil.getInteger((String)request.getAttribute("liferay-ui:my_sites:max"));
+int max = GetterUtil.getInteger(request.getAttribute("liferay-ui:my_sites:max"));
 
 if (max <= 0) {
 	max = PropsValues.MY_SITES_MAX_ELEMENTS;
@@ -30,7 +30,7 @@ List<Group> mySites = user.getMySites(true, max);
 	<ul class="taglib-my-sites">
 
 		<li>
-			<input type="text"/>
+			<input type="text" />
 		</li>
 
 		<%

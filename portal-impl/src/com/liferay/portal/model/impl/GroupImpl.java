@@ -16,6 +16,7 @@ package com.liferay.portal.model.impl;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.staging.StagingConstants;
@@ -221,6 +222,7 @@ public class GroupImpl extends GroupBaseImpl {
 		return layoutSet;
 	}
 
+	@JSON
 	public int getPrivateLayoutsPageCount() {
 		try {
 			return LayoutLocalServiceUtil.getLayoutsCount(this, true);
@@ -246,6 +248,7 @@ public class GroupImpl extends GroupBaseImpl {
 		return layoutSet;
 	}
 
+	@JSON
 	public int getPublicLayoutsPageCount() {
 		try {
 			return LayoutLocalServiceUtil.getLayoutsCount(this, false);
