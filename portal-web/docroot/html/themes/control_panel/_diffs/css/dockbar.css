@@ -54,13 +54,6 @@
 	text-shadow: 1px 1px #FFF;
 }
 
-.dockbar input.yui3-aclist-input {
-	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-	box-sizing: border-box;
-	width: 100%;
-}
-
 .dockbar .menu-button-active {
 	background: #5C94DA url(../images/dockbar/button_active_bg.png) repeat-x 0 0;
 }
@@ -262,13 +255,6 @@ html > .lfr-dockbar-pinned {
 	max-width: 350px;
 }
 
-.my-sites-menu a {
-	display: block;
-	overflow: hidden;
-	text-align: right;
-	white-space: nowrap;
-}
-
 .my-sites-menu ul {
 	list-style: none;
 	max-height: 300px;
@@ -283,6 +269,13 @@ html > .lfr-dockbar-pinned {
 	display: block;
 	margin: 0;
 	padding: 0;
+}
+
+.my-sites-menu a {
+	display: block;
+	overflow: hidden;
+	text-align: right;
+	white-space: nowrap;
 }
 
 .my-sites-menu .aui-paginator-link {
