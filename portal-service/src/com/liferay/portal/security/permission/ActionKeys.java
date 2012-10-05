@@ -144,6 +144,8 @@ public class ActionKeys {
 
 	public static final String CONFIGURATION = "CONFIGURATION";
 
+        public static final String CREATE_UNRESTRICTED_TEMPLATES = "CREATE_UNRESTRICTED_TEMPLATES";
+
 	public static final String CONFIGURE_PORTLETS = "CONFIGURE_PORTLETS";
 
 	public static final String CUSTOMIZE = "CUSTOMIZE";

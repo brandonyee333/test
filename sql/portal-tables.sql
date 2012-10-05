@@ -917,6 +917,7 @@ create table JournalTemplate (
 	xsl TEXT null,
 	langType VARCHAR(75) null,
 	cacheable BOOLEAN,
+        unrestricted BOOLEAN,
 	smallImage BOOLEAN,
 	smallImageId LONG,
 	smallImageURL STRING null
