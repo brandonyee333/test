@@ -521,7 +521,6 @@ AUI.add(
 				searchInput.plug(
 					A.Plugin.AutoCompleteList,
 					{
-						maxResults: sitesPerPage,
 						minQueryLength: 0,
 						on: {
 							results: function(event) {
@@ -529,27 +528,28 @@ AUI.add(
 
 								var siteResults = event.results;
 
+								A.Array.invoke(menuItems, 'hide');
+
 								if (event.query == '') {
 									cancelSearchButton.removeClass('search-input-active');
+
+									instance._showMenuItems(1, sitesPerPage);
 								}
 								else {
 									cancelSearchButton.addClass('search-input-active');
+
+									A.each(
+										siteResults,
+										function(item, index, collection) {
+											var menuItem = item.raw.menuItem;
+
+											menuItem.show();
+										}
+									);
 								}
-
-								A.Array.invoke(menuItems, 'hide');
-
-								A.each(
-									siteResults,
-									function(item, index, collection) {
-										var menuItem = item.raw.menuItem;
-
-										menuItem.show();
-									}
-								);
 							}
 						},
 						resultFilters: 'phraseMatch',
-						resultHighlighter: 'phraseMatch',
 						resultTextLocator: 'name',
 						source: data
 					}
