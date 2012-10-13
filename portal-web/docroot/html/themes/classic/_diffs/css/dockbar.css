@@ -54,13 +54,6 @@
 	text-shadow: 1px 1px #FFF;
 }
 
-.dockbar input.yui3-aclist-input {
-	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-	box-sizing: border-box;
-	width: 100%;
-}
-
 .dockbar .menu-button-active {
 	background: #5C94DA url(../images/dockbar/button_active_bg.png) repeat-x 0 0;
 }
@@ -229,6 +222,22 @@ html > .lfr-dockbar-pinned {
 	float: left;
 }
 
+.dockbar .cancel-search {
+	background: url(/html/themes/control_panel/images/custom/search_reset_button.png) no-repeat scroll left center transparent;
+	border-width: 0;
+	display: none;
+	height: 16px;
+	position: absolute;
+	right: 8px;
+	text-indent: -9999px;
+	top: 8px;
+	width: 16px;
+}
+
+.dockbar .cancel-search.search-input-active {
+	display: block;
+}
+
 .dockbar .user-toolbar {
 	float: right;
 }
@@ -262,13 +271,6 @@ html > .lfr-dockbar-pinned {
 	max-width: 350px;
 }
 
-.my-sites-menu a {
-	display: block;
-	overflow: hidden;
-	text-align: right;
-	white-space: nowrap;
-}
-
 .my-sites-menu ul {
 	list-style: none;
 	max-height: 300px;
@@ -285,9 +287,17 @@ html > .lfr-dockbar-pinned {
 	padding: 0;
 }
 
+.my-sites-menu a {
+	display: block;
+	overflow: hidden;
+	text-align: right;
+	white-space: nowrap;
+}
+
 .my-sites-menu .aui-paginator-link {
 	display: inline-block;
-	padding: 8px;
+	text-align: left;
+	width: 35px;
 }
 
 .my-sites-menu .control-panel a {
@@ -317,19 +327,17 @@ html > .lfr-dockbar-pinned {
 }
 
 .my-sites-menu .my-sites-paginator {
-	margin-left: auto;
-	margin-right: auto;
-	width: 170px;
+	text-align: center;
+	width: 165px;
 }
 
 .my-sites-menu .my-sites-search {
-	background-image: url("../images/common/search.png");
-	background-position: right center;
+	background-image: url(../images/common/search.png);
+	background-position: left center;
 	background-repeat: no-repeat;
 	box-shadow: 0 1px 3px #C9C9C9 inset;
 	border-radius: 5px 5px 5px 5px;
-	height: 25px;
-	padding-right: 25px;
+	padding-left: 20px;
 }
 
 .my-sites-menu .site-name {

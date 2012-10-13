@@ -267,11 +267,16 @@ AUI.add(
 
 							var paginatorContainer = A.Node.create('<div class="my-sites-paginator"></div>');
 
-							var searchBox = A.Node.create('<input class="my-sites-search" type="search" placeholder="Search" />');
+							var searchInput = A.Node.create('<input class="my-sites-search" type="text" value="" autocomplete="off" />');
+							var searchInputContainer = A.Node.create('<span class="my-sites-search-container" ></span>');
+
+							instance._searchInput = searchInput;
+							instance._searchInputContainer = searchInputContainer;
 
 							var sitesMenuContent = A.one('.taglib-my-sites').ancestor();
 
-							sitesMenuContent.prepend(searchBox);
+							searchInputContainer.append(searchInput);
+							sitesMenuContent.prepend(searchInputContainer);
 
 							sitesMenuContent.append(paginatorContainer);
 
@@ -279,7 +284,7 @@ AUI.add(
 
 							var siteSearchData = instance._getSiteSearchData();
 
-							instance._initSiteSearchBox(siteSearchData, searchBox);
+							instance._initSiteSearchInput(siteSearchData, searchInput);
 
 							instance._initSitePaginator(paginatorContainer);
 						}
@@ -348,6 +353,20 @@ AUI.add(
 				return '<div class="dockbar-message ' + cssClass + '" id="' + messageId + '">' + message + '</div>';
 			},
 
+			_clearSearchResults: function() {
+				var instance = this;
+
+				var cancelSearchButton = instance._getSiteSearchCancelButton();
+
+				var searchInput = instance._searchInput;
+
+				cancelSearchButton.removeClass('search-input-active');
+
+				searchInput.val('').focus();
+
+				searchInput.ac.sendRequest('');
+			},
+
 			_createSiteLinks: function (data) {
 				var instance = this;
 
@@ -405,6 +424,26 @@ AUI.add(
 				}
 			},
 
+			_getSiteSearchCancelButton: function() {
+				var instance = this;
+
+				var cancelSearchButton = instance._cancelSearchButton;
+
+				if (!cancelSearchButton) {
+					cancelSearchButton = A.Node.create('<a class="cancel-search" href="javascript:;"></a>');
+
+					var searchInputContainer = instance._searchInputContainer;
+
+					searchInputContainer.append(cancelSearchButton);
+
+					cancelSearchButton.on('click', instance._clearSearchResults, instance);
+
+					instance._cancelSearchButton = cancelSearchButton;
+				}
+
+				return cancelSearchButton;
+			},
+
 			_getSiteSearchData: function () {
 				var instance = this;
 
@@ -456,6 +495,8 @@ AUI.add(
 
 								var page = newState.page;
 
+								instance._clearSearchResults();
+
 								instance._showMenuItems(page, sitesPerPage);
 
 								this.setState(newState);
@@ -468,14 +509,16 @@ AUI.add(
 				).render();
 			},
 
-			_initSiteSearchBox: function (data, searchBox) {
+			_initSiteSearchInput: function (data, searchInput) {
 				var instance = this;
 
 				var menuItems = instance._menuItems;
 
 				var sitesPerPage = instance._sitesPerPage;
 
-				searchBox.plug(
+				var cancelSearchButton = instance._getSiteSearchCancelButton();
+
+				searchInput.plug(
 					A.Plugin.AutoCompleteList,
 					{
 						maxResults: sitesPerPage,
@@ -485,6 +528,13 @@ AUI.add(
 								event.preventDefault();
 
 								var siteResults = event.results;
+
+								if (event.query == '') {
+									cancelSearchButton.removeClass('search-input-active');
+								}
+								else {
+									cancelSearchButton.addClass('search-input-active');
+								}
 
 								A.Array.invoke(menuItems, 'hide');
 
