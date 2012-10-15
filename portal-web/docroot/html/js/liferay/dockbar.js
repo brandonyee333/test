@@ -376,7 +376,7 @@ AUI.add(
 				var sitesPerPage = instance._sitesPerPage;
 
 				var siteTpl = new A.Template(
-					'<a id=' + A.guid() + ' onclick="Liferay.Util.forcePost(this); return false; href="' + themeDisplay.getCDNBaseURL() + '/{path}/" tabindex="0">',
+					'<a id=' + A.guid() + ' onclick="Liferay.Util.forcePost(this); return false;" href="' + themeDisplay.getCDNBaseURL() + '/{path}" tabindex="0">',
 						'<span class="site-name">{name}</span>',
 						'<tpl if "type">',
 							'<span class="site-type">{type}</span>',
@@ -405,7 +405,7 @@ AUI.add(
 
 						var siteData = {
 							name: siteName,
-							path: path,
+							path: path + site.friendlyURL,
 							type: type
 						};
 
