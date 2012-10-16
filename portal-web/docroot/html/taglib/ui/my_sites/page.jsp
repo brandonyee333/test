@@ -91,12 +91,12 @@ List<Group> mySites = user.getMySites(true, max);
 
 						<c:choose>
 							<c:when test="<%= mySite.isControlPanel() %>">
-								<li class="control-panel<%= cssClass %>" data-title="<%= escapedSiteName %>">
-									<a href="<%= themeDisplay.getURLControlPanel() %>">
+								<%
+								String siteName = mySite.getDescriptiveName(locale);
+								%>
 
-										<%
-										String siteName = mySite.getDescriptiveName(locale);
-										%>
+								<li class="control-panel<%= cssClass %>" data-title="<%= siteName %>">
+									<a href="<%= themeDisplay.getURLControlPanel() %>">
 
 										<%@ include file="/html/taglib/ui/my_sites/page_site_name.jspf" %>
 
@@ -136,36 +136,34 @@ List<Group> mySites = user.getMySites(true, max);
 									if (showPublicSiteStaging) {
 										portletURL.setParameter("groupId", String.valueOf(stagingGroupId));
 									}
+
+									String siteName = StringPool.BLANK;
+
+									if (mySite.isUser()) {
+										siteName = LanguageUtil.get(pageContext, "my-public-pages");
+									}
+									else if (escapedSiteName.equals(GroupConstants.GUEST)) {
+										siteName = themeDisplay.getAccount().getName();
+									}
+									else {
+										siteName = mySite.getDescriptiveName(locale);
+									}
+
+									if (showPublicSiteStaging) {
+										StringBundler sb = new StringBundler(5);
+
+										sb.append(siteName);
+										sb.append(StringPool.SPACE);
+										sb.append(StringPool.OPEN_PARENTHESIS);
+										sb.append(LanguageUtil.get(pageContext, "staging"));
+										sb.append(StringPool.CLOSE_PARENTHESIS);
+
+										siteName = sb.toString();
+									}
 									%>
 
-									<li class="<%= (selectedSite && layout.isPublicLayout()) ? "current-site" : "public-site" %> <%= cssClass %>" data-title="<%= escapedSiteName %>">
+									<li class="<%= (selectedSite && layout.isPublicLayout()) ? "current-site" : "public-site" %> <%= cssClass %>" data-title="<%= siteName %>">
 										<a href="<%= HtmlUtil.escape(portletURL.toString()) %>" onclick="Liferay.Util.forcePost(this); return false;">
-
-											<%
-											String siteName = StringPool.BLANK;
-
-											if (mySite.isUser()) {
-												siteName = LanguageUtil.get(pageContext, "my-public-pages");
-											}
-											else if (escapedSiteName.equals(GroupConstants.GUEST)) {
-												siteName = themeDisplay.getAccount().getName();
-											}
-											else {
-												siteName = mySite.getDescriptiveName(locale);
-											}
-
-											if (showPublicSiteStaging) {
-												StringBundler sb = new StringBundler(5);
-
-												sb.append(siteName);
-												sb.append(StringPool.SPACE);
-												sb.append(StringPool.OPEN_PARENTHESIS);
-												sb.append(LanguageUtil.get(pageContext, "staging"));
-												sb.append(StringPool.CLOSE_PARENTHESIS);
-
-												siteName = sb.toString();
-											}
-											%>
 
 											<%@ include file="/html/taglib/ui/my_sites/page_site_name.jspf" %>
 
@@ -193,36 +191,34 @@ List<Group> mySites = user.getMySites(true, max);
 									if (showPrivateSiteStaging) {
 										portletURL.setParameter("groupId", String.valueOf(stagingGroupId));
 									}
+
+									String siteName = StringPool.BLANK;
+
+									if (mySite.isUser()) {
+										siteName = LanguageUtil.get(pageContext, "my-private-pages");
+									}
+									else if (escapedSiteName.equals(GroupConstants.GUEST)) {
+										siteName = themeDisplay.getAccount().getName();
+									}
+									else {
+										siteName = mySite.getDescriptiveName(locale);
+									}
+
+									if (showPrivateSiteStaging) {
+										StringBundler sb = new StringBundler(5);
+
+										sb.append(siteName);
+										sb.append(StringPool.SPACE);
+										sb.append(StringPool.OPEN_PARENTHESIS);
+										sb.append(LanguageUtil.get(pageContext, "staging"));
+										sb.append(StringPool.CLOSE_PARENTHESIS);
+
+										siteName = sb.toString();
+									}
 									%>
 
-									<li class="<%= (selectedSite && layout.isPrivateLayout()) ? "current-site" : "private-site" %> <%= cssClass %>" data-title="<%= escapedSiteName %>">
+									<li class="<%= (selectedSite && layout.isPrivateLayout()) ? "current-site" : "private-site" %> <%= cssClass %>" data-title="<%= siteName %>">
 										<a href="<%= HtmlUtil.escape(portletURL.toString()) %>" onclick="Liferay.Util.forcePost(this); return false;">
-
-											<%
-											String siteName = StringPool.BLANK;
-
-											if (mySite.isUser()) {
-												siteName = LanguageUtil.get(pageContext, "my-private-pages");
-											}
-											else if (escapedSiteName.equals(GroupConstants.GUEST)) {
-												siteName = themeDisplay.getAccount().getName();
-											}
-											else {
-												siteName = mySite.getDescriptiveName(locale);
-											}
-
-											if (showPrivateSiteStaging) {
-												StringBundler sb = new StringBundler(5);
-
-												sb.append(siteName);
-												sb.append(StringPool.SPACE);
-												sb.append(StringPool.OPEN_PARENTHESIS);
-												sb.append(LanguageUtil.get(pageContext, "staging"));
-												sb.append(StringPool.CLOSE_PARENTHESIS);
-
-												siteName = sb.toString();
-											}
-											%>
 
 											<%@ include file="/html/taglib/ui/my_sites/page_site_name.jspf" %>
 

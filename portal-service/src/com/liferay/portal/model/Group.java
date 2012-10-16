@@ -48,6 +48,7 @@ public interface Group extends GroupModel, PersistedModel {
 
 	public long getDefaultPublicPlid();
 
+	@com.liferay.portal.kernel.json.JSON()
 	public java.lang.String getDescriptiveName()
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException;

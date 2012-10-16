@@ -398,7 +398,7 @@ AUI.add(
 
 					var showSiteType = (siteHasPrivateLayout && siteHasPublicLayout);
 
-					var siteName = Liferay.Util.escapeHTML(site.name);
+					var siteName = Liferay.Util.escapeHTML(site.descriptiveName);
 
 					var createSiteMenuItem = function(path, type) {
 						var menuItem = A.Node.create('<li id=' + A.guid() + ' class="' + type + '-site aui-menu-item"></li>');

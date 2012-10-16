@@ -138,6 +138,7 @@ public class GroupImpl extends GroupBaseImpl {
 		return getDefaultPlid(false);
 	}
 
+	@JSON
 	public String getDescriptiveName() throws PortalException, SystemException {
 		return getDescriptiveName(LocaleUtil.getDefault());
 	}
