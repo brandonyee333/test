@@ -269,24 +269,26 @@ AUI.add(
 
 							var searchInput = A.Node.create('<input class="my-sites-search" type="text" value="" autocomplete="off" />');
 							var searchInputContainer = A.Node.create('<span class="my-sites-search-container" ></span>');
+							var userSites = A.one('.taglib-my-sites');
 
 							instance._searchInput = searchInput;
 							instance._searchInputContainer = searchInputContainer;
+							instance._userSites = userSites;
 
-							var sitesMenuContent = A.one('.taglib-my-sites').ancestor();
+							var sitesMenuContent = userSites.ancestor();
 
 							searchInputContainer.append(searchInput);
 							sitesMenuContent.prepend(searchInputContainer);
 
 							sitesMenuContent.append(paginatorContainer);
 
-							instance._createSiteLinks(response);
+							var data = instance._getSiteSearchData();
 
-							var siteSearchData = instance._getSiteSearchData();
+							instance._createSiteLinks(response, data);
 
-							instance._initSiteSearchInput(siteSearchData, searchInput);
+							instance._initSiteSearchInput(data, searchInput);
 
-							instance._initSitePaginator(paginatorContainer);
+							instance._initSitePaginator(paginatorContainer, data.length);
 						}
 					}
 				);
@@ -367,7 +369,7 @@ AUI.add(
 				searchInput.ac.sendRequest('');
 			},
 
-			_createSiteLinks: function (data) {
+			_createSiteLinks: function (responseData, siteSearchData) {
 				var instance = this;
 
 				var capitalize = A.Lang.String.capitalize;
@@ -384,12 +386,12 @@ AUI.add(
 					'</a>'
 				);
 
-				var taglibMySites = A.one('.taglib-my-sites');
+				var userSites = instance._userSites;
 
-				taglibMySites.addClass('site-search');
+				userSites.addClass('site-search');
 
 				for (var i = sitesPerPage - 1; i <= sitesCount - 1; i++) {
-					var site = data[i];
+					var site = responseData[i];
 
 					var siteHasPrivateLayout = (site.privateLayoutsPageCount > 0);
 					var siteHasPublicLayout = (site.publicLayoutsPageCount > 0);
@@ -411,7 +413,15 @@ AUI.add(
 
 						siteTpl.render(siteData, menuItem);
 
-						taglibMySites.append(menuItem);
+						userSites.append(menuItem);
+
+						siteSearchData.push(
+							{
+								name: siteName,
+								menuItem: menuItem
+
+							}
+						);
 					};
 
 					if (siteHasPrivateLayout) {
@@ -449,39 +459,36 @@ AUI.add(
 
 				var dataSource = [];
 
-				var taglibMySites = A.one('.taglib-my-sites');
+				var userSites = instance._userSites;
 
-				var menuItems = taglibMySites.all('li');
+				var siteElements = userSites.all('li');
 
-				A.each(
-					menuItems,
+				siteElements.each(
 					function(item, index, collection) {
-						var siteNameEl = item.one('.site-name');
-
-						var siteName = siteNameEl.getContent().trim();
+						var name = item.attr('data-title');
 
 						dataSource.push(
 							{
-								menuItem: item,
-								name: siteName
+								name: name,
+								menuItem: item
 							}
 						);
 					}
 				);
 
-				instance._menuItems = menuItems;
-
 				return dataSource;
 			},
 
-			_initSitePaginator: function (container) {
+			_initSitePaginator: function (container, sitesCount) {
 				var instance = this;
 
-				var menuItems = instance._menuItems;
+				var userSites = instance._userSites;
+
+				var menuItems = userSites.all('li');
 
 				var sitesPerPage = instance._sitesPerPage;
 
-				var total = Math.ceil(menuItems.size() / sitesPerPage);
+				var total = Math.ceil(sitesCount / sitesPerPage);
 
 				var paginator = new A.Paginator(
 					{
@@ -497,7 +504,7 @@ AUI.add(
 
 								instance._clearSearchResults();
 
-								instance._showMenuItems(page, sitesPerPage);
+								instance._showMenuItems(page, sitesPerPage, menuItems);
 
 								this.setState(newState);
 							}
@@ -512,11 +519,13 @@ AUI.add(
 			_initSiteSearchInput: function (data, searchInput) {
 				var instance = this;
 
-				var menuItems = instance._menuItems;
+				var cancelSearchButton = instance._getSiteSearchCancelButton();
+
+				var userSites = instance._userSites;
+
+				var menuItems = userSites.all('li');
 
 				var sitesPerPage = instance._sitesPerPage;
-
-				var cancelSearchButton = instance._getSiteSearchCancelButton();
 
 				searchInput.plug(
 					A.Plugin.AutoCompleteList,
@@ -526,17 +535,15 @@ AUI.add(
 							results: function(event) {
 								event.preventDefault();
 
-								var siteResults = event.results;
-
-								A.Array.invoke(menuItems, 'hide');
+								menuItems.hide();
 
 								if (event.query == '') {
 									cancelSearchButton.removeClass('search-input-active');
 
-									instance._showMenuItems(1, sitesPerPage);
+									instance._showMenuItems(1, sitesPerPage, menuItems);
 								}
 								else {
-									cancelSearchButton.addClass('search-input-active');
+									var siteResults = event.results;
 
 									A.each(
 										siteResults,
@@ -546,6 +553,8 @@ AUI.add(
 											menuItem.show();
 										}
 									);
+
+									cancelSearchButton.addClass('search-input-active');
 								}
 							}
 						},
@@ -556,7 +565,7 @@ AUI.add(
 				);
 			},
 
-			_showMenuItems: function(page, max) {
+			_showMenuItems: function(page, max, menuItems) {
 				var instance = this;
 
 				var offset = 1;
@@ -564,8 +573,6 @@ AUI.add(
 				var start = (page - offset) * max;
 
 				var end = start + max - offset;
-
-				var menuItems = instance._menuItems;
 
 				menuItems.hide();
 
