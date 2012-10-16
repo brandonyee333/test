@@ -376,7 +376,7 @@ AUI.add(
 				var sitesPerPage = instance._sitesPerPage;
 
 				var siteTpl = new A.Template(
-					'<a id=' + A.guid() + ' onclick="Liferay.Util.forcePost(this); return false;" href="' + themeDisplay.getCDNBaseURL() + '/{path}" tabindex="0">',
+					'<a onclick="Liferay.Util.forcePost(this); return false;" href="' + themeDisplay.getCDNBaseURL() + '/{path}">',
 						'<span class="site-name">{name}</span>',
 						'<tpl if "type">',
 							'<span class="site-type">{type}</span>',
@@ -430,7 +430,7 @@ AUI.add(
 				var cancelSearchButton = instance._cancelSearchButton;
 
 				if (!cancelSearchButton) {
-					cancelSearchButton = A.Node.create('<a class="cancel-search" href="javascript:;"></a>');
+					cancelSearchButton = A.Node.create('<span class="cancel-search" href="javascript:;"></span>');
 
 					var searchInputContainer = instance._searchInputContainer;
 
