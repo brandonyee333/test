@@ -519,4 +519,18 @@ boolean hasLayoutUpdatePermission = LayoutPermissionUtil.contains(permissionChec
 	if (customizableColumns.size() > 0) {
 		customizableColumns.get('parentNode').addClass('customizable');
 	}
+
+	<%
+	int max = GetterUtil.getInteger(request.getAttribute("liferay-ui:my_sites:max"));
+
+	if (max <= 0) {
+		max = PropsValues.MY_SITES_MAX_ELEMENTS;
+	}
+	%>
+
+	Liferay.Dockbar.addMySitesPagination(
+		{
+			max: <%= max %>
+		}
+	);
 </aui:script>

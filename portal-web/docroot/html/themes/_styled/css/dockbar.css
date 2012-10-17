@@ -341,6 +341,10 @@ html > .lfr-dockbar-pinned {
 		float: left;
 	}
 
+	.site-search {
+		height: 300px;
+	}
+
 	.site-type {
 		color: #777;
 		float: right;

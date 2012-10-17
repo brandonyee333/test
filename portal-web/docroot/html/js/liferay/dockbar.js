@@ -251,6 +251,49 @@ AUI.add(
 				return menu;
 			},
 
+			_addMySitesPagination: function(options) {
+				var instance = this;
+
+				Liferay.Service(
+					'/group/get-user-sites',
+					function(response) {
+						var sitesCount = response.length;
+
+						var sitesPerPage = options.max;
+
+						if (sitesCount > sitesPerPage) {
+							instance._sitesCount = sitesCount;
+							instance._sitesPerPage = sitesPerPage;
+
+							var paginatorContainer = A.Node.create('<div class="my-sites-paginator"></div>');
+
+							var searchInput = A.Node.create('<input class="my-sites-search" type="text" value="" autocomplete="off" />');
+							var searchInputContainer = A.Node.create('<span class="my-sites-search-container" ></span>');
+							var userSites = A.one('.taglib-my-sites');
+
+							instance._searchInput = searchInput;
+							instance._searchInputContainer = searchInputContainer;
+							instance._userSites = userSites;
+
+							var sitesMenuContent = userSites.ancestor();
+
+							searchInputContainer.append(searchInput);
+							sitesMenuContent.prepend(searchInputContainer);
+
+							sitesMenuContent.append(paginatorContainer);
+
+							var data = instance._getSiteSearchData();
+
+							instance._createSiteLinks(response, data);
+
+							instance._initSiteSearchInput(data, searchInput);
+
+							instance._initSitePaginator(paginatorContainer, data.length);
+						}
+					}
+				);
+			},
+
 			_createCustomizationMask: function(column) {
 				var instance = this;
 
@@ -265,7 +308,6 @@ AUI.add(
 						cssClass: cssClass,
 						target: column,
 						zIndex: 10
-
 					}
 				).render();
 
@@ -311,6 +353,236 @@ AUI.add(
 				}
 
 				return '<div class="dockbar-message ' + cssClass + '" id="' + messageId + '">' + message + '</div>';
+			},
+
+			_clearSearchResults: function() {
+				var instance = this;
+
+				var cancelSearchButton = instance._getSiteSearchCancelButton();
+
+				var searchInput = instance._searchInput;
+
+				cancelSearchButton.removeClass('search-input-active');
+
+				searchInput.val('').focus();
+
+				searchInput.ac.sendRequest('');
+			},
+
+			_createSiteLinks: function (responseData, siteSearchData) {
+				var instance = this;
+
+				var capitalize = A.Lang.String.capitalize;
+
+				var sitesCount = instance._sitesCount;
+				var sitesPerPage = instance._sitesPerPage;
+
+				var siteTpl = new A.Template(
+					'<a onclick="Liferay.Util.forcePost(this); return false;" href="' + themeDisplay.getCDNBaseURL() + '/{path}">',
+						'<span class="site-name">{name}</span>',
+						'<tpl if "type">',
+							'<span class="site-type">{type}</span>',
+						'</tpl>',
+					'</a>'
+				);
+
+				var userSites = instance._userSites;
+
+				userSites.addClass('site-search');
+
+				for (var i = sitesPerPage - 1; i <= sitesCount - 1; i++) {
+					var site = responseData[i];
+
+					var siteHasPrivateLayout = (site.privateLayoutsPageCount > 0);
+					var siteHasPublicLayout = (site.publicLayoutsPageCount > 0);
+
+					var showSiteType = (siteHasPrivateLayout && siteHasPublicLayout);
+
+					var siteName = Liferay.Util.escapeHTML(site.descriptiveName);
+
+					var createSiteMenuItem = function(path, type) {
+						var menuItem = A.Node.create('<li id=' + A.guid() + ' class="' + type + '-site aui-menu-item"></li>');
+
+						type = showSiteType ? capitalize(type) : null;
+
+						var siteData = {
+							name: siteName,
+							path: path + site.friendlyURL,
+							type: type
+						};
+
+						siteTpl.render(siteData, menuItem);
+
+						userSites.append(menuItem);
+
+						siteSearchData.push(
+							{
+								name: siteName,
+								menuItem: menuItem
+
+							}
+						);
+					};
+
+					if (siteHasPrivateLayout) {
+						createSiteMenuItem('web', 'private');
+					}
+
+					if (siteHasPublicLayout) {
+						createSiteMenuItem('group', 'public');
+					}
+				}
+			},
+
+			_getSiteSearchCancelButton: function() {
+				var instance = this;
+
+				var cancelSearchButton = instance._cancelSearchButton;
+
+				if (!cancelSearchButton) {
+					cancelSearchButton = A.Node.create('<span class="cancel-search" href="javascript:;"></span>');
+
+					var searchInputContainer = instance._searchInputContainer;
+
+					searchInputContainer.append(cancelSearchButton);
+
+					cancelSearchButton.on('click', instance._clearSearchResults, instance);
+
+					instance._cancelSearchButton = cancelSearchButton;
+				}
+
+				return cancelSearchButton;
+			},
+
+			_getSiteSearchData: function () {
+				var instance = this;
+
+				var dataSource = [];
+
+				var userSites = instance._userSites;
+
+				var siteElements = userSites.all('li');
+
+				siteElements.each(
+					function(item, index, collection) {
+						var name = item.attr('data-title');
+
+						dataSource.push(
+							{
+								name: name,
+								menuItem: item
+							}
+						);
+					}
+				);
+
+				return dataSource;
+			},
+
+			_initSitePaginator: function (container, sitesCount) {
+				var instance = this;
+
+				var userSites = instance._userSites;
+
+				var menuItems = userSites.all('li');
+
+				var sitesPerPage = instance._sitesPerPage;
+
+				var total = Math.ceil(sitesCount / sitesPerPage);
+
+				var paginator = new A.Paginator(
+					{
+						containers: container,
+						firstPageLinkLabel: '',
+						lastPageLinkLabel: '',
+						nextPageLinkLabel: '',
+						on: {
+							changeRequest: function(event) {
+								var newState = event.state;
+
+								var page = newState.page;
+
+								instance._clearSearchResults();
+
+								instance._showMenuItems(page, sitesPerPage, menuItems);
+
+								this.setState(newState);
+							}
+						},
+						prevPageLinkLabel: '',
+						template: '{FirstPageLink}{PrevPageLink}{NextPageLink}{LastPageLink}',
+						total: total
+					}
+				).render();
+			},
+
+			_initSiteSearchInput: function (data, searchInput) {
+				var instance = this;
+
+				var cancelSearchButton = instance._getSiteSearchCancelButton();
+
+				var userSites = instance._userSites;
+
+				var menuItems = userSites.all('li');
+
+				var sitesPerPage = instance._sitesPerPage;
+
+				searchInput.plug(
+					A.Plugin.AutoCompleteList,
+					{
+						minQueryLength: 0,
+						on: {
+							results: function(event) {
+								event.preventDefault();
+
+								menuItems.hide();
+
+								if (event.query == '') {
+									cancelSearchButton.removeClass('search-input-active');
+
+									instance._showMenuItems(1, sitesPerPage, menuItems);
+								}
+								else {
+									var siteResults = event.results;
+
+									A.each(
+										siteResults,
+										function(item, index, collection) {
+											var menuItem = item.raw.menuItem;
+
+											menuItem.show();
+										}
+									);
+
+									cancelSearchButton.addClass('search-input-active');
+								}
+							}
+						},
+						resultFilters: 'phraseMatch',
+						resultTextLocator: 'name',
+						source: data
+					}
+				);
+			},
+
+			_showMenuItems: function(page, max, menuItems) {
+				var instance = this;
+
+				var offset = 1;
+
+				var start = (page - offset) * max;
+
+				var end = start + max - offset;
+
+				menuItems.hide();
+
+				menuItems.each(
+					function(item, index, collection) {
+						if (index >= start && index <= end) {
+							item.show();
+						}
+					}
+				);
 			},
 
 			_openWindow: function(config, item) {
@@ -377,6 +649,17 @@ AUI.add(
 				instance._addMenu(options);
 			},
 			['aui-overlay-context', 'node-focusmanager']
+		);
+
+		Liferay.provide(
+			Dockbar,
+			'addMySitesPagination',
+			function(options) {
+				var instance = this;
+
+				instance._addMySitesPagination(options);
+			},
+			['aui-paginator','aui-template','autocomplete','autocomplete-filters']
 		);
 
 		Liferay.provide(

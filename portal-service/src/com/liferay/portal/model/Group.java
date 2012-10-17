@@ -48,6 +48,7 @@ public interface Group extends GroupModel, PersistedModel {
 
 	public long getDefaultPublicPlid();
 
+	@com.liferay.portal.kernel.json.JSON()
 	public java.lang.String getDescriptiveName()
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException;
@@ -69,10 +70,12 @@ public interface Group extends GroupModel, PersistedModel {
 
 	public com.liferay.portal.model.LayoutSet getPrivateLayoutSet();
 
+	@com.liferay.portal.kernel.json.JSON()
 	public int getPrivateLayoutsPageCount();
 
 	public com.liferay.portal.model.LayoutSet getPublicLayoutSet();
 
+	@com.liferay.portal.kernel.json.JSON()
 	public int getPublicLayoutsPageCount();
 
 	public com.liferay.portal.model.Group getStagingGroup();
