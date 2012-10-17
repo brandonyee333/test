@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.scheduler.TriggerFactoryUtil;
 import com.liferay.portal.kernel.scheduler.TriggerState;
 import com.liferay.portal.kernel.scheduler.TriggerType;
 import com.liferay.portal.kernel.scheduler.messaging.SchedulerResponse;
+import com.liferay.portal.kernel.test.NewJVMJUnitTestRunner;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
@@ -75,16 +76,18 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * @author Tina Tian
  */
+@RunWith(NewJVMJUnitTestRunner.class)
 public class ClusterSchedulerEngineTest {
 
-	@BeforeClass
-	public static void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		PortalUtil portalUtil = new PortalUtil();
 
 		portalUtil.setPortal(new PortalImpl());
@@ -812,10 +815,6 @@ public class ClusterSchedulerEngineTest {
 		MockLockLocalService.setLock(
 			clusterSchedulerEngine.getSerializedString(masterAddress));
 
-		clusterSchedulerEngine.initialize();
-
-		clusterSchedulerEngine.start();
-
 		SchedulerEngineHelperImpl schedulerEngineHelperImpl =
 			new SchedulerEngineHelperImpl();
 
@@ -826,6 +825,10 @@ public class ClusterSchedulerEngineTest {
 
 		schedulerEngineHelperUtil.setSchedulerEngineHelper(
 			schedulerEngineHelperImpl);
+
+		clusterSchedulerEngine.initialize();
+
+		clusterSchedulerEngine.start();
 
 		return clusterSchedulerEngine;
 	}
