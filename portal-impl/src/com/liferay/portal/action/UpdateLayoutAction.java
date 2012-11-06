@@ -403,7 +403,9 @@ public class UpdateLayoutAction extends JSONAction {
 			Portlet rootPortlet = portlet.getRootPortlet();
 
 			for (String footerPortalCss : portlet.getFooterPortalCss()) {
-				if (!HttpUtil.hasProtocol(footerPortalCss)) {
+                // ARENA
+                // if (!HttpUtil.hasProtocol(footerPortalCss)) {
+				if (!HttpUtil.hasProtocol(footerPortalCss) && !footerPortalCss.startsWith("//")) {
 					footerPortalCss =
 						PortalUtil.getPathContext() + footerPortalCss;
 
@@ -416,8 +418,9 @@ public class UpdateLayoutAction extends JSONAction {
 
 			for (String footerPortalJavaScript :
 					portlet.getFooterPortalJavaScript()) {
-
-				if (!HttpUtil.hasProtocol(footerPortalJavaScript)) {
+                // ARENA
+				// if (!HttpUtil.hasProtocol(footerPortalJavaScript)) {
+				if (!HttpUtil.hasProtocol(footerPortalJavaScript) && !footerPortalJavaScript.startsWith("//")) {
 					footerPortalJavaScript =
 						PortalUtil.getPathContext() + footerPortalJavaScript;
 
@@ -430,7 +433,9 @@ public class UpdateLayoutAction extends JSONAction {
 			}
 
 			for (String footerPortletCss : portlet.getFooterPortletCss()) {
-				if (!HttpUtil.hasProtocol(footerPortletCss)) {
+                // ARENA
+				// if (!HttpUtil.hasProtocol(footerPortletCss)) {
+				if (!HttpUtil.hasProtocol(footerPortletCss) && !footerPortletCss.startsWith("//")) {
 					footerPortletCss =
 						portletApp.getContextPath() + footerPortletCss;
 
@@ -443,8 +448,9 @@ public class UpdateLayoutAction extends JSONAction {
 
 			for (String footerPortletJavaScript :
 					portlet.getFooterPortletJavaScript()) {
-
-				if (!HttpUtil.hasProtocol(footerPortletJavaScript)) {
+                // ARENA
+				//if (!HttpUtil.hasProtocol(footerPortletJavaScript)) {
+				if (!HttpUtil.hasProtocol(footerPortletJavaScript) && !footerPortletJavaScript.startsWith("//")) {
 					footerPortletJavaScript =
 						portletApp.getContextPath() + footerPortletJavaScript;
 
@@ -457,7 +463,9 @@ public class UpdateLayoutAction extends JSONAction {
 			}
 
 			for (String headerPortalCss : portlet.getHeaderPortalCss()) {
-				if (!HttpUtil.hasProtocol(headerPortalCss)) {
+                // ARENA
+				// if (!HttpUtil.hasProtocol(headerPortalCss)) {
+				if (!HttpUtil.hasProtocol(headerPortalCss) && !headerPortalCss.startsWith("//")) {
 					headerPortalCss =
 						PortalUtil.getPathContext() + headerPortalCss;
 
@@ -470,8 +478,9 @@ public class UpdateLayoutAction extends JSONAction {
 
 			for (String headerPortalJavaScript :
 					portlet.getHeaderPortalJavaScript()) {
-
-				if (!HttpUtil.hasProtocol(headerPortalJavaScript)) {
+                // ARENA
+				// if (!HttpUtil.hasProtocol(headerPortalJavaScript)) {
+				if (!HttpUtil.hasProtocol(headerPortalJavaScript) && !headerPortalJavaScript.startsWith("//")) {
 					headerPortalJavaScript =
 						PortalUtil.getPathContext() + headerPortalJavaScript;
 
@@ -484,7 +493,9 @@ public class UpdateLayoutAction extends JSONAction {
 			}
 
 			for (String headerPortletCss : portlet.getHeaderPortletCss()) {
-				if (!HttpUtil.hasProtocol(headerPortletCss)) {
+                // ARENA
+				//if (!HttpUtil.hasProtocol(headerPortletCss)) {
+				if (!HttpUtil.hasProtocol(headerPortletCss) && !headerPortletCss.startsWith("//")) {
 					headerPortletCss =
 						portletApp.getContextPath() + headerPortletCss;
 
@@ -497,8 +508,9 @@ public class UpdateLayoutAction extends JSONAction {
 
 			for (String headerPortletJavaScript :
 					portlet.getHeaderPortletJavaScript()) {
-
-				if (!HttpUtil.hasProtocol(headerPortletJavaScript)) {
+                // ARENA
+				//if (!HttpUtil.hasProtocol(headerPortletJavaScript)) {
+				if (!HttpUtil.hasProtocol(headerPortletJavaScript) && !headerPortletJavaScript.startsWith("//")) {
 					headerPortletJavaScript =
 						portletApp.getContextPath() + headerPortletJavaScript;
 

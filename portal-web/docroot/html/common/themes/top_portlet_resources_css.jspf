@@ -27,7 +27,8 @@
 
 	for (Portlet curPortlet : portlets) {
 		for (String headerPortalCss : curPortlet.getHeaderPortalCss()) {
-			if (!HttpUtil.hasProtocol(headerPortalCss)) {
+            // ARENA
+			if (!HttpUtil.hasProtocol(headerPortalCss) && !headerPortalCss.startsWith("//")) {
 				Portlet curRootPortlet = curPortlet.getRootPortlet();
 
 				headerPortalCss = PortalUtil.getStaticResourceURL(request, PortalUtil.getPathContext() + headerPortalCss, curRootPortlet.getTimestamp());
@@ -46,7 +47,8 @@
 
 	for (Portlet curPortlet : portlets) {
 		for (String headerPortletCss : curPortlet.getHeaderPortletCss()) {
-			if (!HttpUtil.hasProtocol(headerPortletCss)) {
+            // ARENA
+			if (!HttpUtil.hasProtocol(headerPortletCss) && !headerPortletCss.startsWith("//")) {
 				Portlet curRootPortlet = curPortlet.getRootPortlet();
 
 				headerPortletCss = PortalUtil.getStaticResourceURL(request, curPortlet.getStaticResourcePath() + headerPortletCss, curRootPortlet.getTimestamp());
