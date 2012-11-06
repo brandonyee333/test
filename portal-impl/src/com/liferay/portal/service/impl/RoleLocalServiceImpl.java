@@ -18,6 +18,7 @@ import com.liferay.portal.DuplicateRoleException;
 import com.liferay.portal.NoSuchRoleException;
 import com.liferay.portal.RequiredRoleException;
 import com.liferay.portal.RoleNameException;
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.cache.Lifecycle;
 import com.liferay.portal.kernel.cache.ThreadLocalCachable;
 import com.liferay.portal.kernel.cache.ThreadLocalCache;
@@ -48,11 +49,13 @@ import com.liferay.portal.model.Team;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.permission.ActionKeys;
 import com.liferay.portal.security.permission.PermissionCacheUtil;
+import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.base.RoleLocalServiceBaseImpl;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PortletKeys;
 import com.liferay.portal.util.PropsUtil;
 import com.liferay.portal.util.PropsValues;
+import com.liferay.portlet.expando.service.ExpandoValueLocalService;
 import com.liferay.portlet.usersadmin.util.UsersAdminUtil;
 
 import java.util.ArrayList;
@@ -151,6 +154,10 @@ public class RoleLocalServiceImpl extends RoleLocalServiceBaseImpl {
 	 * @param  descriptionMap the role's localized descriptions (optionally
 	 *         <code>null</code>)
 	 * @param  type the role's type (optionally <code>0</code>)
+	 * @param  serviceContext the user's service context (optionally
+	 *         <code>null</code>). Can set the universally unique identifier
+	 *         (with the <code>uuid</code> attribute), asset category IDs, asset
+	 *         tag names, and expando bridge attributes for the user.
 	 * @return the role
 	 * @throws PortalException if the class name or the role name were invalid,
 	 *         if the role is a duplicate, or if a user with the primary key
@@ -161,6 +168,39 @@ public class RoleLocalServiceImpl extends RoleLocalServiceBaseImpl {
 			long userId, String className, long classPK, String name,
 			Map<Locale, String> titleMap, Map<Locale, String> descriptionMap,
 			int type, String subType)
+		throws PortalException, SystemException {
+		return addRole(userId, className, classPK, name,
+				 titleMap, descriptionMap, type, subType, null);
+	}
+	/**
+	 * Adds a role with additional parameters. The user is reindexed after role
+	 * is added.
+	 *
+	 * @param  userId the primary key of the user
+	 * @param  className the name of the class for which the role is created
+	 *         (optionally <code>null</code>)
+	 * @param  classPK the primary key of the class for which the role is
+	 *         created (optionally <code>0</code>)
+	 * @param  name the role's name
+	 * @param  titleMap the role's localized titles (optionally
+	 *         <code>null</code>)
+	 * @param  descriptionMap the role's localized descriptions (optionally
+	 *         <code>null</code>)
+	 * @param  type the role's type (optionally <code>0</code>)
+	 * @param  serviceContext the user's service context (optionally
+	 *         <code>null</code>). Can set the universally unique identifier
+	 *         (with the <code>uuid</code> attribute), asset category IDs, asset
+	 *         tag names, and expando bridge attributes for the user.
+	 * @return the role
+	 * @throws PortalException if the class name or the role name were invalid,
+	 *         if the role is a duplicate, or if a user with the primary key
+	 *         could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public Role addRole(
+			long userId, String className, long classPK, String name,
+			Map<Locale, String> titleMap, Map<Locale, String> descriptionMap,
+			int type, String subType,ServiceContext serviceContext)
 		throws PortalException, SystemException {
 
 		// Role
@@ -188,7 +228,8 @@ public class RoleLocalServiceImpl extends RoleLocalServiceBaseImpl {
 		role.setDescriptionMap(descriptionMap);
 		role.setType(type);
 		role.setSubtype(subType);
-
+		role.setExpandoBridgeAttributes(serviceContext);
+		
 		rolePersistence.update(role);
 
 		// Resources
@@ -389,6 +430,11 @@ public class RoleLocalServiceImpl extends RoleLocalServiceBaseImpl {
 			userGroupGroupRoleLocalService.deleteUserGroupGroupRolesByRoleId(
 				role.getRoleId());
 		}
+
+		// Expando
+
+		expandoValueLocalService.deleteValues(
+			Role.class.getName(), role.getRoleId());
 
 		// Role
 
@@ -1210,6 +1256,34 @@ public class RoleLocalServiceImpl extends RoleLocalServiceBaseImpl {
 			Map<Locale, String> descriptionMap, String subtype)
 		throws PortalException, SystemException {
 
+		return updateRole(roleId, name, titleMap,
+				  descriptionMap, subtype, null);
+	}
+	
+	/**
+	 * Updates the role with the primary key.
+	 *
+	 * @param  roleId the primary key of the role
+	 * @param  name the role's new name
+	 * @param  titleMap the new localized titles (optionally <code>null</code>)
+	 *         to replace those existing for the role
+	 * @param  descriptionMap the new localized descriptions (optionally
+	 *         <code>null</code>) to replace those existing for the role
+	 * @param  subtype the role's new subtype (optionally <code>null</code>)
+	 * @param  serviceContext the user's service context (optionally
+	 *         <code>null</code>). Can set the universally unique identifier
+	 *         (with the <code>uuid</code> attribute), asset category IDs, asset
+	 *         tag names, and expando bridge attributes for the user.
+	 * @return the role with the primary key
+	 * @throws PortalException if a role with the primary could not be found or
+	 *         if the role's name was invalid
+	 * @throws SystemException if a system exception occurred
+	 */
+	public Role updateRole(
+			long roleId, String name, Map<Locale, String> titleMap,
+			Map<Locale, String> descriptionMap, String subtype,
+			ServiceContext serviceContext)
+		throws PortalException, SystemException {
 		Role role = rolePersistence.findByPrimaryKey(roleId);
 
 		validate(roleId, role.getCompanyId(), role.getClassNameId(), name);
@@ -1223,6 +1297,7 @@ public class RoleLocalServiceImpl extends RoleLocalServiceBaseImpl {
 		role.setTitleMap(titleMap);
 		role.setDescriptionMap(descriptionMap);
 		role.setSubtype(subtype);
+		role.setExpandoBridgeAttributes(serviceContext);
 
 		rolePersistence.update(role);
 
@@ -1340,6 +1415,16 @@ public class RoleLocalServiceImpl extends RoleLocalServiceBaseImpl {
 		}
 	}
 
+	public ExpandoValueLocalService getExpandoValueLocalService() {
+		return expandoValueLocalService;
+	}
+
+	public void setExpandoValueLocalService(ExpandoValueLocalService expandoValueLocalService) {
+		this.expandoValueLocalService = expandoValueLocalService;
+	}
+
+	@BeanReference(type = ExpandoValueLocalService.class)
+	protected ExpandoValueLocalService expandoValueLocalService;
 	private Map<String, Role> _systemRolesMap = new HashMap<String, Role>();
 
 }
