@@ -299,6 +299,10 @@ public interface RoleLocalService extends BaseLocalService,
 	* @param descriptionMap the role's localized descriptions (optionally
 	<code>null</code>)
 	* @param type the role's type (optionally <code>0</code>)
+	* @param serviceContext the user's service context (optionally
+	<code>null</code>). Can set the universally unique identifier
+	(with the <code>uuid</code> attribute), asset category IDs, asset
+	tag names, and expando bridge attributes for the user.
 	* @return the role
 	* @throws PortalException if the class name or the role name were invalid,
 	if the role is a duplicate, or if a user with the primary key
@@ -310,6 +314,40 @@ public interface RoleLocalService extends BaseLocalService,
 		java.util.Map<java.util.Locale, java.lang.String> titleMap,
 		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
 		int type, java.lang.String subType)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Adds a role with additional parameters. The user is reindexed after role
+	* is added.
+	*
+	* @param userId the primary key of the user
+	* @param className the name of the class for which the role is created
+	(optionally <code>null</code>)
+	* @param classPK the primary key of the class for which the role is
+	created (optionally <code>0</code>)
+	* @param name the role's name
+	* @param titleMap the role's localized titles (optionally
+	<code>null</code>)
+	* @param descriptionMap the role's localized descriptions (optionally
+	<code>null</code>)
+	* @param type the role's type (optionally <code>0</code>)
+	* @param serviceContext the user's service context (optionally
+	<code>null</code>). Can set the universally unique identifier
+	(with the <code>uuid</code> attribute), asset category IDs, asset
+	tag names, and expando bridge attributes for the user.
+	* @return the role
+	* @throws PortalException if the class name or the role name were invalid,
+	if the role is a duplicate, or if a user with the primary key
+	could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public com.liferay.portal.model.Role addRole(long userId,
+		java.lang.String className, long classPK, java.lang.String name,
+		java.util.Map<java.util.Locale, java.lang.String> titleMap,
+		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+		int type, java.lang.String subType,
+		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException;
 
@@ -987,6 +1025,34 @@ public interface RoleLocalService extends BaseLocalService,
 		java.util.Map<java.util.Locale, java.lang.String> titleMap,
 		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
 		java.lang.String subtype)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Updates the role with the primary key.
+	*
+	* @param roleId the primary key of the role
+	* @param name the role's new name
+	* @param titleMap the new localized titles (optionally <code>null</code>)
+	to replace those existing for the role
+	* @param descriptionMap the new localized descriptions (optionally
+	<code>null</code>) to replace those existing for the role
+	* @param subtype the role's new subtype (optionally <code>null</code>)
+	* @param serviceContext the user's service context (optionally
+	<code>null</code>). Can set the universally unique identifier
+	(with the <code>uuid</code> attribute), asset category IDs, asset
+	tag names, and expando bridge attributes for the user.
+	* @return the role with the primary key
+	* @throws PortalException if a role with the primary could not be found or
+	if the role's name was invalid
+	* @throws SystemException if a system exception occurred
+	*/
+	public com.liferay.portal.model.Role updateRole(long roleId,
+		java.lang.String name,
+		java.util.Map<java.util.Locale, java.lang.String> titleMap,
+		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+		java.lang.String subtype,
+		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException;
 }
