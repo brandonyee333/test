@@ -109,6 +109,50 @@ public class RoleServiceSoap {
 	}
 
 	/**
+	* Adds a role. The user is reindexed after role is added.
+	*
+	* @param name the role's name
+	* @param titleMap the role's localized titles (optionally
+	<code>null</code>)
+	* @param descriptionMap the role's localized descriptions (optionally
+	<code>null</code>)
+	* @param type the role's type (optionally <code>0</code>)
+	* @param serviceContext the organization's service context (optionally
+	<code>null</code>). Can set asset category IDs, asset tag names,
+	and expando bridge attributes for the organization.
+	* @return the role
+	* @throws PortalException if a user with the primary key could not be
+	found, if the user did not have permission to add roles, if the
+	class name or the role name were invalid, or if the role is a
+	duplicate
+	* @throws SystemException if a system exception occurred
+	*/
+	public static com.liferay.portal.model.RoleSoap addRole(
+		java.lang.String name, java.lang.String[] titleMapLanguageIds,
+		java.lang.String[] titleMapValues,
+		java.lang.String[] descriptionMapLanguageIds,
+		java.lang.String[] descriptionMapValues, int type,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws RemoteException {
+		try {
+			Map<Locale, String> titleMap = LocalizationUtil.getLocalizationMap(titleMapLanguageIds,
+					titleMapValues);
+			Map<Locale, String> descriptionMap = LocalizationUtil.getLocalizationMap(descriptionMapLanguageIds,
+					descriptionMapValues);
+
+			com.liferay.portal.model.Role returnValue = RoleServiceUtil.addRole(name,
+					titleMap, descriptionMap, type, serviceContext);
+
+			return com.liferay.portal.model.RoleSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	/**
 	* Adds the roles to the user. The user is reindexed after the roles are
 	* added.
 	*
@@ -438,6 +482,50 @@ public class RoleServiceSoap {
 
 			com.liferay.portal.model.Role returnValue = RoleServiceUtil.updateRole(roleId,
 					name, titleMap, descriptionMap, subtype);
+
+			return com.liferay.portal.model.RoleSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	/**
+	* Updates the role with the primary key.
+	*
+	* @param roleId the primary key of the role
+	* @param name the role's new name
+	* @param titleMap the new localized titles (optionally <code>null</code>)
+	to replace those existing for the role
+	* @param descriptionMap the new localized descriptions (optionally
+	<code>null</code>) to replace those existing for the role
+	* @param subtype the role's new subtype (optionally <code>null</code>)
+	* @param serviceContext the organization's service context (optionally
+	<code>null</code>). Can set asset category IDs, asset tag names,
+	and expando bridge attributes for the organization.
+	* @return the role with the primary key
+	* @throws PortalException if the user did not have permission to update the
+	role, if a role with the primary could not be found, or if the
+	role's name was invalid
+	* @throws SystemException if a system exception occurred
+	*/
+	public static com.liferay.portal.model.RoleSoap updateRole(long roleId,
+		java.lang.String name, java.lang.String[] titleMapLanguageIds,
+		java.lang.String[] titleMapValues,
+		java.lang.String[] descriptionMapLanguageIds,
+		java.lang.String[] descriptionMapValues, java.lang.String subtype,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws RemoteException {
+		try {
+			Map<Locale, String> titleMap = LocalizationUtil.getLocalizationMap(titleMapLanguageIds,
+					titleMapValues);
+			Map<Locale, String> descriptionMap = LocalizationUtil.getLocalizationMap(descriptionMapLanguageIds,
+					descriptionMapValues);
+
+			com.liferay.portal.model.Role returnValue = RoleServiceUtil.updateRole(roleId,
+					name, titleMap, descriptionMap, subtype, serviceContext);
 
 			return com.liferay.portal.model.RoleSoap.toSoapModel(returnValue);
 		}

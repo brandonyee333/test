@@ -20,6 +20,7 @@ import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.permission.ActionKeys;
+import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.base.RoleServiceBaseImpl;
 import com.liferay.portal.service.permission.PortalPermissionUtil;
 import com.liferay.portal.service.permission.RolePermissionUtil;
@@ -65,6 +66,37 @@ public class RoleServiceImpl extends RoleServiceBaseImpl {
 		return roleLocalService.addRole(
 			user.getUserId(), user.getCompanyId(), name, titleMap,
 			descriptionMap, type);
+	}
+
+	/**
+	 * Adds a role. The user is reindexed after role is added.
+	 *
+	 * @param  name the role's name
+	 * @param  titleMap the role's localized titles (optionally
+	 *         <code>null</code>)
+	 * @param  descriptionMap the role's localized descriptions (optionally
+	 *         <code>null</code>)
+	 * @param  type the role's type (optionally <code>0</code>)
+	 * @param  serviceContext the organization's service context (optionally
+	 *         <code>null</code>). Can set asset category IDs, asset tag names,
+	 *         and expando bridge attributes for the organization.
+	 * @return the role
+	 * @throws PortalException if a user with the primary key could not be
+	 *         found, if the user did not have permission to add roles, if the
+	 *         class name or the role name were invalid, or if the role is a
+	 *         duplicate
+	 * @throws SystemException if a system exception occurred
+	 */
+	public Role addRole(
+			String name, Map<Locale, String> titleMap,
+			Map<Locale, String> descriptionMap, int type, ServiceContext serviceContext)
+		throws PortalException, SystemException {
+
+		Role role=addRole(name, titleMap, descriptionMap, type);
+		
+		role.setExpandoBridgeAttributes(serviceContext);
+
+		return role;
 	}
 
 	/**
@@ -343,6 +375,37 @@ public class RoleServiceImpl extends RoleServiceBaseImpl {
 			roleId, name, titleMap, descriptionMap, subtype);
 	}
 
+	/**
+	 * Updates the role with the primary key.
+	 *
+	 * @param  roleId the primary key of the role
+	 * @param  name the role's new name
+	 * @param  titleMap the new localized titles (optionally <code>null</code>)
+	 *         to replace those existing for the role
+	 * @param  descriptionMap the new localized descriptions (optionally
+	 *         <code>null</code>) to replace those existing for the role
+	 * @param  subtype the role's new subtype (optionally <code>null</code>)
+	 * @param  serviceContext the organization's service context (optionally
+	 *         <code>null</code>). Can set asset category IDs, asset tag names,
+	 *         and expando bridge attributes for the organization.
+	 * @return the role with the primary key
+	 * @throws PortalException if the user did not have permission to update the
+	 *         role, if a role with the primary could not be found, or if the
+	 *         role's name was invalid
+	 * @throws SystemException if a system exception occurred
+	 */
+	public Role updateRole(
+			long roleId, String name, Map<Locale, String> titleMap,
+			Map<Locale, String> descriptionMap, String subtype, ServiceContext serviceContext)
+		throws PortalException, SystemException {
+
+		Role role=updateRole(roleId, name, titleMap, descriptionMap, subtype);
+		
+		role.setExpandoBridgeAttributes(serviceContext);
+		
+		return role ;
+	}
+	
 	protected void checkUserRolesPermission(long userId, long[] roleIds)
 		throws PortalException {
 
