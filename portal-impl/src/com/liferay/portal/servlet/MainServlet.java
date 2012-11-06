@@ -102,6 +102,7 @@ import com.liferay.util.servlet.EncryptedServletRequest;
 
 import java.io.IOException;
 
+import java.io.OutputStreamWriter;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -1152,8 +1153,11 @@ public class MainServlet extends ActionServlet {
 
 		ServletOutputStream servletOutputStream = response.getOutputStream();
 
-		servletOutputStream.print(html);
-	}
+        // ARENA
+        //servletOutputStream.print(html);
+        OutputStreamWriter osw = new OutputStreamWriter(servletOutputStream, StringPool.UTF8);
+        osw.write(html);
+    }
 
 	protected boolean processMaintenanceRequest(
 			HttpServletRequest request, HttpServletResponse response)
