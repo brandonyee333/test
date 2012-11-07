@@ -83,738 +83,741 @@ import javax.servlet.http.HttpSession;
  */
 public abstract class PortletRequestImpl implements LiferayPortletRequest {
 
-    public static PortletRequestImpl getPortletRequestImpl(
-            PortletRequest portletRequest) {
-
-        while (!(portletRequest instanceof PortletRequestImpl)) {
-            if (portletRequest instanceof PortletRequestWrapper) {
-                PortletRequestWrapper portletRequestWrapper =
-                        (PortletRequestWrapper)portletRequest;
+	public static PortletRequestImpl getPortletRequestImpl(
+		PortletRequest portletRequest) {
+
+		while (!(portletRequest instanceof PortletRequestImpl)) {
+			if (portletRequest instanceof PortletRequestWrapper) {
+				PortletRequestWrapper portletRequestWrapper =
+					(PortletRequestWrapper)portletRequest;
+
+				portletRequest = portletRequestWrapper.getRequest();
+			}
+			else {
+				throw new RuntimeException(
+					"Unable to unwrap the portlet request from " +
+						portletRequest.getClass());
+			}
+		}
+
+		return (PortletRequestImpl)portletRequest;
+	}
+
+	public void cleanUp() {
+		_request.removeAttribute(JavaConstants.JAVAX_PORTLET_CONFIG);
+		_request.removeAttribute(JavaConstants.JAVAX_PORTLET_REQUEST);
+		_request.removeAttribute(JavaConstants.JAVAX_PORTLET_RESPONSE);
+		_request.removeAttribute(PortletRequest.LIFECYCLE_PHASE);
+        // ARENA
+		_request.removeAttribute(WebKeys.PORTLET_ID);
+		_request.removeAttribute(WebKeys.PORTLET_CONTENT);
+	}
+
+	public void defineObjects(
+		PortletConfig portletConfig, PortletResponse portletResponse) {
 
-                portletRequest = portletRequestWrapper.getRequest();
-            }
-            else {
-                throw new RuntimeException(
-                        "Unable to unwrap the portlet request from " +
-                                portletRequest.getClass());
-            }
-        }
+		PortletConfigImpl portletConfigImpl = (PortletConfigImpl)portletConfig;
 
-        return (PortletRequestImpl)portletRequest;
-    }
+		setAttribute(WebKeys.PORTLET_ID, portletConfigImpl.getPortletId());
+		setAttribute(JavaConstants.JAVAX_PORTLET_CONFIG, portletConfig);
+		setAttribute(JavaConstants.JAVAX_PORTLET_REQUEST, this);
+		setAttribute(JavaConstants.JAVAX_PORTLET_RESPONSE, portletResponse);
+		setAttribute(PortletRequest.LIFECYCLE_PHASE, getLifecycle());
+	}
+
+	public Object getAttribute(String name) {
+		if (name == null) {
+			throw new IllegalArgumentException();
+		}
 
-    public void cleanUp() {
-        _request.removeAttribute(JavaConstants.JAVAX_PORTLET_CONFIG);
-        _request.removeAttribute(JavaConstants.JAVAX_PORTLET_REQUEST);
-        _request.removeAttribute(JavaConstants.JAVAX_PORTLET_RESPONSE);
-        _request.removeAttribute(PortletRequest.LIFECYCLE_PHASE);
-    }
+		if (name.equals(PortletRequest.CCPP_PROFILE)) {
+			return getCCPPProfile();
+		}
+		else if (name.equals(PortletRequest.USER_INFO)) {
+			Object value = getUserInfo();
 
-    public void defineObjects(
-            PortletConfig portletConfig, PortletResponse portletResponse) {
+			if (value != null) {
+				return value;
+			}
+		}
+
+		return _request.getAttribute(name);
+	}
 
-        PortletConfigImpl portletConfigImpl = (PortletConfigImpl)portletConfig;
+	public Enumeration<String> getAttributeNames() {
+		List<String> names = new ArrayList<String>();
+
+		Enumeration<String> enu = _request.getAttributeNames();
+
+		while (enu.hasMoreElements()) {
+			String name = enu.nextElement();
 
-        setAttribute(WebKeys.PORTLET_ID, portletConfigImpl.getPortletId());
-        setAttribute(JavaConstants.JAVAX_PORTLET_CONFIG, portletConfig);
-        setAttribute(JavaConstants.JAVAX_PORTLET_REQUEST, this);
-        setAttribute(JavaConstants.JAVAX_PORTLET_RESPONSE, portletResponse);
-        setAttribute(PortletRequest.LIFECYCLE_PHASE, getLifecycle());
-    }
+			if (!name.equals(JavaConstants.JAVAX_SERVLET_INCLUDE_PATH_INFO)) {
+				names.add(name);
+			}
+		}
+
+		return Collections.enumeration(names);
+	}
 
-    public Object getAttribute(String name) {
-        if (name == null) {
-            throw new IllegalArgumentException();
-        }
+	public String getAuthType() {
+		return _request.getAuthType();
+	}
 
-        if (name.equals(PortletRequest.CCPP_PROFILE)) {
-            return getCCPPProfile();
-        }
-        else if (name.equals(PortletRequest.USER_INFO)) {
-            Object value = getUserInfo();
+	public Profile getCCPPProfile() {
+		if (_profile == null) {
+			_profile = PortalProfileFactory.getCCPPProfile(_request);
+		}
+
+		return _profile;
+	}
 
-            if (value != null) {
-                return value;
-            }
-        }
+	public String getContextPath() {
+		PortletContextImpl portletContextImpl =
+			(PortletContextImpl)_portletContext;
 
-        return _request.getAttribute(name);
-    }
+		ServletContext servletContext = portletContextImpl.getServletContext();
+
+		String servletContextName = servletContext.getServletContextName();
 
-    public Enumeration<String> getAttributeNames() {
-        List<String> names = new ArrayList<String>();
+		if (ServletContextPool.containsKey(servletContextName)) {
+			servletContext = ServletContextPool.get(servletContextName);
 
-        Enumeration<String> enu = _request.getAttributeNames();
+			return ContextPathUtil.getContextPath(servletContext);
+		}
 
-        while (enu.hasMoreElements()) {
-            String name = enu.nextElement();
+		return StringPool.SLASH.concat(_portletContext.getPortletContextName());
+	}
 
-            if (!name.equals(JavaConstants.JAVAX_SERVLET_INCLUDE_PATH_INFO)) {
-                names.add(name);
-            }
-        }
+	public Cookie[] getCookies() {
+		return _request.getCookies();
+	}
 
-        return Collections.enumeration(names);
-    }
+	public String getETag() {
+		return null;
+	}
 
-    public String getAuthType() {
-        return _request.getAuthType();
-    }
+	public HttpServletRequest getHttpServletRequest() {
+		return _request;
+	}
 
-    public Profile getCCPPProfile() {
-        if (_profile == null) {
-            _profile = PortalProfileFactory.getCCPPProfile(_request);
-        }
+	public abstract String getLifecycle();
 
-        return _profile;
-    }
+	public Locale getLocale() {
+		Locale locale = _locale;
+
+		if (locale == null) {
+			locale = _request.getLocale();
+		}
 
-    public String getContextPath() {
-        PortletContextImpl portletContextImpl =
-                (PortletContextImpl)_portletContext;
+		if (locale == null) {
+			locale = LocaleUtil.getDefault();
+		}
 
-        ServletContext servletContext = portletContextImpl.getServletContext();
+		return locale;
+	}
 
-        String servletContextName = servletContext.getServletContextName();
+	public Enumeration<Locale> getLocales() {
+		return _request.getLocales();
+	}
 
-        if (ServletContextPool.containsKey(servletContextName)) {
-            servletContext = ServletContextPool.get(servletContextName);
+	public String getMethod() {
+		return _request.getMethod();
+	}
 
-            return ContextPathUtil.getContextPath(servletContext);
-        }
+	public HttpServletRequest getOriginalHttpServletRequest() {
+		return _originalRequest;
+	}
 
-        return StringPool.SLASH.concat(_portletContext.getPortletContextName());
-    }
+	public String getParameter(String name) {
+		if (name == null) {
+			throw new IllegalArgumentException();
+		}
 
-    public Cookie[] getCookies() {
-        return _request.getCookies();
-    }
+		if (_portletRequestDispatcherRequest != null) {
+			return _portletRequestDispatcherRequest.getParameter(name);
+		}
 
-    public String getETag() {
-        return null;
-    }
+		return _request.getParameter(name);
+	}
+
+	public Map<String, String[]> getParameterMap() {
+		if (_portletRequestDispatcherRequest != null) {
+			return Collections.unmodifiableMap(
+				_portletRequestDispatcherRequest.getParameterMap());
+		}
 
-    public HttpServletRequest getHttpServletRequest() {
-        return _request;
-    }
+		return Collections.unmodifiableMap(_request.getParameterMap());
+	}
 
-    public abstract String getLifecycle();
+	public Enumeration<String> getParameterNames() {
+		if (_portletRequestDispatcherRequest != null) {
+			return _portletRequestDispatcherRequest.getParameterNames();
+		}
 
-    public Locale getLocale() {
-        Locale locale = _locale;
-
-        if (locale == null) {
-            locale = _request.getLocale();
-        }
+		return _request.getParameterNames();
+	}
 
-        if (locale == null) {
-            locale = LocaleUtil.getDefault();
-        }
+	public String[] getParameterValues(String name) {
+		if (name == null) {
+			throw new IllegalArgumentException();
+		}
 
-        return locale;
-    }
+		if (_portletRequestDispatcherRequest != null) {
+			return _portletRequestDispatcherRequest.getParameterValues(name);
+		}
 
-    public Enumeration<Locale> getLocales() {
-        return _request.getLocales();
-    }
+		return _request.getParameterValues(name);
+	}
 
-    public String getMethod() {
-        return _request.getMethod();
-    }
+	public PortalContext getPortalContext() {
+		return _portalContext;
+	}
 
-    public HttpServletRequest getOriginalHttpServletRequest() {
-        return _originalRequest;
-    }
+	public Portlet getPortlet() {
+		return _portlet;
+	}
 
-    public String getParameter(String name) {
-        if (name == null) {
-            throw new IllegalArgumentException();
-        }
+	public PortletContext getPortletContext() {
+		return _portletContext;
+	}
 
-        if (_portletRequestDispatcherRequest != null) {
-            return _portletRequestDispatcherRequest.getParameter(name);
-        }
+	public PortletMode getPortletMode() {
+		return _portletMode;
+	}
 
-        return _request.getParameter(name);
-    }
-
-    public Map<String, String[]> getParameterMap() {
-        if (_portletRequestDispatcherRequest != null) {
-            return Collections.unmodifiableMap(
-                    _portletRequestDispatcherRequest.getParameterMap());
-        }
+	public String getPortletName() {
+		return _portletName;
+	}
 
-        return Collections.unmodifiableMap(_request.getParameterMap());
-    }
+	public PortletSession getPortletSession() {
+		return _session;
+	}
 
-    public Enumeration<String> getParameterNames() {
-        if (_portletRequestDispatcherRequest != null) {
-            return _portletRequestDispatcherRequest.getParameterNames();
-        }
+	public PortletSession getPortletSession(boolean create) {
+		/*HttpSession httpSes = _req.getSession(create);
 
-        return _request.getParameterNames();
-    }
+		if (httpSes == null) {
+			return null;
+		}
+		else {
+			if (create) {
+				_session = new PortletSessionImpl(
+					_req.getSession(), _portletContext, _portletName, _plid);
+			}
 
-    public String[] getParameterValues(String name) {
-        if (name == null) {
-            throw new IllegalArgumentException();
-        }
+			return _ses;
+		}*/
 
-        if (_portletRequestDispatcherRequest != null) {
-            return _portletRequestDispatcherRequest.getParameterValues(name);
-        }
+		/*if ((_session == null) && create) {
+			_req.getSession(create);
 
-        return _request.getParameterValues(name);
-    }
+			_session = new PortletSessionImpl(
+				_req.getSession(), _portletContext, _portletName, _plid);
+		}*/
 
-    public PortalContext getPortalContext() {
-        return _portalContext;
-    }
+		if (!create && _invalidSession) {
+			return null;
+		}
 
-    public Portlet getPortlet() {
-        return _portlet;
-    }
+		return _session;
+	}
 
-    public PortletContext getPortletContext() {
-        return _portletContext;
-    }
+	public PortletPreferences getPreferences() {
+		return new PortletPreferencesWrapper(
+			getPreferencesImpl(), getLifecycle());
+	}
 
-    public PortletMode getPortletMode() {
-        return _portletMode;
-    }
+	public PortletPreferencesImpl getPreferencesImpl() {
+		return (PortletPreferencesImpl)_preferences;
+	}
 
-    public String getPortletName() {
-        return _portletName;
-    }
+	public Map<String, String[]> getPrivateParameterMap() {
+		Map<String, String[]> parameterMap = null;
 
-    public PortletSession getPortletSession() {
-        return _session;
-    }
-
-    public PortletSession getPortletSession(boolean create) {
-        /*HttpSession httpSes = _req.getSession(create);
-
-          if (httpSes == null) {
-              return null;
-          }
-          else {
-              if (create) {
-                  _session = new PortletSessionImpl(
-                      _req.getSession(), _portletContext, _portletName, _plid);
-              }
-
-              return _ses;
-          }*/
-
-        /*if ((_session == null) && create) {
-              _req.getSession(create);
-
-              _session = new PortletSessionImpl(
-                  _req.getSession(), _portletContext, _portletName, _plid);
-          }*/
-
-        if (!create && _invalidSession) {
-            return null;
-        }
-
-        return _session;
-    }
-
-    public PortletPreferences getPreferences() {
-        return new PortletPreferencesWrapper(
-                getPreferencesImpl(), getLifecycle());
-    }
-
-    public PortletPreferencesImpl getPreferencesImpl() {
-        return (PortletPreferencesImpl)_preferences;
-    }
-
-    public Map<String, String[]> getPrivateParameterMap() {
-        Map<String, String[]> parameterMap = null;
-
-        if (_portletRequestDispatcherRequest != null) {
-            parameterMap = _portletRequestDispatcherRequest.getParameterMap();
-        }
-        else {
-            parameterMap = _request.getParameterMap();
-        }
-
-        Map<String, String[]> privateParameterMap = null;
-
-        for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
-            String name = entry.getKey();
-
-            if (_portlet.getPublicRenderParameter(name) != null) {
-                continue;
-            }
-
-            if (privateParameterMap == null) {
-                privateParameterMap = new HashMap<String, String[]>(
-                        parameterMap.size(), 1);
-            }
-
-            privateParameterMap.put(name, entry.getValue());
-        }
-
-        if (privateParameterMap == null) {
-            return Collections.emptyMap();
-        }
-
-        return Collections.unmodifiableMap(privateParameterMap);
-    }
-
-    public Enumeration<String> getProperties(String name) {
-        List<String> values = new ArrayList<String>();
-
-        String value = _portalContext.getProperty(name);
-
-        if (value != null) {
-            values.add(value);
-        }
-
-        return Collections.enumeration(values);
-    }
-
-    public String getProperty(String name) {
-        return _portalContext.getProperty(name);
-    }
-
-    public Enumeration<String> getPropertyNames() {
-        return _portalContext.getPropertyNames();
-    }
-
-    public Map<String, String[]> getPublicParameterMap() {
-        Map<String, String[]> parameterMap = null;
-
-        if (_portletRequestDispatcherRequest != null) {
-            parameterMap = _portletRequestDispatcherRequest.getParameterMap();
-        }
-        else {
-            parameterMap = _request.getParameterMap();
-        }
-
-        Map<String, String[]> publicParameterMap = null;
-
-        for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
-            String name = entry.getKey();
-
-            if (_portlet.getPublicRenderParameter(name) != null) {
-
-                if (publicParameterMap == null) {
-                    publicParameterMap = new HashMap<String, String[]>(
-                            parameterMap.size(), 1);
-                }
-
-                publicParameterMap.put(name, entry.getValue());
-            }
-        }
-
-        if (publicParameterMap == null) {
-            return Collections.emptyMap();
-        }
-        else {
-            return Collections.unmodifiableMap(publicParameterMap);
-        }
-    }
-
-    public String getRemoteUser() {
-        return _remoteUser;
-    }
-
-    public Map<String, String[]> getRenderParameters() {
-        return RenderParametersPool.get(_request, _plid, _portletName);
-    }
-
-    public String getRequestedSessionId() {
-        if (_session != null) {
-            return _session.getId();
-        }
-        else {
-            HttpSession session = _request.getSession(false);
-
-            if (session == null) {
-                return StringPool.BLANK;
-            }
-            else {
-                return session.getId();
-            }
-        }
-    }
-
-    public String getResponseContentType() {
-        if (_wapTheme) {
-            return ContentTypes.XHTML_MP;
-        }
-        else {
-            return ContentTypes.TEXT_HTML;
-        }
-    }
-
-    public Enumeration<String> getResponseContentTypes() {
-        List<String> responseContentTypes = new ArrayList<String>();
-
-        responseContentTypes.add(getResponseContentType());
-
-        return Collections.enumeration(responseContentTypes);
-    }
-
-    public String getScheme() {
-        return _request.getScheme();
-    }
-
-    public String getServerName() {
-        return _request.getServerName();
-    }
-
-    public int getServerPort() {
-        return _request.getServerPort();
-    }
-
-    public LinkedHashMap<String, String> getUserInfo() {
-        return UserInfoFactory.getUserInfo(_remoteUserId, _portlet);
-    }
-
-    public Principal getUserPrincipal() {
-        return _userPrincipal;
-    }
-
-    public String getWindowID() {
-        return _portletName.concat(
-                LiferayPortletSession.LAYOUT_SEPARATOR).concat(
-                String.valueOf(_plid));
-    }
-
-    public WindowState getWindowState() {
-        return _windowState;
-    }
-
-    public void invalidateSession() {
-        _invalidSession = true;
-    }
-
-    public boolean isInvalidParameter(String name) {
-        if (Validator.isNull(name) ||
-                name.startsWith(PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE) ||
-                name.startsWith(
-                        PortletQName.REMOVE_PUBLIC_RENDER_PARAMETER_NAMESPACE) ||
-                PortalUtil.isReservedParameter(name)) {
-
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-    public boolean isPortletModeAllowed(PortletMode portletMode) {
-        if ((portletMode == null) || Validator.isNull(portletMode.toString())) {
-            return true;
-        }
-        else {
-            return _portlet.hasPortletMode(
-                    getResponseContentType(), portletMode);
-        }
-    }
-
-    public boolean isPrivateRequestAttributes() {
-        return _portlet.isPrivateRequestAttributes();
-    }
-
-    public boolean isRequestedSessionIdValid() {
-        return _request.isRequestedSessionIdValid();
-    }
-
-    public boolean isSecure() {
-        return _request.isSecure();
-    }
-
-    public boolean isTriggeredByActionURL() {
-        return _triggeredByActionURL;
-    }
-
-    public boolean isUserInRole(String role) {
-        if (_remoteUserId <= 0) {
-            return false;
-        }
-        else {
-            try {
-                long companyId = PortalUtil.getCompanyId(_request);
-
-                String roleLink = _portlet.getRoleMappers().get(role);
-
-                if (Validator.isNotNull(roleLink)) {
-                    return RoleLocalServiceUtil.hasUserRole(
-                            _remoteUserId, companyId, roleLink, true);
-                }
-                else {
-                    return RoleLocalServiceUtil.hasUserRole(
-                            _remoteUserId, companyId, role, true);
-                }
-            }
-            catch (Exception e) {
-                _log.error(e);
-            }
-
-            return _request.isUserInRole(role);
-        }
-    }
-
-    public boolean isWindowStateAllowed(WindowState windowState) {
-        return PortalContextImpl.isSupportedWindowState(windowState);
-    }
-
-    public void removeAttribute(String name) {
-        if (name == null) {
-            throw new IllegalArgumentException();
-        }
-
-        _request.removeAttribute(name);
-    }
-
-    public void setAttribute(String name, Object obj) {
-        if (name == null) {
-            throw new IllegalArgumentException();
-        }
-
-        if (obj == null) {
-            removeAttribute(name);
-        }
-        else {
-            _request.setAttribute(name, obj);
-        }
-    }
-
-    public void setPortletMode(PortletMode portletMode) {
-        _portletMode = portletMode;
-    }
-
-    public void setPortletRequestDispatcherRequest(HttpServletRequest request) {
-        _portletRequestDispatcherRequest = request;
-    }
-
-    public void setWindowState(WindowState windowState) {
-        _windowState = windowState;
-    }
-
-    protected void init(
-            HttpServletRequest request, Portlet portlet,
-            InvokerPortlet invokerPortlet, PortletContext portletContext,
-            WindowState windowState, PortletMode portletMode,
-            PortletPreferences preferences, long plid) {
-
-        ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
-                WebKeys.THEME_DISPLAY);
-
-        _portlet = portlet;
-        _portletName = portlet.getPortletId();
-        _publicRenderParameters = PublicRenderParametersPool.get(request, plid);
-
-        String portletNamespace = PortalUtil.getPortletNamespace(_portletName);
-
-        boolean portalSessionShared = false;
-
-        PortletApp portletApp = portlet.getPortletApp();
-
-        if (portletApp.isWARFile() && !portlet.isPrivateSessionAttributes()) {
-            portalSessionShared = true;
-        }
-
-        request = new SharedSessionServletRequest(request, portalSessionShared);
-
-        DynamicServletRequest dynamicRequest = null;
-
-        if (portlet.isPrivateRequestAttributes()) {
-            dynamicRequest = new NamespaceServletRequest(
-                    request, portletNamespace, portletNamespace, false);
-        }
-        else {
-            dynamicRequest = new DynamicServletRequest(request, false);
-        }
-
-        boolean portletFocus = false;
-
-        String ppid = ParamUtil.getString(request, "p_p_id");
-
-        boolean windowStateRestoreCurrentView = ParamUtil.getBoolean(
-                request, "p_p_state_rcv");
-
-        if (_portletName.equals(ppid) &&
-                !(windowStateRestoreCurrentView &&
-                        portlet.isRestoreCurrentView())) {
-
-            // Request was targeted to this portlet
-
-            if (themeDisplay.isLifecycleRender() ||
-                    themeDisplay.isLifecycleResource()) {
-
-                // Request was triggered by a render or resource URL
-
-                portletFocus = true;
-            }
-            else if (themeDisplay.isLifecycleAction()) {
-                _triggeredByActionURL = true;
-
-                if (getLifecycle().equals(PortletRequest.ACTION_PHASE)) {
-
-                    // Request was triggered by an action URL and is being
-                    // processed by com.liferay.portlet.ActionRequestImpl
-
-                    portletFocus = true;
-                }
-            }
-        }
-
-        if (portletFocus) {
-            Map<String, String[]> renderParameters =
-                    new HashMap<String, String[]>();
-
-            if (getLifecycle().equals(PortletRequest.RENDER_PHASE) &&
-                    !LiferayWindowState.isExclusive(request) &&
-                    !LiferayWindowState.isPopUp(request)) {
-
-                RenderParametersPool.put(
-                        request, plid, _portletName, renderParameters);
-            }
-
-            Map<String, String[]> parameters = request.getParameterMap();
-
-            for (Map.Entry<String, String[]> entry : parameters.entrySet()) {
-                String name = entry.getKey();
-
-                if (isInvalidParameter(name)) {
-                    continue;
-                }
-
-                String[] values = entry.getValue();
-
-                if (themeDisplay.isLifecycleRender()) {
-                    renderParameters.put(name, values);
-                }
-
-                if (values == null) {
-                    continue;
-                }
-
-                name = removePortletNamespace(
-                        invokerPortlet, portletNamespace, name);
-
-                dynamicRequest.setParameterValues(name, values);
-            }
-        }
-        else {
-            Map<String, String[]> renderParameters = RenderParametersPool.get(
-                    request, plid, _portletName);
-
-            for (Map.Entry<String, String[]> entry :
-                    renderParameters.entrySet()) {
-
-                String name = entry.getKey();
-                String[] values = entry.getValue();
-
-                name = removePortletNamespace(
-                        invokerPortlet, portletNamespace, name);
-
-                dynamicRequest.setParameterValues(name, values);
-            }
-        }
-
-        mergePublicRenderParameters(dynamicRequest, preferences, plid);
-
-        _request = dynamicRequest;
-        _originalRequest = request;
-        _wapTheme = BrowserSnifferUtil.isWap(_request);
-        _portlet = portlet;
-        _portalContext = new PortalContextImpl();
-        _portletContext = portletContext;
-        _windowState = windowState;
-        _portletMode = portletMode;
-        _preferences = preferences;
-        _session = new PortletSessionImpl(
-                _request.getSession(), _portletContext, _portletName, plid);
-
-        String remoteUser = request.getRemoteUser();
-
-        String userPrincipalStrategy = portlet.getUserPrincipalStrategy();
-
-        if (userPrincipalStrategy.equals(
-                PortletConstants.USER_PRINCIPAL_STRATEGY_SCREEN_NAME)) {
-
-            try {
-                User user = PortalUtil.getUser(request);
-
-                if (user != null) {
-                    _remoteUser = user.getScreenName();
-                    _remoteUserId = user.getUserId();
-                    _userPrincipal = new ProtectedPrincipal(_remoteUser);
-                }
-            }
-            catch (Exception e) {
-                _log.error(e);
-            }
-        }
-        else {
-            long userId = PortalUtil.getUserId(request);
-
-            if ((userId > 0) && (remoteUser == null)) {
-                _remoteUser = String.valueOf(userId);
-                _remoteUserId = userId;
-                _userPrincipal = new ProtectedPrincipal(_remoteUser);
-            }
-            else {
-                _remoteUser = remoteUser;
-                _remoteUserId = GetterUtil.getLong(remoteUser);
-                _userPrincipal = request.getUserPrincipal();
-            }
-        }
-
-        _locale = themeDisplay.getLocale();
-        _plid = plid;
-    }
-
-    protected void mergePublicRenderParameters(
-            DynamicServletRequest dynamicRequest, PortletPreferences preferences,
-            long plid) {
-
-        Enumeration<PublicRenderParameter> publicRenderParameters =
-                Collections.enumeration(_portlet.getPublicRenderParameters());
-
-        while (publicRenderParameters.hasMoreElements()) {
-            PublicRenderParameter publicRenderParameter =
-                    publicRenderParameters.nextElement();
-
-            String ignoreKey = PublicRenderParameterConfiguration.getIgnoreKey(
-                    publicRenderParameter);
-
-            boolean ignoreValue = GetterUtil.getBoolean(
-                    preferences.getValue(ignoreKey, null));
-
-            if (ignoreValue) {
-                continue;
-            }
-
-            String mappingKey =
-                    PublicRenderParameterConfiguration.getMappingKey(
-                            publicRenderParameter);
-
-            String mappingValue = GetterUtil.getString(
-                    preferences.getValue(mappingKey, null));
-
-            HttpServletRequest request =
-                    (HttpServletRequest)dynamicRequest.getRequest();
-
-            String[] newValues = request.getParameterValues(mappingValue);
-
-            if ((newValues != null) && (newValues.length != 0)) {
-                newValues = ArrayUtil.remove(newValues, StringPool.NULL);
-            }
-
-            String name = publicRenderParameter.getIdentifier();
-
-            if ((newValues == null) || (newValues.length == 0)) {
-                QName qName = publicRenderParameter.getQName();
-
-                String[] values = _publicRenderParameters.get(
-                        PortletQNameUtil.getPublicRenderParameterName(qName));
+		if (_portletRequestDispatcherRequest != null) {
+			parameterMap = _portletRequestDispatcherRequest.getParameterMap();
+		}
+		else {
+			parameterMap = _request.getParameterMap();
+		}
+
+		Map<String, String[]> privateParameterMap = null;
+
+		for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
+			String name = entry.getKey();
+
+			if (_portlet.getPublicRenderParameter(name) != null) {
+				continue;
+			}
+
+			if (privateParameterMap == null) {
+				privateParameterMap = new HashMap<String, String[]>(
+					parameterMap.size(), 1);
+			}
+
+			privateParameterMap.put(name, entry.getValue());
+		}
+
+		if (privateParameterMap == null) {
+			return Collections.emptyMap();
+		}
+
+		return Collections.unmodifiableMap(privateParameterMap);
+	}
+
+	public Enumeration<String> getProperties(String name) {
+		List<String> values = new ArrayList<String>();
+
+		String value = _portalContext.getProperty(name);
+
+		if (value != null) {
+			values.add(value);
+		}
+
+		return Collections.enumeration(values);
+	}
+
+	public String getProperty(String name) {
+		return _portalContext.getProperty(name);
+	}
+
+	public Enumeration<String> getPropertyNames() {
+		return _portalContext.getPropertyNames();
+	}
+
+	public Map<String, String[]> getPublicParameterMap() {
+		Map<String, String[]> parameterMap = null;
+
+		if (_portletRequestDispatcherRequest != null) {
+			parameterMap = _portletRequestDispatcherRequest.getParameterMap();
+		}
+		else {
+			parameterMap = _request.getParameterMap();
+		}
+
+		Map<String, String[]> publicParameterMap = null;
+
+		for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
+			String name = entry.getKey();
+
+			if (_portlet.getPublicRenderParameter(name) != null) {
+
+				if (publicParameterMap == null) {
+					publicParameterMap = new HashMap<String, String[]>(
+						parameterMap.size(), 1);
+				}
+
+				publicParameterMap.put(name, entry.getValue());
+			}
+		}
+
+		if (publicParameterMap == null) {
+			return Collections.emptyMap();
+		}
+		else {
+			return Collections.unmodifiableMap(publicParameterMap);
+		}
+	}
+
+	public String getRemoteUser() {
+		return _remoteUser;
+	}
+
+	public Map<String, String[]> getRenderParameters() {
+		return RenderParametersPool.get(_request, _plid, _portletName);
+	}
+
+	public String getRequestedSessionId() {
+		if (_session != null) {
+			return _session.getId();
+		}
+		else {
+			HttpSession session = _request.getSession(false);
+
+			if (session == null) {
+				return StringPool.BLANK;
+			}
+			else {
+				return session.getId();
+			}
+		}
+	}
+
+	public String getResponseContentType() {
+		if (_wapTheme) {
+			return ContentTypes.XHTML_MP;
+		}
+		else {
+			return ContentTypes.TEXT_HTML;
+		}
+	}
+
+	public Enumeration<String> getResponseContentTypes() {
+		List<String> responseContentTypes = new ArrayList<String>();
+
+		responseContentTypes.add(getResponseContentType());
+
+		return Collections.enumeration(responseContentTypes);
+	}
+
+	public String getScheme() {
+		return _request.getScheme();
+	}
+
+	public String getServerName() {
+		return _request.getServerName();
+	}
+
+	public int getServerPort() {
+		return _request.getServerPort();
+	}
+
+	public LinkedHashMap<String, String> getUserInfo() {
+		return UserInfoFactory.getUserInfo(_remoteUserId, _portlet);
+	}
+
+	public Principal getUserPrincipal() {
+		return _userPrincipal;
+	}
+
+	public String getWindowID() {
+		return _portletName.concat(
+			LiferayPortletSession.LAYOUT_SEPARATOR).concat(
+				String.valueOf(_plid));
+	}
+
+	public WindowState getWindowState() {
+		return _windowState;
+	}
+
+	public void invalidateSession() {
+		_invalidSession = true;
+	}
+
+	public boolean isInvalidParameter(String name) {
+		if (Validator.isNull(name) ||
+			name.startsWith(PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE) ||
+			name.startsWith(
+				PortletQName.REMOVE_PUBLIC_RENDER_PARAMETER_NAMESPACE) ||
+			PortalUtil.isReservedParameter(name)) {
+
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	public boolean isPortletModeAllowed(PortletMode portletMode) {
+		if ((portletMode == null) || Validator.isNull(portletMode.toString())) {
+			return true;
+		}
+		else {
+			return _portlet.hasPortletMode(
+				getResponseContentType(), portletMode);
+		}
+	}
+
+	public boolean isPrivateRequestAttributes() {
+		return _portlet.isPrivateRequestAttributes();
+	}
+
+	public boolean isRequestedSessionIdValid() {
+		return _request.isRequestedSessionIdValid();
+	}
+
+	public boolean isSecure() {
+		return _request.isSecure();
+	}
+
+	public boolean isTriggeredByActionURL() {
+		return _triggeredByActionURL;
+	}
+
+	public boolean isUserInRole(String role) {
+		if (_remoteUserId <= 0) {
+			return false;
+		}
+		else {
+			try {
+				long companyId = PortalUtil.getCompanyId(_request);
+
+				String roleLink = _portlet.getRoleMappers().get(role);
+
+				if (Validator.isNotNull(roleLink)) {
+					return RoleLocalServiceUtil.hasUserRole(
+						_remoteUserId, companyId, roleLink, true);
+				}
+				else {
+					return RoleLocalServiceUtil.hasUserRole(
+						_remoteUserId, companyId, role, true);
+				}
+			}
+			catch (Exception e) {
+				_log.error(e);
+			}
+
+			return _request.isUserInRole(role);
+		}
+	}
+
+	public boolean isWindowStateAllowed(WindowState windowState) {
+		return PortalContextImpl.isSupportedWindowState(windowState);
+	}
+
+	public void removeAttribute(String name) {
+		if (name == null) {
+			throw new IllegalArgumentException();
+		}
+
+		_request.removeAttribute(name);
+	}
+
+	public void setAttribute(String name, Object obj) {
+		if (name == null) {
+			throw new IllegalArgumentException();
+		}
+
+		if (obj == null) {
+			removeAttribute(name);
+		}
+		else {
+			_request.setAttribute(name, obj);
+		}
+	}
+
+	public void setPortletMode(PortletMode portletMode) {
+		_portletMode = portletMode;
+	}
+
+	public void setPortletRequestDispatcherRequest(HttpServletRequest request) {
+		_portletRequestDispatcherRequest = request;
+	}
+
+	public void setWindowState(WindowState windowState) {
+		_windowState = windowState;
+	}
+
+	protected void init(
+		HttpServletRequest request, Portlet portlet,
+		InvokerPortlet invokerPortlet, PortletContext portletContext,
+		WindowState windowState, PortletMode portletMode,
+		PortletPreferences preferences, long plid) {
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		_portlet = portlet;
+		_portletName = portlet.getPortletId();
+		_publicRenderParameters = PublicRenderParametersPool.get(request, plid);
+
+		String portletNamespace = PortalUtil.getPortletNamespace(_portletName);
+
+		boolean portalSessionShared = false;
+
+		PortletApp portletApp = portlet.getPortletApp();
+
+		if (portletApp.isWARFile() && !portlet.isPrivateSessionAttributes()) {
+			portalSessionShared = true;
+		}
+
+		request = new SharedSessionServletRequest(request, portalSessionShared);
+
+		DynamicServletRequest dynamicRequest = null;
+
+		if (portlet.isPrivateRequestAttributes()) {
+			dynamicRequest = new NamespaceServletRequest(
+				request, portletNamespace, portletNamespace, false);
+		}
+		else {
+			dynamicRequest = new DynamicServletRequest(request, false);
+		}
+
+		boolean portletFocus = false;
+
+		String ppid = ParamUtil.getString(request, "p_p_id");
+
+		boolean windowStateRestoreCurrentView = ParamUtil.getBoolean(
+			request, "p_p_state_rcv");
+
+		if (_portletName.equals(ppid) &&
+			!(windowStateRestoreCurrentView &&
+			  portlet.isRestoreCurrentView())) {
+
+			// Request was targeted to this portlet
+
+			if (themeDisplay.isLifecycleRender() ||
+				themeDisplay.isLifecycleResource()) {
+
+				// Request was triggered by a render or resource URL
+
+				portletFocus = true;
+			}
+			else if (themeDisplay.isLifecycleAction()) {
+				_triggeredByActionURL = true;
+
+				if (getLifecycle().equals(PortletRequest.ACTION_PHASE)) {
+
+					// Request was triggered by an action URL and is being
+					// processed by com.liferay.portlet.ActionRequestImpl
+
+					portletFocus = true;
+				}
+			}
+		}
+
+		if (portletFocus) {
+			Map<String, String[]> renderParameters =
+				new HashMap<String, String[]>();
+
+			if (getLifecycle().equals(PortletRequest.RENDER_PHASE) &&
+				!LiferayWindowState.isExclusive(request) &&
+				!LiferayWindowState.isPopUp(request)) {
+
+				RenderParametersPool.put(
+					request, plid, _portletName, renderParameters);
+			}
+
+			Map<String, String[]> parameters = request.getParameterMap();
+
+			for (Map.Entry<String, String[]> entry : parameters.entrySet()) {
+				String name = entry.getKey();
+
+				if (isInvalidParameter(name)) {
+					continue;
+				}
+
+				String[] values = entry.getValue();
+
+				if (themeDisplay.isLifecycleRender()) {
+					renderParameters.put(name, values);
+				}
+
+				if (values == null) {
+					continue;
+				}
+
+				name = removePortletNamespace(
+					invokerPortlet, portletNamespace, name);
+
+				dynamicRequest.setParameterValues(name, values);
+			}
+		}
+		else {
+			Map<String, String[]> renderParameters = RenderParametersPool.get(
+				request, plid, _portletName);
+
+			for (Map.Entry<String, String[]> entry :
+					renderParameters.entrySet()) {
+
+				String name = entry.getKey();
+				String[] values = entry.getValue();
+
+				name = removePortletNamespace(
+					invokerPortlet, portletNamespace, name);
+
+				dynamicRequest.setParameterValues(name, values);
+			}
+		}
+
+		mergePublicRenderParameters(dynamicRequest, preferences, plid);
+
+		_request = dynamicRequest;
+		_originalRequest = request;
+		_wapTheme = BrowserSnifferUtil.isWap(_request);
+		_portlet = portlet;
+		_portalContext = new PortalContextImpl();
+		_portletContext = portletContext;
+		_windowState = windowState;
+		_portletMode = portletMode;
+		_preferences = preferences;
+		_session = new PortletSessionImpl(
+			_request.getSession(), _portletContext, _portletName, plid);
+
+		String remoteUser = request.getRemoteUser();
+
+		String userPrincipalStrategy = portlet.getUserPrincipalStrategy();
+
+		if (userPrincipalStrategy.equals(
+				PortletConstants.USER_PRINCIPAL_STRATEGY_SCREEN_NAME)) {
+
+			try {
+				User user = PortalUtil.getUser(request);
+
+				if (user != null) {
+					_remoteUser = user.getScreenName();
+					_remoteUserId = user.getUserId();
+					_userPrincipal = new ProtectedPrincipal(_remoteUser);
+				}
+			}
+			catch (Exception e) {
+				_log.error(e);
+			}
+		}
+		else {
+			long userId = PortalUtil.getUserId(request);
+
+			if ((userId > 0) && (remoteUser == null)) {
+				_remoteUser = String.valueOf(userId);
+				_remoteUserId = userId;
+				_userPrincipal = new ProtectedPrincipal(_remoteUser);
+			}
+			else {
+				_remoteUser = remoteUser;
+				_remoteUserId = GetterUtil.getLong(remoteUser);
+				_userPrincipal = request.getUserPrincipal();
+			}
+		}
+
+		_locale = themeDisplay.getLocale();
+		_plid = plid;
+	}
+
+	protected void mergePublicRenderParameters(
+		DynamicServletRequest dynamicRequest, PortletPreferences preferences,
+		long plid) {
+
+		Enumeration<PublicRenderParameter> publicRenderParameters =
+			Collections.enumeration(_portlet.getPublicRenderParameters());
+
+		while (publicRenderParameters.hasMoreElements()) {
+			PublicRenderParameter publicRenderParameter =
+				publicRenderParameters.nextElement();
+
+			String ignoreKey = PublicRenderParameterConfiguration.getIgnoreKey(
+				publicRenderParameter);
+
+			boolean ignoreValue = GetterUtil.getBoolean(
+				preferences.getValue(ignoreKey, null));
+
+			if (ignoreValue) {
+				continue;
+			}
+
+			String mappingKey =
+				PublicRenderParameterConfiguration.getMappingKey(
+					publicRenderParameter);
+
+			String mappingValue = GetterUtil.getString(
+				preferences.getValue(mappingKey, null));
+
+			HttpServletRequest request =
+				(HttpServletRequest)dynamicRequest.getRequest();
+
+			String[] newValues = request.getParameterValues(mappingValue);
+
+			if ((newValues != null) && (newValues.length != 0)) {
+				newValues = ArrayUtil.remove(newValues, StringPool.NULL);
+			}
+
+			String name = publicRenderParameter.getIdentifier();
+
+			if ((newValues == null) || (newValues.length == 0)) {
+				QName qName = publicRenderParameter.getQName();
+
+				String[] values = _publicRenderParameters.get(
+					PortletQNameUtil.getPublicRenderParameterName(qName));
 
                 // ARENA
                 if ((values) == null || (values.length == 0)) {
@@ -824,50 +827,50 @@ public abstract class PortletRequestImpl implements LiferayPortletRequest {
                     continue;
                 }
 
-                if (dynamicRequest.getParameter(name) == null) {
-                    dynamicRequest.setParameterValues(name, values);
-                }
-            }
-            else {
-                dynamicRequest.setParameterValues(name, newValues);
-            }
-        }
-    }
+				if (dynamicRequest.getParameter(name) == null) {
+					dynamicRequest.setParameterValues(name, values);
+				}
+			}
+			else {
+				dynamicRequest.setParameterValues(name, newValues);
+			}
+		}
+	}
 
-    protected String removePortletNamespace(
-            InvokerPortlet invokerPortlet, String portletNamespace, String name) {
+	protected String removePortletNamespace(
+		InvokerPortlet invokerPortlet, String portletNamespace, String name) {
 
-        if (name.startsWith(portletNamespace) &&
-                ((invokerPortlet == null) || !invokerPortlet.isFacesPortlet())) {
+		if (name.startsWith(portletNamespace) &&
+			((invokerPortlet == null) || !invokerPortlet.isFacesPortlet())) {
 
-            name = name.substring(portletNamespace.length());
-        }
+			name = name.substring(portletNamespace.length());
+		}
 
-        return name;
-    }
+		return name;
+	}
 
-    private static Log _log = LogFactoryUtil.getLog(PortletRequestImpl.class);
+	private static Log _log = LogFactoryUtil.getLog(PortletRequestImpl.class);
 
-    private boolean _invalidSession;
-    private Locale _locale;
-    private HttpServletRequest _originalRequest;
-    private long _plid;
-    private PortalContext _portalContext;
-    private Portlet _portlet;
-    private PortletContext _portletContext;
-    private PortletMode _portletMode;
-    private String _portletName;
-    private HttpServletRequest _portletRequestDispatcherRequest;
-    private PortletPreferences _preferences;
-    private Profile _profile;
-    private Map<String, String[]> _publicRenderParameters;
-    private String _remoteUser;
-    private long _remoteUserId;
-    private HttpServletRequest _request;
-    private PortletSessionImpl _session;
-    private boolean _triggeredByActionURL;
-    private Principal _userPrincipal;
-    private boolean _wapTheme;
-    private WindowState _windowState;
+	private boolean _invalidSession;
+	private Locale _locale;
+	private HttpServletRequest _originalRequest;
+	private long _plid;
+	private PortalContext _portalContext;
+	private Portlet _portlet;
+	private PortletContext _portletContext;
+	private PortletMode _portletMode;
+	private String _portletName;
+	private HttpServletRequest _portletRequestDispatcherRequest;
+	private PortletPreferences _preferences;
+	private Profile _profile;
+	private Map<String, String[]> _publicRenderParameters;
+	private String _remoteUser;
+	private long _remoteUserId;
+	private HttpServletRequest _request;
+	private PortletSessionImpl _session;
+	private boolean _triggeredByActionURL;
+	private Principal _userPrincipal;
+	private boolean _wapTheme;
+	private WindowState _windowState;
 
 }
