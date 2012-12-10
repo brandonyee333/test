@@ -28,6 +28,7 @@ import org.quartz.impl.jdbcjobstore.NoSuchDelegateException;
 import org.quartz.impl.jdbcjobstore.PostgreSQLDelegate;
 import org.quartz.impl.jdbcjobstore.StdJDBCDelegate;
 import org.quartz.impl.jdbcjobstore.SybaseDelegate;
+import org.quartz.impl.jdbcjobstore.oracle.OracleDelegate;
 
 /**
  * @author Brian Wing Shun Chan
@@ -52,6 +53,9 @@ public class PortalJobStore extends JobStoreTX {
 			}
 			else if (dbType.equals(DB.TYPE_HYPERSONIC)) {
 				driverDelegateClass = HSQLDBDelegate.class;
+			}
+			else if (dbType.equals(DB.TYPE_ORACLE)) {
+				driverDelegateClass = OracleDelegate.class;
 			}
 			else if (dbType.equals(DB.TYPE_POSTGRESQL)) {
 				driverDelegateClass = PostgreSQLDelegate.class;
