@@ -91,7 +91,7 @@ public class EditOrganizationAction extends PortletAction {
 				organization = updateOrganization(actionRequest);
 			}
 			else if (cmd.equals(Constants.DELETE)) {
-				deleteOrganizations(actionRequest);
+				organization = deleteOrganizations(actionRequest);
 			}
 
 			String redirect = ParamUtil.getString(actionRequest, "redirect");
@@ -188,15 +188,28 @@ public class EditOrganizationAction extends PortletAction {
 			getForward(renderRequest, "portlet.users_admin.edit_organization"));
 	}
 
-	protected void deleteOrganizations(ActionRequest actionRequest)
+	protected Organization deleteOrganizations(ActionRequest actionRequest)
 		throws Exception {
 
-		long[] deleteOrganizationIds = StringUtil.split(
-			ParamUtil.getString(actionRequest, "deleteOrganizationIds"), 0L);
+        long[] deleteOrganizationIds = StringUtil.split(
+                ParamUtil.getString(actionRequest, "deleteOrganizationIds"), 0L);
 
-		for (long deleteOrganizationId : deleteOrganizationIds) {
-			OrganizationServiceUtil.deleteOrganization(deleteOrganizationId);
-		}
+        long currentOrganizationId = ParamUtil.getLong(
+                actionRequest, "organizationId");
+
+        boolean returnOrganizationById = true;
+        for (long deleteOrganizationId : deleteOrganizationIds) {
+            OrganizationServiceUtil.deleteOrganization(deleteOrganizationId);
+            if(currentOrganizationId == deleteOrganizationId) {
+                returnOrganizationById = false;
+            }
+        }
+
+        if (currentOrganizationId > 0 && returnOrganizationById) {
+            return OrganizationServiceUtil.getOrganization(currentOrganizationId);
+        } else {
+            return null;
+        }
 	}
 
 	protected Organization updateOrganization(ActionRequest actionRequest)
