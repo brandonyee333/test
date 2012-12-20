@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+#parse ($init)
+
+#set ($deviceBrand = $themeDisplay.device.getBrand())
+#set ($deviceOS = $themeDisplay.device.getOS())
+
+#if ($cacheManifestEnabled)
+    #set ($cacheManifest = 'manifest="' + $cacheManifestUrl + '"')
+#else
+    #set ($cacheManifest = "")
+#end
+
+<html class="#language("lang.dir") device-brand-${deviceBrand} device-os-${deviceOS}" dir="#language("lang.dir")" lang="$w3c_language_id" ${cacheManifest}>
+	<head>
+		<title>$the_title &mdash; $company_name</title>
+
+		<meta name="viewport" content="width=device-width, initial-scale=1"> 
+
+		<link rel="stylesheet" href="/application-cache-sample-theme/css/jquery.mobile-1.2.0.min.css" />
+		<link rel="stylesheet" href="/application-cache-sample-theme/css/custom.css" />
+		<script src="/application-cache-sample-theme/js/jquery-1.8.2.min.js"></script>
+		<script src="/application-cache-sample-theme/js/jquery.mobile-1.2.0.min.js"></script>
+	</head>
+
+	<body class="$css_class">
+		<div id="wrapper">
+
+			<a href="#main-content" id="skip-to-content" class="blind">#language("skip-to-content")</a>
+
+			<div id="content">
+				#if ($selectable)
+					$theme.include($content_include)
+				#else
+					$portletDisplay.recycle()
+
+					$portletDisplay.setTitle($the_title)
+
+					$theme.wrapPortlet("portlet.vm", $content_include)
+				#end
+			</div>
+		</div>
+	</body>
+</html>

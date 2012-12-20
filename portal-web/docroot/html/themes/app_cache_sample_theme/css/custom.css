@@ -1,0 +1,70 @@
+.blind {
+    position: absolute;
+    left: -1000px;
+    top: -1000px;
+    overflow: hidden;
+    height: 1px;
+    width: 1px;
+}
+
+.taglib-icon {
+	text-decoration: none;
+}
+
+.portlet-column-content {
+	padding: 0px;
+}
+
+.presentation-detail-popup {
+	min-width: 250px;
+}
+.presentation-detail-popup .ui-header .ui-title {
+	margin-left: 2em;
+	margin-right: 2em;
+}
+.presentation-detail-popup .presentation-detail-label {
+	font-weight: bold;
+	float: left;
+	display: block;
+	width: 6em;
+}
+.presentation-detail-popup .presentation-detail-value {
+	overflow: hidden;
+}
+.presentation-detail-popup .ui-li-desc {
+	margin-top: 0;
+}
+.presentation-detail-popup .avatar {
+	max-width: 80px;
+	max-height: 80px;
+	display: block;
+}
+
+
+.presentations-schedule {
+    overflow: hidden;
+    padding: 5px;
+}
+.presentations-schedule > div {
+    clear: both;
+}
+.presentations-schedule .presentations {
+    overflow: hidden;
+}
+.presentations-schedule .presentation-time {
+    font-weight: bold;
+    width: 60px;
+    float: left;
+}
+.presentations-schedule .presentation {
+    width: 250px;
+    float: left;
+    border: 1px solid #666;
+}
+.presentations-schedule .presentation h3 {
+    margin-top: 0;
+}
+.presentations-schedule .presentation a {
+    text-decoration: none;
+    display: block;
+}

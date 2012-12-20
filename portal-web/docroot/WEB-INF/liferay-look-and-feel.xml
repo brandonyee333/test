@@ -47,4 +47,7 @@
 		</settings>
 		<wap-theme>true</wap-theme>
 	</theme>
+    <theme id="app-cache-sample-theme" name="App cache sample theme">
+        <root-path>/wap/themes/app_cache_sample_theme</root-path>
+    </theme>
 </look-and-feel>
