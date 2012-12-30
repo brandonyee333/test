@@ -16,7 +16,7 @@ package com.liferay.portal.kernel.test;
 
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
-import com.liferay.portal.util.PropsImpl;
+import com.liferay.portal.kernel.util.PropsImpl;
 
 /**
  * @author Brian Wing Shun Chan
