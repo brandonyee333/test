@@ -417,7 +417,11 @@
 			<param-value>xml-rpc.servlet.</param-value>
 		</init-param>
 	</filter>
-	<filter-mapping>
+    <filter>
+        <filter-name>Web Content Application Cache Manifest</filter-name>
+        <filter-class>eu.ibacz.cachemanifest.servlet.ManifestServletFilter</filter-class>
+    </filter>
+    <filter-mapping>
 		<filter-name>Ignore Filter - FTL</filter-name>
 		<url-pattern>*.ftl</url-pattern>
 	</filter-mapping>
@@ -1076,4 +1080,10 @@
 		<dispatcher>INCLUDE</dispatcher>
 		<dispatcher>REQUEST</dispatcher>
 	</filter-mapping>
+    <filter-mapping>
+        <filter-name>Web Content Application Cache Manifest</filter-name>
+        <url-pattern>*.manifest</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+    </filter-mapping>
 </web-app>

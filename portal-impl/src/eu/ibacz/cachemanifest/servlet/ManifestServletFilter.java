@@ -48,7 +48,7 @@ public class ManifestServletFilter implements Filter {
         HttpServletRequest servletRequest = (HttpServletRequest) request;
         HttpServletResponse servletResponse = (HttpServletResponse) response;
 
-        String manifestName = getManifestName(servletRequest.getServletPath());
+        String manifestName = getManifestName(servletRequest.getRequestURI());
         Manifest manifest = ManifestHolder.getManifest(manifestName);
 
         if (manifest != null) {
@@ -78,6 +78,6 @@ public class ManifestServletFilter implements Filter {
 
 
     private String getManifestName(String servletPath) {
-        return servletPath.substring(1, servletPath.indexOf('.'));
+        return servletPath.substring(servletPath.lastIndexOf("/") + 1, servletPath.lastIndexOf('.'));
     }
 }
