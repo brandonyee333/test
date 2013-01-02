@@ -48,6 +48,9 @@
 		<wap-theme>true</wap-theme>
 	</theme>
     <theme id="app-cache-sample-theme" name="App cache sample theme">
-        <root-path>/wap/themes/app_cache_sample_theme</root-path>
+        <root-path>/html/themes/app_cache_sample_theme</root-path>
+        <templates-path>${root-path}/templates</templates-path>
+        <images-path>${root-path}/images</images-path>
+        <template-extension>vm</template-extension>
     </theme>
 </look-and-feel>
