@@ -6,11 +6,9 @@
  * divested of its trade secrets.
  *
  * ===========================================================================*/
-package eu.ibacz.cachemanifest.manifest;
+package com.liferay.portal.cachemanifest.manifest;
 
 import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 
 /**
@@ -20,23 +18,17 @@ import java.util.Date;
  */
 public class Manifest {
 
-    private static final String OUTPUT_CHARSET = "UTF-8";
-    private String name;
-    private String manifest;
-    private Date dateModified;
-    private String md5Hex;
-
     public Manifest(String name, String cachePart, String networkPart, String fallbackPart) {
-        this.name = name;
-        this.dateModified = new Date();
-        this.manifest = generateManifest(cachePart, networkPart, fallbackPart);
+        this._name = name;
+        this._dateModified = new Date();
+        this._manifest = generateManifest(cachePart, networkPart, fallbackPart);
     }
 
     private String generateManifest(String cachePart, String networkPart, String fallbackPart) {
         StringBuilder sb = new StringBuilder(cachePart.length() + networkPart.length() + fallbackPart.length() + 512);
         sb.append("CACHE MANIFEST\n");
         sb.append("# modified: ");
-        sb.append(dateModified.toString());
+        sb.append(_dateModified.toString());
         sb.append("\n");
         sb.append(cachePart);
         sb.append("\nNETWORK:\n");
@@ -53,7 +45,7 @@ public class Manifest {
      * @return the name of the manifest
      */
     public String getName() {
-        return name;
+        return _name;
     }
 
     /**
@@ -62,7 +54,7 @@ public class Manifest {
      * @return the timestamp of generation
      */
     public long getDateModifiedInMillis() {
-        return dateModified.getTime();
+        return _dateModified.getTime();
     }
 
     /**
@@ -71,7 +63,7 @@ public class Manifest {
      * @return the content of the manifest
      */
     public String getManifest() {
-        return manifest;
+        return _manifest;
     }
 
     /**
@@ -93,13 +85,22 @@ public class Manifest {
      * @return the MD5 hash of the content
      */
     public String getMd5Hex() {
-        if (md5Hex == null) {
-            md5Hex = computeMd5();
+        if (_md5Hex == null) {
+            _md5Hex = computeMd5();
         }
-        return md5Hex;
+        return _md5Hex;
     }
 
     private String computeMd5() {
         return Util.md5String(getManifestBytes());
     }
+
+
+
+    private static final String OUTPUT_CHARSET = "UTF-8";
+
+    private String _name;
+    private String _manifest;
+    private Date _dateModified;
+    private String _md5Hex;
 }

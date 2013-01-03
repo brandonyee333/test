@@ -6,7 +6,7 @@
  * divested of its trade secrets.
  *
  * ===========================================================================*/
-package eu.ibacz.cachemanifest.manifest;
+package com.liferay.portal.cachemanifest.manifest;
 
 /**
  * Object holding form data about Application Cache Manifest.
@@ -15,25 +15,25 @@ package eu.ibacz.cachemanifest.manifest;
  */
 public class ManifestSectionDataDto {
 
-    private String cache;
-    private String network;
-    private String fallback;
-
     public ManifestSectionDataDto(String cache, String network, String fallback) {
-        this.cache = cache;
-        this.network = network;
-        this.fallback = fallback;
+        this._cache = cache;
+        this._network = network;
+        this._fallback = fallback;
     }
 
     public String getCache() {
-        return cache;
+        return _cache;
     }
 
     public String getFallback() {
-        return fallback;
+        return _fallback;
     }
 
     public String getNetwork() {
-        return network;
+        return _network;
     }
+
+    private String _cache;
+    private String _network;
+    private String _fallback;
 }

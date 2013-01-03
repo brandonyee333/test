@@ -6,14 +6,14 @@
  * divested of its trade secrets.
  *
  * ===========================================================================*/
-package eu.ibacz.cachemanifest.theme;
+package com.liferay.portal.cachemanifest.theme;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.model.Layout;
-import eu.ibacz.cachemanifest.manifest.ManifestConstants;
-import eu.ibacz.cachemanifest.manifest.Util;
+import com.liferay.portal.cachemanifest.manifest.ManifestConstants;
+import com.liferay.portal.cachemanifest.manifest.Util;
 
 /**
  * Utilities for retrieving data usable in themes.
@@ -21,10 +21,6 @@ import eu.ibacz.cachemanifest.manifest.Util;
  * @author Tomáš Král (tomas.kral@ibacz.eu)
  */
 public class CacheManifestUtil {
-    private static final Log _log = LogFactoryUtil.getLog(CacheManifestUtil.class);
-
-    private static final String APPLICATION_CACHE_MANIFEST_PREFIX = "/";
-    private static final String APPLICATION_CACHE_MANIFEST_POSTFIX = ".manifest";
 
     /**
      * Determines whether offline access is allowed for the given layout.
@@ -72,4 +68,9 @@ public class CacheManifestUtil {
             return null;
         }
     }
+
+    private static final String APPLICATION_CACHE_MANIFEST_PREFIX = "/";
+    private static final String APPLICATION_CACHE_MANIFEST_POSTFIX = ".manifest";
+
+    private static final Log _log = LogFactoryUtil.getLog(CacheManifestUtil.class);
 }

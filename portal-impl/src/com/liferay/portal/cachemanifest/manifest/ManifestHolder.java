@@ -6,7 +6,7 @@
  * divested of its trade secrets.
  *
  * ===========================================================================*/
-package eu.ibacz.cachemanifest.manifest;
+package com.liferay.portal.cachemanifest.manifest;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,15 +19,13 @@ import java.util.Map;
  */
 public class ManifestHolder {
 
-    private static Map<String, Manifest> manifests = new HashMap<String, Manifest>();
-
     /**
      * Adds manifest to the holder.
      *
      * @param manifest
      */
     public static synchronized void addManifest(Manifest manifest) {
-        manifests.put(manifest.getName(), manifest);
+        _manifests.put(manifest.getName(), manifest);
     }
 
     /**
@@ -36,9 +34,9 @@ public class ManifestHolder {
      * @param ml
      */
     public static synchronized void setManifests(List<Manifest> ml) {
-        manifests.clear();
+        _manifests.clear();
         for (Manifest manifest : ml) {
-            manifests.put(manifest.getName(), manifest);
+            _manifests.put(manifest.getName(), manifest);
         }
     }
 
@@ -49,7 +47,7 @@ public class ManifestHolder {
      * @return the manifest content
      */
     public static synchronized Manifest getManifest(String manifestName) {
-        return manifests.get(manifestName);
+        return _manifests.get(manifestName);
     }
 
     /**
@@ -58,6 +56,8 @@ public class ManifestHolder {
      * @param manifestName
      */
     public static synchronized void removeManifest(String manifestName) {
-        manifests.remove(manifestName);
+        _manifests.remove(manifestName);
     }
+
+    private static Map<String, Manifest> _manifests = new HashMap<String, Manifest>();
 }

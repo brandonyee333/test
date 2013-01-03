@@ -6,7 +6,7 @@
  * divested of its trade secrets.
  *
  * ===========================================================================*/
-package eu.ibacz.cachemanifest.listener;
+package com.liferay.portal.cachemanifest.listener;
 
 import com.liferay.portal.ModelListenerException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -15,7 +15,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.BaseModelListener;
 import com.liferay.portal.model.Layout;
-import eu.ibacz.cachemanifest.manifest.Util;
+import com.liferay.portal.cachemanifest.manifest.Util;
 
 /**
  * Listener that regenerate MANIFEST after change in layout structure.
@@ -24,7 +24,6 @@ import eu.ibacz.cachemanifest.manifest.Util;
  * @author Tomáš Král (tomas.kral@ibacz.eu)
  */
 public class LayoutListener extends BaseModelListener<Layout> {
-    private static Log _log = LogFactoryUtil.getLog(LayoutListener.class);
 
     @Override
     public void onAfterCreate(Layout model) throws ModelListenerException {
@@ -64,4 +63,6 @@ public class LayoutListener extends BaseModelListener<Layout> {
             throw new ModelListenerException(e);
         }
     }
+
+    private static Log _log = LogFactoryUtil.getLog(LayoutListener.class);
 }

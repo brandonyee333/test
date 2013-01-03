@@ -6,7 +6,7 @@
  * divested of its trade secrets.
  *
  * ===========================================================================*/
-package eu.ibacz.cachemanifest.theme;
+package com.liferay.portal.cachemanifest.theme;
 
 import com.liferay.portal.kernel.events.Action;
 import com.liferay.portal.kernel.events.ActionException;
@@ -31,11 +31,6 @@ import java.util.Map;
  * @author Tomáš Král (tomas.kral@ibacz.eu)
  */
 public class CacheManifestVelocityVariables extends Action {
-    private static final Log _log = LogFactoryUtil.getLog(CacheManifestVelocityVariables.class);
-
-    private static final String VELOCITY_PARAM_CACHE_MANIFEST_ENABLED = "cacheManifestEnabled";
-    private static final String VELOCITY_PARAM_CACHE_MANIFEST_URL= "cacheManifestUrl";
-    private static final String VELOCITY_PARAM_CACHE_MANIFEST= "cacheManifest";
 
     @Override
     public void run(HttpServletRequest request, HttpServletResponse response) throws ActionException {
@@ -64,4 +59,10 @@ public class CacheManifestVelocityVariables extends Action {
             request.setAttribute(WebKeys.VM_VARIABLES, vmVariables);
         }
     }
+
+    private static final String VELOCITY_PARAM_CACHE_MANIFEST_ENABLED = "cacheManifestEnabled";
+    private static final String VELOCITY_PARAM_CACHE_MANIFEST_URL= "cacheManifestUrl";
+    private static final String VELOCITY_PARAM_CACHE_MANIFEST= "cacheManifest";
+
+    private static final Log _log = LogFactoryUtil.getLog(CacheManifestVelocityVariables.class);
 }

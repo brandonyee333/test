@@ -6,7 +6,7 @@
  * divested of its trade secrets.
  *
  * ===========================================================================*/
-package eu.ibacz.cachemanifest.manifest;
+package com.liferay.portal.cachemanifest.manifest;
 
 /**
  *

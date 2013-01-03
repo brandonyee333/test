@@ -6,12 +6,12 @@
  * divested of its trade secrets.
  *
  * ===========================================================================*/
-package eu.ibacz.cachemanifest.strutsaction;
+package com.liferay.portal.cachemanifest.strutsaction;
 
 import com.liferay.portal.kernel.struts.BaseStrutsAction;
 import com.liferay.portal.model.LayoutSet;
 import com.liferay.portal.service.LayoutSetLocalServiceUtil;
-import eu.ibacz.cachemanifest.manifest.Util;
+import com.liferay.portal.cachemanifest.manifest.Util;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
  * @author Tomáš Král (tomas.kral@ibacz.eu)
  */
 public class RegenerateManifest extends BaseStrutsAction {
-    private static final String LAYOUT_SET_PARAMETER_SET = "layoutSetId";
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -40,4 +39,6 @@ public class RegenerateManifest extends BaseStrutsAction {
             throw new NullPointerException(LAYOUT_SET_PARAMETER_SET);
         }
     }
+
+    private static final String LAYOUT_SET_PARAMETER_SET = "layoutSetId";
 }

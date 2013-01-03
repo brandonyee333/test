@@ -6,10 +6,10 @@
  * divested of its trade secrets.
  *
  * ===========================================================================*/
-package eu.ibacz.cachemanifest.strutsaction;
+package com.liferay.portal.cachemanifest.strutsaction;
 
 import com.liferay.portal.kernel.struts.BaseStrutsAction;
-import eu.ibacz.cachemanifest.manifest.Util;
+import com.liferay.portal.cachemanifest.manifest.Util;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

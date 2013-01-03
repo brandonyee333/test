@@ -6,15 +6,15 @@
  * divested of its trade secrets.
  * 
  */
-package eu.ibacz.cachemanifest.servlet;
+package com.liferay.portal.cachemanifest.servlet;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import eu.ibacz.cachemanifest.manifest.Manifest;
-import eu.ibacz.cachemanifest.manifest.ManifestHolder;
-import eu.ibacz.cachemanifest.manifest.ManifestInitializer;
+import com.liferay.portal.cachemanifest.manifest.Manifest;
+import com.liferay.portal.cachemanifest.manifest.ManifestHolder;
+import com.liferay.portal.cachemanifest.manifest.ManifestInitializer;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -28,8 +28,6 @@ import java.io.OutputStream;
  * @author Tomáš Král <tomas.kral@ibacz.eu>
  */
 public class ManifestServletFilter implements Filter {
-    private static final Log _log = LogFactoryUtil.getLog(ManifestServletFilter.class);
-
 
     public void init(FilterConfig filterConfig) throws ServletException {
         _log.debug("Initializing Application Cache Manifest Hook...");
@@ -80,4 +78,7 @@ public class ManifestServletFilter implements Filter {
     private String getManifestName(String servletPath) {
         return servletPath.substring(servletPath.lastIndexOf("/") + 1, servletPath.lastIndexOf('.'));
     }
+
+
+    private static final Log _log = LogFactoryUtil.getLog(ManifestServletFilter.class);
 }

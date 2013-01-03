@@ -419,7 +419,7 @@
 	</filter>
     <filter>
         <filter-name>Web Content Application Cache Manifest</filter-name>
-        <filter-class>eu.ibacz.cachemanifest.servlet.ManifestServletFilter</filter-class>
+        <filter-class>com.liferay.portal.cachemanifest.servlet.ManifestServletFilter</filter-class>
     </filter>
     <filter-mapping>
 		<filter-name>Ignore Filter - FTL</filter-name>

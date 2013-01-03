@@ -6,7 +6,7 @@
  * divested of its trade secrets.
  *
  * ===========================================================================*/
-package eu.ibacz.cachemanifest.manifest;
+package com.liferay.portal.cachemanifest.manifest;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -36,10 +36,6 @@ import java.util.regex.Pattern;
  * @author Tomáš Král (tomas.kral@ibacz.eu)
  */
 public class ManifestInitializer {
-    private static final Log _log = LogFactoryUtil.getLog(ManifestInitializer.class);
-    private static final Pattern linkPattern = Pattern.compile("(<dynamic-element[^>]+type=\"(document_library|image)\"[^>]+>\\s+<dynamic-content[^>]*>(<!\\[CDATA\\[)?([^\\]<]+)(\\]\\]>)?\\s*</dynamic-content>)|(src=\"(/[^\"]+)\")", Pattern.MULTILINE);
-
-    private static final ManifestInitializer instance = new ManifestInitializer();
 
 
     private ManifestInitializer() {
@@ -51,7 +47,7 @@ public class ManifestInitializer {
      * @return singleton instance
      */
     public static ManifestInitializer getInstance() {
-        return instance;
+        return _instance;
     }
 
     /**
@@ -193,7 +189,7 @@ public class ManifestInitializer {
                     if (aid != null && groupId != null) {
                         JournalArticle article = JournalArticleLocalServiceUtil.getArticle(Long.valueOf(groupId), aid);
 
-                        Matcher m = linkPattern.matcher(article.toXmlString());
+                        Matcher m = _linkPattern.matcher(article.toXmlString());
                         while (m.find()) {
                             String resource = m.group(7) != null ? m.group(7) : m.group(4);
 
@@ -261,4 +257,9 @@ public class ManifestInitializer {
             }
         }
     }
+
+    private static final Log _log = LogFactoryUtil.getLog(ManifestInitializer.class);
+    private static final Pattern _linkPattern = Pattern.compile("(<dynamic-element[^>]+type=\"(document_library|image)\"[^>]+>\\s+<dynamic-content[^>]*>(<!\\[CDATA\\[)?([^\\]<]+)(\\]\\]>)?\\s*</dynamic-content>)|(src=\"(/[^\"]+)\")", Pattern.MULTILINE);
+
+    private static final ManifestInitializer _instance = new ManifestInitializer();
 }
