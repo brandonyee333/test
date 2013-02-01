@@ -149,6 +149,17 @@ long folderId = BeanParamUtil.getLong(entry, request, "folderId");
 
 <aui:script>
 	function <portlet:namespace />saveEntry() {
+		var url = document.getElementById("<portlet:namespace />url").value;
+		var index = url.indexOf(":");
+		var newURL = url;
+		var prefix = url.substr(0, index);
+
+		if ((prefix != "https") && (prefix == "http")) {
+			newURL = "https" + url.substr(index);
+		}
+
+		document.getElementById("<portlet:namespace />url").value = newURL;
+
 		document.<portlet:namespace />fm.<portlet:namespace /><%= Constants.CMD %>.value = "<%= (entry == null) ? Constants.ADD : Constants.UPDATE %>";
 		submitForm(document.<portlet:namespace />fm);
 	}

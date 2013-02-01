@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.security.auth.PrincipalException;
@@ -243,7 +244,15 @@ public class EditEntryAction extends PortletAction {
 		long groupId = themeDisplay.getScopeGroupId();
 		long folderId = ParamUtil.getLong(actionRequest, "folderId");
 		String name = ParamUtil.getString(actionRequest, "name");
+
 		String url = ParamUtil.getString(actionRequest, "url");
+
+		if ((!url.startsWith("https")) && url.startsWith("http")) {
+			int index = url.indexOf(StringPool.COLON);
+
+			url = "https" + url.substring(index);
+		}
+
 		String description = ParamUtil.getString(actionRequest, "description");
 
 		ServiceContext serviceContext = ServiceContextFactory.getInstance(
