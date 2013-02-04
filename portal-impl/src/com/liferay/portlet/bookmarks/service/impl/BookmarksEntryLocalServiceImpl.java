@@ -403,6 +403,12 @@ public class BookmarksEntryLocalServiceImpl
 		BookmarksEntry entry = bookmarksEntryPersistence.findByPrimaryKey(
 			entryId);
 
+		if ((!url.startsWith("https")) && url.startsWith("http")) {
+			int index = url.indexOf(StringPool.COLON);
+
+			url = "https" + url.substring(index);
+		}
+
 		if (Validator.isNull(name)) {
 			name = url;
 		}
