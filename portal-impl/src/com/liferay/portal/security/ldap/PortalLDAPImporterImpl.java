@@ -299,6 +299,8 @@ public class PortalLDAPImporterImpl implements PortalLDAPImporter {
 
 				Binding binding = enu.nextElement();
 
+				enu.close();
+
 				Attributes attributes = PortalLDAPUtil.getUserAttributes(
 					ldapServerId, companyId, ldapContext,
 					PortalLDAPUtil.getNameInNamespace(
@@ -521,22 +523,6 @@ public class PortalLDAPImporterImpl implements PortalLDAPImporter {
 		}
 
 		return user;
-	}
-
-	protected void addUserGroupsNotAddedByLDAPImport(
-			long userId, List<Long> userGroupIds)
-		throws Exception {
-
-		List<UserGroup> userGroups =
-			UserGroupLocalServiceUtil.getUserUserGroups(userId);
-
-		for (UserGroup userGroup : userGroups) {
-			if (!userGroupIds.contains(userGroup.getUserGroupId()) &&
-				!userGroup.isAddedByLDAPImport()) {
-
-				userGroupIds.add(userGroup.getUserGroupId());
-			}
-		}
 	}
 
 	protected String escapeValue(String value) {
@@ -852,20 +838,26 @@ public class PortalLDAPImporterImpl implements PortalLDAPImporter {
 			}
 		}
 
-		addUserGroupsNotAddedByLDAPImport(user.getUserId(), newUserGroupIds);
-
-		for (long newUserGroupId : newUserGroupIds) {
-			UserLocalServiceUtil.addUserGroupUsers(
-				newUserGroupId, new long[] {user.getUserId()});
-		}
-
+		List<Long> existingUserGroupIds = new ArrayList<Long>();
 		List<UserGroup> userUserGroups =
 			UserGroupLocalServiceUtil.getUserUserGroups(user.getUserId());
 
 		for (UserGroup userGroup : userUserGroups) {
-			if (!newUserGroupIds.contains(userGroup.getUserGroupId())) {
+
+			if (!newUserGroupIds.contains(userGroup.getUserGroupId())
+					&& userGroup.isAddedByLDAPImport()) {
 				UserLocalServiceUtil.deleteUserGroupUser(
 					userGroup.getUserGroupId(), user.getUserId());
+				continue;
+			}
+
+			existingUserGroupIds.add(userGroup.getUserGroupId());
+		}
+
+		for (long newUserGroupId : newUserGroupIds) {
+			if (!existingUserGroupIds.contains(newUserGroupId)) {
+				UserLocalServiceUtil.addUserGroupUsers(
+						newUserGroupId, new long[] {user.getUserId()});
 			}
 		}
 	}
@@ -931,9 +923,20 @@ public class PortalLDAPImporterImpl implements PortalLDAPImporter {
 			userGroup = UserGroupLocalServiceUtil.getUserGroup(
 				companyId, ldapGroup.getGroupName());
 
-			UserGroupLocalServiceUtil.updateUserGroup(
-				companyId, userGroup.getUserGroupId(), ldapGroup.getGroupName(),
-				ldapGroup.getDescription());
+			boolean newGroupName = !userGroup.getName()
+					.equalsIgnoreCase(ldapGroup.getGroupName());
+
+			boolean newGroupDescription = (userGroup.getDescription() != null
+					&& !userGroup.getDescription()
+						.equalsIgnoreCase(ldapGroup.getDescription()))
+						|| (userGroup.getDescription() == null
+							&& ldapGroup.getDescription() != null);
+
+			if (newGroupName || newGroupDescription) {
+				UserGroupLocalServiceUtil.updateUserGroup(
+					companyId, userGroup.getUserGroupId(), ldapGroup.getGroupName(),
+					ldapGroup.getDescription());
+			}
 		}
 		catch (NoSuchUserGroupException nsuge) {
 			if (_log.isDebugEnabled()) {
