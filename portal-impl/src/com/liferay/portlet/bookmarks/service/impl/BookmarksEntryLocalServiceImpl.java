@@ -516,6 +516,14 @@ public class BookmarksEntryLocalServiceImpl
 		return entry;
 	}
 
+	protected String editURL(String url) {
+		if (StringUtil.startsWith(url, "http:")) {
+			url = StringUtil.replaceFirst(url, "http", "https");
+		}
+
+		return url;
+	}
+
 	protected long getFolder(BookmarksEntry entry, long folderId)
 		throws SystemException {
 
@@ -650,14 +658,6 @@ public class BookmarksEntryLocalServiceImpl
 		if (!Validator.isUrl(url)) {
 			throw new EntryURLException();
 		}
-	}
-
-	protected String editURL(String url) {
-		if (StringUtil.startsWith(url, "http:")) {
-			url = StringUtil.replaceFirst(url, "http", "https");
-		}
-
-		return url;
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(
