@@ -417,7 +417,9 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 
 				long classPK = 0;
 
-				if (Validator.isNotNull(structureId)) {
+				if (Validator.isNotNull(structureId) && 
+						!Validator.equals(structureId, "0")) {
+
 					classPK = _ddmStructureIds.get(groupId + "#" + structureId);
 				}
 
