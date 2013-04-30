@@ -106,6 +106,10 @@ public class FileEntryStagedModelDataHandler
 			PortletDataContext portletDataContext, FileEntry fileEntry)
 		throws Exception {
 
+		if (!fileEntry.isDefaultRepository()) {
+			return;
+		}
+
 		Element fileEntryGroupElement =
 			portletDataContext.getExportDataGroupElement(FileEntry.class);
 
@@ -115,17 +119,6 @@ public class FileEntryStagedModelDataHandler
 		String fileEntryPath = ExportImportPathUtil.getModelPath(
 			fileEntry.getGroupId(), FileEntry.class.getName(),
 			fileEntry.getFileEntryId());
-
-		if (!fileEntry.isDefaultRepository()) {
-			Repository repository = RepositoryUtil.findByPrimaryKey(
-				fileEntry.getRepositoryId());
-
-			StagedModelDataHandlerUtil.exportStagedModel(
-				portletDataContext, repository);
-
-			portletDataContext.addReferenceElement(
-				fileEntryElement, repository);
-		}
 
 		FileVersion fileVersion = fileEntry.getFileVersion();
 
@@ -249,9 +242,16 @@ public class FileEntryStagedModelDataHandler
 			}
 		}
 
+		Map<Long, Long> folderIds =
+				(Map<Long, Long>)portletDataContext.getNewPrimaryKeysMap(
+					Folder.class);
+
+		long folderId = MapUtil.getLong(
+				folderIds, fileEntry.getFolderId(), fileEntry.getFolderId());
+
 		if ((fileEntry.getFolderId() !=
 				DLFolderConstants.DEFAULT_PARENT_FOLDER_ID) &&
-			(fileEntry.getFolderId() == fileEntry.getFolderId())) {
+			(fileEntry.getFolderId() == folderId)) {
 
 			String folderPath = ExportImportPathUtil.getModelPath(
 				portletDataContext, Folder.class.getName(),
@@ -263,13 +263,6 @@ public class FileEntryStagedModelDataHandler
 			StagedModelDataHandlerUtil.importStagedModel(
 				portletDataContext, folder);
 		}
-
-		Map<Long, Long> folderIds =
-			(Map<Long, Long>)portletDataContext.getNewPrimaryKeysMap(
-				Folder.class);
-
-		long folderId = MapUtil.getLong(
-			folderIds, fileEntry.getFolderId(), fileEntry.getFolderId());
 
 		long[] assetCategoryIds = null;
 		String[] assetTagNames = null;
