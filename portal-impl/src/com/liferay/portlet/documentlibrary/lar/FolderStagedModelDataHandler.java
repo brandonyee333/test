@@ -69,7 +69,7 @@ public class FolderStagedModelDataHandler
 		Element folderGroupElement =
 			portletDataContext.getExportDataGroupElement(Folder.class);
 
-		Element folderElement = folderGroupElement.addElement("staged-model");
+		Element folderElement = null;
 
 		String folderPath = ExportImportPathUtil.getModelPath(
 			folder.getGroupId(), Folder.class.getName(), folder.getFolderId());
@@ -81,6 +81,8 @@ public class FolderStagedModelDataHandler
 			StagedModelDataHandlerUtil.exportStagedModel(
 				portletDataContext, repository);
 
+			folderElement = folderGroupElement.addElement("staged-model");
+
 			portletDataContext.addReferenceElement(folderElement, repository);
 		}
 		else if (!folder.isDefaultRepository()) {
@@ -89,6 +91,9 @@ public class FolderStagedModelDataHandler
 			// be exported as part of repository export
 
 			return;
+		} 
+		else {
+			folderElement = folderGroupElement.addElement("staged-model");
 		}
 
 		if (folder.getParentFolderId() !=
