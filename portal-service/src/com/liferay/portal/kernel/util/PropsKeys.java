@@ -955,9 +955,13 @@ public interface PropsKeys {
 
 	public static final String INDEX_WITH_THREAD = "index.with.thread";
 
+	public static final String INTRABAND_IMPL = "intraband.impl";
+
 	public static final String INTRABAND_MAILBOX_REAPER_THREAD_ENABLED = "intraband.mailbox.reaper.thread.enabled";
 
 	public static final String INTRABAND_MAILBOX_STORAGE_LIFE = "intraband.mailbox.storage.life";
+
+	public static final String INTRABAND_TIMEOUT_DEFAULT = "intraband.timeout.default";
 
 	public static final String INTRABAND_WELDER_IMPL = "intraband.welder.impl";
 
@@ -1598,10 +1602,6 @@ public interface PropsKeys {
 	public static final String MODULE_FRAMEWORK_BASE_DIR = "module.framework.base.dir";
 
 	public static final String MODULE_FRAMEWORK_BEGINNING_START_LEVEL = "module.framework.beginning.start.level";
-
-	public static final String MODULE_FRAMEWORK_CORE_DIR = "module.framework.core.dir";
-
-	public static final String MODULE_FRAMEWORK_ENABLED = "module.framework.enabled";
 
 	public static final String MODULE_FRAMEWORK_INITIAL_BUNDLES = "module.framework.initial.bundles";
 
@@ -2502,6 +2502,8 @@ public interface PropsKeys {
 	public static final String WEBDAV_NONCE_EXPIRATION = "webdav.nonce.expiration";
 
 	public static final String WEBDAV_SERVLET_HTTPS_REQUIRED = "webdav.servlet.https.required";
+
+	public static final String WEBLOGIC_REQUEST_WRAP_NON_SERIALIZABLE = "weblogic.request.wrap.non.serializable";
 
 	public static final String WIDGET_SERVLET_MAPPING = "widget.servlet.mapping";
 

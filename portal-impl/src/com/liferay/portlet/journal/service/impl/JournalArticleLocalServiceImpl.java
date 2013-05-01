@@ -976,6 +976,11 @@ public class JournalArticleLocalServiceImpl
 		journalArticleImageLocalService.deleteImages(
 			article.getGroupId(), article.getArticleId(), article.getVersion());
 
+		// Expando
+
+		expandoValueLocalService.deleteValues(
+			JournalArticle.class.getName(), article.getId());
+
 		// Workflow
 
 		if (!article.isDraft()) {
@@ -1018,11 +1023,6 @@ public class JournalArticleLocalServiceImpl
 			// Small image
 
 			imageLocalService.deleteImage(article.getSmallImageId());
-
-			// Expando
-
-			expandoValueLocalService.deleteValues(
-				JournalArticle.class.getName(), article.getId());
 
 			// Trash
 
@@ -1600,6 +1600,17 @@ public class JournalArticleLocalServiceImpl
 
 		Map<String, String> tokens = JournalUtil.getTokens(
 			article.getGroupId(), themeDisplay, xmlRequest);
+
+		if ((themeDisplay == null) && xmlRequest.equals("<request />")) {
+			tokens.put("company_id", String.valueOf(article.getCompanyId()));
+
+			Group companyGroup = groupLocalService.getCompanyGroup(
+				article.getCompanyId());
+
+			tokens.put(
+				"company_group_id", String.valueOf(companyGroup.getGroupId()));
+			tokens.put("group_id", String.valueOf(article.getGroupId()));
+		}
 
 		tokens.put(
 			"article_resource_pk",

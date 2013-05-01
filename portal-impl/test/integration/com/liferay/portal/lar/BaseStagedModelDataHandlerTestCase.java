@@ -77,16 +77,7 @@ public abstract class BaseStagedModelDataHandlerTestCase extends PowerMockito {
 
 		// Export
 
-		ZipWriter zipWriter = ZipWriterFactoryUtil.getZipWriter();
-
-		PortletDataContext portletDataContext = new PortletDataContextImpl(
-			stagingGroup.getCompanyId(), stagingGroup.getGroupId(),
-			getParameterMap(), new HashSet<String>(), getStartDate(),
-			getEndDate(), zipWriter);
-
-		Element rootElement = SAXReaderUtil.createElement("root");
-
-		portletDataContext.setExportDataRootElement(rootElement);
+		initExport();
 
 		Map<String, List<StagedModel>> dependentStagedModelsMap =
 			addDependentStagedModelsMap(stagingGroup);
@@ -102,27 +93,11 @@ public abstract class BaseStagedModelDataHandlerTestCase extends PowerMockito {
 
 		// Import
 
-		UserIdStrategy userIdStrategy = new CurrentUserIdStrategy(
-			TestPropsValues.getUser());
-
-		ZipReader zipReader = ZipReaderFactoryUtil.getZipReader(
-			zipWriter.getFile());
-
-		portletDataContext = new PortletDataContextImpl(
-			liveGroup.getCompanyId(), liveGroup.getGroupId(), getParameterMap(),
-			new HashSet<String>(), userIdStrategy, zipReader);
-
-		portletDataContext.setSourceGroupId(stagingGroup.getGroupId());
-
-		portletDataContext.setImportDataRootElement(rootElement);
+		initImport();
 
 		// Reread the staged model for import from ZIP for true testing
 
-		String stagedModelPath = ExportImportPathUtil.getModelPath(stagedModel);
-
-		StagedModel exportedStagedModel =
-			(StagedModel)portletDataContext.getZipEntryAsObject(
-				stagedModelPath);
+		StagedModel exportedStagedModel = readExportedStagedModel(stagedModel);
 
 		Assert.assertNotNull(exportedStagedModel);
 
@@ -192,8 +167,48 @@ public abstract class BaseStagedModelDataHandlerTestCase extends PowerMockito {
 
 	protected abstract Class<? extends StagedModel> getStagedModelClass();
 
+	protected String getStagedModelPath(long groupId, StagedModel stagedModel) {
+		return ExportImportPathUtil.getModelPath(stagedModel);
+	}
+
 	protected Date getStartDate() {
 		return new Date(System.currentTimeMillis() - Time.HOUR);
+	}
+
+	protected void initExport() throws Exception {
+		zipWriter = ZipWriterFactoryUtil.getZipWriter();
+
+		portletDataContext = new PortletDataContextImpl(
+			stagingGroup.getCompanyId(), stagingGroup.getGroupId(),
+			getParameterMap(), new HashSet<String>(), getStartDate(),
+			getEndDate(), zipWriter);
+
+		rootElement = SAXReaderUtil.createElement("root");
+
+		portletDataContext.setExportDataRootElement(rootElement);
+	}
+
+	protected void initImport() throws Exception {
+		userIdStrategy = new CurrentUserIdStrategy(TestPropsValues.getUser());
+		zipReader = ZipReaderFactoryUtil.getZipReader(zipWriter.getFile());
+
+		portletDataContext = new PortletDataContextImpl(
+			liveGroup.getCompanyId(), liveGroup.getGroupId(), getParameterMap(),
+			new HashSet<String>(), userIdStrategy, zipReader);
+
+		portletDataContext.setImportDataRootElement(rootElement);
+		portletDataContext.setSourceGroupId(stagingGroup.getGroupId());
+	}
+
+	protected StagedModel readExportedStagedModel(StagedModel stagedModel) {
+		String stagedModelPath = getStagedModelPath(
+			stagingGroup.getGroupId(), stagedModel);
+
+		StagedModel exportedStagedModel =
+			(StagedModel)portletDataContext.getZipEntryAsObject(
+				stagedModelPath);
+
+		return exportedStagedModel;
 	}
 
 	protected void validateExport(
@@ -240,8 +255,8 @@ public abstract class BaseStagedModelDataHandlerTestCase extends PowerMockito {
 				while (iterator.hasNext()) {
 					StagedModel dependentStagedModel = iterator.next();
 
-					String dependentStagedModelPath =
-						ExportImportPathUtil.getModelPath(dependentStagedModel);
+					String dependentStagedModelPath = getStagedModelPath(
+						stagingGroup.getGroupId(), dependentStagedModel);
 
 					if (path.equals(dependentStagedModelPath)) {
 						iterator.remove();
@@ -276,6 +291,11 @@ public abstract class BaseStagedModelDataHandlerTestCase extends PowerMockito {
 	}
 
 	protected Group liveGroup;
+	protected PortletDataContext portletDataContext;
+	protected Element rootElement;
 	protected Group stagingGroup;
+	protected UserIdStrategy userIdStrategy;
+	protected ZipReader zipReader;
+	protected ZipWriter zipWriter;
 
 }

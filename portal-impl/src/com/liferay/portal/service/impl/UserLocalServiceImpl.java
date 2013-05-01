@@ -4817,6 +4817,13 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 		// Groups and organizations
 
+		// See LPS-33205. Cache the user's list of user group roles because
+		// adding or removing groups may add or remove user group roles
+		// depending on the site default user associations.
+
+		List<UserGroupRole> previousUserGroupRoles =
+			userGroupRolePersistence.findByUserId(userId);
+
 		updateGroups(userId, groupIds, serviceContext, false);
 		updateOrganizations(userId, organizationIds, false);
 
@@ -4830,7 +4837,9 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 		// User group roles
 
-		updateUserGroupRoles(user, groupIds, organizationIds, userGroupRoles);
+		updateUserGroupRoles(
+			user, groupIds, organizationIds, userGroupRoles,
+			previousUserGroupRoles);
 
 		// User groups
 
@@ -5170,8 +5179,15 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 		// Authenticate against the User_ table
 
-		if ((authResult == Authenticator.SUCCESS) &&
-			PropsValues.AUTH_PIPELINE_ENABLE_LIFERAY_CHECK) {
+		boolean skipLiferayCheck = false;
+
+		if (authResult == Authenticator.SKIP_LIFERAY_CHECK) {
+			authResult = Authenticator.SUCCESS;
+
+			skipLiferayCheck = true;
+		}
+		else if ((authResult == Authenticator.SUCCESS) &&
+				 PropsValues.AUTH_PIPELINE_ENABLE_LIFERAY_CHECK) {
 
 			boolean authenticated = PwdAuthenticator.authenticate(
 				login, password, user.getPassword());
@@ -5211,15 +5227,10 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 			// Update digest
 
-			boolean updateDigest = true;
+			if (skipLiferayCheck ||
+				!PropsValues.AUTH_PIPELINE_ENABLE_LIFERAY_CHECK ||
+				Validator.isNull(user.getDigest())) {
 
-			if (PropsValues.AUTH_PIPELINE_ENABLE_LIFERAY_CHECK) {
-				if (Validator.isNotNull(user.getDigest())) {
-					updateDigest = false;
-				}
-			}
-
-			if (updateDigest) {
 				String digest = user.getDigest(password);
 
 				user.setDigest(digest);
@@ -5614,15 +5625,13 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 	protected void updateUserGroupRoles(
 			User user, long[] groupIds, long[] organizationIds,
-			List<UserGroupRole> userGroupRoles)
+			List<UserGroupRole> userGroupRoles,
+			List<UserGroupRole> previousUserGroupRoles)
 		throws PortalException, SystemException {
 
 		if (userGroupRoles == null) {
 			return;
 		}
-
-		List<UserGroupRole> previousUserGroupRoles =
-			userGroupRolePersistence.findByUserId(user.getUserId());
 
 		for (UserGroupRole userGroupRole : previousUserGroupRoles) {
 			if (userGroupRoles.contains(userGroupRole)) {
@@ -5766,7 +5775,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		int userCount = searchCount(
 			companyId, null, WorkflowConstants.STATUS_APPROVED, null);
 
-		if (userCount > company.getMaxUsers()) {
+		if (userCount >= company.getMaxUsers()) {
 			throw new CompanyMaxUsersException();
 		}
 	}

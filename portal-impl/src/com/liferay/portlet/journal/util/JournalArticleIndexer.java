@@ -44,10 +44,12 @@ import com.liferay.portal.security.permission.ActionKeys;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PortletKeys;
+import com.liferay.portlet.dynamicdatamapping.StructureFieldException;
 import com.liferay.portlet.dynamicdatamapping.model.DDMStructure;
 import com.liferay.portlet.dynamicdatamapping.service.DDMStructureLocalServiceUtil;
 import com.liferay.portlet.dynamicdatamapping.storage.Fields;
 import com.liferay.portlet.dynamicdatamapping.util.DDMIndexerUtil;
+import com.liferay.portlet.dynamicdatamapping.util.DDMUtil;
 import com.liferay.portlet.journal.asset.JournalArticleAssetRendererFactory;
 import com.liferay.portlet.journal.model.JournalArticle;
 import com.liferay.portlet.journal.model.JournalArticleConstants;
@@ -58,6 +60,8 @@ import com.liferay.portlet.journal.service.JournalFolderServiceUtil;
 import com.liferay.portlet.journal.service.permission.JournalArticlePermission;
 import com.liferay.portlet.journal.service.persistence.JournalArticleActionableDynamicQuery;
 import com.liferay.portlet.trash.util.TrashUtil;
+
+import java.io.Serializable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -125,15 +129,36 @@ public class JournalArticleIndexer extends BaseIndexer {
 
 		addSearchClassTypeIds(contextQuery, searchContext);
 
-		String structureField = (String)searchContext.getAttribute(
+		String ddmStructureFieldName = (String)searchContext.getAttribute(
 			"ddmStructureFieldName");
-		String structureValue = (String)searchContext.getAttribute(
+		Serializable ddmStructureFieldValue = searchContext.getAttribute(
 			"ddmStructureFieldValue");
 
-		if (Validator.isNotNull(structureField) &&
-			Validator.isNotNull(structureValue)) {
+		if (Validator.isNotNull(ddmStructureFieldName) &&
+			Validator.isNotNull(ddmStructureFieldValue)) {
 
-			contextQuery.addRequiredTerm(structureField, structureValue);
+			String[] ddmStructureFieldNameParts = StringUtil.split(
+				ddmStructureFieldName, StringPool.SLASH);
+
+			DDMStructure structure = DDMStructureLocalServiceUtil.getStructure(
+				GetterUtil.getLong(ddmStructureFieldNameParts[1]));
+
+			String fieldName = StringUtil.replaceLast(
+				ddmStructureFieldNameParts[2],
+				StringPool.UNDERLINE.concat(
+					LocaleUtil.toLanguageId(searchContext.getLocale())),
+				StringPool.BLANK);
+
+			try {
+				ddmStructureFieldValue = DDMUtil.getIndexedFieldValue(
+					ddmStructureFieldValue, structure.getFieldType(fieldName));
+			}
+			catch (StructureFieldException sfe) {
+			}
+
+			contextQuery.addRequiredTerm(
+				ddmStructureFieldName,
+				StringPool.QUOTE + ddmStructureFieldValue + StringPool.QUOTE);
 		}
 
 		long[] folderIds = searchContext.getFolderIds();
