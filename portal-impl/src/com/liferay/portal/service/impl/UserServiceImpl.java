@@ -605,10 +605,13 @@ public class UserServiceImpl extends UserServiceBaseImpl {
 			List<AnnouncementsDelivery> announcementsDelivers,
 			boolean sendEmail, ServiceContext serviceContext)
 		throws PortalException, SystemException {
+		
+		if(serviceContext != null){
+			
+			boolean indexingEnabled = serviceContext.isIndexingEnabled();
 
-		boolean indexingEnabled = serviceContext.isIndexingEnabled();
-
-		serviceContext.setIndexingEnabled(false);
+			serviceContext.setIndexingEnabled(false);
+		}
 
 		try {
 			User user = addUserWithWorkflow(
