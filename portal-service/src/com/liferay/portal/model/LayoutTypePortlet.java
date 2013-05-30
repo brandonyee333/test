@@ -16,9 +16,12 @@ package com.liferay.portal.model;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.portlet.embedded.RenderingContext;
 import com.liferay.portlet.PortalPreferences;
 
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Brian Wing Shun Chan
@@ -26,7 +29,8 @@ import java.util.List;
  */
 public interface LayoutTypePortlet extends LayoutType {
 
-	public boolean addEmbeddedPortletId(String portletId)
+	public boolean addEmbeddedPortletId(
+			RenderingContext embeddedPortletRenderingContext, String portletId)
 		throws PortalException, SystemException;
 
 	public void addModeAboutPortletId(String portletId);
@@ -175,6 +179,10 @@ public interface LayoutTypePortlet extends LayoutType {
 
 	public boolean isDefaultUpdated();
 
+	public boolean isEmbeddedPortletIdValid(
+			HttpServletRequest request, String portletId)
+		throws PortalException, SystemException;
+
 	public boolean isPortletCustomizable(String portletId);
 
 	public void movePortletId(
@@ -218,6 +226,7 @@ public interface LayoutTypePortlet extends LayoutType {
 	public void reorganizePortlets(
 		List<String> newColumns, List<String> oldColumns);
 
+	public void resetEmbeddedPortlets() throws PortalException, SystemException;
 	public void resetModes();
 
 	public void resetStates();
