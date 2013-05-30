@@ -89,32 +89,14 @@ public class AssetEntryServiceImpl extends AssetEntryServiceBaseImpl {
 	public List<AssetEntry> getEntries(AssetEntryQuery entryQuery)
 		throws PortalException, SystemException {
 
-		AssetEntryQuery filteredEntryQuery = buildFilteredEntryQuery(
-			entryQuery);
-
-		if (hasEntryQueryResults(entryQuery, filteredEntryQuery)) {
-			return new ArrayList<AssetEntry>();
-		}
-
-		Object[] results = filterEntryQuery(filteredEntryQuery, false);
-
-		return (List<AssetEntry>)results[0];
+		return assetEntryLocalService.getEntries(entryQuery);
 	}
 
 	@Override
 	public int getEntriesCount(AssetEntryQuery entryQuery)
 		throws PortalException, SystemException {
 
-		AssetEntryQuery filteredEntryQuery = buildFilteredEntryQuery(
-			entryQuery);
-
-		if (hasEntryQueryResults(entryQuery, filteredEntryQuery)) {
-			return 0;
-		}
-
-		Object[] results = filterEntryQuery(filteredEntryQuery, true);
-
-		return (Integer)results[1];
+		return assetEntryLocalService.getEntriesCount(entryQuery);
 	}
 
 	@Override
