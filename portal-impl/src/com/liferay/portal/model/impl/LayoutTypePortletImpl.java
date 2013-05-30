@@ -21,6 +21,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletContainerSecurityUtil;
 import com.liferay.portal.kernel.portlet.PortletLayoutListener;
+import com.liferay.portal.kernel.portlet.embedded.RenderingContext;
+import com.liferay.portal.kernel.portlet.embedded.RenderingContextUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
@@ -69,9 +71,12 @@ import java.text.Format;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Brian Wing Shun Chan
@@ -100,8 +105,20 @@ public class LayoutTypePortletImpl
 	}
 
 	@Override
-	public boolean addEmbeddedPortletId(String portletId)
+	public boolean addEmbeddedPortletId(
+			RenderingContext embeddedPortletRenderingContext, String portletId)
 		throws PortalException, SystemException {
+
+		if (embeddedPortletRenderingContext == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					"Portlet " + portletId +
+						" cannot be added because there is no rendering " +
+						"context");
+			}
+
+			return false;
+		}
 
 		if (hasEmbeddedPortletId(portletId)) {
 			return false;
@@ -144,9 +161,19 @@ public class LayoutTypePortletImpl
 
 		freshTypeSettings.setProperty(_EMBEDDED_PORTLETS, propValue);
 
+		String embeddedPortletContext =
+			embeddedPortletRenderingContext.toString();
+
+		freshTypeSettings.setProperty(
+			_EMBEDDED_PORTLETS + StringPool.UNDERLINE + portletId,
+			embeddedPortletContext);
+
 		LayoutLocalServiceUtil.updateLayout(freshLayout);
 
 		setTypeSettingsProperty(_EMBEDDED_PORTLETS, propValue);
+		setTypeSettingsProperty(
+			_EMBEDDED_PORTLETS + StringPool.UNDERLINE + portletId,
+			embeddedPortletContext);
 
 		_embeddedPortlets = null;
 
@@ -803,6 +830,28 @@ public class LayoutTypePortletImpl
 	}
 
 	@Override
+	public boolean isEmbeddedPortletIdValid(
+			HttpServletRequest request, String portletId)
+		throws PortalException, SystemException {
+
+		String embeddedPortletContext = getTypeSettingsProperty(
+			_EMBEDDED_PORTLETS + StringPool.UNDERLINE + portletId);
+
+		if (Validator.isNotNull(embeddedPortletContext)) {
+			RenderingContext embeddedPortletRenderingContext =
+				RenderingContext.fromString(embeddedPortletContext);
+
+			if (RenderingContextUtil.isValid(
+					request, embeddedPortletRenderingContext)) {
+
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	@Override
 	public boolean isPortletCustomizable(String portletId) {
 		return isColumnCustomizable(getColumn(portletId));
 	}
@@ -864,6 +913,11 @@ public class LayoutTypePortletImpl
 			}
 
 			embeddedPortlets = ArrayUtil.remove(embeddedPortlets, portletId);
+
+			freshTypeSettings.setProperty(
+				_EMBEDDED_PORTLETS + StringPool.UNDERLINE + portletId, null);
+			setTypeSettingsProperty(
+				_EMBEDDED_PORTLETS + StringPool.UNDERLINE + portletId, null);
 
 			removedPortletIds.add(portletId);
 		}
@@ -1077,6 +1131,48 @@ public class LayoutTypePortletImpl
 		}
 
 		setTypeSettingsProperty(lastNewColumnId, lastNewColumnValue);
+	}
+
+	@Override
+	public void resetEmbeddedPortlets()
+		throws PortalException, SystemException {
+
+		Layout freshLayout = LayoutLocalServiceUtil.getLayout(getPlid());
+
+		String[] embeddedPortlets =
+			StringUtil.split(
+				freshLayout.getTypeSettingsProperty(_EMBEDDED_PORTLETS));
+
+		UnicodeProperties freshLayoutProperties =
+			freshLayout.getTypeSettingsProperties();
+
+		for (Iterator<String> keys = freshLayoutProperties.keySet().iterator();
+				keys.hasNext();) {
+
+			String key = keys.next();
+
+			if (key.startsWith(_EMBEDDED_PORTLETS)) {
+				keys.remove();
+			}
+		}
+
+		LayoutLocalServiceUtil.updateLayout(freshLayout);
+
+		UnicodeProperties typeSettingsProperties = getTypeSettingsProperties();
+
+		for (Iterator<String> keys = typeSettingsProperties.keySet().iterator();
+			keys.hasNext();) {
+
+			String key = keys.next();
+
+			if (key.startsWith(_EMBEDDED_PORTLETS)) {
+				keys.remove();
+			}
+		}
+
+		_embeddedPortlets = null;
+
+		onRemoveFromLayout(embeddedPortlets);
 	}
 
 	@Override
