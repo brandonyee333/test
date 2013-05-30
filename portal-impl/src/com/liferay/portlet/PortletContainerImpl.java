@@ -145,7 +145,14 @@ public class PortletContainerImpl implements PortletContainer {
 				addEmbeddedPortlet(request, portlet);
 			}
 
-			_doRender(request, response, portlet);
+			try {
+				RenderingContextUtil.pushParent(request, portlet);
+
+				_doRender(request, response, portlet);
+			}
+			finally {
+				RenderingContextUtil.pop(request);
+			}
 		}
 		catch (Exception e) {
 			throw new PortletContainerException(e);
