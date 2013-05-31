@@ -24,8 +24,11 @@ import com.liferay.portal.kernel.portlet.LiferayPortletConfig;
 import com.liferay.portal.kernel.portlet.LiferayPortletMode;
 import com.liferay.portal.kernel.portlet.PortletContainer;
 import com.liferay.portal.kernel.portlet.PortletContainerException;
+import com.liferay.portal.kernel.portlet.PortletContainerSecurityCheck;
 import com.liferay.portal.kernel.portlet.PortletModeFactory;
 import com.liferay.portal.kernel.portlet.WindowStateFactory;
+import com.liferay.portal.kernel.portlet.embedded.RenderingContext;
+import com.liferay.portal.kernel.portlet.embedded.RenderingContextUtil;
 import com.liferay.portal.kernel.security.pacl.DoPrivileged;
 import com.liferay.portal.kernel.servlet.BufferCacheServletResponse;
 import com.liferay.portal.kernel.servlet.DirectRequestDispatcherFactoryUtil;
@@ -36,7 +39,6 @@ import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.webdav.WebDAVStorage;
 import com.liferay.portal.kernel.xml.QName;
 import com.liferay.portal.model.Layout;
@@ -56,6 +58,7 @@ import com.liferay.portal.theme.PortletDisplay;
 import com.liferay.portal.theme.PortletDisplayFactory;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
+import com.liferay.portal.util.WebKeys;
 import com.liferay.util.SerializableUtil;
 
 import java.io.Serializable;
@@ -137,7 +140,18 @@ public class PortletContainerImpl implements PortletContainer {
 		throws PortletContainerException {
 
 		try {
-			_doRender(request, response, portlet);
+			if (canRegisterEmbeddedPortlet(request)) {
+				addEmbeddedPortlet(request, portlet);
+			}
+
+			try {
+				RenderingContextUtil.pushParent(request, portlet);
+
+				_doRender(request, response, portlet);
+			}
+			finally {
+				RenderingContextUtil.pop(request);
+			}
 		}
 		catch (Exception e) {
 			throw new PortletContainerException(e);
@@ -156,6 +170,47 @@ public class PortletContainerImpl implements PortletContainer {
 		catch (Exception e) {
 			throw new PortletContainerException(e);
 		}
+	}
+
+	protected void addEmbeddedPortlet(
+			HttpServletRequest request, Portlet portlet)
+		throws PortalException, SystemException {
+
+		Layout layout = (Layout)request.getAttribute(WebKeys.LAYOUT);
+
+		LayoutTypePortlet layoutTypePortlet =
+			(LayoutTypePortlet)layout.getLayoutType();
+
+		RenderingContext renderingContext =
+			RenderingContextUtil.getActualContext(request);
+
+		layoutTypePortlet.addEmbeddedPortletId(
+			renderingContext, portlet.getPortletId());
+	}
+
+	protected boolean canRegisterEmbeddedPortlet(HttpServletRequest request)
+		throws PortalException, SystemException {
+
+		PortletContainerSecurityCheck securityCheck =
+			(PortletContainerSecurityCheck)request.getAttribute(
+				WebKeys.PORTLET_SECURITY_CHECK);
+
+		if ((securityCheck != null) && securityCheck.isRuntimePortlet()) {
+			securityCheck = securityCheck.getParent();
+			while (securityCheck != null) {
+				if (securityCheck.isEmbeddedPortlet() ||
+					securityCheck.isControlPanelPortlet() ||
+					securityCheck.isPortletOnPage() ||
+					securityCheck.isRuntimePortlet()) {
+
+					return true;
+				}
+
+				securityCheck = securityCheck.getParent();
+			}
+		}
+
+		return false;
 	}
 
 	protected long getScopeGroupId(
