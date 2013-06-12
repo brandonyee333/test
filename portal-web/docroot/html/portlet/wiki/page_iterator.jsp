@@ -172,8 +172,6 @@ if (type.equals("all_pages")) {
 
 	total = WikiPageServiceUtil.getPagesCount(themeDisplay.getScopeGroupId(), node.getNodeId(), true);
 
-	searchContainer.setTotal(total);
-
 	results = WikiPageServiceUtil.getPages(themeDisplay.getScopeGroupId(), node.getNodeId(), true, WorkflowConstants.STATUS_APPROVED, searchContainer.getStart(), searchContainer.getEnd(), orderByComparator);
 }
 else if (type.equals("categorized_pages") || type.equals("tagged_pages")) {
@@ -185,8 +183,6 @@ else if (type.equals("categorized_pages") || type.equals("tagged_pages")) {
 	assetEntryQuery.setEnablePermissions(true);
 
 	total = AssetEntryServiceUtil.getEntriesCount(assetEntryQuery);
-
-	searchContainer.setTotal(total);
 
 	if (searchContainer.isRecalculateCur()) {
 		assetEntryQuery = new AssetEntryQuery(WikiPage.class.getName(), searchContainer);
@@ -219,8 +215,6 @@ else if (type.equals("draft_pages") || type.equals("pending_pages")) {
 
 	total = WikiPageServiceUtil.getPagesCount(themeDisplay.getScopeGroupId(), draftUserId, node.getNodeId(), status);
 
-	searchContainer.setTotal(total);
-
 	results = WikiPageServiceUtil.getPages(themeDisplay.getScopeGroupId(), draftUserId, node.getNodeId(), status, searchContainer.getStart(), searchContainer.getEnd());
 }
 else if (type.equals("orphan_pages")) {
@@ -228,14 +222,12 @@ else if (type.equals("orphan_pages")) {
 
 	total = orphans.size();
 
-	searchContainer.setTotal(total);
+	//searchContainer.setTotal(total);
 
 	results = ListUtil.subList(orphans, searchContainer.getStart(), searchContainer.getEnd());
 }
 else if (type.equals("history")) {
 	total = WikiPageLocalServiceUtil.getPagesCount(wikiPage.getNodeId(), wikiPage.getTitle());
-
-	searchContainer.setTotal(total);
 
 	results = WikiPageLocalServiceUtil.getPages(wikiPage.getNodeId(), wikiPage.getTitle(), QueryUtil.ALL_POS, QueryUtil.ALL_POS, new PageVersionComparator());
 }
@@ -244,8 +236,6 @@ else if (type.equals("incoming_links")) {
 
 	total = links.size();
 
-	searchContainer.setTotal(total);
-
 	results = ListUtil.subList(links, searchContainer.getStart(), searchContainer.getEnd());
 }
 else if (type.equals("outgoing_links")) {
@@ -253,19 +243,16 @@ else if (type.equals("outgoing_links")) {
 
 	total = links.size();
 
-	searchContainer.setTotal(total);
-
 	results = ListUtil.subList(links, searchContainer.getStart(), searchContainer.getEnd());
 }
 else if (type.equals("recent_changes")) {
 	total = WikiPageServiceUtil.getRecentChangesCount(themeDisplay.getScopeGroupId(), node.getNodeId());
 
-	searchContainer.setTotal(total);
-
 	results = WikiPageServiceUtil.getRecentChanges(themeDisplay.getScopeGroupId(), node.getNodeId(), searchContainer.getStart(), searchContainer.getEnd());
 }
 
 searchContainer.setResults(results);
+searchContainer.setTotal(total);
 
 List resultRows = searchContainer.getResultRows();
 
