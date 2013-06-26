@@ -340,8 +340,6 @@ public class StagingImpl implements Staging {
 		String fileId = null;
 
 		try {
-			long fileSize = file.length();
-
 			byte[] bytes =
 				new byte[PropsValues.STAGING_REMOTE_TRANSFER_BUFFER_SIZE];
 
@@ -349,14 +347,11 @@ public class StagingImpl implements Staging {
 				_log.debug("File transfer started");
 			}
 
-			inputStream = new BufferedInputStream(
-				new FileInputStream(file), 64 * 1024);
+			inputStream = new FileInputStream(file);
 
 			fileId = LayoutServiceHttp.createImportLayoutsFileId(httpPrincipal);
 
 			int length = inputStream.read(bytes);
-
-			long bytesCopied = 0;
 
 			while (length > 0) {
 				byte[] bytesToSend = bytes;
@@ -369,14 +364,6 @@ public class StagingImpl implements Staging {
 
 				LayoutServiceHttp.appendToImportLayoutsFile(
 					httpPrincipal, fileId, bytesToSend);
-
-				bytesCopied = bytesCopied + bytesToSend.length;
-
-				if (_log.isDebugEnabled()) {
-					_log.debug(
-						String.format(
-							"%d of %d bytes moved ", bytesCopied, fileSize));
-				}
 
 				length = inputStream.read(bytes);
 			}
