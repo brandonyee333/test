@@ -309,13 +309,14 @@ public class LayoutServiceImpl extends LayoutServiceBaseImpl {
 	 * To create token use  createImportFileToken() method
 	 */
 	@Override
-	public void addToImportFile(String token, byte[] bytes)
+	public void appendToImportLayoutsFile(String fileId, byte[] bytes)
 		throws SystemException {
 
-		File file = getFileFromToken(token);
+		File file = getFileForId(fileId);
 
 		if (!file.exists()) {
-			throw new SystemException("Token does not exist");
+			throw new SystemException(
+				"File for id " + fileId + " does not exist");
 		}
 
 		FileOutputStream fileOutputStream = null;
@@ -342,7 +343,7 @@ public class LayoutServiceImpl extends LayoutServiceBaseImpl {
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public String createImportFileToken() throws SystemException {
+	public String createImportLayoutsFileId() throws SystemException {
 		StringBundler sb = new StringBundler(2);
 
 		sb.append(Time.getTimestamp());
@@ -350,7 +351,7 @@ public class LayoutServiceImpl extends LayoutServiceBaseImpl {
 
 		String token = sb.toString();
 
-		File file = getFileFromToken(token);
+		File file = getFileForId(token);
 
 		try {
 			boolean createdSuccessFully = file.createNewFile();
@@ -985,13 +986,13 @@ public class LayoutServiceImpl extends LayoutServiceBaseImpl {
 	@Override
 	public void importLayouts(
 			long groupId, boolean privateLayout,
-			Map<String, String[]> parameterMap, String token)
+			Map<String, String[]> parameterMap, String fileId)
 		throws PortalException, SystemException {
 
 		GroupPermissionUtil.check(
 			getPermissionChecker(), groupId, ActionKeys.EXPORT_IMPORT_LAYOUTS);
 
-		File file = getFileFromToken(token);
+		File file = getFileForId(fileId);
 
 		try {
 			importLayouts(groupId, privateLayout, parameterMap, file);
@@ -1684,9 +1685,9 @@ public class LayoutServiceImpl extends LayoutServiceBaseImpl {
 		return filteredLayouts;
 	}
 
-	protected File getFileFromToken(String token) {
+	protected File getFileForId(String fileId) {
 		return new File(
-			SystemProperties.get(SystemProperties.TMP_DIR), token + ".lar");
+			SystemProperties.get(SystemProperties.TMP_DIR), fileId + ".lar");
 	}
 
 }
