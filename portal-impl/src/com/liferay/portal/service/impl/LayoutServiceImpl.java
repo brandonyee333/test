@@ -988,6 +988,9 @@ public class LayoutServiceImpl extends LayoutServiceBaseImpl {
 			Map<String, String[]> parameterMap, String token)
 		throws PortalException, SystemException {
 
+		GroupPermissionUtil.check(
+			getPermissionChecker(), groupId, ActionKeys.EXPORT_IMPORT_LAYOUTS);
+
 		File file = getFileFromToken(token);
 
 		try {
