@@ -54,7 +54,6 @@ import com.liferay.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.util.PwdGenerator;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -327,10 +326,7 @@ public class LayoutServiceImpl extends LayoutServiceBaseImpl {
 			fileOutputStream.write(bytes);
 			fileOutputStream.flush();
 		}
-		catch (FileNotFoundException e) {
-			throw new PortalException(e);
-		}
-		catch (IOException e) {
+		catch (Exception e) {
 			throw new SystemException(e);
 		}
 		finally {
@@ -357,7 +353,12 @@ public class LayoutServiceImpl extends LayoutServiceBaseImpl {
 		File file = getFileFromToken(token);
 
 		try {
-			file.createNewFile();
+			boolean createdSuccessFully = file.createNewFile();
+
+			if (!createdSuccessFully) {
+				throw new SystemException("File could not be created");
+			}
+
 			return token;
 		}
 		catch (IOException e) {
@@ -423,19 +424,6 @@ public class LayoutServiceImpl extends LayoutServiceBaseImpl {
 
 		TempFileUtil.deleteTempFile(
 			groupId, getUserId(), fileName, tempFolderName);
-	}
-
-	/**
-	 * Delete to token that has been used for tokenized lar transfer
-	 *
-	 * @param token to be removed
-	 * @throws SystemException if a system exception occurred
-	 */
-	public void deleteToken(String token)
-		throws PortalException, SystemException {
-
-		File file = getFileFromToken(token);
-		FileUtil.delete(file);
 	}
 
 	/**
@@ -1006,7 +994,7 @@ public class LayoutServiceImpl extends LayoutServiceBaseImpl {
 			importLayouts(groupId, privateLayout, parameterMap, file);
 		}
 		finally {
-			deleteToken(token);
+			FileUtil.delete(file);
 		}
 	}
 
