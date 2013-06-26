@@ -394,10 +394,6 @@ public class StagingImpl implements Staging {
 			}
 		}
 		finally {
-			if (token != null) {
-				LayoutServiceHttp.deleteToken(httpPrincipal, token);
-			}
-
 			IOUtils.closeQuietly(inputStream);
 
 			FileUtil.delete(file);
