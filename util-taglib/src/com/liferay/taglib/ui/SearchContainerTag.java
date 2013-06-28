@@ -124,6 +124,10 @@ public class SearchContainerTag<R> extends ParamAndPropertyAncestorTagImpl {
 				_searchContainer.setTotal(_total);
 			}
 
+			if (Validator.isNotNull(_emptyResultsMessage)) {
+				_searchContainer.setEmptyResultsMessage(_emptyResultsMessage);
+			}
+			
 			pageContext.setAttribute(_var, _searchContainer);
 
 			return EVAL_BODY_INCLUDE;
