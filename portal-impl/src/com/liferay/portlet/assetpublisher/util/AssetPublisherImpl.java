@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
+import com.liferay.portal.model.Company;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.GroupConstants;
 import com.liferay.portal.model.Layout;
@@ -63,8 +64,10 @@ import com.liferay.portal.util.SubscriptionSender;
 import com.liferay.portal.util.WebKeys;
 import com.liferay.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portlet.asset.AssetRendererFactoryRegistryUtil;
+import com.liferay.portlet.asset.NoSuchEntryException;
 import com.liferay.portlet.asset.model.AssetCategory;
 import com.liferay.portlet.asset.model.AssetEntry;
+import com.liferay.portlet.asset.model.AssetRenderer;
 import com.liferay.portlet.asset.model.AssetRendererFactory;
 import com.liferay.portlet.asset.service.AssetCategoryLocalServiceUtil;
 import com.liferay.portlet.asset.service.AssetEntryLocalServiceUtil;
@@ -363,6 +366,74 @@ public class AssetPublisherImpl implements AssetPublisher {
 		else {
 			return AssetEntryLocalServiceUtil.getEntries(assetEntryQuery);
 		}
+	}
+
+	public Object[] getAssetEntryObject(
+			String[] assetEntryXmls, long[] groupIds, boolean enablePermissions,
+			PermissionChecker permissionChecker, boolean isConfiguration,
+			Company company)
+		throws Exception {
+
+		List results = ListUtil.fromArray(assetEntryXmls);
+
+		List<AssetEntry> viewableResults = new ArrayList<AssetEntry>();
+
+		List<String> deletedAssets = new ArrayList<String>();
+
+		for (int i = 0; i < results.size(); i++) {
+			String assetEntryXml = (String)results.get(i);
+
+			Document document = SAXReaderUtil.read(assetEntryXml);
+
+			Element rootElement = document.getRootElement();
+
+			String assetEntryUuid = rootElement.elementText("asset-entry-uuid");
+
+			AssetEntry assetEntry = null;
+
+			for (long groupId : groupIds) {
+				try {
+					assetEntry = AssetEntryLocalServiceUtil.getEntry(
+						groupId, assetEntryUuid);
+
+					break;
+				}
+				catch (NoSuchEntryException nsee) {
+				}
+			}
+
+			if ((assetEntry == null) || !assetEntry.isVisible()) {
+				continue;
+			}
+
+			AssetRendererFactory assetRendererFactory =
+				AssetRendererFactoryRegistryUtil.
+					getAssetRendererFactoryByClassName(
+						assetEntry.getClassName());
+
+			AssetRenderer assetRenderer = assetRendererFactory.getAssetRenderer(
+				assetEntry.getClassPK());
+
+			if (isConfiguration) {
+				if (!assetRendererFactory.isActive(company.getCompanyId())) {
+					deletedAssets.add(assetEntryUuid);
+
+					continue;
+				}
+			}
+			else {
+				if (!assetRenderer.isDisplayable() ||
+					(enablePermissions &&
+					 !assetRenderer.hasViewPermission(permissionChecker))) {
+
+					continue;
+				}
+			}
+
+			viewableResults.add(assetEntry);
+		}
+
+		return new Object[] {viewableResults, deletedAssets};
 	}
 
 	@Override

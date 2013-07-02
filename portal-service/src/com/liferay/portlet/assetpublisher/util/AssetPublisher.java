@@ -16,6 +16,7 @@ package com.liferay.portlet.assetpublisher.util;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.model.Company;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Layout;
 import com.liferay.portal.model.User;
@@ -77,6 +78,12 @@ public interface AssetPublisher {
 			PortletPreferences preferences, Layout layout, long scopeGroupId,
 			int max, boolean checkPermission)
 		throws PortalException, SystemException;
+
+	public Object[] getAssetEntryObject(
+			String[] assetEntryXmls, long[] groupIds, boolean enablePermissions,
+			PermissionChecker permissionChecker, boolean isConfiguration,
+			Company company)
+		throws Exception;
 
 	public AssetEntryQuery getAssetEntryQuery(
 			PortletPreferences portletPreferences, long[] scopeGroupIds)

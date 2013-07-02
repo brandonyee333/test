@@ -17,6 +17,7 @@ package com.liferay.portlet.assetpublisher.util;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
+import com.liferay.portal.model.Company;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Layout;
 import com.liferay.portal.model.User;
@@ -94,6 +95,17 @@ public class AssetPublisherUtil {
 
 		return getAssetPublisher().getAssetEntries(
 			preferences, layout, scopeGroupId, max, checkPermission);
+	}
+
+	public static Object[] getAssetEntryObject(
+			String[] assetEntryXmls, long[] groupIds, boolean enablePermissions,
+			PermissionChecker permissionChecker, boolean isConfiguration,
+			Company company)
+		throws Exception {
+
+		return getAssetPublisher().getAssetEntryObject(
+				assetEntryXmls, groupIds, enablePermissions, permissionChecker,
+				isConfiguration, company);
 	}
 
 	public static AssetEntryQuery getAssetEntryQuery(
