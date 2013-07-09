@@ -152,12 +152,36 @@ long folderId = BeanParamUtil.getLong(fileEntry, request, "folderId");
 							after: {
 								success: function(event, id, obj) {
 									var jsonArray = this.get('responseData');
+									
+									var selectedFilesCountContainer = A.one('.selected-files-count');
+
+									var totalFiles = A.all('input[name=<portlet:namespace />selectUploadedFileCheckbox]');
+
+									var selectedFiles = totalFiles.filter(':checked');	
+
+									var tmpInd = null;
 
 									for (var i = 0; i < jsonArray.length; i++) {
 										var item = jsonArray[i];
-
-										var checkBox = A.one('input[data-fileName="' + item.fileName + '"]');
-
+										
+										var selectedFileText = null; 
+										
+										for (var j = 0; j < selectedFiles.size(); j++) {
+											
+											var selectedFileTextTmpFromInput = selectedFiles.item(j).attr('data-fileName').replace(/ /g,"");
+											var selectedFileTextTmpFromJson = item.fileName.replace(/ /g,"");
+											
+											if (selectedFileTextTmpFromInput == selectedFileTextTmpFromJson 
+											    && (tmpInd == null || tmpInd != j)) {
+												selectedFileText = selectedFiles.item(j).attr('data-fileName');	
+												tmpInd = j;
+												break;
+											}
+										}
+										
+									    var checkBox = A.one('input[data-fileName="' + selectedFileText + '"]');
+										
+										
 										var li = checkBox.ancestor();
 
 										checkBox.remove(true);
