@@ -36,7 +36,6 @@ String strutsAction = ParamUtil.getString(request, "struts_action");
 
 			<aui:nav-item href="<%= taglibURL %>" label="move" />
 
-			
 			<%
 			taglibURL = "javascript:" + renderResponse.getNamespace() + "deleteEntries();";
 			%>
