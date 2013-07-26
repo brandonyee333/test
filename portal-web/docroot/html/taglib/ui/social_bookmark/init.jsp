@@ -20,6 +20,7 @@
 String displayStyle = GetterUtil.getString((String)request.getAttribute("liferay-ui:social-bookmark:displayStyle"), "horizontal");
 String type = (String)request.getAttribute("liferay-ui:social-bookmark:type");
 String url = GetterUtil.getString((String)request.getAttribute("liferay-ui:social-bookmark:url"));
+url = url.replaceFirst("localhost", "mira.local");
 String title = GetterUtil.getString((String)request.getAttribute("liferay-ui:social-bookmark:title"));
 String target = GetterUtil.getString((String)request.getAttribute("liferay-ui:social-bookmark:target"));
 String postUrl = (String)request.getAttribute("liferay-ui:social-bookmark:postUrl");

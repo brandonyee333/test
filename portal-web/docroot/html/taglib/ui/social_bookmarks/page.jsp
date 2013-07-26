@@ -40,4 +40,39 @@
 
 		</ul>
 	</div>
+
+	<div id="share">
+		<button class="btn" type="button">
+			Share
+			<i class="icon-share"></i>
+		</button>
+		SANITY
+		<liferay-ui:icon-menu cssClass="icon-share" id="iconMenuShare" message="share">
+			<liferay-ui:icon
+				message="tweet"
+				src=""
+				url="twitter.com"
+			/>
+
+			<liferay-ui:icon
+				message="like"
+				src=""
+				url='facebook.com'
+			/>
+
+			<liferay-ui:icon
+				message="publically-recommend-on-google"
+				src=""
+				url='google.com/+'
+			/>
+
+		</liferay-ui:icon-menu>
+	</div>
+
+	<aui:script use="node">
+		var share = A.one('#share');
+
+
+	</aui:script>
+
 </c:if>
