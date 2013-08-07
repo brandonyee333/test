@@ -1856,6 +1856,14 @@ public class LayoutRevisionWrapper implements LayoutRevision,
 	}
 
 	@Override
+	public java.lang.String getRegularURL(
+		com.liferay.portal.kernel.servlet.ProtectedServletRequest request)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _layoutRevision.getRegularURL(request);
+	}
+
+	@Override
 	public com.liferay.portal.model.Theme getTheme()
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
