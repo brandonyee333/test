@@ -440,12 +440,20 @@ public class DLUtil {
 		sb.append(fileEntry.getRepositoryId());
 		sb.append(StringPool.SLASH);
 		sb.append(fileEntry.getFolderId());
+        sb.append(StringPool.SLASH);
+        sb.append(HttpUtil.encodeURL(HtmlUtil.unescape(fileEntry.getTitle())));
 		sb.append(StringPool.SLASH);
-		sb.append(HttpUtil.encodeURL(HtmlUtil.unescape(fileEntry.getTitle())));
-		sb.append(StringPool.SLASH);
-		sb.append(fileEntry.getUuid());
+        sb.append(fileEntry.getUuid());
 
-		if (appendVersion) {
+        //Here add an additional filename to path so the pdf viewer of ie/ff find a correct filename
+        //The FileEntry Resolution of Liferay remain unaffected because see only in the first 4 path components of the url
+        if (fileEntry.getMimeType().equalsIgnoreCase("application/pdf"))
+        {
+            sb.append(StringPool.SLASH);
+            sb.append(HttpUtil.encodeURL(HtmlUtil.unescape(fileEntry.getTitle())));
+        }
+
+        if (appendVersion) {
 			sb.append("?version=");
 			sb.append(fileVersion.getVersion());
 		}
