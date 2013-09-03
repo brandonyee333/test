@@ -150,16 +150,16 @@ public class FlagsRequestMessageListener extends BaseMessageListener {
 
 		String contentTitle = HtmlUtil.unescape(flagsRequest.getContentTitle());
 		String contentURL = HtmlUtil.unescape(flagsRequest.getContentURL());
-		
+
 		for (User recipient : recipients) {
 			try {
 				notify(
 					company, groupName, reporterEmailAddress, reporterUserName,
 					reportedEmailAddress, reportedUserName, reportedURL,
-					flagsRequest.getClassPK(), contentTitle,
-					contentType, contentURL, reason, fromName,
-					fromAddress, recipient.getFullName(),
-					recipient.getEmailAddress(), subject, body, serviceContext);
+					flagsRequest.getClassPK(), contentTitle, contentType,
+					contentURL, reason, fromName, fromAddress,
+					recipient.getFullName(), recipient.getEmailAddress(),
+					subject, body, serviceContext);
 			}
 			catch (IOException ioe) {
 				if (_log.isWarnEnabled()) {
