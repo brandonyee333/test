@@ -181,7 +181,7 @@ public class AssetTagLocalServiceImpl extends AssetTagLocalServiceBaseImpl {
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<AssetTag> checkTags(long userId, long groupId, String[] names)
+	public List<AssetTag> checkTags(long userId, Group group, String[] names)
 		throws PortalException, SystemException {
 
 		List<AssetTag> tags = new ArrayList<AssetTag>();
@@ -190,20 +190,18 @@ public class AssetTagLocalServiceImpl extends AssetTagLocalServiceBaseImpl {
 			AssetTag tag = null;
 
 			try {
-				tag = getTag(groupId, name);
+				tag = getTag(group.getGroupId(), name);
 			}
 			catch (NoSuchTagException nste1) {
 				ServiceContext serviceContext = new ServiceContext();
 
 				serviceContext.setAddGroupPermissions(true);
 				serviceContext.setAddGuestPermissions(true);
-				serviceContext.setScopeGroupId(groupId);
+				serviceContext.setScopeGroupId(group.getGroupId());
 
 				tag = addTag(
 					userId, name, PropsValues.ASSET_TAG_PROPERTIES_DEFAULT,
 					serviceContext);
-
-				Group group = groupPersistence.findByPrimaryKey(groupId);
 
 				Group companyGroup = groupLocalService.getCompanyGroup(
 					group.getCompanyId());
@@ -232,6 +230,15 @@ public class AssetTagLocalServiceImpl extends AssetTagLocalServiceBaseImpl {
 		}
 
 		return tags;
+	}
+
+	@Override
+	public void checkTags(long userId, long groupId, String[] names)
+		throws PortalException, SystemException {
+
+		Group group = groupPersistence.findByPrimaryKey(groupId);
+
+		checkTags(userId, group, names);
 	}
 
 	@Override
