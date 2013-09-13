@@ -164,6 +164,22 @@ public class AssetTagLocalServiceImpl extends AssetTagLocalServiceBaseImpl {
 			guestPermissions);
 	}
 
+	/**
+	 * Returns the tags with the matching group ID and names. This method checks
+	 * if the tag names with the specified group ID exist. If a tag name does
+	 * not exist in the group, it creates a new tag with the specified name. If
+	 * a tag with the same name exists in the group, it copies the associated
+	 * properties to the new tag.
+	 *
+	 * @param  userId the primary key of the user
+	 * @param  groupId the primary key of the tag's group
+	 * @param  names the tag names
+	 * @return the tags with the matching group ID and names
+	 * @throws PortalException if a matching group could not be found, if the
+	 *         tag's key or value were invalid, or if a portal exception
+	 *         occurred
+	 * @throws SystemException if a system exception occurred
+	 */
 	@Override
 	public List<AssetTag> checkTags(long userId, Group group, String[] names)
 		throws PortalException, SystemException {
