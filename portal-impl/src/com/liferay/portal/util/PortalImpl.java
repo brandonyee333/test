@@ -844,8 +844,8 @@ public class PortalImpl implements Portal {
 
 		if (themeDisplay.isAjax() || themeDisplay.isIsolated() ||
 			themeDisplay.isLifecycleResource() ||
-			themeDisplay.isStateExclusive()) {
-
+			themeDisplay.isStateExclusive() || themeDisplay.isLifecycleRender()) {
+			
 			return StringUtil.randomId();
 		}
 		else {
