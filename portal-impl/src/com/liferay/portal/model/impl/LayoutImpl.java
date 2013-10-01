@@ -930,8 +930,9 @@ public class LayoutImpl extends LayoutBaseImpl {
 		if (!CookieKeys.hasSessionId(request) &&
 			(url.startsWith(portalURL) || url.startsWith(StringPool.SLASH))) {
 
-			url = PortalUtil.getURLWithSessionId(
-				url, request.getSession().getId());
+			String sessionId = request.getSession().getId();
+
+			url = PortalUtil.getURLWithSessionId(url, sessionId);
 		}
 
 		if (!resetMaxState) {
