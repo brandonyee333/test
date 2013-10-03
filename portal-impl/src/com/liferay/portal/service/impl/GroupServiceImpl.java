@@ -817,8 +817,12 @@ public class GroupServiceImpl extends GroupServiceBaseImpl {
 			userSiteGroups.add(0, controlPanelGroup);
 		}
 
+		if (start == QueryUtil.ALL_POS) {
+			start = 0;
+		}
+
 		return Collections.unmodifiableList(
-			ListUtil.subList(userSiteGroups, start, end));
+			ListUtil.subList(userSiteGroups, 0, end - start));
 	}
 
 	/**
