@@ -276,7 +276,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 		else if (className.equals(Organization.class.getName())) {
 			name = getOrgGroupName(name);
 		}
-		else if (!GroupConstants.USER_PERSONAL_SITE.equals(name)) {
+		else if (GroupConstants.USER_PERSONAL_SITE.equals(name)|| Validator.isNull(name)) {
 			name = String.valueOf(classPK);
 		}
 
