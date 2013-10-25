@@ -180,44 +180,37 @@ public class LuceneSpellCheckIndexWriter extends BaseSpellCheckIndexWriter {
 		IndexAccessor indexAccessor = LuceneHelperUtil.getIndexAccessor(
 			companyId);
 
-		IndexSearcher indexSearcher = null;
+		List<IndexReader> indexReaders = new ArrayList<IndexReader>();
 
-		try {
-			List<IndexReader> indexReaders = new ArrayList<IndexReader>();
+		IndexSearcher indexSearcher = LuceneHelperUtil.getSearcher(
+			indexAccessor.getCompanyId());
 
-			indexSearcher = LuceneHelperUtil.getSearcher(
-				indexAccessor.getCompanyId(), true);
+		if (indexSearcher.maxDoc() > 0) {
+			ReaderUtil.gatherSubReaders(
+				indexReaders, indexSearcher.getIndexReader());
+		}
 
-			if (indexSearcher.maxDoc() > 0) {
-				ReaderUtil.gatherSubReaders(
-					indexReaders, indexSearcher.getIndexReader());
+		String localizedFieldName = DocumentImpl.getLocalizedName(
+			languageId, keywordFieldName);
+
+		boolean validWord = isValidWord(
+			localizedFieldName, keyword, indexReaders);
+
+		if (!validWord) {
+			if (_log.isInfoEnabled()) {
+				_log.info(
+					"Not indexing because keyword " + keyword +
+						" is invalid");
 			}
 
-			String localizedFieldName = DocumentImpl.getLocalizedName(
-				languageId, keywordFieldName);
-
-			boolean validWord = isValidWord(
-				localizedFieldName, keyword, indexReaders);
-
-			if (!validWord) {
-				if (_log.isInfoEnabled()) {
-					_log.info(
-						"Not indexing because keyword " + keyword +
-							" is invalid");
-				}
-
-				return;
-			}
-
-			Document document = createDocument(
-				companyId, groupId, languageId, localizedFieldName, keyword,
-				weight, typeFieldValue, maxNGramLength);
-
-			indexAccessor.addDocument(document);
+			return;
 		}
-		finally {
-			LuceneHelperUtil.cleanUp(indexSearcher);
-		}
+
+		Document document = createDocument(
+			companyId, groupId, languageId, localizedFieldName, keyword,
+			weight, typeFieldValue, maxNGramLength);
+
+		indexAccessor.addDocument(document);
 	}
 
 	@Override
@@ -230,61 +223,54 @@ public class LuceneSpellCheckIndexWriter extends BaseSpellCheckIndexWriter {
 		IndexAccessor indexAccessor = LuceneHelperUtil.getIndexAccessor(
 			companyId);
 
-		IndexSearcher indexSearcher = null;
+		String localizedFieldName = DocumentImpl.getLocalizedName(
+			languageId, keywordFieldName);
 
-		try {
-			String localizedFieldName = DocumentImpl.getLocalizedName(
-				languageId, keywordFieldName);
+		IndexSearcher indexSearcher = LuceneHelperUtil.getSearcher(
+			indexAccessor.getCompanyId());
 
-			indexSearcher = LuceneHelperUtil.getSearcher(
-				indexAccessor.getCompanyId(), true);
+		List<IndexReader> indexReaders = new ArrayList<IndexReader>();
 
-			List<IndexReader> indexReaders = new ArrayList<IndexReader>();
+		if (indexSearcher.maxDoc() > 0) {
+			ReaderUtil.gatherSubReaders(
+				indexReaders, indexSearcher.getIndexReader());
+		}
 
-			if (indexSearcher.maxDoc() > 0) {
-				ReaderUtil.gatherSubReaders(
-					indexReaders, indexSearcher.getIndexReader());
-			}
+		Collection<Document> documents = new ArrayList<Document>();
 
-			Collection<Document> documents = new ArrayList<Document>();
+		DictionaryReader dictionaryReader = new DictionaryReader(
+			inputStream, StringPool.UTF8);
 
-			DictionaryReader dictionaryReader = new DictionaryReader(
-				inputStream, StringPool.UTF8);
+		Iterator<DictionaryEntry> iterator =
+			dictionaryReader.getDictionaryEntriesIterator();
 
-			Iterator<DictionaryEntry> iterator =
-				dictionaryReader.getDictionaryEntriesIterator();
+		while (iterator.hasNext()) {
+			DictionaryEntry dictionaryEntry = iterator.next();
 
-			while (iterator.hasNext()) {
-				DictionaryEntry dictionaryEntry = iterator.next();
+			String word = dictionaryEntry.getWord();
 
-				String word = dictionaryEntry.getWord();
+			boolean validWord = isValidWord(
+				localizedFieldName, word, indexReaders);
 
-				boolean validWord = isValidWord(
-					localizedFieldName, word, indexReaders);
-
-				if (!validWord) {
-					if (_log.isInfoEnabled()) {
-						_log.info(
-							"Not indexing because word " + word +
-								" is invalid");
-					}
-
-					continue;
+			if (!validWord) {
+				if (_log.isInfoEnabled()) {
+					_log.info(
+						"Not indexing because word " + word +
+							" is invalid");
 				}
 
-				Document document = createDocument(
-					companyId, groupId, languageId, localizedFieldName, word,
-					dictionaryEntry.getWeight(), typeFieldValue,
-					maxNGramLength);
-
-				documents.add(document);
+				continue;
 			}
 
-			indexAccessor.addDocuments(documents);
+			Document document = createDocument(
+				companyId, groupId, languageId, localizedFieldName, word,
+				dictionaryEntry.getWeight(), typeFieldValue,
+				maxNGramLength);
+
+			documents.add(document);
 		}
-		finally {
-			LuceneHelperUtil.cleanUp(indexSearcher);
-		}
+
+		indexAccessor.addDocuments(documents);
 	}
 
 	protected boolean isValidWord(

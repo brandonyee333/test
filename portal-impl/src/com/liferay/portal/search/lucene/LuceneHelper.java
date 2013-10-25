@@ -105,7 +105,7 @@ public interface LuceneHelper {
 
 	public Set<String> getQueryTerms(Query query);
 
-	public IndexSearcher getSearcher(long companyId, boolean readOnly)
+	public IndexSearcher getSearcher(long companyId)
 		throws IOException;
 
 	public String getSnippet(

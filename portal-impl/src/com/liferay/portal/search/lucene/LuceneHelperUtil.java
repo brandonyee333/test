@@ -335,10 +335,10 @@ public class LuceneHelperUtil {
 		return getLuceneHelper().getQueryTerms(query);
 	}
 
-	public static IndexSearcher getSearcher(long companyId, boolean readOnly)
+	public static IndexSearcher getSearcher(long companyId)
 		throws IOException {
 
-		return getLuceneHelper().getSearcher(companyId, readOnly);
+		return getLuceneHelper().getSearcher(companyId);
 	}
 
 	public static String getSnippet(Query query, String field, String s)

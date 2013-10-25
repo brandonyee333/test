@@ -110,6 +110,10 @@ public class LuceneHelperImpl implements LuceneHelper {
 	public void addDocument(long companyId, Document document)
 		throws IOException {
 
+		IndexSearcher indexSearcher = _indexSearchers.remove(companyId);
+
+		cleanUp(indexSearcher);
+
 		IndexAccessor indexAccessor = getIndexAccessor(companyId);
 
 		indexAccessor.addDocument(document);
@@ -343,6 +347,10 @@ public class LuceneHelperImpl implements LuceneHelper {
 			return;
 		}
 
+		IndexSearcher indexSearcher = _indexSearchers.remove(companyId);
+
+		cleanUp(indexSearcher);
+
 		indexAccessor.delete();
 	}
 
@@ -353,6 +361,10 @@ public class LuceneHelperImpl implements LuceneHelper {
 		if (indexAccessor == null) {
 			return;
 		}
+
+		IndexSearcher indexSearcher = _indexSearchers.remove(companyId);
+
+		cleanUp(indexSearcher);
 
 		indexAccessor.deleteDocuments(term);
 	}
@@ -534,18 +546,26 @@ public class LuceneHelperImpl implements LuceneHelper {
 	}
 
 	@Override
-	public IndexSearcher getSearcher(long companyId, boolean readOnly)
+	public IndexSearcher getSearcher(long companyId)
 		throws IOException {
+
+		IndexSearcher indexSearcher = _indexSearchers.get(companyId);
+
+		if (indexSearcher != null) {
+			return indexSearcher;
+		}
 
 		IndexAccessor indexAccessor = getIndexAccessor(companyId);
 
 		IndexReader indexReader = IndexReader.open(
-			indexAccessor.getLuceneDir(), readOnly);
+			indexAccessor.getLuceneDir(), true);
 
-		IndexSearcher indexSearcher = new IndexSearcher(indexReader);
+		indexSearcher = new IndexSearcher(indexReader);
 
 		indexSearcher.setDefaultFieldSortScoring(true, true);
 		indexSearcher.setSimilarity(new FieldWeightSimilarity());
+
+		_indexSearchers.put(companyId, indexSearcher);
 
 		return indexSearcher;
 	}
@@ -611,6 +631,10 @@ public class LuceneHelperImpl implements LuceneHelper {
 			return;
 		}
 
+		IndexSearcher indexSearcher = _indexSearchers.remove(companyId);
+
+		cleanUp(indexSearcher);
+		
 		IndexAccessor indexAccessor = _indexAccessors.get(companyId);
 
 		if (indexAccessor == null) {
@@ -687,6 +711,10 @@ public class LuceneHelperImpl implements LuceneHelper {
 				_loadIndexClusterEventListener);
 		}
 
+		for (IndexSearcher indexSearcher : _indexSearchers.values()) {
+			cleanUp(indexSearcher);
+		}
+
 		for (IndexAccessor indexAccessor : _indexAccessors.values()) {
 			indexAccessor.close();
 		}
@@ -694,6 +722,10 @@ public class LuceneHelperImpl implements LuceneHelper {
 
 	@Override
 	public void shutdown(long companyId) {
+		IndexSearcher indexSearcher = _indexSearchers.remove(companyId);
+
+		cleanUp(indexSearcher);
+
 		IndexAccessor indexAccessor = getIndexAccessor(companyId);
 
 		_indexAccessors.remove(indexAccessor);
@@ -735,6 +767,10 @@ public class LuceneHelperImpl implements LuceneHelper {
 	@Override
 	public void updateDocument(long companyId, Term term, Document document)
 		throws IOException {
+
+		IndexSearcher indexSearcher = _indexSearchers.remove(companyId);
+
+		cleanUp(indexSearcher);
 
 		IndexAccessor indexAccessor = getIndexAccessor(companyId);
 
@@ -929,6 +965,9 @@ public class LuceneHelperImpl implements LuceneHelper {
 	private LoadIndexClusterEventListener _loadIndexClusterEventListener;
 	private ThreadPoolExecutor _luceneIndexThreadPoolExecutor;
 	private Version _version;
+	private Map<Long, IndexSearcher> _indexSearchers =
+		new ConcurrentHashMap<Long, IndexSearcher>();
+	
 
 	private class LoadIndexClusterEventListener
 		implements ClusterEventListener {
@@ -1070,6 +1109,10 @@ public class LuceneHelperImpl implements LuceneHelper {
 						bootupAddress);
 			}
 
+			IndexSearcher indexSearcher = _indexSearchers.remove(_companyId);
+
+			cleanUp(indexSearcher);
+		
 			InputStream inputStream = null;
 
 			try {
