@@ -1970,7 +1970,7 @@ public class StringUtil {
 	}
 
 	public static String randomId() {
-		Random random = new Random();
+		Random random = new Random((Double.doubleToLongBits(Math.random())));
 
 		char[] chars = new char[4];
 
