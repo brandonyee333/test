@@ -285,8 +285,12 @@ public class PortletResponseUtil {
 
 		mimeResponse.setProperty(
 			HttpHeaders.CACHE_CONTROL, HttpHeaders.CACHE_CONTROL_PRIVATE_VALUE);
+
+        // ARENA
+        /*
 		mimeResponse.setProperty(
 			HttpHeaders.PRAGMA, HttpHeaders.PRAGMA_NO_CACHE_VALUE);
+        */
 
 		if (Validator.isNotNull(fileName)) {
 			String contentDisposition =
