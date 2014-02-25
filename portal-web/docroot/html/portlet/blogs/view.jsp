@@ -22,7 +22,7 @@ String assetTagName = ParamUtil.getString(request, "tag");
 
 PortletURL portletURL = renderResponse.createRenderURL();
 
-portletURL.setParameter("struts_action", "/blogs/view");
+portletURL.setParameter("struts_action", "/blogs/view" );
 %>
 
 <liferay-ui:trash-undo />

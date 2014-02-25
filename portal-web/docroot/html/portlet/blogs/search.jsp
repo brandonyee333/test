@@ -19,7 +19,7 @@
 <%
 String redirect = ParamUtil.getString(request, "redirect");
 
-String keywords = ParamUtil.getString(request, "keywords");
+String keywords = ParamUtil.getString(request, "keywords" );
 %>
 
 <liferay-portlet:renderURL varImpl="searchURL">
