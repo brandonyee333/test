@@ -291,11 +291,7 @@ public class JSPSourceProcessor extends BaseSourceProcessor {
 					matcher.start());
 			}
 
-			if (isAutoFix() && !content.equals(newContent)) {
-				fileUtil.write(file, newContent);
-
-				sourceFormatterHelper.printError(fileName, file);
-			}
+			compareAndAutoFixContent(file, fileName, content, newContent);
 
 			if (portalSource &&
 				!mainReleaseVersion.equals(MAIN_RELEASE_VERSION_6_1_0) &&
@@ -435,13 +431,7 @@ public class JSPSourceProcessor extends BaseSourceProcessor {
 		checkLanguageKeys(fileName, newContent, _taglibLanguageKeyPattern);
 		checkXSS(fileName, newContent);
 
-		if (isAutoFix() && (newContent != null) &&
-			!content.equals(newContent)) {
-
-			fileUtil.write(file, newContent);
-
-			sourceFormatterHelper.printError(fileName, file);
-		}
+		compareAndAutoFixContent(file, fileName, content, newContent);
 
 		return newContent;
 	}
@@ -1262,7 +1252,9 @@ public class JSPSourceProcessor extends BaseSourceProcessor {
 			}
 		}
 
-		imports = formatImports(imports, 17);
+		ImportsFormatter importsFormatter = new JSPImportsFormatter();
+
+		imports = importsFormatter.format(imports);
 
 		String beforeImports = content.substring(0, matcher.start());
 
@@ -1288,8 +1280,8 @@ public class JSPSourceProcessor extends BaseSourceProcessor {
 
 	private static final String[] _TAG_LIBRARIES = new String[] {
 		"aui", "c", "html", "jsp", "liferay-portlet", "liferay-security",
-		"liferay-theme", "liferay-ui", "liferay-util", "portlet", "struts",
-		"tiles"
+		"liferay-staging", "liferay-theme", "liferay-ui", "liferay-util",
+		"portlet", "struts", "tiles"
 	};
 
 	private List<String> _duplicateImportClassNames = new ArrayList<String>();

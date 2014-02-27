@@ -5,7 +5,7 @@
 		<execute action="CPSitetemplatesAdd#type" locator-key1="NAME_FIELD" value1="${siteTemplateName}" />
 
 		<if>
-			<equals arg1="${siteTemplateActive}" arg2="false" />
+			<equals arg1="${siteTemplateActive}" arg2="No" />
 			<then>
 				<execute action="CPSitetemplatesAdd#uncheck" locator-key1="ACTIVE_CHECKBOX" />
 			</then>
@@ -52,7 +52,7 @@
 		<execute action="CPSitetemplateSettings#type" locator-key1="NAME_FIELD" value1="${siteTemplateName} Edit" />
 
 		<if>
-			<equals arg1="${siteTemplateActiveEdit}" arg2="false" />
+			<equals arg1="${siteTemplateActiveEdit}" arg2="No" />
 			<then>
 				<execute action="CPSitetemplateSettings#uncheck" locator-key1="ACTIVE_CHECKBOX" />
 			</then>
@@ -62,6 +62,15 @@
 		</if>
 
 		<execute action="CPSitetemplateSettings#assertClick" locator-key1="SAVE_BUTTON" value1="Save" />
+	</command>
+
+	<command name="gotoViewPages">
+		<var name="key_siteTemplateName" value="${siteTemplateName}" />
+
+		<execute action="CPSitetemplates#assertTextEquals" locator-key1="SITE_TEMPLATE_TABLE_NAME" value1="${siteTemplateName}" />
+		<execute action="CPSitetemplates#assertClick" locator-key1="SITE_TEMPLATE_TABLE_ACTIONS" value1="Actions" />
+		<execute action="CPSitetemplates#assertClick" locator-key1="SITE_TEMPLATE_MENULIST_VIEW_PAGES" value1="View Pages" />
+		<execute action="CPSitetemplates#selectWindow" locator1="home - Liferay" />
 	</command>
 
 	<command name="tearDownCP">

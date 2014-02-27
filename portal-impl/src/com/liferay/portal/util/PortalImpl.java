@@ -167,7 +167,6 @@ import com.liferay.portal.upload.UploadPortletRequestImpl;
 import com.liferay.portal.upload.UploadServletRequestImpl;
 import com.liferay.portal.util.comparator.PortletControlPanelWeightComparator;
 import com.liferay.portal.webserver.WebServerServlet;
-import com.liferay.portlet.ActionResponseImpl;
 import com.liferay.portlet.InvokerPortlet;
 import com.liferay.portlet.PortletConfigFactoryUtil;
 import com.liferay.portlet.PortletInstanceFactoryUtil;
@@ -264,6 +263,7 @@ import javax.portlet.PortletURL;
 import javax.portlet.PreferencesValidator;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
+import javax.portlet.StateAwareResponse;
 import javax.portlet.ValidatorException;
 import javax.portlet.WindowState;
 
@@ -773,11 +773,14 @@ public class PortalImpl implements Portal {
 			}
 		}
 
-		ActionResponseImpl actionResponseImpl =
-			(ActionResponseImpl)actionResponse;
+		LiferayPortletResponse liferayPortletResponse =
+			getLiferayPortletResponse(actionResponse);
+
+		StateAwareResponse stateAwareResponse =
+			(StateAwareResponse)liferayPortletResponse;
 
 		Map<String, String[]> renderParameters =
-			actionResponseImpl.getRenderParameterMap();
+			stateAwareResponse.getRenderParameterMap();
 
 		actionResponse.setRenderParameter("p_p_lifecycle", "1");
 
@@ -788,7 +791,7 @@ public class PortalImpl implements Portal {
 			String[] values = actionRequest.getParameterValues(param);
 
 			if (renderParameters.get(
-					actionResponseImpl.getNamespace() + param) == null) {
+					actionResponse.getNamespace() + param) == null) {
 
 				actionResponse.setRenderParameter(param, values);
 			}
@@ -5204,7 +5207,9 @@ public class PortalImpl implements Portal {
 
 		// Timestamp
 
-		if ((parameterMap == null) || !parameterMap.containsKey("t")) {
+		if (((parameterMap == null) || !parameterMap.containsKey("t")) &&
+			 !(timestamp < 0)) {
+
 			if ((timestamp == 0) && uri.startsWith(StrutsUtil.TEXT_HTML_DIR)) {
 				ServletContext servletContext =
 					(ServletContext)request.getAttribute(WebKeys.CTX);
@@ -5704,6 +5709,10 @@ public class PortalImpl implements Portal {
 		return getUserPassword(getHttpServletRequest(portletRequest));
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public String getUserValue(long userId, String param, String defaultValue)
 		throws SystemException {
@@ -5988,7 +5997,7 @@ public class PortalImpl implements Portal {
 	}
 
 	/**
-	 * @deprecated As of 6.2.0 with no direct replacement
+	 * @deprecated As of 6.2.0, with no direct replacement
 	 */
 	@Deprecated
 	@Override
@@ -7960,7 +7969,7 @@ public class PortalImpl implements Portal {
 	}
 
 	/**
-	 * @deprecated As of 6.2.0 with no direct replacement
+	 * @deprecated As of 6.2.0, with no direct replacement
 	 */
 	@Deprecated
 	protected boolean isPanelSelectedPortlet(

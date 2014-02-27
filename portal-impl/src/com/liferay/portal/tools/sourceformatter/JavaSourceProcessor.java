@@ -168,7 +168,9 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 			}
 		}
 
-		imports = formatImports(sb.toString(), 7);
+		ImportsFormatter importsFormatter = new JavaImportsFormatter();
+
+		imports = importsFormatter.format(sb.toString());
 
 		content =
 			content.substring(0, matcher.start()) + imports +
@@ -1092,13 +1094,7 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 			oldContent = newContent;
 		}
 
-		if (isAutoFix() && (newContent != null) &&
-			!content.equals(newContent)) {
-
-			fileUtil.write(file, newContent);
-
-			sourceFormatterHelper.printError(fileName, file);
-		}
+		compareAndAutoFixContent(file, fileName, content, newContent);
 
 		return newContent;
 	}

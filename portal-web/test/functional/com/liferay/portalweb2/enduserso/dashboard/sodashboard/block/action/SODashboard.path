@@ -71,12 +71,17 @@
 </tr>
 <tr>
 	<td>NAVIGATION_PAGE</td>
-	<td>//div[@id='content']//li[contains(.,'${pageName}')]/a/span</td>
+	<td>//div[@id='content']//li[contains(.,'${key_pageName}')]/a/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NAVIGATION_USER_ADDED_PAGE</td>
+	<td>xpath=(//div[@id='content']//li[contains(@class,'lfr-nav-deletable')]/a/span)[2]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>NAVIGATION_PAGE_DELETE</td>
-	<td>//span[contains(@class,'delete-tab')]</td>
+	<td>xpath=(//div[@id='content']//li[contains(@class,'lfr-nav-deletable')]/span[contains(@class,'delete')])[2]</td>
 	<td></td>
 </tr>
 <tr>
@@ -142,6 +147,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>ANNOUNCEMENTS_ENTRY_SECTION</td>
+	<td>//div[@class='unread-entries-container']</td>
+	<td></td>
+</tr>
+<tr>
 	<td>ANNOUNCEMENTS_ENTRY_ACTION</td>
 	<td>//div[@class='entry-action']</td>
 	<td></td>
@@ -178,17 +188,17 @@
 </tr>
 <tr>
 	<td>ANNOUNCEMENTS_ENTRY_READ_ENTRIES_DROPDOWN</td>
-	<td>//div[contains(@class,'read-entries')]/div/span</td>
+	<td>//div[contains(@class,'header toggler-header')]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>ANNOUNCEMENTS_ENTRY_COLLAPSED</td>
-	<td>//div[contains(@class,'content-collapsed')]</td>
+	<td>//div[contains(@class,'toggler-header-collapsed')]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>ANNOUNCEMENTS_ENTRY_EXPANDED</td>
-	<td>//div[contains(@class,'content-expanded')]</td>
+	<td>//div[contains(@class,'toggler-header-expanded')]</td>
 	<td></td>
 </tr>
 <tr>

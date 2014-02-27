@@ -19,6 +19,7 @@
 <%@ page import="com.liferay.portal.DuplicateLockException" %><%@
 page import="com.liferay.portal.ImageTypeException" %><%@
 page import="com.liferay.portal.LARFileException" %><%@
+page import="com.liferay.portal.LARFileNameException" %><%@
 page import="com.liferay.portal.LARFileSizeException" %><%@
 page import="com.liferay.portal.LARTypeException" %><%@
 page import="com.liferay.portal.LayoutFriendlyURLException" %><%@
@@ -51,6 +52,7 @@ page import="com.liferay.portal.kernel.lar.PortletDataHandlerChoice" %><%@
 page import="com.liferay.portal.kernel.lar.PortletDataHandlerControl" %><%@
 page import="com.liferay.portal.kernel.lar.PortletDataHandlerKeys" %><%@
 page import="com.liferay.portal.kernel.lar.UserIdStrategy" %><%@
+page import="com.liferay.portal.kernel.lar.exportimportconfiguration.ExportImportConfigurationConstants" %><%@
 page import="com.liferay.portal.kernel.scheduler.SchedulerEngineHelperUtil" %><%@
 page import="com.liferay.portal.kernel.scheduler.StorageType" %><%@
 page import="com.liferay.portal.kernel.scheduler.messaging.SchedulerResponse" %><%@

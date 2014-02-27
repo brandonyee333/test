@@ -248,7 +248,7 @@ create unique index IX_D27B03E7 on ExpandoValue (tableId, columnId, classPK);
 create index IX_B71E92D5 on ExpandoValue (tableId, rowId_);
 
 create index IX_1827A2E5 on ExportImportConfiguration (companyId);
-create index IX_5095514E on ExportImportConfiguration (groupId, type_);
+create index IX_47CC6234 on ExportImportConfiguration (groupId, type_, status);
 
 create unique index IX_D0D5E397 on Group_ (companyId, classNameId, classPK);
 create unique index IX_5DE0BE11 on Group_ (companyId, classNameId, liveGroupId, name);
@@ -501,6 +501,7 @@ create index IX_8E6DA3A1 on PortletPreferences (portletId);
 
 create index IX_A1A8CB8B on RatingsEntry (classNameId, classPK, score);
 create unique index IX_B47E3C11 on RatingsEntry (userId, classNameId, classPK);
+create index IX_9F242DF6 on RatingsEntry (uuid_, companyId);
 
 create unique index IX_A6E99284 on RatingsStats (classNameId, classPK);
 

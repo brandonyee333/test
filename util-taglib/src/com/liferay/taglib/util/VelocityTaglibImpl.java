@@ -46,6 +46,7 @@ import com.liferay.taglib.portletext.IconRefreshTag;
 import com.liferay.taglib.portletext.RuntimeTag;
 import com.liferay.taglib.security.DoAsURLTag;
 import com.liferay.taglib.security.PermissionsURLTag;
+import com.liferay.taglib.staging.MenuTag;
 import com.liferay.taglib.theme.LayoutIconTag;
 import com.liferay.taglib.theme.MetaTagsTag;
 import com.liferay.taglib.theme.WrapPortletTag;
@@ -65,7 +66,6 @@ import com.liferay.taglib.ui.RatingsTag;
 import com.liferay.taglib.ui.SearchTag;
 import com.liferay.taglib.ui.SitesDirectoryTag;
 import com.liferay.taglib.ui.SocialBookmarksTag;
-import com.liferay.taglib.ui.StagingTag;
 import com.liferay.taglib.ui.ToggleTag;
 
 import java.io.Writer;
@@ -271,6 +271,7 @@ public class VelocityTaglibImpl implements VelocityTaglib {
 
 		setUp(breadcrumbTag);
 
+		breadcrumbTag.setDisplayStyle(displayStyle);
 		breadcrumbTag.setShowGuestGroup(showGuestGroup);
 		breadcrumbTag.setShowLayout(showLayout);
 		breadcrumbTag.setShowParentGroups(showParentGroups);
@@ -1152,13 +1153,21 @@ public class VelocityTaglibImpl implements VelocityTaglib {
 		socialBookmarksTag.runTag();
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #stagingMenu}
+	 */
 	@Override
 	public void staging() throws Exception {
-		StagingTag stagingTag = new StagingTag();
+		stagingMenu();
+	}
 
-		setUp(stagingTag);
+	@Override
+	public void stagingMenu() throws Exception {
+		MenuTag menuTag = new MenuTag();
 
-		stagingTag.runTag();
+		setUp(menuTag);
+
+		menuTag.runTag();
 	}
 
 	@Override

@@ -84,10 +84,6 @@ public class Logger {
 		sb.append(_actionCount);
 		sb.append("\">");
 
-		sb.append("<a href='#image");
-		sb.append(_actionCount);
-		sb.append("'>");
-
 		sb.append(getActionCommand(command, params));
 
 		sb.append("</a>");
@@ -104,13 +100,11 @@ public class Logger {
 		sb.append(_actionCount);
 		sb.append("\">");
 
-		sb.append(getActionCommand(command, params));
-
 		sb.append("</div>");
 
 		_actionCount++;
 
-		log("actionScreenShotLog", sb.toString(), "screenShot");
+		log("descriptionLog", sb.toString(), "screenShot");
 	}
 
 	public void logActionDescription(Object[] arguments) throws Exception {
@@ -239,15 +233,18 @@ public class Logger {
 
 		_screenshotCount++;
 
+		sb.append("&nbsp;&nbsp;&nbsp;&nbsp;");
+		sb.append("&nbsp;&nbsp;&nbsp;&nbsp;");
+		sb.append("&nbsp;&nbsp;&nbsp;&nbsp;");
+		sb.append("&nbsp;&nbsp;&nbsp;&nbsp;");
 		sb.append("<img alt=\"");
 		sb.append(_screenshotCount);
-		sb.append("\" height=\"750\" src=\"screenshots/");
+		sb.append("\" height=\"450\" src=\"screenshots/");
 		sb.append(_screenshotCount);
-		sb.append(".jpg\" width=\"1050\" />");
+		sb.append(".jpg\" width=\"630\" />");
+		sb.append("<br />");
 
-		sb.append("<hr />");
-
-		log("actionScreenShotLog", sb.toString(), "screenShot");
+		log("descriptionLog", sb.toString(), "descriptionLog");
 	}
 
 	public void logSeleniumCommand(Method method, Object[] arguments) {
@@ -524,9 +521,6 @@ public class Logger {
 	protected String getActionCommand(String command, String[] params) {
 		StringBundler sb = new StringBundler();
 
-		sb.append("[");
-		sb.append(_actionCount);
-		sb.append("] ");
 		sb.append("Running <b>");
 		sb.append(command);
 		sb.append("</b>");

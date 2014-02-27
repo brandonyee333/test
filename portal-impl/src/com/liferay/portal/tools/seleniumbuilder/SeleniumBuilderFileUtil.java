@@ -515,6 +515,11 @@ public class SeleniumBuilderFileUtil {
 				prefix + "Invalid " + string1 + " attribute value " + string2 +
 					" in " + suffix);
 		}
+		else if (errorCode == 1017) {
+			throw new IllegalArgumentException(
+				prefix + "Description '" + string1 +
+					"' must end with a '.' in " + suffix);
+		}
 		else if (errorCode == 2000) {
 			throw new IllegalArgumentException(
 				prefix + "Too many child elements in the " + string1 +
@@ -532,6 +537,11 @@ public class SeleniumBuilderFileUtil {
 		else if (errorCode == 2003) {
 			throw new IllegalArgumentException(
 				prefix + "Illegal XPath " + string1 + " in " + suffix);
+		}
+		else if (errorCode == 2004) {
+			throw new IllegalArgumentException(
+				prefix + "Description '" + string1 +
+					"' must title convention in " + suffix);
 		}
 		else {
 			throw new IllegalArgumentException(prefix + suffix);
@@ -745,9 +755,18 @@ public class SeleniumBuilderFileUtil {
 				throwValidationException(1002, fileName, element, elementName);
 			}
 
-			if (elementName.equals("description") ||
-				elementName.equals("echo") || elementName.equals("fail")) {
+			if (elementName.equals("description")) {
+				validateSimpleElement(
+					fileName, element, new String[] {"message"});
 
+				String message = element.attributeValue("message");
+
+				if (!message.endsWith(".")) {
+					throwValidationException(
+						1017, fileName, commandElement, message);
+				}
+			}
+			else if (elementName.equals("echo") || elementName.equals("fail")) {
 				validateSimpleElement(
 					fileName, element, new String[] {"message"});
 			}
@@ -772,6 +791,9 @@ public class SeleniumBuilderFileUtil {
 			}
 			else if (elementName.equals("property")) {
 				validatePropertyElement(fileName, element);
+			}
+			else if (elementName.equals("take-screenshot")) {
+				validateSimpleElement(fileName, element, new String[0]);
 			}
 			else if (elementName.equals("var")) {
 				validateVarElement(fileName, element);
@@ -1286,7 +1308,7 @@ public class SeleniumBuilderFileUtil {
 					fileName, element,
 					new String[] {
 						"description", "echo", "execute", "fail", "for", "if",
-						"var", "while",
+						"take-screenshot", "var", "while",
 					},
 					new String[] {"action", "macro"}, new String[] {"var"},
 					new String[] {
@@ -1375,30 +1397,81 @@ public class SeleniumBuilderFileUtil {
 			throwValidationException(1002, fileName, element, elementName);
 		}
 
-		Element element = elements.get(1);
+		Element locatorElement = elements.get(1);
 
-		String text = element.getText();
+		String locator = locatorElement.getText();
 
-		text = text.replace("${","");
-		text = text.replace("}","");
-		text = text.replace("/-/","/");
+		locator = locator.replace("${","");
+		locator = locator.replace("}","");
+		locator = locator.replace("/-/","/");
 
-		if (text.endsWith("/")) {
-			text = text.substring(0, text.length() - 1);
+		if (locator.endsWith("/")) {
+			locator = locator.substring(0, locator.length() - 1);
 		}
 
-		if (!text.equals("") && !text.startsWith("link=") &&
-			!text.contains(".png")) {
+		if (!locator.equals("") && !locator.startsWith("link=") &&
+			!locator.contains(".png")) {
 
 			try {
 				XPathFactory xPathFactory = XPathFactory.newInstance();
 
 				XPath xPath = xPathFactory.newXPath();
 
-				xPath.compile(text);
+				xPath.compile(locator);
 			}
 			catch (Exception e) {
-				throwValidationException(2003, fileName, text);
+				throwValidationException(2003, fileName, locator);
+			}
+		}
+
+		Element keyElement = elements.get(0);
+
+		String key = keyElement.getText();
+
+		Element descriptionElement = elements.get(2);
+
+		String description = descriptionElement.getText();
+
+		if (!key.equals("") && !key.equals("EXTEND_ACTION_PATH") &&
+			!key.equals("PAGE_NAME") && !description.equals("")) {
+
+			if (description.endsWith(".")) {
+				throwValidationException(2004, fileName, description);
+			}
+
+			Pattern statementPattern = Pattern.compile("[A-Z0-9].*");
+
+			Matcher statmentMatcher = statementPattern.matcher(description);
+
+			if (!statmentMatcher.find()) {
+				throwValidationException(2004, fileName, description);
+			}
+
+			Pattern wordPattern1 = Pattern.compile("[A-Za-z0-9\\-]+");
+
+			Matcher wordMatcher1 = wordPattern1.matcher(description);
+
+			while (wordMatcher1.find()) {
+				String word = wordMatcher1.group();
+
+				if (word.equals("a") || word.equals("and") ||
+					word.equals("as") || word.equals("at") ||
+					word.equals("by") || word.equals("for") ||
+					word.equals("from") || word.equals("in") ||
+					word.equals("of") || word.equals("the") ||
+					word.equals("to")) {
+
+					continue;
+				}
+
+				Pattern wordPattern2 = Pattern.compile(
+					"[A-Z0-9][A-Za-z0-9\\-]*");
+
+				Matcher wordMatcher2 = wordPattern2.matcher(word);
+
+				if (!wordMatcher2.find()) {
+					throwValidationException(2004, fileName, description);
+				}
 			}
 		}
 	}
@@ -1548,7 +1621,7 @@ public class SeleniumBuilderFileUtil {
 					fileName, element,
 					new String[] {
 						"description", "echo", "execute", "fail", "for", "if",
-						"property", "var", "while"
+						"property", "take-screenshot", "var", "while"
 					},
 					new String[] {"action", "macro", "test-case"},
 					new String[] {"var"},
@@ -1577,8 +1650,8 @@ public class SeleniumBuilderFileUtil {
 				validateBlockElement(
 					fileName, element,
 					new String[] {
-						"description", "echo", "execute", "fail", "if", "var",
-						"while"
+						"description", "echo", "execute", "fail", "if",
+						"take-screenshot", "var", "while"
 					},
 					new String[] {"action", "macro", "test-case"},
 					new String[] {"var"},
@@ -1741,10 +1814,11 @@ public class SeleniumBuilderFileUtil {
 		});
 	private static List<String> _componentNames = ListUtil.fromArray(
 		new String[] {
-			"marketplace", "portal-administration", "portal-apis",
-			"portal-application-standards", "portal-authentication",
-			"portal-business-productivity", "portal-calendar",
-			"portal-collaboration", "portal-configuration", "portal-deployment",
+			"marketplace", "marketplace-known-issues", "portal-administration",
+			"portal-apis", "portal-application-standards",
+			"portal-authentication", "portal-business-productivity",
+			"portal-calendar", "portal-collaboration", "portal-configuration",
+			"portal-deployment", "portal-known-issues",
 			"portal-document-management", "portal-frameworks",
 			"portal-infrastructure", "portal-integrations", "portal-legacy",
 			"portal-opensocial", "portal-operations", "portal-permissions",
@@ -1755,8 +1829,9 @@ public class SeleniumBuilderFileUtil {
 			"portal-user-interface", "portal-util-misc", "portal-wcm",
 			"portal-web-forms-and-data-lists", "portal-workflow",
 			"social-office-administration", "social-office-dashboard",
-			"social-office-environment", "social-office-profile",
-			"social-office-site", "social-office-user-bar"
+			"social-office-environment", "social-office-known-issues",
+			"social-office-profile", "social-office-site",
+			"social-office-user-bar"
 		});
 	private static List<String> _methodNames = ListUtil.fromArray(
 		new String[] {
@@ -1768,7 +1843,8 @@ public class SeleniumBuilderFileUtil {
 			"and", "case", "command", "condition", "contains", "default",
 			"definition", "description", "echo", "else", "elseif", "equals",
 			"execute", "fail", "for", "if", "isset", "not", "or", "property",
-			"set-up", "td", "tear-down", "then", "tr", "while", "var"
+			"set-up", "take-screenshot", "td", "tear-down", "then", "tr",
+			"while", "var"
 		});
 
 	private String _baseDir;

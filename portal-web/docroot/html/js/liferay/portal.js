@@ -118,7 +118,7 @@
 					{
 						cssClass: 'tooltip-help',
 						opacity: 1,
-						trigger: obj,
+						stickDuration: 300,
 						visible: false,
 						zIndex: Liferay.zIndex.TOOLTIP
 					}
@@ -127,16 +127,25 @@
 				instance._cached = cached;
 			}
 
-			if (text == null) {
-				obj = A.one(obj);
+			obj = A.one(obj);
 
+			if (text == null) {
 				text = instance._getText(obj.guid());
 			}
 
 			cached.set(BODY_CONTENT, text);
+			cached.set(TRIGGER, obj);
 
-			cached.set(TRIGGER, obj).show();
+			obj.detach('hover');
+
+			obj.on(
+				'hover',
+				A.bind('_onBoundingBoxMouseenter', cached),
+				A.bind('_onBoundingBoxMouseleave', cached)
+			);
+
+			cached.show();
 		},
-		['aui-tooltip-delegate']
+		['aui-tooltip-base']
 	);
 })(AUI(), Liferay);

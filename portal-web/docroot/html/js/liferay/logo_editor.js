@@ -53,7 +53,7 @@ AUI.add(
 								},
 								uploadStart: {
 									defaultFn: A.rbind('_defUploadStartFn', instance)
-								},
+								}
 							}
 						);
 
@@ -97,6 +97,8 @@ AUI.add(
 						}
 
 						if (exception) {
+							var message = '';
+
 							if (exception == 'FileSizeException') {
 								message = Lang.sub(
 									Liferay.Language.get('upload-images-no-larger-than-x-k'),

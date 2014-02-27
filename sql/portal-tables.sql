@@ -791,7 +791,11 @@ create table ExportImportConfiguration (
 	name VARCHAR(75) null,
 	description STRING null,
 	type_ INTEGER,
-	settings_ TEXT null
+	settings_ TEXT null,
+	status INTEGER,
+	statusByUserId LONG,
+	statusByUserName VARCHAR(75) null,
+	statusDate DATE null
 );
 
 create table Group_ (
@@ -1590,6 +1594,7 @@ create table PortletPreferences (
 );
 
 create table RatingsEntry (
+	uuid_ VARCHAR(75) null,
 	entryId LONG not null primary key,
 	companyId LONG,
 	userId LONG,

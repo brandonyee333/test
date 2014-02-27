@@ -23,7 +23,17 @@
 
 	${selenium}.sendLogger(${lineId} + "${lineNumber}", "pending");
 
-	<#if name == "echo">
+	<#if name =="description">
+		<#assign variableContext = variableContextStack.peek()>
+
+		<#assign message = element.attributeValue("message")>
+
+		${selenium}.sendMacroDescriptionLogger(RuntimeVariables.evaluateVariable("${seleniumBuilderFileUtil.escapeJava(message)}", ${variableContext}));
+
+		<#assign lineNumber = element.attributeValue("line-number")>
+
+		${selenium}.sendLogger(${lineId} + "${lineNumber}", "pass");
+	<#elseif name == "echo">
 		<#assign variableContext = variableContextStack.peek()>
 
 		<#assign message = element.attributeValue("message")>
@@ -64,16 +74,6 @@
 			</#if>
 
 			<#include "action_log_element.ftl">
-
-			<#if !(action?contains("#is"))>
-				<#if testCaseName??>
-					selenium
-				<#else>
-					liferaySelenium
-				</#if>
-
-				.saveScreenshot(commandScopeVariables.get("testCaseName"));
-			</#if>
 
 			<#include "action_element.ftl">
 
@@ -173,6 +173,18 @@
 
 		${selenium}.sendLogger(${lineId} + "${lineNumber}", "pass");
 	<#elseif name == "property">
+		<#assign lineNumber = element.attributeValue("line-number")>
+
+		${selenium}.sendLogger(${lineId} + "${lineNumber}", "pass");
+	<#elseif name == "take-screenshot">
+		<#assign variableContext = variableContextStack.peek()>
+
+		executeScopeVariables = new HashMap<String, String>();
+
+		executeScopeVariables.putAll(${variableContext});
+
+		${selenium}.saveScreenshot(commandScopeVariables.get("testCaseName"));
+
 		<#assign lineNumber = element.attributeValue("line-number")>
 
 		${selenium}.sendLogger(${lineId} + "${lineNumber}", "pass");

@@ -284,6 +284,11 @@ public class LuceneHelperImpl implements LuceneHelper {
 		}
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #releaseIndexSearcher(long,
+	 *             IndexSearcher)}
+	 */
+	@Deprecated
 	@Override
 	public void cleanUp(IndexSearcher indexSearcher) {
 		if (indexSearcher == null) {
@@ -425,6 +430,13 @@ public class LuceneHelperImpl implements LuceneHelper {
 	}
 
 	@Override
+	public IndexSearcher getIndexSearcher(long companyId) throws IOException {
+		IndexAccessor indexAccessor = getIndexAccessor(companyId);
+
+		return indexAccessor.acquireIndexSearcher();
+	}
+
+	@Override
 	public long getLastGeneration(long companyId) {
 		if (!isLoadIndexFromClusterEnabled()) {
 			return IndexAccessor.DEFAULT_LAST_GENERATION;
@@ -520,6 +532,10 @@ public class LuceneHelperImpl implements LuceneHelper {
 		return queryTerms;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #getIndexSearcher(long)}
+	 */
+	@Deprecated
 	@Override
 	public IndexSearcher getSearcher(long companyId, boolean readOnly)
 		throws IOException {
@@ -645,6 +661,16 @@ public class LuceneHelperImpl implements LuceneHelper {
 		long localLastGeneration = getLastGeneration(companyId);
 
 		_loadIndexFromCluster(indexAccessor, localLastGeneration);
+	}
+
+	@Override
+	public void releaseIndexSearcher(
+			long companyId, IndexSearcher indexSearcher)
+		throws IOException {
+
+		IndexAccessor indexAccessor = getIndexAccessor(companyId);
+
+		indexAccessor.releaseIndexSearcher(indexSearcher);
 	}
 
 	public void setAnalyzer(Analyzer analyzer) {
@@ -804,7 +830,8 @@ public class LuceneHelperImpl implements LuceneHelper {
 
 		ClusterRequest clusterRequest = ClusterRequest.createUnicastRequest(
 			new MethodHandler(
-				_createTokenMethodKey, _TRANSIENT_TOKEN_KEEP_ALIVE_TIME),
+				_createTokenMethodKey,
+				_CLUSTER_LINK_NODE_BOOTUP_RESPONSE_TIMEOUT),
 			bootupAddress);
 
 		FutureClusterResponses futureClusterResponses =
@@ -970,8 +997,6 @@ public class LuceneHelperImpl implements LuceneHelper {
 		GetterUtil.getInteger(
 			PropsUtil.get(PropsKeys.LUCENE_BOOLEAN_QUERY_CLAUSE_MAX_SIZE),
 			BooleanQuery.getMaxClauseCount());
-
-	private static final long _TRANSIENT_TOKEN_KEEP_ALIVE_TIME = 10000;
 
 	private static Log _log = LogFactoryUtil.getLog(LuceneHelperImpl.class);
 

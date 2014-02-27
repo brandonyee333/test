@@ -88,64 +88,9 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		return _errorMessages;
 	}
 
-	protected static String formatImports(String imports, int classStartPos)
-		throws IOException {
-
-		if (imports.contains("/*") || imports.contains("*/") ||
-			imports.contains("//")) {
-
-			return imports + "\n";
-		}
-
-		List<ImportPackage> importPackages = new ArrayList<ImportPackage>();
-
-		UnsyncBufferedReader unsyncBufferedReader = new UnsyncBufferedReader(
-			new UnsyncStringReader(imports));
-
-		String line = null;
-
-		while ((line = unsyncBufferedReader.readLine()) != null) {
-			ImportPackage importPackage = ImportPackageFactoryUtil.create(line);
-
-			if ((importPackage != null) &&
-				!importPackages.contains(importPackage)) {
-
-				importPackages.add(importPackage);
-			}
-		}
-
-		importPackages = ListUtil.sort(importPackages);
-
-		StringBundler sb = new StringBundler(3 * importPackages.size());
-
-		String temp = null;
-
-		for (int i = 0; i < importPackages.size(); i++) {
-			ImportPackage importPackage = importPackages.get(i);
-
-			String s = importPackage.getLine();
-
-			int pos = s.indexOf(".");
-
-			pos = s.indexOf(".", pos + 1);
-
-			if (pos == -1) {
-				pos = s.indexOf(".");
-			}
-
-			String packageLevel = s.substring(classStartPos, pos);
-
-			if ((i != 0) && !packageLevel.equals(temp)) {
-				sb.append("\n");
-			}
-
-			temp = packageLevel;
-
-			sb.append(s);
-			sb.append("\n");
-		}
-
-		return sb.toString();
+	@Override
+	public SourceMismatchException getFirstSourceMismatchException() {
+		return _firstSourceMismatchException;
 	}
 
 	protected void checkIfClauseParentheses(
@@ -367,6 +312,30 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		}
 
 		processErrorMessage(fileName, "plus: " + fileName + " " + lineCount);
+	}
+
+	protected void compareAndAutoFixContent(
+			File file, String fileName, String content, String newContent)
+		throws IOException {
+
+		if (content.equals(newContent)) {
+			return;
+		}
+
+		fileName = StringUtil.replace(
+			fileName, StringPool.BACK_SLASH, StringPool.SLASH);
+
+		if (_autoFix) {
+			fileUtil.write(file, newContent);
+		}
+		else if (_firstSourceMismatchException == null) {
+			_firstSourceMismatchException =
+				new SourceMismatchException(fileName, content, newContent);
+		}
+
+		if (_printErrors) {
+			sourceFormatterHelper.printError(fileName, file);
+		}
 	}
 
 	protected String fixCompatClassImports(File file, String content)
@@ -909,10 +878,6 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		return false;
 	}
 
-	protected boolean isAutoFix() {
-		return _autoFix;
-	}
-
 	protected boolean isExcluded(Properties properties, String fileName) {
 		return isExcluded(properties, fileName, -1);
 	}
@@ -1223,6 +1188,7 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 	private String _copyright;
 	private List<String> _errorMessages = new ArrayList<String>();
 	private String[] _excludes;
+	private SourceMismatchException _firstSourceMismatchException;
 	private boolean _initialized;
 	private String _oldCopyright;
 	private int _pluginsDirectorylevel;

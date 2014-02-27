@@ -20,7 +20,22 @@
 </tr>
 <tr>
 	<td>TITLE</td>
-	<td>//h1[@class='portlet-title']/span[2]</td>
+	<td>//h1[@class='portlet-title']/span[1]</td>
+	<td>Portlet Header</td>
+</tr>
+<tr>
+	<td>TITLE_1</td>
+	<td>xpath=(//h1[@class='portlet-title']/span[2])[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TITLE_2</td>
+	<td>xpath=(//h1[@class='portlet-title']/span[2])[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TITLE_3</td>
+	<td>xpath=(//h1[@class='portlet-title']/span[2])[3]</td>
 	<td></td>
 </tr>
 <tr>
@@ -86,6 +101,11 @@
 <tr>
 	<td>PORTLET_BODY</td>
 	<td>//section[contains(.,'${key_portletName}')]//div[@class='portlet-body']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PORTLET_CONTENT</td>
+	<td>//div[@class='portlet-content']</td>
 	<td></td>
 </tr>
 <tr>

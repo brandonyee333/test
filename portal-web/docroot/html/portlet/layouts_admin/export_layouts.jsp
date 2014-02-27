@@ -17,6 +17,10 @@
 <%@ include file="/html/portlet/layouts_admin/init.jsp" %>
 
 <%
+String cmd = ParamUtil.getString(request, Constants.CMD);
+
+String exportNav = ParamUtil.getString(request, "exportNav", "custom");
+
 long groupId = ParamUtil.getLong(request, "groupId");
 
 Group group = null;
@@ -73,11 +77,26 @@ if (selectedLayouts.isEmpty()) {
 PortletURL portletURL = renderResponse.createRenderURL();
 
 portletURL.setParameter("struts_action", "/layouts_admin/export_layouts");
-portletURL.setParameter("tabs2", "current-and-previous");
+portletURL.setParameter(Constants.CMD, Constants.EXPORT);
+
+if (cmd.equals(Constants.ADD)) {
+	portletURL.setParameter("tabs2", "new-export-process");
+	portletURL.setParameter("exportNav", "export-configurations");
+}
+else {
+	portletURL.setParameter("tabs2", "current-and-previous");
+}
+
 portletURL.setParameter("groupId", String.valueOf(groupId));
 portletURL.setParameter("liveGroupId", String.valueOf(liveGroupId));
 portletURL.setParameter("privateLayout", String.valueOf(privateLayout));
 portletURL.setParameter("rootNodeName", rootNodeName);
+
+String tabs2Names = StringPool.BLANK;
+
+if (!cmd.equals(Constants.ADD)) {
+	tabs2Names = "new-export-process,current-and-previous";
+}
 %>
 
 <portlet:renderURL var="backURL">
@@ -90,22 +109,47 @@ portletURL.setParameter("rootNodeName", rootNodeName);
 />
 
 <liferay-ui:tabs
-	names="new-export-process,current-and-previous"
+	names="<%= tabs2Names %>"
 	param="tabs2"
 	refresh="<%= false %>"
 >
+
+	<%
+	int incompleteBackgroundTaskCount = BackgroundTaskLocalServiceUtil.getBackgroundTasksCount(liveGroupId, LayoutExportBackgroundTaskExecutor.class.getName(), false);
+	%>
+
+	<div class="<%= (incompleteBackgroundTaskCount == 0) ? "hide" : "in-progress" %>" id="<portlet:namespace />incompleteProcessMessage">
+		<liferay-util:include page="/html/portlet/layouts_admin/incomplete_processes_message.jsp">
+			<liferay-util:param name="incompleteBackgroundTaskCount" value="<%= String.valueOf(incompleteBackgroundTaskCount) %>" />
+		</liferay-util:include>
+	</div>
+
 	<liferay-ui:section>
-		<div id="<portlet:namespace />exportImportOptions">
+		<div <%= !cmd.equals(Constants.ADD) ? StringPool.BLANK : "class=\"hide\"" %>>
+			<aui:nav-bar>
+				<aui:nav id="exportNav">
+					<aui:nav-item
+						data-value="custom"
+						iconCssClass="icon-puzzle"
+						label="custom"
+					/>
 
-			<%
-			int incompleteBackgroundTaskCount = BackgroundTaskLocalServiceUtil.getBackgroundTasksCount(liveGroupId, LayoutExportBackgroundTaskExecutor.class.getName(), false);
-			%>
+					<aui:nav-item
+						data-value="export-configurations"
+						iconCssClass="icon-archive"
+						label="export-templates"
+					/>
+				</aui:nav>
+			</aui:nav-bar>
+		</div>
 
-			<div class="<%= (incompleteBackgroundTaskCount == 0) ? "hide" : "in-progress" %>" id="<portlet:namespace />incompleteProcessMessage">
-				<liferay-util:include page="/html/portlet/layouts_admin/incomplete_processes_message.jsp">
-					<liferay-util:param name="incompleteBackgroundTaskCount" value="<%= String.valueOf(incompleteBackgroundTaskCount) %>" />
-				</liferay-util:include>
-			</div>
+		<div <%= exportNav.equals("custom") ? StringPool.BLANK : "class=\"hide\"" %> id="<portlet:namespace />exportOptions">
+			<portlet:actionURL var="addExportConfigurationURL">
+				<portlet:param name="struts_action" value="/layouts_admin/edit_export_configuration" />
+				<portlet:param name="groupId" value="<%= String.valueOf(liveGroupId) %>" />
+				<portlet:param name="privateLayout" value="<%= String.valueOf(privateLayout) %>" />
+				<portlet:param name="exportLAR" value="<%= Boolean.TRUE.toString() %>" />
+			</portlet:actionURL>
 
 			<portlet:actionURL var="exportPagesURL">
 				<portlet:param name="struts_action" value="/layouts_admin/export_layouts" />
@@ -114,15 +158,24 @@ portletURL.setParameter("rootNodeName", rootNodeName);
 				<portlet:param name="exportLAR" value="<%= Boolean.TRUE.toString() %>" />
 			</portlet:actionURL>
 
-			<aui:form action='<%= exportPagesURL + "&etag=0&strip=0" %>' cssClass="lfr-export-dialog" method="post" name="fm1">
-				<aui:input name="<%= Constants.CMD %>" type="hidden" value="<%= Constants.EXPORT %>" />
+			<aui:form action='<%= (cmd.equals(Constants.ADD) ? addExportConfigurationURL : exportPagesURL) + "&etag=0&strip=0" %>' cssClass="lfr-export-dialog" method="post" name="fm1">
+				<aui:input name="<%= Constants.CMD %>" type="hidden" value="<%= cmd.equals(Constants.ADD) ? Constants.ADD : Constants.EXPORT %>" />
 				<aui:input name="redirect" type="hidden" value="<%= portletURL.toString() %>" />
 
+				<liferay-ui:error exception="<%= LARFileNameException.class %>" message="please-enter-a-file-with-a-valid-file-name" />
+
 				<div class="export-dialog-tree">
-					<aui:input cssClass="file-selector" label="export-the-selected-data-to-the-given-lar-file-name" name="exportFileName" showRequiredLabel="<%= false %>" size="50" value='<%= HtmlUtil.escape(StringUtil.replace(rootNodeName, " ", "_")) + "-" + Time.getShortTimestamp() + ".lar" %>'>
-						<aui:validator name="maxLength">75</aui:validator>
-						<aui:validator name="required" />
-					</aui:input>
+					<c:if test="<%= cmd.equals(Constants.ADD) %>">
+						<aui:model-context model="<%= ExportImportConfiguration.class %>" />
+
+						<aui:fieldset cssClass="options-group" label="new-export-template">
+							<aui:input label="name" name="name" showRequiredLabel="<%= false %>">
+								<aui:validator name="required" />
+							</aui:input>
+
+							<aui:input label="description" name="description" showRequiredLabel="<%= false %>" />
+						</aui:fieldset>
+					</c:if>
 
 					<aui:input name="layoutIds" type="hidden" />
 
@@ -584,21 +637,41 @@ portletURL.setParameter("rootNodeName", rootNodeName);
 				</div>
 
 				<aui:button-row>
-					<aui:button type="submit" value="export" />
+					<c:choose>
+						<c:when test="<%= cmd.equals(Constants.ADD) %>">
+							<aui:button type="submit" value="save" />
 
-					<aui:button href="<%= backURL %>" type="cancel" />
+							<aui:button href="<%= portletURL.toString() %>" type="cancel" />
+						</c:when>
+						<c:otherwise>
+							<aui:button type="submit" value="export" />
+
+							<aui:button href="<%= backURL %>" type="cancel" />
+						</c:otherwise>
+					</c:choose>
 				</aui:button-row>
 			</aui:form>
 		</div>
-	</liferay-ui:section>
 
-	<liferay-ui:section>
-		<div class="process-list" id="<portlet:namespace />exportProcesses">
-			<liferay-util:include page="/html/portlet/layouts_admin/export_layouts_processes.jsp">
-				<liferay-util:param name="groupId" value="<%= String.valueOf(liveGroupId) %>" />
+		<div <%= exportNav.equals("export-configurations") ? StringPool.BLANK : "class=\"hide\"" %> id="<portlet:namespace />exportConfigurations">
+			<liferay-util:include page="/html/portlet/layouts_admin/export_layouts_configurations.jsp">
+				<liferay-util:param name="groupId" value="<%= String.valueOf(groupId) %>" />
+				<liferay-util:param name="liveGroupId" value="<%= String.valueOf(liveGroupId) %>" />
+				<liferay-util:param name="privateLayout" value="<%= String.valueOf(privateLayout) %>" />
+				<liferay-util:param name="rootNodeName" value="<%= rootNodeName %>" />
 			</liferay-util:include>
 		</div>
 	</liferay-ui:section>
+
+	<c:if test="<%= !cmd.equals(Constants.ADD) %>">
+		<liferay-ui:section>
+			<div class="process-list" id="<portlet:namespace />exportProcesses">
+				<liferay-util:include page="/html/portlet/layouts_admin/export_layouts_processes.jsp">
+					<liferay-util:param name="groupId" value="<%= String.valueOf(liveGroupId) %>" />
+				</liferay-util:include>
+			</div>
+		</liferay-ui:section>
+	</c:if>
 </liferay-ui:tabs>
 
 <aui:script use="liferay-export-import">
@@ -666,6 +739,28 @@ portletURL.setParameter("rootNodeName", rootNodeName);
 			submitForm(form, form.attr('action'), false);
 		}
 	);
+
+	var clickHandler = function(event) {
+		var dataValue = event.target.ancestor('li').attr('data-value');
+
+		processDataValue(dataValue);
+	};
+
+	var processDataValue = function(dataValue) {
+		var exportOptions = A.one('#<portlet:namespace />exportOptions');
+		var exportConfigurations = A.one('#<portlet:namespace />exportConfigurations');
+
+		if (dataValue === 'custom') {
+			exportConfigurations.hide();
+			exportOptions.show();
+		}
+		else if (dataValue === 'export-configurations') {
+			exportOptions.hide();
+			exportConfigurations.show();
+		}
+	};
+
+	A.one('#<portlet:namespace />exportNav').delegate('click', clickHandler, 'li a');
 </aui:script>
 
 <aui:script>

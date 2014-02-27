@@ -471,7 +471,7 @@ $dockbarOpenGradientStart: #0EA6F9;
 	.portlet-topper-toolbar {
 		position: absolute;
 		right: 21px;
-		top: 23px;
+		top: 20px;
 	}
 
 	.nav-list {
@@ -642,7 +642,7 @@ $dockbarOpenGradientStart: #0EA6F9;
 				&.open {
 					.toggler-content {
 						border: 1px solid #DDD;
-						left: 49px;
+						left: 48px;
 						margin-top: 0 !important;
 
 						&:before {
@@ -666,7 +666,11 @@ $dockbarOpenGradientStart: #0EA6F9;
 
 			.accordion-toggle {
 				position: relative;
-				text-indent: -9999px;
+				text-align: center;
+
+				.title-text {
+					display: none;
+				}
 			}
 
 			.toggler-content-wrapper {
@@ -690,28 +694,10 @@ $dockbarOpenGradientStart: #0EA6F9;
 				padding: 0;
 
 				.accordion {
+					border-bottom-width: 0;
+
 					.toggler-header .accordion-toggle {
 						background: none no-repeat right;
-					}
-
-					#panel-manage-site_administration\.configuration .toggler-header .accordion-toggle {
-						background-image: url(../images/custom/panel_icons_white_server_bg.png);
-						right: 8px;
-					}
-
-					#panel-manage-site_administration\.content .toggler-header .accordion-toggle {
-						background-image: url(../images/custom/panel_icons_white_portal_bg.png);
-						right: 4px;
-					}
-
-					#panel-manage-site_administration\.pages .toggler-header .accordion-toggle {
-						background-image: url(../images/custom/panel_icons_white_marketplace_bg.png);
-						right: 4px;
-					}
-
-					#panel-manage-site_administration\.users .toggler-header .accordion-toggle {
-						background-image: url(../images/custom/panel_icons_white_marketplace_bg.png);
-						right: 4px;
 					}
 
 					.accordion-group {
@@ -966,17 +952,17 @@ $dockbarOpenGradientStart: #0EA6F9;
 
 	.panel-page-menu .portlet-borderless-container {
 		&:after {
-				background-color: #D1D1D1;
+			background-color: #D1D1D1;
 
-				@include background-image(linear-gradient(#FFF, #D1D1D1));
+			@include background-image(linear-gradient(#FFF, #D1D1D1));
 
-				content: '';
-				display: block;
-				height: 15px;
-				position: absolute;
-				right: -1px;
-				top: 0;
-				width: 1px;
+			content: '';
+			display: block;
+			height: 15px;
+			position: absolute;
+			right: -1px;
+			top: 0;
+			width: 1px;
 		}
 
 		.accordion .accordion-group {
@@ -1074,6 +1060,10 @@ $dockbarOpenGradientStart: #0EA6F9;
 	/* ---------- Media queries ---------- */
 
 	@include respond-to(phone, tablet) {
+		.portlet-title {
+			display: inline-block;
+		}
+
 		ul.form-navigator.well {
 			.button-holder {
 				padding-bottom: 20px;
@@ -1113,6 +1103,12 @@ $dockbarOpenGradientStart: #0EA6F9;
 				display: block;
 				opacity: 1;
 			}
+
+			.portlet-borderless-container {
+				&, .accordion .accordion-group {
+					@include box-shadow(inset 1px 0 #DDD);
+				}
+			}
 		}
 
 		.panels-minimized {
@@ -1144,6 +1140,9 @@ $dockbarOpenGradientStart: #0EA6F9;
 				.portlet-borderless-container {
 					background: transparent;
 					border: 1px solid #D3D3D3;
+
+					@include box-shadow(none);
+
 					float: left;
 					margin-top: 20px;
 					width: 100%;
@@ -1192,6 +1191,7 @@ $dockbarOpenGradientStart: #0EA6F9;
 
 						.accordion-heading {
 							border-bottom-width: 0;
+							border-left-width: 1px;
 						}
 					}
 				}
