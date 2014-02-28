@@ -50,6 +50,7 @@ import com.liferay.portal.repository.liferayrepository.model.LiferayFolder;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portlet.documentlibrary.DuplicateFileException;
 import com.liferay.portlet.documentlibrary.DuplicateFolderNameException;
+import com.liferay.portlet.documentlibrary.FileEntryTypeException;
 import com.liferay.portlet.documentlibrary.FolderNameException;
 import com.liferay.portlet.documentlibrary.NoSuchDirectoryException;
 import com.liferay.portlet.documentlibrary.NoSuchFileEntryException;
@@ -971,6 +972,10 @@ public class DLFolderLocalServiceImpl extends DLFolderLocalServiceBaseImpl {
 
 			if (!overrideFileEntryTypes) {
 				fileEntryTypeIds = Collections.emptyList();
+			}
+
+			if (overrideFileEntryTypes && fileEntryTypeIds.isEmpty()) {
+				throw new FileEntryTypeException();
 			}
 
 			DLFolder dlFolder = dlFolderPersistence.findByPrimaryKey(folderId);
