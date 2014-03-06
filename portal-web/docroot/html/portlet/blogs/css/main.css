@@ -123,10 +123,6 @@
 		}
 	}
 
-	.input-large, .lfr-input-text {
-		max-width: 95%;
-	}
-
 	.preview {
 		background: #FFC;
 		border: 1px dotted gray;
@@ -184,7 +180,7 @@
 		border-width: 0;
 	}
 
-	@media (max-width:1100px) {
+	@media (max-width:1120px) {
 		 .btn-group .btn {
 			display: block;
 			margin: 5px;
@@ -194,6 +190,10 @@
 
 		.taglib-workflow-status > span {
 			display: block;
+		}
+
+		input.input-large, input.lfr-input-text {
+			max-width: 92%;
 		}
 	}
 
