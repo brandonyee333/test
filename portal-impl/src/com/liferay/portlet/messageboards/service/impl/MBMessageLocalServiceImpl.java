@@ -1851,8 +1851,12 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 
 		HttpServletRequest request = serviceContext.getRequest();
 
-		if (request == null) {
-			return StringPool.BLANK;
+		if ((request == null) &&
+			Validator.isNotNull(serviceContext.getLayoutFullURL())) {
+
+			return serviceContext.getLayoutFullURL() +
+				Portal.FRIENDLY_URL_SEPARATOR +
+				"message_boards/view_message/" + message.getMessageId();
 		}
 
 		String layoutURL = getLayoutURL(
