@@ -19,6 +19,10 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.SearchEngineUtil;
+import com.liferay.portal.kernel.util.ClassResolverUtil;
+import com.liferay.portal.kernel.util.MethodHandler;
+import com.liferay.portal.kernel.util.MethodKey;
+import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.service.BaseLocalService;
 
 import java.lang.reflect.InvocationTargetException;
@@ -27,6 +31,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 /**
  * @author Brian Wing Shun Chan
@@ -49,7 +54,7 @@ public abstract class BaseActionableDynamicQuery
 	public void performActions(long startPrimaryKey, long endPrimaryKey)
 		throws PortalException, SystemException {
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+		final DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
 			_clazz, _classLoader);
 
 		Property property = PropertyFactoryUtil.forName(
@@ -62,11 +67,46 @@ public abstract class BaseActionableDynamicQuery
 
 		addCriteria(dynamicQuery);
 
-		List<Object> objects = (List<Object>)executeDynamicQuery(
-			_dynamicQueryMethod, dynamicQuery);
+		Callable<Void> performActionsCallable = new Callable<Void>() {
 
-		for (Object object : objects) {
-			performAction(object);
+			@Override
+			public Void call() throws Exception {
+				List<Object> objects = (List<Object>)executeDynamicQuery(
+					_dynamicQueryMethod, dynamicQuery);
+
+				for (Object object : objects) {
+					performAction(object);
+				}
+
+				return null;
+			}
+
+		};
+
+		Object transactionAttribute = getTransactionAttribute();
+
+		try {
+			if (transactionAttribute == null) {
+				performActionsCallable.call();
+			}
+			else {
+				MethodHandler methodHandler = new MethodHandler(
+					_callMethodKey, transactionAttribute,
+					performActionsCallable);
+
+				methodHandler.invoke();
+			}
+		}
+		catch (Throwable t) {
+			if (t instanceof PortalException) {
+				throw (PortalException)t;
+			}
+
+			if (t instanceof SystemException) {
+				throw (SystemException)t;
+			}
+
+			throw new SystemException(t);
 		}
 	}
 
@@ -222,6 +262,10 @@ public abstract class BaseActionableDynamicQuery
 		return _searchEngineId;
 	}
 
+	protected Object getTransactionAttribute() {
+		return null;
+	}
+
 	protected void indexInterval() throws PortalException {
 		if ((_documents == null) || _documents.isEmpty()) {
 			return;
@@ -295,22 +339,65 @@ public abstract class BaseActionableDynamicQuery
 	protected void performActionsInSingleInterval()
 		throws PortalException, SystemException {
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+		final DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
 			_clazz, _classLoader);
 
 		addDefaultCriteria(dynamicQuery);
 
 		addCriteria(dynamicQuery);
 
-		List<Object> objects = (List<Object>)executeDynamicQuery(
-			_dynamicQueryMethod, dynamicQuery);
+		Callable<Void> performActionsCallable = new Callable<Void>() {
 
-		for (Object object : objects) {
-			performAction(object);
+			@Override
+			public Void call() throws Exception {
+				List<Object> objects = (List<Object>)executeDynamicQuery(
+					_dynamicQueryMethod, dynamicQuery);
+
+				for (Object object : objects) {
+					performAction(object);
+				}
+
+				return null;
+			}
+
+		};
+
+		Object transactionAttribute = getTransactionAttribute();
+
+		try {
+			if (transactionAttribute == null) {
+				performActionsCallable.call();
+			}
+			else {
+				MethodHandler methodHandler = new MethodHandler(
+					_callMethodKey, transactionAttribute,
+					performActionsCallable);
+
+				methodHandler.invoke();
+			}
+		}
+		catch (Throwable t) {
+			if (t instanceof PortalException) {
+				throw (PortalException)t;
+			}
+
+			if (t instanceof SystemException) {
+				throw (SystemException)t;
+			}
+
+			throw new SystemException(t);
 		}
 
 		indexInterval();
 	}
+
+	private static final String _TRANSACTION_ATTRIBUTE_CLASS_NAME =
+		"org.springframework.transaction.interceptor.TransactionAttribute";
+
+	private static final String _TRANSACTION_CALLABLE_UTIL_CLASS_NAME =
+		"com.liferay.portal.spring.transaction.TransactionalCallableUtil";
+
+	private static final MethodKey _callMethodKey;
 
 	private BaseLocalService _baseLocalService;
 	private ClassLoader _classLoader;
@@ -324,5 +411,23 @@ public abstract class BaseActionableDynamicQuery
 	private int _interval = Indexer.DEFAULT_INTERVAL;
 	private String _primaryKeyPropertyName;
 	private String _searchEngineId;
+
+	static {
+		try {
+			ClassLoader portalClassLoader =
+				PortalClassLoaderUtil.getClassLoader();
+
+			_callMethodKey = new MethodKey(
+				ClassResolverUtil.resolve(
+					_TRANSACTION_CALLABLE_UTIL_CLASS_NAME, portalClassLoader),
+				"call",
+				ClassResolverUtil.resolve(
+					_TRANSACTION_ATTRIBUTE_CLASS_NAME, portalClassLoader),
+				Callable.class);
+		}
+		catch (ClassNotFoundException cnfe) {
+			throw new ExceptionInInitializerError(cnfe);
+		}
+	}
 
 }
