@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.search.QueryConfig;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.Sort;
+import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.trash.TrashHandler;
 import com.liferay.portal.kernel.trash.TrashHandlerRegistryUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
@@ -35,6 +36,7 @@ import com.liferay.portal.model.Group;
 import com.liferay.portal.model.SystemEvent;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.persistence.GroupActionableDynamicQuery;
+import com.liferay.portal.spring.transaction.TransactionAttributeBuilder;
 import com.liferay.portlet.trash.model.TrashEntry;
 import com.liferay.portlet.trash.model.TrashVersion;
 import com.liferay.portlet.trash.service.base.TrashEntryLocalServiceBaseImpl;
@@ -43,6 +45,8 @@ import com.liferay.portlet.trash.util.TrashUtil;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import org.springframework.transaction.interceptor.TransactionAttribute;
 
 /**
  * Provides the local service for accessing, adding, checking, and deleting
@@ -129,6 +133,11 @@ public class TrashEntryLocalServiceImpl extends TrashEntryLocalServiceBaseImpl {
 	public void checkEntries() throws PortalException, SystemException {
 		ActionableDynamicQuery actionableDynamicQuery =
 			new GroupActionableDynamicQuery() {
+
+			@Override
+			protected TransactionAttribute getTransactionAttribute() {
+				return _transactionAttribute;
+			}
 
 			@Override
 			protected void performAction(Object object)
@@ -435,5 +444,10 @@ public class TrashEntryLocalServiceImpl extends TrashEntryLocalServiceBaseImpl {
 
 		return calendar.getTime();
 	}
+
+	private static final TransactionAttribute _transactionAttribute =
+		TransactionAttributeBuilder.build(
+			Propagation.REQUIRES_NEW,
+			new Class<?>[] {PortalException.class, SystemException.class});
 
 }
