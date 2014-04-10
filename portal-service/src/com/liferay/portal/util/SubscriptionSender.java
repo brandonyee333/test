@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.mail.MailMessage;
 import com.liferay.portal.kernel.mail.SMTPAccount;
 import com.liferay.portal.kernel.messaging.DestinationNames;
+import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.notifications.NotificationEvent;
 import com.liferay.portal.kernel.notifications.NotificationEventFactoryUtil;
@@ -760,7 +761,45 @@ public class SubscriptionSender implements Serializable {
 
 	protected void sendNotification(User user) throws Exception {
 		sendEmailNotification(user);
+		sendPushNotification(user);
 		sendWebsiteNotification(user);
+	}
+
+	protected void sendPushNotification(final User user) throws Exception {
+		if (UserNotificationManagerUtil.isDeliver(
+			user.getUserId(), portletId, _notificationClassNameId,
+			_notificationType, UserNotificationDeliveryConstants.TYPE_PUSH)) {
+
+			final JSONObject notificationEventJSONObject =
+				JSONFactoryUtil.createJSONObject();
+
+			notificationEventJSONObject.put("className", _className);
+			notificationEventJSONObject.put("classPK", _classPK);
+			notificationEventJSONObject.put("entryTitle", _entryTitle);
+			notificationEventJSONObject.put("entryURL", _entryURL);
+			notificationEventJSONObject.put(
+				"notificationType", _notificationType);
+			notificationEventJSONObject.put("userId", user.getUserId());
+
+			Callable<Void> callable = new Callable<Void>() {
+
+				@Override
+				public Void call() throws Exception {
+					Message message = new Message();
+
+					message.put("userId", user.getUserId());
+					message.put("data", notificationEventJSONObject.toString());
+
+					MessageBusUtil.sendMessage(
+						DestinationNames.PUSH_NOTIFICATION, message);
+
+					return null;
+				}
+
+			};
+
+			TransactionCommitCallbackRegistryUtil.registerCallback(callable);
+		}
 	}
 
 	protected void sendWebsiteNotification(User user) throws Exception {
