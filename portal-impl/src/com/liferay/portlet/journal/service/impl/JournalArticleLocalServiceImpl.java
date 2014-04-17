@@ -4337,6 +4337,51 @@ public class JournalArticleLocalServiceImpl
 			andOperator, new QueryDefinition(status));
 	}
 
+	/**
+	 * Returns an ordered range of all the web content articles and their total
+	 * number of hits matching the parameters using the indexer, including a
+	 * keywords parameter for matching an article's ID, title, description, or
+	 * content, a DDM structure key parameter, a DDM template key parameter, and
+	 * a finder hash map parameter. It is preferable to use this method instead
+	 * of the non-indexed version whenever possible for performance reasons.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end -
+	 * start</code> instances. <code>start</code> and <code>end</code> are not
+	 * primary keys, they are indexes in the result set. Thus, <code>0</code>
+	 * refers to the first result in the set. Setting both <code>start</code>
+	 * and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full
+	 * result set.
+	 * </p>
+	 *
+	 * @param  companyId the primary key of the web content article's company
+	 * @param  groupId the primary key of the group (optionally <code>0</code>)
+	 * @param  folderIds the primary keys of the web content article folders
+	 *         (optionally {@link java.util.Collections#EMPTY_LIST})
+	 * @param  classNameId the primary key of the DDMStructure class, the
+	 *         primary key of the class name associated with the article, or
+	 *         {@link JournalArticleConstants#CLASSNAME_ID_DEFAULT} otherwise
+	 * @param  ddmStructureKey the primary key of the web content article's DDM
+	 *         structure
+	 * @param  ddmTemplateKey the primary key of the web content article's DDM
+	 *         template
+	 * @param  keywords the keywords (space separated), which may occur in the
+	 *         web content article ID, title, description, or content
+	 *         (optionally <code>null</code>). If the keywords value is not
+	 *         <code>null</code>, the search uses the OR operator in connecting
+	 *         query criteria; otherwise it uses the AND operator.
+	 * @param  params the finder parameters (optionally <code>null</code>)
+	 * @param  start the lower bound of the range of web content articles to
+	 *         return
+	 * @param  end the upper bound of the range of web content articles to
+	 *         return (not inclusive)
+	 * @param  sort the field, type, and direction by which to sort (optionally
+	 *         <code>null</code>)
+	 * @return the matching web content articles ordered by <code>sort</code>
+	 *         and their total number of hits
+	 * @throws PortalException if a portal exception occurred
+	 * @throws SystemException if a system exception occurred
+	 */
 	@Override
 	public BaseModelSearchResult<JournalArticle> searchJournalArticles(
 			long companyId, long groupId, List<Long> folderIds,
@@ -4373,6 +4418,65 @@ public class JournalArticleLocalServiceImpl
 			params, andOperator, start, end, sort);
 	}
 
+	/**
+	 * Returns an ordered range of all the web content articles and their total
+	 * number of hits matching the parameters using the indexer, including
+	 * keyword parameters for article ID, title, description, or content, a DDM
+	 * structure key parameter, a DDM template key parameter, an AND operator
+	 * switch, and parameters for type, status, and a finder hash map. It is
+	 * preferable to use this method instead of the non-indexed version whenever
+	 * possible for performance reasons.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end -
+	 * start</code> instances. <code>start</code> and <code>end</code> are not
+	 * primary keys, they are indexes in the result set. Thus, <code>0</code>
+	 * refers to the first result in the set. Setting both <code>start</code>
+	 * and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full
+	 * result set.
+	 * </p>
+	 *
+	 * @param  companyId the primary key of the web content article's company
+	 * @param  groupId the primary key of the group (optionally <code>0</code>)
+	 * @param  folderIds the primary keys of the web content article folders
+	 *         (optionally {@link java.util.Collections#EMPTY_LIST})
+	 * @param  classNameId the primary key of the DDMStructure class, the
+	 *         primary key of the class name associated with the article, or
+	 *         {@link JournalArticleConstants#CLASSNAME_ID_DEFAULT} otherwise
+	 * @param  articleId the article ID keywords (space separated, optionally
+	 *         <code>null</code>)
+	 * @param  title the title keywords (space separated, optionally
+	 *         <code>null</code>)
+	 * @param  description the description keywords (space separated, optionally
+	 *         <code>null</code>)
+	 * @param  content the content keywords (space separated, optionally
+	 *         <code>null</code>)
+	 * @param  type the web content article's type (optionally
+	 *         <code>null</code>)
+	 * @param  status the web content article's workflow status. For more
+	 *         information see {@link WorkflowConstants} for constants starting
+	 *         with the "STATUS_" prefix.
+	 * @param  ddmStructureKey the primary key of the web content article's DDM
+	 *         structure
+	 * @param  ddmTemplateKey the primary key of the web content article's DDM
+	 *         template
+	 * @param  params the finder parameters (optionally <code>null</code>). The
+	 *         <code>includeDiscussions</code> parameter can be set to
+	 *         <code>true</code> to search for the keywords in the web content
+	 *         article discussions.
+	 * @param  andSearch whether every field must match its value or keywords,
+	 *         or just one field must match
+	 * @param  start the lower bound of the range of web content articles to
+	 *         return
+	 * @param  end the upper bound of the range of web content articles to
+	 *         return (not inclusive)
+	 * @param  sort the field, type, and direction by which to sort (optionally
+	 *         <code>null</code>)
+	 * @return the matching web content articles ordered by <code>sort</code>
+	 *         and their total number of hits
+	 * @throws PortalException if a portal exception occurred
+	 * @throws SystemException if a system exception occurred
+	 */
 	@Override
 	public BaseModelSearchResult<JournalArticle> searchJournalArticles(
 			long companyId, long groupId, List<Long> folderIds,
@@ -4391,6 +4495,35 @@ public class JournalArticleLocalServiceImpl
 		return searchJournalArticles(searchContext);
 	}
 
+	/**
+	 * Returns an ordered range of all the web content articles and their total
+	 * number of hits matching the parameters using the indexer.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end -
+	 * start</code> instances. <code>start</code> and <code>end</code> are not
+	 * primary keys, they are indexes in the result set. Thus, <code>0</code>
+	 * refers to the first result in the set. Setting both <code>start</code>
+	 * and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full
+	 * result set.
+	 * </p>
+	 *
+	 * @param  groupId the primary key of the group (optionally <code>0</code>)
+	 * @param  userId the primary key of the user searching for web content
+	 *         articles
+	 * @param  creatorUserId the primary key of the web content article's
+	 *         creator
+	 * @param  status the web content article's workflow status. For more
+	 *         information see {@link WorkflowConstants} for constants starting
+	 *         with the "STATUS_" prefix.
+	 * @param  start the lower bound of the range of web content articles to
+	 *         return
+	 * @param  end the upper bound of the range of web content articles to
+	 *         return (not inclusive)
+	 * @return the matching web content articles and their total number of hits
+	 * @throws PortalException if a portal exception occurred
+	 * @throws SystemException if a system exception occurred
+	 */
 	@Override
 	public BaseModelSearchResult<JournalArticle> searchJournalArticles(
 			long groupId, long userId, long creatorUserId, int status,
@@ -5202,8 +5335,6 @@ public class JournalArticleLocalServiceImpl
 	 *         information see {@link WorkflowConstants} for constants starting
 	 *         with the "STATUS_" prefix.
 	 * @param  articleURL the web content article's accessible URL
-	 * @param  workflowContext the web content article's configured workflow
-	 *         context
 	 * @param  serviceContext the service context to be applied. Can set the
 	 *         modification date, status date, and portlet preferences. With
 	 *         respect to social activities, by setting the service context's
@@ -5211,6 +5342,8 @@ public class JournalArticleLocalServiceImpl
 	 *         com.liferay.portal.kernel.util.Constants#UPDATE}, the invocation
 	 *         is considered a web content update activity; otherwise it is
 	 *         considered a web content add activity.
+	 * @param  workflowContext the web content article's configured workflow
+	 *         context
 	 * @return the updated web content article
 	 * @throws PortalException if a portal exception occurred
 	 * @throws SystemException if a system exception occurred
