@@ -80,15 +80,24 @@ public class ModuleAutoDeployListener extends BaseAutoDeployListener {
 		}
 
 		Manifest manifest = null;
+		JarInputStream jarInputStream = null;
 
 		try {
-			JarInputStream jarInputStream = new JarInputStream(
+			jarInputStream = new JarInputStream(
 				new FileInputStream(file));
 
 			manifest = jarInputStream.getManifest();
 		}
 		catch (IOException ioe) {
 			throw new AutoDeployException(ioe);
+		}
+		finally {
+			if(jarInputStream != null) {
+				try {
+					jarInputStream.close();
+				} catch (IOException e) {
+				}
+			}
 		}
 
 		if (manifest == null) {
