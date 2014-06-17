@@ -16,55 +16,153 @@ package com.liferay.portal.security.auth;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.ClassUtil;
-import com.liferay.portal.kernel.util.InstanceFactory;
-import com.liferay.portal.util.ClassLoaderUtil;
-import com.liferay.portal.util.PropsValues;
+import com.liferay.registry.Registry;
+import com.liferay.registry.RegistryUtil;
+import com.liferay.registry.ServiceReference;
+import com.liferay.registry.ServiceRegistration;
+import com.liferay.registry.ServiceTracker;
+import com.liferay.registry.ServiceTrackerCustomizer;
+import com.liferay.registry.collections.StringServiceRegistrationMap;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Brian Wing Shun Chan
  * @author Shuyang Zhou
+ * @author Peter Fellwock
  */
 public class EmailAddressValidatorFactory {
 
+	public static EmailAddressValidator getEmailAddressValidator(String classname) {
+		return _instance._getEmailAddressValidator(classname);
+	}
+
+	public static Map<String, EmailAddressValidator> getEmailAddressValidators() {
+		return _instance._getEmailAddressValidators();
+	}
+
 	public static EmailAddressValidator getInstance() {
-		return _emailAddressValidator;
+		return _instance._serviceTracker.getService();
 	}
 
-	public static void setInstance(
-		EmailAddressValidator emailAddressValidator) {
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Set " + ClassUtil.getClassName(emailAddressValidator));
-		}
-
-		if (emailAddressValidator == null) {
-			_emailAddressValidator = _originalEmailAddressValidator;
-		}
-		else {
-			_emailAddressValidator = emailAddressValidator;
-		}
+	public static void register(String path, EmailAddressValidator emailAddressValidator) {
+		_instance._register(path, emailAddressValidator);
 	}
 
-	public void afterPropertiesSet() throws Exception {
-		if (_log.isDebugEnabled()) {
-			_log.debug(
-				"Instantiate " + PropsValues.USERS_EMAIL_ADDRESS_VALIDATOR);
+	public static void unregister(String classname) {
+		_instance._unregister(classname);
+	}
+
+	private EmailAddressValidatorFactory() {
+		Registry registry = RegistryUtil.getRegistry();
+
+		_serviceTracker = registry.trackServices(
+			EmailAddressValidator.class.getName(),
+			new EmailAddressValidatorServiceTrackerCustomizer());
+
+		_serviceTracker.open();
+	}
+
+	private EmailAddressValidator _getEmailAddressValidator(String path) {
+		EmailAddressValidator emailAddressValidator = _validators.get(path);
+
+		if (emailAddressValidator != null) {
+			return emailAddressValidator;
 		}
 
-		ClassLoader classLoader = ClassLoaderUtil.getPortalClassLoader();
+		for (Map.Entry<String, EmailAddressValidator> entry : _validators.entrySet()) {
+			if (path.startsWith(entry.getKey())) {
+				return entry.getValue();
+			}
+		}
 
-		_originalEmailAddressValidator =
-			(EmailAddressValidator)InstanceFactory.newInstance(
-				classLoader, PropsValues.USERS_EMAIL_ADDRESS_VALIDATOR);
+		return null;
+	}
 
-		_emailAddressValidator = _originalEmailAddressValidator;
+	private Map<String, EmailAddressValidator> _getEmailAddressValidators() {
+		return _validators;
+	}
+
+	private void _register(String path, EmailAddressValidator emailAddressValidator) {
+		Registry registry = RegistryUtil.getRegistry();
+
+		Map<String, Object> properties = new HashMap<String, Object>();
+
+		properties.put("path", path);
+
+		ServiceRegistration<EmailAddressValidator> serviceRegistration =
+			registry.registerService(
+				EmailAddressValidator.class, emailAddressValidator, properties);
+
+		_emailAddressValidatorServiceRegistrations.put(path, serviceRegistration);
+	}
+
+	private void _unregister(String path) {
+		ServiceRegistration<?> serviceRegistration =
+			_emailAddressValidatorServiceRegistrations.remove(path);
+
+		if (serviceRegistration != null) {
+			serviceRegistration.unregister();
+		}
+
+		serviceRegistration = _emailAddressValidatorServiceRegistrations.remove(
+			path);
+
+		if (serviceRegistration != null) {
+			serviceRegistration.unregister();
+		}
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(
 		EmailAddressValidatorFactory.class);
 
-	private static volatile EmailAddressValidator _emailAddressValidator;
-	private static EmailAddressValidator _originalEmailAddressValidator;
+	private static EmailAddressValidatorFactory _instance =
+		new EmailAddressValidatorFactory();
+
+	private StringServiceRegistrationMap<EmailAddressValidator>
+		_emailAddressValidatorServiceRegistrations =
+			new StringServiceRegistrationMap<EmailAddressValidator>();
+	private ServiceTracker<?, EmailAddressValidator> _serviceTracker;
+	private Map<String, EmailAddressValidator> _validators =
+		new ConcurrentHashMap<String, EmailAddressValidator>();
+
+	private class EmailAddressValidatorServiceTrackerCustomizer
+		implements ServiceTrackerCustomizer<Object, EmailAddressValidator> {
+
+		@Override
+		public EmailAddressValidator addingService(ServiceReference<Object> serviceReference) {
+			Registry registry = RegistryUtil.getRegistry();
+
+			Object service = registry.getService(serviceReference);
+
+			EmailAddressValidator emailAddressValidator = (EmailAddressValidator)service;
+
+			String path = emailAddressValidator.getClass().getName();
+
+			_validators.put(path, emailAddressValidator);
+
+			return emailAddressValidator;
+		}
+
+		@Override
+		public void modifiedService(
+			ServiceReference<Object> serviceReference, EmailAddressValidator service) {
+		}
+
+		@Override
+		public void removedService(
+			ServiceReference<Object> serviceReference, EmailAddressValidator service) {
+
+			Registry registry = RegistryUtil.getRegistry();
+
+			registry.ungetService(serviceReference);
+
+			String path = (String)serviceReference.getProperty("path");
+			_validators.remove(path);
+		}
+
+	}
 
 }

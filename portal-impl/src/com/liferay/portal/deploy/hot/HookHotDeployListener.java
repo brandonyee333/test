@@ -591,13 +591,17 @@ public class HookHotDeployListener
 		if (portalProperties.containsKey(
 				PropsKeys.USERS_EMAIL_ADDRESS_GENERATOR)) {
 
-			EmailAddressGeneratorFactory.setInstance(null);
+			EmailAddressGeneratorFactory
+			.unregister(portalProperties.getProperty(
+				PropsKeys.USERS_EMAIL_ADDRESS_GENERATOR));
 		}
 
 		if (portalProperties.containsKey(
 				PropsKeys.USERS_EMAIL_ADDRESS_VALIDATOR)) {
 
-			EmailAddressValidatorFactory.setInstance(null);
+			EmailAddressValidatorFactory
+			.unregister(portalProperties.getProperty(
+				PropsKeys.USERS_EMAIL_ADDRESS_VALIDATOR));
 		}
 
 		if (portalProperties.containsKey(PropsKeys.USERS_FULL_NAME_GENERATOR)) {
@@ -2049,7 +2053,8 @@ public class HookHotDeployListener
 					portletClassLoader, EmailAddressGenerator.class,
 					emailAddressGeneratorClassName);
 
-			EmailAddressGeneratorFactory.setInstance(emailAddressGenerator);
+			EmailAddressGeneratorFactory
+			.register(emailAddressGeneratorClassName, emailAddressGenerator);
 		}
 
 		if (portalProperties.containsKey(
@@ -2064,7 +2069,8 @@ public class HookHotDeployListener
 					portletClassLoader, EmailAddressValidator.class,
 					emailAddressValidatorClassName);
 
-			EmailAddressValidatorFactory.setInstance(emailAddressValidator);
+			EmailAddressValidatorFactory
+			.register(emailAddressValidatorClassName, emailAddressValidator);
 		}
 
 		if (portalProperties.containsKey(PropsKeys.USERS_FULL_NAME_GENERATOR)) {
