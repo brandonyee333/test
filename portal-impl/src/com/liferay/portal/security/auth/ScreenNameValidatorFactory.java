@@ -14,55 +14,148 @@
 
 package com.liferay.portal.security.auth;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.ClassUtil;
-import com.liferay.portal.kernel.util.InstanceFactory;
-import com.liferay.portal.util.ClassLoaderUtil;
-import com.liferay.portal.util.PropsValues;
+import com.liferay.registry.Registry;
+import com.liferay.registry.RegistryUtil;
+import com.liferay.registry.ServiceReference;
+import com.liferay.registry.ServiceRegistration;
+import com.liferay.registry.ServiceTracker;
+import com.liferay.registry.ServiceTrackerCustomizer;
+import com.liferay.registry.collections.StringServiceRegistrationMap;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Brian Wing Shun Chan
  * @author Shuyang Zhou
+ * @author Peter Fellwock
  */
 public class ScreenNameValidatorFactory {
 
 	public static ScreenNameValidator getInstance() {
-		return _screenNameValidator;
+		return _instance._serviceTracker.getService();
 	}
 
-	public static void setInstance(ScreenNameValidator screenNameValidator) {
-		if (_log.isDebugEnabled()) {
-			_log.debug("Set " + ClassUtil.getClassName(screenNameValidator));
+	public static ScreenNameValidator getScreenNameValidator(String path) {
+		return _instance._getScreenNameValidator(path);
+	}
+
+	public static Map<String, ScreenNameValidator> getScreenNameValidators() {
+		return _instance._getScreenNameValidators();
+	}
+
+	public static void register(String path, ScreenNameValidator screenNameValidator) {
+		_instance._register(path, screenNameValidator);
+	}
+
+	public static void unregister(String path) {
+		_instance._unregister(path);
+	}
+
+	private ScreenNameValidatorFactory() {
+		Registry registry = RegistryUtil.getRegistry();
+
+		_serviceTracker = registry.trackServices(
+				ScreenNameValidator.class.getName(),
+				new ScreenNameValidatorServiceTrackerCustomizer());
+
+		_serviceTracker.open();
+	}
+
+	private ScreenNameValidator _getScreenNameValidator(String path) {
+		ScreenNameValidator screenNameValidator = _validators.get(path);
+
+		if (screenNameValidator != null) {
+			return screenNameValidator;
 		}
 
-		if (screenNameValidator == null) {
-			_screenNameValidator = _originalScreenNameValidator;
+		for (Map.Entry<String, ScreenNameValidator> entry : _validators.entrySet()) {
+			if (path.startsWith(entry.getKey())) {
+				return entry.getValue();
+			}
 		}
-		else {
-			_screenNameValidator = screenNameValidator;
+
+		return null;
+	}
+
+	private Map<String, ScreenNameValidator> _getScreenNameValidators() {
+		return _validators;
+	}
+
+	private void _register(String path, ScreenNameValidator screenNameValidator) {
+		Registry registry = RegistryUtil.getRegistry();
+
+		Map<String, Object> properties = new HashMap<String, Object>();
+
+		properties.put("path", path);
+
+		ServiceRegistration<ScreenNameValidator> serviceRegistration =
+			registry.registerService(
+				ScreenNameValidator.class, screenNameValidator, properties);
+
+		_screenNameValidatorServiceRegistrations.put(path, serviceRegistration);
+	}
+
+	private void _unregister(String path) {
+		ServiceRegistration<?> serviceRegistration =
+			_screenNameValidatorServiceRegistrations.remove(path);
+
+		if (serviceRegistration != null) {
+			serviceRegistration.unregister();
+		}
+
+		serviceRegistration = _screenNameValidatorServiceRegistrations.remove(
+			path);
+
+		if (serviceRegistration != null) {
+			serviceRegistration.unregister();
 		}
 	}
 
-	public void afterPropertiesSet() throws Exception {
-		if (_log.isDebugEnabled()) {
-			_log.debug(
-				"Instantiate " + PropsValues.USERS_SCREEN_NAME_VALIDATOR);
+	private static ScreenNameValidatorFactory _instance =
+		new ScreenNameValidatorFactory();
+
+	private StringServiceRegistrationMap<ScreenNameValidator>
+		_screenNameValidatorServiceRegistrations =
+			new StringServiceRegistrationMap<ScreenNameValidator>();
+	private ServiceTracker<?, ScreenNameValidator> _serviceTracker;
+	private Map<String, ScreenNameValidator> _validators =
+		new ConcurrentHashMap<String, ScreenNameValidator>();
+
+	private class ScreenNameValidatorServiceTrackerCustomizer
+		implements ServiceTrackerCustomizer<Object, ScreenNameValidator> {
+
+		@Override
+		public ScreenNameValidator addingService(ServiceReference<Object> serviceReference) {
+			Registry registry = RegistryUtil.getRegistry();
+
+			Object service = registry.getService(serviceReference);
+
+			ScreenNameValidator screenNameValidator = (ScreenNameValidator)service;
+
+			String path = screenNameValidator.getClass().getName();
+
+			_validators.put(path, screenNameValidator);
+
+			return screenNameValidator;
 		}
 
-		ClassLoader classLoader = ClassLoaderUtil.getPortalClassLoader();
+		@Override
+		public void modifiedService(
+			ServiceReference<Object> serviceReference, ScreenNameValidator service) {
+		}
 
-		_originalScreenNameValidator =
-			(ScreenNameValidator)InstanceFactory.newInstance(
-				classLoader, PropsValues.USERS_SCREEN_NAME_VALIDATOR);
+		@Override
+		public void removedService(
+			ServiceReference<Object> serviceReference, ScreenNameValidator service) {
 
-		_screenNameValidator = _originalScreenNameValidator;
+			Registry registry = RegistryUtil.getRegistry();
+
+			registry.ungetService(serviceReference);
+
+			String path = (String)serviceReference.getProperty("path");
+			_validators.remove(path);
+		}
 	}
-
-	private static Log _log = LogFactoryUtil.getLog(
-		ScreenNameValidatorFactory.class);
-
-	private static ScreenNameValidator _originalScreenNameValidator;
-	private static volatile ScreenNameValidator _screenNameValidator;
-
 }

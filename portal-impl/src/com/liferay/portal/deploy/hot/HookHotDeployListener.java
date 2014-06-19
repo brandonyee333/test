@@ -623,13 +623,17 @@ public class HookHotDeployListener
 		if (portalProperties.containsKey(
 				PropsKeys.USERS_SCREEN_NAME_GENERATOR)) {
 
-			ScreenNameGeneratorFactory.setInstance(null);
+			ScreenNameGeneratorFactory.unregister(
+					portalProperties.getProperty(
+						PropsKeys.USERS_SCREEN_NAME_GENERATOR));
 		}
 
 		if (portalProperties.containsKey(
 				PropsKeys.USERS_SCREEN_NAME_VALIDATOR)) {
 
-			ScreenNameValidatorFactory.setInstance(null);
+			ScreenNameValidatorFactory.unregister(
+					portalProperties.getProperty(
+						PropsKeys.USERS_SCREEN_NAME_VALIDATOR));
 		}
 
 		Set<String> liferayFilterClassNames =
@@ -2134,7 +2138,8 @@ public class HookHotDeployListener
 					portletClassLoader, ScreenNameGenerator.class,
 					screenNameGeneratorClassName);
 
-			ScreenNameGeneratorFactory.setInstance(screenNameGenerator);
+			ScreenNameGeneratorFactory.register(screenNameGeneratorClassName,
+				screenNameGenerator);
 		}
 
 		if (portalProperties.containsKey(
@@ -2148,7 +2153,8 @@ public class HookHotDeployListener
 					portletClassLoader, ScreenNameValidator.class,
 					screenNameValidatorClassName);
 
-			ScreenNameValidatorFactory.setInstance(screenNameValidator);
+			ScreenNameValidatorFactory.register(screenNameValidatorClassName,
+				screenNameValidator);
 		}
 
 		Set<String> liferayFilterClassNames =
