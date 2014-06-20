@@ -102,9 +102,7 @@ import com.liferay.portal.sanitizer.SanitizerImpl;
 import com.liferay.portal.security.auth.AuthFailure;
 import com.liferay.portal.security.auth.AuthPipeline;
 import com.liferay.portal.security.auth.AuthToken;
-import com.liferay.portal.security.auth.AuthTokenUtil;
 import com.liferay.portal.security.auth.AuthTokenWhitelistUtil;
-import com.liferay.portal.security.auth.AuthTokenWrapper;
 import com.liferay.portal.security.auth.AuthVerifier;
 import com.liferay.portal.security.auth.AuthVerifierConfiguration;
 import com.liferay.portal.security.auth.AuthVerifierPipeline;
@@ -112,9 +110,7 @@ import com.liferay.portal.security.auth.Authenticator;
 import com.liferay.portal.security.auth.AutoLogin;
 import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.security.auth.EmailAddressGenerator;
-import com.liferay.portal.security.auth.EmailAddressGeneratorFactory;
 import com.liferay.portal.security.auth.EmailAddressValidator;
-import com.liferay.portal.security.auth.EmailAddressValidatorFactory;
 import com.liferay.portal.security.auth.FullNameGenerator;
 import com.liferay.portal.security.auth.FullNameGeneratorFactory;
 import com.liferay.portal.security.auth.FullNameValidator;
@@ -168,6 +164,9 @@ import com.liferay.portlet.documentlibrary.store.Store;
 import com.liferay.portlet.documentlibrary.store.StoreFactory;
 import com.liferay.portlet.documentlibrary.util.DLProcessor;
 import com.liferay.portlet.documentlibrary.util.DLProcessorRegistryUtil;
+import com.liferay.registry.Registry;
+import com.liferay.registry.RegistryUtil;
+import com.liferay.registry.ServiceRegistration;
 
 import java.io.File;
 import java.io.InputStream;
@@ -186,6 +185,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterConfig;
@@ -200,6 +200,8 @@ import org.springframework.aop.framework.AdvisedSupport;
  * @author Wesley Gong
  * @author Ryan Park
  * @author Mika Koivisto
+ * @author Peter Fellwock
+ * @author Raymond Augé
  */
 public class HookHotDeployListener
 	extends BaseHotDeployListener implements PropsKeys {
@@ -411,6 +413,9 @@ public class HookHotDeployListener
 			String servletContextName, Properties portalProperties)
 		throws Exception {
 
+		Map<Object, ServiceRegistration<?>> serviceRegistrations =
+			getServiceRegistrations(servletContextName);
+
 		PropsUtil.removeProperties(portalProperties);
 
 		if (_log.isDebugEnabled() && portalProperties.containsKey(LOCALES)) {
@@ -446,10 +451,15 @@ public class HookHotDeployListener
 		}
 
 		if (portalProperties.containsKey(PropsKeys.AUTH_TOKEN_IMPL)) {
-			AuthTokenWrapper authTokenWrapper =
-				(AuthTokenWrapper)AuthTokenUtil.getAuthToken();
+			String authTokenClassName = portalProperties.getProperty(
+				PropsKeys.AUTH_TOKEN_IMPL);
 
-			authTokenWrapper.setAuthToken(null);
+			ServiceRegistration<?> serviceRegistration =
+				serviceRegistrations.remove(authTokenClassName);
+
+			if (serviceRegistration != null) {
+				serviceRegistration.unregister();
+			}
 		}
 
 		if (portalProperties.containsKey(PropsKeys.CAPTCHA_ENGINE_IMPL)) {
@@ -591,17 +601,33 @@ public class HookHotDeployListener
 		if (portalProperties.containsKey(
 				PropsKeys.USERS_EMAIL_ADDRESS_GENERATOR)) {
 
-			EmailAddressGeneratorFactory
-			.unregister(portalProperties.getProperty(
-				PropsKeys.USERS_EMAIL_ADDRESS_GENERATOR));
+            String usersEmailAddressGeneratorClassName =
+                    portalProperties.getProperty(
+                        PropsKeys.USERS_EMAIL_ADDRESS_GENERATOR);
+
+                ServiceRegistration<?> serviceRegistration =
+                    serviceRegistrations.remove(
+                        usersEmailAddressGeneratorClassName);
+
+                if (serviceRegistration != null) {
+                    serviceRegistration.unregister();
+                }
 		}
 
 		if (portalProperties.containsKey(
 				PropsKeys.USERS_EMAIL_ADDRESS_VALIDATOR)) {
 
-			EmailAddressValidatorFactory
-			.unregister(portalProperties.getProperty(
-				PropsKeys.USERS_EMAIL_ADDRESS_VALIDATOR));
+            String usersEmailAddressValidatorClassName =
+                    portalProperties.getProperty(
+                        PropsKeys.USERS_EMAIL_ADDRESS_VALIDATOR);
+
+                ServiceRegistration<?> serviceRegistration =
+                    serviceRegistrations.remove(
+                    		usersEmailAddressValidatorClassName);
+
+                if (serviceRegistration != null) {
+                    serviceRegistration.unregister();
+                }
 		}
 
 		if (portalProperties.containsKey(PropsKeys.USERS_FULL_NAME_GENERATOR)) {
@@ -993,6 +1019,21 @@ public class HookHotDeployListener
 		}
 
 		return new File(filePath);
+	}
+
+	protected Map<Object, ServiceRegistration<?>> getServiceRegistrations(
+		String servletContextName) {
+
+		Map<Object, ServiceRegistration<?>> serviceRegistrations =
+			_serviceRegistrations.get(servletContextName);
+
+		if (serviceRegistrations == null) {
+			serviceRegistrations = newMap();
+
+			_serviceRegistrations.put(servletContextName, serviceRegistrations);
+		}
+
+		return serviceRegistrations;
 	}
 
 	protected void initAuthenticators(
@@ -1685,6 +1726,11 @@ public class HookHotDeployListener
 			Properties portalProperties, Properties unfilteredPortalProperties)
 		throws Exception {
 
+		Registry registry = RegistryUtil.getRegistry();
+
+		Map<Object, ServiceRegistration<?>> serviceRegistrations =
+			getServiceRegistrations(servletContextName);
+
 		PropsUtil.addProperties(portalProperties);
 
 		if (_log.isDebugEnabled() && portalProperties.containsKey(LOCALES)) {
@@ -1741,10 +1787,10 @@ public class HookHotDeployListener
 			AuthToken authToken = (AuthToken)newInstance(
 				portletClassLoader, AuthToken.class, authTokenClassName);
 
-			AuthTokenWrapper authTokenWrapper =
-				(AuthTokenWrapper)AuthTokenUtil.getAuthToken();
+			ServiceRegistration<AuthToken> serviceRegistration =
+				registry.registerService(authTokenClassName, authToken);
 
-			authTokenWrapper.setAuthToken(authToken);
+			serviceRegistrations.put(authTokenClassName, serviceRegistration);
 		}
 
 		if (portalProperties.containsKey(PropsKeys.CAPTCHA_ENGINE_IMPL)) {
@@ -2053,8 +2099,12 @@ public class HookHotDeployListener
 					portletClassLoader, EmailAddressGenerator.class,
 					emailAddressGeneratorClassName);
 
-			EmailAddressGeneratorFactory
-			.register(emailAddressGeneratorClassName, emailAddressGenerator);
+			ServiceRegistration<EmailAddressGenerator> serviceRegistration =
+	                registry.registerService(
+	                    EmailAddressGenerator.class, emailAddressGenerator);
+
+	            serviceRegistrations.put(
+	                emailAddressGeneratorClassName, serviceRegistration);
 		}
 
 		if (portalProperties.containsKey(
@@ -2069,8 +2119,12 @@ public class HookHotDeployListener
 					portletClassLoader, EmailAddressValidator.class,
 					emailAddressValidatorClassName);
 
-			EmailAddressValidatorFactory
-			.register(emailAddressValidatorClassName, emailAddressValidator);
+			ServiceRegistration<EmailAddressValidator> serviceRegistration =
+	                registry.registerService(
+	                    EmailAddressValidator.class, emailAddressValidator);
+
+	            serviceRegistrations.put(
+	            		emailAddressValidatorClassName, serviceRegistration);
 		}
 
 		if (portalProperties.containsKey(PropsKeys.USERS_FULL_NAME_GENERATOR)) {
@@ -2431,6 +2485,10 @@ public class HookHotDeployListener
 			strutsActionContainer.registerStrutsAction(
 				strutsActionPath, strutsAction);
 		}
+	}
+
+	protected <S, T> Map<S, T> newMap() {
+		return new ConcurrentHashMap<S, T>();
 	}
 
 	protected void resetPortalProperties(
@@ -2890,6 +2948,8 @@ public class HookHotDeployListener
 		_PROPS_KEYS_SESSION_EVENTS);
 	private Map<String, SanitizerContainer> _sanitizerContainerMap =
 		new HashMap<String, SanitizerContainer>();
+	private Map<String, Map<Object, ServiceRegistration<?>>>
+		_serviceRegistrations = newMap();
 	private ServicesContainer _servicesContainer = new ServicesContainer();
 	private Set<String> _servletContextNames = new HashSet<String>();
 	private Map<String, ServletFiltersContainer> _servletFiltersContainerMap =

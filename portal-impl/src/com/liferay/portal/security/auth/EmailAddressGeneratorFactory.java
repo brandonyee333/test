@@ -18,15 +18,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
-import com.liferay.registry.ServiceReference;
-import com.liferay.registry.ServiceRegistration;
 import com.liferay.registry.ServiceTracker;
-import com.liferay.registry.ServiceTrackerCustomizer;
-import com.liferay.registry.collections.StringServiceRegistrationMap;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Amos Fong
@@ -35,84 +27,18 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class EmailAddressGeneratorFactory {
 
-	public static EmailAddressGenerator getEmailAddressGenerator(String classname) {
-		return _instance._getEmailAddressGenerator(classname);
-	}
-
-	public static Map<String, EmailAddressGenerator> getEmailAddressGenerators() {
-		return _instance._getEmailAddressGenerators();
-	}
 
 	public static EmailAddressGenerator getInstance() {
 		return _instance._serviceTracker.getService();
-	}
-
-	public static void register(String classname, EmailAddressGenerator emailAddressGenerator) {
-		_instance._register(classname, emailAddressGenerator);
-	}
-
-	public static void unregister(String classname) {
-		_instance._unregister(classname);
 	}
 
 	private EmailAddressGeneratorFactory() {
 		Registry registry = RegistryUtil.getRegistry();
 
 		_serviceTracker = registry.trackServices(
-			EmailAddressGenerator.class.getName(),
-			new EmailAddressGeneratorServiceTrackerCustomizer());
+			EmailAddressGenerator.class);
 
 		_serviceTracker.open();
-	}
-
-	private EmailAddressGenerator _getEmailAddressGenerator(String path) {
-		EmailAddressGenerator emailAddressGenerator = _generators.get(path);
-
-		if (emailAddressGenerator != null) {
-			return emailAddressGenerator;
-		}
-
-		for (Map.Entry<String, EmailAddressGenerator> entry : _generators.entrySet()) {
-			if (path.startsWith(entry.getKey())) {
-				return entry.getValue();
-			}
-		}
-
-		return null;
-	}
-
-	private Map<String, EmailAddressGenerator> _getEmailAddressGenerators() {
-		return _generators;
-	}
-
-	private void _register(String path, EmailAddressGenerator emailAddressGenerator) {
-		Registry registry = RegistryUtil.getRegistry();
-
-		Map<String, Object> properties = new HashMap<String, Object>();
-
-		properties.put("path", path);
-
-		ServiceRegistration<EmailAddressGenerator> serviceRegistration =
-			registry.registerService(
-				EmailAddressGenerator.class, emailAddressGenerator, properties);
-
-		_emailAddressGeneratorServiceRegistrations.put(path, serviceRegistration);
-	}
-
-	private void _unregister(String path) {
-		ServiceRegistration<?> serviceRegistration =
-			_emailAddressGeneratorServiceRegistrations.remove(path);
-
-		if (serviceRegistration != null) {
-			serviceRegistration.unregister();
-		}
-
-		serviceRegistration = _emailAddressGeneratorServiceRegistrations.remove(
-			path);
-
-		if (serviceRegistration != null) {
-			serviceRegistration.unregister();
-		}
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(
@@ -120,49 +46,8 @@ public class EmailAddressGeneratorFactory {
 
 	private static EmailAddressGeneratorFactory _instance =
 		new EmailAddressGeneratorFactory();
-
-	private StringServiceRegistrationMap<EmailAddressGenerator>
-		_emailAddressGeneratorServiceRegistrations =
-			new StringServiceRegistrationMap<EmailAddressGenerator>();
-	private Map<String, EmailAddressGenerator> _generators =
-		new ConcurrentHashMap<String, EmailAddressGenerator>();
+	
 	private ServiceTracker<?, EmailAddressGenerator> _serviceTracker;
 
-	private class EmailAddressGeneratorServiceTrackerCustomizer
-		implements ServiceTrackerCustomizer<Object, EmailAddressGenerator> {
-
-		@Override
-		public EmailAddressGenerator addingService(ServiceReference<Object> serviceReference) {
-			Registry registry = RegistryUtil.getRegistry();
-
-			Object service = registry.getService(serviceReference);
-
-			EmailAddressGenerator emailAddressGenerator = (EmailAddressGenerator)service;
-
-			String path = emailAddressGenerator.getClass().getName();
-
-			_generators.put(path, emailAddressGenerator);
-
-			return emailAddressGenerator;
-		}
-
-		@Override
-		public void modifiedService(
-			ServiceReference<Object> serviceReference, EmailAddressGenerator service) {
-		}
-
-		@Override
-		public void removedService(
-			ServiceReference<Object> serviceReference, EmailAddressGenerator service) {
-
-			Registry registry = RegistryUtil.getRegistry();
-
-			registry.ungetService(serviceReference);
-
-			String path = (String)serviceReference.getProperty("path");
-			_generators.remove(path);
-		}
-
-	}
 
 }
