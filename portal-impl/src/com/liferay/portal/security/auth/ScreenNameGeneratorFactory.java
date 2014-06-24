@@ -14,55 +14,146 @@
 
 package com.liferay.portal.security.auth;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.ClassUtil;
-import com.liferay.portal.kernel.util.InstanceFactory;
-import com.liferay.portal.util.ClassLoaderUtil;
-import com.liferay.portal.util.PropsValues;
+import com.liferay.registry.Registry;
+import com.liferay.registry.RegistryUtil;
+import com.liferay.registry.ServiceReference;
+import com.liferay.registry.ServiceRegistration;
+import com.liferay.registry.ServiceTracker;
+import com.liferay.registry.ServiceTrackerCustomizer;
+import com.liferay.registry.collections.StringServiceRegistrationMap;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Brian Wing Shun Chan
  * @author Shuyang Zhou
+ * @author Peter Fellwock
  */
 public class ScreenNameGeneratorFactory {
 
 	public static ScreenNameGenerator getInstance() {
-		return _screenNameGenerator;
+		return _instance._serviceTracker.getService();
 	}
 
-	public static void setInstance(ScreenNameGenerator screenNameGenerator) {
-		if (_log.isDebugEnabled()) {
-			_log.debug("Set " + ClassUtil.getClassName(screenNameGenerator));
+	public static ScreenNameGenerator getScreenNameGenerator(String path) {
+		return _instance._getScreenNameGenerator(path);
+	}
+
+	public static Map<String, ScreenNameGenerator> getScreenNameGenerators() {
+		return _instance._getScreenNameGenerators();
+	}
+
+	public static void register(String path, ScreenNameGenerator screenNameGenerator) {
+		_instance._register(path, screenNameGenerator);
+	}
+
+	public static void unregister(String path) {
+		_instance._unregister(path);
+	}
+
+	private ScreenNameGeneratorFactory() {
+		Registry registry = RegistryUtil.getRegistry();
+
+		_serviceTracker = registry.trackServices(
+				ScreenNameGenerator.class.getName(),
+			new ScreenNameGeneratorServiceTrackerCustomizer());
+
+		_serviceTracker.open();
+	}
+
+	private ScreenNameGenerator _getScreenNameGenerator(String path) {
+		ScreenNameGenerator screenNameGenerator = _generators.get(path);
+
+		if (screenNameGenerator != null) {
+			return screenNameGenerator;
 		}
 
-		if (screenNameGenerator == null) {
-			_screenNameGenerator = _originalScreenNameGenerator;
+		for (Map.Entry<String, ScreenNameGenerator> entry : _generators
+				.entrySet()) {
+			if (path.startsWith(entry.getKey())) {
+				return entry.getValue();
+			}
 		}
-		else {
-			_screenNameGenerator = screenNameGenerator;
+
+		return null;
+	}
+
+	private Map<String, ScreenNameGenerator> _getScreenNameGenerators() {
+		return _generators;
+	}
+
+	private void _register(String path, ScreenNameGenerator screenNameGenerator) {
+		Registry registry = RegistryUtil.getRegistry();
+
+		Map<String, Object> properties = new HashMap<String, Object>();
+
+		properties.put("path", path);
+
+		ServiceRegistration<ScreenNameGenerator> serviceRegistration = registry
+				.registerService(ScreenNameGenerator.class, screenNameGenerator,
+					properties);
+
+		_screenNameGeneratorServiceRegistrations.put(path, serviceRegistration);
+	}
+
+	private void _unregister(String path) {
+		ServiceRegistration<?> serviceRegistration = _screenNameGeneratorServiceRegistrations
+			.remove(path);
+
+		if (serviceRegistration != null) {
+			serviceRegistration.unregister();
+		}
+
+		serviceRegistration = _screenNameGeneratorServiceRegistrations
+			.remove(path);
+
+		if (serviceRegistration != null) {
+			serviceRegistration.unregister();
 		}
 	}
 
-	public void afterPropertiesSet() throws Exception {
-		if (_log.isDebugEnabled()) {
-			_log.debug(
-				"Instantiate " + PropsValues.USERS_SCREEN_NAME_GENERATOR);
+	private static ScreenNameGeneratorFactory _instance = new ScreenNameGeneratorFactory();
+
+	private Map<String, ScreenNameGenerator> _generators = new ConcurrentHashMap<String, ScreenNameGenerator>();
+	private StringServiceRegistrationMap<ScreenNameGenerator> _screenNameGeneratorServiceRegistrations = new StringServiceRegistrationMap<ScreenNameGenerator>();
+	private ServiceTracker<?, ScreenNameGenerator> _serviceTracker;
+
+	private class ScreenNameGeneratorServiceTrackerCustomizer
+			implements ServiceTrackerCustomizer<Object, ScreenNameGenerator> {
+
+		@Override
+		public ScreenNameGenerator addingService(
+				ServiceReference<Object> serviceReference) {
+			Registry registry = RegistryUtil.getRegistry();
+
+			Object service = registry.getService(serviceReference);
+
+			ScreenNameGenerator screenNameGenerator = (ScreenNameGenerator)service;
+
+			String path = screenNameGenerator.getClass().getName();
+
+			_generators.put(path, screenNameGenerator);
+
+			return screenNameGenerator;
 		}
 
-		ClassLoader classLoader = ClassLoaderUtil.getPortalClassLoader();
+		@Override
+		public void modifiedService(ServiceReference<Object> serviceReference,
+				ScreenNameGenerator service) {
+		}
 
-		_originalScreenNameGenerator =
-			(ScreenNameGenerator)InstanceFactory.newInstance(
-				classLoader, PropsValues.USERS_SCREEN_NAME_GENERATOR);
+		@Override
+		public void removedService(ServiceReference<Object> serviceReference,
+				ScreenNameGenerator service) {
 
-		_screenNameGenerator = _originalScreenNameGenerator;
+			Registry registry = RegistryUtil.getRegistry();
+
+			registry.ungetService(serviceReference);
+
+			String path = (String) serviceReference.getProperty("path");
+			_generators.remove(path);
+		}
 	}
-
-	private static Log _log = LogFactoryUtil.getLog(
-		ScreenNameGeneratorFactory.class);
-
-	private static ScreenNameGenerator _originalScreenNameGenerator;
-	private static volatile ScreenNameGenerator _screenNameGenerator;
-
 }
