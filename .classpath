@@ -8,7 +8,7 @@
 	<classpathentry excluding="**/.svn/**|.svn/" kind="src" path="portal-service/src"/>
 	<!--<classpathentry excluding="**/.svn/**|.svn/" kind="src" path="portal-service/test/integration"/>-->
 	<classpathentry excluding="**/.svn/**|.svn/" kind="src" path="portal-service/test/unit"/>
-	<classpathentry excluding="**/.svn/**|.svn/" kind="src" path="portal-web/test"/>
+	<classpathentry excluding="**/.svn/**|.svn/" kind="src" path="portal-web/test/functional"/>
 	<classpathentry excluding="**/.svn/**|.svn/" kind="src" path="support-tomcat/src"/>
 	<classpathentry excluding="**/.svn/**|.svn/" kind="src" path="util-bridges/src"/>
 	<classpathentry excluding="**/.svn/**|.svn/" kind="src" path="util-java/src"/>
@@ -232,8 +232,8 @@
 	<classpathentry kind="lib" path="lib/portal/mimepull.jar"/>
 	<classpathentry kind="lib" path="lib/portal/msnm.jar"/>
 	<classpathentry kind="lib" path="lib/portal/nekohtml.jar"/>
-	<classpathentry kind="lib" path="lib/portal/oauth.jar"/>
-	<classpathentry kind="lib" path="lib/portal/oauth-provider.jar"/>
+	<!--<classpathentry kind="lib" path="lib/portal/oauth.jar"/>-->
+	<!--<classpathentry kind="lib" path="lib/portal/oauth-provider.jar"/>-->
 	<classpathentry kind="lib" path="lib/portal/odmg.jar"/>
 	<classpathentry kind="lib" path="lib/portal/openid4java.jar"/>
 	<classpathentry kind="lib" path="lib/portal/oro.jar"/>
