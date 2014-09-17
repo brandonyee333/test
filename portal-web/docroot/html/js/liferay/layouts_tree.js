@@ -187,7 +187,7 @@ AUI.add(
 						noticeClass: 'hide',
 						timeout: timeout || 10000,
 						toggleText: false,
-						type: type || 'warning',
+						type: type || 'danger',
 						useAnimation: Lang.isValue(useAnimation) ? useAnimation : true
 					}
 				).show();
@@ -444,7 +444,7 @@ AUI.add(
 			_restoreNodePosition: function(response) {
 				var instance = this;
 
-				instance._displayNotice(response.message, 'warning', 10000, true);
+				instance._displayNotice(response.message, 'danger', 10000, true);
 
 				var nodeId = A.Lang.sub(
 					NODE_ID_TPL,
