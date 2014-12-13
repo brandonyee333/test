@@ -299,10 +299,12 @@ public class VerifySQLServer extends VerifyProcess {
 			"'Cyrus%') and (sysobjects.name not like 'QUARTZ%')";
 
 	private static final String _FILTER_NONUNICODE_DATA_TYPES =
-		"((systypes.name = 'varchar') OR (systypes.name = 'text'))";
+		"((systypes.name = 'ntext') OR (systypes.name = 'text') OR " +
+			"(systypes.name = 'varchar'))";
 
-	private static Log _log = LogFactoryUtil.getLog(VerifySQLServer.class);
+	private static final Log _log = LogFactoryUtil.getLog(
+		VerifySQLServer.class);
 
-	private List<String> _addPrimaryKeySQLs = new ArrayList<String>();
+	private final List<String> _addPrimaryKeySQLs = new ArrayList<String>();
 
 }

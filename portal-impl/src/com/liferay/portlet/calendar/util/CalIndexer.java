@@ -16,7 +16,6 @@ package com.liferay.portlet.calendar.util;
 
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.search.BaseIndexer;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Field;
@@ -105,7 +104,8 @@ public class CalIndexer extends BaseIndexer {
 		Document document = getDocument(event);
 
 		SearchEngineUtil.updateDocument(
-			getSearchEngineId(), event.getCompanyId(), document);
+			getSearchEngineId(), event.getCompanyId(), document,
+			isCommitImmediately());
 	}
 
 	@Override
@@ -127,9 +127,7 @@ public class CalIndexer extends BaseIndexer {
 		return PORTLET_ID;
 	}
 
-	protected void reindexEvents(long companyId)
-		throws PortalException, SystemException {
-
+	protected void reindexEvents(long companyId) throws PortalException {
 		final ActionableDynamicQuery actionableDynamicQuery =
 			CalEventLocalServiceUtil.getActionableDynamicQuery();
 

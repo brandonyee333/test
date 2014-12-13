@@ -16,11 +16,13 @@ package com.liferay.portal.kernel.lar;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.StagedGroupedModel;
 import com.liferay.portal.model.StagedModel;
+import com.liferay.portal.util.PortletKeys;
 
 import java.io.Serializable;
 
@@ -55,6 +57,18 @@ public class ExportImportPathUtil {
 	 * The portlet prefix used in generating paths.
 	 */
 	public static final String PATH_PREFIX_PORTLET = "portlet";
+
+	/**
+	 * The service prefix used in generating paths.
+	 */
+	public static final String PATH_PREFIX_SERVICE = "service";
+
+	public static String getCompanyModelPath(
+		long companyId, String className, long classPK) {
+
+		return getModelPath(
+			PATH_PREFIX_COMPANY, companyId, className, classPK, null);
+	}
 
 	/**
 	 * Returns the expando-specific path for the entity path. The entity path
@@ -291,6 +305,30 @@ public class ExportImportPathUtil {
 	 *
 	 * @param  portletDataContext the context of the current export/import
 	 *         process
+	 * @return a portlet path for the portlet ID
+	 */
+	public static String getPortletPath(PortletDataContext portletDataContext) {
+		return getPortletPath(
+			portletDataContext, portletDataContext.getPortletId());
+	}
+
+	/**
+	 * Returns a portlet path for the portlet ID.
+	 *
+	 * <p>
+	 * For example, a portlet path would resemble the following:
+	 * </p>
+	 *
+	 * <p>
+	 * <pre>
+	 * <code>
+	 * /group/"queried groupId"/portlet/"portletId"
+	 * </code>
+	 * </pre>
+	 * </p>
+	 *
+	 * @param  portletDataContext the context of the current export/import
+	 *         process
 	 * @param  portletId the portlet ID the path is being generated for
 	 * @return a portlet path for the portlet ID
 	 */
@@ -304,6 +342,24 @@ public class ExportImportPathUtil {
 		sb.append(PATH_PREFIX_PORTLET);
 		sb.append(StringPool.FORWARD_SLASH);
 		sb.append(portletId);
+
+		return sb.toString();
+	}
+
+	public static String getPortletPreferencesPath(
+		PortletDataContext portletDataContext, String portletId, long ownerId,
+		int ownerType, long plid) {
+
+		StringBundler sb = new StringBundler(8);
+
+		sb.append(getPortletPath(portletDataContext, portletId));
+		sb.append("/preferences/");
+		sb.append(getOwnerTypePath(ownerType));
+		sb.append(ownerId);
+		sb.append(CharPool.FORWARD_SLASH);
+		sb.append(plid);
+		sb.append(CharPool.FORWARD_SLASH);
+		sb.append("portlet-preferences.xml");
 
 		return sb.toString();
 	}
@@ -333,6 +389,25 @@ public class ExportImportPathUtil {
 	public static String getRootPath(PortletDataContext portletDataContext) {
 		return getRootPath(
 			PATH_PREFIX_GROUP, portletDataContext.getScopeGroupId());
+	}
+
+	public static String getServicePortletPreferencesPath(
+		PortletDataContext portletDataContext, String serviceName, long ownerId,
+		int ownerType) {
+
+		StringBundler sb = new StringBundler(9);
+
+		sb.append(getRootPath(portletDataContext));
+		sb.append(StringPool.FORWARD_SLASH);
+		sb.append(PATH_PREFIX_SERVICE);
+		sb.append(StringPool.FORWARD_SLASH);
+		sb.append(serviceName);
+		sb.append(getOwnerTypePath(ownerType));
+		sb.append(ownerId);
+		sb.append(CharPool.FORWARD_SLASH);
+		sb.append("portlet-preferences.xml");
+
+		return sb.toString();
 	}
 
 	/**
@@ -423,6 +498,27 @@ public class ExportImportPathUtil {
 		}
 
 		return sb.toString();
+	}
+
+	protected static String getOwnerTypePath(int ownerType) {
+		if (ownerType == PortletKeys.PREFS_OWNER_TYPE_ARCHIVED) {
+			return "archived/";
+		}
+		else if (ownerType == PortletKeys.PREFS_OWNER_TYPE_COMPANY) {
+			return "company/";
+		}
+		else if (ownerType == PortletKeys.PREFS_OWNER_TYPE_GROUP) {
+			return "group/";
+		}
+		else if (ownerType == PortletKeys.PREFS_OWNER_TYPE_LAYOUT) {
+			return "layout/";
+		}
+		else if (ownerType == PortletKeys.PREFS_OWNER_TYPE_USER) {
+			return "user/";
+		}
+		else {
+			return StringPool.BLANK;
+		}
 	}
 
 	protected static String getRootPath(

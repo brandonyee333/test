@@ -14,8 +14,6 @@
 
 package com.liferay.portlet.documentlibrary.antivirus;
 
-import com.liferay.portal.kernel.exception.SystemException;
-
 import java.io.File;
 import java.io.InputStream;
 
@@ -35,23 +33,17 @@ public class AntivirusScannerWrapper implements AntivirusScanner {
 	}
 
 	@Override
-	public void scan(byte[] bytes)
-		throws AntivirusScannerException, SystemException {
-
+	public void scan(byte[] bytes) throws AntivirusScannerException {
 		_antivirusScanner.scan(bytes);
 	}
 
 	@Override
-	public void scan(File file)
-		throws AntivirusScannerException, SystemException {
-
+	public void scan(File file) throws AntivirusScannerException {
 		_antivirusScanner.scan(file);
 	}
 
 	@Override
-	public void scan(InputStream inputStream)
-		throws AntivirusScannerException, SystemException {
-
+	public void scan(InputStream inputStream) throws AntivirusScannerException {
 		_antivirusScanner.scan(inputStream);
 	}
 
@@ -65,6 +57,6 @@ public class AntivirusScannerWrapper implements AntivirusScanner {
 	}
 
 	private AntivirusScanner _antivirusScanner;
-	private AntivirusScanner _originalAntivirusScanner;
+	private final AntivirusScanner _originalAntivirusScanner;
 
 }

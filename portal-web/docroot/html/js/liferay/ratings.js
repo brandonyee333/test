@@ -33,15 +33,38 @@ AUI.add(
 			{
 				ATTRS: {
 					averageScore: {},
+
 					className: {},
+
 					classPK: {},
+
 					namespace: {},
+
+					round: {},
+
 					size: {},
+
 					totalEntries: {},
+
 					totalScore: {},
+
 					type: {},
+
 					uri: {},
-					yourScore: {}
+
+					yourScore: {
+						getter: function(value) {
+							var instance = this;
+
+							var yourScore = value;
+
+							if ((instance.get('type') == 'stars') && (yourScore == -1.0)) {
+								yourScore = 0;
+							}
+
+							return yourScore;
+						}
+					}
 				},
 
 				EXTENDS: A.Base,
@@ -67,7 +90,7 @@ AUI.add(
 						if (score == 1.0) {
 							scoreIndex = 0;
 						}
-						else if (score == -1.0) {
+						else if (score == 0.0) {
 							scoreIndex = 1;
 						}
 
@@ -86,7 +109,7 @@ AUI.add(
 						return prefix + score;
 					},
 
-					_getLabel: function(desc, totalEntries, ratingScore) {
+					_getLabel: function(desc, totalEntries) {
 						var instance = this;
 
 						var voteLabel = '';
@@ -193,7 +216,10 @@ AUI.add(
 
 					var ratings = Liferay.Ratings.StarRating;
 
-					if (config.type != 'stars') {
+					if (config.type === 'like') {
+						ratings = Liferay.Ratings.LikeRating;
+					}
+					else if (config.type === 'thumbs') {
 						ratings = Liferay.Ratings.ThumbRating;
 					}
 
@@ -208,7 +234,7 @@ AUI.add(
 					function() {
 						A.Array.each(
 							buffer,
-							function(item, index, collection) {
+							function(item, index) {
 								var handle = item.container.on(
 									EVENT_INTERACTIONS_RENDER,
 									function(event) {
@@ -232,8 +258,8 @@ AUI.add(
 				_INSTANCES: {},
 
 				_thumbScoreMap: {
-					'-1': 0,
-					'down': -1,
+					'-1': -1,
+					'down': 0,
 					'up': 1
 				}
 			}
@@ -241,15 +267,24 @@ AUI.add(
 
 		var StarRating = A.Component.create(
 			{
-				EXTENDS: Ratings,
-
 				ATTRS: {
 					initialFocus: {
 						validator: Lang.isBoolean
 					}
 				},
 
+				EXTENDS: Ratings,
+
 				prototype: {
+					_itemSelect: function(event) {
+						var instance = this;
+
+						var uri = instance.get(STR_URI);
+						var score = (instance.ratings.get('selectedIndex') + 1) / instance.get(STR_SIZE);
+
+						instance._sendVoteRequest(uri, score, instance._saveCallback);
+					},
+
 					_renderRatings: function() {
 						var instance = this;
 
@@ -258,12 +293,18 @@ AUI.add(
 						instance._ratingScoreNode = A.one('#' + namespace + 'ratingScoreContent');
 
 						if (themeDisplay.isSignedIn()) {
-							var yourScore = instance.get(STR_YOUR_SCORE);
+							var yourScore = instance.get(STR_YOUR_SCORE) * instance.get(STR_SIZE);
 
 							instance.ratings = new A.StarRating(
 								{
 									boundingBox: '#' + namespace + 'ratingStar',
 									canReset: false,
+									cssClasses: {
+										element: CSS_ICON_STAR_EMPTY,
+										hover: CSS_ICON_STAR,
+										off: CSS_ICON_STAR_EMPTY,
+										on: CSS_ICON_STAR
+									},
 									defaultSelected: yourScore,
 									srcNode: '#' + namespace + 'ratingStarContent'
 								}
@@ -279,15 +320,6 @@ AUI.add(
 						instance._ratingScoreNode.on('mouseenter', instance._showScoreTooltip, instance);
 					},
 
-					_itemSelect: function(event) {
-						var instance = this;
-
-						var uri = instance.get(STR_URI);
-						var score = instance.ratings.get('selectedIndex') + 1;
-
-						instance._sendVoteRequest(uri, score, instance._saveCallback);
-					},
-
 					_saveCallback: function(event, id, obj) {
 						var instance = this;
 
@@ -297,16 +329,18 @@ AUI.add(
 
 						var description = Liferay.Language.get('average');
 
-						var label = instance._getLabel(description, json.totalEntries, json.averageScore);
+						var averageScore = json.averageScore * instance.get(STR_SIZE);
 
-						var averageIndex = json.averageScore;
+						var label = instance._getLabel(description, json.totalEntries);
+
+						var averageIndex = instance.get('round') ? Math.round(averageScore) : Math.floor(averageScore);
 
 						var ratingScore = instance._ratingScoreNode;
 
 						ratingScore.one('.rating-label').html(label);
 
 						ratingScore.all(SELECTOR_RATING_ELEMENT).each(
-							function(item, index, collection) {
+							function(item, index) {
 								var fromCssClass = CSS_ICON_STAR;
 								var toCssClass = CSS_ICON_STAR_EMPTY;
 
@@ -319,7 +353,7 @@ AUI.add(
 							}
 						);
 
-						instance._updateAverageScoreText(json.averageScore);
+						instance._updateAverageScoreText(averageScore);
 					}
 				}
 			}
@@ -327,48 +361,38 @@ AUI.add(
 
 		var ThumbRating = A.Component.create(
 			{
-				EXTENDS: Ratings,
-
 				ATTRS: {
 					initialFocus: {
 						validator: Lang.isBoolean
 					}
 				},
 
+				EXTENDS: Ratings,
+
 				prototype: {
-					_renderRatings: function() {
+					_createRating: function() {
 						var instance = this;
 
-						if (themeDisplay.isSignedIn()) {
-							var description = instance._fixScore(instance.get('totalScore'));
+						var namespace = instance.get(STR_NAMESPACE);
 
-							var totalEntries = instance.get('totalEntries');
-							var averageScore = instance.get('averageScore');
-							var size = instance.get(STR_SIZE);
-							var yourScore = instance.get(STR_YOUR_SCORE);
-
-							var label = instance._getLabel(description, totalEntries, averageScore);
-
-							var yourScoreIndex = instance._convertToIndex(yourScore);
-
-							var namespace = instance.get(STR_NAMESPACE);
-
-							instance.ratings = new A.ThumbRating(
-								{
-									boundingBox: '#' + namespace + 'ratingThumb',
-									label: label,
-									srcNode: '#' + namespace + 'ratingThumbContent'
-								}
-							).render();
-
-							if (instance.get(STR_INITIAL_FOCUS)) {
-								A.one('#' + namespace + 'ratingThumb a').focus();
+						instance.ratings = new A.ThumbRating(
+							{
+								boundingBox: '#' + namespace + 'ratingThumb',
+								srcNode: '#' + namespace + 'ratingThumbContent'
 							}
+						).render();
+					},
 
-							instance._bindRatings();
+					_getThumbScores: function(entries, score) {
+						var instance = this;
 
-							instance.ratings.select(yourScoreIndex);
-						}
+						var positiveVotes = Math.floor(score);
+						var negativeVotes = entries - positiveVotes;
+
+						return {
+							negativeVotes : negativeVotes,
+							positiveVotes : positiveVotes
+						};
 					},
 
 					_itemSelect: function(event) {
@@ -382,6 +406,28 @@ AUI.add(
 						instance._sendVoteRequest(uri, score, instance._saveCallback);
 					},
 
+					_renderRatings: function() {
+						var instance = this;
+
+						if (themeDisplay.isSignedIn()) {
+							var yourScore = instance.get(STR_YOUR_SCORE);
+
+							var yourScoreIndex = instance._convertToIndex(yourScore);
+
+							var namespace = instance.get(STR_NAMESPACE);
+
+							instance._createRating();
+
+							if (instance.get(STR_INITIAL_FOCUS)) {
+								A.one('#' + namespace + 'ratingThumb a').focus();
+							}
+
+							instance._bindRatings();
+
+							instance.ratings.select(yourScoreIndex);
+						}
+					},
+
 					_saveCallback: function(event, id, obj) {
 						var instance = this;
 
@@ -389,17 +435,84 @@ AUI.add(
 
 						var json = xhr.get(STR_RESPONSE_DATA);
 
-						var score = Math.round(json.totalEntries * json.averageScore);
+						var thumbScore = instance._getThumbScores(json.totalEntries, json.totalScore);
 
-						var description = instance._fixScore(score);
-						var label = instance._getLabel(description, json.totalEntries);
+						instance._updateScores(thumbScore);
+					},
 
-						instance.ratings.set('label', label);
+					_updateScores: function(thumbScore) {
+						var instance = this;
+
+						var elements = instance.ratings.get('elements');
+
+						var ratingThumbUp = elements.item(0);
+						var ratingThumbDown = elements.item(1);
+
+						ratingThumbUp.html(thumbScore.positiveVotes);
+
+						if (ratingThumbDown) {
+							ratingThumbDown.html(thumbScore.negativeVotes);
+						}
 					}
 				}
 			}
 		);
 
+		var LikeRatingImpl = A.Component.create(
+			{
+				EXTENDS: A.ThumbRating,
+
+				NAME: 'LikeRatingImpl',
+
+				prototype: {
+					renderUI: function() {
+						var instance = this;
+
+						var cssClasses = instance.get('cssClasses');
+
+						A.ThumbRating.superclass.renderUI.apply(this, arguments);
+
+						var elements = instance.get('elements');
+
+						elements.addClass(cssClasses.off);
+						elements.item(0).addClass(cssClasses.up);
+					}
+				}
+			}
+		);
+
+		var LikeRating = A.Component.create(
+			{
+				EXTENDS: ThumbRating,
+
+				NAME: 'LikeRating',
+
+				prototype: {
+					_createRating: function() {
+						var instance = this;
+
+						var namespace = instance.get(STR_NAMESPACE);
+
+						instance.ratings = new LikeRatingImpl(
+							{
+								boundingBox: '#' + namespace + 'ratingLike',
+								srcNode: '#' + namespace + 'ratingLikeContent'
+							}
+						).render();
+					},
+
+					_getThumbScores: function(entries, score) {
+						var instance = this;
+
+						return {
+							positiveVotes : entries
+						};
+					}
+				}
+			}
+		);
+
+		Ratings.LikeRating = LikeRating;
 		Ratings.StarRating = StarRating;
 		Ratings.ThumbRating = ThumbRating;
 

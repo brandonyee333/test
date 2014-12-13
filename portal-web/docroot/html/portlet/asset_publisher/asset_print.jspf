@@ -21,6 +21,7 @@ printAssetURL.setParameter("struts_action", "/asset_publisher/view_content");
 printAssetURL.setParameter("assetEntryId", String.valueOf(assetEntry.getEntryId()));
 printAssetURL.setParameter("viewMode", Constants.PRINT);
 printAssetURL.setParameter("type", assetRendererFactory.getType());
+printAssetURL.setParameter("languageId", languageId);
 
 if (Validator.isNotNull(assetRenderer.getUrlTitle())) {
 	if (assetRenderer.getGroupId() != scopeGroupId) {
@@ -36,9 +37,9 @@ printAssetURL.setWindowState(LiferayWindowState.POP_UP);
 <c:choose>
 	<c:when test="<%= print %>">
 		<liferay-ui:icon
-			image="print"
+			iconCssClass="icon-print"
 			label="<%= true %>"
-			message='<%= LanguageUtil.format(pageContext, "print-x-x", new Object[] {"hide-accessible", HtmlUtil.escape(assetRenderer.getTitle(locale))}, false) %>'
+			message='<%= LanguageUtil.format(request, "print-x-x", new Object[] {"hide-accessible", HtmlUtil.escape(assetRenderer.getTitle(locale))}, false) %>'
 			url="javascript:print();"
 		/>
 
@@ -48,9 +49,9 @@ printAssetURL.setWindowState(LiferayWindowState.POP_UP);
 	</c:when>
 	<c:otherwise>
 		<liferay-ui:icon
-			image="print"
+			iconCssClass="icon-print"
 			label="<%= true %>"
-			message='<%= LanguageUtil.format(pageContext, "print-x-x", new Object[] {"hide-accessible", HtmlUtil.escape(assetRenderer.getTitle(locale))}, false) %>'
+			message='<%= LanguageUtil.format(request, "print-x-x", new Object[] {"hide-accessible", HtmlUtil.escape(assetRenderer.getTitle(locale))}, false) %>'
 			url='<%= "javascript:" + renderResponse.getNamespace() + "printPage_" + assetEntryIndex + "();" %>'
 		/>
 

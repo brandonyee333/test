@@ -16,9 +16,9 @@
 
 <%@ include file="/html/portlet/language/init.jsp" %>
 
-<liferay-portlet:actionURL portletConfiguration="true" var="configurationActionURL" />
+<liferay-portlet:actionURL portletConfiguration="<%= true %>" var="configurationActionURL" />
 
-<liferay-portlet:renderURL portletConfiguration="true" var="configurationRenderURL" />
+<liferay-portlet:renderURL portletConfiguration="<%= true %>" var="configurationRenderURL" />
 
 <aui:form action="<%= configurationActionURL %>" method="post" name="fm" onSubmit='<%= "event.preventDefault(); " + renderResponse.getNamespace() + "saveConfiguration();" %>'>
 	<aui:input name="<%= Constants.CMD %>" type="hidden" value="<%= Constants.UPDATE %>" />
@@ -65,12 +65,21 @@
 	</aui:fieldset>
 
 	<aui:fieldset>
-		<aui:select name="preferences--displayStyle--" value="<%= displayStyle %>">
-			<aui:option label="icon" value="<%= LanguageTag.LIST_ICON %>" />
-			<aui:option label="long-text" value="<%= LanguageTag.LIST_LONG_TEXT %>" />
-			<aui:option label="short-text" value="<%= LanguageTag.LIST_SHORT_TEXT %>" />
-			<aui:option label="select-box" value="<%= LanguageTag.SELECT_BOX %>" />
-		</aui:select>
+		<div class="display-template">
+
+			<%
+			TemplateHandler templateHandler = TemplateHandlerRegistryUtil.getTemplateHandler(Locale.class.getName());
+			%>
+
+			<liferay-ui:ddm-template-selector
+				classNameId="<%= PortalUtil.getClassNameId(templateHandler.getClassName()) %>"
+				displayStyle="<%= displayStyle %>"
+				displayStyleGroupId="<%= displayStyleGroupId %>"
+				displayStyles="<%= Arrays.asList(PropsValues.LANGUAGE_DISPLAY_STYLE_OPTIONS) %>"
+				label="display-template"
+				refreshURL="<%= configurationRenderURL %>"
+			/>
+		</div>
 	</aui:fieldset>
 
 	<aui:input name="preferences--displayCurrentLocale--" type="checkbox" value="<%= displayCurrentLocale %>" />
@@ -81,14 +90,11 @@
 </aui:form>
 
 <aui:script>
-	Liferay.provide(
-		window,
-		'<portlet:namespace />saveConfiguration',
-		function() {
-			document.<portlet:namespace />fm.<portlet:namespace />languageIds.value = Liferay.Util.listSelect(document.<portlet:namespace />fm.<portlet:namespace />currentLanguageIds);
+	function <portlet:namespace />saveConfiguration() {
+		var form = AUI.$(document.<portlet:namespace />fm);
 
-			submitForm(document.<portlet:namespace />fm);
-		},
-		['liferay-util-list-fields']
-	);
+		form.fm('languageIds').val(Liferay.Util.listSelect(form.fm('currentLanguageIds')));
+
+		submitForm(form);
+	}
 </aui:script>

@@ -17,45 +17,45 @@ package com.liferay.portlet.journal;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.PortletRequestModel;
 import com.liferay.portal.kernel.template.TemplateConstants;
-import com.liferay.portal.kernel.test.ExecutionTestListeners;
-import com.liferay.portal.kernel.transaction.Transactional;
+import com.liferay.portal.kernel.test.AggregateTestRule;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
-import com.liferay.portal.test.EnvironmentExecutionTestListener;
-import com.liferay.portal.test.LiferayIntegrationJUnitTestRunner;
-import com.liferay.portal.test.TransactionalExecutionTestListener;
-import com.liferay.portal.util.TestPropsValues;
+import com.liferay.portal.service.ClassNameLocalServiceUtil;
+import com.liferay.portal.test.DeleteAfterTestRun;
+import com.liferay.portal.test.LiferayIntegrationTestRule;
+import com.liferay.portal.test.MainServletTestRule;
+import com.liferay.portal.util.test.TestPropsValues;
 import com.liferay.portlet.dynamicdatamapping.model.DDMStructure;
 import com.liferay.portlet.dynamicdatamapping.model.DDMTemplate;
-import com.liferay.portlet.dynamicdatamapping.util.DDMStructureTestUtil;
-import com.liferay.portlet.dynamicdatamapping.util.DDMTemplateTestUtil;
+import com.liferay.portlet.dynamicdatamapping.util.test.DDMStructureTestUtil;
+import com.liferay.portlet.dynamicdatamapping.util.test.DDMTemplateTestUtil;
 import com.liferay.portlet.journal.model.JournalArticle;
-import com.liferay.portlet.journal.util.JournalTestUtil;
 import com.liferay.portlet.journal.util.JournalUtil;
+import com.liferay.portlet.journal.util.test.JournalTestUtil;
 
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
 import org.junit.Assert;
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 /**
  * @author Marcellus Tavares
  */
-@ExecutionTestListeners(
-	listeners = {
-		EnvironmentExecutionTestListener.class,
-		TransactionalExecutionTestListener.class
-	})
-@RunWith(LiferayIntegrationJUnitTestRunner.class)
-@Transactional
 public class JournalTransformerTest {
+
+	@ClassRule
+	@Rule
+	public static final AggregateTestRule aggregateTestRule =
+		new AggregateTestRule(
+			new LiferayIntegrationTestRule(), MainServletTestRule.INSTANCE);
 
 	@Test
 	public void testContentTransformerListener() throws Exception {
@@ -76,21 +76,23 @@ public class JournalTransformerTest {
 
 		JournalTestUtil.addMetadataElement(linkElement, "en_US", "link");
 
-		String xsd = document.asXML();
+		String definition = document.asXML();
 
-		DDMStructure ddmStructure = DDMStructureTestUtil.addStructure(
-			JournalArticle.class.getName(), xsd);
+		_ddmStructure = DDMStructureTestUtil.addStructure(
+			JournalArticle.class.getName(), definition);
 
 		String xsl = "$name.getData()";
 
-		DDMTemplate ddmTemplate = DDMTemplateTestUtil.addTemplate(
-			ddmStructure.getStructureId(), TemplateConstants.LANG_TYPE_VM, xsl);
+		_ddmTemplate = DDMTemplateTestUtil.addTemplate(
+			_ddmStructure.getStructureId(), TemplateConstants.LANG_TYPE_VM,
+			xsl);
 
 		String xml = DDMStructureTestUtil.getSampleStructuredContent(
 			"Joe Bloggs");
 
-		JournalArticle article = JournalTestUtil.addArticleWithXMLContent(
-			xml, ddmStructure.getStructureKey(), ddmTemplate.getTemplateKey());
+		_article = JournalTestUtil.addArticleWithXMLContent(
+			xml, _ddmStructure.getStructureKey(),
+			_ddmTemplate.getTemplateKey());
 
 		Map<String, String> tokens = getTokens();
 
@@ -105,7 +107,7 @@ public class JournalTransformerTest {
 		Element element = (Element)document.selectSingleNode(
 			"//dynamic-content");
 
-		element.setText("[@" + article.getArticleId()  + ";name@]");
+		element.setText("[@" + _article.getArticleId()  + ";name@]");
 
 		content = JournalUtil.transform(
 			null, tokens, Constants.VIEW, "en_US", document, null, xsl,
@@ -235,14 +237,31 @@ public class JournalTransformerTest {
 	public void testVMTransformation() throws Exception {
 		Map<String, String> tokens = getTokens();
 
+		_ddmStructure = DDMStructureTestUtil.addStructure(
+			TestPropsValues.getGroupId(), "name");
+
+		_ddmTemplate = DDMTemplateTestUtil.addTemplate(
+			_ddmStructure.getStructureId(), TemplateConstants.LANG_TYPE_VM,
+			"$name.getData()");
+
 		String xml = DDMStructureTestUtil.getSampleStructuredContent(
 			"name", "Joe Bloggs");
 
-		String script = "$name.getData()";
-
 		String content = JournalUtil.transform(
 			null, tokens, Constants.VIEW, "en_US", SAXReaderUtil.read(xml),
-			null, script, TemplateConstants.LANG_TYPE_VM);
+			null,
+			"#parse(\"$templatesPath/" +
+				_ddmTemplate.getTemplateKey() + "\")",
+			TemplateConstants.LANG_TYPE_VM);
+
+		Assert.assertEquals("Joe Bloggs", content);
+
+		content = JournalUtil.transform(
+			null, tokens, Constants.VIEW, "en_US", SAXReaderUtil.read(xml),
+			null,
+			"#parse(\"$journalTemplatesPath/" +
+				_ddmTemplate.getTemplateKey() + "\")",
+			TemplateConstants.LANG_TYPE_VM);
 
 		Assert.assertEquals("Joe Bloggs", content);
 	}
@@ -252,11 +271,25 @@ public class JournalTransformerTest {
 			TestPropsValues.getGroupId(), (PortletRequestModel)null, null);
 
 		tokens.put(
+			TemplateConstants.CLASS_NAME_ID,
+			String.valueOf(
+				ClassNameLocalServiceUtil.getClassNameId(
+					DDMStructure.class.getName())));
+		tokens.put(
 			"article_group_id", String.valueOf(TestPropsValues.getGroupId()));
 		tokens.put(
 			"company_id", String.valueOf(TestPropsValues.getCompanyId()));
 
 		return tokens;
 	}
+
+	@DeleteAfterTestRun
+	private JournalArticle _article;
+
+	@DeleteAfterTestRun
+	private DDMStructure _ddmStructure;
+
+	@DeleteAfterTestRun
+	private DDMTemplate _ddmTemplate;
 
 }

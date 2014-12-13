@@ -21,6 +21,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+import java.lang.reflect.Array;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -29,8 +31,10 @@ import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -60,6 +64,24 @@ public class ListUtil {
 		copy.addAll(master);
 	}
 
+	public static <E> int count(
+		List<? extends E> list, PredicateFilter<E> predicateFilter) {
+
+		if (isEmpty(list)) {
+			return 0;
+		}
+
+		int count = 0;
+
+		for (E element : list) {
+			if (predicateFilter.filter(element)) {
+				count++;
+			}
+		}
+
+		return count;
+	}
+
 	public static <E> void distinct(
 		List<? extends E> list, Comparator<E> comparator) {
 
@@ -86,6 +108,22 @@ public class ListUtil {
 
 	public static void distinct(List<?> list) {
 		distinct(list, null);
+	}
+
+	public static <E> boolean exists(
+		List<? extends E> list, PredicateFilter<E> predicateFilter) {
+
+		if (isEmpty(list)) {
+			return false;
+		}
+
+		for (E element : list) {
+			if (predicateFilter.filter(element)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public static <T> List<T> filter(
@@ -118,7 +156,7 @@ public class ListUtil {
 
 	@SuppressWarnings("rawtypes")
 	public static <E> List<E> fromCollection(Collection<? extends E> c) {
-		if ((c != null) && List.class.isAssignableFrom(c.getClass())) {
+		if ((c != null) && (c instanceof List)) {
 			return (List)c;
 		}
 
@@ -152,16 +190,15 @@ public class ListUtil {
 
 		List<String> list = new ArrayList<String>();
 
-		UnsyncBufferedReader unsyncBufferedReader = new UnsyncBufferedReader(
-			new FileReader(file));
+		try (UnsyncBufferedReader unsyncBufferedReader =
+				new UnsyncBufferedReader(new FileReader(file))) {
 
-		String s = StringPool.BLANK;
+			String s = StringPool.BLANK;
 
-		while ((s = unsyncBufferedReader.readLine()) != null) {
-			list.add(s);
+			while ((s = unsyncBufferedReader.readLine()) != null) {
+				list.add(s);
+			}
 		}
-
-		unsyncBufferedReader.close();
 
 		return list;
 	}
@@ -219,7 +256,7 @@ public class ListUtil {
 	}
 
 	public static boolean isUnmodifiableList(List<?> list) {
-		return _unmodifiableListClass.isAssignableFrom(list.getClass());
+		return _unmodifiableListClass.isInstance(list);
 	}
 
 	/**
@@ -256,6 +293,29 @@ public class ListUtil {
 		return list;
 	}
 
+	public static <E> Iterator<E> reverseIterator(List<E> list) {
+		final ListIterator<E> listIterator = list.listIterator(list.size());
+
+		return new Iterator<E>() {
+
+			@Override
+			public boolean hasNext() {
+				return listIterator.hasPrevious();
+			}
+
+			@Override
+			public E next() {
+				return listIterator.previous();
+			}
+
+			@Override
+			public void remove() {
+				listIterator.remove();
+			}
+
+		};
+	}
+
 	public static <E> List<E> sort(List<E> list) {
 		return sort(list, null);
 	}
@@ -286,6 +346,27 @@ public class ListUtil {
 		}
 
 		return Collections.emptyList();
+	}
+
+	public static <T, A> A[] toArray(
+		List<? extends T> list, Accessor<T, A> accessor) {
+
+		if (isEmpty(list)) {
+			return (A[])Array.newInstance(accessor.getAttributeClass(), 0);
+		}
+
+		A[] array = (A[])Array.newInstance(
+			accessor.getAttributeClass(), list.size());
+
+		for (int i = 0; i < list.size(); i++) {
+			T bean = list.get(i);
+
+			A attribute = accessor.get(bean);
+
+			array[i] = attribute;
+		}
+
+		return array;
 	}
 
 	public static List<Boolean> toList(boolean[] array) {
@@ -376,6 +457,10 @@ public class ListUtil {
 		return aList;
 	}
 
+	public static <T, V extends T> List<T> toList(List<V> vlist) {
+		return new ArrayList<T>(vlist);
+	}
+
 	public static List<Long> toList(long[] array) {
 		if (ArrayUtil.isEmpty(array)) {
 			return new ArrayList<Long>();
@@ -402,6 +487,26 @@ public class ListUtil {
 		}
 
 		return list;
+	}
+
+	public static <T> long[] toLongArray(
+		List<? extends T> list, Accessor<T, Long> accessor) {
+
+		if (isEmpty(list)) {
+			return (long[])Array.newInstance(long.class, 0);
+		}
+
+		long[] array = (long[])Array.newInstance(long.class, list.size());
+
+		for (int i = 0; i < list.size(); i++) {
+			T bean = list.get(i);
+
+			Long attribute = accessor.get(bean);
+
+			array[i] = attribute;
+		}
+
+		return array;
 	}
 
 	/**
@@ -483,6 +588,18 @@ public class ListUtil {
 		}
 
 		return sb.toString();
+	}
+
+	public static <T> List<T> unique(List<T> list) {
+		Set<T> set = new LinkedHashSet<T>();
+
+		set.addAll(list);
+
+		if (list.size() == set.size()) {
+			return list;
+		}
+
+		return new ArrayList<T>(set);
 	}
 
 	private static Class<? extends List<?>> _unmodifiableListClass;

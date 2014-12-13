@@ -14,6 +14,8 @@
 
 package com.liferay.portal.service.base;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.bean.IdentifiableBean;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -56,6 +58,7 @@ import javax.sql.DataSource;
  * @see com.liferay.portal.service.AccountLocalServiceUtil
  * @generated
  */
+@ProviderType
 public abstract class AccountLocalServiceBaseImpl extends BaseLocalServiceImpl
 	implements AccountLocalService, IdentifiableBean {
 	/*
@@ -69,11 +72,10 @@ public abstract class AccountLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 *
 	 * @param account the account
 	 * @return the account that was added
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	@Override
-	public Account addAccount(Account account) throws SystemException {
+	public Account addAccount(Account account) {
 		account.setNew(true);
 
 		return accountPersistence.update(account);
@@ -96,12 +98,10 @@ public abstract class AccountLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 * @param accountId the primary key of the account
 	 * @return the account that was removed
 	 * @throws PortalException if a account with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
-	public Account deleteAccount(long accountId)
-		throws PortalException, SystemException {
+	public Account deleteAccount(long accountId) throws PortalException {
 		return accountPersistence.remove(accountId);
 	}
 
@@ -110,11 +110,10 @@ public abstract class AccountLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 *
 	 * @param account the account
 	 * @return the account that was removed
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
-	public Account deleteAccount(Account account) throws SystemException {
+	public Account deleteAccount(Account account) {
 		return accountPersistence.remove(account);
 	}
 
@@ -131,12 +130,9 @@ public abstract class AccountLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 *
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery)
-		throws SystemException {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return accountPersistence.findWithDynamicQuery(dynamicQuery);
 	}
 
@@ -151,12 +147,10 @@ public abstract class AccountLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 * @param start the lower bound of the range of model instances
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery, int start, int end)
-		throws SystemException {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end) {
 		return accountPersistence.findWithDynamicQuery(dynamicQuery, start, end);
 	}
 
@@ -172,45 +166,40 @@ public abstract class AccountLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator orderByComparator) throws SystemException {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end, OrderByComparator<T> orderByComparator) {
 		return accountPersistence.findWithDynamicQuery(dynamicQuery, start,
 			end, orderByComparator);
 	}
 
 	/**
-	 * Returns the number of rows that match the dynamic query.
+	 * Returns the number of rows matching the dynamic query.
 	 *
 	 * @param dynamicQuery the dynamic query
-	 * @return the number of rows that match the dynamic query
-	 * @throws SystemException if a system exception occurred
+	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
-	public long dynamicQueryCount(DynamicQuery dynamicQuery)
-		throws SystemException {
+	public long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return accountPersistence.countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * Returns the number of rows that match the dynamic query.
+	 * Returns the number of rows matching the dynamic query.
 	 *
 	 * @param dynamicQuery the dynamic query
 	 * @param projection the projection to apply to the query
-	 * @return the number of rows that match the dynamic query
-	 * @throws SystemException if a system exception occurred
+	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection) throws SystemException {
+		Projection projection) {
 		return accountPersistence.countWithDynamicQuery(dynamicQuery, projection);
 	}
 
 	@Override
-	public Account fetchAccount(long accountId) throws SystemException {
+	public Account fetchAccount(long accountId) {
 		return accountPersistence.fetchByPrimaryKey(accountId);
 	}
 
@@ -220,17 +209,14 @@ public abstract class AccountLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 * @param accountId the primary key of the account
 	 * @return the account
 	 * @throws PortalException if a account with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public Account getAccount(long accountId)
-		throws PortalException, SystemException {
+	public Account getAccount(long accountId) throws PortalException {
 		return accountPersistence.findByPrimaryKey(accountId);
 	}
 
 	@Override
-	public ActionableDynamicQuery getActionableDynamicQuery()
-		throws SystemException {
+	public ActionableDynamicQuery getActionableDynamicQuery() {
 		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
 
 		actionableDynamicQuery.setBaseLocalService(com.liferay.portal.service.AccountLocalServiceUtil.getService());
@@ -243,8 +229,7 @@ public abstract class AccountLocalServiceBaseImpl extends BaseLocalServiceImpl
 	}
 
 	protected void initActionableDynamicQuery(
-		ActionableDynamicQuery actionableDynamicQuery)
-		throws SystemException {
+		ActionableDynamicQuery actionableDynamicQuery) {
 		actionableDynamicQuery.setBaseLocalService(com.liferay.portal.service.AccountLocalServiceUtil.getService());
 		actionableDynamicQuery.setClass(Account.class);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
@@ -252,9 +237,18 @@ public abstract class AccountLocalServiceBaseImpl extends BaseLocalServiceImpl
 		actionableDynamicQuery.setPrimaryKeyPropertyName("accountId");
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
+		throws PortalException {
+		return accountLocalService.deleteAccount((Account)persistedModel);
+	}
+
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException, SystemException {
+		throws PortalException {
 		return accountPersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
@@ -268,11 +262,9 @@ public abstract class AccountLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 * @param start the lower bound of the range of accounts
 	 * @param end the upper bound of the range of accounts (not inclusive)
 	 * @return the range of accounts
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<Account> getAccounts(int start, int end)
-		throws SystemException {
+	public List<Account> getAccounts(int start, int end) {
 		return accountPersistence.findAll(start, end);
 	}
 
@@ -280,10 +272,9 @@ public abstract class AccountLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 * Returns the number of accounts.
 	 *
 	 * @return the number of accounts
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int getAccountsCount() throws SystemException {
+	public int getAccountsCount() {
 		return accountPersistence.countAll();
 	}
 
@@ -292,11 +283,10 @@ public abstract class AccountLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 *
 	 * @param account the account
 	 * @return the account that was updated
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	@Override
-	public Account updateAccount(Account account) throws SystemException {
+	public Account updateAccount(Account account) {
 		return accountPersistence.update(account);
 	}
 
@@ -418,7 +408,7 @@ public abstract class AccountLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 *
 	 * @param sql the sql query
 	 */
-	protected void runSQL(String sql) throws SystemException {
+	protected void runSQL(String sql) {
 		try {
 			DataSource dataSource = accountPersistence.getDataSource();
 

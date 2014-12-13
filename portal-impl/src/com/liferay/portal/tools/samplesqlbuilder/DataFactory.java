@@ -134,6 +134,7 @@ import com.liferay.portlet.dynamicdatamapping.model.DDMContentModel;
 import com.liferay.portlet.dynamicdatamapping.model.DDMStorageLink;
 import com.liferay.portlet.dynamicdatamapping.model.DDMStorageLinkModel;
 import com.liferay.portlet.dynamicdatamapping.model.DDMStructure;
+import com.liferay.portlet.dynamicdatamapping.model.DDMStructureConstants;
 import com.liferay.portlet.dynamicdatamapping.model.DDMStructureLinkModel;
 import com.liferay.portlet.dynamicdatamapping.model.DDMStructureModel;
 import com.liferay.portlet.dynamicdatamapping.model.DDMTemplateConstants;
@@ -203,6 +204,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.TimeZone;
 
 import javax.portlet.PortletPreferences;
 
@@ -272,7 +274,8 @@ public class DataFactory {
 		initRoleModels();
 		initUserNames();
 		initUserModels();
-		initVirtualHostModel();
+		initVirtualHostModel(
+			properties.getProperty("sample.sql.virtual.hostname"));
 	}
 
 	public AccountModel getAccountModel() {
@@ -721,6 +724,20 @@ public class DataFactory {
 	}
 
 	public void initContext(Properties properties) {
+		String timeZoneId = properties.getProperty("sample.sql.db.time.zone");
+
+		if (Validator.isNotNull(timeZoneId)) {
+			TimeZone timeZone = TimeZone.getTimeZone(timeZoneId);
+
+			if (timeZone != null) {
+				TimeZone.setDefault(timeZone);
+
+				_simpleDateFormat =
+					FastDateFormatFactoryUtil.getSimpleDateFormat(
+						"yyyy-MM-dd HH:mm:ss", timeZone);
+			}
+		}
+
 		_assetPublisherQueryName = GetterUtil.getString(
 			properties.getProperty("sample.sql.asset.publisher.query.name"));
 
@@ -987,12 +1004,12 @@ public class DataFactory {
 		unsyncBufferedReader.close();
 	}
 
-	public void initVirtualHostModel() {
+	public void initVirtualHostModel(String hostname) {
 		_virtualHostModel = new VirtualHostModelImpl();
 
 		_virtualHostModel.setVirtualHostId(_counter.get());
 		_virtualHostModel.setCompanyId(_companyId);
-		_virtualHostModel.setHostname("localhost");
+		_virtualHostModel.setHostname(hostname);
 	}
 
 	public AssetEntryModel newAssetEntryModel(BlogsEntryModel blogsEntryModel) {
@@ -1000,7 +1017,7 @@ public class DataFactory {
 			blogsEntryModel.getGroupId(), blogsEntryModel.getCreateDate(),
 			blogsEntryModel.getModifiedDate(), getBlogsEntryClassNameId(),
 			blogsEntryModel.getEntryId(), blogsEntryModel.getUuid(), 0, true,
-			ContentTypes.TEXT_HTML, blogsEntryModel.getTitle());
+			true, ContentTypes.TEXT_HTML, blogsEntryModel.getTitle());
 	}
 
 	public AssetEntryModel newAssetEntryModel(
@@ -1010,7 +1027,7 @@ public class DataFactory {
 			dLFileEntryModel.getGroupId(), dLFileEntryModel.getCreateDate(),
 			dLFileEntryModel.getModifiedDate(), getDLFileEntryClassNameId(),
 			dLFileEntryModel.getFileEntryId(), dLFileEntryModel.getUuid(),
-			dLFileEntryModel.getFileEntryTypeId(), true,
+			dLFileEntryModel.getFileEntryTypeId(), true, true,
 			dLFileEntryModel.getMimeType(), dLFileEntryModel.getTitle());
 	}
 
@@ -1019,8 +1036,8 @@ public class DataFactory {
 			dLFolderModel.getGroupId(), dLFolderModel.getCreateDate(),
 			dLFolderModel.getModifiedDate(),
 			_classNameModelsMap.get(DLFolder.class.getName()),
-			dLFolderModel.getFolderId(), dLFolderModel.getUuid(), 0, true, null,
-			dLFolderModel.getName());
+			dLFolderModel.getFolderId(), dLFolderModel.getUuid(), 0, true, true,
+			null, dLFolderModel.getName());
 	}
 
 	public AssetEntryModel newAssetEntryModel(
@@ -1035,8 +1052,9 @@ public class DataFactory {
 			journalArticleModel.getCreateDate(),
 			journalArticleModel.getModifiedDate(),
 			getJournalArticleClassNameId(), resourcePrimKey, resourceUuid,
-			_defaultJournalDDMStructureModel.getStructureId(), true,
-			ContentTypes.TEXT_HTML, journalArticleModel.getTitle());
+			_defaultJournalDDMStructureModel.getStructureId(),
+			journalArticleModel.isIndexable(), true, ContentTypes.TEXT_HTML,
+			journalArticleModel.getTitle());
 	}
 
 	public AssetEntryModel newAssetEntryModel(MBMessageModel mbMessageModel) {
@@ -1056,8 +1074,8 @@ public class DataFactory {
 		return newAssetEntryModel(
 			mbMessageModel.getGroupId(), mbMessageModel.getCreateDate(),
 			mbMessageModel.getModifiedDate(), classNameId,
-			mbMessageModel.getMessageId(), mbMessageModel.getUuid(), 0, visible,
-			ContentTypes.TEXT_HTML, mbMessageModel.getSubject());
+			mbMessageModel.getMessageId(), mbMessageModel.getUuid(), 0, true,
+			visible, ContentTypes.TEXT_HTML, mbMessageModel.getSubject());
 	}
 
 	public AssetEntryModel newAssetEntryModel(MBThreadModel mbThreadModel) {
@@ -1065,8 +1083,9 @@ public class DataFactory {
 			mbThreadModel.getGroupId(), mbThreadModel.getCreateDate(),
 			mbThreadModel.getModifiedDate(),
 			_classNameModelsMap.get(MBThread.class.getName()),
-			mbThreadModel.getThreadId(), mbThreadModel.getUuid(), 0, false,
-			StringPool.BLANK, String.valueOf(mbThreadModel.getRootMessageId()));
+			mbThreadModel.getThreadId(), mbThreadModel.getUuid(), 0, true,
+			false, StringPool.BLANK,
+			String.valueOf(mbThreadModel.getRootMessageId()));
 	}
 
 	public AssetEntryModel newAssetEntryModel(WikiPageModel wikiPageModel) {
@@ -1074,7 +1093,7 @@ public class DataFactory {
 			wikiPageModel.getGroupId(), wikiPageModel.getCreateDate(),
 			wikiPageModel.getModifiedDate(), getWikiPageClassNameId(),
 			wikiPageModel.getResourcePrimKey(), wikiPageModel.getUuid(), 0,
-			true, ContentTypes.TEXT_HTML, wikiPageModel.getTitle());
+			true, true, ContentTypes.TEXT_HTML, wikiPageModel.getTitle());
 	}
 
 	public List<PortletPreferencesModel>
@@ -1463,6 +1482,7 @@ public class DataFactory {
 		dlFileVersionModel.setRepositoryId(dlFileEntryModel.getRepositoryId());
 		dlFileVersionModel.setFolderId(dlFileEntryModel.getFolderId());
 		dlFileVersionModel.setFileEntryId(dlFileEntryModel.getFileEntryId());
+		dlFileVersionModel.setFileName(dlFileEntryModel.getFileName());
 		dlFileVersionModel.setExtension(dlFileEntryModel.getExtension());
 		dlFileVersionModel.setMimeType(dlFileEntryModel.getMimeType());
 		dlFileVersionModel.setTitle(dlFileEntryModel.getTitle());
@@ -1543,10 +1563,9 @@ public class DataFactory {
 		journalArticleModel.setUrlTitle(urlTitle);
 
 		journalArticleModel.setContent(_journalArticleContent);
-		journalArticleModel.setType("general");
-		journalArticleModel.setStructureId(
+		journalArticleModel.setDDMStructureKey(
 			_defaultJournalDDMStructureModel.getStructureKey());
-		journalArticleModel.setTemplateId(
+		journalArticleModel.setDDMTemplateKey(
 			_defaultJournalDDMTemplateModel.getTemplateKey());
 		journalArticleModel.setDisplayDate(new Date());
 		journalArticleModel.setExpirationDate(nextFutureDate());
@@ -1586,7 +1605,8 @@ public class DataFactory {
 		journalContentSearchModel.setGroupId(journalArticleModel.getGroupId());
 		journalContentSearchModel.setCompanyId(_companyId);
 		journalContentSearchModel.setLayoutId(layoutId);
-		journalContentSearchModel.setPortletId(PortletKeys.JOURNAL_CONTENT);
+		journalContentSearchModel.setPortletId(
+			"com_liferay_journal_content_web_portlet_JournalContentPortlet");
 		journalContentSearchModel.setArticleId(
 			journalArticleModel.getArticleId());
 
@@ -2400,8 +2420,8 @@ public class DataFactory {
 
 	protected AssetEntryModel newAssetEntryModel(
 		long groupId, Date createDate, Date modifiedDate, long classNameId,
-		long classPK, String uuid, long classTypeId, boolean visible,
-		String mimeType, String title) {
+		long classPK, String uuid, long classTypeId, boolean listable,
+		boolean visible, String mimeType, String title) {
 
 		AssetEntryModel assetEntryModel = new AssetEntryModelImpl();
 
@@ -2416,6 +2436,7 @@ public class DataFactory {
 		assetEntryModel.setClassPK(classPK);
 		assetEntryModel.setClassUuid(uuid);
 		assetEntryModel.setClassTypeId(classTypeId);
+		assetEntryModel.setListable(listable);
 		assetEntryModel.setVisible(visible);
 		assetEntryModel.setStartDate(createDate);
 		assetEntryModel.setEndDate(nextFutureDate());
@@ -2483,6 +2504,7 @@ public class DataFactory {
 		blogsEntryModel.setCreateDate(new Date());
 		blogsEntryModel.setModifiedDate(new Date());
 		blogsEntryModel.setTitle("Test Blog " + index);
+		blogsEntryModel.setSubtitle("Subtitle of Test Blog " + index);
 		blogsEntryModel.setUrlTitle("testblog" + index);
 		blogsEntryModel.setContent("This is test blog " + index + ".");
 		blogsEntryModel.setDisplayDate(new Date());
@@ -2492,7 +2514,7 @@ public class DataFactory {
 	}
 
 	protected DDMContentModel newDDMContentModel(
-		long contentId, long groupId, String xml) {
+		long contentId, long groupId, String data) {
 
 		DDMContentModel ddmContentModel = new DDMContentModelImpl();
 
@@ -2505,7 +2527,7 @@ public class DataFactory {
 		ddmContentModel.setCreateDate(nextFutureDate());
 		ddmContentModel.setModifiedDate(nextFutureDate());
 		ddmContentModel.setName(DDMStorageLink.class.getName());
-		ddmContentModel.setXml(xml);
+		ddmContentModel.setData(data);
 
 		return ddmContentModel;
 	}
@@ -2526,7 +2548,7 @@ public class DataFactory {
 
 	protected DDMStructureModel newDDMStructureModel(
 		long groupId, long userId, long classNameId, String structureKey,
-		String xsd) {
+		String definition) {
 
 		DDMStructureModel dDMStructureModel = new DDMStructureModelImpl();
 
@@ -2540,6 +2562,7 @@ public class DataFactory {
 		dDMStructureModel.setModifiedDate(nextFutureDate());
 		dDMStructureModel.setClassNameId(classNameId);
 		dDMStructureModel.setStructureKey(structureKey);
+		dDMStructureModel.setVersion(DDMStructureConstants.VERSION_DEFAULT);
 
 		StringBundler sb = new StringBundler(5);
 
@@ -2551,7 +2574,7 @@ public class DataFactory {
 
 		dDMStructureModel.setName(sb.toString());
 
-		dDMStructureModel.setXsd(xsd);
+		dDMStructureModel.setDefinition(definition);
 		dDMStructureModel.setStorageType("xml");
 
 		return dDMStructureModel;
@@ -2573,6 +2596,7 @@ public class DataFactory {
 			_classNameModelsMap.get(DDMStructure.class.getName()));
 		ddmTemplateModel.setClassPK(structureId);
 		ddmTemplateModel.setTemplateKey(String.valueOf(_counter.get()));
+		ddmTemplateModel.setVersion(DDMTemplateConstants.VERSION_DEFAULT);
 
 		StringBundler sb = new StringBundler(3);
 
@@ -2609,6 +2633,7 @@ public class DataFactory {
 		dlFileEntryModel.setRepositoryId(dlFolerModel.getRepositoryId());
 		dlFileEntryModel.setFolderId(dlFolerModel.getFolderId());
 		dlFileEntryModel.setName("TestFile" + index);
+		dlFileEntryModel.setFileName("TestFile" + index + ".txt");
 		dlFileEntryModel.setExtension("txt");
 		dlFileEntryModel.setMimeType(ContentTypes.TEXT_PLAIN);
 		dlFileEntryModel.setTitle("TestFile" + index + ".txt");

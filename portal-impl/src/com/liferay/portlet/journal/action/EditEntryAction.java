@@ -17,6 +17,7 @@ package com.liferay.portlet.journal.action;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.Constants;
+import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -28,7 +29,6 @@ import com.liferay.portal.struts.PortletAction;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.WebKeys;
-import com.liferay.portlet.PortletURLFactoryUtil;
 import com.liferay.portlet.asset.AssetCategoryException;
 import com.liferay.portlet.asset.AssetTagException;
 import com.liferay.portlet.journal.DuplicateArticleIdException;
@@ -48,8 +48,6 @@ import java.util.List;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletConfig;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.portlet.WindowState;
@@ -73,9 +71,7 @@ public class EditEntryAction extends PortletAction {
 		String cmd = ParamUtil.getString(actionRequest, Constants.CMD);
 
 		try {
-			if (cmd.equals(Constants.DELETE) ||
-				cmd.equals(Constants.DELETE_VERSIONS)) {
-
+			if (cmd.equals(Constants.DELETE)) {
 				deleteEntries(actionRequest, false);
 			}
 			else if (cmd.equals(Constants.EXPIRE)) {
@@ -90,32 +86,6 @@ public class EditEntryAction extends PortletAction {
 
 			String redirect = PortalUtil.escapeRedirect(
 				ParamUtil.getString(actionRequest, "redirect"));
-
-			if (cmd.equals(Constants.DELETE_VERSIONS) &&
-				!ActionUtil.hasArticle(actionRequest)) {
-
-				String referringPortletResource = ParamUtil.getString(
-					actionRequest, "referringPortletResource");
-
-				if (Validator.isNotNull(referringPortletResource)) {
-					setForward(
-						actionRequest,
-						"portlet.journal.asset.add_asset_redirect");
-
-					return;
-				}
-				else {
-					ThemeDisplay themeDisplay =
-						(ThemeDisplay)actionRequest.getAttribute(
-							WebKeys.THEME_DISPLAY);
-
-					PortletURL portletURL = PortletURLFactoryUtil.create(
-						actionRequest, portletConfig.getPortletName(),
-						themeDisplay.getPlid(), PortletRequest.RENDER_PHASE);
-
-					redirect = portletURL.toString();
-				}
-			}
 
 			WindowState windowState = actionRequest.getWindowState();
 
@@ -212,12 +182,14 @@ public class EditEntryAction extends PortletAction {
 			if (moveToTrash) {
 				JournalArticle article =
 					JournalArticleServiceUtil.moveArticleToTrash(
-						themeDisplay.getScopeGroupId(), deleteArticleId);
+						themeDisplay.getScopeGroupId(),
+						HtmlUtil.unescape(deleteArticleId));
 
 				trashedModels.add(article);
 			}
 			else {
-				ActionUtil.deleteArticle(actionRequest, deleteArticleId);
+				ActionUtil.deleteArticle(
+					actionRequest, HtmlUtil.unescape(deleteArticleId));
 			}
 		}
 
@@ -247,7 +219,8 @@ public class EditEntryAction extends PortletAction {
 			ParamUtil.getString(actionRequest, "articleIds"));
 
 		for (String expireArticleId : expireArticleIds) {
-			ActionUtil.expireArticle(actionRequest, expireArticleId);
+			ActionUtil.expireArticle(
+				actionRequest, HtmlUtil.unescape(expireArticleId));
 		}
 	}
 
@@ -276,7 +249,8 @@ public class EditEntryAction extends PortletAction {
 		for (String articleId : articleIds) {
 			try {
 				JournalArticleServiceUtil.moveArticle(
-					themeDisplay.getScopeGroupId(), articleId, newFolderId);
+					themeDisplay.getScopeGroupId(),
+					HtmlUtil.unescape(articleId), newFolderId);
 			}
 			catch (InvalidDDMStructureException idse) {
 				invalidArticleIds.add(articleId);

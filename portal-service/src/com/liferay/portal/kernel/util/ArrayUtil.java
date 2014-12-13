@@ -28,6 +28,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -805,6 +806,22 @@ public class ArrayUtil {
 		return true;
 	}
 
+	public static <T> int count(T[] array, PredicateFilter<T> predicateFilter) {
+		if (isEmpty(array)) {
+			return 0;
+		}
+
+		int count = 0;
+
+		for (T t : array) {
+			if (predicateFilter.filter(t)) {
+				count++;
+			}
+		}
+
+		return count;
+	}
+
 	public static String[] distinct(String[] array) {
 		return distinct(array, null);
 	}
@@ -830,6 +847,22 @@ public class ArrayUtil {
 		}
 
 		return set.toArray(new String[set.size()]);
+	}
+
+	public static <T> boolean exists(
+		T[] array, PredicateFilter<T> predicateFilter) {
+
+		if (isEmpty(array)) {
+			return false;
+		}
+
+		for (T t : array) {
+			if (predicateFilter.filter(t)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public static boolean[] filter(
@@ -1613,14 +1646,16 @@ public class ArrayUtil {
 		return aArray;
 	}
 
-	public static double[] toDoubleArray(Collection<Double> collection) {
+	public static double[] toDoubleArray(
+		Collection<? extends Number> collection) {
+
 		double[] newArray = new double[collection.size()];
 
 		if (collection instanceof List) {
-			List<Double> list = (List<Double>)collection;
+			List<Number> list = (List<Number>)collection;
 
 			for (int i = 0; i < list.size(); i++) {
-				Double value = list.get(i);
+				Number value = list.get(i);
 
 				newArray[i] = value.doubleValue();
 			}
@@ -1628,10 +1663,10 @@ public class ArrayUtil {
 		else {
 			int i = 0;
 
-			Iterator<Double> iterator = collection.iterator();
+			Iterator<? extends Number> iterator = collection.iterator();
 
 			while (iterator.hasNext()) {
-				Double value = iterator.next();
+				Number value = iterator.next();
 
 				newArray[i++] = value.doubleValue();
 			}
@@ -1640,14 +1675,16 @@ public class ArrayUtil {
 		return newArray;
 	}
 
-	public static float[] toFloatArray(Collection<Float> collection) {
+	public static float[] toFloatArray(
+		Collection<? extends Number> collection) {
+
 		float[] newArray = new float[collection.size()];
 
 		if (collection instanceof List) {
-			List<Float> list = (List<Float>)collection;
+			List<Number> list = (List<Number>)collection;
 
 			for (int i = 0; i < list.size(); i++) {
-				Float value = list.get(i);
+				Number value = list.get(i);
 
 				newArray[i] = value.floatValue();
 			}
@@ -1655,10 +1692,10 @@ public class ArrayUtil {
 		else {
 			int i = 0;
 
-			Iterator<Float> iterator = collection.iterator();
+			Iterator<? extends Number> iterator = collection.iterator();
 
 			while (iterator.hasNext()) {
-				Float value = iterator.next();
+				Number value = iterator.next();
 
 				newArray[i++] = value.floatValue();
 			}
@@ -1667,14 +1704,14 @@ public class ArrayUtil {
 		return newArray;
 	}
 
-	public static int[] toIntArray(Collection<Integer> collection) {
+	public static int[] toIntArray(Collection<? extends Number> collection) {
 		int[] newArray = new int[collection.size()];
 
 		if (collection instanceof List) {
-			List<Integer> list = (List<Integer>)collection;
+			List<Number> list = (List<Number>)collection;
 
 			for (int i = 0; i < list.size(); i++) {
-				Integer value = list.get(i);
+				Number value = list.get(i);
 
 				newArray[i] = value.intValue();
 			}
@@ -1682,10 +1719,10 @@ public class ArrayUtil {
 		else {
 			int i = 0;
 
-			Iterator<Integer> iterator = collection.iterator();
+			Iterator<? extends Number> iterator = collection.iterator();
 
 			while (iterator.hasNext()) {
-				Integer value = iterator.next();
+				Number value = iterator.next();
 
 				newArray[i++] = value.intValue();
 			}
@@ -1694,14 +1731,14 @@ public class ArrayUtil {
 		return newArray;
 	}
 
-	public static long[] toLongArray(Collection<Long> collection) {
+	public static long[] toLongArray(Collection<? extends Number> collection) {
 		long[] newArray = new long[collection.size()];
 
 		if (collection instanceof List) {
-			List<Long> list = (List<Long>)collection;
+			List<Number> list = (List<Number>)collection;
 
 			for (int i = 0; i < list.size(); i++) {
-				Long value = list.get(i);
+				Number value = list.get(i);
 
 				newArray[i] = value.longValue();
 			}
@@ -1709,13 +1746,33 @@ public class ArrayUtil {
 		else {
 			int i = 0;
 
-			Iterator<Long> iterator = collection.iterator();
+			Iterator<? extends Number> iterator = collection.iterator();
 
 			while (iterator.hasNext()) {
-				Long value = iterator.next();
+				Number value = iterator.next();
 
 				newArray[i++] = value.longValue();
 			}
+		}
+
+		return newArray;
+	}
+
+	public static Long[] toLongArray(int[] array) {
+		Long[] newArray = new Long[array.length];
+
+		for (int i = 0; i < array.length; i++) {
+			newArray[i] = (long)array[i];
+		}
+
+		return newArray;
+	}
+
+	public static Long[] toLongArray(long[] array) {
+		Long[] newArray = new Long[array.length];
+
+		for (int i = 0; i < array.length; i++) {
+			newArray[i] = array[i];
 		}
 
 		return newArray;
@@ -1990,63 +2047,63 @@ public class ArrayUtil {
 	}
 
 	public static byte[] unique(byte[] array) {
-		List<Byte> list = new UniqueList<Byte>();
+		Set<Byte> set = new LinkedHashSet<Byte>();
 
 		for (int i = 0; i < array.length; i++) {
-			list.add(array[i]);
+			set.add(array[i]);
 		}
 
-		return toArray(list.toArray(new Byte[list.size()]));
+		return toArray(set.toArray(new Byte[set.size()]));
 	}
 
 	public static double[] unique(double[] array) {
-		List<Double> list = new UniqueList<Double>();
+		Set<Double> set = new LinkedHashSet<Double>();
 
 		for (int i = 0; i < array.length; i++) {
-			list.add(array[i]);
+			set.add(array[i]);
 		}
 
-		return toArray(list.toArray(new Double[list.size()]));
+		return toArray(set.toArray(new Double[set.size()]));
 	}
 
 	public static float[] unique(float[] array) {
-		List<Float> list = new UniqueList<Float>();
+		Set<Float> set = new LinkedHashSet<Float>();
 
 		for (int i = 0; i < array.length; i++) {
-			list.add(array[i]);
+			set.add(array[i]);
 		}
 
-		return toArray(list.toArray(new Float[list.size()]));
+		return toArray(set.toArray(new Float[set.size()]));
 	}
 
 	public static int[] unique(int[] array) {
-		List<Integer> list = new UniqueList<Integer>();
+		Set<Integer> set = new LinkedHashSet<Integer>();
 
 		for (int i = 0; i < array.length; i++) {
-			list.add(array[i]);
+			set.add(array[i]);
 		}
 
-		return toArray(list.toArray(new Integer[list.size()]));
+		return toArray(set.toArray(new Integer[set.size()]));
 	}
 
 	public static long[] unique(long[] array) {
-		List<Long> list = new UniqueList<Long>();
+		Set<Long> set = new LinkedHashSet<Long>();
 
 		for (int i = 0; i < array.length; i++) {
-			list.add(array[i]);
+			set.add(array[i]);
 		}
 
-		return toArray(list.toArray(new Long[list.size()]));
+		return toArray(set.toArray(new Long[set.size()]));
 	}
 
 	public static short[] unique(short[] array) {
-		List<Short> list = new UniqueList<Short>();
+		Set<Short> set = new LinkedHashSet<Short>();
 
 		for (int i = 0; i < array.length; i++) {
-			list.add(array[i]);
+			set.add(array[i]);
 		}
 
-		return toArray(list.toArray(new Short[list.size()]));
+		return toArray(set.toArray(new Short[set.size()]));
 	}
 
 }

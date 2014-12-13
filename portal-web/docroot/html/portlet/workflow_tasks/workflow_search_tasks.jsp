@@ -28,16 +28,16 @@ WorkflowTaskDisplayTerms displayTerms = new WorkflowTaskDisplayTerms(renderReque
 >
 
 	<aui:fieldset>
-		<aui:input inlineField="<%= true %>" label="task" name="<%= displayTerms.NAME %>" size="20" value="<%= displayTerms.getName() %>" />
+		<aui:input inlineField="<%= true %>" label="task" name="<%= WorkflowTaskDisplayTerms.NAME %>" size="20" value="<%= displayTerms.getName() %>" />
 
-		<aui:select inlineField="<%= true %>" name="<%= displayTerms.TYPE %>">
+		<aui:select inlineField="<%= true %>" name="<%= WorkflowTaskDisplayTerms.TYPE %>">
 
 			<%
 			String displayTermsType = displayTerms.getType();
 
-			List<WorkflowHandler> workflowHandlers = WorkflowHandlerRegistryUtil.getWorkflowHandlers();
+			List<WorkflowHandler<?>> workflowHandlers = WorkflowHandlerRegistryUtil.getWorkflowHandlers();
 
-			for (WorkflowHandler workflowHandler : workflowHandlers) {
+			for (WorkflowHandler<?> workflowHandler : workflowHandlers) {
 				if (!workflowHandler.isAssetTypeSearchable()) {
 					continue;
 				}

@@ -17,8 +17,8 @@ package com.liferay.portal.kernel.util;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
+import com.liferay.portal.kernel.settings.Settings;
 import com.liferay.portal.kernel.xml.Document;
-import com.liferay.portal.settings.Settings;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -74,8 +74,20 @@ public class LocalizationUtil {
 		return getLocalization().getDefaultLanguageId(document);
 	}
 
+	public static String getDefaultLanguageId(
+		Document document, Locale defaultLocale) {
+
+		return getLocalization().getDefaultLanguageId(document, defaultLocale);
+	}
+
 	public static String getDefaultLanguageId(String xml) {
 		return getLocalization().getDefaultLanguageId(xml);
+	}
+
+	public static String getDefaultLanguageId(
+		String xml, Locale defaultLocale) {
+
+		return getLocalization().getDefaultLanguageId(xml, defaultLocale);
 	}
 
 	/**
@@ -139,6 +151,14 @@ public class LocalizationUtil {
 		PortletRequest portletRequest, String parameter) {
 
 		return getLocalization().getLocalizationMap(portletRequest, parameter);
+	}
+
+	public static Map<Locale, String> getLocalizationMap(
+		PortletRequest portletRequest, String parameter,
+		Map<Locale, String> defaultValues) {
+
+		return getLocalization().getLocalizationMap(
+			portletRequest, parameter, defaultValues);
 	}
 
 	public static Map<Locale, String> getLocalizationMap(String xml) {
@@ -227,6 +247,11 @@ public class LocalizationUtil {
 		return modifiedLocales;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0 replaced by {@link
+	 *             #getLocalizedName(String, String)}
+	 */
+	@Deprecated
 	public static String getPreferencesKey(String key, String languageId) {
 		return getLocalization().getPreferencesKey(key, languageId);
 	}

@@ -14,7 +14,6 @@
 
 package com.liferay.portlet.mobiledevicerules.model.impl;
 
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portlet.mobiledevicerules.model.MDRRule;
 import com.liferay.portlet.mobiledevicerules.service.MDRRuleLocalServiceUtil;
 
@@ -26,11 +25,8 @@ import java.util.List;
  */
 public class MDRRuleGroupImpl extends MDRRuleGroupBaseImpl {
 
-	public MDRRuleGroupImpl() {
-	}
-
 	@Override
-	public List<MDRRule> getRules() throws SystemException {
+	public List<MDRRule> getRules() {
 		if (getRuleGroupId() > 0) {
 			return MDRRuleLocalServiceUtil.getRules(getRuleGroupId());
 		}

@@ -14,6 +14,8 @@
 
 package com.liferay.portlet.messageboards.service.base;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.bean.IdentifiableBean;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -66,6 +68,7 @@ import javax.sql.DataSource;
  * @see com.liferay.portlet.messageboards.service.MBBanLocalServiceUtil
  * @generated
  */
+@ProviderType
 public abstract class MBBanLocalServiceBaseImpl extends BaseLocalServiceImpl
 	implements MBBanLocalService, IdentifiableBean {
 	/*
@@ -79,11 +82,10 @@ public abstract class MBBanLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 *
 	 * @param mbBan the message boards ban
 	 * @return the message boards ban that was added
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	@Override
-	public MBBan addMBBan(MBBan mbBan) throws SystemException {
+	public MBBan addMBBan(MBBan mbBan) {
 		mbBan.setNew(true);
 
 		return mbBanPersistence.update(mbBan);
@@ -106,12 +108,10 @@ public abstract class MBBanLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 * @param banId the primary key of the message boards ban
 	 * @return the message boards ban that was removed
 	 * @throws PortalException if a message boards ban with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
-	public MBBan deleteMBBan(long banId)
-		throws PortalException, SystemException {
+	public MBBan deleteMBBan(long banId) throws PortalException {
 		return mbBanPersistence.remove(banId);
 	}
 
@@ -120,11 +120,10 @@ public abstract class MBBanLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 *
 	 * @param mbBan the message boards ban
 	 * @return the message boards ban that was removed
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
-	public MBBan deleteMBBan(MBBan mbBan) throws SystemException {
+	public MBBan deleteMBBan(MBBan mbBan) {
 		return mbBanPersistence.remove(mbBan);
 	}
 
@@ -141,12 +140,9 @@ public abstract class MBBanLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 *
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery)
-		throws SystemException {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return mbBanPersistence.findWithDynamicQuery(dynamicQuery);
 	}
 
@@ -161,12 +157,10 @@ public abstract class MBBanLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 * @param start the lower bound of the range of model instances
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery, int start, int end)
-		throws SystemException {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end) {
 		return mbBanPersistence.findWithDynamicQuery(dynamicQuery, start, end);
 	}
 
@@ -182,60 +176,41 @@ public abstract class MBBanLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator orderByComparator) throws SystemException {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end, OrderByComparator<T> orderByComparator) {
 		return mbBanPersistence.findWithDynamicQuery(dynamicQuery, start, end,
 			orderByComparator);
 	}
 
 	/**
-	 * Returns the number of rows that match the dynamic query.
+	 * Returns the number of rows matching the dynamic query.
 	 *
 	 * @param dynamicQuery the dynamic query
-	 * @return the number of rows that match the dynamic query
-	 * @throws SystemException if a system exception occurred
+	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
-	public long dynamicQueryCount(DynamicQuery dynamicQuery)
-		throws SystemException {
+	public long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return mbBanPersistence.countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * Returns the number of rows that match the dynamic query.
+	 * Returns the number of rows matching the dynamic query.
 	 *
 	 * @param dynamicQuery the dynamic query
 	 * @param projection the projection to apply to the query
-	 * @return the number of rows that match the dynamic query
-	 * @throws SystemException if a system exception occurred
+	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection) throws SystemException {
+		Projection projection) {
 		return mbBanPersistence.countWithDynamicQuery(dynamicQuery, projection);
 	}
 
 	@Override
-	public MBBan fetchMBBan(long banId) throws SystemException {
+	public MBBan fetchMBBan(long banId) {
 		return mbBanPersistence.fetchByPrimaryKey(banId);
-	}
-
-	/**
-	 * Returns the message boards ban with the matching UUID and company.
-	 *
-	 * @param uuid the message boards ban's UUID
-	 * @param  companyId the primary key of the company
-	 * @return the matching message boards ban, or <code>null</code> if a matching message boards ban could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	@Override
-	public MBBan fetchMBBanByUuidAndCompanyId(String uuid, long companyId)
-		throws SystemException {
-		return mbBanPersistence.fetchByUuid_C_First(uuid, companyId, null);
 	}
 
 	/**
@@ -244,11 +219,9 @@ public abstract class MBBanLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 * @param uuid the message boards ban's UUID
 	 * @param groupId the primary key of the group
 	 * @return the matching message boards ban, or <code>null</code> if a matching message boards ban could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public MBBan fetchMBBanByUuidAndGroupId(String uuid, long groupId)
-		throws SystemException {
+	public MBBan fetchMBBanByUuidAndGroupId(String uuid, long groupId) {
 		return mbBanPersistence.fetchByUUID_G(uuid, groupId);
 	}
 
@@ -258,16 +231,14 @@ public abstract class MBBanLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 * @param banId the primary key of the message boards ban
 	 * @return the message boards ban
 	 * @throws PortalException if a message boards ban with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public MBBan getMBBan(long banId) throws PortalException, SystemException {
+	public MBBan getMBBan(long banId) throws PortalException {
 		return mbBanPersistence.findByPrimaryKey(banId);
 	}
 
 	@Override
-	public ActionableDynamicQuery getActionableDynamicQuery()
-		throws SystemException {
+	public ActionableDynamicQuery getActionableDynamicQuery() {
 		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
 
 		actionableDynamicQuery.setBaseLocalService(com.liferay.portlet.messageboards.service.MBBanLocalServiceUtil.getService());
@@ -280,8 +251,7 @@ public abstract class MBBanLocalServiceBaseImpl extends BaseLocalServiceImpl
 	}
 
 	protected void initActionableDynamicQuery(
-		ActionableDynamicQuery actionableDynamicQuery)
-		throws SystemException {
+		ActionableDynamicQuery actionableDynamicQuery) {
 		actionableDynamicQuery.setBaseLocalService(com.liferay.portlet.messageboards.service.MBBanLocalServiceUtil.getService());
 		actionableDynamicQuery.setClass(MBBan.class);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
@@ -291,11 +261,10 @@ public abstract class MBBanLocalServiceBaseImpl extends BaseLocalServiceImpl
 
 	@Override
 	public ExportActionableDynamicQuery getExportActionableDynamicQuery(
-		final PortletDataContext portletDataContext) throws SystemException {
+		final PortletDataContext portletDataContext) {
 		final ExportActionableDynamicQuery exportActionableDynamicQuery = new ExportActionableDynamicQuery() {
 				@Override
-				public long performCount()
-					throws PortalException, SystemException {
+				public long performCount() throws PortalException {
 					ManifestSummary manifestSummary = portletDataContext.getManifestSummary();
 
 					StagedModelType stagedModelType = getStagedModelType();
@@ -331,9 +300,8 @@ public abstract class MBBanLocalServiceBaseImpl extends BaseLocalServiceImpl
 
 		exportActionableDynamicQuery.setPerformActionMethod(new ActionableDynamicQuery.PerformActionMethod() {
 				@Override
-				@SuppressWarnings("unused")
 				public void performAction(Object object)
-					throws PortalException, SystemException {
+					throws PortalException {
 					MBBan stagedModel = (MBBan)object;
 
 					StagedModelDataHandlerUtil.exportStagedModel(portletDataContext,
@@ -346,25 +314,48 @@ public abstract class MBBanLocalServiceBaseImpl extends BaseLocalServiceImpl
 		return exportActionableDynamicQuery;
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
+		throws PortalException {
+		return mbBanLocalService.deleteMBBan((MBBan)persistedModel);
+	}
+
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException, SystemException {
+		throws PortalException {
 		return mbBanPersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
 	/**
-	 * Returns the message boards ban with the matching UUID and company.
+	 * Returns all the message boards bans matching the UUID and company.
 	 *
-	 * @param uuid the message boards ban's UUID
-	 * @param  companyId the primary key of the company
-	 * @return the matching message boards ban
-	 * @throws PortalException if a matching message boards ban could not be found
-	 * @throws SystemException if a system exception occurred
+	 * @param uuid the UUID of the message boards bans
+	 * @param companyId the primary key of the company
+	 * @return the matching message boards bans, or an empty list if no matches were found
 	 */
 	@Override
-	public MBBan getMBBanByUuidAndCompanyId(String uuid, long companyId)
-		throws PortalException, SystemException {
-		return mbBanPersistence.findByUuid_C_First(uuid, companyId, null);
+	public List<MBBan> getMBBansByUuidAndCompanyId(String uuid, long companyId) {
+		return mbBanPersistence.findByUuid_C(uuid, companyId);
+	}
+
+	/**
+	 * Returns a range of message boards bans matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the message boards bans
+	 * @param companyId the primary key of the company
+	 * @param start the lower bound of the range of message boards bans
+	 * @param end the upper bound of the range of message boards bans (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the range of matching message boards bans, or an empty list if no matches were found
+	 */
+	@Override
+	public List<MBBan> getMBBansByUuidAndCompanyId(String uuid, long companyId,
+		int start, int end, OrderByComparator<MBBan> orderByComparator) {
+		return mbBanPersistence.findByUuid_C(uuid, companyId, start, end,
+			orderByComparator);
 	}
 
 	/**
@@ -374,11 +365,10 @@ public abstract class MBBanLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 * @param groupId the primary key of the group
 	 * @return the matching message boards ban
 	 * @throws PortalException if a matching message boards ban could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public MBBan getMBBanByUuidAndGroupId(String uuid, long groupId)
-		throws PortalException, SystemException {
+		throws PortalException {
 		return mbBanPersistence.findByUUID_G(uuid, groupId);
 	}
 
@@ -392,10 +382,9 @@ public abstract class MBBanLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 * @param start the lower bound of the range of message boards bans
 	 * @param end the upper bound of the range of message boards bans (not inclusive)
 	 * @return the range of message boards bans
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<MBBan> getMBBans(int start, int end) throws SystemException {
+	public List<MBBan> getMBBans(int start, int end) {
 		return mbBanPersistence.findAll(start, end);
 	}
 
@@ -403,10 +392,9 @@ public abstract class MBBanLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 * Returns the number of message boards bans.
 	 *
 	 * @return the number of message boards bans
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int getMBBansCount() throws SystemException {
+	public int getMBBansCount() {
 		return mbBanPersistence.countAll();
 	}
 
@@ -415,11 +403,10 @@ public abstract class MBBanLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 *
 	 * @param mbBan the message boards ban
 	 * @return the message boards ban that was updated
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	@Override
-	public MBBan updateMBBan(MBBan mbBan) throws SystemException {
+	public MBBan updateMBBan(MBBan mbBan) {
 		return mbBanPersistence.update(mbBan);
 	}
 
@@ -653,7 +640,7 @@ public abstract class MBBanLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 *
 	 * @param sql the sql query
 	 */
-	protected void runSQL(String sql) throws SystemException {
+	protected void runSQL(String sql) {
 		try {
 			DataSource dataSource = mbBanPersistence.getDataSource();
 

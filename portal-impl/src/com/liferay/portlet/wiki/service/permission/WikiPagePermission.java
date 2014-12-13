@@ -15,7 +15,7 @@
 package com.liferay.portlet.wiki.service.permission;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
 import com.liferay.portal.kernel.staging.permission.StagingPermissionUtil;
 import com.liferay.portal.kernel.workflow.permission.WorkflowPermissionUtil;
 import com.liferay.portal.security.auth.PrincipalException;
@@ -25,7 +25,6 @@ import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.util.PortletKeys;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.wiki.NoSuchPageException;
-import com.liferay.portlet.wiki.NoSuchPageResourceException;
 import com.liferay.portlet.wiki.model.WikiNode;
 import com.liferay.portlet.wiki.model.WikiPage;
 import com.liferay.portlet.wiki.service.WikiPageLocalServiceUtil;
@@ -33,12 +32,15 @@ import com.liferay.portlet.wiki.service.WikiPageLocalServiceUtil;
 /**
  * @author Brian Wing Shun Chan
  */
+@OSGiBeanProperties(
+	property = {"model.class.name=com.liferay.portlet.wiki.model.WikiPage"}
+)
 public class WikiPagePermission implements BaseModelPermissionChecker {
 
 	public static void check(
 			PermissionChecker permissionChecker, long resourcePrimKey,
 			String actionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (!contains(permissionChecker, resourcePrimKey, actionId)) {
 			throw new PrincipalException();
@@ -48,7 +50,7 @@ public class WikiPagePermission implements BaseModelPermissionChecker {
 	public static void check(
 			PermissionChecker permissionChecker, long nodeId, String title,
 			double version, String actionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (!contains(permissionChecker, nodeId, title, version, actionId)) {
 			throw new PrincipalException();
@@ -58,7 +60,7 @@ public class WikiPagePermission implements BaseModelPermissionChecker {
 	public static void check(
 			PermissionChecker permissionChecker, long nodeId, String title,
 			String actionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (!contains(permissionChecker, nodeId, title, actionId)) {
 			throw new PrincipalException();
@@ -67,7 +69,7 @@ public class WikiPagePermission implements BaseModelPermissionChecker {
 
 	public static void check(
 			PermissionChecker permissionChecker, WikiPage page, String actionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (!contains(permissionChecker, page, actionId)) {
 			throw new PrincipalException();
@@ -75,25 +77,22 @@ public class WikiPagePermission implements BaseModelPermissionChecker {
 	}
 
 	public static boolean contains(
-			PermissionChecker permissionChecker, long resourcePrimKey,
-			String actionId)
-		throws PortalException, SystemException {
+			PermissionChecker permissionChecker, long classPK, String actionId)
+		throws PortalException {
 
-		try {
-			WikiPage page = WikiPageLocalServiceUtil.getPage(
-				resourcePrimKey, (Boolean)null);
+		WikiPage page = WikiPageLocalServiceUtil.fetchPage(classPK);
 
-			return contains(permissionChecker, page, actionId);
+		if (page == null) {
+			page = WikiPageLocalServiceUtil.getPageByPageId(classPK);
 		}
-		catch (NoSuchPageResourceException nspre) {
-			return false;
-		}
+
+		return contains(permissionChecker, page, actionId);
 	}
 
 	public static boolean contains(
 			PermissionChecker permissionChecker, long nodeId, String title,
 			double version, String actionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		try {
 			WikiPage page = WikiPageLocalServiceUtil.getPage(
@@ -110,7 +109,7 @@ public class WikiPagePermission implements BaseModelPermissionChecker {
 	public static boolean contains(
 			PermissionChecker permissionChecker, long nodeId, String title,
 			String actionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		try {
 			WikiPage page = WikiPageLocalServiceUtil.getPage(
@@ -125,8 +124,7 @@ public class WikiPagePermission implements BaseModelPermissionChecker {
 	}
 
 	public static boolean contains(
-			PermissionChecker permissionChecker, WikiPage page, String actionId)
-		throws SystemException {
+		PermissionChecker permissionChecker, WikiPage page, String actionId) {
 
 		Boolean hasPermission = StagingPermissionUtil.hasPermission(
 			permissionChecker, page.getGroupId(), WikiPage.class.getName(),
@@ -201,7 +199,7 @@ public class WikiPagePermission implements BaseModelPermissionChecker {
 	public void checkBaseModel(
 			PermissionChecker permissionChecker, long groupId, long primaryKey,
 			String actionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		check(permissionChecker, primaryKey, actionId);
 	}

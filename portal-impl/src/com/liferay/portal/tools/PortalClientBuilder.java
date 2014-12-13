@@ -14,7 +14,6 @@
 
 package com.liferay.portal.tools;
 
-import com.liferay.portal.ant.Wsdl2JavaTask;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.FileUtil;
@@ -24,6 +23,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
+import com.liferay.util.ant.Wsdl2JavaTask;
 
 import java.io.File;
 
@@ -61,8 +61,7 @@ public class PortalClientBuilder {
 				if (serviceName.startsWith("Plugin_") &&
 					!FileUtil.exists(mappingFile)) {
 
-					_writePluginMappingFile(
-						mappingFile, serviceElement, serviceName);
+					_writePluginMappingFile(mappingFile, serviceElement);
 				}
 
 				if (serviceName.startsWith("Plugin_") ||
@@ -89,7 +88,7 @@ public class PortalClientBuilder {
 	}
 
 	private void _writePluginMappingFile(
-			String mappingFile, Element serviceElement, String serviceName)
+			String mappingFile, Element serviceElement)
 		throws Exception {
 
 		String wsdlTargetNamespace = null;

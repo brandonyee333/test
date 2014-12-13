@@ -48,6 +48,11 @@ public class WikiNodeTrashRenderer extends BaseTrashRenderer {
 	}
 
 	@Override
+	public String getIconCssClass() {
+		return "icon-copy";
+	}
+
+	@Override
 	public String getIconPath(ThemeDisplay themeDisplay) {
 		return themeDisplay.getPathThemeImages() + "/common/all_pages.png";
 	}
@@ -78,6 +83,6 @@ public class WikiNodeTrashRenderer extends BaseTrashRenderer {
 		return TYPE;
 	}
 
-	private WikiNode _node;
+	private final WikiNode _node;
 
 }

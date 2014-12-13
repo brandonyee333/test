@@ -14,6 +14,8 @@
 
 package com.liferay.portal.service.base;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.bean.IdentifiableBean;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -37,6 +39,8 @@ import com.liferay.portal.service.LayoutSetBranchLocalService;
 import com.liferay.portal.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.service.persistence.ImagePersistence;
 import com.liferay.portal.service.persistence.LayoutBranchPersistence;
+import com.liferay.portal.service.persistence.LayoutFinder;
+import com.liferay.portal.service.persistence.LayoutPersistence;
 import com.liferay.portal.service.persistence.LayoutRevisionPersistence;
 import com.liferay.portal.service.persistence.LayoutSetBranchPersistence;
 import com.liferay.portal.service.persistence.LayoutSetPersistence;
@@ -62,6 +66,7 @@ import javax.sql.DataSource;
  * @see com.liferay.portal.service.LayoutSetBranchLocalServiceUtil
  * @generated
  */
+@ProviderType
 public abstract class LayoutSetBranchLocalServiceBaseImpl
 	extends BaseLocalServiceImpl implements LayoutSetBranchLocalService,
 		IdentifiableBean {
@@ -76,12 +81,10 @@ public abstract class LayoutSetBranchLocalServiceBaseImpl
 	 *
 	 * @param layoutSetBranch the layout set branch
 	 * @return the layout set branch that was added
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	@Override
-	public LayoutSetBranch addLayoutSetBranch(LayoutSetBranch layoutSetBranch)
-		throws SystemException {
+	public LayoutSetBranch addLayoutSetBranch(LayoutSetBranch layoutSetBranch) {
 		layoutSetBranch.setNew(true);
 
 		return layoutSetBranchPersistence.update(layoutSetBranch);
@@ -104,12 +107,11 @@ public abstract class LayoutSetBranchLocalServiceBaseImpl
 	 * @param layoutSetBranchId the primary key of the layout set branch
 	 * @return the layout set branch that was removed
 	 * @throws PortalException if a layout set branch with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public LayoutSetBranch deleteLayoutSetBranch(long layoutSetBranchId)
-		throws PortalException, SystemException {
+		throws PortalException {
 		return layoutSetBranchPersistence.remove(layoutSetBranchId);
 	}
 
@@ -119,13 +121,11 @@ public abstract class LayoutSetBranchLocalServiceBaseImpl
 	 * @param layoutSetBranch the layout set branch
 	 * @return the layout set branch that was removed
 	 * @throws PortalException
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public LayoutSetBranch deleteLayoutSetBranch(
-		LayoutSetBranch layoutSetBranch)
-		throws PortalException, SystemException {
+		LayoutSetBranch layoutSetBranch) throws PortalException {
 		return layoutSetBranchPersistence.remove(layoutSetBranch);
 	}
 
@@ -142,12 +142,9 @@ public abstract class LayoutSetBranchLocalServiceBaseImpl
 	 *
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery)
-		throws SystemException {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return layoutSetBranchPersistence.findWithDynamicQuery(dynamicQuery);
 	}
 
@@ -162,12 +159,10 @@ public abstract class LayoutSetBranchLocalServiceBaseImpl
 	 * @param start the lower bound of the range of model instances
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery, int start, int end)
-		throws SystemException {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end) {
 		return layoutSetBranchPersistence.findWithDynamicQuery(dynamicQuery,
 			start, end);
 	}
@@ -184,47 +179,41 @@ public abstract class LayoutSetBranchLocalServiceBaseImpl
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator orderByComparator) throws SystemException {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end, OrderByComparator<T> orderByComparator) {
 		return layoutSetBranchPersistence.findWithDynamicQuery(dynamicQuery,
 			start, end, orderByComparator);
 	}
 
 	/**
-	 * Returns the number of rows that match the dynamic query.
+	 * Returns the number of rows matching the dynamic query.
 	 *
 	 * @param dynamicQuery the dynamic query
-	 * @return the number of rows that match the dynamic query
-	 * @throws SystemException if a system exception occurred
+	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
-	public long dynamicQueryCount(DynamicQuery dynamicQuery)
-		throws SystemException {
+	public long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return layoutSetBranchPersistence.countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * Returns the number of rows that match the dynamic query.
+	 * Returns the number of rows matching the dynamic query.
 	 *
 	 * @param dynamicQuery the dynamic query
 	 * @param projection the projection to apply to the query
-	 * @return the number of rows that match the dynamic query
-	 * @throws SystemException if a system exception occurred
+	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection) throws SystemException {
+		Projection projection) {
 		return layoutSetBranchPersistence.countWithDynamicQuery(dynamicQuery,
 			projection);
 	}
 
 	@Override
-	public LayoutSetBranch fetchLayoutSetBranch(long layoutSetBranchId)
-		throws SystemException {
+	public LayoutSetBranch fetchLayoutSetBranch(long layoutSetBranchId) {
 		return layoutSetBranchPersistence.fetchByPrimaryKey(layoutSetBranchId);
 	}
 
@@ -234,17 +223,15 @@ public abstract class LayoutSetBranchLocalServiceBaseImpl
 	 * @param layoutSetBranchId the primary key of the layout set branch
 	 * @return the layout set branch
 	 * @throws PortalException if a layout set branch with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public LayoutSetBranch getLayoutSetBranch(long layoutSetBranchId)
-		throws PortalException, SystemException {
+		throws PortalException {
 		return layoutSetBranchPersistence.findByPrimaryKey(layoutSetBranchId);
 	}
 
 	@Override
-	public ActionableDynamicQuery getActionableDynamicQuery()
-		throws SystemException {
+	public ActionableDynamicQuery getActionableDynamicQuery() {
 		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
 
 		actionableDynamicQuery.setBaseLocalService(com.liferay.portal.service.LayoutSetBranchLocalServiceUtil.getService());
@@ -257,8 +244,7 @@ public abstract class LayoutSetBranchLocalServiceBaseImpl
 	}
 
 	protected void initActionableDynamicQuery(
-		ActionableDynamicQuery actionableDynamicQuery)
-		throws SystemException {
+		ActionableDynamicQuery actionableDynamicQuery) {
 		actionableDynamicQuery.setBaseLocalService(com.liferay.portal.service.LayoutSetBranchLocalServiceUtil.getService());
 		actionableDynamicQuery.setClass(LayoutSetBranch.class);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
@@ -266,9 +252,18 @@ public abstract class LayoutSetBranchLocalServiceBaseImpl
 		actionableDynamicQuery.setPrimaryKeyPropertyName("layoutSetBranchId");
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
+		throws PortalException {
+		return layoutSetBranchLocalService.deleteLayoutSetBranch((LayoutSetBranch)persistedModel);
+	}
+
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException, SystemException {
+		throws PortalException {
 		return layoutSetBranchPersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
@@ -282,11 +277,9 @@ public abstract class LayoutSetBranchLocalServiceBaseImpl
 	 * @param start the lower bound of the range of layout set branchs
 	 * @param end the upper bound of the range of layout set branchs (not inclusive)
 	 * @return the range of layout set branchs
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<LayoutSetBranch> getLayoutSetBranchs(int start, int end)
-		throws SystemException {
+	public List<LayoutSetBranch> getLayoutSetBranchs(int start, int end) {
 		return layoutSetBranchPersistence.findAll(start, end);
 	}
 
@@ -294,10 +287,9 @@ public abstract class LayoutSetBranchLocalServiceBaseImpl
 	 * Returns the number of layout set branchs.
 	 *
 	 * @return the number of layout set branchs
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int getLayoutSetBranchsCount() throws SystemException {
+	public int getLayoutSetBranchsCount() {
 		return layoutSetBranchPersistence.countAll();
 	}
 
@@ -306,12 +298,11 @@ public abstract class LayoutSetBranchLocalServiceBaseImpl
 	 *
 	 * @param layoutSetBranch the layout set branch
 	 * @return the layout set branch that was updated
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public LayoutSetBranch updateLayoutSetBranch(
-		LayoutSetBranch layoutSetBranch) throws SystemException {
+		LayoutSetBranch layoutSetBranch) {
 		return layoutSetBranchPersistence.update(layoutSetBranch);
 	}
 
@@ -445,6 +436,80 @@ public abstract class LayoutSetBranchLocalServiceBaseImpl
 	 */
 	public void setImagePersistence(ImagePersistence imagePersistence) {
 		this.imagePersistence = imagePersistence;
+	}
+
+	/**
+	 * Returns the layout local service.
+	 *
+	 * @return the layout local service
+	 */
+	public com.liferay.portal.service.LayoutLocalService getLayoutLocalService() {
+		return layoutLocalService;
+	}
+
+	/**
+	 * Sets the layout local service.
+	 *
+	 * @param layoutLocalService the layout local service
+	 */
+	public void setLayoutLocalService(
+		com.liferay.portal.service.LayoutLocalService layoutLocalService) {
+		this.layoutLocalService = layoutLocalService;
+	}
+
+	/**
+	 * Returns the layout remote service.
+	 *
+	 * @return the layout remote service
+	 */
+	public com.liferay.portal.service.LayoutService getLayoutService() {
+		return layoutService;
+	}
+
+	/**
+	 * Sets the layout remote service.
+	 *
+	 * @param layoutService the layout remote service
+	 */
+	public void setLayoutService(
+		com.liferay.portal.service.LayoutService layoutService) {
+		this.layoutService = layoutService;
+	}
+
+	/**
+	 * Returns the layout persistence.
+	 *
+	 * @return the layout persistence
+	 */
+	public LayoutPersistence getLayoutPersistence() {
+		return layoutPersistence;
+	}
+
+	/**
+	 * Sets the layout persistence.
+	 *
+	 * @param layoutPersistence the layout persistence
+	 */
+	public void setLayoutPersistence(LayoutPersistence layoutPersistence) {
+		this.layoutPersistence = layoutPersistence;
+	}
+
+	/**
+	 * Returns the layout finder.
+	 *
+	 * @return the layout finder
+	 */
+	public LayoutFinder getLayoutFinder() {
+		return layoutFinder;
+	}
+
+	/**
+	 * Sets the layout finder.
+	 *
+	 * @param layoutFinder the layout finder
+	 */
+	public void setLayoutFinder(LayoutFinder layoutFinder) {
+		this.layoutFinder = layoutFinder;
 	}
 
 	/**
@@ -754,7 +819,7 @@ public abstract class LayoutSetBranchLocalServiceBaseImpl
 	 *
 	 * @param sql the sql query
 	 */
-	protected void runSQL(String sql) throws SystemException {
+	protected void runSQL(String sql) {
 		try {
 			DataSource dataSource = layoutSetBranchPersistence.getDataSource();
 
@@ -787,6 +852,14 @@ public abstract class LayoutSetBranchLocalServiceBaseImpl
 	protected com.liferay.portal.service.ImageService imageService;
 	@BeanReference(type = ImagePersistence.class)
 	protected ImagePersistence imagePersistence;
+	@BeanReference(type = com.liferay.portal.service.LayoutLocalService.class)
+	protected com.liferay.portal.service.LayoutLocalService layoutLocalService;
+	@BeanReference(type = com.liferay.portal.service.LayoutService.class)
+	protected com.liferay.portal.service.LayoutService layoutService;
+	@BeanReference(type = LayoutPersistence.class)
+	protected LayoutPersistence layoutPersistence;
+	@BeanReference(type = LayoutFinder.class)
+	protected LayoutFinder layoutFinder;
 	@BeanReference(type = com.liferay.portal.service.LayoutBranchLocalService.class)
 	protected com.liferay.portal.service.LayoutBranchLocalService layoutBranchLocalService;
 	@BeanReference(type = com.liferay.portal.service.LayoutBranchService.class)

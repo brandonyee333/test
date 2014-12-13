@@ -16,7 +16,6 @@ package com.liferay.portlet.journal.model.impl;
 
 import com.liferay.portal.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -25,6 +24,7 @@ import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.SetUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.xml.Document;
@@ -32,16 +32,25 @@ import com.liferay.portal.kernel.xml.DocumentException;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.model.CacheField;
 import com.liferay.portal.model.Image;
+import com.liferay.portal.model.Layout;
+import com.liferay.portal.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.service.ImageLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.webserver.WebServerServletTokenUtil;
+import com.liferay.portlet.dynamicdatamapping.model.DDMStructure;
+import com.liferay.portlet.dynamicdatamapping.model.DDMTemplate;
+import com.liferay.portlet.dynamicdatamapping.service.DDMStructureLocalServiceUtil;
+import com.liferay.portlet.dynamicdatamapping.service.DDMTemplateLocalServiceUtil;
 import com.liferay.portlet.journal.model.JournalArticle;
 import com.liferay.portlet.journal.model.JournalArticleResource;
 import com.liferay.portlet.journal.model.JournalFolder;
+import com.liferay.portlet.journal.model.JournalFolderConstants;
 import com.liferay.portlet.journal.service.JournalArticleImageLocalServiceUtil;
 import com.liferay.portlet.journal.service.JournalArticleLocalServiceUtil;
 import com.liferay.portlet.journal.service.JournalArticleResourceLocalServiceUtil;
 import com.liferay.portlet.journal.service.JournalFolderLocalServiceUtil;
+import com.liferay.portlet.journal.util.JournalUtil;
 import com.liferay.portlet.journal.util.LocaleTransformerListener;
 
 import java.util.Locale;
@@ -67,8 +76,8 @@ public class JournalArticleImpl extends JournalArticleBaseImpl {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link #getContentByLocale(String,
-	 *             String}
+	 * @deprecated As of 7.0.0, replaced by {@link #getContentByLocale(Document,
+	 *             String)}
 	 */
 	@Deprecated
 	public static String getContentByLocale(
@@ -86,11 +95,12 @@ public class JournalArticleImpl extends JournalArticleBaseImpl {
 		}
 	}
 
-	public JournalArticleImpl() {
-	}
-
 	@Override
-	public String buildTreePath() throws PortalException, SystemException {
+	public String buildTreePath() throws PortalException {
+		if (getFolderId() == JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
+			return StringPool.SLASH;
+		}
+
 		JournalFolder folder = getFolder();
 
 		return folder.buildTreePath();
@@ -98,8 +108,7 @@ public class JournalArticleImpl extends JournalArticleBaseImpl {
 
 	@Override
 	public long getArticleImageId(
-			String elInstanceId, String elName, String languageId)
-		throws SystemException {
+		String elInstanceId, String elName, String languageId) {
 
 		return JournalArticleImageLocalServiceUtil.getArticleImageId(
 			getGroupId(), getArticleId(), getVersion(), elInstanceId, elName,
@@ -123,17 +132,13 @@ public class JournalArticleImpl extends JournalArticleBaseImpl {
 	}
 
 	@Override
-	public JournalArticleResource getArticleResource()
-		throws PortalException, SystemException {
-
+	public JournalArticleResource getArticleResource() throws PortalException {
 		return JournalArticleResourceLocalServiceUtil.getArticleResource(
 			getResourcePrimKey());
 	}
 
 	@Override
-	public String getArticleResourceUuid()
-		throws PortalException, SystemException {
-
+	public String getArticleResourceUuid() throws PortalException {
 		JournalArticleResource articleResource = getArticleResource();
 
 		return articleResource.getUuid();
@@ -170,6 +175,22 @@ public class JournalArticleImpl extends JournalArticleBaseImpl {
 	@Override
 	public String getContentByLocale(String languageId) {
 		return getContentByLocale(getDocument(), languageId);
+	}
+
+	@Override
+	public DDMStructure getDDMStructure() throws PortalException {
+		return DDMStructureLocalServiceUtil.fetchStructure(
+			PortalUtil.getSiteGroupId(getGroupId()),
+			ClassNameLocalServiceUtil.getClassNameId(JournalArticle.class),
+			getDDMStructureKey(), true);
+	}
+
+	@Override
+	public DDMTemplate getDDMTemplate() throws PortalException {
+		return DDMTemplateLocalServiceUtil.fetchTemplate(
+			PortalUtil.getSiteGroupId(getGroupId()),
+			ClassNameLocalServiceUtil.getClassNameId(JournalArticle.class),
+			getDDMStructureKey(), true);
 	}
 
 	@Override
@@ -212,7 +233,7 @@ public class JournalArticleImpl extends JournalArticleBaseImpl {
 	}
 
 	@Override
-	public JournalFolder getFolder() throws PortalException, SystemException {
+	public JournalFolder getFolder() throws PortalException {
 		if (getFolderId() <= 0) {
 			return new JournalFolderImpl();
 		}
@@ -221,7 +242,18 @@ public class JournalArticleImpl extends JournalArticleBaseImpl {
 	}
 
 	@Override
-	public String getSmallImageType() throws PortalException, SystemException {
+	public Layout getLayout() {
+		String layoutUuid = getLayoutUuid();
+
+		if (Validator.isNull(layoutUuid)) {
+			return null;
+		}
+
+		return JournalUtil.getArticleLayout(layoutUuid, getGroupId());
+	}
+
+	@Override
+	public String getSmallImageType() throws PortalException {
 		if ((_smallImageType == null) && isSmallImage()) {
 			Image smallImage = ImageLocalServiceUtil.getImage(
 				getSmallImageId());
@@ -235,6 +267,22 @@ public class JournalArticleImpl extends JournalArticleBaseImpl {
 	@Override
 	public StagedModelType getStagedModelType() {
 		return new StagedModelType(JournalArticle.class);
+	}
+
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #getDDMStructureKey()}
+	 */
+	@Override
+	public String getStructureId() {
+		return getDDMStructureKey();
+	}
+
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #getDDMTemplateKey()}
+	 */
+	@Override
+	public String getTemplateId() {
+		return getDDMTemplateKey();
 	}
 
 	@Override
@@ -260,7 +308,7 @@ public class JournalArticleImpl extends JournalArticleBaseImpl {
 	}
 
 	@Override
-	public boolean hasApprovedVersion() throws SystemException {
+	public boolean hasApprovedVersion() {
 		JournalArticle article =
 			JournalArticleLocalServiceUtil.fetchLatestArticle(
 				getGroupId(), getArticleId(),
@@ -289,6 +337,20 @@ public class JournalArticleImpl extends JournalArticleBaseImpl {
 	@Override
 	public void prepareLocalizedFieldsForImport(Locale defaultImportLocale)
 		throws LocaleException {
+
+		super.prepareLocalizedFieldsForImport(defaultImportLocale);
+
+		String content = StringPool.BLANK;
+
+		try {
+			content = JournalUtil.prepareLocalizedContentForImport(
+				getContent(), defaultImportLocale);
+		}
+		catch (Exception e) {
+			throw new LocaleException(LocaleException.TYPE_DEFAULT, e);
+		}
+
+		setContent(content);
 	}
 
 	@Override
@@ -313,6 +375,22 @@ public class JournalArticleImpl extends JournalArticleBaseImpl {
 		_smallImageType = smallImageType;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #setDDMStructureKey(String)}
+	 */
+	@Override
+	public void setStructureId(String ddmStructureKey) {
+		setDDMStructureKey(ddmStructureKey);
+	}
+
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #setDDMTemplateKey(String)}
+	 */
+	@Override
+	public void setTemplateId(String ddmTemplateKey) {
+		setDDMTemplateKey(ddmTemplateKey);
+	}
+
 	@Override
 	public void setTitle(String title) {
 		super.setTitle(title);
@@ -320,7 +398,8 @@ public class JournalArticleImpl extends JournalArticleBaseImpl {
 		_defaultLanguageId = null;
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(JournalArticleImpl.class);
+	private static final Log _log = LogFactoryUtil.getLog(
+		JournalArticleImpl.class);
 
 	@CacheField
 	private String _defaultLanguageId;

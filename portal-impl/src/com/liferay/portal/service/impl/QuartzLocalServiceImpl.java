@@ -32,7 +32,7 @@ import java.sql.ResultSet;
 public class QuartzLocalServiceImpl extends QuartzLocalServiceBaseImpl {
 
 	@Override
-	public void checkQuartzTables() throws SystemException {
+	public void checkQuartzTables() {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -68,7 +68,7 @@ public class QuartzLocalServiceImpl extends QuartzLocalServiceBaseImpl {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		QuartzLocalServiceImpl.class);
 
 }

@@ -16,7 +16,6 @@ package com.liferay.portlet.announcements.model;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.service.ServiceContext;
@@ -94,9 +93,8 @@ public interface AnnouncementsFlagModel extends BaseModel<AnnouncementsFlag> {
 	 * Returns the user uuid of this announcements flag.
 	 *
 	 * @return the user uuid of this announcements flag
-	 * @throws SystemException if a system exception occurred
 	 */
-	public String getUserUuid() throws SystemException;
+	public String getUserUuid();
 
 	/**
 	 * Sets the user uuid of this announcements flag.
@@ -184,19 +182,20 @@ public interface AnnouncementsFlagModel extends BaseModel<AnnouncementsFlag> {
 	public Object clone();
 
 	@Override
-	public int compareTo(AnnouncementsFlag announcementsFlag);
+	public int compareTo(
+		com.liferay.portlet.announcements.model.AnnouncementsFlag announcementsFlag);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<AnnouncementsFlag> toCacheModel();
+	public CacheModel<com.liferay.portlet.announcements.model.AnnouncementsFlag> toCacheModel();
 
 	@Override
-	public AnnouncementsFlag toEscapedModel();
+	public com.liferay.portlet.announcements.model.AnnouncementsFlag toEscapedModel();
 
 	@Override
-	public AnnouncementsFlag toUnescapedModel();
+	public com.liferay.portlet.announcements.model.AnnouncementsFlag toUnescapedModel();
 
 	@Override
 	public String toString();

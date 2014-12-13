@@ -17,7 +17,6 @@ package com.liferay.portlet.softwarecatalog.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.GroupedModel;
@@ -131,10 +130,9 @@ public interface SCProductEntryModel extends BaseModel<SCProductEntry>,
 	 * Returns the user uuid of this s c product entry.
 	 *
 	 * @return the user uuid of this s c product entry
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public String getUserUuid() throws SystemException;
+	public String getUserUuid();
 
 	/**
 	 * Sets the user uuid of this s c product entry.
@@ -365,19 +363,20 @@ public interface SCProductEntryModel extends BaseModel<SCProductEntry>,
 	public Object clone();
 
 	@Override
-	public int compareTo(SCProductEntry scProductEntry);
+	public int compareTo(
+		com.liferay.portlet.softwarecatalog.model.SCProductEntry scProductEntry);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<SCProductEntry> toCacheModel();
+	public CacheModel<com.liferay.portlet.softwarecatalog.model.SCProductEntry> toCacheModel();
 
 	@Override
-	public SCProductEntry toEscapedModel();
+	public com.liferay.portlet.softwarecatalog.model.SCProductEntry toEscapedModel();
 
 	@Override
-	public SCProductEntry toUnescapedModel();
+	public com.liferay.portlet.softwarecatalog.model.SCProductEntry toUnescapedModel();
 
 	@Override
 	public String toString();

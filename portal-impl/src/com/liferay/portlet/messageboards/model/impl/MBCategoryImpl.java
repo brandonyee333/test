@@ -15,7 +15,6 @@
 package com.liferay.portlet.messageboards.model.impl;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portlet.messageboards.model.MBCategory;
 import com.liferay.portlet.messageboards.model.MBCategoryConstants;
 import com.liferay.portlet.messageboards.service.MBCategoryLocalServiceUtil;
@@ -28,13 +27,8 @@ import java.util.List;
  */
 public class MBCategoryImpl extends MBCategoryBaseImpl {
 
-	public MBCategoryImpl() {
-	}
-
 	@Override
-	public List<Long> getAncestorCategoryIds()
-		throws PortalException, SystemException {
-
+	public List<Long> getAncestorCategoryIds() throws PortalException {
 		List<Long> ancestorCategoryIds = new ArrayList<Long>();
 
 		MBCategory category = this;
@@ -50,9 +44,7 @@ public class MBCategoryImpl extends MBCategoryBaseImpl {
 	}
 
 	@Override
-	public List<MBCategory> getAncestors()
-		throws PortalException, SystemException {
-
+	public List<MBCategory> getAncestors() throws PortalException {
 		List<MBCategory> ancestors = new ArrayList<MBCategory>();
 
 		MBCategory category = this;
@@ -67,9 +59,7 @@ public class MBCategoryImpl extends MBCategoryBaseImpl {
 	}
 
 	@Override
-	public MBCategory getParentCategory()
-		throws PortalException, SystemException {
-
+	public MBCategory getParentCategory() throws PortalException {
 		long parentCategoryId = getParentCategoryId();
 
 		if ((parentCategoryId ==

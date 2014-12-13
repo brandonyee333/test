@@ -30,7 +30,7 @@ AUI.add(
 					}
 				},
 
-				AUGMENTS: [Liferay.PortletBase, Liferay.StorageFormatter],
+				AUGMENTS: [Liferay.CropRegion, Liferay.PortletBase, Liferay.StorageFormatter],
 
 				EXTENDS: A.Base,
 
@@ -108,7 +108,7 @@ AUI.add(
 
 						if (Lang.isObject(responseText)) {
 							if (responseText.errorMessage) {
-								var messageNode = instance._getMessageNode(responseText.errorMessage, 'alert alert-error');
+								var messageNode = instance._getMessageNode(responseText.errorMessage, 'alert alert-danger');
 
 								instance._formNode.prepend(messageNode);
 							}
@@ -137,25 +137,6 @@ AUI.add(
 						Liferay.Util.toggleDisabled(instance._submitButton, true);
 					},
 
-					_getImgNaturalSize: function(img) {
-						var imageHeight = img.get('naturalHeight');
-						var imageWidth = img.get('naturalWidth');
-
-						if (Lang.isUndefined(imageHeight) || Lang.isUndefined(imageWidth)) {
-							var tmp = new Image();
-
-							tmp.src = img.attr('src');
-
-							imageHeight = tmp.height;
-							imageWidth = tmp.width;
-						}
-
-						return {
-							height: imageHeight,
-							width: imageWidth
-						};
-					},
-
 					_getMessageNode: function(message, cssClass) {
 						var instance = this;
 
@@ -172,7 +153,7 @@ AUI.add(
 						}
 
 						if (cssClass) {
-							messageNode.removeClass('alert-error').removeClass('alert-success');
+							messageNode.removeClass('alert-danger').removeClass('alert-success');
 
 							messageNode.addClass(cssClass);
 						}
@@ -289,17 +270,7 @@ AUI.add(
 						if (imageCropper && portraitPreviewImg) {
 							var region = imageCropper.get('region');
 
-							var naturalSize = instance._getImgNaturalSize(portraitPreviewImg);
-
-							var scaleX = naturalSize.width / portraitPreviewImg.width();
-							var scaleY = naturalSize.height / portraitPreviewImg.height();
-
-							var cropRegion = {
-								height: region.height * scaleY,
-								x: region.x * scaleX,
-								y: region.y * scaleY,
-								width: region.width * scaleX
-							};
+							var cropRegion = instance._getCropRegion(portraitPreviewImg, region);
 
 							instance._cropRegionNode.val(A.JSON.stringify(cropRegion));
 						}
@@ -320,6 +291,6 @@ AUI.add(
 	},
 	'',
 	{
-		requires: ['aui-image-cropper', 'aui-io-request', 'liferay-portlet-base', 'liferay-storage-formatter']
+		requires: ['aui-image-cropper', 'aui-io-request', 'liferay-crop-region', 'liferay-portlet-base', 'liferay-storage-formatter']
 	}
 );

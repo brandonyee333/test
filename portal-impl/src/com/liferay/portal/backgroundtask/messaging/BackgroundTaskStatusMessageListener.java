@@ -28,8 +28,9 @@ import com.liferay.portal.kernel.messaging.Message;
 public class BackgroundTaskStatusMessageListener extends BaseMessageListener {
 
 	public BackgroundTaskStatusMessageListener(
-		long backgroundTaskId, BackgroundTaskStatusMessageTranslator
-		backgroundTaskStatusMessageTranslator) {
+		long backgroundTaskId,
+		BackgroundTaskStatusMessageTranslator
+			backgroundTaskStatusMessageTranslator) {
 
 		_backgroundTaskId = backgroundTaskId;
 		_backgroundTaskStatusMessageTranslator =
@@ -62,11 +63,11 @@ public class BackgroundTaskStatusMessageListener extends BaseMessageListener {
 			backgroundTaskStatus, message);
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		BackgroundTaskStatusMessageListener.class);
 
-	private long _backgroundTaskId;
-	private BackgroundTaskStatusMessageTranslator
+	private final long _backgroundTaskId;
+	private final BackgroundTaskStatusMessageTranslator
 		_backgroundTaskStatusMessageTranslator;
 
 }

@@ -1,7 +1,9 @@
 <#include "../init.ftl">
 
-<#assign latitude = "">
-<#assign longitude = "">
+<#assign latitude = 0>
+<#assign longitude = 0>
+
+<#assign fieldRawValue = paramUtil.getString(request, "${namespacedFieldName}", fieldRawValue)>
 
 <#if (fieldRawValue != "")>
 	<#assign geolocationJSONObject = jsonFactoryUtil.createJSONObject(fieldRawValue)>
@@ -13,53 +15,11 @@
 <@aui["field-wrapper"] cssClass="geolocation-field" data=data label=label required=required>
 	<@aui.input name=namespacedFieldName type="hidden" value=fieldRawValue />
 
-	<@aui["button-row"]>
-		<@aui.button onClick="window['${portletNamespace}${namespacedFieldName}SetGeolocation']();" value="geolocate" />
-	</@>
+	<div id="${portletNamespace}${namespacedFieldName}CoordinatesContainer">
+		<div class="glyphicon glyphicon-map-marker" id="${portletNamespace}${namespacedFieldName}Location"></div>
 
-	<p>
-		<strong><@liferay_ui.message key="location" />:</strong>
-
-		<span id="${portletNamespace}${namespacedFieldName}Coordinates">
-			<#if (fieldRawValue != "")>
-				${latitude}, ${longitude}
-			<#else>
-				-
-			</#if>
-		</span>
-	</p>
+		<@liferay_ui["map"] geolocation=true latitude=latitude longitude=longitude name=namespacedFieldName />
+	</div>
 
 	${fieldStructure.children}
-</@>
-
-<@aui.script>
-	Liferay.provide(
-		window,
-		'${portletNamespace}${namespacedFieldName}SetGeolocation',
-		function(position) {
-			var A = AUI();
-
-			var coordinatesNode = A.one('#${portletNamespace}${namespacedFieldName}Coordinates');
-
-			coordinatesNode.html('<@liferay_ui.message key="loading" />');
-
-			Liferay.Util.getGeolocation(
-				function(latitude, longitude) {
-					var inputNode = A.one('#${portletNamespace}${namespacedFieldName}');
-
-					inputNode.val(
-						A.JSON.stringify(
-							{
-								latitude: latitude,
-								longitude: longitude
-							}
-						)
-					);
-
-					coordinatesNode.html([latitude, longitude].join(', '));
-				}
-			);
-		},
-		['aui-base', 'json']
-	);
 </@>

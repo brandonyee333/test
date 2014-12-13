@@ -41,15 +41,14 @@ import java.util.concurrent.Callable;
 public abstract class BaseActionableDynamicQuery
 	implements ActionableDynamicQuery {
 
-	public static final TransactionAttribute
-		REQUIRES_NEW_TRANSACTION_ATTRIBUTE;
+	public static final TransactionAttribute REQUIRES_NEW_TRANSACTION_ATTRIBUTE;
 
 	static {
 		TransactionAttribute.Builder builder =
 			new TransactionAttribute.Builder();
 
-		builder.propagation(Propagation.REQUIRES_NEW);
-		builder.rollbackForClasses(
+		builder.setPropagation(Propagation.REQUIRES_NEW);
+		builder.setRollbackForClasses(
 			PortalException.class, SystemException.class);
 
 		REQUIRES_NEW_TRANSACTION_ATTRIBUTE = builder.build();
@@ -84,7 +83,7 @@ public abstract class BaseActionableDynamicQuery
 	}
 
 	@Override
-	public void performActions() throws PortalException, SystemException {
+	public void performActions() throws PortalException {
 		long previousPrimaryKey = -1;
 
 		while (true) {
@@ -101,7 +100,7 @@ public abstract class BaseActionableDynamicQuery
 	}
 
 	@Override
-	public long performCount() throws PortalException, SystemException {
+	public long performCount() throws PortalException {
 		if (_performCountMethod != null) {
 			return _performCountMethod.performCount();
 		}
@@ -123,9 +122,7 @@ public abstract class BaseActionableDynamicQuery
 	}
 
 	@Override
-	public void setBaseLocalService(BaseLocalService baseLocalService)
-		throws SystemException {
-
+	public void setBaseLocalService(BaseLocalService baseLocalService) {
 		_baseLocalService = baseLocalService;
 
 		Class<?> clazz = _baseLocalService.getClass();
@@ -149,6 +146,11 @@ public abstract class BaseActionableDynamicQuery
 	@Override
 	public void setClassLoader(ClassLoader classLoader) {
 		_classLoader = classLoader;
+	}
+
+	@Override
+	public void setCommitImmediately(boolean commitImmediately) {
+		_commitImmediately = commitImmediately;
 	}
 
 	@Override
@@ -236,7 +238,7 @@ public abstract class BaseActionableDynamicQuery
 	}
 
 	protected long doPerformActions(long previousPrimaryKey)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		final DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
 			_clazz, _classLoader);
@@ -310,7 +312,7 @@ public abstract class BaseActionableDynamicQuery
 
 	protected Object executeDynamicQuery(
 			Method dynamicQueryMethod, Object... arguments)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		try {
 			return dynamicQueryMethod.invoke(_baseLocalService, arguments);
@@ -354,19 +356,18 @@ public abstract class BaseActionableDynamicQuery
 		}
 
 		SearchEngineUtil.updateDocuments(
-			_searchEngineId, _companyId, new ArrayList<Document>(_documents));
+			_searchEngineId, _companyId, new ArrayList<Document>(_documents),
+			_commitImmediately);
 
 		_documents.clear();
 	}
 
 	@SuppressWarnings("unused")
 	protected void intervalCompleted(long startPrimaryKey, long endPrimaryKey)
-		throws PortalException, SystemException {
+		throws PortalException {
 	}
 
-	protected void performAction(Object object)
-		throws PortalException, SystemException {
-
+	protected void performAction(Object object) throws PortalException {
 		if (_performActionMethod != null) {
 			_performActionMethod.performAction(object);
 		}
@@ -376,6 +377,7 @@ public abstract class BaseActionableDynamicQuery
 	private BaseLocalService _baseLocalService;
 	private ClassLoader _classLoader;
 	private Class<?> _clazz;
+	private boolean _commitImmediately;
 	private long _companyId;
 	private Collection<Document> _documents;
 	private Method _dynamicQueryCountMethod;

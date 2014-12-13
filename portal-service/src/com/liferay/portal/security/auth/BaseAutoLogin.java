@@ -16,6 +16,9 @@ package com.liferay.portal.security.auth;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.util.PortalUtil;
 
 import java.util.Properties;
 
@@ -79,6 +82,16 @@ public abstract class BaseAutoLogin implements AuthVerifier, AutoLogin {
 		}
 	}
 
+	protected void addRedirect(HttpServletRequest request) {
+		String redirect = ParamUtil.getString(request, "redirect");
+
+		if (Validator.isNotNull(redirect)) {
+			request.setAttribute(
+				AutoLogin.AUTO_LOGIN_REDIRECT_AND_CONTINUE,
+				PortalUtil.escapeRedirect(redirect));
+		}
+	}
+
 	protected String[] doHandleException(
 			HttpServletRequest request, HttpServletResponse response,
 			Exception e)
@@ -97,6 +110,6 @@ public abstract class BaseAutoLogin implements AuthVerifier, AutoLogin {
 			HttpServletRequest request, HttpServletResponse response)
 		throws Exception;
 
-	private static Log _log = LogFactoryUtil.getLog(BaseAutoLogin.class);
+	private static final Log _log = LogFactoryUtil.getLog(BaseAutoLogin.class);
 
 }

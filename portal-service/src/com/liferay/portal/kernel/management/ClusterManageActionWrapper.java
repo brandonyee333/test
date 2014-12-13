@@ -49,9 +49,7 @@ public class ClusterManageActionWrapper
 		}
 	}
 
-	protected FutureClusterResponses doAction()
-		throws ManageActionException, SystemException {
-
+	protected FutureClusterResponses doAction() throws ManageActionException {
 		MethodHandler manageActionMethodHandler =
 			PortalManagerUtil.createManageActionMethodHandler(_manageAction);
 
@@ -105,7 +103,7 @@ public class ClusterManageActionWrapper
 		}
 	}
 
-	private ClusterGroup _clusterGroup;
-	private ManageAction<?> _manageAction;
+	private final ClusterGroup _clusterGroup;
+	private final ManageAction<?> _manageAction;
 
 }

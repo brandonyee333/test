@@ -15,7 +15,6 @@
 package com.liferay.portal.model.impl;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -30,11 +29,8 @@ import com.liferay.portal.util.PortalUtil;
  */
 public class RoleImpl extends RoleBaseImpl {
 
-	public RoleImpl() {
-	}
-
 	@Override
-	public String getDescriptiveName() throws PortalException, SystemException {
+	public String getDescriptiveName() throws PortalException {
 		String name = getName();
 
 		if (isTeam()) {
@@ -99,6 +95,6 @@ public class RoleImpl extends RoleBaseImpl {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(RoleImpl.class);
+	private static final Log _log = LogFactoryUtil.getLog(RoleImpl.class);
 
 }

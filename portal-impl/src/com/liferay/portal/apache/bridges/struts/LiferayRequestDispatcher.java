@@ -15,7 +15,6 @@
 package com.liferay.portal.apache.bridges.struts;
 
 import com.liferay.portal.kernel.servlet.DynamicServletRequest;
-import com.liferay.portal.kernel.servlet.PipingServletResponse;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.StringPool;
@@ -25,6 +24,7 @@ import com.liferay.portlet.PortletRequestImpl;
 import com.liferay.portlet.PortletResponseImpl;
 import com.liferay.portlet.PortletServletRequest;
 import com.liferay.portlet.PortletServletResponse;
+import com.liferay.taglib.servlet.PipingServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -257,7 +257,7 @@ public class LiferayRequestDispatcher implements RequestDispatcher {
 		return portletApp.getServletURLPatterns();
 	}
 
-	private String _path;
-	private RequestDispatcher _requestDispatcher;
+	private final String _path;
+	private final RequestDispatcher _requestDispatcher;
 
 }

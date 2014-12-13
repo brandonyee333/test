@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Property;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.search.BaseIndexer;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.DocumentImpl;
@@ -90,7 +89,8 @@ public class WikiNodeIndexer extends BaseIndexer {
 		document.addUID(PORTLET_ID, node.getNodeId(), node.getName());
 
 		SearchEngineUtil.deleteDocument(
-			getSearchEngineId(), node.getCompanyId(), document.get(Field.UID));
+			getSearchEngineId(), node.getCompanyId(), document.get(Field.UID),
+			isCommitImmediately());
 	}
 
 	@Override
@@ -126,13 +126,14 @@ public class WikiNodeIndexer extends BaseIndexer {
 		if (!node.isInTrash()) {
 			SearchEngineUtil.deleteDocument(
 				getSearchEngineId(), node.getCompanyId(),
-				document.get(Field.UID));
+				document.get(Field.UID), isCommitImmediately());
 
 			return;
 		}
 
 		SearchEngineUtil.updateDocument(
-			getSearchEngineId(), node.getCompanyId(), document);
+			getSearchEngineId(), node.getCompanyId(), document,
+			isCommitImmediately());
 	}
 
 	@Override
@@ -154,9 +155,7 @@ public class WikiNodeIndexer extends BaseIndexer {
 		return PORTLET_ID;
 	}
 
-	protected void reindexEntries(long companyId)
-		throws PortalException, SystemException {
-
+	protected void reindexEntries(long companyId) throws PortalException {
 		final ActionableDynamicQuery actionableDynamicQuery =
 			WikiNodeLocalServiceUtil.getActionableDynamicQuery();
 

@@ -14,70 +14,65 @@
 
 package com.liferay.portal.search;
 
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.search.SearchContext;
-import com.liferay.portal.kernel.test.ExecutionTestListeners;
+import com.liferay.portal.kernel.test.AggregateTestRule;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.User;
-import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
-import com.liferay.portal.service.ServiceTestUtil;
-import com.liferay.portal.test.LiferayIntegrationJUnitTestRunner;
-import com.liferay.portal.test.MainServletExecutionTestListener;
+import com.liferay.portal.test.DeleteAfterTestRun;
+import com.liferay.portal.test.LiferayIntegrationTestRule;
+import com.liferay.portal.test.MainServletTestRule;
 import com.liferay.portal.test.Sync;
-import com.liferay.portal.test.SynchronousDestinationExecutionTestListener;
-import com.liferay.portal.util.GroupTestUtil;
-import com.liferay.portal.util.TestPropsValues;
-import com.liferay.portal.util.UserTestUtil;
+import com.liferay.portal.test.SynchronousDestinationTestRule;
+import com.liferay.portal.util.test.GroupTestUtil;
+import com.liferay.portal.util.test.RandomTestUtil;
+import com.liferay.portal.util.test.SearchContextTestUtil;
+import com.liferay.portal.util.test.ServiceContextTestUtil;
+import com.liferay.portal.util.test.TestPropsValues;
+import com.liferay.portal.util.test.UserTestUtil;
 import com.liferay.portlet.dynamicdatamapping.model.DDMStructure;
 import com.liferay.portlet.dynamicdatamapping.model.DDMTemplate;
-import com.liferay.portlet.dynamicdatamapping.util.DDMStructureTestUtil;
-import com.liferay.portlet.dynamicdatamapping.util.DDMTemplateTestUtil;
+import com.liferay.portlet.dynamicdatamapping.util.test.DDMStructureTestUtil;
+import com.liferay.portlet.dynamicdatamapping.util.test.DDMTemplateTestUtil;
 import com.liferay.portlet.journal.model.JournalArticle;
 import com.liferay.portlet.journal.model.JournalFolder;
 import com.liferay.portlet.journal.service.JournalArticleLocalServiceUtil;
 import com.liferay.portlet.journal.service.JournalFolderLocalServiceUtil;
-import com.liferay.portlet.journal.util.JournalTestUtil;
+import com.liferay.portlet.journal.util.test.JournalTestUtil;
 
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 /**
  * @author Eudaldo Alonso
  */
-@ExecutionTestListeners(
-	listeners = {
-		MainServletExecutionTestListener.class,
-		SynchronousDestinationExecutionTestListener.class
-	})
-@RunWith(LiferayIntegrationJUnitTestRunner.class)
 @Sync
 public class JournalIndexerTest {
 
+	@ClassRule
+	@Rule
+	public static final AggregateTestRule aggregateTestRule =
+		new AggregateTestRule(
+			new LiferayIntegrationTestRule(), MainServletTestRule.INSTANCE,
+			SynchronousDestinationTestRule.INSTANCE);
+
 	@Before
 	public void setUp() throws Exception {
-		FinderCacheUtil.clearCache();
-
 		_group = GroupTestUtil.addGroup();
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		GroupLocalServiceUtil.deleteGroup(_group);
 	}
 
 	@Test
@@ -92,7 +87,7 @@ public class JournalIndexerTest {
 
 	@Test
 	public void testCopyArticle() throws Exception {
-		SearchContext searchContext = ServiceTestUtil.getSearchContext(
+		SearchContext searchContext = SearchContextTestUtil.getSearchContext(
 			_group.getGroupId());
 
 		searchContext.setKeywords("Architectural");
@@ -101,7 +96,7 @@ public class JournalIndexerTest {
 			_group.getGroupId(), searchContext);
 
 		JournalFolder folder = JournalTestUtil.addFolder(
-			_group.getGroupId(), ServiceTestUtil.randomString());
+			_group.getGroupId(), RandomTestUtil.randomString());
 
 		JournalArticle article = JournalTestUtil.addArticleWithWorkflow(
 			_group.getGroupId(), folder.getFolderId(), "title",
@@ -128,7 +123,7 @@ public class JournalIndexerTest {
 
 	@Test
 	public void testDeleteArticles() throws Exception {
-		SearchContext searchContext = ServiceTestUtil.getSearchContext(
+		SearchContext searchContext = SearchContextTestUtil.getSearchContext(
 			_group.getGroupId());
 
 		searchContext.setKeywords("Architectural");
@@ -137,7 +132,7 @@ public class JournalIndexerTest {
 			_group.getGroupId(), searchContext);
 
 		JournalFolder folder = JournalTestUtil.addFolder(
-			_group.getGroupId(), ServiceTestUtil.randomString());
+			_group.getGroupId(), RandomTestUtil.randomString());
 
 		JournalArticle article1 = JournalTestUtil.addArticleWithWorkflow(
 			_group.getGroupId(), folder.getFolderId(), "title",
@@ -150,8 +145,8 @@ public class JournalIndexerTest {
 		String content = DDMStructureTestUtil.getSampleStructuredContent(
 			"Architectural Approach");
 
-		ServiceContext serviceContext = ServiceTestUtil.getServiceContext(
-			_group.getGroupId());
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
 
 		serviceContext.setWorkflowAction(WorkflowConstants.ACTION_PUBLISH);
 
@@ -198,14 +193,14 @@ public class JournalIndexerTest {
 
 	@Test
 	public void testIndexVersions() throws Exception {
-		SearchContext searchContext = ServiceTestUtil.getSearchContext(
+		SearchContext searchContext = SearchContextTestUtil.getSearchContext(
 			_group.getGroupId());
 
 		int initialSearchCount = searchCount(
 			_group.getGroupId(), searchContext);
 
 		JournalFolder folder = JournalTestUtil.addFolder(
-			_group.getGroupId(), ServiceTestUtil.randomString());
+			_group.getGroupId(), RandomTestUtil.randomString());
 
 		String content = "Liferay Architectural Approach";
 
@@ -218,8 +213,8 @@ public class JournalIndexerTest {
 				_group.getGroupId(), false, WorkflowConstants.STATUS_ANY,
 				searchContext));
 
-		ServiceContext serviceContext = ServiceTestUtil.getServiceContext(
-			_group.getGroupId());
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
 
 		serviceContext.setWorkflowAction(WorkflowConstants.ACTION_PUBLISH);
 
@@ -278,7 +273,7 @@ public class JournalIndexerTest {
 
 	@Test
 	public void testMoveArticleToTrashAndRestore() throws Exception {
-		SearchContext searchContext = ServiceTestUtil.getSearchContext(
+		SearchContext searchContext = SearchContextTestUtil.getSearchContext(
 			_group.getGroupId());
 
 		searchContext.setKeywords("Architectural");
@@ -287,7 +282,7 @@ public class JournalIndexerTest {
 			_group.getGroupId(), searchContext);
 
 		JournalFolder folder = JournalTestUtil.addFolder(
-			_group.getGroupId(), ServiceTestUtil.randomString());
+			_group.getGroupId(), RandomTestUtil.randomString());
 
 		JournalArticle article = JournalTestUtil.addArticleWithWorkflow(
 			_group.getGroupId(), folder.getFolderId(), "title",
@@ -324,7 +319,7 @@ public class JournalIndexerTest {
 
 	@Test
 	public void testRemoveArticleLocale() throws Exception {
-		SearchContext searchContext1 = ServiceTestUtil.getSearchContext(
+		SearchContext searchContext1 = SearchContextTestUtil.getSearchContext(
 			_group.getGroupId());
 
 		searchContext1.setKeywords("Arquitectura");
@@ -333,7 +328,7 @@ public class JournalIndexerTest {
 		int initialSearchCount1 = searchCount(
 			_group.getGroupId(), searchContext1);
 
-		SearchContext searchContext2 = ServiceTestUtil.getSearchContext(
+		SearchContext searchContext2 = SearchContextTestUtil.getSearchContext(
 			_group.getGroupId());
 
 		searchContext2.setKeywords("Architectural");
@@ -385,10 +380,10 @@ public class JournalIndexerTest {
 
 	@Test
 	public void testUpdateArticleTranslation() throws Exception {
-		ServiceContext serviceContext = ServiceTestUtil.getServiceContext(
-			_group.getGroupId());
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
 
-		SearchContext searchContext1 = ServiceTestUtil.getSearchContext(
+		SearchContext searchContext1 = SearchContextTestUtil.getSearchContext(
 			_group.getGroupId());
 
 		searchContext1.setKeywords("Arquitectura");
@@ -397,7 +392,7 @@ public class JournalIndexerTest {
 		int initialSearchCount1 = searchCount(
 			_group.getGroupId(), searchContext1);
 
-		SearchContext searchContext2 = ServiceTestUtil.getSearchContext(
+		SearchContext searchContext2 = SearchContextTestUtil.getSearchContext(
 			_group.getGroupId());
 
 		searchContext2.setKeywords("Apple");
@@ -463,7 +458,7 @@ public class JournalIndexerTest {
 	}
 
 	protected void addArticle(boolean approve) throws Exception {
-		SearchContext searchContext = ServiceTestUtil.getSearchContext(
+		SearchContext searchContext = SearchContextTestUtil.getSearchContext(
 			_group.getGroupId());
 
 		searchContext.setKeywords("Architectural");
@@ -472,7 +467,7 @@ public class JournalIndexerTest {
 			_group.getGroupId(), searchContext);
 
 		JournalFolder folder = JournalTestUtil.addFolder(
-			_group.getGroupId(), ServiceTestUtil.randomString());
+			_group.getGroupId(), RandomTestUtil.randomString());
 
 		JournalTestUtil.addArticleWithWorkflow(
 			_group.getGroupId(), folder.getFolderId(), "title",
@@ -494,11 +489,12 @@ public class JournalIndexerTest {
 			long folderId, String keywords, ServiceContext serviceContext)
 		throws Exception {
 
-		String xsd = DDMStructureTestUtil.getSampleStructureXSD("name");
+		String definition = DDMStructureTestUtil.getSampleStructureDefinition(
+			"name");
 
 		DDMStructure ddmStructure = DDMStructureTestUtil.addStructure(
 			serviceContext.getScopeGroupId(), JournalArticle.class.getName(),
-			xsd);
+			definition);
 
 		DDMTemplate ddmTemplate = DDMTemplateTestUtil.addTemplate(
 			serviceContext.getScopeGroupId(), ddmStructure.getStructureId());
@@ -514,10 +510,10 @@ public class JournalIndexerTest {
 	protected void articleVersions(boolean delete, boolean all)
 		throws Exception {
 
-		ServiceContext serviceContext = ServiceTestUtil.getServiceContext(
-			_group.getGroupId());
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
 
-		SearchContext searchContext1 = ServiceTestUtil.getSearchContext(
+		SearchContext searchContext1 = SearchContextTestUtil.getSearchContext(
 			_group.getGroupId());
 
 		searchContext1.setKeywords("Architectural");
@@ -525,7 +521,7 @@ public class JournalIndexerTest {
 		int initialSearchCount1 = searchCount(
 			_group.getGroupId(), searchContext1);
 
-		SearchContext searchContext2 = ServiceTestUtil.getSearchContext(
+		SearchContext searchContext2 = SearchContextTestUtil.getSearchContext(
 			_group.getGroupId());
 
 		searchContext2.setKeywords("Apple");
@@ -534,7 +530,7 @@ public class JournalIndexerTest {
 			_group.getGroupId(), searchContext2);
 
 		JournalFolder folder = JournalTestUtil.addFolder(
-			_group.getGroupId(), ServiceTestUtil.randomString());
+			_group.getGroupId(), RandomTestUtil.randomString());
 
 		JournalArticle article = JournalTestUtil.addArticleWithWorkflow(
 			_group.getGroupId(), folder.getFolderId(), "title",
@@ -598,14 +594,14 @@ public class JournalIndexerTest {
 	}
 
 	protected void indexVersions(boolean delete, boolean all) throws Exception {
-		SearchContext searchContext = ServiceTestUtil.getSearchContext(
+		SearchContext searchContext = SearchContextTestUtil.getSearchContext(
 			_group.getGroupId());
 
 		int initialSearchCount = searchCount(
 			_group.getGroupId(), searchContext);
 
 		JournalFolder folder = JournalTestUtil.addFolder(
-			_group.getGroupId(), ServiceTestUtil.randomString());
+			_group.getGroupId(), RandomTestUtil.randomString());
 
 		String content = "Liferay Architectural Approach";
 
@@ -616,8 +612,8 @@ public class JournalIndexerTest {
 			initialSearchCount + 1,
 			searchCount(_group.getGroupId(), searchContext));
 
-		ServiceContext serviceContext = ServiceTestUtil.getServiceContext(
-			_group.getGroupId());
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
 
 		serviceContext.setWorkflowAction(WorkflowConstants.ACTION_PUBLISH);
 
@@ -676,26 +672,26 @@ public class JournalIndexerTest {
 	}
 
 	protected void moveArticle(boolean moveToTrash) throws Exception {
-		SearchContext searchContext1 = ServiceTestUtil.getSearchContext(
+		SearchContext searchContext1 = SearchContextTestUtil.getSearchContext(
 			_group.getGroupId());
 
 		searchContext1.setKeywords("Architectural");
 
 		JournalFolder folder1 = JournalTestUtil.addFolder(
-			_group.getGroupId(), ServiceTestUtil.randomString());
+			_group.getGroupId(), RandomTestUtil.randomString());
 
 		searchContext1.setFolderIds(new long[] {folder1.getFolderId()});
 
 		int initialSearchCount1 = searchCount(
 			_group.getGroupId(), searchContext1);
 
-		SearchContext searchContext2 = ServiceTestUtil.getSearchContext(
+		SearchContext searchContext2 = SearchContextTestUtil.getSearchContext(
 			_group.getGroupId());
 
 		searchContext2.setKeywords("Architectural");
 
 		JournalFolder folder2 = JournalTestUtil.addFolder(
-			_group.getGroupId(), ServiceTestUtil.randomString());
+			_group.getGroupId(), RandomTestUtil.randomString());
 
 		searchContext2.setFolderIds(new long[] {folder2.getFolderId()});
 
@@ -718,8 +714,8 @@ public class JournalIndexerTest {
 				initialSearchCount1,
 				searchCount(_group.getGroupId(), searchContext1));
 
-			ServiceContext serviceContext = ServiceTestUtil.getServiceContext(
-				_group.getGroupId());
+			ServiceContext serviceContext =
+				ServiceContextTestUtil.getServiceContext(_group.getGroupId());
 
 			article = JournalArticleLocalServiceUtil.getArticle(
 				article.getId());
@@ -765,7 +761,7 @@ public class JournalIndexerTest {
 	}
 
 	protected void updateArticle(boolean approve) throws Exception {
-		SearchContext searchContext1 = ServiceTestUtil.getSearchContext(
+		SearchContext searchContext1 = SearchContextTestUtil.getSearchContext(
 			_group.getGroupId());
 
 		searchContext1.setKeywords("Architectural");
@@ -773,7 +769,7 @@ public class JournalIndexerTest {
 		int initialSearchCount1 = searchCount(
 			_group.getGroupId(), searchContext1);
 
-		SearchContext searchContext2 = ServiceTestUtil.getSearchContext(
+		SearchContext searchContext2 = SearchContextTestUtil.getSearchContext(
 			_group.getGroupId());
 
 		searchContext2.setKeywords("Apple");
@@ -782,7 +778,7 @@ public class JournalIndexerTest {
 			_group.getGroupId(), searchContext2);
 
 		JournalFolder folder = JournalTestUtil.addFolder(
-			_group.getGroupId(), ServiceTestUtil.randomString());
+			_group.getGroupId(), RandomTestUtil.randomString());
 
 		JournalArticle article = JournalTestUtil.addArticleWithWorkflow(
 			_group.getGroupId(), folder.getFolderId(), "title",
@@ -795,8 +791,8 @@ public class JournalIndexerTest {
 		String content = DDMStructureTestUtil.getSampleStructuredContent(
 			"Apple tablet");
 
-		ServiceContext serviceContext = ServiceTestUtil.getServiceContext(
-			_group.getGroupId());
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
 
 		if (!approve) {
 			serviceContext.setWorkflowAction(
@@ -828,10 +824,10 @@ public class JournalIndexerTest {
 	}
 
 	protected void updateContent() throws Exception {
-		ServiceContext serviceContext = ServiceTestUtil.getServiceContext(
-			_group.getGroupId());
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
 
-		SearchContext searchContext1 = ServiceTestUtil.getSearchContext(
+		SearchContext searchContext1 = SearchContextTestUtil.getSearchContext(
 			_group.getGroupId());
 
 		searchContext1.setKeywords("Architectural");
@@ -839,7 +835,7 @@ public class JournalIndexerTest {
 		int initialSearchCount1 = searchCount(
 			_group.getGroupId(), searchContext1);
 
-		SearchContext searchContext2 = ServiceTestUtil.getSearchContext(
+		SearchContext searchContext2 = SearchContextTestUtil.getSearchContext(
 			_group.getGroupId());
 
 		searchContext2.setKeywords("Liferay");
@@ -848,7 +844,7 @@ public class JournalIndexerTest {
 			_group.getGroupId(), searchContext2);
 
 		JournalFolder folder = JournalTestUtil.addFolder(
-			_group.getGroupId(), ServiceTestUtil.randomString());
+			_group.getGroupId(), RandomTestUtil.randomString());
 
 		String content = "Liferay Architectural Approach";
 
@@ -874,6 +870,7 @@ public class JournalIndexerTest {
 			searchCount(_group.getGroupId(), searchContext2));
 	}
 
+	@DeleteAfterTestRun
 	private Group _group;
 
 }

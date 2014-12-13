@@ -17,7 +17,6 @@ package com.liferay.portlet.shopping.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.GroupedModel;
@@ -131,10 +130,9 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 * Returns the user uuid of this shopping order.
 	 *
 	 * @return the user uuid of this shopping order
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public String getUserUuid() throws SystemException;
+	public String getUserUuid();
 
 	/**
 	 * Sets the user uuid of this shopping order.
@@ -913,19 +911,20 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	public Object clone();
 
 	@Override
-	public int compareTo(ShoppingOrder shoppingOrder);
+	public int compareTo(
+		com.liferay.portlet.shopping.model.ShoppingOrder shoppingOrder);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<ShoppingOrder> toCacheModel();
+	public CacheModel<com.liferay.portlet.shopping.model.ShoppingOrder> toCacheModel();
 
 	@Override
-	public ShoppingOrder toEscapedModel();
+	public com.liferay.portlet.shopping.model.ShoppingOrder toEscapedModel();
 
 	@Override
-	public ShoppingOrder toUnescapedModel();
+	public com.liferay.portlet.shopping.model.ShoppingOrder toUnescapedModel();
 
 	@Override
 	public String toString();

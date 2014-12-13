@@ -170,17 +170,19 @@ public class IndexerRegistryUtil {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(IndexerRegistryUtil.class);
+	private static final Log _log = LogFactoryUtil.getLog(
+		IndexerRegistryUtil.class);
 
-	private static IndexerRegistryUtil _instance = new IndexerRegistryUtil();
+	private static final IndexerRegistryUtil _instance =
+		new IndexerRegistryUtil();
 
-	private static Indexer _dummyIndexer = new DummyIndexer();
+	private static final Indexer _dummyIndexer = new DummyIndexer();
 
-	private Map<String, Indexer> _indexers =
+	private final Map<String, Indexer> _indexers =
 		new ConcurrentHashMap<String, Indexer>();
-	private StringServiceRegistrationMap<Indexer> _serviceRegistrations =
+	private final StringServiceRegistrationMap<Indexer> _serviceRegistrations =
 		new StringServiceRegistrationMap<Indexer>();
-	private ServiceTracker<Indexer, Indexer> _serviceTracker;
+	private final ServiceTracker<Indexer, Indexer> _serviceTracker;
 
 	private class IndexerServiceTrackerCustomizer
 		implements ServiceTrackerCustomizer<Indexer, Indexer> {
@@ -194,7 +196,8 @@ public class IndexerRegistryUtil {
 			Indexer indexer = registry.getService(serviceReference);
 
 			Set<String> classNames = _aggregrateClassNames(
-				(String[])serviceReference.getProperty("indexer.classNames"));
+				(String[])serviceReference.getProperty("indexer.classNames"),
+				indexer.getClassNames());
 
 			for (String className : classNames) {
 				_indexers.put(className, indexer);
@@ -217,7 +220,8 @@ public class IndexerRegistryUtil {
 			registry.ungetService(serviceReference);
 
 			Set<String> classNames = _aggregrateClassNames(
-				(String[])serviceReference.getProperty("indexer.classNames"));
+				(String[])serviceReference.getProperty("indexer.classNames"),
+				indexer.getClassNames());
 
 			for (String className : classNames) {
 				_indexers.remove(className);

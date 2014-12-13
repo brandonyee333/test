@@ -15,7 +15,6 @@
 package com.liferay.portlet.messageboards.trash;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.trash.BaseTrashRenderer;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -44,9 +43,7 @@ public class MBThreadTrashRenderer extends BaseTrashRenderer {
 
 	public static final String TYPE = "message_thread";
 
-	public MBThreadTrashRenderer(MBThread thread)
-		throws PortalException, SystemException {
-
+	public MBThreadTrashRenderer(MBThread thread) throws PortalException {
 		_thread = thread;
 
 		_rootMessage = MBMessageLocalServiceUtil.getMBMessage(
@@ -61,6 +58,11 @@ public class MBThreadTrashRenderer extends BaseTrashRenderer {
 	@Override
 	public long getClassPK() {
 		return _thread.getPrimaryKey();
+	}
+
+	@Override
+	public String getIconCssClass() {
+		return "icon-comments";
 	}
 
 	@Override
@@ -127,7 +129,7 @@ public class MBThreadTrashRenderer extends BaseTrashRenderer {
 		return "/html/portlet/message_boards/view_thread_tree.jsp";
 	}
 
-	private MBMessage _rootMessage;
-	private MBThread _thread;
+	private final MBMessage _rootMessage;
+	private final MBThread _thread;
 
 }

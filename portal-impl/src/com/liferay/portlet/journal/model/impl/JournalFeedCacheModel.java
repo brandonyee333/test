@@ -14,6 +14,8 @@
 
 package com.liferay.portlet.journal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
@@ -34,11 +36,12 @@ import java.util.Date;
  * @see JournalFeed
  * @generated
  */
+@ProviderType
 public class JournalFeedCacheModel implements CacheModel<JournalFeed>,
 	Externalizable {
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(47);
+		StringBundler sb = new StringBundler(45);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -62,14 +65,12 @@ public class JournalFeedCacheModel implements CacheModel<JournalFeed>,
 		sb.append(name);
 		sb.append(", description=");
 		sb.append(description);
-		sb.append(", type=");
-		sb.append(type);
-		sb.append(", structureId=");
-		sb.append(structureId);
-		sb.append(", templateId=");
-		sb.append(templateId);
-		sb.append(", rendererTemplateId=");
-		sb.append(rendererTemplateId);
+		sb.append(", DDMStructureKey=");
+		sb.append(DDMStructureKey);
+		sb.append(", DDMTemplateKey=");
+		sb.append(DDMTemplateKey);
+		sb.append(", DDMRendererTemplateKey=");
+		sb.append(DDMRendererTemplateKey);
 		sb.append(", delta=");
 		sb.append(delta);
 		sb.append(", orderByCol=");
@@ -149,32 +150,25 @@ public class JournalFeedCacheModel implements CacheModel<JournalFeed>,
 			journalFeedImpl.setDescription(description);
 		}
 
-		if (type == null) {
-			journalFeedImpl.setType(StringPool.BLANK);
+		if (DDMStructureKey == null) {
+			journalFeedImpl.setDDMStructureKey(StringPool.BLANK);
 		}
 		else {
-			journalFeedImpl.setType(type);
+			journalFeedImpl.setDDMStructureKey(DDMStructureKey);
 		}
 
-		if (structureId == null) {
-			journalFeedImpl.setStructureId(StringPool.BLANK);
+		if (DDMTemplateKey == null) {
+			journalFeedImpl.setDDMTemplateKey(StringPool.BLANK);
 		}
 		else {
-			journalFeedImpl.setStructureId(structureId);
+			journalFeedImpl.setDDMTemplateKey(DDMTemplateKey);
 		}
 
-		if (templateId == null) {
-			journalFeedImpl.setTemplateId(StringPool.BLANK);
+		if (DDMRendererTemplateKey == null) {
+			journalFeedImpl.setDDMRendererTemplateKey(StringPool.BLANK);
 		}
 		else {
-			journalFeedImpl.setTemplateId(templateId);
-		}
-
-		if (rendererTemplateId == null) {
-			journalFeedImpl.setRendererTemplateId(StringPool.BLANK);
-		}
-		else {
-			journalFeedImpl.setRendererTemplateId(rendererTemplateId);
+			journalFeedImpl.setDDMRendererTemplateKey(DDMRendererTemplateKey);
 		}
 
 		journalFeedImpl.setDelta(delta);
@@ -241,10 +235,9 @@ public class JournalFeedCacheModel implements CacheModel<JournalFeed>,
 		feedId = objectInput.readUTF();
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
-		type = objectInput.readUTF();
-		structureId = objectInput.readUTF();
-		templateId = objectInput.readUTF();
-		rendererTemplateId = objectInput.readUTF();
+		DDMStructureKey = objectInput.readUTF();
+		DDMTemplateKey = objectInput.readUTF();
+		DDMRendererTemplateKey = objectInput.readUTF();
 		delta = objectInput.readInt();
 		orderByCol = objectInput.readUTF();
 		orderByType = objectInput.readUTF();
@@ -301,32 +294,25 @@ public class JournalFeedCacheModel implements CacheModel<JournalFeed>,
 			objectOutput.writeUTF(description);
 		}
 
-		if (type == null) {
+		if (DDMStructureKey == null) {
 			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeUTF(type);
+			objectOutput.writeUTF(DDMStructureKey);
 		}
 
-		if (structureId == null) {
+		if (DDMTemplateKey == null) {
 			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeUTF(structureId);
+			objectOutput.writeUTF(DDMTemplateKey);
 		}
 
-		if (templateId == null) {
+		if (DDMRendererTemplateKey == null) {
 			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeUTF(templateId);
-		}
-
-		if (rendererTemplateId == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
-		}
-		else {
-			objectOutput.writeUTF(rendererTemplateId);
+			objectOutput.writeUTF(DDMRendererTemplateKey);
 		}
 
 		objectOutput.writeInt(delta);
@@ -387,10 +373,9 @@ public class JournalFeedCacheModel implements CacheModel<JournalFeed>,
 	public String feedId;
 	public String name;
 	public String description;
-	public String type;
-	public String structureId;
-	public String templateId;
-	public String rendererTemplateId;
+	public String DDMStructureKey;
+	public String DDMTemplateKey;
+	public String DDMRendererTemplateKey;
 	public int delta;
 	public String orderByCol;
 	public String orderByType;

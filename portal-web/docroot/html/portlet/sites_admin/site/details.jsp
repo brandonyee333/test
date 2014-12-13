@@ -22,6 +22,38 @@ Group liveGroup = (Group)request.getAttribute("site.liveGroup");
 LayoutSetPrototype layoutSetPrototype = (LayoutSetPrototype)request.getAttribute("site.layoutSetPrototype");
 boolean showPrototypes = GetterUtil.getBoolean(request.getAttribute("site.showPrototypes"));
 
+long parentGroupId = ParamUtil.getLong(request, "parentGroupSearchContainerPrimaryKeys", (group != null) ? group.getParentGroupId() : GroupConstants.DEFAULT_PARENT_GROUP_ID);
+
+if (parentGroupId <= 0) {
+	parentGroupId = GroupConstants.DEFAULT_PARENT_GROUP_ID;
+
+	if (liveGroup != null) {
+		parentGroupId = liveGroup.getParentGroupId();
+	}
+}
+
+Group parentGroup = null;
+
+if ((group == null) && (parentGroupId == GroupConstants.DEFAULT_PARENT_GROUP_ID) && !permissionChecker.isCompanyAdmin()) {
+	List<Group> manageableGroups = new ArrayList<Group>();
+
+	for (Group curGroup : user.getGroups()) {
+		if (GroupPermissionUtil.contains(permissionChecker, curGroup, ActionKeys.MANAGE_SUBGROUPS)) {
+			manageableGroups.add(curGroup);
+		}
+	}
+
+	if (manageableGroups.size() == 1) {
+		Group manageableGroup = manageableGroups.get(0);
+
+		parentGroupId = manageableGroup.getGroupId();
+	}
+}
+
+if (parentGroupId != GroupConstants.DEFAULT_PARENT_GROUP_ID) {
+	parentGroup = GroupLocalServiceUtil.fetchGroup(parentGroupId);
+}
+
 List<LayoutSetPrototype> layoutSetPrototypes = LayoutSetPrototypeServiceUtil.search(company.getCompanyId(), Boolean.TRUE, null);
 
 LayoutSet privateLayoutSet = null;
@@ -34,9 +66,7 @@ boolean publicLayoutSetPrototypeLinkEnabled = true;
 
 if (showPrototypes && (group != null)) {
 	try {
-		LayoutLocalServiceUtil.getLayouts(liveGroup.getGroupId(), true, LayoutConstants.DEFAULT_PARENT_LAYOUT_ID);
-
-		privateLayoutSet = LayoutSetLocalServiceUtil.getLayoutSet(liveGroup.getGroupId(), true);
+		privateLayoutSet = LayoutSetLocalServiceUtil.getLayoutSet(group.getGroupId(), true);
 
 		privateLayoutSetPrototypeLinkEnabled = privateLayoutSet.isLayoutSetPrototypeLinkEnabled();
 
@@ -50,9 +80,7 @@ if (showPrototypes && (group != null)) {
 	}
 
 	try {
-		LayoutLocalServiceUtil.getLayouts(liveGroup.getGroupId(), false, LayoutConstants.DEFAULT_PARENT_LAYOUT_ID);
-
-		publicLayoutSet = LayoutSetLocalServiceUtil.getLayoutSet(liveGroup.getGroupId(), false);
+		publicLayoutSet = LayoutSetLocalServiceUtil.getLayoutSet(group.getGroupId(), false);
 
 		publicLayoutSetPrototypeLinkEnabled = publicLayoutSet.isLayoutSetPrototypeLinkEnabled();
 
@@ -83,6 +111,7 @@ else if (group != null) {
 <aui:model-context bean="<%= liveGroup %>" model="<%= Group.class %>" />
 
 <liferay-ui:error exception="<%= DuplicateGroupException.class %>" message="please-enter-a-unique-name" />
+<liferay-ui:error exception="<%= GroupInheritContentException.class %>" message="this-site-cannot-inherit-content-from-its-parent-site" />
 <liferay-ui:error exception="<%= GroupNameException.class %>" message="please-enter-a-valid-name" />
 
 <liferay-ui:error exception="<%= GroupParentException.class %>">
@@ -144,6 +173,19 @@ else if (group != null) {
 
 	<c:if test="<%= (group == null) || !group.isCompany() %>">
 		<aui:input name="active" value="<%= true %>" />
+	</c:if>
+
+	<c:if test="<%= ((parentGroupId != GroupConstants.DEFAULT_PARENT_GROUP_ID) && PropsValues.SITES_SHOW_INHERIT_CONTENT_SCOPE_FROM_PARENT_SITE) %>">
+
+		<%
+		boolean disabled = false;
+
+		if ((parentGroup != null) && parentGroup.isInheritContent()) {
+			disabled = true;
+		}
+		%>
+
+		<aui:input disabled="<%= disabled %>" helpMessage='<%= disabled ? "this-site-cannot-inherit-the-content-from-its-parent-site-since-the-parent-site-is-already-inheriting-the-content-from-its-parent" : StringPool.BLANK %>' name="inheritContent" value="<%= false %>" />
 	</c:if>
 
 	<h3><liferay-ui:message key="membership-options" /></h3>
@@ -212,20 +254,24 @@ boolean hasUnlinkLayoutSetPrototypePermission = PortalPermissionUtil.contains(pe
 								</aui:select>
 
 								<c:choose>
-									<c:when test="<%= hasUnlinkLayoutSetPrototypePermission %>">
-										<div class="hide" id="<portlet:namespace />publicLayoutSetPrototypeIdOptions">
-											<c:if test="<%= disableLayoutSetPrototypeInput %>">
-												<div class="alert alert-info">
-													<liferay-ui:message key="you-cannot-enable-the-propagation-of-changes-because-you-modified-the-display-settings-of-this-site" />
-												</div>
-											</c:if>
+									<c:when test="<%= (group == null) || !group.isStaged() %>">
+										<c:choose>
+											<c:when test="<%= hasUnlinkLayoutSetPrototypePermission %>">
+												<div class="hide" id="<portlet:namespace />publicLayoutSetPrototypeIdOptions">
+													<c:if test="<%= disableLayoutSetPrototypeInput %>">
+														<div class="alert alert-info">
+															<liferay-ui:message key="you-cannot-enable-the-propagation-of-changes-because-you-modified-the-display-settings-of-this-site" />
+														</div>
+													</c:if>
 
-											<aui:input disabled="<%= disableLayoutSetPrototypeInput %>" helpMessage="enable-propagation-of-changes-from-the-site-template-help" label="enable-propagation-of-changes-from-the-site-template" name="publicLayoutSetPrototypeLinkEnabled" type="checkbox" value="<%= publicLayoutSetPrototypeLinkEnabled %>" />
-										</div>
+													<aui:input disabled="<%= disableLayoutSetPrototypeInput %>" helpMessage="enable-propagation-of-changes-from-the-site-template-help" label="enable-propagation-of-changes-from-the-site-template" name="publicLayoutSetPrototypeLinkEnabled" type="checkbox" value="<%= publicLayoutSetPrototypeLinkEnabled %>" />
+												</div>
+											</c:when>
+											<c:otherwise>
+												<aui:input name="publicLayoutSetPrototypeLinkEnabled" type="hidden" value="<%= true %>" />
+											</c:otherwise>
+										</c:choose>
 									</c:when>
-									<c:otherwise>
-										<aui:input name="publicLayoutSetPrototypeLinkEnabled" type="hidden" value="<%= true %>" />
-									</c:otherwise>
 								</c:choose>
 							</c:when>
 							<c:otherwise>
@@ -240,7 +286,7 @@ boolean hasUnlinkLayoutSetPrototypePermission = PortalPermissionUtil.contains(pe
 												</liferay-portlet:actionURL>
 
 												<liferay-ui:icon
-													image="view"
+													iconCssClass="icon-search"
 													label="<%= true %>"
 													message="open-public-pages"
 													method="get"
@@ -254,14 +300,14 @@ boolean hasUnlinkLayoutSetPrototypePermission = PortalPermissionUtil.contains(pe
 										</c:choose>
 
 										<c:choose>
-											<c:when test="<%= (publicLayoutSetPrototype != null) && !liveGroup.isStaged() && hasUnlinkLayoutSetPrototypePermission %>">
+											<c:when test="<%= (publicLayoutSetPrototype != null) && !group.isStaged() && hasUnlinkLayoutSetPrototypePermission %>">
 												<c:if test="<%= disableLayoutSetPrototypeInput %>">
 													<div class="alert alert-info">
 														<liferay-ui:message key="you-cannot-enable-the-propagation-of-changes-because-you-modified-the-display-settings-of-this-site" />
 													</div>
 												</c:if>
 
-												<aui:input disabled="<%= disableLayoutSetPrototypeInput %>" label='<%= LanguageUtil.format(pageContext, "enable-propagation-of-changes-from-the-site-template-x", HtmlUtil.escape(publicLayoutSetPrototype.getName(locale)), false) %>' name="publicLayoutSetPrototypeLinkEnabled" type="checkbox" value="<%= publicLayoutSetPrototypeLinkEnabled %>" />
+												<aui:input disabled="<%= disableLayoutSetPrototypeInput %>" label='<%= LanguageUtil.format(request, "enable-propagation-of-changes-from-the-site-template-x", HtmlUtil.escape(publicLayoutSetPrototype.getName(locale)), false) %>' name="publicLayoutSetPrototypeLinkEnabled" type="checkbox" value="<%= publicLayoutSetPrototypeLinkEnabled %>" />
 
 												<div class='<%= publicLayoutSetPrototypeLinkEnabled ? "" : "hide" %>' id="<portlet:namespace/>publicLayoutSetPrototypeMergeAlert">
 
@@ -314,20 +360,24 @@ boolean hasUnlinkLayoutSetPrototypePermission = PortalPermissionUtil.contains(pe
 								</aui:select>
 
 								<c:choose>
-									<c:when test="<%= hasUnlinkLayoutSetPrototypePermission %>">
-										<div class="hide" id="<portlet:namespace />privateLayoutSetPrototypeIdOptions">
-											<c:if test="<%= disableLayoutSetPrototypeInput %>">
-												<div class="alert alert-info">
-													<liferay-ui:message key="you-cannot-enable-the-propagation-of-changes-because-you-modified-the-display-settings-of-this-site" />
-												</div>
-											</c:if>
+									<c:when test="<%= (group == null) || !group.isStaged() %>">
+										<c:choose>
+											<c:when test="<%= hasUnlinkLayoutSetPrototypePermission %>">
+												<div class="hide" id="<portlet:namespace />privateLayoutSetPrototypeIdOptions">
+													<c:if test="<%= disableLayoutSetPrototypeInput %>">
+														<div class="alert alert-info">
+															<liferay-ui:message key="you-cannot-enable-the-propagation-of-changes-because-you-modified-the-display-settings-of-this-site" />
+														</div>
+													</c:if>
 
-											<aui:input disabled="<%= disableLayoutSetPrototypeInput %>" helpMessage="enable-propagation-of-changes-from-the-site-template-help" label="enable-propagation-of-changes-from-the-site-template" name="privateLayoutSetPrototypeLinkEnabled" type="checkbox" value="<%= privateLayoutSetPrototypeLinkEnabled %>" />
-										</div>
+													<aui:input disabled="<%= disableLayoutSetPrototypeInput %>" helpMessage="enable-propagation-of-changes-from-the-site-template-help" label="enable-propagation-of-changes-from-the-site-template" name="privateLayoutSetPrototypeLinkEnabled" type="checkbox" value="<%= privateLayoutSetPrototypeLinkEnabled %>" />
+												</div>
+											</c:when>
+											<c:otherwise>
+												<aui:input name="privateLayoutSetPrototypeLinkEnabled" type="hidden" value="<%= true %>" />
+											</c:otherwise>
+										</c:choose>
 									</c:when>
-									<c:otherwise>
-										<aui:input name="privateLayoutSetPrototypeLinkEnabled" type="hidden" value="<%= true %>" />
-									</c:otherwise>
 								</c:choose>
 							</c:when>
 							<c:otherwise>
@@ -342,7 +392,7 @@ boolean hasUnlinkLayoutSetPrototypePermission = PortalPermissionUtil.contains(pe
 												</liferay-portlet:actionURL>
 
 												<liferay-ui:icon
-													image="view"
+													iconCssClass="icon-search"
 													label="<%= true %>"
 													message="open-private-pages"
 													method="get"
@@ -356,14 +406,14 @@ boolean hasUnlinkLayoutSetPrototypePermission = PortalPermissionUtil.contains(pe
 										</c:choose>
 
 										<c:choose>
-											<c:when test="<%= (privateLayoutSetPrototype != null) && !liveGroup.isStaged() && hasUnlinkLayoutSetPrototypePermission %>">
+											<c:when test="<%= (privateLayoutSetPrototype != null) && !group.isStaged() && hasUnlinkLayoutSetPrototypePermission %>">
 												<c:if test="<%= disableLayoutSetPrototypeInput %>">
 													<div class="alert alert-info">
 														<liferay-ui:message key="you-cannot-enable-the-propagation-of-changes-because-you-modified-the-display-settings-of-this-site" />
 													</div>
 												</c:if>
 
-												<aui:input disabled="<%= disableLayoutSetPrototypeInput %>" label='<%= LanguageUtil.format(pageContext, "enable-propagation-of-changes-from-the-site-template-x", HtmlUtil.escape(privateLayoutSetPrototype.getName(locale)), false) %>' name="privateLayoutSetPrototypeLinkEnabled" type="checkbox" value="<%= privateLayoutSetPrototypeLinkEnabled %>" />
+												<aui:input disabled="<%= disableLayoutSetPrototypeInput %>" label='<%= LanguageUtil.format(request, "enable-propagation-of-changes-from-the-site-template-x", HtmlUtil.escape(privateLayoutSetPrototype.getName(locale)), false) %>' name="privateLayoutSetPrototypeLinkEnabled" type="checkbox" value="<%= privateLayoutSetPrototypeLinkEnabled %>" />
 
 												<div class='<%= privateLayoutSetPrototypeLinkEnabled ? "" : "hide" %>' id="<portlet:namespace/>privateLayoutSetPrototypeMergeAlert">
 
@@ -405,7 +455,7 @@ boolean hasUnlinkLayoutSetPrototypePermission = PortalPermissionUtil.contains(pe
 						}
 						%>
 
-						<aui:select helpMessage='<%= LanguageUtil.format(pageContext, "application-adapter-help", "http://www.liferay.com/community/wiki/-/wiki/Main/Application+Adapters", false) %>' label="application-adapter" name="customJspServletContextName">
+						<aui:select helpMessage='<%= LanguageUtil.format(request, "application-adapter-help", "http://www.liferay.com/community/wiki/-/wiki/Main/Application+Adapters", false) %>' label="application-adapter" name="customJspServletContextName">
 							<aui:option label="none" value="" />
 
 							<%
@@ -427,8 +477,8 @@ boolean hasUnlinkLayoutSetPrototypePermission = PortalPermissionUtil.contains(pe
 					<aui:input name="layoutSetPrototypeId" type="hidden" value="<%= layoutSetPrototype.getLayoutSetPrototypeId() %>" />
 
 					<aui:field-wrapper label="copy-as">
-						<aui:input checked="<%= true %>" helpMessage='<%= LanguageUtil.format(pageContext, "select-this-to-copy-the-pages-of-the-site-template-x-as-public-pages-for-this-site", HtmlUtil.escape(layoutSetPrototype.getName(locale)), false) %>' label="public-pages" name="layoutSetVisibility" type="radio" value="0" />
-						<aui:input helpMessage='<%= LanguageUtil.format(pageContext, "select-this-to-copy-the-pages-of-the-site-template-x-as-private-pages-for-this-site", HtmlUtil.escape(layoutSetPrototype.getName(locale)), false) %>' label="private-pages" name="layoutSetVisibility" type="radio" value="1" />
+						<aui:input checked="<%= true %>" helpMessage='<%= LanguageUtil.format(request, "select-this-to-copy-the-pages-of-the-site-template-x-as-public-pages-for-this-site", HtmlUtil.escape(layoutSetPrototype.getName(locale)), false) %>' label="public-pages" name="layoutSetVisibility" type="radio" value="0" />
+						<aui:input helpMessage='<%= LanguageUtil.format(request, "select-this-to-copy-the-pages-of-the-site-template-x-as-private-pages-for-this-site", HtmlUtil.escape(layoutSetPrototype.getName(locale)), false) %>' label="private-pages" name="layoutSetVisibility" type="radio" value="1" />
 					</aui:field-wrapper>
 
 					<c:choose>
@@ -445,42 +495,6 @@ boolean hasUnlinkLayoutSetPrototypePermission = PortalPermissionUtil.contains(pe
 	</aui:fieldset>
 
 	<%
-	long parentGroupId = ParamUtil.getLong(request, "parentGroupSearchContainerPrimaryKeys", (group != null) ? group.getParentGroupId() : GroupConstants.DEFAULT_PARENT_GROUP_ID);
-
-	if (parentGroupId <= 0) {
-		parentGroupId = GroupConstants.DEFAULT_PARENT_GROUP_ID;
-
-		if (group != null) {
-			parentGroupId = liveGroup.getParentGroupId();
-		}
-	}
-
-	Group parentGroup = null;
-
-	if ((group == null) && (parentGroupId == GroupConstants.DEFAULT_PARENT_GROUP_ID) && !permissionChecker.isCompanyAdmin()) {
-		List<Group> manageableGroups = new ArrayList<Group>();
-
-		for (Group curGroup : user.getGroups()) {
-			if (GroupPermissionUtil.contains(permissionChecker, curGroup, ActionKeys.MANAGE_SUBGROUPS)) {
-				manageableGroups.add(curGroup);
-			}
-		}
-
-		if (manageableGroups.size() == 1) {
-			Group manageableGroup = manageableGroups.get(0);
-
-			parentGroupId = manageableGroup.getGroupId();
-		}
-	}
-
-	if (parentGroupId != GroupConstants.DEFAULT_PARENT_GROUP_ID) {
-		try {
-			parentGroup = GroupLocalServiceUtil.getGroup(parentGroupId);
-		}
-		catch (NoSuchGroupException nsoe) {
-		}
-	}
-
 	List<Group> parentGroups = new ArrayList<Group>();
 
 	if (parentGroup != null) {
@@ -490,7 +504,7 @@ boolean hasUnlinkLayoutSetPrototypePermission = PortalPermissionUtil.contains(pe
 
 	<liferay-util:buffer var="removeGroupIcon">
 		<liferay-ui:icon
-			image="unlink"
+			iconCssClass="icon-unlink"
 			label="<%= true %>"
 			message="remove"
 		/>
@@ -527,7 +541,7 @@ boolean hasUnlinkLayoutSetPrototypePermission = PortalPermissionUtil.contains(pe
 
 			<liferay-ui:search-container-column-text
 				name="type"
-				value="<%= LanguageUtil.get(pageContext, curGroup.getTypeLabel()) %>"
+				value="<%= LanguageUtil.get(request, curGroup.getTypeLabel()) %>"
 			/>
 
 			<liferay-ui:search-container-column-text>
@@ -543,7 +557,7 @@ boolean hasUnlinkLayoutSetPrototypePermission = PortalPermissionUtil.contains(pe
 		iconCssClass="icon-search"
 		id="selectParentSiteLink"
 		label="<%= true %>"
-		linkCssClass="btn"
+		linkCssClass="btn btn-default"
 		message="select"
 		url="javascript:;"
 	/>
@@ -581,8 +595,8 @@ boolean hasUnlinkLayoutSetPrototypePermission = PortalPermissionUtil.contains(pe
 		Liferay.Util.toggleSelectBox('<portlet:namespace />publicLayoutSetPrototypeId', <portlet:namespace />isVisible, '<portlet:namespace />publicLayoutSetPrototypeIdOptions');
 		Liferay.Util.toggleSelectBox('<portlet:namespace />privateLayoutSetPrototypeId', <portlet:namespace />isVisible, '<portlet:namespace />privateLayoutSetPrototypeIdOptions');
 
-		Liferay.Util.toggleBoxes('<portlet:namespace />publicLayoutSetPrototypeLinkEnabledCheckbox','<portlet:namespace />publicLayoutSetPrototypeMergeAlert');
-		Liferay.Util.toggleBoxes('<portlet:namespace />privateLayoutSetPrototypeLinkEnabledCheckbox','<portlet:namespace />privateLayoutSetPrototypeMergeAlert');
+		Liferay.Util.toggleBoxes('<portlet:namespace />publicLayoutSetPrototypeLinkEnabled','<portlet:namespace />publicLayoutSetPrototypeMergeAlert');
+		Liferay.Util.toggleBoxes('<portlet:namespace />privateLayoutSetPrototypeLinkEnabled','<portlet:namespace />privateLayoutSetPrototypeMergeAlert');
 	</aui:script>
 
 	<aui:script use="liferay-search-container">
@@ -614,7 +628,7 @@ boolean hasUnlinkLayoutSetPrototypePermission = PortalPermissionUtil.contains(pe
 
 						var rowColumns = [];
 
-						var href = "<portlet:renderURL><portlet:param name="struts_action" value="/sites_admin/edit_site" /><portlet:param name="redirect" value="<%= currentURL %>" /></portlet:renderURL>&<portlet:namespace />groupId=" + event.groupid;
+						var href = '<portlet:renderURL><portlet:param name="struts_action" value="/sites_admin/edit_site" /><portlet:param name="redirect" value="<%= currentURL %>" /></portlet:renderURL>&<portlet:namespace />groupId=' + event.groupid;
 
 						rowColumns.push(createURL(href, event.groupdescriptivename));
 						rowColumns.push(event.grouptype);

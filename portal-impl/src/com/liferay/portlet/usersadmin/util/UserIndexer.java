@@ -14,9 +14,9 @@
 
 package com.liferay.portlet.usersadmin.util;
 
+import com.liferay.portal.NoSuchContactException;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.search.BaseIndexer;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.BooleanQuery;
@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.SearchEngineUtil;
 import com.liferay.portal.kernel.search.Summary;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -45,10 +46,11 @@ import com.liferay.portal.util.PropsValues;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
@@ -66,6 +68,7 @@ public class UserIndexer extends BaseIndexer {
 	public static final String PORTLET_ID = PortletKeys.USERS_ADMIN;
 
 	public UserIndexer() {
+		setCommitImmediately(true);
 		setDefaultSelectedFieldNames(
 			Field.COMPANY_ID, Field.UID, Field.USER_ID);
 		setIndexerEnabled(PropsValues.USERS_INDEXER_ENABLED);
@@ -245,8 +248,7 @@ public class UserIndexer extends BaseIndexer {
 
 		document.addKeyword(
 			"ancestorOrganizationIds",
-			getAncestorOrganizationIds(
-				user.getUserId(), user.getOrganizationIds()));
+			getAncestorOrganizationIds(user.getOrganizationIds()));
 		document.addText("emailAddress", user.getEmailAddress());
 		document.addText("firstName", user.getFirstName());
 		document.addText("fullName", user.getFullName());
@@ -316,14 +318,7 @@ public class UserIndexer extends BaseIndexer {
 
 	@Override
 	protected void doReindex(Object obj) throws Exception {
-		if (obj instanceof List<?>) {
-			List<User> users = (List<User>)obj;
-
-			for (User user : users) {
-				doReindex(user);
-			}
-		}
-		else if (obj instanceof Long) {
+		if (obj instanceof Long) {
 			long userId = (Long)obj;
 
 			User user = UserLocalServiceUtil.getUserById(userId);
@@ -365,7 +360,8 @@ public class UserIndexer extends BaseIndexer {
 				Collection<Document> documents = entry.getValue();
 
 				SearchEngineUtil.updateDocuments(
-					getSearchEngineId(), companyId, documents);
+					getSearchEngineId(), companyId, documents,
+					isCommitImmediately());
 			}
 		}
 		else if (obj instanceof User) {
@@ -378,12 +374,20 @@ public class UserIndexer extends BaseIndexer {
 			Document document = getDocument(user);
 
 			SearchEngineUtil.updateDocument(
-				getSearchEngineId(), user.getCompanyId(), document);
+				getSearchEngineId(), user.getCompanyId(), document,
+				isCommitImmediately());
 
 			Indexer indexer = IndexerRegistryUtil.nullSafeGetIndexer(
 				Contact.class);
 
-			indexer.reindex(user.getContact());
+			try {
+				indexer.reindex(user.getContact());
+			}
+			catch (NoSuchContactException nscce) {
+
+				// This is a temporary workaround for LPS-46825
+
+			}
 		}
 	}
 
@@ -401,30 +405,23 @@ public class UserIndexer extends BaseIndexer {
 		reindexUsers(companyId);
 	}
 
-	protected long[] getAncestorOrganizationIds(
-			long userId, long[] organizationIds)
+	protected long[] getAncestorOrganizationIds(long[] organizationIds)
 		throws Exception {
 
-		List<Organization> ancestorOrganizations =
-			new ArrayList<Organization>();
+		Set<Long> ancestorOrganizationIds = new HashSet<Long>();
 
 		for (long organizationId : organizationIds) {
 			Organization organization =
 				OrganizationLocalServiceUtil.getOrganization(organizationId);
 
-			ancestorOrganizations.addAll(organization.getAncestors());
+			for (long ancestorOrganizationId :
+					organization.getAncestorOrganizationIds()) {
+
+				ancestorOrganizationIds.add(ancestorOrganizationId);
+			}
 		}
 
-		long[] ancestorOrganizationIds = new long[ancestorOrganizations.size()];
-
-		for (int i = 0; i < ancestorOrganizations.size(); i++) {
-			Organization ancestorOrganization = ancestorOrganizations.get(i);
-
-			ancestorOrganizationIds[i] =
-				ancestorOrganization.getOrganizationId();
-		}
-
-		return ancestorOrganizationIds;
+		return ArrayUtil.toLongArray(ancestorOrganizationIds);
 	}
 
 	@Override
@@ -432,9 +429,7 @@ public class UserIndexer extends BaseIndexer {
 		return PORTLET_ID;
 	}
 
-	protected void reindexUsers(long companyId)
-		throws PortalException, SystemException {
-
+	protected void reindexUsers(long companyId) throws PortalException {
 		final ActionableDynamicQuery actionableDynamicQuery =
 			UserLocalServiceUtil.getActionableDynamicQuery();
 

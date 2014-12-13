@@ -14,7 +14,6 @@
 
 package com.liferay.portlet.softwarecatalog.model.impl;
 
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portlet.softwarecatalog.model.SCFrameworkVersion;
@@ -29,13 +28,8 @@ import java.util.List;
  */
 public class SCProductVersionImpl extends SCProductVersionBaseImpl {
 
-	public SCProductVersionImpl() {
-	}
-
 	@Override
-	public List<SCFrameworkVersion> getFrameworkVersions()
-		throws SystemException {
-
+	public List<SCFrameworkVersion> getFrameworkVersions() {
 		return SCFrameworkVersionLocalServiceUtil.
 			getProductVersionFrameworkVersions(getProductVersionId());
 	}
@@ -57,6 +51,7 @@ public class SCProductVersionImpl extends SCProductVersionBaseImpl {
 		return productEntry;
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(SCProductVersionImpl.class);
+	private static final Log _log = LogFactoryUtil.getLog(
+		SCProductVersionImpl.class);
 
 }

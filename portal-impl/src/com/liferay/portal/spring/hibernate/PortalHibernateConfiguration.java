@@ -15,6 +15,8 @@
 package com.liferay.portal.spring.hibernate;
 
 import com.liferay.portal.dao.orm.hibernate.event.MVCCSynchronizerPostUpdateEventListener;
+import com.liferay.portal.dao.orm.hibernate.event.NestableAutoFlushEventListener;
+import com.liferay.portal.dao.shard.ShardSpringSessionContext;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
@@ -47,6 +49,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.dialect.Dialect;
+import org.hibernate.event.AutoFlushEventListener;
 import org.hibernate.event.EventListeners;
 import org.hibernate.event.PostUpdateEventListener;
 
@@ -82,6 +85,10 @@ public class PortalHibernateConfiguration extends LocalSessionFactoryBean {
 
 	public void setMvccEnabled(boolean mvccEnabled) {
 		_mvccEnabled = mvccEnabled;
+	}
+
+	public void setShardEnabled(boolean shardEnabled) {
+		_shardEnabled = shardEnabled;
 	}
 
 	protected static Map<String, Class<?>> getPreloadClassLoaderClasses() {
@@ -171,6 +178,10 @@ public class PortalHibernateConfiguration extends LocalSessionFactoryBean {
 				EventListeners eventListeners =
 					configuration.getEventListeners();
 
+				eventListeners.setAutoFlushEventListeners(
+					new AutoFlushEventListener[] {
+						NestableAutoFlushEventListener.INSTANCE
+					});
 				eventListeners.setPostUpdateEventListeners(
 					new PostUpdateEventListener[] {
 						MVCCSynchronizerPostUpdateEventListener.INSTANCE
@@ -183,15 +194,17 @@ public class PortalHibernateConfiguration extends LocalSessionFactoryBean {
 
 		Properties hibernateProperties = getHibernateProperties();
 
-		if (hibernateProperties != null) {
-			for (Map.Entry<Object, Object> entry :
-					hibernateProperties.entrySet()) {
+		if (_shardEnabled) {
+			hibernateProperties.setProperty(
+				Environment.CURRENT_SESSION_CONTEXT_CLASS,
+				ShardSpringSessionContext.class.getName());
+		}
 
-				String key = (String)entry.getKey();
-				String value = (String)entry.getValue();
+		for (Map.Entry<Object, Object> entry : hibernateProperties.entrySet()) {
+			String key = (String)entry.getKey();
+			String value = (String)entry.getValue();
 
-				configuration.setProperty(key, value);
-			}
+			configuration.setProperty(key, value);
 		}
 
 		return configuration;
@@ -273,11 +286,12 @@ public class PortalHibernateConfiguration extends LocalSessionFactoryBean {
 	private static final String[] _PRELOAD_CLASS_NAMES =
 		PropsValues.SPRING_HIBERNATE_CONFIGURATION_PROXY_FACTORY_PRELOAD_CLASSLOADER_CLASSES;
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		PortalHibernateConfiguration.class);
 
-	private static Map<ProxyFactory, ClassLoader> _proxyFactoryClassLoaders =
-		new WeakHashMap<ProxyFactory, ClassLoader>();
+	private static final Map<ProxyFactory, ClassLoader>
+		_proxyFactoryClassLoaders =
+			new WeakHashMap<ProxyFactory, ClassLoader>();
 
 	static {
 		ProxyFactory.classLoaderProvider =
@@ -316,5 +330,6 @@ public class PortalHibernateConfiguration extends LocalSessionFactoryBean {
 
 	private Converter<String> _hibernateConfigurationConverter;
 	private boolean _mvccEnabled = true;
+	private boolean _shardEnabled;
 
 }

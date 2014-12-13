@@ -16,6 +16,8 @@
 
 <%@ include file="/html/portlet/layouts_admin/init.jsp" %>
 
+<liferay-staging:defineObjects />
+
 <%
 String cmd = ParamUtil.getString(request, Constants.CMD);
 
@@ -60,49 +62,12 @@ else {
 	}
 }
 
-Group group = (Group)request.getAttribute(WebKeys.GROUP);
-
-Group liveGroup = null;
-Group stagingGroup = null;
-
-if (group.isStagingGroup()) {
-	liveGroup = group.getLiveGroup();
-	stagingGroup = group;
-}
-else if (group.isStaged()) {
-	liveGroup = group;
-
-	if (group.isStagedRemotely()) {
-		stagingGroup = group;
-	}
-	else {
-		stagingGroup = group.getStagingGroup();
-	}
-}
-
-long liveGroupId = 0;
-
-if (liveGroup != null) {
-	liveGroupId = liveGroup.getGroupId();
-}
-
-long stagingGroupId = 0;
-
-if (stagingGroup != null) {
-	stagingGroupId = stagingGroup.getGroupId();
-}
-
 long layoutSetBranchId = MapUtil.getLong(parameterMap, "layoutSetBranchId", ParamUtil.getLong(request, "layoutSetBranchId"));
 String layoutSetBranchName = MapUtil.getString(parameterMap, "layoutSetBranchName", ParamUtil.getString(request, "layoutSetBranchName"));
 
 boolean localPublishing = true;
 
-if (liveGroup.isStaged()) {
-	if (liveGroup.isStagedRemotely()) {
-		localPublishing = false;
-	}
-}
-else if (cmd.equals(Constants.PUBLISH_TO_REMOTE)) {
+if ((liveGroup.isStaged() && liveGroup.isStagedRemotely()) || cmd.equals(Constants.PUBLISH_TO_REMOTE)) {
 	localPublishing = false;
 }
 
@@ -121,10 +86,7 @@ treeId = treeId + liveGroupId;
 
 String publishActionKey = "copy";
 
-if (liveGroup.isStaged()) {
-	publishActionKey = "publish";
-}
-else if (cmd.equals(Constants.PUBLISH_TO_REMOTE)) {
+if (liveGroup.isStaged() || cmd.equals(Constants.PUBLISH_TO_REMOTE)) {
 	publishActionKey = "publish";
 }
 
@@ -142,26 +104,25 @@ try {
 catch (NoSuchLayoutException nsle) {
 }
 
-boolean privateLayout = ParamUtil.getBoolean(request, "privateLayout", tabs1.equals("private-pages"));
-
 treeId = treeId + privateLayout + layoutSetBranchId;
 
-long[] selectedLayoutIds = GetterUtil.getLongValues(StringUtil.split(SessionTreeJSClicks.getOpenNodes(request, treeId + "SelectedNode"), ','));
+long[] selectedLayoutIds = null;
 
-List<Layout> selectedLayouts = new ArrayList<Layout>();
+String openNodes = SessionTreeJSClicks.getOpenNodes(request, treeId + "SelectedNode");
 
-long selectedLayoutsGroupId = group.getGroupId();
+if (openNodes == null) {
+	List<Layout> stagingGroupLayouts = LayoutLocalServiceUtil.getLayouts(stagingGroupId, privateLayout, LayoutConstants.DEFAULT_PARENT_LAYOUT_ID);
 
-if (stagingGroupId > 0) {
-	selectedLayoutsGroupId = stagingGroupId;
+	selectedLayoutIds = new long[stagingGroupLayouts.size()];
+
+	for (int i = 0; i < stagingGroupLayouts.size(); i++) {
+		Layout stagingGroupLayout = stagingGroupLayouts.get(i);
+
+		selectedLayoutIds[i] = stagingGroupLayout.getLayoutId();
+	}
 }
-
-for (int i = 0; i < selectedLayoutIds.length; i++) {
-	try {
-		selectedLayouts.add(LayoutLocalServiceUtil.getLayout(selectedLayoutsGroupId, privateLayout, selectedLayoutIds[i]));
-	}
-	catch (NoSuchLayoutException nsle) {
-	}
+else {
+	selectedLayoutIds = GetterUtil.getLongValues(StringUtil.split(openNodes, ','));
 }
 
 UnicodeProperties liveGroupTypeSettings = liveGroup.getTypeSettingsProperties();
@@ -234,7 +195,7 @@ else {
 		<liferay-ui:section>
 			<div <%= (!cmd.equals(Constants.ADD) && !cmd.equals(Constants.UPDATE)) ? StringPool.BLANK : "class=\"hide\"" %>>
 				<aui:nav-bar>
-					<aui:nav id="publishConfigurationButtons">
+					<aui:nav cssClass="navbar-nav" id="publishConfigurationButtons">
 						<aui:nav-item
 							data-value="custom"
 							iconCssClass="icon-puzzle"
@@ -267,6 +228,10 @@ else {
 					<aui:input name="layoutSetBranchName" type="hidden" value="<%= layoutSetBranchName %>" />
 					<aui:input name="lastImportUserName" type="hidden" value="<%= user.getFullName() %>" />
 					<aui:input name="lastImportUserUuid" type="hidden" value="<%= String.valueOf(user.getUserUuid()) %>" />
+					<aui:input name="<%= PortletDataHandlerKeys.PORTLET_ARCHIVED_SETUPS_ALL %>" type="hidden" value="<%= true %>" />
+					<aui:input name="<%= PortletDataHandlerKeys.PORTLET_CONFIGURATION_ALL %>" type="hidden" value="<%= true %>" />
+					<aui:input name="<%= PortletDataHandlerKeys.PORTLET_SETUP_ALL %>" type="hidden" value="<%= true %>"  />
+					<aui:input name="<%= PortletDataHandlerKeys.PORTLET_USER_PREFERENCES_ALL %>" type="hidden" value="<%= true %>" />
 
 					<liferay-ui:error exception="<%= DuplicateLockException.class %>" message="another-publishing-process-is-in-progress,-please-try-again-later" />
 
@@ -316,15 +281,7 @@ else {
 					</liferay-ui:error>
 
 					<c:if test="<%= !cmd.equals(Constants.PUBLISH_TO_LIVE) && !cmd.equals(Constants.PUBLISH_TO_REMOTE) %>">
-						<aui:model-context bean="<%= exportImportConfiguration %>" model="<%= ExportImportConfiguration.class %>" />
-
-						<aui:fieldset cssClass="options-group" label='<%= cmd.equals(Constants.ADD) ? "new-publish-template" : "edit-template" %>'>
-							<aui:input label="name" name="name" showRequiredLabel="<%= false %>">
-								<aui:validator name="required" />
-							</aui:input>
-
-							<aui:input label="description" name="description" />
-						</aui:fieldset>
+						<liferay-staging:configuration-header exportImportConfiguration="<%= exportImportConfiguration %>" label='<%= cmd.equals(Constants.ADD) ? "new-publish-template" : "edit-template" %>' />
 					</c:if>
 
 					<div id="<portlet:namespace />publishOptions">
@@ -387,37 +344,7 @@ else {
 								</aui:fieldset>
 							</c:if>
 
-							<%
-							List<Layout> exportLayouts = new ArrayList<Layout>();
-
-							if (selLayout != null) {
-								exportLayouts.add(selLayout);
-							}
-							else if (!selectedLayouts.isEmpty()) {
-								exportLayouts = selectedLayouts;
-							}
-							else {
-								exportLayouts = LayoutLocalServiceUtil.getLayouts(group.getGroupId(), privateLayout);
-							}
-
-							List<Portlet> portletDataHandlerPortlets = LayoutExporter.getPortletDataHandlerPortlets(exportLayouts);
-							%>
-
-							<c:if test="<%= !portletDataHandlerPortlets.isEmpty() %>">
-								<aui:fieldset cssClass="options-group" label="application-configuration">
-									<%@ include file="/html/portlet/layouts_admin/publish_layouts_portlets_setup.jspf" %>
-								</aui:fieldset>
-							</c:if>
-
-							<%
-							List<Portlet> dataSiteLevelPortlets = LayoutExporter.getDataSiteLevelPortlets(company.getCompanyId(), false);
-							%>
-
-							<c:if test="<%= !dataSiteLevelPortlets.isEmpty() %>">
-								<aui:fieldset cssClass="options-group" label="content">
-									<%@ include file="/html/portlet/layouts_admin/publish_layouts_portlets_data.jspf" %>
-								</aui:fieldset>
-							</c:if>
+							<liferay-staging:content parameterMap="<%= parameterMap %>" type="<%= localPublishing ? Constants.PUBLISH_TO_LIVE : Constants.PUBLISH_TO_REMOTE %>" />
 
 							<aui:fieldset cssClass="options-group" label="permissions">
 								<%@ include file="/html/portlet/layouts_admin/export_configuration/permissions.jspf" %>
@@ -438,9 +365,9 @@ else {
 									<aui:button href="<%= renderURL.toString() %>" type="reset" value="cancel" />
 								</c:when>
 								<c:otherwise>
-									<aui:button id="addButton" name="addButton" onClick='<%= renderResponse.getNamespace() + "schedulePublishEvent();" %>' value="add-event" />
+									<aui:button id="addButton" onClick='<%= renderResponse.getNamespace() + "schedulePublishEvent();" %>' value="add-event" />
 
-									<aui:button id="publishButton" name="publishButton" type="submit" value="<%= publishActionKey %>" />
+									<aui:button id="publishButton" type="submit" value="<%= publishActionKey %>" />
 								</c:otherwise>
 							</c:choose>
 						</aui:button-row>
@@ -491,45 +418,18 @@ else {
 </liferay-ui:tabs>
 
 <aui:script>
-	Liferay.provide(
-		window,
-		'<portlet:namespace />publishPages',
-		function() {
-			if (confirm('<%= UnicodeLanguageUtil.get(pageContext, "are-you-sure-you-want-to-" + publishActionKey + "-these-pages") %>')) {
-				var A = AUI();
+	function <portlet:namespace />publishPages() {
+		var form = AUI.$(document.<portlet:namespace />exportPagesFm);
 
-				var allContentRadioChecked = A.one('#<portlet:namespace />allContent').attr('checked');
+		if (form.fm('allContent').prop('checked')) {
+			form.fm('<%= PortletDataHandlerKeys.PORTLET_DATA_CONTROL_DEFAULT %>').val(true);
+		}
 
-				if (allContentRadioChecked) {
-					var selectedContents = A.one('#<portlet:namespace />selectContents');
-
-					var checkedNodes = selectedContents.all('input[type=checkbox]');
-
-					checkedNodes.each(
-						function(item, index, collection) {
-							if (!item.attr('checked')) {
-								item.attr('checked', true);
-
-								Liferay.Util.updateCheckboxValue(item);
-							}
-						}
-					);
-
-					var portletDataControlDefault = A.one('#<portlet:namespace /><%= PortletDataHandlerKeys.PORTLET_DATA_CONTROL_DEFAULT %>');
-
-					portletDataControlDefault.val(true);
-				}
-
-				submitForm(document.<portlet:namespace />exportPagesFm);
-			}
-		},
-		['aui-base']
-	);
+		submitForm(form);
+	}
 
 	Liferay.Util.toggleRadio('<portlet:namespace />allApplications', '<portlet:namespace />showChangeGlobalConfiguration', ['<portlet:namespace />selectApplications']);
 	Liferay.Util.toggleRadio('<portlet:namespace />allContent', '<portlet:namespace />showChangeGlobalContent', ['<portlet:namespace />selectContents']);
-	Liferay.Util.toggleRadio('<portlet:namespace />chooseApplications', '<portlet:namespace />selectApplications', ['<portlet:namespace />showChangeGlobalConfiguration']);
-	Liferay.Util.toggleRadio('<portlet:namespace />chooseContent', '<portlet:namespace />selectContents', ['<portlet:namespace />showChangeGlobalContent']);
 	Liferay.Util.toggleRadio('<portlet:namespace />publishingEventNow', '<portlet:namespace />publishButton', ['<portlet:namespace />selectSchedule', '<portlet:namespace />addButton']);
 	Liferay.Util.toggleRadio('<portlet:namespace />publishingEventSchedule', ['<portlet:namespace />selectSchedule', '<portlet:namespace />addButton'], '<portlet:namespace />publishButton');
 	Liferay.Util.toggleRadio('<portlet:namespace />rangeAll', '', ['<portlet:namespace />startEndDate', '<portlet:namespace />rangeLastInputs']);
@@ -549,18 +449,19 @@ else {
 		<portlet:param name="layoutSetBranchName" value="<%= layoutSetBranchName %>" />
 		<portlet:param name="liveGroupId" value="<%= String.valueOf(liveGroupId) %>" />
 		<portlet:param name="localPublishing" value="<%= String.valueOf(localPublishing) %>" />
+		<portlet:param name="privateLayout" value="<%= String.valueOf(privateLayout) %>" />
 	</liferay-portlet:resourceURL>
 
 	new Liferay.ExportImport(
 		{
-			commentsNode: '#<%= PortletDataHandlerKeys.COMMENTS %>Checkbox',
-			deleteMissingLayoutsNode: '#<%= PortletDataHandlerKeys.DELETE_MISSING_LAYOUTS %>Checkbox',
-			deletePortletDataNode: '#<%= PortletDataHandlerKeys.DELETE_PORTLET_DATA %>Checkbox',
-			deletionsNode: '#<%= PortletDataHandlerKeys.DELETIONS %>Checkbox',
+			commentsNode: '#<%= PortletDataHandlerKeys.COMMENTS %>',
+			deleteMissingLayoutsNode: '#<%= PortletDataHandlerKeys.DELETE_MISSING_LAYOUTS %>',
+			deletePortletDataNode: '#<%= PortletDataHandlerKeys.DELETE_PORTLET_DATA %>',
+			deletionsNode: '#<%= PortletDataHandlerKeys.DELETIONS %>',
 			form: document.<portlet:namespace />exportPagesFm,
 			incompleteProcessMessageNode: '#<portlet:namespace />incompleteProcessMessage',
-			layoutSetSettingsNode: '#<%= PortletDataHandlerKeys.LAYOUT_SET_SETTINGS %>Checkbox',
-			logoNode: '#<%= PortletDataHandlerKeys.LOGO %>Checkbox',
+			layoutSetSettingsNode: '#<%= PortletDataHandlerKeys.LAYOUT_SET_SETTINGS %>',
+			logoNode: '#<%= PortletDataHandlerKeys.LOGO %>',
 			namespace: '<portlet:namespace />',
 			pageTreeId: '<%= treeId %>',
 			processesNode: '#publishProcesses',
@@ -569,16 +470,16 @@ else {
 			rangeDateRangeNode: '#rangeDateRange',
 			rangeLastNode: '#rangeLast',
 			rangeLastPublishNode: '#rangeLastPublish',
-			ratingsNode: '#<%= PortletDataHandlerKeys.RATINGS %>Checkbox',
+			ratingsNode: '#<%= PortletDataHandlerKeys.RATINGS %>',
 			remoteAddressNode: '#<portlet:namespace />remoteAddress',
-			remoteDeletePortletDataNode: '#remoteDeletePortletDataCheckbox',
-			remotePortNode: '#<portlet:namespace />remotePort',
-			remotePathContextNode: '#<portlet:namespace />remotePathContext',
+			remoteDeletePortletDataNode: '#remoteDeletePortletData',
 			remoteGroupIdNode: '#<portlet:namespace />remoteGroupId',
-			secureConnectionNode: '#secureConnectionCheckbox',
-			setupNode: '#<%= PortletDataHandlerKeys.PORTLET_SETUP_ALL %>Checkbox',
-			themeReferenceNode: '#<%= PortletDataHandlerKeys.THEME_REFERENCE %>Checkbox',
-			userPreferencesNode: '#<%= PortletDataHandlerKeys.PORTLET_USER_PREFERENCES_ALL %>Checkbox'
+			remotePathContextNode: '#<portlet:namespace />remotePathContext',
+			remotePortNode: '#<portlet:namespace />remotePort',
+			secureConnectionNode: '#secureConnection',
+			setupNode: '#<%= PortletDataHandlerKeys.PORTLET_SETUP_ALL %>',
+			themeReferenceNode: '#<%= PortletDataHandlerKeys.THEME_REFERENCE %>',
+			userPreferencesNode: '#<%= PortletDataHandlerKeys.PORTLET_USER_PREFERENCES_ALL %>'
 		}
 	);
 

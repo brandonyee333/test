@@ -14,6 +14,8 @@
 
 package com.liferay.portlet.messageboards.service.base;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.bean.IdentifiableBean;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -65,6 +67,7 @@ import javax.sql.DataSource;
  * @see com.liferay.portlet.messageboards.service.MBStatsUserLocalServiceUtil
  * @generated
  */
+@ProviderType
 public abstract class MBStatsUserLocalServiceBaseImpl
 	extends BaseLocalServiceImpl implements MBStatsUserLocalService,
 		IdentifiableBean {
@@ -79,12 +82,10 @@ public abstract class MBStatsUserLocalServiceBaseImpl
 	 *
 	 * @param mbStatsUser the message boards stats user
 	 * @return the message boards stats user that was added
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	@Override
-	public MBStatsUser addMBStatsUser(MBStatsUser mbStatsUser)
-		throws SystemException {
+	public MBStatsUser addMBStatsUser(MBStatsUser mbStatsUser) {
 		mbStatsUser.setNew(true);
 
 		return mbStatsUserPersistence.update(mbStatsUser);
@@ -107,12 +108,11 @@ public abstract class MBStatsUserLocalServiceBaseImpl
 	 * @param statsUserId the primary key of the message boards stats user
 	 * @return the message boards stats user that was removed
 	 * @throws PortalException if a message boards stats user with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public MBStatsUser deleteMBStatsUser(long statsUserId)
-		throws PortalException, SystemException {
+		throws PortalException {
 		return mbStatsUserPersistence.remove(statsUserId);
 	}
 
@@ -121,12 +121,10 @@ public abstract class MBStatsUserLocalServiceBaseImpl
 	 *
 	 * @param mbStatsUser the message boards stats user
 	 * @return the message boards stats user that was removed
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
-	public MBStatsUser deleteMBStatsUser(MBStatsUser mbStatsUser)
-		throws SystemException {
+	public MBStatsUser deleteMBStatsUser(MBStatsUser mbStatsUser) {
 		return mbStatsUserPersistence.remove(mbStatsUser);
 	}
 
@@ -143,12 +141,9 @@ public abstract class MBStatsUserLocalServiceBaseImpl
 	 *
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery)
-		throws SystemException {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return mbStatsUserPersistence.findWithDynamicQuery(dynamicQuery);
 	}
 
@@ -163,12 +158,10 @@ public abstract class MBStatsUserLocalServiceBaseImpl
 	 * @param start the lower bound of the range of model instances
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery, int start, int end)
-		throws SystemException {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end) {
 		return mbStatsUserPersistence.findWithDynamicQuery(dynamicQuery, start,
 			end);
 	}
@@ -185,47 +178,41 @@ public abstract class MBStatsUserLocalServiceBaseImpl
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator orderByComparator) throws SystemException {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end, OrderByComparator<T> orderByComparator) {
 		return mbStatsUserPersistence.findWithDynamicQuery(dynamicQuery, start,
 			end, orderByComparator);
 	}
 
 	/**
-	 * Returns the number of rows that match the dynamic query.
+	 * Returns the number of rows matching the dynamic query.
 	 *
 	 * @param dynamicQuery the dynamic query
-	 * @return the number of rows that match the dynamic query
-	 * @throws SystemException if a system exception occurred
+	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
-	public long dynamicQueryCount(DynamicQuery dynamicQuery)
-		throws SystemException {
+	public long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return mbStatsUserPersistence.countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * Returns the number of rows that match the dynamic query.
+	 * Returns the number of rows matching the dynamic query.
 	 *
 	 * @param dynamicQuery the dynamic query
 	 * @param projection the projection to apply to the query
-	 * @return the number of rows that match the dynamic query
-	 * @throws SystemException if a system exception occurred
+	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection) throws SystemException {
+		Projection projection) {
 		return mbStatsUserPersistence.countWithDynamicQuery(dynamicQuery,
 			projection);
 	}
 
 	@Override
-	public MBStatsUser fetchMBStatsUser(long statsUserId)
-		throws SystemException {
+	public MBStatsUser fetchMBStatsUser(long statsUserId) {
 		return mbStatsUserPersistence.fetchByPrimaryKey(statsUserId);
 	}
 
@@ -235,17 +222,15 @@ public abstract class MBStatsUserLocalServiceBaseImpl
 	 * @param statsUserId the primary key of the message boards stats user
 	 * @return the message boards stats user
 	 * @throws PortalException if a message boards stats user with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public MBStatsUser getMBStatsUser(long statsUserId)
-		throws PortalException, SystemException {
+		throws PortalException {
 		return mbStatsUserPersistence.findByPrimaryKey(statsUserId);
 	}
 
 	@Override
-	public ActionableDynamicQuery getActionableDynamicQuery()
-		throws SystemException {
+	public ActionableDynamicQuery getActionableDynamicQuery() {
 		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
 
 		actionableDynamicQuery.setBaseLocalService(com.liferay.portlet.messageboards.service.MBStatsUserLocalServiceUtil.getService());
@@ -258,8 +243,7 @@ public abstract class MBStatsUserLocalServiceBaseImpl
 	}
 
 	protected void initActionableDynamicQuery(
-		ActionableDynamicQuery actionableDynamicQuery)
-		throws SystemException {
+		ActionableDynamicQuery actionableDynamicQuery) {
 		actionableDynamicQuery.setBaseLocalService(com.liferay.portlet.messageboards.service.MBStatsUserLocalServiceUtil.getService());
 		actionableDynamicQuery.setClass(MBStatsUser.class);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
@@ -267,9 +251,18 @@ public abstract class MBStatsUserLocalServiceBaseImpl
 		actionableDynamicQuery.setPrimaryKeyPropertyName("statsUserId");
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
+		throws PortalException {
+		return mbStatsUserLocalService.deleteMBStatsUser((MBStatsUser)persistedModel);
+	}
+
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException, SystemException {
+		throws PortalException {
 		return mbStatsUserPersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
@@ -283,11 +276,9 @@ public abstract class MBStatsUserLocalServiceBaseImpl
 	 * @param start the lower bound of the range of message boards stats users
 	 * @param end the upper bound of the range of message boards stats users (not inclusive)
 	 * @return the range of message boards stats users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<MBStatsUser> getMBStatsUsers(int start, int end)
-		throws SystemException {
+	public List<MBStatsUser> getMBStatsUsers(int start, int end) {
 		return mbStatsUserPersistence.findAll(start, end);
 	}
 
@@ -295,10 +286,9 @@ public abstract class MBStatsUserLocalServiceBaseImpl
 	 * Returns the number of message boards stats users.
 	 *
 	 * @return the number of message boards stats users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int getMBStatsUsersCount() throws SystemException {
+	public int getMBStatsUsersCount() {
 		return mbStatsUserPersistence.countAll();
 	}
 
@@ -307,12 +297,10 @@ public abstract class MBStatsUserLocalServiceBaseImpl
 	 *
 	 * @param mbStatsUser the message boards stats user
 	 * @return the message boards stats user that was updated
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	@Override
-	public MBStatsUser updateMBStatsUser(MBStatsUser mbStatsUser)
-		throws SystemException {
+	public MBStatsUser updateMBStatsUser(MBStatsUser mbStatsUser) {
 		return mbStatsUserPersistence.update(mbStatsUser);
 	}
 
@@ -713,7 +701,7 @@ public abstract class MBStatsUserLocalServiceBaseImpl
 	 *
 	 * @param sql the sql query
 	 */
-	protected void runSQL(String sql) throws SystemException {
+	protected void runSQL(String sql) {
 		try {
 			DataSource dataSource = mbStatsUserPersistence.getDataSource();
 

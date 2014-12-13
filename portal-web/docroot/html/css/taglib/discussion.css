@@ -135,7 +135,6 @@
 				textarea {
 					max-width: 100%;
 					width: 100%;
-					@include box-sizing(border-box);
 				}
 			}
 
@@ -207,7 +206,9 @@
 
 	.lfr-discussion-details {
 		.taglib-user-display {
-			word-wrap: break-word;
+			@include respond-to(desktop, tablet) {
+				word-wrap: break-word;
+			}
 
 			.user-details .user-name {
 				font-weight: bold;
@@ -222,7 +223,7 @@
 
 	.lfr-discussion-posted-on {
 		color: #999;
-		font-size: .9em;
+		font-size: 0.9em;
 
 		.lfr-discussion-parent-link {
 			cursor: pointer;

@@ -44,7 +44,7 @@ request.setAttribute("view.jsp-portletURL", portletURL);
 			searchContainer="<%= new AssetSearch(renderRequest, portletURL) %>"
 		>
 			<aui:nav-bar>
-				<aui:nav searchContainer="<%= searchContainer %>">
+				<aui:nav cssClass="navbar-nav" searchContainer="<%= searchContainer %>">
 					<liferay-util:include page="/html/portlet/asset_browser/toolbar.jsp">
 						<liferay-util:param name="groupId" value="<%= String.valueOf(groupId) %>" />
 						<liferay-util:param name="typeSelection" value="<%= typeSelection %>" />
@@ -52,7 +52,7 @@ request.setAttribute("view.jsp-portletURL", portletURL);
 					</liferay-util:include>
 				</aui:nav>
 
-				<aui:nav-bar-search cssClass="navbar-search-advanced" file="/html/portlet/asset_publisher/asset_search.jsp" searchContainer="<%= searchContainer %>" />
+				<aui:nav-bar-search file="/html/portlet/asset_publisher/asset_search.jsp" searchContainer="<%= searchContainer %>" />
 			</aui:nav-bar>
 
 			<%
@@ -64,31 +64,23 @@ request.setAttribute("view.jsp-portletURL", portletURL);
 			%>
 
 			<liferay-ui:search-container-results>
-				<%@ include file="/html/portlet/asset_publisher/asset_search_results.jspf" %>
+				<c:choose>
+					<c:when test="<%= PropsValues.ASSET_BROWSER_SEARCH_WITH_DATABASE %>">
+						<%@ include file="/html/portlet/asset_publisher/asset_search_results_database.jspf" %>
+					</c:when>
+					<c:otherwise>
+						<%@ include file="/html/portlet/asset_publisher/asset_search_results_index.jspf" %>
+					</c:otherwise>
+				</c:choose>
 			</liferay-ui:search-container-results>
 
 			<liferay-ui:search-container-row
-				className="com.liferay.portal.kernel.search.Document"
+				className="com.liferay.portlet.asset.model.AssetEntry"
 				escapedModel="<%= true %>"
-				modelVar="doc"
+				modelVar="assetEntry"
 			>
 
 				<%
-				long assetEntryId = 0;
-
-				if (typeSelection.equals(JournalArticle.class.getName())) {
-					assetEntryId = GetterUtil.getLong(doc.get(Field.ROOT_ENTRY_CLASS_PK));
-				}
-				else {
-					assetEntryId = GetterUtil.getLong(doc.get(Field.ENTRY_CLASS_PK));
-				}
-
-				AssetEntry assetEntry = AssetEntryLocalServiceUtil.fetchEntry(typeSelection, assetEntryId);
-
-				if ((assetEntry == null) || !assetEntry.isVisible()) {
-					continue;
-				}
-
 				Group group = GroupLocalServiceUtil.getGroup(assetEntry.getGroupId());
 				%>
 
@@ -133,7 +125,6 @@ request.setAttribute("view.jsp-portletURL", portletURL);
 						<aui:button cssClass="selector-button" data="<%= data %>" value="choose" />
 					</c:if>
 				</liferay-ui:search-container-column-text>
-
 			</liferay-ui:search-container-row>
 
 			<liferay-ui:search-iterator />
@@ -141,6 +132,6 @@ request.setAttribute("view.jsp-portletURL", portletURL);
 	</aui:form>
 </div>
 
-<aui:script use="aui-base">
+<aui:script>
 	Liferay.Util.selectEntityHandler('#<portlet:namespace />selectAssetFm', '<%= HtmlUtil.escapeJS(eventName) %>');
 </aui:script>

@@ -51,6 +51,10 @@ public interface WorkflowTaskManager {
 			Map<String, Serializable> workflowContext)
 		throws WorkflowException;
 
+	public WorkflowTask fetchWorkflowTask(
+			long companyId, long workflowTaskInstanceId)
+		throws WorkflowException;
+
 	public List<String> getNextTransitionNames(
 			long companyId, long userId, long workflowTaskId)
 		throws WorkflowException;
@@ -87,52 +91,53 @@ public interface WorkflowTaskManager {
 
 	public List<WorkflowTask> getWorkflowTasks(
 			long companyId, Boolean completed, int start, int end,
-			OrderByComparator orderByComparator)
+			OrderByComparator<WorkflowTask> orderByComparator)
 		throws WorkflowException;
 
 	public List<WorkflowTask> getWorkflowTasksByRole(
 			long companyId, long roleId, Boolean completed, int start, int end,
-			OrderByComparator orderByComparator)
+			OrderByComparator<WorkflowTask> orderByComparator)
 		throws WorkflowException;
 
 	public List<WorkflowTask> getWorkflowTasksBySubmittingUser(
 			long companyId, long userId, Boolean completed, int start, int end,
-			OrderByComparator orderByComparator)
+			OrderByComparator<WorkflowTask> orderByComparator)
 		throws WorkflowException;
 
 	public List<WorkflowTask> getWorkflowTasksByUser(
 			long companyId, long userId, Boolean completed, int start, int end,
-			OrderByComparator orderByComparator)
+			OrderByComparator<WorkflowTask> orderByComparator)
 		throws WorkflowException;
 
 	public List<WorkflowTask> getWorkflowTasksByUserRoles(
 			long companyId, long userId, Boolean completed, int start, int end,
-			OrderByComparator orderByComparator)
+			OrderByComparator<WorkflowTask> orderByComparator)
 		throws WorkflowException;
 
 	public List<WorkflowTask> getWorkflowTasksByWorkflowInstance(
 			long companyId, Long userId, long workflowInstanceId,
 			Boolean completed, int start, int end,
-			OrderByComparator orderByComparator)
+			OrderByComparator<WorkflowTask> orderByComparator)
 		throws WorkflowException;
 
 	public List<WorkflowTask> search(
 			long companyId, long userId, String keywords, Boolean completed,
 			Boolean searchByUserRoles, int start, int end,
-			OrderByComparator orderByComparator)
+			OrderByComparator<WorkflowTask> orderByComparator)
 		throws WorkflowException;
 
 	public List<WorkflowTask> search(
 			long companyId, long userId, String taskName, String assetType,
 			Long[] assetPrimaryKey, Date dueDateGT, Date dueDateLT,
 			Boolean completed, Boolean searchByUserRoles, boolean andOperator,
-			int start, int end, OrderByComparator orderByComparator)
+			int start, int end,
+			OrderByComparator<WorkflowTask> orderByComparator)
 		throws WorkflowException;
 
 	public List<WorkflowTask> search(
 			long companyId, long userId, String keywords, String[] assetTypes,
 			Boolean completed, Boolean searchByUserRoles, int start, int end,
-			OrderByComparator orderByComparator)
+			OrderByComparator<WorkflowTask> orderByComparator)
 		throws WorkflowException;
 
 	public int searchCount(

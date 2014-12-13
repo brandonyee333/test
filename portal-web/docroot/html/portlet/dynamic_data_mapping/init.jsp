@@ -26,10 +26,10 @@ page import="com.liferay.portlet.documentlibrary.model.DLFileEntryMetadata" %><%
 page import="com.liferay.portlet.dynamicdatalists.model.DDLRecordSet" %><%@
 page import="com.liferay.portlet.dynamicdatamapping.RequiredStructureException" %><%@
 page import="com.liferay.portlet.dynamicdatamapping.RequiredTemplateException" %><%@
+page import="com.liferay.portlet.dynamicdatamapping.StructureDefinitionException" %><%@
 page import="com.liferay.portlet.dynamicdatamapping.StructureDuplicateElementException" %><%@
 page import="com.liferay.portlet.dynamicdatamapping.StructureFieldException" %><%@
 page import="com.liferay.portlet.dynamicdatamapping.StructureNameException" %><%@
-page import="com.liferay.portlet.dynamicdatamapping.StructureXsdException" %><%@
 page import="com.liferay.portlet.dynamicdatamapping.TemplateNameException" %><%@
 page import="com.liferay.portlet.dynamicdatamapping.TemplateScriptException" %><%@
 page import="com.liferay.portlet.dynamicdatamapping.TemplateSmallImageNameException" %><%@
@@ -78,6 +78,9 @@ String storageTypeValue = StringPool.BLANK;
 
 if (scopeStorageType.equals("expando")) {
 	storageTypeValue = StorageType.EXPANDO.getValue();
+}
+else if (scopeStorageType.equals("json")) {
+	storageTypeValue = StorageType.JSON.getValue();
 }
 else if (scopeStorageType.equals("xml")) {
 	storageTypeValue = StorageType.XML.getValue();

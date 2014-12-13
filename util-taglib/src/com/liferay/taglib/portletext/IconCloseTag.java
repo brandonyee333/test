@@ -14,8 +14,8 @@
 
 package com.liferay.taglib.portletext;
 
-import com.liferay.portal.kernel.servlet.taglib.FileAvailabilityUtil;
 import com.liferay.portal.theme.PortletDisplay;
+import com.liferay.taglib.FileAvailabilityUtil;
 import com.liferay.taglib.ui.IconTag;
 
 /**
@@ -41,9 +41,8 @@ public class IconCloseTag extends IconTag {
 		setImage("../aui/remove");
 		setMessage("remove");
 
-		String onClick =
-			"Liferay.Portlet.close('#p_p_id_".concat(
-				portletDisplay.getId()).concat("_'); return false;");
+		String onClick = "Liferay.Portlet.close('#p_p_id_".concat(
+			portletDisplay.getId()).concat("_'); return false;");
 
 		setOnClick(onClick);
 

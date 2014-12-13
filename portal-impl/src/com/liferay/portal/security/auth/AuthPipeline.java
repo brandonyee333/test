@@ -17,6 +17,7 @@ package com.liferay.portal.security.auth;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.InstancePool;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.model.CompanyConstants;
 import com.liferay.portal.util.PropsValues;
@@ -30,7 +31,6 @@ import com.liferay.registry.ServiceTrackerCustomizer;
 import com.liferay.registry.collections.ServiceRegistrationMap;
 import com.liferay.registry.util.StringPlus;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -141,13 +141,13 @@ public class AuthPipeline {
 	public static void unregisterAuthenticator(
 		String key, Authenticator authenticator) {
 
-		_instance._unregisterAuthenticator(key, authenticator);
+		_instance._unregisterAuthenticator(authenticator);
 	}
 
 	public static void unregisterAuthFailure(
 		String key, AuthFailure authFailure) {
 
-		_instance._unregisterAuthFailure(key, authFailure);
+		_instance._unregisterAuthFailure(authFailure);
 	}
 
 	private AuthPipeline() {
@@ -329,9 +329,7 @@ public class AuthPipeline {
 		_authFailureServiceRegistrations.put(authFailure, serviceRegistration);
 	}
 
-	private void _unregisterAuthenticator(
-		String key, Authenticator authenticator) {
-
+	private void _unregisterAuthenticator(Authenticator authenticator) {
 		ServiceRegistration<Authenticator> serviceRegistration =
 			_authenticatorServiceRegistrations.remove(authenticator);
 
@@ -340,7 +338,7 @@ public class AuthPipeline {
 		}
 	}
 
-	private void _unregisterAuthFailure(String key, AuthFailure authFailure) {
+	private void _unregisterAuthFailure(AuthFailure authFailure) {
 		ServiceRegistration<AuthFailure> serviceRegistration =
 			_authFailureServiceRegistrations.remove(authFailure);
 
@@ -349,21 +347,22 @@ public class AuthPipeline {
 		}
 	}
 
-	private static AuthPipeline _instance = new AuthPipeline();
+	private static final AuthPipeline _instance = new AuthPipeline();
 
-	private Map<String, Authenticator[]> _authenticators =
+	private final Map<String, Authenticator[]> _authenticators =
 		new HashMap<String, Authenticator[]>();
-	private Map<Authenticator, ServiceRegistration<Authenticator>>
+	private final Map<Authenticator, ServiceRegistration<Authenticator>>
 		_authenticatorServiceRegistrations =
 			new ServiceRegistrationMap<Authenticator>();
-	private ServiceTracker<Authenticator, Authenticator>
+	private final ServiceTracker<Authenticator, Authenticator>
 		_authenticatorServiceTracker;
-	private Map<String, AuthFailure[]> _authFailures =
+	private final Map<String, AuthFailure[]> _authFailures =
 		new HashMap<String, AuthFailure[]>();
-	private Map<AuthFailure, ServiceRegistration<AuthFailure>>
+	private final Map<AuthFailure, ServiceRegistration<AuthFailure>>
 		_authFailureServiceRegistrations =
 			new ServiceRegistrationMap<AuthFailure>();
-	private ServiceTracker<AuthFailure, AuthFailure> _authFailureServiceTracker;
+	private final ServiceTracker<AuthFailure, AuthFailure>
+		_authFailureServiceTracker;
 
 	private class AuthenticatorServiceTrackerCustomizer
 		implements ServiceTrackerCustomizer<Authenticator, Authenticator> {
@@ -382,8 +381,7 @@ public class AuthPipeline {
 			boolean added = false;
 
 			for (String key : keys) {
-				List<Authenticator> authenticators = Arrays.asList(
-					_authenticators.get(key));
+				Authenticator[] authenticators = _authenticators.get(key);
 
 				if (authenticators == null) {
 					continue;
@@ -391,12 +389,10 @@ public class AuthPipeline {
 
 				added = true;
 
-				authenticators.add(authenticator);
+				authenticators = ArrayUtil.append(
+					authenticators, authenticator);
 
-				_authenticators.put(
-					key,
-					authenticators.toArray(
-						new Authenticator[authenticators.size()]));
+				_authenticators.put(key, authenticators);
 			}
 
 			if (!added) {
@@ -425,18 +421,20 @@ public class AuthPipeline {
 				serviceReference.getProperty("key"));
 
 			for (String key : keys) {
-				List<Authenticator> authenticators = Arrays.asList(
-					_authenticators.get(key));
+				Authenticator[] authenticators = _authenticators.get(key);
 
 				if (authenticators == null) {
 					continue;
 				}
 
-				if (authenticators.remove(authenticator)) {
+				List<Authenticator> authenticatorsList = ListUtil.toList(
+					authenticators);
+
+				if (authenticatorsList.remove(authenticator)) {
 					_authenticators.put(
 						key,
-						authenticators.toArray(
-							new Authenticator[authenticators.size()]));
+						authenticatorsList.toArray(
+							new Authenticator[authenticatorsList.size()]));
 				}
 			}
 		}
@@ -460,8 +458,7 @@ public class AuthPipeline {
 			boolean added = false;
 
 			for (String key : keys) {
-				List<AuthFailure> authFailures = Arrays.asList(
-					_authFailures.get(key));
+				AuthFailure[] authFailures = _authFailures.get(key);
 
 				if (authFailures == null) {
 					continue;
@@ -469,11 +466,9 @@ public class AuthPipeline {
 
 				added = true;
 
-				authFailures.add(authFailure);
+				authFailures = ArrayUtil.append(authFailures, authFailure);
 
-				_authFailures.put(
-					key,
-					authFailures.toArray(new AuthFailure[authFailures.size()]));
+				_authFailures.put(key, authFailures);
 			}
 
 			if (!added) {
@@ -484,17 +479,15 @@ public class AuthPipeline {
 		}
 
 		@Override
-		public void
-			modifiedService(
-				ServiceReference<AuthFailure> serviceReference,
-				AuthFailure authFailure) {
+		public void modifiedService(
+			ServiceReference<AuthFailure> serviceReference,
+			AuthFailure authFailure) {
 		}
 
 		@Override
-		public void
-			removedService(
-				ServiceReference<AuthFailure> serviceReference,
-				AuthFailure authFailure) {
+		public void removedService(
+			ServiceReference<AuthFailure> serviceReference,
+			AuthFailure authFailure) {
 
 			Registry registry = RegistryUtil.getRegistry();
 
@@ -504,18 +497,20 @@ public class AuthPipeline {
 				serviceReference.getProperty("key"));
 
 			for (String key : keys) {
-				List<AuthFailure> authFailures = Arrays.asList(
-					_authFailures.get(key));
+				AuthFailure[] authFailures = _authFailures.get(key);
 
 				if (authFailures == null) {
 					continue;
 				}
 
-				if (authFailures.remove(authFailure)) {
+				List<AuthFailure> authFailuresList = ListUtil.fromArray(
+					authFailures);
+
+				if (authFailuresList.remove(authFailure)) {
 					_authFailures.put(
 						key,
-						authFailures.toArray(
-							new AuthFailure[authFailures.size()]));
+						authFailuresList.toArray(
+							new AuthFailure[authFailuresList.size()]));
 				}
 			}
 		}

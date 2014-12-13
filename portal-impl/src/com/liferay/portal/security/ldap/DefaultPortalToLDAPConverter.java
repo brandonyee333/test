@@ -27,6 +27,7 @@ import com.liferay.portal.model.Contact;
 import com.liferay.portal.model.Image;
 import com.liferay.portal.model.User;
 import com.liferay.portal.model.UserGroup;
+import com.liferay.portal.security.exportimport.UserOperation;
 import com.liferay.portal.security.pwd.PasswordEncryptorUtil;
 import com.liferay.portal.service.ImageLocalServiceUtil;
 import com.liferay.portal.util.PrefsPropsUtil;
@@ -155,7 +156,7 @@ public class DefaultPortalToLDAPConverter implements PortalToLDAPConverter {
 	public Modifications getLDAPGroupModifications(
 			long ldapServerId, UserGroup userGroup, User user,
 			Properties groupMappings, Properties userMappings,
-			LDAPOperation ldapOperation)
+			UserOperation userOperation)
 		throws Exception {
 
 		Modifications modifications = Modifications.getInstance();
@@ -166,14 +167,14 @@ public class DefaultPortalToLDAPConverter implements PortalToLDAPConverter {
 		if (PortalLDAPUtil.isGroupMember(
 				ldapServerId, user.getCompanyId(), groupDN, userDN)) {
 
-			if (ldapOperation == LDAPOperation.REMOVE) {
+			if (userOperation == UserOperation.REMOVE) {
 				modifications.addItem(
 					DirContext.REMOVE_ATTRIBUTE,
 					groupMappings.getProperty(GroupConverterKeys.USER), userDN);
 			}
 		}
 		else {
-			if (ldapOperation == LDAPOperation.ADD) {
+			if (userOperation == UserOperation.ADD) {
 				modifications.addItem(
 					DirContext.ADD_ATTRIBUTE,
 					groupMappings.getProperty(GroupConverterKeys.USER), userDN);
@@ -185,8 +186,7 @@ public class DefaultPortalToLDAPConverter implements PortalToLDAPConverter {
 
 	@Override
 	public Attributes getLDAPUserAttributes(
-			long ldapServerId, User user, Properties userMappings)
-		throws SystemException {
+		long ldapServerId, User user, Properties userMappings) {
 
 		Attributes attributes = new BasicAttributes(true);
 
@@ -410,9 +410,7 @@ public class DefaultPortalToLDAPConverter implements PortalToLDAPConverter {
 		}
 	}
 
-	protected String getEncryptedPasswordForLDAP(User user)
-		throws SystemException {
-
+	protected String getEncryptedPasswordForLDAP(User user) {
 		String password = user.getPasswordUnencrypted();
 
 		if (Validator.isNull(password)) {

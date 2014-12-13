@@ -23,16 +23,19 @@ import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.messaging.SynchronousDestination;
 import com.liferay.portal.kernel.messaging.proxy.MessagingProxy;
 import com.liferay.portal.kernel.nio.intraband.Datagram;
-import com.liferay.portal.kernel.nio.intraband.MockIntraband;
-import com.liferay.portal.kernel.nio.intraband.MockRegistrationReference;
 import com.liferay.portal.kernel.nio.intraband.RegistrationReference;
-import com.liferay.portal.kernel.process.ProcessExecutor;
+import com.liferay.portal.kernel.nio.intraband.test.MockIntraband;
+import com.liferay.portal.kernel.nio.intraband.test.MockRegistrationReference;
+import com.liferay.portal.kernel.process.local.LocalProcessLauncher;
 import com.liferay.portal.kernel.resiliency.mpi.MPIHelperUtil;
 import com.liferay.portal.kernel.resiliency.spi.MockSPI;
+import com.liferay.portal.kernel.resiliency.spi.MockSPIProvider;
 import com.liferay.portal.kernel.resiliency.spi.SPI;
 import com.liferay.portal.kernel.resiliency.spi.SPIConfiguration;
+import com.liferay.portal.kernel.test.AggregateTestRule;
 import com.liferay.portal.kernel.test.CodeCoverageAssertor;
-import com.liferay.portal.kernel.test.NewClassLoaderJUnitTestRunner;
+import com.liferay.portal.kernel.test.NewEnv;
+import com.liferay.portal.kernel.test.NewEnvTestRule;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.ClassLoaderPool;
 import com.liferay.portal.kernel.util.StringPool;
@@ -44,7 +47,6 @@ import java.nio.ByteBuffer;
 import java.rmi.RemoteException;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -52,18 +54,19 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 /**
  * @author Shuyang Zhou
  */
-@RunWith(NewClassLoaderJUnitTestRunner.class)
 public class IntrabandBridgeDestinationTest {
 
 	@ClassRule
-	public static CodeCoverageAssertor codeCoverageAssertor =
-		new CodeCoverageAssertor();
+	@Rule
+	public static final AggregateTestRule aggregateTestRule =
+		new AggregateTestRule(
+			CodeCoverageAssertor.INSTANCE, NewEnvTestRule.INSTANCE);
 
 	@Before
 	public void setUp() {
@@ -293,13 +296,14 @@ public class IntrabandBridgeDestinationTest {
 		Assert.assertNull(message.get(_RECEIVE_KEY));
 	}
 
+	@NewEnv(type = NewEnv.Type.CLASSLOADER)
 	@Test
 	public void testSendMessageBag3() throws Exception {
 
 		// Is SPI, without child SPI, downcast
 
 		ConcurrentMap<String, Object> attributes =
-			ProcessExecutor.ProcessContext.getAttributes();
+			LocalProcessLauncher.ProcessContext.getAttributes();
 
 		MockSPI mockSPI1 = _createMockSPI("SPIProvider", "SPI1");
 
@@ -389,6 +393,27 @@ public class IntrabandBridgeDestinationTest {
 		Assert.assertNull(message.get(_RECEIVE_KEY));
 	}
 
+	private static void _installSPIs(SPI... spis) throws RemoteException {
+		Map<String, Object> spiProviderContainers =
+			ReflectionTestUtil.getFieldValue(
+				MPIHelperUtil.class, "_spiProviderContainers");
+
+		for (SPI spi : spis) {
+			MPIHelperUtil.registerSPIProvider(
+				new MockSPIProvider(spi.getSPIProviderName()));
+
+			Object spiProviderContainer = spiProviderContainers.get(
+				spi.getSPIProviderName());
+
+			Map<String, SPI> spiMap = ReflectionTestUtil.getFieldValue(
+				spiProviderContainer, "_spis");
+
+			SPIConfiguration spiConfiguration = spi.getSPIConfiguration();
+
+			spiMap.put(spiConfiguration.getSPIId(), spi);
+		}
+	}
+
 	private MessageRoutingBag _createMessageRoutingBag() {
 		Message message = new Message();
 
@@ -413,18 +438,6 @@ public class IntrabandBridgeDestinationTest {
 		mockSPI.spiProviderName = spiProviderName;
 
 		return mockSPI;
-	}
-
-	private void _installSPIs(SPI... spis) throws Exception {
-		Map<String, SPI> spisMap = new ConcurrentHashMap<String, SPI>();
-
-		for (SPI spi : spis) {
-			SPIConfiguration spiConfiguration = spi.getSPIConfiguration();
-
-			spisMap.put(spiConfiguration.getSPIId(), spi);
-		}
-
-		ReflectionTestUtil.setFieldValue(MPIHelperUtil.class, "_spis", spisMap);
 	}
 
 	private String _toRoutingId(SPI spi) throws RemoteException {

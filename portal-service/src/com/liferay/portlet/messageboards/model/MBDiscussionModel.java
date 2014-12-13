@@ -17,7 +17,6 @@ package com.liferay.portlet.messageboards.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.AttachedModel;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.CacheModel;
@@ -149,10 +148,9 @@ public interface MBDiscussionModel extends AttachedModel, BaseModel<MBDiscussion
 	 * Returns the user uuid of this message boards discussion.
 	 *
 	 * @return the user uuid of this message boards discussion
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public String getUserUuid() throws SystemException;
+	public String getUserUuid();
 
 	/**
 	 * Sets the user uuid of this message boards discussion.
@@ -304,19 +302,20 @@ public interface MBDiscussionModel extends AttachedModel, BaseModel<MBDiscussion
 	public Object clone();
 
 	@Override
-	public int compareTo(MBDiscussion mbDiscussion);
+	public int compareTo(
+		com.liferay.portlet.messageboards.model.MBDiscussion mbDiscussion);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<MBDiscussion> toCacheModel();
+	public CacheModel<com.liferay.portlet.messageboards.model.MBDiscussion> toCacheModel();
 
 	@Override
-	public MBDiscussion toEscapedModel();
+	public com.liferay.portlet.messageboards.model.MBDiscussion toEscapedModel();
 
 	@Override
-	public MBDiscussion toUnescapedModel();
+	public com.liferay.portlet.messageboards.model.MBDiscussion toUnescapedModel();
 
 	@Override
 	public String toString();

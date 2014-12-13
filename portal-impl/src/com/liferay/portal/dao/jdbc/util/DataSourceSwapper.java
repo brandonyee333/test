@@ -152,7 +152,8 @@ public class DataSourceSwapper {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(DataSourceSwapper.class);
+	private static final Log _log = LogFactoryUtil.getLog(
+		DataSourceSwapper.class);
 
 	private static DataSourceWrapper _counterDataSourceWrapper;
 	private static DataSourceWrapper _liferayDataSourceWrapper;

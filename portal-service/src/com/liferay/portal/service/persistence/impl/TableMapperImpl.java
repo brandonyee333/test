@@ -17,6 +17,7 @@ package com.liferay.portal.service.persistence.impl;
 import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.kernel.cache.MultiVMPoolUtil;
 import com.liferay.portal.kernel.cache.PortalCache;
+import com.liferay.portal.kernel.cache.PortalCacheHelperUtil;
 import com.liferay.portal.kernel.dao.jdbc.MappingSqlQuery;
 import com.liferay.portal.kernel.dao.jdbc.MappingSqlQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.jdbc.RowMapper;
@@ -97,9 +98,7 @@ public class TableMapperImpl<L extends BaseModel<L>, R extends BaseModel<R>>
 	}
 
 	@Override
-	public boolean addTableMapping(long leftPrimaryKey, long rightPrimaryKey)
-		throws SystemException {
-
+	public boolean addTableMapping(long leftPrimaryKey, long rightPrimaryKey) {
 		if (containsTableMapping(leftPrimaryKey, rightPrimaryKey, false)) {
 			return false;
 		}
@@ -149,16 +148,13 @@ public class TableMapperImpl<L extends BaseModel<L>, R extends BaseModel<R>>
 
 	@Override
 	public boolean containsTableMapping(
-			long leftPrimaryKey, long rightPrimaryKey)
-		throws SystemException {
+		long leftPrimaryKey, long rightPrimaryKey) {
 
 		return containsTableMapping(leftPrimaryKey, rightPrimaryKey, true);
 	}
 
 	@Override
-	public int deleteLeftPrimaryKeyTableMappings(long leftPrimaryKey)
-		throws SystemException {
-
+	public int deleteLeftPrimaryKeyTableMappings(long leftPrimaryKey) {
 		return deleteTableMappings(
 			leftBasePersistence, rightBasePersistence, leftToRightPortalCache,
 			rightToLeftPortalCache, getRightPrimaryKeysSqlQuery,
@@ -166,9 +162,7 @@ public class TableMapperImpl<L extends BaseModel<L>, R extends BaseModel<R>>
 	}
 
 	@Override
-	public int deleteRightPrimaryKeyTableMappings(long rightPrimaryKey)
-		throws SystemException {
-
+	public int deleteRightPrimaryKeyTableMappings(long rightPrimaryKey) {
 		return deleteTableMappings(
 			rightBasePersistence, leftBasePersistence, rightToLeftPortalCache,
 			leftToRightPortalCache, getLeftPrimaryKeysSqlQuery,
@@ -176,8 +170,8 @@ public class TableMapperImpl<L extends BaseModel<L>, R extends BaseModel<R>>
 	}
 
 	@Override
-	public boolean deleteTableMapping(long leftPrimaryKey, long rightPrimaryKey)
-		throws SystemException {
+	public boolean deleteTableMapping(
+		long leftPrimaryKey, long rightPrimaryKey) {
 
 		if (!containsTableMapping(leftPrimaryKey, rightPrimaryKey, false)) {
 			return false;
@@ -241,8 +235,7 @@ public class TableMapperImpl<L extends BaseModel<L>, R extends BaseModel<R>>
 
 	@Override
 	public List<L> getLeftBaseModels(
-			long rightPrimaryKey, int start, int end, OrderByComparator obc)
-		throws SystemException {
+		long rightPrimaryKey, int start, int end, OrderByComparator<L> obc) {
 
 		return getBaseModels(
 			rightToLeftPortalCache, getLeftPrimaryKeysSqlQuery, rightPrimaryKey,
@@ -250,9 +243,7 @@ public class TableMapperImpl<L extends BaseModel<L>, R extends BaseModel<R>>
 	}
 
 	@Override
-	public long[] getLeftPrimaryKeys(long rightPrimaryKey)
-		throws SystemException {
-
+	public long[] getLeftPrimaryKeys(long rightPrimaryKey) {
 		return getPrimaryKeys(
 			rightToLeftPortalCache, getLeftPrimaryKeysSqlQuery, rightPrimaryKey,
 			true);
@@ -265,8 +256,7 @@ public class TableMapperImpl<L extends BaseModel<L>, R extends BaseModel<R>>
 
 	@Override
 	public List<R> getRightBaseModels(
-			long leftPrimaryKey, int start, int end, OrderByComparator obc)
-		throws SystemException {
+		long leftPrimaryKey, int start, int end, OrderByComparator<R> obc) {
 
 		return getBaseModels(
 			leftToRightPortalCache, getRightPrimaryKeysSqlQuery, leftPrimaryKey,
@@ -274,9 +264,7 @@ public class TableMapperImpl<L extends BaseModel<L>, R extends BaseModel<R>>
 	}
 
 	@Override
-	public long[] getRightPrimaryKeys(long leftPrimaryKey)
-		throws SystemException {
-
+	public long[] getRightPrimaryKeys(long leftPrimaryKey) {
 		return getPrimaryKeys(
 			leftToRightPortalCache, getRightPrimaryKeysSqlQuery, leftPrimaryKey,
 			true);
@@ -304,8 +292,7 @@ public class TableMapperImpl<L extends BaseModel<L>, R extends BaseModel<R>>
 			PortalCache<Long, long[]> masterToSlavePortalCache,
 			PortalCache<Long, long[]> slaveToMasterPortalCache,
 			MappingSqlQuery<Long> mappingSqlQuery, SqlUpdate deleteSqlUpdate,
-			long masterPrimaryKey)
-		throws SystemException {
+			long masterPrimaryKey) {
 
 		ModelListener<M>[] masterModelListeners =
 			masterBasePersistence.getListeners();
@@ -388,8 +375,7 @@ public class TableMapperImpl<L extends BaseModel<L>, R extends BaseModel<R>>
 			PortalCache<Long, long[]> portalCache,
 			MappingSqlQuery<Long> mappingSqlQuery, long masterPrimaryKey,
 			BasePersistence<T> slaveBasePersistence, int start, int end,
-			OrderByComparator obc)
-		throws SystemException {
+			OrderByComparator<T> obc) {
 
 		long[] slavePrimaryKeys = getPrimaryKeys(
 			portalCache, mappingSqlQuery, masterPrimaryKey, true);
@@ -418,10 +404,9 @@ public class TableMapperImpl<L extends BaseModel<L>, R extends BaseModel<R>>
 	}
 
 	protected static long[] getPrimaryKeys(
-			PortalCache<Long, long[]> portalCache,
-			MappingSqlQuery<Long> mappingSqlQuery, long masterPrimaryKey,
-			boolean updateCache)
-		throws SystemException {
+		PortalCache<Long, long[]> portalCache,
+		MappingSqlQuery<Long> mappingSqlQuery, long masterPrimaryKey,
+		boolean updateCache) {
 
 		long[] primaryKeys = portalCache.get(masterPrimaryKey);
 
@@ -444,7 +429,8 @@ public class TableMapperImpl<L extends BaseModel<L>, R extends BaseModel<R>>
 			Arrays.sort(primaryKeys);
 
 			if (updateCache) {
-				portalCache.putQuiet(masterPrimaryKey, primaryKeys);
+				PortalCacheHelperUtil.putWithoutReplicator(
+					portalCache, masterPrimaryKey, primaryKeys);
 			}
 		}
 
@@ -452,8 +438,7 @@ public class TableMapperImpl<L extends BaseModel<L>, R extends BaseModel<R>>
 	}
 
 	protected boolean containsTableMapping(
-			long leftPrimaryKey, long rightPrimaryKey, boolean updateCache)
-		throws SystemException {
+		long leftPrimaryKey, long rightPrimaryKey, boolean updateCache) {
 
 		long[] rightPrimaryKeys = getPrimaryKeys(
 			leftToRightPortalCache, getRightPrimaryKeysSqlQuery, leftPrimaryKey,

@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Property;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
@@ -29,6 +28,7 @@ import com.liferay.portal.kernel.search.BooleanQuery;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.DocumentImpl;
 import com.liferay.portal.kernel.search.Field;
+import com.liferay.portal.kernel.search.FolderIndexer;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.SearchEngineUtil;
 import com.liferay.portal.kernel.search.Summary;
@@ -52,7 +52,7 @@ import javax.portlet.WindowStateException;
 /**
  * @author Alexander Chow
  */
-public class DLFolderIndexer extends BaseIndexer {
+public class DLFolderIndexer extends BaseIndexer implements FolderIndexer {
 
 	public static final String[] CLASS_NAMES = {DLFolder.class.getName()};
 
@@ -68,6 +68,11 @@ public class DLFolderIndexer extends BaseIndexer {
 
 	@Override
 	public String[] getClassNames() {
+		return CLASS_NAMES;
+	}
+
+	@Override
+	public String[] getFolderClassNames() {
 		return CLASS_NAMES;
 	}
 
@@ -108,7 +113,7 @@ public class DLFolderIndexer extends BaseIndexer {
 
 		SearchEngineUtil.deleteDocument(
 			getSearchEngineId(), dlFolder.getCompanyId(),
-			document.get(Field.UID));
+			document.get(Field.UID), isCommitImmediately());
 	}
 
 	@Override
@@ -179,7 +184,8 @@ public class DLFolderIndexer extends BaseIndexer {
 
 		if (document != null) {
 			SearchEngineUtil.updateDocument(
-				getSearchEngineId(), dlFolder.getCompanyId(), document);
+				getSearchEngineId(), dlFolder.getCompanyId(), document,
+				isCommitImmediately());
 		}
 	}
 
@@ -202,9 +208,7 @@ public class DLFolderIndexer extends BaseIndexer {
 		return PORTLET_ID;
 	}
 
-	protected void reindexFolders(final long companyId)
-		throws PortalException, SystemException {
-
+	protected void reindexFolders(final long companyId) throws PortalException {
 		final ActionableDynamicQuery actionableDynamicQuery =
 			DLFolderLocalServiceUtil.getActionableDynamicQuery();
 
@@ -243,6 +247,7 @@ public class DLFolderIndexer extends BaseIndexer {
 		actionableDynamicQuery.performActions();
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(DLFolderIndexer.class);
+	private static final Log _log = LogFactoryUtil.getLog(
+		DLFolderIndexer.class);
 
 }

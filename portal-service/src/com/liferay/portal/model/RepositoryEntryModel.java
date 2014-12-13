@@ -17,7 +17,6 @@ package com.liferay.portal.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.service.ServiceContext;
 
 import com.liferay.portlet.expando.model.ExpandoBridge;
@@ -161,10 +160,9 @@ public interface RepositoryEntryModel extends BaseModel<RepositoryEntry>,
 	 * Returns the user uuid of this repository entry.
 	 *
 	 * @return the user uuid of this repository entry
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public String getUserUuid() throws SystemException;
+	public String getUserUuid();
 
 	/**
 	 * Sets the user uuid of this repository entry.
@@ -310,19 +308,20 @@ public interface RepositoryEntryModel extends BaseModel<RepositoryEntry>,
 	public Object clone();
 
 	@Override
-	public int compareTo(RepositoryEntry repositoryEntry);
+	public int compareTo(
+		com.liferay.portal.model.RepositoryEntry repositoryEntry);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<RepositoryEntry> toCacheModel();
+	public CacheModel<com.liferay.portal.model.RepositoryEntry> toCacheModel();
 
 	@Override
-	public RepositoryEntry toEscapedModel();
+	public com.liferay.portal.model.RepositoryEntry toEscapedModel();
 
 	@Override
-	public RepositoryEntry toUnescapedModel();
+	public com.liferay.portal.model.RepositoryEntry toUnescapedModel();
 
 	@Override
 	public String toString();

@@ -17,7 +17,6 @@ package com.liferay.portal.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.service.ServiceContext;
 
 import com.liferay.portlet.expando.model.ExpandoBridge;
@@ -138,9 +137,8 @@ public interface SystemEventModel extends AttachedModel, BaseModel<SystemEvent>,
 	 * Returns the user uuid of this system event.
 	 *
 	 * @return the user uuid of this system event
-	 * @throws SystemException if a system exception occurred
 	 */
-	public String getUserUuid() throws SystemException;
+	public String getUserUuid();
 
 	/**
 	 * Sets the user uuid of this system event.
@@ -343,19 +341,19 @@ public interface SystemEventModel extends AttachedModel, BaseModel<SystemEvent>,
 	public Object clone();
 
 	@Override
-	public int compareTo(SystemEvent systemEvent);
+	public int compareTo(com.liferay.portal.model.SystemEvent systemEvent);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<SystemEvent> toCacheModel();
+	public CacheModel<com.liferay.portal.model.SystemEvent> toCacheModel();
 
 	@Override
-	public SystemEvent toEscapedModel();
+	public com.liferay.portal.model.SystemEvent toEscapedModel();
 
 	@Override
-	public SystemEvent toUnescapedModel();
+	public com.liferay.portal.model.SystemEvent toUnescapedModel();
 
 	@Override
 	public String toString();

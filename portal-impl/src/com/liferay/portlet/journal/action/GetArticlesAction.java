@@ -102,11 +102,10 @@ public class GetArticlesAction extends Action {
 		String title = null;
 		String description = null;
 		String content = null;
-		String type = ParamUtil.getString(request, "type");
-		String[] structureIds = StringUtil.split(
-			ParamUtil.getString(request, "structureId"));
-		String[] templateIds = StringUtil.split(
-			ParamUtil.getString(request, "templateId"));
+		String[] ddmStructureKeys = StringUtil.split(
+			ParamUtil.getString(request, "ddmStructureKey"));
+		String[] ddmTemplateKeys = StringUtil.split(
+			ParamUtil.getString(request, "ddmTemplateKey"));
 
 		Date displayDateGT = null;
 
@@ -156,7 +155,8 @@ public class GetArticlesAction extends Action {
 		String orderByType = ParamUtil.getString(request, "orderByType");
 		boolean orderByAsc = orderByType.equals("asc");
 
-		OrderByComparator obc = new ArticleModifiedDateComparator(orderByAsc);
+		OrderByComparator<JournalArticle> obc =
+			new ArticleModifiedDateComparator(orderByAsc);
 
 		if (orderByCol.equals("display-date")) {
 			obc = new ArticleDisplayDateComparator(orderByAsc);
@@ -164,7 +164,7 @@ public class GetArticlesAction extends Action {
 
 		return JournalArticleServiceUtil.search(
 			companyId, groupId, folderIds, 0, articleId, version, title,
-			description, content, type, structureIds, templateIds,
+			description, content, ddmStructureKeys, ddmTemplateKeys,
 			displayDateGT, displayDateLT, status, reviewDate, andOperator,
 			start, end, obc);
 	}
@@ -204,6 +204,7 @@ public class GetArticlesAction extends Action {
 		return DDMXMLUtil.formatXML(resultsDoc).getBytes(StringPool.UTF8);
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(GetArticlesAction.class);
+	private static final Log _log = LogFactoryUtil.getLog(
+		GetArticlesAction.class);
 
 }

@@ -21,18 +21,17 @@ import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
  * @author Brian Wing Shun Chan
+ * @generated
  */
 @ProviderType
 public class AssetEntryFinderUtil {
 	public static int countEntries(
-		com.liferay.portlet.asset.service.persistence.AssetEntryQuery entryQuery)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.portlet.asset.service.persistence.AssetEntryQuery entryQuery) {
 		return getFinder().countEntries(entryQuery);
 	}
 
 	public static java.util.List<com.liferay.portlet.asset.model.AssetEntry> findEntries(
-		com.liferay.portlet.asset.service.persistence.AssetEntryQuery entryQuery)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.portlet.asset.service.persistence.AssetEntryQuery entryQuery) {
 		return getFinder().findEntries(entryQuery);
 	}
 

@@ -39,7 +39,7 @@ else {
 	orderByType = portalPreferences.getValue(PortletKeys.BACKGROUND_TASK, "entries-order-by-type", "desc");
 }
 
-OrderByComparator orderByComparator = BackgroundTaskComparatorFactoryUtil.getBackgroundTaskOrderByComparator(orderByCol, orderByType);
+OrderByComparator<BackgroundTask> orderByComparator = BackgroundTaskComparatorFactoryUtil.getBackgroundTaskOrderByComparator(orderByCol, orderByType);
 %>
 
 <liferay-ui:search-container
@@ -103,7 +103,7 @@ OrderByComparator orderByComparator = BackgroundTaskComparatorFactoryUtil.getBac
 				</portlet:actionURL>
 
 				<liferay-ui:icon-delete
-					label="true"
+					label="<%= true %>"
 					message='<%= ((completionDate != null) && completionDate.before(new Date())) ? "clear" : "cancel" %>'
 					url="<%= deleteBackgroundTaskURL %>"
 				/>

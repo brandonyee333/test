@@ -3,6 +3,8 @@ package ${packagePath}.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.util.Accessor;
+import com.liferay.portal.kernel.util.LocaleThreadLocal;
+import com.liferay.portal.model.NestedSetsTreeNodeModel;
 import com.liferay.portal.model.PermissionedModel;
 import com.liferay.portal.model.PersistedModel;
 import com.liferay.portal.model.TreeModel;
@@ -17,16 +19,17 @@ import com.liferay.portal.model.TreeModel;
  * @generated
  */
 
-<#if pluginName == "">
-	@ProviderType
-</#if>
-
+@ProviderType
 public interface ${entity.name} extends
 	${entity.name}Model
 
 	<#assign overrideColumnNames = []>
 
 	<#if entity.hasLocalService() && entity.hasColumns()>
+		<#if entity.isHierarchicalTree()>
+			, NestedSetsTreeNodeModel
+		</#if>
+
 		<#if entity.isPermissionedModel()>
 			, PermissionedModel
 		<#else>
@@ -75,7 +78,7 @@ public interface ${entity.name} extends
 
 				@Override
 				public ${serviceBuilder.getPrimitiveObj(column.type)} get(${entity.name} ${entity.varName}) {
-					return ${entity.varName}.get${column.methodName}();
+					return ${entity.varName}.get${column.methodName}(<#if column.isLocalized()>LocaleThreadLocal.getThemeDisplayLocale()</#if>);
 				}
 
 				@Override

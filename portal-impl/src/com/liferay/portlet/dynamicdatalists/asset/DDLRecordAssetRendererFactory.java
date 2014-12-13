@@ -15,14 +15,16 @@
 package com.liferay.portlet.dynamicdatalists.asset;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.asset.model.AssetRenderer;
 import com.liferay.portlet.asset.model.BaseAssetRendererFactory;
+import com.liferay.portlet.asset.model.BaseDDMStructureClassTypeReader;
+import com.liferay.portlet.asset.model.ClassTypeReader;
 import com.liferay.portlet.dynamicdatalists.model.DDLRecord;
 import com.liferay.portlet.dynamicdatalists.model.DDLRecordVersion;
 import com.liferay.portlet.dynamicdatalists.service.DDLRecordLocalServiceUtil;
+import com.liferay.portlet.dynamicdatalists.service.DDLRecordVersionLocalServiceUtil;
 import com.liferay.portlet.dynamicdatalists.service.permission.DDLRecordSetPermission;
 
 /**
@@ -39,13 +41,14 @@ public class DDLRecordAssetRendererFactory extends BaseAssetRendererFactory {
 
 	@Override
 	public AssetRenderer getAssetRenderer(long classPK, int type)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		DDLRecord record = null;
 		DDLRecordVersion recordVersion = null;
 
 		if (type == TYPE_LATEST) {
-			recordVersion = DDLRecordLocalServiceUtil.getRecordVersion(classPK);
+			recordVersion = DDLRecordVersionLocalServiceUtil.getRecordVersion(
+				classPK);
 
 			record = recordVersion.getRecord();
 		}
@@ -66,6 +69,11 @@ public class DDLRecordAssetRendererFactory extends BaseAssetRendererFactory {
 	@Override
 	public String getClassName() {
 		return DDLRecord.class.getName();
+	}
+
+	@Override
+	public ClassTypeReader getClassTypeReader() {
+		return new BaseDDMStructureClassTypeReader(getClassName());
 	}
 
 	@Override

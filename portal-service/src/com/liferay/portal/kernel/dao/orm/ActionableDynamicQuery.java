@@ -15,7 +15,6 @@
 package com.liferay.portal.kernel.dao.orm;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.transaction.TransactionAttribute;
 import com.liferay.portal.service.BaseLocalService;
@@ -33,18 +32,19 @@ public interface ActionableDynamicQuery {
 
 	public PerformCountMethod getPerformCountMethod();
 
-	public void performActions() throws PortalException, SystemException;
+	public void performActions() throws PortalException;
 
-	public long performCount() throws PortalException, SystemException;
+	public long performCount() throws PortalException;
 
 	public void setAddCriteriaMethod(AddCriteriaMethod addCriteriaMethod);
 
-	public void setBaseLocalService(BaseLocalService baseLocalService)
-		throws SystemException;
+	public void setBaseLocalService(BaseLocalService baseLocalService);
 
 	public void setClass(Class<?> clazz);
 
 	public void setClassLoader(ClassLoader classLoader);
+
+	public void setCommitImmediately(boolean commitImmediately);
 
 	public void setCompanyId(long companyId);
 
@@ -73,14 +73,13 @@ public interface ActionableDynamicQuery {
 
 	public interface PerformActionMethod {
 
-		public void performAction(Object object)
-			throws PortalException, SystemException;
+		public void performAction(Object object) throws PortalException;
 
 	}
 
 	public interface PerformCountMethod {
 
-		public long performCount() throws PortalException, SystemException;
+		public long performCount() throws PortalException;
 
 	}
 

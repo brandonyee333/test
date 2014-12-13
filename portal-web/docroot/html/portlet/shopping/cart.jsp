@@ -32,36 +32,25 @@ boolean minQuantityMultiple = PrefsPropsUtil.getBoolean(company.getCompanyId(), 
 	var itemsInStock = true;
 
 	function <portlet:namespace />checkout() {
-		if (<%= ShoppingUtil.meetsMinOrder(shoppingSettings, items) ? "true" : "false" %>) {
-			if (!itemsInStock) {
-				if (confirm("<%= UnicodeLanguageUtil.get(pageContext, "your-cart-has-items-that-are-out-of-stock") %>")) {
-					document.<portlet:namespace />fm.<portlet:namespace /><%= Constants.CMD %>.value = "<%= Constants.CHECKOUT %>";
-					document.<portlet:namespace />fm.<portlet:namespace />redirect.value = "<portlet:actionURL><portlet:param name="struts_action" value="/shopping/checkout" /></portlet:actionURL>";
-					<portlet:namespace />updateCart();
-				}
-			}
-			else {
-				document.<portlet:namespace />fm.<portlet:namespace /><%= Constants.CMD %>.value = "<%= Constants.CHECKOUT %>";
-				document.<portlet:namespace />fm.<portlet:namespace />redirect.value = "<portlet:actionURL><portlet:param name="struts_action" value="/shopping/checkout" /></portlet:actionURL>";
+		if (!itemsInStock) {
+			if (confirm('<%= UnicodeLanguageUtil.get(request, "your-cart-has-items-that-are-out-of-stock") %>')) {
+				document.<portlet:namespace />fm.<portlet:namespace /><%= Constants.CMD %>.value = '<%= Constants.CHECKOUT %>';
+				document.<portlet:namespace />fm.<portlet:namespace />redirect.value = '<portlet:actionURL><portlet:param name="struts_action" value="/shopping/checkout" /><portlet:param name="cmd" value='<%= Constants.CHECKOUT %>'/></portlet:actionURL>';
 				<portlet:namespace />updateCart();
 			}
 		}
 		else {
-			alert("<%= UnicodeLanguageUtil.format(pageContext, "your-order-cannot-be-processed-because-it-falls-below-the-minimum-required-amount-of-x", currencyFormat.format(shoppingSettings.getMinOrder()), false) %>");
+			document.<portlet:namespace />fm.<portlet:namespace /><%= Constants.CMD %>.value = '<%= Constants.CHECKOUT %>';
+			document.<portlet:namespace />fm.<portlet:namespace />redirect.value = '<portlet:actionURL><portlet:param name="struts_action" value="/shopping/checkout" /><portlet:param name="cmd" value='<%= Constants.CHECKOUT %>'/></portlet:actionURL>';
+			<portlet:namespace />updateCart();
 		}
 	}
 
-	function <portlet:namespace />emptyCart() {
-		document.<portlet:namespace />fm.<portlet:namespace />itemIds.value = "";
-		document.<portlet:namespace />fm.<portlet:namespace />couponCodes.value = "";
-
-		submitForm(document.<portlet:namespace />fm);
-	}
-
 	function <portlet:namespace />updateCart() {
-		var itemIds = "";
 		var count = 0;
-		var invalidSKUs = "";
+		var invalidSKUs = '';
+		var itemIds = '';
+		var subtotal = 0;
 
 		<%
 		int itemsCount= 0;
@@ -76,16 +65,18 @@ boolean minQuantityMultiple = PrefsPropsUtil.getBoolean(company.getCompanyId(), 
 
 			count = document.<portlet:namespace />fm.<portlet:namespace />item_<%= item.getItemId() %>_<%= itemsCount %>_count.value;
 
-			if ((count == "") || isNaN(count) || (count < 0) || ((count > <%= maxQuantity %>) && (<%= maxQuantity %> > 0))) {
-				if (invalidSKUs != "") {
-					invalidSKUs += ", ";
+			subtotal += <%= ShoppingUtil.calculateActualPrice(item, 1) %> * count;
+
+			if ((count == '') || isNaN(count) || (count < 0) || ((count > <%= maxQuantity %>) && (<%= maxQuantity %> > 0))) {
+				if (invalidSKUs != '') {
+					invalidSKUs += ', ';
 				}
 
-				invalidSKUs += "<%= HtmlUtil.escapeJS(item.getSku()) %>";
+				invalidSKUs += '<%= HtmlUtil.escapeJS(item.getSku()) %>';
 			}
 
 			for (var i = 0; i < count; i++) {
-				itemIds += "<%= HtmlUtil.escapeJS(cartItem.getCartItemId()) %>,";
+				itemIds += '<%= HtmlUtil.escapeJS(cartItem.getCartItemId()) %>,';
 			}
 
 			count = 0;
@@ -95,13 +86,24 @@ boolean minQuantityMultiple = PrefsPropsUtil.getBoolean(company.getCompanyId(), 
 		}
 		%>
 
+		if (document.<portlet:namespace />fm.<portlet:namespace /><%= Constants.CMD %>.value == '<%= Constants.CHECKOUT %>') {
+			if (subtotal < <%= shoppingSettings.getMinOrder() %>) {
+				document.<portlet:namespace />fm.<portlet:namespace /><%= Constants.CMD %>.value = '<%= Constants.UPDATE %>'
+				document.<portlet:namespace />fm.<portlet:namespace />redirect.value = '<%= currentURL %>';
+
+				alert('<%= UnicodeLanguageUtil.format(request, "your-order-cannot-be-processed-because-it-falls-below-the-minimum-required-amount-of-x", currencyFormat.format(shoppingSettings.getMinOrder()), false) %>');
+
+				return;
+			}
+		}
+
 		document.<portlet:namespace />fm.<portlet:namespace />itemIds.value = itemIds;
 
-		if (invalidSKUs == "") {
+		if (invalidSKUs == '') {
 			submitForm(document.<portlet:namespace />fm);
 		}
 		else {
-			alert("<%= UnicodeLanguageUtil.get(pageContext, "please-enter-valid-quantities-for-the-following-skus") %>" + invalidSKUs);
+			alert('<%= UnicodeLanguageUtil.get(request, "please-enter-valid-quantities-for-the-following-skus") %>' + invalidSKUs);
 		}
 	}
 </aui:script>
@@ -110,15 +112,14 @@ boolean minQuantityMultiple = PrefsPropsUtil.getBoolean(company.getCompanyId(), 
 	<portlet:param name="struts_action" value="/shopping/cart" />
 </portlet:actionURL>
 
-<aui:form action="<%= cartURL %>" method="post" name="fm" onSubmit='<%= "event.preventDefault(); " + renderResponse.getNamespace() + "saveCart();" %>'>
+<aui:form action="<%= cartURL %>" method="post" name="fm" onSubmit='<%= "event.preventDefault(); " + renderResponse.getNamespace() + "updateCart();" %>'>
 	<aui:input name="<%= Constants.CMD %>" type="hidden" value="<%= Constants.UPDATE %>" />
 	<aui:input name="redirect" type="hidden" value="<%= currentURL %>" />
 	<aui:input name="itemIds" type="hidden" />
 
-	<liferay-ui:header
-		backURL="<%= redirect %>"
-		title="cart"
-	/>
+	<liferay-util:include page="/html/portlet/shopping/tabs1.jsp">
+		<liferay-util:param name="tabs1" value="cart" />
+	</liferay-util:include>
 
 	<liferay-ui:error exception="<%= CartMinQuantityException.class %>">
 
@@ -202,29 +203,19 @@ boolean minQuantityMultiple = PrefsPropsUtil.getBoolean(company.getCompanyId(), 
 		PortletURL rowURL = renderResponse.createRenderURL();
 
 		rowURL.setParameter("struts_action", "/shopping/view_item");
+		rowURL.setParameter("redirect", currentURL);
 		rowURL.setParameter("itemId", String.valueOf(item.getItemId()));
 
 		// SKU and small image
 
-		StringBundler sb = new StringBundler(10);
+		StringBundler sb = new StringBundler(6);
 
 		if (item.isSmallImage()) {
 			sb.append("<br />");
 			sb.append("<img alt=\"");
-			sb.append(item.getSku());
-			sb.append("\" border=\"0\" src=\"");
-
-			if (Validator.isNotNull(item.getSmallImageURL())) {
-				sb.append(item.getSmallImageURL());
-			}
-			else {
-				sb.append(themeDisplay.getPathImage());
-				sb.append("/shopping/item?img_id=");
-				sb.append(item.getSmallImageId());
-				sb.append("&t=");
-				sb.append(WebServerServletTokenUtil.getToken(item.getSmallImageId()));
-			}
-
+			sb.append(HtmlUtil.escapeAttribute(item.getSku()));
+			sb.append("\" src=\"");
+			sb.append(item.getShoppingItemImageURL(themeDisplay));
 			sb.append("\">");
 		}
 		else {
@@ -264,17 +255,17 @@ boolean minQuantityMultiple = PrefsPropsUtil.getBoolean(company.getCompanyId(), 
 			sb.append("<br /><br />");
 
 			if (ShoppingUtil.isInStock(item, itemFields, fieldsArray, count)) {
-				sb.append(LanguageUtil.get(pageContext, "availability"));
+				sb.append(LanguageUtil.get(request, "availability"));
 				sb.append(": ");
 				sb.append("<div class=\"alert alert-success\">");
-				sb.append(LanguageUtil.get(pageContext, "in-stock"));
+				sb.append(LanguageUtil.get(request, "in-stock"));
 				sb.append("</div>");
 			}
 			else {
-				sb.append(LanguageUtil.get(pageContext, "availability"));
+				sb.append(LanguageUtil.get(request, "availability"));
 				sb.append(": ");
-				sb.append("<div class=\"alert alert-error\">");
-				sb.append(LanguageUtil.get(pageContext, "out-of-stock"));
+				sb.append("<div class=\"alert alert-danger\">");
+				sb.append(LanguageUtil.get(request, "out-of-stock"));
 				sb.append("</div>");
 
 				sb.append("<script type=\"text/javascript\">");
@@ -313,14 +304,14 @@ boolean minQuantityMultiple = PrefsPropsUtil.getBoolean(company.getCompanyId(), 
 			sb.append("<br />");
 
 			if ((itemPrice.getMinQuantity() == 0) && (itemPrice.getMaxQuantity() == 0)) {
-				sb.append(LanguageUtil.get(pageContext, "price"));
+				sb.append(LanguageUtil.get(request, "price"));
 				sb.append(": ");
 			}
 			else if (itemPrice.getMaxQuantity() != 0) {
-				sb.append(LanguageUtil.format(pageContext, "price-for-x-to-x-items", new Object[] {"<strong>" + new Integer(itemPrice.getMinQuantity()) + "</strong>", "<strong>" + new Integer(itemPrice.getMaxQuantity()) + "</strong>"}, false));
+				sb.append(LanguageUtil.format(request, "price-for-x-to-x-items", new Object[] {"<strong>" + new Integer(itemPrice.getMinQuantity()) + "</strong>", "<strong>" + new Integer(itemPrice.getMaxQuantity()) + "</strong>"}, false));
 			}
 			else if (itemPrice.getMaxQuantity() == 0) {
-				sb.append(LanguageUtil.format(pageContext, "price-for-x-items-and-above", "<strong>" + new Integer(itemPrice.getMinQuantity()) + "</strong>", false));
+				sb.append(LanguageUtil.format(request, "price-for-x-items-and-above", "<strong>" + new Integer(itemPrice.getMinQuantity()) + "</strong>", false));
 			}
 
 			if (itemPrice.getDiscount() <= 0) {
@@ -333,9 +324,9 @@ boolean minQuantityMultiple = PrefsPropsUtil.getBoolean(company.getCompanyId(), 
 				sb.append("<div class=\"alert alert-success\">");
 				sb.append(currencyFormat.format(ShoppingUtil.calculateActualPrice(itemPrice)));
 				sb.append("</div> / ");
-				sb.append(LanguageUtil.get(pageContext, "you-save"));
+				sb.append(LanguageUtil.get(request, "you-save"));
 				sb.append(": ");
-				sb.append("<div class=\"alert alert-error\">");
+				sb.append("<div class=\"alert alert-danger\">");
 				sb.append(currencyFormat.format(ShoppingUtil.calculateDiscountPrice(itemPrice)));
 				sb.append(" (");
 				sb.append(percentFormat.format(itemPrice.getDiscount()));
@@ -432,7 +423,7 @@ boolean minQuantityMultiple = PrefsPropsUtil.getBoolean(company.getCompanyId(), 
 
 		<c:if test="<%= subtotal != actualSubtotal %>">
 			<aui:field-wrapper label="you-save">
-				<div class="alert alert-error">
+				<div class="alert alert-danger">
 					<%= currencyFormat.format(discountSubtotal) %> (<%= percentFormat.format(ShoppingUtil.calculateDiscountPercent(items)) %>)
 				</div>
 			</aui:field-wrapper>
@@ -455,7 +446,7 @@ boolean minQuantityMultiple = PrefsPropsUtil.getBoolean(company.getCompanyId(), 
 						if (Validator.isNotNull(altShippingName) && Validator.isNotNull(altShippingDelta)) {
 					%>
 
-							<aui:option label='<%= LanguageUtil.get(pageContext, altShippingName) + "(" + currencyFormat.format(ShoppingUtil.calculateAlternativeShipping(items, i)) + ")" %>' selected="<%= i == cart.getAltShipping() %>" value="<%= i %>" />
+							<aui:option label='<%= LanguageUtil.get(request, altShippingName) + "(" + currencyFormat.format(ShoppingUtil.calculateAlternativeShipping(items, i)) + ")" %>' selected="<%= i == cart.getAltShipping() %>" value="<%= i %>" />
 
 					<%
 						}
@@ -480,19 +471,10 @@ boolean minQuantityMultiple = PrefsPropsUtil.getBoolean(company.getCompanyId(), 
 		<aui:input label="coupon-code" name="couponCodes" size="30" style="text-transform: uppercase;" type="text" value="<%= cart.getCouponCodes() %>" />
 
 		<c:if test="<%= coupon != null %>">
-			<portlet:renderURL var="viewCouponURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
-				<portlet:param name="struts_action" value="/shopping/view_coupon" />
-				<portlet:param name="couponId" value="<%= String.valueOf(coupon.getCouponId()) %>" />
-			</portlet:renderURL>
-
-			<%
-			String taglibOpenCouponWindow = "var viewCouponWindow = window.open('" + viewCouponURL + "', 'viewCoupon', 'directories=no,height=200,location=no,menubar=no,resizable=no,scrollbars=yes,status=no,toolbar=no,width=280'); void(''); viewCouponWindow.focus();";
-			%>
-
-			<aui:a href='<%= "javascript:" + taglibOpenCouponWindow %>' label='<%= "(" + LanguageUtil.get(pageContext, "description") + ")" %>' style="font-size: xx-small;" />
+			<aui:a href="javascript:;" label='<%= "(" + LanguageUtil.get(request, "description") + ")" %>' onClick='<%= renderResponse.getNamespace() + "viewCoupon();" %>' style="font-size: xx-small;" />
 
 			<aui:field-wrapper label="coupon-discount">
-				<div class="alert alert-error">
+				<div class="alert alert-danger">
 					<%= currencyFormat.format(ShoppingUtil.calculateCouponDiscount(items, coupon)) %>
 				</div>
 			</aui:field-wrapper>
@@ -505,7 +487,7 @@ boolean minQuantityMultiple = PrefsPropsUtil.getBoolean(company.getCompanyId(), 
 	if (shoppingSettings.usePayPal()) {
 	%>
 
-		<img alt="<liferay-ui:message key="paypal" />" src="<%= themeDisplay.getPathThemeImages() %>/shopping/cc_paypal.png" />
+		<img alt="<liferay-ui:message escapeAttribute="<%= true %>" key="paypal" />" src="<%= themeDisplay.getPathThemeImages() %>/shopping/cc_paypal.png" />
 
 		<br /><br />
 
@@ -530,11 +512,26 @@ boolean minQuantityMultiple = PrefsPropsUtil.getBoolean(company.getCompanyId(), 
 	<aui:button-row>
 		<aui:button onClick='<%= renderResponse.getNamespace() + "updateCart();" %>' value="update-cart" />
 
-		<aui:button onClick='<%= renderResponse.getNamespace() + "emptyCart();" %>' value="empty-cart" />
-
-		<aui:button onClick='<%= renderResponse.getNamespace() + "checkout();" %>' value="checkout" />
+		<aui:button disabled="<%= items.isEmpty() %>" onClick='<%= renderResponse.getNamespace() + "checkout();" %>' type="submit" value="checkout" />
 	</aui:button-row>
 </aui:form>
+
+<aui:script>
+	function <portlet:namespace />viewCoupon() {
+		Liferay.Util.openWindow(
+			{
+				dialog: {
+					height: 200,
+					width: 280
+				},
+				id: '<portlet:namespace />viewCoupon',
+				refreshWindow: window,
+				title: '<%= UnicodeLanguageUtil.get(request, "coupon") %>',
+				uri: '<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="struts_action" value="/shopping/view_coupon" /><portlet:param name="couponId" value="<%= String.valueOf(coupon.getCouponId()) %>" /></portlet:renderURL>'
+			}
+		);
+	}
+</aui:script>
 
 <%!
 private static int _getMaxQuantity(ShoppingItemPrice[] itemPrices) {

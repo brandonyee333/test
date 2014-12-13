@@ -14,18 +14,7 @@
  */
 --%>
 
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
-<%@ page import="com.liferay.portal.kernel.language.LanguageUtil" %>
-<%@ page import="com.liferay.portal.kernel.parsers.bbcode.BBCodeTranslatorUtil" %>
-<%@ page import="com.liferay.portal.kernel.util.ContentTypes" %>
-<%@ page import="com.liferay.portal.kernel.util.HtmlUtil" %>
-<%@ page import="com.liferay.portal.kernel.util.LocaleUtil" %>
-<%@ page import="com.liferay.portal.kernel.util.ParamUtil" %>
-<%@ page import="com.liferay.portal.kernel.util.StringUtil" %>
-<%@ page import="com.liferay.portlet.messageboards.model.MBThreadConstants" %>
-
-<%@ page import="java.util.Locale" %>
+<%@ include file="/html/js/editor/ckeditor_init.jsp" %>
 
 <%
 String contentsLanguageId = ParamUtil.getString(request, "contentsLanguageId");
@@ -51,8 +40,10 @@ boolean resizable = ParamUtil.getBoolean(request, "resizable");
 response.setContentType(ContentTypes.TEXT_JAVASCRIPT);
 %>
 
-;(function() {
+;window['<%= HtmlUtil.escapeJS(name) %>Config'] = function() {
 	var config = CKEDITOR.instances['<%= HtmlUtil.escapeJS(name) %>'].config;
+
+	config.allowedContent = true;
 
 	config.height = 265;
 
@@ -77,25 +68,36 @@ response.setContentType(ContentTypes.TEXT_JAVASCRIPT);
 	].join(',');
 
 	config.toolbar_bbcode = [
-		['Bold', 'Italic', 'Underline', 'Strike', '-', 'Link', 'Unlink'],
-		['Image', 'Smiley', '-', 'TextColor', '-', 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'],
-		['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'Blockquote', '-', 'Code'],
+		['Bold', 'Italic', 'Underline', 'Strike'],
+		['TextColor'],
+		['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+		['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', '-', 'Code'],
 		'/',
-		['Font', 'FontSize', '-', 'Format', '-', 'Undo', 'Redo', '-', 'Source']
+		['Format', 'Font', 'FontSize'],
+		['Link', 'Unlink'],
+		['Image', '-', 'Smiley'],
+		'/',
+		['Cut', 'Copy', 'Paste', '-', 'SelectAll', '-', 'Undo', 'Redo'],
+		['Source'],
+		['A11YBtn']
 	];
 
 	config.toolbar_phone = [
 		['Bold', 'Italic', 'Underline'],
 		['NumberedList', 'BulletedList'],
-		['Image', 'Link', 'Unlink']
+		['Link', 'Unlink'],
+		['Image'],
+		['Source']
 	];
 
 	config.toolbar_tablet = [
 		['Bold', 'Italic', 'Underline', 'Strike'],
-		['NumberedList', 'BulletedList'],
-		['Image', 'Link', 'Unlink'],
 		['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
-		['Styles', 'FontSize']
+		['NumberedList', 'BulletedList'],
+		['Styles', 'FontSize'],
+		['Link', 'Unlink'],
+		['Image'],
+		['Source']
 	];
 
 	config.bodyClass = 'html-editor <%= HtmlUtil.escapeJS(cssClasses) %>';
@@ -112,7 +114,7 @@ response.setContentType(ContentTypes.TEXT_JAVASCRIPT);
 
 	config.enterMode = CKEDITOR.ENTER_BR;
 
-	config.extraPlugins = 'bbcode,wikilink';
+	config.extraPlugins = 'a11yhelpbtn,bbcode,wikilink';
 
 	config.filebrowserBrowseUrl = '';
 
@@ -147,4 +149,8 @@ response.setContentType(ContentTypes.TEXT_JAVASCRIPT);
 	config.smiley_path = '<%= HtmlUtil.escapeJS(emoticonsPath) %>' + '/';
 
 	config.smiley_symbols = ['<%= StringUtil.merge(BBCodeTranslatorUtil.getEmoticonSymbols(), "','") %>'];
-})();
+
+	<%@ include file="/html/js/editor/ckeditor/ckconfig_bbcode-ext.jsp" %>
+};
+
+window['<%= HtmlUtil.escapeJS(name) %>Config']();

@@ -22,9 +22,6 @@ import com.liferay.portal.ContactBirthdayException;
 import com.liferay.portal.ContactFirstNameException;
 import com.liferay.portal.ContactFullNameException;
 import com.liferay.portal.ContactLastNameException;
-import com.liferay.portal.DuplicateOpenIdException;
-import com.liferay.portal.DuplicateUserEmailAddressException;
-import com.liferay.portal.DuplicateUserScreenNameException;
 import com.liferay.portal.EmailAddressException;
 import com.liferay.portal.GroupFriendlyURLException;
 import com.liferay.portal.NoSuchCountryException;
@@ -52,7 +49,6 @@ import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -103,7 +99,6 @@ import java.util.Locale;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletConfig;
-import javax.portlet.PortletRequest;
 import javax.portlet.PortletSession;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
@@ -246,9 +241,6 @@ public class EditUserAction extends PortletAction {
 					 e instanceof ContactFirstNameException ||
 					 e instanceof ContactFullNameException ||
 					 e instanceof ContactLastNameException ||
-					 e instanceof DuplicateOpenIdException ||
-					 e instanceof DuplicateUserEmailAddressException ||
-					 e instanceof DuplicateUserScreenNameException ||
 					 e instanceof EmailAddressException ||
 					 e instanceof GroupFriendlyURLException ||
 					 e instanceof MembershipPolicyException ||
@@ -372,16 +364,13 @@ public class EditUserAction extends PortletAction {
 		String twitterSn = ParamUtil.getString(actionRequest, "twitterSn");
 		String ymSn = ParamUtil.getString(actionRequest, "ymSn");
 		String jobTitle = ParamUtil.getString(actionRequest, "jobTitle");
-		long[] groupIds = getLongArray(
-			actionRequest, "groupsSearchContainerPrimaryKeys");
-		long[] organizationIds = getLongArray(
-			actionRequest, "organizationsSearchContainerPrimaryKeys");
-		long[] roleIds = getLongArray(
-			actionRequest, "rolesSearchContainerPrimaryKeys");
+		long[] groupIds = UsersAdminUtil.getGroupIds(actionRequest);
+		long[] organizationIds = UsersAdminUtil.getOrganizationIds(
+			actionRequest);
+		long[] roleIds = UsersAdminUtil.getRoleIds(actionRequest);
 		List<UserGroupRole> userGroupRoles = UsersAdminUtil.getUserGroupRoles(
 			actionRequest);
-		long[] userGroupIds = getLongArray(
-			actionRequest, "userGroupsSearchContainerPrimaryKeys");
+		long[] userGroupIds = UsersAdminUtil.getUserGroupIds(actionRequest);
 		List<Address> addresses = UsersAdminUtil.getAddresses(actionRequest);
 		List<EmailAddress> emailAddresses = UsersAdminUtil.getEmailAddresses(
 			actionRequest);
@@ -515,16 +504,6 @@ public class EditUserAction extends PortletAction {
 		return getAnnouncementsDeliveries(actionRequest);
 	}
 
-	protected long[] getLongArray(PortletRequest portletRequest, String name) {
-		String value = portletRequest.getParameter(name);
-
-		if (value == null) {
-			return null;
-		}
-
-		return StringUtil.split(GetterUtil.getString(value), 0L);
-	}
-
 	protected User updateLockout(ActionRequest actionRequest) throws Exception {
 		User user = PortalUtil.getSelectedUser(actionRequest);
 
@@ -630,23 +609,22 @@ public class EditUserAction extends PortletAction {
 		String ymSn = BeanParamUtil.getString(contact, actionRequest, "ymSn");
 		String jobTitle = BeanParamUtil.getString(
 			user, actionRequest, "jobTitle");
-		long[] groupIds = getLongArray(
-			actionRequest, "groupsSearchContainerPrimaryKeys");
-		long[] organizationIds = getLongArray(
-			actionRequest, "organizationsSearchContainerPrimaryKeys");
-		long[] roleIds = getLongArray(
-			actionRequest, "rolesSearchContainerPrimaryKeys");
+		long[] groupIds = UsersAdminUtil.getGroupIds(actionRequest);
+		long[] organizationIds = UsersAdminUtil.getOrganizationIds(
+			actionRequest);
+		long[] roleIds = UsersAdminUtil.getRoleIds(actionRequest);
 
 		List<UserGroupRole> userGroupRoles = null;
 
-		if ((actionRequest.getParameter("groupRolesGroupIds") != null) ||
-			(actionRequest.getParameter("groupRolesRoleIds") != null)) {
+		if ((actionRequest.getParameter("addGroupRolesGroupIds") != null) ||
+			(actionRequest.getParameter("addGroupRolesRoleIds") != null) ||
+			(actionRequest.getParameter("deleteGroupRolesGroupIds") != null) ||
+			(actionRequest.getParameter("deleteGroupRolesRoleIds") != null)) {
 
 			userGroupRoles = UsersAdminUtil.getUserGroupRoles(actionRequest);
 		}
 
-		long[] userGroupIds = getLongArray(
-			actionRequest, "userGroupsSearchContainerPrimaryKeys");
+		long[] userGroupIds = UsersAdminUtil.getUserGroupIds(actionRequest);
 		List<Address> addresses = UsersAdminUtil.getAddresses(
 			actionRequest, user.getAddresses());
 		List<EmailAddress> emailAddresses = UsersAdminUtil.getEmailAddresses(

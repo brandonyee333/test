@@ -17,7 +17,6 @@ package com.liferay.portlet.assetpublisher.util;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Layout;
 import com.liferay.portal.model.User;
@@ -25,6 +24,7 @@ import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.asset.model.AssetEntry;
 import com.liferay.portlet.asset.model.AssetRendererFactory;
+import com.liferay.portlet.asset.model.ClassType;
 import com.liferay.portlet.asset.service.persistence.AssetEntryQuery;
 
 import java.util.List;
@@ -80,9 +80,15 @@ public interface AssetPublisher {
 		throws Exception;
 
 	public List<AssetEntry> getAssetEntries(
+		long[] groupIds, long[] classNameIds, String keywords, String userName,
+		String title, String description, boolean advancedSearch,
+		boolean andOperator, int start, int end, String orderByCol1,
+		String orderByCol2, String orderByType1, String orderByType2);
+
+	public List<AssetEntry> getAssetEntries(
 			PortletPreferences portletPreferences, Layout layout,
 			long scopeGroupId, int max, boolean checkPermission)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public List<AssetEntry> getAssetEntries(
 			PortletRequest portletRequest,
@@ -130,6 +136,11 @@ public interface AssetPublisher {
 			boolean checkPermission)
 		throws Exception;
 
+	public int getAssetEntriesCount(
+		long[] groupIds, long[] classNameIds, String keywords, String userName,
+		String title, String description, boolean advancedSearch,
+		boolean andOperator, int start, int end);
+
 	/**
 	 * @deprecated As of 7.0.0, replaced by {@link
 	 *             AssetPublisher#getAssetEntryQuery(PortletPreferences, long[],
@@ -138,13 +149,13 @@ public interface AssetPublisher {
 	@Deprecated
 	public AssetEntryQuery getAssetEntryQuery(
 			PortletPreferences portletPreferences, long[] siteGroupIds)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public AssetEntryQuery getAssetEntryQuery(
 			PortletPreferences portletPreferences, long[] scopeGroupIds,
 			long[] overrideAllAssetCategoryIds,
 			String[] overrideAllAssetTagNames)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public String[] getAssetTagNames(
 		PortletPreferences portletPreferences) throws Exception;
@@ -165,6 +176,10 @@ public interface AssetPublisher {
 
 	public Long[] getClassTypeIds(
 		PortletPreferences portletPreferences, String className,
+		List<ClassType> availableClassTypes);
+
+	public Long[] getClassTypeIds(
+		PortletPreferences portletPreferences, String className,
 		Long[] availableClassTypeIds);
 
 	public Map<Locale, String> getEmailAssetEntryAddedBodyMap(
@@ -181,16 +196,14 @@ public interface AssetPublisher {
 		String emailFromName);
 
 	public String getEmailFromAddress(
-			PortletPreferences portletPreferences, long companyId)
-		throws SystemException;
+		PortletPreferences portletPreferences, long companyId);
 
 	public String getEmailFromName(
-			PortletPreferences portletPreferences, long companyId)
-		throws SystemException;
+		PortletPreferences portletPreferences, long companyId);
 
 	public long getGroupIdFromScopeId(
 			String scopeId, long siteGroupId, boolean privateLayout)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public long[] getGroupIds(
 		PortletPreferences portletPreferences, long scopeGroupId,
@@ -200,24 +213,24 @@ public interface AssetPublisher {
 		PortletRequest portletRequest, String className);
 
 	public String getScopeId(Group group, long scopeGroupId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
-	long getSubscriptionClassPK(long plid, String portletId)
-		throws PortalException, SystemException;
+	public long getSubscriptionClassPK(long plid, String portletId)
+		throws PortalException;
 
 	public boolean isScopeIdSelectable(
 			PermissionChecker permissionChecker, String scopeId,
 			long companyGroupId, Layout layout)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public boolean isSubscribed(
 			long companyId, long userId, long plid, String portletId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public void notifySubscribers(
 			PortletPreferences portletPreferences, long plid, String portletId,
 			List<AssetEntry> assetEntries)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public void processAssetEntryQuery(
 			User user, PortletPreferences portletPreferences,
@@ -237,13 +250,13 @@ public interface AssetPublisher {
 	public void subscribe(
 			PermissionChecker permissionChecker, long groupId, long plid,
 			String portletId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public void unregisterAssetQueryProcessor(
 		String assetQueryProcessorClassName);
 
 	public void unsubscribe(
 			PermissionChecker permissionChecker, long plid, String portletId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 }

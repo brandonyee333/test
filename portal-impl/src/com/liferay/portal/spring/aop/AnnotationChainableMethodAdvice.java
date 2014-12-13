@@ -54,11 +54,12 @@ public abstract class AnnotationChainableMethodAdvice<T extends Annotation>
 			return (T)annotation;
 		}
 
-		Object thisObject = methodInvocation.getThis();
-
-		Class<?> targetClass = thisObject.getClass();
-
 		Method method = methodInvocation.getMethod();
+
+		ServiceBeanMethodInvocation serviceBeanMethodInvocation =
+			(ServiceBeanMethodInvocation)methodInvocation;
+
+		Class<?> targetClass = serviceBeanMethodInvocation.getTargetClass();
 
 		List<Annotation> annotations = AnnotationLocator.locate(
 			method, targetClass);
@@ -140,7 +141,7 @@ public abstract class AnnotationChainableMethodAdvice<T extends Annotation>
 			_annotationClass, this);
 	}
 
-	private Class<? extends Annotation> _annotationClass;
-	private T _nullAnnotation;
+	private final Class<? extends Annotation> _annotationClass;
+	private final T _nullAnnotation;
 
 }

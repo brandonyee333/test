@@ -16,8 +16,7 @@
 
 <%@ include file="/html/common/init.jsp" %>
 
-<%@ page import="com.liferay.portal.DuplicateUserEmailAddressException" %><%@
-page import="com.liferay.portal.LayoutPermissionException" %><%@
+<%@ page import="com.liferay.portal.LayoutPermissionException" %><%@
 page import="com.liferay.portal.PortletActiveException" %><%@
 page import="com.liferay.portal.RequiredLayoutException" %><%@
 page import="com.liferay.portal.RequiredRoleException" %><%@
@@ -39,8 +38,7 @@ page import="com.liferay.portal.license.util.LicenseManagerUtil" %><%@
 page import="com.liferay.portal.license.util.LicenseUtil" %><%@
 page import="com.liferay.portal.setup.SetupWizardUtil" %><%@
 page import="com.liferay.portal.struts.PortletRequestProcessor" %><%@
-page import="com.liferay.portal.util.PortletCategoryUtil" %><%@
-page import="com.liferay.portlet.usersadmin.util.UsersAdmin" %>
+page import="com.liferay.portal.util.PortletCategoryUtil" %>
 
 <%@ page import="org.apache.struts.action.ActionMapping" %><%@
 page import="org.apache.struts.taglib.tiles.ComponentConstants" %><%@

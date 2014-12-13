@@ -58,7 +58,7 @@ public class DocumentConversionUtil {
 	public static File convert(
 			String id, InputStream inputStream, String sourceExtension,
 			String targetExtension)
-		throws IOException, SystemException {
+		throws IOException {
 
 		return _instance._convert(
 			id, inputStream, sourceExtension, targetExtension);
@@ -162,7 +162,7 @@ public class DocumentConversionUtil {
 	private File _convert(
 			String id, InputStream inputStream, String sourceExtension,
 			String targetExtension)
-		throws IOException, SystemException {
+		throws IOException {
 
 		if (!isEnabled()) {
 			return null;
@@ -201,8 +201,7 @@ public class DocumentConversionUtil {
 		else if (outputDocumentFormat == null) {
 			throw new SystemException(
 				"Conversion is not supported from " +
-					inputDocumentFormat.getName() + " to ." +
-						targetExtension);
+					inputDocumentFormat.getName() + " to ." + targetExtension);
 		}
 		else if (!inputDocumentFormat.isExportableTo(outputDocumentFormat)) {
 			throw new SystemException(
@@ -269,7 +268,7 @@ public class DocumentConversionUtil {
 		return conversions;
 	}
 
-	private DocumentConverter _getDocumentConverter() throws SystemException {
+	private DocumentConverter _getDocumentConverter() {
 		if ((_openOfficeConnection != null) && (_documentConverter != null)) {
 			return _documentConverter;
 		}
@@ -371,9 +370,7 @@ public class DocumentConversionUtil {
 		}
 	}
 
-	private void _validate(String targetExtension, String id)
-		throws SystemException {
-
+	private void _validate(String targetExtension, String id) {
 		if (!Validator.isFileExtension(targetExtension)) {
 			throw new SystemException("Invalid extension: " + targetExtension);
 		}

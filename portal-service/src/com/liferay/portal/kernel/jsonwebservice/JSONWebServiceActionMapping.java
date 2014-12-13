@@ -29,6 +29,8 @@ public interface JSONWebServiceActionMapping {
 
 	public Object getActionObject();
 
+	public String getContextName();
+
 	public String getContextPath();
 
 	public String getMethod();
@@ -40,5 +42,7 @@ public interface JSONWebServiceActionMapping {
 	public Method getRealActionMethod();
 
 	public String getSignature();
+
+	public boolean isDeprecated();
 
 }

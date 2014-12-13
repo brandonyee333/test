@@ -23,8 +23,11 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * @author Mika Koivisto
+ * @author     Mika Koivisto
+ * @deprecated As of 7.0.0, replaced by {@link
+ *             com.liferay.portal.repository.util.ExternalRepositoryFactoryUtil}
  */
+@Deprecated
 public class RepositoryFactoryUtil {
 
 	public static BaseRepository getInstance(String className)
@@ -63,7 +66,7 @@ public class RepositoryFactoryUtil {
 		_repositoryFactories.remove(className);
 	}
 
-	private static ConcurrentHashMap<String, RepositoryFactory>
+	private static final ConcurrentHashMap<String, RepositoryFactory>
 		_repositoryFactories =
 			new ConcurrentHashMap<String, RepositoryFactory>();
 

@@ -15,6 +15,7 @@
 package com.liferay.portal.verify;
 
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
@@ -28,14 +29,18 @@ import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.xml.Attribute;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.Node;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.kernel.xml.XPath;
+import com.liferay.portal.model.AuditedModel;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.CompanyConstants;
+import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.documentlibrary.NoSuchFolderException;
 import com.liferay.portlet.documentlibrary.model.DLFileEntryMetadata;
@@ -51,6 +56,8 @@ import com.liferay.portlet.dynamicdatalists.model.DDLRecordModel;
 import com.liferay.portlet.dynamicdatalists.model.DDLRecordSet;
 import com.liferay.portlet.dynamicdatalists.model.DDLRecordVersion;
 import com.liferay.portlet.dynamicdatalists.service.DDLRecordLocalServiceUtil;
+import com.liferay.portlet.dynamicdatamapping.model.DDMForm;
+import com.liferay.portlet.dynamicdatamapping.model.DDMFormField;
 import com.liferay.portlet.dynamicdatamapping.model.DDMStructure;
 import com.liferay.portlet.dynamicdatamapping.model.DDMStructureLink;
 import com.liferay.portlet.dynamicdatamapping.model.DDMTemplate;
@@ -59,7 +66,6 @@ import com.liferay.portlet.dynamicdatamapping.service.DDMStructureLinkLocalServi
 import com.liferay.portlet.dynamicdatamapping.service.DDMStructureLocalServiceUtil;
 import com.liferay.portlet.dynamicdatamapping.service.DDMTemplateLocalServiceUtil;
 import com.liferay.portlet.dynamicdatamapping.storage.Field;
-import com.liferay.portlet.dynamicdatamapping.storage.FieldConstants;
 import com.liferay.portlet.dynamicdatamapping.storage.Fields;
 import com.liferay.portlet.dynamicdatamapping.storage.StorageEngineUtil;
 import com.liferay.portlet.dynamicdatamapping.util.DDMXMLUtil;
@@ -235,6 +241,26 @@ public class VerifyDynamicDataMapping extends VerifyProcess {
 		return jsonObject.toString();
 	}
 
+	protected long getUserId(AuditedModel auditedModel) throws PortalException {
+		User user = UserLocalServiceUtil.fetchUser(auditedModel.getUserId());
+
+		if (user != null) {
+			return user.getUserId();
+		}
+
+		User defaultUser = UserLocalServiceUtil.getDefaultUser(
+			auditedModel.getCompanyId());
+
+		if (_log.isWarnEnabled()) {
+			_log.warn(
+				"Using default user " + defaultUser.getUserId() +
+					" for audited model " + auditedModel.getModelClassName() +
+						" with primary key " + auditedModel.getPrimaryKeyObj());
+		}
+
+		return defaultUser.getUserId();
+	}
+
 	protected boolean hasDefaultMetadataElement(
 		Element dynamicElementElement, String defaultLanguageId) {
 
@@ -255,13 +281,13 @@ public class VerifyDynamicDataMapping extends VerifyProcess {
 	protected boolean hasFileUploadFields(DDMStructure ddmStructure)
 		throws Exception {
 
-		Map<String, Map<String, String>> fieldsMap =
-			ddmStructure.getFieldsMap();
+		Map<String, DDMFormField> ddmFormFieldsMap =
+			ddmStructure.getFullHierarchyDDMFormFieldsMap(true);
 
-		for (Map<String, String> field : fieldsMap.values()) {
-			String dataType = field.get(FieldConstants.DATA_TYPE);
+		for (DDMFormField ddmFormField : ddmFormFieldsMap.values()) {
+			String dataType = ddmFormField.getDataType();
 
-			if (dataType.equals("file-upload")) {
+			if (Validator.equals(dataType, "file-upload")) {
 				return true;
 			}
 		}
@@ -287,19 +313,16 @@ public class VerifyDynamicDataMapping extends VerifyProcess {
 		for (DDLRecord ddlRecord : ddlRecords) {
 			updateFileUploadReferences(
 				ddlRecord.getCompanyId(), ddlRecord.getDDMStorageId(),
-				ddlRecord.getUserId(), ddlRecord.getGroupId(), ddlRecord,
+				getUserId(ddlRecord), ddlRecord.getGroupId(), ddlRecord,
 				ddlRecord.getStatus());
 		}
 	}
 
-	protected void updateDDMStructure(DDMStructure ddmStructure, String xsd)
+	protected void updateDDMStructure(
+			DDMStructure ddmStructure, DDMForm ddmForm)
 		throws Exception {
 
-		if (xsd.equals(ddmStructure.getXsd())) {
-			return;
-		}
-
-		ddmStructure.setXsd(xsd);
+		ddmStructure.updateDDMForm(ddmForm);
 
 		DDMStructureLocalServiceUtil.updateDDMStructure(ddmStructure);
 	}
@@ -330,7 +353,7 @@ public class VerifyDynamicDataMapping extends VerifyProcess {
 
 		updateFileUploadReferences(
 			fileEntry.getCompanyId(), dlFileEntryMetadata.getDDMStorageId(),
-			fileEntry.getUserId(), fileEntry.getGroupId(), dlFileEntryMetadata,
+			getUserId(fileEntry), fileEntry.getGroupId(), dlFileEntryMetadata,
 			fileVersion.getStatus());
 	}
 
@@ -368,6 +391,25 @@ public class VerifyDynamicDataMapping extends VerifyProcess {
 			serviceContext, workflowContext);
 	}
 
+	protected void updateFileUploadReferences(DDMForm ddmForm)
+		throws Exception {
+
+		List<DDMFormField> ddmFormFields = ddmForm.getDDMFormFields();
+
+		for (DDMFormField ddmFormField : ddmFormFields) {
+			updateFileUploadReferences(ddmFormField);
+		}
+	}
+
+	protected void updateFileUploadReferences(DDMFormField ddmFormField) {
+		String dataType = ddmFormField.getDataType();
+
+		if (Validator.equals(dataType, "file-upload")) {
+			ddmFormField.setDataType("document-library");
+			ddmFormField.setType("ddm-documentlibrary");
+		}
+	}
+
 	protected void updateFileUploadReferences(DDMStructure ddmStructure)
 		throws Exception {
 
@@ -384,9 +426,11 @@ public class VerifyDynamicDataMapping extends VerifyProcess {
 			updateFileUploadReferences(ddmStructureLink);
 		}
 
-		String xsd = updateFileUploadReferences(ddmStructure.getXsd());
+		DDMForm ddmForm = ddmStructure.getDDMForm();
 
-		updateDDMStructure(ddmStructure, xsd);
+		updateFileUploadReferences(ddmForm);
+
+		updateDDMStructure(ddmStructure, ddmForm);
 
 		List<DDMTemplate> ddmTemplates = getFormDDMTemplates(ddmStructure);
 
@@ -477,13 +521,31 @@ public class VerifyDynamicDataMapping extends VerifyProcess {
 		return DDMXMLUtil.formatXML(document.asXML());
 	}
 
+	protected DDMForm verifyDDMForm(DDMForm ddmForm) {
+		List<DDMFormField> ddmFormFields = ddmForm.getDDMFormFields();
+
+		for (DDMFormField ddmFormField : ddmFormFields) {
+			verifyDDMFormField(ddmFormField);
+		}
+
+		return ddmForm;
+	}
+
+	protected void verifyDDMFormField(DDMFormField ddmFormField) {
+		String dataType = ddmFormField.getDataType();
+
+		if (Validator.equals(dataType, "image")) {
+			ddmFormField.setNamespace("ddm");
+			ddmFormField.setType("ddm-image");
+		}
+	}
+
 	protected void verifyDDMStructure(DDMStructure ddmStructure)
 		throws Exception {
 
-		String xsd = verifySchema(
-			ddmStructure.getXsd(), ddmStructure.getDefaultLanguageId());
+		DDMForm ddmForm = verifyDDMForm(ddmStructure.getDDMForm());
 
-		updateDDMStructure(ddmStructure, xsd);
+		updateDDMStructure(ddmStructure, ddmForm);
 	}
 
 	protected void verifyDDMTemplate(DDMTemplate ddmTemplate) throws Exception {
@@ -515,6 +577,13 @@ public class VerifyDynamicDataMapping extends VerifyProcess {
 		if (Validator.equals(dataType, "image")) {
 			dynamicElementElement.addAttribute("fieldNamespace", "ddm");
 			dynamicElementElement.addAttribute("type", "ddm-image");
+		}
+
+		Attribute attribute = dynamicElementElement.attribute(
+			"autoGeneratedName");
+
+		if (attribute != null) {
+			dynamicElementElement.remove(attribute);
 		}
 
 		verifyMetadataElement(dynamicElementElement, defaultLanguageId);
@@ -556,7 +625,7 @@ public class VerifyDynamicDataMapping extends VerifyProcess {
 		return DDMXMLUtil.formatXML(document.asXML());
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		VerifyDynamicDataMapping.class);
 
 	private long _ddlRecordSetClassNameId;

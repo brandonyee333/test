@@ -250,11 +250,12 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 		updateMetadataElement(
 			metadataElement,
 			new String[] {
-				"multiple", "readOnly", "repeatable", "required", "showLabel",
-				"width",
+				"multiple", "name", "readOnly", "repeatable", "required",
+				"showLabel", "type", "width",
 			},
 			new String[] {
-				"acceptFiles", "displayChildLabelAsValue", "fieldCssClass"
+				"acceptFiles", "displayChildLabelAsValue", "fieldCssClass",
+				"folder"
 			});
 
 		if (StringUtil.equalsIgnoreCase(
@@ -271,7 +272,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		UpgradeDynamicDataMapping.class);
 
 }

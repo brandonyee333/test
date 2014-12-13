@@ -14,6 +14,8 @@
 
 package com.liferay.portlet.mobiledevicerules.service.base;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.bean.IdentifiableBean;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -69,6 +71,7 @@ import javax.sql.DataSource;
  * @see com.liferay.portlet.mobiledevicerules.service.MDRActionLocalServiceUtil
  * @generated
  */
+@ProviderType
 public abstract class MDRActionLocalServiceBaseImpl extends BaseLocalServiceImpl
 	implements MDRActionLocalService, IdentifiableBean {
 	/*
@@ -82,12 +85,10 @@ public abstract class MDRActionLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 *
 	 * @param mdrAction the m d r action
 	 * @return the m d r action that was added
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	@Override
-	public MDRAction addMDRAction(MDRAction mdrAction)
-		throws SystemException {
+	public MDRAction addMDRAction(MDRAction mdrAction) {
 		mdrAction.setNew(true);
 
 		return mdrActionPersistence.update(mdrAction);
@@ -110,12 +111,10 @@ public abstract class MDRActionLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 * @param actionId the primary key of the m d r action
 	 * @return the m d r action that was removed
 	 * @throws PortalException if a m d r action with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
-	public MDRAction deleteMDRAction(long actionId)
-		throws PortalException, SystemException {
+	public MDRAction deleteMDRAction(long actionId) throws PortalException {
 		return mdrActionPersistence.remove(actionId);
 	}
 
@@ -124,12 +123,10 @@ public abstract class MDRActionLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 *
 	 * @param mdrAction the m d r action
 	 * @return the m d r action that was removed
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
-	public MDRAction deleteMDRAction(MDRAction mdrAction)
-		throws SystemException {
+	public MDRAction deleteMDRAction(MDRAction mdrAction) {
 		return mdrActionPersistence.remove(mdrAction);
 	}
 
@@ -146,12 +143,9 @@ public abstract class MDRActionLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 *
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery)
-		throws SystemException {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return mdrActionPersistence.findWithDynamicQuery(dynamicQuery);
 	}
 
@@ -166,12 +160,10 @@ public abstract class MDRActionLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 * @param start the lower bound of the range of model instances
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery, int start, int end)
-		throws SystemException {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end) {
 		return mdrActionPersistence.findWithDynamicQuery(dynamicQuery, start,
 			end);
 	}
@@ -188,61 +180,42 @@ public abstract class MDRActionLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator orderByComparator) throws SystemException {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end, OrderByComparator<T> orderByComparator) {
 		return mdrActionPersistence.findWithDynamicQuery(dynamicQuery, start,
 			end, orderByComparator);
 	}
 
 	/**
-	 * Returns the number of rows that match the dynamic query.
+	 * Returns the number of rows matching the dynamic query.
 	 *
 	 * @param dynamicQuery the dynamic query
-	 * @return the number of rows that match the dynamic query
-	 * @throws SystemException if a system exception occurred
+	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
-	public long dynamicQueryCount(DynamicQuery dynamicQuery)
-		throws SystemException {
+	public long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return mdrActionPersistence.countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * Returns the number of rows that match the dynamic query.
+	 * Returns the number of rows matching the dynamic query.
 	 *
 	 * @param dynamicQuery the dynamic query
 	 * @param projection the projection to apply to the query
-	 * @return the number of rows that match the dynamic query
-	 * @throws SystemException if a system exception occurred
+	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection) throws SystemException {
+		Projection projection) {
 		return mdrActionPersistence.countWithDynamicQuery(dynamicQuery,
 			projection);
 	}
 
 	@Override
-	public MDRAction fetchMDRAction(long actionId) throws SystemException {
+	public MDRAction fetchMDRAction(long actionId) {
 		return mdrActionPersistence.fetchByPrimaryKey(actionId);
-	}
-
-	/**
-	 * Returns the m d r action with the matching UUID and company.
-	 *
-	 * @param uuid the m d r action's UUID
-	 * @param  companyId the primary key of the company
-	 * @return the matching m d r action, or <code>null</code> if a matching m d r action could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	@Override
-	public MDRAction fetchMDRActionByUuidAndCompanyId(String uuid,
-		long companyId) throws SystemException {
-		return mdrActionPersistence.fetchByUuid_C_First(uuid, companyId, null);
 	}
 
 	/**
@@ -251,11 +224,9 @@ public abstract class MDRActionLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 * @param uuid the m d r action's UUID
 	 * @param groupId the primary key of the group
 	 * @return the matching m d r action, or <code>null</code> if a matching m d r action could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public MDRAction fetchMDRActionByUuidAndGroupId(String uuid, long groupId)
-		throws SystemException {
+	public MDRAction fetchMDRActionByUuidAndGroupId(String uuid, long groupId) {
 		return mdrActionPersistence.fetchByUUID_G(uuid, groupId);
 	}
 
@@ -265,17 +236,14 @@ public abstract class MDRActionLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 * @param actionId the primary key of the m d r action
 	 * @return the m d r action
 	 * @throws PortalException if a m d r action with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public MDRAction getMDRAction(long actionId)
-		throws PortalException, SystemException {
+	public MDRAction getMDRAction(long actionId) throws PortalException {
 		return mdrActionPersistence.findByPrimaryKey(actionId);
 	}
 
 	@Override
-	public ActionableDynamicQuery getActionableDynamicQuery()
-		throws SystemException {
+	public ActionableDynamicQuery getActionableDynamicQuery() {
 		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
 
 		actionableDynamicQuery.setBaseLocalService(com.liferay.portlet.mobiledevicerules.service.MDRActionLocalServiceUtil.getService());
@@ -288,8 +256,7 @@ public abstract class MDRActionLocalServiceBaseImpl extends BaseLocalServiceImpl
 	}
 
 	protected void initActionableDynamicQuery(
-		ActionableDynamicQuery actionableDynamicQuery)
-		throws SystemException {
+		ActionableDynamicQuery actionableDynamicQuery) {
 		actionableDynamicQuery.setBaseLocalService(com.liferay.portlet.mobiledevicerules.service.MDRActionLocalServiceUtil.getService());
 		actionableDynamicQuery.setClass(MDRAction.class);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
@@ -299,11 +266,10 @@ public abstract class MDRActionLocalServiceBaseImpl extends BaseLocalServiceImpl
 
 	@Override
 	public ExportActionableDynamicQuery getExportActionableDynamicQuery(
-		final PortletDataContext portletDataContext) throws SystemException {
+		final PortletDataContext portletDataContext) {
 		final ExportActionableDynamicQuery exportActionableDynamicQuery = new ExportActionableDynamicQuery() {
 				@Override
-				public long performCount()
-					throws PortalException, SystemException {
+				public long performCount() throws PortalException {
 					ManifestSummary manifestSummary = portletDataContext.getManifestSummary();
 
 					StagedModelType stagedModelType = getStagedModelType();
@@ -349,9 +315,8 @@ public abstract class MDRActionLocalServiceBaseImpl extends BaseLocalServiceImpl
 
 		exportActionableDynamicQuery.setPerformActionMethod(new ActionableDynamicQuery.PerformActionMethod() {
 				@Override
-				@SuppressWarnings("unused")
 				public void performAction(Object object)
-					throws PortalException, SystemException {
+					throws PortalException {
 					MDRAction stagedModel = (MDRAction)object;
 
 					StagedModelDataHandlerUtil.exportStagedModel(portletDataContext,
@@ -364,25 +329,50 @@ public abstract class MDRActionLocalServiceBaseImpl extends BaseLocalServiceImpl
 		return exportActionableDynamicQuery;
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
+		throws PortalException {
+		return mdrActionLocalService.deleteMDRAction((MDRAction)persistedModel);
+	}
+
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException, SystemException {
+		throws PortalException {
 		return mdrActionPersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
 	/**
-	 * Returns the m d r action with the matching UUID and company.
+	 * Returns all the m d r actions matching the UUID and company.
 	 *
-	 * @param uuid the m d r action's UUID
-	 * @param  companyId the primary key of the company
-	 * @return the matching m d r action
-	 * @throws PortalException if a matching m d r action could not be found
-	 * @throws SystemException if a system exception occurred
+	 * @param uuid the UUID of the m d r actions
+	 * @param companyId the primary key of the company
+	 * @return the matching m d r actions, or an empty list if no matches were found
 	 */
 	@Override
-	public MDRAction getMDRActionByUuidAndCompanyId(String uuid, long companyId)
-		throws PortalException, SystemException {
-		return mdrActionPersistence.findByUuid_C_First(uuid, companyId, null);
+	public List<MDRAction> getMDRActionsByUuidAndCompanyId(String uuid,
+		long companyId) {
+		return mdrActionPersistence.findByUuid_C(uuid, companyId);
+	}
+
+	/**
+	 * Returns a range of m d r actions matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the m d r actions
+	 * @param companyId the primary key of the company
+	 * @param start the lower bound of the range of m d r actions
+	 * @param end the upper bound of the range of m d r actions (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the range of matching m d r actions, or an empty list if no matches were found
+	 */
+	@Override
+	public List<MDRAction> getMDRActionsByUuidAndCompanyId(String uuid,
+		long companyId, int start, int end,
+		OrderByComparator<MDRAction> orderByComparator) {
+		return mdrActionPersistence.findByUuid_C(uuid, companyId, start, end,
+			orderByComparator);
 	}
 
 	/**
@@ -392,11 +382,10 @@ public abstract class MDRActionLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 * @param groupId the primary key of the group
 	 * @return the matching m d r action
 	 * @throws PortalException if a matching m d r action could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public MDRAction getMDRActionByUuidAndGroupId(String uuid, long groupId)
-		throws PortalException, SystemException {
+		throws PortalException {
 		return mdrActionPersistence.findByUUID_G(uuid, groupId);
 	}
 
@@ -410,11 +399,9 @@ public abstract class MDRActionLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 * @param start the lower bound of the range of m d r actions
 	 * @param end the upper bound of the range of m d r actions (not inclusive)
 	 * @return the range of m d r actions
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<MDRAction> getMDRActions(int start, int end)
-		throws SystemException {
+	public List<MDRAction> getMDRActions(int start, int end) {
 		return mdrActionPersistence.findAll(start, end);
 	}
 
@@ -422,10 +409,9 @@ public abstract class MDRActionLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 * Returns the number of m d r actions.
 	 *
 	 * @return the number of m d r actions
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int getMDRActionsCount() throws SystemException {
+	public int getMDRActionsCount() {
 		return mdrActionPersistence.countAll();
 	}
 
@@ -434,12 +420,10 @@ public abstract class MDRActionLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 *
 	 * @param mdrAction the m d r action
 	 * @return the m d r action that was updated
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	@Override
-	public MDRAction updateMDRAction(MDRAction mdrAction)
-		throws SystemException {
+	public MDRAction updateMDRAction(MDRAction mdrAction) {
 		return mdrActionPersistence.update(mdrAction);
 	}
 
@@ -731,7 +715,7 @@ public abstract class MDRActionLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 *
 	 * @param sql the sql query
 	 */
-	protected void runSQL(String sql) throws SystemException {
+	protected void runSQL(String sql) {
 		try {
 			DataSource dataSource = mdrActionPersistence.getDataSource();
 

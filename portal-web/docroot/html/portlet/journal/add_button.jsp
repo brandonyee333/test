@@ -57,14 +57,14 @@ List<DDMStructure> ddmStructures = DDMStructureServiceUtil.getJournalFolderStruc
 				<portlet:param name="redirect" value="<%= currentURL %>" />
 				<portlet:param name="groupId" value="<%= String.valueOf(scopeGroupId) %>" />
 				<portlet:param name="folderId" value="<%= String.valueOf(folderId) %>" />
-				<portlet:param name="structureId" value="<%= ddmStructure.getStructureKey() %>" />
+				<portlet:param name="ddmStructureKey" value="<%= ddmStructure.getStructureKey() %>" />
 			</liferay-portlet:renderURL>
 
 			<%
 			AssetRendererFactory assetRendererFactory = AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClassName(JournalArticle.class.getName());
 			%>
 
-			<aui:nav-item href="<%= addArticleURL %>" iconCssClass="<%= assetRendererFactory.getIconCssClass() %>" label="<%= HtmlUtil.escape(ddmStructure.getName(locale)) %>" localizeLabel="<%= false %>" />
+			<aui:nav-item href="<%= addArticleURL %>" iconCssClass="<%= assetRendererFactory.getIconCssClass() %>" label="<%= HtmlUtil.escape(ddmStructure.getUnambiguousName(ddmStructures, themeDisplay.getScopeGroupId(), locale)) %>" localizeLabel="<%= false %>" />
 
 		<%
 		}

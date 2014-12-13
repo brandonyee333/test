@@ -15,90 +15,64 @@
 package com.liferay.portal.service.persistence;
 
 import com.liferay.portal.NoSuchWebDAVPropsException;
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.test.ExecutionTestListeners;
+import com.liferay.portal.kernel.test.AggregateTestRule;
+import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.Time;
-import com.liferay.portal.model.ModelListener;
 import com.liferay.portal.model.WebDAVProps;
 import com.liferay.portal.model.impl.WebDAVPropsModelImpl;
-import com.liferay.portal.service.ServiceTestUtil;
 import com.liferay.portal.service.WebDAVPropsLocalServiceUtil;
-import com.liferay.portal.service.persistence.BasePersistence;
-import com.liferay.portal.service.persistence.PersistenceExecutionTestListener;
-import com.liferay.portal.test.LiferayPersistenceIntegrationJUnitTestRunner;
-import com.liferay.portal.test.persistence.TransactionalPersistenceAdvice;
+import com.liferay.portal.test.LiferayIntegrationTestRule;
+import com.liferay.portal.test.PersistenceTestRule;
+import com.liferay.portal.test.TransactionalTestRule;
 import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.util.test.RandomTestUtil;
 
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-
-import org.junit.runner.RunWith;
 
 import java.io.Serializable;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 /**
- * @author Brian Wing Shun Chan
+ * @generated
  */
-@ExecutionTestListeners(listeners =  {
-	PersistenceExecutionTestListener.class})
-@RunWith(LiferayPersistenceIntegrationJUnitTestRunner.class)
 public class WebDAVPropsPersistenceTest {
-	@Before
-	public void setUp() {
-		_modelListeners = _persistence.getListeners();
-
-		for (ModelListener<WebDAVProps> modelListener : _modelListeners) {
-			_persistence.unregisterListener(modelListener);
-		}
-	}
+	@Rule
+	public final AggregateTestRule aggregateTestRule = new AggregateTestRule(new LiferayIntegrationTestRule(),
+			PersistenceTestRule.INSTANCE,
+			new TransactionalTestRule(Propagation.REQUIRED));
 
 	@After
 	public void tearDown() throws Exception {
-		Map<Serializable, BasePersistence<?>> basePersistences = _transactionalPersistenceAdvice.getBasePersistences();
+		Iterator<WebDAVProps> iterator = _webDAVPropses.iterator();
 
-		Set<Serializable> primaryKeys = basePersistences.keySet();
+		while (iterator.hasNext()) {
+			_persistence.remove(iterator.next());
 
-		for (Serializable primaryKey : primaryKeys) {
-			BasePersistence<?> basePersistence = basePersistences.get(primaryKey);
-
-			try {
-				basePersistence.remove(primaryKey);
-			}
-			catch (Exception e) {
-				if (_log.isDebugEnabled()) {
-					_log.debug("The model with primary key " + primaryKey +
-						" was already deleted");
-				}
-			}
-		}
-
-		_transactionalPersistenceAdvice.reset();
-
-		for (ModelListener<WebDAVProps> modelListener : _modelListeners) {
-			_persistence.registerListener(modelListener);
+			iterator.remove();
 		}
 	}
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = ServiceTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong();
 
 		WebDAVProps webDAVProps = _persistence.create(pk);
 
@@ -125,25 +99,25 @@ public class WebDAVPropsPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = ServiceTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong();
 
 		WebDAVProps newWebDAVProps = _persistence.create(pk);
 
-		newWebDAVProps.setMvccVersion(ServiceTestUtil.nextLong());
+		newWebDAVProps.setMvccVersion(RandomTestUtil.nextLong());
 
-		newWebDAVProps.setCompanyId(ServiceTestUtil.nextLong());
+		newWebDAVProps.setCompanyId(RandomTestUtil.nextLong());
 
-		newWebDAVProps.setCreateDate(ServiceTestUtil.nextDate());
+		newWebDAVProps.setCreateDate(RandomTestUtil.nextDate());
 
-		newWebDAVProps.setModifiedDate(ServiceTestUtil.nextDate());
+		newWebDAVProps.setModifiedDate(RandomTestUtil.nextDate());
 
-		newWebDAVProps.setClassNameId(ServiceTestUtil.nextLong());
+		newWebDAVProps.setClassNameId(RandomTestUtil.nextLong());
 
-		newWebDAVProps.setClassPK(ServiceTestUtil.nextLong());
+		newWebDAVProps.setClassPK(RandomTestUtil.nextLong());
 
-		newWebDAVProps.setProps(ServiceTestUtil.randomString());
+		newWebDAVProps.setProps(RandomTestUtil.randomString());
 
-		_persistence.update(newWebDAVProps);
+		_webDAVPropses.add(_persistence.update(newWebDAVProps));
 
 		WebDAVProps existingWebDAVProps = _persistence.findByPrimaryKey(newWebDAVProps.getPrimaryKey());
 
@@ -170,8 +144,8 @@ public class WebDAVPropsPersistenceTest {
 	@Test
 	public void testCountByC_C() {
 		try {
-			_persistence.countByC_C(ServiceTestUtil.nextLong(),
-				ServiceTestUtil.nextLong());
+			_persistence.countByC_C(RandomTestUtil.nextLong(),
+				RandomTestUtil.nextLong());
 
 			_persistence.countByC_C(0L, 0L);
 		}
@@ -191,7 +165,7 @@ public class WebDAVPropsPersistenceTest {
 
 	@Test
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = ServiceTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong();
 
 		try {
 			_persistence.findByPrimaryKey(pk);
@@ -214,7 +188,7 @@ public class WebDAVPropsPersistenceTest {
 		}
 	}
 
-	protected OrderByComparator getOrderByComparator() {
+	protected OrderByComparator<WebDAVProps> getOrderByComparator() {
 		return OrderByComparatorFactoryUtil.create("WebDAVProps",
 			"mvccVersion", true, "webDavPropsId", true, "companyId", true,
 			"createDate", true, "modifiedDate", true, "classNameId", true,
@@ -232,11 +206,93 @@ public class WebDAVPropsPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = ServiceTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong();
 
 		WebDAVProps missingWebDAVProps = _persistence.fetchByPrimaryKey(pk);
 
 		Assert.assertNull(missingWebDAVProps);
+	}
+
+	@Test
+	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereAllPrimaryKeysExist()
+		throws Exception {
+		WebDAVProps newWebDAVProps1 = addWebDAVProps();
+		WebDAVProps newWebDAVProps2 = addWebDAVProps();
+
+		Set<Serializable> primaryKeys = new HashSet<Serializable>();
+
+		primaryKeys.add(newWebDAVProps1.getPrimaryKey());
+		primaryKeys.add(newWebDAVProps2.getPrimaryKey());
+
+		Map<Serializable, WebDAVProps> webDAVPropses = _persistence.fetchByPrimaryKeys(primaryKeys);
+
+		Assert.assertEquals(2, webDAVPropses.size());
+		Assert.assertEquals(newWebDAVProps1,
+			webDAVPropses.get(newWebDAVProps1.getPrimaryKey()));
+		Assert.assertEquals(newWebDAVProps2,
+			webDAVPropses.get(newWebDAVProps2.getPrimaryKey()));
+	}
+
+	@Test
+	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
+		throws Exception {
+		long pk1 = RandomTestUtil.nextLong();
+
+		long pk2 = RandomTestUtil.nextLong();
+
+		Set<Serializable> primaryKeys = new HashSet<Serializable>();
+
+		primaryKeys.add(pk1);
+		primaryKeys.add(pk2);
+
+		Map<Serializable, WebDAVProps> webDAVPropses = _persistence.fetchByPrimaryKeys(primaryKeys);
+
+		Assert.assertTrue(webDAVPropses.isEmpty());
+	}
+
+	@Test
+	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereSomePrimaryKeysExist()
+		throws Exception {
+		WebDAVProps newWebDAVProps = addWebDAVProps();
+
+		long pk = RandomTestUtil.nextLong();
+
+		Set<Serializable> primaryKeys = new HashSet<Serializable>();
+
+		primaryKeys.add(newWebDAVProps.getPrimaryKey());
+		primaryKeys.add(pk);
+
+		Map<Serializable, WebDAVProps> webDAVPropses = _persistence.fetchByPrimaryKeys(primaryKeys);
+
+		Assert.assertEquals(1, webDAVPropses.size());
+		Assert.assertEquals(newWebDAVProps,
+			webDAVPropses.get(newWebDAVProps.getPrimaryKey()));
+	}
+
+	@Test
+	public void testFetchByPrimaryKeysWithNoPrimaryKeys()
+		throws Exception {
+		Set<Serializable> primaryKeys = new HashSet<Serializable>();
+
+		Map<Serializable, WebDAVProps> webDAVPropses = _persistence.fetchByPrimaryKeys(primaryKeys);
+
+		Assert.assertTrue(webDAVPropses.isEmpty());
+	}
+
+	@Test
+	public void testFetchByPrimaryKeysWithOnePrimaryKey()
+		throws Exception {
+		WebDAVProps newWebDAVProps = addWebDAVProps();
+
+		Set<Serializable> primaryKeys = new HashSet<Serializable>();
+
+		primaryKeys.add(newWebDAVProps.getPrimaryKey());
+
+		Map<Serializable, WebDAVProps> webDAVPropses = _persistence.fetchByPrimaryKeys(primaryKeys);
+
+		Assert.assertEquals(1, webDAVPropses.size());
+		Assert.assertEquals(newWebDAVProps,
+			webDAVPropses.get(newWebDAVProps.getPrimaryKey()));
 	}
 
 	@Test
@@ -287,7 +343,7 @@ public class WebDAVPropsPersistenceTest {
 				WebDAVProps.class.getClassLoader());
 
 		dynamicQuery.add(RestrictionsFactoryUtil.eq("webDavPropsId",
-				ServiceTestUtil.nextLong()));
+				RandomTestUtil.nextLong()));
 
 		List<WebDAVProps> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -328,7 +384,7 @@ public class WebDAVPropsPersistenceTest {
 				"webDavPropsId"));
 
 		dynamicQuery.add(RestrictionsFactoryUtil.in("webDavPropsId",
-				new Object[] { ServiceTestUtil.nextLong() }));
+				new Object[] { RandomTestUtil.nextLong() }));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -354,31 +410,29 @@ public class WebDAVPropsPersistenceTest {
 	}
 
 	protected WebDAVProps addWebDAVProps() throws Exception {
-		long pk = ServiceTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong();
 
 		WebDAVProps webDAVProps = _persistence.create(pk);
 
-		webDAVProps.setMvccVersion(ServiceTestUtil.nextLong());
+		webDAVProps.setMvccVersion(RandomTestUtil.nextLong());
 
-		webDAVProps.setCompanyId(ServiceTestUtil.nextLong());
+		webDAVProps.setCompanyId(RandomTestUtil.nextLong());
 
-		webDAVProps.setCreateDate(ServiceTestUtil.nextDate());
+		webDAVProps.setCreateDate(RandomTestUtil.nextDate());
 
-		webDAVProps.setModifiedDate(ServiceTestUtil.nextDate());
+		webDAVProps.setModifiedDate(RandomTestUtil.nextDate());
 
-		webDAVProps.setClassNameId(ServiceTestUtil.nextLong());
+		webDAVProps.setClassNameId(RandomTestUtil.nextLong());
 
-		webDAVProps.setClassPK(ServiceTestUtil.nextLong());
+		webDAVProps.setClassPK(RandomTestUtil.nextLong());
 
-		webDAVProps.setProps(ServiceTestUtil.randomString());
+		webDAVProps.setProps(RandomTestUtil.randomString());
 
-		_persistence.update(webDAVProps);
+		_webDAVPropses.add(_persistence.update(webDAVProps));
 
 		return webDAVProps;
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(WebDAVPropsPersistenceTest.class);
-	private ModelListener<WebDAVProps>[] _modelListeners;
-	private WebDAVPropsPersistence _persistence = (WebDAVPropsPersistence)PortalBeanLocatorUtil.locate(WebDAVPropsPersistence.class.getName());
-	private TransactionalPersistenceAdvice _transactionalPersistenceAdvice = (TransactionalPersistenceAdvice)PortalBeanLocatorUtil.locate(TransactionalPersistenceAdvice.class.getName());
+	private List<WebDAVProps> _webDAVPropses = new ArrayList<WebDAVProps>();
+	private WebDAVPropsPersistence _persistence = WebDAVPropsUtil.getPersistence();
 }

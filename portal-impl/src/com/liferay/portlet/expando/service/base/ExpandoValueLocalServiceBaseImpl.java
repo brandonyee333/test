@@ -14,6 +14,8 @@
 
 package com.liferay.portlet.expando.service.base;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.bean.IdentifiableBean;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -63,6 +65,7 @@ import javax.sql.DataSource;
  * @see com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil
  * @generated
  */
+@ProviderType
 public abstract class ExpandoValueLocalServiceBaseImpl
 	extends BaseLocalServiceImpl implements ExpandoValueLocalService,
 		IdentifiableBean {
@@ -77,12 +80,10 @@ public abstract class ExpandoValueLocalServiceBaseImpl
 	 *
 	 * @param expandoValue the expando value
 	 * @return the expando value that was added
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	@Override
-	public ExpandoValue addExpandoValue(ExpandoValue expandoValue)
-		throws SystemException {
+	public ExpandoValue addExpandoValue(ExpandoValue expandoValue) {
 		expandoValue.setNew(true);
 
 		return expandoValuePersistence.update(expandoValue);
@@ -105,12 +106,11 @@ public abstract class ExpandoValueLocalServiceBaseImpl
 	 * @param valueId the primary key of the expando value
 	 * @return the expando value that was removed
 	 * @throws PortalException if a expando value with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public ExpandoValue deleteExpandoValue(long valueId)
-		throws PortalException, SystemException {
+		throws PortalException {
 		return expandoValuePersistence.remove(valueId);
 	}
 
@@ -119,12 +119,10 @@ public abstract class ExpandoValueLocalServiceBaseImpl
 	 *
 	 * @param expandoValue the expando value
 	 * @return the expando value that was removed
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
-	public ExpandoValue deleteExpandoValue(ExpandoValue expandoValue)
-		throws SystemException {
+	public ExpandoValue deleteExpandoValue(ExpandoValue expandoValue) {
 		return expandoValuePersistence.remove(expandoValue);
 	}
 
@@ -141,12 +139,9 @@ public abstract class ExpandoValueLocalServiceBaseImpl
 	 *
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery)
-		throws SystemException {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return expandoValuePersistence.findWithDynamicQuery(dynamicQuery);
 	}
 
@@ -161,12 +156,10 @@ public abstract class ExpandoValueLocalServiceBaseImpl
 	 * @param start the lower bound of the range of model instances
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery, int start, int end)
-		throws SystemException {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end) {
 		return expandoValuePersistence.findWithDynamicQuery(dynamicQuery,
 			start, end);
 	}
@@ -183,47 +176,41 @@ public abstract class ExpandoValueLocalServiceBaseImpl
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator orderByComparator) throws SystemException {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end, OrderByComparator<T> orderByComparator) {
 		return expandoValuePersistence.findWithDynamicQuery(dynamicQuery,
 			start, end, orderByComparator);
 	}
 
 	/**
-	 * Returns the number of rows that match the dynamic query.
+	 * Returns the number of rows matching the dynamic query.
 	 *
 	 * @param dynamicQuery the dynamic query
-	 * @return the number of rows that match the dynamic query
-	 * @throws SystemException if a system exception occurred
+	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
-	public long dynamicQueryCount(DynamicQuery dynamicQuery)
-		throws SystemException {
+	public long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return expandoValuePersistence.countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * Returns the number of rows that match the dynamic query.
+	 * Returns the number of rows matching the dynamic query.
 	 *
 	 * @param dynamicQuery the dynamic query
 	 * @param projection the projection to apply to the query
-	 * @return the number of rows that match the dynamic query
-	 * @throws SystemException if a system exception occurred
+	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection) throws SystemException {
+		Projection projection) {
 		return expandoValuePersistence.countWithDynamicQuery(dynamicQuery,
 			projection);
 	}
 
 	@Override
-	public ExpandoValue fetchExpandoValue(long valueId)
-		throws SystemException {
+	public ExpandoValue fetchExpandoValue(long valueId) {
 		return expandoValuePersistence.fetchByPrimaryKey(valueId);
 	}
 
@@ -233,17 +220,14 @@ public abstract class ExpandoValueLocalServiceBaseImpl
 	 * @param valueId the primary key of the expando value
 	 * @return the expando value
 	 * @throws PortalException if a expando value with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public ExpandoValue getExpandoValue(long valueId)
-		throws PortalException, SystemException {
+	public ExpandoValue getExpandoValue(long valueId) throws PortalException {
 		return expandoValuePersistence.findByPrimaryKey(valueId);
 	}
 
 	@Override
-	public ActionableDynamicQuery getActionableDynamicQuery()
-		throws SystemException {
+	public ActionableDynamicQuery getActionableDynamicQuery() {
 		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
 
 		actionableDynamicQuery.setBaseLocalService(com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil.getService());
@@ -256,8 +240,7 @@ public abstract class ExpandoValueLocalServiceBaseImpl
 	}
 
 	protected void initActionableDynamicQuery(
-		ActionableDynamicQuery actionableDynamicQuery)
-		throws SystemException {
+		ActionableDynamicQuery actionableDynamicQuery) {
 		actionableDynamicQuery.setBaseLocalService(com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil.getService());
 		actionableDynamicQuery.setClass(ExpandoValue.class);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
@@ -265,9 +248,18 @@ public abstract class ExpandoValueLocalServiceBaseImpl
 		actionableDynamicQuery.setPrimaryKeyPropertyName("valueId");
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
+		throws PortalException {
+		return expandoValueLocalService.deleteExpandoValue((ExpandoValue)persistedModel);
+	}
+
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException, SystemException {
+		throws PortalException {
 		return expandoValuePersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
@@ -281,11 +273,9 @@ public abstract class ExpandoValueLocalServiceBaseImpl
 	 * @param start the lower bound of the range of expando values
 	 * @param end the upper bound of the range of expando values (not inclusive)
 	 * @return the range of expando values
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<ExpandoValue> getExpandoValues(int start, int end)
-		throws SystemException {
+	public List<ExpandoValue> getExpandoValues(int start, int end) {
 		return expandoValuePersistence.findAll(start, end);
 	}
 
@@ -293,10 +283,9 @@ public abstract class ExpandoValueLocalServiceBaseImpl
 	 * Returns the number of expando values.
 	 *
 	 * @return the number of expando values
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int getExpandoValuesCount() throws SystemException {
+	public int getExpandoValuesCount() {
 		return expandoValuePersistence.countAll();
 	}
 
@@ -305,12 +294,10 @@ public abstract class ExpandoValueLocalServiceBaseImpl
 	 *
 	 * @param expandoValue the expando value
 	 * @return the expando value that was updated
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	@Override
-	public ExpandoValue updateExpandoValue(ExpandoValue expandoValue)
-		throws SystemException {
+	public ExpandoValue updateExpandoValue(ExpandoValue expandoValue) {
 		return expandoValuePersistence.update(expandoValue);
 	}
 
@@ -716,7 +703,7 @@ public abstract class ExpandoValueLocalServiceBaseImpl
 	 *
 	 * @param sql the sql query
 	 */
-	protected void runSQL(String sql) throws SystemException {
+	protected void runSQL(String sql) {
 		try {
 			DataSource dataSource = expandoValuePersistence.getDataSource();
 

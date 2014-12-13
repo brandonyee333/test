@@ -15,7 +15,6 @@
 package com.liferay.portal.mobile.device.rulegroup;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.mobile.device.rulegroup.ActionHandlerManager;
@@ -40,7 +39,7 @@ public class DefaultActionHandlerManagerImpl implements ActionHandlerManager {
 	public void applyActions(
 			List<MDRAction> mdrActions, HttpServletRequest request,
 			HttpServletResponse response)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		for (MDRAction mdrAction : mdrActions) {
 			applyAction(mdrAction, request, response);
@@ -89,7 +88,7 @@ public class DefaultActionHandlerManagerImpl implements ActionHandlerManager {
 	protected void applyAction(
 			MDRAction mdrAction, HttpServletRequest request,
 			HttpServletResponse response)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		ActionHandler actionHandler = _deviceActionHandlers.get(
 			mdrAction.getType());
@@ -103,10 +102,10 @@ public class DefaultActionHandlerManagerImpl implements ActionHandlerManager {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		DefaultActionHandlerManagerImpl.class);
 
-	private Map<String, ActionHandler> _deviceActionHandlers =
+	private final Map<String, ActionHandler> _deviceActionHandlers =
 		new HashMap<String, ActionHandler>();
 
 }

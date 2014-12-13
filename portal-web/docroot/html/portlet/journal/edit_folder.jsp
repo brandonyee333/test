@@ -44,7 +44,7 @@ if (workflowEnabled) {
 
 <liferay-util:buffer var="removeDDMStructureIcon">
 	<liferay-ui:icon
-		iconCssClass="icon-unlink"
+		iconCssClass="icon-remove"
 		label="<%= true %>"
 		message="remove"
 	/>
@@ -73,24 +73,22 @@ if (workflowEnabled) {
 			<aui:field-wrapper label="parent-folder">
 
 				<%
-				String parentFolderName = LanguageUtil.get(pageContext, "home");
+				String parentFolderName = LanguageUtil.get(request, "home");
 
-				try {
-					JournalFolder parentFolder = JournalFolderServiceUtil.getFolder(parentFolderId);
+				JournalFolder parentFolder = JournalFolderServiceUtil.fetchFolder(parentFolderId);
 
+				if (parentFolder != null) {
 					parentFolderName = parentFolder.getName();
-				}
-				catch (NoSuchFolderException nsfe) {
 				}
 				%>
 
-				<div class="control-group">
+				<div class="form-group">
 					<aui:input name="parentFolderName" type="resource" value="<%= parentFolderName %>" />
 
 					<aui:button name="selecFolderButton" value="select" />
 
-					<aui:script use="aui-base">
-						A.one('#<portlet:namespace />selecFolderButton').on(
+					<aui:script>
+						AUI.$('#<portlet:namespace />selecFolderButton').on(
 							'click',
 							function(event) {
 								Liferay.Util.selectEntity(
@@ -179,9 +177,9 @@ if (workflowEnabled) {
 					}
 					%>
 
-					<aui:input checked="<%= folder.getRestrictionType() == JournalFolderConstants.RESTRICTION_TYPE_INHERIT %>" id="restrictionTypeInherit" label='<%= workflowEnabled ? LanguageUtil.format(locale, "use-structure-restrictions-and-workflow-of-the-parent-folder-x", parentFolderName) : LanguageUtil.format(locale, "use-structure-restrictions-of-the-parent-folder-x", parentFolderName) %>' name="restrictionType" type="radio" value="<%= JournalFolderConstants.RESTRICTION_TYPE_INHERIT %>" />
+					<aui:input checked="<%= folder.getRestrictionType() == JournalFolderConstants.RESTRICTION_TYPE_INHERIT %>" id="restrictionTypeInherit" label='<%= workflowEnabled ? LanguageUtil.format(locale, "use-structure-restrictions-and-workflow-of-the-parent-folder-x", HtmlUtil.escape(parentFolderName)) : LanguageUtil.format(locale, "use-structure-restrictions-of-the-parent-folder-x", HtmlUtil.escape(parentFolderName)) %>' name="restrictionType" type="radio" value="<%= JournalFolderConstants.RESTRICTION_TYPE_INHERIT %>" />
 
-					<aui:input checked="<%= folder.getRestrictionType() == JournalFolderConstants.RESTRICTION_TYPE_DDM_STRUCTURES_AND_WORKFLOW %>" id="restrictionTypeDefined" label='<%= workflowEnabled ? LanguageUtil.format(locale, "define-specific-structure-restrictions-and-workflow-for-this-folder-x", folder.getName()) : LanguageUtil.format(locale, "define-specific-structure-restrictions-for-this-folder-x", folder.getName()) %>' name="restrictionType" type="radio" value="<%= JournalFolderConstants.RESTRICTION_TYPE_DDM_STRUCTURES_AND_WORKFLOW %>" />
+					<aui:input checked="<%= folder.getRestrictionType() == JournalFolderConstants.RESTRICTION_TYPE_DDM_STRUCTURES_AND_WORKFLOW %>" id="restrictionTypeDefined" label='<%= workflowEnabled ? LanguageUtil.format(locale, "define-specific-structure-restrictions-and-workflow-for-this-folder-x", HtmlUtil.escape(folder.getName())) : LanguageUtil.format(locale, "define-specific-structure-restrictions-for-this-folder-x", HtmlUtil.escape(folder.getName())) %>' name="restrictionType" type="radio" value="<%= JournalFolderConstants.RESTRICTION_TYPE_DDM_STRUCTURES_AND_WORKFLOW %>" />
 
 					<div class='<%= (folder.getRestrictionType() == JournalFolderConstants.RESTRICTION_TYPE_DDM_STRUCTURES_AND_WORKFLOW) ? StringPool.BLANK : "hide" %>' id="<portlet:namespace />restrictionTypeDefinedDiv">
 						<liferay-ui:search-container
@@ -194,13 +192,12 @@ if (workflowEnabled) {
 
 							<liferay-ui:search-container-row
 								className="com.liferay.portlet.dynamicdatamapping.model.DDMStructure"
-								escapedModel="<%= true %>"
 								keyProperty="structureId"
 								modelVar="ddmStructure"
 							>
 								<liferay-ui:search-container-column-text
 									name="name"
-									value="<%= ddmStructure.getName(locale) %>"
+									value="<%= HtmlUtil.escape(ddmStructure.getName(locale)) %>"
 								/>
 
 								<c:if test="<%= workflowEnabled %>">
@@ -225,7 +222,7 @@ if (workflowEnabled) {
 												}
 											%>
 
-												<aui:option label='<%= workflowDefinition.getName() + " (" + LanguageUtil.format(locale, "version-x", workflowDefinition.getVersion(), false) + ")" %>' selected="<%= selected %>" value="<%= workflowDefinition.getName() + StringPool.AT + workflowDefinition.getVersion() %>" />
+												<aui:option label='<%= HtmlUtil.escape(workflowDefinition.getName()) + " (" + LanguageUtil.format(locale, "version-x", workflowDefinition.getVersion(), false) + ")" %>' selected="<%= selected %>" value="<%= HtmlUtil.escapeAttribute(workflowDefinition.getName()) + StringPool.AT + workflowDefinition.getVersion() %>" />
 
 											<%
 											}
@@ -247,7 +244,7 @@ if (workflowEnabled) {
 							cssClass="modify-link select-structure"
 							iconCssClass="icon-search"
 							label="<%= true %>"
-							linkCssClass="btn"
+							linkCssClass="btn btn-default"
 							message="choose-structure"
 							url='<%= "javascript:" + renderResponse.getNamespace() + "openDDMStructureSelector();" %>'
 						/>
@@ -255,9 +252,14 @@ if (workflowEnabled) {
 				</c:if>
 
 				<c:if test="<%= workflowEnabled %>">
-					<c:if test="<%= !rootFolder %>">
-						<aui:input checked="<%= folder.getRestrictionType() == JournalFolderConstants.RESTRICTION_TYPE_WORKFLOW %>" id="restrictionTypeWorkflow" label='<%= LanguageUtil.format(locale, "default-workflow-for-this-folder-x", folder.getName()) %>' name="restrictionType" type="radio" value="<%= JournalFolderConstants.RESTRICTION_TYPE_WORKFLOW %>" />
-					</c:if>
+					<c:choose>
+						<c:when test="<%= !rootFolder %>">
+							<aui:input checked="<%= folder.getRestrictionType() == JournalFolderConstants.RESTRICTION_TYPE_WORKFLOW %>" id="restrictionTypeWorkflow" label='<%= LanguageUtil.format(locale, "default-workflow-for-this-folder-x", HtmlUtil.escape(folder.getName())) %>' name="restrictionType" type="radio" value="<%= JournalFolderConstants.RESTRICTION_TYPE_WORKFLOW %>" />
+						</c:when>
+						<c:otherwise>
+							<aui:input name="restrictionType" type="hidden" value="<%= JournalFolderConstants.RESTRICTION_TYPE_WORKFLOW %>" />
+						</c:otherwise>
+					</c:choose>
 
 					<div class='<%= (rootFolder || (folder.getRestrictionType() == JournalFolderConstants.RESTRICTION_TYPE_WORKFLOW)) ? StringPool.BLANK : "hide" %>' id="<portlet:namespace />restrictionTypeWorkflowDiv">
 						<aui:select label='<%= rootFolder ? "default-workflow-for-all-structures" : StringPool.BLANK %>' name='<%= "workflowDefinition" + JournalArticleConstants.DDM_STRUCTURE_ID_ALL %>'>
@@ -280,7 +282,7 @@ if (workflowEnabled) {
 								}
 							%>
 
-								<aui:option label='<%= workflowDefinition.getName() + " (" + LanguageUtil.format(locale, "version-x", workflowDefinition.getVersion(), false) + ")" %>' selected="<%= selected %>" value="<%= workflowDefinition.getName() + StringPool.AT + workflowDefinition.getVersion() %>" />
+								<aui:option label='<%= HtmlUtil.escape(workflowDefinition.getName()) + " (" + LanguageUtil.format(locale, "version-x", workflowDefinition.getVersion(), false) + ")" %>' selected="<%= selected %>" value="<%= HtmlUtil.escapeAttribute(workflowDefinition.getName()) + StringPool.AT + workflowDefinition.getVersion() %>" />
 
 							<%
 							}
@@ -317,7 +319,7 @@ if (workflowEnabled) {
 			for (WorkflowDefinition workflowDefinition : workflowDefinitions) {
 			%>
 
-				<aui:option label='<%= workflowDefinition.getName() + " (" + LanguageUtil.format(locale, "version-x", workflowDefinition.getVersion(), false) + ")" %>' selected="<% selected %>" value="<%= workflowDefinition.getName() + StringPool.AT + workflowDefinition.getVersion() %>" />
+				<aui:option label='<%= HtmlUtil.escape(workflowDefinition.getName()) + " (" + LanguageUtil.format(locale, "version-x", workflowDefinition.getVersion(), false) + ")" %>' selected="<% selected %>" value="<%= HtmlUtil.escapeAttribute(workflowDefinition.getName()) + StringPool.AT + workflowDefinition.getVersion() %>" />
 
 			<%
 			}
@@ -337,10 +339,10 @@ if (workflowEnabled) {
 				},
 				eventName: '<portlet:namespace />selectStructure',
 				groupId: <%= scopeGroupId %>,
-				refererPortletName: '<%= PortletKeys.JOURNAL_CONTENT %>',
+				refererPortletName: '<%= PortletKeys.JOURNAL %>',
 				showAncestorScopes: true,
 				struts_action: '/dynamic_data_mapping/select_structure',
-				title: '<%= UnicodeLanguageUtil.get(pageContext, "structures") %>'
+				title: '<%= UnicodeLanguageUtil.get(request, "structures") %>'
 			},
 			function(event) {
 				<portlet:namespace />selectStructure(event.ddmstructureid, event.name);
@@ -352,8 +354,6 @@ if (workflowEnabled) {
 		window,
 		'<portlet:namespace />selectStructure',
 		function(ddmStructureId, ddmStructureName) {
-			var A = AUI();
-
 			var searchContainer = Liferay.SearchContainer.get('<portlet:namespace />ddmStructuresSearchContainer');
 
 			var ddmStructureLink = '<a class="modify-link" data-rowId="' + ddmStructureId + '" href="javascript:;"><%= UnicodeFormatter.toString(removeDDMStructureIcon) %></a>';
@@ -387,8 +387,6 @@ if (workflowEnabled) {
 	searchContainer.get('contentBox').delegate(
 		'click',
 		function(event) {
-			var A = AUI();
-
 			var link = event.currentTarget;
 
 			var tr = link.ancestor('tr');
@@ -403,13 +401,13 @@ if (workflowEnabled) {
 if (folder != null) {
 	JournalUtil.addPortletBreadcrumbEntries(folderId, request, renderResponse);
 
-	PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(pageContext, "edit"), currentURL);
+	PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(request, "edit"), currentURL);
 }
 else {
 	if (parentFolderId > 0) {
 		JournalUtil.addPortletBreadcrumbEntries(parentFolderId, request, renderResponse);
 	}
 
-	PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(pageContext, "add-folder"), currentURL);
+	PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(request, "add-folder"), currentURL);
 }
 %>

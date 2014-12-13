@@ -17,7 +17,6 @@ package com.liferay.portal.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.service.ServiceContext;
 
 import com.liferay.portlet.expando.model.ExpandoBridge;
@@ -145,10 +144,9 @@ public interface OrganizationModel extends BaseModel<Organization>, MVCCModel,
 	 * Returns the user uuid of this organization.
 	 *
 	 * @return the user uuid of this organization
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public String getUserUuid() throws SystemException;
+	public String getUserUuid();
 
 	/**
 	 * Sets the user uuid of this organization.
@@ -394,19 +392,19 @@ public interface OrganizationModel extends BaseModel<Organization>, MVCCModel,
 	public Object clone();
 
 	@Override
-	public int compareTo(Organization organization);
+	public int compareTo(com.liferay.portal.model.Organization organization);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<Organization> toCacheModel();
+	public CacheModel<com.liferay.portal.model.Organization> toCacheModel();
 
 	@Override
-	public Organization toEscapedModel();
+	public com.liferay.portal.model.Organization toEscapedModel();
 
 	@Override
-	public Organization toUnescapedModel();
+	public com.liferay.portal.model.Organization toUnescapedModel();
 
 	@Override
 	public String toString();

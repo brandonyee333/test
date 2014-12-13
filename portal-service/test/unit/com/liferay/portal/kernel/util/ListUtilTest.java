@@ -16,6 +16,7 @@ package com.liferay.portal.kernel.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -24,29 +25,161 @@ import org.junit.Test;
 
 /**
  * @author Olaf Kock
+ * @author Jos� Navarro
  */
 public class ListUtilTest {
+
+	@Test
+	public void testCountEmptyList() {
+		List<String> list = new ArrayList<String>();
+
+		PredicateFilter<String> predicateFilter =
+			new PredicateFilter<String>() {
+
+				@Override
+				public boolean filter(String string) {
+					return true;
+				}
+
+			};
+
+		Assert.assertEquals(0, ListUtil.count(list, predicateFilter));
+	}
+
+	@Test
+	public void testCountList() {
+		List<String> list = new ArrayList<String>();
+
+		list.add("a");
+		list.add("b");
+		list.add("c");
+
+		PredicateFilter<String> predicateFilter =
+			new PredicateFilter<String>() {
+
+				@Override
+				public boolean filter(String string) {
+					return string.equals("b");
+				}
+
+			};
+
+		Assert.assertEquals(1, ListUtil.count(list, predicateFilter));
+
+		predicateFilter = new PredicateFilter<String>() {
+
+			@Override
+			public boolean filter(String string) {
+				return string.equals("z");
+			}
+
+		};
+
+		Assert.assertEquals(0, ListUtil.count(list, predicateFilter));
+	}
+
+	@Test
+	public void testCountNullList() {
+		List<String> list = null;
+
+		PredicateFilter<String> predicateFilter =
+			new PredicateFilter<String>() {
+
+				@Override
+				public boolean filter(String string) {
+					return true;
+				}
+
+			};
+
+		Assert.assertEquals(0, ListUtil.count(list, predicateFilter));
+	}
+
+	@Test
+	public void testExistsEmptyList() {
+		List<String> list = new ArrayList<String>();
+
+		PredicateFilter<String> predicateFilter =
+			new PredicateFilter<String>() {
+
+				@Override
+				public boolean filter(String string) {
+					return true;
+				}
+
+			};
+
+		Assert.assertFalse(ListUtil.exists(list, predicateFilter));
+	}
+
+	@Test
+	public void testExistsList() {
+		List<String> list = new ArrayList<String>();
+
+		list.add("a");
+		list.add("bb");
+		list.add("c");
+
+		PredicateFilter<String> predicateFilter =
+			new PredicateFilter<String>() {
+
+				@Override
+				public boolean filter(String string) {
+					if (string.length() == 2) {
+						return true;
+					}
+
+					return false;
+				}
+
+			};
+
+		Assert.assertTrue(ListUtil.exists(list, predicateFilter));
+
+		predicateFilter = new PredicateFilter<String>() {
+
+			@Override
+			public boolean filter(String string) {
+				return string.equals("z");
+			}
+
+		};
+
+		Assert.assertFalse(ListUtil.exists(list, predicateFilter));
+	}
+
+	@Test
+	public void testExistsNullList() {
+		List<String> list = null;
+
+		PredicateFilter<String> predicateFilter =
+			new PredicateFilter<String>() {
+
+				@Override
+				public boolean filter(String string) {
+					return true;
+				}
+
+			};
+
+		Assert.assertFalse(ListUtil.exists(list, predicateFilter));
+	}
 
 	@Test
 	public void testFilterWithoutOutputList() {
 		List<String> expectedOutputList = new ArrayList<String>();
 
-		expectedOutputList.add("a");
-		expectedOutputList.add("c");
+		expectedOutputList.add("b");
 
 		PredicateFilter<String> predicateFilter =
 			new PredicateFilter<String>() {
 
-			@Override
-			public boolean filter(String string) {
-				if (!string.equals("b")) {
-					return true;
+				@Override
+				public boolean filter(String string) {
+					return string.equals("b");
 				}
 
-				return false;
-			}
-
-		};
+			};
 
 		List<String> inputList = new ArrayList<String>();
 
@@ -54,7 +187,7 @@ public class ListUtilTest {
 		inputList.add("b");
 		inputList.add("c");
 
-		List<String> actualOutputList = ListUtil.filter(
+		Collection<String> actualOutputList = ListUtil.filter(
 			inputList, predicateFilter);
 
 		Assert.assertEquals(expectedOutputList, actualOutputList);
@@ -65,8 +198,7 @@ public class ListUtilTest {
 		List<String> expectedOutputList = new ArrayList<String>();
 
 		expectedOutputList.add("0");
-		expectedOutputList.add("a");
-		expectedOutputList.add("c");
+		expectedOutputList.add("b");
 
 		List<String> inputList = new ArrayList<String>();
 
@@ -81,18 +213,14 @@ public class ListUtilTest {
 		PredicateFilter<String> predicateFilter =
 			new PredicateFilter<String>() {
 
-			@Override
-			public boolean filter(String string) {
-				if (!string.equals("b")) {
-					return true;
+				@Override
+				public boolean filter(String string) {
+					return string.equals("b");
 				}
 
-				return false;
-			}
+			};
 
-		};
-
-		List<String> actualOutputList = ListUtil.filter(
+		Collection<String> actualOutputList = ListUtil.filter(
 			inputList, outputList, predicateFilter);
 
 		Assert.assertSame(outputList, actualOutputList);
@@ -240,6 +368,133 @@ public class ListUtilTest {
 
 		Assert.assertSame(
 			Collections.emptyList(), ListUtil.subList(list, 2, 1));
+	}
+
+	@Test
+	public void testToArray() {
+		List<Integer> list = Arrays.asList(1, 2, 3, 4);
+
+		String[] array = ListUtil.toArray(
+			list,
+			new Accessor<Integer, String>() {
+
+				@Override
+				public String get(Integer integer) {
+					return String.valueOf(integer);
+				}
+
+				@Override
+				public Class<String> getAttributeClass() {
+					return String.class;
+				}
+
+				@Override
+				public Class<Integer> getTypeClass() {
+					return Integer.class;
+				}
+
+			});
+
+		Assert.assertArrayEquals(new String[] {"1", "2", "3", "4"}, array);
+	}
+
+	@Test
+	public void testToArrayEmpty() {
+		List<Integer> list = Collections.emptyList();
+
+		String[] array = ListUtil.toArray(
+			list,
+			new Accessor<Integer, String>() {
+
+				@Override
+				public String get(Integer integer) {
+					return String.valueOf(integer);
+				}
+
+				@Override
+				public Class<String> getAttributeClass() {
+					return String.class;
+				}
+
+				@Override
+				public Class<Integer> getTypeClass() {
+					return Integer.class;
+				}
+
+			});
+
+		Assert.assertArrayEquals(new String[0], array);
+	}
+
+	@Test
+	public void testToList() throws Exception {
+		List<String> list = new ArrayList<String>();
+
+		list.add("aaa");
+		list.add("bbb");
+		list.add("ccc");
+
+		List<Object> list2 = ListUtil.toList(list);
+
+		Assert.assertArrayEquals(
+			new Object[] {"aaa", "bbb", "ccc"},
+			list2.toArray());
+	}
+
+	@Test
+	public void testToLongArray() {
+		List<String> list = Arrays.asList("1", "2", "3", "4");
+
+		long[] array = ListUtil.toLongArray(
+			list,
+			new Accessor<String, Long>() {
+
+				@Override
+				public Long get(String string) {
+					return Long.parseLong(string);
+				}
+
+				@Override
+				public Class<Long> getAttributeClass() {
+					return Long.class;
+				}
+
+				@Override
+				public Class<String> getTypeClass() {
+					return String.class;
+				}
+
+			});
+
+		Assert.assertArrayEquals(new long[] {1, 2, 3, 4}, array);
+	}
+
+	@Test
+	public void testToLongArrayEmpty() {
+		List<String> list = Collections.emptyList();
+
+		long[] array = ListUtil.toLongArray(
+			list,
+			new Accessor<String, Long>() {
+
+				@Override
+				public Long get(String string) {
+					return Long.parseLong(string);
+				}
+
+				@Override
+				public Class<Long> getAttributeClass() {
+					return Long.class;
+				}
+
+				@Override
+				public Class<String> getTypeClass() {
+					return String.class;
+				}
+
+			});
+
+		Assert.assertArrayEquals(new long[0], array);
 	}
 
 	@Test

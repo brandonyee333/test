@@ -19,6 +19,7 @@
 <%@ page import="com.liferay.portal.DuplicateGroupException" %><%@
 page import="com.liferay.portal.DuplicateTeamException" %><%@
 page import="com.liferay.portal.GroupFriendlyURLException" %><%@
+page import="com.liferay.portal.GroupInheritContentException" %><%@
 page import="com.liferay.portal.GroupNameException" %><%@
 page import="com.liferay.portal.GroupParentException" %><%@
 page import="com.liferay.portal.LayoutSetVirtualHostException" %><%@
@@ -31,9 +32,7 @@ page import="com.liferay.portal.RemoteOptionsException" %><%@
 page import="com.liferay.portal.RequiredGroupException" %><%@
 page import="com.liferay.portal.TeamNameException" %><%@
 page import="com.liferay.portal.kernel.backgroundtask.BackgroundTaskConstants" %><%@
-page import="com.liferay.portal.kernel.lar.PortletDataHandler" %><%@
 page import="com.liferay.portal.kernel.staging.StagingConstants" %><%@
-page import="com.liferay.portal.kernel.staging.StagingUtil" %><%@
 page import="com.liferay.portal.lar.LayoutExporter" %><%@
 page import="com.liferay.portal.lar.backgroundtask.LayoutStagingBackgroundTaskExecutor" %><%@
 page import="com.liferay.portal.liveusers.LiveUsers" %><%@
@@ -74,8 +73,6 @@ if (GroupPermissionUtil.contains(permissionChecker, ActionKeys.VIEW)) {
 }
 
 long[] classNameIds = new long[] {PortalUtil.getClassNameId(Company.class), PortalUtil.getClassNameId(Group.class), PortalUtil.getClassNameId(Organization.class)};
-
-Format dateFormatDate = FastDateFormatFactoryUtil.getDate(locale, timeZone);
 %>
 
 <%@ include file="/html/portlet/sites_admin/init-ext.jsp" %>

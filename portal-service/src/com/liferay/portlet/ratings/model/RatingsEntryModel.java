@@ -17,7 +17,6 @@ package com.liferay.portlet.ratings.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.AttachedModel;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.CacheModel;
@@ -133,10 +132,9 @@ public interface RatingsEntryModel extends AttachedModel, BaseModel<RatingsEntry
 	 * Returns the user uuid of this ratings entry.
 	 *
 	 * @return the user uuid of this ratings entry
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public String getUserUuid() throws SystemException;
+	public String getUserUuid();
 
 	/**
 	 * Sets the user uuid of this ratings entry.
@@ -288,19 +286,20 @@ public interface RatingsEntryModel extends AttachedModel, BaseModel<RatingsEntry
 	public Object clone();
 
 	@Override
-	public int compareTo(RatingsEntry ratingsEntry);
+	public int compareTo(
+		com.liferay.portlet.ratings.model.RatingsEntry ratingsEntry);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<RatingsEntry> toCacheModel();
+	public CacheModel<com.liferay.portlet.ratings.model.RatingsEntry> toCacheModel();
 
 	@Override
-	public RatingsEntry toEscapedModel();
+	public com.liferay.portlet.ratings.model.RatingsEntry toEscapedModel();
 
 	@Override
-	public RatingsEntry toUnescapedModel();
+	public com.liferay.portlet.ratings.model.RatingsEntry toUnescapedModel();
 
 	@Override
 	public String toString();

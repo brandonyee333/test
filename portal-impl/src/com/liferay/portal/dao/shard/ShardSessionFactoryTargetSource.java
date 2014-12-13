@@ -33,6 +33,25 @@ import org.springframework.aop.TargetSource;
  */
 public class ShardSessionFactoryTargetSource implements TargetSource {
 
+	public void afterPropertiesSet() throws Exception {
+		Map<String, DataSource> dataSources =
+			_shardDataSourceTargetSource.getDataSources();
+
+		for (String shardName : dataSources.keySet()) {
+			DataSource dataSource = dataSources.get(shardName);
+
+			PortalHibernateConfiguration portalHibernateConfiguration =
+				new PortalHibernateConfiguration();
+
+			portalHibernateConfiguration.setDataSource(dataSource);
+
+			SessionFactory sessionFactory =
+				portalHibernateConfiguration.buildSessionFactory();
+
+			_sessionFactories.put(shardName, sessionFactory);
+		}
+	}
+
 	public Map<String, SessionFactory> getSessionFactories() {
 		return _sessionFactories;
 	}
@@ -65,31 +84,15 @@ public class ShardSessionFactoryTargetSource implements TargetSource {
 	}
 
 	public void setShardDataSourceTargetSource(
-			ShardDataSourceTargetSource shardDataSourceTargetSource)
-		throws Exception {
+		ShardDataSourceTargetSource shardDataSourceTargetSource) {
 
-		Map<String, DataSource> dataSources =
-			shardDataSourceTargetSource.getDataSources();
-
-		for (String shardName : dataSources.keySet()) {
-			DataSource dataSource = dataSources.get(shardName);
-
-			PortalHibernateConfiguration portalHibernateConfiguration =
-				new PortalHibernateConfiguration();
-
-			portalHibernateConfiguration.setDataSource(dataSource);
-
-			SessionFactory sessionFactory =
-				portalHibernateConfiguration.buildSessionFactory();
-
-			_sessionFactories.put(shardName, sessionFactory);
-		}
+		_shardDataSourceTargetSource = shardDataSourceTargetSource;
 	}
 
-	private static Map<String, SessionFactory> _sessionFactories =
+	private static final Map<String, SessionFactory> _sessionFactories =
 		new HashMap<String, SessionFactory>();
 
-	private static ThreadLocal<SessionFactory> _sessionFactory =
+	private static final ThreadLocal<SessionFactory> _sessionFactory =
 		new CentralizedThreadLocal<SessionFactory>(false) {
 
 		@Override
@@ -98,5 +101,7 @@ public class ShardSessionFactoryTargetSource implements TargetSource {
 		}
 
 	};
+
+	private ShardDataSourceTargetSource _shardDataSourceTargetSource;
 
 }

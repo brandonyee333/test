@@ -14,6 +14,8 @@
 
 package com.liferay.portlet.shopping.service.base;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.bean.IdentifiableBean;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -57,6 +59,7 @@ import javax.sql.DataSource;
  * @see com.liferay.portlet.shopping.service.ShoppingItemFieldLocalServiceUtil
  * @generated
  */
+@ProviderType
 public abstract class ShoppingItemFieldLocalServiceBaseImpl
 	extends BaseLocalServiceImpl implements ShoppingItemFieldLocalService,
 		IdentifiableBean {
@@ -71,12 +74,11 @@ public abstract class ShoppingItemFieldLocalServiceBaseImpl
 	 *
 	 * @param shoppingItemField the shopping item field
 	 * @return the shopping item field that was added
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public ShoppingItemField addShoppingItemField(
-		ShoppingItemField shoppingItemField) throws SystemException {
+		ShoppingItemField shoppingItemField) {
 		shoppingItemField.setNew(true);
 
 		return shoppingItemFieldPersistence.update(shoppingItemField);
@@ -99,12 +101,11 @@ public abstract class ShoppingItemFieldLocalServiceBaseImpl
 	 * @param itemFieldId the primary key of the shopping item field
 	 * @return the shopping item field that was removed
 	 * @throws PortalException if a shopping item field with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public ShoppingItemField deleteShoppingItemField(long itemFieldId)
-		throws PortalException, SystemException {
+		throws PortalException {
 		return shoppingItemFieldPersistence.remove(itemFieldId);
 	}
 
@@ -113,12 +114,11 @@ public abstract class ShoppingItemFieldLocalServiceBaseImpl
 	 *
 	 * @param shoppingItemField the shopping item field
 	 * @return the shopping item field that was removed
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public ShoppingItemField deleteShoppingItemField(
-		ShoppingItemField shoppingItemField) throws SystemException {
+		ShoppingItemField shoppingItemField) {
 		return shoppingItemFieldPersistence.remove(shoppingItemField);
 	}
 
@@ -135,12 +135,9 @@ public abstract class ShoppingItemFieldLocalServiceBaseImpl
 	 *
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery)
-		throws SystemException {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return shoppingItemFieldPersistence.findWithDynamicQuery(dynamicQuery);
 	}
 
@@ -155,12 +152,10 @@ public abstract class ShoppingItemFieldLocalServiceBaseImpl
 	 * @param start the lower bound of the range of model instances
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery, int start, int end)
-		throws SystemException {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end) {
 		return shoppingItemFieldPersistence.findWithDynamicQuery(dynamicQuery,
 			start, end);
 	}
@@ -177,47 +172,41 @@ public abstract class ShoppingItemFieldLocalServiceBaseImpl
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator orderByComparator) throws SystemException {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end, OrderByComparator<T> orderByComparator) {
 		return shoppingItemFieldPersistence.findWithDynamicQuery(dynamicQuery,
 			start, end, orderByComparator);
 	}
 
 	/**
-	 * Returns the number of rows that match the dynamic query.
+	 * Returns the number of rows matching the dynamic query.
 	 *
 	 * @param dynamicQuery the dynamic query
-	 * @return the number of rows that match the dynamic query
-	 * @throws SystemException if a system exception occurred
+	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
-	public long dynamicQueryCount(DynamicQuery dynamicQuery)
-		throws SystemException {
+	public long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return shoppingItemFieldPersistence.countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * Returns the number of rows that match the dynamic query.
+	 * Returns the number of rows matching the dynamic query.
 	 *
 	 * @param dynamicQuery the dynamic query
 	 * @param projection the projection to apply to the query
-	 * @return the number of rows that match the dynamic query
-	 * @throws SystemException if a system exception occurred
+	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection) throws SystemException {
+		Projection projection) {
 		return shoppingItemFieldPersistence.countWithDynamicQuery(dynamicQuery,
 			projection);
 	}
 
 	@Override
-	public ShoppingItemField fetchShoppingItemField(long itemFieldId)
-		throws SystemException {
+	public ShoppingItemField fetchShoppingItemField(long itemFieldId) {
 		return shoppingItemFieldPersistence.fetchByPrimaryKey(itemFieldId);
 	}
 
@@ -227,17 +216,15 @@ public abstract class ShoppingItemFieldLocalServiceBaseImpl
 	 * @param itemFieldId the primary key of the shopping item field
 	 * @return the shopping item field
 	 * @throws PortalException if a shopping item field with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public ShoppingItemField getShoppingItemField(long itemFieldId)
-		throws PortalException, SystemException {
+		throws PortalException {
 		return shoppingItemFieldPersistence.findByPrimaryKey(itemFieldId);
 	}
 
 	@Override
-	public ActionableDynamicQuery getActionableDynamicQuery()
-		throws SystemException {
+	public ActionableDynamicQuery getActionableDynamicQuery() {
 		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
 
 		actionableDynamicQuery.setBaseLocalService(com.liferay.portlet.shopping.service.ShoppingItemFieldLocalServiceUtil.getService());
@@ -250,8 +237,7 @@ public abstract class ShoppingItemFieldLocalServiceBaseImpl
 	}
 
 	protected void initActionableDynamicQuery(
-		ActionableDynamicQuery actionableDynamicQuery)
-		throws SystemException {
+		ActionableDynamicQuery actionableDynamicQuery) {
 		actionableDynamicQuery.setBaseLocalService(com.liferay.portlet.shopping.service.ShoppingItemFieldLocalServiceUtil.getService());
 		actionableDynamicQuery.setClass(ShoppingItemField.class);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
@@ -259,9 +245,18 @@ public abstract class ShoppingItemFieldLocalServiceBaseImpl
 		actionableDynamicQuery.setPrimaryKeyPropertyName("itemFieldId");
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
+		throws PortalException {
+		return shoppingItemFieldLocalService.deleteShoppingItemField((ShoppingItemField)persistedModel);
+	}
+
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException, SystemException {
+		throws PortalException {
 		return shoppingItemFieldPersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
@@ -275,11 +270,9 @@ public abstract class ShoppingItemFieldLocalServiceBaseImpl
 	 * @param start the lower bound of the range of shopping item fields
 	 * @param end the upper bound of the range of shopping item fields (not inclusive)
 	 * @return the range of shopping item fields
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<ShoppingItemField> getShoppingItemFields(int start, int end)
-		throws SystemException {
+	public List<ShoppingItemField> getShoppingItemFields(int start, int end) {
 		return shoppingItemFieldPersistence.findAll(start, end);
 	}
 
@@ -287,10 +280,9 @@ public abstract class ShoppingItemFieldLocalServiceBaseImpl
 	 * Returns the number of shopping item fields.
 	 *
 	 * @return the number of shopping item fields
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int getShoppingItemFieldsCount() throws SystemException {
+	public int getShoppingItemFieldsCount() {
 		return shoppingItemFieldPersistence.countAll();
 	}
 
@@ -299,12 +291,11 @@ public abstract class ShoppingItemFieldLocalServiceBaseImpl
 	 *
 	 * @param shoppingItemField the shopping item field
 	 * @return the shopping item field that was updated
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public ShoppingItemField updateShoppingItemField(
-		ShoppingItemField shoppingItemField) throws SystemException {
+		ShoppingItemField shoppingItemField) {
 		return shoppingItemFieldPersistence.update(shoppingItemField);
 	}
 
@@ -408,7 +399,7 @@ public abstract class ShoppingItemFieldLocalServiceBaseImpl
 	 *
 	 * @param sql the sql query
 	 */
-	protected void runSQL(String sql) throws SystemException {
+	protected void runSQL(String sql) {
 		try {
 			DataSource dataSource = shoppingItemFieldPersistence.getDataSource();
 

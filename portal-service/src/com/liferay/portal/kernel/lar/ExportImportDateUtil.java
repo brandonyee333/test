@@ -17,7 +17,8 @@ package com.liferay.portal.kernel.lar;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.DateRange;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -27,12 +28,15 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.TimeZoneUtil;
+import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.ExportImportConfiguration;
+import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Layout;
 import com.liferay.portal.model.LayoutSet;
 import com.liferay.portal.service.ExportImportConfigurationLocalServiceUtil;
+import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.LayoutLocalServiceUtil;
 import com.liferay.portal.service.LayoutSetLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
@@ -64,6 +68,21 @@ public class ExportImportDateUtil {
 
 	public static final String RANGE_LAST = "last";
 
+	public static void clearLastPublishDate(long groupId, boolean privateLayout)
+		throws PortalException {
+
+		LayoutSet layoutSet = LayoutSetLocalServiceUtil.getLayoutSet(
+			groupId, privateLayout);
+
+		UnicodeProperties settingsProperties =
+			layoutSet.getSettingsProperties();
+
+		settingsProperties.remove(_LAST_PUBLISH_DATE);
+
+		LayoutSetLocalServiceUtil.updateSettings(
+			groupId, privateLayout, settingsProperties.toString());
+	}
+
 	public static Calendar getCalendar(
 		PortletRequest portletRequest, String paramPrefix,
 		boolean timeZoneSensitive) {
@@ -90,15 +109,22 @@ public class ExportImportDateUtil {
 	}
 
 	public static DateRange getDateRange(
-			ExportImportConfiguration configuration)
-		throws PortalException, SystemException {
+			ExportImportConfiguration configuration, String defaultRange)
+		throws PortalException {
 
 		Map<String, Serializable> settingsMap = configuration.getSettingsMap();
+
+		Date startDate = (Date)settingsMap.get("startDate");
+		Date endDate = (Date)settingsMap.get("endDate");
+
+		if ((startDate != null) && (endDate != null)) {
+			return new DateRange(startDate, endDate);
+		}
 
 		Map<String, String[]> parameterMap =
 			(Map<String, String[]>)settingsMap.get("parameterMap");
 
-		String range = MapUtil.getString(parameterMap, "range");
+		String range = MapUtil.getString(parameterMap, "range", defaultRange);
 		int rangeLast = MapUtil.getInteger(parameterMap, "last");
 		int startDateAmPm = MapUtil.getInteger(parameterMap, "startDateAmPm");
 		int startDateYear = MapUtil.getInteger(parameterMap, "startDateYear");
@@ -127,20 +153,21 @@ public class ExportImportDateUtil {
 			null, groupId, 0, privateLayout, locale, timeZone);
 	}
 
-	public static DateRange getDateRange(long configurationId)
-		throws PortalException, SystemException {
+	public static DateRange getDateRange(
+			long configurationId, String defaultRange)
+		throws PortalException {
 
 		ExportImportConfiguration exportImportConfiguration =
 			ExportImportConfigurationLocalServiceUtil.
 				getExportImportConfiguration(configurationId);
 
-		return getDateRange(exportImportConfiguration);
+		return getDateRange(exportImportConfiguration, defaultRange);
 	}
 
 	public static DateRange getDateRange(
 			PortletRequest portletRequest, long groupId, boolean privateLayout,
 			long plid, String portletId, String defaultRange)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
@@ -173,6 +200,124 @@ public class ExportImportDateUtil {
 			endDateYear, endDateMonth, endDateDay, endDateHour, endDateMinute,
 			portletId, groupId, plid, privateLayout, themeDisplay.getLocale(),
 			themeDisplay.getTimeZone());
+	}
+
+	public static Date getLastPublishDate(LayoutSet layoutSet) {
+		long lastPublishDate = GetterUtil.getLong(
+			layoutSet.getSettingsProperty(_LAST_PUBLISH_DATE));
+
+		if (lastPublishDate == 0) {
+			return null;
+		}
+
+		return new Date(lastPublishDate);
+	}
+
+	public static Date getLastPublishDate(
+			PortletDataContext portletDataContext,
+			PortletPreferences jxPortletPreferences)
+		throws PortalException {
+
+		Group group = GroupLocalServiceUtil.getGroup(
+			portletDataContext.getGroupId());
+
+		String range = MapUtil.getString(
+			portletDataContext.getParameterMap(), "range");
+
+		if (!group.isStagedRemotely() &&
+			range.equals(RANGE_FROM_LAST_PUBLISH_DATE)) {
+
+			Date portletLastPublishDate = getLastPublishDate(
+				jxPortletPreferences);
+
+			if (portletLastPublishDate == null) {
+				return null;
+			}
+
+			if (portletLastPublishDate.before(
+					portletDataContext.getStartDate())) {
+
+				return portletLastPublishDate;
+			}
+		}
+
+		return portletDataContext.getStartDate();
+	}
+
+	public static Date getLastPublishDate(
+		PortletPreferences jxPortletPreferences) {
+
+		long lastPublishDate = GetterUtil.getLong(
+			jxPortletPreferences.getValue(
+				_LAST_PUBLISH_DATE, StringPool.BLANK));
+
+		if (lastPublishDate == 0) {
+			return null;
+		}
+
+		return new Date(lastPublishDate);
+	}
+
+	public static void updateLastPublishDate(
+			long groupId, boolean privateLayout, DateRange dateRange,
+			Date lastPublishDate)
+		throws PortalException {
+
+		LayoutSet layoutSet = LayoutSetLocalServiceUtil.getLayoutSet(
+			groupId, privateLayout);
+
+		Date originalLastPublishDate = getLastPublishDate(layoutSet);
+
+		if (!isValidDateRange(dateRange, originalLastPublishDate)) {
+			return;
+		}
+
+		if (lastPublishDate == null) {
+			lastPublishDate = new Date();
+		}
+
+		UnicodeProperties settingsProperties =
+			layoutSet.getSettingsProperties();
+
+		settingsProperties.setProperty(
+			_LAST_PUBLISH_DATE, String.valueOf(lastPublishDate.getTime()));
+
+		LayoutSetLocalServiceUtil.updateSettings(
+			layoutSet.getGroupId(), layoutSet.isPrivateLayout(),
+			settingsProperties.toString());
+	}
+
+	public static void updateLastPublishDate(
+		String portletId, PortletPreferences portletPreferences,
+		DateRange dateRange, Date lastPublishDate) {
+
+		Date originalLastPublishDate = getLastPublishDate(portletPreferences);
+
+		if (!isValidDateRange(dateRange, originalLastPublishDate)) {
+			return;
+		}
+
+		if (lastPublishDate == null) {
+			lastPublishDate = new Date();
+		}
+
+		try {
+			portletPreferences.setValue(
+				_LAST_PUBLISH_DATE, String.valueOf(lastPublishDate.getTime()));
+
+			portletPreferences.store();
+		}
+		catch (UnsupportedOperationException uoe) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Not updating the portlet setup for " + portletId +
+						" because no setup was returned for the current " +
+							"page");
+			}
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+		}
 	}
 
 	protected static Calendar getCalendar(
@@ -209,7 +354,7 @@ public class ExportImportDateUtil {
 			int endDateMonth, int endDateDay, int endDateHour,
 			int endDateMinute, String portletId, long groupId, long plid,
 			boolean privateLayout, Locale locale, TimeZone timeZone)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		Date startDate = null;
 		Date endDate = null;
@@ -228,7 +373,7 @@ public class ExportImportDateUtil {
 			endDate = endCalendar.getTime();
 		}
 		else if (range.equals(RANGE_FROM_LAST_PUBLISH_DATE)) {
-			long lastPublishDate = 0;
+			Date lastPublishDate = null;
 
 			if (Validator.isNotNull(portletId) && (plid > 0)) {
 				Layout layout = LayoutLocalServiceUtil.getLayout(plid);
@@ -237,22 +382,19 @@ public class ExportImportDateUtil {
 					PortletPreferencesFactoryUtil.getStrictPortletSetup(
 						layout, portletId);
 
-				lastPublishDate = GetterUtil.getLong(
-					preferences.getValue(
-						"last-publish-date", StringPool.BLANK));
+				lastPublishDate = getLastPublishDate(preferences);
 			}
 			else {
 				LayoutSet layoutSet = LayoutSetLocalServiceUtil.getLayoutSet(
 					groupId, privateLayout);
 
-				lastPublishDate = GetterUtil.getLong(
-					layoutSet.getSettingsProperty("last-publish-date"));
+				lastPublishDate = getLastPublishDate(layoutSet);
 			}
 
-			if (lastPublishDate > 0) {
+			if (lastPublishDate != null) {
 				endDate = new Date();
 
-				startDate = new Date(lastPublishDate);
+				startDate = lastPublishDate;
 			}
 		}
 		else if (range.equals(RANGE_LAST)) {
@@ -265,5 +407,40 @@ public class ExportImportDateUtil {
 
 		return new DateRange(startDate, endDate);
 	}
+
+	protected static boolean isValidDateRange(
+		DateRange dateRange, Date originalLastPublishDate) {
+
+		if (dateRange == null) {
+
+			// This is a valid scenario when publishing all
+
+			return true;
+		}
+
+		Date startDate = dateRange.getStartDate();
+		Date endDate = dateRange.getEndDate();
+
+		if (originalLastPublishDate != null) {
+			if ((startDate != null) &&
+				startDate.after(originalLastPublishDate)) {
+
+				return false;
+			}
+
+			if ((endDate != null) && endDate.before(originalLastPublishDate)) {
+				return false;
+			}
+		}
+		else if ((startDate != null) || (endDate != null)) {
+			return false;
+		}
+
+		return true;
+	}
+
+	private static final String _LAST_PUBLISH_DATE = "last-publish-date";
+
+	private static Log _log = LogFactoryUtil.getLog(ExportImportDateUtil.class);
 
 }

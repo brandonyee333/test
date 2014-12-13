@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.dao.jdbc.DataSourceFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.servlet.PluginContextListener;
 import com.liferay.portal.kernel.servlet.ServletContextPool;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -57,7 +56,7 @@ import org.hibernate.dialect.Dialect;
 /**
  * @author Alexander Chow
  */
-public class ConvertDatabase extends ConvertProcess {
+public class ConvertDatabase extends BaseConvertProcess {
 
 	@Override
 	public String getDescription() {
@@ -224,9 +223,7 @@ public class ConvertDatabase extends ConvertProcess {
 				ServletContext servletContext = ServletContextPool.get(
 					servletContextName);
 
-				ClassLoader classLoader =
-					(ClassLoader)servletContext.getAttribute(
-						PluginContextListener.PLUGIN_CLASS_LOADER);
+				ClassLoader classLoader = servletContext.getClassLoader();
 
 				return classLoader.loadClass(implClassName);
 			}
@@ -269,13 +266,11 @@ public class ConvertDatabase extends ConvertProcess {
 		Table table = new Table(tableName, columns);
 
 		try {
-			String tempFileName = table.generateTempFile();
+			table.generateTempFile();
 
 			db.runSQL(connection, sqlCreate);
 
-			if (tempFileName != null) {
-				table.populateTable(tempFileName, connection);
-			}
+			table.populateTable(connection);
 		}
 		catch (Exception e) {
 			_log.error(e, e);

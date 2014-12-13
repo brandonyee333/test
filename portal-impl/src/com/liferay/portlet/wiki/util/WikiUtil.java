@@ -20,7 +20,6 @@ import com.liferay.portal.kernel.diff.DiffHtmlUtil;
 import com.liferay.portal.kernel.diff.DiffVersion;
 import com.liferay.portal.kernel.diff.DiffVersionsInfo;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -33,7 +32,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
-import com.liferay.portal.kernel.util.InstancePool;
+import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -45,9 +44,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.Company;
 import com.liferay.portal.security.permission.ActionKeys;
 import com.liferay.portal.security.permission.PermissionChecker;
-import com.liferay.portal.settings.ParameterMapSettings;
-import com.liferay.portal.settings.Settings;
-import com.liferay.portal.settings.SettingsFactoryUtil;
+import com.liferay.portal.theme.PortletDisplay;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PropsUtil;
@@ -59,7 +56,7 @@ import com.liferay.portlet.messageboards.model.MBMessage;
 import com.liferay.portlet.messageboards.service.MBMessageLocalServiceUtil;
 import com.liferay.portlet.wiki.PageContentException;
 import com.liferay.portlet.wiki.WikiFormatException;
-import com.liferay.portlet.wiki.WikiSettings;
+import com.liferay.portlet.wiki.WikiPortletInstanceSettings;
 import com.liferay.portlet.wiki.engines.WikiEngine;
 import com.liferay.portlet.wiki.model.WikiNode;
 import com.liferay.portlet.wiki.model.WikiPage;
@@ -92,7 +89,6 @@ import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
 
 /**
  * @author Brian Wing Shun Chan
@@ -193,18 +189,15 @@ public class WikiUtil {
 	}
 
 	public static DiffVersionsInfo getDiffVersionsInfo(
-			long nodeId, String title, double sourceVersion,
-			double targetVersion, PageContext pageContext)
-		throws SystemException {
-
-		List<WikiPage> intermediatePages = new ArrayList<WikiPage>();
+		long nodeId, String title, double sourceVersion, double targetVersion,
+		HttpServletRequest request) {
 
 		double previousVersion = 0;
 		double nextVersion = 0;
 
 		List<WikiPage> pages = WikiPageLocalServiceUtil.getPages(
 			nodeId, title, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			new PageVersionComparator());
+			new PageVersionComparator(true));
 
 		for (WikiPage page : pages) {
 			if ((page.getVersion() < sourceVersion) &&
@@ -218,26 +211,20 @@ public class WikiUtil {
 
 				nextVersion = page.getVersion();
 			}
-
-			if ((page.getVersion() > sourceVersion) &&
-				(page.getVersion() <= targetVersion)) {
-
-				intermediatePages.add(page);
-			}
 		}
 
 		List<DiffVersion> diffVersions = new ArrayList<DiffVersion>();
 
-		for (WikiPage page : intermediatePages) {
+		for (WikiPage page : pages) {
 			String extraInfo = StringPool.BLANK;
 
 			if (page.isMinorEdit()) {
-				extraInfo = LanguageUtil.get(pageContext, "minor-edit");
+				extraInfo = LanguageUtil.get(request, "minor-edit");
 			}
 
 			DiffVersion diffVersion = new DiffVersion(
-				page.getUserId(), page.getVersion(), page.getSummary(),
-				extraInfo);
+				page.getUserId(), page.getVersion(), page.getModifiedDate(),
+				page.getSummary(), extraInfo);
 
 			diffVersions.add(diffVersion);
 		}
@@ -250,7 +237,7 @@ public class WikiUtil {
 	}
 
 	public static Map<String, String> getEmailFromDefinitionTerms(
-		RenderRequest request, String emailFromAddress, String emailFromName) {
+		RenderRequest request) {
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
 			WebKeys.THEME_DISPLAY);
@@ -441,7 +428,7 @@ public class WikiUtil {
 	}
 
 	public static WikiNode getFirstNode(PortletRequest portletRequest)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
@@ -451,14 +438,18 @@ public class WikiUtil {
 
 		List<WikiNode> nodes = WikiNodeLocalServiceUtil.getNodes(groupId);
 
-		WikiSettings wikiSettings = WikiUtil.getWikiSettings(
-			themeDisplay.getScopeGroupId());
+		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
 
-		String[] visibleNodeNames = wikiSettings.getVisibleNodes();
+		WikiPortletInstanceSettings wikiPortletInstanceSettings =
+			WikiPortletInstanceSettings.getInstance(
+				themeDisplay.getLayout(), portletDisplay.getId());
+
+		String[] visibleNodeNames =
+			wikiPortletInstanceSettings.getVisibleNodes();
 
 		nodes = orderNodes(nodes, visibleNodeNames);
 
-		String[] hiddenNodes = wikiSettings.getHiddenNodes();
+		String[] hiddenNodes = wikiPortletInstanceSettings.getHiddenNodes();
 		Arrays.sort(hiddenNodes);
 
 		for (WikiNode node : nodes) {
@@ -564,7 +555,7 @@ public class WikiUtil {
 		return nodes;
 	}
 
-	public static OrderByComparator getPageOrderByComparator(
+	public static OrderByComparator<WikiPage> getPageOrderByComparator(
 		String orderByCol, String orderByType) {
 
 		boolean orderByAsc = false;
@@ -573,7 +564,7 @@ public class WikiUtil {
 			orderByAsc = true;
 		}
 
-		OrderByComparator orderByComparator = null;
+		OrderByComparator<WikiPage> orderByComparator = null;
 
 		if (orderByCol.equals("modifiedDate")) {
 			orderByComparator = new PageCreateDateComparator(orderByAsc);
@@ -586,28 +577,6 @@ public class WikiUtil {
 		}
 
 		return orderByComparator;
-	}
-
-	public static WikiSettings getWikiSettings(long groupId)
-		throws PortalException, SystemException {
-
-		Settings settings = SettingsFactoryUtil.getGroupServiceSettings(
-			groupId, WikiConstants.SERVICE_NAME);
-
-		return new WikiSettings(settings);
-	}
-
-	public static WikiSettings getWikiSettings(
-			long groupId, HttpServletRequest request)
-		throws PortalException, SystemException {
-
-		Settings settings = SettingsFactoryUtil.getGroupServiceSettings(
-			groupId, WikiConstants.SERVICE_NAME);
-
-		ParameterMapSettings parameterMapSettings = new ParameterMapSettings(
-			request.getParameterMap(), settings);
-
-		return new WikiSettings(parameterMapSettings);
 	}
 
 	public static List<WikiNode> orderNodes(
@@ -639,9 +608,9 @@ public class WikiUtil {
 	}
 
 	public static String processContent(String content) {
-		content = content.replaceAll("</p>", "</p>\n");
-		content = content.replaceAll("</br>", "</br>\n");
-		content = content.replaceAll("</div>", "</div>\n");
+		content = StringUtil.replace(content, "</p>", "</p>\n");
+		content = StringUtil.replace(content, "</br>", "</br>\n");
+		content = StringUtil.replace(content, "</div>", "</div>\n");
 
 		return content;
 	}
@@ -747,28 +716,25 @@ public class WikiUtil {
 			}
 
 			try {
-				String engineClass = PropsUtil.get(
+				String engineClassName = PropsUtil.get(
 					PropsKeys.WIKI_FORMATS_ENGINE, new Filter(format));
 
-				if (engineClass == null) {
+				if (engineClassName == null) {
 					throw new WikiFormatException(format);
 				}
 
-				if (!InstancePool.contains(engineClass)) {
-					engine = (WikiEngine)InstancePool.get(engineClass);
+				Class<?> clazz = getClass();
 
-					engine.setMainConfiguration(
-						_readConfigurationFile(
-							PropsKeys.WIKI_FORMATS_CONFIGURATION_MAIN, format));
+				engine = (WikiEngine)InstanceFactory.newInstance(
+					clazz.getClassLoader(), engineClassName);
 
-					engine.setInterWikiConfiguration(
-						_readConfigurationFile(
-							PropsKeys.WIKI_FORMATS_CONFIGURATION_INTERWIKI,
-							format));
-				}
-				else {
-					engine = (WikiEngine)InstancePool.get(engineClass);
-				}
+				engine.setInterWikiConfiguration(
+					_readConfigurationFile(
+						PropsKeys.WIKI_FORMATS_CONFIGURATION_INTERWIKI,
+						format));
+				engine.setMainConfiguration(
+					_readConfigurationFile(
+						PropsKeys.WIKI_FORMATS_CONFIGURATION_MAIN, format));
 
 				_engines.put(format, engine);
 
@@ -843,17 +809,17 @@ public class WikiUtil {
 		StringPool.PLUS, StringPool.QUESTION, StringPool.SLASH
 	};
 
-	private static Log _log = LogFactoryUtil.getLog(WikiUtil.class);
+	private static final Log _log = LogFactoryUtil.getLog(WikiUtil.class);
 
-	private static WikiUtil _instance = new WikiUtil();
+	private static final WikiUtil _instance = new WikiUtil();
 
-	private static Pattern _editPageURLPattern = Pattern.compile(
+	private static final Pattern _editPageURLPattern = Pattern.compile(
 		"\\[\\$BEGIN_PAGE_TITLE_EDIT\\$\\](.*?)" +
 			"\\[\\$END_PAGE_TITLE_EDIT\\$\\]");
-	private static Pattern _viewPageURLPattern = Pattern.compile(
+	private static final Pattern _viewPageURLPattern = Pattern.compile(
 		"\\[\\$BEGIN_PAGE_TITLE\\$\\](.*?)\\[\\$END_PAGE_TITLE\\$\\]");
 
-	private Map<String, WikiEngine> _engines =
+	private final Map<String, WikiEngine> _engines =
 		new ConcurrentHashMap<String, WikiEngine>();
 
 }

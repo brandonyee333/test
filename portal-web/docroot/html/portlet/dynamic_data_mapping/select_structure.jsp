@@ -82,7 +82,7 @@ String eventName = ParamUtil.getString(request, "eventName", "selectStructure");
 				value="<%= structure.getModifiedDate() %>"
 			/>
 
-			<liferay-ui:search-container-column-text>
+			<liferay-ui:search-container-column-text cssClass="entry-action">
 				<c:if test="<%= (structure.getStructureId() != classPK) && ((classPK == 0) || (structure.getParentStructureId() == 0) || (structure.getParentStructureId() != classPK)) %>">
 
 					<%
@@ -103,9 +103,9 @@ String eventName = ParamUtil.getString(request, "eventName", "selectStructure");
 </aui:form>
 
 <aui:script>
-	Liferay.Util.focusFormField(document.<portlet:namespace />selectStructureFm.<portlet:namespace />toggle_id_ddm_structure_searchkeywords);
+	Liferay.Util.focusFormField(document.<portlet:namespace />selectStructureFm.<portlet:namespace />keywords);
 </aui:script>
 
-<aui:script use="aui-base">
+<aui:script>
 	Liferay.Util.selectEntityHandler('#<portlet:namespace />selectStructureFm', '<%= HtmlUtil.escapeJS(eventName) %>');
 </aui:script>

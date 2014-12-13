@@ -15,7 +15,6 @@
 package com.liferay.portlet.documentlibrary.util;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileVersion;
@@ -23,11 +22,8 @@ import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.model.Layout;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portlet.documentlibrary.DLPortletInstanceSettings;
-import com.liferay.portlet.documentlibrary.DLSettings;
 import com.liferay.portlet.documentlibrary.model.DLFileEntryType;
 import com.liferay.portlet.documentlibrary.model.DLFileShortcut;
 import com.liferay.portlet.documentlibrary.model.DLFileVersion;
@@ -104,7 +100,7 @@ public class DLUtil {
 
 	public static String getAbsolutePath(
 			PortletRequest portletRequest, long folderId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		return getDL().getAbsolutePath(portletRequest, folderId);
 	}
@@ -143,7 +139,7 @@ public class DLUtil {
 
 	public static String getDLFileEntryControlPanelLink(
 			PortletRequest portletRequest, long fileEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		return getDL().getDLFileEntryControlPanelLink(
 			portletRequest, fileEntryId);
@@ -151,36 +147,26 @@ public class DLUtil {
 
 	public static String getDLFolderControlPanelLink(
 			PortletRequest portletRequest, long folderId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		return getDL().getDLFolderControlPanelLink(portletRequest, folderId);
 	}
 
-	public static DLPortletInstanceSettings getDLPortletInstanceSettings(
-			Layout layout, String portletId)
-		throws PortalException, SystemException {
+	public static String getDownloadURL(
+		FileEntry fileEntry, FileVersion fileVersion, ThemeDisplay themeDisplay,
+		String queryString) {
 
-		return getDL().getDLPortletInstanceSettings(layout, portletId);
+		return getDL().getDownloadURL(
+			fileEntry, fileVersion, themeDisplay, queryString);
 	}
 
-	public static DLPortletInstanceSettings getDLPortletInstanceSettings(
-			Layout layout, String portletId, HttpServletRequest request)
-		throws PortalException, SystemException {
+	public static String getDownloadURL(
+		FileEntry fileEntry, FileVersion fileVersion, ThemeDisplay themeDisplay,
+		String queryString, boolean appendVersion, boolean absoluteURL) {
 
-		return getDL().getDLPortletInstanceSettings(layout, portletId, request);
-	}
-
-	public static DLSettings getDLSettings(long groupId)
-		throws PortalException, SystemException {
-
-		return getDL().getDLSettings(groupId);
-	}
-
-	public static DLSettings getDLSettings(
-			long groupId, HttpServletRequest request)
-		throws PortalException, SystemException {
-
-		return getDL().getDLSettings(groupId, request);
+		return getDL().getDownloadURL(
+			fileEntry, fileVersion, themeDisplay, queryString, appendVersion,
+			absoluteURL);
 	}
 
 	public static Map<String, String> getEmailDefinitionTerms(
@@ -188,13 +174,6 @@ public class DLUtil {
 
 		return getDL().getEmailDefinitionTerms(
 			request, emailFromAddress, emailFromName);
-	}
-
-	public static boolean getEmailFileEntryAnyEventEnabled(
-		DLSettings dlSettings) {
-
-		return dlSettings.getEmailFileEntryAddedEnabled() ||
-			dlSettings.getEmailFileEntryUpdatedEnabled();
 	}
 
 	public static Map<String, String> getEmailFromDefinitionTerms(
@@ -218,14 +197,22 @@ public class DLUtil {
 		return getDL().getFileEntryImage(fileEntry, themeDisplay);
 	}
 
-	public static Set<Long> getFileEntryTypeSubscriptionClassPKs(long userId)
-		throws SystemException {
-
+	public static Set<Long> getFileEntryTypeSubscriptionClassPKs(long userId) {
 		return getDL().getFileEntryTypeSubscriptionClassPKs(userId);
 	}
 
 	public static String getFileIcon(String extension) {
 		return getDL().getFileIcon(extension);
+	}
+
+	public static String getFileIconCssClass(String extension) {
+		return getDL().getFileIconCssClass(extension);
+	}
+
+	public static String getFileName(
+		long groupId, long folderId, String tempFileName) {
+
+		return getDL().getFileName(groupId, folderId, tempFileName);
 	}
 
 	public static String getGenericName(String extension) {
@@ -277,11 +264,15 @@ public class DLUtil {
 			absoluteURL);
 	}
 
-	public static OrderByComparator getRepositoryModelOrderByComparator(
+	public static <T> OrderByComparator<T> getRepositoryModelOrderByComparator(
 		String orderByCol, String orderByType) {
 
 		return getDL().getRepositoryModelOrderByComparator(
 			orderByCol, orderByType);
+	}
+
+	public static String getSanitizedFileName(String title, String extension) {
+		return getDL().getSanitizedFileName(title, extension);
 	}
 
 	public static String getTempFileId(long id, String version) {
@@ -294,6 +285,11 @@ public class DLUtil {
 		return getDL().getTempFileId(id, version, languageId);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #getThumbnailSrc(FileEntry,
+	 *             ThemeDisplay)}
+	 */
+	@Deprecated
 	public static String getThumbnailSrc(
 			FileEntry fileEntry, DLFileShortcut dlFileShortcut,
 			ThemeDisplay themeDisplay)
@@ -302,6 +298,11 @@ public class DLUtil {
 		return getDL().getThumbnailSrc(fileEntry, dlFileShortcut, themeDisplay);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #getThumbnailSrc(FileEntry,
+	 *             FileVersion, ThemeDisplay)}
+	 */
+	@Deprecated
 	public static String getThumbnailSrc(
 			FileEntry fileEntry, FileVersion fileVersion,
 			DLFileShortcut dlFileShortcut, ThemeDisplay themeDisplay)
@@ -309,6 +310,21 @@ public class DLUtil {
 
 		return getDL().getThumbnailSrc(
 			fileEntry, fileVersion, dlFileShortcut, themeDisplay);
+	}
+
+	public static String getThumbnailSrc(
+			FileEntry fileEntry, FileVersion fileVersion,
+			ThemeDisplay themeDisplay)
+		throws Exception {
+
+		return getDL().getThumbnailSrc(fileEntry, fileVersion, themeDisplay);
+	}
+
+	public static String getThumbnailSrc(
+			FileEntry fileEntry, ThemeDisplay themeDisplay)
+		throws Exception {
+
+		return getDL().getThumbnailSrc(fileEntry, themeDisplay);
 	}
 
 	public static String getThumbnailStyle() throws Exception {
@@ -331,7 +347,7 @@ public class DLUtil {
 
 	public static String getWebDavURL(
 			ThemeDisplay themeDisplay, Folder folder, FileEntry fileEntry)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		return getDL().getWebDavURL(themeDisplay, folder, fileEntry);
 	}
@@ -339,7 +355,7 @@ public class DLUtil {
 	public static String getWebDavURL(
 			ThemeDisplay themeDisplay, Folder folder, FileEntry fileEntry,
 			boolean manualCheckInRequired)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		return getDL().getWebDavURL(
 			themeDisplay, folder, fileEntry, manualCheckInRequired);
@@ -348,7 +364,7 @@ public class DLUtil {
 	public static String getWebDavURL(
 			ThemeDisplay themeDisplay, Folder folder, FileEntry fileEntry,
 			boolean manualCheckInRequired, boolean officeExtensionRequired)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		return getDL().getWebDavURL(
 			themeDisplay, folder, fileEntry, manualCheckInRequired,
@@ -375,8 +391,7 @@ public class DLUtil {
 	}
 
 	public static boolean isSubscribedToFileEntryType(
-			long companyId, long groupId, long userId, long fileEntryTypeId)
-		throws SystemException {
+		long companyId, long groupId, long userId, long fileEntryTypeId) {
 
 		return getDL().isSubscribedToFileEntryType(
 			companyId, groupId, userId, fileEntryTypeId);
@@ -384,7 +399,7 @@ public class DLUtil {
 
 	public static boolean isSubscribedToFolder(
 			long companyId, long groupId, long userId, long folderId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		return getDL().isSubscribedToFolder(
 			companyId, groupId, userId, folderId);
@@ -393,7 +408,7 @@ public class DLUtil {
 	public static boolean isSubscribedToFolder(
 			long companyId, long groupId, long userId, long folderId,
 			boolean recursive)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		return getDL().isSubscribedToFolder(
 			companyId, groupId, userId, folderId, recursive);
@@ -406,7 +421,7 @@ public class DLUtil {
 	public static void startWorkflowInstance(
 			long userId, DLFileVersion dlFileVersion, String syncEventType,
 			ServiceContext serviceContext)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		getDL().startWorkflowInstance(
 			userId, dlFileVersion, syncEventType, serviceContext);

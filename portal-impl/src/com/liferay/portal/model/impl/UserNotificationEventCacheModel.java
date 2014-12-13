@@ -14,6 +14,8 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
@@ -32,6 +34,7 @@ import java.io.ObjectOutput;
  * @see UserNotificationEvent
  * @generated
  */
+@ProviderType
 public class UserNotificationEventCacheModel implements CacheModel<UserNotificationEvent>,
 	Externalizable, MVCCModel {
 	@Override
@@ -46,7 +49,7 @@ public class UserNotificationEventCacheModel implements CacheModel<UserNotificat
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(25);
+		StringBundler sb = new StringBundler(27);
 
 		sb.append("{mvccVersion=");
 		sb.append(mvccVersion);
@@ -70,6 +73,8 @@ public class UserNotificationEventCacheModel implements CacheModel<UserNotificat
 		sb.append(delivered);
 		sb.append(", payload=");
 		sb.append(payload);
+		sb.append(", actionRequired=");
+		sb.append(actionRequired);
 		sb.append(", archived=");
 		sb.append(archived);
 		sb.append("}");
@@ -113,6 +118,7 @@ public class UserNotificationEventCacheModel implements CacheModel<UserNotificat
 			userNotificationEventImpl.setPayload(payload);
 		}
 
+		userNotificationEventImpl.setActionRequired(actionRequired);
 		userNotificationEventImpl.setArchived(archived);
 
 		userNotificationEventImpl.resetOriginalValues();
@@ -133,6 +139,7 @@ public class UserNotificationEventCacheModel implements CacheModel<UserNotificat
 		deliverBy = objectInput.readLong();
 		delivered = objectInput.readBoolean();
 		payload = objectInput.readUTF();
+		actionRequired = objectInput.readBoolean();
 		archived = objectInput.readBoolean();
 	}
 
@@ -171,6 +178,7 @@ public class UserNotificationEventCacheModel implements CacheModel<UserNotificat
 			objectOutput.writeUTF(payload);
 		}
 
+		objectOutput.writeBoolean(actionRequired);
 		objectOutput.writeBoolean(archived);
 	}
 
@@ -185,5 +193,6 @@ public class UserNotificationEventCacheModel implements CacheModel<UserNotificat
 	public long deliverBy;
 	public boolean delivered;
 	public String payload;
+	public boolean actionRequired;
 	public boolean archived;
 }

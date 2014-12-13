@@ -77,6 +77,9 @@ public class SeleniumBuilderFileUtil {
 
 		_componentNames = ListUtil.fromArray(
 			StringUtil.split(properties.getProperty("component.names")));
+		_testcaseAvailablePropertyNames = ListUtil.fromArray(
+			StringUtil.split(
+				properties.getProperty("testcase.available.property.names")));
 		_testrayAvailableComponentNames = ListUtil.fromArray(
 			StringUtil.split(
 				properties.getProperty("testray.available.component.names")));
@@ -452,6 +455,14 @@ public class SeleniumBuilderFileUtil {
 
 	protected void throwValidationException(
 		int errorCode, String fileName, Element element, String[] array,
+		String string1) {
+
+		throwValidationException(
+			errorCode, fileName, element, array, string1, null, null);
+	}
+
+	protected void throwValidationException(
+		int errorCode, String fileName, Element element, String[] array,
 		String string1, String string2, Exception e) {
 
 		String prefix = "Error " + errorCode + ": ";
@@ -541,6 +552,11 @@ public class SeleniumBuilderFileUtil {
 				prefix + "Description '" + string1 +
 					"' must end with a '.' in " + suffix);
 		}
+		else if (errorCode == 1018) {
+			throw new IllegalArgumentException(
+				prefix + "Missing (" + StringUtil.merge(array, "|") +
+					") in attribute " + string1 + " at " + suffix);
+		}
 		else if (errorCode == 2000) {
 			throw new IllegalArgumentException(
 				prefix + "Too many child elements in the " + string1 +
@@ -573,6 +589,10 @@ public class SeleniumBuilderFileUtil {
 		else if (errorCode == 3002) {
 			throw new IllegalArgumentException(
 				prefix + "Missing property '" + string1 + "' for " + suffix);
+		}
+		else if (errorCode == 3003) {
+			throw new IllegalArgumentException(
+				prefix + "Invalid property " + string1 + " at " + suffix);
 		}
 		else {
 			throw new IllegalArgumentException(prefix + suffix);
@@ -910,6 +930,34 @@ public class SeleniumBuilderFileUtil {
 
 					throwValidationException(
 						1005, fileName, executeElement, attributeName);
+				}
+
+				String attributeValue = attribute.getValue();
+
+				if (attributeName.equals("value1") &&
+					attributeValue.contains("move-file")) {
+
+					if (!attributeValue.contains("-Dfile") ||
+						!attributeValue.contains("-Dtofile")) {
+
+						throwValidationException(
+							1018, fileName, executeElement,
+							new String[] {"-Dfile", "-Dtofile"}, "value1");
+					}
+				}
+
+				if (attributeName.equals("value1") &&
+					attributeValue.contains("replace-file")) {
+
+					if (!attributeValue.contains("-Dfile") ||
+						!attributeValue.contains("-Dtoken") ||
+						!attributeValue.contains("-Dvalue")) {
+
+						throwValidationException(
+							1018, fileName, executeElement,
+							new String[] {"-Dfile", "-Dtoken", "-Dvalue"},
+							"value1");
+					}
 				}
 			}
 		}
@@ -1354,7 +1402,8 @@ public class SeleniumBuilderFileUtil {
 						"description", "echo", "execute", "fail", "for", "if",
 						"take-screenshot", "var", "while",
 					},
-					new String[] {"action", "macro"}, new String[] {"var"},
+					new String[] {"action", "function", "macro"},
+					new String[] {"var"},
 					new String[] {
 						"and", "condition", "contains", "equals", "isset",
 						"not", "or"
@@ -1522,16 +1571,23 @@ public class SeleniumBuilderFileUtil {
 
 		String propertyName = propertyElement.attributeValue("name");
 
+		if (!_testcaseAvailablePropertyNames.contains(propertyName)) {
+			throwValidationException(
+				3003, fileName, propertyElement, propertyName);
+		}
+
 		if (propertyName.equals("ignore.errors")) {
 			String propertyDelimiter = propertyElement.attributeValue(
 				"delimiter");
 
-			if (Validator.isNull(propertyDelimiter)) {
-				throwValidationException(
-					1006, fileName, propertyElement, "delimiter");
-			}
-
 			String propertyValue = propertyElement.attributeValue("value");
+
+			if (propertyDelimiter != null) {
+				if (!propertyValue.contains(propertyDelimiter)) {
+					throwValidationException(
+						1006, fileName, propertyElement, "delimiter");
+				}
+			}
 
 			if (Validator.isNull(propertyValue)) {
 				throwValidationException(
@@ -1688,7 +1744,7 @@ public class SeleniumBuilderFileUtil {
 						"description", "echo", "execute", "fail", "for", "if",
 						"property", "take-screenshot", "var", "while"
 					},
-					new String[] {"action", "macro", "test-case"},
+					new String[] {"action", "function", "macro", "test-case"},
 					new String[] {"var"},
 					new String[] {
 						"and", "condition", "contains", "equals", "isset",
@@ -1718,7 +1774,7 @@ public class SeleniumBuilderFileUtil {
 						"description", "echo", "execute", "fail", "if",
 						"take-screenshot", "var", "while"
 					},
-					new String[] {"action", "macro", "test-case"},
+					new String[] {"action", "function", "macro", "test-case"},
 					new String[] {"var"},
 					new String[] {
 						"and", "condition", "contains", "equals", "isset",
@@ -1879,7 +1935,8 @@ public class SeleniumBuilderFileUtil {
 		if (attributeMap.containsKey("method")) {
 			String methodValue = attributeMap.get("method");
 
-			if (!methodValue.startsWith("selenium") &&
+			if (!methodValue.startsWith("MathUtil") &&
+				!methodValue.startsWith("selenium") &&
 				!methodValue.startsWith("StringUtil")) {
 
 				throwValidationException(1005, fileName, element, "method");
@@ -1890,7 +1947,9 @@ public class SeleniumBuilderFileUtil {
 			}
 		}
 
-		if (!attributeMap.containsKey("value") && Validator.isNull(varText)) {
+		if (!attributeMap.containsKey("property-value") &&
+			!attributeMap.containsKey("value") && Validator.isNull(varText)) {
+
 			if (!attributeMap.containsKey("group") &&
 				!attributeMap.containsKey("input") &&
 				!attributeMap.containsKey("locator") &&
@@ -1959,7 +2018,8 @@ public class SeleniumBuilderFileUtil {
 	private static List<String> _allowedVarAttributes = ListUtil.fromArray(
 		new String[] {
 			"attribute", "group", "input", "line-number", "locator",
-			"locator-key", "method", "name", "path", "pattern", "value"
+			"locator-key", "method", "name", "path", "pattern",
+			"property-value", "value"
 		});
 	private static List<String> _componentNames;
 	private static List<String> _methodNames = ListUtil.fromArray(
@@ -1975,6 +2035,7 @@ public class SeleniumBuilderFileUtil {
 			"property", "set-up", "take-screenshot", "td", "tear-down", "then",
 			"tr", "while", "var"
 		});
+	private static List<String> _testcaseAvailablePropertyNames;
 	private static List<String> _testrayAvailableComponentNames;
 
 	private String _baseDirName;

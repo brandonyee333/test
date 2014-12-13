@@ -16,7 +16,6 @@ package com.liferay.portlet.asset.util;
 
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.BaseIndexer;
@@ -55,6 +54,7 @@ public class AssetVocabularyIndexer extends BaseIndexer {
 	public static final String PORTLET_ID = PortletKeys.ASSET_CATEGORIES_ADMIN;
 
 	public AssetVocabularyIndexer() {
+		setCommitImmediately(true);
 		setDefaultSelectedFieldNames(
 			Field.ASSET_VOCABULARY_ID, Field.COMPANY_ID, Field.GROUP_ID,
 			Field.UID);
@@ -96,11 +96,8 @@ public class AssetVocabularyIndexer extends BaseIndexer {
 			BooleanQuery localizedQuery = BooleanQueryFactoryUtil.create(
 				searchContext);
 
-			localizedQuery.addTerm(Field.TITLE, title, true);
-			localizedQuery.addTerm(
-				DocumentImpl.getLocalizedName(
-					searchContext.getLocale(), Field.TITLE),
-				title, true);
+			addSearchLocalizedTerm(
+				localizedQuery, searchContext, Field.TITLE, true);
 
 			searchQuery.add(localizedQuery, BooleanClauseOccur.SHOULD);
 		}
@@ -116,7 +113,7 @@ public class AssetVocabularyIndexer extends BaseIndexer {
 
 		SearchEngineUtil.deleteDocument(
 			getSearchEngineId(), vocabulary.getCompanyId(),
-			document.get(Field.UID));
+			document.get(Field.UID), isCommitImmediately());
 	}
 
 	@Override
@@ -159,7 +156,8 @@ public class AssetVocabularyIndexer extends BaseIndexer {
 
 		if (document != null) {
 			SearchEngineUtil.updateDocument(
-				getSearchEngineId(), vocabulary.getCompanyId(), document);
+				getSearchEngineId(), vocabulary.getCompanyId(), document,
+				isCommitImmediately());
 		}
 	}
 
@@ -184,7 +182,7 @@ public class AssetVocabularyIndexer extends BaseIndexer {
 	}
 
 	protected void reindexVocabularies(final long companyId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		final ActionableDynamicQuery actionableDynamicQuery =
 			AssetVocabularyLocalServiceUtil.getActionableDynamicQuery();
@@ -212,7 +210,7 @@ public class AssetVocabularyIndexer extends BaseIndexer {
 		actionableDynamicQuery.performActions();
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		AssetVocabularyIndexer.class);
 
 }

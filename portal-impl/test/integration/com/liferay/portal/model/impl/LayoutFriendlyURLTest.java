@@ -16,8 +16,7 @@ package com.liferay.portal.model.impl;
 
 import com.liferay.portal.LayoutFriendlyURLException;
 import com.liferay.portal.LayoutFriendlyURLsException;
-import com.liferay.portal.kernel.test.ExecutionTestListeners;
-import com.liferay.portal.kernel.transaction.Transactional;
+import com.liferay.portal.kernel.test.AggregateTestRule;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringPool;
@@ -25,12 +24,13 @@ import com.liferay.portal.model.Group;
 import com.liferay.portal.model.LayoutConstants;
 import com.liferay.portal.service.LayoutLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
-import com.liferay.portal.service.ServiceTestUtil;
-import com.liferay.portal.test.LiferayIntegrationJUnitTestRunner;
-import com.liferay.portal.test.MainServletExecutionTestListener;
-import com.liferay.portal.test.TransactionalCallbackAwareExecutionTestListener;
-import com.liferay.portal.util.GroupTestUtil;
-import com.liferay.portal.util.TestPropsValues;
+import com.liferay.portal.test.LiferayIntegrationTestRule;
+import com.liferay.portal.test.MainServletTestRule;
+import com.liferay.portal.test.ResetDatabaseTestRule;
+import com.liferay.portal.util.test.GroupTestUtil;
+import com.liferay.portal.util.test.RandomTestUtil;
+import com.liferay.portal.util.test.ServiceContextTestUtil;
+import com.liferay.portal.util.test.TestPropsValues;
 
 import java.util.HashMap;
 import java.util.List;
@@ -38,22 +38,23 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.junit.Assert;
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 /**
  * @author Sergio González
  */
-@ExecutionTestListeners(
-	listeners = {
-		MainServletExecutionTestListener.class,
-		TransactionalCallbackAwareExecutionTestListener.class
-	})
-@RunWith(LiferayIntegrationJUnitTestRunner.class)
 public class LayoutFriendlyURLTest {
 
+	@ClassRule
+	@Rule
+	public static final AggregateTestRule aggregateTestRule =
+		new AggregateTestRule(
+			new LiferayIntegrationTestRule(), MainServletTestRule.INSTANCE,
+			ResetDatabaseTestRule.INSTANCE);
+
 	@Test
-	@Transactional
 	public void testDifferentFriendlyURLDifferentLocaleDifferentGroup()
 		throws Exception {
 
@@ -82,7 +83,6 @@ public class LayoutFriendlyURLTest {
 	}
 
 	@Test
-	@Transactional
 	public void testDifferentFriendlyURLDifferentLocaleDifferentLayoutSet()
 		throws Exception {
 
@@ -111,7 +111,6 @@ public class LayoutFriendlyURLTest {
 	}
 
 	@Test
-	@Transactional
 	public void testDifferentFriendlyURLDifferentLocaleSameLayout()
 		throws Exception {
 
@@ -131,7 +130,6 @@ public class LayoutFriendlyURLTest {
 	}
 
 	@Test(expected = LayoutFriendlyURLsException.class)
-	@Transactional
 	public void testInvalidFriendlyURLLanguageId() throws Exception {
 		Group group = GroupTestUtil.addGroup();
 
@@ -143,7 +141,6 @@ public class LayoutFriendlyURLTest {
 	}
 
 	@Test(expected = LayoutFriendlyURLsException.class)
-	@Transactional
 	public void testInvalidFriendlyURLLanguageIdAndCountryId()
 		throws Exception {
 
@@ -157,7 +154,6 @@ public class LayoutFriendlyURLTest {
 	}
 
 	@Test
-	@Transactional
 	public void testInvalidFriendlyURLMapperURLInDefaultLocale()
 		throws Exception {
 
@@ -261,7 +257,6 @@ public class LayoutFriendlyURLTest {
 	}
 
 	@Test(expected = LayoutFriendlyURLsException.class)
-	@Transactional
 	public void testInvalidFriendlyURLMapperURLInNonDefaultLocale()
 		throws Exception {
 
@@ -276,7 +271,6 @@ public class LayoutFriendlyURLTest {
 	}
 
 	@Test(expected = LayoutFriendlyURLsException.class)
-	@Transactional
 	public void testInvalidFriendlyURLStartingWithLanguageId()
 		throws Exception {
 
@@ -290,7 +284,6 @@ public class LayoutFriendlyURLTest {
 	}
 
 	@Test(expected = LayoutFriendlyURLsException.class)
-	@Transactional
 	public void testInvalidFriendlyURLStartingWithLanguageIdAndCountryId()
 		throws Exception {
 
@@ -304,7 +297,6 @@ public class LayoutFriendlyURLTest {
 	}
 
 	@Test(expected = LayoutFriendlyURLsException.class)
-	@Transactional
 	public void testInvalidFriendlyURLStartingWithLowerCaseLanguageIdAndCountryId()
 		throws Exception {
 
@@ -318,7 +310,6 @@ public class LayoutFriendlyURLTest {
 	}
 
 	@Test
-	@Transactional
 	public void testMultipleInvalidFriendlyURLMapperURL() throws Exception {
 		Group group = GroupTestUtil.addGroup();
 
@@ -349,7 +340,6 @@ public class LayoutFriendlyURLTest {
 	}
 
 	@Test
-	@Transactional
 	public void testSameFriendlyURLDifferentLocaleDifferentGroup()
 		throws Exception {
 
@@ -378,7 +368,6 @@ public class LayoutFriendlyURLTest {
 	}
 
 	@Test
-	@Transactional
 	public void testSameFriendlyURLDifferentLocaleDifferentLayout()
 		throws Exception {
 
@@ -411,7 +400,6 @@ public class LayoutFriendlyURLTest {
 	}
 
 	@Test
-	@Transactional
 	public void testSameFriendlyURLDifferentLocaleDifferentLayoutSet()
 		throws Exception {
 
@@ -438,7 +426,6 @@ public class LayoutFriendlyURLTest {
 	}
 
 	@Test
-	@Transactional
 	public void testSameFriendlyURLDifferentLocaleSameLayout()
 		throws Exception {
 
@@ -458,7 +445,6 @@ public class LayoutFriendlyURLTest {
 	}
 
 	@Test
-	@Transactional
 	public void testSameFriendlyURLSameLocaleDifferentLayout()
 		throws Exception {
 
@@ -491,7 +477,6 @@ public class LayoutFriendlyURLTest {
 	}
 
 	@Test
-	@Transactional
 	public void testValidFriendlyURLMapperURLInDefaultLocale()
 		throws Exception {
 
@@ -532,7 +517,6 @@ public class LayoutFriendlyURLTest {
 	}
 
 	@Test
-	@Transactional
 	public void testValidFriendlyURLMapperURLInNonDefaultLocale()
 		throws Exception {
 
@@ -552,7 +536,6 @@ public class LayoutFriendlyURLTest {
 	}
 
 	@Test
-	@Transactional
 	public void testValidFriendlyURLStartingWithLanguageId() throws Exception {
 		Group group = GroupTestUtil.addGroup();
 
@@ -573,17 +556,17 @@ public class LayoutFriendlyURLTest {
 			Map<Locale, String> friendlyURLMap)
 		throws Exception {
 
-		ServiceContext serviceContext = ServiceTestUtil.getServiceContext(
-			groupId);
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(groupId);
 
 		LayoutLocalServiceUtil.addLayout(
 			TestPropsValues.getUserId(), groupId, privateLayout,
 			LayoutConstants.DEFAULT_PARENT_LAYOUT_ID,
-			ServiceTestUtil.randomLocaleStringMap(),
-			ServiceTestUtil.randomLocaleStringMap(),
-			ServiceTestUtil.randomLocaleStringMap(),
-			ServiceTestUtil.randomLocaleStringMap(),
-			ServiceTestUtil.randomLocaleStringMap(),
+			RandomTestUtil.randomLocaleStringMap(),
+			RandomTestUtil.randomLocaleStringMap(),
+			RandomTestUtil.randomLocaleStringMap(),
+			RandomTestUtil.randomLocaleStringMap(),
+			RandomTestUtil.randomLocaleStringMap(),
 			LayoutConstants.TYPE_PORTLET, StringPool.BLANK, false,
 			friendlyURLMap, serviceContext);
 	}

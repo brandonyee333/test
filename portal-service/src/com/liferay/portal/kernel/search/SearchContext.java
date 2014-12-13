@@ -24,9 +24,11 @@ import com.liferay.portal.model.Layout;
 import java.io.Serializable;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.TimeZone;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -42,6 +44,18 @@ public class SearchContext implements Serializable {
 		}
 
 		_facets.put(facet.getFieldName(), facet);
+	}
+
+	public void addFullQueryEntryClassName(String entryClassName) {
+		if (_fullQueryEntryClassNames == null) {
+			_fullQueryEntryClassNames = new HashSet<String>();
+		}
+
+		_fullQueryEntryClassNames.add(entryClassName);
+	}
+
+	public void clearFullQueryEntryClassNames() {
+		_fullQueryEntryClassNames = null;
 	}
 
 	public long[] getAssetCategoryIds() {
@@ -106,6 +120,15 @@ public class SearchContext implements Serializable {
 
 	public long[] getFolderIds() {
 		return _folderIds;
+	}
+
+	public String[] getFullQueryEntryClassNames() {
+		if (_fullQueryEntryClassNames == null) {
+			return new String[0];
+		}
+
+		return _fullQueryEntryClassNames.toArray(
+			new String[_fullQueryEntryClassNames.size()]);
 	}
 
 	public long[] getGroupIds() {
@@ -184,6 +207,10 @@ public class SearchContext implements Serializable {
 		return _andSearch;
 	}
 
+	public boolean isCommitImmediately() {
+		return _commitImmediately;
+	}
+
 	public boolean isIncludeAttachments() {
 		return _includeAttachments;
 	}
@@ -252,6 +279,10 @@ public class SearchContext implements Serializable {
 
 	public void setClassTypeIds(long[] classTypeIds) {
 		_classTypeIds = classTypeIds;
+	}
+
+	public void setCommitImmediately(boolean commitImmediately) {
+		_commitImmediately = commitImmediately;
 	}
 
 	public void setCompanyId(long companyId) {
@@ -376,11 +407,14 @@ public class SearchContext implements Serializable {
 	private BooleanClause[] _booleanClauses;
 	private long[] _categoryIds;
 	private long[] _classTypeIds;
+	private boolean _commitImmediately;
 	private long _companyId;
 	private int _end = QueryUtil.ALL_POS;
 	private String[] _entryClassNames;
-	private Map<String, Facet> _facets = new ConcurrentHashMap<String, Facet>();
+	private final Map<String, Facet> _facets =
+		new ConcurrentHashMap<String, Facet>();
 	private long[] _folderIds;
+	private Set<String> _fullQueryEntryClassNames;
 	private long[] _groupIds;
 	private boolean _includeAttachments;
 	private boolean _includeDiscussions;

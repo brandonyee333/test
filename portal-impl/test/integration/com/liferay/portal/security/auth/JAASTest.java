@@ -17,11 +17,10 @@ package com.liferay.portal.security.auth;
 import com.liferay.portal.events.EventsProcessorUtil;
 import com.liferay.portal.kernel.events.Action;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.security.jaas.PortalPrincipal;
 import com.liferay.portal.kernel.security.jaas.PortalRole;
 import com.liferay.portal.kernel.servlet.HttpMethods;
-import com.liferay.portal.kernel.test.ExecutionTestListeners;
+import com.liferay.portal.kernel.test.AggregateTestRule;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -31,11 +30,11 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.security.jaas.JAASHelper;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.servlet.MainServlet;
-import com.liferay.portal.test.EnvironmentExecutionTestListener;
-import com.liferay.portal.test.LiferayIntegrationJUnitTestRunner;
-import com.liferay.portal.test.MainServletExecutionTestListener;
+import com.liferay.portal.test.LiferayIntegrationTestRule;
+import com.liferay.portal.test.MainServletTestRule;
+import com.liferay.portal.test.mock.AutoDeployMockServletContext;
 import com.liferay.portal.util.PropsValues;
-import com.liferay.portal.util.TestPropsValues;
+import com.liferay.portal.util.test.TestPropsValues;
 
 import java.lang.reflect.Field;
 
@@ -65,8 +64,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import org.springframework.core.io.FileSystemResourceLoader;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -77,9 +77,13 @@ import org.springframework.mock.web.MockServletContext;
 /**
  * @author Raymond Augé
  */
-@ExecutionTestListeners(listeners = {EnvironmentExecutionTestListener.class})
-@RunWith(LiferayIntegrationJUnitTestRunner.class)
-public class JAASTest extends MainServletExecutionTestListener {
+public class JAASTest {
+
+	@ClassRule
+	@Rule
+	public static final AggregateTestRule aggregateTestRule =
+		new AggregateTestRule(
+			new LiferayIntegrationTestRule(), MainServletTestRule.INSTANCE);
 
 	@Before
 	public void setUp() throws Exception {
@@ -316,7 +320,7 @@ public class JAASTest extends MainServletExecutionTestListener {
 
 				@Override
 				protected long doGetJaasUserId(long companyId, String name)
-					throws PortalException, SystemException {
+					throws PortalException {
 
 					try {
 						return super.doGetJaasUserId(companyId, name);
@@ -329,23 +333,20 @@ public class JAASTest extends MainServletExecutionTestListener {
 			}
 		);
 
-		if (mainServlet == null) {
-			MockServletContext mockServletContext =
-				new AutoDeployMockServletContext(
-					getResourceBasePath(), new FileSystemResourceLoader());
+		MainServlet mainServlet = new MainServlet();
 
-			MockServletConfig mockServletConfig = new MockServletConfig(
-				mockServletContext);
+		MockServletContext mockServletContext =
+			new AutoDeployMockServletContext(new FileSystemResourceLoader());
 
-			mainServlet = new MainServlet();
+		MockServletConfig mockServletConfig = new MockServletConfig(
+			mockServletContext);
 
-			try {
-				mainServlet.init(mockServletConfig);
-			}
-			catch (ServletException se) {
-				throw new RuntimeException(
-					"The main servlet could not be initialized");
-			}
+		try {
+			mainServlet.init(mockServletConfig);
+		}
+		catch (ServletException se) {
+			throw new RuntimeException(
+				"The main servlet could not be initialized");
 		}
 
 		Date lastLoginDate = _user.getLastLoginDate();
@@ -429,15 +430,15 @@ public class JAASTest extends MainServletExecutionTestListener {
 
 	private class JAASAction extends Action {
 
+		public boolean isRan() {
+			return _ran;
+		}
+
 		@Override
 		public void run(
 			HttpServletRequest request, HttpServletResponse response) {
 
 			_ran = true;
-		}
-
-		public boolean isRan() {
-			return _ran;
 		}
 
 		private boolean _ran;
@@ -475,8 +476,8 @@ public class JAASTest extends MainServletExecutionTestListener {
 			}
 		}
 
-		private String _name;
-		private String _password;
+		private final String _name;
+		private final String _password;
 
 	}
 

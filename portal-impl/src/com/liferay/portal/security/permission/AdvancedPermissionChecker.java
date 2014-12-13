@@ -15,7 +15,6 @@
 package com.liferay.portal.security.permission;
 
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -23,7 +22,6 @@ import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.SetUtil;
-import com.liferay.portal.kernel.util.UniqueList;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.GroupConstants;
@@ -38,6 +36,7 @@ import com.liferay.portal.model.ResourceConstants;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.RoleConstants;
 import com.liferay.portal.model.Team;
+import com.liferay.portal.model.User;
 import com.liferay.portal.model.UserGroup;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.LayoutLocalServiceUtil;
@@ -48,6 +47,7 @@ import com.liferay.portal.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.TeamLocalServiceUtil;
 import com.liferay.portal.service.UserGroupLocalServiceUtil;
+import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.service.permission.PortletPermissionUtil;
 
 import java.util.ArrayList;
@@ -55,6 +55,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -190,8 +191,7 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 	}
 
 	public ResourceBlockIdsBag getOwnerResourceBlockIdsBag(
-			long companyId, long groupId, String name)
-		throws SystemException {
+		long companyId, long groupId, String name) {
 
 		ResourceBlockIdsBag resourceBlockIdsBag =
 			PermissionCacheUtil.getResourceBlockIdsBag(
@@ -866,7 +866,7 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 			return userOrgs;
 		}
 
-		List<Organization> organizations = new UniqueList<Organization>();
+		Set<Organization> organizations = new LinkedHashSet<Organization>();
 
 		for (Organization organization : userOrgs) {
 			if (!organizations.contains(organization)) {
@@ -880,7 +880,7 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 			}
 		}
 
-		return organizations;
+		return new ArrayList<Organization>(organizations);
 	}
 
 	protected boolean hasGuestPermission(
@@ -995,6 +995,14 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 
 			companyId = group.getCompanyId();
 		}
+		else if (name.equals(User.class.getName())) {
+			User user = UserLocalServiceUtil.fetchUser(
+				GetterUtil.getLong(primKey));
+
+			if (user != null) {
+				companyId = user.getCompanyId();
+			}
+		}
 
 		boolean hasLayoutManagerPermission = true;
 
@@ -1015,9 +1023,7 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 			}
 
 			if (name.equals(Organization.class.getName())) {
-				long organizationId = GetterUtil.getInteger(primKey);
-
-				if (isOrganizationAdminImpl(organizationId)) {
+				if (isOrganizationAdminImpl(GetterUtil.getLong(primKey))) {
 					return true;
 				}
 			}
@@ -1335,7 +1341,7 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 
 	protected Map<Long, Boolean> companyAdmins = new HashMap<Long, Boolean>();
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		AdvancedPermissionChecker.class);
 
 }

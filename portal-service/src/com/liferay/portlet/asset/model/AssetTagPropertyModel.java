@@ -17,7 +17,6 @@ package com.liferay.portlet.asset.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.AuditedModel;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.CacheModel;
@@ -115,10 +114,9 @@ public interface AssetTagPropertyModel extends AuditedModel,
 	 * Returns the user uuid of this asset tag property.
 	 *
 	 * @return the user uuid of this asset tag property
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public String getUserUuid() throws SystemException;
+	public String getUserUuid();
 
 	/**
 	 * Sets the user uuid of this asset tag property.
@@ -258,19 +256,20 @@ public interface AssetTagPropertyModel extends AuditedModel,
 	public Object clone();
 
 	@Override
-	public int compareTo(AssetTagProperty assetTagProperty);
+	public int compareTo(
+		com.liferay.portlet.asset.model.AssetTagProperty assetTagProperty);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<AssetTagProperty> toCacheModel();
+	public CacheModel<com.liferay.portlet.asset.model.AssetTagProperty> toCacheModel();
 
 	@Override
-	public AssetTagProperty toEscapedModel();
+	public com.liferay.portlet.asset.model.AssetTagProperty toEscapedModel();
 
 	@Override
-	public AssetTagProperty toUnescapedModel();
+	public com.liferay.portlet.asset.model.AssetTagProperty toUnescapedModel();
 
 	@Override
 	public String toString();

@@ -15,7 +15,6 @@
 package com.liferay.portlet.blogs.action;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Function;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextFactory;
@@ -41,11 +40,8 @@ public class TrackbackServiceContextFunction
 		catch (PortalException pe) {
 			throw new RuntimeException(pe);
 		}
-		catch (SystemException se) {
-			throw new RuntimeException(se);
-		}
 	}
 
-	private PortletRequest _portletRequest;
+	private final PortletRequest _portletRequest;
 
 }

@@ -55,7 +55,7 @@ List groupNames = (List)objArray[8];
 		else if (role.getType() == RoleConstants.TYPE_REGULAR) {
 		%>
 
-			<%= LanguageUtil.get(pageContext, "all-sites") %>
+			<%= LanguageUtil.get(request, "all-sites") %>
 
 		<%
 		}
@@ -69,15 +69,15 @@ List groupNames = (List)objArray[8];
 
 	<c:if test="<%= supportsFilterByGroup %>">
 		<liferay-ui:icon
+			iconCssClass="icon-cog"
 			id="<%= HtmlUtil.escapeAttribute(targetId) %>"
-			image="configuration"
 			label="<%= true %>"
 			message="change"
 			url="javascript:;"
 		/>
 
-		<aui:script use="aui-base">
-			A.one('#<portlet:namespace /><%= HtmlUtil.escapeJS(targetId) %>').on(
+		<aui:script>
+			AUI.$('#<portlet:namespace /><%= HtmlUtil.escapeJS(targetId) %>').on(
 				'click',
 				function(event) {
 					Liferay.Util.selectEntity(

@@ -121,47 +121,33 @@ boolean modifiedLayout = (layoutSet != null) && layoutSet.isLayoutSetPrototypeLi
 							</liferay-portlet:actionURL>
 
 							<%
-							String taglibURL = "javascript:if (confirm('" + UnicodeLanguageUtil.get(pageContext, "are-you-sure-you-want-to-reset-your-customizations-to-default") + "')){submitForm(document.hrefFm, '" + HttpUtil.encodeURL(resetCustomizationViewURL) + "');}";
+							String taglibURL = "javascript:if (confirm('" + UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-reset-your-customizations-to-default") + "')){submitForm(document.hrefFm, '" + HttpUtil.encodeURL(resetCustomizationViewURL) + "');}";
 							%>
 
 							<liferay-ui:icon label="<%= true %>" message="reset-my-customizations" url="<%= taglibURL %>" />
 						</c:if>
 					</div>
-
-					<aui:script>
-						Liferay.provide(
-							window,
-							'<portlet:namespace />toggleCustomizedView',
-							function(event) {
-								var A = AUI();
-
-								A.io.request(
-									themeDisplay.getPathMain() + '/portal/update_layout',
-									{
-										data: {
-											cmd: 'toggle_customized_view',
-											customized_view: '<%= String.valueOf(!layoutTypePortlet.isCustomizedView()) %>',
-											p_auth: '<%= AuthTokenUtil.getToken(request) %>'
-										},
-										on: {
-											success: function(event, id, obj) {
-												window.location.href = themeDisplay.getLayoutURL();
-											}
-										}
-									}
-								);
-							},
-							['aui-io-request']
-						);
-					</aui:script>
 				</div>
 
-				<aui:script use="aui-base">
-					var toggleCustomizedView = A.one('#<portlet:namespace />toggleCustomizedView');
-
-					if (toggleCustomizedView) {
-						toggleCustomizedView.on('click', <portlet:namespace />toggleCustomizedView);
-					}
+				<aui:script sandbox="<%= true %>">
+					$('#<portlet:namespace />toggleCustomizedView').on(
+						'click',
+						function(event) {
+							$.ajax(
+								themeDisplay.getPathMain() + '/portal/update_layout',
+								{
+									data: {
+										cmd: 'toggle_customized_view',
+										customized_view: '<%= String.valueOf(!layoutTypePortlet.isCustomizedView()) %>',
+										p_auth: '<%= AuthTokenUtil.getToken(request) %>'
+									},
+									success: function() {
+										window.location.href = themeDisplay.getLayoutURL();
+									}
+								}
+							);
+						}
+					);
 				</aui:script>
 			</c:if>
 		</div>

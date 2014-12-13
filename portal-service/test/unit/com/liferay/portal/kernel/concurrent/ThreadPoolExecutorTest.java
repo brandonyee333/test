@@ -14,6 +14,9 @@
 
 package com.liferay.portal.kernel.concurrent;
 
+import com.liferay.portal.kernel.concurrent.test.MarkerBlockingJob;
+import com.liferay.portal.kernel.concurrent.test.TestUtil;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -1124,6 +1127,7 @@ public class ThreadPoolExecutorTest {
 		ReentrantLock takeLock = taskQueue.getTakeLock();
 
 		takeLock.lock();
+
 		try {
 			markerBlockingJob1.unBlock();
 

@@ -15,8 +15,8 @@
 package com.liferay.portal.kernel.util;
 
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.settings.Settings;
 import com.liferay.portal.kernel.xml.Document;
-import com.liferay.portal.settings.Settings;
 
 import java.util.Locale;
 import java.util.Map;
@@ -82,6 +82,8 @@ public interface Localization {
 
 	public String getDefaultLanguageId(Document document);
 
+	public String getDefaultLanguageId(Document document, Locale defaultLocale);
+
 	/**
 	 * Returns the default locale from the localizations XML.
 	 *
@@ -90,6 +92,8 @@ public interface Localization {
 	 *         locale if the default locale cannot be retrieved from the XML
 	 */
 	public String getDefaultLanguageId(String xml);
+
+	public String getDefaultLanguageId(String xml, Locale defaultLocale);
 
 	/**
 	 * Returns the localized string from the localizations XML in the language.
@@ -194,6 +198,10 @@ public interface Localization {
 	 */
 	public Map<Locale, String> getLocalizationMap(
 		PortletRequest portletRequest, String parameter);
+
+	public Map<Locale, String> getLocalizationMap(
+		PortletRequest portletRequest, String parameter,
+		Map<Locale, String> defaultValues);
 
 	/**
 	 * Returns a map of locales and localized strings from the localizations
@@ -303,7 +311,10 @@ public interface Localization {
 	 * @param  key the preferences key
 	 * @param  languageId the ID of the language
 	 * @return the localized preferences key
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             #getLocalizedName(String, String)}
 	 */
+	@Deprecated
 	public String getPreferencesKey(String key, String languageId);
 
 	/**

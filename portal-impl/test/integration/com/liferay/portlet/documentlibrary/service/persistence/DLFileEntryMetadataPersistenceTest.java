@@ -14,27 +14,23 @@
 
 package com.liferay.portlet.documentlibrary.service.persistence;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.test.ExecutionTestListeners;
+import com.liferay.portal.kernel.test.AggregateTestRule;
+import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.model.ModelListener;
-import com.liferay.portal.service.ServiceTestUtil;
-import com.liferay.portal.service.persistence.BasePersistence;
-import com.liferay.portal.service.persistence.PersistenceExecutionTestListener;
-import com.liferay.portal.test.LiferayPersistenceIntegrationJUnitTestRunner;
-import com.liferay.portal.test.persistence.TransactionalPersistenceAdvice;
+import com.liferay.portal.test.LiferayIntegrationTestRule;
+import com.liferay.portal.test.PersistenceTestRule;
+import com.liferay.portal.test.TransactionalTestRule;
 import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.util.test.RandomTestUtil;
 
 import com.liferay.portlet.documentlibrary.NoSuchFileEntryMetadataException;
 import com.liferay.portlet.documentlibrary.model.DLFileEntryMetadata;
@@ -43,63 +39,41 @@ import com.liferay.portlet.documentlibrary.service.DLFileEntryMetadataLocalServi
 
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-
-import org.junit.runner.RunWith;
 
 import java.io.Serializable;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 /**
- * @author Brian Wing Shun Chan
+ * @generated
  */
-@ExecutionTestListeners(listeners =  {
-	PersistenceExecutionTestListener.class})
-@RunWith(LiferayPersistenceIntegrationJUnitTestRunner.class)
 public class DLFileEntryMetadataPersistenceTest {
-	@Before
-	public void setUp() {
-		_modelListeners = _persistence.getListeners();
-
-		for (ModelListener<DLFileEntryMetadata> modelListener : _modelListeners) {
-			_persistence.unregisterListener(modelListener);
-		}
-	}
+	@Rule
+	public final AggregateTestRule aggregateTestRule = new AggregateTestRule(new LiferayIntegrationTestRule(),
+			PersistenceTestRule.INSTANCE,
+			new TransactionalTestRule(Propagation.REQUIRED));
 
 	@After
 	public void tearDown() throws Exception {
-		Map<Serializable, BasePersistence<?>> basePersistences = _transactionalPersistenceAdvice.getBasePersistences();
+		Iterator<DLFileEntryMetadata> iterator = _dlFileEntryMetadatas.iterator();
 
-		Set<Serializable> primaryKeys = basePersistences.keySet();
+		while (iterator.hasNext()) {
+			_persistence.remove(iterator.next());
 
-		for (Serializable primaryKey : primaryKeys) {
-			BasePersistence<?> basePersistence = basePersistences.get(primaryKey);
-
-			try {
-				basePersistence.remove(primaryKey);
-			}
-			catch (Exception e) {
-				if (_log.isDebugEnabled()) {
-					_log.debug("The model with primary key " + primaryKey +
-						" was already deleted");
-				}
-			}
-		}
-
-		_transactionalPersistenceAdvice.reset();
-
-		for (ModelListener<DLFileEntryMetadata> modelListener : _modelListeners) {
-			_persistence.registerListener(modelListener);
+			iterator.remove();
 		}
 	}
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = ServiceTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong();
 
 		DLFileEntryMetadata dlFileEntryMetadata = _persistence.create(pk);
 
@@ -126,23 +100,23 @@ public class DLFileEntryMetadataPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = ServiceTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong();
 
 		DLFileEntryMetadata newDLFileEntryMetadata = _persistence.create(pk);
 
-		newDLFileEntryMetadata.setUuid(ServiceTestUtil.randomString());
+		newDLFileEntryMetadata.setUuid(RandomTestUtil.randomString());
 
-		newDLFileEntryMetadata.setDDMStorageId(ServiceTestUtil.nextLong());
+		newDLFileEntryMetadata.setDDMStorageId(RandomTestUtil.nextLong());
 
-		newDLFileEntryMetadata.setDDMStructureId(ServiceTestUtil.nextLong());
+		newDLFileEntryMetadata.setDDMStructureId(RandomTestUtil.nextLong());
 
-		newDLFileEntryMetadata.setFileEntryTypeId(ServiceTestUtil.nextLong());
+		newDLFileEntryMetadata.setFileEntryTypeId(RandomTestUtil.nextLong());
 
-		newDLFileEntryMetadata.setFileEntryId(ServiceTestUtil.nextLong());
+		newDLFileEntryMetadata.setFileEntryId(RandomTestUtil.nextLong());
 
-		newDLFileEntryMetadata.setFileVersionId(ServiceTestUtil.nextLong());
+		newDLFileEntryMetadata.setFileVersionId(RandomTestUtil.nextLong());
 
-		_persistence.update(newDLFileEntryMetadata);
+		_dlFileEntryMetadatas.add(_persistence.update(newDLFileEntryMetadata));
 
 		DLFileEntryMetadata existingDLFileEntryMetadata = _persistence.findByPrimaryKey(newDLFileEntryMetadata.getPrimaryKey());
 
@@ -179,7 +153,7 @@ public class DLFileEntryMetadataPersistenceTest {
 	@Test
 	public void testCountByFileEntryTypeId() {
 		try {
-			_persistence.countByFileEntryTypeId(ServiceTestUtil.nextLong());
+			_persistence.countByFileEntryTypeId(RandomTestUtil.nextLong());
 
 			_persistence.countByFileEntryTypeId(0L);
 		}
@@ -191,7 +165,7 @@ public class DLFileEntryMetadataPersistenceTest {
 	@Test
 	public void testCountByFileEntryId() {
 		try {
-			_persistence.countByFileEntryId(ServiceTestUtil.nextLong());
+			_persistence.countByFileEntryId(RandomTestUtil.nextLong());
 
 			_persistence.countByFileEntryId(0L);
 		}
@@ -203,7 +177,7 @@ public class DLFileEntryMetadataPersistenceTest {
 	@Test
 	public void testCountByFileVersionId() {
 		try {
-			_persistence.countByFileVersionId(ServiceTestUtil.nextLong());
+			_persistence.countByFileVersionId(RandomTestUtil.nextLong());
 
 			_persistence.countByFileVersionId(0L);
 		}
@@ -215,8 +189,8 @@ public class DLFileEntryMetadataPersistenceTest {
 	@Test
 	public void testCountByD_F() {
 		try {
-			_persistence.countByD_F(ServiceTestUtil.nextLong(),
-				ServiceTestUtil.nextLong());
+			_persistence.countByD_F(RandomTestUtil.nextLong(),
+				RandomTestUtil.nextLong());
 
 			_persistence.countByD_F(0L, 0L);
 		}
@@ -236,7 +210,7 @@ public class DLFileEntryMetadataPersistenceTest {
 
 	@Test
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = ServiceTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong();
 
 		try {
 			_persistence.findByPrimaryKey(pk);
@@ -259,7 +233,7 @@ public class DLFileEntryMetadataPersistenceTest {
 		}
 	}
 
-	protected OrderByComparator getOrderByComparator() {
+	protected OrderByComparator<DLFileEntryMetadata> getOrderByComparator() {
 		return OrderByComparatorFactoryUtil.create("DLFileEntryMetadata",
 			"uuid", true, "fileEntryMetadataId", true, "DDMStorageId", true,
 			"DDMStructureId", true, "fileEntryTypeId", true, "fileEntryId",
@@ -277,11 +251,93 @@ public class DLFileEntryMetadataPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = ServiceTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong();
 
 		DLFileEntryMetadata missingDLFileEntryMetadata = _persistence.fetchByPrimaryKey(pk);
 
 		Assert.assertNull(missingDLFileEntryMetadata);
+	}
+
+	@Test
+	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereAllPrimaryKeysExist()
+		throws Exception {
+		DLFileEntryMetadata newDLFileEntryMetadata1 = addDLFileEntryMetadata();
+		DLFileEntryMetadata newDLFileEntryMetadata2 = addDLFileEntryMetadata();
+
+		Set<Serializable> primaryKeys = new HashSet<Serializable>();
+
+		primaryKeys.add(newDLFileEntryMetadata1.getPrimaryKey());
+		primaryKeys.add(newDLFileEntryMetadata2.getPrimaryKey());
+
+		Map<Serializable, DLFileEntryMetadata> dlFileEntryMetadatas = _persistence.fetchByPrimaryKeys(primaryKeys);
+
+		Assert.assertEquals(2, dlFileEntryMetadatas.size());
+		Assert.assertEquals(newDLFileEntryMetadata1,
+			dlFileEntryMetadatas.get(newDLFileEntryMetadata1.getPrimaryKey()));
+		Assert.assertEquals(newDLFileEntryMetadata2,
+			dlFileEntryMetadatas.get(newDLFileEntryMetadata2.getPrimaryKey()));
+	}
+
+	@Test
+	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
+		throws Exception {
+		long pk1 = RandomTestUtil.nextLong();
+
+		long pk2 = RandomTestUtil.nextLong();
+
+		Set<Serializable> primaryKeys = new HashSet<Serializable>();
+
+		primaryKeys.add(pk1);
+		primaryKeys.add(pk2);
+
+		Map<Serializable, DLFileEntryMetadata> dlFileEntryMetadatas = _persistence.fetchByPrimaryKeys(primaryKeys);
+
+		Assert.assertTrue(dlFileEntryMetadatas.isEmpty());
+	}
+
+	@Test
+	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereSomePrimaryKeysExist()
+		throws Exception {
+		DLFileEntryMetadata newDLFileEntryMetadata = addDLFileEntryMetadata();
+
+		long pk = RandomTestUtil.nextLong();
+
+		Set<Serializable> primaryKeys = new HashSet<Serializable>();
+
+		primaryKeys.add(newDLFileEntryMetadata.getPrimaryKey());
+		primaryKeys.add(pk);
+
+		Map<Serializable, DLFileEntryMetadata> dlFileEntryMetadatas = _persistence.fetchByPrimaryKeys(primaryKeys);
+
+		Assert.assertEquals(1, dlFileEntryMetadatas.size());
+		Assert.assertEquals(newDLFileEntryMetadata,
+			dlFileEntryMetadatas.get(newDLFileEntryMetadata.getPrimaryKey()));
+	}
+
+	@Test
+	public void testFetchByPrimaryKeysWithNoPrimaryKeys()
+		throws Exception {
+		Set<Serializable> primaryKeys = new HashSet<Serializable>();
+
+		Map<Serializable, DLFileEntryMetadata> dlFileEntryMetadatas = _persistence.fetchByPrimaryKeys(primaryKeys);
+
+		Assert.assertTrue(dlFileEntryMetadatas.isEmpty());
+	}
+
+	@Test
+	public void testFetchByPrimaryKeysWithOnePrimaryKey()
+		throws Exception {
+		DLFileEntryMetadata newDLFileEntryMetadata = addDLFileEntryMetadata();
+
+		Set<Serializable> primaryKeys = new HashSet<Serializable>();
+
+		primaryKeys.add(newDLFileEntryMetadata.getPrimaryKey());
+
+		Map<Serializable, DLFileEntryMetadata> dlFileEntryMetadatas = _persistence.fetchByPrimaryKeys(primaryKeys);
+
+		Assert.assertEquals(1, dlFileEntryMetadatas.size());
+		Assert.assertEquals(newDLFileEntryMetadata,
+			dlFileEntryMetadatas.get(newDLFileEntryMetadata.getPrimaryKey()));
 	}
 
 	@Test
@@ -332,7 +388,7 @@ public class DLFileEntryMetadataPersistenceTest {
 				DLFileEntryMetadata.class.getClassLoader());
 
 		dynamicQuery.add(RestrictionsFactoryUtil.eq("fileEntryMetadataId",
-				ServiceTestUtil.nextLong()));
+				RandomTestUtil.nextLong()));
 
 		List<DLFileEntryMetadata> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -373,7 +429,7 @@ public class DLFileEntryMetadataPersistenceTest {
 				"fileEntryMetadataId"));
 
 		dynamicQuery.add(RestrictionsFactoryUtil.in("fileEntryMetadataId",
-				new Object[] { ServiceTestUtil.nextLong() }));
+				new Object[] { RandomTestUtil.nextLong() }));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -400,29 +456,27 @@ public class DLFileEntryMetadataPersistenceTest {
 
 	protected DLFileEntryMetadata addDLFileEntryMetadata()
 		throws Exception {
-		long pk = ServiceTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong();
 
 		DLFileEntryMetadata dlFileEntryMetadata = _persistence.create(pk);
 
-		dlFileEntryMetadata.setUuid(ServiceTestUtil.randomString());
+		dlFileEntryMetadata.setUuid(RandomTestUtil.randomString());
 
-		dlFileEntryMetadata.setDDMStorageId(ServiceTestUtil.nextLong());
+		dlFileEntryMetadata.setDDMStorageId(RandomTestUtil.nextLong());
 
-		dlFileEntryMetadata.setDDMStructureId(ServiceTestUtil.nextLong());
+		dlFileEntryMetadata.setDDMStructureId(RandomTestUtil.nextLong());
 
-		dlFileEntryMetadata.setFileEntryTypeId(ServiceTestUtil.nextLong());
+		dlFileEntryMetadata.setFileEntryTypeId(RandomTestUtil.nextLong());
 
-		dlFileEntryMetadata.setFileEntryId(ServiceTestUtil.nextLong());
+		dlFileEntryMetadata.setFileEntryId(RandomTestUtil.nextLong());
 
-		dlFileEntryMetadata.setFileVersionId(ServiceTestUtil.nextLong());
+		dlFileEntryMetadata.setFileVersionId(RandomTestUtil.nextLong());
 
-		_persistence.update(dlFileEntryMetadata);
+		_dlFileEntryMetadatas.add(_persistence.update(dlFileEntryMetadata));
 
 		return dlFileEntryMetadata;
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(DLFileEntryMetadataPersistenceTest.class);
-	private ModelListener<DLFileEntryMetadata>[] _modelListeners;
-	private DLFileEntryMetadataPersistence _persistence = (DLFileEntryMetadataPersistence)PortalBeanLocatorUtil.locate(DLFileEntryMetadataPersistence.class.getName());
-	private TransactionalPersistenceAdvice _transactionalPersistenceAdvice = (TransactionalPersistenceAdvice)PortalBeanLocatorUtil.locate(TransactionalPersistenceAdvice.class.getName());
+	private List<DLFileEntryMetadata> _dlFileEntryMetadatas = new ArrayList<DLFileEntryMetadata>();
+	private DLFileEntryMetadataPersistence _persistence = DLFileEntryMetadataUtil.getPersistence();
 }

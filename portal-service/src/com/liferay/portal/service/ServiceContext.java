@@ -15,7 +15,6 @@
 package com.liferay.portal.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
@@ -139,7 +138,7 @@ public class ServiceContext implements Cloneable, Serializable {
 	 * update this logic updating the logic in the JSP.
 	 */
 	public void deriveDefaultPermissions(long repositoryId, String modelName)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		long siteGroupId = PortalUtil.getSiteGroupId(repositoryId);
 
@@ -388,9 +387,8 @@ public class ServiceContext implements Cloneable, Serializable {
 	 *         context
 	 * @throws PortalException if a default user for the company could not be
 	 *         found
-	 * @throws SystemException if a system exception occurred
 	 */
-	public long getGuestOrUserId() throws PortalException, SystemException {
+	public long getGuestOrUserId() throws PortalException {
 		long userId = getUserId();
 
 		if (userId > 0) {
@@ -424,6 +422,7 @@ public class ServiceContext implements Cloneable, Serializable {
 	 * @return the the map of request header name/value pairs
 	 * @see    com.liferay.portal.kernel.servlet.HttpHeaders
 	 */
+	@JSON(include = false)
 	public Map<String, String> getHeaders() {
 		return _headers;
 	}
@@ -649,7 +648,7 @@ public class ServiceContext implements Cloneable, Serializable {
 		return PortletConstants.getRootPortletId(portletId);
 	}
 
-	public Group getScopeGroup() throws PortalException, SystemException {
+	public Group getScopeGroup() throws PortalException {
 		return GroupLocalServiceUtil.getGroup(_scopeGroupId);
 	}
 
@@ -773,6 +772,7 @@ public class ServiceContext implements Cloneable, Serializable {
 	 */
 	public boolean isCommandAdd() {
 		if (Validator.equals(_command, Constants.ADD) ||
+			Validator.equals(_command, Constants.ADD_DYNAMIC) ||
 			Validator.equals(_command, Constants.ADD_MULTIPLE)) {
 
 			return true;
@@ -1499,7 +1499,7 @@ public class ServiceContext implements Cloneable, Serializable {
 	private Date _formDate;
 	private String[] _groupPermissions;
 	private String[] _guestPermissions;
-	private Map<String, String> _headers;
+	private transient Map<String, String> _headers;
 	private boolean _indexingEnabled = true;
 	private String _languageId;
 	private String _layoutFullURL;

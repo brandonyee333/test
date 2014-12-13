@@ -16,7 +16,6 @@ package com.liferay.portlet.dynamicdatamapping.storage;
 
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -74,6 +73,11 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 public class ExpandoStorageAdapter extends BaseStorageAdapter {
 
 	@Override
+	public String getStorageType() {
+		return StorageType.EXPANDO.toString();
+	}
+
+	@Override
 	protected long doCreate(
 			long companyId, long ddmStructureId, Fields fields,
 			ServiceContext serviceContext)
@@ -120,7 +124,7 @@ public class ExpandoStorageAdapter extends BaseStorageAdapter {
 	@Override
 	protected List<Fields> doGetFieldsListByClasses(
 			long ddmStructureId, long[] classPKs, List<String> fieldNames,
-			OrderByComparator orderByComparator)
+			OrderByComparator<Fields> orderByComparator)
 		throws Exception {
 
 		return _doQuery(
@@ -130,7 +134,7 @@ public class ExpandoStorageAdapter extends BaseStorageAdapter {
 	@Override
 	protected List<Fields> doGetFieldsListByDDMStructure(
 			long ddmStructureId, List<String> fieldNames,
-			OrderByComparator orderByComparator)
+			OrderByComparator<Fields> orderByComparator)
 		throws Exception {
 
 		return _doQuery(ddmStructureId, fieldNames, null, orderByComparator);
@@ -147,7 +151,7 @@ public class ExpandoStorageAdapter extends BaseStorageAdapter {
 	@Override
 	protected List<Fields> doQuery(
 			long ddmStructureId, List<String> fieldNames, Condition condition,
-			OrderByComparator orderByComparator)
+			OrderByComparator<Fields> orderByComparator)
 		throws Exception {
 
 		return _doQuery(
@@ -228,7 +232,7 @@ public class ExpandoStorageAdapter extends BaseStorageAdapter {
 	}
 
 	private void _checkExpandoColumns(ExpandoTable expandoTable, Fields fields)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		for (String name : fields.getNames()) {
 			ExpandoColumn expandoColumn =
@@ -254,7 +258,7 @@ public class ExpandoStorageAdapter extends BaseStorageAdapter {
 
 	private List<Fields> _doQuery(
 			long ddmStructureId, List<String> fieldNames, Condition condition,
-			OrderByComparator orderByComparator)
+			OrderByComparator<Fields> orderByComparator)
 		throws Exception {
 
 		return _doQuery(
@@ -282,7 +286,7 @@ public class ExpandoStorageAdapter extends BaseStorageAdapter {
 
 	private List<Fields> _doQuery(
 			long ddmStructureId, long[] expandoRowIds, List<String> fieldNames,
-			Condition condition, OrderByComparator orderByComparator)
+			Condition condition, OrderByComparator<Fields> orderByComparator)
 		throws Exception {
 
 		List<Fields> fieldsList = new ArrayList<Fields>();
@@ -347,9 +351,7 @@ public class ExpandoStorageAdapter extends BaseStorageAdapter {
 		return fieldsList;
 	}
 
-	private long[] _getExpandoRowIds(long ddmStructureId)
-		throws SystemException {
-
+	private long[] _getExpandoRowIds(long ddmStructureId) {
 		List<Long> expandoRowIds = new ArrayList<Long>();
 
 		List<DDMStorageLink> ddmStorageLinks =
@@ -366,7 +368,7 @@ public class ExpandoStorageAdapter extends BaseStorageAdapter {
 
 	private ExpandoTable _getExpandoTable(
 			long companyId, long ddmStructureId, Fields fields)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		ExpandoTable expandoTable = null;
 
@@ -552,7 +554,7 @@ public class ExpandoStorageAdapter extends BaseStorageAdapter {
 
 	private void _updateFields(
 			ExpandoTable expandoTable, long classPK, Fields fields)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		Iterator<Field> itr = fields.iterator(true);
 

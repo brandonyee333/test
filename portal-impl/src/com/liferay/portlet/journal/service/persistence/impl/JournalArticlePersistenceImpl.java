@@ -14,6 +14,8 @@
 
 package com.liferay.portlet.journal.service.persistence.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -23,12 +25,9 @@ import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
 import com.liferay.portal.kernel.dao.orm.Session;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -37,7 +36,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.model.CacheModel;
-import com.liferay.portal.model.ModelListener;
 import com.liferay.portal.security.permission.InlineSQLHelperUtil;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
@@ -51,10 +49,13 @@ import java.io.Serializable;
 
 import java.sql.Timestamp;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -69,6 +70,7 @@ import java.util.Set;
  * @see JournalArticleUtil
  * @generated
  */
+@ProviderType
 public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalArticle>
 	implements JournalArticlePersistence {
 	/*
@@ -120,11 +122,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 *
 	 * @param uuid the uuid
 	 * @return the matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> findByUuid(String uuid)
-		throws SystemException {
+	public List<JournalArticle> findByUuid(String uuid) {
 		return findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
@@ -139,11 +139,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> findByUuid(String uuid, int start, int end)
-		throws SystemException {
+	public List<JournalArticle> findByUuid(String uuid, int start, int end) {
 		return findByUuid(uuid, start, end, null);
 	}
 
@@ -159,11 +157,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByUuid(String uuid, int start, int end,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -280,12 +277,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByUuid_First(String uuid,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByUuid_First(uuid,
 				orderByComparator);
 
@@ -311,11 +307,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByUuid_First(String uuid,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		List<JournalArticle> list = findByUuid(uuid, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -332,12 +327,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByUuid_Last(String uuid,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByUuid_Last(uuid, orderByComparator);
 
 		if (journalArticle != null) {
@@ -362,11 +356,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByUuid_Last(String uuid,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		int count = countByUuid(uuid);
 
 		if (count == 0) {
@@ -391,12 +384,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] findByUuid_PrevAndNext(long id, String uuid,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = findByPrimaryKey(id);
 
 		Session session = null;
@@ -426,7 +418,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle getByUuid_PrevAndNext(Session session,
 		JournalArticle journalArticle, String uuid,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<JournalArticle> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -547,10 +539,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * Removes all the journal articles where uuid = &#63; from the database.
 	 *
 	 * @param uuid the uuid
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeByUuid(String uuid) throws SystemException {
+	public void removeByUuid(String uuid) {
 		for (JournalArticle journalArticle : findByUuid(uuid,
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(journalArticle);
@@ -562,10 +553,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 *
 	 * @param uuid the uuid
 	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByUuid(String uuid) throws SystemException {
+	public int countByUuid(String uuid) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_UUID;
 
 		Object[] finderArgs = new Object[] { uuid };
@@ -646,11 +636,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @return the matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByUUID_G(String uuid, long groupId)
-		throws NoSuchArticleException, SystemException {
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByUUID_G(uuid, groupId);
 
 		if (journalArticle == null) {
@@ -682,11 +671,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param uuid the uuid
 	 * @param groupId the group ID
 	 * @return the matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public JournalArticle fetchByUUID_G(String uuid, long groupId)
-		throws SystemException {
+	public JournalArticle fetchByUUID_G(String uuid, long groupId) {
 		return fetchByUUID_G(uuid, groupId, true);
 	}
 
@@ -697,11 +684,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @param retrieveFromCache whether to use the finder cache
 	 * @return the matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByUUID_G(String uuid, long groupId,
-		boolean retrieveFromCache) throws SystemException {
+		boolean retrieveFromCache) {
 		Object[] finderArgs = new Object[] { uuid, groupId };
 
 		Object result = null;
@@ -804,11 +790,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param uuid the uuid
 	 * @param groupId the group ID
 	 * @return the journal article that was removed
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle removeByUUID_G(String uuid, long groupId)
-		throws NoSuchArticleException, SystemException {
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = findByUUID_G(uuid, groupId);
 
 		return remove(journalArticle);
@@ -820,11 +805,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param uuid the uuid
 	 * @param groupId the group ID
 	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByUUID_G(String uuid, long groupId)
-		throws SystemException {
+	public int countByUUID_G(String uuid, long groupId) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_UUID_G;
 
 		Object[] finderArgs = new Object[] { uuid, groupId };
@@ -922,11 +905,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param uuid the uuid
 	 * @param companyId the company ID
 	 * @return the matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> findByUuid_C(String uuid, long companyId)
-		throws SystemException {
+	public List<JournalArticle> findByUuid_C(String uuid, long companyId) {
 		return findByUuid_C(uuid, companyId, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -943,11 +924,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByUuid_C(String uuid, long companyId,
-		int start, int end) throws SystemException {
+		int start, int end) {
 		return findByUuid_C(uuid, companyId, start, end, null);
 	}
 
@@ -964,12 +944,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByUuid_C(String uuid, long companyId,
-		int start, int end, OrderByComparator orderByComparator)
-		throws SystemException {
+		int start, int end, OrderByComparator<JournalArticle> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -1096,12 +1074,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByUuid_C_First(String uuid, long companyId,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByUuid_C_First(uuid, companyId,
 				orderByComparator);
 
@@ -1131,11 +1108,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByUuid_C_First(String uuid, long companyId,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		List<JournalArticle> list = findByUuid_C(uuid, companyId, 0, 1,
 				orderByComparator);
 
@@ -1154,12 +1130,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByUuid_C_Last(String uuid, long companyId,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByUuid_C_Last(uuid, companyId,
 				orderByComparator);
 
@@ -1189,11 +1164,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByUuid_C_Last(String uuid, long companyId,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		int count = countByUuid_C(uuid, companyId);
 
 		if (count == 0) {
@@ -1219,12 +1193,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] findByUuid_C_PrevAndNext(long id, String uuid,
-		long companyId, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		long companyId, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = findByPrimaryKey(id);
 
 		Session session = null;
@@ -1254,7 +1227,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle getByUuid_C_PrevAndNext(Session session,
 		JournalArticle journalArticle, String uuid, long companyId,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<JournalArticle> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -1380,11 +1353,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 *
 	 * @param uuid the uuid
 	 * @param companyId the company ID
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeByUuid_C(String uuid, long companyId)
-		throws SystemException {
+	public void removeByUuid_C(String uuid, long companyId) {
 		for (JournalArticle journalArticle : findByUuid_C(uuid, companyId,
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(journalArticle);
@@ -1397,11 +1368,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param uuid the uuid
 	 * @param companyId the company ID
 	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByUuid_C(String uuid, long companyId)
-		throws SystemException {
+	public int countByUuid_C(String uuid, long companyId) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_UUID_C;
 
 		Object[] finderArgs = new Object[] { uuid, companyId };
@@ -1498,11 +1467,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 *
 	 * @param resourcePrimKey the resource prim key
 	 * @return the matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> findByResourcePrimKey(long resourcePrimKey)
-		throws SystemException {
+	public List<JournalArticle> findByResourcePrimKey(long resourcePrimKey) {
 		return findByResourcePrimKey(resourcePrimKey, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -1518,11 +1485,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByResourcePrimKey(long resourcePrimKey,
-		int start, int end) throws SystemException {
+		int start, int end) {
 		return findByResourcePrimKey(resourcePrimKey, start, end, null);
 	}
 
@@ -1538,12 +1504,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByResourcePrimKey(long resourcePrimKey,
-		int start, int end, OrderByComparator orderByComparator)
-		throws SystemException {
+		int start, int end, OrderByComparator<JournalArticle> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -1650,12 +1614,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByResourcePrimKey_First(long resourcePrimKey,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByResourcePrimKey_First(resourcePrimKey,
 				orderByComparator);
 
@@ -1681,11 +1644,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param resourcePrimKey the resource prim key
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByResourcePrimKey_First(long resourcePrimKey,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		List<JournalArticle> list = findByResourcePrimKey(resourcePrimKey, 0,
 				1, orderByComparator);
 
@@ -1703,12 +1665,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByResourcePrimKey_Last(long resourcePrimKey,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByResourcePrimKey_Last(resourcePrimKey,
 				orderByComparator);
 
@@ -1734,11 +1695,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param resourcePrimKey the resource prim key
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByResourcePrimKey_Last(long resourcePrimKey,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		int count = countByResourcePrimKey(resourcePrimKey);
 
 		if (count == 0) {
@@ -1763,12 +1723,12 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] findByResourcePrimKey_PrevAndNext(long id,
-		long resourcePrimKey, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		long resourcePrimKey,
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = findByPrimaryKey(id);
 
 		Session session = null;
@@ -1798,7 +1758,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle getByResourcePrimKey_PrevAndNext(Session session,
 		JournalArticle journalArticle, long resourcePrimKey,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<JournalArticle> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -1905,11 +1865,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * Removes all the journal articles where resourcePrimKey = &#63; from the database.
 	 *
 	 * @param resourcePrimKey the resource prim key
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeByResourcePrimKey(long resourcePrimKey)
-		throws SystemException {
+	public void removeByResourcePrimKey(long resourcePrimKey) {
 		for (JournalArticle journalArticle : findByResourcePrimKey(
 				resourcePrimKey, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(journalArticle);
@@ -1921,11 +1879,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 *
 	 * @param resourcePrimKey the resource prim key
 	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByResourcePrimKey(long resourcePrimKey)
-		throws SystemException {
+	public int countByResourcePrimKey(long resourcePrimKey) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_RESOURCEPRIMKEY;
 
 		Object[] finderArgs = new Object[] { resourcePrimKey };
@@ -2001,11 +1957,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 *
 	 * @param groupId the group ID
 	 * @return the matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> findByGroupId(long groupId)
-		throws SystemException {
+	public List<JournalArticle> findByGroupId(long groupId) {
 		return findByGroupId(groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
@@ -2020,11 +1974,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> findByGroupId(long groupId, int start, int end)
-		throws SystemException {
+	public List<JournalArticle> findByGroupId(long groupId, int start, int end) {
 		return findByGroupId(groupId, start, end, null);
 	}
 
@@ -2040,11 +1992,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByGroupId(long groupId, int start, int end,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -2147,12 +2098,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByGroupId_First(long groupId,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByGroupId_First(groupId,
 				orderByComparator);
 
@@ -2178,11 +2128,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByGroupId_First(long groupId,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		List<JournalArticle> list = findByGroupId(groupId, 0, 1,
 				orderByComparator);
 
@@ -2200,12 +2149,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByGroupId_Last(long groupId,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByGroupId_Last(groupId,
 				orderByComparator);
 
@@ -2231,11 +2179,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByGroupId_Last(long groupId,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		int count = countByGroupId(groupId);
 
 		if (count == 0) {
@@ -2260,12 +2207,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] findByGroupId_PrevAndNext(long id, long groupId,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = findByPrimaryKey(id);
 
 		Session session = null;
@@ -2295,7 +2241,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle getByGroupId_PrevAndNext(Session session,
 		JournalArticle journalArticle, long groupId,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<JournalArticle> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -2403,11 +2349,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 *
 	 * @param groupId the group ID
 	 * @return the matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> filterFindByGroupId(long groupId)
-		throws SystemException {
+	public List<JournalArticle> filterFindByGroupId(long groupId) {
 		return filterFindByGroupId(groupId, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -2423,11 +2367,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByGroupId(long groupId, int start,
-		int end) throws SystemException {
+		int end) {
 		return filterFindByGroupId(groupId, start, end, null);
 	}
 
@@ -2443,11 +2386,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByGroupId(long groupId, int start,
-		int end, OrderByComparator orderByComparator) throws SystemException {
+		int end, OrderByComparator<JournalArticle> orderByComparator) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByGroupId(groupId, start, end, orderByComparator);
 		}
@@ -2535,12 +2477,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] filterFindByGroupId_PrevAndNext(long id,
-		long groupId, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		long groupId, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByGroupId_PrevAndNext(id, groupId, orderByComparator);
 		}
@@ -2574,7 +2515,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle filterGetByGroupId_PrevAndNext(Session session,
 		JournalArticle journalArticle, long groupId,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<JournalArticle> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -2716,10 +2657,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * Removes all the journal articles where groupId = &#63; from the database.
 	 *
 	 * @param groupId the group ID
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeByGroupId(long groupId) throws SystemException {
+	public void removeByGroupId(long groupId) {
 		for (JournalArticle journalArticle : findByGroupId(groupId,
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(journalArticle);
@@ -2731,10 +2671,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 *
 	 * @param groupId the group ID
 	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByGroupId(long groupId) throws SystemException {
+	public int countByGroupId(long groupId) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_GROUPID;
 
 		Object[] finderArgs = new Object[] { groupId };
@@ -2784,10 +2723,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 *
 	 * @param groupId the group ID
 	 * @return the number of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int filterCountByGroupId(long groupId) throws SystemException {
+	public int filterCountByGroupId(long groupId) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return countByGroupId(groupId);
 		}
@@ -2859,11 +2797,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 *
 	 * @param companyId the company ID
 	 * @return the matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> findByCompanyId(long companyId)
-		throws SystemException {
+	public List<JournalArticle> findByCompanyId(long companyId) {
 		return findByCompanyId(companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
 			null);
 	}
@@ -2879,11 +2815,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByCompanyId(long companyId, int start,
-		int end) throws SystemException {
+		int end) {
 		return findByCompanyId(companyId, start, end, null);
 	}
 
@@ -2899,11 +2834,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByCompanyId(long companyId, int start,
-		int end, OrderByComparator orderByComparator) throws SystemException {
+		int end, OrderByComparator<JournalArticle> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -3006,12 +2940,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByCompanyId_First(long companyId,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByCompanyId_First(companyId,
 				orderByComparator);
 
@@ -3037,11 +2970,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByCompanyId_First(long companyId,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		List<JournalArticle> list = findByCompanyId(companyId, 0, 1,
 				orderByComparator);
 
@@ -3059,12 +2991,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByCompanyId_Last(long companyId,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByCompanyId_Last(companyId,
 				orderByComparator);
 
@@ -3090,11 +3021,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByCompanyId_Last(long companyId,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		int count = countByCompanyId(companyId);
 
 		if (count == 0) {
@@ -3119,12 +3049,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] findByCompanyId_PrevAndNext(long id,
-		long companyId, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		long companyId, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = findByPrimaryKey(id);
 
 		Session session = null;
@@ -3154,7 +3083,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle getByCompanyId_PrevAndNext(Session session,
 		JournalArticle journalArticle, long companyId,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<JournalArticle> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -3261,10 +3190,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * Removes all the journal articles where companyId = &#63; from the database.
 	 *
 	 * @param companyId the company ID
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeByCompanyId(long companyId) throws SystemException {
+	public void removeByCompanyId(long companyId) {
 		for (JournalArticle journalArticle : findByCompanyId(companyId,
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(journalArticle);
@@ -3276,10 +3204,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 *
 	 * @param companyId the company ID
 	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByCompanyId(long companyId) throws SystemException {
+	public int countByCompanyId(long companyId) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_COMPANYID;
 
 		Object[] finderArgs = new Object[] { companyId };
@@ -3325,87 +3252,82 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	private static final String _FINDER_COLUMN_COMPANYID_COMPANYID_2 = "journalArticle.companyId = ?";
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_STRUCTUREID =
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_DDMSTRUCTUREKEY =
 		new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
 			JournalArticleModelImpl.FINDER_CACHE_ENABLED,
 			JournalArticleImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByStructureId",
+			"findByDDMStructureKey",
 			new String[] {
 				String.class.getName(),
 				
 			Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			});
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_STRUCTUREID =
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_DDMSTRUCTUREKEY =
 		new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
 			JournalArticleModelImpl.FINDER_CACHE_ENABLED,
 			JournalArticleImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByStructureId",
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByDDMStructureKey",
 			new String[] { String.class.getName() },
-			JournalArticleModelImpl.STRUCTUREID_COLUMN_BITMASK |
+			JournalArticleModelImpl.DDMSTRUCTUREKEY_COLUMN_BITMASK |
 			JournalArticleModelImpl.ARTICLEID_COLUMN_BITMASK |
 			JournalArticleModelImpl.VERSION_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_STRUCTUREID = new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
+	public static final FinderPath FINDER_PATH_COUNT_BY_DDMSTRUCTUREKEY = new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
 			JournalArticleModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByStructureId",
-			new String[] { String.class.getName() });
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_COUNT_BY_STRUCTUREID =
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"countByDDMStructureKey", new String[] { String.class.getName() });
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_COUNT_BY_DDMSTRUCTUREKEY =
 		new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
 			JournalArticleModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByStructureId",
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByDDMStructureKey",
 			new String[] { String.class.getName() });
 
 	/**
-	 * Returns all the journal articles where structureId = &#63;.
+	 * Returns all the journal articles where DDMStructureKey = &#63;.
 	 *
-	 * @param structureId the structure ID
+	 * @param DDMStructureKey the d d m structure key
 	 * @return the matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> findByStructureId(String structureId)
-		throws SystemException {
-		return findByStructureId(structureId, QueryUtil.ALL_POS,
+	public List<JournalArticle> findByDDMStructureKey(String DDMStructureKey) {
+		return findByDDMStructureKey(DDMStructureKey, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
 
 	/**
-	 * Returns a range of all the journal articles where structureId = &#63;.
+	 * Returns a range of all the journal articles where DDMStructureKey = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.journal.model.impl.JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
-	 * @param structureId the structure ID
+	 * @param DDMStructureKey the d d m structure key
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> findByStructureId(String structureId,
-		int start, int end) throws SystemException {
-		return findByStructureId(structureId, start, end, null);
+	public List<JournalArticle> findByDDMStructureKey(String DDMStructureKey,
+		int start, int end) {
+		return findByDDMStructureKey(DDMStructureKey, start, end, null);
 	}
 
 	/**
-	 * Returns an ordered range of all the journal articles where structureId = &#63;.
+	 * Returns an ordered range of all the journal articles where DDMStructureKey = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.journal.model.impl.JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
-	 * @param structureId the structure ID
+	 * @param DDMStructureKey the d d m structure key
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> findByStructureId(String structureId,
-		int start, int end, OrderByComparator orderByComparator)
-		throws SystemException {
+	public List<JournalArticle> findByDDMStructureKey(String DDMStructureKey,
+		int start, int end, OrderByComparator<JournalArticle> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -3413,841 +3335,25 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 				(orderByComparator == null)) {
 			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_STRUCTUREID;
-			finderArgs = new Object[] { structureId };
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_DDMSTRUCTUREKEY;
+			finderArgs = new Object[] { DDMStructureKey };
 		}
 		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_STRUCTUREID;
-			finderArgs = new Object[] { structureId, start, end, orderByComparator };
-		}
-
-		List<JournalArticle> list = (List<JournalArticle>)FinderCacheUtil.getResult(finderPath,
-				finderArgs, this);
-
-		if ((list != null) && !list.isEmpty()) {
-			for (JournalArticle journalArticle : list) {
-				if (!Validator.equals(structureId,
-							journalArticle.getStructureId())) {
-					list = null;
-
-					break;
-				}
-			}
-		}
-
-		if (list == null) {
-			StringBundler query = null;
-
-			if (orderByComparator != null) {
-				query = new StringBundler(3 +
-						(orderByComparator.getOrderByFields().length * 3));
-			}
-			else {
-				query = new StringBundler(3);
-			}
-
-			query.append(_SQL_SELECT_JOURNALARTICLE_WHERE);
-
-			boolean bindStructureId = false;
-
-			if (structureId == null) {
-				query.append(_FINDER_COLUMN_STRUCTUREID_STRUCTUREID_1);
-			}
-			else if (structureId.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_STRUCTUREID_STRUCTUREID_3);
-			}
-			else {
-				bindStructureId = true;
-
-				query.append(_FINDER_COLUMN_STRUCTUREID_STRUCTUREID_2);
-			}
-
-			if (orderByComparator != null) {
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
-			}
-			else
-			 if (pagination) {
-				query.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-
-			String sql = query.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query q = session.createQuery(sql);
-
-				QueryPos qPos = QueryPos.getInstance(q);
-
-				if (bindStructureId) {
-					qPos.add(structureId);
-				}
-
-				if (!pagination) {
-					list = (List<JournalArticle>)QueryUtil.list(q,
-							getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<JournalArticle>)QueryUtil.list(q,
-							getDialect(), start, end);
-				}
-
-				cacheResult(list);
-
-				FinderCacheUtil.putResult(finderPath, finderArgs, list);
-			}
-			catch (Exception e) {
-				FinderCacheUtil.removeResult(finderPath, finderArgs);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return list;
-	}
-
-	/**
-	 * Returns the first journal article in the ordered set where structureId = &#63;.
-	 *
-	 * @param structureId the structure ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the first matching journal article
-	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	@Override
-	public JournalArticle findByStructureId_First(String structureId,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
-		JournalArticle journalArticle = fetchByStructureId_First(structureId,
-				orderByComparator);
-
-		if (journalArticle != null) {
-			return journalArticle;
-		}
-
-		StringBundler msg = new StringBundler(4);
-
-		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-		msg.append("structureId=");
-		msg.append(structureId);
-
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-		throw new NoSuchArticleException(msg.toString());
-	}
-
-	/**
-	 * Returns the first journal article in the ordered set where structureId = &#63;.
-	 *
-	 * @param structureId the structure ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	@Override
-	public JournalArticle fetchByStructureId_First(String structureId,
-		OrderByComparator orderByComparator) throws SystemException {
-		List<JournalArticle> list = findByStructureId(structureId, 0, 1,
-				orderByComparator);
-
-		if (!list.isEmpty()) {
-			return list.get(0);
-		}
-
-		return null;
-	}
-
-	/**
-	 * Returns the last journal article in the ordered set where structureId = &#63;.
-	 *
-	 * @param structureId the structure ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the last matching journal article
-	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	@Override
-	public JournalArticle findByStructureId_Last(String structureId,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
-		JournalArticle journalArticle = fetchByStructureId_Last(structureId,
-				orderByComparator);
-
-		if (journalArticle != null) {
-			return journalArticle;
-		}
-
-		StringBundler msg = new StringBundler(4);
-
-		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-		msg.append("structureId=");
-		msg.append(structureId);
-
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-		throw new NoSuchArticleException(msg.toString());
-	}
-
-	/**
-	 * Returns the last journal article in the ordered set where structureId = &#63;.
-	 *
-	 * @param structureId the structure ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	@Override
-	public JournalArticle fetchByStructureId_Last(String structureId,
-		OrderByComparator orderByComparator) throws SystemException {
-		int count = countByStructureId(structureId);
-
-		if (count == 0) {
-			return null;
-		}
-
-		List<JournalArticle> list = findByStructureId(structureId, count - 1,
-				count, orderByComparator);
-
-		if (!list.isEmpty()) {
-			return list.get(0);
-		}
-
-		return null;
-	}
-
-	/**
-	 * Returns the journal articles before and after the current journal article in the ordered set where structureId = &#63;.
-	 *
-	 * @param id the primary key of the current journal article
-	 * @param structureId the structure ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next journal article
-	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	@Override
-	public JournalArticle[] findByStructureId_PrevAndNext(long id,
-		String structureId, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
-		JournalArticle journalArticle = findByPrimaryKey(id);
-
-		Session session = null;
-
-		try {
-			session = openSession();
-
-			JournalArticle[] array = new JournalArticleImpl[3];
-
-			array[0] = getByStructureId_PrevAndNext(session, journalArticle,
-					structureId, orderByComparator, true);
-
-			array[1] = journalArticle;
-
-			array[2] = getByStructureId_PrevAndNext(session, journalArticle,
-					structureId, orderByComparator, false);
-
-			return array;
-		}
-		catch (Exception e) {
-			throw processException(e);
-		}
-		finally {
-			closeSession(session);
-		}
-	}
-
-	protected JournalArticle getByStructureId_PrevAndNext(Session session,
-		JournalArticle journalArticle, String structureId,
-		OrderByComparator orderByComparator, boolean previous) {
-		StringBundler query = null;
-
-		if (orderByComparator != null) {
-			query = new StringBundler(6 +
-					(orderByComparator.getOrderByFields().length * 6));
-		}
-		else {
-			query = new StringBundler(3);
-		}
-
-		query.append(_SQL_SELECT_JOURNALARTICLE_WHERE);
-
-		boolean bindStructureId = false;
-
-		if (structureId == null) {
-			query.append(_FINDER_COLUMN_STRUCTUREID_STRUCTUREID_1);
-		}
-		else if (structureId.equals(StringPool.BLANK)) {
-			query.append(_FINDER_COLUMN_STRUCTUREID_STRUCTUREID_3);
-		}
-		else {
-			bindStructureId = true;
-
-			query.append(_FINDER_COLUMN_STRUCTUREID_STRUCTUREID_2);
-		}
-
-		if (orderByComparator != null) {
-			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
-
-			if (orderByConditionFields.length > 0) {
-				query.append(WHERE_AND);
-			}
-
-			for (int i = 0; i < orderByConditionFields.length; i++) {
-				query.append(_ORDER_BY_ENTITY_ALIAS);
-				query.append(orderByConditionFields[i]);
-
-				if ((i + 1) < orderByConditionFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						query.append(WHERE_GREATER_THAN_HAS_NEXT);
-					}
-					else {
-						query.append(WHERE_LESSER_THAN_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						query.append(WHERE_GREATER_THAN);
-					}
-					else {
-						query.append(WHERE_LESSER_THAN);
-					}
-				}
-			}
-
-			query.append(ORDER_BY_CLAUSE);
-
-			String[] orderByFields = orderByComparator.getOrderByFields();
-
-			for (int i = 0; i < orderByFields.length; i++) {
-				query.append(_ORDER_BY_ENTITY_ALIAS);
-				query.append(orderByFields[i]);
-
-				if ((i + 1) < orderByFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						query.append(ORDER_BY_ASC_HAS_NEXT);
-					}
-					else {
-						query.append(ORDER_BY_DESC_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						query.append(ORDER_BY_ASC);
-					}
-					else {
-						query.append(ORDER_BY_DESC);
-					}
-				}
-			}
-		}
-		else {
-			query.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-		}
-
-		String sql = query.toString();
-
-		Query q = session.createQuery(sql);
-
-		q.setFirstResult(0);
-		q.setMaxResults(2);
-
-		QueryPos qPos = QueryPos.getInstance(q);
-
-		if (bindStructureId) {
-			qPos.add(structureId);
-		}
-
-		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(journalArticle);
-
-			for (Object value : values) {
-				qPos.add(value);
-			}
-		}
-
-		List<JournalArticle> list = q.list();
-
-		if (list.size() == 2) {
-			return list.get(1);
-		}
-		else {
-			return null;
-		}
-	}
-
-	/**
-	 * Returns all the journal articles where structureId = any &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.journal.model.impl.JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	 * </p>
-	 *
-	 * @param structureIds the structure IDs
-	 * @return the matching journal articles
-	 * @throws SystemException if a system exception occurred
-	 */
-	@Override
-	public List<JournalArticle> findByStructureId(String[] structureIds)
-		throws SystemException {
-		return findByStructureId(structureIds, QueryUtil.ALL_POS,
-			QueryUtil.ALL_POS, null);
-	}
-
-	/**
-	 * Returns a range of all the journal articles where structureId = any &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.journal.model.impl.JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	 * </p>
-	 *
-	 * @param structureIds the structure IDs
-	 * @param start the lower bound of the range of journal articles
-	 * @param end the upper bound of the range of journal articles (not inclusive)
-	 * @return the range of matching journal articles
-	 * @throws SystemException if a system exception occurred
-	 */
-	@Override
-	public List<JournalArticle> findByStructureId(String[] structureIds,
-		int start, int end) throws SystemException {
-		return findByStructureId(structureIds, start, end, null);
-	}
-
-	/**
-	 * Returns an ordered range of all the journal articles where structureId = any &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.journal.model.impl.JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	 * </p>
-	 *
-	 * @param structureIds the structure IDs
-	 * @param start the lower bound of the range of journal articles
-	 * @param end the upper bound of the range of journal articles (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @return the ordered range of matching journal articles
-	 * @throws SystemException if a system exception occurred
-	 */
-	@Override
-	public List<JournalArticle> findByStructureId(String[] structureIds,
-		int start, int end, OrderByComparator orderByComparator)
-		throws SystemException {
-		if (structureIds == null) {
-			structureIds = new String[0];
-		}
-		else {
-			structureIds = ArrayUtil.distinct(structureIds,
-					NULL_SAFE_STRING_COMPARATOR);
-		}
-
-		if (structureIds.length == 1) {
-			return findByStructureId(structureIds[0], start, end,
-				orderByComparator);
-		}
-
-		boolean pagination = true;
-		Object[] finderArgs = null;
-
-		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-			pagination = false;
-			finderArgs = new Object[] { StringUtil.merge(structureIds) };
-		}
-		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_DDMSTRUCTUREKEY;
 			finderArgs = new Object[] {
-					StringUtil.merge(structureIds),
+					DDMStructureKey,
 					
 					start, end, orderByComparator
 				};
 		}
 
-		List<JournalArticle> list = (List<JournalArticle>)FinderCacheUtil.getResult(FINDER_PATH_WITH_PAGINATION_FIND_BY_STRUCTUREID,
-				finderArgs, this);
-
-		if ((list != null) && !list.isEmpty()) {
-			for (JournalArticle journalArticle : list) {
-				if (!ArrayUtil.contains(structureIds,
-							journalArticle.getStructureId())) {
-					list = null;
-
-					break;
-				}
-			}
-		}
-
-		if (list == null) {
-			StringBundler query = new StringBundler();
-
-			query.append(_SQL_SELECT_JOURNALARTICLE_WHERE);
-
-			if (structureIds.length > 0) {
-				query.append(StringPool.OPEN_PARENTHESIS);
-
-				for (int i = 0; i < structureIds.length; i++) {
-					String structureId = structureIds[i];
-
-					if (structureId == null) {
-						query.append(_FINDER_COLUMN_STRUCTUREID_STRUCTUREID_1);
-					}
-					else if (structureId.equals(StringPool.BLANK)) {
-						query.append(_FINDER_COLUMN_STRUCTUREID_STRUCTUREID_3);
-					}
-					else {
-						query.append(_FINDER_COLUMN_STRUCTUREID_STRUCTUREID_2);
-					}
-
-					if ((i + 1) < structureIds.length) {
-						query.append(WHERE_OR);
-					}
-				}
-
-				query.append(StringPool.CLOSE_PARENTHESIS);
-			}
-
-			query.setStringAt(removeConjunction(query.stringAt(query.index() -
-						1)), query.index() - 1);
-
-			if (orderByComparator != null) {
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
-			}
-			else
-			 if (pagination) {
-				query.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-
-			String sql = query.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query q = session.createQuery(sql);
-
-				QueryPos qPos = QueryPos.getInstance(q);
-
-				for (String structureId : structureIds) {
-					if ((structureId != null) && !structureId.isEmpty()) {
-						qPos.add(structureId);
-					}
-				}
-
-				if (!pagination) {
-					list = (List<JournalArticle>)QueryUtil.list(q,
-							getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<JournalArticle>)QueryUtil.list(q,
-							getDialect(), start, end);
-				}
-
-				cacheResult(list);
-
-				FinderCacheUtil.putResult(FINDER_PATH_WITH_PAGINATION_FIND_BY_STRUCTUREID,
-					finderArgs, list);
-			}
-			catch (Exception e) {
-				FinderCacheUtil.removeResult(FINDER_PATH_WITH_PAGINATION_FIND_BY_STRUCTUREID,
-					finderArgs);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return list;
-	}
-
-	/**
-	 * Removes all the journal articles where structureId = &#63; from the database.
-	 *
-	 * @param structureId the structure ID
-	 * @throws SystemException if a system exception occurred
-	 */
-	@Override
-	public void removeByStructureId(String structureId)
-		throws SystemException {
-		for (JournalArticle journalArticle : findByStructureId(structureId,
-				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
-			remove(journalArticle);
-		}
-	}
-
-	/**
-	 * Returns the number of journal articles where structureId = &#63;.
-	 *
-	 * @param structureId the structure ID
-	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
-	 */
-	@Override
-	public int countByStructureId(String structureId) throws SystemException {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_STRUCTUREID;
-
-		Object[] finderArgs = new Object[] { structureId };
-
-		Long count = (Long)FinderCacheUtil.getResult(finderPath, finderArgs,
-				this);
-
-		if (count == null) {
-			StringBundler query = new StringBundler(2);
-
-			query.append(_SQL_COUNT_JOURNALARTICLE_WHERE);
-
-			boolean bindStructureId = false;
-
-			if (structureId == null) {
-				query.append(_FINDER_COLUMN_STRUCTUREID_STRUCTUREID_1);
-			}
-			else if (structureId.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_STRUCTUREID_STRUCTUREID_3);
-			}
-			else {
-				bindStructureId = true;
-
-				query.append(_FINDER_COLUMN_STRUCTUREID_STRUCTUREID_2);
-			}
-
-			String sql = query.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query q = session.createQuery(sql);
-
-				QueryPos qPos = QueryPos.getInstance(q);
-
-				if (bindStructureId) {
-					qPos.add(structureId);
-				}
-
-				count = (Long)q.uniqueResult();
-
-				FinderCacheUtil.putResult(finderPath, finderArgs, count);
-			}
-			catch (Exception e) {
-				FinderCacheUtil.removeResult(finderPath, finderArgs);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return count.intValue();
-	}
-
-	/**
-	 * Returns the number of journal articles where structureId = any &#63;.
-	 *
-	 * @param structureIds the structure IDs
-	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
-	 */
-	@Override
-	public int countByStructureId(String[] structureIds)
-		throws SystemException {
-		if (structureIds == null) {
-			structureIds = new String[0];
-		}
-		else {
-			structureIds = ArrayUtil.distinct(structureIds,
-					NULL_SAFE_STRING_COMPARATOR);
-		}
-
-		Object[] finderArgs = new Object[] { StringUtil.merge(structureIds) };
-
-		Long count = (Long)FinderCacheUtil.getResult(FINDER_PATH_WITH_PAGINATION_COUNT_BY_STRUCTUREID,
-				finderArgs, this);
-
-		if (count == null) {
-			StringBundler query = new StringBundler();
-
-			query.append(_SQL_COUNT_JOURNALARTICLE_WHERE);
-
-			if (structureIds.length > 0) {
-				query.append(StringPool.OPEN_PARENTHESIS);
-
-				for (int i = 0; i < structureIds.length; i++) {
-					String structureId = structureIds[i];
-
-					if (structureId == null) {
-						query.append(_FINDER_COLUMN_STRUCTUREID_STRUCTUREID_1);
-					}
-					else if (structureId.equals(StringPool.BLANK)) {
-						query.append(_FINDER_COLUMN_STRUCTUREID_STRUCTUREID_3);
-					}
-					else {
-						query.append(_FINDER_COLUMN_STRUCTUREID_STRUCTUREID_2);
-					}
-
-					if ((i + 1) < structureIds.length) {
-						query.append(WHERE_OR);
-					}
-				}
-
-				query.append(StringPool.CLOSE_PARENTHESIS);
-			}
-
-			query.setStringAt(removeConjunction(query.stringAt(query.index() -
-						1)), query.index() - 1);
-
-			String sql = query.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query q = session.createQuery(sql);
-
-				QueryPos qPos = QueryPos.getInstance(q);
-
-				for (String structureId : structureIds) {
-					if ((structureId != null) && !structureId.isEmpty()) {
-						qPos.add(structureId);
-					}
-				}
-
-				count = (Long)q.uniqueResult();
-
-				FinderCacheUtil.putResult(FINDER_PATH_WITH_PAGINATION_COUNT_BY_STRUCTUREID,
-					finderArgs, count);
-			}
-			catch (Exception e) {
-				FinderCacheUtil.removeResult(FINDER_PATH_WITH_PAGINATION_COUNT_BY_STRUCTUREID,
-					finderArgs);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return count.intValue();
-	}
-
-	private static final String _FINDER_COLUMN_STRUCTUREID_STRUCTUREID_1 = "journalArticle.structureId IS NULL";
-	private static final String _FINDER_COLUMN_STRUCTUREID_STRUCTUREID_2 = "journalArticle.structureId = ?";
-	private static final String _FINDER_COLUMN_STRUCTUREID_STRUCTUREID_3 = "(journalArticle.structureId IS NULL OR journalArticle.structureId = '')";
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_TEMPLATEID =
-		new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
-			JournalArticleModelImpl.FINDER_CACHE_ENABLED,
-			JournalArticleImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByTemplateId",
-			new String[] {
-				String.class.getName(),
-				
-			Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_TEMPLATEID =
-		new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
-			JournalArticleModelImpl.FINDER_CACHE_ENABLED,
-			JournalArticleImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByTemplateId",
-			new String[] { String.class.getName() },
-			JournalArticleModelImpl.TEMPLATEID_COLUMN_BITMASK |
-			JournalArticleModelImpl.ARTICLEID_COLUMN_BITMASK |
-			JournalArticleModelImpl.VERSION_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_TEMPLATEID = new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
-			JournalArticleModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByTemplateId",
-			new String[] { String.class.getName() });
-
-	/**
-	 * Returns all the journal articles where templateId = &#63;.
-	 *
-	 * @param templateId the template ID
-	 * @return the matching journal articles
-	 * @throws SystemException if a system exception occurred
-	 */
-	@Override
-	public List<JournalArticle> findByTemplateId(String templateId)
-		throws SystemException {
-		return findByTemplateId(templateId, QueryUtil.ALL_POS,
-			QueryUtil.ALL_POS, null);
-	}
-
-	/**
-	 * Returns a range of all the journal articles where templateId = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.journal.model.impl.JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	 * </p>
-	 *
-	 * @param templateId the template ID
-	 * @param start the lower bound of the range of journal articles
-	 * @param end the upper bound of the range of journal articles (not inclusive)
-	 * @return the range of matching journal articles
-	 * @throws SystemException if a system exception occurred
-	 */
-	@Override
-	public List<JournalArticle> findByTemplateId(String templateId, int start,
-		int end) throws SystemException {
-		return findByTemplateId(templateId, start, end, null);
-	}
-
-	/**
-	 * Returns an ordered range of all the journal articles where templateId = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.journal.model.impl.JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	 * </p>
-	 *
-	 * @param templateId the template ID
-	 * @param start the lower bound of the range of journal articles
-	 * @param end the upper bound of the range of journal articles (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @return the ordered range of matching journal articles
-	 * @throws SystemException if a system exception occurred
-	 */
-	@Override
-	public List<JournalArticle> findByTemplateId(String templateId, int start,
-		int end, OrderByComparator orderByComparator) throws SystemException {
-		boolean pagination = true;
-		FinderPath finderPath = null;
-		Object[] finderArgs = null;
-
-		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_TEMPLATEID;
-			finderArgs = new Object[] { templateId };
-		}
-		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_TEMPLATEID;
-			finderArgs = new Object[] { templateId, start, end, orderByComparator };
-		}
-
 		List<JournalArticle> list = (List<JournalArticle>)FinderCacheUtil.getResult(finderPath,
 				finderArgs, this);
 
 		if ((list != null) && !list.isEmpty()) {
 			for (JournalArticle journalArticle : list) {
-				if (!Validator.equals(templateId, journalArticle.getTemplateId())) {
+				if (!Validator.equals(DDMStructureKey,
+							journalArticle.getDDMStructureKey())) {
 					list = null;
 
 					break;
@@ -4268,18 +3374,18 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 			query.append(_SQL_SELECT_JOURNALARTICLE_WHERE);
 
-			boolean bindTemplateId = false;
+			boolean bindDDMStructureKey = false;
 
-			if (templateId == null) {
-				query.append(_FINDER_COLUMN_TEMPLATEID_TEMPLATEID_1);
+			if (DDMStructureKey == null) {
+				query.append(_FINDER_COLUMN_DDMSTRUCTUREKEY_DDMSTRUCTUREKEY_1);
 			}
-			else if (templateId.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_TEMPLATEID_TEMPLATEID_3);
+			else if (DDMStructureKey.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_DDMSTRUCTUREKEY_DDMSTRUCTUREKEY_3);
 			}
 			else {
-				bindTemplateId = true;
+				bindDDMStructureKey = true;
 
-				query.append(_FINDER_COLUMN_TEMPLATEID_TEMPLATEID_2);
+				query.append(_FINDER_COLUMN_DDMSTRUCTUREKEY_DDMSTRUCTUREKEY_2);
 			}
 
 			if (orderByComparator != null) {
@@ -4302,8 +3408,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (bindTemplateId) {
-					qPos.add(templateId);
+				if (bindDDMStructureKey) {
+					qPos.add(DDMStructureKey);
 				}
 
 				if (!pagination) {
@@ -4337,19 +3443,18 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	/**
-	 * Returns the first journal article in the ordered set where templateId = &#63;.
+	 * Returns the first journal article in the ordered set where DDMStructureKey = &#63;.
 	 *
-	 * @param templateId the template ID
+	 * @param DDMStructureKey the d d m structure key
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public JournalArticle findByTemplateId_First(String templateId,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
-		JournalArticle journalArticle = fetchByTemplateId_First(templateId,
+	public JournalArticle findByDDMStructureKey_First(String DDMStructureKey,
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
+		JournalArticle journalArticle = fetchByDDMStructureKey_First(DDMStructureKey,
 				orderByComparator);
 
 		if (journalArticle != null) {
@@ -4360,8 +3465,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("templateId=");
-		msg.append(templateId);
+		msg.append("DDMStructureKey=");
+		msg.append(DDMStructureKey);
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
@@ -4369,18 +3474,17 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	/**
-	 * Returns the first journal article in the ordered set where templateId = &#63;.
+	 * Returns the first journal article in the ordered set where DDMStructureKey = &#63;.
 	 *
-	 * @param templateId the template ID
+	 * @param DDMStructureKey the d d m structure key
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public JournalArticle fetchByTemplateId_First(String templateId,
-		OrderByComparator orderByComparator) throws SystemException {
-		List<JournalArticle> list = findByTemplateId(templateId, 0, 1,
-				orderByComparator);
+	public JournalArticle fetchByDDMStructureKey_First(String DDMStructureKey,
+		OrderByComparator<JournalArticle> orderByComparator) {
+		List<JournalArticle> list = findByDDMStructureKey(DDMStructureKey, 0,
+				1, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -4390,19 +3494,18 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	/**
-	 * Returns the last journal article in the ordered set where templateId = &#63;.
+	 * Returns the last journal article in the ordered set where DDMStructureKey = &#63;.
 	 *
-	 * @param templateId the template ID
+	 * @param DDMStructureKey the d d m structure key
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public JournalArticle findByTemplateId_Last(String templateId,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
-		JournalArticle journalArticle = fetchByTemplateId_Last(templateId,
+	public JournalArticle findByDDMStructureKey_Last(String DDMStructureKey,
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
+		JournalArticle journalArticle = fetchByDDMStructureKey_Last(DDMStructureKey,
 				orderByComparator);
 
 		if (journalArticle != null) {
@@ -4413,8 +3516,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("templateId=");
-		msg.append(templateId);
+		msg.append("DDMStructureKey=");
+		msg.append(DDMStructureKey);
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
@@ -4422,24 +3525,23 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	/**
-	 * Returns the last journal article in the ordered set where templateId = &#63;.
+	 * Returns the last journal article in the ordered set where DDMStructureKey = &#63;.
 	 *
-	 * @param templateId the template ID
+	 * @param DDMStructureKey the d d m structure key
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public JournalArticle fetchByTemplateId_Last(String templateId,
-		OrderByComparator orderByComparator) throws SystemException {
-		int count = countByTemplateId(templateId);
+	public JournalArticle fetchByDDMStructureKey_Last(String DDMStructureKey,
+		OrderByComparator<JournalArticle> orderByComparator) {
+		int count = countByDDMStructureKey(DDMStructureKey);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<JournalArticle> list = findByTemplateId(templateId, count - 1,
-				count, orderByComparator);
+		List<JournalArticle> list = findByDDMStructureKey(DDMStructureKey,
+				count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -4449,19 +3551,19 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	/**
-	 * Returns the journal articles before and after the current journal article in the ordered set where templateId = &#63;.
+	 * Returns the journal articles before and after the current journal article in the ordered set where DDMStructureKey = &#63;.
 	 *
 	 * @param id the primary key of the current journal article
-	 * @param templateId the template ID
+	 * @param DDMStructureKey the d d m structure key
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public JournalArticle[] findByTemplateId_PrevAndNext(long id,
-		String templateId, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+	public JournalArticle[] findByDDMStructureKey_PrevAndNext(long id,
+		String DDMStructureKey,
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = findByPrimaryKey(id);
 
 		Session session = null;
@@ -4471,13 +3573,13 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 			JournalArticle[] array = new JournalArticleImpl[3];
 
-			array[0] = getByTemplateId_PrevAndNext(session, journalArticle,
-					templateId, orderByComparator, true);
+			array[0] = getByDDMStructureKey_PrevAndNext(session,
+					journalArticle, DDMStructureKey, orderByComparator, true);
 
 			array[1] = journalArticle;
 
-			array[2] = getByTemplateId_PrevAndNext(session, journalArticle,
-					templateId, orderByComparator, false);
+			array[2] = getByDDMStructureKey_PrevAndNext(session,
+					journalArticle, DDMStructureKey, orderByComparator, false);
 
 			return array;
 		}
@@ -4489,9 +3591,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		}
 	}
 
-	protected JournalArticle getByTemplateId_PrevAndNext(Session session,
-		JournalArticle journalArticle, String templateId,
-		OrderByComparator orderByComparator, boolean previous) {
+	protected JournalArticle getByDDMStructureKey_PrevAndNext(Session session,
+		JournalArticle journalArticle, String DDMStructureKey,
+		OrderByComparator<JournalArticle> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -4504,18 +3606,18 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 		query.append(_SQL_SELECT_JOURNALARTICLE_WHERE);
 
-		boolean bindTemplateId = false;
+		boolean bindDDMStructureKey = false;
 
-		if (templateId == null) {
-			query.append(_FINDER_COLUMN_TEMPLATEID_TEMPLATEID_1);
+		if (DDMStructureKey == null) {
+			query.append(_FINDER_COLUMN_DDMSTRUCTUREKEY_DDMSTRUCTUREKEY_1);
 		}
-		else if (templateId.equals(StringPool.BLANK)) {
-			query.append(_FINDER_COLUMN_TEMPLATEID_TEMPLATEID_3);
+		else if (DDMStructureKey.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_DDMSTRUCTUREKEY_DDMSTRUCTUREKEY_3);
 		}
 		else {
-			bindTemplateId = true;
+			bindDDMStructureKey = true;
 
-			query.append(_FINDER_COLUMN_TEMPLATEID_TEMPLATEID_2);
+			query.append(_FINDER_COLUMN_DDMSTRUCTUREKEY_DDMSTRUCTUREKEY_2);
 		}
 
 		if (orderByComparator != null) {
@@ -4586,8 +3688,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 		QueryPos qPos = QueryPos.getInstance(q);
 
-		if (bindTemplateId) {
-			qPos.add(templateId);
+		if (bindDDMStructureKey) {
+			qPos.add(DDMStructureKey);
 		}
 
 		if (orderByComparator != null) {
@@ -4609,52 +3711,139 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	/**
-	 * Removes all the journal articles where templateId = &#63; from the database.
+	 * Returns all the journal articles where DDMStructureKey = any &#63;.
 	 *
-	 * @param templateId the template ID
-	 * @throws SystemException if a system exception occurred
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.journal.model.impl.JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param DDMStructureKeies the d d m structure keies
+	 * @return the matching journal articles
 	 */
 	@Override
-	public void removeByTemplateId(String templateId) throws SystemException {
-		for (JournalArticle journalArticle : findByTemplateId(templateId,
-				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
-			remove(journalArticle);
-		}
+	public List<JournalArticle> findByDDMStructureKey(
+		String[] DDMStructureKeies) {
+		return findByDDMStructureKey(DDMStructureKeies, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
 	}
 
 	/**
-	 * Returns the number of journal articles where templateId = &#63;.
+	 * Returns a range of all the journal articles where DDMStructureKey = any &#63;.
 	 *
-	 * @param templateId the template ID
-	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.journal.model.impl.JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param DDMStructureKeies the d d m structure keies
+	 * @param start the lower bound of the range of journal articles
+	 * @param end the upper bound of the range of journal articles (not inclusive)
+	 * @return the range of matching journal articles
 	 */
 	@Override
-	public int countByTemplateId(String templateId) throws SystemException {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_TEMPLATEID;
+	public List<JournalArticle> findByDDMStructureKey(
+		String[] DDMStructureKeies, int start, int end) {
+		return findByDDMStructureKey(DDMStructureKeies, start, end, null);
+	}
 
-		Object[] finderArgs = new Object[] { templateId };
+	/**
+	 * Returns an ordered range of all the journal articles where DDMStructureKey = any &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.journal.model.impl.JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param DDMStructureKeies the d d m structure keies
+	 * @param start the lower bound of the range of journal articles
+	 * @param end the upper bound of the range of journal articles (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching journal articles
+	 */
+	@Override
+	public List<JournalArticle> findByDDMStructureKey(
+		String[] DDMStructureKeies, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator) {
+		if (DDMStructureKeies == null) {
+			DDMStructureKeies = new String[0];
+		}
+		else {
+			DDMStructureKeies = ArrayUtil.distinct(DDMStructureKeies,
+					NULL_SAFE_STRING_COMPARATOR);
+		}
 
-		Long count = (Long)FinderCacheUtil.getResult(finderPath, finderArgs,
-				this);
+		if (DDMStructureKeies.length == 1) {
+			return findByDDMStructureKey(DDMStructureKeies[0], start, end,
+				orderByComparator);
+		}
 
-		if (count == null) {
-			StringBundler query = new StringBundler(2);
+		boolean pagination = true;
+		Object[] finderArgs = null;
 
-			query.append(_SQL_COUNT_JOURNALARTICLE_WHERE);
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+				(orderByComparator == null)) {
+			pagination = false;
+			finderArgs = new Object[] { StringUtil.merge(DDMStructureKeies) };
+		}
+		else {
+			finderArgs = new Object[] {
+					StringUtil.merge(DDMStructureKeies),
+					
+					start, end, orderByComparator
+				};
+		}
 
-			boolean bindTemplateId = false;
+		List<JournalArticle> list = (List<JournalArticle>)FinderCacheUtil.getResult(FINDER_PATH_WITH_PAGINATION_FIND_BY_DDMSTRUCTUREKEY,
+				finderArgs, this);
 
-			if (templateId == null) {
-				query.append(_FINDER_COLUMN_TEMPLATEID_TEMPLATEID_1);
+		if ((list != null) && !list.isEmpty()) {
+			for (JournalArticle journalArticle : list) {
+				if (!ArrayUtil.contains(DDMStructureKeies,
+							journalArticle.getDDMStructureKey())) {
+					list = null;
+
+					break;
+				}
 			}
-			else if (templateId.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_TEMPLATEID_TEMPLATEID_3);
-			}
-			else {
-				bindTemplateId = true;
+		}
 
-				query.append(_FINDER_COLUMN_TEMPLATEID_TEMPLATEID_2);
+		if (list == null) {
+			StringBundler query = new StringBundler();
+
+			query.append(_SQL_SELECT_JOURNALARTICLE_WHERE);
+
+			if (DDMStructureKeies.length > 0) {
+				query.append(StringPool.OPEN_PARENTHESIS);
+
+				for (int i = 0; i < DDMStructureKeies.length; i++) {
+					String DDMStructureKey = DDMStructureKeies[i];
+
+					if (DDMStructureKey == null) {
+						query.append(_FINDER_COLUMN_DDMSTRUCTUREKEY_DDMSTRUCTUREKEY_1);
+					}
+					else if (DDMStructureKey.equals(StringPool.BLANK)) {
+						query.append(_FINDER_COLUMN_DDMSTRUCTUREKEY_DDMSTRUCTUREKEY_3);
+					}
+					else {
+						query.append(_FINDER_COLUMN_DDMSTRUCTUREKEY_DDMSTRUCTUREKEY_2);
+					}
+
+					if ((i + 1) < DDMStructureKeies.length) {
+						query.append(WHERE_OR);
+					}
+				}
+
+				query.append(StringPool.CLOSE_PARENTHESIS);
+			}
+
+			query.setStringAt(removeConjunction(query.stringAt(query.index() -
+						1)), query.index() - 1);
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
+			}
+			else
+			 if (pagination) {
+				query.append(JournalArticleModelImpl.ORDER_BY_JPQL);
 			}
 
 			String sql = query.toString();
@@ -4668,8 +3857,105 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (bindTemplateId) {
-					qPos.add(templateId);
+				for (String DDMStructureKey : DDMStructureKeies) {
+					if ((DDMStructureKey != null) &&
+							!DDMStructureKey.isEmpty()) {
+						qPos.add(DDMStructureKey);
+					}
+				}
+
+				if (!pagination) {
+					list = (List<JournalArticle>)QueryUtil.list(q,
+							getDialect(), start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<JournalArticle>)QueryUtil.list(q,
+							getDialect(), start, end);
+				}
+
+				cacheResult(list);
+
+				FinderCacheUtil.putResult(FINDER_PATH_WITH_PAGINATION_FIND_BY_DDMSTRUCTUREKEY,
+					finderArgs, list);
+			}
+			catch (Exception e) {
+				FinderCacheUtil.removeResult(FINDER_PATH_WITH_PAGINATION_FIND_BY_DDMSTRUCTUREKEY,
+					finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Removes all the journal articles where DDMStructureKey = &#63; from the database.
+	 *
+	 * @param DDMStructureKey the d d m structure key
+	 */
+	@Override
+	public void removeByDDMStructureKey(String DDMStructureKey) {
+		for (JournalArticle journalArticle : findByDDMStructureKey(
+				DDMStructureKey, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+			remove(journalArticle);
+		}
+	}
+
+	/**
+	 * Returns the number of journal articles where DDMStructureKey = &#63;.
+	 *
+	 * @param DDMStructureKey the d d m structure key
+	 * @return the number of matching journal articles
+	 */
+	@Override
+	public int countByDDMStructureKey(String DDMStructureKey) {
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_DDMSTRUCTUREKEY;
+
+		Object[] finderArgs = new Object[] { DDMStructureKey };
+
+		Long count = (Long)FinderCacheUtil.getResult(finderPath, finderArgs,
+				this);
+
+		if (count == null) {
+			StringBundler query = new StringBundler(2);
+
+			query.append(_SQL_COUNT_JOURNALARTICLE_WHERE);
+
+			boolean bindDDMStructureKey = false;
+
+			if (DDMStructureKey == null) {
+				query.append(_FINDER_COLUMN_DDMSTRUCTUREKEY_DDMSTRUCTUREKEY_1);
+			}
+			else if (DDMStructureKey.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_DDMSTRUCTUREKEY_DDMSTRUCTUREKEY_3);
+			}
+			else {
+				bindDDMStructureKey = true;
+
+				query.append(_FINDER_COLUMN_DDMSTRUCTUREKEY_DDMSTRUCTUREKEY_2);
+			}
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				if (bindDDMStructureKey) {
+					qPos.add(DDMStructureKey);
 				}
 
 				count = (Long)q.uniqueResult();
@@ -4689,9 +3975,637 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_TEMPLATEID_TEMPLATEID_1 = "journalArticle.templateId IS NULL";
-	private static final String _FINDER_COLUMN_TEMPLATEID_TEMPLATEID_2 = "journalArticle.templateId = ?";
-	private static final String _FINDER_COLUMN_TEMPLATEID_TEMPLATEID_3 = "(journalArticle.templateId IS NULL OR journalArticle.templateId = '')";
+	/**
+	 * Returns the number of journal articles where DDMStructureKey = any &#63;.
+	 *
+	 * @param DDMStructureKeies the d d m structure keies
+	 * @return the number of matching journal articles
+	 */
+	@Override
+	public int countByDDMStructureKey(String[] DDMStructureKeies) {
+		if (DDMStructureKeies == null) {
+			DDMStructureKeies = new String[0];
+		}
+		else {
+			DDMStructureKeies = ArrayUtil.distinct(DDMStructureKeies,
+					NULL_SAFE_STRING_COMPARATOR);
+		}
+
+		Object[] finderArgs = new Object[] { StringUtil.merge(DDMStructureKeies) };
+
+		Long count = (Long)FinderCacheUtil.getResult(FINDER_PATH_WITH_PAGINATION_COUNT_BY_DDMSTRUCTUREKEY,
+				finderArgs, this);
+
+		if (count == null) {
+			StringBundler query = new StringBundler();
+
+			query.append(_SQL_COUNT_JOURNALARTICLE_WHERE);
+
+			if (DDMStructureKeies.length > 0) {
+				query.append(StringPool.OPEN_PARENTHESIS);
+
+				for (int i = 0; i < DDMStructureKeies.length; i++) {
+					String DDMStructureKey = DDMStructureKeies[i];
+
+					if (DDMStructureKey == null) {
+						query.append(_FINDER_COLUMN_DDMSTRUCTUREKEY_DDMSTRUCTUREKEY_1);
+					}
+					else if (DDMStructureKey.equals(StringPool.BLANK)) {
+						query.append(_FINDER_COLUMN_DDMSTRUCTUREKEY_DDMSTRUCTUREKEY_3);
+					}
+					else {
+						query.append(_FINDER_COLUMN_DDMSTRUCTUREKEY_DDMSTRUCTUREKEY_2);
+					}
+
+					if ((i + 1) < DDMStructureKeies.length) {
+						query.append(WHERE_OR);
+					}
+				}
+
+				query.append(StringPool.CLOSE_PARENTHESIS);
+			}
+
+			query.setStringAt(removeConjunction(query.stringAt(query.index() -
+						1)), query.index() - 1);
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				for (String DDMStructureKey : DDMStructureKeies) {
+					if ((DDMStructureKey != null) &&
+							!DDMStructureKey.isEmpty()) {
+						qPos.add(DDMStructureKey);
+					}
+				}
+
+				count = (Long)q.uniqueResult();
+
+				FinderCacheUtil.putResult(FINDER_PATH_WITH_PAGINATION_COUNT_BY_DDMSTRUCTUREKEY,
+					finderArgs, count);
+			}
+			catch (Exception e) {
+				FinderCacheUtil.removeResult(FINDER_PATH_WITH_PAGINATION_COUNT_BY_DDMSTRUCTUREKEY,
+					finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_DDMSTRUCTUREKEY_DDMSTRUCTUREKEY_1 =
+		"journalArticle.DDMStructureKey IS NULL";
+	private static final String _FINDER_COLUMN_DDMSTRUCTUREKEY_DDMSTRUCTUREKEY_2 =
+		"journalArticle.DDMStructureKey = ?";
+	private static final String _FINDER_COLUMN_DDMSTRUCTUREKEY_DDMSTRUCTUREKEY_3 =
+		"(journalArticle.DDMStructureKey IS NULL OR journalArticle.DDMStructureKey = '')";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_DDMTEMPLATEKEY =
+		new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
+			JournalArticleModelImpl.FINDER_CACHE_ENABLED,
+			JournalArticleImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+			"findByDDMTemplateKey",
+			new String[] {
+				String.class.getName(),
+				
+			Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_DDMTEMPLATEKEY =
+		new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
+			JournalArticleModelImpl.FINDER_CACHE_ENABLED,
+			JournalArticleImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByDDMTemplateKey",
+			new String[] { String.class.getName() },
+			JournalArticleModelImpl.DDMTEMPLATEKEY_COLUMN_BITMASK |
+			JournalArticleModelImpl.ARTICLEID_COLUMN_BITMASK |
+			JournalArticleModelImpl.VERSION_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_DDMTEMPLATEKEY = new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
+			JournalArticleModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByDDMTemplateKey",
+			new String[] { String.class.getName() });
+
+	/**
+	 * Returns all the journal articles where DDMTemplateKey = &#63;.
+	 *
+	 * @param DDMTemplateKey the d d m template key
+	 * @return the matching journal articles
+	 */
+	@Override
+	public List<JournalArticle> findByDDMTemplateKey(String DDMTemplateKey) {
+		return findByDDMTemplateKey(DDMTemplateKey, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the journal articles where DDMTemplateKey = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.journal.model.impl.JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param DDMTemplateKey the d d m template key
+	 * @param start the lower bound of the range of journal articles
+	 * @param end the upper bound of the range of journal articles (not inclusive)
+	 * @return the range of matching journal articles
+	 */
+	@Override
+	public List<JournalArticle> findByDDMTemplateKey(String DDMTemplateKey,
+		int start, int end) {
+		return findByDDMTemplateKey(DDMTemplateKey, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the journal articles where DDMTemplateKey = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.journal.model.impl.JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param DDMTemplateKey the d d m template key
+	 * @param start the lower bound of the range of journal articles
+	 * @param end the upper bound of the range of journal articles (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching journal articles
+	 */
+	@Override
+	public List<JournalArticle> findByDDMTemplateKey(String DDMTemplateKey,
+		int start, int end, OrderByComparator<JournalArticle> orderByComparator) {
+		boolean pagination = true;
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_DDMTEMPLATEKEY;
+			finderArgs = new Object[] { DDMTemplateKey };
+		}
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_DDMTEMPLATEKEY;
+			finderArgs = new Object[] {
+					DDMTemplateKey,
+					
+					start, end, orderByComparator
+				};
+		}
+
+		List<JournalArticle> list = (List<JournalArticle>)FinderCacheUtil.getResult(finderPath,
+				finderArgs, this);
+
+		if ((list != null) && !list.isEmpty()) {
+			for (JournalArticle journalArticle : list) {
+				if (!Validator.equals(DDMTemplateKey,
+							journalArticle.getDDMTemplateKey())) {
+					list = null;
+
+					break;
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler query = null;
+
+			if (orderByComparator != null) {
+				query = new StringBundler(3 +
+						(orderByComparator.getOrderByFields().length * 3));
+			}
+			else {
+				query = new StringBundler(3);
+			}
+
+			query.append(_SQL_SELECT_JOURNALARTICLE_WHERE);
+
+			boolean bindDDMTemplateKey = false;
+
+			if (DDMTemplateKey == null) {
+				query.append(_FINDER_COLUMN_DDMTEMPLATEKEY_DDMTEMPLATEKEY_1);
+			}
+			else if (DDMTemplateKey.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_DDMTEMPLATEKEY_DDMTEMPLATEKEY_3);
+			}
+			else {
+				bindDDMTemplateKey = true;
+
+				query.append(_FINDER_COLUMN_DDMTEMPLATEKEY_DDMTEMPLATEKEY_2);
+			}
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
+			}
+			else
+			 if (pagination) {
+				query.append(JournalArticleModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				if (bindDDMTemplateKey) {
+					qPos.add(DDMTemplateKey);
+				}
+
+				if (!pagination) {
+					list = (List<JournalArticle>)QueryUtil.list(q,
+							getDialect(), start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<JournalArticle>)QueryUtil.list(q,
+							getDialect(), start, end);
+				}
+
+				cacheResult(list);
+
+				FinderCacheUtil.putResult(finderPath, finderArgs, list);
+			}
+			catch (Exception e) {
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first journal article in the ordered set where DDMTemplateKey = &#63;.
+	 *
+	 * @param DDMTemplateKey the d d m template key
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching journal article
+	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
+	 */
+	@Override
+	public JournalArticle findByDDMTemplateKey_First(String DDMTemplateKey,
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
+		JournalArticle journalArticle = fetchByDDMTemplateKey_First(DDMTemplateKey,
+				orderByComparator);
+
+		if (journalArticle != null) {
+			return journalArticle;
+		}
+
+		StringBundler msg = new StringBundler(4);
+
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		msg.append("DDMTemplateKey=");
+		msg.append(DDMTemplateKey);
+
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+		throw new NoSuchArticleException(msg.toString());
+	}
+
+	/**
+	 * Returns the first journal article in the ordered set where DDMTemplateKey = &#63;.
+	 *
+	 * @param DDMTemplateKey the d d m template key
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
+	 */
+	@Override
+	public JournalArticle fetchByDDMTemplateKey_First(String DDMTemplateKey,
+		OrderByComparator<JournalArticle> orderByComparator) {
+		List<JournalArticle> list = findByDDMTemplateKey(DDMTemplateKey, 0, 1,
+				orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last journal article in the ordered set where DDMTemplateKey = &#63;.
+	 *
+	 * @param DDMTemplateKey the d d m template key
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching journal article
+	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
+	 */
+	@Override
+	public JournalArticle findByDDMTemplateKey_Last(String DDMTemplateKey,
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
+		JournalArticle journalArticle = fetchByDDMTemplateKey_Last(DDMTemplateKey,
+				orderByComparator);
+
+		if (journalArticle != null) {
+			return journalArticle;
+		}
+
+		StringBundler msg = new StringBundler(4);
+
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		msg.append("DDMTemplateKey=");
+		msg.append(DDMTemplateKey);
+
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+		throw new NoSuchArticleException(msg.toString());
+	}
+
+	/**
+	 * Returns the last journal article in the ordered set where DDMTemplateKey = &#63;.
+	 *
+	 * @param DDMTemplateKey the d d m template key
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
+	 */
+	@Override
+	public JournalArticle fetchByDDMTemplateKey_Last(String DDMTemplateKey,
+		OrderByComparator<JournalArticle> orderByComparator) {
+		int count = countByDDMTemplateKey(DDMTemplateKey);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<JournalArticle> list = findByDDMTemplateKey(DDMTemplateKey,
+				count - 1, count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the journal articles before and after the current journal article in the ordered set where DDMTemplateKey = &#63;.
+	 *
+	 * @param id the primary key of the current journal article
+	 * @param DDMTemplateKey the d d m template key
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next journal article
+	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	 */
+	@Override
+	public JournalArticle[] findByDDMTemplateKey_PrevAndNext(long id,
+		String DDMTemplateKey,
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
+		JournalArticle journalArticle = findByPrimaryKey(id);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			JournalArticle[] array = new JournalArticleImpl[3];
+
+			array[0] = getByDDMTemplateKey_PrevAndNext(session, journalArticle,
+					DDMTemplateKey, orderByComparator, true);
+
+			array[1] = journalArticle;
+
+			array[2] = getByDDMTemplateKey_PrevAndNext(session, journalArticle,
+					DDMTemplateKey, orderByComparator, false);
+
+			return array;
+		}
+		catch (Exception e) {
+			throw processException(e);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected JournalArticle getByDDMTemplateKey_PrevAndNext(Session session,
+		JournalArticle journalArticle, String DDMTemplateKey,
+		OrderByComparator<JournalArticle> orderByComparator, boolean previous) {
+		StringBundler query = null;
+
+		if (orderByComparator != null) {
+			query = new StringBundler(6 +
+					(orderByComparator.getOrderByFields().length * 6));
+		}
+		else {
+			query = new StringBundler(3);
+		}
+
+		query.append(_SQL_SELECT_JOURNALARTICLE_WHERE);
+
+		boolean bindDDMTemplateKey = false;
+
+		if (DDMTemplateKey == null) {
+			query.append(_FINDER_COLUMN_DDMTEMPLATEKEY_DDMTEMPLATEKEY_1);
+		}
+		else if (DDMTemplateKey.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_DDMTEMPLATEKEY_DDMTEMPLATEKEY_3);
+		}
+		else {
+			bindDDMTemplateKey = true;
+
+			query.append(_FINDER_COLUMN_DDMTEMPLATEKEY_DDMTEMPLATEKEY_2);
+		}
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				query.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			query.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						query.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC);
+					}
+					else {
+						query.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			query.append(JournalArticleModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = query.toString();
+
+		Query q = session.createQuery(sql);
+
+		q.setFirstResult(0);
+		q.setMaxResults(2);
+
+		QueryPos qPos = QueryPos.getInstance(q);
+
+		if (bindDDMTemplateKey) {
+			qPos.add(DDMTemplateKey);
+		}
+
+		if (orderByComparator != null) {
+			Object[] values = orderByComparator.getOrderByConditionValues(journalArticle);
+
+			for (Object value : values) {
+				qPos.add(value);
+			}
+		}
+
+		List<JournalArticle> list = q.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the journal articles where DDMTemplateKey = &#63; from the database.
+	 *
+	 * @param DDMTemplateKey the d d m template key
+	 */
+	@Override
+	public void removeByDDMTemplateKey(String DDMTemplateKey) {
+		for (JournalArticle journalArticle : findByDDMTemplateKey(
+				DDMTemplateKey, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+			remove(journalArticle);
+		}
+	}
+
+	/**
+	 * Returns the number of journal articles where DDMTemplateKey = &#63;.
+	 *
+	 * @param DDMTemplateKey the d d m template key
+	 * @return the number of matching journal articles
+	 */
+	@Override
+	public int countByDDMTemplateKey(String DDMTemplateKey) {
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_DDMTEMPLATEKEY;
+
+		Object[] finderArgs = new Object[] { DDMTemplateKey };
+
+		Long count = (Long)FinderCacheUtil.getResult(finderPath, finderArgs,
+				this);
+
+		if (count == null) {
+			StringBundler query = new StringBundler(2);
+
+			query.append(_SQL_COUNT_JOURNALARTICLE_WHERE);
+
+			boolean bindDDMTemplateKey = false;
+
+			if (DDMTemplateKey == null) {
+				query.append(_FINDER_COLUMN_DDMTEMPLATEKEY_DDMTEMPLATEKEY_1);
+			}
+			else if (DDMTemplateKey.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_DDMTEMPLATEKEY_DDMTEMPLATEKEY_3);
+			}
+			else {
+				bindDDMTemplateKey = true;
+
+				query.append(_FINDER_COLUMN_DDMTEMPLATEKEY_DDMTEMPLATEKEY_2);
+			}
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				if (bindDDMTemplateKey) {
+					qPos.add(DDMTemplateKey);
+				}
+
+				count = (Long)q.uniqueResult();
+
+				FinderCacheUtil.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception e) {
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_DDMTEMPLATEKEY_DDMTEMPLATEKEY_1 = "journalArticle.DDMTemplateKey IS NULL";
+	private static final String _FINDER_COLUMN_DDMTEMPLATEKEY_DDMTEMPLATEKEY_2 = "journalArticle.DDMTemplateKey = ?";
+	private static final String _FINDER_COLUMN_DDMTEMPLATEKEY_DDMTEMPLATEKEY_3 = "(journalArticle.DDMTemplateKey IS NULL OR journalArticle.DDMTemplateKey = '')";
 	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_LAYOUTUUID =
 		new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
 			JournalArticleModelImpl.FINDER_CACHE_ENABLED,
@@ -4722,11 +4636,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 *
 	 * @param layoutUuid the layout uuid
 	 * @return the matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> findByLayoutUuid(String layoutUuid)
-		throws SystemException {
+	public List<JournalArticle> findByLayoutUuid(String layoutUuid) {
 		return findByLayoutUuid(layoutUuid, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -4742,11 +4654,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByLayoutUuid(String layoutUuid, int start,
-		int end) throws SystemException {
+		int end) {
 		return findByLayoutUuid(layoutUuid, start, end, null);
 	}
 
@@ -4762,11 +4673,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByLayoutUuid(String layoutUuid, int start,
-		int end, OrderByComparator orderByComparator) throws SystemException {
+		int end, OrderByComparator<JournalArticle> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -4883,12 +4793,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByLayoutUuid_First(String layoutUuid,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByLayoutUuid_First(layoutUuid,
 				orderByComparator);
 
@@ -4914,11 +4823,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param layoutUuid the layout uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByLayoutUuid_First(String layoutUuid,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		List<JournalArticle> list = findByLayoutUuid(layoutUuid, 0, 1,
 				orderByComparator);
 
@@ -4936,12 +4844,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByLayoutUuid_Last(String layoutUuid,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByLayoutUuid_Last(layoutUuid,
 				orderByComparator);
 
@@ -4967,11 +4874,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param layoutUuid the layout uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByLayoutUuid_Last(String layoutUuid,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		int count = countByLayoutUuid(layoutUuid);
 
 		if (count == 0) {
@@ -4996,12 +4902,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] findByLayoutUuid_PrevAndNext(long id,
-		String layoutUuid, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		String layoutUuid, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = findByPrimaryKey(id);
 
 		Session session = null;
@@ -5031,7 +4936,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle getByLayoutUuid_PrevAndNext(Session session,
 		JournalArticle journalArticle, String layoutUuid,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<JournalArticle> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -5152,10 +5057,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * Removes all the journal articles where layoutUuid = &#63; from the database.
 	 *
 	 * @param layoutUuid the layout uuid
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeByLayoutUuid(String layoutUuid) throws SystemException {
+	public void removeByLayoutUuid(String layoutUuid) {
 		for (JournalArticle journalArticle : findByLayoutUuid(layoutUuid,
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(journalArticle);
@@ -5167,10 +5071,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 *
 	 * @param layoutUuid the layout uuid
 	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByLayoutUuid(String layoutUuid) throws SystemException {
+	public int countByLayoutUuid(String layoutUuid) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_LAYOUTUUID;
 
 		Object[] finderArgs = new Object[] { layoutUuid };
@@ -5262,11 +5165,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 *
 	 * @param smallImageId the small image ID
 	 * @return the matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> findBySmallImageId(long smallImageId)
-		throws SystemException {
+	public List<JournalArticle> findBySmallImageId(long smallImageId) {
 		return findBySmallImageId(smallImageId, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -5282,11 +5183,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findBySmallImageId(long smallImageId,
-		int start, int end) throws SystemException {
+		int start, int end) {
 		return findBySmallImageId(smallImageId, start, end, null);
 	}
 
@@ -5302,12 +5202,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findBySmallImageId(long smallImageId,
-		int start, int end, OrderByComparator orderByComparator)
-		throws SystemException {
+		int start, int end, OrderByComparator<JournalArticle> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -5414,12 +5312,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findBySmallImageId_First(long smallImageId,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchBySmallImageId_First(smallImageId,
 				orderByComparator);
 
@@ -5445,11 +5342,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param smallImageId the small image ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchBySmallImageId_First(long smallImageId,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		List<JournalArticle> list = findBySmallImageId(smallImageId, 0, 1,
 				orderByComparator);
 
@@ -5467,12 +5363,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findBySmallImageId_Last(long smallImageId,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchBySmallImageId_Last(smallImageId,
 				orderByComparator);
 
@@ -5498,11 +5393,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param smallImageId the small image ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchBySmallImageId_Last(long smallImageId,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		int count = countBySmallImageId(smallImageId);
 
 		if (count == 0) {
@@ -5527,12 +5421,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] findBySmallImageId_PrevAndNext(long id,
-		long smallImageId, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		long smallImageId, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = findByPrimaryKey(id);
 
 		Session session = null;
@@ -5562,7 +5455,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle getBySmallImageId_PrevAndNext(Session session,
 		JournalArticle journalArticle, long smallImageId,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<JournalArticle> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -5669,11 +5562,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * Removes all the journal articles where smallImageId = &#63; from the database.
 	 *
 	 * @param smallImageId the small image ID
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeBySmallImageId(long smallImageId)
-		throws SystemException {
+	public void removeBySmallImageId(long smallImageId) {
 		for (JournalArticle journalArticle : findBySmallImageId(smallImageId,
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(journalArticle);
@@ -5685,10 +5576,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 *
 	 * @param smallImageId the small image ID
 	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countBySmallImageId(long smallImageId) throws SystemException {
+	public int countBySmallImageId(long smallImageId) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_SMALLIMAGEID;
 
 		Object[] finderArgs = new Object[] { smallImageId };
@@ -5764,11 +5654,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param resourcePrimKey the resource prim key
 	 * @param indexable the indexable
 	 * @return the matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByR_I(long resourcePrimKey,
-		boolean indexable) throws SystemException {
+		boolean indexable) {
 		return findByR_I(resourcePrimKey, indexable, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -5785,11 +5674,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByR_I(long resourcePrimKey,
-		boolean indexable, int start, int end) throws SystemException {
+		boolean indexable, int start, int end) {
 		return findByR_I(resourcePrimKey, indexable, start, end, null);
 	}
 
@@ -5806,12 +5694,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByR_I(long resourcePrimKey,
 		boolean indexable, int start, int end,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -5924,12 +5811,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByR_I_First(long resourcePrimKey,
-		boolean indexable, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		boolean indexable, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByR_I_First(resourcePrimKey,
 				indexable, orderByComparator);
 
@@ -5959,12 +5845,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param indexable the indexable
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByR_I_First(long resourcePrimKey,
-		boolean indexable, OrderByComparator orderByComparator)
-		throws SystemException {
+		boolean indexable, OrderByComparator<JournalArticle> orderByComparator) {
 		List<JournalArticle> list = findByR_I(resourcePrimKey, indexable, 0, 1,
 				orderByComparator);
 
@@ -5983,12 +5867,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByR_I_Last(long resourcePrimKey,
-		boolean indexable, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		boolean indexable, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByR_I_Last(resourcePrimKey,
 				indexable, orderByComparator);
 
@@ -6018,12 +5901,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param indexable the indexable
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByR_I_Last(long resourcePrimKey,
-		boolean indexable, OrderByComparator orderByComparator)
-		throws SystemException {
+		boolean indexable, OrderByComparator<JournalArticle> orderByComparator) {
 		int count = countByR_I(resourcePrimKey, indexable);
 
 		if (count == 0) {
@@ -6049,13 +5930,12 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] findByR_I_PrevAndNext(long id,
 		long resourcePrimKey, boolean indexable,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = findByPrimaryKey(id);
 
 		Session session = null;
@@ -6085,7 +5965,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle getByR_I_PrevAndNext(Session session,
 		JournalArticle journalArticle, long resourcePrimKey, boolean indexable,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<JournalArticle> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -6197,11 +6077,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 *
 	 * @param resourcePrimKey the resource prim key
 	 * @param indexable the indexable
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeByR_I(long resourcePrimKey, boolean indexable)
-		throws SystemException {
+	public void removeByR_I(long resourcePrimKey, boolean indexable) {
 		for (JournalArticle journalArticle : findByR_I(resourcePrimKey,
 				indexable, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(journalArticle);
@@ -6214,11 +6092,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param resourcePrimKey the resource prim key
 	 * @param indexable the indexable
 	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByR_I(long resourcePrimKey, boolean indexable)
-		throws SystemException {
+	public int countByR_I(long resourcePrimKey, boolean indexable) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_R_I;
 
 		Object[] finderArgs = new Object[] { resourcePrimKey, indexable };
@@ -6292,6 +6168,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 			JournalArticleModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByR_ST",
 			new String[] { Long.class.getName(), Integer.class.getName() });
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_COUNT_BY_R_ST = new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
+			JournalArticleModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByR_ST",
+			new String[] { Long.class.getName(), Integer.class.getName() });
 
 	/**
 	 * Returns all the journal articles where resourcePrimKey = &#63; and status = &#63;.
@@ -6299,11 +6179,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param resourcePrimKey the resource prim key
 	 * @param status the status
 	 * @return the matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> findByR_ST(long resourcePrimKey, int status)
-		throws SystemException {
+	public List<JournalArticle> findByR_ST(long resourcePrimKey, int status) {
 		return findByR_ST(resourcePrimKey, status, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -6320,11 +6198,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByR_ST(long resourcePrimKey, int status,
-		int start, int end) throws SystemException {
+		int start, int end) {
 		return findByR_ST(resourcePrimKey, status, start, end, null);
 	}
 
@@ -6341,12 +6218,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByR_ST(long resourcePrimKey, int status,
-		int start, int end, OrderByComparator orderByComparator)
-		throws SystemException {
+		int start, int end, OrderByComparator<JournalArticle> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -6459,12 +6334,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByR_ST_First(long resourcePrimKey, int status,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByR_ST_First(resourcePrimKey,
 				status, orderByComparator);
 
@@ -6494,11 +6368,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByR_ST_First(long resourcePrimKey, int status,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		List<JournalArticle> list = findByR_ST(resourcePrimKey, status, 0, 1,
 				orderByComparator);
 
@@ -6517,12 +6390,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByR_ST_Last(long resourcePrimKey, int status,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByR_ST_Last(resourcePrimKey,
 				status, orderByComparator);
 
@@ -6552,11 +6424,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByR_ST_Last(long resourcePrimKey, int status,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		int count = countByR_ST(resourcePrimKey, status);
 
 		if (count == 0) {
@@ -6582,12 +6453,12 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] findByR_ST_PrevAndNext(long id,
-		long resourcePrimKey, int status, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		long resourcePrimKey, int status,
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = findByPrimaryKey(id);
 
 		Session session = null;
@@ -6617,7 +6488,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle getByR_ST_PrevAndNext(Session session,
 		JournalArticle journalArticle, long resourcePrimKey, int status,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<JournalArticle> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -6725,15 +6596,187 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	/**
+	 * Returns all the journal articles where resourcePrimKey = &#63; and status = any &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.journal.model.impl.JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param resourcePrimKey the resource prim key
+	 * @param statuses the statuses
+	 * @return the matching journal articles
+	 */
+	@Override
+	public List<JournalArticle> findByR_ST(long resourcePrimKey, int[] statuses) {
+		return findByR_ST(resourcePrimKey, statuses, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the journal articles where resourcePrimKey = &#63; and status = any &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.journal.model.impl.JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param resourcePrimKey the resource prim key
+	 * @param statuses the statuses
+	 * @param start the lower bound of the range of journal articles
+	 * @param end the upper bound of the range of journal articles (not inclusive)
+	 * @return the range of matching journal articles
+	 */
+	@Override
+	public List<JournalArticle> findByR_ST(long resourcePrimKey,
+		int[] statuses, int start, int end) {
+		return findByR_ST(resourcePrimKey, statuses, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the journal articles where resourcePrimKey = &#63; and status = any &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.journal.model.impl.JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param resourcePrimKey the resource prim key
+	 * @param statuses the statuses
+	 * @param start the lower bound of the range of journal articles
+	 * @param end the upper bound of the range of journal articles (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching journal articles
+	 */
+	@Override
+	public List<JournalArticle> findByR_ST(long resourcePrimKey,
+		int[] statuses, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator) {
+		if (statuses == null) {
+			statuses = new int[0];
+		}
+		else {
+			statuses = ArrayUtil.unique(statuses);
+		}
+
+		if (statuses.length == 1) {
+			return findByR_ST(resourcePrimKey, statuses[0], start, end,
+				orderByComparator);
+		}
+
+		boolean pagination = true;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+				(orderByComparator == null)) {
+			pagination = false;
+			finderArgs = new Object[] {
+					resourcePrimKey, StringUtil.merge(statuses)
+				};
+		}
+		else {
+			finderArgs = new Object[] {
+					resourcePrimKey, StringUtil.merge(statuses),
+					
+					start, end, orderByComparator
+				};
+		}
+
+		List<JournalArticle> list = (List<JournalArticle>)FinderCacheUtil.getResult(FINDER_PATH_WITH_PAGINATION_FIND_BY_R_ST,
+				finderArgs, this);
+
+		if ((list != null) && !list.isEmpty()) {
+			for (JournalArticle journalArticle : list) {
+				if ((resourcePrimKey != journalArticle.getResourcePrimKey()) ||
+						!ArrayUtil.contains(statuses, journalArticle.getStatus())) {
+					list = null;
+
+					break;
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler query = new StringBundler();
+
+			query.append(_SQL_SELECT_JOURNALARTICLE_WHERE);
+
+			query.append(_FINDER_COLUMN_R_ST_RESOURCEPRIMKEY_2);
+
+			if (statuses.length > 0) {
+				query.append(StringPool.OPEN_PARENTHESIS);
+
+				query.append(_FINDER_COLUMN_R_ST_STATUS_7);
+
+				query.append(StringUtil.merge(statuses));
+
+				query.append(StringPool.CLOSE_PARENTHESIS);
+
+				query.append(StringPool.CLOSE_PARENTHESIS);
+			}
+
+			query.setStringAt(removeConjunction(query.stringAt(query.index() -
+						1)), query.index() - 1);
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
+			}
+			else
+			 if (pagination) {
+				query.append(JournalArticleModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				qPos.add(resourcePrimKey);
+
+				if (!pagination) {
+					list = (List<JournalArticle>)QueryUtil.list(q,
+							getDialect(), start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<JournalArticle>)QueryUtil.list(q,
+							getDialect(), start, end);
+				}
+
+				cacheResult(list);
+
+				FinderCacheUtil.putResult(FINDER_PATH_WITH_PAGINATION_FIND_BY_R_ST,
+					finderArgs, list);
+			}
+			catch (Exception e) {
+				FinderCacheUtil.removeResult(FINDER_PATH_WITH_PAGINATION_FIND_BY_R_ST,
+					finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
 	 * Removes all the journal articles where resourcePrimKey = &#63; and status = &#63; from the database.
 	 *
 	 * @param resourcePrimKey the resource prim key
 	 * @param status the status
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeByR_ST(long resourcePrimKey, int status)
-		throws SystemException {
+	public void removeByR_ST(long resourcePrimKey, int status) {
 		for (JournalArticle journalArticle : findByR_ST(resourcePrimKey,
 				status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(journalArticle);
@@ -6746,11 +6789,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param resourcePrimKey the resource prim key
 	 * @param status the status
 	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByR_ST(long resourcePrimKey, int status)
-		throws SystemException {
+	public int countByR_ST(long resourcePrimKey, int status) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_R_ST;
 
 		Object[] finderArgs = new Object[] { resourcePrimKey, status };
@@ -6799,8 +6840,86 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		return count.intValue();
 	}
 
+	/**
+	 * Returns the number of journal articles where resourcePrimKey = &#63; and status = any &#63;.
+	 *
+	 * @param resourcePrimKey the resource prim key
+	 * @param statuses the statuses
+	 * @return the number of matching journal articles
+	 */
+	@Override
+	public int countByR_ST(long resourcePrimKey, int[] statuses) {
+		if (statuses == null) {
+			statuses = new int[0];
+		}
+		else {
+			statuses = ArrayUtil.unique(statuses);
+		}
+
+		Object[] finderArgs = new Object[] {
+				resourcePrimKey, StringUtil.merge(statuses)
+			};
+
+		Long count = (Long)FinderCacheUtil.getResult(FINDER_PATH_WITH_PAGINATION_COUNT_BY_R_ST,
+				finderArgs, this);
+
+		if (count == null) {
+			StringBundler query = new StringBundler();
+
+			query.append(_SQL_COUNT_JOURNALARTICLE_WHERE);
+
+			query.append(_FINDER_COLUMN_R_ST_RESOURCEPRIMKEY_2);
+
+			if (statuses.length > 0) {
+				query.append(StringPool.OPEN_PARENTHESIS);
+
+				query.append(_FINDER_COLUMN_R_ST_STATUS_7);
+
+				query.append(StringUtil.merge(statuses));
+
+				query.append(StringPool.CLOSE_PARENTHESIS);
+
+				query.append(StringPool.CLOSE_PARENTHESIS);
+			}
+
+			query.setStringAt(removeConjunction(query.stringAt(query.index() -
+						1)), query.index() - 1);
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				qPos.add(resourcePrimKey);
+
+				count = (Long)q.uniqueResult();
+
+				FinderCacheUtil.putResult(FINDER_PATH_WITH_PAGINATION_COUNT_BY_R_ST,
+					finderArgs, count);
+			}
+			catch (Exception e) {
+				FinderCacheUtil.removeResult(FINDER_PATH_WITH_PAGINATION_COUNT_BY_R_ST,
+					finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
 	private static final String _FINDER_COLUMN_R_ST_RESOURCEPRIMKEY_2 = "journalArticle.resourcePrimKey = ? AND ";
 	private static final String _FINDER_COLUMN_R_ST_STATUS_2 = "journalArticle.status = ?";
+	private static final String _FINDER_COLUMN_R_ST_STATUS_7 = "journalArticle.status IN (";
 	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_G_U = new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
 			JournalArticleModelImpl.FINDER_CACHE_ENABLED,
 			JournalArticleImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
@@ -6831,11 +6950,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @param userId the user ID
 	 * @return the matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> findByG_U(long groupId, long userId)
-		throws SystemException {
+	public List<JournalArticle> findByG_U(long groupId, long userId) {
 		return findByG_U(groupId, userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
 			null);
 	}
@@ -6852,11 +6969,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_U(long groupId, long userId, int start,
-		int end) throws SystemException {
+		int end) {
 		return findByG_U(groupId, userId, start, end, null);
 	}
 
@@ -6873,11 +6989,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_U(long groupId, long userId, int start,
-		int end, OrderByComparator orderByComparator) throws SystemException {
+		int end, OrderByComparator<JournalArticle> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -6990,12 +7105,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByG_U_First(long groupId, long userId,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByG_U_First(groupId, userId,
 				orderByComparator);
 
@@ -7025,11 +7139,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByG_U_First(long groupId, long userId,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		List<JournalArticle> list = findByG_U(groupId, userId, 0, 1,
 				orderByComparator);
 
@@ -7048,12 +7161,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByG_U_Last(long groupId, long userId,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByG_U_Last(groupId, userId,
 				orderByComparator);
 
@@ -7083,11 +7195,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByG_U_Last(long groupId, long userId,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		int count = countByG_U(groupId, userId);
 
 		if (count == 0) {
@@ -7113,12 +7224,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] findByG_U_PrevAndNext(long id, long groupId,
-		long userId, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		long userId, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = findByPrimaryKey(id);
 
 		Session session = null;
@@ -7148,7 +7258,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle getByG_U_PrevAndNext(Session session,
 		JournalArticle journalArticle, long groupId, long userId,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<JournalArticle> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -7261,11 +7371,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @param userId the user ID
 	 * @return the matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> filterFindByG_U(long groupId, long userId)
-		throws SystemException {
+	public List<JournalArticle> filterFindByG_U(long groupId, long userId) {
 		return filterFindByG_U(groupId, userId, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -7282,11 +7390,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_U(long groupId, long userId,
-		int start, int end) throws SystemException {
+		int start, int end) {
 		return filterFindByG_U(groupId, userId, start, end, null);
 	}
 
@@ -7303,12 +7410,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_U(long groupId, long userId,
-		int start, int end, OrderByComparator orderByComparator)
-		throws SystemException {
+		int start, int end, OrderByComparator<JournalArticle> orderByComparator) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_U(groupId, userId, start, end, orderByComparator);
 		}
@@ -7401,12 +7506,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] filterFindByG_U_PrevAndNext(long id, long groupId,
-		long userId, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		long userId, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_U_PrevAndNext(id, groupId, userId, orderByComparator);
 		}
@@ -7440,7 +7544,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle filterGetByG_U_PrevAndNext(Session session,
 		JournalArticle journalArticle, long groupId, long userId,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<JournalArticle> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -7587,11 +7691,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 *
 	 * @param groupId the group ID
 	 * @param userId the user ID
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeByG_U(long groupId, long userId)
-		throws SystemException {
+	public void removeByG_U(long groupId, long userId) {
 		for (JournalArticle journalArticle : findByG_U(groupId, userId,
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(journalArticle);
@@ -7604,10 +7706,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @param userId the user ID
 	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByG_U(long groupId, long userId) throws SystemException {
+	public int countByG_U(long groupId, long userId) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_G_U;
 
 		Object[] finderArgs = new Object[] { groupId, userId };
@@ -7662,11 +7763,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @param userId the user ID
 	 * @return the number of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int filterCountByG_U(long groupId, long userId)
-		throws SystemException {
+	public int filterCountByG_U(long groupId, long userId) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return countByG_U(groupId, userId);
 		}
@@ -7747,11 +7846,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @param folderId the folder ID
 	 * @return the matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> findByG_F(long groupId, long folderId)
-		throws SystemException {
+	public List<JournalArticle> findByG_F(long groupId, long folderId) {
 		return findByG_F(groupId, folderId, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -7768,11 +7865,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_F(long groupId, long folderId,
-		int start, int end) throws SystemException {
+		int start, int end) {
 		return findByG_F(groupId, folderId, start, end, null);
 	}
 
@@ -7789,12 +7885,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_F(long groupId, long folderId,
-		int start, int end, OrderByComparator orderByComparator)
-		throws SystemException {
+		int start, int end, OrderByComparator<JournalArticle> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -7907,12 +8001,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByG_F_First(long groupId, long folderId,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByG_F_First(groupId, folderId,
 				orderByComparator);
 
@@ -7942,11 +8035,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param folderId the folder ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByG_F_First(long groupId, long folderId,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		List<JournalArticle> list = findByG_F(groupId, folderId, 0, 1,
 				orderByComparator);
 
@@ -7965,12 +8057,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByG_F_Last(long groupId, long folderId,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByG_F_Last(groupId, folderId,
 				orderByComparator);
 
@@ -8000,11 +8091,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param folderId the folder ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByG_F_Last(long groupId, long folderId,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		int count = countByG_F(groupId, folderId);
 
 		if (count == 0) {
@@ -8030,12 +8120,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] findByG_F_PrevAndNext(long id, long groupId,
-		long folderId, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		long folderId, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = findByPrimaryKey(id);
 
 		Session session = null;
@@ -8065,7 +8154,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle getByG_F_PrevAndNext(Session session,
 		JournalArticle journalArticle, long groupId, long folderId,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<JournalArticle> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -8178,11 +8267,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @param folderId the folder ID
 	 * @return the matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> filterFindByG_F(long groupId, long folderId)
-		throws SystemException {
+	public List<JournalArticle> filterFindByG_F(long groupId, long folderId) {
 		return filterFindByG_F(groupId, folderId, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -8199,11 +8286,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_F(long groupId, long folderId,
-		int start, int end) throws SystemException {
+		int start, int end) {
 		return filterFindByG_F(groupId, folderId, start, end, null);
 	}
 
@@ -8220,12 +8306,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_F(long groupId, long folderId,
-		int start, int end, OrderByComparator orderByComparator)
-		throws SystemException {
+		int start, int end, OrderByComparator<JournalArticle> orderByComparator) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_F(groupId, folderId, start, end, orderByComparator);
 		}
@@ -8318,12 +8402,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] filterFindByG_F_PrevAndNext(long id, long groupId,
-		long folderId, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		long folderId, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_F_PrevAndNext(id, groupId, folderId,
 				orderByComparator);
@@ -8358,7 +8441,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle filterGetByG_F_PrevAndNext(Session session,
 		JournalArticle journalArticle, long groupId, long folderId,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<JournalArticle> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -8506,11 +8589,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @param folderIds the folder IDs
 	 * @return the matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> filterFindByG_F(long groupId, long[] folderIds)
-		throws SystemException {
+	public List<JournalArticle> filterFindByG_F(long groupId, long[] folderIds) {
 		return filterFindByG_F(groupId, folderIds, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -8527,11 +8608,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_F(long groupId, long[] folderIds,
-		int start, int end) throws SystemException {
+		int start, int end) {
 		return filterFindByG_F(groupId, folderIds, start, end, null);
 	}
 
@@ -8548,12 +8628,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_F(long groupId, long[] folderIds,
-		int start, int end, OrderByComparator orderByComparator)
-		throws SystemException {
+		int start, int end, OrderByComparator<JournalArticle> orderByComparator) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_F(groupId, folderIds, start, end, orderByComparator);
 		}
@@ -8657,11 +8735,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @param folderIds the folder IDs
 	 * @return the matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> findByG_F(long groupId, long[] folderIds)
-		throws SystemException {
+	public List<JournalArticle> findByG_F(long groupId, long[] folderIds) {
 		return findByG_F(groupId, folderIds, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -8678,11 +8754,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_F(long groupId, long[] folderIds,
-		int start, int end) throws SystemException {
+		int start, int end) {
 		return findByG_F(groupId, folderIds, start, end, null);
 	}
 
@@ -8699,12 +8774,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_F(long groupId, long[] folderIds,
-		int start, int end, OrderByComparator orderByComparator)
-		throws SystemException {
+		int start, int end, OrderByComparator<JournalArticle> orderByComparator) {
 		if (folderIds == null) {
 			folderIds = new long[0];
 		}
@@ -8829,11 +8902,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 *
 	 * @param groupId the group ID
 	 * @param folderId the folder ID
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeByG_F(long groupId, long folderId)
-		throws SystemException {
+	public void removeByG_F(long groupId, long folderId) {
 		for (JournalArticle journalArticle : findByG_F(groupId, folderId,
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(journalArticle);
@@ -8846,11 +8917,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @param folderId the folder ID
 	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByG_F(long groupId, long folderId)
-		throws SystemException {
+	public int countByG_F(long groupId, long folderId) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_G_F;
 
 		Object[] finderArgs = new Object[] { groupId, folderId };
@@ -8905,11 +8974,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @param folderIds the folder IDs
 	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByG_F(long groupId, long[] folderIds)
-		throws SystemException {
+	public int countByG_F(long groupId, long[] folderIds) {
 		if (folderIds == null) {
 			folderIds = new long[0];
 		}
@@ -8982,11 +9049,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @param folderId the folder ID
 	 * @return the number of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int filterCountByG_F(long groupId, long folderId)
-		throws SystemException {
+	public int filterCountByG_F(long groupId, long folderId) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return countByG_F(groupId, folderId);
 		}
@@ -9037,11 +9102,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @param folderIds the folder IDs
 	 * @return the number of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int filterCountByG_F(long groupId, long[] folderIds)
-		throws SystemException {
+	public int filterCountByG_F(long groupId, long[] folderIds) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return countByG_F(groupId, folderIds);
 		}
@@ -9136,11 +9199,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @param articleId the article ID
 	 * @return the matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> findByG_A(long groupId, String articleId)
-		throws SystemException {
+	public List<JournalArticle> findByG_A(long groupId, String articleId) {
 		return findByG_A(groupId, articleId, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -9157,11 +9218,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_A(long groupId, String articleId,
-		int start, int end) throws SystemException {
+		int start, int end) {
 		return findByG_A(groupId, articleId, start, end, null);
 	}
 
@@ -9178,12 +9238,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_A(long groupId, String articleId,
-		int start, int end, OrderByComparator orderByComparator)
-		throws SystemException {
+		int start, int end, OrderByComparator<JournalArticle> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -9311,12 +9369,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByG_A_First(long groupId, String articleId,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByG_A_First(groupId, articleId,
 				orderByComparator);
 
@@ -9346,11 +9403,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param articleId the article ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByG_A_First(long groupId, String articleId,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		List<JournalArticle> list = findByG_A(groupId, articleId, 0, 1,
 				orderByComparator);
 
@@ -9369,12 +9425,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByG_A_Last(long groupId, String articleId,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByG_A_Last(groupId, articleId,
 				orderByComparator);
 
@@ -9404,11 +9459,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param articleId the article ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByG_A_Last(long groupId, String articleId,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		int count = countByG_A(groupId, articleId);
 
 		if (count == 0) {
@@ -9434,12 +9488,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] findByG_A_PrevAndNext(long id, long groupId,
-		String articleId, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		String articleId, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = findByPrimaryKey(id);
 
 		Session session = null;
@@ -9469,7 +9522,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle getByG_A_PrevAndNext(Session session,
 		JournalArticle journalArticle, long groupId, String articleId,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<JournalArticle> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -9596,11 +9649,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @param articleId the article ID
 	 * @return the matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> filterFindByG_A(long groupId, String articleId)
-		throws SystemException {
+	public List<JournalArticle> filterFindByG_A(long groupId, String articleId) {
 		return filterFindByG_A(groupId, articleId, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -9617,11 +9668,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_A(long groupId, String articleId,
-		int start, int end) throws SystemException {
+		int start, int end) {
 		return filterFindByG_A(groupId, articleId, start, end, null);
 	}
 
@@ -9638,12 +9688,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_A(long groupId, String articleId,
-		int start, int end, OrderByComparator orderByComparator)
-		throws SystemException {
+		int start, int end, OrderByComparator<JournalArticle> orderByComparator) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_A(groupId, articleId, start, end, orderByComparator);
 		}
@@ -9750,12 +9798,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] filterFindByG_A_PrevAndNext(long id, long groupId,
-		String articleId, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		String articleId, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_A_PrevAndNext(id, groupId, articleId,
 				orderByComparator);
@@ -9790,7 +9837,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle filterGetByG_A_PrevAndNext(Session session,
 		JournalArticle journalArticle, long groupId, String articleId,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<JournalArticle> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -9951,11 +9998,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 *
 	 * @param groupId the group ID
 	 * @param articleId the article ID
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeByG_A(long groupId, String articleId)
-		throws SystemException {
+	public void removeByG_A(long groupId, String articleId) {
 		for (JournalArticle journalArticle : findByG_A(groupId, articleId,
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(journalArticle);
@@ -9968,11 +10013,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @param articleId the article ID
 	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByG_A(long groupId, String articleId)
-		throws SystemException {
+	public int countByG_A(long groupId, String articleId) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_G_A;
 
 		Object[] finderArgs = new Object[] { groupId, articleId };
@@ -10041,11 +10084,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @param articleId the article ID
 	 * @return the number of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int filterCountByG_A(long groupId, String articleId)
-		throws SystemException {
+	public int filterCountByG_A(long groupId, String articleId) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return countByG_A(groupId, articleId);
 		}
@@ -10138,11 +10179,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @param urlTitle the url title
 	 * @return the matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> findByG_UT(long groupId, String urlTitle)
-		throws SystemException {
+	public List<JournalArticle> findByG_UT(long groupId, String urlTitle) {
 		return findByG_UT(groupId, urlTitle, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -10159,11 +10198,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_UT(long groupId, String urlTitle,
-		int start, int end) throws SystemException {
+		int start, int end) {
 		return findByG_UT(groupId, urlTitle, start, end, null);
 	}
 
@@ -10180,12 +10218,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_UT(long groupId, String urlTitle,
-		int start, int end, OrderByComparator orderByComparator)
-		throws SystemException {
+		int start, int end, OrderByComparator<JournalArticle> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -10312,12 +10348,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByG_UT_First(long groupId, String urlTitle,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByG_UT_First(groupId, urlTitle,
 				orderByComparator);
 
@@ -10347,11 +10382,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param urlTitle the url title
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByG_UT_First(long groupId, String urlTitle,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		List<JournalArticle> list = findByG_UT(groupId, urlTitle, 0, 1,
 				orderByComparator);
 
@@ -10370,12 +10404,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByG_UT_Last(long groupId, String urlTitle,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByG_UT_Last(groupId, urlTitle,
 				orderByComparator);
 
@@ -10405,11 +10438,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param urlTitle the url title
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByG_UT_Last(long groupId, String urlTitle,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		int count = countByG_UT(groupId, urlTitle);
 
 		if (count == 0) {
@@ -10435,12 +10467,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] findByG_UT_PrevAndNext(long id, long groupId,
-		String urlTitle, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		String urlTitle, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = findByPrimaryKey(id);
 
 		Session session = null;
@@ -10470,7 +10501,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle getByG_UT_PrevAndNext(Session session,
 		JournalArticle journalArticle, long groupId, String urlTitle,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<JournalArticle> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -10597,11 +10628,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @param urlTitle the url title
 	 * @return the matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> filterFindByG_UT(long groupId, String urlTitle)
-		throws SystemException {
+	public List<JournalArticle> filterFindByG_UT(long groupId, String urlTitle) {
 		return filterFindByG_UT(groupId, urlTitle, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -10618,11 +10647,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_UT(long groupId, String urlTitle,
-		int start, int end) throws SystemException {
+		int start, int end) {
 		return filterFindByG_UT(groupId, urlTitle, start, end, null);
 	}
 
@@ -10639,12 +10667,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_UT(long groupId, String urlTitle,
-		int start, int end, OrderByComparator orderByComparator)
-		throws SystemException {
+		int start, int end, OrderByComparator<JournalArticle> orderByComparator) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_UT(groupId, urlTitle, start, end, orderByComparator);
 		}
@@ -10751,12 +10777,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] filterFindByG_UT_PrevAndNext(long id, long groupId,
-		String urlTitle, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		String urlTitle, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_UT_PrevAndNext(id, groupId, urlTitle,
 				orderByComparator);
@@ -10791,7 +10816,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle filterGetByG_UT_PrevAndNext(Session session,
 		JournalArticle journalArticle, long groupId, String urlTitle,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<JournalArticle> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -10952,11 +10977,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 *
 	 * @param groupId the group ID
 	 * @param urlTitle the url title
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeByG_UT(long groupId, String urlTitle)
-		throws SystemException {
+	public void removeByG_UT(long groupId, String urlTitle) {
 		for (JournalArticle journalArticle : findByG_UT(groupId, urlTitle,
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(journalArticle);
@@ -10969,11 +10992,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @param urlTitle the url title
 	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByG_UT(long groupId, String urlTitle)
-		throws SystemException {
+	public int countByG_UT(long groupId, String urlTitle) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_G_UT;
 
 		Object[] finderArgs = new Object[] { groupId, urlTitle };
@@ -11042,11 +11063,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @param urlTitle the url title
 	 * @return the number of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int filterCountByG_UT(long groupId, String urlTitle)
-		throws SystemException {
+	public int filterCountByG_UT(long groupId, String urlTitle) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return countByG_UT(groupId, urlTitle);
 		}
@@ -11109,84 +11128,82 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	private static final String _FINDER_COLUMN_G_UT_URLTITLE_1 = "journalArticle.urlTitle IS NULL";
 	private static final String _FINDER_COLUMN_G_UT_URLTITLE_2 = "journalArticle.urlTitle = ?";
 	private static final String _FINDER_COLUMN_G_UT_URLTITLE_3 = "(journalArticle.urlTitle IS NULL OR journalArticle.urlTitle = '')";
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_G_S = new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_G_DDMSK = new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
 			JournalArticleModelImpl.FINDER_CACHE_ENABLED,
 			JournalArticleImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByG_S",
+			"findByG_DDMSK",
 			new String[] {
 				Long.class.getName(), String.class.getName(),
 				
 			Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			});
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_S = new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_DDMSK =
+		new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
 			JournalArticleModelImpl.FINDER_CACHE_ENABLED,
 			JournalArticleImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_S",
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_DDMSK",
 			new String[] { Long.class.getName(), String.class.getName() },
 			JournalArticleModelImpl.GROUPID_COLUMN_BITMASK |
-			JournalArticleModelImpl.STRUCTUREID_COLUMN_BITMASK |
+			JournalArticleModelImpl.DDMSTRUCTUREKEY_COLUMN_BITMASK |
 			JournalArticleModelImpl.ARTICLEID_COLUMN_BITMASK |
 			JournalArticleModelImpl.VERSION_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_G_S = new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
+	public static final FinderPath FINDER_PATH_COUNT_BY_G_DDMSK = new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
 			JournalArticleModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_S",
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_DDMSK",
 			new String[] { Long.class.getName(), String.class.getName() });
 
 	/**
-	 * Returns all the journal articles where groupId = &#63; and structureId = &#63;.
+	 * Returns all the journal articles where groupId = &#63; and DDMStructureKey = &#63;.
 	 *
 	 * @param groupId the group ID
-	 * @param structureId the structure ID
+	 * @param DDMStructureKey the d d m structure key
 	 * @return the matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> findByG_S(long groupId, String structureId)
-		throws SystemException {
-		return findByG_S(groupId, structureId, QueryUtil.ALL_POS,
+	public List<JournalArticle> findByG_DDMSK(long groupId,
+		String DDMStructureKey) {
+		return findByG_DDMSK(groupId, DDMStructureKey, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
 
 	/**
-	 * Returns a range of all the journal articles where groupId = &#63; and structureId = &#63;.
+	 * Returns a range of all the journal articles where groupId = &#63; and DDMStructureKey = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.journal.model.impl.JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param groupId the group ID
-	 * @param structureId the structure ID
+	 * @param DDMStructureKey the d d m structure key
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> findByG_S(long groupId, String structureId,
-		int start, int end) throws SystemException {
-		return findByG_S(groupId, structureId, start, end, null);
+	public List<JournalArticle> findByG_DDMSK(long groupId,
+		String DDMStructureKey, int start, int end) {
+		return findByG_DDMSK(groupId, DDMStructureKey, start, end, null);
 	}
 
 	/**
-	 * Returns an ordered range of all the journal articles where groupId = &#63; and structureId = &#63;.
+	 * Returns an ordered range of all the journal articles where groupId = &#63; and DDMStructureKey = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.journal.model.impl.JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param groupId the group ID
-	 * @param structureId the structure ID
+	 * @param DDMStructureKey the d d m structure key
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> findByG_S(long groupId, String structureId,
-		int start, int end, OrderByComparator orderByComparator)
-		throws SystemException {
+	public List<JournalArticle> findByG_DDMSK(long groupId,
+		String DDMStructureKey, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -11194,13 +11211,13 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 				(orderByComparator == null)) {
 			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_S;
-			finderArgs = new Object[] { groupId, structureId };
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_DDMSK;
+			finderArgs = new Object[] { groupId, DDMStructureKey };
 		}
 		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_G_S;
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_G_DDMSK;
 			finderArgs = new Object[] {
-					groupId, structureId,
+					groupId, DDMStructureKey,
 					
 					start, end, orderByComparator
 				};
@@ -11212,8 +11229,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		if ((list != null) && !list.isEmpty()) {
 			for (JournalArticle journalArticle : list) {
 				if ((groupId != journalArticle.getGroupId()) ||
-						!Validator.equals(structureId,
-							journalArticle.getStructureId())) {
+						!Validator.equals(DDMStructureKey,
+							journalArticle.getDDMStructureKey())) {
 					list = null;
 
 					break;
@@ -11234,20 +11251,20 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 			query.append(_SQL_SELECT_JOURNALARTICLE_WHERE);
 
-			query.append(_FINDER_COLUMN_G_S_GROUPID_2);
+			query.append(_FINDER_COLUMN_G_DDMSK_GROUPID_2);
 
-			boolean bindStructureId = false;
+			boolean bindDDMStructureKey = false;
 
-			if (structureId == null) {
-				query.append(_FINDER_COLUMN_G_S_STRUCTUREID_1);
+			if (DDMStructureKey == null) {
+				query.append(_FINDER_COLUMN_G_DDMSK_DDMSTRUCTUREKEY_1);
 			}
-			else if (structureId.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_G_S_STRUCTUREID_3);
+			else if (DDMStructureKey.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_G_DDMSK_DDMSTRUCTUREKEY_3);
 			}
 			else {
-				bindStructureId = true;
+				bindDDMStructureKey = true;
 
-				query.append(_FINDER_COLUMN_G_S_STRUCTUREID_2);
+				query.append(_FINDER_COLUMN_G_DDMSK_DDMSTRUCTUREKEY_2);
 			}
 
 			if (orderByComparator != null) {
@@ -11272,8 +11289,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 				qPos.add(groupId);
 
-				if (bindStructureId) {
-					qPos.add(structureId);
+				if (bindDDMStructureKey) {
+					qPos.add(DDMStructureKey);
 				}
 
 				if (!pagination) {
@@ -11307,21 +11324,21 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	/**
-	 * Returns the first journal article in the ordered set where groupId = &#63; and structureId = &#63;.
+	 * Returns the first journal article in the ordered set where groupId = &#63; and DDMStructureKey = &#63;.
 	 *
 	 * @param groupId the group ID
-	 * @param structureId the structure ID
+	 * @param DDMStructureKey the d d m structure key
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public JournalArticle findByG_S_First(long groupId, String structureId,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
-		JournalArticle journalArticle = fetchByG_S_First(groupId, structureId,
-				orderByComparator);
+	public JournalArticle findByG_DDMSK_First(long groupId,
+		String DDMStructureKey,
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
+		JournalArticle journalArticle = fetchByG_DDMSK_First(groupId,
+				DDMStructureKey, orderByComparator);
 
 		if (journalArticle != null) {
 			return journalArticle;
@@ -11334,8 +11351,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		msg.append("groupId=");
 		msg.append(groupId);
 
-		msg.append(", structureId=");
-		msg.append(structureId);
+		msg.append(", DDMStructureKey=");
+		msg.append(DDMStructureKey);
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
@@ -11343,19 +11360,19 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	/**
-	 * Returns the first journal article in the ordered set where groupId = &#63; and structureId = &#63;.
+	 * Returns the first journal article in the ordered set where groupId = &#63; and DDMStructureKey = &#63;.
 	 *
 	 * @param groupId the group ID
-	 * @param structureId the structure ID
+	 * @param DDMStructureKey the d d m structure key
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public JournalArticle fetchByG_S_First(long groupId, String structureId,
-		OrderByComparator orderByComparator) throws SystemException {
-		List<JournalArticle> list = findByG_S(groupId, structureId, 0, 1,
-				orderByComparator);
+	public JournalArticle fetchByG_DDMSK_First(long groupId,
+		String DDMStructureKey,
+		OrderByComparator<JournalArticle> orderByComparator) {
+		List<JournalArticle> list = findByG_DDMSK(groupId, DDMStructureKey, 0,
+				1, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -11365,21 +11382,21 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	/**
-	 * Returns the last journal article in the ordered set where groupId = &#63; and structureId = &#63;.
+	 * Returns the last journal article in the ordered set where groupId = &#63; and DDMStructureKey = &#63;.
 	 *
 	 * @param groupId the group ID
-	 * @param structureId the structure ID
+	 * @param DDMStructureKey the d d m structure key
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public JournalArticle findByG_S_Last(long groupId, String structureId,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
-		JournalArticle journalArticle = fetchByG_S_Last(groupId, structureId,
-				orderByComparator);
+	public JournalArticle findByG_DDMSK_Last(long groupId,
+		String DDMStructureKey,
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
+		JournalArticle journalArticle = fetchByG_DDMSK_Last(groupId,
+				DDMStructureKey, orderByComparator);
 
 		if (journalArticle != null) {
 			return journalArticle;
@@ -11392,8 +11409,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		msg.append("groupId=");
 		msg.append(groupId);
 
-		msg.append(", structureId=");
-		msg.append(structureId);
+		msg.append(", DDMStructureKey=");
+		msg.append(DDMStructureKey);
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
@@ -11401,25 +11418,25 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	/**
-	 * Returns the last journal article in the ordered set where groupId = &#63; and structureId = &#63;.
+	 * Returns the last journal article in the ordered set where groupId = &#63; and DDMStructureKey = &#63;.
 	 *
 	 * @param groupId the group ID
-	 * @param structureId the structure ID
+	 * @param DDMStructureKey the d d m structure key
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public JournalArticle fetchByG_S_Last(long groupId, String structureId,
-		OrderByComparator orderByComparator) throws SystemException {
-		int count = countByG_S(groupId, structureId);
+	public JournalArticle fetchByG_DDMSK_Last(long groupId,
+		String DDMStructureKey,
+		OrderByComparator<JournalArticle> orderByComparator) {
+		int count = countByG_DDMSK(groupId, DDMStructureKey);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<JournalArticle> list = findByG_S(groupId, structureId, count - 1,
-				count, orderByComparator);
+		List<JournalArticle> list = findByG_DDMSK(groupId, DDMStructureKey,
+				count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -11429,20 +11446,20 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	/**
-	 * Returns the journal articles before and after the current journal article in the ordered set where groupId = &#63; and structureId = &#63;.
+	 * Returns the journal articles before and after the current journal article in the ordered set where groupId = &#63; and DDMStructureKey = &#63;.
 	 *
 	 * @param id the primary key of the current journal article
 	 * @param groupId the group ID
-	 * @param structureId the structure ID
+	 * @param DDMStructureKey the d d m structure key
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public JournalArticle[] findByG_S_PrevAndNext(long id, long groupId,
-		String structureId, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+	public JournalArticle[] findByG_DDMSK_PrevAndNext(long id, long groupId,
+		String DDMStructureKey,
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = findByPrimaryKey(id);
 
 		Session session = null;
@@ -11452,13 +11469,13 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 			JournalArticle[] array = new JournalArticleImpl[3];
 
-			array[0] = getByG_S_PrevAndNext(session, journalArticle, groupId,
-					structureId, orderByComparator, true);
+			array[0] = getByG_DDMSK_PrevAndNext(session, journalArticle,
+					groupId, DDMStructureKey, orderByComparator, true);
 
 			array[1] = journalArticle;
 
-			array[2] = getByG_S_PrevAndNext(session, journalArticle, groupId,
-					structureId, orderByComparator, false);
+			array[2] = getByG_DDMSK_PrevAndNext(session, journalArticle,
+					groupId, DDMStructureKey, orderByComparator, false);
 
 			return array;
 		}
@@ -11470,9 +11487,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		}
 	}
 
-	protected JournalArticle getByG_S_PrevAndNext(Session session,
-		JournalArticle journalArticle, long groupId, String structureId,
-		OrderByComparator orderByComparator, boolean previous) {
+	protected JournalArticle getByG_DDMSK_PrevAndNext(Session session,
+		JournalArticle journalArticle, long groupId, String DDMStructureKey,
+		OrderByComparator<JournalArticle> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -11485,20 +11502,20 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 		query.append(_SQL_SELECT_JOURNALARTICLE_WHERE);
 
-		query.append(_FINDER_COLUMN_G_S_GROUPID_2);
+		query.append(_FINDER_COLUMN_G_DDMSK_GROUPID_2);
 
-		boolean bindStructureId = false;
+		boolean bindDDMStructureKey = false;
 
-		if (structureId == null) {
-			query.append(_FINDER_COLUMN_G_S_STRUCTUREID_1);
+		if (DDMStructureKey == null) {
+			query.append(_FINDER_COLUMN_G_DDMSK_DDMSTRUCTUREKEY_1);
 		}
-		else if (structureId.equals(StringPool.BLANK)) {
-			query.append(_FINDER_COLUMN_G_S_STRUCTUREID_3);
+		else if (DDMStructureKey.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_G_DDMSK_DDMSTRUCTUREKEY_3);
 		}
 		else {
-			bindStructureId = true;
+			bindDDMStructureKey = true;
 
-			query.append(_FINDER_COLUMN_G_S_STRUCTUREID_2);
+			query.append(_FINDER_COLUMN_G_DDMSK_DDMSTRUCTUREKEY_2);
 		}
 
 		if (orderByComparator != null) {
@@ -11571,8 +11588,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 		qPos.add(groupId);
 
-		if (bindStructureId) {
-			qPos.add(structureId);
+		if (bindDDMStructureKey) {
+			qPos.add(DDMStructureKey);
 		}
 
 		if (orderByComparator != null) {
@@ -11594,61 +11611,59 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	/**
-	 * Returns all the journal articles that the user has permission to view where groupId = &#63; and structureId = &#63;.
+	 * Returns all the journal articles that the user has permission to view where groupId = &#63; and DDMStructureKey = &#63;.
 	 *
 	 * @param groupId the group ID
-	 * @param structureId the structure ID
+	 * @param DDMStructureKey the d d m structure key
 	 * @return the matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> filterFindByG_S(long groupId, String structureId)
-		throws SystemException {
-		return filterFindByG_S(groupId, structureId, QueryUtil.ALL_POS,
+	public List<JournalArticle> filterFindByG_DDMSK(long groupId,
+		String DDMStructureKey) {
+		return filterFindByG_DDMSK(groupId, DDMStructureKey, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
 
 	/**
-	 * Returns a range of all the journal articles that the user has permission to view where groupId = &#63; and structureId = &#63;.
+	 * Returns a range of all the journal articles that the user has permission to view where groupId = &#63; and DDMStructureKey = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.journal.model.impl.JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param groupId the group ID
-	 * @param structureId the structure ID
+	 * @param DDMStructureKey the d d m structure key
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> filterFindByG_S(long groupId,
-		String structureId, int start, int end) throws SystemException {
-		return filterFindByG_S(groupId, structureId, start, end, null);
+	public List<JournalArticle> filterFindByG_DDMSK(long groupId,
+		String DDMStructureKey, int start, int end) {
+		return filterFindByG_DDMSK(groupId, DDMStructureKey, start, end, null);
 	}
 
 	/**
-	 * Returns an ordered range of all the journal articles that the user has permissions to view where groupId = &#63; and structureId = &#63;.
+	 * Returns an ordered range of all the journal articles that the user has permissions to view where groupId = &#63; and DDMStructureKey = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.journal.model.impl.JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param groupId the group ID
-	 * @param structureId the structure ID
+	 * @param DDMStructureKey the d d m structure key
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> filterFindByG_S(long groupId,
-		String structureId, int start, int end,
-		OrderByComparator orderByComparator) throws SystemException {
+	public List<JournalArticle> filterFindByG_DDMSK(long groupId,
+		String DDMStructureKey, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
-			return findByG_S(groupId, structureId, start, end, orderByComparator);
+			return findByG_DDMSK(groupId, DDMStructureKey, start, end,
+				orderByComparator);
 		}
 
 		StringBundler query = null;
@@ -11668,20 +11683,20 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 			query.append(_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		query.append(_FINDER_COLUMN_G_S_GROUPID_2);
+		query.append(_FINDER_COLUMN_G_DDMSK_GROUPID_2);
 
-		boolean bindStructureId = false;
+		boolean bindDDMStructureKey = false;
 
-		if (structureId == null) {
-			query.append(_FINDER_COLUMN_G_S_STRUCTUREID_1);
+		if (DDMStructureKey == null) {
+			query.append(_FINDER_COLUMN_G_DDMSK_DDMSTRUCTUREKEY_1);
 		}
-		else if (structureId.equals(StringPool.BLANK)) {
-			query.append(_FINDER_COLUMN_G_S_STRUCTUREID_3);
+		else if (DDMStructureKey.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_G_DDMSK_DDMSTRUCTUREKEY_3);
 		}
 		else {
-			bindStructureId = true;
+			bindDDMStructureKey = true;
 
-			query.append(_FINDER_COLUMN_G_S_STRUCTUREID_2);
+			query.append(_FINDER_COLUMN_G_DDMSK_DDMSTRUCTUREKEY_2);
 		}
 
 		if (!getDB().isSupportsInlineDistinct()) {
@@ -11729,8 +11744,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 			qPos.add(groupId);
 
-			if (bindStructureId) {
-				qPos.add(structureId);
+			if (bindDDMStructureKey) {
+				qPos.add(DDMStructureKey);
 			}
 
 			return (List<JournalArticle>)QueryUtil.list(q, getDialect(), start,
@@ -11745,22 +11760,22 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	/**
-	 * Returns the journal articles before and after the current journal article in the ordered set of journal articles that the user has permission to view where groupId = &#63; and structureId = &#63;.
+	 * Returns the journal articles before and after the current journal article in the ordered set of journal articles that the user has permission to view where groupId = &#63; and DDMStructureKey = &#63;.
 	 *
 	 * @param id the primary key of the current journal article
 	 * @param groupId the group ID
-	 * @param structureId the structure ID
+	 * @param DDMStructureKey the d d m structure key
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public JournalArticle[] filterFindByG_S_PrevAndNext(long id, long groupId,
-		String structureId, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+	public JournalArticle[] filterFindByG_DDMSK_PrevAndNext(long id,
+		long groupId, String DDMStructureKey,
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
-			return findByG_S_PrevAndNext(id, groupId, structureId,
+			return findByG_DDMSK_PrevAndNext(id, groupId, DDMStructureKey,
 				orderByComparator);
 		}
 
@@ -11773,13 +11788,13 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 			JournalArticle[] array = new JournalArticleImpl[3];
 
-			array[0] = filterGetByG_S_PrevAndNext(session, journalArticle,
-					groupId, structureId, orderByComparator, true);
+			array[0] = filterGetByG_DDMSK_PrevAndNext(session, journalArticle,
+					groupId, DDMStructureKey, orderByComparator, true);
 
 			array[1] = journalArticle;
 
-			array[2] = filterGetByG_S_PrevAndNext(session, journalArticle,
-					groupId, structureId, orderByComparator, false);
+			array[2] = filterGetByG_DDMSK_PrevAndNext(session, journalArticle,
+					groupId, DDMStructureKey, orderByComparator, false);
 
 			return array;
 		}
@@ -11791,9 +11806,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		}
 	}
 
-	protected JournalArticle filterGetByG_S_PrevAndNext(Session session,
-		JournalArticle journalArticle, long groupId, String structureId,
-		OrderByComparator orderByComparator, boolean previous) {
+	protected JournalArticle filterGetByG_DDMSK_PrevAndNext(Session session,
+		JournalArticle journalArticle, long groupId, String DDMStructureKey,
+		OrderByComparator<JournalArticle> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -11811,20 +11826,20 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 			query.append(_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		query.append(_FINDER_COLUMN_G_S_GROUPID_2);
+		query.append(_FINDER_COLUMN_G_DDMSK_GROUPID_2);
 
-		boolean bindStructureId = false;
+		boolean bindDDMStructureKey = false;
 
-		if (structureId == null) {
-			query.append(_FINDER_COLUMN_G_S_STRUCTUREID_1);
+		if (DDMStructureKey == null) {
+			query.append(_FINDER_COLUMN_G_DDMSK_DDMSTRUCTUREKEY_1);
 		}
-		else if (structureId.equals(StringPool.BLANK)) {
-			query.append(_FINDER_COLUMN_G_S_STRUCTUREID_3);
+		else if (DDMStructureKey.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_G_DDMSK_DDMSTRUCTUREKEY_3);
 		}
 		else {
-			bindStructureId = true;
+			bindDDMStructureKey = true;
 
-			query.append(_FINDER_COLUMN_G_S_STRUCTUREID_2);
+			query.append(_FINDER_COLUMN_G_DDMSK_DDMSTRUCTUREKEY_2);
 		}
 
 		if (!getDB().isSupportsInlineDistinct()) {
@@ -11927,8 +11942,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 		qPos.add(groupId);
 
-		if (bindStructureId) {
-			qPos.add(structureId);
+		if (bindDDMStructureKey) {
+			qPos.add(DDMStructureKey);
 		}
 
 		if (orderByComparator != null) {
@@ -11950,35 +11965,31 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	/**
-	 * Removes all the journal articles where groupId = &#63; and structureId = &#63; from the database.
+	 * Removes all the journal articles where groupId = &#63; and DDMStructureKey = &#63; from the database.
 	 *
 	 * @param groupId the group ID
-	 * @param structureId the structure ID
-	 * @throws SystemException if a system exception occurred
+	 * @param DDMStructureKey the d d m structure key
 	 */
 	@Override
-	public void removeByG_S(long groupId, String structureId)
-		throws SystemException {
-		for (JournalArticle journalArticle : findByG_S(groupId, structureId,
-				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+	public void removeByG_DDMSK(long groupId, String DDMStructureKey) {
+		for (JournalArticle journalArticle : findByG_DDMSK(groupId,
+				DDMStructureKey, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(journalArticle);
 		}
 	}
 
 	/**
-	 * Returns the number of journal articles where groupId = &#63; and structureId = &#63;.
+	 * Returns the number of journal articles where groupId = &#63; and DDMStructureKey = &#63;.
 	 *
 	 * @param groupId the group ID
-	 * @param structureId the structure ID
+	 * @param DDMStructureKey the d d m structure key
 	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByG_S(long groupId, String structureId)
-		throws SystemException {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_G_S;
+	public int countByG_DDMSK(long groupId, String DDMStructureKey) {
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_G_DDMSK;
 
-		Object[] finderArgs = new Object[] { groupId, structureId };
+		Object[] finderArgs = new Object[] { groupId, DDMStructureKey };
 
 		Long count = (Long)FinderCacheUtil.getResult(finderPath, finderArgs,
 				this);
@@ -11988,20 +11999,20 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 			query.append(_SQL_COUNT_JOURNALARTICLE_WHERE);
 
-			query.append(_FINDER_COLUMN_G_S_GROUPID_2);
+			query.append(_FINDER_COLUMN_G_DDMSK_GROUPID_2);
 
-			boolean bindStructureId = false;
+			boolean bindDDMStructureKey = false;
 
-			if (structureId == null) {
-				query.append(_FINDER_COLUMN_G_S_STRUCTUREID_1);
+			if (DDMStructureKey == null) {
+				query.append(_FINDER_COLUMN_G_DDMSK_DDMSTRUCTUREKEY_1);
 			}
-			else if (structureId.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_G_S_STRUCTUREID_3);
+			else if (DDMStructureKey.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_G_DDMSK_DDMSTRUCTUREKEY_3);
 			}
 			else {
-				bindStructureId = true;
+				bindDDMStructureKey = true;
 
-				query.append(_FINDER_COLUMN_G_S_STRUCTUREID_2);
+				query.append(_FINDER_COLUMN_G_DDMSK_DDMSTRUCTUREKEY_2);
 			}
 
 			String sql = query.toString();
@@ -12017,8 +12028,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 				qPos.add(groupId);
 
-				if (bindStructureId) {
-					qPos.add(structureId);
+				if (bindDDMStructureKey) {
+					qPos.add(DDMStructureKey);
 				}
 
 				count = (Long)q.uniqueResult();
@@ -12039,38 +12050,36 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	/**
-	 * Returns the number of journal articles that the user has permission to view where groupId = &#63; and structureId = &#63;.
+	 * Returns the number of journal articles that the user has permission to view where groupId = &#63; and DDMStructureKey = &#63;.
 	 *
 	 * @param groupId the group ID
-	 * @param structureId the structure ID
+	 * @param DDMStructureKey the d d m structure key
 	 * @return the number of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int filterCountByG_S(long groupId, String structureId)
-		throws SystemException {
+	public int filterCountByG_DDMSK(long groupId, String DDMStructureKey) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
-			return countByG_S(groupId, structureId);
+			return countByG_DDMSK(groupId, DDMStructureKey);
 		}
 
 		StringBundler query = new StringBundler(3);
 
 		query.append(_FILTER_SQL_COUNT_JOURNALARTICLE_WHERE);
 
-		query.append(_FINDER_COLUMN_G_S_GROUPID_2);
+		query.append(_FINDER_COLUMN_G_DDMSK_GROUPID_2);
 
-		boolean bindStructureId = false;
+		boolean bindDDMStructureKey = false;
 
-		if (structureId == null) {
-			query.append(_FINDER_COLUMN_G_S_STRUCTUREID_1);
+		if (DDMStructureKey == null) {
+			query.append(_FINDER_COLUMN_G_DDMSK_DDMSTRUCTUREKEY_1);
 		}
-		else if (structureId.equals(StringPool.BLANK)) {
-			query.append(_FINDER_COLUMN_G_S_STRUCTUREID_3);
+		else if (DDMStructureKey.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_G_DDMSK_DDMSTRUCTUREKEY_3);
 		}
 		else {
-			bindStructureId = true;
+			bindDDMStructureKey = true;
 
-			query.append(_FINDER_COLUMN_G_S_STRUCTUREID_2);
+			query.append(_FINDER_COLUMN_G_DDMSK_DDMSTRUCTUREKEY_2);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(query.toString(),
@@ -12091,8 +12100,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 			qPos.add(groupId);
 
-			if (bindStructureId) {
-				qPos.add(structureId);
+			if (bindDDMStructureKey) {
+				qPos.add(DDMStructureKey);
 			}
 
 			Long count = (Long)q.uniqueResult();
@@ -12107,88 +12116,86 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		}
 	}
 
-	private static final String _FINDER_COLUMN_G_S_GROUPID_2 = "journalArticle.groupId = ? AND ";
-	private static final String _FINDER_COLUMN_G_S_STRUCTUREID_1 = "journalArticle.structureId IS NULL";
-	private static final String _FINDER_COLUMN_G_S_STRUCTUREID_2 = "journalArticle.structureId = ?";
-	private static final String _FINDER_COLUMN_G_S_STRUCTUREID_3 = "(journalArticle.structureId IS NULL OR journalArticle.structureId = '')";
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_G_T = new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
+	private static final String _FINDER_COLUMN_G_DDMSK_GROUPID_2 = "journalArticle.groupId = ? AND ";
+	private static final String _FINDER_COLUMN_G_DDMSK_DDMSTRUCTUREKEY_1 = "journalArticle.DDMStructureKey IS NULL";
+	private static final String _FINDER_COLUMN_G_DDMSK_DDMSTRUCTUREKEY_2 = "journalArticle.DDMStructureKey = ?";
+	private static final String _FINDER_COLUMN_G_DDMSK_DDMSTRUCTUREKEY_3 = "(journalArticle.DDMStructureKey IS NULL OR journalArticle.DDMStructureKey = '')";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_G_DDMTK = new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
 			JournalArticleModelImpl.FINDER_CACHE_ENABLED,
 			JournalArticleImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByG_T",
+			"findByG_DDMTK",
 			new String[] {
 				Long.class.getName(), String.class.getName(),
 				
 			Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			});
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_T = new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_DDMTK =
+		new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
 			JournalArticleModelImpl.FINDER_CACHE_ENABLED,
 			JournalArticleImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_T",
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_DDMTK",
 			new String[] { Long.class.getName(), String.class.getName() },
 			JournalArticleModelImpl.GROUPID_COLUMN_BITMASK |
-			JournalArticleModelImpl.TEMPLATEID_COLUMN_BITMASK |
+			JournalArticleModelImpl.DDMTEMPLATEKEY_COLUMN_BITMASK |
 			JournalArticleModelImpl.ARTICLEID_COLUMN_BITMASK |
 			JournalArticleModelImpl.VERSION_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_G_T = new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
+	public static final FinderPath FINDER_PATH_COUNT_BY_G_DDMTK = new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
 			JournalArticleModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_T",
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_DDMTK",
 			new String[] { Long.class.getName(), String.class.getName() });
 
 	/**
-	 * Returns all the journal articles where groupId = &#63; and templateId = &#63;.
+	 * Returns all the journal articles where groupId = &#63; and DDMTemplateKey = &#63;.
 	 *
 	 * @param groupId the group ID
-	 * @param templateId the template ID
+	 * @param DDMTemplateKey the d d m template key
 	 * @return the matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> findByG_T(long groupId, String templateId)
-		throws SystemException {
-		return findByG_T(groupId, templateId, QueryUtil.ALL_POS,
+	public List<JournalArticle> findByG_DDMTK(long groupId,
+		String DDMTemplateKey) {
+		return findByG_DDMTK(groupId, DDMTemplateKey, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
 
 	/**
-	 * Returns a range of all the journal articles where groupId = &#63; and templateId = &#63;.
+	 * Returns a range of all the journal articles where groupId = &#63; and DDMTemplateKey = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.journal.model.impl.JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param groupId the group ID
-	 * @param templateId the template ID
+	 * @param DDMTemplateKey the d d m template key
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> findByG_T(long groupId, String templateId,
-		int start, int end) throws SystemException {
-		return findByG_T(groupId, templateId, start, end, null);
+	public List<JournalArticle> findByG_DDMTK(long groupId,
+		String DDMTemplateKey, int start, int end) {
+		return findByG_DDMTK(groupId, DDMTemplateKey, start, end, null);
 	}
 
 	/**
-	 * Returns an ordered range of all the journal articles where groupId = &#63; and templateId = &#63;.
+	 * Returns an ordered range of all the journal articles where groupId = &#63; and DDMTemplateKey = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.journal.model.impl.JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param groupId the group ID
-	 * @param templateId the template ID
+	 * @param DDMTemplateKey the d d m template key
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> findByG_T(long groupId, String templateId,
-		int start, int end, OrderByComparator orderByComparator)
-		throws SystemException {
+	public List<JournalArticle> findByG_DDMTK(long groupId,
+		String DDMTemplateKey, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -12196,13 +12203,13 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 				(orderByComparator == null)) {
 			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_T;
-			finderArgs = new Object[] { groupId, templateId };
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_DDMTK;
+			finderArgs = new Object[] { groupId, DDMTemplateKey };
 		}
 		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_G_T;
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_G_DDMTK;
 			finderArgs = new Object[] {
-					groupId, templateId,
+					groupId, DDMTemplateKey,
 					
 					start, end, orderByComparator
 				};
@@ -12214,8 +12221,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		if ((list != null) && !list.isEmpty()) {
 			for (JournalArticle journalArticle : list) {
 				if ((groupId != journalArticle.getGroupId()) ||
-						!Validator.equals(templateId,
-							journalArticle.getTemplateId())) {
+						!Validator.equals(DDMTemplateKey,
+							journalArticle.getDDMTemplateKey())) {
 					list = null;
 
 					break;
@@ -12236,20 +12243,20 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 			query.append(_SQL_SELECT_JOURNALARTICLE_WHERE);
 
-			query.append(_FINDER_COLUMN_G_T_GROUPID_2);
+			query.append(_FINDER_COLUMN_G_DDMTK_GROUPID_2);
 
-			boolean bindTemplateId = false;
+			boolean bindDDMTemplateKey = false;
 
-			if (templateId == null) {
-				query.append(_FINDER_COLUMN_G_T_TEMPLATEID_1);
+			if (DDMTemplateKey == null) {
+				query.append(_FINDER_COLUMN_G_DDMTK_DDMTEMPLATEKEY_1);
 			}
-			else if (templateId.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_G_T_TEMPLATEID_3);
+			else if (DDMTemplateKey.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_G_DDMTK_DDMTEMPLATEKEY_3);
 			}
 			else {
-				bindTemplateId = true;
+				bindDDMTemplateKey = true;
 
-				query.append(_FINDER_COLUMN_G_T_TEMPLATEID_2);
+				query.append(_FINDER_COLUMN_G_DDMTK_DDMTEMPLATEKEY_2);
 			}
 
 			if (orderByComparator != null) {
@@ -12274,8 +12281,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 				qPos.add(groupId);
 
-				if (bindTemplateId) {
-					qPos.add(templateId);
+				if (bindDDMTemplateKey) {
+					qPos.add(DDMTemplateKey);
 				}
 
 				if (!pagination) {
@@ -12309,21 +12316,21 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	/**
-	 * Returns the first journal article in the ordered set where groupId = &#63; and templateId = &#63;.
+	 * Returns the first journal article in the ordered set where groupId = &#63; and DDMTemplateKey = &#63;.
 	 *
 	 * @param groupId the group ID
-	 * @param templateId the template ID
+	 * @param DDMTemplateKey the d d m template key
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public JournalArticle findByG_T_First(long groupId, String templateId,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
-		JournalArticle journalArticle = fetchByG_T_First(groupId, templateId,
-				orderByComparator);
+	public JournalArticle findByG_DDMTK_First(long groupId,
+		String DDMTemplateKey,
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
+		JournalArticle journalArticle = fetchByG_DDMTK_First(groupId,
+				DDMTemplateKey, orderByComparator);
 
 		if (journalArticle != null) {
 			return journalArticle;
@@ -12336,8 +12343,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		msg.append("groupId=");
 		msg.append(groupId);
 
-		msg.append(", templateId=");
-		msg.append(templateId);
+		msg.append(", DDMTemplateKey=");
+		msg.append(DDMTemplateKey);
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
@@ -12345,19 +12352,19 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	/**
-	 * Returns the first journal article in the ordered set where groupId = &#63; and templateId = &#63;.
+	 * Returns the first journal article in the ordered set where groupId = &#63; and DDMTemplateKey = &#63;.
 	 *
 	 * @param groupId the group ID
-	 * @param templateId the template ID
+	 * @param DDMTemplateKey the d d m template key
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public JournalArticle fetchByG_T_First(long groupId, String templateId,
-		OrderByComparator orderByComparator) throws SystemException {
-		List<JournalArticle> list = findByG_T(groupId, templateId, 0, 1,
-				orderByComparator);
+	public JournalArticle fetchByG_DDMTK_First(long groupId,
+		String DDMTemplateKey,
+		OrderByComparator<JournalArticle> orderByComparator) {
+		List<JournalArticle> list = findByG_DDMTK(groupId, DDMTemplateKey, 0,
+				1, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -12367,21 +12374,21 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	/**
-	 * Returns the last journal article in the ordered set where groupId = &#63; and templateId = &#63;.
+	 * Returns the last journal article in the ordered set where groupId = &#63; and DDMTemplateKey = &#63;.
 	 *
 	 * @param groupId the group ID
-	 * @param templateId the template ID
+	 * @param DDMTemplateKey the d d m template key
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public JournalArticle findByG_T_Last(long groupId, String templateId,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
-		JournalArticle journalArticle = fetchByG_T_Last(groupId, templateId,
-				orderByComparator);
+	public JournalArticle findByG_DDMTK_Last(long groupId,
+		String DDMTemplateKey,
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
+		JournalArticle journalArticle = fetchByG_DDMTK_Last(groupId,
+				DDMTemplateKey, orderByComparator);
 
 		if (journalArticle != null) {
 			return journalArticle;
@@ -12394,8 +12401,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		msg.append("groupId=");
 		msg.append(groupId);
 
-		msg.append(", templateId=");
-		msg.append(templateId);
+		msg.append(", DDMTemplateKey=");
+		msg.append(DDMTemplateKey);
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
@@ -12403,25 +12410,25 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	/**
-	 * Returns the last journal article in the ordered set where groupId = &#63; and templateId = &#63;.
+	 * Returns the last journal article in the ordered set where groupId = &#63; and DDMTemplateKey = &#63;.
 	 *
 	 * @param groupId the group ID
-	 * @param templateId the template ID
+	 * @param DDMTemplateKey the d d m template key
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public JournalArticle fetchByG_T_Last(long groupId, String templateId,
-		OrderByComparator orderByComparator) throws SystemException {
-		int count = countByG_T(groupId, templateId);
+	public JournalArticle fetchByG_DDMTK_Last(long groupId,
+		String DDMTemplateKey,
+		OrderByComparator<JournalArticle> orderByComparator) {
+		int count = countByG_DDMTK(groupId, DDMTemplateKey);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<JournalArticle> list = findByG_T(groupId, templateId, count - 1,
-				count, orderByComparator);
+		List<JournalArticle> list = findByG_DDMTK(groupId, DDMTemplateKey,
+				count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -12431,20 +12438,20 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	/**
-	 * Returns the journal articles before and after the current journal article in the ordered set where groupId = &#63; and templateId = &#63;.
+	 * Returns the journal articles before and after the current journal article in the ordered set where groupId = &#63; and DDMTemplateKey = &#63;.
 	 *
 	 * @param id the primary key of the current journal article
 	 * @param groupId the group ID
-	 * @param templateId the template ID
+	 * @param DDMTemplateKey the d d m template key
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public JournalArticle[] findByG_T_PrevAndNext(long id, long groupId,
-		String templateId, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+	public JournalArticle[] findByG_DDMTK_PrevAndNext(long id, long groupId,
+		String DDMTemplateKey,
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = findByPrimaryKey(id);
 
 		Session session = null;
@@ -12454,13 +12461,13 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 			JournalArticle[] array = new JournalArticleImpl[3];
 
-			array[0] = getByG_T_PrevAndNext(session, journalArticle, groupId,
-					templateId, orderByComparator, true);
+			array[0] = getByG_DDMTK_PrevAndNext(session, journalArticle,
+					groupId, DDMTemplateKey, orderByComparator, true);
 
 			array[1] = journalArticle;
 
-			array[2] = getByG_T_PrevAndNext(session, journalArticle, groupId,
-					templateId, orderByComparator, false);
+			array[2] = getByG_DDMTK_PrevAndNext(session, journalArticle,
+					groupId, DDMTemplateKey, orderByComparator, false);
 
 			return array;
 		}
@@ -12472,9 +12479,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		}
 	}
 
-	protected JournalArticle getByG_T_PrevAndNext(Session session,
-		JournalArticle journalArticle, long groupId, String templateId,
-		OrderByComparator orderByComparator, boolean previous) {
+	protected JournalArticle getByG_DDMTK_PrevAndNext(Session session,
+		JournalArticle journalArticle, long groupId, String DDMTemplateKey,
+		OrderByComparator<JournalArticle> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -12487,20 +12494,20 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 		query.append(_SQL_SELECT_JOURNALARTICLE_WHERE);
 
-		query.append(_FINDER_COLUMN_G_T_GROUPID_2);
+		query.append(_FINDER_COLUMN_G_DDMTK_GROUPID_2);
 
-		boolean bindTemplateId = false;
+		boolean bindDDMTemplateKey = false;
 
-		if (templateId == null) {
-			query.append(_FINDER_COLUMN_G_T_TEMPLATEID_1);
+		if (DDMTemplateKey == null) {
+			query.append(_FINDER_COLUMN_G_DDMTK_DDMTEMPLATEKEY_1);
 		}
-		else if (templateId.equals(StringPool.BLANK)) {
-			query.append(_FINDER_COLUMN_G_T_TEMPLATEID_3);
+		else if (DDMTemplateKey.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_G_DDMTK_DDMTEMPLATEKEY_3);
 		}
 		else {
-			bindTemplateId = true;
+			bindDDMTemplateKey = true;
 
-			query.append(_FINDER_COLUMN_G_T_TEMPLATEID_2);
+			query.append(_FINDER_COLUMN_G_DDMTK_DDMTEMPLATEKEY_2);
 		}
 
 		if (orderByComparator != null) {
@@ -12573,8 +12580,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 		qPos.add(groupId);
 
-		if (bindTemplateId) {
-			qPos.add(templateId);
+		if (bindDDMTemplateKey) {
+			qPos.add(DDMTemplateKey);
 		}
 
 		if (orderByComparator != null) {
@@ -12596,61 +12603,59 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	/**
-	 * Returns all the journal articles that the user has permission to view where groupId = &#63; and templateId = &#63;.
+	 * Returns all the journal articles that the user has permission to view where groupId = &#63; and DDMTemplateKey = &#63;.
 	 *
 	 * @param groupId the group ID
-	 * @param templateId the template ID
+	 * @param DDMTemplateKey the d d m template key
 	 * @return the matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> filterFindByG_T(long groupId, String templateId)
-		throws SystemException {
-		return filterFindByG_T(groupId, templateId, QueryUtil.ALL_POS,
+	public List<JournalArticle> filterFindByG_DDMTK(long groupId,
+		String DDMTemplateKey) {
+		return filterFindByG_DDMTK(groupId, DDMTemplateKey, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
 
 	/**
-	 * Returns a range of all the journal articles that the user has permission to view where groupId = &#63; and templateId = &#63;.
+	 * Returns a range of all the journal articles that the user has permission to view where groupId = &#63; and DDMTemplateKey = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.journal.model.impl.JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param groupId the group ID
-	 * @param templateId the template ID
+	 * @param DDMTemplateKey the d d m template key
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> filterFindByG_T(long groupId,
-		String templateId, int start, int end) throws SystemException {
-		return filterFindByG_T(groupId, templateId, start, end, null);
+	public List<JournalArticle> filterFindByG_DDMTK(long groupId,
+		String DDMTemplateKey, int start, int end) {
+		return filterFindByG_DDMTK(groupId, DDMTemplateKey, start, end, null);
 	}
 
 	/**
-	 * Returns an ordered range of all the journal articles that the user has permissions to view where groupId = &#63; and templateId = &#63;.
+	 * Returns an ordered range of all the journal articles that the user has permissions to view where groupId = &#63; and DDMTemplateKey = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.journal.model.impl.JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param groupId the group ID
-	 * @param templateId the template ID
+	 * @param DDMTemplateKey the d d m template key
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> filterFindByG_T(long groupId,
-		String templateId, int start, int end,
-		OrderByComparator orderByComparator) throws SystemException {
+	public List<JournalArticle> filterFindByG_DDMTK(long groupId,
+		String DDMTemplateKey, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
-			return findByG_T(groupId, templateId, start, end, orderByComparator);
+			return findByG_DDMTK(groupId, DDMTemplateKey, start, end,
+				orderByComparator);
 		}
 
 		StringBundler query = null;
@@ -12670,20 +12675,20 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 			query.append(_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		query.append(_FINDER_COLUMN_G_T_GROUPID_2);
+		query.append(_FINDER_COLUMN_G_DDMTK_GROUPID_2);
 
-		boolean bindTemplateId = false;
+		boolean bindDDMTemplateKey = false;
 
-		if (templateId == null) {
-			query.append(_FINDER_COLUMN_G_T_TEMPLATEID_1);
+		if (DDMTemplateKey == null) {
+			query.append(_FINDER_COLUMN_G_DDMTK_DDMTEMPLATEKEY_1);
 		}
-		else if (templateId.equals(StringPool.BLANK)) {
-			query.append(_FINDER_COLUMN_G_T_TEMPLATEID_3);
+		else if (DDMTemplateKey.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_G_DDMTK_DDMTEMPLATEKEY_3);
 		}
 		else {
-			bindTemplateId = true;
+			bindDDMTemplateKey = true;
 
-			query.append(_FINDER_COLUMN_G_T_TEMPLATEID_2);
+			query.append(_FINDER_COLUMN_G_DDMTK_DDMTEMPLATEKEY_2);
 		}
 
 		if (!getDB().isSupportsInlineDistinct()) {
@@ -12731,8 +12736,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 			qPos.add(groupId);
 
-			if (bindTemplateId) {
-				qPos.add(templateId);
+			if (bindDDMTemplateKey) {
+				qPos.add(DDMTemplateKey);
 			}
 
 			return (List<JournalArticle>)QueryUtil.list(q, getDialect(), start,
@@ -12747,22 +12752,22 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	/**
-	 * Returns the journal articles before and after the current journal article in the ordered set of journal articles that the user has permission to view where groupId = &#63; and templateId = &#63;.
+	 * Returns the journal articles before and after the current journal article in the ordered set of journal articles that the user has permission to view where groupId = &#63; and DDMTemplateKey = &#63;.
 	 *
 	 * @param id the primary key of the current journal article
 	 * @param groupId the group ID
-	 * @param templateId the template ID
+	 * @param DDMTemplateKey the d d m template key
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public JournalArticle[] filterFindByG_T_PrevAndNext(long id, long groupId,
-		String templateId, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+	public JournalArticle[] filterFindByG_DDMTK_PrevAndNext(long id,
+		long groupId, String DDMTemplateKey,
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
-			return findByG_T_PrevAndNext(id, groupId, templateId,
+			return findByG_DDMTK_PrevAndNext(id, groupId, DDMTemplateKey,
 				orderByComparator);
 		}
 
@@ -12775,13 +12780,13 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 			JournalArticle[] array = new JournalArticleImpl[3];
 
-			array[0] = filterGetByG_T_PrevAndNext(session, journalArticle,
-					groupId, templateId, orderByComparator, true);
+			array[0] = filterGetByG_DDMTK_PrevAndNext(session, journalArticle,
+					groupId, DDMTemplateKey, orderByComparator, true);
 
 			array[1] = journalArticle;
 
-			array[2] = filterGetByG_T_PrevAndNext(session, journalArticle,
-					groupId, templateId, orderByComparator, false);
+			array[2] = filterGetByG_DDMTK_PrevAndNext(session, journalArticle,
+					groupId, DDMTemplateKey, orderByComparator, false);
 
 			return array;
 		}
@@ -12793,9 +12798,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		}
 	}
 
-	protected JournalArticle filterGetByG_T_PrevAndNext(Session session,
-		JournalArticle journalArticle, long groupId, String templateId,
-		OrderByComparator orderByComparator, boolean previous) {
+	protected JournalArticle filterGetByG_DDMTK_PrevAndNext(Session session,
+		JournalArticle journalArticle, long groupId, String DDMTemplateKey,
+		OrderByComparator<JournalArticle> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -12813,20 +12818,20 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 			query.append(_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		query.append(_FINDER_COLUMN_G_T_GROUPID_2);
+		query.append(_FINDER_COLUMN_G_DDMTK_GROUPID_2);
 
-		boolean bindTemplateId = false;
+		boolean bindDDMTemplateKey = false;
 
-		if (templateId == null) {
-			query.append(_FINDER_COLUMN_G_T_TEMPLATEID_1);
+		if (DDMTemplateKey == null) {
+			query.append(_FINDER_COLUMN_G_DDMTK_DDMTEMPLATEKEY_1);
 		}
-		else if (templateId.equals(StringPool.BLANK)) {
-			query.append(_FINDER_COLUMN_G_T_TEMPLATEID_3);
+		else if (DDMTemplateKey.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_G_DDMTK_DDMTEMPLATEKEY_3);
 		}
 		else {
-			bindTemplateId = true;
+			bindDDMTemplateKey = true;
 
-			query.append(_FINDER_COLUMN_G_T_TEMPLATEID_2);
+			query.append(_FINDER_COLUMN_G_DDMTK_DDMTEMPLATEKEY_2);
 		}
 
 		if (!getDB().isSupportsInlineDistinct()) {
@@ -12929,8 +12934,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 		qPos.add(groupId);
 
-		if (bindTemplateId) {
-			qPos.add(templateId);
+		if (bindDDMTemplateKey) {
+			qPos.add(DDMTemplateKey);
 		}
 
 		if (orderByComparator != null) {
@@ -12952,35 +12957,31 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	/**
-	 * Removes all the journal articles where groupId = &#63; and templateId = &#63; from the database.
+	 * Removes all the journal articles where groupId = &#63; and DDMTemplateKey = &#63; from the database.
 	 *
 	 * @param groupId the group ID
-	 * @param templateId the template ID
-	 * @throws SystemException if a system exception occurred
+	 * @param DDMTemplateKey the d d m template key
 	 */
 	@Override
-	public void removeByG_T(long groupId, String templateId)
-		throws SystemException {
-		for (JournalArticle journalArticle : findByG_T(groupId, templateId,
-				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+	public void removeByG_DDMTK(long groupId, String DDMTemplateKey) {
+		for (JournalArticle journalArticle : findByG_DDMTK(groupId,
+				DDMTemplateKey, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(journalArticle);
 		}
 	}
 
 	/**
-	 * Returns the number of journal articles where groupId = &#63; and templateId = &#63;.
+	 * Returns the number of journal articles where groupId = &#63; and DDMTemplateKey = &#63;.
 	 *
 	 * @param groupId the group ID
-	 * @param templateId the template ID
+	 * @param DDMTemplateKey the d d m template key
 	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByG_T(long groupId, String templateId)
-		throws SystemException {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_G_T;
+	public int countByG_DDMTK(long groupId, String DDMTemplateKey) {
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_G_DDMTK;
 
-		Object[] finderArgs = new Object[] { groupId, templateId };
+		Object[] finderArgs = new Object[] { groupId, DDMTemplateKey };
 
 		Long count = (Long)FinderCacheUtil.getResult(finderPath, finderArgs,
 				this);
@@ -12990,20 +12991,20 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 			query.append(_SQL_COUNT_JOURNALARTICLE_WHERE);
 
-			query.append(_FINDER_COLUMN_G_T_GROUPID_2);
+			query.append(_FINDER_COLUMN_G_DDMTK_GROUPID_2);
 
-			boolean bindTemplateId = false;
+			boolean bindDDMTemplateKey = false;
 
-			if (templateId == null) {
-				query.append(_FINDER_COLUMN_G_T_TEMPLATEID_1);
+			if (DDMTemplateKey == null) {
+				query.append(_FINDER_COLUMN_G_DDMTK_DDMTEMPLATEKEY_1);
 			}
-			else if (templateId.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_G_T_TEMPLATEID_3);
+			else if (DDMTemplateKey.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_G_DDMTK_DDMTEMPLATEKEY_3);
 			}
 			else {
-				bindTemplateId = true;
+				bindDDMTemplateKey = true;
 
-				query.append(_FINDER_COLUMN_G_T_TEMPLATEID_2);
+				query.append(_FINDER_COLUMN_G_DDMTK_DDMTEMPLATEKEY_2);
 			}
 
 			String sql = query.toString();
@@ -13019,8 +13020,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 				qPos.add(groupId);
 
-				if (bindTemplateId) {
-					qPos.add(templateId);
+				if (bindDDMTemplateKey) {
+					qPos.add(DDMTemplateKey);
 				}
 
 				count = (Long)q.uniqueResult();
@@ -13041,38 +13042,36 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	/**
-	 * Returns the number of journal articles that the user has permission to view where groupId = &#63; and templateId = &#63;.
+	 * Returns the number of journal articles that the user has permission to view where groupId = &#63; and DDMTemplateKey = &#63;.
 	 *
 	 * @param groupId the group ID
-	 * @param templateId the template ID
+	 * @param DDMTemplateKey the d d m template key
 	 * @return the number of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int filterCountByG_T(long groupId, String templateId)
-		throws SystemException {
+	public int filterCountByG_DDMTK(long groupId, String DDMTemplateKey) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
-			return countByG_T(groupId, templateId);
+			return countByG_DDMTK(groupId, DDMTemplateKey);
 		}
 
 		StringBundler query = new StringBundler(3);
 
 		query.append(_FILTER_SQL_COUNT_JOURNALARTICLE_WHERE);
 
-		query.append(_FINDER_COLUMN_G_T_GROUPID_2);
+		query.append(_FINDER_COLUMN_G_DDMTK_GROUPID_2);
 
-		boolean bindTemplateId = false;
+		boolean bindDDMTemplateKey = false;
 
-		if (templateId == null) {
-			query.append(_FINDER_COLUMN_G_T_TEMPLATEID_1);
+		if (DDMTemplateKey == null) {
+			query.append(_FINDER_COLUMN_G_DDMTK_DDMTEMPLATEKEY_1);
 		}
-		else if (templateId.equals(StringPool.BLANK)) {
-			query.append(_FINDER_COLUMN_G_T_TEMPLATEID_3);
+		else if (DDMTemplateKey.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_G_DDMTK_DDMTEMPLATEKEY_3);
 		}
 		else {
-			bindTemplateId = true;
+			bindDDMTemplateKey = true;
 
-			query.append(_FINDER_COLUMN_G_T_TEMPLATEID_2);
+			query.append(_FINDER_COLUMN_G_DDMTK_DDMTEMPLATEKEY_2);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(query.toString(),
@@ -13093,8 +13092,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 			qPos.add(groupId);
 
-			if (bindTemplateId) {
-				qPos.add(templateId);
+			if (bindDDMTemplateKey) {
+				qPos.add(DDMTemplateKey);
 			}
 
 			Long count = (Long)q.uniqueResult();
@@ -13109,10 +13108,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		}
 	}
 
-	private static final String _FINDER_COLUMN_G_T_GROUPID_2 = "journalArticle.groupId = ? AND ";
-	private static final String _FINDER_COLUMN_G_T_TEMPLATEID_1 = "journalArticle.templateId IS NULL";
-	private static final String _FINDER_COLUMN_G_T_TEMPLATEID_2 = "journalArticle.templateId = ?";
-	private static final String _FINDER_COLUMN_G_T_TEMPLATEID_3 = "(journalArticle.templateId IS NULL OR journalArticle.templateId = '')";
+	private static final String _FINDER_COLUMN_G_DDMTK_GROUPID_2 = "journalArticle.groupId = ? AND ";
+	private static final String _FINDER_COLUMN_G_DDMTK_DDMTEMPLATEKEY_1 = "journalArticle.DDMTemplateKey IS NULL";
+	private static final String _FINDER_COLUMN_G_DDMTK_DDMTEMPLATEKEY_2 = "journalArticle.DDMTemplateKey = ?";
+	private static final String _FINDER_COLUMN_G_DDMTK_DDMTEMPLATEKEY_3 = "(journalArticle.DDMTemplateKey IS NULL OR journalArticle.DDMTemplateKey = '')";
 	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_G_L = new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
 			JournalArticleModelImpl.FINDER_CACHE_ENABLED,
 			JournalArticleImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
@@ -13143,11 +13142,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @param layoutUuid the layout uuid
 	 * @return the matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> findByG_L(long groupId, String layoutUuid)
-		throws SystemException {
+	public List<JournalArticle> findByG_L(long groupId, String layoutUuid) {
 		return findByG_L(groupId, layoutUuid, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -13164,11 +13161,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_L(long groupId, String layoutUuid,
-		int start, int end) throws SystemException {
+		int start, int end) {
 		return findByG_L(groupId, layoutUuid, start, end, null);
 	}
 
@@ -13185,12 +13181,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_L(long groupId, String layoutUuid,
-		int start, int end, OrderByComparator orderByComparator)
-		throws SystemException {
+		int start, int end, OrderByComparator<JournalArticle> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -13318,12 +13312,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByG_L_First(long groupId, String layoutUuid,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByG_L_First(groupId, layoutUuid,
 				orderByComparator);
 
@@ -13353,11 +13346,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param layoutUuid the layout uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByG_L_First(long groupId, String layoutUuid,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		List<JournalArticle> list = findByG_L(groupId, layoutUuid, 0, 1,
 				orderByComparator);
 
@@ -13376,12 +13368,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByG_L_Last(long groupId, String layoutUuid,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByG_L_Last(groupId, layoutUuid,
 				orderByComparator);
 
@@ -13411,11 +13402,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param layoutUuid the layout uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByG_L_Last(long groupId, String layoutUuid,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		int count = countByG_L(groupId, layoutUuid);
 
 		if (count == 0) {
@@ -13441,12 +13431,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] findByG_L_PrevAndNext(long id, long groupId,
-		String layoutUuid, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		String layoutUuid, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = findByPrimaryKey(id);
 
 		Session session = null;
@@ -13476,7 +13465,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle getByG_L_PrevAndNext(Session session,
 		JournalArticle journalArticle, long groupId, String layoutUuid,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<JournalArticle> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -13603,11 +13592,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @param layoutUuid the layout uuid
 	 * @return the matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> filterFindByG_L(long groupId, String layoutUuid)
-		throws SystemException {
+	public List<JournalArticle> filterFindByG_L(long groupId, String layoutUuid) {
 		return filterFindByG_L(groupId, layoutUuid, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -13624,11 +13611,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_L(long groupId,
-		String layoutUuid, int start, int end) throws SystemException {
+		String layoutUuid, int start, int end) {
 		return filterFindByG_L(groupId, layoutUuid, start, end, null);
 	}
 
@@ -13645,12 +13631,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_L(long groupId,
 		String layoutUuid, int start, int end,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_L(groupId, layoutUuid, start, end, orderByComparator);
 		}
@@ -13757,12 +13742,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] filterFindByG_L_PrevAndNext(long id, long groupId,
-		String layoutUuid, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		String layoutUuid, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_L_PrevAndNext(id, groupId, layoutUuid,
 				orderByComparator);
@@ -13797,7 +13781,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle filterGetByG_L_PrevAndNext(Session session,
 		JournalArticle journalArticle, long groupId, String layoutUuid,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<JournalArticle> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -13958,11 +13942,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 *
 	 * @param groupId the group ID
 	 * @param layoutUuid the layout uuid
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeByG_L(long groupId, String layoutUuid)
-		throws SystemException {
+	public void removeByG_L(long groupId, String layoutUuid) {
 		for (JournalArticle journalArticle : findByG_L(groupId, layoutUuid,
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(journalArticle);
@@ -13975,11 +13957,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @param layoutUuid the layout uuid
 	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByG_L(long groupId, String layoutUuid)
-		throws SystemException {
+	public int countByG_L(long groupId, String layoutUuid) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_G_L;
 
 		Object[] finderArgs = new Object[] { groupId, layoutUuid };
@@ -14048,11 +14028,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @param layoutUuid the layout uuid
 	 * @return the number of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int filterCountByG_L(long groupId, String layoutUuid)
-		throws SystemException {
+	public int filterCountByG_L(long groupId, String layoutUuid) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return countByG_L(groupId, layoutUuid);
 		}
@@ -14145,11 +14123,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @param status the status
 	 * @return the matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> findByG_ST(long groupId, int status)
-		throws SystemException {
+	public List<JournalArticle> findByG_ST(long groupId, int status) {
 		return findByG_ST(groupId, status, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -14166,11 +14142,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_ST(long groupId, int status, int start,
-		int end) throws SystemException {
+		int end) {
 		return findByG_ST(groupId, status, start, end, null);
 	}
 
@@ -14187,11 +14162,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_ST(long groupId, int status, int start,
-		int end, OrderByComparator orderByComparator) throws SystemException {
+		int end, OrderByComparator<JournalArticle> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -14304,12 +14278,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByG_ST_First(long groupId, int status,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByG_ST_First(groupId, status,
 				orderByComparator);
 
@@ -14339,11 +14312,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByG_ST_First(long groupId, int status,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		List<JournalArticle> list = findByG_ST(groupId, status, 0, 1,
 				orderByComparator);
 
@@ -14362,12 +14334,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByG_ST_Last(long groupId, int status,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByG_ST_Last(groupId, status,
 				orderByComparator);
 
@@ -14397,11 +14368,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByG_ST_Last(long groupId, int status,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		int count = countByG_ST(groupId, status);
 
 		if (count == 0) {
@@ -14427,12 +14397,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] findByG_ST_PrevAndNext(long id, long groupId,
-		int status, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		int status, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = findByPrimaryKey(id);
 
 		Session session = null;
@@ -14462,7 +14431,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle getByG_ST_PrevAndNext(Session session,
 		JournalArticle journalArticle, long groupId, int status,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<JournalArticle> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -14575,11 +14544,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @param status the status
 	 * @return the matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> filterFindByG_ST(long groupId, int status)
-		throws SystemException {
+	public List<JournalArticle> filterFindByG_ST(long groupId, int status) {
 		return filterFindByG_ST(groupId, status, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -14596,11 +14563,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_ST(long groupId, int status,
-		int start, int end) throws SystemException {
+		int start, int end) {
 		return filterFindByG_ST(groupId, status, start, end, null);
 	}
 
@@ -14617,12 +14583,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_ST(long groupId, int status,
-		int start, int end, OrderByComparator orderByComparator)
-		throws SystemException {
+		int start, int end, OrderByComparator<JournalArticle> orderByComparator) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_ST(groupId, status, start, end, orderByComparator);
 		}
@@ -14715,12 +14679,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] filterFindByG_ST_PrevAndNext(long id, long groupId,
-		int status, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		int status, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_ST_PrevAndNext(id, groupId, status, orderByComparator);
 		}
@@ -14754,7 +14717,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle filterGetByG_ST_PrevAndNext(Session session,
 		JournalArticle journalArticle, long groupId, int status,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<JournalArticle> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -14901,11 +14864,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 *
 	 * @param groupId the group ID
 	 * @param status the status
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeByG_ST(long groupId, int status)
-		throws SystemException {
+	public void removeByG_ST(long groupId, int status) {
 		for (JournalArticle journalArticle : findByG_ST(groupId, status,
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(journalArticle);
@@ -14918,10 +14879,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @param status the status
 	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByG_ST(long groupId, int status) throws SystemException {
+	public int countByG_ST(long groupId, int status) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_G_ST;
 
 		Object[] finderArgs = new Object[] { groupId, status };
@@ -14976,11 +14936,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @param status the status
 	 * @return the number of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int filterCountByG_ST(long groupId, int status)
-		throws SystemException {
+	public int filterCountByG_ST(long groupId, int status) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return countByG_ST(groupId, status);
 		}
@@ -15056,11 +15014,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param companyId the company ID
 	 * @param version the version
 	 * @return the matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> findByC_V(long companyId, double version)
-		throws SystemException {
+	public List<JournalArticle> findByC_V(long companyId, double version) {
 		return findByC_V(companyId, version, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -15077,11 +15033,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByC_V(long companyId, double version,
-		int start, int end) throws SystemException {
+		int start, int end) {
 		return findByC_V(companyId, version, start, end, null);
 	}
 
@@ -15098,12 +15053,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByC_V(long companyId, double version,
-		int start, int end, OrderByComparator orderByComparator)
-		throws SystemException {
+		int start, int end, OrderByComparator<JournalArticle> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -15216,12 +15169,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByC_V_First(long companyId, double version,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByC_V_First(companyId, version,
 				orderByComparator);
 
@@ -15251,11 +15203,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param version the version
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByC_V_First(long companyId, double version,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		List<JournalArticle> list = findByC_V(companyId, version, 0, 1,
 				orderByComparator);
 
@@ -15274,12 +15225,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByC_V_Last(long companyId, double version,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByC_V_Last(companyId, version,
 				orderByComparator);
 
@@ -15309,11 +15259,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param version the version
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByC_V_Last(long companyId, double version,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		int count = countByC_V(companyId, version);
 
 		if (count == 0) {
@@ -15339,12 +15288,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] findByC_V_PrevAndNext(long id, long companyId,
-		double version, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		double version, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = findByPrimaryKey(id);
 
 		Session session = null;
@@ -15374,7 +15322,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle getByC_V_PrevAndNext(Session session,
 		JournalArticle journalArticle, long companyId, double version,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<JournalArticle> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -15486,11 +15434,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 *
 	 * @param companyId the company ID
 	 * @param version the version
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeByC_V(long companyId, double version)
-		throws SystemException {
+	public void removeByC_V(long companyId, double version) {
 		for (JournalArticle journalArticle : findByC_V(companyId, version,
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(journalArticle);
@@ -15503,11 +15449,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param companyId the company ID
 	 * @param version the version
 	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByC_V(long companyId, double version)
-		throws SystemException {
+	public int countByC_V(long companyId, double version) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_C_V;
 
 		Object[] finderArgs = new Object[] { companyId, version };
@@ -15588,11 +15532,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param companyId the company ID
 	 * @param status the status
 	 * @return the matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> findByC_ST(long companyId, int status)
-		throws SystemException {
+	public List<JournalArticle> findByC_ST(long companyId, int status) {
 		return findByC_ST(companyId, status, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -15609,11 +15551,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByC_ST(long companyId, int status,
-		int start, int end) throws SystemException {
+		int start, int end) {
 		return findByC_ST(companyId, status, start, end, null);
 	}
 
@@ -15630,12 +15571,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByC_ST(long companyId, int status,
-		int start, int end, OrderByComparator orderByComparator)
-		throws SystemException {
+		int start, int end, OrderByComparator<JournalArticle> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -15748,12 +15687,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByC_ST_First(long companyId, int status,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByC_ST_First(companyId, status,
 				orderByComparator);
 
@@ -15783,11 +15721,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByC_ST_First(long companyId, int status,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		List<JournalArticle> list = findByC_ST(companyId, status, 0, 1,
 				orderByComparator);
 
@@ -15806,12 +15743,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByC_ST_Last(long companyId, int status,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByC_ST_Last(companyId, status,
 				orderByComparator);
 
@@ -15841,11 +15777,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByC_ST_Last(long companyId, int status,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		int count = countByC_ST(companyId, status);
 
 		if (count == 0) {
@@ -15871,12 +15806,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] findByC_ST_PrevAndNext(long id, long companyId,
-		int status, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		int status, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = findByPrimaryKey(id);
 
 		Session session = null;
@@ -15906,7 +15840,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle getByC_ST_PrevAndNext(Session session,
 		JournalArticle journalArticle, long companyId, int status,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<JournalArticle> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -16018,11 +15952,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 *
 	 * @param companyId the company ID
 	 * @param status the status
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeByC_ST(long companyId, int status)
-		throws SystemException {
+	public void removeByC_ST(long companyId, int status) {
 		for (JournalArticle journalArticle : findByC_ST(companyId, status,
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(journalArticle);
@@ -16035,11 +15967,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param companyId the company ID
 	 * @param status the status
 	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByC_ST(long companyId, int status)
-		throws SystemException {
+	public int countByC_ST(long companyId, int status) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_C_ST;
 
 		Object[] finderArgs = new Object[] { companyId, status };
@@ -16111,11 +16041,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param companyId the company ID
 	 * @param status the status
 	 * @return the matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> findByC_NotST(long companyId, int status)
-		throws SystemException {
+	public List<JournalArticle> findByC_NotST(long companyId, int status) {
 		return findByC_NotST(companyId, status, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -16132,11 +16060,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByC_NotST(long companyId, int status,
-		int start, int end) throws SystemException {
+		int start, int end) {
 		return findByC_NotST(companyId, status, start, end, null);
 	}
 
@@ -16153,12 +16080,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByC_NotST(long companyId, int status,
-		int start, int end, OrderByComparator orderByComparator)
-		throws SystemException {
+		int start, int end, OrderByComparator<JournalArticle> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -16263,12 +16188,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByC_NotST_First(long companyId, int status,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByC_NotST_First(companyId, status,
 				orderByComparator);
 
@@ -16298,11 +16222,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByC_NotST_First(long companyId, int status,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		List<JournalArticle> list = findByC_NotST(companyId, status, 0, 1,
 				orderByComparator);
 
@@ -16321,12 +16244,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByC_NotST_Last(long companyId, int status,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByC_NotST_Last(companyId, status,
 				orderByComparator);
 
@@ -16356,11 +16278,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByC_NotST_Last(long companyId, int status,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		int count = countByC_NotST(companyId, status);
 
 		if (count == 0) {
@@ -16386,12 +16307,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] findByC_NotST_PrevAndNext(long id, long companyId,
-		int status, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		int status, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = findByPrimaryKey(id);
 
 		Session session = null;
@@ -16421,7 +16341,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle getByC_NotST_PrevAndNext(Session session,
 		JournalArticle journalArticle, long companyId, int status,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<JournalArticle> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -16533,11 +16453,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 *
 	 * @param companyId the company ID
 	 * @param status the status
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeByC_NotST(long companyId, int status)
-		throws SystemException {
+	public void removeByC_NotST(long companyId, int status) {
 		for (JournalArticle journalArticle : findByC_NotST(companyId, status,
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(journalArticle);
@@ -16550,11 +16468,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param companyId the company ID
 	 * @param status the status
 	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByC_NotST(long companyId, int status)
-		throws SystemException {
+	public int countByC_NotST(long companyId, int status) {
 		FinderPath finderPath = FINDER_PATH_WITH_PAGINATION_COUNT_BY_C_NOTST;
 
 		Object[] finderArgs = new Object[] { companyId, status };
@@ -16605,6 +16521,577 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	private static final String _FINDER_COLUMN_C_NOTST_COMPANYID_2 = "journalArticle.companyId = ? AND ";
 	private static final String _FINDER_COLUMN_C_NOTST_STATUS_2 = "journalArticle.status != ?";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_C_DDMTK = new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
+			JournalArticleModelImpl.FINDER_CACHE_ENABLED,
+			JournalArticleImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+			"findByC_DDMTK",
+			new String[] {
+				Long.class.getName(), String.class.getName(),
+				
+			Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_DDMTK =
+		new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
+			JournalArticleModelImpl.FINDER_CACHE_ENABLED,
+			JournalArticleImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_DDMTK",
+			new String[] { Long.class.getName(), String.class.getName() },
+			JournalArticleModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+			JournalArticleModelImpl.DDMTEMPLATEKEY_COLUMN_BITMASK |
+			JournalArticleModelImpl.ARTICLEID_COLUMN_BITMASK |
+			JournalArticleModelImpl.VERSION_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_C_DDMTK = new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
+			JournalArticleModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_DDMTK",
+			new String[] { Long.class.getName(), String.class.getName() });
+
+	/**
+	 * Returns all the journal articles where classNameId = &#63; and DDMTemplateKey = &#63;.
+	 *
+	 * @param classNameId the class name ID
+	 * @param DDMTemplateKey the d d m template key
+	 * @return the matching journal articles
+	 */
+	@Override
+	public List<JournalArticle> findByC_DDMTK(long classNameId,
+		String DDMTemplateKey) {
+		return findByC_DDMTK(classNameId, DDMTemplateKey, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the journal articles where classNameId = &#63; and DDMTemplateKey = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.journal.model.impl.JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param classNameId the class name ID
+	 * @param DDMTemplateKey the d d m template key
+	 * @param start the lower bound of the range of journal articles
+	 * @param end the upper bound of the range of journal articles (not inclusive)
+	 * @return the range of matching journal articles
+	 */
+	@Override
+	public List<JournalArticle> findByC_DDMTK(long classNameId,
+		String DDMTemplateKey, int start, int end) {
+		return findByC_DDMTK(classNameId, DDMTemplateKey, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the journal articles where classNameId = &#63; and DDMTemplateKey = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.journal.model.impl.JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param classNameId the class name ID
+	 * @param DDMTemplateKey the d d m template key
+	 * @param start the lower bound of the range of journal articles
+	 * @param end the upper bound of the range of journal articles (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching journal articles
+	 */
+	@Override
+	public List<JournalArticle> findByC_DDMTK(long classNameId,
+		String DDMTemplateKey, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator) {
+		boolean pagination = true;
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_DDMTK;
+			finderArgs = new Object[] { classNameId, DDMTemplateKey };
+		}
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_C_DDMTK;
+			finderArgs = new Object[] {
+					classNameId, DDMTemplateKey,
+					
+					start, end, orderByComparator
+				};
+		}
+
+		List<JournalArticle> list = (List<JournalArticle>)FinderCacheUtil.getResult(finderPath,
+				finderArgs, this);
+
+		if ((list != null) && !list.isEmpty()) {
+			for (JournalArticle journalArticle : list) {
+				if ((classNameId != journalArticle.getClassNameId()) ||
+						!Validator.equals(DDMTemplateKey,
+							journalArticle.getDDMTemplateKey())) {
+					list = null;
+
+					break;
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler query = null;
+
+			if (orderByComparator != null) {
+				query = new StringBundler(4 +
+						(orderByComparator.getOrderByFields().length * 3));
+			}
+			else {
+				query = new StringBundler(4);
+			}
+
+			query.append(_SQL_SELECT_JOURNALARTICLE_WHERE);
+
+			query.append(_FINDER_COLUMN_C_DDMTK_CLASSNAMEID_2);
+
+			boolean bindDDMTemplateKey = false;
+
+			if (DDMTemplateKey == null) {
+				query.append(_FINDER_COLUMN_C_DDMTK_DDMTEMPLATEKEY_1);
+			}
+			else if (DDMTemplateKey.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_C_DDMTK_DDMTEMPLATEKEY_3);
+			}
+			else {
+				bindDDMTemplateKey = true;
+
+				query.append(_FINDER_COLUMN_C_DDMTK_DDMTEMPLATEKEY_2);
+			}
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
+			}
+			else
+			 if (pagination) {
+				query.append(JournalArticleModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				qPos.add(classNameId);
+
+				if (bindDDMTemplateKey) {
+					qPos.add(DDMTemplateKey);
+				}
+
+				if (!pagination) {
+					list = (List<JournalArticle>)QueryUtil.list(q,
+							getDialect(), start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<JournalArticle>)QueryUtil.list(q,
+							getDialect(), start, end);
+				}
+
+				cacheResult(list);
+
+				FinderCacheUtil.putResult(finderPath, finderArgs, list);
+			}
+			catch (Exception e) {
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first journal article in the ordered set where classNameId = &#63; and DDMTemplateKey = &#63;.
+	 *
+	 * @param classNameId the class name ID
+	 * @param DDMTemplateKey the d d m template key
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching journal article
+	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
+	 */
+	@Override
+	public JournalArticle findByC_DDMTK_First(long classNameId,
+		String DDMTemplateKey,
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
+		JournalArticle journalArticle = fetchByC_DDMTK_First(classNameId,
+				DDMTemplateKey, orderByComparator);
+
+		if (journalArticle != null) {
+			return journalArticle;
+		}
+
+		StringBundler msg = new StringBundler(6);
+
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		msg.append("classNameId=");
+		msg.append(classNameId);
+
+		msg.append(", DDMTemplateKey=");
+		msg.append(DDMTemplateKey);
+
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+		throw new NoSuchArticleException(msg.toString());
+	}
+
+	/**
+	 * Returns the first journal article in the ordered set where classNameId = &#63; and DDMTemplateKey = &#63;.
+	 *
+	 * @param classNameId the class name ID
+	 * @param DDMTemplateKey the d d m template key
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
+	 */
+	@Override
+	public JournalArticle fetchByC_DDMTK_First(long classNameId,
+		String DDMTemplateKey,
+		OrderByComparator<JournalArticle> orderByComparator) {
+		List<JournalArticle> list = findByC_DDMTK(classNameId, DDMTemplateKey,
+				0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last journal article in the ordered set where classNameId = &#63; and DDMTemplateKey = &#63;.
+	 *
+	 * @param classNameId the class name ID
+	 * @param DDMTemplateKey the d d m template key
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching journal article
+	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
+	 */
+	@Override
+	public JournalArticle findByC_DDMTK_Last(long classNameId,
+		String DDMTemplateKey,
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
+		JournalArticle journalArticle = fetchByC_DDMTK_Last(classNameId,
+				DDMTemplateKey, orderByComparator);
+
+		if (journalArticle != null) {
+			return journalArticle;
+		}
+
+		StringBundler msg = new StringBundler(6);
+
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		msg.append("classNameId=");
+		msg.append(classNameId);
+
+		msg.append(", DDMTemplateKey=");
+		msg.append(DDMTemplateKey);
+
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+		throw new NoSuchArticleException(msg.toString());
+	}
+
+	/**
+	 * Returns the last journal article in the ordered set where classNameId = &#63; and DDMTemplateKey = &#63;.
+	 *
+	 * @param classNameId the class name ID
+	 * @param DDMTemplateKey the d d m template key
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
+	 */
+	@Override
+	public JournalArticle fetchByC_DDMTK_Last(long classNameId,
+		String DDMTemplateKey,
+		OrderByComparator<JournalArticle> orderByComparator) {
+		int count = countByC_DDMTK(classNameId, DDMTemplateKey);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<JournalArticle> list = findByC_DDMTK(classNameId, DDMTemplateKey,
+				count - 1, count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the journal articles before and after the current journal article in the ordered set where classNameId = &#63; and DDMTemplateKey = &#63;.
+	 *
+	 * @param id the primary key of the current journal article
+	 * @param classNameId the class name ID
+	 * @param DDMTemplateKey the d d m template key
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next journal article
+	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
+	 */
+	@Override
+	public JournalArticle[] findByC_DDMTK_PrevAndNext(long id,
+		long classNameId, String DDMTemplateKey,
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
+		JournalArticle journalArticle = findByPrimaryKey(id);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			JournalArticle[] array = new JournalArticleImpl[3];
+
+			array[0] = getByC_DDMTK_PrevAndNext(session, journalArticle,
+					classNameId, DDMTemplateKey, orderByComparator, true);
+
+			array[1] = journalArticle;
+
+			array[2] = getByC_DDMTK_PrevAndNext(session, journalArticle,
+					classNameId, DDMTemplateKey, orderByComparator, false);
+
+			return array;
+		}
+		catch (Exception e) {
+			throw processException(e);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected JournalArticle getByC_DDMTK_PrevAndNext(Session session,
+		JournalArticle journalArticle, long classNameId, String DDMTemplateKey,
+		OrderByComparator<JournalArticle> orderByComparator, boolean previous) {
+		StringBundler query = null;
+
+		if (orderByComparator != null) {
+			query = new StringBundler(6 +
+					(orderByComparator.getOrderByFields().length * 6));
+		}
+		else {
+			query = new StringBundler(3);
+		}
+
+		query.append(_SQL_SELECT_JOURNALARTICLE_WHERE);
+
+		query.append(_FINDER_COLUMN_C_DDMTK_CLASSNAMEID_2);
+
+		boolean bindDDMTemplateKey = false;
+
+		if (DDMTemplateKey == null) {
+			query.append(_FINDER_COLUMN_C_DDMTK_DDMTEMPLATEKEY_1);
+		}
+		else if (DDMTemplateKey.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_C_DDMTK_DDMTEMPLATEKEY_3);
+		}
+		else {
+			bindDDMTemplateKey = true;
+
+			query.append(_FINDER_COLUMN_C_DDMTK_DDMTEMPLATEKEY_2);
+		}
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				query.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			query.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						query.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC);
+					}
+					else {
+						query.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			query.append(JournalArticleModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = query.toString();
+
+		Query q = session.createQuery(sql);
+
+		q.setFirstResult(0);
+		q.setMaxResults(2);
+
+		QueryPos qPos = QueryPos.getInstance(q);
+
+		qPos.add(classNameId);
+
+		if (bindDDMTemplateKey) {
+			qPos.add(DDMTemplateKey);
+		}
+
+		if (orderByComparator != null) {
+			Object[] values = orderByComparator.getOrderByConditionValues(journalArticle);
+
+			for (Object value : values) {
+				qPos.add(value);
+			}
+		}
+
+		List<JournalArticle> list = q.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the journal articles where classNameId = &#63; and DDMTemplateKey = &#63; from the database.
+	 *
+	 * @param classNameId the class name ID
+	 * @param DDMTemplateKey the d d m template key
+	 */
+	@Override
+	public void removeByC_DDMTK(long classNameId, String DDMTemplateKey) {
+		for (JournalArticle journalArticle : findByC_DDMTK(classNameId,
+				DDMTemplateKey, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+			remove(journalArticle);
+		}
+	}
+
+	/**
+	 * Returns the number of journal articles where classNameId = &#63; and DDMTemplateKey = &#63;.
+	 *
+	 * @param classNameId the class name ID
+	 * @param DDMTemplateKey the d d m template key
+	 * @return the number of matching journal articles
+	 */
+	@Override
+	public int countByC_DDMTK(long classNameId, String DDMTemplateKey) {
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_C_DDMTK;
+
+		Object[] finderArgs = new Object[] { classNameId, DDMTemplateKey };
+
+		Long count = (Long)FinderCacheUtil.getResult(finderPath, finderArgs,
+				this);
+
+		if (count == null) {
+			StringBundler query = new StringBundler(3);
+
+			query.append(_SQL_COUNT_JOURNALARTICLE_WHERE);
+
+			query.append(_FINDER_COLUMN_C_DDMTK_CLASSNAMEID_2);
+
+			boolean bindDDMTemplateKey = false;
+
+			if (DDMTemplateKey == null) {
+				query.append(_FINDER_COLUMN_C_DDMTK_DDMTEMPLATEKEY_1);
+			}
+			else if (DDMTemplateKey.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_C_DDMTK_DDMTEMPLATEKEY_3);
+			}
+			else {
+				bindDDMTemplateKey = true;
+
+				query.append(_FINDER_COLUMN_C_DDMTK_DDMTEMPLATEKEY_2);
+			}
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				qPos.add(classNameId);
+
+				if (bindDDMTemplateKey) {
+					qPos.add(DDMTemplateKey);
+				}
+
+				count = (Long)q.uniqueResult();
+
+				FinderCacheUtil.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception e) {
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_C_DDMTK_CLASSNAMEID_2 = "journalArticle.classNameId = ? AND ";
+	private static final String _FINDER_COLUMN_C_DDMTK_DDMTEMPLATEKEY_1 = "journalArticle.DDMTemplateKey IS NULL";
+	private static final String _FINDER_COLUMN_C_DDMTK_DDMTEMPLATEKEY_2 = "journalArticle.DDMTemplateKey = ?";
+	private static final String _FINDER_COLUMN_C_DDMTK_DDMTEMPLATEKEY_3 = "(journalArticle.DDMTemplateKey IS NULL OR journalArticle.DDMTemplateKey = '')";
 	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_LTD_S = new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
 			JournalArticleModelImpl.FINDER_CACHE_ENABLED,
 			JournalArticleImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
@@ -16626,11 +17113,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param displayDate the display date
 	 * @param status the status
 	 * @return the matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> findByLtD_S(Date displayDate, int status)
-		throws SystemException {
+	public List<JournalArticle> findByLtD_S(Date displayDate, int status) {
 		return findByLtD_S(displayDate, status, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -16647,11 +17132,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByLtD_S(Date displayDate, int status,
-		int start, int end) throws SystemException {
+		int start, int end) {
 		return findByLtD_S(displayDate, status, start, end, null);
 	}
 
@@ -16668,12 +17152,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByLtD_S(Date displayDate, int status,
-		int start, int end, OrderByComparator orderByComparator)
-		throws SystemException {
+		int start, int end, OrderByComparator<JournalArticle> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -16790,12 +17272,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByLtD_S_First(Date displayDate, int status,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByLtD_S_First(displayDate, status,
 				orderByComparator);
 
@@ -16825,11 +17306,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByLtD_S_First(Date displayDate, int status,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		List<JournalArticle> list = findByLtD_S(displayDate, status, 0, 1,
 				orderByComparator);
 
@@ -16848,12 +17328,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByLtD_S_Last(Date displayDate, int status,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByLtD_S_Last(displayDate, status,
 				orderByComparator);
 
@@ -16883,11 +17362,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByLtD_S_Last(Date displayDate, int status,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		int count = countByLtD_S(displayDate, status);
 
 		if (count == 0) {
@@ -16913,12 +17391,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] findByLtD_S_PrevAndNext(long id, Date displayDate,
-		int status, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		int status, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = findByPrimaryKey(id);
 
 		Session session = null;
@@ -16948,7 +17425,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle getByLtD_S_PrevAndNext(Session session,
 		JournalArticle journalArticle, Date displayDate, int status,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<JournalArticle> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -17071,11 +17548,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 *
 	 * @param displayDate the display date
 	 * @param status the status
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeByLtD_S(Date displayDate, int status)
-		throws SystemException {
+	public void removeByLtD_S(Date displayDate, int status) {
 		for (JournalArticle journalArticle : findByLtD_S(displayDate, status,
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(journalArticle);
@@ -17088,11 +17563,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param displayDate the display date
 	 * @param status the status
 	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByLtD_S(Date displayDate, int status)
-		throws SystemException {
+	public int countByLtD_S(Date displayDate, int status) {
 		FinderPath finderPath = FINDER_PATH_WITH_PAGINATION_COUNT_BY_LTD_S;
 
 		Object[] finderArgs = new Object[] { displayDate, status };
@@ -17201,11 +17674,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param indexable the indexable
 	 * @param status the status
 	 * @return the matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByR_I_S(long resourcePrimKey,
-		boolean indexable, int status) throws SystemException {
+		boolean indexable, int status) {
 		return findByR_I_S(resourcePrimKey, indexable, status,
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
@@ -17223,12 +17695,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByR_I_S(long resourcePrimKey,
-		boolean indexable, int status, int start, int end)
-		throws SystemException {
+		boolean indexable, int status, int start, int end) {
 		return findByR_I_S(resourcePrimKey, indexable, status, start, end, null);
 	}
 
@@ -17246,12 +17716,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByR_I_S(long resourcePrimKey,
 		boolean indexable, int status, int start, int end,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -17370,12 +17839,12 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByR_I_S_First(long resourcePrimKey,
-		boolean indexable, int status, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		boolean indexable, int status,
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByR_I_S_First(resourcePrimKey,
 				indexable, status, orderByComparator);
 
@@ -17409,12 +17878,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByR_I_S_First(long resourcePrimKey,
-		boolean indexable, int status, OrderByComparator orderByComparator)
-		throws SystemException {
+		boolean indexable, int status,
+		OrderByComparator<JournalArticle> orderByComparator) {
 		List<JournalArticle> list = findByR_I_S(resourcePrimKey, indexable,
 				status, 0, 1, orderByComparator);
 
@@ -17434,12 +17902,12 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByR_I_S_Last(long resourcePrimKey,
-		boolean indexable, int status, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		boolean indexable, int status,
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByR_I_S_Last(resourcePrimKey,
 				indexable, status, orderByComparator);
 
@@ -17473,12 +17941,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByR_I_S_Last(long resourcePrimKey,
-		boolean indexable, int status, OrderByComparator orderByComparator)
-		throws SystemException {
+		boolean indexable, int status,
+		OrderByComparator<JournalArticle> orderByComparator) {
 		int count = countByR_I_S(resourcePrimKey, indexable, status);
 
 		if (count == 0) {
@@ -17505,13 +17972,12 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] findByR_I_S_PrevAndNext(long id,
 		long resourcePrimKey, boolean indexable, int status,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = findByPrimaryKey(id);
 
 		Session session = null;
@@ -17541,7 +18007,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle getByR_I_S_PrevAndNext(Session session,
 		JournalArticle journalArticle, long resourcePrimKey, boolean indexable,
-		int status, OrderByComparator orderByComparator, boolean previous) {
+		int status, OrderByComparator<JournalArticle> orderByComparator,
+		boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -17663,11 +18130,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param indexable the indexable
 	 * @param statuses the statuses
 	 * @return the matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByR_I_S(long resourcePrimKey,
-		boolean indexable, int[] statuses) throws SystemException {
+		boolean indexable, int[] statuses) {
 		return findByR_I_S(resourcePrimKey, indexable, statuses,
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
@@ -17685,12 +18151,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByR_I_S(long resourcePrimKey,
-		boolean indexable, int[] statuses, int start, int end)
-		throws SystemException {
+		boolean indexable, int[] statuses, int start, int end) {
 		return findByR_I_S(resourcePrimKey, indexable, statuses, start, end,
 			null);
 	}
@@ -17709,12 +18173,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByR_I_S(long resourcePrimKey,
 		boolean indexable, int[] statuses, int start, int end,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		if (statuses == null) {
 			statuses = new int[0];
 		}
@@ -17846,11 +18309,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param resourcePrimKey the resource prim key
 	 * @param indexable the indexable
 	 * @param status the status
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public void removeByR_I_S(long resourcePrimKey, boolean indexable,
-		int status) throws SystemException {
+		int status) {
 		for (JournalArticle journalArticle : findByR_I_S(resourcePrimKey,
 				indexable, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(journalArticle);
@@ -17864,11 +18326,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param indexable the indexable
 	 * @param status the status
 	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByR_I_S(long resourcePrimKey, boolean indexable, int status)
-		throws SystemException {
+	public int countByR_I_S(long resourcePrimKey, boolean indexable, int status) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_R_I_S;
 
 		Object[] finderArgs = new Object[] { resourcePrimKey, indexable, status };
@@ -17928,11 +18388,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param indexable the indexable
 	 * @param statuses the statuses
 	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public int countByR_I_S(long resourcePrimKey, boolean indexable,
-		int[] statuses) throws SystemException {
+		int[] statuses) {
 		if (statuses == null) {
 			statuses = new int[0];
 		}
@@ -18045,11 +18504,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param userId the user ID
 	 * @param classNameId the class name ID
 	 * @return the matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_U_C(long groupId, long userId,
-		long classNameId) throws SystemException {
+		long classNameId) {
 		return findByG_U_C(groupId, userId, classNameId, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -18067,11 +18525,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_U_C(long groupId, long userId,
-		long classNameId, int start, int end) throws SystemException {
+		long classNameId, int start, int end) {
 		return findByG_U_C(groupId, userId, classNameId, start, end, null);
 	}
 
@@ -18089,12 +18546,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_U_C(long groupId, long userId,
 		long classNameId, int start, int end,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -18213,12 +18669,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByG_U_C_First(long groupId, long userId,
-		long classNameId, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		long classNameId, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByG_U_C_First(groupId, userId,
 				classNameId, orderByComparator);
 
@@ -18252,12 +18707,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param classNameId the class name ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByG_U_C_First(long groupId, long userId,
-		long classNameId, OrderByComparator orderByComparator)
-		throws SystemException {
+		long classNameId, OrderByComparator<JournalArticle> orderByComparator) {
 		List<JournalArticle> list = findByG_U_C(groupId, userId, classNameId,
 				0, 1, orderByComparator);
 
@@ -18277,12 +18730,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByG_U_C_Last(long groupId, long userId,
-		long classNameId, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		long classNameId, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByG_U_C_Last(groupId, userId,
 				classNameId, orderByComparator);
 
@@ -18316,12 +18768,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param classNameId the class name ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByG_U_C_Last(long groupId, long userId,
-		long classNameId, OrderByComparator orderByComparator)
-		throws SystemException {
+		long classNameId, OrderByComparator<JournalArticle> orderByComparator) {
 		int count = countByG_U_C(groupId, userId, classNameId);
 
 		if (count == 0) {
@@ -18348,12 +18798,12 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] findByG_U_C_PrevAndNext(long id, long groupId,
-		long userId, long classNameId, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		long userId, long classNameId,
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = findByPrimaryKey(id);
 
 		Session session = null;
@@ -18383,7 +18833,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle getByG_U_C_PrevAndNext(Session session,
 		JournalArticle journalArticle, long groupId, long userId,
-		long classNameId, OrderByComparator orderByComparator, boolean previous) {
+		long classNameId, OrderByComparator<JournalArticle> orderByComparator,
+		boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -18501,11 +18952,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param userId the user ID
 	 * @param classNameId the class name ID
 	 * @return the matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_U_C(long groupId, long userId,
-		long classNameId) throws SystemException {
+		long classNameId) {
 		return filterFindByG_U_C(groupId, userId, classNameId,
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
@@ -18523,11 +18973,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_U_C(long groupId, long userId,
-		long classNameId, int start, int end) throws SystemException {
+		long classNameId, int start, int end) {
 		return filterFindByG_U_C(groupId, userId, classNameId, start, end, null);
 	}
 
@@ -18545,12 +18994,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_U_C(long groupId, long userId,
 		long classNameId, int start, int end,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_U_C(groupId, userId, classNameId, start, end,
 				orderByComparator);
@@ -18649,13 +19097,12 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] filterFindByG_U_C_PrevAndNext(long id,
 		long groupId, long userId, long classNameId,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_U_C_PrevAndNext(id, groupId, userId, classNameId,
 				orderByComparator);
@@ -18690,7 +19137,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle filterGetByG_U_C_PrevAndNext(Session session,
 		JournalArticle journalArticle, long groupId, long userId,
-		long classNameId, OrderByComparator orderByComparator, boolean previous) {
+		long classNameId, OrderByComparator<JournalArticle> orderByComparator,
+		boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -18842,11 +19290,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @param userId the user ID
 	 * @param classNameId the class name ID
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeByG_U_C(long groupId, long userId, long classNameId)
-		throws SystemException {
+	public void removeByG_U_C(long groupId, long userId, long classNameId) {
 		for (JournalArticle journalArticle : findByG_U_C(groupId, userId,
 				classNameId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(journalArticle);
@@ -18860,11 +19306,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param userId the user ID
 	 * @param classNameId the class name ID
 	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByG_U_C(long groupId, long userId, long classNameId)
-		throws SystemException {
+	public int countByG_U_C(long groupId, long userId, long classNameId) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_G_U_C;
 
 		Object[] finderArgs = new Object[] { groupId, userId, classNameId };
@@ -18924,11 +19368,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param userId the user ID
 	 * @param classNameId the class name ID
 	 * @return the number of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int filterCountByG_U_C(long groupId, long userId, long classNameId)
-		throws SystemException {
+	public int filterCountByG_U_C(long groupId, long userId, long classNameId) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return countByG_U_C(groupId, userId, classNameId);
 		}
@@ -19027,11 +19469,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param folderId the folder ID
 	 * @param status the status
 	 * @return the matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_F_ST(long groupId, long folderId,
-		int status) throws SystemException {
+		int status) {
 		return findByG_F_ST(groupId, folderId, status, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -19049,11 +19490,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_F_ST(long groupId, long folderId,
-		int status, int start, int end) throws SystemException {
+		int status, int start, int end) {
 		return findByG_F_ST(groupId, folderId, status, start, end, null);
 	}
 
@@ -19071,12 +19511,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_F_ST(long groupId, long folderId,
-		int status, int start, int end, OrderByComparator orderByComparator)
-		throws SystemException {
+		int status, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -19195,12 +19634,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByG_F_ST_First(long groupId, long folderId,
-		int status, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		int status, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByG_F_ST_First(groupId, folderId,
 				status, orderByComparator);
 
@@ -19234,12 +19672,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByG_F_ST_First(long groupId, long folderId,
-		int status, OrderByComparator orderByComparator)
-		throws SystemException {
+		int status, OrderByComparator<JournalArticle> orderByComparator) {
 		List<JournalArticle> list = findByG_F_ST(groupId, folderId, status, 0,
 				1, orderByComparator);
 
@@ -19259,12 +19695,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByG_F_ST_Last(long groupId, long folderId,
-		int status, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		int status, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByG_F_ST_Last(groupId, folderId,
 				status, orderByComparator);
 
@@ -19298,12 +19733,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByG_F_ST_Last(long groupId, long folderId,
-		int status, OrderByComparator orderByComparator)
-		throws SystemException {
+		int status, OrderByComparator<JournalArticle> orderByComparator) {
 		int count = countByG_F_ST(groupId, folderId, status);
 
 		if (count == 0) {
@@ -19330,12 +19763,12 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] findByG_F_ST_PrevAndNext(long id, long groupId,
-		long folderId, int status, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		long folderId, int status,
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = findByPrimaryKey(id);
 
 		Session session = null;
@@ -19365,7 +19798,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle getByG_F_ST_PrevAndNext(Session session,
 		JournalArticle journalArticle, long groupId, long folderId, int status,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<JournalArticle> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -19483,11 +19916,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param folderId the folder ID
 	 * @param status the status
 	 * @return the matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_F_ST(long groupId, long folderId,
-		int status) throws SystemException {
+		int status) {
 		return filterFindByG_F_ST(groupId, folderId, status, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -19505,11 +19937,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_F_ST(long groupId, long folderId,
-		int status, int start, int end) throws SystemException {
+		int status, int start, int end) {
 		return filterFindByG_F_ST(groupId, folderId, status, start, end, null);
 	}
 
@@ -19527,12 +19958,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_F_ST(long groupId, long folderId,
-		int status, int start, int end, OrderByComparator orderByComparator)
-		throws SystemException {
+		int status, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_F_ST(groupId, folderId, status, start, end,
 				orderByComparator);
@@ -19631,13 +20061,12 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] filterFindByG_F_ST_PrevAndNext(long id,
 		long groupId, long folderId, int status,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_F_ST_PrevAndNext(id, groupId, folderId, status,
 				orderByComparator);
@@ -19672,7 +20101,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle filterGetByG_F_ST_PrevAndNext(Session session,
 		JournalArticle journalArticle, long groupId, long folderId, int status,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<JournalArticle> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -19825,11 +20254,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param folderId the folder ID
 	 * @param statuses the statuses
 	 * @return the matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_F_ST(long groupId, long folderId,
-		int[] statuses) throws SystemException {
+		int[] statuses) {
 		return filterFindByG_F_ST(groupId, folderId, statuses,
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
@@ -19847,11 +20275,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_F_ST(long groupId, long folderId,
-		int[] statuses, int start, int end) throws SystemException {
+		int[] statuses, int start, int end) {
 		return filterFindByG_F_ST(groupId, folderId, statuses, start, end, null);
 	}
 
@@ -19869,12 +20296,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_F_ST(long groupId, long folderId,
-		int[] statuses, int start, int end, OrderByComparator orderByComparator)
-		throws SystemException {
+		int[] statuses, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_F_ST(groupId, folderId, statuses, start, end,
 				orderByComparator);
@@ -19984,11 +20410,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param folderId the folder ID
 	 * @param statuses the statuses
 	 * @return the matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_F_ST(long groupId, long folderId,
-		int[] statuses) throws SystemException {
+		int[] statuses) {
 		return findByG_F_ST(groupId, folderId, statuses, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -20006,11 +20431,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_F_ST(long groupId, long folderId,
-		int[] statuses, int start, int end) throws SystemException {
+		int[] statuses, int start, int end) {
 		return findByG_F_ST(groupId, folderId, statuses, start, end, null);
 	}
 
@@ -20028,12 +20452,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_F_ST(long groupId, long folderId,
-		int[] statuses, int start, int end, OrderByComparator orderByComparator)
-		throws SystemException {
+		int[] statuses, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator) {
 		if (statuses == null) {
 			statuses = new int[0];
 		}
@@ -20165,11 +20588,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @param folderId the folder ID
 	 * @param status the status
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeByG_F_ST(long groupId, long folderId, int status)
-		throws SystemException {
+	public void removeByG_F_ST(long groupId, long folderId, int status) {
 		for (JournalArticle journalArticle : findByG_F_ST(groupId, folderId,
 				status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(journalArticle);
@@ -20183,11 +20604,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param folderId the folder ID
 	 * @param status the status
 	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByG_F_ST(long groupId, long folderId, int status)
-		throws SystemException {
+	public int countByG_F_ST(long groupId, long folderId, int status) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_G_F_ST;
 
 		Object[] finderArgs = new Object[] { groupId, folderId, status };
@@ -20247,11 +20666,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param folderId the folder ID
 	 * @param statuses the statuses
 	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByG_F_ST(long groupId, long folderId, int[] statuses)
-		throws SystemException {
+	public int countByG_F_ST(long groupId, long folderId, int[] statuses) {
 		if (statuses == null) {
 			statuses = new int[0];
 		}
@@ -20331,11 +20748,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param folderId the folder ID
 	 * @param status the status
 	 * @return the number of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int filterCountByG_F_ST(long groupId, long folderId, int status)
-		throws SystemException {
+	public int filterCountByG_F_ST(long groupId, long folderId, int status) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return countByG_F_ST(groupId, folderId, status);
 		}
@@ -20391,11 +20806,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param folderId the folder ID
 	 * @param statuses the statuses
 	 * @return the number of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int filterCountByG_F_ST(long groupId, long folderId, int[] statuses)
-		throws SystemException {
+	public int filterCountByG_F_ST(long groupId, long folderId, int[] statuses) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return countByG_F_ST(groupId, folderId, statuses);
 		}
@@ -20502,11 +20915,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param classNameId the class name ID
 	 * @param classPK the class p k
 	 * @return the matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_C_C(long groupId, long classNameId,
-		long classPK) throws SystemException {
+		long classPK) {
 		return findByG_C_C(groupId, classNameId, classPK, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -20524,11 +20936,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_C_C(long groupId, long classNameId,
-		long classPK, int start, int end) throws SystemException {
+		long classPK, int start, int end) {
 		return findByG_C_C(groupId, classNameId, classPK, start, end, null);
 	}
 
@@ -20546,12 +20957,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_C_C(long groupId, long classNameId,
-		long classPK, int start, int end, OrderByComparator orderByComparator)
-		throws SystemException {
+		long classPK, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -20670,12 +21080,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByG_C_C_First(long groupId, long classNameId,
-		long classPK, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		long classPK, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByG_C_C_First(groupId,
 				classNameId, classPK, orderByComparator);
 
@@ -20709,12 +21118,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByG_C_C_First(long groupId, long classNameId,
-		long classPK, OrderByComparator orderByComparator)
-		throws SystemException {
+		long classPK, OrderByComparator<JournalArticle> orderByComparator) {
 		List<JournalArticle> list = findByG_C_C(groupId, classNameId, classPK,
 				0, 1, orderByComparator);
 
@@ -20734,12 +21141,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByG_C_C_Last(long groupId, long classNameId,
-		long classPK, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		long classPK, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByG_C_C_Last(groupId, classNameId,
 				classPK, orderByComparator);
 
@@ -20773,12 +21179,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByG_C_C_Last(long groupId, long classNameId,
-		long classPK, OrderByComparator orderByComparator)
-		throws SystemException {
+		long classPK, OrderByComparator<JournalArticle> orderByComparator) {
 		int count = countByG_C_C(groupId, classNameId, classPK);
 
 		if (count == 0) {
@@ -20805,12 +21209,12 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] findByG_C_C_PrevAndNext(long id, long groupId,
-		long classNameId, long classPK, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		long classNameId, long classPK,
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = findByPrimaryKey(id);
 
 		Session session = null;
@@ -20840,7 +21244,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle getByG_C_C_PrevAndNext(Session session,
 		JournalArticle journalArticle, long groupId, long classNameId,
-		long classPK, OrderByComparator orderByComparator, boolean previous) {
+		long classPK, OrderByComparator<JournalArticle> orderByComparator,
+		boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -20958,11 +21363,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param classNameId the class name ID
 	 * @param classPK the class p k
 	 * @return the matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_C_C(long groupId,
-		long classNameId, long classPK) throws SystemException {
+		long classNameId, long classPK) {
 		return filterFindByG_C_C(groupId, classNameId, classPK,
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
@@ -20980,12 +21384,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_C_C(long groupId,
-		long classNameId, long classPK, int start, int end)
-		throws SystemException {
+		long classNameId, long classPK, int start, int end) {
 		return filterFindByG_C_C(groupId, classNameId, classPK, start, end, null);
 	}
 
@@ -21003,12 +21405,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_C_C(long groupId,
 		long classNameId, long classPK, int start, int end,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_C_C(groupId, classNameId, classPK, start, end,
 				orderByComparator);
@@ -21107,13 +21508,12 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] filterFindByG_C_C_PrevAndNext(long id,
 		long groupId, long classNameId, long classPK,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_C_C_PrevAndNext(id, groupId, classNameId, classPK,
 				orderByComparator);
@@ -21148,7 +21548,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle filterGetByG_C_C_PrevAndNext(Session session,
 		JournalArticle journalArticle, long groupId, long classNameId,
-		long classPK, OrderByComparator orderByComparator, boolean previous) {
+		long classPK, OrderByComparator<JournalArticle> orderByComparator,
+		boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -21300,11 +21701,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @param classNameId the class name ID
 	 * @param classPK the class p k
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeByG_C_C(long groupId, long classNameId, long classPK)
-		throws SystemException {
+	public void removeByG_C_C(long groupId, long classNameId, long classPK) {
 		for (JournalArticle journalArticle : findByG_C_C(groupId, classNameId,
 				classPK, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(journalArticle);
@@ -21318,11 +21717,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param classNameId the class name ID
 	 * @param classPK the class p k
 	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByG_C_C(long groupId, long classNameId, long classPK)
-		throws SystemException {
+	public int countByG_C_C(long groupId, long classNameId, long classPK) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_G_C_C;
 
 		Object[] finderArgs = new Object[] { groupId, classNameId, classPK };
@@ -21382,11 +21779,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param classNameId the class name ID
 	 * @param classPK the class p k
 	 * @return the number of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int filterCountByG_C_C(long groupId, long classNameId, long classPK)
-		throws SystemException {
+	public int filterCountByG_C_C(long groupId, long classNameId, long classPK) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return countByG_C_C(groupId, classNameId, classPK);
 		}
@@ -21438,39 +21833,39 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	private static final String _FINDER_COLUMN_G_C_C_GROUPID_2 = "journalArticle.groupId = ? AND ";
 	private static final String _FINDER_COLUMN_G_C_C_CLASSNAMEID_2 = "journalArticle.classNameId = ? AND ";
 	private static final String _FINDER_COLUMN_G_C_C_CLASSPK_2 = "journalArticle.classPK = ?";
-	public static final FinderPath FINDER_PATH_FETCH_BY_G_C_S = new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
+	public static final FinderPath FINDER_PATH_FETCH_BY_G_C_DDMSK = new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
 			JournalArticleModelImpl.FINDER_CACHE_ENABLED,
-			JournalArticleImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByG_C_S",
+			JournalArticleImpl.class, FINDER_CLASS_NAME_ENTITY,
+			"fetchByG_C_DDMSK",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName()
 			},
 			JournalArticleModelImpl.GROUPID_COLUMN_BITMASK |
 			JournalArticleModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			JournalArticleModelImpl.STRUCTUREID_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_G_C_S = new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
+			JournalArticleModelImpl.DDMSTRUCTUREKEY_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_G_C_DDMSK = new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
 			JournalArticleModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_C_S",
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_C_DDMSK",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName()
 			});
 
 	/**
-	 * Returns the journal article where groupId = &#63; and classNameId = &#63; and structureId = &#63; or throws a {@link com.liferay.portlet.journal.NoSuchArticleException} if it could not be found.
+	 * Returns the journal article where groupId = &#63; and classNameId = &#63; and DDMStructureKey = &#63; or throws a {@link com.liferay.portlet.journal.NoSuchArticleException} if it could not be found.
 	 *
 	 * @param groupId the group ID
 	 * @param classNameId the class name ID
-	 * @param structureId the structure ID
+	 * @param DDMStructureKey the d d m structure key
 	 * @return the matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public JournalArticle findByG_C_S(long groupId, long classNameId,
-		String structureId) throws NoSuchArticleException, SystemException {
-		JournalArticle journalArticle = fetchByG_C_S(groupId, classNameId,
-				structureId);
+	public JournalArticle findByG_C_DDMSK(long groupId, long classNameId,
+		String DDMStructureKey) throws NoSuchArticleException {
+		JournalArticle journalArticle = fetchByG_C_DDMSK(groupId, classNameId,
+				DDMStructureKey);
 
 		if (journalArticle == null) {
 			StringBundler msg = new StringBundler(8);
@@ -21483,8 +21878,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 			msg.append(", classNameId=");
 			msg.append(classNameId);
 
-			msg.append(", structureId=");
-			msg.append(structureId);
+			msg.append(", DDMStructureKey=");
+			msg.append(DDMStructureKey);
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
@@ -21499,40 +21894,37 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	/**
-	 * Returns the journal article where groupId = &#63; and classNameId = &#63; and structureId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 * Returns the journal article where groupId = &#63; and classNameId = &#63; and DDMStructureKey = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
 	 *
 	 * @param groupId the group ID
 	 * @param classNameId the class name ID
-	 * @param structureId the structure ID
+	 * @param DDMStructureKey the d d m structure key
 	 * @return the matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public JournalArticle fetchByG_C_S(long groupId, long classNameId,
-		String structureId) throws SystemException {
-		return fetchByG_C_S(groupId, classNameId, structureId, true);
+	public JournalArticle fetchByG_C_DDMSK(long groupId, long classNameId,
+		String DDMStructureKey) {
+		return fetchByG_C_DDMSK(groupId, classNameId, DDMStructureKey, true);
 	}
 
 	/**
-	 * Returns the journal article where groupId = &#63; and classNameId = &#63; and structureId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 * Returns the journal article where groupId = &#63; and classNameId = &#63; and DDMStructureKey = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
 	 * @param groupId the group ID
 	 * @param classNameId the class name ID
-	 * @param structureId the structure ID
+	 * @param DDMStructureKey the d d m structure key
 	 * @param retrieveFromCache whether to use the finder cache
 	 * @return the matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public JournalArticle fetchByG_C_S(long groupId, long classNameId,
-		String structureId, boolean retrieveFromCache)
-		throws SystemException {
-		Object[] finderArgs = new Object[] { groupId, classNameId, structureId };
+	public JournalArticle fetchByG_C_DDMSK(long groupId, long classNameId,
+		String DDMStructureKey, boolean retrieveFromCache) {
+		Object[] finderArgs = new Object[] { groupId, classNameId, DDMStructureKey };
 
 		Object result = null;
 
 		if (retrieveFromCache) {
-			result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_G_C_S,
+			result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_G_C_DDMSK,
 					finderArgs, this);
 		}
 
@@ -21541,8 +21933,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 			if ((groupId != journalArticle.getGroupId()) ||
 					(classNameId != journalArticle.getClassNameId()) ||
-					!Validator.equals(structureId,
-						journalArticle.getStructureId())) {
+					!Validator.equals(DDMStructureKey,
+						journalArticle.getDDMStructureKey())) {
 				result = null;
 			}
 		}
@@ -21552,22 +21944,22 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 			query.append(_SQL_SELECT_JOURNALARTICLE_WHERE);
 
-			query.append(_FINDER_COLUMN_G_C_S_GROUPID_2);
+			query.append(_FINDER_COLUMN_G_C_DDMSK_GROUPID_2);
 
-			query.append(_FINDER_COLUMN_G_C_S_CLASSNAMEID_2);
+			query.append(_FINDER_COLUMN_G_C_DDMSK_CLASSNAMEID_2);
 
-			boolean bindStructureId = false;
+			boolean bindDDMStructureKey = false;
 
-			if (structureId == null) {
-				query.append(_FINDER_COLUMN_G_C_S_STRUCTUREID_1);
+			if (DDMStructureKey == null) {
+				query.append(_FINDER_COLUMN_G_C_DDMSK_DDMSTRUCTUREKEY_1);
 			}
-			else if (structureId.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_G_C_S_STRUCTUREID_3);
+			else if (DDMStructureKey.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_G_C_DDMSK_DDMSTRUCTUREKEY_3);
 			}
 			else {
-				bindStructureId = true;
+				bindDDMStructureKey = true;
 
-				query.append(_FINDER_COLUMN_G_C_S_STRUCTUREID_2);
+				query.append(_FINDER_COLUMN_G_C_DDMSK_DDMSTRUCTUREKEY_2);
 			}
 
 			String sql = query.toString();
@@ -21585,20 +21977,20 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 				qPos.add(classNameId);
 
-				if (bindStructureId) {
-					qPos.add(structureId);
+				if (bindDDMStructureKey) {
+					qPos.add(DDMStructureKey);
 				}
 
 				List<JournalArticle> list = q.list();
 
 				if (list.isEmpty()) {
-					FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_G_C_S,
+					FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_G_C_DDMSK,
 						finderArgs, list);
 				}
 				else {
 					if ((list.size() > 1) && _log.isWarnEnabled()) {
 						_log.warn(
-							"JournalArticlePersistenceImpl.fetchByG_C_S(long, long, String, boolean) with parameters (" +
+							"JournalArticlePersistenceImpl.fetchByG_C_DDMSK(long, long, String, boolean) with parameters (" +
 							StringUtil.merge(finderArgs) +
 							") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
 					}
@@ -21611,15 +22003,16 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 					if ((journalArticle.getGroupId() != groupId) ||
 							(journalArticle.getClassNameId() != classNameId) ||
-							(journalArticle.getStructureId() == null) ||
-							!journalArticle.getStructureId().equals(structureId)) {
-						FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_G_C_S,
+							(journalArticle.getDDMStructureKey() == null) ||
+							!journalArticle.getDDMStructureKey()
+											   .equals(DDMStructureKey)) {
+						FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_G_C_DDMSK,
 							finderArgs, journalArticle);
 					}
 				}
 			}
 			catch (Exception e) {
-				FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_G_C_S,
+				FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_G_C_DDMSK,
 					finderArgs);
 
 				throw processException(e);
@@ -21638,38 +22031,36 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	/**
-	 * Removes the journal article where groupId = &#63; and classNameId = &#63; and structureId = &#63; from the database.
+	 * Removes the journal article where groupId = &#63; and classNameId = &#63; and DDMStructureKey = &#63; from the database.
 	 *
 	 * @param groupId the group ID
 	 * @param classNameId the class name ID
-	 * @param structureId the structure ID
+	 * @param DDMStructureKey the d d m structure key
 	 * @return the journal article that was removed
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public JournalArticle removeByG_C_S(long groupId, long classNameId,
-		String structureId) throws NoSuchArticleException, SystemException {
-		JournalArticle journalArticle = findByG_C_S(groupId, classNameId,
-				structureId);
+	public JournalArticle removeByG_C_DDMSK(long groupId, long classNameId,
+		String DDMStructureKey) throws NoSuchArticleException {
+		JournalArticle journalArticle = findByG_C_DDMSK(groupId, classNameId,
+				DDMStructureKey);
 
 		return remove(journalArticle);
 	}
 
 	/**
-	 * Returns the number of journal articles where groupId = &#63; and classNameId = &#63; and structureId = &#63;.
+	 * Returns the number of journal articles where groupId = &#63; and classNameId = &#63; and DDMStructureKey = &#63;.
 	 *
 	 * @param groupId the group ID
 	 * @param classNameId the class name ID
-	 * @param structureId the structure ID
+	 * @param DDMStructureKey the d d m structure key
 	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByG_C_S(long groupId, long classNameId, String structureId)
-		throws SystemException {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_G_C_S;
+	public int countByG_C_DDMSK(long groupId, long classNameId,
+		String DDMStructureKey) {
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_G_C_DDMSK;
 
-		Object[] finderArgs = new Object[] { groupId, classNameId, structureId };
+		Object[] finderArgs = new Object[] { groupId, classNameId, DDMStructureKey };
 
 		Long count = (Long)FinderCacheUtil.getResult(finderPath, finderArgs,
 				this);
@@ -21679,22 +22070,22 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 			query.append(_SQL_COUNT_JOURNALARTICLE_WHERE);
 
-			query.append(_FINDER_COLUMN_G_C_S_GROUPID_2);
+			query.append(_FINDER_COLUMN_G_C_DDMSK_GROUPID_2);
 
-			query.append(_FINDER_COLUMN_G_C_S_CLASSNAMEID_2);
+			query.append(_FINDER_COLUMN_G_C_DDMSK_CLASSNAMEID_2);
 
-			boolean bindStructureId = false;
+			boolean bindDDMStructureKey = false;
 
-			if (structureId == null) {
-				query.append(_FINDER_COLUMN_G_C_S_STRUCTUREID_1);
+			if (DDMStructureKey == null) {
+				query.append(_FINDER_COLUMN_G_C_DDMSK_DDMSTRUCTUREKEY_1);
 			}
-			else if (structureId.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_G_C_S_STRUCTUREID_3);
+			else if (DDMStructureKey.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_G_C_DDMSK_DDMSTRUCTUREKEY_3);
 			}
 			else {
-				bindStructureId = true;
+				bindDDMStructureKey = true;
 
-				query.append(_FINDER_COLUMN_G_C_S_STRUCTUREID_2);
+				query.append(_FINDER_COLUMN_G_C_DDMSK_DDMSTRUCTUREKEY_2);
 			}
 
 			String sql = query.toString();
@@ -21712,8 +22103,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 				qPos.add(classNameId);
 
-				if (bindStructureId) {
-					qPos.add(structureId);
+				if (bindDDMStructureKey) {
+					qPos.add(DDMStructureKey);
 				}
 
 				count = (Long)q.uniqueResult();
@@ -21733,15 +22124,16 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_G_C_S_GROUPID_2 = "journalArticle.groupId = ? AND ";
-	private static final String _FINDER_COLUMN_G_C_S_CLASSNAMEID_2 = "journalArticle.classNameId = ? AND ";
-	private static final String _FINDER_COLUMN_G_C_S_STRUCTUREID_1 = "journalArticle.structureId IS NULL";
-	private static final String _FINDER_COLUMN_G_C_S_STRUCTUREID_2 = "journalArticle.structureId = ?";
-	private static final String _FINDER_COLUMN_G_C_S_STRUCTUREID_3 = "(journalArticle.structureId IS NULL OR journalArticle.structureId = '')";
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_G_C_T = new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
+	private static final String _FINDER_COLUMN_G_C_DDMSK_GROUPID_2 = "journalArticle.groupId = ? AND ";
+	private static final String _FINDER_COLUMN_G_C_DDMSK_CLASSNAMEID_2 = "journalArticle.classNameId = ? AND ";
+	private static final String _FINDER_COLUMN_G_C_DDMSK_DDMSTRUCTUREKEY_1 = "journalArticle.DDMStructureKey IS NULL";
+	private static final String _FINDER_COLUMN_G_C_DDMSK_DDMSTRUCTUREKEY_2 = "journalArticle.DDMStructureKey = ?";
+	private static final String _FINDER_COLUMN_G_C_DDMSK_DDMSTRUCTUREKEY_3 = "(journalArticle.DDMStructureKey IS NULL OR journalArticle.DDMStructureKey = '')";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_G_C_DDMTK =
+		new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
 			JournalArticleModelImpl.FINDER_CACHE_ENABLED,
 			JournalArticleImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByG_C_T",
+			"findByG_C_DDMTK",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName(),
@@ -21749,45 +22141,45 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 			Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			});
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_C_T = new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_C_DDMTK =
+		new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
 			JournalArticleModelImpl.FINDER_CACHE_ENABLED,
 			JournalArticleImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_C_T",
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_C_DDMTK",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName()
 			},
 			JournalArticleModelImpl.GROUPID_COLUMN_BITMASK |
 			JournalArticleModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			JournalArticleModelImpl.TEMPLATEID_COLUMN_BITMASK |
+			JournalArticleModelImpl.DDMTEMPLATEKEY_COLUMN_BITMASK |
 			JournalArticleModelImpl.ARTICLEID_COLUMN_BITMASK |
 			JournalArticleModelImpl.VERSION_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_G_C_T = new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
+	public static final FinderPath FINDER_PATH_COUNT_BY_G_C_DDMTK = new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
 			JournalArticleModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_C_T",
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_C_DDMTK",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName()
 			});
 
 	/**
-	 * Returns all the journal articles where groupId = &#63; and classNameId = &#63; and templateId = &#63;.
+	 * Returns all the journal articles where groupId = &#63; and classNameId = &#63; and DDMTemplateKey = &#63;.
 	 *
 	 * @param groupId the group ID
 	 * @param classNameId the class name ID
-	 * @param templateId the template ID
+	 * @param DDMTemplateKey the d d m template key
 	 * @return the matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> findByG_C_T(long groupId, long classNameId,
-		String templateId) throws SystemException {
-		return findByG_C_T(groupId, classNameId, templateId, QueryUtil.ALL_POS,
-			QueryUtil.ALL_POS, null);
+	public List<JournalArticle> findByG_C_DDMTK(long groupId, long classNameId,
+		String DDMTemplateKey) {
+		return findByG_C_DDMTK(groupId, classNameId, DDMTemplateKey,
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
 	/**
-	 * Returns a range of all the journal articles where groupId = &#63; and classNameId = &#63; and templateId = &#63;.
+	 * Returns a range of all the journal articles where groupId = &#63; and classNameId = &#63; and DDMTemplateKey = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.journal.model.impl.JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -21795,20 +22187,20 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 *
 	 * @param groupId the group ID
 	 * @param classNameId the class name ID
-	 * @param templateId the template ID
+	 * @param DDMTemplateKey the d d m template key
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> findByG_C_T(long groupId, long classNameId,
-		String templateId, int start, int end) throws SystemException {
-		return findByG_C_T(groupId, classNameId, templateId, start, end, null);
+	public List<JournalArticle> findByG_C_DDMTK(long groupId, long classNameId,
+		String DDMTemplateKey, int start, int end) {
+		return findByG_C_DDMTK(groupId, classNameId, DDMTemplateKey, start,
+			end, null);
 	}
 
 	/**
-	 * Returns an ordered range of all the journal articles where groupId = &#63; and classNameId = &#63; and templateId = &#63;.
+	 * Returns an ordered range of all the journal articles where groupId = &#63; and classNameId = &#63; and DDMTemplateKey = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.journal.model.impl.JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -21816,17 +22208,16 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 *
 	 * @param groupId the group ID
 	 * @param classNameId the class name ID
-	 * @param templateId the template ID
+	 * @param DDMTemplateKey the d d m template key
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> findByG_C_T(long groupId, long classNameId,
-		String templateId, int start, int end,
-		OrderByComparator orderByComparator) throws SystemException {
+	public List<JournalArticle> findByG_C_DDMTK(long groupId, long classNameId,
+		String DDMTemplateKey, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -21834,13 +22225,13 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 				(orderByComparator == null)) {
 			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_C_T;
-			finderArgs = new Object[] { groupId, classNameId, templateId };
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_C_DDMTK;
+			finderArgs = new Object[] { groupId, classNameId, DDMTemplateKey };
 		}
 		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_G_C_T;
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_G_C_DDMTK;
 			finderArgs = new Object[] {
-					groupId, classNameId, templateId,
+					groupId, classNameId, DDMTemplateKey,
 					
 					start, end, orderByComparator
 				};
@@ -21853,8 +22244,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 			for (JournalArticle journalArticle : list) {
 				if ((groupId != journalArticle.getGroupId()) ||
 						(classNameId != journalArticle.getClassNameId()) ||
-						!Validator.equals(templateId,
-							journalArticle.getTemplateId())) {
+						!Validator.equals(DDMTemplateKey,
+							journalArticle.getDDMTemplateKey())) {
 					list = null;
 
 					break;
@@ -21875,22 +22266,22 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 			query.append(_SQL_SELECT_JOURNALARTICLE_WHERE);
 
-			query.append(_FINDER_COLUMN_G_C_T_GROUPID_2);
+			query.append(_FINDER_COLUMN_G_C_DDMTK_GROUPID_2);
 
-			query.append(_FINDER_COLUMN_G_C_T_CLASSNAMEID_2);
+			query.append(_FINDER_COLUMN_G_C_DDMTK_CLASSNAMEID_2);
 
-			boolean bindTemplateId = false;
+			boolean bindDDMTemplateKey = false;
 
-			if (templateId == null) {
-				query.append(_FINDER_COLUMN_G_C_T_TEMPLATEID_1);
+			if (DDMTemplateKey == null) {
+				query.append(_FINDER_COLUMN_G_C_DDMTK_DDMTEMPLATEKEY_1);
 			}
-			else if (templateId.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_G_C_T_TEMPLATEID_3);
+			else if (DDMTemplateKey.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_G_C_DDMTK_DDMTEMPLATEKEY_3);
 			}
 			else {
-				bindTemplateId = true;
+				bindDDMTemplateKey = true;
 
-				query.append(_FINDER_COLUMN_G_C_T_TEMPLATEID_2);
+				query.append(_FINDER_COLUMN_G_C_DDMTK_DDMTEMPLATEKEY_2);
 			}
 
 			if (orderByComparator != null) {
@@ -21917,8 +22308,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 				qPos.add(classNameId);
 
-				if (bindTemplateId) {
-					qPos.add(templateId);
+				if (bindDDMTemplateKey) {
+					qPos.add(DDMTemplateKey);
 				}
 
 				if (!pagination) {
@@ -21952,22 +22343,22 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	/**
-	 * Returns the first journal article in the ordered set where groupId = &#63; and classNameId = &#63; and templateId = &#63;.
+	 * Returns the first journal article in the ordered set where groupId = &#63; and classNameId = &#63; and DDMTemplateKey = &#63;.
 	 *
 	 * @param groupId the group ID
 	 * @param classNameId the class name ID
-	 * @param templateId the template ID
+	 * @param DDMTemplateKey the d d m template key
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public JournalArticle findByG_C_T_First(long groupId, long classNameId,
-		String templateId, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
-		JournalArticle journalArticle = fetchByG_C_T_First(groupId,
-				classNameId, templateId, orderByComparator);
+	public JournalArticle findByG_C_DDMTK_First(long groupId, long classNameId,
+		String DDMTemplateKey,
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
+		JournalArticle journalArticle = fetchByG_C_DDMTK_First(groupId,
+				classNameId, DDMTemplateKey, orderByComparator);
 
 		if (journalArticle != null) {
 			return journalArticle;
@@ -21983,8 +22374,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		msg.append(", classNameId=");
 		msg.append(classNameId);
 
-		msg.append(", templateId=");
-		msg.append(templateId);
+		msg.append(", DDMTemplateKey=");
+		msg.append(DDMTemplateKey);
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
@@ -21992,21 +22383,20 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	/**
-	 * Returns the first journal article in the ordered set where groupId = &#63; and classNameId = &#63; and templateId = &#63;.
+	 * Returns the first journal article in the ordered set where groupId = &#63; and classNameId = &#63; and DDMTemplateKey = &#63;.
 	 *
 	 * @param groupId the group ID
 	 * @param classNameId the class name ID
-	 * @param templateId the template ID
+	 * @param DDMTemplateKey the d d m template key
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public JournalArticle fetchByG_C_T_First(long groupId, long classNameId,
-		String templateId, OrderByComparator orderByComparator)
-		throws SystemException {
-		List<JournalArticle> list = findByG_C_T(groupId, classNameId,
-				templateId, 0, 1, orderByComparator);
+	public JournalArticle fetchByG_C_DDMTK_First(long groupId,
+		long classNameId, String DDMTemplateKey,
+		OrderByComparator<JournalArticle> orderByComparator) {
+		List<JournalArticle> list = findByG_C_DDMTK(groupId, classNameId,
+				DDMTemplateKey, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -22016,22 +22406,22 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	/**
-	 * Returns the last journal article in the ordered set where groupId = &#63; and classNameId = &#63; and templateId = &#63;.
+	 * Returns the last journal article in the ordered set where groupId = &#63; and classNameId = &#63; and DDMTemplateKey = &#63;.
 	 *
 	 * @param groupId the group ID
 	 * @param classNameId the class name ID
-	 * @param templateId the template ID
+	 * @param DDMTemplateKey the d d m template key
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public JournalArticle findByG_C_T_Last(long groupId, long classNameId,
-		String templateId, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
-		JournalArticle journalArticle = fetchByG_C_T_Last(groupId, classNameId,
-				templateId, orderByComparator);
+	public JournalArticle findByG_C_DDMTK_Last(long groupId, long classNameId,
+		String DDMTemplateKey,
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
+		JournalArticle journalArticle = fetchByG_C_DDMTK_Last(groupId,
+				classNameId, DDMTemplateKey, orderByComparator);
 
 		if (journalArticle != null) {
 			return journalArticle;
@@ -22047,8 +22437,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		msg.append(", classNameId=");
 		msg.append(classNameId);
 
-		msg.append(", templateId=");
-		msg.append(templateId);
+		msg.append(", DDMTemplateKey=");
+		msg.append(DDMTemplateKey);
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
@@ -22056,27 +22446,26 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	/**
-	 * Returns the last journal article in the ordered set where groupId = &#63; and classNameId = &#63; and templateId = &#63;.
+	 * Returns the last journal article in the ordered set where groupId = &#63; and classNameId = &#63; and DDMTemplateKey = &#63;.
 	 *
 	 * @param groupId the group ID
 	 * @param classNameId the class name ID
-	 * @param templateId the template ID
+	 * @param DDMTemplateKey the d d m template key
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public JournalArticle fetchByG_C_T_Last(long groupId, long classNameId,
-		String templateId, OrderByComparator orderByComparator)
-		throws SystemException {
-		int count = countByG_C_T(groupId, classNameId, templateId);
+	public JournalArticle fetchByG_C_DDMTK_Last(long groupId, long classNameId,
+		String DDMTemplateKey,
+		OrderByComparator<JournalArticle> orderByComparator) {
+		int count = countByG_C_DDMTK(groupId, classNameId, DDMTemplateKey);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<JournalArticle> list = findByG_C_T(groupId, classNameId,
-				templateId, count - 1, count, orderByComparator);
+		List<JournalArticle> list = findByG_C_DDMTK(groupId, classNameId,
+				DDMTemplateKey, count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -22086,21 +22475,21 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	/**
-	 * Returns the journal articles before and after the current journal article in the ordered set where groupId = &#63; and classNameId = &#63; and templateId = &#63;.
+	 * Returns the journal articles before and after the current journal article in the ordered set where groupId = &#63; and classNameId = &#63; and DDMTemplateKey = &#63;.
 	 *
 	 * @param id the primary key of the current journal article
 	 * @param groupId the group ID
 	 * @param classNameId the class name ID
-	 * @param templateId the template ID
+	 * @param DDMTemplateKey the d d m template key
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public JournalArticle[] findByG_C_T_PrevAndNext(long id, long groupId,
-		long classNameId, String templateId, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+	public JournalArticle[] findByG_C_DDMTK_PrevAndNext(long id, long groupId,
+		long classNameId, String DDMTemplateKey,
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = findByPrimaryKey(id);
 
 		Session session = null;
@@ -22110,13 +22499,15 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 			JournalArticle[] array = new JournalArticleImpl[3];
 
-			array[0] = getByG_C_T_PrevAndNext(session, journalArticle, groupId,
-					classNameId, templateId, orderByComparator, true);
+			array[0] = getByG_C_DDMTK_PrevAndNext(session, journalArticle,
+					groupId, classNameId, DDMTemplateKey, orderByComparator,
+					true);
 
 			array[1] = journalArticle;
 
-			array[2] = getByG_C_T_PrevAndNext(session, journalArticle, groupId,
-					classNameId, templateId, orderByComparator, false);
+			array[2] = getByG_C_DDMTK_PrevAndNext(session, journalArticle,
+					groupId, classNameId, DDMTemplateKey, orderByComparator,
+					false);
 
 			return array;
 		}
@@ -22128,9 +22519,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		}
 	}
 
-	protected JournalArticle getByG_C_T_PrevAndNext(Session session,
+	protected JournalArticle getByG_C_DDMTK_PrevAndNext(Session session,
 		JournalArticle journalArticle, long groupId, long classNameId,
-		String templateId, OrderByComparator orderByComparator, boolean previous) {
+		String DDMTemplateKey,
+		OrderByComparator<JournalArticle> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -22143,22 +22535,22 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 		query.append(_SQL_SELECT_JOURNALARTICLE_WHERE);
 
-		query.append(_FINDER_COLUMN_G_C_T_GROUPID_2);
+		query.append(_FINDER_COLUMN_G_C_DDMTK_GROUPID_2);
 
-		query.append(_FINDER_COLUMN_G_C_T_CLASSNAMEID_2);
+		query.append(_FINDER_COLUMN_G_C_DDMTK_CLASSNAMEID_2);
 
-		boolean bindTemplateId = false;
+		boolean bindDDMTemplateKey = false;
 
-		if (templateId == null) {
-			query.append(_FINDER_COLUMN_G_C_T_TEMPLATEID_1);
+		if (DDMTemplateKey == null) {
+			query.append(_FINDER_COLUMN_G_C_DDMTK_DDMTEMPLATEKEY_1);
 		}
-		else if (templateId.equals(StringPool.BLANK)) {
-			query.append(_FINDER_COLUMN_G_C_T_TEMPLATEID_3);
+		else if (DDMTemplateKey.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_G_C_DDMTK_DDMTEMPLATEKEY_3);
 		}
 		else {
-			bindTemplateId = true;
+			bindDDMTemplateKey = true;
 
-			query.append(_FINDER_COLUMN_G_C_T_TEMPLATEID_2);
+			query.append(_FINDER_COLUMN_G_C_DDMTK_DDMTEMPLATEKEY_2);
 		}
 
 		if (orderByComparator != null) {
@@ -22233,8 +22625,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 		qPos.add(classNameId);
 
-		if (bindTemplateId) {
-			qPos.add(templateId);
+		if (bindDDMTemplateKey) {
+			qPos.add(DDMTemplateKey);
 		}
 
 		if (orderByComparator != null) {
@@ -22256,23 +22648,22 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	/**
-	 * Returns all the journal articles that the user has permission to view where groupId = &#63; and classNameId = &#63; and templateId = &#63;.
+	 * Returns all the journal articles that the user has permission to view where groupId = &#63; and classNameId = &#63; and DDMTemplateKey = &#63;.
 	 *
 	 * @param groupId the group ID
 	 * @param classNameId the class name ID
-	 * @param templateId the template ID
+	 * @param DDMTemplateKey the d d m template key
 	 * @return the matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> filterFindByG_C_T(long groupId,
-		long classNameId, String templateId) throws SystemException {
-		return filterFindByG_C_T(groupId, classNameId, templateId,
+	public List<JournalArticle> filterFindByG_C_DDMTK(long groupId,
+		long classNameId, String DDMTemplateKey) {
+		return filterFindByG_C_DDMTK(groupId, classNameId, DDMTemplateKey,
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
 	/**
-	 * Returns a range of all the journal articles that the user has permission to view where groupId = &#63; and classNameId = &#63; and templateId = &#63;.
+	 * Returns a range of all the journal articles that the user has permission to view where groupId = &#63; and classNameId = &#63; and DDMTemplateKey = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.journal.model.impl.JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -22280,22 +22671,20 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 *
 	 * @param groupId the group ID
 	 * @param classNameId the class name ID
-	 * @param templateId the template ID
+	 * @param DDMTemplateKey the d d m template key
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> filterFindByG_C_T(long groupId,
-		long classNameId, String templateId, int start, int end)
-		throws SystemException {
-		return filterFindByG_C_T(groupId, classNameId, templateId, start, end,
-			null);
+	public List<JournalArticle> filterFindByG_C_DDMTK(long groupId,
+		long classNameId, String DDMTemplateKey, int start, int end) {
+		return filterFindByG_C_DDMTK(groupId, classNameId, DDMTemplateKey,
+			start, end, null);
 	}
 
 	/**
-	 * Returns an ordered range of all the journal articles that the user has permissions to view where groupId = &#63; and classNameId = &#63; and templateId = &#63;.
+	 * Returns an ordered range of all the journal articles that the user has permissions to view where groupId = &#63; and classNameId = &#63; and DDMTemplateKey = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.journal.model.impl.JournalArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
@@ -22303,20 +22692,19 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 *
 	 * @param groupId the group ID
 	 * @param classNameId the class name ID
-	 * @param templateId the template ID
+	 * @param DDMTemplateKey the d d m template key
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> filterFindByG_C_T(long groupId,
-		long classNameId, String templateId, int start, int end,
-		OrderByComparator orderByComparator) throws SystemException {
+	public List<JournalArticle> filterFindByG_C_DDMTK(long groupId,
+		long classNameId, String DDMTemplateKey, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
-			return findByG_C_T(groupId, classNameId, templateId, start, end,
-				orderByComparator);
+			return findByG_C_DDMTK(groupId, classNameId, DDMTemplateKey, start,
+				end, orderByComparator);
 		}
 
 		StringBundler query = null;
@@ -22336,22 +22724,22 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 			query.append(_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		query.append(_FINDER_COLUMN_G_C_T_GROUPID_2);
+		query.append(_FINDER_COLUMN_G_C_DDMTK_GROUPID_2);
 
-		query.append(_FINDER_COLUMN_G_C_T_CLASSNAMEID_2);
+		query.append(_FINDER_COLUMN_G_C_DDMTK_CLASSNAMEID_2);
 
-		boolean bindTemplateId = false;
+		boolean bindDDMTemplateKey = false;
 
-		if (templateId == null) {
-			query.append(_FINDER_COLUMN_G_C_T_TEMPLATEID_1);
+		if (DDMTemplateKey == null) {
+			query.append(_FINDER_COLUMN_G_C_DDMTK_DDMTEMPLATEKEY_1);
 		}
-		else if (templateId.equals(StringPool.BLANK)) {
-			query.append(_FINDER_COLUMN_G_C_T_TEMPLATEID_3);
+		else if (DDMTemplateKey.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_G_C_DDMTK_DDMTEMPLATEKEY_3);
 		}
 		else {
-			bindTemplateId = true;
+			bindDDMTemplateKey = true;
 
-			query.append(_FINDER_COLUMN_G_C_T_TEMPLATEID_2);
+			query.append(_FINDER_COLUMN_G_C_DDMTK_DDMTEMPLATEKEY_2);
 		}
 
 		if (!getDB().isSupportsInlineDistinct()) {
@@ -22401,8 +22789,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 			qPos.add(classNameId);
 
-			if (bindTemplateId) {
-				qPos.add(templateId);
+			if (bindDDMTemplateKey) {
+				qPos.add(DDMTemplateKey);
 			}
 
 			return (List<JournalArticle>)QueryUtil.list(q, getDialect(), start,
@@ -22417,25 +22805,24 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	/**
-	 * Returns the journal articles before and after the current journal article in the ordered set of journal articles that the user has permission to view where groupId = &#63; and classNameId = &#63; and templateId = &#63;.
+	 * Returns the journal articles before and after the current journal article in the ordered set of journal articles that the user has permission to view where groupId = &#63; and classNameId = &#63; and DDMTemplateKey = &#63;.
 	 *
 	 * @param id the primary key of the current journal article
 	 * @param groupId the group ID
 	 * @param classNameId the class name ID
-	 * @param templateId the template ID
+	 * @param DDMTemplateKey the d d m template key
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public JournalArticle[] filterFindByG_C_T_PrevAndNext(long id,
-		long groupId, long classNameId, String templateId,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+	public JournalArticle[] filterFindByG_C_DDMTK_PrevAndNext(long id,
+		long groupId, long classNameId, String DDMTemplateKey,
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
-			return findByG_C_T_PrevAndNext(id, groupId, classNameId,
-				templateId, orderByComparator);
+			return findByG_C_DDMTK_PrevAndNext(id, groupId, classNameId,
+				DDMTemplateKey, orderByComparator);
 		}
 
 		JournalArticle journalArticle = findByPrimaryKey(id);
@@ -22447,13 +22834,15 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 			JournalArticle[] array = new JournalArticleImpl[3];
 
-			array[0] = filterGetByG_C_T_PrevAndNext(session, journalArticle,
-					groupId, classNameId, templateId, orderByComparator, true);
+			array[0] = filterGetByG_C_DDMTK_PrevAndNext(session,
+					journalArticle, groupId, classNameId, DDMTemplateKey,
+					orderByComparator, true);
 
 			array[1] = journalArticle;
 
-			array[2] = filterGetByG_C_T_PrevAndNext(session, journalArticle,
-					groupId, classNameId, templateId, orderByComparator, false);
+			array[2] = filterGetByG_C_DDMTK_PrevAndNext(session,
+					journalArticle, groupId, classNameId, DDMTemplateKey,
+					orderByComparator, false);
 
 			return array;
 		}
@@ -22465,9 +22854,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		}
 	}
 
-	protected JournalArticle filterGetByG_C_T_PrevAndNext(Session session,
+	protected JournalArticle filterGetByG_C_DDMTK_PrevAndNext(Session session,
 		JournalArticle journalArticle, long groupId, long classNameId,
-		String templateId, OrderByComparator orderByComparator, boolean previous) {
+		String DDMTemplateKey,
+		OrderByComparator<JournalArticle> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -22485,22 +22875,22 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 			query.append(_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		query.append(_FINDER_COLUMN_G_C_T_GROUPID_2);
+		query.append(_FINDER_COLUMN_G_C_DDMTK_GROUPID_2);
 
-		query.append(_FINDER_COLUMN_G_C_T_CLASSNAMEID_2);
+		query.append(_FINDER_COLUMN_G_C_DDMTK_CLASSNAMEID_2);
 
-		boolean bindTemplateId = false;
+		boolean bindDDMTemplateKey = false;
 
-		if (templateId == null) {
-			query.append(_FINDER_COLUMN_G_C_T_TEMPLATEID_1);
+		if (DDMTemplateKey == null) {
+			query.append(_FINDER_COLUMN_G_C_DDMTK_DDMTEMPLATEKEY_1);
 		}
-		else if (templateId.equals(StringPool.BLANK)) {
-			query.append(_FINDER_COLUMN_G_C_T_TEMPLATEID_3);
+		else if (DDMTemplateKey.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_G_C_DDMTK_DDMTEMPLATEKEY_3);
 		}
 		else {
-			bindTemplateId = true;
+			bindDDMTemplateKey = true;
 
-			query.append(_FINDER_COLUMN_G_C_T_TEMPLATEID_2);
+			query.append(_FINDER_COLUMN_G_C_DDMTK_DDMTEMPLATEKEY_2);
 		}
 
 		if (!getDB().isSupportsInlineDistinct()) {
@@ -22605,8 +22995,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 		qPos.add(classNameId);
 
-		if (bindTemplateId) {
-			qPos.add(templateId);
+		if (bindDDMTemplateKey) {
+			qPos.add(DDMTemplateKey);
 		}
 
 		if (orderByComparator != null) {
@@ -22628,37 +23018,36 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	/**
-	 * Removes all the journal articles where groupId = &#63; and classNameId = &#63; and templateId = &#63; from the database.
+	 * Removes all the journal articles where groupId = &#63; and classNameId = &#63; and DDMTemplateKey = &#63; from the database.
 	 *
 	 * @param groupId the group ID
 	 * @param classNameId the class name ID
-	 * @param templateId the template ID
-	 * @throws SystemException if a system exception occurred
+	 * @param DDMTemplateKey the d d m template key
 	 */
 	@Override
-	public void removeByG_C_T(long groupId, long classNameId, String templateId)
-		throws SystemException {
-		for (JournalArticle journalArticle : findByG_C_T(groupId, classNameId,
-				templateId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+	public void removeByG_C_DDMTK(long groupId, long classNameId,
+		String DDMTemplateKey) {
+		for (JournalArticle journalArticle : findByG_C_DDMTK(groupId,
+				classNameId, DDMTemplateKey, QueryUtil.ALL_POS,
+				QueryUtil.ALL_POS, null)) {
 			remove(journalArticle);
 		}
 	}
 
 	/**
-	 * Returns the number of journal articles where groupId = &#63; and classNameId = &#63; and templateId = &#63;.
+	 * Returns the number of journal articles where groupId = &#63; and classNameId = &#63; and DDMTemplateKey = &#63;.
 	 *
 	 * @param groupId the group ID
 	 * @param classNameId the class name ID
-	 * @param templateId the template ID
+	 * @param DDMTemplateKey the d d m template key
 	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByG_C_T(long groupId, long classNameId, String templateId)
-		throws SystemException {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_G_C_T;
+	public int countByG_C_DDMTK(long groupId, long classNameId,
+		String DDMTemplateKey) {
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_G_C_DDMTK;
 
-		Object[] finderArgs = new Object[] { groupId, classNameId, templateId };
+		Object[] finderArgs = new Object[] { groupId, classNameId, DDMTemplateKey };
 
 		Long count = (Long)FinderCacheUtil.getResult(finderPath, finderArgs,
 				this);
@@ -22668,22 +23057,22 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 			query.append(_SQL_COUNT_JOURNALARTICLE_WHERE);
 
-			query.append(_FINDER_COLUMN_G_C_T_GROUPID_2);
+			query.append(_FINDER_COLUMN_G_C_DDMTK_GROUPID_2);
 
-			query.append(_FINDER_COLUMN_G_C_T_CLASSNAMEID_2);
+			query.append(_FINDER_COLUMN_G_C_DDMTK_CLASSNAMEID_2);
 
-			boolean bindTemplateId = false;
+			boolean bindDDMTemplateKey = false;
 
-			if (templateId == null) {
-				query.append(_FINDER_COLUMN_G_C_T_TEMPLATEID_1);
+			if (DDMTemplateKey == null) {
+				query.append(_FINDER_COLUMN_G_C_DDMTK_DDMTEMPLATEKEY_1);
 			}
-			else if (templateId.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_G_C_T_TEMPLATEID_3);
+			else if (DDMTemplateKey.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_G_C_DDMTK_DDMTEMPLATEKEY_3);
 			}
 			else {
-				bindTemplateId = true;
+				bindDDMTemplateKey = true;
 
-				query.append(_FINDER_COLUMN_G_C_T_TEMPLATEID_2);
+				query.append(_FINDER_COLUMN_G_C_DDMTK_DDMTEMPLATEKEY_2);
 			}
 
 			String sql = query.toString();
@@ -22701,8 +23090,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 				qPos.add(classNameId);
 
-				if (bindTemplateId) {
-					qPos.add(templateId);
+				if (bindDDMTemplateKey) {
+					qPos.add(DDMTemplateKey);
 				}
 
 				count = (Long)q.uniqueResult();
@@ -22723,41 +23112,40 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	/**
-	 * Returns the number of journal articles that the user has permission to view where groupId = &#63; and classNameId = &#63; and templateId = &#63;.
+	 * Returns the number of journal articles that the user has permission to view where groupId = &#63; and classNameId = &#63; and DDMTemplateKey = &#63;.
 	 *
 	 * @param groupId the group ID
 	 * @param classNameId the class name ID
-	 * @param templateId the template ID
+	 * @param DDMTemplateKey the d d m template key
 	 * @return the number of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int filterCountByG_C_T(long groupId, long classNameId,
-		String templateId) throws SystemException {
+	public int filterCountByG_C_DDMTK(long groupId, long classNameId,
+		String DDMTemplateKey) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
-			return countByG_C_T(groupId, classNameId, templateId);
+			return countByG_C_DDMTK(groupId, classNameId, DDMTemplateKey);
 		}
 
 		StringBundler query = new StringBundler(4);
 
 		query.append(_FILTER_SQL_COUNT_JOURNALARTICLE_WHERE);
 
-		query.append(_FINDER_COLUMN_G_C_T_GROUPID_2);
+		query.append(_FINDER_COLUMN_G_C_DDMTK_GROUPID_2);
 
-		query.append(_FINDER_COLUMN_G_C_T_CLASSNAMEID_2);
+		query.append(_FINDER_COLUMN_G_C_DDMTK_CLASSNAMEID_2);
 
-		boolean bindTemplateId = false;
+		boolean bindDDMTemplateKey = false;
 
-		if (templateId == null) {
-			query.append(_FINDER_COLUMN_G_C_T_TEMPLATEID_1);
+		if (DDMTemplateKey == null) {
+			query.append(_FINDER_COLUMN_G_C_DDMTK_DDMTEMPLATEKEY_1);
 		}
-		else if (templateId.equals(StringPool.BLANK)) {
-			query.append(_FINDER_COLUMN_G_C_T_TEMPLATEID_3);
+		else if (DDMTemplateKey.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_G_C_DDMTK_DDMTEMPLATEKEY_3);
 		}
 		else {
-			bindTemplateId = true;
+			bindDDMTemplateKey = true;
 
-			query.append(_FINDER_COLUMN_G_C_T_TEMPLATEID_2);
+			query.append(_FINDER_COLUMN_G_C_DDMTK_DDMTEMPLATEKEY_2);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(query.toString(),
@@ -22780,8 +23168,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 			qPos.add(classNameId);
 
-			if (bindTemplateId) {
-				qPos.add(templateId);
+			if (bindDDMTemplateKey) {
+				qPos.add(DDMTemplateKey);
 			}
 
 			Long count = (Long)q.uniqueResult();
@@ -22796,11 +23184,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		}
 	}
 
-	private static final String _FINDER_COLUMN_G_C_T_GROUPID_2 = "journalArticle.groupId = ? AND ";
-	private static final String _FINDER_COLUMN_G_C_T_CLASSNAMEID_2 = "journalArticle.classNameId = ? AND ";
-	private static final String _FINDER_COLUMN_G_C_T_TEMPLATEID_1 = "journalArticle.templateId IS NULL";
-	private static final String _FINDER_COLUMN_G_C_T_TEMPLATEID_2 = "journalArticle.templateId = ?";
-	private static final String _FINDER_COLUMN_G_C_T_TEMPLATEID_3 = "(journalArticle.templateId IS NULL OR journalArticle.templateId = '')";
+	private static final String _FINDER_COLUMN_G_C_DDMTK_GROUPID_2 = "journalArticle.groupId = ? AND ";
+	private static final String _FINDER_COLUMN_G_C_DDMTK_CLASSNAMEID_2 = "journalArticle.classNameId = ? AND ";
+	private static final String _FINDER_COLUMN_G_C_DDMTK_DDMTEMPLATEKEY_1 = "journalArticle.DDMTemplateKey IS NULL";
+	private static final String _FINDER_COLUMN_G_C_DDMTK_DDMTEMPLATEKEY_2 = "journalArticle.DDMTemplateKey = ?";
+	private static final String _FINDER_COLUMN_G_C_DDMTK_DDMTEMPLATEKEY_3 = "(journalArticle.DDMTemplateKey IS NULL OR journalArticle.DDMTemplateKey = '')";
 	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_G_C_L = new FinderPath(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
 			JournalArticleModelImpl.FINDER_CACHE_ENABLED,
 			JournalArticleImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
@@ -22840,11 +23228,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param classNameId the class name ID
 	 * @param layoutUuid the layout uuid
 	 * @return the matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_C_L(long groupId, long classNameId,
-		String layoutUuid) throws SystemException {
+		String layoutUuid) {
 		return findByG_C_L(groupId, classNameId, layoutUuid, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -22862,11 +23249,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_C_L(long groupId, long classNameId,
-		String layoutUuid, int start, int end) throws SystemException {
+		String layoutUuid, int start, int end) {
 		return findByG_C_L(groupId, classNameId, layoutUuid, start, end, null);
 	}
 
@@ -22884,12 +23270,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_C_L(long groupId, long classNameId,
 		String layoutUuid, int start, int end,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -23023,12 +23408,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByG_C_L_First(long groupId, long classNameId,
-		String layoutUuid, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		String layoutUuid, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByG_C_L_First(groupId,
 				classNameId, layoutUuid, orderByComparator);
 
@@ -23062,12 +23446,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param layoutUuid the layout uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByG_C_L_First(long groupId, long classNameId,
-		String layoutUuid, OrderByComparator orderByComparator)
-		throws SystemException {
+		String layoutUuid, OrderByComparator<JournalArticle> orderByComparator) {
 		List<JournalArticle> list = findByG_C_L(groupId, classNameId,
 				layoutUuid, 0, 1, orderByComparator);
 
@@ -23087,12 +23469,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByG_C_L_Last(long groupId, long classNameId,
-		String layoutUuid, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		String layoutUuid, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByG_C_L_Last(groupId, classNameId,
 				layoutUuid, orderByComparator);
 
@@ -23126,12 +23507,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param layoutUuid the layout uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByG_C_L_Last(long groupId, long classNameId,
-		String layoutUuid, OrderByComparator orderByComparator)
-		throws SystemException {
+		String layoutUuid, OrderByComparator<JournalArticle> orderByComparator) {
 		int count = countByG_C_L(groupId, classNameId, layoutUuid);
 
 		if (count == 0) {
@@ -23158,12 +23537,12 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] findByG_C_L_PrevAndNext(long id, long groupId,
-		long classNameId, String layoutUuid, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		long classNameId, String layoutUuid,
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = findByPrimaryKey(id);
 
 		Session session = null;
@@ -23193,7 +23572,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle getByG_C_L_PrevAndNext(Session session,
 		JournalArticle journalArticle, long groupId, long classNameId,
-		String layoutUuid, OrderByComparator orderByComparator, boolean previous) {
+		String layoutUuid, OrderByComparator<JournalArticle> orderByComparator,
+		boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -23325,11 +23705,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param classNameId the class name ID
 	 * @param layoutUuid the layout uuid
 	 * @return the matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_C_L(long groupId,
-		long classNameId, String layoutUuid) throws SystemException {
+		long classNameId, String layoutUuid) {
 		return filterFindByG_C_L(groupId, classNameId, layoutUuid,
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
@@ -23347,12 +23726,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_C_L(long groupId,
-		long classNameId, String layoutUuid, int start, int end)
-		throws SystemException {
+		long classNameId, String layoutUuid, int start, int end) {
 		return filterFindByG_C_L(groupId, classNameId, layoutUuid, start, end,
 			null);
 	}
@@ -23371,12 +23748,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_C_L(long groupId,
 		long classNameId, String layoutUuid, int start, int end,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_C_L(groupId, classNameId, layoutUuid, start, end,
 				orderByComparator);
@@ -23489,13 +23865,12 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] filterFindByG_C_L_PrevAndNext(long id,
 		long groupId, long classNameId, String layoutUuid,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_C_L_PrevAndNext(id, groupId, classNameId,
 				layoutUuid, orderByComparator);
@@ -23530,7 +23905,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle filterGetByG_C_L_PrevAndNext(Session session,
 		JournalArticle journalArticle, long groupId, long classNameId,
-		String layoutUuid, OrderByComparator orderByComparator, boolean previous) {
+		String layoutUuid, OrderByComparator<JournalArticle> orderByComparator,
+		boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -23696,11 +24072,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @param classNameId the class name ID
 	 * @param layoutUuid the layout uuid
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeByG_C_L(long groupId, long classNameId, String layoutUuid)
-		throws SystemException {
+	public void removeByG_C_L(long groupId, long classNameId, String layoutUuid) {
 		for (JournalArticle journalArticle : findByG_C_L(groupId, classNameId,
 				layoutUuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(journalArticle);
@@ -23714,11 +24088,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param classNameId the class name ID
 	 * @param layoutUuid the layout uuid
 	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByG_C_L(long groupId, long classNameId, String layoutUuid)
-		throws SystemException {
+	public int countByG_C_L(long groupId, long classNameId, String layoutUuid) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_G_C_L;
 
 		Object[] finderArgs = new Object[] { groupId, classNameId, layoutUuid };
@@ -23792,11 +24164,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param classNameId the class name ID
 	 * @param layoutUuid the layout uuid
 	 * @return the number of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public int filterCountByG_C_L(long groupId, long classNameId,
-		String layoutUuid) throws SystemException {
+		String layoutUuid) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return countByG_C_L(groupId, classNameId, layoutUuid);
 		}
@@ -23890,11 +24261,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param version the version
 	 * @return the matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByG_A_V(long groupId, String articleId,
-		double version) throws NoSuchArticleException, SystemException {
+		double version) throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByG_A_V(groupId, articleId, version);
 
 		if (journalArticle == null) {
@@ -23930,11 +24300,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param articleId the article ID
 	 * @param version the version
 	 * @return the matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByG_A_V(long groupId, String articleId,
-		double version) throws SystemException {
+		double version) {
 		return fetchByG_A_V(groupId, articleId, version, true);
 	}
 
@@ -23946,11 +24315,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param version the version
 	 * @param retrieveFromCache whether to use the finder cache
 	 * @return the matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByG_A_V(long groupId, String articleId,
-		double version, boolean retrieveFromCache) throws SystemException {
+		double version, boolean retrieveFromCache) {
 		Object[] finderArgs = new Object[] { groupId, articleId, version };
 
 		Object result = null;
@@ -24060,11 +24428,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param articleId the article ID
 	 * @param version the version
 	 * @return the journal article that was removed
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle removeByG_A_V(long groupId, String articleId,
-		double version) throws NoSuchArticleException, SystemException {
+		double version) throws NoSuchArticleException {
 		JournalArticle journalArticle = findByG_A_V(groupId, articleId, version);
 
 		return remove(journalArticle);
@@ -24077,11 +24444,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param articleId the article ID
 	 * @param version the version
 	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByG_A_V(long groupId, String articleId, double version)
-		throws SystemException {
+	public int countByG_A_V(long groupId, String articleId, double version) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_G_A_V;
 
 		Object[] finderArgs = new Object[] { groupId, articleId, version };
@@ -24199,11 +24564,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param articleId the article ID
 	 * @param status the status
 	 * @return the matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_A_ST(long groupId, String articleId,
-		int status) throws SystemException {
+		int status) {
 		return findByG_A_ST(groupId, articleId, status, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -24221,11 +24585,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_A_ST(long groupId, String articleId,
-		int status, int start, int end) throws SystemException {
+		int status, int start, int end) {
 		return findByG_A_ST(groupId, articleId, status, start, end, null);
 	}
 
@@ -24243,12 +24606,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_A_ST(long groupId, String articleId,
-		int status, int start, int end, OrderByComparator orderByComparator)
-		throws SystemException {
+		int status, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -24382,12 +24744,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByG_A_ST_First(long groupId, String articleId,
-		int status, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		int status, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByG_A_ST_First(groupId, articleId,
 				status, orderByComparator);
 
@@ -24421,12 +24782,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByG_A_ST_First(long groupId, String articleId,
-		int status, OrderByComparator orderByComparator)
-		throws SystemException {
+		int status, OrderByComparator<JournalArticle> orderByComparator) {
 		List<JournalArticle> list = findByG_A_ST(groupId, articleId, status, 0,
 				1, orderByComparator);
 
@@ -24446,12 +24805,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByG_A_ST_Last(long groupId, String articleId,
-		int status, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		int status, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByG_A_ST_Last(groupId, articleId,
 				status, orderByComparator);
 
@@ -24485,12 +24843,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByG_A_ST_Last(long groupId, String articleId,
-		int status, OrderByComparator orderByComparator)
-		throws SystemException {
+		int status, OrderByComparator<JournalArticle> orderByComparator) {
 		int count = countByG_A_ST(groupId, articleId, status);
 
 		if (count == 0) {
@@ -24517,12 +24873,12 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] findByG_A_ST_PrevAndNext(long id, long groupId,
-		String articleId, int status, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		String articleId, int status,
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = findByPrimaryKey(id);
 
 		Session session = null;
@@ -24552,7 +24908,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle getByG_A_ST_PrevAndNext(Session session,
 		JournalArticle journalArticle, long groupId, String articleId,
-		int status, OrderByComparator orderByComparator, boolean previous) {
+		int status, OrderByComparator<JournalArticle> orderByComparator,
+		boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -24684,11 +25041,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param articleId the article ID
 	 * @param status the status
 	 * @return the matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_A_ST(long groupId,
-		String articleId, int status) throws SystemException {
+		String articleId, int status) {
 		return filterFindByG_A_ST(groupId, articleId, status,
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
@@ -24706,12 +25062,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_A_ST(long groupId,
-		String articleId, int status, int start, int end)
-		throws SystemException {
+		String articleId, int status, int start, int end) {
 		return filterFindByG_A_ST(groupId, articleId, status, start, end, null);
 	}
 
@@ -24729,12 +25083,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_A_ST(long groupId,
 		String articleId, int status, int start, int end,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_A_ST(groupId, articleId, status, start, end,
 				orderByComparator);
@@ -24847,13 +25200,12 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] filterFindByG_A_ST_PrevAndNext(long id,
 		long groupId, String articleId, int status,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_A_ST_PrevAndNext(id, groupId, articleId, status,
 				orderByComparator);
@@ -24888,7 +25240,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle filterGetByG_A_ST_PrevAndNext(Session session,
 		JournalArticle journalArticle, long groupId, String articleId,
-		int status, OrderByComparator orderByComparator, boolean previous) {
+		int status, OrderByComparator<JournalArticle> orderByComparator,
+		boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -25055,11 +25408,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param articleId the article ID
 	 * @param statuses the statuses
 	 * @return the matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_A_ST(long groupId,
-		String articleId, int[] statuses) throws SystemException {
+		String articleId, int[] statuses) {
 		return filterFindByG_A_ST(groupId, articleId, statuses,
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
@@ -25077,12 +25429,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_A_ST(long groupId,
-		String articleId, int[] statuses, int start, int end)
-		throws SystemException {
+		String articleId, int[] statuses, int start, int end) {
 		return filterFindByG_A_ST(groupId, articleId, statuses, start, end, null);
 	}
 
@@ -25100,12 +25450,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_A_ST(long groupId,
 		String articleId, int[] statuses, int start, int end,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_A_ST(groupId, articleId, statuses, start, end,
 				orderByComparator);
@@ -25229,11 +25578,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param articleId the article ID
 	 * @param statuses the statuses
 	 * @return the matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_A_ST(long groupId, String articleId,
-		int[] statuses) throws SystemException {
+		int[] statuses) {
 		return findByG_A_ST(groupId, articleId, statuses, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -25251,11 +25599,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_A_ST(long groupId, String articleId,
-		int[] statuses, int start, int end) throws SystemException {
+		int[] statuses, int start, int end) {
 		return findByG_A_ST(groupId, articleId, statuses, start, end, null);
 	}
 
@@ -25273,12 +25620,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_A_ST(long groupId, String articleId,
-		int[] statuses, int start, int end, OrderByComparator orderByComparator)
-		throws SystemException {
+		int[] statuses, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator) {
 		if (statuses == null) {
 			statuses = new int[0];
 		}
@@ -25425,11 +25771,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @param articleId the article ID
 	 * @param status the status
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeByG_A_ST(long groupId, String articleId, int status)
-		throws SystemException {
+	public void removeByG_A_ST(long groupId, String articleId, int status) {
 		for (JournalArticle journalArticle : findByG_A_ST(groupId, articleId,
 				status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(journalArticle);
@@ -25443,11 +25787,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param articleId the article ID
 	 * @param status the status
 	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByG_A_ST(long groupId, String articleId, int status)
-		throws SystemException {
+	public int countByG_A_ST(long groupId, String articleId, int status) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_G_A_ST;
 
 		Object[] finderArgs = new Object[] { groupId, articleId, status };
@@ -25521,11 +25863,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param articleId the article ID
 	 * @param statuses the statuses
 	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByG_A_ST(long groupId, String articleId, int[] statuses)
-		throws SystemException {
+	public int countByG_A_ST(long groupId, String articleId, int[] statuses) {
 		if (statuses == null) {
 			statuses = new int[0];
 		}
@@ -25619,11 +25959,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param articleId the article ID
 	 * @param status the status
 	 * @return the number of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int filterCountByG_A_ST(long groupId, String articleId, int status)
-		throws SystemException {
+	public int filterCountByG_A_ST(long groupId, String articleId, int status) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return countByG_A_ST(groupId, articleId, status);
 		}
@@ -25693,11 +26031,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param articleId the article ID
 	 * @param statuses the statuses
 	 * @return the number of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public int filterCountByG_A_ST(long groupId, String articleId,
-		int[] statuses) throws SystemException {
+		int[] statuses) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return countByG_A_ST(groupId, articleId, statuses);
 		}
@@ -25812,11 +26149,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param articleId the article ID
 	 * @param status the status
 	 * @return the matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_A_NotST(long groupId, String articleId,
-		int status) throws SystemException {
+		int status) {
 		return findByG_A_NotST(groupId, articleId, status, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -25834,11 +26170,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_A_NotST(long groupId, String articleId,
-		int status, int start, int end) throws SystemException {
+		int status, int start, int end) {
 		return findByG_A_NotST(groupId, articleId, status, start, end, null);
 	}
 
@@ -25856,12 +26191,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_A_NotST(long groupId, String articleId,
-		int status, int start, int end, OrderByComparator orderByComparator)
-		throws SystemException {
+		int status, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -25987,12 +26321,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByG_A_NotST_First(long groupId, String articleId,
-		int status, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		int status, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByG_A_NotST_First(groupId,
 				articleId, status, orderByComparator);
 
@@ -26026,12 +26359,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByG_A_NotST_First(long groupId,
-		String articleId, int status, OrderByComparator orderByComparator)
-		throws SystemException {
+		String articleId, int status,
+		OrderByComparator<JournalArticle> orderByComparator) {
 		List<JournalArticle> list = findByG_A_NotST(groupId, articleId, status,
 				0, 1, orderByComparator);
 
@@ -26051,12 +26383,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByG_A_NotST_Last(long groupId, String articleId,
-		int status, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		int status, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByG_A_NotST_Last(groupId,
 				articleId, status, orderByComparator);
 
@@ -26090,12 +26421,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByG_A_NotST_Last(long groupId, String articleId,
-		int status, OrderByComparator orderByComparator)
-		throws SystemException {
+		int status, OrderByComparator<JournalArticle> orderByComparator) {
 		int count = countByG_A_NotST(groupId, articleId, status);
 
 		if (count == 0) {
@@ -26122,12 +26451,12 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] findByG_A_NotST_PrevAndNext(long id, long groupId,
-		String articleId, int status, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		String articleId, int status,
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = findByPrimaryKey(id);
 
 		Session session = null;
@@ -26157,7 +26486,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle getByG_A_NotST_PrevAndNext(Session session,
 		JournalArticle journalArticle, long groupId, String articleId,
-		int status, OrderByComparator orderByComparator, boolean previous) {
+		int status, OrderByComparator<JournalArticle> orderByComparator,
+		boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -26289,11 +26619,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param articleId the article ID
 	 * @param status the status
 	 * @return the matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_A_NotST(long groupId,
-		String articleId, int status) throws SystemException {
+		String articleId, int status) {
 		return filterFindByG_A_NotST(groupId, articleId, status,
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
@@ -26311,12 +26640,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_A_NotST(long groupId,
-		String articleId, int status, int start, int end)
-		throws SystemException {
+		String articleId, int status, int start, int end) {
 		return filterFindByG_A_NotST(groupId, articleId, status, start, end,
 			null);
 	}
@@ -26335,12 +26662,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_A_NotST(long groupId,
 		String articleId, int status, int start, int end,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_A_NotST(groupId, articleId, status, start, end,
 				orderByComparator);
@@ -26453,13 +26779,12 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] filterFindByG_A_NotST_PrevAndNext(long id,
 		long groupId, String articleId, int status,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_A_NotST_PrevAndNext(id, groupId, articleId, status,
 				orderByComparator);
@@ -26496,7 +26821,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle filterGetByG_A_NotST_PrevAndNext(Session session,
 		JournalArticle journalArticle, long groupId, String articleId,
-		int status, OrderByComparator orderByComparator, boolean previous) {
+		int status, OrderByComparator<JournalArticle> orderByComparator,
+		boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -26662,11 +26988,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @param articleId the article ID
 	 * @param status the status
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeByG_A_NotST(long groupId, String articleId, int status)
-		throws SystemException {
+	public void removeByG_A_NotST(long groupId, String articleId, int status) {
 		for (JournalArticle journalArticle : findByG_A_NotST(groupId,
 				articleId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(journalArticle);
@@ -26680,11 +27004,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param articleId the article ID
 	 * @param status the status
 	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByG_A_NotST(long groupId, String articleId, int status)
-		throws SystemException {
+	public int countByG_A_NotST(long groupId, String articleId, int status) {
 		FinderPath finderPath = FINDER_PATH_WITH_PAGINATION_COUNT_BY_G_A_NOTST;
 
 		Object[] finderArgs = new Object[] { groupId, articleId, status };
@@ -26758,11 +27080,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param articleId the article ID
 	 * @param status the status
 	 * @return the number of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int filterCountByG_A_NotST(long groupId, String articleId, int status)
-		throws SystemException {
+	public int filterCountByG_A_NotST(long groupId, String articleId, int status) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return countByG_A_NotST(groupId, articleId, status);
 		}
@@ -26870,11 +27190,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param urlTitle the url title
 	 * @param status the status
 	 * @return the matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_UT_ST(long groupId, String urlTitle,
-		int status) throws SystemException {
+		int status) {
 		return findByG_UT_ST(groupId, urlTitle, status, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -26892,11 +27211,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_UT_ST(long groupId, String urlTitle,
-		int status, int start, int end) throws SystemException {
+		int status, int start, int end) {
 		return findByG_UT_ST(groupId, urlTitle, status, start, end, null);
 	}
 
@@ -26914,12 +27232,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByG_UT_ST(long groupId, String urlTitle,
-		int status, int start, int end, OrderByComparator orderByComparator)
-		throws SystemException {
+		int status, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -27052,12 +27369,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByG_UT_ST_First(long groupId, String urlTitle,
-		int status, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		int status, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByG_UT_ST_First(groupId, urlTitle,
 				status, orderByComparator);
 
@@ -27091,12 +27407,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByG_UT_ST_First(long groupId, String urlTitle,
-		int status, OrderByComparator orderByComparator)
-		throws SystemException {
+		int status, OrderByComparator<JournalArticle> orderByComparator) {
 		List<JournalArticle> list = findByG_UT_ST(groupId, urlTitle, status, 0,
 				1, orderByComparator);
 
@@ -27116,12 +27430,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByG_UT_ST_Last(long groupId, String urlTitle,
-		int status, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		int status, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByG_UT_ST_Last(groupId, urlTitle,
 				status, orderByComparator);
 
@@ -27155,12 +27468,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByG_UT_ST_Last(long groupId, String urlTitle,
-		int status, OrderByComparator orderByComparator)
-		throws SystemException {
+		int status, OrderByComparator<JournalArticle> orderByComparator) {
 		int count = countByG_UT_ST(groupId, urlTitle, status);
 
 		if (count == 0) {
@@ -27187,12 +27498,12 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] findByG_UT_ST_PrevAndNext(long id, long groupId,
-		String urlTitle, int status, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		String urlTitle, int status,
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = findByPrimaryKey(id);
 
 		Session session = null;
@@ -27222,7 +27533,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle getByG_UT_ST_PrevAndNext(Session session,
 		JournalArticle journalArticle, long groupId, String urlTitle,
-		int status, OrderByComparator orderByComparator, boolean previous) {
+		int status, OrderByComparator<JournalArticle> orderByComparator,
+		boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -27354,11 +27666,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param urlTitle the url title
 	 * @param status the status
 	 * @return the matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_UT_ST(long groupId,
-		String urlTitle, int status) throws SystemException {
+		String urlTitle, int status) {
 		return filterFindByG_UT_ST(groupId, urlTitle, status,
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
@@ -27376,12 +27687,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_UT_ST(long groupId,
-		String urlTitle, int status, int start, int end)
-		throws SystemException {
+		String urlTitle, int status, int start, int end) {
 		return filterFindByG_UT_ST(groupId, urlTitle, status, start, end, null);
 	}
 
@@ -27399,12 +27708,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> filterFindByG_UT_ST(long groupId,
 		String urlTitle, int status, int start, int end,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_UT_ST(groupId, urlTitle, status, start, end,
 				orderByComparator);
@@ -27517,13 +27825,12 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] filterFindByG_UT_ST_PrevAndNext(long id,
 		long groupId, String urlTitle, int status,
-		OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_UT_ST_PrevAndNext(id, groupId, urlTitle, status,
 				orderByComparator);
@@ -27558,7 +27865,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle filterGetByG_UT_ST_PrevAndNext(Session session,
 		JournalArticle journalArticle, long groupId, String urlTitle,
-		int status, OrderByComparator orderByComparator, boolean previous) {
+		int status, OrderByComparator<JournalArticle> orderByComparator,
+		boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -27724,11 +28032,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param groupId the group ID
 	 * @param urlTitle the url title
 	 * @param status the status
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeByG_UT_ST(long groupId, String urlTitle, int status)
-		throws SystemException {
+	public void removeByG_UT_ST(long groupId, String urlTitle, int status) {
 		for (JournalArticle journalArticle : findByG_UT_ST(groupId, urlTitle,
 				status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(journalArticle);
@@ -27742,11 +28048,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param urlTitle the url title
 	 * @param status the status
 	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByG_UT_ST(long groupId, String urlTitle, int status)
-		throws SystemException {
+	public int countByG_UT_ST(long groupId, String urlTitle, int status) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_G_UT_ST;
 
 		Object[] finderArgs = new Object[] { groupId, urlTitle, status };
@@ -27820,11 +28124,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param urlTitle the url title
 	 * @param status the status
 	 * @return the number of matching journal articles that the user has permission to view
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int filterCountByG_UT_ST(long groupId, String urlTitle, int status)
-		throws SystemException {
+	public int filterCountByG_UT_ST(long groupId, String urlTitle, int status) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return countByG_UT_ST(groupId, urlTitle, status);
 		}
@@ -27931,11 +28233,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param version the version
 	 * @param status the status
 	 * @return the matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByC_V_ST(long companyId, double version,
-		int status) throws SystemException {
+		int status) {
 		return findByC_V_ST(companyId, version, status, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -27953,11 +28254,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByC_V_ST(long companyId, double version,
-		int status, int start, int end) throws SystemException {
+		int status, int start, int end) {
 		return findByC_V_ST(companyId, version, status, start, end, null);
 	}
 
@@ -27975,12 +28275,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findByC_V_ST(long companyId, double version,
-		int status, int start, int end, OrderByComparator orderByComparator)
-		throws SystemException {
+		int status, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -28099,12 +28398,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByC_V_ST_First(long companyId, double version,
-		int status, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		int status, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByC_V_ST_First(companyId, version,
 				status, orderByComparator);
 
@@ -28138,12 +28436,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByC_V_ST_First(long companyId, double version,
-		int status, OrderByComparator orderByComparator)
-		throws SystemException {
+		int status, OrderByComparator<JournalArticle> orderByComparator) {
 		List<JournalArticle> list = findByC_V_ST(companyId, version, status, 0,
 				1, orderByComparator);
 
@@ -28163,12 +28459,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByC_V_ST_Last(long companyId, double version,
-		int status, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		int status, OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByC_V_ST_Last(companyId, version,
 				status, orderByComparator);
 
@@ -28202,12 +28497,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle fetchByC_V_ST_Last(long companyId, double version,
-		int status, OrderByComparator orderByComparator)
-		throws SystemException {
+		int status, OrderByComparator<JournalArticle> orderByComparator) {
 		int count = countByC_V_ST(companyId, version, status);
 
 		if (count == 0) {
@@ -28234,12 +28527,12 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle[] findByC_V_ST_PrevAndNext(long id, long companyId,
-		double version, int status, OrderByComparator orderByComparator)
-		throws NoSuchArticleException, SystemException {
+		double version, int status,
+		OrderByComparator<JournalArticle> orderByComparator)
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = findByPrimaryKey(id);
 
 		Session session = null;
@@ -28269,7 +28562,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	protected JournalArticle getByC_V_ST_PrevAndNext(Session session,
 		JournalArticle journalArticle, long companyId, double version,
-		int status, OrderByComparator orderByComparator, boolean previous) {
+		int status, OrderByComparator<JournalArticle> orderByComparator,
+		boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -28386,11 +28680,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param companyId the company ID
 	 * @param version the version
 	 * @param status the status
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeByC_V_ST(long companyId, double version, int status)
-		throws SystemException {
+	public void removeByC_V_ST(long companyId, double version, int status) {
 		for (JournalArticle journalArticle : findByC_V_ST(companyId, version,
 				status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(journalArticle);
@@ -28404,11 +28696,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param version the version
 	 * @param status the status
 	 * @return the number of matching journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByC_V_ST(long companyId, double version, int status)
-		throws SystemException {
+	public int countByC_V_ST(long companyId, double version, int status) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_C_V_ST;
 
 		Object[] finderArgs = new Object[] { companyId, version, status };
@@ -28484,10 +28774,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 			new Object[] { journalArticle.getUuid(), journalArticle.getGroupId() },
 			journalArticle);
 
-		FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_G_C_S,
+		FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_G_C_DDMSK,
 			new Object[] {
 				journalArticle.getGroupId(), journalArticle.getClassNameId(),
-				journalArticle.getStructureId()
+				journalArticle.getDDMStructureKey()
 			}, journalArticle);
 
 		FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_G_A_V,
@@ -28582,12 +28872,12 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 			args = new Object[] {
 					journalArticle.getGroupId(), journalArticle.getClassNameId(),
-					journalArticle.getStructureId()
+					journalArticle.getDDMStructureKey()
 				};
 
-			FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_G_C_S, args,
+			FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_G_C_DDMSK, args,
 				Long.valueOf(1));
-			FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_G_C_S, args,
+			FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_G_C_DDMSK, args,
 				journalArticle);
 
 			args = new Object[] {
@@ -28616,16 +28906,16 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 			}
 
 			if ((journalArticleModelImpl.getColumnBitmask() &
-					FINDER_PATH_FETCH_BY_G_C_S.getColumnBitmask()) != 0) {
+					FINDER_PATH_FETCH_BY_G_C_DDMSK.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
 						journalArticle.getGroupId(),
 						journalArticle.getClassNameId(),
-						journalArticle.getStructureId()
+						journalArticle.getDDMStructureKey()
 					};
 
-				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_G_C_S, args,
+				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_G_C_DDMSK, args,
 					Long.valueOf(1));
-				FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_G_C_S, args,
+				FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_G_C_DDMSK, args,
 					journalArticle);
 			}
 
@@ -28668,22 +28958,22 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 		args = new Object[] {
 				journalArticle.getGroupId(), journalArticle.getClassNameId(),
-				journalArticle.getStructureId()
+				journalArticle.getDDMStructureKey()
 			};
 
-		FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_G_C_S, args);
-		FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_G_C_S, args);
+		FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_G_C_DDMSK, args);
+		FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_G_C_DDMSK, args);
 
 		if ((journalArticleModelImpl.getColumnBitmask() &
-				FINDER_PATH_FETCH_BY_G_C_S.getColumnBitmask()) != 0) {
+				FINDER_PATH_FETCH_BY_G_C_DDMSK.getColumnBitmask()) != 0) {
 			args = new Object[] {
 					journalArticleModelImpl.getOriginalGroupId(),
 					journalArticleModelImpl.getOriginalClassNameId(),
-					journalArticleModelImpl.getOriginalStructureId()
+					journalArticleModelImpl.getOriginalDDMStructureKey()
 				};
 
-			FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_G_C_S, args);
-			FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_G_C_S, args);
+			FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_G_C_DDMSK, args);
+			FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_G_C_DDMSK, args);
 		}
 
 		args = new Object[] {
@@ -28733,11 +29023,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param id the primary key of the journal article
 	 * @return the journal article that was removed
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public JournalArticle remove(long id)
-		throws NoSuchArticleException, SystemException {
+	public JournalArticle remove(long id) throws NoSuchArticleException {
 		return remove((Serializable)id);
 	}
 
@@ -28747,11 +29035,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param primaryKey the primary key of the journal article
 	 * @return the journal article that was removed
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle remove(Serializable primaryKey)
-		throws NoSuchArticleException, SystemException {
+		throws NoSuchArticleException {
 		Session session = null;
 
 		try {
@@ -28783,8 +29070,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	@Override
-	protected JournalArticle removeImpl(JournalArticle journalArticle)
-		throws SystemException {
+	protected JournalArticle removeImpl(JournalArticle journalArticle) {
 		journalArticle = toUnwrappedModel(journalArticle);
 
 		Session session = null;
@@ -28817,8 +29103,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	@Override
 	public JournalArticle updateImpl(
-		com.liferay.portlet.journal.model.JournalArticle journalArticle)
-		throws SystemException {
+		com.liferay.portlet.journal.model.JournalArticle journalArticle) {
 		journalArticle = toUnwrappedModel(journalArticle);
 
 		boolean isNew = journalArticle.isNew();
@@ -28953,40 +29238,40 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 			}
 
 			if ((journalArticleModelImpl.getColumnBitmask() &
-					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_STRUCTUREID.getColumnBitmask()) != 0) {
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_DDMSTRUCTUREKEY.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						journalArticleModelImpl.getOriginalStructureId()
+						journalArticleModelImpl.getOriginalDDMStructureKey()
 					};
 
-				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_STRUCTUREID,
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_DDMSTRUCTUREKEY,
 					args);
-				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_STRUCTUREID,
+				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_DDMSTRUCTUREKEY,
 					args);
 
-				args = new Object[] { journalArticleModelImpl.getStructureId() };
+				args = new Object[] { journalArticleModelImpl.getDDMStructureKey() };
 
-				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_STRUCTUREID,
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_DDMSTRUCTUREKEY,
 					args);
-				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_STRUCTUREID,
+				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_DDMSTRUCTUREKEY,
 					args);
 			}
 
 			if ((journalArticleModelImpl.getColumnBitmask() &
-					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_TEMPLATEID.getColumnBitmask()) != 0) {
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_DDMTEMPLATEKEY.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						journalArticleModelImpl.getOriginalTemplateId()
+						journalArticleModelImpl.getOriginalDDMTemplateKey()
 					};
 
-				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_TEMPLATEID,
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_DDMTEMPLATEKEY,
 					args);
-				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_TEMPLATEID,
+				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_DDMTEMPLATEKEY,
 					args);
 
-				args = new Object[] { journalArticleModelImpl.getTemplateId() };
+				args = new Object[] { journalArticleModelImpl.getDDMTemplateKey() };
 
-				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_TEMPLATEID,
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_DDMTEMPLATEKEY,
 					args);
-				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_TEMPLATEID,
+				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_DDMTEMPLATEKEY,
 					args);
 			}
 
@@ -29155,44 +29440,44 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 			}
 
 			if ((journalArticleModelImpl.getColumnBitmask() &
-					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_S.getColumnBitmask()) != 0) {
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_DDMSK.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
 						journalArticleModelImpl.getOriginalGroupId(),
-						journalArticleModelImpl.getOriginalStructureId()
+						journalArticleModelImpl.getOriginalDDMStructureKey()
 					};
 
-				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_G_S, args);
-				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_S,
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_G_DDMSK, args);
+				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_DDMSK,
 					args);
 
 				args = new Object[] {
 						journalArticleModelImpl.getGroupId(),
-						journalArticleModelImpl.getStructureId()
+						journalArticleModelImpl.getDDMStructureKey()
 					};
 
-				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_G_S, args);
-				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_S,
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_G_DDMSK, args);
+				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_DDMSK,
 					args);
 			}
 
 			if ((journalArticleModelImpl.getColumnBitmask() &
-					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_T.getColumnBitmask()) != 0) {
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_DDMTK.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
 						journalArticleModelImpl.getOriginalGroupId(),
-						journalArticleModelImpl.getOriginalTemplateId()
+						journalArticleModelImpl.getOriginalDDMTemplateKey()
 					};
 
-				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_G_T, args);
-				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_T,
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_G_DDMTK, args);
+				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_DDMTK,
 					args);
 
 				args = new Object[] {
 						journalArticleModelImpl.getGroupId(),
-						journalArticleModelImpl.getTemplateId()
+						journalArticleModelImpl.getDDMTemplateKey()
 					};
 
-				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_G_T, args);
-				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_T,
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_G_DDMTK, args);
+				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_DDMTK,
 					args);
 			}
 
@@ -29277,6 +29562,27 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_C_ST, args);
 				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_ST,
+					args);
+			}
+
+			if ((journalArticleModelImpl.getColumnBitmask() &
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_DDMTK.getColumnBitmask()) != 0) {
+				Object[] args = new Object[] {
+						journalArticleModelImpl.getOriginalClassNameId(),
+						journalArticleModelImpl.getOriginalDDMTemplateKey()
+					};
+
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_C_DDMTK, args);
+				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_DDMTK,
+					args);
+
+				args = new Object[] {
+						journalArticleModelImpl.getClassNameId(),
+						journalArticleModelImpl.getDDMTemplateKey()
+					};
+
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_C_DDMTK, args);
+				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_DDMTK,
 					args);
 			}
 
@@ -29373,25 +29679,27 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 			}
 
 			if ((journalArticleModelImpl.getColumnBitmask() &
-					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_C_T.getColumnBitmask()) != 0) {
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_C_DDMTK.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
 						journalArticleModelImpl.getOriginalGroupId(),
 						journalArticleModelImpl.getOriginalClassNameId(),
-						journalArticleModelImpl.getOriginalTemplateId()
+						journalArticleModelImpl.getOriginalDDMTemplateKey()
 					};
 
-				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_G_C_T, args);
-				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_C_T,
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_G_C_DDMTK,
+					args);
+				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_C_DDMTK,
 					args);
 
 				args = new Object[] {
 						journalArticleModelImpl.getGroupId(),
 						journalArticleModelImpl.getClassNameId(),
-						journalArticleModelImpl.getTemplateId()
+						journalArticleModelImpl.getDDMTemplateKey()
 					};
 
-				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_G_C_T, args);
-				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_C_T,
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_G_C_DDMTK,
+					args);
+				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_C_DDMTK,
 					args);
 			}
 
@@ -29529,9 +29837,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		journalArticleImpl.setUrlTitle(journalArticle.getUrlTitle());
 		journalArticleImpl.setDescription(journalArticle.getDescription());
 		journalArticleImpl.setContent(journalArticle.getContent());
-		journalArticleImpl.setType(journalArticle.getType());
-		journalArticleImpl.setStructureId(journalArticle.getStructureId());
-		journalArticleImpl.setTemplateId(journalArticle.getTemplateId());
+		journalArticleImpl.setDDMStructureKey(journalArticle.getDDMStructureKey());
+		journalArticleImpl.setDDMTemplateKey(journalArticle.getDDMTemplateKey());
 		journalArticleImpl.setLayoutUuid(journalArticle.getLayoutUuid());
 		journalArticleImpl.setDisplayDate(journalArticle.getDisplayDate());
 		journalArticleImpl.setExpirationDate(journalArticle.getExpirationDate());
@@ -29554,11 +29861,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param primaryKey the primary key of the journal article
 	 * @return the journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchArticleException, SystemException {
+		throws NoSuchArticleException {
 		JournalArticle journalArticle = fetchByPrimaryKey(primaryKey);
 
 		if (journalArticle == null) {
@@ -29579,11 +29885,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param id the primary key of the journal article
 	 * @return the journal article
 	 * @throws com.liferay.portlet.journal.NoSuchArticleException if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public JournalArticle findByPrimaryKey(long id)
-		throws NoSuchArticleException, SystemException {
+		throws NoSuchArticleException {
 		return findByPrimaryKey((Serializable)id);
 	}
 
@@ -29592,11 +29897,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 *
 	 * @param primaryKey the primary key of the journal article
 	 * @return the journal article, or <code>null</code> if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public JournalArticle fetchByPrimaryKey(Serializable primaryKey)
-		throws SystemException {
+	public JournalArticle fetchByPrimaryKey(Serializable primaryKey) {
 		JournalArticle journalArticle = (JournalArticle)EntityCacheUtil.getResult(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
 				JournalArticleImpl.class, primaryKey);
 
@@ -29641,21 +29944,111 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 *
 	 * @param id the primary key of the journal article
 	 * @return the journal article, or <code>null</code> if a journal article with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public JournalArticle fetchByPrimaryKey(long id) throws SystemException {
+	public JournalArticle fetchByPrimaryKey(long id) {
 		return fetchByPrimaryKey((Serializable)id);
+	}
+
+	@Override
+	public Map<Serializable, JournalArticle> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys) {
+		if (primaryKeys.isEmpty()) {
+			return Collections.emptyMap();
+		}
+
+		Map<Serializable, JournalArticle> map = new HashMap<Serializable, JournalArticle>();
+
+		if (primaryKeys.size() == 1) {
+			Iterator<Serializable> iterator = primaryKeys.iterator();
+
+			Serializable primaryKey = iterator.next();
+
+			JournalArticle journalArticle = fetchByPrimaryKey(primaryKey);
+
+			if (journalArticle != null) {
+				map.put(primaryKey, journalArticle);
+			}
+
+			return map;
+		}
+
+		Set<Serializable> uncachedPrimaryKeys = null;
+
+		for (Serializable primaryKey : primaryKeys) {
+			JournalArticle journalArticle = (JournalArticle)EntityCacheUtil.getResult(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
+					JournalArticleImpl.class, primaryKey);
+
+			if (journalArticle == null) {
+				if (uncachedPrimaryKeys == null) {
+					uncachedPrimaryKeys = new HashSet<Serializable>();
+				}
+
+				uncachedPrimaryKeys.add(primaryKey);
+			}
+			else {
+				map.put(primaryKey, journalArticle);
+			}
+		}
+
+		if (uncachedPrimaryKeys == null) {
+			return map;
+		}
+
+		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
+				1);
+
+		query.append(_SQL_SELECT_JOURNALARTICLE_WHERE_PKS_IN);
+
+		for (Serializable primaryKey : uncachedPrimaryKeys) {
+			query.append(String.valueOf(primaryKey));
+
+			query.append(StringPool.COMMA);
+		}
+
+		query.setIndex(query.index() - 1);
+
+		query.append(StringPool.CLOSE_PARENTHESIS);
+
+		String sql = query.toString();
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			Query q = session.createQuery(sql);
+
+			for (JournalArticle journalArticle : (List<JournalArticle>)q.list()) {
+				map.put(journalArticle.getPrimaryKeyObj(), journalArticle);
+
+				cacheResult(journalArticle);
+
+				uncachedPrimaryKeys.remove(journalArticle.getPrimaryKeyObj());
+			}
+
+			for (Serializable primaryKey : uncachedPrimaryKeys) {
+				EntityCacheUtil.putResult(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
+					JournalArticleImpl.class, primaryKey, _nullJournalArticle);
+			}
+		}
+		catch (Exception e) {
+			throw processException(e);
+		}
+		finally {
+			closeSession(session);
+		}
+
+		return map;
 	}
 
 	/**
 	 * Returns all the journal articles.
 	 *
 	 * @return the journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> findAll() throws SystemException {
+	public List<JournalArticle> findAll() {
 		return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
@@ -29669,11 +30062,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param start the lower bound of the range of journal articles
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<JournalArticle> findAll(int start, int end)
-		throws SystemException {
+	public List<JournalArticle> findAll(int start, int end) {
 		return findAll(start, end, null);
 	}
 
@@ -29688,11 +30079,10 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<JournalArticle> findAll(int start, int end,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<JournalArticle> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -29774,10 +30164,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	/**
 	 * Removes all the journal articles from the database.
 	 *
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeAll() throws SystemException {
+	public void removeAll() {
 		for (JournalArticle journalArticle : findAll()) {
 			remove(journalArticle);
 		}
@@ -29787,10 +30176,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * Returns the number of journal articles.
 	 *
 	 * @return the number of journal articles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countAll() throws SystemException {
+	public int countAll() {
 		Long count = (Long)FinderCacheUtil.getResult(FINDER_PATH_COUNT_ALL,
 				FINDER_ARGS_EMPTY, this);
 
@@ -29830,25 +30218,6 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * Initializes the journal article persistence.
 	 */
 	public void afterPropertiesSet() {
-		String[] listenerClassNames = StringUtil.split(GetterUtil.getString(
-					com.liferay.portal.util.PropsUtil.get(
-						"value.object.listener.com.liferay.portlet.journal.model.JournalArticle")));
-
-		if (listenerClassNames.length > 0) {
-			try {
-				List<ModelListener<JournalArticle>> listenersList = new ArrayList<ModelListener<JournalArticle>>();
-
-				for (String listenerClassName : listenerClassNames) {
-					listenersList.add((ModelListener<JournalArticle>)InstanceFactory.newInstance(
-							getClassLoader(), listenerClassName));
-				}
-
-				listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
-			}
-			catch (Exception e) {
-				_log.error(e);
-			}
-		}
 	}
 
 	public void destroy() {
@@ -29859,6 +30228,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	}
 
 	private static final String _SQL_SELECT_JOURNALARTICLE = "SELECT journalArticle FROM JournalArticle journalArticle";
+	private static final String _SQL_SELECT_JOURNALARTICLE_WHERE_PKS_IN = "SELECT journalArticle FROM JournalArticle journalArticle WHERE id_ IN (";
 	private static final String _SQL_SELECT_JOURNALARTICLE_WHERE = "SELECT journalArticle FROM JournalArticle journalArticle WHERE ";
 	private static final String _SQL_COUNT_JOURNALARTICLE = "SELECT COUNT(journalArticle) FROM JournalArticle journalArticle";
 	private static final String _SQL_COUNT_JOURNALARTICLE_WHERE = "SELECT COUNT(journalArticle) FROM JournalArticle journalArticle WHERE ";
@@ -29876,11 +30246,11 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No JournalArticle exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No JournalArticle exists with the key {";
 	private static final boolean _HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE = com.liferay.portal.util.PropsValues.HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE;
-	private static Log _log = LogFactoryUtil.getLog(JournalArticlePersistenceImpl.class);
-	private static Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
-				"uuid", "id", "type"
+	private static final Log _log = LogFactoryUtil.getLog(JournalArticlePersistenceImpl.class);
+	private static final Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
+				"uuid", "id"
 			});
-	private static JournalArticle _nullJournalArticle = new JournalArticleImpl() {
+	private static final JournalArticle _nullJournalArticle = new JournalArticleImpl() {
 			@Override
 			public Object clone() {
 				return this;
@@ -29892,7 +30262,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 			}
 		};
 
-	private static CacheModel<JournalArticle> _nullJournalArticleCacheModel = new CacheModel<JournalArticle>() {
+	private static final CacheModel<JournalArticle> _nullJournalArticleCacheModel =
+		new CacheModel<JournalArticle>() {
 			@Override
 			public JournalArticle toEntityModel() {
 				return _nullJournalArticle;

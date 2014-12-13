@@ -14,21 +14,23 @@
 
 package com.liferay.cobertura.instrument;
 
-import com.liferay.portal.kernel.util.CharPool;
-
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStream;
 
 import java.lang.instrument.ClassFileTransformer;
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
 
 import java.security.ProtectionDomain;
 
-import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler;
 import net.sourceforge.cobertura.coveragedata.ProjectData;
 
 import org.objectweb.asm.ClassReader;
@@ -42,9 +44,7 @@ import org.objectweb.asm.Opcodes;
  */
 public class CoberturaClassFileTransformer implements ClassFileTransformer {
 
-	public CoberturaClassFileTransformer(
-		String[] includes, String[] excludes, final File lockFile) {
-
+	public CoberturaClassFileTransformer(String[] includes, String[] excludes) {
 		_includePatterns = new Pattern[includes.length];
 
 		for (int i = 0; i < includes.length; i++) {
@@ -60,32 +60,13 @@ public class CoberturaClassFileTransformer implements ClassFileTransformer {
 
 			_excludePatterns[i] = pattern;
 		}
-
-		ProjectDataUtil.addShutdownHook(
-			new Runnable() {
-
-				@Override
-				public void run() {
-					File dataFile =
-						CoverageDataFileHandler.getDefaultDataFile();
-
-					Collection<ProjectData> projectDatas =
-						_projectDatas.values();
-
-					ProjectDataUtil.mergeSave(
-						dataFile, lockFile,
-						projectDatas.toArray(
-							new ProjectData[projectDatas.size()]));
-
-					_projectDatas.clear();
-				}
-
-			}
-
-		);
 	}
 
 	public boolean matches(String className) {
+		if (className == null) {
+			return false;
+		}
+
 		if (_excludePatterns.length != 0) {
 			for (Pattern excludePattern : _excludePatterns) {
 				Matcher matcher = excludePattern.matcher(className);
@@ -132,11 +113,10 @@ public class CoberturaClassFileTransformer implements ClassFileTransformer {
 					}
 				}
 
-				ClassWriter classWriter = new ClassWriter(
-					ClassWriter.COMPUTE_MAXS);
+				ClassWriter classWriter = new ContextAwareClassWriter(
+					ClassWriter.COMPUTE_FRAMES);
 
-				String name = className.replace(
-					CharPool.SLASH, CharPool.PERIOD);
+				String name = className.replace('/', '.');
 
 				ClassVisitor classVisitor = new CoberturaClassVisitor(
 					projectData.getOrCreateClassData(name), classWriter);
@@ -147,18 +127,23 @@ public class CoberturaClassFileTransformer implements ClassFileTransformer {
 					classReader.accept(classVisitor, 0);
 				}
 
-				return classWriter.toByteArray();
+				byte[] data = classWriter.toByteArray();
+
+				dumpIntrumentedClass(classLoader, className, data);
+
+				return data;
 			}
 
 			// Modify TouchCollector's static initialization block by
 			// redirecting ProjectData#initialize to
 			// InstrumentationAgent#initialize
 
-			if (className.equals(
+			if ((className != null) &&
+				className.equals(
 					"net/sourceforge/cobertura/coveragedata/TouchCollector")) {
 
-				ClassWriter classWriter = new ClassWriter(
-					ClassWriter.COMPUTE_MAXS);
+				ClassWriter classWriter = new ContextAwareClassWriter(
+					ClassWriter.COMPUTE_FRAMES);
 
 				ClassVisitor classVisitor = new TouchCollectorClassVisitor(
 					classWriter);
@@ -167,7 +152,11 @@ public class CoberturaClassFileTransformer implements ClassFileTransformer {
 
 				classReader.accept(classVisitor, 0);
 
-				return classWriter.toByteArray();
+				byte[] data = classWriter.toByteArray();
+
+				dumpIntrumentedClass(classLoader, className, data);
+
+				return data;
 			}
 		}
 		catch (Throwable t) {
@@ -179,9 +168,69 @@ public class CoberturaClassFileTransformer implements ClassFileTransformer {
 		return null;
 	}
 
-	private Pattern[] _excludePatterns;
-	private Pattern[] _includePatterns;
-	private ConcurrentMap<ClassLoader, ProjectData> _projectDatas =
+	protected void dumpIntrumentedClass(
+			ClassLoader classLoader, String className, byte[] data)
+		throws IOException {
+
+		if (!Boolean.getBoolean("junit.code.coverage.dump")) {
+			return;
+		}
+
+		File logFile = new File(_dumpDir, "instrument.log");
+
+		File dumpDir = _dumpDir;
+
+		int index = className.lastIndexOf('/');
+
+		if (index != -1) {
+			dumpDir = new File(
+				dumpDir + "/" + classLoader.toString(),
+				className.substring(0, index));
+
+			className = className.substring(index + 1);
+		}
+
+		dumpDir.mkdirs();
+
+		File classFile = new File(dumpDir, className + ".class");
+
+		try (OutputStream outputStream = new FileOutputStream(classFile)) {
+			outputStream.write(data);
+		}
+
+		try (FileWriter fileWriter = new FileWriter(logFile, true)) {
+			fileWriter.write(
+				"Instrumented " + className + " from " + classLoader +
+					" and dumped to " + classFile.getAbsolutePath() + "\n");
+		}
+	}
+
+	private static final File _dumpDir;
+
+	static {
+		RuntimeMXBean runtimeMXBean = ManagementFactory.getRuntimeMXBean();
+
+		String name = runtimeMXBean.getName();
+
+		int index = name.indexOf('@');
+
+		String processId = null;
+
+		if (index == -1) {
+			processId = Long.toString(System.currentTimeMillis());
+		}
+		else {
+			processId = name.substring(0, index);
+		}
+
+		_dumpDir = new File(
+			System.getProperty("java.io.tmpdir"),
+			"cobertura-dump/" + processId);
+	}
+
+	private final Pattern[] _excludePatterns;
+	private final Pattern[] _includePatterns;
+	private final ConcurrentMap<ClassLoader, ProjectData> _projectDatas =
 		new ConcurrentHashMap<ClassLoader, ProjectData>();
 
 	private static class TouchCollectorClassVisitor extends ClassVisitor {

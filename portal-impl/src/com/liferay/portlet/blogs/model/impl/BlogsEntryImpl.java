@@ -15,7 +15,6 @@
 package com.liferay.portlet.blogs.model.impl;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.Image;
 import com.liferay.portal.service.ImageLocalServiceUtil;
@@ -29,9 +28,6 @@ import java.util.Date;
  * @author Juan Fernández
  */
 public class BlogsEntryImpl extends BlogsEntryBaseImpl {
-
-	public BlogsEntryImpl() {
-	}
 
 	@Override
 	public String getEntryImageURL(ThemeDisplay themeDisplay) {
@@ -50,7 +46,7 @@ public class BlogsEntryImpl extends BlogsEntryBaseImpl {
 	}
 
 	@Override
-	public String getSmallImageType() throws PortalException, SystemException {
+	public String getSmallImageType() throws PortalException {
 		if ((_smallImageType == null) && isSmallImage()) {
 			Image smallImage = ImageLocalServiceUtil.getImage(
 				getSmallImageId());

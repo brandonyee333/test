@@ -17,7 +17,6 @@ package com.liferay.portal.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.service.ServiceContext;
 
 import com.liferay.portlet.expando.model.ExpandoBridge;
@@ -145,10 +144,9 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 * Returns the user uuid of this password policy.
 	 *
 	 * @return the user uuid of this password policy
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public String getUserUuid() throws SystemException;
+	public String getUserUuid();
 
 	/**
 	 * Sets the user uuid of this password policy.
@@ -688,19 +686,19 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	public Object clone();
 
 	@Override
-	public int compareTo(PasswordPolicy passwordPolicy);
+	public int compareTo(com.liferay.portal.model.PasswordPolicy passwordPolicy);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<PasswordPolicy> toCacheModel();
+	public CacheModel<com.liferay.portal.model.PasswordPolicy> toCacheModel();
 
 	@Override
-	public PasswordPolicy toEscapedModel();
+	public com.liferay.portal.model.PasswordPolicy toEscapedModel();
 
 	@Override
-	public PasswordPolicy toUnescapedModel();
+	public com.liferay.portal.model.PasswordPolicy toUnescapedModel();
 
 	@Override
 	public String toString();

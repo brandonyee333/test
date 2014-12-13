@@ -14,6 +14,8 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
@@ -32,6 +34,7 @@ import java.io.ObjectOutput;
  * @see Group
  * @generated
  */
+@ProviderType
 public class GroupCacheModel implements CacheModel<Group>, Externalizable,
 	MVCCModel {
 	@Override
@@ -46,7 +49,7 @@ public class GroupCacheModel implements CacheModel<Group>, Externalizable,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(41);
+		StringBundler sb = new StringBundler(43);
 
 		sb.append("{mvccVersion=");
 		sb.append(mvccVersion);
@@ -86,6 +89,8 @@ public class GroupCacheModel implements CacheModel<Group>, Externalizable,
 		sb.append(site);
 		sb.append(", remoteStagingGroupCount=");
 		sb.append(remoteStagingGroupCount);
+		sb.append(", inheritContent=");
+		sb.append(inheritContent);
 		sb.append(", active=");
 		sb.append(active);
 		sb.append("}");
@@ -156,6 +161,7 @@ public class GroupCacheModel implements CacheModel<Group>, Externalizable,
 
 		groupImpl.setSite(site);
 		groupImpl.setRemoteStagingGroupCount(remoteStagingGroupCount);
+		groupImpl.setInheritContent(inheritContent);
 		groupImpl.setActive(active);
 
 		groupImpl.resetOriginalValues();
@@ -184,6 +190,7 @@ public class GroupCacheModel implements CacheModel<Group>, Externalizable,
 		friendlyURL = objectInput.readUTF();
 		site = objectInput.readBoolean();
 		remoteStagingGroupCount = objectInput.readInt();
+		inheritContent = objectInput.readBoolean();
 		active = objectInput.readBoolean();
 	}
 
@@ -249,6 +256,7 @@ public class GroupCacheModel implements CacheModel<Group>, Externalizable,
 
 		objectOutput.writeBoolean(site);
 		objectOutput.writeInt(remoteStagingGroupCount);
+		objectOutput.writeBoolean(inheritContent);
 		objectOutput.writeBoolean(active);
 	}
 
@@ -271,5 +279,6 @@ public class GroupCacheModel implements CacheModel<Group>, Externalizable,
 	public String friendlyURL;
 	public boolean site;
 	public int remoteStagingGroupCount;
+	public boolean inheritContent;
 	public boolean active;
 }

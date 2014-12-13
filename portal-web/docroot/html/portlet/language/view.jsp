@@ -16,4 +16,10 @@
 
 <%@ include file="/html/portlet/language/init.jsp" %>
 
-<liferay-ui:language displayCurrentLocale="<%= displayCurrentLocale %>" displayStyle="<%= displayStyle %>" languageIds="<%= languageIds %>" />
+<%
+Locale[] locales = LocaleUtil.fromLanguageIds(languageIds);
+%>
+
+<liferay-ui:ddm-template-renderer displayStyle="<%= displayStyle %>" displayStyleGroupId="<%= displayStyleGroupId %>" entries="<%= ListUtil.fromArray(locales) %>">
+	<liferay-ui:language displayCurrentLocale="<%= displayCurrentLocale %>" displayStyle="<%= displayStyle %>" languageIds="<%= languageIds %>" />
+</liferay-ui:ddm-template-renderer>

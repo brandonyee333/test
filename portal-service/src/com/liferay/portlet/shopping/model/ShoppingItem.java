@@ -39,8 +39,12 @@ public interface ShoppingItem extends ShoppingItemModel, PersistedModel {
 	public java.lang.String[] getFieldsQuantitiesArray();
 
 	public java.util.List<com.liferay.portlet.shopping.model.ShoppingItemPrice> getItemPrices()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
+
+	public java.lang.String getShoppingItemImageURL(
+		com.liferay.portal.theme.ThemeDisplay themeDisplay);
+
+	public boolean isInfiniteStock();
 
 	public void setFieldsQuantitiesArray(
 		java.lang.String[] fieldsQuantitiesArray);

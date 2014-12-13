@@ -14,6 +14,8 @@
 
 package com.liferay.portal.service.base;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.bean.IdentifiableBean;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -58,6 +60,7 @@ import javax.sql.DataSource;
  * @see com.liferay.portal.service.ResourceBlockPermissionLocalServiceUtil
  * @generated
  */
+@ProviderType
 public abstract class ResourceBlockPermissionLocalServiceBaseImpl
 	extends BaseLocalServiceImpl implements ResourceBlockPermissionLocalService,
 		IdentifiableBean {
@@ -72,13 +75,11 @@ public abstract class ResourceBlockPermissionLocalServiceBaseImpl
 	 *
 	 * @param resourceBlockPermission the resource block permission
 	 * @return the resource block permission that was added
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public ResourceBlockPermission addResourceBlockPermission(
-		ResourceBlockPermission resourceBlockPermission)
-		throws SystemException {
+		ResourceBlockPermission resourceBlockPermission) {
 		resourceBlockPermission.setNew(true);
 
 		return resourceBlockPermissionPersistence.update(resourceBlockPermission);
@@ -102,12 +103,11 @@ public abstract class ResourceBlockPermissionLocalServiceBaseImpl
 	 * @param resourceBlockPermissionId the primary key of the resource block permission
 	 * @return the resource block permission that was removed
 	 * @throws PortalException if a resource block permission with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public ResourceBlockPermission deleteResourceBlockPermission(
-		long resourceBlockPermissionId) throws PortalException, SystemException {
+		long resourceBlockPermissionId) throws PortalException {
 		return resourceBlockPermissionPersistence.remove(resourceBlockPermissionId);
 	}
 
@@ -116,13 +116,11 @@ public abstract class ResourceBlockPermissionLocalServiceBaseImpl
 	 *
 	 * @param resourceBlockPermission the resource block permission
 	 * @return the resource block permission that was removed
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public ResourceBlockPermission deleteResourceBlockPermission(
-		ResourceBlockPermission resourceBlockPermission)
-		throws SystemException {
+		ResourceBlockPermission resourceBlockPermission) {
 		return resourceBlockPermissionPersistence.remove(resourceBlockPermission);
 	}
 
@@ -139,12 +137,9 @@ public abstract class ResourceBlockPermissionLocalServiceBaseImpl
 	 *
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery)
-		throws SystemException {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return resourceBlockPermissionPersistence.findWithDynamicQuery(dynamicQuery);
 	}
 
@@ -159,12 +154,10 @@ public abstract class ResourceBlockPermissionLocalServiceBaseImpl
 	 * @param start the lower bound of the range of model instances
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery, int start, int end)
-		throws SystemException {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end) {
 		return resourceBlockPermissionPersistence.findWithDynamicQuery(dynamicQuery,
 			start, end);
 	}
@@ -181,47 +174,42 @@ public abstract class ResourceBlockPermissionLocalServiceBaseImpl
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator orderByComparator) throws SystemException {
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end, OrderByComparator<T> orderByComparator) {
 		return resourceBlockPermissionPersistence.findWithDynamicQuery(dynamicQuery,
 			start, end, orderByComparator);
 	}
 
 	/**
-	 * Returns the number of rows that match the dynamic query.
+	 * Returns the number of rows matching the dynamic query.
 	 *
 	 * @param dynamicQuery the dynamic query
-	 * @return the number of rows that match the dynamic query
-	 * @throws SystemException if a system exception occurred
+	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
-	public long dynamicQueryCount(DynamicQuery dynamicQuery)
-		throws SystemException {
+	public long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return resourceBlockPermissionPersistence.countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * Returns the number of rows that match the dynamic query.
+	 * Returns the number of rows matching the dynamic query.
 	 *
 	 * @param dynamicQuery the dynamic query
 	 * @param projection the projection to apply to the query
-	 * @return the number of rows that match the dynamic query
-	 * @throws SystemException if a system exception occurred
+	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection) throws SystemException {
+		Projection projection) {
 		return resourceBlockPermissionPersistence.countWithDynamicQuery(dynamicQuery,
 			projection);
 	}
 
 	@Override
 	public ResourceBlockPermission fetchResourceBlockPermission(
-		long resourceBlockPermissionId) throws SystemException {
+		long resourceBlockPermissionId) {
 		return resourceBlockPermissionPersistence.fetchByPrimaryKey(resourceBlockPermissionId);
 	}
 
@@ -231,17 +219,15 @@ public abstract class ResourceBlockPermissionLocalServiceBaseImpl
 	 * @param resourceBlockPermissionId the primary key of the resource block permission
 	 * @return the resource block permission
 	 * @throws PortalException if a resource block permission with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public ResourceBlockPermission getResourceBlockPermission(
-		long resourceBlockPermissionId) throws PortalException, SystemException {
+		long resourceBlockPermissionId) throws PortalException {
 		return resourceBlockPermissionPersistence.findByPrimaryKey(resourceBlockPermissionId);
 	}
 
 	@Override
-	public ActionableDynamicQuery getActionableDynamicQuery()
-		throws SystemException {
+	public ActionableDynamicQuery getActionableDynamicQuery() {
 		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
 
 		actionableDynamicQuery.setBaseLocalService(com.liferay.portal.service.ResourceBlockPermissionLocalServiceUtil.getService());
@@ -255,8 +241,7 @@ public abstract class ResourceBlockPermissionLocalServiceBaseImpl
 	}
 
 	protected void initActionableDynamicQuery(
-		ActionableDynamicQuery actionableDynamicQuery)
-		throws SystemException {
+		ActionableDynamicQuery actionableDynamicQuery) {
 		actionableDynamicQuery.setBaseLocalService(com.liferay.portal.service.ResourceBlockPermissionLocalServiceUtil.getService());
 		actionableDynamicQuery.setClass(ResourceBlockPermission.class);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
@@ -265,9 +250,18 @@ public abstract class ResourceBlockPermissionLocalServiceBaseImpl
 			"resourceBlockPermissionId");
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
+		throws PortalException {
+		return resourceBlockPermissionLocalService.deleteResourceBlockPermission((ResourceBlockPermission)persistedModel);
+	}
+
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException, SystemException {
+		throws PortalException {
 		return resourceBlockPermissionPersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
@@ -281,11 +275,10 @@ public abstract class ResourceBlockPermissionLocalServiceBaseImpl
 	 * @param start the lower bound of the range of resource block permissions
 	 * @param end the upper bound of the range of resource block permissions (not inclusive)
 	 * @return the range of resource block permissions
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<ResourceBlockPermission> getResourceBlockPermissions(
-		int start, int end) throws SystemException {
+		int start, int end) {
 		return resourceBlockPermissionPersistence.findAll(start, end);
 	}
 
@@ -293,10 +286,9 @@ public abstract class ResourceBlockPermissionLocalServiceBaseImpl
 	 * Returns the number of resource block permissions.
 	 *
 	 * @return the number of resource block permissions
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int getResourceBlockPermissionsCount() throws SystemException {
+	public int getResourceBlockPermissionsCount() {
 		return resourceBlockPermissionPersistence.countAll();
 	}
 
@@ -305,13 +297,11 @@ public abstract class ResourceBlockPermissionLocalServiceBaseImpl
 	 *
 	 * @param resourceBlockPermission the resource block permission
 	 * @return the resource block permission that was updated
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public ResourceBlockPermission updateResourceBlockPermission(
-		ResourceBlockPermission resourceBlockPermission)
-		throws SystemException {
+		ResourceBlockPermission resourceBlockPermission) {
 		return resourceBlockPermissionPersistence.update(resourceBlockPermission);
 	}
 
@@ -490,7 +480,7 @@ public abstract class ResourceBlockPermissionLocalServiceBaseImpl
 	 *
 	 * @param sql the sql query
 	 */
-	protected void runSQL(String sql) throws SystemException {
+	protected void runSQL(String sql) {
 		try {
 			DataSource dataSource = resourceBlockPermissionPersistence.getDataSource();
 

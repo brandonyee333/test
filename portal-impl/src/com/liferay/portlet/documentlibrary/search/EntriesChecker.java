@@ -65,6 +65,9 @@ public class EntriesChecker extends RowChecker {
 		if (portletName.equals(PortletKeys.DOCUMENT_LIBRARY_DISPLAY)) {
 			_documentLibraryDisplayPortlet = true;
 		}
+		else {
+			_documentLibraryDisplayPortlet = false;
+		}
 	}
 
 	@Override
@@ -191,7 +194,7 @@ public class EntriesChecker extends RowChecker {
 			checkBoxAllRowIds = "'" + getAllRowIds() + "'";
 		}
 		else {
-			checkBoxAllRowIds = "'#" + getAllRowIds() + "Checkbox'";
+			checkBoxAllRowIds = "'#" + getAllRowIds() + "'";
 			checkBoxPostOnClick =
 				_liferayPortletResponse.getNamespace() +
 					"toggleActionsButton();";
@@ -199,8 +202,7 @@ public class EntriesChecker extends RowChecker {
 
 		return getRowCheckBox(
 			request, checked, disabled,
-			_liferayPortletResponse.getNamespace() + RowChecker.ROW_IDS +
-				name + "Checkbox",
+			_liferayPortletResponse.getNamespace() + RowChecker.ROW_IDS + name,
 			primaryKey, checkBoxRowIds, checkBoxAllRowIds, checkBoxPostOnClick);
 	}
 
@@ -211,21 +213,21 @@ public class EntriesChecker extends RowChecker {
 		sb.append(_liferayPortletResponse.getNamespace());
 		sb.append(RowChecker.ROW_IDS);
 		sb.append(Folder.class.getSimpleName());
-		sb.append("Checkbox', '");
+		sb.append("', '");
 		sb.append(_liferayPortletResponse.getNamespace());
 		sb.append(RowChecker.ROW_IDS);
 		sb.append(DLFileShortcut.class.getSimpleName());
-		sb.append("Checkbox', '");
+		sb.append("', '");
 		sb.append(_liferayPortletResponse.getNamespace());
 		sb.append(RowChecker.ROW_IDS);
 		sb.append(FileEntry.class.getSimpleName());
-		sb.append("Checkbox']");
+		sb.append("']");
 
 		return sb.toString();
 	}
 
-	private boolean _documentLibraryDisplayPortlet;
-	private LiferayPortletResponse _liferayPortletResponse;
-	private PermissionChecker _permissionChecker;
+	private final boolean _documentLibraryDisplayPortlet;
+	private final LiferayPortletResponse _liferayPortletResponse;
+	private final PermissionChecker _permissionChecker;
 
 }

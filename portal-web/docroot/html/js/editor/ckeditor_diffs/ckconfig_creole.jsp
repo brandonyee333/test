@@ -14,15 +14,7 @@
  */
 --%>
 
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
-<%@ page import="com.liferay.portal.kernel.language.LanguageUtil" %>
-<%@ page import="com.liferay.portal.kernel.util.ContentTypes" %>
-<%@ page import="com.liferay.portal.kernel.util.HtmlUtil" %>
-<%@ page import="com.liferay.portal.kernel.util.LocaleUtil" %>
-<%@ page import="com.liferay.portal.kernel.util.ParamUtil" %>
-
-<%@ page import="java.util.Locale" %>
+<%@ include file="/html/js/editor/ckeditor_init.jsp" %>
 
 <%
 String attachmentURLPrefix = ParamUtil.getString(request, "attachmentURLPrefix");
@@ -49,10 +41,12 @@ long wikiPageResourcePrimKey = ParamUtil.getLong(request, "wikiPageResourcePrimK
 response.setContentType(ContentTypes.TEXT_JAVASCRIPT);
 %>
 
-;(function() {
+;window['<%= HtmlUtil.escapeJS(name) %>Config'] = function() {
 	var ckEditor = CKEDITOR.instances['<%= HtmlUtil.escapeJS(name) %>'];
 
 	var config = ckEditor.config;
+
+	config.allowedContent = 'b strong i hr h1 h2 h3 h4 h5 h6 em ul ol li pre table tr th; img a[*]';
 
 	config.attachmentURLPrefix = '<%= HtmlUtil.escapeJS(attachmentURLPrefix) %>';
 
@@ -72,7 +66,9 @@ response.setContentType(ContentTypes.TEXT_JAVASCRIPT);
 
 	config.disableObjectResizing = true;
 
-	config.extraPlugins = 'creole,wikilink';
+	config.extraPlugins = 'a11yhelpbtn,creole,lfrpopup,wikilink';
+
+	config.filebrowserWindowFeatures = 'title=<%= LanguageUtil.get(locale, "browse") %>';
 
 	config.format_tags = 'p;h1;h2;h3;h4;h5;h6;pre';
 
@@ -114,38 +110,41 @@ response.setContentType(ContentTypes.TEXT_JAVASCRIPT);
 	config.resize_enabled = <%= resizable %>;
 
 	config.toolbar_creole = [
-		['Cut','Copy','Paste','PasteText','PasteFromWord'],
-		['Undo','Redo'],
-		['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'],
+		['Bold', 'Italic', '-' ,'RemoveFormat'],
+		['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'],
 		['Format'],
-
-		<%
-		String linkButtonBar = "['Link', 'Unlink']";
-
-		if (wikiPageResourcePrimKey > 0) {
-			linkButtonBar = "['Link', 'Unlink', 'Image']";
-		}
-		%>
-
-		<%= linkButtonBar %>,
-
-		['Table', '-', 'HorizontalRule', 'SpecialChar' ],
-		['Find','Replace','-','SelectAll','RemoveFormat'],
-		['Source']
+		['Link', 'Unlink'],
+		['Table', '-', <c:if test="<%= (wikiPageResourcePrimKey > 0) %>">'Image', '-', </c:if> 'HorizontalRule', '-', 'SpecialChar' ],
+		'/',
+		['Cut', 'Copy', 'Paste', '-', 'PasteText', 'PasteFromWord', '-', 'SelectAll', '-', 'Undo', 'Redo'],
+		['Find','Replace'],
+		['Source'],
+		['A11YBtn']
 	];
 
 	config.toolbar_phone = [
-		['Bold', 'Italic', 'Underline'],
+		['Bold', 'Italic'],
 		['NumberedList', 'BulletedList'],
-		['Image', 'Link', 'Unlink']
+		['Link', 'Unlink'],
+
+		<c:if test="<%= (wikiPageResourcePrimKey > 0) %>">
+			['Image'],
+		</c:if>
+
+		['Source']
 	];
 
 	config.toolbar_tablet = [
-		['Bold', 'Italic', 'Underline', 'Strike'],
-		['NumberedList', 'BulletedList'],
-		['Image', 'Link', 'Unlink'],
-		['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
-		['Styles', 'FontSize']
+		['Bold', 'Italic'],
+		['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'],
+		['Format'],
+		['Link', 'Unlink'],
+
+		<c:if test="<%= (wikiPageResourcePrimKey > 0) %>">
+			['Image'],
+		</c:if>
+
+		['Source']
 	];
 
 	ckEditor.on(
@@ -196,4 +195,8 @@ response.setContentType(ContentTypes.TEXT_JAVASCRIPT);
 			}
 		}
 	);
-})();
+
+	<%@ include file="/html/js/editor/ckeditor/ckconfig_creole-ext.jsp" %>
+};
+
+window['<%= HtmlUtil.escapeJS(name) %>Config']();

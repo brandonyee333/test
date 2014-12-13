@@ -21,13 +21,13 @@ import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
  * @author Brian Wing Shun Chan
+ * @generated
  */
 @ProviderType
 public class MBCategoryFinderUtil {
 	public static int countByS_G_U_P(long groupId, long userId,
 		long[] parentCategoryIds,
-		com.liferay.portal.kernel.dao.orm.QueryDefinition queryDefinition)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.portal.kernel.dao.orm.QueryDefinition<com.liferay.portlet.messageboards.model.MBCategory> queryDefinition) {
 		return getFinder()
 				   .countByS_G_U_P(groupId, userId, parentCategoryIds,
 			queryDefinition);
@@ -35,8 +35,7 @@ public class MBCategoryFinderUtil {
 
 	public static int filterCountByS_G_U_P(long groupId, long userId,
 		long[] parentCategoryIds,
-		com.liferay.portal.kernel.dao.orm.QueryDefinition queryDefinition)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.portal.kernel.dao.orm.QueryDefinition<com.liferay.portlet.messageboards.model.MBCategory> queryDefinition) {
 		return getFinder()
 				   .filterCountByS_G_U_P(groupId, userId, parentCategoryIds,
 			queryDefinition);
@@ -44,8 +43,7 @@ public class MBCategoryFinderUtil {
 
 	public static java.util.List<com.liferay.portlet.messageboards.model.MBCategory> filterFindByS_G_U_P(
 		long groupId, long userId, long[] parentCategoryIds,
-		com.liferay.portal.kernel.dao.orm.QueryDefinition queryDefinition)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.portal.kernel.dao.orm.QueryDefinition<com.liferay.portlet.messageboards.model.MBCategory> queryDefinition) {
 		return getFinder()
 				   .filterFindByS_G_U_P(groupId, userId, parentCategoryIds,
 			queryDefinition);
@@ -53,8 +51,7 @@ public class MBCategoryFinderUtil {
 
 	public static java.util.List<com.liferay.portlet.messageboards.model.MBCategory> findByS_G_U_P(
 		long groupId, long userId, long[] parentCategoryIds,
-		com.liferay.portal.kernel.dao.orm.QueryDefinition queryDefinition)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.portal.kernel.dao.orm.QueryDefinition<com.liferay.portlet.messageboards.model.MBCategory> queryDefinition) {
 		return getFinder()
 				   .findByS_G_U_P(groupId, userId, parentCategoryIds,
 			queryDefinition);

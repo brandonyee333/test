@@ -15,7 +15,6 @@
 package com.liferay.portlet.dynamicdatamapping.template;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.mobile.device.Device;
 import com.liferay.portal.kernel.template.BaseTemplateHandler;
 import com.liferay.portal.kernel.template.TemplateVariableCodeHandler;
@@ -89,12 +88,9 @@ public abstract class BaseDDMTemplateHandler extends BaseTemplateHandler {
 		return templateVariableGroup;
 	}
 
-	protected abstract TemplateVariableCodeHandler
-		getTemplateVariableCodeHandler();
-
 	protected TemplateVariableGroup getStructureFieldsTemplateVariableGroup(
 			long ddmStructureId, Locale locale)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (ddmStructureId <= 0) {
 			return null;
@@ -125,6 +121,9 @@ public abstract class BaseDDMTemplateHandler extends BaseTemplateHandler {
 
 		return templateVariableGroup;
 	}
+
+	protected abstract TemplateVariableCodeHandler
+		getTemplateVariableCodeHandler();
 
 	protected TemplateVariableGroup getUtilTemplateVariableGroup() {
 		TemplateVariableGroup templateVariableGroup = new TemplateVariableGroup(

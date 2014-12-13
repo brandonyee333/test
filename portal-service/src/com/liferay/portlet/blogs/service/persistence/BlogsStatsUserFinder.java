@@ -18,27 +18,23 @@ import aQute.bnd.annotation.ProviderType;
 
 /**
  * @author Brian Wing Shun Chan
+ * @generated
  */
 @ProviderType
 public interface BlogsStatsUserFinder {
-	public int countByOrganizationId(long organizationId)
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public int countByOrganizationId(long organizationId);
 
 	public int countByOrganizationIds(
-		java.util.List<java.lang.Long> organizationIds)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		java.util.List<java.lang.Long> organizationIds);
 
 	public java.util.List<com.liferay.portlet.blogs.model.BlogsStatsUser> findByGroupIds(
-		long companyId, long groupId, int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		long companyId, long groupId, int start, int end);
 
 	public java.util.List<com.liferay.portlet.blogs.model.BlogsStatsUser> findByOrganizationId(
 		long organizationId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portlet.blogs.model.BlogsStatsUser> obc);
 
 	public java.util.List<com.liferay.portlet.blogs.model.BlogsStatsUser> findByOrganizationIds(
 		java.util.List<java.lang.Long> organizationIds, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portlet.blogs.model.BlogsStatsUser> obc);
 }

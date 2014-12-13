@@ -19,6 +19,8 @@
 <%
 User selUser = (User)request.getAttribute("user.selUser");
 List<UserGroup> userGroups = (List<UserGroup>)request.getAttribute("user.userGroups");
+
+currentURLObj.setParameter("historyKey", renderResponse.getNamespace() + "userGroups");
 %>
 
 <liferay-ui:error-marker key="errorSection" value="user-groups" />
@@ -27,20 +29,25 @@ List<UserGroup> userGroups = (List<UserGroup>)request.getAttribute("user.userGro
 
 <liferay-util:buffer var="removeUserGroupIcon">
 	<liferay-ui:icon
-		image="unlink"
+		iconCssClass="icon-remove"
 		label="<%= true %>"
 		message="remove"
 	/>
 </liferay-util:buffer>
 
+<aui:input name="addUserGroupIds" type="hidden" />
+<aui:input name="deleteUserGroupIds" type="hidden" />
+
 <h3><liferay-ui:message key="user-groups" /></h3>
 
 <liferay-ui:search-container
+	curParam="userGroupsCur"
 	headerNames="name,null"
+	iteratorURL="<%= currentURLObj %>"
+	total="<%= userGroups.size() %>"
 >
 	<liferay-ui:search-container-results
-		results="<%= userGroups %>"
-		total="<%= userGroups.size() %>"
+		results="<%= userGroups.subList(searchContainer.getStart(), searchContainer.getResultEnd()) %>"
 	/>
 
 	<liferay-ui:search-container-row
@@ -61,7 +68,7 @@ List<UserGroup> userGroups = (List<UserGroup>)request.getAttribute("user.userGro
 		</c:if>
 	</liferay-ui:search-container-row>
 
-	<liferay-ui:search-iterator paginate="<%= false %>" />
+	<liferay-ui:search-iterator />
 </liferay-ui:search-container>
 
 <c:if test="<%= !portletName.equals(PortletKeys.MY_ACCOUNT) %>">
@@ -70,16 +77,69 @@ List<UserGroup> userGroups = (List<UserGroup>)request.getAttribute("user.userGro
 		iconCssClass="icon-search"
 		id="openUserGroupsLink"
 		label="<%= true %>"
-		linkCssClass="btn"
+		linkCssClass="btn btn-default"
 		message="select"
 		url="javascript:;"
 	/>
 
-	<aui:script use="aui-base,escape">
+	<aui:script use="escape,liferay-search-container">
+		var Util = Liferay.Util;
+
+		var searchContainer = Liferay.SearchContainer.get('<portlet:namespace />userGroupsSearchContainer');
+
+		var searchContainerContentBox = searchContainer.get('contentBox');
+
+		var addUserGroupIds = [];
+		var deleteUserGroupIds = [];
+
+		searchContainerContentBox.delegate(
+			'click',
+			function(event) {
+				var link = event.currentTarget;
+
+				var rowId = link.attr('data-rowId');
+
+				var tr = link.ancestor('tr');
+
+				var selectUserGroup = Util.getWindow('<portlet:namespace />selectUserGroup');
+
+				if (selectUserGroup) {
+					var selectButton = selectUserGroup.iframe.node.get('contentWindow.document').one('.selector-button[data-usergroupid="' + rowId + '"]');
+
+					Util.toggleDisabled(selectButton, false);
+				}
+
+				searchContainer.deleteRow(tr, rowId);
+
+				A.Array.removeItem(addUserGroupIds, rowId);
+
+				deleteUserGroupIds.push(rowId);
+
+				document.<portlet:namespace />fm.<portlet:namespace />addUserGroupIds.value = addUserGroupIds.join(',');
+				document.<portlet:namespace />fm.<portlet:namespace />deleteUserGroupIds.value = deleteUserGroupIds.join(',');
+			},
+			'.modify-link'
+		);
+
+		Liferay.on(
+			'<portlet:namespace />enableRemovedUserGroups',
+			function(event) {
+				event.selectors.each(
+					function(item, index, collection) {
+						var userGroupId = item.attr('data-usergroupid');
+
+						if (A.Array.indexOf(deleteUserGroupIds, userGroupId) != -1) {
+							Util.toggleDisabled(item, false);
+						}
+					}
+				);
+			}
+		);
+
 		A.one('#<portlet:namespace />openUserGroupsLink').on(
 			'click',
 			function(event) {
-				Liferay.Util.selectEntity(
+				Util.selectEntity(
 					{
 						dialog: {
 							constrain: true,
@@ -99,63 +159,24 @@ List<UserGroup> userGroups = (List<UserGroup>)request.getAttribute("user.userGro
 					function(event) {
 						var A = AUI();
 
-						var searchContainer = Liferay.SearchContainer.get('<portlet:namespace />userGroupsSearchContainer');
-
 						var rowColumns = [];
 
 						rowColumns.push(A.Escape.html(event.usergroupname));
 						rowColumns.push('<a class="modify-link" data-rowId="' + event.usergroupid + '" href="javascript:;"><%= UnicodeFormatter.toString(removeUserGroupIcon) %></a>');
 
 						searchContainer.addRow(rowColumns, event.usergroupid);
+
 						searchContainer.updateDataStore();
+
+						A.Array.removeItem(deleteUserGroupIds, event.usergroupid);
+
+						addUserGroupIds.push(event.usergroupid);
+
+						document.<portlet:namespace />fm.<portlet:namespace />addUserGroupIds.value = addUserGroupIds.join(',');
+						document.<portlet:namespace />fm.<portlet:namespace />deleteUserGroupIds.value = deleteUserGroupIds.join(',');
 					}
 				);
 			}
 		);
 	</aui:script>
 </c:if>
-
-<aui:script use="liferay-search-container">
-	var Util = Liferay.Util;
-
-	var searchContainer = Liferay.SearchContainer.get('<portlet:namespace />userGroupsSearchContainer');
-
-	var searchContainerContentBox = searchContainer.get('contentBox');
-
-	searchContainerContentBox.delegate(
-		'click',
-		function(event) {
-			var link = event.currentTarget;
-
-			var rowId = link.attr('data-rowId');
-
-			var tr = link.ancestor('tr');
-
-			var selectUserGroup = Util.getWindow('<portlet:namespace />selectUserGroup');
-
-			if (selectUserGroup) {
-				var selectButton = selectUserGroup.iframe.node.get('contentWindow.document').one('.selector-button[data-usergroupid="' + rowId + '"]');
-
-				Util.toggleDisabled(selectButton, false);
-			}
-
-			searchContainer.deleteRow(tr, rowId);
-		},
-		'.modify-link'
-	);
-
-	Liferay.on(
-		'<portlet:namespace />enableRemovedUserGroups',
-		function(event) {
-			event.selectors.each(
-				function(item, index, collection) {
-					var modifyLink = searchContainerContentBox.one('.modify-link[data-rowid="' + item.attr('data-usergroupid') + '"]');
-
-					if (!modifyLink) {
-						Util.toggleDisabled(item, false);
-					}
-				}
-			);
-		}
-	);
-</aui:script>

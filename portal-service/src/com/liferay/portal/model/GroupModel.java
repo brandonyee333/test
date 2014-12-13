@@ -17,7 +17,6 @@ package com.liferay.portal.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.service.ServiceContext;
 
 import com.liferay.portlet.expando.model.ExpandoBridge;
@@ -136,9 +135,8 @@ public interface GroupModel extends AttachedModel, BaseModel<Group>, MVCCModel {
 	 * Returns the creator user uuid of this group.
 	 *
 	 * @return the creator user uuid of this group
-	 * @throws SystemException if a system exception occurred
 	 */
-	public String getCreatorUserUuid() throws SystemException;
+	public String getCreatorUserUuid();
 
 	/**
 	 * Sets the creator user uuid of this group.
@@ -377,6 +375,27 @@ public interface GroupModel extends AttachedModel, BaseModel<Group>, MVCCModel {
 	public void setRemoteStagingGroupCount(int remoteStagingGroupCount);
 
 	/**
+	 * Returns the inherit content of this group.
+	 *
+	 * @return the inherit content of this group
+	 */
+	public boolean getInheritContent();
+
+	/**
+	 * Returns <code>true</code> if this group is inherit content.
+	 *
+	 * @return <code>true</code> if this group is inherit content; <code>false</code> otherwise
+	 */
+	public boolean isInheritContent();
+
+	/**
+	 * Sets whether this group is inherit content.
+	 *
+	 * @param inheritContent the inherit content of this group
+	 */
+	public void setInheritContent(boolean inheritContent);
+
+	/**
 	 * Returns the active of this group.
 	 *
 	 * @return the active of this group
@@ -434,19 +453,19 @@ public interface GroupModel extends AttachedModel, BaseModel<Group>, MVCCModel {
 	public Object clone();
 
 	@Override
-	public int compareTo(Group group);
+	public int compareTo(com.liferay.portal.model.Group group);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<Group> toCacheModel();
+	public CacheModel<com.liferay.portal.model.Group> toCacheModel();
 
 	@Override
-	public Group toEscapedModel();
+	public com.liferay.portal.model.Group toEscapedModel();
 
 	@Override
-	public Group toUnescapedModel();
+	public com.liferay.portal.model.Group toUnescapedModel();
 
 	@Override
 	public String toString();

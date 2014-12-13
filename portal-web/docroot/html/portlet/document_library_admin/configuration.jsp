@@ -17,15 +17,15 @@
 <%@ include file="/html/portlet/document_library/init.jsp" %>
 
 <%
-dlSettings = DLUtil.getDLSettings(themeDisplay.getSiteGroupId(), request);
+dlSettings = DLSettings.getInstance(themeDisplay.getSiteGroupId(), request.getParameterMap());
 %>
 
-<liferay-portlet:actionURL portletConfiguration="true" var="configurationActionURL">
+<liferay-portlet:actionURL portletConfiguration="<%= true %>" var="configurationActionURL">
 	<liferay-portlet:param name="serviceName" value="<%= DLConstants.SERVICE_NAME %>" />
 	<liferay-portlet:param name="settingsScope" value="group" />
 </liferay-portlet:actionURL>
 
-<liferay-portlet:renderURL portletConfiguration="true" var="configurationRenderURL" />
+<liferay-portlet:renderURL portletConfiguration="<%= true %>" var="configurationRenderURL" />
 
 <aui:form action="<%= configurationActionURL %>" method="post" name="fm">
 	<aui:input name="<%= Constants.CMD %>" type="hidden" value="<%= Constants.UPDATE %>" />
@@ -81,7 +81,7 @@ dlSettings = DLUtil.getDLSettings(themeDisplay.getSiteGroupId(), request);
 			<liferay-ui:email-notification-settings
 				emailBody="<%= dlSettings.getEmailFileEntryAddedBodyXml() %>"
 				emailDefinitionTerms="<%= emailDefinitionTerms %>"
-				emailEnabled="<%= dlSettings.getEmailFileEntryAddedEnabled() %>"
+				emailEnabled="<%= dlSettings.isEmailFileEntryAddedEnabled() %>"
 				emailParam="emailFileEntryAdded"
 				emailSubject="<%= dlSettings.getEmailFileEntryAddedSubjectXml() %>"
 			/>
@@ -91,7 +91,7 @@ dlSettings = DLUtil.getDLSettings(themeDisplay.getSiteGroupId(), request);
 			<liferay-ui:email-notification-settings
 				emailBody="<%= dlSettings.getEmailFileEntryUpdatedBodyXml() %>"
 				emailDefinitionTerms="<%= emailDefinitionTerms %>"
-				emailEnabled="<%= dlSettings.getEmailFileEntryUpdatedEnabled() %>"
+				emailEnabled="<%= dlSettings.isEmailFileEntryUpdatedEnabled() %>"
 				emailParam="emailFileEntryUpdated"
 				emailSubject="<%= dlSettings.getEmailFileEntryUpdatedSubjectXml() %>"
 			/>

@@ -15,7 +15,6 @@
 package com.liferay.portlet.shopping.model.impl;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -32,9 +31,6 @@ import java.util.Map;
  */
 public class ShoppingCartImpl extends ShoppingCartBaseImpl {
 
-	public ShoppingCartImpl() {
-	}
-
 	@Override
 	public void addItemId(long itemId, String fields) {
 		setItemIds(
@@ -43,7 +39,7 @@ public class ShoppingCartImpl extends ShoppingCartBaseImpl {
 	}
 
 	@Override
-	public ShoppingCoupon getCoupon() throws PortalException, SystemException {
+	public ShoppingCoupon getCoupon() throws PortalException {
 		ShoppingCoupon coupon = null;
 
 		if (Validator.isNotNull(getCouponCodes())) {
@@ -60,7 +56,7 @@ public class ShoppingCartImpl extends ShoppingCartBaseImpl {
 	}
 
 	@Override
-	public Map<ShoppingCartItem, Integer> getItems() throws SystemException {
+	public Map<ShoppingCartItem, Integer> getItems() {
 		return ShoppingCartLocalServiceUtil.getItems(
 			getGroupId(), getItemIds());
 	}

@@ -51,10 +51,6 @@ public class WebKeys implements com.liferay.portal.kernel.util.WebKeys {
 
 	public static final String BLOGS_ENTRY = "BLOGS_ENTRY";
 
-	public static final String BOOKMARKS_ENTRY = "BOOKMARKS_ENTRY";
-
-	public static final String BOOKMARKS_FOLDER = "BOOKMARKS_FOLDER";
-
 	public static final String CACHE_PORTLET_RESPONSES = "CACHE_PORTLET_RESPONSES";
 
 	public static final String CALENDAR_EVENT = "CALENDAR_EVENT";
@@ -87,6 +83,8 @@ public class WebKeys implements com.liferay.portal.kernel.util.WebKeys {
 
 	public static final String DIFF_RESULTS = "DIFF_RESULTS";
 
+	public static final String DIFF_VERSION = "DIFF_VERSION";
+
 	public static final String DOCUMENT_LIBRARY_FILE_ENTRIES = "DOCUMENT_LIBRARY_FILE_ENTRIES";
 
 	public static final String DOCUMENT_LIBRARY_FILE_ENTRY = "DOCUMENT_LIBRARY_FILE_ENTRY";
@@ -98,8 +96,6 @@ public class WebKeys implements com.liferay.portal.kernel.util.WebKeys {
 	public static final String DOCUMENT_LIBRARY_FILE_SHORTCUTS = "DOCUMENT_LIBRARY_FILE_SHORTCUTS";
 
 	public static final String DOCUMENT_LIBRARY_FILE_VERSION = "DOCUMENT_LIBRARY_FILE_VERSION";
-
-	public static final String DOCUMENT_LIBRARY_FOLDER = "DOCUMENT_LIBRARY_FOLDER";
 
 	public static final String DOCUMENT_LIBRARY_FOLDERS = "DOCUMENT_LIBRARY_FOLDERS";
 
@@ -145,15 +141,11 @@ public class WebKeys implements com.liferay.portal.kernel.util.WebKeys {
 
 	public static final String GOOGLE_GADGET = "GOOGLE_GADGET";
 
-	public static final String GROUP = "GROUP";
-
 	public static final String HTTPS_INITIAL = "HTTPS_INITIAL";
 
 	public static final String I18N_LANGUAGE_ID = "I18N_LANGUAGE_ID";
 
 	public static final String I18N_PATH = "I18N_PATH";
-
-	public static final String IFRAME_SRC = "IFRAME_SRC";
 
 	public static final String JOURNAL_ARTICLE_CONTENT = "JOURNAL_ARTICLE_CONTENT";
 
@@ -298,10 +290,6 @@ public class WebKeys implements com.liferay.portal.kernel.util.WebKeys {
 
 	public static final String MOBILE_DEVICE_RULES_RULE_TYPE = "MOBILE_DEVICE_RULES_RULE_TYPE";
 
-	public static final String NESTED_PORTLET_VELOCITY_TEMPLATE_CONTENT = "NESTED_PORTLET_VELOCITY_TEMPLATE_CONTENT";
-
-	public static final String NESTED_PORTLET_VELOCITY_TEMPLATE_ID = "NESTED_PORTLET_VELOCITY_TEMPLATE_ID";
-
 	public static final String NETVIBES = "NETVIBES";
 
 	public static final String NOTES_LIST = "NOTES_LIST";
@@ -328,8 +316,6 @@ public class WebKeys implements com.liferay.portal.kernel.util.WebKeys {
 
 	public static final String PHONE = "PHONE";
 
-	public static final String POLLS_QUESTION = "POLLS_QUESTION";
-
 	public static final String PORTAL_PREFERENCES = "PORTAL_PREFERENCES";
 
 	public static final String PORTAL_REQUEST_DATA_SAMPLE = "PORTAL_REQUEST_DATA_SAMPLE";
@@ -337,8 +323,6 @@ public class WebKeys implements com.liferay.portal.kernel.util.WebKeys {
 	public static final String PORTAL_RESILIENCY_ACTION = "PORTAL_RESILIENCY_ACTION";
 
 	public static final String PORTLET_AJAX_RENDER = "PORTLET_AJAX_RENDER";
-
-	public static final String PORTLET_BREADCRUMBS = "LIFERAY_SHARED_PORTLET_BREADCRUMBS";
 
 	public static final String PORTLET_CATEGORY = "PORTLET_CATEGORY";
 

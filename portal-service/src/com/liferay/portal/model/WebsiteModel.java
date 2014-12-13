@@ -17,7 +17,6 @@ package com.liferay.portal.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.service.ServiceContext;
 
 import com.liferay.portlet.expando.model.ExpandoBridge;
@@ -145,10 +144,9 @@ public interface WebsiteModel extends AttachedModel, BaseModel<Website>,
 	 * Returns the user uuid of this website.
 	 *
 	 * @return the user uuid of this website
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public String getUserUuid() throws SystemException;
+	public String getUserUuid();
 
 	/**
 	 * Sets the user uuid of this website.
@@ -336,19 +334,19 @@ public interface WebsiteModel extends AttachedModel, BaseModel<Website>,
 	public Object clone();
 
 	@Override
-	public int compareTo(Website website);
+	public int compareTo(com.liferay.portal.model.Website website);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<Website> toCacheModel();
+	public CacheModel<com.liferay.portal.model.Website> toCacheModel();
 
 	@Override
-	public Website toEscapedModel();
+	public com.liferay.portal.model.Website toEscapedModel();
 
 	@Override
-	public Website toUnescapedModel();
+	public com.liferay.portal.model.Website toUnescapedModel();
 
 	@Override
 	public String toString();

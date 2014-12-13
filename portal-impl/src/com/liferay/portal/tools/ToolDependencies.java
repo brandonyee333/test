@@ -32,7 +32,8 @@ import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.microsofttranslator.MicrosoftTranslatorFactoryImpl;
 import com.liferay.portal.model.ModelHintsImpl;
 import com.liferay.portal.model.ModelHintsUtil;
-import com.liferay.portal.security.auth.FullNameGeneratorFactory;
+import com.liferay.portal.security.auth.DefaultFullNameGenerator;
+import com.liferay.portal.security.auth.FullNameGenerator;
 import com.liferay.portal.security.permission.ResourceActionsImpl;
 import com.liferay.portal.security.permission.ResourceActionsUtil;
 import com.liferay.portal.service.permission.PortletPermissionImpl;
@@ -47,6 +48,11 @@ import com.liferay.portal.util.InitUtil;
 import com.liferay.portal.util.PortalImpl;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.xml.SAXReaderImpl;
+import com.liferay.registry.BasicRegistryImpl;
+import com.liferay.registry.Registry;
+import com.liferay.registry.RegistryUtil;
+
+import java.io.Serializable;
 
 /**
  * @author Raymond Augé
@@ -55,6 +61,13 @@ public class ToolDependencies {
 
 	public static void wireBasic() {
 		InitUtil.init();
+
+		RegistryUtil.setRegistry(new BasicRegistryImpl());
+
+		Registry registry = RegistryUtil.getRegistry();
+
+		registry.registerService(
+			FullNameGenerator.class, new DefaultFullNameGenerator());
 
 		DigesterUtil digesterUtil = new DigesterUtil();
 
@@ -75,16 +88,6 @@ public class ToolDependencies {
 
 		friendlyURLNormalizerUtil.setFriendlyURLNormalizer(
 			new FriendlyURLNormalizerImpl());
-
-		FullNameGeneratorFactory fullNameGeneratorFactory =
-			new FullNameGeneratorFactory();
-
-		try {
-			fullNameGeneratorFactory.afterPropertiesSet();
-		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
-		}
 
 		HtmlUtil htmlUtil = new HtmlUtil();
 
@@ -118,11 +121,6 @@ public class ToolDependencies {
 
 		SingleVMPoolUtil singleVMPoolUtil = new SingleVMPoolUtil();
 
-		MemoryPortalCacheManager<String, String> memoryPortalCacheManager =
-			new MemoryPortalCacheManager<String, String>();
-
-		memoryPortalCacheManager.afterPropertiesSet();
-
 		PortletPermissionUtil portletPermissionUtil =
 			new PortletPermissionUtil();
 
@@ -134,7 +132,9 @@ public class ToolDependencies {
 
 		SingleVMPoolImpl singleVMPoolImpl = new SingleVMPoolImpl();
 
-		singleVMPoolImpl.setPortalCacheManager(memoryPortalCacheManager);
+		singleVMPoolImpl.setPortalCacheManager(
+			MemoryPortalCacheManager.createMemoryPortalCacheManager(
+				ToolDependencies.class.getName()));
 
 		singleVMPoolUtil.setSingleVMPool(singleVMPoolImpl);
 	}
@@ -146,12 +146,10 @@ public class ToolDependencies {
 
 		MultiVMPoolImpl multiVMPoolImpl = new MultiVMPoolImpl();
 
-		MemoryPortalCacheManager<String, String> memoryPortalCacheManager =
-			new MemoryPortalCacheManager<String, String>();
-
-		memoryPortalCacheManager.afterPropertiesSet();
-
-		multiVMPoolImpl.setPortalCacheManager(memoryPortalCacheManager);
+		multiVMPoolImpl.setPortalCacheManager(
+			MemoryPortalCacheManager.
+				<Serializable, Serializable>createMemoryPortalCacheManager(
+					ToolDependencies.class.getName()));
 
 		multiVMPoolUtil.setMultiVMPool(multiVMPoolImpl);
 

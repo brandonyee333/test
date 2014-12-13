@@ -28,7 +28,7 @@ if (assetEntryId > 0) {
 
 <c:if test="<%= (assetLinks != null) && !assetLinks.isEmpty() %>">
 	<div class="taglib-asset-links">
-		<h2 class="asset-links-title"><liferay-ui:message key="related-assets" />:</h2>
+		<h2 class="asset-links-title icon-link"><liferay-ui:message key="related-assets" />:</h2>
 
 		<ul class="asset-links-list">
 
@@ -83,7 +83,12 @@ if (assetEntryId > 0) {
 						assetPublisherURL.setParameter("urlTitle", assetRenderer.getUrlTitle());
 					}
 
-					assetPublisherURL.setWindowState(WindowState.MAXIMIZED);
+					if (themeDisplay.isStatePopUp()) {
+						assetPublisherURL.setWindowState(LiferayWindowState.POP_UP);
+					}
+					else {
+						assetPublisherURL.setWindowState(WindowState.MAXIMIZED);
+					}
 
 					String viewFullContentURLString = assetPublisherURL.toString();
 

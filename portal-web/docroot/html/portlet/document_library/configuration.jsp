@@ -17,16 +17,16 @@
 <%@ include file="/html/portlet/document_library/init.jsp" %>
 
 <%
-dlPortletInstanceSettings = DLUtil.getDLPortletInstanceSettings(layout, portletId, request);
+dlPortletInstanceSettings = DLPortletInstanceSettings.getInstance(layout, portletId, request.getParameterMap());
 
 DLConfigurationDisplayContext dlConfigurationDisplayContext = new DLConfigurationDisplayContext(request, dlPortletInstanceSettings);
 %>
 
-<liferay-portlet:actionURL portletConfiguration="true" var="configurationActionURL">
+<liferay-portlet:actionURL portletConfiguration="<%= true %>" var="configurationActionURL">
 	<liferay-portlet:param name="settingsScope" value="portletInstance" />
 </liferay-portlet:actionURL>
 
-<liferay-portlet:renderURL portletConfiguration="true" var="configurationRenderURL" />
+<liferay-portlet:renderURL portletConfiguration="<%= true %>" var="configurationRenderURL" />
 
 <aui:form action="<%= configurationActionURL %>" method="post" name="fm" onSubmit='<%= "event.preventDefault(); " + renderResponse.getNamespace() + "saveConfiguration();" %>'>
 	<aui:input name="<%= Constants.CMD %>" type="hidden" value="<%= Constants.UPDATE %>" />
@@ -47,7 +47,7 @@ DLConfigurationDisplayContext dlConfigurationDisplayContext = new DLConfiguratio
 			<liferay-ui:panel-container extended="<%= true %>" id="documentLibrarySettingsPanelContainer" persistState="<%= true %>">
 				<liferay-ui:panel collapsible="<%= true %>" extended="<%= true %>" id="documentLibraryItemsListingPanel" persistState="<%= true %>" title="display-settings">
 					<aui:fieldset>
-						<div class="control-group">
+						<div class="form-group">
 							<aui:input label="root-folder" name="rootFolderName" type="resource" value="<%= rootFolderName %>" />
 
 							<aui:button name="selectFolderButton" value="select" />
@@ -59,7 +59,7 @@ DLConfigurationDisplayContext dlConfigurationDisplayContext = new DLConfiguratio
 							<aui:button disabled="<%= rootFolderId <= 0 %>" name="removeFolderButton" onClick="<%= taglibRemoveFolder %>" value="remove" />
 						</div>
 
-						<aui:input label="show-search" name="preferences--showFoldersSearch--" type="checkbox" value="<%= dlPortletInstanceSettings.getShowFoldersSearch() %>" />
+						<aui:input label="show-search" name="preferences--showFoldersSearch--" type="checkbox" value="<%= dlPortletInstanceSettings.isShowFoldersSearch() %>" />
 
 						<aui:select label="maximum-entries-to-display" name="preferences--entriesPerPage--">
 
@@ -75,7 +75,7 @@ DLConfigurationDisplayContext dlConfigurationDisplayContext = new DLConfiguratio
 
 						</aui:select>
 
-						<aui:input name="preferences--enableRelatedAssets--" type="checkbox" value="<%= dlPortletInstanceSettings.getEnableRelatedAssets() %>" />
+						<aui:input name="preferences--enableRelatedAssets--" type="checkbox" value="<%= dlPortletInstanceSettings.isEnableRelatedAssets() %>" />
 
 						<aui:field-wrapper label="display-style-views">
 							<liferay-ui:input-move-boxes
@@ -108,13 +108,13 @@ DLConfigurationDisplayContext dlConfigurationDisplayContext = new DLConfiguratio
 				</liferay-ui:panel>
 
 				<liferay-ui:panel collapsible="<%= true %>" extended="<%= true %>" id="documentLibraryDocumentsRatingsPanel" persistState="<%= true %>" title="ratings">
-					<aui:input name="preferences--enableRatings--" type="checkbox" value="<%= dlPortletInstanceSettings.getEnableRatings() %>" />
-					<aui:input name="preferences--enableCommentRatings--" type="checkbox" value="<%= dlPortletInstanceSettings.getEnableCommentRatings() %>" />
+					<aui:input name="preferences--enableRatings--" type="checkbox" value="<%= dlPortletInstanceSettings.isEnableRatings() %>" />
+					<aui:input name="preferences--enableCommentRatings--" type="checkbox" value="<%= dlPortletInstanceSettings.isEnableCommentRatings() %>" />
 				</liferay-ui:panel>
 			</liferay-ui:panel-container>
 
-			<aui:script use="aui-base">
-				A.one('#<portlet:namespace />selectFolderButton').on(
+			<aui:script>
+				AUI.$('#<portlet:namespace />selectFolderButton').on(
 					'click',
 					function(event) {
 						Liferay.Util.selectEntity(
@@ -129,6 +129,7 @@ DLConfigurationDisplayContext dlConfigurationDisplayContext = new DLConfiguratio
 
 								<liferay-portlet:renderURL portletName="<%= portletResource %>" var="selectFolderURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 									<portlet:param name="struts_action" value="/document_library/select_folder" />
+									<portlet:param name="ignoreRootFolder" value="<%= Boolean.TRUE.toString() %>" />
 								</liferay-portlet:renderURL>
 
 								uri: '<%= selectFolderURL.toString() %>'
@@ -156,15 +157,14 @@ DLConfigurationDisplayContext dlConfigurationDisplayContext = new DLConfiguratio
 </aui:form>
 
 <aui:script>
-	Liferay.provide(
-		window,
-		'<portlet:namespace />saveConfiguration',
-		function() {
-			document.<portlet:namespace />fm.<portlet:namespace />displayViews.value = Liferay.Util.listSelect(document.<portlet:namespace />fm.<portlet:namespace />currentDisplayViews);
-			document.<portlet:namespace />fm.<portlet:namespace />entryColumns.value = Liferay.Util.listSelect(document.<portlet:namespace />fm.<portlet:namespace />currentEntryColumns);
+	function <portlet:namespace />saveConfiguration() {
+		var Util = Liferay.Util;
 
-			submitForm(document.<portlet:namespace />fm);
-		},
-		['liferay-util-list-fields']
-	);
+		var form = $(document.<portlet:namespace />fm);
+
+		form.fm('displayViews').val(Util.listSelect(form.fm('currentDisplayViews')));
+		form.fm('entryColumns').val(Util.listSelect(form.fm('currentEntryColumns')));
+
+		submitForm(form);
+	}
 </aui:script>

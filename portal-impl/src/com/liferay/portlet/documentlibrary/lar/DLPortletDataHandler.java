@@ -15,48 +15,69 @@
 package com.liferay.portlet.documentlibrary.lar;
 
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.dao.orm.Conjunction;
 import com.liferay.portal.kernel.dao.orm.Disjunction;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery;
+import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.Property;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.QueryDefinition;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.lar.BasePortletDataHandler;
 import com.liferay.portal.kernel.lar.ExportImportHelperUtil;
 import com.liferay.portal.kernel.lar.ManifestSummary;
 import com.liferay.portal.kernel.lar.PortletDataContext;
 import com.liferay.portal.kernel.lar.PortletDataHandlerBoolean;
 import com.liferay.portal.kernel.lar.PortletDataHandlerControl;
+import com.liferay.portal.kernel.lar.StagedModelDataHandler;
+import com.liferay.portal.kernel.lar.StagedModelDataHandlerRegistryUtil;
 import com.liferay.portal.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.portal.kernel.lar.StagedModelType;
+import com.liferay.portal.kernel.lar.xstream.XStreamAliasRegistryUtil;
+import com.liferay.portal.kernel.lar.xstream.XStreamConverterRegistryUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.TempFileEntryUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.model.Repository;
+import com.liferay.portal.model.impl.RepositoryEntryImpl;
+import com.liferay.portal.model.impl.RepositoryImpl;
 import com.liferay.portal.repository.liferayrepository.LiferayRepository;
 import com.liferay.portal.service.RepositoryLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PropsValues;
+import com.liferay.portlet.documentlibrary.lar.xstream.FileEntryConverter;
+import com.liferay.portlet.documentlibrary.lar.xstream.FileVersionConverter;
+import com.liferay.portlet.documentlibrary.lar.xstream.FolderConverter;
 import com.liferay.portlet.documentlibrary.model.DLFileEntry;
 import com.liferay.portlet.documentlibrary.model.DLFileEntryConstants;
 import com.liferay.portlet.documentlibrary.model.DLFileEntryType;
 import com.liferay.portlet.documentlibrary.model.DLFileRank;
 import com.liferay.portlet.documentlibrary.model.DLFileShortcut;
+import com.liferay.portlet.documentlibrary.model.DLFileVersion;
 import com.liferay.portlet.documentlibrary.model.DLFolder;
 import com.liferay.portlet.documentlibrary.model.DLFolderConstants;
+import com.liferay.portlet.documentlibrary.model.impl.DLFileEntryImpl;
+import com.liferay.portlet.documentlibrary.model.impl.DLFileEntryTypeImpl;
+import com.liferay.portlet.documentlibrary.model.impl.DLFileShortcutImpl;
+import com.liferay.portlet.documentlibrary.model.impl.DLFolderImpl;
 import com.liferay.portlet.documentlibrary.service.DLAppLocalServiceUtil;
 import com.liferay.portlet.documentlibrary.service.DLFileEntryLocalServiceUtil;
 import com.liferay.portlet.documentlibrary.service.DLFileEntryTypeLocalServiceUtil;
 import com.liferay.portlet.documentlibrary.service.DLFileShortcutLocalServiceUtil;
 import com.liferay.portlet.documentlibrary.service.DLFolderLocalServiceUtil;
 import com.liferay.portlet.documentlibrary.service.permission.DLPermission;
+import com.liferay.portlet.documentlibrary.util.DLConstants;
 
 import java.util.List;
 import java.util.Map;
@@ -105,6 +126,25 @@ public class DLPortletDataHandler extends BasePortletDataHandler {
 				NAMESPACE, "shortcuts", true, false, null,
 				DLFileShortcut.class.getName()));
 		setPublishToLiveByDefault(PropsValues.DL_PUBLISH_TO_LIVE_BY_DEFAULT);
+
+		XStreamAliasRegistryUtil.register(DLFileEntryImpl.class, "DLFileEntry");
+		XStreamAliasRegistryUtil.register(
+			DLFileEntryTypeImpl.class, "DLFileEntryType");
+		XStreamAliasRegistryUtil.register(
+			DLFileShortcutImpl.class, "DLFileShortcut");
+		XStreamAliasRegistryUtil.register(DLFolderImpl.class, "DLFolder");
+		XStreamAliasRegistryUtil.register(RepositoryImpl.class, "Repository");
+		XStreamAliasRegistryUtil.register(
+			RepositoryEntryImpl.class, "RepositoryEntry");
+
+		XStreamConverterRegistryUtil.register(new FileEntryConverter());
+		XStreamConverterRegistryUtil.register(new FileVersionConverter());
+		XStreamConverterRegistryUtil.register(new FolderConverter());
+	}
+
+	@Override
+	public String getServiceName() {
+		return DLConstants.SERVICE_NAME;
 	}
 
 	@Override
@@ -296,7 +336,21 @@ public class DLPortletDataHandler extends BasePortletDataHandler {
 			portletPreferences.getValue("rootFolderId", null));
 
 		if (rootFolderId != DLFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
-			Folder folder = DLAppLocalServiceUtil.getFolder(rootFolderId);
+			Folder folder = null;
+
+			try {
+				folder = DLAppLocalServiceUtil.getFolder(rootFolderId);
+			}
+			catch (PortalException e) {
+				if (_log.isErrorEnabled()) {
+					_log.error(
+						"Portlet " + portletId +
+							" refers to an invalid root folder ID " +
+								rootFolderId);
+				}
+
+				throw e;
+			}
 
 			StagedModelDataHandlerUtil.exportReferenceStagedModel(
 				portletDataContext, portletId, folder);
@@ -326,7 +380,7 @@ public class DLPortletDataHandler extends BasePortletDataHandler {
 
 				Map<Long, Long> folderIds =
 					(Map<Long, Long>)portletDataContext.getNewPrimaryKeysMap(
-						Folder.class);
+						Folder.class + ".folderIdsAndRepositoryEntryIds");
 
 				rootFolderId = MapUtil.getLong(
 					folderIds, rootFolderId, rootFolderId);
@@ -433,11 +487,45 @@ public class DLPortletDataHandler extends BasePortletDataHandler {
 				public void addCriteria(DynamicQuery dynamicQuery) {
 					addCriteriaMethod.addCriteria(dynamicQuery);
 
-					Property property = PropertyFactoryUtil.forName(
+					DynamicQuery fileVersionDynamicQuery =
+						DynamicQueryFactoryUtil.forClass(
+							DLFileVersion.class, "dlFileVersion",
+							PortalClassLoaderUtil.getClassLoader());
+
+					fileVersionDynamicQuery.setProjection(
+						ProjectionFactoryUtil.property("fileEntryId"));
+
+					fileVersionDynamicQuery.add(
+						RestrictionsFactoryUtil.eqProperty(
+							"dlFileVersion.fileEntryId", "fileEntryId"));
+					fileVersionDynamicQuery.add(
+						RestrictionsFactoryUtil.eqProperty(
+							"dlFileVersion.version", "version"));
+
+					Property statusProperty = PropertyFactoryUtil.forName(
+						"status");
+
+					StagedModelDataHandler<?> stagedModelDataHandler =
+						StagedModelDataHandlerRegistryUtil.
+							getStagedModelDataHandler(
+								DLFileEntry.class.getName());
+
+					fileVersionDynamicQuery.add(
+						statusProperty.in(
+							stagedModelDataHandler.getExportableStatuses()));
+
+					Property fileEntryIdProperty = PropertyFactoryUtil.forName(
+						"fileEntryId");
+
+					dynamicQuery.add(
+						fileEntryIdProperty.in(fileVersionDynamicQuery));
+
+					Property repositoryIdProperty = PropertyFactoryUtil.forName(
 						"repositoryId");
 
 					dynamicQuery.add(
-						property.eq(portletDataContext.getScopeGroupId()));
+						repositoryIdProperty.eq(
+							portletDataContext.getScopeGroupId()));
 				}
 
 			});
@@ -446,7 +534,7 @@ public class DLPortletDataHandler extends BasePortletDataHandler {
 
 				@Override
 				public void performAction(Object object)
-					throws PortalException, SystemException {
+					throws PortalException {
 
 					DLFileEntry dlFileEntry = (DLFileEntry)object;
 
@@ -465,9 +553,7 @@ public class DLPortletDataHandler extends BasePortletDataHandler {
 			new ActionableDynamicQuery.PerformCountMethod() {
 
 				@Override
-				public long performCount()
-					throws PortalException, SystemException {
-
+				public long performCount() throws PortalException {
 					ManifestSummary manifestSummary =
 						portletDataContext.getManifestSummary();
 
@@ -476,7 +562,7 @@ public class DLPortletDataHandler extends BasePortletDataHandler {
 							portletDataContext.getScopeGroupId(),
 							portletDataContext.getDateRange(),
 							portletDataContext.getScopeGroupId(),
-							new QueryDefinition(
+							new QueryDefinition<DLFileEntry>(
 								WorkflowConstants.STATUS_APPROVED));
 
 					StagedModelType stagedModelType =
@@ -533,7 +619,7 @@ public class DLPortletDataHandler extends BasePortletDataHandler {
 
 				@Override
 				public void performAction(Object object)
-					throws PortalException, SystemException {
+					throws PortalException {
 
 					DLFolder dlFolder = (DLFolder)object;
 
@@ -573,14 +659,25 @@ public class DLPortletDataHandler extends BasePortletDataHandler {
 				public void addCriteria(DynamicQuery dynamicQuery) {
 					addCriteriaMethod.addCriteria(dynamicQuery);
 
+					Conjunction conjunction =
+						RestrictionsFactoryUtil.conjunction();
+
 					Property classNameIdProperty = PropertyFactoryUtil.forName(
 						"classNameId");
 
 					long liferayRepositoryClassNameId =
 						PortalUtil.getClassNameId(LiferayRepository.class);
 
-					dynamicQuery.add(
+					conjunction.add(
 						classNameIdProperty.ne(liferayRepositoryClassNameId));
+
+					long tempFileRepositoryClassNameId =
+						PortalUtil.getClassNameId(TempFileEntryUtil.class);
+
+					conjunction.add(
+						classNameIdProperty.ne(tempFileRepositoryClassNameId));
+
+					dynamicQuery.add(conjunction);
 
 					Disjunction disjunction =
 						RestrictionsFactoryUtil.disjunction();
@@ -602,5 +699,8 @@ public class DLPortletDataHandler extends BasePortletDataHandler {
 
 		return exportActionableDynamicQuery;
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		DLPortletDataHandler.class);
 
 }

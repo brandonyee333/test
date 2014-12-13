@@ -16,7 +16,6 @@ package com.liferay.portlet.journal.util;
 
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
@@ -26,6 +25,7 @@ import com.liferay.portal.kernel.search.BooleanQuery;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.DocumentImpl;
 import com.liferay.portal.kernel.search.Field;
+import com.liferay.portal.kernel.search.FolderIndexer;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.SearchEngineUtil;
 import com.liferay.portal.kernel.search.Summary;
@@ -49,7 +49,7 @@ import javax.portlet.WindowStateException;
 /**
  * @author Eduardo Garcia
  */
-public class JournalFolderIndexer extends BaseIndexer {
+public class JournalFolderIndexer extends BaseIndexer implements FolderIndexer {
 
 	public static final String[] CLASS_NAMES = {JournalFolder.class.getName()};
 
@@ -65,6 +65,11 @@ public class JournalFolderIndexer extends BaseIndexer {
 
 	@Override
 	public String[] getClassNames() {
+		return CLASS_NAMES;
+	}
+
+	@Override
+	public String[] getFolderClassNames() {
 		return CLASS_NAMES;
 	}
 
@@ -103,8 +108,8 @@ public class JournalFolderIndexer extends BaseIndexer {
 		document.addUID(PORTLET_ID, folder.getFolderId());
 
 		SearchEngineUtil.deleteDocument(
-			getSearchEngineId(), folder.getCompanyId(),
-			document.get(Field.UID));
+			getSearchEngineId(), folder.getCompanyId(), document.get(Field.UID),
+			isCommitImmediately());
 	}
 
 	@Override
@@ -167,7 +172,8 @@ public class JournalFolderIndexer extends BaseIndexer {
 		Document document = getDocument(folder);
 
 		SearchEngineUtil.updateDocument(
-			getSearchEngineId(), folder.getCompanyId(), document);
+			getSearchEngineId(), folder.getCompanyId(), document,
+			isCommitImmediately());
 	}
 
 	@Override
@@ -189,9 +195,7 @@ public class JournalFolderIndexer extends BaseIndexer {
 		return PORTLET_ID;
 	}
 
-	protected void reindexFolders(long companyId)
-		throws PortalException, SystemException {
-
+	protected void reindexFolders(long companyId) throws PortalException {
 		final ActionableDynamicQuery actionableDynamicQuery =
 			JournalFolderLocalServiceUtil.getActionableDynamicQuery();
 
@@ -218,6 +222,7 @@ public class JournalFolderIndexer extends BaseIndexer {
 		actionableDynamicQuery.performActions();
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(JournalFolderIndexer.class);
+	private static final Log _log = LogFactoryUtil.getLog(
+		JournalFolderIndexer.class);
 
 }

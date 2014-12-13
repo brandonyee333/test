@@ -15,7 +15,7 @@
 package com.liferay.portlet.messageboards.service.permission;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
 import com.liferay.portal.kernel.staging.permission.StagingPermissionUtil;
 import com.liferay.portal.kernel.workflow.permission.WorkflowPermissionUtil;
 import com.liferay.portal.security.auth.PrincipalException;
@@ -28,19 +28,26 @@ import com.liferay.portlet.messageboards.NoSuchCategoryException;
 import com.liferay.portlet.messageboards.model.MBCategory;
 import com.liferay.portlet.messageboards.model.MBCategoryConstants;
 import com.liferay.portlet.messageboards.model.MBMessage;
+import com.liferay.portlet.messageboards.model.MBThread;
 import com.liferay.portlet.messageboards.service.MBBanLocalServiceUtil;
 import com.liferay.portlet.messageboards.service.MBCategoryLocalServiceUtil;
 import com.liferay.portlet.messageboards.service.MBMessageLocalServiceUtil;
+import com.liferay.portlet.messageboards.service.MBThreadLocalServiceUtil;
 
 /**
  * @author Brian Wing Shun Chan
  */
+@OSGiBeanProperties(
+	property = {
+		"model.class.name=com.liferay.portlet.messageboards.model.MBMessage"
+	}
+)
 public class MBMessagePermission implements BaseModelPermissionChecker {
 
 	public static void check(
 			PermissionChecker permissionChecker, long messageId,
 			String actionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (!contains(permissionChecker, messageId, actionId)) {
 			throw new PrincipalException();
@@ -50,7 +57,7 @@ public class MBMessagePermission implements BaseModelPermissionChecker {
 	public static void check(
 			PermissionChecker permissionChecker, MBMessage message,
 			String actionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (!contains(permissionChecker, message, actionId)) {
 			throw new PrincipalException();
@@ -58,11 +65,20 @@ public class MBMessagePermission implements BaseModelPermissionChecker {
 	}
 
 	public static boolean contains(
-			PermissionChecker permissionChecker, long messageId,
-			String actionId)
-		throws PortalException, SystemException {
+			PermissionChecker permissionChecker, long classPK, String actionId)
+		throws PortalException {
 
-		MBMessage message = MBMessageLocalServiceUtil.getMessage(messageId);
+		MBThread mbThread = MBThreadLocalServiceUtil.fetchThread(classPK);
+
+		MBMessage message = null;
+
+		if (mbThread == null) {
+			message = MBMessageLocalServiceUtil.getMessage(classPK);
+		}
+		else {
+			message = MBMessageLocalServiceUtil.getMessage(
+				mbThread.getRootMessageId());
+		}
 
 		return contains(permissionChecker, message, actionId);
 	}
@@ -70,7 +86,7 @@ public class MBMessagePermission implements BaseModelPermissionChecker {
 	public static boolean contains(
 			PermissionChecker permissionChecker, MBMessage message,
 			String actionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (MBBanLocalServiceUtil.hasBan(
 				message.getGroupId(), permissionChecker.getUserId())) {
@@ -154,7 +170,7 @@ public class MBMessagePermission implements BaseModelPermissionChecker {
 	public void checkBaseModel(
 			PermissionChecker permissionChecker, long groupId, long primaryKey,
 			String actionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		check(permissionChecker, primaryKey, actionId);
 	}

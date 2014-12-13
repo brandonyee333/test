@@ -17,7 +17,6 @@ package com.liferay.portal.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.service.ServiceContext;
 
 import com.liferay.portlet.expando.model.ExpandoBridge;
@@ -145,10 +144,9 @@ public interface PhoneModel extends AttachedModel, BaseModel<Phone>, MVCCModel,
 	 * Returns the user uuid of this phone.
 	 *
 	 * @return the user uuid of this phone
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public String getUserUuid() throws SystemException;
+	public String getUserUuid();
 
 	/**
 	 * Sets the user uuid of this phone.
@@ -351,19 +349,19 @@ public interface PhoneModel extends AttachedModel, BaseModel<Phone>, MVCCModel,
 	public Object clone();
 
 	@Override
-	public int compareTo(Phone phone);
+	public int compareTo(com.liferay.portal.model.Phone phone);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<Phone> toCacheModel();
+	public CacheModel<com.liferay.portal.model.Phone> toCacheModel();
 
 	@Override
-	public Phone toEscapedModel();
+	public com.liferay.portal.model.Phone toEscapedModel();
 
 	@Override
-	public Phone toUnescapedModel();
+	public com.liferay.portal.model.Phone toUnescapedModel();
 
 	@Override
 	public String toString();

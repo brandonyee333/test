@@ -18,10 +18,9 @@
 
 <%
 PortletURL configurationRenderURL = (PortletURL)request.getAttribute("configuration.jsp-configurationRenderURL");
-String rootPortletId = (String)request.getAttribute("configuration.jsp-rootPortletId");
 String selectScope = (String)request.getAttribute("configuration.jsp-selectScope");
 String selectStyle = (String)request.getAttribute("configuration.jsp-selectStyle");
-String eventName = "_" + HtmlUtil.escapeJS(portletResource) + "_selectAsset";
+String eventName = "_" + HtmlUtil.escapeJS(assetPublisherDisplayContext.getPortletResource()) + "_selectAsset";
 %>
 
 <liferay-ui:tabs
@@ -85,6 +84,7 @@ String eventName = "_" + HtmlUtil.escapeJS(portletResource) + "_selectAsset";
 
 					<liferay-ui:search-container-column-jsp
 						align="right"
+						cssClass="entry-action"
 						path="/html/portlet/asset_publisher/asset_selection_action.jsp"
 					/>
 				</liferay-ui:search-container-row>
@@ -105,11 +105,11 @@ String eventName = "_" + HtmlUtil.escapeJS(portletResource) + "_selectAsset";
 			%>
 
 				<div class="select-asset-selector">
-					<div class="lfr-meta-actions edit-controls">
+					<div class="edit-controls lfr-meta-actions">
 						<liferay-ui:icon-menu
 							cssClass="select-existing-selector"
 							direction="right" icon="../aui/plus"
-							message='<%= LanguageUtil.format(pageContext, (groupIds.length == 1) ? "select" : "select-in-x", HtmlUtil.escape((GroupLocalServiceUtil.getGroup(groupId)).getDescriptiveName(locale)), false) %>'
+							message='<%= LanguageUtil.format(request, (groupIds.length == 1) ? "select" : "select-in-x", HtmlUtil.escape((GroupLocalServiceUtil.getGroup(groupId)).getDescriptiveName(locale)), false) %>'
 							showWhenSingleIcon="<%= true %>"
 						>
 
@@ -141,7 +141,7 @@ String eventName = "_" + HtmlUtil.escapeJS(portletResource) + "_selectAsset";
 
 									String type = curRendererFactory.getTypeName(locale);
 
-									data.put("title", LanguageUtil.format(pageContext, "select-x", type, false));
+									data.put("title", LanguageUtil.format(request, "select-x", type, false));
 									data.put("type", type);
 							%>
 
@@ -157,16 +157,18 @@ String eventName = "_" + HtmlUtil.escapeJS(portletResource) + "_selectAsset";
 							<%
 								}
 								else {
-									Map<Long, String> assetAvailableClassTypes = curRendererFactory.getClassTypes(PortalUtil.getCurrentAndAncestorSiteGroupIds(groupId), locale);
+									ClassTypeReader classTypeReader = curRendererFactory.getClassTypeReader();
 
-									for (Map.Entry<Long, String> assetAvailableClassType : assetAvailableClassTypes.entrySet()) {
-										assetBrowserURL.setParameter("subtypeSelectionId", String.valueOf(assetAvailableClassType.getKey()));
+									List<ClassType> assetAvailableClassTypes = classTypeReader.getAvailableClassTypes(PortalUtil.getSharedContentSiteGroupIds(company.getCompanyId(), scopeGroupId, user.getUserId()), locale);
+
+									for (ClassType assetAvailableClassType : assetAvailableClassTypes) {
+										assetBrowserURL.setParameter("subtypeSelectionId", String.valueOf(assetAvailableClassType.getClassTypeId()));
 
 										data.put("href", assetBrowserURL.toString());
 
-										String type = assetAvailableClassType.getValue();
+										String type = assetAvailableClassType.getName();
 
-										data.put("title", LanguageUtil.format(pageContext, "select-x", type, false));
+										data.put("title", LanguageUtil.format(request, "select-x", type, false));
 										data.put("type", type);
 							%>
 
@@ -211,7 +213,7 @@ String eventName = "_" + HtmlUtil.escapeJS(portletResource) + "_selectAsset";
 	<aui:button onClick='<%= renderResponse.getNamespace() + "saveSelectBoxes();" %>' type="submit" />
 </aui:button-row>
 
-<aui:script use="aui-base">
+<aui:script sandbox="<%= true %>">
 	function selectAsset(assetEntryId, assetClassName, assetType, assetEntryTitle, groupName) {
 		document.<portlet:namespace />fm.<portlet:namespace /><%= Constants.CMD %>.value = 'add-selection';
 		document.<portlet:namespace />fm.<portlet:namespace />assetEntryId.value = assetEntryId;
@@ -220,12 +222,13 @@ String eventName = "_" + HtmlUtil.escapeJS(portletResource) + "_selectAsset";
 		submitForm(document.<portlet:namespace />fm);
 	}
 
-	A.getBody().delegate(
+	$('body').on(
 		'click',
+		'.asset-selector a',
 		function(event) {
 			event.preventDefault();
 
-			var currentTarget = event.currentTarget;
+			var currentTarget = $(event.currentTarget);
 
 			Liferay.Util.selectEntity(
 				{
@@ -236,14 +239,13 @@ String eventName = "_" + HtmlUtil.escapeJS(portletResource) + "_selectAsset";
 					},
 					eventName: '<%= eventName %>',
 					id: '<%= eventName %>' + currentTarget.attr('id'),
-					title: currentTarget.attr('data-title'),
-					uri: currentTarget.attr('data-href')
+					title: currentTarget.data('title'),
+					uri: currentTarget.data('href')
 				},
 				function(event) {
 					selectAsset(event.assetentryid, event.assetclassname, event.assettype, event.assettitle, event.groupdescriptivename);
 				}
 			);
-		},
-		'.asset-selector a'
+		}
 	);
 </aui:script>

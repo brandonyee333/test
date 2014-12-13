@@ -15,7 +15,6 @@
 package com.liferay.portal.metadata;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.metadata.RawMetadataProcessor;
@@ -45,6 +44,7 @@ import org.apache.tika.metadata.Property;
 import org.apache.tika.metadata.TIFF;
 import org.apache.tika.metadata.TikaMetadataKeys;
 import org.apache.tika.metadata.TikaMimeKeys;
+import org.apache.tika.metadata.XMPDM;
 
 /**
  * @author Alexander Chow
@@ -59,7 +59,7 @@ public abstract class BaseRawMetadataProcessor implements RawMetadataProcessor {
 	@Override
 	public Map<String, Fields> getRawMetadataMap(
 			String extension, String mimeType, File file)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		Metadata metadata = extractMetadata(extension, mimeType, file);
 
@@ -69,7 +69,7 @@ public abstract class BaseRawMetadataProcessor implements RawMetadataProcessor {
 	@Override
 	public Map<String, Fields> getRawMetadataMap(
 			String extension, String mimeType, InputStream inputStream)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		Metadata metadata = extractMetadata(extension, mimeType, inputStream);
 
@@ -131,11 +131,11 @@ public abstract class BaseRawMetadataProcessor implements RawMetadataProcessor {
 
 	protected abstract Metadata extractMetadata(
 			String extension, String mimeType, File file)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	protected abstract Metadata extractMetadata(
 			String extension, String mimeType, InputStream inputStream)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	protected Object getFieldValue(Metadata metadata, Field field) {
 		Object fieldValue = null;
@@ -172,10 +172,10 @@ public abstract class BaseRawMetadataProcessor implements RawMetadataProcessor {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		BaseRawMetadataProcessor.class);
 
-	private static Map<String, Field[]> _fields =
+	private static final Map<String, Field[]> _fields =
 		new HashMap<String, Field[]>();
 
 	static {

@@ -14,6 +14,8 @@
 
 package com.liferay.portal.service.persistence.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
@@ -24,11 +26,8 @@ import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -38,7 +37,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.MVCCModel;
-import com.liferay.portal.model.ModelListener;
 import com.liferay.portal.model.User;
 import com.liferay.portal.model.impl.UserImpl;
 import com.liferay.portal.model.impl.UserModelImpl;
@@ -53,11 +51,13 @@ import java.io.Serializable;
 
 import java.sql.Timestamp;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -72,6 +72,7 @@ import java.util.Set;
  * @see UserUtil
  * @generated
  */
+@ProviderType
 public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	implements UserPersistence {
 	/*
@@ -117,10 +118,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param uuid the uuid
 	 * @return the matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<User> findByUuid(String uuid) throws SystemException {
+	public List<User> findByUuid(String uuid) {
 		return findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
@@ -135,11 +135,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param start the lower bound of the range of users
 	 * @param end the upper bound of the range of users (not inclusive)
 	 * @return the range of matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<User> findByUuid(String uuid, int start, int end)
-		throws SystemException {
+	public List<User> findByUuid(String uuid, int start, int end) {
 		return findByUuid(uuid, start, end, null);
 	}
 
@@ -155,11 +153,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param end the upper bound of the range of users (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<User> findByUuid(String uuid, int start, int end,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<User> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -276,12 +273,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user
 	 * @throws com.liferay.portal.NoSuchUserException if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User findByUuid_First(String uuid,
-		OrderByComparator orderByComparator)
-		throws NoSuchUserException, SystemException {
+		OrderByComparator<User> orderByComparator) throws NoSuchUserException {
 		User user = fetchByUuid_First(uuid, orderByComparator);
 
 		if (user != null) {
@@ -306,11 +301,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user, or <code>null</code> if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User fetchByUuid_First(String uuid,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<User> orderByComparator) {
 		List<User> list = findByUuid(uuid, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -327,11 +321,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user
 	 * @throws com.liferay.portal.NoSuchUserException if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public User findByUuid_Last(String uuid, OrderByComparator orderByComparator)
-		throws NoSuchUserException, SystemException {
+	public User findByUuid_Last(String uuid,
+		OrderByComparator<User> orderByComparator) throws NoSuchUserException {
 		User user = fetchByUuid_Last(uuid, orderByComparator);
 
 		if (user != null) {
@@ -356,11 +349,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user, or <code>null</code> if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User fetchByUuid_Last(String uuid,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<User> orderByComparator) {
 		int count = countByUuid(uuid);
 
 		if (count == 0) {
@@ -384,12 +376,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next user
 	 * @throws com.liferay.portal.NoSuchUserException if a user with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User[] findByUuid_PrevAndNext(long userId, String uuid,
-		OrderByComparator orderByComparator)
-		throws NoSuchUserException, SystemException {
+		OrderByComparator<User> orderByComparator) throws NoSuchUserException {
 		User user = findByPrimaryKey(userId);
 
 		Session session = null;
@@ -418,7 +408,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	}
 
 	protected User getByUuid_PrevAndNext(Session session, User user,
-		String uuid, OrderByComparator orderByComparator, boolean previous) {
+		String uuid, OrderByComparator<User> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -539,10 +529,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * Removes all the users where uuid = &#63; from the database.
 	 *
 	 * @param uuid the uuid
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeByUuid(String uuid) throws SystemException {
+	public void removeByUuid(String uuid) {
 		for (User user : findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
 				null)) {
 			remove(user);
@@ -554,10 +543,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param uuid the uuid
 	 * @return the number of matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByUuid(String uuid) throws SystemException {
+	public int countByUuid(String uuid) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_UUID;
 
 		Object[] finderArgs = new Object[] { uuid };
@@ -646,11 +634,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param uuid the uuid
 	 * @param companyId the company ID
 	 * @return the matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<User> findByUuid_C(String uuid, long companyId)
-		throws SystemException {
+	public List<User> findByUuid_C(String uuid, long companyId) {
 		return findByUuid_C(uuid, companyId, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -667,11 +653,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param start the lower bound of the range of users
 	 * @param end the upper bound of the range of users (not inclusive)
 	 * @return the range of matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<User> findByUuid_C(String uuid, long companyId, int start,
-		int end) throws SystemException {
+		int end) {
 		return findByUuid_C(uuid, companyId, start, end, null);
 	}
 
@@ -688,11 +673,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param end the upper bound of the range of users (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<User> findByUuid_C(String uuid, long companyId, int start,
-		int end, OrderByComparator orderByComparator) throws SystemException {
+		int end, OrderByComparator<User> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -819,12 +803,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user
 	 * @throws com.liferay.portal.NoSuchUserException if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User findByUuid_C_First(String uuid, long companyId,
-		OrderByComparator orderByComparator)
-		throws NoSuchUserException, SystemException {
+		OrderByComparator<User> orderByComparator) throws NoSuchUserException {
 		User user = fetchByUuid_C_First(uuid, companyId, orderByComparator);
 
 		if (user != null) {
@@ -853,11 +835,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user, or <code>null</code> if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User fetchByUuid_C_First(String uuid, long companyId,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<User> orderByComparator) {
 		List<User> list = findByUuid_C(uuid, companyId, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -875,12 +856,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user
 	 * @throws com.liferay.portal.NoSuchUserException if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User findByUuid_C_Last(String uuid, long companyId,
-		OrderByComparator orderByComparator)
-		throws NoSuchUserException, SystemException {
+		OrderByComparator<User> orderByComparator) throws NoSuchUserException {
 		User user = fetchByUuid_C_Last(uuid, companyId, orderByComparator);
 
 		if (user != null) {
@@ -909,11 +888,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user, or <code>null</code> if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User fetchByUuid_C_Last(String uuid, long companyId,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<User> orderByComparator) {
 		int count = countByUuid_C(uuid, companyId);
 
 		if (count == 0) {
@@ -939,12 +917,11 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next user
 	 * @throws com.liferay.portal.NoSuchUserException if a user with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User[] findByUuid_C_PrevAndNext(long userId, String uuid,
-		long companyId, OrderByComparator orderByComparator)
-		throws NoSuchUserException, SystemException {
+		long companyId, OrderByComparator<User> orderByComparator)
+		throws NoSuchUserException {
 		User user = findByPrimaryKey(userId);
 
 		Session session = null;
@@ -973,7 +950,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	}
 
 	protected User getByUuid_C_PrevAndNext(Session session, User user,
-		String uuid, long companyId, OrderByComparator orderByComparator,
+		String uuid, long companyId, OrderByComparator<User> orderByComparator,
 		boolean previous) {
 		StringBundler query = null;
 
@@ -1100,11 +1077,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param uuid the uuid
 	 * @param companyId the company ID
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeByUuid_C(String uuid, long companyId)
-		throws SystemException {
+	public void removeByUuid_C(String uuid, long companyId) {
 		for (User user : findByUuid_C(uuid, companyId, QueryUtil.ALL_POS,
 				QueryUtil.ALL_POS, null)) {
 			remove(user);
@@ -1117,11 +1092,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param uuid the uuid
 	 * @param companyId the company ID
 	 * @return the number of matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByUuid_C(String uuid, long companyId)
-		throws SystemException {
+	public int countByUuid_C(String uuid, long companyId) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_UUID_C;
 
 		Object[] finderArgs = new Object[] { uuid, companyId };
@@ -1214,10 +1187,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param companyId the company ID
 	 * @return the matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<User> findByCompanyId(long companyId) throws SystemException {
+	public List<User> findByCompanyId(long companyId) {
 		return findByCompanyId(companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
 			null);
 	}
@@ -1233,11 +1205,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param start the lower bound of the range of users
 	 * @param end the upper bound of the range of users (not inclusive)
 	 * @return the range of matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<User> findByCompanyId(long companyId, int start, int end)
-		throws SystemException {
+	public List<User> findByCompanyId(long companyId, int start, int end) {
 		return findByCompanyId(companyId, start, end, null);
 	}
 
@@ -1253,11 +1223,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param end the upper bound of the range of users (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<User> findByCompanyId(long companyId, int start, int end,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<User> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -1360,12 +1329,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user
 	 * @throws com.liferay.portal.NoSuchUserException if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User findByCompanyId_First(long companyId,
-		OrderByComparator orderByComparator)
-		throws NoSuchUserException, SystemException {
+		OrderByComparator<User> orderByComparator) throws NoSuchUserException {
 		User user = fetchByCompanyId_First(companyId, orderByComparator);
 
 		if (user != null) {
@@ -1390,11 +1357,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user, or <code>null</code> if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User fetchByCompanyId_First(long companyId,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<User> orderByComparator) {
 		List<User> list = findByCompanyId(companyId, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -1411,12 +1377,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user
 	 * @throws com.liferay.portal.NoSuchUserException if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User findByCompanyId_Last(long companyId,
-		OrderByComparator orderByComparator)
-		throws NoSuchUserException, SystemException {
+		OrderByComparator<User> orderByComparator) throws NoSuchUserException {
 		User user = fetchByCompanyId_Last(companyId, orderByComparator);
 
 		if (user != null) {
@@ -1441,11 +1405,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user, or <code>null</code> if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User fetchByCompanyId_Last(long companyId,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<User> orderByComparator) {
 		int count = countByCompanyId(companyId);
 
 		if (count == 0) {
@@ -1470,12 +1433,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next user
 	 * @throws com.liferay.portal.NoSuchUserException if a user with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User[] findByCompanyId_PrevAndNext(long userId, long companyId,
-		OrderByComparator orderByComparator)
-		throws NoSuchUserException, SystemException {
+		OrderByComparator<User> orderByComparator) throws NoSuchUserException {
 		User user = findByPrimaryKey(userId);
 
 		Session session = null;
@@ -1504,7 +1465,8 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	}
 
 	protected User getByCompanyId_PrevAndNext(Session session, User user,
-		long companyId, OrderByComparator orderByComparator, boolean previous) {
+		long companyId, OrderByComparator<User> orderByComparator,
+		boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -1611,10 +1573,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * Removes all the users where companyId = &#63; from the database.
 	 *
 	 * @param companyId the company ID
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeByCompanyId(long companyId) throws SystemException {
+	public void removeByCompanyId(long companyId) {
 		for (User user : findByCompanyId(companyId, QueryUtil.ALL_POS,
 				QueryUtil.ALL_POS, null)) {
 			remove(user);
@@ -1626,10 +1587,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param companyId the company ID
 	 * @return the number of matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByCompanyId(long companyId) throws SystemException {
+	public int countByCompanyId(long companyId) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_COMPANYID;
 
 		Object[] finderArgs = new Object[] { companyId };
@@ -1691,11 +1651,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param contactId the contact ID
 	 * @return the matching user
 	 * @throws com.liferay.portal.NoSuchUserException if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public User findByContactId(long contactId)
-		throws NoSuchUserException, SystemException {
+	public User findByContactId(long contactId) throws NoSuchUserException {
 		User user = fetchByContactId(contactId);
 
 		if (user == null) {
@@ -1723,10 +1681,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param contactId the contact ID
 	 * @return the matching user, or <code>null</code> if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public User fetchByContactId(long contactId) throws SystemException {
+	public User fetchByContactId(long contactId) {
 		return fetchByContactId(contactId, true);
 	}
 
@@ -1736,11 +1693,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param contactId the contact ID
 	 * @param retrieveFromCache whether to use the finder cache
 	 * @return the matching user, or <code>null</code> if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public User fetchByContactId(long contactId, boolean retrieveFromCache)
-		throws SystemException {
+	public User fetchByContactId(long contactId, boolean retrieveFromCache) {
 		Object[] finderArgs = new Object[] { contactId };
 
 		Object result = null;
@@ -1821,11 +1776,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param contactId the contact ID
 	 * @return the user that was removed
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public User removeByContactId(long contactId)
-		throws NoSuchUserException, SystemException {
+	public User removeByContactId(long contactId) throws NoSuchUserException {
 		User user = findByContactId(contactId);
 
 		return remove(user);
@@ -1836,10 +1789,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param contactId the contact ID
 	 * @return the number of matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByContactId(long contactId) throws SystemException {
+	public int countByContactId(long contactId) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_CONTACTID;
 
 		Object[] finderArgs = new Object[] { contactId };
@@ -1911,11 +1863,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param emailAddress the email address
 	 * @return the matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<User> findByEmailAddress(String emailAddress)
-		throws SystemException {
+	public List<User> findByEmailAddress(String emailAddress) {
 		return findByEmailAddress(emailAddress, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -1931,11 +1881,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param start the lower bound of the range of users
 	 * @param end the upper bound of the range of users (not inclusive)
 	 * @return the range of matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<User> findByEmailAddress(String emailAddress, int start, int end)
-		throws SystemException {
+	public List<User> findByEmailAddress(String emailAddress, int start, int end) {
 		return findByEmailAddress(emailAddress, start, end, null);
 	}
 
@@ -1951,11 +1899,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param end the upper bound of the range of users (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<User> findByEmailAddress(String emailAddress, int start,
-		int end, OrderByComparator orderByComparator) throws SystemException {
+		int end, OrderByComparator<User> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -2076,12 +2023,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user
 	 * @throws com.liferay.portal.NoSuchUserException if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User findByEmailAddress_First(String emailAddress,
-		OrderByComparator orderByComparator)
-		throws NoSuchUserException, SystemException {
+		OrderByComparator<User> orderByComparator) throws NoSuchUserException {
 		User user = fetchByEmailAddress_First(emailAddress, orderByComparator);
 
 		if (user != null) {
@@ -2106,11 +2051,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param emailAddress the email address
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user, or <code>null</code> if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User fetchByEmailAddress_First(String emailAddress,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<User> orderByComparator) {
 		List<User> list = findByEmailAddress(emailAddress, 0, 1,
 				orderByComparator);
 
@@ -2128,12 +2072,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user
 	 * @throws com.liferay.portal.NoSuchUserException if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User findByEmailAddress_Last(String emailAddress,
-		OrderByComparator orderByComparator)
-		throws NoSuchUserException, SystemException {
+		OrderByComparator<User> orderByComparator) throws NoSuchUserException {
 		User user = fetchByEmailAddress_Last(emailAddress, orderByComparator);
 
 		if (user != null) {
@@ -2158,11 +2100,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param emailAddress the email address
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user, or <code>null</code> if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User fetchByEmailAddress_Last(String emailAddress,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<User> orderByComparator) {
 		int count = countByEmailAddress(emailAddress);
 
 		if (count == 0) {
@@ -2187,12 +2128,11 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next user
 	 * @throws com.liferay.portal.NoSuchUserException if a user with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User[] findByEmailAddress_PrevAndNext(long userId,
-		String emailAddress, OrderByComparator orderByComparator)
-		throws NoSuchUserException, SystemException {
+		String emailAddress, OrderByComparator<User> orderByComparator)
+		throws NoSuchUserException {
 		User user = findByPrimaryKey(userId);
 
 		Session session = null;
@@ -2221,7 +2161,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	}
 
 	protected User getByEmailAddress_PrevAndNext(Session session, User user,
-		String emailAddress, OrderByComparator orderByComparator,
+		String emailAddress, OrderByComparator<User> orderByComparator,
 		boolean previous) {
 		StringBundler query = null;
 
@@ -2343,11 +2283,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * Removes all the users where emailAddress = &#63; from the database.
 	 *
 	 * @param emailAddress the email address
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeByEmailAddress(String emailAddress)
-		throws SystemException {
+	public void removeByEmailAddress(String emailAddress) {
 		for (User user : findByEmailAddress(emailAddress, QueryUtil.ALL_POS,
 				QueryUtil.ALL_POS, null)) {
 			remove(user);
@@ -2359,11 +2297,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param emailAddress the email address
 	 * @return the number of matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByEmailAddress(String emailAddress)
-		throws SystemException {
+	public int countByEmailAddress(String emailAddress) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_EMAILADDRESS;
 
 		Object[] finderArgs = new Object[] { emailAddress };
@@ -2441,11 +2377,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param portraitId the portrait ID
 	 * @return the matching user
 	 * @throws com.liferay.portal.NoSuchUserException if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public User findByPortraitId(long portraitId)
-		throws NoSuchUserException, SystemException {
+	public User findByPortraitId(long portraitId) throws NoSuchUserException {
 		User user = fetchByPortraitId(portraitId);
 
 		if (user == null) {
@@ -2473,10 +2407,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param portraitId the portrait ID
 	 * @return the matching user, or <code>null</code> if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public User fetchByPortraitId(long portraitId) throws SystemException {
+	public User fetchByPortraitId(long portraitId) {
 		return fetchByPortraitId(portraitId, true);
 	}
 
@@ -2486,11 +2419,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param portraitId the portrait ID
 	 * @param retrieveFromCache whether to use the finder cache
 	 * @return the matching user, or <code>null</code> if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public User fetchByPortraitId(long portraitId, boolean retrieveFromCache)
-		throws SystemException {
+	public User fetchByPortraitId(long portraitId, boolean retrieveFromCache) {
 		Object[] finderArgs = new Object[] { portraitId };
 
 		Object result = null;
@@ -2578,11 +2509,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param portraitId the portrait ID
 	 * @return the user that was removed
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public User removeByPortraitId(long portraitId)
-		throws NoSuchUserException, SystemException {
+	public User removeByPortraitId(long portraitId) throws NoSuchUserException {
 		User user = findByPortraitId(portraitId);
 
 		return remove(user);
@@ -2593,10 +2522,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param portraitId the portrait ID
 	 * @return the number of matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByPortraitId(long portraitId) throws SystemException {
+	public int countByPortraitId(long portraitId) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_PORTRAITID;
 
 		Object[] finderArgs = new Object[] { portraitId };
@@ -2660,11 +2588,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param userId the user ID
 	 * @return the matching user
 	 * @throws com.liferay.portal.NoSuchUserException if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User findByC_U(long companyId, long userId)
-		throws NoSuchUserException, SystemException {
+		throws NoSuchUserException {
 		User user = fetchByC_U(companyId, userId);
 
 		if (user == null) {
@@ -2696,11 +2623,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param companyId the company ID
 	 * @param userId the user ID
 	 * @return the matching user, or <code>null</code> if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public User fetchByC_U(long companyId, long userId)
-		throws SystemException {
+	public User fetchByC_U(long companyId, long userId) {
 		return fetchByC_U(companyId, userId, true);
 	}
 
@@ -2711,11 +2636,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param userId the user ID
 	 * @param retrieveFromCache whether to use the finder cache
 	 * @return the matching user, or <code>null</code> if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User fetchByC_U(long companyId, long userId,
-		boolean retrieveFromCache) throws SystemException {
+		boolean retrieveFromCache) {
 		Object[] finderArgs = new Object[] { companyId, userId };
 
 		Object result = null;
@@ -2803,11 +2727,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param companyId the company ID
 	 * @param userId the user ID
 	 * @return the user that was removed
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User removeByC_U(long companyId, long userId)
-		throws NoSuchUserException, SystemException {
+		throws NoSuchUserException {
 		User user = findByC_U(companyId, userId);
 
 		return remove(user);
@@ -2819,11 +2742,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param companyId the company ID
 	 * @param userId the user ID
 	 * @return the number of matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByC_U(long companyId, long userId)
-		throws SystemException {
+	public int countByC_U(long companyId, long userId) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_C_U;
 
 		Object[] finderArgs = new Object[] { companyId, userId };
@@ -2900,11 +2821,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param companyId the company ID
 	 * @param createDate the create date
 	 * @return the matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<User> findByC_CD(long companyId, Date createDate)
-		throws SystemException {
+	public List<User> findByC_CD(long companyId, Date createDate) {
 		return findByC_CD(companyId, createDate, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -2921,11 +2840,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param start the lower bound of the range of users
 	 * @param end the upper bound of the range of users (not inclusive)
 	 * @return the range of matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<User> findByC_CD(long companyId, Date createDate, int start,
-		int end) throws SystemException {
+		int end) {
 		return findByC_CD(companyId, createDate, start, end, null);
 	}
 
@@ -2942,11 +2860,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param end the upper bound of the range of users (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<User> findByC_CD(long companyId, Date createDate, int start,
-		int end, OrderByComparator orderByComparator) throws SystemException {
+		int end, OrderByComparator<User> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -3070,12 +2987,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user
 	 * @throws com.liferay.portal.NoSuchUserException if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User findByC_CD_First(long companyId, Date createDate,
-		OrderByComparator orderByComparator)
-		throws NoSuchUserException, SystemException {
+		OrderByComparator<User> orderByComparator) throws NoSuchUserException {
 		User user = fetchByC_CD_First(companyId, createDate, orderByComparator);
 
 		if (user != null) {
@@ -3104,11 +3019,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param createDate the create date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user, or <code>null</code> if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User fetchByC_CD_First(long companyId, Date createDate,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<User> orderByComparator) {
 		List<User> list = findByC_CD(companyId, createDate, 0, 1,
 				orderByComparator);
 
@@ -3127,12 +3041,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user
 	 * @throws com.liferay.portal.NoSuchUserException if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User findByC_CD_Last(long companyId, Date createDate,
-		OrderByComparator orderByComparator)
-		throws NoSuchUserException, SystemException {
+		OrderByComparator<User> orderByComparator) throws NoSuchUserException {
 		User user = fetchByC_CD_Last(companyId, createDate, orderByComparator);
 
 		if (user != null) {
@@ -3161,11 +3073,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param createDate the create date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user, or <code>null</code> if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User fetchByC_CD_Last(long companyId, Date createDate,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<User> orderByComparator) {
 		int count = countByC_CD(companyId, createDate);
 
 		if (count == 0) {
@@ -3191,12 +3102,11 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next user
 	 * @throws com.liferay.portal.NoSuchUserException if a user with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User[] findByC_CD_PrevAndNext(long userId, long companyId,
-		Date createDate, OrderByComparator orderByComparator)
-		throws NoSuchUserException, SystemException {
+		Date createDate, OrderByComparator<User> orderByComparator)
+		throws NoSuchUserException {
 		User user = findByPrimaryKey(userId);
 
 		Session session = null;
@@ -3225,8 +3135,8 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	}
 
 	protected User getByC_CD_PrevAndNext(Session session, User user,
-		long companyId, Date createDate, OrderByComparator orderByComparator,
-		boolean previous) {
+		long companyId, Date createDate,
+		OrderByComparator<User> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -3349,11 +3259,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param companyId the company ID
 	 * @param createDate the create date
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeByC_CD(long companyId, Date createDate)
-		throws SystemException {
+	public void removeByC_CD(long companyId, Date createDate) {
 		for (User user : findByC_CD(companyId, createDate, QueryUtil.ALL_POS,
 				QueryUtil.ALL_POS, null)) {
 			remove(user);
@@ -3366,11 +3274,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param companyId the company ID
 	 * @param createDate the create date
 	 * @return the number of matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByC_CD(long companyId, Date createDate)
-		throws SystemException {
+	public int countByC_CD(long companyId, Date createDate) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_C_CD;
 
 		Object[] finderArgs = new Object[] { companyId, createDate };
@@ -3459,11 +3365,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param companyId the company ID
 	 * @param modifiedDate the modified date
 	 * @return the matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<User> findByC_MD(long companyId, Date modifiedDate)
-		throws SystemException {
+	public List<User> findByC_MD(long companyId, Date modifiedDate) {
 		return findByC_MD(companyId, modifiedDate, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -3480,11 +3384,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param start the lower bound of the range of users
 	 * @param end the upper bound of the range of users (not inclusive)
 	 * @return the range of matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<User> findByC_MD(long companyId, Date modifiedDate, int start,
-		int end) throws SystemException {
+		int end) {
 		return findByC_MD(companyId, modifiedDate, start, end, null);
 	}
 
@@ -3501,11 +3404,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param end the upper bound of the range of users (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<User> findByC_MD(long companyId, Date modifiedDate, int start,
-		int end, OrderByComparator orderByComparator) throws SystemException {
+		int end, OrderByComparator<User> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -3629,12 +3531,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user
 	 * @throws com.liferay.portal.NoSuchUserException if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User findByC_MD_First(long companyId, Date modifiedDate,
-		OrderByComparator orderByComparator)
-		throws NoSuchUserException, SystemException {
+		OrderByComparator<User> orderByComparator) throws NoSuchUserException {
 		User user = fetchByC_MD_First(companyId, modifiedDate, orderByComparator);
 
 		if (user != null) {
@@ -3663,11 +3563,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param modifiedDate the modified date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user, or <code>null</code> if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User fetchByC_MD_First(long companyId, Date modifiedDate,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<User> orderByComparator) {
 		List<User> list = findByC_MD(companyId, modifiedDate, 0, 1,
 				orderByComparator);
 
@@ -3686,12 +3585,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user
 	 * @throws com.liferay.portal.NoSuchUserException if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User findByC_MD_Last(long companyId, Date modifiedDate,
-		OrderByComparator orderByComparator)
-		throws NoSuchUserException, SystemException {
+		OrderByComparator<User> orderByComparator) throws NoSuchUserException {
 		User user = fetchByC_MD_Last(companyId, modifiedDate, orderByComparator);
 
 		if (user != null) {
@@ -3720,11 +3617,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param modifiedDate the modified date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user, or <code>null</code> if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User fetchByC_MD_Last(long companyId, Date modifiedDate,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<User> orderByComparator) {
 		int count = countByC_MD(companyId, modifiedDate);
 
 		if (count == 0) {
@@ -3750,12 +3646,11 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next user
 	 * @throws com.liferay.portal.NoSuchUserException if a user with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User[] findByC_MD_PrevAndNext(long userId, long companyId,
-		Date modifiedDate, OrderByComparator orderByComparator)
-		throws NoSuchUserException, SystemException {
+		Date modifiedDate, OrderByComparator<User> orderByComparator)
+		throws NoSuchUserException {
 		User user = findByPrimaryKey(userId);
 
 		Session session = null;
@@ -3784,8 +3679,8 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	}
 
 	protected User getByC_MD_PrevAndNext(Session session, User user,
-		long companyId, Date modifiedDate, OrderByComparator orderByComparator,
-		boolean previous) {
+		long companyId, Date modifiedDate,
+		OrderByComparator<User> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -3908,11 +3803,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param companyId the company ID
 	 * @param modifiedDate the modified date
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeByC_MD(long companyId, Date modifiedDate)
-		throws SystemException {
+	public void removeByC_MD(long companyId, Date modifiedDate) {
 		for (User user : findByC_MD(companyId, modifiedDate, QueryUtil.ALL_POS,
 				QueryUtil.ALL_POS, null)) {
 			remove(user);
@@ -3925,11 +3818,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param companyId the company ID
 	 * @param modifiedDate the modified date
 	 * @return the number of matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByC_MD(long companyId, Date modifiedDate)
-		throws SystemException {
+	public int countByC_MD(long companyId, Date modifiedDate) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_C_MD;
 
 		Object[] finderArgs = new Object[] { companyId, modifiedDate };
@@ -4010,11 +3901,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param defaultUser the default user
 	 * @return the matching user
 	 * @throws com.liferay.portal.NoSuchUserException if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User findByC_DU(long companyId, boolean defaultUser)
-		throws NoSuchUserException, SystemException {
+		throws NoSuchUserException {
 		User user = fetchByC_DU(companyId, defaultUser);
 
 		if (user == null) {
@@ -4046,11 +3936,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param companyId the company ID
 	 * @param defaultUser the default user
 	 * @return the matching user, or <code>null</code> if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public User fetchByC_DU(long companyId, boolean defaultUser)
-		throws SystemException {
+	public User fetchByC_DU(long companyId, boolean defaultUser) {
 		return fetchByC_DU(companyId, defaultUser, true);
 	}
 
@@ -4061,11 +3949,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param defaultUser the default user
 	 * @param retrieveFromCache whether to use the finder cache
 	 * @return the matching user, or <code>null</code> if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User fetchByC_DU(long companyId, boolean defaultUser,
-		boolean retrieveFromCache) throws SystemException {
+		boolean retrieveFromCache) {
 		Object[] finderArgs = new Object[] { companyId, defaultUser };
 
 		Object result = null;
@@ -4160,11 +4047,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param companyId the company ID
 	 * @param defaultUser the default user
 	 * @return the user that was removed
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User removeByC_DU(long companyId, boolean defaultUser)
-		throws NoSuchUserException, SystemException {
+		throws NoSuchUserException {
 		User user = findByC_DU(companyId, defaultUser);
 
 		return remove(user);
@@ -4176,11 +4062,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param companyId the company ID
 	 * @param defaultUser the default user
 	 * @return the number of matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByC_DU(long companyId, boolean defaultUser)
-		throws SystemException {
+	public int countByC_DU(long companyId, boolean defaultUser) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_C_DU;
 
 		Object[] finderArgs = new Object[] { companyId, defaultUser };
@@ -4249,11 +4133,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param screenName the screen name
 	 * @return the matching user
 	 * @throws com.liferay.portal.NoSuchUserException if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User findByC_SN(long companyId, String screenName)
-		throws NoSuchUserException, SystemException {
+		throws NoSuchUserException {
 		User user = fetchByC_SN(companyId, screenName);
 
 		if (user == null) {
@@ -4285,11 +4168,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param companyId the company ID
 	 * @param screenName the screen name
 	 * @return the matching user, or <code>null</code> if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public User fetchByC_SN(long companyId, String screenName)
-		throws SystemException {
+	public User fetchByC_SN(long companyId, String screenName) {
 		return fetchByC_SN(companyId, screenName, true);
 	}
 
@@ -4300,11 +4181,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param screenName the screen name
 	 * @param retrieveFromCache whether to use the finder cache
 	 * @return the matching user, or <code>null</code> if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User fetchByC_SN(long companyId, String screenName,
-		boolean retrieveFromCache) throws SystemException {
+		boolean retrieveFromCache) {
 		Object[] finderArgs = new Object[] { companyId, screenName };
 
 		Object result = null;
@@ -4407,11 +4287,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param companyId the company ID
 	 * @param screenName the screen name
 	 * @return the user that was removed
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User removeByC_SN(long companyId, String screenName)
-		throws NoSuchUserException, SystemException {
+		throws NoSuchUserException {
 		User user = findByC_SN(companyId, screenName);
 
 		return remove(user);
@@ -4423,11 +4302,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param companyId the company ID
 	 * @param screenName the screen name
 	 * @return the number of matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByC_SN(long companyId, String screenName)
-		throws SystemException {
+	public int countByC_SN(long companyId, String screenName) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_C_SN;
 
 		Object[] finderArgs = new Object[] { companyId, screenName };
@@ -4512,11 +4389,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param emailAddress the email address
 	 * @return the matching user
 	 * @throws com.liferay.portal.NoSuchUserException if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User findByC_EA(long companyId, String emailAddress)
-		throws NoSuchUserException, SystemException {
+		throws NoSuchUserException {
 		User user = fetchByC_EA(companyId, emailAddress);
 
 		if (user == null) {
@@ -4548,11 +4424,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param companyId the company ID
 	 * @param emailAddress the email address
 	 * @return the matching user, or <code>null</code> if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public User fetchByC_EA(long companyId, String emailAddress)
-		throws SystemException {
+	public User fetchByC_EA(long companyId, String emailAddress) {
 		return fetchByC_EA(companyId, emailAddress, true);
 	}
 
@@ -4563,11 +4437,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param emailAddress the email address
 	 * @param retrieveFromCache whether to use the finder cache
 	 * @return the matching user, or <code>null</code> if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User fetchByC_EA(long companyId, String emailAddress,
-		boolean retrieveFromCache) throws SystemException {
+		boolean retrieveFromCache) {
 		Object[] finderArgs = new Object[] { companyId, emailAddress };
 
 		Object result = null;
@@ -4670,11 +4543,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param companyId the company ID
 	 * @param emailAddress the email address
 	 * @return the user that was removed
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User removeByC_EA(long companyId, String emailAddress)
-		throws NoSuchUserException, SystemException {
+		throws NoSuchUserException {
 		User user = findByC_EA(companyId, emailAddress);
 
 		return remove(user);
@@ -4686,11 +4558,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param companyId the company ID
 	 * @param emailAddress the email address
 	 * @return the number of matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByC_EA(long companyId, String emailAddress)
-		throws SystemException {
+	public int countByC_EA(long companyId, String emailAddress) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_C_EA;
 
 		Object[] finderArgs = new Object[] { companyId, emailAddress };
@@ -4775,11 +4645,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param facebookId the facebook ID
 	 * @return the matching user
 	 * @throws com.liferay.portal.NoSuchUserException if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User findByC_FID(long companyId, long facebookId)
-		throws NoSuchUserException, SystemException {
+		throws NoSuchUserException {
 		User user = fetchByC_FID(companyId, facebookId);
 
 		if (user == null) {
@@ -4811,11 +4680,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param companyId the company ID
 	 * @param facebookId the facebook ID
 	 * @return the matching user, or <code>null</code> if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public User fetchByC_FID(long companyId, long facebookId)
-		throws SystemException {
+	public User fetchByC_FID(long companyId, long facebookId) {
 		return fetchByC_FID(companyId, facebookId, true);
 	}
 
@@ -4826,11 +4693,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param facebookId the facebook ID
 	 * @param retrieveFromCache whether to use the finder cache
 	 * @return the matching user, or <code>null</code> if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User fetchByC_FID(long companyId, long facebookId,
-		boolean retrieveFromCache) throws SystemException {
+		boolean retrieveFromCache) {
 		Object[] finderArgs = new Object[] { companyId, facebookId };
 
 		Object result = null;
@@ -4925,11 +4791,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param companyId the company ID
 	 * @param facebookId the facebook ID
 	 * @return the user that was removed
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User removeByC_FID(long companyId, long facebookId)
-		throws NoSuchUserException, SystemException {
+		throws NoSuchUserException {
 		User user = findByC_FID(companyId, facebookId);
 
 		return remove(user);
@@ -4941,11 +4806,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param companyId the company ID
 	 * @param facebookId the facebook ID
 	 * @return the number of matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByC_FID(long companyId, long facebookId)
-		throws SystemException {
+	public int countByC_FID(long companyId, long facebookId) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_C_FID;
 
 		Object[] finderArgs = new Object[] { companyId, facebookId };
@@ -5014,11 +4877,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param openId the open ID
 	 * @return the matching user
 	 * @throws com.liferay.portal.NoSuchUserException if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User findByC_O(long companyId, String openId)
-		throws NoSuchUserException, SystemException {
+		throws NoSuchUserException {
 		User user = fetchByC_O(companyId, openId);
 
 		if (user == null) {
@@ -5050,11 +4912,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param companyId the company ID
 	 * @param openId the open ID
 	 * @return the matching user, or <code>null</code> if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public User fetchByC_O(long companyId, String openId)
-		throws SystemException {
+	public User fetchByC_O(long companyId, String openId) {
 		return fetchByC_O(companyId, openId, true);
 	}
 
@@ -5065,11 +4925,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param openId the open ID
 	 * @param retrieveFromCache whether to use the finder cache
 	 * @return the matching user, or <code>null</code> if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User fetchByC_O(long companyId, String openId,
-		boolean retrieveFromCache) throws SystemException {
+		boolean retrieveFromCache) {
 		Object[] finderArgs = new Object[] { companyId, openId };
 
 		Object result = null;
@@ -5179,11 +5038,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param companyId the company ID
 	 * @param openId the open ID
 	 * @return the user that was removed
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User removeByC_O(long companyId, String openId)
-		throws NoSuchUserException, SystemException {
+		throws NoSuchUserException {
 		User user = findByC_O(companyId, openId);
 
 		return remove(user);
@@ -5195,11 +5053,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param companyId the company ID
 	 * @param openId the open ID
 	 * @return the number of matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByC_O(long companyId, String openId)
-		throws SystemException {
+	public int countByC_O(long companyId, String openId) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_C_O;
 
 		Object[] finderArgs = new Object[] { companyId, openId };
@@ -5292,11 +5148,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param companyId the company ID
 	 * @param status the status
 	 * @return the matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<User> findByC_S(long companyId, int status)
-		throws SystemException {
+	public List<User> findByC_S(long companyId, int status) {
 		return findByC_S(companyId, status, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -5313,11 +5167,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param start the lower bound of the range of users
 	 * @param end the upper bound of the range of users (not inclusive)
 	 * @return the range of matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<User> findByC_S(long companyId, int status, int start, int end)
-		throws SystemException {
+	public List<User> findByC_S(long companyId, int status, int start, int end) {
 		return findByC_S(companyId, status, start, end, null);
 	}
 
@@ -5334,11 +5186,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param end the upper bound of the range of users (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<User> findByC_S(long companyId, int status, int start, int end,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<User> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -5451,12 +5302,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user
 	 * @throws com.liferay.portal.NoSuchUserException if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User findByC_S_First(long companyId, int status,
-		OrderByComparator orderByComparator)
-		throws NoSuchUserException, SystemException {
+		OrderByComparator<User> orderByComparator) throws NoSuchUserException {
 		User user = fetchByC_S_First(companyId, status, orderByComparator);
 
 		if (user != null) {
@@ -5485,11 +5334,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user, or <code>null</code> if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User fetchByC_S_First(long companyId, int status,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<User> orderByComparator) {
 		List<User> list = findByC_S(companyId, status, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -5507,12 +5355,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user
 	 * @throws com.liferay.portal.NoSuchUserException if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User findByC_S_Last(long companyId, int status,
-		OrderByComparator orderByComparator)
-		throws NoSuchUserException, SystemException {
+		OrderByComparator<User> orderByComparator) throws NoSuchUserException {
 		User user = fetchByC_S_Last(companyId, status, orderByComparator);
 
 		if (user != null) {
@@ -5541,11 +5387,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user, or <code>null</code> if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User fetchByC_S_Last(long companyId, int status,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<User> orderByComparator) {
 		int count = countByC_S(companyId, status);
 
 		if (count == 0) {
@@ -5571,12 +5416,11 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next user
 	 * @throws com.liferay.portal.NoSuchUserException if a user with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User[] findByC_S_PrevAndNext(long userId, long companyId,
-		int status, OrderByComparator orderByComparator)
-		throws NoSuchUserException, SystemException {
+		int status, OrderByComparator<User> orderByComparator)
+		throws NoSuchUserException {
 		User user = findByPrimaryKey(userId);
 
 		Session session = null;
@@ -5605,7 +5449,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	}
 
 	protected User getByC_S_PrevAndNext(Session session, User user,
-		long companyId, int status, OrderByComparator orderByComparator,
+		long companyId, int status, OrderByComparator<User> orderByComparator,
 		boolean previous) {
 		StringBundler query = null;
 
@@ -5718,11 +5562,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param companyId the company ID
 	 * @param status the status
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeByC_S(long companyId, int status)
-		throws SystemException {
+	public void removeByC_S(long companyId, int status) {
 		for (User user : findByC_S(companyId, status, QueryUtil.ALL_POS,
 				QueryUtil.ALL_POS, null)) {
 			remove(user);
@@ -5735,10 +5577,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param companyId the company ID
 	 * @param status the status
 	 * @return the number of matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByC_S(long companyId, int status) throws SystemException {
+	public int countByC_S(long companyId, int status) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_C_S;
 
 		Object[] finderArgs = new Object[] { companyId, status };
@@ -5822,11 +5663,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param createDate the create date
 	 * @param modifiedDate the modified date
 	 * @return the matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<User> findByC_CD_MD(long companyId, Date createDate,
-		Date modifiedDate) throws SystemException {
+		Date modifiedDate) {
 		return findByC_CD_MD(companyId, createDate, modifiedDate,
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
@@ -5844,11 +5684,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param start the lower bound of the range of users
 	 * @param end the upper bound of the range of users (not inclusive)
 	 * @return the range of matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<User> findByC_CD_MD(long companyId, Date createDate,
-		Date modifiedDate, int start, int end) throws SystemException {
+		Date modifiedDate, int start, int end) {
 		return findByC_CD_MD(companyId, createDate, modifiedDate, start, end,
 			null);
 	}
@@ -5867,12 +5706,11 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param end the upper bound of the range of users (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<User> findByC_CD_MD(long companyId, Date createDate,
 		Date modifiedDate, int start, int end,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<User> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -6013,12 +5851,11 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user
 	 * @throws com.liferay.portal.NoSuchUserException if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User findByC_CD_MD_First(long companyId, Date createDate,
-		Date modifiedDate, OrderByComparator orderByComparator)
-		throws NoSuchUserException, SystemException {
+		Date modifiedDate, OrderByComparator<User> orderByComparator)
+		throws NoSuchUserException {
 		User user = fetchByC_CD_MD_First(companyId, createDate, modifiedDate,
 				orderByComparator);
 
@@ -6052,12 +5889,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param modifiedDate the modified date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user, or <code>null</code> if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User fetchByC_CD_MD_First(long companyId, Date createDate,
-		Date modifiedDate, OrderByComparator orderByComparator)
-		throws SystemException {
+		Date modifiedDate, OrderByComparator<User> orderByComparator) {
 		List<User> list = findByC_CD_MD(companyId, createDate, modifiedDate, 0,
 				1, orderByComparator);
 
@@ -6077,12 +5912,11 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user
 	 * @throws com.liferay.portal.NoSuchUserException if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User findByC_CD_MD_Last(long companyId, Date createDate,
-		Date modifiedDate, OrderByComparator orderByComparator)
-		throws NoSuchUserException, SystemException {
+		Date modifiedDate, OrderByComparator<User> orderByComparator)
+		throws NoSuchUserException {
 		User user = fetchByC_CD_MD_Last(companyId, createDate, modifiedDate,
 				orderByComparator);
 
@@ -6116,12 +5950,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param modifiedDate the modified date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user, or <code>null</code> if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User fetchByC_CD_MD_Last(long companyId, Date createDate,
-		Date modifiedDate, OrderByComparator orderByComparator)
-		throws SystemException {
+		Date modifiedDate, OrderByComparator<User> orderByComparator) {
 		int count = countByC_CD_MD(companyId, createDate, modifiedDate);
 
 		if (count == 0) {
@@ -6148,12 +5980,11 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next user
 	 * @throws com.liferay.portal.NoSuchUserException if a user with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User[] findByC_CD_MD_PrevAndNext(long userId, long companyId,
-		Date createDate, Date modifiedDate, OrderByComparator orderByComparator)
-		throws NoSuchUserException, SystemException {
+		Date createDate, Date modifiedDate,
+		OrderByComparator<User> orderByComparator) throws NoSuchUserException {
 		User user = findByPrimaryKey(userId);
 
 		Session session = null;
@@ -6183,7 +6014,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 
 	protected User getByC_CD_MD_PrevAndNext(Session session, User user,
 		long companyId, Date createDate, Date modifiedDate,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<User> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -6322,11 +6153,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param companyId the company ID
 	 * @param createDate the create date
 	 * @param modifiedDate the modified date
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public void removeByC_CD_MD(long companyId, Date createDate,
-		Date modifiedDate) throws SystemException {
+		Date modifiedDate) {
 		for (User user : findByC_CD_MD(companyId, createDate, modifiedDate,
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(user);
@@ -6340,11 +6170,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param createDate the create date
 	 * @param modifiedDate the modified date
 	 * @return the number of matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByC_CD_MD(long companyId, Date createDate, Date modifiedDate)
-		throws SystemException {
+	public int countByC_CD_MD(long companyId, Date createDate, Date modifiedDate) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_C_CD_MD;
 
 		Object[] finderArgs = new Object[] { companyId, createDate, modifiedDate };
@@ -6460,11 +6288,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param defaultUser the default user
 	 * @param status the status
 	 * @return the matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<User> findByC_DU_S(long companyId, boolean defaultUser,
-		int status) throws SystemException {
+		int status) {
 		return findByC_DU_S(companyId, defaultUser, status, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -6482,11 +6309,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param start the lower bound of the range of users
 	 * @param end the upper bound of the range of users (not inclusive)
 	 * @return the range of matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<User> findByC_DU_S(long companyId, boolean defaultUser,
-		int status, int start, int end) throws SystemException {
+		int status, int start, int end) {
 		return findByC_DU_S(companyId, defaultUser, status, start, end, null);
 	}
 
@@ -6504,12 +6330,11 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param end the upper bound of the range of users (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<User> findByC_DU_S(long companyId, boolean defaultUser,
-		int status, int start, int end, OrderByComparator orderByComparator)
-		throws SystemException {
+		int status, int start, int end,
+		OrderByComparator<User> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -6628,12 +6453,11 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user
 	 * @throws com.liferay.portal.NoSuchUserException if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User findByC_DU_S_First(long companyId, boolean defaultUser,
-		int status, OrderByComparator orderByComparator)
-		throws NoSuchUserException, SystemException {
+		int status, OrderByComparator<User> orderByComparator)
+		throws NoSuchUserException {
 		User user = fetchByC_DU_S_First(companyId, defaultUser, status,
 				orderByComparator);
 
@@ -6667,12 +6491,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user, or <code>null</code> if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User fetchByC_DU_S_First(long companyId, boolean defaultUser,
-		int status, OrderByComparator orderByComparator)
-		throws SystemException {
+		int status, OrderByComparator<User> orderByComparator) {
 		List<User> list = findByC_DU_S(companyId, defaultUser, status, 0, 1,
 				orderByComparator);
 
@@ -6692,12 +6514,11 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user
 	 * @throws com.liferay.portal.NoSuchUserException if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User findByC_DU_S_Last(long companyId, boolean defaultUser,
-		int status, OrderByComparator orderByComparator)
-		throws NoSuchUserException, SystemException {
+		int status, OrderByComparator<User> orderByComparator)
+		throws NoSuchUserException {
 		User user = fetchByC_DU_S_Last(companyId, defaultUser, status,
 				orderByComparator);
 
@@ -6731,12 +6552,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user, or <code>null</code> if a matching user could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User fetchByC_DU_S_Last(long companyId, boolean defaultUser,
-		int status, OrderByComparator orderByComparator)
-		throws SystemException {
+		int status, OrderByComparator<User> orderByComparator) {
 		int count = countByC_DU_S(companyId, defaultUser, status);
 
 		if (count == 0) {
@@ -6763,12 +6582,11 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next user
 	 * @throws com.liferay.portal.NoSuchUserException if a user with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User[] findByC_DU_S_PrevAndNext(long userId, long companyId,
-		boolean defaultUser, int status, OrderByComparator orderByComparator)
-		throws NoSuchUserException, SystemException {
+		boolean defaultUser, int status,
+		OrderByComparator<User> orderByComparator) throws NoSuchUserException {
 		User user = findByPrimaryKey(userId);
 
 		Session session = null;
@@ -6798,7 +6616,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 
 	protected User getByC_DU_S_PrevAndNext(Session session, User user,
 		long companyId, boolean defaultUser, int status,
-		OrderByComparator orderByComparator, boolean previous) {
+		OrderByComparator<User> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
@@ -6915,11 +6733,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param companyId the company ID
 	 * @param defaultUser the default user
 	 * @param status the status
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeByC_DU_S(long companyId, boolean defaultUser, int status)
-		throws SystemException {
+	public void removeByC_DU_S(long companyId, boolean defaultUser, int status) {
 		for (User user : findByC_DU_S(companyId, defaultUser, status,
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(user);
@@ -6933,11 +6749,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param defaultUser the default user
 	 * @param status the status
 	 * @return the number of matching users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countByC_DU_S(long companyId, boolean defaultUser, int status)
-		throws SystemException {
+	public int countByC_DU_S(long companyId, boolean defaultUser, int status) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_C_DU_S;
 
 		Object[] finderArgs = new Object[] { companyId, defaultUser, status };
@@ -7398,10 +7212,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param userId the primary key of the user
 	 * @return the user that was removed
 	 * @throws com.liferay.portal.NoSuchUserException if a user with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public User remove(long userId) throws NoSuchUserException, SystemException {
+	public User remove(long userId) throws NoSuchUserException {
 		return remove((Serializable)userId);
 	}
 
@@ -7411,11 +7224,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param primaryKey the primary key of the user
 	 * @return the user that was removed
 	 * @throws com.liferay.portal.NoSuchUserException if a user with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public User remove(Serializable primaryKey)
-		throws NoSuchUserException, SystemException {
+	public User remove(Serializable primaryKey) throws NoSuchUserException {
 		Session session = null;
 
 		try {
@@ -7446,7 +7257,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	}
 
 	@Override
-	protected User removeImpl(User user) throws SystemException {
+	protected User removeImpl(User user) {
 		user = toUnwrappedModel(user);
 
 		userToGroupTableMapper.deleteLeftPrimaryKeyTableMappings(user.getPrimaryKey());
@@ -7487,8 +7298,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	}
 
 	@Override
-	public User updateImpl(com.liferay.portal.model.User user)
-		throws SystemException {
+	public User updateImpl(com.liferay.portal.model.User user) {
 		user = toUnwrappedModel(user);
 
 		boolean isNew = user.isNew();
@@ -7783,11 +7593,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param primaryKey the primary key of the user
 	 * @return the user
 	 * @throws com.liferay.portal.NoSuchUserException if a user with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public User findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchUserException, SystemException {
+		throws NoSuchUserException {
 		User user = fetchByPrimaryKey(primaryKey);
 
 		if (user == null) {
@@ -7808,11 +7617,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param userId the primary key of the user
 	 * @return the user
 	 * @throws com.liferay.portal.NoSuchUserException if a user with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public User findByPrimaryKey(long userId)
-		throws NoSuchUserException, SystemException {
+	public User findByPrimaryKey(long userId) throws NoSuchUserException {
 		return findByPrimaryKey((Serializable)userId);
 	}
 
@@ -7821,11 +7628,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param primaryKey the primary key of the user
 	 * @return the user, or <code>null</code> if a user with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public User fetchByPrimaryKey(Serializable primaryKey)
-		throws SystemException {
+	public User fetchByPrimaryKey(Serializable primaryKey) {
 		User user = (User)EntityCacheUtil.getResult(UserModelImpl.ENTITY_CACHE_ENABLED,
 				UserImpl.class, primaryKey);
 
@@ -7868,21 +7673,111 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param userId the primary key of the user
 	 * @return the user, or <code>null</code> if a user with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public User fetchByPrimaryKey(long userId) throws SystemException {
+	public User fetchByPrimaryKey(long userId) {
 		return fetchByPrimaryKey((Serializable)userId);
+	}
+
+	@Override
+	public Map<Serializable, User> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys) {
+		if (primaryKeys.isEmpty()) {
+			return Collections.emptyMap();
+		}
+
+		Map<Serializable, User> map = new HashMap<Serializable, User>();
+
+		if (primaryKeys.size() == 1) {
+			Iterator<Serializable> iterator = primaryKeys.iterator();
+
+			Serializable primaryKey = iterator.next();
+
+			User user = fetchByPrimaryKey(primaryKey);
+
+			if (user != null) {
+				map.put(primaryKey, user);
+			}
+
+			return map;
+		}
+
+		Set<Serializable> uncachedPrimaryKeys = null;
+
+		for (Serializable primaryKey : primaryKeys) {
+			User user = (User)EntityCacheUtil.getResult(UserModelImpl.ENTITY_CACHE_ENABLED,
+					UserImpl.class, primaryKey);
+
+			if (user == null) {
+				if (uncachedPrimaryKeys == null) {
+					uncachedPrimaryKeys = new HashSet<Serializable>();
+				}
+
+				uncachedPrimaryKeys.add(primaryKey);
+			}
+			else {
+				map.put(primaryKey, user);
+			}
+		}
+
+		if (uncachedPrimaryKeys == null) {
+			return map;
+		}
+
+		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
+				1);
+
+		query.append(_SQL_SELECT_USER_WHERE_PKS_IN);
+
+		for (Serializable primaryKey : uncachedPrimaryKeys) {
+			query.append(String.valueOf(primaryKey));
+
+			query.append(StringPool.COMMA);
+		}
+
+		query.setIndex(query.index() - 1);
+
+		query.append(StringPool.CLOSE_PARENTHESIS);
+
+		String sql = query.toString();
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			Query q = session.createQuery(sql);
+
+			for (User user : (List<User>)q.list()) {
+				map.put(user.getPrimaryKeyObj(), user);
+
+				cacheResult(user);
+
+				uncachedPrimaryKeys.remove(user.getPrimaryKeyObj());
+			}
+
+			for (Serializable primaryKey : uncachedPrimaryKeys) {
+				EntityCacheUtil.putResult(UserModelImpl.ENTITY_CACHE_ENABLED,
+					UserImpl.class, primaryKey, _nullUser);
+			}
+		}
+		catch (Exception e) {
+			throw processException(e);
+		}
+		finally {
+			closeSession(session);
+		}
+
+		return map;
 	}
 
 	/**
 	 * Returns all the users.
 	 *
 	 * @return the users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<User> findAll() throws SystemException {
+	public List<User> findAll() {
 		return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
@@ -7896,10 +7791,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param start the lower bound of the range of users
 	 * @param end the upper bound of the range of users (not inclusive)
 	 * @return the range of users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<User> findAll(int start, int end) throws SystemException {
+	public List<User> findAll(int start, int end) {
 		return findAll(start, end, null);
 	}
 
@@ -7914,11 +7808,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param end the upper bound of the range of users (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<User> findAll(int start, int end,
-		OrderByComparator orderByComparator) throws SystemException {
+		OrderByComparator<User> orderByComparator) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -8000,10 +7893,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	/**
 	 * Removes all the users from the database.
 	 *
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeAll() throws SystemException {
+	public void removeAll() {
 		for (User user : findAll()) {
 			remove(user);
 		}
@@ -8013,10 +7905,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * Returns the number of users.
 	 *
 	 * @return the number of users
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int countAll() throws SystemException {
+	public int countAll() {
 		Long count = (Long)FinderCacheUtil.getResult(FINDER_PATH_COUNT_ALL,
 				FINDER_ARGS_EMPTY, this);
 
@@ -8048,15 +7939,26 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	}
 
 	/**
+	 * Returns the primaryKeys of groups associated with the user.
+	 *
+	 * @param pk the primary key of the user
+	 * @return long[] of the primaryKeys of groups associated with the user
+	 */
+	@Override
+	public long[] getGroupPrimaryKeys(long pk) {
+		long[] pks = userToGroupTableMapper.getRightPrimaryKeys(pk);
+
+		return pks.clone();
+	}
+
+	/**
 	 * Returns all the groups associated with the user.
 	 *
 	 * @param pk the primary key of the user
 	 * @return the groups associated with the user
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<com.liferay.portal.model.Group> getGroups(long pk)
-		throws SystemException {
+	public List<com.liferay.portal.model.Group> getGroups(long pk) {
 		return getGroups(pk, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 	}
 
@@ -8071,11 +7973,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param start the lower bound of the range of users
 	 * @param end the upper bound of the range of users (not inclusive)
 	 * @return the range of groups associated with the user
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<com.liferay.portal.model.Group> getGroups(long pk, int start,
-		int end) throws SystemException {
+		int end) {
 		return getGroups(pk, start, end, null);
 	}
 
@@ -8091,11 +7992,11 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param end the upper bound of the range of users (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of groups associated with the user
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<com.liferay.portal.model.Group> getGroups(long pk, int start,
-		int end, OrderByComparator orderByComparator) throws SystemException {
+		int end,
+		OrderByComparator<com.liferay.portal.model.Group> orderByComparator) {
 		return userToGroupTableMapper.getRightBaseModels(pk, start, end,
 			orderByComparator);
 	}
@@ -8105,10 +8006,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @return the number of groups associated with the user
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int getGroupsSize(long pk) throws SystemException {
+	public int getGroupsSize(long pk) {
 		long[] pks = userToGroupTableMapper.getRightPrimaryKeys(pk);
 
 		return pks.length;
@@ -8120,11 +8020,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param pk the primary key of the user
 	 * @param groupPK the primary key of the group
 	 * @return <code>true</code> if the group is associated with the user; <code>false</code> otherwise
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public boolean containsGroup(long pk, long groupPK)
-		throws SystemException {
+	public boolean containsGroup(long pk, long groupPK) {
 		return userToGroupTableMapper.containsTableMapping(pk, groupPK);
 	}
 
@@ -8133,10 +8031,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user to check for associations with groups
 	 * @return <code>true</code> if the user has any groups associated with it; <code>false</code> otherwise
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public boolean containsGroups(long pk) throws SystemException {
+	public boolean containsGroups(long pk) {
 		if (getGroupsSize(pk) > 0) {
 			return true;
 		}
@@ -8150,10 +8047,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param groupPK the primary key of the group
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void addGroup(long pk, long groupPK) throws SystemException {
+	public void addGroup(long pk, long groupPK) {
 		userToGroupTableMapper.addTableMapping(pk, groupPK);
 	}
 
@@ -8162,11 +8058,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param group the group
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void addGroup(long pk, com.liferay.portal.model.Group group)
-		throws SystemException {
+	public void addGroup(long pk, com.liferay.portal.model.Group group) {
 		userToGroupTableMapper.addTableMapping(pk, group.getPrimaryKey());
 	}
 
@@ -8175,10 +8069,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param groupPKs the primary keys of the groups
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void addGroups(long pk, long[] groupPKs) throws SystemException {
+	public void addGroups(long pk, long[] groupPKs) {
 		for (long groupPK : groupPKs) {
 			userToGroupTableMapper.addTableMapping(pk, groupPK);
 		}
@@ -8189,11 +8082,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param groups the groups
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void addGroups(long pk, List<com.liferay.portal.model.Group> groups)
-		throws SystemException {
+	public void addGroups(long pk, List<com.liferay.portal.model.Group> groups) {
 		for (com.liferay.portal.model.Group group : groups) {
 			userToGroupTableMapper.addTableMapping(pk, group.getPrimaryKey());
 		}
@@ -8203,10 +8094,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * Clears all associations between the user and its groups. Also notifies the appropriate model listeners and clears the mapping table finder cache.
 	 *
 	 * @param pk the primary key of the user to clear the associated groups from
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void clearGroups(long pk) throws SystemException {
+	public void clearGroups(long pk) {
 		userToGroupTableMapper.deleteLeftPrimaryKeyTableMappings(pk);
 	}
 
@@ -8215,10 +8105,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param groupPK the primary key of the group
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeGroup(long pk, long groupPK) throws SystemException {
+	public void removeGroup(long pk, long groupPK) {
 		userToGroupTableMapper.deleteTableMapping(pk, groupPK);
 	}
 
@@ -8227,11 +8116,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param group the group
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeGroup(long pk, com.liferay.portal.model.Group group)
-		throws SystemException {
+	public void removeGroup(long pk, com.liferay.portal.model.Group group) {
 		userToGroupTableMapper.deleteTableMapping(pk, group.getPrimaryKey());
 	}
 
@@ -8240,11 +8127,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param groupPKs the primary keys of the groups
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeGroups(long pk, long[] groupPKs)
-		throws SystemException {
+	public void removeGroups(long pk, long[] groupPKs) {
 		for (long groupPK : groupPKs) {
 			userToGroupTableMapper.deleteTableMapping(pk, groupPK);
 		}
@@ -8255,11 +8140,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param groups the groups
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public void removeGroups(long pk,
-		List<com.liferay.portal.model.Group> groups) throws SystemException {
+		List<com.liferay.portal.model.Group> groups) {
 		for (com.liferay.portal.model.Group group : groups) {
 			userToGroupTableMapper.deleteTableMapping(pk, group.getPrimaryKey());
 		}
@@ -8270,10 +8154,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param groupPKs the primary keys of the groups to be associated with the user
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void setGroups(long pk, long[] groupPKs) throws SystemException {
+	public void setGroups(long pk, long[] groupPKs) {
 		Set<Long> newGroupPKsSet = SetUtil.fromArray(groupPKs);
 		Set<Long> oldGroupPKsSet = SetUtil.fromArray(userToGroupTableMapper.getRightPrimaryKeys(
 					pk));
@@ -8298,11 +8181,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param groups the groups to be associated with the user
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void setGroups(long pk, List<com.liferay.portal.model.Group> groups)
-		throws SystemException {
+	public void setGroups(long pk, List<com.liferay.portal.model.Group> groups) {
 		try {
 			long[] groupPKs = new long[groups.size()];
 
@@ -8320,15 +8201,26 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	}
 
 	/**
+	 * Returns the primaryKeys of organizations associated with the user.
+	 *
+	 * @param pk the primary key of the user
+	 * @return long[] of the primaryKeys of organizations associated with the user
+	 */
+	@Override
+	public long[] getOrganizationPrimaryKeys(long pk) {
+		long[] pks = userToOrganizationTableMapper.getRightPrimaryKeys(pk);
+
+		return pks.clone();
+	}
+
+	/**
 	 * Returns all the organizations associated with the user.
 	 *
 	 * @param pk the primary key of the user
 	 * @return the organizations associated with the user
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<com.liferay.portal.model.Organization> getOrganizations(long pk)
-		throws SystemException {
+	public List<com.liferay.portal.model.Organization> getOrganizations(long pk) {
 		return getOrganizations(pk, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 	}
 
@@ -8343,11 +8235,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param start the lower bound of the range of users
 	 * @param end the upper bound of the range of users (not inclusive)
 	 * @return the range of organizations associated with the user
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<com.liferay.portal.model.Organization> getOrganizations(
-		long pk, int start, int end) throws SystemException {
+		long pk, int start, int end) {
 		return getOrganizations(pk, start, end, null);
 	}
 
@@ -8363,12 +8254,11 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param end the upper bound of the range of users (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of organizations associated with the user
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<com.liferay.portal.model.Organization> getOrganizations(
-		long pk, int start, int end, OrderByComparator orderByComparator)
-		throws SystemException {
+		long pk, int start, int end,
+		OrderByComparator<com.liferay.portal.model.Organization> orderByComparator) {
 		return userToOrganizationTableMapper.getRightBaseModels(pk, start, end,
 			orderByComparator);
 	}
@@ -8378,10 +8268,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @return the number of organizations associated with the user
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int getOrganizationsSize(long pk) throws SystemException {
+	public int getOrganizationsSize(long pk) {
 		long[] pks = userToOrganizationTableMapper.getRightPrimaryKeys(pk);
 
 		return pks.length;
@@ -8393,11 +8282,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param pk the primary key of the user
 	 * @param organizationPK the primary key of the organization
 	 * @return <code>true</code> if the organization is associated with the user; <code>false</code> otherwise
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public boolean containsOrganization(long pk, long organizationPK)
-		throws SystemException {
+	public boolean containsOrganization(long pk, long organizationPK) {
 		return userToOrganizationTableMapper.containsTableMapping(pk,
 			organizationPK);
 	}
@@ -8407,10 +8294,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user to check for associations with organizations
 	 * @return <code>true</code> if the user has any organizations associated with it; <code>false</code> otherwise
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public boolean containsOrganizations(long pk) throws SystemException {
+	public boolean containsOrganizations(long pk) {
 		if (getOrganizationsSize(pk) > 0) {
 			return true;
 		}
@@ -8424,11 +8310,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param organizationPK the primary key of the organization
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void addOrganization(long pk, long organizationPK)
-		throws SystemException {
+	public void addOrganization(long pk, long organizationPK) {
 		userToOrganizationTableMapper.addTableMapping(pk, organizationPK);
 	}
 
@@ -8437,12 +8321,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param organization the organization
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public void addOrganization(long pk,
-		com.liferay.portal.model.Organization organization)
-		throws SystemException {
+		com.liferay.portal.model.Organization organization) {
 		userToOrganizationTableMapper.addTableMapping(pk,
 			organization.getPrimaryKey());
 	}
@@ -8452,11 +8334,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param organizationPKs the primary keys of the organizations
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void addOrganizations(long pk, long[] organizationPKs)
-		throws SystemException {
+	public void addOrganizations(long pk, long[] organizationPKs) {
 		for (long organizationPK : organizationPKs) {
 			userToOrganizationTableMapper.addTableMapping(pk, organizationPK);
 		}
@@ -8467,12 +8347,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param organizations the organizations
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public void addOrganizations(long pk,
-		List<com.liferay.portal.model.Organization> organizations)
-		throws SystemException {
+		List<com.liferay.portal.model.Organization> organizations) {
 		for (com.liferay.portal.model.Organization organization : organizations) {
 			userToOrganizationTableMapper.addTableMapping(pk,
 				organization.getPrimaryKey());
@@ -8483,10 +8361,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * Clears all associations between the user and its organizations. Also notifies the appropriate model listeners and clears the mapping table finder cache.
 	 *
 	 * @param pk the primary key of the user to clear the associated organizations from
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void clearOrganizations(long pk) throws SystemException {
+	public void clearOrganizations(long pk) {
 		userToOrganizationTableMapper.deleteLeftPrimaryKeyTableMappings(pk);
 	}
 
@@ -8495,11 +8372,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param organizationPK the primary key of the organization
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeOrganization(long pk, long organizationPK)
-		throws SystemException {
+	public void removeOrganization(long pk, long organizationPK) {
 		userToOrganizationTableMapper.deleteTableMapping(pk, organizationPK);
 	}
 
@@ -8508,12 +8383,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param organization the organization
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public void removeOrganization(long pk,
-		com.liferay.portal.model.Organization organization)
-		throws SystemException {
+		com.liferay.portal.model.Organization organization) {
 		userToOrganizationTableMapper.deleteTableMapping(pk,
 			organization.getPrimaryKey());
 	}
@@ -8523,11 +8396,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param organizationPKs the primary keys of the organizations
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeOrganizations(long pk, long[] organizationPKs)
-		throws SystemException {
+	public void removeOrganizations(long pk, long[] organizationPKs) {
 		for (long organizationPK : organizationPKs) {
 			userToOrganizationTableMapper.deleteTableMapping(pk, organizationPK);
 		}
@@ -8538,12 +8409,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param organizations the organizations
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public void removeOrganizations(long pk,
-		List<com.liferay.portal.model.Organization> organizations)
-		throws SystemException {
+		List<com.liferay.portal.model.Organization> organizations) {
 		for (com.liferay.portal.model.Organization organization : organizations) {
 			userToOrganizationTableMapper.deleteTableMapping(pk,
 				organization.getPrimaryKey());
@@ -8555,11 +8424,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param organizationPKs the primary keys of the organizations to be associated with the user
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void setOrganizations(long pk, long[] organizationPKs)
-		throws SystemException {
+	public void setOrganizations(long pk, long[] organizationPKs) {
 		Set<Long> newOrganizationPKsSet = SetUtil.fromArray(organizationPKs);
 		Set<Long> oldOrganizationPKsSet = SetUtil.fromArray(userToOrganizationTableMapper.getRightPrimaryKeys(
 					pk));
@@ -8585,12 +8452,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param organizations the organizations to be associated with the user
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public void setOrganizations(long pk,
-		List<com.liferay.portal.model.Organization> organizations)
-		throws SystemException {
+		List<com.liferay.portal.model.Organization> organizations) {
 		try {
 			long[] organizationPKs = new long[organizations.size()];
 
@@ -8608,15 +8473,26 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	}
 
 	/**
+	 * Returns the primaryKeys of roles associated with the user.
+	 *
+	 * @param pk the primary key of the user
+	 * @return long[] of the primaryKeys of roles associated with the user
+	 */
+	@Override
+	public long[] getRolePrimaryKeys(long pk) {
+		long[] pks = userToRoleTableMapper.getRightPrimaryKeys(pk);
+
+		return pks.clone();
+	}
+
+	/**
 	 * Returns all the roles associated with the user.
 	 *
 	 * @param pk the primary key of the user
 	 * @return the roles associated with the user
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<com.liferay.portal.model.Role> getRoles(long pk)
-		throws SystemException {
+	public List<com.liferay.portal.model.Role> getRoles(long pk) {
 		return getRoles(pk, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 	}
 
@@ -8631,11 +8507,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param start the lower bound of the range of users
 	 * @param end the upper bound of the range of users (not inclusive)
 	 * @return the range of roles associated with the user
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<com.liferay.portal.model.Role> getRoles(long pk, int start,
-		int end) throws SystemException {
+		int end) {
 		return getRoles(pk, start, end, null);
 	}
 
@@ -8651,11 +8526,11 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param end the upper bound of the range of users (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of roles associated with the user
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<com.liferay.portal.model.Role> getRoles(long pk, int start,
-		int end, OrderByComparator orderByComparator) throws SystemException {
+		int end,
+		OrderByComparator<com.liferay.portal.model.Role> orderByComparator) {
 		return userToRoleTableMapper.getRightBaseModels(pk, start, end,
 			orderByComparator);
 	}
@@ -8665,10 +8540,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @return the number of roles associated with the user
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int getRolesSize(long pk) throws SystemException {
+	public int getRolesSize(long pk) {
 		long[] pks = userToRoleTableMapper.getRightPrimaryKeys(pk);
 
 		return pks.length;
@@ -8680,10 +8554,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param pk the primary key of the user
 	 * @param rolePK the primary key of the role
 	 * @return <code>true</code> if the role is associated with the user; <code>false</code> otherwise
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public boolean containsRole(long pk, long rolePK) throws SystemException {
+	public boolean containsRole(long pk, long rolePK) {
 		return userToRoleTableMapper.containsTableMapping(pk, rolePK);
 	}
 
@@ -8692,10 +8565,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user to check for associations with roles
 	 * @return <code>true</code> if the user has any roles associated with it; <code>false</code> otherwise
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public boolean containsRoles(long pk) throws SystemException {
+	public boolean containsRoles(long pk) {
 		if (getRolesSize(pk) > 0) {
 			return true;
 		}
@@ -8709,10 +8581,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param rolePK the primary key of the role
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void addRole(long pk, long rolePK) throws SystemException {
+	public void addRole(long pk, long rolePK) {
 		userToRoleTableMapper.addTableMapping(pk, rolePK);
 	}
 
@@ -8721,11 +8592,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param role the role
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void addRole(long pk, com.liferay.portal.model.Role role)
-		throws SystemException {
+	public void addRole(long pk, com.liferay.portal.model.Role role) {
 		userToRoleTableMapper.addTableMapping(pk, role.getPrimaryKey());
 	}
 
@@ -8734,10 +8603,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param rolePKs the primary keys of the roles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void addRoles(long pk, long[] rolePKs) throws SystemException {
+	public void addRoles(long pk, long[] rolePKs) {
 		for (long rolePK : rolePKs) {
 			userToRoleTableMapper.addTableMapping(pk, rolePK);
 		}
@@ -8748,11 +8616,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param roles the roles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void addRoles(long pk, List<com.liferay.portal.model.Role> roles)
-		throws SystemException {
+	public void addRoles(long pk, List<com.liferay.portal.model.Role> roles) {
 		for (com.liferay.portal.model.Role role : roles) {
 			userToRoleTableMapper.addTableMapping(pk, role.getPrimaryKey());
 		}
@@ -8762,10 +8628,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * Clears all associations between the user and its roles. Also notifies the appropriate model listeners and clears the mapping table finder cache.
 	 *
 	 * @param pk the primary key of the user to clear the associated roles from
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void clearRoles(long pk) throws SystemException {
+	public void clearRoles(long pk) {
 		userToRoleTableMapper.deleteLeftPrimaryKeyTableMappings(pk);
 	}
 
@@ -8774,10 +8639,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param rolePK the primary key of the role
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeRole(long pk, long rolePK) throws SystemException {
+	public void removeRole(long pk, long rolePK) {
 		userToRoleTableMapper.deleteTableMapping(pk, rolePK);
 	}
 
@@ -8786,11 +8650,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param role the role
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeRole(long pk, com.liferay.portal.model.Role role)
-		throws SystemException {
+	public void removeRole(long pk, com.liferay.portal.model.Role role) {
 		userToRoleTableMapper.deleteTableMapping(pk, role.getPrimaryKey());
 	}
 
@@ -8799,10 +8661,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param rolePKs the primary keys of the roles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeRoles(long pk, long[] rolePKs) throws SystemException {
+	public void removeRoles(long pk, long[] rolePKs) {
 		for (long rolePK : rolePKs) {
 			userToRoleTableMapper.deleteTableMapping(pk, rolePK);
 		}
@@ -8813,11 +8674,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param roles the roles
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeRoles(long pk, List<com.liferay.portal.model.Role> roles)
-		throws SystemException {
+	public void removeRoles(long pk, List<com.liferay.portal.model.Role> roles) {
 		for (com.liferay.portal.model.Role role : roles) {
 			userToRoleTableMapper.deleteTableMapping(pk, role.getPrimaryKey());
 		}
@@ -8828,10 +8687,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param rolePKs the primary keys of the roles to be associated with the user
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void setRoles(long pk, long[] rolePKs) throws SystemException {
+	public void setRoles(long pk, long[] rolePKs) {
 		Set<Long> newRolePKsSet = SetUtil.fromArray(rolePKs);
 		Set<Long> oldRolePKsSet = SetUtil.fromArray(userToRoleTableMapper.getRightPrimaryKeys(
 					pk));
@@ -8856,11 +8714,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param roles the roles to be associated with the user
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void setRoles(long pk, List<com.liferay.portal.model.Role> roles)
-		throws SystemException {
+	public void setRoles(long pk, List<com.liferay.portal.model.Role> roles) {
 		try {
 			long[] rolePKs = new long[roles.size()];
 
@@ -8878,15 +8734,26 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	}
 
 	/**
+	 * Returns the primaryKeys of teams associated with the user.
+	 *
+	 * @param pk the primary key of the user
+	 * @return long[] of the primaryKeys of teams associated with the user
+	 */
+	@Override
+	public long[] getTeamPrimaryKeys(long pk) {
+		long[] pks = userToTeamTableMapper.getRightPrimaryKeys(pk);
+
+		return pks.clone();
+	}
+
+	/**
 	 * Returns all the teams associated with the user.
 	 *
 	 * @param pk the primary key of the user
 	 * @return the teams associated with the user
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<com.liferay.portal.model.Team> getTeams(long pk)
-		throws SystemException {
+	public List<com.liferay.portal.model.Team> getTeams(long pk) {
 		return getTeams(pk, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 	}
 
@@ -8901,11 +8768,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param start the lower bound of the range of users
 	 * @param end the upper bound of the range of users (not inclusive)
 	 * @return the range of teams associated with the user
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<com.liferay.portal.model.Team> getTeams(long pk, int start,
-		int end) throws SystemException {
+		int end) {
 		return getTeams(pk, start, end, null);
 	}
 
@@ -8921,11 +8787,11 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param end the upper bound of the range of users (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of teams associated with the user
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<com.liferay.portal.model.Team> getTeams(long pk, int start,
-		int end, OrderByComparator orderByComparator) throws SystemException {
+		int end,
+		OrderByComparator<com.liferay.portal.model.Team> orderByComparator) {
 		return userToTeamTableMapper.getRightBaseModels(pk, start, end,
 			orderByComparator);
 	}
@@ -8935,10 +8801,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @return the number of teams associated with the user
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int getTeamsSize(long pk) throws SystemException {
+	public int getTeamsSize(long pk) {
 		long[] pks = userToTeamTableMapper.getRightPrimaryKeys(pk);
 
 		return pks.length;
@@ -8950,10 +8815,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param pk the primary key of the user
 	 * @param teamPK the primary key of the team
 	 * @return <code>true</code> if the team is associated with the user; <code>false</code> otherwise
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public boolean containsTeam(long pk, long teamPK) throws SystemException {
+	public boolean containsTeam(long pk, long teamPK) {
 		return userToTeamTableMapper.containsTableMapping(pk, teamPK);
 	}
 
@@ -8962,10 +8826,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user to check for associations with teams
 	 * @return <code>true</code> if the user has any teams associated with it; <code>false</code> otherwise
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public boolean containsTeams(long pk) throws SystemException {
+	public boolean containsTeams(long pk) {
 		if (getTeamsSize(pk) > 0) {
 			return true;
 		}
@@ -8979,10 +8842,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param teamPK the primary key of the team
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void addTeam(long pk, long teamPK) throws SystemException {
+	public void addTeam(long pk, long teamPK) {
 		userToTeamTableMapper.addTableMapping(pk, teamPK);
 	}
 
@@ -8991,11 +8853,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param team the team
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void addTeam(long pk, com.liferay.portal.model.Team team)
-		throws SystemException {
+	public void addTeam(long pk, com.liferay.portal.model.Team team) {
 		userToTeamTableMapper.addTableMapping(pk, team.getPrimaryKey());
 	}
 
@@ -9004,10 +8864,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param teamPKs the primary keys of the teams
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void addTeams(long pk, long[] teamPKs) throws SystemException {
+	public void addTeams(long pk, long[] teamPKs) {
 		for (long teamPK : teamPKs) {
 			userToTeamTableMapper.addTableMapping(pk, teamPK);
 		}
@@ -9018,11 +8877,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param teams the teams
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void addTeams(long pk, List<com.liferay.portal.model.Team> teams)
-		throws SystemException {
+	public void addTeams(long pk, List<com.liferay.portal.model.Team> teams) {
 		for (com.liferay.portal.model.Team team : teams) {
 			userToTeamTableMapper.addTableMapping(pk, team.getPrimaryKey());
 		}
@@ -9032,10 +8889,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * Clears all associations between the user and its teams. Also notifies the appropriate model listeners and clears the mapping table finder cache.
 	 *
 	 * @param pk the primary key of the user to clear the associated teams from
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void clearTeams(long pk) throws SystemException {
+	public void clearTeams(long pk) {
 		userToTeamTableMapper.deleteLeftPrimaryKeyTableMappings(pk);
 	}
 
@@ -9044,10 +8900,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param teamPK the primary key of the team
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeTeam(long pk, long teamPK) throws SystemException {
+	public void removeTeam(long pk, long teamPK) {
 		userToTeamTableMapper.deleteTableMapping(pk, teamPK);
 	}
 
@@ -9056,11 +8911,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param team the team
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeTeam(long pk, com.liferay.portal.model.Team team)
-		throws SystemException {
+	public void removeTeam(long pk, com.liferay.portal.model.Team team) {
 		userToTeamTableMapper.deleteTableMapping(pk, team.getPrimaryKey());
 	}
 
@@ -9069,10 +8922,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param teamPKs the primary keys of the teams
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeTeams(long pk, long[] teamPKs) throws SystemException {
+	public void removeTeams(long pk, long[] teamPKs) {
 		for (long teamPK : teamPKs) {
 			userToTeamTableMapper.deleteTableMapping(pk, teamPK);
 		}
@@ -9083,11 +8935,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param teams the teams
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeTeams(long pk, List<com.liferay.portal.model.Team> teams)
-		throws SystemException {
+	public void removeTeams(long pk, List<com.liferay.portal.model.Team> teams) {
 		for (com.liferay.portal.model.Team team : teams) {
 			userToTeamTableMapper.deleteTableMapping(pk, team.getPrimaryKey());
 		}
@@ -9098,10 +8948,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param teamPKs the primary keys of the teams to be associated with the user
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void setTeams(long pk, long[] teamPKs) throws SystemException {
+	public void setTeams(long pk, long[] teamPKs) {
 		Set<Long> newTeamPKsSet = SetUtil.fromArray(teamPKs);
 		Set<Long> oldTeamPKsSet = SetUtil.fromArray(userToTeamTableMapper.getRightPrimaryKeys(
 					pk));
@@ -9126,11 +8975,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param teams the teams to be associated with the user
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void setTeams(long pk, List<com.liferay.portal.model.Team> teams)
-		throws SystemException {
+	public void setTeams(long pk, List<com.liferay.portal.model.Team> teams) {
 		try {
 			long[] teamPKs = new long[teams.size()];
 
@@ -9148,15 +8995,26 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	}
 
 	/**
+	 * Returns the primaryKeys of user groups associated with the user.
+	 *
+	 * @param pk the primary key of the user
+	 * @return long[] of the primaryKeys of user groups associated with the user
+	 */
+	@Override
+	public long[] getUserGroupPrimaryKeys(long pk) {
+		long[] pks = userToUserGroupTableMapper.getRightPrimaryKeys(pk);
+
+		return pks.clone();
+	}
+
+	/**
 	 * Returns all the user groups associated with the user.
 	 *
 	 * @param pk the primary key of the user
 	 * @return the user groups associated with the user
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public List<com.liferay.portal.model.UserGroup> getUserGroups(long pk)
-		throws SystemException {
+	public List<com.liferay.portal.model.UserGroup> getUserGroups(long pk) {
 		return getUserGroups(pk, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 	}
 
@@ -9171,11 +9029,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param start the lower bound of the range of users
 	 * @param end the upper bound of the range of users (not inclusive)
 	 * @return the range of user groups associated with the user
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<com.liferay.portal.model.UserGroup> getUserGroups(long pk,
-		int start, int end) throws SystemException {
+		int start, int end) {
 		return getUserGroups(pk, start, end, null);
 	}
 
@@ -9191,12 +9048,11 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param end the upper bound of the range of users (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of user groups associated with the user
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public List<com.liferay.portal.model.UserGroup> getUserGroups(long pk,
-		int start, int end, OrderByComparator orderByComparator)
-		throws SystemException {
+		int start, int end,
+		OrderByComparator<com.liferay.portal.model.UserGroup> orderByComparator) {
 		return userToUserGroupTableMapper.getRightBaseModels(pk, start, end,
 			orderByComparator);
 	}
@@ -9206,10 +9062,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @return the number of user groups associated with the user
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public int getUserGroupsSize(long pk) throws SystemException {
+	public int getUserGroupsSize(long pk) {
 		long[] pks = userToUserGroupTableMapper.getRightPrimaryKeys(pk);
 
 		return pks.length;
@@ -9221,11 +9076,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param pk the primary key of the user
 	 * @param userGroupPK the primary key of the user group
 	 * @return <code>true</code> if the user group is associated with the user; <code>false</code> otherwise
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public boolean containsUserGroup(long pk, long userGroupPK)
-		throws SystemException {
+	public boolean containsUserGroup(long pk, long userGroupPK) {
 		return userToUserGroupTableMapper.containsTableMapping(pk, userGroupPK);
 	}
 
@@ -9234,10 +9087,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user to check for associations with user groups
 	 * @return <code>true</code> if the user has any user groups associated with it; <code>false</code> otherwise
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public boolean containsUserGroups(long pk) throws SystemException {
+	public boolean containsUserGroups(long pk) {
 		if (getUserGroupsSize(pk) > 0) {
 			return true;
 		}
@@ -9251,11 +9103,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param userGroupPK the primary key of the user group
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void addUserGroup(long pk, long userGroupPK)
-		throws SystemException {
+	public void addUserGroup(long pk, long userGroupPK) {
 		userToUserGroupTableMapper.addTableMapping(pk, userGroupPK);
 	}
 
@@ -9264,11 +9114,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param userGroup the user group
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public void addUserGroup(long pk,
-		com.liferay.portal.model.UserGroup userGroup) throws SystemException {
+		com.liferay.portal.model.UserGroup userGroup) {
 		userToUserGroupTableMapper.addTableMapping(pk, userGroup.getPrimaryKey());
 	}
 
@@ -9277,11 +9126,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param userGroupPKs the primary keys of the user groups
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void addUserGroups(long pk, long[] userGroupPKs)
-		throws SystemException {
+	public void addUserGroups(long pk, long[] userGroupPKs) {
 		for (long userGroupPK : userGroupPKs) {
 			userToUserGroupTableMapper.addTableMapping(pk, userGroupPK);
 		}
@@ -9292,12 +9139,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param userGroups the user groups
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public void addUserGroups(long pk,
-		List<com.liferay.portal.model.UserGroup> userGroups)
-		throws SystemException {
+		List<com.liferay.portal.model.UserGroup> userGroups) {
 		for (com.liferay.portal.model.UserGroup userGroup : userGroups) {
 			userToUserGroupTableMapper.addTableMapping(pk,
 				userGroup.getPrimaryKey());
@@ -9308,10 +9153,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * Clears all associations between the user and its user groups. Also notifies the appropriate model listeners and clears the mapping table finder cache.
 	 *
 	 * @param pk the primary key of the user to clear the associated user groups from
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void clearUserGroups(long pk) throws SystemException {
+	public void clearUserGroups(long pk) {
 		userToUserGroupTableMapper.deleteLeftPrimaryKeyTableMappings(pk);
 	}
 
@@ -9320,11 +9164,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param userGroupPK the primary key of the user group
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeUserGroup(long pk, long userGroupPK)
-		throws SystemException {
+	public void removeUserGroup(long pk, long userGroupPK) {
 		userToUserGroupTableMapper.deleteTableMapping(pk, userGroupPK);
 	}
 
@@ -9333,11 +9175,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param userGroup the user group
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public void removeUserGroup(long pk,
-		com.liferay.portal.model.UserGroup userGroup) throws SystemException {
+		com.liferay.portal.model.UserGroup userGroup) {
 		userToUserGroupTableMapper.deleteTableMapping(pk,
 			userGroup.getPrimaryKey());
 	}
@@ -9347,11 +9188,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param userGroupPKs the primary keys of the user groups
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void removeUserGroups(long pk, long[] userGroupPKs)
-		throws SystemException {
+	public void removeUserGroups(long pk, long[] userGroupPKs) {
 		for (long userGroupPK : userGroupPKs) {
 			userToUserGroupTableMapper.deleteTableMapping(pk, userGroupPK);
 		}
@@ -9362,12 +9201,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param userGroups the user groups
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public void removeUserGroups(long pk,
-		List<com.liferay.portal.model.UserGroup> userGroups)
-		throws SystemException {
+		List<com.liferay.portal.model.UserGroup> userGroups) {
 		for (com.liferay.portal.model.UserGroup userGroup : userGroups) {
 			userToUserGroupTableMapper.deleteTableMapping(pk,
 				userGroup.getPrimaryKey());
@@ -9379,11 +9216,9 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param userGroupPKs the primary keys of the user groups to be associated with the user
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
-	public void setUserGroups(long pk, long[] userGroupPKs)
-		throws SystemException {
+	public void setUserGroups(long pk, long[] userGroupPKs) {
 		Set<Long> newUserGroupPKsSet = SetUtil.fromArray(userGroupPKs);
 		Set<Long> oldUserGroupPKsSet = SetUtil.fromArray(userToUserGroupTableMapper.getRightPrimaryKeys(
 					pk));
@@ -9408,12 +9243,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param pk the primary key of the user
 	 * @param userGroups the user groups to be associated with the user
-	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public void setUserGroups(long pk,
-		List<com.liferay.portal.model.UserGroup> userGroups)
-		throws SystemException {
+		List<com.liferay.portal.model.UserGroup> userGroups) {
 		try {
 			long[] userGroupPKs = new long[userGroups.size()];
 
@@ -9439,26 +9272,6 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * Initializes the user persistence.
 	 */
 	public void afterPropertiesSet() {
-		String[] listenerClassNames = StringUtil.split(GetterUtil.getString(
-					com.liferay.portal.util.PropsUtil.get(
-						"value.object.listener.com.liferay.portal.model.User")));
-
-		if (listenerClassNames.length > 0) {
-			try {
-				List<ModelListener<User>> listenersList = new ArrayList<ModelListener<User>>();
-
-				for (String listenerClassName : listenerClassNames) {
-					listenersList.add((ModelListener<User>)InstanceFactory.newInstance(
-							getClassLoader(), listenerClassName));
-				}
-
-				listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
-			}
-			catch (Exception e) {
-				_log.error(e);
-			}
-		}
-
 		userToGroupTableMapper = TableMapperFactory.getTableMapper("Users_Groups",
 				"userId", "groupId", this, groupPersistence);
 
@@ -9504,6 +9317,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	protected UserGroupPersistence userGroupPersistence;
 	protected TableMapper<User, com.liferay.portal.model.UserGroup> userToUserGroupTableMapper;
 	private static final String _SQL_SELECT_USER = "SELECT user FROM User user";
+	private static final String _SQL_SELECT_USER_WHERE_PKS_IN = "SELECT user FROM User user WHERE userId IN (";
 	private static final String _SQL_SELECT_USER_WHERE = "SELECT user FROM User user WHERE ";
 	private static final String _SQL_COUNT_USER = "SELECT COUNT(user) FROM User user";
 	private static final String _SQL_COUNT_USER_WHERE = "SELECT COUNT(user) FROM User user WHERE ";
@@ -9511,11 +9325,11 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No User exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No User exists with the key {";
 	private static final boolean _HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE = com.liferay.portal.util.PropsValues.HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE;
-	private static Log _log = LogFactoryUtil.getLog(UserPersistenceImpl.class);
-	private static Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
+	private static final Log _log = LogFactoryUtil.getLog(UserPersistenceImpl.class);
+	private static final Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
 				"uuid", "password"
 			});
-	private static User _nullUser = new UserImpl() {
+	private static final User _nullUser = new UserImpl() {
 			@Override
 			public Object clone() {
 				return this;
@@ -9527,12 +9341,12 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 			}
 		};
 
-	private static CacheModel<User> _nullUserCacheModel = new NullCacheModel();
+	private static final CacheModel<User> _nullUserCacheModel = new NullCacheModel();
 
 	private static class NullCacheModel implements CacheModel<User>, MVCCModel {
 		@Override
 		public long getMvccVersion() {
-			return 0;
+			return -1;
 		}
 
 		@Override
