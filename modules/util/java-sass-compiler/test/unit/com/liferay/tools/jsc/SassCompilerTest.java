@@ -38,4 +38,20 @@ public class SassCompilerTest extends BaseTests {
 			stripNewLines(output));
 	}
 
+	@Test
+	public void testCompile_asset_category_selector() throws Exception {
+		SassCompiler compiler = new SassCompiler();
+		assumeNotNull(compiler);
+
+		String output =
+			compiler.compileFile(_BASE_RESOURCES +
+				"_asset_category_selector.scss", "", "");
+		assertNotNull(output);
+		assertEquals(stripNewLines(readFileContents(_BASE_RESOURCES +
+			"_asset_category_selector.css")), stripNewLines(output));
+	}
+
+	private static final String _BASE_RESOURCES =
+		"bin/com/liferay/tools/jsc/testfiles/";
+
 }
