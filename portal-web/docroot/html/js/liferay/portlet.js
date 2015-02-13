@@ -486,7 +486,12 @@
 
 										portlet.plug(A.Plugin.ParseContent);
 
-										portlet.load(themeDisplay.getPathMain() + '/portal/render_portlet?' + A.QueryString.stringify(data));
+										portlet.load(themeDisplay.getPathMain() + '/portal/render_portlet?' + A.QueryString.stringify(data),null, function(){
+										Liferay.fire('portletRestored',portlet);
+										});
+										
+									}else{
+									        Liferay.fire('portletMinimized',portlet);	
 									}
 								}
 							},
