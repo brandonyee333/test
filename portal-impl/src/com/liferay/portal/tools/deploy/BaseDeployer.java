@@ -2316,31 +2316,23 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 			rootElement.attributeValue("version"), 2.3);
 
 		if (webXmlVersion <= 2.3) {
-			if (PropsValues.TCK_URL) {
-				Attribute attribute = rootElement.attribute("version");
+			Attribute attribute = rootElement.attribute("version");
 
 				if (attribute == null) {
-					rootElement.addAttribute("version", "2.4");
-				}
-				else {
-					attribute.setValue("2.4");
-				}
-
-				content =
-					"<?xml version=\"1.0\"?>\n\n" +
-						rootElement.formattedString();
-
-				document = SAXReaderUtil.read(content);
-
-				rootElement = document.getRootElement();
-
-				webXmlVersion = 2.4;
+				rootElement.addAttribute("version", "2.4");
 			}
 			else {
-				throw new AutoDeployException(
-					webXml.getName() +
-						" must be updated to the Servlet 2.4 specification");
+				attribute.setValue("2.4");
 			}
+
+			content =
+				"<?xml version=\"1.0\"?>\n\n" + rootElement.formattedString();
+
+			document = SAXReaderUtil.read(content);
+
+			rootElement = document.getRootElement();
+
+			webXmlVersion = 2.4;
 		}
 
 		// Plugin context listener
