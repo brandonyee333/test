@@ -1199,10 +1199,7 @@
 				</elseif>
 				<else>
 					<waitfor maxwait="1" maxwaitunit="second" timeoutproperty="portal.not.started">
-						<and>
-							<available file="${test.app.server.parent.dir}/logs" />
-							<socket server="localhost" port="${test.app.server.leading.port.number}080" />
-						</and>
+						<socket server="localhost" port="${test.app.server.leading.port.number}080" />
 					</waitfor>
 				</else>
 			</if>
