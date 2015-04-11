@@ -4405,7 +4405,7 @@ public class ServiceBuilder {
 
 		int pos = fileName.lastIndexOf("/src/");
 		if (pos == -1) {
-		    pos = fileName.lastIndexOf("/service/" + 9) ;
+		    pos = fileName.lastIndexOf("/WEB-INF/service/") + 17;
 		} else {
 		    pos = pos + 5;
 		}
