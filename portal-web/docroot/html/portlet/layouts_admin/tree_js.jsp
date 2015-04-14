@@ -197,9 +197,14 @@ if (!selectableTree) {
 						(nodeType === 'url')) {
 
 						cssIcons = {
+							iconCheck: 'tree-icon icon-check',
 							iconCollapsed: iconCssClassName,
 							iconExpanded: iconCssClassName,
-							iconLeaf: iconCssClassName
+							iconHitAreaCollapsed: 'tree-hitarea icon-plus',
+							iconHitAreaExpanded: 'tree-hitarea icon-minus',
+							iconLeaf: iconCssClassName,
+							iconLoading: 'icon-refresh',
+							iconUncheck: 'icon-check'
 						};
 					}
 
