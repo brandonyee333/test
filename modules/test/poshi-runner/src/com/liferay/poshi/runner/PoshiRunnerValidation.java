@@ -103,6 +103,9 @@ public class PoshiRunnerValidation {
 			else if (elementName.equals("for")) {
 				_validateForElement(childElement, filePath);
 			}
+			else if (elementName.equals("take-screenshot")) {
+				_validateTakeScreenshotElement(childElement, filePath);
+			}
 		}
 	}
 
@@ -182,6 +185,8 @@ public class PoshiRunnerValidation {
 
 			_validatePossibleAttributeNames(
 				element, possibleAttributeNames, filePath);
+
+			_validateMacroContext(element, filePath);
 		}
 		else if (Validator.isNotNull(element.attributeValue("selenium"))) {
 			List<String> possibleAttributeNames = Arrays.asList(
@@ -268,6 +273,20 @@ public class PoshiRunnerValidation {
 			_validateCommandElement(childElement, filePath);
 
 			_parseElements(childElement, filePath);
+		}
+	}
+
+	private static void _validateMacroContext(Element element, String filePath)
+		throws PoshiRunnerException {
+
+		String classCommandName = element.attributeValue("macro");
+
+		String commandElementKey = "macro#" + classCommandName;
+
+		if (!PoshiRunnerContext.isCommandElement(commandElementKey)) {
+			throw new PoshiRunnerException(
+				"Invalid macro command " + classCommandName + "\n" + filePath +
+					":" + element.attributeValue("line-number"));
 		}
 	}
 
@@ -362,6 +381,24 @@ public class PoshiRunnerValidation {
 					"Invalid " + attributeName + " attribute\n" + filePath +
 						":" + element.attributeValue("line-number"));
 			}
+		}
+	}
+
+	private static void _validateTakeScreenshotElement(
+			Element element, String filePath)
+		throws PoshiRunnerException {
+
+		List<String> possibleAttributeNames = Arrays.asList("line-number");
+
+		_validatePossibleAttributeNames(
+			element, possibleAttributeNames, filePath);
+
+		List<Element> childElements = element.elements();
+
+		if (!childElements.isEmpty()) {
+			throw new PoshiRunnerException(
+				"Invalid child elements\n" + filePath + ":" +
+					element.attributeValue("line-number"));
 		}
 	}
 
