@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.model.ModelHintsConstants;
 import com.liferay.rtl.css.RTLCSSConverter;
 import com.liferay.sass.compiler.jni.JniSassCompiler;
+import com.liferay.sass.compiler.ruby.RubySassCompiler;
 
 import java.io.File;
 
@@ -33,7 +34,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.liferay.sass.compiler.ruby.RubySassCompiler;
 import org.apache.tools.ant.DirectoryScanner;
 
 /**
@@ -49,7 +49,7 @@ public class CSSBuilder {
 		String portalCommonDirName = arguments.get("sass.portal.common.dir");
 		String compilerImpl = arguments.get("sass.compiler.impl");
 
-		if(compilerImpl == null) {
+		if (compilerImpl == null) {
 			compilerImpl = "libsass";
 		}
 
@@ -59,9 +59,9 @@ public class CSSBuilder {
 
 	public CSSBuilder(
 			String sassDir, String docrootDirName, String portalCommonDirName)
-		throws Exception{
+		throws Exception {
 
-		this(sassDir,docrootDirName,portalCommonDirName,"libsass");
+		this(sassDir, docrootDirName, portalCommonDirName, "libsass");
 	}
 
 	public CSSBuilder(
@@ -431,14 +431,12 @@ public class CSSBuilder {
 			if (_jniSassCompiler != null) {
 				return _jniSassCompiler.compileString(
 					content,
-					_portalCommonDirName + File.pathSeparator + filePath,
-					"");
+					_portalCommonDirName + File.pathSeparator + filePath, "");
 			}
 			else {
 				return _rubySassCompiler.compileString(
 					content,
-					_portalCommonDirName + File.pathSeparator + filePath,
-					"");
+					_portalCommonDirName + File.pathSeparator + filePath, "");
 			}
 		}
 		catch (Exception e) {
@@ -555,10 +553,10 @@ public class CSSBuilder {
 
 	private final String _docrootDirName;
 	private final Map<String, String> _fileCache = new HashMap<>();
-	private JniSassCompiler _jniSassCompiler;
-	private RubySassCompiler _rubySassCompiler;
+	private final JniSassCompiler _jniSassCompiler;
 	private final Pattern[] _patterns = {Pattern.compile(".*\\/ckeditor\\/.*")};
 	private final String _portalCommonDirName;
 	private final RTLCSSConverter _rtlCSSConverter;
+	private final RubySassCompiler _rubySassCompiler;
 
 }

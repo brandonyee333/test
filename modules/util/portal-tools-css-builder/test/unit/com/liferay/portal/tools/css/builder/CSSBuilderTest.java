@@ -14,19 +14,21 @@
 
 package com.liferay.portal.tools.css.builder;
 
-import java.io.File;
-
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-
 import com.helger.commons.charset.CCharset;
 import com.helger.css.ECSSVersion;
 import com.helger.css.decl.CSSStyleRule;
 import com.helger.css.decl.CascadingStyleSheet;
 import com.helger.css.reader.CSSReader;
 import com.helger.css.writer.CSSWriterSettings;
+
+import java.io.File;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -43,27 +45,31 @@ public class CSSBuilderTest {
 		String generatedTestCss = readFile(
 			_WORKING_DIR + "/libsass/.sass-cache/test.css");
 
-		Assert.assertEquals(formatCss(expectedTestCss), formatCss(generatedTestCss));
+		Assert.assertEquals(
+			formatCss(expectedTestCss), formatCss(generatedTestCss));
 
 		String expectedTestRtlCss = readFile(
 			_WORKING_DIR + "/expected/test_rtl.css");
 		String generatedTestRtlCss = readFile(
 			_WORKING_DIR + "/libsass/.sass-cache/test_rtl.css");
 
-		Assert.assertEquals(formatCss(expectedTestRtlCss), formatCss(generatedTestRtlCss));
+		Assert.assertEquals(
+			formatCss(expectedTestRtlCss), formatCss(generatedTestRtlCss));
 
 		String expectedMainCss = readFile(_WORKING_DIR + "/expected/main.css");
 		String generatedMainCss = readFile(
 			_WORKING_DIR + "/libsass/.sass-cache/main.css");
 
-		Assert.assertEquals(formatCss(expectedMainCss), formatCss(generatedMainCss));
+		Assert.assertEquals(
+			formatCss(expectedMainCss), formatCss(generatedMainCss));
 
 		String expectedMainRtlCss = readFile(
 			_WORKING_DIR + "/expected/main_rtl.css");
 		String generatedMainRtlCss = readFile(
 			_WORKING_DIR + "/libsass/.sass-cache/main_rtl.css");
 
-		Assert.assertEquals(formatCss(expectedMainRtlCss), formatCss(generatedMainRtlCss));
+		Assert.assertEquals(
+			formatCss(expectedMainRtlCss), formatCss(generatedMainRtlCss));
 
 		File previousTestFile = new File(
 			_WORKING_DIR + "/libsass/.sass-cache/test.css");
@@ -115,36 +121,31 @@ public class CSSBuilderTest {
 		String generatedTestCss = readFile(
 			_WORKING_DIR + "/ruby/.sass-cache/test.css");
 
-		Assert.assertEquals(formatCss(expectedTestCss), formatCss(generatedTestCss));
+		Assert.assertEquals(
+			formatCss(expectedTestCss), formatCss(generatedTestCss));
 
 		String expectedTestRtlCss = readFile(
 			_WORKING_DIR + "/expected/test_rtl.css");
 		String generatedTestRtlCss = readFile(
 			_WORKING_DIR + "/ruby/.sass-cache/test_rtl.css");
 
-		Assert.assertEquals(formatCss(expectedTestRtlCss), formatCss(generatedTestRtlCss));
+		Assert.assertEquals(
+			formatCss(expectedTestRtlCss), formatCss(generatedTestRtlCss));
 
 		String expectedMainCss = readFile(_WORKING_DIR + "/expected/main.css");
 		String generatedMainCss = readFile(
 			_WORKING_DIR + "/ruby/.sass-cache/main.css");
 
-		Assert.assertEquals(formatCss(expectedMainCss), formatCss(generatedMainCss));
+		Assert.assertEquals(
+			formatCss(expectedMainCss), formatCss(generatedMainCss));
 
 		String expectedMainRtlCss = readFile(
 			_WORKING_DIR + "/expected/main_rtl.css");
 		String generatedMainRtlCss = readFile(
 			_WORKING_DIR + "/ruby/.sass-cache/main_rtl.css");
 
-		Assert.assertEquals(formatCss(expectedMainRtlCss), formatCss(generatedMainRtlCss));
-	}
-
-	private void generateCSS(String sassImpl) throws Exception {
-		String sassDir = "/" + sassImpl + "/";
-		String docrootDirName = _WORKING_DIR;
-		String portalCommonDirName =
-			_WORKING_DIR + "common";
-
-		new CSSBuilder(sassDir, docrootDirName, portalCommonDirName, sassImpl);
+		Assert.assertEquals(
+			formatCss(expectedMainRtlCss), formatCss(generatedMainRtlCss));
 	}
 
 	protected String formatCss(String css) {
@@ -164,6 +165,14 @@ public class CSSBuilderTest {
 		}
 
 		return sb.toString();
+	}
+
+	private void generateCSS(String sassImpl) throws Exception {
+		String sassDir = "/" + sassImpl + "/";
+		String docrootDirName = _WORKING_DIR;
+		String portalCommonDirName = _WORKING_DIR + "common";
+
+		new CSSBuilder(sassDir, docrootDirName, portalCommonDirName, sassImpl);
 	}
 
 	private String readFile(String fileName) throws Exception {
