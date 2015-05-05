@@ -16,6 +16,7 @@ package com.liferay.portlet.messageboards.action;
 
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.servlet.PortalWebResourcesUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -50,8 +51,10 @@ import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
-
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -211,13 +214,19 @@ public class EditDiscussionAction extends PortletAction {
 			"liferay-ui:discussion:rootIndexPage",
 			String.valueOf(rootIndexPage));
 
-		PortletContext portletContext = portletConfig.getPortletContext();
-
-		PortletRequestDispatcher portletRequestDispatcher =
-			portletContext.getRequestDispatcher(
+		RequestDispatcher requestDispatcher =
+		    PortalWebResourcesUtil.getServletContext().getRequestDispatcher(
 				"/html/taglib/ui/discussion/page_resources.jsp");
 
-		portletRequestDispatcher.include(resourceRequest, resourceResponse);
+        HttpServletResponse response = PortalUtil.getHttpServletResponse(
+            resourceResponse);
+
+        try {
+            requestDispatcher.include(request, response);
+        }
+        catch (ServletException e) {
+            throw new PortletException(e);
+        }
 	}
 
 	protected void deleteMessage(ActionRequest actionRequest) throws Exception {
