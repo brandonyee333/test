@@ -16,6 +16,9 @@ package com.liferay.portlet.messageboards.action;
 
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.servlet.PortalSessionThreadLocal;
 import com.liferay.portal.kernel.servlet.PortalWebResourcesUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.Constants;
@@ -52,9 +55,11 @@ import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -214,18 +219,30 @@ public class EditDiscussionAction extends PortletAction {
 			"liferay-ui:discussion:rootIndexPage",
 			String.valueOf(rootIndexPage));
 
-		RequestDispatcher requestDispatcher =
-		    PortalWebResourcesUtil.getServletContext().getRequestDispatcher(
-				"/html/taglib/ui/discussion/page_resources.jsp");
-
         HttpServletResponse response = PortalUtil.getHttpServletResponse(
             resourceResponse);
+        
+        HttpSession session = PortalSessionThreadLocal.getHttpSession();
+
+        if (session == null) {
+            session = request.getSession();
+        }
+
+        ServletContext servletContext = session.getServletContext();
+
+        RequestDispatcher requestDispatcher =
+            servletContext.getRequestDispatcher(
+                    "/html/taglib/ui/discussion/page_resources.jsp");
 
         try {
             requestDispatcher.include(request, response);
         }
         catch (ServletException e) {
-            throw new PortletException(e);
+            if (_log.isErrorEnabled()) {
+                _log.error("Unable to include JSP", e);
+            }
+
+            throw new IOException("Unable to include JSP", e);
         }
 	}
 
@@ -370,5 +387,7 @@ public class EditDiscussionAction extends PortletAction {
 	}
 
 	private static final boolean _CHECK_METHOD_ON_PROCESS_ACTION = false;
+
+    private static final Log _log = LogFactoryUtil.getLog(EditDiscussionAction.class);
 
 }
