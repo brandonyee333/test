@@ -21,6 +21,8 @@ import com.liferay.portal.model.PortletApp;
 import com.liferay.portal.service.PortletLocalService;
 import com.liferay.portal.service.PortletLocalServiceUtil;
 import com.liferay.portal.tools.ToolDependencies;
+import com.liferay.portal.util.PortalImpl;
+import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PortletKeys;
 
 import javax.servlet.RequestDispatcher;
@@ -162,6 +164,10 @@ public class ComboServletTest extends PowerMockito {
 		_mockHttpServletRequest.setScheme("http");
 
 		_mockHttpServletResponse = new MockHttpServletResponse();
+
+		PortalUtil portalUtil = new PortalUtil();
+
+		portalUtil.setPortal(new PortalImpl());
 	}
 
 	@Test
