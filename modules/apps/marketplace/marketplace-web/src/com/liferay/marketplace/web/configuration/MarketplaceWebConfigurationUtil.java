@@ -12,22 +12,22 @@
  * details.
  */
 
-package com.liferay.marketplace.web.util;
+package com.liferay.marketplace.web.configuration;
 
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.util.portlet.PortletProps;
+import com.liferay.portal.kernel.configuration.Configuration;
+import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
 
 /**
- * @author Ryan Park
+ * @author Joan Kim
  */
-public class PortletPropsValues {
+public class MarketplaceWebConfigurationUtil {
 
-	public static final boolean MARKETPLACE_STORE_ENABLED =
-		GetterUtil.getBoolean(
-			PortletProps.get(PortletPropsKeys.MARKETPLACE_STORE_ENABLED), true);
+	public static String get(String key) {
+		return _configuration.get(key);
+	}
 
-	public static final String MARKETPLACE_URL = GetterUtil.getString(
-		PortletProps.get(PortletPropsKeys.MARKETPLACE_URL),
-		"https://mp.liferay.com");
+	private static final Configuration _configuration =
+		ConfigurationFactoryUtil.getConfiguration(
+			MarketplaceWebConfigurationUtil.class.getClassLoader(), "portlet");
 
 }
