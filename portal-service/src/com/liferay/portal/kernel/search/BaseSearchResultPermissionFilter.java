@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.Time;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -41,9 +42,8 @@ public abstract class BaseSearchResultPermissionFilter
 			Set<String> selectedFieldNameSet = SetUtil.fromArray(
 				queryConfig.getSelectedFieldNames());
 
-			for (String selectedFieldName : _PERMISSION_SELECTED_FIELD_NAMES) {
-				selectedFieldNameSet.add(selectedFieldName);
-			}
+			Collections.addAll(
+				selectedFieldNameSet, _PERMISSION_SELECTED_FIELD_NAMES);
 
 			queryConfig.setSelectedFieldNames(
 				selectedFieldNameSet.toArray(
@@ -56,7 +56,9 @@ public abstract class BaseSearchResultPermissionFilter
 		if ((end == QueryUtil.ALL_POS) && (start == QueryUtil.ALL_POS)) {
 			Hits hits = getHits(searchContext);
 
-			filterHits(hits, searchContext);
+			if (!isGroupAdmin(searchContext)) {
+				filterHits(hits, searchContext);
+			}
 
 			return hits;
 		}
@@ -65,6 +67,11 @@ public abstract class BaseSearchResultPermissionFilter
 			return new HitsImpl();
 		}
 
+		if (isGroupAdmin(searchContext)) {
+			return getHits(searchContext);
+		}
+
+		double amplificationFactor = 1.0;
 		int excludedDocsSize = 0;
 		int hitsSize = 0;
 		int offset = 0;
@@ -76,10 +83,10 @@ public abstract class BaseSearchResultPermissionFilter
 		while (true) {
 			int count = end - documents.size();
 
-			int amplifiedCount = (int)(
-				count * _INDEX_PERMISSION_FILTER_SEARCH_AMPLIFICATION_FACTOR);
+			int amplifiedCount = (int)Math.ceil(count * amplificationFactor);
 
-			int amplifiedEnd = offset + amplifiedCount;
+			int amplifiedEnd = Math.min(
+				offset + amplifiedCount, _INDEX_SEARCH_LIMIT);
 
 			searchContext.setEnd(amplifiedEnd);
 			searchContext.setStart(offset);
@@ -103,7 +110,8 @@ public abstract class BaseSearchResultPermissionFilter
 
 			if ((newDocs.length >= count) ||
 				(oldDocs.length < amplifiedCount) ||
-				(amplifiedEnd >= hitsSize)) {
+				(amplifiedEnd >= hitsSize) ||
+				(amplifiedEnd == _INDEX_SEARCH_LIMIT)) {
 
 				updateHits(
 					hits, documents, scores, start, end,
@@ -113,6 +121,9 @@ public abstract class BaseSearchResultPermissionFilter
 			}
 
 			offset = amplifiedEnd;
+
+			amplificationFactor = _getAmplificationFactor(
+				documents.size(), offset);
 		}
 	}
 
@@ -137,6 +148,8 @@ public abstract class BaseSearchResultPermissionFilter
 	protected abstract Hits getHits(SearchContext searchContext)
 		throws SearchException;
 
+	protected abstract boolean isGroupAdmin(SearchContext searchContext);
+
 	protected void updateHits(
 		Hits hits, List<Document> documents, List<Float> scores, int start,
 		int end, int size, long startTime) {
@@ -157,12 +170,25 @@ public abstract class BaseSearchResultPermissionFilter
 			(float)(System.currentTimeMillis() - startTime) / Time.SECOND);
 	}
 
+	private double _getAmplificationFactor(double totalViewable, double total) {
+		if (totalViewable == 0) {
+			return _INDEX_PERMISSION_FILTER_SEARCH_AMPLIFICATION_FACTOR;
+		}
+
+		return Math.min(
+			1.0 / (totalViewable / total),
+			_INDEX_PERMISSION_FILTER_SEARCH_AMPLIFICATION_FACTOR);
+	}
+
 	private static final double
 		_INDEX_PERMISSION_FILTER_SEARCH_AMPLIFICATION_FACTOR =
 			GetterUtil.getDouble(
 				PropsUtil.get(
 					PropsKeys.
 						INDEX_PERMISSION_FILTER_SEARCH_AMPLIFICATION_FACTOR));
+
+	private static final int _INDEX_SEARCH_LIMIT = GetterUtil.getInteger(
+		PropsUtil.get(PropsKeys.INDEX_SEARCH_LIMIT));
 
 	private static final String[] _PERMISSION_SELECTED_FIELD_NAMES =
 		{Field.ENTRY_CLASS_NAME, Field.ENTRY_CLASS_PK};
