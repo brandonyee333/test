@@ -85,7 +85,8 @@ public abstract class BaseSearchResultPermissionFilter
 
 			int amplifiedCount = (int)Math.ceil(count * amplificationFactor);
 
-			int amplifiedEnd = offset + amplifiedCount;
+			int amplifiedEnd = Math.min(
+				offset + amplifiedCount, _INDEX_SEARCH_LIMIT);
 
 			searchContext.setEnd(amplifiedEnd);
 			searchContext.setStart(offset);
@@ -109,7 +110,8 @@ public abstract class BaseSearchResultPermissionFilter
 
 			if ((newDocs.length >= count) ||
 				(oldDocs.length < amplifiedCount) ||
-				(amplifiedEnd >= hitsSize)) {
+				(amplifiedEnd >= hitsSize) ||
+				(amplifiedEnd == _INDEX_SEARCH_LIMIT)) {
 
 				updateHits(
 					hits, documents, scores, start, end,
@@ -184,6 +186,9 @@ public abstract class BaseSearchResultPermissionFilter
 				PropsUtil.get(
 					PropsKeys.
 						INDEX_PERMISSION_FILTER_SEARCH_AMPLIFICATION_FACTOR));
+
+	private static final int _INDEX_SEARCH_LIMIT = GetterUtil.getInteger(
+		PropsUtil.get(PropsKeys.INDEX_SEARCH_LIMIT));
 
 	private static final String[] _PERMISSION_SELECTED_FIELD_NAMES =
 		{Field.ENTRY_CLASS_NAME, Field.ENTRY_CLASS_PK};
