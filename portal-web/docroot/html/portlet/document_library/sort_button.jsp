@@ -23,6 +23,8 @@ long folderId = GetterUtil.getLong((String)request.getAttribute("view.jsp-folder
 
 long fileEntryTypeId = ParamUtil.getLong(request, "fileEntryTypeId", DLFileEntryTypeConstants.FILE_ENTRY_TYPE_ID_ALL);
 
+int entryEnd = ParamUtil.getInteger(request, "entryEnd", entriesPerPage);
+
 String orderByType = ParamUtil.getString(request, "orderByType");
 
 String reverseOrderByType = "asc";
@@ -83,6 +85,7 @@ if (orderByType.equals("asc")) {
 						'<portlet:namespace />viewFolders': <%= Boolean.FALSE.toString() %>,
 						'<portlet:namespace />orderByCol': orderByCol,
 						'<portlet:namespace />orderByType': reverseOrderByType,
+						'<portlet:namespace />entryEnd': <%= entryEnd %>,
 						'<portlet:namespace />saveOrderBy': <%= Boolean.TRUE.toString() %>
 					}
 				}
