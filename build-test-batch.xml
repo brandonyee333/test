@@ -238,6 +238,10 @@
 								<param name="database.type" value="@{database.type}" />
 							</antcall>
 
+							<echo file="${basedir}/test.class.file.names.properties">TEST_CLASS_GROUP_0=com/liferay/portal/soap/extender/test/JaxWsComponentRegistrationTest.class,com/liferay/portal/soap/extender/test/JaxWsComponentHandlerRegistrationTest.class,com/liferay/portal/soap/extender/test/JaxWsApiRegistrationTest.class,com/liferay/portal/soap/extender/test/JaxWsApiHandlerRegistrationTest.class,com/liferay/portal/soap/extender/test/JaxWsComponentRegistrationTest.class,com/liferay/portal/soap/extender/test/JaxWsComponentHandlerRegistrationTest.class,com/liferay/portal/soap/extender/test/JaxWsApiRegistrationTest.class,com/liferay/portal/soap/extender/test/JaxWsApiHandlerRegistrationTest.class,com/liferay/portal/soap/extender/test/JaxWsComponentRegistrationTest.class,com/liferay/portal/soap/extender/test/JaxWsComponentHandlerRegistrationTest.class,com/liferay/portal/soap/extender/test/JaxWsApiRegistrationTest.class,com/liferay/portal/soap/extender/test/JaxWsApiHandlerRegistrationTest.class,com/liferay/portal/soap/extender/test/JaxWsComponentRegistrationTest.class,com/liferay/portal/soap/extender/test/JaxWsComponentHandlerRegistrationTest.class,com/liferay/portal/soap/extender/test/JaxWsApiRegistrationTest.class,com/liferay/portal/soap/extender/test/JaxWsApiHandlerRegistrationTest.class,com/liferay/portal/soap/extender/test/JaxWsComponentRegistrationTest.class,com/liferay/portal/soap/extender/test/JaxWsComponentHandlerRegistrationTest.class,com/liferay/portal/soap/extender/test/JaxWsApiRegistrationTest.class,com/liferay/portal/soap/extender/test/JaxWsApiHandlerRegistrationTest.class
+
+TEST_CLASS_GROUPS=0</echo>
+
 							<antcall target="prepare-system-ext-properties" inheritAll="false" />
 
 							<ant dir="modules" target="test-class-group" inheritAll="false">
@@ -288,6 +292,7 @@
 	</target>
 
 	<target name="modules-integration-mysql">
+		<echo> Testing </echo>
 		<run-modules-integration-test database.type="mysql" />
 	</target>
 
