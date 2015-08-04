@@ -33,6 +33,8 @@ public class HandlerBundleActivator implements BundleActivator {
 
 	@Override
 	public void start(BundleContext bundleContext) throws Exception {
+		System.out.println("HANDLER BUNDLE STARTED");
+
 		Dictionary<String, Object> properties = new Hashtable<>();
 
 		properties.put("soap.address", "/greeter");
@@ -54,6 +56,8 @@ public class HandlerBundleActivator implements BundleActivator {
 
 	@Override
 	public void stop(BundleContext bundleContext) {
+		System.out.println("HANDLER BUNDLE STOPPED");
+
 		cleanUp(bundleContext);
 	}
 

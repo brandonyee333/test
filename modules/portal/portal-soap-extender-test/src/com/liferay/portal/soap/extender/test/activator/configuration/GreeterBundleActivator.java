@@ -39,6 +39,8 @@ public class GreeterBundleActivator implements BundleActivator {
 
 	@Override
 	public void start(BundleContext bundleContext) throws Exception {
+		System.out.println("GREETER BUNDLE STARTUP");
+
 		Dictionary<String, Object> properties = new Hashtable<>();
 
 		properties.put("jaxws", true);
@@ -88,10 +90,14 @@ public class GreeterBundleActivator implements BundleActivator {
 			throw new IllegalStateException(
 				"Endpoint was not registered within 10 seconds");
 		}
+
+		System.out.println("FINISHED GREETER STARTUP");
 	}
 
 	@Override
 	public void stop(BundleContext bundleContext) {
+		System.out.println("GREETER BUNDLE STOPPED");
+
 		cleanUp(bundleContext);
 	}
 
