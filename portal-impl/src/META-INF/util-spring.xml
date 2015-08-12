@@ -601,6 +601,7 @@
 	
 	<bean id="com.liferay.portlet.monitoring.action.EditSessionMVCActionCommand" class="com.liferay.portlet.monitoring.action.EditSessionMVCActionCommand" />
 	<bean id="com.liferay.portlet.monitoring.action.EditSessionMVCRenderCommand" class="com.liferay.portlet.monitoring.action.EditSessionMVCRenderCommand" />
+	<bean id="com.liferay.portlet.monitoring.action.MonitoringViewMVCRenderCommand" class="com.liferay.portlet.monitoring.action.MonitoringViewMVCRenderCommand" />
 	
 	
 	<bean id="com.liferay.portlet.rolesadmin.util.RolesAdmin" class="com.liferay.portlet.rolesadmin.util.RolesAdminImpl" />
