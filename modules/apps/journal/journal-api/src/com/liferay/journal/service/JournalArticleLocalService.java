@@ -3331,12 +3331,14 @@ public interface JournalArticleLocalService extends BaseLocalService,
 	* @param assetCategoryIds the primary keys of the new asset categories
 	* @param assetTagNames the new asset tag names
 	* @param assetLinkEntryIds the primary keys of the new asset link entries
+	* @param priority the priority of the asset
 	* @throws PortalException if a portal exception occurred
 	*/
 	public void updateAsset(long userId,
 		com.liferay.journal.model.JournalArticle article,
 		long[] assetCategoryIds, java.lang.String[] assetTagNames,
-		long[] assetLinkEntryIds) throws PortalException;
+		long[] assetLinkEntryIds, java.lang.Double priority)
+		throws PortalException;
 
 	/**
 	* Updates the web content article matching the group, article ID, and

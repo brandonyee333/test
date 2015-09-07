@@ -3844,16 +3844,17 @@ public class JournalArticleLocalServiceWrapper
 	* @param assetCategoryIds the primary keys of the new asset categories
 	* @param assetTagNames the new asset tag names
 	* @param assetLinkEntryIds the primary keys of the new asset link entries
+	* @param priority the priority of the asset
 	* @throws PortalException if a portal exception occurred
 	*/
 	@Override
 	public void updateAsset(long userId,
 		com.liferay.journal.model.JournalArticle article,
 		long[] assetCategoryIds, java.lang.String[] assetTagNames,
-		long[] assetLinkEntryIds)
+		long[] assetLinkEntryIds, java.lang.Double priority)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_journalArticleLocalService.updateAsset(userId, article,
-			assetCategoryIds, assetTagNames, assetLinkEntryIds);
+			assetCategoryIds, assetTagNames, assetLinkEntryIds, priority);
 	}
 
 	/**
