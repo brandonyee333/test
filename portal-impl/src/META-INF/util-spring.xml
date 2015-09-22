@@ -35,7 +35,7 @@
 	<bean id="com.liferay.portal.kernel.cache.key.CacheKeyGeneratorUtil" class="com.liferay.portal.kernel.cache.key.CacheKeyGeneratorUtil">
 		<property name="cacheKeyGenerators">
 			<map>
-				<entry key="com.liferay.portal.kernel.dao.orm.FinderCache#BaseModel">
+				<entry key="com.liferay.portal.cache.dao.orm.FinderCache#BaseModel">
 					<bean class="com.liferay.portal.cache.key.HashCodeCacheKeyGenerator" />
 				</entry>
 				<entry key="com.liferay.portlet.PortletPreferencesFactoryImpl">
@@ -67,16 +67,6 @@
 	<bean id="com.liferay.portal.kernel.dao.jdbc.SqlUpdateFactoryUtil" class="com.liferay.portal.kernel.dao.jdbc.SqlUpdateFactoryUtil">
 		<property name="sqlUpdateFactory">
 			<bean class="com.liferay.portal.dao.jdbc.spring.SqlUpdateFactoryImpl" />
-		</property>
-	</bean>
-	<bean id="com.liferay.portal.kernel.dao.orm.EntityCacheUtil" class="com.liferay.portal.kernel.dao.orm.EntityCacheUtil">
-		<property name="entityCache">
-			<bean class="com.liferay.portal.dao.orm.common.EntityCacheImpl" />
-		</property>
-	</bean>
-	<bean id="com.liferay.portal.kernel.dao.orm.FinderCacheUtil" class="com.liferay.portal.kernel.dao.orm.FinderCacheUtil">
-		<property name="finderCache">
-			<bean class="com.liferay.portal.dao.orm.common.FinderCacheImpl" />
 		</property>
 	</bean>
 	<bean id="com.liferay.portal.kernel.dao.orm.PortalCustomSQLUtil" class="com.liferay.portal.kernel.dao.orm.PortalCustomSQLUtil">
