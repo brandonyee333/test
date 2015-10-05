@@ -53,13 +53,6 @@ public class SQLTransformerCastClobTextTest {
 		new AggregateTestRule(
 			new LiferayIntegrationTestRule(), TransactionalTestRule.INSTANCE);
 
-	@Before
-	public void setUp() {
-		String dbType = _db.getType();
-
-		Assume.assumeTrue(dbType.equals(DB.TYPE_ORACLE));
-	}
-
 	@BeforeClass
 	public static void setUpClass() throws Exception {
 		_db = DBFactoryUtil.getDB();
@@ -81,53 +74,106 @@ public class SQLTransformerCastClobTextTest {
 		}
 	}
 
+	@Before
+	public void setUp() {
+		String dbType = _db.getType();
+
+		Assume.assumeTrue(dbType.equals(DB.TYPE_ORACLE));
+	}
+
 	@Test
 	public void testSelectBigText_3999() {
 		checkResult(
-			runSelect(BIG_TEXT_A_3999, ""),
-			new String[]{BIG_TEXT_A_3999});
+			runSelect(BIG_TEXT_A_3999, ""), new String[] {BIG_TEXT_A_3999});
 	}
 
 	@Test
 	public void testSelectBigText_4000() {
+
 		// those match all rows sharing the first 4000 characters
 		// as CAST_CLOB_TEXT truncates data prior to comparison
+
 		checkResult(
 			runSelect(BIG_TEXT_A_4000, ""),
-			new String[]{BIG_TEXT_A_4000, BIG_TEXT_A_4001, BIG_TEXT_A_4000_B});
+			new String[] {BIG_TEXT_A_4000, BIG_TEXT_A_4001, BIG_TEXT_A_4000_B});
 
 		checkResult(
 			runSelect(BIG_TEXT_A_3999_B, ""),
-			new String[]{BIG_TEXT_A_3999_B, BIG_TEXT_A_3999_BB});
+			new String[] {BIG_TEXT_A_3999_B, BIG_TEXT_A_3999_BB});
 	}
 
 	@Test
 	public void testSelectBigText_4001() {
+
 		// those match nothing as CAST_CLOB_TEXT truncates data prior to
 		// comparison. Note this is intended behavior
 
 		// selects where data = BIG_TEXT_A_4001
+
 		checkResult(
-			runSelect(BIG_TEXT_A_4000, String.valueOf(A)),
-			_EMPTY_RESULT);
+			runSelect(BIG_TEXT_A_4000, String.valueOf(A)), _EMPTY_RESULT);
 
 		// selects where data = BIG_TEXT_A_3999_BB
+
 		checkResult(
-			runSelect(BIG_TEXT_A_3999_B, String.valueOf(B)),
-			_EMPTY_RESULT);
+			runSelect(BIG_TEXT_A_3999_B, String.valueOf(B)), _EMPTY_RESULT);
 
 		// selects where data = BIG_TEXT_A_4000_B
+
 		checkResult(
-			runSelect(BIG_TEXT_A_4000, String.valueOf(B)),
-			_EMPTY_RESULT);
+			runSelect(BIG_TEXT_A_4000, String.valueOf(B)), _EMPTY_RESULT);
 	}
 
 	@Test
 	public void testSelectText_1() {
+
 		// matches nothing
+
 		checkResult(runSelect(String.valueOf(B), ""), _EMPTY_RESULT);
 
 		checkResult(runSelect(String.valueOf(A), ""), _EMPTY_RESULT);
+	}
+
+	private static String[] createInserts() {
+		String[] sqls = new String[6];
+
+		sqls[0] = StringUtil.replace(
+			_SQL_INSERT_LONG_STRING,
+			new String[] {"[$ID$]", "[$DATA_1$]", "[$DATA_2$]"},
+			new String[] {"0", BIG_TEXT_A_3999, ""});
+
+		sqls[1] = StringUtil.replace(
+			_SQL_INSERT_LONG_STRING,
+			new String[] {"[$ID$]", "[$DATA_1$]", "[$DATA_2$]"},
+			new String[] {"1", BIG_TEXT_A_4000, ""});
+
+		// inserts BIG_TEXT_A_4001
+
+		sqls[2] = StringUtil.replace(
+			_SQL_INSERT_LONG_STRING,
+			new String[] {"[$ID$]", "[$DATA_1$]", "[$DATA_2$]"},
+			new String[] {"2", BIG_TEXT_A_4000, String.valueOf(A)});
+
+		sqls[3] = StringUtil.replace(
+			_SQL_INSERT_LONG_STRING,
+			new String[] {"[$ID$]", "[$DATA_1$]", "[$DATA_2$]"},
+			new String[] {"3", BIG_TEXT_A_3999_B, ""});
+
+		// inserts BIG_TEXT_A_3999_BB
+
+		sqls[4] = StringUtil.replace(
+			_SQL_INSERT_LONG_STRING,
+			new String[] {"[$ID$]", "[$DATA_1$]", "[$DATA_2$]"},
+			new String[] {"4", BIG_TEXT_A_3999_B, String.valueOf(B)});
+
+		// inserts BIG_TEXT_A_4000_B
+
+		sqls[5] = StringUtil.replace(
+			_SQL_INSERT_LONG_STRING,
+			new String[] {"[$ID$]", "[$DATA_1$]", "[$DATA_2$]"},
+			new String[] {"5", BIG_TEXT_A_4000, String.valueOf(B)});
+
+		return sqls;
 	}
 
 	private void checkResult(List<?> queryResult, String[] expectedResult) {
@@ -139,6 +185,7 @@ public class SQLTransformerCastClobTextTest {
 			Object[] cols = (Object[])result;
 
 			// data from the data DB column comes in 2 cols. Let's recompose it
+
 			String data = (String)cols[0];
 
 			if (cols[1] != null) {
@@ -149,51 +196,12 @@ public class SQLTransformerCastClobTextTest {
 		}
 	}
 
-	private static String[] createInserts() {
-		String[] sqls = new String[6];
-
-		sqls[0] = StringUtil.replace(
-			_SQL_INSERT_LONG_STRING,
-			new String[]{"[$ID$]", "[$DATA_1$]", "[$DATA_2$]"},
-			new String[]{"0", BIG_TEXT_A_3999, ""});
-
-		sqls[1] = StringUtil.replace(
-			_SQL_INSERT_LONG_STRING,
-			new String[]{"[$ID$]", "[$DATA_1$]", "[$DATA_2$]"},
-			new String[]{"1", BIG_TEXT_A_4000, ""});
-
-		// inserts BIG_TEXT_A_4001
-		sqls[2] = StringUtil.replace(
-			_SQL_INSERT_LONG_STRING,
-			new String[]{"[$ID$]", "[$DATA_1$]", "[$DATA_2$]"},
-			new String[]{"2", BIG_TEXT_A_4000, String.valueOf(A)});
-
-		sqls[3] = StringUtil.replace(
-			_SQL_INSERT_LONG_STRING,
-			new String[]{"[$ID$]", "[$DATA_1$]", "[$DATA_2$]"},
-			new String[]{"3", BIG_TEXT_A_3999_B, ""});
-
-		// inserts BIG_TEXT_A_3999_BB
-		sqls[4] = StringUtil.replace(
-			_SQL_INSERT_LONG_STRING,
-			new String[]{"[$ID$]", "[$DATA_1$]", "[$DATA_2$]"},
-			new String[]{"4", BIG_TEXT_A_3999_B, String.valueOf(B)});
-
-		// inserts BIG_TEXT_A_4000_B
-		sqls[5] = StringUtil.replace(
-			_SQL_INSERT_LONG_STRING,
-			new String[]{"[$ID$]", "[$DATA_1$]", "[$DATA_2$]"},
-			new String[]{"5", BIG_TEXT_A_4000, String.valueOf(B)});
-
-		return sqls;
-	}
-
 	private List<?> runSelect(String data1, String data2) {
 		List<?> list = null;
 
 		String sql = null;
 
-		if (data1.length() + data2.length() > 4000) {
+		if ((data1.length() + data2.length()) > 4000) {
 			sql = _SQL_SELECT_COMPARE_STRINGS_ABOVE_4000;
 		}
 		else {
@@ -213,29 +221,20 @@ public class SQLTransformerCastClobTextTest {
 
 			qPos.add(data2);
 
-			list = QueryUtil.list(q, _sessionFactory.getDialect(),
-				QueryUtil.ALL_POS, QueryUtil.ALL_POS, false);
+			list = QueryUtil.list(
+				q, _sessionFactory.getDialect(), QueryUtil.ALL_POS,
+				QueryUtil.ALL_POS, false);
 
 			list = Collections.unmodifiableList(list);
 		}
 		finally {
 			_sessionFactory.closeSession(session);
 		}
+
 		return list;
 	}
 
-	private final static Character A = 'a';
-	private final static Character B = 'b';
-
-	private final static String BIG_TEXT_A_3999 =
-		CharBuffer.allocate(3999).toString().replace('\0', A);
-	private final static String BIG_TEXT_A_4000 = BIG_TEXT_A_3999 + A;
-	private final static String BIG_TEXT_A_4001 = BIG_TEXT_A_4000 + A;
-	private final static String BIG_TEXT_A_3999_B = BIG_TEXT_A_3999 + B;
-	private final static String BIG_TEXT_A_3999_BB = BIG_TEXT_A_3999_B + B;
-	private final static String BIG_TEXT_A_4000_B = BIG_TEXT_A_4000 + B;
-
-	private static String[] _EMPTY_RESULT = new String[]{};
+	private static String[] _EMPTY_RESULT = new String[] {};
 
 	private static final String _SQL_CREATE_TABLE =
 		"create table TestCastClobText (" +
@@ -245,6 +244,7 @@ public class SQLTransformerCastClobTextTest {
 	private static final String _SQL_DROP_TABLE = "DROP TABLE TestCastClobText";
 
 	// this query inserts clobs longer than 4000 chars from 2 string chunks
+
 	private static final String _SQL_INSERT_LONG_STRING =
 		"INSERT INTO TestCastClobText VALUES " +
 		"([$ID$], to_clob('[$DATA_1$]') || to_clob('[$DATA_2$]'))";
@@ -255,25 +255,44 @@ public class SQLTransformerCastClobTextTest {
 	// Both apply the CAST_CLOB_TEXT function to the column being compared,
 	// just like *PersistenceImpl does. This way we test how that function
 	// works when transformed to an oracle native function
+
 	private static final String _SQL_SELECT_COMPARE_STRINGS_4000_AND_BELOW =
 		"SELECT " +
-		"	DBMS_LOB.SUBSTR(data, 4000, 1), DBMS_LOB.SUBSTR(data, 1, 4001) " +
+		" DBMS_LOB.SUBSTR(data, 4000, 1), DBMS_LOB.SUBSTR(data, 1, 4001) " +
 		"FROM " +
-		"	TestCastClobText " +
+		" TestCastClobText " +
 		"WHERE " +
-		"	CAST_CLOB_TEXT(TestCastClobText.data) = ? || ?";
+		" CAST_CLOB_TEXT(TestCastClobText.data) = ? || ?";
 
 	private static final String _SQL_SELECT_COMPARE_STRINGS_ABOVE_4000 =
 		"SELECT " +
-		"	DBMS_LOB.SUBSTR(data, 4000, 1), DBMS_LOB.SUBSTR(data, 1, 4001) " +
+		" DBMS_LOB.SUBSTR(data, 4000, 1), DBMS_LOB.SUBSTR(data, 1, 4001) " +
 		"FROM " +
-		"	TestCastClobText " +
+		" TestCastClobText " +
 		"WHERE " +
-		"	DBMS_LOB.COMPARE(CAST_CLOB_TEXT(TestCastClobText.data), " +
-		"	to_clob(?) || to_clob(?)) = 0";
+		" DBMS_LOB.COMPARE(CAST_CLOB_TEXT(TestCastClobText.data), " +
+		" to_clob(?) || to_clob(?)) = 0";
+
+	private static final Character A = 'a';
+
+	private static final Character B = 'b';
+
+	private static final String BIG_TEXT_A_3999 = CharBuffer.allocate(
+		3999).toString().replace('\0', A);
+
+	private static final String BIG_TEXT_A_3999_B = BIG_TEXT_A_3999 + B;
+
+	private static final String BIG_TEXT_A_3999_BB = BIG_TEXT_A_3999_B + B;
+
+	private static final String BIG_TEXT_A_4000 = BIG_TEXT_A_3999 + A;
+
+	private static final String BIG_TEXT_A_4000_B = BIG_TEXT_A_4000 + B;
+
+	private static final String BIG_TEXT_A_4001 = BIG_TEXT_A_4000 + A;
 
 	private static DB _db;
 
 	private final SessionFactory _sessionFactory =
-		(SessionFactory) PortalBeanLocatorUtil.locate("liferaySessionFactory");
+		(SessionFactory)PortalBeanLocatorUtil.locate("liferaySessionFactory");
+
 }
