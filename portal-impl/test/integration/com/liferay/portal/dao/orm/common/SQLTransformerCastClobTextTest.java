@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
@@ -37,6 +36,7 @@ import java.util.List;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Assume;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -46,11 +46,19 @@ import org.junit.Test;
  * @author Daniel Sanz
  */
 public class SQLTransformerCastClobTextTest {
+
 	@ClassRule
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
 			new LiferayIntegrationTestRule(), TransactionalTestRule.INSTANCE);
+
+	@Before
+	public void setUp() {
+		String dbType = _db.getType();
+
+		Assume.assumeTrue(dbType.equals(DB.TYPE_ORACLE));
+	}
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
@@ -58,15 +66,19 @@ public class SQLTransformerCastClobTextTest {
 
 		String dbType = _db.getType();
 
-		Assume.assumeTrue(dbType.equals(DB.TYPE_ORACLE));
-
-		_db.runSQL(_SQL_CREATE_TABLE);
-		_db.runSQL(createInserts());
+		if (dbType.equals(DB.TYPE_ORACLE)) {
+			_db.runSQL(_SQL_CREATE_TABLE);
+			_db.runSQL(createInserts());
+		}
 	}
 
 	@AfterClass
 	public static void tearDownClass() throws Exception {
-		_db.runSQL(_SQL_DROP_TABLE);
+		String dbType = _db.getType();
+
+		if (dbType.equals(DB.TYPE_ORACLE)) {
+			_db.runSQL(_SQL_DROP_TABLE);
+		}
 	}
 
 	@Test
@@ -209,7 +221,6 @@ public class SQLTransformerCastClobTextTest {
 		finally {
 			_sessionFactory.closeSession(session);
 		}
-
 		return list;
 	}
 
