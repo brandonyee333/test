@@ -143,9 +143,9 @@
 			FROM
 				JournalArticle
 			WHERE
-				(classNameId = ?) AND
-				(reviewDate >= ?) AND
-				(reviewDate <= ?)
+				(JournalArticle.classNameId = ?) AND
+				(JournalArticle.reviewDate >= ?) AND
+				(JournalArticle.reviewDate <= ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.journal.service.persistence.JournalArticleFinder.findByR_D">
@@ -155,12 +155,12 @@
 			FROM
 				JournalArticle
 			WHERE
-				(resourcePrimKey = ?) AND
-				(displayDate <= ?) AND
-				(status = 0) AND
-				(indexable = [$TRUE$])
+				(JournalArticle.resourcePrimKey = ?) AND
+				(JournalArticle.displayDate <= ?) AND
+				(JournalArticle.status = 0) AND
+				(JournalArticle.indexable = [$TRUE$])
 			ORDER BY
-				version DESC
+				JournalArticle.version DESC
 		]]>
 	</sql>
 	<sql id="com.liferay.journal.service.persistence.JournalArticleFinder.findByG_F">
@@ -262,16 +262,16 @@
 	<sql id="com.liferay.journal.service.persistence.JournalFeedFinder.countByC_G_F_N_D">
 		<![CDATA[
 			SELECT
-				COUNT(*) AS COUNT_VALUE
+				COUNT(JournalFeed.id) AS COUNT_VALUE
 			FROM
 				JournalFeed
 			WHERE
-				(companyId = ?) AND
-				(groupId = ?) AND
+				(JournalFeed.companyId = ?) AND
+				(JournalFeed.groupId = ?) AND
 				(
-					(feedId LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(lower(name) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(lower(description) LIKE ? [$AND_OR_NULL_CHECK$])
+					(JournalFeed.feedId LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(JournalFeed.name) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(JournalFeed.description) LIKE ? [$AND_OR_NULL_CHECK$])
 				)
 		]]>
 	</sql>
@@ -282,15 +282,15 @@
 			FROM
 				JournalFeed
 			WHERE
-				(companyId = ?) AND
-				(groupId = ?) AND
+				(JournalFeed.companyId = ?) AND
+				(JournalFeed.groupId = ?) AND
 				(
-					(feedId LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(lower(name) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(lower(description) LIKE ? [$AND_OR_NULL_CHECK$])
+					(JournalFeed.feedId LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(JournalFeed.name) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(JournalFeed.description) LIKE ? [$AND_OR_NULL_CHECK$])
 				)
 			ORDER BY
-				feedId ASC
+				JournalFeed.feedId ASC
 		]]>
 	</sql>
 	<sql id="com.liferay.journal.service.persistence.JournalFolderFinder.countA_ByG_U_F">
@@ -309,7 +309,7 @@
 	<sql id="com.liferay.journal.service.persistence.JournalFolderFinder.countF_ByG_F">
 		<![CDATA[
 			SELECT
-				COUNT(*) AS COUNT_VALUE
+				COUNT(JournalFolder.folderId) AS COUNT_VALUE
 			FROM
 				JournalFolder
 			WHERE
@@ -358,7 +358,7 @@
 	<sql id="com.liferay.journal.service.persistence.JournalFolderFinder.findF_ByG_F">
 		<![CDATA[
 			SELECT
-				DISTINCT folderId AS modelFolderId, '' AS articleId, 0 AS version, 1 AS modelFolder, JournalFolder.createDate as displayDate, JournalFolder.modifiedDate as modifiedDate
+				DISTINCT JournalFolder.folderId AS modelFolderId, '' AS articleId, 0 AS version, 1 AS modelFolder, JournalFolder.createDate as displayDate, JournalFolder.modifiedDate as modifiedDate
 			FROM
 				JournalFolder
 			WHERE
