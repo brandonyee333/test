@@ -4,7 +4,7 @@
 	<sql id="com.liferay.bookmarks.service.persistence.BookmarksFolderFinder.countE_ByG_F">
 		<![CDATA[
 			SELECT
-				COUNT(*) AS COUNT_VALUE
+				COUNT(BookmarksEntry.entryId) AS COUNT_VALUE
 			FROM
 				BookmarksEntry
 			WHERE
@@ -15,7 +15,7 @@
 	<sql id="com.liferay.bookmarks.service.persistence.BookmarksFolderFinder.countF_ByG_P">
 		<![CDATA[
 			SELECT
-				COUNT(*) AS COUNT_VALUE
+				COUNT(BookmarksFolder.folderId) AS COUNT_VALUE
 			FROM
 				BookmarksFolder
 			WHERE
@@ -26,7 +26,7 @@
 	<sql id="com.liferay.bookmarks.service.persistence.BookmarksFolderFinder.countE_ByG_F_S">
 		<![CDATA[
 			SELECT
-				COUNT(*) AS COUNT_VALUE
+				COUNT(BookmarksEntry.entryId) AS COUNT_VALUE
 			FROM
 				BookmarksEntry
 			WHERE
@@ -38,7 +38,7 @@
 	<sql id="com.liferay.bookmarks.service.persistence.BookmarksFolderFinder.countF_ByG_P_S">
 		<![CDATA[
 			SELECT
-				COUNT(*) AS COUNT_VALUE
+				COUNT(BookmarksFolder.folderId) AS COUNT_VALUE
 			FROM
 				BookmarksFolder
 			WHERE
