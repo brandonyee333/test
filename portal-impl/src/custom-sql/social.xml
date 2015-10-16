@@ -4,18 +4,18 @@
 	<sql id="com.liferay.portlet.social.service.persistence.SocialActivityCounterFinder.countU_ByG_C_N_S_E">
 		<![CDATA[
 			SELECT
-				COUNT(DISTINCT classPK) AS COUNT_VALUE
+				COUNT(DISTINCT SocialActivityCounter.classPK) AS COUNT_VALUE
 			FROM
 				SocialActivityCounter
 			INNER JOIN
 				User_ ON
 					(SocialActivityCounter.classPK = User_.userId)
 			WHERE
-				(groupId = ?) AND
-				(classNameId = ?) AND
-				(name IN ([$NAME$])) AND
-				(startPeriod + ? >= ?) AND
-				(endPeriod = -1) AND
+				(SocialActivityCounter.groupId = ?) AND
+				(SocialActivityCounter.classNameId = ?) AND
+				(SocialActivityCounter.name IN ([$NAME$])) AND
+				(SocialActivityCounter.startPeriod + ? >= ?) AND
+				(SocialActivityCounter.endPeriod = -1) AND
 				(User_.defaultUser != [$TRUE$]) AND
 				(User_.status = 0) AND
 				(SocialActivityCounter.active_ = [$TRUE$])
@@ -24,39 +24,39 @@
 	<sql id="com.liferay.portlet.social.service.persistence.SocialActivityCounterFinder.findAC_ByG_N_S_E_1">
 		<![CDATA[
 			SELECT
-				name, SUM(currentValue) currentValue, startPeriod, endPeriod
+				SocialActivityCounter.name, SUM(SocialActivityCounter.currentValue) currentValue, SocialActivityCounter.startPeriod, endPeriod
 			FROM
 				SocialActivityCounter
 			WHERE
-				(groupId = ?) AND
-				(name = ?) AND
-				(startPeriod >= ?) AND
-				(startPeriod <= ?) AND
-				(startPeriod + ? <= ? + 1) AND
-				(active_ = [$TRUE$])
+				(SocialActivityCounter.groupId = ?) AND
+				(SocialActivityCounter.name = ?) AND
+				(SocialActivityCounter.startPeriod >= ?) AND
+				(SocialActivityCounter.startPeriod <= ?) AND
+				(SocialActivityCounter.startPeriod + ? <= ? + 1) AND
+				(SocialActivityCounter.active_ = [$TRUE$])
 			GROUP BY
-				name, startPeriod, endPeriod
+				SocialActivityCounter.name, SocialActivityCounter.startPeriod, SocialActivityCounter.endPeriod
 			ORDER BY
-				startPeriod
+				SocialActivityCounter.startPeriod
 		]]>
 	</sql>
 	<sql id="com.liferay.portlet.social.service.persistence.SocialActivityCounterFinder.findAC_ByG_N_S_E_2">
 		<![CDATA[
 			SELECT
-				classNameId, name, SUM(currentValue) currentValue
+				SocialActivityCounter.classNameId, SocialActivityCounter.name, SUM(SocialActivityCounter.currentValue) currentValue
 			FROM
 				SocialActivityCounter
 			WHERE
-				(groupId = ?) AND
-				(name = ?) AND
-				(startPeriod >= ?) AND
-				(startPeriod <= ?) AND
-				(startPeriod + ? <= ? + 1) AND
-				(active_ = [$TRUE$])
+				(SocialActivityCounter.groupId = ?) AND
+				(SocialActivityCounter.name = ?) AND
+				(SocialActivityCounter.startPeriod >= ?) AND
+				(SocialActivityCounter.startPeriod <= ?) AND
+				(SocialActivityCounter.startPeriod + ? <= ? + 1) AND
+				(SocialActivityCounter.active_ = [$TRUE$])
 			GROUP BY
-				classNameId, name
+				SocialActivityCounter.classNameId, SocialActivityCounter.name
 			ORDER BY
-				currentValue DESC
+				SocialActivityCounter.currentValue DESC
 		]]>
 	</sql>
 	<sql id="com.liferay.portlet.social.service.persistence.SocialActivityCounterFinder.findAC_By_G_C_C_N_S_E">
@@ -66,44 +66,44 @@
 			FROM
 				SocialActivityCounter
 			WHERE
-				(groupId = ?) AND
-				(classNameId = ?) AND
-				(classPK IN ([$CLASS_PK$])) AND
-				(name IN ([$NAME$])) AND
-				(endPeriod = -1) AND
-				(active_ = [$TRUE$])
+				(SocialActivityCounter.groupId = ?) AND
+				(SocialActivityCounter.classNameId = ?) AND
+				(SocialActivityCounter.classPK IN ([$CLASS_PK$])) AND
+				(SocialActivityCounter.name IN ([$NAME$])) AND
+				(SocialActivityCounter.endPeriod = -1) AND
+				(SocialActivityCounter.active_ = [$TRUE$])
 			ORDER BY
-				classPK
+				SocialActivityCounter.classPK
 		]]>
 	</sql>
 	<sql id="com.liferay.portlet.social.service.persistence.SocialActivityCounterFinder.findU_ByG_C_N_S_E">
 		<![CDATA[
 			SELECT
-				classPK
+				SocialActivityCounter.classPK
 			FROM
 				SocialActivityCounter
 			INNER JOIN
 				User_ ON
 					(SocialActivityCounter.classPK = User_.userId)
 			WHERE
-				(groupId = ?) AND
-				(classNameId = ?) AND
-				(name IN ([$NAME$])) AND
-				(startPeriod >= ?) AND
-				(endPeriod = -1) AND
+				(SocialActivityCounter.groupId = ?) AND
+				(SocialActivityCounter.classNameId = ?) AND
+				(SocialActivityCounter.name IN ([$NAME$])) AND
+				(SocialActivityCounter.startPeriod >= ?) AND
+				(SocialActivityCounter.endPeriod = -1) AND
 				(User_.defaultUser != [$TRUE$]) AND
 				(User_.status = 0) AND
-				(active_ = [$TRUE$])
+				(SocialActivityCounter.active_ = [$TRUE$])
 			GROUP BY
-				classPK
+				SocialActivityCounter.classPK
 			ORDER BY
-				SUM(currentValue) DESC
+				SUM(SocialActivityCounter.currentValue) DESC
 		]]>
 	</sql>
 	<sql id="com.liferay.portlet.social.service.persistence.SocialActivityFinder.countByGroupId">
 		<![CDATA[
 			SELECT
-				COUNT(*) AS COUNT_VALUE
+				COUNT(SocialActivity.activityId) AS COUNT_VALUE
 			FROM
 				SocialActivity
 			WHERE
@@ -114,7 +114,7 @@
 	<sql id="com.liferay.portlet.social.service.persistence.SocialActivityFinder.countByGroupUsers">
 		<![CDATA[
 			SELECT
-				COUNT(*) AS COUNT_VALUE
+				COUNT(SocialActivity.activityId) AS COUNT_VALUE
 			FROM
 				SocialActivity
 			INNER JOIN
@@ -128,7 +128,7 @@
 	<sql id="com.liferay.portlet.social.service.persistence.SocialActivityFinder.countByOrganizationId">
 		<![CDATA[
 			SELECT
-				COUNT(*) AS COUNT_VALUE
+				COUNT(SocialActivity.activityId) AS COUNT_VALUE
 			FROM
 				SocialActivity
 			INNER JOIN
@@ -145,7 +145,7 @@
 	<sql id="com.liferay.portlet.social.service.persistence.SocialActivityFinder.countByOrganizationUsers">
 		<![CDATA[
 			SELECT
-				COUNT(*) AS COUNT_VALUE
+				COUNT(SocialActivity.activityId) AS COUNT_VALUE
 			FROM
 				SocialActivity
 			INNER JOIN
@@ -187,14 +187,14 @@
 	<sql id="com.liferay.portlet.social.service.persistence.SocialActivityFinder.countByUserGroups">
 		<![CDATA[
 			SELECT
-				COUNT(*) AS COUNT_VALUE
+				COUNT(SocialActivity.activityId) AS COUNT_VALUE
 			FROM
 				SocialActivity
 			WHERE
 				(
-					groupId IN (
+					SocialActivity.groupId IN (
 						SELECT
-							groupId
+							Groups_Orgs.groupId
 						FROM
 							Groups_Orgs
 						INNER JOIN
@@ -203,9 +203,9 @@
 						WHERE
 							Users_Orgs.userId = ?
 					) OR
-					groupId IN (
+					SocialActivity.groupId IN (
 						SELECT
-							groupId
+							Groups_UserGroups.groupId
 						FROM
 							Groups_UserGroups
 						INNER JOIN
@@ -214,42 +214,42 @@
 						WHERE
 							Users_UserGroups.userId = ?
 					) OR
-					groupId IN (
+					SocialActivity.groupId IN (
 						SELECT
-							groupId
+							Users_Groups.groupId
 						FROM
 							Users_Groups
 						WHERE
-							userId = ?
+							Users_Groups.userId = ?
 					)
 				) AND
-				(mirrorActivityId = 0)
+				(SocialActivity.mirrorActivityId = 0)
 		]]>
 	</sql>
 	<sql id="com.liferay.portlet.social.service.persistence.SocialActivityFinder.countByUserGroupsAndOrganizations">
 		<![CDATA[
 			(
 				SELECT
-					COUNT(*) AS COUNT_VALUE
+					COUNT(SocialActivity.activityId) AS COUNT_VALUE
 				FROM
 					SocialActivity
 				WHERE
 					(
-						groupId IN (
+						SocialActivity.groupId IN (
 							SELECT
-								groupId
+								Users_Groups.groupId
 							FROM
 								Users_Groups
 							WHERE
-								userId = ?
+								Users_Groups.userId = ?
 						)
 					) AND
-					(mirrorActivityId = 0)
+					(SocialActivity.mirrorActivityId = 0)
 			)
 			UNION ALL
 			(
 				SELECT
-					COUNT(*) AS COUNT_VALUE
+					COUNT(SocialActivity.activityId) AS COUNT_VALUE
 				FROM
 					SocialActivity
 				INNER JOIN
@@ -263,7 +263,7 @@
 					(
 						Organization_.organizationId IN (
 							SELECT
-								organizationId
+								Users_Orgs.organizationId
 							FROM
 								Users_Orgs
 							WHERE
@@ -276,7 +276,7 @@
 	<sql id="com.liferay.portlet.social.service.persistence.SocialActivityFinder.countByUserOrganizations">
 		<![CDATA[
 			SELECT
-				COUNT(*) AS COUNT_VALUE
+				COUNT(SocialActivity.activityId) AS COUNT_VALUE
 			FROM
 				SocialActivity
 			INNER JOIN
@@ -290,7 +290,7 @@
 				(
 					Organization_.organizationId IN (
 						SELECT
-							organizationId
+							Users_Orgs.organizationId
 						FROM
 							Users_Orgs
 						WHERE
@@ -306,10 +306,10 @@
 			FROM
 				SocialActivity
 			WHERE
-				(groupId = ?) AND
-				(mirrorActivityId = 0)
+				(SocialActivity.groupId = ?) AND
+				(SocialActivity.mirrorActivityId = 0)
 			ORDER BY
-				createDate DESC
+				SocialActivity.createDate DESC
 		]]>
 	</sql>
 	<sql id="com.liferay.portlet.social.service.persistence.SocialActivityFinder.findByGroupUsers">
@@ -403,9 +403,9 @@
 				SocialActivity
 			WHERE
 				(
-					groupId IN (
+					SocialActivity.groupId IN (
 						SELECT
-							groupId
+							Groups_Orgs.groupId
 						FROM
 							Groups_Orgs
 						INNER JOIN
@@ -414,9 +414,9 @@
 						WHERE
 							Users_Orgs.userId = ?
 					) OR
-					groupId IN (
+					SocialActivity.groupId IN (
 						SELECT
-							groupId
+							Groups_UserGroups.groupId
 						FROM
 							Groups_UserGroups
 						INNER JOIN
@@ -425,18 +425,18 @@
 						WHERE
 							Users_UserGroups.userId = ?
 					) OR
-					groupId IN (
+					SocialActivity.groupId IN (
 						SELECT
-							groupId
+							Users_Groups.groupId
 						FROM
 							Users_Groups
 						WHERE
-							userId = ?
+							Users_Groups.userId = ?
 					)
 				) AND
-				(mirrorActivityId = 0)
+				(SocialActivity.mirrorActivityId = 0)
 			ORDER BY
-				createDate DESC
+				SocialActivity.createDate DESC
 		]]>
 	</sql>
 	<sql id="com.liferay.portlet.social.service.persistence.SocialActivityFinder.findByUserGroupsAndOrganizations">
@@ -451,16 +451,16 @@
 						SocialActivity
 					WHERE
 						(
-							groupId IN (
+							SocialActivity.groupId IN (
 								SELECT
-									groupId
+									Users_Groups.groupId
 								FROM
 									Users_Groups
 								WHERE
-									userId = ?
+									Users_Groups.userId = ?
 							)
 						) AND
-						(mirrorActivityId = 0)
+						(SocialActivity.mirrorActivityId = 0)
 
 					UNION ALL
 
@@ -479,7 +479,7 @@
 						(
 							Organization_.organizationId IN (
 								SELECT
-									organizationId
+									Users_Orgs.organizationId
 								FROM
 									Users_Orgs
 								WHERE
@@ -488,7 +488,7 @@
 						)
 				) TEMP_TABLE
 			ORDER BY
-				createDate DESC
+				TEMP_TABLE.createDate DESC
 		]]>
 	</sql>
 	<sql id="com.liferay.portlet.social.service.persistence.SocialActivityFinder.findByUserOrganizations">
@@ -508,7 +508,7 @@
 				(
 					Organization_.organizationId IN (
 						SELECT
-							organizationId
+							Users_Orgs.organizationId
 						FROM
 							Users_Orgs
 						WHERE
@@ -554,9 +554,9 @@
 				SocialActivitySet
 			WHERE
 				(
-					groupId IN (
+					SocialActivitySet.groupId IN (
 						SELECT
-							groupId
+							Groups_Orgs.groupId
 						FROM
 							Groups_Orgs
 						INNER JOIN
@@ -565,9 +565,9 @@
 						WHERE
 							Users_Orgs.userId = ?
 					) OR
-					groupId IN (
+					SocialActivitySet.groupId IN (
 						SELECT
-							groupId
+							Groups_UserGroups.groupId
 						FROM
 							Groups_UserGroups
 						INNER JOIN
@@ -576,17 +576,17 @@
 						WHERE
 							Users_UserGroups.userId = ?
 					) OR
-					groupId IN (
+					SocialActivitySet.groupId IN (
 						SELECT
-							groupId
+							Users_Groups.groupId
 						FROM
 							Users_Groups
 						WHERE
 							userId = ?
 					) OR
-					activitySetId IN (
+					SocialActivitySet.activitySetId IN (
 						SELECT
-							activitySetId
+							SocialActivitySet.activitySetId
 						FROM
 							SocialActivitySet
 						INNER JOIN
@@ -595,7 +595,7 @@
 						WHERE
 							(SocialRelation.userId1 = ?)
 					) OR (
-						userId = ?
+						SocialActivitySet.userId = ?
 					)
 				)
 		]]>
@@ -608,9 +608,9 @@
 				SocialActivitySet
 			WHERE
 				(
-					groupId IN (
+					SocialActivitySet.groupId IN (
 						SELECT
-							groupId
+							Groups_Orgs.groupId
 						FROM
 							Groups_Orgs
 						INNER JOIN
@@ -619,9 +619,9 @@
 						WHERE
 							Users_Orgs.userId = ?
 					) OR
-					groupId IN (
+					SocialActivitySet.groupId IN (
 						SELECT
-							groupId
+							Groups_UserGroups.groupId
 						FROM
 							Groups_UserGroups
 						INNER JOIN
@@ -630,13 +630,13 @@
 						WHERE
 							Users_UserGroups.userId = ?
 					) OR
-					groupId IN (
+					SocialActivitySet.groupId IN (
 						SELECT
-							groupId
+							Users_Groups.groupId
 						FROM
 							Users_Groups
 						WHERE
-							userId = ?
+							Users_Groups.userId = ?
 					)
 				)
 		]]>
@@ -680,9 +680,9 @@
 				SocialActivitySet
 			WHERE
 				(
-					groupId IN (
+					SocialActivitySet.groupId IN (
 						SELECT
-							groupId
+							Groups_Orgs.groupId
 						FROM
 							Groups_Orgs
 						INNER JOIN
@@ -691,9 +691,9 @@
 						WHERE
 							Users_Orgs.userId = ?
 					) OR
-					groupId IN (
+					SocialActivitySet.groupId IN (
 						SELECT
-							groupId
+							Groups_UserGroups.groupId
 						FROM
 							Groups_UserGroups
 						INNER JOIN
@@ -702,17 +702,17 @@
 						WHERE
 							Users_UserGroups.userId = ?
 					) OR
-					groupId IN (
+					SocialActivitySet.groupId IN (
 						SELECT
-							groupId
+							Users_Groups.groupId
 						FROM
 							Users_Groups
 						WHERE
-							userId = ?
+							Users_Groups.userId = ?
 					) OR
-					activitySetId IN (
+					SocialActivitySet.activitySetId IN (
 						SELECT
-							activitySetId
+							SocialActivitySet.activitySetId
 						FROM
 							SocialActivitySet
 						INNER JOIN
@@ -721,11 +721,11 @@
 						WHERE
 							(SocialRelation.userId1 = ?)
 					) OR (
-						userId = ?
+						SocialActivitySet.userId = ?
 					)
 				)
 			ORDER BY
-				modifiedDate DESC
+				SocialActivitySet.modifiedDate DESC
 		]]>
 	</sql>
 	<sql id="com.liferay.portlet.social.service.persistence.SocialActivitySetFinder.findByUserGroups">
@@ -736,9 +736,9 @@
 				SocialActivitySet
 			WHERE
 				(
-					groupId IN (
+					SocialActivitySet.groupId IN (
 						SELECT
-							groupId
+							Groups_Orgs.groupId
 						FROM
 							Groups_Orgs
 						INNER JOIN
@@ -747,9 +747,9 @@
 						WHERE
 							Users_Orgs.userId = ?
 					) OR
-					groupId IN (
+					SocialActivitySet.groupId IN (
 						SELECT
-							groupId
+							Groups_UserGroups.groupId
 						FROM
 							Groups_UserGroups
 						INNER JOIN
@@ -758,17 +758,17 @@
 						WHERE
 							Users_UserGroups.userId = ?
 					) OR
-					groupId IN (
+					SocialActivitySet.groupId IN (
 						SELECT
-							groupId
+							Users_Groups.groupId
 						FROM
 							Users_Groups
 						WHERE
-							userId = ?
+							Users_Groups.userId = ?
 					)
 				)
 			ORDER BY
-				modifiedDate DESC
+				SocialActivitySet.modifiedDate DESC
 		]]>
 	</sql>
 </custom-sql>
