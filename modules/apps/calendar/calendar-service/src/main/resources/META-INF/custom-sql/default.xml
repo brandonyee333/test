@@ -4,25 +4,25 @@
 	<sql id="com.liferay.calendar.service.persistence.CalendarBookingFinder.countByC_G_C_C_P_T_D_L_S_E_S">
 		<![CDATA[
 			SELECT
-				COUNT(DISTINCT calendarBookingId) AS COUNT_VALUE
+				COUNT(DISTINCT CalendarBooking.calendarBookingId) AS COUNT_VALUE
 			FROM
 				CalendarBooking
 			WHERE
-				(companyId = ?) AND
+				(CalendarBooking.companyId = ?) AND
 				[$GROUP_ID$]
 				[$CALENDAR_ID$]
 				[$CALENDAR_RESOURCE_ID$]
-				(parentCalendarBookingId = ?) AND
+				(CalendarBooking.parentCalendarBookingId = ?) AND
 				(
-					(lower(title) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(CalendarBooking.title) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
 					(description LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(lower(location) LIKE ? [$AND_OR_NULL_CHECK$])
+					(lower(CalendarBooking.location) LIKE ? [$AND_OR_NULL_CHECK$])
 				) AND
 				(
-					(startTime >= ? AND endTime <= ?) OR
-					(startTime <= ? AND endTime >= ?) OR
-					(startTime >= ? AND startTime <= ? AND endTime >= ?) OR
-					(startTime <= ? AND endTime >= ? AND endTime <= ?)
+					(CalendarBooking.startTime >= ? AND CalendarBooking.endTime <= ?) OR
+					(CalendarBooking.startTime <= ? AND CalendarBooking.endTime >= ?) OR
+					(CalendarBooking.startTime >= ? AND CalendarBooking.startTime <= ? AND CalendarBooking.endTime >= ?) OR
+					(CalendarBooking.startTime <= ? AND CalendarBooking.endTime >= ? AND CalendarBooking.endTime <= ?)
 				)
 				[$STATUS$]
 		]]>
@@ -35,11 +35,11 @@
 				CalendarBooking
 			WHERE
 				(
-					(recurrence IS NOT NULL) OR
-					(startTime >= ?)
+					(CalendarBooking.recurrence IS NOT NULL) OR
+					(CalendarBooking.startTime >= ?)
 				) AND
-				(firstReminder > 0) AND
-				(status = 0)
+				(CalendarBooking.firstReminder > 0) AND
+				(CalendarBooking.status = 0)
 		]]>
 	</sql>
 	<sql id="com.liferay.calendar.service.persistence.CalendarBookingFinder.findByC_G_C_C_P_T_D_L_S_E_S">
@@ -49,22 +49,22 @@
 			FROM
 				CalendarBooking
 			WHERE
-				(companyId = ?) AND
+				(CalendarBooking.companyId = ?) AND
 				[$GROUP_ID$]
 				[$CALENDAR_ID$]
 				[$CALENDAR_RESOURCE_ID$]
-				(parentCalendarBookingId = ?) AND
+				(CalendarBooking.parentCalendarBookingId = ?) AND
 				(
-					(lower(title) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(description LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(lower(location) LIKE ? [$AND_OR_NULL_CHECK$])
+					(lower(CalendarBooking.title) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(CalendarBooking.description LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(CalendarBooking.location) LIKE ? [$AND_OR_NULL_CHECK$])
 				) AND
 				(
 					(
-						(startTime >= ? AND endTime <= ?) OR
-						(startTime <= ? AND endTime >= ?) OR
-						(startTime >= ? AND startTime <= ? AND endTime >= ?) OR
-						(startTime <= ? AND endTime >= ? AND endTime <= ?)
+						(CalendarBooking.startTime >= ? AND CalendarBooking.endTime <= ?) OR
+						(CalendarBooking.startTime <= ? AND CalendarBooking.endTime >= ?) OR
+						(CalendarBooking.startTime >= ? AND CalendarBooking.startTime <= ? AND CalendarBooking.endTime >= ?) OR
+						(CalendarBooking.startTime <= ? AND CalendarBooking.endTime >= ? AND CalendarBooking.endTime <= ?)
 					)
 					[$RECURRENCE$]
 				)
@@ -75,7 +75,7 @@
 	<sql id="com.liferay.calendar.service.persistence.CalendarFinder.countByC_G_C_N_D">
 		<![CDATA[
 			SELECT
-				COUNT(DISTINCT calendarId) AS COUNT_VALUE
+				COUNT(DISTINCT Calendar.calendarId) AS COUNT_VALUE
 			FROM
 				Calendar
 			WHERE
@@ -95,12 +95,12 @@
 			FROM
 				Calendar
 			WHERE
-				(companyId = ?) AND
+				(Calendar.companyId = ?) AND
 				[$GROUP_ID$]
 				[$CALENDAR_RESOURCE_ID$]
 				(
-					(lower(name) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(description LIKE ? [$AND_OR_NULL_CHECK$])
+					(lower(Calendar.name) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(Calendar.description LIKE ? [$AND_OR_NULL_CHECK$])
 				)
 				[$ORDER_BY$]
 		]]>
@@ -108,19 +108,19 @@
 	<sql id="com.liferay.calendar.service.persistence.CalendarResourceFinder.countByC_G_C_C_N_D_A">
 		<![CDATA[
 			SELECT
-				COUNT(DISTINCT calendarResourceId) AS COUNT_VALUE
+				COUNT(DISTINCT CalendarResource.calendarResourceId) AS COUNT_VALUE
 			FROM
 				CalendarResource
 			WHERE
-				(companyId = ?) AND
+				(CalendarResource.companyId = ?) AND
 				[$GROUP_ID$]
 				[$CLASS_NAME_ID$]
 				(
-					(lower(code_) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(lower(name) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(description LIKE ? [$AND_OR_NULL_CHECK$])
+					(lower(CalendarResource.code_) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(CalendarResource.name) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(CalendarResource.description LIKE ? [$AND_OR_NULL_CHECK$])
 				) AND
-				(active_ = ?)
+				(CalendarResource.active_ = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.calendar.service.persistence.CalendarResourceFinder.findByC_G_C_C_N_D_A">
@@ -130,15 +130,15 @@
 			FROM
 				CalendarResource
 			WHERE
-				(companyId = ?) AND
+				(CalendarResource.companyId = ?) AND
 				[$GROUP_ID$]
 				[$CLASS_NAME_ID$]
 				(
-					(lower(code_) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(lower(name) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(description LIKE ? [$AND_OR_NULL_CHECK$])
+					(lower(CalendarResource.code_) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(CalendarResource.name) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(CalendarResource.description LIKE ? [$AND_OR_NULL_CHECK$])
 				) AND
-				(active_ = ?)
+				(CalendarResource.active_ = ?)
 				[$ORDER_BY$]
 		]]>
 	</sql>
