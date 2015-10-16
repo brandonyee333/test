@@ -256,7 +256,7 @@
 		<![CDATA[
 			[$BASIC_DOCUMENT$]
 			SELECT
-				COUNT(DISTINCT fileEntryTypeId) AS COUNT_VALUE
+				COUNT(DISTINCT DLFileEntryType.fileEntryTypeId) AS COUNT_VALUE
 			FROM
 				DLFileEntryType
 			WHERE
@@ -291,11 +291,11 @@
 	<sql id="com.liferay.portlet.documentlibrary.service.persistence.DLFileRankFinder.findByStaleRanks">
 		<![CDATA[
 			SELECT
-				groupId, userId
+				DLFileRank.groupId, DLFileRank.userId
 			FROM
 				DLFileRank
 			GROUP BY
-				groupId, userId
+				DLFileRank.groupId, DLFileRank.userId
 			HAVING COUNT(*) > ?
 		]]>
 	</sql>
@@ -315,7 +315,7 @@
 	<sql id="com.liferay.portlet.documentlibrary.service.persistence.DLFolderFinder.countF_ByG_M_F">
 		<![CDATA[
 			SELECT
-				COUNT(DISTINCT folderId) AS COUNT_VALUE
+				COUNT(DISTINCT DLFolder.folderId) AS COUNT_VALUE
 			FROM
 				DLFolder
 			WHERE
@@ -341,7 +341,7 @@
 	<sql id="com.liferay.portlet.documentlibrary.service.persistence.DLFolderFinder.countFS_ByG_F_A">
 		<![CDATA[
 			SELECT
-				COUNT(DISTINCT fileShortcutId) AS COUNT_VALUE
+				COUNT(DISTINCT DLFileShortcut.fileShortcutId) AS COUNT_VALUE
 			FROM
 				DLFileShortcut
 			[$JOIN$]
