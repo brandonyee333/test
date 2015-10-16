@@ -4,15 +4,15 @@
 	<sql id="com.liferay.wiki.service.persistence.WikiPageFinder.countByCreateDate">
 		<![CDATA[
 			SELECT
-				COUNT(*) AS COUNT_VALUE
+				COUNT(WikiPage.pageId) AS COUNT_VALUE
 			FROM
 				WikiPage
 			WHERE
-				(groupId = ?) AND
-				(nodeId = ?) AND
-				(createDate [$CREATE_DATE_COMPARATOR$] ?) AND
-				(head = ?) AND
-				(status = ?)
+				(WikiPage.groupId = ?) AND
+				(WikiPage.nodeId = ?) AND
+				(WikiPage.createDate [$CREATE_DATE_COMPARATOR$] ?) AND
+				(WikiPage.head = ?) AND
+				(WikiPage.status = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.wiki.service.persistence.WikiPageFinder.countByG_N_H_S">
@@ -45,13 +45,13 @@
 			FROM
 				WikiPage
 			WHERE
-				(groupId = ?) AND
-				(nodeId = ?) AND
-				(createDate [$CREATE_DATE_COMPARATOR$] ?) AND
-				(head = ?) AND
-				(status = ?)
+				(WikiPage.groupId = ?) AND
+				(WikiPage.nodeId = ?) AND
+				(WikiPage.createDate [$CREATE_DATE_COMPARATOR$] ?) AND
+				(WikiPage.head = ?) AND
+				(WikiPage.status = ?)
 			ORDER BY
-				createDate DESC
+				WikiPage.createDate DESC
 		]]>
 	</sql>
 	<sql id="com.liferay.wiki.service.persistence.WikiPageFinder.findByNoAssets">
