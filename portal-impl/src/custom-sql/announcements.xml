@@ -51,8 +51,8 @@
 			FROM
 				AnnouncementsEntry
 			WHERE
-				(displayDate >= ?) AND
-				(displayDate <= ?)
+				(AnnouncementsEntry.displayDate >= ?) AND
+				(AnnouncementsEntry.displayDate <= ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.portlet.announcements.service.persistence.AnnouncementsEntryFinder.findByHidden">
