@@ -40,12 +40,12 @@
 	<sql id="com.liferay.portlet.messageboards.service.persistence.MBMessageFinder.countByC_T">
 		<![CDATA[
 			SELECT
-				COUNT(*) AS COUNT_VALUE
+				COUNT(MBMessage.messageId) AS COUNT_VALUE
 			FROM
 				MBMessage
 			WHERE
-				(createDate <= ?) AND
-				(threadId = ?)
+				(MBMessage.createDate <= ?) AND
+				(MBMessage.threadId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.portlet.messageboards.service.persistence.MBMessageFinder.countByG_U_C_S">
