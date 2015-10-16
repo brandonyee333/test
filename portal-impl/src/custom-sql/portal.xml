@@ -55,8 +55,8 @@
 			DELETE FROM
 				ResourceBlock
 			WHERE
-				(referenceCount <= 0) AND
-				(resourceBlockId = ?)
+				(ResourceBlock.referenceCount <= 0) AND
+				(ResourceBlock.resourceBlockId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.portal.service.impl.ResourcePermissionLocalServiceImpl.findMissingResourcePermissions">
@@ -282,15 +282,15 @@
 	<sql id="com.liferay.portal.service.persistence.GroupFinder.findByC_P">
 		<![CDATA[
 			SELECT
-				groupId
+				Group_.groupId
 			FROM
 				Group_
 			WHERE
-				(groupId > ?) AND
-				(companyId = ?) AND
-				(parentGroupId = ?)
+				(Group_.groupId > ?) AND
+				(Group_.companyId = ?) AND
+				(Group_.parentGroupId = ?)
 			ORDER BY
-				groupId ASC
+				Group_.	groupId ASC
 		]]>
 	</sql>
 	<sql id="com.liferay.portal.service.persistence.GroupFinder.findByC_GK">
