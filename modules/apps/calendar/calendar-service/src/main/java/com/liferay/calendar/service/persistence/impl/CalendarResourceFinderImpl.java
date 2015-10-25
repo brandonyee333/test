@@ -281,11 +281,14 @@ public class CalendarResourceFinderImpl
 			sql = StringUtil.replace(
 				sql, "[$CLASS_NAME_ID$]", getClassNameIds(classNameIds));
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(code_)", StringPool.LIKE, false, codes);
+				sql, "lower(CalendarResource.code_)", StringPool.LIKE, false,
+				codes);
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(name)", StringPool.LIKE, false, names);
+				sql, "lower(CalendarResource.name)", StringPool.LIKE, false,
+				names);
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "description", StringPool.LIKE, true, descriptions);
+				sql, "CalendarResource.description", StringPool.LIKE, true,
+				descriptions);
 			sql = CustomSQLUtil.replaceAndOperator(sql, andOperator);
 
 			SQLQuery q = session.createSynchronizedSQLQuery(sql);
@@ -355,11 +358,14 @@ public class CalendarResourceFinderImpl
 			sql = StringUtil.replace(
 				sql, "[$CLASS_NAME_ID$]", getClassNameIds(classNameIds));
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(code_)", StringPool.LIKE, false, codes);
+				sql, "lower(CalendarResource.code_)", StringPool.LIKE, false,
+				codes);
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(name)", StringPool.LIKE, false, names);
+				sql, "lower(CalendarResource.name)", StringPool.LIKE, false,
+				names);
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "description", StringPool.LIKE, true, descriptions);
+				sql, "CalendarResource.description", StringPool.LIKE, true,
+				descriptions);
 			sql = CustomSQLUtil.replaceAndOperator(sql, andOperator);
 
 			StringBundler sb = new StringBundler();
@@ -410,7 +416,7 @@ public class CalendarResourceFinderImpl
 		sb.append("(");
 
 		for (int i = 0; i < classNameIds.length; i++) {
-			sb.append("classNameId = ?");
+			sb.append("CalendarResource.classNameId = ?");
 
 			if ((i + 1) < classNameIds.length) {
 				sb.append(" OR ");
@@ -432,7 +438,7 @@ public class CalendarResourceFinderImpl
 		sb.append("(");
 
 		for (int i = 0; i < groupIds.length; i++) {
-			sb.append("groupId = ?");
+			sb.append("CalendarResource.groupId = ?");
 
 			if ((i + 1) < groupIds.length) {
 				sb.append(" OR ");
