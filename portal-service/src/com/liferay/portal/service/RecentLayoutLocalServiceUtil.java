@@ -40,6 +40,13 @@ public class RecentLayoutLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.portal.service.impl.RecentLayoutLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static com.liferay.portal.model.RecentLayout addRecentLayout(
+		long companyId, long groupId, long userId, long layoutSetBranchId,
+		long plid) {
+		return getService()
+				   .addRecentLayout(companyId, groupId, userId,
+			layoutSetBranchId, plid);
+	}
 
 	/**
 	* Adds the recent layout to the database. Also notifies the appropriate model listeners.
@@ -177,6 +184,11 @@ public class RecentLayoutLocalServiceUtil {
 	public static com.liferay.portal.model.RecentLayout fetchRecentLayout(
 		long recentLayoutId) {
 		return getService().fetchRecentLayout(recentLayoutId);
+	}
+
+	public static com.liferay.portal.model.RecentLayout fetchRecentLayout(
+		long userId, long layoutSetBranchId, long plid) {
+		return getService().fetchRecentLayout(userId, layoutSetBranchId, plid);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {

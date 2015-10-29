@@ -32,6 +32,14 @@ public class RecentLayoutSetLocalServiceWrapper
 		_recentLayoutSetLocalService = recentLayoutSetLocalService;
 	}
 
+	@Override
+	public com.liferay.portal.model.RecentLayoutSet addRecentLayoutSet(
+		long companyId, long groupId, long userId, long layoutSetId,
+		long layoutSetBranchId) {
+		return _recentLayoutSetLocalService.addRecentLayoutSet(companyId,
+			groupId, userId, layoutSetId, layoutSetBranchId);
+	}
+
 	/**
 	* Adds the recent layout set to the database. Also notifies the appropriate model listeners.
 	*
@@ -182,6 +190,13 @@ public class RecentLayoutSetLocalServiceWrapper
 	public com.liferay.portal.model.RecentLayoutSet fetchRecentLayoutSet(
 		long recentLayoutSetId) {
 		return _recentLayoutSetLocalService.fetchRecentLayoutSet(recentLayoutSetId);
+	}
+
+	@Override
+	public com.liferay.portal.model.RecentLayoutSet fetchRecentLayoutSet(
+		long userId, long layoutSetId) {
+		return _recentLayoutSetLocalService.fetchRecentLayoutSet(userId,
+			layoutSetId);
 	}
 
 	@Override

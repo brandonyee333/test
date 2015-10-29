@@ -45,6 +45,9 @@ public interface RecentLayoutLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link RecentLayoutLocalServiceUtil} to access the recent layout local service. Add custom service methods to {@link com.liferay.portal.service.impl.RecentLayoutLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	public com.liferay.portal.model.RecentLayout addRecentLayout(
+		long companyId, long groupId, long userId, long layoutSetBranchId,
+		long plid);
 
 	/**
 	* Adds the recent layout to the database. Also notifies the appropriate model listeners.
@@ -162,6 +165,10 @@ public interface RecentLayoutLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public com.liferay.portal.model.RecentLayout fetchRecentLayout(
 		long recentLayoutId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public com.liferay.portal.model.RecentLayout fetchRecentLayout(
+		long userId, long layoutSetBranchId, long plid);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery();
