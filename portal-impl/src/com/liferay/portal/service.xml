@@ -1741,6 +1741,69 @@
 		<reference package-path="com.liferay.portal" entity="Portlet" />
 		<reference package-path="com.liferay.portal" entity="PortletItem" />
 	</entity>
+	<entity name="RecentLayout" local-service="true" remote-service="false" uuid="false">
+
+		<!-- PK fields -->
+
+		<column name="recentLayoutId" type="long" primary="true" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+
+		<!-- Other fields -->
+
+		<column name="layoutSetBranchId" type="long" />
+		<column name="plid" type="long" />
+		<column name="layoutBranchId" type="long" />
+		<column name="layoutRevisionId" type="long" />
+
+		<!-- Finder methods -->
+
+		<finder name="GroupId" return-type="Collection">
+			<finder-column name="groupId" />
+		</finder>
+		<finder name="U_L_P" return-type="RecentLayout" unique="true">
+			<finder-column name="userId" />
+			<finder-column name="layoutSetBranchId" />
+			<finder-column name="plid" />
+		</finder>
+	</entity>
+	<entity name="RecentLayoutSet" local-service="true" remote-service="false" uuid="false">
+
+		<!-- PK fields -->
+
+		<column name="recentLayoutSetId" type="long" primary="true" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+
+		<!-- Other fields -->
+
+		<column name="layoutSetId" type="long" />
+		<column name="layoutSetBranchId" type="long" />
+
+		<!-- Finder methods -->
+
+		<finder name="GroupId" return-type="Collection">
+			<finder-column name="groupId" />
+		</finder>
+		<finder name="U_L" return-type="RecentLayoutSet" unique="true">
+			<finder-column name="userId" />
+			<finder-column name="layoutSetId" />
+		</finder>
+	</entity>
 	<entity name="Region" local-service="false" remote-service="true">
 
 		<!-- PK fields -->
