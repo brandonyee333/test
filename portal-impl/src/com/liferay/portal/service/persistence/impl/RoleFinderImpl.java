@@ -974,7 +974,7 @@ public class RoleFinderImpl extends RoleFinderBaseImpl implements RoleFinder {
 	protected String getWhere(String key) {
 		String join = StringPool.BLANK;
 
-		if (key.equals("usersRoles")) {
+		if (key.equals("Role_.usersRoles")) {
 			join = CustomSQLUtil.get(JOIN_BY_USERS_ROLES);
 		}
 
