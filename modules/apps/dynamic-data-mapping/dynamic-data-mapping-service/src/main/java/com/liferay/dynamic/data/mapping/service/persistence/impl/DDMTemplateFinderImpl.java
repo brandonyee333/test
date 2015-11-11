@@ -1019,7 +1019,7 @@ public class DDMTemplateFinderImpl
 		sb.append(StringPool.OPEN_PARENTHESIS);
 
 		for (int i = 0; i < classNameIds.length; i++) {
-			sb.append("classNameId = ?");
+			sb.append("DDMTemplate.classNameId = ?");
 
 			if ((i + 1) < classNameIds.length) {
 				sb.append(" OR ");
@@ -1041,7 +1041,7 @@ public class DDMTemplateFinderImpl
 		sb.append(StringPool.OPEN_PARENTHESIS);
 
 		for (int i = 0; i < classPKs.length; i++) {
-			sb.append("classPK = ?");
+			sb.append("DDMTemplate.classPK = ?");
 
 			if ((i + 1) < classPKs.length) {
 				sb.append(" OR ");
@@ -1063,7 +1063,7 @@ public class DDMTemplateFinderImpl
 		sb.append(StringPool.OPEN_PARENTHESIS);
 
 		for (int i = 0; i < groupIds.length; i++) {
-			sb.append("groupId = ?");
+			sb.append("DDMTemplate.groupId = ?");
 
 			if ((i + 1) < groupIds.length) {
 				sb.append(" OR ");
