@@ -97,7 +97,7 @@ public class MDRRuleGroupFinderImpl
 
 			sql = StringUtil.replace(sql, "[$GROUP_ID$]", getGroupIds(params));
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(name)", StringPool.LIKE, true, names);
+				sql, "lower(MDRRuleGroup.name)", StringPool.LIKE, true, names);
 			sql = CustomSQLUtil.replaceAndOperator(sql, true);
 
 			SQLQuery q = session.createSynchronizedSQLQuery(sql);
@@ -216,10 +216,10 @@ public class MDRRuleGroupFinderImpl
 		Boolean includeGlobalScope = (Boolean)params.get("includeGlobalScope");
 
 		if ((includeGlobalScope != null) && includeGlobalScope) {
-			return "((groupId = ?) OR (groupId = ?))";
+			return "((MDRRuleGroup.groupId = ?) OR (MDRRuleGroup.groupId = ?))";
 		}
 		else {
-			return "(groupId = ?)";
+			return "(MDRRuleGroup.groupId = ?)";
 		}
 	}
 
