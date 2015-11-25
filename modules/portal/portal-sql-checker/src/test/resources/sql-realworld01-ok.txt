@@ -1,0 +1,63 @@
+SELECT
+	* 
+FROM
+	(	SELECT
+			DISTINCT DLFolder.folderId AS modelFolderId,
+			DLFolder.createDate        AS createDate,
+			DLFolder.modifiedDate      AS modifiedDate,
+			DLFolder.name              AS NAME,
+			DLFolder.name              AS title,
+			0                          AS size_,
+			0                          AS readCount,
+			0                          AS fileShortcutId,
+			1                          AS modelFolder 
+		FROM
+			DLFolder 
+		WHERE
+			(DLFolder.groupId = ?) 
+			AND (DLFolder.hidden_ = 0) 
+			AND (DLFolder.status != ?) 
+			AND DLFolder.parentFolderId= ? 
+		UNION
+			ALL SELECT
+					DISTINCT DLFileEntry.folderId AS modelFolderId,
+					DLFileEntry.createDate        AS createDate,
+					DLFileEntry.modifiedDate      AS modifiedDate,
+					DLFileEntry.name              AS NAME,
+					DLFileEntry.title             AS title,
+					DLFileEntry.size_             AS size_,
+					DLFileEntry.readCount         AS readCount,
+					0                             AS fileShortcutId,
+					0                             AS modelFolder 
+				FROM
+					DLFileEntry 
+					INNER JOIN DLFileVersion 
+					ON (DLFileEntry.fileEntryId = DLFileVersion.fileEntryId) 
+				WHERE
+					(DLFileEntry.groupId = ?) 
+					AND (DLFileVersion.status != ?) 
+					AND DLFileEntry.folderId= ? 
+				UNION
+					ALL SELECT
+							DISTINCT DLFileEntry.folderId AS modelFolderId,
+							DLFileEntry.createDate        AS createDate,
+							DLFileEntry.modifiedDate      AS modifiedDate,
+							DLFileEntry.name              AS NAME,
+							DLFileEntry.title             AS title,
+							DLFileEntry.size_             AS size_,
+							DLFileEntry.readCount         AS readCount,
+							DLFileEntry.fileShortcutId    AS fileShortcutId,
+							0                             AS modelFolder 
+						FROM
+							DLFileShortcut 
+							INNER JOIN DLFileEntry 
+							ON (DLFileEntry.fileEntryId = DLFileShortcut.toFileEntryId) 
+						WHERE
+							(DLFileShortcut.groupId = ?) 
+							AND (DLFileShortcut.active_ = ?) 
+							AND (DLFileShortcut.status != ?) 
+							AND DLFileShortcut.folderId= ? ) TEMP_TABLE 
+ORDER BY
+	modelFolder DESC,
+	modifiedDate ASC
+limit ?

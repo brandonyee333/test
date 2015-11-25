@@ -1,0 +1,11 @@
+Bundle-Name: Liferay Portal SQL Checker
+Bundle-SymbolicName: com.liferay.portal.sqlchecker
+Bundle-Version: 7.0.0
+Include-Resource:\
+	classes,\
+	@lib/jsqlparser.jar
+Private-Package: \
+	com.liferay.portal.sqlchecker,\
+	com.liferay.portal.sqlchecker.impl
+
+Bundle-Activator: com.liferay.portal.sqlchecker.Activator
