@@ -143,18 +143,18 @@ public class SQLCheckerTest {
 		String sql = cleanEntities(readSQL(file));
 		SQLChecker sqlChecker = new SQLCheckerImpl();
 
+		boolean isError = file.indexOf("-error.") > 0;
+		
 		try {
 			sqlChecker.verifySelectSQL(sql);
 
-			if (file.indexOf("-error.")>0) {
-				Assert.fail(
-					"sql-file " + file + " sql should be faulty : " + sql);
-			}
+			Assert.assertFalse(
+				"sql-file " + file + " sql should be faulty : " + sql, isError);
+			
 		}
 		catch (NoTableNameAtColumnSQLException ntbce ) {
-			if (file.indexOf("-ok.")>0) {
-				Assert.fail(ntbce.getMessage() + "\n" + sql);
-			}
+			Assert.assertTrue(
+				"sql-file " + file + " sql should be faulty : " + sql, isError);
 		}
 	}
 
