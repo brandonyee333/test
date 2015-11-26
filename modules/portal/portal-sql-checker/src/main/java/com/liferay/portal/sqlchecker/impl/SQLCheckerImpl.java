@@ -14,12 +14,15 @@
 
 package com.liferay.portal.sqlchecker.impl;
 
+import com.liferay.portal.kernel.dao.db.DB;
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.DatabaseUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.sql.SQLException;
-
 import java.util.List;
 
 import net.sf.jsqlparser.expression.BinaryExpression;
@@ -51,11 +54,18 @@ import net.sf.jsqlparser.statement.select.SubSelect;
 public class SQLCheckerImpl implements SQLChecker {
 
 	public void verifySelectSQL(String sql) throws SQLException {
-		try {
-			if (sql.toLowerCase().startsWith("show")) {
-				return;
-			}
-			
+		DB db = DBFactoryUtil.getDB();
+		
+		if (db.getType().equals(DB.TYPE_HYPERSONIC)) {
+			// CCJSqlParserUtil not yet compatible with Hypersonic
+			return;
+		}
+		
+		if (StringUtil.toLowerCase(sql).startsWith("show")) {
+			return;
+		}
+		
+		try {			
 			Statement statement = CCJSqlParserUtil.parse(sql);
 
 			if (statement instanceof Select) {
@@ -77,7 +87,7 @@ public class SQLCheckerImpl implements SQLChecker {
 			sb.append("ERROR SQL:");
 			sb.append(sql);
 			sb.append(" is not valid");
-			throw new SQLException(sb.toString(), t);
+			_log.warn(sb.toString(), t);
 		}
 	}
 
