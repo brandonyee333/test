@@ -52,6 +52,10 @@ public class SQLCheckerImpl implements SQLChecker {
 
 	public void verifySelectSQL(String sql) throws SQLException {
 		try {
+			if (sql.toLowerCase().startsWith("show")) {
+				return;
+			}
+			
 			Statement statement = CCJSqlParserUtil.parse(sql);
 
 			if (statement instanceof Select) {
@@ -75,12 +79,6 @@ public class SQLCheckerImpl implements SQLChecker {
 			sb.append(" is not valid");
 			throw new SQLException(sb.toString(), t);
 		}
-	}
-
-	protected String cleanEntities(String sql) {
-		sql = sql.replaceAll("[\\{]|[\\}]", "");
-		sql = sql.replaceAll("[l]", "");
-		return sql;
 	}
 
 	protected void verifyExpression(Expression expression, boolean isMultiTable)
