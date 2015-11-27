@@ -1484,7 +1484,7 @@
 	<sql id="com.liferay.portal.service.persistence.UserFinder.findByUsersGroups">
 		<![CDATA[
 			SELECT
-				User_.userId, groupId
+				User_.userId, User_.groupId
 			FROM
 				User_
 			INNER JOIN
@@ -1500,7 +1500,7 @@
 	<sql id="com.liferay.portal.service.persistence.UserFinder.findByUsersOrgs">
 		<![CDATA[
 			SELECT
-				User_.userId, groupId
+				User_.userId, User_.groupId
 			FROM
 				User_
 			INNER JOIN
@@ -1519,7 +1519,7 @@
 	<sql id="com.liferay.portal.service.persistence.UserFinder.findByUsersOrgsGroup">
 		<![CDATA[
 			SELECT
-				User_.userId, groupId
+				User_.userId, User_.groupId
 			FROM
 				User_
 			INNER JOIN
@@ -1538,7 +1538,7 @@
 	<sql id="com.liferay.portal.service.persistence.UserFinder.findByUsersUserGroups">
 		<![CDATA[
 			SELECT
-				User_.userId, groupId
+				User_.userId, User_.groupId
 			FROM
 				User_
 			INNER JOIN
