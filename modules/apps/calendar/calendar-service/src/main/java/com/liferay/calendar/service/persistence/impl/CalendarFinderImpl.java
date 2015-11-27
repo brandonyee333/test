@@ -267,9 +267,10 @@ public class CalendarFinderImpl
 				sql, "[$CALENDAR_RESOURCE_ID$]",
 				getCalendarResourceIds(calendarResourceIds));
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(name)", StringPool.LIKE, false, names);
+				sql, "lower(Calendar.name)", StringPool.LIKE, false, names);
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "description", StringPool.LIKE, false, descriptions);
+				sql, "Calendar.description", StringPool.LIKE, false,
+				descriptions);
 			sql = CustomSQLUtil.replaceAndOperator(sql, andOperator);
 
 			SQLQuery q = session.createSynchronizedSQLQuery(sql);
@@ -340,9 +341,10 @@ public class CalendarFinderImpl
 				sql, "[$CALENDAR_RESOURCE_ID$]",
 				getCalendarResourceIds(calendarResourceIds));
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(name)", StringPool.LIKE, false, names);
+				sql, "lower(Calendar.name)", StringPool.LIKE, false, names);
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "description", StringPool.LIKE, false, descriptions);
+				sql, "Calendar.description", StringPool.LIKE, false,
+				descriptions);
 			sql = CustomSQLUtil.replaceAndOperator(sql, andOperator);
 
 			StringBundler sb = new StringBundler();
@@ -389,7 +391,7 @@ public class CalendarFinderImpl
 		sb.append("(");
 
 		for (int i = 0; i < calendarResourceIds.length; i++) {
-			sb.append("calendarResourceId = ?");
+			sb.append("Calendar.calendarResourceId = ?");
 
 			if ((i + 1) < calendarResourceIds.length) {
 				sb.append(" OR ");
@@ -411,7 +413,7 @@ public class CalendarFinderImpl
 		sb.append("(");
 
 		for (int i = 0; i < groupIds.length; i++) {
-			sb.append("groupId = ?");
+			sb.append("Calendar.groupId = ?");
 
 			if ((i + 1) < groupIds.length) {
 				sb.append(" OR ");

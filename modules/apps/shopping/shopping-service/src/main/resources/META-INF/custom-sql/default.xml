@@ -15,38 +15,38 @@
 	<sql id="com.liferay.shopping.service.persistence.ShoppingCouponFinder.countByG_C_C_A_DT">
 		<![CDATA[
 			SELECT
-				COUNT(*) AS COUNT_VALUE
+				COUNT(ShoppingCoupon.couponId) AS COUNT_VALUE
 			FROM
 				ShoppingCoupon
 			WHERE
-				(groupId = ?) AND
-				(companyId = ?) AND
+				(ShoppingCoupon.groupId = ?) AND
+				(ShoppingCoupon.companyId = ?) AND
 				(
-					(code_ LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(active_ = ?) [$AND_OR_CONNECTOR$]
-					(discountType = ? [$AND_OR_NULL_CHECK$])
+					(ShoppingCoupon.code_ LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(ShoppingCoupon.active_ = ?) [$AND_OR_CONNECTOR$]
+					(ShoppingCoupon.discountType = ? [$AND_OR_NULL_CHECK$])
 				)
 		]]>
 	</sql>
 	<sql id="com.liferay.shopping.service.persistence.ShoppingOrderFinder.countByG_C_U_N_PPPS">
 		<![CDATA[
 			SELECT
-				COUNT(*) AS COUNT_VALUE
+				COUNT(ShoppingOrder.orderId) AS COUNT_VALUE
 			FROM
 				ShoppingOrder
 			WHERE
-				(groupId = ?) AND
-				(companyId = ?) AND
-				(userId = ?) AND
+				(ShoppingOrder.groupId = ?) AND
+				(ShoppingOrder.companyId = ?) AND
+				(ShoppingOrder.userId = ?) AND
 				(
-					(number_ LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(billingFirstName LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(billingLastName LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(billingEmailAddress LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(shippingFirstName LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(shippingLastName LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(shippingEmailAddress LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(ppPaymentStatus = ?)
+					(ShoppingOrder.number_ LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(ShoppingOrder.billingFirstName LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(ShoppingOrder.billingLastName LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(ShoppingOrder.billingEmailAddress LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(ShoppingOrder.shippingFirstName LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(ShoppingOrder.shippingLastName LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(ShoppingOrder.shippingEmailAddress LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(ShoppingOrder.ppPaymentStatus = ?)
 				)
 		]]>
 	</sql>
@@ -57,15 +57,15 @@
 			FROM
 				ShoppingCoupon
 			WHERE
-				(groupId = ?) AND
-				(companyId = ?) AND
+				(ShoppingCoupon.groupId = ?) AND
+				(ShoppingCoupon.companyId = ?) AND
 				(
-					(code_ LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(active_ = ?) [$AND_OR_CONNECTOR$]
-					(discountType = ? [$AND_OR_NULL_CHECK$])
+					(ShoppingCoupon.code_ LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(ShoppingCoupon.active_ = ?) [$AND_OR_CONNECTOR$]
+					(ShoppingCoupon.discountType = ? [$AND_OR_NULL_CHECK$])
 				)
 			ORDER BY
-				createDate ASC
+				ShoppingCoupon.createDate ASC
 		]]>
 	</sql>
 	<sql id="com.liferay.shopping.service.persistence.ShoppingOrderFinder.findByG_C_U_N_PPPS">
@@ -75,21 +75,21 @@
 			FROM
 				ShoppingOrder
 			WHERE
-				(groupId = ?) AND
-				(companyId = ?) AND
-				(userId = ?) AND
+				(ShoppingOrder.groupId = ?) AND
+				(ShoppingOrder.companyId = ?) AND
+				(ShoppingOrder.userId = ?) AND
 				(
-					(number_ LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(billingFirstName LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(billingLastName LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(billingEmailAddress LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(shippingFirstName LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(shippingLastName LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(shippingEmailAddress LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(ppPaymentStatus = ?)
+					(ShoppingOrder.number_ LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(ShoppingOrder.billingFirstName LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(ShoppingOrder.billingLastName LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(ShoppingOrder.billingEmailAddress LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(ShoppingOrder.shippingFirstName LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(ShoppingOrder.shippingLastName LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(ShoppingOrder.shippingEmailAddress LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(ShoppingOrder.ppPaymentStatus = ?)
 				)
 			ORDER BY
-				createDate ASC
+				ShoppingOrder.createDate ASC
 		]]>
 	</sql>
 </custom-sql>

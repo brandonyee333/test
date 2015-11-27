@@ -359,11 +359,14 @@ public class CalendarBookingFinderImpl
 			}
 
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(title)", StringPool.LIKE, false, titles);
+				sql, "lower(CalendarBooking.title)", StringPool.LIKE, false,
+				titles);
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "description", StringPool.LIKE, false, descriptions);
+				sql, "CalendarBooking.description", StringPool.LIKE, false,
+				descriptions);
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(location)", StringPool.LIKE, true, locations);
+				sql, "lower(CalendarBooking.location)", StringPool.LIKE, true,
+				locations);
 			sql = CustomSQLUtil.replaceAndOperator(sql, andOperator);
 
 			SQLQuery q = session.createSynchronizedSQLQuery(sql);
@@ -464,15 +467,19 @@ public class CalendarBookingFinderImpl
 
 			if (parentCalendarBookingId < 0) {
 				sql = StringUtil.replace(
-					sql, "(parentCalendarBookingId = ?) AND", StringPool.BLANK);
+					sql, "(CalendarBooking.parentCalendarBookingId = ?) AND",
+					StringPool.BLANK);
 			}
 
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(title)", StringPool.LIKE, false, titles);
+				sql, "lower(CalendarBooking.title)", StringPool.LIKE, false,
+				titles);
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "description", StringPool.LIKE, false, descriptions);
+				sql, "CalendarBooking.description", StringPool.LIKE, false,
+				descriptions);
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(location)", StringPool.LIKE, true, locations);
+				sql, "lower(CalendarBooking.location)", StringPool.LIKE, true,
+				locations);
 			sql = CustomSQLUtil.replaceAndOperator(sql, andOperator);
 
 			StringBundler sb = new StringBundler();
@@ -547,7 +554,7 @@ public class CalendarBookingFinderImpl
 		sb.append(" (");
 
 		for (int i = 0; i < calendarIds.length; i++) {
-			sb.append("calendarId = ? ");
+			sb.append("CalendarBooking.calendarId = ? ");
 
 			if ((i + 1) != calendarIds.length) {
 				sb.append("OR ");
@@ -570,7 +577,7 @@ public class CalendarBookingFinderImpl
 		sb.append(" (");
 
 		for (int i = 0; i < calendarResourceIds.length; i++) {
-			sb.append("calendarResourceId = ? ");
+			sb.append("CalendarBooking.calendarResourceId = ? ");
 
 			if ((i + 1) != calendarResourceIds.length) {
 				sb.append("OR ");
@@ -592,7 +599,7 @@ public class CalendarBookingFinderImpl
 		sb.append("(");
 
 		for (int i = 0; i < groupIds.length; i++) {
-			sb.append("groupId = ?");
+			sb.append("CalendarBooking.groupId = ?");
 
 			if ((i + 1) < groupIds.length) {
 				sb.append(" OR ");
@@ -606,7 +613,8 @@ public class CalendarBookingFinderImpl
 
 	protected String getRecurrence(boolean recurring) {
 		if (recurring) {
-			return "OR ((recurrence IS NOT NULL AND recurrence != ''))";
+			return "OR ((CalendarBooking.recurrence IS NOT NULL AND ".concat(
+				"CalendarBooking.recurrence != ''))");
 		}
 
 		return StringPool.BLANK;

@@ -55,8 +55,8 @@
 			DELETE FROM
 				ResourceBlock
 			WHERE
-				(referenceCount <= 0) AND
-				(resourceBlockId = ?)
+				(ResourceBlock.referenceCount <= 0) AND
+				(ResourceBlock.resourceBlockId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.portal.service.impl.ResourcePermissionLocalServiceImpl.findMissingResourcePermissions">
@@ -282,15 +282,15 @@
 	<sql id="com.liferay.portal.service.persistence.GroupFinder.findByC_P">
 		<![CDATA[
 			SELECT
-				groupId
+				Group_.groupId
 			FROM
 				Group_
 			WHERE
-				(groupId > ?) AND
-				(companyId = ?) AND
-				(parentGroupId = ?)
+				(Group_.groupId > ?) AND
+				(Group_.companyId = ?) AND
+				(Group_.parentGroupId = ?)
 			ORDER BY
-				groupId ASC
+				Group_.	groupId ASC
 		]]>
 	</sql>
 	<sql id="com.liferay.portal.service.persistence.GroupFinder.findByC_GK">
@@ -1460,7 +1460,7 @@
 					(Group_.classNameId = [$CLASS_NAME_ID_COM.LIFERAY.PORTAL.MODEL.USER$]) AND
 					(Group_.classPK = User_.userId)
 			WHERE
-				(defaultUser = [$FALSE$]) AND
+				(User_.defaultUser = [$FALSE$]) AND
 				(Group_.classPK IS NULL)
 		]]>
 	</sql>
@@ -1484,7 +1484,7 @@
 	<sql id="com.liferay.portal.service.persistence.UserFinder.findByUsersGroups">
 		<![CDATA[
 			SELECT
-				User_.userId, groupId
+				User_.userId, User_.groupId
 			FROM
 				User_
 			INNER JOIN
@@ -1500,7 +1500,7 @@
 	<sql id="com.liferay.portal.service.persistence.UserFinder.findByUsersOrgs">
 		<![CDATA[
 			SELECT
-				User_.userId, groupId
+				User_.userId, User_.groupId
 			FROM
 				User_
 			INNER JOIN
@@ -1519,7 +1519,7 @@
 	<sql id="com.liferay.portal.service.persistence.UserFinder.findByUsersOrgsGroup">
 		<![CDATA[
 			SELECT
-				User_.userId, groupId
+				User_.userId, User_.groupId
 			FROM
 				User_
 			INNER JOIN
@@ -1538,7 +1538,7 @@
 	<sql id="com.liferay.portal.service.persistence.UserFinder.findByUsersUserGroups">
 		<![CDATA[
 			SELECT
-				User_.userId, groupId
+				User_.userId, User_.groupId
 			FROM
 				User_
 			INNER JOIN

@@ -19,7 +19,7 @@
 	<sql id="com.liferay.dynamic.data.mapping.service.persistence.DDMDataProviderInstanceFinder.findByC_G_N_D">
 		<![CDATA[
 			SELECT
-				{DDMDataProviderInstance.*}
+				{DISTINCT DDMDataProviderInstance.*}
 			FROM
 				(
 					SELECT DISTINCT
@@ -55,36 +55,28 @@
 					(lower(CAST_TEXT(DDMStructure.name)) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
 					(DDMStructure.description LIKE ? [$AND_OR_NULL_CHECK$])
 				) AND
-				(storageType = ? OR ? IS NULL) AND
-				(type_ = ?)
+				(DDMStructure.storageType = ? OR ? IS NULL) AND
+				(DDMStructure.type_ = ?)
 				[$STATUS$]
 		]]>
 	</sql>
 	<sql id="com.liferay.dynamic.data.mapping.service.persistence.DDMStructureFinder.findByC_G_C_N_D_S_T_S">
 		<![CDATA[
-			SELECT
+			SELECT DISTINCT
 				{DDMStructure.*}
 			FROM
+				DDMStructure
+			WHERE
+				(DDMStructure.companyId = ?) AND
+				[$GROUP_ID$]
+				(DDMStructure.classNameId = ?) AND
 				(
-					SELECT DISTINCT
-						DDMStructure.structureId
-					FROM
-						DDMStructure
-					WHERE
-						(DDMStructure.companyId = ?) AND
-						[$GROUP_ID$]
-						(DDMStructure.classNameId = ?) AND
-						(
-							(lower(CAST_TEXT(DDMStructure.name)) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-							(DDMStructure.description LIKE ? [$AND_OR_NULL_CHECK$])
-						) AND
-						(DDMStructure.storageType = ? OR ? IS NULL) AND
-						(DDMStructure.type_ = ?)
-						[$STATUS$]
-				)
-				TEMP_TABLE
-					INNER JOIN DDMStructure ON
-						TEMP_TABLE.structureId = DDMStructure.structureId
+					(lower(CAST_TEXT(DDMStructure.name)) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(DDMStructure.description LIKE ? [$AND_OR_NULL_CHECK$])
+				) AND
+				(DDMStructure.storageType = ? OR ? IS NULL) AND
+				(DDMStructure.type_ = ?)
+				[$STATUS$]
 			ORDER BY
 				DDMStructure.structureId DESC
 		]]>
@@ -92,7 +84,7 @@
 	<sql id="com.liferay.dynamic.data.mapping.service.persistence.DDMTemplateFinder.countByG_C_SC_S">
 		<![CDATA[
 			SELECT
-				COUNT(DDMTemplate.templateId) AS COUNT_VALUE
+				COUNT(DISTINCT DDMTemplate.templateId) AS COUNT_VALUE
 			FROM
 				DDMTemplate
 			WHERE
@@ -136,16 +128,16 @@
 	</sql>
 	<sql id="com.liferay.dynamic.data.mapping.service.persistence.DDMTemplateFinder.findByG_C_SC_S">
 		<![CDATA[
-			SELECT
+			SELECT DISTINCT
 				{DDMTemplate.*}
 			FROM
 				DDMTemplate
 			WHERE
 				[$GROUP_ID$]
-				(classNameId = ?) AND
+				(DDMTemplate.classNameId = ?) AND
 				(
-					(classPK = 0) OR
-					(classPK IN (
+					(DDMTemplate.classPK = 0) OR
+					(DDMTemplate.classPK IN (
 						SELECT
 							DDMStructure.structureId
 						FROM
@@ -161,32 +153,24 @@
 	</sql>
 	<sql id="com.liferay.dynamic.data.mapping.service.persistence.DDMTemplateFinder.findByC_G_C_C_R_N_D_T_M_L_S">
 		<![CDATA[
-			SELECT
+			SELECT DISTINCT
 				{DDMTemplate.*}
 			FROM
+				DDMTemplate
+			WHERE
+				(DDMTemplate.companyId = ?) AND
+				[$GROUP_ID$]
+				[$CLASSNAME_ID$]
+				[$CLASS_PK$]
+				(DDMTemplate.resourceClassNameId = ?) AND
 				(
-					SELECT DISTINCT
-						DDMTemplate.templateId
-					FROM
-						DDMTemplate
-					WHERE
-						(DDMTemplate.companyId = ?) AND
-						[$GROUP_ID$]
-						[$CLASSNAME_ID$]
-						[$CLASS_PK$]
-						(DDMTemplate.resourceClassNameId = ?) AND
-						(
-							(lower(CAST_TEXT(DDMTemplate.name)) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-							(DDMTemplate.description LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-							(DDMTemplate.type_ LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-							(DDMTemplate.mode_ LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-							(DDMTemplate.language LIKE ? [$AND_OR_NULL_CHECK$])
-						)
-						[$STATUS$]
+					(lower(CAST_TEXT(DDMTemplate.name)) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(DDMTemplate.description LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(DDMTemplate.type_ LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(DDMTemplate.mode_ LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(DDMTemplate.language LIKE ? [$AND_OR_NULL_CHECK$])
 				)
-				TEMP_TABLE
-					INNER JOIN DDMTemplate ON
-						TEMP_TABLE.templateId = DDMTemplate.templateId
+				[$STATUS$]
 			ORDER BY
 				DDMTemplate.templateId DESC
 		]]>

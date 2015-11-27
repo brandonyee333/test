@@ -180,10 +180,11 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 				sb = new StringBundler(13);
 			}
 
-			sb.append("SELECT groupId, COUNT(DISTINCT userId) FROM (");
+			sb.append(
+				"SELECT User_.groupId, COUNT(DISTINCT User_.userId) FROM (");
 
 			if (sybase) {
-				sb.append("SELECT userId, groupId FROM ");
+				sb.append("SELECT User_.userId, User_.groupId FROM ");
 			}
 
 			sb.append(StringPool.OPEN_PARENTHESIS);

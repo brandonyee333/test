@@ -17,6 +17,7 @@ package com.liferay.portal.dao.jdbc;
 import com.liferay.portal.dao.jdbc.util.DataSourceWrapper;
 import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.dao.jdbc.DataSourceFactory;
+import com.liferay.portal.kernel.dao.jdbc.WrappedConnectionFactory;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jndi.JNDIUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -43,9 +44,14 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 import java.net.URL;
 import java.net.URLClassLoader;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import javax.management.MBeanServer;
 import javax.management.MalformedObjectNameException;
@@ -68,6 +74,13 @@ import org.apache.tomcat.jdbc.pool.jmx.ConnectionPool;
  */
 @DoPrivileged
 public class DataSourceFactoryImpl implements DataSourceFactory {
+
+	public void addWrappedConnectionFactory(
+		WrappedConnectionFactory wrappedConnectionFactory) {
+
+		_wrappedConnectionDataSource.addWrappedConnectionFactory(
+			wrappedConnectionFactory);
+	}
 
 	@Override
 	public void destroyDataSource(DataSource dataSource) throws Exception {
@@ -171,7 +184,10 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 			_log.debug("Created data source " + dataSource.getClass());
 		}
 
-		return _pacl.getDataSource(dataSource);
+		_wrappedConnectionDataSource = new WrappedConnectionDataSource(
+			dataSource);
+
+		return _pacl.getDataSource(_wrappedConnectionDataSource);
 	}
 
 	@Override
@@ -191,8 +207,14 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 		return initDataSource(properties);
 	}
 
-	public interface PACL {
+	public void removeWrappedConnectionFactory(
+		WrappedConnectionFactory wrappedConnectionFactory) {
 
+		_wrappedConnectionDataSource.removeWrappedConnectionFactory(
+			wrappedConnectionFactory);
+	}
+
+	public interface PACL {
 		public DataSource getDataSource(DataSource dataSource);
 
 	}
@@ -554,6 +576,7 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 	private static final PACL _pacl = new NoPACL();
 
 	private ServiceTracker <MBeanServer, MBeanServer> _serviceTracker;
+	private WrappedConnectionDataSource _wrappedConnectionDataSource;
 
 	private static class NoPACL implements PACL {
 
@@ -561,6 +584,54 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 		public DataSource getDataSource(DataSource dataSource) {
 			return dataSource;
 		}
+
+	}
+
+	private static class WrappedConnectionDataSource extends DataSourceWrapper {
+
+		public WrappedConnectionDataSource(DataSource dataSource) {
+			super(dataSource);
+		}
+
+		public void addWrappedConnectionFactory(
+			WrappedConnectionFactory wrappedConnectionFactory) {
+
+			addRemove(true, wrappedConnectionFactory);
+		}
+
+		@Override
+		public Connection getConnection() throws SQLException {
+			Connection connection = super.getConnection();
+
+			for (WrappedConnectionFactory wrappedConnectionFactory :
+					_wrappedConnectionFactories) {
+
+				connection = wrappedConnectionFactory.getWrappedConnection(
+					connection);
+			}
+
+			return connection;
+		}
+
+		public void removeWrappedConnectionFactory(
+			WrappedConnectionFactory wrappedConnectionFactory) {
+
+			addRemove(false, wrappedConnectionFactory);
+		}
+
+		protected synchronized void addRemove(
+			boolean isAdd, WrappedConnectionFactory wrappedConnectionFactory) {
+
+			if (isAdd) {
+				_wrappedConnectionFactories.add(wrappedConnectionFactory);
+			}
+			else {
+				_wrappedConnectionFactories.remove(wrappedConnectionFactory);
+			}
+		}
+
+		private final Set<WrappedConnectionFactory>
+			_wrappedConnectionFactories = new HashSet<>();
 
 	}
 
