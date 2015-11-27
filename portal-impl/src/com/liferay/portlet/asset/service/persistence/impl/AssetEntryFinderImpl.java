@@ -363,11 +363,11 @@ public class AssetEntryFinderImpl
 		}
 
 		if (entryQuery.isListable() != null) {
-			sb.append(" AND (listable = ?)");
+			sb.append(" AND (AssetEntry.listable = ?)");
 		}
 
 		if (entryQuery.isVisible() != null) {
-			sb.append(" AND (visible = ?)");
+			sb.append(" AND (AssetEntry.visible = ?)");
 		}
 
 		if (entryQuery.isExcludeZeroViewCount()) {
@@ -781,7 +781,7 @@ public class AssetEntryFinderImpl
 		StringBundler sb = new StringBundler((tagIds.length * 3) - 1);
 
 		for (int i = 0; i < tagIds.length; i++) {
-			sb.append("tagId = ");
+			sb.append("AssetEntries_AssetTags.tagId = ");
 			sb.append(tagIds[i]);
 
 			if ((i + 1) != tagIds.length) {
