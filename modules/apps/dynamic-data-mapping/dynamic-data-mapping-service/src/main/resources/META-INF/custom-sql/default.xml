@@ -26,7 +26,6 @@
 						DDMDataProviderInstance.dataProviderInstanceId
 					FROM
 						DDMDataProviderInstance
-						
 					WHERE
 						(DDMDataProviderInstance.companyId = ?) AND
 						[$GROUP_ID$]
@@ -45,7 +44,7 @@
 	<sql id="com.liferay.dynamic.data.mapping.service.persistence.DDMStructureFinder.countByC_G_C_N_D_S_T_S">
 		<![CDATA[
 			SELECT
-				COUNT(DDMStructure.structureId) AS COUNT_VALUE
+				COUNT(DISTINCT DDMStructure.structureId) AS COUNT_VALUE
 			FROM
 				DDMStructure
 			WHERE
@@ -63,7 +62,7 @@
 	</sql>
 	<sql id="com.liferay.dynamic.data.mapping.service.persistence.DDMStructureFinder.findByC_G_C_N_D_S_T_S">
 		<![CDATA[
-			SELECT
+			SELECT 
 				{DDMStructure.*}
 			FROM
 				(
@@ -93,7 +92,7 @@
 	<sql id="com.liferay.dynamic.data.mapping.service.persistence.DDMTemplateFinder.countByG_C_SC_S">
 		<![CDATA[
 			SELECT
-				COUNT(DDMTemplate.templateId) AS COUNT_VALUE
+				COUNT(DISTINCT DDMTemplate.templateId) AS COUNT_VALUE
 			FROM
 				DDMTemplate
 			WHERE
@@ -116,7 +115,7 @@
 	<sql id="com.liferay.dynamic.data.mapping.service.persistence.DDMTemplateFinder.countByC_G_C_C_R_N_D_T_M_L_S">
 		<![CDATA[
 			SELECT
-				COUNT(DDMTemplate.templateId) AS COUNT_VALUE
+				COUNT(DISTINCT DDMTemplate.templateId) AS COUNT_VALUE
 			FROM
 				DDMTemplate
 			WHERE
@@ -137,7 +136,7 @@
 	</sql>
 	<sql id="com.liferay.dynamic.data.mapping.service.persistence.DDMTemplateFinder.findByG_C_SC_S">
 		<![CDATA[
-			SELECT
+			SELECT 
 				{DDMTemplate.*}
 			FROM
 				DDMTemplate
@@ -162,7 +161,7 @@
 	</sql>
 	<sql id="com.liferay.dynamic.data.mapping.service.persistence.DDMTemplateFinder.findByC_G_C_C_R_N_D_T_M_L_S">
 		<![CDATA[
-			SELECT
+			SELECT 
 				{DDMTemplate.*}
 			FROM
 				(
