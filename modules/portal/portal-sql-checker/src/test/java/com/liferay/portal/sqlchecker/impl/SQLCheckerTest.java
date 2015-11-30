@@ -65,8 +65,9 @@ public class SQLCheckerTest {
 	}
 
 	@Test
-	public void testRealworld() throws Exception {
-		verifyQueryFile("/sql-realworld01-ok.txt");
+	public void testSelectByColumnAlias() throws Exception {
+		verifyQueryFile("/sql-select-column-alias01-ok.txt");
+		verifyQueryFile("/sql-select-column-alias02-ok.txt");
 	}
 
 	@Test
@@ -144,13 +145,12 @@ public class SQLCheckerTest {
 		SQLChecker sqlChecker = new SQLCheckerImpl();
 
 		boolean isError = file.indexOf("-error.") > 0;
-		
+
 		try {
 			sqlChecker.verifySelectSQL(sql);
 
 			Assert.assertFalse(
 				"sql-file " + file + " sql should be faulty : " + sql, isError);
-			
 		}
 		catch (NoTableNameAtColumnSQLException ntbce ) {
 			Assert.assertTrue(

@@ -20,8 +20,13 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.sql.SQLException;
-import java.util.List;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import net.sf.jsqlparser.expression.Alias;
 import net.sf.jsqlparser.expression.BinaryExpression;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.Function;
@@ -83,7 +88,9 @@ public class SQLCheckerImpl implements SQLChecker {
 		}
 	}
 
-	protected void verifyExpression(Expression expression, boolean isMultiTable)
+	protected void verifyExpression(
+			Expression expression, Map<String, Alias> columnAliases,
+			boolean isMultiTable)
 		throws NoTableNameAtColumnSQLException {
 
 		if (expression == null) {
@@ -93,22 +100,29 @@ public class SQLCheckerImpl implements SQLChecker {
 		if (expression instanceof Parenthesis) {
 			Parenthesis parenthesis = (Parenthesis)expression;
 
-			verifyExpression(parenthesis.getExpression(), isMultiTable);
+			verifyExpression(
+				parenthesis.getExpression(), columnAliases, isMultiTable);
 		}
 		else if (expression instanceof BinaryExpression) {
 			BinaryExpression binaryExpression = (BinaryExpression)expression;
 			verifyExpression(
-				binaryExpression.getLeftExpression(), isMultiTable);
+				binaryExpression.getLeftExpression(), columnAliases,
+				isMultiTable);
 			verifyExpression(
-				binaryExpression.getRightExpression(), isMultiTable);
+				binaryExpression.getRightExpression(), columnAliases,
+				isMultiTable);
 		}
 		else if (expression instanceof Column) {
 			Column column = (Column)expression;
 
-			if (isMultiTable && column.getTable().getName()== null) {
-				throw new NoTableNameAtColumnSQLException(
-					"Column name does not have table name prefix " +
-					column.getColumnName());
+			if (isMultiTable) {
+				if (columnAliases.containsKey(column.getColumnName())) {
+				}
+				else if (column.getTable().getName()== null) {
+					throw new NoTableNameAtColumnSQLException(
+						"Column name does not have table name prefix " +
+						column.getColumnName());
+				}
 			}
 		}
 		else if (expression instanceof Function) {
@@ -120,13 +134,15 @@ public class SQLCheckerImpl implements SQLChecker {
 					Expression functionExpression :
 						expressionList.getExpressions()) {
 
-					verifyExpression(functionExpression, isMultiTable);
+					verifyExpression(
+						functionExpression, columnAliases, isMultiTable);
 				}
 			}
 		}
 		else if (expression instanceof InExpression ) {
 			InExpression inExpression = (InExpression)expression;
-			verifyExpression(inExpression.getLeftExpression(), isMultiTable);
+			verifyExpression(
+				inExpression.getLeftExpression(), columnAliases, isMultiTable);
 			ItemsList itemsList = inExpression.getRightItemsList();
 
 			if ( itemsList instanceof SubSelect ) {
@@ -140,7 +156,8 @@ public class SQLCheckerImpl implements SQLChecker {
 					Expression subExpression :
 						expressionList.getExpressions()) {
 
-					verifyExpression(subExpression, isMultiTable);
+					verifyExpression(
+						subExpression, columnAliases, isMultiTable);
 				}
 			}
 			else {
@@ -198,23 +215,39 @@ public class SQLCheckerImpl implements SQLChecker {
 			boolean isMultiTable = joins!= null && !joins.isEmpty();
 
 			FromItem fromItem = plainSelect.getFromItem();
+
 			verifyFromItem(fromItem);
 
 			if (joins!= null) {
 				for (Join join : joins) {
-					verifyExpression(join.getOnExpression(), isMultiTable);
+					fromItem = join.getRightItem();
+
+					verifyExpression(
+						join.getOnExpression(),
+						Collections.<String, Alias>emptyMap(), isMultiTable);
+
 					verifyFromItem(fromItem);
 				}
 			}
 
 			List<SelectItem> list = plainSelect.getSelectItems();
 
+			Map<String, Alias> columnAliases = new HashMap<>();
+
 			for ( SelectItem selectItem : list) {
 				if (selectItem instanceof SelectExpressionItem) {
 					SelectExpressionItem selectExpressionItem =
 						(SelectExpressionItem)selectItem;
+
+					Alias alias = selectExpressionItem.getAlias();
+
+					if (alias!= null) {
+						columnAliases.put(alias.getName(), alias);
+					}
+
 					verifyExpression(
-						selectExpressionItem.getExpression(), isMultiTable);
+						selectExpressionItem.getExpression(),
+						Collections.<String, Alias>emptyMap(), isMultiTable);
 				}
 				else if (_log.isDebugEnabled()) {
 					_log.debug("selectItem :" + selectItem.getClass());
@@ -223,15 +256,18 @@ public class SQLCheckerImpl implements SQLChecker {
 
 			Expression whereExpression = plainSelect.getWhere();
 
-			verifyExpression(whereExpression, isMultiTable);
-			verifyExpression(plainSelect.getHaving(), isMultiTable);
+			verifyExpression(
+				whereExpression, Collections.<String, Alias>emptyMap(),
+				isMultiTable);
+			verifyExpression(
+				plainSelect.getHaving(), columnAliases, isMultiTable);
 
 			List<Expression> columnReferences =
 				plainSelect.getGroupByColumnReferences();
 
 			if (columnReferences!= null) {
 				for (Expression expression : columnReferences ) {
-					verifyExpression(expression, isMultiTable);
+					verifyExpression(expression, columnAliases, isMultiTable);
 				}
 			}
 
@@ -241,7 +277,8 @@ public class SQLCheckerImpl implements SQLChecker {
 			if (orderByElements!= null) {
 				for (OrderByElement orderByElement : orderByElements ) {
 					verifyExpression(
-						orderByElement.getExpression(), isMultiTable);
+						orderByElement.getExpression(), columnAliases,
+						isMultiTable);
 				}
 			}
 		}
