@@ -73,11 +73,13 @@ public class SQLCheckerImpl implements SQLChecker {
 			throw e;
 		}
 		catch (Throwable t) {
-			StringBundler sb = new StringBundler();
-			sb.append("ERROR SQL:");
-			sb.append(sql);
-			sb.append(" is not valid");
-			_log.warn(sb.toString(), t);
+			if (_log.isWarnEnabled()) {
+				StringBundler sb = new StringBundler();
+				sb.append("ERROR SQL:");
+				sb.append(sql);
+				sb.append(" is not valid");
+				_log.warn(sb.toString(), t);
+			}
 		}
 	}
 
