@@ -283,7 +283,7 @@ public class SQLCheckerImpl implements SQLChecker {
 			}
 		}
 		else if (_log.isDebugEnabled()) {
-			_log.debug("selectBody:" +selectBody);
+			_log.debug("selectBody:" +selectBody.getClass());
 		}
 	}
 
