@@ -14,6 +14,9 @@
 
 package com.liferay.portal.sqlchecker.impl;
 
+import com.liferay.portal.kernel.dao.db.DB;
+import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,11 +30,21 @@ public class SQLCheckerStatement implements Statement {
 
 	public SQLCheckerStatement(Statement statement, SQLChecker sqlChecker) {
 		_statement = statement;
+		DB db = DBFactoryUtil.getDB();
+
+		if (db.getType().equals(DB.TYPE_HYPERSONIC)) {
+			_sqlChecker = null;
+			return;
+		}
+
 		_sqlChecker = sqlChecker;
 	}
 
 	public void addBatch(String sql) throws SQLException {
-		_sqlChecker.verifySelectSQL(sql);
+		if (_sqlChecker!= null) {
+			_sqlChecker.verifySelectSQL(sql);
+		}
+
 		_statement.addBatch(sql);
 	}
 
@@ -56,7 +69,10 @@ public class SQLCheckerStatement implements Statement {
 	}
 
 	public boolean execute(String sql) throws SQLException {
-		_sqlChecker.verifySelectSQL(sql);
+		if (_sqlChecker!= null) {
+			_sqlChecker.verifySelectSQL(sql);
+		}
+
 		return _statement.execute(sql);
 	}
 
@@ -83,7 +99,10 @@ public class SQLCheckerStatement implements Statement {
 	}
 
 	public ResultSet executeQuery(String sql) throws SQLException {
-		_sqlChecker.verifySelectSQL(sql);
+		if (_sqlChecker!= null) {
+			_sqlChecker.verifySelectSQL(sql);
+		}
+
 		return _statement.executeQuery(sql);
 	}
 
