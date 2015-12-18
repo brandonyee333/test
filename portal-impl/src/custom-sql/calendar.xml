@@ -4,15 +4,15 @@
 	<sql id="com.liferay.portlet.calendar.service.persistence.CalEventFinder.countByG_SD_T">
 		<![CDATA[
 			SELECT
-				COUNT(*) AS COUNT_VALUE
+				COUNT(CalEvent.eventId) AS COUNT_VALUE
 			FROM
 				CalEvent
 			WHERE
-				(groupId = ?) AND
-				(startDate >= ?) AND
-				(startDate <= ?) AND
-				(timeZoneSensitive = ?) AND
-				(repeating = ?)
+				(CalEvent.groupId = ?) AND
+				(CalEvent.startDate >= ?) AND
+				(CalEvent.startDate <= ?) AND
+				(CalEvent.timeZoneSensitive = ?) AND
+				(CalEvent.repeating = ?)
 				[$TYPE$]
 		]]>
 	</sql>
@@ -23,15 +23,15 @@
 			FROM
 				CalEvent
 			WHERE
-				(remindBy != ?) AND
+				(CalEvent.remindBy != ?) AND
 				(
 					(
-						(repeating = [$FALSE$]) AND
-						(startDate >= ?)
+						(CalEvent.repeating = [$FALSE$]) AND
+						(CalEvent.startDate >= ?)
 					) OR
 					(
-						(repeating = [$TRUE$]) AND
-						(endDate >= ? OR endDate IS NULL)
+						(CalEvent.repeating = [$TRUE$]) AND
+						(CalEvent.endDate >= ? OR CalEvent.endDate IS NULL)
 					)
 				) AND
 				EXISTS (
@@ -64,11 +64,11 @@
 			FROM
 				CalEvent
 			WHERE
-				(groupId = ?) AND
-				(startDate >= ?) AND
-				(startDate <= ?) AND
-				(timeZoneSensitive = ?) AND
-				(repeating = ?)
+				(CalEvent.groupId = ?) AND
+				(CalEvent.startDate >= ?) AND
+				(CalEvent.startDate <= ?) AND
+				(CalEvent.timeZoneSensitive = ?) AND
+				(CalEvent.repeating = ?)
 				[$TYPE$]
 		]]>
 	</sql>

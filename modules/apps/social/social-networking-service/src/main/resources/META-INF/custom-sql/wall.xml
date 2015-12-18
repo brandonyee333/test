@@ -4,17 +4,17 @@
 	<sql id="com.liferay.social.networking.service.persistence.WallEntryFinder.countByG1_G2_U1_U2">
 		<![CDATA[
 			SELECT
-				COUNT(*) AS COUNT_VALUE
+				COUNT(SN_WallEntry.wallEntryId) AS COUNT_VALUE
 			FROM
 				SN_WallEntry
 			WHERE
 				(
-					(groupId = ?) OR
-					(groupId = ?)
+					(SN_WallEntry.groupId = ?) OR
+					(SN_WallEntry.groupId = ?)
 				) AND
 				(
-					(userId = ?) OR
-					(userId = ?)
+					(SN_WallEntry.userId = ?) OR
+					(SN_WallEntry.userId = ?)
 				)
 		]]>
 	</sql>
@@ -26,15 +26,15 @@
 				SN_WallEntry
 			WHERE
 				(
-					(groupId = ?) OR
-					(groupId = ?)
+					(SN_WallEntry.groupId = ?) OR
+					(SN_WallEntry.groupId = ?)
 				) AND
 				(
-					(userId = ?) OR
-					(userId = ?)
+					(SN_WallEntry.userId = ?) OR
+					(SN_WallEntry.userId = ?)
 				)
 			ORDER BY
-				createDate DESC
+				SN_WallEntry.createDate DESC
 		]]>
 	</sql>
 </custom-sql>

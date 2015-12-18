@@ -256,7 +256,7 @@
 		<![CDATA[
 			[$BASIC_DOCUMENT$]
 			SELECT
-				COUNT(DISTINCT fileEntryTypeId) AS COUNT_VALUE
+				COUNT(DISTINCT DLFileEntryType.fileEntryTypeId) AS COUNT_VALUE
 			FROM
 				DLFileEntryType
 			WHERE
@@ -291,11 +291,11 @@
 	<sql id="com.liferay.portlet.documentlibrary.service.persistence.DLFileRankFinder.findByStaleRanks">
 		<![CDATA[
 			SELECT
-				groupId, userId
+				DLFileRank.groupId, DLFileRank.userId
 			FROM
 				DLFileRank
 			GROUP BY
-				groupId, userId
+				DLFileRank.groupId, DLFileRank.userId
 			HAVING COUNT(*) > ?
 		]]>
 	</sql>
@@ -315,7 +315,7 @@
 	<sql id="com.liferay.portlet.documentlibrary.service.persistence.DLFolderFinder.countF_ByG_M_F">
 		<![CDATA[
 			SELECT
-				COUNT(DISTINCT folderId) AS COUNT_VALUE
+				COUNT(DISTINCT DLFolder.folderId) AS COUNT_VALUE
 			FROM
 				DLFolder
 			WHERE
@@ -341,7 +341,7 @@
 	<sql id="com.liferay.portlet.documentlibrary.service.persistence.DLFolderFinder.countFS_ByG_F_A">
 		<![CDATA[
 			SELECT
-				COUNT(DISTINCT fileShortcutId) AS COUNT_VALUE
+				COUNT(DISTINCT DLFileShortcut.fileShortcutId) AS COUNT_VALUE
 			FROM
 				DLFileShortcut
 			[$JOIN$]
@@ -368,7 +368,7 @@
 	<sql id="com.liferay.portlet.documentlibrary.service.persistence.DLFolderFinder.findF_ByG_M_F">
 		<![CDATA[
 			SELECT
-				DISTINCT folderId AS modelFolderId, DLFolder.createDate as createDate, DLFolder.modifiedDate as modifiedDate, DLFolder.name AS name, DLFolder.name AS title, 0 AS size_, 0 AS readCount, 0 AS fileShortcutId, 1 AS modelFolder
+				DISTINCT DLFolder.folderId AS modelFolderId, DLFolder.createDate as createDate, DLFolder.modifiedDate as modifiedDate, DLFolder.name AS name, DLFolder.name AS title, 0 AS size_, 0 AS readCount, 0 AS fileShortcutId, 1 AS modelFolder
 			FROM
 				DLFolder
 			WHERE
@@ -395,7 +395,7 @@
 	<sql id="com.liferay.portlet.documentlibrary.service.persistence.DLFolderFinder.findFS_ByG_F_A">
 		<![CDATA[
 			SELECT
-				DISTINCT DLFileEntry.folderId AS modelFolderId, DLFileEntry.createDate as createDate, DLFileEntry.modifiedDate as modifiedDate, DLFileEntry.name AS name, DLFileEntry.title AS title, DLFileEntry.size_ AS size_, DLFileEntry.readCount AS readCount, fileShortcutId AS fileShortcutId, 0 AS modelFolder
+				DISTINCT DLFileEntry.folderId AS modelFolderId, DLFileEntry.createDate as createDate, DLFileEntry.modifiedDate as modifiedDate, DLFileEntry.name AS name, DLFileEntry.title AS title, DLFileEntry.size_ AS size_, DLFileEntry.readCount AS readCount, DLFileShortcut.fileShortcutId AS fileShortcutId, 0 AS modelFolder
 			FROM
 				DLFileShortcut
 			INNER JOIN

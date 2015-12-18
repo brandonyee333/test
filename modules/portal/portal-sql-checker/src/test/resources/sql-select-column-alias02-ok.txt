@@ -1,0 +1,8 @@
+SELECT
+	dfet.companyId as companyId,
+	g.groupId as groupId,
+	dfet.name as name
+FROM
+	DLFileEntryType AS dfet INNER JOIN Group_ AS g ON dfet.groupId = g.groupId
+ORDER BY
+	name ASC

@@ -4,7 +4,7 @@
 	<sql id="com.liferay.portlet.blogs.service.persistence.BlogsEntryFinder.countByOrganizationIds">
 		<![CDATA[
 			SELECT
-				COUNT(*) AS COUNT_VALUE
+				COUNT(BlogsEntry.entryId) AS COUNT_VALUE
 			FROM
 				BlogsEntry
 			INNER JOIN
@@ -99,7 +99,7 @@
 	<sql id="com.liferay.portlet.blogs.service.persistence.BlogsStatsUserFinder.countByOrganizationIds">
 		<![CDATA[
 			SELECT
-				COUNT(*) AS COUNT_VALUE
+				COUNT(BlogsStatsUser.statsUserId) AS COUNT_VALUE
 			FROM
 				BlogsStatsUser
 			INNER JOIN

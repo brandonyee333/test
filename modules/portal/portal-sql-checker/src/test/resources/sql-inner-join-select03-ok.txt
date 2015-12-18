@@ -1,0 +1,17 @@
+			SELECT
+				Group_.companyId as companyId,
+				Group_.groupId as groupId,
+				DLFileEntryType.name as name,
+				0 AS fileShortcutId
+			FROM
+				DLFileEntryType, Group_ 
+			WHERE
+				Group_.groupId = DLFileEntryType.groupId AND
+				(
+					( Group_.companyId = ?) AND
+					( Group_.groupId = ? ) AND
+					(
+						(lower(DLFileEntryType.name) LIKE ? ) AND
+						(DLFileEntryType.description LIKE ? )
+					)
+				)

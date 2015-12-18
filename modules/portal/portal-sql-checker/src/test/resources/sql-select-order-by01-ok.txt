@@ -1,0 +1,7 @@
+			SELECT
+				companyId,
+				groupId
+			FROM
+				DLFileEntryType
+			ORDER BY 
+				companyId ASC			
