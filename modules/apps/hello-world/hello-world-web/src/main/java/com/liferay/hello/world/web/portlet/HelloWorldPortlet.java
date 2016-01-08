@@ -64,4 +64,5 @@ public class HelloWorldPortlet extends MVCPortlet {
 			writer.print("Welcome to " + ReleaseInfo.getReleaseInfo() + ".");
 		}
 	}
+
 }
