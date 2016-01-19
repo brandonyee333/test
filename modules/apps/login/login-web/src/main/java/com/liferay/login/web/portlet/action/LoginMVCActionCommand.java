@@ -26,6 +26,7 @@ import com.liferay.portal.UserPasswordException;
 import com.liferay.portal.UserScreenNameException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.security.auth.session.AuthenticatedSessionManagerUtil;
@@ -99,8 +100,14 @@ public class LoginMVCActionCommand extends BaseMVCActionCommand {
 				actionRequest, "doActionAfterLogin");
 
 			if (doActionAfterLogin) {
-				actionResponse.setRenderParameter(
-					"mvcPath", "/login_redirect.jsp");
+				PortletURL renderURL =
+					((LiferayPortletResponse)actionResponse).createRenderURL();
+
+				renderURL.setParameter(
+					"mvcRenderCommandName", "/login/login_redirect");
+
+				actionRequest.setAttribute(
+					WebKeys.REDIRECT, renderURL.toString());
 			}
 		}
 		catch (Exception e) {
