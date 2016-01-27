@@ -81,7 +81,7 @@ public class CompanyIndexFactory implements IndexFactory {
 
 		CreateIndexRequestBuilder createIndexRequestBuilder =
 			indicesAdminClient.prepareCreate(
-				"liferay-"+ String.valueOf(companyId));
+				"liferay-" + String.valueOf(companyId));
 
 		addMappings(createIndexRequestBuilder);
 		setSettings(createIndexRequestBuilder);
@@ -104,7 +104,7 @@ public class CompanyIndexFactory implements IndexFactory {
 
 		DeleteIndexRequestBuilder deleteIndexRequestBuilder =
 			indicesAdminClient.prepareDelete(
-				"liferay-"+ String.valueOf(companyId));
+				"liferay-" + String.valueOf(companyId));
 
 		DeleteIndexResponse deleteIndexResponse =
 			deleteIndexRequestBuilder.get();
@@ -184,7 +184,7 @@ public class CompanyIndexFactory implements IndexFactory {
 
 		IndicesExistsRequestBuilder indicesExistsRequestBuilder =
 			indicesAdminClient.prepareExists(
-				"liferay-"+ String.valueOf(companyId));
+				"liferay-" + String.valueOf(companyId));
 
 		IndicesExistsResponse indicesExistsResponse =
 			indicesExistsRequestBuilder.get();
