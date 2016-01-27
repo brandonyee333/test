@@ -109,7 +109,7 @@ public class CompanyIndexFactoryTest {
 	}
 
 	protected Settings getIndexSettings() {
-		String name = String.valueOf(_COMPANY_ID);
+		String name = "liferay-" + String.valueOf(_COMPANY_ID);
 
 		GetIndexResponse getIndexResponse = _elasticsearchFixture.getIndex(
 			name);
