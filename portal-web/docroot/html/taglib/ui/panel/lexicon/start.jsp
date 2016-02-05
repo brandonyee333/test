@@ -38,7 +38,11 @@ else if ((extended != null) && !extended) {
 						<c:if test="<%= Validator.isNotNull(iconCssClass) %>">
 							<i class="<%= iconCssClass %>"></i>
 						</c:if>
-
+						
+						<c:if test="<%= Validator.isNotNull(badge) %>">
+							<span class="badge <%= (badgeCssClass == null) ? StringPool.BLANK : badgeCssClass %>"><%= badge %></span>
+						</c:if>
+						
 						<liferay-ui:message key="<%= title %>" />
 
 						<c:if test="<%= Validator.isNotNull(helpMessage) %>">
