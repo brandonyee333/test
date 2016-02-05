@@ -67,6 +67,8 @@ public class PanelTag extends IncludeTag {
 		request.setAttribute("liferay-ui:panel:extended", _extended);
 		request.setAttribute("liferay-ui:panel:cssClass", _cssClass);
 		request.setAttribute("liferay-ui:panel:state", _state);
+		request.setAttribute("liferay-ui:panel:badge", _badge);
+		request.setAttribute("liferay-ui:panel:badgeCssClass", _badgeCssClass);
 
 		super.doStartTag();
 
@@ -129,6 +131,14 @@ public class PanelTag extends IncludeTag {
 		_title = title;
 	}
 
+	public void setBadge(String badge) {
+		_badge = badge;
+	}
+	
+	public void setBadgeCssClass(String badgeCssClass) {
+		_badgeCssClass = badgeCssClass;
+	}
+	
 	@Override
 	protected void cleanUp() {
 		_accordion = false;
@@ -146,6 +156,8 @@ public class PanelTag extends IncludeTag {
 		_startPage = null;
 		_state = null;
 		_title = null;
+		_badge = null;
+		_badgeCssClass = null;
 	}
 
 	@Override
@@ -191,5 +203,7 @@ public class PanelTag extends IncludeTag {
 	private String _startPage;
 	private String _state;
 	private String _title;
+	private String _badge;
+	private String _badgeCssClass;
 
 }
