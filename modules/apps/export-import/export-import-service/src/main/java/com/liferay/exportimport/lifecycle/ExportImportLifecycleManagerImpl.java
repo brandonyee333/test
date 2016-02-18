@@ -47,7 +47,7 @@ public class ExportImportLifecycleManagerImpl
 
 	@Override
 	public void fireExportImportLifecycleEvent(
-		int code, int processFlag, Serializable... arguments) {
+		int code, int processFlag, Object... arguments) {
 
 		Message message = new Message();
 

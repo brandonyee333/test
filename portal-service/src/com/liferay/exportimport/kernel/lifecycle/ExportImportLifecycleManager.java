@@ -22,6 +22,6 @@ import java.io.Serializable;
 public interface ExportImportLifecycleManager {
 
 	public void fireExportImportLifecycleEvent(
-		int code, int processFlag, Serializable... arguments);
+		int code, int processFlag, Object... arguments);
 
 }

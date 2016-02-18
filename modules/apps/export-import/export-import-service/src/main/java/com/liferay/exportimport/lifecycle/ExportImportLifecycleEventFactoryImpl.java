@@ -30,7 +30,7 @@ public class ExportImportLifecycleEventFactoryImpl
 
 	@Override
 	public ExportImportLifecycleEvent create(
-		int code, int processFlag, Serializable... attributes) {
+		int code, int processFlag, Object... attributes) {
 
 		ExportImportLifecycleEvent exportImportLifecycleEvent =
 			new ExportImportLifecycleEventImpl();
