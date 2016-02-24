@@ -1,8 +1,5 @@
 <definition>
-	<var method="TestPropsUtil#get('portal.url')" name="siteName" />
-
-	<var method="StringUtil#replace('${siteName}', 'http://', '')" name="siteName" />
-	<var method="StringUtil#replace('${siteName}', ':8080', '')" name="siteName" />
+	<var name="siteName" value="Liferay" />
 
 	<command name="_assertDialogBoxPresent">
 		<if>
@@ -97,6 +94,11 @@
 	</command>
 
 	<command name="add">
+		<execute macro="TestCase#getSiteName">
+			<return from="siteName" name="siteName" />
+			<var name="siteName" value="${siteName}" />
+		</execute>
+
 		<if>
 			<equals arg1="${eventType}" arg2="Regular" />
 			<then>
@@ -245,6 +247,11 @@
 			</else>
 		</if>
 
+		<execute macro="TestCase#getSiteName">
+			<return from="siteName" name="siteName" />
+			<var name="siteName" value="${siteName}" />
+		</execute>
+
 		<execute macro="Page#gotoPG">
 			<var name="defaultURL" value="${defaultURL}" />
 			<var name="nodePort" value="${nodePort}" />
@@ -319,14 +326,14 @@
 					<var name="key_entryComment" value="${eventComment}" />
 
 					<execute function="AssertTextEquals" locator1="Comments#USER_NAME" value1="${user} (You)" />
-					<execute function="AssertTextEquals" locator1="Comments#COMMENT_BODY" value1="${eventComment}" />
+					<execute function="AssertTextEquals" locator1="Comments#COMMENT_BODY_SPECIFIC" value1="${eventComment}" />
 				</for>
 			</then>
 			<else>
 				<var name="key_entryComment" value="${eventComment}" />
 
 				<execute function="AssertTextEquals" locator1="Comments#USER_NAME" value1="${user} (You)" />
-				<execute function="AssertTextEquals" locator1="Comments#COMMENT_BODY" value1="${eventComment}" />
+				<execute function="AssertTextEquals" locator1="Comments#COMMENT_BODY_SPECIFIC" value1="${eventComment}" />
 			</else>
 		</if>
 
@@ -388,6 +395,11 @@
 				<execute macro="CalendarEvent#publish" />
 			</else>
 		</if>
+
+		<execute macro="TestCase#getSiteName">
+			<return from="siteName" name="siteName" />
+			<var name="siteName" value="${siteName}" />
+		</execute>
 
 		<execute macro="Page#gotoPG">
 			<var name="defaultURL" value="${defaultURL}" />
@@ -459,6 +471,11 @@
 				<execute macro="CalendarEvent#publish" />
 			</else>
 		</if>
+
+		<execute macro="TestCase#getSiteName">
+			<return from="siteName" name="siteName" />
+			<var name="siteName" value="${siteName}" />
+		</execute>
 
 		<execute macro="Page#gotoPG">
 			<var name="defaultURL" value="${defaultURL}" />
@@ -1016,6 +1033,11 @@
 
 		<execute function="SelectFrame" value1="relative=top" />
 
+		<execute macro="TestCase#getSiteName">
+			<return from="siteName" name="siteName" />
+			<var name="siteName" value="${siteName}" />
+		</execute>
+
 		<execute macro="Page#gotoPG">
 			<var name="defaultURL" value="${defaultURL}" />
 			<var name="nodePort" value="${nodePort}" />
@@ -1440,7 +1462,7 @@
 					<var name="nodePort" value="${nodePort}" />
 					<var name="pageName" value="Marketplace Calendar Testing" />
 					<var name="pageTemplateName" value="${pageTemplateName}" />
-					<var name="pageType" value="${pageType}" />
+					<var name="sitePageType" value="${pageType}" />
 				</execute>
 
 				<execute macro="Portlet#addPG">
@@ -1537,14 +1559,14 @@
 					<var name="key_entryComment" value="${eventComment}" />
 
 					<execute function="AssertTextEquals" locator1="Comments#USER_NAME" value1="${user} (You)" />
-					<execute function="AssertTextEquals" locator1="Comments#COMMENT_BODY" value1="${eventComment}" />
+					<execute function="AssertTextEquals" locator1="Comments#COMMENT_BODY_SPECIFIC" value1="${eventComment}" />
 				</for>
 			</then>
 			<else>
 				<var name="key_entryComment" value="${eventComment}" />
 
 				<execute function="AssertTextEquals" locator1="Comments#USER_NAME" value1="${user} (You)" />
-				<execute function="AssertTextEquals" locator1="Comments#COMMENT_BODY" value1="${eventComment}" />
+				<execute function="AssertTextEquals" locator1="Comments#COMMENT_BODY_SPECIFIC" value1="${eventComment}" />
 			</else>
 		</if>
 
@@ -1710,6 +1732,11 @@
 	</command>
 
 	<command name="viewInvitedUserRSVPWithApprovedWorkflow">
+		<execute macro="TestCase#getSiteName">
+			<return from="siteName" name="siteName" />
+			<var name="siteName" value="${siteName}" />
+		</execute>
+
 		<var name="key_siteCalendarName" value="${siteCalendarName}" />
 		<var name="key_siteName" value="${siteName}" />
 
@@ -1724,6 +1751,11 @@
 	</command>
 
 	<command name="viewNoUserInviteWithUnapprovedWorkflow">
+		<execute macro="TestCase#getSiteName">
+			<return from="siteName" name="siteName" />
+			<var name="siteName" value="${siteName}" />
+		</execute>
+
 		<var name="key_siteCalendarName" value="${siteCalendarName}" />
 		<var name="key_siteName" value="${siteName}" />
 
@@ -1739,8 +1771,9 @@
 	<command name="viewRepeatingEventErrorMessage">
 		<execute function="Click" locator1="Button#PUBLISH" />
 
-		<execute function="AssertTextEquals" locator1="Message#ERROR_1" value1="Your request failed to complete." />
-		<execute function="AssertTextEquals" locator1="Message#ERROR_2" value1="The last repeating date should come after the event start date." />
+		<execute macro="Alert#viewRequestFailedToComplete" />
+
+		<execute function="AssertTextEquals#assertPartialText" locator1="Message#ERROR_2" value1="The last repeating date should come after the event start date." />
 	</command>
 
 	<command name="viewRepeatingEventViaViewDetails">
@@ -1842,6 +1875,11 @@
 	</command>
 
 	<command name="viewSiteCalendarEventNotPresent">
+		<execute macro="TestCase#getSiteName">
+			<return from="siteName" name="siteName" />
+			<var name="siteName" value="${siteName}" />
+		</execute>
+
 		<var name="key_siteName" value="${siteName}" />
 
 		<execute function="AssertElementNotPresent" locator1="Calendar#CURRENT_SITE_CALENDARS_HEADER" value1="${siteName}'s Calendars" />
@@ -1853,6 +1891,11 @@
 	</command>
 
 	<command name="viewSiteCalendarEventWithDefaultPermissions">
+		<execute macro="TestCase#getSiteName">
+			<return from="siteName" name="siteName" />
+			<var name="siteName" value="${siteName}" />
+		</execute>
+
 		<var name="key_siteName" value="${siteName}" />
 
 		<execute function="AssertTextEquals" locator1="Calendar#CURRENT_SITE_CALENDARS_HEADER" value1="${siteName}'s Calendars" />

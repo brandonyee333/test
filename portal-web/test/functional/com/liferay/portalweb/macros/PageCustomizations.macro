@@ -1,21 +1,32 @@
 <definition>
 	<command name="enableSectionCustomizableCP">
 		<var name="key_columnId" value="${columnId}" />
-		<var name="key_page" value="${sitePageName}" />
 
-		<execute function="MouseOver" locator1="SitePages#PAGE_TREE_PAGE_LINK" />
+		<execute macro="ProductMenu#gotoEditPage">
+			<var name="page" value="${sitePageName}" />
+		</execute>
 
-		<execute function="Click" locator1="ProductMenu#EDIT_PAGE" />
+		<execute macro="Navigator#gotoTab">
+			<var name="tab" value="Advanced" />
+		</execute>
 
-		<execute function="AssertClick" locator1="NavListItem#CUSTOMIZATION_SETTINGS" value1="Customization Settings" />
+		<execute macro="Panel#expandPanel">
+			<var name="panelHeading" value="Customization Settings" />
+		</execute>
 
-		<execute function="Check" locator1="SitePagesEditPage#CUSTOMIZATION_SETTINGS_CUSTOMIZABLE_COLUMN" />
+		<execute function="Check#checkToggleSwitch" locator1="SitePagesEditPage#CUSTOMIZATION_SETTINGS_CUSTOMIZABLE_COLUMN" />
 
 		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
 
 		<execute macro="Alert#viewRequestCompletedSuccessMessage" />
 
-		<execute function="AssertClick" locator1="NavListItem#CUSTOMIZATION_SETTINGS" value1="Customization Settings" />
+		<execute macro="Navigator#gotoTab">
+			<var name="tab" value="Advanced" />
+		</execute>
+
+		<execute macro="Panel#expandPanel">
+			<var name="panelHeading" value="Customization Settings" />
+		</execute>
 
 		<execute function="AssertChecked" locator1="SitePagesEditPage#CUSTOMIZATION_SETTINGS_CUSTOMIZABLE_COLUMN" value1="Customizable" />
 	</command>
@@ -23,12 +34,14 @@
 	<command name="enableSectionCustomizablePG">
 		<var name="key_columnId" value="${columnId}" />
 
-		<execute function="Check" locator1="SitePagesEditPage#CUSTOMIZATION_SETTINGS_CUSTOMIZABLE_COLUMN_CHECKBOX" value1="Customizable" />
+		<execute function="Check#checkToggleSwitch" locator1="SitePagesEditPage#CUSTOMIZATION_SETTINGS_CUSTOMIZABLE_COLUMN_CHECKBOX" value1="Customizable" />
 		<execute function="AssertClick#pauseAssertTextClickAt" locator1="Button#SAVE" value1="Save" />
 	</command>
 
 	<command name="gotoCustomizationSettingsPG">
-		<execute function="Click" locator1="ControlMenu#EDIT" />
+		<execute macro="Navigator#gotoTab">
+			<var name="tab" value="Advanced" />
+		</execute>
 
 		<execute macro="Panel#expandPanel">
 			<var name="panelHeading" value="Customization Settings" />

@@ -24,8 +24,13 @@ import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.language.LanguageWrapper;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.CompanyConstants;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.pacl.DoPrivileged;
+import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.CookieKeys;
@@ -35,7 +40,9 @@ import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -44,12 +51,6 @@ import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.CompanyConstants;
-import com.liferay.portal.model.Group;
-import com.liferay.portal.model.GroupConstants;
-import com.liferay.portal.service.GroupLocalServiceUtil;
-import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PrefsPropsUtil;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.registry.Registry;
@@ -60,6 +61,7 @@ import com.liferay.registry.dependency.ServiceDependencyManager;
 import java.io.Serializable;
 
 import java.text.MessageFormat;
+import java.text.NumberFormat;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -307,7 +309,10 @@ public class LanguageImpl implements Language, Serializable {
 					}
 				}
 
-				value = MessageFormat.format(pattern, formattedArguments);
+				MessageFormat messageFormat = decorateMessageFormat(
+					request, pattern, formattedArguments);
+
+				value = messageFormat.format(formattedArguments);
 			}
 			else {
 				value = pattern;
@@ -475,7 +480,10 @@ public class LanguageImpl implements Language, Serializable {
 					}
 				}
 
-				value = MessageFormat.format(pattern, formattedArguments);
+				MessageFormat messageFormat = decorateMessageFormat(
+					request, pattern, formattedArguments);
+
+				value = messageFormat.format(formattedArguments);
 			}
 			else {
 				value = pattern;
@@ -662,7 +670,10 @@ public class LanguageImpl implements Language, Serializable {
 					}
 				}
 
-				value = MessageFormat.format(pattern, formattedArguments);
+				MessageFormat messageFormat = decorateMessageFormat(
+					locale, pattern, formattedArguments);
+
+				value = messageFormat.format(formattedArguments);
 			}
 			else {
 				value = pattern;
@@ -808,7 +819,10 @@ public class LanguageImpl implements Language, Serializable {
 					}
 				}
 
-				value = MessageFormat.format(pattern, formattedArguments);
+				MessageFormat messageFormat = decorateMessageFormat(
+					resourceBundle.getLocale(), pattern, formattedArguments);
+
+				value = messageFormat.format(formattedArguments);
 			}
 			else {
 				value = pattern;
@@ -1118,6 +1132,11 @@ public class LanguageImpl implements Language, Serializable {
 		CompanyLocalesBag companyLocalesBag = _getCompanyLocalesBag();
 
 		return companyLocalesBag.getByLanguageCode(languageCode);
+	}
+
+	@Override
+	public ResourceBundleLoader getPortalResourceBundleLoader() {
+		return LanguageResources.RESOURCE_BUNDLE_LOADER;
 	}
 
 	@Override
@@ -1608,6 +1627,35 @@ public class LanguageImpl implements Language, Serializable {
 		languageIdCookie.setMaxAge(CookieKeys.MAX_AGE);
 
 		CookieKeys.addCookie(request, response, languageIdCookie);
+	}
+
+	protected MessageFormat decorateMessageFormat(
+		HttpServletRequest request, String pattern,
+		Object[] formattedArguments) {
+
+		Locale locale = _getLocale(request);
+
+		return decorateMessageFormat(locale, pattern, formattedArguments);
+	}
+
+	protected MessageFormat decorateMessageFormat(
+		Locale locale, String pattern, Object[] formattedArguments) {
+
+		if (locale == null) {
+			locale = LocaleUtil.getDefault();
+		}
+
+		MessageFormat messageFormat = new MessageFormat(pattern, locale);
+
+		for (int i = 0; i < formattedArguments.length; i++) {
+			Object formattedArgument = formattedArguments[i];
+
+			if (formattedArgument instanceof Number) {
+				messageFormat.setFormat(i, NumberFormat.getInstance(locale));
+			}
+		}
+
+		return messageFormat;
 	}
 
 	private static CompanyLocalesBag _getCompanyLocalesBag() {

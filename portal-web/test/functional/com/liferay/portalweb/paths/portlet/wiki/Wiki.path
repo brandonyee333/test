@@ -197,8 +197,8 @@
 	<td></td>
 </tr>
 <tr>
-	<td>ATTACHMENT_TABLE_REMOVE</td>
-	<td>//tr[contains(.,'${key_attachmentFileName}')]//span[contains(.,'Remove')]</td>
+	<td>ATTACHMENT_TABLE_MOVE_TO_THE_RECYCLE_BIN</td>
+	<td>//tr[contains(.,'${key_attachmentFileName}')]//span[contains(.,'Move to the Recycle Bin')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -241,6 +241,47 @@
 <tr>
 	<td>COMMENT_EDIT_LINK</td>
 	<td>//div[@class='lfr-discussion-message' and contains(.,'${key_commentBody}')]//..//li/span/a/span[contains(.,'Edit')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--COMPARE_ACTIVITIES_NAVIGATION-->
+<tr>
+	<td>COMPARE_ACTIVITIES_NAVIGATION_TEXT_MODE_LINK</td>
+	<td>//div[@class='central-info']//a[contains(.,'Text Mode')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>COMPARE_VERSIONS_TEXT_MODE_TABLE_TITLE_VERSION_OLD</td>
+	<td>//table[@id='taglib-diff-results']//tr/td[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>COMPARE_VERSIONS_TEXT_MODE_TABLE_TITLE_VERSION_NEW</td>
+	<td>//table[@id='taglib-diff-results']//tr/td[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>COMPARE_VERSIONS_TEXT_MODE_TABLE_LINE_NUMBER_OLD_1</td>
+	<td>//table[@id='taglib-diff-results']//tr[contains(.,'Line')]/th[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>COMPARE_VERSIONS_TEXT_MODE_TABLE_LINE_NUMBER_NEW_1</td>
+	<td>//table[@id='taglib-diff-results']//tr[contains(.,'Line')]/th[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>COMPARE_VERSIONS_TEXT_MODE_TABLE_CONTENT_OLD_1</td>
+	<td>//table[@id='taglib-diff-results']//tr[3]/td[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>COMPARE_VERSIONS_TEXT_MODE_TABLE_CONTENT_NEW_1</td>
+	<td>//table[@id='taglib-diff-results']//tr[3]/td[2]</td>
 	<td></td>
 </tr>
 <tr>
@@ -338,6 +379,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>HISTORY_VERSIONS_ACTIONS</td>
+	<td>//tr[contains(.,'${key_wikiPageRevision}')]/td[8]//span/*[name()='svg'][contains(@class,'icon-ellipsis-v')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>HISTORY_VERSIONS_TAB</td>
 	<td>//li[@class='tab']//a[contains(.,'Versions')]</td>
 	<td></td>
@@ -383,7 +429,17 @@
 	<td>//tr[contains(.,'${key_wikiPageVersionOld}')]/td[2]</td>
 	<td></td>
 </tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
 <!--COMPARE_VERSIONS-->
+<tr>
+	<td>COMPARE_VERSIONS_DATE</td>
+	<td>//div[contains(@id,'wikiPageVersionSearchContainer')]//tr[contains(.,'${key_wikiPageVersion}')]/td[2]</td>
+	<td></td>
+</tr>
 <tr>
 	<td>COMPARE_VERSIONS_DIFF</td>
 	<td>//span[contains(@class,'diff-html') and contains(.,'${key_wikiPageVersionDiff}')]</td>
@@ -400,8 +456,28 @@
 	<td></td>
 </tr>
 <tr>
+	<td>COMPARE_VERSIONS_IFRAME</td>
+	<td>//iframe[contains(@id,'compareVersions')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>COMPARE_VERSIONS_PARAGRAPH_FULL</td>
 	<td>//div[contains(@class,'portlet-wiki')]//p[contains(.,'${key_wikiPageContentCompareFull}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>COMPARE_VERSIONS_VERSION</td>
+	<td>//div[contains(@id,'wikiPageVersionSearchContainer')]//tr[contains(.,'${key_wikiPageVersion}')]/td[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>COMPARE_VERSIONS_VERSION_ACTIONS</td>
+	<td>//h4[contains(.,'${key_wikiPageVersion}')]/..//span/*[name()='svg'][contains(@class,'icon-ellipsis-v')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>COMPARE_VERSIONS_VERSION_LINK</td>
+	<td>//div[contains(@id,'wikiPageVersionSearchContainer')]//tr/td/a[contains(@class,'selector-button') and contains(.,'${key_wikiPageVersion}')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -575,7 +651,7 @@
 </tr>
 <tr>
 	<td>NODE_TABLE_NUMBER_OF_PAGES</td>
-	<td>//tr[contains(.,'${key_wikiNodeName}')]/td[3]/a</td>
+	<td>//tr[contains(.,'${key_wikiNodeName}')]/td[3]</td>
 	<td></td>
 </tr>
 <tr>

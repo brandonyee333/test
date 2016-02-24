@@ -1,8 +1,5 @@
 <definition>
-	<var method="TestPropsUtil#get('portal.url')" name="siteName" />
-
-	<var method="StringUtil#replace('${siteName}', 'http://', '')" name="siteName" />
-	<var method="StringUtil#replace('${siteName}', ':8080', '')" name="siteName" />
+	<var name="siteName" value="Liferay" />
 
 	<command name="_selectCalendarSettingsIframe">
 		<execute function="SelectFrame" locator1="CalendarEditCalendar#EDIT_CALENDAR_IFRAME" />
@@ -15,6 +12,11 @@
 	</command>
 
 	<command name="gotoAddCurrentSiteCalendars">
+		<execute macro="TestCase#getSiteName">
+			<return from="siteName" name="siteName" />
+			<var name="siteName" value="${siteName}" />
+		</execute>
+
 		<var name="key_siteName" value="${siteName}" />
 
 		<execute function="Click" locator1="Calendar#CURRENT_SITE_CALENDARS_MENULIST_ARROW" />
@@ -66,7 +68,7 @@
 	</command>
 
 	<command name="gotoAddEventViaAssetPublisher">
-		<execute function="AssertClick" locator1="AP#ADD_NEW_DROPDOWN" value1="Add New" />
+		<execute function="Click#makeVisibleClickAt" locator1="AP#ADD_ASSET_PLUS_ICON" />
 
 		<execute function="AssertClick" locator1="MenuItem#CALENDAR_EVENT" value1="Calendar Event" />
 
@@ -110,6 +112,11 @@
 	</command>
 
 	<command name="gotoCurrentSiteCalendarsManage">
+		<execute macro="TestCase#getSiteName">
+			<return from="siteName" name="siteName" />
+			<var name="siteName" value="${siteName}" />
+		</execute>
+
 		<var name="key_siteName" value="${siteName}" />
 
 		<execute function="Click" locator1="Calendar#CURRENT_SITE_CALENDARS_MENULIST_ARROW" />
