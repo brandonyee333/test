@@ -43,4 +43,7 @@ public class AlertTag extends BaseAlertTag {
 		setNamespacedAttribute(request, "id", id);
 	}
 
+	public void hashi() {
+	}
+
 }
