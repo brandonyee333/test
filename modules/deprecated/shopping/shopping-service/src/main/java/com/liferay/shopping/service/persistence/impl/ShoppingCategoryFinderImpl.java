@@ -14,6 +14,7 @@
 
 package com.liferay.shopping.service.persistence.impl;
 
+import com.liferay.portal.dao.orm.CustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.QueryDefinition;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -29,7 +30,6 @@ import com.liferay.shopping.model.ShoppingItem;
 import com.liferay.shopping.service.ShoppingCategoryLocalServiceUtil;
 import com.liferay.shopping.service.ShoppingItemLocalServiceUtil;
 import com.liferay.shopping.service.persistence.ShoppingCategoryFinder;
-import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.util.ArrayList;
 import java.util.Iterator;
