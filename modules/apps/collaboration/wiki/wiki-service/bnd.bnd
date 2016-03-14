@@ -68,9 +68,7 @@ Include-Resource:\
 	@../../../../../lib/portal/oscache.jar,\
 	@../../../../../lib/portal/stringtemplate.jar,\
 	@../../../../../util-java/util-java.jar!/com/liferay/util/RSSThreadLocal.class,\
-	@../../../../../util-java/util-java.jar!/com/liferay/util/RSSUtil.class,\
-	@../../../../../util-java/util-java.jar!/com/liferay/util/dao/orm/CustomSQL.class,\
-	@../../../../../util-java/util-java.jar!/com/liferay/util/dao/orm/CustomSQLUtil.class
+	@../../../../../util-java/util-java.jar!/com/liferay/util/RSSUtil.class
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Wiki
 Liferay-Service: true
