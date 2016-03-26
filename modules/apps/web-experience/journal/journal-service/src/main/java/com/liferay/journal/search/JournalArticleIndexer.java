@@ -24,6 +24,7 @@ import com.liferay.journal.configuration.JournalServiceConfigurationValues;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalArticleDisplay;
 import com.liferay.journal.service.JournalArticleLocalService;
+import com.liferay.journal.service.JournalArticleLocalServiceUtil;
 import com.liferay.journal.service.permission.JournalArticlePermission;
 import com.liferay.journal.util.JournalContent;
 import com.liferay.journal.util.JournalConverter;
@@ -550,11 +551,40 @@ public class JournalArticleIndexer
 		document.addKeyword(
 			"ddmTemplateKey", journalArticle.getDDMTemplateKey());
 		document.addDate("displayDate", journalArticle.getDisplayDate());
-		document.addKeyword("head", JournalUtil.isHead(journalArticle));
 
-		boolean headListable = JournalUtil.isHeadListable(journalArticle);
+		JournalArticle latestArticle =
+			JournalArticleLocalServiceUtil.fetchLatestArticle(
+				journalArticle.getResourcePrimKey(),
+				new int[] {
+					WorkflowConstants.STATUS_APPROVED,
+					WorkflowConstants.STATUS_IN_TRASH,
+					WorkflowConstants.STATUS_SCHEDULED
+				});
+
+		boolean headListable = false;
+
+		if ((latestArticle != null) &&
+			(journalArticle.getId() == latestArticle.getId())) {
+
+			headListable = true;
+		}
 
 		document.addKeyword("headListable", headListable);
+
+		if (latestArticle == null) {
+			document.addKeyword("head", false);
+		}
+		else if (!latestArticle.isScheduled()) {
+			if (headListable && latestArticle.isIndexable()) {
+				document.addKeyword("head", true);
+			}
+			else {
+				document.addKeyword("head", false);
+			}
+		}
+		else {
+			document.addKeyword("head", JournalUtil.isHead(journalArticle));
+		}
 
 		// Scheduled listable articles should be visible in asset browser
 
