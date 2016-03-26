@@ -323,6 +323,10 @@ public class JournalArticleIndexer
 		}
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	protected void addDDMStructureAttributes(
 			Document document, JournalArticle article)
 		throws Exception {
@@ -647,6 +651,10 @@ public class JournalArticleIndexer
 		reindexArticles(companyId);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	protected String extractDDMContent(
 			JournalArticle article, String languageId)
 		throws Exception {
