@@ -478,30 +478,55 @@ public class JournalArticleIndexer
 		String[] languageIds = LocalizationUtil.getAvailableLanguageIds(
 			journalArticle.getDocument());
 
-		for (String languageId : languageIds) {
-			String content = extractDDMContent(journalArticle, languageId);
+		DDMStructure ddmStructure = _ddmStructureLocalService.fetchStructure(
+			journalArticle.getGroupId(),
+			PortalUtil.getClassNameId(JournalArticle.class),
+			journalArticle.getDDMStructureKey(), true);
 
-			String description = journalArticle.getDescription(languageId);
+		DDMFormValues ddmFormValues = null;
 
-			String title = journalArticle.getTitle(languageId);
+		try {
+			Fields fields = _journalConverter.getDDMFields(
+				ddmStructure, journalArticle.getDocument());
 
-			if (languageId.equals(articleDefaultLanguageId)) {
-				document.addText(Field.CONTENT, content);
-				document.addText(Field.DESCRIPTION, description);
-				document.addText(Field.TITLE, title);
-				document.addText("defaultLanguageId", languageId);
+			ddmFormValues = _fieldsToDDMFormValuesConverter.convert(
+				ddmStructure, fields);
+		}
+		catch (Exception e) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(e, e);
 			}
+		}
 
-			document.addText(
-				LocalizationUtil.getLocalizedName(Field.CONTENT, languageId),
-				content);
-			document.addText(
-				LocalizationUtil.getLocalizedName(
-					Field.DESCRIPTION, languageId),
-				description);
-			document.addText(
-				LocalizationUtil.getLocalizedName(Field.TITLE, languageId),
-				title);
+		if (ddmFormValues != null) {
+			for (String languageId : languageIds) {
+				String content = _ddmIndexer.extractIndexableAttributes(
+					ddmStructure, ddmFormValues,
+					LocaleUtil.fromLanguageId(languageId));
+
+				String description = journalArticle.getDescription(languageId);
+
+				String title = journalArticle.getTitle(languageId);
+
+				if (languageId.equals(articleDefaultLanguageId)) {
+					document.addText(Field.CONTENT, content);
+					document.addText(Field.DESCRIPTION, description);
+					document.addText(Field.TITLE, title);
+					document.addText("defaultLanguageId", languageId);
+				}
+
+				document.addText(
+					LocalizationUtil.getLocalizedName(
+						Field.CONTENT, languageId),
+					content);
+				document.addText(
+					LocalizationUtil.getLocalizedName(
+						Field.DESCRIPTION, languageId),
+					description);
+				document.addText(
+					LocalizationUtil.getLocalizedName(Field.TITLE, languageId),
+					title);
+			}
 		}
 
 		document.addKeyword(Field.FOLDER_ID, journalArticle.getFolderId());
@@ -541,7 +566,9 @@ public class JournalArticleIndexer
 			}
 		}
 
-		addDDMStructureAttributes(document, journalArticle);
+		if (ddmFormValues != null) {
+			_ddmIndexer.addAttributes(document, ddmStructure, ddmFormValues);
+		}
 
 		return document;
 	}
