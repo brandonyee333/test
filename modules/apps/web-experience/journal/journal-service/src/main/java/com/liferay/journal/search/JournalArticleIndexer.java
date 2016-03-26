@@ -589,11 +589,7 @@ public class JournalArticleIndexer
 		// Scheduled listable articles should be visible in asset browser
 
 		if (journalArticle.isScheduled() && headListable) {
-			boolean visible = GetterUtil.getBoolean(document.get("visible"));
-
-			if (!visible) {
-				document.addKeyword("visible", true);
-			}
+			document.addKeyword("visible", true);
 		}
 
 		if (ddmFormValues != null) {
