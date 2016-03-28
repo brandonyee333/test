@@ -24,6 +24,7 @@ import com.liferay.journal.configuration.JournalServiceConfigurationValues;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalArticleDisplay;
 import com.liferay.journal.service.JournalArticleLocalService;
+import com.liferay.journal.service.JournalArticleLocalServiceUtil;
 import com.liferay.journal.service.permission.JournalArticlePermission;
 import com.liferay.journal.util.JournalContent;
 import com.liferay.journal.util.JournalConverter;
@@ -323,6 +324,10 @@ public class JournalArticleIndexer
 		}
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	protected void addDDMStructureAttributes(
 			Document document, JournalArticle article)
 		throws Exception {
@@ -474,30 +479,55 @@ public class JournalArticleIndexer
 		String[] languageIds = LocalizationUtil.getAvailableLanguageIds(
 			journalArticle.getDocument());
 
-		for (String languageId : languageIds) {
-			String content = extractDDMContent(journalArticle, languageId);
+		DDMStructure ddmStructure = _ddmStructureLocalService.fetchStructure(
+			journalArticle.getGroupId(),
+			PortalUtil.getClassNameId(JournalArticle.class),
+			journalArticle.getDDMStructureKey(), true);
 
-			String description = journalArticle.getDescription(languageId);
+		DDMFormValues ddmFormValues = null;
 
-			String title = journalArticle.getTitle(languageId);
+		try {
+			Fields fields = _journalConverter.getDDMFields(
+				ddmStructure, journalArticle.getDocument());
 
-			if (languageId.equals(articleDefaultLanguageId)) {
-				document.addText(Field.CONTENT, content);
-				document.addText(Field.DESCRIPTION, description);
-				document.addText(Field.TITLE, title);
-				document.addText("defaultLanguageId", languageId);
+			ddmFormValues = _fieldsToDDMFormValuesConverter.convert(
+				ddmStructure, fields);
+		}
+		catch (Exception e) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(e, e);
 			}
+		}
 
-			document.addText(
-				LocalizationUtil.getLocalizedName(Field.CONTENT, languageId),
-				content);
-			document.addText(
-				LocalizationUtil.getLocalizedName(
-					Field.DESCRIPTION, languageId),
-				description);
-			document.addText(
-				LocalizationUtil.getLocalizedName(Field.TITLE, languageId),
-				title);
+		if (ddmFormValues != null) {
+			for (String languageId : languageIds) {
+				String content = _ddmIndexer.extractIndexableAttributes(
+					ddmStructure, ddmFormValues,
+					LocaleUtil.fromLanguageId(languageId));
+
+				String description = journalArticle.getDescription(languageId);
+
+				String title = journalArticle.getTitle(languageId);
+
+				if (languageId.equals(articleDefaultLanguageId)) {
+					document.addText(Field.CONTENT, content);
+					document.addText(Field.DESCRIPTION, description);
+					document.addText(Field.TITLE, title);
+					document.addText("defaultLanguageId", languageId);
+				}
+
+				document.addText(
+					LocalizationUtil.getLocalizedName(
+						Field.CONTENT, languageId),
+					content);
+				document.addText(
+					LocalizationUtil.getLocalizedName(
+						Field.DESCRIPTION, languageId),
+					description);
+				document.addText(
+					LocalizationUtil.getLocalizedName(Field.TITLE, languageId),
+					title);
+			}
 		}
 
 		document.addKeyword(Field.FOLDER_ID, journalArticle.getFolderId());
@@ -521,23 +551,50 @@ public class JournalArticleIndexer
 		document.addKeyword(
 			"ddmTemplateKey", journalArticle.getDDMTemplateKey());
 		document.addDate("displayDate", journalArticle.getDisplayDate());
-		document.addKeyword("head", JournalUtil.isHead(journalArticle));
 
-		boolean headListable = JournalUtil.isHeadListable(journalArticle);
+		JournalArticle latestArticle =
+			JournalArticleLocalServiceUtil.fetchLatestArticle(
+				journalArticle.getResourcePrimKey(),
+				new int[] {
+					WorkflowConstants.STATUS_APPROVED,
+					WorkflowConstants.STATUS_IN_TRASH,
+					WorkflowConstants.STATUS_SCHEDULED
+				});
+
+		boolean headListable = false;
+
+		if ((latestArticle != null) &&
+			(journalArticle.getId() == latestArticle.getId())) {
+
+			headListable = true;
+		}
 
 		document.addKeyword("headListable", headListable);
+
+		if (latestArticle == null) {
+			document.addKeyword("head", false);
+		}
+		else if (!latestArticle.isScheduled()) {
+			if (headListable && latestArticle.isIndexable()) {
+				document.addKeyword("head", true);
+			}
+			else {
+				document.addKeyword("head", false);
+			}
+		}
+		else {
+			document.addKeyword("head", JournalUtil.isHead(journalArticle));
+		}
 
 		// Scheduled listable articles should be visible in asset browser
 
 		if (journalArticle.isScheduled() && headListable) {
-			boolean visible = GetterUtil.getBoolean(document.get("visible"));
-
-			if (!visible) {
-				document.addKeyword("visible", true);
-			}
+			document.addKeyword("visible", true);
 		}
 
-		addDDMStructureAttributes(document, journalArticle);
+		if (ddmFormValues != null) {
+			_ddmIndexer.addAttributes(document, ddmStructure, ddmFormValues);
+		}
 
 		return document;
 	}
@@ -647,6 +704,10 @@ public class JournalArticleIndexer
 		reindexArticles(companyId);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	protected String extractDDMContent(
 			JournalArticle article, String languageId)
 		throws Exception {
