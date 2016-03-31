@@ -30,6 +30,9 @@ import java.util.Map;
  */
 public class ContentUtil {
 
+	public static void get() {
+	}
+
 	public static String get(ClassLoader classLoader, String location) {
 		return _instance._get(classLoader, location, false);
 	}
