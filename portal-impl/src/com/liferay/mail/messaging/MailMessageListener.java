@@ -39,6 +39,9 @@ import javax.mail.internet.InternetAddress;
  */
 public class MailMessageListener extends BaseMessageListener {
 
+	protected void doMailMessage() throws Exception {
+	}
+
 	protected void doMailMessage(MailMessage mailMessage) throws Exception {
 		InternetAddress from = filterInternetAddress(mailMessage.getFrom());
 
