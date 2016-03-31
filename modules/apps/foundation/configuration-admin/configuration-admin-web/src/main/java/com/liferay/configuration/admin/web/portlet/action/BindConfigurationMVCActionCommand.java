@@ -23,7 +23,6 @@ import com.liferay.configuration.admin.web.util.ResourceBundleLoaderProvider;
 import com.liferay.dynamic.data.mapping.form.values.factory.DDMFormValuesFactory;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
-import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
@@ -114,13 +113,9 @@ public class BindConfigurationMVCActionCommand implements MVCActionCommand {
 
 		DDMFormValues ddmFormValues = getDDMFormValues(actionRequest, ddmForm);
 
-		DDMFormValuesToPropertiesConverter ddmFormValuesToPropertiesConverter =
-			new DDMFormValuesToPropertiesConverter(
-				configurationModel, ddmFormValues, _jsonFactory,
-				themeDisplay.getLocale());
-
 		Dictionary<String, Object> properties =
-			ddmFormValuesToPropertiesConverter.getProperties();
+			DDMFormValuesToPropertiesConverter.getProperties(
+				configurationModel, ddmFormValues, themeDisplay.getLocale());
 
 		properties.put(Constants.SERVICE_PID, pid);
 
@@ -217,9 +212,6 @@ public class BindConfigurationMVCActionCommand implements MVCActionCommand {
 
 	@Reference
 	private DDMFormValuesFactory _ddmFormValuesFactory;
-
-	@Reference
-	private JSONFactory _jsonFactory;
 
 	@Reference
 	private ResourceBundleLoaderProvider _resourceBundleLoaderProvider;
