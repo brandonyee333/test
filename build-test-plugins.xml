@@ -276,14 +276,13 @@ plugins.includes=${test.plugin}</echo>
 
 		<ant dir="${lp.plugins.dir}/${test.plugin.type}/${test.plugin}" target="clean" inheritAll="false" />
 
+		<ant dir="${lp.plugins.dir}/${test.plugin.type}/${test.plugin}" target="compile" inheritAll="false" />
+
 		<if>
 			<contains string="${test.plugin}" substring="portlet" />
 			<then>
 				<ant dir="${lp.plugins.dir}/${test.plugin.type}/${test.plugin}" target="compile-jsp" inheritAll="false" />
 			</then>
-			<else>
-				<ant dir="${lp.plugins.dir}/${test.plugin.type}/${test.plugin}" target="compile" inheritAll="false" />
-			</else>
 		</if>
 	</target>
 
