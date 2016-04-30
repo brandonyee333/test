@@ -37,12 +37,45 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class ParamUtil {
 
+	/**
+	 * Read parameter as boolean from the request, or return the default value 
+	 * if parameter is missing.
+	 * 
+	 * <p>
+	 * If parameter value cannot be converted to boolean, the default value is 
+	 * returned.
+	 * </p>
+	 *
+	 * @param  request the servlet request from which to read the parameter
+	 * @param  param the name of the parameter to read
+	 * @param  defaultValue the default value 
+	 * @return the parameter value as boolean for the given parameter name and 
+	 *         for the given servlet request, or the default value if parameter
+	 *         is missing
+	 */
 	public static boolean get(
 		HttpServletRequest request, String param, boolean defaultValue) {
 
 		return GetterUtil.get(request.getParameter(param), defaultValue);
 	}
 
+	/**
+	 * Read parameter as date from the request, or return the default value 
+	 * if parameter is missing.
+	 * 
+	 * <p>
+	 * If parameter value cannot be converted to date, the default value is 
+	 * returned.
+	 * </p>
+	 *
+	 * @param  request the servlet request from which to read the parameter
+	 * @param  param the name of the parameter to read
+	 * @param  dateFormat the format used to parse date
+	 * @param  defaultValue the default value 
+	 * @return the parameter value as date for the given parameter name and 
+	 *         for the given servlet request, or the default value if parameter
+	 *         is missing
+	 */
 	public static Date get(
 		HttpServletRequest request, String param, DateFormat dateFormat,
 		Date defaultValue) {
@@ -51,42 +84,149 @@ public class ParamUtil {
 			request.getParameter(param), dateFormat, defaultValue);
 	}
 
+	/**
+	 * Read parameter as double from the request, or return the default value 
+	 * if parameter is missing.
+	 * 
+	 * <p>
+	 * If parameter value cannot be converted to double, the default value is 
+	 * returned.
+	 * </p>
+	 *
+	 * @param  request the servlet request from which to read the parameter
+	 * @param  param the name of the parameter to read
+	 * @param  defaultValue the default value 
+	 * @return the parameter value as double for the given parameter name and 
+	 *         for the given servlet request, or the default value if parameter
+	 *         is missing
+	 */
 	public static double get(
 		HttpServletRequest request, String param, double defaultValue) {
 
 		return GetterUtil.get(request.getParameter(param), defaultValue);
 	}
 
+	/**
+	 * Read parameter as float from the request, or return the default value 
+	 * if parameter is missing.
+	 * 
+	 * <p>
+	 * If parameter value cannot be converted to float, the default value is 
+	 * returned.
+	 * </p>
+	 *
+	 * @param  request the servlet request from which to read the parameter
+	 * @param  param the name of the parameter to read
+	 * @param  defaultValue the default value 
+	 * @return the parameter value as float for the given parameter name and 
+	 *         for the given servlet request, or the default value if parameter
+	 *         is missing
+	 */
 	public static float get(
 		HttpServletRequest request, String param, float defaultValue) {
 
 		return GetterUtil.get(request.getParameter(param), defaultValue);
 	}
 
+	/**
+	 * Read parameter as integer from the request, or return the default value 
+	 * if parameter is missing.
+	 * 
+	 * <p>
+	 * If parameter value cannot be converted to integer, the default value is 
+	 * returned.
+	 * </p>
+	 *
+	 * @param  request the servlet request from which to read the parameter
+	 * @param  param the name of the parameter to read
+	 * @param  defaultValue the default value 
+	 * @return the parameter value as integer for the given parameter name and 
+	 *         for the given servlet request, or the default value if parameter
+	 *         is missing
+	 */
 	public static int get(
 		HttpServletRequest request, String param, int defaultValue) {
 
 		return GetterUtil.get(request.getParameter(param), defaultValue);
 	}
 
+	/**
+	 * Read parameter as long from the request, or return the default value 
+	 * if parameter is missing.
+	 * 
+	 * <p>
+	 * If parameter value cannot be converted to long, the default value is 
+	 * returned.
+	 * </p>
+	 *
+	 * @param  request the servlet request from which to read the parameter
+	 * @param  param the name of the parameter to read
+	 * @param  defaultValue the default value 
+	 * @return the parameter value as long for the given parameter name and 
+	 *         for the given servlet request, or the default value if parameter
+	 *         is missing
+	 */
 	public static long get(
 		HttpServletRequest request, String param, long defaultValue) {
 
 		return GetterUtil.get(request.getParameter(param), defaultValue);
 	}
 
+	/**
+	 * Read parameter as number from the request, or return the default value 
+	 * if parameter is missing.
+	 * 
+	 * <p>
+	 * If parameter value cannot be converted to number, the default value is 
+	 * returned.
+	 * </p>
+	 *
+	 * @param  request the servlet request from which to read the parameter
+	 * @param  param the name of the parameter to read
+	 * @param  defaultValue the default value 
+	 * @return the parameter value as number for the given parameter name and 
+	 *         for the given servlet request, or the default value if parameter
+	 *         is missing
+	 */
 	public static Number get(
 		HttpServletRequest request, String param, Number defaultValue) {
 
 		return GetterUtil.get(request.getParameter(param), defaultValue);
 	}
 
+	/**
+	 * Read parameter as short from the request, or return the default value 
+	 * if parameter is missing.
+	 * 
+	 * <p>
+	 * If parameter value cannot be converted to short, the default value is 
+	 * returned.
+	 * </p>
+	 *
+	 * @param  request the servlet request from which to read the parameter
+	 * @param  param the name of the parameter to read
+	 * @param  defaultValue the default value 
+	 * @return the parameter value as short for the given parameter name and 
+	 *         for the given servlet request, or the default value if parameter
+	 *         is missing
+	 */
 	public static short get(
 		HttpServletRequest request, String param, short defaultValue) {
 
 		return GetterUtil.get(request.getParameter(param), defaultValue);
 	}
 
+	/**
+	 * Read parameter as string from the request, or return the default value 
+	 * if parameter is missing.
+	 *
+	 * @param  request the servlet request from which to read the parameter
+	 * @param  param the name of the parameter to read
+	 * @param  defaultValue the default value 
+	 * @return the parameter value as string for the given parameter name and 
+	 *         for the given servlet request, or the default value if parameter
+	 *         is missing
+	 */
 	public static String get(
 		HttpServletRequest request, String param, String defaultValue) {
 
@@ -100,12 +240,47 @@ public class ParamUtil {
 		return null;
 	}
 
+	/**
+	 * Read parameter as boolean from the service context, or return the 
+	 * default value if parameter is missing.
+	 * 
+	 * <p>
+	 * If parameter value cannot be converted to boolean, the default value is 
+	 * returned.
+	 * </p>
+	 *
+	 * @param  portletRequest the service context from which to read the 
+	 *         parameter
+	 * @param  param the name of the parameter to read
+	 * @param  defaultValue the default value 
+	 * @return the parameter value as boolean for the given parameter name and 
+	 *         for the given service context, or the default value if parameter
+	 *         is missing
+	 */
 	public static boolean get(
 		PortletRequest portletRequest, String param, boolean defaultValue) {
 
 		return GetterUtil.get(portletRequest.getParameter(param), defaultValue);
 	}
 
+	/**
+	 * Read parameter as date from the service context, or return the 
+	 * default value if parameter is missing.
+	 * 
+	 * <p>
+	 * If parameter value cannot be converted to date, the default value is 
+	 * returned.
+	 * </p>
+	 *
+	 * @param  portletRequest the service context from which to read the 
+	 *         parameter
+	 * @param  param the name of the parameter to read
+	 * @param  dateFormat the format used to parse date
+	 * @param  defaultValue the default value 
+	 * @return the parameter value as date for the given parameter name and 
+	 *         for the given service context, or the default value if parameter
+	 *         is missing
+	 */
 	public static Date get(
 		PortletRequest portletRequest, String param, DateFormat dateFormat,
 		Date defaultValue) {
@@ -114,42 +289,156 @@ public class ParamUtil {
 			portletRequest.getParameter(param), dateFormat, defaultValue);
 	}
 
+	/**
+	 * Read parameter as double from the service context, or return the 
+	 * default value if parameter is missing.
+	 * 
+	 * <p>
+	 * If parameter value cannot be converted to double, the default value is 
+	 * returned.
+	 * </p>
+	 *
+	 * @param  portletRequest the service context from which to read the 
+	 *         parameter
+	 * @param  param the name of the parameter to read
+	 * @param  defaultValue the default value 
+	 * @return the parameter value as double for the given parameter name and 
+	 *         for the given service context, or the default value if parameter
+	 *         is missing
+	 */
 	public static double get(
 		PortletRequest portletRequest, String param, double defaultValue) {
 
 		return GetterUtil.get(portletRequest.getParameter(param), defaultValue);
 	}
 
+	/**
+	 * Read parameter as float from the service context, or return the 
+	 * default value if parameter is missing.
+	 * 
+	 * <p>
+	 * If parameter value cannot be converted to float, the default value is 
+	 * returned.
+	 * </p>
+	 *
+	 * @param  portletRequest the service context from which to read the 
+	 *         parameter
+	 * @param  param the name of the parameter to read
+	 * @param  defaultValue the default value 
+	 * @return the parameter value as float for the given parameter name and 
+	 *         for the given service context, or the default value if parameter
+	 *         is missing
+	 */
 	public static float get(
 		PortletRequest portletRequest, String param, float defaultValue) {
 
 		return GetterUtil.get(portletRequest.getParameter(param), defaultValue);
 	}
 
+	/**
+	 * Read parameter as integer from the service context, or return the 
+	 * default value if parameter is missing.
+	 * 
+	 * <p>
+	 * If parameter value cannot be converted to integer, the default value is 
+	 * returned.
+	 * </p>
+	 *
+	 * @param  portletRequest the service context from which to read the 
+	 *         parameter
+	 * @param  param the name of the parameter to read
+	 * @param  defaultValue the default value 
+	 * @return the parameter value as integer for the given parameter name and 
+	 *         for the given service context, or the default value if parameter
+	 *         is missing
+	 */
 	public static int get(
 		PortletRequest portletRequest, String param, int defaultValue) {
 
 		return GetterUtil.get(portletRequest.getParameter(param), defaultValue);
 	}
 
+	/**
+	 * Read parameter as long from the service context, or return the 
+	 * default value if parameter is missing.
+	 * 
+	 * <p>
+	 * If parameter value cannot be converted to long, the default value is 
+	 * returned.
+	 * </p>
+	 *
+	 * @param  portletRequest the service context from which to read the 
+	 *         parameter
+	 * @param  param the name of the parameter to read
+	 * @param  defaultValue the default value 
+	 * @return the parameter value as long for the given parameter name and 
+	 *         for the given service context, or the default value if parameter
+	 *         is missing
+	 */
 	public static long get(
 		PortletRequest portletRequest, String param, long defaultValue) {
 
 		return GetterUtil.get(portletRequest.getParameter(param), defaultValue);
 	}
 
+	/**
+	 * Read parameter as number from the service context, or return the 
+	 * default value if parameter is missing.
+	 * 
+	 * <p>
+	 * If parameter value cannot be converted to number, the default value is 
+	 * returned.
+	 * </p>
+	 *
+	 * @param  portletRequest the service context from which to read the 
+	 *         parameter
+	 * @param  param the name of the parameter to read
+	 * @param  defaultValue the default value 
+	 * @return the parameter value as number for the given parameter name and 
+	 *         for the given service context, or the default value if parameter
+	 *         is missing
+	 */
 	public static Number get(
 		PortletRequest portletRequest, String param, Number defaultValue) {
 
 		return GetterUtil.get(portletRequest.getParameter(param), defaultValue);
 	}
 
+	/**
+	 * Read parameter as short from the service context, or return the 
+	 * default value if parameter is missing.
+	 * 
+	 * <p>
+	 * If parameter value cannot be converted to short, the default value is 
+	 * returned.
+	 * </p>
+	 *
+	 * @param  portletRequest the service context from which to read the 
+	 *         parameter
+	 * @param  param the name of the parameter to read
+	 * @param  defaultValue the default value 
+	 * @return the parameter value as short for the given parameter name and 
+	 *         for the given service context, or the default value if parameter
+	 *         is missing
+	 */
 	public static short get(
 		PortletRequest portletRequest, String param, short defaultValue) {
 
 		return GetterUtil.get(portletRequest.getParameter(param), defaultValue);
 	}
 
+	/**
+	 * Read parameter as string from the service context, or return the 
+	 * default value if parameter is missing.
+	 *
+	 * @param  portletRequest the service context from which to read the 
+	 *         parameter
+	 * @param  param the name of the parameter to read
+	 * @param  defaultValue the default value 
+	 * @return the parameter value as string for the given parameter name and 
+	 *         for the given service context, or the default value if parameter
+	 *         is missing
+	 */
 	public static String get(
 		PortletRequest portletRequest, String param, String defaultValue) {
 
@@ -163,12 +452,47 @@ public class ParamUtil {
 		return null;
 	}
 
+	/**
+	 * Read parameter as boolean from the service context, or return the 
+	 * default value if parameter is missing.
+	 * 
+	 * <p>
+	 * If parameter value cannot be converted to boolean, the default value is 
+	 * returned.
+	 * </p>
+	 *
+	 * @param  serviceContext the service context from which to read the 
+	 *         parameter
+	 * @param  param the name of the parameter to read
+	 * @param  defaultValue the default value 
+	 * @return the parameter value as boolean for the given parameter name and 
+	 *         for the given service context, or the default value if parameter
+	 *         is missing
+	 */
 	public static boolean get(
 		ServiceContext serviceContext, String param, boolean defaultValue) {
 
 		return GetterUtil.get(serviceContext.getAttribute(param), defaultValue);
 	}
 
+	/**
+	 * Read parameter as date from the service context, or return the default 
+	 * value if parameter is missing.
+	 * 
+	 * <p>
+	 * If parameter value cannot be converted to date, the default value is 
+	 * returned.
+	 * </p>
+	 *
+	 * @param  serviceContext the service context from which to read the 
+	 *         parameter
+	 * @param  param the name of the parameter to read
+	 * @param  dateFormat the format used to parse date
+	 * @param  defaultValue the default value 
+	 * @return the parameter value as date for the given parameter name and 
+	 *         for the given service context, or the default value if parameter
+	 *         is missing
+	 */
 	public static Date get(
 		ServiceContext serviceContext, String param, DateFormat dateFormat,
 		Date defaultValue) {
@@ -177,42 +501,156 @@ public class ParamUtil {
 			serviceContext.getAttribute(param), dateFormat, defaultValue);
 	}
 
+	/**
+	 * Read parameter as double from the service context, or return the default 
+	 * value if parameter is missing.
+	 * 
+	 * <p>
+	 * If parameter value cannot be converted to double, the default value is 
+	 * returned.
+	 * </p>
+	 *
+	 * @param  serviceContext the service context from which to read the 
+	 *         parameter
+	 * @param  param the name of the parameter to read
+	 * @param  defaultValue the default value 
+	 * @return the parameter value as double for the given parameter name and 
+	 *         for the given service context, or the default value if parameter
+	 *         is missing
+	 */
 	public static double get(
 		ServiceContext serviceContext, String param, double defaultValue) {
 
 		return GetterUtil.get(serviceContext.getAttribute(param), defaultValue);
 	}
 
+	/**
+	 * Read parameter as float from the service context, or return the default 
+	 * value if parameter is missing.
+	 * 
+	 * <p>
+	 * If parameter value cannot be converted to float, the default value is 
+	 * returned.
+	 * </p>
+	 *
+	 * @param  serviceContext the service context from which to read the 
+	 *         parameter
+	 * @param  param the name of the parameter to read
+	 * @param  defaultValue the default value 
+	 * @return the parameter value as float for the given parameter name and 
+	 *         for the given service context, or the default value if parameter
+	 *         is missing
+	 */
 	public static float get(
 		ServiceContext serviceContext, String param, float defaultValue) {
 
 		return GetterUtil.get(serviceContext.getAttribute(param), defaultValue);
 	}
 
+	/**
+	 * Read parameter as integer from the service context, or return the 
+	 * default value if parameter is missing.
+	 * 
+	 * <p>
+	 * If parameter value cannot be converted to integer, the default value is 
+	 * returned.
+	 * </p>
+	 *
+	 * @param  serviceContext the service context from which to read the 
+	 *         parameter
+	 * @param  param the name of the parameter to read
+	 * @param  defaultValue the default value 
+	 * @return the parameter value as integer for the given parameter name and 
+	 *         for the given service context, or the default value if parameter
+	 *         is missing
+	 */
 	public static int get(
 		ServiceContext serviceContext, String param, int defaultValue) {
 
 		return GetterUtil.get(serviceContext.getAttribute(param), defaultValue);
 	}
 
+	/**
+	 * Read parameter as long from the service context, or return the default 
+	 * value if parameter is missing.
+	 * 
+	 * <p>
+	 * If parameter value cannot be converted to long, the default value is 
+	 * returned.
+	 * </p>
+	 *
+	 * @param  serviceContext the service context from which to read the 
+	 *         parameter
+	 * @param  param the name of the parameter to read
+	 * @param  defaultValue the default value 
+	 * @return the parameter value as long for the given parameter name and 
+	 *         for the given service context, or the default value if 
+	 *         parameter is missing
+	 */
 	public static long get(
 		ServiceContext serviceContext, String param, long defaultValue) {
 
 		return GetterUtil.get(serviceContext.getAttribute(param), defaultValue);
 	}
 
+	/**
+	 * Read parameter as number from the service context, or return the default
+	 * value if parameter is missing.
+	 * 
+	 * <p>
+	 * If parameter value cannot be converted to number, the default value is 
+	 * returned.
+	 * </p>
+	 *
+	 * @param  serviceContext the service context from which to read the 
+	 *         parameter
+	 * @param  param the name of the parameter to read
+	 * @param  defaultValue the default value 
+	 * @return the parameter value as number for the given parameter name and 
+	 *         for the given service context, or the default value if parameter
+	 *         is missing
+	 */
 	public static Number get(
 		ServiceContext serviceContext, String param, Number defaultValue) {
 
 		return GetterUtil.get(serviceContext.getAttribute(param), defaultValue);
 	}
 
+	/**
+	 * Read parameter as short from the service context, or return the default 
+	 * value if parameter is missing.
+	 * 
+	 * <p>
+	 * If parameter value cannot be converted to short, the default value is 
+	 * returned.
+	 * </p>
+	 *
+	 * @param  serviceContext the service context from which to read the 
+	 *         parameter
+	 * @param  param the name of the parameter to read
+	 * @param  defaultValue the default value 
+	 * @return the parameter value as short for the given parameter name and 
+	 *         for the given service context, or the default value if parameter
+	 *         is missing
+	 */
 	public static short get(
 		ServiceContext serviceContext, String param, short defaultValue) {
 
 		return GetterUtil.get(serviceContext.getAttribute(param), defaultValue);
 	}
 
+	/**
+	 * Read parameter as string from the service context, or return the default 
+	 * value if parameter is missing.
+	 *
+	 * @param  serviceContext the service context from which to read the 
+	 *         parameter
+	 * @param  param the name of the parameter to read
+	 * @param  defaultValue the default value 
+	 * @return the parameter value as string for the given parameter name and 
+	 *         for the given service context, or the default value if parameter
+	 *         is missing
+	 */
 	public static String get(
 		ServiceContext serviceContext, String param, String defaultValue) {
 
@@ -226,46 +664,158 @@ public class ParamUtil {
 		return null;
 	}
 
+	/**
+	 * Read parameter as boolean from the request, or return <code>false</code> 
+	 * if parameter is missing.
+	 *
+	 * @param  request the servlet request from which to read the parameter
+	 * @param  param the name of the parameter to read 
+	 * @return the parameter value as boolean for the given parameter name and 
+	 *         for the given servlet request, or <code>false</code> if parameter
+	 *         is missing
+	 */
 	public static boolean getBoolean(HttpServletRequest request, String param) {
 		return GetterUtil.getBoolean(request.getParameter(param));
 	}
 
+	/**
+	 * Read parameter as boolean from the request, or return the default value 
+	 * if parameter is missing.
+	 * 
+	 * <p>
+	 * If parameter value cannot be converted to boolean, the default value is 
+	 * returned.
+	 * </p>
+	 *
+	 * @param  request the servlet request from which to read the parameter
+	 * @param  param the name of the parameter to read
+	 * @param  defaultValue the default value 
+	 * @return the parameter value as boolean for the given parameter name and 
+	 *         for the given servlet request, or the default value if parameter
+	 *         is missing
+	 */
 	public static boolean getBoolean(
 		HttpServletRequest request, String param, boolean defaultValue) {
 
 		return get(request, param, defaultValue);
 	}
 
+	/**
+	 * Read parameter as boolean from the service context, or return 
+	 * <code>false</code> if parameter is missing.
+	 *
+	 * @param  portletRequest the service context from which to read the 
+	 *         parameter
+	 * @param  param the name of the parameter to read 
+	 * @return the parameter value as boolean for the given parameter name and 
+	 *         for the given service context, or <code>false</code> if parameter
+	 *         is missing
+	 */
 	public static boolean getBoolean(
 		PortletRequest portletRequest, String param) {
 
 		return GetterUtil.getBoolean(portletRequest.getParameter(param));
 	}
 
+	/**
+	 * Read parameter as boolean from the service context, or return the 
+	 * default value if parameter is missing.
+	 * 
+	 * <p>
+	 * If parameter value cannot be converted to boolean, the default value is 
+	 * returned.
+	 * </p>
+	 *
+	 * @param  portletRequest the service context from which to read the 
+	 *         parameter
+	 * @param  param the name of the parameter to read
+	 * @param  defaultValue the default value 
+	 * @return the parameter value as boolean for the given parameter name and 
+	 *         for the given service context, or the default value if parameter
+	 *         is missing
+	 */
 	public static boolean getBoolean(
 		PortletRequest portletRequest, String param, boolean defaultValue) {
 
 		return get(portletRequest, param, defaultValue);
 	}
 
+	/**
+	 * Read parameter as boolean from the service context, or return 
+	 * <code>false</code> if parameter is missing.
+	 *
+	 * @param  serviceContext the service context from which to read the 
+	 *         parameter
+	 * @param  param the name of the parameter to read 
+	 * @return the parameter value as boolean for the given parameter name and 
+	 *         for the given service context, or <code>false</code> if 
+	 *         parameter is missing
+	 */
 	public static boolean getBoolean(
 		ServiceContext serviceContext, String param) {
 
 		return GetterUtil.getBoolean(serviceContext.getAttribute(param));
 	}
 
+	/**
+	 * Read parameter as boolean from the service context, or return the 
+	 * default value if parameter is missing.
+	 * 
+	 * <p>
+	 * If parameter value cannot be converted to boolean, the default value is 
+	 * returned.
+	 * </p>
+	 *
+	 * @param  serviceContext the service context from which to read the 
+	 *         parameter
+	 * @param  param the name of the parameter to read
+	 * @param  defaultValue the default value 
+	 * @return the parameter value as boolean for the given parameter name and 
+	 *         for the given service context, or the default value if parameter
+	 *         is missing
+	 */
 	public static boolean getBoolean(
 		ServiceContext serviceContext, String param, boolean defaultValue) {
 
 		return get(serviceContext, param, defaultValue);
 	}
 
+	/**
+	 * Read parameter values as boolean array from the request.
+	 * 
+	 * <p>
+	 * In the returned array, each parameter value not convertible as boolean 
+	 * is replaced by <code>false</code> .
+	 * </p>
+	 *
+	 * @param  request the servlet request from which to read the parameter
+	 * @param  param the name of the parameter to read
+	 * @return the parameter values as boolean array for the given parameter 
+	 *         name and for the given servlet request, or the default value if 
+	 *         parameter is missing
+	 */
 	public static boolean[] getBooleanValues(
 		HttpServletRequest request, String param) {
 
 		return getBooleanValues(request, param, new boolean[0]);
 	}
 
+	/**
+	 * Read parameter values as boolean array from the request, or return the 
+	 * default value if parameter is missing.
+	 * 
+	 * <p>
+	 * In the returned array, each parameter value not convertible as boolean 
+	 * is replaced by <code>false</code> .
+	 * </p>
+	 *
+	 * @param  request the servlet request from which to read the parameter
+	 * @param  param the name of the parameter to read
+	 * @param  defaultValue the default value 
+	 * @return the parameter values as boolean array for the given parameter 
+	 *         name and for the given servlet request, or the default value if 
+	 *         parameter is missing
+	 */
 	public static boolean[] getBooleanValues(
 		HttpServletRequest request, String param, boolean[] defaultValue) {
 
@@ -273,12 +823,43 @@ public class ParamUtil {
 			getParameterValues(request, param, null), defaultValue);
 	}
 
+	/**
+	 * Read parameter values as boolean array from the service context.
+	 * 
+	 * <p>
+	 * In the returned array, each parameter value not convertible as boolean 
+	 * is replaced by <code>false</code> .
+	 * </p>
+	 *
+	 * @param  request the service context from which to read the parameter
+	 * @param  param the name of the parameter to read
+	 * @return the parameter values as boolean array for the given parameter
+	 *         name and for the given service context, or the default value if 
+	 *         parameter is missing
+	 */
 	public static boolean[] getBooleanValues(
 		PortletRequest portletRequest, String param) {
 
 		return getBooleanValues(portletRequest, param, new boolean[0]);
 	}
 
+	/**
+	 * Read parameter values as boolean array from the service context, or 
+	 * return the default value if parameter is missing.
+	 * 
+	 * <p>
+	 * In the returned array, each parameter value not convertible as boolean 
+	 * is replaced by <code>false</code> .
+	 * </p>
+	 *
+	 * @param  portletRequest the service context from which to read the 
+	 *         parameter
+	 * @param  param the name of the parameter to read
+	 * @param  defaultValue the default value 
+	 * @return the parameter values as boolean array for the given parameter 
+	 *         name and for the given service context, or the default value if 
+	 *         parameter is missing
+	 */
 	public static boolean[] getBooleanValues(
 		PortletRequest portletRequest, String param, boolean[] defaultValue) {
 
@@ -286,12 +867,43 @@ public class ParamUtil {
 			getParameterValues(portletRequest, param, null), defaultValue);
 	}
 
+	/**
+	 * Read parameter values as boolean array from the service context.
+	 * 
+	 * <p>
+	 * In the returned array, each parameter value not convertible as boolean 
+	 * is replaced by <code>false</code> .
+	 * </p>
+	 *
+	 * @param  serviceContext the service context from which to read the parameter
+	 * @param  param the name of the parameter to read
+	 * @return the parameter values as boolean array for the given parameter
+	 *         name and for the given service context, or the default value if 
+	 *         parameter is missing
+	 */
 	public static boolean[] getBooleanValues(
 		ServiceContext serviceContext, String param) {
 
 		return getBooleanValues(serviceContext, param, new boolean[0]);
 	}
 
+	/**
+	 * Read parameter values as boolean array from the service context, or 
+	 * return the default value if parameter is missing.
+	 * 
+	 * <p>
+	 * In the returned array, each parameter value not convertible as boolean 
+	 * is replaced by <code>false</code>.
+	 * </p>
+	 *
+	 * @param  serviceContext the service context from which to read the 
+	 *         parameter
+	 * @param  param the name of the parameter to read
+	 * @param  defaultValue the default value 
+	 * @return the parameter values as boolean array for the given parameter 
+	 *         name and for the given service context, or the default value if 
+	 *         parameter is missing
+	 */
 	public static boolean[] getBooleanValues(
 		ServiceContext serviceContext, String param, boolean[] defaultValue) {
 
@@ -299,12 +911,45 @@ public class ParamUtil {
 			serviceContext.getAttribute(param), defaultValue);
 	}
 
+	/**
+	 * Read parameter as date from the request, or return current date 
+	 * if parameter is missing.
+	 * 
+	 * <p>
+	 * If parameter value cannot be converted to date, current date is 
+	 * returned.
+	 * </p>
+	 *
+	 * @param  request the servlet request from which to read the parameter
+	 * @param  param the name of the parameter to read
+	 * @param  dateFormat the format used to parse date
+	 * @return the parameter value as date for the given parameter name and 
+	 *         for the given servlet request, or the current date if parameter
+	 *         is missing
+	 */
 	public static Date getDate(
 		HttpServletRequest request, String param, DateFormat dateFormat) {
 
 		return GetterUtil.getDate(request.getParameter(param), dateFormat);
 	}
 
+	/**
+	 * Read parameter as date from the request, or return the default value 
+	 * if parameter is missing.
+	 * 
+	 * <p>
+	 * If parameter value cannot be converted to date, the default value is 
+	 * returned.
+	 * </p>
+	 *
+	 * @param  request the servlet request from which to read the parameter
+	 * @param  param the name of the parameter to read
+	 * @param  dateFormat the format used to parse date
+	 * @param  defaultValue the default value 
+	 * @return the parameter value as date for the given parameter name and 
+	 *         for the given servlet request, or the default value if parameter
+	 *         is missing
+	 */
 	public static Date getDate(
 		HttpServletRequest request, String param, DateFormat dateFormat,
 		Date defaultValue) {
@@ -312,6 +957,23 @@ public class ParamUtil {
 		return get(request, param, dateFormat, defaultValue);
 	}
 
+	/**
+	 * Read parameter as date from the service context, or return current date 
+	 * if parameter is missing.
+	 * 
+	 * <p>
+	 * If parameter value cannot be converted to date, current date is 
+	 * returned.
+	 * </p>
+	 *
+	 * @param  portletRequest the service context from which to read the 
+	 *         parameter
+	 * @param  param the name of the parameter to read
+	 * @param  dateFormat the format used to parse date
+	 * @return the parameter value as date for the given parameter name and 
+	 *         for the given service context, or the current date if parameter
+	 *         is missing
+	 */
 	public static Date getDate(
 		PortletRequest portletRequest, String param, DateFormat dateFormat) {
 
@@ -319,6 +981,24 @@ public class ParamUtil {
 			portletRequest.getParameter(param), dateFormat);
 	}
 
+	/**
+	 * Read parameter as date from the service context, or return the default 
+	 * value if parameter is missing.
+	 * 
+	 * <p>
+	 * If parameter value cannot be converted to date, the default value is 
+	 * returned.
+	 * </p>
+	 *
+	 * @param  portletRequest the service context from which to read the 
+	 *         parameter
+	 * @param  param the name of the parameter to read
+	 * @param  dateFormat the format used to parse date
+	 * @param  defaultValue the default value 
+	 * @return the parameter value as date for the given parameter name and 
+	 *         for the given service context, or the default value if parameter
+	 *         is missing
+	 */
 	public static Date getDate(
 		PortletRequest portletRequest, String param, DateFormat dateFormat,
 		Date defaultValue) {
@@ -326,6 +1006,23 @@ public class ParamUtil {
 		return get(portletRequest, param, dateFormat, defaultValue);
 	}
 
+	/**
+	 * Read parameter as date from the service context, or return current date 
+	 * if parameter is missing.
+	 * 
+	 * <p>
+	 * If parameter value cannot be converted to date, current date is 
+	 * returned.
+	 * </p>
+	 *
+	 * @param  serviceContext the service context from which to read the 
+	 *         parameter
+	 * @param  param the name of the parameter to read
+	 * @param  dateFormat the format used to parse date
+	 * @return the parameter value as date for the given parameter name and 
+	 *         for the given service context, or the current date if parameter
+	 *         is missing
+	 */
 	public static Date getDate(
 		ServiceContext serviceContext, String param, DateFormat dateFormat) {
 
@@ -333,6 +1030,24 @@ public class ParamUtil {
 			serviceContext.getAttribute(param), dateFormat);
 	}
 
+	/**
+	 * Read parameter as date from the service context, or return the default 
+	 * value if parameter is missing.
+	 * 
+	 * <p>
+	 * If parameter value cannot be converted to date, the default value is 
+	 * returned.
+	 * </p>
+	 *
+	 * @param  serviceContext the service context from which to read the 
+	 *         parameter
+	 * @param  param the name of the parameter to read
+	 * @param  dateFormat the format used to parse date
+	 * @param  defaultValue the default value 
+	 * @return the parameter value as date for the given parameter name and 
+	 *         for the given service context, or the default value if parameter
+	 *         is missing
+	 */
 	public static Date getDate(
 		ServiceContext serviceContext, String param, DateFormat dateFormat,
 		Date defaultValue) {
