@@ -1527,13 +1527,13 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 			ldapUser.getUserGroupRoles(), ldapUser.getUserGroupIds(),
 			ldapUser.getServiceContext());
 
+		user = _userLocalService.updateStatus(
+			user.getUserId(), ldapUser.getStatus(), new ServiceContext());
+
 		if (modifiedDate != null) {
 			user = _userLocalService.updateModifiedDate(
 				user.getUserId(), modifiedDate);
 		}
-
-		user = _userLocalService.updateStatus(
-			user.getUserId(), ldapUser.getStatus(), new ServiceContext());
 
 		if (_log.isDebugEnabled()) {
 			_log.debug(
