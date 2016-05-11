@@ -904,14 +904,6 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 				return bundle;
 			}
 
-			if (start) {
-				if (_log.isDebugEnabled()) {
-					_log.debug("Starting initial bundle " + bundle);
-				}
-
-				bundle.start();
-			}
-
 			if (((bundle.getState() & Bundle.UNINSTALLED) == 0) &&
 				(startLevel > 0)) {
 
@@ -926,6 +918,15 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 				bundleStartLevel.setStartLevel(startLevel);
 			}
+
+			if (start) {
+				if (_log.isDebugEnabled()) {
+					_log.debug("Starting initial bundle " + bundle);
+				}
+
+				bundle.start();
+			}
+
 
 			if (_log.isDebugEnabled()) {
 				_log.debug("Started bundle " + bundle);
