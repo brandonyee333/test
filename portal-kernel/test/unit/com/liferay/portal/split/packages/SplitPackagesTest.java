@@ -74,6 +74,20 @@ public class SplitPackagesTest {
 						}
 					}
 
+					return FileVisitResult.CONTINUE;
+				}
+
+			});
+
+		Files.walkFileTree(
+			portalPath.resolve("modules"),
+			new SimpleFileVisitor<Path>() {
+
+				@Override
+				public FileVisitResult preVisitDirectory(
+						Path dirPath, BasicFileAttributes basicFileAttributes)
+					throws IOException {
+
 					if (Files.exists(dirPath.resolve("portal.build"))) {
 						Path sourcePath = dirPath.resolve("src/main/java");
 
