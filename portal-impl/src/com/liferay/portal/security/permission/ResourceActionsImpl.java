@@ -1178,6 +1178,8 @@ public class ResourceActionsImpl implements ResourceActions {
 		Set<String> modelResourceActions =
 			modelResourceActionsBag.getResourceActions();
 
+		modelResourceActions.clear();
+
 		readSupportsActions(modelResourceElement, modelResourceActions);
 
 		checkModelActions(modelResourceActions);
@@ -1244,6 +1246,8 @@ public class ResourceActionsImpl implements ResourceActions {
 
 		Set<String> portletResourceActions =
 			portletResourceActionsBag.getResourceActions();
+
+		portletResourceActions.clear();
 
 		readSupportsActions(portletResourceElement, portletResourceActions);
 
