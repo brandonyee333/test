@@ -29,6 +29,7 @@ import com.liferay.knowledge.base.model.KBTemplate;
 import com.liferay.knowledge.base.web.constants.KBWebKeys;
 import com.liferay.portal.kernel.exception.NoSuchSubscriptionException;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
@@ -66,6 +67,7 @@ import javax.portlet.RenderResponse;
 import javax.portlet.WindowStateException;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Peter Shin
@@ -78,7 +80,8 @@ import org.osgi.service.component.annotations.Component;
 		"com.liferay.portlet.add-default-resource=true",
 		"com.liferay.portlet.css-class-wrapper=knowledge-base-portlet knowledge-base-portlet-admin",
 		"com.liferay.portlet.display-category=category.hidden",
-		"com.liferay.portlet.header-portlet-css=/admin/css/common.css,/admin/css/main.css",
+		"com.liferay.portlet.header-portlet-css=/admin/css/common.css",
+		"com.liferay.portlet.header-portlet-css=/admin/css/main.css",
 		"com.liferay.portlet.icon=/icons/admin.png",
 		"com.liferay.portlet.preferences-unique-per-layout=false",
 		"com.liferay.portlet.scopeable=true",
@@ -87,10 +90,10 @@ import org.osgi.service.component.annotations.Component;
 		"javax.portlet.expiration-cache=0",
 		"javax.portlet.init-param.always-send-redirect=true",
 		"javax.portlet.init-param.copy-request-parameters=true",
+		"javax.portlet.init-param.portlet-title-based-navigation=true",
 		"javax.portlet.init-param.template-path=/admin/",
 		"javax.portlet.init-param.view-template=/admin/view.jsp",
 		"javax.portlet.name=" + KBPortletKeys.KNOWLEDGE_BASE_ADMIN,
-		"javax.portlet.preferences=classpath:/META-INF/portlet-preferences/admin-default-portlet-preferences.xml",
 		"javax.portlet.resource-bundle=content.Language",
 		"javax.portlet.security-role-ref=administrator,guest,power-user,user",
 		"javax.portlet.supported-public-render-parameter=categoryId",
@@ -113,6 +116,27 @@ public class AdminPortlet extends BaseKBPortlet {
 
 		kbArticleService.deleteKBArticles(
 			themeDisplay.getScopeGroupId(), resourcePrimKeys);
+	}
+
+	public void deleteKBArticlesAndFolders(
+			ActionRequest actionRequest, ActionResponse actionResponse)
+		throws PortalException {
+
+		long[] deleteKBArticleResourcePrimKeys = ParamUtil.getLongValues(
+			actionRequest, "rowIdsKBArticle");
+
+		for (long deleteKBArticleResourcePrimKey :
+				deleteKBArticleResourcePrimKeys) {
+
+			kbArticleService.deleteKBArticle(deleteKBArticleResourcePrimKey);
+		}
+
+		long[] deleteKBFolderIds = ParamUtil.getLongValues(
+			actionRequest, "rowIdsKBFolder");
+
+		for (long deleteKBFolderId : deleteKBFolderIds) {
+			kbFolderService.deleteKBFolder(deleteKBFolderId);
+		}
 	}
 
 	public void deleteKBFolder(
@@ -205,9 +229,9 @@ public class AdminPortlet extends BaseKBPortlet {
 		throws IOException, PortletException {
 
 		try {
-			int status = WorkflowConstants.STATUS_ANY;
-
-			renderRequest.setAttribute(KBWebKeys.KNOWLEDGE_BASE_STATUS, status);
+			renderRequest.setAttribute(
+				KBWebKeys.DL_MIME_TYPE_DISPLAY_CONTEXT,
+				dlMimeTypeDisplayContext);
 
 			KBArticle kbArticle = null;
 
@@ -218,6 +242,7 @@ public class AdminPortlet extends BaseKBPortlet {
 				renderRequest, "resourceClassNameId", kbArticleClassNameId);
 			long resourcePrimKey = ParamUtil.getLong(
 				renderRequest, "resourcePrimKey");
+			int status = WorkflowConstants.STATUS_ANY;
 
 			if ((resourcePrimKey > 0) &&
 				(resourceClassNameId == kbArticleClassNameId)) {
@@ -240,6 +265,8 @@ public class AdminPortlet extends BaseKBPortlet {
 
 			renderRequest.setAttribute(
 				KBWebKeys.KNOWLEDGE_BASE_KB_TEMPLATE, kbTemplate);
+
+			renderRequest.setAttribute(KBWebKeys.KNOWLEDGE_BASE_STATUS, status);
 		}
 		catch (Exception e) {
 			if (e instanceof NoSuchArticleException ||
@@ -435,6 +462,13 @@ public class AdminPortlet extends BaseKBPortlet {
 		}
 
 		return false;
+	}
+
+	@Reference(
+		target = "(&(release.bundle.symbolic.name=com.liferay.knowledge.base.web)(release.schema.version=1.0.0))",
+		unbind = "-"
+	)
+	protected void setRelease(Release release) {
 	}
 
 }

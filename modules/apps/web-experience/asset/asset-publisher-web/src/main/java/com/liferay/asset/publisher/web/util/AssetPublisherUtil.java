@@ -561,7 +561,8 @@ public class AssetPublisherUtil {
 
 			AssetRenderer<?> assetRenderer =
 				assetRendererFactory.getAssetRenderer(
-					assetEntry.getClassPK(), AssetRendererFactory.TYPE_LATEST);
+					assetEntry.getClassPK(),
+					AssetRendererFactory.TYPE_LATEST_APPROVED);
 
 			if (!assetRendererFactory.isActive(
 					permissionChecker.getCompanyId())) {
@@ -573,11 +574,21 @@ public class AssetPublisherUtil {
 				continue;
 			}
 
-			if (checkPermission &&
-				((!assetRenderer.isDisplayable() && !includeNonVisibleAssets) ||
-				 !assetRenderer.hasViewPermission(permissionChecker))) {
+			if (checkPermission) {
+				if (!assetRenderer.isDisplayable() &&
+					!includeNonVisibleAssets) {
 
-				continue;
+					continue;
+				}
+				else if (!assetRenderer.hasViewPermission(permissionChecker)) {
+					assetRenderer = assetRendererFactory.getAssetRenderer(
+						assetEntry.getClassPK(),
+						AssetRendererFactory.TYPE_LATEST_APPROVED);
+
+					if (!assetRenderer.hasViewPermission(permissionChecker)) {
+						continue;
+					}
+				}
 			}
 
 			assetEntries.add(assetEntry);

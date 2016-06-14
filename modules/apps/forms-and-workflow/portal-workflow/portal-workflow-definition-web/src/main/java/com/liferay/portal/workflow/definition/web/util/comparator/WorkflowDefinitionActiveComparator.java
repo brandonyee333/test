@@ -18,6 +18,8 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.workflow.WorkflowDefinition;
 
+import java.text.Collator;
+
 import java.util.Locale;
 
 /**
@@ -41,6 +43,8 @@ public class WorkflowDefinitionActiveComparator
 
 		_ascending = ascending;
 		_locale = locale;
+
+		_collator = Collator.getInstance(_locale);
 	}
 
 	@Override
@@ -51,7 +55,7 @@ public class WorkflowDefinitionActiveComparator
 		String activeLabel1 = getActiveLabel(workflowDefinition1.isActive());
 		String activeLabel2 = getActiveLabel(workflowDefinition2.isActive());
 
-		int value = activeLabel1.compareTo(activeLabel2);
+		int value = _collator.compare(activeLabel1, activeLabel2);
 
 		if (_ascending) {
 			return value;
@@ -90,6 +94,7 @@ public class WorkflowDefinitionActiveComparator
 	}
 
 	private final boolean _ascending;
+	private final Collator _collator;
 	private final Locale _locale;
 
 }

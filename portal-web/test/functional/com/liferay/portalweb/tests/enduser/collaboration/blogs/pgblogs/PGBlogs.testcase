@@ -1,4 +1,5 @@
 <definition component-name="portal-collaboration">
+	<property name="portal.release" value="true" />
 	<property name="custom.properties" value="default.layout.template.id=1_column" />
 	<property name="testray.main.component.name" value="Blogs" />
 
@@ -419,7 +420,7 @@
 		<execute macro="BlogsNavigator#gotoConfigurationScopePG" />
 
 		<execute macro="BlogsConfiguration#selectScopePG">
-			<var name="scopeSelection" value="Liferay" />
+			<var name="scopeSelection" value="Liferay DXP" />
 		</execute>
 
 		<execute macro="Navigator#gotoPage">
@@ -1264,11 +1265,11 @@
 		<execute macro="Gmail#viewMail">
 			<var name="emailFromUserName" value="Joe Bloggs" />
 			<var name="gmailAssetType" value="Inappropriate Content Flagged" />
-			<var name="gmailMailTableMessageTitle" value="Inappropriate Content Flagged in Liferay" />
-			<var name="gmailMessageBody" value="You are receiving this email because you are administrator of Liferay. Please review the content in this site." />
+			<var name="gmailMailTableMessageTitle" value="Inappropriate Content Flagged in Liferay DXP" />
+			<var name="gmailMessageBody" value="You are receiving this email because you are administrator of Liferay DXP. Please review the content in this site." />
 			<var name="gmailMessageBodyClosing" value="Sincerely" />
 			<var name="gmailMessageBodyGreeting" value="Dear userfn1 userln1," />
-			<var name="gmailMessageTitle" value="Inappropriate Content Flagged in Liferay" />
+			<var name="gmailMessageTitle" value="Inappropriate Content Flagged in Liferay DXP" />
 		</execute>
 
 		<execute macro="Gmail#tearDown">
@@ -1507,6 +1508,11 @@
 	</command>
 
 	<command name="ViewBlogsEntryRSS" priority="4">
+		<execute macro="TestCase#getSiteName">
+			<return from="siteName" name="siteName" />
+			<var name="siteName" value="${siteName}" />
+		</execute>
+		
 		<execute macro="Navigator#gotoPage">
 			<var name="pageName" value="Blogs Page" />
 		</execute>
@@ -1520,6 +1526,7 @@
 			<var name="entryContent" value="Blogs Entry Content" />
 			<var name="entryTitle" value="Blogs Entry Title" />
 			<var name="pageName" value="Blogs Page" />
+			<var name="siteName" value="${siteName}" />
 		</execute>
 	</command>
 

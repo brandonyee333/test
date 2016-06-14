@@ -53,13 +53,22 @@ import javax.servlet.http.HttpServletResponse;
 public class CommentAssetRenderer
 	extends BaseJSPAssetRenderer<WorkflowableComment> implements TrashRenderer {
 
-	public CommentAssetRenderer(WorkflowableComment workflowableComment) {
+	public CommentAssetRenderer(
+		WorkflowableComment workflowableComment,
+		AssetRendererFactory<WorkflowableComment> assetRendererFactory) {
+
 		_workflowableComment = workflowableComment;
+		_assetRendererFactory = assetRendererFactory;
 	}
 
 	@Override
 	public WorkflowableComment getAssetObject() {
 		return _workflowableComment;
+	}
+
+	@Override
+	public AssetRendererFactory<WorkflowableComment> getAssetRendererFactory() {
+		return _assetRendererFactory;
 	}
 
 	@Override
@@ -72,6 +81,10 @@ public class CommentAssetRenderer
 		return _workflowableComment.getCommentId();
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public Date getDisplayDate() {
 		return _workflowableComment.getModifiedDate();
@@ -235,6 +248,8 @@ public class CommentAssetRenderer
 		return true;
 	}
 
+	private final AssetRendererFactory<WorkflowableComment>
+		_assetRendererFactory;
 	private final WorkflowableComment _workflowableComment;
 
 }

@@ -1,4 +1,5 @@
 <definition component-name="portal-wcm">
+	<property name="portal.release" value="true" />
 	<property name="testray.main.component.name" value="Site and Page Templates" />
 
 	<set-up>
@@ -35,6 +36,10 @@
 		<execute macro="SiteTemplates#addCP">
 			<var name="siteTemplateActive" value="Yes" />
 			<var name="siteTemplateName" value="Site Template Name" />
+		</execute>
+
+		<execute macro="SiteTemplates#viewCP">
+			<var name="siteTemplateNameList" value="Site Template Name" />
 		</execute>
 
 		<execute macro="ProductMenu#gotoControlPanelSites">

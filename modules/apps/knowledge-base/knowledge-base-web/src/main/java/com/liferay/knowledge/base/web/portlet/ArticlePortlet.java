@@ -22,6 +22,7 @@ import com.liferay.knowledge.base.model.KBArticle;
 import com.liferay.knowledge.base.service.permission.KBArticlePermission;
 import com.liferay.knowledge.base.web.constants.KBWebKeys;
 import com.liferay.portal.kernel.exception.NoSuchSubscriptionException;
+import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.servlet.SessionErrors;
@@ -42,6 +43,7 @@ import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Peter Shin
@@ -53,7 +55,8 @@ import org.osgi.service.component.annotations.Component;
 		"com.liferay.portlet.add-default-resource=true",
 		"com.liferay.portlet.css-class-wrapper=knowledge-base-portlet knowledge-base-portlet-article",
 		"com.liferay.portlet.display-category=category.cms",
-		"com.liferay.portlet.header-portlet-css=/admin/css/common.css,/article/css/main.css",
+		"com.liferay.portlet.header-portlet-css=/admin/css/common.css",
+		"com.liferay.portlet.header-portlet-css=/article/css/main.css",
 		"com.liferay.portlet.icon=/icons/article.png",
 		"com.liferay.portlet.instanceable=true",
 		"com.liferay.portlet.scopeable=true",
@@ -64,7 +67,6 @@ import org.osgi.service.component.annotations.Component;
 		"javax.portlet.init-param.template-path=/article/",
 		"javax.portlet.init-param.view-template=/article/view.jsp",
 		"javax.portlet.name=" + KBPortletKeys.KNOWLEDGE_BASE_ARTICLE,
-		"javax.portlet.preferences=classpath:/META-INF/portlet-preferences/article-default-portlet-preferences.xml",
 		"javax.portlet.resource-bundle=content.Language",
 		"javax.portlet.security-role-ref=administrator,guest,power-user,user",
 		"javax.portlet.supported-public-render-parameter=categoryId",
@@ -81,13 +83,14 @@ public class ArticlePortlet extends BaseKBPortlet {
 		throws IOException, PortletException {
 
 		try {
-			int status = getStatus(renderRequest);
-
-			renderRequest.setAttribute(KBWebKeys.KNOWLEDGE_BASE_STATUS, status);
+			renderRequest.setAttribute(
+				KBWebKeys.DL_MIME_TYPE_DISPLAY_CONTEXT,
+				dlMimeTypeDisplayContext);
 
 			KBArticle kbArticle = null;
 
 			long resourcePrimKey = getResourcePrimKey(renderRequest);
+			int status = getStatus(renderRequest);
 
 			if (resourcePrimKey > 0) {
 				kbArticle = kbArticleService.getLatestKBArticle(
@@ -96,6 +99,8 @@ public class ArticlePortlet extends BaseKBPortlet {
 
 			renderRequest.setAttribute(
 				KBWebKeys.KNOWLEDGE_BASE_KB_ARTICLE, kbArticle);
+
+			renderRequest.setAttribute(KBWebKeys.KNOWLEDGE_BASE_STATUS, status);
 		}
 		catch (Exception e) {
 			if (e instanceof NoSuchArticleException ||
@@ -221,6 +226,13 @@ public class ArticlePortlet extends BaseKBPortlet {
 		}
 
 		return WorkflowConstants.STATUS_APPROVED;
+	}
+
+	@Reference(
+		target = "(&(release.bundle.symbolic.name=com.liferay.knowledge.base.web)(release.schema.version=1.0.0))",
+		unbind = "-"
+	)
+	protected void setRelease(Release release) {
 	}
 
 }

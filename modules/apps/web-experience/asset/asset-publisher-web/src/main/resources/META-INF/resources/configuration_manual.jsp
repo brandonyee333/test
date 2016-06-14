@@ -72,7 +72,6 @@ String eventName = "_" + HtmlUtil.escapeJS(assetPublisherDisplayContext.getPortl
 						%>
 
 						<liferay-ui:search-container-column-text
-							cssClass="content-column title-column"
 							name="title"
 							truncate="<%= true %>"
 						>
@@ -80,29 +79,32 @@ String eventName = "_" + HtmlUtil.escapeJS(assetPublisherDisplayContext.getPortl
 
 							<c:if test="<%= !assetEntry.isVisible() %>">
 								(<aui:workflow-status
+									markupView="lexicon"
 									showIcon="<%= false %>"
 									showLabel="<%= false %>"
 									status="<%= assetRenderer.getStatus() %>"
-									statusMessage='<%= assetRenderer.getStatus() == 0 ? "not-visible" : WorkflowConstants.getStatusLabel(assetRenderer.getStatus()) %>'
+									statusMessage='<%= (assetRenderer.getStatus() == 0) ? "not-visible" : WorkflowConstants.getStatusLabel(assetRenderer.getStatus()) %>'
 								/>)
 							</c:if>
 						</liferay-ui:search-container-column-text>
 
 						<liferay-ui:search-container-column-text
-							cssClass="text-column type-column"
 							name="type"
 							value="<%= assetRendererFactory.getTypeName(locale) %>"
 						/>
 
 						<liferay-ui:search-container-column-date
-							cssClass="modified-date-column text-column"
 							name="modified-date"
 							value="<%= assetEntry.getModifiedDate() %>"
 						/>
 
 						<liferay-ui:search-container-column-jsp
-							cssClass="entry-action-column"
 							path="/asset_selection_action.jsp"
+						/>
+
+						<liferay-ui:search-container-column-jsp
+							cssClass="entry-action-column"
+							path="/asset_selection_order_action.jsp"
 						/>
 					</liferay-ui:search-container-row>
 
@@ -173,7 +175,7 @@ String eventName = "_" + HtmlUtil.escapeJS(assetPublisherDisplayContext.getPortl
 											cssClass="asset-selector"
 											data="<%= data %>"
 											id="<%= groupId + FriendlyURLNormalizerUtil.normalize(type) %>"
-											message="<%= type %>"
+											message="<%= HtmlUtil.escape(type) %>"
 											url="javascript:;"
 										/>
 
@@ -202,7 +204,7 @@ String eventName = "_" + HtmlUtil.escapeJS(assetPublisherDisplayContext.getPortl
 												cssClass="asset-selector"
 												data="<%= data %>"
 												id="<%= groupId + FriendlyURLNormalizerUtil.normalize(type) %>"
-												message="<%= type %>"
+												message="<%= HtmlUtil.escape(type) %>"
 												url="javascript:;"
 											/>
 

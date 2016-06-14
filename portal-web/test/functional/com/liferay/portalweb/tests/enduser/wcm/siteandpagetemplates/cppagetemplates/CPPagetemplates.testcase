@@ -1,4 +1,5 @@
 <definition component-name="portal-wcm">
+	<property name="portal.release" value="true" />
 	<property name="testray.main.component.name" value="Site and Page Templates" />
 
 	<set-up>
@@ -294,8 +295,14 @@
 			<var name="pageTemplateName" value="Page Template Name" />
 		</execute>
 
+		<execute macro="TestCase#getSiteName">
+			<return from="siteName" name="siteName" />
+			<var name="siteName" value="${siteName}" />
+		</execute>
+
 		<execute macro="PageTemplate#viewPG">
 			<var name="pageTemplateName" value="Page Template Name" />
+			<var name="siteName" value="${siteName}" />
 		</execute>
 
 		<execute macro="ProductMenu#gotoControlPanelSites">
@@ -309,6 +316,7 @@
 
 		<execute macro="PageTemplate#viewPG">
 			<var name="pageTemplateName" value="Page Template Name Edit" />
+			<var name="siteName" value="${siteName}" />
 		</execute>
 	</command>
 </definition>

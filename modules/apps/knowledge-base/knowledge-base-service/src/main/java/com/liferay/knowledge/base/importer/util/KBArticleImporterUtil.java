@@ -15,13 +15,14 @@
 package com.liferay.knowledge.base.importer.util;
 
 import com.liferay.document.library.kernel.exception.NoSuchFileEntryException;
+import com.liferay.knowledge.base.configuration.KBGroupServiceConfiguration;
 import com.liferay.knowledge.base.constants.KBPortletKeys;
 import com.liferay.knowledge.base.exception.KBArticleImportException;
 import com.liferay.knowledge.base.model.KBArticle;
-import com.liferay.knowledge.base.service.util.PortletPropsValues;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.portletfilerepository.PortletFileRepositoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
@@ -45,8 +46,15 @@ public class KBArticleImporterUtil {
 			ZipReader zipReader, Map<String, FileEntry> fileEntriesMap)
 		throws PortalException {
 
+		KBGroupServiceConfiguration kbGroupServiceConfiguration =
+			ConfigurationProviderUtil.getGroupConfiguration(
+				KBGroupServiceConfiguration.class, kbArticle.getGroupId());
+
 		try {
-			validateImageFileExtension(imageFileName);
+			validateImageFileExtension(
+				imageFileName,
+				kbGroupServiceConfiguration.
+					markdownImporterImageFileExtensions());
 		}
 		catch (KBArticleImportException kbaie) {
 			if (_log.isWarnEnabled()) {
@@ -57,11 +65,13 @@ public class KBArticleImporterUtil {
 		}
 
 		try {
+			String zipReaderFileName = getZipReaderFileName(
+				kbGroupServiceConfiguration.markdownImporterImageFolder(),
+				imageFileName);
+
 			return addImageFileEntry(
 				userId, kbArticle, imageFileName,
-				zipReader.getEntryAsInputStream(
-					PortletPropsValues.MARKDOWN_IMPORTER_IMAGE_FOLDER +
-						imageFileName),
+				zipReader.getEntryAsInputStream(zipReaderFileName),
 				fileEntriesMap);
 		}
 		catch (Exception e) {
@@ -113,14 +123,13 @@ public class KBArticleImporterUtil {
 		return paths[paths.length - 1];
 	}
 
-	public static void validateImageFileExtension(String imageFileName)
+	public static void validateImageFileExtension(
+			String imageFileName, String[] fileExtensions)
 		throws KBArticleImportException {
 
 		boolean validImageFileExtension = false;
 
-		for (String fileExtension :
-				PortletPropsValues.MARKDOWN_IMPORTER_IMAGE_FILE_EXTENSIONS) {
-
+		for (String fileExtension : fileExtensions) {
 			if (StringPool.STAR.equals(fileExtension) ||
 				StringUtil.endsWith(imageFileName, fileExtension)) {
 
@@ -169,6 +178,17 @@ public class KBArticleImporterUtil {
 		fileEntriesMap.put(imageFileName, fileEntry);
 
 		return fileEntry;
+	}
+
+	protected static String getZipReaderFileName(
+		String dirName, String fileName) {
+
+		if (dirName.endsWith(StringPool.SLASH)) {
+			return dirName + fileName;
+		}
+		else {
+			return dirName + StringPool.SLASH + fileName;
+		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

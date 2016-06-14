@@ -1,4 +1,5 @@
 <definition component-name="portal-staging">
+	<property name="portal.release" value="true" />
 	<property name="testray.main.component.name" value="Export/Import Framework" />
 
 	<set-up>
@@ -140,17 +141,13 @@
 		<execute macro="LAR#exportExportTemplateCP">
 			<var name="exportTemplateDescription" value="Export Template Description" />
 			<var name="exportTemplateName" value="Export Template Name" />
+			<var name="larFileName" value="Export.Template" />
 		</execute>
 
-		<var method="selenium#getText('//ul/li/div/h5')" name="valueName" />
-
-		<echo message="value name ${valueName}" />
-
-		<var group="1" input="${valueName}" name="larFileName" pattern="([a-zA-z0-9_.-]*)[(0-9KB)]*" />
-
-		<echo message="file name ${larFileName}" />
+		<execute function="Pause" locator1="3000" />
 
 		<execute function="Click" locator1="SitePagesExport#CURRENT_AND_PREVIOUS_DOWNLOAD" />
+
 		<execute function="DownloadTempFile" />
 
 		<execute macro="ProductMenu#gotoControlPanelSites">
@@ -162,7 +159,7 @@
 		</execute>
 
 		<execute macro="LAR#importSiteCP">
-			<var name="larFileName" value="${larFileName}" />
+			<var name="larFileName" value="Export.Template" />
 			<var name="siteName" value="Site Name" />
 		</execute>
 
@@ -209,23 +206,21 @@
 		<execute macro="LAR#exportExportTemplateCP">
 			<var name="exportTemplateDescription" value="Export Template Description Edit" />
 			<var name="exportTemplateName" value="Export Template Name Edit" />
+			<var name="larFileName" value="Export Template Name Edit" />
 		</execute>
+
+		<var group="1" input="Export Template Name Edit" name="larFile" pattern="([a-zA-z0-9_.-]*)[(0-9KB)]*" />
 
 		<execute function="AssertTextEquals#assertPartialText" locator1="SitePagesExport#CURRENT_AND_PREVIOUS_STATUS" value1="Successful" />
 
-		<var method="selenium#getText('//ul/li/div/h5')" name="valueName" />
-
-		<echo message="value name ${valueName}" />
-
-		<var group="1" input="${valueName}" name="larFileName" pattern="([a-zA-z0-9_.-]*)[(0-9KB)]*" />
-
-		<echo message="file name ${larFileName}" />
-
 		<execute function="Click" locator1="SitePagesExport#CURRENT_AND_PREVIOUS_DOWNLOAD" />
+
 		<execute function="DownloadTempFile" />
 
+		<execute function="Pause" locator1="5000" />
+
 		<execute macro="LAR#importSiteCP">
-			<var name="larFileName" value="${larFileName}" />
+			<var name="larFileName" value="${larFile}" />
 			<var name="siteName" value="Site Name" />
 		</execute>
 
@@ -376,7 +371,9 @@
 			<var name="dmFolderName" value="DM Folder Name" />
 		</execute>
 
-		<execute macro="LAR#configureExportSiteCP" />
+		<execute macro="LAR#configureExportSiteCP" >
+			<var name="larFileName" value="DMExport" />
+		</execute>
 
 		<execute function="AssertClick" locator1="SitePagesExport#EXPORT_BUTTON" value1="Export" />
 
@@ -439,6 +436,8 @@
 
 		<execute function="Click" locator1="SitePagesExport#CURRENT_AND_PREVIOUS_DOWNLOAD" />
 		<execute function="DownloadTempFile" />
+
+		<execute function="Pause" locator1="5000" />
 
 		<execute macro="LAR#importSiteCP">
 			<var name="larFileName" value="${larFileName}" />
@@ -549,6 +548,7 @@
 		</execute>
 
 		<execute macro="LAR#exportSiteCP">
+			<var name="larFileName" value="ExportPrivatePage" />
 			<var name="privateLayout" value="true" />
 		</execute>
 
@@ -581,13 +581,9 @@
 			<var name="siteName" value="Site Name" />
 		</execute>
 
-		<execute macro="ProductMenu#gotoSite">
-			<var name="site" value="Site Name" />
-		</execute>
-
-		<execute macro="Navigator#gotoSitePage">
+		<execute macro="Navigator#gotoPage">
 			<var name="pageName" value="Private Page" />
-			<var name="siteName" value="Site Name" />
+			<var name="sitePagePrivacy" value="true" />
 		</execute>
 	</command>
 

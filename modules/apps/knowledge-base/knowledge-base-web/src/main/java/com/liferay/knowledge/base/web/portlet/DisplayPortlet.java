@@ -32,6 +32,7 @@ import com.liferay.knowledge.base.web.selector.KBArticleSelector;
 import com.liferay.knowledge.base.web.selector.KBArticleSelectorFactory;
 import com.liferay.portal.kernel.exception.NoSuchSubscriptionException;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.portlet.PortalPreferences;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
@@ -75,7 +76,8 @@ import org.osgi.service.component.annotations.Reference;
 	property = {
 		"com.liferay.portlet.css-class-wrapper=knowledge-base-portlet knowledge-base-portlet-display",
 		"com.liferay.portlet.display-category=category.cms",
-		"com.liferay.portlet.header-portlet-css=/admin/css/common.css,/display/css/main.css",
+		"com.liferay.portlet.header-portlet-css=/admin/css/common.css",
+		"com.liferay.portlet.header-portlet-css=/display/css/main.css",
 		"com.liferay.portlet.icon=/icons/display.png",
 		"com.liferay.portlet.scopeable=true",
 		"javax.portlet.display-name=Knowledge Base Display",
@@ -85,7 +87,6 @@ import org.osgi.service.component.annotations.Reference;
 		"javax.portlet.init-param.template-path=/display/",
 		"javax.portlet.init-param.view-template=/display/view.jsp",
 		"javax.portlet.name=" + KBPortletKeys.KNOWLEDGE_BASE_DISPLAY,
-		"javax.portlet.preferences=classpath:/META-INF/portlet-preferences/display-default-portlet-preferences.xml",
 		"javax.portlet.resource-bundle=content.Language",
 		"javax.portlet.security-role-ref=administrator,guest,power-user,user",
 		"javax.portlet.supported-public-render-parameter=categoryId",
@@ -102,13 +103,19 @@ public class DisplayPortlet extends BaseKBPortlet {
 		throws IOException, PortletException {
 
 		try {
+			renderRequest.setAttribute(
+				KBWebKeys.DL_MIME_TYPE_DISPLAY_CONTEXT,
+				dlMimeTypeDisplayContext);
+
 			KBArticleSelection kbArticleSelection = getKBArticle(renderRequest);
+
+			renderRequest.setAttribute(
+				KBWebKeys.KNOWLEDGE_BASE_EXACT_MATCH,
+				kbArticleSelection.isExactMatch());
 
 			KBArticle kbArticle = kbArticleSelection.getKBArticle();
 
 			int status = getStatus(renderRequest, kbArticle);
-
-			renderRequest.setAttribute(KBWebKeys.KNOWLEDGE_BASE_STATUS, status);
 
 			if ((kbArticle != null) && (kbArticle.getStatus() != status)) {
 				kbArticle = _kbArticleLocalService.fetchLatestKBArticle(
@@ -117,12 +124,12 @@ public class DisplayPortlet extends BaseKBPortlet {
 
 			renderRequest.setAttribute(
 				KBWebKeys.KNOWLEDGE_BASE_KB_ARTICLE, kbArticle);
-			renderRequest.setAttribute(
-				KBWebKeys.KNOWLEDGE_BASE_EXACT_MATCH,
-				kbArticleSelection.isExactMatch());
+
 			renderRequest.setAttribute(
 				KBWebKeys.KNOWLEDGE_BASE_SEARCH_KEYWORDS,
 				kbArticleSelection.getKeywords());
+
+			renderRequest.setAttribute(KBWebKeys.KNOWLEDGE_BASE_STATUS, status);
 
 			if (!kbArticleSelection.isExactMatch()) {
 				HttpServletResponse response =
@@ -406,6 +413,13 @@ public class DisplayPortlet extends BaseKBPortlet {
 		KBArticleSelectorFactory kbArticleSelectorFactory) {
 
 		_kbArticleSelectorFactory = kbArticleSelectorFactory;
+	}
+
+	@Reference(
+		target = "(&(release.bundle.symbolic.name=com.liferay.knowledge.base.web)(release.schema.version=1.0.0))",
+		unbind = "-"
+	)
+	protected void setRelease(Release release) {
 	}
 
 	private ClassNameLocalService _classNameLocalService;

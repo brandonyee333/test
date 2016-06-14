@@ -83,6 +83,11 @@ public class JavaSourceProcessorTest extends BaseSourceProcessorTestCase {
 	}
 
 	@Test
+	public void testFormatBooleanStatements() throws Exception {
+		test("FormatBooleanStatements.testjava");
+	}
+
+	@Test
 	public void testFormatImports() throws Exception {
 		test("FormatImports.testjava");
 	}
@@ -155,13 +160,24 @@ public class JavaSourceProcessorTest extends BaseSourceProcessorTestCase {
 				"line break:", "line break:", "line break:", "line break:",
 				"line break:", "line break:", "line break:", "line break:",
 				"line break:", "line break:", "line break:", "line break:",
-				"line break:", "line break:"
+				"line break:", "line break:", "line break:"
 			},
 			new Integer[] {
 				31, 35, 43, 47, 49, 52, 55, 59, 62, 67, 71, 77, 81, 87, 98, 111,
-				115, 125
+				116, 122, 132
 			});
 		test("IncorrectLineBreaks2.testjava");
+	}
+
+	@Test
+	public void testIncorrectParameterNames() throws Exception {
+		test(
+			"IncorrectParameterNames.testjava",
+			new String[] {
+				"Parameter StringMap should not start with uppercase:",
+				"Parameter TestString should not start with uppercase:"
+			},
+			new Integer[] {24, 28});
 	}
 
 	@Test
@@ -185,6 +201,15 @@ public class JavaSourceProcessorTest extends BaseSourceProcessorTestCase {
 			},
 			new Integer[] {22, 28});
 		test("IncorrectVariableNames2.testjava");
+		test(
+			"IncorrectVariableNames3.testjava",
+			new String[] {
+				"Variable TestMapWithARatherLongName should not start with " +
+					"uppercase:",
+				"Variable TestString should not start with uppercase:"
+			},
+			new Integer[] {26, 29});
+
 	}
 
 	@Test

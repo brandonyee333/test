@@ -18,10 +18,13 @@
 
 <%
 KBArticleURLHelper kbArticleURLHelper = new KBArticleURLHelper(renderRequest, renderResponse, templatePath);
+
+String[] kbArticlesSections = kbSectionPortletInstanceConfiguration.kbArticlesSections();
+String kbArticleDisplayStyle = kbSectionPortletInstanceConfiguration.kbArticleDisplayStyle();
 %>
 
 <c:choose>
-	<c:when test="<%= ArrayUtil.isNotEmpty(PortletPropsValues.ADMIN_KB_ARTICLE_SECTIONS) %>">
+	<c:when test="<%= ArrayUtil.isNotEmpty(kbSectionPortletInstanceConfiguration.adminKBArticleSections()) %>">
 		<liferay-portlet:renderURL varImpl="iteratorURL">
 			<portlet:param name="mvcPath" value="/section/view.jsp" />
 		</liferay-portlet:renderURL>
@@ -34,7 +37,7 @@ KBArticleURLHelper kbArticleURLHelper = new KBArticleURLHelper(renderRequest, re
 				results="<%= KBArticleServiceUtil.getSectionsKBArticles(scopeGroupId, kbArticlesSections, WorkflowConstants.STATUS_APPROVED, searchContainer.getStart(), searchContainer.getEnd(), searchContainer.getOrderByComparator()) %>"
 			/>
 
-			<c:if test="<%= showKBArticlesSectionsTitle %>">
+			<c:if test="<%= kbSectionPortletInstanceConfiguration.showKBArticlesSectionsTitle() %>">
 
 				<%
 				List<String> titles = new ArrayList<String>();
@@ -96,7 +99,7 @@ KBArticleURLHelper kbArticleURLHelper = new KBArticleURLHelper(renderRequest, re
 
 			</div>
 
-			<c:if test="<%= showKBArticlesPagination && (total > searchContainer.getDelta()) %>">
+			<c:if test="<%= kbSectionPortletInstanceConfiguration.showKBArticlesPagination() && (total > searchContainer.getDelta()) %>">
 				<div class="taglib-search-iterator-page-iterator-bottom">
 					<liferay-ui:search-paginator searchContainer="<%= searchContainer %>" />
 				</div>

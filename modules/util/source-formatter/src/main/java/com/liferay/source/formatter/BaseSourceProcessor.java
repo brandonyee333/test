@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.NaturalOrderStringComparator;
 import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -47,6 +48,7 @@ import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CodingErrorAction;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -54,6 +56,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -73,20 +81,48 @@ import org.dom4j.io.SAXReader;
  */
 public abstract class BaseSourceProcessor implements SourceProcessor {
 
+	public static final int PLUGINS_MAX_DIR_LEVEL = 3;
+
 	public static final int PORTAL_MAX_DIR_LEVEL = 7;
 
 	@Override
 	public final void format() throws Exception {
 		preFormat();
 
-		for (String fileName : getFileNames()) {
-			try {
-				format(fileName);
-			}
-			catch (Exception e) {
-				throw new RuntimeException("Unable to format " + fileName, e);
-			}
+		List<String> fileNames = getFileNames();
+
+		ExecutorService executorService = Executors.newFixedThreadPool(
+			sourceFormatterArgs.getProcessorThreadCount());
+
+		List<Future<Void>> futures = new ArrayList<>(fileNames.size());
+
+		for (final String fileName : fileNames) {
+			Future<Void> future = executorService.submit(
+				new Callable<Void>() {
+
+					@Override
+					public Void call() throws Exception {
+						try {
+							format(fileName);
+
+							return null;
+						}
+						catch (Exception e) {
+							throw new RuntimeException(
+								"Unable to format " + fileName, e);
+						}
+					}
+
+				});
+
+			futures.add(future);
 		}
+
+		for (Future<Void> future : futures) {
+			future.get();
+		}
+
+		executorService.shutdown();
 
 		postFormat();
 
@@ -201,7 +237,7 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		Matcher matcher = getterUtilGetPattern.matcher(content);
 
 		while (matcher.find()) {
-			List<String> parametersList = getParameterList(matcher);
+			List<String> parametersList = getParameterList(matcher.group());
 
 			if (parametersList.size() != 2) {
 				continue;
@@ -336,11 +372,7 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 	}
 
 	protected void checkInefficientStringMethods(
-		String line, String fileName, String absolutePath, int lineCount) {
-
-		if (isExcludedPath(getRunOutsidePortalExcludes(), absolutePath)) {
-			return;
-		}
+		String line, String fileName, int lineCount) {
 
 		String methodName = "toLowerCase";
 
@@ -366,6 +398,28 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		}
 	}
 
+	protected void checkInefficientStringMethods(
+		String line, String fileName, String absolutePath, int lineCount,
+		boolean javaSource) {
+
+		if (isExcludedPath(getRunOutsidePortalExcludes(), absolutePath)) {
+			return;
+		}
+
+		if (javaSource) {
+			checkInefficientStringMethods(line, fileName, lineCount);
+
+			return;
+		}
+
+		Matcher matcher = javaSourceInsideJSPLinePattern.matcher(line);
+
+		while (matcher.find()) {
+			checkInefficientStringMethods(
+				matcher.group(1), fileName, lineCount);
+		}
+	}
+
 	protected void checkLanguageKeys(
 			String fileName, String absolutePath, String content,
 			Pattern pattern)
@@ -378,7 +432,7 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		}
 
 		if (_portalLanguageProperties == null) {
-			_portalLanguageProperties = new Properties();
+			Properties portalLanguageProperties = new Properties();
 
 			File portalLanguagePropertiesFile = new File(
 				getFile("portal-impl", PORTAL_MAX_DIR_LEVEL),
@@ -387,7 +441,9 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 			InputStream inputStream = new FileInputStream(
 				portalLanguagePropertiesFile);
 
-			_portalLanguageProperties.load(inputStream);
+			portalLanguageProperties.load(inputStream);
+
+			_portalLanguageProperties = portalLanguageProperties;
 		}
 
 		Matcher matcher = pattern.matcher(content);
@@ -500,6 +556,10 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 	}
 
 	protected void checkPropertyUtils(String fileName, String content) {
+		if (fileName.endsWith("TypeConvertorUtil.java")) {
+			return;
+		}
+
 		if (content.contains("org.apache.commons.beanutils.PropertyUtils")) {
 			processErrorMessage(
 				fileName,
@@ -536,7 +596,7 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		Matcher matcher = stringUtilReplacePattern.matcher(content);
 
 		while (matcher.find()) {
-			List<String> parametersList = getParameterList(matcher);
+			List<String> parametersList = getParameterList(matcher.group());
 
 			if (parametersList.size() != 3) {
 				return;
@@ -921,8 +981,15 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 
 			String attribute = s.substring(0, x);
 
-			if (!isAttributName(attribute)) {
+			String trimmedAttribute = StringUtil.trim(attribute);
+
+			if (!isAttributName(trimmedAttribute)) {
 				return line;
+			}
+
+			if (!attribute.equals(trimmedAttribute)) {
+				return StringUtil.replace(
+					line, attribute + "=", trimmedAttribute + "=");
 			}
 
 			if (Validator.isNotNull(previousAttribute) &&
@@ -937,6 +1004,11 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 
 			if ((delimeter != CharPool.APOSTROPHE) &&
 				(delimeter != CharPool.QUOTE)) {
+
+				if (delimeter == CharPool.SPACE) {
+					return StringUtil.replace(
+						line, attribute + "= ", attribute + "=");
+				}
 
 				if (delimeter != CharPool.AMPERSAND) {
 					processErrorMessage(
@@ -1136,47 +1208,6 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		return content;
 	}
 
-	protected String formatJSONObject(String content) {
-		Matcher jsonObjectPutBlockMatcher = jsonObjectPutBlockPattern.matcher(
-			content);
-
-		while (jsonObjectPutBlockMatcher.find()) {
-			String jsonObjectPutBlock = jsonObjectPutBlockMatcher.group();
-
-			Matcher jsonObjectPutMatcher = jsonObjectPutPattern.matcher(
-				jsonObjectPutBlock);
-
-			String previousParameters = null;
-			String previousPutObjectName = null;
-
-			while (jsonObjectPutMatcher.find()) {
-				String parameters = jsonObjectPutMatcher.group(2);
-
-				List<String> parametersList = splitParameters(parameters);
-
-				String putObjectName = parametersList.get(0);
-
-				if ((previousPutObjectName != null) &&
-					(previousPutObjectName.compareToIgnoreCase(putObjectName) >
-						0)) {
-
-					String newJSONObjectPutBlock = StringUtil.replaceFirst(
-						jsonObjectPutBlock, previousParameters, parameters);
-					newJSONObjectPutBlock = StringUtil.replaceLast(
-						newJSONObjectPutBlock, parameters, previousParameters);
-
-					return StringUtil.replace(
-						content, jsonObjectPutBlock, newJSONObjectPutBlock);
-				}
-
-				previousParameters = parameters;
-				previousPutObjectName = putObjectName;
-			}
-		}
-
-		return content;
-	}
-
 	protected String formatStringBundler(
 		String fileName, String content, int maxLineLength) {
 
@@ -1252,7 +1283,7 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 			return line;
 		}
 
-		Matcher matcher = javaSourceInsideJSPTagPattern.matcher(line);
+		Matcher matcher = javaSourceInsideJSPLinePattern.matcher(line);
 
 		while (matcher.find()) {
 			String linePart = matcher.group(1);
@@ -1566,24 +1597,20 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 
 		List<String> fileNames = new ArrayList<>();
 
-		for (int i = 0; i < 3; i++) {
-			fileNames = getFileNames(basedir, new String[0], includes);
+		for (int i = 0; i < PLUGINS_MAX_DIR_LEVEL; i++) {
+			File sharedDir = new File(basedir + "shared");
 
-			if (!fileNames.isEmpty()) {
+			if (sharedDir.exists()) {
+				fileNames = getFileNames(basedir, new String[0], includes);
+
 				break;
 			}
 
-			basedir = "../" + basedir;
+			basedir = basedir + "../";
 		}
 
 		for (String fileName : fileNames) {
-			if (!fileName.startsWith(
-					sourceFormatterArgs.getBaseDirName() + "shared")) {
-
-				break;
-			}
-
-			File file = new File(basedir + fileName);
+			File file = new File(fileName);
 
 			String content = FileUtil.read(file);
 
@@ -2073,28 +2100,70 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		return null;
 	}
 
-	protected List<String> getParameterList(Matcher methodCallMatcher) {
-		String replaceCall = methodCallMatcher.group();
+	protected List<String> getParameterList(String methodCall) {
+		String parameters = null;
 
-		int x = replaceCall.length();
+		int x = -1;
 
 		while (true) {
-			x = replaceCall.lastIndexOf(
-				StringPool.CLOSE_PARENTHESIS, x - 1);
+			x = methodCall.indexOf(StringPool.CLOSE_PARENTHESIS, x + 1);
 
-			replaceCall = replaceCall.substring(0, x + 1);
+			parameters = methodCall.substring(0, x + 1);
 
-			if (getLevel(replaceCall) == 0) {
+			if ((getLevel(parameters, "(", ")") == 0) &&
+				(getLevel(parameters, "{", "}") == 0)) {
+
 				break;
 			}
 		}
 
-		x = replaceCall.indexOf(StringPool.OPEN_PARENTHESIS);
+		x = parameters.indexOf(StringPool.OPEN_PARENTHESIS);
 
-		String parameters = replaceCall.substring(
-			x + 1, replaceCall.length() - 1);
+		parameters = parameters.substring(x + 1, parameters.length() - 1);
 
 		return splitParameters(parameters);
+	}
+
+	protected List<String> getPluginsInsideModulesDirectoryNames()
+		throws Exception {
+
+		if (_pluginsInsideModulesDirectoryNames != null) {
+			return _pluginsInsideModulesDirectoryNames;
+		}
+
+		List<String> pluginsInsideModulesDirectoryNames = new ArrayList<>();
+
+		List<String> pluginBuildFileNames = getFileNames(
+			new String[0],
+			new String[] {
+				"**/modules/apps/**/build.xml",
+				"**/modules/private/apps/**/build.xml"
+			});
+
+		for (String pluginBuildFileName : pluginBuildFileNames) {
+			pluginBuildFileName = StringUtil.replace(
+				pluginBuildFileName, StringPool.BACK_SLASH, StringPool.SLASH);
+
+			File file = new File(pluginBuildFileName);
+
+			String absolutePath = getAbsolutePath(file);
+
+			int x = absolutePath.indexOf("/modules/apps/");
+
+			if (x == -1) {
+				x = absolutePath.indexOf("/modules/private/apps/");
+			}
+
+			int y = absolutePath.lastIndexOf(StringPool.SLASH);
+
+			pluginsInsideModulesDirectoryNames.add(
+				absolutePath.substring(x, y + 1));
+		}
+
+		_pluginsInsideModulesDirectoryNames =
+			pluginsInsideModulesDirectoryNames;
+
+		return _pluginsInsideModulesDirectoryNames;
 	}
 
 	protected String getProperty(String key) {
@@ -2294,6 +2363,28 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 	}
 
 	protected boolean isModulesFile(String absolutePath) {
+		return isModulesFile(absolutePath, false);
+	}
+
+	protected boolean isModulesFile(
+		String absolutePath, boolean includePlugins) {
+
+		if (includePlugins) {
+			return absolutePath.contains("/modules/");
+		}
+
+		try {
+			for (String directoryName :
+					getPluginsInsideModulesDirectoryNames()) {
+
+				if (absolutePath.contains(directoryName)) {
+					return false;
+				}
+			}
+		}
+		catch (Exception e) {
+		}
+
 		return absolutePath.contains("/modules/");
 	}
 
@@ -2358,10 +2449,92 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 			});
 	}
 
+	protected String sortDefinitions(
+		String content, Comparator<String> comparator) {
+
+		String previousDefinition = null;
+
+		Matcher matcher = _definitionPattern.matcher(content);
+
+		while (matcher.find()) {
+			String definition = matcher.group();
+
+			if (Validator.isNotNull(matcher.group(1))) {
+				definition = definition.substring(0, definition.length() - 1);
+			}
+
+			if (Validator.isNotNull(previousDefinition)) {
+				int value = comparator.compare(previousDefinition, definition);
+
+				if (value > 0) {
+					content = StringUtil.replaceFirst(
+						content, previousDefinition, definition);
+					content = StringUtil.replaceLast(
+						content, definition, previousDefinition);
+
+					return content;
+				}
+
+				if (value == 0) {
+					return StringUtil.replaceFirst(
+						content, previousDefinition + "\n", StringPool.BLANK);
+				}
+			}
+
+			previousDefinition = definition;
+		}
+
+		return content;
+	}
+
 	protected String sortHTMLAttributes(
 		String line, String value, String attributeAndValue) {
 
 		return line;
+	}
+
+	protected String sortPutOrSetCalls(
+		String content, Pattern codeBlockPattern, Pattern singleLinePattern) {
+
+		Matcher codeBlockMatcher = codeBlockPattern.matcher(content);
+
+		PutOrSetParameterNameComparator putOrSetParameterNameComparator =
+			new PutOrSetParameterNameComparator();
+
+		while (codeBlockMatcher.find()) {
+			String codeBlock = codeBlockMatcher.group();
+
+			Matcher singleLineMatcher = singleLinePattern.matcher(codeBlock);
+
+			String previousParameters = null;
+			String previousPutOrSetParameterName = null;
+
+			while (singleLineMatcher.find()) {
+				String parameters = singleLineMatcher.group(1);
+
+				List<String> parametersList = splitParameters(parameters);
+
+				String putOrSetParameterName = parametersList.get(0);
+
+				if ((previousPutOrSetParameterName != null) &&
+					(putOrSetParameterNameComparator.compare(
+						previousPutOrSetParameterName, putOrSetParameterName) >
+							0)) {
+
+					String newCodeBlock = StringUtil.replaceFirst(
+						codeBlock, previousParameters, parameters);
+					newCodeBlock = StringUtil.replaceLast(
+						newCodeBlock, parameters, previousParameters);
+
+					return StringUtil.replace(content, codeBlock, newCodeBlock);
+				}
+
+				previousParameters = parameters;
+				previousPutOrSetParameterName = putOrSetParameterName;
+			}
+		}
+
+		return content;
 	}
 
 	protected List<String> splitParameters(String parameters) {
@@ -2384,7 +2557,9 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 
 			String linePart = parameters.substring(0, x);
 
-			if (getLevel(linePart) == 0) {
+			if ((getLevel(linePart, "(", ")") == 0) &&
+				(getLevel(linePart, "{", "}") == 0)) {
+
 				parametersList.add(StringUtil.trim(linePart));
 
 				parameters = parameters.substring(x + 1);
@@ -2538,12 +2713,12 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		"GetterUtil\\.get(Boolean|Double|Float|Integer|Number|Object|Short|" +
 			"String)\\((.*?)\\);\n",
 		Pattern.DOTALL);
-	protected static Pattern javaSourceInsideJSPTagPattern = Pattern.compile(
+	protected static Pattern javaSourceInsideJSPLinePattern = Pattern.compile(
 		"<%=(.+?)%>");
 	protected static Pattern jsonObjectPutBlockPattern = Pattern.compile(
 		"(\t*\\w*(json|JSON)Object\\.put\\(\\s*\".*?\\);\n)+", Pattern.DOTALL);
 	protected static Pattern jsonObjectPutPattern = Pattern.compile(
-		"\t*\\w*(json|JSON)Object\\.put\\((.*?)\\);\n", Pattern.DOTALL);
+		"\t*\\w*(?:json|JSON)Object\\.put\\((.*?)\\);\n", Pattern.DOTALL);
 	protected static Pattern languageKeyPattern = Pattern.compile(
 		"LanguageUtil.(?:get|format)\\([^;%]+|Liferay.Language.get\\('([^']+)");
 	protected static Pattern mergeLangPattern = Pattern.compile(
@@ -2561,6 +2736,10 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		"SessionErrors.(?:add|contains|get)\\([^;%&|!]+|".concat(
 			"SessionMessages.(?:add|contains|get)\\([^;%&|!]+"),
 		Pattern.MULTILINE);
+	protected static Pattern setAttributeBlockPattern = Pattern.compile(
+		"(\t*\\w*\\.setAttribute\\(\\s*.*?\\);\n)+", Pattern.DOTALL);
+	protected static Pattern setAttributePattern = Pattern.compile(
+		"\t*\\w*\\.setAttribute\\((.*?)\\);\n", Pattern.DOTALL);
 	protected static Pattern singleLengthStringPattern = Pattern.compile(
 		"^(\".\"|StringPool\\.([A-Z_]+))$");
 	protected static Pattern stringUtilReplacePattern = Pattern.compile(
@@ -2724,21 +2903,73 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		new HashMap<>();
 	private Map<String, String> _compatClassNamesMap;
 	private String _copyright;
-	private Map<String, List<String>> _errorMessagesMap = new HashMap<>();
+	private final Pattern _definitionPattern = Pattern.compile(
+		"^[A-Za-z-][\\s\\S]*?([^\\\\]\n|\\Z)", Pattern.MULTILINE);
+	private Map<String, List<String>> _errorMessagesMap =
+		new ConcurrentHashMap<>();
 	private String[] _excludes;
 	private SourceMismatchException _firstSourceMismatchException;
 	private Set<String> _immutableFieldTypes;
 	private String _mainReleaseVersion;
-	private final List<String> _modifiedFileNames = new ArrayList<>();
+	private final List<String> _modifiedFileNames =
+		new CopyOnWriteArrayList<>();
 	private final Map<String, Properties> _moduleLangLanguageProperties =
 		new HashMap<>();
 	private final Map<String, Properties> _moduleLanguageProperties =
 		new HashMap<>();
 	private String _oldCopyright;
+	private List<String> _pluginsInsideModulesDirectoryNames;
 	private Properties _portalLanguageProperties;
 	private Properties _properties;
 	private List<String> _runOutsidePortalExcludes;
 	private SourceFormatterHelper _sourceFormatterHelper;
 	private boolean _usePortalCompatImport;
+
+	private class PutOrSetParameterNameComparator
+		extends NaturalOrderStringComparator {
+
+		@Override
+		public int compare(
+			String putOrSetParameterName1, String putOrSetParameterName2) {
+
+			String strippedParameterName1 = stripQuotes(putOrSetParameterName1);
+			String strippedParameterName2 = stripQuotes(putOrSetParameterName2);
+
+			if (strippedParameterName1.contains(StringPool.OPEN_PARENTHESIS) ||
+				strippedParameterName2.contains(StringPool.OPEN_PARENTHESIS)) {
+
+				return 0;
+			}
+
+			Matcher matcher = _multipleLineParameterNamePattern.matcher(
+				putOrSetParameterName1);
+
+			if (matcher.find()) {
+				putOrSetParameterName1 = matcher.replaceAll(StringPool.BLANK);
+			}
+
+			matcher = _multipleLineParameterNamePattern.matcher(
+				putOrSetParameterName2);
+
+			if (matcher.find()) {
+				putOrSetParameterName2 = matcher.replaceAll(StringPool.BLANK);
+			}
+
+			int value = super.compare(
+				putOrSetParameterName1, putOrSetParameterName2);
+
+			if (putOrSetParameterName1.startsWith(StringPool.QUOTE) ^
+				putOrSetParameterName2.startsWith(StringPool.QUOTE)) {
+
+				return -value;
+			}
+
+			return value;
+		}
+
+		private final Pattern _multipleLineParameterNamePattern =
+			Pattern.compile("\" \\+\n\t+\"");
+
+	}
 
 }

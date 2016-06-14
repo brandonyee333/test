@@ -19,6 +19,7 @@ import com.liferay.dynamic.data.mapping.model.DDMTemplate;
 import com.liferay.dynamic.data.mapping.service.DDMTemplateLocalService;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.kernel.lar.PortletDataException;
+import com.liferay.exportimport.kernel.lar.PortletDataHandlerKeys;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.staging.MergeLayoutPrototypesThreadLocal;
 import com.liferay.exportimport.portlet.preferences.processor.Capability;
@@ -145,6 +146,16 @@ public class JournalContentExportImportPortletPreferencesProcessor
 			return portletPreferences;
 		}
 
+		if (!MapUtil.getBoolean(
+				portletDataContext.getParameterMap(),
+				PortletDataHandlerKeys.PORTLET_DATA) &&
+			MergeLayoutPrototypesThreadLocal.isInProgress()) {
+
+			portletDataContext.setScopeGroupId(previousScopeGroupId);
+
+			return portletPreferences;
+		}
+
 		StagedModelDataHandlerUtil.exportReferenceStagedModel(
 			portletDataContext, portletId, article);
 
@@ -238,13 +249,15 @@ public class JournalContentExportImportPortletPreferencesProcessor
 
 				portletPreferences.setValue("groupId", String.valueOf(groupId));
 
-				Layout layout = _layoutLocalService.fetchLayout(
-					portletDataContext.getPlid());
+				if (portletDataContext.getPlid() > 0) {
+					Layout layout = _layoutLocalService.fetchLayout(
+						portletDataContext.getPlid());
 
-				_journalContentSearchLocalService.updateContentSearch(
-					layout.getGroupId(), layout.isPrivateLayout(),
-					layout.getLayoutId(), portletDataContext.getPortletId(),
-					articleId, true);
+					_journalContentSearchLocalService.updateContentSearch(
+						layout.getGroupId(), layout.isPrivateLayout(),
+						layout.getLayoutId(), portletDataContext.getPortletId(),
+						articleId, true);
+				}
 			}
 			else {
 				portletPreferences.setValue("groupId", StringPool.BLANK);

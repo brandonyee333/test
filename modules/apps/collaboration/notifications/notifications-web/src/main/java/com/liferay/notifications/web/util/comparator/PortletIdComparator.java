@@ -16,6 +16,8 @@ package com.liferay.notifications.web.util.comparator;
 
 import com.liferay.portal.kernel.util.PortalUtil;
 
+import java.text.Collator;
+
 import java.util.Comparator;
 import java.util.Locale;
 
@@ -26,6 +28,8 @@ public class PortletIdComparator implements Comparator<String> {
 
 	public PortletIdComparator(Locale locale) {
 		_locale = locale;
+
+		_collator = Collator.getInstance(_locale);
 	}
 
 	@Override
@@ -33,9 +37,10 @@ public class PortletIdComparator implements Comparator<String> {
 		String portletTitle1 = PortalUtil.getPortletTitle(portletId1, _locale);
 		String portletTitle2 = PortalUtil.getPortletTitle(portletId2, _locale);
 
-		return portletTitle1.compareTo(portletTitle2);
+		return _collator.compare(portletTitle1, portletTitle2);
 	}
 
+	private final Collator _collator;
 	private final Locale _locale;
 
 }

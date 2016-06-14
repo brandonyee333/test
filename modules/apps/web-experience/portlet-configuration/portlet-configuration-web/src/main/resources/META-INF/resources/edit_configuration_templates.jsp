@@ -31,7 +31,7 @@ portletURL.setParameter("redirect", redirect);
 portletURL.setParameter("returnToFullPageURL", returnToFullPageURL);
 portletURL.setParameter("portletResource", portletResource);
 
-SearchContainer<ArchivedSettings> archivedSettingsSearch = new SearchContainer<ArchivedSettings>(renderRequest, null, null, SearchContainer.DEFAULT_CUR_PARAM, SearchContainer.DEFAULT_DELTA, portletURL, null, "there-are-no-archived-setups");
+SearchContainer<ArchivedSettings> archivedSettingsSearch = new SearchContainer<ArchivedSettings>(renderRequest, null, null, SearchContainer.DEFAULT_CUR_PARAM, SearchContainer.DEFAULT_DELTA, portletURL, null, "there-are-no-configuration-templates");
 
 List<ArchivedSettings> archivedSettingsList = SettingsFactoryUtil.getPortletInstanceArchivedSettingsList(scopeGroupId, selPortlet.getRootPortletId());
 
@@ -174,26 +174,25 @@ archivedSettingsSearch.setResults(archivedSettingsList);
 					</c:when>
 					<c:when test='<%= displayStyle.equals("list") %>'>
 						<liferay-ui:search-container-column-text
-							cssClass="content-column name-column title-column"
+							name="name"
 							truncate="<%= true %>"
 						>
 							<%= HtmlUtil.escape(archivedSettings.getName()) %>
 						</liferay-ui:search-container-column-text>
 
 						<liferay-ui:search-container-column-text
-							cssClass="text-column user-name-column"
+							name="user-name"
+							truncate="<%= true %>"
 						>
 							<%= HtmlUtil.escape(archivedSettings.getUserName()) %>
 						</liferay-ui:search-container-column-text>
 
 						<liferay-ui:search-container-column-date
-							cssClass="modified-date-column text-column"
 							name="modified-date"
 							property="modifiedDate"
 						/>
 
 						<liferay-ui:search-container-column-jsp
-							cssClass="entry-action-column"
 							path="/configuration_template_action.jsp"
 						/>
 					</c:when>

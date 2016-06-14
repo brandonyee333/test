@@ -25,6 +25,7 @@ import com.liferay.knowledge.base.service.permission.KBArticlePermission;
 import com.liferay.knowledge.base.web.constants.KBWebKeys;
 import com.liferay.portal.kernel.exception.NoSuchSubscriptionException;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.servlet.SessionErrors;
@@ -53,7 +54,8 @@ import org.osgi.service.component.annotations.Reference;
 	property = {
 		"com.liferay.portlet.css-class-wrapper=knowledge-base-portlet knowledge-base-portlet-section",
 		"com.liferay.portlet.display-category=category.cms",
-		"com.liferay.portlet.header-portlet-css=/admin/css/common.css,/section/css/main.css",
+		"com.liferay.portlet.header-portlet-css=/admin/css/common.css",
+		"com.liferay.portlet.header-portlet-css=/section/css/main.css",
 		"com.liferay.portlet.icon=/icons/section.png",
 		"com.liferay.portlet.instanceable=true",
 		"com.liferay.portlet.scopeable=true",
@@ -64,7 +66,6 @@ import org.osgi.service.component.annotations.Reference;
 		"javax.portlet.init-param.template-path=/section/",
 		"javax.portlet.init-param.view-template=/section/view.jsp",
 		"javax.portlet.name=" + KBPortletKeys.KNOWLEDGE_BASE_SECTION,
-		"javax.portlet.preferences=classpath:/META-INF/portlet-preferences/section-default-portlet-preferences.xml",
 		"javax.portlet.resource-bundle=content.Language",
 		"javax.portlet.security-role-ref=administrator,guest,power-user,user",
 		"javax.portlet.supported-public-render-parameter=categoryId",
@@ -81,14 +82,18 @@ public class SectionPortlet extends BaseKBPortlet {
 		throws IOException, PortletException {
 
 		try {
-			int status = getStatus(renderRequest);
+			renderRequest.setAttribute(
+				KBWebKeys.DL_MIME_TYPE_DISPLAY_CONTEXT,
+				dlMimeTypeDisplayContext);
 
-			renderRequest.setAttribute(KBWebKeys.KNOWLEDGE_BASE_STATUS, status);
+			int status = getStatus(renderRequest);
 
 			KBArticle kbArticle = getKBArticle(renderRequest, status);
 
 			renderRequest.setAttribute(
 				KBWebKeys.KNOWLEDGE_BASE_KB_ARTICLE, kbArticle);
+
+			renderRequest.setAttribute(KBWebKeys.KNOWLEDGE_BASE_STATUS, status);
 		}
 		catch (Exception e) {
 			if (e instanceof NoSuchArticleException ||
@@ -195,6 +200,13 @@ public class SectionPortlet extends BaseKBPortlet {
 		KBArticleLocalService kbArticleLocalService) {
 
 		_kbArticleLocalService = kbArticleLocalService;
+	}
+
+	@Reference(
+		target = "(&(release.bundle.symbolic.name=com.liferay.knowledge.base.web)(release.schema.version=1.0.0))",
+		unbind = "-"
+	)
+	protected void setRelease(Release release) {
 	}
 
 	private KBArticleLocalService _kbArticleLocalService;

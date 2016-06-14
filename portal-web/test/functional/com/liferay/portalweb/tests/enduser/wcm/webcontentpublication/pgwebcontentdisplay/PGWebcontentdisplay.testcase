@@ -1,4 +1,5 @@
 <definition component-name="portal-wcd">
+	<property name="portal.release" value="true" />
 	<property name="testray.main.component.name" value="Web Content Display" />
 
 	<var name="pageName" value="Web Content Display Page" />
@@ -41,8 +42,7 @@
 	</tear-down>
 
 	<command name="AddDraftNotApproved" priority="4">
-		<execute macro="WebContent#addPGViaWCD">
-			<var name="draft" value="true" />
+		<execute macro="WebContent#addDraftPGViaWCD">
 			<var name="webContentContent" value="WC WebContent Content" />
 			<var name="webContentTitle" value="WC WebContent Title" />
 		</execute>
@@ -122,6 +122,10 @@
 		<execute macro="WebContent#addPGViaWCD">
 			<var name="webContentContent" value="WC WebContent Content" />
 			<var name="webContentTitle" value="WC WebContent Title" />
+		</execute>
+
+		<execute macro="WebContent#viewPGViaWCD">
+			<var name="webContentContent" value="WC WebContent Content" />
 		</execute>
 	</command>
 
@@ -319,6 +323,10 @@
 			<var name="webContentTitle" value="WC WebContent Title" />
 		</execute>
 
+		<execute macro="WebContent#viewPGViaWCD">
+			<var name="webContentContent" value="WC WebContent Content" />
+		</execute>
+
 		<execute macro="Navigator#openURL" />
 
 		<execute macro="ProductMenu#gotoSitesContent">
@@ -414,6 +422,10 @@
 			<var name="webContentTitle" value="WC WebContent Title" />
 		</execute>
 
+		<execute macro="WebContent#viewPGViaWCD">
+			<var name="webContentContent" value="WC WebContent Content" />
+		</execute>
+
 		<execute macro="WebContentNavigator#gotoEditPGViaWCD" />
 
 		<execute macro="WebContent#editPGViaWCD">
@@ -436,6 +448,10 @@
 		<execute macro="WebContent#addPGViaWCD">
 			<var name="webContentContent" value="WC WebContent Content" />
 			<var name="webContentTitle" value="WC WebContent Title" />
+		</execute>
+
+		<execute macro="WebContent#viewPGViaWCD">
+			<var name="webContentContent" value="WC WebContent Content" />
 		</execute>
 
 		<execute macro="WebContentNavigator#gotoEditPGViaWCD" />
@@ -625,6 +641,10 @@
 			<var name="webContentTitle" value="WC WebContent Title" />
 		</execute>
 
+		<execute macro="WebContent#viewPGViaWCD">
+			<var name="webContentContent" value="WC WebContent Content" />
+		</execute>
+
 		<execute macro="ProductMenu#gotoControlPanelConfiguration">
 			<var name="portlet" value="Server Administration" />
 		</execute>
@@ -758,6 +778,10 @@
 			<var name="webContentTitle" value="WC WebContent Title" />
 		</execute>
 
+		<execute macro="WebContent#viewPGViaWCD">
+			<var name="webContentContent" value="WC WebContent Content" />
+		</execute>
+
 		<execute macro="User#logoutPG" />
 
 		<execute macro="Navigator#gotoPage">
@@ -869,6 +893,10 @@
 			<var name="webContentTitle" value="WC WebContent Title" />
 		</execute>
 
+		<execute macro="WebContent#viewPGViaWCD">
+			<var name="webContentContent" value="WC WebContent Content" />
+		</execute>
+
 		<execute macro="WebContentDisplayPortlet#editTemplate">
 			<var name="editTemplateButton" value="true" />
 			<var name="structureName" value="Basic Web Content" />
@@ -886,6 +914,10 @@
 		<execute macro="WebContent#addPGViaWCD">
 			<var name="webContentContent" value="WC WebContent Content" />
 			<var name="webContentTitle" value="WC WebContent Title" />
+		</execute>
+
+		<execute macro="WebContent#viewPGViaWCD">
+			<var name="webContentContent" value="WC WebContent Content" />
 		</execute>
 
 		<execute macro="WebContentNavigator#gotoEditPGViaWCD" />
@@ -940,6 +972,10 @@
 			<var name="webContentTitle" value="WC WebContent Title" />
 		</execute>
 
+		<execute macro="WebContent#viewPGViaWCD">
+			<var name="webContentContent" value="WC WebContent Content" />
+		</execute>
+
 		<execute macro="Navigator#openURL" />
 
 		<execute macro="ProductMenu#gotoSitesContent">
@@ -965,10 +1001,11 @@
 		</execute>
 
 		<execute macro="WebContent#addPGViaWCD">
-			<var name="pageBreak" value="true" />
 			<var name="webContentContent" value="@page_break@ Welcome @page_break@" />
 			<var name="webContentTitle" value="WC WebContent Title" />
 		</execute>
+
+		<execute macro="WebContent#viewPageBreak" />
 
 		<execute macro="WebContentDisplayPortlet#viewContentPageBreak">
 			<var name="webContentContent" value="Welcome" />

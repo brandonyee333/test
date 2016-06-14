@@ -108,7 +108,7 @@ public class AddLayoutSetPrototypePortalInstanceLifecycleListener
 
 		preferences.put("anyAssetType", Boolean.FALSE.toString());
 		preferences.put(
-			"portletSetupTitle_" + LocaleUtil.getDefault(), "Upcoming Events");
+			"portletSetupTitle_" + LocaleUtil.getDefault(), "Recent Content");
 		preferences.put("portletSetupUseCustomTitle", Boolean.TRUE.toString());
 
 		DefaultLayoutPrototypesUtil.updatePortletSetup(
@@ -179,7 +179,10 @@ public class AddLayoutSetPrototypePortalInstanceLifecycleListener
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
-	@Reference(target = "(javax.portlet.name=59)", unbind = "-")
+	@Reference(
+		target = "(javax.portlet.name=" + PollsPortletKeys.POLLS_DISPLAY + ")",
+		unbind = "-"
+	)
 	protected void setPollsPortlet(Portlet portlet) {
 	}
 

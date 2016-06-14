@@ -87,6 +87,20 @@ public class DDLRecordIndexer extends BaseIndexer<DDLRecord> {
 	}
 
 	@Override
+	public BooleanFilter getFacetBooleanFilter(
+			String className, SearchContext searchContext)
+		throws Exception {
+
+		BooleanFilter booleanFilter = super.getFacetBooleanFilter(
+			DDLRecordSet.class.getName(), searchContext);
+
+		booleanFilter.addTerm(
+			Field.ENTRY_CLASS_NAME, DDLRecord.class.getName());
+
+		return booleanFilter;
+	}
+
+	@Override
 	public void postProcessContextBooleanFilter(
 			BooleanFilter contextBooleanFilter, SearchContext searchContext)
 		throws Exception {
@@ -105,6 +119,12 @@ public class DDLRecordIndexer extends BaseIndexer<DDLRecord> {
 		if (recordSetId > 0) {
 			contextBooleanFilter.addRequiredTerm("recordSetId", recordSetId);
 		}
+
+		long recordSetScope = GetterUtil.getLong(
+			searchContext.getAttribute("recordSetScope"),
+			DDLRecordSetConstants.SCOPE_DYNAMIC_DATA_LISTS);
+
+		contextBooleanFilter.addRequiredTerm("recordSetScope", recordSetScope);
 
 		addSearchClassTypeIds(contextBooleanFilter, searchContext);
 
@@ -161,7 +181,8 @@ public class DDLRecordIndexer extends BaseIndexer<DDLRecord> {
 		document.addText(
 			"ddmContent",
 			extractDDMContent(recordVersion, LocaleUtil.getSiteDefault()));
-		document.addKeyword("recordSetId", recordVersion.getRecordSetId());
+		document.addKeyword("recordSetId", recordSet.getRecordSetId());
+		document.addKeyword("recordSetScope", recordSet.getScope());
 
 		DDMStructure ddmStructure = recordSet.getDDMStructure();
 

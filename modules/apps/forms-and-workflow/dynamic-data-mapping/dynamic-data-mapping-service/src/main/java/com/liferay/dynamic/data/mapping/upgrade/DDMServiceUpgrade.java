@@ -29,11 +29,13 @@ import com.liferay.dynamic.data.mapping.upgrade.v1_0_0.UpgradeDynamicDataMapping
 import com.liferay.dynamic.data.mapping.upgrade.v1_0_0.UpgradeKernelPackage;
 import com.liferay.dynamic.data.mapping.upgrade.v1_0_0.UpgradeLastPublishDate;
 import com.liferay.dynamic.data.mapping.upgrade.v1_0_0.UpgradeSchema;
+import com.liferay.dynamic.data.mapping.upgrade.v1_0_1.UpgradeResourcePermission;
 import com.liferay.dynamic.data.mapping.util.DDM;
 import com.liferay.expando.kernel.service.ExpandoRowLocalService;
 import com.liferay.expando.kernel.service.ExpandoTableLocalService;
 import com.liferay.expando.kernel.service.ExpandoValueLocalService;
-import com.liferay.portal.kernel.service.ResourceActionLocalService;
+import com.liferay.portal.kernel.security.permission.ResourceActions;
+import com.liferay.portal.kernel.service.ResourceLocalService;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 
@@ -69,9 +71,13 @@ public class DDMServiceUpgrade implements UpgradeStepRegistrator {
 				_ddmFormXSDDeserializer, _dlFileEntryLocalService,
 				_dlFileVersionLocalService, _dlFolderLocalService,
 				_expandoRowLocalService, _expandoTableLocalService,
-				_expandoValueLocalService, _resourceActionLocalService,
-				_resourcePermissionLocalService),
+				_expandoValueLocalService, _resourceActions,
+				_resourceLocalService, _resourcePermissionLocalService),
 			new UpgradeLastPublishDate());
+
+		registry.register(
+			"com.liferay.dynamic.data.mapping.service", "1.0.0", "1.0.1",
+			new UpgradeResourcePermission(_resourceActions));
 	}
 
 	@Reference(unbind = "-")
@@ -171,10 +177,15 @@ public class DDMServiceUpgrade implements UpgradeStepRegistrator {
 	}
 
 	@Reference(unbind = "-")
-	protected void setResourceActionLocalService(
-		ResourceActionLocalService resourceActionLocalService) {
+	protected void setResourceActions(ResourceActions resourceActions) {
+		_resourceActions = resourceActions;
+	}
 
-		_resourceActionLocalService = resourceActionLocalService;
+	@Reference(unbind = "-")
+	protected void setResourceLocalService(
+		ResourceLocalService resourceLocalService) {
+
+		_resourceLocalService = resourceLocalService;
 	}
 
 	@Reference(unbind = "-")
@@ -198,7 +209,8 @@ public class DDMServiceUpgrade implements UpgradeStepRegistrator {
 	private ExpandoRowLocalService _expandoRowLocalService;
 	private ExpandoTableLocalService _expandoTableLocalService;
 	private ExpandoValueLocalService _expandoValueLocalService;
-	private ResourceActionLocalService _resourceActionLocalService;
+	private ResourceActions _resourceActions;
+	private ResourceLocalService _resourceLocalService;
 	private ResourcePermissionLocalService _resourcePermissionLocalService;
 
 }
