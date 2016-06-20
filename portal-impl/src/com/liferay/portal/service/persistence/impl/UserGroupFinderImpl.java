@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.security.permission.InlineSQLHelperUtil;
 import com.liferay.portal.kernel.service.persistence.UserGroupFinder;
 import com.liferay.portal.kernel.service.persistence.UserGroupUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -373,6 +374,11 @@ public class UserGroupFinderImpl
 
 		for (Map.Entry<String, Object> entry : params.entrySet()) {
 			String key = entry.getKey();
+
+			if (!_isFinderParam(key)) {
+				continue;
+			}
+
 			Object value = entry.getValue();
 
 			if (Validator.isNotNull(value)) {
@@ -424,6 +430,11 @@ public class UserGroupFinderImpl
 
 		for (Map.Entry<String, Object> entry : params.entrySet()) {
 			String key = entry.getKey();
+
+			if (!_isFinderParam(key)) {
+				continue;
+			}
+
 			Object value = entry.getValue();
 
 			if (Validator.isNotNull(value)) {
@@ -506,6 +517,12 @@ public class UserGroupFinderImpl
 		}
 
 		for (Map.Entry<String, Object> entry : params.entrySet()) {
+			String key = entry.getKey();
+
+			if (!_isFinderParam(key)) {
+				continue;
+			}
+
 			Object value = entry.getValue();
 
 			if (value instanceof Long) {
@@ -532,6 +549,11 @@ public class UserGroupFinderImpl
 				}
 			}
 		}
+	}
+
+	private boolean _isFinderParam(String key) {
+		return ArrayUtil.contains(
+			UserGroupFinderConstants.PARAMS_USER_GROUP_FINDER, key);
 	}
 
 }
