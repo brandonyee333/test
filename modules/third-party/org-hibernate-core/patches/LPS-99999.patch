@@ -1,0 +1,83 @@
+diff --git a/org/hibernate/engine/ActionQueue.java b/org/hibernate/engine/ActionQueue.java
+index 012f68c..c958d15 100644
+--- a/org/hibernate/engine/ActionQueue.java
++++ b/org/hibernate/engine/ActionQueue.java
+@@ -33,6 +33,7 @@ import java.util.HashSet;
+ import java.util.LinkedList;
+ import java.util.List;
+ import java.util.Set;
++import java.util.concurrent.atomic.AtomicReference;
+ 
+ import org.slf4j.Logger;
+ import org.slf4j.LoggerFactory;
+@@ -86,6 +87,8 @@ public class ActionQueue {
+ 	private AfterTransactionCompletionProcessQueue afterTransactionProcesses;
+ 	private BeforeTransactionCompletionProcessQueue beforeTransactionProcesses;
+ 
++	private final AtomicReference<Thread> _firstThread = new AtomicReference<Thread>();
++
+ 	/**
+ 	 * Constructs an action queue bound to the given session.
+ 	 *
+@@ -99,7 +102,14 @@ public class ActionQueue {
+ 	private void init() {
+ 		insertions = new ArrayList( INIT_QUEUE_LIST_SIZE );
+ 		deletions = new ArrayList( INIT_QUEUE_LIST_SIZE );
+-		updates = new ArrayList( INIT_QUEUE_LIST_SIZE );
++		updates = new ArrayList( INIT_QUEUE_LIST_SIZE ) {
++
++			@Override
++			public void clear() {
++				new Exception(Thread.currentThread().getName() + " $$$Calling clear, Session: " + session.hashCode()).printStackTrace(System.out);
++			}
++
++		};
+ 
+ 		collectionCreations = new ArrayList( INIT_QUEUE_LIST_SIZE );
+ 		collectionRemovals = new ArrayList( INIT_QUEUE_LIST_SIZE );
+@@ -181,6 +191,17 @@ public class ActionQueue {
+ 	 * @throws HibernateException error executing queued actions.
+ 	 */
+ 	public void executeActions() throws HibernateException {
++		Thread thread = _firstThread.getAndSet(Thread.currentThread());
++
++		if (thread != null) {
++			if (Thread.currentThread().equals(thread)) {
++//				System.out.println("##Same Thread: " + thread.getName());
++			}
++			else {
++				throw new HibernateException("Current thread: " + Thread.currentThread().getName() + " , Existing thread: " + thread.getName());
++			}
++		}
++
+ 		executeActions( insertions );
+ 		executeActions( updates );
+ 		executeActions( collectionRemovals );
+@@ -261,11 +282,17 @@ public class ActionQueue {
+ 
+ 	private void executeActions(List list) throws HibernateException {
+ 		int size = list.size();
+-		for ( int i = 0; i < size; i++ ) {
+-			execute( ( Executable ) list.get( i ) );
++		try {
++			for ( int i = 0; i < size; i++ ) {
++				execute( ( Executable ) list.get( i ) );
++			}
++			list.clear();
++			session.getBatcher().executeBatch();
++		}
++		catch (IndexOutOfBoundsException ioobe) {
++			System.out.println("%%%%% Session: " + session.hashCode());
++			throw ioobe;
+ 		}
+-		list.clear();
+-		session.getBatcher().executeBatch();
+ 	}
+ 
+ 	public void execute(Executable executable) {
+@@ -742,3 +769,4 @@ public class ActionQueue {
+ 	}
+ 
+ }
++/* @generated */
+\ No newline at end of file
