@@ -1063,6 +1063,10 @@ public class GroupImpl extends GroupBaseImpl {
 				Portlet stagedPortlet = PortletLocalServiceUtil.getPortletById(
 					stagedPortletId);
 
+				if (stagedPortlet == null) {
+					continue;
+				}
+
 				if (portletDataHandler.equals(
 						stagedPortlet.getPortletDataHandlerInstance())) {
 
