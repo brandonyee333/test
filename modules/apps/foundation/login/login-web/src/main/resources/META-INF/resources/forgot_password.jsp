@@ -34,7 +34,7 @@ if (reminderAttempts == null) {
 	<portlet:param name="mvcRenderCommandName" value="/login/forgot_password" />
 </portlet:actionURL>
 
-<aui:form action="<%= forgotPasswordURL %>" method="post" name="fm">
+<aui:form action="<%= forgotPasswordURL %>" method="post" name="fm" autocomplete='<%= PropsValues.COMPANY_SECURITY_PASSWORD_REMINDER_QUERY_FORM_AUTOCOMPLETE ? "on" : "off" %>'>
 	<aui:input name="saveLastPath" type="hidden" value="<%= false %>" />
 
 	<liferay-ui:error exception="<%= CaptchaConfigurationException.class %>" message="a-captcha-error-occurred-please-contact-an-administrator" />
