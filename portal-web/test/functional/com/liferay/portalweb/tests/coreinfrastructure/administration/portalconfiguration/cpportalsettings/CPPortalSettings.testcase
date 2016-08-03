@@ -641,4 +641,38 @@
 
 		<execute macro="PortalSettings#viewReservedCredentialsScreenNamesCP" />
 	</command>
+
+	<command name="ViewInstanceSettingEnableLDAPAuthNotAffectSystemSetting" priority="3">
+		<execute macro="ProductMenu#gotoControlPanelConfiguration">
+			<var name="portlet" value="System Settings" />
+		</execute>
+
+		<execute macro="SystemSettingsNavigator#gotoFoundationCP" />
+
+		<execute macro="SystemSettings#viewDefaultConfigurationCP">
+			<var name="configurationName" value="LDAP Auth" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoControlPanelConfiguration">
+			<var name="portlet" value="Instance Settings" />
+		</execute>
+
+		<execute macro="PortalSettings#enableLDAPCP" />
+
+		<execute macro="ProductMenu#gotoControlPanelConfiguration">
+			<var name="portlet" value="System Settings" />
+		</execute>
+
+		<execute macro="SystemSettingsNavigator#gotoFoundationCP" />
+
+		<execute macro="SystemSettings#viewDefaultConfigurationCP">
+			<var name="configurationName" value="LDAP Auth" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoControlPanelConfiguration">
+			<var name="portlet" value="Instance Settings" />
+		</execute>
+
+		<execute macro="PortalSettings#disableLDAPCP" />
+	</command>
 </definition>
