@@ -74,16 +74,6 @@
 		<antcall target="index-modules-and-app-lpkgs" />
 	</target>
 
-	<target name="check-app-version">
-		<fail message="Please provide a value for the property &quot;app.version&quot; when running this target.">
-			<condition>
-				<not>
-					<isset property="app.version" />
-				</not>
-			</condition>
-		</fail>
-	</target>
-
 	<target name="check-current-branch">
 		<exec executable="git" outputproperty="liferay.releng.branch">
 			<arg value="rev-parse" />
@@ -98,7 +88,7 @@
 		</condition>
 	</target>
 
-	<target depends="check-app-version,init-build-app" name="check-stale-artifacts" unless="check.stale.artifacts.skip">
+	<target depends="get-app-version,init-build-app" name="check-stale-artifacts" unless="check.stale.artifacts.skip">
 		<property location="${gradle.wrapper.path}" name="gradle.wrapper.path.absolute" />
 
 		<exec dir="${app.dir}" executable="${gradle.wrapper.path.absolute}" outputproperty="stale.artifacts.output">
@@ -152,6 +142,24 @@
 		</exec>
 	</target>
 
+	<target depends="get-app-properties" name="delete-pending-app">
+		<echo message="Deleting pending versions of ${app.marketplace.title}${line.separator}" />
+
+		<exec dir="." executable="curl">
+			<arg line="-X DELETE -F token=${token} ${marketplace.server.base.url}/osb-portlet/mp_release/app_entries/${app.marketplace.id}" />
+		</exec>
+	</target>
+
+	<target depends="get-app-names" name="delete-pending-apps">
+		<for list="${app.names}" param="app.name">
+			<sequential>
+				<antcall inheritall="false" target="delete-pending-app">
+					<param name="app.name" value="@{app.name}" />
+				</antcall>
+			</sequential>
+		</for>
+	</target>
+
 	<target depends="check-stale-artifacts,get-artifact-versions-previous-release" name="dist-module-artifacts">
 		<mkdir dir="${dist.dir}" />
 
@@ -173,7 +181,7 @@
 		</subant>
 	</target>
 
-	<target depends="init-build-app" name="get-app-artifacts">
+	<target depends="init-build-app,get-app-version" name="get-app-artifacts">
 		<pathconvert pathsep=",\${line.separator}&#x0009;" property="module.versions.list">
 			<flattenmapper />
 
@@ -185,7 +193,7 @@
 		<property name="app.artifacts" value="app.artifacts-${app.version}=\${line.separator}&#x0009;${module.versions.list}" />
 	</target>
 
-	<target depends="init-build-app" name="get-app-change-log">
+	<target depends="init-build-app,get-app-version" name="get-app-change-log">
 		<loadfile failonerror="false" property="app.ticket.list" srcfile="${dist.dir}/ticket.list.tmp">
 			<filterchain>
 				<tokenfilter>
@@ -216,7 +224,7 @@
 		<property name="app.change.log.header" value="${app.change.log.version.separator}#${line.separator}# Liferay App Version ${app.version}${line.separator}#" />
 	</target>
 
-	<target name="get-app-git-id">
+	<target depends="get-app-version" name="get-app-git-id">
 		<exec executable="git" outputproperty="git.rev.parse.output">
 			<arg value="rev-parse" />
 			<arg value="head" />
@@ -225,27 +233,57 @@
 		<property name="app.git.id" value="app.git.id-${app.version}=${git.rev.parse.output}" />
 	</target>
 
-	<target depends="init-build-app" name="get-app-version-previous-release">
-		<loadfile failonerror="false" property="app.version.previous.release" srcfile="${releng.app.dir}/app.changelog">
-			<filterchain>
-				<linecontains>
-					<contains value="# " />
-				</linecontains>
-
-				<striplinebreaks />
-
-				<tailfilter lines="1" />
-
-				<tokenfilter>
-					<replaceregex pattern="^.*?(\d[\d.]+\d)$" replace="\1" />
-				</tokenfilter>
-			</filterchain>
-		</loadfile>
-
-		<property name="app.version.previous" value="0.0.0" />
+	<target name="get-app-names">
+		<pathconvert pathsep="," property="app.names">
+			<globmapper from="${modules.dir}${file.separator}apps${file.separator}*" to="*" />
+			<path>
+				<dirset dir="${basedir}" includes="apps/*">
+					<present targetdir="${basedir}/.releng">
+						<mapper from="*" to="*${file.separator}app.properties" type="glob" />
+					</present>
+				</dirset>
+			</path>
+		</pathconvert>
 	</target>
 
-	<target depends="get-app-version-previous-release" name="get-artifact-versions-previous-release">
+	<target depends="init-build-app" name="get-app-properties">
+		<property file="${releng.app.dir}/app.properties" />
+
+		<property name="app.version.previous.release" value="${app.marketplace.version}" />
+	</target>
+
+	<target name="get-app-ticket-list-param">
+		<loadfile property="app.ticket.list.param">
+			<filterchain>
+				<replacestring from=" " to="+" />
+			</filterchain>
+			<propertyresource name="app.ticket.list" />
+		</loadfile>
+	</target>
+
+	<target depends="get-app-properties" name="get-app-version">
+		<loadfile property="app.major.minor.version.previous.release">
+			<filterchain>
+				<replaceregex pattern="(\d{1,2}\.\d{1,2})\.\d{1,2}" replace="\1" />
+
+				<striplinebreaks />
+			</filterchain>
+			<propertyresource name="app.version.previous.release" />
+		</loadfile>
+
+		<loadfile property="app.bug.fix.version.previous.release">
+			<filterchain>
+				<replaceregex pattern="\d{1,2}\.\d{1,2}\.(\d{1,2})" replace="\1" />
+			</filterchain>
+			<propertyresource name="app.version.previous.release" />
+		</loadfile>
+
+		<math datatype="int" operand1="${app.bug.fix.version.previous.release}" operand2="1" operation="+" result="app.bug.fix.version" />
+
+		<property name="app.version" value="${app.major.minor.version.previous.release}.${app.bug.fix.version}" />
+	</target>
+
+	<target depends="get-app-properties" name="get-artifact-versions-previous-release">
 		<property file="${releng.app.dir}/app.changelog" />
 
 		<set-artifact-versions-previous-release app.version.previous.release="${app.version.previous.release}" />
@@ -260,6 +298,25 @@
 			</chainedmapper>
 			<fileset dir="${osgi.dir}/marketplace" includes="*.jar" />
 		</pathconvert>
+	</target>
+
+	<target name="get-plugins-binaries-list">
+		<var name="plugins.count" value="0" />
+		<var name="plugins.binaries.list" value="" />
+
+		<for param="plugin.file">
+			<path>
+				<fileset dir="${dist.dir}" includes="*.jar" />
+			</path>
+
+			<sequential>
+				<local name="plugin.file" />
+
+				<property name="plugin.file" value="@{plugin.file}" />
+
+				<var name="plugins.binaries.list" value="${plugins.binaries.list}-F plugin=&#64;${plugin.file} " />
+			</sequential>
+		</for>
 	</target>
 
 	<target name="index-modules-and-app-lpkgs">
@@ -278,6 +335,7 @@
 			newenvironment="true"
 		>
 			<jvmarg value="-Dliferay.home=${liferay.home}" />
+			<jvmarg value="-Dmodule.framework.marketplace.dir=${liferay.home}/osgi/marketplace" />
 			<jvmarg value="-Dportal.lib.dir=${portal.lib.dir}" />
 		</java>
 	</target>
@@ -383,6 +441,45 @@
 				</not>
 			</and>
 		</condition>
+	</target>
+
+	<target depends="build-app,get-app-properties,get-app-ticket-list-param,get-app-version,get-plugins-binaries-list" name="publish-app">
+		<echo message="Publishing ${app.marketplace.title}${line.separator}App Version: ${app.version}${line.separator}Portal Compatibility Build Number: ${build.number}" />
+
+		<echo message="curl command:${line.separator}curl -X POST -F buildNumber=${build.number} -F changelog=&quot;${app.ticket.list}&quot; ${plugins.binaries.list} -F token=${token} -F version=${app.version} ${marketplace.server.base.url}/osb-portlet/mp_release/app_entries/${app.marketplace.id}" />
+
+		<exec dir="." failonerror="true" executable="curl">
+			<arg line="-X POST -F buildNumber=${build.number} -F changelog=&quot;${app.ticket.list}&quot; ${plugins.binaries.list} -F token=${token} -F version=${app.version} ${marketplace.server.base.url}/osb-portlet/mp_release/app_entries/${app.marketplace.id}" />
+		</exec>
+
+		<get
+			dest="${basedir}/markteplace/${app.marketplace.title}.lpkg"
+			src="${marketplace.server.base.url}/web/guest/marketplace/-/mp/application/${app.marketplace.id}/${build.number}/${app.version}/${token}"
+		/>
+	</target>
+
+	<target depends="get-app-names" name="publish-app-all">
+		<delete dir="${basedir}/markteplace" />
+
+		<mkdir dir="${basedir}/markteplace" />
+
+		<for list="${app.names}" param="app.name">
+			<sequential>
+				<antcall inheritall="false" target="publish-app">
+					<param name="app.name" value="@{app.name}" />
+				</antcall>
+			</sequential>
+		</for>
+
+		<delete dir="${osgi.dir}/marketplace" />
+
+		<mkdir dir="${osgi.dir}/marketplace" />
+
+		<copy todir="${osgi.dir}/marketplace">
+			<fileset dir="${basedir}/markteplace" includes="**/*" />
+		</copy>
+
+		<antcall target="index-modules-and-app-lpkgs" />
 	</target>
 
 	<target name="reset-all">
