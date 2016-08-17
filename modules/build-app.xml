@@ -471,13 +471,13 @@
 			</sequential>
 		</for>
 
+		<delete dir="${osgi.dir}/marketplace" />
+
 		<mkdir dir="${osgi.dir}/marketplace" />
 
 		<copy todir="${osgi.dir}/marketplace">
 			<fileset dir="${basedir}/markteplace" includes="**/*" />
 		</copy>
-
-		<delete dir="${osgi.dir}/modules" />
 
 		<antcall target="index-modules-and-app-lpkgs" />
 	</target>
