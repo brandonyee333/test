@@ -25,6 +25,7 @@ import java.sql.PreparedStatement;
 
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.SuppressAjWarnings;
 
 import org.hibernate.StaleStateException;
@@ -37,6 +38,13 @@ import org.hibernate.jdbc.BatchingBatcher;
 @Aspect
 @SuppressAjWarnings("adviceDidNotMatch")
 public class HibernateUnexpectedRowCountAspect {
+
+	@Before(
+		"execution(void org.hibernate.jdbc.BatchingBatcher.checkRowCounts(..))"
+	)
+	public void causeError() {
+		throw new StaleStateException("This is a test.");
+	}
 
 	@AfterThrowing(
 		throwing = "sse",
