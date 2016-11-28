@@ -47,12 +47,11 @@ public class HibernateUnexpectedRowCountAspect {
 	}
 
 	@AfterThrowing(
-		argNames = "batchingBatcher,preparedStatement,sse",
+		argNames = "preparedStatement,sse",
 		throwing = "sse",
-		value = "execution(void org.hibernate.jdbc.BatchingBatcher.doExecuteBatch(java.sql.PreparedStatement)) && args(preparedStatement) && this(batchingBatcher)"
+		value = "execution(void org.hibernate.jdbc.BatchingBatcher.doExecuteBatch(java.sql.PreparedStatement)) && args(preparedStatement)"
 	)
 	public void logUpdateSQL(
-		BatchingBatcher batchingBatcher,
 		PreparedStatement preparedStatement, StaleStateException sse) {
 
 		System.out.println("Testing: inside logUpdateSQL");
@@ -63,7 +62,7 @@ public class HibernateUnexpectedRowCountAspect {
 			sb.append("{preparedStatement=");
 			sb.append(preparedStatement);
 			sb.append(", batchUpdateSQL=");
-			sb.append(_batchUpdateSQLField.get(batchingBatcher));
+			//sb.append(_batchUpdateSQLField.get(batchingBatcher));
 			sb.append("}");
 
 			_log.error(sb.toString(), sse);
