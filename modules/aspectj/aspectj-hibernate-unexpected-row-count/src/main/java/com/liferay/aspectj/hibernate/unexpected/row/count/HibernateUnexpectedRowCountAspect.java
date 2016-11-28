@@ -51,21 +51,25 @@ public class HibernateUnexpectedRowCountAspect {
 		value = "execution(void org.hibernate.jdbc.BatchingBatcher.doExecuteBatch(java.sql.PreparedStatement)) && args(preparedStatement) && this(batchingBatcher)"
 	)
 	public void logUpdateSQL(
-			BatchingBatcher batchingBatcher,
-			PreparedStatement preparedStatement, StaleStateException sse)
-		throws ReflectiveOperationException {
+		BatchingBatcher batchingBatcher,
+		PreparedStatement preparedStatement, StaleStateException sse) {
 
 		System.out.println("Testing: inside logUpdateSQL");
 
-		StringBundler sb = new StringBundler(5);
+		try {
+			StringBundler sb = new StringBundler(5);
 
-		sb.append("{preparedStatement=");
-		sb.append(preparedStatement);
-		sb.append(", batchUpdateSQL=");
-		sb.append(_batchUpdateSQLField.get(batchingBatcher));
-		sb.append("}");
+			sb.append("{preparedStatement=");
+			sb.append(preparedStatement);
+			sb.append(", batchUpdateSQL=");
+			sb.append(_batchUpdateSQLField.get(batchingBatcher));
+			sb.append("}");
 
-		_log.error(sb.toString(), sse);
+			_log.error(sb.toString(), sse);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
