@@ -47,6 +47,7 @@ public class HibernateUnexpectedRowCountAspect {
 	}
 
 	@AfterThrowing(
+		argNames = "batchingBatcher,preparedStatement,sse",
 		throwing = "sse",
 		value = "execution(void org.hibernate.jdbc.BatchingBatcher.doExecuteBatch(java.sql.PreparedStatement)) && args(preparedStatement) && this(batchingBatcher)"
 	)
