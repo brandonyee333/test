@@ -43,6 +43,10 @@ public class HibernateUnexpectedRowCountAspect {
 		"execution(void org.hibernate.jdbc.BatchingBatcher.checkRowCounts(..))"
 	)
 	public void causeError() {
+		_log.error("testing: logger");
+
+		System.out.println("Testing: inside causeError");
+
 		throw new StaleStateException("This is a test.");
 	}
 
