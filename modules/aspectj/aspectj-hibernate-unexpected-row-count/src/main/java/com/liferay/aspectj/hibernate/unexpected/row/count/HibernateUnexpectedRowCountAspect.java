@@ -55,6 +55,8 @@ public class HibernateUnexpectedRowCountAspect {
 			PreparedStatement preparedStatement, StaleStateException sse)
 		throws ReflectiveOperationException {
 
+		System.out.println("Testing: inside logUpdateSQL");
+
 		StringBundler sb = new StringBundler(5);
 
 		sb.append("{preparedStatement=");
