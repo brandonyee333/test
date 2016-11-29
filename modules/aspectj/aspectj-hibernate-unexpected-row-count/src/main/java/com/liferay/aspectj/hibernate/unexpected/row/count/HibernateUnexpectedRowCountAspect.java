@@ -17,15 +17,11 @@ package com.liferay.aspectj.hibernate.unexpected.row.count;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ReflectionUtil;
-import com.liferay.portal.kernel.util.StringBundler;
 
 import java.lang.reflect.Field;
 
-import java.sql.PreparedStatement;
-
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.SuppressAjWarnings;
 
 import org.hibernate.StaleStateException;
@@ -39,40 +35,20 @@ import org.hibernate.jdbc.BatchingBatcher;
 @SuppressAjWarnings("adviceDidNotMatch")
 public class HibernateUnexpectedRowCountAspect {
 
-	@Before(
-		"execution(void org.hibernate.jdbc.BatchingBatcher.checkRowCounts(..))"
-	)
-	public void causeError() {
-		_log.error("testing: logger");
-
-		System.out.println("Testing: inside causeError");
-
-		throw new StaleStateException("This is a test.");
-	}
-
 	@AfterThrowing(
-		argNames = "preparedStatement,sse",
 		throwing = "sse",
-		value = "execution(void org.hibernate.jdbc.BatchingBatcher.doExecuteBatch(java.sql.PreparedStatement)) && args(preparedStatement)"
+		value = "execution(void org.hibernate.jdbc.BatchingBatcher.checkRowCounts(int[], java.sql.PreparedStatement)) && this(batchingBatcher)"
 	)
 	public void logUpdateSQL(
-		PreparedStatement preparedStatement, StaleStateException sse) {
-
-		System.out.println("Testing: inside logUpdateSQL");
+		BatchingBatcher batchingBatcher, StaleStateException sse) {
 
 		try {
-			StringBundler sb = new StringBundler(5);
-
-			sb.append("{preparedStatement=");
-			sb.append(preparedStatement);
-			sb.append(", batchUpdateSQL=");
-			//sb.append(_batchUpdateSQLField.get(batchingBatcher));
-			sb.append("}");
-
-			_log.error(sb.toString(), sse);
+			_log.error(
+				"batchUpdateSQL = " + _batchUpdateSQLField.get(batchingBatcher),
+				sse);
 		}
 		catch (Exception e) {
-			_log.error(e, e);
+			sse.addSuppressed(e);
 		}
 	}
 
