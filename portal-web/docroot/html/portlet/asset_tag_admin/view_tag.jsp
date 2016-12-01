@@ -53,16 +53,17 @@ List<AssetTagProperty> tagProperties = AssetTagPropertyServiceUtil.getTagPropert
 	</c:if>
 
 	<div class="tag-field">
-		<c:choose>
-			<c:when test="<%= tag.getAssetCount() > 0 %>">
-				<label><liferay-ui:message key="count" />:</label> <liferay-ui:message key="used-in-x-assets" arguments="<%= tag.getAssetCount() %>" />
-			</c:when>
-			<c:otherwise>
-				<div class="alert alert-info">
-					<liferay-ui:message key="this-tag-is-not-used" />
-				</div>
-			</c:otherwise>
-		</c:choose>
+		<c:if test="<%= tag.getAssetCount() > 1 %>">
+			<label><liferay-ui:message key="count" />:</label> <liferay-ui:message key="used-in-x-assets" arguments="<%= tag.getAssetCount() %>" />
+		</c:if>
+		<c:if test="<%= tag.getAssetCount() == 1 %>">
+			<label><liferay-ui:message key="count" />:</label> <liferay-ui:message key="used-in-1-assets" />
+		</c:if>
+		<c:if test="<%= tag.getAssetCount() < 1 %>">
+			<div class="alert alert-info">
+				<liferay-ui:message key="this-tag-is-not-used" />
+			</div>
+		</c:if>
 	</div>
 
 	<c:if test="<%= !tagProperties.isEmpty() %>">
