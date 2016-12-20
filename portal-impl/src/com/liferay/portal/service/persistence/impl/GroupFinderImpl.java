@@ -1508,6 +1508,7 @@ public class GroupFinderImpl
 			params2.put("classNameIds", organizationClassNameId);
 			params3.put("classNameIds", groupClassNameId);
 			params4.put("classNameIds", groupClassNameId);
+			params4.put("classNameIds", groupOrganizationClassNameIds);
 		}
 		else {
 			params1.put("classNameIds", classNameIds);
@@ -1523,6 +1524,8 @@ public class GroupFinderImpl
 			if (ArrayUtil.contains(classNameIds, groupClassNameId)) {
 				params4.put("classNameIds", groupClassNameId);
 			}
+			
+			params4.put("classNameIds", classNameIds);
 		}
 	}
 
