@@ -216,11 +216,6 @@ public class LayoutLocalServiceStagingAdvice implements MethodInterceptor {
 				(Boolean)arguments[1], (Long)arguments[2], (String)arguments[3],
 				(String)arguments[4], (String)arguments[5]);
 		}
-		else if (methodName.equals("updateName") && (arguments.length == 3)) {
-			returnValue = updateName(
-				(LayoutLocalService)thisObject, (Layout)arguments[0],
-				(String)arguments[1], (String)arguments[2]);
-		}
 		else {
 			returnValue = methodInvocation.proceed();
 		}
@@ -411,44 +406,6 @@ public class LayoutLocalServiceStagingAdvice implements MethodInterceptor {
 			serviceContext.setWorkflowAction(
 				WorkflowConstants.ACTION_SAVE_DRAFT);
 		}
-
-		LayoutRevisionLocalServiceUtil.updateLayoutRevision(
-			serviceContext.getUserId(), layoutRevision.getLayoutRevisionId(),
-			layoutRevision.getLayoutBranchId(), layoutRevision.getName(),
-			layoutRevision.getTitle(), layoutRevision.getDescription(),
-			layoutRevision.getKeywords(), layoutRevision.getRobots(),
-			layoutRevision.getTypeSettings(), layoutRevision.getIconImage(),
-			layoutRevision.getIconImageId(), layoutRevision.getThemeId(),
-			layoutRevision.getColorSchemeId(), layoutRevision.getCss(),
-			serviceContext);
-
-		return layout;
-	}
-
-	public Layout updateName(
-			LayoutLocalService layoutLocalService, Layout layout, String name,
-			String languageId)
-		throws PortalException {
-
-		LayoutRevision layoutRevision = _getLayoutRevision(layout);
-
-		if (layoutRevision == null) {
-			return layoutLocalService.updateName(layout, name, languageId);
-		}
-
-		layoutLocalServiceHelper.validateName(name, languageId);
-
-		layout.setName(name, LocaleUtil.fromLanguageId(languageId));
-
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
-
-		boolean hasWorkflowTask = StagingUtil.hasWorkflowTask(
-			serviceContext.getUserId(), layoutRevision);
-
-		serviceContext.setAttribute("revisionInProgress", hasWorkflowTask);
-
-		serviceContext.setWorkflowAction(WorkflowConstants.ACTION_SAVE_DRAFT);
 
 		LayoutRevisionLocalServiceUtil.updateLayoutRevision(
 			serviceContext.getUserId(), layoutRevision.getLayoutRevisionId(),
@@ -654,7 +611,6 @@ public class LayoutLocalServiceStagingAdvice implements MethodInterceptor {
 		_layoutLocalServiceStagingAdviceMethodNames.add("getLayouts");
 		_layoutLocalServiceStagingAdviceMethodNames.add("updateLayout");
 		_layoutLocalServiceStagingAdviceMethodNames.add("updateLookAndFeel");
-		_layoutLocalServiceStagingAdviceMethodNames.add("updateName");
 	}
 
 }

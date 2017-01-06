@@ -18,6 +18,7 @@ import com.liferay.exportimport.kernel.lar.MissingReferences;
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 import com.liferay.exportimport.kernel.staging.LayoutStagingUtil;
 import com.liferay.exportimport.kernel.staging.MergeLayoutPrototypesThreadLocal;
+import com.liferay.exportimport.kernel.staging.StagingUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Property;
@@ -53,6 +54,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.model.impl.VirtualLayout;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.systemevent.SystemEventHierarchyEntry;
 import com.liferay.portal.kernel.systemevent.SystemEventHierarchyEntryThreadLocal;
@@ -71,6 +73,7 @@ import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.comparator.LayoutComparator;
 import com.liferay.portal.kernel.util.comparator.LayoutPriorityComparator;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowThreadLocal;
 import com.liferay.portal.service.base.LayoutLocalServiceBaseImpl;
 import com.liferay.portal.util.PropsValues;
@@ -2568,28 +2571,58 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 	public Layout updateName(Layout layout, String name, String languageId)
 		throws PortalException {
 
-		Date now = new Date();
+		LayoutRevision layoutRevision = _getLayoutRevision(layout);
+
+		if (layoutRevision == null) {
+			Date now = new Date();
+
+			layoutLocalServiceHelper.validateName(name, languageId);
+
+			layout.setModifiedDate(now);
+			layout.setName(name, LocaleUtil.fromLanguageId(languageId));
+
+			layoutPersistence.update(layout);
+
+			Group group = layout.getGroup();
+
+			if (group.isLayoutPrototype()) {
+				LayoutPrototype layoutPrototype =
+					layoutPrototypeLocalService.getLayoutPrototype(
+						group.getClassPK());
+
+				layoutPrototype.setModifiedDate(now);
+				layoutPrototype.setName(
+					name, LocaleUtil.fromLanguageId(languageId));
+
+				layoutPrototypePersistence.update(layoutPrototype);
+			}
+
+			return layout;
+		}
 
 		layoutLocalServiceHelper.validateName(name, languageId);
 
-		layout.setModifiedDate(now);
 		layout.setName(name, LocaleUtil.fromLanguageId(languageId));
 
-		layoutPersistence.update(layout);
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
 
-		Group group = layout.getGroup();
+		boolean hasWorkflowTask = StagingUtil.hasWorkflowTask(
+			serviceContext.getUserId(), layoutRevision);
 
-		if (group.isLayoutPrototype()) {
-			LayoutPrototype layoutPrototype =
-				layoutPrototypeLocalService.getLayoutPrototype(
-					group.getClassPK());
+		serviceContext.setAttribute("revisionInProgress", hasWorkflowTask);
 
-			layoutPrototype.setModifiedDate(now);
-			layoutPrototype.setName(
-				name, LocaleUtil.fromLanguageId(languageId));
+		serviceContext.setWorkflowAction(WorkflowConstants.ACTION_SAVE_DRAFT);
 
-			layoutPrototypePersistence.update(layoutPrototype);
-		}
+		layoutRevisionLocalService.updateLayoutRevision(
+			serviceContext.getUserId(), layoutRevision.getLayoutRevisionId(),
+			layoutRevision.getLayoutBranchId(), layoutRevision.getName(),
+			layoutRevision.getTitle(), layoutRevision.getDescription(),
+			layoutRevision.getKeywords(), layoutRevision.getRobots(),
+			layoutRevision.getTypeSettings(), layoutRevision.getIconImage(),
+			layoutRevision.getIconImageId(), layoutRevision.getThemeId(),
+			layoutRevision.getColorSchemeId(), layoutRevision.getCss(),
+			serviceContext);
 
 		return layout;
 	}
