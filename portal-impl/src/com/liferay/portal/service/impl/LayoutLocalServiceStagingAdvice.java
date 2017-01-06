@@ -15,7 +15,6 @@
 package com.liferay.portal.service.impl;
 
 import com.liferay.exportimport.kernel.staging.LayoutStagingUtil;
-import com.liferay.exportimport.kernel.staging.MergeLayoutPrototypesThreadLocal;
 import com.liferay.exportimport.kernel.staging.StagingUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -32,7 +31,6 @@ import com.liferay.portal.kernel.service.LayoutFriendlyURLLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.LayoutRevisionLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.SystemEventLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.service.persistence.LayoutRevisionUtil;
@@ -173,40 +171,31 @@ public class LayoutLocalServiceStagingAdvice implements MethodInterceptor {
 
 			returnValue = methodInvocation.proceed();
 		}
-		else if (methodName.equals("updateLayout")) {
-			if (arguments.length == 15) {
-				Map<Locale, String> friendlyURLMap = null;
+		else if (methodName.equals("updateLayout") &&
+				 (arguments.length == 15)) {
 
-				if (Arrays.equals(
-						parameterTypes, _UPDATE_LAYOUT_PARAMETER_TYPES)) {
+			Map<Locale, String> friendlyURLMap = null;
 
-					friendlyURLMap = new HashMap<>();
+			if (Arrays.equals(parameterTypes, _UPDATE_LAYOUT_PARAMETER_TYPES)) {
+				friendlyURLMap = new HashMap<>();
 
-					friendlyURLMap.put(
-						LocaleUtil.getSiteDefault(), (String)arguments[11]);
-				}
-				else {
-					friendlyURLMap = (Map<Locale, String>)arguments[11];
-				}
-
-				returnValue = updateLayout(
-					(LayoutLocalService)thisObject, (Long)arguments[0],
-					(Boolean)arguments[1], (Long)arguments[2],
-					(Long)arguments[3], (Map<Locale, String>)arguments[4],
-					(Map<Locale, String>)arguments[5],
-					(Map<Locale, String>)arguments[6],
-					(Map<Locale, String>)arguments[7],
-					(Map<Locale, String>)arguments[8], (String)arguments[9],
-					(Boolean)arguments[10], friendlyURLMap,
-					(Boolean)arguments[12], (byte[])arguments[13],
-					(ServiceContext)arguments[14]);
+				friendlyURLMap.put(
+					LocaleUtil.getSiteDefault(), (String)arguments[11]);
 			}
-			else if (arguments.length == 4) {
-				returnValue = updateLayout(
-					(LayoutLocalService)thisObject, (Long)arguments[0],
-					(Boolean)arguments[1], (Long)arguments[2],
-					(String)arguments[3]);
+			else {
+				friendlyURLMap = (Map<Locale, String>)arguments[11];
 			}
+
+			returnValue = updateLayout(
+				(LayoutLocalService)thisObject, (Long)arguments[0],
+				(Boolean)arguments[1], (Long)arguments[2], (Long)arguments[3],
+				(Map<Locale, String>)arguments[4],
+				(Map<Locale, String>)arguments[5],
+				(Map<Locale, String>)arguments[6],
+				(Map<Locale, String>)arguments[7],
+				(Map<Locale, String>)arguments[8], (String)arguments[9],
+				(Boolean)arguments[10], friendlyURLMap, (Boolean)arguments[12],
+				(byte[])arguments[13], (ServiceContext)arguments[14]);
 		}
 		else {
 			returnValue = methodInvocation.proceed();
@@ -319,49 +308,6 @@ public class LayoutLocalServiceStagingAdvice implements MethodInterceptor {
 		finally {
 			serviceContext.setWorkflowAction(workflowAction);
 		}
-
-		return layout;
-	}
-
-	public Layout updateLayout(
-			LayoutLocalService layoutLocalService, long groupId,
-			boolean privateLayout, long layoutId, String typeSettings)
-		throws PortalException {
-
-		Layout layout = LayoutUtil.findByG_P_L(
-			groupId, privateLayout, layoutId);
-
-		LayoutRevision layoutRevision = _getLayoutRevision(layout);
-
-		if (layoutRevision == null) {
-			return layoutLocalService.updateLayout(
-				groupId, privateLayout, layoutId, typeSettings);
-		}
-
-		layout.setTypeSettings(typeSettings);
-
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
-
-		boolean hasWorkflowTask = StagingUtil.hasWorkflowTask(
-			serviceContext.getUserId(), layoutRevision);
-
-		serviceContext.setAttribute("revisionInProgress", hasWorkflowTask);
-
-		if (!MergeLayoutPrototypesThreadLocal.isInProgress()) {
-			serviceContext.setWorkflowAction(
-				WorkflowConstants.ACTION_SAVE_DRAFT);
-		}
-
-		LayoutRevisionLocalServiceUtil.updateLayoutRevision(
-			serviceContext.getUserId(), layoutRevision.getLayoutRevisionId(),
-			layoutRevision.getLayoutBranchId(), layoutRevision.getName(),
-			layoutRevision.getTitle(), layoutRevision.getDescription(),
-			layoutRevision.getKeywords(), layoutRevision.getRobots(),
-			layoutRevision.getTypeSettings(), layoutRevision.getIconImage(),
-			layoutRevision.getIconImageId(), layoutRevision.getThemeId(),
-			layoutRevision.getColorSchemeId(), layoutRevision.getCss(),
-			serviceContext);
 
 		return layout;
 	}
