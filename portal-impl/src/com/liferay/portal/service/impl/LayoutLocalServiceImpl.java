@@ -2547,23 +2547,19 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 
 		LayoutRevision layoutRevision = _getLayoutRevision(layout);
 
+		layout.setThemeId(themeId);
+		layout.setColorSchemeId(colorSchemeId);
+		layout.setCss(css);
+
 		if (layoutRevision == null) {
 			Date now = new Date();
 
 			layout.setModifiedDate(now);
 
-			layout.setThemeId(themeId);
-			layout.setColorSchemeId(colorSchemeId);
-			layout.setCss(css);
-
 			layoutPersistence.update(layout);
 
 			return layout;
 		}
-
-		layout.setThemeId(themeId);
-		layout.setColorSchemeId(colorSchemeId);
-		layout.setCss(css);
 
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
