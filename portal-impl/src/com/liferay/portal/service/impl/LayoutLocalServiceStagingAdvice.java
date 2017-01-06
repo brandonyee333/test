@@ -39,7 +39,6 @@ import com.liferay.portal.kernel.service.persistence.LayoutRevisionUtil;
 import com.liferay.portal.kernel.service.persistence.LayoutUtil;
 import com.liferay.portal.kernel.systemevent.SystemEventHierarchyEntry;
 import com.liferay.portal.kernel.systemevent.SystemEventHierarchyEntryThreadLocal;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ClassLoaderUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -50,7 +49,6 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portlet.exportimport.staging.ProxiedLayoutsThreadLocal;
 import com.liferay.portlet.exportimport.staging.StagingAdvicesThreadLocal;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import java.util.ArrayList;
@@ -175,54 +173,56 @@ public class LayoutLocalServiceStagingAdvice implements MethodInterceptor {
 
 			return wrapReturnValue(methodInvocation.proceed(), showIncomplete);
 		}
-		else if (methodName.equals("updateLayout") &&
-				 (arguments.length == 15)) {
+		else if (methodName.equals("updateLayout")) {
+			if (arguments.length == 15) {
+				Map<Locale, String> friendlyURLMap = null;
 
-			Map<Locale, String> friendlyURLMap = null;
+				if (Arrays.equals(
+						parameterTypes, _UPDATE_LAYOUT_PARAMETER_TYPES)) {
 
-			if (Arrays.equals(parameterTypes, _UPDATE_LAYOUT_PARAMETER_TYPES)) {
-				friendlyURLMap = new HashMap<>();
+					friendlyURLMap = new HashMap<>();
 
-				friendlyURLMap.put(
-					LocaleUtil.getSiteDefault(), (String)arguments[11]);
+					friendlyURLMap.put(
+						LocaleUtil.getSiteDefault(), (String)arguments[11]);
+				}
+				else {
+					friendlyURLMap = (Map<Locale, String>)arguments[11];
+				}
+
+				returnValue = updateLayout(
+					(LayoutLocalService)thisObject, (Long)arguments[0],
+					(Boolean)arguments[1], (Long)arguments[2],
+					(Long)arguments[3], (Map<Locale, String>)arguments[4],
+					(Map<Locale, String>)arguments[5],
+					(Map<Locale, String>)arguments[6],
+					(Map<Locale, String>)arguments[7],
+					(Map<Locale, String>)arguments[8], (String)arguments[9],
+					(Boolean)arguments[10], friendlyURLMap,
+					(Boolean)arguments[12], (byte[])arguments[13],
+					(ServiceContext)arguments[14]);
 			}
-			else {
-				friendlyURLMap = (Map<Locale, String>)arguments[11];
+			else if (arguments.length == 4) {
+				returnValue = updateLayout(
+					(LayoutLocalService)thisObject, (Long)arguments[0],
+					(Boolean)arguments[1], (Long)arguments[2],
+					(String)arguments[3]);
 			}
+		}
+		else if (methodName.equals("updateLookAndFeel") &&
+				 (arguments.length == 6)) {
 
-			returnValue = updateLayout(
+			returnValue = updateLookAndFeel(
 				(LayoutLocalService)thisObject, (Long)arguments[0],
-				(Boolean)arguments[1], (Long)arguments[2], (Long)arguments[3],
-				(Map<Locale, String>)arguments[4],
-				(Map<Locale, String>)arguments[5],
-				(Map<Locale, String>)arguments[6],
-				(Map<Locale, String>)arguments[7],
-				(Map<Locale, String>)arguments[8], (String)arguments[9],
-				(Boolean)arguments[10], friendlyURLMap, (Boolean)arguments[12],
-				(byte[])arguments[13], (ServiceContext)arguments[14]);
+				(Boolean)arguments[1], (Long)arguments[2], (String)arguments[3],
+				(String)arguments[4], (String)arguments[5]);
+		}
+		else if (methodName.equals("updateName") && (arguments.length == 3)) {
+			returnValue = updateName(
+				(LayoutLocalService)thisObject, (Layout)arguments[0],
+				(String)arguments[1], (String)arguments[2]);
 		}
 		else {
-			try {
-				Class<?> clazz = getClass();
-
-				parameterTypes = ArrayUtil.append(
-					new Class<?>[] {LayoutLocalService.class}, parameterTypes);
-
-				Method layoutLocalServiceStagingAdviceMethod = clazz.getMethod(
-					methodName, parameterTypes);
-
-				arguments = ArrayUtil.append(
-					new Object[] {thisObject}, arguments);
-
-				returnValue = layoutLocalServiceStagingAdviceMethod.invoke(
-					this, arguments);
-			}
-			catch (InvocationTargetException ite) {
-				throw ite.getTargetException();
-			}
-			catch (NoSuchMethodException nsme) {
-				returnValue = methodInvocation.proceed();
-			}
+			returnValue = methodInvocation.proceed();
 		}
 
 		returnValue = wrapReturnValue(returnValue, showIncomplete);
