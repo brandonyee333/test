@@ -136,6 +136,10 @@ public class LayoutLocalServiceStagingAdvice implements MethodInterceptor {
 			return wrapReturnValue(methodInvocation.proceed(), showIncomplete);
 		}
 
+		if (methodName.equals("createLayout")) {
+			return methodInvocation.proceed();
+		}
+
 		Object returnValue = null;
 
 		Class<?>[] parameterTypes = method.getParameterTypes();
@@ -143,10 +147,7 @@ public class LayoutLocalServiceStagingAdvice implements MethodInterceptor {
 		Object thisObject = methodInvocation.getThis();
 		Object[] arguments = methodInvocation.getArguments();
 
-		if (methodName.equals("createLayout")) {
-			return methodInvocation.proceed();
-		}
-		else if (methodName.equals("deleteLayout")) {
+		if (methodName.equals("deleteLayout")) {
 			if (arguments.length == 3) {
 				deleteLayout(
 					(LayoutLocalService)thisObject, (Layout)arguments[0],
@@ -159,8 +160,7 @@ public class LayoutLocalServiceStagingAdvice implements MethodInterceptor {
 					(ServiceContext)arguments[3]);
 			}
 			else {
-				return wrapReturnValue(
-					methodInvocation.proceed(), showIncomplete);
+				returnValue = methodInvocation.proceed();
 			}
 		}
 		else if (methodName.equals("getLayouts")) {
@@ -171,7 +171,7 @@ public class LayoutLocalServiceStagingAdvice implements MethodInterceptor {
 				showIncomplete = true;
 			}
 
-			return wrapReturnValue(methodInvocation.proceed(), showIncomplete);
+			returnValue = methodInvocation.proceed();
 		}
 		else if (methodName.equals("updateLayout")) {
 			if (arguments.length == 15) {
