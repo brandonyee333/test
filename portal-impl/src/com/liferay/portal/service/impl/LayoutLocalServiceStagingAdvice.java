@@ -208,14 +208,6 @@ public class LayoutLocalServiceStagingAdvice implements MethodInterceptor {
 					(String)arguments[3]);
 			}
 		}
-		else if (methodName.equals("updateLookAndFeel") &&
-				 (arguments.length == 6)) {
-
-			returnValue = updateLookAndFeel(
-				(LayoutLocalService)thisObject, (Long)arguments[0],
-				(Boolean)arguments[1], (Long)arguments[2], (String)arguments[3],
-				(String)arguments[4], (String)arguments[5]);
-		}
 		else {
 			returnValue = methodInvocation.proceed();
 		}
@@ -347,52 +339,6 @@ public class LayoutLocalServiceStagingAdvice implements MethodInterceptor {
 		}
 
 		layout.setTypeSettings(typeSettings);
-
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
-
-		boolean hasWorkflowTask = StagingUtil.hasWorkflowTask(
-			serviceContext.getUserId(), layoutRevision);
-
-		serviceContext.setAttribute("revisionInProgress", hasWorkflowTask);
-
-		if (!MergeLayoutPrototypesThreadLocal.isInProgress()) {
-			serviceContext.setWorkflowAction(
-				WorkflowConstants.ACTION_SAVE_DRAFT);
-		}
-
-		LayoutRevisionLocalServiceUtil.updateLayoutRevision(
-			serviceContext.getUserId(), layoutRevision.getLayoutRevisionId(),
-			layoutRevision.getLayoutBranchId(), layoutRevision.getName(),
-			layoutRevision.getTitle(), layoutRevision.getDescription(),
-			layoutRevision.getKeywords(), layoutRevision.getRobots(),
-			layoutRevision.getTypeSettings(), layoutRevision.getIconImage(),
-			layoutRevision.getIconImageId(), layoutRevision.getThemeId(),
-			layoutRevision.getColorSchemeId(), layoutRevision.getCss(),
-			serviceContext);
-
-		return layout;
-	}
-
-	public Layout updateLookAndFeel(
-			LayoutLocalService layoutLocalService, long groupId,
-			boolean privateLayout, long layoutId, String themeId,
-			String colorSchemeId, String css)
-		throws PortalException {
-
-		Layout layout = LayoutUtil.findByG_P_L(
-			groupId, privateLayout, layoutId);
-
-		LayoutRevision layoutRevision = _getLayoutRevision(layout);
-
-		if (layoutRevision == null) {
-			return layoutLocalService.updateLookAndFeel(
-				groupId, privateLayout, layoutId, themeId, colorSchemeId, css);
-		}
-
-		layout.setThemeId(themeId);
-		layout.setColorSchemeId(colorSchemeId);
-		layout.setCss(css);
 
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
@@ -610,7 +556,6 @@ public class LayoutLocalServiceStagingAdvice implements MethodInterceptor {
 		_layoutLocalServiceStagingAdviceMethodNames.add("deleteLayout");
 		_layoutLocalServiceStagingAdviceMethodNames.add("getLayouts");
 		_layoutLocalServiceStagingAdviceMethodNames.add("updateLayout");
-		_layoutLocalServiceStagingAdviceMethodNames.add("updateLookAndFeel");
 	}
 
 }
