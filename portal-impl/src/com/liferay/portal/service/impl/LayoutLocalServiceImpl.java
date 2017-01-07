@@ -2429,20 +2429,21 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 			layout.setPriority(priority);
 		}
 
+		layout.setParentLayoutId(parentLayoutId);
+		layout.setType(type);
+		layout.setHidden(hidden);
+		layout.setFriendlyURL(friendlyURL);
+
 		if (layoutRevision == null) {
 			Date now = new Date();
 
 			layout.setModifiedDate(serviceContext.getModifiedDate(now));
 
-			layout.setParentLayoutId(parentLayoutId);
 			layout.setNameMap(nameMap);
 			layout.setTitleMap(titleMap);
 			layout.setDescriptionMap(descriptionMap);
 			layout.setKeywordsMap(keywordsMap);
 			layout.setRobotsMap(robotsMap);
-			layout.setType(type);
-			layout.setHidden(hidden);
-			layout.setFriendlyURL(friendlyURL);
 
 			PortalUtil.updateImageId(
 				layout, iconImage, iconBytes, "iconImageId", 0, 0, 0);
@@ -2495,15 +2496,11 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 			return layout;
 		}
 
-		layout.setParentLayoutId(parentLayoutId);
 		layoutRevision.setNameMap(nameMap);
 		layoutRevision.setTitleMap(titleMap);
 		layoutRevision.setDescriptionMap(descriptionMap);
 		layoutRevision.setKeywordsMap(keywordsMap);
 		layoutRevision.setRobotsMap(robotsMap);
-		layout.setType(type);
-		layout.setHidden(hidden);
-		layout.setFriendlyURL(friendlyURL);
 
 		PortalUtil.updateImageId(
 			layoutRevision, iconImage, iconBytes, "iconImageId", 0, 0, 0);
