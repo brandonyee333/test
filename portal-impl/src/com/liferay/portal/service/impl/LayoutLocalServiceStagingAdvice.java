@@ -85,19 +85,16 @@ public class LayoutLocalServiceStagingAdvice implements MethodInterceptor {
 				LayoutRevisionUtil.findByP_NotS(
 					layout.getPlid(), WorkflowConstants.STATUS_INCOMPLETE);
 
-			if (notIncompleteLayoutRevisions.isEmpty()) {
-				LayoutRevisionLocalServiceUtil.deleteLayoutLayoutRevisions(
-					layout.getPlid());
-
-				doDeleteLayout(
-					layoutLocalService, layout, updateLayoutSet,
-					serviceContext);
+			if (!notIncompleteLayoutRevisions.isEmpty()) {
+				return;
 			}
+
+			LayoutRevisionLocalServiceUtil.deleteLayoutLayoutRevisions(
+				layout.getPlid());
 		}
-		else {
-			doDeleteLayout(
-				layoutLocalService, layout, updateLayoutSet, serviceContext);
-		}
+
+		doDeleteLayout(
+			layoutLocalService, layout, updateLayoutSet, serviceContext);
 	}
 
 	public void deleteLayout(
