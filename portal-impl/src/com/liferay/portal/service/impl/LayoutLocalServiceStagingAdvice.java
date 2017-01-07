@@ -84,7 +84,18 @@ public class LayoutLocalServiceStagingAdvice implements MethodInterceptor {
 		return wrapReturnValue(methodInvocation.proceed(), showIncomplete);
 	}
 
-	protected Layout getProxiedLayout(Layout layout) {
+	protected Layout wrapLayout(Layout layout) {
+		LayoutStagingHandler layoutStagingHandler =
+			LayoutStagingUtil.getLayoutStagingHandler(layout);
+
+		if (layoutStagingHandler != null) {
+			return layout;
+		}
+
+		if (!LayoutStagingUtil.isBranchingLayout(layout)) {
+			return layout;
+		}
+
 		Map<Layout, Object> proxiedLayouts =
 			ProxiedLayoutsThreadLocal.getProxiedLayouts();
 
@@ -101,21 +112,6 @@ public class LayoutLocalServiceStagingAdvice implements MethodInterceptor {
 		proxiedLayouts.put(layout, proxiedLayout);
 
 		return (Layout)proxiedLayout;
-	}
-
-	protected Layout wrapLayout(Layout layout) {
-		LayoutStagingHandler layoutStagingHandler =
-			LayoutStagingUtil.getLayoutStagingHandler(layout);
-
-		if (layoutStagingHandler != null) {
-			return layout;
-		}
-
-		if (!LayoutStagingUtil.isBranchingLayout(layout)) {
-			return layout;
-		}
-
-		return getProxiedLayout(layout);
 	}
 
 	protected List<Layout> wrapLayouts(
