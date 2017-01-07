@@ -491,121 +491,6 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 		}
 	}
 
-	private void _deleteLayout(
-			Layout layout, boolean updateLayoutSet,
-			ServiceContext serviceContext)
-		throws PortalException {
-
-		// First layout validation
-
-		if (layout.getParentLayoutId() ==
-				LayoutConstants.DEFAULT_PARENT_LAYOUT_ID) {
-
-			List<Layout> rootLayouts = layoutPersistence.findByG_P_P(
-				layout.getGroupId(), layout.isPrivateLayout(),
-				LayoutConstants.DEFAULT_PARENT_LAYOUT_ID, 0, 2);
-
-			if (rootLayouts.size() > 1) {
-				Layout firstLayout = rootLayouts.get(0);
-
-				if (firstLayout.getLayoutId() == layout.getLayoutId()) {
-					Layout secondLayout = rootLayouts.get(1);
-
-					layoutLocalServiceHelper.validateFirstLayout(secondLayout);
-				}
-			}
-		}
-
-		// Child layouts
-
-		List<Layout> childLayouts = layoutPersistence.findByG_P_P(
-			layout.getGroupId(), layout.isPrivateLayout(),
-			layout.getLayoutId());
-
-		for (Layout childLayout : childLayouts) {
-			layoutLocalService.deleteLayout(
-				childLayout, updateLayoutSet, serviceContext);
-		}
-
-		// Layout friendly URLs
-
-		layoutFriendlyURLLocalService.deleteLayoutFriendlyURLs(
-			layout.getPlid());
-
-		// Portlet preferences
-
-		portletPreferencesLocalService.deletePortletPreferencesByPlid(
-			layout.getPlid());
-
-		// Asset
-
-		assetEntryLocalService.deleteEntry(
-			Layout.class.getName(), layout.getPlid());
-
-		// Ratings
-
-		ratingsStatsLocalService.deleteStats(
-			Layout.class.getName(), layout.getPlid());
-
-		// Expando
-
-		expandoRowLocalService.deleteRows(layout.getPlid());
-
-		// Icon
-
-		imageLocalService.deleteImage(layout.getIconImageId());
-
-		// Scope group
-
-		Group scopeGroup = layout.getScopeGroup();
-
-		if (scopeGroup != null) {
-			groupLocalService.deleteGroup(scopeGroup.getGroupId());
-		}
-
-		// Resources
-
-		String primKey =
-			layout.getPlid() + PortletConstants.LAYOUT_SEPARATOR + "%";
-
-		List<ResourcePermission> resourcePermissions =
-			resourcePermissionPersistence.findByC_LikeP(
-				layout.getCompanyId(), primKey);
-
-		for (ResourcePermission resourcePermission : resourcePermissions) {
-			resourcePermissionLocalService.deleteResourcePermission(
-				resourcePermission);
-		}
-
-		resourceLocalService.deleteResource(
-			layout.getCompanyId(), Layout.class.getName(),
-			ResourceConstants.SCOPE_INDIVIDUAL, layout.getPlid());
-
-		// Layout
-
-		layoutPersistence.remove(layout);
-
-		// Layout set
-
-		if (updateLayoutSet) {
-			layoutSetLocalService.updatePageCount(
-				layout.getGroupId(), layout.isPrivateLayout());
-		}
-
-		// System event
-
-		SystemEventHierarchyEntry systemEventHierarchyEntry =
-			SystemEventHierarchyEntryThreadLocal.peek();
-
-		if ((systemEventHierarchyEntry != null) &&
-			systemEventHierarchyEntry.hasTypedModel(
-				Layout.class.getName(), layout.getPlid())) {
-
-			systemEventHierarchyEntry.setExtraDataValue(
-				"privateLayout", StringUtil.valueOf(layout.isPrivateLayout()));
-		}
-	}
-
 	/**
 	 * Deletes the layout with the primary key, also deleting the layout's child
 	 * layouts, and associated resources.
@@ -3344,6 +3229,121 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 		}
 
 		return layouts;
+	}
+
+	private void _deleteLayout(
+			Layout layout, boolean updateLayoutSet,
+			ServiceContext serviceContext)
+		throws PortalException {
+
+		// First layout validation
+
+		if (layout.getParentLayoutId() ==
+				LayoutConstants.DEFAULT_PARENT_LAYOUT_ID) {
+
+			List<Layout> rootLayouts = layoutPersistence.findByG_P_P(
+				layout.getGroupId(), layout.isPrivateLayout(),
+				LayoutConstants.DEFAULT_PARENT_LAYOUT_ID, 0, 2);
+
+			if (rootLayouts.size() > 1) {
+				Layout firstLayout = rootLayouts.get(0);
+
+				if (firstLayout.getLayoutId() == layout.getLayoutId()) {
+					Layout secondLayout = rootLayouts.get(1);
+
+					layoutLocalServiceHelper.validateFirstLayout(secondLayout);
+				}
+			}
+		}
+
+		// Child layouts
+
+		List<Layout> childLayouts = layoutPersistence.findByG_P_P(
+			layout.getGroupId(), layout.isPrivateLayout(),
+			layout.getLayoutId());
+
+		for (Layout childLayout : childLayouts) {
+			layoutLocalService.deleteLayout(
+				childLayout, updateLayoutSet, serviceContext);
+		}
+
+		// Layout friendly URLs
+
+		layoutFriendlyURLLocalService.deleteLayoutFriendlyURLs(
+			layout.getPlid());
+
+		// Portlet preferences
+
+		portletPreferencesLocalService.deletePortletPreferencesByPlid(
+			layout.getPlid());
+
+		// Asset
+
+		assetEntryLocalService.deleteEntry(
+			Layout.class.getName(), layout.getPlid());
+
+		// Ratings
+
+		ratingsStatsLocalService.deleteStats(
+			Layout.class.getName(), layout.getPlid());
+
+		// Expando
+
+		expandoRowLocalService.deleteRows(layout.getPlid());
+
+		// Icon
+
+		imageLocalService.deleteImage(layout.getIconImageId());
+
+		// Scope group
+
+		Group scopeGroup = layout.getScopeGroup();
+
+		if (scopeGroup != null) {
+			groupLocalService.deleteGroup(scopeGroup.getGroupId());
+		}
+
+		// Resources
+
+		String primKey =
+			layout.getPlid() + PortletConstants.LAYOUT_SEPARATOR + "%";
+
+		List<ResourcePermission> resourcePermissions =
+			resourcePermissionPersistence.findByC_LikeP(
+				layout.getCompanyId(), primKey);
+
+		for (ResourcePermission resourcePermission : resourcePermissions) {
+			resourcePermissionLocalService.deleteResourcePermission(
+				resourcePermission);
+		}
+
+		resourceLocalService.deleteResource(
+			layout.getCompanyId(), Layout.class.getName(),
+			ResourceConstants.SCOPE_INDIVIDUAL, layout.getPlid());
+
+		// Layout
+
+		layoutPersistence.remove(layout);
+
+		// Layout set
+
+		if (updateLayoutSet) {
+			layoutSetLocalService.updatePageCount(
+				layout.getGroupId(), layout.isPrivateLayout());
+		}
+
+		// System event
+
+		SystemEventHierarchyEntry systemEventHierarchyEntry =
+			SystemEventHierarchyEntryThreadLocal.peek();
+
+		if ((systemEventHierarchyEntry != null) &&
+			systemEventHierarchyEntry.hasTypedModel(
+				Layout.class.getName(), layout.getPlid())) {
+
+			systemEventHierarchyEntry.setExtraDataValue(
+				"privateLayout", StringUtil.valueOf(layout.isPrivateLayout()));
+		}
 	}
 
 	private LayoutRevision _getLayoutRevision(Layout layout) {
