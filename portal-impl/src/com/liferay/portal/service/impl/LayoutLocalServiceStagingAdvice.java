@@ -81,7 +81,25 @@ public class LayoutLocalServiceStagingAdvice implements MethodInterceptor {
 			}
 		}
 
-		return wrapReturnValue(methodInvocation.proceed(), showIncomplete);
+		Object returnValue = methodInvocation.proceed();
+
+		if (returnValue instanceof Layout) {
+			returnValue = wrapLayout((Layout)returnValue);
+		}
+		else if (returnValue instanceof List<?>) {
+			List<?> list = (List<?>)returnValue;
+
+			if (!list.isEmpty()) {
+				Object object = list.get(0);
+
+				if (object instanceof Layout) {
+					returnValue = wrapLayouts(
+						(List<Layout>)returnValue, showIncomplete);
+				}
+			}
+		}
+
+		return returnValue;
 	}
 
 	protected Layout wrapLayout(Layout layout) {
@@ -166,28 +184,6 @@ public class LayoutLocalServiceStagingAdvice implements MethodInterceptor {
 		}
 
 		return wrappedLayouts;
-	}
-
-	protected Object wrapReturnValue(
-		Object returnValue, boolean showIncomplete) {
-
-		if (returnValue instanceof Layout) {
-			returnValue = wrapLayout((Layout)returnValue);
-		}
-		else if (returnValue instanceof List<?>) {
-			List<?> list = (List<?>)returnValue;
-
-			if (!list.isEmpty()) {
-				Object object = list.get(0);
-
-				if (object instanceof Layout) {
-					returnValue = wrapLayouts(
-						(List<Layout>)returnValue, showIncomplete);
-				}
-			}
-		}
-
-		return returnValue;
 	}
 
 	private static final Class<?>[] _GET_LAYOUTS_TYPES = {
