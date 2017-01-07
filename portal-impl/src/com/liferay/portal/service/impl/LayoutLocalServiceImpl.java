@@ -447,6 +447,14 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 			ServiceContext serviceContext)
 		throws PortalException {
 
+		_deleteLayout(layout, updateLayoutSet, serviceContext);
+	}
+
+	private void _deleteLayout(
+			Layout layout, boolean updateLayoutSet,
+			ServiceContext serviceContext)
+		throws PortalException {
+
 		// First layout validation
 
 		if (layout.getParentLayoutId() ==
