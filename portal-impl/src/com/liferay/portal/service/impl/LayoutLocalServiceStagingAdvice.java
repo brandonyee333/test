@@ -93,8 +93,31 @@ public class LayoutLocalServiceStagingAdvice implements MethodInterceptor {
 				layout.getPlid());
 		}
 
-		doDeleteLayout(
-			layoutLocalService, layout, updateLayoutSet, serviceContext);
+		if (SystemEventHierarchyEntryThreadLocal.push(
+				Layout.class, layout.getPlid()) == null) {
+
+			layoutLocalService.deleteLayout(
+				layout, updateLayoutSet, serviceContext);
+		}
+		else {
+			try {
+				layoutLocalService.deleteLayout(
+					layout, updateLayoutSet, serviceContext);
+
+				SystemEventHierarchyEntry systemEventHierarchyEntry =
+					SystemEventHierarchyEntryThreadLocal.peek();
+
+				SystemEventLocalServiceUtil.addSystemEvent(
+					0, layout.getGroupId(), Layout.class.getName(),
+					layout.getPlid(), layout.getUuid(), null,
+					SystemEventConstants.TYPE_DELETE,
+					systemEventHierarchyEntry.getExtraData());
+			}
+			finally {
+				SystemEventHierarchyEntryThreadLocal.pop(
+					Layout.class, layout.getPlid());
+			}
+		}
 	}
 
 	public void deleteLayout(
@@ -168,38 +191,6 @@ public class LayoutLocalServiceStagingAdvice implements MethodInterceptor {
 		returnValue = wrapReturnValue(returnValue, showIncomplete);
 
 		return returnValue;
-	}
-
-	protected void doDeleteLayout(
-			LayoutLocalService layoutLocalService, Layout layout,
-			boolean updateLayoutSet, ServiceContext serviceContext)
-		throws PortalException {
-
-		if (SystemEventHierarchyEntryThreadLocal.push(
-				Layout.class, layout.getPlid()) == null) {
-
-			layoutLocalService.deleteLayout(
-				layout, updateLayoutSet, serviceContext);
-		}
-		else {
-			try {
-				layoutLocalService.deleteLayout(
-					layout, updateLayoutSet, serviceContext);
-
-				SystemEventHierarchyEntry systemEventHierarchyEntry =
-					SystemEventHierarchyEntryThreadLocal.peek();
-
-				SystemEventLocalServiceUtil.addSystemEvent(
-					0, layout.getGroupId(), Layout.class.getName(),
-					layout.getPlid(), layout.getUuid(), null,
-					SystemEventConstants.TYPE_DELETE,
-					systemEventHierarchyEntry.getExtraData());
-			}
-			finally {
-				SystemEventHierarchyEntryThreadLocal.pop(
-					Layout.class, layout.getPlid());
-			}
-		}
 	}
 
 	protected Layout getProxiedLayout(Layout layout) {
