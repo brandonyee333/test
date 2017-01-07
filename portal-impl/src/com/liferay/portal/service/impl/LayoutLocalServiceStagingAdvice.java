@@ -19,7 +19,6 @@ import com.liferay.exportimport.kernel.staging.StagingUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
-import com.liferay.portal.kernel.model.LayoutRevision;
 import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.LayoutStagingHandler;
 import com.liferay.portal.kernel.model.User;
@@ -35,21 +34,16 @@ import java.lang.reflect.Method;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
-
-import org.springframework.core.annotation.Order;
 
 /**
  * @author Raymond Augé
  * @author Brian Wing Shun Chan
  */
-@Order(1)
 public class LayoutLocalServiceStagingAdvice implements MethodInterceptor {
 
 	public LayoutLocalServiceStagingAdvice() {
@@ -68,39 +62,26 @@ public class LayoutLocalServiceStagingAdvice implements MethodInterceptor {
 
 		String methodName = method.getName();
 
-		boolean showIncomplete = false;
-
-		if (!_layoutLocalServiceStagingAdviceMethodNames.contains(methodName)) {
-			return wrapReturnValue(methodInvocation.proceed(), showIncomplete);
-		}
-
 		if (methodName.equals("createLayout")) {
 			return methodInvocation.proceed();
 		}
 
-		Object returnValue = null;
-
-		Class<?>[] parameterTypes = method.getParameterTypes();
-
-		Object[] arguments = methodInvocation.getArguments();
+		boolean showIncomplete = false;
 
 		if (methodName.equals("getLayouts")) {
+			Object[] arguments = methodInvocation.getArguments();
+
 			if (arguments.length == 6) {
 				showIncomplete = (Boolean)arguments[3];
 			}
-			else if (Arrays.equals(parameterTypes, _GET_LAYOUTS_TYPES)) {
+			else if (Arrays.equals(
+						method.getParameterTypes(), _GET_LAYOUTS_TYPES)) {
+
 				showIncomplete = true;
 			}
-
-			returnValue = methodInvocation.proceed();
-		}
-		else {
-			returnValue = methodInvocation.proceed();
 		}
 
-		returnValue = wrapReturnValue(returnValue, showIncomplete);
-
-		return returnValue;
+		return wrapReturnValue(methodInvocation.proceed(), showIncomplete);
 	}
 
 	protected Layout getProxiedLayout(Layout layout) {
@@ -120,17 +101,6 @@ public class LayoutLocalServiceStagingAdvice implements MethodInterceptor {
 		proxiedLayouts.put(layout, proxiedLayout);
 
 		return (Layout)proxiedLayout;
-	}
-
-	protected Layout unwrapLayout(Layout layout) {
-		LayoutStagingHandler layoutStagingHandler =
-			LayoutStagingUtil.getLayoutStagingHandler(layout);
-
-		if (layoutStagingHandler == null) {
-			return layout;
-		}
-
-		return layoutStagingHandler.getLayout();
 	}
 
 	protected Layout wrapLayout(Layout layout) {
@@ -224,32 +194,11 @@ public class LayoutLocalServiceStagingAdvice implements MethodInterceptor {
 		return returnValue;
 	}
 
-	private LayoutRevision _getLayoutRevision(Layout layout) {
-		LayoutStagingHandler layoutStagingHandler =
-			LayoutStagingUtil.getLayoutStagingHandler(layout);
-
-		if ((layoutStagingHandler == null) ||
-			!LayoutStagingUtil.isBranchingLayout(layout)) {
-
-			return null;
-		}
-
-		return layoutStagingHandler.getLayoutRevision();
-	}
-
 	private static final Class<?>[] _GET_LAYOUTS_TYPES = {
 		Long.TYPE, Boolean.TYPE, Long.TYPE
 	};
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		LayoutLocalServiceStagingAdvice.class);
-
-	private static final Set<String>
-		_layoutLocalServiceStagingAdviceMethodNames = new HashSet<>();
-
-	static {
-		_layoutLocalServiceStagingAdviceMethodNames.add("createLayout");
-		_layoutLocalServiceStagingAdviceMethodNames.add("getLayouts");
-	}
 
 }
