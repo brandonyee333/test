@@ -447,7 +447,48 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 			ServiceContext serviceContext)
 		throws PortalException {
 
-		_deleteLayout(layout, updateLayoutSet, serviceContext);
+		long layoutSetBranchId = ParamUtil.getLong(
+			serviceContext, "layoutSetBranchId");
+
+		if (layoutSetBranchId > 0) {
+			layoutRevisionLocalService.deleteLayoutRevisions(
+				layoutSetBranchId, layout.getPlid());
+
+			List<LayoutRevision> notIncompleteLayoutRevisions =
+				layoutRevisionPersistence.findByP_NotS(
+					layout.getPlid(), WorkflowConstants.STATUS_INCOMPLETE);
+
+			if (!notIncompleteLayoutRevisions.isEmpty()) {
+				return;
+			}
+
+			layoutRevisionLocalService.deleteLayoutLayoutRevisions(
+				layout.getPlid());
+		}
+
+		if (SystemEventHierarchyEntryThreadLocal.push(
+				Layout.class, layout.getPlid()) == null) {
+
+			_deleteLayout(layout, updateLayoutSet, serviceContext);
+		}
+		else {
+			try {
+				_deleteLayout(layout, updateLayoutSet, serviceContext);
+
+				SystemEventHierarchyEntry systemEventHierarchyEntry =
+					SystemEventHierarchyEntryThreadLocal.peek();
+
+				systemEventLocalService.addSystemEvent(
+					0, layout.getGroupId(), Layout.class.getName(),
+					layout.getPlid(), layout.getUuid(), null,
+					SystemEventConstants.TYPE_DELETE,
+					systemEventHierarchyEntry.getExtraData());
+			}
+			finally {
+				SystemEventHierarchyEntryThreadLocal.pop(
+					Layout.class, layout.getPlid());
+			}
+		}
 	}
 
 	private void _deleteLayout(

@@ -16,29 +16,18 @@ package com.liferay.portal.service.impl;
 
 import com.liferay.exportimport.kernel.staging.LayoutStagingUtil;
 import com.liferay.exportimport.kernel.staging.StagingUtil;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutRevision;
 import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.LayoutStagingHandler;
-import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
-import com.liferay.portal.kernel.service.LayoutLocalService;
-import com.liferay.portal.kernel.service.LayoutRevisionLocalServiceUtil;
-import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.service.SystemEventLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.service.persistence.LayoutRevisionUtil;
-import com.liferay.portal.kernel.systemevent.SystemEventHierarchyEntry;
-import com.liferay.portal.kernel.systemevent.SystemEventHierarchyEntryThreadLocal;
 import com.liferay.portal.kernel.util.ClassLoaderUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
-import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portlet.exportimport.staging.ProxiedLayoutsThreadLocal;
 import com.liferay.portlet.exportimport.staging.StagingAdvicesThreadLocal;
 
@@ -69,68 +58,6 @@ public class LayoutLocalServiceStagingAdvice implements MethodInterceptor {
 		}
 	}
 
-	public void deleteLayout(
-			LayoutLocalService layoutLocalService, Layout layout,
-			boolean updateLayoutSet, ServiceContext serviceContext)
-		throws PortalException {
-
-		long layoutSetBranchId = ParamUtil.getLong(
-			serviceContext, "layoutSetBranchId");
-
-		if (layoutSetBranchId > 0) {
-			LayoutRevisionLocalServiceUtil.deleteLayoutRevisions(
-				layoutSetBranchId, layout.getPlid());
-
-			List<LayoutRevision> notIncompleteLayoutRevisions =
-				LayoutRevisionUtil.findByP_NotS(
-					layout.getPlid(), WorkflowConstants.STATUS_INCOMPLETE);
-
-			if (!notIncompleteLayoutRevisions.isEmpty()) {
-				return;
-			}
-
-			LayoutRevisionLocalServiceUtil.deleteLayoutLayoutRevisions(
-				layout.getPlid());
-		}
-
-		if (SystemEventHierarchyEntryThreadLocal.push(
-				Layout.class, layout.getPlid()) == null) {
-
-			layoutLocalService.deleteLayout(
-				layout, updateLayoutSet, serviceContext);
-		}
-		else {
-			try {
-				layoutLocalService.deleteLayout(
-					layout, updateLayoutSet, serviceContext);
-
-				SystemEventHierarchyEntry systemEventHierarchyEntry =
-					SystemEventHierarchyEntryThreadLocal.peek();
-
-				SystemEventLocalServiceUtil.addSystemEvent(
-					0, layout.getGroupId(), Layout.class.getName(),
-					layout.getPlid(), layout.getUuid(), null,
-					SystemEventConstants.TYPE_DELETE,
-					systemEventHierarchyEntry.getExtraData());
-			}
-			finally {
-				SystemEventHierarchyEntryThreadLocal.pop(
-					Layout.class, layout.getPlid());
-			}
-		}
-	}
-
-	public void deleteLayout(
-			LayoutLocalService layoutLocalService, long groupId,
-			boolean privateLayout, long layoutId, ServiceContext serviceContext)
-		throws PortalException {
-
-		Layout layout = layoutLocalService.getLayout(
-			groupId, privateLayout, layoutId);
-
-		deleteLayout(layoutLocalService, layout, true, serviceContext);
-	}
-
 	@Override
 	public Object invoke(MethodInvocation methodInvocation) throws Throwable {
 		if (!StagingAdvicesThreadLocal.isEnabled()) {
@@ -155,26 +82,9 @@ public class LayoutLocalServiceStagingAdvice implements MethodInterceptor {
 
 		Class<?>[] parameterTypes = method.getParameterTypes();
 
-		Object thisObject = methodInvocation.getThis();
 		Object[] arguments = methodInvocation.getArguments();
 
-		if (methodName.equals("deleteLayout")) {
-			if (arguments.length == 3) {
-				deleteLayout(
-					(LayoutLocalService)thisObject, (Layout)arguments[0],
-					(Boolean)arguments[1], (ServiceContext)arguments[2]);
-			}
-			else if (arguments.length == 4) {
-				deleteLayout(
-					(LayoutLocalService)thisObject, (Long)arguments[0],
-					(Boolean)arguments[1], (Long)arguments[2],
-					(ServiceContext)arguments[3]);
-			}
-			else {
-				returnValue = methodInvocation.proceed();
-			}
-		}
-		else if (methodName.equals("getLayouts")) {
+		if (methodName.equals("getLayouts")) {
 			if (arguments.length == 6) {
 				showIncomplete = (Boolean)arguments[3];
 			}
@@ -339,7 +249,6 @@ public class LayoutLocalServiceStagingAdvice implements MethodInterceptor {
 
 	static {
 		_layoutLocalServiceStagingAdviceMethodNames.add("createLayout");
-		_layoutLocalServiceStagingAdviceMethodNames.add("deleteLayout");
 		_layoutLocalServiceStagingAdviceMethodNames.add("getLayouts");
 	}
 
