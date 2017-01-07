@@ -2416,10 +2416,10 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 		layoutLocalServiceHelper.validateParentLayoutId(
 			groupId, privateLayout, layoutId, parentLayoutId);
 
-		Date now = new Date();
-
 		Layout layout = layoutPersistence.findByG_P_L(
 			groupId, privateLayout, layoutId);
+
+		LayoutRevision layoutRevision = _getLayoutRevision(layout);
 
 		if (parentLayoutId != layout.getParentLayoutId()) {
 			int priority = layoutLocalServiceHelper.getNextPriority(
@@ -2429,63 +2429,124 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 			layout.setPriority(priority);
 		}
 
-		layout.setModifiedDate(serviceContext.getModifiedDate(now));
+		if (layoutRevision == null) {
+			Date now = new Date();
+
+			layout.setModifiedDate(serviceContext.getModifiedDate(now));
+
+			layout.setParentLayoutId(parentLayoutId);
+			layout.setNameMap(nameMap);
+			layout.setTitleMap(titleMap);
+			layout.setDescriptionMap(descriptionMap);
+			layout.setKeywordsMap(keywordsMap);
+			layout.setRobotsMap(robotsMap);
+			layout.setType(type);
+			layout.setHidden(hidden);
+			layout.setFriendlyURL(friendlyURL);
+
+			PortalUtil.updateImageId(
+				layout, iconImage, iconBytes, "iconImageId", 0, 0, 0);
+
+			boolean layoutUpdateable = ParamUtil.getBoolean(
+				serviceContext, Sites.LAYOUT_UPDATEABLE, true);
+
+			UnicodeProperties typeSettingsProperties =
+				layout.getTypeSettingsProperties();
+
+			typeSettingsProperties.put(
+				Sites.LAYOUT_UPDATEABLE, String.valueOf(layoutUpdateable));
+
+			if (privateLayout) {
+				typeSettingsProperties.put(
+					"privateLayout", String.valueOf(privateLayout));
+			}
+
+			layout.setTypeSettingsProperties(typeSettingsProperties);
+
+			String layoutPrototypeUuid = ParamUtil.getString(
+				serviceContext, "layoutPrototypeUuid");
+			boolean layoutPrototypeLinkEnabled = ParamUtil.getBoolean(
+				serviceContext, "layoutPrototypeLinkEnabled");
+
+			if (Validator.isNotNull(layoutPrototypeUuid)) {
+				layout.setLayoutPrototypeUuid(layoutPrototypeUuid);
+				layout.setLayoutPrototypeLinkEnabled(
+					layoutPrototypeLinkEnabled);
+			}
+
+			layout.setExpandoBridgeAttributes(serviceContext);
+
+			layoutPersistence.update(layout);
+
+			// Layout friendly URLs
+
+			layoutFriendlyURLLocalService.updateLayoutFriendlyURLs(
+				serviceContext.getUserId(), layout.getCompanyId(),
+				layout.getGroupId(), layout.getPlid(), layout.isPrivateLayout(),
+				friendlyURLMap, serviceContext);
+
+			// Asset
+
+			updateAsset(
+				serviceContext.getUserId(), layout,
+				serviceContext.getAssetCategoryIds(),
+				serviceContext.getAssetTagNames());
+
+			return layout;
+		}
+
 		layout.setParentLayoutId(parentLayoutId);
-		layout.setNameMap(nameMap);
-		layout.setTitleMap(titleMap);
-		layout.setDescriptionMap(descriptionMap);
-		layout.setKeywordsMap(keywordsMap);
-		layout.setRobotsMap(robotsMap);
+		layoutRevision.setNameMap(nameMap);
+		layoutRevision.setTitleMap(titleMap);
+		layoutRevision.setDescriptionMap(descriptionMap);
+		layoutRevision.setKeywordsMap(keywordsMap);
+		layoutRevision.setRobotsMap(robotsMap);
 		layout.setType(type);
 		layout.setHidden(hidden);
 		layout.setFriendlyURL(friendlyURL);
 
 		PortalUtil.updateImageId(
-			layout, iconImage, iconBytes, "iconImageId", 0, 0, 0);
+			layoutRevision, iconImage, iconBytes, "iconImageId", 0, 0, 0);
 
-		boolean layoutUpdateable = ParamUtil.getBoolean(
-			serviceContext, Sites.LAYOUT_UPDATEABLE, true);
-
-		UnicodeProperties typeSettingsProperties =
-			layout.getTypeSettingsProperties();
-
-		typeSettingsProperties.put(
-			Sites.LAYOUT_UPDATEABLE, String.valueOf(layoutUpdateable));
-
-		if (privateLayout) {
-			typeSettingsProperties.put(
-				"privateLayout", String.valueOf(privateLayout));
-		}
-
-		layout.setTypeSettingsProperties(typeSettingsProperties);
-
-		String layoutPrototypeUuid = ParamUtil.getString(
-			serviceContext, "layoutPrototypeUuid");
 		boolean layoutPrototypeLinkEnabled = ParamUtil.getBoolean(
 			serviceContext, "layoutPrototypeLinkEnabled");
 
-		if (Validator.isNotNull(layoutPrototypeUuid)) {
-			layout.setLayoutPrototypeUuid(layoutPrototypeUuid);
-			layout.setLayoutPrototypeLinkEnabled(layoutPrototypeLinkEnabled);
-		}
+		layout.setLayoutPrototypeLinkEnabled(layoutPrototypeLinkEnabled);
 
 		layout.setExpandoBridgeAttributes(serviceContext);
 
 		layoutPersistence.update(layout);
 
-		// Layout friendly URLs
-
 		layoutFriendlyURLLocalService.updateLayoutFriendlyURLs(
-			serviceContext.getUserId(), layout.getCompanyId(),
-			layout.getGroupId(), layout.getPlid(), layout.isPrivateLayout(),
-			friendlyURLMap, serviceContext);
+			layout.getUserId(), layout.getCompanyId(), layout.getGroupId(),
+			layout.getPlid(), layout.isPrivateLayout(), friendlyURLMap,
+			serviceContext);
 
-		// Asset
+		boolean hasWorkflowTask = StagingUtil.hasWorkflowTask(
+			serviceContext.getUserId(), layoutRevision);
 
-		updateAsset(
-			serviceContext.getUserId(), layout,
-			serviceContext.getAssetCategoryIds(),
-			serviceContext.getAssetTagNames());
+		serviceContext.setAttribute("revisionInProgress", hasWorkflowTask);
+
+		int workflowAction = serviceContext.getWorkflowAction();
+
+		try {
+			serviceContext.setWorkflowAction(
+				WorkflowConstants.ACTION_SAVE_DRAFT);
+
+			layoutRevisionLocalService.updateLayoutRevision(
+				serviceContext.getUserId(),
+				layoutRevision.getLayoutRevisionId(),
+				layoutRevision.getLayoutBranchId(), layoutRevision.getName(),
+				layoutRevision.getTitle(), layoutRevision.getDescription(),
+				layoutRevision.getKeywords(), layoutRevision.getRobots(),
+				layoutRevision.getTypeSettings(), layoutRevision.getIconImage(),
+				layoutRevision.getIconImageId(), layoutRevision.getThemeId(),
+				layoutRevision.getColorSchemeId(), layoutRevision.getCss(),
+				serviceContext);
+		}
+		finally {
+			serviceContext.setWorkflowAction(workflowAction);
+		}
 
 		return layout;
 	}
