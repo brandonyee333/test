@@ -16,7 +16,9 @@ package com.liferay.portal.service.impl;
 
 import com.liferay.exportimport.kernel.lar.MissingReferences;
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
+import com.liferay.exportimport.kernel.staging.LayoutStagingUtil;
 import com.liferay.exportimport.kernel.staging.MergeLayoutPrototypesThreadLocal;
+import com.liferay.exportimport.kernel.staging.StagingUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Property;
@@ -38,8 +40,10 @@ import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.model.LayoutFriendlyURL;
 import com.liferay.portal.kernel.model.LayoutPrototype;
 import com.liferay.portal.kernel.model.LayoutReference;
+import com.liferay.portal.kernel.model.LayoutRevision;
 import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.LayoutSetPrototype;
+import com.liferay.portal.kernel.model.LayoutStagingHandler;
 import com.liferay.portal.kernel.model.LayoutType;
 import com.liferay.portal.kernel.model.LayoutTypePortlet;
 import com.liferay.portal.kernel.model.PortletConstants;
@@ -50,6 +54,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.model.impl.VirtualLayout;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.systemevent.SystemEventHierarchyEntry;
 import com.liferay.portal.kernel.systemevent.SystemEventHierarchyEntryThreadLocal;
@@ -69,6 +74,7 @@ import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.comparator.LayoutComparator;
 import com.liferay.portal.kernel.util.comparator.LayoutPriorityComparator;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowThreadLocal;
 import com.liferay.portal.service.base.LayoutLocalServiceBaseImpl;
 import com.liferay.portal.util.PropsValues;
@@ -442,113 +448,47 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 			ServiceContext serviceContext)
 		throws PortalException {
 
-		// First layout validation
+		long layoutSetBranchId = ParamUtil.getLong(
+			serviceContext, "layoutSetBranchId");
 
-		if (layout.getParentLayoutId() ==
-				LayoutConstants.DEFAULT_PARENT_LAYOUT_ID) {
+		if (layoutSetBranchId > 0) {
+			layoutRevisionLocalService.deleteLayoutRevisions(
+				layoutSetBranchId, layout.getPlid());
 
-			List<Layout> rootLayouts = layoutPersistence.findByG_P_P(
-				layout.getGroupId(), layout.isPrivateLayout(),
-				LayoutConstants.DEFAULT_PARENT_LAYOUT_ID, 0, 2);
+			List<LayoutRevision> notIncompleteLayoutRevisions =
+				layoutRevisionPersistence.findByP_NotS(
+					layout.getPlid(), WorkflowConstants.STATUS_INCOMPLETE);
 
-			if (rootLayouts.size() > 1) {
-				Layout firstLayout = rootLayouts.get(0);
-
-				if (firstLayout.getLayoutId() == layout.getLayoutId()) {
-					Layout secondLayout = rootLayouts.get(1);
-
-					layoutLocalServiceHelper.validateFirstLayout(secondLayout);
-				}
+			if (!notIncompleteLayoutRevisions.isEmpty()) {
+				return;
 			}
+
+			layoutRevisionLocalService.deleteLayoutLayoutRevisions(
+				layout.getPlid());
 		}
 
-		// Child layouts
+		if (SystemEventHierarchyEntryThreadLocal.push(
+				Layout.class, layout.getPlid()) == null) {
 
-		List<Layout> childLayouts = layoutPersistence.findByG_P_P(
-			layout.getGroupId(), layout.isPrivateLayout(),
-			layout.getLayoutId());
-
-		for (Layout childLayout : childLayouts) {
-			layoutLocalService.deleteLayout(
-				childLayout, updateLayoutSet, serviceContext);
+			_deleteLayout(layout, updateLayoutSet, serviceContext);
 		}
+		else {
+			try {
+				_deleteLayout(layout, updateLayoutSet, serviceContext);
 
-		// Layout friendly URLs
+				SystemEventHierarchyEntry systemEventHierarchyEntry =
+					SystemEventHierarchyEntryThreadLocal.peek();
 
-		layoutFriendlyURLLocalService.deleteLayoutFriendlyURLs(
-			layout.getPlid());
-
-		// Portlet preferences
-
-		portletPreferencesLocalService.deletePortletPreferencesByPlid(
-			layout.getPlid());
-
-		// Asset
-
-		assetEntryLocalService.deleteEntry(
-			Layout.class.getName(), layout.getPlid());
-
-		// Ratings
-
-		ratingsStatsLocalService.deleteStats(
-			Layout.class.getName(), layout.getPlid());
-
-		// Expando
-
-		expandoRowLocalService.deleteRows(layout.getPlid());
-
-		// Icon
-
-		imageLocalService.deleteImage(layout.getIconImageId());
-
-		// Scope group
-
-		Group scopeGroup = layout.getScopeGroup();
-
-		if (scopeGroup != null) {
-			groupLocalService.deleteGroup(scopeGroup.getGroupId());
-		}
-
-		// Resources
-
-		String primKey =
-			layout.getPlid() + PortletConstants.LAYOUT_SEPARATOR + "%";
-
-		List<ResourcePermission> resourcePermissions =
-			resourcePermissionPersistence.findByC_LikeP(
-				layout.getCompanyId(), primKey);
-
-		for (ResourcePermission resourcePermission : resourcePermissions) {
-			resourcePermissionLocalService.deleteResourcePermission(
-				resourcePermission);
-		}
-
-		resourceLocalService.deleteResource(
-			layout.getCompanyId(), Layout.class.getName(),
-			ResourceConstants.SCOPE_INDIVIDUAL, layout.getPlid());
-
-		// Layout
-
-		layoutPersistence.remove(layout);
-
-		// Layout set
-
-		if (updateLayoutSet) {
-			layoutSetLocalService.updatePageCount(
-				layout.getGroupId(), layout.isPrivateLayout());
-		}
-
-		// System event
-
-		SystemEventHierarchyEntry systemEventHierarchyEntry =
-			SystemEventHierarchyEntryThreadLocal.peek();
-
-		if ((systemEventHierarchyEntry != null) &&
-			systemEventHierarchyEntry.hasTypedModel(
-				Layout.class.getName(), layout.getPlid())) {
-
-			systemEventHierarchyEntry.setExtraDataValue(
-				"privateLayout", StringUtil.valueOf(layout.isPrivateLayout()));
+				systemEventLocalService.addSystemEvent(
+					0, layout.getGroupId(), Layout.class.getName(),
+					layout.getPlid(), layout.getUuid(), null,
+					SystemEventConstants.TYPE_DELETE,
+					systemEventHierarchyEntry.getExtraData());
+			}
+			finally {
+				SystemEventHierarchyEntryThreadLocal.pop(
+					Layout.class, layout.getPlid());
+			}
 		}
 	}
 
@@ -2415,10 +2355,10 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 		layoutLocalServiceHelper.validateParentLayoutId(
 			groupId, privateLayout, layoutId, parentLayoutId);
 
-		Date now = new Date();
-
 		Layout layout = layoutPersistence.findByG_P_L(
 			groupId, privateLayout, layoutId);
+
+		LayoutRevision layoutRevision = _getLayoutRevision(layout);
 
 		if (parentLayoutId != layout.getParentLayoutId()) {
 			int priority = layoutLocalServiceHelper.getNextPriority(
@@ -2428,63 +2368,121 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 			layout.setPriority(priority);
 		}
 
-		layout.setModifiedDate(serviceContext.getModifiedDate(now));
 		layout.setParentLayoutId(parentLayoutId);
-		layout.setNameMap(nameMap);
-		layout.setTitleMap(titleMap);
-		layout.setDescriptionMap(descriptionMap);
-		layout.setKeywordsMap(keywordsMap);
-		layout.setRobotsMap(robotsMap);
 		layout.setType(type);
 		layout.setHidden(hidden);
 		layout.setFriendlyURL(friendlyURL);
 
-		PortalUtil.updateImageId(
-			layout, iconImage, iconBytes, "iconImageId", 0, 0, 0);
+		if (layoutRevision == null) {
+			Date now = new Date();
 
-		boolean layoutUpdateable = ParamUtil.getBoolean(
-			serviceContext, Sites.LAYOUT_UPDATEABLE, true);
+			layout.setModifiedDate(serviceContext.getModifiedDate(now));
 
-		UnicodeProperties typeSettingsProperties =
-			layout.getTypeSettingsProperties();
+			layout.setNameMap(nameMap);
+			layout.setTitleMap(titleMap);
+			layout.setDescriptionMap(descriptionMap);
+			layout.setKeywordsMap(keywordsMap);
+			layout.setRobotsMap(robotsMap);
 
-		typeSettingsProperties.put(
-			Sites.LAYOUT_UPDATEABLE, String.valueOf(layoutUpdateable));
+			PortalUtil.updateImageId(
+				layout, iconImage, iconBytes, "iconImageId", 0, 0, 0);
 
-		if (privateLayout) {
+			boolean layoutUpdateable = ParamUtil.getBoolean(
+				serviceContext, Sites.LAYOUT_UPDATEABLE, true);
+
+			UnicodeProperties typeSettingsProperties =
+				layout.getTypeSettingsProperties();
+
 			typeSettingsProperties.put(
-				"privateLayout", String.valueOf(privateLayout));
+				Sites.LAYOUT_UPDATEABLE, String.valueOf(layoutUpdateable));
+
+			if (privateLayout) {
+				typeSettingsProperties.put(
+					"privateLayout", String.valueOf(privateLayout));
+			}
+
+			layout.setTypeSettingsProperties(typeSettingsProperties);
+
+			String layoutPrototypeUuid = ParamUtil.getString(
+				serviceContext, "layoutPrototypeUuid");
+			boolean layoutPrototypeLinkEnabled = ParamUtil.getBoolean(
+				serviceContext, "layoutPrototypeLinkEnabled");
+
+			if (Validator.isNotNull(layoutPrototypeUuid)) {
+				layout.setLayoutPrototypeUuid(layoutPrototypeUuid);
+				layout.setLayoutPrototypeLinkEnabled(
+					layoutPrototypeLinkEnabled);
+			}
+
+			layout.setExpandoBridgeAttributes(serviceContext);
+
+			layoutPersistence.update(layout);
+
+			// Layout friendly URLs
+
+			layoutFriendlyURLLocalService.updateLayoutFriendlyURLs(
+				serviceContext.getUserId(), layout.getCompanyId(),
+				layout.getGroupId(), layout.getPlid(), layout.isPrivateLayout(),
+				friendlyURLMap, serviceContext);
+
+			// Asset
+
+			updateAsset(
+				serviceContext.getUserId(), layout,
+				serviceContext.getAssetCategoryIds(),
+				serviceContext.getAssetTagNames());
+
+			return layout;
 		}
 
-		layout.setTypeSettingsProperties(typeSettingsProperties);
+		layoutRevision.setNameMap(nameMap);
+		layoutRevision.setTitleMap(titleMap);
+		layoutRevision.setDescriptionMap(descriptionMap);
+		layoutRevision.setKeywordsMap(keywordsMap);
+		layoutRevision.setRobotsMap(robotsMap);
 
-		String layoutPrototypeUuid = ParamUtil.getString(
-			serviceContext, "layoutPrototypeUuid");
+		PortalUtil.updateImageId(
+			layoutRevision, iconImage, iconBytes, "iconImageId", 0, 0, 0);
+
 		boolean layoutPrototypeLinkEnabled = ParamUtil.getBoolean(
 			serviceContext, "layoutPrototypeLinkEnabled");
 
-		if (Validator.isNotNull(layoutPrototypeUuid)) {
-			layout.setLayoutPrototypeUuid(layoutPrototypeUuid);
-			layout.setLayoutPrototypeLinkEnabled(layoutPrototypeLinkEnabled);
-		}
+		layout.setLayoutPrototypeLinkEnabled(layoutPrototypeLinkEnabled);
 
 		layout.setExpandoBridgeAttributes(serviceContext);
 
 		layoutPersistence.update(layout);
 
-		// Layout friendly URLs
-
 		layoutFriendlyURLLocalService.updateLayoutFriendlyURLs(
-			serviceContext.getUserId(), layout.getCompanyId(),
-			layout.getGroupId(), layout.getPlid(), layout.isPrivateLayout(),
-			friendlyURLMap, serviceContext);
+			layout.getUserId(), layout.getCompanyId(), layout.getGroupId(),
+			layout.getPlid(), layout.isPrivateLayout(), friendlyURLMap,
+			serviceContext);
 
-		// Asset
+		boolean hasWorkflowTask = StagingUtil.hasWorkflowTask(
+			serviceContext.getUserId(), layoutRevision);
 
-		updateAsset(
-			serviceContext.getUserId(), layout,
-			serviceContext.getAssetCategoryIds(),
-			serviceContext.getAssetTagNames());
+		serviceContext.setAttribute("revisionInProgress", hasWorkflowTask);
+
+		int workflowAction = serviceContext.getWorkflowAction();
+
+		try {
+			serviceContext.setWorkflowAction(
+				WorkflowConstants.ACTION_SAVE_DRAFT);
+
+			layoutRevisionLocalService.updateLayoutRevision(
+				serviceContext.getUserId(),
+				layoutRevision.getLayoutRevisionId(),
+				layoutRevision.getLayoutBranchId(), layoutRevision.getName(),
+				layoutRevision.getTitle(), layoutRevision.getDescription(),
+				layoutRevision.getKeywords(), layoutRevision.getRobots(),
+				layoutRevision.getTypeSettings(), layoutRevision.getIconImage(),
+				layoutRevision.getIconImageId(), layoutRevision.getThemeId(),
+				layoutRevision.getColorSchemeId(), layoutRevision.getCss(),
+				serviceContext);
+		}
+		finally {
+			serviceContext.setWorkflowAction(workflowAction);
+		}
 
 		return layout;
 	}
@@ -2505,21 +2503,52 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 			String typeSettings)
 		throws PortalException {
 
-		Date now = new Date();
-
-		UnicodeProperties typeSettingsProperties = new UnicodeProperties();
-
-		typeSettingsProperties.fastLoad(typeSettings);
-
 		Layout layout = layoutPersistence.findByG_P_L(
 			groupId, privateLayout, layoutId);
 
-		validateTypeSettingsProperties(layout, typeSettingsProperties);
+		LayoutRevision layoutRevision = _getLayoutRevision(layout);
 
-		layout.setModifiedDate(now);
-		layout.setTypeSettings(typeSettingsProperties.toString());
+		if (layoutRevision == null) {
+			Date now = new Date();
 
-		layoutPersistence.update(layout);
+			UnicodeProperties typeSettingsProperties = new UnicodeProperties();
+
+			typeSettingsProperties.fastLoad(typeSettings);
+
+			validateTypeSettingsProperties(layout, typeSettingsProperties);
+
+			layout.setModifiedDate(now);
+			layout.setTypeSettings(typeSettingsProperties.toString());
+
+			layoutPersistence.update(layout);
+
+			return layout;
+		}
+
+		layout.setTypeSettings(typeSettings);
+
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
+
+		boolean hasWorkflowTask = StagingUtil.hasWorkflowTask(
+			serviceContext.getUserId(), layoutRevision);
+
+		serviceContext.setAttribute("revisionInProgress", hasWorkflowTask);
+
+		if (!MergeLayoutPrototypesThreadLocal.isInProgress()) {
+			serviceContext.setWorkflowAction(
+				WorkflowConstants.ACTION_SAVE_DRAFT);
+		}
+
+		layoutRevisionLocalService.updateLayoutRevision(
+			serviceContext.getUserId(), layoutRevision.getLayoutRevisionId(),
+			layoutRevision.getLayoutBranchId(), layoutRevision.getName(),
+			layoutRevision.getTitle(), layoutRevision.getDescription(),
+			layoutRevision.getKeywords(), layoutRevision.getRobots(),
+			layoutRevision.getTypeSettings(), layoutRevision.getIconImage(),
+			layoutRevision.getIconImageId(), layoutRevision.getThemeId(),
+			layoutRevision.getColorSchemeId(), layoutRevision.getCss(),
+			serviceContext);
 
 		return layout;
 	}
@@ -2541,18 +2570,47 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 			String colorSchemeId, String css)
 		throws PortalException {
 
-		Date now = new Date();
-
 		Layout layout = layoutPersistence.findByG_P_L(
 			groupId, privateLayout, layoutId);
 
-		layout.setModifiedDate(now);
+		LayoutRevision layoutRevision = _getLayoutRevision(layout);
 
 		layout.setThemeId(themeId);
 		layout.setColorSchemeId(colorSchemeId);
 		layout.setCss(css);
 
-		layoutPersistence.update(layout);
+		if (layoutRevision == null) {
+			Date now = new Date();
+
+			layout.setModifiedDate(now);
+
+			layoutPersistence.update(layout);
+
+			return layout;
+		}
+
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
+
+		boolean hasWorkflowTask = StagingUtil.hasWorkflowTask(
+			serviceContext.getUserId(), layoutRevision);
+
+		serviceContext.setAttribute("revisionInProgress", hasWorkflowTask);
+
+		if (!MergeLayoutPrototypesThreadLocal.isInProgress()) {
+			serviceContext.setWorkflowAction(
+				WorkflowConstants.ACTION_SAVE_DRAFT);
+		}
+
+		layoutRevisionLocalService.updateLayoutRevision(
+			serviceContext.getUserId(), layoutRevision.getLayoutRevisionId(),
+			layoutRevision.getLayoutBranchId(), layoutRevision.getName(),
+			layoutRevision.getTitle(), layoutRevision.getDescription(),
+			layoutRevision.getKeywords(), layoutRevision.getRobots(),
+			layoutRevision.getTypeSettings(), layoutRevision.getIconImage(),
+			layoutRevision.getIconImageId(), layoutRevision.getThemeId(),
+			layoutRevision.getColorSchemeId(), layoutRevision.getCss(),
+			serviceContext);
 
 		return layout;
 	}
@@ -2570,28 +2628,58 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 	public Layout updateName(Layout layout, String name, String languageId)
 		throws PortalException {
 
-		Date now = new Date();
+		LayoutRevision layoutRevision = _getLayoutRevision(layout);
+
+		if (layoutRevision == null) {
+			Date now = new Date();
+
+			layoutLocalServiceHelper.validateName(name, languageId);
+
+			layout.setModifiedDate(now);
+			layout.setName(name, LocaleUtil.fromLanguageId(languageId));
+
+			layoutPersistence.update(layout);
+
+			Group group = layout.getGroup();
+
+			if (group.isLayoutPrototype()) {
+				LayoutPrototype layoutPrototype =
+					layoutPrototypeLocalService.getLayoutPrototype(
+						group.getClassPK());
+
+				layoutPrototype.setModifiedDate(now);
+				layoutPrototype.setName(
+					name, LocaleUtil.fromLanguageId(languageId));
+
+				layoutPrototypePersistence.update(layoutPrototype);
+			}
+
+			return layout;
+		}
 
 		layoutLocalServiceHelper.validateName(name, languageId);
 
-		layout.setModifiedDate(now);
 		layout.setName(name, LocaleUtil.fromLanguageId(languageId));
 
-		layoutPersistence.update(layout);
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
 
-		Group group = layout.getGroup();
+		boolean hasWorkflowTask = StagingUtil.hasWorkflowTask(
+			serviceContext.getUserId(), layoutRevision);
 
-		if (group.isLayoutPrototype()) {
-			LayoutPrototype layoutPrototype =
-				layoutPrototypeLocalService.getLayoutPrototype(
-					group.getClassPK());
+		serviceContext.setAttribute("revisionInProgress", hasWorkflowTask);
 
-			layoutPrototype.setModifiedDate(now);
-			layoutPrototype.setName(
-				name, LocaleUtil.fromLanguageId(languageId));
+		serviceContext.setWorkflowAction(WorkflowConstants.ACTION_SAVE_DRAFT);
 
-			layoutPrototypePersistence.update(layoutPrototype);
-		}
+		layoutRevisionLocalService.updateLayoutRevision(
+			serviceContext.getUserId(), layoutRevision.getLayoutRevisionId(),
+			layoutRevision.getLayoutBranchId(), layoutRevision.getName(),
+			layoutRevision.getTitle(), layoutRevision.getDescription(),
+			layoutRevision.getKeywords(), layoutRevision.getRobots(),
+			layoutRevision.getTypeSettings(), layoutRevision.getIconImage(),
+			layoutRevision.getIconImageId(), layoutRevision.getThemeId(),
+			layoutRevision.getColorSchemeId(), layoutRevision.getCss(),
+			serviceContext);
 
 		return layout;
 	}
@@ -3146,6 +3234,134 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 		}
 
 		return layouts;
+	}
+
+	private void _deleteLayout(
+			Layout layout, boolean updateLayoutSet,
+			ServiceContext serviceContext)
+		throws PortalException {
+
+		// First layout validation
+
+		if (layout.getParentLayoutId() ==
+				LayoutConstants.DEFAULT_PARENT_LAYOUT_ID) {
+
+			List<Layout> rootLayouts = layoutPersistence.findByG_P_P(
+				layout.getGroupId(), layout.isPrivateLayout(),
+				LayoutConstants.DEFAULT_PARENT_LAYOUT_ID, 0, 2);
+
+			if (rootLayouts.size() > 1) {
+				Layout firstLayout = rootLayouts.get(0);
+
+				if (firstLayout.getLayoutId() == layout.getLayoutId()) {
+					Layout secondLayout = rootLayouts.get(1);
+
+					layoutLocalServiceHelper.validateFirstLayout(secondLayout);
+				}
+			}
+		}
+
+		// Child layouts
+
+		List<Layout> childLayouts = layoutPersistence.findByG_P_P(
+			layout.getGroupId(), layout.isPrivateLayout(),
+			layout.getLayoutId());
+
+		for (Layout childLayout : childLayouts) {
+			layoutLocalService.deleteLayout(
+				childLayout, updateLayoutSet, serviceContext);
+		}
+
+		// Layout friendly URLs
+
+		layoutFriendlyURLLocalService.deleteLayoutFriendlyURLs(
+			layout.getPlid());
+
+		// Portlet preferences
+
+		portletPreferencesLocalService.deletePortletPreferencesByPlid(
+			layout.getPlid());
+
+		// Asset
+
+		assetEntryLocalService.deleteEntry(
+			Layout.class.getName(), layout.getPlid());
+
+		// Ratings
+
+		ratingsStatsLocalService.deleteStats(
+			Layout.class.getName(), layout.getPlid());
+
+		// Expando
+
+		expandoRowLocalService.deleteRows(layout.getPlid());
+
+		// Icon
+
+		imageLocalService.deleteImage(layout.getIconImageId());
+
+		// Scope group
+
+		Group scopeGroup = layout.getScopeGroup();
+
+		if (scopeGroup != null) {
+			groupLocalService.deleteGroup(scopeGroup.getGroupId());
+		}
+
+		// Resources
+
+		String primKey =
+			layout.getPlid() + PortletConstants.LAYOUT_SEPARATOR + "%";
+
+		List<ResourcePermission> resourcePermissions =
+			resourcePermissionPersistence.findByC_LikeP(
+				layout.getCompanyId(), primKey);
+
+		for (ResourcePermission resourcePermission : resourcePermissions) {
+			resourcePermissionLocalService.deleteResourcePermission(
+				resourcePermission);
+		}
+
+		resourceLocalService.deleteResource(
+			layout.getCompanyId(), Layout.class.getName(),
+			ResourceConstants.SCOPE_INDIVIDUAL, layout.getPlid());
+
+		// Layout
+
+		layoutPersistence.remove(layout);
+
+		// Layout set
+
+		if (updateLayoutSet) {
+			layoutSetLocalService.updatePageCount(
+				layout.getGroupId(), layout.isPrivateLayout());
+		}
+
+		// System event
+
+		SystemEventHierarchyEntry systemEventHierarchyEntry =
+			SystemEventHierarchyEntryThreadLocal.peek();
+
+		if ((systemEventHierarchyEntry != null) &&
+			systemEventHierarchyEntry.hasTypedModel(
+				Layout.class.getName(), layout.getPlid())) {
+
+			systemEventHierarchyEntry.setExtraDataValue(
+				"privateLayout", StringUtil.valueOf(layout.isPrivateLayout()));
+		}
+	}
+
+	private LayoutRevision _getLayoutRevision(Layout layout) {
+		LayoutStagingHandler layoutStagingHandler =
+			LayoutStagingUtil.getLayoutStagingHandler(layout);
+
+		if ((layoutStagingHandler == null) ||
+			!LayoutStagingUtil.isBranchingLayout(layout)) {
+
+			return null;
+		}
+
+		return layoutStagingHandler.getLayoutRevision();
 	}
 
 	private List<Layout> _injectVirtualLayouts(

@@ -679,12 +679,14 @@
 		<reference entity="Image" package-path="com.liferay.portal" />
 		<reference entity="LayoutFriendlyURL" package-path="com.liferay.portal" />
 		<reference entity="LayoutPrototype" package-path="com.liferay.portal" />
+		<reference entity="LayoutRevision" package-path="com.liferay.portal" />
 		<reference entity="LayoutSet" package-path="com.liferay.portal" />
 		<reference entity="LayoutSetPrototype" package-path="com.liferay.portal" />
 		<reference entity="PluginSetting" package-path="com.liferay.portal" />
 		<reference entity="PortletPreferences" package-path="com.liferay.portal" />
 		<reference entity="Resource" package-path="com.liferay.portal" />
 		<reference entity="ResourcePermission" package-path="com.liferay.portal" />
+		<reference entity="SystemEvent" package-path="com.liferay.portal" />
 		<reference entity="User" package-path="com.liferay.portal" />
 		<reference entity="UserGroup" package-path="com.liferay.portal" />
 		<reference entity="AssetCategory" package-path="com.liferay.portlet.asset" />
