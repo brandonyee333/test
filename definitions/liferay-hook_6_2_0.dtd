@@ -119,6 +119,7 @@ sites.form.add.seo
 sites.form.update.advanced
 sites.form.update.main
 sites.form.update.seo
+sites.form.update.miscellaneous
 social.activity.sets.bundling.enabled
 social.activity.sets.enabled
 social.activity.sets.selector
