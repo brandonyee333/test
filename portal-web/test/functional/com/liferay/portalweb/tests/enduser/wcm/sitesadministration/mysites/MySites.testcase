@@ -26,6 +26,8 @@
 	</tear-down>
 
 	<command name="DisplayMySitesPagination" priority="3">
+		<property name="portal.acceptance" value="yvonne" />
+
 		<execute macro="TestCase#getSiteName">
 			<return from="siteName" name="siteName" />
 			<var name="siteName" value="${siteName}" />
@@ -342,6 +344,8 @@
 	</command>
 
 	<command name="SearchSite" priority="4">
+		<property name="portal.acceptance" value="yvonne" />
+
 		<execute macro="TestCase#getSiteName">
 			<return from="siteName" name="siteName" />
 			<var name="siteName" value="${siteName}" />
@@ -384,6 +388,8 @@
 	</command>
 
 	<command name="ViewMembershipAssignViaSiteCP" priority="3">
+		<property name="portal.acceptance" value="yvonne" />
+
 		<execute macro="TestCase#getSiteName">
 			<return from="siteName" name="siteName" />
 			<var name="siteName" value="${siteName}" />
@@ -477,6 +483,8 @@
 	</command>
 
 	<command name="ViewNoInactiveSite" priority="3">
+		<property name="portal.acceptance" value="yvonne" />
+
 		<execute macro="TestCase#getSiteName">
 			<return from="siteName" name="siteName" />
 			<var name="siteName" value="${siteName}" />
@@ -530,6 +538,8 @@
 	</command>
 
 	<command name="ViewNoJoinOption" priority="3">
+		<property name="portal.acceptance" value="yvonne" />
+
 		<execute macro="TestCase#getSiteName">
 			<return from="siteName" name="siteName" />
 			<var name="siteName" value="${siteName}" />
@@ -618,6 +628,8 @@
 	</command>
 
 	<command name="ViewNoLeaveOption" priority="3">
+		<property name="portal.acceptance" value="yvonne" />
+
 		<execute macro="TestCase#getSiteName">
 			<return from="siteName" name="siteName" />
 			<var name="siteName" value="${siteName}" />
@@ -666,6 +678,8 @@
 	</command>
 
 	<command name="ViewSitePages" priority="3">
+		<property name="portal.acceptance" value="yvonne" />
+
 		<execute macro="TestCase#getSiteName">
 			<return from="siteName" name="siteName" />
 			<var name="siteName" value="${siteName}" />
@@ -725,6 +739,8 @@
 	</command>
 
 	<command name="ViewSiteWithTags" priority="4">
+		<property name="portal.acceptance" value="yvonne" />
+
 		<execute macro="TestCase#getSiteName">
 			<return from="siteName" name="siteName" />
 			<var name="siteName" value="${siteName}" />

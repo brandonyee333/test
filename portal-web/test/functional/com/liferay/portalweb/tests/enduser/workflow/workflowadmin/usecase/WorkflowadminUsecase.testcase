@@ -1724,6 +1724,8 @@
 	</command>
 
 	<command name="XSSScriptWebContent" priority="4">
+		<property name="portal.acceptance" value="yvonne" />
+
 		<execute macro="TestCase#getSiteName">
 			<return from="siteName" name="siteName" />
 			<var name="siteName" value="${siteName}" />
