@@ -27,6 +27,13 @@
 	</tear-down>
 
 	<command name="AddPageMultiplePagesToSite" priority="3">
+		<property name="portal.acceptance" value="yvonne" />
+
+		<execute macro="TestCase#getSiteName">
+			<return from="siteName" name="siteName" />
+			<var name="siteName" value="${siteName}" />
+		</execute>
+
 		<execute macro="Navigator#openURL" />
 
 		<execute macro="Page#add">
@@ -41,9 +48,7 @@
 			<var name="pageName" value="Site Page 3" />
 		</execute>
 
-		<execute macro="Page#tearDownPG">
-			<var name="site" value="Liferay" />
-		</execute>
+		<execute macro="Page#tearDownPG" />
 	</command>
 
 	<command name="AddPagesFullPageApplication" priority="4">
