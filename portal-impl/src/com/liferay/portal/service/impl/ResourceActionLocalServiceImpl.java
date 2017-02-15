@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.dao.orm.Property;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.NoSuchResourceActionException;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.ResourceActionsException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.ResourceAction;
@@ -212,9 +213,32 @@ public class ResourceActionLocalServiceImpl
 	}
 
 	@Override
-	public ResourceAction deleteResourceAction(ResourceAction resourceAction) {
+	public ResourceAction deleteResourceAction(ResourceAction resourceAction)
+		throws PortalException {
+
+		return deleteResourceAction(resourceAction, false);
+	}
+
+	@Override
+	public ResourceAction deleteResourceAction(
+			ResourceAction resourceAction, boolean force)
+		throws PortalException {
+
 		final String name = resourceAction.getName();
 		final long bitwiseValue = resourceAction.getBitwiseValue();
+		String actionId = resourceAction.getActionId();
+
+		if (!force) {
+			List<String> actionIds = ResourceActionsUtil.getResourceActions(
+				name);
+
+			if (actionIds.contains(actionId)) {
+				throw new ResourceActionsException(
+					"Cannot delete resource action " + actionId +
+						" for resource " + name + " because it is currently " +
+							"in use");
+			}
+		}
 
 		ActionableDynamicQuery.AddCriteriaMethod addCriteriaMethod =
 			new ActionableDynamicQuery.AddCriteriaMethod() {
