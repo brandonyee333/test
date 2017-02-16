@@ -1420,8 +1420,8 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 				mappingPropertyName = ContactConverterKeys.SUFFIX;
 			}
 
-			if (!contactMappings.containsKey(mappingPropertyName) ||
-				ldapUserIgnoreAttributes.contains(propertyName)) {
+			if (contactMappings.containsKey(mappingPropertyName) &&
+				!ldapUserIgnoreAttributes.contains(propertyName)) {
 
 				setProperty(ldapContact, contact, propertyName);
 			}
@@ -1434,8 +1434,8 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 				mappingPropertyName = UserConverterKeys.PORTRAIT;
 			}
 
-			if (!userMappings.containsKey(mappingPropertyName) ||
-				ldapUserIgnoreAttributes.contains(propertyName)) {
+			if (userMappings.containsKey(mappingPropertyName) &&
+				!ldapUserIgnoreAttributes.contains(propertyName)) {
 
 				setProperty(ldapUser, user, propertyName);
 			}
