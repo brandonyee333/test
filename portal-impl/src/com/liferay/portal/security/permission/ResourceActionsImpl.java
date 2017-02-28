@@ -1205,7 +1205,7 @@ public class ResourceActionsImpl implements ResourceActions {
 		}
 
 		ModelResourceActionsBag modelResourceActionsBag =
-			_getModelResourceActionsBag(name);
+			new ModelResourceActionsBag();
 
 		Element portletRefElement = modelResourceElement.element("portlet-ref");
 
@@ -1291,6 +1291,8 @@ public class ResourceActionsImpl implements ResourceActions {
 
 		_readOwnerDefaultActions(modelResourceElement, ownerDefaultActions);
 
+		_modelResourceActionsBags.put(name, modelResourceActionsBag);
+
 		return name;
 	}
 
@@ -1321,7 +1323,7 @@ public class ResourceActionsImpl implements ResourceActions {
 		name = JS.getSafeName(name);
 
 		PortletResourceActionsBag portletResourceActionsBag =
-			_getPortletResourceActionsBag(name);
+			new PortletResourceActionsBag();
 
 		Set<String> portletActions =
 			portletResourceActionsBag.getPortletActions();
@@ -1361,6 +1363,8 @@ public class ResourceActionsImpl implements ResourceActions {
 
 		_readLayoutManagerActions(
 			portletResourceElement, layoutManagerActions, portletActions);
+
+		_portletResourceActionsBags.put(name, portletResourceActionsBag);
 
 		return name;
 	}
