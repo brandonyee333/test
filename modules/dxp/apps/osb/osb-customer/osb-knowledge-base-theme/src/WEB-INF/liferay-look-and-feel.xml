@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE look-and-feel PUBLIC "-//Liferay//DTD Look and Feel 7.0.0//EN" "http://www.liferay.com/dtd/liferay-look-and-feel_7_0_0.dtd">
+
+<look-and-feel>
+	<compatibility>
+		<version>7.0.0+</version>
+	</compatibility>
+	<theme id="osb-knowledge-base" name="OSB Knowledge Base">
+		<template-extension>vm</template-extension>
+		<settings>
+			<setting configurable="true" key="custom-navigation" options="true,false" type="select" value="false"></setting>
+			<setting configurable="true" key="custom-site-lang-key" value="" />
+			<setting configurable="true" key="custom-site-nav-logo" options="true,false" type="select" value="false" />
+			<setting configurable="true" key="custom-site-url" value="" />
+			<setting configurable="true" key="google-analytics-id" value="" />
+			<setting configurable="true" key="liferay-home-url" value="/" />
+			<setting configurable="true" key="nav-options" options="dynamic,none,static" type="select" value="dynamic"></setting>
+			<setting configurable="true" key="open-graph-image" value=""></setting>
+			<setting configurable="true" key="open-graph-title" value=""></setting>
+			<setting configurable="true" key="open-graph-url" value=""></setting>
+			<setting key="portlet-setup-show-borders-default" value="false"></setting>
+		</settings>
+		<layout-templates>
+			<custom>
+				<layout-template id="2-columns-iv" name="2 Columns (25/75)">
+					<template-path>/layouttpl/custom/2-columns-iv-layouttpl/2_columns_iv.tpl</template-path>
+					<thumbnail-path>/layouttpl/custom/2-columns-iv-layouttpl/2_columns_iv.png</thumbnail-path>
+				</layout-template>
+			</custom>
+		</layout-templates>
+		<portlet-decorator id="barebone" name="Barebone">
+			<portlet-decorator-css-class>portlet-barebone</portlet-decorator-css-class>
+		</portlet-decorator>
+		<portlet-decorator id="borderless" name="Borderless">
+			<portlet-decorator-css-class>portlet-borderless</portlet-decorator-css-class>
+		</portlet-decorator>
+		<portlet-decorator id="decorate" name="Decorate">
+			<default-portlet-decorator>true</default-portlet-decorator>
+			<portlet-decorator-css-class>portlet-decorate</portlet-decorator-css-class>
+		</portlet-decorator>
+	</theme>
+</look-and-feel>
