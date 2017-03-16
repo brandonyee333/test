@@ -6,7 +6,7 @@
 		<version>7.0.0+</version>
 	</compatibility>
 	<theme id="osb-knowledge-base" name="OSB Knowledge Base">
-		<template-extension>vm</template-extension>
+		<template-extension>ftl</template-extension>
 		<settings>
 			<setting configurable="true" key="custom-navigation" options="true,false" type="select" value="false"></setting>
 			<setting configurable="true" key="custom-site-lang-key" value="" />
@@ -18,7 +18,6 @@
 			<setting configurable="true" key="open-graph-image" value=""></setting>
 			<setting configurable="true" key="open-graph-title" value=""></setting>
 			<setting configurable="true" key="open-graph-url" value=""></setting>
-			<setting key="portlet-setup-show-borders-default" value="false"></setting>
 		</settings>
 		<layout-templates>
 			<custom>
@@ -32,10 +31,10 @@
 			<portlet-decorator-css-class>portlet-barebone</portlet-decorator-css-class>
 		</portlet-decorator>
 		<portlet-decorator id="borderless" name="Borderless">
+			<default-portlet-decorator>true</default-portlet-decorator>
 			<portlet-decorator-css-class>portlet-borderless</portlet-decorator-css-class>
 		</portlet-decorator>
 		<portlet-decorator id="decorate" name="Decorate">
-			<default-portlet-decorator>true</default-portlet-decorator>
 			<portlet-decorator-css-class>portlet-decorate</portlet-decorator-css-class>
 		</portlet-decorator>
 	</theme>

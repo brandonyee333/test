@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 
-#parse ($init)
+<#include init />
 
-<html class="$root_css_class" dir="#language ("lang.dir")" lang="$w3c_language_id">
+<html class="aui ${root_css_class}" dir="<@liferay.language key="lang.dir" />" lang="${w3c_language_id}">
 
 <head>
 	<meta charset="utf-8" />
 	<meta content="minimum-scale=1.0, width=device-width" name="viewport" />
 	<meta content="liferay" property="fb:admins" />
-	<meta content="$page.getDescription($locale)" property="og:description" />
-	<meta content="$open_graph_image" property="og:image" />
-	<meta content="$open_graph_title" property="og:title" />
+	<meta content="${page.getDescription(locale)}" property="og:description" />
+	<meta content="${open_graph_image}" property="og:image" />
+	<meta content="${open_graph_title}" property="og:title" />
 	<meta content="website" property="og:type" />
-	<meta content="$open_graph_url" property="og:url" />
-	<title>$the_title | #language ("liferay")</title>
+	<meta content="${open_graph_url}" property="og:url" />
+	<title>${the_title} | "<@liferay.language key="liferay" /></title>
 
-	$theme.include($top_head_include)
+	<@liferay_util["include"] page=top_head_include />
 
-	#if ($theme.getSetting("google-analytics-id") != "")
+	<#if theme.getSetting("google-analytics-id") != "">
 		<script>
 			(function(i, s, o, g, r, a, m) {
 				i['GoogleAnalyticsObject'] = r;
@@ -36,47 +36,49 @@
 				m.parentNode.insertBefore(a, m);
 			})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
-			ga('create', '$theme.getSetting("google-analytics-id")', 'auto');
+			ga('create', '${theme.getSetting("google-analytics-id")}', 'auto');
 			ga('send', 'pageview');
 		</script>
-	#end
+	</#if>
 </head>
 
-<body class="$css_class">
+<body class="${css_class}">
 
-<a class="hide-accessible" href="#main-content" id="skip-to-content">#language ("skip-to-content")</a>
+<a class="hide-accessible" href="#main-content" id="skip-to-content"><@liferay.language key="skip-to-content" /></a>
 
-$theme.include($body_top_include)
+<@liferay_util["include"] page=body_top_include />
 
-#if ($themeDisplay.isShowControlPanelIcon() || $themeDisplay.isShowSiteAdministrationIcon())
-	#dockbar()
-#end
+<#if can_view_control_panel>
+	<@liferay.control_menu />
+</#if>
 
 <div class="container-fluid" id="wrapper">
 	<div class="row-fluid">
 		<header class="banner span12" id="banner" role="banner">
 			<div class="banner-content">
-				<a class="$logo_css_class" href="/">
-					<img alt="#language ("liferay")" src="$images_folder/custom/heading.png" />
+				<a class="${logo_css_class}" href="/">
+					<img alt="<@liferay.language key="liferay" />" src="${images_folder}/custom/heading.png" />
 				</a>
 
-				#if ($has_navigation)
-					#parse ("$full_templates_path/navigation.vm")
-				#end
+				<#if has_navigation>
+					<#include "${full_templates_path}/navigation.ftl" />
+				</#if>
 			</div>
 		</header>
 	</div>
 
 	<div class="row-fluid">
-		#if ($selectable)
-			$theme.include($content_include)
-		#else
-			$portletDisplay.recycle()
+		<#if selectable>
+			<@liferay_util["include"] page=content_include />
+		<#else>
+			${portletDisplay.recycle()}
 
-			$portletDisplay.setTitle($the_title)
+			${portletDisplay.setTitle(the_title)}
 
-			$theme.wrapPortlet("portlet.vm", $content_include)
-		#end
+			<@liferay_theme["wrap-portlet"] page="portlet.ftl">
+				<@liferay_util["include"] page=content_include />
+			</@>
+		</#if>
 	</div>
 
 	<div class="row-fluid">
@@ -88,7 +90,7 @@ $theme.include($body_top_include)
 							<a href="http://www.facebook.com/pages/Liferay/45119213107" target="_blank">
 								<span class="facebook social-img"></span>
 
-								<span class="responsive-hidden">#language ("facebook")</span>
+								<span class="responsive-hidden"><@liferay.language key="facebook" /></span>
 							</a>
 						</li>
 						<li class="nav-item parent-item root-item">
@@ -102,7 +104,7 @@ $theme.include($body_top_include)
 							<a href="http://www.twitter.com/liferay" target="_blank">
 								<span class="social-img twitter"></span>
 
-								<span class="responsive-hidden">#language ("twitter")</span>
+								<span class="responsive-hidden"><@liferay.language key="twitter" /></span>
 							</a>
 						</li>
 					</ul>
@@ -110,19 +112,19 @@ $theme.include($body_top_include)
 			</div>
 
 			<div class="responsive-only row-fluid">
-				<nav class="$nav_css_class footer-navigation span12">
-					#print_navigation($mobile_footer_nav_friendly_url)
+				<nav class="${nav_css_class} footer-navigation span12">
+					<@print_navigation layout_friendly_url=mobile_footer_nav_friendly_url />
 				</nav>
 			</div>
 
 			<div class="responsive-hidden row-fluid">
-				<nav class="$nav_css_class footer-navigation span12">
-					#print_navigation($footer_nav_friendly_url)
+				<nav class="${nav_css_class} footer-navigation span12">
+					<@print_navigation layout_friendly_url=footer_nav_friendly_url />
 				</nav>
 			</div>
 
 			<div class="responsive-hidden row-fluid">
-				<nav class="$nav_css_class social-media-panel">
+				<nav class="${nav_css_class} social-media-panel">
 					<div class="facebook-buttons">
 						<script type="text/javascript">
 							(function(script, id) {
@@ -150,16 +152,16 @@ $theme.include($body_top_include)
 
 			<div class="row-fluid">
 				<div class="copyright span12">
-					&copy; $the_year Liferay Inc. All Rights Reserved
+					&copy; ${the_year} Liferay Inc. All Rights Reserved
 				</div>
 			</div>
 		</footer>
 	</div>
 </div>
 
-$theme.include($body_bottom_include)
+<@liferay_util["include"] page=body_bottom_include />
 
-$theme.include($bottom_include)
+<@liferay_util["include"] page=bottom_include />
 
 </body>
 

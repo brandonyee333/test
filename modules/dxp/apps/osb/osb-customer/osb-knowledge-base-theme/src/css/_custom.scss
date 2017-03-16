@@ -1,4 +1,7 @@
+@import "buttons";
 @import "compass";
+@import "font";
+@import "headings";
 @import "mixins";
 
 $border-color: #D0D1D3;
@@ -38,12 +41,30 @@ $white: #FFF;
 		}
 	}
 
-	.responsive-only {
-		display: none;
-	}
-
 	#wrapper {
 		padding: 0;
+
+		.portlet {
+			margin: 0;
+		}
+
+		.portlet-content {
+			padding: 0;
+		}
+
+		.portlet-title-text {
+			display: none;
+		}
+	}
+
+	.has-control-menu {
+		.banner {
+			top: 65px;
+		}
+	}
+
+	.responsive-only {
+		display: none;
 	}
 
 	/* ---------- Admin dockbar ---------- */
@@ -87,6 +108,7 @@ $white: #FFF;
 		height: 56px;
 		position: fixed;
 		top: 0;
+		width: 100%;
 		z-index: 324;
 
 		a {
@@ -1016,7 +1038,7 @@ $white: #FFF;
 			}
 
 			.footer-navigation {
-				margin: 0  auto;
+				margin: 0 auto;
 
 				a {
 					display: block;
