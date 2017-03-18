@@ -52,6 +52,10 @@ $white: #FFF;
 			padding: 0;
 		}
 
+		.portlet-content-editable {
+			border: none;
+		}
+
 		.portlet-title-text {
 			display: none;
 		}
@@ -247,7 +251,7 @@ $white: #FFF;
 				color: $gray;
 			}
 
-			.taglib-settings {
+			.portlet-language {
 				padding-left: 10px;
 			}
 		}
@@ -255,11 +259,11 @@ $white: #FFF;
 		.site-navigation {
 			float: right;
 
-			.language-toggle .taglib-settings, .nav-item .child-menu, .nav-user .drop-down-menu {
+			.language-toggle .portlet-language, .nav-item .child-menu, .nav-user .drop-down-menu {
 				display: none;
 			}
 
-			.language-toggle.open .taglib-settings, .nav-item.open .child-menu, .nav-user.open .drop-down-menu {
+			.language-toggle.open .portlet-language, .nav-item.open .child-menu, .nav-user.open .drop-down-menu {
 				display: block;
 			}
 
@@ -274,7 +278,7 @@ $white: #FFF;
 					border-color: transparent;
 					border-style: solid;
 					border-width: 0 1px;
-					padding: 18px 0;
+					padding: 16px 0;
 
 					&.open {
 						border-color: $border-color;
@@ -306,6 +310,10 @@ $white: #FFF;
 					a {
 						padding: 10px 15px;
 						text-decoration: none;
+					}
+
+					&.open a {
+						background-color: #FFF;
 					}
 
 					.selected a {
@@ -370,6 +378,10 @@ $white: #FFF;
 
 			.nav-user {
 				width: 50px;
+
+				.drop-down-menu ul {
+					padding: 0;
+				}
 			}
 
 			.nav-search, .nav-user {
@@ -396,7 +408,7 @@ $white: #FFF;
 				}
 
 				.nav-search-toggle {
-					background: $white url(@theme_image_path@/custom/search_icons.png) no-repeat right top;
+					background: $white url(@theme_image_path@/custom/search_icons.png) no-repeat right 3px;
 					cursor: pointer;
 					right: 0;
 
@@ -561,6 +573,7 @@ $white: #FFF;
 					font-size: 1.5em;
 					height: 50px;
 					margin: 0;
+					padding: 4px 6px;
 					width: 100%;
 				}
 			}
@@ -616,6 +629,7 @@ $white: #FFF;
 						font-size: 1.5em;
 						height: 50px;
 						margin: 0;
+						padding: 4px 6px;
 						width: 50%;
 					}
 				}
@@ -770,6 +784,7 @@ $white: #FFF;
 
 		.social-nav {
 			border-bottom: 1px solid $border-color;
+			line-height: 20px;
 
 			a {
 				&:focus, &:hover {
@@ -785,7 +800,7 @@ $white: #FFF;
 					float: left;
 					height: 16px;
 					padding-right: 5px;
-					width: 16px;
+					width: 21px;
 
 					&.facebook {
 						background-position: 0 -16px;

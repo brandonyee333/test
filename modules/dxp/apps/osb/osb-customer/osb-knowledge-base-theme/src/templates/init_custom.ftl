@@ -94,6 +94,8 @@
 					cur_layout_name = cur_layout.getName(locale)
 
 					cur_layout_nav_item_selected_css_class = ""
+
+					nav_index = cur_layout?index + 1
 				/>
 
 				<#if getterUtil.getInteger(cur_layout.getTypeSettingsProperty("linkToLayoutId")) == layout.getLayoutId()>
@@ -111,12 +113,12 @@
 				</#if>
 
 				<#if cur_layout.hasChildren()>
-					<li class="nav-item nav-item-${cur_layout?index} parent-item root-item toggle-menu">
+					<li class="nav-item nav-item-${nav_index} parent-item root-item toggle-menu">
 						<a class="${cur_layout_nav_item_selected_css_class}" href="javascript:;" ${cur_layout.getTarget()}>${cur_layout_name}</a>
 
 						<span class="children-marker responsive-only"></span>
 				<#else>
-					<li class="nav-item nav-item-${cur_layout?index} root-item">
+					<li class="nav-item nav-item-${nav_index} root-item">
 						<#assign cur_layout_href = cur_layout.getFriendlyURL() />
 
 						<#if cur_layout.isTypeURL()>
@@ -129,14 +131,18 @@
 				<#if cur_layout.hasChildren()>
 					<ul class="child-menu drop-down-menu toggle-menu-content">
 						<#list cur_layout.getChildren() as child_layout>
-							<#assign child_layout_name = child_layout.getName(locale) />
+							<#assign
+								child_layout_name = child_layout.getName(locale)
+
+								child_nav_index = child_layout?index + 1
+							/>
 
 							<#if child_layout.hasChildren()>
-								<li class="child-item nav-item nav-item-${child_layout?index} parent-item" id="childItem${child_layout?index}">
+								<li class="child-item nav-item nav-item-${child_nav_index} parent-item" id="childItem${child_nav_index}">
 
-								<span class="children-marker responsive-only toggle-menu" data-target-node="#childItem${child_layout?index}"></span>
+								<span class="children-marker responsive-only toggle-menu" data-target-node="#childItem${child_nav_index}"></span>
 							<#else>
-								<li class="child-item nav-item" id="childItem${child_layout?index}">
+								<li class="child-item nav-item" id="childItem${child_nav_index}">
 							</#if>
 
 							<#assign child_layout_href = child_layout.getFriendlyURL() />
