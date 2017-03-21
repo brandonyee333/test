@@ -51,6 +51,8 @@
 
 <#if is_signed_in && portal_permission_util.contains(themeDisplay.getPermissionChecker(), "VIEW_CONTROL_PANEL")>
 	<#assign can_view_control_panel = true />
+<#else>
+	<#assign css_class = stringUtil.replace(css_class, "has-control-menu", "") />
 </#if>
 
 <#assign
