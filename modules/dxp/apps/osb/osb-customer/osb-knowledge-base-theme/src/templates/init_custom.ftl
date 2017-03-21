@@ -29,20 +29,20 @@
 
 <#assign nav_options = theme_display.getThemeSetting("nav-options") />
 
-<#if theme.getSetting("open-graph-image") != "">
-	<#assign open_graph_image = theme.getSetting("open-graph-image") />
+<#if theme_settings.get("open-graph-image") != "">
+	<#assign open_graph_image = theme_settings.get("open-graph-image") />
 <#else>
 	<#assign open_graph_image = images_folder + "/custom/open_graph_image.png" />
 </#if>
 
-<#if theme.getSetting("open-graph-title") != "">
-	<#assign open_graph_title = theme.getSetting("open-graph-title") />
+<#if theme_settings.get("open-graph-title") != "">
+	<#assign open_graph_title = theme_settings.get("open-graph-title") />
 <#else>
 	<#assign open_graph_title = the_title + " - " + company_name />
 </#if>
 
-<#if theme.getSetting("open-graph-url") != "">
-	<#assign open_graph_url = theme.getSetting("open-graph-url") />
+<#if theme_settings.get("open-graph-url") != "">
+	<#assign open_graph_url = theme_settings.get("open-graph-url") />
 <#else>
 	<#assign open_graph_url = htmlUtil.escape(portal.getCurrentCompleteURL(request)) />
 </#if>
