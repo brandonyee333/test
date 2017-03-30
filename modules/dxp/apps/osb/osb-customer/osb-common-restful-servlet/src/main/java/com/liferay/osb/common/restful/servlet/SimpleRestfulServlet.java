@@ -123,7 +123,7 @@ public abstract class SimpleRestfulServlet extends HttpServlet {
 		}
 	}
 
-	protected long nullResourceId = -1;
+	protected static final long NULL_RESOURCE_ID = -1;
 
 	private void _callMethod(
 			HttpServletRequest request, HttpServletResponse response)
@@ -143,7 +143,7 @@ public abstract class SimpleRestfulServlet extends HttpServlet {
 		Method method = _getMethod(requestMethod, resourceName, resourceId);
 
 		try {
-			if (resourceId == nullResourceId) {
+			if (resourceId == NULL_RESOURCE_ID) {
 				method.invoke(this, request, response);
 			}
 			else {
@@ -161,7 +161,7 @@ public abstract class SimpleRestfulServlet extends HttpServlet {
 
 		Tuple key = null;
 
-		if (resourceId == nullResourceId) {
+		if (resourceId == NULL_RESOURCE_ID) {
 			key = new Tuple(requestMethod, resourceName);
 		}
 		else {
@@ -178,7 +178,7 @@ public abstract class SimpleRestfulServlet extends HttpServlet {
 
 		Class<?> clazz = getClass();
 
-		if (resourceId == nullResourceId) {
+		if (resourceId == NULL_RESOURCE_ID) {
 			method = clazz.getMethod(
 				methodName, HttpServletRequest.class,
 				HttpServletResponse.class);
