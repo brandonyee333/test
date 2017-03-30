@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.osb.common.restful.servlet.util;
+package com.liferay.osb.common.restful.servlet.http;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
