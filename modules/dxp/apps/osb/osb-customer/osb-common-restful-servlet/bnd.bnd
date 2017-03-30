@@ -1,0 +1,11 @@
+Bundle-Name: Liferay OSB Common Restful Servlet
+Bundle-SymbolicName: com.liferay.osb.common.restful.servlet
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.osb.common.restful.servlet,\
+	com.liferay.osb.common.restful.servlet.exception
+Import-Package:\
+	!org.apache.commons.io.*,\
+	*
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title:
