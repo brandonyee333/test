@@ -1,0 +1,45 @@
+/* ---------- Portlet ---------- */
+
+.osb-knowledge-base-knowledge-base-wrapper-portlet {
+	.back-btn {
+		background: url(../images/arrow-left.png) no-repeat -10px center;
+		background-size: 32px 16px;
+		cursor: pointer;
+		font-size: larger;
+		font-weight: bold;
+		padding-left: 15px;
+	}
+
+	.kb-entity-header {
+		border-bottom: 1px solid #CCC;
+		margin: 5px 0 5px 30px;
+		width: 65.95745%;
+		*width: 65.90426%;
+	}
+
+	.kb-title {
+		font-weight: bold;
+		word-wrap: break-word;
+	}
+}
+
+/* ---------- Knowledge base portlet navigation ---------- */
+
+.knowledge-base-portlet-display {
+	.kb-article-container {
+		width: 65.95745%;
+		*width: 65.90426%;
+
+		.kb-entity-header, .taglib-header {
+			display: none;
+		}
+	}
+
+	.row-fluid div.span3 {
+		display: none;
+	}
+
+	.row-fluid div.span9 {
+		width: auto;
+	}
+}
