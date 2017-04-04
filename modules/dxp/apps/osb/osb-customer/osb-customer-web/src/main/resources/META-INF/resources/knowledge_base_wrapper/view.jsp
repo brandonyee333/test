@@ -17,12 +17,11 @@
 <%@ include file="/init.jsp" %>
 
 <%
-String cmd = (String)request.getAttribute(Constants.CMD);
 String redirect = (String)request.getAttribute(OSBCustomerWebKeys.REDIRECT);
 KBArticle kbArticle = (KBArticle)request.getAttribute(OSBCustomerWebKeys.KNOWLEDGE_BASE_KB_ARTICLE);
 %>
 
-<c:if test="<%= !cmd.equals(Constants.EDIT) && (kbArticle != null) %>">
+<c:if test="<%= kbArticle != null %>">
 	<div class="kb-entity-header">
 		<c:if test="<%= Validator.isNotNull(redirect) %>">
 			<div>
@@ -52,4 +51,20 @@ KBArticle kbArticle = (KBArticle)request.getAttribute(OSBCustomerWebKeys.KNOWLED
 HttpServletRequest originalRequest = liferayPortletRequest.getOriginalHttpServletRequest();
 %>
 
-<liferay-portlet:runtime persistSettings="<%= false %>" portletName="<%= KBPortletKeys.KNOWLEDGE_BASE_DISPLAY %>" queryString="<%= originalRequest.getQueryString() %>" />
+<liferay-util:buffer var="html">
+	<liferay-portlet:runtime persistSettings="<%= false %>" portletName="<%= KBPortletKeys.KNOWLEDGE_BASE_DISPLAY %>" queryString="<%= originalRequest.getQueryString() %>" />
+</liferay-util:buffer>
+
+<%
+int x = html.indexOf("<div class=\"kb-article-tools\"");
+
+if (x != -1) {
+	int y = html.indexOf("</div>", x);
+
+	if (y != -1) {
+		html = html.substring(0, x) + html.substring(y + 6);
+	}
+}
+%>
+
+<%= html %>

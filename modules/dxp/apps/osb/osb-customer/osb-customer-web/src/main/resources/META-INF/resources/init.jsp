@@ -20,7 +20,8 @@
 
 <%@ taglib uri="http://liferay.com/tld/portlet" prefix="liferay-portlet" %><%@
 taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
-taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
+taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %><%@
+taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
 <%@ page import="com.liferay.asset.kernel.model.AssetCategory" %><%@
 page import="com.liferay.asset.kernel.service.AssetCategoryLocalServiceUtil" %><%@
@@ -28,7 +29,6 @@ page import="com.liferay.knowledge.base.constants.KBPortletKeys" %><%@
 page import="com.liferay.knowledge.base.model.KBArticle" %><%@
 page import="com.liferay.osb.customer.web.internal.asset.model.AssetCategoryDisplay" %><%@
 page import="com.liferay.osb.customer.web.internal.constants.OSBCustomerWebKeys" %><%@
-page import="com.liferay.portal.kernel.util.Constants" %><%@
 page import="com.liferay.portal.kernel.util.HtmlUtil" %><%@
 page import="com.liferay.portal.kernel.util.Validator" %>
 

@@ -19,16 +19,15 @@ import com.liferay.knowledge.base.model.KBArticle;
 import com.liferay.knowledge.base.service.KBArticleLocalService;
 import com.liferay.osb.customer.web.internal.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.web.internal.constants.OSBCustomerWebKeys;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
-import com.liferay.portal.kernel.servlet.SessionErrors;
-import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.io.IOException;
@@ -72,72 +71,55 @@ public class KnowledgeBaseWrapperPortlet extends MVCPortlet {
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws IOException, PortletException {
 
+		LiferayPortletRequest liferayPortletRequest =
+			(LiferayPortletRequest)renderRequest;
+
+		HttpServletRequest request =
+			liferayPortletRequest.getOriginalHttpServletRequest();
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		String redirect = ParamUtil.getString(
+			request, "_" + KBPortletKeys.KNOWLEDGE_BASE_DISPLAY + "_redirect");
+		String urlTitle = ParamUtil.getString(
+			request, "_" + KBPortletKeys.KNOWLEDGE_BASE_DISPLAY + "_urlTitle");
+
 		try {
-			LiferayPortletRequest liferayPortletRequest =
-				(LiferayPortletRequest)renderRequest;
+			KBArticle kbArticle = getKBArticle(themeDisplay, urlTitle);
 
-			HttpServletRequest request =
-				liferayPortletRequest.getOriginalHttpServletRequest();
-
-			ThemeDisplay themeDisplay =
-				(ThemeDisplay)renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
-
-			String mvcPath = ParamUtil.getString(
-				request,
-				"_" + KBPortletKeys.KNOWLEDGE_BASE_DISPLAY + "_mvcPath");
-			String redirect = ParamUtil.getString(
-				request,
-				"_" + KBPortletKeys.KNOWLEDGE_BASE_DISPLAY + "_redirect");
-			String urlTitle = ParamUtil.getString(
-				request,
-				"_" + KBPortletKeys.KNOWLEDGE_BASE_DISPLAY + "_urlTitle");
-
-			if (mvcPath.equals("/display/edit_article.jsp")) {
-				renderRequest.setAttribute(Constants.CMD, Constants.EDIT);
-			}
-			else {
-				PortletPreferences portletPreferences =
-					PortletPreferencesFactoryUtil.getExistingPortletSetup(
-						themeDisplay.getLayout(),
-						KBPortletKeys.KNOWLEDGE_BASE_DISPLAY);
-
-				long parentResourcePrimKey = GetterUtil.getLong(
-					portletPreferences.getValue("resourcePrimKey", null));
-
-				KBArticle kbArticle =
-					_kbArticleLocalService.fetchKBArticleByUrlTitle(
-						OSBCustomerConstants.GROUP_KNOWLEDGE_ID,
-						parentResourcePrimKey, urlTitle);
-
-				if (kbArticle == null) {
-					kbArticle = _kbArticleLocalService.fetchFirstChildKBArticle(
-						OSBCustomerConstants.GROUP_KNOWLEDGE_ID,
-						parentResourcePrimKey);
-				}
-
-				renderRequest.setAttribute(
-					OSBCustomerWebKeys.KNOWLEDGE_BASE_KB_ARTICLE, kbArticle);
-
-				renderRequest.setAttribute(Constants.CMD, Constants.VIEW);
-			}
-
-			renderRequest.setAttribute(OSBCustomerWebKeys.REDIRECT, redirect);
+			renderRequest.setAttribute(
+				OSBCustomerWebKeys.KNOWLEDGE_BASE_KB_ARTICLE, kbArticle);
 		}
 		catch (Exception e) {
-			if (isSessionErrorException(e)) {
-				SessionErrors.add(renderRequest, e.getClass(), e);
-
-				SessionMessages.add(
-					renderRequest,
-					PortalUtil.getPortletId(renderRequest) +
-						SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_ERROR_MESSAGE);
-			}
-			else {
-				throw new PortletException(e);
-			}
+			_log.error(e, e);
 		}
 
+		renderRequest.setAttribute(OSBCustomerWebKeys.REDIRECT, redirect);
+
 		super.render(renderRequest, renderResponse);
+	}
+
+	protected KBArticle getKBArticle(ThemeDisplay themeDisplay, String urlTitle)
+		throws PortalException {
+
+		PortletPreferences portletPreferences =
+			PortletPreferencesFactoryUtil.getExistingPortletSetup(
+				themeDisplay.getLayout(), KBPortletKeys.KNOWLEDGE_BASE_DISPLAY);
+
+		long parentResourcePrimKey = GetterUtil.getLong(
+			portletPreferences.getValue("resourcePrimKey", null));
+
+		KBArticle kbArticle = _kbArticleLocalService.fetchKBArticleByUrlTitle(
+			OSBCustomerConstants.GROUP_KNOWLEDGE_ID, parentResourcePrimKey,
+			urlTitle);
+
+		if (kbArticle == null) {
+			kbArticle = _kbArticleLocalService.fetchFirstChildKBArticle(
+				OSBCustomerConstants.GROUP_KNOWLEDGE_ID, parentResourcePrimKey);
+		}
+
+		return kbArticle;
 	}
 
 	@Reference(unbind = "-")
@@ -146,6 +128,9 @@ public class KnowledgeBaseWrapperPortlet extends MVCPortlet {
 
 		_kbArticleLocalService = kbArticleLocalService;
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		KnowledgeBaseWrapperPortlet.class);
 
 	private KBArticleLocalService _kbArticleLocalService;
 

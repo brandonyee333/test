@@ -33,13 +33,18 @@
 		.kb-entity-header, .taglib-header {
 			display: none;
 		}
+
+		.kb-article-next {
+			float: right;
+		}
 	}
 
-	.row-fluid div.span3 {
+	.row div.col-md-3 {
 		display: none;
 	}
 
-	.row-fluid div.span9 {
+	.row div.col-md-9 {
+		margin-left: 2.5%;
 		width: auto;
 	}
 }
