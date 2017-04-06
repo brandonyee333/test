@@ -18,8 +18,8 @@
 
 <%
 String cmd = (String)request.getAttribute(Constants.CMD);
-String redirect = (String)request.getAttribute(OSBWebKeys.REDIRECT);
-KBArticle kbArticle = (KBArticle)request.getAttribute(OSBWebKeys.KNOWLEDGE_BASE_KB_ARTICLE);
+String redirect = (String)request.getAttribute(OSBCustomerWebKeys.REDIRECT);
+KBArticle kbArticle = (KBArticle)request.getAttribute(OSBCustomerWebKeys.KNOWLEDGE_BASE_KB_ARTICLE);
 %>
 
 <c:if test="<%= !cmd.equals(Constants.EDIT) && (kbArticle != null) %>">

@@ -17,8 +17,8 @@ package com.liferay.osb.customer.web.internal.portlet;
 import com.liferay.knowledge.base.constants.KBPortletKeys;
 import com.liferay.knowledge.base.model.KBArticle;
 import com.liferay.knowledge.base.service.KBArticleLocalService;
-import com.liferay.osb.customer.web.internal.util.OSBConstants;
-import com.liferay.osb.customer.web.internal.util.OSBWebKeys;
+import com.liferay.osb.customer.web.internal.constants.OSBCustomerConstants;
+import com.liferay.osb.customer.web.internal.constants.OSBCustomerWebKeys;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
@@ -106,21 +106,22 @@ public class KnowledgeBaseWrapperPortlet extends MVCPortlet {
 
 				KBArticle kbArticle =
 					_kbArticleLocalService.fetchKBArticleByUrlTitle(
-						OSBConstants.GROUP_KNOWLEDGE_ID, parentResourcePrimKey,
-						urlTitle);
+						OSBCustomerConstants.GROUP_KNOWLEDGE_ID,
+						parentResourcePrimKey, urlTitle);
 
 				if (kbArticle == null) {
 					kbArticle = _kbArticleLocalService.fetchFirstChildKBArticle(
-						OSBConstants.GROUP_KNOWLEDGE_ID, parentResourcePrimKey);
+						OSBCustomerConstants.GROUP_KNOWLEDGE_ID,
+						parentResourcePrimKey);
 				}
 
 				renderRequest.setAttribute(
-					OSBWebKeys.KNOWLEDGE_BASE_KB_ARTICLE, kbArticle);
+					OSBCustomerWebKeys.KNOWLEDGE_BASE_KB_ARTICLE, kbArticle);
 
 				renderRequest.setAttribute(Constants.CMD, Constants.VIEW);
 			}
 
-			renderRequest.setAttribute(OSBWebKeys.REDIRECT, redirect);
+			renderRequest.setAttribute(OSBCustomerWebKeys.REDIRECT, redirect);
 		}
 		catch (Exception e) {
 			if (isSessionErrorException(e)) {

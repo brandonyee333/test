@@ -17,7 +17,7 @@ package com.liferay.osb.customer.web.internal.asset.model;
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.asset.kernel.service.AssetVocabularyLocalServiceUtil;
-import com.liferay.osb.customer.web.internal.util.OSBConstants;
+import com.liferay.osb.customer.web.internal.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.web.internal.util.comparator.AssetCategoryLeftCategoryIdComparator;
 import com.liferay.osb.customer.web.internal.util.comparator.AssetCategoryNameComparator;
 import com.liferay.osb.customer.web.internal.util.comparator.AssetVocabularyDescriptionComparator;
@@ -117,9 +117,10 @@ public class AssetCategoryDisplay {
 		StringBundler sb = new StringBundler();
 
 		renderAbstract(
-			sb, OSBConstants.ASSET_VOCABULARY_LIFERAY_PRODUCT_ID, false);
+			sb, OSBCustomerConstants.ASSET_VOCABULARY_LIFERAY_PRODUCT_ID,
+			false);
 		renderAbstract(
-			sb, OSBConstants.ASSET_VOCABULARY_ARTICLE_TYPE_ID, false);
+			sb, OSBCustomerConstants.ASSET_VOCABULARY_ARTICLE_TYPE_ID, false);
 
 		return sb.toString();
 	}
@@ -129,7 +130,7 @@ public class AssetCategoryDisplay {
 
 		for (AssetVocabulary assetVocabulary : _assetVocabularies) {
 			if (assetVocabulary.getVocabularyId() ==
-					OSBConstants.ASSET_VOCABULARY_LIFERAY_PRODUCT_ID) {
+					OSBCustomerConstants.ASSET_VOCABULARY_LIFERAY_PRODUCT_ID) {
 
 				renderTree(sb, assetVocabulary);
 			}

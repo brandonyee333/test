@@ -12,12 +12,12 @@
  * details.
  */
 
-package com.liferay.osb.customer.web.internal.util;
+package com.liferay.osb.customer.web.internal.constants;
 
 /**
  * @author Alan Zhang
  */
-public class OSBConstants {
+public class OSBCustomerConstants {
 
 	public static final String ARTICLE_DISPLAY_STRUCTURE_KEY =
 		"ARTICLE-DISPLAY-6.2.10.1";

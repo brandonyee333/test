@@ -12,22 +12,18 @@
  * details.
  */
 
-package com.liferay.osb.customer.web.internal.util;
+package com.liferay.osb.customer.web.internal.constants;
 
-import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.util.WebKeys;
 
 /**
  * @author Alan Zhang
  */
-public class OSBActionKeys extends ActionKeys {
+public class OSBCustomerWebKeys implements WebKeys {
 
-	public static final String SUBMIT_ARTICLE = "SUBMIT_ARTICLE";
+	public static final String KNOWLEDGE_BASE_KB_ARTICLE =
+		"KNOWLEDGE_BASE_KB_ARTICLE";
 
-	public static final String VIEW_DASHBOARD = "VIEW_DASHBOARD";
-
-	public static final String VIEW_JOURNAL_ARTICLE = "VIEW_JOURNAL_ARTICLE";
-
-	public static final String VIEW_JOURNAL_ARTICLE_ADVANCED =
-		"VIEW_JOURNAL_ARTICLE_ADVANCED";
+	public static final String WORKFLOW_TASK = "WORKFLOW_TASK";
 
 }

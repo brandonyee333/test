@@ -12,18 +12,18 @@
  * details.
  */
 
-package com.liferay.osb.customer.web.internal.util;
-
-import com.liferay.portal.kernel.util.WebKeys;
+package com.liferay.osb.customer.web.internal.constants;
 
 /**
- * @author Alan Zhang
+ * @author Amos Fong
  */
-public class OSBWebKeys implements WebKeys {
+public class OSBCustomerPortletKeys {
 
-	public static final String KNOWLEDGE_BASE_KB_ARTICLE =
-		"KNOWLEDGE_BASE_KB_ARTICLE";
+	public static final String DISPLAY = "3_WAR_osbknowledgebaseportlet";
 
-	public static final String WORKFLOW_TASK = "WORKFLOW_TASK";
+	public static final String KNOWLEDGE_BASE_WRAPPER =
+		"5_WAR_osbknowledgebaseportlet";
+
+	public static final String SEARCH = "1_WAR_osbknowledgebaseportlet";
 
 }
