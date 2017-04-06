@@ -1,0 +1,81 @@
+{
+	"availableLanguageIds": [
+		"en_US"
+	],
+	"defaultLanguageId": "en_US",
+	"fields": [
+		{
+			"dataType": "string",
+			"indexType": "keyword",
+			"label": {
+				"en_US": " Banner Header "
+			},
+			"localizable": true,
+			"name": "bannerHeader",
+			"nestedFields": [
+				{
+					"dataType": "document-library",
+					"fieldNamespace": "ddm",
+					"indexType": "keyword",
+					"label": {
+						"en_US": " Banner Image "
+					},
+					"localizable": true,
+					"name": "bannerImage",
+					"predefinedValue": {
+						"en_US": " "
+					},
+					"readOnly": false,
+					"repeatable": false,
+					"required": false,
+					"showLabel": true,
+					"style": {
+						"en_US": ""
+					},
+					"tip": {
+						"en_US": " The image for the banner. "
+					},
+					"type": "ddm-documentlibrary"
+				},
+				{
+					"dataType": "html",
+					"fieldNamespace": "ddm",
+					"indexType": "keyword",
+					"label": {
+						"en_US": " Banner Content "
+					},
+					"localizable": true,
+					"name": "bannerContent",
+					"predefinedValue": {
+						"en_US": " "
+					},
+					"readOnly": false,
+					"repeatable": false,
+					"required": false,
+					"showLabel": true,
+					"style": {
+						"en_US": ""
+					},
+					"tip": {
+						"en_US": " The content for the banner. "
+					},
+					"type": "ddm-text-html"
+				}
+			],
+			"predefinedValue": {
+				"en_US": " "
+			},
+			"readOnly": false,
+			"repeatable": false,
+			"required": false,
+			"showLabel": true,
+			"style": {
+				"en_US": ""
+			},
+			"tip": {
+				"en_US": " The header for the banner. "
+			},
+			"type": "text"
+		}
+	]
+}
