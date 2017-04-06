@@ -43,6 +43,13 @@ public class ErrorTag extends IncludeTag implements BodyTag {
 
 	@Override
 	public int doStartTag() throws JspException {
+		if (SessionErrors.isEmpty(request)) {
+			return SKIP_BODY;
+		}
+		else {
+			_hasError = true;
+		}
+
 		setAttributeNamespace(_ATTRIBUTE_NAMESPACE);
 
 		PortletRequest portletRequest = (PortletRequest)request.getAttribute(
