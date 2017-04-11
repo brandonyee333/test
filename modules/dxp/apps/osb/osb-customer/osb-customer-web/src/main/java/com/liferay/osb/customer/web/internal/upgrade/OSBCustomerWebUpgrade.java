@@ -14,10 +14,14 @@
 
 package com.liferay.osb.customer.web.internal.upgrade;
 
+import com.liferay.dynamic.data.mapping.service.persistence.DDMStructurePersistence;
+import com.liferay.dynamic.data.mapping.service.persistence.DDMTemplatePersistence;
+import com.liferay.journal.service.persistence.JournalArticlePersistence;
 import com.liferay.osb.customer.web.internal.upgrade.v1_0_0.UpgradeDDMTemplates;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Amos Fong
@@ -29,7 +33,18 @@ public class OSBCustomerWebUpgrade implements UpgradeStepRegistrator {
 	public void register(Registry registry) {
 		registry.register(
 			"com.liferay.osb.customer.web", "0.0.0", "1.0.0",
-			new UpgradeDDMTemplates());
+			new UpgradeDDMTemplates(
+				_ddmStructurePersistence, _ddmTemplatePersistence,
+				_journalArticlePersistence));
 	}
+
+	@Reference(unbind = "-")
+	private DDMStructurePersistence _ddmStructurePersistence;
+
+	@Reference(unbind = "-")
+	private DDMTemplatePersistence _ddmTemplatePersistence;
+
+	@Reference(unbind = "-")
+	private JournalArticlePersistence _journalArticlePersistence;
 
 }

@@ -14,6 +14,9 @@
 
 package com.liferay.osb.customer.web.internal.upgrade.v1_0_0;
 
+import com.liferay.dynamic.data.mapping.service.persistence.DDMStructurePersistence;
+import com.liferay.dynamic.data.mapping.service.persistence.DDMTemplatePersistence;
+import com.liferay.journal.service.persistence.JournalArticlePersistence;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
 /**
@@ -21,28 +24,63 @@ import com.liferay.portal.kernel.upgrade.UpgradeProcess;
  */
 public class UpgradeDDMTemplates extends UpgradeProcess {
 
-	@Override
-	protected void doUpgrade() throws Exception {
-		ugpradeKey("84109", "CENTER-BLOCKS");
-		ugpradeKey("122947", "KB-BANNER");
-		ugpradeKey("122950", "LOWER-BLOCKS");
-		ugpradeKey("ARTICLE-DISPLAY-6.2.10.1", "ARTICLE-DISPLAY");
-		ugpradeKey("HOME-PAGE-SEARCH-BAR-6.2.10.1", "HOME-PAGE-SEARCH-BAR");
+	public UpgradeDDMTemplates(
+		DDMStructurePersistence ddmStructurePersistence,
+		DDMTemplatePersistence ddmTemplatePersistence,
+		JournalArticlePersistence journalArticlePersistence) {
+
+		_ddmStructurePersistence = ddmStructurePersistence;
+		_ddmTemplatePersistence = ddmTemplatePersistence;
+		_journalArticlePersistence = journalArticlePersistence;
 	}
 
-	protected void ugpradeKey(String oldKey, String newKey) throws Exception {
-		runSQL(
-			"update DDMStructure set structureKey = '" + newKey + "' where " +
-				"structureKey = '" + oldKey + "'");
-		runSQL(
-			"update DDMTemplate set templateKey = '" + newKey + "' where " +
-				"templateKey = '" + oldKey + "'");
-		runSQL(
-			"update JournalArticle set DDMStructureKey = '" + newKey + "' " +
-				"where DDMStructureKey = '" + oldKey + "'");
-		runSQL(
-			"update JournalArticle set DDMTemplateKey = '" + newKey + "' " +
-				"where DDMTemplateKey = '" + oldKey + "'");
+	@Override
+	protected void doUpgrade() throws Exception {
+		upgradeStructureKeys("84103", "CENTER-BLOCKS");
+		upgradeStructureKeys("122953", "KB-BANNER");
+		upgradeStructureKeys("122955", "LOWER-BLOCKS");
+		upgradeStructureKeys("ARTICLE-DISPLAY-6.2.10.1", "ARTICLE-DISPLAY");
+		upgradeStructureKeys(
+			"HOME-PAGE-SEARCH-BAR-6.2.10.1", "HOME-PAGE-SEARCH-BAR");
+
+		upgradeTemplateKeys("84109", "CENTER-BLOCKS");
+		upgradeTemplateKeys("122947", "KB-BANNER");
+		upgradeTemplateKeys("122950", "LOWER-BLOCKS");
+		upgradeTemplateKeys("ARTICLE-DISPLAY-6.2.10.1", "ARTICLE-DISPLAY");
+		upgradeTemplateKeys(
+			"HOME-PAGE-SEARCH-BAR-6.2.10.1", "HOME-PAGE-SEARCH-BAR");
+
+		_ddmStructurePersistence.clearCache();
+		_ddmTemplatePersistence.clearCache();
+		_journalArticlePersistence.clearCache();
 	}
+
+	protected void upgradeStructureKeys(
+			String oldStructureKey, String newStructureKey)
+		throws Exception {
+
+		runSQL(
+			"update DDMStructure set structureKey = '" + newStructureKey +
+				"' where structureKey = '" + oldStructureKey + "'");
+		runSQL(
+			"update JournalArticle set DDMStructureKey = '" + newStructureKey +
+				"' where DDMStructureKey = '" + oldStructureKey + "'");
+	}
+
+	protected void upgradeTemplateKeys(
+			String oldTemplateKey, String newTemplateKey)
+		throws Exception {
+
+		runSQL(
+			"update DDMTemplate set templateKey = '" + newTemplateKey +
+				"' where templateKey = '" + oldTemplateKey + "'");
+		runSQL(
+			"update JournalArticle set DDMTemplateKey = '" + newTemplateKey +
+				"' where DDMTemplateKey = '" + oldTemplateKey + "'");
+	}
+
+	private final DDMStructurePersistence _ddmStructurePersistence;
+	private final DDMTemplatePersistence _ddmTemplatePersistence;
+	private final JournalArticlePersistence _journalArticlePersistence;
 
 }
