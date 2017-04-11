@@ -33,6 +33,10 @@ $white: #FFF;
 		}
 	}
 
+	h2 {
+		font-weight: bold;
+	}
+
 	ul {
 		li {
 			list-style: none;
@@ -69,8 +73,36 @@ $white: #FFF;
 		}
 	}
 
+	.offset1 {
+		margin-left: 8.5%;
+	}
+
+	.offset3 {
+		margin-left: 25%;
+	}
+
 	.responsive-only {
 		display: none;
+	}
+
+	.span3 {
+		float: left;
+		width: 23%;
+	}
+
+	.span4 {
+		float: left;
+		width: 31%;
+	}
+
+	.span6 {
+		float: left;
+		width: 50%;
+	}
+
+	.span8 {
+		float: left;
+		width: 65%;
 	}
 
 	/* ---------- Admin dockbar ---------- */
