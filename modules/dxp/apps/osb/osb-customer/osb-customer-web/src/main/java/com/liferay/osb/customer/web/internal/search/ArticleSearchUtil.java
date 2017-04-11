@@ -109,7 +109,7 @@ public class ArticleSearchUtil {
 		searchContext.setKeywords(searchContext.getKeywords());
 		searchContext.setStart(start);
 
-		Indexer indexer = ArticleFacetedSearcher.getInstance();
+		Indexer indexer = new ArticleSearcher();
 
 		return indexer.search(searchContext);
 	}

@@ -23,9 +23,7 @@ import com.liferay.osb.customer.web.internal.util.comparator.AssetCategoryNameCo
 import com.liferay.osb.customer.web.internal.util.comparator.AssetVocabularyDescriptionComparator;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
-import com.liferay.portal.kernel.search.BooleanQuery;
-import com.liferay.portal.kernel.search.BooleanQueryFactoryUtil;
-import com.liferay.portal.kernel.search.SearchContext;
+import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -91,26 +89,23 @@ public class AssetCategoryDisplay {
 			_assetVocabularies, new AssetVocabularyDescriptionComparator(true));
 	}
 
-	public BooleanQuery createSearchFilterQuery(SearchContext searchContext)
-		throws PortalException {
-
-		BooleanQuery assetVocabularyQuery = BooleanQueryFactoryUtil.create(
-			searchContext);
+	public BooleanFilter createBooleanFilter() throws PortalException {
+		BooleanFilter assetVocabularyFilter = new BooleanFilter();
 
 		for (AssetVocabulary assetVocabulary : _assetVocabularies) {
 			List<AssetCategory> headAssetCategories =
 				_headAssetCategoriesMap.get(assetVocabulary.getVocabularyId());
 
 			if (!headAssetCategories.isEmpty()) {
-				BooleanQuery assetCategoriesQuery = createAssetCategoriesQuery(
-					headAssetCategories, searchContext);
+				BooleanFilter assetCategoriesFilter =
+					createAssetCategoriesFilter(headAssetCategories);
 
-				assetVocabularyQuery.add(
-					assetCategoriesQuery, BooleanClauseOccur.MUST);
+				assetVocabularyFilter.add(
+					assetCategoriesFilter, BooleanClauseOccur.MUST);
 			}
 		}
 
-		return assetVocabularyQuery;
+		return assetVocabularyFilter;
 	}
 
 	public String renderAbstract() {
@@ -187,37 +182,34 @@ public class AssetCategoryDisplay {
 		assetCategories.add(subassetCategory);
 	}
 
-	protected BooleanQuery createAssetCategoriesQuery(
-			List<AssetCategory> assetCategories, SearchContext searchContext)
+	protected BooleanFilter createAssetCategoriesFilter(
+			List<AssetCategory> assetCategories)
 		throws PortalException {
 
-		BooleanQuery assetCategoriesQuery = BooleanQueryFactoryUtil.create(
-			searchContext);
+		BooleanFilter assetCategoriesFilter = new BooleanFilter();
 
 		for (AssetCategory assetCategory : assetCategories) {
-			BooleanQuery assetCategoryQuery = BooleanQueryFactoryUtil.create(
-				searchContext);
+			BooleanFilter assetCategoryFilter = new BooleanFilter();
 
-			assetCategoryQuery.addTerm(
+			assetCategoryFilter.addTerm(
 				"assetCategoryIds", assetCategory.getCategoryId());
 
 			List<AssetCategory> childAssetCategories =
 				_subassetCategoriesMap.get(assetCategory.getCategoryId());
 
 			if (childAssetCategories != null) {
-				BooleanQuery childAssetCategoriesQuery =
-					createAssetCategoriesQuery(
-						childAssetCategories, searchContext);
+				BooleanFilter childAssetCategoriesFilter =
+					createAssetCategoriesFilter(childAssetCategories);
 
-				assetCategoryQuery.add(
-					childAssetCategoriesQuery, BooleanClauseOccur.MUST);
+				assetCategoryFilter.add(
+					childAssetCategoriesFilter, BooleanClauseOccur.MUST);
 			}
 
-			assetCategoriesQuery.add(
-				assetCategoryQuery, BooleanClauseOccur.SHOULD);
+			assetCategoriesFilter.add(
+				assetCategoryFilter, BooleanClauseOccur.SHOULD);
 		}
 
-		return assetCategoriesQuery;
+		return assetCategoriesFilter;
 	}
 
 	protected List<AssetCategory> getSubassetCategories(
