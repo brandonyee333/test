@@ -1,0 +1,326 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%
+List<AssetVocabulary> assetVocabularies = AssetVocabularyServiceUtil.getGroupVocabularies(OSBCustomerConstants.GROUP_KNOWLEDGE_ID);
+
+for (AssetVocabulary assetVocabulary : assetVocabularies) {
+	List<AssetCategory> assetCategories = AssetCategoryServiceUtil.getVocabularyRootCategories(OSBCustomerConstants.GROUP_KNOWLEDGE_ID, assetVocabulary.getVocabularyId(), QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+%>
+
+	<div class="search-filters tree-node-content">
+		<c:if test="<%= !assetCategories.isEmpty() %>">
+			<h3 class="cursor-pointer header" onclick="<portlet:namespace />toggleFilter(<%= assetVocabulary.getVocabularyId() %>);">
+				<i class="icon-plus tree-hitarea"></i>
+
+				<liferay-ui:message key="<%= HtmlUtil.escape(assetVocabulary.getName()) %>" />
+			</h3>
+		</c:if>
+
+		<div id="<portlet:namespace /><%= assetVocabulary.getVocabularyId() %>" style="display: none;">
+
+			<%
+			for (AssetCategory assetCategory : assetCategories) {
+				List<AssetCategory> childCategories = AssetCategoryServiceUtil.getChildCategories(assetCategory.getCategoryId());
+			%>
+
+				<ul>
+					<li>
+						<span class="<%= !childCategories.isEmpty() ? "cursor-pointer" : "" %> filter-label">
+							<i class="cursor-pointer <%= !childCategories.isEmpty() ? "icon-plus tree-hitarea" : "indent" %>" onclick="<portlet:namespace />toggleFilter(<%= assetCategory.getCategoryId() %>);"></i>
+
+							<input <%= ArrayUtil.contains(searchTerms.getAssetCategoryIds(), assetCategory.getCategoryId()) ? "checked" : "" %> class="filter-input" name="<portlet:namespace /><%= assetCategory.getCategoryId() %>" onchange="<portlet:namespace />updateSearchResults(false, false);" type="checkbox" value="<%= assetCategory.getCategoryId() %>" />
+
+							<span onclick="<portlet:namespace />toggleFilter(<%= assetCategory.getCategoryId() %>);">
+								<%= HtmlUtil.escape(assetCategory.getName()) %>
+							</span>
+						</span>
+
+						<c:if test="<%= !childCategories.isEmpty() %>">
+							<div id="<portlet:namespace /><%= assetCategory.getCategoryId() %>" style="display: none;">
+								<ul>
+
+									<%
+									for (AssetCategory childCategory : childCategories) {
+										List<AssetCategory> grandchildCategories = AssetCategoryServiceUtil.getChildCategories(childCategory.getCategoryId());
+									%>
+
+										<li>
+											<span class="<%= !grandchildCategories.isEmpty() ? "cursor-pointer" : "" %> filter-label">
+												<i class="cursor-pointer <%= !grandchildCategories.isEmpty() ? "icon-plus tree-hitarea" : "indent" %>" onclick="<portlet:namespace />toggleFilter(<%= childCategory.getCategoryId() %>);"></i>
+
+												<input <%= ArrayUtil.contains(searchTerms.getAssetCategoryIds(), childCategory.getCategoryId()) ? "checked" : "" %> class="filter-input" name="<portlet:namespace /><%= childCategory.getCategoryId() %>" onchange="<portlet:namespace />updateSearchResults(false, false);" type="checkbox" value="<%= childCategory.getCategoryId() %>" />
+
+												<span onclick="<portlet:namespace />toggleFilter(<%= childCategory.getCategoryId() %>);">
+													<%= HtmlUtil.escape(childCategory.getName()) %>
+												</span>
+											</span>
+
+											<c:if test="<%= !grandchildCategories.isEmpty() %>">
+												<div class="indent" id="<portlet:namespace /><%= childCategory.getCategoryId() %>" style="display: none;">
+													<ul>
+
+														<%
+														for (AssetCategory grandchildCategory : grandchildCategories) {
+														%>
+
+															<li>
+																<span class="cursor-pointer filter-label">
+																	<input <%= ArrayUtil.contains(searchTerms.getAssetCategoryIds(), grandchildCategory.getCategoryId()) ? "checked" : "" %> class="filter-input" name="<portlet:namespace /><%= grandchildCategory.getCategoryId() %>" onchange="<portlet:namespace />updateSearchResults(false, false);" type="checkbox" value="<%= grandchildCategory.getCategoryId() %>" /><%= HtmlUtil.escape(grandchildCategory.getName()) %>
+																</span>
+															</li>
+
+														<%
+														}
+														%>
+
+													</ul>
+												</div>
+											</c:if>
+										</li>
+
+									<%
+									}
+									%>
+
+								</ul>
+							</div>
+						</c:if>
+					</li>
+				</ul>
+
+			<%
+			}
+			%>
+
+		</div>
+	</div>
+
+<%
+}
+%>
+
+<div class="search-filters tree-node-content">
+	<h3 class="cursor-pointer header" onclick="<portlet:namespace />toggleFilter('languageFilter');">
+		<i class="icon-plus tree-hitarea"></i>
+
+		<liferay-ui:message key="language" />
+	</h3>
+
+	<div id="<portlet:namespace />languageFilter" style="display: none;">
+
+		<%
+		for (Locale curLocale : OSBJournalArticleConstants.LOCALES) {
+			String currentLanguageId = LocaleUtil.toLanguageId(curLocale);
+		%>
+
+			<ul>
+				<li>
+					<span class="filter-label">
+						<i class="cursor-pointer indent" onclick="<portlet:namespace />toggleFilter(<%= currentLanguageId %>);"></i>
+
+						<input <%= ArrayUtil.contains(searchTerms.getLanguageIds(), currentLanguageId) ? "checked" : "" %> class="filter-language-input" name="<portlet:namespace /><%= currentLanguageId %>" onchange="<portlet:namespace />updateSearchResults(false);" type="checkbox" value="<%= currentLanguageId %>" />
+
+						<span onclick="<portlet:namespace />toggleFilter(<%= curLocale.getLanguage() %>);">
+							<%= LocaleUtil.getLongDisplayName(curLocale, new HashSet<String>()) %>
+						</span>
+					</span>
+				</li>
+			</ul>
+
+		<%
+		}
+		%>
+
+	</div>
+</div>
+
+<c:if test="<%= liferayOrg %>">
+	<div class="search-filters tree-node-content">
+		<h3 class="cursor-pointer header" onclick="<portlet:namespace />toggleFilter('permissionFilter');">
+			<i class="icon-plus tree-hitarea"></i>
+
+			<liferay-ui:message key="permission" />
+		</h3>
+
+		<div id="<portlet:namespace />permissionFilter" style="display: none;">
+
+			<%
+			for (long permissionType : OSBJournalArticleConstants.PERMISSION_TYPES) {
+			%>
+
+				<ul>
+					<li>
+						<span class="filter-label">
+							<i class="cursor-pointer indent" onclick="<portlet:namespace />toggleFilter(<%= permissionType %>);"></i>
+
+							<input <%= ArrayUtil.contains(searchTerms.getPermissionTypes(), permissionType) ? "checked" : "" %> class="filter-permission-input" name="<portlet:namespace /><%= permissionType %>" onchange="<portlet:namespace />updateSearchResults(false, false);" type="checkbox" value="<%= permissionType %>" />
+
+							<span onclick="<portlet:namespace />toggleFilter(<%= permissionType %>);">
+								<liferay-ui:message key="<%= OSBJournalArticleConstants.getPermissionTypeLabel(permissionType) %>" />
+							</span>
+						</span>
+					</li>
+				</ul>
+
+			<%
+			}
+			%>
+
+		</div>
+	</div>
+</c:if>
+
+<div class="search-filters-tools">
+
+	<%
+	String clearFiltersCss = "clear-filters";
+
+	if (!ArrayUtil.isEmpty(searchTerms.getAssetCategoryIds()) || !ArrayUtil.isEmpty(searchTerms.getLanguageIds())) {
+		clearFiltersCss = clearFiltersCss.concat(" active");
+	}
+	%>
+
+	<a class="<%= clearFiltersCss %>" href="javascript:<portlet:namespace />updateSearchResults(false, true)"><liferay-ui:message key="clear-filters" /></a>
+</div>
+
+<%
+AssetVocabulary articleTypeVocabulary = AssetVocabularyLocalServiceUtil.getGroupVocabulary(OSBCustomerConstants.GROUP_KNOWLEDGE_ID, "Article Type");
+
+List<AssetCategory> articleTypeCategories = AssetCategoryLocalServiceUtil.getVocabularyCategories(0, articleTypeVocabulary.getVocabularyId(), 0, 1, null);
+
+AssetCategory knowledgeBaseCategory = articleTypeCategories.get(0);
+%>
+
+<aui:script>
+	function <portlet:namespace />openFilters() {
+		var filters = document.querySelectorAll('input[type="checkbox"]:checked');
+
+		<portlet:namespace />toggleFilter(<%= articleTypeVocabulary.getVocabularyId() %>);
+		<portlet:namespace />toggleFilter(<%= knowledgeBaseCategory.getCategoryId() %>);
+
+		for (var i = 0; i < filters.length; i++) {
+			var element = filters[i];
+			var elementParent = element.parentElement;
+
+			var subfilters = elementParent.querySelectorAll('input[type="checkbox"]:checked');
+
+			while (!elementParent.classList.contains('tree-node-content')) {
+				if (elementParent.style.display == 'none') {
+					elementParent.style.display = '';
+
+					elementParent = elementParent.parentElement;
+
+					if (subfilters.length > 0) {
+						<portlet:namespace />toggleIcon(elementParent, null);
+					}
+				}
+				else {
+					elementParent = elementParent.parentElement;
+				}
+			}
+
+			<portlet:namespace />toggleIcon(elementParent, null);
+		}
+	}
+
+	function <portlet:namespace />toggleFilter(id) {
+		var element = document.getElementById('<portlet:namespace />' + id);
+		var elementParent = element.parentElement;
+
+		if (element.style.display == 'none') {
+			element.style.display = '';
+
+			<portlet:namespace />toggleIcon(elementParent, true);
+		}
+		else {
+			element.style.display = 'none';
+
+			<portlet:namespace />toggleIcon(elementParent, true);
+		}
+	}
+
+	function <portlet:namespace />toggleIcon(element, toggle) {
+		var icon = element.getElementsByTagName('i')[0];
+
+		if (icon) {
+			if (icon.classList.contains('icon-plus')) {
+				icon.classList.remove('icon-plus');
+				icon.classList.add('icon-minus');
+			}
+			else if (icon.classList.contains('icon-minus') && toggle) {
+				icon.classList.remove('icon-minus');
+				icon.classList.add('icon-plus');
+			}
+		}
+	}
+
+	function <portlet:namespace />updateSearchResults(clearKeywords, clearFilters) {
+		var resultsURL = '<portlet:renderURL><portlet:param name="mvcPath" value="/search/view.jsp" /></portlet:renderURL>';
+
+		if (!clearKeywords) {
+			var keywords = document.getElementById('<portlet:namespace />keywords').value;
+
+			if (keywords.length > 0) {
+				resultsURL += '&<portlet:namespace />keywords=' + keywords;
+			}
+		}
+
+		if (!clearFilters) {
+			var inputs = document.querySelectorAll('.filter-input');
+
+			for (var i = 0; i < inputs.length; i++) {
+				var element = inputs[i];
+
+				if (!element.value || !element.checked) {
+					continue;
+				}
+
+				resultsURL += '&<portlet:namespace />assetCategoryIds=' + element.value;
+			}
+
+			var languageInputs = document.querySelectorAll('.filter-language-input');
+
+			for (var i = 0; i < languageInputs.length; i++) {
+				var element = languageInputs[i];
+
+				if (!element.value || !element.checked) {
+					continue;
+				}
+
+				resultsURL += '&<portlet:namespace />languageIds=' + element.value;
+			}
+
+			var permissionTypes = document.querySelectorAll('.filter-permission-input');
+
+			if (permissionTypes) {
+				for (var i = 0; i < permissionTypes.length; i++) {
+					var element = permissionTypes[i];
+
+					if (!element.value || !element.checked) {
+						continue;
+					}
+
+					resultsURL += '&<portlet:namespace />permissionTypes=' + element.value;
+				}
+			}
+		}
+
+		window.location.href = resultsURL;
+	}
+
+	<portlet:namespace />openFilters();
+</aui:script>

@@ -18,6 +18,7 @@ import com.liferay.knowledge.base.constants.KBPortletKeys;
 import com.liferay.knowledge.base.model.KBArticle;
 import com.liferay.knowledge.base.service.KBArticleLocalService;
 import com.liferay.osb.customer.web.internal.constants.OSBCustomerConstants;
+import com.liferay.osb.customer.web.internal.constants.OSBCustomerPortletKeys;
 import com.liferay.osb.customer.web.internal.constants.OSBCustomerWebKeys;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -58,7 +59,7 @@ import org.osgi.service.component.annotations.Reference;
 		"javax.portlet.expiration-cache=0",
 		"javax.portlet.init-param.template-path=/knowledge_base_wrapper/",
 		"javax.portlet.init-param.view-template=/knowledge_base_wrapper/view.jsp",
-		"javax.portlet.name=5_WAR_osbknowledgebaseportlet",
+		"javax.portlet.name=" + OSBCustomerPortletKeys.KNOWLEDGE_BASE_WRAPPER,
 		"javax.portlet.resource-bundle=content.Language",
 		"javax.portlet.security-role-ref=administrator,guest,power-user,user",
 		"javax.portlet.supports.mime-type=text/html"

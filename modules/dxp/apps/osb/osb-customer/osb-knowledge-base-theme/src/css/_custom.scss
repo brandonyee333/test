@@ -639,52 +639,6 @@ $white: #FFF;
 		}
 	}
 
-	/* ---------- Knowledge base search ---------- */
-
-	.osb-knowledge-base-search-portlet {
-		.search-container {
-			.search-header {
-				background-color: $dark-blue;
-				color: $white;
-				padding-top: 3em;
-				text-align: center;
-
-				.header {
-					font-weight: normal;
-				}
-
-				.search-form {
-					margin: 0 auto;
-					padding-bottom: 20px;
-					padding-top: 1em;
-
-					.lfr-search-keywords {
-						box-sizing: border-box;
-						font-size: 1.5em;
-						height: 50px;
-						margin: 0;
-						padding: 4px 6px;
-						width: 50%;
-					}
-				}
-			}
-		}
-
-		.navigation-pane {
-			background: #E3F2FD;
-			border-right: 1px solid $border-color;
-			padding: 15px 20px;
-
-			li {
-				padding-top: 5px;
-
-				.filter-input {
-					vertical-align: top
-				}
-			}
-		}
-	}
-
 	/* ---------- Knowledge base side bar navigation ---------- */
 
 	.osb-knowledge-base-side-navigation-portlet {
