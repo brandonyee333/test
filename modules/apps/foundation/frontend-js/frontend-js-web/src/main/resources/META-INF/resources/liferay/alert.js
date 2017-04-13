@@ -226,7 +226,7 @@ AUI.add(
 							{
 								icon: instance.get('icon'),
 								message: instance.get('message'),
-								pathThemeImages: themeDisplay.getPathThemeImages(),
+								pathThemeImages: themeDisplay.getPathThemeImagesSvg(),
 								title: instance.get('title') || ''
 							}
 						);

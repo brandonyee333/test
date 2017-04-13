@@ -90,7 +90,7 @@ AUI.add(
 						CONTENT_TEMPLATE,
 						{
 							iconMoonTooltip: Liferay.Language.get('dark-theme'),
-							pathThemeImages: themeDisplay.getPathThemeImages()
+							pathThemeImages: themeDisplay.getPathThemeImagesSvg()
 						}
 					),
 

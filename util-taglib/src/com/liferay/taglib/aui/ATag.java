@@ -60,7 +60,7 @@ public class ATag extends BaseATag {
 				jspWriter.write("<svg class=\"lexicon-icon ");
 				jspWriter.write("lexicon-icon-shortcut\" role=\"img\"><use ");
 				jspWriter.write("xlink:href=\"");
-				jspWriter.write(themeDisplay.getPathThemeImages());
+				jspWriter.write(themeDisplay.getPathThemeImagesSvg());
 				jspWriter.write("/lexicon/icons.svg#shortcut\" /><span ");
 				jspWriter.write("class=\"sr-only\">");
 				jspWriter.write(

@@ -170,7 +170,7 @@ public class IconTag extends BaseIconTag {
 
 				if (src == null) {
 					src =
-						themeDisplay.getPathThemeImages() +
+						themeDisplay.getPathThemeImagesSvg() +
 							"/lexicon/icons.svg";
 				}
 
