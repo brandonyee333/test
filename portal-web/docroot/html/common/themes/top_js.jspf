@@ -206,6 +206,9 @@
 			getPathThemeImages: function() {
 				return '<%= themeDisplay.getPathThemeImages() %>';
 			},
+			getPathThemeImagesSvg: function() {
+				return '<%= themeDisplay.getPathThemeImagesSvg() %>';
+			},
 			getPathThemeRoot: function() {
 				return '<%= themeDisplay.getPathThemeRoot() %>';
 			},
