@@ -35,9 +35,17 @@ public class OSBCustomerConstants {
 	public static final String RESOURCE_NAME_KNOWLEDGE_DISPLAY =
 		"com.liferay.osb.knowledge.base.display";
 
+	public static final long ROLE_CUSTOMER_ID = 10827;
+
 	public static final long ROLE_DOCUMENT_LEAD = 19253;
 
+	public static final long ROLE_GUEST_ID = 10165;
+
 	public static final long ROLE_LIFERAY_EMPLOYEE_ID = 10946;
+
+	public static final long ROLE_PARTNER_ID = 54427;
+
+	public static final long ROLE_TRIAL_ID = 214323;
 
 	public static final long USER_DEFAULT_USER_ID = 10161;
 
