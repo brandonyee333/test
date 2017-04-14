@@ -17,6 +17,8 @@ package com.liferay.osb.customer.web.internal.upgrade.v1_0_0;
 import com.liferay.dynamic.data.mapping.service.persistence.DDMStructurePersistence;
 import com.liferay.dynamic.data.mapping.service.persistence.DDMTemplatePersistence;
 import com.liferay.journal.service.persistence.JournalArticlePersistence;
+import com.liferay.portal.kernel.model.PortletPreferences;
+import com.liferay.portal.kernel.service.PortletPreferencesLocalService;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
 /**
@@ -27,15 +29,20 @@ public class UpgradeDDMTemplates extends UpgradeProcess {
 	public UpgradeDDMTemplates(
 		DDMStructurePersistence ddmStructurePersistence,
 		DDMTemplatePersistence ddmTemplatePersistence,
-		JournalArticlePersistence journalArticlePersistence) {
+		JournalArticlePersistence journalArticlePersistence,
+		PortletPreferencesLocalService portletPreferencesLocalService) {
 
 		_ddmStructurePersistence = ddmStructurePersistence;
 		_ddmTemplatePersistence = ddmTemplatePersistence;
 		_journalArticlePersistence = journalArticlePersistence;
+		_portletPreferencesLocalService = portletPreferencesLocalService;
 	}
 
 	@Override
 	protected void doUpgrade() throws Exception {
+		upgradePortletPreferences(
+			"ARTICLE-DISPLAY-6.2.10.1", "ARTICLE-DISPLAY");
+
 		upgradeStructureKeys("84103", "CENTER-BLOCKS");
 		upgradeStructureKeys("122953", "KB-BANNER");
 		upgradeStructureKeys("122955", "LOWER-BLOCKS");
@@ -53,6 +60,26 @@ public class UpgradeDDMTemplates extends UpgradeProcess {
 		_ddmStructurePersistence.clearCache();
 		_ddmTemplatePersistence.clearCache();
 		_journalArticlePersistence.clearCache();
+	}
+
+	protected void upgradePortletPreferences(
+			String oldStructureKey, String newStructureKey)
+		throws Exception {
+
+		PortletPreferences portletPreferences =
+			_portletPreferencesLocalService.fetchPortletPreferences(86044);
+
+		if (portletPreferences == null) {
+			return;
+		}
+
+		String preferences = portletPreferences.getPreferences();
+
+		portletPreferences.setPreferences(
+			preferences.replace(oldStructureKey, newStructureKey));
+
+		_portletPreferencesLocalService.updatePortletPreferences(
+			portletPreferences);
 	}
 
 	protected void upgradeStructureKeys(
@@ -82,5 +109,7 @@ public class UpgradeDDMTemplates extends UpgradeProcess {
 	private final DDMStructurePersistence _ddmStructurePersistence;
 	private final DDMTemplatePersistence _ddmTemplatePersistence;
 	private final JournalArticlePersistence _journalArticlePersistence;
+	private final PortletPreferencesLocalService
+		_portletPreferencesLocalService;
 
 }
