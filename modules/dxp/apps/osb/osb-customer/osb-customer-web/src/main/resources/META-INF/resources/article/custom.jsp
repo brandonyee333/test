@@ -32,7 +32,7 @@ if (ddmStructure != null) {
 }
 %>
 
-<c:if test='<%= structureId.equals("ARTICLE-DISPLAY-6.2.10.1") %>'>
+<c:if test='<%= structureId.equals("ARTICLE-DISPLAY") %>'>
 
 	<%
 	long originalAuthorUserId = user.getUserId();

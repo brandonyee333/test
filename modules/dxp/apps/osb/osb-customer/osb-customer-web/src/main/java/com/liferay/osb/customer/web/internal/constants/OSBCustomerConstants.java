@@ -20,7 +20,7 @@ package com.liferay.osb.customer.web.internal.constants;
 public class OSBCustomerConstants {
 
 	public static final String ARTICLE_DISPLAY_STRUCTURE_KEY =
-		"ARTICLE-DISPLAY-6.2.10.1";
+		"ARTICLE-DISPLAY";
 
 	public static final long ASSET_VOCABULARY_ARTICLE_TYPE_ID = 10892;
 
