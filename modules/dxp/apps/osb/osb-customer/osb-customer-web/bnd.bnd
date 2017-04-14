@@ -5,3 +5,4 @@ Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Customer
 Web-ContextPath: /osb-customer-web
 -dsannotations-options: inherit
+-includeresource: content=src/main/resources/content
