@@ -16,8 +16,7 @@
 
 <%@ include file="/init.jsp" %>
 
-<%@ page import="com.liferay.dynamic.data.mapping.model.DDMStructure" %><%@
-page import="com.liferay.dynamic.data.mapping.service.DDMStructureServiceUtil" %><%@
+<%@ page import="com.liferay.dynamic.data.mapping.service.DDMStructureServiceUtil" %><%@
 page import="com.liferay.osb.customer.web.internal.constants.OSBJournalArticleConstants" %><%@
 page import="com.liferay.osb.customer.web.internal.search.ArticleSearch" %><%@
 page import="com.liferay.osb.customer.web.internal.search.ArticleSearchTerms" %><%@
