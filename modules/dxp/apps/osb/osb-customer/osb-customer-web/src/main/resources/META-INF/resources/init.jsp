@@ -93,7 +93,3 @@ page import="javax.portlet.WindowState" %>
 <liferay-theme:defineObjects />
 
 <portlet:defineObjects />
-
-<%
-String currentURL = PortalUtil.getCurrentURL(request);
-%>
