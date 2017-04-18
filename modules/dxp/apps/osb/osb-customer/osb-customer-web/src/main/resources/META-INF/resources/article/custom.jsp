@@ -17,13 +17,12 @@
 <%@ include file="/init.jsp" %>
 
 <%
-String articleId = ParamUtil.getString(request, "articleId");
+DDMStructure ddmStructure = (DDMStructure)request.getAttribute("edit_article.jsp-structure");
 
+String articleId = ParamUtil.getString(request, "articleId");
 long groupId = ParamUtil.getLong(request, "groupId", themeDisplay.getScopeGroupId());
 
 JournalArticle oldestArticle = JournalArticleLocalServiceUtil.getArticle(groupId, articleId, 1.0);
-
-DDMStructure ddmStructure = (DDMStructure)request.getAttribute("edit_article.jsp-structure");
 
 String structureId = StringPool.BLANK;
 

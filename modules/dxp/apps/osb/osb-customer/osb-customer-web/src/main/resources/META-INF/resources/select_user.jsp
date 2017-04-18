@@ -17,29 +17,17 @@
 <%@ include file="/init.jsp" %>
 
 <%
-String displayStyle = ParamUtil.getString(request, "displayStyle", "list");
-
 long roleLiferayEmployeeId = GetterUtil.getLong(renderRequest.getAttribute("OSB_ROLE_LIFERAY_EMPLOYEE_ID"));
+
+String displayStyle = ParamUtil.getString(request, "displayStyle", "list");
+String orderByCol = ParamUtil.getString(request, "orderByCol", "modified-date");
+String orderByType = ParamUtil.getString(request, "orderByType", "asc");
+
+OrderByComparator<User> orderByComparator = UsersAdminUtil.getUserOrderByComparator(orderByCol, orderByType);
 
 PortletURL portletURL = renderResponse.createRenderURL();
 
 portletURL.setParameter("mvcRenderCommandName", "/journal/select_user");
-
-SearchContainer userSearch = new UserSearch(renderRequest, portletURL);
-
-String orderByCol = ParamUtil.getString(request, "orderByCol", "modified-date");
-
-userSearch.setOrderByCol(orderByCol);
-
-String orderByType = ParamUtil.getString(request, "orderByType", "asc");
-
-userSearch.setOrderByType(orderByType);
-
-OrderByComparator<User> orderByComparator = UsersAdminUtil.getUserOrderByComparator(orderByCol, orderByType);
-
-userSearch.setOrderByComparator(orderByComparator);
-
-request.setAttribute(WebKeys.SEARCH_CONTAINER, userSearch);
 %>
 
 <aui:nav-bar cssClass="collapse-basic-search" markupView="lexicon">
@@ -61,6 +49,16 @@ request.setAttribute(WebKeys.SEARCH_CONTAINER, userSearch);
 				navigationKeys='<%= new String[] {"all"} %>'
 				portletURL="<%= portletURL %>"
 			/>
+
+			<%
+			SearchContainer userSearch = new UserSearch(renderRequest, portletURL);
+
+			userSearch.setOrderByCol(orderByCol);
+			userSearch.setOrderByType(orderByType);
+			userSearch.setOrderByComparator(orderByComparator);
+
+			request.setAttribute(WebKeys.SEARCH_CONTAINER, userSearch);
+			%>
 
 			<liferay-frontend:management-bar-sort
 				orderByCol="<%= userSearch.getOrderByCol() %>"
