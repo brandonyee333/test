@@ -640,6 +640,15 @@ public class ThemeDisplay
 	}
 
 	/**
+	 * Returns the URL for the theme's svg images.
+	 *
+	 * @return the URL for the theme's svg images
+	 */
+	public String getPathThemeImagesSvg() {
+		return _pathThemeImagesSvg;
+	}
+
+	/**
 	 * Returns the URL for the theme's JavaScript directory.
 	 *
 	 * @return the URL for the theme's JavaScript directory
@@ -1442,16 +1451,16 @@ public class ThemeDisplay
 
 		String dynamicResourcesHost = getCDNDynamicResourcesHost();
 
+		String portalURL = getPortalURL();
+
+		try {
+			portalURL = PortalUtil.getPortalURL(getLayout(), this);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+		}
+
 		if (Validator.isNull(dynamicResourcesHost)) {
-			String portalURL = getPortalURL();
-
-			try {
-				portalURL = PortalUtil.getPortalURL(getLayout(), this);
-			}
-			catch (Exception e) {
-				_log.error(e, e);
-			}
-
 			dynamicResourcesHost = portalURL;
 		}
 
@@ -1459,8 +1468,12 @@ public class ThemeDisplay
 			dynamicResourcesHost + themeStaticResourcePath +
 				theme.getCssPath());
 
+		String themeImagesPath = theme.getImagesPath();
+
 		setPathThemeImages(
-			cdnBaseURL + themeStaticResourcePath + theme.getImagesPath());
+			cdnBaseURL + themeStaticResourcePath + themeImagesPath);
+		setPathThemeImagesSvg(
+			portalURL + themeStaticResourcePath + themeImagesPath);
 		setPathThemeJavaScript(
 			cdnBaseURL + themeStaticResourcePath + theme.getJavaScriptPath());
 
@@ -1541,6 +1554,10 @@ public class ThemeDisplay
 
 	public void setPathThemeImages(String pathThemeImages) {
 		_pathThemeImages = pathThemeImages;
+	}
+
+	public void setPathThemeImagesSvg(String pathThemeImagesSvg) {
+		_pathThemeImagesSvg = pathThemeImagesSvg;
 	}
 
 	public void setPathThemeJavaScript(String pathThemeJavaScript) {
@@ -1956,6 +1973,7 @@ public class ThemeDisplay
 	private String _pathSound = StringPool.BLANK;
 	private String _pathThemeCss = StringPool.BLANK;
 	private String _pathThemeImages = StringPool.BLANK;
+	private String _pathThemeImagesSvg = StringPool.BLANK;
 	private String _pathThemeJavaScript = StringPool.BLANK;
 	private String _pathThemeRoot = StringPool.BLANK;
 	private String _pathThemeTemplates = StringPool.BLANK;

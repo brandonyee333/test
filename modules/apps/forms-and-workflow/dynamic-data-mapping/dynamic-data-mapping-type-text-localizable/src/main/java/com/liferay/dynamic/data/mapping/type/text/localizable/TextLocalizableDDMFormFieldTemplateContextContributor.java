@@ -117,7 +117,7 @@ public class TextLocalizableDDMFormFieldTemplateContextContributor
 
 		StringBuilder sb = new StringBuilder();
 
-		sb.append(themeDisplay.getPathThemeImages());
+		sb.append(themeDisplay.getPathThemeImagesSvg());
 		sb.append("/lexicon/icons.svg");
 		sb.append(StringPool.POUND);
 		sb.append(
