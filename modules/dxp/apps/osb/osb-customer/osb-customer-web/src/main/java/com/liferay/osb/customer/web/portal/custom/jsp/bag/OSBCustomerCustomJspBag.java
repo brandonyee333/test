@@ -44,7 +44,7 @@ public class OSBCustomerCustomJspBag implements CustomJspBag {
 
 	@Override
 	public String getCustomJspDir() {
-		return "META-INF/resources/portal";
+		return "META-INF/resources/custom_jsps";
 	}
 
 	@Override
