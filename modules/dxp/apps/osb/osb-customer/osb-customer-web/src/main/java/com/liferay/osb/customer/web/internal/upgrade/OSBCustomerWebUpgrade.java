@@ -20,6 +20,7 @@ import com.liferay.journal.service.persistence.JournalArticlePersistence;
 import com.liferay.osb.customer.web.internal.upgrade.v1_0_0.UpgradeDDMTemplates;
 import com.liferay.osb.customer.web.internal.upgrade.v1_0_0.UpgradeSubscription;
 import com.liferay.portal.kernel.service.PortletPreferencesLocalService;
+import com.liferay.portal.kernel.service.persistence.SubscriptionPersistence;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 
@@ -39,7 +40,7 @@ public class OSBCustomerWebUpgrade implements UpgradeStepRegistrator {
 			new UpgradeDDMTemplates(
 				_ddmStructurePersistence, _ddmTemplatePersistence,
 				_journalArticlePersistence, _portletPreferencesLocalService),
-			new UpgradeSubscription(_portal));
+			new UpgradeSubscription(_portal, _subscriptionPersistence));
 	}
 
 	@Reference
@@ -56,5 +57,8 @@ public class OSBCustomerWebUpgrade implements UpgradeStepRegistrator {
 
 	@Reference
 	private PortletPreferencesLocalService _portletPreferencesLocalService;
+
+	@Reference
+	private SubscriptionPersistence _subscriptionPersistence;
 
 }

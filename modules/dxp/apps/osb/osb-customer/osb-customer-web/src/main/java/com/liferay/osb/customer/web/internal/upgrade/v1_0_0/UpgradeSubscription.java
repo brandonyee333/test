@@ -19,6 +19,7 @@ import com.liferay.journal.model.JournalFolder;
 import com.liferay.osb.customer.web.internal.constants.OSBCustomerConstants;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.service.persistence.SubscriptionPersistence;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -28,8 +29,11 @@ import com.liferay.portal.kernel.util.StringBundler;
  */
 public class UpgradeSubscription extends UpgradeProcess {
 
-	public UpgradeSubscription(Portal portal) {
+	public UpgradeSubscription(
+		Portal portal, SubscriptionPersistence subscriptionPersistence) {
+
 		_portal = portal;
+		_subscriptionPersistence = subscriptionPersistence;
 	}
 
 	@Override
@@ -44,11 +48,14 @@ public class UpgradeSubscription extends UpgradeProcess {
 		sb.append(_portal.getClassNameId(JournalFolder.class.getName()));
 
 		runSQL(sb.toString());
+
+		_subscriptionPersistence.clearCache();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		UpgradeSubscription.class);
 
 	private final Portal _portal;
+	private final SubscriptionPersistence _subscriptionPersistence;
 
 }
