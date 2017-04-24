@@ -42,19 +42,19 @@ public class OSBCustomerWebUpgrade implements UpgradeStepRegistrator {
 			new UpgradeSubscription(_portal));
 	}
 
-	@Reference(unbind = "-")
+	@Reference
 	private DDMStructurePersistence _ddmStructurePersistence;
 
-	@Reference(unbind = "-")
+	@Reference
 	private DDMTemplatePersistence _ddmTemplatePersistence;
 
-	@Reference(unbind = "-")
+	@Reference
 	private JournalArticlePersistence _journalArticlePersistence;
 
 	@Reference
 	private Portal _portal;
 
-	@Reference(unbind = "-")
+	@Reference
 	private PortletPreferencesLocalService _portletPreferencesLocalService;
 
 }
