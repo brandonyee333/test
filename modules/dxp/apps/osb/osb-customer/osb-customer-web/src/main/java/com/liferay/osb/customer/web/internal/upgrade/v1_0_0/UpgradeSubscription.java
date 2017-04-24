@@ -40,7 +40,6 @@ public class UpgradeSubscription extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 		long journalArticleClassNameId = _portal.getClassNameId(
 			JournalArticle.class.getName());
-
 		long journalFolderClassNameId = _portal.getClassNameId(
 			JournalFolder.class.getName());
 
@@ -57,10 +56,10 @@ public class UpgradeSubscription extends UpgradeProcess {
 		try (PreparedStatement ps = connection.prepareStatement(sql)) {
 			ps.setLong(1, classPK);
 
-			ResultSet rs = ps.executeQuery();
-
-			if (rs.next()) {
-				return rs.getLong("groupId");
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					return rs.getLong("groupId");
+				}
 			}
 		}
 
@@ -103,9 +102,8 @@ public class UpgradeSubscription extends UpgradeProcess {
 			PreparedStatement ps1 = connection.prepareStatement(sql1);
 			PreparedStatement ps2 =
 				AutoBatchPreparedStatementUtil.concurrentAutoBatch(
-					connection, sql2)) {
-
-			ResultSet rs = ps1.executeQuery();
+					connection, sql2);
+			ResultSet rs = ps1.executeQuery()) {
 
 			while (rs.next()) {
 				long subscriptionId = rs.getLong("subscriptionId");
