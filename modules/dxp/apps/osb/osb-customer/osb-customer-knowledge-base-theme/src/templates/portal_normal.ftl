@@ -17,7 +17,7 @@
 
 	<@liferay_util["include"] page=top_head_include />
 
-	<#if theme_settings.get("google-analytics-id") != "">
+	<#if theme_settings["google-analytics-id"] != "">
 		<script>
 			(function(i, s, o, g, r, a, m) {
 				i['GoogleAnalyticsObject'] = r;
@@ -36,7 +36,7 @@
 				m.parentNode.insertBefore(a, m);
 			})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
-			ga('create', '${theme_settings.get("google-analytics-id")}', 'auto');
+			ga('create', '${theme_settings["google-analytics-id"]}', 'auto');
 			ga('send', 'pageview');
 		</script>
 	</#if>
@@ -56,26 +56,26 @@
 	<div class="row-fluid">
 		<header class="banner span12" id="banner" role="banner">
 			<div class="banner-content">
-				<#if getterUtil.getBoolean(theme_settings.get("custom-site-nav-logo")) && (theme_settings.get("custom-site-url") != "")>
+				<#if getterUtil.getBoolean(theme_settings["custom-site-nav-logo"]) && (theme_settings["custom-site-url"] != "")>
 					<div class="${logo_css_class} custom-site-nav">
-						<a class="home" href='${theme_settings.get("liferay-home-url")}'>
+						<a class="home" href='${theme_settings["liferay-home-url"]}'>
 							<#include "${full_templates_path}/svg.ftl" />
 						</a>
 
-						<#if theme_settings.get("custom-site-lang-key") != "">
-							<a class="custom-site-url" href='${theme_settings.get("custom-site-url")}'>
+						<#if theme_settings["custom-site-lang-key"] != "">
+							<a class="custom-site-url" href='${theme_settings["custom-site-url"]}'>
 								<svg class="nav-separator" preserveAspectRatio="none" viewBox="0 0 2 4">
 									<path class="nav-arrow" d="M0 0 L2 2 L0 4" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
 								</svg>
 
 								<span class="custom-site-text">
-									<@liferay.language key=theme_settings.get("custom-site-lang-key") />
+									<@liferay.language key=theme_settings["custom-site-lang-key"] />
 								</span>
 							</a>
 						</#if>
 					</div>
 				<#else>
-					<a class="${logo_css_class}" href='${theme_settings.get("liferay-home-url")}'>
+					<a class="${logo_css_class}" href='${theme_settings["liferay-home-url"]}'>
 						<img alt="Liferay" src="${images_folder}/custom/heading.png" />
 					</a>
 				</#if>

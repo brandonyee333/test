@@ -27,29 +27,29 @@
 <#assign main_nav_friendly_url = "/main-navigation" />
 <#assign mobile_footer_nav_friendly_url = "/mobile-footer-navigation" />
 
-<#assign nav_options = theme_display.getThemeSetting("nav-options") />
+<#assign nav_options = theme_settings["nav-options"] />
 
-<#if theme_settings.get("open-graph-image") != "">
-	<#assign open_graph_image = theme_settings.get("open-graph-image") />
+<#if theme_settings["open-graph-image"] != "">
+	<#assign open_graph_image = theme_settings["open-graph-image"] />
 <#else>
 	<#assign open_graph_image = images_folder + "/custom/open_graph_image.png" />
 </#if>
 
-<#if theme_settings.get("open-graph-title") != "">
-	<#assign open_graph_title = theme_settings.get("open-graph-title") />
+<#if theme_settings["open-graph-title"] != "">
+	<#assign open_graph_title = theme_settings["open-graph-title"] />
 <#else>
 	<#assign open_graph_title = the_title + " - " + company_name />
 </#if>
 
-<#if theme_settings.get("open-graph-url") != "">
-	<#assign open_graph_url = theme_settings.get("open-graph-url") />
+<#if theme_settings["open-graph-url"] != "">
+	<#assign open_graph_url = theme_settings["open-graph-url"] />
 <#else>
 	<#assign open_graph_url = htmlUtil.escape(portal.getCurrentCompleteURL(request)) />
 </#if>
 
 <#assign can_view_control_panel = false />
 
-<#if is_signed_in && portal_permission_util.contains(themeDisplay.getPermissionChecker(), "VIEW_CONTROL_PANEL")>
+<#if is_signed_in && portal_permission_util.contains(theme_display.getPermissionChecker(), "VIEW_CONTROL_PANEL")>
 	<#assign can_view_control_panel = true />
 <#else>
 	<#assign css_class = stringUtil.replace(css_class, "has-control-menu", "") />
@@ -83,7 +83,7 @@
 		navigation_layout = layout_local_service.fetchLayoutByFriendlyURL(guest_group_id, false, layout_friendly_url)!""
 	/>
 
-	<#if getterUtil.getBoolean(theme_display.getThemeSetting("custom-navigation"))>
+	<#if getterUtil.getBoolean(theme_settings["custom-navigation"])>
 		<#assign navigation_layout = layout_local_service.fetchLayoutByFriendlyURL(group_id, layout.isPrivateLayout(), layout_friendly_url)!"" />
 	</#if>
 

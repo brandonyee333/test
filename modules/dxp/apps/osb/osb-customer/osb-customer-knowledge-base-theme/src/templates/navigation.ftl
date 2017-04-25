@@ -49,7 +49,7 @@
 	<#assign main_menu_style = "" />
 
 	<#if is_signed_in>
-		<#assign main_menu_style = "style='background-image: url(" + user.getPortraitURL(themeDisplay) + "); background-size: cover;'" />
+		<#assign main_menu_style = "style='background-image: url(" + user.getPortraitURL(theme_display) + "); background-size: cover;'" />
 	</#if>
 
 	<div class="nav-user toggle-menu" ${main_menu_style}>
@@ -85,7 +85,7 @@
 										layout_private_name = place.getDescriptiveName()
 										layout_public_name = place.getDescriptiveName()
 
-										url = place.getPathFriendlyURL(false, themeDisplay) + place.getFriendlyURL()
+										url = place.getPathFriendlyURL(false, theme_display) + place.getFriendlyURL()
 									/>
 
 									<#if place.hasPrivateLayouts() && place.hasPublicLayouts()>
@@ -95,7 +95,7 @@
 										/>
 									</#if>
 
-									<#if my_places.size() &gt; 2>
+									<#if my_places?size gt 2>
 										<#assign site_css_class = "site" />
 
 										<#if place.getGroupId() == group_id>
@@ -109,7 +109,7 @@
 										</#if>
 
 										<#if place.hasPrivateLayouts()>
-											<#assign url = place.getPathFriendlyURL(true, themeDisplay) + place.getFriendlyURL() />
+											<#assign url = place.getPathFriendlyURL(true, theme_display) + place.getFriendlyURL() />
 
 											<li class="private ${site_css_class}">
 												<a href="${url}">${layout_private_name}</a>
@@ -135,7 +135,7 @@
 
 			<#if is_signed_in>
 				<li class="sign-in-button" id="signOutBtn">
-					<a href="${sign_out_url}?referer=${themeDisplay.getURLCurrent()}">${sign_out_text}</a>
+					<a href="${sign_out_url}?referer=${theme_display.getURLCurrent()}">${sign_out_text}</a>
 				</li>
 			<#else>
 				<li class="sign-in-button" id="signInBtn">
