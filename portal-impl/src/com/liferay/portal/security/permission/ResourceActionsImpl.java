@@ -1065,12 +1065,16 @@ public class ResourceActionsImpl implements ResourceActions {
 
 		Element rootElement = document.getRootElement();
 
+		Map<String, PortletResourceActionsBag> tempPortletResourceActionsBags =
+			new HashMap<>();
+
 		if (PropsValues.RESOURCE_ACTIONS_READ_PORTLET_RESOURCES) {
 			for (Element portletResourceElement :
 					rootElement.elements("portlet-resource")) {
 
 				String portletName = _readPortletResource(
-					servletContextName, portletResourceElement);
+					servletContextName, portletResourceElement,
+					tempPortletResourceActionsBags);
 
 				if (portletNames != null) {
 					portletNames.add(portletName);
@@ -1078,20 +1082,27 @@ public class ResourceActionsImpl implements ResourceActions {
 			}
 		}
 
+		Map<String, ModelResourceActionsBag> tempModelResourceActionsBags =
+			new HashMap<>();
+
 		for (Element modelResourceElement :
 				rootElement.elements("model-resource")) {
 
 			String modelName = _readModelResource(
-				servletContextName, modelResourceElement);
+				servletContextName, modelResourceElement,
+				tempPortletResourceActionsBags, tempModelResourceActionsBags);
 
 			if (portletNames != null) {
 				ModelResourceActionsBag modelResourceActionsBag =
-					_modelResourceActionsBags.get(modelName);
+					tempModelResourceActionsBags.get(modelName);
 
 				portletNames.addAll(
 					modelResourceActionsBag.getPortletResources());
 			}
 		}
+
+		_portletResourceActionsBags.putAll(tempPortletResourceActionsBags);
+		_modelResourceActionsBags.putAll(tempModelResourceActionsBags);
 	}
 
 	private List<String> _readActionKeys(Element parentElement) {
@@ -1190,7 +1201,10 @@ public class ResourceActionsImpl implements ResourceActions {
 	}
 
 	private String _readModelResource(
-			String servletContextName, Element modelResourceElement)
+			String servletContextName, Element modelResourceElement,
+			Map<String, PortletResourceActionsBag>
+				tempPortletResourceActionsBags,
+			Map<String, ModelResourceActionsBag> tempModelResourceActionsBags)
 		throws Exception {
 
 		String name = modelResourceElement.elementTextTrim("model-name");
@@ -1232,12 +1246,13 @@ public class ResourceActionsImpl implements ResourceActions {
 			// Reference for a portlet to child models
 
 			PortletResourceActionsBag portletResourceActionsBag =
-				_portletResourceActionsBags.get(portletName);
+				tempPortletResourceActionsBags.get(portletName);
 
 			if (portletResourceActionsBag == null) {
-				throw new ResourceActionsException(
-					"The model " + name + " references a portlet that does " +
-						"not exist: " + portletName);
+				portletResourceActionsBag = new PortletResourceActionsBag();
+
+				tempPortletResourceActionsBags.put(
+					portletName, portletResourceActionsBag);
 			}
 
 			Set<String> modelResources =
@@ -1305,7 +1320,7 @@ public class ResourceActionsImpl implements ResourceActions {
 
 		_readOwnerDefaultActions(modelResourceElement, ownerDefaultActions);
 
-		_modelResourceActionsBags.put(name, modelResourceActionsBag);
+		tempModelResourceActionsBags.put(name, modelResourceActionsBag);
 
 		return name;
 	}
@@ -1324,7 +1339,9 @@ public class ResourceActionsImpl implements ResourceActions {
 	}
 
 	private String _readPortletResource(
-			String servletContextName, Element portletResourceElement)
+			String servletContextName, Element portletResourceElement,
+			Map<String, PortletResourceActionsBag>
+				tempPortletResourceActionsBags)
 		throws Exception {
 
 		String name = portletResourceElement.elementTextTrim("portlet-name");
@@ -1378,7 +1395,7 @@ public class ResourceActionsImpl implements ResourceActions {
 		_readLayoutManagerActions(
 			portletResourceElement, layoutManagerActions, portletActions);
 
-		_portletResourceActionsBags.put(name, portletResourceActionsBag);
+		tempPortletResourceActionsBags.put(name, portletResourceActionsBag);
 
 		return name;
 	}
