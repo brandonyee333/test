@@ -1166,14 +1166,13 @@ public class ResourceActionsImpl implements ResourceActions {
 		for (Element modelResourceElement :
 				rootElement.elements("model-resource")) {
 
-			String modelName = _readModelResource(
-				servletContextName, modelResourceElement,
-				tempPortletResourceActionsBags, tempModelResourceActionsBags);
+			ModelResourceActionsBag modelResourceActionsBag =
+				_readModelResource(
+					servletContextName, modelResourceElement,
+					tempPortletResourceActionsBags,
+					tempModelResourceActionsBags);
 
 			if (portletNames != null) {
-				ModelResourceActionsBag modelResourceActionsBag =
-					tempModelResourceActionsBags.get(modelName);
-
 				portletNames.addAll(
 					modelResourceActionsBag.getPortletResources());
 			}
@@ -1278,7 +1277,7 @@ public class ResourceActionsImpl implements ResourceActions {
 		layoutManagerActions.addAll(_readActionKeys(layoutManagerElement));
 	}
 
-	private String _readModelResource(
+	private ModelResourceActionsBag _readModelResource(
 			String servletContextName, Element modelResourceElement,
 			Map<String, PortletResourceActionsBag>
 				tempPortletResourceActionsBags,
@@ -1416,7 +1415,7 @@ public class ResourceActionsImpl implements ResourceActions {
 
 		tempModelResourceActionsBags.put(name, modelResourceActionsBag);
 
-		return name;
+		return modelResourceActionsBag;
 	}
 
 	private void _readOwnerDefaultActions(
