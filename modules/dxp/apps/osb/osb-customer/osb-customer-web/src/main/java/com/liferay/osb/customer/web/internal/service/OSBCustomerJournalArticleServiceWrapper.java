@@ -23,7 +23,7 @@ import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.journal.service.JournalArticleLocalServiceWrapper;
 import com.liferay.knowledge.base.constants.KBActionKeys;
-import com.liferay.osb.customer.web.internal.constants.OSBCustomerConstants;
+import com.liferay.osb.customer.api.constants.OSBCustomerConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.User;

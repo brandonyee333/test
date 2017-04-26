@@ -12,13 +12,14 @@
  * details.
  */
 
-package com.liferay.osb.customer.web.internal.search;
+package com.liferay.osb.customer.api.util;
 
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.osb.customer.api.constants.OSBCustomerPortletKeys;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
+import com.liferay.portal.kernel.search.FacetedSearcher;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.Indexer;
@@ -42,7 +43,7 @@ import javax.portlet.PortletPreferences;
  * @author Kyle Bischof
  * @author Amos Fong
  */
-public class ArticleSearchUtil {
+public class KBSearchUtil {
 
 	public static String cleanKeywords(String keywords) {
 		return keywords.replaceAll("(?i)\\b(and|not)\\b", StringPool.BLANK);
@@ -109,7 +110,7 @@ public class ArticleSearchUtil {
 		searchContext.setKeywords(searchContext.getKeywords());
 		searchContext.setStart(start);
 
-		Indexer indexer = new ArticleSearcher();
+		Indexer indexer = FacetedSearcher.getInstance();
 
 		return indexer.search(searchContext);
 	}

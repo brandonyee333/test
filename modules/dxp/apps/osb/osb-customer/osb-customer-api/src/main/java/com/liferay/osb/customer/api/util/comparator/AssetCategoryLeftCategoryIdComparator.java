@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.osb.customer.web.internal.util.comparator;
+package com.liferay.osb.customer.api.util.comparator;
 
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -20,19 +20,21 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 /**
  * @author Alan Zhang
  */
-public class AssetCategoryNameComparator extends OrderByComparator {
+public class AssetCategoryLeftCategoryIdComparator extends OrderByComparator {
 
-	public static final String ORDER_BY_ASC = "AssetCategory.name ASC";
+	public static final String ORDER_BY_ASC =
+		"AssetCategory.leftCategoryId ASC";
 
-	public static final String ORDER_BY_DESC = "AssetCategory.name DESC";
+	public static final String ORDER_BY_DESC =
+		"AssetCategory.leftCategoryId DESC";
 
-	public static final String[] ORDER_BY_FIELDS = {"name"};
+	public static final String[] ORDER_BY_FIELDS = {"leftCategoryId"};
 
-	public AssetCategoryNameComparator() {
+	public AssetCategoryLeftCategoryIdComparator() {
 		this(false);
 	}
 
-	public AssetCategoryNameComparator(boolean ascending) {
+	public AssetCategoryLeftCategoryIdComparator(boolean ascending) {
 		_ascending = ascending;
 	}
 
@@ -41,10 +43,17 @@ public class AssetCategoryNameComparator extends OrderByComparator {
 		AssetCategory assetCategory1 = (AssetCategory)obj1;
 		AssetCategory assetCategory2 = (AssetCategory)obj2;
 
-		String name1 = assetCategory1.getName();
-		String name2 = assetCategory2.getName();
+		long leftCategoryId1 = assetCategory1.getLeftCategoryId();
+		long leftCategoryId2 = assetCategory2.getLeftCategoryId();
 
-		int value = name1.compareTo(name2);
+		int value = 0;
+
+		if (leftCategoryId1 < leftCategoryId2) {
+			value = -1;
+		}
+		else if (leftCategoryId1 > leftCategoryId2) {
+			value = 1;
+		}
 
 		if (_ascending) {
 			return value;

@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.osb.customer.web.internal.constants;
+package com.liferay.osb.customer.api.constants;
 
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 

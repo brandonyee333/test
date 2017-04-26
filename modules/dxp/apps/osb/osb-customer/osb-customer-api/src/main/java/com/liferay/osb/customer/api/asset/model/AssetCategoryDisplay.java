@@ -12,15 +12,15 @@
  * details.
  */
 
-package com.liferay.osb.customer.web.internal.asset.model;
+package com.liferay.osb.customer.api.asset.model;
 
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.asset.kernel.service.AssetVocabularyLocalServiceUtil;
-import com.liferay.osb.customer.web.internal.constants.OSBCustomerConstants;
-import com.liferay.osb.customer.web.internal.util.comparator.AssetCategoryLeftCategoryIdComparator;
-import com.liferay.osb.customer.web.internal.util.comparator.AssetCategoryNameComparator;
-import com.liferay.osb.customer.web.internal.util.comparator.AssetVocabularyDescriptionComparator;
+import com.liferay.osb.customer.api.constants.OSBCustomerConstants;
+import com.liferay.osb.customer.api.util.comparator.AssetCategoryLeftCategoryIdComparator;
+import com.liferay.osb.customer.api.util.comparator.AssetCategoryNameComparator;
+import com.liferay.osb.customer.api.util.comparator.AssetVocabularyDescriptionComparator;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.filter.BooleanFilter;

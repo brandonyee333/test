@@ -16,7 +16,7 @@ package com.liferay.osb.customer.web.internal.upgrade.v1_0_0;
 
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalFolder;
-import com.liferay.osb.customer.web.internal.constants.OSBCustomerConstants;
+import com.liferay.osb.customer.api.constants.OSBCustomerConstants;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.SubscriptionPersistence;

@@ -14,7 +14,7 @@
 
 package com.liferay.osb.customer.web.internal.portlet.action;
 
-import com.liferay.osb.customer.web.internal.constants.OSBCustomerPortletKeys;
+import com.liferay.osb.customer.api.constants.OSBCustomerPortletKeys;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
 import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.util.ParamUtil;
