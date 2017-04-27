@@ -19,10 +19,10 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.servlet.BaseFilter;
-import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortletKeys;
+import com.liferay.portal.kernel.util.URLCodec;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Alan Zhang
@@ -43,14 +44,14 @@ import org.osgi.service.component.annotations.Component;
 	},
 	service = Filter.class
 )
-public class OSBCustomerFilter extends BaseFilter {
+public class EnforceAuthenticationFilter extends BaseFilter {
 
 	@Override
 	public boolean isFilterEnabled(
 		HttpServletRequest request, HttpServletResponse response) {
 
 		try {
-			User user = PortalUtil.getUser(request);
+			User user = _portal.getUser(request);
 
 			if (user != null) {
 				return false;
@@ -91,11 +92,14 @@ public class OSBCustomerFilter extends BaseFilter {
 		throws Exception {
 
 		response.sendRedirect(
-			PortalUtil.getPathMain() + "/portal/login?redirect=" +
-				HttpUtil.encodeURL(request.getRequestURI()));
+			_portal.getPathMain() + "/portal/login?redirect=" +
+				URLCodec.encodeURL(request.getRequestURI()));
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		OSBCustomerFilter.class);
+		EnforceAuthenticationFilter.class);
+
+	@Reference
+	private Portal _portal;
 
 }

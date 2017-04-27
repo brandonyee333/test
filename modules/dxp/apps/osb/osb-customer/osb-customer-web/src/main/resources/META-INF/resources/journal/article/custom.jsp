@@ -19,27 +19,27 @@
 <%
 DDMStructure ddmStructure = (DDMStructure)request.getAttribute("edit_article.jsp-structure");
 
-String articleId = ParamUtil.getString(request, "articleId");
-long groupId = ParamUtil.getLong(request, "groupId", themeDisplay.getScopeGroupId());
-
-JournalArticle oldestArticle = JournalArticleLocalServiceUtil.getArticle(groupId, articleId, 1.0);
-
-String structureId = StringPool.BLANK;
+String ddmStructureId = StringPool.BLANK;
 
 if (ddmStructure != null) {
-	structureId = ddmStructure.getStructureKey();
+	ddmStructureId = ddmStructure.getStructureKey();
 }
 %>
 
-<c:if test='<%= structureId.equals("ARTICLE-DISPLAY") %>'>
+<c:if test="<%= ddmStructureId.equals(OSBCustomerConstants.DDM_STRUCTURE_ARTICLE_DISPLAY_KEY) %>">
 
 	<%
+	String articleId = ParamUtil.getString(request, "articleId");
+	long groupId = ParamUtil.getLong(request, "groupId", themeDisplay.getScopeGroupId());
+
+	JournalArticle oldestJournalArticle = JournalArticleLocalServiceUtil.fetchArticle(groupId, articleId, 1.0);
+
 	long originalAuthorUserId = user.getUserId();
 	String originalAuthorUserName = user.getFullName();
 
-	if (oldestArticle != null) {
-		originalAuthorUserId = oldestArticle.getUserId();
-		originalAuthorUserName = oldestArticle.getUserName();
+	if (oldestJournalArticle != null) {
+		originalAuthorUserId = oldestJournalArticle.getUserId();
+		originalAuthorUserName = oldestJournalArticle.getUserName();
 	}
 	%>
 

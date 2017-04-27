@@ -12,13 +12,12 @@
  * details.
  */
 
-package com.liferay.osb.customer.web.internal.portlet.action;
+package com.liferay.osb.customer.web.journal.portlet.action;
 
 import com.liferay.journal.constants.JournalPortletKeys;
-import com.liferay.osb.customer.web.internal.constants.OSBCustomerConstants;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderConstants;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
@@ -43,30 +42,28 @@ import org.osgi.service.component.annotations.Reference;
 	},
 	service = MVCRenderCommand.class
 )
-public class OSBJournalSelectUserMVCRenderCommand implements MVCRenderCommand {
+public class OSBCustomerJournalSelectUserMVCRenderCommand
+	implements MVCRenderCommand {
 
 	@Override
 	public String render(
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws PortletException {
 
-		renderRequest.setAttribute(
-			"OSB_ROLE_LIFERAY_EMPLOYEE_ID",
-			OSBCustomerConstants.ROLE_LIFERAY_EMPLOYEE_ID);
-
 		RequestDispatcher requestDispatcher =
-			servletContext.getRequestDispatcher("/select_user.jsp");
+			servletContext.getRequestDispatcher(
+				"/journal/article/select_user.jsp");
 
 		try {
 			HttpServletRequest httpServletRequest =
-				PortalUtil.getHttpServletRequest(renderRequest);
+				_portal.getHttpServletRequest(renderRequest);
 			HttpServletResponse httpServletResponse =
-				PortalUtil.getHttpServletResponse(renderResponse);
+				_portal.getHttpServletResponse(renderResponse);
 
 			requestDispatcher.include(httpServletRequest, httpServletResponse);
 		}
 		catch (Exception e) {
-			throw new PortletException("Unable to include select_user.jsp", e);
+			throw new PortletException(e);
 		}
 
 		return MVCRenderConstants.MVC_PATH_VALUE_SKIP_DISPATCH;
@@ -74,5 +71,8 @@ public class OSBJournalSelectUserMVCRenderCommand implements MVCRenderCommand {
 
 	@Reference(target = "(osgi.web.symbolicname=com.liferay.osb.customer.web)")
 	protected ServletContext servletContext;
+
+	@Reference
+	private Portal _portal;
 
 }

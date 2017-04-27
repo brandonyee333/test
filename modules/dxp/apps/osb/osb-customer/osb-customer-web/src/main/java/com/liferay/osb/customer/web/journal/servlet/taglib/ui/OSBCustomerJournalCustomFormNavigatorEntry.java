@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.osb.customer.web.internal.servlet.taglib.ui;
+package com.liferay.osb.customer.web.journal.servlet.taglib.ui;
 
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -35,7 +35,7 @@ import org.osgi.service.component.annotations.Reference;
 	immediate = true, property = {"form.navigator.entry.order:Integer=89"},
 	service = FormNavigatorEntry.class
 )
-public class OSBJournalCustomFormNavigatorEntry
+public class OSBCustomerJournalCustomFormNavigatorEntry
 	extends BaseJSPFormNavigatorEntry<JournalArticle> {
 
 	@Override
@@ -69,7 +69,7 @@ public class OSBJournalCustomFormNavigatorEntry
 
 	@Override
 	protected String getJspPath() {
-		return "/article/custom.jsp";
+		return "/journal/article/custom.jsp";
 	}
 
 }

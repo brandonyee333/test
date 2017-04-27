@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.osb.customer.web.custom.jsp.bag;
+package com.liferay.osb.customer.web.portal.custom.jsp.bag;
 
 import com.liferay.portal.deploy.hot.CustomJspBag;
 import com.liferay.portal.kernel.url.URLContainer;
@@ -44,7 +44,7 @@ public class OSBCustomerCustomJspBag implements CustomJspBag {
 
 	@Override
 	public String getCustomJspDir() {
-		return "META-INF/resources/";
+		return "META-INF/resources/portal";
 	}
 
 	@Override

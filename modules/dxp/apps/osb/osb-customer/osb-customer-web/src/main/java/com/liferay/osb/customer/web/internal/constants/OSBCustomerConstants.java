@@ -19,9 +19,6 @@ package com.liferay.osb.customer.web.internal.constants;
  */
 public class OSBCustomerConstants {
 
-	public static final String ARTICLE_DISPLAY_STRUCTURE_KEY =
-		"ARTICLE-DISPLAY";
-
 	public static final long ASSET_VOCABULARY_ARTICLE_TYPE_ID = 10892;
 
 	public static final long ASSET_VOCABULARY_COMPONENT_ID = 10891;
@@ -29,6 +26,9 @@ public class OSBCustomerConstants {
 	public static final long ASSET_VOCABULARY_LIFERAY_PRODUCT_ID = 11179;
 
 	public static final long COMPANY_ID = 10157;
+
+	public static final String DDM_STRUCTURE_ARTICLE_DISPLAY_KEY =
+		"ARTICLE-DISPLAY";
 
 	public static final long GROUP_KNOWLEDGE_ID = 10738;
 

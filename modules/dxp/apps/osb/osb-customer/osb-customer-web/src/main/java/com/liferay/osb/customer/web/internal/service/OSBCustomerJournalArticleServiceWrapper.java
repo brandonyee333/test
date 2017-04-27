@@ -35,7 +35,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 
 import java.io.File;
 
@@ -52,14 +52,14 @@ import org.osgi.service.component.annotations.Reference;
  * @author John Zhao
  */
 @Component(immediate = true, service = ServiceWrapper.class)
-public class OSBJournalArticleServiceWrapper
+public class OSBCustomerJournalArticleServiceWrapper
 	extends JournalArticleLocalServiceWrapper {
 
-	public OSBJournalArticleServiceWrapper() {
+	public OSBCustomerJournalArticleServiceWrapper() {
 		super(null);
 	}
 
-	public OSBJournalArticleServiceWrapper(
+	public OSBCustomerJournalArticleServiceWrapper(
 		JournalArticleLocalService journalArticleLocalService) {
 
 		super(journalArticleLocalService);
@@ -97,7 +97,7 @@ public class OSBJournalArticleServiceWrapper
 			smallImageFile, images, articleURL, serviceContext);
 
 		if (ddmStructureKey.equals(
-				OSBCustomerConstants.ARTICLE_DISPLAY_STRUCTURE_KEY)) {
+				OSBCustomerConstants.DDM_STRUCTURE_ARTICLE_DISPLAY_KEY)) {
 
 			updateOriginalAuthor(article, serviceContext);
 
@@ -140,7 +140,7 @@ public class OSBJournalArticleServiceWrapper
 			articleURL, serviceContext);
 
 		if (ddmStructureKey.equals(
-				OSBCustomerConstants.ARTICLE_DISPLAY_STRUCTURE_KEY)) {
+				OSBCustomerConstants.DDM_STRUCTURE_ARTICLE_DISPLAY_KEY)) {
 
 			updateOriginalAuthor(article, serviceContext);
 
@@ -181,32 +181,6 @@ public class OSBJournalArticleServiceWrapper
 		return roleIdsToActionIds;
 	}
 
-	@Reference(unbind = "-")
-	protected void setClassNameLocalService(
-		ClassNameLocalService classNameLocalService) {
-
-		_classNameLocalService = classNameLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setDDMStructureLocalService(
-		DDMStructureLocalService ddmStructureLocalService) {
-
-		_ddmStructureLocalService = ddmStructureLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setResourcePermissionLocalService(
-		ResourcePermissionLocalService resourcePermissionLocalService) {
-
-		_resourcePermissionLocalService = resourcePermissionLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setUserLocalService(UserLocalService userLocalService) {
-		_userLocalService = userLocalService;
-	}
-
 	protected void updateOriginalAuthor(
 			JournalArticle article, ServiceContext serviceContext)
 		throws PortalException {
@@ -235,7 +209,7 @@ public class OSBJournalArticleServiceWrapper
 		throws PortalException {
 
 		DDMStructure ddmStructure = _ddmStructureLocalService.getStructure(
-			PortalUtil.getSiteGroupId(groupId),
+			_portal.getSiteGroupId(groupId),
 			_classNameLocalService.getClassNameId(JournalArticle.class),
 			ddmStructureKey, true);
 
@@ -259,9 +233,19 @@ public class OSBJournalArticleServiceWrapper
 			roleIdsToActionIds);
 	}
 
+	@Reference
 	private ClassNameLocalService _classNameLocalService;
+
+	@Reference
 	private DDMStructureLocalService _ddmStructureLocalService;
+
+	@Reference
+	private Portal _portal;
+
+	@Reference
 	private ResourcePermissionLocalService _resourcePermissionLocalService;
+
+	@Reference
 	private UserLocalService _userLocalService;
 
 }
