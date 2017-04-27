@@ -240,6 +240,9 @@ public class OSBCustomerJournalArticleServiceWrapper
 	private DDMStructureLocalService _ddmStructureLocalService;
 
 	@Reference
+	private JournalArticleLocalService _journalArticleLocalService;
+
+	@Reference
 	private Portal _portal;
 
 	@Reference
