@@ -19,6 +19,8 @@ package com.liferay.osb.customer.constants;
  */
 public class OSBCustomerPortletKeys {
 
+	public static final String DASHBOARD = "6_WAR_osbknowledgebaseportlet";
+
 	public static final String DISPLAY = "3_WAR_osbknowledgebaseportlet";
 
 	public static final String KNOWLEDGE_BASE_WRAPPER =
