@@ -19,9 +19,9 @@ import com.liferay.knowledge.base.model.KBArticle;
 import com.liferay.knowledge.base.service.KBArticleLocalService;
 import com.liferay.mail.kernel.model.MailMessage;
 import com.liferay.mail.kernel.service.MailService;
-import com.liferay.osb.customer.api.constants.OSBCustomerConstants;
-import com.liferay.osb.customer.api.importer.KBArticleInfo;
-import com.liferay.osb.customer.api.util.PortletPropsValues;
+import com.liferay.osb.customer.configuration.OSBCustomerConfigurationValues;
+import com.liferay.osb.customer.constants.OSBCustomerConstants;
+import com.liferay.osb.customer.importer.KBArticleInfo;
 import com.liferay.osb.customer.service.base.OSBCustomerKnowledgeBaseLocalServiceBaseImpl;
 import com.liferay.petra.content.ContentUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
@@ -209,12 +209,12 @@ public class OSBCustomerKnowledgeBaseLocalServiceImpl
 		throws Exception {
 
 		InternetAddress from = new InternetAddress(
-			PortletPropsValues.AUTO_DEPLOYER_EMAIL_FROM_ADDRESS,
+			OSBCustomerConfigurationValues.AUTO_DEPLOYER_EMAIL_FROM_ADDRESS,
 			"Liferay Knowledge Base");
 
 		InternetAddress to = new InternetAddress(
-			PortletPropsValues.AUTO_DEPLOYER_EMAIL_TO_ADDRESS,
-			PortletPropsValues.AUTO_DEPLOYER_EMAIL_TO_NAME);
+			OSBCustomerConfigurationValues.AUTO_DEPLOYER_EMAIL_TO_ADDRESS,
+			OSBCustomerConfigurationValues.AUTO_DEPLOYER_EMAIL_TO_NAME);
 
 		String subject = ContentUtil.get(
 			OSBCustomerKnowledgeBaseLocalServiceImpl.class.getClassLoader(),
@@ -237,7 +237,7 @@ public class OSBCustomerKnowledgeBaseLocalServiceImpl
 			},
 			new String[] {
 				newKnowledgeBaseArticles, oldKnowledgeBaseArticles,
-				PortletPropsValues.AUTO_DEPLOYER_EMAIL_TO_NAME
+				OSBCustomerConfigurationValues.AUTO_DEPLOYER_EMAIL_TO_NAME
 			});
 
 		MailMessage mailMessage = new MailMessage(
