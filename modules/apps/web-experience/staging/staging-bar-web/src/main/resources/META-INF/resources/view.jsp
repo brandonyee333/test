@@ -185,7 +185,7 @@ if (layout != null) {
 						<%
 						}
 						catch (PrincipalException pe) {
-							_log.error("User " + user.getScreenName() + " must be authenticated");
+							_log.error("Unauthenticated user " + user.getScreenName());
 						%>
 
 							<a class="control-menu-icon" value="go-to-remote-live">
