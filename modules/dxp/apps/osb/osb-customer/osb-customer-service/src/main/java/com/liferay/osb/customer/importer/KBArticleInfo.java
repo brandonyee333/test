@@ -21,6 +21,7 @@ import com.liferay.asset.kernel.service.AssetTagLocalServiceUtil;
 import com.liferay.knowledge.base.constants.KBArticleConstants;
 import com.liferay.knowledge.base.model.KBArticle;
 import com.liferay.osb.customer.asset.model.AssetCategoryDisplay;
+import com.liferay.petra.xml.DocUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.CSVUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -28,7 +29,6 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.xml.Element;
-import com.liferay.util.xml.DocUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
