@@ -185,7 +185,7 @@ public class SiteAdministrationPanelCategoryDisplayContext {
 				_log.error(pe.getMessage());
 			}
 			catch (PortalException pe) {
-				_log.error(pe);
+				_log.error(pe, pe);
 			}
 		}
 		else if (group.isStagingGroup()) {
