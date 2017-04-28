@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.osb.customer.api.util.comparator;
+package com.liferay.osb.customer.util.comparator;
 
 import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.portal.kernel.util.OrderByComparator;

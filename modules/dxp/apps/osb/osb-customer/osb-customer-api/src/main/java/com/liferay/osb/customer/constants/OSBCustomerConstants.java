@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.osb.customer.api.constants;
+package com.liferay.osb.customer.constants;
 
 /**
  * @author Alan Zhang

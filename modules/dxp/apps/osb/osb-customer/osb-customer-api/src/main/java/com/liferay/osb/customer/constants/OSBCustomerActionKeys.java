@@ -12,18 +12,22 @@
  * details.
  */
 
-package com.liferay.osb.customer.api.constants;
+package com.liferay.osb.customer.constants;
+
+import com.liferay.portal.kernel.security.permission.ActionKeys;
 
 /**
- * @author Amos Fong
+ * @author Alan Zhang
  */
-public class OSBCustomerPortletKeys {
+public class OSBCustomerActionKeys extends ActionKeys {
 
-	public static final String DISPLAY = "3_WAR_osbknowledgebaseportlet";
+	public static final String SUBMIT_ARTICLE = "SUBMIT_ARTICLE";
 
-	public static final String KNOWLEDGE_BASE_WRAPPER =
-		"5_WAR_osbknowledgebaseportlet";
+	public static final String VIEW_DASHBOARD = "VIEW_DASHBOARD";
 
-	public static final String SEARCH = "1_WAR_osbknowledgebaseportlet";
+	public static final String VIEW_JOURNAL_ARTICLE = "VIEW_JOURNAL_ARTICLE";
+
+	public static final String VIEW_JOURNAL_ARTICLE_ADVANCED =
+		"VIEW_JOURNAL_ARTICLE_ADVANCED";
 
 }
