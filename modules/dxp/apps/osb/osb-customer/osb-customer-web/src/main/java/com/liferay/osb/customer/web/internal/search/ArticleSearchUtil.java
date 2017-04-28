@@ -15,7 +15,7 @@
 package com.liferay.osb.customer.web.internal.search;
 
 import com.liferay.journal.model.JournalArticle;
-import com.liferay.osb.customer.api.constants.OSBCustomerPortletKeys;
+import com.liferay.osb.customer.constants.OSBCustomerPortletKeys;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;

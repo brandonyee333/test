@@ -14,7 +14,7 @@
 
 package com.liferay.osb.customer.web.internal.portlet;
 
-import com.liferay.osb.customer.api.constants.OSBCustomerPortletKeys;
+import com.liferay.osb.customer.constants.OSBCustomerPortletKeys;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 
 import javax.portlet.Portlet;
