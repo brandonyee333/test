@@ -28,4 +28,7 @@ public class OSBCustomerPortletKeys {
 
 	public static final String SEARCH = "1_WAR_osbknowledgebaseportlet";
 
+	public static final String SIDE_NAVIGATION =
+		"2_WAR_osbknowledgebaseportlet";
+
 }
