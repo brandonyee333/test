@@ -41,12 +41,12 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	immediate = true,
 	property = {
-		"com.liferay.portlet.css-class-wrapper=osb-knowledge-base-dashboard-portlet",
+		"com.liferay.portlet.css-class-wrapper=osb-documentation-dashboard-portlet",
 		"com.liferay.portlet.display-category=category.osb",
 		"com.liferay.portlet.footer-portlet-javascript=/dashboard/js/main.js",
 		"com.liferay.portlet.header-portlet-css=/dashboard/css/main.css",
 		"com.liferay.portlet.icon=/icon.png",
-		"javax.portlet.display-name=OSB Knowledge Base Dashboard",
+		"javax.portlet.display-name=OSB Documentation Dashboard",
 		"javax.portlet.expiration-cache=0",
 		"javax.portlet.init-param.template-path=/dashboard/",
 		"javax.portlet.init-param.view-template=/dashboard/view.jsp",

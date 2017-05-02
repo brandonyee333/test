@@ -21,9 +21,9 @@ String articleId = ParamUtil.getString(renderRequest, "articleId");
 
 SearchContext searchContext = SearchContextFactory.getInstance(request);
 
-String[] searchStructureIds = KBSearchUtil.getSearchStructureIds(themeDisplay.getScopeGroupId());
+String[] searchStructureIds = ArticleSearchUtil.getSearchStructureIds(themeDisplay.getScopeGroupId());
 
-Hits hits = KBSearchUtil.search(searchContext, new String[] {JournalArticle.class.getName()}, new long[0], new String[0], new long[0], searchStructureIds, themeDisplay.getLanguageId(), 0, 8);
+Hits hits = ArticleSearchUtil.search(searchContext, new String[] {JournalArticle.class.getName()}, new long[0], new String[0], new long[0], searchStructureIds, themeDisplay.getLanguageId(), 0, 8);
 
 int count = 0;
 

@@ -352,7 +352,7 @@ boolean viewjournalArticle = OSBArticlePermission.contains(permissionChecker, OS
 			'<portlet:renderURL windowState="<%= LiferayWindowState.EXCLUSIVE.toString() %>"><portlet:param name="mvcPath" value="/side_navigation/search.jsp" /></portlet:renderURL>',
 			{
 				data: {
-					<portlet:namespace />keywords: '<%= HtmlUtil.escapeJS(KBSearchUtil.cleanKeywords(sb.toString())) %>',
+					<portlet:namespace />keywords: '<%= HtmlUtil.escapeJS(ArticleSearchUtil.cleanKeywords(sb.toString())) %>',
 					<portlet:namespace />redirect: '<%= HtmlUtil.escapeJS(redirect) %>'
 				},
 				on: {

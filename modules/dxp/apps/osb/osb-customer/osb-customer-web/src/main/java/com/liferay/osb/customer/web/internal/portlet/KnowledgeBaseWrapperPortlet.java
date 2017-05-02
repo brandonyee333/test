@@ -51,11 +51,11 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	immediate = true,
 	property = {
-		"com.liferay.portlet.css-class-wrapper=osb-knowledge-base-knowledge-base-wrapper-portlet",
+		"com.liferay.portlet.css-class-wrapper=osb-documentation-knowledge-base-wrapper-portlet",
 		"com.liferay.portlet.display-category=category.osb",
 		"com.liferay.portlet.header-portlet-css=/knowledge_base_wrapper/css/main.css",
 		"com.liferay.portlet.icon=/icon.png",
-		"javax.portlet.display-name=OSB Knowledge Base Knowledge Base Wrapper",
+		"javax.portlet.display-name=OSB Documentation Knowledge Base Wrapper",
 		"javax.portlet.expiration-cache=0",
 		"javax.portlet.init-param.template-path=/knowledge_base_wrapper/",
 		"javax.portlet.init-param.view-template=/knowledge_base_wrapper/view.jsp",

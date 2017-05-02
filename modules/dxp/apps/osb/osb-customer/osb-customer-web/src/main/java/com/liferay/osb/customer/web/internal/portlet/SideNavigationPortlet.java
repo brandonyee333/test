@@ -27,19 +27,20 @@ import org.osgi.service.component.annotations.Component;
 @Component(
 	immediate = true,
 	property = {
-		"com.liferay.portlet.css-class-wrapper=osb-knowledge-base-side-navigation-portlet",
+		"com.liferay.portlet.css-class-wrapper=osb-documentation-side-navigation-portlet",
 		"com.liferay.portlet.display-category=category.osb",
-		"com.liferay.portlet.instanceable=true",
-		"javax.portlet.display-name=OSB Knowledge Base Side Navigation",
+		"com.liferay.portlet.header-portlet-css=/side_navigation/css/main.css",
+		"javax.portlet.display-name=OSB Documentation Side Navigation",
 		"javax.portlet.expiration-cache=0",
 		"javax.portlet.init-param.template-path=/side_navigation/",
 		"javax.portlet.init-param.view-template=/side_navigation/view.jsp",
 		"javax.portlet.name=" + OSBCustomerPortletKeys.SIDE_NAVIGATION,
 		"javax.portlet.resource-bundle=content.Language",
 		"javax.portlet.security-role-ref=administrator,guest,power-user,user",
-		"javax.portlet.supported-public-render-parameter=articleId"
+		"javax.portlet.supported-public-render-parameter=articleId",
+		"javax.portlet.supports.mime-type=text/html"
 	},
 	service = Portlet.class
 )
-public class OSBKnowledgeBaseSideNavigationPortlet extends MVCPortlet {
+public class SideNavigationPortlet extends MVCPortlet {
 }

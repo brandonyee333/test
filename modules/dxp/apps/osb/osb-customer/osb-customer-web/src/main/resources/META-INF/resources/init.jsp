@@ -51,7 +51,6 @@ page import="com.liferay.osb.customer.web.internal.constants.OSBCustomerWebKeys"
 page import="com.liferay.osb.customer.web.internal.permission.OSBArticlePermission" %><%@
 page import="com.liferay.osb.customer.web.internal.search.ArticleSearchUtil" %><%@
 page import="com.liferay.osb.customer.web.internal.util.KBArticleUtil" %><%@
-page import="com.liferay.osb.customer.web.internal.util.KBSearchUtil" %><%@
 page import="com.liferay.portal.kernel.dao.orm.QueryUtil" %><%@
 page import="com.liferay.portal.kernel.dao.search.SearchContainer" %><%@
 page import="com.liferay.portal.kernel.log.Log" %><%@

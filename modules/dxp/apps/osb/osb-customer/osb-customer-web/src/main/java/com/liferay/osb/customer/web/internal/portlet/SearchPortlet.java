@@ -27,11 +27,11 @@ import org.osgi.service.component.annotations.Component;
 @Component(
 	immediate = true,
 	property = {
-		"com.liferay.portlet.css-class-wrapper=osb-knowledge-base-search-portlet",
+		"com.liferay.portlet.css-class-wrapper=osb-documentation-search-portlet",
 		"com.liferay.portlet.display-category=category.osb",
 		"com.liferay.portlet.header-portlet-css=/search/css/main.css",
 		"com.liferay.portlet.icon=/icon.png",
-		"javax.portlet.display-name=OSB Knowledge Base Search",
+		"javax.portlet.display-name=OSB Documentation Search",
 		"javax.portlet.expiration-cache=0",
 		"javax.portlet.init-param.template-path=/search/",
 		"javax.portlet.init-param.view-template=/search/view.jsp",

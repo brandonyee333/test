@@ -1,7 +1,4 @@
-@import "compass";
-@import "mixins";
-
-.osb-knowledge-base-side-navigation-portlet {
+.osb-documentation-side-navigation-portlet {
 	.portlet-borderless-container {
 		min-height: 0;
 	}
@@ -48,19 +45,6 @@
 
 		.version-selector {
 			margin: 0;
-		}
-
-		@include respond-to(tablet, desktop) {
-			.side-nav-toggle {
-				span {
-					padding-left: 10px;
-					position: absolute;
-					top: 10px;
-
-					@include transform(rotate(90deg));
-					@include transform-origin(0);
-				}
-			}
 		}
 	}
 }
