@@ -1,3 +1,4 @@
+<%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -11,26 +12,11 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
+--%>
 
-package com.liferay.osb.customer.constants;
+<%@ include file="/init.jsp" %>
 
-/**
- * @author Amos Fong
- */
-public class OSBCustomerPortletKeys {
-
-	public static final String ADMIN = "4_WAR_osbknowledgebaseportlet";
-
-	public static final String DASHBOARD = "6_WAR_osbknowledgebaseportlet";
-
-	public static final String DISPLAY = "3_WAR_osbknowledgebaseportlet";
-
-	public static final String KNOWLEDGE_BASE_WRAPPER =
-		"5_WAR_osbknowledgebaseportlet";
-
-	public static final String SEARCH = "1_WAR_osbknowledgebaseportlet";
-
-	public static final String SIDE_NAVIGATION =
-		"2_WAR_osbknowledgebaseportlet";
-
-}
+<%@ page import="com.liferay.knowledge.base.constants.KBFolderConstants" %><%@
+page import="com.liferay.knowledge.base.exception.KBArticleImportException" %><%@
+page import="com.liferay.knowledge.base.service.KBFolderServiceUtil" %><%@
+page import="com.liferay.osb.customer.web.internal.util.AdminUtil" %>
