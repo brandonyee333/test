@@ -99,10 +99,19 @@ public class ResourceActionLocalServiceUtil {
 	*
 	* @param resourceAction the resource action
 	* @return the resource action that was removed
+	* @throws PortalException
 	*/
 	public static com.liferay.portal.kernel.model.ResourceAction deleteResourceAction(
-		com.liferay.portal.kernel.model.ResourceAction resourceAction) {
+		com.liferay.portal.kernel.model.ResourceAction resourceAction)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteResourceAction(resourceAction);
+	}
+
+	public static com.liferay.portal.kernel.model.ResourceAction deleteResourceAction(
+		com.liferay.portal.kernel.model.ResourceAction resourceAction,
+		boolean force)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().deleteResourceAction(resourceAction, force);
 	}
 
 	/**

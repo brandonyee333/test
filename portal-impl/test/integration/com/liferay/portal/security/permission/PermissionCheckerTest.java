@@ -898,7 +898,9 @@ public class PermissionCheckerTest {
 				"/dependencies/resource-actions.xml");
 	}
 
-	protected static void removeResourceActions(String portletName) {
+	protected static void removeResourceActions(String portletName)
+		throws PortalException {
+
 		List<ResourceAction> portletResourceActions =
 			ResourceActionLocalServiceUtil.getResourceActions(portletName);
 
