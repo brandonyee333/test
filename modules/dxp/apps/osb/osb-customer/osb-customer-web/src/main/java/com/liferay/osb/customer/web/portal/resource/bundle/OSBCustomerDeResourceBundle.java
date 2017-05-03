@@ -41,6 +41,6 @@ public class OSBCustomerDeResourceBundle extends ResourceBundle {
 	}
 
 	private final ResourceBundle _resourceBundle = ResourceBundleUtil.getBundle(
-		"content.Language_de", getClass().getClassLoader());
+		"content.Language_de", getClass());
 
 }

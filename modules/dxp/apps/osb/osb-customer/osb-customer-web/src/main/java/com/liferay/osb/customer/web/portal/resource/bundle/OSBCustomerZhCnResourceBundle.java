@@ -41,6 +41,6 @@ public class OSBCustomerZhCnResourceBundle extends ResourceBundle {
 	}
 
 	private final ResourceBundle _resourceBundle = ResourceBundleUtil.getBundle(
-		"content.Language_zh_CN", getClass().getClassLoader());
+		"content.Language_zh_CN", getClass());
 
 }
