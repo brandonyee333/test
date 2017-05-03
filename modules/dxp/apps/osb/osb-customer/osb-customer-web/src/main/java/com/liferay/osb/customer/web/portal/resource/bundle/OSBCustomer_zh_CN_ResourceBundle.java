@@ -28,7 +28,7 @@ import org.osgi.service.component.annotations.Component;
 	immediate = true, property = {"language.id=zh_CN"},
 	service = ResourceBundle.class
 )
-public class OSBCustomerZhCnResourceBundle extends ResourceBundle {
+public class OSBCustomer_zh_CN_ResourceBundle extends ResourceBundle {
 
 	@Override
 	public Enumeration<String> getKeys() {

@@ -25,10 +25,10 @@ import org.osgi.service.component.annotations.Component;
  * @author Jenny Chen
  */
 @Component(
-	immediate = true, property = {"language.id=ja_JP"},
+	immediate = true, property = {"language.id=es_ES"},
 	service = ResourceBundle.class
 )
-public class OSBCustomerJaResourceBundle extends ResourceBundle {
+public class OSBCustomer_es_ES_ResourceBundle extends ResourceBundle {
 
 	@Override
 	public Enumeration<String> getKeys() {
@@ -41,6 +41,6 @@ public class OSBCustomerJaResourceBundle extends ResourceBundle {
 	}
 
 	private final ResourceBundle _resourceBundle = ResourceBundleUtil.getBundle(
-		"content.Language_ja", getClass());
+		"content.Language_es", getClass());
 
 }
