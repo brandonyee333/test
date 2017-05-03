@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.osb.customer.web.journal.servlet.taglib.ui;
+package com.liferay.osb.customer.web.internal.journal.servlet.taglib.ui;
 
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.portal.kernel.language.LanguageUtil;

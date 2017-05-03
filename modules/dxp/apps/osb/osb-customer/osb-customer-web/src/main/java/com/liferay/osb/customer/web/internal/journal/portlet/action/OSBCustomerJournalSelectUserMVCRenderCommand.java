@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.osb.customer.web.journal.portlet.action;
+package com.liferay.osb.customer.web.internal.journal.portlet.action;
 
 import com.liferay.journal.constants.JournalPortletKeys;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
