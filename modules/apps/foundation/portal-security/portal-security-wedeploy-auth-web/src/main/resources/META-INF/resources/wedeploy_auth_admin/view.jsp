@@ -16,4 +16,38 @@
 
 <%@ include file="/init.jsp" %>
 
-<p>WeDeploy Auth Admin</p>
+<%
+String redirect = ParamUtil.getString(request, "redirect");
+String backURL = ParamUtil.getString(request, "backURL");
+%>
+
+<liferay-ui:header
+	backURL="<%= backURL %>"
+	localizeTitle=""
+	title=""
+/>
+
+<aui:nav-bar markupView="lexicon">
+	<aui:nav cssClass="navbar-nav">
+		<aui:nav-item label="Add" selected="<%= true %>" />
+	</aui:nav>
+</aui:nav-bar>
+
+<portlet:actionURL name="/admin/add_application" var="addApplicationURL">
+	<portlet:param name="mvcActionCommand" value="/admin/add_application" />
+</portlet:actionURL>
+
+<aui:form action="<%= addApplicationURL %>" method="post" name="fm">
+	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
+	<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
+
+	<aui:fieldset>
+		<aui:input label="application-name" name="name" />
+		<aui:input name="description" />
+
+		<aui:button-row>
+			<aui:button type="submit" />
+			<aui:button href="<%= redirect %>" type="cancel" />
+		</aui:button-row>
+	</aui:fieldset>
+</aui:form>
