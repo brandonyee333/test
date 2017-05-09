@@ -224,11 +224,8 @@ public class KBArticleUtil {
 			long groupId, long kbFolderId, String urlTitle)
 		throws PortalException {
 
-		KBArticle kbArticle =
-
-			_kbArticleLocalService.fetchKBArticleByUrlTitle(
-
-				groupId, kbFolderId, urlTitle);
+		KBArticle kbArticle = _kbArticleLocalService.fetchKBArticleByUrlTitle(
+			groupId, kbFolderId, urlTitle);
 
 		if (kbArticle != null) {
 			return kbArticle;
