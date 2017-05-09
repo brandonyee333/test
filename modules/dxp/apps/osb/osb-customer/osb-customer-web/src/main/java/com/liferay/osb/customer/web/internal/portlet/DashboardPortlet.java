@@ -14,7 +14,9 @@
 
 package com.liferay.osb.customer.web.internal.portlet;
 
+import com.liferay.osb.customer.constants.OSBCustomerActionKeys;
 import com.liferay.osb.customer.constants.OSBCustomerPortletKeys;
+import com.liferay.osb.customer.web.internal.permission.OSBCustomerArticlePermission;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -137,14 +139,12 @@ public class DashboardPortlet extends MVCPortlet {
 				(ThemeDisplay)portletRequest.getAttribute(
 					WebKeys.THEME_DISPLAY);
 
-			return true;
-
-			/*if (OSBArticlePermission.contains(
+			if (OSBCustomerArticlePermission.contains(
 					themeDisplay.getPermissionChecker(),
-					OSBActionKeys.VIEW_DASHBOARD)) {
+					OSBCustomerActionKeys.VIEW_DASHBOARD)) {
 
 				return true;
-			}*/
+			}
 		}
 		catch (Exception e) {
 		}

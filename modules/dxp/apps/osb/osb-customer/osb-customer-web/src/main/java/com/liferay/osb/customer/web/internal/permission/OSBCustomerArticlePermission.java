@@ -27,7 +27,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 /**
  * @author Alan Zhang
  */
-public class OSBArticlePermission {
+public class OSBCustomerArticlePermission {
 
 	public static boolean contains(
 			PermissionChecker permissionChecker, String actionId)

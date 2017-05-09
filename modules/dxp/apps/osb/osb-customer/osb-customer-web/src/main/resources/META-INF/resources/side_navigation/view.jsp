@@ -22,7 +22,7 @@ Layout rootLayout = null;
 boolean relatedArticlesToggleValue = GetterUtil.getBoolean(SessionClicks.get(request, renderResponse.getNamespace() + "related_articles_toggle_value", "true"));
 boolean sideNavToggleValue = GetterUtil.getBoolean(SessionClicks.get(request, renderResponse.getNamespace() + "side_nav_toggle_value", "true"));
 
-boolean viewjournalArticle = OSBArticlePermission.contains(permissionChecker, OSBCustomerActionKeys.VIEW_JOURNAL_ARTICLE);
+boolean viewjournalArticle = OSBCustomerArticlePermission.contains(permissionChecker, OSBCustomerActionKeys.VIEW_JOURNAL_ARTICLE);
 %>
 
 <div id="<portlet:namespace />navigationContainer">

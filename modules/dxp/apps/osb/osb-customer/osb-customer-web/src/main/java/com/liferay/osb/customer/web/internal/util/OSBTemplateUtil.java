@@ -17,6 +17,7 @@ package com.liferay.osb.customer.web.internal.util;
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.service.AssetCategoryService;
 import com.liferay.osb.customer.asset.model.AssetCategoryDisplay;
+import com.liferay.osb.customer.web.internal.permission.OSBCustomerArticlePermission;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserConstants;
@@ -56,8 +57,8 @@ public class OSBTemplateUtil {
 			PermissionChecker permissionChecker, String actionId)
 		throws PortalException {
 
-		//return OSBArticlePermission.contains(permissionChecker, actionId);
-		return true;
+		return OSBCustomerArticlePermission.contains(
+			permissionChecker, actionId);
 	}
 
 	public String renderAssetCategories(
