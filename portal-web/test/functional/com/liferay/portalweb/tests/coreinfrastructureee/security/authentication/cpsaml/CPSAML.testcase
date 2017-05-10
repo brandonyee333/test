@@ -155,6 +155,7 @@
 	</command>
 
 	<command name="ViewSingleLogoutWithMultipleSPs" priority="4">
+		<property name="portal.acceptance" value="3saml" />
 		<property name="app.server.bundles.size" value="2" />
 
 		<execute macro="SAML#configureSecondLiferaySAMLasSP" />
