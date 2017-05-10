@@ -37,7 +37,7 @@ import org.osgi.service.component.annotations.Component;
 		"javax.portlet.init-param.clear-request-parameters=true",
 		"javax.portlet.init-param.copy-request-parameters=true",
 		"javax.portlet.init-param.template-path=/",
-		"javax.portlet.init-param.view-template=/wedeploy_auth_admin/view.jsp",
+		"javax.portlet.init-param.view-template=/wedeploy_auth_admin/view",
 		"javax.portlet.name=" + WeDeployAuthPortletKeys.WEDEPLOY_AUTH_ADMIN,
 		"javax.portlet.resource-bundle=content.Language",
 		"javax.portlet.security-role-ref=administrator",
