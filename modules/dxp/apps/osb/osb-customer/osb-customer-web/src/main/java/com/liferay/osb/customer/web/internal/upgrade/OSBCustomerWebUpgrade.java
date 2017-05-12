@@ -18,8 +18,11 @@ import com.liferay.dynamic.data.mapping.service.persistence.DDMStructurePersiste
 import com.liferay.dynamic.data.mapping.service.persistence.DDMTemplatePersistence;
 import com.liferay.journal.service.persistence.JournalArticlePersistence;
 import com.liferay.osb.customer.web.internal.upgrade.v1_0_0.UpgradeDDMTemplates;
+import com.liferay.osb.customer.web.internal.upgrade.v1_0_0.UpgradeResourceAction;
 import com.liferay.osb.customer.web.internal.upgrade.v1_0_0.UpgradeSubscription;
 import com.liferay.portal.kernel.service.PortletPreferencesLocalService;
+import com.liferay.portal.kernel.service.persistence.ResourceActionPersistence;
+import com.liferay.portal.kernel.service.persistence.ResourcePermissionPersistence;
 import com.liferay.portal.kernel.service.persistence.SubscriptionPersistence;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
@@ -40,6 +43,8 @@ public class OSBCustomerWebUpgrade implements UpgradeStepRegistrator {
 			new UpgradeDDMTemplates(
 				_ddmStructurePersistence, _ddmTemplatePersistence,
 				_journalArticlePersistence, _portletPreferencesLocalService),
+			new UpgradeResourceAction(
+				_resourceActionPersistence, _resourcePermissionPersistence),
 			new UpgradeSubscription(_portal, _subscriptionPersistence));
 	}
 
@@ -57,6 +62,12 @@ public class OSBCustomerWebUpgrade implements UpgradeStepRegistrator {
 
 	@Reference
 	private PortletPreferencesLocalService _portletPreferencesLocalService;
+
+	@Reference
+	private ResourceActionPersistence _resourceActionPersistence;
+
+	@Reference
+	private ResourcePermissionPersistence _resourcePermissionPersistence;
 
 	@Reference
 	private SubscriptionPersistence _subscriptionPersistence;
