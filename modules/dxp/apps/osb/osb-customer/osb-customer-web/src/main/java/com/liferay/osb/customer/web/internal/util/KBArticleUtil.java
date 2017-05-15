@@ -31,13 +31,19 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.LayoutConstants;
+import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
+import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -120,6 +126,61 @@ public class KBArticleUtil {
 	}
 
 	public static String getKBArticleURL(
+			HttpServletRequest request, KBArticle kbArticle)
+		throws Exception {
+
+		List<Layout> layouts = _layoutLocalService.getLayouts(
+			kbArticle.getGroupId(), false, LayoutConstants.TYPE_PORTLET);
+
+		for (Layout layout : layouts) {
+			PortletPreferences portletPreferences =
+				PortletPreferencesFactoryUtil.getPortletSetup(
+					layout, KBPortletKeys.KNOWLEDGE_BASE_DISPLAY,
+					StringPool.BLANK);
+
+			long kbFolderClassNameId = _portal.getClassNameId(
+				KBFolderConstants.getClassName());
+
+			long resourceClassNameId = GetterUtil.getLong(
+				portletPreferences.getValue("resourceClassNameId", null),
+				kbFolderClassNameId);
+
+			long resourcePrimKey = GetterUtil.getLong(
+				portletPreferences.getValue("resourcePrimKey", null),
+				KBFolderConstants.DEFAULT_PARENT_FOLDER_ID);
+
+			if (resourceClassNameId != kbFolderClassNameId) {
+				continue;
+			}
+
+			if (!isParentFolder(resourcePrimKey, kbArticle.getKbFolderId())) {
+				continue;
+			}
+
+			PortletURL portletURL = PortletURLFactoryUtil.create(
+				request, KBPortletKeys.KNOWLEDGE_BASE_DISPLAY, layout.getPlid(),
+				PortletRequest.RENDER_PHASE);
+
+			if (kbArticle.getKbFolderId() !=
+					KBFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
+
+				KBFolder kbFolder = _kbFolderLocalService.getKBFolder(
+					kbArticle.getKbFolderId());
+
+				portletURL.setParameter(
+					"kbFolderUrlTitle", String.valueOf(kbFolder.getUrlTitle()));
+			}
+
+			portletURL.setParameter("urlTitle", kbArticle.getUrlTitle());
+			portletURL.setWindowState(LiferayWindowState.NORMAL);
+
+			return portletURL.toString();
+		}
+
+		return StringPool.BLANK;
+	}
+
+	public static String getKBArticleURL(
 			HttpServletRequest request, long plid, KBArticle kbArticle,
 			String redirect)
 		throws PortalException {
@@ -194,6 +255,27 @@ public class KBArticleUtil {
 		}
 	}
 
+	protected static boolean isParentFolder(
+			long resourcePrimKey, long kbFolderId)
+		throws PortalException {
+
+		if (resourcePrimKey == kbFolderId) {
+			return true;
+		}
+
+		while (kbFolderId != KBFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
+			if (resourcePrimKey == kbFolderId) {
+				return true;
+			}
+
+			KBFolder kbFolder = _kbFolderLocalService.getKBFolder(kbFolderId);
+
+			kbFolderId = kbFolder.getParentKBFolderId();
+		}
+
+		return false;
+	}
+
 	@Reference(unbind = "-")
 	protected void setAssetVocabularyLocalService(
 		AssetVocabularyLocalService assetVocabularyLocalService) {
@@ -218,6 +300,18 @@ public class KBArticleUtil {
 	@Reference(unbind = "-")
 	protected void setKBFolderService(KBFolderService kbFolderService) {
 		_kbFolderService = kbFolderService;
+	}
+
+	@Reference(unbind = "-")
+	protected void setLayoutLocalService(
+		LayoutLocalService layoutLocalService) {
+
+		_layoutLocalService = layoutLocalService;
+	}
+
+	@Reference(unbind = "-")
+	protected void setPortal(Portal portal) {
+		_portal = portal;
 	}
 
 	private static KBArticle _findKBArticle(
@@ -247,5 +341,7 @@ public class KBArticleUtil {
 	private static KBArticleLocalService _kbArticleLocalService;
 	private static KBFolderLocalService _kbFolderLocalService;
 	private static KBFolderService _kbFolderService;
+	private static LayoutLocalService _layoutLocalService;
+	private static Portal _portal;
 
 }

@@ -52,7 +52,7 @@ else if (entryClassName.equals(KBArticle.class.getName())) {
 	title = kbArticle.getTitle();
 	summary = assetRenderer.getSummary(user.getLocale());
 
-	rowURL = assetRenderer.getURLViewInContext(liferayPortletRequest, liferayPortletResponse, "");
+	rowURL = KBArticleUtil.getKBArticleURL(request, kbArticle);
 
 	rowURL = HttpUtil.addParameter(rowURL, "redirect", currentURL);
 }
