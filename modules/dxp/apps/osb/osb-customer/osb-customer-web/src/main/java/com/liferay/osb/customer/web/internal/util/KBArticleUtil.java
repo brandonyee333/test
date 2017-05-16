@@ -86,17 +86,8 @@ public class KBArticleUtil {
 	public static KBArticle getKBArticle(HttpServletRequest request)
 		throws PortalException {
 
-		HttpServletRequest originalRequest =
-			PortalUtil.getOriginalServletRequest(request);
-
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
 			WebKeys.THEME_DISPLAY);
-
-		long kbArticleId = ParamUtil.getLong(request, "kbArticleId");
-
-		if (kbArticleId > 0) {
-			return _kbArticleLocalService.getKBArticle(kbArticleId);
-		}
 
 		PortletPreferences portletPreferences =
 			PortletPreferencesFactoryUtil.getStrictPortletSetup(
@@ -112,7 +103,7 @@ public class KBArticleUtil {
 		}
 
 		String urlTitle = ParamUtil.getString(
-			originalRequest, "_2_WAR_knowledgebaseportlet_urlTitle");
+			request, "_" + KBPortletKeys.KNOWLEDGE_BASE_DISPLAY + "_urlTitle");
 
 		KBArticle kbArticle = _findKBArticle(
 			themeDisplay.getScopeGroupId(), resourcePrimKey, urlTitle);

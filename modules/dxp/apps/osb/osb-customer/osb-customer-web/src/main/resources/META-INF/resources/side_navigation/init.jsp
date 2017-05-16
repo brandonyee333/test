@@ -26,13 +26,13 @@ ancestorLayouts.addAll(layout.getAncestors());
 
 List<Long> kbArticleAncestorResourcePrimKeys = new ArrayList<Long>();
 
-KBArticle kbArticle = KBArticleUtil.getKBArticle(request);
+HttpServletRequest originalRequest = liferayPortletRequest.getOriginalHttpServletRequest();
+
+KBArticle kbArticle = KBArticleUtil.getKBArticle(originalRequest);
 
 if (kbArticle != null) {
 	kbArticleAncestorResourcePrimKeys = kbArticle.getAncestorResourcePrimaryKeys();
 }
-
-HttpServletRequest originalRequest = PortalUtil.getOriginalServletRequest(request);
 
 String redirect = ParamUtil.getString(originalRequest, "_2_WAR_knowledgebaseportlet_redirect");
 
