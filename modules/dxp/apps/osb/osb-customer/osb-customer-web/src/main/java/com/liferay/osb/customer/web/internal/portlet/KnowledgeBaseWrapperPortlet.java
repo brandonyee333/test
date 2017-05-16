@@ -82,8 +82,7 @@ public class KnowledgeBaseWrapperPortlet extends MVCPortlet {
 		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		String redirect = ParamUtil.getString(
-			request, "_" + KBPortletKeys.KNOWLEDGE_BASE_DISPLAY + "_redirect");
+		String redirect = ParamUtil.getString(request, "redirect");
 		String urlTitle = ParamUtil.getString(
 			request, "_" + KBPortletKeys.KNOWLEDGE_BASE_DISPLAY + "_urlTitle");
 
