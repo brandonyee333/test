@@ -143,6 +143,43 @@ boolean viewjournalArticle = OSBCustomerArticlePermission.contains(permissionChe
 <aui:script>
 	Liferay.provide(
 		window,
+		'<portlet:namespace />navigationReady',
+		function(event) {
+			var A = AUI();
+
+			var navigationContainer = A.one('#<portlet:namespace />navigationContainer');
+
+			if (navigationContainer) {
+				var treeView = new A.TreeView(
+					{
+						contentBox: '.side-nav-tree',
+						selectOnToggle: true,
+						type: 'normal'
+					}
+				).render('#<portlet:namespace />navigation');
+
+				var sideNavTree = navigationContainer.one('.side-nav-tree');
+
+				if (sideNavTree) {
+					var selected = sideNavTree.all('a.selected');
+
+					selected.each(
+						function(item, index, collection) {
+							var selectedNode = treeView.getNodeByChild(item);
+
+							selectedNode.expand();
+						}
+					);
+				}
+
+				A.all('.side-nav').show();
+			}
+		},
+		['aui-tree']
+	);
+
+	Liferay.provide(
+		window,
 		'<portlet:namespace />toggleIcon',
 		function() {
 			var relatedArticlesNode = AUI().one('#<portlet:namespace />relatedArticlesNode');
@@ -192,7 +229,7 @@ boolean viewjournalArticle = OSBCustomerArticlePermission.contains(permissionChe
 									sideNavTree.html(response);
 								}
 
-								Liferay.fire('<portlet:namespace />navigationReady');
+								<portlet:namespace />navigationReady();
 							}
 							else {
 								window.location.reload();
@@ -268,38 +305,9 @@ boolean viewjournalArticle = OSBCustomerArticlePermission.contains(permissionChe
 				}
 			);
 		}
-
-		Liferay.on(
-			'<portlet:namespace />navigationReady',
-			function(event) {
-				var treeView = new A.TreeView(
-					{
-						contentBox: '.side-nav-tree',
-						selectOnToggle: true,
-						type: 'normal'
-					}
-				).render('#<portlet:namespace />navigation');
-
-				var sideNavTree = navigationContainer.one('.side-nav-tree');
-
-				if (sideNavTree) {
-					var selected = sideNavTree.all('a.selected');
-
-					selected.each(
-						function(item, index, collection) {
-							var selectedNode = treeView.getNodeByChild(item);
-
-							selectedNode.expand();
-						}
-					);
-				}
-
-				A.all('.side-nav').show();
-			}
-		);
 	}
 
-	Liferay.fire('<portlet:namespace />navigationReady');
+	<portlet:namespace />navigationReady();
 </aui:script>
 
 <c:if test="<%= viewjournalArticle && (kbLayout != null) %>">
