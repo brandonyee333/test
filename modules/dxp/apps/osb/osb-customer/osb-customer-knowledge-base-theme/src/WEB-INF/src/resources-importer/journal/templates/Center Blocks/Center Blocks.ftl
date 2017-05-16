@@ -9,10 +9,10 @@
 		<#assign categorySize = hasJournalView?string('4', '3')?number />
 
 		<#list section_header.getSiblings()?chunk(categorySize) as current_category>
-			<div class="offset1 row-fluid span10">
+			<div class="col-md-10 col-sm-offset-1 row">
 				<#list current_category as section>
 					<#if hasJournalView || current_category_has_next>
-						<#assign cssClassSize = "span" + 12 / current_category?size />
+						<#assign cssClassSize = "col-md-" + 12 / current_category?size />
 
 						<div class="category-content ${cssClassSize} text-center">
 							<#if section.getData() != "">

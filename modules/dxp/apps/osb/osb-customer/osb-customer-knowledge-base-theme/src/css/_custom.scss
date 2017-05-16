@@ -33,7 +33,7 @@ $white: #FFF;
 		}
 	}
 
-	h2 {
+	h1, h2 {
 		font-weight: bold;
 	}
 
@@ -73,41 +73,8 @@ $white: #FFF;
 		}
 	}
 
-	.offset1 {
-		margin-left: 8.5%;
-	}
-
-	.offset3 {
-		margin-left: 25%;
-	}
-
 	.responsive-only {
 		display: none;
-	}
-
-	.span3 {
-		float: left;
-		width: 23%;
-	}
-
-	.span4 {
-		float: left;
-		width: 31%;
-	}
-
-	.span6 {
-		float: left;
-		width: 50%;
-	}
-
-	.span8 {
-		float: left;
-		width: 65%;
-	}
-
-	.span9 {
-		float: left;
-		width: 75%;
 	}
 
 	/* ---------- Admin dockbar ---------- */
@@ -694,6 +661,8 @@ $white: #FFF;
 			font-weight: bold;
 			list-style: none;
 			margin-bottom: 0;
+			margin-left: 25px;
+			padding: 0;
 
 			li {
 				color: inherit;
@@ -735,8 +704,8 @@ $white: #FFF;
 			}
 		}
 
-		[class*="span"] {
-			margin-left: 0 !important;
+		[class*="col-md"] {
+			padding-left: 0;
 		}
 
 		.article-content {

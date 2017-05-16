@@ -54,7 +54,7 @@
 
 <div class="container-fluid" id="wrapper">
 	<div class="row-fluid">
-		<header class="banner span12" id="banner" role="banner">
+		<header class="banner col-md-12" id="banner" role="banner">
 			<div class="banner-content">
 				<#if getterUtil.getBoolean(theme_settings["custom-site-nav-logo"]) && (theme_settings["custom-site-url"] != "")>
 					<div class="${logo_css_class} custom-site-nav">
@@ -102,9 +102,9 @@
 	</div>
 
 	<div class="row-fluid">
-		<footer class="footer span12">
+		<footer class="footer col-md-12">
 			<div class="row-fluid">
-				<div class="social-nav span12">
+				<div class="social-nav col-md-12">
 					<ul class="nav-menu">
 						<li class="nav-item parent-item root-item">
 							<a href="http://www.facebook.com/pages/Liferay/45119213107" target="_blank">
@@ -132,13 +132,13 @@
 			</div>
 
 			<div class="responsive-only row-fluid">
-				<nav class="${nav_css_class} footer-navigation span12">
+				<nav class="${nav_css_class} footer-navigation col-md-12">
 					<@print_navigation layout_friendly_url=mobile_footer_nav_friendly_url />
 				</nav>
 			</div>
 
 			<div class="responsive-hidden row-fluid">
-				<nav class="${nav_css_class} footer-navigation span12">
+				<nav class="${nav_css_class} footer-navigation col-md-12">
 					<@print_navigation layout_friendly_url=footer_nav_friendly_url />
 				</nav>
 			</div>
@@ -171,7 +171,7 @@
 			</div>
 
 			<div class="row-fluid">
-				<div class="copyright span12">
+				<div class="copyright col-md-12">
 					&copy; ${the_year} Liferay Inc. All Rights Reserved
 				</div>
 			</div>

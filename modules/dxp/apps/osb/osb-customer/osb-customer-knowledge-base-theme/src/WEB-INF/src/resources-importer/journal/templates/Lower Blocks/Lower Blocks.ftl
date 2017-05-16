@@ -11,9 +11,9 @@
 <div class="clearfix lower-blocks">
 	<#if section_header.getSiblings()?has_content>
 		<#list section_header.getSiblings()?chunk(4) as current_category>
-			<div class="offset3 row-fluid span6">
+			<div class="col-md-6 col-sm-offset-3 row">
 				<#list current_category as section>
-					<#assign cssClassSize = "span" + 12 / current_category?size />
+					<#assign cssClassSize = "col-md-" + 12 / current_category?size />
 
 					<div class="category-content ${cssClassSize} text-center">
 						<#if section.getData() != "">

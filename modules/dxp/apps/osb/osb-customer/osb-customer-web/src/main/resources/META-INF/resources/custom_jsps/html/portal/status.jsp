@@ -139,11 +139,11 @@ if (Validator.isNotNull(exception)) {
 
 		<div class="row-fluid" id="main-content">
 			<div class="error-container">
-				<div class="error-image span5">
+				<div class="col-md-5 error-image">
 					<img src="<%= themeDisplay.getPathThemeImages() %>/custom/lost_ray_alloy.png" />
 				</div>
 
-				<div class="error-content span7">
+				<div class="col-md-7 error-content">
 					<div>
 						<h2 class="heading redesign">
 							<liferay-ui:message key="were-sorry-the-page-you-requested-was-not-found" />

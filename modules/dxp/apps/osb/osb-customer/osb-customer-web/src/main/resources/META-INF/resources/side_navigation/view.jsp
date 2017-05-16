@@ -255,15 +255,15 @@ boolean viewjournalArticle = OSBCustomerArticlePermission.contains(permissionChe
 			var columnOne = A.one('#column-1');
 
 			if (columnOne) {
-				columnOne.toggleClass('span1', expanded);
-				columnOne.toggleClass('span3', !expanded);
+				columnOne.toggleClass('col-md-1', expanded);
+				columnOne.toggleClass('col-md-3', !expanded);
 			}
 
 			var columnTwo = A.one('#column-2');
 
 			if (columnTwo) {
-				columnTwo.toggleClass('span9', !expanded);
-				columnTwo.toggleClass('span11', expanded);
+				columnTwo.toggleClass('col-md-9', !expanded);
+				columnTwo.toggleClass('col-md-11', expanded);
 			}
 		}
 
