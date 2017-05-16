@@ -18,7 +18,8 @@
 
 <%
 String queryString = (String)request.getAttribute("queryString");
-String redirect = (String)request.getAttribute(OSBCustomerWebKeys.REDIRECT);
+
+String redirect = ParamUtil.getString(request, "redirect");
 %>
 
 <liferay-ui:error exception="<%= NoSuchArticleException.class %>" message="the-article-could-not-be-found" />

@@ -33,7 +33,7 @@ public class OSBCustomerConstants {
 	public static final long GROUP_KNOWLEDGE_ID = 10738;
 
 	public static final String RESOURCE_NAME_KNOWLEDGE_DISPLAY =
-		"com.liferay.osb.knowledge.base.display";
+		"com.liferay.osb.documentation.display";
 
 	public static final long ROLE_CUSTOMER_ID = 10827;
 

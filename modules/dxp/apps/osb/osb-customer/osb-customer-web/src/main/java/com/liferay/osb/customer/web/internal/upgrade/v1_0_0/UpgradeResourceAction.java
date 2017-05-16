@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.web.internal.upgrade.v1_0_0;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.ResourceActionPersistence;
 import com.liferay.portal.kernel.service.persistence.ResourcePermissionPersistence;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
@@ -43,16 +41,11 @@ public class UpgradeResourceAction extends UpgradeProcess {
 	}
 
 	protected void upgradeResourceName(String tableName) throws Exception {
-		String newName = "com.liferay.osb.documentation.display";
-		String oldName = "com.liferay.osb.knowledge.base.display";
-
 		runSQL(
-			"update " + tableName + " set name = '" + newName +
-				"' where name = '" + oldName + "'");
+			"update " + tableName + " set name = " +
+				"'com.liferay.osb.documentation.display' where name = " +
+					"'com.liferay.osb.knowledge.base.display'");
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		UpgradeResourceAction.class);
 
 	private final ResourceActionPersistence _resourceActionPersistence;
 	private final ResourcePermissionPersistence _resourcePermissionPersistence;

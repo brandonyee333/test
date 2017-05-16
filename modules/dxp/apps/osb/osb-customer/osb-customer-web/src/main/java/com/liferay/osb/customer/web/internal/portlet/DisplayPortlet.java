@@ -20,13 +20,11 @@ import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleService;
 import com.liferay.osb.customer.constants.OSBCustomerActionKeys;
 import com.liferay.osb.customer.constants.OSBCustomerPortletKeys;
-import com.liferay.osb.customer.web.internal.constants.OSBCustomerWebKeys;
 import com.liferay.osb.customer.web.internal.permission.OSBCustomerArticlePermission;
 import com.liferay.osb.customer.web.internal.search.ArticleSearchUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
@@ -51,8 +49,6 @@ import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -86,17 +82,6 @@ public class DisplayPortlet extends MVCPortlet {
 		throws IOException, PortletException {
 
 		try {
-			LiferayPortletRequest liferayPortletRequest =
-				(LiferayPortletRequest)renderRequest;
-
-			HttpServletRequest request =
-				liferayPortletRequest.getOriginalHttpServletRequest();
-
-			String redirect = ParamUtil.getString(
-				request, "_" + OSBCustomerPortletKeys.DISPLAY + "_redirect");
-
-			renderRequest.setAttribute(OSBCustomerWebKeys.REDIRECT, redirect);
-
 			ThemeDisplay themeDisplay =
 				(ThemeDisplay)renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
 
@@ -245,27 +230,15 @@ public class DisplayPortlet extends MVCPortlet {
 		}
 	}
 
-	@Reference(unbind = "-")
-	protected void setJournalArticleService(
-		JournalArticleService journalArticleService) {
-
-		_journalArticleService = journalArticleService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setSubscriptionLocalService(
-		SubscriptionLocalService subscriptionLocalService) {
-
-		_subscriptionLocalService = subscriptionLocalService;
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(DisplayPortlet.class);
 
+	@Reference
 	private JournalArticleService _journalArticleService;
 
 	@Reference
 	private Portal _portal;
 
+	@Reference
 	private SubscriptionLocalService _subscriptionLocalService;
 
 }
