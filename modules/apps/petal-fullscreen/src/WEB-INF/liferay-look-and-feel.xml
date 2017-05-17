@@ -16,6 +16,18 @@
 			<portlet-decorator-css-class>portlet-decorate</portlet-decorator-css-class>
 		</portlet-decorator>
 
+		<color-scheme id="01" name="Default">
+			<default-cs>true</default-cs>
+			<css-class>default</css-class>
+			<color-scheme-images-path>${images-path}/color_schemes/${css-class}</color-scheme-images-path>
+		</color-scheme>
+		<color-scheme id="02" name="Pink">
+			<css-class>pink</css-class>
+		</color-scheme>
+		<color-scheme id="03" name="Marx">
+			<css-class>marx</css-class>
+		</color-scheme>
+
 		<settings>
 			<setting configurable="true" key="banner-image" type="text" value="/o/petal-fullscreen/images/sean-afnan-217427.jpg" />
 			<setting configurable="true" key="header-title" type="text" value="Microsoft Office Fanpage" />

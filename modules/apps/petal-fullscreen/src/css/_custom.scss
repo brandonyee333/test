@@ -9,6 +9,8 @@ $bluish: #2A59DE;
 $gray: #737373;
 
 @import "portlet_decorator";
+@import "color_schemes/pink";
+@import "color_schemes/marx";
 
 @mixin fake-underline-default {
 	bottom: 0;

@@ -1,0 +1,7 @@
+.pink .container-fluid {
+	@for $i from 1 through 6 {
+		h#{$i} {
+			color: #FF00FF;
+		}
+	}
+}
