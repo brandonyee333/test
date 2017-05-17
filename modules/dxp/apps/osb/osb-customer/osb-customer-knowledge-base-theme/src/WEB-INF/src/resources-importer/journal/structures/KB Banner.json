@@ -6,7 +6,7 @@
 	"fields": [
 		{
 			"dataType": "string",
-			"indexType": "keyword",
+			"indexType": "text",
 			"label": {
 				"en_US": " Banner Header "
 			},
@@ -40,7 +40,7 @@
 				{
 					"dataType": "html",
 					"fieldNamespace": "ddm",
-					"indexType": "keyword",
+					"indexType": "text",
 					"label": {
 						"en_US": " Banner Content "
 					},

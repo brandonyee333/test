@@ -6,7 +6,7 @@
 	"fields": [
 		{
 			"dataType": "string",
-			"indexType": "keyword",
+			"indexType": "text",
 			"label": {
 				"en_US": "Section Header"
 			},
@@ -64,7 +64,7 @@
 				{
 					"dataType": "html",
 					"fieldNamespace": "ddm",
-					"indexType": "keyword",
+					"indexType": "text",
 					"label": {
 						"en_US": "Section Content"
 					},

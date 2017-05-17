@@ -7,7 +7,7 @@
 		{
 			"dataType": "",
 			"fieldNamespace": "ddm",
-			"indexType": "keyword",
+			"indexType": "text",
 			"label": {
 				"en_US": " Notice : Make sure to choose Home Page Search Bar.VM. All style code put on there. "
 			},

@@ -6,7 +6,7 @@
 	"fields": [
 		{
 			"dataType": "string",
-			"indexType": "keyword",
+			"indexType": "text",
 			"label": {
 				"en_US": " Disclaimers "
 			},
@@ -77,7 +77,7 @@
 		{
 			"dataType": "html",
 			"fieldNamespace": "ddm",
-			"indexType": "keyword",
+			"indexType": "text",
 			"label": {
 				"en_US": " Description "
 			},
@@ -101,7 +101,7 @@
 		{
 			"dataType": "html",
 			"fieldNamespace": "ddm",
-			"indexType": "keyword",
+			"indexType": "text",
 			"label": {
 				"en_US": " Resolution "
 			},
@@ -125,7 +125,7 @@
 		{
 			"dataType": "html",
 			"fieldNamespace": "ddm",
-			"indexType": "keyword",
+			"indexType": "text",
 			"label": {
 				"en_US": " Additional Information "
 			},
