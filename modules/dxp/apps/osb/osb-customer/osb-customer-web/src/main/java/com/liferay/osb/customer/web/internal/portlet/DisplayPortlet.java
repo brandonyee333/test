@@ -186,10 +186,8 @@ public class DisplayPortlet extends MVCPortlet {
 
 		renderURL.setDoAsGroupId(journalArticle.getGroupId());
 
-		renderURL.setParameter("struts_action", "/journal/edit_article");
+		renderURL.setParameter("mvcPath", "/edit_article.jsp");
 		renderURL.setParameter("redirect", currentURL);
-		renderURL.setParameter(
-			"folderId", String.valueOf(journalArticle.getFolderId()));
 		renderURL.setParameter(
 			"articleId", String.valueOf(journalArticle.getArticleId()));
 		renderURL.setParameter(

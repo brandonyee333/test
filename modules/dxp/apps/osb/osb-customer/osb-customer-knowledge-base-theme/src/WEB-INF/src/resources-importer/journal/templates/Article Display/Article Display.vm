@@ -130,7 +130,7 @@
 
 			<br />
 
-			#if ($permissionChecker.isSignedIn() && $request.window-state.equals("normal"))
+			#if ($permissionChecker.isSignedIn() && $validator.equals($request.window-state.toString(), "normal"))
 				<div class="section">
 					#if (!$isSubscribed)
 						<div>
@@ -187,7 +187,7 @@
 		}
 	);
 
-	#if ($request.window-state.equals("normal"))
+	#if ($validator.equals($request.window-state.toString(), "normal"))
 		AUI().ready(
 			'liferay-portlet-url',
 			function(A) {
