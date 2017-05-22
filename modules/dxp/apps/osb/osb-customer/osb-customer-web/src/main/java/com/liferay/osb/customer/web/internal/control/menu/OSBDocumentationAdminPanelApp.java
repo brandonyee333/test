@@ -34,8 +34,8 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	immediate = true,
 	property = {
-		"panel.category.key=" + PanelCategoryKeys.SITE_ADMINISTRATION_CONTENT,
-		"panel.category.order:Integer=1300"
+		"panel.app.order:Integer=1300",
+		"panel.category.key=" + PanelCategoryKeys.SITE_ADMINISTRATION_CONTENT
 	},
 	service = PanelApp.class
 )
@@ -61,7 +61,7 @@ public class OSBDocumentationAdminPanelApp extends BasePanelApp {
 			return true;
 		}
 
-		return super.isShow(permissionChecker, group);
+		return false;
 	}
 
 	@Override
