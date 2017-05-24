@@ -185,11 +185,11 @@ public class OSBCustomerKnowledgeBaseLocalServiceImpl
 				String newKnowledgeBaseArticles = null;
 
 				if (newKBArticleInfoList.isEmpty()) {
-					oldKnowledgeBaseArticles = LanguageUtil.get(
+					newKnowledgeBaseArticles = LanguageUtil.get(
 						LocaleUtil.US, "no-articles-were-found");
 				}
 				else {
-					oldKnowledgeBaseArticles = StringUtil.merge(
+					newKnowledgeBaseArticles = StringUtil.merge(
 						newKBArticleInfoList, StringPool.NEW_LINE);
 				}
 
