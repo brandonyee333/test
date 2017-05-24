@@ -218,7 +218,7 @@ public class OSBCustomerKnowledgeBaseLocalServiceImpl
 
 		String subject = ContentUtil.get(
 			OSBCustomerKnowledgeBaseLocalServiceImpl.class.getClassLoader(),
-			"com/liferay/osb/knowledge/base/dependencies" +
+			"com/liferay/osb/customer/service/configuration/dependencies" +
 				"/email_knowledge_base_articles_subject.tmpl");
 
 		subject = StringUtil.replace(
@@ -226,7 +226,7 @@ public class OSBCustomerKnowledgeBaseLocalServiceImpl
 
 		String body = ContentUtil.get(
 			OSBCustomerKnowledgeBaseLocalServiceImpl.class.getClassLoader(),
-			"com/liferay/osb/knowledge/base/dependencies" +
+			"com/liferay/osb/customer/service/configuration/dependencies" +
 				"/email_knowledge_base_articles_body.tmpl");
 
 		body = StringUtil.replace(
