@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.osb.customer.web.internal.control.menu;
+package com.liferay.osb.customer.web.internal.application.list;
 
 import com.liferay.application.list.BasePanelApp;
 import com.liferay.application.list.PanelApp;
