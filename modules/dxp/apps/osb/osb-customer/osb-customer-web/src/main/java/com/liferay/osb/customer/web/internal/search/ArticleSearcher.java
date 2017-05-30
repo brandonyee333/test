@@ -16,10 +16,14 @@ package com.liferay.osb.customer.web.internal.search;
 
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.service.AssetCategoryLocalServiceUtil;
+import com.liferay.dynamic.data.mapping.model.DDMStructure;
+import com.liferay.dynamic.data.mapping.service.DDMStructureLocalServiceUtil;
+import com.liferay.dynamic.data.mapping.util.DDMIndexer;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.knowledge.base.model.KBArticle;
 import com.liferay.osb.customer.asset.model.AssetCategoryDisplay;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
+import com.liferay.osb.customer.web.internal.constants.OSBJournalArticleConstants;
 import com.liferay.portal.kernel.search.BaseSearcher;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.BooleanQuery;
@@ -32,6 +36,11 @@ import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import com.liferay.portal.kernel.search.generic.BooleanQueryImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
@@ -136,7 +145,7 @@ public class ArticleSearcher extends BaseSearcher {
 				"languageIds");
 
 			for (String languageId : languageIds) {
-				languageIdFilter.addTerm(Field.LANGUAGE_ID, languageId);
+				languageIdFilter.addTerm(Field.DEFAULT_LANGUAGE_ID, languageId);
 			}
 
 			if (languageIdFilter.hasClauses()) {
@@ -148,8 +157,10 @@ public class ArticleSearcher extends BaseSearcher {
 			long[] permissionTypes = (long[])searchContext.getAttribute(
 				"permissionTypes");
 
+			String fieldName = _getJournalArticleDDMFieldName("permissions");
+
 			for (long permissionType : permissionTypes) {
-				permissionTypeFilter.addTerm("permissionType", permissionType);
+				permissionTypeFilter.addTerm(fieldName, permissionType);
 			}
 
 			if (permissionTypeFilter.hasClauses()) {
@@ -166,26 +177,28 @@ public class ArticleSearcher extends BaseSearcher {
 
 		BooleanQuery journalArticleQuery = new BooleanQueryImpl();
 
-		String keywords = searchContext.getKeywords();
-
 		String[] searchStructureIds = (String[])searchContext.getAttribute(
 			"searchStructureIds");
 
-		if (Validator.isNotNull(keywords) && (searchStructureIds.length > 0) &&
+		if ((searchStructureIds.length > 0) &&
 			(!_articleTypeAssetCategories.isEmpty() ||
 			 !_officialDocumentation)) {
 
-			journalArticleQuery.addRequiredTerm(
+			journalArticleQuery.addExactTerm(
 				Field.ENTRY_CLASS_NAME, JournalArticle.class.getName());
 
-			BooleanQuery keywordsQuery = new BooleanQueryImpl();
+			String keywords = searchContext.getKeywords();
 
-			keywordsQuery.addExactTerm(Field.ASSET_TAG_NAMES, keywords);
+			if (Validator.isNotNull(keywords)) {
+				BooleanQuery keywordsQuery = new BooleanQueryImpl();
 
-			_addSearchLocalizedTerms(
-				keywordsQuery, searchContext.getLocale(), keywords);
+				keywordsQuery.addExactTerm(Field.ASSET_TAG_NAMES, keywords);
 
-			journalArticleQuery.add(keywordsQuery, BooleanClauseOccur.MUST);
+				_addSearchLocalizedTerms(
+					keywordsQuery, searchContext.getLocale(), keywords);
+
+				journalArticleQuery.add(keywordsQuery, BooleanClauseOccur.MUST);
+			}
 		}
 
 		return journalArticleQuery;
@@ -218,8 +231,14 @@ public class ArticleSearcher extends BaseSearcher {
 			long[] permissionTypes = (long[])searchContext.getAttribute(
 				"permissionTypes");
 
-			for (long permissionType : permissionTypes) {
-				permissionTypeFilter.addTerm("permissionType", permissionType);
+			if (!ArrayUtil.contains(
+					permissionTypes,
+					OSBJournalArticleConstants.PERMISSION_TYPE_EXTERNAL)) {
+
+				for (long permissionType : permissionTypes) {
+					permissionTypeFilter.addTerm(
+						"permissionType", permissionType);
+				}
 			}
 
 			if (permissionTypeFilter.hasClauses()) {
@@ -253,7 +272,7 @@ public class ArticleSearcher extends BaseSearcher {
 		BooleanQuery kbArticleQuery = new BooleanQueryImpl();
 
 		if (_articleTypeAssetCategories.isEmpty() || _officialDocumentation) {
-			kbArticleQuery.addRequiredTerm(
+			kbArticleQuery.addExactTerm(
 				Field.ENTRY_CLASS_NAME, KBArticle.class.getName());
 
 			String keywords = searchContext.getKeywords();
@@ -262,8 +281,6 @@ public class ArticleSearcher extends BaseSearcher {
 				BooleanQuery keywordsQuery = new BooleanQueryImpl();
 
 				keywordsQuery.addExactTerm(Field.ASSET_TAG_NAMES, keywords);
-
-				keywordsQuery.addTerm("headers", keywords);
 
 				keywordsQuery.addTerms(_keywordFields, keywords);
 
@@ -304,21 +321,22 @@ public class ArticleSearcher extends BaseSearcher {
 			}
 		}
 
-		BooleanQuery userLanguageIdQuery = new BooleanQueryImpl();
-
-		String userLanguageId = (String)searchContext.getAttribute(
-			"userLanguageId");
-
-		if (Validator.isNotNull(userLanguageId)) {
-			userLanguageIdQuery.addTerm(Field.LANGUAGE_ID, userLanguageId);
-		}
-
 		for (String entryClassName : searchContext.getEntryClassNames()) {
 			if (entryClassName.equals(JournalArticle.class.getName())) {
 				BooleanQuery journalArticleQuery = _createJournalArticleQuery(
 					searchContext);
 
 				if (journalArticleQuery.hasClauses()) {
+					BooleanQuery userLanguageIdQuery = new BooleanQueryImpl();
+
+					String userLanguageId = (String)searchContext.getAttribute(
+						"userLanguageId");
+
+					if (Validator.isNotNull(userLanguageId)) {
+						userLanguageIdQuery.addTerm(
+							Field.DEFAULT_LANGUAGE_ID, userLanguageId);
+					}
+
 					if (userLanguageIdQuery.hasClauses()) {
 						journalArticleQuery.add(
 							userLanguageIdQuery, BooleanClauseOccur.SHOULD);
@@ -333,11 +351,6 @@ public class ArticleSearcher extends BaseSearcher {
 					searchContext);
 
 				if (kbArticleQuery.hasClauses()) {
-					if (userLanguageIdQuery.hasClauses()) {
-						kbArticleQuery.add(
-							userLanguageIdQuery, BooleanClauseOccur.SHOULD);
-					}
-
 					fullQuery.add(kbArticleQuery, BooleanClauseOccur.SHOULD);
 				}
 			}
@@ -348,6 +361,32 @@ public class ArticleSearcher extends BaseSearcher {
 		}
 
 		return fullQuery;
+	}
+
+	private String _getJournalArticleDDMFieldName(String fieldName)
+		throws Exception {
+
+		long classNameId = PortalUtil.getClassNameId(JournalArticle.class);
+
+		DDMStructure ddmStructure = DDMStructureLocalServiceUtil.getStructure(
+			OSBCustomerConstants.GROUP_KNOWLEDGE_ID, classNameId,
+			OSBCustomerConstants.DDM_STRUCTURE_ARTICLE_DISPLAY_KEY);
+
+		StringBundler sb = new StringBundler(8);
+
+		sb.append(DDMIndexer.DDM_FIELD_PREFIX);
+		sb.append(ddmStructure.getFieldProperty(fieldName, "indexType"));
+		sb.append(DDMIndexer.DDM_FIELD_SEPARATOR);
+		sb.append(ddmStructure.getStructureId());
+		sb.append(DDMIndexer.DDM_FIELD_SEPARATOR);
+		sb.append(fieldName);
+
+		Locale locale = LocaleUtil.getDefault();
+
+		sb.append(StringPool.UNDERLINE);
+		sb.append(LocaleUtil.toLanguageId(locale));
+
+		return sb.toString();
 	}
 
 	private String _getLocalizedName(Locale locale, String field) {
