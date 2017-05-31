@@ -380,10 +380,10 @@ public class ArticleSearcher extends BaseSearcher {
 		sb.append(ddmStructure.getStructureId());
 		sb.append(DDMIndexer.DDM_FIELD_SEPARATOR);
 		sb.append(fieldName);
+		sb.append(StringPool.UNDERLINE);
 
 		Locale locale = LocaleUtil.getDefault();
 
-		sb.append(StringPool.UNDERLINE);
 		sb.append(LocaleUtil.toLanguageId(locale));
 
 		return sb.toString();
