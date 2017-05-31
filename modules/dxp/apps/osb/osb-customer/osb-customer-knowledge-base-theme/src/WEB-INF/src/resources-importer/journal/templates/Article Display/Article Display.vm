@@ -170,13 +170,14 @@
 			var imageViewer = new A.ImageViewer(
 				{
 					links: '.article-content img',
+					playing: false,
 					zIndex: 1
 				}
 			);
 
 			imageViewer.render();
 
-			A.one('.image-viewer-content').on(
+			A.one('.image-viewer-base-image-list').on(
 				'click',
 				function(event) {
 					event.stopPropagation();
