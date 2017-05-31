@@ -1,4 +1,8 @@
 .osb-documentation-display-portlet {
+	img {
+		max-width: 100%;
+	}
+
 	.back-btn {
 		background: url(../../images/arrow_left.png) no-repeat -10px center;
 		background-size: 32px 16px;
