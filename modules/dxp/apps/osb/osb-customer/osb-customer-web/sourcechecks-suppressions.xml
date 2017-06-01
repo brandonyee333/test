@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+
+<suppressions>
+	<suppress checks="JSPLanguageKeysCheck" files="modules/dxp/apps/osb/osb-customer/osb-customer-web/.*" />
+	<suppress checks="LanguageKeysCheck" files="modules/dxp/apps/osb/osb-customer/osb-customer-web/.*" />
+</suppressions>
