@@ -97,8 +97,8 @@
 		</@>
 	</#if>
 
-	<footer class="footer col-md-12">
-		<div class="social-nav col-md-12">
+	<footer class="col-md-12 footer">
+		<div class="col-md-12 social-nav">
 			<ul class="nav-menu">
 				<li class="nav-item parent-item root-item">
 					<a href="http://www.facebook.com/pages/Liferay/45119213107" target="_blank">
@@ -163,7 +163,7 @@
 			</nav>
 		</div>
 
-		<div class="copyright col-md-12">
+		<div class="col-md-12 copyright">
 			&copy; ${the_year} Liferay Inc. All Rights Reserved
 		</div>
 	</footer>
