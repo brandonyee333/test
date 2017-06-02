@@ -61,8 +61,8 @@ public class OSBCustomerArticlePermission {
 		if (actionId.equals(OSBCustomerActionKeys.VIEW_JOURNAL_ARTICLE)) {
 			return permissionChecker.hasPermission(
 				OSBCustomerConstants.GROUP_KNOWLEDGE_ID,
-				OSBCustomerConstants.RESOURCE_NAME_KNOWLEDGE_DISPLAY, 0,
-				actionId);
+				OSBCustomerConstants.RESOURCE_NAME_KNOWLEDGE_DISPLAY,
+				OSBCustomerConstants.GROUP_KNOWLEDGE_ID, actionId);
 		}
 
 		return false;
