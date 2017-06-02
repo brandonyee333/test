@@ -53,7 +53,7 @@
 </#if>
 
 <div class="container-fluid" id="wrapper">
-	<header class="banner col-md-12" id="banner" role="banner">
+	<header class="banner" id="banner" role="banner">
 		<div class="banner-content">
 			<#if getterUtil.getBoolean(theme_settings["custom-site-nav-logo"]) && (theme_settings["custom-site-url"] != "")>
 				<div class="${logo_css_class} custom-site-nav">
