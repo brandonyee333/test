@@ -23,7 +23,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 %>
 
 <liferay-ui:error exception="<%= NoSuchArticleException.class %>" message="the-article-could-not-be-found" />
-<liferay-ui:error exception="<%= PrincipalException.class %>" message="the-article-could-not-be-found" />
+<liferay-ui:error exception="<%= PrincipalException.MustHavePermission.class %>" message="the-article-could-not-be-found" />
 
 <c:if test="<%= Validator.isNotNull(redirect) %>">
 	<div>
