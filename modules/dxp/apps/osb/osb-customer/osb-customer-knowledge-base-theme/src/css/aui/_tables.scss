@@ -1,20 +1,20 @@
 table {
-	background-color: $tableBackground;
-	border: 1px solid $tableBorder;
+	background-color: $table-bg;
+	border: 1px solid $table-border-color;
 	border-collapse: separate;
 	border-left-width: 0;
 
-	@include border-radius($baseBorderRadius);
+	@include border-radius($border-radius-base);
 
 	border-spacing: 0;
-	margin-bottom: $baseLineHeight;
+	margin-bottom: $line-height-computed;
 	max-width: 100%;
 	width: 100%;
 
 	td, th {
-		border-left: 1px solid $tableBorder;
-		border-top: 1px solid $tableBorder;
-		line-height: $baseLineHeight;
+		border-left: 1px solid $table-border-color;
+		border-top: 1px solid $table-border-color;
+		line-height: $line-height-base;
 		padding: 8px;
 		text-align: left;
 		vertical-align: top;
@@ -34,7 +34,7 @@ table {
 				border-top-width: 0;
 
 				&:first-child {
-					@include border-top-left-radius($baseBorderRadius);
+					@include border-top-left-radius($border-radius-base);
 				}
 			}
 		}
@@ -44,11 +44,11 @@ table {
 		&:first-child tr:first-child {
 			> td, > th {
 				&:first-child {
-					@include border-top-left-radius($baseBorderRadius);
+					@include border-top-left-radius($border-radius-base);
 				}
 
 				&:last-child {
-					@include border-top-right-radius($baseBorderRadius);
+					@include border-top-right-radius($border-radius-base);
 				}
 			}
 		}
@@ -58,11 +58,11 @@ table {
 		&:last-child tr:last-child {
 			> td, > th {
 				&:first-child {
-					@include border-bottom-left-radius($baseBorderRadius);
+					@include border-bottom-left-radius($border-radius-base);
 				}
 
 				&:last-child {
-					@include border-bottom-right-radius($baseBorderRadius);
+					@include border-bottom-right-radius($border-radius-base);
 				}
 			}
 		}
@@ -82,7 +82,7 @@ table {
 		+ tbody, + thead {
 			tr:first-child {
 				td:last-child , th:last-child {
-					@include border-top-right-radius($baseBorderRadius);
+					@include border-top-right-radius($border-radius-base);
 				}
 			}
 		}
@@ -91,17 +91,17 @@ table {
 	tbody {
 		> tr:nth-child(odd) {
 			> td, > th {
-				background-color: $tableBackgroundAccent;
+				background-color: $table-bg-accent;
 			}
 		}
 
 		+ tbody {
-			border-top: 2px solid $tableBorder;
+			border-top: 2px solid $table-border-color;
 		}
 	}
 
 	.table {
-		background-color: $bodyBackground;
+		background-color: $body-bg;
 	}
 }
 
@@ -124,25 +124,25 @@ table, .row-fluid table {
 .table {
 	td, th {
 		@for $i from 1 through 12 {
-			&.span#{$i} { @include tableColumns($i); }
+			&.span#{$i} { @include column-count($i); }
 		}
 	}
 
 	tbody tr {
 		&.error > td {
-			background-color: $errorBackground;
+			background-color: $alert-danger-bg;
 		}
 
 		&.info > td {
-			background-color: $infoBackground;
+			background-color: $alert-info-bg;
 		}
 
 		&.success > td {
-			background-color: $successBackground;
+			background-color: $alert-success-bg;
 		}
 
 		&.warning > td {
-			background-color: $warningBackground;
+			background-color: $alert-warning-bg;
 		}
 	}
 }
@@ -152,24 +152,24 @@ table, .row-fluid table {
 		tr {
 			&:hover {
 				> td, > th {
-					background-color: $tableBackgroundHover;
+					background-color: $table-bg-hover;
 				}
 			}
 
 			&.error:hover > td {
-				background-color: darken($errorBackground, 5%);
+				background-color: darken($alert-danger-bg, 5%);
 			}
 
 			&.info:hover > td {
-				background-color: darken($infoBackground, 5%);
+				background-color: darken($alert-info-bg, 5%);
 			}
 
 			&.success:hover > td {
-				background-color: darken($successBackground, 5%);
+				background-color: darken($alert-success-bg, 5%);
 			}
 
 			&.warning:hover > td {
-				background-color: darken($warningBackground, 5%);
+				background-color: darken($alert-warning-bg, 5%);
 			}
 		}
 	}
