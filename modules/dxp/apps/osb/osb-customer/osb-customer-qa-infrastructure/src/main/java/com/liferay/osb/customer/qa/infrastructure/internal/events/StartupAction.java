@@ -139,8 +139,7 @@ public class StartupAction extends SimpleAction {
 
 	protected void checkUsers(long companyId) throws Exception {
 		String[] emailAddresses = StringUtil.split(
-			OSBCustomerQAConfigurationValues.OSB_QA_USER_EMAIL_ADDRESSES,
-			StringPool.COMMA);
+			OSBCustomerQAConfigurationValues.OSB_QA_USER_EMAIL_ADDRESSES);
 
 		for (String emailAddress : emailAddresses) {
 			String firstName = OSBCustomerQAConfigurationUtil.get(
