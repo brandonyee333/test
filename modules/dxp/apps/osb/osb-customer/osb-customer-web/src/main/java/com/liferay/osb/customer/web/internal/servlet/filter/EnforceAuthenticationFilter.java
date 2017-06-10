@@ -37,10 +37,10 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"before-filter=Virtual Host Filter", "dispatcher=FORWARD",
-		"dispatcher=REQUEST", "servlet-context-name=",
-		"servlet-filter-name=OSB Customer Filter", "url-pattern=/documents/*",
-		"url-pattern=/group/*", "url-pattern=/user/*", "url-pattern=/web/*"
+		"dispatcher=FORWARD", "dispatcher=REQUEST", "servlet-context-name=",
+		"servlet-filter-name=Enforce Authentication Filter",
+		"url-pattern=/documents/*", "url-pattern=/group/*",
+		"url-pattern=/user/*", "url-pattern=/web/*"
 	},
 	service = Filter.class
 )
