@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.io.IOException;
@@ -74,7 +75,7 @@ public class KnowledgeBaseWrapperPortlet extends MVCPortlet {
 		throws IOException, PortletException {
 
 		LiferayPortletRequest liferayPortletRequest =
-			(LiferayPortletRequest)renderRequest;
+			_portal.getLiferayPortletRequest(renderRequest);
 
 		HttpServletRequest request =
 			liferayPortletRequest.getOriginalHttpServletRequest();
@@ -141,5 +142,8 @@ public class KnowledgeBaseWrapperPortlet extends MVCPortlet {
 		KnowledgeBaseWrapperPortlet.class);
 
 	private KBArticleLocalService _kbArticleLocalService;
+
+	@Reference
+	private Portal _portal;
 
 }
