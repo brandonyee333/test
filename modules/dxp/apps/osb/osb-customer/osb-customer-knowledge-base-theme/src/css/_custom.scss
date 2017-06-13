@@ -821,7 +821,7 @@ $white: #FFF;
 
 	/* ---------- Media queries ---------- */
 
-	@include respond-to(phone, tablet) {
+	@include media-query(null, $breakpoint_tablet - 1)  {
 		.dockbar-ready {
 			.banner {
 				top: 53px;
@@ -965,7 +965,7 @@ $white: #FFF;
 		}
 	}
 
-	@include respond-to(phone) {
+	@include media-query(null, $screen-xs-max)  {
 		.responsive-hidden {
 			display: none;
 		}
