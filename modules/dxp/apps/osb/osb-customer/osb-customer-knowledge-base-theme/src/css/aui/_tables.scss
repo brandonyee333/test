@@ -7,7 +7,7 @@ table {
 	@include border-radius($border-radius-base);
 
 	border-spacing: 0;
-	margin-bottom: $line-height-computed;
+	margin-bottom: $line-height-base;
 	max-width: 100%;
 	width: 100%;
 
@@ -122,27 +122,21 @@ table, .row-fluid table {
 }
 
 .table {
-	td, th {
-		@for $i from 1 through 12 {
-			&.span#{$i} { @include column-count($i); }
-		}
-	}
-
 	tbody tr {
-		&.error > td {
-			background-color: $alert-danger-bg;
+		&.danger > td {
+			background-color: $state-danger-bg;
 		}
 
 		&.info > td {
-			background-color: $alert-info-bg;
+			background-color: $state-info-bg;
 		}
 
 		&.success > td {
-			background-color: $alert-success-bg;
+			background-color: $state-success-bg;
 		}
 
 		&.warning > td {
-			background-color: $alert-warning-bg;
+			background-color: $state-warning-bg;
 		}
 	}
 }
@@ -156,20 +150,20 @@ table, .row-fluid table {
 				}
 			}
 
-			&.error:hover > td {
-				background-color: darken($alert-danger-bg, 5%);
+			&.danger:hover > td {
+				background-color: darken($state-danger-bg, 5%);
 			}
 
 			&.info:hover > td {
-				background-color: darken($alert-info-bg, 5%);
+				background-color: darken($state-info-bg, 5%);
 			}
 
 			&.success:hover > td {
-				background-color: darken($alert-success-bg, 5%);
+				background-color: darken($state-success-bg, 5%);
 			}
 
 			&.warning:hover > td {
-				background-color: darken($alert-warning-bg, 5%);
+				background-color: darken($state-warning-bg, 5%);
 			}
 		}
 	}
