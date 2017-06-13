@@ -212,8 +212,6 @@ public class KBArticleImporter {
 
 				if (assetTagNames.length == 0) {
 					addErrorMessage("Cannot find tag: " + line);
-
-					continue;
 				}
 
 				long[] assetCategoryIds = new long[0];
