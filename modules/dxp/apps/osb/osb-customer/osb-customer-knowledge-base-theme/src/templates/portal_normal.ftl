@@ -125,13 +125,13 @@
 		</div>
 
 		<div class="responsive-only">
-			<nav class="${nav_css_class} footer-navigation col-md-12">
+			<nav class="${nav_css_class} col-md-12 footer-navigation">
 				<@print_navigation layout_friendly_url=mobile_footer_nav_friendly_url />
 			</nav>
 		</div>
 
 		<div class="responsive-hidden">
-			<nav class="${nav_css_class} footer-navigation col-md-12">
+			<nav class="${nav_css_class} col-md-12 footer-navigation">
 				<@print_navigation layout_friendly_url=footer_nav_friendly_url />
 			</nav>
 		</div>
