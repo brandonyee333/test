@@ -13,6 +13,9 @@ $light-blue: #1C75B9;
 $orange: #F49B45;
 $white: #FFF;
 
+$has-control-menu-top-desktop: 64px;
+$has-control-menu-top-mobile: 48px;
+
 /* ---------- General ---------- */
 
 .aui {
@@ -68,7 +71,11 @@ $white: #FFF;
 
 	.has-control-menu {
 		.banner {
-			top: 65px;
+			top: $has-control-menu-top-mobile;
+
+			@include sm() {
+				top: $has-control-menu-top-desktop;
+		}
 		}
 	}
 
