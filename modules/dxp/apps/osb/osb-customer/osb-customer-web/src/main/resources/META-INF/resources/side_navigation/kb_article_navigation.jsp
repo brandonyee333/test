@@ -31,7 +31,7 @@ Layout selLayout = (Layout)request.getAttribute("kb_article_navigation.jsp-selLa
 			List<KBArticle> childKBArticles = KBArticleLocalServiceUtil.getKBArticles(themeDisplay.getScopeGroupId(), curKBArticle.getResourcePrimKey(), WorkflowConstants.STATUS_APPROVED, QueryUtil.ALL_POS, QueryUtil.ALL_POS, new KBArticlePriorityComparator(true));
 		%>
 
-			<li class="tree-node">
+			<li class="tree-node <%= (!childKBArticles.isEmpty() && isAncestor) ? "indented-parent" : "indented-child" %>">
 				<a class="<%= (isAncestor && !childKBArticles.isEmpty()) ? "has-children" : StringPool.BLANK %> <%= isAncestor ? "selected" : StringPool.BLANK %>" href="<%= KBArticleUtil.getKBArticleURL(request, selLayout.getPlid(), curKBArticle, redirect) %>"><span><%= curKBArticle.getTitle() %></span></a>
 
 				<c:if test="<%= isAncestor && !childKBArticles.isEmpty() %>">

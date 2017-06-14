@@ -655,6 +655,20 @@ $has-control-menu-top-mobile: 48px;
 			ul {
 				margin: 0 0 10px 25px
 			}
+
+			li.indented-parent {
+				padding-left: 18px;
+				text-indent: -18px;
+				
+				& li.indented-child {
+					padding-left: 6px;
+					text-indent: -24px;
+				}
+				
+				& li {
+					padding-left: inherit;
+				}
+			}
 		}
 	}
 
