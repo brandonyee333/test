@@ -1,7 +1,9 @@
-@import "aui/tables";
 @import "buttons";
+@import "compass";
 @import "font";
 @import "headings";
+
+@import "aui/tables";
 
 $border-color: #D0D1D3;
 $font-color: #4C4C4E;
@@ -75,7 +77,7 @@ $has-control-menu-top-mobile: 48px;
 
 			@include sm() {
 				top: $has-control-menu-top-desktop;
-		}
+			}
 		}
 	}
 
@@ -828,7 +830,7 @@ $has-control-menu-top-mobile: 48px;
 
 	/* ---------- Media queries ---------- */
 
-	@include media-query(null, $breakpoint_tablet - 1)  {
+	@include media-query(null, $breakpoint_tablet - 1) {
 		.dockbar-ready {
 			.banner {
 				top: 53px;
@@ -972,7 +974,7 @@ $has-control-menu-top-mobile: 48px;
 		}
 	}
 
-	@include media-query(null, $screen-xs-max)  {
+	@include media-query(null, $screen-xs-max) {
 		.responsive-hidden {
 			display: none;
 		}
