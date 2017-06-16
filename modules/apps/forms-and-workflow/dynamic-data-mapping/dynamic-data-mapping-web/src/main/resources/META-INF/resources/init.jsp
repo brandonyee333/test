@@ -53,6 +53,7 @@ page import="com.liferay.dynamic.data.mapping.search.TemplateDisplayTerms" %><%@
 page import="com.liferay.dynamic.data.mapping.search.TemplateSearch" %><%@
 page import="com.liferay.dynamic.data.mapping.search.TemplateSearchTerms" %><%@
 page import="com.liferay.dynamic.data.mapping.service.DDMStorageLinkLocalServiceUtil" %><%@
+page import="com.liferay.dynamic.data.mapping.service.DDMStructureLinkLocalServiceUtil" %><%@
 page import="com.liferay.dynamic.data.mapping.service.DDMStructureLocalServiceUtil" %><%@
 page import="com.liferay.dynamic.data.mapping.service.DDMStructureServiceUtil" %><%@
 page import="com.liferay.dynamic.data.mapping.service.DDMStructureVersionServiceUtil" %><%@
@@ -69,7 +70,7 @@ page import="com.liferay.dynamic.data.mapping.validator.DDMFormLayoutValidationE
 page import="com.liferay.dynamic.data.mapping.validator.DDMFormValidationException" %><%@
 page import="com.liferay.dynamic.data.mapping.web.configuration.DDMWebConfigurationKeys" %><%@
 page import="com.liferay.dynamic.data.mapping.web.configuration.DDMWebConfigurationUtil" %><%@
-page import="com.liferay.dynamic.data.mapping.web.display.context.DDMDisplayContext" %><%@
+page import="com.liferay.dynamic.data.mapping.web.internal.display.context.DDMDisplayContext" %><%@
 page import="com.liferay.petra.content.ContentUtil" %><%@
 page import="com.liferay.portal.kernel.bean.BeanParamUtil" %><%@
 page import="com.liferay.portal.kernel.configuration.Filter" %><%@
@@ -105,7 +106,8 @@ page import="com.liferay.portal.kernel.util.LocaleUtil" %><%@
 page import="com.liferay.portal.kernel.util.OrderByComparator" %><%@
 page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
 page import="com.liferay.portal.kernel.util.PortalUtil" %><%@
-page import="com.liferay.portal.kernel.util.ResourceBundleUtil" %><%@
+page import="com.liferay.portal.kernel.util.ResourceBundleLoader" %><%@
+page import="com.liferay.portal.kernel.util.ResourceBundleLoaderUtil" %><%@
 page import="com.liferay.portal.kernel.util.StringBundler" %><%@
 page import="com.liferay.portal.kernel.util.StringPool" %><%@
 page import="com.liferay.portal.kernel.util.StringUtil" %><%@
@@ -132,6 +134,9 @@ page import="java.util.StringTokenizer" %>
 <%@ page import="javax.portlet.PortletRequest" %><%@
 page import="javax.portlet.PortletURL" %><%@
 page import="javax.portlet.WindowState" %>
+
+<%@ page import="org.osgi.framework.Bundle" %><%@
+page import="org.osgi.framework.FrameworkUtil" %>
 
 <liferay-frontend:defineObjects />
 

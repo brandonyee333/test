@@ -40,7 +40,7 @@ if (ListUtil.isEmpty(folders) && ListUtil.isEmpty(articles)) {
 %>
 
 <c:choose>
-	<c:when test="<%= (ListUtil.isEmpty(articles) && ListUtil.isNotEmpty(folders) && (folders.size() == 1)) %>">
+	<c:when test="<%= ListUtil.isEmpty(articles) && ListUtil.isNotEmpty(folders) && (folders.size() == 1) %>">
 
 		<%
 		JournalFolder folder = folders.get(0);
@@ -54,14 +54,13 @@ if (ListUtil.isEmpty(folders) && ListUtil.isEmpty(articles)) {
 					<li>
 						<liferay-util:include page="/subscribe.jsp" servletContext="<%= application %>" />
 					</li>
-
 					<li>
 						<liferay-util:include page="/folder_action.jsp" servletContext="<%= application %>" />
 					</li>
 				</ul>
 			</c:if>
 
-			<h4><%= (folder != null) ? folder.getName() : LanguageUtil.get(request, "home") %></h4>
+			<h4><%= (folder != null) ? HtmlUtil.escape(folder.getName()) : LanguageUtil.get(request, "home") %></h4>
 
 			<h6 class="text-default">
 				<liferay-ui:message key="folder" />
@@ -117,6 +116,9 @@ if (ListUtil.isEmpty(folders) && ListUtil.isEmpty(articles)) {
 		<div class="sidebar-header">
 			<ul class="sidebar-header-actions">
 				<li>
+					<liferay-util:include page="/subscribe.jsp" servletContext="<%= application %>" />
+				</li>
+				<li>
 					<liferay-util:include page="/article_action.jsp" servletContext="<%= application %>" />
 				</li>
 			</ul>
@@ -140,7 +142,7 @@ if (ListUtil.isEmpty(folders) && ListUtil.isEmpty(articles)) {
 			<h5><liferay-ui:message key="id" /></h5>
 
 			<p>
-				<%= article.getArticleId() %>
+				<%= HtmlUtil.escape(article.getArticleId()) %>
 			</p>
 
 			<h5><liferay-ui:message key="version" /></h5>
@@ -165,7 +167,7 @@ if (ListUtil.isEmpty(folders) && ListUtil.isEmpty(articles)) {
 				<h5><liferay-ui:message key="template" /></h5>
 
 				<p>
-					<%= ddmTemplate.getName(locale) %>
+					<%= HtmlUtil.escape(ddmTemplate.getName(locale)) %>
 				</p>
 			</c:if>
 
@@ -189,11 +191,13 @@ if (ListUtil.isEmpty(folders) && ListUtil.isEmpty(articles)) {
 			Date reviewDate = article.getReviewDate();
 			%>
 
-			<h5><liferay-ui:message key="display-date" /></h5>
+			<c:if test="<%= article.getDisplayDate() != null %>">
+				<h5><liferay-ui:message key="display-date" /></h5>
 
-			<p>
-				<%= dateFormatDateTime.format(article.getDisplayDate()) %>
-			</p>
+				<p>
+					<%= dateFormatDateTime.format(article.getDisplayDate()) %>
+				</p>
+			</c:if>
 
 			<h5><liferay-ui:message key="expiration-date" /></h5>
 

@@ -38,6 +38,7 @@ public class DefaultIndexerRequestBufferExecutor
 	extends BaseIndexerRequestBufferExecutor
 	implements IndexerRequestBufferExecutor {
 
+	@Override
 	public void execute(
 		IndexerRequestBuffer indexerRequestBuffer, int numRequests) {
 
@@ -78,7 +79,9 @@ public class DefaultIndexerRequestBufferExecutor
 			indexerRequestBuffer.remove(indexerRequest);
 		}
 
-		commit(searchEngineIds);
+		if (!BufferOverflowThreadLocal.isOverflowMode()) {
+			commit(searchEngineIds);
+		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

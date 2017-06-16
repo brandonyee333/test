@@ -81,7 +81,7 @@ public class DDLRecordServiceUtil {
 	the record.
 	* @return the record
 	* @throws PortalException if a portal exception occurred
-	* @deprecated As of 7.0.0, replaced by {@link #addRecord(long, long, int,
+	* @deprecated As of 1.1.0, replaced by {@link #addRecord(long, long, int,
 	DDMFormValues, ServiceContext)}
 	*/
 	@Deprecated
@@ -109,7 +109,7 @@ public class DDLRecordServiceUtil {
 	the record.
 	* @return the record
 	* @throws PortalException if a portal exception occurred
-	* @deprecated As of 7.0.0, replaced by {@link #addRecord(long, long, int,
+	* @deprecated As of 1.1.0, replaced by {@link #addRecord(long, long, int,
 	DDMFormValues, ServiceContext)}
 	*/
 	@Deprecated
@@ -132,7 +132,7 @@ public class DDLRecordServiceUtil {
 	set the record modified date.
 	* @return the affected record
 	* @throws PortalException
-	* @deprecated As of 7.0.0, replaced by {@link #updateRecord(long, boolean,
+	* @deprecated As of 1.1.0, replaced by {@link #updateRecord(long, boolean,
 	int, DDMFormValues, ServiceContext)}
 	*/
 	@Deprecated
@@ -197,7 +197,7 @@ public class DDLRecordServiceUtil {
 	set the record modified date.
 	* @return the record
 	* @throws PortalException if a portal exception occurred
-	* @deprecated As of 7.0.0, replaced by {@link #updateRecord(long, boolean,
+	* @deprecated As of 1.1.0, replaced by {@link #updateRecord(long, boolean,
 	int, DDMFormValues, ServiceContext)}
 	*/
 	@Deprecated
@@ -226,7 +226,7 @@ public class DDLRecordServiceUtil {
 	set the record modified date.
 	* @return the record
 	* @throws PortalException if a portal exception occurred
-	* @deprecated As of 7.0.0, replaced by {@link #updateRecord(long, boolean,
+	* @deprecated As of 1.1.0, replaced by {@link #updateRecord(long, boolean,
 	int, DDMFormValues, ServiceContext)}
 	*/
 	@Deprecated
@@ -248,6 +248,19 @@ public class DDLRecordServiceUtil {
 	*/
 	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
+	}
+
+	/**
+	* Returns all the records matching the record set ID
+	*
+	* @param recordSetId the record's record set ID
+	* @return the matching records
+	* @throws PortalException if a portal exception occurred
+	*/
+	public static java.util.List<com.liferay.dynamic.data.lists.model.DDLRecord> getRecords(
+		long recordSetId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getRecords(recordSetId);
 	}
 
 	/**
@@ -277,7 +290,7 @@ public class DDLRecordServiceUtil {
 	}
 
 	/**
-	* @deprecated As of 7.0.0, replaced by {@link #revertRecord(long, String,
+	* @deprecated As of 1.1.0, replaced by {@link #revertRecord(long, String,
 	ServiceContext)}
 	*/
 	@Deprecated

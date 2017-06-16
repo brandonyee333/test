@@ -34,7 +34,7 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.journal.service.persistence.JournalArticleFinder;
-import com.liferay.journal.service.persistence.JournalArticleImagePersistence;
+import com.liferay.journal.service.persistence.JournalArticleLocalizationPersistence;
 import com.liferay.journal.service.persistence.JournalArticlePersistence;
 import com.liferay.journal.service.persistence.JournalArticleResourcePersistence;
 import com.liferay.journal.service.persistence.JournalContentSearchPersistence;
@@ -47,6 +47,7 @@ import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.jdbc.SqlUpdate;
 import com.liferay.portal.kernel.dao.jdbc.SqlUpdateFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.dao.orm.Conjunction;
 import com.liferay.portal.kernel.dao.orm.Criterion;
 import com.liferay.portal.kernel.dao.orm.DefaultActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Disjunction;
@@ -72,7 +73,6 @@ import com.liferay.portal.kernel.service.persistence.CompanyPersistence;
 import com.liferay.portal.kernel.service.persistence.GroupPersistence;
 import com.liferay.portal.kernel.service.persistence.ImagePersistence;
 import com.liferay.portal.kernel.service.persistence.PortletPreferencesPersistence;
-import com.liferay.portal.kernel.service.persistence.SubscriptionPersistence;
 import com.liferay.portal.kernel.service.persistence.SystemEventPersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.service.persistence.WorkflowDefinitionLinkPersistence;
@@ -352,6 +352,27 @@ public abstract class JournalArticleLocalServiceBaseImpl
 				public void addCriteria(DynamicQuery dynamicQuery) {
 					Criterion modifiedDateCriterion = portletDataContext.getDateRangeCriteria(
 							"modifiedDate");
+
+					if (modifiedDateCriterion != null) {
+						Conjunction conjunction = RestrictionsFactoryUtil.conjunction();
+
+						conjunction.add(modifiedDateCriterion);
+
+						Disjunction disjunction = RestrictionsFactoryUtil.disjunction();
+
+						disjunction.add(RestrictionsFactoryUtil.gtProperty(
+								"modifiedDate", "lastPublishDate"));
+
+						Property lastPublishDateProperty = PropertyFactoryUtil.forName(
+								"lastPublishDate");
+
+						disjunction.add(lastPublishDateProperty.isNull());
+
+						conjunction.add(disjunction);
+
+						modifiedDateCriterion = conjunction;
+					}
+
 					Criterion statusDateCriterion = portletDataContext.getDateRangeCriteria(
 							"statusDate");
 
@@ -797,44 +818,6 @@ public abstract class JournalArticleLocalServiceBaseImpl
 	}
 
 	/**
-	 * Returns the subscription local service.
-	 *
-	 * @return the subscription local service
-	 */
-	public com.liferay.portal.kernel.service.SubscriptionLocalService getSubscriptionLocalService() {
-		return subscriptionLocalService;
-	}
-
-	/**
-	 * Sets the subscription local service.
-	 *
-	 * @param subscriptionLocalService the subscription local service
-	 */
-	public void setSubscriptionLocalService(
-		com.liferay.portal.kernel.service.SubscriptionLocalService subscriptionLocalService) {
-		this.subscriptionLocalService = subscriptionLocalService;
-	}
-
-	/**
-	 * Returns the subscription persistence.
-	 *
-	 * @return the subscription persistence
-	 */
-	public SubscriptionPersistence getSubscriptionPersistence() {
-		return subscriptionPersistence;
-	}
-
-	/**
-	 * Sets the subscription persistence.
-	 *
-	 * @param subscriptionPersistence the subscription persistence
-	 */
-	public void setSubscriptionPersistence(
-		SubscriptionPersistence subscriptionPersistence) {
-		this.subscriptionPersistence = subscriptionPersistence;
-	}
-
-	/**
 	 * Returns the system event local service.
 	 *
 	 * @return the system event local service
@@ -1137,18 +1120,18 @@ public abstract class JournalArticleLocalServiceBaseImpl
 	}
 
 	/**
-	 * Returns the d l app local service.
+	 * Returns the dl app local service.
 	 *
-	 * @return the d l app local service
+	 * @return the dl app local service
 	 */
 	public com.liferay.document.library.kernel.service.DLAppLocalService getDLAppLocalService() {
 		return dlAppLocalService;
 	}
 
 	/**
-	 * Sets the d l app local service.
+	 * Sets the dl app local service.
 	 *
-	 * @param dlAppLocalService the d l app local service
+	 * @param dlAppLocalService the dl app local service
 	 */
 	public void setDLAppLocalService(
 		com.liferay.document.library.kernel.service.DLAppLocalService dlAppLocalService) {
@@ -1308,41 +1291,22 @@ public abstract class JournalArticleLocalServiceBaseImpl
 	}
 
 	/**
-	 * Returns the journal article image local service.
+	 * Returns the journal article localization persistence.
 	 *
-	 * @return the journal article image local service
+	 * @return the journal article localization persistence
 	 */
-	public com.liferay.journal.service.JournalArticleImageLocalService getJournalArticleImageLocalService() {
-		return journalArticleImageLocalService;
+	public JournalArticleLocalizationPersistence getJournalArticleLocalizationPersistence() {
+		return journalArticleLocalizationPersistence;
 	}
 
 	/**
-	 * Sets the journal article image local service.
+	 * Sets the journal article localization persistence.
 	 *
-	 * @param journalArticleImageLocalService the journal article image local service
+	 * @param journalArticleLocalizationPersistence the journal article localization persistence
 	 */
-	public void setJournalArticleImageLocalService(
-		com.liferay.journal.service.JournalArticleImageLocalService journalArticleImageLocalService) {
-		this.journalArticleImageLocalService = journalArticleImageLocalService;
-	}
-
-	/**
-	 * Returns the journal article image persistence.
-	 *
-	 * @return the journal article image persistence
-	 */
-	public JournalArticleImagePersistence getJournalArticleImagePersistence() {
-		return journalArticleImagePersistence;
-	}
-
-	/**
-	 * Sets the journal article image persistence.
-	 *
-	 * @param journalArticleImagePersistence the journal article image persistence
-	 */
-	public void setJournalArticleImagePersistence(
-		JournalArticleImagePersistence journalArticleImagePersistence) {
-		this.journalArticleImagePersistence = journalArticleImagePersistence;
+	public void setJournalArticleLocalizationPersistence(
+		JournalArticleLocalizationPersistence journalArticleLocalizationPersistence) {
+		this.journalArticleLocalizationPersistence = journalArticleLocalizationPersistence;
 	}
 
 	/**
@@ -1559,10 +1523,6 @@ public abstract class JournalArticleLocalServiceBaseImpl
 	protected PortletPreferencesPersistence portletPreferencesPersistence;
 	@ServiceReference(type = com.liferay.portal.kernel.service.ResourceLocalService.class)
 	protected com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService;
-	@ServiceReference(type = com.liferay.portal.kernel.service.SubscriptionLocalService.class)
-	protected com.liferay.portal.kernel.service.SubscriptionLocalService subscriptionLocalService;
-	@ServiceReference(type = SubscriptionPersistence.class)
-	protected SubscriptionPersistence subscriptionPersistence;
 	@ServiceReference(type = com.liferay.portal.kernel.service.SystemEventLocalService.class)
 	protected com.liferay.portal.kernel.service.SystemEventLocalService systemEventLocalService;
 	@ServiceReference(type = SystemEventPersistence.class)
@@ -1613,10 +1573,8 @@ public abstract class JournalArticleLocalServiceBaseImpl
 	protected com.liferay.trash.kernel.service.TrashVersionLocalService trashVersionLocalService;
 	@ServiceReference(type = TrashVersionPersistence.class)
 	protected TrashVersionPersistence trashVersionPersistence;
-	@BeanReference(type = com.liferay.journal.service.JournalArticleImageLocalService.class)
-	protected com.liferay.journal.service.JournalArticleImageLocalService journalArticleImageLocalService;
-	@BeanReference(type = JournalArticleImagePersistence.class)
-	protected JournalArticleImagePersistence journalArticleImagePersistence;
+	@BeanReference(type = JournalArticleLocalizationPersistence.class)
+	protected JournalArticleLocalizationPersistence journalArticleLocalizationPersistence;
 	@BeanReference(type = com.liferay.journal.service.JournalArticleResourceLocalService.class)
 	protected com.liferay.journal.service.JournalArticleResourceLocalService journalArticleResourceLocalService;
 	@BeanReference(type = JournalArticleResourcePersistence.class)

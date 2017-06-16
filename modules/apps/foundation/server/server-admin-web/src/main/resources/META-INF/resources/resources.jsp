@@ -44,6 +44,7 @@ long usedMemory = totalMemory - runtime.freeMemory();
 
 				<%= numberFormat.format(hours) %>:<%= numberFormat.format(minutes) %>:<%= numberFormat.format(seconds) %>
 			</div>
+
 			<div class="meter-wrapper text-center">
 				<portlet:resourceURL id="/server_admin/view_chart" var="totalMemoryChartURL">
 					<portlet:param name="type" value="total" />
@@ -197,7 +198,7 @@ long usedMemory = totalMemory - runtime.freeMemory();
 
 				<div class="index-action-wrapper pull-right" data-type="portal">
 					<c:choose>
-						<c:when test="<%= backgroundTaskDisplay == null || !backgroundTaskDisplay.hasPercentage() %>">
+						<c:when test="<%= (backgroundTaskDisplay == null) || !backgroundTaskDisplay.hasPercentage() %>">
 
 							<%
 							long timeout = ParamUtil.getLong(request, "timeout");
@@ -237,7 +238,7 @@ long usedMemory = totalMemory - runtime.freeMemory();
 
 					<div class="index-action-wrapper pull-right" data-type="<%= indexer.getClassName() %>">
 						<c:choose>
-							<c:when test="<%= backgroundTaskDisplay == null || !backgroundTaskDisplay.hasPercentage() %>">
+							<c:when test="<%= (backgroundTaskDisplay == null) || !backgroundTaskDisplay.hasPercentage() %>">
 								<aui:button cssClass="save-server-button" data-classname="<%= indexer.getClassName() %>" data-cmd="reindex" disabled="<%= !indexer.isIndexerEnabled() %>" value="execute" />
 							</c:when>
 							<c:otherwise>
@@ -281,7 +282,7 @@ long usedMemory = totalMemory - runtime.freeMemory();
 		<ul class="list-group system-action-group">
 			<li class="clearfix list-group-item">
 				<div class="pull-left">
-					<h5><liferay-ui:message key="reset-preview-and-thumbnail-files-for-documents-and-media-portlet" /></h5>
+					<h5><liferay-ui:message key="reset-preview-and-thumbnail-files-for-documents-and-media" /></h5>
 				</div>
 
 				<div class="pull-right">

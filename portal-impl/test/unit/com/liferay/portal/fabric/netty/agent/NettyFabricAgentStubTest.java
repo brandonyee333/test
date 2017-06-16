@@ -172,6 +172,7 @@ public class NettyFabricAgentStubTest {
 				}
 
 			});
+
 		FabricWorker<String> fabricWorker = nettyFabricAgentStub.execute(
 			processConfig, processCallable);
 
@@ -199,7 +200,7 @@ public class NettyFabricAgentStubTest {
 		Collection<? extends FabricWorker<?>> fabricWorkers =
 			nettyFabricAgentStub.getFabricWorkers();
 
-		Assert.assertEquals(1, fabricWorkers.size());
+		Assert.assertEquals(fabricWorkers.toString(), 1, fabricWorkers.size());
 		Assert.assertTrue(fabricWorkers.contains(fabricWorker));
 
 		NoticeableFuture<String> noticeableFuture =
@@ -216,7 +217,7 @@ public class NettyFabricAgentStubTest {
 		Map<Path, Path> outputPathMap = ReflectionTestUtil.getFieldValue(
 			nettyFabricWorkerStub, "_outputPathMap");
 
-		Assert.assertEquals(2, outputPathMap.size());
+		Assert.assertEquals(outputPathMap.toString(), 2, outputPathMap.size());
 
 		Path path1 = testFile1.toPath();
 

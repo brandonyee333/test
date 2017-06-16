@@ -1,7 +1,6 @@
 AUI.add(
 	'liferay-ddm-form-renderer',
 	function(A) {
-		var AArray = A.Array;
 		var Renderer = Liferay.DDM.Renderer;
 
 		var TPL_CONTAINER = '<div class="lfr-ddm-form-container"></div>';
@@ -18,12 +17,12 @@ AUI.add(
 						value: ''
 					},
 
-					portletNamespace: {
-						value: ''
+					enableEvaluations: {
+						value: true
 					},
 
-					readOnlyFields: {
-						value: []
+					portletNamespace: {
+						value: ''
 					},
 
 					strings: {
@@ -36,7 +35,8 @@ AUI.add(
 				},
 
 				AUGMENTS: [
-					Renderer.FormDefinitionSupport,
+					Renderer.FormContextSupport,
+					Renderer.FormEvaluationSupport,
 					Renderer.FormFeedbackSupport,
 					Renderer.FormPaginationSupport,
 					Renderer.FormTabsSupport,
@@ -77,6 +77,16 @@ AUI.add(
 						(new A.EventHandle(instance._eventHandlers)).detach();
 					},
 
+					getEvaluationPayload: function() {
+						var instance = this;
+
+						return {
+							p_auth: Liferay.authToken,
+							portletNamespace: instance.get('portletNamespace'),
+							serializedFormContext: JSON.stringify(instance.get('context'))
+						};
+					},
+
 					getFormNode: function() {
 						var instance = this;
 
@@ -93,6 +103,24 @@ AUI.add(
 						var formNode = instance.getFormNode();
 
 						return (formNode || container).one('[type="submit"]');
+					},
+
+					hasFocus: function() {
+						var instance = this;
+
+						var container = instance.get('container');
+
+						var hasFocus = false;
+
+						instance.eachField(
+							function(field) {
+								hasFocus = field.hasFocus();
+
+								return hasFocus;
+							}
+						);
+
+						return hasFocus || container.contains(document.activeElement);
 					},
 
 					submit: function() {
@@ -114,13 +142,7 @@ AUI.add(
 					toJSON: function() {
 						var instance = this;
 
-						var defaultLanguageId = themeDisplay.getLanguageId();
-
-						return {
-							availableLanguageIds: [defaultLanguageId],
-							defaultLanguageId: defaultLanguageId,
-							fieldValues: AArray.invoke(instance.getImmediateFields(), 'toJSON')
-						};
+						return instance.get('context');
 					},
 
 					_afterFormRender: function() {
@@ -137,6 +159,14 @@ AUI.add(
 						if (submitButton) {
 							submitButton.attr('disabled', false);
 						}
+
+						var container = instance.get('container');
+
+						Liferay.fire(Liferay.namespace('DDM').Form + ':render',
+							{
+								containerId: container.get('id')
+							}
+						);
 					},
 
 					_onLiferaySubmitForm: function(event) {
@@ -176,6 +206,6 @@ AUI.add(
 	},
 	'',
 	{
-		requires: ['aui-component', 'liferay-ddm-form-renderer-definition', 'liferay-ddm-form-renderer-feedback', 'liferay-ddm-form-renderer-nested-fields', 'liferay-ddm-form-renderer-pagination', 'liferay-ddm-form-renderer-tabs', 'liferay-ddm-form-renderer-template', 'liferay-ddm-form-renderer-validation', 'liferay-ddm-form-soy']
+		requires: ['aui-component', 'liferay-ddm-form-renderer-context', 'liferay-ddm-form-renderer-evaluation', 'liferay-ddm-form-renderer-feedback', 'liferay-ddm-form-renderer-nested-fields', 'liferay-ddm-form-renderer-pagination', 'liferay-ddm-form-renderer-tabs', 'liferay-ddm-form-renderer-template', 'liferay-ddm-form-renderer-validation', 'liferay-ddm-form-soy']
 	}
 );

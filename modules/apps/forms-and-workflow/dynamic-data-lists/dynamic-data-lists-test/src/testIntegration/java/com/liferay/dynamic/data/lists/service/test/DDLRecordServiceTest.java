@@ -15,6 +15,7 @@
 package com.liferay.dynamic.data.lists.service.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.dynamic.data.lists.exception.RecordGroupIdException;
 import com.liferay.dynamic.data.lists.helper.DDLRecordSetTestHelper;
 import com.liferay.dynamic.data.lists.helper.DDLRecordTestHelper;
 import com.liferay.dynamic.data.lists.helper.DDLRecordTestUtil;
@@ -23,6 +24,7 @@ import com.liferay.dynamic.data.lists.model.DDLRecordConstants;
 import com.liferay.dynamic.data.lists.model.DDLRecordSet;
 import com.liferay.dynamic.data.lists.model.DDLRecordVersion;
 import com.liferay.dynamic.data.lists.service.DDLRecordLocalServiceUtil;
+import com.liferay.dynamic.data.lists.service.DDLRecordVersionLocalServiceUtil;
 import com.liferay.dynamic.data.mapping.exception.StorageException;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
@@ -37,7 +39,6 @@ import com.liferay.dynamic.data.mapping.test.util.DDMFormTestUtil;
 import com.liferay.dynamic.data.mapping.test.util.DDMFormValuesTestUtil;
 import com.liferay.dynamic.data.mapping.test.util.DDMStructureTestHelper;
 import com.liferay.dynamic.data.mapping.test.util.storage.FailStorageAdapter;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
@@ -45,6 +46,7 @@ import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -56,8 +58,13 @@ import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
 import com.liferay.registry.ServiceRegistration;
 
+import java.io.Serializable;
+
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import org.junit.AfterClass;
@@ -106,6 +113,96 @@ public class DDLRecordServiceTest {
 		_ddmStructureTestHelper = new DDMStructureTestHelper(
 			PortalUtil.getClassNameId(DDLRecordSet.class), _group);
 		_recordSetTestHelper = new DDLRecordSetTestHelper(_group);
+	}
+
+	@Test
+	public void testAddDraftVersion() throws Exception {
+		DDMForm ddmForm = createDDMForm();
+
+		ddmForm.addDDMFormField(createTextDDMFormField("Name", false, false));
+
+		DDMFormValues expectedDDMFormValues = createDDMFormValues(ddmForm);
+
+		DDMFormFieldValue expectedDDMFormFieldValue =
+			createUnlocalizedDDMFormFieldValue("Name", "Sample Name");
+
+		expectedDDMFormValues.addDDMFormFieldValue(expectedDDMFormFieldValue);
+
+		DDLRecordSet recordSet = addRecordSet(ddmForm);
+
+		ServiceContext serviceContext = DDLRecordTestUtil.getServiceContext(
+			WorkflowConstants.ACTION_SAVE_DRAFT);
+
+		serviceContext.setAttribute("status", WorkflowConstants.STATUS_DRAFT);
+		serviceContext.setAttribute("validateDDMFormValues", Boolean.FALSE);
+
+		DDLRecordLocalServiceUtil.addRecord(
+			TestPropsValues.getUserId(), _group.getGroupId(),
+			recordSet.getRecordSetId(),
+			DDLRecordConstants.DISPLAY_INDEX_DEFAULT, expectedDDMFormValues,
+			serviceContext);
+
+		DDLRecordVersion recordVersion =
+			DDLRecordVersionLocalServiceUtil.fetchLatestRecordVersion(
+				TestPropsValues.getUserId(), recordSet.getRecordSetId(),
+				recordSet.getVersion(), WorkflowConstants.STATUS_DRAFT);
+
+		Assert.assertNotNull(recordVersion);
+
+		DDMFormValues ddmFormValues = recordVersion.getDDMFormValues();
+
+		Map<String, List<DDMFormFieldValue>> ddmFormFieldValuesMap =
+			ddmFormValues.getDDMFormFieldValuesMap();
+
+		List<DDMFormFieldValue> ddmFormFieldValues = ddmFormFieldValuesMap.get(
+			"Name");
+
+		DDMFormFieldValue ddmFormFieldValue0 = ddmFormFieldValues.get(0);
+
+		Value value = ddmFormFieldValue0.getValue();
+
+		Assert.assertEquals("Sample Name", value.getString(_defaultLocale));
+	}
+
+	@Test
+	public void testAddRecordVerifyRecordSetVersion() throws Exception {
+		DDMForm ddmForm = createDDMForm();
+
+		ddmForm.addDDMFormField(createTextDDMFormField("Name", true, false));
+
+		DDMFormValues expectedDDMFormValues = createDDMFormValues(ddmForm);
+
+		DDLRecordSet recordSet = addRecordSet(ddmForm);
+
+		DDLRecordTestHelper recordTestHelper = new DDLRecordTestHelper(
+			_group, recordSet);
+
+		DDLRecord record = recordTestHelper.addRecord(
+			expectedDDMFormValues, WorkflowConstants.ACTION_PUBLISH);
+
+		Assert.assertEquals(
+			recordSet.getVersion(), record.getRecordSetVersion());
+
+		DDLRecordVersion recordVersion = record.getRecordVersion();
+
+		Assert.assertEquals(
+			recordSet.getVersion(), recordVersion.getRecordSetVersion());
+	}
+
+	@Test(expected = RecordGroupIdException.class)
+	public void testAddRecordWithDifferentGroupIdFromRecordSet()
+		throws Exception {
+
+		long groupId = RandomTestUtil.nextLong();
+
+		DDMForm ddmForm = DDMFormTestUtil.createDDMForm("Field");
+
+		DDLRecordSet ddlRecordSet = addRecordSet(ddmForm);
+
+		DDLRecordTestHelper ddlRecordTestHelper = new DDLRecordTestHelper(
+			GroupTestUtil.addGroup(groupId), ddlRecordSet);
+
+		ddlRecordTestHelper.addRecord();
 	}
 
 	@Test(expected = StorageException.class)
@@ -240,6 +337,49 @@ public class DDLRecordServiceTest {
 	}
 
 	@Test
+	public void testAddRecordWithUpdatedRecordSet() throws Exception {
+		DDMForm ddmForm = createDDMForm();
+
+		ddmForm.addDDMFormField(createTextDDMFormField("Name", true, false));
+		ddmForm.addDDMFormField(
+			createTextDDMFormField("Description", true, false));
+
+		DDMFormValues expectedDDMFormValues = createDDMFormValues(ddmForm);
+
+		DDLRecordSet recordSet = addRecordSet(ddmForm);
+
+		DDLRecordTestHelper recordTestHelper = new DDLRecordTestHelper(
+			_group, recordSet);
+
+		DDLRecord record = recordTestHelper.addRecord(
+			expectedDDMFormValues, WorkflowConstants.ACTION_PUBLISH);
+
+		List<DDMFormField> ddmFormFields = ddmForm.getDDMFormFields();
+
+		ddmFormFields.remove(1);
+
+		DDMStructure ddmStructure = _ddmStructureTestHelper.updateStructure(
+			recordSet.getDDMStructureId(), ddmForm);
+
+		_recordSetTestHelper.updateRecordSet(
+			recordSet.getRecordSetId(), ddmStructure);
+
+		expectedDDMFormValues = createDDMFormValues(ddmForm);
+
+		record = recordTestHelper.updateRecord(
+			record.getRecordId(), false, 0, expectedDDMFormValues,
+			WorkflowConstants.ACTION_PUBLISH);
+
+		Assert.assertEquals(
+			recordSet.getVersion(), record.getRecordSetVersion());
+
+		DDLRecordVersion recordVersion = record.getRecordVersion();
+
+		Assert.assertEquals(
+			recordSet.getVersion(), recordVersion.getRecordSetVersion());
+	}
+
+	@Test
 	public void testPublishRecordDraftWithoutChanges() throws Exception {
 		DDMForm ddmForm = createDDMForm();
 
@@ -276,6 +416,35 @@ public class DDLRecordServiceTest {
 		Assert.assertTrue(recordVersion.isApproved());
 	}
 
+	@Test
+	public void testUpdateRecord() throws Exception {
+		DDMForm ddmForm = createDDMForm();
+
+		ddmForm.addDDMFormField(createTextDDMFormField("Name", true, false));
+		ddmForm.addDDMFormField(createTextDDMFormField("Phone", true, false));
+
+		DDLRecordSet recordSet = addRecordSet(ddmForm);
+
+		DDLRecordTestHelper recordTestHelper = new DDLRecordTestHelper(
+			_group, recordSet);
+
+		DDLRecord record = recordTestHelper.addRecord();
+
+		Map<String, Serializable> fieldsMap = new HashMap<>();
+
+		fieldsMap.put("Name", "Joe Bloggs");
+		fieldsMap.put("Phone", "123456");
+
+		updateRecord(
+			record.getRecordId(), fieldsMap, true,
+			WorkflowConstants.ACTION_PUBLISH);
+
+		record = DDLRecordLocalServiceUtil.getRecord(record.getRecordId());
+
+		assertRecordFieldValue(record, "Name", "Joe Bloggs");
+		assertRecordFieldValue(record, "Phone", "123456");
+	}
+
 	protected DDLRecordSet addRecordSet(DDMForm ddmForm) throws Exception {
 		return addRecordSet(ddmForm, StorageType.JSON.toString());
 	}
@@ -291,7 +460,7 @@ public class DDLRecordServiceTest {
 
 	protected void assertRecordDDMFormValues(
 			DDMForm ddmForm, DDMFormValues expectedDDMFormValues)
-		throws Exception, PortalException {
+		throws Exception {
 
 		DDLRecordSet recordSet = addRecordSet(ddmForm);
 
@@ -309,6 +478,23 @@ public class DDLRecordServiceTest {
 		Assert.assertEquals(expectedDDMFormValues, actualDDMFormValues);
 	}
 
+	protected void assertRecordFieldValue(
+			DDLRecord record, String fieldName, String expectedValue)
+		throws Exception {
+
+		List<DDMFormFieldValue> ddmFormFieldValues =
+			record.getDDMFormFieldValues(fieldName);
+
+		Assert.assertEquals(
+			ddmFormFieldValues.toString(), 1, ddmFormFieldValues.size());
+
+		DDMFormFieldValue ddmFormFieldValue = ddmFormFieldValues.get(0);
+
+		Value value = ddmFormFieldValue.getValue();
+
+		Assert.assertEquals(expectedValue, value.getString(_defaultLocale));
+	}
+
 	protected DDMForm createDDMForm() {
 		DDMForm ddmForm = new DDMForm();
 
@@ -317,15 +503,10 @@ public class DDLRecordServiceTest {
 		availableLocales.add(LocaleUtil.US);
 
 		ddmForm.setAvailableLocales(availableLocales);
+
 		ddmForm.setDefaultLocale(LocaleUtil.US);
 
 		return ddmForm;
-	}
-
-	protected DDMFormFieldValue createDDMFormFieldValue(
-		String name, Value value) {
-
-		return DDMFormValuesTestUtil.createDDMFormFieldValue(name, value);
 	}
 
 	protected DDMFormValues createDDMFormValues(DDMForm ddmForm) {
@@ -397,6 +578,20 @@ public class DDLRecordServiceTest {
 		return DDLRecordLocalServiceUtil.updateRecord(
 			TestPropsValues.getUserId(), recordId, false,
 			DDLRecordConstants.DISPLAY_INDEX_DEFAULT, ddmFormValues,
+			serviceContext);
+	}
+
+	protected DDLRecord updateRecord(
+			long recordId, Map<String, Serializable> fieldsMap,
+			boolean mergeFields, int workflowAction)
+		throws Exception {
+
+		ServiceContext serviceContext = DDLRecordTestUtil.getServiceContext(
+			workflowAction);
+
+		return DDLRecordLocalServiceUtil.updateRecord(
+			TestPropsValues.getUserId(), recordId,
+			DDLRecordConstants.DISPLAY_INDEX_DEFAULT, fieldsMap, mergeFields,
 			serviceContext);
 	}
 

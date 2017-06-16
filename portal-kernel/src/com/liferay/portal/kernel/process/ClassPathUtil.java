@@ -42,6 +42,7 @@ import java.net.URLClassLoader;
 import java.net.URLConnection;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -78,7 +79,7 @@ public class ClassPathUtil {
 			if (classLoader instanceof URLClassLoader) {
 				URLClassLoader urlClassLoader = (URLClassLoader)classLoader;
 
-				urls.addAll(Arrays.asList(urlClassLoader.getURLs()));
+				Collections.addAll(urls, urlClassLoader.getURLs());
 			}
 
 			classLoader = classLoader.getParent();
@@ -143,6 +144,7 @@ public class ClassPathUtil {
 			classLoader, ServletException.class.getName());
 
 		sb.append(appServerGlobalClassPath);
+
 		sb.append(File.pathSeparator);
 
 		String portalGlobalClassPath = _buildClassPath(
@@ -228,7 +230,8 @@ public class ClassPathUtil {
 		}
 
 		if ((ServerDetector.isJBoss() || ServerDetector.isWildfly()) &&
-			(protocol.equals("vfs") || protocol.equals("vfsfile"))) {
+			(protocol.equals("vfs") || protocol.equals("vfsfile") ||
+			 protocol.equals("vfszip"))) {
 
 			int pos = path.indexOf(".jar/");
 

@@ -14,10 +14,13 @@
 
 package com.liferay.exportimport.staging;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.document.library.kernel.exception.DuplicateFileEntryException;
 import com.liferay.document.library.kernel.exception.FileExtensionException;
 import com.liferay.document.library.kernel.exception.FileNameException;
 import com.liferay.document.library.kernel.exception.FileSizeException;
+import com.liferay.document.library.kernel.util.DLValidator;
 import com.liferay.exportimport.kernel.background.task.BackgroundTaskExecutorNames;
 import com.liferay.exportimport.kernel.configuration.ExportImportConfigurationConstants;
 import com.liferay.exportimport.kernel.configuration.ExportImportConfigurationParameterMapFactory;
@@ -25,6 +28,7 @@ import com.liferay.exportimport.kernel.configuration.ExportImportConfigurationSe
 import com.liferay.exportimport.kernel.exception.LARFileException;
 import com.liferay.exportimport.kernel.exception.LARFileSizeException;
 import com.liferay.exportimport.kernel.exception.LARTypeException;
+import com.liferay.exportimport.kernel.exception.LayoutImportException;
 import com.liferay.exportimport.kernel.exception.MissingReferenceException;
 import com.liferay.exportimport.kernel.exception.RemoteExportException;
 import com.liferay.exportimport.kernel.lar.ExportImportDateUtil;
@@ -34,15 +38,12 @@ import com.liferay.exportimport.kernel.lar.MissingReferences;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.kernel.lar.PortletDataException;
 import com.liferay.exportimport.kernel.lar.PortletDataHandlerKeys;
-import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
-import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 import com.liferay.exportimport.kernel.service.ExportImportConfigurationLocalService;
 import com.liferay.exportimport.kernel.service.StagingLocalService;
 import com.liferay.exportimport.kernel.staging.LayoutStagingUtil;
 import com.liferay.exportimport.kernel.staging.Staging;
 import com.liferay.exportimport.kernel.staging.StagingConstants;
-import com.liferay.exportimport.kernel.staging.StagingUtil;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskManagerUtil;
 import com.liferay.portal.kernel.exception.LayoutPrototypeException;
@@ -75,7 +76,6 @@ import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.RecentLayoutBranch;
 import com.liferay.portal.kernel.model.RecentLayoutRevision;
 import com.liferay.portal.kernel.model.RecentLayoutSetBranch;
-import com.liferay.portal.kernel.model.StagedModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.WorkflowInstanceLink;
 import com.liferay.portal.kernel.model.adapter.StagedTheme;
@@ -94,6 +94,7 @@ import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.LayoutRevisionLocalService;
 import com.liferay.portal.kernel.service.LayoutService;
 import com.liferay.portal.kernel.service.LayoutSetBranchLocalService;
+import com.liferay.portal.kernel.service.PortletLocalService;
 import com.liferay.portal.kernel.service.RecentLayoutBranchLocalService;
 import com.liferay.portal.kernel.service.RecentLayoutRevisionLocalService;
 import com.liferay.portal.kernel.service.RecentLayoutSetBranchLocalService;
@@ -109,9 +110,9 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -126,8 +127,6 @@ import com.liferay.portal.kernel.workflow.WorkflowTaskManagerUtil;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.service.http.ClassNameServiceHttp;
 import com.liferay.portal.service.http.GroupServiceHttp;
-import com.liferay.portal.util.PrefsPropsUtil;
-import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.exportimport.staging.ProxiedLayoutsThreadLocal;
 
 import java.io.Serializable;
@@ -142,6 +141,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.ResourceBundle;
 import java.util.Set;
 
 import javax.portlet.PortletPreferences;
@@ -160,7 +160,26 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(immediate = true)
 @DoPrivileged
+@ProviderType
 public class StagingImpl implements Staging {
+
+	@Override
+	public String buildRemoteURL(
+		ExportImportConfiguration exportImportConfiguration) {
+
+		Map<String, Serializable> settingsMap =
+			exportImportConfiguration.getSettingsMap();
+
+		String remoteAddress = MapUtil.getString(settingsMap, "remoteAddress");
+		int remotePort = MapUtil.getInteger(settingsMap, "remotePort");
+		String remotePathContext = MapUtil.getString(
+			settingsMap, "remotePathContext");
+		boolean secureConnection = MapUtil.getBoolean(
+			settingsMap, "secureConnection");
+
+		return buildRemoteURL(
+			remoteAddress, remotePort, remotePathContext, secureConnection);
+	}
 
 	@Override
 	public String buildRemoteURL(
@@ -191,7 +210,7 @@ public class StagingImpl implements Staging {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link #getRemoteSiteURL(Group,
+	 * @deprecated As of 3.0.0, replaced by {@link #getRemoteSiteURL(Group,
 	 *             boolean)}
 	 */
 	@Deprecated
@@ -220,7 +239,7 @@ public class StagingImpl implements Staging {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link
+	 * @deprecated As of 3.0.0, replaced by {@link
 	 *             _stagingLocalService#checkDefaultLayoutSetBranches(long,
 	 *             Group, boolean, boolean, boolean, ServiceContext)}
 	 */
@@ -304,8 +323,8 @@ public class StagingImpl implements Staging {
 		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		long scopeGroupId = PortalUtil.getScopeGroupId(
-			PortalUtil.getHttpServletRequest(portletRequest),
+		long scopeGroupId = _portal.getScopeGroupId(
+			_portal.getHttpServletRequest(portletRequest),
 			portlet.getPortletId());
 		long plid = ParamUtil.getLong(portletRequest, "plid");
 
@@ -319,7 +338,7 @@ public class StagingImpl implements Staging {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link #publishPortlet(long, long,
+	 * @deprecated As of 3.0.0, replaced by {@link #publishPortlet(long, long,
 	 *             long, long, long, String, Map)}
 	 */
 	@Deprecated
@@ -397,7 +416,7 @@ public class StagingImpl implements Staging {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link #copyRemoteLayouts(long,
+	 * @deprecated As of 3.0.0, replaced by {@link #copyRemoteLayouts(long,
 	 *             boolean, Map, Map, String, int, String, boolean, long,
 	 *             boolean)}
 	 */
@@ -506,7 +525,7 @@ public class StagingImpl implements Staging {
 	public void deleteRecentLayoutRevisionId(
 		HttpServletRequest request, long layoutSetBranchId, long plid) {
 
-		long userId = PortalUtil.getUserId(request);
+		long userId = _portal.getUserId(request);
 
 		deleteRecentLayoutRevisionId(userId, layoutSetBranchId, plid);
 	}
@@ -526,7 +545,7 @@ public class StagingImpl implements Staging {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link
+	 * @deprecated As of 3.0.0, replaced by {@link
 	 *             #deleteRecentLayoutRevisionId(long, long, long)}
 	 */
 	@Deprecated
@@ -577,7 +596,7 @@ public class StagingImpl implements Staging {
 				String referrerClassName = entry.getValue();
 
 				if (referrerClassName.equals(Portlet.class.getName())) {
-					referrerDisplayName = PortalUtil.getPortletTitle(
+					referrerDisplayName = _portal.getPortletTitle(
 						referrerDisplayName, locale);
 				}
 
@@ -625,7 +644,7 @@ public class StagingImpl implements Staging {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link
+	 * @deprecated As of 3.0.0, replaced by {@link
 	 *             #getErrorMessagesJSONArray(Locale, Map<String,
 	 *             MissingReference>)}
 	 */
@@ -651,6 +670,9 @@ public class StagingImpl implements Staging {
 		int errorType = 0;
 		JSONArray warningMessagesJSONArray = null;
 
+		ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(
+			"content.Language", locale, getClass());
+
 		if (e instanceof DuplicateFileEntryException) {
 			errorMessage = LanguageUtil.get(
 				locale, "please-enter-a-unique-document-name");
@@ -671,20 +693,6 @@ public class StagingImpl implements Staging {
 		else if (e instanceof FileSizeException ||
 				 e instanceof LARFileSizeException) {
 
-			long fileMaxSize = PropsValues.DL_FILE_MAX_SIZE;
-
-			try {
-				fileMaxSize = PrefsPropsUtil.getLong(
-					PropsKeys.DL_FILE_MAX_SIZE);
-
-				if (fileMaxSize == 0) {
-					fileMaxSize = PrefsPropsUtil.getLong(
-						PropsKeys.UPLOAD_SERVLET_REQUEST_IMPL_MAX_SIZE);
-				}
-			}
-			catch (Exception e1) {
-			}
-
 			if ((exportImportConfiguration != null) &&
 				((exportImportConfiguration.getType() ==
 					ExportImportConfigurationConstants.
@@ -693,8 +701,7 @@ public class StagingImpl implements Staging {
 					ExportImportConfigurationConstants.
 						TYPE_PUBLISH_LAYOUT_REMOTE) ||
 				(exportImportConfiguration.getType() ==
-					ExportImportConfigurationConstants.
-						TYPE_PUBLISH_PORTLET))) {
+					ExportImportConfigurationConstants.TYPE_PUBLISH_PORTLET))) {
 
 				errorMessage = LanguageUtil.get(
 					locale,
@@ -707,7 +714,8 @@ public class StagingImpl implements Staging {
 					locale,
 					"please-enter-a-file-with-a-valid-file-size-no-larger-" +
 						"than-x",
-					TextFormatter.formatStorageSize(fileMaxSize, locale),
+					TextFormatter.formatStorageSize(
+						_dlValidator.getMaxAllowableSize(), locale),
 					false);
 			}
 
@@ -716,14 +724,99 @@ public class StagingImpl implements Staging {
 		else if (e instanceof LARTypeException) {
 			LARTypeException lte = (LARTypeException)e;
 
-			errorMessage = LanguageUtil.format(
-				locale, "please-import-a-lar-file-of-the-correct-type-x",
-				lte.getMessage());
+			if (lte.getType() == LARTypeException.TYPE_COMPANY_GROUP) {
+				errorMessage = LanguageUtil.format(
+					resourceBundle, "a-x-can-only-be-imported-to-a-x",
+					"global-site");
+			}
+			else if (lte.getType() == LARTypeException.TYPE_LAYOUT_PROTOTYPE) {
+				errorMessage = LanguageUtil.format(
+					resourceBundle, "a-x-can-only-be-imported-to-a-x",
+					LanguageUtil.get(locale, "page-template"));
+			}
+			else if (lte.getType() == LARTypeException.TYPE_LAYOUT_SET) {
+				errorMessage = LanguageUtil.format(
+					resourceBundle, "a-x-can-only-be-imported-to-a-x", "site");
+			}
+			else if (lte.getType() ==
+						LARTypeException.TYPE_LAYOUT_SET_PROTOTYPE) {
+
+				errorMessage = LanguageUtil.format(
+					resourceBundle, "a-x-can-only-be-imported-to-a-x",
+					LanguageUtil.get(locale, "site-template"));
+			}
+			else {
+				errorMessage = LanguageUtil.format(
+					resourceBundle, "uploaded-lar-file-type-x-does-not-match-x",
+					new Object[] {
+						lte.getActualLARType(),
+						StringUtil.merge(
+							lte.getExpectedLARTypes(),
+							StringPool.COMMA_AND_SPACE)
+					});
+			}
+
 			errorType = ServletResponseConstants.SC_FILE_CUSTOM_EXCEPTION;
 		}
 		else if (e instanceof LARFileException) {
-			errorMessage = LanguageUtil.get(
-				locale, "please-specify-a-lar-file-to-import");
+			LARFileException lfe = (LARFileException)e;
+
+			if (lfe.getType() == LARFileException.TYPE_INVALID_MANIFEST) {
+				errorMessage = LanguageUtil.format(
+					resourceBundle, "invalid-manifest.xml-x", lfe.getMessage());
+			}
+			else if (lfe.getType() == LARFileException.TYPE_MISSING_MANIFEST) {
+				errorMessage = LanguageUtil.get(
+					resourceBundle, "missing-manifest.xml");
+			}
+			else {
+				errorMessage = LanguageUtil.get(
+					locale, "please-specify-a-lar-file-to-import");
+			}
+
+			errorType = ServletResponseConstants.SC_FILE_CUSTOM_EXCEPTION;
+		}
+		else if (e instanceof LayoutImportException) {
+			LayoutImportException lie = (LayoutImportException)e;
+
+			if (lie.getType() ==
+					LayoutImportException.TYPE_WRONG_BUILD_NUMBER) {
+
+				errorMessage = LanguageUtil.format(
+					resourceBundle,
+					"lar-build-number-x-does-not-match-portal-build-number-x",
+					lie.getArguments());
+			}
+			else if (lie.getType() ==
+						LayoutImportException.TYPE_WRONG_LAR_SCHEMA_VERSION) {
+
+				errorMessage = LanguageUtil.format(
+					resourceBundle,
+					"lar-schema-version-x-does-not-match-deployed-export-" +
+						"import-schema-version-x",
+					lie.getArguments());
+			}
+			else if (lie.getType() ==
+						LayoutImportException.
+							TYPE_WRONG_PORTLET_SCHEMA_VERSION) {
+
+				Object[] arguments = lie.getArguments();
+
+				Portlet portlet = _portletLocalService.getPortletById(
+					(String)arguments[1]);
+
+				arguments[1] = portlet.getDisplayName();
+
+				errorMessage = LanguageUtil.format(
+					resourceBundle,
+					"portlet's-schema-version-x-in-the-lar-is-not-valid-for-" +
+						"the-deployed-portlet-x-with-schema-version-x",
+					lie.getArguments());
+			}
+			else {
+				errorMessage = e.getLocalizedMessage();
+			}
+
 			errorType = ServletResponseConstants.SC_FILE_CUSTOM_EXCEPTION;
 		}
 		else if (e instanceof LayoutPrototypeException) {
@@ -736,7 +829,7 @@ public class StagingImpl implements Staging {
 			sb.append("not-be-found.-please-import-the-following-templates-");
 			sb.append("manually");
 
-			errorMessage = LanguageUtil.get(locale, sb.toString());
+			errorMessage = LanguageUtil.get(resourceBundle, sb.toString());
 
 			errorMessagesJSONArray = JSONFactoryUtil.createJSONArray();
 
@@ -800,8 +893,7 @@ public class StagingImpl implements Staging {
 					ExportImportConfigurationConstants.
 						TYPE_PUBLISH_LAYOUT_REMOTE) ||
 				(exportImportConfiguration.getType() ==
-					ExportImportConfigurationConstants.
-						TYPE_PUBLISH_PORTLET))) {
+					ExportImportConfigurationConstants.TYPE_PUBLISH_PORTLET))) {
 
 				errorMessage = LanguageUtil.get(
 					locale,
@@ -820,6 +912,7 @@ public class StagingImpl implements Staging {
 
 			errorMessagesJSONArray = getErrorMessagesJSONArray(
 				locale, missingReferences.getDependencyMissingReferences());
+
 			errorType = ServletResponseConstants.SC_FILE_CUSTOM_EXCEPTION;
 			warningMessagesJSONArray = getWarningMessagesJSONArray(
 				locale, missingReferences.getWeakMissingReferences());
@@ -827,67 +920,146 @@ public class StagingImpl implements Staging {
 		else if (e instanceof PortletDataException) {
 			PortletDataException pde = (PortletDataException)e;
 
-			StagedModel stagedModel = pde.getStagedModel();
+			String referrerClassName = pde.getStagedModelClassName();
+			String referrerDisplayName = pde.getStagedModelDisplayName();
 
-			String referrerClassName = StringPool.BLANK;
-			String referrerDisplayName = StringPool.BLANK;
+			String modelResource = ResourceActionsUtil.getModelResource(
+				locale, referrerClassName);
 
-			if (stagedModel != null) {
-				StagedModelType stagedModelType =
-					stagedModel.getStagedModelType();
-
-				referrerClassName = stagedModelType.getClassName();
-				referrerDisplayName = StagedModelDataHandlerUtil.getDisplayName(
-					stagedModel);
+			if (pde.getType() == PortletDataException.DELETE_PORTLET_DATA) {
+				if (Validator.isNotNull(pde.getLocalizedMessage())) {
+					errorMessage = LanguageUtil.format(
+						locale,
+						"the-following-error-in-x-while-deleting-its-data-" +
+							"has-stopped-the-process-x",
+						new String[] {
+							_portal.getPortletTitle(pde.getPortletId(), locale),
+							pde.getLocalizedMessage()
+						},
+						false);
+				}
+				else {
+					errorMessage = LanguageUtil.format(
+						locale,
+						"an-unexpected-error-in-x-while-deleting-its-data-" +
+							"has-stopped-the-process",
+						new String[] {
+							_portal.getPortletTitle(pde.getPortletId(), locale)
+						},
+						false);
+				}
 			}
+			else if (pde.getType() ==
+						PortletDataException.EXPORT_PORTLET_DATA) {
 
-			if (pde.getType() == PortletDataException.INVALID_GROUP) {
+				if (Validator.isNotNull(pde.getLocalizedMessage())) {
+					errorMessage = LanguageUtil.format(
+						locale,
+						"the-following-error-in-x-while-exporting-its-data-" +
+							"has-stopped-the-process-x",
+						new String[] {
+							_portal.getPortletTitle(pde.getPortletId(), locale),
+							pde.getLocalizedMessage()
+						},
+						false);
+				}
+				else {
+					errorMessage = LanguageUtil.format(
+						locale,
+						"an-unexpected-error-in-x-while-exporting-its-data-" +
+							"has-stopped-the-process",
+						new String[] {
+							_portal.getPortletTitle(pde.getPortletId(), locale)
+						},
+						false);
+				}
+			}
+			else if (pde.getType() ==
+						PortletDataException.IMPORT_PORTLET_DATA) {
+
+				if (Validator.isNotNull(pde.getLocalizedMessage())) {
+					errorMessage = LanguageUtil.format(
+						locale,
+						"the-following-error-in-x-while-importing-its-data-" +
+							"has-stopped-the-process-x",
+						new String[] {
+							_portal.getPortletTitle(pde.getPortletId(), locale),
+							pde.getLocalizedMessage()
+						},
+						false);
+				}
+				else {
+					errorMessage = LanguageUtil.format(
+						locale,
+						"an-unexpected-error-in-x-while-importing-its-data-" +
+							"has-stopped-the-process",
+						new String[] {
+							_portal.getPortletTitle(pde.getPortletId(), locale)
+						},
+						false);
+				}
+			}
+			else if (pde.getType() == PortletDataException.INVALID_GROUP) {
 				errorMessage = LanguageUtil.format(
 					locale,
 					"the-x-x-could-not-be-exported-because-it-is-not-in-the-" +
 						"currently-exported-group",
-					new String[] {
-						ResourceActionsUtil.getModelResource(
-							locale, referrerClassName),
-						referrerDisplayName
-					},
-					false);
+					new String[] {modelResource, referrerDisplayName}, false);
 			}
 			else if (pde.getType() == PortletDataException.MISSING_DEPENDENCY) {
 				errorMessage = LanguageUtil.format(
 					locale,
 					"the-x-x-has-missing-references-that-could-not-be-found-" +
 						"during-the-process",
-					new String[] {
-						ResourceActionsUtil.getModelResource(
-							locale, referrerClassName),
-						referrerDisplayName
-					},
-					false);
+					new String[] {modelResource, referrerDisplayName}, false);
+			}
+			else if (pde.getType() ==
+						PortletDataException.PREPARE_MANIFEST_SUMMARY) {
+
+				if (Validator.isNotNull(pde.getLocalizedMessage())) {
+					errorMessage = LanguageUtil.format(
+						locale,
+						"the-following-error-in-x-while-preparing-its-" +
+							"manifest-has-stopped-the-process-x",
+						new String[] {
+							_portal.getPortletTitle(pde.getPortletId(), locale),
+							pde.getLocalizedMessage()
+						},
+						false);
+				}
+				else {
+					errorMessage = LanguageUtil.format(
+						locale,
+						"an-unexpected-error-in-x-while-preparing-its-" +
+							"manifest-has-stopped-the-process",
+						new String[] {
+							_portal.getPortletTitle(pde.getPortletId(), locale)
+						},
+						false);
+				}
 			}
 			else if (pde.getType() == PortletDataException.STATUS_IN_TRASH) {
 				errorMessage = LanguageUtil.format(
 					locale,
 					"the-x-x-could-not-be-exported-because-it-is-in-the-" +
 						"recycle-bin",
-					new String[] {
-						ResourceActionsUtil.getModelResource(
-							locale, referrerClassName),
-						referrerDisplayName
-					},
-					false);
+					new String[] {modelResource, referrerDisplayName}, false);
 			}
 			else if (pde.getType() == PortletDataException.STATUS_UNAVAILABLE) {
 				errorMessage = LanguageUtil.format(
 					locale,
 					"the-x-x-could-not-be-exported-because-its-workflow-" +
 						"status-is-not-exportable",
+					new String[] {modelResource, referrerDisplayName}, false);
+			}
+			else if (Validator.isNotNull(referrerDisplayName)) {
+				errorMessage = LanguageUtil.format(
+					resourceBundle,
+					"the-following-error-occurred-while-processing-the-x-x-x",
 					new String[] {
-						ResourceActionsUtil.getModelResource(
-							locale, referrerClassName),
-						referrerDisplayName
-					},
-					false);
+						modelResource, referrerDisplayName,
+						e.getLocalizedMessage()
+					});
 			}
 			else {
 				errorMessage = e.getLocalizedMessage();
@@ -896,8 +1068,15 @@ public class StagingImpl implements Staging {
 			errorType = ServletResponseConstants.SC_FILE_CUSTOM_EXCEPTION;
 		}
 		else if (e instanceof PortletIdException) {
-			errorMessage = LanguageUtil.get(
-				locale, "please-import-a-lar-file-for-the-current-portlet");
+			PortletIdException pie = (PortletIdException)e;
+
+			Portlet portlet = _portletLocalService.getPortletById(
+				pie.getMessage());
+
+			errorMessage = LanguageUtil.format(
+				resourceBundle, "a-x-can-only-be-imported-to-a-x",
+				portlet.getDisplayName() + " Portlet");
+
 			errorType = ServletResponseConstants.SC_FILE_CUSTOM_EXCEPTION;
 		}
 		else {
@@ -927,7 +1106,7 @@ public class StagingImpl implements Staging {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link
+	 * @deprecated As of 3.0.0, replaced by {@link
 	 *             #getExceptionMessagesJSONObject(Locale, Exception,
 	 *             ExportImportConfiguration)}
 	 */
@@ -940,14 +1119,31 @@ public class StagingImpl implements Staging {
 	}
 
 	@Override
+	public Group getLiveGroup(Group group) {
+		if (group == null) {
+			return null;
+		}
+
+		if (group.isStagingGroup() && !group.isStagedRemotely()) {
+			return group.getLiveGroup();
+		}
+
+		return group;
+	}
+
+	@Override
 	public Group getLiveGroup(long groupId) {
+		if (groupId <= 0) {
+			return null;
+		}
+
 		Group group = _groupLocalService.fetchGroup(groupId);
 
 		if (group == null) {
 			return null;
 		}
 
-		if (!group.isStagedRemotely() && group.isStagingGroup()) {
+		if (group.isStagingGroup() && !group.isStagedRemotely()) {
 			return group.getLiveGroup();
 		}
 
@@ -966,7 +1162,7 @@ public class StagingImpl implements Staging {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, moved to {@link
+	 * @deprecated As of 3.0.0, moved to {@link
 	 *             ExportImportHelperUtil#getMissingParentLayouts(Layout, long)}
 	 */
 	@Deprecated
@@ -983,7 +1179,7 @@ public class StagingImpl implements Staging {
 			HttpServletRequest request, long layoutSetBranchId, long plid)
 		throws PortalException {
 
-		long userId = PortalUtil.getUserId(request);
+		long userId = _portal.getUserId(request);
 
 		return getRecentLayoutRevisionId(userId, layoutSetBranchId, plid);
 	}
@@ -1003,7 +1199,7 @@ public class StagingImpl implements Staging {
 
 		RecentLayoutSetBranch recentLayoutSetBranch =
 			_recentLayoutSetBranchLocalService.fetchRecentLayoutSetBranch(
-				PortalUtil.getUserId(request), layoutSetId);
+				_portal.getUserId(request), layoutSetId);
 
 		if (recentLayoutSetBranch != null) {
 			return recentLayoutSetBranch.getLayoutSetBranchId();
@@ -1042,7 +1238,7 @@ public class StagingImpl implements Staging {
 			stagingGroup.getTypeSettingsProperties();
 
 		HttpPrincipal httpPrincipal = new HttpPrincipal(
-			StagingUtil.buildRemoteURL(typeSettingsProperties), user.getLogin(),
+			buildRemoteURL(typeSettingsProperties), user.getLogin(),
 			user.getPassword(), user.getPasswordEncrypted());
 
 		long remoteGroupId = GetterUtil.getLong(
@@ -1114,7 +1310,7 @@ public class StagingImpl implements Staging {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link
+	 * @deprecated As of 3.0.0, replaced by {@link
 	 *             ExportImportConfigurationParameterMapFactory#buildParameterMap(
 	 *             )}
 	 */
@@ -1125,7 +1321,7 @@ public class StagingImpl implements Staging {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link
+	 * @deprecated As of 3.0.0, replaced by {@link
 	 *             ExportImportConfigurationParameterMapFactory#buildParameterMap(
 	 *             PortletRequest)}
 	 */
@@ -1180,7 +1376,7 @@ public class StagingImpl implements Staging {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link
+	 * @deprecated As of 3.0.0, replaced by {@link
 	 *             #getWarningMessagesJSONArray(Locale, Map<String,
 	 *             MissingReference>)}
 	 */
@@ -1270,21 +1466,21 @@ public class StagingImpl implements Staging {
 			layout);
 
 		if (layoutRevision == null) {
-			try {
-				layoutRevision = _layoutRevisionLocalService.getLayoutRevision(
+			List<LayoutRevision> layoutRevisions =
+				_layoutRevisionLocalService.getLayoutRevisions(
 					layoutSetBranchId, layout.getPlid(), true);
 
+			if (!layoutRevisions.isEmpty()) {
 				return false;
-			}
-			catch (Exception e) {
 			}
 		}
 
-		try {
-			layoutRevision = _layoutRevisionLocalService.getLayoutRevision(
+		List<LayoutRevision> layoutRevisions =
+			_layoutRevisionLocalService.getLayoutRevisions(
 				layoutSetBranchId, layout.getPlid(), false);
-		}
-		catch (Exception e) {
+
+		if (!layoutRevisions.isEmpty()) {
+			layoutRevision = layoutRevisions.get(0);
 		}
 
 		if ((layoutRevision == null) ||
@@ -1298,7 +1494,7 @@ public class StagingImpl implements Staging {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, see {@link
+	 * @deprecated As of 3.0.0, see {@link
 	 *             com.liferay.portal.kernel.backgroundtask.BackgroundTaskExecutor#getIsolationLevel(
 	 *             )}
 	 */
@@ -1371,6 +1567,11 @@ public class StagingImpl implements Staging {
 			"exportImportConfigurationId",
 			exportImportConfiguration.getExportImportConfigurationId());
 
+		boolean privateLayout = MapUtil.getBoolean(
+			settingsMap, "privateLayout");
+
+		taskContextMap.put("privateLayout", privateLayout);
+
 		BackgroundTask backgroundTask =
 			BackgroundTaskManagerUtil.addBackgroundTask(
 				userId, exportImportConfiguration.getGroupId(),
@@ -1406,7 +1607,7 @@ public class StagingImpl implements Staging {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link #publishLayouts(long, long,
+	 * @deprecated As of 3.0.0, replaced by {@link #publishLayouts(long, long,
 	 *             long, boolean, long[], Map)}
 	 */
 	@Deprecated
@@ -1466,7 +1667,7 @@ public class StagingImpl implements Staging {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link #publishLayouts(long, long,
+	 * @deprecated As of 3.0.0, replaced by {@link #publishLayouts(long, long,
 	 *             long, boolean, long[], Map)}
 	 */
 	@Deprecated
@@ -1499,7 +1700,7 @@ public class StagingImpl implements Staging {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link #publishLayouts(long, long,
+	 * @deprecated As of 3.0.0, replaced by {@link #publishLayouts(long, long,
 	 *             long, boolean, Map)}
 	 */
 	@Deprecated
@@ -1681,8 +1882,8 @@ public class StagingImpl implements Staging {
 		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		long scopeGroupId = PortalUtil.getScopeGroupId(
-			PortalUtil.getHttpServletRequest(portletRequest),
+		long scopeGroupId = _portal.getScopeGroupId(
+			_portal.getHttpServletRequest(portletRequest),
 			portlet.getPortletId());
 
 		long plid = ParamUtil.getLong(portletRequest, "plid");
@@ -2016,7 +2217,7 @@ public class StagingImpl implements Staging {
 		throws PortalException {
 
 		setRecentLayoutBranchId(
-			PortalUtil.getUserId(request), layoutSetBranchId, plid,
+			_portal.getUserId(request), layoutSetBranchId, plid,
 			layoutBranchId);
 	}
 
@@ -2036,7 +2237,7 @@ public class StagingImpl implements Staging {
 		throws PortalException {
 
 		setRecentLayoutRevisionId(
-			PortalUtil.getUserId(request), layoutSetBranchId, plid,
+			_portal.getUserId(request), layoutSetBranchId, plid,
 			layoutRevisionId);
 	}
 
@@ -2056,7 +2257,7 @@ public class StagingImpl implements Staging {
 		throws PortalException {
 
 		setRecentLayoutSetBranchId(
-			PortalUtil.getUserId(request), layoutSetId, layoutSetBranchId);
+			_portal.getUserId(request), layoutSetId, layoutSetBranchId);
 	}
 
 	@Override
@@ -2083,7 +2284,7 @@ public class StagingImpl implements Staging {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, see {@link
+	 * @deprecated As of 3.0.0, see {@link
 	 *             com.liferay.portal.kernel.backgroundtask.BackgroundTaskExecutor#getIsolationLevel(
 	 *             )}
 	 */
@@ -2130,13 +2331,15 @@ public class StagingImpl implements Staging {
 	public void unschedulePublishToRemote(PortletRequest portletRequest)
 		throws PortalException {
 
-		long groupId = ParamUtil.getLong(portletRequest, "groupId");
+		long stagingGroupId = ParamUtil.getLong(
+			portletRequest, "stagingGroupId");
 
 		String jobName = ParamUtil.getString(portletRequest, "jobName");
 		String groupName = getSchedulerGroupName(
-			DestinationNames.LAYOUTS_REMOTE_PUBLISHER, groupId);
+			DestinationNames.LAYOUTS_REMOTE_PUBLISHER, stagingGroupId);
 
-		_layoutService.unschedulePublishToRemote(groupId, jobName, groupName);
+		_layoutService.unschedulePublishToRemote(
+			stagingGroupId, jobName, groupName);
 	}
 
 	@Override
@@ -2207,7 +2410,7 @@ public class StagingImpl implements Staging {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link
+	 * @deprecated As of 3.0.0, replaced by {@link
 	 *             ExportImportDateUtil#updateLastPublishDate(long, boolean,
 	 *             DateRange, Date)}
 	 */
@@ -2222,7 +2425,7 @@ public class StagingImpl implements Staging {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link
+	 * @deprecated As of 3.0.0, replaced by {@link
 	 *             ExportImportDateUtil#updateLastPublishDate(String,
 	 *             PortletPreferences, DateRange, Date)}
 	 */
@@ -2348,7 +2551,7 @@ public class StagingImpl implements Staging {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link #validateRemote(long, String,
+	 * @deprecated As of 3.0.0, replaced by {@link #validateRemote(long, String,
 	 *             int, String, boolean, long)}
 	 */
 	@Deprecated
@@ -2463,6 +2666,12 @@ public class StagingImpl implements Staging {
 			return masterLayoutBranch.getLayoutBranchId();
 		}
 		catch (NoSuchLayoutBranchException nslbe) {
+
+			// LPS-52675
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(nslbe, nslbe);
+			}
 		}
 
 		return 0;
@@ -2494,6 +2703,12 @@ public class StagingImpl implements Staging {
 				layoutBranchId = layoutBranch.getLayoutBranchId();
 			}
 			catch (NoSuchLayoutBranchException nslbe) {
+
+				// LPS-52675
+
+				if (_log.isDebugEnabled()) {
+					_log.debug(nslbe, nslbe);
+				}
 			}
 		}
 
@@ -2508,6 +2723,12 @@ public class StagingImpl implements Staging {
 				}
 			}
 			catch (NoSuchLayoutRevisionException nslre) {
+
+				// LPS-52675
+
+				if (_log.isDebugEnabled()) {
+					_log.debug(nslre, nslre);
+				}
 			}
 		}
 
@@ -2599,7 +2820,7 @@ public class StagingImpl implements Staging {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
+	 * @deprecated As of 3.0.0, with no direct replacement
 	 */
 	@Deprecated
 	protected long publishLayouts(
@@ -2625,6 +2846,7 @@ public class StagingImpl implements Staging {
 
 		if (sourceLayout.isTypeControlPanel()) {
 			stagingGroup = _groupLocalService.fetchGroup(scopeGroupId);
+
 			liveGroup = stagingGroup.getLiveGroup();
 
 			targetLayout = sourceLayout;
@@ -2633,6 +2855,7 @@ public class StagingImpl implements Staging {
 				 (sourceLayout.getScopeGroup().getGroupId() == scopeGroupId)) {
 
 			stagingGroup = sourceLayout.getScopeGroup();
+
 			liveGroup = stagingGroup.getLiveGroup();
 
 			targetLayout = _layoutLocalService.getLayout(
@@ -2640,6 +2863,7 @@ public class StagingImpl implements Staging {
 		}
 		else {
 			stagingGroup = sourceLayout.getGroup();
+
 			liveGroup = stagingGroup.getLiveGroup();
 
 			targetLayout = _layoutLocalService.fetchLayoutByUuidAndGroupId(
@@ -2661,7 +2885,7 @@ public class StagingImpl implements Staging {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
+	 * @deprecated As of 3.0.0, with no direct replacement
 	 */
 	@Deprecated
 	protected long publishToRemote(
@@ -2671,56 +2895,66 @@ public class StagingImpl implements Staging {
 		return 0;
 	}
 
-	@Reference(unbind = "-")
+	/**
+	 * @deprecated As of 4.0.0
+	 */
+	@Deprecated
 	protected void setExportImportConfigurationLocalService(
 		ExportImportConfigurationLocalService
 			exportImportConfigurationLocalService) {
-
-		_exportImportConfigurationLocalService =
-			exportImportConfigurationLocalService;
 	}
 
-	@Reference(unbind = "-")
+	/**
+	 * @deprecated As of 4.0.0
+	 */
+	@Deprecated
 	protected void setGroupLocalService(GroupLocalService groupLocalService) {
-		_groupLocalService = groupLocalService;
 	}
 
-	@Reference(unbind = "-")
+	/**
+	 * @deprecated As of 4.0.0
+	 */
+	@Deprecated
 	protected void setLayoutBranchLocalService(
 		LayoutBranchLocalService layoutBranchLocalService) {
-
-		_layoutBranchLocalService = layoutBranchLocalService;
 	}
 
-	@Reference(unbind = "-")
+	/**
+	 * @deprecated As of 4.0.0
+	 */
+	@Deprecated
 	protected void setLayoutLocalService(
 		LayoutLocalService layoutLocalService) {
-
-		_layoutLocalService = layoutLocalService;
 	}
 
-	@Reference(unbind = "-")
+	/**
+	 * @deprecated As of 4.0.0
+	 */
+	@Deprecated
 	protected void setLayoutRevisionLocalService(
 		LayoutRevisionLocalService layoutRevisionLocalService) {
-
-		_layoutRevisionLocalService = layoutRevisionLocalService;
 	}
 
-	@Reference(unbind = "-")
+	/**
+	 * @deprecated As of 4.0.0
+	 */
+	@Deprecated
 	protected void setLayoutService(LayoutService layoutService) {
-		_layoutService = layoutService;
 	}
 
-	@Reference(unbind = "-")
+	/**
+	 * @deprecated As of 4.0.0
+	 */
+	@Deprecated
 	protected void setLayoutSetBranchLocalService(
 		LayoutSetBranchLocalService layoutSetBranchLocalService) {
-
-		_layoutSetBranchLocalService = layoutSetBranchLocalService;
 	}
 
-	@Reference(unbind = "-")
+	/**
+	 * @deprecated As of 4.0.0
+	 */
+	@Deprecated
 	protected void setLockManager(LockManager lockManager) {
-		_lockManager = lockManager;
 	}
 
 	protected void setRecentLayoutBranchId(
@@ -2760,11 +2994,12 @@ public class StagingImpl implements Staging {
 		ProxiedLayoutsThreadLocal.clearProxiedLayouts();
 	}
 
-	@Reference(unbind = "-")
+	/**
+	 * @deprecated As of 4.0.0
+	 */
+	@Deprecated
 	protected void setRecentLayoutBranchLocalService(
 		RecentLayoutBranchLocalService recentLayoutBranchLocalService) {
-
-		_recentLayoutBranchLocalService = recentLayoutBranchLocalService;
 	}
 
 	protected void setRecentLayoutRevisionId(
@@ -2820,11 +3055,12 @@ public class StagingImpl implements Staging {
 			userId, layoutSetBranchId, plid, layoutBranchId);
 	}
 
-	@Reference (unbind = "-")
+	/**
+	 * @deprecated As of 4.0.0
+	 */
+	@Deprecated
 	protected void setRecentLayoutRevisionLocalService(
 		RecentLayoutRevisionLocalService recentLayoutRevisionLocalService) {
-
-		_recentLayoutRevisionLocalService = recentLayoutRevisionLocalService;
 	}
 
 	protected void setRecentLayoutSetBranchId(
@@ -2865,30 +3101,35 @@ public class StagingImpl implements Staging {
 		ProxiedLayoutsThreadLocal.clearProxiedLayouts();
 	}
 
-	@Reference(unbind = "-")
+	/**
+	 * @deprecated As of 4.0.0
+	 */
+	@Deprecated
 	protected void setRecentLayoutSetBranchLocalService(
 		RecentLayoutSetBranchLocalService recentLayoutSetBranchLocalService) {
-
-		_recentLayoutSetBranchLocalService = recentLayoutSetBranchLocalService;
 	}
 
-	@Reference(unbind = "-")
+	/**
+	 * @deprecated As of 4.0.0
+	 */
+	@Deprecated
 	protected void setStagingLocalService(
 		StagingLocalService stagingLocalService) {
-
-		_stagingLocalService = stagingLocalService;
 	}
 
-	@Reference(unbind = "-")
+	/**
+	 * @deprecated As of 4.0.0
+	 */
+	@Deprecated
 	protected void setUserLocalService(UserLocalService userLocalService) {
-		_userLocalService = userLocalService;
 	}
 
-	@Reference(unbind = "-")
+	/**
+	 * @deprecated As of 4.0.0
+	 */
+	@Deprecated
 	protected void setWorkflowInstanceLinkLocalService(
 		WorkflowInstanceLinkLocalService workflowInstanceLinkLocalService) {
-
-		_workflowInstanceLinkLocalService = workflowInstanceLinkLocalService;
 	}
 
 	protected void validateRemoteGroup(
@@ -2963,6 +3204,13 @@ public class StagingImpl implements Staging {
 			}
 		}
 		catch (NoSuchGroupException nsge) {
+
+			// LPS-52675
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(nsge, nsge);
+			}
+
 			RemoteExportException ree = new RemoteExportException(
 				RemoteExportException.NO_GROUP);
 
@@ -2971,6 +3219,13 @@ public class StagingImpl implements Staging {
 			throw ree;
 		}
 		catch (PrincipalException pe) {
+
+			// LPS-52675
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(pe, pe);
+			}
+
 			RemoteExportException ree = new RemoteExportException(
 				RemoteExportException.NO_PERMISSIONS);
 
@@ -2979,11 +3234,25 @@ public class StagingImpl implements Staging {
 			throw ree;
 		}
 		catch (RemoteAuthException rae) {
+
+			// LPS-52675
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(rae, rae);
+			}
+
 			rae.setURL(remoteURL);
 
 			throw rae;
 		}
 		catch (SystemException se) {
+
+			// LPS-52675
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(se, se);
+			}
+
 			RemoteExportException ree = new RemoteExportException(
 				RemoteExportException.BAD_CONNECTION, se.getMessage());
 
@@ -2998,21 +3267,57 @@ public class StagingImpl implements Staging {
 
 	private static final Log _log = LogFactoryUtil.getLog(StagingImpl.class);
 
+	@Reference
+	private DLValidator _dlValidator;
+
+	@Reference
 	private ExportImportConfigurationLocalService
 		_exportImportConfigurationLocalService;
+
+	@Reference
 	private GroupLocalService _groupLocalService;
+
+	@Reference
 	private LayoutBranchLocalService _layoutBranchLocalService;
+
+	@Reference
 	private LayoutLocalService _layoutLocalService;
+
+	@Reference
 	private LayoutRevisionLocalService _layoutRevisionLocalService;
+
+	@Reference
 	private LayoutService _layoutService;
+
+	@Reference
 	private LayoutSetBranchLocalService _layoutSetBranchLocalService;
+
+	@Reference
 	private LockManager _lockManager;
+
+	@Reference
+	private Portal _portal;
+
+	@Reference
+	private PortletLocalService _portletLocalService;
+
+	@Reference
 	private RecentLayoutBranchLocalService _recentLayoutBranchLocalService;
+
+	@Reference
 	private RecentLayoutRevisionLocalService _recentLayoutRevisionLocalService;
+
+	@Reference
 	private RecentLayoutSetBranchLocalService
 		_recentLayoutSetBranchLocalService;
+
+	@Reference
 	private StagingLocalService _stagingLocalService;
+
+	@Reference
 	private UserLocalService _userLocalService;
+
+	@Reference
 	private WorkflowInstanceLinkLocalService _workflowInstanceLinkLocalService;
 
 	private class ScheduleInformation {

@@ -17,6 +17,7 @@ package com.liferay.users.admin.web.theme.contributor;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Contact;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalService;
@@ -56,8 +57,11 @@ public class UsersTemplateContextContributor
 		contextObjects.put("is_default_user", user.isDefaultUser());
 
 		try {
-			contextObjects.put("is_female", user.isFemale());
-			contextObjects.put("is_male", user.isMale());
+			Contact contact = user.getContact();
+
+			contextObjects.put("is_female", !contact.isMale());
+			contextObjects.put("is_male", contact.isMale());
+			contextObjects.put("user_birthday", contact.getBirthday());
 		}
 		catch (PortalException pe) {
 			_log.error(pe, pe);
@@ -66,20 +70,13 @@ public class UsersTemplateContextContributor
 		contextObjects.put("is_setup_complete", user.isSetupComplete());
 		contextObjects.put("language", themeDisplay.getLanguageId());
 		contextObjects.put("language_id", user.getLanguageId());
-
-		try {
-			contextObjects.put("user_birthday", user.getBirthday());
-		}
-		catch (PortalException pe) {
-			_log.error(pe, pe);
-		}
-
 		contextObjects.put("user_comments", user.getComments());
 		contextObjects.put("user_email_address", user.getEmailAddress());
 		contextObjects.put("user_first_name", user.getFirstName());
 		contextObjects.put(
 			"user_greeting", HtmlUtil.escape(user.getGreeting()));
 		contextObjects.put("user_id", user.getUserId());
+		contextObjects.put("user_initialized", true);
 		contextObjects.put("user_last_login_ip", user.getLastLoginIP());
 		contextObjects.put("user_last_name", user.getLastName());
 		contextObjects.put("user_login_ip", user.getLoginIP());

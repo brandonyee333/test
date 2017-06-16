@@ -51,8 +51,7 @@ public class DLFolderLocalServiceWrapper implements DLFolderLocalService,
 	}
 
 	@Override
-	public boolean hasInheritableLock(long folderId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public boolean hasInheritableLock(long folderId) {
 		return _dlFolderLocalService.hasInheritableLock(folderId);
 	}
 
@@ -181,6 +180,12 @@ public class DLFolderLocalServiceWrapper implements DLFolderLocalService,
 	public com.liferay.document.library.kernel.model.DLFolder fetchDLFolderByUuidAndGroupId(
 		java.lang.String uuid, long groupId) {
 		return _dlFolderLocalService.fetchDLFolderByUuidAndGroupId(uuid, groupId);
+	}
+
+	@Override
+	public com.liferay.document.library.kernel.model.DLFolder fetchFolder(
+		java.lang.String uuid, long groupId) {
+		return _dlFolderLocalService.fetchFolder(uuid, groupId);
 	}
 
 	@Override

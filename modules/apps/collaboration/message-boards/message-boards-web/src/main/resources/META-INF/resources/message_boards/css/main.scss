@@ -2,6 +2,10 @@
 @import "mixins";
 
 .portlet-asset-publisher, .portlet-message-boards, .portlet-trash {
+	.advanced-reply {
+		float: right;
+	}
+
 	.category-subscriptions {
 		clear: both;
 		margin-bottom: 1em;
@@ -57,10 +61,6 @@
 			list-style: none;
 		}
 
-		.message-attachment {
-			padding: 0.5em;
-		}
-
 		.deleted-input {
 			margin-left: -2em;
 			padding: 0;
@@ -90,12 +90,6 @@
 			padding-left: 0;
 		}
 
-		.message-content {
-			img {
-				max-width: 100%;
-			}
-		}
-
 		.reply-to-main-thread-container {
 			text-align: center;
 		}
@@ -103,6 +97,14 @@
 
 	.message-container {
 		padding-left: 10px;
+	}
+
+	.message-content {
+		word-break: break-all;
+
+		img {
+			max-width: 100%;
+		}
 	}
 
 	.thread-bottom, .thread-top {
@@ -189,6 +191,10 @@
 			font-weight: bold;
 			margin-right: 1em;
 		}
+
+		.list-group-item-content span.h5 {
+			margin-right: 12px;
+		}
 	}
 
 	.views {
@@ -224,7 +230,6 @@
 	}
 
 	.thread-controls {
-		border: 1px solid #CCC;
 		margin-bottom: 5px;
 		padding: 3px 5px;
 	}
@@ -235,10 +240,6 @@
 
 	.thread-actions {
 		float: right;
-	}
-
-	.thread-user-rank {
-		display: block;
 	}
 
 	.thread-priority {

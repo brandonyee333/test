@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.instance.lifecycle.PortalInstanceLifecycleManag
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.messaging.async.Async;
 import com.liferay.portal.kernel.model.Account;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.CompanyConstants;
@@ -60,7 +61,6 @@ import com.liferay.portal.kernel.search.facet.AssetEntriesFacet;
 import com.liferay.portal.kernel.search.facet.Facet;
 import com.liferay.portal.kernel.search.facet.ScopeFacet;
 import com.liferay.portal.kernel.search.facet.faceted.searcher.FacetedSearcher;
-import com.liferay.portal.kernel.search.facet.faceted.searcher.FacetedSearcherManager;
 import com.liferay.portal.kernel.search.facet.faceted.searcher.FacetedSearcherManagerUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.CompanyProvider;
@@ -71,10 +71,12 @@ import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TimeZoneUtil;
@@ -154,7 +156,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 		// Company
 
-		virtualHostname = StringUtil.toLowerCase(virtualHostname.trim());
+		virtualHostname = StringUtil.toLowerCase(
+			StringUtil.trim(virtualHostname));
 
 		if (Validator.isNull(webId) ||
 			webId.equals(PropsValues.COMPANY_DEFAULT_WEB_ID) ||
@@ -368,6 +371,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 					defaultUser.getLocale(), "welcome", null, false);
 
 				defaultUser.setGreeting(greeting + StringPool.EXCLAMATION);
+
 				defaultUser.setLoginDate(now);
 				defaultUser.setFailedLoginAttempts(0);
 				defaultUser.setAgreedToTermsOfUse(true);
@@ -549,7 +553,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 	 */
 	@Override
 	public Company fetchCompanyByVirtualHost(String virtualHostname) {
-		virtualHostname = StringUtil.toLowerCase(virtualHostname.trim());
+		virtualHostname = StringUtil.toLowerCase(
+			StringUtil.trim(virtualHostname));
 
 		VirtualHost virtualHost = virtualHostPersistence.fetchByHostname(
 			virtualHostname);
@@ -644,7 +649,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		throws PortalException {
 
 		try {
-			virtualHostname = StringUtil.toLowerCase(virtualHostname.trim());
+			virtualHostname = StringUtil.toLowerCase(
+				StringUtil.trim(virtualHostname));
 
 			VirtualHost virtualHost = virtualHostPersistence.findByHostname(
 				virtualHostname);
@@ -783,11 +789,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		long companyId, long userId, String portletId, long groupId,
 		String type, String keywords, int start, int end) {
 
-		FacetedSearcherManager facetedSearcherManager =
-			FacetedSearcherManagerUtil.getFacetedSearcherManager();
-
 		FacetedSearcher facetedSearcher =
-			facetedSearcherManager.createFacetedSearcher();
+			FacetedSearcherManagerUtil.createFacetedSearcher();
 
 		SearchContext searchContext = createSearchContext(
 			companyId, userId, portletId, groupId, keywords, start, end);
@@ -823,7 +826,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 		// Company
 
-		virtualHostname = StringUtil.toLowerCase(virtualHostname.trim());
+		virtualHostname = StringUtil.toLowerCase(
+			StringUtil.trim(virtualHostname));
 
 		if (!active) {
 			if (companyId == PortalInstances.getDefaultCompanyId()) {
@@ -889,7 +893,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 		// Company
 
-		virtualHostname = StringUtil.toLowerCase(virtualHostname.trim());
+		virtualHostname = StringUtil.toLowerCase(
+			StringUtil.trim(virtualHostname));
 
 		Company company = companyPersistence.findByPrimaryKey(companyId);
 
@@ -986,6 +991,90 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		user.setTimeZoneId(timeZoneId);
 
 		userPersistence.update(user);
+
+		updateDisplayGroupNames(companyId);
+	}
+
+	@Async
+	@Override
+	public void updateDisplayGroupNames(long companyId) throws PortalException {
+		User user = userLocalService.getDefaultUser(companyId);
+
+		Locale locale = user.getLocale();
+
+		if (locale.equals(LocaleUtil.getDefault())) {
+			return;
+		}
+
+		ActionableDynamicQuery groupActionableDynamicQuery =
+			groupLocalService.getActionableDynamicQuery();
+
+		groupActionableDynamicQuery.setAddCriteriaMethod(
+			new ActionableDynamicQuery.AddCriteriaMethod() {
+
+				@Override
+				public void addCriteria(DynamicQuery dynamicQuery) {
+					Property activeProperty = PropertyFactoryUtil.forName(
+						"active");
+
+					dynamicQuery.add(activeProperty.eq(Boolean.TRUE));
+
+					Property nameProperty = PropertyFactoryUtil.forName("name");
+
+					dynamicQuery.add(nameProperty.isNotNull());
+
+					Property typeProperty = PropertyFactoryUtil.forName("type");
+
+					dynamicQuery.add(
+						typeProperty.ne(GroupConstants.TYPE_SITE_SYSTEM));
+				}
+
+			});
+		groupActionableDynamicQuery.setCompanyId(user.getCompanyId());
+		groupActionableDynamicQuery.setPerformActionMethod(
+			new ActionableDynamicQuery.PerformActionMethod<Group>() {
+
+				@Override
+				public void performAction(Group group) {
+					Map<Locale, String> nameMap = group.getNameMap();
+
+					if (MapUtil.isEmpty(nameMap)) {
+						return;
+					}
+
+					Locale locale = user.getLocale();
+
+					String groupDefaultName = nameMap.get(locale);
+
+					if (Validator.isNotNull(groupDefaultName)) {
+						return;
+					}
+
+					String oldGroupDefaultName = nameMap.get(
+						LocaleUtil.getDefault());
+
+					if (_log.isWarnEnabled()) {
+						StringBundler sb = new StringBundler(5);
+
+						sb.append("No name was found for locale ");
+						sb.append(locale);
+						sb.append(". Using \"");
+						sb.append(oldGroupDefaultName);
+						sb.append("\" as the name instead.");
+
+						_log.warn(sb.toString());
+					}
+
+					nameMap.put(locale, oldGroupDefaultName);
+
+					group.setNameMap(nameMap);
+
+					groupLocalService.updateGroup(group);
+				}
+
+			});
+
+		groupActionableDynamicQuery.performActions();
 	}
 
 	/**
@@ -1603,6 +1692,12 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 				}
 			}
 			catch (NoSuchVirtualHostException nsvhe) {
+
+				// LPS-52675
+
+				if (_log.isDebugEnabled()) {
+					_log.debug(nsvhe, nsvhe);
+				}
 			}
 		}
 	}

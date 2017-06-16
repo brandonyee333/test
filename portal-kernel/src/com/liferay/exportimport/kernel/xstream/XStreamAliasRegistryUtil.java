@@ -14,6 +14,8 @@
 
 package com.liferay.exportimport.kernel.xstream;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
 import com.liferay.registry.ServiceReference;
@@ -23,16 +25,18 @@ import com.liferay.registry.ServiceTrackerCustomizer;
 import com.liferay.registry.collections.ServiceRegistrationMap;
 import com.liferay.registry.collections.ServiceRegistrationMapImpl;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Mate Thurzo
  */
+@ProviderType
 public class XStreamAliasRegistryUtil {
 
 	public static Map<Class<?>, String> getAliases() {
-		return _instance._getAliases();
+		return new HashMap<>(_instance._getAliases());
 	}
 
 	public static void register(Class<?> clazz, String name) {

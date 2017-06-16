@@ -200,9 +200,16 @@
 			<finder-column name="name" />
 			<finder-column name="description" />
 		</finder>
+		<finder db-index="false" name="G_C_N_D" return-type="Collection">
+			<finder-column arrayable-operator="OR" name="groupId" />
+			<finder-column name="classNameId" />
+			<finder-column name="name" />
+			<finder-column name="description" />
+		</finder>
 
 		<!-- References -->
 
+		<reference entity="DDMDataProviderInstance" package-path="com.liferay.dynamic.data.mapping" />
 		<reference entity="DDMDataProviderInstanceLink" package-path="com.liferay.dynamic.data.mapping" />
 		<reference entity="DDMStructureLayout" package-path="com.liferay.dynamic.data.mapping" />
 		<reference entity="DDMStructureLink" package-path="com.liferay.dynamic.data.mapping" />
@@ -515,6 +522,7 @@
 		<exception>ContentData</exception>
 		<exception>ContentName</exception>
 		<exception>DataProviderInstanceName</exception>
+		<exception>InvalidParentStructure</exception>
 		<exception>InvalidStructureVersion</exception>
 		<exception>InvalidTemplateVersion</exception>
 		<exception>RequiredStructure</exception>

@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.util.StackTraceUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.servlet.filters.BasePortalFilter;
@@ -40,8 +41,8 @@ import com.liferay.registry.ServiceReference;
 import com.liferay.registry.ServiceTracker;
 import com.liferay.registry.ServiceTrackerCustomizer;
 
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
@@ -54,15 +55,6 @@ import javax.servlet.http.HttpSession;
  * @author Raymond Augé
  */
 public class AutoLoginFilter extends BasePortalFilter {
-
-	public AutoLoginFilter() {
-		Registry registry = RegistryUtil.getRegistry();
-
-		_serviceTracker = registry.trackServices(
-			AutoLogin.class, new AutoLoginServiceTrackerCustomizer());
-
-		_serviceTracker.open();
-	}
 
 	protected String getLoginRemoteUser(
 			HttpServletRequest request, HttpServletResponse response,
@@ -123,22 +115,23 @@ public class AutoLoginFilter extends BasePortalFilter {
 		session.setAttribute("j_remoteuser", jUsername);
 
 		if (PropsValues.PORTAL_JAAS_ENABLE) {
-			String redirect = PortalUtil.getPathMain().concat(
-				"/portal/protected");
+			String mainPath = PortalUtil.getPathMain();
+
+			String redirect = mainPath.concat("/portal/protected");
 
 			if (PropsValues.AUTH_FORWARD_BY_LAST_PATH) {
+				redirect = redirect.concat("?redirect=");
+
 				String autoLoginRedirect = (String)request.getAttribute(
 					AutoLogin.AUTO_LOGIN_REDIRECT_AND_CONTINUE);
 
-				redirect = redirect.concat("?redirect=");
+				if (Validator.isNull(autoLoginRedirect)) {
+					autoLoginRedirect = PortalUtil.getCurrentCompleteURL(
+						request);
+				}
 
-				if (Validator.isNotNull(autoLoginRedirect)) {
-					redirect = redirect.concat(autoLoginRedirect);
-				}
-				else {
-					redirect = redirect.concat(
-						PortalUtil.getCurrentCompleteURL(request));
-				}
+				redirect = redirect.concat(
+					URLCodec.encodeURL(autoLoginRedirect));
 			}
 
 			response.sendRedirect(redirect);
@@ -194,8 +187,8 @@ public class AutoLoginFilter extends BasePortalFilter {
 		String remoteUser = request.getRemoteUser();
 		String jUserName = (String)session.getAttribute("j_username");
 
-		if (!PropsValues.AUTH_LOGIN_DISABLED &&
-			(remoteUser == null) && (jUserName == null)) {
+		if (!PropsValues.AUTH_LOGIN_DISABLED && (remoteUser == null) &&
+			(jUserName == null)) {
 
 			for (AutoLogin autoLogin : _autoLogins) {
 				try {
@@ -274,10 +267,9 @@ public class AutoLoginFilter extends BasePortalFilter {
 	private static final Log _log = LogFactoryUtil.getLog(
 		AutoLoginFilter.class);
 
-	private static final List<AutoLogin> _autoLogins =
-		new CopyOnWriteArrayList<>();
-
-	private final ServiceTracker<?, AutoLogin> _serviceTracker;
+	private static final Set<AutoLogin> _autoLogins =
+		new CopyOnWriteArraySet<>();
+	private static final ServiceTracker<?, AutoLogin> _serviceTracker;
 
 	private static class AutoLoginServiceTrackerCustomizer
 		implements ServiceTrackerCustomizer<AutoLogin, AutoLogin> {
@@ -315,6 +307,15 @@ public class AutoLoginFilter extends BasePortalFilter {
 			_autoLogins.remove(autoLogin);
 		}
 
+	}
+
+	static {
+		Registry registry = RegistryUtil.getRegistry();
+
+		_serviceTracker = registry.trackServices(
+			AutoLogin.class, new AutoLoginServiceTrackerCustomizer());
+
+		_serviceTracker.open();
 	}
 
 }

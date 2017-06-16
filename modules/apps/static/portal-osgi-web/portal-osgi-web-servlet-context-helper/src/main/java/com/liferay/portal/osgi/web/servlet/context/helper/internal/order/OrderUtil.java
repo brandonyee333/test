@@ -349,6 +349,7 @@ public class OrderUtil {
 				EnumMap<Order.Path, String[]> curRoutes = curOrder.getRoutes();
 
 				String[] curPathNames = curRoutes.get(path);
+
 				String fragmentName = webXMLDefinition.getFragmentName();
 
 				if (Arrays.binarySearch(curPathNames, fragmentName) >= 0) {
@@ -385,9 +386,7 @@ public class OrderUtil {
 					EnumMap<Order.Path, String[]> routes = new EnumMap<>(
 						Order.Path.class);
 
-					routes.put(
-						path,
-						_appendAndSort(pathNames, curPathNames));
+					routes.put(path, _appendAndSort(pathNames, curPathNames));
 					routes.put(oppositePath, orderRoutes.get(oppositePath));
 
 					order.setRoutes(routes);

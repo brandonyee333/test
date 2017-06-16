@@ -576,6 +576,7 @@ public class ThreadPoolExecutorTest {
 
 		Assert.assertTrue(
 			threadPoolHandler instanceof ThreadPoolHandlerAdapter);
+
 		Assert.assertFalse(threadPoolExecutor.isShutdown());
 		Assert.assertFalse(threadPoolExecutor.isTerminating());
 		Assert.assertFalse(threadPoolExecutor.isTerminated());
@@ -606,6 +607,7 @@ public class ThreadPoolExecutorTest {
 
 		Assert.assertTrue(
 			threadPoolHandler instanceof ThreadPoolHandlerAdapter);
+
 		Assert.assertFalse(threadPoolExecutor.isShutdown());
 		Assert.assertFalse(threadPoolExecutor.isTerminating());
 		Assert.assertFalse(threadPoolExecutor.isTerminated());
@@ -824,7 +826,7 @@ public class ThreadPoolExecutorTest {
 		List<Runnable> rejectedList =
 			recordRejectedExecutionHandler.getRejectedList();
 
-		Assert.assertEquals(1, rejectedList.size());
+		Assert.assertEquals(rejectedList.toString(), 1, rejectedList.size());
 		Assert.assertSame(markerBlockingJob, rejectedList.get(0));
 	}
 
@@ -1020,8 +1022,10 @@ public class ThreadPoolExecutorTest {
 			List<Runnable> rejectedList =
 				recordRejectedExecutionHandler.getRejectedList();
 
-			Assert.assertEquals(1, rejectedList.size());
+			Assert.assertEquals(
+				rejectedList.toString(), 1, rejectedList.size());
 			Assert.assertSame(markerBlockingJob, rejectedList.get(0));
+
 			Assert.assertFalse(markerBlockingJob.isStarted());
 		}
 		finally {
@@ -1064,17 +1068,20 @@ public class ThreadPoolExecutorTest {
 
 			threadPoolExecutor.execute(new MarkerBlockingJob(true));
 
-			Assert.assertEquals(0, rejectedList.size());
+			Assert.assertEquals(
+				rejectedList.toString(), 0, rejectedList.size());
 
 			threadPoolExecutor.execute(new MarkerBlockingJob(true));
 
-			Assert.assertEquals(0, rejectedList.size());
+			Assert.assertEquals(
+				rejectedList.toString(), 0, rejectedList.size());
 
 			MarkerBlockingJob markerBlockingJob = new MarkerBlockingJob();
 
 			threadPoolExecutor.execute(markerBlockingJob);
 
-			Assert.assertEquals(1, rejectedList.size());
+			Assert.assertEquals(
+				rejectedList.toString(), 1, rejectedList.size());
 			Assert.assertSame(markerBlockingJob, rejectedList.get(0));
 			Assert.assertFalse(markerBlockingJob.isStarted());
 		}
@@ -1171,7 +1178,7 @@ public class ThreadPoolExecutorTest {
 			Set<? extends AbstractQueuedSynchronizer> workerTasks =
 				threadPoolExecutor.getWorkerTasks();
 
-			Assert.assertEquals(1, workerTasks.size());
+			Assert.assertEquals(workerTasks.toString(), 1, workerTasks.size());
 
 			headWorkerTask = workerTasks.iterator().next();
 

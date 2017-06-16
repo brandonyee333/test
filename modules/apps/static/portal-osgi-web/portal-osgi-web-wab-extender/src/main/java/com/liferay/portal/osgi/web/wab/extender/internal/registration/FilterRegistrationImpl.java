@@ -32,7 +32,6 @@ import javax.servlet.FilterRegistration;
 
 /**
  * @author Juan Gonzalez
- *
  */
 public class FilterRegistrationImpl implements FilterRegistration.Dynamic {
 
@@ -121,8 +120,8 @@ public class FilterRegistrationImpl implements FilterRegistration.Dynamic {
 	}
 
 	@Override
-	public void setAsyncSupported(boolean isAsyncSupported) {
-		_asyncSupported = isAsyncSupported;
+	public void setAsyncSupported(boolean asyncSupported) {
+		_asyncSupported = asyncSupported;
 	}
 
 	public void setClassName(String className) {

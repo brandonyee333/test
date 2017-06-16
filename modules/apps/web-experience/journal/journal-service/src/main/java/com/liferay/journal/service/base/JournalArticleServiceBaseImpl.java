@@ -24,7 +24,7 @@ import com.liferay.expando.kernel.service.persistence.ExpandoRowPersistence;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleService;
 import com.liferay.journal.service.persistence.JournalArticleFinder;
-import com.liferay.journal.service.persistence.JournalArticleImagePersistence;
+import com.liferay.journal.service.persistence.JournalArticleLocalizationPersistence;
 import com.liferay.journal.service.persistence.JournalArticlePersistence;
 import com.liferay.journal.service.persistence.JournalArticleResourcePersistence;
 import com.liferay.journal.service.persistence.JournalContentSearchPersistence;
@@ -44,7 +44,6 @@ import com.liferay.portal.kernel.service.persistence.CompanyPersistence;
 import com.liferay.portal.kernel.service.persistence.GroupPersistence;
 import com.liferay.portal.kernel.service.persistence.ImagePersistence;
 import com.liferay.portal.kernel.service.persistence.PortletPreferencesPersistence;
-import com.liferay.portal.kernel.service.persistence.SubscriptionPersistence;
 import com.liferay.portal.kernel.service.persistence.SystemEventPersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.service.persistence.WorkflowDefinitionLinkPersistence;
@@ -495,44 +494,6 @@ public abstract class JournalArticleServiceBaseImpl extends BaseServiceImpl
 	}
 
 	/**
-	 * Returns the subscription local service.
-	 *
-	 * @return the subscription local service
-	 */
-	public com.liferay.portal.kernel.service.SubscriptionLocalService getSubscriptionLocalService() {
-		return subscriptionLocalService;
-	}
-
-	/**
-	 * Sets the subscription local service.
-	 *
-	 * @param subscriptionLocalService the subscription local service
-	 */
-	public void setSubscriptionLocalService(
-		com.liferay.portal.kernel.service.SubscriptionLocalService subscriptionLocalService) {
-		this.subscriptionLocalService = subscriptionLocalService;
-	}
-
-	/**
-	 * Returns the subscription persistence.
-	 *
-	 * @return the subscription persistence
-	 */
-	public SubscriptionPersistence getSubscriptionPersistence() {
-		return subscriptionPersistence;
-	}
-
-	/**
-	 * Sets the subscription persistence.
-	 *
-	 * @param subscriptionPersistence the subscription persistence
-	 */
-	public void setSubscriptionPersistence(
-		SubscriptionPersistence subscriptionPersistence) {
-		this.subscriptionPersistence = subscriptionPersistence;
-	}
-
-	/**
 	 * Returns the system event local service.
 	 *
 	 * @return the system event local service
@@ -911,18 +872,18 @@ public abstract class JournalArticleServiceBaseImpl extends BaseServiceImpl
 	}
 
 	/**
-	 * Returns the d l app local service.
+	 * Returns the dl app local service.
 	 *
-	 * @return the d l app local service
+	 * @return the dl app local service
 	 */
 	public com.liferay.document.library.kernel.service.DLAppLocalService getDLAppLocalService() {
 		return dlAppLocalService;
 	}
 
 	/**
-	 * Sets the d l app local service.
+	 * Sets the dl app local service.
 	 *
-	 * @param dlAppLocalService the d l app local service
+	 * @param dlAppLocalService the dl app local service
 	 */
 	public void setDLAppLocalService(
 		com.liferay.document.library.kernel.service.DLAppLocalService dlAppLocalService) {
@@ -930,18 +891,18 @@ public abstract class JournalArticleServiceBaseImpl extends BaseServiceImpl
 	}
 
 	/**
-	 * Returns the d l app remote service.
+	 * Returns the dl app remote service.
 	 *
-	 * @return the d l app remote service
+	 * @return the dl app remote service
 	 */
 	public com.liferay.document.library.kernel.service.DLAppService getDLAppService() {
 		return dlAppService;
 	}
 
 	/**
-	 * Sets the d l app remote service.
+	 * Sets the dl app remote service.
 	 *
-	 * @param dlAppService the d l app remote service
+	 * @param dlAppService the dl app remote service
 	 */
 	public void setDLAppService(
 		com.liferay.document.library.kernel.service.DLAppService dlAppService) {
@@ -1120,41 +1081,22 @@ public abstract class JournalArticleServiceBaseImpl extends BaseServiceImpl
 	}
 
 	/**
-	 * Returns the journal article image local service.
+	 * Returns the journal article localization persistence.
 	 *
-	 * @return the journal article image local service
+	 * @return the journal article localization persistence
 	 */
-	public com.liferay.journal.service.JournalArticleImageLocalService getJournalArticleImageLocalService() {
-		return journalArticleImageLocalService;
+	public JournalArticleLocalizationPersistence getJournalArticleLocalizationPersistence() {
+		return journalArticleLocalizationPersistence;
 	}
 
 	/**
-	 * Sets the journal article image local service.
+	 * Sets the journal article localization persistence.
 	 *
-	 * @param journalArticleImageLocalService the journal article image local service
+	 * @param journalArticleLocalizationPersistence the journal article localization persistence
 	 */
-	public void setJournalArticleImageLocalService(
-		com.liferay.journal.service.JournalArticleImageLocalService journalArticleImageLocalService) {
-		this.journalArticleImageLocalService = journalArticleImageLocalService;
-	}
-
-	/**
-	 * Returns the journal article image persistence.
-	 *
-	 * @return the journal article image persistence
-	 */
-	public JournalArticleImagePersistence getJournalArticleImagePersistence() {
-		return journalArticleImagePersistence;
-	}
-
-	/**
-	 * Sets the journal article image persistence.
-	 *
-	 * @param journalArticleImagePersistence the journal article image persistence
-	 */
-	public void setJournalArticleImagePersistence(
-		JournalArticleImagePersistence journalArticleImagePersistence) {
-		this.journalArticleImagePersistence = journalArticleImagePersistence;
+	public void setJournalArticleLocalizationPersistence(
+		JournalArticleLocalizationPersistence journalArticleLocalizationPersistence) {
+		this.journalArticleLocalizationPersistence = journalArticleLocalizationPersistence;
 	}
 
 	/**
@@ -1400,10 +1342,6 @@ public abstract class JournalArticleServiceBaseImpl extends BaseServiceImpl
 	protected PortletPreferencesPersistence portletPreferencesPersistence;
 	@ServiceReference(type = com.liferay.portal.kernel.service.ResourceLocalService.class)
 	protected com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService;
-	@ServiceReference(type = com.liferay.portal.kernel.service.SubscriptionLocalService.class)
-	protected com.liferay.portal.kernel.service.SubscriptionLocalService subscriptionLocalService;
-	@ServiceReference(type = SubscriptionPersistence.class)
-	protected SubscriptionPersistence subscriptionPersistence;
 	@ServiceReference(type = com.liferay.portal.kernel.service.SystemEventLocalService.class)
 	protected com.liferay.portal.kernel.service.SystemEventLocalService systemEventLocalService;
 	@ServiceReference(type = SystemEventPersistence.class)
@@ -1466,10 +1404,8 @@ public abstract class JournalArticleServiceBaseImpl extends BaseServiceImpl
 	protected com.liferay.trash.kernel.service.TrashVersionLocalService trashVersionLocalService;
 	@ServiceReference(type = TrashVersionPersistence.class)
 	protected TrashVersionPersistence trashVersionPersistence;
-	@BeanReference(type = com.liferay.journal.service.JournalArticleImageLocalService.class)
-	protected com.liferay.journal.service.JournalArticleImageLocalService journalArticleImageLocalService;
-	@BeanReference(type = JournalArticleImagePersistence.class)
-	protected JournalArticleImagePersistence journalArticleImagePersistence;
+	@BeanReference(type = JournalArticleLocalizationPersistence.class)
+	protected JournalArticleLocalizationPersistence journalArticleLocalizationPersistence;
 	@BeanReference(type = com.liferay.journal.service.JournalArticleResourceLocalService.class)
 	protected com.liferay.journal.service.JournalArticleResourceLocalService journalArticleResourceLocalService;
 	@BeanReference(type = JournalArticleResourcePersistence.class)

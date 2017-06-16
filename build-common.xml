@@ -15,10 +15,6 @@
 		<path location="${project.dir.native}" />
 	</pathconvert>
 
-	<pathconvert dirsep="/" property="project.dir.unix">
-		<path location="${project.dir.native}" />
-	</pathconvert>
-
 	<property name="sdk.dir" value="${project.dir}/tools/sdk" />
 
 	<property name="test.properties" value="com/liferay/portal/tools/dependencies/portal-tools.properties" />
@@ -61,9 +57,14 @@
 		<fileset dir="${project.dir}/lib/portal" includes="*.jar" />
 	</path>
 
+	<path id="lib.pre.classpath">
+		<fileset dir="${project.dir}/tmp/lib-pre" erroronmissingdir="false" includes="*.jar" />
+	</path>
+
 	<path id="project.classpath">
 		<pathelement path="${classpath.full}" />
 		<path refid="lib.classpath" />
+		<path refid="lib.pre.classpath" />
 	</path>
 
 	<path id="web.classpath">
@@ -71,71 +72,58 @@
 		<fileset dir="${project.dir}/lib/development" includes="jsp-api.jar,mail.jar,servlet-api.jar" />
 		<fileset dir="${project.dir}/lib/global" includes="*.jar" />
 		<fileset dir="${project.dir}/lib/portal" includes="bnd.jar" />
+		<path refid="lib.pre.classpath" />
 		<path refid="web-lib.classpath" />
 	</path>
 
 	<taskdef classpathref="lib.classpath" resource="aQute/bnd/ant/taskdef.properties" />
-	<taskdef classpathref="lib.classpath" resource="axis-tasks.properties" />
-	<taskdef classpathref="lib.classpath" resource="com/orangevolt/tools/ant/taskdefs.properties" />
 	<taskdef classpathref="lib.classpath" resource="ise/antelope/tasks/antlib.xml" uri="antlib:ise.antelope.tasks" />
 	<taskdef classpathref="lib.classpath" resource="net/sf/antcontrib/antlib.xml" />
 	<typedef classpathref="lib.classpath" resource="org/apache/maven/artifact/ant/antlib.xml" uri="antlib:org.apache.maven.artifact.ant" />
 	<taskdef classpathref="lib.classpath" resource="tasks.properties" />
 
 	<taskdef classname="com.liferay.ant.beanshell.BeanShellTask" classpathref="lib.classpath" name="beanshell" />
-
-	<taskdef classname="com.liferay.ant.bnd.BaselineJarTask" classpathref="lib.classpath" name="baseline-jar" />
-	<taskdef classname="com.liferay.ant.bnd.ReleaseToRepoTask" classpathref="lib.classpath" name="release-to-repo" />
-
 	<taskdef classname="com.liferay.ant.build.logger.LiferayBuildLoggerInstallerTask" classpath="${project.dir}/lib/development/com.liferay.ant.build.logger.jar" name="liferay-build-logger-installer" />
+	<taskdef classname="com.liferay.ant.mirrors.get.MirrorsGetTask" classpathref="lib.classpath" name="mirrors-get" />
 
 	<liferay-build-logger-installer />
 
 	<taskdef classname="com.oopsconsultancy.xmltask.ant.XmlTask" classpath="${project.dir}/lib/development/xmltask.jar" name="xmltask" />
 
-	<taskdef classname="com.tonicsystems.jarjar.JarJarTask" classpath="${project.dir}/lib/development/jarjar.jar" name="jarjar" />
+	<condition property="build.profile" value="portal">
+		<not>
+			<isset property="build.profile" />
+		</not>
+	</condition>
 
-	<import file="build-common-ivy.xml" />
+	<condition property="app.server.type" value="tomcat">
+		<equals arg1="${build.profile}" arg2="slim" />
+	</condition>
 
-	<property location="${project.dir}" name="project.location.absolute.native" />
-
-	<pathconvert property="project.location.absolute" targetos="unix">
-		<path location="${project.location.absolute.native}" />
-	</pathconvert>
-
-	<propertycopy
-		from="project.location.absolute"
-		name="project.dir"
-		override="true"
-	/>
-
+	<property name="aspectj.agent" value="-javaagent:${project.dir}/lib/portal/aspectj-weaver.jar" />
+	<property name="aspectj.configuration" value="com/liferay/aspectj/aop.xml" />
+	<property name="definitions.dir" value="${project.dir}/definitions" />
 	<property name="doc.dir" value="${project.dir}/api" />
 
-	<propertycopy from="app.server.${app.server.type}.version" name="app.server.version" silent="true" />
-	<propertycopy from="app.server.${app.server.type}.dir" name="app.server.dir" />
-	<propertycopy from="app.server.${app.server.type}.bin.dir" name="app.server.bin.dir" />
-	<propertycopy from="app.server.${app.server.type}.classes.global.dir" name="app.server.classes.global.dir" />
-	<propertycopy from="app.server.${app.server.type}.classes.portal.dir" name="app.server.classes.portal.dir" />
-	<propertycopy from="app.server.${app.server.type}.deploy.dir" name="app.server.deploy.dir" />
-	<propertycopy from="app.server.${app.server.type}.instance.dir" name="app.server.instance.dir" silent="true" />
-	<propertycopy from="app.server.${app.server.type}.lib.endorsed.dir" name="app.server.lib.endorsed.dir" silent="true" />
-	<propertycopy from="app.server.${app.server.type}.lib.global.dir" name="app.server.lib.global.dir" />
-	<propertycopy from="app.server.${app.server.type}.lib.portal.dir" name="app.server.lib.portal.dir" />
-	<propertycopy from="app.server.${app.server.type}.lib.support.dir" name="app.server.lib.support.dir" silent="true" />
-	<propertycopy from="app.server.${app.server.type}.portal.dir" name="app.server.portal.dir" />
-	<propertycopy from="app.server.${app.server.type}.log.dir" name="app.server.log.dir" />
-	<propertycopy from="app.server.${app.server.type}.temp.dir" name="app.server.temp.dir" />
-	<propertycopy from="app.server.${app.server.type}.work.dir" name="app.server.work.dir" />
+	<tempfile deleteonexit="true" destdir="${project.dir}" property="app.server.tmp.properties" suffix=".properties" />
 
-	<if>
-		<or>
-			<equals arg1="${app.server.type}" arg2="glassfish" />
-			<equals arg1="${app.server.type}" arg2="websphere" />
-		</or>
-		<then>
-			<propertycopy from="app.server.${app.server.type}.portal.war.name" name="app.server.portal.war.name" />
-		</then>
-	</if>
+	<echoproperties destfile="${app.server.tmp.properties}" regex="app\.server\.${app.server.type}\..*" />
+
+	<loadproperties srcfile="${app.server.tmp.properties}">
+		<filterchain>
+			<tokenfilter>
+				<replacestring from="app.server.${app.server.type}." to="app.server." />
+			</tokenfilter>
+		</filterchain>
+	</loadproperties>
+
+	<condition property="app.server.portal.war.name" value="${app.server.glassfish.portal.war.name}">
+		<equals arg1="${app.server.type}" arg2="glassfish" />
+	</condition>
+
+	<condition property="app.server.portal.war.name" value="${app.server.websphere.portal.war.name}">
+		<equals arg1="${app.server.type}" arg2="websphere" />
+	</condition>
 
 	<property name="liferay.home" value="${app.server.parent.dir}" />
 
@@ -176,6 +164,12 @@
 		</not>
 	</condition>
 
+	<condition else="Liferay DXP" property="liferay.releng.product.display.name" value="Liferay Portal CE">
+		<not>
+			<istrue value="${liferay.releng.ee}" />
+		</not>
+	</condition>
+
 	<condition else="false" property="liferay.releng.public">
 		<not>
 			<istrue value="${liferay.releng.ee}" />
@@ -186,126 +180,16 @@
 		<istrue value="${liferay.releng.ee}" />
 	</condition>
 
-	<property name="definitions.dir" value="${project.dir}/definitions" />
-
-	<xmlcatalog id="dtd.catalog">
-		<dtd location="datatypes.dtd" publicId="datatypes" />
-		<dtd location="${definitions.dir}/facelet-taglib_1_0.dtd" publicId="-//Sun Microsystems, Inc.//DTD Facelet Taglib 1.0//EN" />
-		<dtd location="${definitions.dir}/liferay-display_2_0_0.dtd" publicId="-//Liferay//DTD DISPLAY 2.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-display_3_5_0.dtd" publicId="-//Liferay//DTD Display 3.5.0//EN" />
-		<dtd location="${definitions.dir}/liferay-display_4_0_0.dtd" publicId="-//Liferay//DTD Display 4.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-display_5_0_0.dtd" publicId="-//Liferay//DTD Display 5.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-display_5_1_0.dtd" publicId="-//Liferay//DTD Display 5.1.0//EN" />
-		<dtd location="${definitions.dir}/liferay-display_5_2_0.dtd" publicId="-//Liferay//DTD Display 5.2.0//EN" />
-		<dtd location="${definitions.dir}/liferay-display_6_0_0.dtd" publicId="-//Liferay//DTD Display 6.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-display_6_1_0.dtd" publicId="-//Liferay//DTD Display 6.1.0//EN" />
-		<dtd location="${definitions.dir}/liferay-display_6_2_0.dtd" publicId="-//Liferay//DTD Display 6.2.0//EN" />
-		<dtd location="${definitions.dir}/liferay-display_7_0_0.dtd" publicId="-//Liferay//DTD Display 7.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-friendly-url-routes_6_0_0.dtd" publicId="-//Liferay//DTD Friendly URL Routes 6.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-friendly-url-routes_6_1_0.dtd" publicId="-//Liferay//DTD Friendly URL Routes 6.1.0//EN" />
-		<dtd location="${definitions.dir}/liferay-friendly-url-routes_6_2_0.dtd" publicId="-//Liferay//DTD Friendly URL Routes 6.2.0//EN" />
-		<dtd location="${definitions.dir}/liferay-friendly-url-routes_7_0_0.dtd" publicId="-//Liferay//DTD Friendly URL Routes 7.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-hook_5_1_0.dtd" publicId="-//Liferay//DTD Hook 5.1.0//EN" />
-		<dtd location="${definitions.dir}/liferay-hook_5_2_0.dtd" publicId="-//Liferay//DTD Hook 5.2.0//EN" />
-		<dtd location="${definitions.dir}/liferay-hook_6_0_0.dtd" publicId="-//Liferay//DTD Hook 6.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-hook_6_1_0.dtd" publicId="-//Liferay//DTD Hook 6.1.0//EN" />
-		<dtd location="${definitions.dir}/liferay-hook_6_2_0.dtd" publicId="-//Liferay//DTD Hook 6.2.0//EN" />
-		<dtd location="${definitions.dir}/liferay-hook_7_0_0.dtd" publicId="-//Liferay//DTD Hook 7.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-layout-templates_3_6_0.dtd" publicId="-//Liferay//DTD Layout Templates 3.6.0//EN" />
-		<dtd location="${definitions.dir}/liferay-layout-templates_4_0_0.dtd" publicId="-//Liferay//DTD Layout Templates 4.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-layout-templates_4_3_0.dtd" publicId="-//Liferay//DTD Layout Templates 4.3.0//EN" />
-		<dtd location="${definitions.dir}/liferay-layout-templates_5_0_0.dtd" publicId="-//Liferay//DTD Layout Templates 5.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-layout-templates_5_1_0.dtd" publicId="-//Liferay//DTD Layout Templates 5.1.0//EN" />
-		<dtd location="${definitions.dir}/liferay-layout-templates_5_2_0.dtd" publicId="-//Liferay//DTD Layout Templates 5.2.0//EN" />
-		<dtd location="${definitions.dir}/liferay-layout-templates_6_0_0.dtd" publicId="-//Liferay//DTD Layout Templates 6.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-layout-templates_6_1_0.dtd" publicId="-//Liferay//DTD Layout Templates 6.1.0//EN" />
-		<dtd location="${definitions.dir}/liferay-layout-templates_6_2_0.dtd" publicId="-//Liferay//DTD Layout Templates 6.2.0//EN" />
-		<dtd location="${definitions.dir}/liferay-layout-templates_7_0_0.dtd" publicId="-//Liferay//DTD Layout Templates 7.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-look-and-feel_3_5_0.dtd" publicId="-//Liferay//DTD Look and Feel 3.5.0//EN" />
-		<dtd location="${definitions.dir}/liferay-look-and-feel_4_0_0.dtd" publicId="-//Liferay//DTD Look and Feel 4.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-look-and-feel_4_3_0.dtd" publicId="-//Liferay//DTD Look and Feel 4.3.0//EN" />
-		<dtd location="${definitions.dir}/liferay-look-and-feel_5_0_0.dtd" publicId="-//Liferay//DTD Look and Feel 5.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-look-and-feel_5_1_0.dtd" publicId="-//Liferay//DTD Look and Feel 5.1.0//EN" />
-		<dtd location="${definitions.dir}/liferay-look-and-feel_5_2_0.dtd" publicId="-//Liferay//DTD Look and Feel 5.2.0//EN" />
-		<dtd location="${definitions.dir}/liferay-look-and-feel_6_0_0.dtd" publicId="-//Liferay//DTD Look and Feel 6.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-look-and-feel_6_1_0.dtd" publicId="-//Liferay//DTD Look and Feel 6.1.0//EN" />
-		<dtd location="${definitions.dir}/liferay-look-and-feel_6_2_0.dtd" publicId="-//Liferay//DTD Look and Feel 6.2.0//EN" />
-		<dtd location="${definitions.dir}/liferay-look-and-feel_7_0_0.dtd" publicId="-//Liferay//DTD Look and Feel 7.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-plugin-package_4_3_0.dtd" publicId="-//Liferay//DTD Plugin Package 4.3.0//EN" />
-		<dtd location="${definitions.dir}/liferay-plugin-package_5_0_0.dtd" publicId="-//Liferay//DTD Plugin Package 5.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-plugin-package_5_1_0.dtd" publicId="-//Liferay//DTD Plugin Package 5.1.0//EN" />
-		<dtd location="${definitions.dir}/liferay-plugin-package_5_2_0.dtd" publicId="-//Liferay//DTD Plugin Package 5.2.0//EN" />
-		<dtd location="${definitions.dir}/liferay-plugin-package_6_0_0.dtd" publicId="-//Liferay//DTD Plugin Package 6.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-plugin-package_6_1_0.dtd" publicId="-//Liferay//DTD Plugin Package 6.1.0//EN" />
-		<dtd location="${definitions.dir}/liferay-plugin-package_6_2_0.dtd" publicId="-//Liferay//DTD Plugin Package 6.2.0//EN" />
-		<dtd location="${definitions.dir}/liferay-plugin-package_7_0_0.dtd" publicId="-//Liferay//DTD Plugin Package 7.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-plugin-repository_4_3_0.dtd" publicId="-//Liferay//DTD Plugin Repository 4.3.0//EN" />
-		<dtd location="${definitions.dir}/liferay-plugin-repository_5_0_0.dtd" publicId="-//Liferay//DTD Plugin Repository 5.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-plugin-repository_5_1_0.dtd" publicId="-//Liferay//DTD Plugin Repository 5.1.0//EN" />
-		<dtd location="${definitions.dir}/liferay-plugin-repository_5_2_0.dtd" publicId="-//Liferay//DTD Plugin Repository 5.2.0//EN" />
-		<dtd location="${definitions.dir}/liferay-plugin-repository_6_0_0.dtd" publicId="-//Liferay//DTD Plugin Repository 6.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-plugin-repository_6_1_0.dtd" publicId="-//Liferay//DTD Plugin Repository 6.1.0//EN" />
-		<dtd location="${definitions.dir}/liferay-plugin-repository_6_2_0.dtd" publicId="-//Liferay//DTD Plugin Repository 6.2.0//EN" />
-		<dtd location="${definitions.dir}/liferay-plugin-repository_7_0_0.dtd" publicId="-//Liferay//DTD Plugin Repository 7.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-portlet_2_0_0.dtd" publicId="-//Liferay//DTD PORTLET 2.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-portlet_2_2_0.dtd" publicId="-//Liferay//DTD PORTLET 2.2.0//EN" />
-		<dtd location="${definitions.dir}/liferay-portlet-app_3_5_0.dtd" publicId="-//Liferay//DTD Portlet Application 3.5.0//EN" />
-		<dtd location="${definitions.dir}/liferay-portlet-app_4_0_0.dtd" publicId="-//Liferay//DTD Portlet Application 4.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-portlet-app_4_1_0.dtd" publicId="-//Liferay//DTD Portlet Application 4.1.0//EN" />
-		<dtd location="${definitions.dir}/liferay-portlet-app_4_2_0.dtd" publicId="-//Liferay//DTD Portlet Application 4.2.0//EN" />
-		<dtd location="${definitions.dir}/liferay-portlet-app_4_3_0.dtd" publicId="-//Liferay//DTD Portlet Application 4.3.0//EN" />
-		<dtd location="${definitions.dir}/liferay-portlet-app_4_3_1.dtd" publicId="-//Liferay//DTD Portlet Application 4.3.1//EN" />
-		<dtd location="${definitions.dir}/liferay-portlet-app_4_3_2.dtd" publicId="-//Liferay//DTD Portlet Application 4.3.2//EN" />
-		<dtd location="${definitions.dir}/liferay-portlet-app_4_3_3.dtd" publicId="-//Liferay//DTD Portlet Application 4.3.3//EN" />
-		<dtd location="${definitions.dir}/liferay-portlet-app_4_4_0.dtd" publicId="-//Liferay//DTD Portlet Application 4.4.0//EN" />
-		<dtd location="${definitions.dir}/liferay-portlet-app_5_0_0.dtd" publicId="-//Liferay//DTD Portlet Application 5.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-portlet-app_5_1_0.dtd" publicId="-//Liferay//DTD Portlet Application 5.1.0//EN" />
-		<dtd location="${definitions.dir}/liferay-portlet-app_5_2_0.dtd" publicId="-//Liferay//DTD Portlet Application 5.2.0//EN" />
-		<dtd location="${definitions.dir}/liferay-portlet-app_6_0_0.dtd" publicId="-//Liferay//DTD Portlet Application 6.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-portlet-app_6_1_0.dtd" publicId="-//Liferay//DTD Portlet Application 6.1.0//EN" />
-		<dtd location="${definitions.dir}/liferay-portlet-app_6_2_0.dtd" publicId="-//Liferay//DTD Portlet Application 6.2.0//EN" />
-		<dtd location="${definitions.dir}/liferay-portlet-app_7_0_0.dtd" publicId="-//Liferay//DTD Portlet Application 7.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-resource-action-mapping_6_0_0.dtd" publicId="-//Liferay//DTD Resource Action Mapping 6.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-resource-action-mapping_6_1_0.dtd" publicId="-//Liferay//DTD Resource Action Mapping 6.1.0//EN" />
-		<dtd location="${definitions.dir}/liferay-resource-action-mapping_6_2_0.dtd" publicId="-//Liferay//DTD Resource Action Mapping 6.2.0//EN" />
-		<dtd location="${definitions.dir}/liferay-resource-action-mapping_7_0_0.dtd" publicId="-//Liferay//DTD Resource Action Mapping 7.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-service-builder_3_5_0.dtd" publicId="-//Liferay//DTD Service Builder 3.5.0//EN" />
-		<dtd location="${definitions.dir}/liferay-service-builder_3_6_1.dtd" publicId="-//Liferay//DTD Service Builder 3.6.1//EN" />
-		<dtd location="${definitions.dir}/liferay-service-builder_4_0_0.dtd" publicId="-//Liferay//DTD Service Builder 4.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-service-builder_4_2_0.dtd" publicId="-//Liferay//DTD Service Builder 4.2.0//EN" />
-		<dtd location="${definitions.dir}/liferay-service-builder_4_3_0.dtd" publicId="-//Liferay//DTD Service Builder 4.3.0//EN" />
-		<dtd location="${definitions.dir}/liferay-service-builder_4_3_3.dtd" publicId="-//Liferay//DTD Service Builder 4.3.3//EN" />
-		<dtd location="${definitions.dir}/liferay-service-builder_4_4_0.dtd" publicId="-//Liferay//DTD Service Builder 4.4.0//EN" />
-		<dtd location="${definitions.dir}/liferay-service-builder_5_0_0.dtd" publicId="-//Liferay//DTD Service Builder 5.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-service-builder_5_1_0.dtd" publicId="-//Liferay//DTD Service Builder 5.1.0//EN" />
-		<dtd location="${definitions.dir}/liferay-service-builder_5_2_0.dtd" publicId="-//Liferay//DTD Service Builder 5.2.0//EN" />
-		<dtd location="${definitions.dir}/liferay-service-builder_6_0_0.dtd" publicId="-//Liferay//DTD Service Builder 6.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-service-builder_6_1_0.dtd" publicId="-//Liferay//DTD Service Builder 6.1.0//EN" />
-		<dtd location="${definitions.dir}/liferay-service-builder_6_2_0.dtd" publicId="-//Liferay//DTD Service Builder 6.2.0//EN" />
-		<dtd location="${definitions.dir}/liferay-service-builder_7_0_0.dtd" publicId="-//Liferay//DTD Service Builder 7.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-skin_2_0_0.dtd" publicId="-//Liferay//DTD SKIN 2.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-social_6_1_0.dtd" publicId="-//Liferay//DTD Social 6.1.0//EN" />
-		<dtd location="${definitions.dir}/liferay-social_6_2_0.dtd" publicId="-//Liferay//DTD Social 6.2.0//EN" />
-		<dtd location="${definitions.dir}/liferay-social_7_0_0.dtd" publicId="-//Liferay//DTD Social 7.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-theme-loader_4_3_0.dtd" publicId="-//Liferay//DTD Theme Loader 4.3.0//EN" />
-		<dtd location="${definitions.dir}/liferay-theme-loader_5_0_0.dtd" publicId="-//Liferay//DTD Theme Loader 5.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-theme-loader_5_1_0.dtd" publicId="-//Liferay//DTD Theme Loader 5.1.0//EN" />
-		<dtd location="${definitions.dir}/liferay-theme-loader_5_2_0.dtd" publicId="-//Liferay//DTD Theme Loader 5.2.0//EN" />
-		<dtd location="${definitions.dir}/liferay-theme-loader_6_0_0.dtd" publicId="-//Liferay//DTD Theme Loader 6.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-theme-loader_6_1_0.dtd" publicId="-//Liferay//DTD Theme Loader 6.1.0//EN" />
-		<dtd location="${definitions.dir}/liferay-theme-loader_6_2_0.dtd" publicId="-//Liferay//DTD Theme Loader 6.2.0//EN" />
-		<dtd location="${definitions.dir}/liferay-theme-loader_7_0_0.dtd" publicId="-//Liferay//DTD Theme Loader 7.0.0//EN" />
-		<dtd location="${definitions.dir}/liferay-user-notification-definitions_6_2_0.dtd" publicId="-//Liferay//DTD User Notification Definition 6.2.0//EN" />
-		<dtd location="${definitions.dir}/liferay-user-notification-definitions_7_0_0.dtd" publicId="-//Liferay//DTD User Notification Definition 7.0.0//EN" />
-		<dtd location="${definitions.dir}/mule-configuration.dtd" publicId="-//MuleSource //DTD mule-configuration XML V1.0//EN" />
-		<dtd location="${definitions.dir}/spring-beans.dtd" publicId="-//SPRING//DTD BEAN//EN" />
-		<dtd location="${definitions.dir}/struts-config_1_2.dtd" publicId="-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" />
-		<dtd location="${definitions.dir}/tiles-config_1_1.dtd" publicId="-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN" />
-		<dtd location="${definitions.dir}/web-app_2_3.dtd" publicId="-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" />
-		<dtd location="${definitions.dir}/web-facesconfig_1_0.dtd" publicId="-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.0//EN" />
-		<dtd location="${definitions.dir}/web-facesconfig_1_1.dtd" publicId="-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN" />
-		<dtd location="${definitions.dir}/XMLSchema.dtd" publicId="-//W3C//DTD XMLSCHEMA 200102//EN" />
-	</xmlcatalog>
+	<fail message="Please use Java 1.8.">
+		<condition>
+			<not>
+				<or>
+					<equals arg1="${java.specification.version}" arg2="1.8" />
+					<isset property="env.JENKINS_HOME" />
+				</or>
+			</not>
+		</condition>
+	</fail>
 
 	<condition property="correct.ant.version">
 		<antversion atleast="1.7.0" />
@@ -322,7 +206,6 @@
 	<whichresource property="google.errorprone.compiler" resource="/com/google/errorprone/ErrorProneAntCompilerAdapter.class" />
 
 	<if>
-
 		<and>
 			<equals arg1="${javac.compiler}" arg2="com.google.errorprone.ErrorProneAntCompilerAdapter" />
 			<not>
@@ -359,31 +242,36 @@ Error-Prone was automatically installed. Please rerun your task.
 		</then>
 	</if>
 
-	<if>
-		<not>
-			<isset property="env.ANT_OPTS" />
-		</not>
-		<then>
-			<fail>
+	<fail message=".${line.separator}Please set the environment variable ANT_OPTS to the recommended value of${line.separator}&quot;-Xmx2048m -XX:MaxPermSize=512m&quot;.">
+		<condition>
+			<not>
+				<isset property="env.ANT_OPTS" />
+			</not>
+		</condition>
+	</fail>
+
+	<fail>
+		<condition>
+			<and>
+				<equals arg1="${microsoft.translator.subscription.key}" arg2="" />
+				<or>
+					<isset property="microsoft.translator.client.id" />
+					<isset property="microsoft.translator.client.secret" />
+				</or>
+			</and>
+		</condition>
 .
 
-Please set the environment variable ANT_OPTS to the recommended value of
-"-Xmx2048m -XX:MaxPermSize=512m".
-			</fail>
-		</then>
-	</if>
+Properties "microsoft.translator.client.id" and
+"microsoft.translator.client.secret" are deprecated. Please remove these
+properties, or set "microsoft.translator.subscription.key" instead, then rerun
+your task.
 
-	<if>
-		<and>
-			<not>
-				<isset property="jdk.7.home" />
-			</not>
-			<equals arg1="${java.specification.version}" arg2="1.6" />
-		</and>
-		<then>
-			<property name="jdk.7.home" value="${env.JAVA_HOME}" />
-		</then>
-	</if>
+Subscription to the Translator Text Translation API on Microsoft Cognitive
+Services is required. Basic subscriptions, up to 2 million characters a month,
+are free. See http://docs.microsofttranslator.com/text-translate.html for more
+information.
+	</fail>
 
 	<property name="whip.agent" value="-javaagent:${project.dir}/${junit.whip.jar}=${junit.whip.includes};${junit.whip.excludes}" />
 
@@ -402,112 +290,6 @@ Please set the environment variable ANT_OPTS to the recommended value of
 			<echo file="app.server.${user.name}.properties">@{properties.content}</echo>
 
 			<echo file="${sdk.dir}/build.${user.name}.properties">@{properties.content}</echo>
-		</sequential>
-	</macrodef>
-
-	<macrodef name="check-fix-pack-requirements">
-		<attribute default="${app.server.dir}/patching-tool/patches" name="fix.pack.dir" />
-		<attribute name="fix.pack.file.name" />
-
-		<sequential>
-			<propertyregex
-				input="@{fix.pack.file.name}"
-				property="fix.pack.build.version"
-				regexp=".+(\d{4})\.zip"
-				replace="\1"
-			/>
-
-			<propertyregex
-				input="@{fix.pack.file.name}"
-				property="fix.pack.portal.version"
-				regexp=".+(\d)(\d)(\d\d)\.zip"
-				replace="\1.\2.\3"
-			/>
-
-			<property
-				name="fix.pack.temp.dir"
-				value="@{fix.pack.dir}/temp"
-			/>
-
-			<mkdir dir="${fix.pack.temp.dir}" />
-
-			<unzip
-				dest="${fix.pack.temp.dir}"
-				src="@{fix.pack.dir}/@{fix.pack.file.name}"
-			/>
-
-			<xmlproperty file="${fix.pack.temp.dir}/fixpack_documentation.xml" />
-
-			<delete dir="${fix.pack.temp.dir}" />
-
-			<antelope:stringutil property="fix.pack.requirements" string="${patch.requirements}">
-				<antelope:replace regex="!" replacement="" />
-				<antelope:replace regex="&gt;=" replacement="-" />
-			</antelope:stringutil>
-
-			<var name="patch.requirements" unset="true" />
-
-			<if>
-				<not>
-					<equals arg1="${fix.pack.requirements}" arg2="" />
-				</not>
-				<then>
-					<for list="${fix.pack.requirements}" param="fix.pack.requirement">
-						<sequential>
-							<propertyregex
-								input="@{fix.pack.requirement}"
-								property="fix.pack.requirement.type"
-								override="true"
-								regexp="-\d+"
-								replace=""
-							/>
-
-							<if>
-								<equals arg1="${fix.pack.requirement.type}" arg2="hotfix" />
-								<then>
-									<var
-										name="fix.pack.requirement.file.name"
-										value="liferay-@{fix.pack.requirement}-${fix.pack.build.version}.zip"
-									/>
-								</then>
-								<else>
-									<var
-										name="fix.pack.requirement.file.name"
-										value="liferay-fix-pack-@{fix.pack.requirement}-${fix.pack.build.version}.zip"
-									/>
-								</else>
-							</if>
-
-							<if>
-								<not>
-									<available file="@{fix.pack.dir}/${fix.pack.requirement.file.name}" />
-								</not>
-								<then>
-									<trycatch>
-										<try>
-											<get
-												dest="@{fix.pack.dir}"
-												src="http://mirrors/files.liferay.com/private/ee/fix-packs/${fix.pack.portal.version}/${fix.pack.requirement.type}/${fix.pack.requirement.file.name}"
-											/>
-										</try>
-										<catch>
-											<get
-												dest="@{fix.pack.dir}"
-												src="http://mirrors/files.liferay.com/private/ee/fix-packs/incubation/${fix.pack.requirement.file.name}"
-											/>
-										</catch>
-									</trycatch>
-
-									<check-fix-pack-requirements
-										fix.pack.dir="@{fix.pack.dir}"
-										fix.pack.file.name="${fix.pack.requirement.file.name}"
-									/>
-								</then>
-							</if>
-						</sequential>
-					</for>
-				</then>
-			</if>
 		</sequential>
 	</macrodef>
 
@@ -623,6 +405,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 
 	<macrodef name="execute">
 		<attribute default="." name="dir" />
+		<attribute default="true" name="failonerror" />
 
 		<text name="commands" />
 
@@ -678,12 +461,12 @@ Please set the environment variable ANT_OPTS to the recommended value of
 									<if>
 										<contains string="${command.executable}" substring=".sh" />
 										<then>
-											<exec dir="@{dir}" executable="/bin/bash" output="${command.output}">
+											<exec dir="@{dir}" executable="/bin/bash" failonerror="@{failonerror}" output="${command.output}">
 												<arg line="${command.executable} ${command.arg.line}" />
 											</exec>
 										</then>
 										<else>
-											<exec dir="@{dir}" executable="/bin/bash" output="${command.output}">
+											<exec dir="@{dir}" executable="/bin/bash" failonerror="@{failonerror}" output="${command.output}">
 												<arg value="-c" />
 												<arg value="${command.executable} ${command.arg.line}" />
 											</exec>
@@ -691,7 +474,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 									</if>
 								</then>
 								<else>
-									<exec dir="@{dir}" executable="cmd.exe" output="${command.output}">
+									<exec dir="@{dir}" executable="cmd.exe" failonerror="@{failonerror}" output="${command.output}">
 										<arg line="/c ${command.executable} ${command.arg.line}" />
 									</exec>
 								</else>
@@ -722,12 +505,12 @@ Please set the environment variable ANT_OPTS to the recommended value of
 										<if>
 											<contains string="${command.executable}" substring=".sh" />
 											<then>
-												<exec append="true" dir="@{dir}" executable="/bin/bash" output="${command.output}">
+												<exec append="true" dir="@{dir}" executable="/bin/bash" failonerror="@{failonerror}" output="${command.output}">
 													<arg line="${command.executable} ${command.arg.line}" />
 												</exec>
 											</then>
 											<else>
-												<exec append="true" dir="@{dir}" executable="/bin/bash" output="${command.output}">
+												<exec append="true" dir="@{dir}" executable="/bin/bash" failonerror="@{failonerror}" output="${command.output}">
 													<arg value="-c" />
 													<arg value="${command.executable} ${command.arg.line}" />
 												</exec>
@@ -735,7 +518,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 										</if>
 									</then>
 									<else>
-										<exec append="true" dir="@{dir}" executable="cmd.exe" output="${command.output}">
+										<exec append="true" dir="@{dir}" executable="cmd.exe" failonerror="@{failonerror}" output="${command.output}">
 											<arg line="/c ${command.executable} ${command.arg.line}" />
 										</exec>
 									</else>
@@ -749,12 +532,12 @@ Please set the environment variable ANT_OPTS to the recommended value of
 									<if>
 										<contains string="${command.executable}" substring=".sh" />
 										<then>
-											<exec dir="@{dir}" executable="/bin/bash">
+											<exec dir="@{dir}" executable="/bin/bash" failonerror="@{failonerror}">
 												<arg line="${command.executable} ${command.arg.line}" />
 											</exec>
 										</then>
 										<else>
-											<exec dir="@{dir}" executable="/bin/bash">
+											<exec dir="@{dir}" executable="/bin/bash" failonerror="@{failonerror}">
 												<arg value="-c" />
 												<arg value="${command.executable} ${command.arg.line}" />
 											</exec>
@@ -762,7 +545,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 									</if>
 								</then>
 								<else>
-									<exec dir="@{dir}" executable="cmd.exe">
+									<exec dir="@{dir}" executable="cmd.exe" failonerror="@{failonerror}">
 										<arg line="/c @{command}" />
 									</exec>
 								</else>
@@ -775,9 +558,11 @@ Please set the environment variable ANT_OPTS to the recommended value of
 	</macrodef>
 
 	<macrodef name="gradle-execute">
+		<attribute default="false" name="checktask" />
 		<attribute default="${basedir}" name="dir" />
 		<attribute default="true" name="failonerror" />
 		<attribute default="true" name="forcedcacheenabled" />
+		<attribute default="" name="outputproperty" />
 		<attribute name="task" />
 		<element implicit="true" name="args" optional="true" />
 
@@ -794,17 +579,54 @@ Please set the environment variable ANT_OPTS to the recommended value of
 				</else>
 			</if>
 
-			<exec dir="@{dir}" executable="${project.dir}/gradlew${gradlew.suffix}" failonerror="@{failonerror}">
-				<args />
-				<arg value="--no-daemon" />
-				<arg value="--project-cache-dir=${project.dir}/.gradle" />
-				<arg value="--stacktrace" />
-				<arg value="-Dapp.server.parent.dir=${app.server.parent.dir}" />
-				<arg value="-Dforced.cache.enabled=@{forcedcacheenabled}" />
-				<arg value="-Dliferay.home=${liferay.home}" />
-				<arg value="@{task}" />
-				<env key="GRADLE_OPTS" value="${env.ANT_OPTS}" />
-			</exec>
+			<local name="task.available" />
+
+			<if>
+				<equals arg1="@{checktask}" arg2="true" />
+				<then>
+					<local name="tasks.output" />
+
+					<exec dir="@{dir}" executable="${project.dir}/gradlew${gradlew.suffix}" failonerror="@{failonerror}">
+						<arg value="--no-daemon" />
+						<arg value="--project-cache-dir=${project.dir}/.gradle" />
+						<arg value="--stacktrace" />
+						<arg value="-Dapp.server.parent.dir=${app.server.parent.dir}" />
+						<arg value="-Dforced.cache.enabled=@{forcedcacheenabled}" />
+						<arg value="-Dliferay.home=${liferay.home}" />
+						<arg value="tasks" />
+						<arg value="--all" />
+						<env key="GRADLE_OPTS" value="${env.ANT_OPTS}" />
+						<redirector outputproperty="tasks.output" unless:blank="tasks.output" />
+					</exec>
+
+					<condition else="false" property="task.available" value="true">
+						<contains string="${tasks.output}" substring="@{task} -" />
+					</condition>
+				</then>
+			</if>
+
+			<property name="task.available" value="true" />
+
+			<if>
+				<equals arg1="${task.available}" arg2="true" />
+				<then>
+					<exec dir="@{dir}" executable="${project.dir}/gradlew${gradlew.suffix}" failonerror="@{failonerror}">
+						<args />
+						<arg value="--no-daemon" />
+						<arg value="--project-cache-dir=${project.dir}/.gradle" />
+						<arg value="--stacktrace" />
+						<arg value="-Dapp.server.parent.dir=${app.server.parent.dir}" />
+						<arg value="-Dforced.cache.enabled=@{forcedcacheenabled}" />
+						<arg value="-Dliferay.home=${liferay.home}" />
+						<arg value="@{task}" />
+						<env key="GRADLE_OPTS" value="${env.ANT_OPTS}" />
+						<redirector errorproperty="@{outputproperty}.error" outputproperty="@{outputproperty}" unless:blank="@{outputproperty}" />
+					</exec>
+				</then>
+				<else>
+					<echo>Skipped unavailable task: @{task}.</echo>
+				</else>
+			</if>
 		</sequential>
 	</macrodef>
 
@@ -815,16 +637,24 @@ Please set the environment variable ANT_OPTS to the recommended value of
 		<element implicit="true" name="attach-files" optional="true" />
 
 		<sequential>
+			<local name="build.repository.local.actual.dir" />
+			<local name="snapshot.version.suffix" />
+
+			<condition else="${build.repository.local.dir}" property="build.repository.local.actual.dir" value="${user.home}/.m2/repository">
+				<equals arg1="${build.repository.local.dir}" arg2="" />
+			</condition>
+
 			<condition else="" property="snapshot.version.suffix" value="-SNAPSHOT">
 				<istrue value="@{snapshot}" />
 			</condition>
 
 			<prepare-portal-artifact-pom snapshot.version.suffix="${snapshot.version.suffix}" />
 
-			<delete dir="${user.home}/.m2/repository/com/liferay/portal/com.liferay.${processed.artifact.name}" />
+			<delete dir="${build.repository.local.actual.dir}/com/liferay/portal/com.liferay.${processed.artifact.name}" />
 
 			<artifact:install file="${artifact.name}.@{packaging}">
 				<attach-files />
+				<localRepository path="${build.repository.local.dir}" unless:blank="${build.repository.local.dir}" />
 				<pom file="pom.xml" />
 			</artifact:install>
 
@@ -843,6 +673,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 		<element name="test.classes" />
 
 		<sequential>
+			<local name="aspectj.weaver.enabled" />
 			<local name="junit.java.gc" />
 
 			<if>
@@ -859,6 +690,8 @@ Please set the environment variable ANT_OPTS to the recommended value of
 					</if>
 				</then>
 				<else>
+					<property name="aspectj.weaver.enabled" value="true" />
+
 					<local name="project.dir.name" />
 
 					<basename file="${project.dir}" property="project.dir.name" />
@@ -868,13 +701,18 @@ Please set the environment variable ANT_OPTS to the recommended value of
 			</if>
 
 			<junit dir="${project.dir}" fork="on" forkmode="@{forkmode}" haltonfailure="${junit.halt.on.failure}" jvm="${junit.jvm}" outputtoformatters="false" printsummary="on" showoutput="true">
+				<sysproperty if:true="${aspectj.weaver.enabled}" key="aspectj.agent" value="${aspectj.agent}" />
+				<sysproperty key="catalina.base" value="." />
 				<sysproperty file="woven-classes" key="junit.aspectj.dump" />
 				<sysproperty key="junit.code.coverage" value="${junit.code.coverage}" />
 				<sysproperty if:true="${jvm.debug}" key="jvm.debug" value="true" />
 				<sysproperty key="liferay.lib.portal.dir" value="${app.server.tomcat.lib.portal.dir}" />
+				<sysproperty key="liferay.temp.dir" value="${app.server.tomcat.temp.dir}" />
+				<sysproperty if:true="${aspectj.weaver.enabled}" key="org.aspectj.weaver.loadtime.configuration" value="${aspectj.configuration}" />
 				<sysproperty key="whip.agent" value="${whip.agent}" />
 				<sysproperty file="test-coverage/@{test.type}/whip.dat" key="whip.datafile" />
 				<sysproperty key="whip.instrument.dump" value="${whip.instrument.dump}" />
+				<jvmarg if:true="${aspectj.weaver.enabled}" line="${aspectj.agent}" />
 				<jvmarg if:true="${jvm.debug}" line="${jpda.settings}" />
 				<jvmarg line="${junit.java.gc}" />
 				<jvmarg line="${whip.agent}" />
@@ -886,6 +724,8 @@ Please set the environment variable ANT_OPTS to the recommended value of
 				<jvmarg value="-Dliferay.log.dir=${liferay.home}/logs" />
 				<jvmarg value="-Dliferay.mode=test" />
 				<jvmarg value="-Dosgi.state.dir=${liferay.home}/osgi/state" />
+				<jvmarg value="-Drelease.versions.test.other.dir=${release.versions.test.other.dir}" />
+				<jvmarg value="-Dsun.zip.disableMemoryMapping=true" />
 				<misc />
 				<jvmarg value="-Duser.timezone=GMT" />
 				<classpath location="test-coverage" />
@@ -1155,13 +995,29 @@ Please set the environment variable ANT_OPTS to the recommended value of
 		</sequential>
 	</macrodef>
 
+	<macrodef name="setup-libs">
+		<sequential>
+			<gradle-execute task="setUpLibs">
+				<arg value="--build-file=${project.dir}/modules/util.gradle" />
+			</gradle-execute>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="setup-sdk">
 		<sequential>
+			<gradle-execute forcedcacheenabled="true" outputproperty="sdk.zip.file" task="printDependencyPath">
+				<arg value="--build-file=${project.dir}/modules/util.gradle" />
+				<arg value="--quiet" />
+				<arg value="-PdependencyNotation=com.liferay.portal:com.liferay.portal.plugins.sdk:${build.sdk.version}" />
+			</gradle-execute>
+
+			<dirname file="${sdk.zip.file}" property="sdk.zip.dir" />
+
 			<if>
 				<not>
 					<uptodate>
 						<mapper to="${sdk.dir}" type="merge" />
-						<srcfiles dir="${project.dir}/tools" includes="com.liferay.portal.plugins.sdk-7.0.0.zip" />
+						<srcfiles dir="${sdk.zip.dir}" includes="com.liferay.portal.plugins.sdk-${build.sdk.version}.zip" />
 					</uptodate>
 				</not>
 				<then>
@@ -1169,11 +1025,11 @@ Please set the environment variable ANT_OPTS to the recommended value of
 
 					<unzip
 						dest="${project.dir}/tools"
-						src="${project.dir}/tools/com.liferay.portal.plugins.sdk-7.0.0.zip"
+						src="${sdk.zip.dir}/com.liferay.portal.plugins.sdk-${build.sdk.version}.zip"
 					>
 						<mapper
 							type="glob"
-							from="com.liferay.portal.plugins.sdk-7.0.0/*"
+							from="com.liferay.portal.plugins.sdk-${build.sdk.version}/*"
 							to="sdk/*"
 						/>
 					</unzip>
@@ -1184,7 +1040,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 
 			<update-gradle-properties />
 
-			<gradle-execute task="setupPortalTools">
+			<gradle-execute task="setUpPortalTools">
 				<arg value="--build-file=${project.dir}/modules/util.gradle" />
 			</gradle-execute>
 		</sequential>
@@ -1198,17 +1054,28 @@ Please set the environment variable ANT_OPTS to the recommended value of
 
 			<if>
 				<and>
-					<equals arg1="${basedir}" arg2="${project.dir}/portal-impl" />
+					<equals arg1="${basedir.unix}" arg2="${project.dir}/portal-impl" />
 					<equals arg1="@{test.type}" arg2="integration" />
 				</and>
 				<then>
 					<var name="junit.classpath" value="${classpath.portal-impl-integration}" />
+
+					<for param="lfrbuild-ci">
+						<fileset dir="${project.dir}/modules" includes="**/.lfrbuild-ci" />
+						<sequential>
+							<local name="module.dir" />
+
+							<dirname file="@{lfrbuild-ci}" property="module.dir" />
+
+							<var name="junit.classpath" value="${junit.classpath};${module.dir}/classes" />
+						</sequential>
+					</for>
 				</then>
 			</if>
 
 			<if>
 				<and>
-					<equals arg1="${basedir}" arg2="${project.dir}/portal-impl" />
+					<equals arg1="${basedir.unix}" arg2="${project.dir}/portal-impl" />
 					<equals arg1="@{test.type}" arg2="unit" />
 				</and>
 				<then>
@@ -1218,7 +1085,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 
 			<if>
 				<and>
-					<equals arg1="${basedir}" arg2="${project.dir}/portal-kernel" />
+					<equals arg1="${basedir.unix}" arg2="${project.dir}/portal-kernel" />
 					<equals arg1="@{test.type}" arg2="unit" />
 				</and>
 				<then>
@@ -1228,7 +1095,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 
 			<if>
 				<and>
-					<equals arg1="${basedir}" arg2="${project.dir}/util-java" />
+					<equals arg1="${basedir.unix}" arg2="${project.dir}/util-java" />
 					<equals arg1="@{test.type}" arg2="unit" />
 				</and>
 				<then>
@@ -1240,6 +1107,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 				<pathelement path="test-classes/@{test.type}" />
 				<pathelement path="${junit.classpath}" />
 				<pathelement path="${test.additional.classpath}" />
+				<path refid="lib.pre.classpath" />
 				<fileset dir="${project.dir}/lib/development" excludes="jalopy.jar,jetty*.jar,tomcat*.jar" includes="*.jar" />
 				<fileset dir="${project.dir}/lib/global" includes="*.jar" />
 				<fileset dir="${project.dir}/lib/portal" excludes="ant.jar" includes="*.jar" />
@@ -1389,10 +1257,12 @@ rerun your task.
 
 			<property location="${basedir}/.gradle/gradle.properties" name="gradle.properties.file" />
 
+			<mkdir dir="${basedir}/.gradle" />
+
 			<delete file="${gradle.properties.file}" />
 
 			<condition else="false" property="jsp.precompile.enabled">
-				<istrue value="${jsp.precompile}" />
+				<istrue value="${jsp.precompile.modules}" />
 			</condition>
 
 			<echoproperties destfile="${gradle.properties.file}" >
@@ -1400,27 +1270,33 @@ rerun your task.
 					<propertyref name="app.server.type" />
 					<propertyref name="baseline.jar.report.level" />
 					<propertyref name="baseline.jar.report.only.dirty.packages" />
+					<propertyref name="git.working.branch.name" />
 					<propertyref name="jsp.precompile.enabled" />
+					<propertyref name="jsp.precompile.from.source" />
 					<propertyref name="junit.java.integration.gc" />
 					<propertyref name="junit.java.unit.gc" />
 					<propertyref name="liferay.home" />
 					<propertyref name="liferay.releng.app.title.prefix" />
+					<propertyref name="liferay.releng.product.display.name" />
 					<propertyref name="liferay.releng.public" />
 					<propertyref name="liferay.releng.supported" />
-					<propertyref name="microsoft.translator.client.id" />
-					<propertyref name="microsoft.translator.client.secret" />
-					<propertyref name="nodejs.npm.email" />
-					<propertyref name="nodejs.npm.password" />
-					<propertyref name="nodejs.npm.user" />
+					<propertyref name="org.gradle.daemon" />
+					<propertyref name="release.versions.test.other.dir" />
 					<propertyref name="sass.compiler.class.name" />
 					<propertyref name="sass.generate.source.map" />
 					<propertyref name="sass.precision" />
+					<propertyref name="sdk.dir" />
+					<propertyref name="source.formatter.include.subrepositories" />
 					<propertyref name="source.formatter.max.line.length" />
 					<propertyref name="source.formatter.processor.thread.count" />
 					<propertyref name="timeout.app.server.wait" />
+					<propertyref name="upgrade.table.dir" />
 					<propertyref prefix="ivy.pom." />
+					<propertyref prefix="microsoft.translator." />
+					<propertyref prefix="nodejs.npm." />
 					<propertyref prefix="sonatype." />
-					<propertyref regex="^\s*app\.server\.(?:glassfish|jboss|jetty|jonas|resin|tcat|tcserver|tomcat|weblogic|websphere|wildfly).*\.dir" />
+					<propertyref regex=".+\.ignore\.local$" />
+					<propertyref regex="^\s*app\.server\.(?:glassfish|jboss|jetty|jonas|resin|tcat|tcserver|tomcat|weblogic|websphere|wildfly).*" />
 				</propertyset>
 			</echoproperties>
 
@@ -1438,13 +1314,31 @@ rerun your task.
 
 			<record-artifact-version artifact.name="util-taglib" file="${gradle.properties.file}" />
 
+			<property name="build.repository.private.proxied.url" value="${build.repository.private.url}" />
+
+			<if>
+				<contains string="${env.ANT_OPTS}" substring="squid.lax.liferay.com" />
+				<then>
+					<propertyregex
+						input="${build.repository.private.proxied.url}"
+						override="true"
+						property="build.repository.private.proxied.url"
+						regexp="^https:\/\/(.+)"
+						replace="http://\1"
+					/>
+				</then>
+			</if>
+
 			<propertyfile file="${gradle.properties.file}">
 				<entry key="database.jdbc.drivers.url" value="${test.jdbc.drivers.url}" />
 				<entry key="database.jdbc.oracle.driver" value="${jdbc.oracle.driver}" />
 				<entry key="database.oracle.version" value="${database.oracle.version}" />
+				<entry key="plugins.sdk.version" value="${build.sdk.version}" />
+				<entry key="systemProp.build.bnd.print.enabled" value="${build.bnd.print.enabled}" />
 				<entry key="systemProp.build.performance.logger.enabled" value="${build.performance.logger.enabled}" />
+				<entry key="systemProp.maven.repo.local" value="${build.repository.local.dir}" unless:blank="${build.repository.local.dir}" />
 				<entry key="systemProp.repository.private.password" value="${build.repository.private.password}" />
-				<entry key="systemProp.repository.private.url" value="${build.repository.private.url}" />
+				<entry key="systemProp.repository.private.url" value="${build.repository.private.proxied.url}" />
 				<entry key="systemProp.repository.private.username" value="${build.repository.private.username}" />
 			</propertyfile>
 
@@ -1474,8 +1368,6 @@ rerun your task.
 					<propertyref name="junit.test.excludes" />
 					<propertyref name="liferay.home" />
 					<propertyref name="lp.version" />
-					<propertyref name="microsoft.translator.client.id" />
-					<propertyref name="microsoft.translator.client.secret" />
 					<propertyref name="sass.compiler.class.name" />
 					<propertyref name="snapshot.check.enabled" />
 					<propertyref name="upgrade.table.dir" />
@@ -1484,6 +1376,7 @@ rerun your task.
 					<propertyref name="-plugin" />
 					<propertyref name="-releaserepo" />
 					<propertyref prefix="ivy.pom." />
+					<propertyref prefix="microsoft.translator." />
 					<propertyref prefix="sonatype." />
 					<propertyref regex="^\s*app\.server\.(?:glassfish|jboss|jetty|jonas|resin|tcat|tcserver|tomcat|weblogic|websphere|wildfly).*\.dir" />
 				</propertyset>
@@ -1537,8 +1430,6 @@ rerun your task.
 	</target>
 
 	<target name="format-javadoc">
-		<echo>Run "ant compile compile-test" before using format-javadoc to generate @Override tags.</echo>
-
 		<path id="javadoc.formatter.classpath">
 			<fileset dir="${sdk.dir}/dependencies/com.liferay.javadoc.formatter/lib" includes="*.jar" />
 			<path refid="project.classpath" />

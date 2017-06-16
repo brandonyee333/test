@@ -45,7 +45,6 @@ import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.model.Region;
 import com.liferay.portal.kernel.model.ResourcedModel;
 import com.liferay.portal.kernel.model.TrashedModel;
-import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.WorkflowedModel;
 import com.liferay.portal.kernel.search.facet.AssetEntriesFacet;
 import com.liferay.portal.kernel.search.facet.Facet;
@@ -58,16 +57,12 @@ import com.liferay.portal.kernel.search.filter.TermsFilter;
 import com.liferay.portal.kernel.search.generic.BooleanQueryImpl;
 import com.liferay.portal.kernel.search.generic.MatchAllQuery;
 import com.liferay.portal.kernel.search.hits.HitsProcessorRegistryUtil;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.CountryServiceUtil;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.RegionServiceUtil;
-import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
-import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.trash.TrashHandler;
-import com.liferay.portal.kernel.trash.TrashRenderer;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashUtil;
@@ -83,9 +78,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.ratings.kernel.model.RatingsStats;
-import com.liferay.ratings.kernel.service.RatingsStatsLocalServiceUtil;
-import com.liferay.trash.kernel.model.TrashEntry;
+import com.liferay.registry.collections.ServiceTrackerCollections;
 
 import java.io.Serializable;
 
@@ -98,6 +91,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
 
@@ -517,8 +511,9 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 
 	@Override
 	public void reindex(Collection<T> collection) {
-		if (IndexWriterHelperUtil.isIndexReadOnly() || !isIndexerEnabled() ||
-			collection.isEmpty()) {
+		if (IndexWriterHelperUtil.isIndexReadOnly() ||
+			IndexWriterHelperUtil.isIndexReadOnly(getClassName()) ||
+			!isIndexerEnabled() || collection.isEmpty()) {
 
 			return;
 		}
@@ -528,7 +523,7 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 				reindex(element);
 			}
 			catch (SearchException se) {
-				_log.error("Unable to index object: " + element);
+				_log.error("Unable to index object: " + element, se);
 			}
 		}
 	}
@@ -537,6 +532,7 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 	public void reindex(String className, long classPK) throws SearchException {
 		try {
 			if (IndexWriterHelperUtil.isIndexReadOnly() ||
+				IndexWriterHelperUtil.isIndexReadOnly(getClassName()) ||
 				!isIndexerEnabled() || (classPK <= 0)) {
 
 				return;
@@ -559,11 +555,20 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 
 	@Override
 	public void reindex(String[] ids) throws SearchException {
+		long companyThreadLocalCompanyId = CompanyThreadLocal.getCompanyId();
+
 		try {
 			if (IndexWriterHelperUtil.isIndexReadOnly() ||
+				IndexWriterHelperUtil.isIndexReadOnly(getClassName()) ||
 				!isIndexerEnabled()) {
 
 				return;
+			}
+
+			if (ids.length > 0) {
+				long companyId = GetterUtil.getLong(ids[0]);
+
+				CompanyThreadLocal.setCompanyId(companyId);
 			}
 
 			doReindex(ids);
@@ -574,12 +579,16 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 		catch (Exception e) {
 			throw new SearchException(e);
 		}
+		finally {
+			CompanyThreadLocal.setCompanyId(companyThreadLocalCompanyId);
+		}
 	}
 
 	@Override
 	public void reindex(T object) throws SearchException {
 		try {
 			if (IndexWriterHelperUtil.isIndexReadOnly() ||
+				IndexWriterHelperUtil.isIndexReadOnly(getClassName()) ||
 				!isIndexerEnabled()) {
 
 				return;
@@ -761,18 +770,6 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 			document.addDate(Field.PUBLISH_DATE, new Date(0));
 		}
 
-		RatingsStats ratingsStats = RatingsStatsLocalServiceUtil.fetchStats(
-			className, classPK);
-
-		if (ratingsStats != null) {
-			document.addNumber(Field.RATINGS, ratingsStats.getAverageScore());
-		}
-		else {
-			document.addNumber(Field.RATINGS, 0.0f);
-		}
-
-		document.addNumber(Field.VIEW_COUNT, assetEntry.getViewCount());
-
 		document.addLocalizedKeyword(
 			"localized_title",
 			populateMap(assetEntry, assetEntry.getTitleMap()), true, true);
@@ -883,6 +880,25 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 			new String[selectedFieldNameSet.size()]);
 
 		queryConfig.setSelectedFieldNames(selectedFieldNames);
+	}
+
+	protected void addLocalizedField(
+		Document document, String field, Locale siteDefaultLocale,
+		Map<Locale, String> map) {
+
+		for (Entry<Locale, String> entry : map.entrySet()) {
+			Locale locale = entry.getKey();
+
+			if (locale.equals(siteDefaultLocale)) {
+				document.addText(field, entry.getValue());
+			}
+
+			String languageId = LocaleUtil.toLanguageId(locale);
+
+			document.addText(
+				LocalizationUtil.getLocalizedName(field, languageId),
+				entry.getValue());
+		}
 	}
 
 	protected void addSearchAssetCategoryIds(
@@ -1252,80 +1268,12 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 		}
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	protected void addTrashFields(
 		Document document, TrashedModel trashedModel) {
-
-		TrashEntry trashEntry = null;
-
-		try {
-			trashEntry = trashedModel.getTrashEntry();
-		}
-		catch (PortalException pe) {
-			if (_log.isDebugEnabled()) {
-				_log.debug("Unable to get trash entry for " + trashedModel);
-			}
-		}
-
-		if (trashEntry == null) {
-			document.addDate(Field.REMOVED_DATE, new Date());
-
-			ServiceContext serviceContext =
-				ServiceContextThreadLocal.getServiceContext();
-
-			if (serviceContext != null) {
-				try {
-					User user = UserLocalServiceUtil.getUser(
-						serviceContext.getUserId());
-
-					document.addKeyword(
-						Field.REMOVED_BY_USER_NAME, user.getFullName(), true);
-				}
-				catch (PortalException pe) {
-					if (_log.isDebugEnabled()) {
-						_log.debug(
-							"Unable to locate user: " +
-								serviceContext.getUserId(),
-							pe);
-					}
-				}
-			}
-		}
-		else {
-			document.addDate(Field.REMOVED_DATE, trashEntry.getCreateDate());
-			document.addKeyword(
-				Field.REMOVED_BY_USER_NAME, trashEntry.getUserName(), true);
-
-			if (trashedModel.isInTrash() &&
-				!trashedModel.isInTrashExplicitly()) {
-
-				document.addKeyword(
-					Field.ROOT_ENTRY_CLASS_NAME, trashEntry.getClassName());
-				document.addKeyword(
-					Field.ROOT_ENTRY_CLASS_PK, trashEntry.getClassPK());
-			}
-		}
-
-		TrashHandler trashHandler = trashedModel.getTrashHandler();
-
-		try {
-			TrashRenderer trashRenderer = null;
-
-			if ((trashHandler != null) && (trashEntry != null)) {
-				trashRenderer = trashHandler.getTrashRenderer(
-					trashEntry.getClassPK());
-			}
-
-			if (trashRenderer != null) {
-				document.addKeyword(Field.TYPE, trashRenderer.getType(), true);
-			}
-		}
-		catch (PortalException pe) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(
-					"Unable to get trash renderer for " +
-						trashEntry.getClassName());
-			}
-		}
 	}
 
 	protected BooleanQuery createFullQuery(
@@ -1619,18 +1567,16 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 			document.addKeyword(Field.STATUS, workflowedModel.getStatus());
 		}
 
-		if ((groupedModel != null) && (baseModel instanceof TrashedModel)) {
-			TrashedModel trashedModel = (TrashedModel)baseModel;
-
-			if (trashedModel.isInTrash()) {
-				addTrashFields(document, trashedModel);
-			}
-		}
-
 		addAssetFields(document, className, classPK);
 
 		ExpandoBridgeIndexerUtil.addAttributes(
 			document, baseModel.getExpandoBridge());
+
+		for (DocumentContributor documentContributor :
+				getDocumentContributors()) {
+
+			documentContributor.contribute(document, baseModel);
+		}
 
 		return document;
 	}
@@ -1647,6 +1593,17 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 		return _defaultSelectedLocalizedFieldNames;
 	}
 
+	protected List<DocumentContributor> getDocumentContributors() {
+		if (_documentContributors != null) {
+			return _documentContributors;
+		}
+
+		_documentContributors = ServiceTrackerCollections.openList(
+			DocumentContributor.class);
+
+		return _documentContributors;
+	}
+
 	protected String getExpandoFieldName(
 		SearchContext searchContext, ExpandoBridge expandoBridge,
 		String attributeName) {
@@ -1656,8 +1613,14 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 				expandoBridge.getCompanyId(), expandoBridge.getClassName(),
 				attributeName);
 
+		UnicodeProperties unicodeProperties =
+			expandoColumn.getTypeSettingsProperties();
+
+		int indexType = GetterUtil.getInteger(
+			unicodeProperties.getProperty(ExpandoColumnConstants.INDEX_TYPE));
+
 		String fieldName = ExpandoBridgeIndexerUtil.encodeFieldName(
-			attributeName);
+			attributeName, indexType);
 
 		if (expandoColumn.getType() ==
 				ExpandoColumnConstants.STRING_LOCALIZED) {
@@ -1692,7 +1655,7 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0 replaced by {@link #getClassName}
+	 * @deprecated As of 7.0.0, replaced by {@link #getClassName}
 	 */
 	@Deprecated
 	protected String getPortletId(SearchContext searchContext) {
@@ -1917,6 +1880,7 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 	private String[] _defaultSelectedFieldNames;
 	private String[] _defaultSelectedLocalizedFieldNames;
 	private final Document _document = new DocumentImpl();
+	private List<DocumentContributor> _documentContributors;
 	private boolean _filterSearch;
 	private Boolean _indexerEnabled;
 	private IndexerPostProcessor[] _indexerPostProcessors =

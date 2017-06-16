@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutReference;
 import com.liferay.portal.kernel.model.LayoutSoap;
 import com.liferay.portal.kernel.model.ResourceConstants;
+import com.liferay.portal.kernel.security.permission.InlineSQLHelperUtil;
 import com.liferay.portal.kernel.service.persistence.LayoutFinder;
 import com.liferay.portal.kernel.service.persistence.LayoutUtil;
 import com.liferay.portal.kernel.util.StringPool;
@@ -67,6 +68,7 @@ public class LayoutFinderImpl
 
 			QueryPos qPos = QueryPos.getInstance(q);
 
+			qPos.add(Layout.class.getName());
 			qPos.add(ResourceConstants.SCOPE_INDIVIDUAL);
 			qPos.add(roleId);
 
@@ -114,6 +116,9 @@ public class LayoutFinderImpl
 
 			sql = StringUtil.replace(
 				sql, "AND (Layout.privateLayout = ?)", StringPool.BLANK);
+
+			sql = InlineSQLHelperUtil.replacePermissionCheck(
+				sql, Layout.class.getName(), "Layout.plid", groupId);
 
 			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 

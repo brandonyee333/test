@@ -15,6 +15,8 @@
 package com.liferay.dynamic.data.mapping.util;
 
 import com.liferay.dynamic.data.mapping.annotations.DDMForm;
+import com.liferay.dynamic.data.mapping.annotations.DDMFormRule;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -26,11 +28,11 @@ import java.lang.reflect.Method;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 /**
@@ -52,8 +54,8 @@ public class DDMFormFactoryHelper {
 
 		ddmForm.setAvailableLocales(_availableLocales);
 		ddmForm.setDefaultLocale(_defaultLocale);
-
 		ddmForm.setDDMFormFields(getDDMFormFields());
+		ddmForm.setDDMFormRules(getDDMFormRules());
 
 		return ddmForm;
 	}
@@ -92,7 +94,7 @@ public class DDMFormFactoryHelper {
 	}
 
 	protected Collection<Method> getDDMFormFieldMethods() {
-		Map<String, Method> methodsMap = new HashMap<>();
+		Map<String, Method> methodsMap = new TreeMap<>();
 
 		collectDDMFormFieldMethodsMap(_clazz, methodsMap);
 
@@ -116,6 +118,22 @@ public class DDMFormFactoryHelper {
 		}
 
 		return ddmFormFields;
+	}
+
+	protected List<com.liferay.dynamic.data.mapping.model.DDMFormRule>
+		getDDMFormRules() {
+
+		List<com.liferay.dynamic.data.mapping.model.DDMFormRule> ddmFormRules =
+			new ArrayList<>();
+
+		for (DDMFormRule ddmFormRule : _ddmForm.rules()) {
+			ddmFormRules.add(
+				new com.liferay.dynamic.data.mapping.model.DDMFormRule(
+					ddmFormRule.condition(),
+					ListUtil.fromArray(ddmFormRule.actions())));
+		}
+
+		return ddmFormRules;
 	}
 
 	protected Locale getDefaultLocale() {

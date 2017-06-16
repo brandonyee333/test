@@ -38,6 +38,7 @@ import com.liferay.registry.RegistryUtil;
 
 import java.nio.ByteBuffer;
 
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.Assert;
@@ -58,7 +59,7 @@ public class MessageDatagramReceiveHandlerTest {
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
-			CodeCoverageAssertor.INSTANCE, AspectJNewEnvTestRule.INSTANCE);
+			AspectJNewEnvTestRule.INSTANCE, CodeCoverageAssertor.INSTANCE);
 
 	@Before
 	public void setUp() {
@@ -286,9 +287,9 @@ public class MessageDatagramReceiveHandlerTest {
 			expectedMessageRoutingBag.isRoutingDowncast(),
 			actualMessageRoutingBag.isRoutingDowncast());
 		Assert.assertEquals(
-			ReflectionTestUtil.getFieldValue(
+			ReflectionTestUtil.<ArrayList<String>>getFieldValue(
 				expectedMessageRoutingBag, "_routingTrace"),
-			ReflectionTestUtil.getFieldValue(
+			ReflectionTestUtil.<ArrayList<String>>getFieldValue(
 				actualMessageRoutingBag, "_routingTrace"));
 	}
 

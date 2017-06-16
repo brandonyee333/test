@@ -2021,11 +2021,15 @@ public class ShoppingCategoryPersistenceImpl extends BasePersistenceImpl<Shoppin
 						list);
 				}
 				else {
-					if ((list.size() > 1) && _log.isWarnEnabled()) {
-						_log.warn(
-							"ShoppingCategoryPersistenceImpl.fetchByG_N(long, String, boolean) with parameters (" +
-							StringUtil.merge(finderArgs) +
-							") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+					if (list.size() > 1) {
+						Collections.sort(list, Collections.reverseOrder());
+
+						if (_log.isWarnEnabled()) {
+							_log.warn(
+								"ShoppingCategoryPersistenceImpl.fetchByG_N(long, String, boolean) with parameters (" +
+								StringUtil.merge(finderArgs) +
+								") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+						}
 					}
 
 					ShoppingCategory shoppingCategory = list.get(0);
@@ -2224,7 +2228,8 @@ public class ShoppingCategoryPersistenceImpl extends BasePersistenceImpl<Shoppin
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
-		clearUniqueFindersCache((ShoppingCategoryModelImpl)shoppingCategory);
+		clearUniqueFindersCache((ShoppingCategoryModelImpl)shoppingCategory,
+			true);
 	}
 
 	@Override
@@ -2236,52 +2241,40 @@ public class ShoppingCategoryPersistenceImpl extends BasePersistenceImpl<Shoppin
 			entityCache.removeResult(ShoppingCategoryModelImpl.ENTITY_CACHE_ENABLED,
 				ShoppingCategoryImpl.class, shoppingCategory.getPrimaryKey());
 
-			clearUniqueFindersCache((ShoppingCategoryModelImpl)shoppingCategory);
+			clearUniqueFindersCache((ShoppingCategoryModelImpl)shoppingCategory,
+				true);
 		}
 	}
 
 	protected void cacheUniqueFindersCache(
-		ShoppingCategoryModelImpl shoppingCategoryModelImpl, boolean isNew) {
-		if (isNew) {
-			Object[] args = new Object[] {
-					shoppingCategoryModelImpl.getGroupId(),
-					shoppingCategoryModelImpl.getName()
-				};
-
-			finderCache.putResult(FINDER_PATH_COUNT_BY_G_N, args,
-				Long.valueOf(1));
-			finderCache.putResult(FINDER_PATH_FETCH_BY_G_N, args,
-				shoppingCategoryModelImpl);
-		}
-		else {
-			if ((shoppingCategoryModelImpl.getColumnBitmask() &
-					FINDER_PATH_FETCH_BY_G_N.getColumnBitmask()) != 0) {
-				Object[] args = new Object[] {
-						shoppingCategoryModelImpl.getGroupId(),
-						shoppingCategoryModelImpl.getName()
-					};
-
-				finderCache.putResult(FINDER_PATH_COUNT_BY_G_N, args,
-					Long.valueOf(1));
-				finderCache.putResult(FINDER_PATH_FETCH_BY_G_N, args,
-					shoppingCategoryModelImpl);
-			}
-		}
-	}
-
-	protected void clearUniqueFindersCache(
 		ShoppingCategoryModelImpl shoppingCategoryModelImpl) {
 		Object[] args = new Object[] {
 				shoppingCategoryModelImpl.getGroupId(),
 				shoppingCategoryModelImpl.getName()
 			};
 
-		finderCache.removeResult(FINDER_PATH_COUNT_BY_G_N, args);
-		finderCache.removeResult(FINDER_PATH_FETCH_BY_G_N, args);
+		finderCache.putResult(FINDER_PATH_COUNT_BY_G_N, args, Long.valueOf(1),
+			false);
+		finderCache.putResult(FINDER_PATH_FETCH_BY_G_N, args,
+			shoppingCategoryModelImpl, false);
+	}
+
+	protected void clearUniqueFindersCache(
+		ShoppingCategoryModelImpl shoppingCategoryModelImpl,
+		boolean clearCurrent) {
+		if (clearCurrent) {
+			Object[] args = new Object[] {
+					shoppingCategoryModelImpl.getGroupId(),
+					shoppingCategoryModelImpl.getName()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_N, args);
+			finderCache.removeResult(FINDER_PATH_FETCH_BY_G_N, args);
+		}
 
 		if ((shoppingCategoryModelImpl.getColumnBitmask() &
 				FINDER_PATH_FETCH_BY_G_N.getColumnBitmask()) != 0) {
-			args = new Object[] {
+			Object[] args = new Object[] {
 					shoppingCategoryModelImpl.getOriginalGroupId(),
 					shoppingCategoryModelImpl.getOriginalName()
 				};
@@ -2448,8 +2441,29 @@ public class ShoppingCategoryPersistenceImpl extends BasePersistenceImpl<Shoppin
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew || !ShoppingCategoryModelImpl.COLUMN_BITMASK_ENABLED) {
+		if (!ShoppingCategoryModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		}
+		else
+		 if (isNew) {
+			Object[] args = new Object[] { shoppingCategoryModelImpl.getGroupId() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_GROUPID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPID,
+				args);
+
+			args = new Object[] {
+					shoppingCategoryModelImpl.getGroupId(),
+					shoppingCategoryModelImpl.getParentCategoryId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_P, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_P,
+				args);
+
+			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
+				FINDER_ARGS_EMPTY);
 		}
 
 		else {
@@ -2496,8 +2510,8 @@ public class ShoppingCategoryPersistenceImpl extends BasePersistenceImpl<Shoppin
 			ShoppingCategoryImpl.class, shoppingCategory.getPrimaryKey(),
 			shoppingCategory, false);
 
-		clearUniqueFindersCache(shoppingCategoryModelImpl);
-		cacheUniqueFindersCache(shoppingCategoryModelImpl, isNew);
+		clearUniqueFindersCache(shoppingCategoryModelImpl, false);
+		cacheUniqueFindersCache(shoppingCategoryModelImpl);
 
 		shoppingCategory.resetOriginalValues();
 
@@ -2678,7 +2692,7 @@ public class ShoppingCategoryPersistenceImpl extends BasePersistenceImpl<Shoppin
 		query.append(_SQL_SELECT_SHOPPINGCATEGORY_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			query.append(String.valueOf(primaryKey));
+			query.append((long)primaryKey);
 
 			query.append(StringPool.COMMA);
 		}

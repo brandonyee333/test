@@ -31,8 +31,9 @@ import com.liferay.document.library.kernel.service.DLFileVersionLocalService;
 import com.liferay.document.library.kernel.service.DLFolderLocalService;
 import com.liferay.document.library.kernel.store.DLStoreUtil;
 import com.liferay.document.library.kernel.util.DLUtil;
-import com.liferay.document.library.kernel.util.DLValidatorUtil;
+import com.liferay.document.library.kernel.util.DLValidator;
 import com.liferay.document.library.kernel.util.comparator.DLFileVersionVersionComparator;
+import com.liferay.portal.instances.service.PortalInstancesLocalService;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Criterion;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -57,7 +58,6 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.repository.liferayrepository.model.LiferayFileEntry;
 import com.liferay.portal.repository.liferayrepository.model.LiferayFileVersion;
 import com.liferay.portal.repository.liferayrepository.model.LiferayFolder;
-import com.liferay.portal.util.PortalInstances;
 import com.liferay.portal.verify.VerifyProcess;
 import com.liferay.portlet.documentlibrary.webdav.DLWebDAVUtil;
 
@@ -68,7 +68,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 import org.springframework.context.ApplicationContext;
@@ -77,12 +76,10 @@ import org.springframework.context.ApplicationContext;
  * @author Raymond Augé
  * @author Douglas Wong
  * @author Alexander Chow
+ * @deprecated As of 1.1.0, replaced by {@link
+ *             com.liferay.document.library.internal.verify.DLServiceVerifyProcess}
  */
-@Component(
-	immediate = true,
-	property = {"verify.process.name=com.liferay.document.library.service"},
-	service = VerifyProcess.class
-)
+@Deprecated
 public class DLServiceVerifyProcess extends VerifyProcess {
 
 	protected void addDLFileVersion(DLFileEntry dlFileEntry) {
@@ -357,11 +354,10 @@ public class DLServiceVerifyProcess extends VerifyProcess {
 
 						String title = dlFileEntry.getTitle();
 
-						if (!DLValidatorUtil.isValidName(title)) {
+						if (!_dlValidator.isValidName(title)) {
 							try {
 								dlFileEntry = renameTitle(
-									dlFileEntry,
-									DLValidatorUtil.fixName(title));
+									dlFileEntry, _dlValidator.fixName(title));
 							}
 							catch (Exception e) {
 								if (_log.isWarnEnabled()) {
@@ -409,14 +405,21 @@ public class DLServiceVerifyProcess extends VerifyProcess {
 							catch (Exception e) {
 								if (_log.isWarnEnabled()) {
 									_log.warn(
-										"Unable to rename duplicate title for" +
-											" file entry " +
+										"Unable to rename duplicate title " +
+											"for file entry " +
 												dlFileEntry.getFileEntryId(),
 										e);
 								}
 							}
 						}
 						catch (PortalException pe) {
+
+							// LPS-52675
+
+							if (_log.isDebugEnabled()) {
+								_log.debug(pe, pe);
+							}
+
 							return;
 						}
 					}
@@ -586,6 +589,12 @@ public class DLServiceVerifyProcess extends VerifyProcess {
 				return renameTitle(dlFileEntry, newTitle);
 			}
 			catch (DuplicateFileEntryException dfee) {
+
+				// LPS-52675
+
+				if (_log.isDebugEnabled()) {
+					_log.debug(dfee, dfee);
+				}
 			}
 		}
 	}
@@ -741,7 +750,8 @@ public class DLServiceVerifyProcess extends VerifyProcess {
 
 	protected void verifyTree() throws Exception {
 		try (LoggingTimer loggingTimer = new LoggingTimer()) {
-			long[] companyIds = PortalInstances.getCompanyIdsBySQL();
+			long[] companyIds =
+				_portalInstancesLocalService.getCompanyIdsBySQL();
 
 			for (long companyId : companyIds) {
 				_dlFolderLocalService.rebuildTree(companyId);
@@ -762,5 +772,11 @@ public class DLServiceVerifyProcess extends VerifyProcess {
 	private DLFileEntryTypeLocalService _dlFileEntryTypeLocalService;
 	private DLFileVersionLocalService _dlFileVersionLocalService;
 	private DLFolderLocalService _dlFolderLocalService;
+
+	@Reference
+	private DLValidator _dlValidator;
+
+	@Reference
+	private PortalInstancesLocalService _portalInstancesLocalService;
 
 }

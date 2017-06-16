@@ -16,6 +16,8 @@ package com.liferay.portal.security.ldap.internal.model.listener;
 
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.MembershipRequest;
@@ -27,6 +29,7 @@ import com.liferay.portal.kernel.service.MembershipRequestLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.security.exportimport.UserExporter;
 import com.liferay.portal.security.ldap.internal.UserImportTransactionThreadLocal;
@@ -35,9 +38,11 @@ import java.io.Serializable;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Scott Lee
@@ -68,22 +73,28 @@ public class UserModelListener extends BaseModelListener<User> {
 	}
 
 	@Override
-	public void onAfterCreate(User user) throws ModelListenerException {
+	public void onAfterCreate(User user) {
 		try {
 			exportToLDAP(user);
 		}
 		catch (Exception e) {
-			throw new ModelListenerException(e);
+			_log.error(
+				"Unable to export user " + user.getUserId() +
+					" to LDAP on after create",
+				e);
 		}
 	}
 
 	@Override
-	public void onAfterUpdate(User user) throws ModelListenerException {
+	public void onAfterUpdate(User user) {
 		try {
 			exportToLDAP(user);
 		}
 		catch (Exception e) {
-			throw new ModelListenerException(e);
+			_log.error(
+				"Unable to export user " + user.getUserId() +
+					" to LDAP on after update",
+				e);
 		}
 	}
 
@@ -93,41 +104,35 @@ public class UserModelListener extends BaseModelListener<User> {
 			user.getOriginalEmailAddress());
 	}
 
-	@Reference(unbind = "-")
-	public void setMembershipRequestLocalService(
-		MembershipRequestLocalService membershipRequestLocalService) {
-
-		_membershipRequestLocalService = membershipRequestLocalService;
-	}
-
-	@Reference(unbind = "-")
-	public void setUserExporter(UserExporter userExporter) {
-		_userExporter = userExporter;
-	}
-
-	@Reference(unbind = "-")
-	public void setUserLocalService(UserLocalService userLocalService) {
-		_userLocalService = userLocalService;
-	}
-
-	protected void exportToLDAP(User user) throws Exception {
+	protected void exportToLDAP(final User user) throws Exception {
 		if (user.isDefaultUser() ||
 			UserImportTransactionThreadLocal.isOriginatesFromImport()) {
 
 			return;
 		}
 
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
+		Callable<Void> callable = new Callable<Void>() {
 
-		Map<String, Serializable> expandoBridgeAttributes = null;
+			@Override
+			public Void call() throws Exception {
+				ServiceContext serviceContext =
+					ServiceContextThreadLocal.getServiceContext();
 
-		if (serviceContext != null) {
-			expandoBridgeAttributes =
-				serviceContext.getExpandoBridgeAttributes();
-		}
+				Map<String, Serializable> expandoBridgeAttributes = null;
 
-		_userExporter.exportUser(user, expandoBridgeAttributes);
+				if (serviceContext != null) {
+					expandoBridgeAttributes =
+						serviceContext.getExpandoBridgeAttributes();
+				}
+
+				_userExporter.exportUser(user, expandoBridgeAttributes);
+
+				return null;
+			}
+
+		};
+
+		TransactionCommitCallbackUtil.registerCallback(callable);
 	}
 
 	protected void updateMembershipRequestStatus(long userId, long groupId)
@@ -152,8 +157,16 @@ public class UserModelListener extends BaseModelListener<User> {
 		}
 	}
 
+	private static final Log _log = LogFactoryUtil.getLog(
+		UserModelListener.class);
+
+	@Reference
 	private MembershipRequestLocalService _membershipRequestLocalService;
+
+	@Reference(policyOption = ReferencePolicyOption.GREEDY)
 	private UserExporter _userExporter;
+
+	@Reference
 	private UserLocalService _userLocalService;
 
 }

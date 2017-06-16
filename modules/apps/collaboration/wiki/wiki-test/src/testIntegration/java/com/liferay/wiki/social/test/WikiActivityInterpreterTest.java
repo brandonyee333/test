@@ -15,8 +15,6 @@
 package com.liferay.wiki.social.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-import com.liferay.document.library.kernel.model.DLFileEntryConstants;
-import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
@@ -24,11 +22,14 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portlet.social.test.BaseSocialActivityInterpreterTestCase;
+import com.liferay.registry.Registry;
+import com.liferay.registry.RegistryUtil;
+import com.liferay.registry.ServiceTracker;
 import com.liferay.social.kernel.model.SocialActivityConstants;
 import com.liferay.social.kernel.model.SocialActivityInterpreter;
+import com.liferay.trash.TrashHelper;
 import com.liferay.trash.kernel.model.TrashEntry;
 import com.liferay.trash.kernel.service.TrashEntryLocalServiceUtil;
-import com.liferay.trash.kernel.util.TrashUtil;
 import com.liferay.wiki.constants.WikiPortletKeys;
 import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.model.WikiPage;
@@ -36,6 +37,9 @@ import com.liferay.wiki.service.WikiPageLocalServiceUtil;
 import com.liferay.wiki.social.WikiActivityKeys;
 import com.liferay.wiki.util.test.WikiTestUtil;
 
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
@@ -54,6 +58,28 @@ public class WikiActivityInterpreterTest
 		new AggregateTestRule(
 			new LiferayIntegrationTestRule(),
 			SynchronousDestinationTestRule.INSTANCE);
+
+	@BeforeClass
+	public static void setUpClass() {
+		Registry registry = RegistryUtil.getRegistry();
+
+		_serviceTracker = registry.trackServices(TrashHelper.class.getName());
+
+		_serviceTracker.open();
+	}
+
+	@AfterClass
+	public static void tearDownClass() {
+		_serviceTracker.close();
+	}
+
+	@Before
+	@Override
+	public void setUp() throws Exception {
+		super.setUp();
+
+		_trashHelper = _serviceTracker.getService();
+	}
 
 	@Override
 	protected void addActivities() throws Exception {
@@ -94,15 +120,9 @@ public class WikiActivityInterpreterTest
 
 	@Override
 	protected void moveModelsToTrash() throws Exception {
-		FileEntry fileEntry =
-			WikiPageLocalServiceUtil.movePageAttachmentToTrash(
-				TestPropsValues.getUserId(), _page.getNodeId(),
-				_page.getTitle(), _attachmentFileName);
-
-		TrashEntry trashEntry = TrashEntryLocalServiceUtil.getEntry(
-			DLFileEntryConstants.getClassName(), fileEntry.getFileEntryId());
-
-		_attachmentFileName = TrashUtil.getTrashTitle(trashEntry.getEntryId());
+		WikiPageLocalServiceUtil.movePageAttachmentToTrash(
+			TestPropsValues.getUserId(), _page.getNodeId(), _page.getTitle(),
+			_attachmentFileName);
 
 		WikiPageLocalServiceUtil.movePageToTrash(
 			TestPropsValues.getUserId(), _page);
@@ -114,15 +134,25 @@ public class WikiActivityInterpreterTest
 
 	@Override
 	protected void restoreModelsFromTrash() throws Exception {
-		WikiPageLocalServiceUtil.restorePageFromTrash(
-			TestPropsValues.getUserId(), _page);
+		TrashEntry trashEntry = TrashEntryLocalServiceUtil.getEntry(
+			WikiPage.class.getName(), _page.getResourcePrimKey());
+
+		String trashTitle = _trashHelper.getTrashTitle(trashEntry.getEntryId());
+
+		_page.setTitle(trashTitle);
 
 		WikiPageLocalServiceUtil.restorePageAttachmentFromTrash(
 			TestPropsValues.getUserId(), _page.getNodeId(), _page.getTitle(),
 			_attachmentFileName);
+
+		WikiPageLocalServiceUtil.restorePageFromTrash(
+			TestPropsValues.getUserId(), _page);
 	}
+
+	private static ServiceTracker<TrashHelper, TrashHelper> _serviceTracker;
 
 	private String _attachmentFileName;
 	private WikiPage _page;
+	private TrashHelper _trashHelper;
 
 }

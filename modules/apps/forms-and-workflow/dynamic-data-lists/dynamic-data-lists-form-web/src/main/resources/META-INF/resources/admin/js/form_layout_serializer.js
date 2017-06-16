@@ -30,14 +30,10 @@ AUI.add(
 				NAME: 'liferay-ddl-form-builder-layout-serializer',
 
 				prototype: {
-					serialize: function() {
+					getPages: function() {
 						var instance = this;
 
-						return A.JSON.stringify(
-							{
-								pages: instance.visit()
-							}
-						);
+						return instance.visit();
 					},
 
 					_serializeColumn: function(column) {
@@ -47,15 +43,15 @@ AUI.add(
 							size: column.get('size')
 						};
 
-						var fieldNames = [];
+						var fields = [];
 
 						var fieldsList = column.get('value');
 
 						if (fieldsList) {
-							fieldNames = instance._visitFields(fieldsList.get('fields'));
+							fields = instance._visitFields(fieldsList.get('fields'));
 						}
 
-						serializedColumn.fieldNames = fieldNames;
+						serializedColumn.fields = fields;
 
 						return serializedColumn;
 					},
@@ -63,7 +59,7 @@ AUI.add(
 					_serializeField: function(field) {
 						var instance = this;
 
-						return field.get('name');
+						return field.get('context');
 					},
 
 					_serializePage: function(page, index) {
@@ -73,17 +69,13 @@ AUI.add(
 
 						var pages = builder.get('pages');
 
-						var descriptions = pages.get('descriptions');
-						var titles = pages.get('titles');
+						var descriptions = pages.get('localizedDescriptions');
+						var titles = pages.get('localizedTitles');
 
 						return {
-							description: {
-								en_US: descriptions[index] || ''
-							},
+							description: descriptions[index] || '',
 							rows: instance._visitRows(page.get('rows')),
-							title: {
-								en_US: titles[index] || ''
-							}
+							title: titles[index] || ''
 						};
 					},
 
@@ -126,7 +118,7 @@ AUI.add(
 							function(item) {
 								return item.columns.filter(
 									function(column) {
-										return column.fieldNames.length > 0;
+										return column.fields.length > 0;
 									}
 								).length > 0;
 							}

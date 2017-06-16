@@ -14,7 +14,8 @@
 
 package com.liferay.portal.security.ldap.internal.model.listener;
 
-import com.liferay.portal.kernel.exception.ModelListenerException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.Contact;
 import com.liferay.portal.kernel.model.ModelListener;
@@ -31,6 +32,7 @@ import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Scott Lee
@@ -41,33 +43,29 @@ import org.osgi.service.component.annotations.Reference;
 public class ContactModelListener extends BaseModelListener<Contact> {
 
 	@Override
-	public void onAfterCreate(Contact contact) throws ModelListenerException {
+	public void onAfterCreate(Contact contact) {
 		try {
 			exportToLDAP(contact);
 		}
 		catch (Exception e) {
-			throw new ModelListenerException(e);
+			_log.error(
+				"Unable to export contact with user ID " + contact.getUserId() +
+					" to LDAP on after create",
+				e);
 		}
 	}
 
 	@Override
-	public void onAfterUpdate(Contact contact) throws ModelListenerException {
+	public void onAfterUpdate(Contact contact) {
 		try {
 			exportToLDAP(contact);
 		}
 		catch (Exception e) {
-			throw new ModelListenerException(e);
+			_log.error(
+				"Unable to export contact with user ID " + contact.getUserId() +
+					" to LDAP on after update",
+				e);
 		}
-	}
-
-	@Reference(unbind = "-")
-	public void setUserExporter(UserExporter userExporter) {
-		_userExporter = userExporter;
-	}
-
-	@Reference(unbind = "-")
-	public void setUserLocalService(UserLocalService userLocalService) {
-		_userLocalService = userLocalService;
 	}
 
 	protected void exportToLDAP(Contact contact) throws Exception {
@@ -94,7 +92,13 @@ public class ContactModelListener extends BaseModelListener<Contact> {
 		_userExporter.exportUser(contact, expandoBridgeAttributes);
 	}
 
+	private static final Log _log = LogFactoryUtil.getLog(
+		ContactModelListener.class);
+
+	@Reference(policyOption = ReferencePolicyOption.GREEDY)
 	private UserExporter _userExporter;
+
+	@Reference
 	private UserLocalService _userLocalService;
 
 }

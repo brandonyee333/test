@@ -70,6 +70,30 @@ import java.util.Map;
  */
 @ProviderType
 public class JournalArticleServiceSoap {
+	public static void subscribe(long groupId, long articleId)
+		throws RemoteException {
+		try {
+			JournalArticleServiceUtil.subscribe(groupId, articleId);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static void unsubscribe(long groupId, long articleId)
+		throws RemoteException {
+		try {
+			JournalArticleServiceUtil.unsubscribe(groupId, articleId);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
 	/**
 	* Adds a web content article without any images.
 	*
@@ -1268,7 +1292,7 @@ public class JournalArticleServiceSoap {
 	* @param articleId the primary key of the web content article
 	* @param newFolderId the primary key of the web content article's new
 	folder
-	* @deprecated As of 7.0.0, replaced by {@link #moveArticle(long, String,
+	* @deprecated As of 4.0.0, replaced by {@link #moveArticle(long, String,
 	long, ServiceContext)}
 	*/
 	@Deprecated

@@ -23,7 +23,7 @@ AssetCategory category = (AssetCategory)row.getObject();
 %>
 
 <liferay-ui:icon-menu direction="left-side" icon="<%= StringPool.BLANK %>" markupView="lexicon" message="<%= StringPool.BLANK %>" showWhenSingleIcon="<%= true %>">
-	<c:if test="<%= AssetCategoryPermission.contains(permissionChecker, category, ActionKeys.UPDATE) %>">
+	<c:if test="<%= assetCategoriesDisplayContext.hasPermission(category, ActionKeys.UPDATE) %>">
 		<portlet:renderURL var="editCategoryURL">
 			<portlet:param name="mvcPath" value="/edit_category.jsp" />
 			<portlet:param name="categoryId" value="<%= String.valueOf(category.getCategoryId()) %>" />
@@ -36,7 +36,7 @@ AssetCategory category = (AssetCategory)row.getObject();
 		/>
 	</c:if>
 
-	<c:if test="<%= AssetCategoryPermission.contains(permissionChecker, category, ActionKeys.ADD_CATEGORY) %>">
+	<c:if test="<%= assetCategoriesDisplayContext.hasPermission(category, ActionKeys.ADD_CATEGORY) %>">
 		<portlet:renderURL var="addSubcategoryCategoryURL">
 			<portlet:param name="mvcPath" value="/edit_category.jsp" />
 			<portlet:param name="vocabularyId" value="<%= String.valueOf(category.getVocabularyId()) %>" />
@@ -49,20 +49,15 @@ AssetCategory category = (AssetCategory)row.getObject();
 		/>
 	</c:if>
 
-	<c:if test="<%= AssetCategoryPermission.contains(permissionChecker, category, ActionKeys.UPDATE) %>">
-		<portlet:renderURL var="moveCategoryURL">
-			<portlet:param name="mvcPath" value="/move_category.jsp" />
-			<portlet:param name="categoryId" value="<%= String.valueOf(category.getCategoryId()) %>" />
-			<portlet:param name="vocabularyId" value="<%= String.valueOf(category.getVocabularyId()) %>" />
-		</portlet:renderURL>
-
+	<c:if test="<%= assetCategoriesDisplayContext.hasPermission(category, ActionKeys.UPDATE) %>">
 		<liferay-ui:icon
+			id='<%= row.getRowId() + "moveCategory" %>'
 			message="move"
-			url="<%= moveCategoryURL %>"
+			url="javascript:;"
 		/>
 	</c:if>
 
-	<c:if test="<%= AssetCategoryPermission.contains(permissionChecker, category, ActionKeys.PERMISSIONS) %>">
+	<c:if test="<%= assetCategoriesDisplayContext.hasPermission(category, ActionKeys.PERMISSIONS) %>">
 		<liferay-security:permissionsURL
 			modelResource="<%= AssetCategory.class.getName() %>"
 			modelResourceDescription="<%= category.getTitle(locale) %>"
@@ -79,7 +74,7 @@ AssetCategory category = (AssetCategory)row.getObject();
 		/>
 	</c:if>
 
-	<c:if test="<%= AssetCategoryPermission.contains(permissionChecker, category, ActionKeys.DELETE) %>">
+	<c:if test="<%= assetCategoriesDisplayContext.hasPermission(category, ActionKeys.DELETE) %>">
 		<portlet:actionURL name="deleteCategory" var="deleteCategoryURL">
 			<portlet:param name="redirect" value="<%= currentURL %>" />
 			<portlet:param name="categoryId" value="<%= String.valueOf(category.getCategoryId()) %>" />
@@ -90,3 +85,52 @@ AssetCategory category = (AssetCategory)row.getObject();
 		/>
 	</c:if>
 </liferay-ui:icon-menu>
+
+<c:if test="<%= assetCategoriesDisplayContext.hasPermission(category, ActionKeys.UPDATE) %>">
+	<aui:script use="liferay-item-selector-dialog">
+		$('#<portlet:namespace /><%= row.getRowId() %>moveCategory').on(
+			'click',
+			function(event) {
+				var itemSelectorDialog = new A.LiferayItemSelectorDialog(
+					{
+						eventName: '<portlet:namespace />selectCategory',
+						on: {
+							selectedItemChange: function(event) {
+								var selectedItem = event.newVal;
+
+								if (selectedItem) {
+									var parentCategoryId = 0;
+									var vocabularyId = 0;
+
+									for (var key in selectedItem) {
+										var item = selectedItem[key];
+
+										if (!item.unchecked) {
+											parentCategoryId = item.categoryId || 0;
+											vocabularyId = item.vocabularyId || 0;
+
+											break;
+										}
+									}
+
+									if ((vocabularyId > 0) || (parentCategoryId > 0)) {
+										document.<portlet:namespace />moveCategoryFm.<portlet:namespace />categoryId.value = '<%= category.getCategoryId() %>';
+										document.<portlet:namespace />moveCategoryFm.<portlet:namespace />parentCategoryId.value = parentCategoryId;
+										document.<portlet:namespace />moveCategoryFm.<portlet:namespace />vocabularyId.value = vocabularyId;
+
+										submitForm($(document.<portlet:namespace />moveCategoryFm));
+									}
+								}
+							}
+						},
+						'strings.add': '<liferay-ui:message key="done" />',
+						title: '<liferay-ui:message arguments="<%= category.getTitle(locale) %>" key="move-x" />',
+						url: '<%= assetCategoriesDisplayContext.getSelectCategoryURL() %>'
+					}
+				);
+
+				itemSelectorDialog.open();
+			}
+		);
+	</aui:script>
+</c:if>

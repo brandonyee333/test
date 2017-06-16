@@ -40,6 +40,7 @@ import com.liferay.portal.security.ldap.authenticator.configuration.LDAPAuthConf
 import com.liferay.portal.security.ldap.configuration.ConfigurationProvider;
 import com.liferay.portal.security.ldap.configuration.LDAPServerConfiguration;
 import com.liferay.portal.security.ldap.configuration.SystemLDAPConfiguration;
+import com.liferay.portal.security.ldap.constants.LDAPConstants;
 import com.liferay.portal.security.ldap.exportimport.LDAPUserImporter;
 import com.liferay.portal.security.ldap.exportimport.configuration.LDAPImportConfiguration;
 
@@ -62,6 +63,7 @@ import javax.naming.ldap.LdapContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Brian Wing Shun Chan
@@ -73,11 +75,6 @@ import org.osgi.service.component.annotations.Reference;
 	service = Authenticator.class
 )
 public class LDAPAuth implements Authenticator {
-
-	public static final String AUTH_METHOD_BIND = "bind";
-
-	public static final String AUTH_METHOD_PASSWORD_COMPARE =
-		"password-compare";
 
 	public static final String RESULT_PASSWORD_EXP_WARNING =
 		"2.16.840.1.113730.3.4.5";
@@ -162,7 +159,7 @@ public class LDAPAuth implements Authenticator {
 		SystemLDAPConfiguration systemLDAPConfiguration =
 			_systemLDAPConfigurationProvider.getConfiguration(companyId);
 
-		if (authMethod.equals(AUTH_METHOD_BIND)) {
+		if (authMethod.equals(LDAPConstants.AUTH_METHOD_BIND)) {
 			Hashtable<String, Object> env =
 				(Hashtable<String, Object>)ctx.getEnvironment();
 
@@ -214,7 +211,9 @@ public class LDAPAuth implements Authenticator {
 				}
 			}
 		}
-		else if (authMethod.equals(AUTH_METHOD_PASSWORD_COMPARE)) {
+		else if (authMethod.equals(
+					LDAPConstants.AUTH_METHOD_PASSWORD_COMPARE)) {
+
 			ldapAuthResult = new LDAPAuthResult();
 
 			Attribute userPassword = attributes.get("userPassword");
@@ -261,9 +260,8 @@ public class LDAPAuth implements Authenticator {
 		if (ldapContext == null) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
-					"No LDAP server configuration available for " +
-						"LDAP server " + ldapServerId + " and company " +
-							companyId);
+					"No LDAP server configuration available for LDAP server " +
+						ldapServerId + " and company " + companyId);
 			}
 
 			return FAILURE;
@@ -328,7 +326,7 @@ public class LDAPAuth implements Authenticator {
 			// Get user or create from LDAP
 
 			if (!ldapAuthResult.isAuthenticated()) {
-				password = StringPool.BLANK;
+				password = null;
 			}
 
 			User user = _ldapUserImporter.importUser(
@@ -344,8 +342,7 @@ public class LDAPAuth implements Authenticator {
 						companyId);
 
 				for (String errorUserLockoutKeyword :
-						systemLDAPConfiguration.
-							errorUserLockoutKeywords()) {
+						systemLDAPConfiguration.errorUserLockoutKeywords()) {
 
 					if (errorMessage.contains(errorUserLockoutKeyword)) {
 						throw new UserLockoutException.LDAPLockout(
@@ -726,7 +723,7 @@ public class LDAPAuth implements Authenticator {
 		_ldapSettings = ldapSettings;
 	}
 
-	@Reference(unbind = "-")
+	@Reference(policyOption = ReferencePolicyOption.GREEDY, unbind = "-")
 	protected void setLdapUserImporter(LDAPUserImporter ldapUserImporter) {
 		_ldapUserImporter = ldapUserImporter;
 	}
@@ -741,7 +738,7 @@ public class LDAPAuth implements Authenticator {
 		_passwordEncryptor = passwordEncryptor;
 	}
 
-	@Reference(unbind = "-")
+	@Reference(policyOption = ReferencePolicyOption.GREEDY, unbind = "-")
 	protected void setPortalLDAP(PortalLDAP portalLDAP) {
 		_portalLDAP = portalLDAP;
 	}
@@ -771,10 +768,8 @@ public class LDAPAuth implements Authenticator {
 
 	private boolean _authPipelineEnableLiferayCheck;
 	private final ThreadLocal<Map<String, LDAPAuthResult>>
-		_failedLDAPAuthResults =
-			new AutoResetThreadLocal<Map<String, LDAPAuthResult>>(
-				LDAPAuth.class + "._failedLDAPAuthResultCache",
-				new HashMap<String, LDAPAuthResult>());
+		_failedLDAPAuthResults = new AutoResetThreadLocal<>(
+			LDAPAuth.class + "._failedLDAPAuthResultCache", HashMap::new);
 	private ConfigurationProvider<LDAPAuthConfiguration>
 		_ldapAuthConfigurationProvider;
 	private ConfigurationProvider<LDAPImportConfiguration>

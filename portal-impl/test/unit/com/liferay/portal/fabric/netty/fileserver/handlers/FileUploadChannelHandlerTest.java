@@ -78,7 +78,7 @@ public class FileUploadChannelHandlerTest {
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
-			CodeCoverageAssertor.INSTANCE, AspectJNewEnvTestRule.INSTANCE);
+			AspectJNewEnvTestRule.INSTANCE, CodeCoverageAssertor.INSTANCE);
 
 	@After
 	public void tearDown() {
@@ -228,6 +228,7 @@ public class FileUploadChannelHandlerTest {
 		Assert.assertEquals(1, byteBuf.refCnt());
 		Assert.assertTrue(fileUploadChannelHandler.receive(byteBuf));
 		Assert.assertEquals(1, byteBuf.refCnt());
+
 		Assert.assertArrayEquals(
 			data, unsyncByteArrayOutputStream.toByteArray());
 		Assert.assertEquals(Unpooled.wrappedBuffer(data), byteBuf);

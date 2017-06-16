@@ -223,9 +223,28 @@ public class JournalFolderServiceWrapper implements JournalFolderService,
 	}
 
 	@Override
+	public java.util.List<java.lang.Object> getFoldersAndArticles(
+		long groupId, long userId, long folderId, int status,
+		java.util.Locale locale, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<?> obc) {
+		return _journalFolderService.getFoldersAndArticles(groupId, userId,
+			folderId, status, locale, start, end, obc);
+	}
+
+	@Override
 	public java.util.List<java.lang.Long> getSubfolderIds(long groupId,
 		long folderId, boolean recurse) {
 		return _journalFolderService.getSubfolderIds(groupId, folderId, recurse);
+	}
+
+	@Override
+	public java.util.List<com.liferay.dynamic.data.mapping.model.DDMStructure> searchDDMStructures(
+		long companyId, long[] groupIds, long folderId, int restrictionType,
+		java.lang.String keywords, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.dynamic.data.mapping.model.DDMStructure> obc)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _journalFolderService.searchDDMStructures(companyId, groupIds,
+			folderId, restrictionType, keywords, start, end, obc);
 	}
 
 	@Override
@@ -241,7 +260,7 @@ public class JournalFolderServiceWrapper implements JournalFolderService,
 	}
 
 	/**
-	* @deprecated As of 7.0.0, replaced by {@link #getSubfolderIds(List, long,
+	* @deprecated As of 4.0.0, replaced by {@link #getSubfolderIds(List, long,
 	long, boolean)}
 	*/
 	@Deprecated

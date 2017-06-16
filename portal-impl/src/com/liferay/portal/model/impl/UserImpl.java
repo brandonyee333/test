@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.model.Website;
 import com.liferay.portal.kernel.security.auth.EmailAddressGenerator;
 import com.liferay.portal.kernel.security.auth.FullNameGenerator;
 import com.liferay.portal.kernel.security.auth.FullNameGeneratorFactory;
+import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.service.AddressLocalServiceUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.service.ContactLocalServiceUtil;
@@ -100,7 +101,23 @@ public class UserImpl extends UserBaseImpl {
 
 	@Override
 	public Contact fetchContact() {
-		return ContactLocalServiceUtil.fetchContact(getContactId());
+		if (_contact == _NULL_CONTACT) {
+			return null;
+		}
+
+		if (_contact == null) {
+			Contact contact = ContactLocalServiceUtil.fetchContact(
+				getContactId());
+
+			if (contact == null) {
+				_contact = _NULL_CONTACT;
+			}
+			else {
+				_contact = contact;
+			}
+		}
+
+		return _contact;
 	}
 
 	/**
@@ -145,7 +162,11 @@ public class UserImpl extends UserBaseImpl {
 	 */
 	@Override
 	public Contact getContact() throws PortalException {
-		return ContactLocalServiceUtil.getContact(getContactId());
+		if ((_contact == null) || (_contact == _NULL_CONTACT)) {
+			_contact = ContactLocalServiceUtil.getContact(getContactId());
+		}
+
+		return _contact;
 	}
 
 	/**
@@ -185,12 +206,14 @@ public class UserImpl extends UserBaseImpl {
 			Digester.MD5, getEmailAddress(), Portal.PORTAL_REALM, password);
 
 		sb.append(digest1);
+
 		sb.append(StringPool.COMMA);
 
 		String digest2 = DigesterUtil.digestHex(
 			Digester.MD5, getScreenName(), Portal.PORTAL_REALM, password);
 
 		sb.append(digest2);
+
 		sb.append(StringPool.COMMA);
 
 		String digest3 = DigesterUtil.digestHex(
@@ -302,7 +325,7 @@ public class UserImpl extends UserBaseImpl {
 
 		String profileFriendlyURL = getProfileFriendlyURL();
 
-		if (Validator.isNotNull(profileFriendlyURL)) {
+		if (profileFriendlyURL != null) {
 			return portalURL.concat(PortalUtil.getPathContext()).concat(
 				profileFriendlyURL);
 		}
@@ -385,7 +408,7 @@ public class UserImpl extends UserBaseImpl {
 
 		String profileFriendlyURL = getProfileFriendlyURL();
 
-		if (Validator.isNotNull(profileFriendlyURL)) {
+		if (profileFriendlyURL != null) {
 			return PortalUtil.addPreservedParameters(
 				themeDisplay,
 				portalURL.concat(
@@ -491,15 +514,10 @@ public class UserImpl extends UserBaseImpl {
 
 	@Override
 	public String getInitials() {
-		StringBundler sb = new StringBundler(2);
+		String firstInitial = StringUtil.shorten(getFirstName(), 1);
+		String lastInitial = StringUtil.shorten(getLastName(), 1);
 
-		String[] names = new String[] {getFirstName(), getLastName()};
-
-		for (String name : names) {
-			sb.append(StringUtil.toUpperCase(StringUtil.shorten(name, 1)));
-		}
-
-		return sb.toString();
+		return StringUtil.toUpperCase(firstInitial.concat(lastInitial));
 	}
 
 	@Override
@@ -596,8 +614,7 @@ public class UserImpl extends UserBaseImpl {
 	public PasswordPolicy getPasswordPolicy() throws PortalException {
 		if (_passwordPolicy == null) {
 			_passwordPolicy =
-				PasswordPolicyLocalServiceUtil.getPasswordPolicyByUserId(
-					getUserId());
+				PasswordPolicyLocalServiceUtil.getPasswordPolicyByUser(this);
 		}
 
 		return _passwordPolicy;
@@ -776,6 +793,13 @@ public class UserImpl extends UserBaseImpl {
 			return false;
 		}
 
+		if ((PropsValues.LAYOUT_USER_PRIVATE_LAYOUTS_ENABLED ||
+			 PropsValues.LAYOUT_USER_PUBLIC_LAYOUTS_ENABLED) &&
+			(getUserId() == PrincipalThreadLocal.getUserId())) {
+
+			return true;
+		}
+
 		List<Group> groups = getMySiteGroups(1);
 
 		return !groups.isEmpty();
@@ -836,7 +860,7 @@ public class UserImpl extends UserBaseImpl {
 
 	@Override
 	public boolean isEmailAddressVerificationComplete() {
-		if (isDefaultUser()) {
+		if (isDefaultUser() || isEmailAddressVerified()) {
 			return true;
 		}
 
@@ -853,7 +877,7 @@ public class UserImpl extends UserBaseImpl {
 		}
 
 		if (emailAddressVerificationRequired) {
-			return super.isEmailAddressVerified();
+			return false;
 		}
 
 		return true;
@@ -909,7 +933,7 @@ public class UserImpl extends UserBaseImpl {
 
 	@Override
 	public boolean isTermsOfUseComplete() {
-		if (isDefaultUser()) {
+		if (isDefaultUser() || isAgreedToTermsOfUse()) {
 			return true;
 		}
 
@@ -918,7 +942,7 @@ public class UserImpl extends UserBaseImpl {
 			PropsValues.TERMS_OF_USE_REQUIRED);
 
 		if (termsOfUseRequired) {
-			return super.isAgreedToTermsOfUse();
+			return false;
 		}
 
 		return true;
@@ -953,7 +977,7 @@ public class UserImpl extends UserBaseImpl {
 	}
 
 	protected String getProfileFriendlyURL() {
-		if (Validator.isNull(PropsValues.USERS_PROFILE_FRIENDLY_URL)) {
+		if (!_hasUsersProfileFriendlyURL) {
 			return null;
 		}
 
@@ -965,8 +989,14 @@ public class UserImpl extends UserBaseImpl {
 			});
 	}
 
+	private static final Contact _NULL_CONTACT = new ContactImpl();
+
 	private static final Log _log = LogFactoryUtil.getLog(UserImpl.class);
 
+	private static final boolean _hasUsersProfileFriendlyURL = Validator.isNull(
+		PropsValues.USERS_PROFILE_FRIENDLY_URL);
+
+	private Contact _contact;
 	private Locale _locale;
 	private boolean _passwordModified;
 	private PasswordPolicy _passwordPolicy;

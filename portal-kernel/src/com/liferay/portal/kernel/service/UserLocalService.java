@@ -1308,6 +1308,7 @@ public interface UserLocalService extends BaseLocalService,
 	that login does not exist.
 	* @see AuthPipeline
 	*/
+	@Transactional(propagation = Propagation.SUPPORTS)
 	public int authenticateByEmailAddress(long companyId,
 		java.lang.String emailAddress, java.lang.String password,
 		Map<java.lang.String, java.lang.String[]> headerMap,
@@ -1334,6 +1335,7 @@ public interface UserLocalService extends BaseLocalService,
 	that login does not exist.
 	* @see AuthPipeline
 	*/
+	@Transactional(propagation = Propagation.SUPPORTS)
 	public int authenticateByScreenName(long companyId,
 		java.lang.String screenName, java.lang.String password,
 		Map<java.lang.String, java.lang.String[]> headerMap,
@@ -1360,6 +1362,7 @@ public interface UserLocalService extends BaseLocalService,
 	that login does not exist.
 	* @see AuthPipeline
 	*/
+	@Transactional(propagation = Propagation.SUPPORTS)
 	public int authenticateByUserId(long companyId, long userId,
 		java.lang.String password,
 		Map<java.lang.String, java.lang.String[]> headerMap,
@@ -1512,6 +1515,9 @@ public interface UserLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getUsersCount();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getUsersCount(long companyId, boolean defaultUser, int status);
 
 	/**
 	* Returns the number of users with the status, and whose first name, middle
@@ -1849,6 +1855,10 @@ public interface UserLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<User> getUsers(int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<User> getUsers(long companyId, boolean defaultUser, int status,
+		int start, int end, OrderByComparator<User> obc);
 
 	/**
 	* Returns an ordered range of all the users with the status, and whose

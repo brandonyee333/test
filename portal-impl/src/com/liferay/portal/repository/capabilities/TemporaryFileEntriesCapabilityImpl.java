@@ -21,6 +21,8 @@ import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.repository.DocumentRepository;
 import com.liferay.portal.kernel.repository.capabilities.BulkOperationCapability;
 import com.liferay.portal.kernel.repository.capabilities.ConfigurationCapability;
@@ -47,7 +49,10 @@ import java.util.List;
 
 /**
  * @author Iván Zaera
+ * @deprecated As of 7.0.0, replaced by {@link
+ *             com.liferay.document.library.internal.capabilities.TemporaryFileEntriesCapabilityImpl}
  */
+@Deprecated
 public class TemporaryFileEntriesCapabilityImpl
 	implements TemporaryFileEntriesCapability {
 
@@ -123,6 +128,12 @@ public class TemporaryFileEntriesCapabilityImpl
 			_documentRepository.deleteFileEntry(fileEntry.getFileEntryId());
 		}
 		catch (NoSuchModelException nsme) {
+
+			// LPS-52675
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(nsme, nsme);
+			}
 		}
 	}
 
@@ -139,6 +150,13 @@ public class TemporaryFileEntriesCapabilityImpl
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 		}
 		catch (NoSuchModelException nsme) {
+
+			// LPS-52675
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(nsme, nsme);
+			}
+
 			return Collections.emptyList();
 		}
 	}
@@ -191,6 +209,13 @@ public class TemporaryFileEntriesCapabilityImpl
 			return _documentRepository.getFolder(parentFolderId, folderName);
 		}
 		catch (NoSuchFolderException nsfe) {
+
+			// LPS-52675
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(nsfe, nsfe);
+			}
+
 			return _documentRepository.addFolder(
 				userId, parentFolderId, folderName, StringPool.BLANK,
 				serviceContext);
@@ -283,6 +308,9 @@ public class TemporaryFileEntriesCapabilityImpl
 
 	private static final long _TEMPORARY_FILE_ENTRIES_TIMEOUT_DEFAULT =
 		12 * 60 * 60 * 1000;
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		TemporaryFileEntriesCapabilityImpl.class);
 
 	private final DocumentRepository _documentRepository;
 

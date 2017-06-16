@@ -3,8 +3,9 @@
 import App from 'senna/src/app/App';
 import core from 'metal/src/core';
 import dom from 'metal-dom/src/dom';
-import Utils from '../util/Utils.es';
 import LiferaySurface from '../surface/Surface.es';
+import Utils from '../util/Utils.es';
+import {CancellablePromise} from 'metal-promise/src/promise/Promise';
 
 class LiferayApp extends App {
 	constructor() {
@@ -13,7 +14,12 @@ class LiferayApp extends App {
 		this.portletsBlacklist = {};
 		this.validStatusCodes = [];
 
-		var exceptionsSelector = ':not([target="_blank"]):not([data-senna-off]):not([data-resource-href])';
+		this.setShouldUseFacade(true);
+
+		this.timeout = Math.max(Liferay.SPA.requestTimeout, 0) || Utils.getMaxTimeout();
+		this.timeoutAlert = null;
+
+		var exceptionsSelector = Liferay.SPA.navigationExceptionSelectors;
 
 		this.setFormSelector('form' + exceptionsSelector);
 		this.setLinkSelector('a' + exceptionsSelector);
@@ -23,6 +29,7 @@ class LiferayApp extends App {
 		this.on('endNavigate', this.onEndNavigate);
 		this.on('startNavigate', this.onStartNavigate);
 
+		Liferay.on('beforeScreenFlip', Utils.resetAllPortlets);
 		Liferay.on('io:complete', this.onLiferayIOComplete, this);
 
 		var body = document.body;
@@ -61,13 +68,17 @@ class LiferayApp extends App {
 	}
 
 	isScreenCacheExpired(screen) {
+		if (this.getCacheExpirationTime() === 0) {
+			return false;
+		}
+
 		var lastModifiedInterval = (new Date()).getTime() - screen.getCacheLastModified();
 
 		return lastModifiedInterval > this.getCacheExpirationTime();
 	}
 
-	onBeforeNavigate(event) {
-		if (Liferay.SPA.clearScreensCache || event.form) {
+	onBeforeNavigate(data, event) {
+		if (Liferay.SPA.clearScreensCache || data.form) {
 			this.clearScreensCache();
 		}
 
@@ -75,7 +86,8 @@ class LiferayApp extends App {
 			'beforeNavigate',
 			{
 				app: this,
-				path: event.path
+				originalEvent: event,
+				path: data.path
 			}
 		);
 	}
@@ -106,14 +118,36 @@ class LiferayApp extends App {
 			}
 		);
 
+		if (!this.pendingNavigate) {
+			this._clearRequestTimer();
+			this._hideTimeoutAlert();
+		}
+
 		if (event.error) {
 			if (event.error.invalidStatus || event.error.requestError || event.error.timeout) {
-				if (event.form) {
-					event.form.submit();
+				let message = Liferay.Language.get('there-was-an-unexpected-error.-please-refresh-the-current-page');
+
+				if (Liferay.SPA.debugEnabled) {
+					console.error(event.error);
+
+					if (event.error.invalidStatus) {
+						message = Liferay.Language.get('the-spa-navigation-request-received-an-invalid-http-status-code');
+					}
+					if (event.error.requestError) {
+						message = Liferay.Language.get('there-was-an-unexpected-error-in-the-spa-request');
+					}
+					if (event.error.timeout) {
+						message = Liferay.Language.get('the-spa-request-timed-out');
+					}
 				}
-				else {
-					window.location.href = event.path;
-				}
+
+				this._createNotification(
+					{
+						message: message,
+						title: Liferay.Language.get('error'),
+						type: 'danger'
+					}
+				);
 			}
 		}
 		else if (Liferay.Layout && Liferay.Data.layoutConfig) {
@@ -137,6 +171,8 @@ class LiferayApp extends App {
 				path: event.path
 			}
 		);
+
+		this._startRequestTimer(event.path);
 	}
 
 	setPortletsBlacklist(portletsBlacklist) {
@@ -145,6 +181,81 @@ class LiferayApp extends App {
 
 	setValidStatusCodes(validStatusCodes) {
 		this.validStatusCodes = validStatusCodes;
+	}
+
+	_clearRequestTimer() {
+		if (this.requestTimer) {
+			clearTimeout(this.requestTimer);
+		}
+	}
+
+	_createNotification(config) {
+		return new CancellablePromise(
+			(resolve) => {
+				AUI().use(
+					'liferay-notification',
+					() => {
+						resolve(
+							new Liferay.Notification(
+								Object.assign(
+									{
+										closeable: true,
+										delay: {
+											hide: 0,
+											show: 0
+										},
+										duration: 500,
+										type: 'warning'
+									},
+									config
+								)
+							).render('body')
+						);
+					}
+				);
+			}
+		);
+	}
+
+	_hideTimeoutAlert() {
+		if (this.timeoutAlert) {
+			this.timeoutAlert.hide();
+		}
+	}
+
+	_startRequestTimer(path) {
+		this._clearRequestTimer();
+
+		if (Liferay.SPA.userNotification.timeout > 0) {
+			this.requestTimer = setTimeout(
+				() => {
+					Liferay.fire(
+						'spaRequestTimeout',
+						{
+							path: path
+						}
+					);
+
+					if (!this.timeoutAlert) {
+						this._createNotification(
+							{
+								message: Liferay.SPA.userNotification.message,
+								title: Liferay.SPA.userNotification.title,
+								type: 'warning'
+							}
+						).then(
+							(alert) => {
+								this.timeoutAlert = alert;
+							}
+						);
+					}
+					else {
+						this.timeoutAlert.show();
+					}
+				},
+				Liferay.SPA.userNotification.timeout
+			);
+		}
 	}
 }
 

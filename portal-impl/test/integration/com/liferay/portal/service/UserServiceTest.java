@@ -139,7 +139,8 @@ public class UserServiceTest {
 				UserGroupRoleLocalServiceUtil.getUserGroupRoles(
 					_user.getUserId(), groupId);
 
-			Assert.assertEquals(1, userGroupRoles.size());
+			Assert.assertEquals(
+				userGroupRoles.toString(), 1, userGroupRoles.size());
 
 			UserGroupRole userGroupRole = userGroupRoles.get(0);
 
@@ -758,6 +759,7 @@ public class UserServiceTest {
 						_user.getCompanyId(), _user.getEmailAddress());
 
 				Assert.assertTrue(sentPassword);
+
 				Assert.assertEquals(
 					initialInboxSize + 1, MailServiceTestUtil.getInboxSize());
 				Assert.assertTrue(
@@ -781,6 +783,7 @@ public class UserServiceTest {
 					_user.getCompanyId(), _user.getScreenName());
 
 				Assert.assertTrue(sentPassword);
+
 				Assert.assertEquals(
 					initialInboxSize + 1, MailServiceTestUtil.getInboxSize());
 				Assert.assertTrue(
@@ -804,6 +807,7 @@ public class UserServiceTest {
 					_user.getUserId());
 
 				Assert.assertTrue(sentPassword);
+
 				Assert.assertEquals(
 					initialInboxSize + 1, MailServiceTestUtil.getInboxSize());
 				Assert.assertTrue(
@@ -828,6 +832,7 @@ public class UserServiceTest {
 						_user.getCompanyId(), _user.getEmailAddress());
 
 				Assert.assertFalse(sentPassword);
+
 				Assert.assertEquals(
 					initialInboxSize + 1, MailServiceTestUtil.getInboxSize());
 				Assert.assertTrue(
@@ -851,6 +856,7 @@ public class UserServiceTest {
 					_user.getCompanyId(), _user.getScreenName());
 
 				Assert.assertFalse(sentPassword);
+
 				Assert.assertEquals(
 					initialInboxSize + 1, MailServiceTestUtil.getInboxSize());
 				Assert.assertTrue(
@@ -874,6 +880,7 @@ public class UserServiceTest {
 					_user.getUserId());
 
 				Assert.assertFalse(sentPassword);
+
 				Assert.assertEquals(
 					initialInboxSize + 1, MailServiceTestUtil.getInboxSize());
 				Assert.assertTrue(

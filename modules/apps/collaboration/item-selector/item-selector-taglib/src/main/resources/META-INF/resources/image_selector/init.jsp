@@ -16,4 +16,4 @@
 
 <%@ include file="/init.jsp" %>
 
-<portlet:defineObjects />
+<%@ page import="com.liferay.portal.kernel.servlet.BrowserSnifferUtil" %>

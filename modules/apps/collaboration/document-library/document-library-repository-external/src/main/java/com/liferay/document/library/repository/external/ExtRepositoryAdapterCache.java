@@ -31,6 +31,10 @@ public class ExtRepositoryAdapterCache implements Cloneable {
 		return _extRepositoryAdapterThreadLocal.get();
 	}
 
+	public void clear() {
+		_extRepositoryAdapters.clear();
+	}
+
 	@Override
 	public ExtRepositoryAdapterCache clone() {
 		if (_log.isInfoEnabled()) {
@@ -113,10 +117,9 @@ public class ExtRepositoryAdapterCache implements Cloneable {
 		ExtRepositoryAdapterCache.class);
 
 	private static final ThreadLocal<ExtRepositoryAdapterCache>
-		_extRepositoryAdapterThreadLocal =
-			new AutoResetThreadLocal<ExtRepositoryAdapterCache>(
-				ExtRepositoryAdapterCache.class.getName(),
-				new ExtRepositoryAdapterCache());
+		_extRepositoryAdapterThreadLocal = new AutoResetThreadLocal<>(
+			ExtRepositoryAdapterCache.class.getName(),
+			ExtRepositoryAdapterCache::new);
 
 	private Map<String, ExtRepositoryModelAdapter<?>> _extRepositoryAdapters;
 

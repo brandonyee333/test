@@ -96,18 +96,23 @@ public interface WikiPageService extends BaseService {
 	public WikiPage getDraftPage(long nodeId, java.lang.String title)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public WikiPage getPage(long groupId, long nodeId, java.lang.String title)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public WikiPage getPage(long nodeId, java.lang.String title)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public WikiPage getPage(long nodeId, java.lang.String title, double version)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public WikiPage getPage(long nodeId, java.lang.String title,
 		java.lang.Boolean head) throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public WikiPage getPage(long pageId) throws PortalException;
 
 	public WikiPage movePageToTrash(long nodeId, java.lang.String title)
@@ -203,7 +208,7 @@ public interface WikiPageService extends BaseService {
 		int start, int end) throws PortalException;
 
 	/**
-	* @deprecated As of 7.0.0 replaced by {@link #addTempFileEntry(long,
+	* @deprecated As of 1.2.0, replaced by {@link #addTempFileEntry(long,
 	String, String, InputStream, String)}
 	*/
 	@java.lang.Deprecated

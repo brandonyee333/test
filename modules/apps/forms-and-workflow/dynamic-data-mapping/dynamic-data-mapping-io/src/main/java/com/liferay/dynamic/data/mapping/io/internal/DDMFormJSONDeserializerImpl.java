@@ -22,9 +22,9 @@ import com.liferay.dynamic.data.mapping.io.DDMFormJSONDeserializer;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
 import com.liferay.dynamic.data.mapping.model.DDMFormFieldOptions;
-import com.liferay.dynamic.data.mapping.model.DDMFormFieldRule;
-import com.liferay.dynamic.data.mapping.model.DDMFormFieldRuleType;
 import com.liferay.dynamic.data.mapping.model.DDMFormFieldValidation;
+import com.liferay.dynamic.data.mapping.model.DDMFormRule;
+import com.liferay.dynamic.data.mapping.model.DDMFormSuccessPageSettings;
 import com.liferay.dynamic.data.mapping.model.LocalizedValue;
 import com.liferay.dynamic.data.mapping.util.DDMFormFactory;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -67,7 +67,10 @@ public class DDMFormJSONDeserializerImpl implements DDMFormJSONDeserializer {
 			setDDMFormDefaultLocale(
 				jsonObject.getString("defaultLanguageId"), ddmForm);
 			setDDMFormFields(jsonObject.getJSONArray("fields"), ddmForm);
+			setDDMFormRules(jsonObject.getJSONArray("rules"), ddmForm);
 			setDDMFormLocalizedValuesDefaultLocale(ddmForm);
+			setDDMFormSuccessPageSettings(
+				jsonObject.getJSONObject("successPage"), ddmForm);
 
 			return ddmForm;
 		}
@@ -123,7 +126,9 @@ public class DDMFormJSONDeserializerImpl implements DDMFormJSONDeserializer {
 			return deserializeDDMFormFieldOptions(
 				serializedDDMFormFieldProperty);
 		}
-		else if (Objects.equals(dataType, "ddm-validation")) {
+		else if (Objects.equals(
+					ddmFormFieldTypeSetting.getType(), "validation")) {
+
 			return deserializeDDMFormFieldValidation(
 				serializedDDMFormFieldProperty);
 		}
@@ -226,28 +231,6 @@ public class DDMFormJSONDeserializerImpl implements DDMFormJSONDeserializer {
 		return ddmFormFieldOptions;
 	}
 
-	protected DDMFormFieldRule getDDMFormFieldRule(JSONObject jsonObject) {
-		String expression = jsonObject.getString("expression");
-
-		DDMFormFieldRuleType ddmFormFieldRuleType = DDMFormFieldRuleType.parse(
-			jsonObject.getString("type"));
-
-		return new DDMFormFieldRule(expression, ddmFormFieldRuleType);
-	}
-
-	protected List<DDMFormFieldRule> getDDMFormFieldRules(JSONArray jsonArray) {
-		List<DDMFormFieldRule> ddmFormFieldRules = new ArrayList<>();
-
-		for (int i = 0; i < jsonArray.length(); i++) {
-			DDMFormFieldRule ddmFormFieldRule = getDDMFormFieldRule(
-				jsonArray.getJSONObject(i));
-
-			ddmFormFieldRules.add(ddmFormFieldRule);
-		}
-
-		return ddmFormFieldRules;
-	}
-
 	protected List<DDMFormField> getDDMFormFields(JSONArray jsonArray)
 		throws PortalException {
 
@@ -276,6 +259,44 @@ public class DDMFormJSONDeserializerImpl implements DDMFormJSONDeserializer {
 		}
 
 		return DDMFormFactory.create(ddmFormFieldTypeSettings);
+	}
+
+	protected DDMFormRule getDDMFormRule(JSONObject jsonObject) {
+		String condition = jsonObject.getString("condition");
+
+		List<String> actions = getDDMFormRuleActions(
+			jsonObject.getJSONArray("actions"));
+
+		DDMFormRule ddmFormRule = new DDMFormRule(condition, actions);
+
+		boolean enabled = jsonObject.getBoolean("enabled", true);
+
+		ddmFormRule.setEnabled(enabled);
+
+		return ddmFormRule;
+	}
+
+	protected List<String> getDDMFormRuleActions(JSONArray jsonArray) {
+		List<String> actions = new ArrayList<>();
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			actions.add(jsonArray.getString(i));
+		}
+
+		return actions;
+	}
+
+	protected List<DDMFormRule> getDDMFormRules(JSONArray jsonArray) {
+		List<DDMFormRule> ddmFormRules = new ArrayList<>();
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			DDMFormRule ddmFormRule = getDDMFormRule(
+				jsonArray.getJSONObject(i));
+
+			ddmFormRules.add(ddmFormRule);
+		}
+
+		return ddmFormRules;
 	}
 
 	protected void setDDMFormAvailableLocales(
@@ -347,8 +368,6 @@ public class DDMFormJSONDeserializerImpl implements DDMFormJSONDeserializer {
 			setDDMFormFieldProperty(
 				jsonObject, ddmFormField, ddmFormFieldTypeSetting);
 		}
-
-		setDDMFormFieldRules(jsonObject.getJSONArray("rules"), ddmFormField);
 	}
 
 	protected void setDDMFormFieldProperty(
@@ -358,24 +377,14 @@ public class DDMFormJSONDeserializerImpl implements DDMFormJSONDeserializer {
 
 		String settingName = ddmFormFieldTypeSetting.getName();
 
-		Object deserializedDDMFormFieldProperty =
-			deserializeDDMFormFieldProperty(
-				jsonObject.getString(settingName), ddmFormFieldTypeSetting);
+		if (jsonObject.has(settingName)) {
+			Object deserializedDDMFormFieldProperty =
+				deserializeDDMFormFieldProperty(
+					jsonObject.getString(settingName), ddmFormFieldTypeSetting);
 
-		ddmFormField.setProperty(settingName, deserializedDDMFormFieldProperty);
-	}
-
-	protected void setDDMFormFieldRules(
-		JSONArray jsonArray, DDMFormField ddmFormField) {
-
-		if ((jsonArray == null) || (jsonArray.length() == 0)) {
-			return;
+			ddmFormField.setProperty(
+				settingName, deserializedDDMFormFieldProperty);
 		}
-
-		List<DDMFormFieldRule> ddmFormFieldRules = getDDMFormFieldRules(
-			jsonArray);
-
-		ddmFormField.setDDMFormFieldRules(ddmFormFieldRules);
 	}
 
 	protected void setDDMFormFields(JSONArray jsonArray, DDMForm ddmForm)
@@ -398,6 +407,31 @@ public class DDMFormJSONDeserializerImpl implements DDMFormJSONDeserializer {
 			setDDMFormFieldLocalizedValuesDefaultLocale(
 				ddmFormField, ddmForm.getDefaultLocale());
 		}
+	}
+
+	protected void setDDMFormRules(JSONArray jsonArray, DDMForm ddmForm) {
+		if ((jsonArray == null) || (jsonArray.length() == 0)) {
+			return;
+		}
+
+		List<DDMFormRule> ddmFormRules = getDDMFormRules(jsonArray);
+
+		ddmForm.setDDMFormRules(ddmFormRules);
+	}
+
+	protected void setDDMFormSuccessPageSettings(
+		JSONObject jsonObject, DDMForm ddmForm) {
+
+		if (jsonObject == null) {
+			return;
+		}
+
+		DDMFormSuccessPageSettings ddmFormSuccessPageSettings =
+			new DDMFormSuccessPageSettings(
+				jsonObject.getString("body"), jsonObject.getString("title"),
+				jsonObject.getBoolean("enabled"));
+
+		ddmForm.setDDMFormSuccessPageSettings(ddmFormSuccessPageSettings);
 	}
 
 	@Reference(unbind = "-")

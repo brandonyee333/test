@@ -51,11 +51,11 @@ import com.liferay.wiki.exception.ImportFilesException;
 import com.liferay.wiki.exception.NoSuchPageException;
 import com.liferay.wiki.importer.WikiImporter;
 import com.liferay.wiki.importer.impl.WikiImporterKeys;
+import com.liferay.wiki.internal.translator.MediaWikiToCreoleTranslator;
 import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.model.WikiPage;
 import com.liferay.wiki.model.WikiPageConstants;
 import com.liferay.wiki.service.WikiPageLocalService;
-import com.liferay.wiki.translator.MediaWikiToCreoleTranslator;
 import com.liferay.wiki.validator.WikiPageTitleValidator;
 
 import java.io.IOException;
@@ -131,15 +131,17 @@ public class MediaWikiImporter implements WikiImporter {
 			processRegularPages(
 				userId, node, rootElement, specialNamespaces, usersMap,
 				imagesInputStream, options);
+
 			processImages(userId, node, imagesInputStream);
 
 			moveFrontPage(userId, node, options);
 		}
 		catch (DocumentException de) {
-			throw new ImportFilesException("Invalid XML file provided");
+			throw new ImportFilesException("Invalid XML file provided", de);
 		}
 		catch (IOException ioe) {
-			throw new ImportFilesException("Error reading the files provided");
+			throw new ImportFilesException(
+				"Error reading the files provided", ioe);
 		}
 		catch (PortalException pe) {
 			throw pe;
@@ -265,10 +267,14 @@ public class MediaWikiImporter implements WikiImporter {
 		try {
 			DLStoreUtil.validate(fileName, true, inputStream);
 		}
-		catch (PortalException pe) {
-			return false;
-		}
-		catch (SystemException se) {
+		catch (PortalException | SystemException e) {
+
+			// LPS-52675
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(e, e);
+			}
+
 			return false;
 		}
 

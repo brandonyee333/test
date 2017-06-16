@@ -14,6 +14,7 @@
 
 package com.liferay.application.list;
 
+import com.liferay.application.list.display.context.logic.PanelCategoryHelper;
 import com.liferay.application.list.util.PanelCategoryServiceReferenceMapper;
 import com.liferay.osgi.service.tracker.collections.map.PropertyServiceReferenceComparator;
 import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapper;
@@ -23,6 +24,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PredicateFilter;
@@ -37,6 +39,11 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 
 /**
+ * Provides methods for retrieving application category instances defined by
+ * {@link PanelCategory} implementations. The Application Categories Registry is
+ * an OSGi component. Application categories used within the registry should
+ * also be OSGi components in order to be registered.
+ *
  * @author Adolfo Pérez
  */
 @Component(immediate = true, service = PanelCategoryRegistry.class)
@@ -97,6 +104,33 @@ public class PanelCategoryRegistry {
 				}
 
 			});
+	}
+
+	public int getChildPanelCategoriesNotificationsCount(
+		PanelCategoryHelper panelCategoryHelper, String panelCategoryKey,
+		PermissionChecker permissionChecker, Group group, User user) {
+
+		int count = 0;
+
+		for (PanelCategory panelCategory :
+				getChildPanelCategories(panelCategoryKey)) {
+
+			int notificationsCount = panelCategory.getNotificationsCount(
+				panelCategoryHelper, permissionChecker, group, user);
+
+			try {
+				if ((notificationsCount > 0) &&
+					panelCategory.isShow(permissionChecker, group)) {
+
+					count += notificationsCount;
+				}
+			}
+			catch (PortalException pe) {
+				_log.error(pe, pe);
+			}
+		}
+
+		return count;
 	}
 
 	public PanelCategory getFirstChildPanelCategory(

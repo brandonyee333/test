@@ -359,6 +359,16 @@ public class BaseRepositoryProxyBean
 
 	@Override
 	public List<FileEntry> getFileEntries(
+			long folderId, String[] mimeTypes, int status, int start, int end,
+			OrderByComparator<FileEntry> obc)
+		throws PortalException {
+
+		return _baseRepository.getFileEntries(
+			folderId, mimeTypes, status, start, end, obc);
+	}
+
+	@Override
+	public List<FileEntry> getFileEntries(
 			long folderId, String[] mimeTypes, int start, int end,
 			OrderByComparator<FileEntry> obc)
 		throws PortalException {
@@ -422,6 +432,14 @@ public class BaseRepositoryProxyBean
 		throws PortalException {
 
 		return _baseRepository.getFileEntriesCount(folderId, mimeTypes);
+	}
+
+	@Override
+	public int getFileEntriesCount(
+			long folderId, String[] mimeTypes, int status)
+		throws PortalException {
+
+		return _baseRepository.getFileEntriesCount(folderId, mimeTypes, status);
 	}
 
 	@Override
@@ -667,12 +685,18 @@ public class BaseRepositoryProxyBean
 		return _baseRepository.getSubfolderIds(folderId, recurse);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
 	@Deprecated
 	@Override
 	public String[] getSupportedConfigurations() {
 		return _baseRepository.getSupportedConfigurations();
 	}
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
 	@Deprecated
 	@Override
 	public String[][] getSupportedParameters() {

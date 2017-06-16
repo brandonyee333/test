@@ -15,22 +15,29 @@
 package com.liferay.journal.service.permission;
 
 import com.liferay.exportimport.kernel.staging.permission.StagingPermissionUtil;
-import com.liferay.journal.configuration.JournalServiceConfigurationValues;
-import com.liferay.journal.exception.NoSuchFolderException;
+import com.liferay.journal.configuration.JournalServiceConfiguration;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalFolder;
 import com.liferay.journal.model.JournalFolderConstants;
 import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.journal.service.JournalFolderLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.PortletProvider;
 import com.liferay.portal.kernel.portlet.PortletProviderUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.BaseModelPermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.workflow.permission.WorkflowPermissionUtil;
 import com.liferay.portal.util.PropsValues;
+
+import java.util.Map;
+import java.util.Objects;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -110,9 +117,132 @@ public class JournalArticlePermission implements BaseModelPermissionChecker {
 	}
 
 	public static boolean contains(
-			PermissionChecker permissionChecker, JournalArticle article,
+		PermissionChecker permissionChecker, JournalArticle article,
+		String actionId) {
+
+		Map<Object, Object> permissionChecksMap =
+			permissionChecker.getPermissionChecksMap();
+
+		CacheKey cacheKey = new CacheKey(
+			article.getGroupId(), article.getArticleId(), actionId);
+
+		Boolean contains = (Boolean)permissionChecksMap.get(cacheKey);
+
+		if (contains == null) {
+			contains = _contains(permissionChecker, article, actionId);
+
+			permissionChecksMap.put(cacheKey, contains);
+		}
+
+		return contains;
+	}
+
+	public static boolean contains(
+		PermissionChecker permissionChecker, long classPK, String actionId) {
+
+		JournalArticle article = _journalArticleLocalService.fetchLatestArticle(
+			classPK);
+
+		if (article == null) {
+			article = _journalArticleLocalService.fetchArticle(classPK);
+
+			if (article == null) {
+				_log.error("Unable to find journal article " + classPK);
+
+				return false;
+			}
+		}
+
+		return contains(permissionChecker, article, actionId);
+	}
+
+	public static boolean contains(
+		PermissionChecker permissionChecker, long groupId, String articleId,
+		double version, String actionId) {
+
+		JournalArticle article = _journalArticleLocalService.fetchArticle(
+			groupId, articleId, version);
+
+		if (article == null) {
+			_log.error(
+				"Unable to get journal article with group ID " + groupId +
+					", article ID " + articleId + ", and version " + version);
+
+			return false;
+		}
+
+		return contains(permissionChecker, article, actionId);
+	}
+
+	public static boolean contains(
+		PermissionChecker permissionChecker, long groupId, String articleId,
+		int status, String actionId) {
+
+		JournalArticle article = _journalArticleLocalService.fetchLatestArticle(
+			groupId, articleId, status);
+
+		if (article == null) {
+			_log.error(
+				"Unable to get journal article with group ID " + groupId +
+					", article ID " + articleId + ", and status " + status);
+
+			return false;
+		}
+
+		return contains(permissionChecker, article, actionId);
+	}
+
+	public static boolean contains(
+		PermissionChecker permissionChecker, long groupId, String articleId,
+		String actionId) {
+
+		JournalArticle article = _journalArticleLocalService.fetchArticle(
+			groupId, articleId);
+
+		if (article == null) {
+			_log.error(
+				"Unable to get journal article with group ID " + groupId +
+					" and article ID " + articleId);
+
+			return false;
+		}
+
+		return contains(permissionChecker, article, actionId);
+	}
+
+	@Override
+	public void checkBaseModel(
+			PermissionChecker permissionChecker, long groupId, long primaryKey,
 			String actionId)
 		throws PortalException {
+
+		check(permissionChecker, primaryKey, actionId);
+	}
+
+	@Reference(unbind = "-")
+	protected void setConfigurationProvider(
+		ConfigurationProvider configurationProvider) {
+
+		_configurationProvider = configurationProvider;
+	}
+
+	@Reference(unbind = "-")
+	protected void setJournalArticleLocalService(
+		JournalArticleLocalService journalArticleLocalService) {
+
+		_journalArticleLocalService = journalArticleLocalService;
+	}
+
+	@Reference(unbind = "-")
+	protected void setJournalFolderLocalService(
+		JournalFolderLocalService journalFolderLocalService) {
+
+		_journalFolderLocalService = journalFolderLocalService;
+	}
+
+	private static boolean _contains(
+		PermissionChecker permissionChecker, JournalArticle article,
+		String actionId) {
 
 		String portletId = PortletProviderUtil.getPortletId(
 			JournalArticle.class.getName(), PortletProvider.Action.EDIT);
@@ -144,41 +274,63 @@ public class JournalArticlePermission implements BaseModelPermissionChecker {
 			}
 		}
 
-		if (actionId.equals(ActionKeys.VIEW) &&
-			!JournalServiceConfigurationValues.
-				JOURNAL_ARTICLE_VIEW_PERMISSION_CHECK_ENABLED) {
+		if (actionId.equals(ActionKeys.VIEW)) {
+			JournalServiceConfiguration journalServiceConfiguration = null;
 
-			return true;
-		}
-
-		if (actionId.equals(ActionKeys.VIEW) &&
-			PropsValues.PERMISSIONS_VIEW_DYNAMIC_INHERITANCE) {
-
-			long folderId = article.getFolderId();
-
-			if (folderId == JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
-				if (!JournalPermission.contains(
-						permissionChecker, article.getGroupId(), actionId)) {
-
-					return false;
-				}
+			try {
+				journalServiceConfiguration =
+					_configurationProvider.getCompanyConfiguration(
+						JournalServiceConfiguration.class,
+						permissionChecker.getCompanyId());
 			}
-			else {
-				try {
-					JournalFolder folder = _journalFolderLocalService.getFolder(
-						folderId);
+			catch (ConfigurationException ce) {
+				_log.error(
+					"Unable to get journal service configuration for company " +
+						permissionChecker.getCompanyId(),
+					ce);
 
-					if (!JournalFolderPermission.contains(
-							permissionChecker, folder, ActionKeys.ACCESS) &&
-						!JournalFolderPermission.contains(
-							permissionChecker, folder, ActionKeys.VIEW)) {
+				return false;
+			}
+
+			if (!journalServiceConfiguration.
+					articleViewPermissionsCheckEnabled()) {
+
+				return true;
+			}
+
+			if (PropsValues.PERMISSIONS_VIEW_DYNAMIC_INHERITANCE) {
+				long folderId = article.getFolderId();
+
+				if (folderId ==
+						JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
+
+					if (!JournalPermission.contains(
+							permissionChecker, article.getGroupId(),
+							actionId)) {
 
 						return false;
 					}
 				}
-				catch (NoSuchFolderException nsfe) {
-					if (!article.isInTrash()) {
-						throw nsfe;
+				else {
+					JournalFolder folder =
+						_journalFolderLocalService.fetchFolder(folderId);
+
+					if (folder != null) {
+						if (!JournalFolderPermission.contains(
+								permissionChecker, folder, ActionKeys.ACCESS) &&
+							!JournalFolderPermission.contains(
+								permissionChecker, folder, ActionKeys.VIEW)) {
+
+							return false;
+						}
+					}
+					else {
+						if (!article.isInTrash()) {
+							_log.error(
+								"Unable to get journal folder " + folderId);
+
+							return false;
+						}
 					}
 				}
 			}
@@ -196,77 +348,56 @@ public class JournalArticlePermission implements BaseModelPermissionChecker {
 			article.getResourcePrimKey(), actionId);
 	}
 
-	public static boolean contains(
-			PermissionChecker permissionChecker, long classPK, String actionId)
-		throws PortalException {
+	private static final Log _log = LogFactoryUtil.getLog(
+		JournalArticlePermission.class);
 
-		JournalArticle article = _journalArticleLocalService.fetchLatestArticle(
-			classPK);
-
-		if (article == null) {
-			article = _journalArticleLocalService.getArticle(classPK);
-		}
-
-		return contains(permissionChecker, article, actionId);
-	}
-
-	public static boolean contains(
-			PermissionChecker permissionChecker, long groupId, String articleId,
-			double version, String actionId)
-		throws PortalException {
-
-		JournalArticle article = _journalArticleLocalService.getArticle(
-			groupId, articleId, version);
-
-		return contains(permissionChecker, article, actionId);
-	}
-
-	public static boolean contains(
-			PermissionChecker permissionChecker, long groupId, String articleId,
-			int status, String actionId)
-		throws PortalException {
-
-		JournalArticle article = _journalArticleLocalService.getLatestArticle(
-			groupId, articleId, status);
-
-		return contains(permissionChecker, article, actionId);
-	}
-
-	public static boolean contains(
-			PermissionChecker permissionChecker, long groupId, String articleId,
-			String actionId)
-		throws PortalException {
-
-		JournalArticle article = _journalArticleLocalService.getArticle(
-			groupId, articleId);
-
-		return contains(permissionChecker, article, actionId);
-	}
-
-	@Override
-	public void checkBaseModel(
-			PermissionChecker permissionChecker, long groupId, long primaryKey,
-			String actionId)
-		throws PortalException {
-
-		check(permissionChecker, primaryKey, actionId);
-	}
-
-	@Reference(unbind = "-")
-	protected void setJournalArticleLocalService(
-		JournalArticleLocalService journalArticleLocalService) {
-
-		_journalArticleLocalService = journalArticleLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setJournalFolderLocalService(
-		JournalFolderLocalService journalFolderLocalService) {
-
-		_journalFolderLocalService = journalFolderLocalService;
-	}
-
+	private static ConfigurationProvider _configurationProvider;
 	private static JournalArticleLocalService _journalArticleLocalService;
 	private static JournalFolderLocalService _journalFolderLocalService;
+
+	private static class CacheKey {
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (!(obj instanceof CacheKey)) {
+				return false;
+			}
+
+			CacheKey cacheKey = (CacheKey)obj;
+
+			if ((_groupId == cacheKey._groupId) &&
+				Objects.equals(_articleId, cacheKey._articleId) &&
+				Objects.equals(_actionId, cacheKey._actionId)) {
+
+				return true;
+			}
+
+			return false;
+		}
+
+		@Override
+		public int hashCode() {
+			int hash = HashUtil.hash(0, _groupId);
+
+			hash = HashUtil.hash(hash, _articleId);
+
+			return HashUtil.hash(hash, _actionId);
+		}
+
+		private CacheKey(long groupId, String articleId, String actionId) {
+			_groupId = groupId;
+			_articleId = articleId;
+			_actionId = actionId;
+		}
+
+		private final String _actionId;
+		private final String _articleId;
+		private final long _groupId;
+
+	}
 
 }

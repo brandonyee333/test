@@ -19,7 +19,7 @@ import com.liferay.asset.kernel.model.AssetRenderer;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.microblogs.constants.MicroblogsPortletKeys;
 import com.liferay.microblogs.exception.UnsupportedMicroblogsEntryException;
-import com.liferay.microblogs.microblogs.social.MicroblogsActivityKeys;
+import com.liferay.microblogs.internal.social.MicroblogsActivityKeys;
 import com.liferay.microblogs.model.MicroblogsEntry;
 import com.liferay.microblogs.model.MicroblogsEntryConstants;
 import com.liferay.microblogs.service.base.MicroblogsEntryLocalServiceBaseImpl;
@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.model.Group;
-import com.liferay.portal.kernel.model.Subscription;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserNotificationDeliveryConstants;
 import com.liferay.portal.kernel.process.ProcessCallable;
@@ -44,6 +43,9 @@ import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.spring.extender.service.ServiceReference;
+import com.liferay.subscription.model.Subscription;
+import com.liferay.subscription.service.SubscriptionLocalService;
 
 import java.io.Serializable;
 
@@ -66,7 +68,7 @@ public class MicroblogsEntryLocalServiceImpl
 
 		// Microblogs entry
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 
 		Date now = new Date();
 
@@ -116,7 +118,7 @@ public class MicroblogsEntryLocalServiceImpl
 
 		// Microblogs entry
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 
 		Date now = new Date();
 
@@ -255,6 +257,10 @@ public class MicroblogsEntryLocalServiceImpl
 		return microblogsEntryPersistence.countByCompanyId(companyId);
 	}
 
+	/**
+	 * @deprecated As of 2.1.0
+	 */
+	@Deprecated
 	@Override
 	public List<MicroblogsEntry> getMicroblogsEntries(
 		long creatorClassNameId, int type, int start, int end,
@@ -264,6 +270,10 @@ public class MicroblogsEntryLocalServiceImpl
 			creatorClassNameId, type, start, end, obc);
 	}
 
+	/**
+	 * @deprecated As of 2.1.0
+	 */
+	@Deprecated
 	@Override
 	public List<MicroblogsEntry> getMicroblogsEntries(
 		long creatorClassNameId, long creatorClassPK, int start, int end) {
@@ -272,6 +282,10 @@ public class MicroblogsEntryLocalServiceImpl
 			creatorClassNameId, creatorClassPK, start, end);
 	}
 
+	/**
+	 * @deprecated As of 2.1.0
+	 */
+	@Deprecated
 	@Override
 	public List<MicroblogsEntry> getMicroblogsEntries(
 		long creatorClassNameId, long creatorClassPK, int type, int start,
@@ -281,6 +295,47 @@ public class MicroblogsEntryLocalServiceImpl
 			creatorClassNameId, creatorClassPK, type, start, end);
 	}
 
+	@Override
+	public List<MicroblogsEntry> getMicroblogsEntries(
+		long companyId, long creatorClassNameId, int type, int start, int end,
+		OrderByComparator obc) {
+
+		return microblogsEntryPersistence.findByC_CCNI_T(
+			companyId, creatorClassNameId, type, start, end, obc);
+	}
+
+	@Override
+	public List<MicroblogsEntry> getMicroblogsEntries(
+		long companyId, long creatorClassNameId, long creatorClassPK, int start,
+		int end) {
+
+		return microblogsEntryPersistence.findByC_CCNI_CCPK(
+			companyId, creatorClassNameId, creatorClassPK, start, end);
+	}
+
+	@Override
+	public List<MicroblogsEntry> getMicroblogsEntries(
+		long companyId, long creatorClassNameId, long creatorClassPK, int type,
+		int start, int end) {
+
+		return microblogsEntryPersistence.findByC_CCNI_CCPK_T(
+			companyId, creatorClassNameId, creatorClassPK, type, start, end);
+	}
+
+	@Override
+	public List<MicroblogsEntry> getMicroblogsEntries(
+		long companyId, long creatorClassNameId, long creatorClassPK,
+		String assetTagName, boolean andOperator, int start, int end) {
+
+		return microblogsEntryFinder.findByC_CCNI_CCPK_ATN(
+			companyId, creatorClassNameId, creatorClassPK, assetTagName,
+			andOperator, start, end);
+	}
+
+	/**
+	 * @deprecated As of 2.1.0
+	 */
+	@Deprecated
 	@Override
 	public List<MicroblogsEntry> getMicroblogsEntries(
 		long creatorClassNameId, long creatorClassPK, String assetTagName,
@@ -293,12 +348,29 @@ public class MicroblogsEntryLocalServiceImpl
 
 	@Override
 	public List<MicroblogsEntry> getMicroblogsEntries(
+		long companyId, long creatorClassNameId, String assetTagName, int start,
+		int end) {
+
+		return microblogsEntryFinder.findByC_CCNI_ATN(
+			companyId, creatorClassNameId, assetTagName, start, end);
+	}
+
+	/**
+	 * @deprecated As of 2.1.0
+	 */
+	@Deprecated
+	@Override
+	public List<MicroblogsEntry> getMicroblogsEntries(
 		long creatorClassNameId, String assetTagName, int start, int end) {
 
 		return microblogsEntryFinder.findByCCNI_ATN(
 			creatorClassNameId, assetTagName, start, end);
 	}
 
+	/**
+	 * @deprecated As of 2.1.0
+	 */
+	@Deprecated
 	@Override
 	public int getMicroblogsEntriesCount(
 		long creatorClassNameId, long creatorClassPK) {
@@ -307,6 +379,10 @@ public class MicroblogsEntryLocalServiceImpl
 			creatorClassNameId, creatorClassPK);
 	}
 
+	/**
+	 * @deprecated As of 2.1.0
+	 */
+	@Deprecated
 	@Override
 	public int getMicroblogsEntriesCount(
 		long creatorClassNameId, long creatorClassPK, int type) {
@@ -317,6 +393,45 @@ public class MicroblogsEntryLocalServiceImpl
 
 	@Override
 	public int getMicroblogsEntriesCount(
+		long companyId, long creatorClassNameId, long creatorClassPK) {
+
+		return microblogsEntryPersistence.countByC_CCNI_CCPK(
+			companyId, creatorClassNameId, creatorClassPK);
+	}
+
+	@Override
+	public int getMicroblogsEntriesCount(
+		long companyId, long creatorClassNameId, long creatorClassPK,
+		int type) {
+
+		return microblogsEntryPersistence.countByC_CCNI_CCPK_T(
+			companyId, creatorClassNameId, creatorClassPK, type);
+	}
+
+	@Override
+	public int getMicroblogsEntriesCount(
+		long companyId, long creatorClassNameId, long creatorClassPK,
+		String assetTagName, boolean andOperator) {
+
+		return microblogsEntryFinder.countByC_CCNI_CCPK_ATN(
+			companyId, creatorClassNameId, creatorClassPK, assetTagName,
+			andOperator);
+	}
+
+	@Override
+	public int getMicroblogsEntriesCount(
+		long companyId, long creatorClassNameId, String assetTagName) {
+
+		return microblogsEntryFinder.countByC_CCNI_ATN(
+			companyId, creatorClassNameId, assetTagName);
+	}
+
+	/**
+	 * @deprecated As of 2.1.0
+	 */
+	@Deprecated
+	@Override
+	public int getMicroblogsEntriesCount(
 		long creatorClassNameId, long creatorClassPK, String assetTagName,
 		boolean andOperator) {
 
@@ -324,6 +439,10 @@ public class MicroblogsEntryLocalServiceImpl
 			creatorClassNameId, creatorClassPK, assetTagName, andOperator);
 	}
 
+	/**
+	 * @deprecated As of 2.1.0
+	 */
+	@Deprecated
 	@Override
 	public int getMicroblogsEntriesCount(
 		long creatorClassNameId, String assetTagName) {
@@ -561,6 +680,9 @@ public class MicroblogsEntryLocalServiceImpl
 		}
 	}
 
+	@ServiceReference(type = SubscriptionLocalService.class)
+	protected SubscriptionLocalService subscriptionLocalService;
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		MicroblogsEntryLocalServiceImpl.class);
 
@@ -600,7 +722,8 @@ public class MicroblogsEntryLocalServiceImpl
 			int pages = count / Indexer.DEFAULT_INTERVAL;
 
 			for (int i = 0; i <= pages; i++) {
-				int start = (i * Indexer.DEFAULT_INTERVAL);
+				int start = i * Indexer.DEFAULT_INTERVAL;
+
 				int end = start + Indexer.DEFAULT_INTERVAL;
 
 				if (count < end) {

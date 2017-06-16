@@ -30,7 +30,7 @@ String kbArticleDisplayStyle = kbSectionPortletInstanceConfiguration.kbArticleDi
 		</liferay-portlet:renderURL>
 
 		<liferay-ui:search-container
-			searchContainer="<%= new KBArticleSearch(renderRequest, iteratorURL) %>"
+			searchContainer="<%= new KBObjectsSearch(renderRequest, iteratorURL) %>"
 			total="<%= KBArticleServiceUtil.getSectionsKBArticlesCount(scopeGroupId, kbArticlesSections, WorkflowConstants.STATUS_APPROVED) %>"
 		>
 			<liferay-ui:search-container-results
@@ -50,7 +50,7 @@ String kbArticleDisplayStyle = kbSectionPortletInstanceConfiguration.kbArticleDi
 				%>
 
 				<div class="kb-articles-sections-title">
-					<%= StringUtil.merge(titles, StringPool.COMMA_AND_SPACE) %>
+					<%= HtmlUtil.escape(StringUtil.merge(titles, StringPool.COMMA_AND_SPACE)) %>
 				</div>
 			</c:if>
 
@@ -74,7 +74,7 @@ String kbArticleDisplayStyle = kbSectionPortletInstanceConfiguration.kbArticleDi
 						<liferay-ui:icon
 							iconCssClass="icon-file-alt"
 							label="<%= true %>"
-							message="<%= kbArticle.getTitle() %>"
+							message="<%= HtmlUtil.escape(kbArticle.getTitle()) %>"
 							method="get"
 							url="<%= viewKBArticleURL.toString() %>"
 						/>
@@ -84,7 +84,7 @@ String kbArticleDisplayStyle = kbSectionPortletInstanceConfiguration.kbArticleDi
 						<div class="kb-article-content">
 							<c:choose>
 								<c:when test='<%= kbArticleDisplayStyle.equals("abstract") && Validator.isNotNull(kbArticle.getDescription()) %>'>
-									<%= kbArticle.getDescription() %>
+									<%= HtmlUtil.escape(kbArticle.getDescription()) %>
 								</c:when>
 								<c:when test='<%= kbArticleDisplayStyle.equals("abstract") %>'>
 									<%= StringUtil.shorten(HtmlUtil.extractText(kbArticle.getContent()), 500) %>
@@ -113,7 +113,7 @@ String kbArticleDisplayStyle = kbSectionPortletInstanceConfiguration.kbArticleDi
 		%>
 
 		<div class="alert alert-info">
-			<%= LanguageUtil.format(request, "please-input-a-list-of-comma-delimited-words-for-portlet-property-x-to-enable-this-portlet", "admin.kb.article.sections", false) %>
+			<%= LanguageUtil.get(resourceBundle, "please-configure-the-list-of-available-sections-in-system-settings-collaboration-knowledge-base-to-enable-this-portlet") %>
 		</div>
 	</c:otherwise>
 </c:choose>

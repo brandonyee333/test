@@ -14,8 +14,6 @@
 
 package com.liferay.portal.security.service.access.policy.service.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.Role;
@@ -53,7 +51,6 @@ import java.util.TreeSet;
 /**
  * @author Brian Wing Shun Chan
  */
-@ProviderType
 public class SAPEntryLocalServiceImpl extends SAPEntryLocalServiceBaseImpl {
 
 	@Override
@@ -65,7 +62,7 @@ public class SAPEntryLocalServiceImpl extends SAPEntryLocalServiceBaseImpl {
 
 		// Service access policy entry
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 		allowedServiceSignatures = normalizeServiceSignatures(
 			allowedServiceSignatures);
 		name = StringUtil.trim(name);
@@ -336,6 +333,7 @@ public class SAPEntryLocalServiceImpl extends SAPEntryLocalServiceBaseImpl {
 
 		if (titleMap != null) {
 			Locale defaultLocale = LocaleUtil.getDefault();
+
 			String defaultTitle = titleMap.get(defaultLocale);
 
 			if (Validator.isNotNull(defaultTitle)) {

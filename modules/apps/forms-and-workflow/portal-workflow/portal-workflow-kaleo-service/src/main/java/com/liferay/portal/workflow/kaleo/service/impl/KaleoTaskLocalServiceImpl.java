@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.workflow.kaleo.definition.Assignment;
 import com.liferay.portal.workflow.kaleo.definition.Task;
+import com.liferay.portal.workflow.kaleo.definition.TaskForm;
 import com.liferay.portal.workflow.kaleo.model.KaleoTask;
 import com.liferay.portal.workflow.kaleo.service.base.KaleoTaskLocalServiceBaseImpl;
 
@@ -38,8 +39,7 @@ public class KaleoTaskLocalServiceImpl extends KaleoTaskLocalServiceBaseImpl {
 
 		// Kaleo task
 
-		User user = userPersistence.findByPrimaryKey(
-			serviceContext.getGuestOrUserId());
+		User user = userLocalService.getUser(serviceContext.getGuestOrUserId());
 		Date now = new Date();
 
 		long kaleoTaskId = counterLocalService.increment();
@@ -68,6 +68,16 @@ public class KaleoTaskLocalServiceImpl extends KaleoTaskLocalServiceBaseImpl {
 				assignment, serviceContext);
 		}
 
+		// Kaleo forms
+
+		Set<TaskForm> taskForms = task.getTaskForms();
+
+		for (TaskForm taskForm : taskForms) {
+			kaleoTaskFormLocalService.addKaleoTaskForm(
+				kaleoDefinitionId, kaleoNodeId, kaleoTask, taskForm,
+				serviceContext);
+		}
+
 		return kaleoTask;
 	}
 
@@ -82,6 +92,10 @@ public class KaleoTaskLocalServiceImpl extends KaleoTaskLocalServiceBaseImpl {
 
 		kaleoTaskAssignmentLocalService.deleteCompanyKaleoTaskAssignments(
 			companyId);
+
+		// Kaleo task forms
+
+		kaleoTaskFormLocalService.deleteCompanyKaleoTaskForms(companyId);
 	}
 
 	@Override
@@ -95,6 +109,11 @@ public class KaleoTaskLocalServiceImpl extends KaleoTaskLocalServiceBaseImpl {
 
 		kaleoTaskAssignmentLocalService.
 			deleteKaleoDefinitionKaleoTaskAssignments(kaleoDefinitionId);
+
+		// Kaleo task forms
+
+		kaleoTaskFormLocalService.deleteKaleoDefinitionKaleoTaskForms(
+			kaleoDefinitionId);
 	}
 
 	@Override

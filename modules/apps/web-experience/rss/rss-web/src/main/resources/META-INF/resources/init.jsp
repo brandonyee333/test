@@ -31,7 +31,7 @@ page import="com.liferay.portal.kernel.util.StringPool" %><%@
 page import="com.liferay.portal.kernel.util.Validator" %><%@
 page import="com.liferay.rss.web.configuration.RSSPortletInstanceConfiguration" %><%@
 page import="com.liferay.rss.web.configuration.RSSWebCacheConfiguration" %><%@
-page import="com.liferay.rss.web.display.context.RSSDisplayContext" %><%@
+page import="com.liferay.rss.web.internal.display.context.RSSDisplayContext" %><%@
 page import="com.liferay.rss.web.util.RSSFeed" %><%@
 page import="com.liferay.rss.web.util.RSSFeedEntry" %>
 

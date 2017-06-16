@@ -114,6 +114,10 @@ public interface GroupLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public boolean hasUserGroups(long userId);
 
+	@Skip
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean isLiveGroupActive(Group group);
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
@@ -252,6 +256,7 @@ public interface GroupLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Group fetchGroup(long companyId, java.lang.String groupKey);
 
+	@ThreadLocalCachable
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Group fetchGroup(long groupId);
 
@@ -265,6 +270,9 @@ public interface GroupLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Group fetchGroupByUuidAndCompanyId(java.lang.String uuid,
 		long companyId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Group fetchStagingGroup(long liveGroupId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Group fetchUserGroup(long companyId, long userId);

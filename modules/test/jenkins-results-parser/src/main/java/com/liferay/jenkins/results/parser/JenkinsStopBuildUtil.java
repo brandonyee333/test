@@ -53,10 +53,10 @@ public class JenkinsStopBuildUtil {
 			TopLevelBuild topLevelBuild, String username, String password)
 		throws Exception {
 
-		List<DownstreamBuild> downstreamBuilds =
-			topLevelBuild.getDownstreamBuilds("running");
+		List<Build> downstreamBuilds = topLevelBuild.getDownstreamBuilds(
+			"running");
 
-		for (DownstreamBuild downstreamBuild : downstreamBuilds) {
+		for (Build downstreamBuild : downstreamBuilds) {
 			_stopBuild(downstreamBuild, username, password);
 		}
 	}
@@ -141,7 +141,7 @@ public class JenkinsStopBuildUtil {
 	}
 
 	private static final Pattern _buildURLPattern = Pattern.compile(
-		".+://(?<hostName>[^.]+).liferay.com/job/(?<jobName>[^/]+).*/" +
+		".+://(?<hostName>[^.]+)(.liferay.com)?/job/(?<jobName>[^/]+).*/" +
 			"(?<buildNumber>\\d+)/");
 	private static final Pattern _progressiveTextPattern = Pattern.compile(
 		"Build \\'.*\\' started at (?<url>.+)\\.");

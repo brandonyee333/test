@@ -21,7 +21,6 @@
 <%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %><%@
 taglib uri="http://liferay.com/tld/frontend" prefix="liferay-frontend" %><%@
 taglib uri="http://liferay.com/tld/portlet" prefix="liferay-portlet" %><%@
-taglib uri="http://liferay.com/tld/security" prefix="liferay-security" %><%@
 taglib uri="http://liferay.com/tld/staging" prefix="liferay-staging" %><%@
 taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/trash" prefix="liferay-trash" %><%@
@@ -33,6 +32,7 @@ page import="com.liferay.dynamic.data.mapping.exception.StructureDuplicateStruct
 page import="com.liferay.exportimport.constants.ExportImportPortletKeys" %><%@
 page import="com.liferay.exportimport.kernel.background.task.BackgroundTaskExecutorNames" %><%@
 page import="com.liferay.exportimport.kernel.configuration.ExportImportConfigurationConstants" %><%@
+page import="com.liferay.exportimport.kernel.configuration.ExportImportConfigurationHelper" %><%@
 page import="com.liferay.exportimport.kernel.exception.LARFileException" %><%@
 page import="com.liferay.exportimport.kernel.exception.LARFileNameException" %><%@
 page import="com.liferay.exportimport.kernel.exception.LARFileSizeException" %><%@
@@ -58,15 +58,17 @@ page import="com.liferay.exportimport.kernel.service.ExportImportConfigurationLo
 page import="com.liferay.exportimport.kernel.staging.StagingUtil" %><%@
 page import="com.liferay.exportimport.util.comparator.ExportImportConfigurationNameComparator" %><%@
 page import="com.liferay.exportimport.web.constants.ExportImportWebKeys" %><%@
-page import="com.liferay.exportimport.web.dao.search.ExportImportResultRowSplitter" %><%@
-page import="com.liferay.exportimport.web.portlet.action.ExportImportMVCActionCommand" %><%@
-page import="com.liferay.exportimport.web.search.ExportImportConfigurationDisplayTerms" %><%@
-page import="com.liferay.exportimport.web.search.ExportImportConfigurationSearchTerms" %><%@
+page import="com.liferay.exportimport.web.internal.dao.search.ExportImportResultRowSplitter" %><%@
+page import="com.liferay.exportimport.web.internal.portlet.action.ExportImportMVCActionCommand" %><%@
+page import="com.liferay.exportimport.web.internal.search.ExportImportConfigurationDisplayTerms" %><%@
+page import="com.liferay.exportimport.web.internal.search.ExportImportConfigurationSearchTerms" %><%@
 page import="com.liferay.portal.kernel.backgroundtask.BackgroundTask" %><%@
 page import="com.liferay.portal.kernel.backgroundtask.BackgroundTaskConstants" %><%@
 page import="com.liferay.portal.kernel.backgroundtask.BackgroundTaskManagerUtil" %><%@
 page import="com.liferay.portal.kernel.backgroundtask.BackgroundTaskStatus" %><%@
 page import="com.liferay.portal.kernel.backgroundtask.BackgroundTaskStatusRegistryUtil" %><%@
+page import="com.liferay.portal.kernel.backgroundtask.display.BackgroundTaskDisplay" %><%@
+page import="com.liferay.portal.kernel.backgroundtask.display.BackgroundTaskDisplayFactoryUtil" %><%@
 page import="com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker" %><%@
 page import="com.liferay.portal.kernel.dao.search.SearchContainer" %><%@
 page import="com.liferay.portal.kernel.exception.LayoutPrototypeException" %><%@
@@ -115,6 +117,7 @@ page import="com.liferay.portal.kernel.service.TicketLocalServiceUtil" %><%@
 page import="com.liferay.portal.kernel.service.UserLocalServiceUtil" %><%@
 page import="com.liferay.portal.kernel.service.permission.GroupPermissionUtil" %><%@
 page import="com.liferay.portal.kernel.servlet.SessionMessages" %><%@
+page import="com.liferay.portal.kernel.upload.UploadServletRequestConfigurationHelperUtil" %><%@
 page import="com.liferay.portal.kernel.util.AggregateResourceBundle" %><%@
 page import="com.liferay.portal.kernel.util.ArrayUtil" %><%@
 page import="com.liferay.portal.kernel.util.CalendarFactoryUtil" %><%@
@@ -143,8 +146,7 @@ page import="com.liferay.portal.kernel.util.WebKeys" %><%@
 page import="com.liferay.portal.kernel.util.comparator.PortletTitleComparator" %><%@
 page import="com.liferay.portal.util.PropsValues" %><%@
 page import="com.liferay.portlet.layoutsadmin.display.context.GroupDisplayContextHelper" %><%@
-page import="com.liferay.taglib.search.ResultRow" %><%@
-page import="com.liferay.trash.kernel.util.TrashUtil" %>
+page import="com.liferay.taglib.search.ResultRow" %>
 
 <%@ page import="java.io.Serializable" %>
 
@@ -171,6 +173,8 @@ page import="javax.portlet.PortletURL" %>
 
 <liferay-theme:defineObjects />
 
+<liferay-trash:defineObjects />
+
 <portlet:defineObjects />
 
 <%
@@ -179,6 +183,10 @@ PortalPreferences portalPreferences = PortletPreferencesFactoryUtil.getPortalPre
 String portletResource = ParamUtil.getString(request, "portletResource");
 
 Portlet selPortlet = PortletLocalServiceUtil.getPortletById(company.getCompanyId(), portletResource);
+
+Calendar calendar = CalendarFactoryUtil.getCalendar(timeZone, locale);
+
+int timeZoneOffset = timeZone.getOffset(calendar.getTimeInMillis());
 
 Format dateFormatDateTime = FastDateFormatFactoryUtil.getDateTime(locale, timeZone);
 %>

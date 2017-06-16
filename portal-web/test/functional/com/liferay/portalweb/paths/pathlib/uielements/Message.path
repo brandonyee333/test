@@ -54,13 +54,23 @@
 	<td></td>
 </tr>
 <tr>
+	<td>ERROR_1_COLUMN_1</td>
+	<td>xpath=(//div[contains(@id,'column-1')]/div[contains(@class,'alert') and (contains(@class,'alert-error') or contains(@class,'alert-danger'))])[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ERROR_1_COLUMN_2</td>
+	<td>xpath=(//div[contains(@id,'column-2')]/div[contains(@class,'alert') and (contains(@class,'alert-error') or contains(@class,'alert-danger'))])[1]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>ERROR_2</td>
 	<td>xpath=(//div[contains(@class,'alert') and (contains(@class,'alert-error') or contains(@class,'alert-danger'))])[2]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>ERROR_3</td>
-	<td>xpath=(//div[contains(@class,'alert') and (contains(@class,'alert-warning'))])</td>
+	<td>xpath=(//div[contains(@class,'alert') and (contains(@class,'alert-warning')) and (not(contains(@id,'warningMessage')))])</td>
 	<td></td>
 </tr>
 <tr>
@@ -71,6 +81,11 @@
 <tr>
 	<td>ERROR_3_LINK</td>
 	<td>xpath=(//div[contains(@class,'alert') and (contains(@class,'alert-warning'))]/a)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ERROR_EMPTY_FIELD</td>
+	<td>//div[contains(@class,'alert') and (contains(@class,'alert-error') or contains(@class,'alert-danger'))]//div[contains(.,'At least one option should be set for field ${key_fieldLabel}.')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -95,12 +110,17 @@
 </tr>
 <tr>
 	<td>ERROR_FORM_FIELD_REQUIRED</td>
-	<td>//div[contains(@class,'has-error')]//div[@class='help-block']</td>
+	<td>//div[contains(@class,'has-error')]//div[contains(@class,'help-block')]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>ERROR_SPECIFIC_FORM_FIELD_REQUIRED</td>
-	<td>//div[contains(@data-fieldname,'${key_fieldName}')]/../../div[contains(@class,'has-error')]//div[@class='help-block']</td>
+	<td>//div[contains(@data-fieldname,'${key_fieldName}')]/../../div[contains(@class,'has-error')]//div[contains(@class,'help-block')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GENERIC</td>
+	<td>//div[contains(@class,'alert')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -161,6 +181,11 @@
 <tr>
 	<td>NO_ENTRIES</td>
 	<td>//div[contains(@id,'Empty') and contains(.,'No entries were found')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PORTAL_LOCALIZATION</td>
+	<td>//div[contains(@class,'portal-message') and contains(@class,'alert-info')]</td>
 	<td></td>
 </tr>
 <tr>

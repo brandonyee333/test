@@ -76,22 +76,60 @@ public abstract class ScreensJournalArticleServiceBaseImpl
 	}
 
 	/**
-	 * Returns the screens d d l record remote service.
+	 * Returns the screens comment remote service.
 	 *
-	 * @return the screens d d l record remote service
+	 * @return the screens comment remote service
+	 */
+	public com.liferay.screens.service.ScreensCommentService getScreensCommentService() {
+		return screensCommentService;
+	}
+
+	/**
+	 * Sets the screens comment remote service.
+	 *
+	 * @param screensCommentService the screens comment remote service
+	 */
+	public void setScreensCommentService(
+		com.liferay.screens.service.ScreensCommentService screensCommentService) {
+		this.screensCommentService = screensCommentService;
+	}
+
+	/**
+	 * Returns the screens ddl record remote service.
+	 *
+	 * @return the screens ddl record remote service
 	 */
 	public com.liferay.screens.service.ScreensDDLRecordService getScreensDDLRecordService() {
 		return screensDDLRecordService;
 	}
 
 	/**
-	 * Sets the screens d d l record remote service.
+	 * Sets the screens ddl record remote service.
 	 *
-	 * @param screensDDLRecordService the screens d d l record remote service
+	 * @param screensDDLRecordService the screens ddl record remote service
 	 */
 	public void setScreensDDLRecordService(
 		com.liferay.screens.service.ScreensDDLRecordService screensDDLRecordService) {
 		this.screensDDLRecordService = screensDDLRecordService;
+	}
+
+	/**
+	 * Returns the screens ddm structure version remote service.
+	 *
+	 * @return the screens ddm structure version remote service
+	 */
+	public com.liferay.screens.service.ScreensDDMStructureVersionService getScreensDDMStructureVersionService() {
+		return screensDDMStructureVersionService;
+	}
+
+	/**
+	 * Sets the screens ddm structure version remote service.
+	 *
+	 * @param screensDDMStructureVersionService the screens ddm structure version remote service
+	 */
+	public void setScreensDDMStructureVersionService(
+		com.liferay.screens.service.ScreensDDMStructureVersionService screensDDMStructureVersionService) {
+		this.screensDDMStructureVersionService = screensDDMStructureVersionService;
 	}
 
 	/**
@@ -111,6 +149,25 @@ public abstract class ScreensJournalArticleServiceBaseImpl
 	public void setScreensJournalArticleService(
 		ScreensJournalArticleService screensJournalArticleService) {
 		this.screensJournalArticleService = screensJournalArticleService;
+	}
+
+	/**
+	 * Returns the screens ratings entry remote service.
+	 *
+	 * @return the screens ratings entry remote service
+	 */
+	public com.liferay.screens.service.ScreensRatingsEntryService getScreensRatingsEntryService() {
+		return screensRatingsEntryService;
+	}
+
+	/**
+	 * Sets the screens ratings entry remote service.
+	 *
+	 * @param screensRatingsEntryService the screens ratings entry remote service
+	 */
+	public void setScreensRatingsEntryService(
+		com.liferay.screens.service.ScreensRatingsEntryService screensRatingsEntryService) {
+		this.screensRatingsEntryService = screensRatingsEntryService;
 	}
 
 	/**
@@ -401,10 +458,16 @@ public abstract class ScreensJournalArticleServiceBaseImpl
 
 	@BeanReference(type = com.liferay.screens.service.ScreensAssetEntryService.class)
 	protected com.liferay.screens.service.ScreensAssetEntryService screensAssetEntryService;
+	@BeanReference(type = com.liferay.screens.service.ScreensCommentService.class)
+	protected com.liferay.screens.service.ScreensCommentService screensCommentService;
 	@BeanReference(type = com.liferay.screens.service.ScreensDDLRecordService.class)
 	protected com.liferay.screens.service.ScreensDDLRecordService screensDDLRecordService;
+	@BeanReference(type = com.liferay.screens.service.ScreensDDMStructureVersionService.class)
+	protected com.liferay.screens.service.ScreensDDMStructureVersionService screensDDMStructureVersionService;
 	@BeanReference(type = ScreensJournalArticleService.class)
 	protected ScreensJournalArticleService screensJournalArticleService;
+	@BeanReference(type = com.liferay.screens.service.ScreensRatingsEntryService.class)
+	protected com.liferay.screens.service.ScreensRatingsEntryService screensRatingsEntryService;
 	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
 	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
 	@ServiceReference(type = com.liferay.journal.service.JournalArticleLocalService.class)

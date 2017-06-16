@@ -16,6 +16,7 @@ package com.liferay.portal.kernel.upgrade;
 
 import com.liferay.portal.kernel.dao.db.BaseDBProcess;
 import com.liferay.portal.kernel.dao.db.DB;
+import com.liferay.portal.kernel.dao.db.DBInspector;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.db.DBProcessContext;
 import com.liferay.portal.kernel.dao.db.IndexMetadata;
@@ -27,7 +28,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.upgrade.util.UpgradeColumn;
 import com.liferay.portal.kernel.upgrade.util.UpgradeTable;
 import com.liferay.portal.kernel.upgrade.util.UpgradeTableFactoryUtil;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ClassUtil;
 import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.ObjectValuePair;
@@ -49,6 +49,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -128,9 +130,29 @@ public abstract class UpgradeProcess
 
 	public interface Alterable {
 
+		public static boolean containsIgnoreCase(
+			Collection<String> columnNames, String columnName) {
+
+			for (String curColumnName : columnNames) {
+				if (StringUtil.equalsIgnoreCase(curColumnName, columnName)) {
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		/**
+		 * @deprecated As of 7.0.0, with no direct replacement
+		 */
+		@Deprecated
 		public String getIndexedColumnName();
 
 		public String getSQL(String tableName);
+
+		public boolean shouldAddIndex(Collection<String> columnNames);
+
+		public boolean shouldDropIndex(Collection<String> columnNames);
 
 	}
 
@@ -139,11 +161,25 @@ public abstract class UpgradeProcess
 		public AlterColumnName(String oldColumnName, String newColumn) {
 			_oldColumnName = oldColumnName;
 			_newColumn = newColumn;
+
+			String newColumnName = StringUtil.extractFirst(
+				newColumn, StringPool.SPACE);
+
+			if (newColumnName != null) {
+				_newColumnName = newColumnName;
+			}
+			else {
+				_newColumnName = _newColumn;
+			}
 		}
 
+		/**
+		 * @deprecated As of 7.0.0, with no direct replacement
+		 */
+		@Deprecated
 		@Override
 		public String getIndexedColumnName() {
-			return _oldColumnName;
+			return null;
 		}
 
 		@Override
@@ -160,7 +196,18 @@ public abstract class UpgradeProcess
 			return sb.toString();
 		}
 
+		@Override
+		public boolean shouldAddIndex(Collection<String> columnNames) {
+			return Alterable.containsIgnoreCase(columnNames, _newColumnName);
+		}
+
+		@Override
+		public boolean shouldDropIndex(Collection<String> columnNames) {
+			return Alterable.containsIgnoreCase(columnNames, _oldColumnName);
+		}
+
 		private final String _newColumn;
+		private final String _newColumnName;
 		private final String _oldColumnName;
 
 	}
@@ -172,9 +219,13 @@ public abstract class UpgradeProcess
 			_newType = newType;
 		}
 
+		/**
+		 * @deprecated As of 7.0.0, with no direct replacement
+		 */
+		@Deprecated
 		@Override
 		public String getIndexedColumnName() {
-			return _columnName;
+			return null;
 		}
 
 		@Override
@@ -191,6 +242,16 @@ public abstract class UpgradeProcess
 			return sb.toString();
 		}
 
+		@Override
+		public boolean shouldAddIndex(Collection<String> columnNames) {
+			return Alterable.containsIgnoreCase(columnNames, _columnName);
+		}
+
+		@Override
+		public boolean shouldDropIndex(Collection<String> columnNames) {
+			return Alterable.containsIgnoreCase(columnNames, _columnName);
+		}
+
 		private final String _columnName;
 		private final String _newType;
 
@@ -202,6 +263,10 @@ public abstract class UpgradeProcess
 			_columnName = columnName;
 		}
 
+		/**
+		 * @deprecated As of 7.0.0, with no direct replacement
+		 */
+		@Deprecated
 		@Override
 		public String getIndexedColumnName() {
 			return null;
@@ -219,6 +284,16 @@ public abstract class UpgradeProcess
 			return sb.toString();
 		}
 
+		@Override
+		public boolean shouldAddIndex(Collection<String> columnNames) {
+			return Alterable.containsIgnoreCase(columnNames, _columnName);
+		}
+
+		@Override
+		public boolean shouldDropIndex(Collection<String> columnNames) {
+			return false;
+		}
+
 		private final String _columnName;
 
 	}
@@ -229,9 +304,13 @@ public abstract class UpgradeProcess
 			_columnName = columnName;
 		}
 
+		/**
+		 * @deprecated As of 7.0.0, with no direct replacement
+		 */
+		@Deprecated
 		@Override
 		public String getIndexedColumnName() {
-			return _columnName;
+			return null;
 		}
 
 		@Override
@@ -244,6 +323,16 @@ public abstract class UpgradeProcess
 			sb.append(_columnName);
 
 			return sb.toString();
+		}
+
+		@Override
+		public boolean shouldAddIndex(Collection<String> columnNames) {
+			return false;
+		}
+
+		@Override
+		public boolean shouldDropIndex(Collection<String> columnNames) {
+			return Alterable.containsIgnoreCase(columnNames, _columnName);
 		}
 
 		private final String _columnName;
@@ -259,12 +348,14 @@ public abstract class UpgradeProcess
 			String tableName = (String)tableNameField.get(null);
 
 			DatabaseMetaData databaseMetaData = connection.getMetaData();
+			DBInspector dbInspector = new DBInspector(connection);
 
 			try (ResultSet rs1 = databaseMetaData.getPrimaryKeys(
-					null, null, tableName);
+					dbInspector.getCatalog(), dbInspector.getSchema(),
+					tableName);
 				ResultSet rs2 = databaseMetaData.getIndexInfo(
-					null, null, normalizeName(tableName, databaseMetaData),
-					false, false)) {
+					dbInspector.getCatalog(), dbInspector.getSchema(),
+					normalizeName(tableName, databaseMetaData), false, false)) {
 
 				Set<String> primaryKeyNames = new HashSet<>();
 
@@ -302,15 +393,10 @@ public abstract class UpgradeProcess
 				}
 
 				for (Alterable alterable : alterables) {
-					String columnName = StringUtil.toUpperCase(
-						alterable.getIndexedColumnName());
-
 					for (Map.Entry<String, Set<String>> entry :
 							columnNamesMap.entrySet()) {
 
-						Set<String> columnNames = entry.getValue();
-
-						if (columnNames.contains(columnName)) {
+						if (alterable.shouldDropIndex(entry.getValue())) {
 							runSQL(
 								"drop index " + entry.getKey() + " on " +
 									tableName);
@@ -333,15 +419,13 @@ public abstract class UpgradeProcess
 						IndexMetadata indexMetadata =
 							objectValuePair.getValue();
 
-						if (!ArrayUtil.contains(
-								indexMetadata.getColumnNames(), columnName,
-								true)) {
+						if (alterable.shouldAddIndex(
+								Arrays.asList(
+									indexMetadata.getColumnNames()))) {
 
-							continue;
+							runSQLTemplateString(
+								objectValuePair.getKey(), false, true);
 						}
-
-						runSQLTemplateString(
-							objectValuePair.getKey(), false, true);
 					}
 				}
 			}

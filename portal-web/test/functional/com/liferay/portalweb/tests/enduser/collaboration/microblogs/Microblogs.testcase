@@ -1,5 +1,6 @@
 <definition component-name="portal-collaboration">
 	<property name="portal.release" value="true" />
+	<property name="portal.upstream" value="true" />
 	<property name="custom.properties" value="default.layout.template.id=1_column" />
 	<property name="testray.main.component.name" value="Microblogs" />
 
@@ -38,10 +39,7 @@
 		</if>
 	</tear-down>
 
-	<command name="AddEntry" priority="5">
-		<property name="portal.acceptance" value="true" />
-		<property name="test.name.skip.portal.instance" value="Microblogs#AddEntry" />
-
+	<command name="AddEntry" priority="4">
 		<execute macro="Microblogs#updateStatus">
 			<var name="entryContent" value="Microblog Entry Content" />
 		</execute>
@@ -56,7 +54,6 @@
 
 	<command name="DeleteEntry" priority="5">
 		<property name="portal.acceptance" value="true" />
-		<property name="test.name.skip.portal.instance" value="Microblogs#DeleteEntry" />
 
 		<execute macro="Microblogs#updateStatus">
 			<var name="entryContent" value="Microblog Entry Content" />
@@ -75,7 +72,6 @@
 
 	<command name="EditEntry" priority="5">
 		<property name="portal.acceptance" value="true" />
-		<property name="test.name.skip.portal.instance" value="Microblogs#EditEntry" />
 
 		<execute macro="Microblogs#updateStatus">
 			<var name="entryContent" value="Microblog Entry Content" />

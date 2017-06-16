@@ -1,20 +1,14 @@
 AUI.add(
 	'liferay-ddl-form-builder-modal-support',
 	function(A) {
+		var Settings = Liferay.DDL.Settings;
+
 		var FormBuilderModalSupport = function() {
 		};
 
 		FormBuilderModalSupport.ATTRS = {
 			centered: {
 				valueFn: '_valueCentered'
-			},
-
-			dynamicContentHeight: {
-				value: false,
-				writeOnce: true
-			},
-
-			portletNamespace: {
 			},
 
 			zIndex: {
@@ -31,40 +25,10 @@ AUI.add(
 				);
 			},
 
-			syncHeight: function() {
-				var instance = this;
-
-				var bodyNode = instance.getStdModNode(A.WidgetStdMod.BODY);
-
-				bodyNode.setStyle('max-height', A.DOM.winHeight(A.config.doc) - instance._getModalOffset());
-			},
-
-			_afterModalRender: function() {
-				var instance = this;
-
-				if (instance.get('dynamicContentHeight')) {
-					instance._configModalDynamicHeight();
-
-					instance.syncHeight();
-				}
-			},
-
-			_afterModalVisibleChange: function(event) {
-				var instance = this;
-
-				if (event.newVal && instance.get('dynamicContentHeight')) {
-					instance.syncHeight();
-				}
-			},
-
 			_afterWindowResize: function() {
 				var instance = this;
 
 				if (instance.get('visible')) {
-					if (instance.get('dynamicContentHeight')) {
-						instance.syncHeight();
-					}
-
 					if (instance.get('centered')) {
 						instance.align();
 					}
@@ -75,8 +39,6 @@ AUI.add(
 				var instance = this;
 
 				instance._eventHandles.push(
-					instance.after('render', instance._afterModalRender),
-					instance.after('visibleChange', instance._afterModalVisibleChange),
 					instance.on('xyChange', instance._onModalXYChange)
 				);
 			},
@@ -91,26 +53,6 @@ AUI.add(
 				return xy;
 			},
 
-			_configModalDynamicHeight: function() {
-				var instance = this;
-
-				instance.get('boundingBox').addClass('dynamic-content-height');
-			},
-
-			_getModalOffset: function() {
-				var instance = this;
-
-				var bodyNode = instance.getStdModNode(A.WidgetStdMod.BODY);
-
-				var bodyHeight = bodyNode.height();
-
-				var boundingBox = instance.get('boundingBox');
-
-				var outerHeight = boundingBox.outerHeight(true);
-
-				return Math.max(bodyHeight, outerHeight) - Math.min(bodyHeight, outerHeight);
-			},
-
 			_onModalXYChange: function(event) {
 				var instance = this;
 
@@ -122,7 +64,7 @@ AUI.add(
 			_valueCentered: function() {
 				var instance = this;
 
-				var portletNode = A.one('#p_p_id' + instance.get('portletNamespace'));
+				var portletNode = A.one('#p_p_id' + Settings.portletNamespace);
 
 				instance.set('centered', portletNode);
 			}

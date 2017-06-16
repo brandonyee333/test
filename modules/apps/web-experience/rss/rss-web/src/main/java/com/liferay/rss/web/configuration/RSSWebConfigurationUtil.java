@@ -19,7 +19,9 @@ import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
 
 /**
  * @author Eudaldo Alonso
+ * @deprecated As of 2.2.0, with no direct replacement
  */
+@Deprecated
 public class RSSWebConfigurationUtil {
 
 	public static String get(String key) {

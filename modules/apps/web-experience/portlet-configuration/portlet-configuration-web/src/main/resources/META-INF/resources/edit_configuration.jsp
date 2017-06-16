@@ -22,13 +22,13 @@
 	</liferay-util:include>
 </c:if>
 
-<div class="container-fluid-1280">
+<div class="portlet-configuration-setup">
 
 	<%
 	ConfigurationAction configurationAction = (ConfigurationAction)request.getAttribute(WebKeys.CONFIGURATION_ACTION);
 
 	if (configurationAction != null) {
-		configurationAction.include(portletConfig, request, new PipingServletResponse(pageContext));
+		configurationAction.include(portletConfig, request, PipingServletResponse.createPipingServletResponse(pageContext));
 	}
 	%>
 

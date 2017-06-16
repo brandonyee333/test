@@ -37,7 +37,9 @@ import java.util.Set;
 /**
  * @author Shuyang Zhou
  * @author Brian Wing Shun Chan
+ * @deprecated As of 7.0.0, with no direct replacement
  */
+@Deprecated
 public class RatingsStatsFinderImpl
 	extends RatingsStatsFinderBaseImpl implements RatingsStatsFinder {
 
@@ -48,8 +50,7 @@ public class RatingsStatsFinderImpl
 		RatingsStatsModelImpl.ENTITY_CACHE_ENABLED,
 		RatingsStatsModelImpl.FINDER_CACHE_ENABLED, RatingsStatsImpl.class,
 		RatingsStatsPersistenceImpl.FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-		"findByC_C",
-		new String[] {Long.class.getName(), List.class.getName()});
+		"findByC_C", new String[] {Long.class.getName(), List.class.getName()});
 
 	@Override
 	public Map<Serializable, RatingsStats> fetchByPrimaryKeys(

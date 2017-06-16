@@ -19,7 +19,18 @@
 <%
 int type = ParamUtil.getInteger(request, "type", 1);
 String keywords = ParamUtil.getString(request, "keywords");
-String displayStyle = ParamUtil.getString(request, "displayStyle", "list");
+
+String displayStyle = ParamUtil.getString(request, "displayStyle");
+
+if (Validator.isNull(displayStyle)) {
+	displayStyle = portalPreferences.getValue(RolesAdminPortletKeys.ROLES_ADMIN, "displayStyle", "descriptive");
+}
+else {
+	portalPreferences.setValue(RolesAdminPortletKeys.ROLES_ADMIN, "displayStyle", displayStyle);
+
+	request.setAttribute(WebKeys.SINGLE_PAGE_APPLICATION_CLEAR_CACHE, Boolean.TRUE);
+}
+
 String orderByCol = ParamUtil.getString(request, "orderByCol", "title");
 String orderByType = ParamUtil.getString(request, "orderByType", "asc");
 
@@ -36,22 +47,6 @@ String portletURLString = portletURL.toString();
 portletURL.setParameter("keywords", keywords);
 
 pageContext.setAttribute("portletURL", portletURL);
-
-String breadcrumbKey = null;
-
-if (type == RoleConstants.TYPE_SITE) {
-	breadcrumbKey = "site-roles";
-}
-else if (type == RoleConstants.TYPE_ORGANIZATION) {
-	breadcrumbKey = "organization-roles";
-}
-else {
-	breadcrumbKey = "regular-roles";
-}
-
-String breadcrumbTitle = LanguageUtil.get(request, breadcrumbKey);
-
-PortalUtil.addPortletBreadcrumbEntry(request, breadcrumbTitle, currentURL);
 %>
 
 <liferay-ui:error exception="<%= RequiredRoleException.class %>" message="you-cannot-delete-a-system-role" />
@@ -60,6 +55,7 @@ PortalUtil.addPortletBreadcrumbEntry(request, breadcrumbTitle, currentURL);
 	<liferay-portlet:renderURL varImpl="addRoleURL">
 		<portlet:param name="mvcPath" value="/edit_role.jsp" />
 		<portlet:param name="redirect" value="<%= portletURLString %>" />
+		<portlet:param name="tabs1" value="details" />
 		<portlet:param name="type" value="<%= String.valueOf(type) %>" />
 	</liferay-portlet:renderURL>
 
@@ -137,7 +133,7 @@ PortalUtil.addPortletBreadcrumbEntry(request, breadcrumbTitle, currentURL);
 
 	<liferay-frontend:management-bar-buttons>
 		<liferay-frontend:management-bar-display-buttons
-			displayViews='<%= new String[] {"list"} %>'
+			displayViews='<%= new String[] {"descriptive", "icon", "list"} %>'
 			portletURL="<%= portletURL %>"
 			selectedDisplayStyle="<%= displayStyle %>"
 		/>
@@ -153,30 +149,30 @@ PortalUtil.addPortletBreadcrumbEntry(request, breadcrumbTitle, currentURL);
 
 	<liferay-portlet:renderURLParams varImpl="portletURL" />
 
-	<liferay-ui:breadcrumb
-		showLayout="<%= false %>"
-		showPortletBreadcrumb="<%= true %>"
-	/>
+	<%
+	SearchContainer searchContainer = new RoleSearch(renderRequest, portletURL);
+	%>
 
 	<liferay-ui:search-container
 		id="roleSearch"
 		rowChecker="<%= new RoleChecker(renderResponse) %>"
-		searchContainer="<%= new RoleSearch(renderRequest, portletURL) %>"
+		searchContainer="<%= searchContainer %>"
+		var="roleSearchContainer"
 	>
 		<liferay-ui:search-container-results>
 
 			<%
-			RoleSearchTerms searchTerms = (RoleSearchTerms)searchContainer.getSearchTerms();
+			RoleSearchTerms searchTerms = (RoleSearchTerms)roleSearchContainer.getSearchTerms();
 
 			total = RoleServiceUtil.searchCount(company.getCompanyId(), searchTerms.getKeywords(), searchTerms.getTypesObj(), new LinkedHashMap<String, Object>());
 
-			searchContainer.setTotal(total);
+			roleSearchContainer.setTotal(total);
 
-			results = RoleServiceUtil.search(company.getCompanyId(), searchTerms.getKeywords(), searchTerms.getTypesObj(), new LinkedHashMap<String, Object>(), searchContainer.getStart(), searchContainer.getEnd(), searchContainer.getOrderByComparator());
+			results = RoleServiceUtil.search(company.getCompanyId(), searchTerms.getKeywords(), searchTerms.getTypesObj(), new LinkedHashMap<String, Object>(), roleSearchContainer.getStart(), roleSearchContainer.getEnd(), roleSearchContainer.getOrderByComparator());
 
-			searchContainer.setResults(results);
+			roleSearchContainer.setResults(results);
 
-			portletURL.setParameter(searchContainer.getCurParam(), String.valueOf(searchContainer.getCur()));
+			portletURL.setParameter(roleSearchContainer.getCurParam(), String.valueOf(roleSearchContainer.getCur()));
 			%>
 
 		</liferay-ui:search-container-results>
@@ -190,53 +186,22 @@ PortalUtil.addPortletBreadcrumbEntry(request, breadcrumbTitle, currentURL);
 		>
 
 			<%
-			String name = role.getName();
-
-			boolean unassignableRole = false;
-
-			if (name.equals(RoleConstants.GUEST) || name.equals(RoleConstants.OWNER) || name.equals(RoleConstants.USER)) {
-				unassignableRole = true;
-			}
-
 			PortletURL rowURL = null;
 
-			if (!unassignableRole && (role.getType() == RoleConstants.TYPE_REGULAR) && RolePermissionUtil.contains(permissionChecker, role.getRoleId(), ActionKeys.ASSIGN_MEMBERS)) {
+			if (RolePermissionUtil.contains(permissionChecker, role.getRoleId(), ActionKeys.UPDATE)) {
 				rowURL = renderResponse.createRenderURL();
 
-				rowURL.setParameter("mvcPath", "/edit_role_assignments.jsp");
-				rowURL.setParameter("redirect", searchContainer.getIteratorURL().toString());
+				rowURL.setParameter("mvcPath", "/edit_role.jsp");
+				rowURL.setParameter("tabs1", "details");
+				rowURL.setParameter("redirect", roleSearchContainer.getIteratorURL().toString());
 				rowURL.setParameter("roleId", String.valueOf(role.getRoleId()));
 			}
 			%>
 
-			<liferay-ui:search-container-column-text
-				cssClass="table-cell-content"
-				href="<%= rowURL %>"
-				name="title"
-				value="<%= HtmlUtil.escape(role.getTitle(locale)) %>"
-			/>
-
-			<c:if test="<%= (PropsValues.ROLES_ORGANIZATION_SUBTYPES.length > 0) || (PropsValues.ROLES_REGULAR_SUBTYPES.length > 0) || (PropsValues.ROLES_SITE_SUBTYPES.length > 0) %>">
-				<liferay-ui:search-container-column-text
-					href="<%= rowURL %>"
-					name="subType"
-					value="<%= LanguageUtil.get(request, role.getSubtype()) %>"
-				/>
-			</c:if>
-
-			<liferay-ui:search-container-column-text
-				cssClass="table-cell-content"
-				href="<%= rowURL %>"
-				name="description"
-				value="<%= HtmlUtil.escape(role.getDescription(locale)) %>"
-			/>
-
-			<liferay-ui:search-container-column-jsp
-				path="/role_action.jsp"
-			/>
+			<%@ include file="/search_columns.jspf" %>
 		</liferay-ui:search-container-row>
 
-		<liferay-ui:search-iterator markupView="lexicon" />
+		<liferay-ui:search-iterator displayStyle="<%= displayStyle %>" markupView="lexicon" />
 	</liferay-ui:search-container>
 </aui:form>
 

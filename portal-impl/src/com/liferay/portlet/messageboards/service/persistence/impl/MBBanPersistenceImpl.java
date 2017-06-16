@@ -38,6 +38,7 @@ import com.liferay.portal.kernel.service.persistence.CompanyProvider;
 import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -48,6 +49,8 @@ import com.liferay.portlet.messageboards.model.impl.MBBanImpl;
 import com.liferay.portlet.messageboards.model.impl.MBBanModelImpl;
 
 import java.io.Serializable;
+
+import java.lang.reflect.Field;
 
 import java.util.Collections;
 import java.util.Date;
@@ -3181,6 +3184,22 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 
 	public MBBanPersistenceImpl() {
 		setModelClass(MBBan.class);
+
+		try {
+			Field field = ReflectionUtil.getDeclaredField(BasePersistenceImpl.class,
+					"_dbColumnNames");
+
+			Map<String, String> dbColumnNames = new HashMap<String, String>();
+
+			dbColumnNames.put("uuid", "uuid_");
+
+			field.set(this, dbColumnNames);
+		}
+		catch (Exception e) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(e, e);
+			}
+		}
 	}
 
 	/**
@@ -3251,7 +3270,7 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
-		clearUniqueFindersCache((MBBanModelImpl)mbBan);
+		clearUniqueFindersCache((MBBanModelImpl)mbBan, true);
 	}
 
 	@Override
@@ -3263,69 +3282,44 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 			entityCache.removeResult(MBBanModelImpl.ENTITY_CACHE_ENABLED,
 				MBBanImpl.class, mbBan.getPrimaryKey());
 
-			clearUniqueFindersCache((MBBanModelImpl)mbBan);
+			clearUniqueFindersCache((MBBanModelImpl)mbBan, true);
 		}
 	}
 
-	protected void cacheUniqueFindersCache(MBBanModelImpl mbBanModelImpl,
-		boolean isNew) {
-		if (isNew) {
-			Object[] args = new Object[] {
-					mbBanModelImpl.getUuid(), mbBanModelImpl.getGroupId()
-				};
-
-			finderCache.putResult(FINDER_PATH_COUNT_BY_UUID_G, args,
-				Long.valueOf(1));
-			finderCache.putResult(FINDER_PATH_FETCH_BY_UUID_G, args,
-				mbBanModelImpl);
-
-			args = new Object[] {
-					mbBanModelImpl.getGroupId(), mbBanModelImpl.getBanUserId()
-				};
-
-			finderCache.putResult(FINDER_PATH_COUNT_BY_G_B, args,
-				Long.valueOf(1));
-			finderCache.putResult(FINDER_PATH_FETCH_BY_G_B, args, mbBanModelImpl);
-		}
-		else {
-			if ((mbBanModelImpl.getColumnBitmask() &
-					FINDER_PATH_FETCH_BY_UUID_G.getColumnBitmask()) != 0) {
-				Object[] args = new Object[] {
-						mbBanModelImpl.getUuid(), mbBanModelImpl.getGroupId()
-					};
-
-				finderCache.putResult(FINDER_PATH_COUNT_BY_UUID_G, args,
-					Long.valueOf(1));
-				finderCache.putResult(FINDER_PATH_FETCH_BY_UUID_G, args,
-					mbBanModelImpl);
-			}
-
-			if ((mbBanModelImpl.getColumnBitmask() &
-					FINDER_PATH_FETCH_BY_G_B.getColumnBitmask()) != 0) {
-				Object[] args = new Object[] {
-						mbBanModelImpl.getGroupId(),
-						mbBanModelImpl.getBanUserId()
-					};
-
-				finderCache.putResult(FINDER_PATH_COUNT_BY_G_B, args,
-					Long.valueOf(1));
-				finderCache.putResult(FINDER_PATH_FETCH_BY_G_B, args,
-					mbBanModelImpl);
-			}
-		}
-	}
-
-	protected void clearUniqueFindersCache(MBBanModelImpl mbBanModelImpl) {
+	protected void cacheUniqueFindersCache(MBBanModelImpl mbBanModelImpl) {
 		Object[] args = new Object[] {
 				mbBanModelImpl.getUuid(), mbBanModelImpl.getGroupId()
 			};
 
-		finderCache.removeResult(FINDER_PATH_COUNT_BY_UUID_G, args);
-		finderCache.removeResult(FINDER_PATH_FETCH_BY_UUID_G, args);
+		finderCache.putResult(FINDER_PATH_COUNT_BY_UUID_G, args,
+			Long.valueOf(1), false);
+		finderCache.putResult(FINDER_PATH_FETCH_BY_UUID_G, args,
+			mbBanModelImpl, false);
+
+		args = new Object[] {
+				mbBanModelImpl.getGroupId(), mbBanModelImpl.getBanUserId()
+			};
+
+		finderCache.putResult(FINDER_PATH_COUNT_BY_G_B, args, Long.valueOf(1),
+			false);
+		finderCache.putResult(FINDER_PATH_FETCH_BY_G_B, args, mbBanModelImpl,
+			false);
+	}
+
+	protected void clearUniqueFindersCache(MBBanModelImpl mbBanModelImpl,
+		boolean clearCurrent) {
+		if (clearCurrent) {
+			Object[] args = new Object[] {
+					mbBanModelImpl.getUuid(), mbBanModelImpl.getGroupId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_UUID_G, args);
+			finderCache.removeResult(FINDER_PATH_FETCH_BY_UUID_G, args);
+		}
 
 		if ((mbBanModelImpl.getColumnBitmask() &
 				FINDER_PATH_FETCH_BY_UUID_G.getColumnBitmask()) != 0) {
-			args = new Object[] {
+			Object[] args = new Object[] {
 					mbBanModelImpl.getOriginalUuid(),
 					mbBanModelImpl.getOriginalGroupId()
 				};
@@ -3334,16 +3328,18 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 			finderCache.removeResult(FINDER_PATH_FETCH_BY_UUID_G, args);
 		}
 
-		args = new Object[] {
-				mbBanModelImpl.getGroupId(), mbBanModelImpl.getBanUserId()
-			};
+		if (clearCurrent) {
+			Object[] args = new Object[] {
+					mbBanModelImpl.getGroupId(), mbBanModelImpl.getBanUserId()
+				};
 
-		finderCache.removeResult(FINDER_PATH_COUNT_BY_G_B, args);
-		finderCache.removeResult(FINDER_PATH_FETCH_BY_G_B, args);
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_B, args);
+			finderCache.removeResult(FINDER_PATH_FETCH_BY_G_B, args);
+		}
 
 		if ((mbBanModelImpl.getColumnBitmask() &
 				FINDER_PATH_FETCH_BY_G_B.getColumnBitmask()) != 0) {
-			args = new Object[] {
+			Object[] args = new Object[] {
 					mbBanModelImpl.getOriginalGroupId(),
 					mbBanModelImpl.getOriginalBanUserId()
 				};
@@ -3516,8 +3512,46 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew || !MBBanModelImpl.COLUMN_BITMASK_ENABLED) {
+		if (!MBBanModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		}
+		else
+		 if (isNew) {
+			Object[] args = new Object[] { mbBanModelImpl.getUuid() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_UUID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID,
+				args);
+
+			args = new Object[] {
+					mbBanModelImpl.getUuid(), mbBanModelImpl.getCompanyId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_UUID_C, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID_C,
+				args);
+
+			args = new Object[] { mbBanModelImpl.getGroupId() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_GROUPID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPID,
+				args);
+
+			args = new Object[] { mbBanModelImpl.getUserId() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID,
+				args);
+
+			args = new Object[] { mbBanModelImpl.getBanUserId() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_BANUSERID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_BANUSERID,
+				args);
+
+			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
+				FINDER_ARGS_EMPTY);
 		}
 
 		else {
@@ -3607,8 +3641,8 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 		entityCache.putResult(MBBanModelImpl.ENTITY_CACHE_ENABLED,
 			MBBanImpl.class, mbBan.getPrimaryKey(), mbBan, false);
 
-		clearUniqueFindersCache(mbBanModelImpl);
-		cacheUniqueFindersCache(mbBanModelImpl, isNew);
+		clearUniqueFindersCache(mbBanModelImpl, false);
+		cacheUniqueFindersCache(mbBanModelImpl);
 
 		mbBan.resetOriginalValues();
 
@@ -3786,7 +3820,7 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 		query.append(_SQL_SELECT_MBBAN_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			query.append(String.valueOf(primaryKey));
+			query.append((long)primaryKey);
 
 			query.append(StringPool.COMMA);
 		}

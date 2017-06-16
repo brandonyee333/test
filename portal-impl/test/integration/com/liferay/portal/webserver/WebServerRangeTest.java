@@ -29,7 +29,9 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.webdav.methods.Method;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
+import com.liferay.portal.webserver.test.BaseWebServerTestCase;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -89,7 +91,9 @@ public class WebServerRangeTest extends BaseWebServerTestCase {
 
 		String[] responseBodies = StringUtil.split(responseBody, boundary);
 
-		Assert.assertEquals(ranges.length + 2, responseBodies.length);
+		Assert.assertEquals(
+			Arrays.toString(responseBodies), ranges.length + 2,
+			responseBodies.length);
 		Assert.assertEquals(StringPool.DOUBLE_DASH, responseBodies[0]);
 		Assert.assertEquals(
 			StringPool.DOUBLE_DASH, responseBodies[ranges.length + 1]);
@@ -104,6 +108,7 @@ public class WebServerRangeTest extends BaseWebServerTestCase {
 			Assert.assertTrue(Validator.isNull(lines[2]));
 
 			String[] rangePair = StringUtil.split(ranges[i], StringPool.DASH);
+
 			int start = GetterUtil.getInteger(rangePair[0]);
 			int end = GetterUtil.getInteger(rangePair[1]);
 
@@ -111,6 +116,7 @@ public class WebServerRangeTest extends BaseWebServerTestCase {
 				_SAMPLE_DATA.getBytes(), start, end + 1);
 
 			Assert.assertArrayEquals(bytes, lines[3].getBytes("UTF-8"));
+
 			Assert.assertEquals(StringPool.DOUBLE_DASH, lines[4]);
 		}
 	}

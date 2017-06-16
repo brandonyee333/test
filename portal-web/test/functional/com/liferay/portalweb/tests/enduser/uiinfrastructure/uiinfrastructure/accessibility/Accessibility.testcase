@@ -1,5 +1,6 @@
 <definition component-name="portal-user-interface">
 	<property name="portal.release" value="true" />
+	<property name="portal.upstream" value="true" />
 	<property name="testray.component.names" value="Accessibility" />
 	<property name="testray.main.component.name" value="User Interface" />
 
@@ -29,24 +30,6 @@
 			<var name="sitePageType" value="${pageType}" />
 		</execute>
 
-		<execute macro="Page#add">
-			<var name="defaultURL" value="${defaultURL}" />
-			<var name="nodePort" value="${nodePort}" />
-			<var name="pageName" value="Test Page2" />
-			<var name="pageTemplateName" value="${pageTemplateName}" />
-			<var name="sitePageType" value="${pageType}" />
-		</execute>
-
-		<execute macro="Page#add">
-			<var name="defaultURL" value="${defaultURL}" />
-			<var name="nodePort" value="${nodePort}" />
-			<var name="pageName" value="Test Page3" />
-			<var name="pageTemplateName" value="${pageTemplateName}" />
-			<var name="sitePageType" value="${pageType}" />
-		</execute>
-
-		<execute macro="SignOut#signOut" />
-
 		<execute macro="Navigator#gotoPage">
 			<var name="pageName" value="Test Page1" />
 		</execute>
@@ -60,8 +43,10 @@
 			<var name="webContentTitle" value="Web Content Title" />
 		</execute>
 
-		<execute macro="WebContent#viewPGViaWCD">
-			<var name="webContentContent" value="Web Content Content" />
+		<execute macro="SignOut#signOut" />
+
+		<execute macro="Navigator#gotoPage">
+			<var name="pageName" value="Test Page1" />
 		</execute>
 
 		<execute function="AssertAccessible" />

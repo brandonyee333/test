@@ -14,7 +14,6 @@
 
 package com.liferay.portal.security.ldap.internal.model.listener;
 
-import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModelListener;
@@ -27,6 +26,7 @@ import com.liferay.portal.security.ldap.internal.UserImportTransactionThreadLoca
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Marcellus Tavares
@@ -36,9 +36,8 @@ public class UserGroupModelListener extends BaseModelListener<UserGroup> {
 
 	@Override
 	public void onAfterAddAssociation(
-			Object userGroupId, String associationClassName,
-			Object associationClassPK)
-		throws ModelListenerException {
+		Object userGroupId, String associationClassName,
+		Object associationClassPK) {
 
 		try {
 			if (associationClassName.equals(User.class.getName())) {
@@ -48,15 +47,17 @@ public class UserGroupModelListener extends BaseModelListener<UserGroup> {
 			}
 		}
 		catch (Exception e) {
-			throw new ModelListenerException(e);
+			_log.error(
+				"Unable to export user group with user ID " +
+					associationClassPK + " to LDAP on after add association",
+				e);
 		}
 	}
 
 	@Override
 	public void onAfterRemoveAssociation(
-			Object userGroupId, String associationClassName,
-			Object associationClassPK)
-		throws ModelListenerException {
+		Object userGroupId, String associationClassName,
+		Object associationClassPK) {
 
 		try {
 			if (associationClassName.equals(User.class.getName())) {
@@ -66,13 +67,12 @@ public class UserGroupModelListener extends BaseModelListener<UserGroup> {
 			}
 		}
 		catch (Exception e) {
-			throw new ModelListenerException(e);
+			_log.error(
+				"Unable to export user group with user ID " +
+					associationClassPK +
+						" to LDAP on after remove association",
+				e);
 		}
-	}
-
-	@Reference(unbind = "-")
-	public void setUserExporter(UserExporter userExporter) {
-		_userExporter = userExporter;
 	}
 
 	protected void exportToLDAP(
@@ -98,6 +98,7 @@ public class UserGroupModelListener extends BaseModelListener<UserGroup> {
 	private static final Log _log = LogFactoryUtil.getLog(
 		UserGroupModelListener.class);
 
+	@Reference(policyOption = ReferencePolicyOption.GREEDY)
 	private UserExporter _userExporter;
 
 }

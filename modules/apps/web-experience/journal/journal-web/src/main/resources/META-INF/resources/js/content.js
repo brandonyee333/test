@@ -95,6 +95,20 @@ AUI.add(
 						(new A.EventHandle(instance._eventHandles)).detach();
 					},
 
+					_afterDeletingAvailableLocale: function(event) {
+						var instance = this;
+
+						var descriptionInputLocalized = instance.get(STR_DESCRIPTION_INPUT_LOCALIZED);
+
+						var titleInputLocalized = instance.get(STR_TITLE_INPUT_LOCALIZED);
+
+						var locale = event.locale;
+
+						descriptionInputLocalized.removeInputLanguage(locale);
+
+						titleInputLocalized.removeInputLanguage(locale);
+					},
+
 					_afterEditingLocaleChange: function(event) {
 						var instance = this;
 
@@ -156,7 +170,10 @@ AUI.add(
 
 						if (translationManager) {
 							eventHandles.push(
-								translationManager.after('editingLocaleChange', instance._afterEditingLocaleChange, instance)
+								translationManager.on('deleteAvailableLocale', instance._afterDeletingAvailableLocale.bind(instance))
+							);
+							eventHandles.push(
+								translationManager.on('editingLocaleChange', instance._afterEditingLocaleChange.bind(instance))
 							);
 						}
 
@@ -226,7 +243,11 @@ AUI.add(
 								mvcPath: '/select_structure.jsp',
 								navigationStartsOn: 'SELECT_STRUCTURE',
 								refererPortletName: ddm.refererPortletName,
+								searchRestriction: ddm.searchRestriction,
+								searchRestrictionClassNameId: ddm.searchRestrictionClassNameId,
+								searchRestrictionClassPK: ddm.searchRestrictionClassPK,
 								showAncestorScopes: true,
+								showCacheableInput: true,
 								title: strings.structures
 							},
 							function(event) {
@@ -271,6 +292,7 @@ AUI.add(
 								refererPortletName: ddm.refererPortletName,
 								resourceClassNameId: ddm.resourceClassNameId,
 								showAncestorScopes: true,
+								showCacheableInput: true,
 								templateId: ddm.templateId,
 								title: strings.templates
 							},

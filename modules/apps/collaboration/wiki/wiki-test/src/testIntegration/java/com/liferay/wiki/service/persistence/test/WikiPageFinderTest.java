@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
-import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
@@ -53,8 +52,7 @@ public class WikiPageFinderTest {
 	@ClassRule
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
-		new AggregateTestRule(
-			new LiferayIntegrationTestRule(), TransactionalTestRule.INSTANCE);
+		new LiferayIntegrationTestRule();
 
 	@Before
 	public void setUp() throws Exception {
@@ -93,7 +91,7 @@ public class WikiPageFinderTest {
 			QueryUtil.ALL_POS, null);
 
 		Assert.assertEquals(1, count);
-		Assert.assertEquals(count, pages.size());
+		Assert.assertEquals(pages.toString(), count, pages.size());
 	}
 
 	@Test
@@ -114,7 +112,7 @@ public class WikiPageFinderTest {
 			QueryUtil.ALL_POS, null);
 
 		Assert.assertEquals(2, count);
-		Assert.assertEquals(count, pages.size());
+		Assert.assertEquals(pages.toString(), count, pages.size());
 	}
 
 	@Test
@@ -131,7 +129,7 @@ public class WikiPageFinderTest {
 			QueryUtil.ALL_POS, null);
 
 		Assert.assertEquals(2, count);
-		Assert.assertEquals(count, pages.size());
+		Assert.assertEquals(pages.toString(), count, pages.size());
 	}
 
 	@DeleteAfterTestRun

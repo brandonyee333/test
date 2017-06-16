@@ -26,11 +26,10 @@
 
 				<span class="user-avatar-image">
 					<liferay-ui:user-portrait
-					imageCssClass="user-icon-lg"
-					userId="<%= user.getUserId() %>"
+						imageCssClass="user-icon-lg"
+						user="<%= user %>"
 					/>
 				</span>
-
 				<span class="user-full-name">
 					<%= HtmlUtil.escape(user.getFullName()) %>
 				</span>

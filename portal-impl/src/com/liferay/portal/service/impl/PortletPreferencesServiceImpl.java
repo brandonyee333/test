@@ -19,9 +19,9 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
-import com.liferay.portal.kernel.model.PortletConstants;
 import com.liferay.portal.kernel.model.PortletItem;
 import com.liferay.portal.kernel.model.PortletPreferences;
+import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
 import com.liferay.portal.kernel.service.permission.PortletPermissionUtil;
@@ -95,7 +95,7 @@ public class PortletPreferencesServiceImpl
 		javax.portlet.PortletPreferences archivedPreferences =
 			portletPreferencesLocalService.getPreferences(
 				portletItem.getCompanyId(), ownerId, ownerType, plid,
-				PortletConstants.getRootPortletId(portletId));
+				PortletIdCodec.decodePortletName(portletId));
 
 		copyPreferences(archivedPreferences, preferences);
 	}
@@ -128,6 +128,7 @@ public class PortletPreferencesServiceImpl
 			PortletPreferences.class.getName());
 
 		long ownerId = portletItem.getPortletItemId();
+
 		int ownerType = PortletKeys.PREFS_OWNER_TYPE_ARCHIVED;
 		long plid = 0;
 
@@ -170,7 +171,7 @@ public class PortletPreferencesServiceImpl
 			targetPreferences.store();
 		}
 		catch (IOException ioe) {
-			_log.error(ioe);
+			_log.error("Unable to copy preferences", ioe);
 		}
 		catch (ValidatorException ve) {
 			throw new SystemException(ve);

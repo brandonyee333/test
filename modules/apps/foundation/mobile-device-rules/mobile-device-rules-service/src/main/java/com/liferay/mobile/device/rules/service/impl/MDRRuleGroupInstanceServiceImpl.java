@@ -14,8 +14,6 @@
 
 package com.liferay.mobile.device.rules.service.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.mobile.device.rules.model.MDRRuleGroupInstance;
 import com.liferay.mobile.device.rules.service.base.MDRRuleGroupInstanceServiceBaseImpl;
 import com.liferay.mobile.device.rules.service.permission.MDRPermission;
@@ -32,7 +30,6 @@ import java.util.List;
 /**
  * @author Edward C. Han
  */
-@ProviderType
 public class MDRRuleGroupInstanceServiceImpl
 	extends MDRRuleGroupInstanceServiceBaseImpl {
 
@@ -121,15 +118,14 @@ public class MDRRuleGroupInstanceServiceImpl
 		long groupId = 0;
 
 		if (className.equals(Layout.class.getName())) {
-			Layout layout = layoutPersistence.fetchByPrimaryKey(classPK);
+			Layout layout = layoutLocalService.fetchLayout(classPK);
 
 			if (layout != null) {
 				groupId = layout.getGroupId();
 			}
 		}
 		else if (className.equals(LayoutSet.class.getName())) {
-			LayoutSet layoutSet = layoutSetPersistence.fetchByPrimaryKey(
-				classPK);
+			LayoutSet layoutSet = layoutSetLocalService.fetchLayoutSet(classPK);
 
 			if (layoutSet != null) {
 				groupId = layoutSet.getGroupId();

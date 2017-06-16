@@ -14,8 +14,10 @@
 
 package com.liferay.gradle.plugins.workspace.configurators;
 
+import com.liferay.gradle.plugins.workspace.ProjectConfigurator;
+import com.liferay.gradle.plugins.workspace.WorkspaceExtension;
 import com.liferay.gradle.plugins.workspace.WorkspacePlugin;
-import com.liferay.gradle.plugins.workspace.util.GradleUtil;
+import com.liferay.gradle.plugins.workspace.internal.util.GradleUtil;
 import com.liferay.gradle.util.Validator;
 
 import java.io.File;
@@ -25,6 +27,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.gradle.api.GradleException;
+import org.gradle.api.Project;
 import org.gradle.api.initialization.Settings;
 
 /**
@@ -50,6 +53,11 @@ public abstract class BaseProjectConfigurator implements ProjectConfigurator {
 
 			_defaultRootDirs = Collections.singleton(dir);
 		}
+	}
+
+	@Override
+	public void configureRootProject(
+		Project project, WorkspaceExtension workspaceExtension) {
 	}
 
 	@Override

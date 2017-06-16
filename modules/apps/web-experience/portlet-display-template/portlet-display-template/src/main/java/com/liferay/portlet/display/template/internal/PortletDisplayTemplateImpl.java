@@ -97,6 +97,12 @@ public class PortletDisplayTemplateImpl implements PortletDisplayTemplate {
 					uuid, groupId);
 			}
 			catch (PortalException pe) {
+
+				// LPS-52675
+
+				if (_log.isDebugEnabled()) {
+					_log.debug(pe, pe);
+				}
 			}
 
 			try {
@@ -117,9 +123,13 @@ public class PortletDisplayTemplateImpl implements PortletDisplayTemplate {
 
 	@Override
 	public long getDDMTemplateGroupId(long groupId) {
-		try {
-			Group group = _groupLocalService.getGroup(groupId);
+		Group group = _groupLocalService.fetchGroup(groupId);
 
+		if (group == null) {
+			return groupId;
+		}
+
+		try {
 			if (group.isLayout()) {
 				group = group.getParentGroup();
 			}
@@ -154,6 +164,9 @@ public class PortletDisplayTemplateImpl implements PortletDisplayTemplate {
 		return displayStyle.substring(DISPLAY_STYLE_PREFIX.length());
 	}
 
+	/**
+	 * @deprecated As of 2.0.0
+	 */
 	@Deprecated
 	@Override
 	public String getDDMTemplateUuid(String displayStyle) {
@@ -211,6 +224,12 @@ public class PortletDisplayTemplateImpl implements PortletDisplayTemplate {
 							ddmTemplateKey, true);
 				}
 				catch (PortalException pe) {
+
+					// LPS-52675
+
+					if (_log.isDebugEnabled()) {
+						_log.debug(pe, pe);
+					}
 				}
 			}
 		}
@@ -224,6 +243,9 @@ public class PortletDisplayTemplateImpl implements PortletDisplayTemplate {
 		return portletDisplayDDMTemplate;
 	}
 
+	/**
+	 * @deprecated As of 2.0.0
+	 */
 	@Deprecated
 	@Override
 	public long getPortletDisplayTemplateDDMTemplateId(
@@ -374,8 +396,6 @@ public class PortletDisplayTemplateImpl implements PortletDisplayTemplate {
 
 		contextObjects.put(
 			PortletDisplayTemplateConstants.LOCALE, request.getLocale());
-
-		contextObjects.put(PortletDisplayTemplateConstants.REQUEST, request);
 
 		RenderRequest renderRequest = (RenderRequest)request.getAttribute(
 			JavaConstants.JAVAX_PORTLET_REQUEST);

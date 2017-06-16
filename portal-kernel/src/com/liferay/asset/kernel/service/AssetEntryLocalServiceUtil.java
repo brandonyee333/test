@@ -384,6 +384,16 @@ public class AssetEntryLocalServiceUtil {
 
 	public static com.liferay.portal.kernel.search.Hits search(long companyId,
 		long[] groupIds, long userId, java.lang.String className,
+		long classTypeId, java.lang.String keywords, boolean showNonindexable,
+		int[] statuses, int start, int end,
+		com.liferay.portal.kernel.search.Sort sort) {
+		return getService()
+				   .search(companyId, groupIds, userId, className, classTypeId,
+			keywords, showNonindexable, statuses, start, end, sort);
+	}
+
+	public static com.liferay.portal.kernel.search.Hits search(long companyId,
+		long[] groupIds, long userId, java.lang.String className,
 		long classTypeId, java.lang.String keywords, int status, int start,
 		int end) {
 		return getService()
@@ -803,6 +813,12 @@ public class AssetEntryLocalServiceUtil {
 	}
 
 	public static void incrementViewCounter(long userId,
+		com.liferay.asset.kernel.model.AssetEntry assetEntry)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().incrementViewCounter(userId, assetEntry);
+	}
+
+	public static void incrementViewCounter(long userId,
 		java.lang.String className, long classPK, int increment) {
 		getService().incrementViewCounter(userId, className, classPK, increment);
 	}
@@ -820,6 +836,15 @@ public class AssetEntryLocalServiceUtil {
 
 	public static void setAssetTagAssetEntries(long tagId, long[] entryIds) {
 		getService().setAssetTagAssetEntries(tagId, entryIds);
+	}
+
+	public static void validate(long groupId, java.lang.String className,
+		long classPK, long classTypePK, long[] categoryIds,
+		java.lang.String[] tagNames)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService()
+			.validate(groupId, className, classPK, classTypePK, categoryIds,
+			tagNames);
 	}
 
 	public static void validate(long groupId, java.lang.String className,

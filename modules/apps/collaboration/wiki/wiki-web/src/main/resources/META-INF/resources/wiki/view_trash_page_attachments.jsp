@@ -48,10 +48,14 @@ PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(request, "attachm
 			<portlet:param name="redirect" value="<%= currentURL %>" />
 		</portlet:actionURL>
 
+		<%
+		String trashEntriesMaxAgeTimeDescription = LanguageUtil.getTimeDescription(locale, trashHelper.getMaxAge(themeDisplay.getScopeGroup()) * Time.MINUTE, true);
+		%>
+
 		<liferay-trash:empty
 			confirmMessage="are-you-sure-you-want-to-remove-the-attachments-for-this-page"
 			emptyMessage="remove-the-attachments-for-this-page"
-			infoMessage="attachments-that-have-been-removed-for-more-than-x-will-be-automatically-deleted"
+			infoMessage='<%= LanguageUtil.format(request, "attachments-that-have-been-removed-for-more-than-x-will-be-automatically-deleted", trashEntriesMaxAgeTimeDescription, false) %>'
 			portletURL="<%= emptyTrashURL.toString() %>"
 			totalEntries="<%= wikiPage.getDeletedAttachmentsFileEntriesCount() %>"
 		/>
@@ -77,23 +81,3 @@ PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(request, "attachm
 
 	<%@ include file="/wiki/attachments_list.jspf" %>
 </div>
-
-<portlet:actionURL name="/wiki/edit_page_attachment" var="checkEntryURL">
-	<portlet:param name="<%= Constants.CMD %>" value="<%= Constants.CHECK %>" />
-	<portlet:param name="redirect" value="<%= currentURL %>" />
-</portlet:actionURL>
-
-<portlet:renderURL var="duplicateEntryURL" windowState="<%= LiferayWindowState.EXCLUSIVE.toString() %>">
-	<portlet:param name="mvcRenderCommandName" value="/wiki/restore_entry" />
-	<portlet:param name="redirect" value="<%= currentURL %>" />
-</portlet:renderURL>
-
-<aui:script use="liferay-restore-entry">
-	new Liferay.RestoreEntry(
-		{
-			checkEntryURL: '<%= checkEntryURL.toString() %>',
-			duplicateEntryURL: '<%= duplicateEntryURL.toString() %>',
-			namespace: '<portlet:namespace />'
-		}
-	);
-</aui:script>

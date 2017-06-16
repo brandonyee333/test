@@ -246,7 +246,7 @@ public class EhcachePortalCacheTest {
 
 		List<String> keys = _ehcachePortalCache.getKeys();
 
-		Assert.assertEquals(1, keys.size());
+		Assert.assertEquals(keys.toString(), 1, keys.size());
 		Assert.assertTrue(keys.contains(_KEY_1));
 	}
 
@@ -358,6 +358,7 @@ public class EhcachePortalCacheTest {
 		_ehcachePortalCache.reconfigEhcache(ehcache2);
 
 		Assert.assertSame(ehcache2, _ehcachePortalCache.ehcache);
+
 		Assert.assertEquals(
 			oldPortalCacheListeners,
 			_ehcachePortalCache.getPortalCacheListeners());

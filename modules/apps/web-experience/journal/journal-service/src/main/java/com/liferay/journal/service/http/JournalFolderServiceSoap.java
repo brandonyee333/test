@@ -336,7 +336,7 @@ public class JournalFolderServiceSoap {
 	}
 
 	/**
-	* @deprecated As of 7.0.0, replaced by {@link #getSubfolderIds(List, long,
+	* @deprecated As of 4.0.0, replaced by {@link #getSubfolderIds(List, long,
 	long, boolean)}
 	*/
 	@Deprecated
@@ -433,6 +433,26 @@ public class JournalFolderServiceSoap {
 		throws RemoteException {
 		try {
 			JournalFolderServiceUtil.restoreFolderFromTrash(folderId);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.dynamic.data.mapping.model.DDMStructureSoap[] searchDDMStructures(
+		long companyId, long[] groupIds, long folderId, int restrictionType,
+		java.lang.String keywords, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.dynamic.data.mapping.model.DDMStructure> obc)
+		throws RemoteException {
+		try {
+			java.util.List<com.liferay.dynamic.data.mapping.model.DDMStructure> returnValue =
+				JournalFolderServiceUtil.searchDDMStructures(companyId,
+					groupIds, folderId, restrictionType, keywords, start, end,
+					obc);
+
+			return com.liferay.dynamic.data.mapping.model.DDMStructureSoap.toSoapModels(returnValue);
 		}
 		catch (Exception e) {
 			_log.error(e, e);

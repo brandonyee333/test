@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.process.ProcessChannel;
 import com.liferay.portal.kernel.process.ProcessConfig;
 import com.liferay.portal.kernel.process.ProcessConfig.Builder;
 import com.liferay.portal.kernel.process.local.LocalProcessExecutor;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -67,6 +68,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -94,6 +97,12 @@ public class LPKGIndexValidator {
 		builder.setRuntimeClassPath(classpath);
 
 		_processConfig = builder.build();
+	}
+
+	@Activate
+	public void activate(BundleContext bundleContext) {
+		_enabled = GetterUtil.getBoolean(
+			bundleContext.getProperty("lpkg.index.validator.enabled"), true);
 	}
 
 	public boolean checkIntegrity(List<URI> indexURIs) {
@@ -178,6 +187,18 @@ public class LPKGIndexValidator {
 		return true;
 	}
 
+	public void setJarFiles(List<File> jarFiles) {
+		_jarFiles = jarFiles;
+
+		Set<String> jarFileNames = new HashSet<>();
+
+		for (File file : jarFiles) {
+			jarFileNames.add(StringUtil.toLowerCase(file.getName()));
+		}
+
+		_jarFileNames = jarFileNames;
+	}
+
 	public void setLPKGDeployer(LPKGDeployer lpkgDeployer) {
 		_lpkgDeployer = lpkgDeployer;
 	}
@@ -215,6 +236,10 @@ public class LPKGIndexValidator {
 	}
 
 	public boolean validate(List<File> lpkgFiles) throws Exception {
+		if (!_enabled) {
+			return false;
+		}
+
 		long start = System.currentTimeMillis();
 
 		List<URI> allIndexURIs = new ArrayList<>();
@@ -296,15 +321,17 @@ public class LPKGIndexValidator {
 
 		LocalProcessExecutor localProcessExecutor = new LocalProcessExecutor();
 
+		List<File> additionalJarFiles = new ArrayList<>(_jarFiles);
+
+		additionalJarFiles.add(
+			new File(PropsValues.LIFERAY_LIB_PORTAL_DIR, "util-taglib.jar"));
+
 		try {
 			ProcessChannel<byte[]> processChannel =
 				localProcessExecutor.execute(
 					_processConfig,
 					new TargetPlatformIndexerProcessCallable(
-						Arrays.asList(
-							new File(
-								PropsValues.LIFERAY_LIB_PORTAL_DIR,
-								"util-taglib.jar")),
+						additionalJarFiles,
 						PropsValues.MODULE_FRAMEWORK_STOP_WAIT_TIMEOUT,
 						PropsValues.MODULE_FRAMEWORK_BASE_DIR + "/static",
 						PropsValues.MODULE_FRAMEWORK_MODULES_DIR,
@@ -334,7 +361,8 @@ public class LPKGIndexValidator {
 
 		try {
 			for (File lpkgFile : lpkgFiles) {
-				Indexer indexer = _indexerFactory.createLPKGIndexer(lpkgFile);
+				Indexer indexer = _indexerFactory.createLPKGIndexer(
+					lpkgFile, _jarFileNames);
 
 				indexer.index(unsyncByteArrayOutputStream);
 
@@ -405,6 +433,8 @@ public class LPKGIndexValidator {
 	@Reference
 	private BytesURLProtocolSupport _bytesURLProtocolSupport;
 
+	private boolean _enabled;
+
 	@Reference
 	private IndexerFactory _indexerFactory;
 
@@ -414,6 +444,8 @@ public class LPKGIndexValidator {
 	private final Path _integrityPropertiesFilePath = Paths.get(
 		PropsValues.MODULE_FRAMEWORK_BASE_DIR, Indexer.DIR_NAME_TARGET_PLATFORM,
 		"integrity.properties");
+	private Set<String> _jarFileNames;
+	private List<File> _jarFiles;
 	private LPKGDeployer _lpkgDeployer;
 	private final ProcessConfig _processConfig;
 

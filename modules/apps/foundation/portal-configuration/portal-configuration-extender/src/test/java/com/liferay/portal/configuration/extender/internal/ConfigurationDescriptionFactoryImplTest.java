@@ -53,8 +53,8 @@ public class ConfigurationDescriptionFactoryImplTest {
 							Charset.forName("UTF-8")))));
 
 		Assert.assertTrue(
-			configurationDescription
-				instanceof FactoryConfigurationDescription);
+			configurationDescription instanceof
+				FactoryConfigurationDescription);
 
 		FactoryConfigurationDescription factoryConfigurationDescription =
 			(FactoryConfigurationDescription)configurationDescription;
@@ -74,9 +74,7 @@ public class ConfigurationDescriptionFactoryImplTest {
 	}
 
 	@Test
-	public void
-		testCreateReturnsNullWhenNotPropertiesFileNamedConfigurationContent() {
-
+	public void testCreateReturnsNullWhenNotPropertiesFileNamedConfigurationContent() {
 		ConfigurationDescriptionFactory configurationDescriptionFactory =
 			new ConfigurationDescriptionFactoryImpl();
 

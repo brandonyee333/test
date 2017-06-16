@@ -96,11 +96,9 @@ public abstract class BasePortletDataHandler implements PortletDataHandler {
 			return doDeleteData(
 				portletDataContext, portletId, portletPreferences);
 		}
-		catch (PortletDataException pde) {
-			throw pde;
-		}
 		catch (Exception e) {
-			throw new PortletDataException(e);
+			throw _handleException(
+				e, PortletDataException.DELETE_PORTLET_DATA, portletId);
 		}
 		finally {
 			if (_log.isInfoEnabled()) {
@@ -125,7 +123,11 @@ public abstract class BasePortletDataHandler implements PortletDataHandler {
 			startTime = System.currentTimeMillis();
 		}
 
+		Element rootElement = null;
+
 		try {
+			rootElement = portletDataContext.getExportDataRootElement();
+
 			portletDataContext.addDeletionSystemEventStagedModelTypes(
 				getDeletionSystemEventStagedModelTypes());
 
@@ -139,13 +141,13 @@ public abstract class BasePortletDataHandler implements PortletDataHandler {
 			return doExportData(
 				portletDataContext, portletId, portletPreferences);
 		}
-		catch (PortletDataException pde) {
-			throw pde;
-		}
 		catch (Exception e) {
-			throw new PortletDataException(e);
+			throw _handleException(
+				e, PortletDataException.EXPORT_PORTLET_DATA, portletId);
 		}
 		finally {
+			portletDataContext.setExportDataRootElement(rootElement);
+
 			if (_log.isInfoEnabled()) {
 				long duration = System.currentTimeMillis() - startTime;
 
@@ -364,21 +366,24 @@ public abstract class BasePortletDataHandler implements PortletDataHandler {
 
 		long sourceGroupId = portletDataContext.getSourceGroupId();
 
+		Element rootElement = null;
+
 		try {
 			if (Validator.isXml(data)) {
+				rootElement = portletDataContext.getImportDataRootElement();
+
 				addImportDataRootElement(portletDataContext, data);
 			}
 
 			return doImportData(
 				portletDataContext, portletId, portletPreferences, data);
 		}
-		catch (PortletDataException pde) {
-			throw pde;
-		}
 		catch (Exception e) {
-			throw new PortletDataException(e);
+			throw _handleException(
+				e, PortletDataException.IMPORT_PORTLET_DATA, portletId);
 		}
 		finally {
+			portletDataContext.setImportDataRootElement(rootElement);
 			portletDataContext.setSourceGroupId(sourceGroupId);
 
 			if (_log.isInfoEnabled()) {
@@ -443,11 +448,6 @@ public abstract class BasePortletDataHandler implements PortletDataHandler {
 	}
 
 	@Override
-	public boolean isSupportsDataStrategyCopyAsNew() {
-		return _supportsDataStrategyCopyAsNew;
-	}
-
-	@Override
 	public void prepareManifestSummary(PortletDataContext portletDataContext)
 		throws PortletDataException {
 
@@ -463,14 +463,17 @@ public abstract class BasePortletDataHandler implements PortletDataHandler {
 		try {
 			doPrepareManifestSummary(portletDataContext, portletPreferences);
 		}
-		catch (PortletDataException pde) {
-			throw pde;
-		}
 		catch (Exception e) {
-			throw new PortletDataException(e);
+			throw _handleException(
+				e, PortletDataException.PREPARE_MANIFEST_SUMMARY,
+				portletDataContext.getPortletId());
 		}
 	}
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
+	@Deprecated
 	@Override
 	public PortletPreferences processExportPortletPreferences(
 			PortletDataContext portletDataContext, String portletId,
@@ -489,6 +492,10 @@ public abstract class BasePortletDataHandler implements PortletDataHandler {
 		}
 	}
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
+	@Deprecated
 	@Override
 	public PortletPreferences processImportPortletPreferences(
 			PortletDataContext portletDataContext, String portletId,
@@ -727,8 +734,8 @@ public abstract class BasePortletDataHandler implements PortletDataHandler {
 			long modelAdditionCount = manifestSummary.getModelAdditionCount(
 				stagedModelType);
 
-			if (portletDataHandlerControl
-					instanceof PortletDataHandlerBoolean) {
+			if (portletDataHandlerControl instanceof
+					PortletDataHandlerBoolean) {
 
 				PortletDataHandlerBoolean portletDataHandlerBoolean =
 					(PortletDataHandlerBoolean)portletDataHandlerControl;
@@ -821,10 +828,37 @@ public abstract class BasePortletDataHandler implements PortletDataHandler {
 		_publishToLiveByDefault = publishToLiveByDefault;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
+	@Deprecated
 	protected void setSupportsDataStrategyCopyAsNew(
 		boolean supportsDataStrategyCopyAsNew) {
+	}
 
-		_supportsDataStrategyCopyAsNew = supportsDataStrategyCopyAsNew;
+	private PortletDataException _handleException(
+		Exception e, int type, String portletId) {
+
+		PortletDataException pde = null;
+
+		if (e instanceof PortletDataException) {
+			pde = (PortletDataException)e;
+		}
+		else {
+			pde = new PortletDataException(e.getMessage(), e);
+		}
+
+		if (Validator.isNull(pde.getPortletId())) {
+			pde.setPortletId(portletId);
+		}
+
+		if (pde.getType() != PortletDataException.DEFAULT) {
+			return pde;
+		}
+
+		pde.setType(type);
+
+		return pde;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -847,6 +881,5 @@ public abstract class BasePortletDataHandler implements PortletDataHandler {
 	private String _portletId;
 	private boolean _publishToLiveByDefault;
 	private int _rank = 100;
-	private boolean _supportsDataStrategyCopyAsNew = true;
 
 }

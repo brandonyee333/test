@@ -15,17 +15,20 @@
 package com.liferay.dynamic.data.mapping.util;
 
 import com.liferay.dynamic.data.mapping.BaseDDMTestCase;
+import com.liferay.dynamic.data.mapping.internal.util.DDMFormTemplateSynchonizer;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
+import com.liferay.dynamic.data.mapping.model.DDMFormFieldOptions;
 import com.liferay.dynamic.data.mapping.model.DDMTemplate;
 import com.liferay.dynamic.data.mapping.model.DDMTemplateConstants;
 import com.liferay.dynamic.data.mapping.model.LocalizedValue;
 import com.liferay.dynamic.data.mapping.model.impl.DDMTemplateImpl;
 import com.liferay.dynamic.data.mapping.service.impl.DDMTemplateLocalServiceImpl;
-import com.liferay.dynamic.data.mapping.util.impl.DDMFormTemplateSynchonizer;
+import com.liferay.dynamic.data.mapping.service.util.ServiceProps;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.util.PropsValues;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -35,13 +38,24 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.core.classloader.annotations.SuppressStaticInitializationFor;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 /**
  * @author Marcellus Tavares
  */
-@PrepareForTest({LocaleUtil.class})
+@PrepareForTest({LocaleUtil.class, PropsValues.class, ServiceProps.class})
+@RunWith(PowerMockRunner.class)
+@SuppressStaticInitializationFor(
+	{
+		"com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil",
+		"com.liferay.portal.kernel.xml.SAXReaderUtil",
+		"com.liferay.portal.util.PropsValues"
+	}
+)
 public class DDMFormTemplateSynchonizerTest extends BaseDDMTestCase {
 
 	@Before
@@ -56,8 +70,9 @@ public class DDMFormTemplateSynchonizerTest extends BaseDDMTestCase {
 		setUpLanguageUtil();
 		setUpLocaleUtil();
 		setUpHtmlUtil();
-		setUpPropsUtil();
+		setUpPropsValues();
 		setUpSAXReaderUtil();
+		setUpServiceProps();
 	}
 
 	@Test
@@ -106,6 +121,37 @@ public class DDMFormTemplateSynchonizerTest extends BaseDDMTestCase {
 	}
 
 	@Test
+	public void testUpdateDDMFormFieldOptionsIfTheyWereModifiedFromStructure()
+		throws Exception {
+
+		DDMForm structureDDMForm = createDDMForm();
+
+		DDMFormField selectDDMFormField = createSelectDDMFormField(
+			"Select", false, 2);
+
+		addDDMFormField(structureDDMForm, selectDDMFormField);
+
+		DDMFormField radioDDMFormField = createSelectDDMFormField(
+			"Radio", true, 3);
+
+		addDDMFormField(structureDDMForm, radioDDMFormField);
+
+		createFormTemplates(structureDDMForm);
+
+		selectDDMFormField.setDDMFormFieldOptions(createDDMFormFieldOptions(1));
+
+		radioDDMFormField.setDDMFormFieldOptions(createDDMFormFieldOptions(2));
+
+		DDMFormTemplateSynchonizer ddmFormTemplateSynchonizer =
+			new MockDDMFormTemplateSynchronizer(structureDDMForm);
+
+		ddmFormTemplateSynchonizer.synchronize();
+
+		testFormTemplatesAfterChangeDDMFormFieldOptionsProperty(
+			structureDDMForm, "Select", "Radio");
+	}
+
+	@Test
 	public void testUpdateRequiredPropertyIfTemplateModeIsCreate()
 		throws Exception {
 
@@ -144,6 +190,19 @@ public class DDMFormTemplateSynchonizerTest extends BaseDDMTestCase {
 		return ddmForm;
 	}
 
+	protected DDMFormFieldOptions createDDMFormFieldOptions(
+		int availableOptions) {
+
+		DDMFormFieldOptions ddmFormFieldOptions = new DDMFormFieldOptions();
+
+		for (int i = 1; i <= availableOptions; i++) {
+			ddmFormFieldOptions.addOptionLabel(
+				"Value " + i, LocaleUtil.US, "Option " + i);
+		}
+
+		return ddmFormFieldOptions;
+	}
+
 	protected void createFormTemplates(DDMForm ddmForm) {
 		_createDDMTemplate = createTemplate(
 			RandomTestUtil.randomLong(), "Test Create Mode Form Template",
@@ -154,6 +213,46 @@ public class DDMFormTemplateSynchonizerTest extends BaseDDMTestCase {
 			RandomTestUtil.randomLong(), "Test Edit Mode Form Template",
 			DDMTemplateConstants.TEMPLATE_MODE_EDIT,
 			ddmFormJSONSerializer.serialize(ddmForm));
+	}
+
+	protected DDMFormField createRadioDDMFormField(
+		String name, boolean required, int availableOptions) {
+
+		DDMFormField ddmFormField = new DDMFormField(name, "radio");
+
+		ddmFormField.setDataType("string");
+		ddmFormField.setRequired(required);
+
+		LocalizedValue label = ddmFormField.getLabel();
+
+		label.addString(LocaleUtil.US, StringUtil.randomString());
+
+		DDMFormFieldOptions ddmFormFieldOptions = createDDMFormFieldOptions(
+			availableOptions);
+
+		ddmFormField.setDDMFormFieldOptions(ddmFormFieldOptions);
+
+		return ddmFormField;
+	}
+
+	protected DDMFormField createSelectDDMFormField(
+		String name, boolean required, int availableOptions) {
+
+		DDMFormField ddmFormField = new DDMFormField(name, "select");
+
+		ddmFormField.setDataType("string");
+		ddmFormField.setRequired(required);
+
+		LocalizedValue label = ddmFormField.getLabel();
+
+		label.addString(LocaleUtil.US, StringUtil.randomString());
+
+		DDMFormFieldOptions ddmFormFieldOptions = createDDMFormFieldOptions(
+			availableOptions);
+
+		ddmFormField.setDDMFormFieldOptions(ddmFormFieldOptions);
+
+		return ddmFormField;
 	}
 
 	@Override
@@ -209,41 +308,88 @@ public class DDMFormTemplateSynchonizerTest extends BaseDDMTestCase {
 		}
 	}
 
+	protected void setUpServiceProps() {
+		mockStatic(ServiceProps.class);
+	}
+
 	protected void testFormTemplatesAfterAddRequiredFields() throws Exception {
-
-		// Edit
-
-		Map<String, DDMFormField> ddmFormFieldsMap = getDDMFormFieldsMap(
-			_editDDMTemplate);
-
-		DDMFormField ddmFormField = ddmFormFieldsMap.get("name2");
-
-		Assert.assertNull(ddmFormField);
 
 		// Create
 
-		ddmFormFieldsMap = getDDMFormFieldsMap(_createDDMTemplate);
+		Map<String, DDMFormField> ddmFormFieldsMap = getDDMFormFieldsMap(
+			_createDDMTemplate);
 
-		ddmFormField = ddmFormFieldsMap.get("name2");
+		DDMFormField ddmFormField = ddmFormFieldsMap.get("name2");
 
 		Assert.assertNotNull(ddmFormField);
 		Assert.assertTrue(ddmFormField.isRequired());
+
+		// Edit
+
+		ddmFormFieldsMap = getDDMFormFieldsMap(_editDDMTemplate);
+
+		ddmFormField = ddmFormFieldsMap.get("name2");
+
+		Assert.assertNull(ddmFormField);
+	}
+
+	protected void testFormTemplatesAfterChangeDDMFormFieldOptionsProperty(
+			DDMForm structureForm, String...fields)
+		throws Exception {
+
+		Map<String, DDMFormField> structureDDMFormFieldsMap =
+			structureForm.getDDMFormFieldsMap(true);
+
+		Map<String, DDMFormField> createTemplateDDMFormFieldsMap =
+			getDDMFormFieldsMap(_createDDMTemplate);
+
+		Map<String, DDMFormField> editTemplateDDMFormFieldsMap =
+			getDDMFormFieldsMap(_editDDMTemplate);
+
+		for (String field : fields) {
+			DDMFormField structureDDMFormField = structureDDMFormFieldsMap.get(
+				field);
+
+			DDMFormFieldOptions structureDDMFormFieldOptions =
+				structureDDMFormField.getDDMFormFieldOptions();
+
+			// Create
+
+			DDMFormField templateDDMFormField =
+				createTemplateDDMFormFieldsMap.get(field);
+
+			DDMFormFieldOptions templateDDMFormFieldOptions =
+				templateDDMFormField.getDDMFormFieldOptions();
+
+			Assert.assertEquals(
+				structureDDMFormFieldOptions, templateDDMFormFieldOptions);
+
+			// Edit
+
+			templateDDMFormField = editTemplateDDMFormFieldsMap.get(field);
+
+			templateDDMFormFieldOptions =
+				templateDDMFormField.getDDMFormFieldOptions();
+
+			Assert.assertEquals(
+				structureDDMFormFieldOptions, templateDDMFormFieldOptions);
+		}
 	}
 
 	protected void testFormTemplatesAfterRemoveFields() throws Exception {
 
-		// Edit
+		// Create
 
 		Map<String, DDMFormField> ddmFormFieldsMap = getDDMFormFieldsMap(
-			_editDDMTemplate);
+			_createDDMTemplate);
 
 		DDMFormField ddmFormField = ddmFormFieldsMap.get("name1");
 
 		Assert.assertNull(ddmFormField);
 
-		// Create
+		// Edit
 
-		ddmFormFieldsMap = getDDMFormFieldsMap(_createDDMTemplate);
+		ddmFormFieldsMap = getDDMFormFieldsMap(_editDDMTemplate);
 
 		ddmFormField = ddmFormFieldsMap.get("name1");
 
@@ -253,26 +399,26 @@ public class DDMFormTemplateSynchonizerTest extends BaseDDMTestCase {
 	protected void testFormTemplatesAfterUpdateRequiredFieldProperties()
 		throws Exception {
 
-		// Edit
+		// Create
 
 		Map<String, DDMFormField> ddmFormFieldsMap = getDDMFormFieldsMap(
-			_editDDMTemplate);
+			_createDDMTemplate);
 
 		DDMFormField name1DDMFormField = ddmFormFieldsMap.get("name1");
 		DDMFormField name2DDMFormField = ddmFormFieldsMap.get("name2");
 
-		Assert.assertFalse(name1DDMFormField.isRequired());
-		Assert.assertTrue(name2DDMFormField.isRequired());
+		Assert.assertTrue(name1DDMFormField.isRequired());
+		Assert.assertFalse(name2DDMFormField.isRequired());
 
-		// Create
+		// Edit
 
-		ddmFormFieldsMap = getDDMFormFieldsMap(_createDDMTemplate);
+		ddmFormFieldsMap = getDDMFormFieldsMap(_editDDMTemplate);
 
 		name1DDMFormField = ddmFormFieldsMap.get("name1");
 		name2DDMFormField = ddmFormFieldsMap.get("name2");
 
-		Assert.assertTrue(name1DDMFormField.isRequired());
-		Assert.assertFalse(name2DDMFormField.isRequired());
+		Assert.assertFalse(name1DDMFormField.isRequired());
+		Assert.assertTrue(name2DDMFormField.isRequired());
 	}
 
 	protected void updateDDMFormFieldRequiredProperty(

@@ -19,8 +19,18 @@
 	<td></td>
 </tr>
 <tr>
+	<td>ADD_ACTION</td>
+	<td>//span[contains(.,'Add Action')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>ADD_ATTACHMENTS</td>
 	<td>//button[contains(.,'Add Attachments')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ANNOUNCEMENT</td>
+	<td>//span[contains(.,'Add Announcement')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -129,6 +139,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>ADVANCED_REPLY</td>
+	<td>//button/span[contains(.,'Advanced Reply')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>APPLY_EFFECTS</td>
 	<td>//div[contains(@class,'controls-container') and contains(@class,'open')]//button[contains(@class,'btn') and contains(.,'Apply')]</td>
 	<td></td>
@@ -160,7 +175,7 @@
 </tr>
 <tr>
 	<td>CANCEL</td>
-	<td>//a[contains(@class,'cancel') and contains(@class,'btn')] | //button[contains(.,'Cancel')]</td>
+	<td>//a[contains(@class,'cancel') and contains(@class,'btn')] | //button[contains(.,'Cancel')] | //a[contains(@class,'btn') and contains(.,'Cancel')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -235,7 +250,7 @@
 </tr>
 <tr>
 	<td>CLOSE_MODAL</td>
-	<td>//button[contains(.,'×')]</td>
+	<td>//h3[contains(@class,'modal-title') and contains(.,'${key_modalTitle}')]/../div/button[contains(@class,'close')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -324,6 +339,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>EDIT_PENCIL</td>
+	<td>//a[contains(@class,'btn')]//i[contains(@class,'icon-pencil')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>ENTER</td>
 	<td>//button[contains(.,'Enter')]</td>
 	<td></td>
@@ -369,6 +389,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>GENERATE</td>
+	<td>//button[contains(.,'Generate')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>I_AGREE</td>
 	<td>//button[contains(.,'I Agree')]</td>
 	<td></td>
@@ -406,6 +431,11 @@
 <tr>
 	<td>ITEMS_PER_PAGE</td>
 	<td>//a[contains(@title,'Items per Page')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>LEAVE</td>
+	<td>//button[contains(.,'Leave')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -480,7 +510,7 @@
 </tr>
 <tr>
 	<td>POST</td>
-	<td>//button[contains(.,'Post') and not(contains(@class,'disabled'))]</td>
+	<td>//div[@class='button-holder']/button[contains(@id,'MicroblogsPortlet')]/span[contains(.,'Post')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -491,6 +521,11 @@
 <tr>
 	<td>PREVIEW</td>
 	<td>//button[contains(.,'Preview')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PREVIOUS</td>
+	<td>//button[contains(.,'Previous')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -560,12 +595,12 @@
 </tr>
 <tr>
 	<td>ROTATE_LEFT</td>
-	<td>//a[contains(@class,'btn') and (@data-onclick='rotateLeft')]</td>
+	<td>//a[contains(@class,'btn-link') and (@data-onclick='data-onclick')][1]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>ROTATE_RIGHT</td>
-	<td>//a[contains(@class,'btn') and (@data-onclick='rotateRight')]</td>
+	<td>//a[contains(@class,'btn-link') and (@data-onclick='data-onclick')][2]</td>
 	<td></td>
 </tr>
 <tr>
@@ -634,6 +669,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>SELECT_MOBILE_DEVICE_RULES</td>
+	<td>//div[@class='btn-toolbar']/button[contains(.,'Select')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>SELECT_PAGES</td>
 	<td>//button[contains(.,'Select Pages')]</td>
 	<td></td>
@@ -641,6 +681,11 @@
 <tr>
 	<td>SELECT_SCOPE</td>
 	<td>//div[contains(@class,'btn-group')]/a[@title='Default']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SELECT_VOCABULARY</td>
+	<td>//button[contains(@title,'Select Vocabulary')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -679,6 +724,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>STAY</td>
+	<td>//button[contains(.,'Stay')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>SUBMIT</td>
 	<td>//button[@type='submit']</td>
 	<td></td>
@@ -701,6 +751,16 @@
 <tr>
 	<td>UNLOCK</td>
 	<td>//button[contains(.,'Unlock')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>UNPUBLISH</td>
+	<td>//button[contains(@id,'publish') and contains(.,'Unpublish')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>UNSUBSCRIBE</td>
+	<td>//button[contains(.,'Unsubscribe')]</td>
 	<td></td>
 </tr>
 <tr>

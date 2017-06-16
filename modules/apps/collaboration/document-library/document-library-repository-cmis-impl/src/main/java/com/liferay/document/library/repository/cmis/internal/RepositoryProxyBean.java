@@ -85,6 +85,9 @@ public class RepositoryProxyBean
 		}
 	}
 
+	/**
+	 * @deprecated As of 2.0.0
+	 */
 	@Deprecated
 	@Override
 	public FileEntry addFileEntry(
@@ -104,6 +107,9 @@ public class RepositoryProxyBean
 		}
 	}
 
+	/**
+	 * @deprecated As of 2.0.0
+	 */
 	@Deprecated
 	@Override
 	public FileEntry addFileEntry(
@@ -155,6 +161,9 @@ public class RepositoryProxyBean
 		}
 	}
 
+	/**
+	 * @deprecated As of 2.0.0
+	 */
 	@Deprecated
 	@Override
 	public Folder addFolder(
@@ -183,6 +192,9 @@ public class RepositoryProxyBean
 		}
 	}
 
+	/**
+	 * @deprecated As of 2.0.0
+	 */
 	@Deprecated
 	@Override
 	public void checkInFileEntry(
@@ -226,6 +238,9 @@ public class RepositoryProxyBean
 		}
 	}
 
+	/**
+	 * @deprecated As of 2.0.0
+	 */
 	@Deprecated
 	@Override
 	public void checkInFileEntry(
@@ -286,6 +301,9 @@ public class RepositoryProxyBean
 		}
 	}
 
+	/**
+	 * @deprecated As of 2.0.0
+	 */
 	@Deprecated
 	@Override
 	public FileEntry copyFileEntry(
@@ -439,6 +457,22 @@ public class RepositoryProxyBean
 
 	@Override
 	public List<FileEntry> getFileEntries(
+			long folderId, String[] mimeTypes, int status, int start, int end,
+			OrderByComparator<FileEntry> obc)
+		throws PortalException {
+
+		try (ContextClassLoaderSetter contextClassLoaderSetter =
+				new ContextClassLoaderSetter(_classLoader)) {
+
+			List<FileEntry> fileEntries = _repository.getFileEntries(
+				folderId, mimeTypes, status, start, end, obc);
+
+			return toFileEntryProxyBeans(fileEntries);
+		}
+	}
+
+	@Override
+	public List<FileEntry> getFileEntries(
 			long folderId, String[] mimeTypes, int start, int end,
 			OrderByComparator<FileEntry> obc)
 		throws PortalException {
@@ -533,6 +567,18 @@ public class RepositoryProxyBean
 				new ContextClassLoaderSetter(_classLoader)) {
 
 			return _repository.getFileEntriesCount(folderId, mimeTypes);
+		}
+	}
+
+	@Override
+	public int getFileEntriesCount(
+			long folderId, String[] mimeTypes, int status)
+		throws PortalException {
+
+		try (ContextClassLoaderSetter contextClassLoaderSetter =
+				new ContextClassLoaderSetter(_classLoader)) {
+
+			return _repository.getFileEntriesCount(folderId, mimeTypes, status);
 		}
 	}
 
@@ -920,6 +966,9 @@ public class RepositoryProxyBean
 		}
 	}
 
+	/**
+	 * @deprecated As of 2.0.0
+	 */
 	@Deprecated
 	@Override
 	public FileEntry moveFileEntry(
@@ -951,6 +1000,9 @@ public class RepositoryProxyBean
 		}
 	}
 
+	/**
+	 * @deprecated As of 2.0.0
+	 */
 	@Deprecated
 	@Override
 	public Folder moveFolder(
@@ -1008,6 +1060,9 @@ public class RepositoryProxyBean
 		}
 	}
 
+	/**
+	 * @deprecated As of 2.0.0
+	 */
 	@Deprecated
 	@Override
 	public void revertFileEntry(
@@ -1125,6 +1180,9 @@ public class RepositoryProxyBean
 		}
 	}
 
+	/**
+	 * @deprecated As of 2.0.0
+	 */
 	@Deprecated
 	@Override
 	public FileEntry updateFileEntry(
@@ -1144,6 +1202,9 @@ public class RepositoryProxyBean
 		}
 	}
 
+	/**
+	 * @deprecated As of 2.0.0
+	 */
 	@Deprecated
 	@Override
 	public FileEntry updateFileEntry(

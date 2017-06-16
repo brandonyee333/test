@@ -31,8 +31,8 @@ if (bodyContent != null) {
 		<%= bodyContentString %>
 	</c:when>
 	<c:otherwise>
-		<div class="icon-monospaced sticker-default sticker-lg">
-			<aui:icon cssClass="text-default" image="<%= icon %>" markupView="lexicon" />
+		<div class="sticker sticker-default sticker-lg sticker-static">
+			<aui:icon image="<%= icon %>" markupView="lexicon" />
 		</div>
 	</c:otherwise>
 </c:choose>

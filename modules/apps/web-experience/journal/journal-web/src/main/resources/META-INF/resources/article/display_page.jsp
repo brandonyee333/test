@@ -51,7 +51,7 @@ boolean changeStructure = GetterUtil.getBoolean(request.getAttribute("edit_artic
 			}
 
 			if (selLayout != null) {
-				layoutBreadcrumb = _getLayoutBreadcrumb(request, selLayout, locale);
+				layoutBreadcrumb = journalDisplayContext.getLayoutBreadcrumb(selLayout);
 			}
 		}
 		%>
@@ -68,7 +68,6 @@ boolean changeStructure = GetterUtil.getBoolean(request.getAttribute("edit_artic
 			<span class="<%= Validator.isNull(layoutBreadcrumb) ? "hide" : StringPool.BLANK %>" id="<portlet:namespace />displayPageItemRemove" role="button">
 				<aui:icon cssClass="icon-monospaced" image="times" markupView="lexicon" />
 			</span>
-
 			<span id="<portlet:namespace />displayPageNameInput">
 				<c:choose>
 					<c:when test="<%= Validator.isNull(layoutBreadcrumb) %>">
@@ -122,6 +121,8 @@ boolean changeStructure = GetterUtil.getBoolean(request.getAttribute("edit_artic
 		layoutItemSelectorCriterion.setDesiredItemSelectorReturnTypes(desiredItemSelectorReturnTypes);
 
 		PortletURL itemSelectorURL = itemSelector.getItemSelectorURL(RequestBackedPortletURLFactoryUtil.create(liferayPortletRequest), eventName, layoutItemSelectorCriterion);
+
+		itemSelectorURL.setParameter("layoutUuid", layoutUuid);
 		%>
 
 		<aui:script use="liferay-item-selector-dialog">
@@ -141,9 +142,9 @@ boolean changeStructure = GetterUtil.getBoolean(request.getAttribute("edit_artic
 									var selectedItem = event.newVal;
 
 									if (selectedItem) {
-										pagesContainerInput.val(selectedItem.value);
+										pagesContainerInput.val(selectedItem.id);
 
-										displayPageNameInput.html(selectedItem.layoutpath);
+										displayPageNameInput.html(selectedItem.name);
 
 										displayPageItemRemove.removeClass('hide');
 									}
@@ -172,35 +173,3 @@ boolean changeStructure = GetterUtil.getBoolean(request.getAttribute("edit_artic
 		</aui:script>
 	</c:otherwise>
 </c:choose>
-
-<%!
-private String _getLayoutBreadcrumb(HttpServletRequest request, Layout layout, Locale locale) throws Exception {
-	List<Layout> ancestors = layout.getAncestors();
-
-	StringBundler sb = new StringBundler(4 * ancestors.size() + 5);
-
-	if (layout.isPrivateLayout()) {
-		sb.append(LanguageUtil.get(request, "private-pages"));
-	}
-	else {
-		sb.append(LanguageUtil.get(request, "public-pages"));
-	}
-
-	sb.append(StringPool.SPACE);
-	sb.append(StringPool.GREATER_THAN);
-	sb.append(StringPool.SPACE);
-
-	Collections.reverse(ancestors);
-
-	for (Layout ancestor : ancestors) {
-		sb.append(HtmlUtil.escape(ancestor.getName(locale)));
-		sb.append(StringPool.SPACE);
-		sb.append(StringPool.GREATER_THAN);
-		sb.append(StringPool.SPACE);
-	}
-
-	sb.append(HtmlUtil.escape(layout.getName(locale)));
-
-	return sb.toString();
-}
-%>

@@ -43,6 +43,7 @@ import java.io.Serializable;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import javax.servlet.ServletContext;
 
@@ -143,6 +144,10 @@ public interface PortletLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Portlet fetchPortlet(long id);
+
+	@Skip
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Portlet fetchPortletById(long companyId, java.lang.String portletId);
 
 	/**
 	* Returns the portlet with the primary key.
@@ -366,4 +371,7 @@ public interface PortletLocalService extends BaseLocalService,
 	@Clusterable
 	@Transactional(enabled = false)
 	public void removeCompanyPortletsPool(long companyId);
+
+	@Skip
+	public void visitPortlets(long companyId, Consumer<Portlet> consumer);
 }

@@ -14,13 +14,22 @@
 
 package com.liferay.exportimport.kernel.lar;
 
+import aQute.bnd.annotation.ProviderType;
+
 import java.util.concurrent.Callable;
 
 /**
  * @author Daniel Kocsis
  */
+@ProviderType
 public interface ExportImportProcessCallbackRegistry {
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
+	@Deprecated
 	public void registerCallback(Callable<?> callable);
+
+	public void registerCallback(String processId, Callable<?> callable);
 
 }

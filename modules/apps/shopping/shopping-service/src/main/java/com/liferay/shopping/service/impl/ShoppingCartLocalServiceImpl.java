@@ -175,7 +175,7 @@ public class ShoppingCartLocalServiceImpl
 				}
 			}
 			catch (NoSuchCouponException nsce) {
-				throw new NoSuchCouponException(couponCodesArray[i]);
+				throw new NoSuchCouponException(couponCodesArray[i], nsce);
 			}
 
 			// Temporarily disable stacking of coupon codes
@@ -183,7 +183,7 @@ public class ShoppingCartLocalServiceImpl
 			break;
 		}
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 
 		ShoppingCart cart = null;
 

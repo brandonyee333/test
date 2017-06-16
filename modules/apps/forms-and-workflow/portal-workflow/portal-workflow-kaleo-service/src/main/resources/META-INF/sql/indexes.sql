@@ -10,6 +10,8 @@ create index IX_408542BA on KaleoDefinition (companyId, active_);
 create index IX_4C23F11B on KaleoDefinition (companyId, name[$COLUMN_LENGTH:200$], active_);
 create index IX_EC14F81A on KaleoDefinition (companyId, name[$COLUMN_LENGTH:200$], version);
 
+create unique index IX_AE02DCC on KaleoDefinitionVersion (companyId, name[$COLUMN_LENGTH:200$], version[$COLUMN_LENGTH:75$]);
+
 create index IX_58D85ECB on KaleoInstance (className[$COLUMN_LENGTH:200$], classPK);
 create index IX_BF5839F8 on KaleoInstance (companyId, kaleoDefinitionName[$COLUMN_LENGTH:200$], kaleoDefinitionVersion, completionDate);
 create index IX_C6D7A867 on KaleoInstance (companyId, userId);
@@ -52,6 +54,18 @@ create index IX_C851011 on KaleoTaskAssignmentInstance (kaleoDefinitionId);
 create index IX_67A9EE93 on KaleoTaskAssignmentInstance (kaleoInstanceId);
 create index IX_D4C2235B on KaleoTaskAssignmentInstance (kaleoTaskInstanceTokenId);
 
+create index IX_EFDA7E59 on KaleoTaskForm (companyId);
+create index IX_60D1964F on KaleoTaskForm (kaleoDefinitionId);
+create index IX_945326BE on KaleoTaskForm (kaleoNodeId);
+create index IX_E38A5954 on KaleoTaskForm (kaleoTaskId, formUuid[$COLUMN_LENGTH:75$]);
+
+create index IX_77B26CC4 on KaleoTaskFormInstance (companyId);
+create index IX_B975E9BA on KaleoTaskFormInstance (kaleoDefinitionId);
+create index IX_FF271E7C on KaleoTaskFormInstance (kaleoInstanceId);
+create index IX_E7F42BD0 on KaleoTaskFormInstance (kaleoTaskFormId);
+create index IX_2A86346C on KaleoTaskFormInstance (kaleoTaskId);
+create index IX_2C81C992 on KaleoTaskFormInstance (kaleoTaskInstanceTokenId);
+
 create index IX_A3271995 on KaleoTaskInstanceToken (className[$COLUMN_LENGTH:200$], classPK);
 create index IX_997FE723 on KaleoTaskInstanceToken (companyId);
 create index IX_608E9519 on KaleoTaskInstanceToken (kaleoDefinitionId);
@@ -60,7 +74,8 @@ create index IX_B857A115 on KaleoTaskInstanceToken (kaleoInstanceId, kaleoTaskId
 create index IX_1A479F32 on KaleoTimer (kaleoClassName[$COLUMN_LENGTH:200$], kaleoClassPK, blocking);
 
 create index IX_DB96C55B on KaleoTimerInstanceToken (kaleoInstanceId);
-create index IX_9932524C on KaleoTimerInstanceToken (kaleoInstanceTokenId, completed, blocking);
+create index IX_F904A89A on KaleoTimerInstanceToken (kaleoInstanceTokenId, blocking, completed);
+create index IX_DB279423 on KaleoTimerInstanceToken (kaleoInstanceTokenId, completed);
 create index IX_13A5BA2C on KaleoTimerInstanceToken (kaleoInstanceTokenId, kaleoTimerId);
 
 create index IX_41D6C6D on KaleoTransition (companyId);

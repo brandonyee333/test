@@ -1,10 +1,11 @@
 ;
-; Do not manually edit this file. See
-; https://github.com/git-commands/git-subrepo#readme for more information.
+; Do not manually edit this file.
 ;
 [subrepo]
+	autopull = false
 	cmdver = liferay
-	commit = eb45c712412a2dadf668950cf586569aa00a094a
+	commit = 011c1958ad1724c1eabd3696cb6b617f34919bfc
+	mergebuttonmergecommits = false
 	mode = push
-	parent = fc249f820849da7c689601485883815a76e2cd4f
+	parent = 88c1e3d396b66f8314253206eb87cb2eee1bc688
 	remote = git@github.com:liferay/com-liferay-iframe.git

@@ -28,9 +28,11 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.tools.ArgumentsUtil;
+import com.liferay.portal.tools.GitException;
+import com.liferay.portal.tools.GitUtil;
 
-import com.memetix.mst.language.Language;
-import com.memetix.mst.translate.Translate;
+import io.github.firemaples.language.Language;
+import io.github.firemaples.translate.Translate;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -46,6 +48,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -53,6 +56,7 @@ import java.util.TreeMap;
 
 /**
  * @author Brian Wing Shun Chan
+ * @author Hugo Huijser
  */
 public class LangBuilder {
 
@@ -78,15 +82,28 @@ public class LangBuilder {
 			"lang.portal.language.properties.file");
 		boolean translate = GetterUtil.getBoolean(
 			arguments.get("lang.translate"), LangBuilderArgs.TRANSLATE);
-		String translateClientId = arguments.get("lang.translate.client.id");
-		String translateClientSecret = arguments.get(
-			"lang.translate.client.secret");
+		String translateSubscriptionKey = arguments.get(
+			"lang.translate.subscription.key");
+
+		boolean buildCurrentBranch = ArgumentsUtil.getBoolean(
+			arguments, "build.current.branch", false);
+
+		if (buildCurrentBranch) {
+			String gitWorkingBranchName = ArgumentsUtil.getString(
+				arguments, "git.working.branch.name", "master");
+
+			_processCurrentBranch(
+				langFileName, plugin, portalLanguagePropertiesFileName,
+				translate, translateSubscriptionKey, gitWorkingBranchName);
+
+			return;
+		}
 
 		try {
 			new LangBuilder(
 				langDirName, langFileName, plugin,
-				portalLanguagePropertiesFileName, translate, translateClientId,
-				translateClientSecret);
+				portalLanguagePropertiesFileName, translate,
+				translateSubscriptionKey);
 		}
 		catch (Exception e) {
 			ArgumentsUtil.processMainException(arguments, e);
@@ -96,15 +113,14 @@ public class LangBuilder {
 	public LangBuilder(
 			String langDirName, String langFileName, boolean plugin,
 			String portalLanguagePropertiesFileName, boolean translate,
-			String translateClientId, String translateClientSecret)
+			String translateSubscriptionKey)
 		throws Exception {
 
 		_langDirName = langDirName;
 		_langFileName = langFileName;
 		_translate = translate;
 
-		Translate.setClientId(translateClientId);
-		Translate.setClientSecret(translateClientSecret);
+		Translate.setSubscriptionKey(translateSubscriptionKey);
 
 		_initKeysWithUpdatedValues();
 
@@ -209,6 +225,7 @@ public class LangBuilder {
 		_createProperties(content, "sl"); // Slovene
 		_createProperties(content, "es"); // Spanish
 		_createProperties(content, "sv"); // Swedish
+		_createProperties(content, "th"); // Thai
 		_createProperties(content, "tr"); // Turkish
 		_createProperties(content, "uk"); // Ukrainian
 		_createProperties(content, "vi"); // Vietnamese
@@ -226,6 +243,39 @@ public class LangBuilder {
 		}
 
 		return StringPool.BLANK;
+	}
+
+	private static void _processCurrentBranch(
+			String langFileName, boolean plugin,
+			String portalLanguagePropertiesFileName, boolean translate,
+			String translateSubscriptionKey, String gitWorkingBranchName)
+		throws Exception {
+
+		try {
+			String basedir = ".././";
+
+			List<String> fileNames = GitUtil.getCurrentBranchFileNames(
+				basedir, gitWorkingBranchName);
+
+			for (String fileName : fileNames) {
+				int pos = fileName.indexOf(
+					"content/" + langFileName + ".properties");
+
+				if (pos == -1) {
+					continue;
+				}
+
+				String langDirName = basedir + fileName.substring(0, pos + 7);
+
+				new LangBuilder(
+					langDirName, langFileName, plugin,
+					portalLanguagePropertiesFileName, translate,
+					translateSubscriptionKey);
+			}
+		}
+		catch (GitException ge) {
+			System.out.println(ge.getMessage());
+		}
 	}
 
 	private void _copyProperties(File file, String languageId)
@@ -334,13 +384,8 @@ public class LangBuilder {
 					}
 
 					if (translatedText != null) {
-						if (translatedText.contains("Babel Fish") ||
-							translatedText.contains("Yahoo! - 999")) {
-
+						if (translatedText.endsWith(AUTOMATIC_COPY)) {
 							translatedText = "";
-						}
-						else if (translatedText.endsWith(AUTOMATIC_COPY)) {
-							translatedText = value + AUTOMATIC_COPY;
 						}
 					}
 
@@ -410,14 +455,6 @@ public class LangBuilder {
 					}
 
 					if (Validator.isNotNull(translatedText)) {
-						if (translatedText.contains("Babel Fish") ||
-							translatedText.contains("Yahoo! - 999")) {
-
-							throw new IOException(
-								"IP was blocked because of over usage. " +
-									"Please use another IP.");
-						}
-
 						translatedText = _fixTranslation(translatedText);
 
 						if (firstLine) {
@@ -524,7 +561,8 @@ public class LangBuilder {
 			if (value.contains(".") || value.contains("?") ||
 				value.contains(":") ||
 				key.equals(
-					"the-url-of-the-page-comparing-this-page-content-with-the-previous-version")) {
+					"the-url-of-the-page-comparing-this-page-content-with-" +
+						"the-previous-version")) {
 			}
 			else {
 				value = StringUtil.replace(value, " this ", " This ");

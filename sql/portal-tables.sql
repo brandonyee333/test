@@ -205,50 +205,6 @@ create table AssetVocabulary (
 	lastPublishDate DATE null
 );
 
-create table BlogsEntry (
-	uuid_ VARCHAR(75) null,
-	entryId LONG not null primary key,
-	groupId LONG,
-	companyId LONG,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	modifiedDate DATE null,
-	title VARCHAR(150) null,
-	subtitle STRING null,
-	urlTitle VARCHAR(150) null,
-	description STRING null,
-	content TEXT null,
-	displayDate DATE null,
-	allowPingbacks BOOLEAN,
-	allowTrackbacks BOOLEAN,
-	trackbacks TEXT null,
-	coverImageCaption STRING null,
-	coverImageFileEntryId LONG,
-	coverImageURL STRING null,
-	smallImage BOOLEAN,
-	smallImageFileEntryId LONG,
-	smallImageId LONG,
-	smallImageURL STRING null,
-	lastPublishDate DATE null,
-	status INTEGER,
-	statusByUserId LONG,
-	statusByUserName VARCHAR(75) null,
-	statusDate DATE null
-);
-
-create table BlogsStatsUser (
-	statsUserId LONG not null primary key,
-	groupId LONG,
-	companyId LONG,
-	userId LONG,
-	entryCount INTEGER,
-	lastPostDate DATE null,
-	ratingsTotalEntries INTEGER,
-	ratingsTotalScore DOUBLE,
-	ratingsAverageScore DOUBLE
-);
-
 create table BrowserTracker (
 	mvccVersion LONG default 0 not null,
 	browserTrackerId LONG not null primary key,
@@ -297,7 +253,7 @@ create table Contact_ (
 	classPK LONG,
 	accountId LONG,
 	parentContactId LONG,
-	emailAddress VARCHAR(75) null,
+	emailAddress VARCHAR(254) null,
 	firstName VARCHAR(75) null,
 	middleName VARCHAR(75) null,
 	lastName VARCHAR(75) null,
@@ -518,7 +474,7 @@ create table EmailAddress (
 	modifiedDate DATE null,
 	classNameId LONG,
 	classPK LONG,
-	address VARCHAR(75) null,
+	address VARCHAR(254) null,
 	typeId LONG,
 	primary_ BOOLEAN
 );
@@ -869,7 +825,7 @@ create table MBMailingList (
 	createDate DATE null,
 	modifiedDate DATE null,
 	categoryId LONG,
-	emailAddress VARCHAR(75) null,
+	emailAddress VARCHAR(254) null,
 	inProtocol VARCHAR(75) null,
 	inServerName VARCHAR(75) null,
 	inServerPort INTEGER,
@@ -877,7 +833,7 @@ create table MBMailingList (
 	inUserName VARCHAR(75) null,
 	inPassword VARCHAR(75) null,
 	inReadInterval INTEGER,
-	outEmailAddress VARCHAR(75) null,
+	outEmailAddress VARCHAR(254) null,
 	outCustom BOOLEAN,
 	outServerName VARCHAR(75) null,
 	outServerPort INTEGER,
@@ -1451,20 +1407,6 @@ create table SocialRequest (
 	status INTEGER
 );
 
-create table Subscription (
-	mvccVersion LONG default 0 not null,
-	subscriptionId LONG not null primary key,
-	groupId LONG,
-	companyId LONG,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	modifiedDate DATE null,
-	classNameId LONG,
-	classPK LONG,
-	frequency VARCHAR(75) null
-);
-
 create table SystemEvent (
 	mvccVersion LONG default 0 not null,
 	systemEventId LONG not null primary key,
@@ -1565,7 +1507,7 @@ create table User_ (
 	reminderQueryAnswer VARCHAR(75) null,
 	graceLoginCount INTEGER,
 	screenName VARCHAR(75) null,
-	emailAddress VARCHAR(75) null,
+	emailAddress VARCHAR(254) null,
 	facebookId LONG,
 	googleUserId VARCHAR(75) null,
 	ldapServerId LONG,

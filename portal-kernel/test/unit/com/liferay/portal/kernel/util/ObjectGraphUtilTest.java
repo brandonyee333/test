@@ -48,9 +48,12 @@ public class ObjectGraphUtilTest {
 	@Before
 	public void setUp() {
 		_recordVisitor = new RecordVisitor();
+
 		_objectValuePairs = _recordVisitor._objectValuePairs;
+
 		_recordAnnotatedFieldMappingVisitor =
 			new RecordAnnotatedFieldMappingVisitor();
+
 		_annotatedFieldMappingObjectValuePairs =
 			_recordAnnotatedFieldMappingVisitor._objectValuePairs;
 	}
@@ -146,7 +149,10 @@ public class ObjectGraphUtilTest {
 		Assert.assertSame(
 			linkedType1,
 			_recordAnnotatedFieldMappingVisitor.mapValue(null, linkedType1));
-		Assert.assertEquals(1, _annotatedFieldMappingObjectValuePairs.size());
+
+		Assert.assertEquals(
+			_annotatedFieldMappingObjectValuePairs.toString(), 1,
+			_annotatedFieldMappingObjectValuePairs.size());
 
 		ObjectValuePair<Field, Object> objectValuePair =
 			_annotatedFieldMappingObjectValuePairs.get(0);
@@ -166,7 +172,10 @@ public class ObjectGraphUtilTest {
 
 		Assert.assertNotSame(linkedType1Array, mappedLinkedType1Array);
 		Assert.assertArrayEquals(linkedType1Array, mappedLinkedType1Array);
-		Assert.assertEquals(2, _annotatedFieldMappingObjectValuePairs.size());
+
+		Assert.assertEquals(
+			_annotatedFieldMappingObjectValuePairs.toString(), 2,
+			_annotatedFieldMappingObjectValuePairs.size());
 
 		ObjectValuePair<Field, Object> objectValuePair =
 			_annotatedFieldMappingObjectValuePairs.get(0);
@@ -209,6 +218,7 @@ public class ObjectGraphUtilTest {
 			_recordAnnotatedFieldMappingVisitor.visit(
 				ReflectionUtil.getDeclaredField(LinkedType1.class, "_object1"),
 				linkedType1));
+
 		Assert.assertTrue(_annotatedFieldMappingObjectValuePairs.isEmpty());
 		Assert.assertSame(
 			linkedType1._object2,
@@ -222,7 +232,10 @@ public class ObjectGraphUtilTest {
 
 		Assert.assertNull(
 			_recordAnnotatedFieldMappingVisitor.visit(field, linkedType1));
-		Assert.assertEquals(1, _annotatedFieldMappingObjectValuePairs.size());
+
+		Assert.assertEquals(
+			_annotatedFieldMappingObjectValuePairs.toString(), 1,
+			_annotatedFieldMappingObjectValuePairs.size());
 
 		ObjectValuePair<Field, Object> objectValuePair =
 			_annotatedFieldMappingObjectValuePairs.get(0);
@@ -242,7 +255,8 @@ public class ObjectGraphUtilTest {
 
 		ObjectGraphUtil.walkObjectGraph(nullReference, _recordVisitor);
 
-		Assert.assertEquals(1, _objectValuePairs.size());
+		Assert.assertEquals(
+			_objectValuePairs.toString(), 1, _objectValuePairs.size());
 
 		ObjectValuePair<Field, Object> objectValuePair = _objectValuePairs.get(
 			0);
@@ -291,7 +305,8 @@ public class ObjectGraphUtilTest {
 
 		ObjectGraphUtil.walkObjectGraph(primitive, _recordVisitor);
 
-		Assert.assertEquals(1, _objectValuePairs.size());
+		Assert.assertEquals(
+			_objectValuePairs.toString(), 1, _objectValuePairs.size());
 
 		ObjectValuePair<Field, Object> objectValuePair = _objectValuePairs.get(
 			0);
@@ -308,7 +323,8 @@ public class ObjectGraphUtilTest {
 
 		ObjectGraphUtil.walkObjectGraph(primitiveArray, _recordVisitor);
 
-		Assert.assertEquals(1, _objectValuePairs.size());
+		Assert.assertEquals(
+			_objectValuePairs.toString(), 1, _objectValuePairs.size());
 
 		ObjectValuePair<Field, Object> objectValuePair = _objectValuePairs.get(
 			0);
@@ -325,7 +341,8 @@ public class ObjectGraphUtilTest {
 
 		ObjectGraphUtil.walkObjectGraph(selfReference, _recordVisitor);
 
-		Assert.assertEquals(1, _objectValuePairs.size());
+		Assert.assertEquals(
+			_objectValuePairs.toString(), 1, _objectValuePairs.size());
 
 		ObjectValuePair<Field, Object> objectValuePair = _objectValuePairs.get(
 			0);
@@ -343,7 +360,8 @@ public class ObjectGraphUtilTest {
 
 		ObjectGraphUtil.walkObjectGraph(selfReferenceArray, _recordVisitor);
 
-		Assert.assertEquals(1, _objectValuePairs.size());
+		Assert.assertEquals(
+			_objectValuePairs.toString(), 1, _objectValuePairs.size());
 
 		ObjectValuePair<Field, Object> objectValuePair = _objectValuePairs.get(
 			0);

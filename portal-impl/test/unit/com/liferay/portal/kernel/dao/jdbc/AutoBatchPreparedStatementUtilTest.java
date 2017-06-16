@@ -29,6 +29,8 @@ import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.test.rule.AdviseWith;
 import com.liferay.portal.test.rule.AspectJNewEnvTestRule;
+import com.liferay.registry.BasicRegistryImpl;
+import com.liferay.registry.RegistryUtil;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
@@ -41,6 +43,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.List;
@@ -50,6 +53,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -66,6 +70,11 @@ public class AutoBatchPreparedStatementUtilTest {
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
 			AspectJNewEnvTestRule.INSTANCE, CodeCoverageAssertor.INSTANCE);
+
+	@Before
+	public void setUp() {
+		RegistryUtil.setRegistry(new BasicRegistryImpl());
+	}
 
 	@AdviseWith(adviceClasses = {PropsUtilAdvice.class})
 	@Test
@@ -206,7 +215,8 @@ public class AutoBatchPreparedStatementUtilTest {
 
 			Throwable[] throwables = t.getSuppressed();
 
-			Assert.assertEquals(1, throwables.length);
+			Assert.assertEquals(
+				Arrays.toString(throwables), 1, throwables.length);
 
 			Throwable throwable = throwables[0];
 
@@ -264,7 +274,9 @@ public class AutoBatchPreparedStatementUtilTest {
 
 			Throwable[] suppressedThrowables = t.getSuppressed();
 
-			Assert.assertEquals(1, suppressedThrowables.length);
+			Assert.assertEquals(
+				Arrays.toString(suppressedThrowables), 1,
+				suppressedThrowables.length);
 			Assert.assertTrue(throwables.contains(suppressedThrowables[0]));
 
 			return;
@@ -415,6 +427,7 @@ public class AutoBatchPreparedStatementUtilTest {
 			Assert.assertEquals(
 				Integer.valueOf(0),
 				ReflectionTestUtil.getFieldValue(invocationHandler, "_count"));
+
 			Assert.assertTrue(methods.toString(), methods.isEmpty());
 
 			// Protection for executing empty batch
@@ -519,6 +532,7 @@ public class AutoBatchPreparedStatementUtilTest {
 			Assert.assertEquals(
 				Integer.valueOf(0),
 				ReflectionTestUtil.getFieldValue(invocationHandler, "_count"));
+
 			Assert.assertTrue(methods.toString(), methods.isEmpty());
 
 			// Protection for executing empty batch

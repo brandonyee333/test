@@ -49,6 +49,8 @@ import com.liferay.portal.test.rule.AdviseWith;
 import com.liferay.portal.test.rule.AspectJNewEnvTestRule;
 import com.liferay.portal.util.PropsImpl;
 import com.liferay.portal.util.PropsValues;
+import com.liferay.registry.BasicRegistryImpl;
+import com.liferay.registry.RegistryUtil;
 
 import java.io.DataInputStream;
 import java.io.File;
@@ -97,10 +99,12 @@ public class HttpClientSPIAgentTest {
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
-			CodeCoverageAssertor.INSTANCE, AspectJNewEnvTestRule.INSTANCE);
+			AspectJNewEnvTestRule.INSTANCE, CodeCoverageAssertor.INSTANCE);
 
 	@Before
 	public void setUp() {
+		RegistryUtil.setRegistry(new BasicRegistryImpl());
+
 		PropsUtil.setProps(new PropsImpl());
 
 		_portlet = new PortletImpl() {
@@ -230,7 +234,8 @@ public class HttpClientSPIAgentTest {
 
 				socket.close();
 
-				Assert.assertEquals(1, logRecords.size());
+				Assert.assertEquals(
+					logRecords.toString(), 1, logRecords.size());
 
 				LogRecord logRecord = logRecords.get(0);
 
@@ -278,6 +283,7 @@ public class HttpClientSPIAgentTest {
 		Assert.assertSame(
 			mockRegistrationReference,
 			httpClientSPIAgent.registrationReference);
+
 		Assert.assertEquals(
 			new InetSocketAddress(
 				InetAddressUtil.getLoopbackInetAddress(),
@@ -440,7 +446,8 @@ public class HttpClientSPIAgentTest {
 
 				closePeers(socket, serverSocket);
 
-				Assert.assertEquals(1, logRecords.size());
+				Assert.assertEquals(
+					logRecords.toString(), 1, logRecords.size());
 
 				LogRecord logRecord = logRecords.get(0);
 
@@ -588,6 +595,7 @@ public class HttpClientSPIAgentTest {
 			mockHttpServletResponse,
 			mockHttpServletRequest.getAttribute(
 				WebKeys.SPI_AGENT_ORIGINAL_RESPONSE));
+
 		Assert.assertNotNull(
 			mockHttpServletRequest.getAttribute(WebKeys.SPI_AGENT_RESPONSE));
 
@@ -685,7 +693,8 @@ public class HttpClientSPIAgentTest {
 
 				closePeers(socket, serverSocket);
 
-				Assert.assertEquals(1, logRecords.size());
+				Assert.assertEquals(
+					logRecords.toString(), 1, logRecords.size());
 
 				LogRecord logRecord = logRecords.get(0);
 
@@ -888,7 +897,7 @@ public class HttpClientSPIAgentTest {
 				Assert.assertSame(IOException.class, throwable.getClass());
 			}
 
-			Assert.assertEquals(1, logRecords.size());
+			Assert.assertEquals(logRecords.toString(), 1, logRecords.size());
 
 			LogRecord logRecord = logRecords.get(0);
 

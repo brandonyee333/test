@@ -17,7 +17,7 @@ package com.liferay.gradle.plugins.workspace.configurators;
 import com.liferay.gradle.plugins.LiferayThemePlugin;
 import com.liferay.gradle.plugins.extensions.LiferayExtension;
 import com.liferay.gradle.plugins.workspace.WorkspaceExtension;
-import com.liferay.gradle.plugins.workspace.util.GradleUtil;
+import com.liferay.gradle.plugins.workspace.internal.util.GradleUtil;
 
 import groovy.lang.Closure;
 
@@ -34,12 +34,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.gradle.api.Project;
+import org.gradle.api.Task;
 import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.CopySpec;
 import org.gradle.api.initialization.Settings;
 import org.gradle.api.plugins.BasePlugin;
 import org.gradle.api.plugins.BasePluginConvention;
 import org.gradle.api.plugins.ExtensionAware;
+import org.gradle.api.tasks.Copy;
 
 /**
  * @author Andrea Di Giorgi
@@ -58,50 +60,17 @@ public class ThemesProjectConfigurator extends BaseProjectConfigurator {
 
 		GradleUtil.applyPlugin(project, LiferayThemePlugin.class);
 
-		configureLiferay(project, workspaceExtension);
+		_configureLiferay(project, workspaceExtension);
 
-		configureRootTaskDistBundle(
-			project, RootProjectConfigurator.DIST_BUNDLE_TAR_TASK_NAME);
-		configureRootTaskDistBundle(
-			project, RootProjectConfigurator.DIST_BUNDLE_ZIP_TASK_NAME);
+		Task assembleTask = GradleUtil.getTask(
+			project, BasePlugin.ASSEMBLE_TASK_NAME);
+
+		_configureRootTaskDistBundle(assembleTask);
 	}
 
 	@Override
 	public String getName() {
 		return _NAME;
-	}
-
-	protected void configureLiferay(
-		Project project, WorkspaceExtension workspaceExtension) {
-
-		LiferayExtension liferayExtension = GradleUtil.getExtension(
-			project, LiferayExtension.class);
-
-		liferayExtension.setAppServerParentDir(workspaceExtension.getHomeDir());
-	}
-
-	protected void configureRootTaskDistBundle(
-		final Project project, String rootTaskName) {
-
-		CopySpec copySpec = (CopySpec)GradleUtil.getTask(
-			project.getRootProject(), rootTaskName);
-
-		copySpec.into(
-			"osgi/modules",
-			new Closure<Void>(null) {
-
-				@SuppressWarnings("unused")
-				public void doCall(CopySpec copySpec) {
-					ConfigurableFileCollection configurableFileCollection =
-						project.files(getWarFile(project));
-
-					configurableFileCollection.builtBy(
-						BasePlugin.ASSEMBLE_TASK_NAME);
-
-					copySpec.from(getWarFile(project));
-				}
-
-			});
 	}
 
 	@Override
@@ -142,7 +111,44 @@ public class ThemesProjectConfigurator extends BaseProjectConfigurator {
 		return projectDirs;
 	}
 
-	protected File getWarFile(Project project) {
+	private void _configureLiferay(
+		Project project, WorkspaceExtension workspaceExtension) {
+
+		LiferayExtension liferayExtension = GradleUtil.getExtension(
+			project, LiferayExtension.class);
+
+		liferayExtension.setAppServerParentDir(workspaceExtension.getHomeDir());
+	}
+
+	private void _configureRootTaskDistBundle(final Task assembleTask) {
+		Project project = assembleTask.getProject();
+
+		Copy copy = (Copy)GradleUtil.getTask(
+			project.getRootProject(),
+			RootProjectConfigurator.DIST_BUNDLE_TASK_NAME);
+
+		copy.dependsOn(assembleTask);
+
+		copy.into(
+			"osgi/modules",
+			new Closure<Void>(project) {
+
+				@SuppressWarnings("unused")
+				public void doCall(CopySpec copySpec) {
+					Project project = assembleTask.getProject();
+
+					ConfigurableFileCollection configurableFileCollection =
+						project.files(_getWarFile(project));
+
+					configurableFileCollection.builtBy(assembleTask);
+
+					copySpec.from(_getWarFile(project));
+				}
+
+			});
+	}
+
+	private File _getWarFile(Project project) {
 		BasePluginConvention basePluginConvention = GradleUtil.getConvention(
 			project, BasePluginConvention.class);
 

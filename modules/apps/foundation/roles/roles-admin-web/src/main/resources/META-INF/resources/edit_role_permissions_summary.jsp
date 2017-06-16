@@ -29,7 +29,8 @@ PortletURL permissionsAllURL = liferayPortletResponse.createRenderURL();
 
 permissionsAllURL.setParameter("mvcPath", "/edit_role_permissions.jsp");
 permissionsAllURL.setParameter(Constants.CMD, Constants.VIEW);
-permissionsAllURL.setParameter("tabs1", "roles");
+permissionsAllURL.setParameter("tabs1", "define-permissions");
+permissionsAllURL.setParameter("tabs2", "roles");
 permissionsAllURL.setParameter("backURL", backURL);
 permissionsAllURL.setParameter("roleId", String.valueOf(role.getRoleId()));
 
@@ -113,8 +114,11 @@ for (int i = 0; i < results.size(); i++) {
 	PermissionDisplay permissionDisplay = (PermissionDisplay)results.get(i);
 
 	Permission permission = permissionDisplay.getPermission();
+
 	Resource resource = permissionDisplay.getResource();
+
 	String curResource = resource.getName();
+
 	String curPortletName = permissionDisplay.getPortletName();
 	String curPortletLabel = permissionDisplay.getPortletLabel();
 	String curModelLabel = permissionDisplay.getModelLabel();
@@ -164,7 +168,7 @@ for (int i = 0; i < results.size(); i++) {
 
 	editPermissionsResourceURL.setParameter("mvcPath", "/view_resources.jsp");
 	editPermissionsResourceURL.setParameter(Constants.CMD, Constants.EDIT);
-	editPermissionsResourceURL.setParameter("tabs1", "roles");
+	editPermissionsResourceURL.setParameter("tabs2", "roles");
 	editPermissionsResourceURL.setParameter("roleId", String.valueOf(role.getRoleId()));
 	editPermissionsResourceURL.setParameter("redirect", permissionsAllURL.toString());
 	editPermissionsResourceURL.setParameter("portletResource", curPortletName);
@@ -173,7 +177,8 @@ for (int i = 0; i < results.size(); i++) {
 
 	editPermissionsURL.setParameter("mvcPath", "/edit_role_permissions.jsp");
 	editPermissionsURL.setParameter(Constants.CMD, Constants.EDIT);
-	editPermissionsURL.setParameter("tabs1", "roles");
+	editPermissionsURL.setParameter("tabs1", "define-permissions");
+	editPermissionsURL.setParameter("tabs2", "roles");
 	editPermissionsURL.setParameter("roleId", String.valueOf(role.getRoleId()));
 	editPermissionsURL.setParameter("redirect", permissionsAllURL.toString());
 	editPermissionsURL.setParameter("portletResource", curPortletName);

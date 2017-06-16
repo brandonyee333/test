@@ -26,7 +26,10 @@ AssetCategoryUtil.addPortletBreadcrumbEntry(assetCategoriesDisplayContext.getVoc
 %>
 
 <aui:nav-bar cssClass="collapse-basic-search" markupView="lexicon">
-	<portlet:renderURL var="mainURL" />
+	<portlet:renderURL var="mainURL">
+		<portlet:param name="mvcPath" value="/view_categories.jsp" />
+		<portlet:param name="vocabularyId" value="<%= String.valueOf(assetCategoriesDisplayContext.getVocabularyId()) %>" />
+	</portlet:renderURL>
 
 	<aui:nav cssClass="navbar-nav">
 		<aui:nav-item href="<%= mainURL.toString() %>" label="categories" selected="<%= true %>" />
@@ -64,7 +67,7 @@ AssetCategoryUtil.addPortletBreadcrumbEntry(assetCategoriesDisplayContext.getVoc
 			<liferay-frontend:management-bar-sort
 				orderByCol="<%= assetCategoriesDisplayContext.getOrderByCol() %>"
 				orderByType="<%= assetCategoriesDisplayContext.getOrderByType() %>"
-				orderColumns='<%= new String[] {"create-date"} %>'
+				orderColumns="<%= assetCategoriesDisplayContext.getOrderColumns() %>"
 				portletURL="<%= PortletURLUtil.clone(assetCategoriesDisplayContext.getIteratorURL(), liferayPortletResponse) %>"
 			/>
 		</liferay-frontend:management-bar-filters>
@@ -74,7 +77,7 @@ AssetCategoryUtil.addPortletBreadcrumbEntry(assetCategoriesDisplayContext.getVoc
 		</liferay-portlet:actionURL>
 
 		<liferay-frontend:management-bar-display-buttons
-			displayViews='<%= new String[] {"icon", "descriptive", "list"} %>'
+			displayViews="<%= assetCategoriesDisplayContext.getDisplayViews() %>"
 			portletURL="<%= changeDisplayStyleURL %>"
 			selectedDisplayStyle="<%= assetCategoriesDisplayContext.getDisplayStyle() %>"
 		/>
@@ -112,6 +115,10 @@ AssetCategoryUtil.addPortletBreadcrumbEntry(assetCategoriesDisplayContext.getVoc
 				<portlet:param name="vocabularyId" value="<%= String.valueOf(curCategory.getVocabularyId()) %>" />
 			</portlet:renderURL>
 
+			<%
+			int subcategoriesCount = AssetCategoryLocalServiceUtil.getChildCategoriesCount(curCategory.getCategoryId());
+			%>
+
 			<c:choose>
 				<c:when test='<%= Objects.equals(assetCategoriesDisplayContext.getDisplayStyle(), "descriptive") %>'>
 					<liferay-ui:search-container-column-icon
@@ -132,6 +139,10 @@ AssetCategoryUtil.addPortletBreadcrumbEntry(assetCategoriesDisplayContext.getVoc
 
 						<h6 class="text-default">
 							<%= HtmlUtil.escape(curCategory.getDescription(locale)) %>
+						</h6>
+
+						<h6 class="text-default">
+							<liferay-ui:message arguments="<%= subcategoriesCount %>" key="x-subcategories" />
 						</h6>
 					</liferay-ui:search-container-column-text>
 
@@ -159,22 +170,49 @@ AssetCategoryUtil.addPortletBreadcrumbEntry(assetCategoriesDisplayContext.getVoc
 							<liferay-frontend:vertical-card-header>
 								<liferay-ui:message arguments="<%= LanguageUtil.getTimeDescription(request, System.currentTimeMillis() - curCategory.getCreateDate().getTime(), true) %>" key="x-ago" translateArguments="<%= false %>" />
 							</liferay-frontend:vertical-card-header>
+
+							<liferay-frontend:vertical-card-footer>
+								<liferay-ui:message arguments="<%= subcategoriesCount %>" key="x-subcategories" />
+							</liferay-frontend:vertical-card-footer>
 						</liferay-frontend:icon-vertical-card>
 					</liferay-ui:search-container-column-text>
 				</c:when>
 				<c:when test='<%= Objects.equals(assetCategoriesDisplayContext.getDisplayStyle(), "list") %>'>
-					<liferay-ui:search-container-column-text
-						href="<%= rowURL %>"
-						name="category"
-						truncate="<%= true %>"
-						value="<%= HtmlUtil.escape(curCategory.getTitle(locale)) %>"
-					/>
+					<c:choose>
+						<c:when test="<%= assetCategoriesDisplayContext.isFlattenedNavigationAllowed() %>">
+							<liferay-ui:search-container-column-text
+								cssClass="table-cell-content"
+								name="path"
+								value="<%= HtmlUtil.escape(curCategory.getPath(locale, true)) %>"
+							/>
 
-					<liferay-ui:search-container-column-text
-						name="description"
-						truncate="<%= true %>"
-						value="<%= HtmlUtil.escape(curCategory.getDescription(locale)) %>"
-					/>
+							<liferay-ui:search-container-column-text
+								cssClass="table-cell-content"
+								name="category"
+								value="<%= HtmlUtil.escape(curCategory.getTitle(locale)) %>"
+							/>
+						</c:when>
+						<c:otherwise>
+							<liferay-ui:search-container-column-text
+								cssClass="table-cell-content"
+								href="<%= rowURL %>"
+								name="category"
+								value="<%= HtmlUtil.escape(curCategory.getTitle(locale)) %>"
+							/>
+
+							<liferay-ui:search-container-column-text
+								cssClass="table-cell-content"
+								name="description"
+								value="<%= HtmlUtil.escape(curCategory.getDescription(locale)) %>"
+							/>
+
+							<liferay-ui:search-container-column-text
+								cssClass="table-cell-content"
+								name="subcategories"
+								value="<%= String.valueOf(subcategoriesCount) %>"
+							/>
+						</c:otherwise>
+					</c:choose>
 
 					<liferay-ui:search-container-column-date
 						name="create-date"
@@ -204,9 +242,20 @@ AssetCategoryUtil.addPortletBreadcrumbEntry(assetCategoriesDisplayContext.getVoc
 	</portlet:renderURL>
 
 	<liferay-frontend:add-menu>
-		<liferay-frontend:add-menu-item title='<%= LanguageUtil.get(request, "add-category") %>' url="<%= addCategoryURL.toString() %>" />
+		<liferay-frontend:add-menu-item title='<%= LanguageUtil.get(request, (assetCategoriesDisplayContext.getCategoryId() > 0) ? "add-subcategory" : "add-category") %>' url="<%= addCategoryURL.toString() %>" />
 	</liferay-frontend:add-menu>
 </c:if>
+
+<portlet:actionURL name="moveCategory" var="moveCategoryURL">
+	<portlet:param name="redirect" value="<%= currentURL %>" />
+	<portlet:param name="mvcPath" value="/view_categories.jsp" />
+</portlet:actionURL>
+
+<aui:form action="<%= moveCategoryURL %>" name="moveCategoryFm">
+	<aui:input name="categoryId" type="hidden" />
+	<aui:input name="parentCategoryId" type="hidden" />
+	<aui:input name="vocabularyId" type="hidden" />
+</aui:form>
 
 <aui:script sandbox="<%= true %>">
 	$('#<portlet:namespace />deleteSelectedCategories').on(

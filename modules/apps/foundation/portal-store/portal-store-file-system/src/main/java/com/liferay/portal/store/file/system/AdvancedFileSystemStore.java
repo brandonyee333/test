@@ -52,7 +52,7 @@ import org.osgi.service.component.annotations.ConfigurationPolicy;
  */
 @Component(
 	configurationPid = "com.liferay.portal.store.file.system.configuration.AdvancedFileSystemStoreConfiguration",
-	configurationPolicy = ConfigurationPolicy.OPTIONAL, immediate = true,
+	configurationPolicy = ConfigurationPolicy.REQUIRE, immediate = true,
 	property = "store.type=com.liferay.portal.store.file.system.AdvancedFileSystemStore",
 	service = Store.class
 )
@@ -120,8 +120,6 @@ public class AdvancedFileSystemStore extends FileSystemStore {
 				new FileSystemStoreRootDirException());
 		}
 
-		validate();
-
 		initializeRootDir();
 	}
 
@@ -143,7 +141,7 @@ public class AdvancedFileSystemStore extends FileSystemStore {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link #getFileNames(List, String,
+	 * @deprecated As of 2.0.0, replaced by {@link #getFileNames(List, String,
 	 *             String)}
 	 */
 	@Deprecated

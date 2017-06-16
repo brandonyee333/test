@@ -51,6 +51,7 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.shrinkwrap.osgi.api.BndProjectBuilder;
@@ -179,7 +180,8 @@ public class ResourcesImporterTest {
 
 		_layoutPrototypes = getLayoutPrototypes();
 
-		Assert.assertEquals(2, _layoutPrototypes.size());
+		Assert.assertEquals(
+			_layoutPrototypes.toString(), 2, _layoutPrototypes.size());
 
 		validateLayouts(_importedGroup);
 
@@ -224,12 +226,16 @@ public class ResourcesImporterTest {
 			webArchive,
 			"classes/resources-importer/journal/articles/BASIC_WEB_CONTENT" +
 				"/Basic Article.xml");
-		addWebInfResource(
-			webArchive,
-			"classes/resources-importer/journal/articles/BASIC_WEB_CONTENT" +
-				"/Basic Web Content Parent Folder" +
-					"/Basic Web Content Child Folder" +
-						"/Basic Article in Child Folder.xml");
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append("classes/resources-importer/journal/articles");
+		sb.append("/BASIC_WEB_CONTENT/Basic Web Content Parent Folder");
+		sb.append("/Basic Web Content Child Folder");
+		sb.append("/Basic Article in Child Folder.xml");
+
+		addWebInfResource(webArchive, sb.toString());
+
 		addWebInfResource(
 			webArchive,
 			"classes/resources-importer/journal/articles/BASIC_WEB_CONTENT" +
@@ -301,7 +307,7 @@ public class ResourcesImporterTest {
 				importedGroup.getGroupId(),
 				DLFolderConstants.DEFAULT_PARENT_FOLDER_ID);
 
-		Assert.assertEquals(1, dlFileEntries.size());
+		Assert.assertEquals(dlFileEntries.toString(), 1, dlFileEntries.size());
 
 		DLFileEntry dlFileEntry = dlFileEntries.get(0);
 
@@ -317,7 +323,7 @@ public class ResourcesImporterTest {
 			importedGroup.getGroupId(),
 			DLFolderConstants.DEFAULT_PARENT_FOLDER_ID);
 
-		Assert.assertEquals(1, dlFolders.size());
+		Assert.assertEquals(dlFolders.toString(), 1, dlFolders.size());
 
 		DLFolder dlFolder = dlFolders.get(0);
 
@@ -333,7 +339,8 @@ public class ResourcesImporterTest {
 			JournalArticleLocalServiceUtil.getArticles(
 				importedGroup.getGroupId());
 
-		Assert.assertEquals(5, journalArticles.size());
+		Assert.assertEquals(
+			journalArticles.toString(), 5, journalArticles.size());
 
 		int ddmStructuresCount =
 			DDMStructureLocalServiceUtil.getStructuresCount(
@@ -365,7 +372,7 @@ public class ResourcesImporterTest {
 		List<AssetTag> assetTags = AssetTagLocalServiceUtil.getEntryTags(
 			assetEntry.getEntryId());
 
-		Assert.assertEquals(1, assetTags.size());
+		Assert.assertEquals(assetTags.toString(), 1, assetTags.size());
 
 		JournalFolder parentJournalFolder =
 			JournalFolderLocalServiceUtil.fetchFolder(
@@ -420,7 +427,7 @@ public class ResourcesImporterTest {
 
 		List<Portlet> portlets = layoutTypePortlet.getAllPortlets();
 
-		Assert.assertEquals(7, portlets.size());
+		Assert.assertEquals(portlets.toString(), 7, portlets.size());
 
 		UnicodeProperties layoutTypeSettingsProperties =
 			layout.getTypeSettingsProperties();

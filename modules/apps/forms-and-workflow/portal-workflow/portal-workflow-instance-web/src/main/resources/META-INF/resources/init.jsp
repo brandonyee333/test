@@ -19,6 +19,7 @@
 <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
 
 <%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %><%@
+taglib uri="http://liferay.com/tld/comment" prefix="liferay-comment" %><%@
 taglib uri="http://liferay.com/tld/frontend" prefix="liferay-frontend" %><%@
 taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %><%@
@@ -35,12 +36,12 @@ page import="com.liferay.portal.kernel.util.WebKeys" %><%@
 page import="com.liferay.portal.kernel.workflow.WorkflowException" %><%@
 page import="com.liferay.portal.kernel.workflow.WorkflowInstance" %><%@
 page import="com.liferay.portal.kernel.workflow.WorkflowLog" %><%@
-page import="com.liferay.portal.workflow.instance.web.constants.WorkflowInstancePortletKeys" %><%@
-page import="com.liferay.portal.workflow.instance.web.dao.search.WorkflowInstanceResultRowSplitter" %><%@
-page import="com.liferay.portal.workflow.instance.web.display.context.MyWorkflowInstanceEditDisplayContext" %><%@
-page import="com.liferay.portal.workflow.instance.web.display.context.MyWorkflowInstanceViewDisplayContext" %><%@
-page import="com.liferay.portal.workflow.instance.web.display.context.WorkflowInstanceEditDisplayContext" %><%@
-page import="com.liferay.portal.workflow.instance.web.display.context.WorkflowInstanceViewDisplayContext" %><%@
+page import="com.liferay.portal.workflow.instance.web.internal.constants.WorkflowInstancePortletKeys" %><%@
+page import="com.liferay.portal.workflow.instance.web.internal.dao.search.WorkflowInstanceResultRowSplitter" %><%@
+page import="com.liferay.portal.workflow.instance.web.internal.display.context.MyWorkflowInstanceEditDisplayContext" %><%@
+page import="com.liferay.portal.workflow.instance.web.internal.display.context.MyWorkflowInstanceViewDisplayContext" %><%@
+page import="com.liferay.portal.workflow.instance.web.internal.display.context.WorkflowInstanceEditDisplayContext" %><%@
+page import="com.liferay.portal.workflow.instance.web.internal.display.context.WorkflowInstanceViewDisplayContext" %><%@
 page import="com.liferay.taglib.search.DateSearchEntry" %><%@
 page import="com.liferay.taglib.search.ResultRow" %>
 

@@ -14,6 +14,8 @@
 
 package com.liferay.users.admin.web.portlet.action;
 
+import com.liferay.asset.kernel.exception.AssetCategoryException;
+import com.liferay.asset.kernel.exception.AssetTagException;
 import com.liferay.document.library.kernel.service.DLAppLocalService;
 import com.liferay.portal.kernel.exception.AddressCityException;
 import com.liferay.portal.kernel.exception.AddressStreetException;
@@ -51,10 +53,10 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -79,6 +81,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	immediate = true,
 	property = {
+		"javax.portlet.name=" + UsersAdminPortletKeys.MY_ORGANIZATIONS,
 		"javax.portlet.name=" + UsersAdminPortletKeys.USERS_ADMIN,
 		"mvc.command.name=/users_admin/edit_organization"
 	},
@@ -117,7 +120,7 @@ public class EditOrganizationMVCActionCommand extends BaseMVCActionCommand {
 			String redirect = ParamUtil.getString(actionRequest, "redirect");
 
 			if (organization != null) {
-				redirect = HttpUtil.setParameter(
+				redirect = _http.setParameter(
 					redirect, actionResponse.getNamespace() + "organizationId",
 					organization.getOrganizationId());
 			}
@@ -133,6 +136,11 @@ public class EditOrganizationMVCActionCommand extends BaseMVCActionCommand {
 				SessionErrors.add(actionRequest, e.getClass());
 
 				mvcPath = "/error.jsp";
+			}
+			else if (e instanceof AssetCategoryException ||
+					 e instanceof AssetTagException) {
+
+				SessionErrors.add(actionRequest, e.getClass(), e);
 			}
 			else if (e instanceof AddressCityException ||
 					 e instanceof AddressStreetException ||
@@ -162,14 +170,14 @@ public class EditOrganizationMVCActionCommand extends BaseMVCActionCommand {
 				}
 
 				if (e instanceof RequiredOrganizationException) {
-					String redirect = PortalUtil.escapeRedirect(
+					String redirect = _portal.escapeRedirect(
 						ParamUtil.getString(actionRequest, "redirect"));
 
 					long organizationId = ParamUtil.getLong(
 						actionRequest, "organizationId");
 
 					if (organizationId > 0) {
-						redirect = HttpUtil.setParameter(
+						redirect = _http.setParameter(
 							redirect,
 							actionResponse.getNamespace() + "organizationId",
 							organizationId);
@@ -273,10 +281,10 @@ public class EditOrganizationMVCActionCommand extends BaseMVCActionCommand {
 			actionRequest, "privateLayoutSetPrototypeId");
 		boolean publicLayoutSetPrototypeLinkEnabled = ParamUtil.getBoolean(
 			actionRequest, "publicLayoutSetPrototypeLinkEnabled",
-			(publicLayoutSetPrototypeId > 0));
+			publicLayoutSetPrototypeId > 0);
 		boolean privateLayoutSetPrototypeLinkEnabled = ParamUtil.getBoolean(
 			actionRequest, "privateLayoutSetPrototypeLinkEnabled",
-			(privateLayoutSetPrototypeId > 0));
+			privateLayoutSetPrototypeId > 0);
 
 		Group organizationGroup = organization.getGroup();
 
@@ -308,6 +316,13 @@ public class EditOrganizationMVCActionCommand extends BaseMVCActionCommand {
 	}
 
 	private DLAppLocalService _dlAppLocalService;
+
+	@Reference
+	private Http _http;
+
 	private OrganizationService _organizationService;
+
+	@Reference
+	private Portal _portal;
 
 }

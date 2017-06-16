@@ -40,7 +40,7 @@ boolean showAssetCount = dataJSONObject.getBoolean("showAssetCount", true);
 
 			<ul class="<%= (showAssetCount && displayStyle.equals("cloud")) ? "tag-cloud" : "tag-list" %> list-unstyled">
 				<li class="default facet-value">
-					<a data-value="<%= Validator.isNull(fieldParam) ? "text-primary" : "text-default" %>" href="javascript:;"><liferay-ui:message key="<%= HtmlUtil.escape(facetConfiguration.getLabel()) %>" /></a>
+					<a class="<%= Validator.isNull(fieldParam) ? "text-primary" : "text-default" %>" data-value="" href="javascript:;"><liferay-ui:message key="<%= HtmlUtil.escape(facetConfiguration.getLabel()) %>" /></a>
 				</li>
 
 				<%
@@ -92,10 +92,9 @@ boolean showAssetCount = dataJSONObject.getBoolean("showAssetCount", true);
 						continue;
 					}
 
-					AssetCategory curAssetCategory = AssetCategoryLocalServiceUtil.getAssetCategory(assetCategoryId);
+					AssetCategory curAssetCategory = AssetCategoryLocalServiceUtil.fetchAssetCategory(assetCategoryId);
 
-					if (AssetCategoryPermission.contains(permissionChecker, curAssetCategory, ActionKeys.VIEW)) {
-
+					if ((curAssetCategory != null) && AssetCategoryPermission.contains(permissionChecker, curAssetCategory, ActionKeys.VIEW)) {
 						int popularity = (int)(1 + ((maxCount - (maxCount - (termCollector.getFrequency() - minCount))) * multiplier));
 
 						if (frequencyThreshold > termCollector.getFrequency()) {
@@ -110,7 +109,7 @@ boolean showAssetCount = dataJSONObject.getBoolean("showAssetCount", true);
 								<%= HtmlUtil.escape(curAssetCategory.getTitle(locale)) %>
 
 								<c:if test="<%= showAssetCount %>">
-									<span class="frequency"><%= termCollector.getFrequency() %></span>
+									<span class="frequency">(<%= termCollector.getFrequency() %>)</span>
 								</c:if>
 							</a>
 						</li>

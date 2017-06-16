@@ -17,7 +17,7 @@
 <%@ include file="/init.jsp" %>
 
 <%
-String language = ParamUtil.getString(renderRequest, "language", "javascript");
+String language = ParamUtil.getString(renderRequest, "language", "groovy");
 
 if (SessionMessages.contains(renderRequest, "language")) {
 	language = (String)SessionMessages.get(renderRequest, "language");
@@ -37,7 +37,7 @@ String scriptOutput = (String)SessionMessages.get(renderRequest, "scriptOutput")
 		<aui:select name="language">
 
 			<%
-			for (String supportedLanguage: ScriptingUtil.getSupportedLanguages()) {
+			for (String supportedLanguage : ScriptingUtil.getSupportedLanguages()) {
 			%>
 
 				<aui:option label="<%= TextFormatter.format(supportedLanguage, TextFormatter.J) %>" selected="<%= supportedLanguage.equals(language) %>" value="<%= supportedLanguage %>" />

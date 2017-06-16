@@ -51,6 +51,26 @@ public class LockLocalServiceImpl extends LockLocalServiceBaseImpl {
 	}
 
 	@Override
+	public Lock fetchLock(String className, long key) {
+		return fetchLock(className, String.valueOf(key));
+	}
+
+	@Override
+	public Lock fetchLock(String className, String key) {
+		Lock lock = lockPersistence.fetchByC_K(className, key);
+
+		if (lock != null) {
+			if (lock.isExpired()) {
+				expireLock(lock);
+
+				lock = null;
+			}
+		}
+
+		return lock;
+	}
+
+	@Override
 	public Lock getLock(String className, long key) throws PortalException {
 		return getLock(className, String.valueOf(key));
 	}
@@ -136,8 +156,29 @@ public class LockLocalServiceImpl extends LockLocalServiceBaseImpl {
 
 	@Override
 	public Lock lock(
+			long userId, String className, long key, String owner,
+			boolean inheritable, long expirationTime, boolean renew)
+		throws PortalException {
+
+		return lock(
+			userId, className, String.valueOf(key), owner, inheritable,
+			expirationTime, renew);
+	}
+
+	@Override
+	public Lock lock(
 			long userId, String className, String key, String owner,
 			boolean inheritable, long expirationTime)
+		throws PortalException {
+
+		return lock(
+			userId, className, key, owner, inheritable, expirationTime, true);
+	}
+
+	@Override
+	public Lock lock(
+			long userId, String className, String key, String owner,
+			boolean inheritable, long expirationTime, boolean renew)
 		throws PortalException {
 
 		Date now = new Date();
@@ -155,8 +196,10 @@ public class LockLocalServiceImpl extends LockLocalServiceBaseImpl {
 			}
 		}
 
+		boolean isNew = false;
+
 		if (lock == null) {
-			User user = userPersistence.findByPrimaryKey(userId);
+			User user = userLocalService.getUser(userId);
 
 			long lockId = counterLocalService.increment();
 
@@ -169,6 +212,11 @@ public class LockLocalServiceImpl extends LockLocalServiceBaseImpl {
 			lock.setKey(key);
 			lock.setOwner(owner);
 			lock.setInheritable(inheritable);
+
+			isNew = true;
+		}
+		else if (!renew) {
+			return lock;
 		}
 
 		lock.setCreateDate(now);
@@ -180,7 +228,11 @@ public class LockLocalServiceImpl extends LockLocalServiceBaseImpl {
 			lock.setExpirationDate(new Date(now.getTime() + expirationTime));
 		}
 
-		lockPersistence.update(lock);
+		lock = lockPersistence.update(lock);
+
+		if (isNew) {
+			lock.setNew(true);
+		}
 
 		return lock;
 	}
@@ -241,14 +293,16 @@ public class LockLocalServiceImpl extends LockLocalServiceBaseImpl {
 					});
 			}
 			catch (Throwable t) {
+				Throwable cause = t;
+
 				if (t instanceof ORMException) {
-					Throwable cause = t.getCause();
+					cause = t.getCause();
+				}
 
-					if ((cause instanceof ConstraintViolationException) ||
-						(cause instanceof LockAcquisitionException)) {
+				if (cause instanceof ConstraintViolationException ||
+					cause instanceof LockAcquisitionException) {
 
-						continue;
-					}
+					continue;
 				}
 
 				ReflectionUtil.throwException(t);
@@ -345,7 +399,6 @@ public class LockLocalServiceImpl extends LockLocalServiceBaseImpl {
 
 							if (Objects.equals(lock.getOwner(), owner)) {
 								lockPersistence.remove(lock);
-								lockPersistence.flush();
 							}
 
 							return null;
@@ -356,14 +409,16 @@ public class LockLocalServiceImpl extends LockLocalServiceBaseImpl {
 				return;
 			}
 			catch (Throwable t) {
+				Throwable cause = t;
+
 				if (t instanceof ORMException) {
-					Throwable cause = t.getCause();
+					cause = t.getCause();
+				}
 
-					if ((cause instanceof ConstraintViolationException) ||
-						(cause instanceof LockAcquisitionException)) {
+				if (cause instanceof ConstraintViolationException ||
+					cause instanceof LockAcquisitionException) {
 
-						continue;
-					}
+					continue;
 				}
 
 				ReflectionUtil.throwException(t);
@@ -383,26 +438,14 @@ public class LockLocalServiceImpl extends LockLocalServiceBaseImpl {
 
 		try {
 			lockPersistence.remove(lock);
+
+			lockPersistence.flush();
 		}
 		finally {
 			if (lockListener != null) {
 				lockListener.onAfterExpire(key);
 			}
 		}
-	}
-
-	protected Lock fetchLock(String className, String key) {
-		Lock lock = lockPersistence.fetchByC_K(className, key);
-
-		if (lock != null) {
-			if (lock.isExpired()) {
-				expireLock(lock);
-
-				lock = null;
-			}
-		}
-
-		return lock;
 	}
 
 	private final TransactionConfig _transactionConfig =

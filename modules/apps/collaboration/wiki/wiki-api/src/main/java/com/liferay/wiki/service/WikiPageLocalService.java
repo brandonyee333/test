@@ -49,6 +49,7 @@ import java.io.Serializable;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import javax.portlet.PortletURL;
 
@@ -221,17 +222,22 @@ public interface WikiPageLocalService extends BaseLocalService,
 	public WikiPage getLatestPage(long resourcePrimKey, long nodeId,
 		int status, boolean preferApproved) throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public WikiPage getPage(long nodeId, java.lang.String title)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public WikiPage getPage(long nodeId, java.lang.String title, double version)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public WikiPage getPage(long nodeId, java.lang.String title,
 		java.lang.Boolean head) throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public WikiPage getPage(long resourcePrimKey) throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public WikiPage getPage(long resourcePrimKey, java.lang.Boolean head)
 		throws PortalException;
 
@@ -265,7 +271,7 @@ public interface WikiPageLocalService extends BaseLocalService,
 		long groupId) throws PortalException;
 
 	/**
-	* @deprecated As of 7.0.0, replaced by {@link #movePageFromTrash(long,
+	* @deprecated As of 1.2.0, replaced by {@link #movePageFromTrash(long,
 	long, String, long, String)} *
 	*/
 	@java.lang.Deprecated
@@ -297,7 +303,7 @@ public interface WikiPageLocalService extends BaseLocalService,
 		ServiceContext serviceContext) throws PortalException;
 
 	/**
-	* @deprecated As of 7.0.0, replaced by {@link #updateStatus(long, WikiPage,
+	* @deprecated As of 1.2.0, replaced by {@link #updateStatus(long, WikiPage,
 	int, ServiceContext, Map)}
 	*/
 	@java.lang.Deprecated
@@ -320,6 +326,12 @@ public interface WikiPageLocalService extends BaseLocalService,
 	*/
 	@Indexable(type = IndexableType.REINDEX)
 	public WikiPage updateWikiPage(WikiPage wikiPage);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public WikiPageDisplay getPageDisplay(WikiPage page,
+		PortletURL viewPageURL, Supplier<PortletURL> editPageURLSupplier,
+		java.lang.String attachmentURLPrefix, ServiceContext serviceContext)
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public WikiPageDisplay getPageDisplay(WikiPage page,
@@ -600,7 +612,7 @@ public interface WikiPageLocalService extends BaseLocalService,
 		throws PortalException;
 
 	/**
-	* @deprecated As of 7.0.0 replaced by {@link #addTempFileEntry(long, long,
+	* @deprecated As of 1.2.0, replaced by {@link #addTempFileEntry(long, long,
 	String, String, InputStream, String)}
 	*/
 	@java.lang.Deprecated
@@ -641,7 +653,7 @@ public interface WikiPageLocalService extends BaseLocalService,
 		throws PortalException;
 
 	/**
-	* @deprecated As of 7.0.0, replaced by {@link #renamePage(long, long,
+	* @deprecated As of 1.2.0, replaced by {@link #renamePage(long, long,
 	String, String, ServiceContext)}
 	*/
 	@java.lang.Deprecated
@@ -676,7 +688,7 @@ public interface WikiPageLocalService extends BaseLocalService,
 		throws PortalException;
 
 	/**
-	* @deprecated As of 7.0.0 replaced by {@link
+	* @deprecated As of 1.2.0, replaced by {@link
 	WikiPageTitleValidator#validate(String)}
 	*/
 	@java.lang.Deprecated

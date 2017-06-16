@@ -19,7 +19,7 @@
 <%
 String keywords = ParamUtil.getString(request, "keywords");
 
-PortletURL portletURL = renderResponse.createRenderURL();
+PortletURL portletURL = trashDisplayContext.getPortletURL();
 
 boolean approximate = false;
 
@@ -39,7 +39,14 @@ if (Validator.isNotNull(searchTerms.getKeywords())) {
 	trashEntries = baseModelSearchResult.getBaseModels();
 }
 else {
-	TrashEntryList trashEntryList = TrashEntryServiceUtil.getEntries(themeDisplay.getScopeGroupId(), entrySearch.getStart(), entrySearch.getEnd(), entrySearch.getOrderByComparator());
+	TrashEntryList trashEntryList = null;
+
+	if (Objects.equals(trashDisplayContext.getNavigation(), "all")) {
+		trashEntryList = TrashEntryServiceUtil.getEntries(themeDisplay.getScopeGroupId(), entrySearch.getStart(), entrySearch.getEnd(), entrySearch.getOrderByComparator());
+	}
+	else {
+		trashEntryList = TrashEntryServiceUtil.getEntries(themeDisplay.getScopeGroupId(), trashDisplayContext.getNavigation(), entrySearch.getStart(), entrySearch.getEnd(), entrySearch.getOrderByComparator());
+	}
 
 	entrySearch.setTotal(trashEntryList.getCount());
 
@@ -52,7 +59,7 @@ entrySearch.setResults(trashEntries);
 
 EmptyOnClickRowChecker emptyOnClickRowChecker = new EmptyOnClickRowChecker(renderResponse);
 
-emptyOnClickRowChecker.setRememberCheckBoxStateURLRegex("^(?!.*" + liferayPortletResponse.getNamespace() + "redirect).*(/entry/)");
+emptyOnClickRowChecker.setRememberCheckBoxStateURLRegex("^(?!.*" + liferayPortletResponse.getNamespace() + "redirect).*^(?!.*/entry/)");
 
 entrySearch.setRowChecker(emptyOnClickRowChecker);
 
@@ -196,10 +203,12 @@ request.setAttribute("view.jsp-recycleBinEntrySearch", entrySearch);
 					if (Validator.isNotNull(trashRenderer.renderActions(renderRequest, renderResponse))) {
 						actionPath = trashRenderer.renderActions(renderRequest, renderResponse);
 					}
-					else if(trashEntry.getRootEntry() == null) {
+					else if (trashEntry.getRootEntry() == null) {
 						actionPath = "/entry_action.jsp";
-					} else {
-						request.setAttribute(TrashWebKeys.TRASH_RENDERER, trashRenderer);
+					}
+					else {
+						request.setAttribute("view.jsp-className", trashRenderer.getClassName());
+						request.setAttribute("view.jsp-classPK", String.valueOf(trashRenderer.getClassPK()));
 					}
 					%>
 
@@ -275,8 +284,8 @@ request.setAttribute("view.jsp-recycleBinEntrySearch", entrySearch);
 						</c:when>
 						<c:when test="<%= trashDisplayContext.isListView() %>">
 							<liferay-ui:search-container-column-text
+								cssClass="table-cell-content"
 								name="name"
-								truncate="<%= true %>"
 							>
 								<c:choose>
 									<c:when test="<%= !trashHandler.isContainerModel() %>">

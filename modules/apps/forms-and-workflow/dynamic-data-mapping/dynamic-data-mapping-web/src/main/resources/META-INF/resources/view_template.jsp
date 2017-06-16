@@ -19,7 +19,7 @@
 <%
 String tabs1 = ParamUtil.getString(request, "tabs1", "templates");
 
-long groupId = ParamUtil.getLong(request, "groupId", themeDisplay.getSiteGroupId());
+long groupId = ParamUtil.getLong(request, "groupId", PortalUtil.getScopeGroupId(request, refererPortletName));
 long classNameId = ParamUtil.getLong(request, "classNameId");
 long classPK = ParamUtil.getLong(request, "classPK");
 
@@ -48,6 +48,11 @@ if (layout != null) {
 }
 
 PortletURL iteratorURL = renderResponse.createRenderURL();
+
+iteratorURL.setParameter("mvcPath", "/view_template.jsp");
+iteratorURL.setParameter("groupId", String.valueOf(groupId));
+iteratorURL.setParameter("classNameId", String.valueOf(classNameId));
+iteratorURL.setParameter("resourceClassNameId", String.valueOf(resourceClassNameId));
 
 TemplateSearch templateSearch = new TemplateSearch(renderRequest, iteratorURL);
 
@@ -163,17 +168,17 @@ TemplateSearchTerms templateSearchTerms = (TemplateSearchTerms)templateSearch.ge
 
 				<c:if test='<%= !excludedColumnNames.contains("name") %>'>
 					<liferay-ui:search-container-column-text
+						cssClass="table-cell-content"
 						href="<%= rowHREF %>"
 						name="name"
-						truncate="<%= true %>"
 						value="<%= HtmlUtil.escape(template.getName(locale)) %>"
 					/>
 				</c:if>
 
 				<liferay-ui:search-container-column-jsp
+					cssClass="table-cell-content"
 					name="description"
 					path="/template_description.jsp"
-					truncate="<%= true %>"
 				/>
 
 				<c:if test='<%= !excludedColumnNames.contains("structure") && (structure == null) %>'>

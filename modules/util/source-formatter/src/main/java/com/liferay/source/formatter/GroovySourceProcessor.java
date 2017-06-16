@@ -14,57 +14,26 @@
 
 package com.liferay.source.formatter;
 
-import java.io.IOException;
-
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Hugo Huijser
  */
-public class GroovySourceProcessor extends JavaSourceProcessor {
-
-	@Override
-	public String[] getIncludes() {
-		return _INCLUDES;
-	}
-
-	@Override
-	protected void checkInefficientStringMethods(
-		String line, String fileName, String absolutePath, int lineCount,
-		boolean javaSource) {
-	}
-
-	@Override
-	protected void checkMissingAuthor(
-		String content, String fileName, String className) {
-
-		if (Character.isUpperCase(className.charAt(0))) {
-			super.checkMissingAuthor(content, fileName, className);
-		}
-	}
-
-	@Override
-	protected void checkPackagePath(
-		String content, String fileName, String packagePath) {
-	}
+public class GroovySourceProcessor extends BaseSourceProcessor {
 
 	@Override
 	protected List<String> doGetFileNames() throws Exception {
+		if (!portalSource && !subrepository) {
+			return new ArrayList<>();
+		}
+
 		return getFileNames(new String[0], getIncludes());
 	}
 
 	@Override
-	protected String fixCopyright(
-			String content, String absolutePath, String fileName,
-			String className)
-		throws IOException {
-
-		if (Character.isUpperCase(className.charAt(0))) {
-			return super.fixCopyright(
-				content, absolutePath, fileName, className);
-		}
-
-		return content;
+	protected String[] doGetIncludes() {
+		return _INCLUDES;
 	}
 
 	private static final String[] _INCLUDES = new String[] {"**/*.groovy"};

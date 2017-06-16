@@ -28,8 +28,6 @@ import com.liferay.portal.kernel.model.TrashedModel;
 import com.liferay.portal.kernel.model.TypedModel;
 import com.liferay.portal.kernel.model.WorkflowedModel;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.trash.TrashHandler;
-import com.liferay.trash.kernel.model.TrashEntry;
 
 import java.io.Serializable;
 
@@ -62,18 +60,18 @@ import java.util.Map;
 
 @ProviderType
 public interface ${entity.name}Model extends
-	<#assign overrideColumnNames = []>
+	<#assign overrideColumnNames = [] />
 
 	<#if entity.isAttachedModel()>
 		AttachedModel,
 
-		<#assign overrideColumnNames = overrideColumnNames + ["className", "classNameId", "classPK"]>
+		<#assign overrideColumnNames = overrideColumnNames + ["className", "classNameId", "classPK"] />
 	</#if>
 
 	<#if entity.isAuditedModel() && !entity.isGroupedModel() && !entity.isStagedAuditedModel()>
 		AuditedModel,
 
-		<#assign overrideColumnNames = overrideColumnNames + ["companyId", "createDate", "modifiedDate", "userId", "userName", "userUuid"]>
+		<#assign overrideColumnNames = overrideColumnNames + ["companyId", "createDate", "modifiedDate", "userId", "userName", "userUuid"] />
 	</#if>
 
 	BaseModel<${entity.name}>
@@ -85,7 +83,7 @@ public interface ${entity.name}Model extends
 	<#if entity.isGroupedModel() && !entity.isStagedGroupedModel()>
 		, GroupedModel
 
-		<#assign overrideColumnNames = overrideColumnNames + ["companyId", "createDate", "groupId", "modifiedDate", "userId", "userName", "userUuid"]>
+		<#assign overrideColumnNames = overrideColumnNames + ["companyId", "createDate", "groupId", "modifiedDate", "userId", "userName", "userUuid"] />
 	</#if>
 
 	<#if entity.isLocalizedModel()>
@@ -95,55 +93,55 @@ public interface ${entity.name}Model extends
 	<#if entity.isMvccEnabled()>
 		, MVCCModel
 
-		<#assign overrideColumnNames = overrideColumnNames + ["mvccVersion"]>
+		<#assign overrideColumnNames = overrideColumnNames + ["mvccVersion"] />
 	</#if>
 
 	<#if entity.isResourcedModel()>
 		, ResourcedModel
 
-		<#assign overrideColumnNames = overrideColumnNames + ["resourcePrimKey"]>
+		<#assign overrideColumnNames = overrideColumnNames + ["resourcePrimKey"] />
 	</#if>
 
 	<#if entity.isShardedModel()>
 		, ShardedModel
 
-		<#assign overrideColumnNames = overrideColumnNames + ["companyId"]>
+		<#assign overrideColumnNames = overrideColumnNames + ["companyId"] />
 	</#if>
 
 	<#if entity.isStagedGroupedModel()>
 		, StagedGroupedModel
 
-		<#assign overrideColumnNames = overrideColumnNames + ["companyId", "createDate", "groupId", "lastPublishDate", "modifiedDate", "stagedModelType", "userId", "userName", "userUuid", "uuid"]>
+		<#assign overrideColumnNames = overrideColumnNames + ["companyId", "createDate", "groupId", "lastPublishDate", "modifiedDate", "stagedModelType", "userId", "userName", "userUuid", "uuid"] />
 	</#if>
 
 	<#if entity.isStagedAuditedModel() && !entity.isStagedGroupedModel()>
 		, StagedAuditedModel
 
-		<#assign overrideColumnNames = overrideColumnNames + ["companyId", "createDate", "modifiedDate", "stagedModelType", "userId", "userName", "userUuid", "uuid"]>
+		<#assign overrideColumnNames = overrideColumnNames + ["companyId", "createDate", "modifiedDate", "stagedModelType", "userId", "userName", "userUuid", "uuid"] />
 	</#if>
 
 	<#if !entity.isStagedAuditedModel() && !entity.isStagedGroupedModel() && entity.isStagedModel()>
 		, StagedModel
 
-		<#assign overrideColumnNames = overrideColumnNames + ["companyId", "createDate", "modifiedDate", "stagedModelType", "uuid"]>
+		<#assign overrideColumnNames = overrideColumnNames + ["companyId", "createDate", "modifiedDate", "stagedModelType", "uuid"] />
 	</#if>
 
 	<#if entity.isTrashEnabled()>
 		, TrashedModel
 
-		<#assign overrideColumnNames = overrideColumnNames + ["status"]>
+		<#assign overrideColumnNames = overrideColumnNames + ["status"] />
 	</#if>
 
 	<#if entity.isTypedModel() && !entity.isAttachedModel()>
 		, TypedModel
 
-		<#assign overrideColumnNames = overrideColumnNames + ["className", "classNameId"]>
+		<#assign overrideColumnNames = overrideColumnNames + ["className", "classNameId"] />
 	</#if>
 
 	<#if entity.isWorkflowEnabled()>
 		, WorkflowedModel
 
-		<#assign overrideColumnNames = overrideColumnNames + ["status", "statusByUserId", "statusByUserName", "statusByUserUuid", "statusDate"]>
+		<#assign overrideColumnNames = overrideColumnNames + ["status", "statusByUserId", "statusByUserName", "statusByUserUuid", "statusDate"] />
 	</#if>
 
 	{
@@ -169,7 +167,7 @@ public interface ${entity.name}Model extends
 	public void setPrimaryKey(${entity.PKClassName} primaryKey);
 
 	<#list entity.regularColList as column>
-		<#if column.name == "classNameId">
+		<#if stringUtil.equals(column.name, "classNameId")>
 			/**
 			 * Returns the fully qualified class name of this ${entity.humanName}.
 			 *
@@ -185,18 +183,20 @@ public interface ${entity.name}Model extends
 			public void setClassName(String className);
 		</#if>
 
-		<#assign autoEscape = true>
+		<#assign
+			autoEscape = true
 
-		<#assign modelName = apiPackagePath + ".model." + entity.name>
+			modelName = apiPackagePath + ".model." + entity.name
+		/>
 
 		<#if modelHintsUtil.getHints(modelName, column.name)??>
-			<#assign hints = modelHintsUtil.getHints(modelName, column.name)>
+			<#assign hints = modelHintsUtil.getHints(modelName, column.name) />
 
 			<#if hints["auto-escape"]??>
-				<#assign autoEscapeHintValue = hints["auto-escape"]>
+				<#assign autoEscapeHintValue = hints["auto-escape"] />
 
-				<#if autoEscapeHintValue == "false">
-					<#assign autoEscape = false>
+				<#if stringUtil.equals(autoEscapeHintValue, "false")>
+					<#assign autoEscape = false />
 				</#if>
 			</#if>
 		</#if>
@@ -207,7 +207,7 @@ public interface ${entity.name}Model extends
 		 * @return the ${column.humanName} of this ${entity.humanName}
 		 */
 
-		<#if autoEscape && (column.type == "String") && (column.localized == false)>
+		<#if autoEscape && stringUtil.equals(column.type, "String") && (column.localized == false)>
 			@AutoEscape
 		</#if>
 
@@ -270,7 +270,7 @@ public interface ${entity.name}Model extends
 			public Map<Locale, String> get${column.methodName}Map();
 		</#if>
 
-		<#if column.type == "boolean">
+		<#if stringUtil.equals(column.type, "boolean")>
 			/**
 			 * Returns <code>true</code> if this ${entity.humanName} is ${column.humanName}.
 			 *
@@ -280,7 +280,7 @@ public interface ${entity.name}Model extends
 		</#if>
 
 		/**
-		<#if column.type == "boolean">
+		<#if stringUtil.equals(column.type, "boolean")>
 		 * Sets whether this ${entity.humanName} is ${column.humanName}.
 		<#else>
 		 * Sets the ${column.humanName} of this ${entity.humanName}.
@@ -329,7 +329,7 @@ public interface ${entity.name}Model extends
 			public void set${column.methodName}Map(Map<Locale, String> ${column.name}Map, Locale defaultLocale);
 		</#if>
 
-		<#if (column.name == "resourcePrimKey") && entity.isResourcedModel()>
+		<#if stringUtil.equals(column.name, "resourcePrimKey") && entity.isResourcedModel()>
 			@Override
 			public boolean isResourceMain();
 		</#if>
@@ -361,6 +361,22 @@ public interface ${entity.name}Model extends
 		</#if>
 	</#list>
 
+	<#if entity.localizedEntity??>
+		public String[] getAvailableLanguageIds();
+
+		<#list entity.localizedColumns as column>
+			public String get${column.methodName}();
+
+			public String get${column.methodName}(String languageId);
+
+			public String get${column.methodName}(String languageId, boolean useDefault);
+
+			public String get${column.methodName}MapAsXML();
+
+			public Map<String, String> getLanguageIdTo${column.methodName}Map();
+		</#list>
+	</#if>
+
 	<#if entity.isTrashEnabled()>
 		<#if !entity.isWorkflowEnabled()>
 			/**
@@ -378,7 +394,7 @@ public interface ${entity.name}Model extends
 		 * @return the trash entry created when this ${entity.humanName} was moved to the Recycle Bin
 		 */
 		@Override
-		public TrashEntry getTrashEntry() throws PortalException;
+		public com.liferay.trash.kernel.model.TrashEntry getTrashEntry() throws PortalException;
 
 		/**
 		 * Returns the class primary key of the trash entry for this ${entity.humanName}.
@@ -392,9 +408,11 @@ public interface ${entity.name}Model extends
 		 * Returns the trash handler for this ${entity.humanName}.
 		 *
 		 * @return the trash handler for this ${entity.humanName}
+		 * @deprecated As of 7.0.0, with no direct replacement
 		 */
+		@Deprecated
 		@Override
-		public TrashHandler getTrashHandler();
+		public com.liferay.portal.kernel.trash.TrashHandler getTrashHandler();
 
 		/**
 		 * Returns <code>true</code> if this ${entity.humanName} is in the Recycle Bin.

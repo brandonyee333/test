@@ -51,6 +51,12 @@ if (step == 1) {
 		uniqueGroupId = groups.get(0).getGroupId();
 	}
 }
+
+long groupId = ParamUtil.getLong(request, "groupId", uniqueGroupId);
+
+portletURL.setParameter("groupId", String.valueOf(groupId));
+
+portletURL.setParameter("step", String.valueOf(step));
 %>
 
 <aui:nav-bar cssClass="collapse-basic-search" markupView="lexicon">
@@ -90,10 +96,6 @@ if (step == 1) {
 			<div class="alert alert-info">
 				<liferay-ui:message key="please-select-a-site-to-which-you-will-assign-a-site-role" />
 			</div>
-
-			<%
-			portletURL.setParameter("step", "1");
-			%>
 
 			<liferay-ui:search-container
 				searchContainer="<%= new GroupSearch(renderRequest, portletURL) %>"
@@ -156,13 +158,7 @@ if (step == 1) {
 				);
 			</aui:script>
 		</c:when>
-
 		<c:when test="<%= step == 2 %>">
-
-			<%
-			long groupId = ParamUtil.getLong(request, "groupId", uniqueGroupId);
-			%>
-
 			<aui:input name="step" type="hidden" value="2" />
 			<aui:input name="groupId" type="hidden" value="<%= String.valueOf(groupId) %>" />
 
@@ -185,7 +181,6 @@ if (step == 1) {
 
 			<%
 			portletURL.setParameter("step", "2");
-			portletURL.setParameter("groupId", String.valueOf(groupId));
 			%>
 
 			<liferay-ui:search-container
@@ -238,11 +233,11 @@ if (step == 1) {
 							<%
 							Map<String, Object> data = new HashMap<String, Object>();
 
-							data.put("iconcssclass", RolesAdminUtil.getIconCssClass(role));
+							data.put("entityid", role.getRoleId());
+							data.put("entityname", role.getTitle(locale));
 							data.put("groupdescriptivename", group.getDescriptiveName(locale));
 							data.put("groupid", group.getGroupId());
-							data.put("roleid", role.getRoleId());
-							data.put("roletitle", role.getTitle(locale));
+							data.put("iconcssclass", RolesAdminUtil.getIconCssClass(role));
 							data.put("searchcontainername", "siteRoles");
 
 							boolean disabled = false;

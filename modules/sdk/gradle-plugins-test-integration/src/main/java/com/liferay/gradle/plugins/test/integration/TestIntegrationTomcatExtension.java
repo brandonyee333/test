@@ -14,7 +14,7 @@
 
 package com.liferay.gradle.plugins.test.integration;
 
-import com.liferay.gradle.plugins.test.integration.util.GradleUtil;
+import com.liferay.gradle.plugins.test.integration.internal.util.GradleUtil;
 
 import java.io.File;
 
@@ -51,6 +51,16 @@ public class TestIntegrationTomcatExtension {
 
 	public String getManagerUserName() {
 		return GradleUtil.toString(_managerUserName);
+	}
+
+	public File getModuleFrameworkBaseDir() {
+		File dir = getLiferayHome();
+
+		if (dir != null) {
+			dir = new File(dir, "osgi");
+		}
+
+		return dir;
 	}
 
 	public int getPortNumber() {

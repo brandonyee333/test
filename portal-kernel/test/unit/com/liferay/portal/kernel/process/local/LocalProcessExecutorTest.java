@@ -71,7 +71,7 @@ import java.net.URLClassLoader;
 import java.nio.channels.ServerSocketChannel;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -109,12 +109,12 @@ public class LocalProcessExecutorTest {
 			@Override
 			public void appendAssertClasses(List<Class<?>> assertClasses) {
 				assertClasses.add(ProcessConfig.class);
-				assertClasses.addAll(
-					Arrays.asList(ProcessConfig.class.getDeclaredClasses()));
+				Collections.addAll(
+					assertClasses, ProcessConfig.class.getDeclaredClasses());
 				assertClasses.add(LocalProcessLauncher.class);
-				assertClasses.addAll(
-					Arrays.asList(
-						LocalProcessLauncher.class.getDeclaredClasses()));
+				Collections.addAll(
+					assertClasses,
+					LocalProcessLauncher.class.getDeclaredClasses());
 			}
 
 		};
@@ -447,7 +447,7 @@ public class LocalProcessExecutorTest {
 			Assert.assertFalse(future.isCancelled());
 			Assert.assertTrue(future.isDone());
 
-			Assert.assertEquals(1, logRecords.size());
+			Assert.assertEquals(logRecords.toString(), 1, logRecords.size());
 
 			String message = logRecords.get(0).getMessage();
 
@@ -635,6 +635,7 @@ public class LocalProcessExecutorTest {
 		ExecutorService executorService = _invokeGetThreadPoolExecutor();
 
 		Assert.assertNotNull(executorService);
+
 		Assert.assertNotNull(_getThreadPoolExecutor());
 
 		_localProcessExecutor.destroy();
@@ -646,6 +647,7 @@ public class LocalProcessExecutorTest {
 		executorService = _invokeGetThreadPoolExecutor();
 
 		Assert.assertNotNull(executorService);
+
 		Assert.assertNotNull(_getThreadPoolExecutor());
 
 		DummyJob dummyJob = new DummyJob();
@@ -788,7 +790,7 @@ public class LocalProcessExecutorTest {
 
 			List<LogRecord> logRecords = captureHandler.getLogRecords();
 
-			Assert.assertEquals(1, logRecords.size());
+			Assert.assertEquals(logRecords.toString(), 1, logRecords.size());
 
 			LogRecord logRecord = logRecords.get(0);
 
@@ -851,6 +853,7 @@ public class LocalProcessExecutorTest {
 
 		Assert.assertEquals(
 			DummyReturnProcessCallable.class.getName(), returnValue);
+
 		Assert.assertFalse(future.isCancelled());
 		Assert.assertTrue(future.isDone());
 
@@ -967,7 +970,7 @@ public class LocalProcessExecutorTest {
 			Assert.assertFalse(future.isCancelled());
 			Assert.assertTrue(future.isDone());
 
-			Assert.assertEquals(1, logRecords.size());
+			Assert.assertEquals(logRecords.toString(), 1, logRecords.size());
 
 			LogRecord logRecord = logRecords.get(0);
 
@@ -993,7 +996,7 @@ public class LocalProcessExecutorTest {
 			Assert.assertFalse(future.isCancelled());
 			Assert.assertTrue(future.isDone());
 
-			Assert.assertEquals(2, logRecords.size());
+			Assert.assertEquals(logRecords.toString(), 2, logRecords.size());
 
 			LogRecord logRecord1 = logRecords.get(0);
 
@@ -1026,7 +1029,7 @@ public class LocalProcessExecutorTest {
 			Assert.assertFalse(future.isCancelled());
 			Assert.assertTrue(future.isDone());
 
-			Assert.assertEquals(0, logRecords.size());
+			Assert.assertEquals(logRecords.toString(), 0, logRecords.size());
 		}
 	}
 
@@ -1150,7 +1153,7 @@ public class LocalProcessExecutorTest {
 
 			List<LogRecord> logRecords = captureHandler.getLogRecords();
 
-			Assert.assertEquals(1, logRecords.size());
+			Assert.assertEquals(logRecords.toString(), 1, logRecords.size());
 
 			LogRecord logRecord = logRecords.get(0);
 
@@ -1326,7 +1329,7 @@ public class LocalProcessExecutorTest {
 
 			Set<Process> processes = _localProcessExecutor.destroy();
 
-			Assert.assertEquals(1, processes.size());
+			Assert.assertEquals(processes.toString(), 1, processes.size());
 
 			try {
 				future.get();
@@ -1381,7 +1384,8 @@ public class LocalProcessExecutorTest {
 
 				List<LogRecord> logRecords = captureHandler.getLogRecords();
 
-				Assert.assertEquals(1, logRecords.size());
+				Assert.assertEquals(
+					logRecords.toString(), 1, logRecords.size());
 
 				LogRecord logRecord = logRecords.get(0);
 
@@ -1482,6 +1486,9 @@ public class LocalProcessExecutorTest {
 			arguments.add(jpdaOptions);
 			arguments.add("-Djvm.debug=true");
 		}
+
+		arguments.add("-Dliferay.mode=test");
+		arguments.add("-Dsun.zip.disableMemoryMapping=true");
 
 		String whipAgentLine = System.getProperty("whip.agent");
 
@@ -1724,7 +1731,7 @@ public class LocalProcessExecutorTest {
 				Thread heartbeatThread = _getHeartbeatThread(false);
 
 				while (heartbeatThread.getState() !=
-					Thread.State.TIMED_WAITING);
+							Thread.State.TIMED_WAITING);
 
 				ProcessContext.detach();
 
@@ -1965,7 +1972,7 @@ public class LocalProcessExecutorTest {
 
 			byte[] serializedData = unsyncByteArrayOutputStream.toByteArray();
 
-			serializedData[5] = (byte) (serializedData[5] + 1);
+			serializedData[5] = (byte)(serializedData[5] + 1);
 
 			_brokenPipingData = serializedData;
 		}

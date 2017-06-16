@@ -14,6 +14,8 @@
 
 package com.liferay.exportimport.lar;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.document.library.kernel.service.DLFileEntryLocalService;
 import com.liferay.exportimport.kernel.lar.DefaultConfigurationPortletDataHandler;
 import com.liferay.exportimport.kernel.lar.ExportImportDateUtil;
@@ -37,7 +39,6 @@ import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Property;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
-import com.liferay.portal.kernel.exception.NoSuchLayoutException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -49,11 +50,11 @@ import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.model.Portlet;
-import com.liferay.portal.kernel.model.PortletConstants;
 import com.liferay.portal.kernel.model.StagedGroupedModel;
 import com.liferay.portal.kernel.model.StagedModel;
 import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.security.xml.SecureXMLFactoryProviderUtil;
 import com.liferay.portal.kernel.service.GroupLocalService;
@@ -119,6 +120,7 @@ import org.xml.sax.XMLReader;
  * @author Mate Thurzo
  */
 @Component(immediate = true)
+@ProviderType
 public class ExportImportHelperImpl implements ExportImportHelper {
 
 	@Override
@@ -146,7 +148,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, moved to {@link
+	 * @deprecated As of 3.0.0, moved to {@link
 	 *             ExportImportDateUtil#getCalendar(PortletRequest, String,
 	 *             boolean)}
 	 */
@@ -214,7 +216,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, moved to {@link
+	 * @deprecated As of 3.0.0, moved to {@link
 	 *             ExportImportDateUtil#getDateRange(PortletRequest, long,
 	 *             boolean, long, String, String)}
 	 */
@@ -231,7 +233,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
+	 * @deprecated As of 3.0.0, with no direct replacement
 	 */
 	@Deprecated
 	@Override
@@ -252,11 +254,11 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 			return null;
 		}
 
-		return PortletConstants.getRootPortletId(portletId);
+		return PortletIdCodec.decodePortletName(portletId);
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link
+	 * @deprecated As of 3.0.0, replaced by {@link
 	 *             #getExportPortletControlsMap(long, String, Map)}
 	 */
 	@Deprecated
@@ -271,7 +273,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link
+	 * @deprecated As of 3.0.0, replaced by {@link
 	 *             #getExportPortletControlsMap(long, String, Map, String)}
 	 */
 	@Deprecated
@@ -327,7 +329,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link
+	 * @deprecated As of 3.0.0, replaced by {@link
 	 *             #getImportPortletControlsMap(long, String, Map, Element,
 	 *             ManifestSummary)}
 	 */
@@ -343,7 +345,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link
+	 * @deprecated As of 3.0.0, replaced by {@link
 	 *             #getImportPortletControlsMap(long, String, Map, Element,
 	 *             ManifestSummary)}
 	 */
@@ -514,7 +516,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link
+	 * @deprecated As of 3.0.0, replaced by {@link
 	 *             #getManifestSummary(PortletDataContext)}
 	 */
 	@Deprecated
@@ -609,7 +611,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 	}
 
 	/**
-	 * @see om.liferay.exportimport.kernel.backgroundtask.LayoutRemoteStagingBackgroundTaskExecutor#getMissingRemoteParentLayouts(
+	 * @see com.liferay.exportimport.kernel.backgroundtask.LayoutRemoteStagingBackgroundTaskExecutor#getMissingRemoteParentLayouts(
 	 *      com.liferay.portal.kernel.security.auth.HttpPrincipal, Layout, long)
 	 */
 	@Override
@@ -626,16 +628,15 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 			parentLayout = _layoutLocalService.getLayout(
 				layout.getGroupId(), layout.isPrivateLayout(), parentLayoutId);
 
-			try {
-				_layoutLocalService.getLayoutByUuidAndGroupId(
+			if (_layoutLocalService.hasLayout(
 					parentLayout.getUuid(), liveGroupId,
-					parentLayout.isPrivateLayout());
+					parentLayout.isPrivateLayout())) {
 
 				// If one parent is found, all others are assumed to exist
 
 				break;
 			}
-			catch (NoSuchLayoutException nsle) {
+			else {
 				missingParentLayouts.add(parentLayout);
 
 				parentLayoutId = parentLayout.getParentLayoutId();
@@ -776,7 +777,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link
+	 * @deprecated As of 3.0.0, replaced by {@link
 	 *             com.liferay.exportimport.content.processor.ExportImportContentProcessor#replaceExportContentReferences(
 	 *             PortletDataContext, StagedModel, String, boolean, boolean)}
 	 */
@@ -792,7 +793,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link
+	 * @deprecated As of 3.0.0, replaced by {@link
 	 *             com.liferay.exportimport.content.processor.ExportImportContentProcessor#replaceExportContentReferences(
 	 *             PortletDataContext, StagedModel, String, boolean, boolean)}
 	 */
@@ -808,7 +809,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link
+	 * @deprecated As of 3.0.0, replaced by {@link
 	 *             com.liferay.exportimport.content.processor.ExportImportContentProcessor#replaceExportContentReferences(
 	 *             PortletDataContext, StagedModel, String, boolean, boolean)}
 	 */
@@ -824,7 +825,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
+	 * @deprecated As of 3.0.0, with no direct replacement
 	 */
 	@Deprecated
 	@Override
@@ -838,7 +839,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
+	 * @deprecated As of 3.0.0, with no direct replacement
 	 */
 	@Deprecated
 	@Override
@@ -852,7 +853,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
+	 * @deprecated As of 3.0.0, with no direct replacement
 	 */
 	@Deprecated
 	@Override
@@ -864,7 +865,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
+	 * @deprecated As of 3.0.0, with no direct replacement
 	 */
 	@Deprecated
 	@Override
@@ -877,7 +878,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
+	 * @deprecated As of 3.0.0, with no direct replacement
 	 */
 	@Deprecated
 	@Override
@@ -891,7 +892,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
+	 * @deprecated As of 3.0.0, with no direct replacement
 	 */
 	@Deprecated
 	@Override
@@ -904,7 +905,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link
+	 * @deprecated As of 3.0.0, replaced by {@link
 	 *             com.liferay.exportimport.content.processor.ExportImportContentProcessor#replaceImportContentReferences(
 	 *             PortletDataContext, StagedModel, String)}
 	 */
@@ -919,7 +920,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link
+	 * @deprecated As of 3.0.0, replaced by {@link
 	 *             com.liferay.exportimport.content.processor.ExportImportContentProcessor#replaceImportContentReferences(
 	 *             PortletDataContext, StagedModel, String)}
 	 */
@@ -934,7 +935,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
+	 * @deprecated As of 3.0.0, with no direct replacement
 	 */
 	@Deprecated
 	@Override
@@ -947,7 +948,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
+	 * @deprecated As of 3.0.0, with no direct replacement
 	 */
 	@Deprecated
 	@Override
@@ -960,7 +961,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
+	 * @deprecated As of 3.0.0, with no direct replacement
 	 */
 	@Deprecated
 	@Override
@@ -972,7 +973,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
+	 * @deprecated As of 3.0.0, with no direct replacement
 	 */
 	@Deprecated
 	@Override
@@ -985,7 +986,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
+	 * @deprecated As of 3.0.0, with no direct replacement
 	 */
 	@Deprecated
 	@Override
@@ -997,7 +998,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
+	 * @deprecated As of 3.0.0, with no direct replacement
 	 */
 	@Deprecated
 	@Override
@@ -1010,7 +1011,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, see {@link
+	 * @deprecated As of 3.0.0, see {@link
 	 *             DefaultConfigurationPortletDataHandler#updateExportPortletPreferencesClassPKs(
 	 *             PortletDataContext, Portlet, PortletPreferences, String,
 	 *             String)}
@@ -1024,7 +1025,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link
+	 * @deprecated As of 3.0.0, replaced by {@link
 	 *             #updateExportPortletPreferencesClassPKs(PortletDataContext,
 	 *             Portlet, PortletPreferences, String, String)}
 	 */
@@ -1041,7 +1042,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, see {@link
+	 * @deprecated As of 3.0.0, see {@link
 	 *             DefaultConfigurationPortletDataHandler#updateImportPortletPreferencesClassPKs(
 	 *             PortletDataContext, PortletPreferences, String, Class, long)}
 	 */
@@ -1055,7 +1056,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link
+	 * @deprecated As of 3.0.0, replaced by {@link
 	 *             #validateMissingReferences(PortletDataContext)}
 	 */
 	@Deprecated
@@ -1249,7 +1250,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 		return MapUtil.getBoolean(
 			parameterMap,
 			PortletDataHandlerKeys.PORTLET_DATA + StringPool.UNDERLINE +
-				PortletConstants.getRootPortletId(portletId));
+				PortletIdCodec.decodePortletName(portletId));
 	}
 
 	protected Map<String, Boolean> getExportPortletSetupControlsMap(
@@ -1291,29 +1292,29 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 		else if (rootPortletId != null) {
 			exportCurPortletConfiguration =
 				exportPortletConfiguration &&
-					MapUtil.getBoolean(
-						parameterMap,
-						PortletDataHandlerKeys.PORTLET_CONFIGURATION +
-							StringPool.UNDERLINE + rootPortletId);
+				MapUtil.getBoolean(
+					parameterMap,
+					PortletDataHandlerKeys.PORTLET_CONFIGURATION +
+						StringPool.UNDERLINE + rootPortletId);
 
 			exportCurPortletArchivedSetups =
 				exportCurPortletConfiguration &&
-					MapUtil.getBoolean(
-						parameterMap,
-						PortletDataHandlerKeys.PORTLET_ARCHIVED_SETUPS +
-							StringPool.UNDERLINE + rootPortletId);
+				MapUtil.getBoolean(
+					parameterMap,
+					PortletDataHandlerKeys.PORTLET_ARCHIVED_SETUPS +
+						StringPool.UNDERLINE + rootPortletId);
 			exportCurPortletSetup =
 				exportCurPortletConfiguration &&
-					MapUtil.getBoolean(
-						parameterMap,
-						PortletDataHandlerKeys.PORTLET_SETUP +
-							StringPool.UNDERLINE + rootPortletId);
+				MapUtil.getBoolean(
+					parameterMap,
+					PortletDataHandlerKeys.PORTLET_SETUP +
+						StringPool.UNDERLINE + rootPortletId);
 			exportCurPortletUserPreferences =
 				exportCurPortletConfiguration &&
-					MapUtil.getBoolean(
-						parameterMap,
-						PortletDataHandlerKeys.PORTLET_USER_PREFERENCES +
-							StringPool.UNDERLINE + rootPortletId);
+				MapUtil.getBoolean(
+					parameterMap,
+					PortletDataHandlerKeys.PORTLET_USER_PREFERENCES +
+						StringPool.UNDERLINE + rootPortletId);
 		}
 
 		Map<String, Boolean> exportPortletSetupControlsMap = new HashMap<>();
@@ -1369,7 +1370,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 		return MapUtil.getBoolean(
 			parameterMap,
 			PortletDataHandlerKeys.PORTLET_DATA + StringPool.UNDERLINE +
-				PortletConstants.getRootPortletId(portletId));
+				PortletIdCodec.decodePortletName(portletId));
 	}
 
 	protected Map<String, Boolean> getImportPortletSetupControlsMap(
@@ -1406,45 +1407,45 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 
 			importCurPortletArchivedSetups =
 				importCurPortletConfiguration &&
-					MapUtil.getBoolean(
-						parameterMap,
-						PortletDataHandlerKeys.PORTLET_ARCHIVED_SETUPS_ALL);
+				MapUtil.getBoolean(
+					parameterMap,
+					PortletDataHandlerKeys.PORTLET_ARCHIVED_SETUPS_ALL);
 			importCurPortletSetup =
 				importCurPortletConfiguration &&
-					MapUtil.getBoolean(
-						parameterMap, PortletDataHandlerKeys.PORTLET_SETUP_ALL);
+				MapUtil.getBoolean(
+					parameterMap, PortletDataHandlerKeys.PORTLET_SETUP_ALL);
 			importCurPortletUserPreferences =
 				importCurPortletConfiguration &&
-					MapUtil.getBoolean(
-						parameterMap,
-						PortletDataHandlerKeys.PORTLET_USER_PREFERENCES_ALL);
+				MapUtil.getBoolean(
+					parameterMap,
+					PortletDataHandlerKeys.PORTLET_USER_PREFERENCES_ALL);
 		}
 		else if (rootPortletId != null) {
 			importCurPortletConfiguration =
 				importPortletConfiguration &&
-					MapUtil.getBoolean(
-						parameterMap,
-						PortletDataHandlerKeys.PORTLET_CONFIGURATION +
-							StringPool.UNDERLINE + rootPortletId);
+				MapUtil.getBoolean(
+					parameterMap,
+					PortletDataHandlerKeys.PORTLET_CONFIGURATION +
+						StringPool.UNDERLINE + rootPortletId);
 
 			importCurPortletArchivedSetups =
 				importCurPortletConfiguration &&
-					MapUtil.getBoolean(
-						parameterMap,
-						PortletDataHandlerKeys.PORTLET_ARCHIVED_SETUPS +
-							StringPool.UNDERLINE + rootPortletId);
+				MapUtil.getBoolean(
+					parameterMap,
+					PortletDataHandlerKeys.PORTLET_ARCHIVED_SETUPS +
+						StringPool.UNDERLINE + rootPortletId);
 			importCurPortletSetup =
 				importCurPortletConfiguration &&
-					MapUtil.getBoolean(
-						parameterMap,
-						PortletDataHandlerKeys.PORTLET_SETUP +
-							StringPool.UNDERLINE + rootPortletId);
+				MapUtil.getBoolean(
+					parameterMap,
+					PortletDataHandlerKeys.PORTLET_SETUP +
+						StringPool.UNDERLINE + rootPortletId);
 			importCurPortletUserPreferences =
 				importCurPortletConfiguration &&
-					MapUtil.getBoolean(
-						parameterMap,
-						PortletDataHandlerKeys.PORTLET_USER_PREFERENCES +
-							StringPool.UNDERLINE + rootPortletId);
+				MapUtil.getBoolean(
+					parameterMap,
+					PortletDataHandlerKeys.PORTLET_USER_PREFERENCES +
+						StringPool.UNDERLINE + rootPortletId);
 		}
 
 		Map<String, Boolean> importPortletSetupMap = new HashMap<>();

@@ -57,11 +57,13 @@ import java.util.concurrent.Future;
  */
 public abstract class DLPreviewableProcessor implements DLProcessor {
 
+	public static final String DECRYPT_PATH = "document_decrypt/";
+
+	public static final String DECRYPT_TMP_PATH;
+
 	public static final String PREVIEW_PATH = "document_preview/";
 
-	public static final String PREVIEW_TMP_PATH =
-		SystemProperties.get(SystemProperties.TMP_DIR) + "/liferay/" +
-			PREVIEW_PATH;
+	public static final String PREVIEW_TMP_PATH;
 
 	public static final long REPOSITORY_ID = CompanyConstants.SYSTEM;
 
@@ -73,9 +75,17 @@ public abstract class DLPreviewableProcessor implements DLProcessor {
 
 	public static final String THUMBNAIL_PATH = "document_thumbnail/";
 
-	public static final String THUMBNAIL_TMP_PATH =
-		SystemProperties.get(SystemProperties.TMP_DIR) + "/liferay/" +
-			THUMBNAIL_PATH;
+	public static final String THUMBNAIL_TMP_PATH;
+
+	public static final String TMP_PATH;
+
+	static {
+		TMP_PATH = SystemProperties.get(SystemProperties.TMP_DIR) + "/liferay/";
+
+		DECRYPT_TMP_PATH = TMP_PATH.concat(DECRYPT_PATH);
+		PREVIEW_TMP_PATH = TMP_PATH.concat(PREVIEW_PATH);
+		THUMBNAIL_TMP_PATH = TMP_PATH.concat(THUMBNAIL_PATH);
+	}
 
 	public static void deleteFiles() {
 		long[] companyIds = PortalUtil.getCompanyIds();
@@ -641,6 +651,10 @@ public abstract class DLPreviewableProcessor implements DLProcessor {
 		sb.append(type);
 
 		return sb.toString();
+	}
+
+	protected File getDecryptedTempFile(String id) {
+		return new File(DECRYPT_TMP_PATH + id);
 	}
 
 	protected abstract List<Long> getFileVersionIds();

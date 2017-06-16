@@ -45,7 +45,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -153,6 +153,7 @@ public class SPIClassPathContextListenerTest {
 		final String driverClassName = "TestDriver";
 
 		putResource(resources, _jdbcDriverJarFile, driverClassName);
+
 		putResource(
 			resources, _portalServiceJarFile, PortalException.class.getName());
 
@@ -246,7 +247,8 @@ public class SPIClassPathContextListenerTest {
 
 			Assert.assertEquals(
 				spiClassPath, SPIClassPathContextListener.SPI_CLASS_PATH);
-			Assert.assertEquals(2, logRecords.size());
+
+			Assert.assertEquals(logRecords.toString(), 2, logRecords.size());
 
 			LogRecord logRecord = logRecords.get(0);
 
@@ -302,6 +304,7 @@ public class SPIClassPathContextListenerTest {
 			ReflectionTestUtil.invoke(
 				childClassLoader, "findLoadedClass",
 				new Class<?>[] {String.class}, TestClass.class.getName()));
+
 		Assert.assertNull(
 			ReflectionTestUtil.invoke(
 				parentClassLoader, "findLoadedClass",
@@ -355,7 +358,7 @@ public class SPIClassPathContextListenerTest {
 
 		List<SPIProvider> spiProviders = MPIHelperUtil.getSPIProviders();
 
-		Assert.assertEquals(1, spiProviders.size());
+		Assert.assertEquals(spiProviders.toString(), 1, spiProviders.size());
 		Assert.assertSame(spiProviderReference.get(), spiProviders.get(0));
 
 		// Duplicate register
@@ -370,7 +373,7 @@ public class SPIClassPathContextListenerTest {
 			spiClassPathContextListener.contextInitialized(
 				new ServletContextEvent(_mockServletContext));
 
-			Assert.assertEquals(1, logRecords.size());
+			Assert.assertEquals(logRecords.toString(), 1, logRecords.size());
 
 			LogRecord logRecord = logRecords.get(0);
 
@@ -424,7 +427,7 @@ public class SPIClassPathContextListenerTest {
 
 		spiProviders = MPIHelperUtil.getSPIProviders();
 
-		Assert.assertEquals(1, spiProviders.size());
+		Assert.assertEquals(spiProviders.toString(), 1, spiProviders.size());
 		Assert.assertSame(spiProviderReference.get(), spiProviders.get(0));
 
 		embeddedLibDir.delete();
@@ -446,7 +449,8 @@ public class SPIClassPathContextListenerTest {
 					file.delete();
 				}
 				else {
-					fileQueue.addAll(Arrays.asList(files));
+					Collections.addAll(fileQueue, files);
+
 					fileQueue.add(file);
 				}
 			}

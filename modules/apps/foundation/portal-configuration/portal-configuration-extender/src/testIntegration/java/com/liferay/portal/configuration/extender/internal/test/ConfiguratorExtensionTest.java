@@ -22,6 +22,7 @@ import com.liferay.portal.configuration.extender.NamedConfigurationContent;
 import com.liferay.portal.configuration.extender.SingleConfigurationDescription;
 import com.liferay.portal.configuration.extender.internal.ConfiguratorExtension;
 import com.liferay.portal.kernel.util.PropertiesUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Supplier;
 
 import java.io.ByteArrayInputStream;
@@ -129,7 +130,8 @@ public class ConfiguratorExtensionTest {
 		Configuration[] configurations = _configurationAdmin.listConfigurations(
 			null);
 
-		Assert.assertEquals(1, configurations.length);
+		Assert.assertEquals(
+			Arrays.toString(configurations), 1, configurations.length);
 	}
 
 	@Test
@@ -142,14 +144,15 @@ public class ConfiguratorExtensionTest {
 		Configuration[] configurations = _configurationAdmin.listConfigurations(
 			null);
 
-		Assert.assertEquals(1, configurations.length);
+		Assert.assertEquals(
+			Arrays.toString(configurations), 1, configurations.length);
 	}
 
 	@Test
 	public void testFactoryConfigurationCreatesAnother() throws Exception {
 		Configuration configuration =
 			_configurationAdmin.createFactoryConfiguration(
-				"test.factory.pid", null);
+				"test.factory.pid", StringPool.QUESTION);
 
 		configuration.update(
 			new Hashtable<String, Object>() {
@@ -166,7 +169,8 @@ public class ConfiguratorExtensionTest {
 		Configuration[] configurations = _configurationAdmin.listConfigurations(
 			null);
 
-		Assert.assertEquals(2, configurations.length);
+		Assert.assertEquals(
+			Arrays.toString(configurations), 2, configurations.length);
 
 		Assert.assertNotNull(
 			_configurationAdmin.listConfigurations("(key=value)"));
@@ -189,7 +193,8 @@ public class ConfiguratorExtensionTest {
 		Configuration[] configurations = _configurationAdmin.listConfigurations(
 			null);
 
-		Assert.assertEquals(2, configurations.length);
+		Assert.assertEquals(
+			Arrays.toString(configurations), 2, configurations.length);
 	}
 
 	@Test
@@ -206,7 +211,8 @@ public class ConfiguratorExtensionTest {
 		Configuration[] configurations = _configurationAdmin.listConfigurations(
 			null);
 
-		Assert.assertEquals(1, configurations.length);
+		Assert.assertEquals(
+			Arrays.toString(configurations), 1, configurations.length);
 
 		Dictionary<String, Object> properties =
 			configurations[0].getProperties();
@@ -231,7 +237,8 @@ public class ConfiguratorExtensionTest {
 		Configuration[] configurations = _configurationAdmin.listConfigurations(
 			null);
 
-		Assert.assertEquals(2, configurations.length);
+		Assert.assertEquals(
+			Arrays.toString(configurations), 2, configurations.length);
 	}
 
 	@Test
@@ -243,7 +250,8 @@ public class ConfiguratorExtensionTest {
 		Configuration[] configurations = _configurationAdmin.listConfigurations(
 			null);
 
-		Assert.assertEquals(1, configurations.length);
+		Assert.assertEquals(
+			Arrays.toString(configurations), 1, configurations.length);
 	}
 
 	@Test
@@ -251,7 +259,8 @@ public class ConfiguratorExtensionTest {
 		throws Exception {
 
 		Configuration configuration = _configurationAdmin.getConfiguration(
-			"test.pid", null);
+			"test.pid", StringPool.QUESTION);
+
 		configuration.update(
 			new Hashtable<String, Object>() {
 				{
@@ -267,7 +276,8 @@ public class ConfiguratorExtensionTest {
 		Configuration[] configurations = _configurationAdmin.listConfigurations(
 			null);
 
-		Assert.assertEquals(1, configurations.length);
+		Assert.assertEquals(
+			Arrays.toString(configurations), 1, configurations.length);
 
 		Dictionary<String, Object> properties =
 			configurations[0].getProperties();
@@ -288,7 +298,8 @@ public class ConfiguratorExtensionTest {
 		Configuration[] configurations = _configurationAdmin.listConfigurations(
 			null);
 
-		Assert.assertEquals(1, configurations.length);
+		Assert.assertEquals(
+			Arrays.toString(configurations), 1, configurations.length);
 
 		Dictionary<String, Object> properties =
 			configurations[0].getProperties();
@@ -312,7 +323,8 @@ public class ConfiguratorExtensionTest {
 		Configuration[] configurations = _configurationAdmin.listConfigurations(
 			null);
 
-		Assert.assertEquals(1, configurations.length);
+		Assert.assertEquals(
+			Arrays.toString(configurations), 1, configurations.length);
 
 		Dictionary<String, Object> properties =
 			configurations[0].getProperties();
@@ -331,7 +343,8 @@ public class ConfiguratorExtensionTest {
 		Configuration[] configurations = _configurationAdmin.listConfigurations(
 			null);
 
-		Assert.assertEquals(2, configurations.length);
+		Assert.assertEquals(
+			Arrays.toString(configurations), 2, configurations.length);
 	}
 
 	private void _startExtension(
@@ -365,8 +378,8 @@ public class ConfiguratorExtensionTest {
 		public ConfigurationDescription create(
 			NamedConfigurationContent namedConfigurationContent) {
 
-			if (namedConfigurationContent
-					instanceof StringSingleNamedConfigurationContent) {
+			if (namedConfigurationContent instanceof
+					StringSingleNamedConfigurationContent) {
 
 				final StringSingleNamedConfigurationContent ssncc =
 					(StringSingleNamedConfigurationContent)

@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.security.ldap.LDAPSettings;
 import com.liferay.portal.kernel.service.CompanyLocalService;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LoggingTimer;
@@ -38,7 +39,7 @@ import com.liferay.portal.security.ldap.exportimport.configuration.LDAPImportCon
 import com.liferay.portal.verify.VerifyProcess;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Dictionary;
 import java.util.HashSet;
 import java.util.List;
@@ -181,10 +182,6 @@ public class LDAPPropertiesVerifyProcess extends VerifyProcess {
 		Dictionary<String, Object> dictionary = new HashMapDictionary<>();
 
 		dictionary.put(
-			LDAPConstants.AUTH_REQUIRED,
-			_prefsProps.getBoolean(
-				companyId, LegacyLDAPPropsKeys.LDAP_AUTH_REQUIRED, false));
-		dictionary.put(
 			LDAPConstants.EXPORT_ENABLED,
 			_prefsProps.getBoolean(
 				companyId, LegacyLDAPPropsKeys.LDAP_EXPORT_ENABLED, false));
@@ -192,17 +189,6 @@ public class LDAPPropertiesVerifyProcess extends VerifyProcess {
 			LDAPConstants.EXPORT_GROUP_ENABLED,
 			_prefsProps.getBoolean(
 				companyId, LegacyLDAPPropsKeys.LDAP_EXPORT_GROUP_ENABLED,
-				false));
-		dictionary.put(
-			LDAPConstants.PASSWORD_ENCRYPTION_ALGORITHM,
-			_prefsProps.getString(
-				companyId,
-				LegacyLDAPPropsKeys.LDAP_AUTH_PASSWORD_ENCRYPTION_ALGORITHM,
-				"NONE"));
-		dictionary.put(
-			LDAPConstants.PASSWORD_POLICY_ENABLED,
-			_prefsProps.getBoolean(
-				companyId, LegacyLDAPPropsKeys.LDAP_PASSWORD_POLICY_ENABLED,
 				false));
 
 		if (_log.isInfoEnabled()) {
@@ -283,23 +269,27 @@ public class LDAPPropertiesVerifyProcess extends VerifyProcess {
 
 	protected void verifyLDAPProperties() throws Exception {
 		try (LoggingTimer loggingTimer = new LoggingTimer()) {
-			List<Company> companies =_companyLocalService.getCompanies(false);
+			List<Company> companies = _companyLocalService.getCompanies(false);
 
 			for (Company company : companies) {
 				long companyId = company.getCompanyId();
+
+				long[] ldapServerIds = StringUtil.split(
+					_prefsProps.getString(companyId, "ldap.server.ids"), 0L);
+
+				if (ArrayUtil.isEmpty(ldapServerIds)) {
+					continue;
+				}
 
 				verifyLDAPAuthProperties(companyId);
 				verifyLDAPExportProperties(companyId);
 				verifyLDAPImportProperties(companyId);
 				verifySystemLDAPConfiguration(companyId);
 
-				long[] ldapServerIds = StringUtil.split(
-					_prefsProps.getString(companyId, "ldap.server.ids"), 0L);
-
 				Set<String> keys = new HashSet<>();
 
-				keys.addAll(
-					Arrays.asList(LegacyLDAPPropsKeys.NONPOSTFIXED_LDAP_KEYS));
+				Collections.addAll(
+					keys, LegacyLDAPPropsKeys.NONPOSTFIXED_LDAP_KEYS);
 
 				for (long ldapServerId : ldapServerIds) {
 					String postfix = _ldapSettings.getPropertyPostfix(

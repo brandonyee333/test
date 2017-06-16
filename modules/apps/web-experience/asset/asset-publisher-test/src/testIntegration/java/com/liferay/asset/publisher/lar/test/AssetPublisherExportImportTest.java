@@ -26,6 +26,7 @@ import com.liferay.asset.publisher.web.constants.AssetPublisherPortletKeys;
 import com.liferay.asset.publisher.web.display.context.AssetEntryResult;
 import com.liferay.asset.publisher.web.display.context.AssetPublisherDisplayContext;
 import com.liferay.asset.publisher.web.util.AssetPublisherUtil;
+import com.liferay.asset.publisher.web.util.DefaultAssetPublisherCustomizer;
 import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.document.library.kernel.model.DLFileEntryMetadata;
 import com.liferay.document.library.kernel.model.DLFileEntryType;
@@ -47,14 +48,15 @@ import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
-import com.liferay.portal.kernel.model.PortletInstance;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.servlet.PortletServlet;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
@@ -65,6 +67,7 @@ import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -99,8 +102,12 @@ import org.junit.runner.RunWith;
 
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.portlet.MockPortletRequest;
+import org.springframework.mock.web.portlet.MockPortletResponse;
 
 /**
+ * Tests the export and import behavior of the Asset Publisher bundle with
+ * different types of assets.
+ *
  * @author Julio Camarero
  */
 @RunWith(Arquillian.class)
@@ -117,11 +124,9 @@ public class AssetPublisherExportImportTest
 
 	@Override
 	public String getPortletId() throws Exception {
-		PortletInstance portletInstance = new PortletInstance(
+		return PortletIdCodec.encode(
 			AssetPublisherPortletKeys.ASSET_PUBLISHER,
 			RandomTestUtil.randomString());
-
-		return portletInstance.getPortletInstanceKey();
 	}
 
 	@Before
@@ -145,6 +150,7 @@ public class AssetPublisherExportImportTest
 		preferenceMap.put(
 			"anyAssetType",
 			new String[] {String.valueOf(dlFileEntryClassNameId)});
+
 		preferenceMap.put(
 			"anyClassTypeDLFileEntryAssetRendererFactory",
 			new String[] {String.valueOf(Boolean.TRUE)});
@@ -176,6 +182,7 @@ public class AssetPublisherExportImportTest
 		preferenceMap.put(
 			"anyAssetType",
 			new String[] {String.valueOf(journalArticleClassNameId)});
+
 		preferenceMap.put(
 			"anyClassTypeJournalArticleAssetRendererFactory",
 			new String[] {String.valueOf(Boolean.TRUE)});
@@ -608,6 +615,7 @@ public class AssetPublisherExportImportTest
 		preferenceMap.put(
 			"anyAssetType",
 			new String[] {String.valueOf(dlFileEntryClassNameId)});
+
 		preferenceMap.put(
 			"anyClassTypeDLFileEntryAssetRendererFactory",
 			new String[] {
@@ -664,6 +672,7 @@ public class AssetPublisherExportImportTest
 		preferenceMap.put(
 			"anyAssetType",
 			new String[] {String.valueOf(journalArticleClassNameId)});
+
 		preferenceMap.put(
 			"anyClassTypeJournalArticleAssetRendererFactory",
 			new String[] {String.valueOf(ddmStructure.getStructureId())});
@@ -743,6 +752,13 @@ public class AssetPublisherExportImportTest
 
 		Map<String, String[]> preferenceMap = new HashMap<>();
 
+		long dlFileEntryClassNameId = PortalUtil.getClassNameId(
+			DLFileEntry.class);
+
+		preferenceMap.put(
+			"anyAssetType",
+			new String[] {String.valueOf(dlFileEntryClassNameId)});
+
 		preferenceMap.put(
 			"anyClassTypeDLFileEntryAssetRendererFactory",
 			new String[] {String.valueOf(Boolean.FALSE)});
@@ -791,6 +807,13 @@ public class AssetPublisherExportImportTest
 			serviceContext);
 
 		Map<String, String[]> preferenceMap = new HashMap<>();
+
+		long journalArticleClassNameId = PortalUtil.getClassNameId(
+			JournalArticle.class);
+
+		preferenceMap.put(
+			"anyAssetType",
+			new String[] {String.valueOf(journalArticleClassNameId)});
 
 		preferenceMap.put(
 			"anyClassTypeJournalArticleAssetRendererFactory",
@@ -949,7 +972,8 @@ public class AssetPublisherExportImportTest
 		List<AssetEntry> actualAssetEntries) {
 
 		Assert.assertEquals(
-			expectedAssetEntries.size(), actualAssetEntries.size());
+			actualAssetEntries.toString(), expectedAssetEntries.size(),
+			actualAssetEntries.size());
 
 		Iterator<AssetEntry> expectedAssetEntriesIterator =
 			expectedAssetEntries.iterator();
@@ -1083,6 +1107,16 @@ public class AssetPublisherExportImportTest
 				ServiceContextTestUtil.getServiceContext());
 		}
 
+		DefaultAssetPublisherCustomizer defaultAssetPublisherCustomizer =
+			new DefaultAssetPublisherCustomizer();
+
+		defaultAssetPublisherCustomizer.activate(new HashMap<String, Object>());
+
+		MockPortletRequest mockPortletRequest = new MockPortletRequest();
+
+		MockHttpServletRequest mockHttpServletRequest =
+			new MockHttpServletRequest();
+
 		String scopeId = AssetPublisherUtil.getScopeId(
 			group, group.getGroupId());
 
@@ -1092,9 +1126,6 @@ public class AssetPublisherExportImportTest
 
 		PortletPreferences portletPreferences = getImportedPortletPreferences(
 			preferenceMap);
-
-		MockHttpServletRequest mockHttpServletRequest =
-			new MockHttpServletRequest();
 
 		ThemeDisplay themeDisplay = new ThemeDisplay();
 
@@ -1110,9 +1141,18 @@ public class AssetPublisherExportImportTest
 		mockHttpServletRequest.setAttribute(
 			WebKeys.THEME_DISPLAY, themeDisplay);
 
+		mockPortletRequest.setPreferences(portletPreferences);
+
+		mockPortletRequest.setAttribute(
+			PortletServlet.PORTLET_SERVLET_REQUEST, mockHttpServletRequest);
+
+		mockHttpServletRequest.setAttribute(
+			JavaConstants.JAVAX_PORTLET_REQUEST, mockPortletRequest);
+
 		AssetPublisherDisplayContext assetPublisherDisplayContext =
 			new AssetPublisherDisplayContext(
-				mockHttpServletRequest, portletPreferences);
+				defaultAssetPublisherCustomizer, mockPortletRequest,
+				new MockPortletResponse(), portletPreferences);
 
 		SearchContainer<AssetEntry> searchContainer = new SearchContainer<>();
 

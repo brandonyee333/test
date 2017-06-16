@@ -21,6 +21,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -58,6 +59,20 @@ public class ReflectionUtil {
 		}
 
 		return unfinalField(field);
+	}
+
+	public static Field[] getDeclaredFields(Class<?> clazz) throws Exception {
+		Field[] fields = clazz.getDeclaredFields();
+
+		for (Field field : fields) {
+			if (!field.isAccessible()) {
+				field.setAccessible(true);
+			}
+
+			unfinalField(field);
+		}
+
+		return fields;
 	}
 
 	public static Method getDeclaredMethod(
@@ -187,7 +202,7 @@ public class ReflectionUtil {
 		Set<Method> visibleMethods = new HashSet<>(
 			Arrays.asList(clazz.getMethods()));
 
-		visibleMethods.addAll(Arrays.asList(clazz.getDeclaredMethods()));
+		Collections.addAll(visibleMethods, clazz.getDeclaredMethods());
 
 		while ((clazz = clazz.getSuperclass()) != null) {
 			for (Method method : clazz.getDeclaredMethods()) {
@@ -205,7 +220,7 @@ public class ReflectionUtil {
 	}
 
 	public static <T> T throwException(Throwable throwable) {
-		return ReflectionUtil.<T, RuntimeException>_doThrowException(throwable);
+		return ReflectionUtil.<T, RuntimeException>_throwException(throwable);
 	}
 
 	public static Field unfinalField(Field field) throws Exception {
@@ -218,14 +233,6 @@ public class ReflectionUtil {
 		}
 
 		return field;
-	}
-
-	@SuppressWarnings("unchecked")
-	private static <T, E extends Throwable> T _doThrowException(
-			Throwable throwable)
-		throws E {
-
-		throw (E)throwable;
 	}
 
 	private static Type _getGenericInterface(
@@ -268,6 +275,14 @@ public class ReflectionUtil {
 			catch (ClassNotFoundException cnfe) {
 			}
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private static <T, E extends Throwable> T _throwException(
+			Throwable throwable)
+		throws E {
+
+		throw (E)throwable;
 	}
 
 	private static final Method _CLONE_METHOD;

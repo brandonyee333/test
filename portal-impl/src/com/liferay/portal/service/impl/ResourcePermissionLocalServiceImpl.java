@@ -14,6 +14,7 @@
 
 package com.liferay.portal.service.impl;
 
+import com.liferay.exportimport.kernel.staging.MergeLayoutPrototypesThreadLocal;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
 import com.liferay.portal.kernel.dao.orm.Session;
@@ -30,6 +31,7 @@ import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.search.IndexWriterHelperUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.security.permission.PermissionUpdateHandler;
 import com.liferay.portal.kernel.security.permission.PermissionUpdateHandlerRegistryUtil;
@@ -377,7 +379,7 @@ public class ResourcePermissionLocalServiceImpl
 				}
 			}
 
-			if (availableActionIds.size() > 0) {
+			if (!availableActionIds.isEmpty()) {
 				roleIdsToActionIds.put(
 					resourcePermission.getRoleId(), availableActionIds);
 			}
@@ -958,8 +960,6 @@ public class ResourcePermissionLocalServiceImpl
 		}
 
 		roleLocalService.deleteRole(fromRoleId);
-
-		PermissionCacheUtil.clearCache();
 	}
 
 	/**
@@ -1008,8 +1008,6 @@ public class ResourcePermissionLocalServiceImpl
 		if (resourcePermissions.isEmpty()) {
 			roleLocalService.deleteRole(fromRoleId);
 		}
-
-		PermissionCacheUtil.clearCache();
 	}
 
 	/**
@@ -1303,9 +1301,13 @@ public class ResourcePermissionLocalServiceImpl
 			resourcePermission.setViewActionId(actionIdsLong % 2 == 1);
 
 			resourcePermissionPersistence.update(resourcePermission);
-		}
 
-		IndexWriterHelperUtil.updatePermissionFields(name, primKey);
+			if (ArrayUtil.contains(actionIds, ActionKeys.MANAGE_SUBGROUPS)) {
+				PermissionCacheUtil.clearPrimaryKeyRoleCache();
+			}
+
+			IndexWriterHelperUtil.updatePermissionFields(name, primKey);
+		}
 	}
 
 	protected boolean isGuestRoleId(long companyId, long roleId)
@@ -1391,12 +1393,31 @@ public class ResourcePermissionLocalServiceImpl
 		try {
 			long[] roleIds = ArrayUtil.toLongArray(roleIdsToActionIds.keySet());
 
-			List<ResourcePermission> resourcePermissions =
+			List<ResourcePermission> resourcePermissions = new ArrayList<>(
+				roleIds.length);
+
+			int batchSize = 1000;
+			int start = 0;
+
+			while (start < (roleIds.length - batchSize)) {
+				resourcePermissions.addAll(
+					resourcePermissionPersistence.findByC_N_S_P_R(
+						companyId, name, scope, primKey,
+						ArrayUtil.subset(roleIds, start, start + batchSize)));
+
+				start += batchSize;
+			}
+
+			resourcePermissions.addAll(
 				resourcePermissionPersistence.findByC_N_S_P_R(
-					companyId, name, scope, primKey, roleIds);
+					companyId, name, scope, primKey,
+					ArrayUtil.subset(roleIds, start, roleIds.length)));
+
+			roleIdsToActionIds = new HashMap<>(roleIdsToActionIds);
 
 			for (ResourcePermission resourcePermission : resourcePermissions) {
 				long roleId = resourcePermission.getRoleId();
+
 				String[] actionIds = roleIdsToActionIds.remove(roleId);
 
 				doUpdateResourcePermission(
@@ -1419,8 +1440,10 @@ public class ResourcePermissionLocalServiceImpl
 					ResourcePermissionConstants.OPERATOR_SET, false);
 			}
 
-			TransactionCommitCallbackUtil.registerCallback(
-				new UpdateResourcePermissionCallable(name, primKey));
+			if (!MergeLayoutPrototypesThreadLocal.isInProgress()) {
+				TransactionCommitCallbackUtil.registerCallback(
+					new UpdateResourcePermissionCallable(name, primKey));
+			}
 		}
 		finally {
 			PermissionThreadLocal.setFlushResourcePermissionEnabled(

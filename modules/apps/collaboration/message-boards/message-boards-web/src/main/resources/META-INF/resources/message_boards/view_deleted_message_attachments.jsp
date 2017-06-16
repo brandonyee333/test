@@ -50,10 +50,14 @@ iteratorURL.setParameter("messageId", String.valueOf(messageId));
 	<portlet:param name="messageId" value="<%= String.valueOf(message.getMessageId()) %>" />
 </portlet:actionURL>
 
+<%
+String trashEntriesMaxAgeTimeDescription = LanguageUtil.getTimeDescription(locale, trashHelper.getMaxAge(themeDisplay.getScopeGroup()) * Time.MINUTE, true);
+%>
+
 <liferay-trash:empty
 	confirmMessage="are-you-sure-you-want-to-remove-the-attachments-for-this-message"
 	emptyMessage="remove-the-attachments-for-this-message"
-	infoMessage="attachments-that-have-been-removed-for-more-than-x-will-be-automatically-deleted"
+	infoMessage='<%= LanguageUtil.format(request, "attachments-that-have-been-removed-for-more-than-x-will-be-automatically-deleted", trashEntriesMaxAgeTimeDescription, false) %>'
 	portletURL="<%= emptyTrashURL.toString() %>"
 	totalEntries="<%= message.getDeletedAttachmentsFileEntriesCount() %>"
 />
@@ -93,7 +97,7 @@ iteratorURL.setParameter("messageId", String.valueOf(messageId));
 				icon="<%= assetRenderer.getIconCssClass() %>"
 				label="<%= true %>"
 				markupView="lexicon"
-				message="<%= TrashUtil.getOriginalTitle(fileEntry.getTitle()) %>"
+				message="<%= trashHelper.getOriginalTitle(fileEntry.getTitle()) %>"
 			/>
 		</liferay-ui:search-container-column-text>
 
@@ -112,22 +116,3 @@ iteratorURL.setParameter("messageId", String.valueOf(messageId));
 
 	<liferay-ui:search-iterator />
 </liferay-ui:search-container>
-
-<portlet:actionURL name="/message_boards/edit_message_attachments" var="checkEntryURL">
-	<portlet:param name="<%= Constants.CMD %>" value="<%= Constants.CHECK %>" />
-</portlet:actionURL>
-
-<portlet:renderURL var="duplicateEntryURL" windowState="<%= LiferayWindowState.EXCLUSIVE.toString() %>">
-	<portlet:param name="mvcRenderCommandName" value="/message_boards/restore_entry" />
-	<portlet:param name="redirect" value="<%= currentURL %>" />
-</portlet:renderURL>
-
-<aui:script use="liferay-restore-entry">
-	new Liferay.RestoreEntry(
-	{
-			checkEntryURL: '<%= checkEntryURL.toString() %>',
-			duplicateEntryURL: '<%= duplicateEntryURL.toString() %>',
-			namespace: '<portlet:namespace />'
-		}
-	);
-</aui:script>

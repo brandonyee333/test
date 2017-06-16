@@ -61,11 +61,12 @@ if (!resultRowSplitterEntries.isEmpty()) {
 
 						if (i < normalizedHeaderNames.size()) {
 							normalizedHeaderName = normalizedHeaderNames.get(i);
-
-							cssClass = (normalizedHeaderName == "rowChecker") ? "lfr-checkbox-column" : "lfr-" + normalizedHeaderName + "-column";
 						}
 
-						if (Validator.isNull(normalizedHeaderName)) {
+						if (Validator.isNotNull(normalizedHeaderName)) {
+							cssClass = (normalizedHeaderName.equals("rowChecker")) ? "lfr-checkbox-column" : "lfr-" + normalizedHeaderName + "-column";
+						}
+						else {
 							normalizedHeaderName = String.valueOf(i +1);
 
 							cssClass = "lfr-entry-action-column";
@@ -224,7 +225,7 @@ if (!resultRowSplitterEntries.isEmpty()) {
 					}
 				%>
 
-					<tr class="<%= GetterUtil.getString(row.getClassName()) %> <%= row.getCssClass() %> <%= row.getState() %> <%= rowIsChecked ? "info" : StringPool.BLANK %>" data-qa-id="row" <%= AUIUtil.buildData(data) %>>
+					<tr class="<%= GetterUtil.getString(row.getClassName()) %> <%= row.getCssClass() %> <%= row.getState() %> <%= rowIsChecked ? "active" : StringPool.BLANK %>" data-qa-id="row" <%= AUIUtil.buildData(data) %>>
 
 						<%
 						for (int j = 0; j < entries.size(); j++) {
@@ -258,7 +259,7 @@ if (!resultRowSplitterEntries.isEmpty()) {
 								normalizedColumnName = normalizedHeaderNames.get(j);
 
 								if (!Validator.isBlank(normalizedColumnName)) {
-									columnClassName += (normalizedColumnName == "rowChecker") ? " lfr-checkbox-column" : " lfr-" + normalizedColumnName + "-column";
+									columnClassName += (normalizedColumnName.equals("rowChecker")) ? " lfr-checkbox-column" : " lfr-" + normalizedColumnName + "-column";
 								}
 							}
 
@@ -311,7 +312,7 @@ if (!resultRowSplitterEntries.isEmpty()) {
 					for (int i = 0; i < headerNames.size(); i++) {
 					%>
 
-						<td class="table-cell"></td>
+						<td></td>
 
 					<%
 					}

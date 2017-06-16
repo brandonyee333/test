@@ -23,14 +23,16 @@ ItemSelectorUploadViewDisplayContext itemSelectorUploadViewDisplayContext = (Ite
 <div class="container-fluid-1280 lfr-item-viewer" id="itemSelectorUploadContainer">
 	<div class="drop-enabled drop-zone upload-view">
 		<div id="uploadDescription">
-			<p>
-				<strong><liferay-ui:message arguments="<%= itemSelectorUploadViewDisplayContext.getRepositoryName() %>" key="drag-and-drop-to-upload-to-x-or" /></strong>
-			</p>
+			<c:if test="<%= !BrowserSnifferUtil.isMobile(request) %>">
+				<p>
+					<strong><liferay-ui:message arguments="<%= itemSelectorUploadViewDisplayContext.getRepositoryName() %>" key="drag-and-drop-to-upload-to-x-or" /></strong>
+				</p>
+			</c:if>
 
 			<p>
 				<label class="btn btn-default" for="<portlet:namespace />inputFile"><liferay-ui:message key="select-file" /></label>
 
-				<input class="hide" id="<portlet:namespace />inputFile" type="file" />
+				<input accept="<%= ArrayUtil.isEmpty(itemSelectorUploadViewDisplayContext.getExtensions()) ? "*" : StringUtil.merge(itemSelectorUploadViewDisplayContext.getExtensions()) %>" class="hide" id="<portlet:namespace />inputFile" type="file" />
 			</p>
 		</div>
 	</div>
@@ -39,6 +41,21 @@ ItemSelectorUploadViewDisplayContext itemSelectorUploadViewDisplayContext = (Ite
 </div>
 
 <aui:script use="liferay-item-selector-repository-entry-browser">
+
+	<%
+	ItemSelectorReturnTypeResolver itemSelectorReturnTypeResolver = itemSelectorUploadViewDisplayContext.getItemSelectorReturnTypeResolver();
+
+	Class<?> itemSelectorReturnTypeClass = itemSelectorReturnTypeResolver.getItemSelectorReturnTypeClass();
+
+	String uploadURL = itemSelectorUploadViewDisplayContext.getURL();
+
+	String namespace = itemSelectorUploadViewDisplayContext.getNamespace();
+
+	if (Validator.isNotNull(namespace)) {
+		uploadURL = HttpUtil.addParameter(uploadURL, namespace + "returnType", itemSelectorReturnTypeClass.getName());
+	}
+	%>
+
 	new Liferay.ItemSelectorRepositoryEntryBrowser(
 		{
 			closeCaption: '<%= itemSelectorUploadViewDisplayContext.getTitle(locale) %>',
@@ -49,8 +66,9 @@ ItemSelectorUploadViewDisplayContext itemSelectorUploadViewDisplayContext = (Ite
 				}
 			},
 			rootNode: '#itemSelectorUploadContainer',
-			uploadItemReturnType: '<%= HtmlUtil.escapeAttribute(UploadableFileReturnType.class.getName()) %>',
-			uploadItemURL: '<%= itemSelectorUploadViewDisplayContext.getURL() %>'
+			uploadItemReturnType: '<%= HtmlUtil.escapeAttribute(itemSelectorReturnTypeClass.getName()) %>',
+			uploadItemURL: '<%= uploadURL.toString() %>',
+			validExtensions: '<%= ArrayUtil.isEmpty(itemSelectorUploadViewDisplayContext.getExtensions()) ? "*" : StringUtil.merge(itemSelectorUploadViewDisplayContext.getExtensions()) %>'
 		}
 	);
 </aui:script>

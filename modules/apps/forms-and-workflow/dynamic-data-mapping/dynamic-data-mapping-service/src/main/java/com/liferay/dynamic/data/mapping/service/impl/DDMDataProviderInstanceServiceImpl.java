@@ -83,6 +83,25 @@ public class DDMDataProviderInstanceServiceImpl
 	}
 
 	@Override
+	public DDMDataProviderInstance fetchDataProviderInstanceByUuid(String uuid)
+		throws PortalException {
+
+		DDMDataProviderInstance dataProviderInstance =
+			ddmDataProviderInstanceLocalService.fetchDataProviderInstanceByUuid(
+				uuid);
+
+		if (dataProviderInstance == null) {
+			return null;
+		}
+
+		DDMDataProviderInstancePermission.check(
+			getPermissionChecker(),
+			dataProviderInstance.getDataProviderInstanceId(), ActionKeys.VIEW);
+
+		return dataProviderInstance;
+	}
+
+	@Override
 	public DDMDataProviderInstance getDataProviderInstance(
 			long dataProviderInstanceId)
 		throws PortalException {
@@ -92,6 +111,22 @@ public class DDMDataProviderInstanceServiceImpl
 
 		return ddmDataProviderInstanceLocalService.getDataProviderInstance(
 			dataProviderInstanceId);
+	}
+
+	@Override
+	public DDMDataProviderInstance getDataProviderInstanceByUuid(String uuid)
+		throws PortalException {
+
+		DDMDataProviderInstance ddmDataProviderInstance =
+			ddmDataProviderInstanceLocalService.getDataProviderInstanceByUuid(
+				uuid);
+
+		DDMDataProviderInstancePermission.check(
+			getPermissionChecker(),
+			ddmDataProviderInstance.getDataProviderInstanceId(),
+			ActionKeys.VIEW);
+
+		return ddmDataProviderInstance;
 	}
 
 	@Override

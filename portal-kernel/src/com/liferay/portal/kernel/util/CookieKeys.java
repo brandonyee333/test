@@ -75,6 +75,7 @@ public class CookieKeys {
 		String name = cookie.getName();
 
 		String originalValue = cookie.getValue();
+
 		String encodedValue = originalValue;
 
 		if (isEncodedCookie(name)) {
@@ -110,6 +111,34 @@ public class CookieKeys {
 		addCookie(request, response, cookieSupportCookie);
 	}
 
+	public static void deleteCookies(
+		HttpServletRequest request, HttpServletResponse response, String domain,
+		String... cookieNames) {
+
+		if (!_SESSION_ENABLE_PERSISTENT_COOKIES) {
+			return;
+		}
+
+		Map<String, Cookie> cookieMap = _getCookieMap(request);
+
+		for (String cookieName : cookieNames) {
+			Cookie cookie = cookieMap.remove(
+				StringUtil.toUpperCase(cookieName));
+
+			if (cookie != null) {
+				if (domain != null) {
+					cookie.setDomain(domain);
+				}
+
+				cookie.setMaxAge(0);
+				cookie.setPath(StringPool.SLASH);
+				cookie.setValue(StringPool.BLANK);
+
+				response.addCookie(cookie);
+			}
+		}
+	}
+
 	public static String getCookie(HttpServletRequest request, String name) {
 		return getCookie(request, name, true);
 	}
@@ -129,6 +158,7 @@ public class CookieKeys {
 
 		try {
 			String encodedValue = value;
+
 			String originalValue = new String(
 				UnicodeFormatter.hexToBytes(encodedValue));
 

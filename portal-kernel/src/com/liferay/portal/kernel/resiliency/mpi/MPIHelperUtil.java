@@ -271,7 +271,7 @@ public class MPIHelperUtil {
 	public static boolean unregisterSPI(SPI spi) {
 		try {
 			if (spi == _unregisteringSPIThreadLocal.get()) {
-				_doUnregisterSPI(spi);
+				_unregisterSPI(spi);
 
 				return true;
 			}
@@ -308,7 +308,7 @@ public class MPIHelperUtil {
 			if (spiProviderContainer.removeSPI(
 					spiConfiguration.getSPIId(), spi)) {
 
-				_doUnregisterSPI(spi);
+				_unregisterSPI(spi);
 
 				return true;
 			}
@@ -384,7 +384,7 @@ public class MPIHelperUtil {
 		return false;
 	}
 
-	private static void _doUnregisterSPI(SPI spi) throws RemoteException {
+	private static void _unregisterSPI(SPI spi) throws RemoteException {
 		SPIRegistryUtil.unregisterSPI(spi);
 
 		SPIConfiguration spiConfiguration = spi.getSPIConfiguration();
@@ -421,38 +421,6 @@ public class MPIHelperUtil {
 		_spiProviderContainers = new ConcurrentHashMap<>();
 	private static final ThreadLocal<SPI> _unregisteringSPIThreadLocal =
 		new CentralizedThreadLocal<>(true);
-
-	static {
-
-		// Keep strong reference to prevent garbage collection
-
-		_mpiImpl = new MPIImpl();
-
-		try {
-			if (PropsUtil.getProps() != null) {
-				System.setProperty(
-					PropsKeys.INTRABAND_IMPL,
-					PropsUtil.get(PropsKeys.INTRABAND_IMPL));
-				System.setProperty(
-					PropsKeys.INTRABAND_TIMEOUT_DEFAULT,
-					PropsUtil.get(PropsKeys.INTRABAND_TIMEOUT_DEFAULT));
-				System.setProperty(
-					PropsKeys.INTRABAND_WELDER_IMPL,
-					PropsUtil.get(PropsKeys.INTRABAND_WELDER_IMPL));
-			}
-
-			_intraband = IntrabandFactoryUtil.createIntraband();
-
-			_intraband.registerDatagramReceiveHandler(
-				SystemDataType.RPC.getValue(),
-				new BootstrapRPCDatagramReceiveHandler());
-
-			_mpi = (MPI)UnicastRemoteObject.exportObject(_mpiImpl, 0);
-		}
-		catch (Exception e) {
-			throw new ExceptionInInitializerError(e);
-		}
-	}
 
 	private static class MPIImpl implements MPI {
 
@@ -493,6 +461,38 @@ public class MPIHelperUtil {
 		private final ConcurrentMap<String, SPI> _spis =
 			new ConcurrentHashMap<>();
 
+	}
+
+	static {
+
+		// Keep strong reference to prevent garbage collection
+
+		_mpiImpl = new MPIImpl();
+
+		try {
+			if (PropsUtil.getProps() != null) {
+				System.setProperty(
+					PropsKeys.INTRABAND_IMPL,
+					PropsUtil.get(PropsKeys.INTRABAND_IMPL));
+				System.setProperty(
+					PropsKeys.INTRABAND_TIMEOUT_DEFAULT,
+					PropsUtil.get(PropsKeys.INTRABAND_TIMEOUT_DEFAULT));
+				System.setProperty(
+					PropsKeys.INTRABAND_WELDER_IMPL,
+					PropsUtil.get(PropsKeys.INTRABAND_WELDER_IMPL));
+			}
+
+			_intraband = IntrabandFactoryUtil.createIntraband();
+
+			_intraband.registerDatagramReceiveHandler(
+				SystemDataType.RPC.getValue(),
+				new BootstrapRPCDatagramReceiveHandler());
+
+			_mpi = (MPI)UnicastRemoteObject.exportObject(_mpiImpl, 0);
+		}
+		catch (Exception e) {
+			throw new ExceptionInInitializerError(e);
+		}
 	}
 
 }

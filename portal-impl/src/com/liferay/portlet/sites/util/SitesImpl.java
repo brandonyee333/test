@@ -45,13 +45,13 @@ import com.liferay.portal.kernel.model.LayoutSetPrototype;
 import com.liferay.portal.kernel.model.LayoutType;
 import com.liferay.portal.kernel.model.LayoutTypePortlet;
 import com.liferay.portal.kernel.model.Organization;
-import com.liferay.portal.kernel.model.PortletConstants;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.model.impl.VirtualLayout;
+import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
@@ -103,7 +103,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.portal.service.impl.LayoutLocalServiceVirtualLayoutsAdvice;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.PortletPreferencesImpl;
 import com.liferay.sites.kernel.util.Sites;
@@ -390,7 +389,7 @@ public class SitesImpl implements Sites {
 		List<String> sourcePortletIds = sourceLayoutTypePortlet.getPortletIds();
 
 		for (String sourcePortletId : sourcePortletIds) {
-			String resourceName = PortletConstants.getRootPortletId(
+			String resourceName = PortletIdCodec.decodePortletName(
 				sourcePortletId);
 
 			String sourceResourcePrimKey = PortletPermissionUtil.getPrimaryKey(
@@ -535,7 +534,7 @@ public class SitesImpl implements Sites {
 		}
 
 		Group group = layout.getGroup();
-		String oldFriendlyURL = layout.getFriendlyURL(themeDisplay.getLocale());
+		String oldFriendlyURL = themeDisplay.getLayoutFriendlyURL(layout);
 
 		if (group.isStagingGroup() &&
 			!GroupPermissionUtil.contains(
@@ -1294,7 +1293,7 @@ public class SitesImpl implements Sites {
 
 		try {
 			Lock lock = LockManagerUtil.lock(
-				LayoutLocalServiceVirtualLayoutsAdvice.class.getName(),
+				SitesImpl.class.getName(),
 				String.valueOf(layoutSet.getLayoutSetId()), owner);
 
 			// Double deep check
@@ -1308,7 +1307,7 @@ public class SitesImpl implements Sites {
 					// Acquire lock if the lock is older than the lock max time
 
 					lock = LockManagerUtil.lock(
-						LayoutLocalServiceVirtualLayoutsAdvice.class.getName(),
+						SitesImpl.class.getName(),
 						String.valueOf(layoutSet.getLayoutSetId()),
 						lock.getOwner(), owner);
 
@@ -1353,10 +1352,21 @@ public class SitesImpl implements Sites {
 				layoutSet.isPrivateLayout(), parameterMap, importData);
 		}
 		catch (Exception e) {
-			_log.error(e, e);
+			mergeFailCount++;
+
+			StringBundler sb = new StringBundler(6);
+
+			sb.append("Merge fail count increased to ");
+			sb.append(mergeFailCount);
+			sb.append(" for layout set prototype ");
+			sb.append(layoutSetPrototype.getLayoutSetPrototypeId());
+			sb.append(" and layout set ");
+			sb.append(layoutSet.getLayoutSetId());
+
+			_log.error(sb.toString(), e);
 
 			layoutSetPrototypeSettingsProperties.setProperty(
-				MERGE_FAIL_COUNT, String.valueOf(++mergeFailCount));
+				MERGE_FAIL_COUNT, String.valueOf(mergeFailCount));
 
 			// Invoke updateImpl so that we do not trigger the listeners
 
@@ -1366,7 +1376,7 @@ public class SitesImpl implements Sites {
 			MergeLayoutPrototypesThreadLocal.setInProgress(false);
 
 			LockManagerUtil.unlock(
-				LayoutLocalServiceVirtualLayoutsAdvice.class.getName(),
+				SitesImpl.class.getName(),
 				String.valueOf(layoutSet.getLayoutSetId()), owner);
 		}
 	}
@@ -1502,7 +1512,7 @@ public class SitesImpl implements Sites {
 		}
 
 		String portletTitle = PortalUtil.getPortletTitle(
-			PortletConstants.getRootPortletId(sourcePortletId), languageId);
+			PortletIdCodec.decodePortletName(sourcePortletId), languageId);
 
 		String newPortletTitle = PortalUtil.getNewPortletTitle(
 			portletTitle, String.valueOf(sourceLayout.getLayoutId()),
@@ -1560,18 +1570,14 @@ public class SitesImpl implements Sites {
 				permissionChecker, layout.getName(), layout.getLayoutId(),
 				ActionKeys.UPDATE);
 		}
-		else if (!group.isUser() &&
-				 !GroupPermissionUtil.contains(
-					 permissionChecker, group, ActionKeys.UPDATE)) {
+		else if (!GroupPermissionUtil.contains(
+					permissionChecker, group, ActionKeys.UPDATE) &&
+				 (!group.isUser() ||
+				  (permissionChecker.getUserId() != group.getClassPK()))) {
 
 			throw new PrincipalException.MustHavePermission(
 				permissionChecker, group.getName(), group.getGroupId(),
 				ActionKeys.UPDATE);
-		}
-		else if (group.isUser() &&
-				 (permissionChecker.getUserId() != group.getClassPK())) {
-
-			throw new PrincipalException();
 		}
 	}
 
@@ -1649,8 +1655,8 @@ public class SitesImpl implements Sites {
 
 		try {
 			Lock lock = LockManagerUtil.lock(
-				LayoutLocalServiceVirtualLayoutsAdvice.class.getName(),
-				String.valueOf(layout.getPlid()), owner);
+				SitesImpl.class.getName(), String.valueOf(layout.getPlid()),
+				owner);
 
 			if (!owner.equals(lock.getOwner())) {
 				Date createDate = lock.getCreateDate();
@@ -1661,7 +1667,7 @@ public class SitesImpl implements Sites {
 					// Acquire lock if the lock is older than the lock max time
 
 					lock = LockManagerUtil.lock(
-						LayoutLocalServiceVirtualLayoutsAdvice.class.getName(),
+						SitesImpl.class.getName(),
 						String.valueOf(layout.getPlid()), lock.getOwner(),
 						owner);
 
@@ -1700,8 +1706,8 @@ public class SitesImpl implements Sites {
 			MergeLayoutPrototypesThreadLocal.setInProgress(false);
 
 			LockManagerUtil.unlock(
-				LayoutLocalServiceVirtualLayoutsAdvice.class.getName(),
-				String.valueOf(layout.getPlid()), owner);
+				SitesImpl.class.getName(), String.valueOf(layout.getPlid()),
+				owner);
 		}
 	}
 

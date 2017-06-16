@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -46,6 +47,8 @@ import com.liferay.portlet.documentlibrary.model.impl.DLContentImpl;
 import com.liferay.portlet.documentlibrary.model.impl.DLContentModelImpl;
 
 import java.io.Serializable;
+
+import java.lang.reflect.Field;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -2218,6 +2221,24 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 
 	public DLContentPersistenceImpl() {
 		setModelClass(DLContent.class);
+
+		try {
+			Field field = ReflectionUtil.getDeclaredField(BasePersistenceImpl.class,
+					"_dbColumnNames");
+
+			Map<String, String> dbColumnNames = new HashMap<String, String>();
+
+			dbColumnNames.put("path", "path_");
+			dbColumnNames.put("data", "data_");
+			dbColumnNames.put("size", "size_");
+
+			field.set(this, dbColumnNames);
+		}
+		catch (Exception e) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(e, e);
+			}
+		}
 	}
 
 	/**
@@ -2288,7 +2309,7 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
-		clearUniqueFindersCache((DLContentModelImpl)dlContent);
+		clearUniqueFindersCache((DLContentModelImpl)dlContent, true);
 	}
 
 	@Override
@@ -2300,44 +2321,11 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 			entityCache.removeResult(DLContentModelImpl.ENTITY_CACHE_ENABLED,
 				DLContentImpl.class, dlContent.getPrimaryKey());
 
-			clearUniqueFindersCache((DLContentModelImpl)dlContent);
+			clearUniqueFindersCache((DLContentModelImpl)dlContent, true);
 		}
 	}
 
 	protected void cacheUniqueFindersCache(
-		DLContentModelImpl dlContentModelImpl, boolean isNew) {
-		if (isNew) {
-			Object[] args = new Object[] {
-					dlContentModelImpl.getCompanyId(),
-					dlContentModelImpl.getRepositoryId(),
-					dlContentModelImpl.getPath(),
-					dlContentModelImpl.getVersion()
-				};
-
-			finderCache.putResult(FINDER_PATH_COUNT_BY_C_R_P_V, args,
-				Long.valueOf(1));
-			finderCache.putResult(FINDER_PATH_FETCH_BY_C_R_P_V, args,
-				dlContentModelImpl);
-		}
-		else {
-			if ((dlContentModelImpl.getColumnBitmask() &
-					FINDER_PATH_FETCH_BY_C_R_P_V.getColumnBitmask()) != 0) {
-				Object[] args = new Object[] {
-						dlContentModelImpl.getCompanyId(),
-						dlContentModelImpl.getRepositoryId(),
-						dlContentModelImpl.getPath(),
-						dlContentModelImpl.getVersion()
-					};
-
-				finderCache.putResult(FINDER_PATH_COUNT_BY_C_R_P_V, args,
-					Long.valueOf(1));
-				finderCache.putResult(FINDER_PATH_FETCH_BY_C_R_P_V, args,
-					dlContentModelImpl);
-			}
-		}
-	}
-
-	protected void clearUniqueFindersCache(
 		DLContentModelImpl dlContentModelImpl) {
 		Object[] args = new Object[] {
 				dlContentModelImpl.getCompanyId(),
@@ -2345,12 +2333,29 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 				dlContentModelImpl.getPath(), dlContentModelImpl.getVersion()
 			};
 
-		finderCache.removeResult(FINDER_PATH_COUNT_BY_C_R_P_V, args);
-		finderCache.removeResult(FINDER_PATH_FETCH_BY_C_R_P_V, args);
+		finderCache.putResult(FINDER_PATH_COUNT_BY_C_R_P_V, args,
+			Long.valueOf(1), false);
+		finderCache.putResult(FINDER_PATH_FETCH_BY_C_R_P_V, args,
+			dlContentModelImpl, false);
+	}
+
+	protected void clearUniqueFindersCache(
+		DLContentModelImpl dlContentModelImpl, boolean clearCurrent) {
+		if (clearCurrent) {
+			Object[] args = new Object[] {
+					dlContentModelImpl.getCompanyId(),
+					dlContentModelImpl.getRepositoryId(),
+					dlContentModelImpl.getPath(),
+					dlContentModelImpl.getVersion()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_R_P_V, args);
+			finderCache.removeResult(FINDER_PATH_FETCH_BY_C_R_P_V, args);
+		}
 
 		if ((dlContentModelImpl.getColumnBitmask() &
 				FINDER_PATH_FETCH_BY_C_R_P_V.getColumnBitmask()) != 0) {
-			args = new Object[] {
+			Object[] args = new Object[] {
 					dlContentModelImpl.getOriginalCompanyId(),
 					dlContentModelImpl.getOriginalRepositoryId(),
 					dlContentModelImpl.getOriginalPath(),
@@ -2499,8 +2504,33 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew || !DLContentModelImpl.COLUMN_BITMASK_ENABLED) {
+		if (!DLContentModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		}
+		else
+		 if (isNew) {
+			Object[] args = new Object[] {
+					dlContentModelImpl.getCompanyId(),
+					dlContentModelImpl.getRepositoryId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_R, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_R,
+				args);
+
+			args = new Object[] {
+					dlContentModelImpl.getCompanyId(),
+					dlContentModelImpl.getRepositoryId(),
+					dlContentModelImpl.getPath()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_R_P, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_R_P,
+				args);
+
+			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
+				FINDER_ARGS_EMPTY);
 		}
 
 		else {
@@ -2552,8 +2582,8 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 		entityCache.putResult(DLContentModelImpl.ENTITY_CACHE_ENABLED,
 			DLContentImpl.class, dlContent.getPrimaryKey(), dlContent, false);
 
-		clearUniqueFindersCache(dlContentModelImpl);
-		cacheUniqueFindersCache(dlContentModelImpl, isNew);
+		clearUniqueFindersCache(dlContentModelImpl, false);
+		cacheUniqueFindersCache(dlContentModelImpl);
 
 		dlContent.resetOriginalValues();
 
@@ -2731,7 +2761,7 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 		query.append(_SQL_SELECT_DLCONTENT_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			query.append(String.valueOf(primaryKey));
+			query.append((long)primaryKey);
 
 			query.append(StringPool.COMMA);
 		}

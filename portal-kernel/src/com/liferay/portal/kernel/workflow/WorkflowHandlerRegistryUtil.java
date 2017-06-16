@@ -180,9 +180,15 @@ public class WorkflowHandlerRegistryUtil {
 
 					@Override
 					public Void call() throws Exception {
-						workflowHandler.startWorkflowInstance(
-							companyId, groupId, userId, classPK, model,
-							tempWorkflowContext);
+						boolean hasWorkflowInstanceInProgress =
+							_instance._hasWorkflowInstanceInProgress(
+								companyId, groupId, className, classPK);
+
+						if (!hasWorkflowInstanceInProgress) {
+							workflowHandler.startWorkflowInstance(
+								companyId, groupId, userId, classPK, model,
+								tempWorkflowContext);
+						}
 
 						return null;
 					}
@@ -330,7 +336,7 @@ public class WorkflowHandlerRegistryUtil {
 
 	private class WorkflowHandlerServiceTrackerCustomizer
 		implements
-			ServiceTrackerCustomizer <WorkflowHandler<?>, WorkflowHandler<?>> {
+			ServiceTrackerCustomizer<WorkflowHandler<?>, WorkflowHandler<?>> {
 
 		@Override
 		public WorkflowHandler<?> addingService(

@@ -15,7 +15,7 @@
 package com.liferay.source.formatter;
 
 import com.liferay.portal.kernel.util.CharPool;
-import com.liferay.portal.kernel.util.NaturalOrderStringComparator;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.source.formatter.util.FileUtil;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import java.net.URL;
@@ -41,7 +42,7 @@ import org.junit.BeforeClass;
 /**
  * @author Hugo Huijser
  */
-public class BaseSourceProcessorTestCase {
+public abstract class BaseSourceProcessorTestCase {
 
 	@BeforeClass
 	public static void setUpClass() {
@@ -56,7 +57,7 @@ public class BaseSourceProcessorTestCase {
 
 		sb.append(_DIR_NAME);
 
-		_temporaryFolder = new File (sb.toString());
+		_temporaryFolder = new File(sb.toString());
 	}
 
 	@AfterClass
@@ -70,7 +71,6 @@ public class BaseSourceProcessorTestCase {
 		sourceFormatterArgs.setAutoFix(true);
 		sourceFormatterArgs.setPrintErrors(false);
 		sourceFormatterArgs.setThrowException(false);
-		sourceFormatterArgs.setUseProperties(false);
 
 		return sourceFormatterArgs;
 	}
@@ -101,8 +101,7 @@ public class BaseSourceProcessorTestCase {
 	}
 
 	protected void test(
-			String fileName, String[] expectedErrorMessages,
-			Integer[] lineNumbers)
+			String fileName, String[] expectedMessages, Integer[] lineNumbers)
 		throws Exception {
 
 		String originalExtension = FilenameUtils.getExtension(fileName);
@@ -118,9 +117,13 @@ public class BaseSourceProcessorTestCase {
 		String fullFileName =
 			_DIR_NAME + StringPool.SLASH + fileName + "." + originalExtension;
 
-		File newFile = new File(_temporaryFolder, fileName + "." + extension);
-
 		URL url = classLoader.getResource(fullFileName);
+
+		if (url == null) {
+			throw new FileNotFoundException(fullFileName);
+		}
+
+		File newFile = new File(_temporaryFolder, fileName + "." + extension);
 
 		try (InputStream inputStream = url.openStream()) {
 			FileUtils.copyInputStreamToFile(inputStream, newFile);
@@ -144,43 +147,52 @@ public class BaseSourceProcessorTestCase {
 					" does not end with a valid extension");
 		}
 
-		List<String> errorMessages = sourceFormatter.getErrorMessages();
+		List<SourceFormatterMessage> sourceFormatterMessages =
+			ListUtil.fromCollection(
+				sourceFormatter.getSourceFormatterMessages());
 
-		Collections.sort(errorMessages, new NaturalOrderStringComparator());
+		if (!sourceFormatterMessages.isEmpty() ||
+			(expectedMessages.length > 0)) {
 
-		if (!errorMessages.isEmpty() || (expectedErrorMessages.length > 0)) {
 			Assert.assertEquals(
-				expectedErrorMessages.length, errorMessages.size());
+				sourceFormatterMessages.toString(), expectedMessages.length,
+				sourceFormatterMessages.size());
 
-			for (int i = 0; i < errorMessages.size(); i++) {
-				String actualErrorMessage = errorMessages.get(i);
-				String expectedErrorMessage = expectedErrorMessages[i];
+			for (int i = 0; i < sourceFormatterMessages.size(); i++) {
+				SourceFormatterMessage sourceFormatterMessage =
+					sourceFormatterMessages.get(i);
 
-				StringBundler sb = new StringBundler(5);
+				Assert.assertEquals(
+					expectedMessages[i], sourceFormatterMessage.getMessage());
 
-				sb.append(expectedErrorMessage);
-				sb.append(StringPool.SPACE);
+				int lineCount = sourceFormatterMessage.getLineCount();
+
+				if (lineCount > -1) {
+					Assert.assertEquals(
+						String.valueOf(lineNumbers[i]),
+						String.valueOf(lineCount));
+				}
 
 				String absolutePath = StringUtil.replace(
 					newFile.getAbsolutePath(), CharPool.BACK_SLASH,
 					CharPool.SLASH);
 
-				sb.append(absolutePath);
-
-				if (lineNumbers != null) {
-					sb.append(StringPool.SPACE);
-					sb.append(lineNumbers[i]);
-				}
-
-				Assert.assertEquals(sb.toString(), actualErrorMessage);
+				Assert.assertEquals(
+					absolutePath, sourceFormatterMessage.getFileName());
 			}
 		}
 		else {
 			String actualFormattedContent = FileUtil.read(
 				new File(modifiedFileNames.get(0)));
 
-			URL expectedURL = classLoader.getResource(
-				_DIR_NAME + "/expected/" + fileName + "." + originalExtension);
+			String expectedFileName =
+				_DIR_NAME + "/expected/" + fileName + "." + originalExtension;
+
+			URL expectedURL = classLoader.getResource(expectedFileName);
+
+			if (expectedURL == null) {
+				throw new FileNotFoundException(expectedFileName);
+			}
 
 			String expectedFormattedContent = IOUtils.toString(
 				expectedURL, StringPool.UTF8);

@@ -114,7 +114,9 @@ public class JspC extends org.apache.jasper.JspC {
 				page = page.replace(File.separatorChar, '/');
 			}
 
-			if (page.contains("/docroot/META-INF/custom_jsps/")) {
+			if (page.contains("/docroot/META-INF/custom_jsps/") ||
+				page.contains("/META-INF/resources/custom_jsps/")) {
+
 				iterator.remove();
 			}
 		}
@@ -148,6 +150,11 @@ public class JspC extends org.apache.jasper.JspC {
 		Method setArgsMethod = jspcClass.getMethod("setArgs", String[].class);
 
 		setArgsMethod.invoke(jspc, new Object[] {args});
+
+		Method setClassPathMethod = jspcClass.getMethod(
+			"setClassPath", String.class);
+
+		setClassPathMethod.invoke(jspc, classpath);
 
 		Method executeMethod = jspcClass.getMethod("execute");
 

@@ -91,13 +91,15 @@ if (editorOptions != null) {
 		long javaScriptLastModified = PortalWebResourcesUtil.getLastModified(PortalWebResourceConstants.RESOURCE_TYPE_EDITOR_CKEDITOR);
 		%>
 
-		<script src="<%= HtmlUtil.escape(PortalUtil.getStaticResourceURL(request, themeDisplay.getCDNHost() + PortalWebResourcesUtil.getContextPath(PortalWebResourceConstants.RESOURCE_TYPE_EDITOR_CKEDITOR) + "/ckeditor/ckeditor.js", javaScriptLastModified)) %>" type="text/javascript"></script>
+		<script data-senna-track="temporary" src="<%= HtmlUtil.escapeAttribute(PortalUtil.getStaticResourceURL(request, themeDisplay.getCDNHost() + PortalWebResourcesUtil.getContextPath(PortalWebResourceConstants.RESOURCE_TYPE_EDITOR_CKEDITOR) + "/ckeditor/ckeditor.js", javaScriptLastModified)) %>" type="text/javascript"></script>
 
 		<c:if test="<%= inlineEdit && Validator.isNotNull(inlineEditSaveURL) %>">
-			<script src="<%= HtmlUtil.escape(PortalUtil.getStaticResourceURL(request, themeDisplay.getCDNHost() + PortalWebResourcesUtil.getContextPath(PortalWebResourceConstants.RESOURCE_TYPE_EDITOR_CKEDITOR) + "/ckeditor/main.js", javaScriptLastModified)) %>" type="text/javascript"></script>
+			<script data-senna-track="temporary" src="<%= HtmlUtil.escapeAttribute(PortalUtil.getStaticResourceURL(request, themeDisplay.getCDNHost() + PortalWebResourcesUtil.getContextPath(PortalWebResourceConstants.RESOURCE_TYPE_EDITOR_CKEDITOR) + "/ckeditor/main.js", javaScriptLastModified)) %>" type="text/javascript"></script>
 		</c:if>
 
-		<script type="text/javascript">
+		<liferay-util:dynamic-include key='<%= "com.liferay.frontend.editor.ckeditor.web#" + editorName + "#additionalResources" %>' />
+
+		<script data-senna-track="temporary" type="text/javascript">
 			Liferay.namespace('EDITORS')['<%= editorName %>'] = true;
 
 			CKEDITOR.scriptLoader.loadScripts = function(scripts, success, failure) {
@@ -123,17 +125,25 @@ if (editorOptions != null) {
 			CKEDITOR.getNextZIndex = function() {
 				return CKEDITOR.dialog._.currentZIndex ? CKEDITOR.dialog._.currentZIndex + 10 : Liferay.zIndex.WINDOW + 10;
 			};
+
+			var destroyGlobalEditor = function() {
+				window.CKEDITOR = undefined;
+
+				Liferay.detach('beforeScreenFlip', destroyGlobalEditor);
+			};
+
+			Liferay.on('beforeScreenFlip', destroyGlobalEditor);
 		</script>
 	</liferay-util:html-top>
 </c:if>
 
 <%
-String textareaName = name;
+String textareaName = HtmlUtil.escapeAttribute(name);
 
 String modules = "aui-node-base";
 
 if (inlineEdit && Validator.isNotNull(inlineEditSaveURL)) {
-	textareaName = name + "_original";
+	textareaName = textareaName + "_original";
 
 	modules += ",inline-editor-ckeditor";
 }
@@ -143,7 +153,7 @@ if (inlineEdit && Validator.isNotNull(inlineEditSaveURL)) {
 	<textarea id="<%= textareaName %>" name="<%= textareaName %>" style="display: none;"></textarea>
 </liferay-util:buffer>
 
-<div class="<%= cssClass %>" id="<%= name %>Container">
+<div class="<%= HtmlUtil.escapeAttribute(cssClass) %>" id="<%= HtmlUtil.escapeAttribute(name) %>Container">
 	<c:if test="<%= autoCreate %>">
 		<%= editor %>
 	</c:if>
@@ -153,12 +163,16 @@ if (inlineEdit && Validator.isNotNull(inlineEditSaveURL)) {
 	CKEDITOR.disableAutoInline = true;
 </script>
 
+<%
+name = HtmlUtil.escapeJS(name);
+%>
+
 <aui:script use="<%= modules %>">
 	var getInitialContent = function() {
 		var data;
 
-		if (window['<%= HtmlUtil.escape(namespace + initMethod) %>']) {
-			data = <%= HtmlUtil.escape(namespace + initMethod) %>();
+		if (window['<%= HtmlUtil.escapeJS(namespace + initMethod) %>']) {
+			data = <%= HtmlUtil.escapeJS(namespace + initMethod) %>();
 		}
 		else {
 			data = '<%= contents != null ? HtmlUtil.escapeJS(contents) : StringPool.BLANK %>';
@@ -392,18 +406,29 @@ if (inlineEdit && Validator.isNotNull(inlineEditSaveURL)) {
 		return toolbarSet;
 	}
 
+	var afterVal = function() {
+		return new A.Do.AlterReturn(
+			'Return editor content',
+			window['<%= name %>'].getHTML()
+		);
+	};
+
 	var createEditor = function() {
 		var editorNode = A.one('#<%= name %>');
 
 		editorNode.attr('contenteditable', true);
 		editorNode.addClass('lfr-editable');
 
+		var eventHandles = [
+			A.Do.after(afterVal, editorNode, 'val', this)
+		];
+
 		function initData() {
 			<c:if test="<%= Validator.isNotNull(initMethod) && !(inlineEdit && Validator.isNotNull(inlineEditSaveURL)) %>">
 				if (!ckEditorContent) {
 					<c:choose>
-						<c:when test="<%= (contents != null) %>">
-							ckEditorContent = '<%= UnicodeFormatter.toString(contents) %>';
+						<c:when test="<%= contents != null %>">
+							ckEditorContent = '<%= HtmlUtil.escapeJS(contents) %>';
 						</c:when>
 						<c:otherwise>
 							ckEditorContent = window['<%= HtmlUtil.escapeJS(namespace + initMethod) %>']();
@@ -538,6 +563,42 @@ if (inlineEdit && Validator.isNotNull(inlineEditSaveURL)) {
 					CKEDITOR.instances['<%= name %>'].on('focus', window['<%= name %>'].onFocusCallback);
 				</c:if>
 
+				<c:if test="<%= !(inlineEdit && Validator.isNotNull(inlineEditSaveURL)) %>">
+					var initialEditor = CKEDITOR.instances['<%= name %>'].id;
+
+					A.getWin().on(
+						'resize',
+						A.debounce(
+							function() {
+								if (currentToolbarSet != getToolbarSet(initialToolbarSet)) {
+									var ckeditorInstance = CKEDITOR.instances['<%= name %>'];
+
+									if (ckeditorInstance) {
+										var currentEditor = ckeditorInstance.id;
+
+										if (currentEditor === initialEditor) {
+											var currentDialog = CKEDITOR.dialog.getCurrent();
+
+											if (currentDialog) {
+												currentDialog.hide();
+											}
+
+											ckEditorContent = ckeditorInstance.getData();
+
+											window['<%= name %>'].dispose();
+
+											window['<%= name %>'].create();
+
+											initialEditor = CKEDITOR.instances['<%= name %>'].id;
+										}
+									}
+								}
+							},
+							250
+						)
+					);
+				</c:if>
+
 				var destroyInstance = function(event) {
 					if (event.portletId === '<%= portletId %>') {
 						try {
@@ -557,6 +618,8 @@ if (inlineEdit && Validator.isNotNull(inlineEditSaveURL)) {
 						catch (e) {
 						}
 
+						(new A.EventHandle(eventHandles)).detach();
+
 						Liferay.detach('destroyPortlet', destroyInstance);
 					}
 				};
@@ -575,42 +638,6 @@ if (inlineEdit && Validator.isNotNull(inlineEditSaveURL)) {
 	<c:if test='<%= autoCreate && ((inlineEdit && toogleControlsStatus.equals("visible")) || !inlineEdit) %>'>
 		createEditor();
 	</c:if>
-
-	<c:if test="<%= !(inlineEdit && Validator.isNotNull(inlineEditSaveURL)) %>">
-		var initialEditor = CKEDITOR.instances['<%= name %>'].id;
-
-		A.getWin().on(
-			'resize',
-			A.debounce(
-				function() {
-					if (currentToolbarSet != getToolbarSet(initialToolbarSet)) {
-						var ckeditorInstance = CKEDITOR.instances['<%= name %>'];
-
-						if (ckeditorInstance) {
-							var currentEditor = ckeditorInstance.id;
-
-							if (currentEditor === initialEditor) {
-								var currentDialog = CKEDITOR.dialog.getCurrent();
-
-								if (currentDialog) {
-									currentDialog.hide();
-								}
-
-								ckEditorContent = ckeditorInstance.getData();
-
-								window['<%= name %>'].dispose();
-
-								window['<%= name %>'].create();
-
-								initialEditor = CKEDITOR.instances['<%= name %>'].id;
-							}
-						}
-					}
-				},
-				250
-			)
-		);
-	</c:if>
 </aui:script>
 
 <%!
@@ -625,7 +652,7 @@ public String marshallParams(Map<String, String> params) {
 		sb.append(StringPool.AMPERSAND);
 		sb.append(configParam.getKey());
 		sb.append(StringPool.EQUAL);
-		sb.append(HttpUtil.encodeURL(configParam.getValue()));
+		sb.append(URLCodec.encodeURL(configParam.getValue()));
 	}
 
 	return sb.toString();

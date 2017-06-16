@@ -44,6 +44,7 @@ import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.security.permission.ResourceBlockIdsBag;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistryUtil;
+import com.liferay.portal.kernel.spring.aop.Skip;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
@@ -309,7 +310,7 @@ public class ResourceBlockLocalServiceImpl
 			return (PermissionedModel)persistedModel;
 		}
 		catch (ClassCastException cce) {
-			throw new ResourceBlocksNotSupportedException();
+			throw new ResourceBlocksNotSupportedException(cce);
 		}
 	}
 
@@ -411,6 +412,7 @@ public class ResourceBlockLocalServiceImpl
 	}
 
 	@Override
+	@Skip
 	public boolean isSupported(String name) {
 		return PersistedModelLocalServiceRegistryUtil.
 			isPermissionedModelLocalService(name);
@@ -895,7 +897,7 @@ public class ResourceBlockLocalServiceImpl
 				catch (SystemException se) {
 					if (_log.isWarnEnabled()) {
 						_log.warn(
-							"Unable to add a new resource block. Retrying");
+							"Unable to add a new resource block. Retrying", se);
 					}
 
 					// On failure, cancel all pending persistent entities

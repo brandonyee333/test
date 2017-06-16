@@ -16,7 +16,7 @@ package com.liferay.sync.engine.session;
 
 import com.btr.proxy.search.ProxySearch;
 
-import com.liferay.sync.engine.documentlibrary.handler.Handler;
+import com.liferay.sync.engine.document.library.handler.Handler;
 import com.liferay.sync.engine.util.OSDetector;
 import com.liferay.sync.engine.util.PropsValues;
 import com.liferay.sync.engine.util.ReleaseInfo;
@@ -30,6 +30,7 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 
+import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 
 import java.util.ArrayList;
@@ -45,6 +46,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
 
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
@@ -65,7 +69,15 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.http.config.Registry;
+import org.apache.http.config.RegistryBuilder;
+import org.apache.http.conn.HttpClientConnectionManager;
+import org.apache.http.conn.HttpConnectionFactory;
+import org.apache.http.conn.ManagedHttpClientConnection;
+import org.apache.http.conn.routing.HttpRoute;
 import org.apache.http.conn.routing.HttpRoutePlanner;
+import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustStrategy;
@@ -79,6 +91,7 @@ import org.apache.http.impl.client.BasicAuthCache;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.LaxRedirectStrategy;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.impl.conn.SystemDefaultRoutePlanner;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
@@ -121,21 +134,22 @@ public class Session {
 
 		headers.add(syncBuildHeader);
 
-		String syncDevice = null;
+		String syncDeviceType = null;
 
 		if (OSDetector.isApple()) {
-			syncDevice = "desktop-mac";
+			syncDeviceType = "desktop-mac";
 		}
 		else if (OSDetector.isLinux()) {
-			syncDevice = "desktop-linux";
+			syncDeviceType = "desktop-linux";
 		}
 		else if (OSDetector.isWindows()) {
-			syncDevice = "desktop-windows";
+			syncDeviceType = "desktop-windows";
 		}
 
-		Header syncDeviceHeader = new BasicHeader("Sync-Device", syncDevice);
+		Header syncDeviceTypeHeader = new BasicHeader(
+			"Sync-Device", syncDeviceType);
 
-		headers.add(syncDeviceHeader);
+		headers.add(syncDeviceTypeHeader);
 
 		httpClientBuilder.setDefaultHeaders(headers);
 
@@ -145,14 +159,18 @@ public class Session {
 		httpClientBuilder.setRedirectStrategy(new LaxRedirectStrategy());
 		httpClientBuilder.setRoutePlanner(getHttpRoutePlanner());
 
-		if (trustSelfSigned) {
-			try {
+		try {
+			if (trustSelfSigned) {
 				httpClientBuilder.setSSLSocketFactory(
 					_getTrustingSSLSocketFactory());
 			}
-			catch (Exception e) {
-				_logger.error(e.getMessage(), e);
+			else {
+				httpClientBuilder.setSSLSocketFactory(
+					_getDefaultSSLSocketFactory());
 			}
+		}
+		catch (Exception e) {
+			_logger.error(e.getMessage(), e);
 		}
 
 		return httpClientBuilder;
@@ -176,6 +194,20 @@ public class Session {
 		return _httpRoutePlanner;
 	}
 
+	public static void setTrustManagers(TrustManager[] trustManagers)
+		throws Exception {
+
+		SSLContextBuilder sslContextBuilder = SSLContexts.custom();
+
+		SSLContext sslContext = sslContextBuilder.build();
+
+		sslContext.init(null, trustManagers, new SecureRandom());
+
+		_defaultSSLSocketFactory = new SSLConnectionSocketFactory(
+			sslContext,
+			SSLConnectionSocketFactory.getDefaultHostnameVerifier());
+	}
+
 	public Session(
 		URL url, String login, String password, boolean trustSelfSigned,
 		int maxConnections) {
@@ -189,6 +221,9 @@ public class Session {
 
 		HttpClientBuilder httpClientBuilder = createHttpClientBuilder(
 			trustSelfSigned, maxConnections);
+
+		httpClientBuilder.setConnectionManager(
+			_getHttpClientConnectionManager(trustSelfSigned));
 
 		CredentialsProvider credentialsProvider =
 			new BasicCredentialsProvider();
@@ -221,6 +256,9 @@ public class Session {
 
 		HttpClientBuilder httpClientBuilder = createHttpClientBuilder(
 			trustSelfSigned, maxConnections);
+
+		httpClientBuilder.setConnectionManager(
+			_getHttpClientConnectionManager(trustSelfSigned));
 
 		_httpClient = httpClientBuilder.build();
 
@@ -383,7 +421,7 @@ public class Session {
 		};
 
 		_trackTransferRateScheduledFuture =
-			_scheduledExecutorService.scheduleWithFixedDelay(
+			_scheduledExecutorService.scheduleAtFixedRate(
 				runnable, 0, 1, TimeUnit.SECONDS);
 	}
 
@@ -395,25 +433,40 @@ public class Session {
 		_trackTransferRateScheduledFuture.cancel(false);
 	}
 
+	private static SSLConnectionSocketFactory _getDefaultSSLSocketFactory()
+		throws Exception {
+
+		if (_defaultSSLSocketFactory == null) {
+			_defaultSSLSocketFactory = new SSLConnectionSocketFactory(
+				SSLContext.getDefault());
+		}
+
+		return _defaultSSLSocketFactory;
+	}
+
 	private static SSLConnectionSocketFactory _getTrustingSSLSocketFactory()
 		throws Exception {
 
-		SSLContextBuilder sslContextBuilder = SSLContexts.custom();
+		if (_trustingSSLSocketFactory == null) {
+			SSLContextBuilder sslContextBuilder = SSLContexts.custom();
 
-		sslContextBuilder.loadTrustMaterial(
-			new TrustStrategy() {
+			sslContextBuilder.loadTrustMaterial(
+				new TrustStrategy() {
 
-				@Override
-				public boolean isTrusted(
-					X509Certificate[] x509Certificates, String authType) {
+					@Override
+					public boolean isTrusted(
+						X509Certificate[] x509Certificates, String authType) {
 
-					return true;
-				}
+						return true;
+					}
 
-			});
+				});
 
-		return new SSLConnectionSocketFactory(
-			sslContextBuilder.build(), new NoopHostnameVerifier());
+			_trustingSSLSocketFactory = new SSLConnectionSocketFactory(
+				sslContextBuilder.build(), new NoopHostnameVerifier());
+		}
+
+		return _trustingSSLSocketFactory;
 	}
 
 	private void _buildHttpPostBody(
@@ -517,6 +570,41 @@ public class Session {
 		};
 	}
 
+	private HttpClientConnectionManager _getHttpClientConnectionManager(
+		boolean trustSelfSigned) {
+
+		HttpConnectionFactory<HttpRoute, ManagedHttpClientConnection>
+			connectionFactory = new SyncManagedHttpClientConnectionFactory();
+
+		try {
+			RegistryBuilder<ConnectionSocketFactory> registryBuilder =
+				RegistryBuilder.create();
+
+			registryBuilder.register(
+				"http", new PlainConnectionSocketFactory());
+
+			if (trustSelfSigned) {
+				registryBuilder.register(
+					"https", _getTrustingSSLSocketFactory());
+			}
+			else {
+				registryBuilder.register(
+					"https", _getDefaultSSLSocketFactory());
+			}
+
+			Registry<ConnectionSocketFactory> registry =
+				registryBuilder.build();
+
+			return new PoolingHttpClientConnectionManager(
+				registry, connectionFactory);
+		}
+		catch (Exception e) {
+			_logger.error(e.getMessage(), e);
+		}
+
+		return new PoolingHttpClientConnectionManager(connectionFactory);
+	}
+
 	private MultipartEntityBuilder _getMultipartEntityBuilder(
 		Map<String, Object> parameters) {
 
@@ -581,9 +669,11 @@ public class Session {
 	private static final Logger _logger = LoggerFactory.getLogger(
 		Session.class);
 
+	private static SSLConnectionSocketFactory _defaultSSLSocketFactory;
 	private static HttpRoutePlanner _httpRoutePlanner;
 	private static final ScheduledExecutorService _scheduledExecutorService =
 		Executors.newSingleThreadScheduledExecutor();
+	private static SSLConnectionSocketFactory _trustingSSLSocketFactory;
 
 	private BasicHttpContext _basicHttpContext;
 	private final AtomicInteger _downloadedBytes = new AtomicInteger(0);

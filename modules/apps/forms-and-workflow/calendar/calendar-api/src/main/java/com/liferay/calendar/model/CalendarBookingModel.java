@@ -29,9 +29,6 @@ import com.liferay.portal.kernel.model.StagedGroupedModel;
 import com.liferay.portal.kernel.model.TrashedModel;
 import com.liferay.portal.kernel.model.WorkflowedModel;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.trash.TrashHandler;
-
-import com.liferay.trash.kernel.model.TrashEntry;
 
 import java.io.Serializable;
 
@@ -275,6 +272,20 @@ public interface CalendarBookingModel extends BaseModel<CalendarBooking>,
 	 * @param parentCalendarBookingId the parent calendar booking ID of this calendar booking
 	 */
 	public void setParentCalendarBookingId(long parentCalendarBookingId);
+
+	/**
+	 * Returns the recurring calendar booking ID of this calendar booking.
+	 *
+	 * @return the recurring calendar booking ID of this calendar booking
+	 */
+	public long getRecurringCalendarBookingId();
+
+	/**
+	 * Sets the recurring calendar booking ID of this calendar booking.
+	 *
+	 * @param recurringCalendarBookingId the recurring calendar booking ID of this calendar booking
+	 */
+	public void setRecurringCalendarBookingId(long recurringCalendarBookingId);
 
 	/**
 	 * Returns the v event uid of this calendar booking.
@@ -731,7 +742,8 @@ public interface CalendarBookingModel extends BaseModel<CalendarBooking>,
 	 * @return the trash entry created when this calendar booking was moved to the Recycle Bin
 	 */
 	@Override
-	public TrashEntry getTrashEntry() throws PortalException;
+	public com.liferay.trash.kernel.model.TrashEntry getTrashEntry()
+		throws PortalException;
 
 	/**
 	 * Returns the class primary key of the trash entry for this calendar booking.
@@ -745,9 +757,11 @@ public interface CalendarBookingModel extends BaseModel<CalendarBooking>,
 	 * Returns the trash handler for this calendar booking.
 	 *
 	 * @return the trash handler for this calendar booking
+	 * @deprecated As of 7.0.0, with no direct replacement
 	 */
+	@Deprecated
 	@Override
-	public TrashHandler getTrashHandler();
+	public com.liferay.portal.kernel.trash.TrashHandler getTrashHandler();
 
 	/**
 	 * Returns <code>true</code> if this calendar booking is in the Recycle Bin.

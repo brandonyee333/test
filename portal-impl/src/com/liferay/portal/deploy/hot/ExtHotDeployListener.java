@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.servlet.WebDirDetector;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.ServerDetector;
 import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -203,6 +204,9 @@ public class ExtHotDeployListener extends BaseHotDeployListener {
 		}
 	}
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
 	@Deprecated
 	protected void installExt(ServletContext servletContext) throws Exception {
 		installExt(servletContext, servletContext.getClassLoader());
@@ -219,7 +223,18 @@ public class ExtHotDeployListener extends BaseHotDeployListener {
 		String portalLibDir = PortalUtil.getPortalLibDir();
 		String pluginWebDir = WebDirDetector.getRootDir(portletClassLoader);
 
-		copyJar(servletContext, globalLibDir, "ext-service");
+		if (ServerDetector.isTomcat()) {
+			portalLibDir = globalLibDir.concat("portal/");
+
+			FileUtil.mkdirs(portalLibDir);
+
+			globalLibDir = globalLibDir.concat("global/");
+
+			FileUtil.mkdirs(globalLibDir);
+		}
+
+		copyJar(servletContext, globalLibDir, "ext-kernel");
+
 		copyJar(servletContext, portalLibDir, "ext-impl");
 		copyJar(servletContext, portalLibDir, "ext-util-bridges");
 		copyJar(servletContext, portalLibDir, "ext-util-java");

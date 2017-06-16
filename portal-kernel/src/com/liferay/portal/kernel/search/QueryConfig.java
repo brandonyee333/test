@@ -24,7 +24,7 @@ import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Serializable;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -43,7 +43,7 @@ public class QueryConfig implements Serializable {
 		Set<String> highlightFieldNamesSet = SetUtil.fromArray(
 			(String[])_attributes.get(_HIGHLIGHT_FIELD_NAMES));
 
-		highlightFieldNamesSet.addAll(Arrays.asList(highlightFieldNames));
+		Collections.addAll(highlightFieldNamesSet, highlightFieldNames);
 
 		_attributes.put(
 			_HIGHLIGHT_FIELD_NAMES,
@@ -55,7 +55,7 @@ public class QueryConfig implements Serializable {
 		Set<String> selectedFieldNamesSet = SetUtil.fromArray(
 			(String[])_attributes.get(_SELECTED_FIELD_NAMES));
 
-		selectedFieldNamesSet.addAll(Arrays.asList(selectedFieldNames));
+		Collections.addAll(selectedFieldNamesSet, selectedFieldNames);
 
 		_attributes.put(
 			_SELECTED_FIELD_NAMES,
@@ -254,8 +254,7 @@ public class QueryConfig implements Serializable {
 		int collatedSpellCheckResultScoresThreshold) {
 
 		_attributes.put(
-			PropsKeys.
-				INDEX_SEARCH_COLLATED_SPELL_CHECK_RESULT_SCORES_THRESHOLD,
+			PropsKeys.INDEX_SEARCH_COLLATED_SPELL_CHECK_RESULT_SCORES_THRESHOLD,
 			collatedSpellCheckResultScoresThreshold);
 	}
 

@@ -128,7 +128,7 @@ public class IntrabandProxyUtilTest {
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
-			CodeCoverageAssertor.INSTANCE, AspectJNewEnvTestRule.INSTANCE);
+			AspectJNewEnvTestRule.INSTANCE, CodeCoverageAssertor.INSTANCE);
 
 	@Before
 	public void setUp() {
@@ -187,12 +187,12 @@ public class IntrabandProxyUtilTest {
 
 	@Test
 	public void testCreateProxyMethodNode() {
-		List<Method> methods = new ArrayList<Method>(
+		List<Method> methods = new ArrayList<>(
 			Arrays.asList(
 				TestProxyMethodsInterface.class.getDeclaredMethods()));
 
-		methods.addAll(
-			Arrays.asList(TestProxyMethodsClass.class.getDeclaredMethods()));
+		Collections.addAll(
+			methods, TestProxyMethodsClass.class.getDeclaredMethods());
 
 		for (int i = 0; i < methods.size(); i++) {
 			_doTestCreateProxyMethodNode(
@@ -224,6 +224,7 @@ public class IntrabandProxyUtilTest {
 					type.getClassName(), TextFormatter.G);
 
 				methodName = "read".concat(name);
+
 				returnType = type;
 			}
 			else if (type.equals(Type.getType(String.class))) {
@@ -303,7 +304,7 @@ public class IntrabandProxyUtilTest {
 
 		List<Method> idMethods = methodsBag.idMethods;
 
-		Assert.assertEquals(2, idMethods.size());
+		Assert.assertEquals(idMethods.toString(), 2, idMethods.size());
 		Assert.assertTrue(
 			idMethods.contains(
 				TestExtractMethodsClass5.class.getMethod("getId1")));
@@ -313,7 +314,7 @@ public class IntrabandProxyUtilTest {
 
 		List<Method> proxyMethods = methodsBag.proxyMethods;
 
-		Assert.assertEquals(2, proxyMethods.size());
+		Assert.assertEquals(proxyMethods.toString(), 2, proxyMethods.size());
 		Assert.assertEquals(
 			TestExtractMethodsClass5.class.getMethod("doStuff1"),
 			proxyMethods.get(0));
@@ -323,14 +324,16 @@ public class IntrabandProxyUtilTest {
 
 		List<Method> emptyMethods = methodsBag.emptyMethods;
 
-		Assert.assertEquals(1, emptyMethods.size());
+		Assert.assertEquals(emptyMethods.toString(), 1, emptyMethods.size());
 		Assert.assertEquals(
 			TestExtractMethodsClass5.class.getMethod("doStuff4"),
 			emptyMethods.get(0));
 
 		String[] proxyMethodSignatures = methodsBag.proxyMethodSignatures;
 
-		Assert.assertEquals(2, proxyMethodSignatures.length);
+		Assert.assertEquals(
+			Arrays.toString(proxyMethodSignatures), 2,
+			proxyMethodSignatures.length);
 		Assert.assertEquals("doStuff1-()V", proxyMethodSignatures[0]);
 		Assert.assertEquals("doStuff2-()V", proxyMethodSignatures[1]);
 	}
@@ -385,7 +388,7 @@ public class IntrabandProxyUtilTest {
 				testId, registrationReference,
 				WarnLogExceptionHandler.INSTANCE);
 
-			Assert.assertEquals(2, logRecords.size());
+			Assert.assertEquals(logRecords.toString(), 2, logRecords.size());
 
 			LogRecord logRecord = logRecords.get(0);
 
@@ -694,6 +697,7 @@ public class IntrabandProxyUtilTest {
 
 			Assert.assertEquals(
 				Opcodes.INVOKEVIRTUAL, abstractInsnNode.getOpcode());
+
 			Assert.assertEquals(
 				Type.getInternalName(Serializer.class), methodInsnNode.owner);
 
@@ -702,6 +706,7 @@ public class IntrabandProxyUtilTest {
 					type.getClassName(), TextFormatter.G);
 
 				Assert.assertEquals("write".concat(name), methodInsnNode.name);
+
 				Assert.assertEquals(
 					Type.getMethodDescriptor(Type.VOID_TYPE, type),
 					methodInsnNode.desc);
@@ -817,7 +822,7 @@ public class IntrabandProxyUtilTest {
 
 			List<LogRecord> logRecords = captureHandler.getLogRecords();
 
-			Assert.assertEquals(1, logRecords.size());
+			Assert.assertEquals(logRecords.toString(), 1, logRecords.size());
 
 			LogRecord logRecord = logRecords.get(0);
 
@@ -950,7 +955,7 @@ public class IntrabandProxyUtilTest {
 
 			List<LogRecord> logRecords = captureHandler.getLogRecords();
 
-			Assert.assertEquals(1, logRecords.size());
+			Assert.assertEquals(logRecords.toString(), 1, logRecords.size());
 
 			LogRecord logRecord = logRecords.get(0);
 
@@ -1643,7 +1648,8 @@ public class IntrabandProxyUtilTest {
 
 					List<LogRecord> logRecords = captureHandler.getLogRecords();
 
-					Assert.assertEquals(1, logRecords.size());
+					Assert.assertEquals(
+						logRecords.toString(), 1, logRecords.size());
 
 					LogRecord logRecord = logRecords.get(0);
 
@@ -1693,6 +1699,7 @@ public class IntrabandProxyUtilTest {
 
 				Assert.assertEquals(
 					_sampleValueMap.get(returnType), rpcResponse.getResult());
+
 				Assert.assertSame(
 					mockRegistrationReference,
 					mockIntraband.getRegistrationReference());
@@ -1769,7 +1776,8 @@ public class IntrabandProxyUtilTest {
 
 		Constructor<?>[] constructors = skeletonClass.getConstructors();
 
-		Assert.assertEquals(1, constructors.length);
+		Assert.assertEquals(
+			Arrays.toString(constructors), 1, constructors.length);
 
 		Constructor<?> constructor = constructors[0];
 
@@ -1810,7 +1818,8 @@ public class IntrabandProxyUtilTest {
 
 		Method[] declaredMethods = skeletonClass.getDeclaredMethods();
 
-		Assert.assertEquals(6, declaredMethods.length);
+		Assert.assertEquals(
+			Arrays.toString(declaredMethods), 6, declaredMethods.length);
 	}
 
 	private void _doTestGenerateStubClassStructure(
@@ -1867,13 +1876,14 @@ public class IntrabandProxyUtilTest {
 
 		Field[] fields = stubClass.getDeclaredFields();
 
-		Assert.assertEquals(6, fields.length);
+		Assert.assertEquals(Arrays.toString(fields), 6, fields.length);
 
 		// Constructors
 
 		Constructor<?>[] constructors = stubClass.getConstructors();
 
-		Assert.assertEquals(1, constructors.length);
+		Assert.assertEquals(
+			Arrays.toString(constructors), 1, constructors.length);
 
 		Constructor<?> constructor = constructors[0];
 
@@ -1911,7 +1921,7 @@ public class IntrabandProxyUtilTest {
 			_assertDeclaredMethod(
 				stubClass, proxyMethod.getName(),
 				proxyMethod.getParameterTypes(),
-				(proxyMethod.getModifiers() & ~Modifier.ABSTRACT),
+				proxyMethod.getModifiers() & ~Modifier.ABSTRACT,
 				proxyMethod.getReturnType(), proxyMethod.getExceptionTypes());
 		}
 
@@ -1927,6 +1937,7 @@ public class IntrabandProxyUtilTest {
 		Method[] declaredMethods = stubClass.getDeclaredMethods();
 
 		Assert.assertEquals(
+			Arrays.toString(declaredMethods),
 			3 + idMethods.size() + proxyMethods.size() + emptyMethods.size(),
 			declaredMethods.length);
 	}
@@ -2029,7 +2040,8 @@ public class IntrabandProxyUtilTest {
 				_assertInsnNode(insnList.getFirst(), Opcodes.RETURN);
 
 				if (logEnabled) {
-					Assert.assertEquals(1, logRecords.size());
+					Assert.assertEquals(
+						logRecords.toString(), 1, logRecords.size());
 
 					LogRecord logRecord = logRecords.get(0);
 
@@ -2552,42 +2564,6 @@ public class IntrabandProxyUtilTest {
 
 	}
 
-	private static abstract class TestExtractMethodsClass5 {
-
-		@Proxy
-		public void doStuff1() {
-		}
-
-		@Proxy(name = "doStuffX")
-		public void doStuff2() {
-		}
-
-		@SuppressWarnings("unused")
-		public void doStuff3() {
-		}
-
-		public abstract void doStuff4();
-
-		@Id
-		public String getId1() {
-			return null;
-		}
-
-		@Id
-		public String getId2() {
-			return null;
-		}
-
-	}
-
-	private static abstract class TestGenerateClass1
-		extends TestProxyMethodsClass implements TestGenerateInterface1 {
-	}
-
-	private static abstract class TestGenerateClass2
-		extends TestProxyMethodsClass implements TestGenerateInterface2 {
-	}
-
 	private static class TestGenerateStubFunction1 {
 
 		@SuppressWarnings("unused")
@@ -2607,43 +2583,6 @@ public class IntrabandProxyUtilTest {
 					TestGenerateStubFunction1.class.getName() + " in <clinit>");
 			}
 		}
-
-	}
-
-	private static abstract class TestGenerateStubFunction2
-		extends TestProxyMethodsClass
-		implements TestEmptyMethodsInterface, TestIdMethodsInterface {
-
-		@SuppressWarnings("unused")
-		public void copyMethod1() {
-			if (_log.isInfoEnabled()) {
-				_log.info("copyMethod1");
-			}
-		}
-
-		@SuppressWarnings("unused")
-		protected void copyMethod2() {
-			if (_log.isInfoEnabled()) {
-				_log.info("copyMethod2");
-			}
-		}
-
-		@SuppressWarnings("unused")
-		void copyMethod3() {
-			if (_log.isInfoEnabled()) {
-				_log.info("copyMethod3");
-			}
-		}
-
-		@SuppressWarnings("unused")
-		private void copyMethod4() {
-			if (_log.isInfoEnabled()) {
-				_log.info("copyMethod4");
-			}
-		}
-
-		private static final Log _log = LogFactoryUtil.getLog(
-			TestGenerateStubFunction2.class);
 
 	}
 
@@ -2702,29 +2641,6 @@ public class IntrabandProxyUtilTest {
 
 	}
 
-	private static abstract class TestProxyMethodsClass
-		implements TestProxyMethodsInterface {
-
-		@Proxy
-		protected abstract short syncCallShort(
-				boolean z, byte b, char c, double d, float f, int i, long j,
-				short s, String string, Date date, Object obj)
-			throws InterruptedException, IOException;
-
-		@Proxy
-		abstract Object syncCallObject(
-				boolean z, byte b, char c, double d, float f, int i, long j,
-				short s, String string, Date date, Object obj)
-			throws InterruptedException, IOException;
-
-		@Proxy
-		abstract String syncCallString(
-				boolean z, byte b, char c, double d, float f, int i, long j,
-				short s, String string, Date date, Object obj)
-			throws InterruptedException, IOException;
-
-	}
-
 	private static class TestValidateClass {
 
 		@SuppressWarnings("unused")
@@ -2780,6 +2696,42 @@ public class IntrabandProxyUtilTest {
 
 	}
 
+	private abstract static class TestExtractMethodsClass5 {
+
+		@Proxy
+		public void doStuff1() {
+		}
+
+		@Proxy(name = "doStuffX")
+		public void doStuff2() {
+		}
+
+		@SuppressWarnings("unused")
+		public void doStuff3() {
+		}
+
+		public abstract void doStuff4();
+
+		@Id
+		public String getId1() {
+			return null;
+		}
+
+		@Id
+		public String getId2() {
+			return null;
+		}
+
+	}
+
+	private abstract static class TestGenerateClass1
+		extends TestProxyMethodsClass implements TestGenerateInterface1 {
+	}
+
+	private abstract static class TestGenerateClass2
+		extends TestProxyMethodsClass implements TestGenerateInterface2 {
+	}
+
 	private interface TestGenerateInterface1
 		extends Comparable<String>, Callable<String>, Runnable,
 				TestEmptyMethodsInterface, TestProxyMethodsInterface {
@@ -2789,6 +2741,43 @@ public class IntrabandProxyUtilTest {
 		extends TestIdMethodsInterface, TestGenerateInterface1 {
 	}
 
+	private abstract static class TestGenerateStubFunction2
+		extends TestProxyMethodsClass
+		implements TestEmptyMethodsInterface, TestIdMethodsInterface {
+
+		@SuppressWarnings("unused")
+		public void copyMethod1() {
+			if (_log.isInfoEnabled()) {
+				_log.info("copyMethod1");
+			}
+		}
+
+		@SuppressWarnings("unused")
+		protected void copyMethod2() {
+			if (_log.isInfoEnabled()) {
+				_log.info("copyMethod2");
+			}
+		}
+
+		@SuppressWarnings("unused")
+		void copyMethod3() {
+			if (_log.isInfoEnabled()) {
+				_log.info("copyMethod3");
+			}
+		}
+
+		@SuppressWarnings("unused")
+		private void copyMethod4() {
+			if (_log.isInfoEnabled()) {
+				_log.info("copyMethod4");
+			}
+		}
+
+		private static final Log _log = LogFactoryUtil.getLog(
+			TestGenerateStubFunction2.class);
+
+	}
+
 	private interface TestIdMethodsInterface {
 
 		@Id
@@ -2796,6 +2785,29 @@ public class IntrabandProxyUtilTest {
 
 		@Id
 		public abstract String getId2();
+
+	}
+
+	private abstract static class TestProxyMethodsClass
+		implements TestProxyMethodsInterface {
+
+		@Proxy
+		protected abstract short syncCallShort(
+				boolean z, byte b, char c, double d, float f, int i, long j,
+				short s, String string, Date date, Object obj)
+			throws InterruptedException, IOException;
+
+		@Proxy
+		abstract Object syncCallObject(
+				boolean z, byte b, char c, double d, float f, int i, long j,
+				short s, String string, Date date, Object obj)
+			throws InterruptedException, IOException;
+
+		@Proxy
+		abstract String syncCallString(
+				boolean z, byte b, char c, double d, float f, int i, long j,
+				short s, String string, Date date, Object obj)
+			throws InterruptedException, IOException;
 
 	}
 

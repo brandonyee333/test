@@ -16,7 +16,9 @@ package com.liferay.portal.osgi.web.wab.extender.internal;
 
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ReflectionUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.osgi.web.servlet.context.helper.ServletContextHelperRegistration;
 import com.liferay.portal.osgi.web.servlet.context.helper.definition.FilterDefinition;
 import com.liferay.portal.osgi.web.servlet.context.helper.definition.ListenerDefinition;
@@ -28,6 +30,9 @@ import com.liferay.portal.osgi.web.wab.extender.internal.adapter.ModifiableServl
 import com.liferay.portal.osgi.web.wab.extender.internal.adapter.ModifiableServletContextAdapter;
 import com.liferay.portal.osgi.web.wab.extender.internal.adapter.ServletContextListenerExceptionAdapter;
 import com.liferay.portal.osgi.web.wab.extender.internal.adapter.ServletExceptionAdapter;
+import com.liferay.portal.osgi.web.wab.extender.internal.registration.FilterRegistrationImpl;
+import com.liferay.portal.osgi.web.wab.extender.internal.registration.ListenerServiceRegistrationComparator;
+import com.liferay.portal.osgi.web.wab.extender.internal.registration.ServletRegistrationImpl;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,6 +49,7 @@ import java.util.Collection;
 import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.EventListener;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
@@ -88,6 +94,7 @@ public class WabBundleProcessor {
 		BundleWiring bundleWiring = _bundle.adapt(BundleWiring.class);
 
 		_bundleClassLoader = bundleWiring.getClassLoader();
+
 		_bundleContext = _bundle.getBundleContext();
 	}
 
@@ -147,13 +154,54 @@ public class WabBundleProcessor {
 
 			initServletContainerInitializers(_bundle, servletContext);
 
+			ModifiableServletContext modifiableServletContext =
+				(ModifiableServletContext)servletContext;
+
+			Map<String, String> unregisteredInitParameters =
+				modifiableServletContext.getUnregisteredInitParameters();
+
+			if ((unregisteredInitParameters != null) &&
+				!unregisteredInitParameters.isEmpty()) {
+
+				Map<String, Object> attributes = new HashMap<>();
+
+				Enumeration<String> attributeNames =
+					servletContext.getAttributeNames();
+
+				while (attributeNames.hasMoreElements()) {
+					String attributeName = attributeNames.nextElement();
+
+					attributes.put(
+						attributeName,
+						servletContext.getAttribute(attributeName));
+				}
+
+				List<ListenerDefinition> listenerDefinitions =
+					modifiableServletContext.getListenerDefinitions();
+				Map<String, FilterRegistrationImpl> filterRegistrationImpls =
+					modifiableServletContext.getFilterRegistrationImpls();
+				Map<String, ServletRegistrationImpl> servletRegistrationImpls =
+					modifiableServletContext.getServletRegistrationImpls();
+
+				servletContextHelperRegistration.setProperties(
+					unregisteredInitParameters);
+
+				ServletContext newServletContext =
+					servletContextHelperRegistration.getServletContext();
+
+				servletContext = ModifiableServletContextAdapter.createInstance(
+					newServletContext, attributes, listenerDefinitions,
+					filterRegistrationImpls, servletRegistrationImpls,
+					_bundle.getBundleContext(), webXMLDefinition, _logger);
+
+				modifiableServletContext =
+					(ModifiableServletContext)servletContext;
+			}
+
 			scanTLDsForListeners(webXMLDefinition, servletContext);
 
 			initListeners(
 				webXMLDefinition.getListenerDefinitions(), servletContext);
-
-			ModifiableServletContext modifiableServletContext =
-				(ModifiableServletContext)servletContext;
 
 			initListeners(
 				modifiableServletContext.getListenerDefinitions(),
@@ -302,7 +350,7 @@ public class WabBundleProcessor {
 
 	protected void destroyFilters() {
 		for (ServiceRegistration<?> serviceRegistration :
-				_filterRegistrations) {
+				_filterServiceRegistrations) {
 
 			try {
 				serviceRegistration.unregister();
@@ -312,12 +360,12 @@ public class WabBundleProcessor {
 			}
 		}
 
-		_filterRegistrations.clear();
+		_filterServiceRegistrations.clear();
 	}
 
 	protected void destroyListeners() {
 		for (ServiceRegistration<?> serviceRegistration :
-				_listenerRegistrations) {
+				_listenerServiceRegistrations) {
 
 			try {
 				serviceRegistration.unregister();
@@ -327,12 +375,12 @@ public class WabBundleProcessor {
 			}
 		}
 
-		_listenerRegistrations.clear();
+		_listenerServiceRegistrations.clear();
 	}
 
 	protected void destroyServlets() {
 		for (ServiceRegistration<?> serviceRegistration :
-				_servletRegistrations) {
+				_servletServiceRegistrations) {
 
 			try {
 				serviceRegistration.unregister();
@@ -342,7 +390,7 @@ public class WabBundleProcessor {
 			}
 		}
 
-		_servletRegistrations.clear();
+		_servletServiceRegistrations.clear();
 	}
 
 	protected String[] getClassNames(EventListener eventListener) {
@@ -363,11 +411,9 @@ public class WabBundleProcessor {
 		// The following supported listener is omitted on purpose because it is
 		// registered individually.
 
-		/*
-		if (ServletContextListener.class.isInstance(eventListener)) {
+		/*if (ServletContextListener.class.isInstance(eventListener)) {
 			classNamesList.add(ServletContextListener.class.getName());
-		}
-		*/
+		}*/
 
 		if (ServletRequestAttributeListener.class.isInstance(eventListener)) {
 			classNamesList.add(ServletRequestAttributeListener.class.getName());
@@ -430,8 +476,7 @@ public class WabBundleProcessor {
 				HttpWhiteboardConstants.HTTP_WHITEBOARD_CONTEXT_SELECT,
 				_contextName);
 			properties.put(
-				HttpWhiteboardConstants.
-					HTTP_WHITEBOARD_FILTER_ASYNC_SUPPORTED,
+				HttpWhiteboardConstants.HTTP_WHITEBOARD_FILTER_ASYNC_SUPPORTED,
 				filterDefinition.isAsyncSupported());
 			properties.put(
 				HttpWhiteboardConstants.HTTP_WHITEBOARD_FILTER_DISPATCHER,
@@ -478,7 +523,7 @@ public class WabBundleProcessor {
 				throw exception;
 			}
 
-			_filterRegistrations.add(serviceRegistration);
+			_filterServiceRegistrations.add(serviceRegistration);
 		}
 	}
 
@@ -506,7 +551,7 @@ public class WabBundleProcessor {
 						classNames, listenerDefinition.getEventListener(),
 						properties);
 
-				_listenerRegistrations.add(serviceRegistration);
+				_listenerServiceRegistrations.add(serviceRegistration);
 			}
 
 			if (!ServletContextListener.class.isInstance(
@@ -536,7 +581,7 @@ public class WabBundleProcessor {
 				throw exception;
 			}
 
-			_listenerRegistrations.add(serviceRegistration);
+			_listenerServiceRegistrations.add(serviceRegistration);
 		}
 	}
 
@@ -557,10 +602,28 @@ public class WabBundleProcessor {
 			URL url = initializerResources.nextElement();
 
 			try (InputStream inputStream = url.openStream()) {
-				String fqcn = StringUtil.read(inputStream);
+				Collection<String> fqcns = new ArrayList<>();
 
-				processServletContainerInitializerClass(
-					fqcn, bundle, bundleWiring, servletContext);
+				StringUtil.readLines(inputStream, fqcns);
+
+				for (String fqcn : fqcns) {
+					int index = fqcn.indexOf(StringPool.POUND);
+
+					if (index == 0) {
+						continue;
+					}
+
+					if (index > 0) {
+						fqcn = fqcn.substring(0, index);
+					}
+
+					fqcn = fqcn.trim();
+
+					if (Validator.isNotNull(fqcn)) {
+						processServletContainerInitializerClass(
+							fqcn, bundle, bundleWiring, servletContext);
+					}
+				}
 			}
 			catch (IOException ioe) {
 				_logger.log(Logger.LOG_ERROR, ioe.getMessage(), ioe);
@@ -633,7 +696,7 @@ public class WabBundleProcessor {
 				throw exception;
 			}
 
-			_servletRegistrations.add(serviceRegistration);
+			_servletServiceRegistrations.add(serviceRegistration);
 		}
 	}
 
@@ -669,7 +732,7 @@ public class WabBundleProcessor {
 		Class<?>[] handledTypesArray = handledTypes.value();
 
 		if (handledTypesArray == null) {
-			handledTypesArray = new Class[0];
+			handledTypesArray = new Class<?>[0];
 		}
 
 		Collection<String> classResources = bundleWiring.listResources(
@@ -749,7 +812,7 @@ public class WabBundleProcessor {
 
 		@Override
 		public Class<?>[] value() {
-			return new Class[0];
+			return new Class<?>[0];
 		}
 
 	};
@@ -760,14 +823,15 @@ public class WabBundleProcessor {
 	private final ClassLoader _bundleClassLoader;
 	private final BundleContext _bundleContext;
 	private String _contextName;
-	private final Set<ServiceRegistration<Filter>> _filterRegistrations =
+	private final Set<ServiceRegistration<Filter>> _filterServiceRegistrations =
 		new ConcurrentSkipListSet<>();
-	private final Set<ServiceRegistration<?>> _listenerRegistrations =
-		new ConcurrentSkipListSet<>();
+	private final Set<ServiceRegistration<?>> _listenerServiceRegistrations =
+		new ConcurrentSkipListSet<>(
+			new ListenerServiceRegistrationComparator());
 	private final Logger _logger;
 	private ServiceReference<ServletContextHelperRegistration>
 		_servletContextHelperRegistrationServiceReference;
-	private final Set<ServiceRegistration<Servlet>> _servletRegistrations =
-		new ConcurrentSkipListSet<>();
+	private final Set<ServiceRegistration<Servlet>>
+		_servletServiceRegistrations = new ConcurrentSkipListSet<>();
 
 }

@@ -30,16 +30,16 @@ import com.liferay.journal.util.comparator.ArticleDisplayDateComparator;
 import com.liferay.journal.util.comparator.ArticleIDComparator;
 import com.liferay.journal.util.comparator.ArticleModifiedDateComparator;
 import com.liferay.journal.util.comparator.ArticleReviewDateComparator;
-import com.liferay.journal.util.comparator.ArticleTitleComparator;
 import com.liferay.journal.util.comparator.ArticleVersionComparator;
 import com.liferay.portal.kernel.dao.orm.QueryDefinition;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
-import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
+import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -47,13 +47,17 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
+import com.liferay.portal.test.rule.TransactionalTestRule;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -82,7 +86,8 @@ public class JournalArticleFinderTest {
 		new AggregateTestRule(
 			new LiferayIntegrationTestRule(),
 			SynchronousDestinationTestRule.INSTANCE,
-			TransactionalTestRule.INSTANCE);
+			new TransactionalTestRule(
+				Propagation.SUPPORTS, "com.liferay.journal.service"));
 
 	@Before
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -233,7 +238,7 @@ public class JournalArticleFinderTest {
 				JournalArticleConstants.CLASSNAME_ID_DEFAULT, new Date(),
 				queryDefinition);
 
-		Assert.assertEquals(1, articles.size());
+		Assert.assertEquals(articles.toString(), 1, articles.size());
 
 		JournalArticle article = articles.get(0);
 
@@ -247,7 +252,7 @@ public class JournalArticleFinderTest {
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT, new Date(),
 			queryDefinition);
 
-		Assert.assertEquals(1, articles.size());
+		Assert.assertEquals(articles.toString(), 1, articles.size());
 
 		article = articles.get(0);
 
@@ -261,7 +266,7 @@ public class JournalArticleFinderTest {
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT, new Date(),
 			queryDefinition);
 
-		Assert.assertEquals(0, articles.size());
+		Assert.assertEquals(articles.toString(), 0, articles.size());
 	}
 
 	@Test
@@ -284,11 +289,53 @@ public class JournalArticleFinderTest {
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT, new Date(),
 			calendar.getTime());
 
-		Assert.assertEquals(1, articles.size());
+		Assert.assertEquals(articles.toString(), 1, articles.size());
 
 		JournalArticle article = articles.get(0);
 
 		Assert.assertEquals(_USER_ID, article.getUserId());
+	}
+
+	@Test
+	public void testLocalizedQueryByC_G_F_C_A_V_T_D_C_T_S_T_D_R()
+		throws Exception {
+
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(
+				_group.getGroupId(), TestPropsValues.getUserId());
+
+		Map<Locale, String> titleMap = new HashMap<>();
+
+		titleMap.put(Locale.US, "Localized Article");
+		titleMap.put(Locale.FRANCE, "Localized Article");
+
+		JournalTestUtil.addArticle(
+			_group.getGroupId(), _folder.getFolderId(),
+			JournalArticleConstants.CLASSNAME_ID_DEFAULT, titleMap, titleMap,
+			titleMap, Locale.US, true, true, serviceContext);
+
+		QueryDefinition<JournalArticle> queryDefinition =
+			new QueryDefinition<>();
+
+		queryDefinition.setStatus(WorkflowConstants.STATUS_ANY);
+
+		int actualCount =
+			_journalArticleFinder.countByC_G_F_C_A_V_T_D_C_S_T_D_R(
+				_group.getCompanyId(), _group.getGroupId(), _folderIds,
+				JournalArticleConstants.CLASSNAME_ID_DEFAULT, null, null,
+				"\"Localized Article\"", null, null, null, (String)null, null,
+				null, null, true, queryDefinition);
+
+		Assert.assertEquals(1, actualCount);
+
+		List<JournalArticle> articles =
+			_journalArticleFinder.findByC_G_F_C_A_V_T_D_C_S_T_D_R(
+				_group.getCompanyId(), _group.getGroupId(), _folderIds,
+				JournalArticleConstants.CLASSNAME_ID_DEFAULT, null, null,
+				"\"Localized Article\"", null, null, null, (String)null, null,
+				null, null, true, queryDefinition);
+
+		Assert.assertEquals(articles.toString(), 1, articles.size());
 	}
 
 	@Test
@@ -409,8 +456,6 @@ public class JournalArticleFinderTest {
 		testQueryByG_F(new ArticleModifiedDateComparator(false));
 		testQueryByG_F(new ArticleReviewDateComparator(true));
 		testQueryByG_F(new ArticleReviewDateComparator(false));
-		testQueryByG_F(new ArticleTitleComparator(true));
-		testQueryByG_F(new ArticleTitleComparator(false));
 		testQueryByG_F(new ArticleVersionComparator(true));
 		testQueryByG_F(new ArticleVersionComparator(false));
 	}
@@ -473,7 +518,6 @@ public class JournalArticleFinderTest {
 			article.setModifiedDate(calendar.getTime());
 			article.setArticleId("a" + i);
 			article.setVersion(i);
-			article.setTitle("a" + i);
 			article.setDisplayDate(calendar.getTime());
 			article.setReviewDate(calendar.getTime());
 

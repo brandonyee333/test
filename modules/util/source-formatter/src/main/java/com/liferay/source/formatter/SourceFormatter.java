@@ -16,15 +16,28 @@ package com.liferay.source.formatter;
 
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.tools.ArgumentsUtil;
-import com.liferay.source.formatter.util.GitUtil;
+import com.liferay.portal.tools.GitException;
+import com.liferay.portal.tools.GitUtil;
+import com.liferay.portal.tools.ToolsUtil;
+import com.liferay.source.formatter.util.SourceFormatterUtil;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentSkipListSet;
@@ -45,38 +58,46 @@ public class SourceFormatter {
 		try {
 			SourceFormatterArgs sourceFormatterArgs = new SourceFormatterArgs();
 
-			boolean autoFix = GetterUtil.getBoolean(
-				arguments.get("source.auto.fix"), SourceFormatterArgs.AUTO_FIX);
+			boolean autoFix = ArgumentsUtil.getBoolean(
+				arguments, "source.auto.fix", SourceFormatterArgs.AUTO_FIX);
 
 			sourceFormatterArgs.setAutoFix(autoFix);
 
-			String baseDirName = GetterUtil.getString(
-				arguments.get("source.base.dir"),
+			String baseDirName = ArgumentsUtil.getString(
+				arguments, "source.base.dir",
 				SourceFormatterArgs.BASE_DIR_NAME);
 
 			sourceFormatterArgs.setBaseDirName(baseDirName);
 
-			boolean formatCurrentBranch = GetterUtil.getBoolean(
-				arguments.get("format.current.branch"),
+			boolean formatCurrentBranch = ArgumentsUtil.getBoolean(
+				arguments, "format.current.branch",
 				SourceFormatterArgs.FORMAT_CURRENT_BRANCH);
 
 			sourceFormatterArgs.setFormatCurrentBranch(formatCurrentBranch);
 
-			boolean formatLatestAuthor = GetterUtil.getBoolean(
-				arguments.get("format.latest.author"),
+			boolean formatLatestAuthor = ArgumentsUtil.getBoolean(
+				arguments, "format.latest.author",
 				SourceFormatterArgs.FORMAT_LATEST_AUTHOR);
 
 			sourceFormatterArgs.setFormatLatestAuthor(formatLatestAuthor);
 
-			boolean formatLocalChanges = GetterUtil.getBoolean(
-				arguments.get("format.local.changes"),
+			boolean formatLocalChanges = ArgumentsUtil.getBoolean(
+				arguments, "format.local.changes",
 				SourceFormatterArgs.FORMAT_LOCAL_CHANGES);
 
 			sourceFormatterArgs.setFormatLocalChanges(formatLocalChanges);
 
 			if (formatCurrentBranch) {
+				String gitWorkingBranchName = ArgumentsUtil.getString(
+					arguments, "git.working.branch.name",
+					SourceFormatterArgs.GIT_WORKING_BRANCH_NAME);
+
+				sourceFormatterArgs.setGitWorkingBranchName(
+					gitWorkingBranchName);
+
 				sourceFormatterArgs.setRecentChangesFileNames(
-					GitUtil.getCurrentBranchFileNames(baseDirName));
+					GitUtil.getCurrentBranchFileNames(
+						baseDirName, gitWorkingBranchName));
 			}
 			else if (formatLatestAuthor) {
 				sourceFormatterArgs.setRecentChangesFileNames(
@@ -87,48 +108,62 @@ public class SourceFormatter {
 					GitUtil.getLocalChangesFileNames(baseDirName));
 			}
 
-			String copyrightFileName = GetterUtil.getString(
-				arguments.get("source.copyright.file"),
-				SourceFormatterArgs.COPYRIGHT_FILE_NAME);
-
-			sourceFormatterArgs.setCopyrightFileName(copyrightFileName);
+			String fileNamesString = ArgumentsUtil.getString(
+				arguments, "source.files", StringPool.BLANK);
 
 			String[] fileNames = StringUtil.split(
-				arguments.get("source.files"), StringPool.COMMA);
+				fileNamesString, StringPool.COMMA);
 
 			if (ArrayUtil.isNotEmpty(fileNames)) {
 				sourceFormatterArgs.setFileNames(Arrays.asList(fileNames));
 			}
+			else {
+				String fileExtensionsString = ArgumentsUtil.getString(
+					arguments, "source.file.extensions", StringPool.BLANK);
 
-			int maxLineLength = GetterUtil.getInteger(
-				arguments.get("max.line.length"),
+				String[] fileExtensions = StringUtil.split(
+					fileExtensionsString, StringPool.COMMA);
+
+				sourceFormatterArgs.setFileExtensions(
+					Arrays.asList(fileExtensions));
+			}
+
+			boolean includeSubrepositories = ArgumentsUtil.getBoolean(
+				arguments, "include.subrepositories",
+				SourceFormatterArgs.INCLUDE_SUBREPOSITORIES);
+
+			sourceFormatterArgs.setIncludeSubrepositories(
+				includeSubrepositories);
+
+			int maxLineLength = ArgumentsUtil.getInteger(
+				arguments, "max.line.length",
 				SourceFormatterArgs.MAX_LINE_LENGTH);
 
 			sourceFormatterArgs.setMaxLineLength(maxLineLength);
 
-			boolean printErrors = GetterUtil.getBoolean(
-				arguments.get("source.print.errors"),
+			boolean printErrors = ArgumentsUtil.getBoolean(
+				arguments, "source.print.errors",
 				SourceFormatterArgs.PRINT_ERRORS);
 
 			sourceFormatterArgs.setPrintErrors(printErrors);
 
-			int processorThreadCount = GetterUtil.getInteger(
-				arguments.get("processor.thread.count"),
+			int processorThreadCount = ArgumentsUtil.getInteger(
+				arguments, "processor.thread.count",
 				SourceFormatterArgs.PROCESSOR_THREAD_COUNT);
 
 			sourceFormatterArgs.setProcessorThreadCount(processorThreadCount);
 
-			boolean throwException = GetterUtil.getBoolean(
-				arguments.get("source.throw.exception"),
+			boolean showDocumentation = ArgumentsUtil.getBoolean(
+				arguments, "show.documentation",
+				SourceFormatterArgs.SHOW_DOCUMENTATION);
+
+			sourceFormatterArgs.setShowDocumentation(showDocumentation);
+
+			boolean throwException = ArgumentsUtil.getBoolean(
+				arguments, "source.throw.exception",
 				SourceFormatterArgs.THROW_EXCEPTION);
 
 			sourceFormatterArgs.setThrowException(throwException);
-
-			boolean useProperties = GetterUtil.getBoolean(
-				arguments.get("source.use.properties"),
-				SourceFormatterArgs.USE_PROPERTIES);
-
-			sourceFormatterArgs.setUseProperties(useProperties);
 
 			SourceFormatter sourceFormatter = new SourceFormatter(
 				sourceFormatterArgs);
@@ -150,6 +185,23 @@ public class SourceFormatter {
 	}
 
 	public void format() throws Exception {
+		if (_isPortalSource()) {
+			_populatePortalImplProperties();
+
+			_addDefaultExcludes();
+
+			_populateAllFileNames();
+
+			_populateModulesProperties();
+		}
+		else {
+			_populateProperties();
+
+			_addDefaultExcludes();
+
+			_populateAllFileNames();
+		}
+
 		List<SourceProcessor> sourceProcessors = new ArrayList<>();
 
 		sourceProcessors.add(new BNDSourceProcessor());
@@ -161,11 +213,14 @@ public class SourceFormatter {
 		sourceProcessors.add(new JSONSourceProcessor());
 		sourceProcessors.add(new JSPSourceProcessor());
 		sourceProcessors.add(new JSSourceProcessor());
+		sourceProcessors.add(new MarkdownSourceProcessor());
 		sourceProcessors.add(new PropertiesSourceProcessor());
 		sourceProcessors.add(new SHSourceProcessor());
+		sourceProcessors.add(new SoySourceProcessor());
 		sourceProcessors.add(new SQLSourceProcessor());
 		sourceProcessors.add(new TLDSourceProcessor());
 		sourceProcessors.add(new XMLSourceProcessor());
+		sourceProcessors.add(new YMLSourceProcessor());
 
 		ExecutorService executorService = Executors.newFixedThreadPool(
 			sourceProcessors.size());
@@ -194,12 +249,12 @@ public class SourceFormatter {
 			try {
 				future.get();
 			}
-			catch (ExecutionException ee2) {
+			catch (ExecutionException ee) {
 				if (ee1 == null) {
-					ee1 = ee2;
+					ee1 = ee;
 				}
 				else {
-					ee1.addSuppressed(ee2);
+					ee1.addSuppressed(ee);
 				}
 			}
 		}
@@ -215,18 +270,24 @@ public class SourceFormatter {
 		}
 
 		if (_sourceFormatterArgs.isThrowException()) {
-			if (!_errorMessages.isEmpty()) {
-				throw new Exception(StringUtil.merge(_errorMessages, "\n"));
+			if (!_sourceFormatterMessages.isEmpty()) {
+				StringBundler sb = new StringBundler(
+					_sourceFormatterMessages.size() * 2);
+
+				for (SourceFormatterMessage sourceFormatterMessage :
+						_sourceFormatterMessages) {
+
+					sb.append(sourceFormatterMessage.toString());
+					sb.append("\n");
+				}
+
+				throw new Exception(sb.toString());
 			}
 
 			if (_firstSourceMismatchException != null) {
 				throw _firstSourceMismatchException;
 			}
 		}
-	}
-
-	public List<String> getErrorMessages() {
-		return new ArrayList<>(_errorMessages);
 	}
 
 	public List<String> getModifiedFileNames() {
@@ -237,18 +298,184 @@ public class SourceFormatter {
 		return _sourceFormatterArgs;
 	}
 
+	public Set<SourceFormatterMessage> getSourceFormatterMessages() {
+		return _sourceFormatterMessages;
+	}
+
 	public SourceMismatchException getSourceMismatchException() {
 		return _firstSourceMismatchException;
+	}
+
+	private void _addDefaultExcludes() {
+		String excludesValue = _properties.getProperty(
+			"source.formatter.excludes");
+
+		if (Validator.isNull(excludesValue)) {
+			excludesValue = StringUtil.merge(_defaultExcludes);
+		}
+		else {
+			excludesValue +=
+				StringPool.COMMA + StringUtil.merge(_defaultExcludes);
+		}
+
+		_properties.setProperty("source.formatter.excludes", excludesValue);
+	}
+
+	private boolean _isPortalSource() {
+		File portalImplDir = SourceFormatterUtil.getFile(
+			_sourceFormatterArgs.getBaseDirName(), "portal-impl",
+			ToolsUtil.PORTAL_MAX_DIR_LEVEL);
+
+		if (portalImplDir != null) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private void _populateAllFileNames() throws Exception {
+		String excludesValue = _properties.getProperty(
+			"source.formatter.excludes");
+
+		List<String> excludesList = ListUtil.fromString(
+			GetterUtil.getString(excludesValue), StringPool.COMMA);
+
+		_allFileNames = SourceFormatterUtil.scanForFiles(
+			_sourceFormatterArgs.getBaseDirName(),
+			excludesList.toArray(new String[excludesList.size()]),
+			new String[] {"**/*.*"},
+			_sourceFormatterArgs.isIncludeSubrepositories());
+	}
+
+	private void _populateModulesProperties() throws Exception {
+		List<Properties> propertiesList = new ArrayList<>();
+
+		propertiesList.add(_properties);
+
+		// Find properties files in any parent directory
+
+		String parentDirName = _sourceFormatterArgs.getBaseDirName();
+
+		for (int i = 0; i < ToolsUtil.PORTAL_MAX_DIR_LEVEL; i++) {
+			try {
+				InputStream inputStream = new FileInputStream(
+					parentDirName + _PROPERTIES_FILE_NAME);
+
+				Properties properties = new Properties();
+
+				properties.load(inputStream);
+
+				propertiesList.add(properties);
+			}
+			catch (FileNotFoundException fnfe) {
+			}
+
+			parentDirName += "../";
+		}
+
+		// Find properties file in any child directory
+
+		String excludesValue = _properties.getProperty(
+			"source.formatter.excludes");
+
+		List<String> excludesList = ListUtil.fromString(
+			GetterUtil.getString(excludesValue), StringPool.COMMA);
+
+		List<String> modulePropertiesFileNames =
+			SourceFormatterUtil.filterFileNames(
+				_allFileNames,
+				excludesList.toArray(new String[excludesList.size()]),
+				new String[] {"**/" + _PROPERTIES_FILE_NAME});
+
+		for (String modulePropertiesFileName : modulePropertiesFileNames) {
+			InputStream inputStream = new FileInputStream(
+				modulePropertiesFileName);
+
+			Properties properties = new Properties();
+
+			properties.load(inputStream);
+
+			propertiesList.add(properties);
+		}
+
+		// Merge all properties files
+
+		_properties = new Properties();
+
+		for (int i = 0; i < propertiesList.size(); i++) {
+			Properties properties = propertiesList.get(i);
+
+			Enumeration<String> enu =
+				(Enumeration<String>)properties.propertyNames();
+
+			while (enu.hasMoreElements()) {
+				String key = enu.nextElement();
+
+				String value = properties.getProperty(key);
+
+				if (Validator.isNull(value)) {
+					continue;
+				}
+
+				if (key.contains("excludes")) {
+					String existingValue = _properties.getProperty(key);
+
+					if (Validator.isNotNull(existingValue)) {
+						value = existingValue + StringPool.COMMA + value;
+					}
+
+					_properties.put(key, value);
+				}
+				else if (!_properties.containsKey(key)) {
+					_properties.put(key, value);
+				}
+			}
+		}
+	}
+
+	private void _populatePortalImplProperties() throws Exception {
+		File propertiesFile = SourceFormatterUtil.getFile(
+			_sourceFormatterArgs.getBaseDirName(),
+			"portal-impl/src/" + _PROPERTIES_FILE_NAME,
+			ToolsUtil.PORTAL_MAX_DIR_LEVEL);
+
+		if (propertiesFile != null) {
+			InputStream inputStream = new FileInputStream(propertiesFile);
+
+			_properties.load(inputStream);
+		}
+	}
+
+	private void _populateProperties() throws Exception {
+		String fileName = _PROPERTIES_FILE_NAME;
+
+		for (int i = 0; i <= ToolsUtil.PLUGINS_MAX_DIR_LEVEL; i++) {
+			try {
+				InputStream inputStream = new FileInputStream(
+					_sourceFormatterArgs.getBaseDirName() + fileName);
+
+				_properties.load(inputStream);
+
+				return;
+			}
+			catch (FileNotFoundException fnfe) {
+			}
+
+			fileName = "../" + fileName;
+		}
 	}
 
 	private void _runSourceProcessor(SourceProcessor sourceProcessor)
 		throws Exception {
 
+		sourceProcessor.setAllFileNames(_allFileNames);
+		sourceProcessor.setProperties(_properties);
 		sourceProcessor.setSourceFormatterArgs(_sourceFormatterArgs);
 
 		sourceProcessor.format();
 
-		_errorMessages.addAll(sourceProcessor.getErrorMessages());
+		_sourceFormatterMessages.addAll(
+			sourceProcessor.getSourceFormatterMessages());
 		_modifiedFileNames.addAll(sourceProcessor.getModifiedFileNames());
 
 		if (_firstSourceMismatchException == null) {
@@ -257,10 +484,22 @@ public class SourceFormatter {
 		}
 	}
 
-	private final Set<String> _errorMessages = new ConcurrentSkipListSet<>();
+	private static final String _PROPERTIES_FILE_NAME =
+		"source-formatter.properties";
+
+	private static final List<String> _defaultExcludes = Arrays.asList(
+		"**/.git/**", "**/.gradle/**", "**/bin/**", "**/build/**",
+		"**/classes/**", "**/node_modules/**", "**/npm-shrinkwrap.json",
+		"**/test-classes/**", "**/test-coverage/**", "**/test-results/**",
+		"**/tmp/**");
+
+	private List<String> _allFileNames;
 	private volatile SourceMismatchException _firstSourceMismatchException;
 	private final List<String> _modifiedFileNames =
 		new CopyOnWriteArrayList<>();
+	private Properties _properties = new Properties();
 	private final SourceFormatterArgs _sourceFormatterArgs;
+	private final Set<SourceFormatterMessage> _sourceFormatterMessages =
+		new ConcurrentSkipListSet<>();
 
 }

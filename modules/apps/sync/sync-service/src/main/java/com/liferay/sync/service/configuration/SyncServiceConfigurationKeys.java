@@ -28,8 +28,17 @@ public class SyncServiceConfigurationKeys {
 	public static final String SYNC_CLIENT_BATCH_FILE_MAX_SIZE =
 		"sync.client.batch.file.max.size";
 
+	public static final String SYNC_CLIENT_FORCE_SECURITY_MODE =
+		"sync.client.force.security.mode";
+
 	public static final String SYNC_CLIENT_MAX_CONNECTIONS =
 		"sync.client.max.connections";
+
+	public static final String SYNC_CLIENT_MAX_DOWNLOAD_RATE =
+		"sync.client.max.download.rate";
+
+	public static final String SYNC_CLIENT_MAX_UPLOAD_RATE =
+		"sync.client.max.upload.rate";
 
 	public static final String SYNC_CLIENT_MIN_BUILD_ANDROID =
 		"sync.client.min.build.android";
@@ -46,6 +55,10 @@ public class SyncServiceConfigurationKeys {
 	public static final String SYNC_FILE_CHECKSUM_THRESHOLD_SIZE =
 		"sync.file.checksum.threshold.size";
 
+	/**
+	 * @deprecated As of 1.3.0, with no direct replacement
+	 */
+	@Deprecated
 	public static final String SYNC_FILE_DIFF_CACHE_DELETE_INTERVAL =
 		"sync.file.diff.cache.delete.interval";
 
@@ -54,6 +67,8 @@ public class SyncServiceConfigurationKeys {
 
 	public static final String SYNC_FILE_DIFF_CACHE_EXPIRATION_TIME =
 		"sync.file.diff.cache.expiration.time";
+
+	public static final String SYNC_LAN_ENABLED = "sync.lan.enabled";
 
 	public static final String SYNC_MAC_PACKAGE_FOLDER_EXTENSIONS =
 		"sync.mac.package.folder.extensions";

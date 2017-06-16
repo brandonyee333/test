@@ -14,7 +14,7 @@
  */
 --%>
 
-<%@ include file="/init.jsp" %>
+<%@ include file="/asset/init.jsp" %>
 
 <%
 int abstractLength = GetterUtil.getInteger(request.getAttribute(WebKeys.ASSET_ENTRY_ABSTRACT_LENGTH), AssetUtil.ASSET_ENTRY_ABSTRACT_LENGTH);
@@ -27,7 +27,7 @@ JournalArticleDisplay articleDisplay = (JournalArticleDisplay)request.getAttribu
 	<div class="asset-small-image">
 		<c:choose>
 			<c:when test="<%= Validator.isNotNull(viewURL) %>">
-				<a href="<%= viewURL %>">
+				<a href="<%= HtmlUtil.escapeAttribute(viewURL) %>">
 					<img alt="<%= HtmlUtil.escapeAttribute(articleDisplay.getTitle()) %>" class="asset-small-image img-thumbnail" src="<%= HtmlUtil.escapeAttribute(articleDisplay.getArticleDisplayImageURL(themeDisplay)) %>" width="150" />
 				</a>
 			</c:when>
@@ -39,13 +39,11 @@ JournalArticleDisplay articleDisplay = (JournalArticleDisplay)request.getAttribu
 </c:if>
 
 <%
-String summary = HtmlUtil.escape(articleDisplay.getDescription());
-
-summary = HtmlUtil.replaceNewLine(summary);
+String summary = articleDisplay.getDescription();
 
 if (Validator.isNull(summary)) {
-	summary = HtmlUtil.stripHtml(articleDisplay.getContent());
+	summary = articleDisplay.getContent();
 }
 %>
 
-<%= StringUtil.shorten(summary, abstractLength) %>
+<%= HtmlUtil.stripHtml(StringUtil.shorten(summary, abstractLength)) %>

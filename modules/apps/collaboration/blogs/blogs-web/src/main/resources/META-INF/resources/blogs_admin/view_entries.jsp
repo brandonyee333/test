@@ -46,6 +46,10 @@ if (delta > 0) {
 	navigationPortletURL.setParameter("delta", String.valueOf(delta));
 }
 
+PortletURL sortURL = PortletURLUtil.clone(navigationPortletURL, liferayPortletResponse);
+
+sortURL.setParameter("entriesNavigation", entriesNavigation);
+
 navigationPortletURL.setParameter("orderBycol", orderByCol);
 navigationPortletURL.setParameter("orderByType", orderByType);
 
@@ -62,7 +66,88 @@ if (cur > 0) {
 String keywords = ParamUtil.getString(request, "keywords");
 %>
 
+<%
+int entriesTotal = 0;
+List<BlogsEntry> entriesResults = null;
+
+SearchContainer entriesSearchContainer = new SearchContainer(renderRequest, PortletURLUtil.clone(portletURL, liferayPortletResponse), null, "no-entries-were-found");
+
+entriesSearchContainer.setOrderByComparator(BlogsUtil.getOrderByComparator(orderByCol, orderByType));
+
+if ((assetCategoryId != 0) || Validator.isNotNull(assetTagName)) {
+	SearchContainerResults<AssetEntry> searchContainerResults = BlogsUtil.getSearchContainerResults(entriesSearchContainer);
+
+	entriesSearchContainer.setTotal(searchContainerResults.getTotal());
+
+	List<AssetEntry> assetEntries = searchContainerResults.getResults();
+
+	entriesResults = new ArrayList<>(assetEntries.size());
+
+	for (AssetEntry assetEntry : assetEntries) {
+		entriesResults.add(BlogsEntryLocalServiceUtil.getEntry(assetEntry.getClassPK()));
+	}
+}
+else if (Validator.isNull(keywords)) {
+	if (entriesNavigation.equals("mine")) {
+		entriesTotal = BlogsEntryServiceUtil.getGroupUserEntriesCount(scopeGroupId, themeDisplay.getUserId(), WorkflowConstants.STATUS_ANY);
+	}
+	else {
+		entriesTotal = BlogsEntryServiceUtil.getGroupEntriesCount(scopeGroupId, WorkflowConstants.STATUS_ANY);
+	}
+
+	entriesSearchContainer.setTotal(entriesTotal);
+
+	if (entriesNavigation.equals("mine")) {
+		entriesResults = BlogsEntryServiceUtil.getGroupUserEntries(scopeGroupId, themeDisplay.getUserId(), WorkflowConstants.STATUS_ANY, entriesSearchContainer.getStart(), entriesSearchContainer.getEnd(), entriesSearchContainer.getOrderByComparator());
+	}
+	else {
+		entriesResults = BlogsEntryServiceUtil.getGroupEntries(scopeGroupId, WorkflowConstants.STATUS_ANY, entriesSearchContainer.getStart(), entriesSearchContainer.getEnd(), entriesSearchContainer.getOrderByComparator());
+	}
+}
+else {
+	Indexer indexer = IndexerRegistryUtil.getIndexer(BlogsEntry.class);
+
+	SearchContext searchContext = SearchContextFactory.getInstance(request);
+
+	searchContext.setEnd(entriesSearchContainer.getEnd());
+	searchContext.setKeywords(keywords);
+	searchContext.setStart(entriesSearchContainer.getStart());
+
+	Hits hits = indexer.search(searchContext);
+
+	entriesResults = new ArrayList<>(hits.getLength());
+
+	entriesSearchContainer.setTotal(hits.getLength());
+
+	for (int i = 0; i < hits.getDocs().length; i++) {
+		Document doc = hits.doc(i);
+
+		long entryId = GetterUtil.getLong(doc.get(Field.ENTRY_CLASS_PK));
+
+		BlogsEntry entry = null;
+
+		try {
+			entry = BlogsEntryServiceUtil.getEntry(entryId);
+
+			entry = entry.toEscapedModel();
+		}
+		catch (Exception e) {
+			if (_log.isWarnEnabled()) {
+				_log.warn("Blogs search index is stale and contains entry " + entryId);
+			}
+
+			continue;
+		}
+
+		entriesResults.add(entry);
+	}
+}
+
+entriesSearchContainer.setResults(entriesResults);
+%>
+
 <liferay-frontend:management-bar
+	disabled="<%= entriesSearchContainer.getTotal() <= 0 %>"
 	includeCheckBox="<%= true %>"
 	searchContainerId="blogEntries"
 >
@@ -86,13 +171,13 @@ String keywords = ParamUtil.getString(request, "keywords");
 				orderByCol="<%= orderByCol %>"
 				orderByType="<%= orderByType %>"
 				orderColumns='<%= new String[] {"title", "display-date"} %>'
-				portletURL="<%= portletURL %>"
+				portletURL="<%= sortURL %>"
 			/>
 		</liferay-frontend:management-bar-filters>
 	</c:if>
 
 	<liferay-frontend:management-bar-action-buttons>
-		<liferay-frontend:management-bar-button href='<%= "javascript:" + renderResponse.getNamespace() + "deleteEntries();" %>' icon='<%= TrashUtil.isTrashEnabled(scopeGroupId) ? "trash" : "times" %>' label='<%= TrashUtil.isTrashEnabled(scopeGroupId) ? "recycle-bin" : "delete" %>' />
+		<liferay-frontend:management-bar-button href='<%= "javascript:" + renderResponse.getNamespace() + "deleteEntries();" %>' icon='<%= trashHelper.isTrashEnabled(scopeGroupId) ? "trash" : "times" %>' label='<%= trashHelper.isTrashEnabled(scopeGroupId) ? "recycle-bin" : "delete" %>' />
 	</liferay-frontend:management-bar-action-buttons>
 </liferay-frontend:management-bar>
 
@@ -117,24 +202,18 @@ String keywords = ParamUtil.getString(request, "keywords");
 
 		<liferay-ui:search-container
 			id="blogEntries"
-			orderByComparator="<%= BlogsUtil.getOrderByComparator(orderByCol, orderByType) %>"
 			rowChecker="<%= new EmptyOnClickRowChecker(renderResponse) %>"
-			searchContainer='<%= new SearchContainer(renderRequest, PortletURLUtil.clone(portletURL, liferayPortletResponse), null, "no-entries-were-found") %>'
+			searchContainer="<%= entriesSearchContainer %>"
 		>
-			<liferay-ui:search-container-results>
-				<%@ include file="/blogs_admin/entry_search_results.jspf" %>
-			</liferay-ui:search-container-results>
-
 			<liferay-ui:search-container-row
-				className="com.liferay.blogs.kernel.model.BlogsEntry"
+				className="com.liferay.blogs.model.BlogsEntry"
 				escapedModel="<%= true %>"
 				keyProperty="entryId"
 				modelVar="entry"
-				rowIdProperty="urlTitle"
 			>
 				<liferay-portlet:renderURL varImpl="rowURL">
 					<portlet:param name="mvcRenderCommandName" value="/blogs/edit_entry" />
-					<portlet:param name="redirect" value="<%= searchContainer.getIteratorURL().toString() %>" />
+					<portlet:param name="redirect" value="<%= entriesSearchContainer.getIteratorURL().toString() %>" />
 					<portlet:param name="entryId" value="<%= String.valueOf(entry.getEntryId()) %>" />
 				</liferay-portlet:renderURL>
 
@@ -159,14 +238,18 @@ String keywords = ParamUtil.getString(request, "keywords");
 
 <aui:script>
 	function <portlet:namespace />deleteEntries() {
-		if (<%= TrashUtil.isTrashEnabled(scopeGroupId) %> || confirm('<%= UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-delete-the-selected-entries") %>')) {
+		if (<%= trashHelper.isTrashEnabled(scopeGroupId) %> || confirm('<%= UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-delete-the-selected-entries") %>')) {
 			var form = AUI.$(document.<portlet:namespace />fm);
 
 			form.attr('method', 'post');
-			form.fm('<%= Constants.CMD %>').val('<%= TrashUtil.isTrashEnabled(scopeGroupId) ? Constants.MOVE_TO_TRASH : Constants.DELETE %>');
+			form.fm('<%= Constants.CMD %>').val('<%= trashHelper.isTrashEnabled(scopeGroupId) ? Constants.MOVE_TO_TRASH : Constants.DELETE %>');
 			form.fm('deleteEntryIds').val(Liferay.Util.listCheckedExcept(form, '<portlet:namespace />allRowIds'));
 
 			submitForm(form, '<portlet:actionURL name="/blogs/edit_entry" />');
 		}
 	}
 </aui:script>
+
+<%!
+private static Log _log = LogFactoryUtil.getLog("com_liferay_blogs_web.blogs_admin.view_entries_jsp");
+%>

@@ -29,12 +29,21 @@ ResourceBundleLoaderProvider resourceBundleLoaderProvider = (ResourceBundleLoade
 
 ResourceBundleLoader resourceBundleLoader = resourceBundleLoaderProvider.getResourceBundleLoader(configurationModel.getBundleSymbolicName());
 
-ResourceBundle componentResourceBundle = resourceBundleLoader.loadResourceBundle(LanguageUtil.getLanguageId(request));
+ResourceBundle componentResourceBundle = resourceBundleLoader.loadResourceBundle(PortalUtil.getLocale(request));
 
 String configurationModelName = (componentResourceBundle != null) ? LanguageUtil.get(componentResourceBundle, configurationModel.getName()) : configurationModel.getName();
 
 renderResponse.setTitle(configurationModelName);
 %>
+
+<liferay-ui:error exception="<%= ConfigurationModelListenerException.class %>">
+
+	<%
+	ConfigurationModelListenerException cmle = (ConfigurationModelListenerException)errorException;
+	%>
+
+	<liferay-ui:message key="<%= cmle.causeMessage %>" localizeKey="<%= false %>" />
+</liferay-ui:error>
 
 <portlet:actionURL name="bindConfiguration" var="bindConfigurationActionURL" />
 <portlet:actionURL name="deleteConfiguration" var="deleteConfigurationActionURL" />
@@ -51,6 +60,16 @@ renderResponse.setTitle(configurationModelName);
 					<aui:alert closeable="<%= false %>" id="errorAlert" type="info">
 						<liferay-ui:message key="this-configuration-was-not-saved-yet" />
 					</aui:alert>
+				</c:if>
+
+				<%
+				String configurationModelDescription = (componentResourceBundle != null) ? LanguageUtil.get(componentResourceBundle, configurationModel.getDescription()) : configurationModel.getDescription();
+				%>
+
+				<c:if test="<%= !Validator.isBlank(configurationModelDescription) %>">
+					<p class="text-default">
+						<strong><%= configurationModelDescription %></strong>
+					</p>
 				</c:if>
 
 				<%= ddmFormHTML %>

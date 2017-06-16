@@ -14,8 +14,6 @@
 
 package com.liferay.sync.service.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -31,15 +29,15 @@ import java.util.List;
 /**
  * @author Shinn Lok
  */
-@ProviderType
 public class SyncDeviceLocalServiceImpl extends SyncDeviceLocalServiceBaseImpl {
 
 	@Override
 	public SyncDevice addSyncDevice(
-			long userId, String type, int buildNumber, int featureSet)
+			long userId, String type, long buildNumber, String hostname,
+			int featureSet)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 		Date now = new Date();
 
 		long syncDeviceId = counterLocalService.increment();
@@ -54,11 +52,22 @@ public class SyncDeviceLocalServiceImpl extends SyncDeviceLocalServiceBaseImpl {
 		syncDevice.setType(type);
 		syncDevice.setBuildNumber(buildNumber);
 		syncDevice.setFeatureSet(featureSet);
+		syncDevice.setHostname(hostname);
 		syncDevice.setStatus(SyncDeviceConstants.STATUS_ACTIVE);
 
 		syncDevicePersistence.update(syncDevice);
 
 		return syncDevice;
+	}
+
+	@Override
+	public List<SyncDevice> getSyncDevices(
+			long userId, int start, int end,
+			OrderByComparator orderByComparator)
+		throws PortalException {
+
+		return syncDevicePersistence.findByUserId(
+			userId, start, end, orderByComparator);
 	}
 
 	@Override
@@ -85,8 +94,8 @@ public class SyncDeviceLocalServiceImpl extends SyncDeviceLocalServiceBaseImpl {
 
 	@Override
 	public SyncDevice updateSyncDevice(
-			long syncDeviceId, String type, int buildNumber, int featureSet,
-			int status)
+			long syncDeviceId, String type, long buildNumber, int featureSet,
+			String hostname, int status)
 		throws PortalException {
 
 		SyncDevice syncDevice = syncDevicePersistence.findByPrimaryKey(
@@ -96,6 +105,7 @@ public class SyncDeviceLocalServiceImpl extends SyncDeviceLocalServiceBaseImpl {
 		syncDevice.setType(type);
 		syncDevice.setBuildNumber(buildNumber);
 		syncDevice.setFeatureSet(featureSet);
+		syncDevice.setHostname(hostname);
 		syncDevice.setStatus(status);
 
 		syncDevicePersistence.update(syncDevice);

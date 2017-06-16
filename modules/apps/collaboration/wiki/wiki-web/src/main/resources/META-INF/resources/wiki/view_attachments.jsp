@@ -21,11 +21,7 @@ WikiPage wikiPage = (WikiPage)request.getAttribute(WikiWebKeys.WIKI_PAGE);
 
 boolean copyPageAttachments = ParamUtil.getBoolean(request, "copyPageAttachments", true);
 
-List<FileEntry> attachmentsFileEntries = null;
-
-if (wikiPage != null) {
-	attachmentsFileEntries = wikiPage.getAttachmentsFileEntries();
-}
+List<FileEntry> attachmentsFileEntries = wikiPage.getAttachmentsFileEntries();
 
 long templateNodeId = ParamUtil.getLong(request, "templateNodeId");
 String templateTitle = ParamUtil.getString(request, "templateTitle");
@@ -45,7 +41,7 @@ if ((templateNodeId > 0) && Validator.isNotNull(templateTitle)) {
 int deletedAttachmentsCount = wikiPage.getDeletedAttachmentsFileEntriesCount();
 %>
 
-<c:if test="<%= TrashUtil.isTrashEnabled(scopeGroupId) && (deletedAttachmentsCount > 0) %>">
+<c:if test="<%= trashHelper.isTrashEnabled(scopeGroupId) && (deletedAttachmentsCount > 0) %>">
 	<portlet:renderURL var="viewTrashAttachmentsURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 		<portlet:param name="mvcRenderCommandName" value="/wiki/view_trash_page_attachments" />
 		<portlet:param name="redirect" value="<%= currentURL %>" />
@@ -82,10 +78,10 @@ int deletedAttachmentsCount = wikiPage.getDeletedAttachmentsFileEntriesCount();
 	</c:if>
 
 	<%
-	int attachmentsFileEntriesCount = wikiPage.getAttachmentsFileEntriesCount();
+	int attachmentsFileEntriesCount = attachmentsFileEntries.size();
 	String emptyResultsMessage = "this-page-does-not-have-file-attachments";
 	boolean paginate = false;
-	boolean showPageAttachmentAction = true;
+	boolean showPageAttachmentAction = (templateNodeId == 0);
 	int status = WorkflowConstants.STATUS_APPROVED;
 	%>
 

@@ -40,7 +40,7 @@
 </tr>
 <tr>
 	<td>SPECIFIC_LARGE_TEXT_LINK</td>
-	<td>//div[contains(@class,'vertical-card') and contains(.,'${key_cardText}')]//span[contains(@class,'lfr-card-title-text')]//a</td>
+	<td>//div[contains(@class,'vertical-card') and contains(.,'${key_cardText}')]//span[contains(@class,'lfr-card-title-text')]//span</td>
 	<td></td>
 </tr>
 <tr>
@@ -51,11 +51,6 @@
 <tr>
 	<td>SPECIFIC_SMALL_TEXT</td>
 	<td>//div[contains(@class,'vertical-card') and contains(.,'${key_cardText}')]//span[contains(@class,'lfr-card-workflow-text')]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>SPECIFIC_SMALL_TEXT_2</td>
-	<td>xpath=(//div[contains(@class,'vertical-card') and contains(.,'${key_cardText}')]//span[@class='lfr-card-subtitle-text'])[2]</td>
 	<td></td>
 </tr>
 </tbody>

@@ -21,7 +21,7 @@ WikiNode node = (WikiNode)request.getAttribute(WikiWebKeys.WIKI_NODE);
 WikiPage wikiPage = (WikiPage)request.getAttribute(WikiWebKeys.WIKI_PAGE);
 %>
 
-<div class="lfr-dynamic-uploader">
+<div class="lfr-dynamic-uploader" id="<portlet:namespace />uploaderContainer">
 	<div class="lfr-upload-container" id="<portlet:namespace />fileUpload"></div>
 </div>
 
@@ -71,13 +71,13 @@ Ticket ticket = TicketLocalServiceUtil.addTicket(user.getCompanyId(), User.class
 </liferay-util:buffer>
 
 <liferay-portlet:actionURL name="/wiki/edit_page_attachment" var="deleteURL">
-	<portlet:param name="<%= Constants.CMD %>" value="<%= TrashUtil.isTrashEnabled(wikiRequestHelper.getScopeGroupId()) ? Constants.MOVE_TO_TRASH : Constants.DELETE %>" />
+	<portlet:param name="<%= Constants.CMD %>" value="<%= trashHelper.isTrashEnabled(wikiRequestHelper.getScopeGroupId()) ? Constants.MOVE_TO_TRASH : Constants.DELETE %>" />
 	<portlet:param name="redirect" value="<%= wikiRequestHelper.getCurrentURL() %>" />
 	<portlet:param name="nodeId" value="<%= String.valueOf(node.getNodeId()) %>" />
 	<portlet:param name="title" value="<%= wikiPage.getTitle() %>" />
 </liferay-portlet:actionURL>
 
-<aui:script use="liferay-upload">
+<aui:script use="liferay-portlet-url,liferay-upload">
 	var uploader = new Liferay.Upload(
 		{
 			boundingBox: '#<portlet:namespace />fileUpload',
@@ -92,6 +92,8 @@ Ticket ticket = TicketLocalServiceUtil.addTicket(user.getCompanyId(), User.class
 			maxFileSize: '<%= PrefsPropsUtil.getLong(PropsKeys.DL_FILE_MAX_SIZE) %> ',
 			namespace: '<portlet:namespace />',
 			removeOnComplete: true,
+			rootElement: '#<portlet:namespace />uploaderContainer',
+			simultaneousUploads: 1,
 			'strings.uploadsCompleteText': '<%= LanguageUtil.get(request, "all-files-are-saved") %>',
 			uploadFile: '<liferay-portlet:actionURL doAsUserId="<%= user.getUserId() %>" name="/wiki/edit_page_attachment"><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.ADD %>" /><portlet:param name="nodeId" value="<%= String.valueOf(node.getNodeId()) %>" /><portlet:param name="title" value="<%= wikiPage.getTitle() %>" /></liferay-portlet:actionURL>&ticketKey=<%= ticket.getKey() %><liferay-ui:input-permissions-params modelName="<%= WikiPage.class.getName() %>" />'
 		}
@@ -111,12 +113,12 @@ Ticket ticket = TicketLocalServiceUtil.addTicket(user.getCompanyId(), User.class
 
 				rowColumns.push(event.name);
 				rowColumns.push(uploader.formatStorage(event.size));
-				rowColumns.push('<a href="' + deleteURL + '"><%= TrashUtil.isTrashEnabled(scopeGroupId) ? UnicodeLanguageUtil.get(resourceBundle, "move-to-the-recycle-bin") : UnicodeFormatter.toString(removeAttachmentIcon) %></a>');
+				rowColumns.push('<a href="' + deleteURL + '"><%= trashHelper.isTrashEnabled(scopeGroupId) ? UnicodeLanguageUtil.get(resourceBundle, "move-to-the-recycle-bin") : UnicodeFormatter.toString(removeAttachmentIcon) %></a>');
 
 				searchContainer.addRow(rowColumns, event.id);
 
 				searchContainer.updateDataStore();
 			}
 		}
-	)
+	);
 </aui:script>

@@ -22,30 +22,27 @@ import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.verify.VerifyProcess;
 import com.liferay.portal.verify.VerifyResourcePermissions;
 import com.liferay.portal.verify.VerifyUUID;
+import com.liferay.wiki.internal.verify.model.WikiNodeVerifiableModel;
+import com.liferay.wiki.internal.verify.model.WikiPageResourceVerifiableModel;
+import com.liferay.wiki.internal.verify.model.WikiPageVerifiableModel;
 import com.liferay.wiki.model.WikiPage;
 import com.liferay.wiki.model.WikiPageResource;
 import com.liferay.wiki.service.WikiPageLocalService;
 import com.liferay.wiki.service.WikiPageResourceLocalService;
 import com.liferay.wiki.util.comparator.PageVersionComparator;
-import com.liferay.wiki.verify.model.WikiNodeVerifiableModel;
-import com.liferay.wiki.verify.model.WikiPageResourceVerifiableModel;
-import com.liferay.wiki.verify.model.WikiPageVerifiableModel;
 
 import java.util.Date;
 import java.util.List;
 
-import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
- * @author Brian Wing Shun Chan
- * @author Iván Zaera
+ * @author     Brian Wing Shun Chan
+ * @author     Iván Zaera
+ * @deprecated As of 1.4.0, replaced by {@link
+ *             com.liferay.wiki.internal.verify.WikiServiceVerifyProcess}
  */
-@Component(
-	immediate = true,
-	property = {"verify.process.name=com.liferay.wiki.service"},
-	service = VerifyProcess.class
-)
+@Deprecated
 public class WikiServiceVerifyProcess extends VerifyProcess {
 
 	@Override

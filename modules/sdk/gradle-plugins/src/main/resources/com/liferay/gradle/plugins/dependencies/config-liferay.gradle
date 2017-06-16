@@ -27,7 +27,7 @@ liferay {
 			dir = project.properties["app.server.jboss.dir"] ?: "${->liferay.appServerParentDir}/jboss-eap-${->liferay.appServers.jboss.version}"
 			libGlobalDir = project.properties["app.server.jboss.lib.global.dir"] ?: "${->liferay.appServers.jboss.dir}/modules/com/liferay/portal/main"
 			portalDir = project.properties["app.server.jboss.portal.dir"] ?: "${->liferay.appServers.jboss.dir}/standalone/deployments/ROOT.war"
-			version = project.properties["app.server.jboss.version"] ?: "6.4.0"
+			version = project.properties["app.server.jboss.version"] ?: "7.0.0"
 		}
 
 		jetty {
@@ -102,9 +102,9 @@ liferay {
 		}
 	}
 
-	appServerParentDir = rootProject.file("../bundles")
+	appServerParentDir = project.properties["app.server.parent.dir"] ?: rootProject.file("../bundles")
 	appServerType = project.properties["app.server.type"] ?: "tomcat"
-	deployDir = project.properties["auto.deploy.dir"] ?: "${->liferay.appServerParentDir}/osgi/modules"
+	deployDir = project.properties["auto.deploy.dir"] ?: "${->liferay.appServerParentDir}/deploy"
 	jmxRemotePort = project.properties["jmx.remote.port"] ?: 8099
 	liferayHome = project.properties["liferay.home"] ?: "${->liferay.appServerParentDir}"
 }

@@ -15,13 +15,14 @@
 package com.liferay.portal.upgrade.v6_2_0;
 
 import com.liferay.portal.kernel.model.LayoutTypePortletConstants;
-import com.liferay.portal.kernel.model.PortletConstants;
 import com.liferay.portal.kernel.model.PortletPreferences;
+import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.PortletKeys;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.model.impl.PortletPreferencesImpl;
@@ -63,11 +64,14 @@ public class UpgradeCustomizablePortlets extends UpgradeProcess {
 			long ownerId, int ownerType, long plid, String portletId)
 		throws Exception {
 
+		StringBundler sb = new StringBundler(3);
+
+		sb.append("select portletPreferencesId, ownerId, ownerType, plid, ");
+		sb.append("portletId, preferences from PortletPreferences where ");
+		sb.append("ownerId = ?, ownerType = ?, plid = ?, portletId = ?");
+
 		try (PreparedStatement ps = connection.prepareStatement(
-				"select portletPreferencesId, ownerId, ownerType, plid, " +
-					"portletId, preferences from PortletPreferences where " +
-						"ownerId = ?, ownerType = ?, plid = ?, portletId = " +
-							"?")) {
+				sb.toString())) {
 
 			ps.setLong(1, ownerId);
 			ps.setInt(2, ownerType);
@@ -156,24 +160,30 @@ public class UpgradeCustomizablePortlets extends UpgradeProcess {
 
 				List<String> newPortletIds = new ArrayList<>();
 
+				StringBundler sb = new StringBundler(4);
+
+				sb.append("update PortletPreferences set ownerId = ?, ");
+				sb.append("ownerType = ?, plid = ?, portletId = ? where ");
+				sb.append("ownerId = ? and ownerType = ? and plid = ? and ");
+				sb.append("portletId = ?");
+
 				try (PreparedStatement ps = connection.prepareStatement(
-						"update PortletPreferences set ownerId = ?, " +
-							"ownerType = ?, plid = ?, portletId = ? where " +
-							"ownerId = ? and ownerType = ? and plid = ? and " +
-							"portletId = ?")) {
+						sb.toString())) {
 
 					for (String customPortletId : StringUtil.split(value)) {
 						String newPortletId = null;
 
-						if (!PortletConstants.hasInstanceId(customPortletId)) {
+						if (!PortletIdCodec.hasInstanceId(customPortletId)) {
 							newPortletIds.add(customPortletId);
 						}
 						else {
-							String instanceId = PortletConstants.getInstanceId(
+							String instanceId = PortletIdCodec.decodeInstanceId(
 								customPortletId);
 
-							newPortletId = PortletConstants.assemblePortletId(
-								customPortletId, ownerId, instanceId);
+							newPortletId = PortletIdCodec.encode(
+								PortletIdCodec.decodePortletName(
+									customPortletId),
+								ownerId, instanceId);
 
 							ps.setLong(1, ownerId);
 							ps.setInt(2, PortletKeys.PREFS_OWNER_TYPE_USER);

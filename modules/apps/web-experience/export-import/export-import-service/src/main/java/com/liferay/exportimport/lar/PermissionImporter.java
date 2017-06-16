@@ -14,17 +14,21 @@
 
 package com.liferay.exportimport.lar;
 
+import aQute.bnd.annotation.ProviderType;
+
+import com.liferay.exportimport.internal.util.ExportImportPermissionUtil;
 import com.liferay.exportimport.kernel.lar.ExportImportPathUtil;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.kernel.staging.MergeLayoutPrototypesThreadLocal;
-import com.liferay.exportimport.util.ExportImportPermissionUtil;
 import com.liferay.portal.kernel.exception.NoSuchTeamException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
-import com.liferay.portal.kernel.model.PortletConstants;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.model.Team;
+import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -55,6 +59,7 @@ import java.util.Set;
  * @author Zsigmond Rab
  * @author Douglas Wong
  */
+@ProviderType
 public class PermissionImporter {
 
 	public static PermissionImporter getInstance() {
@@ -87,7 +92,7 @@ public class PermissionImporter {
 		Element permissionsElement = portletElement.element("permissions");
 
 		if ((layout != null) && (permissionsElement != null)) {
-			String resourceName = PortletConstants.getRootPortletId(portletId);
+			String resourceName = PortletIdCodec.decodePortletName(portletId);
 
 			String resourcePrimKey = PortletPermissionUtil.getPrimaryKey(
 				layout.getPlid(), portletId);
@@ -164,6 +169,13 @@ public class PermissionImporter {
 				team = TeamLocalServiceUtil.getTeam(groupId, name);
 			}
 			catch (NoSuchTeamException nste) {
+
+				// LPS-52675
+
+				if (_log.isDebugEnabled()) {
+					_log.debug(nste, nste);
+				}
+
 				team = TeamLocalServiceUtil.addTeam(
 					userId, groupId, name, description, new ServiceContext());
 			}
@@ -274,6 +286,9 @@ public class PermissionImporter {
 
 	private PermissionImporter() {
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		PermissionImporter.class);
 
 	private static final PermissionImporter _instance =
 		new PermissionImporter();

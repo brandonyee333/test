@@ -40,7 +40,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -98,21 +98,22 @@ public class LiferayPortlet extends GenericPortlet {
 				return;
 			}
 
-			boolean emptySessionMessages = isEmptySessionMessages(
-				actionRequest);
-
-			if (emptySessionMessages) {
-				addSuccessMessage(actionRequest, actionResponse);
-			}
+			String portletId = PortalUtil.getPortletId(actionRequest);
 
 			if (!SessionMessages.contains(
 					actionRequest,
-					PortalUtil.getPortletId(actionRequest) +
-						SessionMessages.KEY_SUFFIX_FORCE_SEND_REDIRECT)) {
+					portletId.concat(
+						SessionMessages.KEY_SUFFIX_FORCE_SEND_REDIRECT))) {
 
-				if (emptySessionMessages || isAlwaysSendRedirect()) {
+				if (isEmptySessionMessages(actionRequest) ||
+					isAlwaysSendRedirect()) {
+
 					sendRedirect(actionRequest, actionResponse);
 				}
+			}
+
+			if (isAddSuccessMessage(actionRequest)) {
+				addSuccessMessage(actionRequest, actionResponse);
 			}
 		}
 		catch (PortletException pe) {
@@ -493,10 +494,46 @@ public class LiferayPortlet extends GenericPortlet {
 		validPaths = getPaths(rootPath, extension);
 
 		validPaths.addAll(
-			getPaths(_PATH_META_INF_RESOURCES + rootPath, extension));
+			getPaths(_PATH_META_INF_RESOURCES.concat(rootPath), extension));
 
-		validPaths.addAll(
-			Arrays.asList(StringUtil.split(getInitParameter("valid-paths"))));
+		Collections.addAll(
+			validPaths, StringUtil.split(getInitParameter("valid-paths")));
+	}
+
+	protected boolean isAddSuccessMessage(ActionRequest actionRequest) {
+		if (!addProcessActionSuccessMessage) {
+			return false;
+		}
+
+		String portletId = PortalUtil.getPortletId(actionRequest);
+
+		if (SessionMessages.contains(
+				actionRequest,
+				portletId.concat(
+					SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_SUCCESS_MESSAGE))) {
+
+			return false;
+		}
+
+		if (SessionMessages.isEmpty(actionRequest)) {
+			return true;
+		}
+
+		int sessionMessagesSize = SessionMessages.size(actionRequest);
+
+		for (String suffix : _IGNORED_SESSION_MESSAGE_SUFFIXES) {
+			if (SessionMessages.contains(
+					actionRequest, portletId.concat(suffix))) {
+
+				sessionMessagesSize--;
+			}
+		}
+
+		if (sessionMessagesSize == 0) {
+			return true;
+		}
+
+		return false;
 	}
 
 	protected boolean isAlwaysSendRedirect() {
@@ -513,7 +550,9 @@ public class LiferayPortlet extends GenericPortlet {
 		String portletId = PortalUtil.getPortletId(actionRequest);
 
 		for (String suffix : _IGNORED_SESSION_MESSAGE_SUFFIXES) {
-			if (SessionMessages.contains(actionRequest, portletId + suffix)) {
+			if (SessionMessages.contains(
+					actionRequest, portletId.concat(suffix))) {
+
 				sessionMessagesSize--;
 			}
 		}
@@ -557,7 +596,7 @@ public class LiferayPortlet extends GenericPortlet {
 
 	protected boolean isValidPath(String path) {
 		if (validPaths.contains(path) ||
-			validPaths.contains(_PATH_META_INF_RESOURCES + path)) {
+			validPaths.contains(_PATH_META_INF_RESOURCES.concat(path))) {
 
 			return true;
 		}
@@ -600,7 +639,7 @@ public class LiferayPortlet extends GenericPortlet {
 
 	protected void writeJSON(
 			PortletRequest portletRequest, ActionResponse actionResponse,
-			Object json)
+			Object jsonObj)
 		throws IOException {
 
 		HttpServletResponse response = PortalUtil.getHttpServletResponse(
@@ -608,19 +647,19 @@ public class LiferayPortlet extends GenericPortlet {
 
 		response.setContentType(getJSONContentType(portletRequest));
 
-		ServletResponseUtil.write(response, json.toString());
+		ServletResponseUtil.write(response, jsonObj.toString());
 
 		response.flushBuffer();
 	}
 
 	protected void writeJSON(
 			PortletRequest portletRequest, MimeResponse mimeResponse,
-			Object json)
+			Object jsonObj)
 		throws IOException {
 
 		mimeResponse.setContentType(getJSONContentType(portletRequest));
 
-		PortletResponseUtil.write(mimeResponse, json.toString());
+		PortletResponseUtil.write(mimeResponse, jsonObj.toString());
 
 		mimeResponse.flushBuffer();
 	}

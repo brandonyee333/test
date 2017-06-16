@@ -1,5 +1,6 @@
 <definition component-name="portal-wcm">
 	<property name="portal.release" value="true" />
+	<property name="portal.upstream" value="true" />
 	<property name="testray.main.component.name" value="Related Assets" />
 
 	<set-up>
@@ -20,6 +21,8 @@
 	</tear-down>
 
 	<command name="AssertRelatedAssetsDisplayWithCategory" priority="4">
+		<property name="testray.component.names" value="Categories,Staging,Related Assets,Web Content Administration" />
+
 		<execute macro="ProductMenu#gotoControlPanelSites">
 			<var name="portlet" value="Sites" />
 		</execute>
@@ -183,8 +186,10 @@
 			<var name="portletName" value="Related Assets" />
 		</execute>
 
-		<execute macro="RelatedAssets#configureFilterByCategories">
+		<execute macro="AssetPublisherPortlet#configureFilterByCategories">
 			<var name="categoryName" value="Category Name" />
+			<var name="portletName" value="Related Assets" />
+			<var name="vocabularyName" value="Vocabulary Name" />
 		</execute>
 
 		<execute macro="Navigator#gotoPrivateStagedSitePage">
@@ -198,6 +203,8 @@
 	</command>
 
 	<command name="ViewNoFolders" priority="3">
+		<property name="testray.component.names" value="Related Assets" />
+
 		<execute macro="ProductMenu#gotoControlPanelSites">
 			<var name="portlet" value="Sites" />
 		</execute>

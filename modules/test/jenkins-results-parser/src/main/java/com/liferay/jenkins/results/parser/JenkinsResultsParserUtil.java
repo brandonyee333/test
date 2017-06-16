@@ -15,35 +15,44 @@
 package com.liferay.jenkins.results.parser;
 
 import java.io.BufferedReader;
-import java.io.CharArrayWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.StringReader;
-import java.io.Writer;
+import java.io.UnsupportedEncodingException;
 
+import java.net.HttpURLConnection;
+import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLDecoder;
+import java.net.UnknownHostException;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.dom4j.Element;
-import org.dom4j.io.OutputFormat;
-import org.dom4j.io.XMLWriter;
+import org.apache.commons.codec.binary.Base64;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -53,13 +62,84 @@ import org.json.JSONObject;
  */
 public class JenkinsResultsParserUtil {
 
+	public static final String[] DEFAULT_BUILD_PROPERTIES_URLS = {
+		"http://mirrors-no-cache.lax.liferay.com/github.com/liferay" +
+			"/liferay-jenkins-ee/build.properties",
+		"http://mirrors-no-cache.lax.liferay.com/github.com/liferay" +
+			"/liferay-jenkins-ee/commands/build.properties",
+		"http://mirrors-no-cache.lax.liferay.com/github.com/liferay" +
+			"/liferay-portal/build.properties",
+		"http://mirrors-no-cache.lax.liferay.com/github.com/liferay" +
+			"/liferay-portal/ci.properties",
+		"http://mirrors-no-cache.lax.liferay.com/github.com/liferay" +
+			"/liferay-portal/test.properties"
+	};
+
+	public static boolean debug;
+
+	public static String combine(String...strings) {
+		if ((strings == null) || (strings.length == 0)) {
+			return "";
+		}
+
+		StringBuilder sb = new StringBuilder();
+
+		for (String string : strings) {
+			sb.append(string);
+		}
+
+		return sb.toString();
+	}
+
+	public static void copy(File source, File target) throws IOException {
+		try {
+			if (!source.exists()) {
+				throw new FileNotFoundException(
+					source.getPath() + " does not exist");
+			}
+
+			if (target.exists()) {
+				delete(target);
+			}
+
+			if (source.isDirectory()) {
+				target.mkdir();
+
+				for (File file : source.listFiles()) {
+					copy(file, new File(target, file.getName()));
+				}
+
+				return;
+			}
+
+			try (FileInputStream fileInputStream =
+					new FileInputStream(source)) {
+
+				try (FileOutputStream fileOutputStream =
+						new FileOutputStream(target)) {
+
+					Files.copy(Paths.get(source.toURI()), fileOutputStream);
+
+					fileOutputStream.flush();
+				}
+			}
+		}
+		catch (IOException ioe) {
+			if (target.exists()) {
+				delete(target);
+			}
+
+			throw ioe;
+		}
+	}
+
 	public static JSONObject createJSONObject(String jsonString)
-		throws Exception {
+		throws IOException {
 
 		JSONObject jsonObject = new JSONObject(jsonString);
 
-		if (jsonObject.isNull("duration") ||
-			jsonObject.isNull("result") || jsonObject.isNull("url")) {
+		if (jsonObject.isNull("duration") || jsonObject.isNull("result") ||
+			jsonObject.isNull("url")) {
 
 			return jsonObject;
 		}
@@ -79,8 +159,6 @@ public class JenkinsResultsParserUtil {
 		if ((jsonObject.getInt("duration") == 0) && result.equals("FAILURE")) {
 			String actualResult = getActualResult(url);
 
-			System.out.println("Actual Result: " + actualResult);
-
 			jsonObject.putOpt("result", actualResult);
 		}
 
@@ -93,7 +171,41 @@ public class JenkinsResultsParserUtil {
 		return encode(url);
 	}
 
-	public static URL encode(URL url) throws Exception {
+	public static String decode(String url)
+		throws UnsupportedEncodingException {
+
+		return URLDecoder.decode(url, "UTF-8");
+	}
+
+	public static void delete(File file) throws IOException {
+		if (!file.exists()) {
+			System.out.println(
+				"Unable to delete because file does not exist " +
+					file.getPath());
+
+			return;
+		}
+
+		if (file.isDirectory()) {
+			for (File subfile : file.listFiles()) {
+				delete(subfile);
+			}
+		}
+
+		file.delete();
+	}
+
+	public static String encode(String url)
+		throws MalformedURLException, URISyntaxException {
+
+		URL encodedURL = encode(new URL(url));
+
+		return encodedURL.toExternalForm();
+	}
+
+	public static URL encode(URL url)
+		throws MalformedURLException, URISyntaxException {
+
 		URI uri = new URI(
 			url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(),
 			url.getPath(), url.getQuery(), url.getRef());
@@ -104,7 +216,8 @@ public class JenkinsResultsParserUtil {
 	}
 
 	public static Process executeBashCommands(
-			boolean exitOnFirstFail, String... commands)
+			boolean exitOnFirstFail, File basedir, long timeout,
+			String... commands)
 		throws InterruptedException, IOException {
 
 		System.out.print("Executing commands: ");
@@ -112,8 +225,6 @@ public class JenkinsResultsParserUtil {
 		for (String command : commands) {
 			System.out.println(command);
 		}
-
-		Runtime runtime = Runtime.getRuntime();
 
 		String[] bashCommands = new String[3];
 
@@ -138,25 +249,78 @@ public class JenkinsResultsParserUtil {
 
 		bashCommands[2] = sb.toString();
 
-		Process process = runtime.exec(bashCommands);
+		ProcessBuilder processBuilder = new ProcessBuilder(bashCommands);
 
-		System.out.println(
-			"Output stream: " + readInputStream(process.getInputStream()));
+		processBuilder.directory(basedir.getAbsoluteFile());
 
-		int returnCode = process.waitFor();
+		Process process = processBuilder.start();
 
-		if (returnCode != 0) {
+		long duration = 0;
+		long start = System.currentTimeMillis();
+		int returnCode = -1;
+
+		sleep(25);
+
+		while ((returnCode == -1) && (duration < timeout)) {
+			duration = System.currentTimeMillis() - start;
+
+			try {
+				returnCode = process.exitValue();
+			}
+			catch (IllegalThreadStateException itse) {
+				returnCode = -1;
+			}
+
+			sleep(100);
+		}
+
+		if (returnCode == -1) {
+			process.destroy();
+
+			throw new RuntimeException(
+				combine(
+					"Timeout occurred while executing bash commands: ",
+					bashCommands[2]));
+		}
+
+		if (debug) {
+			InputStream inputStream = process.getInputStream();
+
+			inputStream.mark(inputStream.available());
+
 			System.out.println(
-				"Error stream: " + readInputStream(process.getErrorStream()));
+				"Output stream: " + readInputStream(inputStream));
+
+			inputStream.reset();
+		}
+
+		if (debug && (returnCode != 0)) {
+			InputStream inputStream = process.getErrorStream();
+
+			inputStream.mark(inputStream.available());
+
+			System.out.println("Error stream: " + readInputStream(inputStream));
+
+			inputStream.reset();
 		}
 
 		return process;
 	}
 
+	public static Process executeBashCommands(
+			boolean exitOnFirstFail, String... commands)
+		throws InterruptedException, IOException {
+
+		return executeBashCommands(
+			exitOnFirstFail, new File("."), _BASH_COMMAND_TIMEOUT_DEFAULT,
+			commands);
+	}
+
 	public static Process executeBashCommands(String... commands)
 		throws InterruptedException, IOException {
 
-		return executeBashCommands(true, commands);
+		return executeBashCommands(
+			true, new File("."), _BASH_COMMAND_TIMEOUT_DEFAULT, commands);
 	}
 
 	public static String expandSlaveRange(String value) {
@@ -182,6 +346,7 @@ public class JenkinsResultsParserUtil {
 			String prefix = hostName.substring(0, y);
 
 			int first = Integer.parseInt(hostName.substring(y, x));
+
 			int last = Integer.parseInt(hostName.substring(x + 2));
 
 			for (int current = first; current <= last; current++) {
@@ -195,6 +360,23 @@ public class JenkinsResultsParserUtil {
 		}
 
 		return sb.toString();
+	}
+
+	public static List<File> findFiles(File basedir, String regex) {
+		List<File> files = new ArrayList<>();
+
+		for (File file : basedir.listFiles()) {
+			String fileName = file.getName();
+
+			if (file.isDirectory()) {
+				files.addAll(findFiles(file, regex));
+			}
+			else if (fileName.matches(regex)) {
+				files.add(file);
+			}
+		}
+
+		return files;
 	}
 
 	public static String fixFileName(String fileName) {
@@ -234,26 +416,6 @@ public class JenkinsResultsParserUtil {
 		return json;
 	}
 
-	public static String fixMarkdown(String markdown) {
-		markdown = markdown.replace("\\", "\\\\");
-		markdown = markdown.replace("`", "\\`");
-		markdown = markdown.replace("*", "\\*");
-		markdown = markdown.replace("_", "\\_");
-		markdown = markdown.replace("{", "\\{");
-		markdown = markdown.replace("}", "\\}");
-		markdown = markdown.replace("[", "\\[");
-		markdown = markdown.replace("]", "\\]");
-		markdown = markdown.replace("(", "\\(");
-		markdown = markdown.replace(")", "\\)");
-		markdown = markdown.replace("#", "\\#");
-		markdown = markdown.replace("+", "\\+");
-		markdown = markdown.replace("-", "\\-");
-		markdown = markdown.replace(".", "\\.");
-		markdown = markdown.replace("!", "\\!");
-
-		return markdown;
-	}
-
 	public static String fixURL(String url) {
 		url = url.replace("(", "%28");
 		url = url.replace(")", "%29");
@@ -263,18 +425,7 @@ public class JenkinsResultsParserUtil {
 		return url;
 	}
 
-	public static String format(Element element) throws IOException {
-		Writer writer = new CharArrayWriter();
-
-		XMLWriter xmlWriter = new XMLWriter(
-			writer, OutputFormat.createPrettyPrint());
-
-		xmlWriter.write(element);
-
-		return writer.toString();
-	}
-
-	public static String getActualResult(String buildURL) throws Exception {
+	public static String getActualResult(String buildURL) throws IOException {
 		String progressiveText = toString(
 			getLocalURL(buildURL + "/logText/progressiveText"), false);
 
@@ -331,7 +482,57 @@ public class JenkinsResultsParserUtil {
 		return "";
 	}
 
-	public static String getJobVariant(JSONObject jsonObject) throws Exception {
+	public static String getAxisVariable(String axisBuildURL) throws Exception {
+		String url = decode(axisBuildURL);
+
+		String label = "AXIS_VARIABLE=";
+
+		int x = url.indexOf(label);
+
+		if (x != -1) {
+			url = url.substring(x + label.length());
+
+			int y = url.indexOf(",");
+
+			return url.substring(0, y);
+		}
+
+		return "";
+	}
+
+	public static Properties getBuildProperties() throws IOException {
+		Properties properties = new Properties();
+
+		if ((_buildProperties != null) && !_buildProperties.isEmpty()) {
+			properties.putAll(_buildProperties);
+
+			return properties;
+		}
+
+		if (_buildPropertiesURLs == null) {
+			_buildPropertiesURLs = DEFAULT_BUILD_PROPERTIES_URLS;
+		}
+
+		for (String url : _buildPropertiesURLs) {
+			properties.load(
+				new StringReader(toString(getLocalURL(url), false)));
+		}
+
+		return properties;
+	}
+
+	public static String getHostName(String defaultHostName) {
+		try {
+			InetAddress inetAddress = InetAddress.getLocalHost();
+
+			return inetAddress.getHostName();
+		}
+		catch (UnknownHostException uhe) {
+			return defaultHostName;
+		}
+	}
+
+	public static String getJobVariant(JSONObject jsonObject) {
 		JSONArray actionsJSONArray = jsonObject.getJSONArray("actions");
 
 		for (int i = 0; i < actionsJSONArray.length(); i++) {
@@ -389,59 +590,169 @@ public class JenkinsResultsParserUtil {
 			remoteURL = fixFileName(remoteURL);
 		}
 
-		Matcher matcher = _localURLPattern1.matcher(remoteURL);
+		String localURL = remoteURL;
+		String localURLQueryString = "";
 
-		if (matcher.find()) {
-			StringBuilder sb = new StringBuilder();
+		int x = remoteURL.indexOf("?");
 
-			sb.append("http://test-");
-			sb.append(matcher.group(1));
-			sb.append("/");
-			sb.append(matcher.group(1));
-			sb.append("/");
-
-			return remoteURL.replaceAll(matcher.group(0), sb.toString());
+		if (x != -1) {
+			localURL = remoteURL.substring(0, x);
+			localURLQueryString = remoteURL.substring(x);
 		}
 
-		matcher = _localURLPattern2.matcher(remoteURL);
+		Matcher remoteURLAuthorityMatcher1 =
+			_remoteURLAuthorityPattern1.matcher(localURL);
+		Matcher remoteURLAuthorityMatcher2 =
+			_remoteURLAuthorityPattern2.matcher(localURL);
 
-		if (matcher.find()) {
-			StringBuilder sb = new StringBuilder();
+		if (remoteURLAuthorityMatcher1.find()) {
+			String localURLAuthority = combine(
+				"http://test-", remoteURLAuthorityMatcher1.group(1), "/",
+				remoteURLAuthorityMatcher1.group(1), "/");
+			String remoteURLAuthority = remoteURLAuthorityMatcher1.group(0);
 
-			sb.append("http://");
-			sb.append(matcher.group(1));
-			sb.append("/");
+			localURL = localURL.replaceAll(
+				remoteURLAuthority, localURLAuthority);
+		}
+		else if (remoteURLAuthorityMatcher2.find()) {
+			String localURLAuthority = combine(
+				"http://", remoteURLAuthorityMatcher2.group(1), "/");
+			String remoteURLAuthority = remoteURLAuthorityMatcher2.group(0);
 
-			return remoteURL.replaceAll(matcher.group(0), sb.toString());
+			localURL = localURL.replaceAll(
+				remoteURLAuthority, localURLAuthority);
 		}
 
-		return remoteURL;
+		return localURL + localURLQueryString;
 	}
 
-	public static List<String> getSlaves(String master) throws Exception {
-		List<String> slaves = new ArrayList<>(100);
+	public static List<String> getMasters(
+		Properties buildProperties, String prefix) {
 
-		Properties properties = new Properties();
+		List<String> masters = new ArrayList<>();
 
-		properties.load(
-			new StringReader(
-				toString(
-					getLocalURL(
-						"http://mirrors-no-cache.lax.liferay.com/github.com" +
-							"/liferay/liferay-jenkins-ee/build.properties"))));
+		for (int i = 1;
+			buildProperties.containsKey(
+				"master.slaves(" + prefix + "-" + i + ")");
+			i++) {
 
-		String masterSlavesKey = "master.slaves(" + master + ")";
+			masters.add(prefix + "-" + i);
+		}
 
-		if (properties.containsKey(masterSlavesKey)) {
-			String slavesString = expandSlaveRange(
-				properties.getProperty(masterSlavesKey));
+		return masters;
+	}
 
-			for (String slave : slavesString.split(",")) {
-				slaves.add(slave.trim());
+	public static String getNounForm(
+		int count, String plural, String singular) {
+
+		if (count == 1) {
+			return singular;
+		}
+
+		return plural;
+	}
+
+	public static List<String> getRandomList(List<String> list, int size) {
+		if (list.size() < size) {
+			throw new IllegalStateException(
+				"Size must not exceed the size of the list");
+		}
+
+		if (size == list.size()) {
+			return list;
+		}
+
+		List<String> randomList = new ArrayList<>(size);
+
+		for (int i = 0; i < size; i++) {
+			String item = null;
+
+			while (true) {
+				item = list.get(getRandomValue(0, list.size() - 1));
+
+				if (randomList.contains(item)) {
+					continue;
+				}
+
+				randomList.add(item);
+
+				break;
+			}
+		}
+
+		return randomList;
+	}
+
+	public static int getRandomValue(int start, int end) {
+		int size = Math.abs(end - start);
+
+		double randomDouble = Math.random();
+
+		return start + (int)Math.round(size * randomDouble);
+	}
+
+	public static String getRegexLiteral(String string) {
+		if (string == null) {
+			throw new NullPointerException("String may not be null");
+		}
+
+		String specialCharactersString = "\\^$.|?*+()[]{}";
+
+		StringBuilder sb = new StringBuilder();
+
+		for (char character : string.toCharArray()) {
+			if (specialCharactersString.indexOf(character) != -1) {
+				sb.append('\\');
+			}
+
+			sb.append(character);
+		}
+
+		return sb.toString();
+	}
+
+	public static List<String> getSlaves(
+		Properties buildProperties, String masterPatternString) {
+
+		List<String> slaves = new ArrayList<>();
+
+		Pattern masterPattern = Pattern.compile(
+			"master.slaves\\(" + masterPatternString + "\\)");
+
+		for (Object key : buildProperties.keySet()) {
+			Matcher keyMatcher = masterPattern.matcher(key.toString());
+
+			if (keyMatcher.find()) {
+				String slavesString = expandSlaveRange(
+					buildProperties.getProperty(key.toString()));
+
+				for (String slave : slavesString.split(",")) {
+					slaves.add(slave.trim());
+				}
 			}
 		}
 
 		return slaves;
+	}
+
+	public static List<String> getSlaves(String masterPatternString)
+		throws Exception {
+
+		return getSlaves(getBuildProperties(), masterPatternString);
+	}
+
+	public static String merge(String... strings) {
+		StringBuilder sb = new StringBuilder();
+
+		for (int i = 0; i < strings.length; i++) {
+			sb.append(strings[i]);
+
+			if (i < (strings.length - 1)) {
+				sb.append(",");
+			}
+		}
+
+		return sb.toString();
 	}
 
 	public static String read(File file) throws IOException {
@@ -464,6 +775,47 @@ public class JenkinsResultsParserUtil {
 		}
 
 		return sb.toString();
+	}
+
+	public static String redact(String string) {
+		if (_redactTokens == null) {
+			_redactTokens = new HashSet<>();
+
+			Properties properties = null;
+
+			try {
+				properties = getBuildProperties();
+			}
+			catch (IOException ioe) {
+				throw new RuntimeException(
+					"Unable to get build properties", ioe);
+			}
+
+			for (int i =
+				1; properties.containsKey(_getRedactTokenKey(i)); i++) {
+
+				String key = properties.getProperty(_getRedactTokenKey(i));
+
+				String redactToken = key;
+
+				if (key.startsWith("${") && key.endsWith("}")) {
+					redactToken = properties.getProperty(
+						key.substring(2, key.length() - 1));
+				}
+
+				if ((redactToken != null) && !redactToken.isEmpty()) {
+					_redactTokens.add(redactToken);
+				}
+			}
+
+			_redactTokens.remove("test");
+		}
+
+		for (String redactToken : _redactTokens) {
+			string = string.replace(redactToken, "[REDACTED]");
+		}
+
+		return string;
 	}
 
 	public static void sendEmail(
@@ -495,6 +847,18 @@ public class JenkinsResultsParserUtil {
 		}
 	}
 
+	public static void setBuildProperties(Hashtable<?, ?> buildProperties) {
+		_buildPropertiesURLs = null;
+
+		_buildProperties = buildProperties;
+	}
+
+	public static void setBuildProperties(String... urls) {
+		_buildProperties = null;
+
+		_buildPropertiesURLs = urls;
+	}
+
 	public static void sleep(long duration) {
 		try {
 			Thread.sleep(duration);
@@ -504,24 +868,89 @@ public class JenkinsResultsParserUtil {
 		}
 	}
 
-	public static JSONObject toJSONObject(String url) throws Exception {
+	public static String toDurationString(long duration) {
+		StringBuilder sb = new StringBuilder();
+
+		duration = _appendDurationStringForUnit(
+			duration, _MILLIS_IN_DAY, sb, "day", "days");
+
+		duration = _appendDurationStringForUnit(
+			duration, _MILLIS_IN_HOUR, sb, "hour", "hours");
+
+		duration = _appendDurationStringForUnit(
+			duration, _MILLIS_IN_MINUTE, sb, "minute", "minutes");
+
+		duration = _appendDurationStringForUnit(
+			duration, _MILLIS_IN_SECOND, sb, "second", "seconds");
+
+		duration = _appendDurationStringForUnit(duration, 1, sb, "ms", "ms");
+
+		String durationString = sb.toString();
+
+		if (durationString.endsWith(" ")) {
+			durationString = durationString.substring(
+				0, durationString.length() - 1);
+		}
+
+		return durationString;
+	}
+
+	public static JSONArray toJSONArray(String url) throws IOException {
+		return toJSONArray(
+			url, true, _MAX_RETRIES_DEFAULT, null, _RETRY_PERIOD_DEFAULT,
+			_TIMEOUT_DEFAULT);
+	}
+
+	public static JSONArray toJSONArray(String url, boolean checkCache)
+		throws IOException {
+
+		return toJSONArray(
+			url, checkCache, _MAX_RETRIES_DEFAULT, null, _RETRY_PERIOD_DEFAULT,
+			_TIMEOUT_DEFAULT);
+	}
+
+	public static JSONArray toJSONArray(
+			String url, boolean checkCache, int maxRetries, String postContent,
+			int retryPeriod, int timeout)
+		throws IOException {
+
+		String response = toString(
+			url, checkCache, maxRetries, postContent, retryPeriod, timeout);
+
+		if ((response == null) ||
+			response.endsWith("was truncated due to its size.")) {
+
+			return null;
+		}
+
+		return new JSONArray(response);
+	}
+
+	public static JSONArray toJSONArray(String url, String postContent)
+		throws IOException {
+
+		return toJSONArray(
+			url, false, _MAX_RETRIES_DEFAULT, postContent,
+			_RETRY_PERIOD_DEFAULT, _TIMEOUT_DEFAULT);
+	}
+
+	public static JSONObject toJSONObject(String url) throws IOException {
 		return toJSONObject(
 			url, true, _MAX_RETRIES_DEFAULT, _RETRY_PERIOD_DEFAULT,
 			_TIMEOUT_DEFAULT);
 	}
 
 	public static JSONObject toJSONObject(String url, boolean checkCache)
-		throws Exception {
+		throws IOException {
 
-		return createJSONObject(
-			toString(
-				url, checkCache, _MAX_RETRIES_DEFAULT, _RETRY_PERIOD_DEFAULT,
-				_TIMEOUT_DEFAULT));
+		return toJSONObject(
+			url, checkCache, _MAX_RETRIES_DEFAULT, _RETRY_PERIOD_DEFAULT,
+			_TIMEOUT_DEFAULT);
 	}
 
 	public static JSONObject toJSONObject(
 			String url, boolean checkCache, int timeout)
-		throws Exception {
+		throws IOException {
 
 		return toJSONObject(
 			url, checkCache, _MAX_RETRIES_DEFAULT, _RETRY_PERIOD_DEFAULT,
@@ -531,26 +960,53 @@ public class JenkinsResultsParserUtil {
 	public static JSONObject toJSONObject(
 			String url, boolean checkCache, int maxRetries, int retryPeriod,
 			int timeout)
-		throws Exception {
+		throws IOException {
+
+		return toJSONObject(
+			url, checkCache, maxRetries, null, retryPeriod, timeout);
+	}
+
+	public static JSONObject toJSONObject(
+			String url, boolean checkCache, int maxRetries, String postContent,
+			int retryPeriod, int timeout)
+		throws IOException {
 
 		String response = toString(
-			url, checkCache, maxRetries, retryPeriod, timeout);
+			url, checkCache, maxRetries, postContent, retryPeriod, timeout);
 
-		if (response.endsWith("was truncated due to its size.")) {
+		if ((response == null) ||
+			response.endsWith("was truncated due to its size.")) {
+
 			return null;
 		}
 
 		return createJSONObject(response);
 	}
 
-	public static String toString(String url) throws Exception {
+	public static JSONObject toJSONObject(String url, String postContent)
+		throws IOException {
+
+		return toJSONObject(
+			url, false, _MAX_RETRIES_DEFAULT, postContent,
+			_RETRY_PERIOD_DEFAULT, _TIMEOUT_DEFAULT);
+	}
+
+	public static Properties toProperties(String url) throws IOException {
+		Properties properties = new Properties();
+
+		properties.load(new StringReader(toString(url)));
+
+		return properties;
+	}
+
+	public static String toString(String url) throws IOException {
 		return toString(
 			url, true, _MAX_RETRIES_DEFAULT, _RETRY_PERIOD_DEFAULT,
 			_TIMEOUT_DEFAULT);
 	}
 
 	public static String toString(String url, boolean checkCache)
-		throws Exception {
+		throws IOException {
 
 		return toString(
 			url, checkCache, _MAX_RETRIES_DEFAULT, _RETRY_PERIOD_DEFAULT,
@@ -558,7 +1014,7 @@ public class JenkinsResultsParserUtil {
 	}
 
 	public static String toString(String url, boolean checkCache, int timeout)
-		throws Exception {
+		throws IOException {
 
 		return toString(
 			url, checkCache, _MAX_RETRIES_DEFAULT, _RETRY_PERIOD_DEFAULT,
@@ -568,7 +1024,16 @@ public class JenkinsResultsParserUtil {
 	public static String toString(
 			String url, boolean checkCache, int maxRetries, int retryPeriod,
 			int timeout)
-		throws Exception {
+		throws IOException {
+
+		return toString(
+			url, checkCache, maxRetries, null, retryPeriod, timeout);
+	}
+
+	public static String toString(
+			String url, boolean checkCache, int maxRetries, String postContent,
+			int retryPeriod, int timeout)
+		throws IOException {
 
 		url = fixURL(url);
 
@@ -577,22 +1042,63 @@ public class JenkinsResultsParserUtil {
 		if (checkCache && _toStringCache.containsKey(key) &&
 			!url.startsWith("file:")) {
 
-			System.out.println("Loading " + url);
+			if (debug) {
+				System.out.println("Loading " + url);
+			}
 
-			return _toStringCache.get(key);
+			String response = _toStringCache.get(key);
+
+			if (response != null) {
+				return response;
+			}
+
+			_toStringCache.remove(key);
 		}
 
 		int retryCount = 0;
 
 		while (true) {
 			try {
-				System.out.println("Downloading " + url);
+				if (debug) {
+					System.out.println("Downloading " + url);
+				}
 
 				StringBuilder sb = new StringBuilder();
 
 				URL urlObject = new URL(url);
 
 				URLConnection urlConnection = urlObject.openConnection();
+
+				if (url.startsWith("https://api.github.com")) {
+					HttpURLConnection httpURLConnection =
+						(HttpURLConnection)urlConnection;
+
+					httpURLConnection.setRequestMethod("GET");
+
+					Properties buildProperties = getBuildProperties();
+
+					httpURLConnection.setRequestProperty(
+						"Authorization",
+						"token " +
+							buildProperties.getProperty("github.access.token"));
+
+					httpURLConnection.setRequestProperty(
+						"Content-Type", "application/json");
+
+					if (postContent != null) {
+						httpURLConnection.setRequestMethod("POST");
+
+						httpURLConnection.setDoOutput(true);
+
+						try (OutputStream outputStream =
+								httpURLConnection.getOutputStream()) {
+
+							outputStream.write(postContent.getBytes("UTF-8"));
+
+							outputStream.flush();
+						}
+					}
+				}
 
 				if (timeout != 0) {
 					urlConnection.setConnectTimeout(timeout);
@@ -637,26 +1143,57 @@ public class JenkinsResultsParserUtil {
 					throw ioe;
 				}
 
-				System.out.println("Retry in " + retryPeriod + " seconds");
+				System.out.println(
+					"Retrying " + url + " in " + retryPeriod + " seconds");
 
 				sleep(1000 * retryPeriod);
 			}
 		}
 	}
 
+	public static String toString(String url, String postContent)
+		throws IOException {
+
+		return toString(
+			url, false, _MAX_RETRIES_DEFAULT, postContent,
+			_RETRY_PERIOD_DEFAULT, _TIMEOUT_DEFAULT);
+	}
+
+	public static void turnSlavesOff(String master, String... slaves) {
+		_setSlaveStatus(master, true, slaves);
+	}
+
+	public static void turnSlavesOn(String master, String... slaves) {
+		_setSlaveStatus(master, false, slaves);
+	}
+
 	public static void write(File file, String content) throws IOException {
-		System.out.println(
-			"Write file " + file + " with length " + content.length());
+		if (debug) {
+			System.out.println(
+				"Write file " + file + " with length " + content.length());
+		}
 
 		File parentDir = file.getParentFile();
 
 		if ((parentDir != null) && !parentDir.exists()) {
-			System.out.println("Make parent directories for " + file);
+			if (debug) {
+				System.out.println("Make parent directories for " + file);
+			}
 
 			parentDir.mkdirs();
 		}
 
 		Files.write(Paths.get(file.toURI()), content.getBytes());
+	}
+
+	public static void write(String path, String content) throws IOException {
+		if (path.startsWith("${dependencies.url}")) {
+			path = path.replace(
+				"${dependencies.url}",
+				DEPENDENCIES_URL_FILE.replace("file:", ""));
+		}
+
+		write(new File(path), content);
 	}
 
 	protected static final String DEPENDENCIES_URL_FILE;
@@ -680,15 +1217,125 @@ public class JenkinsResultsParserUtil {
 		}
 	}
 
+	private static long _appendDurationStringForUnit(
+		long duration, long millisInUnit, StringBuilder sb,
+		String unitDescriptionSingular, String unitDescriptionPlural) {
+
+		if (duration >= millisInUnit) {
+			long units = duration / millisInUnit;
+
+			sb.append(units);
+
+			sb.append(" ");
+
+			sb.append(
+				getNounForm(
+					(int)units, unitDescriptionPlural,
+					unitDescriptionSingular));
+
+			sb.append(" ");
+
+			return duration % millisInUnit;
+		}
+
+		return duration;
+	}
+
+	private static void _executeJenkinsScript(String master, String script) {
+		try {
+			URL urlObject = new URL(
+				fixURL(getLocalURL("http://" + master + "/script")));
+
+			HttpURLConnection httpURLConnection =
+				(HttpURLConnection)urlObject.openConnection();
+
+			httpURLConnection.setDoOutput(true);
+			httpURLConnection.setRequestMethod("POST");
+
+			Properties buildProperties = getBuildProperties();
+
+			String authorizationString =
+				buildProperties.getProperty("jenkins.admin.user.name") + ":" +
+					buildProperties.getProperty("jenkins.admin.user.token");
+
+			String encodedAuthorizationString = Base64.encodeBase64String(
+				authorizationString.getBytes());
+
+			httpURLConnection.setRequestProperty(
+				"Authorization", "Basic " + encodedAuthorizationString);
+
+			try (OutputStream outputStream =
+					httpURLConnection.getOutputStream()) {
+
+				outputStream.write(script.getBytes("UTF-8"));
+
+				outputStream.flush();
+			}
+
+			httpURLConnection.connect();
+
+			System.out.println(
+				"Response from " + urlObject + ": " +
+					httpURLConnection.getResponseCode() + " " +
+						httpURLConnection.getResponseMessage());
+		}
+		catch (IOException ioe) {
+			System.out.println("Unable to execute Jenkins script");
+		}
+	}
+
+	private static String _getRedactTokenKey(int index) {
+		return "github.message.redact.token[" + index + "]";
+	}
+
+	private static void _setSlaveStatus(
+		String master, boolean offlineStatus, String... slaves) {
+
+		try {
+			String script = "script=";
+
+			Class<?> clazz = JenkinsResultsParserUtil.class;
+
+			script += readInputStream(
+				clazz.getResourceAsStream(
+					"dependencies/set-slave-status.groovy"));
+
+			script = script.replace("${slaves}", merge(slaves));
+			script = script.replace(
+				"${offline.status}", String.valueOf(offlineStatus));
+
+			_executeJenkinsScript(master, script);
+		}
+		catch (IOException ioe) {
+			System.out.println(
+				"Unable to set the status for slaves: " + slaves);
+
+			ioe.printStackTrace();
+		}
+	}
+
+	private static final long _BASH_COMMAND_TIMEOUT_DEFAULT = 1000 * 60 * 60;
+
 	private static final int _MAX_RETRIES_DEFAULT = 3;
+
+	private static final long _MILLIS_IN_DAY = 24L * 60L * 60L * 1000L;
+
+	private static final long _MILLIS_IN_HOUR = 60L * 60L * 1000L;
+
+	private static final long _MILLIS_IN_MINUTE = 60L * 1000L;
+
+	private static final long _MILLIS_IN_SECOND = 1000L;
 
 	private static final int _RETRY_PERIOD_DEFAULT = 5;
 
 	private static final int _TIMEOUT_DEFAULT = 0;
 
-	private static final Pattern _localURLPattern1 = Pattern.compile(
+	private static Hashtable<?, ?> _buildProperties;
+	private static String[] _buildPropertiesURLs;
+	private static Set<String> _redactTokens;
+	private static final Pattern _remoteURLAuthorityPattern1 = Pattern.compile(
 		"https://test.liferay.com/([0-9]+)/");
-	private static final Pattern _localURLPattern2 = Pattern.compile(
+	private static final Pattern _remoteURLAuthorityPattern2 = Pattern.compile(
 		"https://(test-[0-9]+-[0-9]+).liferay.com/");
 
 	private static final Map<String, String> _toStringCache =
@@ -704,5 +1351,12 @@ public class JenkinsResultsParserUtil {
 			}
 
 		};
+
+	static {
+		System.out.println("Securing standard error and out");
+
+		System.setErr(SecurePrintStream.getInstance());
+		System.setOut(SecurePrintStream.getInstance());
+	}
 
 }

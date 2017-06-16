@@ -83,8 +83,7 @@ public class ResourceBundleUtil {
 
 		for (Locale locale : LanguageUtil.getAvailableLocales()) {
 			ResourceBundle resourceBundle =
-				resourceBundleLoader.loadResourceBundle(
-					LocaleUtil.toLanguageId(locale));
+				resourceBundleLoader.loadResourceBundle(locale);
 
 			map.put(locale, getString(resourceBundle, key));
 		}
@@ -92,6 +91,9 @@ public class ResourceBundleUtil {
 		return map;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
 	@Deprecated
 	public static Map<Locale, String> getLocalizationMap(
 		String baseName, Class<?> clazz, String key) {
@@ -114,7 +116,7 @@ public class ResourceBundleUtil {
 	}
 
 	/**
-	 * @deprecated As of 7.0.1, replaced by {@link #getString(ResourceBundle,
+	 * @deprecated As of 7.0.0, replaced by {@link #getString(ResourceBundle,
 	 *             String, Object...)}
 	 */
 	@Deprecated
@@ -161,6 +163,10 @@ public class ResourceBundleUtil {
 		return value;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static void loadResourceBundles(
 		Map<String, ResourceBundle> resourceBundles, Locale locale,
 		ResourceBundleLoader resourceBundleLoader) {
@@ -170,6 +176,10 @@ public class ResourceBundleUtil {
 		loadResourceBundles(resourceBundles, languageId, resourceBundleLoader);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static void loadResourceBundles(
 		Map<String, ResourceBundle> resourceBundles, String languageId,
 		ResourceBundleLoader resourceBundleLoader) {

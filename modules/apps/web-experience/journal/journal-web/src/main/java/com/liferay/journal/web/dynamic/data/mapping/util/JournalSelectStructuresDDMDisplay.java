@@ -14,10 +14,13 @@
 
 package com.liferay.journal.web.dynamic.data.mapping.util;
 
+import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.util.DDMDisplay;
 import com.liferay.journal.constants.JournalPortletKeys;
+import com.liferay.portal.kernel.util.Portal;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Eudaldo Alonso
@@ -34,8 +37,24 @@ public class JournalSelectStructuresDDMDisplay extends JournalDDMDisplay {
 	}
 
 	@Override
+	public boolean isEnableSelectStructureLink(
+		DDMStructure structure, long classPK) {
+
+		if (structure.getStructureId() == classPK) {
+			return false;
+		}
+
+		return true;
+	}
+
+	@Override
 	public boolean isShowAddStructureButton() {
 		return false;
+	}
+
+	@Reference(unbind = "-")
+	protected void setPortal(Portal portal) {
+		this.portal = portal;
 	}
 
 }

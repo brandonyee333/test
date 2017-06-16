@@ -100,6 +100,12 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	}
 
 	@Override
+	public boolean isLiveGroupActive(
+		com.liferay.portal.kernel.model.Group group) {
+		return _groupLocalService.isLiveGroupActive(group);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
 		return _groupLocalService.getActionableDynamicQuery();
 	}
@@ -305,6 +311,12 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	public com.liferay.portal.kernel.model.Group fetchGroupByUuidAndCompanyId(
 		java.lang.String uuid, long companyId) {
 		return _groupLocalService.fetchGroupByUuidAndCompanyId(uuid, companyId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.Group fetchStagingGroup(
+		long liveGroupId) {
+		return _groupLocalService.fetchStagingGroup(liveGroupId);
 	}
 
 	@Override

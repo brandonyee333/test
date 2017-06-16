@@ -22,10 +22,14 @@
 		<column name="type" type="String" />
 		<column name="buildNumber" type="long" />
 		<column name="featureSet" type="int" />
+		<column name="hostname" type="String" />
 		<column name="status" type="int" />
 
 		<!-- Finder methods -->
 
+		<finder name="UserId" return-type="Collection">
+			<finder-column name="userId" />
+		</finder>
 		<finder name="C_U" return-type="Collection">
 			<finder-column name="companyId" />
 			<finder-column case-sensitive="false" comparator="LIKE" name="userName" />
@@ -95,6 +99,7 @@
 		<column name="size" type="long" />
 		<column name="checksum" type="String" />
 		<column name="event" type="String" />
+		<column name="lanTokenKey" type="String" />
 		<column json-enabled="false" name="lastPermissionChangeDate" type="Date" />
 		<column name="lockExpirationDate" type="Date" />
 		<column name="lockUserId" type="long" />
@@ -163,12 +168,9 @@
 		<reference entity="DLApp" package-path="com.liferay.portlet.documentlibrary" />
 		<reference entity="DLFileEntry" package-path="com.liferay.portlet.documentlibrary" />
 		<reference entity="DLFileVersion" package-path="com.liferay.portlet.documentlibrary" />
+		<reference entity="DLFolder" package-path="com.liferay.portlet.documentlibrary" />
 		<reference entity="DLSyncEvent" package-path="com.liferay.portlet.documentlibrary" />
 		<reference entity="DLTrash" package-path="com.liferay.portlet.documentlibrary" />
-
-		<!-- Transactions -->
-
-		<tx-required>getFileDeltaAsStream</tx-required>
 	</entity>
 	<exceptions>
 		<exception>SyncDeviceActive</exception>

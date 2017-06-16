@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.template.TemplateConstants;
@@ -36,7 +37,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.portal.security.permission.AdvancedPermissionChecker;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.util.ArrayList;
@@ -97,7 +97,7 @@ public class DDMTemplateServiceTest extends BaseDDMServiceTestCase {
 			_structureClassNameId, _recordSetClassNameId,
 			WorkflowConstants.STATUS_ANY);
 
-		Assert.assertEquals(3, templates.size());
+		Assert.assertEquals(templates.toString(), 3, templates.size());
 	}
 
 	@Test
@@ -106,6 +106,7 @@ public class DDMTemplateServiceTest extends BaseDDMServiceTestCase {
 			_recordSetClassNameId, StringUtil.randomString());
 
 		String language = TemplateConstants.LANG_TYPE_FTL;
+
 		String script = getTestTemplateScript(language);
 
 		addTemplate(
@@ -124,7 +125,7 @@ public class DDMTemplateServiceTest extends BaseDDMServiceTestCase {
 				ddmStructure.getStructureId(), _recordSetClassNameId,
 				WorkflowConstants.STATUS_ANY);
 
-		Assert.assertEquals(3, templates.size());
+		Assert.assertEquals(templates.toString(), 3, templates.size());
 	}
 
 	@Test
@@ -146,14 +147,14 @@ public class DDMTemplateServiceTest extends BaseDDMServiceTestCase {
 			_structureClassNameId, structure.getStructureId(),
 			_recordSetClassNameId, true, WorkflowConstants.STATUS_ANY);
 
-		Assert.assertEquals(2, templates.size());
+		Assert.assertEquals(templates.toString(), 2, templates.size());
 
 		templates = DDMTemplateServiceUtil.getTemplates(
 			TestPropsValues.getCompanyId(), childGroup.getGroupId(),
 			_structureClassNameId, structure.getStructureId(),
 			_recordSetClassNameId, false, WorkflowConstants.STATUS_ANY);
 
-		Assert.assertEquals(0, templates.size());
+		Assert.assertEquals(templates.toString(), 0, templates.size());
 
 		GroupLocalServiceUtil.deleteGroup(childGroup);
 	}
@@ -180,14 +181,14 @@ public class DDMTemplateServiceTest extends BaseDDMServiceTestCase {
 			_structureClassNameId, structure1.getStructureId(),
 			_recordSetClassNameId, WorkflowConstants.STATUS_ANY);
 
-		Assert.assertEquals(2, templates.size());
+		Assert.assertEquals(templates.toString(), 2, templates.size());
 
 		templates = DDMTemplateServiceUtil.getTemplates(
 			TestPropsValues.getCompanyId(), group.getGroupId(),
 			_structureClassNameId, structure2.getStructureId(),
 			_recordSetClassNameId, WorkflowConstants.STATUS_ANY);
 
-		Assert.assertEquals(1, templates.size());
+		Assert.assertEquals(templates.toString(), 1, templates.size());
 	}
 
 	@Test
@@ -221,7 +222,7 @@ public class DDMTemplateServiceTest extends BaseDDMServiceTestCase {
 				WorkflowConstants.STATUS_ANY, QueryUtil.ALL_POS,
 				QueryUtil.ALL_POS, null);
 
-		Assert.assertEquals(3, templates.size());
+		Assert.assertEquals(templates.toString(), 3, templates.size());
 
 		for (DDMTemplate newTemplate : newTemplates) {
 			Assert.assertTrue(templates.contains(newTemplate));
@@ -272,7 +273,7 @@ public class DDMTemplateServiceTest extends BaseDDMServiceTestCase {
 			_recordSetClassNameId, DDMTemplateConstants.TEMPLATE_TYPE_DISPLAY,
 			WorkflowConstants.STATUS_ANY);
 
-		Assert.assertEquals(2, templates.size());
+		Assert.assertEquals(templates.toString(), 2, templates.size());
 
 		templates = DDMTemplateServiceUtil.getTemplates(
 			TestPropsValues.getCompanyId(), group.getGroupId(),
@@ -280,7 +281,7 @@ public class DDMTemplateServiceTest extends BaseDDMServiceTestCase {
 			_recordSetClassNameId, DDMTemplateConstants.TEMPLATE_TYPE_FORM,
 			WorkflowConstants.STATUS_ANY);
 
-		Assert.assertEquals(1, templates.size());
+		Assert.assertEquals(templates.toString(), 1, templates.size());
 	}
 
 	@Test
@@ -304,7 +305,7 @@ public class DDMTemplateServiceTest extends BaseDDMServiceTestCase {
 			_recordSetClassNameId, DDMTemplateConstants.TEMPLATE_TYPE_DISPLAY,
 			WorkflowConstants.STATUS_APPROVED);
 
-		Assert.assertEquals(2, templates.size());
+		Assert.assertEquals(templates.toString(), 2, templates.size());
 
 		templates = DDMTemplateServiceUtil.getTemplates(
 			TestPropsValues.getCompanyId(), group.getGroupId(),
@@ -312,7 +313,7 @@ public class DDMTemplateServiceTest extends BaseDDMServiceTestCase {
 			_recordSetClassNameId, DDMTemplateConstants.TEMPLATE_TYPE_DISPLAY,
 			WorkflowConstants.STATUS_DRAFT);
 
-		Assert.assertEquals(1, templates.size());
+		Assert.assertEquals(templates.toString(), 1, templates.size());
 	}
 
 	@Test
@@ -338,7 +339,7 @@ public class DDMTemplateServiceTest extends BaseDDMServiceTestCase {
 			WorkflowConstants.STATUS_ANY, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
 			null);
 
-		Assert.assertEquals(3, templates.size());
+		Assert.assertEquals(templates.toString(), 3, templates.size());
 	}
 
 	@Test
@@ -367,7 +368,7 @@ public class DDMTemplateServiceTest extends BaseDDMServiceTestCase {
 			WorkflowConstants.STATUS_ANY, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
 			null);
 
-		Assert.assertEquals(3, ddmTemplates.size());
+		Assert.assertEquals(ddmTemplates.toString(), 3, ddmTemplates.size());
 	}
 
 	@Test
@@ -379,7 +380,9 @@ public class DDMTemplateServiceTest extends BaseDDMServiceTestCase {
 			_recordSetClassNameId, StringUtil.randomString());
 
 		String language = TemplateConstants.LANG_TYPE_FTL;
+
 		String script = getTestTemplateScript(language);
+
 		String type = null;
 		String mode = null;
 
@@ -404,7 +407,7 @@ public class DDMTemplateServiceTest extends BaseDDMServiceTestCase {
 			WorkflowConstants.STATUS_ANY, true, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 
-		Assert.assertEquals(1, templates.size());
+		Assert.assertEquals(templates.toString(), 1, templates.size());
 		Assert.assertEquals(template, templates.get(0));
 	}
 
@@ -417,7 +420,9 @@ public class DDMTemplateServiceTest extends BaseDDMServiceTestCase {
 			_recordSetClassNameId, StringUtil.randomString());
 
 		String language = TemplateConstants.LANG_TYPE_FTL;
+
 		String script = getTestTemplateScript(language);
+
 		String type = null;
 		String mode = null;
 
@@ -445,7 +450,7 @@ public class DDMTemplateServiceTest extends BaseDDMServiceTestCase {
 			WorkflowConstants.STATUS_ANY, true, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 
-		Assert.assertEquals(1, templates.size());
+		Assert.assertEquals(templates.toString(), 1, templates.size());
 		Assert.assertEquals(ddmTemplate, templates.get(0));
 	}
 
@@ -458,7 +463,9 @@ public class DDMTemplateServiceTest extends BaseDDMServiceTestCase {
 			_recordSetClassNameId, StringUtil.randomString());
 
 		String language = TemplateConstants.LANG_TYPE_FTL;
+
 		String script = getTestTemplateScript(language);
+
 		String type = null;
 		String mode = null;
 
@@ -482,7 +489,7 @@ public class DDMTemplateServiceTest extends BaseDDMServiceTestCase {
 			WorkflowConstants.STATUS_ANY, false, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 
-		Assert.assertEquals(3, templates.size());
+		Assert.assertEquals(templates.toString(), 3, templates.size());
 	}
 
 	@Test
@@ -494,7 +501,9 @@ public class DDMTemplateServiceTest extends BaseDDMServiceTestCase {
 			_recordSetClassNameId, StringUtil.randomString());
 
 		String language = TemplateConstants.LANG_TYPE_FTL;
+
 		String script = getTestTemplateScript(language);
+
 		String type = null;
 		String mode = null;
 
@@ -521,7 +530,7 @@ public class DDMTemplateServiceTest extends BaseDDMServiceTestCase {
 			WorkflowConstants.STATUS_ANY, false, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 
-		Assert.assertEquals(3, templates.size());
+		Assert.assertEquals(templates.toString(), 3, templates.size());
 	}
 
 	@Test
@@ -533,7 +542,9 @@ public class DDMTemplateServiceTest extends BaseDDMServiceTestCase {
 			_recordSetClassNameId, StringUtil.randomString());
 
 		String language = TemplateConstants.LANG_TYPE_FTL;
+
 		String script = getTestTemplateScript(language);
+
 		String type = null;
 		String mode = null;
 
@@ -568,7 +579,9 @@ public class DDMTemplateServiceTest extends BaseDDMServiceTestCase {
 			_recordSetClassNameId, StringUtil.randomString());
 
 		String language = TemplateConstants.LANG_TYPE_FTL;
+
 		String script = getTestTemplateScript(language);
+
 		String type = null;
 		String mode = null;
 
@@ -606,7 +619,9 @@ public class DDMTemplateServiceTest extends BaseDDMServiceTestCase {
 			_recordSetClassNameId, StringUtil.randomString());
 
 		String language = TemplateConstants.LANG_TYPE_FTL;
+
 		String script = getTestTemplateScript(language);
+
 		String type = null;
 		String mode = null;
 
@@ -641,7 +656,9 @@ public class DDMTemplateServiceTest extends BaseDDMServiceTestCase {
 			_recordSetClassNameId, StringUtil.randomString());
 
 		String language = TemplateConstants.LANG_TYPE_FTL;
+
 		String script = getTestTemplateScript(language);
+
 		String type = null;
 		String mode = null;
 
@@ -675,11 +692,7 @@ public class DDMTemplateServiceTest extends BaseDDMServiceTestCase {
 			PermissionThreadLocal.getPermissionChecker();
 
 		PermissionThreadLocal.setPermissionChecker(
-			new AdvancedPermissionChecker() {
-				{
-					init(_siteAdminUser);
-				}
-			});
+			PermissionCheckerFactoryUtil.create(_siteAdminUser));
 	}
 
 	protected void setUpPrincipalThreadLocal() throws Exception {

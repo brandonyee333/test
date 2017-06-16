@@ -23,8 +23,8 @@ import com.liferay.portal.kernel.dao.orm.SQLQuery;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
-import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
+import com.liferay.portal.test.rule.TransactionalTestRule;
 
 import java.util.List;
 
@@ -92,7 +92,8 @@ public class DB2DialectTest {
 				q, _sessionFactory.getDialect(), start, end);
 
 			Assert.assertNotNull(result);
-			Assert.assertEquals(expectedResultSize, result.size());
+			Assert.assertEquals(
+				result.toString(), expectedResultSize, result.size());
 		}
 		finally {
 			_sessionFactory.closeSession(session);

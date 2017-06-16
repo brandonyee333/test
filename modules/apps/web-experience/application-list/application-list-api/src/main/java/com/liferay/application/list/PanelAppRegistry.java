@@ -15,7 +15,6 @@
 package com.liferay.application.list;
 
 import com.liferay.application.list.util.PanelCategoryServiceReferenceMapper;
-import com.liferay.osgi.service.tracker.collections.map.PropertyServiceReferenceComparator;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapListener;
@@ -23,22 +22,51 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.model.Portlet;
+import com.liferay.portal.kernel.model.PortletConstants;
+import com.liferay.portal.kernel.model.ResourceConstants;
+import com.liferay.portal.kernel.model.Role;
+import com.liferay.portal.kernel.model.RoleConstants;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.portlet.PortletPreferencesFactory;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.service.PortletLocalService;
+import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
+import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.PortletCategoryKeys;
+import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.PredicateFilter;
+import com.liferay.portal.kernel.util.PrefsProps;
+import com.liferay.portal.kernel.util.StringPool;
+
+import java.io.IOException;
+import java.io.Serializable;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
+import javax.portlet.PortletPreferences;
+import javax.portlet.ReadOnlyException;
+import javax.portlet.ValidatorException;
+
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
+ * Provides methods for retrieving application instances defined by {@link
+ * PanelApp} implementations. The Applications Registry is an OSGi component.
+ * Applications used within the registry should also be OSGi components in order
+ * to be registered.
+ *
  * @author Adolfo Pérez
  */
 @Component(immediate = true, service = PanelAppRegistry.class)
@@ -116,13 +144,36 @@ public class PanelAppRegistry {
 			});
 	}
 
+	public int getPanelAppsNotificationsCount(
+		String parentPanelCategoryKey, PermissionChecker permissionChecker,
+		Group group, User user) {
+
+		int count = 0;
+
+		for (PanelApp panelApp : getPanelApps(parentPanelCategoryKey)) {
+			int notificationsCount = panelApp.getNotificationsCount(user);
+
+			try {
+				if ((notificationsCount > 0) &&
+					panelApp.isShow(permissionChecker, group)) {
+
+					count += notificationsCount;
+				}
+			}
+			catch (PortalException pe) {
+				_log.error(pe, pe);
+			}
+		}
+
+		return count;
+	}
+
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_serviceTrackerMap = ServiceTrackerMapFactory.openMultiValueMap(
 			bundleContext, PanelApp.class, "(panel.category.key=*)",
 			new PanelCategoryServiceReferenceMapper(),
-			Collections.reverseOrder(
-				new PropertyServiceReferenceComparator("panel.app.order")),
+			new PanelAppOrderComparator(),
 			new PanelAppsServiceTrackerMapListener());
 	}
 
@@ -149,7 +200,68 @@ public class PanelAppRegistry {
 	private static final Log _log = LogFactoryUtil.getLog(
 		PanelAppRegistry.class);
 
+	@Reference
+	private PortletPreferencesFactory _portletPreferencesFactory;
+
+	@Reference
+	private PrefsProps _prefsProps;
+
+	@Reference
+	private ResourcePermissionLocalService _resourcePermissionLocalService;
+
+	@Reference
+	private RoleLocalService _roleLocalService;
+
 	private ServiceTrackerMap<String, List<PanelApp>> _serviceTrackerMap;
+
+	private class PanelAppOrderComparator
+		implements Comparator<ServiceReference<PanelApp>>, Serializable {
+
+		@Override
+		public int compare(
+			ServiceReference serviceReference1,
+			ServiceReference serviceReference2) {
+
+			if (serviceReference1 == null) {
+				if (serviceReference2 == null) {
+					return 0;
+				}
+				else {
+					return 1;
+				}
+			}
+			else if (serviceReference2 == null) {
+				return -1;
+			}
+
+			Object propertyValue1 = serviceReference1.getProperty(
+				"panel.app.order");
+			Object propertyValue2 = serviceReference2.getProperty(
+				"panel.app.order");
+
+			if (propertyValue1 == null) {
+				if (propertyValue2 == null) {
+					return 0;
+				}
+				else {
+					return 1;
+				}
+			}
+			else if (propertyValue2 == null) {
+				return -1;
+			}
+
+			if (!(propertyValue2 instanceof Comparable)) {
+				return -serviceReference2.compareTo(serviceReference1);
+			}
+
+			Comparable<Object> propertyValueComparable2 =
+				(Comparable<Object>)propertyValue2;
+
+			return -propertyValueComparable2.compareTo(propertyValue1);
+		}
+
+	}
 
 	private class PanelAppsServiceTrackerMapListener
 		implements ServiceTrackerMapListener<String, PanelApp, List<PanelApp>> {
@@ -168,6 +280,13 @@ public class PanelAppRegistry {
 			if (portlet != null) {
 				portlet.setControlPanelEntryCategory(panelCategoryKey);
 
+				try {
+					initPersonalControlPanelPortletPermission(portlet);
+				}
+				catch (Exception e) {
+					_log.error(e, e);
+				}
+
 				panelApp.setPortlet(portlet);
 			}
 			else if (_log.isDebugEnabled()) {
@@ -180,6 +299,58 @@ public class PanelAppRegistry {
 			ServiceTrackerMap<String, List<PanelApp>> serviceTrackerMap,
 			String panelCategoryKey, PanelApp panelApp,
 			List<PanelApp> panelApps) {
+		}
+
+		protected void initPersonalControlPanelPortletPermission(
+				Portlet portlet)
+			throws IOException, PortalException, ReadOnlyException,
+				ValidatorException {
+
+			String category = portlet.getControlPanelEntryCategory();
+
+			if ((category == null) ||
+				!category.equals(PortletCategoryKeys.USER_MY_ACCOUNT)) {
+
+				return;
+			}
+
+			long companyId = portlet.getCompanyId();
+			String portletId = portlet.getPortletId();
+
+			PortletPreferences portletPreferences =
+				_portletPreferencesFactory.getLayoutPortletSetup(
+					companyId, companyId, PortletKeys.PREFS_OWNER_TYPE_COMPANY,
+					LayoutConstants.DEFAULT_PLID, portletId,
+					PortletConstants.DEFAULT_PREFERENCES);
+
+			if (_prefsProps.getBoolean(
+					portletPreferences,
+					"myAccountAccessInControlPanelPermissionsInitialized")) {
+
+				return;
+			}
+
+			Role userRole = _roleLocalService.getRole(
+				companyId, RoleConstants.USER);
+
+			List<String> actionIds =
+				ResourceActionsUtil.getPortletResourceActions(
+					portlet.getRootPortletId());
+
+			String actionId = ActionKeys.ACCESS_IN_CONTROL_PANEL;
+
+			if (actionIds.contains(actionId)) {
+				_resourcePermissionLocalService.addResourcePermission(
+					companyId, portlet.getRootPortletId(),
+					ResourceConstants.SCOPE_COMPANY, String.valueOf(companyId),
+					userRole.getRoleId(), actionId);
+			}
+
+			portletPreferences.setValue(
+				"myAccountAccessInControlPanelPermissionsInitialized",
+				StringPool.TRUE);
+
+			portletPreferences.store();
 		}
 
 	}

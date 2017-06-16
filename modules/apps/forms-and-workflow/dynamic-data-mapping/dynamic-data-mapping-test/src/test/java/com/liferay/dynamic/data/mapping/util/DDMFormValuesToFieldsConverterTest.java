@@ -15,6 +15,8 @@
 package com.liferay.dynamic.data.mapping.util;
 
 import com.liferay.dynamic.data.mapping.BaseDDMTestCase;
+import com.liferay.dynamic.data.mapping.internal.util.DDMFormValuesToFieldsConverterImpl;
+import com.liferay.dynamic.data.mapping.internal.util.DDMImpl;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
 import com.liferay.dynamic.data.mapping.model.DDMFormFieldType;
@@ -26,10 +28,9 @@ import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.dynamic.data.mapping.storage.Field;
 import com.liferay.dynamic.data.mapping.storage.Fields;
-import com.liferay.dynamic.data.mapping.util.impl.DDMFormValuesToFieldsConverterImpl;
-import com.liferay.dynamic.data.mapping.util.impl.DDMImpl;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.util.PropsValues;
 
 import java.io.Serializable;
 
@@ -42,16 +43,23 @@ import java.util.Set;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.core.classloader.annotations.SuppressStaticInitializationFor;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 /**
  * @author Marcellus Tavares
  */
-@PrepareForTest({DDMStructureLocalServiceUtil.class})
+@PrepareForTest({DDMStructureLocalServiceUtil.class, PropsValues.class})
+@RunWith(PowerMockRunner.class)
 @SuppressStaticInitializationFor(
-	"com.liferay.dynamic.data.mapping.service.DDMStructureLocalServiceUtil"
+	{
+		"com.liferay.dynamic.data.mapping.service.DDMStructureLocalServiceUtil",
+		"com.liferay.portal.kernel.xml.SAXReaderUtil",
+		"com.liferay.portal.util.PropsValues"
+	}
 )
 public class DDMFormValuesToFieldsConverterTest extends BaseDDMTestCase {
 
@@ -68,7 +76,7 @@ public class DDMFormValuesToFieldsConverterTest extends BaseDDMTestCase {
 		setUpHtmlUtil();
 		setUpJSONFactoryUtil();
 		setUpLanguageUtil();
-		setUpPropsUtil();
+		setUpPropsValues();
 		setUpSAXReaderUtil();
 	}
 
@@ -109,6 +117,7 @@ public class DDMFormValuesToFieldsConverterTest extends BaseDDMTestCase {
 		Class<?> clazz = value.getClass();
 
 		Assert.assertEquals(true, clazz.isAssignableFrom(Boolean.class));
+
 		Assert.assertEquals(true, value);
 
 		Field fieldsDisplayField = fields.get(DDMImpl.FIELDS_DISPLAY_NAME);
@@ -206,8 +215,7 @@ public class DDMFormValuesToFieldsConverterTest extends BaseDDMTestCase {
 		ddmFormValues.addDDMFormFieldValue(paulDDMFormFieldValue);
 
 		DDMFormFieldValue joeDDMFormFieldValue = createDDMFormFieldValue(
-			"rght", "Name",
-			createLocalizedValue("Joe", "Joao", LocaleUtil.US));
+			"rght", "Name", createLocalizedValue("Joe", "Joao", LocaleUtil.US));
 
 		List<DDMFormFieldValue> joeNestedDDMFormFieldValue =
 			joeDDMFormFieldValue.getNestedDDMFormFieldValues();

@@ -36,7 +36,7 @@
 
 			<h4>
 				<aui:a href="<%= rowURL.toString() %>">
-					<%= entry.getTitle() %>
+					<%= BlogsEntryUtil.getDisplayTitle(resourceBundle, entry) %>
 				</aui:a>
 			</h4>
 
@@ -74,7 +74,7 @@
 						imageUrl="<%= entryImageURL %>"
 						resultRow="<%= row %>"
 						rowChecker="<%= searchContainer.getRowChecker() %>"
-						title="<%= entry.getTitle() %>"
+						title="<%= BlogsEntryUtil.getDisplayTitle(resourceBundle, entry) %>"
 						url="<%= rowURL.toString() %>"
 					>
 						<%@ include file="/blogs_admin/entry_vertical_card.jspf" %>
@@ -87,7 +87,7 @@
 						icon="blogs"
 						resultRow="<%= row %>"
 						rowChecker="<%= searchContainer.getRowChecker() %>"
-						title="<%= entry.getTitle() %>"
+						title="<%= BlogsEntryUtil.getDisplayTitle(resourceBundle, entry) %>"
 						url="<%= rowURL.toString() %>"
 					>
 						<%@ include file="/blogs_admin/entry_vertical_card.jspf" %>
@@ -98,11 +98,11 @@
 	</c:when>
 	<c:otherwise>
 		<liferay-ui:search-container-column-text
+			cssClass="table-cell-content"
 			href="<%= rowURL %>"
 			name="title"
 			orderable="<%= false %>"
-			property="title"
-			truncate="<%= true %>"
+			value="<%= BlogsEntryUtil.getDisplayTitle(resourceBundle, entry) %>"
 		/>
 
 		<liferay-ui:search-container-column-text

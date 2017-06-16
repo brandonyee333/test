@@ -192,7 +192,7 @@ public class AssetDisplayTag extends IncludeTag {
 			}
 		}
 		catch (Exception e) {
-			_log.error(e);
+			_log.error("Unable to include asset renderer template", e);
 		}
 
 		super.includePage(
@@ -202,7 +202,7 @@ public class AssetDisplayTag extends IncludeTag {
 	@Override
 	protected void setAttributes(HttpServletRequest request) {
 		request.setAttribute(
-			"liferay-ui:asset-display:abstractLength", _abstractLength);
+			WebKeys.ASSET_ENTRY_ABSTRACT_LENGTH, _abstractLength);
 
 		AssetEntry assetEntry = _assetEntry;
 

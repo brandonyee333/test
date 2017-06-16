@@ -1,18 +1,18 @@
 <#if entity.isHierarchicalTree()>
 	<#if entity.hasColumn("groupId")>
-		<#assign scopeColumn = entity.getColumn("groupId")>
+		<#assign scopeColumn = entity.getColumn("groupId") />
 	<#else>
-		<#assign scopeColumn = entity.getColumn("companyId")>
+		<#assign scopeColumn = entity.getColumn("companyId") />
 	</#if>
 
-	<#assign pkColumn = entity.getPKList()?first>
+	<#assign pkColumn = entity.getPKList()?first />
 </#if>
 
-<#assign finderFieldSQLSuffix = "_SQL">
+<#assign finderFieldSQLSuffix = "_SQL" />
 
 package ${packagePath}.service.persistence.impl;
 
-<#assign noSuchEntity = serviceBuilder.getNoSuchEntityException(entity)>
+<#assign noSuchEntity = serviceBuilder.getNoSuchEntityException(entity) />
 
 import ${apiPackagePath}.exception.${noSuchEntity}Exception;
 import ${apiPackagePath}.model.${entity.name};
@@ -65,6 +65,7 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -74,6 +75,8 @@ import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
+
+import java.lang.reflect.Field;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -92,7 +95,7 @@ import java.util.Objects;
 import java.util.Set;
 
 <#list referenceList as tempEntity>
-	<#if tempEntity.hasColumns() && ((entity.name == "Counter") || (tempEntity.name != "Counter"))>
+	<#if tempEntity.hasColumns() && (stringUtil.equals(entity.name, "Counter") || !stringUtil.equals(tempEntity.name, "Counter"))>
 		import ${tempEntity.apiPackagePath}.service.persistence.${tempEntity.name}Persistence;
 	</#if>
 </#list>
@@ -132,7 +135,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 
 	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY + ".List2";
 
-	<#assign columnBitmaskEnabled = (entity.finderColumnsList?size &gt; 0) && (entity.finderColumnsList?size &lt; 64)>
+	<#assign columnBitmaskEnabled = (entity.finderColumnsList?size &gt; 0) && (entity.finderColumnsList?size &lt; 64) />
 
 	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(
 		${entity.name}ModelImpl.ENTITY_CACHE_ENABLED,
@@ -206,6 +209,25 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 
 	public ${entity.name}PersistenceImpl() {
 		setModelClass(${entity.name}.class);
+
+		<#if entity.badNamedColumnsList?size != 0>
+			try {
+				Field field = ReflectionUtil.getDeclaredField(BasePersistenceImpl.class, "_dbColumnNames");
+
+				Map<String, String> dbColumnNames = new HashMap<String, String>();
+
+				<#list entity.badNamedColumnsList as column>
+					dbColumnNames.put("${column.name}", "${column.DBName}");
+				</#list>
+
+				field.set(this, dbColumnNames);
+			}
+			catch (Exception e) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(e, e);
+				}
+			}
+		</#if>
 	}
 
 	/**
@@ -218,7 +240,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 		entityCache.putResult(${entity.name}ModelImpl.ENTITY_CACHE_ENABLED, ${entity.name}Impl.class, ${entity.varName}.getPrimaryKey(), ${entity.varName});
 
 		<#list entity.getUniqueFinderList() as finder>
-			<#assign finderColsList = finder.getColumns()>
+			<#assign finderColsList = finder.getColumns() />
 
 			finderCache.putResult(
 				FINDER_PATH_FETCH_BY_${finder.name?upper_case},
@@ -285,7 +307,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		<#if entity.getUniqueFinderList()?size &gt; 0>
-			clearUniqueFindersCache((${entity.name}ModelImpl)${entity.varName});
+			clearUniqueFindersCache((${entity.name}ModelImpl)${entity.varName}, true);
 		</#if>
 	}
 
@@ -298,59 +320,15 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 			entityCache.removeResult(${entity.name}ModelImpl.ENTITY_CACHE_ENABLED, ${entity.name}Impl.class, ${entity.varName}.getPrimaryKey());
 
 			<#if entity.getUniqueFinderList()?size &gt; 0>
-				clearUniqueFindersCache((${entity.name}ModelImpl)${entity.varName});
+				clearUniqueFindersCache((${entity.name}ModelImpl)${entity.varName}, true);
 			</#if>
 		}
 	}
 
 	<#if entity.getUniqueFinderList()?size &gt; 0>
-		protected void cacheUniqueFindersCache(${entity.name}ModelImpl ${entity.varName}ModelImpl, boolean isNew) {
-			if (isNew) {
-				<#list entity.getUniqueFinderList() as finder>
-					<#assign finderColsList = finder.getColumns()>
-
-					<#if finder_index == 0>
-						Object[]
-					</#if>
-					args = new Object[] {
-						<#list finderColsList as finderCol>
-							${entity.varName}ModelImpl.get${finderCol.methodName}()
-
-							<#if finderCol_has_next>
-								,
-							</#if>
-						</#list>
-					};
-
-					finderCache.putResult(FINDER_PATH_COUNT_BY_${finder.name?upper_case}, args, Long.valueOf(1));
-					finderCache.putResult(FINDER_PATH_FETCH_BY_${finder.name?upper_case}, args, ${entity.varName}ModelImpl);
-				</#list>
-			}
-			else {
-				<#list entity.getUniqueFinderList() as finder>
-					<#assign finderColsList = finder.getColumns()>
-
-					if ((${entity.varName}ModelImpl.getColumnBitmask() & FINDER_PATH_FETCH_BY_${finder.name?upper_case}.getColumnBitmask()) != 0) {
-						Object[] args = new Object[] {
-							<#list finderColsList as finderCol>
-								${entity.varName}ModelImpl.get${finderCol.methodName}()
-
-								<#if finderCol_has_next>
-									,
-								</#if>
-							</#list>
-						};
-
-						finderCache.putResult(FINDER_PATH_COUNT_BY_${finder.name?upper_case}, args, Long.valueOf(1));
-						finderCache.putResult(FINDER_PATH_FETCH_BY_${finder.name?upper_case}, args, ${entity.varName}ModelImpl);
-					}
-				</#list>
-			}
-		}
-
-		protected void clearUniqueFindersCache(${entity.name}ModelImpl ${entity.varName}ModelImpl) {
+		protected void cacheUniqueFindersCache(${entity.name}ModelImpl ${entity.varName}ModelImpl) {
 			<#list entity.getUniqueFinderList() as finder>
-				<#assign finderColsList = finder.getColumns()>
+				<#assign finderColsList = finder.getColumns() />
 
 				<#if finder_index == 0>
 					Object[]
@@ -365,11 +343,32 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 					</#list>
 				};
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_${finder.name?upper_case}, args);
-				finderCache.removeResult(FINDER_PATH_FETCH_BY_${finder.name?upper_case}, args);
+				finderCache.putResult(FINDER_PATH_COUNT_BY_${finder.name?upper_case}, args, Long.valueOf(1), false);
+				finderCache.putResult(FINDER_PATH_FETCH_BY_${finder.name?upper_case}, args, ${entity.varName}ModelImpl, false);
+			</#list>
+		}
+
+		protected void clearUniqueFindersCache(${entity.name}ModelImpl ${entity.varName}ModelImpl, boolean clearCurrent) {
+			<#list entity.getUniqueFinderList() as finder>
+				<#assign finderColsList = finder.getColumns() />
+
+				if (clearCurrent) {
+					Object[] args = new Object[] {
+						<#list finderColsList as finderCol>
+							${entity.varName}ModelImpl.get${finderCol.methodName}()
+
+							<#if finderCol_has_next>
+								,
+							</#if>
+						</#list>
+					};
+
+					finderCache.removeResult(FINDER_PATH_COUNT_BY_${finder.name?upper_case}, args);
+					finderCache.removeResult(FINDER_PATH_FETCH_BY_${finder.name?upper_case}, args);
+				}
 
 				if ((${entity.varName}ModelImpl.getColumnBitmask() & FINDER_PATH_FETCH_BY_${finder.name?upper_case}.getColumnBitmask()) != 0) {
-					args = new Object[] {
+					Object[] args = new Object[] {
 						<#list finderColsList as finderCol>
 							${entity.varName}ModelImpl.getOriginal${finderCol.methodName}()
 
@@ -467,7 +466,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 
 		<#list entity.columnList as column>
 			<#if column.isCollection() && column.isMappingManyToMany()>
-				<#assign tempEntity = serviceBuilder.getEntity(column.getEJBName())>
+				<#assign tempEntity = serviceBuilder.getEntity(column.getEJBName()) />
 
 				${entity.varName}To${tempEntity.name}TableMapper.deleteLeftPrimaryKeyTableMappings(${entity.varName}.getPrimaryKey());
 			</#if>
@@ -520,33 +519,12 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 
 		boolean isNew = ${entity.varName}.isNew();
 
-		<#assign collectionFinderList = entity.getCollectionFinderList()>
+		<#assign
+			collectionFinderList = entity.getCollectionFinderList()
+			uniqueFinderList = entity.getUniqueFinderList()
+		/>
 
-		<#assign castEntityModelImpl = false>
-
-		<#if entity.isHierarchicalTree()>
-			<#assign castEntityModelImpl = true>
-		</#if>
-
-		<#if collectionFinderList?size != 0>
-			<#list collectionFinderList as finder>
-				<#if !finder.hasCustomComparator()>
-					<#assign castEntityModelImpl = true>
-				</#if>
-			</#list>
-		</#if>
-
-		<#assign uniqueFinderList = entity.getUniqueFinderList()>
-
-		<#if uniqueFinderList?size &gt; 0>
-			<#assign castEntityModelImpl = true>
-		</#if>
-
-		<#if entity.hasColumn("createDate", "Date") && entity.hasColumn("modifiedDate", "Date")>
-			<#assign castEntityModelImpl = true>
-		</#if>
-
-		<#if castEntityModelImpl>
+		<#if entity.isHierarchicalTree() || (collectionFinderList?size != 0) || (uniqueFinderList?size &gt; 0) || (entity.hasColumn("createDate", "Date") && entity.hasColumn("modifiedDate", "Date"))>
 			${entity.name}ModelImpl ${entity.varName}ModelImpl = (${entity.name}ModelImpl)${entity.varName};
 		</#if>
 
@@ -582,13 +560,13 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 			}
 		</#if>
 
-		<#assign sanitizeTuples = modelHintsUtil.getSanitizeTuples("${apiPackagePath}.model.${entity.name}")>
+		<#assign sanitizeTuples = modelHintsUtil.getSanitizeTuples("${apiPackagePath}.model.${entity.name}") />
 
 		<#if sanitizeTuples?size != 0>
 			long userId = GetterUtil.getLong(PrincipalThreadLocal.getName());
 
 			if (userId > 0) {
-				<#assign companyId = 0>
+				<#assign companyId = 0 />
 
 				<#if entity.hasColumn("companyId")>
 					long companyId = ${entity.varName}.getCompanyId();
@@ -610,26 +588,28 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 
 				try {
 					<#list sanitizeTuples as sanitizeTuple>
-						<#assign colMethodName = textFormatter.format(sanitizeTuple.getObject(0), 6)>
+						<#assign
+							colMethodName = textFormatter.format(sanitizeTuple.getObject(0), 6)
 
-						<#assign contentType = "\"" + sanitizeTuple.getObject(1) + "\"">
+							contentType = "\"" + sanitizeTuple.getObject(1) + "\""
+						/>
 
 						<#if contentType == "\"text/html\"">
-							<#assign contentType = "ContentTypes.TEXT_HTML">
+							<#assign contentType = "ContentTypes.TEXT_HTML" />
 						<#elseif contentType == "\"text/plain\"">
-							<#assign contentType = "ContentTypes.TEXT_PLAIN">
+							<#assign contentType = "ContentTypes.TEXT_PLAIN" />
 						</#if>
 
-						<#assign modes = "\"" + sanitizeTuple.getObject(2) + "\"">
+						<#assign modes = "\"" + sanitizeTuple.getObject(2) + "\"" />
 
 						<#if modes == "\"ALL\"">
-							<#assign modes = "Sanitizer.MODE_ALL">
+							<#assign modes = "Sanitizer.MODE_ALL" />
 						<#elseif modes == "\"BAD_WORDS\"">
-							<#assign modes = "Sanitizer.MODE_BAD_WORDS">
+							<#assign modes = "Sanitizer.MODE_BAD_WORDS" />
 						<#elseif modes == "\"XSS\"">
-							<#assign modes = "Sanitizer.MODE_XSS">
+							<#assign modes = "Sanitizer.MODE_XSS" />
 						<#else>
-							<#assign modes = "StringUtil.split(\"" + sanitizeTuple.getObject(2) + "\")">
+							<#assign modes = "StringUtil.split(\"" + sanitizeTuple.getObject(2) + "\")" />
 						</#if>
 
 						${entity.varName}.set${colMethodName}(SanitizerUtil.sanitize(companyId, groupId, userId, ${apiPackagePath}.model.${entity.name}.class.getName(), ${entity.PKVarName}, ${contentType}, ${modes}, ${entity.varName}.get${colMethodName}(), null));
@@ -696,28 +676,46 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew
-			<#if columnBitmaskEnabled>
-				|| !${entity.name}ModelImpl.COLUMN_BITMASK_ENABLED
-			</#if>
-			) {
+		<#if columnBitmaskEnabled>
+			if (!${entity.name}ModelImpl.COLUMN_BITMASK_ENABLED) {
+				finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+			}
+			else
+		</#if>
 
-			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		if (isNew) {
+			<#if entity.finderColumnsList?size &gt; 64>
+				finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+			<#else>
+				<#if columnBitmaskEnabled && (collectionFinderList?size != 0)>
+					Object[]
+					<#list collectionFinderList as finder>
+						<#assign finderColsList = finder.getColumns() />
+
+						args = new Object[] {
+							<#list finderColsList as finderCol>
+								${entity.varName}ModelImpl.get${finderCol.methodName}()
+
+								<#if finderCol_has_next>
+									,
+								</#if>
+							</#list>
+						};
+
+						finderCache.removeResult(FINDER_PATH_COUNT_BY_${finder.name?upper_case}, args);
+						finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_${finder.name?upper_case}, args);
+					</#list>
+				</#if>
+
+				finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL, FINDER_ARGS_EMPTY);
+			</#if>
 		}
 
 		<#if collectionFinderList?size != 0>
-			<#assign hasEqualComparator = false>
-
-			<#list collectionFinderList as finder>
-				<#assign finderColsList = finder.getColumns()>
-
-				<#if !finder.hasCustomComparator()>
-					<#if !hasEqualComparator>
-						<#assign hasEqualComparator = true>
-
-						else {
-					</#if>
-
+			else {
+				<#list collectionFinderList as finder>
+					<#assign finderColsList = finder.getColumns() />
 					if (
 						<#if columnBitmaskEnabled>
 							(${entity.varName}ModelImpl.getColumnBitmask() & FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_${finder.name?upper_case}.getColumnBitmask()) != 0
@@ -762,19 +760,15 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 						finderCache.removeResult(FINDER_PATH_COUNT_BY_${finder.name?upper_case}, args);
 						finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_${finder.name?upper_case}, args);
 					}
-				</#if>
-			</#list>
-
-			<#if hasEqualComparator>
-				}
-			</#if>
+				</#list>
+			}
 		</#if>
 
 		entityCache.putResult(${entity.name}ModelImpl.ENTITY_CACHE_ENABLED, ${entity.name}Impl.class, ${entity.varName}.getPrimaryKey(), ${entity.varName}, false);
 
 		<#if uniqueFinderList?size &gt; 0>
-			clearUniqueFindersCache(${entity.varName}ModelImpl);
-			cacheUniqueFindersCache(${entity.varName}ModelImpl, isNew);
+			clearUniqueFindersCache(${entity.varName}ModelImpl, false);
+			cacheUniqueFindersCache(${entity.varName}ModelImpl);
 		</#if>
 
 		${entity.varName}.resetOriginalValues();
@@ -795,7 +789,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 		<#list entity.regularColList as column>
 			${entity.varName}Impl.set${column.methodName}(
 
-			<#if column.type == "boolean">
+			<#if stringUtil.equals(column.type, "boolean")>
 				${entity.varName}.is${column.methodName}()
 			<#else>
 				${entity.varName}.get${column.methodName}()
@@ -952,25 +946,23 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				return map;
 			}
 
-			<#if entity.PKClassName == "String">
-				StringBundler query = new StringBundler(uncachedPrimaryKeys.size() * 4 + 1);
-			<#else>
-				StringBundler query = new StringBundler(uncachedPrimaryKeys.size() * 2 + 1);
-			</#if>
+			StringBundler query = new StringBundler(uncachedPrimaryKeys.size() * 2 + 1);
 
 			query.append(_SQL_SELECT_${entity.alias?upper_case}_WHERE_PKS_IN);
 
-			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				<#if entity.PKClassName == "String">
-					query.append(StringPool.APOSTROPHE);
-					query.append((String)primaryKey);
-					query.append(StringPool.APOSTROPHE);
-				<#else>
-					query.append(String.valueOf(primaryKey));
-				</#if>
+			<#if stringUtil.equals(entity.PKClassName, "String")>
+				for (int i = 0; i < uncachedPrimaryKeys.size(); i++) {
+					query.append(StringPool.QUESTION);
 
-				query.append(StringPool.COMMA);
-			}
+					query.append(StringPool.COMMA);
+				}
+			<#else>
+				for (Serializable primaryKey : uncachedPrimaryKeys) {
+					query.append((${entity.PKClassName})primaryKey);
+
+					query.append(StringPool.COMMA);
+				}
+			</#if>
 
 			query.setIndex(query.index() - 1);
 
@@ -984,6 +976,14 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				session = openSession();
 
 				Query q = session.createQuery(sql);
+
+				<#if stringUtil.equals(entity.PKClassName, "String")>
+					QueryPos qPos = QueryPos.getInstance(q);
+
+					for (Serializable primaryKey : uncachedPrimaryKeys) {
+						qPos.add((String)primaryKey);
+					}
+				</#if>
 
 				for (${entity.name} ${entity.varName} : (List<${entity.name}>)q.list()) {
 					map.put(${entity.varName}.getPrimaryKeyObj(), ${entity.varName});
@@ -1189,7 +1189,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 
 	<#list entity.columnList as column>
 		<#if column.isCollection() && column.isMappingManyToMany()>
-			<#assign tempEntity = serviceBuilder.getEntity(column.getEJBName())>
+			<#assign tempEntity = serviceBuilder.getEntity(column.getEJBName()) />
 
 			/**
 			 * Returns the primaryKeys of ${tempEntity.humanNames} associated with the ${entity.humanName}.
@@ -1292,7 +1292,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 			}
 
 			<#if column.isMappingManyToMany()>
-				<#assign noSuchTempEntity = serviceBuilder.getNoSuchEntityException(tempEntity)>
+				<#assign noSuchTempEntity = serviceBuilder.getNoSuchEntityException(tempEntity) />
 
 				/**
 				 * Adds an association between the ${entity.humanName} and the ${tempEntity.humanName}. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -1479,7 +1479,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 
 	<#if entity.badNamedColumnsList?size != 0>
 		@Override
-	    public Set<String> getBadColumnNames() {
+		public Set<String> getBadColumnNames() {
 			return _badColumnNames;
 		}
 	</#if>
@@ -1711,11 +1711,13 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 
 		<#list entity.columnList as column>
 			<#if column.isCollection() && column.isMappingManyToMany()>
-				<#assign tempEntity = serviceBuilder.getEntity(column.getEJBName())>
+				<#assign
+					tempEntity = serviceBuilder.getEntity(column.getEJBName())
 
-				<#assign entityMapping = serviceBuilder.getEntityMapping(column.mappingTable)>
+					entityMapping = serviceBuilder.getEntityMapping(column.mappingTable)
 
-				<#assign companyEntity = serviceBuilder.getEntity(entityMapping.getEntity(0))>
+					companyEntity = serviceBuilder.getEntity(entityMapping.getEntity(0))
+				/>
 
 				${entity.varName}To${tempEntity.name}TableMapper = TableMapperFactory.getTableMapper("${column.mappingTable}", "${companyEntity.PKDBName}", "${entity.PKDBName}", "${tempEntity.PKDBName}", this, ${tempEntity.varName}Persistence);
 			</#if>
@@ -1770,7 +1772,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 
 	<#list entity.columnList as column>
 		<#if column.isCollection() && column.isMappingManyToMany()>
-			<#assign tempEntity = serviceBuilder.getEntity(column.getEJBName())>
+			<#assign tempEntity = serviceBuilder.getEntity(column.getEJBName()) />
 
 			@BeanReference(type = ${tempEntity.name}Persistence.class)
 			protected ${tempEntity.name}Persistence ${tempEntity.varName}Persistence;
@@ -1854,7 +1856,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 
 <#function bindParameter finderColsList>
 	<#list finderColsList as finderCol>
-		<#if !finderCol.hasArrayableOperator() || (finderCol.type == "String")>
+		<#if !finderCol.hasArrayableOperator() || stringUtil.equals(finderCol.type, "String")>
 			<#return true>
 		</#if>
 	</#list>
@@ -1867,7 +1869,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 >
 	<#list finderColsList as finderCol>
 		<#if _arrayable && finderCol.hasArrayableOperator()>
-			<#if finderCol.type == "String">
+			<#if stringUtil.equals(finderCol.type, "String")>
 				for (String ${finderCol.name} : ${finderCol.names}) {
 					if (${finderCol.name} != null && !${finderCol.name}.isEmpty()) {
 						qPos.add(${finderCol.name});
@@ -1880,9 +1882,9 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 		<#else>
 			if (bind${finderCol.methodName}) {
 				qPos.add(
-					<#if finderCol.type == "Date">
+					<#if stringUtil.equals(finderCol.type, "Date")>
 						new Timestamp(${finderCol.name}.getTime())
-					<#elseif (finderCol.type == "String") && !finderCol.isCaseSensitive()>
+					<#elseif stringUtil.equals(finderCol.type, "String") && !finderCol.isCaseSensitive()>
 						StringUtil.toLowerCase(${finderCol.name})
 					<#else>
 						${finderCol.name}

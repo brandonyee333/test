@@ -5,6 +5,7 @@ AUI.add(
 	function(A) {
 		var Do = A.Do;
 		var Lang = A.Lang;
+		var UA = A.UA;
 
 		var contentFilter = new CKEDITOR.filter(
 			{
@@ -33,24 +34,33 @@ AUI.add(
 					},
 
 					onBlurMethod: {
-						validator: Lang.isFunction
+						getter: '_getEditorMethod',
+						validator: '_validateEditorMethod'
 					},
 
 					onChangeMethod: {
-						validator: Lang.isFunction
+						getter: '_getEditorMethod',
+						validator: '_validateEditorMethod'
 					},
 
 					onFocusMethod: {
-						validator: Lang.isFunction
+						getter: '_getEditorMethod',
+						validator: '_validateEditorMethod'
 					},
 
 					onInitMethod: {
-						validator: Lang.isFunction
+						getter: '_getEditorMethod',
+						validator: '_validateEditorMethod'
 					},
 
 					textMode: {
 						validator: Lang.isBoolean,
 						value: {}
+					},
+
+					useCustomDataProcessor: {
+						validator: Lang.isBoolean,
+						value: false
 					}
 				},
 
@@ -82,7 +92,8 @@ AUI.add(
 						var instance = this;
 
 						instance._eventHandles = [
-							Do.after('_afterGet', instance._srcNode, 'get', instance)
+							Do.after('_afterGet', instance._srcNode, 'get', instance),
+							Do.after('_afterVal', instance._srcNode, 'val', instance)
 						];
 
 						var nativeEditor = instance.getNativeEditor();
@@ -100,6 +111,10 @@ AUI.add(
 
 						if (instance.get('onFocusMethod')) {
 							nativeEditor.on('focus', instance._onFocus, instance);
+						}
+
+						if (instance.get('useCustomDataProcessor')) {
+							nativeEditor.on('customDataProcessorLoaded', instance._onCustomDataProcessorLoaded, instance);
 						}
 
 						var editorConfig = instance.get('editorConfig');
@@ -128,7 +143,12 @@ AUI.add(
 					focus: function() {
 						var instance = this;
 
-						instance.getNativeEditor().focus();
+						if (instance.instanceReady) {
+							instance.getNativeEditor().focus();
+						}
+						else {
+							instance.pendingFocus = true;
+						}
 					},
 
 					getCkData: function() {
@@ -180,7 +200,12 @@ AUI.add(
 					setHTML: function(value) {
 						var instance = this;
 
-						instance.getNativeEditor().setData(value);
+						if (instance.instanceReady) {
+							instance.getNativeEditor().setData(value);
+						}
+						else {
+							instance.set('contents', value);
+						}
 					},
 
 					_afterGet: function(attrName) {
@@ -200,33 +225,38 @@ AUI.add(
 								parentForm
 							);
 						}
+						else if (attrName === 'name') {
+							return new Do.AlterReturn(
+								'Return editor namespace',
+								instance.get('namespace')
+							);
+						}
+						else if (attrName === 'type') {
+							return new Do.AlterReturn(
+								'Return editor node name',
+								instance._srcNode.get('nodeName')
+							);
+						}
 					},
 
-					_onBlur: function(event) {
+					_afterVal: function(value) {
 						var instance = this;
 
-						var blurFn = instance.get('onBlurMethod');
+						if (value) {
+							instance.setHTML(value);
+						}
 
-						blurFn(event.editor);
+						return new Do.AlterReturn(
+							'Return editor content',
+							instance.getHTML()
+						);
 					},
 
-					_onChange: function() {
-						var instance = this;
-
-						var changeFn = instance.get('onChangeMethod');
-
-						changeFn(instance.getText());
+					_getEditorMethod: function(method) {
+						return Lang.isFunction(method) ? method : (window[method] || method);
 					},
 
-					_onFocus: function(event) {
-						var instance = this;
-
-						var focusFn = instance.get('onFocusMethod');
-
-						focusFn(event.editor);
-					},
-
-					_onInstanceReady: function() {
+					_initializeData: function() {
 						var instance = this;
 
 						var contents = instance.get('contents');
@@ -237,13 +267,94 @@ AUI.add(
 
 						var onInitFn = instance.get('onInitMethod');
 
-						if (onInitFn) {
+						if (Lang.isFunction(onInitFn)) {
 							onInitFn();
 						}
+
+						if (instance.pendingFocus) {
+							instance.pendingFocus = false;
+
+							instance.focus();
+						}
+					},
+
+					_onBlur: function(event) {
+						var instance = this;
+
+						var blurFn = instance.get('onBlurMethod');
+
+						if (Lang.isFunction(blurFn)) {
+							blurFn(event.editor);
+						}
+					},
+
+					_onChange: function() {
+						var instance = this;
+
+						var changeFn = instance.get('onChangeMethod');
+
+						if (Lang.isFunction(changeFn)) {
+							changeFn(instance.getText());
+						}
+					},
+
+					_onCustomDataProcessorLoaded: function() {
+						var instance = this;
+
+						instance.customDataProcessorLoaded = true;
+
+						if (instance.instanceReady) {
+							instance._initializeData();
+						}
+					},
+
+					_onFocus: function(event) {
+						var instance = this;
+
+						var focusFn = instance.get('onFocusMethod');
+
+						if (Lang.isFunction(focusFn)) {
+							focusFn(event.editor);
+						}
+					},
+
+					_onFocusFix: function(activeElement, nativeEditor) {
+						var instance = this;
+
+						setTimeout(
+							function() {
+								if (activeElement) {
+									nativeEditor.focusManager.blur(true);
+									activeElement.focus();
+								}
+							},
+							100
+						);
+					},
+
+					_onInstanceReady: function() {
+						var instance = this;
 
 						instance.instanceReady = true;
 
 						window[instance.get('namespace')].instanceReady = true;
+
+						if (instance.customDataProcessorLoaded || !instance.get('useCustomDataProcessor')) {
+							instance._initializeData();
+						}
+
+						// LPS-71967
+
+						if (UA.edge && parseInt(UA.edge) >= 14) {
+							A.soon(
+								function() {
+									var nativeEditor = instance.getNativeEditor();
+
+									nativeEditor.once('focus', A.bind('_onFocusFix', instance, document.activeElement, nativeEditor));
+									nativeEditor.focus();
+								}
+							);
+						}
 					},
 
 					_onKey: function(event) {
@@ -262,6 +373,10 @@ AUI.add(
 						fragment.writeHtml(writer);
 
 						event.data.dataValue = writer.getHtml();
+					},
+
+					_validateEditorMethod: function(method) {
+						return Lang.isString(method) || Lang.isFunction(method);
 					}
 				}
 			}
@@ -271,6 +386,6 @@ AUI.add(
 	},
 	'',
 	{
-		requires: ['aui-component', 'liferay-portlet-base']
+		requires: ['aui-component', 'liferay-portlet-base', 'timers']
 	}
 );

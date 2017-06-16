@@ -14,6 +14,8 @@
 
 package com.liferay.exportimport.portlet.preferences.processor.capability;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.kernel.lar.PortletDataException;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
@@ -45,6 +47,7 @@ import org.osgi.service.component.annotations.Reference;
 	immediate = true,
 	service = {Capability.class, ReferencedStagedModelImporterCapability.class}
 )
+@ProviderType
 public class ReferencedStagedModelImporterCapability implements Capability {
 
 	@Override
@@ -90,27 +93,28 @@ public class ReferencedStagedModelImporterCapability implements Capability {
 						portletDataContext.setScopeGroupId(
 							scopeGroup.getGroupId());
 					}
-					catch (NoSuchLayoutException nsle) {
-						if (_log.isInfoEnabled()) {
-							StringBundler sb = new StringBundler(9);
+					catch (PortalException pe) {
+						StringBundler sb = new StringBundler(9);
 
-							sb.append("Unable to export the layout scoped ");
-							sb.append("element with class name ");
-							sb.append(className);
-							sb.append(" and class primary key ");
-							sb.append(classPK);
-							sb.append(" because the layout with UUID ");
-							sb.append(scopeLayoutUuid);
-							sb.append(" is missing from group ");
-							sb.append(portletDataContext.getGroupId());
+						sb.append("Unable to import the layout scoped ");
+						sb.append("element with class name ");
+						sb.append(className);
+						sb.append(" and class primary key ");
+						sb.append(classPK);
+						sb.append(" because the layout with UUID ");
+						sb.append(scopeLayoutUuid);
+						sb.append(" is missing from group ");
+						sb.append(portletDataContext.getGroupId());
 
-							_log.info(sb.toString());
+						if (_log.isDebugEnabled()) {
+							_log.debug(sb.toString(), pe);
 						}
 
-						continue;
-					}
-					catch (PortalException pe) {
-						throw new PortletDataException(pe);
+						if (pe instanceof NoSuchLayoutException) {
+							continue;
+						}
+
+						throw new PortletDataException(sb.toString(), pe);
 					}
 				}
 

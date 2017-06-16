@@ -64,8 +64,7 @@ public class KaleoTimerInstanceTokenLocalServiceImpl
 			ServiceContext serviceContext)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(
-			serviceContext.getGuestOrUserId());
+		User user = userLocalService.getUser(serviceContext.getGuestOrUserId());
 		KaleoInstanceToken kaleoInstanceToken =
 			kaleoInstanceTokenPersistence.findByPrimaryKey(
 				kaleoInstanceTokenId);
@@ -248,20 +247,20 @@ public class KaleoTimerInstanceTokenLocalServiceImpl
 
 	@Override
 	public List<KaleoTimerInstanceToken> getKaleoTimerInstanceTokens(
-		long kaleoInstanceTokenId, boolean completed, boolean blocking,
+		long kaleoInstanceTokenId, boolean blocking, boolean completed,
 		ServiceContext serviceContext) {
 
-		return kaleoTimerInstanceTokenPersistence.findByKITI_C_B(
-			kaleoInstanceTokenId, completed, blocking);
+		return kaleoTimerInstanceTokenPersistence.findByKITI_B_C(
+			kaleoInstanceTokenId, blocking, completed);
 	}
 
 	@Override
 	public int getKaleoTimerInstanceTokensCount(
-		long kaleoInstanceTokenId, boolean completed, boolean blocking,
+		long kaleoInstanceTokenId, boolean blocking, boolean completed,
 		ServiceContext serviceContext) {
 
-		return kaleoTimerInstanceTokenPersistence.countByKITI_C_B(
-			kaleoInstanceTokenId, completed, blocking);
+		return kaleoTimerInstanceTokenPersistence.countByKITI_B_C(
+			kaleoInstanceTokenId, blocking, completed);
 	}
 
 	protected void deleteScheduledTimer(

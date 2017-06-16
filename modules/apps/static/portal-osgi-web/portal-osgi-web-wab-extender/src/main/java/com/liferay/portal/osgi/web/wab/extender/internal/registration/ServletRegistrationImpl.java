@@ -27,7 +27,6 @@ import javax.servlet.ServletSecurityElement;
 
 /**
  * @author Juan Gonzalez
- *
  */
 public class ServletRegistrationImpl implements ServletRegistration.Dynamic {
 
@@ -89,8 +88,8 @@ public class ServletRegistrationImpl implements ServletRegistration.Dynamic {
 	}
 
 	@Override
-	public void setAsyncSupported(boolean isAsyncSupported) {
-		_asyncSupported = isAsyncSupported;
+	public void setAsyncSupported(boolean asyncSupported) {
+		_asyncSupported = asyncSupported;
 	}
 
 	public void setClassName(String className) {

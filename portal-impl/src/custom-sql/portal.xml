@@ -39,15 +39,21 @@
 				(resourceBlock.name = '[$RESOURCE_BLOCK_NAME$]')
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.kernel.security.permission.InlineSQLHelper.joinResourcePermission">
+	<sql id="com.liferay.portal.kernel.security.permission.InlineSQLHelper.findByResourcePermission">
 		<![CDATA[
-			INNER JOIN ResourcePermission ON
+			SELECT DISTINCT
+				ResourcePermission.primKeyId
+			FROM
+				ResourcePermission
+			WHERE
 				(ResourcePermission.companyId = [$COMPANY_ID$]) AND
 				(ResourcePermission.name = '[$CLASS_NAME$]') AND
 				(ResourcePermission.scope = [$RESOURCE_SCOPE_INDIVIDUAL$]) AND
 				(ResourcePermission.viewActionId = [$TRUE$]) AND
-				[$ROLE_IDS_OR_OWNER_ID$] AND
-				[$PRIM_KEYS$]
+				(
+					[$ROLE_IDS_OR_OWNER_ID$]
+					[$GROUP_ADMIN_RESOURCE_PERMISSION$]
+				)
 		]]>
 	</sql>
 	<sql id="com.liferay.portal.kernel.service.persistence.GroupFinder.countByLayouts">
@@ -357,7 +363,7 @@
 		<![CDATA[
 			INNER JOIN
 				ResourcePermission ON
-					(ResourcePermission.primKey = CAST_TEXT(Group_.groupId))
+					(ResourcePermission.primKeyId = Group_.groupId)
 			WHERE
 				(Group_.liveGroupId = 0) AND
 				(ResourcePermission.name = ?) AND
@@ -431,12 +437,12 @@
 			LEFT JOIN
 				ResourcePermission ON
 					(ResourcePermission.companyId = Layout.companyId) AND
-					(ResourcePermission.name = Layout.name) AND
+					(ResourcePermission.name = ?) AND
 					(ResourcePermission.scope = ?) AND
-					(ResourcePermission.primKey = CAST_TEXT(Layout.plid)) AND
+					(ResourcePermission.primKeyId = Layout.plid) AND
 					(ResourcePermission.roleId = ?)
 			WHERE
-				ResourcePermission.primKey IS NULL
+				ResourcePermission.primKeyId IS NULL
 		]]>
 	</sql>
 	<sql id="com.liferay.portal.kernel.service.persistence.LayoutFinder.findByNullFriendlyURL">
@@ -483,7 +489,7 @@
 				(CAST_CLOB_TEXT(PortletPreferences.preferences) LIKE ?)
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.kernel.service.persistence.OrganizationFinder.countByGroupId">
+	<sql id="com.liferay.portal.kernel.service.persistence.OrganizationFinder.countO_ByGroupId">
 		<![CDATA[
 			SELECT
 				COUNT(*) AS COUNT_VALUE
@@ -496,7 +502,7 @@
 				(Group_.groupId = ?)
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.kernel.service.persistence.OrganizationFinder.countByOrganizationId">
+	<sql id="com.liferay.portal.kernel.service.persistence.OrganizationFinder.countO_ByOrganizationId">
 		<![CDATA[
 			SELECT
 				COUNT(*) AS COUNT_VALUE
@@ -508,7 +514,18 @@
 				(Organization_.organizationId = ?)
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.kernel.service.persistence.OrganizationFinder.countByC_PO_N_S_C_Z_R_C">
+	<sql id="com.liferay.portal.kernel.service.persistence.OrganizationFinder.countO_ByC_PO">
+		<![CDATA[
+			SELECT
+				COUNT(DISTINCT Organization_.organizationId) AS COUNT_VALUE
+			FROM
+				Organization_
+			WHERE
+				(companyId = ?) AND
+				(parentOrganizationId = ?)
+		]]>
+	</sql>
+	<sql id="com.liferay.portal.kernel.service.persistence.OrganizationFinder.countO_ByC_PO_N_S_C_Z_R_C">
 		<![CDATA[
 			SELECT
 				COUNT(DISTINCT Organization_.organizationId) AS COUNT_VALUE
@@ -538,7 +555,7 @@
 				)
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.kernel.service.persistence.OrganizationFinder.countByC_PO_N_L_S_C_Z_R_C">
+	<sql id="com.liferay.portal.kernel.service.persistence.OrganizationFinder.countO_ByC_PO_N_L_S_C_Z_R_C">
 		<![CDATA[
 			SELECT
 				COUNT(DISTINCT Organization_.organizationId) AS COUNT_VALUE
@@ -569,7 +586,22 @@
 				)
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.kernel.service.persistence.OrganizationFinder.findByNoAssets">
+	<sql id="com.liferay.portal.kernel.service.persistence.OrganizationFinder.countU_ByC_S_O">
+		<![CDATA[
+			SELECT
+				COUNT(DISTINCT User_.userId) AS COUNT_VALUE
+			FROM
+				User_
+			INNER JOIN
+				Users_Orgs ON
+					(Users_Orgs.userId = User_.userId)
+			WHERE
+				(User_.companyId = ?) AND
+				(User_.status = ?) AND
+				(Users_Orgs.organizationId = ?)
+		]]>
+	</sql>
+	<sql id="com.liferay.portal.kernel.service.persistence.OrganizationFinder.findO_ByNoAssets">
 		<![CDATA[
 			SELECT
 				{Organization_.*}
@@ -582,7 +614,7 @@
 				(AssetEntry.classPK IS NULL)
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.kernel.service.persistence.OrganizationFinder.findByGroupId">
+	<sql id="com.liferay.portal.kernel.service.persistence.OrganizationFinder.findO_ByGroupId">
 		<![CDATA[
 			SELECT
 				DISTINCT Organization_.organizationId AS orgId, Organization_.name AS orgName, Organization_.parentOrganizationId as orgParentId, Organization_.type_ as orgType
@@ -595,7 +627,7 @@
 				(Group_.groupId = ?)
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.kernel.service.persistence.OrganizationFinder.findByC_P">
+	<sql id="com.liferay.portal.kernel.service.persistence.OrganizationFinder.findO_ByC_P">
 		<![CDATA[
 			SELECT
 				organizationId
@@ -609,7 +641,48 @@
 				organizationId ASC
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.kernel.service.persistence.OrganizationFinder.findByC_PO_N_L_S_C_Z_R_C">
+	<sql id="com.liferay.portal.kernel.service.persistence.OrganizationFinder.findO_ByC_PO">
+		<![CDATA[
+			SELECT
+				organizationId, 0 AS userId, name
+			FROM
+				Organization_
+			WHERE
+				(companyId = ?) AND
+				(parentOrganizationId = ?)
+		]]>
+	</sql>
+	<sql id="com.liferay.portal.kernel.service.persistence.OrganizationFinder.findO_ByC_PO_N_S_C_Z_R_C">
+		<![CDATA[
+			SELECT
+				DISTINCT Organization_.organizationId AS orgId, Organization_.name AS orgName, Organization_.parentOrganizationId as orgParentId, Organization_.type_ as orgType
+			FROM
+				Organization_
+			LEFT JOIN
+				Address ON
+					(Address.companyId = Organization_.companyId) AND
+					(Address.classNameId = [$CLASS_NAME_ID_COM.LIFERAY.PORTAL.MODEL.ORGANIZATION$]) AND
+					(Address.classPK = Organization_.organizationId)
+			[$JOIN$]
+			WHERE
+				[$WHERE$]
+				(Organization_.companyId = ?) AND
+				(Organization_.parentOrganizationId [$PARENT_ORGANIZATION_ID_COMPARATOR$] ?) AND
+				(
+					(lower(Organization_.name) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(
+						(lower(Address.street1) LIKE ? [$AND_OR_NULL_CHECK$]) OR
+						(lower(Address.street2) LIKE ? [$AND_OR_NULL_CHECK$]) OR
+						(lower(Address.street3) LIKE ? [$AND_OR_NULL_CHECK$])
+					) [$AND_OR_CONNECTOR$]
+					((Organization_.regionId = ?) OR (Address.regionId = ?)) [$AND_OR_CONNECTOR$]
+					((Organization_.countryId = ?) OR (Address.countryId = ?)) [$AND_OR_CONNECTOR$]
+					(lower(Address.city) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(Address.zip) LIKE ? [$AND_OR_NULL_CHECK$])
+				)
+		]]>
+	</sql>
+	<sql id="com.liferay.portal.kernel.service.persistence.OrganizationFinder.findO_ByC_PO_N_L_S_C_Z_R_C">
 		<![CDATA[
 			SELECT
 				DISTINCT Organization_.organizationId AS orgId, Organization_.name AS orgName, Organization_.parentOrganizationId as orgParentId, Organization_.type_ as orgType
@@ -640,37 +713,22 @@
 				)
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.kernel.service.persistence.OrganizationFinder.findByC_PO_N_S_C_Z_R_C">
+	<sql id="com.liferay.portal.kernel.service.persistence.OrganizationFinder.findU_ByC_S_O">
 		<![CDATA[
 			SELECT
-				DISTINCT Organization_.organizationId AS orgId, Organization_.name AS orgName, Organization_.parentOrganizationId as orgParentId, Organization_.type_ as orgType
+				0 AS organizationId, User_.userId AS userId, User_.lastName AS name
 			FROM
-				Organization_
-			LEFT JOIN
-				Address ON
-					(Address.companyId = Organization_.companyId) AND
-					(Address.classNameId = [$CLASS_NAME_ID_COM.LIFERAY.PORTAL.MODEL.ORGANIZATION$]) AND
-					(Address.classPK = Organization_.organizationId)
-			[$JOIN$]
+				User_
+			INNER JOIN
+				Users_Orgs ON
+					(Users_Orgs.userId = User_.userId)
 			WHERE
-				[$WHERE$]
-				(Organization_.companyId = ?) AND
-				(Organization_.parentOrganizationId [$PARENT_ORGANIZATION_ID_COMPARATOR$] ?) AND
-				(
-					(lower(Organization_.name) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(
-						(lower(Address.street1) LIKE ? [$AND_OR_NULL_CHECK$]) OR
-						(lower(Address.street2) LIKE ? [$AND_OR_NULL_CHECK$]) OR
-						(lower(Address.street3) LIKE ? [$AND_OR_NULL_CHECK$])
-					) [$AND_OR_CONNECTOR$]
-					((Organization_.regionId = ?) OR (Address.regionId = ?)) [$AND_OR_CONNECTOR$]
-					((Organization_.countryId = ?) OR (Address.countryId = ?)) [$AND_OR_CONNECTOR$]
-					(lower(Address.city) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(lower(Address.zip) LIKE ? [$AND_OR_NULL_CHECK$])
-				)
+				(User_.companyId = ?) AND
+				(User_.status = ?) AND
+				(Users_Orgs.organizationId = ?)
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.kernel.service.persistence.OrganizationFinder.joinByOrganizationsGroups">
+	<sql id="com.liferay.portal.kernel.service.persistence.OrganizationFinder.joinO_ByOrganizationsGroups">
 		<![CDATA[
 			INNER JOIN
 				Groups_Orgs ON
@@ -679,7 +737,7 @@
 				(Groups_Orgs.groupId = ?)
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.kernel.service.persistence.OrganizationFinder.joinByOrganizationsPasswordPolicies">
+	<sql id="com.liferay.portal.kernel.service.persistence.OrganizationFinder.joinO_ByOrganizationsPasswordPolicies">
 		<![CDATA[
 			INNER JOIN
 				PasswordPolicyRel ON
@@ -689,7 +747,7 @@
 				(PasswordPolicyRel.classNameId = [$CLASS_NAME_ID_COM.LIFERAY.PORTAL.MODEL.ORGANIZATION$])
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.kernel.service.persistence.OrganizationFinder.joinByOrganizationsRoles">
+	<sql id="com.liferay.portal.kernel.service.persistence.OrganizationFinder.joinO_ByOrganizationsRoles">
 		<![CDATA[
 			INNER JOIN
 				Group_ ON
@@ -702,7 +760,7 @@
 				(Groups_Roles.roleId = ?)
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.kernel.service.persistence.OrganizationFinder.joinByOrganizationsUsers">
+	<sql id="com.liferay.portal.kernel.service.persistence.OrganizationFinder.joinO_ByOrganizationsUsers">
 		<![CDATA[
 			INNER JOIN
 				Users_Orgs ON
@@ -711,7 +769,7 @@
 				(Users_Orgs.userId = ?)
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.kernel.service.persistence.OrganizationFinder.joinByUsersOrgs">
+	<sql id="com.liferay.portal.kernel.service.persistence.OrganizationFinder.joinO_ByUsersOrgs">
 		<![CDATA[
 			INNER JOIN
 				Users_Orgs ON
@@ -910,6 +968,41 @@
 				(ResourceTypePermission.roleId = ?)
 		]]>
 	</sql>
+	<sql id="com.liferay.portal.kernel.service.persistence.RoleFinder.countByGroupRoleAndTeamRole">
+		<![CDATA[
+			SELECT
+				COUNT(Role_.roleId) AS COUNT_VALUE
+			FROM
+				Role_
+			WHERE
+				(Role_.companyId = ?) AND
+				(
+					(
+						(lower(Role_.name) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+						(lower(Role_.description) LIKE ? [$AND_OR_NULL_CHECK$])
+					)
+					[$EXCLUDED_NAMES$]
+					[$TYPE$]
+				) OR
+				(
+					(Role_.classNameId = ?) AND
+					(Role_.roleId != ?) AND
+					(Role_.classPK IN (
+						SELECT
+							Team.teamId
+						FROM
+							Team
+						WHERE
+							(groupId = ?) AND
+							(
+								(lower(Team.name) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+								(lower(Team.description) LIKE ? [$AND_OR_NULL_CHECK$])
+							)
+						)
+					)
+				)
+		]]>
+	</sql>
 	<sql id="com.liferay.portal.kernel.service.persistence.RoleFinder.countByOrganization">
 		<![CDATA[
 			SELECT
@@ -1056,6 +1149,43 @@
 				[$TYPE$]
 		]]>
 	</sql>
+	<sql id="com.liferay.portal.kernel.service.persistence.RoleFinder.findByGroupRoleAndTeamRole">
+		<![CDATA[
+			SELECT
+				{Role_.*}
+			FROM
+				Role_
+			WHERE
+				(Role_.companyId = ?) AND
+				(
+					(
+						(lower(Role_.name) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+						(lower(Role_.description) LIKE ? [$AND_OR_NULL_CHECK$])
+					)
+					[$EXCLUDED_NAMES$]
+					[$TYPE$]
+				) OR
+				(
+					(Role_.classNameId = ?) AND
+					(Role_.roleId != ?) AND
+					(Role_.classPK IN (
+						SELECT
+							Team.teamId
+						FROM
+							Team
+						WHERE
+							(groupId = ?) AND
+							(
+								(lower(Team.name) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+								(lower(Team.description) LIKE ? [$AND_OR_NULL_CHECK$])
+							)
+						)
+					)
+				)
+			ORDER BY
+				Role_.name ASC
+		]]>
+	</sql>
 	<sql id="com.liferay.portal.kernel.service.persistence.RoleFinder.findBySystem">
 		<![CDATA[
 			(
@@ -1078,6 +1208,48 @@
 						(Role_.name = 'Power User') OR
 						(Role_.name = 'User')
 					)
+			)
+		]]>
+	</sql>
+	<sql id="com.liferay.portal.kernel.service.persistence.RoleFinder.findByTeamsUser">
+		<![CDATA[
+			(
+				SELECT
+					{Role_.*}
+				FROM
+					Role_
+				INNER JOIN
+					Team ON
+						(Team.companyId = Role_.companyId) AND
+						(Team.teamId = Role_.classPK)
+				INNER JOIN
+					Users_Teams ON
+						(Users_Teams.teamId = Team.teamId)
+				WHERE
+					(Role_.classNameId = [$CLASS_NAME_ID_COM.LIFERAY.PORTAL.MODEL.TEAM$]) AND
+					(Team.groupId = ?) AND
+					(Users_Teams.userId = ?)
+			)
+			UNION
+			(
+				SELECT
+					{Role_.*}
+				FROM
+					Role_
+				INNER JOIN
+					Team ON
+						(Team.companyId = Role_.companyId) AND
+						(Team.teamId = Role_.classPK)
+				INNER JOIN
+					UserGroups_Teams ON
+						(UserGroups_Teams.teamId = Team.teamId)
+				INNER JOIN
+					Users_UserGroups ON
+						(Users_UserGroups.userGroupId = UserGroups_Teams.userGroupId)
+				WHERE
+					(Role_.classNameId = [$CLASS_NAME_ID_COM.LIFERAY.PORTAL.MODEL.TEAM$]) AND
+					(Team.groupId = ?) AND
+					(Users_UserGroups.userId = ?)
 			)
 		]]>
 	</sql>
@@ -1192,6 +1364,26 @@
 				[$TYPE$]
 			ORDER BY
 				Role_.name ASC
+		]]>
+	</sql>
+	<sql id="com.liferay.portal.kernel.service.persistence.RoleFinder.findByC_N_S_P">
+		<![CDATA[
+			SELECT
+				Role_.name AS roleName, ResourceAction.actionId AS actionId
+			FROM
+				ResourcePermission
+			INNER JOIN
+				Role_ ON
+					(Role_.roleId = ResourcePermission.roleId)
+			INNER JOIN
+				ResourceAction ON
+					(ResourcePermission.name = ResourceAction.name) AND
+					(MOD(INTEGER_DIV(ResourcePermission.actionIds, ResourceAction.bitwiseValue), 2) = 1)
+			WHERE
+				(ResourcePermission.companyId = ?) AND
+				(ResourcePermission.name = ?) AND
+				(ResourcePermission.scope = ?) AND
+				(ResourcePermission.primKey = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.portal.kernel.service.persistence.RoleFinder.findByC_N_S_P_A">
@@ -1493,7 +1685,7 @@
 	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.findByC_FN_MN_LN_SN_EA_S">
 		<![CDATA[
 			SELECT
-				DISTINCT User_.userId AS userId, User_.screenName AS screenName, User_.firstName AS firstName, User_.middleName AS middleName, User_.lastName AS lastName, User_.loginDate as loginDate
+				[$COLUMN_NAMES$]
 			FROM
 				User_
 			[$JOIN$]
@@ -1804,6 +1996,7 @@
 					Users_UserGroups ON
 						(Users_UserGroups.userGroupId = UserGroupGroupRole.userGroupId)
 				WHERE
+					[$WHERE$]
 					(Users_UserGroups.userId = ?)
 			)
 		]]>

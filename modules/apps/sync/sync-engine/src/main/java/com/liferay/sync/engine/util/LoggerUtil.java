@@ -19,7 +19,6 @@ import ch.qos.logback.classic.joran.JoranConfigurator;
 
 import java.net.URL;
 
-import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import org.slf4j.LoggerFactory;
@@ -43,16 +42,15 @@ public class LoggerUtil {
 		joranConfigurator.setContext(_loggerContext);
 
 		try {
-			if (Files.exists(Paths.get(loggerConfigurationFilePathName))) {
+			ClassLoader classLoader = LoggerUtil.class.getClassLoader();
+
+			URL url = classLoader.getResource(
+				PropsValues.SYNC_LOGGER_CONFIGURATION_FILE);
+
+			joranConfigurator.doConfigure(url);
+
+			if (FileUtil.exists(Paths.get(loggerConfigurationFilePathName))) {
 				joranConfigurator.doConfigure(loggerConfigurationFilePathName);
-			}
-			else {
-				ClassLoader classLoader = LoggerUtil.class.getClassLoader();
-
-				URL url = classLoader.getResource(
-					PropsValues.SYNC_LOGGER_CONFIGURATION_FILE);
-
-				joranConfigurator.doConfigure(url);
 			}
 		}
 		catch (Exception e) {

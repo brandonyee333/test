@@ -18,10 +18,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.nio.charset.CharsetEncoderUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -31,6 +29,7 @@ import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.io.ByteArrayInputStream;
@@ -224,7 +223,7 @@ public class ServletResponseUtil {
 			ranges = getRanges(request, response, contentLength);
 		}
 		catch (IOException ioe) {
-			_log.error(ioe);
+			_log.error("Unable to get ranges", ioe);
 
 			response.setHeader(
 				HttpHeaders.CONTENT_RANGE, "bytes */" + contentLength);
@@ -642,12 +641,6 @@ public class ServletResponseUtil {
 		// LEP-2201
 
 		if (Validator.isNotNull(contentType)) {
-			if (contentType.equals(ContentTypes.IMAGE_X_MS_BMP) &&
-				BrowserSnifferUtil.isIe(request)) {
-
-				contentType = ContentTypes.IMAGE_BMP;
-			}
-
 			response.setContentType(contentType);
 		}
 
@@ -677,7 +670,7 @@ public class ServletResponseUtil {
 		}
 
 		if (!ascii) {
-			String encodedFileName = HttpUtil.encodeURL(fileName, true);
+			String encodedFileName = URLCodec.encodeURL(fileName, true);
 
 			if (BrowserSnifferUtil.isIe(request)) {
 				contentDispositionFileName =

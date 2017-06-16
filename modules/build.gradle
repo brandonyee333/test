@@ -3,13 +3,30 @@ import com.liferay.gradle.util.GradleUtil
 
 import java.util.concurrent.ConcurrentSkipListSet
 
+import org.apache.tools.ant.filters.ReplaceTokens
+
 buildscript {
 	apply from: rootProject.file("build-buildscript.gradle"), to: buildscript
 }
 
+ext {
+	projectTemplateTokens = [
+		"com.liferay.ant.bnd.version": "2.0.37",
+		"com.liferay.css.builder.version": "1.0.26",
+		"com.liferay.gradle.plugins.css.builder.version": "2.0.0",
+		"com.liferay.gradle.plugins.theme.builder.version": "2.0.2",
+		"com.liferay.gradle.plugins.version": "3.3.9",
+		"com.liferay.gradle.plugins.workspace.version": "1.4.0",
+		"com.liferay.portal.tools.bundle.support.version": "2.0.3",
+		"com.liferay.portal.tools.service.builder.version": "1.0.155",
+		"com.liferay.portal.tools.soy.builder.version": "3.0.1",
+		"com.liferay.portal.tools.theme.builder.version": "1.1.2"
+	]
+}
+
 Set<File> bndPrintJarFiles = null
 
-if (System.getenv("JENKINS_HOME")) {
+if (Boolean.getBoolean("build.bnd.print.enabled") && System.getenv("JENKINS_HOME")) {
 	configurations {
 		bnd
 	}
@@ -29,6 +46,24 @@ if (System.getenv("JENKINS_HOME")) {
 
 buildDir = new File(rootDir.parentFile, "build")
 
+for (String gradleVersion in ["2.5", "2.14"]) {
+	String gradleDistributionURL = "https://services.gradle.org/distributions/gradle-${gradleVersion}-bin.zip"
+	String suffix = gradleVersion.replace('.', '')
+
+	tasks.create(name: "extractGradleApi${suffix}", type: Copy) {
+		description = "Extracts the Gradle ${gradleVersion} JAR files into a temporary directory."
+
+		from {
+			zipTree(FileUtil.get(project, gradleDistributionURL))
+		}
+
+		include "gradle-${gradleVersion}/lib/**/*.jar"
+
+		includeEmptyDirs = false
+		into buildDir
+	}
+}
+
 gradle.beforeProject {
 	Project project ->
 
@@ -39,6 +74,32 @@ gradle.beforeProject {
 	configure(project) {
 		apply plugin: "com.liferay.defaults.plugin"
 
+		afterEvaluate {
+			String forcedUpdateVersion = GradleUtil.getProperty(project, "forced.update.version", (String)null)
+
+			if (forcedUpdateVersion && tasks.findByName("updateVersion")) {
+				updateVersion {
+					replacement = forcedUpdateVersion
+				}
+			}
+		}
+
+		if (project.path.startsWith(":sdk:project-templates-")) {
+			buildCSS {
+				enabled = false
+			}
+
+			processResources {
+				exclude "**/.sass-cache/"
+
+				filesMatching(["**/*.gradle", "**/pom.xml"]) {
+					filter(ReplaceTokens, tokens: projectTemplateTokens)
+				}
+
+				rename "gitignore", ".gitignore"
+			}
+		}
+
 		pluginManager.withPlugin("com.liferay.ant.plugin") {
 			task buildLang(dependsOn: "build-lang")
 
@@ -46,15 +107,9 @@ gradle.beforeProject {
 				task buildService(dependsOn: "build-service")
 				task buildWSDD(dependsOn: "build-wsdd")
 			}
-
-			deploy {
-				dependsOn ":apps:foundation:frontend-css:frontend-css-common:buildCssCommon"
-			}
 		}
 
 		pluginManager.withPlugin("com.liferay.osgi.plugin") {
-			apply plugin: "pmd"
-
 			afterEvaluate {
 				bundle.jarBuilderFactory.contextClassLoader = buildscript.classLoader
 
@@ -70,13 +125,7 @@ gradle.beforeProject {
 			}
 
 			dependencies {
-				pmd group: "com.liferay", name: "com.liferay.pmd", version: "1.0.1"
 				xmltask rootProject.files("../lib/development/xmltask.jar")
-			}
-
-			pmd {
-				ruleSetFiles = rootProject.files("../tools/sdk/dependencies/net.sourceforge.pmd/rulesets/java/standard-rules.xml")
-				ruleSets = []
 			}
 
 			testIntegration {
@@ -103,10 +152,6 @@ gradle.beforeProject {
 						delete file
 					}
 				}
-			}
-
-			tasks.withType(Pmd) {
-				classpath = null
 			}
 
 			if (bndPrintJarFiles != null) {
@@ -136,16 +181,6 @@ gradle.beforeProject {
 				}
 			}
 		}
-
-		if (System.getenv("JENKINS_HOME")) {
-			pluginManager.withPlugin("com.liferay.node") {
-				downloadNode {
-					doFirst {
-						throw new GradleException("Unable to use Node.js on CI, please configure com.liferay.cache or update the cache")
-					}
-				}
-			}
-		}
 	}
 }
 
@@ -166,6 +201,26 @@ if (bndPrintJarFiles != null) {
 gradle.taskGraph.useFilter {
 	Task task ->
 
+	boolean skipReadOnly = Boolean.parseBoolean(GradleUtil.getTaskPrefixedProperty(task, "skipReadOnly"))
+
+	if (skipReadOnly) {
+		boolean publicBranch = GradleUtil.getProperty(task.project, "liferay.releng.public", false)
+
+		if (publicBranch && task.project.path.startsWith(":private:")) {
+			return false
+		}
+
+		File gitRepoDir = _getRootDir(task.project.projectDir, ".gitrepo")
+
+		if (gitRepoDir != null) {
+			File gitRepoFile = new File(gitRepoDir, ".gitrepo")
+
+			if (gitRepoFile.text.contains("mode = pull")) {
+				return false
+			}
+		}
+	}
+
 	if (task.name == "compileJSP") {
 		FileTree jspFileTree = fileTree(dir: task.project.projectDir, excludes: ["**/custom_jsps/**/*", "**/dependencies/**/*"], includes: ["docroot/**/*.jsp", "src/main/resources/META-INF/resources/**/*.jsp"])
 
@@ -185,6 +240,22 @@ gradle.taskGraph.useFilter {
 	}
 
 	return true
+}
+
+private File _getRootDir(File dir, String markerFileName) {
+	while (true) {
+		File markerFile = new File(dir, markerFileName);
+
+		if (markerFile.exists()) {
+			return dir;
+		}
+
+		dir = dir.getParentFile();
+
+		if (dir == null) {
+			return null;
+		}
+	}
 }
 
 private boolean _hasTestClasses(Project project, String testClassesDirName) {

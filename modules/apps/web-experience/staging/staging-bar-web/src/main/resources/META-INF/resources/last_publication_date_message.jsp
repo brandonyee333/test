@@ -26,7 +26,6 @@ String lastImportLayoutSetBranchName = null;
 long lastImportLayoutSetBranchId = GetterUtil.getLong(typeSettingsProperties.getProperty("last-import-layout-set-branch-id"));
 
 if (lastImportLayoutSetBranchId > 0) {
-
 	try {
 		LayoutSetBranch lastImportLayoutSetBranch = LayoutSetBranchLocalServiceUtil.getLayoutSetBranch(lastImportLayoutSetBranchId);
 
@@ -83,19 +82,21 @@ if (Validator.isNotNull(lastImportUserUuid)) {
 if (Validator.isNull(publisherName)) {
 	publisherName = typeSettingsProperties.getProperty("last-import-user-name");
 }
+
+String lastImportLayoutSetBranchDisplayName = HtmlUtil.escape(layoutSetBranchDisplayContext.getLayoutSetBranchDisplayName(lastImportLayoutSetBranchName));
 %>
 
 <c:choose>
 	<c:when test="<%= lastImportDate > 0 %>">
 		<c:if test="<%= Validator.isNotNull(lastImportLayoutSetBranchName) && Validator.isNotNull(publisherName) %>">
 			<span class="last-publication-branch">
-				<liferay-ui:message arguments='<%= new String[] {"<strong>" + HtmlUtil.escape(layout.getName(locale)) + "</strong>", "<em>" + LanguageUtil.get(request, HtmlUtil.escape(lastImportLayoutSetBranchName)) + "</em>"} %>' key='<%= (group.isStagingGroup() || group.isStagedRemotely()) ? "page-x-was-last-published-to-live" : "page-x-was-last-published-from-x" %>' translateArguments="<%= false %>" />
+				<liferay-ui:message arguments='<%= new String[] {"<strong>" + HtmlUtil.escape(layout.getName(locale)) + "</strong>", "<em>" + lastImportLayoutSetBranchDisplayName + "</em>"} %>' key='<%= (group.isStagingGroup() || group.isStagedRemotely()) ? "page-x-was-last-published-to-live" : "page-x-was-last-published-from-x" %>' translateArguments="<%= false %>" />
 
 				<c:if test="<%= (Validator.isNotNull(lastImportLayoutBranchName) && (layoutRevisions.size() > 1)) || Validator.isNotNull(lastImportLayoutRevisionId) %>">
 					<span class="last-publication-variation-details">(
 						<c:if test="<%= Validator.isNotNull(lastImportLayoutBranchName) && (layoutRevisions.size() > 1) %>">
 							<span class="variation-name">
-								<liferay-ui:message key="variation" />: <strong><liferay-ui:message key="<%= HtmlUtil.escape(lastImportLayoutBranchName) %>" /></strong>
+								<liferay-ui:message key="variation" />: <strong><liferay-ui:message key="<%= HtmlUtil.escape(layoutBranchDisplayContext.getLayoutBranchDisplayName(lastImportLayoutBranchName)) %>" localizeKey="<%= false %>" /></strong>
 							</span>
 						</c:if>
 
@@ -107,7 +108,6 @@ if (Validator.isNull(publisherName)) {
 					)</span>
 				</c:if>
 			</span>
-
 			<span class="last-publication-user">
 				<liferay-ui:message arguments="<%= new String[] {LanguageUtil.getTimeDescription(request, (System.currentTimeMillis() - lastImportDate), true), HtmlUtil.escape(publisherName)} %>" key="x-ago-by-x" translateArguments="<%= false %>" />
 			</span>
@@ -117,7 +117,6 @@ if (Validator.isNull(publisherName)) {
 		<span class="staging-live-group-name">
 			<liferay-ui:message arguments="<%= HtmlUtil.escape(liveGroup.getDescriptiveName(locale)) %>" key="x-is-staged" translateArguments="<%= false %>" />
 		</span>
-
 		<span class="staging-live-help">
 			<liferay-ui:message arguments="<%= HtmlUtil.escape(liveGroup.getDescriptiveName(locale)) %>" key='<%= (group.isStagingGroup() || group.isStagedRemotely()) ? "staging-staging-help-x" : !PropsValues.STAGING_LIVE_GROUP_LOCKING_ENABLED ? "staging-live-help2-x" : "staging-live-help-x" %>' translateArguments="<%= false %>" />
 		</span>

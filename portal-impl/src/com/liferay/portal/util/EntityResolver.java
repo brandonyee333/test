@@ -331,6 +331,9 @@ public class EntityResolver implements org.xml.sax.EntityResolver {
 			"-//Liferay//DTD Portlet Application 7.0.0//EN",
 			"liferay-portlet-app_7_0_0.dtd"),
 		new KeyValuePair(
+			"-//Liferay//DTD Portlet Application 7.1.0//EN",
+			"liferay-portlet-app_7_1_0.dtd"),
+		new KeyValuePair(
 			"-//Liferay//DTD Resource Action Mapping 6.0.0//EN",
 			"liferay-resource-action-mapping_6_0_0.dtd"),
 		new KeyValuePair(
@@ -384,6 +387,9 @@ public class EntityResolver implements org.xml.sax.EntityResolver {
 		new KeyValuePair(
 			"-//Liferay//DTD Service Builder 7.0.0//EN",
 			"liferay-service-builder_7_0_0.dtd"),
+		new KeyValuePair(
+			"-//Liferay//DTD Service Builder 7.1.0//EN",
+			"liferay-service-builder_7_1_0.dtd"),
 		new KeyValuePair(
 			"-//Liferay//DTD Social 6.1.0//EN", "liferay-social_6_1_0.dtd"),
 		new KeyValuePair(
@@ -439,28 +445,27 @@ public class EntityResolver implements org.xml.sax.EntityResolver {
 		new KeyValuePair(
 			"-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN",
 			"web-facesconfig_1_1.dtd"),
-		new KeyValuePair(
-			"-//W3C//DTD XMLSCHEMA 200102//EN", "XMLSchema.dtd")
+		new KeyValuePair("-//W3C//DTD XMLSCHEMA 200102//EN", "XMLSchema.dtd")
 	};
 
 	private static final KeyValuePair[] _SYSTEM_IDS = {
 		new KeyValuePair(
 			"http://java.sun.com/xml/ns/j2ee/j2ee_1_4.xsd", "j2ee_1_4.xsd"),
 		new KeyValuePair(
-			"http://www.ibm.com/webservices/xsd/" +
-				"j2ee_web_services_client_1_1.xsd",
+			"http://www.ibm.com/webservices/xsd" +
+				"/j2ee_web_services_client_1_1.xsd",
 			"j2ee_web_services_client_1_1.xsd"),
 		new KeyValuePair(
 			"http://java.sun.com/xml/ns/javaee/javaee_5.xsd", "javaee_5.xsd"),
 		new KeyValuePair(
 			"http://java.sun.com/xml/ns/javaee/javaee_6.xsd", "javaee_6.xsd"),
 		new KeyValuePair(
-			"http://java.sun.com/xml/ns/javaee/" +
-				"javaee_web_services_client_1_2.xsd",
+			"http://java.sun.com/xml/ns/javaee" +
+				"/javaee_web_services_client_1_2.xsd",
 			"javaee_web_services_client_1_2.xsd"),
 		new KeyValuePair(
-			"http://java.sun.com/xml/ns/javaee/" +
-				"javaee_web_services_client_1_3.xsd",
+			"http://java.sun.com/xml/ns/javaee" +
+				"/javaee_web_services_client_1_3.xsd",
 			"javaee_web_services_client_1_3.xsd"),
 		new KeyValuePair(
 			"http://java.sun.com/xml/ns/j2ee/jsp_2_0.xsd", "jsp_2_0.xsd"),
@@ -513,8 +518,7 @@ public class EntityResolver implements org.xml.sax.EntityResolver {
 		new KeyValuePair(
 			"http://www.liferay.com/dtd/liferay-workflow-definition_7_0_0.xsd",
 			"liferay-workflow-definition_7_0_0.xsd"),
-		new KeyValuePair(
-			"http://www.w3.org/2001/xml.xsd", "xml.xsd")
+		new KeyValuePair("http://www.w3.org/2001/xml.xsd", "xml.xsd")
 	};
 
 	private static final Log _log = LogFactoryUtil.getLog(EntityResolver.class);

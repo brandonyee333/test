@@ -81,6 +81,7 @@ public class AssetVocabularyLocalServiceImpl
 
 		ServiceContext serviceContext = new ServiceContext();
 
+		serviceContext.setAddGuestPermissions(true);
 		serviceContext.setScopeGroupId(groupId);
 
 		return assetVocabularyLocalService.addVocabulary(
@@ -232,6 +233,13 @@ public class AssetVocabularyLocalServiceImpl
 			assetVocabularyPersistence.findByPrimaryKey(vocabularyId);
 
 		assetVocabularyLocalService.deleteVocabulary(vocabulary);
+	}
+
+	@Override
+	public AssetVocabulary fetchGroupVocabulary(long groupId, String name)
+		throws PortalException {
+
+		return assetVocabularyPersistence.fetchByG_N(groupId, name);
 	}
 
 	@Override

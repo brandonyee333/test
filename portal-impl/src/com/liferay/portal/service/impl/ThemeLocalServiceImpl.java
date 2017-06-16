@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.model.Theme;
 import com.liferay.portal.kernel.plugin.PluginPackage;
 import com.liferay.portal.kernel.plugin.Version;
 import com.liferay.portal.kernel.servlet.ServletContextUtil;
+import com.liferay.portal.kernel.spring.aop.Skip;
 import com.liferay.portal.kernel.theme.PortletDecoratorFactoryUtil;
 import com.liferay.portal.kernel.theme.ThemeCompanyId;
 import com.liferay.portal.kernel.theme.ThemeCompanyLimit;
@@ -43,6 +44,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.UnsecureSAXReaderUtil;
+import com.liferay.portal.model.impl.ThemeImpl;
 import com.liferay.portal.plugin.PluginUtil;
 import com.liferay.portal.service.base.ThemeLocalServiceBaseImpl;
 import com.liferay.portal.util.PropsValues;
@@ -67,6 +69,7 @@ import javax.servlet.ServletContext;
  * @author Jorge Ferrer
  * @author Raymond Augé
  */
+@Skip
 public class ThemeLocalServiceImpl extends ThemeLocalServiceBaseImpl {
 
 	@Override
@@ -132,7 +135,7 @@ public class ThemeLocalServiceImpl extends ThemeLocalServiceBaseImpl {
 		List<ColorScheme> colorSchemes = theme.getColorSchemes();
 
 		if (!colorSchemes.isEmpty()) {
-			for (int i = (colorSchemes.size() - 1); i >= 0; i--) {
+			for (int i = colorSchemes.size() - 1; i >= 0; i--) {
 				colorScheme = colorSchemes.get(i);
 
 				if (colorScheme.isDefaultCs()) {
@@ -206,19 +209,9 @@ public class ThemeLocalServiceImpl extends ThemeLocalServiceBaseImpl {
 			return portletDecorator;
 		}
 
-		List<PortletDecorator> portletDecorators = theme.getPortletDecorators();
+		ThemeImpl themeImpl = (ThemeImpl)theme;
 
-		if (!portletDecorators.isEmpty()) {
-			for (int i = (portletDecorators.size() - 1); i >= 0; i--) {
-				portletDecorator = portletDecorators.get(i);
-
-				if (portletDecorator.isDefaultPortletDecorator()) {
-					return portletDecorator;
-				}
-			}
-		}
-
-		return PortletDecoratorFactoryUtil.getDefaultPortletDecorator();
+		return themeImpl.getDefaultPortletDecorator();
 	}
 
 	@Override

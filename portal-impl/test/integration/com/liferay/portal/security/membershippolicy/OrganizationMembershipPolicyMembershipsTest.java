@@ -104,6 +104,7 @@ public class OrganizationMembershipPolicyMembershipsTest
 			initialOrganizationUsersCount + 2,
 			UserLocalServiceUtil.getOrganizationUsersCount(
 				requiredOrganizationIds[0]));
+
 		Assert.assertTrue(isPropagateMembership());
 	}
 
@@ -187,7 +188,7 @@ public class OrganizationMembershipPolicyMembershipsTest
 
 		List<Organization> organizations = user.getOrganizations();
 
-		Assert.assertEquals(0, organizations.size());
+		Assert.assertEquals(organizations.toString(), 0, organizations.size());
 
 		long[] userOrganizationIds = ArrayUtil.append(
 			standardOrganizationIds, requiredOrganizationIds);
@@ -198,7 +199,9 @@ public class OrganizationMembershipPolicyMembershipsTest
 
 		organizations = user.getOrganizations();
 
-		Assert.assertEquals(userOrganizationIds.length, organizations.size());
+		Assert.assertEquals(
+			organizations.toString(), userOrganizationIds.length,
+			organizations.size());
 
 		MembershipPolicyTestUtil.updateUser(
 			user, standardOrganizationIds, null, null, null,
@@ -206,7 +209,9 @@ public class OrganizationMembershipPolicyMembershipsTest
 
 		organizations = user.getOrganizations();
 
-		Assert.assertEquals(userOrganizationIds.length, organizations.size());
+		Assert.assertEquals(
+			organizations.toString(), userOrganizationIds.length,
+			organizations.size());
 	}
 
 	@Test
@@ -219,7 +224,7 @@ public class OrganizationMembershipPolicyMembershipsTest
 
 		List<Organization> organizations = user.getOrganizations();
 
-		Assert.assertEquals(0, organizations.size());
+		Assert.assertEquals(organizations.toString(), 0, organizations.size());
 
 		long[] userOrganizationIds = ArrayUtil.append(
 			standardOrganizationIds, requiredOrganizationIds);
@@ -230,7 +235,9 @@ public class OrganizationMembershipPolicyMembershipsTest
 
 		organizations = user.getOrganizations();
 
-		Assert.assertEquals(userOrganizationIds.length, organizations.size());
+		Assert.assertEquals(
+			organizations.toString(), userOrganizationIds.length,
+			organizations.size());
 
 		MembershipPolicyTestUtil.updateUser(
 			user, requiredOrganizationIds, null, null, null,
@@ -239,7 +246,8 @@ public class OrganizationMembershipPolicyMembershipsTest
 		organizations = user.getOrganizations();
 
 		Assert.assertEquals(
-			requiredOrganizationIds.length, organizations.size());
+			organizations.toString(), requiredOrganizationIds.length,
+			organizations.size());
 	}
 
 	@Test
@@ -260,6 +268,7 @@ public class OrganizationMembershipPolicyMembershipsTest
 			initialUserOrganizationCount - 1,
 			UserLocalServiceUtil.getOrganizationUsersCount(
 				standardOrganizationIds[0]));
+
 		Assert.assertTrue(isPropagateMembership());
 	}
 

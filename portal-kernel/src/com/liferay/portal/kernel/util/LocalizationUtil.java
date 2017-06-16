@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.function.Function;
 
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
@@ -87,6 +88,14 @@ public class LocalizationUtil {
 		PortalRuntimePermission.checkGetBeanProperty(LocalizationUtil.class);
 
 		return _localization;
+	}
+
+	public static String getLocalization(
+		Function<String, String> localizationFunction,
+		String requestedLanguageId, String defaultLanguageId) {
+
+		return getLocalization().getLocalization(
+			localizationFunction, requestedLanguageId, defaultLanguageId);
 	}
 
 	public static String getLocalization(
@@ -242,7 +251,7 @@ public class LocalizationUtil {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0 replaced by {@link #getLocalizedName(String,
+	 * @deprecated As of 7.0.0, replaced by {@link #getLocalizedName(String,
 	 *             String)}
 	 */
 	@Deprecated
@@ -310,6 +319,12 @@ public class LocalizationUtil {
 		LocalizedValuesMap localizedValuesMap, String key) {
 
 		return getLocalization().getXml(localizedValuesMap, key);
+	}
+
+	public static String getXml(
+		Map<String, String> map, String defaultLanguageId, String key) {
+
+		return getLocalization().getXml(map, defaultLanguageId, key);
 	}
 
 	public static String removeLocalization(

@@ -39,6 +39,9 @@ import java.util.List;
 public class InitializedRepository
 	extends InitializedDocumentRepository<Repository> implements Repository {
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
 	@Deprecated
 	@Override
 	public FileEntry addFileEntry(
@@ -54,6 +57,9 @@ public class InitializedRepository
 			file, serviceContext);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
 	@Deprecated
 	@Override
 	public FileEntry addFileEntry(
@@ -69,6 +75,9 @@ public class InitializedRepository
 			is, size, serviceContext);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
 	@Deprecated
 	@Override
 	public Folder addFolder(
@@ -89,6 +98,9 @@ public class InitializedRepository
 		return documentRepository.cancelCheckOut(fileEntryId);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
 	@Deprecated
 	@Override
 	public void checkInFileEntry(
@@ -102,6 +114,9 @@ public class InitializedRepository
 			fileEntryId, major, changeLog, serviceContext);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
 	@Deprecated
 	@Override
 	public void checkInFileEntry(
@@ -137,6 +152,9 @@ public class InitializedRepository
 			fileEntryId, owner, expirationTime, serviceContext);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
 	@Deprecated
 	@Override
 	public FileEntry copyFileEntry(
@@ -187,6 +205,16 @@ public class InitializedRepository
 
 		return documentRepository.getFileEntries(
 			folderId, fileEntryTypeId, start, end, obc);
+	}
+
+	@Override
+	public List<FileEntry> getFileEntries(
+			long folderId, String[] mimeTypes, int status, int start, int end,
+			OrderByComparator<FileEntry> obc)
+		throws PortalException {
+
+		return documentRepository.getFileEntries(
+			folderId, mimeTypes, status, start, end, obc);
 	}
 
 	@Override
@@ -250,6 +278,15 @@ public class InitializedRepository
 		checkDocumentRepository();
 
 		return documentRepository.getFileEntriesCount(folderId, mimeTypes);
+	}
+
+	@Override
+	public int getFileEntriesCount(
+			long folderId, String[] mimeTypes, int status)
+		throws PortalException {
+
+		return documentRepository.getFileEntriesCount(
+			folderId, mimeTypes, status);
 	}
 
 	@Override
@@ -445,6 +482,9 @@ public class InitializedRepository
 			folderId, owner, inheritable, expirationTime);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
 	@Deprecated
 	@Override
 	public FileEntry moveFileEntry(
@@ -457,6 +497,9 @@ public class InitializedRepository
 			fileEntryId, newFolderId, serviceContext);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
 	@Deprecated
 	@Override
 	public Folder moveFolder(
@@ -492,6 +535,9 @@ public class InitializedRepository
 			lockUuid, companyId, expirationTime);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
 	@Deprecated
 	@Override
 	public void revertFileEntry(
@@ -559,6 +605,9 @@ public class InitializedRepository
 		documentRepository.unlockFolder(parentFolderId, name, lockUuid);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
 	@Deprecated
 	@Override
 	public FileEntry updateFileEntry(
@@ -574,6 +623,9 @@ public class InitializedRepository
 			changeLog, majorVersion, file, serviceContext);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
 	@Deprecated
 	@Override
 	public FileEntry updateFileEntry(

@@ -30,7 +30,7 @@ portletURL.setParameter("configurationCategory", configurationCategory);
 
 String keywords = renderRequest.getParameter("keywords");
 
-if (Validator.isNotNull(keywords)) {
+if (keywords != null) {
 	portletDisplay.setShowBackIcon(true);
 	portletDisplay.setURLBack(redirect);
 
@@ -64,9 +64,11 @@ if (Validator.isNotNull(keywords)) {
 	</c:if>
 
 	<aui:nav-bar-search>
+		<portlet:renderURL var="redirectURL" />
+
 		<portlet:renderURL var="searchURL">
 			<portlet:param name="mvcRenderCommandName" value="/search" />
-			<portlet:param name="redirect" value="<%= currentURL %>" />
+			<portlet:param name="redirect" value="<%= redirectURL %>" />
 		</portlet:renderURL>
 
 		<aui:form action="<%= searchURL %>" name="searchFm">
@@ -86,7 +88,7 @@ if (Validator.isNotNull(keywords)) {
 		/>
 
 		<liferay-ui:search-container-row
-			className="com.liferay.configuration.admin.web.model.ConfigurationModel"
+			className="com.liferay.configuration.admin.web.internal.model.ConfigurationModel"
 			keyProperty="ID"
 			modelVar="configurationModel"
 		>
@@ -111,7 +113,7 @@ if (Validator.isNotNull(keywords)) {
 				<%
 				ResourceBundleLoader resourceBundleLoader = resourceBundleLoaderProvider.getResourceBundleLoader(configurationModel.getBundleSymbolicName());
 
-				ResourceBundle componentResourceBundle = resourceBundleLoader.loadResourceBundle(LanguageUtil.getLanguageId(request));
+				ResourceBundle componentResourceBundle = resourceBundleLoader.loadResourceBundle(PortalUtil.getLocale(request));
 
 				String configurationModelName = (componentResourceBundle != null) ? LanguageUtil.get(componentResourceBundle, configurationModel.getName()) : configurationModel.getName();
 				%>
@@ -192,7 +194,7 @@ if (Validator.isNotNull(keywords)) {
 
 								<liferay-ui:icon
 									message="export"
-									method="post"
+									method="get"
 									url="<%= exportURL %>"
 								/>
 							</c:if>

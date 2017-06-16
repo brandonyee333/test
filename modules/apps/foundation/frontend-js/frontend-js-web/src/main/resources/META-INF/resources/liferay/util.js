@@ -30,8 +30,8 @@
 
 	var STR_RIGHT_SQUARE_BRACKET = ']';
 
-	var TPL_LEXICON_ICON = '<svg class="lexicon-icon lexicon-icon-{0} {1}" role="image">' +
-			'<use xlink:href="' + themeDisplay.getPathThemeImages() + '/lexicon/icons.svg#{0}" />' +
+	var TPL_LEXICON_ICON = '<svg class="lexicon-icon lexicon-icon-{0} {1}" focusable="false" role="image">' +
+			'<use data-href="' + themeDisplay.getPathThemeImages() + '/lexicon/icons.svg#{0}" />' +
 		'</svg>';
 
 	var Window = {
@@ -321,12 +321,20 @@
 				else {
 					var portletName = form.data('fm-namespace');
 
-					Liferay.once(
-						portletName + 'formReady',
-						function() {
+					var formReadyEventName = portletName + 'formReady';
+
+					var formReadyHandler = function(event) {
+						var elFormName = form.attr('name');
+						var formName = event.formName;
+
+						if (elFormName === formName) {
 							el.focus();
+
+							Liferay.detach(formReadyEventName, formReadyHandler);
 						}
-					);
+					};
+
+					Liferay.on(formReadyEventName, formReadyHandler);
 				}
 			}
 		},
@@ -687,6 +695,18 @@
 
 		listUncheckedExcept: function(form, except, name) {
 			return Util.listCheckboxesExcept(form, except, name, false);
+		},
+
+		normalizeFriendlyURL: function(text) {
+			var newText = text.replace(/[^a-zA-Z0-9_-]/g, '-');
+
+			if (newText[0] === '-') {
+				newText = newText.replace(/^-+/, '');
+			}
+
+			newText = newText.replace(/--+/g, '-');
+
+			return newText.toLowerCase();
 		},
 
 		ns: function(namespace, obj) {
@@ -1158,6 +1178,8 @@
 				Util.submitForm(form);
 
 				form.attr('target', '');
+
+				Util._submitLocked = null;
 			}
 		},
 
@@ -1250,8 +1272,25 @@
 
 			var dialog = event.dialog;
 
+			var lfrFormContent = iframeBody.one('.lfr-form-content');
+
 			iframeBody.addClass('dialog-iframe-popup');
+
+			if (lfrFormContent && iframeBody.one('.button-holder.dialog-footer')) {
+				iframeBody.addClass('dialog-with-footer');
+
+				var stagingAlert = iframeBody.one('.portlet-body > .lfr-portlet-message-staging-alert');
+
+				if (stagingAlert) {
+					stagingAlert.remove();
+
+					lfrFormContent.prepend(stagingAlert);
+				}
+			}
+
 			iframeBody.addClass(dialog.iframeConfig.bodyCssClass);
+
+			event.win.focus();
 
 			var detachEventHandles = function() {
 				AArray.invoke(eventHandles, 'detach');
@@ -1339,12 +1378,22 @@
 
 			ddmURL.setParameter('scopeTitle', config.title);
 
+			if ('searchRestriction' in config) {
+				ddmURL.setParameter('searchRestriction', config.searchRestriction);
+				ddmURL.setParameter('searchRestrictionClassNameId', config.searchRestrictionClassNameId);
+				ddmURL.setParameter('searchRestrictionClassPK', config.searchRestrictionClassPK);
+			}
+
 			if ('showAncestorScopes' in config) {
 				ddmURL.setParameter('showAncestorScopes', config.showAncestorScopes);
 			}
 
 			if ('showBackURL' in config) {
 				ddmURL.setParameter('showBackURL', config.showBackURL);
+			}
+
+			if ('showCacheableInput' in config) {
+				ddmURL.setParameter('showCacheableInput', config.showCacheableInput);
 			}
 
 			if ('showHeader' in config) {
@@ -1548,16 +1597,17 @@
 				if (selectedData && selectedData.length) {
 					var currentWindow = event.currentTarget.node.get('contentWindow.document');
 
-					var selectorButtons = currentWindow.all('.lfr-search-container .selector-button');
+					var selectorButtons = currentWindow.all('.lfr-search-container-wrapper .selector-button');
 
 					A.some(
 						selectorButtons,
 						function(item, index) {
-							var assetEntryId = item.attr('data-assetentryid');
+							var assetEntryId = item.attr('data-entityid') || item.attr('data-entityname');
 
 							var assetEntryIndex = selectedData.indexOf(assetEntryId);
 
 							if (assetEntryIndex > -1) {
+								item.attr('data-prevent-selection', true);
 								item.attr('disabled', true);
 
 								selectedData.splice(assetEntryIndex, 1);
@@ -1599,7 +1649,6 @@
 					}
 				);
 			}
-
 		},
 		['aui-base', 'liferay-util-window']
 	);
@@ -1832,6 +1881,7 @@
 		DROP_POSITION: 450,
 		MENU: 5000,
 		OVERLAY: 1000,
+		POPOVER: 1600,
 		TOOLTIP: 10000,
 		WINDOW: 1200
 	};

@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.portlet.PortletContainerUtil;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
-import com.liferay.portal.kernel.servlet.MetaInfoCacheServletResponse;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.JavaConstants;
@@ -68,24 +67,6 @@ public class LayoutAction extends Action {
 			HttpServletRequest request, HttpServletResponse response)
 		throws Exception {
 
-		MetaInfoCacheServletResponse metaInfoCacheServletResponse =
-			new MetaInfoCacheServletResponse(response);
-
-		try {
-			return doExecute(
-				actionMapping, actionForm, request,
-				metaInfoCacheServletResponse);
-		}
-		finally {
-			metaInfoCacheServletResponse.finishResponse(false);
-		}
-	}
-
-	protected ActionForward doExecute(
-			ActionMapping actionMapping, ActionForm actionForm,
-			HttpServletRequest request, HttpServletResponse response)
-		throws Exception {
-
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
@@ -119,7 +100,7 @@ public class LayoutAction extends Action {
 
 				if (Validator.isNull(authLoginURL)) {
 					PortletURL loginURL = PortletURLFactoryUtil.create(
-						request, PortletKeys.LOGIN, themeDisplay.getPlid(),
+						request, PortletKeys.LOGIN,
 						PortletRequest.RENDER_PHASE);
 
 					loginURL.setParameter(
@@ -335,6 +316,9 @@ public class LayoutAction extends Action {
 
 				// Include layout content before the page loads because portlets
 				// on the page can set the page title and page subtitle
+
+				PortletContainerUtil.processPublicRenderParameters(
+					request, layout);
 
 				if (layout.includeLayoutContent(request, response)) {
 					return null;

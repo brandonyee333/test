@@ -126,6 +126,7 @@ BackgroundTask lastCompletedInitialPublicationBackgroundTask = BackgroundTaskMan
 				<c:if test="<%= privateLayoutSet.isLayoutSetPrototypeLinkActive() || publicLayoutSet.isLayoutSetPrototypeLinkActive() %>">
 					<div class="alert alert-info">
 						<liferay-ui:message key="staging-cannot-be-used-for-this-site-because-the-propagation-of-changes-from-the-site-template-is-enabled" />
+
 						<c:choose>
 							<c:when test="<%= PortalPermissionUtil.contains(permissionChecker, ActionKeys.UNLINK_LAYOUT_SET_PROTOTYPE) %>">
 								<liferay-ui:message key="change-the-configuration-in-the-details-section" />
@@ -212,7 +213,6 @@ BackgroundTask lastCompletedInitialPublicationBackgroundTask = BackgroundTaskMan
 									<span class="flex-item-center staging-configuration-control-label <%= secureConnection ? "staging-configuration-control-label-bold" : StringPool.BLANK %>">
 										<liferay-ui:message key="use-a-secure-network-connection" />
 									</span>
-
 									<span class="staging-configuration-control-toggle">
 										<aui:input label="<%= StringPool.BLANK %>" name="secureConnection" type="toggle-switch" value="<%= secureConnection %>" />
 									</span>
@@ -237,7 +237,6 @@ BackgroundTask lastCompletedInitialPublicationBackgroundTask = BackgroundTaskMan
 											<span class="flex-item-center staging-configuration-control-label <%= branchingPublic ? "staging-configuration-control-label-bold" : StringPool.BLANK %>">
 												<liferay-ui:message key="enabled-on-public-pages" />
 											</span>
-
 											<span class="staging-configuration-control-toggle">
 												<aui:input label="<%= StringPool.BLANK %>" name="branchingPublic" type="toggle-switch" value="<%= branchingPublic %>" />
 											</span>
@@ -251,7 +250,6 @@ BackgroundTask lastCompletedInitialPublicationBackgroundTask = BackgroundTaskMan
 											<span class="flex-item-center staging-configuration-control-label <%= branchingPrivate ? "staging-configuration-control-label-bold" : StringPool.BLANK %>">
 												<liferay-ui:message key="enabled-on-private-pages" />
 											</span>
-
 											<span class="staging-configuration-control-toggle">
 												<aui:input label="<%= StringPool.BLANK %>" name="branchingPrivate" type="toggle-switch" value="<%= branchingPrivate %>" />
 											</span>
@@ -301,7 +299,6 @@ BackgroundTask lastCompletedInitialPublicationBackgroundTask = BackgroundTaskMan
 											<span class="flex-item-center staging-configuration-control-label <%= staged ? "staging-configuration-control-label-bold" : StringPool.BLANK %>">
 												<liferay-ui:message key="<%= PortalUtil.getPortletTitle(curPortlet, application, locale) %>" />
 											</span>
-
 											<span class="staging-configuration-control-toggle">
 												<aui:input disabled="<%= (liveGroupRemoteStaging && liveGroup.isStagedRemotely()) || liveGroup.isStaged() %>" label="<%= StringPool.BLANK %>" name="<%= StagingConstants.STAGED_PREFIX + StagingUtil.getStagedPortletId(curPortlet.getRootPortletId()) + StringPool.DOUBLE_DASH %>" type="toggle-switch" value="<%= staged %>" />
 											</span>

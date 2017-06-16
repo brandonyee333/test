@@ -15,21 +15,20 @@
 package com.liferay.portal.search.internal.analysis;
 
 import com.liferay.portal.kernel.util.CharPool;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.search.analysis.KeywordTokenizer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.osgi.service.component.annotations.Component;
 
 /**
  * @author Michael C. Han
  */
-@Component(
-	immediate = true, property = {"mode=default"},
-	service = KeywordTokenizer.class
-)
+@Component(immediate = true, service = KeywordTokenizer.class)
 public class SimpleKeywordTokenizer implements KeywordTokenizer {
 
 	@Override
@@ -39,7 +38,7 @@ public class SimpleKeywordTokenizer implements KeywordTokenizer {
 		int end = keyword.indexOf(CharPool.QUOTE, start + 1);
 
 		if (!((keyword.indexOf(CharPool.QUOTE) == 0) &&
-			(keyword.lastIndexOf(CharPool.QUOTE) == (keyword.length() -1)))) {
+			(keyword.lastIndexOf(CharPool.QUOTE) == (keyword.length() - 1)))) {
 
 			if (((start > -1) && (end > start)) ||
 				((start == -1) && (end == -1) &&
@@ -54,6 +53,8 @@ public class SimpleKeywordTokenizer implements KeywordTokenizer {
 
 	@Override
 	public List<String> tokenize(String keyword) {
+		keyword = _normalizeWhitespace(keyword);
+
 		List<String> tokens = new ArrayList<>();
 
 		int start = keyword.indexOf(CharPool.QUOTE);
@@ -63,6 +64,14 @@ public class SimpleKeywordTokenizer implements KeywordTokenizer {
 		tokenize(keyword, tokens, start, end);
 
 		return tokens;
+	}
+
+	protected String[] split(String keyword) {
+		if (Objects.equals(keyword, StringPool.NULL)) {
+			return new String[] {keyword};
+		}
+
+		return StringUtil.split(keyword, CharPool.SPACE);
 	}
 
 	protected void tokenize(
@@ -106,7 +115,7 @@ public class SimpleKeywordTokenizer implements KeywordTokenizer {
 			return;
 		}
 
-		start = keyword.indexOf(CharPool.QUOTE, end + 1);
+		start = keyword.indexOf(CharPool.QUOTE);
 
 		end = keyword.indexOf(CharPool.QUOTE, start + 1);
 
@@ -114,7 +123,7 @@ public class SimpleKeywordTokenizer implements KeywordTokenizer {
 	}
 
 	protected void tokenizeBySpace(String keyword, List<String> tokens) {
-		String[] keywordTokens = StringUtil.split(keyword, CharPool.SPACE);
+		String[] keywordTokens = split(keyword);
 
 		for (String keywordToken : keywordTokens) {
 			keyword = keywordToken.trim();
@@ -124,5 +133,11 @@ public class SimpleKeywordTokenizer implements KeywordTokenizer {
 			}
 		}
 	}
+
+	private String _normalizeWhitespace(String keyword) {
+		return StringUtil.replace(keyword, _IDEOGRAPHIC_SPACE, CharPool.SPACE);
+	}
+
+	private static final char _IDEOGRAPHIC_SPACE = '\u3000';
 
 }

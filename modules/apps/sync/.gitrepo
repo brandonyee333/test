@@ -1,10 +1,11 @@
 ;
-; Do not manually edit this file. See
-; https://github.com/git-commands/git-subrepo#readme for more information.
+; Do not manually edit this file.
 ;
 [subrepo]
+	autopull = false
 	cmdver = liferay
-	commit = 100a12b918e8a7736023d57bb775d86f799b9df8
+	commit = cfbf558933a1ee1e0ea301503373b8c6538946c4
+	mergebuttonmergecommits = false
 	mode = push
-	parent = d4d2e6bacf25de64ce9730710a357e343f7d9a68
+	parent = c94c2e64e070126837a7e435561a4a9697533696
 	remote = git@github.com:liferay/com-liferay-sync.git

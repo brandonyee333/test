@@ -14,13 +14,16 @@
 
 package com.liferay.portal.osgi.web.servlet.jsp.compiler;
 
-import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.osgi.web.servlet.jsp.compiler.internal.JspBundleClassloader;
 import com.liferay.portal.osgi.web.servlet.jsp.compiler.internal.JspServletContext;
 import com.liferay.portal.osgi.web.servlet.jsp.compiler.internal.JspTagHandlerPool;
+import com.liferay.portal.servlet.delegate.ServletContextDelegate;
+import com.liferay.portal.util.PropsValues;
 import com.liferay.taglib.servlet.JspFactorySwapper;
 
 import java.io.File;
@@ -39,6 +42,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 
@@ -52,7 +56,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.regex.Matcher;
@@ -135,7 +141,7 @@ public class JspServlet extends HttpServlet {
 				TreeNode treeNode = parserUtils.parseXMLDocument(
 					url.getPath(), inputStream, false);
 
-				Iterator<TreeNode>iterator = treeNode.findChildren("listener");
+				Iterator<TreeNode> iterator = treeNode.findChildren("listener");
 
 				while (iterator.hasNext()) {
 					TreeNode listenerTreeNode = iterator.next();
@@ -226,7 +232,8 @@ public class JspServlet extends HttpServlet {
 	public void init(final ServletConfig servletConfig)
 		throws ServletException {
 
-		final ServletContext servletContext = servletConfig.getServletContext();
+		final ServletContext servletContext = ServletContextDelegate.create(
+			servletConfig.getServletContext());
 
 		ClassLoader classLoader = servletContext.getClassLoader();
 
@@ -274,8 +281,8 @@ public class JspServlet extends HttpServlet {
 			"compilerClassName",
 			"com.liferay.portal.osgi.web.servlet.jsp.compiler.internal." +
 				"JspCompiler");
-		defaults.put("compilerSourceVM", "1.7");
-		defaults.put("compilerTargetVM", "1.7");
+		defaults.put("compilerSourceVM", "1.8");
+		defaults.put("compilerTargetVM", "1.8");
 		defaults.put("development", "false");
 		defaults.put("httpMethods", "GET,POST,HEAD");
 		defaults.put("keepgenerated", "false");
@@ -294,7 +301,14 @@ public class JspServlet extends HttpServlet {
 		defaults.put(
 			TagHandlerPool.OPTION_TAGPOOL, JspTagHandlerPool.class.getName());
 
+		for (Entry<Object, Object> entry : _initParams.entrySet()) {
+			defaults.put(
+				String.valueOf(entry.getKey()),
+				String.valueOf(entry.getValue()));
+		}
+
 		Enumeration<String> names = servletConfig.getInitParameterNames();
+
 		Set<String> nameSet = new HashSet<>(Collections.list(names));
 
 		nameSet.addAll(defaults.keySet());
@@ -339,6 +353,9 @@ public class JspServlet extends HttpServlet {
 
 			});
 
+		_logVerbosityLevelDebug = Objects.equals(
+			_jspServlet.getInitParameter("logVerbosityLevel"), "DEBUG");
+
 		_bundleTracker = new BundleTracker<>(
 			_bundle.getBundleContext(), Bundle.RESOLVED,
 			new JspFragmentTrackerCustomizer());
@@ -368,10 +385,7 @@ public class JspServlet extends HttpServlet {
 		try {
 			currentThread.setContextClassLoader(_jspBundleClassloader);
 
-			if (Objects.equals(
-					_jspServlet.getInitParameter("logVerbosityLevel"),
-					"DEBUG")) {
-
+			if (_logVerbosityLevelDebug) {
 				String path = (String)request.getAttribute(
 					RequestDispatcher.INCLUDE_SERVLET_PATH);
 
@@ -517,7 +531,7 @@ public class JspServlet extends HttpServlet {
 		catch (NoSuchMethodException nsme) {
 		}
 
-		return Collections.unmodifiableMap(methods);
+		return methods;
 	}
 
 	private void _deleteOutdatedJspFiles(String dir, List<Path> paths) {
@@ -525,7 +539,7 @@ public class JspServlet extends HttpServlet {
 
 		Path dirPath = fileSystem.getPath(dir);
 
-		if (Files.exists(dirPath) && (paths.size() > 0)) {
+		if (Files.exists(dirPath) && !paths.isEmpty()) {
 			try {
 				Files.walkFileTree(dirPath, new DeleteFileVisitor(paths));
 			}
@@ -540,8 +554,7 @@ public class JspServlet extends HttpServlet {
 	private static final String _ANALYZED_TLDS =
 		JspServlet.class.getName().concat("#ANALYZED_TLDS");
 
-	private static final String _DIR_NAME_RESOURCES =
-		File.separator + "META-INF" + File.separator + "resources";
+	private static final String _DIR_NAME_RESOURCES = "/META-INF/resources";
 
 	private static final String _INIT_PARAMETER_NAME_SCRATCH_DIR = "scratchdir";
 
@@ -550,10 +563,11 @@ public class JspServlet extends HttpServlet {
 	};
 
 	private static final String _WORK_DIR =
-		PropsUtil.get(PropsKeys.LIFERAY_HOME) + File.separator + "work" +
-			File.separator;
+		PropsValues.LIFERAY_HOME + File.separator + "work" + File.separator;
 
 	private static final Map<Method, Method> _contextAdapterMethods;
+	private static final Properties _initParams = PropsUtil.getProperties(
+		"jsp.servlet.init.param.", true);
 	private static final Bundle _jspBundle = FrameworkUtil.getBundle(
 		JspServlet.class);
 	private static final Pattern _originalJspPattern = Pattern.compile(
@@ -570,6 +584,7 @@ public class JspServlet extends HttpServlet {
 	private final HttpServlet _jspServlet =
 		new org.apache.jasper.servlet.JspServlet();
 	private Logger _logger;
+	private boolean _logVerbosityLevelDebug;
 	private final List<ServiceRegistration<?>> _serviceRegistrations =
 		new CopyOnWriteArrayList<>();
 
@@ -609,7 +624,8 @@ public class JspServlet extends HttpServlet {
 				return null;
 			}
 
-			String[] fragmentHostParts = fragmentHost.split(";");
+			String[] fragmentHostParts = StringUtil.split(
+				fragmentHost, CharPool.SEMICOLON);
 
 			fragmentHost = fragmentHostParts[0];
 
@@ -630,27 +646,27 @@ public class JspServlet extends HttpServlet {
 				_INIT_PARAMETER_NAME_SCRATCH_DIR);
 
 			while (enumeration.hasMoreElements()) {
-				FileSystem fileSystem = FileSystems.getDefault();
-
-				StringBuilder sb = new StringBuilder(4);
-
-				sb.append(scratchDirName);
-				sb.append("/org/apache/jsp");
-
 				URL url = enumeration.nextElement();
 
-				String urlPath = url.getPath();
+				String pathString = url.getPath();
 
-				String[] urlPathParts = urlPath.split(_DIR_NAME_RESOURCES);
+				if (pathString.startsWith(_DIR_NAME_RESOURCES)) {
+					pathString = pathString.substring(
+						_DIR_NAME_RESOURCES.length() + 1,
+						pathString.length() - 4);
+				}
+				else {
+					pathString = pathString.substring(
+						1, pathString.length() - 4);
+				}
 
-				String jspPath = urlPathParts[1];
+				pathString = StringUtil.replace(
+					pathString, CharPool.UNDERLINE, "_005f");
 
-				sb.append(
-					jspPath.replace(StringPool.PERIOD, StringPool.UNDERLINE));
-
-				sb.append(".class");
-
-				paths.add(fileSystem.getPath(sb.toString()));
+				paths.add(
+					Paths.get(
+						scratchDirName,
+						"/org/apache/jsp/" + pathString + "_jsp.class"));
 			}
 
 			_deleteOutdatedJspFiles(scratchDirName, paths);
@@ -804,7 +820,7 @@ public class JspServlet extends HttpServlet {
 					}
 				}
 
-				return _jspBundle.getEntry(path);
+				return _jspBundle.getResource(path);
 			}
 			catch (MalformedURLException murle) {
 			}

@@ -27,6 +27,16 @@ if (enableKBArticleViewCountIncrement && kbArticle.isApproved()) {
 	AssetEntryServiceUtil.incrementViewCounter(KBArticle.class.getName(), latestKBArticle.getClassPK());
 }
 
+boolean enableKBArticleSuggestions = enableKBArticleRatings && kbArticle.isApproved();
+
+if (enableKBArticleRatings && kbArticle.isDraft()) {
+	KBArticle latestKBArticle = KBArticleServiceUtil.fetchLatestKBArticle(kbArticle.getResourcePrimKey(), WorkflowConstants.STATUS_APPROVED);
+
+	if (latestKBArticle != null) {
+		enableKBArticleSuggestions = true;
+	}
+}
+
 boolean portletTitleBasedNavigation = GetterUtil.getBoolean(portletConfig.getInitParameter("portlet-title-based-navigation"));
 
 if (portletTitleBasedNavigation) {
@@ -42,8 +52,8 @@ if (portletTitleBasedNavigation) {
 
 		<liferay-frontend:info-bar-buttons>
 			<liferay-frontend:info-bar-sidenav-toggler-button
-					icon="info-circle"
-					label="info"
+				icon="info-circle"
+				label="info"
 			/>
 		</liferay-frontend:info-bar-buttons>
 	</liferay-frontend:info-bar>
@@ -94,6 +104,15 @@ if (portletTitleBasedNavigation) {
 					<liferay-util:include page="/admin/common/article_social_bookmarks.jsp" servletContext="<%= application %>" />
 				</c:if>
 
+				<liferay-expando:custom-attributes-available className="<%= KBArticle.class.getName() %>">
+					<liferay-expando:custom-attribute-list
+						className="<%= KBArticle.class.getName() %>"
+						classPK="<%= kbArticle.getKbArticleId() %>"
+						editable="<%= false %>"
+						label="<%= true %>"
+					/>
+				</liferay-expando:custom-attributes-available>
+
 				<liferay-util:include page="/admin/common/article_assets.jsp" servletContext="<%= application %>" />
 
 				<c:if test="<%= showKBArticleAttachments %>">
@@ -111,27 +130,30 @@ if (portletTitleBasedNavigation) {
 						<liferay-ui:ratings
 							className="<%= KBArticle.class.getName() %>"
 							classPK="<%= kbArticle.getResourcePrimKey() %>"
+							inTrash="<%= false %>"
 						/>
 					</div>
-
-					<c:choose>
-						<c:when test="<%= portletTitleBasedNavigation %>">
-							<liferay-ui:panel-container extended="<%= false %>" markupView="lexicon" persistState="<%= true %>">
-								<liferay-ui:panel collapsible="<%= true %>" extended="<%= false %>" markupView="lexicon" persistState="<%= true %>" title="suggestions">
-									<liferay-util:include page="/admin/common/article_suggestions.jsp" servletContext="<%= application %>" />
-								</liferay-ui:panel>
-							</liferay-ui:panel-container>
-						</c:when>
-						<c:otherwise>
-							<liferay-util:include page="/admin/common/article_suggestions.jsp" servletContext="<%= application %>" />
-						</c:otherwise>
-					</c:choose>
 				</c:if>
 
 				<c:if test="<%= !portletTitleBasedNavigation && !rootPortletId.equals(KBPortletKeys.KNOWLEDGE_BASE_ARTICLE) %>">
 					<liferay-util:include page="/admin/common/article_siblings.jsp" servletContext="<%= application %>" />
 				</c:if>
 			</div>
+
+			<c:if test="<%= enableKBArticleSuggestions %>">
+				<c:choose>
+					<c:when test="<%= portletTitleBasedNavigation %>">
+						<liferay-ui:panel-container extended="<%= false %>" markupView="lexicon" persistState="<%= true %>">
+							<liferay-ui:panel collapsible="<%= true %>" extended="<%= false %>" markupView="lexicon" persistState="<%= true %>" title="suggestions">
+								<liferay-util:include page="/admin/common/article_suggestions.jsp" servletContext="<%= application %>" />
+							</liferay-ui:panel>
+						</liferay-ui:panel-container>
+					</c:when>
+					<c:otherwise>
+						<liferay-util:include page="/admin/common/article_suggestions.jsp" servletContext="<%= application %>" />
+					</c:otherwise>
+				</c:choose>
+			</c:if>
 		</div>
 
 		<liferay-util:include page="/admin/common/article_child.jsp" servletContext="<%= application %>" />

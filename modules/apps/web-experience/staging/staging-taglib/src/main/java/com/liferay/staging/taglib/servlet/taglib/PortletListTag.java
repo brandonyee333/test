@@ -14,8 +14,10 @@
 
 package com.liferay.staging.taglib.servlet.taglib;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.Portlet;
-import com.liferay.staging.taglib.servlet.ServletContextUtil;
+import com.liferay.staging.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.taglib.util.IncludeTag;
 
 import java.util.List;
@@ -26,6 +28,7 @@ import javax.servlet.jsp.PageContext;
 /**
  * @author Levente Hudák
  */
+@ProviderType
 public class PortletListTag extends IncludeTag {
 
 	public void setDisableInputs(boolean disableInputs) {

@@ -33,7 +33,8 @@ import org.osgi.service.component.annotations.Reference;
  * @author Brian Wing Shun Chan
  */
 @Component(
-	immediate = true, property = {"namespace=com.liferay.monitoring.Portal"},
+	enabled = false, immediate = true,
+	property = {"namespace=com.liferay.monitoring.Portal"},
 	service = {DataSampleProcessor.class, ServerStatistics.class}
 )
 public class ServerStatistics
@@ -96,7 +97,7 @@ public class ServerStatistics
 			}
 			catch (Exception e) {
 				throw new IllegalStateException(
-					"Unable to get company with company id " + companyId);
+					"Unable to get company with company id " + companyId, e);
 			}
 		}
 

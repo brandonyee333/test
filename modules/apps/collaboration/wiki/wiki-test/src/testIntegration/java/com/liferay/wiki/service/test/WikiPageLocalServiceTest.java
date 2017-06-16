@@ -15,8 +15,11 @@
 package com.liferay.wiki.service.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetLink;
+import com.liferay.asset.kernel.model.AssetTag;
+import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.asset.kernel.service.AssetCategoryLocalServiceUtil;
 import com.liferay.asset.kernel.service.AssetEntryLocalServiceUtil;
 import com.liferay.asset.kernel.service.AssetLinkLocalServiceUtil;
@@ -25,6 +28,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.model.ExpandoColumn;
 import com.liferay.expando.kernel.model.ExpandoColumnConstants;
 import com.liferay.expando.kernel.model.ExpandoValue;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -37,12 +41,16 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.kernel.workflow.WorkflowThreadLocal;
 import com.liferay.portal.service.test.ServiceTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
+import com.liferay.portlet.asset.util.test.AssetTestUtil;
 import com.liferay.portlet.expando.util.test.ExpandoTestUtil;
 import com.liferay.wiki.exception.DuplicatePageException;
 import com.liferay.wiki.exception.NoSuchPageResourceException;
@@ -52,7 +60,11 @@ import com.liferay.wiki.model.WikiPage;
 import com.liferay.wiki.service.WikiPageLocalServiceUtil;
 import com.liferay.wiki.util.test.WikiTestUtil;
 
+import java.io.Serializable;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -110,13 +122,126 @@ public class WikiPageLocalServiceTest {
 	}
 
 	@Test
+	public void testAddPageWithNbspTitle() throws Exception {
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
+
+		WikiPage page = WikiTestUtil.addPage(
+			TestPropsValues.getUserId(), _node.getNodeId(),
+			"ChildPage" + CharPool.NO_BREAK_SPACE + "1",
+			RandomTestUtil.randomString(), true, serviceContext);
+
+		Assert.assertEquals("ChildPage 1", page.getTitle());
+	}
+
+	@Test
 	public void testChangeParent() throws Exception {
 		testChangeParent(false);
 	}
 
 	@Test
+	public void testChangeParentChangesAllWikiPageVersionsParentTitle()
+		throws Exception {
+
+		WikiTestUtil.addPage(
+			TestPropsValues.getUserId(), _group.getGroupId(), _node.getNodeId(),
+			"ParentPage1", true);
+		WikiTestUtil.addPage(
+			TestPropsValues.getUserId(), _group.getGroupId(), _node.getNodeId(),
+			"ParentPage2", true);
+
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
+
+		WikiPage childPage = WikiTestUtil.addPage(
+			TestPropsValues.getUserId(), _node.getNodeId(), "ChildPage",
+			RandomTestUtil.randomString(), "ParentPage1", true, serviceContext);
+
+		WikiTestUtil.updatePage(
+			childPage, TestPropsValues.getUserId(), StringUtil.randomString(),
+			serviceContext);
+
+		WikiPageLocalServiceUtil.changeParent(
+			TestPropsValues.getUserId(), _node.getNodeId(),
+			childPage.getTitle(), "ParentPage2", serviceContext);
+
+		List<WikiPage> pages = WikiPageLocalServiceUtil.getPages(
+			childPage.getNodeId(), childPage.getTitle(), QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS);
+
+		Assert.assertEquals(pages.toString(), 3, pages.size());
+
+		for (WikiPage curWikiPage : pages) {
+			Assert.assertEquals("ParentPage2", curWikiPage.getParentTitle());
+		}
+	}
+
+	@Test
 	public void testChangeParentWithExpando() throws Exception {
 		testChangeParent(true);
+	}
+
+	@Test
+	public void testChangeParentWithWorkflowChangesParentAfterUpdateStatus()
+		throws Exception {
+
+		WikiTestUtil.addPage(
+			TestPropsValues.getUserId(), _group.getGroupId(), _node.getNodeId(),
+			"ParentPage1", true);
+		WikiTestUtil.addPage(
+			TestPropsValues.getUserId(), _group.getGroupId(), _node.getNodeId(),
+			"ParentPage2", true);
+
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
+
+		WikiPage childPage = WikiTestUtil.addPage(
+			TestPropsValues.getUserId(), _node.getNodeId(), "ChildPage",
+			RandomTestUtil.randomString(), "ParentPage1", true, serviceContext);
+
+		boolean workflowEnabled = WorkflowThreadLocal.isEnabled();
+
+		try {
+			WorkflowThreadLocal.setEnabled(true);
+
+			serviceContext = (ServiceContext)serviceContext.clone();
+
+			serviceContext.setWorkflowAction(
+				WorkflowConstants.ACTION_SAVE_DRAFT);
+
+			WikiPage pendingChildPage = WikiPageLocalServiceUtil.changeParent(
+				TestPropsValues.getUserId(), _node.getNodeId(),
+				childPage.getTitle(), "ParentPage2", serviceContext);
+
+			childPage = WikiPageLocalServiceUtil.getPage(
+				_node.getNodeId(), childPage.getTitle(), true);
+
+			Assert.assertEquals("ParentPage1", childPage.getParentTitle());
+
+			Map<String, Serializable> workflowContext = new HashMap<>();
+
+			workflowContext.put(
+				WorkflowConstants.CONTEXT_COMMAND, serviceContext.getCommand());
+
+			WikiPageLocalServiceUtil.updateStatus(
+				TestPropsValues.getUserId(), pendingChildPage,
+				WorkflowConstants.STATUS_APPROVED, serviceContext,
+				workflowContext);
+
+			List<WikiPage> pages = WikiPageLocalServiceUtil.getPages(
+				childPage.getNodeId(), childPage.getTitle(), QueryUtil.ALL_POS,
+				QueryUtil.ALL_POS);
+
+			Assert.assertEquals(pages.toString(), 2, pages.size());
+
+			for (WikiPage curWikiPage : pages) {
+				Assert.assertEquals(
+					"ParentPage2", curWikiPage.getParentTitle());
+			}
+		}
+		finally {
+			WorkflowThreadLocal.setEnabled(workflowEnabled);
+		}
 	}
 
 	@Test
@@ -138,6 +263,7 @@ public class WikiPageLocalServiceTest {
 			copyPage.getAttachmentsFileEntries();
 
 		Assert.assertEquals(
+			attachmentsFileEntries.toString(),
 			copyAttachmentsFileEntries.size(), attachmentsFileEntries.size());
 
 		FileEntry fileEntry = attachmentsFileEntries.get(0);
@@ -160,6 +286,34 @@ public class WikiPageLocalServiceTest {
 		WikiPageLocalServiceUtil.deletePage(page);
 
 		WikiPageLocalServiceUtil.getPage(page.getResourcePrimKey());
+	}
+
+	@Test
+	public void testDeleteParentPageWithChangedParentChild() throws Exception {
+		WikiTestUtil.addPage(
+			TestPropsValues.getUserId(), _group.getGroupId(), _node.getNodeId(),
+			"ParentPage1", true);
+		WikiTestUtil.addPage(
+			TestPropsValues.getUserId(), _group.getGroupId(), _node.getNodeId(),
+			"ParentPage2", true);
+
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
+
+		WikiPage childPage = WikiTestUtil.addPage(
+			TestPropsValues.getUserId(), _node.getNodeId(), "ChildPage",
+			RandomTestUtil.randomString(), "ParentPage1", true, serviceContext);
+
+		WikiPageLocalServiceUtil.changeParent(
+			TestPropsValues.getUserId(), _node.getNodeId(),
+			childPage.getTitle(), "ParentPage2", serviceContext);
+
+		WikiPageLocalServiceUtil.deletePage(_node.getNodeId(), "ParentPage1");
+
+		childPage = WikiPageLocalServiceUtil.getPage(
+			_node.getNodeId(), childPage.getTitle());
+
+		Assert.assertEquals("ChildPage", childPage.getTitle());
 	}
 
 	@Test
@@ -333,7 +487,8 @@ public class WikiPageLocalServiceTest {
 
 		List<WikiPage> pages = WikiPageLocalServiceUtil.getNoAssetPages();
 
-		Assert.assertEquals(initialPages.size() + 1, pages.size());
+		Assert.assertEquals(
+			pages.toString(), initialPages.size() + 1, pages.size());
 		Assert.assertEquals(page, pages.get(pages.size() - 1));
 	}
 
@@ -349,8 +504,191 @@ public class WikiPageLocalServiceTest {
 	}
 
 	@Test
+	public void testRenameDefaultVersionPageWithAssetCategories()
+		throws Exception {
+
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
+
+		AssetVocabulary assetVocabulary = AssetTestUtil.addVocabulary(
+			_group.getGroupId());
+
+		AssetCategory assetCategory1 = AssetTestUtil.addCategory(
+			_group.getGroupId(), assetVocabulary.getVocabularyId());
+		AssetCategory assetCategory2 = AssetTestUtil.addCategory(
+			_group.getGroupId(), assetVocabulary.getVocabularyId());
+
+		long[] assetCategoryIds = new long[2];
+
+		assetCategoryIds[0] = assetCategory1.getCategoryId();
+		assetCategoryIds[1] = assetCategory2.getCategoryId();
+
+		serviceContext.setAssetCategoryIds(assetCategoryIds);
+
+		WikiPage page = WikiTestUtil.addPage(
+			TestPropsValues.getUserId(), _node.getNodeId(),
+			RandomTestUtil.randomString(), RandomTestUtil.randomString(), true,
+			serviceContext);
+
+		serviceContext = ServiceContextTestUtil.getServiceContext(
+			_group.getGroupId());
+
+		WikiPageLocalServiceUtil.renamePage(
+			TestPropsValues.getUserId(), _node.getNodeId(), page.getTitle(),
+			"New Title", true, serviceContext);
+
+		WikiPage renamedPage = WikiPageLocalServiceUtil.getPage(
+			_node.getNodeId(), "New Title");
+
+		long[] finalAssetCategoryIds =
+			AssetCategoryLocalServiceUtil.getCategoryIds(
+				WikiPage.class.getName(), renamedPage.getResourcePrimKey());
+
+		Assert.assertArrayEquals(assetCategoryIds, finalAssetCategoryIds);
+	}
+
+	@Test
+	public void testRenameDefaultVersionPageWithAssetTags() throws Exception {
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
+
+		AssetTag assetTag1 = AssetTestUtil.addTag(_group.getGroupId());
+		AssetTag assetTag2 = AssetTestUtil.addTag(_group.getGroupId());
+
+		String[] assetTagNames = new String[2];
+
+		assetTagNames[0] = assetTag1.getName();
+		assetTagNames[1] = assetTag2.getName();
+
+		serviceContext.setAssetTagNames(assetTagNames);
+
+		WikiPage page = WikiTestUtil.addPage(
+			TestPropsValues.getUserId(), _node.getNodeId(),
+			RandomTestUtil.randomString(), RandomTestUtil.randomString(), true,
+			serviceContext);
+
+		serviceContext = ServiceContextTestUtil.getServiceContext(
+			_group.getGroupId());
+
+		WikiPageLocalServiceUtil.renamePage(
+			TestPropsValues.getUserId(), _node.getNodeId(), page.getTitle(),
+			"New Title", true, serviceContext);
+
+		WikiPage renamedPage = WikiPageLocalServiceUtil.getPage(
+			_node.getNodeId(), "New Title");
+
+		Assert.assertNotNull(renamedPage);
+
+		String[] finalAssetTagNames = AssetTagLocalServiceUtil.getTagNames(
+			WikiPage.class.getName(), renamedPage.getResourcePrimKey());
+
+		Assert.assertArrayEquals(finalAssetTagNames, assetTagNames);
+	}
+
+	@Test
+	public void testRenameNonDefaultVersionPageWithAssetCategories()
+		throws Exception {
+
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
+
+		AssetVocabulary assetVocabulary = AssetTestUtil.addVocabulary(
+			_group.getGroupId());
+
+		AssetCategory assetCategory1 = AssetTestUtil.addCategory(
+			_group.getGroupId(), assetVocabulary.getVocabularyId());
+		AssetCategory assetCategory2 = AssetTestUtil.addCategory(
+			_group.getGroupId(), assetVocabulary.getVocabularyId());
+
+		long[] assetCategoryIds = new long[2];
+
+		assetCategoryIds[0] = assetCategory1.getCategoryId();
+		assetCategoryIds[1] = assetCategory2.getCategoryId();
+
+		serviceContext.setAssetCategoryIds(assetCategoryIds);
+
+		WikiPage page = WikiTestUtil.addPage(
+			TestPropsValues.getUserId(), _node.getNodeId(),
+			RandomTestUtil.randomString(), RandomTestUtil.randomString(), true,
+			serviceContext);
+
+		WikiTestUtil.updatePage(page);
+
+		serviceContext = ServiceContextTestUtil.getServiceContext(
+			_group.getGroupId());
+
+		WikiPageLocalServiceUtil.renamePage(
+			TestPropsValues.getUserId(), _node.getNodeId(), page.getTitle(),
+			"New Title", true, serviceContext);
+
+		WikiPage renamedPage = WikiPageLocalServiceUtil.getPage(
+			_node.getNodeId(), "New Title");
+
+		long[] finalAssetCategoryIds =
+			AssetCategoryLocalServiceUtil.getCategoryIds(
+				WikiPage.class.getName(), renamedPage.getResourcePrimKey());
+
+		Assert.assertArrayEquals(assetCategoryIds, finalAssetCategoryIds);
+	}
+
+	@Test
+	public void testRenameNonDefaultVersionPageWithAssetTags()
+		throws Exception {
+
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
+
+		AssetTag assetTag1 = AssetTestUtil.addTag(_group.getGroupId());
+		AssetTag assetTag2 = AssetTestUtil.addTag(_group.getGroupId());
+
+		String[] assetTagNames = new String[2];
+
+		assetTagNames[0] = assetTag1.getName();
+		assetTagNames[1] = assetTag2.getName();
+
+		serviceContext.setAssetTagNames(assetTagNames);
+
+		WikiPage page = WikiTestUtil.addPage(
+			TestPropsValues.getUserId(), _node.getNodeId(),
+			RandomTestUtil.randomString(), RandomTestUtil.randomString(), true,
+			serviceContext);
+
+		WikiTestUtil.updatePage(page);
+
+		serviceContext = ServiceContextTestUtil.getServiceContext(
+			_group.getGroupId());
+
+		WikiPageLocalServiceUtil.renamePage(
+			TestPropsValues.getUserId(), _node.getNodeId(), page.getTitle(),
+			"New Title", true, serviceContext);
+
+		WikiPage renamedPage = WikiPageLocalServiceUtil.getPage(
+			_node.getNodeId(), "New Title");
+
+		String[] finalAssetTagNames = AssetTagLocalServiceUtil.getTagNames(
+			WikiPage.class.getName(), renamedPage.getResourcePrimKey());
+
+		Assert.assertArrayEquals(finalAssetTagNames, assetTagNames);
+	}
+
+	@Test
 	public void testRenamePage() throws Exception {
-		testRenamePage(false);
+		WikiPage page = WikiTestUtil.addPage(
+			_group.getGroupId(), _node.getNodeId(), true);
+
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
+
+		WikiPageLocalServiceUtil.renamePage(
+			TestPropsValues.getUserId(), _node.getNodeId(), page.getTitle(),
+			"New Title", true, serviceContext);
+
+		WikiPage renamedPage = WikiPageLocalServiceUtil.getPage(
+			_node.getNodeId(), "New Title");
+
+		Assert.assertNotNull(renamedPage);
+
+		checkPopulatedServiceContext(serviceContext, renamedPage, false);
 	}
 
 	@Test(expected = DuplicatePageException.class)
@@ -368,7 +706,39 @@ public class WikiPageLocalServiceTest {
 
 	@Test
 	public void testRenamePageWithExpando() throws Exception {
-		testRenamePage(true);
+		WikiPage page = WikiTestUtil.addPage(
+			_group.getGroupId(), _node.getNodeId(), true);
+
+		addExpandoValueToPage(page);
+
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
+
+		WikiPageLocalServiceUtil.renamePage(
+			TestPropsValues.getUserId(), _node.getNodeId(), page.getTitle(),
+			"New Title", true, serviceContext);
+
+		WikiPage renamedPage = WikiPageLocalServiceUtil.getPage(
+			_node.getNodeId(), "New Title");
+
+		Assert.assertNotNull(renamedPage);
+
+		checkPopulatedServiceContext(serviceContext, renamedPage, true);
+	}
+
+	@Test
+	public void testRenamePageWithNbspTitle() throws Exception {
+		WikiPage page = WikiTestUtil.addPage(
+			_group.getGroupId(), _node.getNodeId(), true);
+
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
+
+		WikiPageLocalServiceUtil.renamePage(
+			TestPropsValues.getUserId(), _node.getNodeId(), page.getTitle(),
+			"New" + CharPool.NO_BREAK_SPACE + "Title", true, serviceContext);
+
+		WikiPageLocalServiceUtil.getPage(_node.getNodeId(), "New Title");
 	}
 
 	@Test
@@ -499,30 +869,6 @@ public class WikiPageLocalServiceTest {
 
 		checkPopulatedServiceContext(
 			serviceContext, retrievedPage, hasExpandoValues);
-	}
-
-	protected void testRenamePage(boolean hasExpandoValues) throws Exception {
-		WikiPage page = WikiTestUtil.addPage(
-			_group.getGroupId(), _node.getNodeId(), true);
-
-		if (hasExpandoValues) {
-			addExpandoValueToPage(page);
-		}
-
-		ServiceContext serviceContext =
-			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
-
-		WikiPageLocalServiceUtil.renamePage(
-			TestPropsValues.getUserId(), _node.getNodeId(), page.getTitle(),
-			"New Title", true, serviceContext);
-
-		WikiPage renamedPage = WikiPageLocalServiceUtil.getPage(
-			_node.getNodeId(), "New Title");
-
-		Assert.assertNotNull(renamedPage);
-
-		checkPopulatedServiceContext(
-			serviceContext, renamedPage, hasExpandoValues);
 	}
 
 	protected void testRestorePageFromTrash(boolean hasExpandoValues)

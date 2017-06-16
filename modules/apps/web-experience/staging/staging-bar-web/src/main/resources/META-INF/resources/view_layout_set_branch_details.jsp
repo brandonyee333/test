@@ -20,7 +20,7 @@
 LayoutRevision layoutRevision = (LayoutRevision)request.getAttribute("view.jsp-layoutRevision");
 LayoutSetBranch layoutSetBranch = (LayoutSetBranch)request.getAttribute("view.jsp-layoutSetBranch");
 List<LayoutSetBranch> layoutSetBranches = (List<LayoutSetBranch>)request.getAttribute("view.jsp-layoutSetBranches");
-String stagingFriendlyURL = (String)request.getAttribute("view.jsp-stagingFriendlyURL");
+String stagingURL = (String)request.getAttribute("view.jsp-stagingURL");
 %>
 
 <c:if test="<%= (layoutSetBranches != null) && (layoutSetBranches.size() >= 1) %>">
@@ -31,7 +31,7 @@ String stagingFriendlyURL = (String)request.getAttribute("view.jsp-stagingFriend
 
 		<div class="dropdown">
 			<a class="dropdown-toggle layout-set-branch-selector staging-variation-selector" data-toggle="dropdown" href="#1">
-				<liferay-ui:message key="<%= HtmlUtil.escape(layoutSetBranch.getName()) %>" />
+				<liferay-ui:message key="<%= HtmlUtil.escape(layoutSetBranchDisplayContext.getLayoutSetBranchDisplayName(layoutSetBranch)) %>" localizeKey="<%= false %>" />
 
 				<aui:icon image="caret-double-l" markupView="lexicon" />
 			</a>
@@ -44,15 +44,15 @@ String stagingFriendlyURL = (String)request.getAttribute("view.jsp-stagingFriend
 				%>
 
 					<portlet:actionURL name="selectLayoutSetBranch" var="curLayoutSetBranchURL">
-						<portlet:param name="redirect" value="<%= stagingFriendlyURL %>" />
+						<portlet:param name="redirect" value="<%= stagingURL %>" />
 						<portlet:param name="groupId" value="<%= String.valueOf(curLayoutSetBranch.getGroupId()) %>" />
 						<portlet:param name="privateLayout" value="<%= String.valueOf(layout.isPrivateLayout()) %>" />
 						<portlet:param name="layoutSetBranchId" value="<%= String.valueOf(curLayoutSetBranch.getLayoutSetBranchId()) %>" />
 					</portlet:actionURL>
 
 					<li>
-						<a class="<%= selected ? "disabled" : StringPool.BLANK %>" href="<%= selected ? "javascript:;" : "javascript:submitForm(document.hrefFm, '" + HttpUtil.encodeURL(curLayoutSetBranchURL) + "');" %>">
-							<liferay-ui:message key="<%= HtmlUtil.escape(curLayoutSetBranch.getName()) %>" />
+						<a class="<%= selected ? "disabled" : StringPool.BLANK %>" href="<%= selected ? "javascript:;" : "javascript:submitForm(document.hrefFm, '" + HtmlUtil.escapeJS(curLayoutSetBranchURL) + "');" %>">
+							<liferay-ui:message key="<%= HtmlUtil.escape(layoutSetBranchDisplayContext.getLayoutSetBranchDisplayName(curLayoutSetBranch)) %>" localizeKey="<%= false %>" />
 						</a>
 					</li>
 

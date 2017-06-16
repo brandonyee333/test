@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.trash.TrashHandler;
 import com.liferay.portal.kernel.trash.TrashHandlerRegistryUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.trash.model.impl.TrashEntryImpl;
 import com.liferay.portlet.trash.service.base.TrashEntryServiceBaseImpl;
@@ -88,6 +89,13 @@ public class TrashEntryServiceImpl extends TrashEntryServiceBaseImpl {
 				deleteEntry(entry);
 			}
 			catch (TrashPermissionException tpe) {
+
+				// LPS-52675
+
+				if (_log.isDebugEnabled()) {
+					_log.debug(tpe, tpe);
+				}
+
 				throwTrashPermissionException = true;
 			}
 			catch (Exception e) {
@@ -116,6 +124,13 @@ public class TrashEntryServiceImpl extends TrashEntryServiceBaseImpl {
 				deleteEntry(entryId);
 			}
 			catch (TrashPermissionException tpe) {
+
+				// LPS-52675
+
+				if (_log.isDebugEnabled()) {
+					_log.debug(tpe, tpe);
+				}
+
 				throwTrashPermissionException = true;
 			}
 		}
@@ -201,6 +216,40 @@ public class TrashEntryServiceImpl extends TrashEntryServiceBaseImpl {
 			long groupId, int start, int end, OrderByComparator<TrashEntry> obc)
 		throws PrincipalException {
 
+		return getEntries(groupId, null, start, end, obc);
+	}
+
+	@Override
+	public List<TrashEntry> getEntries(long groupId, String className)
+		throws PrincipalException {
+
+		long classNameId = classNameLocalService.getClassNameId(className);
+
+		List<TrashEntry> entries = trashEntryPersistence.findByG_C(
+			groupId, classNameId);
+
+		return filterEntries(entries);
+	}
+
+	/**
+	 * Returns a range of all the trash entries matching the group ID.
+	 *
+	 * @param  groupId the primary key of the group
+	 * @param  className the class name of the entity
+	 * @param  start the lower bound of the range of trash entries to return
+	 * @param  end the upper bound of the range of trash entries to return (not
+	 *         inclusive)
+	 * @param  obc the comparator to order the trash entries (optionally
+	 *         <code>null</code>)
+	 * @return the range of matching trash entries ordered by comparator
+	 *         <code>obc</code>
+	 */
+	@Override
+	public TrashEntryList getEntries(
+			long groupId, String className, int start, int end,
+			OrderByComparator<TrashEntry> obc)
+		throws PrincipalException {
+
 		TrashEntryList trashEntriesList = new TrashEntryList();
 
 		int entriesCount = trashEntryPersistence.countByGroupId(groupId);
@@ -213,8 +262,19 @@ public class TrashEntryServiceImpl extends TrashEntryServiceBaseImpl {
 
 		trashEntriesList.setApproximate(approximate);
 
-		List<TrashEntry> entries = trashEntryPersistence.findByGroupId(
-			groupId, 0, end + PropsValues.TRASH_SEARCH_LIMIT, obc);
+		List<TrashEntry> entries = null;
+
+		if (Validator.isNotNull(className)) {
+			long classNameId = classNameLocalService.getClassNameId(className);
+
+			entries = trashEntryPersistence.findByG_C(
+				groupId, classNameId, 0, end + PropsValues.TRASH_SEARCH_LIMIT,
+				obc);
+		}
+		else {
+			entries = trashEntryPersistence.findByGroupId(
+				groupId, 0, end + PropsValues.TRASH_SEARCH_LIMIT, obc);
+		}
 
 		List<TrashEntry> filteredEntries = filterEntries(entries);
 
@@ -234,21 +294,10 @@ public class TrashEntryServiceImpl extends TrashEntryServiceBaseImpl {
 		filteredEntries = filteredEntries.subList(start, end);
 
 		trashEntriesList.setArray(TrashEntrySoap.toSoapModels(filteredEntries));
+
 		trashEntriesList.setCount(total);
 
 		return trashEntriesList;
-	}
-
-	@Override
-	public List<TrashEntry> getEntries(long groupId, String className)
-		throws PrincipalException {
-
-		long classNameId = classNameLocalService.getClassNameId(className);
-
-		List<TrashEntry> entries = trashEntryPersistence.findByG_C(
-			groupId, classNameId);
-
-		return filterEntries(entries);
 	}
 
 	/**

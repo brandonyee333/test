@@ -15,32 +15,32 @@
 package com.liferay.wiki.engine.creole;
 
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.wiki.engine.creole.parser.ast.ASTNode;
-import com.liferay.wiki.engine.creole.parser.ast.BaseListNode;
-import com.liferay.wiki.engine.creole.parser.ast.BoldTextNode;
-import com.liferay.wiki.engine.creole.parser.ast.CollectionNode;
-import com.liferay.wiki.engine.creole.parser.ast.ForcedEndOfLineNode;
-import com.liferay.wiki.engine.creole.parser.ast.FormattedTextNode;
-import com.liferay.wiki.engine.creole.parser.ast.HorizontalNode;
-import com.liferay.wiki.engine.creole.parser.ast.ImageNode;
-import com.liferay.wiki.engine.creole.parser.ast.ItalicTextNode;
-import com.liferay.wiki.engine.creole.parser.ast.ItemNode;
-import com.liferay.wiki.engine.creole.parser.ast.LineNode;
-import com.liferay.wiki.engine.creole.parser.ast.ListNode;
-import com.liferay.wiki.engine.creole.parser.ast.NoWikiSectionNode;
-import com.liferay.wiki.engine.creole.parser.ast.ParagraphNode;
-import com.liferay.wiki.engine.creole.parser.ast.ScapedNode;
-import com.liferay.wiki.engine.creole.parser.ast.UnformattedTextNode;
-import com.liferay.wiki.engine.creole.parser.ast.UnorderedListItemNode;
-import com.liferay.wiki.engine.creole.parser.ast.UnorderedListNode;
-import com.liferay.wiki.engine.creole.parser.ast.WikiPageNode;
-import com.liferay.wiki.engine.creole.parser.ast.link.LinkNode;
-import com.liferay.wiki.engine.creole.parser.ast.table.TableDataNode;
-import com.liferay.wiki.engine.creole.parser.ast.table.TableHeaderNode;
-import com.liferay.wiki.engine.creole.parser.ast.table.TableNode;
-import com.liferay.wiki.engine.creole.parser.parser.Creole10Lexer;
-import com.liferay.wiki.engine.creole.parser.parser.Creole10Parser;
-import com.liferay.wiki.engine.creole.util.WikiEngineCreoleComponentProvider;
+import com.liferay.wiki.engine.creole.internal.parser.ast.ASTNode;
+import com.liferay.wiki.engine.creole.internal.parser.ast.BaseListNode;
+import com.liferay.wiki.engine.creole.internal.parser.ast.BoldTextNode;
+import com.liferay.wiki.engine.creole.internal.parser.ast.CollectionNode;
+import com.liferay.wiki.engine.creole.internal.parser.ast.ForcedEndOfLineNode;
+import com.liferay.wiki.engine.creole.internal.parser.ast.FormattedTextNode;
+import com.liferay.wiki.engine.creole.internal.parser.ast.HorizontalNode;
+import com.liferay.wiki.engine.creole.internal.parser.ast.ImageNode;
+import com.liferay.wiki.engine.creole.internal.parser.ast.ItalicTextNode;
+import com.liferay.wiki.engine.creole.internal.parser.ast.ItemNode;
+import com.liferay.wiki.engine.creole.internal.parser.ast.LineNode;
+import com.liferay.wiki.engine.creole.internal.parser.ast.ListNode;
+import com.liferay.wiki.engine.creole.internal.parser.ast.NoWikiSectionNode;
+import com.liferay.wiki.engine.creole.internal.parser.ast.ParagraphNode;
+import com.liferay.wiki.engine.creole.internal.parser.ast.ScapedNode;
+import com.liferay.wiki.engine.creole.internal.parser.ast.UnformattedTextNode;
+import com.liferay.wiki.engine.creole.internal.parser.ast.UnorderedListItemNode;
+import com.liferay.wiki.engine.creole.internal.parser.ast.UnorderedListNode;
+import com.liferay.wiki.engine.creole.internal.parser.ast.WikiPageNode;
+import com.liferay.wiki.engine.creole.internal.parser.ast.link.LinkNode;
+import com.liferay.wiki.engine.creole.internal.parser.ast.table.TableDataNode;
+import com.liferay.wiki.engine.creole.internal.parser.ast.table.TableHeaderNode;
+import com.liferay.wiki.engine.creole.internal.parser.ast.table.TableNode;
+import com.liferay.wiki.engine.creole.internal.parser.parser.Creole10Lexer;
+import com.liferay.wiki.engine.creole.internal.parser.parser.Creole10Parser;
+import com.liferay.wiki.engine.creole.internal.util.WikiEngineCreoleComponentProvider;
 import com.liferay.wiki.engine.creole.util.test.CreoleTestUtil;
 
 import java.io.IOException;
@@ -229,7 +229,7 @@ public class AntlrCreoleParserTest {
 
 		List<ASTNode> astNodes = paragraphNode.getChildASTNodes();
 
-		Assert.assertEquals(10, astNodes.size());
+		Assert.assertEquals(astNodes.toString(), 10, astNodes.size());
 
 		for (int i = 0; i < astNodes.size(); i++) {
 			ASTNode astNode = astNodes.get(i);
@@ -533,7 +533,7 @@ public class AntlrCreoleParserTest {
 
 		List<ASTNode> astNodes = paragraphNode.getChildASTNodes();
 
-		Assert.assertEquals(1, astNodes.size());
+		Assert.assertEquals(astNodes.toString(), 1, astNodes.size());
 
 		LineNode lineNode = (LineNode)paragraphNode.getChildASTNode(0);
 
@@ -674,13 +674,13 @@ public class AntlrCreoleParserTest {
 
 		List<ASTNode> astNodes = wikiPageNode.getChildASTNodes();
 
-		Assert.assertEquals(1, astNodes.size());
+		Assert.assertEquals(astNodes.toString(), 1, astNodes.size());
 
 		ParagraphNode paragraphNode = (ParagraphNode)astNodes.get(0);
 
 		astNodes = paragraphNode.getChildASTNodes();
 
-		Assert.assertEquals(1, astNodes.size());
+		Assert.assertEquals(astNodes.toString(), 1, astNodes.size());
 
 		LineNode lineNode = (LineNode)paragraphNode.getChildASTNode(0);
 

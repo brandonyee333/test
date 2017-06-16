@@ -18,6 +18,8 @@ import com.liferay.admin.kernel.util.PortalMyAccountApplicationType;
 import com.liferay.announcements.kernel.model.AnnouncementsDelivery;
 import com.liferay.announcements.kernel.model.AnnouncementsEntryConstants;
 import com.liferay.announcements.kernel.service.AnnouncementsDeliveryLocalService;
+import com.liferay.asset.kernel.exception.AssetCategoryException;
+import com.liferay.asset.kernel.exception.AssetTagException;
 import com.liferay.document.library.kernel.service.DLAppLocalService;
 import com.liferay.portal.kernel.bean.BeanParamUtil;
 import com.liferay.portal.kernel.exception.AddressCityException;
@@ -50,8 +52,10 @@ import com.liferay.portal.kernel.model.Contact;
 import com.liferay.portal.kernel.model.EmailAddress;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.ListTypeConstants;
+import com.liferay.portal.kernel.model.PasswordPolicy;
 import com.liferay.portal.kernel.model.Phone;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroupRole;
@@ -71,6 +75,7 @@ import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.service.UserService;
 import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
+import com.liferay.portal.kernel.service.permission.PortalPermissionUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -78,12 +83,13 @@ import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -124,6 +130,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	immediate = true,
 	property = {
+		"javax.portlet.name=" + UsersAdminPortletKeys.MY_ORGANIZATIONS,
 		"javax.portlet.name=" + UsersAdminPortletKeys.USERS_ADMIN,
 		"mvc.command.name=/users_admin/edit_user"
 	},
@@ -241,7 +248,7 @@ public class EditUserMVCActionCommand extends BaseMVCActionCommand {
 	}
 
 	protected void deleteRole(ActionRequest actionRequest) throws Exception {
-		User user = PortalUtil.getSelectedUser(actionRequest);
+		User user = portal.getSelectedUser(actionRequest);
 
 		long roleId = ParamUtil.getLong(actionRequest, "roleId");
 
@@ -278,20 +285,7 @@ public class EditUserMVCActionCommand extends BaseMVCActionCommand {
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
-		DynamicActionRequest dynamicActionRequest = new DynamicActionRequest(
-			actionRequest);
-
-		long prefixId = getListTypeId(
-			actionRequest, "prefixValue", ListTypeConstants.CONTACT_PREFIX);
-
-		dynamicActionRequest.setParameter("prefixId", String.valueOf(prefixId));
-
-		long suffixId = getListTypeId(
-			actionRequest, "suffixValue", ListTypeConstants.CONTACT_SUFFIX);
-
-		dynamicActionRequest.setParameter("suffixId", String.valueOf(suffixId));
-
-		actionRequest = dynamicActionRequest;
+		actionRequest = _wrapActionRequest(actionRequest);
 
 		String cmd = ParamUtil.getString(actionRequest, Constants.CMD);
 
@@ -317,8 +311,8 @@ public class EditUserMVCActionCommand extends BaseMVCActionCommand {
 					actionRequest, actionResponse);
 
 				user = (User)returnValue[0];
-				oldScreenName = ((String)returnValue[1]);
-				updateLanguageId = ((Boolean)returnValue[2]);
+				oldScreenName = (String)returnValue[1];
+				updateLanguageId = (Boolean)returnValue[2];
 			}
 			else if (cmd.equals("unlock")) {
 				user = updateLockout(actionRequest);
@@ -355,8 +349,8 @@ public class EditUserMVCActionCommand extends BaseMVCActionCommand {
 							redirect, oldPath, newPath);
 
 						redirect = StringUtil.replace(
-							redirect, HttpUtil.encodeURL(oldPath),
-							HttpUtil.encodeURL(newPath));
+							redirect, URLCodec.encodeURL(oldPath),
+							URLCodec.encodeURL(newPath));
 					}
 				}
 
@@ -375,7 +369,7 @@ public class EditUserMVCActionCommand extends BaseMVCActionCommand {
 						redirect, themeDisplay.getI18nPath(), i18nPath);
 				}
 
-				redirect = HttpUtil.setParameter(
+				redirect = http.setParameter(
 					redirect, actionResponse.getNamespace() + "p_u_i_d",
 					user.getUserId());
 			}
@@ -386,8 +380,8 @@ public class EditUserMVCActionCommand extends BaseMVCActionCommand {
 				(userLocalService.fetchUserById(scopeGroup.getClassPK()) ==
 					null)) {
 
-				redirect = HttpUtil.setParameter(redirect, "doAsGroupId", 0);
-				redirect = HttpUtil.setParameter(redirect, "refererPlid", 0);
+				redirect = http.setParameter(redirect, "doAsGroupId", 0);
+				redirect = http.setParameter(redirect, "refererPlid", 0);
 			}
 
 			sendRedirect(actionRequest, actionResponse, redirect);
@@ -405,6 +399,8 @@ public class EditUserMVCActionCommand extends BaseMVCActionCommand {
 			else if (e instanceof AddressCityException ||
 					 e instanceof AddressStreetException ||
 					 e instanceof AddressZipException ||
+					 e instanceof AssetCategoryException ||
+					 e instanceof AssetTagException ||
 					 e instanceof CompanyMaxUsersException ||
 					 e instanceof ContactBirthdayException ||
 					 e instanceof ContactNameException ||
@@ -452,13 +448,13 @@ public class EditUserMVCActionCommand extends BaseMVCActionCommand {
 				if (e instanceof CompanyMaxUsersException ||
 					e instanceof RequiredUserException || submittedPassword) {
 
-					String redirect = PortalUtil.escapeRedirect(
+					String redirect = portal.escapeRedirect(
 						ParamUtil.getString(actionRequest, "redirect"));
 
 					if (submittedPassword) {
-						User user = PortalUtil.getSelectedUser(actionRequest);
+						User user = portal.getSelectedUser(actionRequest);
 
-						redirect = HttpUtil.setParameter(
+						redirect = http.setParameter(
 							redirect, actionResponse.getNamespace() + "p_u_i_d",
 							user.getUserId());
 					}
@@ -563,7 +559,7 @@ public class EditUserMVCActionCommand extends BaseMVCActionCommand {
 	}
 
 	protected User updateLockout(ActionRequest actionRequest) throws Exception {
-		User user = PortalUtil.getSelectedUser(actionRequest);
+		User user = portal.getSelectedUser(actionRequest);
 
 		_userService.updateLockoutById(user.getUserId(), false);
 
@@ -577,16 +573,31 @@ public class EditUserMVCActionCommand extends BaseMVCActionCommand {
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		User user = PortalUtil.getSelectedUser(actionRequest);
+		User user = portal.getSelectedUser(actionRequest);
 
 		Contact contact = user.getContact();
 
 		String oldPassword = AdminUtil.getUpdateUserPassword(
 			actionRequest, user.getUserId());
+
 		String newPassword1 = actionRequest.getParameter("password1");
 		String newPassword2 = actionRequest.getParameter("password2");
-		boolean passwordReset = ParamUtil.getBoolean(
-			actionRequest, "passwordReset");
+
+		boolean passwordReset = false;
+
+		PasswordPolicy passwordPolicy = user.getPasswordPolicy();
+
+		if ((user.getLastLoginDate() == null) &&
+			((passwordPolicy == null) ||
+			 (passwordPolicy.isChangeable() &&
+			  passwordPolicy.isChangeRequired()))) {
+
+			passwordReset = true;
+		}
+		else {
+			passwordReset = ParamUtil.getBoolean(
+				actionRequest, "passwordReset");
+		}
 
 		String reminderQueryQuestion = BeanParamUtil.getString(
 			user, actionRequest, "reminderQueryQuestion");
@@ -647,6 +658,7 @@ public class EditUserMVCActionCommand extends BaseMVCActionCommand {
 			actionRequest, "birthdayDay", birthdayCal.get(Calendar.DATE));
 		int birthdayYear = ParamUtil.getInteger(
 			actionRequest, "birthdayYear", birthdayCal.get(Calendar.YEAR));
+
 		String comments = BeanParamUtil.getString(
 			user, actionRequest, "comments");
 		String smsSn = BeanParamUtil.getString(contact, actionRequest, "smsSn");
@@ -711,9 +723,9 @@ public class EditUserMVCActionCommand extends BaseMVCActionCommand {
 
 			// Reset the locale
 
-			HttpServletRequest request = PortalUtil.getHttpServletRequest(
-				actionRequest);
-			HttpServletResponse response = PortalUtil.getHttpServletResponse(
+			HttpServletRequest request = portal.getOriginalServletRequest(
+				portal.getHttpServletRequest(actionRequest));
+			HttpServletResponse response = portal.getHttpServletResponse(
 				actionResponse);
 			HttpSession session = request.getSession();
 
@@ -747,12 +759,15 @@ public class EditUserMVCActionCommand extends BaseMVCActionCommand {
 			PortalMyAccountApplicationType.MyAccount.CLASS_NAME,
 			PortletProvider.Action.VIEW);
 
-		if (!portletId.equals(myAccountPortletId)) {
-			Group group = user.getGroup();
+		Group group = user.getGroup();
 
-			boolean hasGroupUpdatePermission = GroupPermissionUtil.contains(
+		if (!portletId.equals(myAccountPortletId) &&
+			GroupPermissionUtil.contains(
 				themeDisplay.getPermissionChecker(), group.getGroupId(),
-				ActionKeys.UPDATE);
+				ActionKeys.UPDATE) &&
+			PortalPermissionUtil.contains(
+				themeDisplay.getPermissionChecker(),
+				ActionKeys.UNLINK_LAYOUT_SET_PROTOTYPE)) {
 
 			long publicLayoutSetPrototypeId = ParamUtil.getLong(
 				actionRequest, "publicLayoutSetPrototypeId");
@@ -763,9 +778,15 @@ public class EditUserMVCActionCommand extends BaseMVCActionCommand {
 			boolean privateLayoutSetPrototypeLinkEnabled = ParamUtil.getBoolean(
 				actionRequest, "privateLayoutSetPrototypeLinkEnabled");
 
-			if (hasGroupUpdatePermission &&
-				((publicLayoutSetPrototypeId > 0) ||
-				 (privateLayoutSetPrototypeId > 0))) {
+			LayoutSet publicLayoutSet = group.getPublicLayoutSet();
+			LayoutSet privateLayoutSet = group.getPrivateLayoutSet();
+
+			if ((publicLayoutSetPrototypeId > 0) ||
+				(privateLayoutSetPrototypeId > 0) ||
+				(publicLayoutSetPrototypeLinkEnabled !=
+					publicLayoutSet.isLayoutSetPrototypeLinkEnabled()) ||
+				(privateLayoutSetPrototypeLinkEnabled !=
+					privateLayoutSet.isLayoutSetPrototypeLinkEnabled())) {
 
 				SitesUtil.updateLayoutSetPrototypesLinks(
 					group, publicLayoutSetPrototypeId,
@@ -775,7 +796,7 @@ public class EditUserMVCActionCommand extends BaseMVCActionCommand {
 			}
 		}
 
-		Company company = PortalUtil.getCompany(actionRequest);
+		Company company = portal.getCompany(actionRequest);
 
 		if (company.isStrangersVerify() &&
 			!StringUtil.equalsIgnoreCase(oldEmailAddress, emailAddress)) {
@@ -786,7 +807,32 @@ public class EditUserMVCActionCommand extends BaseMVCActionCommand {
 		return new Object[] {user, oldScreenName, updateLanguageId};
 	}
 
+	@Reference
+	protected Http http;
+
+	@Reference
+	protected Portal portal;
+
 	protected UserLocalService userLocalService;
+
+	private ActionRequest _wrapActionRequest(ActionRequest actionRequest)
+		throws Exception {
+
+		DynamicActionRequest dynamicActionRequest = new DynamicActionRequest(
+			actionRequest);
+
+		long prefixId = getListTypeId(
+			actionRequest, "prefixValue", ListTypeConstants.CONTACT_PREFIX);
+
+		dynamicActionRequest.setParameter("prefixId", String.valueOf(prefixId));
+
+		long suffixId = getListTypeId(
+			actionRequest, "suffixValue", ListTypeConstants.CONTACT_SUFFIX);
+
+		dynamicActionRequest.setParameter("suffixId", String.valueOf(suffixId));
+
+		return dynamicActionRequest;
+	}
 
 	private AnnouncementsDeliveryLocalService
 		_announcementsDeliveryLocalService;

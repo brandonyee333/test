@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.service.persistence.CompanyProvider;
 import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -43,6 +44,8 @@ import com.liferay.portal.workflow.kaleo.model.impl.KaleoDefinitionModelImpl;
 import com.liferay.portal.workflow.kaleo.service.persistence.KaleoDefinitionPersistence;
 
 import java.io.Serializable;
+
+import java.lang.reflect.Field;
 
 import java.util.Collections;
 import java.util.Date;
@@ -1886,11 +1889,15 @@ public class KaleoDefinitionPersistenceImpl extends BasePersistenceImpl<KaleoDef
 						finderArgs, list);
 				}
 				else {
-					if ((list.size() > 1) && _log.isWarnEnabled()) {
-						_log.warn(
-							"KaleoDefinitionPersistenceImpl.fetchByC_N_V(long, String, int, boolean) with parameters (" +
-							StringUtil.merge(finderArgs) +
-							") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+					if (list.size() > 1) {
+						Collections.sort(list, Collections.reverseOrder());
+
+						if (_log.isWarnEnabled()) {
+							_log.warn(
+								"KaleoDefinitionPersistenceImpl.fetchByC_N_V(long, String, int, boolean) with parameters (" +
+								StringUtil.merge(finderArgs) +
+								") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+						}
 					}
 
 					KaleoDefinition kaleoDefinition = list.get(0);
@@ -2657,6 +2664,22 @@ public class KaleoDefinitionPersistenceImpl extends BasePersistenceImpl<KaleoDef
 
 	public KaleoDefinitionPersistenceImpl() {
 		setModelClass(KaleoDefinition.class);
+
+		try {
+			Field field = ReflectionUtil.getDeclaredField(BasePersistenceImpl.class,
+					"_dbColumnNames");
+
+			Map<String, String> dbColumnNames = new HashMap<String, String>();
+
+			dbColumnNames.put("active", "active_");
+
+			field.set(this, dbColumnNames);
+		}
+		catch (Exception e) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(e, e);
+			}
+		}
 	}
 
 	/**
@@ -2730,7 +2753,7 @@ public class KaleoDefinitionPersistenceImpl extends BasePersistenceImpl<KaleoDef
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
-		clearUniqueFindersCache((KaleoDefinitionModelImpl)kaleoDefinition);
+		clearUniqueFindersCache((KaleoDefinitionModelImpl)kaleoDefinition, true);
 	}
 
 	@Override
@@ -2742,42 +2765,12 @@ public class KaleoDefinitionPersistenceImpl extends BasePersistenceImpl<KaleoDef
 			entityCache.removeResult(KaleoDefinitionModelImpl.ENTITY_CACHE_ENABLED,
 				KaleoDefinitionImpl.class, kaleoDefinition.getPrimaryKey());
 
-			clearUniqueFindersCache((KaleoDefinitionModelImpl)kaleoDefinition);
+			clearUniqueFindersCache((KaleoDefinitionModelImpl)kaleoDefinition,
+				true);
 		}
 	}
 
 	protected void cacheUniqueFindersCache(
-		KaleoDefinitionModelImpl kaleoDefinitionModelImpl, boolean isNew) {
-		if (isNew) {
-			Object[] args = new Object[] {
-					kaleoDefinitionModelImpl.getCompanyId(),
-					kaleoDefinitionModelImpl.getName(),
-					kaleoDefinitionModelImpl.getVersion()
-				};
-
-			finderCache.putResult(FINDER_PATH_COUNT_BY_C_N_V, args,
-				Long.valueOf(1));
-			finderCache.putResult(FINDER_PATH_FETCH_BY_C_N_V, args,
-				kaleoDefinitionModelImpl);
-		}
-		else {
-			if ((kaleoDefinitionModelImpl.getColumnBitmask() &
-					FINDER_PATH_FETCH_BY_C_N_V.getColumnBitmask()) != 0) {
-				Object[] args = new Object[] {
-						kaleoDefinitionModelImpl.getCompanyId(),
-						kaleoDefinitionModelImpl.getName(),
-						kaleoDefinitionModelImpl.getVersion()
-					};
-
-				finderCache.putResult(FINDER_PATH_COUNT_BY_C_N_V, args,
-					Long.valueOf(1));
-				finderCache.putResult(FINDER_PATH_FETCH_BY_C_N_V, args,
-					kaleoDefinitionModelImpl);
-			}
-		}
-	}
-
-	protected void clearUniqueFindersCache(
 		KaleoDefinitionModelImpl kaleoDefinitionModelImpl) {
 		Object[] args = new Object[] {
 				kaleoDefinitionModelImpl.getCompanyId(),
@@ -2785,12 +2778,28 @@ public class KaleoDefinitionPersistenceImpl extends BasePersistenceImpl<KaleoDef
 				kaleoDefinitionModelImpl.getVersion()
 			};
 
-		finderCache.removeResult(FINDER_PATH_COUNT_BY_C_N_V, args);
-		finderCache.removeResult(FINDER_PATH_FETCH_BY_C_N_V, args);
+		finderCache.putResult(FINDER_PATH_COUNT_BY_C_N_V, args,
+			Long.valueOf(1), false);
+		finderCache.putResult(FINDER_PATH_FETCH_BY_C_N_V, args,
+			kaleoDefinitionModelImpl, false);
+	}
+
+	protected void clearUniqueFindersCache(
+		KaleoDefinitionModelImpl kaleoDefinitionModelImpl, boolean clearCurrent) {
+		if (clearCurrent) {
+			Object[] args = new Object[] {
+					kaleoDefinitionModelImpl.getCompanyId(),
+					kaleoDefinitionModelImpl.getName(),
+					kaleoDefinitionModelImpl.getVersion()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_N_V, args);
+			finderCache.removeResult(FINDER_PATH_FETCH_BY_C_N_V, args);
+		}
 
 		if ((kaleoDefinitionModelImpl.getColumnBitmask() &
 				FINDER_PATH_FETCH_BY_C_N_V.getColumnBitmask()) != 0) {
-			args = new Object[] {
+			Object[] args = new Object[] {
 					kaleoDefinitionModelImpl.getOriginalCompanyId(),
 					kaleoDefinitionModelImpl.getOriginalName(),
 					kaleoDefinitionModelImpl.getOriginalVersion()
@@ -2958,8 +2967,48 @@ public class KaleoDefinitionPersistenceImpl extends BasePersistenceImpl<KaleoDef
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew || !KaleoDefinitionModelImpl.COLUMN_BITMASK_ENABLED) {
+		if (!KaleoDefinitionModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		}
+		else
+		 if (isNew) {
+			Object[] args = new Object[] { kaleoDefinitionModelImpl.getCompanyId() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_COMPANYID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID,
+				args);
+
+			args = new Object[] {
+					kaleoDefinitionModelImpl.getCompanyId(),
+					kaleoDefinitionModelImpl.getName()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_N, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_N,
+				args);
+
+			args = new Object[] {
+					kaleoDefinitionModelImpl.getCompanyId(),
+					kaleoDefinitionModelImpl.getActive()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_A, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_A,
+				args);
+
+			args = new Object[] {
+					kaleoDefinitionModelImpl.getCompanyId(),
+					kaleoDefinitionModelImpl.getName(),
+					kaleoDefinitionModelImpl.getActive()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_N_A, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_N_A,
+				args);
+
+			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
+				FINDER_ARGS_EMPTY);
 		}
 
 		else {
@@ -3050,8 +3099,8 @@ public class KaleoDefinitionPersistenceImpl extends BasePersistenceImpl<KaleoDef
 			KaleoDefinitionImpl.class, kaleoDefinition.getPrimaryKey(),
 			kaleoDefinition, false);
 
-		clearUniqueFindersCache(kaleoDefinitionModelImpl);
-		cacheUniqueFindersCache(kaleoDefinitionModelImpl, isNew);
+		clearUniqueFindersCache(kaleoDefinitionModelImpl, false);
+		cacheUniqueFindersCache(kaleoDefinitionModelImpl);
 
 		kaleoDefinition.resetOriginalValues();
 
@@ -3235,7 +3284,7 @@ public class KaleoDefinitionPersistenceImpl extends BasePersistenceImpl<KaleoDef
 		query.append(_SQL_SELECT_KALEODEFINITION_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			query.append(String.valueOf(primaryKey));
+			query.append((long)primaryKey);
 
 			query.append(StringPool.COMMA);
 		}

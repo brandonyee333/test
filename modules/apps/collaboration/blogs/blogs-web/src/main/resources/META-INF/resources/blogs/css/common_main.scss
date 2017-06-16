@@ -1,3 +1,5 @@
+@import "mixins";
+
 .portlet-blogs {
 	.entry-subtitle {
 		margin-bottom: 20px;
@@ -12,8 +14,6 @@
 	}
 
 	.entry-body {
-		position: relative;
-
 		h1 {
 			font-weight: bold;
 			text-align: center;
@@ -61,6 +61,12 @@
 	.cover-image-caption {
 		color: #868896;
 		text-align: right;
+	}
+
+	.social-bookmarks {
+		.fb-like.fb_iframe_widget span {
+			vertical-align: top !important;
+		}
 	}
 }
 

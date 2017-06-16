@@ -27,7 +27,7 @@ import com.liferay.message.boards.kernel.service.MBCategoryServiceUtil;
 import com.liferay.message.boards.kernel.service.MBMessageLocalServiceUtil;
 import com.liferay.message.boards.kernel.service.MBThreadFlagLocalServiceUtil;
 import com.liferay.message.boards.web.constants.MBPortletKeys;
-import com.liferay.message.boards.web.lar.MBPortletDataHandler;
+import com.liferay.message.boards.web.exportimport.data.handler.MBPortletDataHandler;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
@@ -105,7 +105,7 @@ public class MBPortletDataHandlerTest extends BasePortletDataHandlerTestCase {
 		List<MBCategory> categories = MBCategoryLocalServiceUtil.getCategories(
 			group.getGroupId());
 
-		Assert.assertEquals(0, categories.size());
+		Assert.assertEquals(categories.toString(), 0, categories.size());
 	}
 
 	@Override

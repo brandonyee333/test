@@ -71,7 +71,7 @@ public class DDLRecordServiceWrapper implements DDLRecordService,
 	the record.
 	* @return the record
 	* @throws PortalException if a portal exception occurred
-	* @deprecated As of 7.0.0, replaced by {@link #addRecord(long, long, int,
+	* @deprecated As of 1.1.0, replaced by {@link #addRecord(long, long, int,
 	DDMFormValues, ServiceContext)}
 	*/
 	@Deprecated
@@ -99,7 +99,7 @@ public class DDLRecordServiceWrapper implements DDLRecordService,
 	the record.
 	* @return the record
 	* @throws PortalException if a portal exception occurred
-	* @deprecated As of 7.0.0, replaced by {@link #addRecord(long, long, int,
+	* @deprecated As of 1.1.0, replaced by {@link #addRecord(long, long, int,
 	DDMFormValues, ServiceContext)}
 	*/
 	@Deprecated
@@ -122,7 +122,7 @@ public class DDLRecordServiceWrapper implements DDLRecordService,
 	set the record modified date.
 	* @return the affected record
 	* @throws PortalException
-	* @deprecated As of 7.0.0, replaced by {@link #updateRecord(long, boolean,
+	* @deprecated As of 1.1.0, replaced by {@link #updateRecord(long, boolean,
 	int, DDMFormValues, ServiceContext)}
 	*/
 	@Deprecated
@@ -190,7 +190,7 @@ public class DDLRecordServiceWrapper implements DDLRecordService,
 	set the record modified date.
 	* @return the record
 	* @throws PortalException if a portal exception occurred
-	* @deprecated As of 7.0.0, replaced by {@link #updateRecord(long, boolean,
+	* @deprecated As of 1.1.0, replaced by {@link #updateRecord(long, boolean,
 	int, DDMFormValues, ServiceContext)}
 	*/
 	@Deprecated
@@ -219,7 +219,7 @@ public class DDLRecordServiceWrapper implements DDLRecordService,
 	set the record modified date.
 	* @return the record
 	* @throws PortalException if a portal exception occurred
-	* @deprecated As of 7.0.0, replaced by {@link #updateRecord(long, boolean,
+	* @deprecated As of 1.1.0, replaced by {@link #updateRecord(long, boolean,
 	int, DDMFormValues, ServiceContext)}
 	*/
 	@Deprecated
@@ -242,6 +242,20 @@ public class DDLRecordServiceWrapper implements DDLRecordService,
 	@Override
 	public java.lang.String getOSGiServiceIdentifier() {
 		return _ddlRecordService.getOSGiServiceIdentifier();
+	}
+
+	/**
+	* Returns all the records matching the record set ID
+	*
+	* @param recordSetId the record's record set ID
+	* @return the matching records
+	* @throws PortalException if a portal exception occurred
+	*/
+	@Override
+	public java.util.List<com.liferay.dynamic.data.lists.model.DDLRecord> getRecords(
+		long recordSetId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ddlRecordService.getRecords(recordSetId);
 	}
 
 	/**
@@ -273,7 +287,7 @@ public class DDLRecordServiceWrapper implements DDLRecordService,
 	}
 
 	/**
-	* @deprecated As of 7.0.0, replaced by {@link #revertRecord(long, String,
+	* @deprecated As of 1.1.0, replaced by {@link #revertRecord(long, String,
 	ServiceContext)}
 	*/
 	@Deprecated

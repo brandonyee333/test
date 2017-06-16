@@ -15,11 +15,17 @@
 --%>
 
 <%
+Set<String> names = new TreeSet<String>();
+
+List<Role> userGroupGroupRoles = RoleLocalServiceUtil.getUserGroupGroupRoles(user2.getUserId(), siteMembershipsDisplayContext.getGroupId());
+
+names.addAll(ListUtil.toList(userGroupGroupRoles, Role.TITLE_ACCESSOR));
+
 List<UserGroupRole> userGroupRoles = UserGroupRoleLocalServiceUtil.getUserGroupRoles(user2.getUserId(), siteMembershipsDisplayContext.getGroupId());
 
-List<Team> teams = TeamLocalServiceUtil.getUserOrUserGroupTeams(siteMembershipsDisplayContext.getGroupId(), user2.getUserId());
+names.addAll(ListUtil.toList(userGroupRoles, UsersAdmin.USER_GROUP_ROLE_TITLE_ACCESSOR));
 
-List<String> names = ListUtil.toList(userGroupRoles, UsersAdmin.USER_GROUP_ROLE_TITLE_ACCESSOR);
+List<Team> teams = TeamLocalServiceUtil.getUserOrUserGroupTeams(siteMembershipsDisplayContext.getGroupId(), user2.getUserId());
 
 names.addAll(ListUtil.toList(teams, Team.NAME_ACCESSOR));
 %>
@@ -46,7 +52,7 @@ names.addAll(ListUtil.toList(teams, Team.NAME_ACCESSOR));
 					<liferay-frontend:vertical-card-footer>
 						<span class="text-default">
 							<c:choose>
-								<c:when test="<%= !ListUtil.isEmpty(names) %>">
+								<c:when test="<%= !SetUtil.isEmpty(names) %>">
 									<%= HtmlUtil.escape(StringUtil.merge(names, StringPool.COMMA_AND_SPACE)) %>
 								</c:when>
 								<c:otherwise>
@@ -69,7 +75,7 @@ names.addAll(ListUtil.toList(teams, Team.NAME_ACCESSOR));
 
 		<liferay-ui:search-container-column-text
 			colspan="<%= 2 %>"
-			>
+		>
 			<h5><%= user2.getFullName() %></h5>
 
 			<h6 class="text-default">
@@ -91,22 +97,22 @@ names.addAll(ListUtil.toList(teams, Team.NAME_ACCESSOR));
 	</c:when>
 	<c:otherwise>
 		<liferay-ui:search-container-column-text
+			cssClass="table-cell-content"
 			name="name"
-			truncate="<%= true %>"
 			value="<%= user2.getFullName() %>"
 		/>
 
 		<liferay-ui:search-container-column-text
+			cssClass="table-cell-content"
 			name="screen-name"
 			orderable="<%= true %>"
 			property="screenName"
-			truncate="<%= true %>"
 		/>
 
 		<c:if test="<%= !selectUsers %>">
 			<liferay-ui:search-container-column-text
+				cssClass="table-cell-content"
 				name="site-roles-and-teams"
-				truncate="<%= true %>"
 				value="<%= HtmlUtil.escape(StringUtil.merge(names, StringPool.COMMA_AND_SPACE)) %>"
 			/>
 

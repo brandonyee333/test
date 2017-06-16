@@ -19,10 +19,24 @@
 <%
 KBArticle kbArticle = (KBArticle)request.getAttribute(KBWebKeys.KNOWLEDGE_BASE_KB_ARTICLE);
 
-KBArticle[] previousAndNextKBArticles = KBArticleLocalServiceUtil.getPreviousAndNextKBArticles(kbArticle.getKbArticleId());
+KBArticle[] previousAndNextKBArticles = KBArticleServiceUtil.getPreviousAndNextKBArticles(kbArticle.getKbArticleId());
 
 KBArticle previousKBArticle = previousAndNextKBArticles[0];
 KBArticle nextKBArticle = previousAndNextKBArticles[2];
+
+if (resourceClassNameId != kbFolderClassNameId) {
+	if (resourcePrimKey == kbArticle.getResourcePrimKey()) {
+		previousKBArticle = null;
+	}
+
+	if (nextKBArticle != null) {
+		List<Long> ancestorResourcePrimaryKeys = nextKBArticle.getAncestorResourcePrimaryKeys();
+
+		if (!ancestorResourcePrimaryKeys.contains(resourcePrimKey)) {
+			nextKBArticle = null;
+		}
+	}
+}
 
 KBArticleURLHelper kbArticleURLHelper = new KBArticleURLHelper(renderRequest, renderResponse, templatePath);
 %>
@@ -48,7 +62,6 @@ KBArticleURLHelper kbArticleURLHelper = new KBArticleURLHelper(renderRequest, re
 			</aui:a>
 		</c:if>
 	</span>
-
 	<span class="kb-article-next">
 		<c:if test="<%= nextKBArticle != null %>">
 

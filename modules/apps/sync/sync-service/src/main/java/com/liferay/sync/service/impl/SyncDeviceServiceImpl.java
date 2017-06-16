@@ -14,24 +14,22 @@
 
 package com.liferay.sync.service.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.sync.constants.SyncDeviceConstants;
 import com.liferay.sync.model.SyncDevice;
 import com.liferay.sync.service.base.SyncDeviceServiceBaseImpl;
+import com.liferay.sync.util.SyncDeviceThreadLocal;
 
 /**
  * @author Shinn Lok
  */
-@ProviderType
 public class SyncDeviceServiceImpl extends SyncDeviceServiceBaseImpl {
 
 	@Override
 	public SyncDevice registerSyncDevice(
-			String type, int buildNumber, int featureSet, String uuid)
+			String type, long buildNumber, int featureSet, String uuid)
 		throws PortalException {
 
 		User user = getUser();
@@ -41,8 +39,11 @@ public class SyncDeviceServiceImpl extends SyncDeviceServiceBaseImpl {
 				uuid, user.getCompanyId());
 
 		if (syncDevice == null) {
+			syncDevice = SyncDeviceThreadLocal.getSyncDevice();
+
 			return syncDeviceLocalService.addSyncDevice(
-				user.getUserId(), type, buildNumber, featureSet);
+				user.getUserId(), type, buildNumber, syncDevice.getHostname(),
+				featureSet);
 		}
 
 		if (syncDevice.getUserId() != user.getUserId()) {
@@ -51,7 +52,7 @@ public class SyncDeviceServiceImpl extends SyncDeviceServiceBaseImpl {
 
 		return syncDeviceLocalService.updateSyncDevice(
 			syncDevice.getSyncDeviceId(), type, buildNumber, featureSet,
-			syncDevice.getStatus());
+			syncDevice.getHostname(), syncDevice.getStatus());
 	}
 
 	@Override

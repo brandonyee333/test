@@ -64,8 +64,8 @@ public class DLFileEntryLocalServiceUtil {
 	}
 
 	/**
-	* As of 7.0.0, replaced by {@link #isKeepFileVersionLabel(long, boolean,
-	* ServiceContext)}
+	* @deprecated As of 7.0.0, replaced by {@link #isKeepFileVersionLabel(long,
+	boolean, ServiceContext)}
 	*/
 	@Deprecated
 	public static boolean isKeepFileVersionLabel(long fileEntryId,
@@ -128,6 +128,25 @@ public class DLFileEntryLocalServiceUtil {
 		return getService()
 				   .checkOutFileEntry(userId, fileEntryId, owner,
 			expirationTime, serviceContext);
+	}
+
+	public static com.liferay.document.library.kernel.model.DLFileEntry checkOutFileEntry(
+		long userId, long fileEntryId, long fileEntryTypeId,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .checkOutFileEntry(userId, fileEntryId, fileEntryTypeId,
+			serviceContext);
+	}
+
+	public static com.liferay.document.library.kernel.model.DLFileEntry checkOutFileEntry(
+		long userId, long fileEntryId, long fileEntryTypeId,
+		java.lang.String owner, long expirationTime,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .checkOutFileEntry(userId, fileEntryId, fileEntryTypeId,
+			owner, expirationTime, serviceContext);
 	}
 
 	public static com.liferay.document.library.kernel.model.DLFileEntry copyFileEntry(
@@ -214,6 +233,11 @@ public class DLFileEntryLocalServiceUtil {
 	public static com.liferay.document.library.kernel.model.DLFileEntry fetchDLFileEntryByUuidAndGroupId(
 		java.lang.String uuid, long groupId) {
 		return getService().fetchDLFileEntryByUuidAndGroupId(uuid, groupId);
+	}
+
+	public static com.liferay.document.library.kernel.model.DLFileEntry fetchFileEntry(
+		java.lang.String uuid, long groupId) {
+		return getService().fetchFileEntry(uuid, groupId);
 	}
 
 	public static com.liferay.document.library.kernel.model.DLFileEntry fetchFileEntry(

@@ -25,6 +25,7 @@ long parentResourceClassNameId = ParamUtil.getLong(request, "parentResourceClass
 long parentResourcePrimKey = ParamUtil.getLong(request, "parentResourcePrimKey", KBFolderConstants.DEFAULT_PARENT_FOLDER_ID);
 long originalParentResourcePrimKey = ParamUtil.getLong(request, "originalParentResourcePrimKey");
 double priority = ParamUtil.getDouble(request, "priority", KBArticleConstants.DEFAULT_PRIORITY);
+int targetStatus = ParamUtil.getInteger(request, "targetStatus", status);
 
 long kbArticleClassNameId = PortalUtil.getClassNameId(KBArticleConstants.getClassName());
 
@@ -32,32 +33,46 @@ long[] selectableClassNameIds = ParamUtil.getLongValues(request, "selectableClas
 
 String eventName = ParamUtil.getString(request, "eventName", liferayPortletResponse.getNamespace() + "selectKBObject");
 
-boolean kbFolderView = (resourceClassNameId == kbFolderClassNameId);
+String parentTitle = LanguageUtil.get(request, "home");
+
+if (parentResourcePrimKey != KBFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
+	if (parentResourceClassNameId == kbFolderClassNameId) {
+		KBFolder parentKBFolder = KBFolderLocalServiceUtil.fetchKBFolder(parentResourcePrimKey);
+
+		if ((parentKBFolder == null) || !KBFolderPermission.contains(permissionChecker, parentKBFolder, ActionKeys.VIEW)) {
+			parentResourceClassNameId = kbFolderClassNameId;
+
+			parentResourcePrimKey = KBFolderConstants.DEFAULT_PARENT_FOLDER_ID;
+		}
+		else {
+			parentTitle = parentKBFolder.getName();
+		}
+	}
+	else {
+		KBArticle parentKBArticle = KBArticleLocalServiceUtil.fetchLatestKBArticle(parentResourcePrimKey, status);
+
+		if ((parentKBArticle == null) || !KBArticlePermission.contains(permissionChecker, parentKBArticle, ActionKeys.VIEW)) {
+			parentResourceClassNameId = kbFolderClassNameId;
+
+			parentResourcePrimKey = KBFolderConstants.DEFAULT_PARENT_FOLDER_ID;
+		}
+		else {
+			parentTitle = parentKBArticle.getTitle();
+		}
+	}
+}
 
 SearchContainer kbObjectSearchContainer = new SearchContainer(renderRequest, null, null, SearchContainer.DEFAULT_CUR_PARAM, SearchContainer.DEFAULT_DELTA, currentURLObj, null, "there-are-no-entries");
+
+boolean kbFolderView = (resourceClassNameId == kbFolderClassNameId);
 
 if (kbFolderView) {
 	kbObjectSearchContainer.setTotal(KBFolderServiceUtil.getKBFoldersCount(scopeGroupId, parentResourcePrimKey));
 	kbObjectSearchContainer.setResults(KBFolderServiceUtil.getKBFolders(scopeGroupId, parentResourcePrimKey, kbObjectSearchContainer.getStart(), kbObjectSearchContainer.getEnd()));
 }
 else {
-	kbObjectSearchContainer.setTotal(KBFolderServiceUtil.getKBFoldersAndKBArticlesCount(scopeGroupId, parentResourcePrimKey, WorkflowConstants.STATUS_ANY));
-	kbObjectSearchContainer.setResults(KBFolderServiceUtil.getKBFoldersAndKBArticles(scopeGroupId, parentResourcePrimKey, WorkflowConstants.STATUS_ANY, kbObjectSearchContainer.getStart(), kbObjectSearchContainer.getEnd(), new KBObjectsTitleComparator<Object>()));
-}
-
-String parentTitle = LanguageUtil.get(request, "home");
-
-if (parentResourcePrimKey != KBFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
-	if (parentResourceClassNameId == kbFolderClassNameId) {
-		KBFolder parentKBFolder = KBFolderServiceUtil.getKBFolder(parentResourcePrimKey);
-
-		parentTitle = parentKBFolder.getName();
-	}
-	else {
-		KBArticle parentKBArticle = KBArticleServiceUtil.getLatestKBArticle(parentResourcePrimKey, status);
-
-		parentTitle = parentKBArticle.getTitle();
-	}
+	kbObjectSearchContainer.setTotal(KBFolderServiceUtil.getKBFoldersAndKBArticlesCount(scopeGroupId, parentResourcePrimKey, targetStatus));
+	kbObjectSearchContainer.setResults(KBFolderServiceUtil.getKBFoldersAndKBArticles(scopeGroupId, parentResourcePrimKey, targetStatus, kbObjectSearchContainer.getStart(), kbObjectSearchContainer.getEnd(), new KBObjectsTitleComparator<Object>()));
 }
 %>
 
@@ -65,7 +80,9 @@ if (parentResourcePrimKey != KBFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
 	<aui:form method="post" name="fm">
 
 		<%
-		KnowledgeBaseUtil.addPortletBreadcrumbEntries(0, originalParentResourcePrimKey, parentResourceClassNameId, parentResourcePrimKey, templatePath + "select_parent.jsp", request, renderResponse);
+		KBSelectParentDisplayContext kbSelectParentDisplayContext = new KBSelectParentDisplayContext(parentResourceClassNameId, parentResourcePrimKey, request, liferayPortletResponse);
+
+		kbSelectParentDisplayContext.populatePortletBreadcrumbEntries(currentURLObj);
 		%>
 
 		<liferay-ui:breadcrumb
@@ -103,8 +120,6 @@ if (parentResourcePrimKey != KBFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
 
 						<%
 						KBFolder kbFolder = (KBFolder)kbObject;
-
-						kbFolder = kbFolder.toEscapedModel();
 						%>
 
 						<liferay-portlet:renderURL var="rowURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
@@ -131,11 +146,11 @@ if (parentResourcePrimKey != KBFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
 							<c:choose>
 								<c:when test="<%= Validator.isNotNull(rowURL) %>">
 									<aui:a href="<%= rowURL %>">
-										<%= kbFolder.getName() %>
+										<%= HtmlUtil.escape(kbFolder.getName()) %>
 									</aui:a>
 								</c:when>
 								<c:otherwise>
-									<%= kbFolder.getName() %>
+									<%= HtmlUtil.escape(kbFolder.getName()) %>
 								</c:otherwise>
 							</c:choose>
 						</liferay-ui:search-container-column-text>
@@ -177,8 +192,6 @@ if (parentResourcePrimKey != KBFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
 
 						<%
 						KBArticle kbArticle = (KBArticle)kbObject;
-
-						kbArticle = kbArticle.toEscapedModel();
 						%>
 
 						<liferay-portlet:renderURL var="rowURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
@@ -190,11 +203,12 @@ if (parentResourcePrimKey != KBFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
 							<portlet:param name="originalParentResourcePrimKey" value="<%= String.valueOf(originalParentResourcePrimKey) %>" />
 							<portlet:param name="selectableClassNameIds" value="<%= StringUtil.merge(selectableClassNameIds) %>" />
 							<portlet:param name="status" value="<%= String.valueOf(status) %>" />
+							<portlet:param name="targetStatus" value="<%= String.valueOf(targetStatus) %>" />
 							<portlet:param name="eventName" value="<%= eventName %>" />
 						</liferay-portlet:renderURL>
 
 						<%
-						int kbArticlesCount = KBArticleServiceUtil.getKBArticlesCount(scopeGroupId, kbArticle.getResourcePrimKey(), status);
+						int kbArticlesCount = KBArticleServiceUtil.getKBArticlesCount(scopeGroupId, kbArticle.getResourcePrimKey(), targetStatus);
 
 						if ((kbArticle.getResourcePrimKey() == resourcePrimKey) || (kbArticlesCount == 0)) {
 							rowURL = null;
@@ -205,11 +219,11 @@ if (parentResourcePrimKey != KBFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
 							<c:choose>
 								<c:when test="<%= Validator.isNotNull(rowURL) %>">
 									<aui:a href="<%= rowURL %>">
-										<%= kbArticle.getTitle() %>
+										<%= HtmlUtil.escape(kbArticle.getTitle()) %>
 									</aui:a>
 								</c:when>
 								<c:otherwise>
-									<%= kbArticle.getTitle() %>
+									<%= HtmlUtil.escape(kbArticle.getTitle()) %>
 								</c:otherwise>
 							</c:choose>
 						</liferay-ui:search-container-column-text>

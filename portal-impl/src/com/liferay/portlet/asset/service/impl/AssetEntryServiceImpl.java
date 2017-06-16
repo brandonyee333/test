@@ -133,6 +133,17 @@ public class AssetEntryServiceImpl extends AssetEntryServiceBaseImpl {
 	}
 
 	@Override
+	public void incrementViewCounter(AssetEntry assetEntry)
+		throws PortalException {
+
+		AssetEntryPermission.check(
+			getPermissionChecker(), assetEntry, ActionKeys.VIEW);
+
+		assetEntryLocalService.incrementViewCounter(
+			getGuestOrUserId(), assetEntry);
+	}
+
+	@Override
 	public AssetEntry incrementViewCounter(String className, long classPK)
 		throws PortalException {
 
@@ -334,6 +345,7 @@ public class AssetEntryServiceImpl extends AssetEntryServiceBaseImpl {
 		}
 		else {
 			filteredEntries = entries;
+
 			filteredEntriesCount = filteredEntries.size();
 		}
 

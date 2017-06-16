@@ -1216,7 +1216,7 @@ public class JournalArticleServiceUtil {
 	* @param languageId the primary key of the language translation to get
 	* @param themeDisplay the theme display
 	* @return the matching web content
-	* @deprecated As of 7.0.0, replaced by {@link #getArticleContent(long,
+	* @deprecated As of 4.0.0, replaced by {@link #getArticleContent(long,
 	String, double, String, PortletRequestModel, ThemeDisplay)}
 	*/
 	@Deprecated
@@ -1260,7 +1260,7 @@ public class JournalArticleServiceUtil {
 	* @param languageId the primary key of the language translation to get
 	* @param themeDisplay the theme display
 	* @return the matching web content
-	* @deprecated As of 7.0.0, replaced by {@link #getArticleContent(long,
+	* @deprecated As of 4.0.0, replaced by {@link #getArticleContent(long,
 	String, String, PortletRequestModel, ThemeDisplay)}
 	*/
 	@Deprecated
@@ -1890,7 +1890,7 @@ public class JournalArticleServiceUtil {
 	* @param articleId the primary key of the web content article
 	* @param newFolderId the primary key of the web content article's new
 	folder
-	* @deprecated As of 7.0.0, replaced by {@link #moveArticle(long, String,
+	* @deprecated As of 4.0.0, replaced by {@link #moveArticle(long, String,
 	long, ServiceContext)}
 	*/
 	@Deprecated
@@ -1960,6 +1960,11 @@ public class JournalArticleServiceUtil {
 		getService().restoreArticleFromTrash(resourcePrimKey);
 	}
 
+	public static void subscribe(long groupId, long articleId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().subscribe(groupId, articleId);
+	}
+
 	/**
 	* Subscribes the user to changes in elements that belong to the web content
 	* article's DDM structure.
@@ -1972,6 +1977,11 @@ public class JournalArticleServiceUtil {
 		long ddmStructureId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().subscribeStructure(groupId, userId, ddmStructureId);
+	}
+
+	public static void unsubscribe(long groupId, long articleId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().unsubscribe(groupId, articleId);
 	}
 
 	/**

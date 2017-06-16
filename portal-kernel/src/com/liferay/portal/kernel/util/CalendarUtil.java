@@ -91,8 +91,8 @@ public class CalendarUtil {
 		if (today.get(Calendar.MONTH) < birthday.get(Calendar.MONTH)) {
 			yearDiff--;
 		}
-		else if (today.get(Calendar.MONTH) == birthday.get(Calendar.MONTH) &&
-				 today.get(Calendar.DATE) < birthday.get(Calendar.DATE)) {
+		else if ((today.get(Calendar.MONTH) == birthday.get(Calendar.MONTH)) &&
+				 (today.get(Calendar.DATE) < birthday.get(Calendar.DATE))) {
 
 			yearDiff--;
 		}
@@ -457,6 +457,7 @@ public class CalendarUtil {
 		int year = cal.get(Calendar.YEAR);
 		int month = cal.get(Calendar.MONTH);
 		int day = cal.get(Calendar.DATE);
+
 		int hour = 0;
 		int minute = 0;
 		int second = 0;

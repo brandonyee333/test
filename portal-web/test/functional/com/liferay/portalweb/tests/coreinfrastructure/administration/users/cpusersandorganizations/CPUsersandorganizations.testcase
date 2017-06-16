@@ -1,5 +1,6 @@
 <definition component-name="portal-user-management-and-portal-configuration">
 	<property name="portal.release" value="true" />
+	<property name="portal.upstream" value="true" />
 	<property name="testray.main.component.name" value="Users and Organizations" />
 
 	<set-up>
@@ -80,54 +81,6 @@
 		</execute>
 	</command>
 
-	<command name="AddChildOrganization" priority="4">
-		<execute macro="ProductMenu#gotoControlPanelUsers">
-			<var name="portlet" value="Users and Organizations" />
-		</execute>
-
-		<execute macro="Organization#addCP">
-			<var name="orgName" value="Organization Name" />
-			<var name="orgType" value="Organization" />
-		</execute>
-
-		<execute macro="ProductMenu#gotoControlPanelUsers">
-			<var name="portlet" value="Users and Organizations" />
-		</execute>
-
-		<execute macro="UsersAndOrganizationsNavigator#gotoOrganizations" />
-
-		<execute macro="Organization#searchCP">
-			<var name="orgName" value="Organization Name" />
-			<var name="searchTerm" value="Organization Name" />
-		</execute>
-
-		<execute macro="Organization#viewCP">
-			<var name="orgName" value="Organization Name" />
-			<var name="orgType" value="Organization" />
-		</execute>
-
-		<execute macro="Suborganization#addCP">
-			<var name="orgName" value="Organization Name" />
-			<var name="orgType" value="Organization" />
-			<var name="suborgName" value="Sub Organization Name" />
-			<var name="suborgType" value="Regular Organization" />
-		</execute>
-
-		<execute macro="ProductMenu#gotoControlPanelUsers">
-			<var name="portlet" value="Users and Organizations" />
-		</execute>
-
-		<execute macro="UsersAndOrganizationsNavigator#gotoOrganizations" />
-
-		<execute macro="Organization#viewSubOrganizationCP">
-			<var name="orgName" value="Organization Name" />
-			<var name="orgType" value="Organization" />
-			<var name="suborganizationCount" value="1 Suborganization" />
-			<var name="suborgName" value="Sub Organization Name" />
-			<var name="suborgType" value="Regular Organization" />
-		</execute>
-	</command>
-
 	<command name="AddMember" priority="5">
 		<property name="portal.acceptance" value="true" />
 
@@ -161,6 +114,7 @@
 			<var name="orgName" value="Organization Name" />
 			<var name="userFirstName" value="userfn" />
 			<var name="userLastName" value="userln" />
+			<var name="userName" value="userfn userln" />
 			<var name="userScreenName" value="usersn" />
 		</execute>
 
@@ -177,7 +131,6 @@
 
 		<execute macro="Organization#viewAssignMemberCP">
 			<var name="userName" value="userfn userln" />
-			<var name="userScreenName" value="usersn" />
 		</execute>
 	</command>
 
@@ -373,6 +326,8 @@
 	</command>
 
 	<command name="AddOrganizationSitePrivatePage" priority="3">
+		<var method="TestPropsUtil#get('portal.url')" name="portalURL" />
+
 		<execute macro="ProductMenu#gotoControlPanelUsers">
 			<var name="portlet" value="Users and Organizations" />
 		</execute>
@@ -399,12 +354,12 @@
 		<execute macro="Page#add">
 			<var name="pageName" value="Private Page" />
 			<var name="siteName" value="Organization Name" />
-			<var name="sitePagePrivacy" value="Private Pages" />
+			<var name="sitePagePrivacy" value="Private" />
 		</execute>
 
 		<execute macro="Navigator#gotoSpecificURLPage">
 			<var name="pageName" value="Private Page" />
-			<var name="url" value="http://localhost:8080/group/organization-name/private-page" />
+			<var name="url" value="${portalURL}/group/organization-name/private-page" />
 		</execute>
 
 		<execute macro="Page#view">
@@ -413,6 +368,8 @@
 	</command>
 
 	<command name="AddOrganizationSitePublicPage" priority="3">
+		<var method="TestPropsUtil#get('portal.url')" name="portalURL" />
+
 		<execute macro="ProductMenu#gotoControlPanelUsers">
 			<var name="portlet" value="Users and Organizations" />
 		</execute>
@@ -443,7 +400,7 @@
 
 		<execute macro="Navigator#gotoSpecificURLPage">
 			<var name="pageName" value="Public Page" />
-			<var name="url" value="http://localhost:8080/web/organization-name/public-page" />
+			<var name="url" value="${portalURL}/web/organization-name/public-page" />
 		</execute>
 
 		<execute macro="Page#view">
@@ -452,6 +409,16 @@
 	</command>
 
 	<command name="AddOrganizationTeam" priority="4">
+		<property name="test.name.skip.portal.instance" value="CPUsersandorganizations#AddORganizationTeam" />
+
+		<execute macro="ProductMenu#gotoControlPanelConfiguration">
+			<var name="portlet" value="Server Administration" />
+		</execute>
+
+		<execute macro="ServerAdministration#executeServerResourcesActions">
+			<var name="actionsDescription" value="Reindex all search indexes." />
+		</execute>
+
 		<execute macro="ProductMenu#gotoControlPanelUsers">
 			<var name="portlet" value="Users and Organizations" />
 		</execute>
@@ -492,6 +459,7 @@
 			<var name="orgName" value="Organization Name" />
 			<var name="userFirstName" value="Test" />
 			<var name="userLastName" value="Test" />
+			<var name="userName" value="Test Test" />
 			<var name="userScreenName" value="test" />
 		</execute>
 
@@ -632,9 +600,7 @@
 			<var name="userScreenName" value="usersn" />
 		</execute>
 
-		<execute macro="ProductMenu#gotoControlPanelUsers">
-			<var name="portlet" value="Users and Organizations" />
-		</execute>
+		<execute macro="Navigator#gotoBack" />
 
 		<execute macro="User#viewCP">
 			<var name="userEmailAddress" value="userea@@liferay.com" />
@@ -872,9 +838,7 @@
 			<var name="userScreenName" value="usersn" />
 		</execute>
 
-		<execute macro="ProductMenu#gotoControlPanelUsers">
-			<var name="portlet" value="Users and Organizations" />
-		</execute>
+		<execute macro="Navigator#gotoBack" />
 
 		<execute macro="User#viewCP">
 			<var name="userEmailAddress" value="userea.@liferay.com" />
@@ -996,9 +960,7 @@
 			<var name="userScreenNameVariation" value="Invalid" />
 		</execute>
 
-		<execute macro="ProductMenu#gotoControlPanelUsers">
-			<var name="portlet" value="Users and Organizations" />
-		</execute>
+		<execute macro="Navigator#gotoBack" />
 
 		<execute macro="User#viewCP">
 			<var name="userEmailAddress" value="userea@liferay.com" />
@@ -1154,6 +1116,8 @@
 	</command>
 
 	<command name="DeactivateUserDeactivateButton" priority="4">
+		<var method="TestPropsUtil#get('portal.url')" name="portalURL" />
+
 		<execute macro="ProductMenu#gotoControlPanelUsers">
 			<var name="portlet" value="Users and Organizations" />
 		</execute>
@@ -1184,7 +1148,9 @@
 			<var name="userScreenName" value="usersn" />
 		</execute>
 
-		<execute macro="User#logoutPG" />
+		<execute macro="Navigator#openSpecificURL">
+			<var name="url" value="${portalURL}/c/portal/logout" />
+		</execute>
 
 		<execute macro="User#loginUserInvalidPG">
 			<var name="password" value="test" />
@@ -1422,6 +1388,7 @@
 			<var name="orgName" value="Organization Name" />
 			<var name="userFirstName" value="userfn" />
 			<var name="userLastName" value="userln" />
+			<var name="userName" value="userfn userln" />
 			<var name="userScreenName" value="usersn" />
 		</execute>
 
@@ -1607,6 +1574,7 @@
 			<var name="orgName" value="Organization Name" />
 			<var name="userFirstName" value="userfn" />
 			<var name="userLastName" value="userln" />
+			<var name="userName" value="userfn userln" />
 			<var name="userScreenName" value="usersn" />
 		</execute>
 
@@ -1787,6 +1755,7 @@
 			<var name="orgName" value="Organization Name" />
 			<var name="userFirstName" value="userfn" />
 			<var name="userLastName" value="userln" />
+			<var name="userName" value="userfn userln" />
 			<var name="userScreenName" value="usersn" />
 		</execute>
 
@@ -1870,7 +1839,7 @@
 
 		<execute macro="Page#add">
 			<var name="pageName" value="Test Page" />
-			<var name="siteName" value="Organization Name" />
+			<var name="siteName" value="Organization Name 1" />
 		</execute>
 
 		<execute macro="ProductMenu#gotoControlPanelUsers">

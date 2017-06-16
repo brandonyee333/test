@@ -33,6 +33,7 @@ import com.liferay.portal.util.PropsValues;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @author Juan Fernández
@@ -189,6 +190,18 @@ public class JournalFolderServiceImpl extends JournalFolderServiceBaseImpl {
 	}
 
 	@Override
+	public List<Object> getFoldersAndArticles(
+		long groupId, long userId, long folderId, int status, Locale locale,
+		int start, int end, OrderByComparator<?> obc) {
+
+		QueryDefinition<?> queryDefinition = new QueryDefinition<>(
+			status, userId, true, start, end, (OrderByComparator<Object>)obc);
+
+		return journalFolderFinder.filterFindF_A_ByG_F_L(
+			groupId, folderId, locale, queryDefinition);
+	}
+
+	@Override
 	public int getFoldersAndArticlesCount(
 		long groupId, List<Long> folderIds, int status) {
 
@@ -258,7 +271,7 @@ public class JournalFolderServiceImpl extends JournalFolderServiceBaseImpl {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link #getSubfolderIds(List, long,
+	 * @deprecated As of 4.0.0, replaced by {@link #getSubfolderIds(List, long,
 	 *             long, boolean)}
 	 */
 	@Deprecated
@@ -348,6 +361,19 @@ public class JournalFolderServiceImpl extends JournalFolderServiceBaseImpl {
 			getPermissionChecker(), folder, ActionKeys.UPDATE);
 
 		journalFolderLocalService.restoreFolderFromTrash(getUserId(), folderId);
+	}
+
+	@Override
+	public List<DDMStructure> searchDDMStructures(
+			long companyId, long[] groupIds, long folderId, int restrictionType,
+			String keywords, int start, int end,
+			OrderByComparator<DDMStructure> obc)
+		throws PortalException {
+
+		return filterStructures(
+			journalFolderLocalService.searchDDMStructures(
+				companyId, groupIds, folderId, restrictionType, keywords, start,
+				end, obc));
 	}
 
 	@Override

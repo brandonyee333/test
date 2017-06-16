@@ -1,19 +1,13 @@
 AUI.add(
 	'liferay-ddl-form-builder-layout-deserializer',
 	function(A) {
-		var Lang = A.Lang;
-
 		var FormBuilderUtil = Liferay.DDL.FormBuilderUtil;
-		var RendererUtil = Liferay.DDM.Renderer.Util;
+		var Settings = Liferay.DDL.Settings;
 
 		var LayoutDeserializer = A.Component.create(
 			{
 				ATTRS: {
 					builder: {
-					},
-
-					definition: {
-						validator: Lang.isObject
 					},
 
 					descriptions: {
@@ -54,10 +48,10 @@ AUI.add(
 							}
 						);
 
-						if (column.fieldNames && column.fieldNames.length > 0) {
+						if (column.fields && column.fields.length > 0) {
 							var fieldsList = new Liferay.DDL.FormBuilderFieldList(
 								{
-									fields: instance._deserializeFields(deserializedColumn, column.fieldNames)
+									fields: instance._deserializeFields(deserializedColumn, column.fields)
 								}
 							);
 
@@ -73,44 +67,41 @@ AUI.add(
 						return columns.map(A.bind('_deserializeColumn', instance));
 					},
 
-					_deserializeField: function(deserializedColumn, fieldName) {
+					_deserializeField: function(deserializedColumn, context) {
 						var instance = this;
 
 						var builder = instance.get('builder');
 
-						var definition = instance.get('definition');
+						context.portletNamespace = Settings.portletNamespace;
+						context.visible = true;
+						context.value = '';
 
-						var fieldDefinition = RendererUtil.getFieldByKey(definition, fieldName);
+						delete context.name;
 
-						fieldDefinition.dataProviders = builder.get('dataProviders');
-						fieldDefinition.evaluatorURL = builder.get('evaluatorURL');
-						fieldDefinition.parent = builder;
-						fieldDefinition.portletNamespace = builder.get('portletNamespace');
-						fieldDefinition.readOnly = true;
+						var fieldClass = FormBuilderUtil.getFieldClass(context.type, context);
 
-						var fieldClass = FormBuilderUtil.getFieldClass(fieldDefinition.type);
-
-						return new fieldClass(fieldDefinition);
+						return new fieldClass(
+							A.merge(
+								context,
+								{
+									context: context,
+									parent: builder
+								}
+							)
+						);
 					},
 
-					_deserializeFields: function(deserializedColumn, fieldNames) {
+					_deserializeFields: function(deserializedColumn, fields) {
 						var instance = this;
 
-						return fieldNames.map(A.bind('_deserializeField', instance, deserializedColumn));
+						return fields.map(A.bind('_deserializeField', instance, deserializedColumn));
 					},
 
 					_deserializePage: function(page) {
 						var instance = this;
 
-						var languageId = themeDisplay.getLanguageId();
-
-						var description = page.description && page.description[languageId];
-
-						instance.get('descriptions').push(description);
-
-						var title = page.title && page.title[languageId];
-
-						instance.get('titles').push(title);
+						instance.get('descriptions').push(page.localizedDescription);
+						instance.get('titles').push(page.localizedTitle);
 
 						return new A.Layout(
 							{

@@ -11,17 +11,15 @@
 </#if>
 
 <#list entries as entry>
-	<#assign entry = entry />
+	<#assign
+		entry = entry
 
-	<#assign assetRenderer = entry.getAssetRenderer() />
+		assetRenderer = entry.getAssetRenderer()
 
-	<#assign entryTitle = htmlUtil.escape(assetRenderer.getTitle(locale)) />
+		entryTitle = htmlUtil.escape(assetRenderer.getTitle(locale))
 
-	<#assign viewURL = assetPublisherHelper.getAssetViewURL(renderRequest, renderResponse, entry) />
-
-	<#if assetLinkBehavior != "showFullContent">
-		<#assign viewURL = assetPublisherHelper.getAssetViewURL(renderRequest, renderResponse, entry, true) />
-	</#if>
+		viewURL = assetPublisherHelper.getAssetViewURL(renderRequest, renderResponse, assetRenderer, entry, !stringUtil.equals(assetLinkBehavior, "showFullContent"))
+	/>
 
 	<div class="asset-abstract">
 		<div class="pull-right">
@@ -62,7 +60,6 @@
 			<@getDiscussion />
 		</div>
 	</div>
-
 </#list>
 
 <#macro getDiscussion>
@@ -73,7 +70,7 @@
 
 		${discussionURL.setParameter("javax.portlet.action", "invokeTaglibDiscussion")}
 
-		<@liferay_ui["discussion"]
+		<@liferay_comment["discussion"]
 			className=entry.getClassName()
 			classPK=entry.getClassPK()
 			formAction=discussionURL?string
@@ -127,31 +124,31 @@
 		<span class="metadata-entry metadata-${fieldName}">
 			<#assign dateFormat = "dd MMM yyyy - HH:mm:ss" />
 
-			<#if fieldName == "author">
-				<@liferay.language key="by" /> ${portalUtil.getUserName(assetRenderer.getUserId(), assetRenderer.getUserName())}
-			<#elseif fieldName == "categories">
+			<#if stringUtil.equals(fieldName, "author")>
+				<@liferay.language key="by" /> ${htmlUtil.escape(portalUtil.getUserName(assetRenderer.getUserId(), assetRenderer.getUserName()))}
+			<#elseif stringUtil.equals(fieldName, "categories")>
 				<@liferay_ui["asset-categories-summary"]
 					className=entry.getClassName()
 					classPK=entry.getClassPK()
 					portletURL=renderResponse.createRenderURL()
 				/>
-			<#elseif fieldName == "create-date">
+			<#elseif stringUtil.equals(fieldName, "create-date")>
 				${dateUtil.getDate(entry.getCreateDate(), dateFormat, locale)}
-			<#elseif fieldName == "expiration-date">
+			<#elseif stringUtil.equals(fieldName, "expiration-date")>
 				${dateUtil.getDate(entry.getExpirationDate(), dateFormat, locale)}
-			<#elseif fieldName == "modified-date">
+			<#elseif stringUtil.equals(fieldName, "modified-date")>
 				${dateUtil.getDate(entry.getModifiedDate(), dateFormat, locale)}
-			<#elseif fieldName == "priority">
+			<#elseif stringUtil.equals(fieldName, "priority")>
 				${entry.getPriority()}
-			<#elseif fieldName == "publish-date">
+			<#elseif stringUtil.equals(fieldName, "publish-date")>
 				${dateUtil.getDate(entry.getPublishDate(), dateFormat, locale)}
-			<#elseif fieldName == "tags">
+			<#elseif stringUtil.equals(fieldName, "tags")>
 				<@liferay_ui["asset-tags-summary"]
 					className=entry.getClassName()
 					classPK=entry.getClassPK()
 					portletURL=renderResponse.createRenderURL()
 				/>
-			<#elseif fieldName == "view-count">
+			<#elseif stringUtil.equals(fieldName, "view-count")>
 				${entry.getViewCount()} <@liferay.language key="views" />
 			</#if>
 		</span>

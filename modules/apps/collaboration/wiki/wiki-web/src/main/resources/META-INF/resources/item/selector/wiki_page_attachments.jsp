@@ -19,8 +19,6 @@
 <%
 WikiAttachmentItemSelectorViewDisplayContext wikiAttachmentItemSelectorViewDisplayContext = (WikiAttachmentItemSelectorViewDisplayContext)request.getAttribute(WikiAttachmentItemSelectorView.WIKI_ATTACHMENT_ITEM_SELECTOR_VIEW_DISPLAY_CONTEXT);
 
-WikiAttachmentItemSelectorCriterion wikiAttachmentItemSelectorCriterion = wikiAttachmentItemSelectorViewDisplayContext.getWikiAttachmentItemSelectorCriterion();
-
 int cur = ParamUtil.getInteger(request, SearchContainer.DEFAULT_CUR_PARAM, SearchContainer.DEFAULT_CUR);
 int delta = ParamUtil.getInteger(request, SearchContainer.DEFAULT_DELTA_PARAM, SearchContainer.DEFAULT_DELTA);
 
@@ -34,9 +32,15 @@ WikiPage wikiPage = wikiAttachmentItemSelectorViewDisplayContext.getWikiPage();
 List portletFileEntries = null;
 int portletFileEntriesCount = 0;
 
+String[] mimeTypes = wikiAttachmentItemSelectorViewDisplayContext.getMimeTypes();
+
 if (wikiPage.getAttachmentsFolderId() != DLFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
 	if (wikiAttachmentItemSelectorViewDisplayContext.isSearch()) {
 		SearchContext searchContext = SearchContextFactory.getInstance(request);
+
+		if (ArrayUtil.isNotEmpty(mimeTypes)) {
+			searchContext.setAttribute("mimeTypes", mimeTypes);
+		}
 
 		searchContext.setEnd(end);
 		searchContext.setFolderIds(new long[] {wikiPage.getAttachmentsFolderId()});
@@ -77,16 +81,22 @@ if (wikiPage.getAttachmentsFolderId() != DLFolderConstants.DEFAULT_PARENT_FOLDER
 
 		OrderByComparator<FileEntry> orderByComparator = DLUtil.getRepositoryModelOrderByComparator(orderByCol, orderByType);
 
-		portletFileEntries = wikiPage.getAttachmentsFileEntries(start, end, orderByComparator);
-		portletFileEntriesCount = wikiPage.getAttachmentsFileEntriesCount();
+		if (ArrayUtil.isNotEmpty(mimeTypes)) {
+			portletFileEntries = wikiPage.getAttachmentsFileEntries(mimeTypes, start, end, orderByComparator);
+			portletFileEntriesCount = wikiPage.getAttachmentsFileEntriesCount(mimeTypes);
+		}
+		else {
+			portletFileEntries = wikiPage.getAttachmentsFileEntries(start, end, orderByComparator);
+			portletFileEntriesCount = wikiPage.getAttachmentsFileEntriesCount();
+		}
 	}
 }
 %>
 
 <liferay-item-selector:repository-entry-browser
-	desiredItemSelectorReturnTypes="<%= wikiAttachmentItemSelectorCriterion.getDesiredItemSelectorReturnTypes() %>"
 	emptyResultsMessage='<%= LanguageUtil.get(resourceBundle, "there-are-no-wiki-attachments") %>'
 	itemSelectedEventName="<%= wikiAttachmentItemSelectorViewDisplayContext.getItemSelectedEventName() %>"
+	itemSelectorReturnTypeResolver="<%= wikiAttachmentItemSelectorViewDisplayContext.getItemSelectorReturnTypeResolver() %>"
 	portletURL="<%= wikiAttachmentItemSelectorViewDisplayContext.getPortletURL(request, liferayPortletResponse) %>"
 	repositoryEntries="<%= portletFileEntries %>"
 	repositoryEntriesCount="<%= portletFileEntriesCount %>"

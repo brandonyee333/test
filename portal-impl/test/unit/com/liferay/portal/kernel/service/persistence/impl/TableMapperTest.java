@@ -48,6 +48,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -129,7 +130,7 @@ public class TableMapperTest {
 
 		_rightBasePersistence.setDataSource(_dataSource);
 
-		_tableMapperImpl = new TableMapperImpl<Left, Right>(
+		_tableMapperImpl = new TableMapperImpl<>(
 			_TABLE_NAME, _COMPANY_COLUMN_NAME, _LEFT_COLUMN_NAME,
 			_RIGHT_COLUMN_NAME, _leftBasePersistence, _rightBasePersistence);
 	}
@@ -323,23 +324,25 @@ public class TableMapperTest {
 		new TableMapperFactory();
 
 		Assert.assertTrue(
-			_tableMapperImpl.addTableMappingSqlUpdate
-				instanceof MockAddMappingSqlUpdate);
+			_tableMapperImpl.addTableMappingSqlUpdate instanceof
+				MockAddMappingSqlUpdate);
 		Assert.assertTrue(
-			_tableMapperImpl.deleteLeftPrimaryKeyTableMappingsSqlUpdate
-				instanceof MockDeleteLeftPrimaryKeyTableMappingsSqlUpdate);
+			_tableMapperImpl.
+				deleteLeftPrimaryKeyTableMappingsSqlUpdate instanceof
+					MockDeleteLeftPrimaryKeyTableMappingsSqlUpdate);
 		Assert.assertTrue(
-			_tableMapperImpl.deleteRightPrimaryKeyTableMappingsSqlUpdate
-				instanceof MockDeleteRightPrimaryKeyTableMappingsSqlUpdate);
+			_tableMapperImpl.
+				deleteRightPrimaryKeyTableMappingsSqlUpdate instanceof
+					MockDeleteRightPrimaryKeyTableMappingsSqlUpdate);
 		Assert.assertTrue(
-			_tableMapperImpl.deleteTableMappingSqlUpdate
-				instanceof MockDeleteMappingSqlUpdate);
+			_tableMapperImpl.deleteTableMappingSqlUpdate instanceof
+				MockDeleteMappingSqlUpdate);
 		Assert.assertTrue(
-			_tableMapperImpl.getLeftPrimaryKeysSqlQuery
-				instanceof MockGetLeftPrimaryKeysSqlQuery);
+			_tableMapperImpl.getLeftPrimaryKeysSqlQuery instanceof
+				MockGetLeftPrimaryKeysSqlQuery);
 		Assert.assertTrue(
-			_tableMapperImpl.getRightPrimaryKeysSqlQuery
-				instanceof MockGetRightPrimaryKeysSqlQuery);
+			_tableMapperImpl.getRightPrimaryKeysSqlQuery instanceof
+				MockGetRightPrimaryKeysSqlQuery);
 		Assert.assertSame(
 			_leftBasePersistence, _tableMapperImpl.leftBasePersistence);
 		Assert.assertEquals(_LEFT_COLUMN_NAME, _tableMapperImpl.leftColumnName);
@@ -1006,7 +1009,7 @@ public class TableMapperTest {
 		lefts = _tableMapperImpl.getLeftBaseModels(
 			rightPrimaryKey, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 
-		Assert.assertEquals(1, lefts.size());
+		Assert.assertEquals(lefts.toString(), 1, lefts.size());
 
 		Left left1 = lefts.get(0);
 
@@ -1024,7 +1027,7 @@ public class TableMapperTest {
 		lefts = _tableMapperImpl.getLeftBaseModels(
 			rightPrimaryKey, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 
-		Assert.assertEquals(2, lefts.size());
+		Assert.assertEquals(lefts.toString(), 2, lefts.size());
 
 		left1 = lefts.get(0);
 		Left left2 = lefts.get(1);
@@ -1053,7 +1056,7 @@ public class TableMapperTest {
 
 			});
 
-		Assert.assertEquals(2, lefts.size());
+		Assert.assertEquals(lefts.toString(), 2, lefts.size());
 
 		left1 = lefts.get(0);
 		left2 = lefts.get(1);
@@ -1073,7 +1076,7 @@ public class TableMapperTest {
 
 		lefts = _tableMapperImpl.getLeftBaseModels(rightPrimaryKey, 1, 2, null);
 
-		Assert.assertEquals(1, lefts.size());
+		Assert.assertEquals(lefts.toString(), 1, lefts.size());
 
 		Left left = lefts.get(0);
 
@@ -1112,7 +1115,8 @@ public class TableMapperTest {
 		long[] leftPrimaryKeys = _tableMapperImpl.getLeftPrimaryKeys(
 			rightPrimaryKey);
 
-		Assert.assertEquals(0, leftPrimaryKeys.length);
+		Assert.assertEquals(
+			Arrays.toString(leftPrimaryKeys), 0, leftPrimaryKeys.length);
 
 		// Hit cache
 
@@ -1192,7 +1196,7 @@ public class TableMapperTest {
 		rights = _tableMapperImpl.getRightBaseModels(
 			leftPrimaryKey, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 
-		Assert.assertEquals(1, rights.size());
+		Assert.assertEquals(rights.toString(), 1, rights.size());
 
 		Right right1 = rights.get(0);
 
@@ -1210,7 +1214,7 @@ public class TableMapperTest {
 		rights = _tableMapperImpl.getRightBaseModels(
 			leftPrimaryKey, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 
-		Assert.assertEquals(2, rights.size());
+		Assert.assertEquals(rights.toString(), 2, rights.size());
 
 		right1 = rights.get(0);
 		Right right2 = rights.get(1);
@@ -1239,7 +1243,7 @@ public class TableMapperTest {
 
 			});
 
-		Assert.assertEquals(2, rights.size());
+		Assert.assertEquals(rights.toString(), 2, rights.size());
 
 		right1 = rights.get(0);
 		right2 = rights.get(1);
@@ -1260,7 +1264,7 @@ public class TableMapperTest {
 		rights = _tableMapperImpl.getRightBaseModels(
 			leftPrimaryKey, 1, 2, null);
 
-		Assert.assertEquals(1, rights.size());
+		Assert.assertEquals(rights.toString(), 1, rights.size());
 
 		Right right = rights.get(0);
 
@@ -1299,7 +1303,8 @@ public class TableMapperTest {
 		long[] rightPrimaryKeys = _tableMapperImpl.getRightPrimaryKeys(
 			leftPrimaryKey);
 
-		Assert.assertEquals(0, rightPrimaryKeys.length);
+		Assert.assertEquals(
+			Arrays.toString(rightPrimaryKeys), 0, rightPrimaryKeys.length);
 
 		// Hit cache
 
@@ -1478,7 +1483,7 @@ public class TableMapperTest {
 				_RIGHT_COLUMN_NAME, _leftBasePersistence,
 				_rightBasePersistence);
 
-		Assert.assertEquals(1, tableMappers.size());
+		Assert.assertEquals(tableMappers.toString(), 1, tableMappers.size());
 		Assert.assertSame(tableMapper, tableMappers.get(_TABLE_NAME));
 
 		TableMapper<Right, Left> reverseTableMapper =
@@ -1547,7 +1552,7 @@ public class TableMapperTest {
 		Map<String, PortalCache<?, ?>> portalCaches =
 			ReflectionTestUtil.getFieldValue(multiVMPool, "_portalCaches");
 
-		Assert.assertEquals(2, portalCaches.size());
+		Assert.assertEquals(portalCaches.toString(), 2, portalCaches.size());
 
 		if (tableMapper instanceof ReverseTableMapper) {
 			Assert.assertSame(
@@ -1757,6 +1762,10 @@ public class TableMapperTest {
 				return _primaryKey;
 			}
 
+			if (methodName.equals("toString")) {
+				return String.valueOf(_primaryKey);
+			}
+
 			throw new UnsupportedOperationException();
 		}
 
@@ -1778,8 +1787,8 @@ public class TableMapperTest {
 			Assert.assertSame(_dataSource, dataSource);
 			Assert.assertEquals(
 				"INSERT INTO " + _TABLE_NAME + " (" + _COMPANY_COLUMN_NAME +
-					", " + _LEFT_COLUMN_NAME + ", " + _RIGHT_COLUMN_NAME+ ") " +
-						"VALUES (?, ?, ?)",
+					", " + _LEFT_COLUMN_NAME + ", " + _RIGHT_COLUMN_NAME +
+						") VALUES (?, ?, ?)",
 				sql);
 			Assert.assertArrayEquals(
 				new ParamSetter[] {

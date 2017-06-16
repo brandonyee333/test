@@ -100,6 +100,11 @@ public class GroupLocalServiceUtil {
 		return getService().hasUserGroups(userId);
 	}
 
+	public static boolean isLiveGroupActive(
+		com.liferay.portal.kernel.model.Group group) {
+		return getService().isLiveGroupActive(group);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
 		return getService().getActionableDynamicQuery();
 	}
@@ -294,6 +299,11 @@ public class GroupLocalServiceUtil {
 	public static com.liferay.portal.kernel.model.Group fetchGroupByUuidAndCompanyId(
 		java.lang.String uuid, long companyId) {
 		return getService().fetchGroupByUuidAndCompanyId(uuid, companyId);
+	}
+
+	public static com.liferay.portal.kernel.model.Group fetchStagingGroup(
+		long liveGroupId) {
+		return getService().fetchStagingGroup(liveGroupId);
 	}
 
 	public static com.liferay.portal.kernel.model.Group fetchUserGroup(

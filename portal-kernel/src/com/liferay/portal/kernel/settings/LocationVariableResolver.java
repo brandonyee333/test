@@ -27,11 +27,25 @@ import java.io.IOException;
  */
 public class LocationVariableResolver {
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #LocationVariableResolver(
+	 *			   ResourceManager, SettingsLocatorHelper)}
+	 */
+	@Deprecated
 	public LocationVariableResolver(
 		ResourceManager resourceManager, SettingsFactory settingsFactory) {
 
 		_resourceManager = resourceManager;
-		_settingsFactory = settingsFactory;
+		_settingsLocatorHelper =
+			SettingsLocatorHelperUtil.getSettingsLocatorHelper();
+	}
+
+	public LocationVariableResolver(
+		ResourceManager resourceManager,
+		SettingsLocatorHelper settingsLocatorHelper) {
+
+		_resourceManager = resourceManager;
+		_settingsLocatorHelper = settingsLocatorHelper;
 	}
 
 	public boolean isLocationVariable(String value) {
@@ -70,7 +84,7 @@ public class LocationVariableResolver {
 	private String _getLocation(String value) {
 		int i = value.indexOf(_LOCATION_VARIABLE_PROTOCOL_SEPARATOR);
 
-		return value.substring(i+1, value.length()-1);
+		return value.substring(i + 1, value.length() - 1);
 	}
 
 	private String _getProtocol(String value) {
@@ -124,9 +138,10 @@ public class LocationVariableResolver {
 
 		String serviceName = location.substring(0, i);
 
-		Settings settings = _settingsFactory.getServerSettings(serviceName);
+		Settings settings = _settingsLocatorHelper.getServerSettings(
+			serviceName);
 
-		String property = location.substring(i+1);
+		String property = location.substring(i + 1);
 
 		return settings.getValue(property, null);
 	}
@@ -138,6 +153,6 @@ public class LocationVariableResolver {
 	private static final String _LOCATION_VARIABLE_START = "${";
 
 	private final ResourceManager _resourceManager;
-	private final SettingsFactory _settingsFactory;
+	private final SettingsLocatorHelper _settingsLocatorHelper;
 
 }

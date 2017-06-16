@@ -14,6 +14,7 @@
 
 package com.liferay.portal.osgi.web.wab.extender.internal.adapter;
 
+import com.liferay.portal.kernel.servlet.PortletSessionListenerManager;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 
 import java.lang.reflect.InvocationHandler;
@@ -30,8 +31,12 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.descriptor.JspConfigDescriptor;
 import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSessionEvent;
+import javax.servlet.http.HttpSessionListener;
 
 import org.eclipse.equinox.http.servlet.HttpServiceServlet;
+import org.eclipse.equinox.http.servlet.HttpSessionTrackerUtil;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -71,21 +76,6 @@ public class HttpAdapter {
 		ServletConfig servletConfig = new ServletConfig() {
 
 			@Override
-			public String getServletName() {
-				return "Module Framework Servlet";
-			}
-
-			@Override
-			public ServletContext getServletContext() {
-				return _servletContext;
-			}
-
-			@Override
-			public Enumeration<String> getInitParameterNames() {
-				return _servletContext.getInitParameterNames();
-			}
-
-			@Override
 			public String getInitParameter(String name) {
 				if (name.equals(
 						HttpServiceRuntimeConstants.HTTP_SERVICE_ENDPOINT)) {
@@ -95,6 +85,21 @@ public class HttpAdapter {
 				}
 
 				return _servletContext.getInitParameter(name);
+			}
+
+			@Override
+			public Enumeration<String> getInitParameterNames() {
+				return _servletContext.getInitParameterNames();
+			}
+
+			@Override
+			public ServletContext getServletContext() {
+				return _servletContext;
+			}
+
+			@Override
+			public String getServletName() {
+				return "Module Framework Servlet";
 			}
 
 		};
@@ -118,10 +123,16 @@ public class HttpAdapter {
 				HttpServiceServlet.class.getName(), HttpServlet.class.getName()
 			},
 			_httpServiceServlet, properties);
+
+		PortletSessionListenerManager.addHttpSessionListener(
+			_INVALIDATEHTTPSESSION_LISTENER);
 	}
 
 	@Deactivate
 	protected void deactivate() {
+		PortletSessionListenerManager.removeHttpSessionListener(
+			_INVALIDATEHTTPSESSION_LISTENER);
+
 		_serviceRegistration.unregister();
 
 		_serviceRegistration = null;
@@ -143,6 +154,22 @@ public class HttpAdapter {
 	private static final Class<?>[] _INTERFACES = new Class<?>[] {
 		ServletContext.class
 	};
+
+	private static final HttpSessionListener _INVALIDATEHTTPSESSION_LISTENER =
+		new HttpSessionListener() {
+
+			@Override
+			public void sessionCreated(HttpSessionEvent httpSessionEvent) {
+			}
+
+			@Override
+			public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
+				HttpSession httpSession = httpSessionEvent.getSession();
+
+				HttpSessionTrackerUtil.invalidate(httpSession.getId());
+			}
+
+		};
 
 	private HttpServiceServlet _httpServiceServlet;
 	private ServiceRegistration<?> _serviceRegistration;

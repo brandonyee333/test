@@ -14,14 +14,15 @@
 
 package com.liferay.portal.search.elasticsearch.internal.connection;
 
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.search.elasticsearch.configuration.ElasticsearchConfiguration;
 import com.liferay.portal.search.elasticsearch.internal.cluster.ClusterSettingsContext;
 import com.liferay.portal.search.elasticsearch.internal.cluster.UnicastSettingsContributor;
 import com.liferay.portal.search.elasticsearch.settings.BaseSettingsContributor;
 import com.liferay.portal.search.elasticsearch.settings.ClientSettingsHelper;
+import com.liferay.portal.util.FileImpl;
 
 import java.io.File;
 
@@ -36,16 +37,12 @@ import org.elasticsearch.action.ActionFuture;
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthRequest;
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthRequestBuilder;
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthResponse;
-import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
-import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequestBuilder;
 import org.elasticsearch.action.admin.indices.get.GetIndexRequestBuilder;
 import org.elasticsearch.action.admin.indices.get.GetIndexResponse;
-import org.elasticsearch.action.support.IndicesOptions;
 import org.elasticsearch.client.AdminClient;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.ClusterAdminClient;
 import org.elasticsearch.client.IndicesAdminClient;
-import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.TimeValue;
 
 import org.mockito.Mockito;
@@ -53,7 +50,7 @@ import org.mockito.Mockito;
 /**
  * @author André de Oliveira
  */
-public class ElasticsearchFixture {
+public class ElasticsearchFixture implements IndicesAdminClientSupplier {
 
 	public ElasticsearchFixture(String subdirName) {
 		this(subdirName, Collections.<String, Object>emptyMap());
@@ -70,50 +67,13 @@ public class ElasticsearchFixture {
 		_tmpDirName = "tmp/" + subdirName;
 	}
 
-	public Index createIndex(
-		IndexName indexName, IndexCreationHelper indexCreationHelper) {
-
-		String name = indexName.getName();
-
-		IndicesAdminClient indicesAdminClient = getIndicesAdminClient();
-
-		DeleteIndexRequestBuilder deleteIndexRequestBuilder =
-			indicesAdminClient.prepareDelete(name);
-
-		deleteIndexRequestBuilder.setIndicesOptions(
-			IndicesOptions.lenientExpandOpen());
-
-		deleteIndexRequestBuilder.get();
-
-		CreateIndexRequestBuilder createIndexRequestBuilder =
-			indicesAdminClient.prepareCreate(name);
-
-		indexCreationHelper.contribute(createIndexRequestBuilder);
-
-		Settings.Builder builder = Settings.settingsBuilder();
-
-		indexCreationHelper.contributeIndexSettings(builder);
-
-		createIndexRequestBuilder.setSettings(builder);
-
-		createIndexRequestBuilder.get();
-
-		indexCreationHelper.whenIndexCreated(name);
-
-		return new Index(indexName);
-	}
-
-	public Index createIndex(String indexName) {
-		IndexCreationHelper indexCreationHelper = Mockito.mock(
-			IndexCreationHelper.class);
-
-		return createIndex(new IndexName(indexName), indexCreationHelper);
-	}
-
 	public void createNode() throws Exception {
 		deleteTmpDir();
 
 		_embeddedElasticsearchConnection = createElasticsearchConnection();
+
+		ReflectionTestUtil.setFieldValue(
+			_embeddedElasticsearchConnection, "_file", new FileImpl());
 	}
 
 	public void destroyNode() throws Exception {
@@ -161,6 +121,10 @@ public class ElasticsearchFixture {
 		return health.actionGet();
 	}
 
+	public Map<String, Object> getElasticsearchConfigurationProperties() {
+		return _elasticsearchConfigurationProperties;
+	}
+
 	public EmbeddedElasticsearchConnection
 		getEmbeddedElasticsearchConnection() {
 
@@ -178,6 +142,7 @@ public class ElasticsearchFixture {
 		return getIndexRequestBuilder.get();
 	}
 
+	@Override
 	public IndicesAdminClient getIndicesAdminClient() {
 		AdminClient adminClient = getAdminClient();
 
@@ -196,34 +161,6 @@ public class ElasticsearchFixture {
 
 	public void tearDown() throws Exception {
 		destroyNode();
-	}
-
-	public static class Index {
-
-		public Index(IndexName indexName) {
-			_indexName = indexName;
-		}
-
-		public String getName() {
-			return _indexName.getName();
-		}
-
-		private final IndexName _indexName;
-
-	}
-
-	public static class IndexName {
-
-		public IndexName(String name) {
-			_name = StringUtil.toLowerCase(name);
-		}
-
-		public String getName() {
-			return _name;
-		}
-
-		private final String _name;
-
 	}
 
 	protected void addClusterLoggingThresholdContributor(

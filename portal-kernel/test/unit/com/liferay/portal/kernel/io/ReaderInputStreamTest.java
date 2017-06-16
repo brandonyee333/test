@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 
+import java.util.Arrays;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -104,6 +106,7 @@ public class ReaderInputStreamTest {
 			int result = readerInputStream.read(bytes);
 
 			Assert.assertEquals(_expectedBytesForEnglish.length, result);
+
 			assertEquals(_expectedBytesForEnglish, bytes);
 		}
 	}
@@ -120,6 +123,7 @@ public class ReaderInputStreamTest {
 			int result = readerInputStream.read(bytes);
 
 			Assert.assertEquals(_expectedBytesForChinese.length, result);
+
 			assertEquals(_expectedBytesForChinese, bytes);
 		}
 	}
@@ -136,6 +140,7 @@ public class ReaderInputStreamTest {
 			int result = readerInputStream.read(bytes);
 
 			Assert.assertEquals(_expectedBytesForChinese.length, result);
+
 			assertEquals(_expectedBytesForChinese, bytes);
 		}
 	}
@@ -152,6 +157,7 @@ public class ReaderInputStreamTest {
 			int result = readerInputStream.read(bytes);
 
 			Assert.assertEquals(_expectedBytesForChinese.length, result);
+
 			assertEquals(_expectedBytesForChinese, bytes);
 		}
 	}
@@ -168,6 +174,7 @@ public class ReaderInputStreamTest {
 			int result = readerInputStream.read(bytes);
 
 			Assert.assertEquals(_expectedBytesForChinese.length, result);
+
 			assertEquals(_expectedBytesForChinese, bytes);
 		}
 	}
@@ -245,6 +252,7 @@ public class ReaderInputStreamTest {
 		}
 
 		Assert.assertEquals(
+			Arrays.toString(bytes),
 			_expectedBytesForEnglish.length - skipLength, bytes.length);
 
 		for (int i = skipLength; i < _expectedBytesForEnglish.length; i++) {
@@ -288,7 +296,9 @@ public class ReaderInputStreamTest {
 	}
 
 	protected void assertEquals(byte[] expectBytes, byte[] actualBytes) {
-		Assert.assertEquals(expectBytes.length, actualBytes.length);
+		Assert.assertEquals(
+			Arrays.toString(actualBytes), expectBytes.length,
+			actualBytes.length);
 
 		for (int i = 0; i < expectBytes.length; i++) {
 			Assert.assertEquals(expectBytes[i], actualBytes[i]);

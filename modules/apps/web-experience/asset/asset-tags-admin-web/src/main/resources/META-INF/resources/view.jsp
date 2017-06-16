@@ -16,7 +16,9 @@
 
 <%@ include file="/init.jsp" %>
 
-<liferay-portlet:renderURL varImpl="portletURL" />
+<liferay-portlet:renderURL varImpl="portletURL">
+	<liferay-portlet:param name="keywords" value="<%= assetTagsDisplayContext.getKeywords() %>" />
+</liferay-portlet:renderURL>
 
 <aui:nav-bar cssClass="collapse-basic-search" markupView="lexicon">
 	<portlet:renderURL var="mainURL" />
@@ -49,7 +51,7 @@
 			orderByCol="<%= assetTagsDisplayContext.getOrderByCol() %>"
 			orderByType="<%= assetTagsDisplayContext.getOrderByType() %>"
 			orderColumns='<%= new String[] {"name", "usages"} %>'
-			portletURL="<%= renderResponse.createRenderURL() %>"
+			portletURL="<%= portletURL %>"
 		/>
 	</liferay-frontend:management-bar-filters>
 
@@ -137,8 +139,8 @@
 				</c:when>
 				<c:when test='<%= Objects.equals(assetTagsDisplayContext.getDisplayStyle(), "list") %>'>
 					<liferay-ui:search-container-column-text
+						cssClass="table-cell-content"
 						name="name"
-						truncate="<%= true %>"
 						value="<%= tag.getName() %>"
 					/>
 

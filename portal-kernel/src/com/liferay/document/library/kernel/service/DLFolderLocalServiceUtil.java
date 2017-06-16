@@ -53,8 +53,7 @@ public class DLFolderLocalServiceUtil {
 		return getService().hasFolderLock(userId, folderId);
 	}
 
-	public static boolean hasInheritableLock(long folderId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static boolean hasInheritableLock(long folderId) {
 		return getService().hasInheritableLock(folderId);
 	}
 
@@ -167,6 +166,11 @@ public class DLFolderLocalServiceUtil {
 	public static com.liferay.document.library.kernel.model.DLFolder fetchDLFolderByUuidAndGroupId(
 		java.lang.String uuid, long groupId) {
 		return getService().fetchDLFolderByUuidAndGroupId(uuid, groupId);
+	}
+
+	public static com.liferay.document.library.kernel.model.DLFolder fetchFolder(
+		java.lang.String uuid, long groupId) {
+		return getService().fetchFolder(uuid, groupId);
 	}
 
 	public static com.liferay.document.library.kernel.model.DLFolder fetchFolder(

@@ -48,7 +48,7 @@ public class SocketWelderTest {
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
-			CodeCoverageAssertor.INSTANCE, AspectJNewEnvTestRule.INSTANCE);
+			AspectJNewEnvTestRule.INSTANCE, CodeCoverageAssertor.INSTANCE);
 
 	@Before
 	public void setUp() {
@@ -125,6 +125,7 @@ public class SocketWelderTest {
 	@Test
 	public void testWeldSolingerOn() throws Exception {
 		final SocketWelder serverSocketWelder = new SocketWelder();
+
 		final SocketWelder clientSocketWelder = WelderTestUtil.transform(
 			serverSocketWelder);
 

@@ -92,6 +92,7 @@ public abstract class BaseDB implements DB {
 			}
 
 			int y = sql.indexOf(" on ");
+
 			int x = sql.lastIndexOf(" ", y - 1);
 
 			String indexName = sql.substring(x + 1, y);
@@ -271,7 +272,8 @@ public abstract class BaseDB implements DB {
 			s = con.createStatement();
 
 			for (int i = 0; i < sqls.length; i++) {
-				String sql = buildSQL(sqls[i]);
+				String sql = buildSQL(
+					applyMaxStringIndexLengthLimitation(sqls[i]));
 
 				sql = SQLTransformer.transform(sql.trim());
 
@@ -361,8 +363,7 @@ public abstract class BaseDB implements DB {
 			boolean failOnError)
 		throws IOException, NamingException, SQLException {
 
-		template = applyMaxStringIndexLengthLimitation(
-			_columnLengthPattern.matcher(template));
+		template = applyMaxStringIndexLengthLimitation(template);
 
 		if (evaluate) {
 			try {
@@ -503,6 +504,8 @@ public abstract class BaseDB implements DB {
 		}
 
 		_supportsStringCaseSensitiveQuery = supportsStringCaseSensitiveQuery;
+
+		SQLTransformer.reloadSQLTransformer();
 	}
 
 	@Override
@@ -528,8 +531,7 @@ public abstract class BaseDB implements DB {
 			}
 		}
 
-		indexesSQL = applyMaxStringIndexLengthLimitation(
-			_columnLengthPattern.matcher(indexesSQL));
+		indexesSQL = applyMaxStringIndexLengthLimitation(indexesSQL);
 
 		addIndexes(con, indexesSQL, validIndexNames);
 	}
@@ -546,7 +548,11 @@ public abstract class BaseDB implements DB {
 		}
 	}
 
-	protected String applyMaxStringIndexLengthLimitation(Matcher matcher) {
+	protected String applyMaxStringIndexLengthLimitation(String template) {
+		if (!template.contains("[$COLUMN_LENGTH:")) {
+			return template;
+		}
+
 		DBType dbType = getDBType();
 
 		int stringIndexMaxLength = GetterUtil.getInteger(
@@ -555,18 +561,31 @@ public abstract class BaseDB implements DB {
 				new Filter(dbType.getName())),
 			-1);
 
+		String replacement = "\\(" + stringIndexMaxLength + "\\)";
+
+		Matcher matcher = _columnLengthPattern.matcher(template);
+
 		if (stringIndexMaxLength < 0) {
-			return matcher.replaceAll(StringPool.BLANK);
+			if (dbType.equals(DBType.SYBASE)) {
+				replacement = StringPool.BLANK;
+			}
+			else {
+				return matcher.replaceAll(StringPool.BLANK);
+			}
 		}
 
+		boolean remove = false;
 		StringBuffer sb = new StringBuffer();
-
-		String replacement = "\\(" + stringIndexMaxLength + "\\)";
 
 		while (matcher.find()) {
 			int length = Integer.valueOf(matcher.group(1));
 
-			if (length > stringIndexMaxLength) {
+			if (dbType.equals(DBType.SYBASE) && (length > 1250)) {
+				matcher.appendReplacement(sb, "%%REMOVE%%");
+
+				remove = true;
+			}
+			else if (length > stringIndexMaxLength) {
 				matcher.appendReplacement(sb, replacement);
 			}
 			else {
@@ -576,7 +595,21 @@ public abstract class BaseDB implements DB {
 
 		matcher.appendTail(sb);
 
-		return sb.toString();
+		String string = sb.toString();
+
+		if (dbType.equals(DBType.SYBASE) && remove) {
+			String[] strings = StringUtil.split(string, StringPool.NEW_LINE);
+
+			for (int i = 0; i < strings.length; i++) {
+				if (strings[i].contains("%%REMOVE%%")) {
+					strings[i] = StringPool.BLANK;
+				}
+			}
+
+			return StringUtil.merge(strings, StringPool.NEW_LINE);
+		}
+
+		return string;
 	}
 
 	protected String[] buildColumnNameTokens(String line) {
@@ -671,6 +704,7 @@ public abstract class BaseDB implements DB {
 						include = replaceTemplate(include, getTemplate());
 
 						sb.append(include);
+
 						sb.append("\n\n");
 					}
 					else {
@@ -684,8 +718,7 @@ public abstract class BaseDB implements DB {
 		}
 
 		if (fileName.equals("indexes")) {
-			template = applyMaxStringIndexLengthLimitation(
-				_columnLengthPattern.matcher(template));
+			template = applyMaxStringIndexLengthLimitation(template);
 
 			if (getDBType() == DBType.SYBASE) {
 				template = removeBooleanIndexes(sqlDir, template);
@@ -747,10 +780,14 @@ public abstract class BaseDB implements DB {
 		for (Index index : indexes) {
 			String indexNameUpperCase = StringUtil.toUpperCase(
 				index.getIndexName());
+
 			String indexNameLowerCase = StringUtil.toLowerCase(
 				indexNameUpperCase);
+
 			String tableName = index.getTableName();
+
 			String tableNameLowerCase = StringUtil.toLowerCase(tableName);
+
 			boolean unique = index.isUnique();
 
 			validIndexNames.add(indexNameUpperCase);
@@ -835,6 +872,7 @@ public abstract class BaseDB implements DB {
 				line = line.trim();
 
 				sb.append(line);
+
 				sb.append("\n");
 			}
 		}
@@ -975,11 +1013,13 @@ public abstract class BaseDB implements DB {
 					String table = line.substring(x + 4, y);
 
 					x = y + 2;
+
 					y = line.indexOf(")", x);
 
 					String[] columns = StringUtil.split(line.substring(x, y));
 
 					x = portalData.indexOf(CREATE_TABLE + table + " (");
+
 					y = portalData.indexOf(");", x);
 
 					String portalTableData = portalData.substring(x, y);
@@ -1175,7 +1215,7 @@ public abstract class BaseDB implements DB {
 	private final DBType _dbType;
 	private final int _majorVersion;
 	private final int _minorVersion;
-	private boolean _supportsStringCaseSensitiveQuery;
+	private boolean _supportsStringCaseSensitiveQuery = true;
 	private final Map<String, String> _templateMap = new HashMap<>();
 
 }

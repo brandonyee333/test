@@ -15,7 +15,7 @@
 package com.liferay.sync.engine.service;
 
 import com.liferay.sync.engine.BaseTestCase;
-import com.liferay.sync.engine.documentlibrary.util.FileEventUtil;
+import com.liferay.sync.engine.document.library.util.FileEventUtil;
 import com.liferay.sync.engine.model.SyncFile;
 import com.liferay.sync.engine.service.persistence.SyncFilePersistence;
 import com.liferay.sync.engine.util.FileUtil;
@@ -43,7 +43,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 /**
  * @author Shinn Lok
  */
-@PrepareForTest({FileEventUtil.class})
+@PrepareForTest(FileEventUtil.class)
 @RunWith(PowerMockRunner.class)
 public class SyncFileServiceTest extends BaseTestCase {
 
@@ -52,7 +52,7 @@ public class SyncFileServiceTest extends BaseTestCase {
 		List<SyncFile> syncFiles = SyncFileService.findSyncFiles(
 			syncAccount.getSyncAccountId());
 
-		Assert.assertEquals(1, syncFiles.size());
+		Assert.assertEquals(syncFiles.toString(), 1, syncFiles.size());
 
 		SyncFile folderSyncFileA = SyncFileTestUtil.addFolderSyncFile(
 			FileUtil.getFilePathName(filePathName, "a"),
@@ -85,14 +85,14 @@ public class SyncFileServiceTest extends BaseTestCase {
 		syncFiles = SyncFileService.findSyncFiles(
 			syncAccount.getSyncAccountId());
 
-		Assert.assertEquals(8, syncFiles.size());
+		Assert.assertEquals(syncFiles.toString(), 8, syncFiles.size());
 
 		SyncFileService.deleteSyncFile(folderSyncFileA);
 
 		syncFiles = SyncFileService.findSyncFiles(
 			syncAccount.getSyncAccountId());
 
-		Assert.assertEquals(1, syncFiles.size());
+		Assert.assertEquals(syncFiles.toString(), 1, syncFiles.size());
 	}
 
 	@Test
@@ -209,7 +209,8 @@ public class SyncFileServiceTest extends BaseTestCase {
 			"state", SyncFile.STATE_SYNCED);
 
 		Assert.assertEquals(
-			previousSyncedSyncFilesSize - 4, syncedSyncFiles.size());
+			syncedSyncFiles.toString(), previousSyncedSyncFilesSize - 4,
+			syncedSyncFiles.size());
 
 		for (SyncFile syncFile : syncFiles) {
 			syncFilePersistence.delete(syncFile);
@@ -266,7 +267,9 @@ public class SyncFileServiceTest extends BaseTestCase {
 		List<SyncFile> resyncingSyncFiles = syncFilePersistence.queryForEq(
 			"uiEvent", SyncFile.UI_EVENT_RESYNCING);
 
-		Assert.assertEquals(expectedModifiedCount, resyncingSyncFiles.size());
+		Assert.assertEquals(
+			resyncingSyncFiles.toString(), expectedModifiedCount,
+			resyncingSyncFiles.size());
 
 		for (SyncFile syncFile : syncFiles) {
 			syncFilePersistence.delete(syncFile);

@@ -22,6 +22,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -86,6 +87,9 @@ public abstract class BaseShellDoulosRequestProcessor
 				_log.info("Skip invalid payload");
 			}
 
+			responseJSONObject.put(
+				"queue", new ArrayList<String>(_shellStatuses.keySet()));
+
 			return;
 		}
 
@@ -93,10 +97,18 @@ public abstract class BaseShellDoulosRequestProcessor
 
 		populateResponseJSONObject(responseJSONObject, shellStatus);
 
+		responseJSONObject.put("queueSize", _queue.size());
+
 		if (_log.isInfoEnabled()) {
 			_log.info(
 				"Status " + shellStatus.status + " for " + shellStatus.key);
 		}
+	}
+
+	protected void addShellStatus(String key, ShellStatus shellStatus) {
+		_shellStatuses.put(key, shellStatus);
+
+		_queue.add(shellStatus);
 	}
 
 	protected abstract ShellStatus createShellStatus(
@@ -180,6 +192,8 @@ public abstract class BaseShellDoulosRequestProcessor
 		return _THREAD_EXECUTE_INTERVAL;
 	}
 
+	protected abstract boolean isRemoveFromQueue(JSONObject payloadJSONObject);
+
 	protected abstract boolean isValid(JSONObject payloadJSONObject);
 
 	protected void populateResponseJSONObject(
@@ -200,13 +214,25 @@ public abstract class BaseShellDoulosRequestProcessor
 		synchronized (this) {
 			shellStatus = _shellStatuses.get(key);
 
+			if (isRemoveFromQueue(payloadJSONObject)) {
+				if (shellStatus != null) {
+					removeShellStatus(key, shellStatus);
+				}
+
+				shellStatus = createShellStatus(payloadJSONObject);
+
+				shellStatus.status = "removed";
+
+				return shellStatus;
+			}
+
 			if (shellStatus != null) {
 				long expiredTime = getExpiredTime();
 
 				if ((expiredTime > 0) &&
 					(shellStatus.time < getExpiredTime())) {
 
-					_shellStatuses.remove(key);
+					removeShellStatus(key, shellStatus);
 
 					shellStatus = null;
 				}
@@ -219,13 +245,17 @@ public abstract class BaseShellDoulosRequestProcessor
 
 				shellStatus = createShellStatus(payloadJSONObject);
 
-				_shellStatuses.put(key, shellStatus);
-
-				_queue.add(shellStatus);
+				addShellStatus(key, shellStatus);
 			}
 		}
 
 		return shellStatus;
+	}
+
+	protected void removeShellStatus(String key, ShellStatus shellStatus) {
+		_shellStatuses.remove(key);
+
+		_queue.remove(shellStatus);
 	}
 
 	protected class ShellStatus {

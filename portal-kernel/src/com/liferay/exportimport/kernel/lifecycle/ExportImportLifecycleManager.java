@@ -14,14 +14,24 @@
 
 package com.liferay.exportimport.kernel.lifecycle;
 
+import aQute.bnd.annotation.ProviderType;
+
 import java.io.Serializable;
 
 /**
  * @author Daniel Kocsis
  */
+@ProviderType
 public interface ExportImportLifecycleManager {
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
+	@Deprecated
 	public void fireExportImportLifecycleEvent(
 		int code, int processFlag, Serializable... arguments);
+
+	public void fireExportImportLifecycleEvent(
+		int code, int processFlag, String processId, Serializable... arguments);
 
 }

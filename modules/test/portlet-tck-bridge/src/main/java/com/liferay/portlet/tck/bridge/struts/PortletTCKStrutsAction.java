@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.model.PortletConstants;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourceLocalServiceUtil;
@@ -109,7 +110,7 @@ public class PortletTCKStrutsAction extends BaseStrutsAction {
 
 				layoutType.addPortletId(userId, portletId, false);
 
-				String rootPortletId = PortletConstants.getRootPortletId(
+				String rootPortletId = PortletIdCodec.decodePortletName(
 					portletId);
 
 				String portletPrimaryKey = PortletPermissionUtil.getPrimaryKey(
@@ -151,8 +152,11 @@ public class PortletTCKStrutsAction extends BaseStrutsAction {
 		catch (Exception e) {
 			long creatorUserId = 0;
 			boolean autoPassword = false;
+
 			String password1 = "password";
+
 			String password2 = password1;
+
 			boolean autoScreenName = false;
 			String screenName = "tck";
 			String emailAddress = "tck@liferay.com";

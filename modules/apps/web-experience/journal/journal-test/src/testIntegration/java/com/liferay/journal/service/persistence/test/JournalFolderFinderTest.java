@@ -26,13 +26,14 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
-import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.spring.hibernate.LastSessionRecorderUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
+import com.liferay.portal.test.rule.TransactionalTestRule;
 
 import java.util.List;
 
@@ -62,13 +63,15 @@ public class JournalFolderFinderTest {
 		new AggregateTestRule(
 			new LiferayIntegrationTestRule(),
 			SynchronousDestinationTestRule.INSTANCE,
-			TransactionalTestRule.INSTANCE);
+			new TransactionalTestRule(
+				Propagation.SUPPORTS, "com.liferay.journal.service"));
 
 	@Before
 	public void setUp() throws Exception {
 		_group = GroupTestUtil.addGroup();
 
 		_folder1 = JournalTestUtil.addFolder(_group.getGroupId(), "Folder 1");
+
 		_folder2 = JournalTestUtil.addFolder(
 			_group.getGroupId(), _folder1.getFolderId(), "Folder 2");
 
@@ -133,7 +136,7 @@ public class JournalFolderFinderTest {
 		List<Object> results = _journalFolderFinder.findF_A_ByG_F(
 			_group.getGroupId(), _folder1.getFolderId(), queryDefinition);
 
-		Assert.assertEquals(3, results.size());
+		Assert.assertEquals(results.toString(), 3, results.size());
 
 		for (Object result : results) {
 			if (result instanceof JournalFolder) {
@@ -157,7 +160,7 @@ public class JournalFolderFinderTest {
 		results = _journalFolderFinder.findF_A_ByG_F(
 			_group.getGroupId(), _folder1.getFolderId(), queryDefinition);
 
-		Assert.assertEquals(1, results.size());
+		Assert.assertEquals(results.toString(), 1, results.size());
 
 		for (Object result : results) {
 			if (result instanceof JournalFolder) {
@@ -178,7 +181,7 @@ public class JournalFolderFinderTest {
 		results = _journalFolderFinder.findF_A_ByG_F(
 			_group.getGroupId(), _folder1.getFolderId(), queryDefinition);
 
-		Assert.assertEquals(2, results.size());
+		Assert.assertEquals(results.toString(), 2, results.size());
 
 		for (Object result : results) {
 			if (result instanceof JournalFolder) {
@@ -204,7 +207,7 @@ public class JournalFolderFinderTest {
 
 		List<JournalFolder> folders = _journalFolderFinder.findF_ByNoAssets();
 
-		Assert.assertEquals(1, folders.size());
+		Assert.assertEquals(folders.toString(), 1, folders.size());
 
 		JournalFolder folder = folders.get(0);
 
