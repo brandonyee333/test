@@ -2234,7 +2234,7 @@ ${output.content}</echo>
 			</test-action>
 
 			<test-set-up>
-				<if>
+<!-- 				<if>
 					<isset property="env.DIST_PATH" />
 					<then>
 						<prepare-test-environment />
@@ -2242,7 +2242,8 @@ ${output.content}</echo>
 					<else>
 						<prepare-test-build />
 					</else>
-				</if>
+				</if> -->
+				<prepare-test-environment />
 			</test-set-up>
 		</run-batch-test>
 	</target>
