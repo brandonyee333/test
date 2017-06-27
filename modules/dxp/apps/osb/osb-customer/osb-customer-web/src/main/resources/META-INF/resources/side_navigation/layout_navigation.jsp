@@ -42,7 +42,7 @@ for (Layout childLayout : selLayout.getChildren()) {
 %>
 
 	<li class="tree-node <%= ancestorLayouts.contains(childLayout) ? "selected" : StringPool.BLANK %>">
-		<a class="<%= (childLayout.hasChildren() || !kbArticles.isEmpty()) ? "has-children" : StringPool.BLANK %> <%= ancestorLayouts.contains(childLayout) ? "selected" : StringPool.BLANK %>" href="<%= PortalUtil.getLayoutURL(childLayout, themeDisplay) %>" <%= PortalUtil.getLayoutTarget(childLayout) %>><span><%= childLayout.getName(locale) %></span></a>
+		<a class="<%= ancestorLayouts.contains(childLayout) ? "selected" : StringPool.BLANK %>" href="<%= PortalUtil.getLayoutURL(childLayout, themeDisplay) %>" <%= PortalUtil.getLayoutTarget(childLayout) %>><span><%= childLayout.getName(locale) %></span></a>
 
 		<c:if test="<%= childLayout.hasChildren() %>">
 
