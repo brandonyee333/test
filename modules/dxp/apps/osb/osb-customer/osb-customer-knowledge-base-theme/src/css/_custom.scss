@@ -632,6 +632,29 @@ $has-control-menu-top-mobile: 48px;
 			margin-top: 1em;
 			padding-right: 0.5em;
 
+			li.child {
+				padding-left: 24px;
+				text-indent: -24px;
+			}
+
+			li.parent {
+				padding-left: 17px;
+				text-indent: -17px;
+
+				& li {
+					padding-left: inherit;
+				}
+
+				& li.child {
+					padding-left: 7px;
+					text-indent: -24px;
+				}
+			}
+
+			ul {
+				margin: 0 0 10px 25px;
+			}
+
 			.side-nav-toggle {
 				line-height: 20px;
 
@@ -650,29 +673,6 @@ $has-control-menu-top-mobile: 48px;
 						}
 					}
 				}
-			}
-
-			ul {
-				margin: 0 0 10px 25px
-			}
-
-			li.parent {
-				padding-left: 17px;
-				text-indent: -17px;
-
-				& li.child {
-					padding-left: 7px;
-					text-indent: -24px;
-				}
-
-				& li {
-					padding-left: inherit;
-				}
-			}
-
-			li.child {
-				padding-left: 24px;
-				text-indent: -24px;
 			}
 		}
 	}
