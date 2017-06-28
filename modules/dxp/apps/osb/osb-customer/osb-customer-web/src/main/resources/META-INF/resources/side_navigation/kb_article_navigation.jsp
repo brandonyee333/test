@@ -26,15 +26,15 @@ Layout selLayout = (Layout)request.getAttribute("kb_article_navigation.jsp-selLa
 
 		<%
 		for (KBArticle curKBArticle : kbArticles) {
-			boolean isAncestor = kbArticleAncestorResourcePrimKeys.contains(curKBArticle.getResourcePrimKey());
+			boolean ancestor = kbArticleAncestorResourcePrimKeys.contains(curKBArticle.getResourcePrimKey());
 
 			List<KBArticle> childKBArticles = KBArticleLocalServiceUtil.getKBArticles(themeDisplay.getScopeGroupId(), curKBArticle.getResourcePrimKey(), WorkflowConstants.STATUS_APPROVED, QueryUtil.ALL_POS, QueryUtil.ALL_POS, new KBArticlePriorityComparator(true));
 		%>
 
-			<li class="tree-node <%= (isAncestor && !childKBArticles.isEmpty()) ? "parent" : "child" %>">
-				<a class="<%= isAncestor ? "selected" : StringPool.BLANK %>" href="<%= KBArticleUtil.getKBArticleURL(request, selLayout.getPlid(), curKBArticle, redirect) %>"><span><%= curKBArticle.getTitle() %></span></a>
+			<li class="tree-node <%= (ancestor && !childKBArticles.isEmpty()) ? "parent" : "child" %>">
+				<a class="<%= ancestor ? "selected" : StringPool.BLANK %>" href="<%= KBArticleUtil.getKBArticleURL(request, selLayout.getPlid(), curKBArticle, redirect) %>"><span><%= curKBArticle.getTitle() %></span></a>
 
-				<c:if test="<%= isAncestor && !childKBArticles.isEmpty() %>">
+				<c:if test="<%= ancestor && !childKBArticles.isEmpty() %>">
 
 					<%
 					request.setAttribute("kb_article_navigation.jsp-kbArticles", childKBArticles);
