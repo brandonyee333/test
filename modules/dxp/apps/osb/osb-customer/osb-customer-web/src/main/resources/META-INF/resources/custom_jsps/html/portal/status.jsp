@@ -172,7 +172,7 @@ if (Validator.isNotNull(exception)) {
 							<a class="suggested-link" href="/documentation/7.0/deploy"><liferay-ui:message key="deploy" /></a>
 							<a class="suggested-link" href="/documentation/7.0/admin"><liferay-ui:message key="admin" /></a>
 							<a class="suggested-link" href="/documentation/7.0/develop"><liferay-ui:message key="develop" /></a>
-							<a class="suggested-link" href="/documentation/knowledge-base-link"><liferay-ui:message key="knowledge-base" /></a>
+							<a class="suggested-link" href="/documentation/search/knowledge-base"><liferay-ui:message key="knowledge-base" /></a>
 						</div>
 					</div>
 				</div>

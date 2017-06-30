@@ -108,7 +108,7 @@ boolean viewjournalArticle = OSBCustomerArticlePermission.contains(permissionChe
 				<%
 				String kbLinkHREF = StringPool.SLASH;
 
-				Layout kbLinkLayout = LayoutLocalServiceUtil.fetchLayoutByFriendlyURL(themeDisplay.getScopeGroupId(), false, "/documentation/knowledge-base-link");
+				Layout kbLinkLayout = LayoutLocalServiceUtil.fetchLayoutByFriendlyURL(themeDisplay.getScopeGroupId(), false, "/documentation/search/knowledge-base");
 
 				if (kbLinkLayout != null) {
 					kbLinkHREF = PortalUtil.getLayoutURL(kbLinkLayout, themeDisplay);
