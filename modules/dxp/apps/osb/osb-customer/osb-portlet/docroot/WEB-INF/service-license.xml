@@ -1,0 +1,358 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 6.0.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_6_0_0.dtd">
+
+<service-builder>
+	<entity name="AssetLicense" local-service="true" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="assetLicenseId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="classNameId" type="long" />
+		<column name="classPK" type="long" />
+		<column name="licenseId" type="String" />
+		<column name="name" type="String" />
+		<column name="requiredVersion" type="double" />
+		<column name="usageType" type="int" />
+		<column name="licenseType" type="int" />
+		<column name="licenseTypeAllotment" type="long" />
+		<column name="lifetime" type="long" />
+		<column name="status" type="int" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="usageType" />
+			<order-column name="licenseType" />
+			<order-column name="licenseTypeAllotment" />
+			<order-column name="lifetime" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="C_C" return-type="Collection">
+			<finder-column name="classNameId" />
+			<finder-column name="classPK" />
+		</finder>
+		<finder name="C_C_S" return-type="Collection">
+			<finder-column name="classNameId" />
+			<finder-column name="classPK" />
+			<finder-column name="status" />
+		</finder>
+		<finder name="C_C_UT_LT" return-type="Collection">
+			<finder-column name="classNameId" />
+			<finder-column name="classPK" />
+			<finder-column name="usageType" />
+			<finder-column name="licenseType" />
+		</finder>
+		<finder name="C_C_UT_LT_LTA" return-type="Collection">
+			<finder-column name="classNameId" />
+			<finder-column name="classPK" />
+			<finder-column name="usageType" />
+			<finder-column name="licenseType" />
+			<finder-column name="licenseTypeAllotment" />
+		</finder>
+		<finder name="C_C_UT_LT_S" return-type="Collection">
+			<finder-column name="classNameId" />
+			<finder-column name="classPK" />
+			<finder-column name="usageType" />
+			<finder-column name="licenseType" />
+			<finder-column name="status" />
+		</finder>
+		<finder name="C_C_UT_LT_LTA_S" return-type="Collection">
+			<finder-column name="classNameId" />
+			<finder-column name="classPK" />
+			<finder-column name="usageType" />
+			<finder-column name="licenseType" />
+			<finder-column name="licenseTypeAllotment" />
+			<finder-column name="status" />
+		</finder>
+	</entity>
+	<entity name="LicenseEntry" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="licenseEntryId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="productEntryId" type="long" />
+		<column name="name" type="String" />
+		<column name="type" type="String" />
+		<column name="portalVersionMin" type="int" />
+		<column name="portalVersionMax" type="int" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="name" case-sensitive="false" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="ProductEntryId" return-type="Collection">
+			<finder-column name="productEntryId" />
+		</finder>
+		<finder name="Type" return-type="Collection">
+			<finder-column name="type" />
+		</finder>
+		<finder name="PEI_T" return-type="LicenseEntry" unique="true">
+			<finder-column name="productEntryId" />
+			<finder-column name="type" />
+		</finder>
+		<finder name="PEI_PV" return-type="Collection">
+			<finder-column name="productEntryId" />
+			<finder-column name="portalVersionMin" comparator="&lt;=" />
+		</finder>
+
+		<!-- References -->
+
+		<reference package-path="com.liferay.portal" entity="ListType" />
+	</entity>
+	<entity name="LicenseKey" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="licenseKeyId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedUserId" type="long" />
+		<column name="modifiedUserName" type="String" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="licenseKeySetId" type="long" />
+		<column name="assetReceiptLicenseId" type="long" />
+		<column name="accountEntryId" type="long" />
+		<column name="orderEntryId" type="long" />
+		<column name="offeringEntryId" type="long" />
+		<column name="licenseEntryId" type="long" />
+		<column name="productEntryId" type="long" />
+		<column name="supportResponseId" type="long" />
+		<column name="accountEntryName" type="String" />
+		<column name="licenseEntryName" type="String" />
+		<column name="licenseEntryType" type="String" />
+		<column name="licenseVersion" type="int" />
+		<column name="productEntryName" type="String" />
+		<column name="productId" type="String" />
+		<column name="productVersion" type="int" />
+		<column name="productVersionLabel" type="String" />
+		<column name="clusterId" type="long" />
+		<column name="owner" type="String" />
+		<column name="maxServers" type="int" />
+		<column name="maxConcurrentUsers" type="long" />
+		<column name="maxUsers" type="long" />
+		<column name="maxHttpSessions" type="int" />
+		<column name="description" type="String" />
+		<column name="hostName" type="String" />
+		<column name="ipAddresses" type="String" />
+		<column name="macAddresses" type="String" />
+		<column name="serverId" type="String" />
+		<column name="key" type="String" />
+		<column name="startDate" type="Date" />
+		<column name="expirationDate" type="Date" />
+		<column name="additionalInfo" type="String" />
+		<column name="complimentary" type="boolean" />
+		<column name="active" type="boolean" />
+
+		<!-- Order -->
+
+		<order>
+			<order-column name="active" order-by="desc" />
+			<order-column name="licenseKeyId" order-by="asc" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="UserId" return-type="Collection">
+			<finder-column name="userId" />
+		</finder>
+		<finder name="LicenseKeySetId" return-type="Collection">
+			<finder-column name="licenseKeySetId" />
+		</finder>
+		<finder name="AccountEntryId" return-type="Collection">
+			<finder-column name="accountEntryId" />
+		</finder>
+		<finder name="OfferingEntryId" return-type="Collection">
+			<finder-column name="offeringEntryId" />
+		</finder>
+		<finder name="OrderEntryId" return-type="Collection">
+			<finder-column name="orderEntryId" />
+		</finder>
+		<finder name="U_AEI" return-type="Collection">
+			<finder-column name="userId" />
+			<finder-column name="accountEntryId" />
+		</finder>
+		<finder name="ARLI_A" return-type="Collection">
+			<finder-column name="assetReceiptLicenseId" />
+			<finder-column name="active" />
+		</finder>
+		<finder name="OEI_CI" return-type="Collection">
+			<finder-column name="offeringEntryId" />
+			<finder-column name="clusterId" />
+		</finder>
+		<finder name="OEI_O" return-type="Collection">
+			<finder-column name="orderEntryId" />
+			<finder-column name="owner" />
+		</finder>
+		<finder name="PI_SI" return-type="Collection">
+			<finder-column name="productId" />
+			<finder-column name="serverId" />
+		</finder>
+		<finder name="U_ARLI_PI" return-type="Collection">
+			<finder-column name="userId" />
+			<finder-column name="assetReceiptLicenseId" comparator=">" />
+			<finder-column name="productId" />
+		</finder>
+		<finder name="ARLI_C_A" return-type="Collection">
+			<finder-column name="assetReceiptLicenseId" />
+			<finder-column name="complimentary" />
+			<finder-column name="active" />
+		</finder>
+		<finder name="OEI_CI_A" return-type="Collection">
+			<finder-column name="offeringEntryId" />
+			<finder-column name="clusterId" />
+			<finder-column name="active" />
+		</finder>
+		<finder name="OEI_C_A" return-type="Collection">
+			<finder-column name="offeringEntryId" arrayable-operator="OR" />
+			<finder-column name="complimentary" />
+			<finder-column name="active" />
+		</finder>
+		<finder name="PEN_SI_A" return-type="Collection">
+			<finder-column name="productEntryName" />
+			<finder-column name="serverId" />
+			<finder-column name="active" />
+		</finder>
+		<finder name="ARLI_PI_SI_A" return-type="Collection">
+			<finder-column name="assetReceiptLicenseId" />
+			<finder-column name="productId" />
+			<finder-column name="serverId" />
+			<finder-column name="active" />
+		</finder>
+		<finder name="OEI_LET_C_A" return-type="Collection">
+			<finder-column name="offeringEntryId" />
+			<finder-column name="licenseEntryType" />
+			<finder-column name="complimentary" />
+			<finder-column name="active" />
+		</finder>
+		<finder name="OEI_NotLET_C_A" return-type="Collection">
+			<finder-column name="offeringEntryId" />
+			<finder-column name="licenseEntryType" comparator="!=" />
+			<finder-column name="complimentary" />
+			<finder-column name="active" />
+		</finder>
+
+		<!-- References -->
+
+		<reference package-path="com.liferay.portal" entity="ListType" />
+		<reference package-path="com.liferay.portal" entity="Phone" />
+		<reference package-path="com.liferay.portal" entity="Role" />
+		<reference package-path="com.liferay.portlet.asset" entity="AssetEntry" />
+		<reference package-path="com.liferay.portlet.expando" entity="ExpandoValue" />
+	</entity>
+	<entity name="LicenseKeySet" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="licenseKeySetId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="accountEntryId" type="long" />
+		<column name="name" type="String" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="name" case-sensitive="false" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="AccountEntryId" return-type="Collection">
+			<finder-column name="accountEntryId" />
+		</finder>
+		<finder name="U_AEI_N" return-type="Collection">
+			<finder-column name="userId" />
+			<finder-column name="accountEntryId" />
+			<finder-column name="name" />
+		</finder>
+
+		<!-- References -->
+
+		<reference package-path="com.liferay.portal" entity="Role" />
+	</entity>
+	<exceptions>
+		<exception>AssetLicenseClassName</exception>
+		<exception>AssetLicenseLicenseType</exception>
+		<exception>AssetLicenseLicenseTypeAllotment</exception>
+		<exception>AssetLicenseLifetime</exception>
+		<exception>AssetLicenseUsageType</exception>
+		<exception>AssetLicenseStatus</exception>
+		<exception>DuplicateHostName</exception>
+		<exception>DuplicateIPAddress</exception>
+		<exception>DuplicateMACAddress</exception>
+		<exception>LicenseEntryName</exception>
+		<exception>LicenseEntryPortalVersion</exception>
+		<exception>LicenseKeyActive</exception>
+		<exception>LicenseKeyDescription</exception>
+		<exception>LicenseKeyExport</exception>
+		<exception>LicenseKeyHostName</exception>
+		<exception>LicenseKeyIPAddress</exception>
+		<exception>LicenseKeyMACAddress</exception>
+		<exception>LicenseKeyMaxServers</exception>
+		<exception>LicenseKeyOwner</exception>
+		<exception>LicenseKeyProductEntry</exception>
+		<exception>LicenseKeyProductVersion</exception>
+		<exception>LicenseKeyRegistration</exception>
+		<exception>LicenseKeyRenew</exception>
+		<exception>LicenseKeyServerId</exception>
+		<exception>LicenseKeyServerInfo</exception>
+		<exception>LicenseKeySetName</exception>
+		<exception>LicenseKeySingleUse</exception>
+		<exception>LicenseKeyVersion</exception>
+		<exception>MaximumAssetLicense</exception>
+		<exception>MaximumLicenseKey</exception>
+		<exception>MinimumAssetLicense</exception>
+		<exception>RequiredAssetLicense</exception>
+		<exception>RequiredLicenseEntry</exception>
+		<exception>RequiredOfferingDefinition</exception>
+		<exception>RequiredOfferingEntry</exception>
+		<exception>RequiredPartnerEntry</exception>
+		<exception>RequiredPartnerWorker</exception>
+		<exception>RequiredProductEntry</exception>
+		<exception>RequiredSupportResponse</exception>
+		<exception>RequiredSupportTeam</exception>
+		<exception>RequiredTrainingCourse</exception>
+		<exception>RequiredTrainingLocation</exception>
+		<exception>TrialLicense</exception>
+	</exceptions>
+</service-builder>

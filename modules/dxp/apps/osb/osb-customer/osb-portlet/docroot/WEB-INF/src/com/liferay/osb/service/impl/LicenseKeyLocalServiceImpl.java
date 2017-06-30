@@ -1,0 +1,1823 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+package com.liferay.osb.service.impl;
+
+import com.liferay.compat.portal.kernel.util.ArrayUtil;
+import com.liferay.compat.portal.kernel.util.StringUtil;
+import com.liferay.compat.portal.kernel.util.Time;
+import com.liferay.compat.portal.kernel.util.Validator;
+import com.liferay.compat.portal.util.PortalUtil;
+import com.liferay.osb.DuplicateHostNameException;
+import com.liferay.osb.DuplicateIPAddressException;
+import com.liferay.osb.DuplicateMACAddressException;
+import com.liferay.osb.LicenseKeyActiveException;
+import com.liferay.osb.LicenseKeyDescriptionException;
+import com.liferay.osb.LicenseKeyHostNameException;
+import com.liferay.osb.LicenseKeyIPAddressException;
+import com.liferay.osb.LicenseKeyMACAddressException;
+import com.liferay.osb.LicenseKeyMaxServersException;
+import com.liferay.osb.LicenseKeyOwnerException;
+import com.liferay.osb.LicenseKeyProductEntryException;
+import com.liferay.osb.LicenseKeyProductVersionException;
+import com.liferay.osb.LicenseKeyRenewException;
+import com.liferay.osb.LicenseKeyServerIdException;
+import com.liferay.osb.LicenseKeyServerInfoException;
+import com.liferay.osb.LicenseKeySingleUseException;
+import com.liferay.osb.MaximumLicenseKeyException;
+import com.liferay.osb.OfferingEntryStatusException;
+import com.liferay.osb.admin.util.KeyGenerator;
+import com.liferay.osb.license.util.LicenseUtil;
+import com.liferay.osb.model.AccountEntry;
+import com.liferay.osb.model.AccountEntryConstants;
+import com.liferay.osb.model.AppVersion;
+import com.liferay.osb.model.AssetLicenseConstants;
+import com.liferay.osb.model.AssetReceiptLicense;
+import com.liferay.osb.model.LicenseEntry;
+import com.liferay.osb.model.LicenseEntryConstants;
+import com.liferay.osb.model.LicenseKey;
+import com.liferay.osb.model.LicenseKeyConstants;
+import com.liferay.osb.model.LicenseKeySet;
+import com.liferay.osb.model.OfferingDefinition;
+import com.liferay.osb.model.OfferingEntry;
+import com.liferay.osb.model.OfferingEntryConstants;
+import com.liferay.osb.model.OfferingEntryGroup;
+import com.liferay.osb.model.OrderEntry;
+import com.liferay.osb.model.ProductEntry;
+import com.liferay.osb.model.ProductEntryConstants;
+import com.liferay.osb.service.OSBCountryLocalServiceUtil;
+import com.liferay.osb.service.base.LicenseKeyLocalServiceBaseImpl;
+import com.liferay.osb.util.OSBConstants;
+import com.liferay.osb.util.OSBPortletKeys;
+import com.liferay.osb.util.comparator.LicenseKeyExpirationDateComparator;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.CharPool;
+import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.model.Country;
+import com.liferay.portal.model.User;
+import com.liferay.portal.security.auth.PrincipalException;
+import com.liferay.portal.util.Portal;
+import com.liferay.portal.util.SubscriptionSender;
+import com.liferay.portlet.asset.model.AssetEntry;
+
+import java.io.File;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.TimeZone;
+
+import org.apache.commons.lang.time.DateUtils;
+
+/**
+ * @author Brian Wing Shun Chan
+ * @author Amos Fong
+ */
+public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
+
+	public LicenseKey addLicenseKey(
+			long userId, AssetReceiptLicense assetReceiptLicense, String owner,
+			String description, String[] hostNames, String[] ipAddresses,
+			String[] macAddresses, String[] serverIds, int startDateMonth,
+			int startDateDay, int startDateYear)
+		throws PortalException, SystemException {
+
+		User user = userPersistence.findByPrimaryKey(userId);
+		AssetEntry assetEntry = assetReceiptLicense.getAssetEntry();
+
+		int licenseVersion = 3;
+
+		owner = LicenseUtil.trimText(owner);
+		description = LicenseUtil.trimText(description);
+
+		String productEntryName = LicenseUtil.trimText(assetEntry.getTitle());
+		String productId = assetEntry.getClassUuid();
+
+		int productVersion = 0;
+
+		String productClassName = PortalUtil.getClassName(
+			assetReceiptLicense.getProductClassNameId());
+
+		if (productClassName.equals(AppVersion.class.getName())) {
+			long productClassPK = assetReceiptLicense.getProductClassPK();
+
+			AppVersion appVersion = appVersionLocalService.getAppVersion(
+				productClassPK);
+
+			productVersion = appVersion.getVersionId();
+		}
+
+		Date startDate = getLicenseKeyStartDate(
+			startDateMonth, startDateDay, startDateYear, user.getTimeZone(),
+			assetReceiptLicense.getStartDate());
+
+		startDate = DateUtils.round(startDate, Calendar.SECOND);
+
+		Date expirationDate = assetReceiptLicense.getEndDate();
+
+		expirationDate = DateUtils.round(expirationDate, Calendar.SECOND);
+
+		Date now = new Date();
+
+		validate(
+			assetReceiptLicense, owner, description, hostNames, ipAddresses,
+			macAddresses);
+
+		LicenseKey licenseKey = null;
+
+		int keyCount = 0;
+
+		if (ArrayUtil.isNotEmpty(serverIds)) {
+			keyCount = serverIds.length;
+		}
+		else if (hostNames != null) {
+			keyCount = hostNames.length;
+		}
+
+		for (int i = 0; i < keyCount; i++) {
+			String hostName = StringPool.BLANK;
+			String curIpAddresses = StringPool.BLANK;
+			String curMacAddresses = StringPool.BLANK;
+			String serverId = StringPool.BLANK;
+
+			if (hostNames.length > i) {
+				hostName = hostNames[i];
+				curIpAddresses = ipAddresses[i];
+				curMacAddresses = macAddresses[i];
+			}
+
+			if ((serverIds != null) && (serverIds.length > i)) {
+				serverId = serverIds[i];
+			}
+
+			String licenseKeyType = AssetLicenseConstants.getLicenseKeyType(
+				assetReceiptLicense.getLicenseType());
+
+			String key = KeyGenerator.generate(
+				StringPool.BLANK, StringPool.BLANK, licenseKeyType,
+				licenseVersion, productEntryName, productId,
+				String.valueOf(productVersion), owner, 0, 0, 0,
+				assetReceiptLicense.getMaxUsers(), description, hostName,
+				curIpAddresses, curMacAddresses, new String[] {serverId},
+				startDate, expirationDate);
+
+			long licenseKeyId = counterLocalService.increment();
+
+			licenseKey = licenseKeyPersistence.create(licenseKeyId);
+
+			licenseKey.setUserId(user.getUserId());
+			licenseKey.setUserName(user.getFullName());
+			licenseKey.setCreateDate(now);
+			licenseKey.setModifiedUserId(user.getUserId());
+			licenseKey.setModifiedUserName(user.getFullName());
+			licenseKey.setModifiedDate(now);
+			licenseKey.setAssetReceiptLicenseId(
+				assetReceiptLicense.getAssetReceiptLicenseId());
+			licenseKey.setLicenseEntryType(licenseKeyType);
+			licenseKey.setLicenseVersion(licenseVersion);
+			licenseKey.setProductEntryName(productEntryName);
+			licenseKey.setProductId(productId);
+			licenseKey.setProductVersion(productVersion);
+			licenseKey.setProductVersionLabel(String.valueOf(productVersion));
+			licenseKey.setOwner(owner);
+			licenseKey.setMaxUsers(assetReceiptLicense.getMaxUsers());
+			licenseKey.setDescription(description);
+			licenseKey.setHostName(hostName);
+			licenseKey.setIpAddresses(curIpAddresses);
+			licenseKey.setMacAddresses(curMacAddresses);
+			licenseKey.setServerId(serverId);
+			licenseKey.setKey(key);
+			licenseKey.setStartDate(startDate);
+			licenseKey.setExpirationDate(expirationDate);
+			licenseKey.setComplimentary(false);
+			licenseKey.setActive(true);
+
+			licenseKeyPersistence.update(licenseKey, false);
+		}
+
+		return licenseKey;
+	}
+
+	public LicenseKey addLicenseKey(
+			long userId, LicenseKeySet licenseKeySet, String name,
+			OfferingEntry offeringEntry, LicenseEntry licenseEntry,
+			ProductEntry productEntry, int productVersion, long clusterId,
+			String owner, int maxServers, int maxHttpSessions,
+			String description, String[] hostNames, String[] ipAddresses,
+			String[] macAddresses, String[] serverIds, int startDateMonth,
+			int startDateDay, int startDateYear, String additionalInfo,
+			boolean complimentary, boolean active)
+		throws PortalException, SystemException {
+
+		User user = userPersistence.findByPrimaryKey(userId);
+		AccountEntry accountEntry = offeringEntry.getAccountEntry();
+		OrderEntry orderEntry = offeringEntry.getOrderEntry();
+
+		if (!complimentary) {
+			productEntry = licenseEntry.getProductEntry();
+		}
+
+		String licenseEntryType = licenseEntry.getType();
+
+		int licenseVersion = LicenseKeyConstants.getLicenseVersion(
+			productVersion);
+
+		Date now = new Date();
+
+		Date defaultStartDate = orderEntry.getStartDate();
+
+		if (licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER) ||
+			licenseEntryType.equals(
+				LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER)) {
+
+			defaultStartDate = now;
+		}
+
+		Date startDate = getLicenseKeyStartDate(
+			startDateMonth, startDateDay, startDateYear, user.getTimeZone(),
+			defaultStartDate);
+
+		Date expirationDate = new Date(
+			startDate.getTime() + offeringEntry.getLicenseLifetime());
+
+		validate(
+			offeringEntry, licenseEntry, licenseVersion, productEntry,
+			productVersion, owner, maxServers, description, hostNames,
+			ipAddresses, macAddresses, serverIds, complimentary);
+
+		if (licenseKeySet == null) {
+			licenseKeySet = licenseKeySetLocalService.addLicenseKeySet(
+				user.getUserId(), offeringEntry.getAccountEntryId(), name);
+		}
+
+		if (licenseVersion >= 3) {
+			return doAddLicenseKeyVersion3_4(
+				now, user, licenseKeySet, name, accountEntry, offeringEntry,
+				licenseEntry, productEntry, licenseEntryType, licenseVersion,
+				productVersion, clusterId, owner, maxServers, maxHttpSessions,
+				description, hostNames, ipAddresses, macAddresses, serverIds,
+				startDate, expirationDate, additionalInfo, complimentary,
+				active);
+		}
+		else {
+			return doAddLicenseKey(
+				now, user, licenseKeySet, name, accountEntry, offeringEntry,
+				licenseEntry, productEntry, licenseEntryType, licenseVersion,
+				productVersion, clusterId, owner, maxServers, description,
+				serverIds, startDate, expirationDate, additionalInfo,
+				complimentary, active);
+		}
+	}
+
+	public LicenseKey addLicenseKey(
+			long userId, long licenseKeySetId, String name,
+			long offeringEntryId, long licenseEntryId, long productEntryId,
+			int productVersion, long clusterId, String owner, int maxServers,
+			int maxHttpSessions, String description, String[] hostNames,
+			String[] ipAddresses, String[] macAddresses, String[] serverIds,
+			int startDateMonth, int startDateDay, int startDateYear,
+			boolean complimentary, boolean active)
+		throws PortalException, SystemException {
+
+		LicenseKeySet licenseKeySet = null;
+
+		if (licenseKeySetId > 0) {
+			licenseKeySet = licenseKeySetPersistence.findByPrimaryKey(
+				licenseKeySetId);
+		}
+
+		OfferingEntry offeringEntry = offeringEntryPersistence.findByPrimaryKey(
+			offeringEntryId);
+		LicenseEntry licenseEntry = licenseEntryPersistence.findByPrimaryKey(
+			licenseEntryId);
+
+		ProductEntry productEntry = null;
+
+		if (productEntryId > 0) {
+			productEntry = productEntryPersistence.findByPrimaryKey(
+				productEntryId);
+		}
+
+		return addLicenseKey(
+			userId, licenseKeySet, name, offeringEntry, licenseEntry,
+			productEntry, productVersion, clusterId, owner, maxServers,
+			maxHttpSessions, description, hostNames, ipAddresses, macAddresses,
+			serverIds, startDateMonth, startDateDay, startDateYear,
+			StringPool.BLANK, complimentary, active);
+	}
+
+	public LicenseKey addSingleUseLicenseKey(
+			String orderUuid, int productVersion, String emailAddress,
+			String fullName, String additionalInfo)
+		throws Exception {
+
+		OrderEntry orderEntry = orderEntryLocalService.getOrderEntry(orderUuid);
+
+		validateSingleUse(orderEntry.getOrderEntryId(), emailAddress);
+
+		OfferingEntry offeringEntry = getSingleUseOfferingEntry(
+			orderEntry.getAccountEntryId(), orderEntry.getOrderEntryId(),
+			productVersion);
+		LicenseEntry licenseEntry = licenseEntryLocalService.getLicenseEntry(
+			offeringEntry.getProductEntryId(),
+			LicenseEntryConstants.TYPE_DEVELOPER);
+
+		LicenseKeySet licenseKeySet = getSingleUseLicenseKeySet(
+			orderEntry.getAccountEntryId());
+
+		Calendar cal = Calendar.getInstance();
+
+		LicenseKey licenseKey = addLicenseKey(
+			OSBConstants.USER_DEFAULT_USER_ID, licenseKeySet, null,
+			offeringEntry, licenseEntry, null, productVersion, 0, emailAddress,
+			1, 5, "30-Day Trial License", new String[0], new String[0],
+			new String[0],
+			new String[] {LicenseKeyConstants.SERVER_ID_DEVELOPER},
+			cal.get(Calendar.MONTH), cal.get(Calendar.DATE),
+			cal.get(Calendar.YEAR), additionalInfo, false, true);
+
+		sendRegisteredEmail(emailAddress, fullName, licenseKey);
+
+		return licenseKey;
+	}
+
+	public void buyLicenseKey(long companyId, long userId)
+		throws PortalException, SystemException {
+
+		boolean osbTrialpurchased = expandoValueLocalService.getData(
+			companyId, User.class.getName(), "OSB", "osbTrialPurchased", userId,
+			false);
+
+		if (osbTrialpurchased) {
+			return;
+		}
+
+		expandoValueLocalService.addValue(
+			companyId, User.class.getName(), "OSB", "osbTrialPurchased", userId,
+			true);
+	}
+
+	public List<LicenseKey> getAccountEntryLicenseKeys(long accountEntryId)
+		throws SystemException {
+
+		return licenseKeyPersistence.findByAccountEntryId(accountEntryId);
+	}
+
+	public List<LicenseKey> getAssetReceiptLicenseLicenseKeys(
+			long assetReceiptLicenseId, boolean active)
+		throws SystemException {
+
+		return licenseKeyPersistence.findByARLI_A(
+			assetReceiptLicenseId, active);
+	}
+
+	public List<LicenseKey> getAssetReceiptLicenseLicenseKeys(
+			long assetReceiptLicenseId, boolean complimentary, boolean active)
+		throws SystemException {
+
+		return licenseKeyPersistence.findByARLI_C_A(
+			assetReceiptLicenseId, complimentary, active);
+	}
+
+	public int getAssetReceiptLicenseLicenseKeysCount(
+			long assetReceiptLicenseId, boolean complimentary, boolean active)
+		throws SystemException {
+
+		return licenseKeyPersistence.countByARLI_C_A(
+			assetReceiptLicenseId, complimentary, active);
+	}
+
+	public LicenseKey getFirstLicenseKey(
+			long accountEntryId, OrderByComparator obc)
+		throws PortalException, SystemException {
+
+		return licenseKeyPersistence.findByAccountEntryId_First(
+			accountEntryId, obc);
+	}
+
+	public List<LicenseKey> getLicenseKeys(long userId, long accountEntryId)
+		throws SystemException {
+
+		return licenseKeyPersistence.findByU_AEI(userId, accountEntryId);
+	}
+
+	public List<LicenseKey> getLicenseKeys(long userId, String productId)
+		throws SystemException {
+
+		return licenseKeyPersistence.findByU_ARLI_PI(userId, 0, productId);
+	}
+
+	public List<LicenseKey> getLicenseKeys(
+			long assetReceiptLicenseId, String productId, String serverId,
+			boolean active, int start, int end, OrderByComparator obc)
+		throws SystemException {
+
+		return licenseKeyPersistence.findByARLI_PI_SI_A(
+			assetReceiptLicenseId, productId, serverId, active, start, end,
+			obc);
+	}
+
+	public List<LicenseKey> getLicenseKeys(String productId, String serverId)
+		throws SystemException {
+
+		return licenseKeyPersistence.findByPI_SI(productId, serverId);
+	}
+
+	public List<LicenseKey> getLicenseKeysByName(
+			String productEntryName, String serverId, boolean active, int start,
+			int end, OrderByComparator obc)
+		throws SystemException {
+
+		return licenseKeyPersistence.findByPEN_SI_A(
+			productEntryName, serverId, active, start, end, obc);
+	}
+
+	public List<LicenseKey> getLicenseKeySetLicenseKeys(long licenseKeySetId)
+		throws SystemException {
+
+		return licenseKeyPersistence.findByLicenseKeySetId(licenseKeySetId);
+	}
+
+	public List<LicenseKey> getOfferingEntryGroupLicenseKeys(
+			long[] offeringEntryIds, boolean complimentary, boolean active,
+			int start, int end, OrderByComparator obc)
+		throws SystemException {
+
+		return licenseKeyPersistence.findByOEI_C_A(
+			offeringEntryIds, complimentary, active, start, end, obc);
+	}
+
+	public int getOfferingEntryGroupLicenseKeysCount(
+			long[] offeringEntryIds, boolean complimentary, boolean active)
+		throws SystemException {
+
+		return licenseKeyPersistence.countByOEI_C_A(
+			offeringEntryIds, complimentary, active);
+	}
+
+	public List<LicenseKey> getOfferingEntryLicenseKeys(long offeringEntryId)
+		throws SystemException {
+
+		return licenseKeyPersistence.findByOfferingEntryId(offeringEntryId);
+	}
+
+	public List<LicenseKey> getOfferingEntryLicenseKeys(
+			long offeringEntryId, boolean complimentary, boolean active)
+		throws SystemException {
+
+		return licenseKeyPersistence.findByOEI_C_A(
+			offeringEntryId, complimentary, active);
+	}
+
+	public List<LicenseKey> getOfferingEntryLicenseKeys(
+			long offeringEntryId, long clusterId)
+		throws SystemException {
+
+		return licenseKeyPersistence.findByOEI_CI(offeringEntryId, clusterId);
+	}
+
+	public List<LicenseKey> getOfferingEntryLicenseKeys(
+			long offeringEntryId, long clusterId, boolean active)
+		throws SystemException {
+
+		return licenseKeyPersistence.findByOEI_CI_A(
+			offeringEntryId, clusterId, active);
+	}
+
+	public int getOfferingEntryLicenseKeysCount(long offeringEntryId)
+		throws SystemException {
+
+		return licenseKeyPersistence.countByOfferingEntryId(offeringEntryId);
+	}
+
+	public int getOfferingEntryLicenseKeysCount(
+			long offeringEntryId, boolean complimentary, boolean active)
+		throws SystemException {
+
+		int count = licenseKeyPersistence.countByOEI_NotLET_C_A(
+			offeringEntryId, LicenseEntryConstants.TYPE_CLUSTER, complimentary,
+			active);
+
+		List<LicenseKey> licenseKeys = licenseKeyPersistence.findByOEI_LET_C_A(
+			offeringEntryId, LicenseEntryConstants.TYPE_CLUSTER, complimentary,
+			active);
+
+		Set<Long> clusterIds = new HashSet<Long>();
+
+		for (LicenseKey licenseKey : licenseKeys) {
+			if (licenseKey.getLicenseVersion() >= 3) {
+				if (clusterIds.contains(licenseKey.getClusterId())) {
+					continue;
+				}
+
+				clusterIds.add(licenseKey.getClusterId());
+			}
+
+			count += licenseKey.getMaxServers();
+		}
+
+		return count;
+	}
+
+	public int getOfferingEntryLicenseKeysCount(
+			long offeringEntryId, long clusterId)
+		throws SystemException {
+
+		return licenseKeyPersistence.countByOEI_CI(offeringEntryId, clusterId);
+	}
+
+	public int getOfferingEntryLicenseKeysCount(
+			long offeringEntryId, long clusterId, boolean active)
+		throws SystemException {
+
+		return licenseKeyPersistence.countByOEI_CI_A(
+			offeringEntryId, clusterId, active);
+	}
+
+	public int getUserLicenseKeysCount(long userId, long accountEntryId)
+		throws SystemException {
+
+		return licenseKeyPersistence.countByU_AEI(userId, accountEntryId);
+	}
+
+	public LicenseKey renewLicenseKey(long userId, long licenseKeyId)
+		throws PortalException, SystemException {
+
+		LicenseKey licenseKey = licenseKeyPersistence.findByPrimaryKey(
+			licenseKeyId);
+
+		if (!licenseKey.isActive()) {
+			throw new LicenseKeyActiveException();
+		}
+
+		AssetReceiptLicense assetReceiptLicense =
+			assetReceiptLicensePersistence.findByPrimaryKey(
+				licenseKey.getAssetReceiptLicenseId());
+
+		updateLicenseKey(
+			userId, licenseKeyId,
+			assetReceiptLicense.getAssetReceiptLicenseId(), false);
+
+		Calendar cal = Calendar.getInstance();
+
+		cal.setTime(assetReceiptLicense.getStartDate());
+
+		return addLicenseKey(
+			userId, assetReceiptLicense, licenseKey.getOwner(),
+			licenseKey.getDescription(),
+			new String[] {licenseKey.getHostName()},
+			new String[] {licenseKey.getIpAddresses()},
+			new String[] {licenseKey.getMacAddresses()},
+			new String[] {licenseKey.getServerId()},
+			cal.get(Calendar.MONTH), cal.get(Calendar.DATE),
+			cal.get(Calendar.YEAR));
+	}
+
+	public LicenseKey renewLicenseKey(
+			long userId, long licenseKeyId, Date startDate, int renewTime)
+		throws Exception {
+
+		User user = userPersistence.findByPrimaryKey(userId);
+		LicenseKey licenseKey = licenseKeyPersistence.findByPrimaryKey(
+			licenseKeyId);
+		LicenseKeySet licenseKeySet = licenseKeySetPersistence.findByPrimaryKey(
+			licenseKey.getLicenseKeySetId());
+		ProductEntry productEntry = productEntryPersistence.findByPrimaryKey(
+			licenseKey.getProductEntryId());
+		LicenseEntry licenseEntry = licenseKey.getLicenseEntry();
+
+		if (!licenseKey.canRenew()) {
+			throw new LicenseKeyRenewException();
+		}
+
+		licenseKey.setActive(false);
+
+		licenseKeyPersistence.update(licenseKey, false);
+
+		AccountEntry accountEntry = licenseKey.getAccountEntry();
+
+		String description = String.valueOf(renewTime) + "-Day ";
+
+		if (accountEntry.getType() == AccountEntryConstants.TYPE_TRIAL) {
+			description += "Trial License";
+		}
+		else {
+			description += "License";
+		}
+
+		Date expirationDate = new Date(
+			startDate.getTime() + (renewTime * Time.DAY));
+
+		LicenseKey renewedLicenseKey = doAddLicenseKeyVersion3_4(
+			new Date(), user, licenseKeySet, licenseKeySet.getName(),
+			accountEntry, licenseKey.getOfferingEntry(),
+			licenseKey.getLicenseEntry(), productEntry, licenseEntry.getType(),
+			licenseKey.getLicenseVersion(), licenseKey.getProductVersion(),
+			licenseKey.getClusterId(), licenseKey.getOwner(),
+			licenseKey.getMaxServers(), licenseKey.getMaxHttpSessions(),
+			description, new String[] {licenseKey.getHostName()},
+			new String[] {licenseKey.getIpAddresses()},
+			new String[] {licenseKey.getMacAddresses()},
+			new String[] {licenseKey.getServerId()}, startDate, expirationDate,
+			licenseKey.getAdditionalInfo(), licenseKey.getComplimentary(),
+			true);
+
+		if (accountEntry.getType() == AccountEntryConstants.TYPE_TRIAL) {
+			OfferingEntry offeringEntry = renewedLicenseKey.getOfferingEntry();
+
+			offeringEntry.setSupportEndDate(
+				renewedLicenseKey.getExpirationDate());
+
+			offeringEntryPersistence.update(offeringEntry, false);
+
+			User trialUser = userPersistence.findByPrimaryKey(
+				accountEntry.getUserId());
+
+			sendRegisteredEmail(
+				trialUser.getEmailAddress(), trialUser.getFullName(),
+				renewedLicenseKey);
+		}
+
+		return renewedLicenseKey;
+	}
+
+	public LicenseKey renewTrialLicenseKey(long userId) throws Exception {
+		User user = userPersistence.findByPrimaryKey(userId);
+		AccountEntry accountEntry =
+			accountEntryLocalService.fetchUserTrialAccountEntry(userId);
+
+		if (accountEntry == null) {
+			return null;
+		}
+
+		LicenseKey lastLicenseKey =
+			licenseKeyPersistence.findByAccountEntryId_First(
+				accountEntry.getAccountEntryId(),
+				new LicenseKeyExpirationDateComparator(false));
+
+		validateTrialRenewal(lastLicenseKey);
+
+		LicenseKeySet licenseKeySet = licenseKeySetPersistence.findByPrimaryKey(
+			lastLicenseKey.getLicenseKeySetId());
+
+		Calendar cal = Calendar.getInstance(user.getTimeZone());
+
+		OfferingEntry offeringEntry = offeringEntryPersistence.findByPrimaryKey(
+			lastLicenseKey.getOfferingEntryId());
+
+		lastLicenseKey.setActive(false);
+
+		licenseKeyPersistence.update(lastLicenseKey, false);
+
+		LicenseKey licenseKey = addLicenseKey(
+			userId, licenseKeySet, "Trial Licenses", offeringEntry,
+			lastLicenseKey.getLicenseEntry(), null,
+			lastLicenseKey.getProductVersion(), 0, user.getFullName(), 1, 5,
+			"30-Day Trial License", new String[0], new String[0], new String[0],
+			new String[] {LicenseKeyConstants.SERVER_ID_DEVELOPER},
+			cal.get(Calendar.MONTH), cal.get(Calendar.DATE),
+			cal.get(Calendar.YEAR), StringPool.BLANK, false, true);
+
+		offeringEntry.setSupportEndDate(licenseKey.getExpirationDate());
+
+		offeringEntryPersistence.update(offeringEntry, false);
+
+		sendRegisteredEmail(
+			user.getEmailAddress(), user.getFullName(), licenseKey);
+
+		return licenseKey;
+	}
+
+	public List<LicenseKey> search(
+			Long createUserId, int createDateGTDay, int createDateGTMonth,
+			int createDateGTYear, int createDateLTDay, int createDateLTMonth,
+			int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
+			int modifiedDateGTMonth, int modifiedDateGTYear,
+			int modifiedDateLTDay, int modifiedDateLTMonth,
+			int modifiedDateLTYear, String accountEntryName,
+			String licenseKeySetName, int startDateGTDay, int startDateGTMonth,
+			int startDateGTYear, int startDateLTDay, int startDateLTMonth,
+			int startDateLTYear, long[] licenseEntryIds, long[] productEntryIds,
+			String productEntryName, String productId, int[] productVersions,
+			String owner, String description, String hostName, String ipAddress,
+			String macAddress, String serverId, String key,
+			int expirationDateGTDay, int expirationDateGTMonth,
+			int expirationDateGTYear, int expirationDateLTDay,
+			int expirationDateLTMonth, int expirationDateLTYear,
+			LinkedHashMap<String, Object> params, boolean andSearch, int start,
+			int end, OrderByComparator obc)
+		throws SystemException {
+
+		Date createDateGT = PortalUtil.getDate(
+			createDateGTMonth, createDateGTDay, createDateGTYear);
+		Date createDateLT = PortalUtil.getDate(
+			createDateLTMonth, createDateLTDay, createDateLTYear);
+		Date modifiedDateGT = PortalUtil.getDate(
+			modifiedDateGTMonth, modifiedDateGTDay, modifiedDateGTYear);
+		Date modifiedDateLT = PortalUtil.getDate(
+			modifiedDateLTMonth, modifiedDateLTDay, modifiedDateLTYear);
+		Date startDateGT = PortalUtil.getDate(
+			startDateGTMonth, startDateGTDay, startDateGTYear);
+		Date startDateLT = PortalUtil.getDate(
+			startDateLTMonth, startDateLTDay, startDateLTYear);
+		Date expirationDateGT = PortalUtil.getDate(
+			expirationDateGTMonth, expirationDateGTDay, expirationDateGTYear);
+		Date expirationDateLT = PortalUtil.getDate(
+			expirationDateLTMonth, expirationDateLTDay, expirationDateLTYear);
+
+		return licenseKeyFinder.findByU_C_M_M_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
+			createUserId, createDateGT, createDateLT, modifiedUserId,
+			modifiedDateGT, modifiedDateLT, accountEntryName, licenseKeySetName,
+			startDateGT, startDateLT, licenseEntryIds, productEntryIds,
+			productEntryName, productId, productVersions, owner, description,
+			hostName, ipAddress, macAddress, serverId, key, expirationDateGT,
+			expirationDateLT, params, andSearch, start, end, obc);
+	}
+
+	public List<LicenseKey> search(
+			String keywords, LinkedHashMap<String, Object> params, int start,
+			int end, OrderByComparator obc)
+		throws SystemException {
+
+		return licenseKeyFinder.findByKeywords(
+			keywords, params, start, end, obc);
+	}
+
+	public int searchCount(
+			Long createUserId, int createDateGTDay, int createDateGTMonth,
+			int createDateGTYear, int createDateLTDay, int createDateLTMonth,
+			int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
+			int modifiedDateGTMonth, int modifiedDateGTYear,
+			int modifiedDateLTDay, int modifiedDateLTMonth,
+			int modifiedDateLTYear, String accountEntryName,
+			String licenseKeySetName, int startDateGTDay, int startDateGTMonth,
+			int startDateGTYear, int startDateLTDay, int startDateLTMonth,
+			int startDateLTYear, long[] licenseEntryIds, long[] productEntryIds,
+			String productEntryName, String productId, int[] productVersions,
+			String owner, String description, String hostName, String ipAddress,
+			String macAddress, String serverId, String key,
+			int expirationDateGTDay, int expirationDateGTMonth,
+			int expirationDateGTYear, int expirationDateLTDay,
+			int expirationDateLTMonth, int expirationDateLTYear,
+			LinkedHashMap<String, Object> params, boolean andSearch)
+		throws SystemException {
+
+		Date createDateGT = PortalUtil.getDate(
+			createDateGTMonth, createDateGTDay, createDateGTYear);
+		Date createDateLT = PortalUtil.getDate(
+			createDateLTMonth, createDateLTDay, createDateLTYear);
+		Date modifiedDateGT = PortalUtil.getDate(
+			modifiedDateGTMonth, modifiedDateGTDay, modifiedDateGTYear);
+		Date modifiedDateLT = PortalUtil.getDate(
+			modifiedDateLTMonth, modifiedDateLTDay, modifiedDateLTYear);
+		Date startDateGT = PortalUtil.getDate(
+			startDateGTMonth, startDateGTDay, startDateGTYear);
+		Date startDateLT = PortalUtil.getDate(
+			startDateLTMonth, startDateLTDay, startDateLTYear);
+		Date expirationDateGT = PortalUtil.getDate(
+			expirationDateGTMonth, expirationDateGTDay, expirationDateGTYear);
+		Date expirationDateLT = PortalUtil.getDate(
+			expirationDateLTMonth, expirationDateLTDay, expirationDateLTYear);
+
+		return licenseKeyFinder.countByU_C_M_M_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
+			createUserId, createDateGT, createDateLT, modifiedUserId,
+			modifiedDateGT, modifiedDateLT, accountEntryName, licenseKeySetName,
+			startDateGT, startDateLT, licenseEntryIds, productEntryIds,
+			productEntryName, productId, productVersions, owner, description,
+			hostName, ipAddress, macAddress, serverId, key, expirationDateGT,
+			expirationDateLT, params, andSearch);
+	}
+
+	public int searchCount(
+			String keywords, LinkedHashMap<String, Object> params)
+		throws SystemException {
+
+		return licenseKeyFinder.countByKeywords(keywords, params);
+	}
+
+	public void sendRegisteredEmail(User user, LicenseKey licenseKey)
+		throws Exception {
+
+		sendRegisteredEmail(
+			user.getEmailAddress(), user.getFullName(), licenseKey);
+	}
+
+	public void sendTrialRenewalNotificationEmail(
+			String emailAddress, long accountEntryId)
+		throws Exception {
+
+		LicenseKey licenseKey =
+			licenseKeyPersistence.findByAccountEntryId_First(
+				accountEntryId, new LicenseKeyExpirationDateComparator(false));
+
+		Map<Locale, String> subjectMap =
+			LicenseUtil.getEmailNotificationTrialLicenseSubjectMap();
+		Map<Locale, String> bodyMap =
+			LicenseUtil.getEmailNotificationTrialLicenseBodyMap();
+
+		String layoutURL = PortalUtil.getLayoutFullURL(
+			OSBConstants.GROUP_CUSTOMER_ID, OSBPortletKeys.OSB_LICENSE);
+
+		String licenseURL =
+			layoutURL + Portal.FRIENDLY_URL_SEPARATOR +
+				"license/offering/" + licenseKey.getOfferingEntryId();
+
+		AccountEntry accountEntry = licenseKey.getAccountEntry();
+
+		for (Map.Entry<Locale, String> subjectEntry : subjectMap.entrySet()) {
+			String subject = StringUtil.replace(
+				subjectEntry.getValue(),
+				new String[] {
+					"[$ACCOUNT_ENTRY_NAME$]"
+				},
+				new String[] {
+					accountEntry.getName()
+				});
+
+			subjectEntry.setValue(subject);
+		}
+
+		User user = userPersistence.findByPrimaryKey(licenseKey.getUserId());
+
+		Country country = OSBCountryLocalServiceUtil.getCountry(
+			accountEntry.getCountryId());
+
+		for (Map.Entry<Locale, String> bodyEntry : bodyMap.entrySet()) {
+			String body = StringUtil.replace(
+				bodyEntry.getValue(),
+				new String[] {
+					"[$ACCOUNT_ENTRY_NAME$]", "[$LICENSE_URL$]",
+					"[$USER_COUNTRY$]", "[$USER_EMAIL_ADDRESS$]",
+					"[$USER_FULL_NAME$]"
+				},
+				new String[] {
+					accountEntry.getName(), licenseURL, country.getName(),
+					user.getEmailAddress(), user.getFullName()
+				});
+
+			bodyEntry.setValue(body);
+		}
+
+		SubscriptionSender subscriptionSender = new SubscriptionSender();
+
+		subscriptionSender.setCompanyId(OSBConstants.COMPANY_ID);
+		subscriptionSender.setFrom("no-reply@liferay.com", "Licensing");
+		subscriptionSender.setHtmlFormat(true);
+		subscriptionSender.setLocalizedBodyMap(bodyMap);
+		subscriptionSender.setLocalizedSubjectMap(subjectMap);
+		subscriptionSender.setMailId(
+			"license_key_notification", licenseKey.getLicenseKeyId());
+		subscriptionSender.setPortletId(OSBPortletKeys.OSB_LICENSE);
+		subscriptionSender.setReplyToAddress("sales@liferay.com");
+
+		subscriptionSender.addRuntimeSubscribers(emailAddress, "Liferay, Inc.");
+
+		subscriptionSender.flushNotificationsAsync();
+	}
+
+	public void updateLicenseKey(
+			long userId, long licenseKeyId, long assetReceiptLicenseId,
+			boolean active)
+		throws PortalException, SystemException {
+
+		User user = userPersistence.findByPrimaryKey(userId);
+
+		LicenseKey licenseKey = licenseKeyPersistence.findByPrimaryKey(
+			licenseKeyId);
+
+		AssetReceiptLicense assetReceiptLicense =
+			assetReceiptLicensePersistence.findByPrimaryKey(
+				assetReceiptLicenseId);
+
+		if (active && !licenseKey.isActive()) {
+			validate(assetReceiptLicense, 1);
+		}
+
+		licenseKey.setModifiedUserId(user.getUserId());
+		licenseKey.setModifiedUserName(user.getFullName());
+		licenseKey.setModifiedDate(new Date());
+		licenseKey.setAssetReceiptLicenseId(assetReceiptLicenseId);
+		licenseKey.setActive(active);
+
+		licenseKeyPersistence.update(licenseKey, false);
+	}
+
+	public void updateLicenseKey(
+			long licenseKeyId, long accountEntryId, long offeringEntryId,
+			long orderEntryId)
+		throws PortalException, SystemException {
+
+		LicenseKey licenseKey = licenseKeyPersistence.findByPrimaryKey(
+			licenseKeyId);
+
+		licenseKey.setAccountEntryId(accountEntryId);
+		licenseKey.setOfferingEntryId(offeringEntryId);
+		licenseKey.setOrderEntryId(orderEntryId);
+
+		licenseKeyPersistence.update(licenseKey, false);
+	}
+
+	public void updateLicenseKey(
+			long userId, long licenseKeyId, long licenseKeySetId,
+			long offeringEntryId, String name, boolean active)
+		throws PortalException, SystemException {
+
+		LicenseKey licenseKey = licenseKeyPersistence.findByPrimaryKey(
+			licenseKeyId);
+
+		OfferingEntry offeringEntry = offeringEntryPersistence.findByPrimaryKey(
+			offeringEntryId);
+
+		String type = licenseKey.getLicenseEntryType();
+
+		List<LicenseKey> clusterLicenseKeys = getClusterLicenseKeys(
+			licenseKey, type);
+
+		int activeClusterCount = 0;
+
+		for (LicenseKey clusterLicenseKey : clusterLicenseKeys) {
+			if (clusterLicenseKey.isActive()) {
+				activeClusterCount++;
+			}
+		}
+
+		boolean curActive = false;
+		int serverCount = 0;
+
+		if (licenseKey.getLicenseVersion() >= 3) {
+			if (activeClusterCount > 0) {
+				curActive = true;
+			}
+
+			serverCount = licenseKey.getMaxServers();
+		}
+		else {
+			curActive = licenseKey.isActive();
+			serverCount = clusterLicenseKeys.size();
+		}
+
+		if ((!curActive && active) ||
+			((offeringEntryId != licenseKey.getOfferingEntryId()) &&
+			 (curActive || active))) {
+
+			validate(offeringEntry, serverCount);
+		}
+
+		if (licenseKey.getOfferingEntryId() != offeringEntryId) {
+			OfferingEntry oldOfferingEntry = licenseKey.getOfferingEntry();
+
+			ProductEntry oldProductEntry =
+				productEntryLocalService.fetchProductEntry(
+					oldOfferingEntry.getProductEntryId());
+
+			ProductEntry newProductEntry = offeringEntry.getProductEntry();
+
+			if ((oldProductEntry != null) &&
+				(oldProductEntry.getEnvironment() !=
+					newProductEntry.getEnvironment())) {
+
+				throw new LicenseKeyProductEntryException();
+			}
+		}
+
+		if (licenseKey.getLicenseVersion() >= 3) {
+			if ((!licenseKey.isActive() && active) &&
+				type.equals(LicenseEntryConstants.TYPE_CLUSTER)) {
+
+				if (licenseKey.getMaxServers() <= activeClusterCount) {
+					throw new MaximumLicenseKeyException();
+				}
+			}
+
+			doUpdateLicenseKeyVersion3(
+				new Date(), licenseKey, offeringEntry, clusterLicenseKeys,
+				userId, licenseKeyId, licenseKeySetId, offeringEntryId, name,
+				active);
+		}
+		else {
+			doUpdateLicenseKey(
+				new Date(), licenseKey, offeringEntry, clusterLicenseKeys,
+				userId, licenseKeyId, licenseKeySetId, offeringEntryId, name,
+				active);
+		}
+	}
+
+	protected LicenseKey doAddLicenseKey(
+			Date now, User user, LicenseKeySet licenseKeySet, String name,
+			AccountEntry accountEntry, OfferingEntry offeringEntry,
+			LicenseEntry licenseEntry, ProductEntry productEntry,
+			String licenseEntryType, int licenseVersion, int productVersion,
+			long clusterId, String owner, int maxServers, String description,
+			String[] serverIds, Date startDate, Date expirationDate,
+			String additionalInfo, boolean complimentary, boolean active)
+		throws PortalException, SystemException {
+
+		if (clusterId <= 0) {
+			clusterId = counterLocalService.increment(
+				getCounterName(offeringEntry.getOfferingEntryId()));
+		}
+
+		String accountEntryName = LicenseUtil.trimText(accountEntry.getName());
+		String licenseEntryName = LicenseUtil.trimText(licenseEntry.getName());
+		String productEntryName = LicenseUtil.trimText(productEntry.getName());
+		String productVersionLabel = LicenseUtil.trimText(
+			LicenseKeyConstants.getProductVersionLabel(productVersion));
+
+		owner = LicenseUtil.trimText(owner);
+
+		if ((licenseVersion != 2) ||
+			(!licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) &&
+			 !licenseEntryType.equals(
+				LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER))) {
+
+			maxServers = 1;
+		}
+
+		description = LicenseUtil.trimText(description);
+
+		int maxHttpSessions = 0;
+
+		if (licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER) ||
+			licenseEntryType.equals(
+				LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER) ||
+			licenseEntryType.equals(LicenseEntryConstants.TYPE_TRIAL)) {
+
+			maxHttpSessions = 10;
+		}
+
+		String[] macAddresses = null;
+
+		if (((licenseVersion == 2) &&
+			 licenseEntryType.equals(LicenseEntryConstants.TYPE_PRODUCTION)) ||
+			((licenseVersion != 2) &&
+			 (licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) ||
+			  licenseEntryType.equals(
+				LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER)))) {
+
+			macAddresses = serverIds;
+		}
+		else {
+			macAddresses = new String[serverIds.length];
+		}
+
+		startDate = DateUtils.round(startDate, Calendar.SECOND);
+		expirationDate = DateUtils.round(expirationDate, Calendar.SECOND);
+
+		String key = KeyGenerator.generate(
+			accountEntryName, licenseEntryName, licenseEntryType,
+			licenseVersion, productEntryName,
+			ProductEntryConstants.PRODUCT_ID_PORTAL, productVersionLabel, owner,
+			maxServers, maxHttpSessions, 0, 0, description, null, null, null,
+			serverIds, startDate, expirationDate);
+
+		LicenseKey licenseKey = null;
+
+		OfferingEntryGroup offeringEntryGroup =
+			offeringEntry.getOfferingEntryGroup();
+
+		List<OfferingEntry> availableOfferingEntries =
+			offeringEntryGroup.getAvailableLicenseOfferingEntries();
+
+		availableOfferingEntries.remove(offeringEntry);
+
+		int availableServers = offeringEntry.getAvailableServers();
+
+		for (int i = 0; i < serverIds.length; i++) {
+			if (availableServers <= 0) {
+				if (!availableOfferingEntries.isEmpty()) {
+					offeringEntry = availableOfferingEntries.remove(0);
+
+					availableServers = offeringEntry.getAvailableServers();
+				}
+			}
+
+			licenseKey = doAddLicenseKey(
+				user, now, licenseKeySet, offeringEntry, licenseEntry,
+				accountEntryName, licenseEntryName, licenseEntryType,
+				licenseVersion, productEntryName, productVersion,
+				productVersionLabel, clusterId, owner, maxServers, 0, 0,
+				maxHttpSessions, description, StringPool.BLANK,
+				StringPool.BLANK, macAddresses[i], serverIds[i], key, startDate,
+				expirationDate, additionalInfo, complimentary, active);
+		}
+
+		return licenseKey;
+	}
+
+	protected LicenseKey doAddLicenseKey(
+			User user, Date now, LicenseKeySet licenseKeySet,
+			OfferingEntry offeringEntry, LicenseEntry licenseEntry,
+			String accountEntryName, String licenseEntryName,
+			String licenseEntryType, int licenseVersion,
+			String productEntryName, int productVersion,
+			String productVersionLabel, long clusterId, String owner,
+			int maxServers, long maxConcurrentUsers, long maxUsers,
+			int maxHttpSessions, String description, String hostName,
+			String ipAddresses, String macAddresses, String serverId,
+			String key, Date startDate, Date expirationDate,
+			String additionalInfo, boolean complimentary, boolean active)
+		throws SystemException {
+
+		long licenseKeyId = counterLocalService.increment();
+
+		LicenseKey licenseKey = licenseKeyPersistence.create(licenseKeyId);
+
+		licenseKey.setUserId(user.getUserId());
+		licenseKey.setUserName(user.getFullName());
+		licenseKey.setCreateDate(now);
+		licenseKey.setModifiedUserId(user.getUserId());
+		licenseKey.setModifiedUserName(user.getFullName());
+		licenseKey.setModifiedDate(now);
+		licenseKey.setLicenseKeySetId(licenseKeySet.getLicenseKeySetId());
+		licenseKey.setAccountEntryId(offeringEntry.getAccountEntryId());
+		licenseKey.setOrderEntryId(offeringEntry.getOrderEntryId());
+		licenseKey.setOfferingEntryId(offeringEntry.getOfferingEntryId());
+		licenseKey.setProductEntryId(offeringEntry.getProductEntryId());
+		licenseKey.setSupportResponseId(offeringEntry.getSupportResponseId());
+		licenseKey.setLicenseEntryId(licenseEntry.getLicenseEntryId());
+		licenseKey.setProductEntryId(licenseEntry.getProductEntryId());
+		licenseKey.setAccountEntryName(accountEntryName);
+		licenseKey.setLicenseEntryName(licenseEntryName);
+		licenseKey.setLicenseEntryType(licenseEntryType);
+		licenseKey.setLicenseVersion(licenseVersion);
+		licenseKey.setProductEntryName(productEntryName);
+		licenseKey.setProductId(ProductEntryConstants.PRODUCT_ID_PORTAL);
+		licenseKey.setProductVersion(productVersion);
+		licenseKey.setProductVersionLabel(productVersionLabel);
+		licenseKey.setClusterId(clusterId);
+		licenseKey.setOwner(owner);
+		licenseKey.setMaxServers(maxServers);
+		licenseKey.setMaxConcurrentUsers(maxConcurrentUsers);
+		licenseKey.setMaxUsers(maxUsers);
+		licenseKey.setMaxHttpSessions(maxHttpSessions);
+		licenseKey.setDescription(description);
+		licenseKey.setHostName(hostName);
+		licenseKey.setIpAddresses(ipAddresses);
+		licenseKey.setMacAddresses(macAddresses);
+		licenseKey.setServerId(serverId);
+		licenseKey.setKey(key);
+		licenseKey.setStartDate(startDate);
+		licenseKey.setExpirationDate(expirationDate);
+		licenseKey.setAdditionalInfo(additionalInfo);
+		licenseKey.setComplimentary(complimentary);
+		licenseKey.setActive(active);
+
+		return licenseKeyPersistence.update(licenseKey, false);
+	}
+
+	protected LicenseKey doAddLicenseKeyVersion3_4(
+			Date now, User user, LicenseKeySet licenseKeySet, String name,
+			AccountEntry accountEntry, OfferingEntry offeringEntry,
+			LicenseEntry licenseEntry, ProductEntry productEntry,
+			String licenseEntryType, int licenseVersion, int productVersion,
+			long clusterId, String owner, int maxServers, int maxHttpSessions,
+			String description, String[] hostNames, String[] ipAddresses,
+			String[] macAddresses, String[] serverIds, Date startDate,
+			Date expirationDate, String additionalInfo, boolean complimentary,
+			boolean active)
+		throws PortalException, SystemException {
+
+		String accountEntryName = LicenseUtil.trimText(accountEntry.getName());
+		String licenseEntryName = LicenseUtil.trimText(licenseEntry.getName());
+		String productEntryName = LicenseUtil.trimText(productEntry.getName());
+		String productVersionLabel = LicenseUtil.trimText(
+			LicenseKeyConstants.getProductVersionLabel(productVersion));
+
+		owner = LicenseUtil.trimText(owner);
+
+		if (!licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER)) {
+			maxServers = 1;
+		}
+
+		description = LicenseUtil.trimText(description);
+
+		if (licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER) ||
+			licenseEntryType.equals(
+				LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER)) {
+
+			if (maxHttpSessions == 0) {
+				maxHttpSessions = 10;
+			}
+		}
+		else {
+			maxHttpSessions = 0;
+		}
+
+		if (licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER)) {
+			if (clusterId <= 0) {
+				clusterId = counterLocalService.increment(
+					getCounterName(offeringEntry.getOfferingEntryId()));
+			}
+			else {
+				List<LicenseKey> clusterLicenseKeys =
+					licenseKeyPersistence.findByOEI_CI(
+						offeringEntry.getOfferingEntryId(), clusterId);
+
+				if (!clusterLicenseKeys.isEmpty()) {
+					LicenseKey clusterLicenseKey = clusterLicenseKeys.get(0);
+
+					maxServers = clusterLicenseKey.getMaxServers();
+					startDate = clusterLicenseKey.getStartDate();
+					expirationDate = clusterLicenseKey.getExpirationDate();
+				}
+			}
+		}
+
+		startDate = DateUtils.round(startDate, Calendar.SECOND);
+		expirationDate = DateUtils.round(expirationDate, Calendar.SECOND);
+
+		LicenseKey licenseKey = null;
+
+		int keyCount = 0;
+
+		if (ArrayUtil.isNotEmpty(serverIds)) {
+			keyCount = serverIds.length;
+		}
+		else if (hostNames != null) {
+			keyCount = hostNames.length;
+		}
+
+		OfferingEntryGroup offeringEntryGroup =
+			offeringEntry.getOfferingEntryGroup();
+
+		List<OfferingEntry> availableOfferingEntries =
+			offeringEntryGroup.getAvailableLicenseOfferingEntries();
+
+		availableOfferingEntries.remove(offeringEntry);
+
+		int availableServers = offeringEntry.getAvailableServers();
+
+		for (int i = 0; i < keyCount; i++) {
+			if (availableServers <= 0) {
+				if (!availableOfferingEntries.isEmpty()) {
+					offeringEntry = availableOfferingEntries.remove(0);
+
+					availableServers = offeringEntry.getAvailableServers();
+				}
+			}
+
+			String hostName = StringPool.BLANK;
+			String curIpAddresses = StringPool.BLANK;
+			String curMacAddresses = StringPool.BLANK;
+			String serverId = StringPool.BLANK;
+
+			if ((hostNames != null) && (hostNames.length > i)) {
+				hostName = hostNames[i];
+				curIpAddresses = ipAddresses[i];
+				curMacAddresses = macAddresses[i];
+			}
+
+			if ((serverIds != null) && (serverIds.length > i)) {
+				serverId = serverIds[i];
+			}
+
+			if (!licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER)) {
+				clusterId = counterLocalService.increment(
+					getCounterName(offeringEntry.getOfferingEntryId()));
+			}
+
+			String key = KeyGenerator.generate(
+				accountEntryName, licenseEntryName, licenseEntryType,
+				licenseVersion, productEntryName,
+				ProductEntryConstants.PRODUCT_ID_PORTAL, productVersionLabel,
+				owner, maxServers, maxHttpSessions,
+				offeringEntry.getMaxConcurrentUsers(),
+				offeringEntry.getMaxUsers(), description, hostName,
+				curIpAddresses, curMacAddresses, new String[] {serverId},
+				startDate, expirationDate);
+
+			licenseKey = doAddLicenseKey(
+				user, now, licenseKeySet, offeringEntry, licenseEntry,
+				accountEntryName, licenseEntryName, licenseEntryType,
+				licenseVersion, productEntryName, productVersion,
+				productVersionLabel, clusterId, owner, maxServers,
+				offeringEntry.getMaxConcurrentUsers(),
+				offeringEntry.getMaxUsers(), maxHttpSessions, description,
+				hostName, curIpAddresses, curMacAddresses, serverId, key,
+				startDate, expirationDate, additionalInfo, complimentary,
+				active);
+
+			availableServers--;
+		}
+
+		return licenseKey;
+	}
+
+	protected void doUpdateLicenseKey(
+			Date now, LicenseKey licenseKey, OfferingEntry offeringEntry,
+			List<LicenseKey> clusterLicenseKeys, long userId, long licenseKeyId,
+			long licenseKeySetId, long offeringEntryId, String name,
+			boolean active)
+		throws PortalException, SystemException {
+
+		User user = userPersistence.findByPrimaryKey(userId);
+
+		if (licenseKeySetId <= 0) {
+			LicenseKeySet licenseKeySet =
+				licenseKeySetLocalService.addLicenseKeySet(
+					userId, licenseKey.getAccountEntryId(), name);
+
+			licenseKeySetId = licenseKeySet.getLicenseKeySetId();
+		}
+		else {
+			licenseKeySetPersistence.findByPrimaryKey(licenseKeySetId);
+		}
+
+		long clusterId = licenseKey.getClusterId();
+
+		if (offeringEntryId != licenseKey.getOfferingEntryId()) {
+			clusterId = counterLocalService.increment(
+				getCounterName(offeringEntryId));
+		}
+
+		for (LicenseKey clusterLicenseKey : clusterLicenseKeys) {
+			clusterLicenseKey.setModifiedUserId(user.getUserId());
+			clusterLicenseKey.setModifiedUserName(user.getFullName());
+			clusterLicenseKey.setModifiedDate(now);
+			clusterLicenseKey.setLicenseKeySetId(licenseKeySetId);
+			clusterLicenseKey.setOrderEntryId(offeringEntry.getOrderEntryId());
+			clusterLicenseKey.setOfferingEntryId(offeringEntryId);
+			clusterLicenseKey.setProductEntryId(
+				offeringEntry.getProductEntryId());
+			clusterLicenseKey.setSupportResponseId(
+				offeringEntry.getSupportResponseId());
+			clusterLicenseKey.setClusterId(clusterId);
+			clusterLicenseKey.setActive(active);
+
+			licenseKeyPersistence.update(clusterLicenseKey, false);
+		}
+	}
+
+	protected void doUpdateLicenseKeyVersion3(
+			Date now, LicenseKey licenseKey, OfferingEntry offeringEntry,
+			List<LicenseKey> clusterLicenseKeys, long userId, long licenseKeyId,
+			long licenseKeySetId, long offeringEntryId, String name,
+			boolean active)
+		throws PortalException, SystemException {
+
+		User user = userPersistence.findByPrimaryKey(userId);
+
+		if (licenseKeySetId <= 0) {
+			LicenseKeySet licenseKeySet =
+				licenseKeySetLocalService.addLicenseKeySet(
+					userId, licenseKey.getAccountEntryId(), name);
+
+			licenseKeySetId = licenseKeySet.getLicenseKeySetId();
+		}
+		else {
+			licenseKeySetPersistence.findByPrimaryKey(licenseKeySetId);
+		}
+
+		long clusterId = licenseKey.getClusterId();
+
+		if (offeringEntryId != licenseKey.getOfferingEntryId()) {
+			clusterId = counterLocalService.increment(
+				getCounterName(offeringEntryId));
+		}
+
+		for (LicenseKey clusterLicenseKey : clusterLicenseKeys) {
+			if (clusterLicenseKey.getLicenseKeyId() ==
+					licenseKey.getLicenseKeyId()) {
+
+				clusterLicenseKey.setActive(active);
+			}
+
+			clusterLicenseKey.setModifiedUserId(user.getUserId());
+			clusterLicenseKey.setModifiedUserName(user.getFullName());
+			clusterLicenseKey.setModifiedDate(now);
+			clusterLicenseKey.setLicenseKeySetId(licenseKeySetId);
+			clusterLicenseKey.setOrderEntryId(offeringEntry.getOrderEntryId());
+			clusterLicenseKey.setOfferingEntryId(offeringEntryId);
+			clusterLicenseKey.setProductEntryId(
+				offeringEntry.getProductEntryId());
+			clusterLicenseKey.setSupportResponseId(
+				offeringEntry.getSupportResponseId());
+			clusterLicenseKey.setClusterId(clusterId);
+
+			licenseKeyPersistence.update(clusterLicenseKey, false);
+		}
+	}
+
+	protected List<LicenseKey> getClusterLicenseKeys(
+			LicenseKey licenseKey, String type)
+		throws SystemException {
+
+		if ((type.equals(LicenseEntryConstants.TYPE_CLUSTER) ||
+			 type.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER)) &&
+			(licenseKey.getLicenseVersion() != 2)) {
+
+			return licenseKeyPersistence.findByOEI_CI(
+				licenseKey.getOfferingEntryId(), licenseKey.getClusterId());
+		}
+		else {
+			List<LicenseKey> clusterLicenseKeys = new ArrayList<LicenseKey>();
+
+			clusterLicenseKeys.add(licenseKey);
+
+			return clusterLicenseKeys;
+		}
+	}
+
+	protected String getCounterName(long offeringEntryId) {
+		return LicenseKey.class.getName().concat(StringPool.POUND).concat(
+			String.valueOf(offeringEntryId));
+	}
+
+	protected Date getLicenseKeyStartDate(
+			int month, int day, int year, TimeZone timeZone, Date defaultDate)
+		throws PortalException {
+
+		Date startDate = PortalUtil.getDate(
+			month, day, year, timeZone, (Class<? extends PortalException>)null);
+
+		if (startDate == null) {
+			startDate = defaultDate;
+		}
+
+		return startDate;
+	}
+
+	protected LicenseKeySet getSingleUseLicenseKeySet(long accountEntryId)
+		throws PortalException, SystemException {
+
+		List<LicenseKeySet> licenseKeySets =
+			licenseKeySetPersistence.findByU_AEI_N(
+				OSBConstants.USER_DEFAULT_USER_ID, accountEntryId,
+				"Trial Licenses", 0, 1);
+
+		if (!licenseKeySets.isEmpty()) {
+			return licenseKeySets.get(0);
+		}
+		else {
+			return licenseKeySetLocalService.addLicenseKeySet(
+				OSBConstants.USER_DEFAULT_USER_ID, accountEntryId,
+				"Trial Licenses");
+		}
+	}
+
+	protected OfferingEntry getSingleUseOfferingEntry(
+			long accountEntryId, long orderEntryId, int productVersion)
+		throws PortalException, SystemException {
+
+		List<OfferingEntry> offeringEntries =
+			offeringEntryPersistence.findByU_AEI_OEI_T(
+				OSBConstants.USER_DEFAULT_USER_ID, accountEntryId, orderEntryId,
+				OfferingEntryConstants.TYPE_TRIAL, 0, 1);
+
+		if (!offeringEntries.isEmpty()) {
+			return offeringEntries.get(0);
+		}
+		else {
+			OfferingDefinition offeringDefinition =
+				offeringDefinitionPersistence.findByPrimaryKey(
+					OSBConstants.OFFERING_DEFINITION_TRIAL_ID);
+
+			int majorProductVersion = ProductEntryConstants.getMajorVersion(
+				productVersion);
+
+			return offeringEntryLocalService.addOfferingEntry(
+				OSBConstants.USER_DEFAULT_USER_ID, accountEntryId, orderEntryId,
+				offeringDefinition.getProductEntryId(),
+				offeringDefinition.getSupportResponseId(), "Trial",
+				OfferingEntryConstants.TYPE_TRIAL, majorProductVersion,
+				offeringDefinition.isLicenses(), 2592000000l,
+				offeringDefinition.getMaxConcurrentUsers(),
+				offeringDefinition.getMaxUsers(),
+				offeringDefinition.isSupportTickets(), 60000,
+				OfferingEntryConstants.SIZING_1,
+				offeringDefinition.getQuantity(),
+				OfferingEntryConstants.STATUS_ACTIVE);
+		}
+	}
+
+	protected void sendRegisteredEmail(
+			String emailAddress, String fullName, LicenseKey licenseKey)
+		throws Exception {
+
+		Map<Locale, String> subjectMap =
+			LicenseUtil.getEmailRegisteredTrialLicenseSubjectMap();
+		Map<Locale, String> bodyMap =
+			LicenseUtil.getEmailRegisteredTrialLicenseBodyMap();
+
+		File file = LicenseUtil.exportToFile(licenseKey);
+
+		SubscriptionSender subscriptionSender = new SubscriptionSender();
+
+		subscriptionSender.addFileAttachment(file);
+		subscriptionSender.setCompanyId(OSBConstants.COMPANY_ID);
+		subscriptionSender.setFrom("sales@liferay.com", "Liferay, Inc.");
+		subscriptionSender.setHtmlFormat(true);
+		subscriptionSender.setLocalizedBodyMap(bodyMap);
+		subscriptionSender.setLocalizedSubjectMap(subjectMap);
+		subscriptionSender.setMailId(
+			"license_key", licenseKey.getLicenseKeyId());
+		subscriptionSender.setPortletId(OSBPortletKeys.OSB_LICENSE);
+		subscriptionSender.setReplyToAddress("sales@liferay.com");
+
+		subscriptionSender.addRuntimeSubscribers(emailAddress, fullName);
+
+		subscriptionSender.flushNotificationsAsync();
+	}
+
+	protected void validate(
+			AssetReceiptLicense assetReceiptLicense, int numberOfKeys)
+		throws PortalException, SystemException {
+
+		if (assetReceiptLicense.hasUnlimitedServers()) {
+			return;
+		}
+
+		if (assetReceiptLicense.getAvailableLicenseKeyCount() < numberOfKeys) {
+			throw new MaximumLicenseKeyException();
+		}
+	}
+
+	protected void validate(
+			AssetReceiptLicense assetReceiptLicense, String owner,
+			String description, String[] hostNames, String[] ipAddresses,
+			String[] macAddresses)
+		throws PortalException, SystemException {
+
+		if (Validator.isNull(owner)) {
+			throw new LicenseKeyOwnerException();
+		}
+
+		if (Validator.isNull(description)) {
+			throw new LicenseKeyDescriptionException();
+		}
+
+		if (hostNames.length <= 0) {
+			throw new LicenseKeyHostNameException();
+		}
+
+		Set<String> distinctHostNames = new HashSet<String>();
+		Set<String> distinctIpAddresses = new HashSet<String>();
+		Set<String> distinctMacAddresses = new HashSet<String>();
+
+		for (int i = 0; i < hostNames.length; i++) {
+			String hostName = hostNames[i];
+
+			if (distinctHostNames.contains(hostName)) {
+				throw new DuplicateHostNameException();
+			}
+
+			if (Validator.isNotNull(hostName)) {
+				distinctHostNames.add(hostName);
+			}
+
+			String[] curIpAddresses = StringUtil.split(ipAddresses[i]);
+
+			for (String ipAddress : curIpAddresses) {
+				validateIpAddress(ipAddress);
+
+				if (distinctIpAddresses.contains(ipAddress)) {
+					throw new DuplicateIPAddressException();
+				}
+
+				distinctIpAddresses.add(ipAddress);
+			}
+
+			String[] curMacAddresses = StringUtil.split(macAddresses[i]);
+
+			for (String macAddress : curMacAddresses) {
+				validateMacAddress(macAddress);
+
+				if (distinctMacAddresses.contains(macAddress)) {
+					throw new DuplicateMACAddressException();
+				}
+
+				distinctMacAddresses.add(macAddress);
+			}
+		}
+
+		if (distinctHostNames.isEmpty() && distinctIpAddresses.isEmpty() &&
+			distinctMacAddresses.isEmpty()) {
+
+			throw new LicenseKeyServerInfoException();
+		}
+
+		validate(assetReceiptLicense, 1);
+	}
+
+	protected void validate(OfferingEntry offeringEntry, int numberOfKeys)
+		throws PortalException, SystemException {
+
+		OfferingEntryGroup offeringEntryGroup =
+			offeringEntry.getOfferingEntryGroup();
+
+		if (offeringEntryGroup.getQuantity() <
+				(offeringEntryGroup.getLicenseKeysCount() + numberOfKeys)) {
+
+			throw new MaximumLicenseKeyException();
+		}
+	}
+
+	protected void validate(
+			OfferingEntry offeringEntry, LicenseEntry licenseEntry,
+			int licenseVersion, ProductEntry productEntry, int productVersion,
+			String owner, int maxServers, String description,
+			String[] hostNames, String[] ipAddresses, String[] macAddresses,
+			String[] serverIds, boolean complimentary)
+		throws PortalException, SystemException {
+
+		if (offeringEntry.getStatus() != OfferingEntryConstants.STATUS_ACTIVE) {
+			throw new OfferingEntryStatusException();
+		}
+
+		try {
+			String listType =
+				ProductEntry.class.getName() + StringPool.PERIOD +
+					productEntry.getVersionsListType();
+
+			listTypeService.validate(
+				productVersion, ProductEntryConstants.getAllListType(listType));
+		}
+		catch (Exception e) {
+			throw new LicenseKeyProductVersionException();
+		}
+
+		if (Validator.isNull(owner)) {
+			throw new LicenseKeyOwnerException();
+		}
+
+		String type = licenseEntry.getType();
+
+		if ((licenseVersion >= 3) &&
+			type.equals(LicenseEntryConstants.TYPE_CLUSTER)) {
+
+			if ((maxServers <= 0) || !offeringEntry.isLicenses() ||
+				(maxServers > offeringEntry.getQuantity())) {
+
+				throw new LicenseKeyMaxServersException();
+			}
+		}
+
+		if ((licenseVersion == 2) &&
+			(type.equals(LicenseEntryConstants.TYPE_CLUSTER) ||
+			 type.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER))) {
+
+			if (maxServers <= 0) {
+				throw new LicenseKeyMaxServersException();
+			}
+		}
+
+		if (Validator.isNull(description)) {
+			throw new LicenseKeyDescriptionException();
+		}
+
+		if ((licenseVersion == 2) &&
+			(type.equals(LicenseEntryConstants.TYPE_CLUSTER) ||
+			 type.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER))) {
+
+			validate(offeringEntry, maxServers);
+
+			return;
+		}
+
+		if (licenseVersion <= 2) {
+			if (serverIds.length == 0) {
+				throw new LicenseKeyServerIdException();
+			}
+
+			validate(offeringEntry, serverIds.length);
+
+			for (String serverId : serverIds) {
+				if (type.equals(LicenseEntryConstants.TYPE_ENTERPRISE) ||
+					type.equals(LicenseEntryConstants.TYPE_OEM)) {
+
+					continue;
+				}
+
+				if (Validator.isNull(serverId)) {
+					throw new LicenseKeyServerIdException();
+				}
+
+				if (serverId.equals(LicenseKeyConstants.SERVER_ID_DEVELOPER) &&
+					(complimentary ||
+					 type.equals(LicenseEntryConstants.TYPE_DEVELOPER))) {
+
+					continue;
+				}
+
+				if (serverId.length() == 44) {
+					validateServerId(serverId);
+				}
+				else if (serverId.length() == 17) {
+					validateMacAddress(serverId);
+				}
+				else {
+					//throw new LicenseKeyServerIdException();
+				}
+			}
+		}
+		else if (ArrayUtil.isNotEmpty(serverIds)) {
+			validate(offeringEntry, serverIds.length);
+		}
+		else {
+			if (hostNames.length <= 0) {
+				throw new LicenseKeyHostNameException();
+			}
+
+			validate(offeringEntry, hostNames.length);
+		}
+	}
+
+	protected void validateIpAddress(String ipAddress) throws PortalException {
+		if (!Validator.isIPAddress(ipAddress)) {
+			throw new LicenseKeyIPAddressException();
+		}
+	}
+
+	protected void validateMacAddress(String macAddress)
+		throws PortalException {
+
+		String curMacAddress = StringUtil.replace(
+			macAddress, StringPool.DASH, StringPool.COLON);
+
+		String[] octets = StringUtil.split(curMacAddress, StringPool.COLON);
+
+		if (octets.length != 6) {
+			throw new LicenseKeyMACAddressException();
+		}
+
+		for (int i = 0; i < octets.length; i++) {
+			String octet = octets[i];
+
+			if (octet.length() > 2) {
+				throw new LicenseKeyMACAddressException();
+			}
+
+			char[] charArray = octet.toCharArray();
+
+			for (int j = 0; j < charArray.length; j++) {
+				char c = charArray[j];
+
+				if (!Validator.isDigit(c) &&
+					((c < 65) || ((c > 70) && (c < 97)) || (c > 102))) {
+
+					throw new LicenseKeyMACAddressException();
+				}
+			}
+		}
+	}
+
+	protected void validateServerId(String serverId) throws PortalException {
+		char[] charArray = serverId.toCharArray();
+
+		for (int i = 0; i < charArray.length; i++) {
+			char c = charArray[i];
+
+			if (((i + 1) % 5) == 0) {
+				if (c != CharPool.DASH) {
+					throw new LicenseKeyServerIdException();
+				}
+			}
+			else if (!Validator.isDigit(c) && !Validator.isChar(c)) {
+				throw new LicenseKeyServerIdException();
+			}
+		}
+	}
+
+	protected void validateSingleUse(long orderEntryId, String emailAddress)
+		throws PortalException, SystemException {
+
+		int count = licenseKeyPersistence.countByOEI_O(
+			orderEntryId, emailAddress);
+
+		if (count > 0) {
+			throw new LicenseKeySingleUseException();
+		}
+	}
+
+	protected void validateTrialRenewal(LicenseKey lastLicenseKey)
+		throws PortalException {
+
+		Date lastExpirationDate = lastLicenseKey.getExpirationDate();
+
+		if (lastExpirationDate.getTime() >
+				(System.currentTimeMillis() + (7 * Time.DAY))) {
+
+			throw new PrincipalException();
+		}
+	}
+
+}

@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<!DOCTYPE project>
+
+<project name="osb-portlet" basedir="." default="deploy">
+	<property name="import.shared" value="ecommerce-shared,ip-geocoder-shared,json-web-service-client-shared,osb-restful-shared,osb-shared,osb-tools-shared" />
+
+	<import file="../build-common-portlet.xml" />
+
+	<target name="build-lang">
+		<antcall target="build-lang-cmd">
+			<param name="lang.dir" value="docroot/WEB-INF/src/content" />
+			<param name="lang.file" value="Language" />
+			<param name="lang.translate" value="false" />
+		</antcall>
+	</target>
+
+	<target name="build-upgrade">
+		<property name="upgrade.impl.class" value="com.liferay.osb.hook.upgrade.OSBUpgradeImpl" />
+
+		<if>
+			<isset property="entity" />
+			<then>
+				<property name="entity.name" value="${entity}" />
+			</then>
+			<else>
+				<property name="entity.name" value="" />
+			</else>
+		</if>
+
+		<java
+			classname="com.liferay.osb.tools.UpgradeBuilder"
+			classpathref="plugin.classpath"
+			failonerror="true"
+			fork="true"
+			newenvironment="true"
+		>
+			<arg value="${entity.name}" />
+			<jvmarg value="-Dupgrade.impl.class=${upgrade.impl.class}" />
+		</java>
+	</target>
+
+	<target name="compile">
+		<if>
+			<not>
+				<istrue value="${osb.ext.auto.direct.deploy.disabled}" />
+			</not>
+			<then>
+				<ant dir="${sdk.dir}/ext/osb-ext" target="direct-deploy" inheritAll="false" />
+			</then>
+		</if>
+
+		<ant antfile="../build-common-portlet.xml" target="compile" />
+	</target>
+
+	<target name="format-javadoc">
+		<ant antfile="../build-common-portlet.xml" target="format-javadoc" />
+
+		<echo file="docroot/WEB-INF/src/META-INF/javadocs-all.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8"?><javadocs></javadocs>]]></echo>
+		<echo file="docroot/WEB-INF/src/META-INF/javadocs-rt.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8"?><javadocs></javadocs>]]></echo>
+	</target>
+
+	<target name="format-source">
+		<java
+			classname="com.liferay.osb.tools.SourceFormatter"
+			classpathref="plugin.classpath"
+			failonerror="false"
+			fork="true"
+			newenvironment="true"
+		/>
+
+		<ant antfile="../build-common-portlet.xml" target="format-source" />
+	</target>
+</project>

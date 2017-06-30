@@ -1,0 +1,102 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<aui:script use="aui-base,cookie,liferay-marketplace-messenger">
+	var clientURL = A.Cookie.get(
+		'<%= OSBCookieKeys.MP_CLIENT_URL %>',
+		function(value) {
+			return value.replace(/\"/g, '');
+		}
+	);
+
+	if (!clientURL) {
+		clientURL = window.name;
+	}
+
+	Liferay.MarketplaceMessenger.init(
+		clientURL,
+		{
+			cmd: 'init',
+			height: A.getBody().height() + 50
+		}
+	);
+
+	Liferay.MarketplaceMessenger.receiveMessage(
+		function(event) {
+			var response = event.responseData;
+
+			if (response.message === 'fail') {
+				return;
+			}
+
+			if (response.cmd === 'updateApp') {
+				return;
+			}
+
+			if (!response.supportsHotDeploy) {
+				A.one('.hot-deploy-warning').removeClass('aui-helper-hidden');
+
+				A.one('.btn[data-action=downloadApp]').show();
+			}
+			else {
+				A.one('.update-app').removeClass('aui-helper-hidden');
+
+				A.one('.btn[data-action=updateApp]').show();
+			}
+		},
+		A.Lang.emptyFnTrue
+	);
+
+	A.one('.btn[data-action=updateApp]').on(
+		'click',
+		function(event) {
+			A.all('.btn').hide();
+
+			A.one('.update-app').hide();
+			A.one('.please-wait').show()
+
+			var message = {
+				appId: <%= PortletPropsValues.MARKETPLACE_APP_ENTRY_ID %>,
+				cmd: 'updateApp',
+				url: '<%= PortalUtil.getLayoutFullURL(themeDisplay) %>/-/mp_server/application/' + '<%= appPackage.getAppPackageId() %>',
+				version: '<%= appEntry.getVersion() %>'
+			};
+
+			A.io.request(
+				'<portlet:actionURL name="sendApp" />',
+				{
+					data: message,
+					dataType: 'JSON',
+					method: 'POST',
+					on: {
+						success: function(event, id, obj) {
+							var response = this.get('responseData');
+
+							Liferay.MarketplaceMessenger.postMessage(response);
+						}
+					}
+				}
+			);
+
+			setTimeout(
+				function() {
+					location.href = clientURL;
+				},
+				15000
+			);
+		}
+	);
+</aui:script>

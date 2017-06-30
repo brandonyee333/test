@@ -1,0 +1,451 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%
+boolean licenseAdmin = AccountWorkerLocalServiceUtil.hasAccountWorkerRole(user.getUserId(), AccountWorkerConstants.ROLE_SALES) || RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstants.ROLE_OSB_ACCOUNT_ADMIN_ID) || RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstants.ROLE_OSB_ADMINISTRATOR_ID) || RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstants.ROLE_OSB_TRIAL_LICENSE_ADMIN_ID);
+
+Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
+%>
+
+<div class="callout-a">
+	<liferay-ui:search-toggle
+		buttonLabel="search"
+		displayTerms="<%= displayTerms %>"
+		id="toggle_id_license_key_search"
+	>
+		<div class="aui-helper-clearfix aui-w100">
+			<div class="aui-w33 content-column">
+				<div class="content-column-content left-column">
+					<h2>
+						<liferay-ui:message key="project" />
+					</h2>
+
+					<input id="<portlet:namespace /><%= displayTerms.ACCOUNT_ENTRY_NAME %>" name="<portlet:namespace /><%= displayTerms.ACCOUNT_ENTRY_NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getAccountEntryName()) %>" />
+				</div>
+			</div>
+
+			<div class="aui-w33 content-column">
+				<div class="content-column-content middle-column">
+					<h2>
+						<liferay-ui:message key="name" />
+					</h2>
+
+					<input id="<portlet:namespace /><%= displayTerms.LICENSE_KEY_SET_NAME %>" name="<portlet:namespace /><%= displayTerms.LICENSE_KEY_SET_NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getLicenseKeySetName()) %>" />
+				</div>
+			</div>
+
+			<div class="aui-w33 content-column">
+				<div class="content-column-content right-column">
+					<h2>
+						<liferay-ui:message key="owner" />
+					</h2>
+
+					<input id="<portlet:namespace /><%= displayTerms.OWNER %>" name="<portlet:namespace /><%= displayTerms.OWNER %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getOwner()) %>" />
+				</div>
+			</div>
+		</div>
+
+		<div class="aui-helper-clearfix aui-w100">
+			<div class="aui-w33 content-column">
+				<div class="content-column-content left-column">
+					<h2>
+						<liferay-ui:message key="description" />
+					</h2>
+
+					<input id="<portlet:namespace /><%= displayTerms.DESCRIPTION %>" name="<portlet:namespace /><%= displayTerms.DESCRIPTION %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getDescription()) %>" />
+				</div>
+			</div>
+
+			<div class="aui-w33 content-column">
+				<div class="content-column-content middle-column">
+					<h2>
+						<liferay-ui:message key="host-name" />
+					</h2>
+
+					<input id="<portlet:namespace /><%= displayTerms.HOST_NAME %>" name="<portlet:namespace /><%= displayTerms.HOST_NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getHostName()) %>" />
+				</div>
+			</div>
+
+			<div class="aui-w33 content-column">
+				<div class="content-column-content right-column">
+					<h2>
+						<liferay-ui:message key="ip-address" />
+					</h2>
+
+					<input id="<portlet:namespace /><%= displayTerms.IP_ADDRESS %>" name="<portlet:namespace /><%= displayTerms.IP_ADDRESS %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getIpAddress()) %>" />
+				</div>
+			</div>
+		</div>
+
+		<div class="aui-helper-clearfix aui-w100">
+			<div class="aui-w33 content-column">
+				<div class="content-column-content left-column">
+					<h2>
+						<liferay-ui:message key="mac-address" />
+					</h2>
+
+					<input id="<portlet:namespace /><%= displayTerms.MAC_ADDRESS %>" name="<portlet:namespace /><%= displayTerms.MAC_ADDRESS %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getMacAddress()) %>" />
+				</div>
+			</div>
+
+			<div class="aui-w33 content-column">
+				<div class="content-column-content middle-column">
+					<h2>
+						<liferay-ui:message key="server-id" />
+					</h2>
+
+					<input id="<portlet:namespace /><%= displayTerms.SERVER_ID %>" name="<portlet:namespace /><%= displayTerms.SERVER_ID %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getServerId()) %>" />
+				</div>
+			</div>
+
+			<div class="aui-w33 content-column">
+				<div class="content-column-content right-column">
+					<h2>
+						<liferay-ui:message key="key" />
+					</h2>
+
+					<input id="<portlet:namespace /><%= displayTerms.KEY %>" name="<portlet:namespace /><%= displayTerms.KEY %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getKey()) %>" />
+				</div>
+			</div>
+		</div>
+
+		<div class="aui-helper-clearfix aui-w100">
+			<div class="aui-w33 content-column">
+				<div class="content-column-content left-column">
+					<h2>
+						<liferay-ui:message key="created-by" />
+					</h2>
+
+					<select name="<portlet:namespace /><%= displayTerms.CREATE_USER_ID %>">
+						<option value=""></option>
+						<option <%= (user.getUserId() == displayTerms.getCreateUserId()) ? "selected" : StringPool.BLANK %> value="<%= user.getUserId() %>"><liferay-ui:message key="me" /></option>
+
+						<c:if test="<%= ((displayTerms.getCreateUserId() > 0) && (user.getUserId() != displayTerms.getCreateUserId())) %>">
+							<option selected value="<%= displayTerms.getCreateUserId() %>"><%= HtmlUtil.escape(displayTerms.getCreateUserName()) %></option>
+						</c:if>
+					</select>
+
+					<input name="<portlet:namespace /><%= displayTerms.CREATE_USER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getCreateUserName()) %>" />
+
+					<input class="aui-button-input" onClick="var createUserWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/license/select_user.jsp" /><portlet:param name="userParam" value="licenseKeyCreateUsers" /><portlet:param name="callback" value="selectCreateUser" /></portlet:renderURL>', 'create_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); createUserWindow.focus();" type="button" value="<liferay-ui:message key="choose" />" />
+				</div>
+			</div>
+
+			<div class="aui-w33 content-column">
+				<div class="content-column-content middle-column">
+					<h2>
+						<liferay-ui:message key="last-edited-by" />
+					</h2>
+
+					<select name="<portlet:namespace /><%= displayTerms.MODIFIED_USER_ID %>">
+						<option value=""></option>
+						<option <%= (user.getUserId() == displayTerms.getModifiedUserId()) ? "selected" : StringPool.BLANK %> value="<%= user.getUserId() %>"><liferay-ui:message key="me" /></option>
+
+						<c:if test="<%= ((displayTerms.getModifiedUserId() > 0) && (user.getUserId() != displayTerms.getModifiedUserId())) %>">
+							<option selected value="<%= displayTerms.getModifiedUserId() %>"><%= HtmlUtil.escape(displayTerms.getModifiedUserName()) %></option>
+						</c:if>
+					</select>
+
+					<input name="<portlet:namespace /><%= displayTerms.MODIFIED_USER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getModifiedUserName()) %>" />
+
+					<input class="aui-button-input" onClick="var modifiedUserWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/license/select_user.jsp" /><portlet:param name="userParam" value="licenseKeyModifiedUsers" /><portlet:param name="callback" value="selectModifiedUser" /></portlet:renderURL>', 'modified_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); modifiedUserWindow.focus();" type="button" value="<liferay-ui:message key="choose" />" />
+				</div>
+			</div>
+
+			<div class="aui-w33 content-column">
+				<div class="content-column-content right-column">
+					<c:if test="<%= licenseAdmin %>">
+						<h2>
+							<liferay-ui:message key="active" />
+						</h2>
+
+						<select id="<portlet:namespace /><%= displayTerms.ACTIVE %>" name="<portlet:namespace /><%= displayTerms.ACTIVE %>">
+							<option></option>
+							<option <%= (displayTerms.hasActive() && displayTerms.isActive()) ? "selected" : "" %> value="1"><liferay-ui:message key="true" /></option>
+							<option <%= (displayTerms.hasActive() && !displayTerms.isActive()) ? "selected" : "" %> value="0"><liferay-ui:message key="false" /></option>
+						</select>
+					</c:if>
+				</div>
+			</div>
+		</div>
+
+		<div class="aui-helper-clearfix aui-w100">
+			<div class="aui-w100 content-column">
+				<div class="content-column-content">
+					<h2 class="license-input-heading">
+						<liferay-ui:message key="license-type" />
+					</h2>
+
+					<%
+					List<LicenseEntry> licenseEntries = LicenseEntryLocalServiceUtil.getLicenseEntries(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+					%>
+
+					<liferay-util:include page="/common/multiple_select_checkboxes.jsp" servletContext="<%= application %>">
+						<liferay-util:param name="curValues" value="<%= StringUtil.merge(displayTerms.getLicenseEntryIds()) %>" />
+						<liferay-util:param name="itemsPerColumn" value="7" />
+						<liferay-util:param name="labels" value='<%= ListUtil.toString(licenseEntries, "name") %>' />
+						<liferay-util:param name="name" value="<%= displayTerms.LICENSE_ENTRY_IDS %>" />
+						<liferay-util:param name="values" value='<%= ListUtil.toString(licenseEntries, "licenseEntryId") %>' />
+					</liferay-util:include>
+				</div>
+			</div>
+
+			<div class="aui-w100 content-column">
+				<div class="content-column-content">
+					<h2 class="license-input-heading">
+						<liferay-ui:message key="product" />
+					</h2>
+
+					<%
+					List<ProductEntry> productEntries = ProductEntryLocalServiceUtil.getProductEntries(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+					%>
+
+					<liferay-util:include page="/common/multiple_select_checkboxes.jsp" servletContext="<%= application %>">
+						<liferay-util:param name="curValues" value="<%= StringUtil.merge(displayTerms.getProductEntryIds()) %>" />
+						<liferay-util:param name="itemsPerColumn" value="7" />
+						<liferay-util:param name="labels" value='<%= ListUtil.toString(productEntries, "name") %>' />
+						<liferay-util:param name="name" value="<%= displayTerms.PRODUCT_ENTRY_IDS %>" />
+						<liferay-util:param name="values" value='<%= ListUtil.toString(productEntries, "productEntryId") %>' />
+					</liferay-util:include>
+				</div>
+			</div>
+
+			<div class="aui-w100 content-column">
+				<div class="content-column-content">
+					<h2 class="license-input-heading">
+						<liferay-ui:message key="product-version" />
+					</h2>
+
+					<%
+					List<ListType> productVersionTypes = ListUtil.copy(ListTypeServiceUtil.getListTypes(ProductEntryConstants.LIST_TYPE_PORTAL_ALL_VERSIONS));
+
+					productVersionTypes.addAll(ListTypeServiceUtil.getListTypes(ProductEntryConstants.LIST_TYPE_DIGITAL_ENTERPRISE_ALL_VERSIONS));
+					%>
+
+					<liferay-util:include page="/common/multiple_select_checkboxes.jsp" servletContext="<%= application %>">
+						<liferay-util:param name="curValues" value="<%= StringUtil.merge(displayTerms.getProductVersions()) %>" />
+						<liferay-util:param name="itemsPerColumn" value="6" />
+						<liferay-util:param name="labels" value='<%= ListUtil.toString(productVersionTypes, "name") %>' />
+						<liferay-util:param name="name" value="<%= displayTerms.PRODUCT_VERSIONS %>" />
+						<liferay-util:param name="values" value='<%= ListUtil.toString(productVersionTypes, "listTypeId") %>' />
+					</liferay-util:include>
+				</div>
+			</div>
+		</div>
+
+		<div class="aui-helper-clearfix aui-w100">
+			<div class="aui-w50 content-column">
+				<div class="content-column-content left-column">
+					<h2 class="license-input-heading">
+						<liferay-ui:message key="created-between" />
+					</h2>
+
+					<div class="aui-w100">
+						<liferay-ui:message key="begin-date" />
+
+						<liferay-ui:input-date
+							cssClass="aui-w100"
+							dayNullable="<%= true %>"
+							dayParam="<%= displayTerms.CREATE_DATE_GT_DAY %>"
+							dayValue="<%= displayTerms.getCreateDateGTDay() %>"
+							monthNullable="<%= true %>"
+							monthParam="<%= displayTerms.CREATE_DATE_GT_MONTH %>"
+							monthValue="<%= displayTerms.getCreateDateGTMonth() %>"
+							yearNullable="<%= true %>"
+							yearParam="<%= displayTerms.CREATE_DATE_GT_YEAR %>"
+							yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
+							yearRangeStart="<%= 2010 %>"
+							yearValue="<%= displayTerms.getCreateDateGTYear() %>"
+						/>
+					</div>
+
+					<div class="aui-w100">
+						<liferay-ui:message key="end-date" />
+
+						<liferay-ui:input-date
+							cssClass="aui-w100"
+							dayNullable="<%= true %>"
+							dayParam="<%= displayTerms.CREATE_DATE_LT_DAY %>"
+							dayValue="<%= displayTerms.getCreateDateLTDay() %>"
+							monthNullable="<%= true %>"
+							monthParam="<%= displayTerms.CREATE_DATE_LT_MONTH %>"
+							monthValue="<%= displayTerms.getCreateDateLTMonth() %>"
+							yearNullable="<%= true %>"
+							yearParam="<%= displayTerms.CREATE_DATE_LT_YEAR %>"
+							yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
+							yearRangeStart="<%= 2010 %>"
+							yearValue="<%= displayTerms.getCreateDateLTYear() %>"
+						/>
+					</div>
+				</div>
+			</div>
+
+			<div class="aui-w50 content-column">
+				<div class="content-column-content right-column">
+					<h2 class="license-input-heading">
+						<liferay-ui:message key="modified-between" />
+					</h2>
+
+					<div class="aui-w100">
+						<liferay-ui:message key="begin-date" />
+
+						<liferay-ui:input-date
+							cssClass="aui-w100"
+							dayNullable="<%= true %>"
+							dayParam="<%= displayTerms.MODIFIED_DATE_GT_DAY %>"
+							dayValue="<%= displayTerms.getModifiedDateGTDay() %>"
+							monthNullable="<%= true %>"
+							monthParam="<%= displayTerms.MODIFIED_DATE_GT_MONTH %>"
+							monthValue="<%= displayTerms.getModifiedDateGTMonth() %>"
+							yearNullable="<%= true %>"
+							yearParam="<%= displayTerms.MODIFIED_DATE_GT_YEAR %>"
+							yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
+							yearRangeStart="<%= 2010 %>"
+							yearValue="<%= displayTerms.getModifiedDateGTYear() %>"
+						/>
+					</div>
+
+					<div class="aui-w100">
+						<liferay-ui:message key="end-date" />
+
+						<liferay-ui:input-date
+							cssClass="aui-w100"
+							dayNullable="<%= true %>"
+							dayParam="<%= displayTerms.MODIFIED_DATE_LT_DAY %>"
+							dayValue="<%= displayTerms.getModifiedDateLTDay() %>"
+							monthNullable="<%= true %>"
+							monthParam="<%= displayTerms.MODIFIED_DATE_LT_MONTH %>"
+							monthValue="<%= displayTerms.getModifiedDateLTMonth() %>"
+							yearNullable="<%= true %>"
+							yearParam="<%= displayTerms.MODIFIED_DATE_LT_YEAR %>"
+							yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
+							yearRangeStart="<%= 2010 %>"
+							yearValue="<%= displayTerms.getModifiedDateLTYear() %>"
+						/>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="aui-helper-clearfix aui-w100">
+			<div class="aui-w50 content-column">
+				<div class="content-column-content left-column">
+					<h2 class="license-input-heading">
+						<liferay-ui:message key="started-between" />
+					</h2>
+
+					<div class="aui-w100">
+						<liferay-ui:message key="begin-date" />
+
+						<liferay-ui:input-date
+							cssClass="aui-w100"
+							dayNullable="<%= true %>"
+							dayParam="<%= displayTerms.START_DATE_GT_DAY %>"
+							dayValue="<%= displayTerms.getStartDateGTDay() %>"
+							monthNullable="<%= true %>"
+							monthParam="<%= displayTerms.START_DATE_GT_MONTH %>"
+							monthValue="<%= displayTerms.getStartDateGTMonth() %>"
+							yearNullable="<%= true %>"
+							yearParam="<%= displayTerms.START_DATE_GT_YEAR %>"
+							yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
+							yearRangeStart="<%= 2010 %>"
+							yearValue="<%= displayTerms.getStartDateGTYear() %>"
+						/>
+					</div>
+
+					<div class="aui-w100">
+						<liferay-ui:message key="end-date" />
+
+						<liferay-ui:input-date
+							cssClass="aui-w100"
+							dayNullable="<%= true %>"
+							dayParam="<%= displayTerms.START_DATE_LT_DAY %>"
+							dayValue="<%= displayTerms.getStartDateLTDay() %>"
+							monthNullable="<%= true %>"
+							monthParam="<%= displayTerms.START_DATE_LT_MONTH %>"
+							monthValue="<%= displayTerms.getStartDateLTMonth() %>"
+							yearNullable="<%= true %>"
+							yearParam="<%= displayTerms.START_DATE_LT_YEAR %>"
+							yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
+							yearRangeStart="<%= 2010 %>"
+							yearValue="<%= displayTerms.getStartDateLTYear() %>"
+						/>
+					</div>
+				</div>
+			</div>
+
+			<div class="aui-w50 content-column">
+				<div class="content-column-content right-column">
+					<h2 class="license-input-heading">
+						<liferay-ui:message key="expires-between" />
+					</h2>
+
+					<div class="aui-w100">
+						<liferay-ui:message key="begin-date" />
+
+						<liferay-ui:input-date
+							cssClass="aui-w100"
+							dayNullable="<%= true %>"
+							dayParam="<%= displayTerms.EXPIRATION_DATE_GT_DAY %>"
+							dayValue="<%= displayTerms.getExpirationDateGTDay() %>"
+							monthNullable="<%= true %>"
+							monthParam="<%= displayTerms.EXPIRATION_DATE_GT_MONTH %>"
+							monthValue="<%= displayTerms.getExpirationDateGTMonth() %>"
+							yearNullable="<%= true %>"
+							yearParam="<%= displayTerms.EXPIRATION_DATE_GT_YEAR %>"
+							yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
+							yearRangeStart="<%= 2010 %>"
+							yearValue="<%= displayTerms.getExpirationDateGTYear() %>"
+						/>
+					</div>
+
+					<div class="aui-w100">
+						<liferay-ui:message key="end-date" />
+
+						<liferay-ui:input-date
+							cssClass="aui-w100"
+							dayNullable="<%= true %>"
+							dayParam="<%= displayTerms.EXPIRATION_DATE_LT_DAY %>"
+							dayValue="<%= displayTerms.getExpirationDateLTDay() %>"
+							monthNullable="<%= true %>"
+							monthParam="<%= displayTerms.EXPIRATION_DATE_LT_MONTH %>"
+							monthValue="<%= displayTerms.getExpirationDateLTMonth() %>"
+							yearNullable="<%= true %>"
+							yearParam="<%= displayTerms.EXPIRATION_DATE_LT_YEAR %>"
+							yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
+							yearRangeStart="<%= 2010 %>"
+							yearValue="<%= displayTerms.getExpirationDateLTYear() %>"
+						/>
+					</div>
+				</div>
+			</div>
+		</div>
+	</liferay-ui:search-toggle>
+</div>
+
+<aui:script>
+	function <portlet:namespace />selectCreateUser(userId, userName) {
+		document.<portlet:namespace />fm.<portlet:namespace /><%= displayTerms.CREATE_USER_ID %>.options[2] = new Option(userName, userId);
+		document.<portlet:namespace />fm.<portlet:namespace /><%= displayTerms.CREATE_USER_ID %>.selectedIndex = 2;
+		document.<portlet:namespace />fm.<portlet:namespace /><%= displayTerms.CREATE_USER_NAME %>.value = userName;
+	}
+
+	function <portlet:namespace />selectModifiedUser(userId, userName) {
+		document.<portlet:namespace />fm.<portlet:namespace /><%= displayTerms.MODIFIED_USER_ID %>.options[2] = new Option(userName, userId);
+		document.<portlet:namespace />fm.<portlet:namespace /><%= displayTerms.MODIFIED_USER_ID %>.selectedIndex = 2;
+		document.<portlet:namespace />fm.<portlet:namespace /><%= displayTerms.MODIFIED_USER_NAME %>.value = userName;
+	}
+</aui:script>

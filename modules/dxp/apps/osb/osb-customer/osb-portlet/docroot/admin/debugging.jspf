@@ -1,0 +1,155 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%
+String tabs3 = ParamUtil.getString(request, "tabs3", "license");
+%>
+
+<liferay-ui:tabs
+	names="license,rabbitmq"
+	param="tabs3"
+	url="<%= portletURL.toString() %>"
+/>
+
+<c:choose>
+	<c:when test='<%= tabs3.equals("rabbitmq") && permissionChecker.isCompanyAdmin() %>'>
+		<portlet:actionURL name="debugRabbitMQ" var="debugRabbitMQURL">
+			<portlet:param name="mvcPath" value="/admin/view.jsp" />
+			<portlet:param name="tabs1" value="tools" />
+			<portlet:param name="tabs2" value="debugging" />
+			<portlet:param name="tabs3" value="rabbitmq" />
+		</portlet:actionURL>
+
+		<aui:form action="<%= debugRabbitMQURL %>" method="post" name="fm">
+			<table class="lfr-table">
+			<tr>
+				<td>
+					<liferay-ui:message key="routing-key" />
+				</td>
+				<td>
+					<input name="<portlet:namespace />routingKey" type="text" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<liferay-ui:message key="message" />
+				</td>
+				<td>
+					<textarea class="lfr-textarea" name="<portlet:namespace />message"></textarea>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<liferay-ui:message key="properties" />
+				</td>
+				<td>
+					<textarea class="lfr-textarea" name="<portlet:namespace />properties"></textarea>
+				</td>
+			</tr>
+			</table>
+
+			<input class="aui-button-input" type="submit" value="<liferay-ui:message key="submit" />" />
+		</aui:form>
+	</c:when>
+	<c:otherwise>
+
+		<%
+		Properties licenseProperties = (Properties)request.getAttribute("licenseProperties");
+		Properties serverProperties = (Properties)request.getAttribute("serverProperties");
+		Properties serverIdProperties = (Properties)request.getAttribute("serverIdProperties");
+		%>
+
+		<c:if test="<%= licenseProperties != null %>">
+			<h1>
+				License Properties
+			</h1>
+
+			<%
+			for (String key : licenseProperties.stringPropertyNames()) {
+			%>
+
+				<strong><%= key %>:</strong> <%= licenseProperties.getProperty(key) %>
+
+				<br />
+
+			<%
+			}
+			%>
+
+		</c:if>
+
+		<c:if test="<%= serverProperties != null %>">
+			<h1>
+				Server Properties
+			</h1>
+
+			<%
+			for (String key : serverProperties.stringPropertyNames()) {
+			%>
+
+				<strong><%= key %>:</strong> <%= serverProperties.getProperty(key) %>
+
+				<br />
+
+			<%
+			}
+			%>
+
+		</c:if>
+
+		<c:if test="<%= serverIdProperties != null %>">
+			<h1>
+				Server ID Properties
+			</h1>
+
+			<%
+			for (String key : serverIdProperties.stringPropertyNames()) {
+			%>
+
+				<strong><%= key %>:</strong> <%= serverIdProperties.getProperty(key) %>
+
+				<br />
+
+			<%
+			}
+			%>
+
+		</c:if>
+
+		<portlet:actionURL name="debugLicenseFiles" var="debugLicenseFilesURL">
+			<portlet:param name="mvcPath" value="/admin/view.jsp" />
+			<portlet:param name="tabs1" value="tools" />
+			<portlet:param name="tabs2" value="debugging" />
+			<portlet:param name="tabs3" value="license" />
+		</portlet:actionURL>
+
+		<aui:form action="<%= debugLicenseFilesURL %>" enctype="multipart/form-data" method="post" name="fm">
+			<div class="ctrl-holder">
+				<label for="<portlet:namespace />license"><liferay-ui:message key="license-file" /></label>
+
+				<input id="<portlet:namespace />license" name="<portlet:namespace />license" type="file" />
+			</div>
+
+			<div class="ctrl-holder">
+				<label for="<portlet:namespace />serverId"><liferay-ui:message key="server-id-file" /></label>
+
+				<input id="<portlet:namespace />serverId" name="<portlet:namespace />serverId" type="file" />
+			</div>
+
+			<input class="aui-button-input" type="submit" value="<liferay-ui:message key="submit" />" />
+		</aui:form>
+	</c:otherwise>
+</c:choose>

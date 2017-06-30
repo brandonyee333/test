@@ -1,0 +1,108 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%
+List<AppPackage> appPackages = AppPackageLocalServiceUtil.getAppPackages(actionableAppVersion.getAppVersionId(), QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+
+AppPackage appPackage = null;
+
+int compatibility = ParamUtil.getInteger(request, "compatibility");
+
+if (compatibility > 0) {
+	appPackage = AppPackageLocalServiceUtil.fetchAppPackage(actionableAppVersion.getAppVersionId(), compatibility);
+}
+else if (!appPackages.isEmpty()) {
+	appPackage = appPackages.get(0);
+
+	compatibility = appPackage.getCompatibility();
+}
+%>
+
+<div class="pacl-properties">
+	<aui:select name="supported-framework-versions" onChange="location.href = this.value;">
+
+		<%
+		PortletURL appPackageURL = renderResponse.createRenderURL();
+
+		appPackageURL.setParameter("mvcPath", "/marketplace_admin/review_app_entry.jsp");
+		appPackageURL.setParameter("tabs1", "pacl-properties");
+		appPackageURL.setParameter("redirect", redirect);
+		appPackageURL.setParameter("appEntryId", String.valueOf(appEntry.getAppEntryId()));
+
+		for (AppPackage curAppPackage : appPackages) {
+			appPackageURL.setParameter("compatibility", String.valueOf(curAppPackage.getCompatibility()));
+		%>
+
+			<aui:option label="<%= PortalReleaseUtil.getVersionName(curAppPackage) %>" selected="<%= compatibility == curAppPackage.getCompatibility() %>" value="<%= appPackageURL.toString() %>" />
+
+		<%
+		}
+		%>
+
+	</aui:select>
+
+	<c:if test="<%= appPackage != null %>">
+		<h2>
+			<%= PortalReleaseUtil.getVersionName(appPackage) %>
+		</h2>
+
+		<%
+		List<AppPackagePlugin> appPackagePlugins = AppPackagePluginLocalServiceUtil.getAppPackagePlugins(appPackage.getAppPackageId());
+
+		for (AppPackagePlugin appPackagePlugin : appPackagePlugins) {
+		%>
+
+			<h3>
+				<%= appPackagePlugin.getFileName() %>
+			</h3>
+
+			<%
+			UnicodeProperties paclProperties = appPackagePlugin.getPACLProperties();
+
+			Set<String> keys = new TreeSet<String>(paclProperties.keySet());
+
+			for (String key : keys) {
+			%>
+
+				<div>
+					<liferay-ui:message key="<%= key %>" />
+				</div>
+
+				<ul>
+
+					<%
+					String[] values = StringUtil.split(paclProperties.getProperty(key));
+
+					for (String value : values) {
+					%>
+
+						<li>
+							<%= HtmlUtil.escape(value) %>
+						</li>
+
+					<%
+					}
+					%>
+
+				</ul>
+
+			<%
+			}
+		}
+		%>
+
+	</c:if>
+</div>

@@ -1,0 +1,164 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%
+String keywords = ParamUtil.getString(request, "keywords");
+
+CorpEntry corpEntry = CorpEntryLocalServiceUtil.getOrganizationCorpEntry(group.getOrganizationId());
+%>
+
+<liferay-ui:header
+	title="user-manager"
+/>
+
+<p>
+	<liferay-ui:message key="the-users-listed-will-have-access-to-the-liferay-services-associated-with-the-selected-project" />
+</p>
+
+<%
+List<CorpMembershipRequest> corpMembershipRequests = CorpMembershipRequestLocalServiceUtil.getCorpMembershipRequests(corpEntry.getCorpEntryId(), new int[] {WorkflowConstants.STATUS_PENDING, WorkflowConstants.STATUS_PENDING_VALIDATION}, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+%>
+
+<c:if test="<%= !corpMembershipRequests.isEmpty() %>">
+	<%@ include file="/corp_members/corp_entry_user_requests.jspf" %>
+</c:if>
+
+<div class="company-members">
+	<h2>
+		<liferay-ui:message key="company-members" />
+	</h2>
+
+	<portlet:actionURL var="searchURL">
+		<portlet:param name="mvcPath" value="/corp_members/view.jsp" />
+		<portlet:param name="tabs1" value="manage-users" />
+	</portlet:actionURL>
+
+	<aui:form action="<%= searchURL %>" method="post" name="fm2">
+		<aui:input name="corpEntryId" type="hidden" value="<%= corpEntry.getCorpEntryId() %>" />
+		<aui:input name="userIds" type="hidden" />
+		<aui:input name="corpAdmin" type="hidden" />
+
+		<liferay-ui:error exception="<%= CorpEntryAdminException.class %>" message="you-cannot-perform-administrative-actions-on-yourself" />
+
+		<div class="corp-members-search">
+			<aui:input label="" name="keywords" type="text" value="<%= keywords %>" />
+
+			<aui:button type="submit" value="search" />
+		</div>
+
+		<div class="users">
+			<liferay-ui:search-container
+				emptyResultsMessage="no-users-were-found"
+				headerNames="name,roles"
+			>
+				<liferay-ui:search-container-results
+					results="<%= CorpMembersUtil.getCorpEntryUsers(corpEntry.getCorpEntryId(), keywords, 0, searchContainer.getStart(), searchContainer.getEnd(), new UserFirstNameComparator(true)) %>"
+					total="<%= CorpMembersUtil.getCorpEntryUsersCount(corpEntry.getCorpEntryId(), keywords, 0) %>"
+				/>
+
+				<liferay-ui:search-container-row
+					className="com.liferay.portal.model.User"
+					escapedModel="<%= true %>"
+					keyProperty="userId"
+					modelVar="user2"
+				>
+					<liferay-ui:search-container-row-parameter
+						name="corpEntry"
+						value="<%= corpEntry %>"
+					/>
+
+					<liferay-ui:search-container-column-text>
+						<img class="avatar" src="<%= user2.getPortraitURL(themeDisplay) %>" />
+					</liferay-ui:search-container-column-text>
+
+					<liferay-ui:search-container-column-text
+						name="name"
+						value="<%= user2.getFullName() %>"
+					/>
+
+					<liferay-ui:search-container-column-jsp
+						name="roles"
+						path="/corp_members/corp_entry_user_action.jsp"
+					/>
+
+					<liferay-ui:search-container-column-text
+						align="right"
+					>
+						<c:if test="<%= OSBCorpEntryPermission.contains(permissionChecker, corpEntry, OSBActionKeys.ASSIGN_MEMBERS) %>">
+							<liferay-portlet:actionURL name="unsetCorpEntryUser" var="unsetCorpEntryUserURL">
+								<portlet:param name="redirect" value="<%= currentURL %>" />
+								<portlet:param name="corpEntryId" value="<%= String.valueOf(corpEntry.getCorpEntryId()) %>" />
+								<portlet:param name="userId" value="<%= String.valueOf(user2.getUserId()) %>" />
+							</liferay-portlet:actionURL>
+
+							<a class="unset-user-button" href="<%= unsetCorpEntryUserURL %>">
+								<liferay-ui:message key="remove-user" />
+							</a>
+						</c:if>
+					</liferay-ui:search-container-column-text>
+				</liferay-ui:search-container-row>
+
+				<liferay-ui:search-iterator paginate="<%= false %>" />
+
+				<c:if test="<%= searchContainer.getTotal() > searchContainer.getDelta() %>">
+					<liferay-ui:search-paginator searchContainer="<%= searchContainer %>" />
+				</c:if>
+			</liferay-ui:search-container>
+		</div>
+	</aui:form>
+</div>
+
+<aui:script use="aui-base,aui-io">
+	var users = A.one('.corp-members .users');
+
+	users.delegate(
+		'change',
+		function(event) {
+			var input = event.currentTarget;
+
+			var actions = input.ancestor('.actions');
+
+			A.io.request(
+				'<liferay-portlet:actionURL name="setCorpEntryUserRole" />',
+				{
+					data: {
+						<portlet:namespace />assignRole: input.attr('checked'),
+						<portlet:namespace />corpEntryId: <%= corpEntry.getCorpEntryId() %>,
+						<portlet:namespace />roleId: input.attr('data-roleId'),
+						<portlet:namespace />userId: actions.attr('data-userId')
+					},
+					dataType: 'json',
+					method: 'post'
+				}
+			);
+		},
+		'.actions.roles input[type=checkbox]'
+	);
+
+	users.delegate(
+		'click',
+		function(event) {
+			event.preventDefault();
+
+			if (confirm('<liferay-ui:message key="are-you-sure-you-want-to-remove-this-user-from-the-company" unicode="<%= true %>" />')) {
+				var url = event.currentTarget.attr('href');
+
+				submitForm(document.hrefFm, url);
+			}
+		},
+		'.unset-user-button'
+	);
+</aui:script>

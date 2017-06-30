@@ -1,0 +1,166 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%
+String taglibContractEntriesLabel = StringPool.BLANK;
+
+if (ecDocumentEntryExtraSettings.isResale()) {
+	Object[] arguments = new Object[] {HtmlUtil.escape(addressCompanyName), "<a class=\"reseller-license-agreement\" href=\"javascript:;\">", "</a>", "<a class=\"license-agreement\" href=\"javascript:;\">", "</a>", "<a class=\"terms-of-service\" href=\"javascript:;\">", "</a>"};
+
+	taglibContractEntriesLabel = LanguageUtil.format(pageContext, "i-have-read-and-agree-on-behalf-of-x-to-the-reseller-license-agreement-the-end-user-license-agreement-and-the-terms-of-service", arguments);
+}
+else if (ownerClassName.equals(CorpProject.class.getName())) {
+	Object[] arguments = new Object[] {HtmlUtil.escape(addressCompanyName), "<a class=\"license-agreement\" href=\"javascript:;\">", "</a>", "<a class=\"terms-of-service\" href=\"javascript:;\">", "</a>"};
+
+	taglibContractEntriesLabel = LanguageUtil.format(pageContext, "i-have-read-and-agree-on-behalf-of-x-to-the-end-user-license-agreement-and-the-terms-of-service", arguments);
+}
+else {
+	Object[] arguments = new Object[] {"<a class=\"license-agreement\" href=\"javascript:;\">", "</a>", "<a class=\"terms-of-service\" href=\"javascript:;\">", "</a>"};
+
+	taglibContractEntriesLabel = LanguageUtil.format(pageContext, "i-have-read-and-agree-to-the-end-user-license-agreement-and-the-terms-of-service", arguments);
+}
+%>
+
+<div class="contract-entries">
+	<liferay-ui:error exception="<%= AssetReceiptLegalEntityNameException.class %>" message="please-enter-the-entity-you-are-accepting-on-the-behalf-of" />
+	<liferay-ui:error exception="<%= ContractAuditAcceptanceException.class %>" message="please-accept-the-end-user-license-agreement-and-terms-of-service" />
+
+	<aui:input cssClass="accept-contract" label="<%= taglibContractEntriesLabel %>" name="acceptContract" type="checkbox" />
+
+	<c:if test="<%= Validator.isNull(ownerClassName) %>">
+		<aui:input cssClass="legal-entity-name" name="legalEntityName" type="text" value="<%= addressCompanyName %>" />
+	</c:if>
+</div>
+
+<aui:script use="aui-dialog">
+	A.one('.contract-entries .license-agreement').on(
+		'click',
+		function(event) {
+			var width = 600;
+
+			<%
+			AppVersion appVersion = appEntry.getApprovedAppVersion();
+
+			ContractEntry eulaContractEntry = appVersion.getContractEntry();
+
+			PortletURL eulaURL = renderResponse.createRenderURL();
+
+			eulaURL.setParameter(mvcPathParam, "/marketplace/view_contract_entry.jsp");
+			eulaURL.setParameter("contractEntryId", String.valueOf(eulaContractEntry.getContractEntryId()));
+			eulaURL.setParameter("title", "end-user-license-agreement");
+			eulaURL.setWindowState(LiferayWindowState.EXCLUSIVE);
+			%>
+
+			var dialog = new A.Dialog(
+				{
+					destroyOnClose: true,
+					draggable: true,
+					height: 500,
+					modal: true,
+					resizable: false,
+					stack: true,
+					title: '<liferay-ui:message key="end-user-license-agreement" unicode="<%= true %>" />',
+					width: width,
+					x: (document.documentElement.clientWidth / 2) - (width / 2),
+					y: 100
+				}
+			).plug(
+				A.Plugin.IO,
+				{
+					uri: '<%= eulaURL.toString() %>'
+				}
+			).render();
+		}
+	);
+
+	<c:if test="<%= ecDocumentEntryExtraSettings.isResale() %>">
+		A.one('.contract-entries .reseller-license-agreement').on(
+			'click',
+			function(event) {
+				var width = 600;
+
+				<%
+				ContractEntry rlaContractEntry = ContractEntryLocalServiceUtil.getLatestContractEntry(ContractEntryConstants.DEFAULT_CLASS_NAME_ID, ContractEntryConstants.DEFAULT_CLASS_PK, ContractEntryConstants.TYPE_RESELLER_LICENSE_AGREEMENT);
+
+				PortletURL rlaURL = renderResponse.createRenderURL();
+
+				rlaURL.setParameter(mvcPathParam, "/marketplace/view_contract_entry.jsp");
+				rlaURL.setParameter("contractEntryId", String.valueOf(rlaContractEntry.getContractEntryId()));
+				rlaURL.setParameter("title", "reseller-license-agreement");
+				rlaURL.setWindowState(LiferayWindowState.EXCLUSIVE);
+				%>
+
+				var dialog = new A.Dialog(
+					{
+						destroyOnClose: true,
+						draggable: true,
+						height: 500,
+						modal: true,
+						resizable: false,
+						stack: true,
+						title: '<liferay-ui:message key="reseller-license-agreement" unicode="<%= true %>" />',
+						width: width,
+						x: (document.documentElement.clientWidth / 2) - (width / 2),
+						y: 100
+					}
+				).plug(
+					A.Plugin.IO,
+					{
+						uri: '<%= rlaURL.toString() %>'
+					}
+				).render();
+			}
+		);
+	</c:if>
+
+	A.one('.contract-entries .terms-of-service').on(
+		'click',
+		function(event) {
+			var width = 600;
+
+			<%
+			ContractEntry tosContractEntry = ContractEntryLocalServiceUtil.getLatestContractEntry(ContractEntryConstants.DEFAULT_CLASS_NAME_ID, ContractEntryConstants.DEFAULT_CLASS_PK, ContractEntryConstants.TYPE_TERMS_OF_SERVICE);
+
+			PortletURL tosURL = renderResponse.createRenderURL();
+
+			tosURL.setParameter(mvcPathParam, "/marketplace/view_contract_entry.jsp");
+			tosURL.setParameter("contractEntryId", String.valueOf(tosContractEntry.getContractEntryId()));
+			tosURL.setParameter("title", "liferay-terms-of-service");
+			tosURL.setWindowState(LiferayWindowState.EXCLUSIVE);
+			%>
+
+			var dialog = new A.Dialog(
+				{
+					destroyOnClose: true,
+					draggable: true,
+					height: 500,
+					modal: true,
+					resizable: false,
+					stack: true,
+					title: '<liferay-ui:message key="liferay-terms-of-service" unicode="<%= true %>" />',
+					width: width,
+					x: (document.documentElement.clientWidth / 2) - (width / 2),
+					y: 100
+				}
+			).plug(
+				A.Plugin.IO,
+				{
+					uri: '<%= tosURL.toString() %>'
+				}
+			).render();
+		}
+	);
+</aui:script>

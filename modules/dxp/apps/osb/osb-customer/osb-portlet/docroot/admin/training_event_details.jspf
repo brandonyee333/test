@@ -1,0 +1,116 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%
+TrainingCourse trainingCourse = TrainingCourseLocalServiceUtil.fetchTrainingCourse(trainingEvent.getTrainingCourseId());
+
+String version = StringPool.BLANK;
+
+try {
+	ListType listType = ListTypeServiceUtil.getListType(trainingEvent.getPortalMinorVersion());
+
+	version = listType.getName();
+}
+catch (NoSuchListTypeException nslte) {
+}
+
+PartnerEntry partnerEntry = PartnerEntryLocalServiceUtil.fetchPartnerEntry(trainingEvent.getPartnerEntryId());
+
+TimeZone selTimeZone = TimeZoneUtil.getTimeZone(trainingEvent.getTimeZoneId());
+
+longDateFormatDateTime = FastDateFormatFactoryUtil.getDateTime(DateFormat.LONG, DateFormat.LONG, locale, selTimeZone);
+%>
+
+<table class="lfr-table">
+<tr>
+	<td>
+		<liferay-ui:message key="type" />
+	</td>
+	<td>
+		<%= HtmlUtil.escape(LanguageUtil.get(pageContext, TrainingEventConstants.getTypeLabel(trainingEvent.getType()))) %>
+	</td>
+</tr>
+<tr>
+	<td>
+		<liferay-ui:message key="course" />
+	</td>
+	<td>
+		<%= HtmlUtil.escape(trainingCourse.getName()) %>
+	</td>
+</tr>
+<tr>
+	<td>
+		<liferay-ui:message key="version" />
+	</td>
+	<td>
+		<%= HtmlUtil.escape(version) %>
+	</td>
+</tr>
+<tr>
+	<td>
+		<liferay-ui:message key="location" />
+	</td>
+	<td>
+		<%= trainingEvent.getAddressDisplayHTML() %>
+	</td>
+</tr>
+
+<c:if test="<%= partnerEntry != null %>">
+	<tr>
+		<td>
+			<liferay-ui:message key="partner" />
+		</td>
+		<td>
+			<%= HtmlUtil.escape(partnerEntry.getCode()) %>
+		</td>
+	</tr>
+</c:if>
+
+<tr>
+	<td>
+		<liferay-ui:message key="time-zone" />
+	</td>
+	<td>
+		<%= selTimeZone.getDisplayName() %>
+	</td>
+</tr>
+<tr>
+	<td>
+		<liferay-ui:message key="start-date" />
+	</td>
+	<td>
+		<%= longDateFormatDateTime.format(trainingEvent.getStartDate()) %>
+	</td>
+</tr>
+<tr>
+	<td>
+		<liferay-ui:message key="end-date" />
+	</td>
+	<td>
+		<%= longDateFormatDateTime.format(trainingEvent.getEndDate()) %>
+	</td>
+</tr>
+<tr>
+	<td>
+		<liferay-ui:message key="student-capacity" />
+	</td>
+	<td>
+		<%= trainingEvent.getMaxCustomers() %>
+	</td>
+</tr>
+</table>
+
+<br />

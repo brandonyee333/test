@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+
+<deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+	<service name="Plugin_OSB_AccountCallService" provider="java:RPC" style="rpc" use="encoded">
+		<typeMapping xmlns:ns="http://model.osb.liferay.com" qname="ns:AccountCallSoap" type="java:com.liferay.osb.model.AccountCallSoap" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></typeMapping>
+		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="http://model.osb.liferay.com" name="deleteAccountCall" qname="operNS:deleteAccountCall" returnQName="deleteAccountCallReturn" returnType="rtns:AccountCallSoap" soapAction="">
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="accountCallId" type="tns:long"></parameter>
+		</operation>
+		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="http://model.osb.liferay.com" name="updateAccountCall" qname="operNS:updateAccountCall" returnQName="updateAccountCallReturn" returnType="rtns:AccountCallSoap" soapAction="">
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="accountCallId" type="tns:long"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="accountEntryId" type="tns:long"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="type" type="tns:int"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="callDateMonth" type="tns:int"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="callDateDay" type="tns:int"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="callDateYear" type="tns:int"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="callDateHour" type="tns:int"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="callDateMinute" type="tns:int"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="callLength" type="tns:long"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="summary" type="tns:string"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="clientsPresent" type="tns:string"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="notes" type="tns:string"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="actionItems" type="tns:string"></parameter>
+		</operation>
+		<parameter name="allowedMethods" value="deleteAccountCall updateAccountCall" />
+		<parameter name="className" value="com.liferay.osb.service.http.AccountCallServiceSoap" />
+		<parameter name="schemaUnqualified" value="http://model.osb.liferay.com" />
+		<parameter name="typeMappingVersion" value="1.2" />
+		<parameter name="wsdlPortType" value="AccountCallServiceSoap" />
+		<parameter name="wsdlServiceElement" value="AccountCallServiceSoapService" />
+		<parameter name="wsdlServicePort" value="Plugin_OSB_AccountCallService" />
+		<parameter name="wsdlTargetNamespace" value="urn:http.service.osb.liferay.com" />
+	</service>
+</deployment>

@@ -1,0 +1,244 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<div class="aui-helper-hidden">
+	<div class="lesa-feedback-container" id="<portlet:namespace />lesaFeedbackContainer">
+		<div>
+			<h2 class="center txt-b">
+				<liferay-ui:message key="submit-feedback" />
+			</h2>
+
+			<div class="margin-top-30 txt-b">
+				<liferay-ui:message key="please-select-one-of-the-following" />
+			</div>
+
+			<div>
+				<input checked="checked" id="<portlet:namespace />lesaFeedbackRadioButton" name="<portlet:namespace />lesaFeedbackRadioButton" type="radio" value="0" />
+
+				<liferay-ui:message key="i-would-like-to-give-feedback-about-lesa" />
+			</div>
+
+			<div>
+				<input id="<portlet:namespace />lesaFeedbackBugRadioButton" name="<portlet:namespace />lesaFeedbackRadioButton" type="radio" value="1" />
+
+				<liferay-ui:message key="i-would-like-to-report-a-bug-in-lesa" />
+			</div>
+
+			<div class="margin-top-10">
+				<div class="feedback-msg-error" id="<portlet:namespace />lesaFeedbackSummaryMessage">
+					<liferay-ui:message key="please-provide-a-summary" />
+				</div>
+
+				<div class="txt-b">
+					<liferay-ui:message key="summary" />:
+				</div>
+
+				<textarea class="textarea-summary" id="<portlet:namespace />lesaFeedbackSummary"></textarea>
+			</div>
+
+			<div class="margin-top-10">
+				<div class="feedback-msg-error" id="<portlet:namespace />lesaFeedbackCommentsMessage">
+					<liferay-ui:message key="please-provide-a-description" />
+				</div>
+
+				<div class="txt-b">
+					<liferay-ui:message key="comments" />:
+				</div>
+
+				<textarea class="textarea-comments" id="<portlet:namespace />lesaFeedbackComments"></textarea>
+			</div>
+
+			<div class="aui-helper-clearfix">
+				<input class="fl" id="<portlet:namespace />lesaFeedbackCancelButton" type="button" value="<liferay-ui:message key="cancel" />" />
+				<input class="fr" id="<portlet:namespace />lesaFeedbackSubmitButton" type="button" value="<liferay-ui:message key="submit" />" />
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="aui-helper-hidden">
+	<div class="lesa-feedback-container" id="<portlet:namespace />lesaFeedbackThankYouContainer">
+		<div class="center">
+			<h2 class="txt-b">
+				<liferay-ui:message key="thank-you" />
+			</h2>
+
+			<div class="margin-top-30">
+				<liferay-ui:message key="your-feedback-has-been-submitted" />
+			</div>
+
+			<input id="<portlet:namespace />lesaFeedbackCloseButton" type="button" value="<liferay-ui:message key="close" />" />
+		</div>
+	</div>
+</div>
+
+<aui:script>
+	AUI().use(
+		'aui-dialog',
+		function(A) {
+			var lesaFeedbackDialog = A.one('#<portlet:namespace />lesaFeedbackContainer');
+
+			var lesaFeedbackThankYouDialog = A.one('#<portlet:namespace />lesaFeedbackThankYouContainer');
+
+			var dialog = new A.Dialog(
+				{
+					bodyContent: lesaFeedbackDialog,
+					centered: true,
+					close: false,
+					constrain: true,
+					cssClass: 'lesa-feedback-dialog',
+					draggable: false,
+					modal: true,
+					resizable: false,
+					visible: false
+				}
+			).render();
+
+			var lesaFeedbackIcon = A.one('#<portlet:namespace />lesaFeedbackIcon');
+
+			lesaFeedbackIcon.on(
+				'click',
+				function() {
+					dialog.show();
+				}
+			);
+
+			var lesaFeedbackCancelButton = A.one('#<portlet:namespace />lesaFeedbackCancelButton');
+
+			lesaFeedbackCancelButton.on(
+				'click',
+				function() {
+					<portlet:namespace />closePopup(dialog);
+				}
+			);
+
+			var lesaFeedbackSubmitButton = A.one('#<portlet:namespace />lesaFeedbackSubmitButton');
+
+			lesaFeedbackSubmitButton.on(
+				'click',
+				function() {
+					var lesaFeedbackComments = document.getElementById('<portlet:namespace />lesaFeedbackComments').value;
+					var lesaFeedbackCommentsMessage = A.one('#<portlet:namespace />lesaFeedbackCommentsMessage');
+					var lesaFeedbackSummary = document.getElementById('<portlet:namespace />lesaFeedbackSummary').value;
+					var lesaFeedbackSummaryMessage = A.one('#<portlet:namespace />lesaFeedbackSummaryMessage');
+
+					var error = false;
+
+					lesaFeedbackCommentsMessage.removeClass('visible');
+					lesaFeedbackSummaryMessage.removeClass('visible');
+
+					if (lesaFeedbackSummary.length == 0) {
+						error = true;
+
+						lesaFeedbackSummaryMessage.addClass('visible');
+					}
+
+					if (lesaFeedbackComments.length == 0) {
+						error = true;
+
+						lesaFeedbackCommentsMessage.addClass('visible');
+					}
+
+					if (error) {
+						return;
+					}
+
+					var lesaFeedbackType = '';
+
+					if (document.getElementById('<portlet:namespace />lesaFeedbackRadioButton').checked) {
+						lesaFeedbackType = document.getElementById('<portlet:namespace />lesaFeedbackRadioButton').value;
+					}
+					else {
+						lesaFeedbackType = document.getElementById('<portlet:namespace />lesaFeedbackBugRadioButton').value;
+					}
+
+					A.io.request(
+						'<liferay-portlet:actionURL name="sendLesaFeedbackEmail" />',
+						{
+							data: {
+								<portlet:namespace />lesaFeedbackComments: lesaFeedbackComments,
+								<portlet:namespace />lesaFeedbackSummary: lesaFeedbackSummary,
+								<portlet:namespace />lesaFeedbackType: lesaFeedbackType
+							},
+							dataType: 'json',
+							method: 'post'
+						}
+					);
+
+					var lesaFeedbackDialogContent = A.one('.lesa-feedback-dialog-content');
+
+					lesaFeedbackDialogContent.addClass('lesa-feedback-thank-you');
+
+					dialog.set('bodyContent', lesaFeedbackThankYouDialog);
+
+					dialog.syncUI();
+
+					var lesaFeedbackCloseButton = A.one('#<portlet:namespace />lesaFeedbackCloseButton');
+
+					lesaFeedbackCloseButton.on(
+						'click',
+						function() {
+							dialog.hide();
+
+							lesaFeedbackDialogContent.removeClass('lesa-feedback-thank-you');
+
+							dialog.set('bodyContent', lesaFeedbackDialog);
+
+							dialog.syncUI();
+
+							<portlet:namespace />resetFeedback();
+						}
+					);
+				}
+			);
+
+			window.addEventListener(
+				'keydown',
+				function(A) {
+					if (A.keyCode === 27) {
+						<portlet:namespace />closePopup(dialog);
+					}
+				}
+			);
+		}
+	);
+
+	function <portlet:namespace />closePopup(dialog) {
+		var summary = document.getElementById('<portlet:namespace />lesaFeedbackSummary').value;
+		var comments = document.getElementById('<portlet:namespace />lesaFeedbackComments').value;
+
+		if ((summary != '') || (comments != '')) {
+			var cancelEdit = confirm('<%= UnicodeLanguageUtil.get(pageContext, "are-you-sure-you-want-to-cancel-submitting-feedback") %>');
+
+			if (cancelEdit) {
+				dialog.hide();
+
+				<portlet:namespace />resetFeedback();
+			}
+		}
+		else {
+			dialog.hide();
+
+			<portlet:namespace />resetFeedback();
+		}
+	}
+
+	function <portlet:namespace />resetFeedback() {
+		document.getElementById('<portlet:namespace />lesaFeedbackComments').value = '';
+		document.getElementById('<portlet:namespace />lesaFeedbackRadioButton').checked = true;
+		document.getElementById('<portlet:namespace />lesaFeedbackSummary').value = '';
+	}
+</aui:script>

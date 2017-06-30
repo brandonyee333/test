@@ -1,0 +1,60 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<ul class="quantities">
+
+	<%
+	for (AssetLicense assetLicense : assetLicenses) {
+		long quantity = assetLicense.getLicenseTypeAllotment();
+
+		String key = StringPool.BLANK;
+
+		if (assetLicense.getLicenseType() == AssetLicenseConstants.LICENSE_TYPE_PRODUCTION) {
+			if (quantity == 1) {
+				key = "x-instance-unit";
+			}
+			else {
+				key = "x-instance-units";
+			}
+		}
+		else {
+			if (quantity == 1) {
+				key = "x-user";
+			}
+			else {
+				key = "x-users";
+			}
+		}
+	%>
+
+		<li class="quantity" data-quantity="<%= quantity %>">
+			<a class="action"><liferay-ui:message key="delete" /></a>
+
+			<liferay-ui:message arguments="<%= quantity %>" key="<%= key %>" />
+		</li>
+
+	<%
+	}
+	%>
+
+	<c:if test="<%= hasUnlimitedAssetLicense %>">
+		<li class="quantity" data-quantity="unlimited">
+			<a class="action"><liferay-ui:message key="delete" /></a>
+
+			<liferay-ui:message key="unlimited-instances" />
+		</li>
+	</c:if>
+</ul>

@@ -1,0 +1,672 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%@ include file="/init.jsp" %>
+
+<%
+String redirect = ParamUtil.getString(request, "redirect");
+String backURL = ParamUtil.getString(request, "backURL", redirect);
+
+long supportWorkerId = ParamUtil.getLong(request, "supportWorkerId");
+
+SupportWorker supportWorker = SupportWorkerLocalServiceUtil.getSupportWorker(supportWorkerId);
+
+SupportTeam supportTeam = supportWorker.getSupportTeam();
+
+String severities = StringPool.BLANK;
+
+List<Integer> supportWorkerSeverities = supportWorker.getSeverities();
+
+for (Integer supportWorkerSeverity : supportWorkerSeverities) {
+	severities += supportWorkerSeverity + StringPool.COMMA;
+}
+
+String components = StringPool.BLANK;
+
+List<Integer> supportWorkerComponents = supportWorker.getComponents();
+
+for (Integer supportWorkerComponent : supportWorkerComponents) {
+	components += supportWorkerComponent + StringPool.COMMA;
+}
+
+String accountTiers = StringPool.BLANK;
+
+List<Integer> supportWorkerAccountTiers = supportWorker.getAccountTiers();
+
+for (Integer supportWorkerAccountTier : supportWorkerAccountTiers) {
+	accountTiers += supportWorkerAccountTier + StringPool.COMMA;
+}
+
+boolean hasClockInOutPermission = OSBSupportTeamPermission.contains(permissionChecker, supportTeam);
+
+PortletURL portletURL = renderResponse.createRenderURL();
+
+portletURL.setParameter("mvcPath", "/admin/edit_support_worker.jsp");
+portletURL.setParameter("redirect", redirect);
+portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
+%>
+
+<portlet:actionURL name="updateSupportWorker" var="updateSupportWorkerURL">
+	<portlet:param name="mvcPath" value="/admin/edit_support_worker.jsp" />
+</portlet:actionURL>
+
+<aui:form action="<%= updateSupportWorkerURL %>" method="post" name="fm">
+	<aui:input name="redirect" type="hidden" />
+	<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
+	<aui:input name="supportWorkerId" type="hidden" value="<%= supportWorkerId %>" />
+	<aui:input name="severities" type="hidden" value="<%= severities %>" />
+	<aui:input name="components" type="hidden" value="<%= components %>" />
+	<aui:input name="accountTiers" type="hidden" value="<%= accountTiers %>" />
+
+	<liferay-ui:tabs
+		backURL="<%= backURL %>"
+		names="support-worker"
+	/>
+
+	<liferay-ui:error exception="<%= SupportWorkerMaxWorkException.class %>" message="max-work-cannot-equal-0" />
+
+	<table class="lfr-table">
+	<tr>
+		<td>
+			<liferay-ui:message key="name" />
+		</td>
+		<td>
+
+			<%
+			User supportWorkerUser = UserLocalServiceUtil.getUser(supportWorker.getUserId());
+			%>
+
+			<%= HtmlUtil.escape(supportWorkerUser.getFullName()) %>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<liferay-ui:message key="support-team" />
+		</td>
+		<td>
+			<a href="<portlet:renderURL windowState="<%= WindowState.MAXIMIZED.toString() %>"><portlet:param name="mvcPath" value="/admin/edit_support_team.jsp" /><portlet:param name="redirect" value="<%= portletURL.toString() %>" /><portlet:param name="supportTeamId" value="<%= String.valueOf(supportTeam.getSupportTeamId()) %>" /></portlet:renderURL>" id="<portlet:namespace />supportTeamName">
+				<%= HtmlUtil.escape(supportTeam.getName()) %>
+			</a>
+
+			<input onClick="var supportTeamWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/admin/select_support_team.jsp" /><portlet:param name="callback" value="selectSupportTeam" /></portlet:renderURL>', 'supportTeam', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); supportTeamWindow.focus();" type="button" value="<liferay-ui:message key="change" />" />
+
+			<input name="<portlet:namespace />supportTeamId" type="hidden" value="<%= supportTeam.getSupportTeamId() %>" />
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<liferay-ui:message key="status" />
+		</td>
+		<td>
+			<c:if test="<%= supportWorker.getRole() != SupportWorkerConstants.ROLE_WATCHER %>">
+				<c:choose>
+					<c:when test="<%= hasClockInOutPermission %>">
+						<portlet:actionURL name="clockInOut" var="clockInOutURL">
+							<portlet:param name="redirect" value="<%= currentURL %>" />
+							<portlet:param name="supportWorkerId" value="<%= StringUtil.valueOf(supportWorker.getSupportWorkerId()) %>" />
+						</portlet:actionURL>
+
+						<div class="toggle-on-off-switch">
+							<a class="toggle-on-off-switch-ctrl unlock <%= supportWorker.isClockedIn() ? "on" : "off" %>" href="<%= clockInOutURL %>">
+								<span class="toggle-on-off-switch-inner">
+									<span class="toggle-on-off-switch-on txt-b"><liferay-ui:message key="in" /></span>
+
+									<span class="toggle-on-off-switch-off txt-b"><liferay-ui:message key="on-pto" /></span>
+								</span>
+							</a>
+						</div>
+					</c:when>
+					<c:otherwise>
+						<div class="toggle-on-off-switch">
+							<span class="toggle-on-off-switch-ctrl <%= supportWorker.isClockedIn() ? "on" : "off" %>">
+								<span class="toggle-on-off-switch-inner">
+									<span class="toggle-on-off-switch-on txt-b"><liferay-ui:message key="in" /></span>
+
+									<span class="toggle-on-off-switch-off txt-b"><liferay-ui:message key="on-pto" /></span>
+								</span>
+							</span>
+						</div>
+					</c:otherwise>
+				</c:choose>
+			</c:if>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<liferay-ui:message key="allow-lesa-to-auto-assign-tickets-to-this-user" />
+		</td>
+		<td>
+			<liferay-ui:input-field bean="<%= supportWorker %>" field="autoAssign" model="<%= SupportWorker.class %>" />
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<liferay-ui:message key="assigned-work" />
+		</td>
+		<td>
+			<%= numberFormat.format(supportWorker.getAssignedWork()) %>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<liferay-ui:message key="max-work" />
+		</td>
+		<td>
+			<input name="<portlet:namespace />maxWork" size="5" type="text" value="<%= numberFormat.format(supportWorker.getMaxWork()) %>" />
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<liferay-ui:message key="escalation-level" />
+		</td>
+		<td>
+			<select name="<portlet:namespace />escalationLevel">
+
+				<%
+				List<ListType> escalationLevelTypes = ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_ESCALATION_LEVEL);
+
+				for (ListType escalationLevelType : escalationLevelTypes) {
+				%>
+
+					<option <%= (escalationLevelType.getListTypeId() == supportWorker.getEscalationLevel()) ? "selected" : "" %> value="<%= escalationLevelType.getListTypeId() %>"><%= LanguageUtil.get(pageContext, escalationLevelType.getName()) %></option>
+
+				<%
+				}
+				%>
+
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<liferay-ui:message key="default-escalation-level-2-assignment" />
+		</td>
+		<td>
+			<select name="<portlet:namespace />escalationLevel2Role">
+				<option <%= (supportWorker.getEscalationLevel2Role() == SupportWorkerConstants.ESCALATION_LEVEL_2_ROLE_OTHER) ? "selected" : "" %> value="<%= SupportWorkerConstants.ESCALATION_LEVEL_2_ROLE_OTHER %>"><liferay-ui:message key="other" /></option>
+				<option <%= (supportWorker.getEscalationLevel2Role() != SupportWorkerConstants.ESCALATION_LEVEL_2_ROLE_OTHER) ? "selected" : "" %> value="<%= SupportWorkerConstants.ESCALATION_LEVEL_2_ROLE_PRIMARY %>"><liferay-ui:message key="primary" /></option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<liferay-ui:message key="notifications" />
+		</td>
+		<td>
+			<select name="<portlet:namespace />notifications">
+
+				<%
+				for (int i = 1; i <= 3; i++) {
+				%>
+
+					<option <%= (supportWorker.getNotifications() == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(pageContext, SupportWorkerConstants.getNotificationsLabel(i)) %></option>
+
+				<%
+				}
+				%>
+
+			</select>
+		</td>
+	</tr>
+
+	<c:if test="<%= supportTeam.getSupportLaborId() > 0 %>">
+		<tr>
+			<td>
+				<portlet:renderURL var="supportTeamSupportLaborURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+					<portlet:param name="mvcPath" value="/admin/edit_support_labor.jsp" />
+					<portlet:param name="redirect" value="<%= currentURL %>" />
+					<portlet:param name="supportLaborId" value="<%= String.valueOf(supportTeam.getSupportLaborId()) %>" />
+				</portlet:renderURL>
+
+				<a href="<%= supportTeamSupportLaborURL %>">
+					<liferay-ui:message key="support-team-labor-hours" />
+				</a>
+			</td>
+			<td>
+				<table class="lfr-table">
+				<tr>
+
+					<%
+					for (int i = 0; i < 7; i++) {
+					%>
+
+						<td>
+							<a href="<%= supportTeamSupportLaborURL %>">
+								<liferay-ui:message key="<%= OSBDateUtil.DAY_NAMES[i] %>" />
+							</a>
+						</td>
+
+					<%
+					}
+					%>
+
+				</tr>
+				<tr>
+
+					<%
+					SupportLabor supportTeamSupportLabor = SupportLaborLocalServiceUtil.getSupportLabor(supportTeam.getSupportLaborId());
+
+					for (int i = 1; i <= 7; i++) {
+					%>
+
+						<td>
+							<a href="<%= supportTeamSupportLaborURL %>">
+								<%= supportTeamSupportLabor.formatDayHours(locale, i) %>
+							</a>
+						</td>
+
+					<%
+					}
+					%>
+
+				</tr>
+				</table>
+			</td>
+		</tr>
+	</c:if>
+
+	<c:if test="<%= supportWorker.getSupportLaborId() > 0 %>">
+		<portlet:renderURL var="supportWorkerSupportLaborURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+			<portlet:param name="mvcPath" value="/admin/edit_support_labor.jsp" />
+			<portlet:param name="redirect" value="<%= currentURL %>" />
+			<portlet:param name="supportLaborId" value="<%= String.valueOf(supportWorker.getSupportLaborId()) %>" />
+		</portlet:renderURL>
+
+		<tr>
+			<td>
+				<a href="<%= supportWorkerSupportLaborURL %>">
+					<liferay-ui:message key="support-worker-labor-hours" />
+				</a>
+			</td>
+			<td>
+				<table class="lfr-table">
+				<tr>
+
+					<%
+					for (int i = 0; i < 7; i++) {
+					%>
+
+						<td>
+							<a href="<%= supportWorkerSupportLaborURL %>">
+								<liferay-ui:message key="<%= OSBDateUtil.DAY_NAMES[i] %>" />
+							</a>
+						</td>
+
+					<%
+					}
+					%>
+
+				</tr>
+				<tr>
+
+					<%
+					SupportLabor supportLabor = SupportLaborLocalServiceUtil.getSupportLabor(supportWorker.getSupportLaborId());
+
+					for (int i = 1; i <= 7; i++) {
+					%>
+
+						<td>
+							<a href="<%= supportWorkerSupportLaborURL %>">
+								<%= supportLabor.formatDayHours(locale, i) %>
+							</a>
+						</td>
+
+					<%
+					}
+					%>
+
+				</tr>
+				</table>
+			</td>
+		</tr>
+	</c:if>
+
+	</table>
+
+	<br />
+
+	<div>
+		<input type="submit" value="<liferay-ui:message key="save" />" />
+
+		<input onClick="location.href = '<%= HtmlUtil.escape(backURL) %>';" type="button" value="<liferay-ui:message key="cancel" />" />
+	</div>
+
+	<br />
+
+	<liferay-ui:tabs
+		names="other-support-workers-representing-this-user"
+	/>
+
+	<br />
+
+	<liferay-ui:search-container
+		headerNames="support-team,utilization,severities,components,role"
+		id="supportWorkers"
+	>
+
+		<%
+		List<SupportWorker> userSupportWorkers = SupportWorkerLocalServiceUtil.getUserSupportWorkers(supportWorker.getUserId());
+
+		userSupportWorkers = ListUtil.copy(userSupportWorkers);
+
+		userSupportWorkers.remove(supportWorker);
+		%>
+
+		<liferay-ui:search-container-results
+			results="<%= userSupportWorkers %>"
+			total="<%= userSupportWorkers.size() %>"
+		/>
+
+		<liferay-ui:search-container-row
+			className="com.liferay.osb.model.SupportWorker"
+			modelVar="curSupportWorker"
+		>
+			<portlet:renderURL var="rowURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+				<portlet:param name="mvcPath" value="/admin/edit_support_worker.jsp" />
+				<portlet:param name="redirect" value="<%= currentURL %>" />
+				<portlet:param name="supportWorkerId" value="<%= String.valueOf(curSupportWorker.getSupportWorkerId()) %>" />
+			</portlet:renderURL>
+
+			<%
+			SupportTeam supportWorkerSupportTeam = SupportTeamLocalServiceUtil.getSupportTeam(curSupportWorker.getSupportTeamId());
+			%>
+
+			<liferay-ui:search-container-column-text
+				href="<%= rowURL %>"
+				name="support-team"
+				value="<%= HtmlUtil.escape(supportWorkerSupportTeam.getName()) %>"
+			/>
+
+			<liferay-ui:search-container-column-text
+				name="status"
+			>
+				<c:if test="<%= supportWorker.getRole() != SupportWorkerConstants.ROLE_WATCHER %>">
+					<portlet:actionURL name="clockInOut" var="clockInOutURL">
+						<portlet:param name="redirect" value="<%= currentURL %>" />
+						<portlet:param name="supportWorkerId" value="<%= StringUtil.valueOf(supportWorker.getSupportWorkerId()) %>" />
+					</portlet:actionURL>
+
+					<div class="clock-in-out-switch">
+						<a class="clock-in-out-switch-ctrl <%= supportWorker.isClockedIn() ? "in" : "out" %>" href="<%= clockInOutURL %>">
+							<span class="clock-in-out-switch-inner">
+								<span class="clock-in-out-switch-in txt-b"><liferay-ui:message key="in" /></span>
+
+								<span class="clock-in-out-switch-out txt-b"><liferay-ui:message key="on-pto" /></span>
+							</span>
+						</a>
+					</div>
+				</c:if>
+			</liferay-ui:search-container-column-text>
+
+			<liferay-ui:search-container-column-text
+				href="<%= rowURL %>"
+				name="utilization"
+			>
+				<%= numberFormat.format(MathUtil.format((curSupportWorker.getAssignedWork() / curSupportWorker.getMaxWork()) * 100, 1, 1)) %>%
+
+				(<%= numberFormat.format(curSupportWorker.getAssignedWork()) %>/<%= numberFormat.format(curSupportWorker.getMaxWork()) %>)
+			</liferay-ui:search-container-column-text>
+
+			<liferay-ui:search-container-column-text
+				href="<%= rowURL %>"
+				name="severities"
+			>
+
+				<%
+				List<Integer> curSeverities = curSupportWorker.getSeverities();
+
+				for (int i = 0; i < curSeverities.size(); i++) {
+					Integer curSeverity = curSeverities.get(i);
+				%>
+
+					<%= LanguageUtil.get(pageContext, TicketEntryConstants.getSeverityLabel(curSeverity)) %>
+
+					<%= ((i + 1) < curSeverities.size()) ? "<br />" : StringPool.BLANK %>
+
+				<%
+				}
+				%>
+
+			</liferay-ui:search-container-column-text>
+
+			<liferay-ui:search-container-column-text
+				href="<%= rowURL %>"
+				name="components"
+			>
+
+				<%
+				List<Integer> curComponents = curSupportWorker.getComponents();
+
+				for (int i = 0; i < curComponents.size(); i++) {
+					Integer curComponent = curComponents.get(i);
+				%>
+
+					<%= LanguageUtil.get(pageContext, TicketEntryConstants.getComponentLabel(curComponent)) %>
+
+					<%= ((i + 1) < curComponents.size()) ? "<br />" : StringPool.BLANK %>
+
+				<%
+				}
+				%>
+
+			</liferay-ui:search-container-column-text>
+
+			<liferay-ui:search-container-column-text
+				href="<%= rowURL %>"
+				name="project-tiers"
+			>
+
+				<%
+				List<Integer> curAccountTiers = curSupportWorker.getAccountTiers();
+
+				for (int i = 0; i < curAccountTiers.size(); i++) {
+					Integer curAccountTier = curAccountTiers.get(i);
+				%>
+
+					<%= LanguageUtil.get(pageContext, AccountEntryConstants.getTierLabel(curAccountTier)) %>
+
+					<%= ((i + 1) < curAccountTiers.size()) ? "<br />" : StringPool.BLANK %>
+
+				<%
+				}
+				%>
+
+			</liferay-ui:search-container-column-text>
+
+			<liferay-ui:search-container-column-text
+				href="<%= rowURL %>"
+				name="role"
+				value="<%= LanguageUtil.get(pageContext, curSupportWorker.getRoleLabel()) %>"
+			/>
+		</liferay-ui:search-container-row>
+
+		<liferay-ui:search-iterator paginate="<%= false %>" />
+	</liferay-ui:search-container>
+
+	<br />
+
+	<liferay-ui:tabs
+		names="severities"
+	/>
+
+	<div>
+		<input onClick="var categoryWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/admin/select_severity.jsp" /></portlet:renderURL>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" type="button" value="<liferay-ui:message key="add-severity" />" />
+	</div>
+
+	<br />
+
+	<liferay-ui:search-container
+		headerNames="severity,,"
+		id="severity"
+	>
+		<liferay-ui:search-container-results
+			results="<%= supportWorkerSeverities %>"
+			total="<%= supportWorkerSeverities.size() %>"
+		/>
+
+		<liferay-ui:search-container-row
+			className="java.lang.Integer"
+			modelVar="severity"
+		>
+			<liferay-ui:search-container-column-text
+				name="severity"
+			>
+				<%= LanguageUtil.get(pageContext, TicketEntryConstants.getSeverityLabel(severity)) %>
+			</liferay-ui:search-container-column-text>
+
+			<liferay-ui:search-container-column-text>
+				<input onClick="<portlet:namespace />removeRow('severities', '<%= severity %>', '<portlet:namespace />severitySearchContainer', this);" type="button" value="<liferay-ui:message key="remove" />" />
+			</liferay-ui:search-container-column-text>
+		</liferay-ui:search-container-row>
+
+		<liferay-ui:search-iterator paginate="<%= false %>" />
+	</liferay-ui:search-container>
+
+	<br />
+
+	<liferay-ui:tabs
+		names="components"
+	/>
+
+	<div>
+		<input onClick="var categoryWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/admin/select_component.jsp" /></portlet:renderURL>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" type="button" value="<liferay-ui:message key="add-component" />" />
+	</div>
+
+	<br />
+
+	<liferay-ui:search-container
+		headerNames="component,,"
+		id="component"
+	>
+		<liferay-ui:search-container-results
+			results="<%= supportWorkerComponents %>"
+			total="<%= supportWorkerComponents.size() %>"
+		/>
+
+		<liferay-ui:search-container-row
+			className="java.lang.Integer"
+			modelVar="component"
+		>
+			<liferay-ui:search-container-column-text
+				name="component"
+			>
+				<%= LanguageUtil.get(pageContext, TicketEntryConstants.getComponentLabel(component)) %>
+			</liferay-ui:search-container-column-text>
+
+			<liferay-ui:search-container-column-text>
+				<input onClick="<portlet:namespace />removeRow('components', '<%= component %>', '<portlet:namespace />componentSearchContainer', this);" type="button" value="<liferay-ui:message key="remove" />" />
+			</liferay-ui:search-container-column-text>
+		</liferay-ui:search-container-row>
+
+		<liferay-ui:search-iterator paginate="<%= false %>" />
+	</liferay-ui:search-container>
+
+	<br />
+
+	<liferay-ui:tabs
+		names="project-tiers"
+	/>
+
+	<div>
+		<input onClick="var categoryWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/admin/select_account_tier.jsp" /></portlet:renderURL>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" type="button" value="<liferay-ui:message key="add-project-tier" />" />
+	</div>
+
+	<br />
+
+	<liferay-ui:search-container
+		headerNames="account-tier,,"
+		id="accountTier"
+	>
+		<liferay-ui:search-container-results
+			results="<%= supportWorkerAccountTiers %>"
+			total="<%= supportWorkerAccountTiers.size() %>"
+		/>
+
+		<liferay-ui:search-container-row
+			className="java.lang.Integer"
+			modelVar="accountTier"
+		>
+			<liferay-ui:search-container-column-text
+				name="project-tier"
+			>
+				<%= LanguageUtil.get(pageContext, AccountEntryConstants.getTierLabel(accountTier)) %>
+			</liferay-ui:search-container-column-text>
+
+			<liferay-ui:search-container-column-text>
+				<input onClick="<portlet:namespace />removeRow('accountTiers', '<%= accountTier %>', '<portlet:namespace />accountTierSearchContainer', this);" type="button" value="<liferay-ui:message key="remove" />" />
+			</liferay-ui:search-container-column-text>
+		</liferay-ui:search-container-row>
+
+		<liferay-ui:search-iterator paginate="<%= false %>" />
+	</liferay-ui:search-container>
+</aui:form>
+
+<aui:script>
+	function <portlet:namespace />addColumn(row, html) {
+		var cell = row.insertCell(-1);
+
+		cell.innerHTML = html;
+	}
+
+	function <portlet:namespace />removeRow(inputName, value, tableId, row) {
+		eval('var values = document.<portlet:namespace />fm.<portlet:namespace />' + inputName + '.value');
+
+		values = values.replace(value + ',', '');
+
+		eval('document.<portlet:namespace />fm.<portlet:namespace />' + inputName + '.value = values;');
+
+		var table = document.getElementById(tableId).getElementsByTagName('tbody')[0];
+
+		var rowIndex = row.parentNode.parentNode.rowIndex;
+
+		table.deleteRow(rowIndex);
+	}
+
+	function <portlet:namespace />selectRow(inputName, value, tableId, columnValues) {
+		eval('var values = document.<portlet:namespace />fm.<portlet:namespace />' + inputName + '.value');
+
+		if (values.indexOf(value + ',') == -1) {
+			values += value + ',';
+
+			eval('document.<portlet:namespace />fm.<portlet:namespace />' + inputName + '.value = values;');
+
+			var table = document.getElementById(tableId);
+
+			table.parentNode.parentNode.className = 'lfr-search-container';
+
+			var tBody = table.getElementsByTagName('tbody')[0];
+
+			var row = tBody.insertRow(-1);
+
+			row.className = 'results-row';
+
+			for (i = 0; i < columnValues.length; i++) {
+				<portlet:namespace />addColumn(row, columnValues[i]);
+			}
+
+			<portlet:namespace />addColumn(row, '<input type="button" onClick="<portlet:namespace />removeRow(\'' + inputName + '\', \'' + value + '\', \'' + tableId + '\', this);" value="<liferay-ui:message key="remove" />" />');
+		}
+	}
+
+	function <portlet:namespace />selectSupportTeam(supportTeamId, supportTeamName) {
+		document.<portlet:namespace />fm.<portlet:namespace />supportTeamId.value = supportTeamId;
+
+		var nameEl = document.getElementById("<portlet:namespace />supportTeamName");
+
+		nameEl.href = "<portlet:renderURL windowState="<%= WindowState.MAXIMIZED.toString() %>"><portlet:param name="mvcPath" value="/admin/edit_support_team.jsp" /><portlet:param name="redirect" value="<%= portletURL.toString() %>" /></portlet:renderURL>&<portlet:namespace />supportTeamId=" + supportTeamId;
+		nameEl.innerHTML = supportTeamName + "&nbsp;";
+	}
+</aui:script>

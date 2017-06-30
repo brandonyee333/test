@@ -1,0 +1,78 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<div class="developer-apps">
+	<liferay-ui:header
+		title="developer-apps"
+	/>
+
+	<div class="portlet-msg-alert">
+		<liferay-ui:message key="this-page-is-provided-for-testing-purposes-only" />
+	</div>
+
+	<div class="product-list">
+
+		<%
+		DeveloperEntry developerEntry = DeveloperEntryLocalServiceUtil.fetchUserDeveloperEntry(themeDisplay.getUserId());
+		%>
+
+		<c:if test="<%= developerEntry != null %>">
+			<h3>
+				<liferay-ui:message key="personal" />
+			</h3>
+
+			<%
+			List<AppEntry> appEntries = AppEntryLocalServiceUtil.getAppEntries(developerEntry.getDeveloperEntryId(), WorkflowConstants.STATUS_ANY, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+			int appEntriesCount = AppEntryLocalServiceUtil.getAppEntriesCount(developerEntry.getDeveloperEntryId(), WorkflowConstants.STATUS_ANY);
+			%>
+
+			<div class="app-list">
+				<%@ include file="/marketplace_server/app_entries.jspf" %>
+			</div>
+		</c:if>
+
+		<%
+		List<CorpEntry> corpEntries = CorpEntryLocalServiceUtil.getUserCorpEntries(user.getUserId(), QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+
+		for (CorpEntry corpEntry : corpEntries) {
+			developerEntry = DeveloperEntryLocalServiceUtil.fetchDeveloperEntry(corpEntry.getDossieraAccountKey());
+
+			if ((developerEntry == null) || !developerEntry.isApproved()) {
+				continue;
+			}
+
+			if (!CorpEntryLocalServiceUtil.hasUserCorpEntryRole(themeDisplay.getUserId(), corpEntry.getCorpEntryId(), OSBConstants.ROLE_OSB_CORP_DEVELOPER_ID)) {
+				continue;
+			}
+
+			List<AppEntry> appEntries = AppEntryLocalServiceUtil.getAppEntries(developerEntry.getDeveloperEntryId(), WorkflowConstants.STATUS_ANY, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+			int appEntriesCount = AppEntryLocalServiceUtil.getAppEntriesCount(developerEntry.getDeveloperEntryId(), WorkflowConstants.STATUS_ANY);
+		%>
+
+			<h3>
+				<%= HtmlUtil.escape(corpEntry.getName()) %>
+			</h3>
+
+			<div class="app-list">
+				<%@ include file="/marketplace_server/app_entries.jspf" %>
+			</div>
+
+		<%
+		}
+		%>
+
+	</div>
+</div>

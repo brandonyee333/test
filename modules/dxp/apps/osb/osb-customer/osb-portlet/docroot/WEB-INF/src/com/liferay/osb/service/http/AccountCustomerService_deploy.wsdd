@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+
+<deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+	<service name="Plugin_OSB_AccountCustomerService" provider="java:RPC" style="rpc" use="encoded">
+		<arrayMapping xmlns:ns="urn:http.service.osb.liferay.com" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema" qname="ns:ArrayOf_xsd_int" type="java:int[]" innerType="cmp-ns:int" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></arrayMapping>
+		<arrayMapping xmlns:ns="urn:http.service.osb.liferay.com" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema" qname="ns:ArrayOf_xsd_long" type="java:long[]" innerType="cmp-ns:long" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></arrayMapping>
+		<arrayMapping xmlns:ns="urn:http.service.osb.liferay.com" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema" qname="ns:ArrayOf_xsd_string" type="java:java.lang.String[]" innerType="cmp-ns:string" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></arrayMapping>
+		<operation xmlns:operNS="urn:http.service.osb.liferay.com" name="addAccountCustomers" qname="operNS:addAccountCustomers" soapAction="">
+			<parameter xmlns:tns="urn:http.service.osb.liferay.com" qname="userIds" type="tns:ArrayOf_xsd_long"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="accountEntryId" type="tns:long"></parameter>
+			<parameter xmlns:tns="urn:http.service.osb.liferay.com" qname="roles" type="tns:ArrayOf_xsd_int"></parameter>
+			<parameter xmlns:tns="urn:http.service.osb.liferay.com" qname="notifications" type="tns:ArrayOf_xsd_int"></parameter>
+		</operation>
+		<operation xmlns:operNS="urn:http.service.osb.liferay.com" name="deleteAccountCustomers" qname="operNS:deleteAccountCustomers" soapAction="">
+			<parameter xmlns:tns="urn:http.service.osb.liferay.com" qname="userIds" type="tns:ArrayOf_xsd_long"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="accountEntryId" type="tns:long"></parameter>
+		</operation>
+		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="urn:http.service.osb.liferay.com" xmlns:tns2="http://www.w3.org/2001/XMLSchema" name="getCorpProjectAccountCustomerUUIDs" qname="operNS:getCorpProjectAccountCustomerUUIDs" returnQName="getCorpProjectAccountCustomerUUIDsReturn" returnType="rtns:ArrayOf_xsd_string" returnItemType="tns2:string" soapAction="">
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="corpProjectId" type="tns:long"></parameter>
+		</operation>
+		<operation xmlns:operNS="urn:http.service.osb.liferay.com" name="toggleNotifications" qname="operNS:toggleNotifications" soapAction="">
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="accountCustomerId" type="tns:long"></parameter>
+		</operation>
+		<parameter name="allowedMethods" value="addAccountCustomers deleteAccountCustomers getCorpProjectAccountCustomerUUIDs toggleNotifications" />
+		<parameter name="className" value="com.liferay.osb.service.http.AccountCustomerServiceSoap" />
+		<parameter name="schemaUnqualified" value="urn:http.service.osb.liferay.com" />
+		<parameter name="typeMappingVersion" value="1.2" />
+		<parameter name="wsdlPortType" value="AccountCustomerServiceSoap" />
+		<parameter name="wsdlServiceElement" value="AccountCustomerServiceSoapService" />
+		<parameter name="wsdlServicePort" value="Plugin_OSB_AccountCustomerService" />
+		<parameter name="wsdlTargetNamespace" value="urn:http.service.osb.liferay.com" />
+	</service>
+</deployment>

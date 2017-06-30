@@ -1,0 +1,40 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%
+if (trainingUserId > 0) {
+	results = TrainingEventLocalServiceUtil.getTrainingEvents(trainingUserId, searchContainer.getStart(), searchContainer.getEnd(), searchContainer.getOrderByComparator());
+}
+else if (searchTerms.isAdvancedSearch()) {
+	results = TrainingEventLocalServiceUtil.search(searchTerms.getTypeObj(), searchTerms.getClientName(), searchTerms.getCourse(), searchTerms.getPortalMinorVersionObj(), searchTerms.getCity(), searchTerms.getRegionIdObj(), searchTerms.getCountryIdObj(), searchTerms.getLanguage(), searchTerms.getPartner(), searchTerms.getStartDateGTDay(), searchTerms.getStartDateGTMonth(), searchTerms.getStartDateGTYear(), searchTerms.getStartDateLTDay(), searchTerms.getStartDateLTMonth(), searchTerms.getStartDateLTYear(), searchTerms.getTrainerFirstName(), searchTerms.getTrainerLastName(), searchTerms.getTrainerEmailAddress(), searchTerms.getParams(), searchTerms.isAndOperator(), searchContainer.getStart(), searchContainer.getEnd(), searchContainer.getOrderByComparator());
+}
+else {
+	results = TrainingEventLocalServiceUtil.search(searchTerms.getKeywords(), searchTerms.getCountryIdObj(), searchTerms.getRegionIdObj(), searchTerms.getStartDateGTDay(), searchTerms.getStartDateGTMonth(), searchTerms.getStartDateGTYear(), searchTerms.getStartDateLTDay(), searchTerms.getStartDateLTMonth(), searchTerms.getStartDateLTYear(), searchTerms.getParams(), searchContainer.getStart(), searchContainer.getEnd(), searchContainer.getOrderByComparator());
+}
+
+if (trainingUserId > 0) {
+	total = TrainingEventLocalServiceUtil.getTrainingEventsCount(trainingUserId);
+}
+else if (searchTerms.isAdvancedSearch()) {
+	total = TrainingEventLocalServiceUtil.searchCount(searchTerms.getTypeObj(), searchTerms.getClientName(), searchTerms.getCourse(), searchTerms.getPortalMinorVersionObj(), searchTerms.getCity(), searchTerms.getRegionIdObj(), searchTerms.getCountryIdObj(), searchTerms.getLanguage(), searchTerms.getPartner(), searchTerms.getStartDateGTDay(), searchTerms.getStartDateGTMonth(), searchTerms.getStartDateGTYear(), searchTerms.getStartDateLTDay(), searchTerms.getStartDateLTMonth(), searchTerms.getStartDateLTYear(), searchTerms.getTrainerFirstName(), searchTerms.getTrainerLastName(), searchTerms.getTrainerEmailAddress(), searchTerms.getParams(), searchTerms.isAndOperator());
+}
+else {
+	total = TrainingEventLocalServiceUtil.searchCount(searchTerms.getKeywords(), searchTerms.getCountryIdObj(), searchTerms.getRegionIdObj(), searchTerms.getStartDateGTDay(), searchTerms.getStartDateGTMonth(), searchTerms.getStartDateGTYear(), searchTerms.getStartDateLTDay(), searchTerms.getStartDateLTMonth(), searchTerms.getStartDateLTYear(), searchTerms.getParams());
+}
+
+pageContext.setAttribute("results", results);
+pageContext.setAttribute("total", total);
+%>

@@ -1,0 +1,96 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<liferay-ui:search-container-column-text
+	name="item"
+>
+
+	<%
+	String className = ecDocumentItem.getClassName();
+	%>
+
+	<c:choose>
+		<c:when test="<%= className.equals(AssetLicense.class.getName()) %>">
+			<c:choose>
+				<c:when test="<%= ecDocumentItem.getClassPK() == ECommerceConstants.CLASS_PK_DEVELOPER %>">
+					<liferay-ui:message key="extended-developer-licenses" /> (<liferay-ui:message key="prorated" />)
+				</c:when>
+				<c:when test="<%= ecDocumentItem.getClassPK() == ECommerceConstants.CLASS_PK_STANDARD %>">
+					<liferay-ui:message key="extended-standard-licenses" /> (<liferay-ui:message key="prorated" />)
+				</c:when>
+			</c:choose>
+		</c:when>
+		<c:when test="<%= className.equals(AssetReceiptSupport.class.getName()) %>">
+
+			<%
+			String purchaseType = ecDocumentEntryExtraSettings.getPurchaseType();
+			%>
+
+			<c:choose>
+				<c:when test='<%= purchaseType.equals("new") %>'>
+					<c:choose>
+						<c:when test="<%= ecDocumentItem.getClassPK() == ECommerceConstants.CLASS_PK_DEVELOPER %>">
+							<liferay-ui:message key="extend-subscription-services-for-developer-license" /> (<liferay-ui:message key="prorated" />)
+						</c:when>
+						<c:when test="<%= ecDocumentItem.getClassPK() == ECommerceConstants.CLASS_PK_STANDARD %>">
+							<liferay-ui:message key="extend-subscription-services-for-standard-license" /> (<liferay-ui:message key="prorated" />)
+						</c:when>
+					</c:choose>
+				</c:when>
+				<c:when test='<%= purchaseType.equals("renew") %>'>
+					<c:choose>
+						<c:when test="<%= ecDocumentItem.getClassPK() == ECommerceConstants.CLASS_PK_DEVELOPER %>">
+							<liferay-ui:message key="renew-subscription-services-for-developer-license" />
+						</c:when>
+						<c:when test="<%= ecDocumentItem.getClassPK() == ECommerceConstants.CLASS_PK_STANDARD %>">
+							<liferay-ui:message key="renew-subscription-services-for-standard-license" />
+						</c:when>
+					</c:choose>
+				</c:when>
+			</c:choose>
+		</c:when>
+	</c:choose>
+</liferay-ui:search-container-column-text>
+
+<liferay-ui:search-container-column-text
+	name="quantity"
+>
+	<div class="quantity">
+		<%= ecDocumentItem.getQuantity() %>
+	</div>
+
+	<%
+	ECDocumentItemExtraSettings ecDocumentItemExtraSettings = new ECDocumentItemExtraSettings(ecDocumentItem);
+
+	AppVersion appVersion = appEntry.getApprovedAppVersion();
+	%>
+
+	<c:if test='<%= purchaseStep.equals("summary") && !MarketplaceEcommerceUtil.hasECDocumentEntryUsageType(ecDocumentEntry.getEcDocumentEntryId(), appVersion.getAppVersionId(), ecDocumentItemExtraSettings.getUsageType()) %>'>
+		<a class="remove-item extension" href="<%= deleteECDocumentItemURL %>"></a>
+	</c:if>
+</liferay-ui:search-container-column-text>
+
+<liferay-ui:search-container-column-text
+	name="unit-price"
+	value="<%= ecDocumentItem.getFormattedUnitPrice() %>"
+>
+
+</liferay-ui:search-container-column-text>
+
+<liferay-ui:search-container-column-text
+	name="line-price"
+	value="<%= ecDocumentItem.getFormattedLinePrice() %>"
+/>

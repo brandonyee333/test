@@ -1,0 +1,190 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<c:choose>
+	<c:when test="<%= appEntry.getLicenseLifetime() == AssetLicenseConstants.LIFETIME_SUBSCRIPTION %>">
+		<h3>
+			<liferay-ui:message key="renew-licenses" />
+		</h3>
+
+		<div class="aui-field-help">
+			<liferay-ui:message key="renew-or-modify-your-existing-license-with-the-new-term-beginning-after-your-current-license-expires" />
+		</div>
+	</c:when>
+	<c:when test="<%= appEntry.getLicenseLifetime() == AssetLicenseConstants.LIFETIME_PERPETUAL %>">
+		<h3>
+			<liferay-ui:message key="renew-subscription-services" />
+		</h3>
+
+		<div class="aui-field-help">
+			<liferay-ui:message key="extend-subscription-services-for-another-year-with-the-new-term-beginning-after-your-current-subscription-services-expire-the-new-term-will-begin-today-if-your-subscription-services-have-already-expired" />
+		</div>
+	</c:when>
+</c:choose>
+
+<portlet:actionURL name="purchaseAppEntryRenew" var="purchaseAppEntryRenewURL" />
+
+<aui:form action="<%= purchaseAppEntryRenewURL %>" method="post" name="fm">
+	<aui:input name="<%= mvcPathParam %>" type="hidden" value="/marketplace/purchase_app_entry.jsp" />
+	<aui:input name="purchaseStep" type="hidden" value="license" />
+	<aui:input name="ecDocumentEntryId" type="hidden" value="<%= ecDocumentEntryId %>" />
+	<aui:input name="appEntryId" type="hidden" value="<%= appEntryId %>" />
+	<aui:input name="purchaseType" type="hidden" value="<%= purchaseType %>" />
+	<aui:input name="countryId" type="hidden" value="<%= storeCountryId %>" />
+
+	<liferay-ui:error exception="<%= RequiredQuantityException.class %>" message="you-must-select-at-least-one-renewal-to-proceed" />
+	<liferay-ui:error exception="<%= RequiredRenewalException.class %>" message="you-must-select-at-least-one-renewal-to-proceed" />
+
+	<%
+	List<AssetLicense> developerAssetLicenses = AssetLicenseLocalServiceUtil.getAssetLicenses(AppVersion.class.getName(), appVersion.getAppVersionId(), AssetLicenseConstants.USAGE_TYPE_DEVELOPER, appEntry.getLicenseType(), WorkflowConstants.STATUS_APPROVED, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	List<AssetLicense> standardAssetLicenses = AssetLicenseLocalServiceUtil.getAssetLicenses(AppVersion.class.getName(), appVersion.getAppVersionId(), AssetLicenseConstants.USAGE_TYPE_STANDARD, appEntry.getLicenseType(), WorkflowConstants.STATUS_APPROVED, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	%>
+
+	<c:choose>
+		<c:when test="<%= appEntry.getLicenseLifetime() == AssetLicenseConstants.LIFETIME_SUBSCRIPTION %>">
+			<div class="renew-all-options">
+				<c:if test="<%= !standardAssetLicenses.isEmpty() && assetReceipt.hasActiveAssetReceiptLicenses(AssetLicenseConstants.USAGE_TYPE_STANDARD) && !assetReceipt.hasRenewedAssetReceiptLicenses(AssetLicenseConstants.USAGE_TYPE_STANDARD) %>">
+					<aui:input label="renew-standard-license" name="renewAssetLicenseStandard" type="checkbox" value="<%= true %>" />
+
+					<div class="aui-select-note">
+						<liferay-ui:message key="choose-this-option-to-renew-your-standard-license-including-all-instances" />
+					</div>
+				</c:if>
+
+				<c:if test="<%= !developerAssetLicenses.isEmpty() && assetReceipt.hasActiveAssetReceiptLicenses(AssetLicenseConstants.USAGE_TYPE_DEVELOPER) && !assetReceipt.hasRenewedAssetReceiptLicenses(AssetLicenseConstants.USAGE_TYPE_DEVELOPER) %>">
+					<aui:input helpMessage="developer-licenses-are-limited-to-10-unique-ip-addresses" label="renew-developer-license" name="renewAssetLicenseDeveloper" type="checkbox" />
+
+					<div class="aui-select-note">
+						<liferay-ui:message key="choose-this-option-to-renew-your-developer-license-including-all-instances" />
+					</div>
+				</c:if>
+
+				<div class="actions">
+					<a href="javascript:;"><liferay-ui:message key="change-the-amount-of-instances-to-renew" /></a>
+				</div>
+			</div>
+		</c:when>
+		<c:when test="<%= appEntry.getLicenseLifetime() == AssetLicenseConstants.LIFETIME_PERPETUAL %>">
+			<div class="renew-all-options">
+				<c:if test="<%= !standardAssetLicenses.isEmpty() && assetReceipt.hasActiveAssetReceiptLicenses(AssetLicenseConstants.USAGE_TYPE_STANDARD) && !assetReceipt.hasRenewedAssetReceiptSupports(AssetLicenseConstants.USAGE_TYPE_STANDARD) %>">
+					<aui:input label="renew-subscription-services-for-standard-license" name="renewAssetReceiptSupportStandard" type="checkbox" value="<%= true %>" />
+
+					<div class="aui-select-note">
+						<liferay-ui:message key="choose-this-option-to-renew-subscription-services-for-your-perpetual-standard-licenses" />
+					</div>
+				</c:if>
+
+				<c:if test="<%= !developerAssetLicenses.isEmpty() && assetReceipt.hasActiveAssetReceiptLicenses(AssetLicenseConstants.USAGE_TYPE_DEVELOPER) && !assetReceipt.hasRenewedAssetReceiptSupports(AssetLicenseConstants.USAGE_TYPE_DEVELOPER) %>">
+					<aui:input label="renew-subscription-services-for-developer-license" name="renewAssetReceiptSupportDeveloper" type="checkbox" />
+
+					<div class="aui-select-note">
+						<liferay-ui:message key="choose-this-option-to-renew-subscription-services-for-your-perpetual-developer-licenses" />
+					</div>
+				</c:if>
+			</div>
+		</c:when>
+	</c:choose>
+
+	<c:if test="<%= appEntry.getLicenseLifetime() == AssetLicenseConstants.LIFETIME_SUBSCRIPTION %>">
+		<div class="aui-helper-hidden renew-custom-options">
+			<c:if test="<%= assetReceipt.hasActiveAssetReceiptLicenses(AssetLicenseConstants.USAGE_TYPE_STANDARD) && !assetReceipt.hasRenewedAssetReceiptLicenses(AssetLicenseConstants.USAGE_TYPE_STANDARD) %>">
+
+				<%
+				List<AssetLicense> assetLicenses = standardAssetLicenses;
+				%>
+
+				<c:if test="<%= !assetLicenses.isEmpty() %>">
+					<div class="license-table-container">
+
+						<%
+						String assetLicensesTableLabel = "standard-licenses";
+						%>
+
+						<%@ include file="/marketplace/purchase_app_entry/asset_licenses.jspf" %>
+					</div>
+				</c:if>
+			</c:if>
+
+			<c:if test="<%= assetReceipt.hasActiveAssetReceiptLicenses(AssetLicenseConstants.USAGE_TYPE_DEVELOPER) && !assetReceipt.hasRenewedAssetReceiptLicenses(AssetLicenseConstants.USAGE_TYPE_DEVELOPER) %>">
+
+				<%
+				List<AssetLicense> assetLicenses = developerAssetLicenses;
+				%>
+
+				<c:if test="<%= !assetLicenses.isEmpty() %>">
+					<div class="license-table-container">
+
+						<%
+						String assetLicensesTableLabel = "developer-licenses";
+						%>
+
+						<%@ include file="/marketplace/purchase_app_entry/asset_licenses.jspf" %>
+					</div>
+				</c:if>
+			</c:if>
+		</div>
+	</c:if>
+
+	<aui:button-row>
+		<portlet:renderURL var="viewAppEntryURL">
+			<portlet:param name="<%= mvcPathParam %>" value="/marketplace/view_app_entry.jsp" />
+			<portlet:param name="appEntryId" value="<%= String.valueOf(appEntry.getAppEntryId()) %>" />
+		</portlet:renderURL>
+
+		<portlet:actionURL name="cancelPurchaseAppEntry" var="cancelPurchaseAppEntryURL">
+			<portlet:param name="redirect" value="<%= viewAppEntryURL %>" />
+			<portlet:param name="ecDocumentEntryId" value="<%= String.valueOf(ecDocumentEntryId) %>" />
+		</portlet:actionURL>
+
+		<aui:button href="<%= cancelPurchaseAppEntryURL %>" value="cancel" />
+
+		<portlet:renderURL var="purchaseAppEntryProjectURL">
+			<portlet:param name="<%= mvcPathParam %>" value="/marketplace/purchase_app_entry.jsp" />
+			<portlet:param name="purchaseStep" value="project" />
+			<portlet:param name="ecDocumentEntryId" value="<%= String.valueOf(ecDocumentEntryId) %>" />
+			<portlet:param name="appEntryId" value="<%= String.valueOf(appEntry.getAppEntryId()) %>" />
+		</portlet:renderURL>
+
+		<aui:button href="<%= purchaseAppEntryProjectURL %>" value="back" />
+
+		<aui:button type="submit" value="next" />
+	</aui:button-row>
+</aui:form>
+
+<aui:script use="aui-base">
+	var marketplaceContainer = A.one('.marketplace .purchase-app-entry-license');
+
+	var displayCustomOptions = function(event) {
+		document.<portlet:namespace />fm.<portlet:namespace />renewAssetLicenseDeveloper.checked = false;
+		document.<portlet:namespace />fm.<portlet:namespace />renewAssetLicenseStandard.checked = false;
+
+		marketplaceContainer.one('.renew-all-options').addClass('aui-helper-hidden');
+
+		marketplaceContainer.one('.renew-custom-options').removeClass('aui-helper-hidden');
+	}
+
+	<c:choose>
+		<c:when test ="<%= ECDocumentItemLocalServiceUtil.getECDocumentItemsCount(ecDocumentEntryId) > 0 %>">
+			displayCustomOptions();
+		</c:when>
+		<c:otherwise>
+			marketplaceContainer.one('.renew-all-options .actions a').on(
+				'click',
+				displayCustomOptions
+			);
+		</c:otherwise>
+	</c:choose>
+</aui:script>

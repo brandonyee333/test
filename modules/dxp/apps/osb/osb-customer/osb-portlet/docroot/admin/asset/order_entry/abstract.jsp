@@ -1,0 +1,70 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%@ include file="/init.jsp" %>
+
+<%
+AccountEntryAssetRenderer accountEntryAssetRenderer = (AccountEntryAssetRenderer)request.getAttribute(WebKeys.ASSET_RENDERER);
+WorkflowInstance workflowInstance = (WorkflowInstance)request.getAttribute(OSBWebKeys.WORKFLOW_INSTANCE);
+WorkflowTask workflowTask = (WorkflowTask)request.getAttribute(OSBWebKeys.WORKFLOW_TASK);
+
+if (workflowInstance == null) {
+	workflowInstance = WorkflowInstanceManagerUtil.getWorkflowInstance(company.getCompanyId(), workflowTask.getWorkflowInstanceId());
+}
+
+Map<String, Serializable> workflowContext = workflowInstance.getWorkflowContext();
+
+AccountEntry accountEntry = accountEntryAssetRenderer.getAccountEntry();
+
+request.setAttribute("header.jsp-accountEntry", accountEntry);
+request.setAttribute("header.jsp-entryClassName", workflowContext.get(WorkflowConstants.CONTEXT_ENTRY_CLASS_NAME));
+request.setAttribute("header.jsp-salesforceOpportunityAction", workflowContext.get(WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_ACTION));
+request.setAttribute("header.jsp-salesforceOpportunityStageName", workflowContext.get(WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_STAGE_NAME));
+request.setAttribute("header.jsp-salesforceOpportunityType", workflowContext.get(WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_TYPE));
+%>
+
+<liferay-util:include page="/admin/asset/header.jsp" servletContext="<%= application %>" />
+
+<%
+request.setAttribute("summary.jsp-accountEntry", accountEntry);
+%>
+
+<liferay-util:include page="/admin/asset/account_entry/summary.jsp" servletContext="<%= application %>" />
+
+<%
+request.setAttribute("diff.jsp-newAccountEntryAttributes", workflowContext.get(WorkflowConstants.CONTEXT_NEW_ACCOUNT_ENTRY_ATTRIBUTES));
+request.setAttribute("diff.jsp-oldAccountEntryAttributes", workflowContext.get(WorkflowConstants.CONTEXT_OLD_ACCOUNT_ENTRY_ATTRIBUTES));
+%>
+
+<liferay-util:include page="/admin/asset/account_entry/diff.jsp" servletContext="<%= application %>" />
+
+<%
+JSONObject jsonObject = JSONFactoryUtil.createJSONObject((String)workflowContext.get(WorkflowConstants.CONTEXT_ORDER_ENTRY));
+
+request.setAttribute("summary.jsp-jsonObject", jsonObject);
+%>
+
+<h3>
+	<liferay-ui:message key="order-summary" />
+</h3>
+
+<liferay-util:include page="/admin/asset/order_entry/summary.jsp" servletContext="<%= application %>" />
+
+<%
+request.setAttribute("warning_messages.jsp-warningMessages", workflowContext.get(WorkflowConstants.CONTEXT_WARNING_MESSAGES));
+%>
+
+<liferay-util:include page="/admin/asset/warning_messages.jsp" servletContext="<%= application %>" />

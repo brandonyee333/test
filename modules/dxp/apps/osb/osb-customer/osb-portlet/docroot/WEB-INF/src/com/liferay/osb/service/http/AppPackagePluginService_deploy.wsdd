@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+	<service name="Plugin_OSB_AppPackagePluginService" provider="java:RPC" style="rpc" use="encoded">
+		<typeMapping xmlns:ns="http://model.osb.liferay.com" qname="ns:AppPackagePluginSoap" type="java:com.liferay.osb.model.AppPackagePluginSoap" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></typeMapping>
+		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="http://model.osb.liferay.com" name="deleteAppPackagePlugin" qname="operNS:deleteAppPackagePlugin" returnQName="deleteAppPackagePluginReturn" returnType="rtns:AppPackagePluginSoap" soapAction="">
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="appPackagePluginId" type="tns:long"></parameter>
+		</operation>
+		<operation xmlns:operNS="urn:http.service.osb.liferay.com" name="deleteInvalidAppPackagePlugins" qname="operNS:deleteInvalidAppPackagePlugins" soapAction="">
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="appVersionId" type="tns:long"></parameter>
+		</operation>
+		<parameter name="allowedMethods" value="deleteAppPackagePlugin deleteInvalidAppPackagePlugins" />
+		<parameter name="className" value="com.liferay.osb.service.http.AppPackagePluginServiceSoap" />
+		<parameter name="schemaUnqualified" value="http://model.osb.liferay.com" />
+		<parameter name="typeMappingVersion" value="1.2" />
+		<parameter name="wsdlPortType" value="AppPackagePluginServiceSoap" />
+		<parameter name="wsdlServiceElement" value="AppPackagePluginServiceSoapService" />
+		<parameter name="wsdlServicePort" value="Plugin_OSB_AppPackagePluginService" />
+		<parameter name="wsdlTargetNamespace" value="urn:http.service.osb.liferay.com" />
+	</service>
+</deployment>

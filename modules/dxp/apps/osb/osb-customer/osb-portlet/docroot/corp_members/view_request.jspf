@@ -1,0 +1,86 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%
+long corpEntryId = ParamUtil.getLong(request, "corpEntryId");
+
+CorpEntry corpEntry = CorpEntryLocalServiceUtil.getCorpEntry(corpEntryId);
+%>
+
+<c:choose>
+	<c:when test="<%= themeDisplay.isSignedIn() %>">
+		<div id="<portlet:namespace />corpRequestContainer">
+			<div class="disclaimer">
+				<p>
+					<liferay-ui:message arguments="<%= HtmlUtil.escape(corpEntry.getName()) %>" key="corp-membership-request-disclaimer" />
+				</p>
+
+				<p>
+					<%= HtmlUtil.escape(user.getEmailAddress()) %>
+				</p>
+			</div>
+
+			<div class="buttons">
+				<aui:button cssClass="button fr" onClick='<%= renderResponse.getNamespace() + "sendCorpMembershipRequest();" %>' value="send-request" />
+			</div>
+		</div>
+
+		<aui:script>
+			Liferay.provide(
+				window,
+				'<portlet:namespace />sendCorpMembershipRequest',
+				function() {
+					var A = AUI();
+
+					var corpRequestContainer = A.one('#<portlet:namespace />corpRequestContainer');
+
+					A.io.request(
+						'<liferay-portlet:actionURL name="sendCorpMembershipRequest"><portlet:param name="corpEntryId" value="<%= String.valueOf(corpEntryId) %>" /></liferay-portlet:actionURL>',
+						{
+							dataType: 'json',
+							method: 'post',
+							on: {
+								start: function(event, id, obj) {
+									corpRequestContainer.one('.button input').attr('disabled', true);
+								},
+								success: function(event, id, obj) {
+									var response = this.get('responseData');
+
+									A.DialogManager.closeByChild(corpRequestContainer);
+
+									if (window.corpRequestCallback) {
+										if (response.message === "success") {
+											corpRequestCallback(true);
+										}
+										else {
+											corpRequestCallback(false);
+										}
+									}
+								}
+							}
+						}
+					);
+				},
+				['aui-dialog', 'aui-io']
+			);
+		</aui:script>
+	</c:when>
+	<c:otherwise>
+		<div>
+			<liferay-ui:message arguments="<%= HtmlUtil.escape(corpEntry.getName()) %>" key="please-sign-in-to-request-membership-to-x" />
+		</div>
+	</c:otherwise>
+</c:choose>

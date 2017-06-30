@@ -1,0 +1,321 @@
+body .osb-portlet-corp-admin .yui3-aclist-content {
+	border: none;
+}
+
+.osb-portlet-corp-admin {
+	.aui-fieldset {
+		.aui-field-content {
+			margin: 5px;
+		}
+
+		.aui-field-label {
+			margin-top: 10px;
+		}
+	}
+
+	.jsp-add-corp-entry {
+		.corp-entry {
+			display: inline-block;
+			margin-left: 5px;
+			width: 450px;
+
+			.corp-entry-container {
+				background: #FFF;
+				box-shadow: 1px 1px 4px #888;
+				cursor: pointer;
+				margin-top: 16px;
+				padding: 10px;
+
+				.country, .description, .email, .region {
+					clear: none;
+					padding: 7px;
+
+					.label {
+						font-weight: bold;
+						padding-right: 3px;
+					}
+				}
+
+				.logo {
+					float: right;
+					height: 110px;
+					margin: 0 0 8px 0;
+					padding: 10px;
+					position: relative;
+					width: 110px;
+				}
+
+				.name {
+					font-size: 150%;
+					font-weight: bold;
+					padding: 10px 10px 1px 10px;
+				}
+
+				.status {
+					color: #BBB;
+					padding: 0 0 0 10px;
+				}
+
+				.website {
+					max-width: 300px;
+					padding: 10px;
+				}
+			}
+		}
+
+		.corp-entry-search-container {
+			display: inline-block;
+			margin-right: 10px;
+			vertical-align: top;
+
+			.results {
+				.add-button {
+					background: #FFF;
+					box-shadow: 1px 1px 4px #888;
+					float: right;
+					margin-right: 5px;
+					padding: 9px;
+					text-decoration: none;
+
+					a {
+						text-align: center;
+
+						.label {
+							float: right;
+							font-size: 1em;
+							font-weight: bold;
+							line-height: 1.5em;
+						}
+
+						.plus-sign {
+							float: left;
+							font-size: 3em;
+							font-weight: normal;
+							line-height: .5em;
+							padding-right: 10px;
+						}
+					}
+				}
+
+				.add-button:hover {
+					background: #F2F6F9;
+				}
+
+				.aui-field-input-text {
+					background: #FFF url(../images/search.png) no-repeat 100% 50%;
+					border: 1px solid #AAA;
+					height: 20px;
+					text-indent: 5px;
+					width: 350px;
+				}
+			}
+		}
+	}
+
+	.jsp-edit-corp-entry {
+		.aui-field-input-text {
+			width: 90%;
+		}
+
+		.column-1 {
+			float: left;
+			width: 35%;
+		}
+
+		.column-2 {
+			float: left;
+			width: 35%;
+
+			textarea {
+				height: 100px;
+			}
+		}
+
+		.column-3 {
+			float: left;
+			width: 30%;
+
+			.add-corp-group .aui-field-input-text {
+				background: #FFF url(../images/search.png) no-repeat 100% 50%;
+				border: 1px solid #AAA;
+				height: 20px;
+				text-indent: 5px;
+				width: 100%;
+			}
+
+			.corp-groups {
+				margin-bottom: 10px;
+
+				.corp-group-container {
+					background: #FFF;
+					box-shadow: 1px 1px 4px #888;
+					margin: 0 0 5px 5px;
+					padding: 10px;
+
+					.email {
+						display: inline-block;
+						padding: 0 0 0 10px;
+						vertical-align: bottom;
+					}
+
+					.logo {
+						clear: none;
+						height: 40px;
+						position: relative;
+						width: 40px;
+					}
+
+					.name {
+						display: inline-block;
+						font-size: 1.3em;
+						font-weight: bold;
+						padding: 0 0 0 10px;
+						position: absolute;
+						vertical-align: top;
+					}
+
+					.remove-icon {
+						float: right;
+						position: relative;
+						z-index: 1;
+					}
+				}
+
+				.title {
+					font-weight: bold;
+					margin-top: 10px;
+					padding-bottom: 6px;
+				}
+			}
+		}
+
+		.corp-entry-status {
+			background: url(@theme_image_path@/common/recent_changes.png) no-repeat 0 50%;
+			color: #999;
+			padding: 2px 0 2px 20px;
+		}
+
+		.sales-partnerships {
+			.marketplace-developer {
+				margin: 0 0 20px 30px;
+			}
+
+			.sales-partnership-type-container {
+				margin: 0 0 20px 20px;
+			}
+		}
+	}
+
+	.jsp-edit-corp-group {
+		.aui-field-input-text {
+			width: 90%;
+		}
+
+		.column-1 {
+			float: left;
+			width: 35%;
+
+			textarea {
+				height: 100px;
+			}
+		}
+
+		.column-2 {
+			float: left;
+			width: 30%;
+
+			.add-corp-entry .aui-field-input-text {
+				background: #FFF url(../images/search.png) no-repeat 100% 50%;
+				border: 1px solid #AAA;
+				height: 20px;
+				text-indent: 5px;
+				width: 100%;
+			}
+
+			.corp-entries {
+				margin-bottom: 10px;
+
+				.corp-entry-container {
+					background: #FFF;
+					box-shadow: 1px 1px 4px #888;
+					margin: 0 0 5px 5px;
+					padding: 10px;
+
+					.country {
+						display: inline-block;
+						padding: 0 0 0 10px;
+						vertical-align: bottom;
+					}
+
+					.logo {
+						clear: none;
+						height: 40px;
+						position: relative;
+						width: 40px;
+					}
+
+					.name {
+						display: inline-block;
+						font-size: 1.3em;
+						font-weight: bold;
+						padding: 0 0 0 10px;
+						position: absolute;
+						vertical-align: top;
+					}
+
+					.remove-icon {
+						float: right;
+						position: relative;
+						z-index: 1;
+					}
+				}
+
+				.title {
+					font-weight: bold;
+					margin-top: 10px;
+					padding-bottom: 6px;
+				}
+			}
+		}
+
+		.column-3 {
+			float: left;
+			width: 35%;
+		}
+	}
+
+	.jsp-corp-entries .search-bar .aui-field-content, .jsp-corp-groups .search-bar .aui-field-content {
+		margin: 0;
+	}
+
+	.yui3-aclist {
+		position: relative !important;
+		width: auto !important;
+
+		.yui3-aclist-content {
+			margin-bottom: 0;
+
+			.yui3-aclist-list .yui3-aclist-item {
+				border-bottom: 1px solid #E6E6E6;
+				overflow-y: auto;
+				padding: 8px 6px 7px;
+
+				.status-label {
+					float: right;
+					opacity: 0.5;
+				}
+			}
+
+			.yui3-aclist-list .yui3-aclist-item:hover {
+				background: #F2F6F9;
+				font-weight: bold;
+			}
+		}
+
+		.yui3-aclist-item-active {
+			background: #E0EAF1 !important;
+			color: #000 !important;
+			font-weight: bold !important;
+		}
+	}
+}

@@ -1,0 +1,1965 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 6.0.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_6_0_0.dtd">
+
+<service-builder>
+	<entity name="AccountAttachment" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="accountAttachmentId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="accountEntryId" type="long" />
+		<column name="accountProjectId" type="long" />
+		<column name="fileName" type="String" />
+		<column name="fileSize" type="long" />
+		<column name="type" type="int" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="createDate" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="AccountEntryId" return-type="Collection">
+			<finder-column name="accountEntryId" />
+		</finder>
+		<finder name="AEI_API" return-type="Collection">
+			<finder-column name="accountEntryId" />
+			<finder-column name="accountProjectId" />
+		</finder>
+		<finder name="AEI_API_T" return-type="Collection">
+			<finder-column name="accountEntryId" />
+			<finder-column name="accountProjectId" />
+			<finder-column name="type" />
+		</finder>
+		<finder name="AEI_API_FN_T" return-type="AccountAttachment">
+			<finder-column name="accountEntryId" />
+			<finder-column name="accountProjectId" />
+			<finder-column name="fileName" />
+			<finder-column name="type" />
+		</finder>
+
+		<!-- References -->
+
+		<reference package-path="com.liferay.portal" entity="Organization" />
+	</entity>
+	<entity name="AccountCall" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="accountCallId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="createDate" type="Date" />
+		<column name="modifiedUserId" type="long" />
+		<column name="modifiedUserName" type="String" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="accountEntryId" type="long" />
+		<column name="type" type="int" />
+		<column name="callDate" type="Date" />
+		<column name="callLength" type="long" />
+		<column name="summary" type="String" />
+		<column name="clientsPresent" type="String" />
+		<column name="notes" type="String" />
+		<column name="actionItems" type="String" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="createDate" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="AccountEntryId" return-type="Collection">
+			<finder-column name="accountEntryId" />
+		</finder>
+	</entity>
+	<entity name="AccountCustomer" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="accountCustomerId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+
+		<!-- Other fields -->
+
+		<column name="accountEntryId" type="long" />
+		<column name="role" type="int" />
+		<column name="notifications" type="int" />
+
+		<!-- Finder methods -->
+
+		<finder name="UserId" return-type="Collection">
+			<finder-column name="userId" />
+		</finder>
+		<finder name="AccountEntryId" return-type="Collection">
+			<finder-column name="accountEntryId" />
+		</finder>
+		<finder name="U_AEI" return-type="AccountCustomer">
+			<finder-column name="userId" />
+			<finder-column name="accountEntryId" />
+		</finder>
+		<finder name="U_R" return-type="Collection">
+			<finder-column name="userId" />
+			<finder-column name="role" arrayable-operator="OR" />
+		</finder>
+		<finder name="AEI_NotR" return-type="Collection">
+			<finder-column name="accountEntryId" />
+			<finder-column name="role" comparator="!=" />
+		</finder>
+		<finder name="AEI_NotN" return-type="Collection">
+			<finder-column name="accountEntryId" />
+			<finder-column name="notifications" comparator="!=" />
+		</finder>
+
+		<!-- References -->
+
+		<reference package-path="com.liferay.portal" entity="Organization" />
+	</entity>
+	<entity name="AccountEntry" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="accountEntryId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedUserId" type="long" />
+		<column name="modifiedUserName" type="String" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Relationships -->
+
+		<column name="supportRegions" type="Collection" entity="SupportRegion" mapping-table="AccountEntries_SupportRegions" />
+		<column name="supportTeams" type="Collection" entity="SupportTeam" mapping-table="AccountEntries_SupportTeams" />
+
+		<!-- Other fields -->
+
+		<column name="corpProjectId" type="long" />
+		<column name="corpEntryName" type="String" />
+		<column name="name" type="String" />
+		<column name="code" type="String" />
+		<column name="redirectAccountEntryId" type="long" />
+		<column name="type" type="int" />
+		<column name="industry" type="int" />
+		<column name="countryId" type="long" />
+		<column name="partnerEntryId" type="long" />
+		<column name="partnerManagedSupport" type="boolean" />
+		<column name="tier" type="int" />
+		<column name="maxCustomers" type="int" />
+		<column name="instructions" type="String" />
+		<column name="notes" type="String" />
+		<column name="highestSupportResponseId" type="long" />
+		<column name="lastAuditDate" type="Date" />
+		<column name="status" type="int" />
+		<column name="statusByUserId" type="long" />
+		<column name="statusByUserName" type="String" />
+		<column name="statusDate" type="Date" />
+		<column name="statusMessage" type="String" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="name" case-sensitive="false" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="CorpProjectId" return-type="AccountEntry">
+			<finder-column name="corpProjectId" />
+		</finder>
+		<finder name="Name" return-type="Collection">
+			<finder-column name="name" />
+		</finder>
+		<finder name="Code" return-type="AccountEntry" unique="true">
+			<finder-column name="code" case-sensitive="false" />
+		</finder>
+		<finder name="RedirectAccountEntryId" return-type="Collection">
+			<finder-column name="redirectAccountEntryId" />
+		</finder>
+		<finder name="PartnerEntryId" return-type="Collection">
+			<finder-column name="partnerEntryId" />
+		</finder>
+		<finder name="HighestSupportResponseId" return-type="Collection">
+			<finder-column name="highestSupportResponseId" />
+		</finder>
+		<finder name="U_T" return-type="Collection">
+			<finder-column name="userId" />
+			<finder-column name="type" />
+		</finder>
+		<finder name="RAEI_S" return-type="Collection">
+			<finder-column name="redirectAccountEntryId" />
+			<finder-column name="status" arrayable-operator="OR" />
+		</finder>
+		<finder name="RAEI_NotT_S" return-type="Collection">
+			<finder-column name="redirectAccountEntryId" />
+			<finder-column name="type" comparator="!=" arrayable-operator="OR" />
+			<finder-column name="status" arrayable-operator="OR" />
+		</finder>
+		<finder name="N_C_RAEI" return-type="Collection">
+			<finder-column name="name" case-sensitive="false" comparator="LIKE" />
+			<finder-column name="code" case-sensitive="false" comparator="LIKE" />
+			<finder-column name="redirectAccountEntryId" />
+		</finder>
+
+		<!-- References -->
+
+		<reference package-path="com.liferay.portal" entity="Address" />
+		<reference package-path="com.liferay.portal" entity="Country" />
+		<reference package-path="com.liferay.portal" entity="ListType" />
+		<reference package-path="com.liferay.portal" entity="Organization" />
+		<reference package-path="com.liferay.portal" entity="WorkflowInstanceLink" />
+	</entity>
+	<entity name="AccountEntryLanguage" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="accountEntryLanguageId" type="long" primary="true" />
+
+		<!-- Other fields -->
+
+		<column name="accountEntryId" type="long" />
+		<column name="languageId" type="String" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="languageId" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="AccountEntryId" return-type="Collection">
+			<finder-column name="accountEntryId" />
+		</finder>
+	</entity>
+	<entity name="AccountEnvironment" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="accountEnvironmentId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="accountEntryId" type="long" />
+		<column name="productEntryId" type="long" />
+		<column name="name" type="String" />
+		<column name="envOS" type="int" />
+		<column name="envOSCustom" type="String" />
+		<column name="envDB" type="int" />
+		<column name="envJVM" type="int" />
+		<column name="envAS" type="int" />
+		<column name="envLFR" type="int" />
+
+		<!-- Finder -->
+
+		<finder name="AccountEntryId" return-type="Collection">
+			<finder-column name="accountEntryId" />
+		</finder>
+		<finder name="AEI_PEI" return-type="Collection">
+			<finder-column name="accountEntryId" />
+			<finder-column name="productEntryId" />
+		</finder>
+		<finder name="AEI_PEI_N" return-type="AccountEnvironment">
+			<finder-column name="accountEntryId" />
+			<finder-column name="productEntryId" />
+			<finder-column name="name" />
+		</finder>
+
+		<!-- References -->
+
+		<reference package-path="com.liferay.portal" entity="ListType" />
+	</entity>
+	<entity name="AccountEnvironmentAttachment" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="accountEnvironmentAttachmentId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="accountEnvironmentId" type="long" />
+		<column name="fileName" type="String" />
+		<column name="fileSize" type="long" />
+		<column name="type" type="int" />
+
+		<!-- Finder methods -->
+
+		<finder name="AccountEnvironmentId" return-type="Collection">
+			<finder-column name="accountEnvironmentId" />
+		</finder>
+		<finder name="AEI_FN" return-type="AccountEnvironmentAttachment">
+			<finder-column name="accountEnvironmentId" />
+			<finder-column name="fileName" />
+		</finder>
+		<finder name="AEI_T" return-type="AccountEnvironmentAttachment">
+			<finder-column name="accountEnvironmentId" />
+			<finder-column name="type" />
+		</finder>
+	</entity>
+	<entity name="AccountInformation" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="accountInformationId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="modifiedUserId" type="long" />
+		<column name="modifiedUserName" type="String" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="accountEntryId" type="long" />
+		<column name="accountProjectId" type="long" />
+		<column name="fieldId" type="int" />
+		<column name="data" type="String" />
+
+		<!-- Finder methods -->
+
+		<finder name="AEI_API" return-type="Collection">
+			<finder-column name="accountEntryId" />
+			<finder-column name="accountProjectId" />
+		</finder>
+		<finder name="AEI_NotAPI" return-type="Collection">
+			<finder-column name="accountEntryId" />
+			<finder-column name="accountProjectId" comparator="!=" />
+		</finder>
+		<finder name="AEI_API_FI" return-type="AccountInformation" unique="true">
+			<finder-column name="accountEntryId" />
+			<finder-column name="accountProjectId" />
+			<finder-column name="fieldId" />
+		</finder>
+	</entity>
+	<entity name="AccountLink" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="accountLinkId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="accountEntryId" type="long" />
+		<column name="url" type="String" />
+
+		<!-- Finder methods -->
+
+		<finder name="AccountEntryId" return-type="Collection">
+			<finder-column name="accountEntryId" />
+		</finder>
+	</entity>
+	<entity name="AccountProject" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="accountProjectId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="modifiedUserId" type="long" />
+		<column name="modifiedUserName" type="String" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="accountEntryId" type="long" />
+		<column name="name" type="String" />
+
+		<!-- Finder methods -->
+
+		<finder name="AccountEntryId" return-type="Collection">
+			<finder-column name="accountEntryId" />
+		</finder>
+	</entity>
+	<entity name="AccountWorker" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="accountWorkerId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+
+		<!-- Other fields -->
+
+		<column name="accountEntryId" type="long" />
+		<column name="role" type="int" />
+		<column name="notifications" type="int" />
+
+		<!-- Finder methods -->
+
+		<finder name="UserId" return-type="Collection">
+			<finder-column name="userId" />
+		</finder>
+		<finder name="AccountEntryId" return-type="Collection">
+			<finder-column name="accountEntryId" />
+		</finder>
+		<finder name="U_AEI" return-type="AccountWorker">
+			<finder-column name="userId" />
+			<finder-column name="accountEntryId" />
+		</finder>
+		<finder name="U_R" return-type="Collection">
+			<finder-column name="userId" />
+			<finder-column name="role" />
+		</finder>
+		<finder name="AEI_R" return-type="Collection">
+			<finder-column name="accountEntryId" />
+			<finder-column name="role" />
+		</finder>
+		<finder name="AEI_NotN" return-type="Collection">
+			<finder-column name="accountEntryId" />
+			<finder-column name="notifications" comparator="!=" />
+		</finder>
+	</entity>
+	<entity name="AuditEntry" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="auditEntryId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="classNameId" type="long" />
+		<column name="classPK" type="long" />
+		<column name="previousAuditEntryId" type="long" />
+		<column name="auditSetId" type="long" />
+		<column name="fieldClassNameId" type="long" />
+		<column name="fieldClassPK" type="long" />
+		<column name="action" type="int" />
+		<column name="field" type="int" />
+		<column name="visibility" type="int" />
+		<column name="oldLabel" type="String" />
+		<column name="oldValue" type="String" />
+		<column name="newLabel" type="String" />
+		<column name="newValue" type="String" />
+		<column name="i18n" type="boolean" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="createDate" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="GtCD_C" return-type="Collection">
+			<finder-column name="createDate" comparator=">" />
+			<finder-column name="classNameId" />
+		</finder>
+		<finder name="C_C_V" return-type="Collection">
+			<finder-column name="classNameId" />
+			<finder-column name="classPK" />
+			<finder-column name="visibility" arrayable-operator="OR" />
+		</finder>
+		<finder name="FC_FC_F" return-type="Collection">
+			<finder-column name="fieldClassNameId" />
+			<finder-column name="fieldClassPK" />
+			<finder-column name="field" />
+		</finder>
+		<finder name="C_C_F_A" return-type="Collection">
+			<finder-column name="classNameId" />
+			<finder-column name="classPK" />
+			<finder-column name="field" />
+			<finder-column name="action" />
+		</finder>
+	</entity>
+	<entity name="ExternalIdMapper" local-service="true" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="externalIdMapperId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="classNameId" type="long" />
+		<column name="classPK" type="long" />
+		<column name="type" type="int" />
+		<column name="externalId" type="String" />
+
+		<!-- Finder methods -->
+
+		<finder name="C_C" return-type="Collection">
+			<finder-column name="classNameId" />
+			<finder-column name="classPK" />
+		</finder>
+		<finder name="C_C_T" return-type="Collection">
+			<finder-column name="classNameId" />
+			<finder-column name="classPK" />
+			<finder-column name="type" />
+		</finder>
+		<finder name="C_T_EI" return-type="Collection">
+			<finder-column name="classNameId" />
+			<finder-column name="type" />
+			<finder-column name="externalId" />
+		</finder>
+	</entity>
+	<entity name="HolidayCalendar" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="holidayCalendarId" type="long" primary="true" />
+
+		<!-- Other fields -->
+
+		<column name="name" type="String" />
+		<column name="description" type="String" />
+	</entity>
+	<entity name="HolidayCalendarRel" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="holidayCalendarRelId" type="long" primary="true" />
+
+		<!--  Other fields -->
+
+		<column name="holidayCalendarId" type="long" />
+		<column name="userId" type="long" />
+
+		<!-- Finder methods -->
+
+		<finder name="HolidayCalendarId" return-type="Collection">
+			<finder-column name="holidayCalendarId" />
+		</finder>
+		<finder name="UserId" return-type="Collection">
+			<finder-column name="userId" />
+		</finder>
+		<finder name="HC_U" return-type="HolidayCalendarRel">
+			<finder-column name="holidayCalendarId" />
+			<finder-column name="userId" />
+		</finder>
+	</entity>
+	<entity name="HolidayEntry" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="holidayEntryId" type="long" primary="true" />
+
+		<!-- Other fields -->
+
+		<column name="holidayCalendarId" type="long" />
+		<column name="name" type="String" />
+		<column name="description" type="String" />
+		<column name="startDate" type="Date" />
+		<column name="endDate" type="Date" />
+		<column name="repeatYearly" type="boolean" />
+
+		<!-- Finder methods -->
+
+		<finder name="HolidayCalendar" return-type="Collection">
+			<finder-column name="holidayCalendarId" />
+		</finder>
+	</entity>
+	<entity name="OfferingBundle" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="offeringBundleId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+
+		<!-- Relationships -->
+
+		<column name="offeringDefinitions" type="Collection" entity="OfferingDefinition" mapping-table="OfferingBundles_OfferingDefinitions" />
+
+		<!-- Other fields -->
+
+		<column name="name" type="String" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="name" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="Name" return-type="OfferingBundle" unique="true">
+			<finder-column name="name" />
+		</finder>
+	</entity>
+	<entity name="OfferingDefinition" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="offeringDefinitionId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Relationships -->
+
+		<column name="offeringBundles" type="Collection" entity="OfferingBundle" mapping-table="OfferingBundles_OfferingDefinitions" />
+
+		<!-- Other fields -->
+
+		<column name="productEntryId" type="long" />
+		<column name="supportResponseId" type="long" />
+		<column name="productDescription" type="String" />
+		<column name="licenses" type="boolean" />
+		<column name="unlimitedLicenses" type="boolean" />
+		<column name="maxConcurrentUsers" type="long" />
+		<column name="maxUsers" type="long" />
+		<column name="supportTickets" type="boolean" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="productEntryId" />
+			<order-column name="supportResponseId" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="ProductEntryId" return-type="Collection">
+			<finder-column name="productEntryId" />
+		</finder>
+		<finder name="SupportResponseId" return-type="Collection">
+			<finder-column name="supportResponseId" />
+		</finder>
+		<finder name="PEI_SRI" return-type="Collection">
+			<finder-column name="productEntryId" arrayable-operator="OR" />
+			<finder-column name="supportResponseId" arrayable-operator="OR" />
+		</finder>
+		<finder name="PEI_SRI_PD_L_UL_ST" return-type="OfferingDefinition">
+			<finder-column name="productEntryId" />
+			<finder-column name="supportResponseId" />
+			<finder-column name="productDescription" />
+			<finder-column name="licenses" />
+			<finder-column name="unlimitedLicenses" />
+			<finder-column name="supportTickets" />
+		</finder>
+	</entity>
+	<entity name="OfferingEntry" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="offeringEntryId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="accountEntryId" type="long" />
+		<column name="orderEntryId" type="long" />
+		<column name="productEntryId" type="long" />
+		<column name="supportResponseId" type="long" />
+		<column name="productDescription" type="String" />
+		<column name="type" type="int" />
+		<column name="version" type="int" />
+		<column name="platform" type="String" />
+		<column name="platformVersion" type="String" />
+		<column name="licenses" type="boolean" />
+		<column name="licenseLifetime" type="long" />
+		<column name="maxConcurrentUsers" type="long" />
+		<column name="maxUsers" type="long" />
+		<column name="supportTickets" type="boolean" />
+		<column name="supportLifetime" type="long" />
+		<column name="supportEndDate" type="Date" />
+		<column name="sizing" type="int" />
+		<column name="quantity" type="int" />
+		<column name="status" type="int" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="offeringEntryId" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="AccountEntryId" return-type="Collection">
+			<finder-column name="accountEntryId" />
+		</finder>
+		<finder name="OrderEntryId" return-type="Collection">
+			<finder-column name="orderEntryId" />
+		</finder>
+		<finder name="Version" return-type="Collection">
+			<finder-column name="version" />
+		</finder>
+		<finder name="SupportEndDate" return-type="Collection">
+			<finder-column name="supportEndDate" />
+		</finder>
+		<finder name="Status" return-type="Collection">
+			<finder-column name="status" />
+		</finder>
+		<finder name="AEI_S" return-type="Collection">
+			<finder-column name="accountEntryId" />
+			<finder-column name="status" />
+		</finder>
+		<finder name="U_AEI_OEI_T" return-type="Collection">
+			<finder-column name="userId" />
+			<finder-column name="accountEntryId" />
+			<finder-column name="orderEntryId" />
+			<finder-column name="type" />
+		</finder>
+
+		<!-- References -->
+
+		<reference package-path="com.liferay.mail" entity="Mail" />
+		<reference package-path="com.liferay.portal" entity="Company" />
+	</entity>
+	<entity name="OrderEntry" uuid="true" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="orderEntryId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedUserId" type="long" />
+		<column name="modifiedUserName" type="String" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="accountEntryId" type="long" />
+		<column name="purchaseOrderKey" type="String" />
+		<column name="startDate" type="Date" />
+		<column name="prorated" type="boolean" />
+		<column name="actualStartDate" type="Date" />
+		<column name="renewCount" type="int" />
+		<column name="status" type="int" />
+		<column name="statusByUserId" type="long" />
+		<column name="statusByUserName" type="String" />
+		<column name="statusDate" type="Date" />
+		<column name="statusMessage" type="String" />
+
+		<!-- Finder methods -->
+
+		<finder name="AccountEntryId" return-type="Collection">
+			<finder-column name="accountEntryId" />
+		</finder>
+
+		<!-- References -->
+
+		<reference package-path="com.liferay.portal" entity="Role" />
+	</entity>
+	<entity name="PartnerEntry" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="partnerEntryId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedUserId" type="long" />
+		<column name="modifiedUserName" type="String" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Relationships -->
+
+		<column name="supportRegions" type="Collection" entity="SupportRegion" mapping-table="PartnerEntries_SupportRegions" />
+
+		<!-- Other fields -->
+
+		<column name="parentPartnerEntryId" type="long" />
+		<column name="dossieraAccountKey" type="String" />
+		<column name="code" type="String" />
+		<column name="notes" type="String" />
+		<column name="status" type="int" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="code" case-sensitive="false" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="ParentPartnerEntryId" return-type="Collection">
+			<finder-column name="parentPartnerEntryId" />
+		</finder>
+		<finder name="DossieraAccountKey" return-type="PartnerEntry">
+			<finder-column name="dossieraAccountKey" />
+		</finder>
+		<finder name="Code" return-type="PartnerEntry" unique="true">
+			<finder-column name="code" />
+		</finder>
+
+		<!-- References -->
+
+		<reference package-path="com.liferay.portal" entity="Address" />
+		<reference package-path="com.liferay.portal" entity="Organization" />
+	</entity>
+	<entity name="PartnerWorker" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="partnerWorkerId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+
+		<!-- Other fields -->
+
+		<column name="partnerEntryId" type="long" />
+		<column name="role" type="int" />
+		<column name="notifications" type="int" />
+
+		<!-- Finder methods -->
+
+		<finder name="UserId" return-type="Collection">
+			<finder-column name="userId" />
+		</finder>
+		<finder name="PartnerEntryId" return-type="Collection">
+			<finder-column name="partnerEntryId" />
+		</finder>
+		<finder name="U_PEI" return-type="PartnerWorker">
+			<finder-column name="userId" />
+			<finder-column name="partnerEntryId" />
+		</finder>
+		<finder name="U_R" return-type="Collection">
+			<finder-column name="userId" arrayable-operator="OR" />
+			<finder-column name="role" arrayable-operator="OR" />
+		</finder>
+		<finder name="PEI_R" return-type="Collection">
+			<finder-column name="partnerEntryId" />
+			<finder-column name="role" />
+		</finder>
+		<finder name="PEI_NotN" return-type="Collection">
+			<finder-column name="partnerEntryId" />
+			<finder-column name="notifications" comparator="!=" />
+		</finder>
+
+		<!-- References -->
+
+		<reference package-path="com.liferay.portal" entity="Organization" />
+	</entity>
+	<entity name="ProductEntry" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="productEntryId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="name" type="String" />
+		<column name="type" type="int" />
+		<column name="environment" type="int" />
+		<column name="versionsListType" type="String" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="name" case-sensitive="false" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="Name" return-type="ProductEntry" unique="true">
+			<finder-column name="name" />
+		</finder>
+	</entity>
+	<entity name="SearchFilter" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="searchFilterId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="classNameId" type="long" />
+		<column name="name" type="String" />
+		<column name="filter" type="String" />
+		<column name="visibility" type="int" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="name" case-sensitive="false" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="UserId" return-type="Collection">
+			<finder-column name="userId" />
+		</finder>
+		<finder name="U_C" return-type="Collection">
+			<finder-column name="userId" />
+			<finder-column name="classNameId" />
+		</finder>
+
+		<!-- References -->
+
+		<reference package-path="com.liferay.portal" entity="Organization" />
+	</entity>
+	<entity name="SecurityPatch" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="securityPatchId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="accountEntryId" type="long" />
+		<column name="ticketAttachmentId" type="long" />
+		<column name="portletId" type="String" />
+		<column name="envLFR" type="int" />
+		<column name="name" type="String" />
+		<column name="fileName" type="String" />
+
+		<!-- Finder methods -->
+
+		<finder name="PortletId" return-type="Collection">
+			<finder-column name="portletId" />
+		</finder>
+		<finder name="AEI_PI" return-type="Collection">
+			<finder-column name="accountEntryId" />
+			<finder-column name="portletId" />
+		</finder>
+
+		<!-- References -->
+
+		<reference package-path="com.liferay.portal" entity="ListType" />
+		<reference package-path="com.liferay.portal" entity="Organization" />
+	</entity>
+	<entity name="SupportLabor" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="supportLaborId" type="long" primary="true" />
+
+		<!-- Other fields -->
+
+		<column name="name" type="String" />
+		<column name="description" type="String" />
+		<column name="timeZoneId" type="String" />
+		<column name="sunOpen" type="int" />
+		<column name="sunClose" type="int" />
+		<column name="monOpen" type="int" />
+		<column name="monClose" type="int" />
+		<column name="tueOpen" type="int" />
+		<column name="tueClose" type="int" />
+		<column name="wedOpen" type="int" />
+		<column name="wedClose" type="int" />
+		<column name="thuOpen" type="int" />
+		<column name="thuClose" type="int" />
+		<column name="friOpen" type="int" />
+		<column name="friClose" type="int" />
+		<column name="satOpen" type="int" />
+		<column name="satClose" type="int" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="name" />
+		</order>
+	</entity>
+	<entity name="SupportRegion" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="supportRegionId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="name" type="String" />
+		<column name="description" type="String" />
+		<column name="timeZoneId" type="String" />
+		<column name="managerUserId" type="long" />
+
+		<!-- Relationships -->
+
+		<column name="accountEntries" type="Collection" entity="AccountEntry" mapping-table="AccountEntries_SupportRegions" />
+		<column name="partnerEntries" type="Collection" entity="PartnerEntry" mapping-table="PartnerEntries_SupportRegions" />
+		<column name="supportTeams" type="Collection" entity="SupportTeam" mapping-table="SupportTeams_SupportRegions" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="name" case-sensitive="false" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="Name" return-type="SupportRegion" unique="true">
+			<finder-column name="name" />
+		</finder>
+	</entity>
+	<entity name="SupportResponse" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="supportResponseId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="name" type="String" />
+		<column name="supportLevel" type="int" />
+		<column name="severity1Response" type="int" />
+		<column name="severity1Resolution" type="int" />
+		<column name="severity2Response" type="int" />
+		<column name="severity2Resolution" type="int" />
+		<column name="severity3Response" type="int" />
+		<column name="severity3Resolution" type="int" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="name" case-sensitive="false" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="Name" return-type="SupportResponse" unique="true">
+			<finder-column name="name" />
+		</finder>
+		<finder name="SupportLevel" return-type="Collection">
+			<finder-column name="supportLevel" />
+		</finder>
+	</entity>
+	<entity name="SupportTeam" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="supportTeamId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="parentSupportTeamId" type="long" />
+		<column name="supportLaborId" type="long" />
+		<column name="locationSupportRegionId" type="long" />
+		<column name="name" type="String" />
+		<column name="description" type="String" />
+		<column name="type" type="int" />
+		<column name="assignedWork" type="double" />
+		<column name="maxWork" type="double" />
+
+		<!-- Relationships -->
+
+		<column name="accountEntries" type="Collection" entity="AccountEntry" mapping-table="AccountEntries_SupportTeams" />
+		<column name="supportRegions" type="Collection" entity="SupportRegion" mapping-table="SupportTeams_SupportRegions" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="name" case-sensitive="false" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="ParentSupportTeamId" return-type="Collection">
+			<finder-column name="parentSupportTeamId" />
+		</finder>
+		<finder name="SupportLaborId" return-type="Collection">
+			<finder-column name="supportLaborId" />
+		</finder>
+		<finder name="Name" return-type="SupportTeam" unique="true">
+			<finder-column name="name" />
+		</finder>
+	</entity>
+	<entity name="SupportTeamLanguage" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="supportTeamLanguageId" type="long" primary="true" />
+
+		<!-- Other fields -->
+
+		<column name="supportTeamId" type="long" />
+		<column name="languageId" type="String" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="languageId" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="SupportTeamId" return-type="Collection">
+			<finder-column name="supportTeamId" />
+		</finder>
+	</entity>
+	<entity name="SupportWorker" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="supportWorkerId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+
+		<!-- Other fields -->
+
+		<column name="supportTeamId" type="long" />
+		<column name="supportLaborId" type="long" />
+		<column name="autoAssign" type="boolean" />
+		<column name="assignedWork" type="double" />
+		<column name="maxWork" type="double" />
+		<column name="escalationLevel" type="int" />
+		<column name="role" type="int" />
+		<column name="escalationLevel2Role" type="int" />
+		<column name="notifications" type="int" />
+		<column name="clockedIn" type="boolean" />
+
+		<!-- Finder methods -->
+
+		<finder name="UserId" return-type="Collection">
+			<finder-column name="userId" />
+		</finder>
+		<finder name="SupportTeamId" return-type="Collection">
+			<finder-column name="supportTeamId" />
+		</finder>
+		<finder name="SupportLaborId" return-type="Collection">
+			<finder-column name="supportLaborId" />
+		</finder>
+		<finder name="U_STI" return-type="SupportWorker" unique="true">
+			<finder-column name="userId" />
+			<finder-column name="supportTeamId" />
+		</finder>
+		<finder name="U_MW_R" return-type="Collection">
+			<finder-column name="userId" arrayable-operator="OR" />
+			<finder-column name="maxWork" comparator="!=" />
+			<finder-column name="role" arrayable-operator="OR" />
+		</finder>
+	</entity>
+	<entity name="SupportWorkerComponent" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="supportWorkerComponentId" type="long" primary="true" />
+
+		<!-- Other fields -->
+
+		<column name="supportWorkerId" type="long" />
+		<column name="component" type="int" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="component" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="SupportWorkerId" return-type="Collection">
+			<finder-column name="supportWorkerId" />
+		</finder>
+	</entity>
+	<entity name="SupportWorkerSeverity" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="supportWorkerSeverityId" type="long" primary="true" />
+
+		<!-- Other fields -->
+
+		<column name="supportWorkerId" type="long" />
+		<column name="severity" type="int" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="severity" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="SupportWorkerId" return-type="Collection">
+			<finder-column name="supportWorkerId" />
+		</finder>
+	</entity>
+	<entity name="SupportWorkerAccountTier" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="supportWorkerAccountTierId" type="long" primary="true" />
+
+		<!-- Other fields -->
+
+		<column name="supportWorkerId" type="long" />
+		<column name="accountTier" type="int" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="accountTier" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="SupportWorkerId" return-type="Collection">
+			<finder-column name="supportWorkerId" />
+		</finder>
+	</entity>
+	<entity name="TicketAttachment" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="ticketAttachmentId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="ticketEntryId" type="long" />
+		<column name="ticketSolutionId" type="long" />
+		<column name="releaseNotesId" type="long" />
+		<column name="fileName" type="String" />
+		<column name="fileSize" type="long" />
+		<column name="type" type="int" />
+		<column name="visibility" type="int" />
+		<column name="extractedText" type="String" />
+		<column name="availableFileRepositoryIds" type="String" />
+		<column name="replicate" type="boolean" />
+		<column name="deleteDate" type="Date" />
+		<column name="status" type="int" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="createDate" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="Type" return-type="Collection">
+			<finder-column name="type" arrayable-operator="OR" />
+		</finder>
+		<finder name="CD_TEI" return-type="Collection">
+			<finder-column name="createDate" comparator="&lt;" />
+			<finder-column name="ticketEntryId" />
+		</finder>
+		<finder name="CD_T" return-type="Collection">
+			<finder-column name="createDate" comparator="&lt;" />
+			<finder-column name="type" />
+		</finder>
+		<finder name="TEI_TSI" return-type="Collection">
+			<finder-column name="ticketEntryId" />
+			<finder-column name="ticketSolutionId" />
+		</finder>
+		<finder name="TEI_S" return-type="Collection">
+			<finder-column name="ticketEntryId" />
+			<finder-column name="status" />
+		</finder>
+		<finder name="T_DD" return-type="Collection">
+			<finder-column name="type" arrayable-operator="OR" />
+			<finder-column name="deleteDate" comparator="&lt;" />
+		</finder>
+		<finder name="TEI_T_S" return-type="Collection">
+			<finder-column name="ticketEntryId" />
+			<finder-column name="type" />
+			<finder-column name="status" />
+		</finder>
+		<finder name="U_TEI_V_S" return-type="Collection">
+			<finder-column name="userId" />
+			<finder-column name="ticketEntryId" />
+			<finder-column name="visibility" />
+			<finder-column name="status" />
+		</finder>
+		<finder name="TEI_FN_V_S" return-type="TicketEntry">
+			<finder-column name="ticketEntryId" />
+			<finder-column name="fileName" />
+			<finder-column name="visibility" />
+			<finder-column name="status" />
+		</finder>
+		<finder name="TEI_T_V_S" return-type="Collection">
+			<finder-column name="ticketEntryId" />
+			<finder-column name="type" arrayable-operator="OR" />
+			<finder-column name="visibility" arrayable-operator="OR" />
+			<finder-column name="status" />
+		</finder>
+
+		<!-- References -->
+
+		<reference package-path="com.liferay.portal" entity="Organization" />
+	</entity>
+	<entity name="TicketCall" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="ticketCallId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="ticketEntryId" type="long" />
+		<column name="type" type="int" />
+		<column name="callDate" type="Date" />
+		<column name="callLength" type="long" />
+		<column name="customerName" type="String" />
+		<column name="customerContact" type="String" />
+		<column name="confirmation" type="String" />
+		<column name="instructions" type="String" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="createDate" />
+		</order>
+	</entity>
+	<entity name="TicketCannedResponse" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="ticketCannedResponseId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="name" type="String" localized="true" />
+		<column name="content" type="String" localized="true" />
+		<column name="useCount" type="int" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="name" case-sensitive="false" />
+		</order>
+	</entity>
+	<entity name="TicketComment" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="ticketCommentId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="ticketEntryId" type="long" />
+		<column name="body" type="String" />
+		<column name="type" type="int" />
+		<column name="format" type="String" />
+		<column name="visibility" type="int" />
+		<column name="settings" type="String" />
+		<column name="status" type="int" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="createDate" />
+			<order-column name="ticketCommentId" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="TicketEntryId" return-type="Collection">
+			<finder-column name="ticketEntryId" />
+		</finder>
+		<finder name="TEI_T" return-type="Collection">
+			<finder-column name="ticketEntryId" />
+			<finder-column name="type" />
+		</finder>
+		<finder name="TEI_V_S" return-type="Collection">
+			<finder-column name="ticketEntryId" />
+			<finder-column name="visibility" arrayable-operator="OR" />
+			<finder-column name="status" arrayable-operator="OR" />
+		</finder>
+		<finder name="U_TEI_V_S" return-type="Collection">
+			<finder-column name="userId" />
+			<finder-column name="ticketEntryId" />
+			<finder-column name="visibility" arrayable-operator="OR" />
+			<finder-column name="status" arrayable-operator="OR" />
+		</finder>
+		<finder name="U_TEI_V_S_T" return-type="Collection">
+			<finder-column name="userId" />
+			<finder-column name="ticketEntryId" />
+			<finder-column name="visibility" />
+			<finder-column name="status" />
+			<finder-column name="type" />
+		</finder>
+
+		<!-- References -->
+
+		<reference package-path="com.liferay.portal" entity="Organization" />
+	</entity>
+	<entity name="TicketEntry" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="ticketEntryId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="accountEntryId" type="long" />
+		<column name="orderEntryId" type="long" />
+		<column name="productEntryId" type="long" />
+		<column name="supportResponseId" type="long" />
+		<column name="offeringEntryId" type="long" />
+		<column name="supportRegionId" type="long" />
+		<column name="languageId" type="String" />
+		<column name="ticketId" type="long" />
+		<column name="subject" type="String" />
+		<column name="description" type="String" />
+		<column name="reproductionSteps" type="String" />
+		<column name="severity" type="int" />
+		<column name="status" type="int" />
+		<column name="weight" type="int" />
+		<column name="escalationLevel" type="int" />
+		<column name="envName" type="String" />
+		<column name="envOS" type="int" />
+		<column name="envOSCustom" type="String" />
+		<column name="envDB" type="int" />
+		<column name="envJVM" type="int" />
+		<column name="envAS" type="int" />
+		<column name="envLFR" type="int" />
+		<column name="envBrowser" type="int" />
+		<column name="envBrowserCustom" type="String" />
+		<column name="envCS" type="int" />
+		<column name="envSearch" type="String" />
+		<column name="component" type="int" />
+		<column name="subcomponent" type="int" />
+		<column name="subcomponentCustom" type="String" />
+		<column name="resolution" type="int" />
+		<column name="holdDate" type="Date" />
+		<column name="closedDate" type="Date" />
+		<column name="dueDate" type="Date" />
+		<column name="ignoreDueDate" type="boolean" />
+		<column name="customerModifiedDate" type="Date" />
+		<column name="workerModifiedDate" type="Date" />
+
+		<!-- Order -->
+
+		<order by="desc">
+			<order-column name="modifiedDate" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="GtModifiedDate" return-type="Collection">
+			<finder-column name="modifiedDate" comparator=">=" />
+		</finder>
+		<finder name="AccountEntryId" return-type="Collection">
+			<finder-column name="accountEntryId" />
+		</finder>
+		<finder name="OfferingEntryId" return-type="Collection">
+			<finder-column name="offeringEntryId" />
+		</finder>
+		<finder name="AEI_TI" return-type="TicketEntry" unique="true">
+			<finder-column name="accountEntryId" />
+			<finder-column name="ticketId" />
+		</finder>
+		<finder name="OEI_NotR" return-type="Collection">
+			<finder-column name="offeringEntryId" />
+			<finder-column name="resolution" comparator="!=" />
+		</finder>
+
+		<!-- References -->
+
+		<reference package-path="com.liferay.mail" entity="Mail" />
+		<reference package-path="com.liferay.portal" entity="Company" />
+		<reference package-path="com.liferay.portal" entity="ListType" />
+		<reference package-path="com.liferay.portal" entity="Organization" />
+		<reference package-path="com.liferay.portal" entity="PortletPreferences" />
+		<reference package-path="com.liferay.portal" entity="Subscription" />
+	</entity>
+	<entity name="TicketFeedback" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="ticketFeedbackId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="accountEntryId" type="long" />
+		<column name="ticketEntryId" type="long" />
+		<column name="subject" type="int" />
+		<column name="satisfied" type="int" />
+		<column name="answer1" type="int" />
+		<column name="answer2" type="int" />
+		<column name="answer3" type="int" />
+		<column name="rating1" type="int" />
+		<column name="rating2" type="int" />
+		<column name="rating3" type="int" />
+		<column name="rating4" type="int" />
+		<column name="comments" type="String" />
+		<column name="status" type="int" />
+
+		<!-- Finder methods -->
+
+		<finder name="TicketEntryId" return-type="Collection">
+			<finder-column name="ticketEntryId" />
+		</finder>
+		<finder name="TEI_S" return-type="Collection">
+			<finder-column name="ticketEntryId" />
+			<finder-column name="subject" />
+		</finder>
+		<finder name="TEI_S_NotS" return-type="Collection">
+			<finder-column name="ticketEntryId" />
+			<finder-column name="subject" />
+			<finder-column name="status" comparator="!=" />
+		</finder>
+		<finder name="TEI_S_S" return-type="Collection">
+			<finder-column name="ticketEntryId" />
+			<finder-column name="subject" />
+			<finder-column name="status" />
+		</finder>
+		<finder name="U_TEI_S_NotS" return-type="Collection">
+			<finder-column name="userId" />
+			<finder-column name="ticketEntryId" />
+			<finder-column name="subject" />
+			<finder-column name="status" comparator="!=" />
+		</finder>
+
+		<!-- References -->
+
+		<reference package-path="com.liferay.mail" entity="Mail" />
+		<reference package-path="com.liferay.portal" entity="Organization" />
+		<reference package-path="com.liferay.portal" entity="PortletPreferences" />
+	</entity>
+	<entity name="TicketFlag" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="ticketFlagId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="accountEntryId" type="long" />
+		<column name="ticketEntryId" type="long" />
+		<column name="type" type="int" />
+		<column name="flag" type="int" />
+
+		<!-- Finder methods -->
+
+		<finder name="TicketEntryId" return-type="Collection">
+			<finder-column name="ticketEntryId" />
+		</finder>
+		<finder name="AEI_T" return-type="Collection">
+			<finder-column name="accountEntryId" />
+			<finder-column name="type" />
+		</finder>
+		<finder name="TEI_T" return-type="Collection">
+			<finder-column name="ticketEntryId" />
+			<finder-column name="type" />
+		</finder>
+		<finder name="TEI_T_F" return-type="Collection">
+			<finder-column name="ticketEntryId" />
+			<finder-column name="type" arrayable-operator="OR" />
+			<finder-column name="flag" />
+		</finder>
+		<finder name="U_AEI_TEI_T" return-type="TicketFlag" unique="true">
+			<finder-column name="userId" />
+			<finder-column name="accountEntryId" />
+			<finder-column name="ticketEntryId" />
+			<finder-column name="type" />
+		</finder>
+	</entity>
+	<entity name="TicketInformation" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="ticketInformationId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="ticketEntryId" type="long" />
+		<column name="fieldId" type="long" />
+		<column name="data" type="String" />
+
+		<!-- Finder methods -->
+
+		<finder name="TicketEntryId" return-type="Collection">
+			<finder-column name="ticketEntryId" />
+		</finder>
+		<finder name="TEI_FI" return-type="TicketInformation">
+			<finder-column name="ticketEntryId" />
+			<finder-column name="fieldId" />
+		</finder>
+	</entity>
+	<entity name="TicketLink" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="ticketLinkId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="ticketEntryId" type="long" />
+		<column name="ticketSolutionId" type="long" />
+		<column name="url" type="String" />
+		<column name="type" type="int" />
+		<column name="visibility" type="int" />
+
+		<!-- Finder methods -->
+
+		<finder name="TicketEntryId" return-type="Collection">
+			<finder-column name="ticketEntryId" />
+		</finder>
+		<finder name="TEI_TSI" return-type="Collection">
+			<finder-column name="ticketEntryId" />
+			<finder-column name="ticketSolutionId" />
+		</finder>
+		<finder name="TEI_V" return-type="Collection">
+			<finder-column name="ticketEntryId" />
+			<finder-column name="visibility" arrayable-operator="OR" />
+		</finder>
+
+		<!-- References -->
+
+		<reference package-path="com.liferay.portal" entity="Organization" />
+	</entity>
+	<entity name="TicketSolution" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="ticketSolutionId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="ticketEntryId" type="long" />
+		<column name="summary" type="String" />
+		<column name="useCustomerSummary" type="boolean" />
+		<column name="issueType" type="int" />
+		<column name="solution" type="String" />
+		<column name="type" type="int" />
+		<column name="customerSpecific" type="boolean" />
+		<column name="environmentSpecific" type="boolean" />
+		<column name="versionSpecific" type="boolean" />
+		<column name="reviewForKB" type="boolean" />
+		<column name="status" type="int" />
+		<column name="statusByUserId" type="long" />
+		<column name="statusByUserName" type="String" />
+		<column name="statusDate" type="Date" />
+		<column name="statusMessage" type="String" />
+		<column name="statusReason" type="int" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="createDate" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="TicketEntryId" return-type="Collection">
+			<finder-column name="ticketEntryId" />
+		</finder>
+
+		<!-- References -->
+
+		<reference package-path="com.liferay.portal" entity="Organization" />
+	</entity>
+	<entity name="TicketWorker" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="ticketWorkerId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+
+		<!-- Other fields -->
+
+		<column name="ticketEntryId" type="long" />
+		<column name="sourceClassNameId" type="long" />
+		<column name="sourceClassPK" type="long" />
+		<column name="role" type="int" />
+		<column name="primary" type="boolean" />
+
+		<!-- Finder methods -->
+
+		<finder name="UserId" return-type="Collection">
+			<finder-column name="userId" />
+		</finder>
+		<finder name="TicketEntryId" return-type="Collection">
+			<finder-column name="ticketEntryId" />
+		</finder>
+		<finder name="U_TEI" return-type="TicketWorker">
+			<finder-column name="userId" />
+			<finder-column name="ticketEntryId" />
+		</finder>
+		<finder name="TEI_P" return-type="TicketWorker">
+			<finder-column name="ticketEntryId" />
+			<finder-column name="primary" />
+		</finder>
+		<finder name="SCNI_SCPK" return-type="Collection">
+			<finder-column name="sourceClassNameId" />
+			<finder-column name="sourceClassPK" />
+		</finder>
+	</entity>
+	<exceptions>
+		<exception>AccountAttachmentSize</exception>
+		<exception>AccountCallDate</exception>
+		<exception>AccountCallLength</exception>
+		<exception>AccountCallSummary</exception>
+		<exception>AccountCallType</exception>
+		<exception>AccountEntryCode</exception>
+		<exception>AccountEntryCorpProject</exception>
+		<exception>AccountEntryIndustry</exception>
+		<exception>AccountEntryLanguageId</exception>
+		<exception>AccountEntryMaximumCustomers</exception>
+		<exception>AccountEntryName</exception>
+		<exception>AccountEntryPartnerEntry</exception>
+		<exception>AccountEntrySupportRegion</exception>
+		<exception>AccountEnvironmentAttachment</exception>
+		<exception>AccountEnvironmentAttachmentSize</exception>
+		<exception>AccountEnvironmentEnvAS</exception>
+		<exception>AccountEnvironmentEnvDB</exception>
+		<exception>AccountEnvironmentEnvLFR</exception>
+		<exception>AccountEnvironmentEnvOS</exception>
+		<exception>AccountEnvironmentName</exception>
+		<exception>AccountLinkURL</exception>
+		<exception>AccountProjectName</exception>
+		<exception>AccountWorkerPartnerRole</exception>
+		<exception>AwayMessageDate</exception>
+		<exception>AwayMessageMessage</exception>
+		<exception>DuplicateAccountAttachment</exception>
+		<exception>DuplicateAccountEntry</exception>
+		<exception>DuplicateAccountEnvironment</exception>
+		<exception>DuplicateAccountEnvironmentAttachment</exception>
+		<exception>DuplicateHolidayCalendar</exception>
+		<exception>DuplicateHolidayEntry</exception>
+		<exception>DuplicateOfferingBundle</exception>
+		<exception>DuplicateOfferingDefinition</exception>
+		<exception>DuplicatePartnerEntryCode</exception>
+		<exception>DuplicatePartnerEntryDossieraAccountKey</exception>
+		<exception>DuplicateProductEntry</exception>
+		<exception>DuplicateSupportLabor</exception>
+		<exception>DuplicateSupportRegion</exception>
+		<exception>DuplicateSupportResponse</exception>
+		<exception>DuplicateSupportTeam</exception>
+		<exception>DuplicateSupportWorker</exception>
+		<exception>DuplicateTicketAttachment</exception>
+		<exception>DuplicateTicketCannedResponse</exception>
+		<exception>DuplicateTicketFeedback</exception>
+		<exception>FileRepositoryNotAvailable</exception>
+		<exception>HolidayCalendarName</exception>
+		<exception>HolidayEntryDate</exception>
+		<exception>HolidayEntryHolidayCalendar</exception>
+		<exception>HolidayEntryStartDateLaterThanEndDate</exception>
+		<exception>MaximumDraftTicketComment</exception>
+		<exception>MaximumTicketEntry</exception>
+		<exception>OSBPrincipal</exception>
+		<exception>OfferingBundleName</exception>
+		<exception>OfferingEntryQuantity</exception>
+		<exception>OfferingEntrySizing</exception>
+		<exception>OfferingEntryStatus</exception>
+		<exception>OfferingEntrySupportExpired</exception>
+		<exception>OrderEntryActualStartDate</exception>
+		<exception>OrderEntryStartDate</exception>
+		<exception>PartnerEntryCode</exception>
+		<exception>PartnerEntryParentPartnerEntry</exception>
+		<exception>ProductEntryEnvironment</exception>
+		<exception>ProductEntryName</exception>
+		<exception>RequiredAccountEntry</exception>
+		<exception>RequiredSupportRegion</exception>
+		<exception>RequiredTicketWorker</exception>
+		<exception>SearchFilterName</exception>
+		<exception>SecurityPatchEnvLFR</exception>
+		<exception>SupportLaborHour</exception>
+		<exception>SupportLaborName</exception>
+		<exception>SupportRegionName</exception>
+		<exception>SupportResponseName</exception>
+		<exception>SupportResponseSupportLevel</exception>
+		<exception>SupportTeamContainsNoSupportWorkers</exception>
+		<exception>SupportTeamLocation</exception>
+		<exception>SupportTeamName</exception>
+		<exception>SupportTeamSupportLabor</exception>
+		<exception>SupportWorkerMaxWork</exception>
+		<exception>TicketAttachmentVisibility</exception>
+		<exception>TicketAttachmentAvailableFileRepositoryIds</exception>
+		<exception>TicketCallCustomerName</exception>
+		<exception>TicketCallDate</exception>
+		<exception>TicketCallType</exception>
+		<exception>TicketCallLength</exception>
+		<exception>TicketCannedResponseContent</exception>
+		<exception>TicketCannedResponseName</exception>
+		<exception>TicketCommentBody</exception>
+		<exception>TicketCommentPendingType</exception>
+		<exception>TicketCommentVisibility</exception>
+		<exception>TicketEntryAssignee</exception>
+		<exception>TicketEntryAttachmentSize</exception>
+		<exception>TicketEntryClosed</exception>
+		<exception>TicketEntryComponent</exception>
+		<exception>TicketEntryDescription</exception>
+		<exception>TicketEntryDueDate</exception>
+		<exception>TicketEntryForwarding</exception>
+		<exception>TicketEntryForwardingField</exception>
+		<exception>TicketEntryLanguageId</exception>
+		<exception>TicketEntryResolution</exception>
+		<exception>TicketEntrySeverity</exception>
+		<exception>TicketEntryStatus</exception>
+		<exception>TicketEntrySubcomponent</exception>
+		<exception>TicketEntrySubject</exception>
+		<exception>TicketEntrySystemStatus</exception>
+		<exception>TicketEntryWeight</exception>
+		<exception>TicketFeedbackAnswer</exception>
+		<exception>TicketFeedbackRating</exception>
+		<exception>TicketFeedbackSatisfied</exception>
+		<exception>TicketFlagType</exception>
+		<exception>TicketInformation</exception>
+		<exception>TicketLinkType</exception>
+		<exception>TicketLinkURL</exception>
+		<exception>TicketLinkVisibility</exception>
+		<exception>TicketSolutionBody</exception>
+		<exception>TicketSolutionStatus</exception>
+		<exception>TicketSolutionStatusMessage</exception>
+		<exception>TicketSolutionSummary</exception>
+	</exceptions>
+</service-builder>

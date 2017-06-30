@@ -1,0 +1,409 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%
+String tabs2 = ParamUtil.getString(request, "tabs2", tabs2Name);
+
+long assetEntryId = ParamUtil.getLong(request, "assetEntryId");
+
+AssetEntry assetEntry = AssetEntryLocalServiceUtil.fetchEntry(assetEntryId);
+
+Calendar defaultEndCalendar = CalendarFactoryUtil.getCalendar(timeZone, locale);
+
+int endDateDay = ParamUtil.getInteger(request, "endDateDay", defaultEndCalendar.get(Calendar.DATE));
+int endDateMonth = ParamUtil.getInteger(request, "endDateMonth", defaultEndCalendar.get(Calendar.MONTH));
+int endDateYear = ParamUtil.getInteger(request, "endDateYear", defaultEndCalendar.get(Calendar.YEAR));
+int endDateYearRangeEnd = defaultEndCalendar.get(Calendar.YEAR);
+int endDateYearRangeStart = defaultEndCalendar.get(Calendar.YEAR) - 50;
+
+Calendar defaultStartCalendar = CalendarFactoryUtil.getCalendar(timeZone, locale);
+
+defaultStartCalendar.add(Calendar.DATE, -20);
+
+int startDateDay = ParamUtil.getInteger(request, "startDateDay", defaultStartCalendar.get(Calendar.DATE));
+int startDateMonth = ParamUtil.getInteger(request, "startDateMonth", defaultStartCalendar.get(Calendar.MONTH));
+int startDateYear = ParamUtil.getInteger(request, "startDateYear", defaultStartCalendar.get(Calendar.YEAR));
+int startDateYearRangeEnd = defaultStartCalendar.get(Calendar.YEAR);
+int startDateYearRangeStart = defaultStartCalendar.get(Calendar.YEAR) - 50;
+
+long interval = ParamUtil.getLong(request, "interval", Time.DAY);
+
+String orderByCol = ParamUtil.getString(request, "orderByCol", "date-range");
+String orderByType = ParamUtil.getString(request, "orderByType", "desc");
+%>
+
+<div class="marketplace-developer-apps">
+	<liferay-util:include page="/marketplace_developer_apps/tabs1.jsp" servletContext="<%= application %>">
+		<liferay-util:param name="tabs1" value="apps" />
+	</liferay-util:include>
+
+	<liferay-portlet:renderURL var="myProductsURL">
+		<portlet:param name="mvcPath" value="/marketplace_developer_apps/view.jsp" />
+		<portlet:param name="tabs1" value="apps" />
+	</liferay-portlet:renderURL>
+
+	<liferay-ui:header
+		backURL="<%= myProductsURL %>"
+		title="metrics"
+	/>
+
+	<%
+	boolean hasStatsPermission = false;
+
+	if (assetEntry != null) {
+		AssetRendererFactory assetRendererFactory = AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClassName(assetEntry.getClassName());
+
+		if (assetRendererFactory != null) {
+			hasStatsPermission = assetRendererFactory.hasPermission(permissionChecker, assetEntry.getClassPK(), OSBActionKeys.UPDATE);
+		}
+		else if (Validator.equals(assetEntry.getClassName(), AppEntry.class.getName())) {
+			hasStatsPermission = OSBAppEntryPermission.contains(permissionChecker, assetEntry.getClassPK(), OSBActionKeys.MANAGE_APP);
+		}
+	}
+	%>
+
+	<c:choose>
+		<c:when test="<%= (assetEntry != null) && hasStatsPermission %>">
+			<div class="metrics-asset-wrapper asset">
+
+				<%
+				long marketplacePlid = PortalUtil.getPlidFromPortletId(OSBConstants.GROUP_GUEST_ID, OSBPortletKeys.OSB_MARKETPLACE);
+				%>
+
+				<liferay-portlet:renderURL plid="<%= marketplacePlid %>" portletName="<%= OSBPortletKeys.OSB_MARKETPLACE %>" var="appEntryURL" windowState="<%= LiferayWindowState.NORMAL.toString() %>">
+					<portlet:param name="mvcPath" value="/marketplace/view_app_entry.jsp" />
+					<portlet:param name="backURL" value="<%= currentURL %>" />
+					<portlet:param name="appEntryId" value="<%= String.valueOf(assetEntry.getClassPK()) %>" />
+				</liferay-portlet:renderURL>
+
+				<liferay-util:include page="/marketplace/asset_entry_display.jsp" servletContext="<%= application %>">
+					<liferay-util:param name="assetEntryURL" value="<%= appEntryURL %>" />
+					<liferay-util:param name="className" value="<%= PortalUtil.getClassName(assetEntry.getClassNameId()) %>" />
+					<liferay-util:param name="classPK" value="<%= String.valueOf(assetEntry.getClassPK()) %>" />
+					<liferay-util:param name="displayStyle" value="5" />
+					<liferay-util:param name="title" value="<%= assetEntry.getTitle() %>" />
+				</liferay-util:include>
+			</div>
+
+			<div class="cleared"></div>
+
+			<div class="marketplace-metrics-views-container">
+				<nav class="tab-nav">
+					<ul>
+						<li class="f<%= tabs2.equals("views") ? " selected" : StringPool.BLANK %>">
+							<liferay-portlet:renderURL var="viewsURL">
+								<portlet:param name="mvcPath" value="/marketplace_developer_apps/stats_views.jsp" />
+								<portlet:param name="tabs2" value="views" />
+								<portlet:param name="assetEntryId" value="<%= String.valueOf(assetEntry.getEntryId()) %>" />
+							</liferay-portlet:renderURL>
+
+							<a href="<%= viewsURL %>"><liferay-ui:message key="views" /></a>
+						</li>
+						<li class="l<%= tabs2.equals("downloads") ? " selected" : StringPool.BLANK %>">
+							<liferay-portlet:renderURL var="downloadsURL">
+								<portlet:param name="mvcPath" value="/marketplace_developer_apps/stats_downloads.jsp" />
+								<portlet:param name="tabs2" value="downloads" />
+								<portlet:param name="assetEntryId" value="<%= String.valueOf(assetEntry.getEntryId()) %>" />
+							</liferay-portlet:renderURL>
+
+							<a href="<%= downloadsURL %>"><liferay-ui:message key="downloads" /></a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+
+			<div class="marketplace-metrics-results-container">
+				<liferay-portlet:renderURL varImpl="searchURL">
+					<portlet:param name="mvcPath" value="<%= mvcPath %>" />
+					<portlet:param name="tabs2" value="<%= tabs2Name %>" />
+					<portlet:param name="assetEntryId" value="<%= String.valueOf(assetEntry.getEntryId()) %>" />
+				</liferay-portlet:renderURL>
+
+				<aui:form action="<%= searchURL %>" method="get" name="fm">
+					<liferay-portlet:renderURLParams varImpl="searchURL" />
+
+					<aui:fieldset>
+						<liferay-portlet:renderURL varImpl="iteratorURL">
+							<portlet:param name="mvcPath" value="<%= mvcPath %>" />
+							<portlet:param name="tabs2" value="<%= tabs2Name %>" />
+							<portlet:param name="assetEntryId" value="<%= String.valueOf(assetEntry.getEntryId()) %>" />
+							<portlet:param name="interval" value="<%= String.valueOf(interval) %>" />
+							<portlet:param name="endDateDay" value="<%= String.valueOf(endDateDay) %>" />
+							<portlet:param name="endDateMonth" value="<%= String.valueOf(endDateMonth) %>" />
+							<portlet:param name="endDateYear" value="<%= String.valueOf(endDateYear) %>" />
+							<portlet:param name="startDateDay" value="<%= String.valueOf(startDateDay) %>" />
+							<portlet:param name="startDateMonth" value="<%= String.valueOf(startDateMonth) %>" />
+							<portlet:param name="startDateYear" value="<%= String.valueOf(startDateYear) %>" />
+						</liferay-portlet:renderURL>
+
+						<liferay-ui:search-container
+							emptyResultsMessage="there-are-no-results"
+							headerNames="date"
+							iteratorURL="<%= iteratorURL %>"
+							orderByCol="<%= orderByCol %>"
+							orderByType="<%= orderByType %>"
+						>
+							<liferay-ui:search-container-results>
+
+								<%
+								Calendar startCalendar = CalendarFactoryUtil.getCalendar(timeZone, locale);
+
+								startCalendar.set(Calendar.MONTH, startDateMonth);
+								startCalendar.set(Calendar.DATE, startDateDay);
+								startCalendar.set(Calendar.YEAR, startDateYear);
+								startCalendar.set(Calendar.HOUR_OF_DAY, 0);
+								startCalendar.set(Calendar.MINUTE, 0);
+								startCalendar.set(Calendar.SECOND, 0);
+								startCalendar.set(Calendar.MILLISECOND, 0);
+
+								Calendar endCalendar = CalendarFactoryUtil.getCalendar(timeZone, locale);
+
+								endCalendar.set(Calendar.MONTH, endDateMonth);
+								endCalendar.set(Calendar.DATE, endDateDay);
+								endCalendar.set(Calendar.YEAR, endDateYear);
+								endCalendar.set(Calendar.HOUR_OF_DAY, 0);
+								endCalendar.set(Calendar.MINUTE, 0);
+								endCalendar.set(Calendar.SECOND, 0);
+								endCalendar.set(Calendar.MILLISECOND, 0);
+
+								List<KeyValuePair> keyValuePairs = new ArrayList<KeyValuePair>();
+
+								LinkedHashMap<String, Object> params = new LinkedHashMap<String, Object>();
+
+								params.put("classNameId", assetEntry.getClassNameId());
+								params.put("classPK", assetEntry.getClassPK());
+
+								if (interval == Time.WEEK) {
+									List<AssetStatsWeek> assetStatsWeeks = AssetStatsWeekLocalServiceUtil.getAssetStatsWeeks(startCalendar.get(Calendar.WEEK_OF_YEAR), startCalendar.get(Calendar.YEAR), endCalendar.get(Calendar.WEEK_OF_YEAR), endCalendar.get(Calendar.YEAR), params, QueryUtil.ALL_POS, QueryUtil.ALL_POS, new AssetStatsWeekStartDateComparator());
+
+									for (int i = 0; i < assetStatsWeeks.size(); i++) {
+										AssetStatsWeek assetStatsWeek = assetStatsWeeks.get(i);
+
+										long count = BeanPropertiesUtil.getLong(assetStatsWeek, assetStatsPropertyName);
+										Date startDate = assetStatsWeek.getStartDate(timeZone, locale);
+
+										String value = String.valueOf(startDate.getTime()).concat(StringPool.UNDERLINE).concat(String.valueOf(count));
+
+										keyValuePairs.add(new KeyValuePair(String.valueOf(i), value));
+									}
+								}
+								else if (interval == Time.MONTH) {
+									List<AssetStatsMonth> assetStatsMonths = AssetStatsMonthLocalServiceUtil.getAssetStatsMonths(startCalendar.get(Calendar.MONTH), startCalendar.get(Calendar.YEAR), endCalendar.get(Calendar.MONTH), endCalendar.get(Calendar.YEAR), params, QueryUtil.ALL_POS, QueryUtil.ALL_POS, new AssetStatsMonthStartDateComparator());
+
+									for (int i = 0; i < assetStatsMonths.size(); i++) {
+										AssetStatsMonth assetStatsMonth = assetStatsMonths.get(i);
+
+										long count = BeanPropertiesUtil.getLong(assetStatsMonth, assetStatsPropertyName);
+										Date startDate = assetStatsMonth.getStartDate(timeZone, locale);
+
+										String value = String.valueOf(startDate.getTime()).concat(StringPool.UNDERLINE).concat(String.valueOf(count));
+
+										keyValuePairs.add(new KeyValuePair(String.valueOf(i), value));
+									}
+								}
+								else {
+									List<AssetStatsDay> assetStatsDays = AssetStatsDayLocalServiceUtil.getAssetStatsDays(startCalendar.get(Calendar.DAY_OF_YEAR), startCalendar.get(Calendar.YEAR), endCalendar.get(Calendar.DAY_OF_YEAR), endCalendar.get(Calendar.YEAR), params, QueryUtil.ALL_POS, QueryUtil.ALL_POS, new AssetStatsDayStartDateComparator());
+
+									for (int i = 0; i < assetStatsDays.size(); i++) {
+										AssetStatsDay assetStatsDay = assetStatsDays.get(i);
+
+										long count = BeanPropertiesUtil.getLong(assetStatsDay, assetStatsPropertyName);
+										Date startDate = assetStatsDay.getStartDate(timeZone, locale);
+
+										String value = String.valueOf(startDate.getTime()).concat(StringPool.UNDERLINE).concat(String.valueOf(count));
+
+										keyValuePairs.add(new KeyValuePair(String.valueOf(i), value));
+									}
+								}
+
+								pageContext.setAttribute("results", (List<KeyValuePair>)keyValuePairs);
+								pageContext.setAttribute("total", (Integer)keyValuePairs.size());
+								%>
+
+							</liferay-ui:search-container-results>
+
+							<%
+							TimeSeries timeSeries = null;
+
+							if (interval == Time.WEEK) {
+								timeSeries = new TimeSeries(timeSeriesName, Week.class);
+							}
+							else if (interval == Time.MONTH) {
+								timeSeries = new TimeSeries(timeSeriesName, Month.class);
+							}
+							else {
+								timeSeries = new TimeSeries(timeSeriesName, Day.class);
+							}
+							%>
+
+							<liferay-ui:search-container-row
+								className="com.liferay.portal.kernel.util.KeyValuePair"
+								keyProperty="key"
+								modelVar="keyValuePair"
+							>
+
+								<%
+								String value = keyValuePair.getValue();
+
+								Long count = Long.valueOf(StringUtil.extractLast(value, StringPool.UNDERLINE));
+								Date date = new Date(Long.valueOf(StringUtil.extractFirst(value, StringPool.UNDERLINE)));
+
+								RegularTimePeriod regularTimePeriod = null;
+
+								if (interval == Time.WEEK) {
+									regularTimePeriod = new Week(date, timeZone, locale);
+								}
+								else if (interval == Time.MONTH) {
+									regularTimePeriod = new Month(date, timeZone, locale);
+								}
+								else {
+									regularTimePeriod = new Day(date, timeZone, locale);
+								}
+								%>
+
+								<liferay-ui:search-container-column-text
+									name="date"
+									value="<%= shortDateFormatDate.format(regularTimePeriod.getStart()) %>"
+								/>
+
+								<liferay-ui:search-container-column-text
+									align="right"
+									value="<%= String.valueOf(count) %>"
+								/>
+
+								<%
+								timeSeries.add(regularTimePeriod, count);
+								%>
+
+							</liferay-ui:search-container-row>
+
+							<table class="lfr-table" style="margin-bottom: 10px;">
+								<tr>
+									<td>
+										<strong><liferay-ui:message key="start-date" /></strong>
+									</td>
+									<td>
+										<strong><liferay-ui:message key="end-date" /></strong>
+									</td>
+									<td>
+										<strong><liferay-ui:message key="interval" /></strong>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<liferay-ui:input-date
+											dayParam='<%= "startDateDay" %>'
+											dayValue="<%= startDateDay %>"
+											monthParam='<%= "startDateMonth" %>'
+											monthValue="<%= startDateMonth %>"
+											yearParam='<%= "startDateYear" %>'
+											yearRangeEnd="<%= startDateYearRangeEnd %>"
+											yearRangeStart="<%= startDateYearRangeStart %>"
+											yearValue="<%= startDateYear %>"
+										/>
+									</td>
+									<td>
+										<liferay-ui:input-date
+											dayParam='<%= "endDateDay" %>'
+											dayValue="<%= endDateDay %>"
+											monthParam='<%= "endDateMonth" %>'
+											monthValue="<%= endDateMonth %>"
+											yearParam='<%= "endDateYear" %>'
+											yearRangeEnd="<%= endDateYearRangeEnd %>"
+											yearRangeStart="<%= endDateYearRangeStart %>"
+											yearValue="<%= endDateYear %>"
+										/>
+									</td>
+									<td>
+										<aui:select inlineField="<%= true %>" label="" name="interval">
+											<aui:option label="daily" selected="<%= interval == Time.DAY %>" value="<%= Time.DAY %>" />
+											<aui:option label="weekly" selected="<%= interval == Time.WEEK %>" value="<%= Time.WEEK %>" />
+											<aui:option label="monthly" selected="<%= interval == Time.MONTH %>" value="<%= Time.MONTH %>" />
+										</aui:select>
+									</td>
+								</tr>
+							</table>
+
+							<aui:button type="submit" value="search" />
+
+							<div class="separator"><!-- --></div>
+
+							<c:if test="<%= total > 0 %>">
+
+								<%
+								JFreeChart jFreeChart = ChartFactory.createTimeSeriesChart(null, null, null, new TimeSeriesCollection(timeSeries, timeZone), false, true, false);
+
+								jFreeChart.setBackgroundPaint(new Color(0, 0, 0, 0));
+
+								XYPlot xyPlot = (XYPlot)jFreeChart.getPlot();
+
+								xyPlot.setBackgroundPaint(Color.white);
+								xyPlot.setDomainGridlinePaint(new Color(170, 170, 170));
+								xyPlot.setDomainGridlinesVisible(true);
+								xyPlot.setRangeGridlinePaint(new Color(170, 170, 170));
+								xyPlot.setRangeGridlinesVisible(true);
+
+								XYLineAndShapeRenderer xyLineAndShapeRenderer = (XYLineAndShapeRenderer)xyPlot.getRenderer();
+
+								xyLineAndShapeRenderer.setBaseShapesVisible(true);
+								xyLineAndShapeRenderer.setSeriesPaint(0, new Color(51, 161, 224));
+
+								NumberAxis numberAxis = (NumberAxis)xyPlot.getRangeAxis();
+
+								numberAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+
+								DateAxis dateAxis = (DateAxis)xyPlot.getDomainAxis();
+
+								dateAxis.setDateFormatOverride(jFreeChartDateFormatDate);
+								dateAxis.setVerticalTickLabels(true);
+
+								if (((interval == Time.DAY) && (total < 22)) || ((interval == Time.WEEK) && (total < 4))) {
+									dateAxis.setTickUnit(new DateTickUnit(DateTickUnitType.DAY, 1, jFreeChartDateFormatDate));
+								}
+								%>
+
+								<img border="0" src="<%= themeDisplay.getPathContext() %>/display_chart?filename=<%= ServletUtilities.saveChartAsPNG(jFreeChart, 495, 300, null, null) %>" style="display: block; margin-bottom: 20px; margin-left: auto; margin-right: auto;" />
+							</c:if>
+
+							<liferay-ui:search-iterator paginate="<%= false %>" />
+						</liferay-ui:search-container>
+					</aui:fieldset>
+				</aui:form>
+			</div>
+
+			<aui:script use="aui-base">
+
+				// Marketplace administrators can request to see all data points. Remove unneeded parameters from the URL.
+
+				var keyValuePairsSearchContainerPrimaryKeys = A.one('#<portlet:namespace />keyValuePairsSearchContainerPrimaryKeys');
+
+				if (keyValuePairsSearchContainerPrimaryKeys) {
+					keyValuePairsSearchContainerPrimaryKeys.remove();
+				}
+			</aui:script>
+		</c:when>
+		<c:when test="<%= assetEntry != null %>">
+			<div class="portlet-msg-error">
+				<liferay-ui:message key="you-do-not-have-the-required-permissions" />
+			</div>
+		</c:when>
+		<c:otherwise>
+			<div class="portlet-msg-error">
+				<liferay-ui:message key="the-asset-could-not-be-found" />
+			</div>
+		</c:otherwise>
+	</c:choose>
+</div>

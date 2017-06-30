@@ -1,0 +1,122 @@
+<table style="border-collapse: collapse; font-family: Helvetica,Arial,Verdana,sans-serif; font-size: 14px; margin: 0 auto; width: 530px;">
+<tr>
+	<td style="background-color: #4690CD; padding: 7px 5px;">
+		<a href="http://www.liferay.com/marketplace">
+			<img alt="Liferay Marketplace" height="33" src="http://www.liferay.com/osb-portlet/marketplace_navigation/images/marketplace_logo.png" width="200" />
+		</a>
+	</td>
+</tr>
+<tr>
+	<td style="color: #1a4265; font-family: Gothic, Helvetica, Arial; font-size: 20px; padding-top: 20px;">
+		Hello [$TO_NAME$],
+	</td>
+</tr>
+<tr>
+	<td>
+		Thank you for your purchase on the Liferay Marketplace.
+	</td>
+</tr>
+<tr>
+	<td style="border-bottom: 1px solid #BABEC2; color: #1a4265; font-family: Gothic, Helvetica, Arial; font-size: 20px; padding-top: 20px;">
+		Purchasing Information
+	</td>
+</tr>
+<tr>
+	<td>
+		<table>
+		<tr>
+			<th style="color: #7B7C7F; padding-right: 20px; text-align: left; vertical-align: top;">
+				Purchased for:
+			</th>
+			<td>
+				[$ASSET_RECEIPT_FORMAL_LEGAL_ENTITY_NAME$]
+			</td>
+		</tr>
+		<tr>
+			<th style="color: #7B7C7F; padding-right: 20px; text-align: left; vertical-align: top;">
+				Shipping Address:
+			</th>
+			<td>
+				[$EC_DOCUMENT_ENTRY_SHIPPING_ADDRESS_HTML$]
+			</td>
+		</tr>
+		</table>
+	</td>
+</tr>
+<tr>
+	<td style="border-bottom: 1px solid #BABEC2; color: #1a4265; font-family: Gothic, Helvetica, Arial; font-size: 20px; padding-top: 20px;">
+		Purchased Items
+	</td>
+</tr>
+<tr>
+	<td style="padding: 10px 0;">
+		<table>
+		<tr>
+			<td>
+				<a href="[$APP_ENTRY_STORE_URL$]">
+					<img alt="[$APP_ENTRY_TITLE$]" height="70" src="[$APP_ENTRY_ICON_URL$]" width="70" />
+				</a>
+			</td>
+			<td style="padding-left: 20px;">
+				<a href="[$APP_ENTRY_STORE_URL$]" style="color: #1a4265; font-family: Gothic, Helvetica, Arial; font-size: 16px; font-weight: bold; text-decoration: none;">
+					[$APP_ENTRY_TITLE$]
+				</a>
+			</td>
+		</tr>
+		</table>
+	</td>
+</tr>
+<tr>
+	<td style="padding: 10px 0;">
+		<table style="border-collapse: collapse;">
+		<tr style="border-bottom: 1px solid #D1D2D4; border-top: 1px solid #D1D2D4; color: #7B7C7F; vertical-align: top;">
+			<th style="padding: 3px 5px;">
+				Quantity
+			</th>
+			<th style="padding: 3px 5px; width: 240px;">
+				Item
+			</th>
+			<th style="padding: 3px 5px;">
+				Unit Price
+			</th>
+			<th style="padding: 3px 5px;">
+				Line Price
+			</th>
+		</tr>
+		[$EC_DOCUMENT_ENTRY_LINE_ITEMS_HTML$]
+		<tr>
+			<td colspan="2"></td>
+			<th style="color: #7B7C7F; padding: 3px 5px; text-align: left;">
+				Subtotal
+			</th>
+			<td style="padding: 3px 5px;">
+				[$EC_DOCUMENT_ENTRY_SUBTOTAL$]
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2"></td>
+			<th style="color: #7B7C7F; padding: 3px 5px; text-align: left;">
+				Tax/VAT [$LIFERAY_VAT_NUMBER$]
+			</th>
+			<td style="padding: 3px 5px;">
+				[$EC_DOCUMENT_ENTRY_TAX_AMOUNT$]
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2"></td>
+			<th style="color: #7B7C7F; padding: 3px 5px; text-align: left;">
+				Total
+			</th>
+			<td style="font-weight: bold; padding: 3px 5px;">
+				[$EC_DOCUMENT_ENTRY_TOTAL$]
+			</td>
+		</tr>
+		</table>
+	</td>
+</tr>
+<tr>
+	<td style="padding: 10px 0;">
+		To download your purchases, please go to your <a href="[$ASSET_RECEIPT_MANAGE_APP_URL$]">App Manager</a> on Liferay.com.
+	</td>
+</tr>
+</table>

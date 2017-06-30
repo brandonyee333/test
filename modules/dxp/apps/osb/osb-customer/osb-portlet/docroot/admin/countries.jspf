@@ -1,0 +1,86 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<liferay-ui:search-container
+	headerNames="country,a2,a3,number,idd,status"
+	iteratorURL="<%= portletURL %>"
+>
+	<liferay-ui:search-container-results
+		results="<%= OSBCountryLocalServiceUtil.getCountries(searchContainer.getStart(), searchContainer.getEnd()) %>"
+		total="<%= OSBCountryLocalServiceUtil.getCountriesCount() %>"
+	/>
+
+	<liferay-ui:search-container-row
+		className="com.liferay.portal.model.Country"
+		escapedModel="<%= true %>"
+		keyProperty="countryId"
+		modelVar="country"
+	>
+		<liferay-portlet:renderURL varImpl="rowURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+			<portlet:param name="mvcPath" value="/admin/edit_country.jsp" />
+			<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
+			<portlet:param name="countryId" value="<%= String.valueOf(country.getCountryId()) %>" />
+		</liferay-portlet:renderURL>
+
+		<liferay-ui:search-container-column-text
+			href="<%= rowURL %>"
+			name="country"
+			value="<%= country.getName() %>"
+		/>
+
+		<liferay-ui:search-container-column-text
+			href="<%= rowURL %>"
+			name="a2"
+			value="<%= country.getA2() %>"
+		/>
+
+		<liferay-ui:search-container-column-text
+			href="<%= rowURL %>"
+			name="a3"
+			value="<%= country.getA3() %>"
+		/>
+
+		<liferay-ui:search-container-column-text
+			href="<%= rowURL %>"
+			name="number"
+			value="<%= country.getNumber() %>"
+		/>
+
+		<liferay-ui:search-container-column-text
+			href="<%= rowURL %>"
+			name="idd"
+			value="<%= country.getIdd() %>"
+		/>
+
+		<liferay-ui:search-container-column-text
+			href="<%= rowURL %>"
+			name="status"
+			value='<%= country.isActive() ? LanguageUtil.get(pageContext, "active") : LanguageUtil.get(pageContext, "inactive") %>'
+		/>
+
+		<liferay-ui:search-container-column-jsp
+			path="/admin/country_action.jsp"
+		/>
+	</liferay-ui:search-container-row>
+
+	<div>
+		<input onClick="location.href = '<portlet:renderURL windowState="<%= WindowState.MAXIMIZED.toString() %>"><portlet:param name="mvcPath" value="/admin/edit_country.jsp" /><portlet:param name="redirect" value="<%= portletURL.toString() %>" /></portlet:renderURL>';" type="button" value="<liferay-ui:message key="add-country" />" />
+	</div>
+
+	<br />
+
+	<liferay-ui:search-iterator />
+</liferay-ui:search-container>

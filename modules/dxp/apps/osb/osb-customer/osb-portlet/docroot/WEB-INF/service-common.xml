@@ -1,0 +1,509 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 6.0.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_6_0_0.dtd">
+
+<service-builder>
+	<entity name="AuditAction" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="auditActionId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="classNameId" type="long" />
+		<column name="classPK" type="long" />
+		<column name="mappingClassPK" type="long" />
+		<column name="action" type="int" />
+
+		<!-- Finder methods -->
+
+		<finder name="LtModifiedDate" return-type="Collection">
+			<finder-column name="modifiedDate" comparator="&lt;" />
+		</finder>
+		<finder name="C_C_MC" return-type="AuditAction">
+			<finder-column name="classNameId" />
+			<finder-column name="classPK" />
+			<finder-column name="mappingClassPK" />
+		</finder>
+		<finder name="GtMD_C_GtMC_A" return-type="Collection">
+			<finder-column name="modifiedDate" comparator=">" />
+			<finder-column name="classNameId" />
+			<finder-column name="mappingClassPK" comparator=">" />
+			<finder-column name="action" />
+		</finder>
+		<finder name="GtMD_C_MC_A" return-type="Collection">
+			<finder-column name="modifiedDate" comparator=">" />
+			<finder-column name="classNameId" />
+			<finder-column name="mappingClassPK" />
+			<finder-column name="action" />
+		</finder>
+		<finder name="MD_C_C_MC_A" return-type="Collection">
+			<finder-column name="modifiedDate" />
+			<finder-column name="classNameId" />
+			<finder-column name="classPK" />
+			<finder-column name="mappingClassPK" />
+			<finder-column name="action" />
+		</finder>
+	</entity>
+	<entity name="ContractAudit" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="contractAuditId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="userEmailAddress" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="contractEntryId" type="long" />
+		<column name="signatoryClassNameId" type="long" />
+		<column name="signatoryClassPK" type="long" />
+		<column name="productClassNameId" type="long" />
+		<column name="productClassPK" type="long" />
+		<column name="type" type="String" />
+		<column name="languageId" type="String" />
+		<column name="version" type="int" />
+
+		<!-- Finder methods -->
+
+		<finder name="U_CEI" return-type="Collection">
+			<finder-column name="userId" />
+			<finder-column name="contractEntryId" />
+		</finder>
+		<finder name="CEI_SCN_SCP" return-type="Collection">
+			<finder-column name="contractEntryId" />
+			<finder-column name="signatoryClassNameId" />
+			<finder-column name="signatoryClassPK" />
+		</finder>
+	</entity>
+	<entity name="ContractEntry" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="contractEntryId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="classNameId" type="long" />
+		<column name="classPK" type="long" />
+		<column name="type" type="int" />
+		<column name="version" type="int" />
+		<column name="content" type="String" localized="true" />
+
+		<!-- Finder methods -->
+
+		<finder name="CN_CP_T" return-type="Collection">
+			<finder-column name="classNameId" />
+			<finder-column name="classPK" />
+			<finder-column name="type" />
+		</finder>
+	</entity>
+	<entity name="CorpEntry" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="corpEntryId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="name" type="String" />
+		<column name="description" type="String" localized="true" />
+		<column name="organizationId" type="long" />
+		<column name="logoId" type="long" />
+		<column name="addressId" type="long" />
+		<column name="contactEmailAddress" type="String" />
+		<column name="profileEmailAddress" type="String" />
+		<column name="phoneNumber" type="String" />
+		<column name="faxNumber" type="String" />
+		<column name="website" type="String" />
+		<column name="dossieraAccountKey" type="String" />
+		<column name="status" type="int" />
+		<column name="statusByUserId" type="long" />
+		<column name="statusByUserName" type="String" />
+		<column name="statusDate" type="Date" />
+		<column name="statusMessage" type="String" />
+
+		<!-- Relationships -->
+
+		<column name="corpGroup" type="Collection" entity="CorpGroup" mapping-table="CorpEntry_CorpGroup" />
+
+		<!-- Finder methods -->
+
+		<finder name="Name" return-type="Collection">
+			<finder-column name="name" />
+		</finder>
+		<finder name="OrganizationId" return-type="CorpEntry">
+			<finder-column name="organizationId" />
+		</finder>
+		<finder name="DossieraAccountKey" return-type="CorpEntry">
+			<finder-column name="dossieraAccountKey" />
+		</finder>
+
+		<!-- References -->
+
+		<reference package-path="com.liferay.portal" entity="Address" />
+		<reference package-path="com.liferay.portal" entity="Country" />
+		<reference package-path="com.liferay.portal" entity="Group" />
+		<reference package-path="com.liferay.portal" entity="Layout" />
+		<reference package-path="com.liferay.portal" entity="Organization" />
+		<reference package-path="com.liferay.portal" entity="Role" />
+		<reference package-path="com.liferay.portal" entity="UserGroupRole" />
+	</entity>
+	<entity name="CorpGroup" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="corpGroupId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="name" type="String" />
+		<column name="description" type="String" localized="true" />
+		<column name="organizationId" type="long" />
+		<column name="logoId" type="long" />
+		<column name="emailAddress" type="String" />
+		<column name="website" type="String" />
+
+		<!-- Relationships -->
+
+		<column name="corpEntry" type="Collection" entity="CorpEntry" mapping-table="CorpEntry_CorpGroup" />
+
+		<!-- Finder methods -->
+
+		<finder name="Name" return-type="Collection">
+			<finder-column name="name" />
+		</finder>
+		<finder name="OrganizationId" return-type="CorpGroup">
+			<finder-column name="organizationId" />
+		</finder>
+
+		<!-- References -->
+
+		<reference package-path="com.liferay.portal" entity="Group" />
+		<reference package-path="com.liferay.portal" entity="Organization" />
+		<reference package-path="com.liferay.portal" entity="UserGroupRole" />
+	</entity>
+	<entity name="CorpMembershipRequest" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="corpMembershipRequestId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="corpEntryId" type="long" />
+		<column name="key" type="String" />
+		<column name="emailAddress" type="String" />
+		<column name="status" type="int" />
+
+		<!-- Finder methods -->
+
+		<finder name="Key" return-type="CorpMembershipRequest" unique="true">
+			<finder-column name="key" />
+		</finder>
+		<finder name="CEI_S" return-type="Collection">
+			<finder-column name="corpEntryId" />
+			<finder-column name="status" arrayable-operator="OR" />
+		</finder>
+		<finder name="U_CEI_S" return-type="Collection">
+			<finder-column name="userId" />
+			<finder-column name="corpEntryId" />
+			<finder-column name="status" arrayable-operator="OR" />
+		</finder>
+	</entity>
+	<entity name="CorpProject" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="corpProjectId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="dossieraProjectKey" type="String" />
+		<column name="salesforceProjectKey" type="String" />
+		<column name="name" type="String" />
+		<column name="organizationId" type="long" />
+
+		<!-- Finder methods -->
+
+		<finder name="DossieraProjectKey" return-type="CorpProject">
+			<finder-column name="dossieraProjectKey" />
+		</finder>
+		<finder name="Name" return-type="Collection">
+			<finder-column name="name" comparator="LIKE" />
+		</finder>
+		<finder name="OrganizationId" return-type="CorpProject">
+			<finder-column name="organizationId" />
+		</finder>
+
+		<!-- References -->
+
+		<reference package-path="com.liferay.portal" entity="Group" />
+		<reference package-path="com.liferay.portal" entity="Organization" />
+		<reference package-path="com.liferay.portal" entity="Role" />
+		<reference package-path="com.liferay.portal" entity="UserGroupRole" />
+	</entity>
+	<entity name="CorpProjectMessage" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="corpProjectMessageId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="corpProjectId" type="long" />
+		<column name="type" type="int" />
+		<column name="severityLevel" type="int" />
+		<column name="title" type="String" />
+		<column name="content" type="String" />
+		<column name="displayCP" type="boolean" />
+		<column name="displayLCS" type="boolean" />
+		<column name="displayLESA" type="boolean" />
+
+		<!-- Finder methods -->
+
+		<finder name="CorpProjectId" return-type="Collection">
+			<finder-column name="corpProjectId" />
+		</finder>
+		<finder name="Type" return-type="Collection">
+			<finder-column name="type" />
+		</finder>
+		<finder name="C_T" return-type="CorpProjectMessage">
+			<finder-column name="corpProjectId" />
+			<finder-column name="type" />
+		</finder>
+	</entity>
+	<entity name="CurrencyEntry" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="currencyEntryId" type="long" primary="true" />
+
+		<!-- Other fields -->
+
+		<column name="countryId" type="long" />
+		<column name="currencyCode" type="String" />
+		<column name="marketplaceEnabled" type="boolean" />
+		<column name="marketplaceMinPrice" type="double" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="currencyCode" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="CurrencyCode" return-type="Currency" unique="true">
+			<finder-column name="currencyCode" />
+		</finder>
+		<finder name="MarketplaceEnabled" return-type="Collection">
+			<finder-column name="marketplaceEnabled" />
+		</finder>
+	</entity>
+	<entity name="FeedbackEntry" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="feedbackEntryId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="classNameId" type="long" />
+		<column name="classPK" type="long" />
+		<column name="satisfied" type="int" />
+		<column name="comments" type="String" />
+		<column name="pageURL" type="String" />
+	</entity>
+	<entity name="LCSSubscriptionEntry" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="lcsSubscriptionEntryId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="lcsProjectId" type="long" />
+
+		<!-- Other fields -->
+
+		<column name="product" type="String" />
+		<column name="productVersion" type="int" />
+		<column name="type" type="String" />
+		<column name="platform" type="String" />
+		<column name="platformVersion" type="String" />
+		<column name="serversAllowed" type="int" />
+		<column name="serversUsed" type="int" />
+		<column name="instanceSize" type="int" />
+		<column name="startDate" type="Date" />
+		<column name="endDate" type="Date" />
+		<column name="supportStartDate" type="Date" />
+		<column name="supportEndDate" type="Date" />
+		<column name="actualPrice" type="double" />
+		<column name="currencyCode" type="String" />
+		<column name="active" type="boolean" />
+
+		<!-- References -->
+
+		<reference package-path="com.liferay.portal" entity="Role" />
+	</entity>
+	<entity name="MarketingEvent" local-service="true" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="marketingEventId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="type" type="int" />
+		<column name="defaultLanguageId" type="String" />
+		<column name="title" type="String" localized="true" />
+		<column name="titleURL" type="String" />
+		<column name="hostedBy" type="String" />
+		<column name="hostedByURL" type="String" />
+		<column name="summary" type="String" localized="true" />
+		<column name="imageFileEntryId" type="long" />
+		<column name="slidesFileEntryId" type="long" />
+		<column name="videoTitle" type="String" />
+		<column name="timeZoneId" type="String" />
+		<column name="startDate" type="Date" />
+		<column name="endDate" type="Date" />
+		<column name="dateTBA" type="boolean" />
+		<column name="addressId" type="long" />
+		<column name="globalRegion" type="int" />
+		<column name="online" type="boolean" />
+		<column name="registrationType" type="int" />
+		<column name="registrationURL" type="String" />
+
+		<!-- Finder methods -->
+
+		<finder name="Type" return-type="Collection">
+			<finder-column name="type" />
+		</finder>
+		<finder name="GlobalRegion" return-type="Collection">
+			<finder-column name="globalRegion" />
+		</finder>
+
+		<!-- References -->
+
+		<reference package-path="com.liferay.portal" entity="Address" />
+	</entity>
+	<entity name="OSBCountry" local-service="true" remote-service="true">
+
+		<!-- References -->
+
+		<reference package-path="com.liferay.portal" entity="Country" />
+	</entity>
+
+	<entity name="OSBRegion" local-service="true" remote-service="true">
+
+		<!-- References -->
+
+		<reference package-path="com.liferay.portal" entity="Country" />
+		<reference package-path="com.liferay.portal" entity="Region" />
+	</entity>
+	<exceptions>
+		<exception>CorpEntryAdmin</exception>
+		<exception>CorpEntryContactEmailAddress</exception>
+		<exception>CorpEntryDescription</exception>
+		<exception>CorpEntryFaxNumber</exception>
+		<exception>CorpEntryLogo</exception>
+		<exception>CorpEntryMembership</exception>
+		<exception>CorpEntryName</exception>
+		<exception>CorpEntryProfileEmailAddress</exception>
+		<exception>CorpEntryRole</exception>
+		<exception>CorpEntryType</exception>
+		<exception>CorpGroupDescription</exception>
+		<exception>CorpGroupEmailAddress</exception>
+		<exception>CorpGroupLogo</exception>
+		<exception>CorpGroupName</exception>
+		<exception>CorpProjectAdmin</exception>
+		<exception>CorpProjectMembership</exception>
+		<exception>CorpProjectMessageContent</exception>
+		<exception>CorpProjectMessageSeverityLevel</exception>
+		<exception>CorpProjectMessageTitle</exception>
+		<exception>CorpProjectMessageType</exception>
+		<exception>CorpProjectName</exception>
+		<exception>CorpProjectRole</exception>
+		<exception>CorpProjectSalesforceProjectKey</exception>
+		<exception>CurrencyEntryCode</exception>
+		<exception>CurrencyEntryCountry</exception>
+		<exception>DuplicateCorpProject</exception>
+		<exception>DuplicateCurrencyEntry</exception>
+		<exception>MarketingEventEndDate</exception>
+		<exception>MarketingEventHostedBy</exception>
+		<exception>MarketingEventHostedByURL</exception>
+		<exception>MarketingEventRegistrationURL</exception>
+		<exception>MarketingEventStartDate</exception>
+		<exception>MarketingEventTitle</exception>
+		<exception>MarketingEventTitleURL</exception>
+		<exception>MarketingEventVideoTitle</exception>
+		<exception>RequiredCorpProject</exception>
+		<exception>UnverifiedUser</exception>
+	</exceptions>
+</service-builder>

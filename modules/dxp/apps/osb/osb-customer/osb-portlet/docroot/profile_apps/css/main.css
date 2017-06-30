@@ -1,0 +1,165 @@
+/* ---------- Accessories ---------- */
+
+.osb-portlet-profile-apps {
+	.container {
+		padding: 0.75em 0;
+	}
+
+	.item .icon {
+		display: inline-block;
+	}
+}
+
+/* ---------- Containers ---------- */
+
+.osb-portlet-profile-apps .asset {
+	margin: 0;
+
+	.item {
+		display: inline-block;
+		margin: 0 5px 15px;
+		width: 200px;
+	}
+}
+
+/* ---------- Lists ---------- */
+
+.osb-portlet-profile-apps .asset ul {
+	display: inline-block;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+
+	.title {
+		font-weight: bold;
+		word-wrap: break-word;
+	}
+
+	.btn {
+		font-size: 10px;
+		margin-top: 4px;
+		padding: 1px 5px;
+
+		&.reset {
+			font-size: 12px;
+			margin-top: 3px;
+			padding: 2px 8px;
+		}
+	}
+}
+
+.ie7 .marketplace-app-manager .asset, .ie8 .marketplace-app-manager .asset {
+	.icon, .item {
+		float: left;
+	}
+}
+
+/* ---------- Icon ---------- */
+
+.osb-portlet-profile-apps .item .icon img {
+	border-radius: 9px;
+	height: 90px;
+	width: 90px;
+
+	&.small {
+		display: block;
+		height: 70px;
+		margin-right: 5px;
+		width: 70px;
+	}
+}
+
+/* ---------- Corp profiles ---------- */
+
+.corp-profile .osb-portlet-profile-apps {
+	.asset {
+		&::after, &::before {
+			content: none;
+		}
+
+		.item {
+			border: 1px solid #E3E4E5;
+			box-sizing: border-box;
+			display: inline-block;
+			height: 236px;
+			margin: 1em 0 0.2em;
+			padding: 1em;
+			width: 184px;
+
+			&:first-of-type {
+				margin-left: 0;
+			}
+
+			&:last-of-type {
+				margin-right: 0;
+			}
+
+			.icon {
+				display: block;
+				padding: 2em 2em 1em;
+
+				img.small {
+					margin: 0 auto;
+				}
+			}
+		}
+
+		.info {
+			position: initial;
+			text-align: center;
+			width: 100%;
+
+			a {
+				color: #909295;
+				text-decoration: none;
+
+				&:active, &:focus, &:hover {
+					color: darken(#909295, 25%);
+				}
+			}
+
+			li:nth-of-type(2) {
+				display: none;
+			}
+
+			li:nth-of-type(3), li:nth-of-type(4) {
+				display: inline-block;
+			}
+
+			li .btn.price {
+				background: transparent;
+				border-width: 0;
+				color: #909295;
+				margin: 4px 8px 0;
+				padding: 0;
+
+				&:active, &:focus, &:hover {
+					color: darken(#909295, 25%);
+				}
+			}
+		}
+	}
+
+	.portlet-content {
+		border-width: 0;
+		padding: 0;
+	}
+
+	.portlet-topper {
+		background: transparent;
+		border-width: 0;
+		color: #909295;
+
+		.portlet-title {
+			border-bottom: 1px solid #E3E4E5;
+			font-size: 16px;
+			padding: 0;
+
+			.portlet-title-text {
+				font-size: smaller;
+				text-transform: uppercase;
+			}
+		}
+	}
+}

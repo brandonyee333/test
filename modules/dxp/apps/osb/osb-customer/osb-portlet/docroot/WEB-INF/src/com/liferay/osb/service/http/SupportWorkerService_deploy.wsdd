@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+	<service name="Plugin_OSB_SupportWorkerService" provider="java:RPC" style="rpc" use="encoded">
+		<operation xmlns:operNS="urn:http.service.osb.liferay.com" name="clockInOut" qname="operNS:clockInOut" soapAction="">
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="supportWorkerId" type="tns:long"></parameter>
+		</operation>
+		<parameter name="allowedMethods" value="clockInOut" />
+		<parameter name="className" value="com.liferay.osb.service.http.SupportWorkerServiceSoap" />
+		<parameter name="typeMappingVersion" value="1.2" />
+		<parameter name="wsdlPortType" value="SupportWorkerServiceSoap" />
+		<parameter name="wsdlServiceElement" value="SupportWorkerServiceSoapService" />
+		<parameter name="wsdlServicePort" value="Plugin_OSB_SupportWorkerService" />
+		<parameter name="wsdlTargetNamespace" value="urn:http.service.osb.liferay.com" />
+	</service>
+</deployment>

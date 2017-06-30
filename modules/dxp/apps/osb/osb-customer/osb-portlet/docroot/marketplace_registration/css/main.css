@@ -1,0 +1,412 @@
+@import "compass";
+
+/* ---------- Global ---------- */
+
+/* ---------- General ---------- */
+
+.osb-portlet-marketplace-registration {
+	h1.header-title {
+		color: #1A4265;
+		font-size: 1.6em;
+		font-weight: bold;
+	}
+
+	h3 {
+		color: #1A4265;
+		font-size: 1.1em;
+		font-weight: bold;
+		margin: 10px 0 0;
+	}
+
+	textarea {
+		height: 105px;
+		resize: vertical;
+	}
+
+	.aui-button-holder {
+		overflow: visible;
+	}
+
+	.aui-button-input {
+		padding: 5px 10px;
+	}
+
+	.aui-column.aui-w33 .aui-column-content {
+		margin: 0 20px 0 0;
+
+		&.aui-column-content-last {
+			margin: 0;
+		}
+	}
+
+	.aui-fieldset-legend {
+		color: #1A4265;
+		padding: 10px 0 0;
+	}
+
+	.clear {
+		clear: both;
+	}
+
+	.corp-add-form {
+		a {
+			padding: 10px 0;
+			text-decoration: none;
+
+			&.fs-11 span {
+				display: none;
+			}
+		}
+
+		&.aui-field-input-text {
+			width: 90%;
+		}
+
+		.aui-field-text .aui-field-label,
+		.aui-field-select .aui-field-label {
+			padding: 10px 0 4px;
+		}
+
+		.rt-align {
+			padding-top: 20px;
+		}
+	}
+
+	.corp-entry-container, .developer-entry-container {
+		margin-bottom: 10px;
+	}
+
+	.corp-entry-item, .developer-entry-item {
+		border-top: 1px solid #C8C9CA;
+		box-sizing: border-box;
+		height: 55px;
+		padding: 10px 0;
+
+		&:last-child {
+			border-bottom: 1px solid #C8C9CA;
+		}
+
+		.aui-button-input, .btn, .membership-status {
+			float: right;
+		}
+
+		.date, .membership-status, .title {
+			display: inline-block;
+			margin: 6px 0;
+			vertical-align: middle;
+		}
+
+		.title {
+			width: 65%;
+		}
+	}
+
+	.corp-entry-name, .developer-entry-name {
+		float: left;
+
+		span {
+			display: none;
+		}
+	}
+
+	.corp-entry-result {
+		font-weight: bold;
+	}
+
+	.language-container {
+		background-color: #F2F2F2;
+		margin-bottom: 10px;
+		padding: 10px;
+
+		.aui-field-label {
+			padding-top: 0;
+		}
+
+		.lfr-token {
+			margin: 3px;
+			padding: 0.3em 0.5em 0.3em;
+		}
+	}
+
+	.light-gray {
+		color: #919093;
+	}
+
+	.marketplace-registration-account-selection {
+		.aui-button-input {
+			margin-top: 30px;
+		}
+
+		.aui-layout-content {
+			padding: 9px 40px;
+		}
+
+		.individual-account {
+			border-bottom: 1px solid #CCC;
+		}
+	}
+
+	.marketplace-registration-wrapper {
+		margin: 10px;
+
+		textarea, .aui-field-input-text {
+			width: 90%;
+
+			&:disabled {
+				@include opacity(0.3);
+			}
+		}
+
+		.country select {
+			width: 200px;
+		}
+
+		.phone-number {
+			display: inline;
+		}
+	}
+
+	.terms {
+		border: 1px solid #BABEC2;
+		height: 200px;
+		overflow: auto;
+		padding: 5px;
+		word-wrap: break-word;
+	}
+}
+
+.osb-portlet-marketplace-registration {
+	.marketplace-registration-developer-information {
+		input[type="text"] {
+			width: 300px;
+		}
+
+		.aui-field {
+			display: inline-block;
+			margin-bottom: 9px;
+		}
+
+		.terms {
+			width: 400px;
+		}
+	}
+
+	.marketplace-registration-wrapper img {
+		max-height: 220px;
+		max-width: 220px;
+	}
+
+	.portlet .portlet-content {
+		background-color: #FFF;
+	}
+
+	.required .aui-choice-label:after,
+	.required .aui-field-label:after,
+	.required .aui-field-label-inline-label:after {
+		content: " *";
+	}
+
+	.rt-align {
+		text-align: right;
+	}
+
+	.search-company-name {
+		padding-bottom: 24px;
+
+		a {
+			margin: 0 0 0 20px;
+		}
+
+		input[type="text"] {
+			width: 250px;
+		}
+
+		.col {
+			vertical-align: bottom;
+		}
+	}
+
+	.search-company-name-col {
+		display: inline-block;
+		width: 260px;
+	}
+
+	.search-company-button-col {
+		display: inline-block;
+		padding-top: 16px;
+	}
+
+	.taglib-header .header-back-to a {
+		padding: .5em 0.2em;
+	}
+}
+
+/* ---------- Page ---------- */
+
+/* ---------- Edit corp ---------- */
+
+.marketplace-registration.edit-corp,
+.marketplace-registration.edit-developer-entry {
+	input[type='text'], textarea {
+		width: 90%;
+	}
+
+	.aui-field-content {
+		margin-bottom: 9px;
+	}
+
+	.language-container {
+		margin: 0 37px 10px 0;
+	}
+}
+
+/* ---------- Join a company ---------- */
+
+.marketplace-registration-wrapper.join-a-company {
+	.aui-field-label {
+		margin: 10px 0;
+	}
+}
+
+/* ---------- Upgrade developer entry ---------- */
+
+.marketplace-registration.upgrade-developer-entry {
+	.upgrade-step-header {
+		padding-bottom: 15px;
+
+		.circle {
+			background: #000;
+			border-radius: 20px;
+			color: #FFF;
+			display: inline-block;
+			font-size: 1.1em;
+			font-weight: bold;
+			height: 40px;
+			line-height: 40px;
+			margin-right: 10px;
+			text-align: center;
+			width: 40px;
+		}
+
+		&.details .circle {
+			background: #55F;
+		}
+
+		&.email .circle {
+			background: #D00;
+		}
+
+		&.pay .circle {
+			background: #0A0;
+		}
+	}
+}
+
+/* ---------- Upgrade developer entry details ---------- */
+
+.osb-portlet-marketplace-registration .upgrade-developer-entry-details {
+	.aui-field-input-text {
+		width: 90%;
+	}
+}
+
+/* ---------- Upgrade developer entry email ---------- */
+
+.osb-portlet-marketplace-registration .upgrade-developer-entry-email {
+	.button-row {
+		margin-top: 20px;
+	}
+}
+
+/* ---------- Upgrade developer entry pay ---------- */
+
+.osb-portlet-marketplace-registration .upgrade-developer-entry-pay {
+	.cart {
+		margin: 20px 30px;
+
+		.cart-title {
+			font-weight: bold;
+			margin-bottom: .5em;
+		}
+
+		.subtotal {
+			margin-top: 15px;
+		}
+
+		.total .col-4 {
+			font-weight: bold;
+		}
+
+		th, .subtotal .col-3, .estimated-tax .col-3, .total .col-3 {
+			color: #7B7C7F;
+			font-weight: bold;
+		}
+
+		th, td {
+			padding: 5px 10px;
+		}
+
+		thead tr {
+			border-bottom: 1px solid #CCC;
+			border-top: 1px solid #CCC;
+		}
+	}
+}
+
+/* ---------- Browser ---------- */
+
+/* ---------- Firefox ---------- */
+
+.firefox .osb-portlet-marketplace-registration {
+	.taglib-icon-help {
+		bottom: 8px;
+		position: relative;
+	}
+
+	.phone-number .taglib-icon-help {
+		bottom: 16px;
+		position: relative;
+	}
+}
+
+/* ---------- IE ---------- */
+
+.ie6 .osb-portlet-marketplace-registration .marketplace-registration-wrapper img {
+	height: 220px;
+	width: 220px;
+}
+
+.ie7 .osb-portlet-marketplace-registration .marketplace-registration-wrapper .phone-number .aui-field {
+	display: inline;
+}
+
+.ie8 .osb-portlet-marketplace-registration .phone-number .taglib-icon-help,
+.ie9 .osb-portlet-marketplace-registration .phone-number .taglib-icon-help {
+	bottom: 16px;
+	position: relative;
+}
+
+/* ---------- Mobile ---------- */
+
+/* ---------- View ---------- */
+
+@media (max-width: 740px) {
+	.osb-portlet-marketplace-registration .marketplace-registration-wrapper .marketplace-registration-account-selection {
+		.aui-column {
+			float: none;
+			width: 100%;
+
+			.aui-column-content {
+				padding: auto;
+
+				.aui-button-input {
+					margin-top: 0;
+				}
+
+				.fr {
+					float: none;
+				}
+			}
+		}
+	}
+}

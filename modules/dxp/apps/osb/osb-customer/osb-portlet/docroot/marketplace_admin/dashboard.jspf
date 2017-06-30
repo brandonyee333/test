@@ -1,0 +1,450 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<div class="dashboard">
+	<div id="<portlet:namespace />assets">
+		<liferay-ui:header title="apps" />
+
+		<div class="row">
+
+			<%
+			LinkedHashMap<String, Object> params = new LinkedHashMap<String, Object>();
+
+			params.put("status", WorkflowConstants.STATUS_APPROVED);
+
+			int count = AppEntryLocalServiceUtil.searchCount(null, params, true);
+
+			LinkedHashMap<String, Object> liferayAppEntriesParams = new LinkedHashMap<String, Object>();
+
+			liferayAppEntriesParams.put("developerEntryId", OSBConstants.DEVELOPER_ENTRY_LIFERAY_INC_ID);
+			liferayAppEntriesParams.put("status", WorkflowConstants.STATUS_APPROVED);
+
+			int liferayAppEntriesCount = AppEntryLocalServiceUtil.searchCount(null, liferayAppEntriesParams, true);
+
+			LinkedHashMap<String, Object> thirdPartyAppEntriesParams = new LinkedHashMap<String, Object>();
+
+			thirdPartyAppEntriesParams.put("notDeveloperEntryId", OSBConstants.DEVELOPER_ENTRY_LIFERAY_INC_ID);
+			thirdPartyAppEntriesParams.put("status", WorkflowConstants.STATUS_APPROVED);
+
+			int thirdPartyAppEntriesCount = AppEntryLocalServiceUtil.searchCount(null, thirdPartyAppEntriesParams, true);
+			%>
+
+			<div class="approved detail-container status">
+				<liferay-portlet:renderURL var="assetsApprovedURL">
+					<portlet:param name="tabs1" value="apps" />
+					<portlet:param name="tabs2" value="manage" />
+				</liferay-portlet:renderURL>
+
+				<a href="<%= assetsApprovedURL %>">
+					<span class="status-heading">
+						<span class="count">
+							<%= count %>
+						</span>
+
+						<span class="type">
+							<liferay-ui:message key="approved" />
+						</span>
+					</span>
+
+					<span class="status-details">
+						<span class="count">
+							<%= liferayAppEntriesCount %>
+						</span>
+
+						<span class="type">
+							<liferay-ui:message key="liferay" />
+						</span>
+
+						<span class="count">
+							<%= thirdPartyAppEntriesCount %>
+						</span>
+
+						<span class="type">
+							<liferay-ui:message key="third-party" />
+						</span>
+					</span>
+				</a>
+			</div>
+
+			<%
+			params = new LinkedHashMap<String, Object>();
+
+			params.put("appVersionStatus", WorkflowConstants.STATUS_PENDING);
+
+			count = AppEntryLocalServiceUtil.searchCount(null, params, true);
+
+			liferayAppEntriesParams = new LinkedHashMap<String, Object>();
+
+			liferayAppEntriesParams.put("appVersionStatus", WorkflowConstants.STATUS_PENDING);
+			liferayAppEntriesParams.put("developerEntryId", OSBConstants.DEVELOPER_ENTRY_LIFERAY_INC_ID);
+
+			liferayAppEntriesCount = AppEntryLocalServiceUtil.searchCount(null, liferayAppEntriesParams, true);
+
+			thirdPartyAppEntriesParams = new LinkedHashMap<String, Object>();
+
+			thirdPartyAppEntriesParams.put("appVersionStatus", WorkflowConstants.STATUS_PENDING);
+			thirdPartyAppEntriesParams.put("notDeveloperEntryId", OSBConstants.DEVELOPER_ENTRY_LIFERAY_INC_ID);
+
+			thirdPartyAppEntriesCount = AppEntryLocalServiceUtil.searchCount(null, thirdPartyAppEntriesParams, true);
+			%>
+
+			<div class="detail-container request status<%= count > 0 ? " actionable" : StringPool.BLANK %>">
+				<liferay-portlet:renderURL var="assetsPendingURL">
+					<portlet:param name="tabs1" value="apps" />
+					<portlet:param name="tabs2" value="requests" />
+				</liferay-portlet:renderURL>
+
+				<a href="<%= assetsPendingURL %>">
+					<span class="status-heading">
+						<span class="count">
+							<%= count %>
+						</span>
+
+						<span class="type">
+							<liferay-ui:message key="requests" />
+						</span>
+					</span>
+
+					<span class="status-details">
+						<span class="count">
+							<%= liferayAppEntriesCount %>
+						</span>
+
+						<span class="type">
+							<liferay-ui:message key="liferay" />
+						</span>
+
+						<span class="count">
+							<%= thirdPartyAppEntriesCount %>
+						</span>
+
+						<span class="type">
+							<liferay-ui:message key="third-party" />
+						</span>
+					</span>
+				</a>
+			</div>
+
+			<%
+			params.put("appVersionStatus", WorkflowConstants.STATUS_PENDING_QA);
+
+			count = AppEntryLocalServiceUtil.searchCount(null, params, true);
+
+			liferayAppEntriesParams.put("appVersionStatus", WorkflowConstants.STATUS_PENDING_QA);
+
+			liferayAppEntriesCount = AppEntryLocalServiceUtil.searchCount(null, liferayAppEntriesParams, true);
+
+			thirdPartyAppEntriesParams.put("appVersionStatus", WorkflowConstants.STATUS_PENDING_QA);
+
+			thirdPartyAppEntriesCount = AppEntryLocalServiceUtil.searchCount(null, thirdPartyAppEntriesParams, true);
+			%>
+
+			<div class="detail-container pending-qa status<%= count > 0 ? " actionable" : StringPool.BLANK %>">
+				<liferay-portlet:renderURL var="assetsPendingQaURL">
+					<portlet:param name="tabs1" value="apps" />
+					<portlet:param name="tabs2" value="pending-qa" />
+				</liferay-portlet:renderURL>
+
+				<a href="<%= assetsPendingQaURL %>">
+					<span class="status-heading">
+						<span class="count">
+							<%= count %>
+						</span>
+
+						<span class="type">
+							<liferay-ui:message key="pending-qa" />
+						</span>
+					</span>
+
+					<span class="status-details">
+						<span class="count">
+							<%= liferayAppEntriesCount %>
+						</span>
+
+						<span class="type">
+							<liferay-ui:message key="liferay" />
+						</span>
+
+						<span class="count">
+							<%= thirdPartyAppEntriesCount %>
+						</span>
+
+						<span class="type">
+							<liferay-ui:message key="third-party" />
+						</span>
+					</span>
+				</a>
+			</div>
+
+			<div class="cleared"><!-- --></div>
+		</div>
+	</div>
+
+	<div id="<portlet:namespace />developers">
+		<liferay-ui:header title="developers" />
+
+		<div class="row">
+
+			<%
+			count = DeveloperEntryLocalServiceUtil.getDeveloperEntriesCount(DeveloperEntryConstants.TYPE_COMPANY, WorkflowConstants.STATUS_APPROVED);
+			%>
+
+			<div class="approved status">
+				<liferay-portlet:renderURL var="corpApprovedURL">
+					<portlet:param name="tabs1" value="developers" />
+					<portlet:param name="tabs2" value="manage" />
+					<portlet:param name="type" value="<%= String.valueOf(DeveloperEntryConstants.TYPE_COMPANY) %>" />
+				</liferay-portlet:renderURL>
+
+				<a href="<%= corpApprovedURL %>">
+					<span class="count">
+						<%= count %>
+					</span>
+
+					<span class="type">
+						<liferay-ui:message key="companies" />
+					</span>
+				</a>
+			</div>
+
+			<%
+			count = DeveloperEntryLocalServiceUtil.getDeveloperEntriesCount(WorkflowConstants.STATUS_PENDING);
+			%>
+
+			<div class="request status<%= count > 0 ? " actionable" : StringPool.BLANK %>">
+				<liferay-portlet:renderURL var="corpPendingURL">
+					<portlet:param name="tabs1" value="developers" />
+					<portlet:param name="tabs2" value="requests" />
+					<portlet:param name="type" value="<%= String.valueOf(DeveloperEntryConstants.TYPE_COMPANY) %>" />
+				</liferay-portlet:renderURL>
+
+				<a href="<%= corpPendingURL %>">
+					<span class="count">
+						<%= count %>
+					</span>
+
+					<span class="type">
+						<liferay-ui:message key="requests" />
+					</span>
+				</a>
+			</div>
+
+			<div class="cleared"><!-- --></div>
+		</div>
+
+		<div class="row">
+
+			<%
+			count = DeveloperEntryLocalServiceUtil.getDeveloperEntriesCount(DeveloperEntryConstants.TYPE_USER, WorkflowConstants.STATUS_APPROVED);
+			%>
+
+			<div class="approved status">
+				<liferay-portlet:renderURL var="developersManageURL">
+					<portlet:param name="tabs1" value="developers" />
+					<portlet:param name="tabs2" value="manage" />
+					<portlet:param name="type" value="<%= String.valueOf(DeveloperEntryConstants.TYPE_USER) %>" />
+				</liferay-portlet:renderURL>
+
+				<a href="<%= developersManageURL %>">
+					<span class="count">
+						<%= count %>
+					</span>
+
+					<span class="type">
+						<liferay-ui:message key="users" />
+					</span>
+				</a>
+			</div>
+
+			<div class="cleared"><!-- --></div>
+		</div>
+	</div>
+
+	<div id="<portlet:namespace />metrics">
+
+		<%
+		Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
+
+		Calendar thisWeekEndCalendar = (Calendar)calendar.clone();
+		Calendar thisWeekStartCalendar = (Calendar)calendar.clone();
+
+		thisWeekStartCalendar.add(Calendar.DATE, -6);
+
+		Calendar lastWeekEndCalendar = (Calendar)calendar.clone();
+		Calendar lastWeekStartCalendar = (Calendar)calendar.clone();
+
+		lastWeekEndCalendar.add(Calendar.DATE, -7);
+		lastWeekStartCalendar.add(Calendar.DATE, -13);
+
+		JSONObject lastWeekJSONObject = null;
+		JSONObject thisWeekJSONObject = null;
+		%>
+
+		<liferay-ui:header title="metrics" />
+
+		<div class="row">
+
+			<%
+			lastWeekJSONObject = AssetStatsDayLocalServiceUtil.getAssetStatsDayJSONObject(lastWeekStartCalendar.get(Calendar.DAY_OF_YEAR), lastWeekStartCalendar.get(Calendar.YEAR), lastWeekEndCalendar.get(Calendar.DAY_OF_YEAR), lastWeekEndCalendar.get(Calendar.YEAR), null);
+			thisWeekJSONObject = AssetStatsDayLocalServiceUtil.getAssetStatsDayJSONObject(thisWeekStartCalendar.get(Calendar.DAY_OF_YEAR), thisWeekStartCalendar.get(Calendar.YEAR), thisWeekEndCalendar.get(Calendar.DAY_OF_YEAR), thisWeekEndCalendar.get(Calendar.YEAR), null);
+			%>
+
+			<div class="approved status">
+				<liferay-portlet:renderURL var="totalViewCountMetricURL">
+					<portlet:param name="tabs1" value="metrics" />
+					<portlet:param name="endDateDay" value="<%= String.valueOf(thisWeekEndCalendar.get(Calendar.DATE)) %>" />
+					<portlet:param name="endDateMonth" value="<%= String.valueOf(thisWeekEndCalendar.get(Calendar.MONTH)) %>" />
+					<portlet:param name="endDateYear" value="<%= String.valueOf(thisWeekEndCalendar.get(Calendar.YEAR)) %>" />
+					<portlet:param name="startDateDay" value="<%= String.valueOf(lastWeekStartCalendar.get(Calendar.DATE)) %>" />
+					<portlet:param name="startDateMonth" value="<%= String.valueOf(lastWeekStartCalendar.get(Calendar.MONTH)) %>" />
+					<portlet:param name="startDateYear" value="<%= String.valueOf(lastWeekStartCalendar.get(Calendar.YEAR)) %>" />
+				</liferay-portlet:renderURL>
+
+				<a href="<%= totalViewCountMetricURL %>">
+					<span class="count">
+						<%= thisWeekJSONObject.getLong(AssetStatsConstants.STATS_TYPE_VIEW_COUNT_KEY) + lastWeekJSONObject.getLong(AssetStatsConstants.STATS_TYPE_VIEW_COUNT_KEY) %>
+					</span>
+
+					<span class="type">
+						<liferay-ui:message key="views" />
+					</span>
+				</a>
+			</div>
+
+			<div class="request status">
+				<liferay-portlet:renderURL var="thisWeekViewCountMetricURL">
+					<portlet:param name="tabs1" value="metrics" />
+					<portlet:param name="endDateDay" value="<%= String.valueOf(thisWeekEndCalendar.get(Calendar.DATE)) %>" />
+					<portlet:param name="endDateMonth" value="<%= String.valueOf(thisWeekEndCalendar.get(Calendar.MONTH)) %>" />
+					<portlet:param name="endDateYear" value="<%= String.valueOf(thisWeekEndCalendar.get(Calendar.YEAR)) %>" />
+					<portlet:param name="startDateDay" value="<%= String.valueOf(thisWeekStartCalendar.get(Calendar.DATE)) %>" />
+					<portlet:param name="startDateMonth" value="<%= String.valueOf(thisWeekStartCalendar.get(Calendar.MONTH)) %>" />
+					<portlet:param name="startDateYear" value="<%= String.valueOf(thisWeekStartCalendar.get(Calendar.YEAR)) %>" />
+				</liferay-portlet:renderURL>
+
+				<a href="<%= thisWeekViewCountMetricURL %>">
+					<span class="count">
+						<%= thisWeekJSONObject.getLong(AssetStatsConstants.STATS_TYPE_VIEW_COUNT_KEY) %>
+					</span>
+
+					<span class="type">
+						<liferay-ui:message key="this-week" />
+					</span>
+				</a>
+			</div>
+
+			<div class="request status">
+				<liferay-portlet:renderURL var="lastWeekViewCountMetricURL">
+					<portlet:param name="tabs1" value="metrics" />
+					<portlet:param name="endDateDay" value="<%= String.valueOf(lastWeekEndCalendar.get(Calendar.DATE)) %>" />
+					<portlet:param name="endDateMonth" value="<%= String.valueOf(lastWeekEndCalendar.get(Calendar.MONTH)) %>" />
+					<portlet:param name="endDateYear" value="<%= String.valueOf(lastWeekEndCalendar.get(Calendar.YEAR)) %>" />
+					<portlet:param name="startDateDay" value="<%= String.valueOf(lastWeekStartCalendar.get(Calendar.DATE)) %>" />
+					<portlet:param name="startDateMonth" value="<%= String.valueOf(lastWeekStartCalendar.get(Calendar.MONTH)) %>" />
+					<portlet:param name="startDateYear" value="<%= String.valueOf(lastWeekStartCalendar.get(Calendar.YEAR)) %>" />
+				</liferay-portlet:renderURL>
+
+				<a href="<%= lastWeekViewCountMetricURL %>">
+					<span class="count">
+						<%= lastWeekJSONObject.getLong(AssetStatsConstants.STATS_TYPE_VIEW_COUNT_KEY) %>
+					</span>
+
+					<span class="type">
+						<liferay-ui:message key="last-week" />
+					</span>
+				</a>
+			</div>
+
+			<div class="cleared"><!-- --></div>
+		</div>
+
+		<div class="row">
+
+			<%
+			lastWeekJSONObject = AssetStatsDayLocalServiceUtil.getAssetStatsDayJSONObject(lastWeekStartCalendar.get(Calendar.DAY_OF_YEAR), lastWeekStartCalendar.get(Calendar.YEAR), lastWeekEndCalendar.get(Calendar.DAY_OF_YEAR), lastWeekEndCalendar.get(Calendar.YEAR), null);
+			thisWeekJSONObject = AssetStatsDayLocalServiceUtil.getAssetStatsDayJSONObject(thisWeekStartCalendar.get(Calendar.DAY_OF_YEAR), thisWeekStartCalendar.get(Calendar.YEAR), thisWeekEndCalendar.get(Calendar.DAY_OF_YEAR), thisWeekEndCalendar.get(Calendar.YEAR), null);
+			%>
+
+			<div class="approved status">
+				<liferay-portlet:renderURL var="totalViewCountMetricURL">
+					<portlet:param name="tabs1" value="metrics" />
+					<portlet:param name="endDateDay" value="<%= String.valueOf(thisWeekEndCalendar.get(Calendar.DATE)) %>" />
+					<portlet:param name="endDateMonth" value="<%= String.valueOf(thisWeekEndCalendar.get(Calendar.MONTH)) %>" />
+					<portlet:param name="endDateYear" value="<%= String.valueOf(thisWeekEndCalendar.get(Calendar.YEAR)) %>" />
+					<portlet:param name="startDateDay" value="<%= String.valueOf(lastWeekStartCalendar.get(Calendar.DATE)) %>" />
+					<portlet:param name="startDateMonth" value="<%= String.valueOf(lastWeekStartCalendar.get(Calendar.MONTH)) %>" />
+					<portlet:param name="startDateYear" value="<%= String.valueOf(lastWeekStartCalendar.get(Calendar.YEAR)) %>" />
+				</liferay-portlet:renderURL>
+
+				<a href="<%= totalViewCountMetricURL %>">
+					<span class="count">
+						<%= thisWeekJSONObject.getLong(AssetStatsConstants.STATS_TYPE_DOWNLOAD_COUNT_KEY) + lastWeekJSONObject.getLong(AssetStatsConstants.STATS_TYPE_DOWNLOAD_COUNT_KEY) %>
+					</span>
+
+					<span class="type">
+						<liferay-ui:message key="downloads" />
+					</span>
+				</a>
+			</div>
+
+			<div class="request status">
+				<liferay-portlet:renderURL var="thisWeekViewCountMetricURL">
+					<portlet:param name="tabs1" value="metrics" />
+					<portlet:param name="endDateDay" value="<%= String.valueOf(thisWeekEndCalendar.get(Calendar.DATE)) %>" />
+					<portlet:param name="endDateMonth" value="<%= String.valueOf(thisWeekEndCalendar.get(Calendar.MONTH)) %>" />
+					<portlet:param name="endDateYear" value="<%= String.valueOf(thisWeekEndCalendar.get(Calendar.YEAR)) %>" />
+					<portlet:param name="startDateDay" value="<%= String.valueOf(thisWeekStartCalendar.get(Calendar.DATE)) %>" />
+					<portlet:param name="startDateMonth" value="<%= String.valueOf(thisWeekStartCalendar.get(Calendar.MONTH)) %>" />
+					<portlet:param name="startDateYear" value="<%= String.valueOf(thisWeekStartCalendar.get(Calendar.YEAR)) %>" />
+				</liferay-portlet:renderURL>
+
+				<a href="<%= thisWeekViewCountMetricURL %>">
+					<span class="count">
+						<%= thisWeekJSONObject.getLong(AssetStatsConstants.STATS_TYPE_DOWNLOAD_COUNT_KEY) %>
+					</span>
+
+					<span class="type">
+						<liferay-ui:message key="this-week" />
+					</span>
+				</a>
+			</div>
+
+			<div class="request status">
+				<liferay-portlet:renderURL var="lastWeekViewCountMetricURL">
+					<portlet:param name="tabs1" value="metrics" />
+					<portlet:param name="endDateDay" value="<%= String.valueOf(lastWeekEndCalendar.get(Calendar.DATE)) %>" />
+					<portlet:param name="endDateMonth" value="<%= String.valueOf(lastWeekEndCalendar.get(Calendar.MONTH)) %>" />
+					<portlet:param name="endDateYear" value="<%= String.valueOf(lastWeekEndCalendar.get(Calendar.YEAR)) %>" />
+					<portlet:param name="startDateDay" value="<%= String.valueOf(lastWeekStartCalendar.get(Calendar.DATE)) %>" />
+					<portlet:param name="startDateMonth" value="<%= String.valueOf(lastWeekStartCalendar.get(Calendar.MONTH)) %>" />
+					<portlet:param name="startDateYear" value="<%= String.valueOf(lastWeekStartCalendar.get(Calendar.YEAR)) %>" />
+				</liferay-portlet:renderURL>
+
+				<a href="<%= lastWeekViewCountMetricURL %>">
+					<span class="count">
+						<%= lastWeekJSONObject.getLong(AssetStatsConstants.STATS_TYPE_DOWNLOAD_COUNT_KEY) %>
+					</span>
+
+					<span class="type">
+						<liferay-ui:message key="last-week" />
+					</span>
+				</a>
+			</div>
+
+			<div class="cleared"><!-- --></div>
+		</div>
+	</div>
+</div>

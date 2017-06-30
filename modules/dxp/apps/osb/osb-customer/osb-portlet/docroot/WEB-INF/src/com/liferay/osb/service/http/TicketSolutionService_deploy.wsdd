@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+
+<deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+	<service name="Plugin_OSB_TicketSolutionService" provider="java:RPC" style="rpc" use="encoded">
+		<arrayMapping xmlns:ns="urn:http.service.osb.liferay.com" xmlns:cmp-ns="http://model.osb.liferay.com" qname="ns:ArrayOf_tns2_TicketAttachmentSoap" type="java:com.liferay.osb.model.TicketAttachmentSoap[]" innerType="cmp-ns:TicketAttachmentSoap" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></arrayMapping>
+		<arrayMapping xmlns:ns="urn:http.service.osb.liferay.com" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema" qname="ns:ArrayOf_xsd_anyType" type="java:java.lang.Object[]" innerType="cmp-ns:anyType" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></arrayMapping>
+		<typeMapping xmlns:ns="http://model.osb.liferay.com" qname="ns:TicketAttachmentSoap" type="java:com.liferay.osb.model.TicketAttachmentSoap" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></typeMapping>
+		<typeMapping xmlns:ns="http://model.osb.liferay.com" qname="ns:TicketSolutionSoap" type="java:com.liferay.osb.model.TicketSolutionSoap" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></typeMapping>
+		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="http://model.osb.liferay.com" name="addTicketSolution" qname="operNS:addTicketSolution" returnQName="addTicketSolutionReturn" returnType="rtns:TicketSolutionSoap" soapAction="">
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="userId" type="tns:long"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="ticketEntryId" type="tns:long"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="summary" type="tns:string"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="useCustomerSummary" type="tns:boolean"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="issueType" type="tns:int"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="solution" type="tns:string"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="type" type="tns:int"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="customerSpecific" type="tns:boolean"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="environmentSpecific" type="tns:boolean"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="versionSpecific" type="tns:boolean"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="reviewForKB" type="tns:boolean"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="status" type="tns:int"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="ticketEntrySubcomponent" type="tns:int"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="ticketEntrySubcomponentCustom" type="tns:string"></parameter>
+			<parameter xmlns:tns="urn:http.service.osb.liferay.com" qname="ticketLinkURLs" type="tns:ArrayOf_xsd_anyType"></parameter>
+			<parameter xmlns:tns="urn:http.service.osb.liferay.com" qname="ticketLinkTypes" type="tns:ArrayOf_xsd_anyType"></parameter>
+			<parameter xmlns:tns="urn:http.service.osb.liferay.com" qname="ticketAttachments" type="tns:ArrayOf_tns2_TicketAttachmentSoap"></parameter>
+		</operation>
+		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="http://model.osb.liferay.com" name="updateTicketSolution" qname="operNS:updateTicketSolution" returnQName="updateTicketSolutionReturn" returnType="rtns:TicketSolutionSoap" soapAction="">
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="ticketSolutionId" type="tns:long"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="ticketEntryId" type="tns:long"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="status" type="tns:int"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="statusByUserId" type="tns:long"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="statusMessage" type="tns:string"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="statusReason" type="tns:int"></parameter>
+		</operation>
+		<parameter name="allowedMethods" value="addTicketSolution updateTicketSolution" />
+		<parameter name="className" value="com.liferay.osb.service.http.TicketSolutionServiceSoap" />
+		<parameter name="schemaUnqualified" value="http://model.osb.liferay.com,http://xml.apache.org/xml-soap,urn:http.service.osb.liferay.com" />
+		<parameter name="typeMappingVersion" value="1.2" />
+		<parameter name="wsdlPortType" value="TicketSolutionServiceSoap" />
+		<parameter name="wsdlServiceElement" value="TicketSolutionServiceSoapService" />
+		<parameter name="wsdlServicePort" value="Plugin_OSB_TicketSolutionService" />
+		<parameter name="wsdlTargetNamespace" value="urn:http.service.osb.liferay.com" />
+	</service>
+</deployment>

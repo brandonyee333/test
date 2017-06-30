@@ -1,0 +1,61 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%
+SearchContext searchContext = new SearchContext();
+
+if (displayTerms.isAdvancedSearch()) {
+	searchContext.setAndSearch(displayTerms.isAndOperator());
+}
+
+searchContext.setAttribute("status", WorkflowConstants.STATUS_ANY);
+searchContext.setAttribute("trainingCustomer", String.valueOf(true));
+searchContext.setAttribute("trainingCustomerEmailAddress", displayTerms.getEmailAddress());
+searchContext.setAttribute("trainingCustomerFirstName", displayTerms.getFirstName());
+searchContext.setAttribute("trainingCustomerLastName", displayTerms.getLastName());
+searchContext.setCompanyId(company.getCompanyId());
+searchContext.setEnd(searchContainer.getEnd());
+searchContext.setKeywords(displayTerms.getKeywords());
+
+Sort sort = SortFactoryUtil.getSort(User.class, searchContainer.getOrderByCol(), searchContainer.getOrderByType());
+
+searchContext.setSorts(new Sort[] {sort});
+
+searchContext.setStart(searchContainer.getStart());
+
+Indexer indexer = IndexerRegistryUtil.getIndexer(User.class);
+
+Hits hits = indexer.search(searchContext);
+
+for (int i = 0; i < hits.getDocs().length; i++) {
+	Document document = hits.doc(i);
+
+	long curUserId = GetterUtil.getLong(document.get(Field.ENTRY_CLASS_PK));
+
+	User curUser = UserLocalServiceUtil.fetchUser(curUserId);
+
+	if (curUser == null) {
+		continue;
+	}
+
+	results.add(curUser);
+}
+
+total = hits.getLength();
+
+pageContext.setAttribute("results", results);
+pageContext.setAttribute("total", total);
+%>

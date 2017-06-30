@@ -1,0 +1,767 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%@ include file="/init.jsp" %>
+
+<%
+AccountEntry accountEntry = (AccountEntry)request.getAttribute("edit_account_entry.jsp-accountEntry");
+String detailTab = (String)request.getAttribute("edit_account_entry.jsp-detailTab");
+PortletURL portletURL = (PortletURL)request.getAttribute("edit_account_entry.jsp-portletURL");
+
+long corpProjectId = BeanParamUtil.getLong(accountEntry, request, "corpProjectId");
+
+String[] languageIds = StringUtil.split(ParamUtil.getString(request, "languageIds"));
+
+if (ArrayUtil.isEmpty(languageIds) && (accountEntry != null)) {
+	languageIds = accountEntry.getLanguageIds();
+}
+
+String languageIdsValue = StringPool.BLANK;
+
+for (String languageId : languageIds) {
+	languageIdsValue += languageId + StringPool.COMMA;
+}
+
+long[] supportRegionIds = StringUtil.split(ParamUtil.getString(request, "supportRegionIds"), 0L);
+
+List<SupportRegion> supportRegions = new ArrayList<SupportRegion>();
+
+for (long supportRegionId : supportRegionIds) {
+	supportRegions.add(SupportRegionLocalServiceUtil.getSupportRegion(supportRegionId));
+}
+
+if (supportRegions.isEmpty() && (accountEntry != null)) {
+	supportRegions = accountEntry.getSupportRegions();
+
+	supportRegionIds = new long[supportRegions.size()];
+
+	for (int i = 0; i < supportRegions.size(); i++) {
+		SupportRegion supportRegion = supportRegions.get(i);
+
+		supportRegionIds[i] = supportRegion.getSupportRegionId();
+	}
+}
+
+String supportRegionsValue = StringPool.BLANK;
+
+for (SupportRegion supportRegion : supportRegions) {
+	supportRegionsValue += supportRegion.getSupportRegionId() + StringPool.COMMA;
+}
+%>
+
+<aui:input name="languageIds" type="hidden" value="<%= languageIdsValue %>" />
+<aui:input name="supportRegionIds" type="hidden" value="<%= supportRegionsValue %>" />
+
+<div class="account details tab-view">
+	<ul class="aui-tabview-list tabs">
+		<c:if test="<%= accountEntry != null %>">
+			<li class="aui-tab" data-content="<portlet:namespace />offeringsContent" id="<portlet:namespace />offerings">
+				<a class="aui-tab-content aui-tab-label" href="javascript:<portlet:namespace />revealTab('offerings');"><liferay-ui:message key="offerings" /></a>
+			</li>
+			<li class="aui-tab" data-content="<portlet:namespace />environmentDetailsContent" id="<portlet:namespace />environmentDetails">
+				<a class="aui-tab-content aui-tab-label" href="javascript:<portlet:namespace />revealTab('environmentDetails');"><liferay-ui:message key="environment-details" /></a>
+			</li>
+			<li class="aui-tab" data-content="<portlet:namespace />projectMessagesContent" id="<portlet:namespace />projectMessages">
+				<a class="aui-tab-content aui-tab-label" href="javascript:<portlet:namespace />revealTab('projectMessages');"><liferay-ui:message key="project-messages" /></a>
+			</li>
+		</c:if>
+
+		<li class="aui-tab" data-content="<portlet:namespace />supportRegionsContent" id="<portlet:namespace />supportRegions">
+			<a class="aui-tab-content aui-tab-label" href="javascript:<portlet:namespace />revealTab('supportRegions');"><liferay-ui:message key="support-regions" /></a>
+		</li>
+		<li class="aui-tab" data-content="<portlet:namespace />supportLanguagesContent" id="<portlet:namespace />supportLanguages">
+			<a class="aui-tab-content aui-tab-label" href="javascript:<portlet:namespace />revealTab('supportLanguages');"><liferay-ui:message key="support-languages" /></a>
+		</li>
+
+		<c:if test="<%= accountEntry != null %>">
+			<li class="aui-tab" data-content="<portlet:namespace />historyContent" id="<portlet:namespace />history">
+				<a class="aui-tab-content aui-tab-label" href="javascript:<portlet:namespace />revealTab('history');"><liferay-ui:message key="history" /></a>
+			</li>
+		</c:if>
+	</ul>
+
+	<div class="tab-content">
+		<c:if test="<%= accountEntry != null %>">
+			<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />offeringsContent">
+				<liferay-ui:search-container
+					deltaParam="offeringEntryDelta"
+					searchContainer="<%= new OfferingEntrySearch(renderRequest, portletURL) %>"
+				>
+
+					<%
+					OfferingEntryDisplayTerms displayTerms = (OfferingEntryDisplayTerms)searchContainer.getDisplayTerms();
+					%>
+
+					<c:if test="<%= accountEntry.getType() == AccountEntryConstants.TYPE_INDIVIDUAL %>">
+						<%@ include file="/admin/offering_entry_search.jspf" %>
+					</c:if>
+
+					<liferay-ui:search-container-results>
+
+						<%
+						LinkedHashMap params = new LinkedHashMap();
+
+						if (accountEntry.getType() == AccountEntryConstants.TYPE_INDIVIDUAL) {
+							params.put("user", new String[] {displayTerms.getFirstName(), displayTerms.getMiddleName(), displayTerms.getLastName(), displayTerms.getScreenName(), displayTerms.getEmailAddress()});
+
+							results = SupportUtil.getOfferingEntryGroups(0, accountEntry.getAccountEntryId(), new int[0], new int[0], 0, 0, 0, 0, 0, 0, params, true, searchContainer.getStart(), searchContainer.getEnd());
+							total = OfferingEntryLocalServiceUtil.searchCount(0, accountEntry.getAccountEntryId(), new int[0], new int[0], 0, 0, 0, 0, 0, 0, params, true);
+						}
+						else {
+							List<OfferingEntryGroup> offeringEntryGroups = SupportUtil.getOfferingEntryGroups(0, accountEntry.getAccountEntryId(), new int[0], new int[0], 0, 0, 0, 0, 0, 0, params, true);
+
+							results = ListUtil.subList(offeringEntryGroups, searchContainer.getStart(), searchContainer.getEnd());
+							total = offeringEntryGroups.size();
+						}
+
+						pageContext.setAttribute("results", results);
+						pageContext.setAttribute("total", total);
+						%>
+
+					</liferay-ui:search-container-results>
+
+					<liferay-ui:search-container-row
+						className="com.liferay.osb.model.OfferingEntryGroup"
+						modelVar="offeringEntryGroup"
+					>
+
+						<%
+						String userName = StringPool.BLANK;
+
+						try {
+							User curUser = UserLocalServiceUtil.getUser(offeringEntryGroup.getUserId());
+
+							userName = curUser.getEmailAddress();
+						}
+						catch (Exception e) {
+							userName = offeringEntryGroup.getUserName();
+						}
+
+						ProductEntry productEntry = offeringEntryGroup.getProductEntry();
+						SupportResponse supportResponse = offeringEntryGroup.getSupportResponse();
+						%>
+
+						<liferay-ui:search-container-column-text
+							name="status"
+						>
+							<%= LanguageUtil.get(pageContext, OfferingEntryConstants.getStatusLabel(offeringEntryGroup.getStatus())) %>
+						</liferay-ui:search-container-column-text>
+
+						<liferay-ui:search-container-column-text
+							name="type"
+							value="<%= LanguageUtil.get(pageContext, OfferingEntryConstants.getTypeLabel(offeringEntryGroup.getType())) %>"
+						/>
+
+						<c:choose>
+							<c:when test="<%= accountEntry.getType() == AccountEntryConstants.TYPE_INDIVIDUAL %>">
+								<liferay-ui:search-container-column-text
+									name="owner"
+									value="<%= HtmlUtil.escape(userName) %>"
+								/>
+							</c:when>
+							<c:otherwise>
+								<liferay-ui:search-container-column-text
+									name="product"
+									value="<%= productEntry.getName() %>"
+								/>
+							</c:otherwise>
+						</c:choose>
+
+						<liferay-ui:search-container-column-text
+							name="sla"
+							value="<%= supportResponse.getName() %>"
+						/>
+
+						<liferay-ui:search-container-column-text
+							name="start-date"
+							value="<%= longDateFormatDate.format((offeringEntryGroup.getActualStartDate() != null) ? offeringEntryGroup.getActualStartDate() : offeringEntryGroup.getStartDate()) %>"
+						/>
+
+						<liferay-ui:search-container-column-text
+							name="support-end-date"
+							value="<%= longDateFormatDate.format(offeringEntryGroup.getSupportEndDate()) %>"
+						/>
+
+						<%
+						long licensePlid = PortalUtil.getPlidFromPortletId(user.getGroupId(), OSBPortletKeys.OSB_LICENSE);
+						%>
+
+						<liferay-portlet:renderURL plid="<%= licensePlid %>" portletName="<%= OSBPortletKeys.OSB_LICENSE %>" var="viewLicensesURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+							<liferay-portlet:param name="mvcPath" value="/license/view.jsp" />
+							<liferay-portlet:param name="tabs1" value="portal" />
+							<liferay-portlet:param name="redirect" value="<%= portletURL.toString() %>" />
+							<liferay-portlet:param name="offeringEntryIds" value="<%= StringUtil.merge(offeringEntryGroup.getOfferingEntryIds()) %>" />
+						</liferay-portlet:renderURL>
+
+						<liferay-ui:search-container-column-text
+							href="<%= viewLicensesURL %>"
+							name="licenses"
+						>
+							<%= offeringEntryGroup.getLicenseKeysCount() %> / <%= offeringEntryGroup.getQuantity() %>
+						</liferay-ui:search-container-column-text>
+
+						<liferay-ui:search-container-column-text
+							name="tickets"
+						>
+							<%= offeringEntryGroup.getTicketEntriesCount() %> / <%= offeringEntryGroup.isSupportTickets() ? LanguageUtil.get(pageContext, "unlimited") : "0" %>
+						</liferay-ui:search-container-column-text>
+					</liferay-ui:search-container-row>
+
+					<div class="table-report">
+						<liferay-ui:search-iterator />
+					</div>
+				</liferay-ui:search-container>
+			</div>
+
+			<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />projectMessagesContent">
+				<c:choose>
+					<c:when test="<%= corpProjectId > 0 %>">
+						<liferay-portlet:renderURL portletName="<%= OSBPortletKeys.OSB_CORP_PROJECT_ADMIN %>" var="corpProjectURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+							<portlet:param name="mvcPath" value="/corp_project_admin/view_corp_project.jsp" />
+							<portlet:param name="tabs1" value="messages" />
+							<portlet:param name="backURL" value="<%= currentURL %>" />
+							<portlet:param name="corpProjectId" value="<%= String.valueOf(corpProjectId) %>" />
+						</liferay-portlet:renderURL>
+
+						<div>
+							<input onClick="location.href = '<%= HtmlUtil.escape(corpProjectURL.toString()) %>';" type="button" value="<liferay-ui:message key="manage-messages" />" />
+						</div>
+
+						<br />
+
+						<%
+						List<CorpProjectMessage> corpProjectMessages = CorpProjectMessageLocalServiceUtil.getCorpProjectMessages(corpProjectId);
+						%>
+
+						<liferay-ui:search-container
+							emptyResultsMessage="there-are-no-messages"
+							headerNames="message,type,severity,display-cp,display-lcs,display-lesa"
+						>
+							<liferay-ui:search-container-results
+								results="<%= corpProjectMessages %>"
+								total="<%= corpProjectMessages.size() %>"
+							/>
+
+							<liferay-ui:search-container-row
+								className="com.liferay.osb.model.CorpProjectMessage"
+								escapedModel="<%= true %>"
+								keyProperty="corpProjectMessageId"
+								modelVar="corpProjectMessage"
+							>
+								<liferay-ui:search-container-column-text
+									name="title"
+									value="<%= corpProjectMessage.getTitle() %>"
+								/>
+
+								<liferay-ui:search-container-column-text
+									name="message"
+									value="<%= StringUtil.shorten(corpProjectMessage.getContent(), 150) %>"
+								/>
+
+								<liferay-ui:search-container-column-text
+									name="type"
+									translate="<%= true %>"
+									value="<%= corpProjectMessage.getTypeLabel() %>"
+								/>
+
+								<liferay-ui:search-container-column-text
+									name="severity"
+									translate="<%= true %>"
+									value="<%= corpProjectMessage.getSeverityLevelLabel() %>"
+								/>
+
+								<liferay-ui:search-container-column-text
+									name="display-cp"
+								>
+									<c:if test="<%= corpProjectMessage.isDisplayCP() %>">
+										<liferay-ui:icon image="checked" />
+									</c:if>
+								</liferay-ui:search-container-column-text>
+
+								<liferay-ui:search-container-column-text
+									name="display-lcs"
+								>
+									<c:if test="<%= corpProjectMessage.isDisplayLCS() %>">
+										<liferay-ui:icon image="checked" />
+									</c:if>
+								</liferay-ui:search-container-column-text>
+
+								<liferay-ui:search-container-column-text
+									name="display-lesa"
+								>
+									<c:if test="<%= corpProjectMessage.isDisplayLESA() %>">
+										<liferay-ui:icon image="checked" />
+									</c:if>
+								</liferay-ui:search-container-column-text>
+							</liferay-ui:search-container-row>
+
+							<liferay-ui:search-iterator paginate="<%= false %>" />
+						</liferay-ui:search-container>
+					</c:when>
+					<c:otherwise>
+						<div class="portlet-msg-info">
+							<liferay-ui:message key="this-support-project-is-not-linked-to-a-corp-project" />
+						</div>
+					</c:otherwise>
+				</c:choose>
+			</div>
+
+			<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />environmentDetailsContent">
+				<div class="account-environment">
+					<div class="environment-detail">
+						<ul class="list">
+
+							<%
+							Map<String, List<AccountEnvironment>> accountEnvironmentsMap = AccountEnvironmentLocalServiceUtil.getAccountEnvironmentsMap(accountEntry.getAccountEntryId());
+
+							for (String productEntryName : accountEnvironmentsMap.keySet()) {
+							%>
+
+								<div class="subheader">
+									<%= HtmlUtil.escape(productEntryName) %>
+								</div>
+
+								<%
+								ProductEntry productEntry = ProductEntryLocalServiceUtil.getProductEntryByName(productEntryName);
+
+								List<AccountEnvironment> accountEnvironments = accountEnvironmentsMap.get(productEntryName);
+
+								for (AccountEnvironment accountEnvironment : accountEnvironments) {
+								%>
+
+									<li>
+										<div class="data">
+											<table class="lfr-table">
+											<tr>
+												<td colspan="3">
+													<liferay-ui:message key="name" />:
+
+													<span class="field"><%= HtmlUtil.escape(accountEnvironment.getName()) %></span>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<liferay-ui:message key='<%= productEntry.isSocialOffice() ? "social-office-version" : "liferay-version" %>' />:
+
+													<span class="field"><%= LanguageUtil.get(pageContext, accountEnvironment.getEnvLFRLabel()) %></span>
+												</td>
+												<td>
+													<liferay-ui:message key="application-server" />:
+
+													<span class="field"><%= LanguageUtil.get(pageContext, accountEnvironment.getEnvASLabel()) %></span>
+												</td>
+												<td>
+													<liferay-ui:message key="database" />:
+
+													<span class="field"><%= LanguageUtil.get(pageContext, accountEnvironment.getEnvDBLabel()) %></span>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<liferay-ui:message key="operating-system" />:
+
+													<span class="field">
+														<%= LanguageUtil.get(pageContext, accountEnvironment.getEnvOSLabel()) %>
+
+														<c:if test="<%= Validator.isNotNull(accountEnvironment.getEnvOSCustom()) %>">
+															- <%= HtmlUtil.escape(accountEnvironment.getEnvOSCustom()) %>
+														</c:if>
+													</span>
+												</td>
+												<td>
+													<liferay-ui:message key="java-virtual-machine" />:
+
+													<span class="field"><%= LanguageUtil.get(pageContext, accountEnvironment.getEnvJVMLabel()) %></span>
+												</td>
+												<td />
+											</tr>
+											<tr>
+												<td colspan="3">
+													<liferay-ui:message key="portal-ext" />:
+
+													<%
+													AccountEnvironmentAttachment portalExtAccountEnvironmentAttachment = AccountEnvironmentAttachmentLocalServiceUtil.fetchAccountEnvironmentAttachment(accountEnvironment.getAccountEnvironmentId(), AccountEnvironmentAttachmentConstants.TYPE_PORTAL_EXT);
+													%>
+
+													<c:if test="<%= portalExtAccountEnvironmentAttachment != null %>">
+
+														<%
+														LiferayPortletURL accountEnvironmentAttachmentURL = PortletURLFactoryUtil.create(request, portletDisplay.getId(), layout.getPlid(), PortletRequest.RESOURCE_PHASE);
+
+														accountEnvironmentAttachmentURL.setCopyCurrentRenderParameters(false);
+														accountEnvironmentAttachmentURL.setParameter("accountEnvironmentAttachmentId", String.valueOf(portalExtAccountEnvironmentAttachment.getAccountEnvironmentAttachmentId()));
+														accountEnvironmentAttachmentURL.setResourceID("accountEnvironmentAttachment");
+														%>
+
+														<span class="field"><a href="<%= accountEnvironmentAttachmentURL.toString() %>" target="_blank"><%= HtmlUtil.escape(portalExtAccountEnvironmentAttachment.getFileName()) %></a></span>
+													</c:if>
+
+													<br />
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<liferay-ui:message key="patch-level" />:
+
+													<%
+													AccountEnvironmentAttachment patchLevelAccountEnvironmentAttachment = AccountEnvironmentAttachmentLocalServiceUtil.fetchAccountEnvironmentAttachment(accountEnvironment.getAccountEnvironmentId(), AccountEnvironmentAttachmentConstants.TYPE_PATCH_LEVEL);
+													%>
+
+													<c:if test="<%= patchLevelAccountEnvironmentAttachment != null %>">
+
+														<%
+														LiferayPortletURL accountEnvironmentAttachmentURL = PortletURLFactoryUtil.create(request, portletDisplay.getId(), layout.getPlid(), PortletRequest.RESOURCE_PHASE);
+
+														accountEnvironmentAttachmentURL.setCopyCurrentRenderParameters(false);
+														accountEnvironmentAttachmentURL.setParameter("accountEnvironmentAttachmentId", String.valueOf(patchLevelAccountEnvironmentAttachment.getAccountEnvironmentAttachmentId()));
+														accountEnvironmentAttachmentURL.setResourceID("accountEnvironmentAttachment");
+														%>
+
+														<span class="field"><a href="<%= accountEnvironmentAttachmentURL.toString() %>" target="_blank"><%= HtmlUtil.escape(patchLevelAccountEnvironmentAttachment.getFileName()) %></a></span>
+													</c:if>
+												</td>
+												<td />
+												<td align="right">
+
+													<%
+													PortletURL editAccountEnvironmentURL = renderResponse.createRenderURL();
+
+													editAccountEnvironmentURL.setParameter("mvcPath", "/admin/edit_account_environment.jsp");
+													editAccountEnvironmentURL.setParameter("accountEntryId", String.valueOf(accountEntry.getAccountEntryId()));
+													editAccountEnvironmentURL.setParameter("accountEnvironmentId", String.valueOf(accountEnvironment.getAccountEnvironmentId()));
+													editAccountEnvironmentURL.setParameter("productEntryId", String.valueOf(productEntry.getProductEntryId()));
+													editAccountEnvironmentURL.setWindowState(LiferayWindowState.POP_UP);
+													%>
+
+													<input onClick="<portlet:namespace />openDialog('<liferay-ui:message key="edit-environment-details" />', '<%= editAccountEnvironmentURL.toString() %>', '<portlet:namespace />updateAccountEnvironment')" type="button" value="<liferay-ui:message key="edit" />" />
+												</td>
+											</tr>
+											</table>
+										</div>
+									</li>
+
+							<%
+								}
+							}
+							%>
+
+						</ul>
+					</div>
+				</div>
+			</div>
+		</c:if>
+
+		<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />supportRegionsContent">
+			<div>
+				<input onClick="var categoryWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/admin/select_support_region.jsp" /><portlet:param name="callback" value="selectSupportRegion" /></portlet:renderURL>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" type="button" value="<liferay-ui:message key="add-support-region" />" />
+			</div>
+
+			<br />
+
+			<liferay-ui:search-container
+				headerNames="name,,"
+				id="supportRegion"
+			>
+				<liferay-ui:search-container-results
+					results="<%= supportRegions %>"
+					total="<%= supportRegions.size() %>"
+				/>
+
+				<liferay-ui:search-container-row
+					className="com.liferay.osb.model.SupportRegion"
+					escapedModel="<%= true %>"
+					keyProperty="supportRegionId"
+					modelVar="supportRegion"
+				>
+					<liferay-ui:search-container-column-text
+						property="name"
+					/>
+
+					<liferay-ui:search-container-column-text>
+						<input onClick="<portlet:namespace />removeRow('supportRegionIds', '<%= supportRegion.getSupportRegionId() %>', '<portlet:namespace />supportRegionSearchContainer', this);" type="button" value="<liferay-ui:message key="remove" />" />
+					</liferay-ui:search-container-column-text>
+				</liferay-ui:search-container-row>
+
+				<liferay-ui:search-iterator paginate="<%= false %>" />
+			</liferay-ui:search-container>
+		</div>
+
+		<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />supportLanguagesContent">
+			<div>
+				<input onClick="var supportLanguageWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/admin/select_language.jsp" /></portlet:renderURL>', 'support-language', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); supportLanguageWindow.focus();" type="button" value="<liferay-ui:message key="add-support-language" />" />
+			</div>
+
+			<br />
+
+			<liferay-ui:search-container
+				headerNames="language,,"
+				id="language"
+			>
+				<liferay-ui:search-container-results
+					results="<%= ListUtil.fromArray(languageIds) %>"
+					total="<%= languageIds.length %>"
+				/>
+
+				<liferay-ui:search-container-row
+					className="java.lang.String"
+					modelVar="languageId"
+				>
+					<liferay-ui:search-container-column-text
+						name="language"
+					>
+						<%= LanguageUtil.get(pageContext, AccountEntryConstants.getLanguageLabel(languageId)) %>
+					</liferay-ui:search-container-column-text>
+
+					<liferay-ui:search-container-column-text>
+						<input onClick="<portlet:namespace />removeRow('languageIds', '<%= languageId %>', '<portlet:namespace />languageSearchContainer', this);" type="button" value="<liferay-ui:message key="remove" />" />
+					</liferay-ui:search-container-column-text>
+				</liferay-ui:search-container-row>
+
+				<liferay-ui:search-iterator paginate="<%= false %>" />
+			</liferay-ui:search-container>
+		</div>
+
+		<c:if test="<%= accountEntry != null %>">
+			<div class="aui-helper-hidden history tab-content-tab" id="<portlet:namespace />historyContent">
+
+				<%
+				List<List<AuditEntry>> auditEntrySets = AuditEntryLocalServiceUtil.getAuditEntrySets(PortalUtil.getClassNameId(AccountEntry.class.getName()), accountEntry.getAccountEntryId(), new int[] {VisibilityConstants.ADMIN, VisibilityConstants.LIFERAY_INC, VisibilityConstants.PUBLIC, VisibilityConstants.WORKERS});
+
+				for (int i = 0; i < auditEntrySets.size(); i++) {
+					List<AuditEntry> auditEntries = auditEntrySets.get(i);
+
+					AuditEntry auditEntry = auditEntries.get(0);
+				%>
+
+					<div class="audit-entry-set" id="<portlet:namespace />auditSet<%= auditEntry.getAuditSetId() %>">
+						<div class="header" id="<portlet:namespace />audit<%= auditEntry.getAuditEntryId() %>">
+							<div class="user-display">
+
+								<%
+								String portraitURL = StringPool.BLANK;
+
+								String auditEntryUserName = StringPool.BLANK;
+
+								if (auditEntry.getUserId() != OSBConstants.USER_DEFAULT_USER_ID) {
+									User auditEntryUser = UserLocalServiceUtil.getUser(auditEntry.getUserId());
+
+									portraitURL = auditEntryUser.getPortraitURL(themeDisplay);
+
+									auditEntryUserName = auditEntryUser.getFullName();
+								}
+								else {
+									auditEntryUserName = "Auto";
+								}
+								%>
+
+								<div class="audit user-avatar" style="background-image: url('<%= portraitURL %>&height=30&width=30')"></div>
+
+								<span>
+									<%= HtmlUtil.escape(auditEntryUserName) %>
+								</span>
+							</div>
+
+							&gt;
+
+							<span class="summary">
+								<liferay-ui:message key="<%= auditEntry.getActionLabel() %>" />
+
+								<liferay-ui:message key="<%= auditEntry.getFieldClassNameIdLabel() %>" />
+							</span>
+
+							<div class="create-date">
+								<span title="<%= fullDateFormatDateTime.format(auditEntry.getCreateDate()) %>"><%= shortDateFormatDate.format(auditEntry.getCreateDate()) %> <%= shortDateFormatTime.format(auditEntry.getCreateDate()) %></span>
+							</div>
+						</div>
+
+						<div class="content">
+							<c:if test="<%= auditEntry.getAction() != AuditEntryConstants.ACTION_AUDIT %>">
+								<div class="aui-w20 aui-column txt-sb">
+									<div class="content-column-content left-column">
+										<liferay-ui:message key="field" />
+									</div>
+								</div>
+
+								<div class="aui-w40 aui-column txt-sb">
+									<div class="content-column-content middle-column">
+										<liferay-ui:message key="original-value" />
+									</div>
+								</div>
+
+								<div class="aui-w40 aui-column txt-sb">
+									<div class="content-column-content right-column">
+										<liferay-ui:message key="new-value" />
+									</div>
+								</div>
+							</c:if>
+
+							<%
+							for (int j = 0; j < auditEntries.size(); j++) {
+								AuditEntry curAuditEntry = auditEntries.get(j);
+
+								String oldLabel = curAuditEntry.getOldLabel();
+
+								if (Validator.isNull(oldLabel)) {
+									oldLabel = curAuditEntry.getOldValue();
+								}
+
+								String newLabel = curAuditEntry.getNewLabel();
+
+								if (Validator.isNull(newLabel)) {
+									newLabel = curAuditEntry.getNewValue();
+								}
+							%>
+
+								<div class="cleared"></div>
+
+								<c:choose>
+									<c:when test="<%= curAuditEntry.getAction() == AuditEntryConstants.ACTION_AUDIT %>">
+
+										<%
+										int[] outOfSyncFields = StringUtil.split(curAuditEntry.getOldValue(), 0);
+										%>
+
+										<c:choose>
+											<c:when test="<%= Validator.isNotNull(curAuditEntry.getOldLabel()) %>">
+												<liferay-ui:message key="<%= curAuditEntry.getOldLabel() %>" />
+											</c:when>
+											<c:when test="<%= ArrayUtil.isNotEmpty(outOfSyncFields) %>">
+												<liferay-ui:message key="the-following-fields-are-out-of-sync-with-dossiera" />
+
+												<%
+												for (int k = 0; k < outOfSyncFields.length; k++) {
+													int field = outOfSyncFields[k];
+												%>
+
+													<liferay-ui:message key="<%= AuditEntryConstants.getFieldLabel(field) %>" /><%= ((k + 1) < outOfSyncFields.length) ? StringPool.COMMA : "" %>
+
+												<%
+												}
+												%>
+
+											</c:when>
+											<c:otherwise>
+												<liferay-ui:message key="project-information-has-been-verified" />
+											</c:otherwise>
+										</c:choose>
+									</c:when>
+									<c:otherwise>
+										<div class="aui-w20 aui-column txt-sb">
+											<div class="content-column-content left-column">
+												<liferay-ui:message key="<%= curAuditEntry.getFieldLabel() %>" />
+											</div>
+										</div>
+
+										<div class="aui-w40 aui-column">
+											<div class="content-column-content middle-column">
+												<c:choose>
+													<c:when test="<%= Validator.isNull(oldLabel) %>">
+														<%= AuditEntryConstants.NOT_AVAILABLE %>
+													</c:when>
+													<c:when test="<%= curAuditEntry.getI18n() %>">
+														<liferay-ui:message key="<%= HtmlUtil.escape(oldLabel) %>" />
+													</c:when>
+													<c:when test="<%= (curAuditEntry.getField() == AuditEntryConstants.FIELD_INSTRUCTIONS) || (curAuditEntry.getField() == AuditEntryConstants.FIELD_NOTES) %>">
+														<pre><%= SupportUtil.getHTML(oldLabel) %></pre>
+													</c:when>
+													<c:otherwise>
+														<%= HtmlUtil.escape(oldLabel) %>
+													</c:otherwise>
+												</c:choose>
+											</div>
+										</div>
+
+										<div class="aui-w40 aui-column">
+											<div class="content-column-content right-column">
+												<c:choose>
+													<c:when test="<%= Validator.isNull(newLabel) %>">
+														<%= AuditEntryConstants.NOT_AVAILABLE %>
+													</c:when>
+													<c:when test="<%= curAuditEntry.getI18n() %>">
+														<liferay-ui:message key="<%= HtmlUtil.escape(newLabel) %>" />
+													</c:when>
+													<c:when test="<%= (curAuditEntry.getField() == AuditEntryConstants.FIELD_INSTRUCTIONS) || (curAuditEntry.getField() == AuditEntryConstants.FIELD_NOTES) %>">
+														<pre><%= SupportUtil.getHTML(newLabel) %></pre>
+													</c:when>
+													<c:otherwise>
+														<%= HtmlUtil.escape(newLabel) %>
+													</c:otherwise>
+												</c:choose>
+											</div>
+										</div>
+									</c:otherwise>
+								</c:choose>
+
+							<%
+							}
+							%>
+
+						</div>
+					</div>
+
+				<%
+				}
+				%>
+
+			</div>
+		</c:if>
+	</div>
+</div>
+
+<aui:script>
+	AUI().ready(
+		function() {
+			<portlet:namespace />revealTab('<%= HtmlUtil.escape(detailTab) %>');
+		}
+	);
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />reveal',
+		function(tab) {
+			var A = AUI();
+
+			A.all('.details .tab-content-tab').hide();
+
+			var tabContent = A.one('#' + tab.attr('data-content'));
+
+			tabContent.show();
+
+			A.all('.details .tabs .aui-tab').removeClass('aui-tab-active');
+
+			tab.addClass('aui-tab-active');
+		},
+		['aui-base']
+	);
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />revealTab',
+		function(tabName) {
+			var tab;
+
+			if (tabName) {
+				tab = AUI().one('#<portlet:namespace />' + tabName);
+			}
+
+			if (!tab) {
+				tab = AUI().one('.details .tabs .aui-tab');
+			}
+
+			<portlet:namespace />reveal(tab);
+		}
+	);
+</aui:script>

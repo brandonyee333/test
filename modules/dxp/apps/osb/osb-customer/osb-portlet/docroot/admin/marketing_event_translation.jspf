@@ -1,0 +1,273 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%
+String[] translationLanguageIds = StringUtil.split(ParamUtil.getString(request, "translation_languageIds"));
+
+Map<Locale, String> titleTranslationMap = new HashMap<Locale, String>();
+Map<Locale, String> summaryTranslationMap = new HashMap<Locale, String>();
+
+if (translationLanguageIds.length > 0) {
+	for (String translationLanguageId : translationLanguageIds) {
+		titleTranslationMap.put(LocaleUtil.fromLanguageId(translationLanguageId), ParamUtil.getString(request, "translation_" + translationLanguageId + "_title"));
+		summaryTranslationMap.put(LocaleUtil.fromLanguageId(translationLanguageId), ParamUtil.getString(request, "translation_" + translationLanguageId + "_summary"));
+	}
+}
+else if (marketingEvent != null) {
+	titleTranslationMap = LocalizationUtil.getLocalizationMap(BeanPropertiesUtil.getString(marketingEvent, "title"));
+	summaryTranslationMap = LocalizationUtil.getLocalizationMap(BeanPropertiesUtil.getString(marketingEvent, "summary"));
+
+	for (Locale curLocale : titleTranslationMap.keySet()) {
+		if (Validator.isNotNull(titleTranslationMap.get(curLocale))) {
+			translationLanguageIds = ArrayUtil.append(translationLanguageIds, LocaleUtil.toLanguageId(curLocale));
+		}
+	}
+}
+else {
+	translationLanguageIds = ArrayUtil.append(translationLanguageIds, defaultLanguageId);
+}
+%>
+
+<aui:select label="default-language" name="defaultLanguageId">
+
+	<%
+	for (Locale curLocale : LanguageUtil.getAvailableLocales()) {
+	%>
+
+		<aui:option label="<%= curLocale.getDisplayName(locale) %>" selected="<%= Validator.equals(LocaleUtil.toLanguageId(curLocale), defaultLanguageId) %>" value="<%= LocaleUtil.toLanguageId(curLocale) %>" />
+
+	<%
+	}
+	%>
+
+</aui:select>
+
+<div class="lfr-translation-manager-add-menu">
+	<liferay-ui:icon-menu
+		align="left"
+		cssClass="add-translations-menu"
+		direction="down"
+		icon='<%= themeDisplay.getPathThemeImages() + "/common/add.png" %>'
+		message='<%= LanguageUtil.get(pageContext, "add-translation") %>'
+		showArrow="<%= true %>"
+		showWhenSingleIcon="<%= true %>"
+	>
+
+		<%
+		for (Locale curLocale : LanguageUtil.getAvailableLocales()) {
+		%>
+
+			<portlet:renderURL var="editTranslationURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+				<portlet:param name="mvcPath" value="/admin/edit_marketing_event_translation.jsp" />
+				<portlet:param name="marketingEventId" value="<%= String.valueOf(marketingEventId) %>" />
+				<portlet:param name="languageId" value="<%= LocaleUtil.toLanguageId(curLocale) %>" />
+			</portlet:renderURL>
+
+			<%
+			String taglibOnClick = renderResponse.getNamespace() + "openTranslationDialog('" + editTranslationURL + "');";
+			%>
+
+			<span id="<%= renderResponse.getNamespace() + "translation_" + LocaleUtil.toLanguageId(curLocale) + "_option" %>" style="<%= (ArrayUtil.contains(translationLanguageIds, LocaleUtil.toLanguageId(curLocale)) || Validator.equals(LocaleUtil.toLanguageId(curLocale), defaultLanguageId)) ? "display: none;" : StringPool.BLANK %>">
+				<liferay-ui:icon
+					image='<%= "../language/" + LocaleUtil.toLanguageId(curLocale) %>'
+					message="<%= curLocale.getDisplayName(locale) %>"
+					onClick="<%= taglibOnClick %>"
+					url="javascript:;"
+				/>
+			</span>
+
+		<%
+		}
+		%>
+
+	</liferay-ui:icon-menu>
+</div>
+
+<div class="translations">
+	<aui:input name='<%= "translation_languageIds" %>' type="hidden" value="<%= StringUtil.merge(translationLanguageIds) %>" />
+
+	<%
+	for (Locale curLocale : LanguageUtil.getAvailableLocales()) {
+	%>
+
+		<aui:input name='<%= "translation_" + LocaleUtil.toLanguageId(curLocale) + "_title" %>' type="hidden" value="<%= GetterUtil.getString(titleTranslationMap.get(curLocale)) %>" />
+		<aui:input name='<%= "translation_" + LocaleUtil.toLanguageId(curLocale) + "_summary" %>' type="hidden" value="<%= GetterUtil.getString(summaryTranslationMap.get(curLocale)) %>" />
+
+		<div class="label" id="<%= renderResponse.getNamespace() + "translation_" + LocaleUtil.toLanguageId(curLocale) + "_label" %>" style="<%= ((Validator.isNull(titleTranslationMap.get(curLocale)) && Validator.isNull(summaryTranslationMap.get(curLocale))) || Validator.equals(LocaleUtil.toLanguageId(curLocale), defaultLanguageId)) ? "display: none;" : StringPool.BLANK %>">
+			<portlet:renderURL var="editTranslationURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+				<portlet:param name="mvcPath" value="/admin/edit_marketing_event_translation.jsp" />
+				<portlet:param name="marketingEventId" value="<%= String.valueOf(marketingEventId) %>" />
+				<portlet:param name="languageId" value="<%= LocaleUtil.toLanguageId(curLocale) %>" />
+			</portlet:renderURL>
+
+			<%
+			String taglibText = renderResponse.getNamespace() + "openTranslationDialog('" + editTranslationURL + "');";
+			%>
+
+			<aui:a cssClass="text" href="javascript:;" onClick="<%= taglibText %>">
+				<img alt="" src="<%= themeDisplay.getPathThemeImages() + "/language/" + curLocale + ".png" %>" />
+
+				<%= curLocale.getDisplayName(locale) %>
+			</aui:a>
+
+			<%
+			String taglibRemove = renderResponse.getNamespace() + "removeTranslation('" + LocaleUtil.toLanguageId(curLocale) + "');";
+			%>
+
+			<aui:a cssClass="remove" href="javascript:;" onClick="<%= taglibRemove %>">x</aui:a>
+		</div>
+
+	<%
+	}
+	%>
+
+</div>
+
+<aui:input label="title" name="titleTranslation" type="text" value="<%= GetterUtil.getString(titleTranslationMap.get(LocaleUtil.fromLanguageId(defaultLanguageId))) %>" />
+
+<aui:field-wrapper label="summary">
+	<liferay-ui:input-editor
+		initMethod="initInputEditorSummaryTranslation"
+		name="summaryTranslation"
+	/>
+</aui:field-wrapper>
+
+<aui:script>
+	Liferay.provide(
+		window,
+		'<portlet:namespace />openTranslationDialog',
+		function(url) {
+			Liferay.Util.openWindow(
+				{
+					cache: false,
+					dialog: {
+						align: Liferay.Util.Window.ALIGN_CENTER,
+						width: 870
+					},
+					id: 'marketingEventTranslationDialog',
+					title: '<%= UnicodeLanguageUtil.get(pageContext, "marketing-event-translation") %>',
+					uri: url
+				}
+			);
+		},
+		['aui-dialog', 'aui-overlay-manager', 'liferay-util-window']
+	);
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />removeTranslation',
+		function(languageId) {
+			document.getElementById('<portlet:namespace />translation_' + languageId + '_label').style.display = 'none';
+			document.getElementById('<portlet:namespace />translation_' + languageId + '_summary').value = '';
+			document.getElementById('<portlet:namespace />translation_' + languageId + '_title').value = '';
+
+			var translationLanguageIds = document.getElementById('<portlet:namespace />translation_languageIds').value;
+
+			if (translationLanguageIds.indexOf(languageId) != -1) {
+				var newTranslationLanguageIds = translationLanguageIds.split(',');
+
+				newTranslationLanguageIds.splice(newTranslationLanguageIds.indexOf(languageId), 1);
+
+				document.getElementById('<portlet:namespace />translation_languageIds').value = newTranslationLanguageIds.join();
+			}
+		},
+		['aui-base']
+	);
+</aui:script>
+
+<aui:script use="aui-base">
+	var portlet = A.one('#p_p_id<portlet:namespace />');
+
+	if (portlet) {
+		var oldDefaultLanguageId = '';
+
+		portlet.delegate(
+			'focus',
+			function(event) {
+				var currentTarget = event.currentTarget;
+
+				oldDefaultLanguageId = currentTarget.val();
+			},
+			'#<portlet:namespace />defaultLanguageId'
+		);
+
+		portlet.delegate(
+			'change',
+			function(event) {
+				var currentTarget = event.currentTarget;
+
+				var newDefaultLanguageId = currentTarget.val();
+
+				var title = window.<portlet:namespace />titleTranslation.value;
+				var summary = window.<portlet:namespace />summaryTranslation.getHTML();
+
+				if ((title && (title.trim() != '')) || (summary && (summary.trim() != ''))) {
+					document.getElementById('<portlet:namespace />translation_' + oldDefaultLanguageId + '_label').style.display = '';
+					document.getElementById('<portlet:namespace />translation_' + oldDefaultLanguageId + '_option').style.display = 'none';
+					document.getElementById('<portlet:namespace />translation_' + oldDefaultLanguageId + '_summary').value = summary;
+					document.getElementById('<portlet:namespace />translation_' + oldDefaultLanguageId + '_title').value = title;
+
+					var translationLanguageIds = document.getElementById('<portlet:namespace />translation_languageIds').value;
+
+					if (translationLanguageIds == '') {
+						document.getElementById('<portlet:namespace />translation_languageIds').value = oldDefaultLanguageId;
+					}
+					else if (translationLanguageIds.indexOf(oldDefaultLanguageId) == -1) {
+						document.getElementById('<portlet:namespace />translation_languageIds').value = translationLanguageIds + ',' + oldDefaultLanguageId;
+					}
+				}
+				else {
+					document.getElementById('<portlet:namespace />translation_' + oldDefaultLanguageId + '_label').style.display = 'none';
+					document.getElementById('<portlet:namespace />translation_' + oldDefaultLanguageId + '_option').style.display = '';
+					document.getElementById('<portlet:namespace />translation_' + oldDefaultLanguageId + '_summary').value = '';
+					document.getElementById('<portlet:namespace />translation_' + oldDefaultLanguageId + '_title').value = '';
+
+					var translationLanguageIds = document.getElementById('<portlet:namespace />translation_languageIds').value;
+
+					if (translationLanguageIds.indexOf(oldDefaultLanguageId) != -1) {
+						var newTranslationLanguageIds = translationLanguageIds.split(',');
+
+						newTranslationLanguageIds.splice(newTranslationLanguageIds.indexOf(oldDefaultLanguageId), 1);
+
+						document.getElementById('<portlet:namespace />translation_languageIds').value = newTranslationLanguageIds.join();
+					}
+				}
+
+				var translationLanguageIds = document.getElementById('<portlet:namespace />translation_languageIds').value;
+
+				if (translationLanguageIds == '') {
+					document.getElementById('<portlet:namespace />translation_languageIds').value = newDefaultLanguageId;
+				}
+				else if (translationLanguageIds.indexOf(newDefaultLanguageId) == -1) {
+					document.getElementById('<portlet:namespace />translation_languageIds').value = translationLanguageIds + ',' + newDefaultLanguageId;
+				}
+
+				document.getElementById('<portlet:namespace />translation_' + newDefaultLanguageId + '_label').style.display = 'none';
+				document.getElementById('<portlet:namespace />translation_' + newDefaultLanguageId + '_option').style.display = 'none';
+
+				window.<portlet:namespace />summaryTranslation.setHTML(document.getElementById('<portlet:namespace />translation_' + newDefaultLanguageId + '_summary').value);
+				window.<portlet:namespace />titleTranslation.value = document.getElementById('<portlet:namespace />translation_' + newDefaultLanguageId + '_title').value;
+
+				oldDefaultLanguageId = newDefaultLanguageId;
+			},
+			'#<portlet:namespace />defaultLanguageId'
+		);
+	}
+
+	window['<portlet:namespace />initInputEditorSummaryTranslation'] = function() {
+		return '<%= UnicodeFormatter.toString(GetterUtil.getString(summaryTranslationMap.get(LocaleUtil.fromLanguageId(defaultLanguageId)))) %>';
+	}
+</aui:script>

@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+
+<deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+	<service name="Plugin_OSB_AppPricingService" provider="java:RPC" style="rpc" use="encoded">
+		<typeMapping xmlns:ns="http://model.osb.liferay.com" qname="ns:AppPricingSoap" type="java:com.liferay.osb.model.AppPricingSoap" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></typeMapping>
+		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="http://model.osb.liferay.com" name="addAppPricing" qname="operNS:addAppPricing" returnQName="addAppPricingReturn" returnType="rtns:AppPricingSoap" soapAction="">
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="appVersionId" type="tns:long"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="name" type="tns:string"></parameter>
+		</operation>
+		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="http://model.osb.liferay.com" name="deleteAppPricing" qname="operNS:deleteAppPricing" returnQName="deleteAppPricingReturn" returnType="rtns:AppPricingSoap" soapAction="">
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="appPricingId" type="tns:long"></parameter>
+		</operation>
+		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="http://model.osb.liferay.com" name="updateAppPricing" qname="operNS:updateAppPricing" returnQName="updateAppPricingReturn" returnType="rtns:AppPricingSoap" soapAction="">
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="appPricingId" type="tns:long"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="name" type="tns:string"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="currencyEntryId" type="tns:long"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="standardSupportPrice" type="tns:double"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="developerSupportPrice" type="tns:double"></parameter>
+		</operation>
+		<parameter name="allowedMethods" value="addAppPricing deleteAppPricing updateAppPricing" />
+		<parameter name="className" value="com.liferay.osb.service.http.AppPricingServiceSoap" />
+		<parameter name="schemaUnqualified" value="http://model.osb.liferay.com" />
+		<parameter name="typeMappingVersion" value="1.2" />
+		<parameter name="wsdlPortType" value="AppPricingServiceSoap" />
+		<parameter name="wsdlServiceElement" value="AppPricingServiceSoapService" />
+		<parameter name="wsdlServicePort" value="Plugin_OSB_AppPricingService" />
+		<parameter name="wsdlTargetNamespace" value="urn:http.service.osb.liferay.com" />
+	</service>
+</deployment>

@@ -1,0 +1,117 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<div id="<portlet:namespace />commentForm0" style="<%= Validator.isNull(commentBody) ? "display: none;" : "" %>">
+	<input name="<portlet:namespace />ticketCommentId0" type="hidden" value="0" />
+
+	<div id="<portlet:namespace />commentMessageDisplay0"></div>
+
+	<liferay-util:include page="/support/bbcode_editor.jsp" servletContext="<%= application %>">
+		<liferay-util:param name="content" value="<%= commentBody %>" />
+		<liferay-util:param name="editorId" value="editor0" />
+		<liferay-util:param name="name" value="commentBody0" />
+	</liferay-util:include>
+
+	<c:if test='<%= !tabs1.equals("liferay") && ticketWorker && (ticketEntry.getStatus() != TicketEntryConstants.STATUS_CLOSED) && (ticketEntry.getStatus() != TicketEntryConstants.STATUS_RESOLVED_IN_PRODUCTION) %>'>
+		<div>
+			<liferay-ui:message key="need-response-from" />:
+
+			<c:if test='<%= tabs1.equals("public") %>'>
+				<input checked="checked" name="<portlet:namespace />pendingTypes0" type="checkbox" value="<%= TicketFlagConstants.TYPE_PENDING_CUSTOMER %>" />
+
+				<liferay-ui:message key="customer" />
+			</c:if>
+
+			<c:if test='<%= !tabs1.equals("liferay") %>'>
+				<input <%= (tabs1.equals("workers") && liferayIncOrg) ? "checked=\"checked\"" : "" %> name="<portlet:namespace />pendingTypes0" type="checkbox" value="<%= TicketFlagConstants.TYPE_PENDING_PARTNER %>" />
+
+				<liferay-ui:message key="partner" />
+			</c:if>
+
+			<c:if test="<%= (ticketEntry.getEscalationLevel() != TicketEntryConstants.ESCALATION_LEVEL_P1) %>">
+				<input <%= (tabs1.equals("workers") && !liferayIncOrg) ? "checked=\"checked\"" : "" %> name="<portlet:namespace />pendingTypes0" type="checkbox" value="<%= TicketFlagConstants.TYPE_PENDING_LIFERAY %>" />
+
+				<liferay-ui:message key="liferay" />
+			</c:if>
+		</div>
+	</c:if>
+
+	<br />
+
+	<div class="aui-helper-hidden" id="<portlet:namespace />addAttachments">
+		<fieldset class="block-labels">
+			<table class="lfr-table">
+			<tr>
+				<th>
+					<strong><liferay-ui:message key="upload-files" /></strong>
+				</th>
+
+				<c:if test="<%= ticketWorker %>">
+					<th>
+						<strong><liferay-ui:message key="hotfix" /></strong>
+					</th>
+				</c:if>
+			</tr>
+
+			<%
+			for (int i = 1; i <= 3; i++) {
+				String fileSuffix = 0 + StringPool.UNDERLINE + i;
+			%>
+
+				<tr>
+					<td>
+						<label for="<portlet:namespace />file<%= fileSuffix %>"><liferay-ui:message key="file" /> <%= i %></label>
+
+						<input id="<portlet:namespace />file<%= fileSuffix %>" name="<portlet:namespace />file<%= fileSuffix %>" onChange="<portlet:namespace />checkAttachment(this);" type="file" />
+					</td>
+
+					<c:if test="<%= ticketWorker %>">
+						<td>
+							<aui:input label="" name='<%= "hotfix" + fileSuffix %>' type="checkbox" />
+						</td>
+					</c:if>
+				</tr>
+
+			<%
+			}
+			%>
+
+			</table>
+		</fieldset>
+	</div>
+
+	<input class="aui-button-input" id="<portlet:namespace />addCommentButton0" onClick="<portlet:namespace />addComment(0);" type="button" value="<liferay-ui:message key="reply" />" />
+
+	<c:if test='<%= tabs1.equals("liferay") %>'>
+		<input class="aui-button-input aui-helper-hidden" id="<portlet:namespace />postGamePlanButton" onClick="<portlet:namespace />addComment(0);" type="button" value="<liferay-ui:message key="post-game-plan" />" />
+
+		<input class="aui-button-input" id="<portlet:namespace />addGamePlanButton" onClick="var gamePlanWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/support/select_game_plan.jsp" /></portlet:renderURL>', 'game_plan', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=800'); void(''); gamePlanWindow.focus();" type="button" value="<liferay-ui:message key="add-game-plan" />" />
+	</c:if>
+
+	<c:if test="<%= OSBTicketEntryPermission.contains(permissionChecker, ticketEntry.getTicketEntryId(), ActionKeys.ADD_ATTACHMENT) %>">
+		<input class="aui-button-input" id="<portlet:namespace />addAttachmentsButton" onClick="<portlet:namespace />showAddAttachments();" type="button" value="<liferay-ui:message key="add-attachments" />" />
+	</c:if>
+
+	<c:if test="<%= OSBTicketCannedResponsePermission.contains(permissionChecker, OSBActionKeys.VIEW) %>">
+		<input class="aui-button-input" onClick="var cannedResponseWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/support/select_ticket_canned_response.jsp" /></portlet:renderURL>', 'canned_response', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=800'); void(''); cannedResponseWindow.focus();" type="button" value="<liferay-ui:message key="add-canned-response" />" />
+	</c:if>
+
+	<c:if test="<%= !hasMaximumDraftTicketComment %>">
+		<input class="aui-button-input" id="<portlet:namespace />savaAsDraft" onClick="<portlet:namespace />addComment(<%= WorkflowConstants.STATUS_DRAFT %>);" type="button" value="<liferay-ui:message key="save-as-draft" />" />
+	</c:if>
+
+	<input class="aui-button-input" onClick="<portlet:namespace />cancelComment(0);" type="button" value="<liferay-ui:message key="cancel" />" />
+</div>

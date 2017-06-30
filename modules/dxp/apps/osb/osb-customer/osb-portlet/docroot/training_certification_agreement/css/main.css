@@ -1,0 +1,46 @@
+/* ---------- Page ---------- */
+
+.training-certification-agreement.view {
+	h1 {
+		color: #404040;
+		font-size: 3em;
+		font-weight: 100;
+		line-height: 1.05em;
+		margin: 0 0 20px;
+		text-align: center;
+	}
+
+	h2 {
+		border-bottom: 1px solid #D0D1D3;
+		color: #4C4C4E;
+		font-weight: bold;
+	}
+
+	.btn.disabled {
+		background: #EEE;
+		border: 1px solid #DDD;
+		color: #DDD;
+	}
+
+	.template-text {
+		display: inline-block;
+		margin: 16px 0 0 50px;
+	}
+
+	.template-btn {
+		float: right;
+		margin-top: 10px;
+	}
+
+	.terms-container {
+		background: #FFF;
+		border: 1px solid #808080;
+		height: 200px;
+		overflow: auto;
+		padding-left: 5px;
+	}
+
+	.accept-eula-btn {
+		margin-top: 20px;
+	}
+}

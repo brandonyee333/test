@@ -1,0 +1,137 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<portlet:actionURL name="addAssetLicense" var="addLicenseURL">
+	<portlet:param name="mvcPath" value="/marketplace_admin/review_app_entry.jsp" />
+	<portlet:param name="tabs1" value="licenses" />
+</portlet:actionURL>
+
+<aui:form action="<%= addLicenseURL %>" method="post" name="fm">
+	<aui:input name="redirect" type="hidden" value="<%= portletURL.toString() %>" />
+	<aui:input name="className" type="hidden" value="<%= AppVersion.class.getName() %>" />
+	<aui:input name="classPK" type="hidden" value="<%= actionableAppVersion.getAppVersionId() %>" />
+
+	<liferay-ui:error exception="<%= AssetLicenseLicenseTypeAllotmentException.class %>" message="please-enter-valid-license-type-quantities" />
+	<liferay-ui:error exception="<%= AssetLicenseLicenseTypeException.class %>" message="please-enter-a-valid-license-type" />
+	<liferay-ui:error exception="<%= AssetLicenseLifetimeException.class %>" message="please-enter-a-valid-term" />
+	<liferay-ui:error exception="<%= AssetLicenseUsageTypeException.class %>" message="please-enter-a-valid-usage-type" />
+
+	<div class="manage-asset-license" id="<portlet:namespace />addLicenseForm">
+		<table class="lfr-table">
+		<tr>
+			<td>
+				<aui:input cssClass="name" name="name" />
+			</td>
+			<td>
+				<aui:input cssClass="license-id" name="licenseId" />
+			</td>
+		</tr>
+		</table>
+
+		<table class="lfr-table">
+		<tr>
+			<td>
+				<aui:select name="usageType">
+					<aui:option value="" />
+					<aui:option label="<%= AssetLicenseConstants.getUsageTypeLabel(AssetLicenseConstants.USAGE_TYPE_STANDARD) %>" value="<%= AssetLicenseConstants.USAGE_TYPE_STANDARD %>" />
+					<aui:option label="<%= AssetLicenseConstants.getUsageTypeLabel(AssetLicenseConstants.USAGE_TYPE_DEVELOPER) %>" value="<%= AssetLicenseConstants.USAGE_TYPE_DEVELOPER %>" />
+					<aui:option label="<%= AssetLicenseConstants.getUsageTypeLabel(AssetLicenseConstants.USAGE_TYPE_TRIAL) %>" value="<%= AssetLicenseConstants.USAGE_TYPE_TRIAL %>" />
+				</aui:select>
+			</td>
+			<td>
+				<aui:select name="licenseType">
+					<aui:option value="" />
+					<aui:option label="<%= AssetLicenseConstants.getLicenseTypeLabel(AssetLicenseConstants.LICENSE_TYPE_PRODUCTION) %>" value="<%= AssetLicenseConstants.LICENSE_TYPE_PRODUCTION %>" />
+					<aui:option label="<%= AssetLicenseConstants.getLicenseTypeLabel(AssetLicenseConstants.LICENSE_TYPE_PER_USER) %>" value="<%= AssetLicenseConstants.LICENSE_TYPE_PER_USER %>" />
+					<aui:option label="<%= AssetLicenseConstants.getLicenseTypeLabel(AssetLicenseConstants.LICENSE_TYPE_ENTERPRISE) %>" value="<%= AssetLicenseConstants.LICENSE_TYPE_ENTERPRISE %>" />
+				</aui:select>
+			</td>
+			<td>
+				<aui:select label="term" name="lifetime">
+					<aui:option value="" />
+
+					<%
+					for (long lifetime : AssetLicenseConstants.LIFETIMES) {
+					%>
+
+						<aui:option label="<%= AssetLicenseConstants.getLifetimeLabel(lifetime) %>" value="<%= lifetime %>" />
+
+					<%
+					}
+					%>
+
+				</aui:select>
+			</td>
+			<td>
+				<aui:input label="license-type-allotment" name="licenseTypeAllotment" />
+			</td>
+			<td valign="bottom">
+				<aui:button type="submit" value="add" />
+			</td>
+		</tr>
+		</table>
+	</div>
+
+	<br />
+
+	<liferay-ui:search-container
+		emptyResultsMessage="no-licenses-were-found"
+	>
+		<liferay-ui:search-container-results
+			results="<%= AssetLicenseLocalServiceUtil.getAssetLicenses(AppVersion.class.getName(), actionableAppVersion.getAppVersionId(), WorkflowConstants.STATUS_ANY, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null) %>"
+			total="<%= AssetLicenseLocalServiceUtil.getAssetLicensesCount(AppVersion.class.getName(), actionableAppVersion.getAppVersionId(), WorkflowConstants.STATUS_ANY) %>"
+		/>
+
+		<liferay-ui:search-container-row
+			className="com.liferay.osb.model.AssetLicense"
+			escapedModel="<%= true %>"
+			keyProperty="assetLicenseId"
+			modelVar="curAssetLicense"
+		>
+
+			<liferay-ui:search-container-column-text
+				name="name"
+				value="<%= curAssetLicense.getName() %>"
+			/>
+
+			<liferay-ui:search-container-column-text
+				name="term"
+				translate="<%= true %>"
+				value="<%= curAssetLicense.getLifetimeLabel() %>"
+			/>
+
+			<liferay-ui:search-container-column-text
+				name='<%= (curAssetLicense.getLicenseType() == AssetLicenseConstants.LICENSE_TYPE_PER_USER) ? "max-users" : "servers" %>'
+				value="<%= String.valueOf(curAssetLicense.getLicenseTypeAllotment()) %>"
+			/>
+
+			<liferay-ui:search-container-column-text
+				align="right"
+			>
+				<portlet:actionURL name="deleteAssetLicense" var="deleteURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+					<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
+					<portlet:param name="assetLicenseId" value="<%= String.valueOf(curAssetLicense.getAssetLicenseId()) %>" />
+				</portlet:actionURL>
+
+				<liferay-ui:icon-menu>
+					<liferay-ui:icon-delete url="<%= deleteURL %>" />
+				</liferay-ui:icon-menu>
+			</liferay-ui:search-container-column-text>
+		</liferay-ui:search-container-row>
+
+		<liferay-ui:search-iterator paginate="<%= false %>" />
+	</liferay-ui:search-container>
+</aui:form>

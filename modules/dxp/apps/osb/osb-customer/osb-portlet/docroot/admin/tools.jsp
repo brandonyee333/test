@@ -1,0 +1,50 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%@ include file="/init.jsp" %>
+
+<%
+String tabs2 = ParamUtil.getString(request, "tabs2", "reindex");
+
+PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
+%>
+
+<liferay-ui:tabs
+	names="reindex,data-migration,debugging,import-training-customers,import-training-surveys,sync-to-lcs"
+	param="tabs2"
+	url="<%= portletURL.toString() %>"
+/>
+
+<c:choose>
+	<c:when test='<%= tabs2.equals("data-migration") %>'>
+		<%@ include file="/admin/data_migration.jspf" %>
+	</c:when>
+	<c:when test='<%= tabs2.equals("debugging") %>'>
+		<%@ include file="/admin/debugging.jspf" %>
+	</c:when>
+	<c:when test='<%= tabs2.equals("import-training-customers") %>'>
+		<%@ include file="/admin/import_training_customers.jspf" %>
+	</c:when>
+	<c:when test='<%= tabs2.equals("import-training-surveys") %>'>
+		<%@ include file="/admin/import_training_surveys.jspf" %>
+	</c:when>
+	<c:when test='<%= tabs2.equals("sync-to-lcs") %>'>
+		<%@ include file="/admin/sync_to_lcs.jspf" %>
+	</c:when>
+	<c:otherwise>
+		<%@ include file="/admin/reindex.jspf" %>
+	</c:otherwise>
+</c:choose>

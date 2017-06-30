@@ -1,0 +1,34 @@
+@import "compass";
+
+.osb-portlet-license-form {
+	input[type=checkbox] {
+		margin: 2px;
+	}
+
+	.agreedToContactNotifications .ctrl-holder {
+		padding-left: 1em;
+	}
+
+	.aui-field-label {
+		display: inline;
+	}
+
+	.aui-field-wrapper {
+		overflow: visible;
+	}
+
+	.lfr-input-text {
+		border: 1px solid #BBB;
+		color: #222;
+		font: 10px/1.33 Arial;
+		height: 14px;
+		padding: 1px;
+		width: 150px;
+	}
+}
+
+/* ---------- Extras ---------- */
+
+.osb-portlet-license-form .lfr-input-text {
+	@include border-radius(2px);
+}

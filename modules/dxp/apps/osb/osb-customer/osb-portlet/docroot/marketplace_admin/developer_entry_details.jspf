@@ -1,0 +1,662 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<div class="developer-registration-data">
+	<div class="field-header">
+		<span class="field-header-action">
+			<liferay-portlet:renderURL var="editDeveloperEntryURL">
+				<portlet:param name="mvcPath" value="/marketplace_admin/edit_developer_entry.jsp" />
+				<portlet:param name="redirect" value="<%= currentURL %>" />
+				<portlet:param name="developerEntryId" value="<%= String.valueOf(developerEntry.getDeveloperEntryId()) %>" />
+			</liferay-portlet:renderURL>
+
+			<a href="<%= editDeveloperEntryURL %>">
+				<liferay-ui:message key="edit" />
+			</a>
+		</span>
+
+		<h3>
+			<liferay-ui:message key="developer-registration" />
+		</h3>
+	</div>
+
+	<div class="field-container field-horizontal aui-w25">
+		<span class="field">
+			<span class="field-content">
+				<label class="field-label">
+					<liferay-ui:message key="logo" />
+				</label>
+
+				<span class="field-element">
+					<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="serveMedia" var="logoURL">
+						<portlet:param name="assetAttachmentId" value="<%= String.valueOf(developerEntry.getProfileLogoId()) %>" />
+					</liferay-portlet:resourceURL>
+
+					<img src="<%= logoURL %>" />
+				</span>
+			</span>
+		</span>
+
+		<span class="field">
+			<span class="field-content">
+				<label class="field-label">
+					<liferay-ui:message key="primary-key" />
+				</label>
+
+				<span class="field-element">
+					<%= developerEntry.getDeveloperEntryId() %>
+				</span>
+			</span>
+		</span>
+
+		<span class="field">
+			<span class="field-content">
+				<label class="field-label">
+					<liferay-ui:message key="name" />
+				</label>
+
+				<span class="field-element">
+					<%= HtmlUtil.escape(developerEntry.getName()) %>
+				</span>
+			</span>
+		</span>
+
+		<span class="field">
+			<span class="field-content">
+				<label class="field-label">
+					<liferay-ui:message key="type" />
+				</label>
+
+				<span class="field-element">
+					<liferay-ui:message key="<%= DeveloperEntryConstants.toTypeLabel(developerEntry.getType()) %>" />
+				</span>
+			</span>
+		</span>
+
+		<span class="field">
+			<span class="field-content">
+				<label class="field-label">
+					<liferay-ui:message key="type-primary-key" />
+				</label>
+
+				<span class="field-element">
+					<c:choose>
+						<c:when test="<%= developerEntry.isCompany() %>">
+							<%= developerEntry.getDossieraAccountKey() %>
+						</c:when>
+						<c:when test="<%= developerEntry.isUser() %>">
+							<%= developerEntry.getUserId() %>
+						</c:when>
+					</c:choose>
+				</span>
+			</span>
+		</span>
+	</div>
+
+	<div class="field-container field-horizontal aui-w25">
+		<c:if test="<%= developerEntry.isUser() %>">
+			<span class="field">
+				<span class="field-content">
+					<label class="field-label">
+						<liferay-ui:message key="screen-name" />
+					</label>
+
+					<span class="field-element">
+						<%= HtmlUtil.escape(developerEntry.getScreenName()) %>
+					</span>
+				</span>
+			</span>
+		</c:if>
+
+		<span class="field">
+			<span class="field-content">
+				<label class="field-label">
+					<liferay-ui:message key="description" />
+				</label>
+
+				<span class="field-element">
+					<%= HtmlUtil.escape(developerEntry.getProfileDescription(locale)) %>
+				</span>
+			</span>
+		</span>
+
+		<span class="field">
+			<span class="field-content">
+				<label class="field-label">
+					<liferay-ui:message key="profile-email" />
+				</label>
+
+				<span class="field-element">
+
+					<%
+					String developerEntryProfileEmailAddress = HtmlUtil.escape(developerEntry.getProfileEmailAddress());
+					%>
+
+					<a href="mailto:<%= developerEntryProfileEmailAddress %>"><%= developerEntryProfileEmailAddress %></a>
+				</span>
+			</span>
+		</span>
+
+		<span class="field">
+			<span class="field-content">
+				<label class="field-label">
+					<liferay-ui:message key="contact-email" />
+				</label>
+
+				<span class="field-element">
+
+					<%
+					String developerEntryEmailAddress = HtmlUtil.escape(developerEntry.getEmailAddress());
+					%>
+
+					<a href="mailto:<%= developerEntryEmailAddress %>"><%= developerEntryEmailAddress%></a>
+
+				</span>
+			</span>
+		</span>
+
+		<span class="field">
+			<span class="field-content">
+				<label class="field-label">
+					<liferay-ui:message key="homepage-url" />
+				</label>
+
+				<span class="field-element">
+
+					<%
+					String developerEntryWebsite = HtmlUtil.escape(developerEntry.getProfileWebsite());
+					%>
+
+					<a href="<%= developerEntryWebsite %>" target="_blank"><%= developerEntryWebsite %></a>
+				</span>
+			</span>
+		</span>
+
+		<c:if test="<%= Validator.isNotNull(developerEntry.getDomainName()) %>">
+			<span class="field">
+				<span class="field-content">
+					<label class="field-label">
+						<liferay-ui:message key="domain-name" />
+					</label>
+
+					<span class="field-element">
+						<%= HtmlUtil.escape(developerEntry.getDomainName()) %>
+					</span>
+				</span>
+			</span>
+
+			<span class="field">
+				<span class="field-content">
+					<label class="field-label">
+						<liferay-ui:message key="domain-status" />
+					</label>
+
+					<span class="field-element">
+						<liferay-ui:message key="<%= WorkflowConstants.toLabel(developerEntry.getDomainStatus()) %>" />
+					</span>
+				</span>
+			</span>
+		</c:if>
+
+		<c:if test="<%= developerEntry.getSubscriptionExpirationDate() != null %>">
+			<span class="field">
+				<span class="field-content">
+					<label class="field-label">
+						<liferay-ui:message key="paypal-email" />
+					</label>
+
+					<span class="field-element">
+						<%= HtmlUtil.escape(developerEntry.getPaymentEmailAddress()) %>
+					</span>
+				</span>
+			</span>
+		</c:if>
+	</div>
+
+	<div class="field-container field-horizontal aui-w25">
+		<span class="field">
+			<span class="field-content">
+				<label class="field-label">
+					<liferay-ui:message key="address1" />
+				</label>
+
+				<span class="field-element">
+					<%= HtmlUtil.escape(developerEntry.getStreet1()) %>
+				</span>
+			</span>
+		</span>
+
+		<span class="field">
+			<span class="field-content">
+				<label class="field-label">
+					<liferay-ui:message key="address2" />
+				</label>
+
+				<span class="field-element">
+					<%= HtmlUtil.escape(developerEntry.getStreet2()) %>
+				</span>
+			</span>
+		</span>
+
+		<span class="field">
+			<span class="field-content">
+				<label class="field-label">
+					<liferay-ui:message key="address3" />
+				</label>
+
+				<span class="field-element">
+					<%= HtmlUtil.escape(developerEntry.getStreet3()) %>
+				</span>
+			</span>
+		</span>
+
+		<c:if test="<%= developerEntry.getCountryId() > 0 %>">
+			<span class="field">
+				<span class="field-content">
+					<label class="field-label">
+						<liferay-ui:message key="country" />
+					</label>
+
+					<span class="field-element">
+
+						<%
+						Country country = CountryServiceUtil.fetchCountry(developerEntry.getCountryId());
+						%>
+
+						<c:if test="<%= country != null %>">
+							<liferay-ui:message key="<%= country.getName() %>" />
+						</c:if>
+					</span>
+				</span>
+			</span>
+		</c:if>
+
+		<c:if test="<%= developerEntry.getRegionId() > 0 %>">
+			<span class="field">
+				<span class="field-content">
+					<label class="field-label">
+						<liferay-ui:message key="region" />
+					</label>
+
+					<span class="field-element">
+
+						<%
+						Region region = RegionServiceUtil.getRegion(developerEntry.getRegionId());
+						%>
+
+						<%= HtmlUtil.escape(region.getName()) %>
+					</span>
+				</span>
+			</span>
+		</c:if>
+
+		<span class="field">
+			<span class="field-content">
+				<label class="field-label">
+					<liferay-ui:message key="city" />
+				</label>
+
+				<span class="field-element">
+					<%= HtmlUtil.escape(developerEntry.getCity()) %>
+				</span>
+			</span>
+		</span>
+
+		<span class="field">
+			<span class="field-content">
+				<label class="field-label">
+					<liferay-ui:message key="postal-code" />
+				</label>
+
+				<span class="field-element">
+					<%= HtmlUtil.escape(developerEntry.getZip()) %>
+				</span>
+			</span>
+		</span>
+
+		<span class="field">
+			<span class="field-content">
+				<label class="field-label">
+					<liferay-ui:message key="phone-number" />
+				</label>
+
+				<span class="field-element">
+					<%= HtmlUtil.escape(developerEntry.getPhoneNumber()) %>
+				</span>
+			</span>
+		</span>
+
+		<span class="field">
+			<span class="field-content">
+				<label class="field-label">
+					<liferay-ui:message key="fax" />
+				</label>
+
+				<span class="field-element">
+					<%= HtmlUtil.escape(developerEntry.getFaxNumber()) %>
+				</span>
+			</span>
+		</span>
+	</div>
+
+	<div class="field-container field-horizontal aui-w20">
+		<span class="field">
+			<span class="field-content">
+				<label class="field-label">
+					<liferay-ui:message key="status" />
+				</label>
+
+				<span class="field-element">
+					<liferay-ui:message key="<%= WorkflowConstants.toLabel(developerEntry.getStatus()) %>" />
+				</span>
+			</span>
+		</span>
+
+		<span class="field">
+			<span class="field-content">
+				<label class="field-label">
+					<liferay-ui:message key="status-changed-by" />
+				</label>
+
+				<span class="field-element">
+					<%= HtmlUtil.escape(PortalUtil.getUserName(developerEntry.getStatusByUserId(), developerEntry.getStatusByUserName())) %>
+				</span>
+			</span>
+		</span>
+
+		<span class="field">
+			<span class="field-content">
+				<label class="field-label">
+					<liferay-ui:message key="status-change-date" />
+				</label>
+
+				<span class="field-element">
+					<%= longDateFormatDateTime.format(developerEntry.getStatusDate()) %>
+				</span>
+			</span>
+		</span>
+
+		<span class="field">
+			<span class="field-content">
+				<label class="field-label">
+					<liferay-ui:message key="created-by" />
+				</label>
+
+				<span class="field-element">
+					<%= HtmlUtil.escape(PortalUtil.getUserName(developerEntry)) %>
+				</span>
+			</span>
+		</span>
+
+		<span class="field">
+			<span class="field-content">
+				<label class="field-label">
+					<liferay-ui:message key="create-date" />
+				</label>
+
+				<span class="field-element">
+					<%= longDateFormatDateTime.format(developerEntry.getCreateDate()) %>
+				</span>
+			</span>
+		</span>
+
+		<span class="field">
+			<span class="field-content">
+				<label class="field-label">
+					<liferay-ui:message key="subscription-expiration-date" />
+				</label>
+
+				<span class="field-element">
+					<c:choose>
+						<c:when test="<%= developerEntry.getSubscriptionExpirationDate() != null %>">
+							<%= longDateFormatDateTime.format(developerEntry.getSubscriptionExpirationDate()) %>
+						</c:when>
+						<c:otherwise>
+							<liferay-ui:message key="unsubscribed" />
+						</c:otherwise>
+					</c:choose>
+				</span>
+			</span>
+		</span>
+	</div>
+</div>
+
+<c:if test="<%= developerEntry.isCompany() && Validator.isNotNull(developerEntry.getDossieraAccountKey()) %>">
+
+	<%
+	CorpEntry corpEntry = CorpEntryLocalServiceUtil.fetchCorpEntry(developerEntry.getDossieraAccountKey());
+	%>
+
+	<div class="company-data">
+		<div class="field-header">
+			<c:if test="<%= corpEntry != null %>">
+				<span class="field-header-action">
+
+					<%
+					PortletURL editCorpEntryURL = PortletURLFactoryUtil.create(request, OSBPortletKeys.OSB_CORP_ADMIN, layout.getPlid(), PortletRequest.RENDER_PHASE);
+
+					editCorpEntryURL.setParameter("mvcPath", "/corp_admin/edit_corp_entry.jsp");
+					editCorpEntryURL.setParameter("redirect", currentURL);
+
+					editCorpEntryURL.setParameter("corpEntryId", String.valueOf(corpEntry.getCorpEntryId()));
+					%>
+
+					<a href="<%= editCorpEntryURL %>">
+						<liferay-ui:message key="edit" />
+					</a>
+				</span>
+			</c:if>
+
+			<h3>
+				<liferay-ui:message key="company" />
+			</h3>
+		</div>
+
+		<c:choose>
+			<c:when test="<%= corpEntry != null %>">
+				<%@ include file="/marketplace_admin/developer_entry_corp_entry.jspf" %>
+			</c:when>
+			<c:when test="<%= developerEntry.getStatus() == WorkflowConstants.STATUS_APPROVED %>">
+				<liferay-portlet:actionURL name="updateDeveloperEntryDossieraAccountKey" var="updateDeveloperEntryDossieraAccountKeyURL" />
+
+				<aui:form action="<%= updateDeveloperEntryDossieraAccountKeyURL %>" method="post" name="fm2">
+					<aui:input name="mvcPath" type="hidden" value="/marketplace_admin/review_developer_entry.jsp" />
+					<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
+					<aui:input name="developerEntryId" type="hidden" value="<%= String.valueOf(developerEntry.getDeveloperEntryId()) %>" />
+
+					<div class="portlet-msg-error">
+						<liferay-ui:message arguments="<%= developerEntry.getDossieraAccountKey() %>" key="no-business-account-with-dossiera-account-key-x-was-found" />
+					</div>
+
+					<p>
+						<liferay-ui:message key="please-update-the-developers-information-with-a-new-dossiera-account-key-or-create-a-new-business-account" />
+					</p>
+
+					<aui:fieldset label="update-developer-information">
+						<aui:input checked="<%= true %>" label="update-developer-information-with-the-following-dossiera-account-key" name="<%= Constants.CMD %>" type="radio" value="<%= Constants.UPDATE %>" />
+
+						<aui:input label="<%= StringPool.BLANK %>" name="dossieraAccountKey" type="text" />
+					</aui:fieldset>
+
+					<aui:fieldset label="new-business-account">
+
+						<%
+						String taglibLabel = LanguageUtil.format(pageContext, "create-a-new-business-account-using-dossiera-account-key-x", developerEntry.getDossieraAccountKey());
+						%>
+
+						<aui:input label="<%= taglibLabel %>" name="<%= Constants.CMD %>" type="radio" value="<%= Constants.ADD %>" />
+					</aui:fieldset>
+
+					<input type="submit" />
+				</aui:form>
+			</c:when>
+		</c:choose>
+	</div>
+</c:if>
+
+<div class="tax-documents">
+	<div class="field-header">
+		<h3>
+			<liferay-ui:message key="tax-documents" />
+		</h3>
+	</div>
+
+	<%
+	List<AssetAttachment> assetAttachments = developerEntry.getDocumentAssetAttachments();
+	%>
+
+	<c:if test="<%= !assetAttachments.isEmpty() %>">
+		<%@ include file="/marketplace_registration/developer_entry_asset_attachments.jspf" %>
+	</c:if>
+</div>
+
+<div class="tax-settings">
+	<div class="field-header">
+		<h3>
+			<liferay-ui:message key="tax-settings" />
+		</h3>
+	</div>
+
+	<div class="field-container field-horizontal aui-w30">
+		<span class="field">
+			<span class="field-content">
+				<label class="field-label">
+					<liferay-ui:message key="fatca-withholding-percentage" />
+				</label>
+
+				<span class="field-element">
+					<liferay-ui:message key="<%= String.valueOf(developerEntry.getFatcaWithholdingPercentageValue()) %>" />
+				</span>
+			</span>
+		</span>
+	</div>
+</div>
+
+<liferay-portlet:actionURL name="updateDeveloperEntryStatus" var="updateDeveloperEntryStatusURL" />
+
+<aui:form action="<%= updateDeveloperEntryStatusURL %>" cssClass="status-form" method="post" name="fm">
+	<aui:input name="mvcPath" type="hidden" value="/marketplace_admin/review_developer_entry.jsp" />
+	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
+	<aui:input name="developerEntryId" type="hidden" value="<%= String.valueOf(developerEntry.getDeveloperEntryId()) %>" />
+	<aui:input name="status" type="hidden" value="<%= WorkflowConstants.STATUS_ANY %>" />
+
+	<aui:fieldset cssClass="aui-helper-hidden status-message-container">
+		<div class="field-header">
+			<h3>
+				<liferay-ui:message key="message" />: <span class="status-label"></span>
+			</h3>
+		</div>
+
+		<aui:input label="" name="statusMessage" type="textarea" />
+
+		<aui:button-row>
+			<aui:button type="submit" />
+
+			<aui:button cssClass="cancel-button" value="cancel" />
+		</aui:button-row>
+	</aui:fieldset>
+
+	<div class="actions-container">
+		<c:if test="<%= developerEntry.isCompany() %>">
+			<aui:fieldset>
+
+				<%
+				CorpEntry corpEntry = null;
+
+				if (Validator.isNotNull(developerEntry.getDossieraAccountKey())) {
+					corpEntry = CorpEntryLocalServiceUtil.fetchCorpEntry(developerEntry.getDossieraAccountKey());
+				}
+				%>
+
+				<c:choose>
+					<c:when test="<%= corpEntry != null %>">
+						<aui:input name="dossieraAccountKey" type="hidden" value="<%= developerEntry.getDossieraAccountKey() %>" />
+
+						<aui:input disabled="<%= true %>" label="dossiera-account-key" name="dossieraAccountKeyDisplay" type="text" value="<%= developerEntry.getDossieraAccountKey() %>" />
+					</c:when>
+					<c:otherwise>
+						<aui:input label="dossiera-account-key" name="dossieraAccountKey" type="text" value="<%= developerEntry.getDossieraAccountKey() %>" />
+					</c:otherwise>
+				</c:choose>
+			</aui:fieldset>
+		</c:if>
+
+		<aui:button-row>
+			<c:if test="<%= !developerEntry.isApproved() %>">
+				<aui:button cssClass="submit-button" data-status="<%= WorkflowConstants.STATUS_APPROVED %>" value="approve" />
+			</c:if>
+
+			<c:if test="<%= !developerEntry.isSubscriptionExpired() && (developerEntry.getSubscriptionStatus() != WorkflowConstants.STATUS_APPROVED) %>">
+				<liferay-portlet:actionURL name="updateDeveloperEntrySubscriptionStatus" varImpl="updateDeveloperEntrySubscriptionStatusURL">
+					<portlet:param name="mvcPath" value="/marketplace_admin/review_developer_entry.jsp" />
+					<portlet:param name="redirect" value="<%= redirect %>" />
+					<portlet:param name="developerEntryId" value="<%= String.valueOf(developerEntry.getDeveloperEntryId()) %>" />
+					<portlet:param name="subscriptionStatus" value="<%= String.valueOf(WorkflowConstants.STATUS_APPROVED) %>" />
+				</liferay-portlet:actionURL>
+
+				<aui:button href="<%= updateDeveloperEntrySubscriptionStatusURL.toString() %>" value="approve-paid-developer-status" />
+			</c:if>
+
+			<c:if test="<%= (developerEntry.getStatus() != WorkflowConstants.STATUS_DENIED) && (developerEntry.getStatus() == WorkflowConstants.STATUS_PENDING) %>">
+				<aui:button cssClass="status-message-button" data-status="<%= WorkflowConstants.STATUS_DENIED %>" value="deny" />
+			</c:if>
+
+			<c:if test="<%= (developerEntry.getStatus() != WorkflowConstants.STATUS_EXPIRED) && (developerEntry.getStatus() != WorkflowConstants.STATUS_PENDING) %>">
+				<aui:button cssClass="status-message-button" data-status="<%= WorkflowConstants.STATUS_EXPIRED %>" value="disable" />
+			</c:if>
+		</aui:button-row>
+	</div>
+</aui:form>
+
+<aui:script use="aui-base">
+	var form = A.one('#<portlet:namespace />fm');
+
+	var actionContainer = form.one('.actions-container');
+	var statusMessageContainer = form.one('.status-message-container');
+
+	form.delegate(
+		'click',
+		function(event) {
+			var target = event.currentTarget;
+
+			var button = event.currentTarget.one('input');
+
+			document.<portlet:namespace />fm.<portlet:namespace />status.value = button.attr('data-status');
+
+			if (target.hasClass('submit-button')) {
+				submitForm(document.<portlet:namespace />fm);
+			}
+			else {
+				statusMessageContainer.one('input[type=submit]').val(button.val());
+				statusMessageContainer.one('span.status-label').html(button.val());
+
+				statusMessageContainer.show();
+				actionContainer.hide();
+
+				statusMessageContainer.scrollIntoView();
+			}
+		},
+		'.status-message-button, .submit-button'
+	);
+
+	statusMessageContainer.one('.cancel-button input').on(
+		'click',
+		function(event) {
+			statusMessageContainer.hide();
+			actionContainer.show();
+		}
+	);
+</aui:script>

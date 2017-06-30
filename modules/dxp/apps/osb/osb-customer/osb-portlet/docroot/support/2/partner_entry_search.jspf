@@ -1,0 +1,108 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%
+String mvcPath = ParamUtil.getString(renderRequest, "mvcPath");
+%>
+
+<div>
+	<liferay-ui:search-toggle
+		buttonLabel="search"
+		displayTerms="<%= displayTerms %>"
+		id="toggle_id_partner_entry_search"
+	>
+		<div class="aui-helper-clearfix cleared partner-entry-row">
+			<div class="aui-w33 content-column">
+				<div class="content-column-content left-column">
+					<h2 class="support-assignment support-input-heading">
+						<liferay-ui:message key="code" />
+					</h2>
+
+					<input id="<portlet:namespace /><%= displayTerms.CODE %>" name="<portlet:namespace /><%= displayTerms.CODE %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getCode()) %>" />
+				</div>
+			</div>
+
+			<div class="aui-w33 content-column">
+				<div class="content-column-content content-column">
+					<h2 class="support-assignment support-input-heading">
+						<liferay-ui:message key="first-line-support" />
+					</h2>
+
+					<select id="<portlet:namespace /><%= displayTerms.MANAGING_SUPPORT %>" name="<portlet:namespace /><%= displayTerms.MANAGING_SUPPORT %>">
+						<option <%= !displayTerms.hasManagingSupport() ? "selected" : StringPool.BLANK %> value=""></option>
+						<option <%= (displayTerms.hasManagingSupport() && displayTerms.isManagingSupport()) ? "selected" : StringPool.BLANK %> value="1"><liferay-ui:message key="yes" /></option>
+						<option <%= (displayTerms.hasManagingSupport() && !displayTerms.isManagingSupport()) ? "selected" : StringPool.BLANK %> value="0"><liferay-ui:message key="no" /></option>
+					</select>
+				</div>
+			</div>
+
+			<div class="aui-w33 content-column">
+				<div class="content-column-content right-column">
+					<h2 class="support-assignment support-input-heading">
+						<liferay-ui:message key="has-child-partner-entries" />
+					</h2>
+
+					<select id="<portlet:namespace /><%= displayTerms.CHILD_PARTNER_ENTRIES %>" name="<portlet:namespace /><%= displayTerms.CHILD_PARTNER_ENTRIES %>">
+						<option <%= !displayTerms.hasChildPartnerEntries() ? "selected" : "" %> value=""></option>
+						<option <%= (displayTerms.hasChildPartnerEntries() && displayTerms.isChildPartnerEntries()) ? "selected" : "" %> value="1"><liferay-ui:message key="yes" /></option>
+						<option <%= (displayTerms.hasChildPartnerEntries() && !displayTerms.isChildPartnerEntries()) ? "selected" : "" %> value="0"><liferay-ui:message key="no" /></option>
+					</select>
+				</div>
+			</div>
+		</div>
+
+		<div class="aui-helper-clearfix partner-entry-row">
+			<div class="aui-w33 content-column">
+				<div class="content-column-content left-column">
+					<h2 class="support-assignment support-input-heading">
+						<liferay-ui:message key="support-region" />
+					</h2>
+
+					<select id="<portlet:namespace /><%= displayTerms.SUPPORT_REGION_IDS %>" name="<portlet:namespace /><%= displayTerms.SUPPORT_REGION_IDS %>">
+						<option value=""></option>
+
+						<%
+						for (SupportRegion supportRegion : SupportRegionLocalServiceUtil.getSupportRegions(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
+						%>
+
+							<option <%= ArrayUtil.contains(displayTerms.getSupportRegionIds(), supportRegion.getSupportRegionId()) ? "selected" : "" %> value="<%= supportRegion.getSupportRegionId() %>"><%= HtmlUtil.escape(supportRegion.getName()) %></option>
+
+						<%
+						}
+						%>
+
+					</select>
+				</div>
+			</div>
+
+			<c:if test='<%= mvcPath.equals("/support/2/view.jsp") %>'>
+				<div class="aui-w33 content-column">
+					<div class="content-column-content content-column">
+						<h2 class="support-assignment support-input-heading">
+							<liferay-ui:message key="status" />
+						</h2>
+
+						<select id="<portlet:namespace /><%= displayTerms.STATUSES %>" name="<portlet:namespace /><%= displayTerms.STATUSES %>">
+							<option <%= ArrayUtil.contains(displayTerms.getStatuses(), WorkflowConstants.STATUS_ANY) ? "selected" : "" %> value="<%= WorkflowConstants.STATUS_ANY %>"><liferay-ui:message key="any-status" /></option>
+							<option <%= ArrayUtil.contains(displayTerms.getStatuses(), WorkflowConstants.STATUS_APPROVED) ? "selected" : "" %> value="<%= WorkflowConstants.STATUS_APPROVED %>"><liferay-ui:message key="active" /></option>
+							<option <%= ArrayUtil.contains(displayTerms.getStatuses(), WorkflowConstants.STATUS_INACTIVE) ? "selected" : "" %> value="<%= WorkflowConstants.STATUS_INACTIVE %>"><liferay-ui:message key="inactive" /></option>
+						</select>
+					</div>
+				</div>
+			</c:if>
+		</div>
+	</liferay-ui:search-toggle>
+</div>

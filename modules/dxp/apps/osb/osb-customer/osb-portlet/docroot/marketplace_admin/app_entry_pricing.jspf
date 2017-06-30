@@ -1,0 +1,150 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<div class="pricing">
+
+	<%
+	List<AppPricing> appPricings = AppPricingLocalServiceUtil.getAppPricings(actionableAppVersion.getAppVersionId());
+
+	for (AppPricing appPricing : appPricings) {
+	%>
+
+		<div class="pricing-display">
+			<div class="pricing-display-heading">
+				<%= appPricing.getName() %>
+			</div>
+
+			<div class="pricing-display-body">
+				<div class="prices">
+					<div class="column details">
+						<span class="aui-field-label">
+							<liferay-ui:message key="licenses" />
+						</span>
+					</div>
+
+					<div class="column standard">
+						<span class="aui-field-label">
+							<liferay-ui:message key="standard" />
+						</span>
+
+						<%
+						List<AssetLicense> standardAssetLicenses = AssetLicenseLocalServiceUtil.getAssetLicenses(AppVersion.class.getName(), actionableAppVersion.getAppVersionId(), AssetLicenseConstants.USAGE_TYPE_STANDARD, appEntry.getLicenseType(), WorkflowConstants.STATUS_APPROVED, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+
+						for (AssetLicense assetLicense : standardAssetLicenses) {
+							AppPricingItem appPricingItem = AppPricingItemLocalServiceUtil.fetchAppPricingItem(appPricing.getAppPricingId(), assetLicense.getAssetLicenseId());
+						%>
+
+							<div class="license-type-allotment">
+								<%= (assetLicense.getLicenseTypeAllotment() == AssetLicenseConstants.LICENSE_TYPE_ALLOTMENT_UNLIMITED) ? "&infin;" : assetLicense.getLicenseTypeAllotment() %>
+							</div>
+
+							<div class="price">
+								<%= appPricingItem.getFormattedPrice(locale) %>
+							</div>
+
+						<%
+						}
+						%>
+
+					</div>
+
+					<div class="column developer">
+						<span class="aui-field-label">
+							<liferay-ui:message key="developer" />
+						</span>
+
+						<%
+						List<AssetLicense> developerAssetLicenses = AssetLicenseLocalServiceUtil.getAssetLicenses(AppVersion.class.getName(), actionableAppVersion.getAppVersionId(), AssetLicenseConstants.USAGE_TYPE_DEVELOPER, appEntry.getLicenseType(), WorkflowConstants.STATUS_APPROVED, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+
+						for (AssetLicense assetLicense : developerAssetLicenses) {
+							AppPricingItem appPricingItem = AppPricingItemLocalServiceUtil.fetchAppPricingItem(appPricing.getAppPricingId(), assetLicense.getAssetLicenseId());
+						%>
+
+							<div class="license-type-allotment">
+								<%= (assetLicense.getLicenseTypeAllotment() == AssetLicenseConstants.LICENSE_TYPE_ALLOTMENT_UNLIMITED) ? "&infin;" : assetLicense.getLicenseTypeAllotment() %>
+							</div>
+
+							<div class="price">
+								<%= appPricingItem.getFormattedPrice(locale) %>
+							</div>
+
+						<%
+						}
+						%>
+
+					</div>
+				</div>
+
+				<div class="support">
+					<div class="column details">
+						<span class="aui-field-label">
+							<liferay-ui:message key="support" />
+						</span>
+					</div>
+
+					<div class="column standard">
+						<span class="aui-field-label">
+							<liferay-ui:message key="standard" />
+						</span>
+
+						<div class="price">
+							<%= appPricing.getFormattedSupportPrice(AssetLicenseConstants.USAGE_TYPE_STANDARD, locale) %>
+						</div>
+					</div>
+
+					<div class="column developer">
+						<span class="aui-field-label">
+							<liferay-ui:message key="developer" />
+						</span>
+
+						<div class="price">
+							<%= appPricing.getFormattedSupportPrice(AssetLicenseConstants.USAGE_TYPE_DEVELOPER, locale) %>
+						</div>
+					</div>
+				</div>
+
+				<div>
+					<div class="countries">
+						<span class="aui-field-label">
+							<liferay-ui:message key="countries" />
+						</span>
+
+						<ul class="countries">
+
+						<%
+						List<CountryAppPricing> countryAppPricings = CountryAppPricingLocalServiceUtil.getCountryAppPricings(appPricing.getAppPricingId());
+
+						for (CountryAppPricing countryAppPricing : countryAppPricings) {
+							Country country = CountryServiceUtil.getCountry(countryAppPricing.getCountryId());
+						%>
+
+							<li class="country" data-countryId="<%= country.getCountryId() %>"><%= country.getName() %></li>
+
+						<%
+						}
+						%>
+
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	<%
+	}
+	%>
+
+</div>

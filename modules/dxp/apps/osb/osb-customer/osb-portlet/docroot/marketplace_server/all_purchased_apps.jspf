@@ -1,0 +1,142 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<div class="all-purchased-apps">
+	<liferay-ui:header
+		cssClass="first"
+		title="all-purchased"
+	/>
+
+	<liferay-portlet:renderURL var="searchURL">
+		<portlet:param name="mvcPath" value="/marketplace_server/view_purchased.jsp" />
+		<portlet:param name="tabs1" value="all-purchased" />
+	</liferay-portlet:renderURL>
+
+	<aui:form action="<%= searchURL %>" cssClass="purchase-list container" method="post" name="fm">
+		<aui:select label="owner" name="corpProjectId">
+			<aui:option label="<%= HtmlUtil.escape(user.getFullName()) %>" value="0" />
+
+			<%
+			List<CorpProject> corpProjects = CorpProjectLocalServiceUtil.getUserCorpProjects(user.getUserId());
+
+			for (CorpProject corpProject : corpProjects) {
+			%>
+
+				<aui:option label="<%= HtmlUtil.escape(corpProject.getName()) %>" selected="<%= corpProjectId == corpProject.getCorpProjectId() %>" value="<%= String.valueOf(corpProject.getCorpProjectId()) %>" />
+
+			<%
+			}
+			%>
+
+		</aui:select>
+
+		<aui:select label="category" name="assetCategoryId">
+			<aui:option label="" value="0" />
+
+			<%
+			AssetVocabulary assetVocabulary = AssetVocabularyLocalServiceUtil.getGroupVocabulary(OSBConstants.GROUP_GUEST_ID, "Marketplace");
+
+			List<AssetCategory> assetCategories = AssetCategoryLocalServiceUtil.getVocabularyRootCategories(assetVocabulary.getVocabularyId(), QueryUtil.ALL_POS, QueryUtil.ALL_POS, new AssetCategoryTreeComparator(true));
+
+			for (AssetCategory assetCategory : assetCategories) {
+				if (assetCategory.getCategoryId() == OSBConstants.ASSET_CATEGORY_EE_PLUGINS_ID) {
+					continue;
+				}
+			%>
+
+				<aui:option cssClass="pseudo-optgroup" label="<%= assetCategory.getTitle(themeDisplay.getLanguageId(), true) %>" selected="<%= assetCategoryId == assetCategory.getCategoryId() %>" value="<%= String.valueOf(assetCategory.getCategoryId()) %>" />
+
+				<%
+				List<AssetCategory> subassetCategories = AssetCategoryLocalServiceUtil.getChildCategories(assetCategory.getCategoryId());
+
+				for (AssetCategory subassetCategory : subassetCategories) {
+				%>
+
+					<aui:option cssClass="pseudo-optgroup-option" label="<%= StringPool.DASH + StringPool.SPACE + subassetCategory.getTitle(themeDisplay.getLanguageId(), true) %>" selected="<%= assetCategoryId == subassetCategory.getCategoryId() %>" value="<%= String.valueOf(subassetCategory.getCategoryId()) %>" />
+
+			<%
+				}
+			}
+			%>
+
+		</aui:select>
+
+		<aui:input cssClass="title-field" label="title" name="assetEntryTitle" type="text" value="<%= assetEntryTitle %>" />
+
+		<aui:button cssClass="search" type="submit" value="search" />
+	</aui:form>
+
+	<div class="app-list product-list">
+		<liferay-ui:search-container
+			curParam="cur2"
+			searchContainer="<%= new AssetReceiptSearch(renderRequest, portletURL) %>"
+		>
+
+			<%
+			long productClassNameId = PortalUtil.getClassNameId(AppEntry.class);
+
+			AssetReceiptSearchTerms searchTerms = (AssetReceiptSearchTerms)searchContainer.getSearchTerms();
+
+			LinkedHashMap<String, Object> params = searchTerms.getParams();
+
+			params.put("ownerClassNameId", PortalUtil.getClassNameId(ownerClassName));
+			params.put("ownerClassPK", ownerClassPK);
+			%>
+
+			<liferay-ui:search-container-results
+				results="<%= AssetReceiptLocalServiceUtil.getAssetReceipts(productClassNameId, params, searchContainer.getStart(), searchContainer.getEnd(), null) %>"
+				total="<%= AssetReceiptLocalServiceUtil.getAssetReceiptsCount(productClassNameId, params) %>"
+			/>
+
+			<liferay-ui:search-container-row
+				className="com.liferay.osb.model.AssetReceipt"
+				escapedModel="<%= true %>"
+				keyProperty="assetReceiptId"
+				modelVar="assetReceipt"
+			>
+
+				<%
+				AppEntry appEntry = AppEntryLocalServiceUtil.fetchAppEntry(assetReceipt.getProductClassPK());
+				%>
+
+				<c:if test="<%= appEntry != null %>">
+					<liferay-ui:search-container-column-text
+						name="product-information"
+					>
+						<liferay-util:include page="/marketplace_server/app_entry_display.jsp" servletContext="<%= application %>">
+							<liferay-util:param name="appEntryId" value="<%= String.valueOf(appEntry.getAppEntryId()) %>" />
+							<liferay-util:param name="compatibility" value="<%= String.valueOf(compatibility) %>" />
+						</liferay-util:include>
+					</liferay-ui:search-container-column-text>
+
+					<c:if test="<%= ownerClassName.equals(CorpProject.class.getName()) %>">
+						<liferay-ui:search-container-column-text
+							name="purchased-by"
+							value="<%= HtmlUtil.escape(PortalUtil.getUserName(assetReceipt.getUserId(), assetReceipt.getUserName())) %>"
+						/>
+					</c:if>
+
+					<liferay-ui:search-container-column-jsp
+						align="right"
+						path="/marketplace_server/app_entry_action.jsp"
+					/>
+				</c:if>
+			</liferay-ui:search-container-row>
+
+			<liferay-ui:search-iterator />
+		</liferay-ui:search-container>
+	</div>
+</div>

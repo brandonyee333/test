@@ -1,0 +1,117 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%@ include file="/init.jsp" %>
+
+<%
+String name = GetterUtil.getString(portletPreferences.getValue("name", null));
+String fileName = GetterUtil.getString(portletPreferences.getValue("fileName", null));
+String releaseNotesURL = GetterUtil.getString(portletPreferences.getValue("releaseNotesURL", null));
+String footerText = GetterUtil.getString(portletPreferences.getValue("footerText", null));
+%>
+
+<liferay-portlet:actionURL portletConfiguration="true" var="actionURL" />
+
+<aui:form action="<%= actionURL %>" enctype="multipart/form-data" method="post" name="fm">
+	<aui:input name="<%= Constants.CMD %>" type="hidden" value="<%= Constants.UPDATE %>" />
+
+	<liferay-ui:error exception="<%= ValidatorException.class %>">
+
+		<%
+		ValidatorException ve = (ValidatorException)errorException;
+		%>
+
+		<liferay-ui:message key="<%= ve.getMessage() %>" />
+	</liferay-ui:error>
+
+	<div class="aui-w95 unit security-patch-configuration">
+		<div class="unit-content">
+			<div class="callout-a">
+				<div class="callout-content cleared">
+					<div class="aui-w20 content-column">
+						<span class="txt-b"><liferay-ui:message key="name" /></span>
+					</div>
+
+					<div class="aui-w80 content-column">
+						<input class="lfr-input-text-container" id="<portlet:namespace />name" name="<portlet:namespace />name" type="text" value="<%= HtmlUtil.escapeAttribute(name) %>" />
+					</div>
+				</div>
+
+				<br />
+
+				<div class="callout-content cleared">
+					<div class="aui-w20 content-column">
+						<span class="txt-b"><liferay-ui:message key="release-notes-url" /></span>
+					</div>
+
+					<div class="aui-w80 content-column">
+						<input class="lfr-input-text-container" id="<portlet:namespace />releaseNotesURL" name="<portlet:namespace />releaseNotesURL" type="text" value="<%= HtmlUtil.escapeAttribute(releaseNotesURL) %>" />
+					</div>
+				</div>
+
+				<br />
+
+				<div class="callout-content cleared">
+					<div class="aui-w20 content-column">
+						<span class="txt-b"><liferay-ui:message key="file" /></span>
+					</div>
+
+					<div class="aui-w80 content-column">
+						<c:if test="<%= Validator.isNotNull(fileName) %>">
+							<div class="aui-w80 content-column">
+								<span id="<portlet:namespace />filename"><%= HtmlUtil.escape(fileName) %></span>
+							</div>
+
+							<div class="aui-w20 content-column">
+								<input class="aui-button-input" onClick="javascript:document.getElementById('<portlet:namespace />file').click(); return;" type="button" value="<liferay-ui:message key="upload-new" />" />
+							</div>
+						</c:if>
+
+						<input class="lfr-input-text-container <%= Validator.isNull(fileName) ? "" : "aui-helper-hidden" %>" id="<portlet:namespace />file" name="<portlet:namespace />file" onChange="<portlet:namespace />uploadUpdate();" type="file" />
+					</div>
+				</div>
+
+				<br />
+
+				<div class="callout-content cleared">
+					<div class="aui-w20 content-column">
+						<span class="txt-b"><liferay-ui:message key="footer-text" /></span>
+					</div>
+
+					<div class="aui-w80 content-column">
+						<textarea maxlength="<%= ModelHintsConstants.TEXTAREA_MAX_LENGTH %>" name="<portlet:namespace />footerText" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" wrap="soft"><%= HtmlUtil.escape(footerText) %></textarea>
+					</div>
+				</div>
+
+				<br />
+
+				<div class="callout-content cleared">
+					<aui:button type="submit" />
+				</div>
+			</div>
+		</div>
+	</div>
+</aui:form>
+
+<aui:script>
+	function <portlet:namespace />uploadUpdate(id) {
+		var A = AUI();
+
+		var filename = A.one('#<portlet:namespace />file').val();
+
+		A.one('#<portlet:namespace />filename').html(filename);
+	}
+</aui:script>

@@ -1,0 +1,114 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%
+List<ECDocumentItem> ecDocumentItems = ecDocumentEntry.getECDocumentItems();
+
+boolean purchaseDeveloperLicenses = false;
+boolean selectedDeveloperLicenses = false;
+
+boolean purchaseStandardLicenses = false;
+boolean selectedStandardLicenses = false;
+
+for (ECDocumentItem ecDocumentItem : ecDocumentItems) {
+	if (ecDocumentItem.getClassPK() == ECommerceConstants.CLASS_PK_DEVELOPER) {
+		selectedDeveloperLicenses = true;
+	}
+	if (ecDocumentItem.getClassPK() == ECommerceConstants.CLASS_PK_STANDARD) {
+		selectedStandardLicenses = true;
+	}
+	else if (ecDocumentItem.getClassPK() > 0) {
+		AssetLicense assetLicense = AssetLicenseLocalServiceUtil.getAssetLicense(ecDocumentItem.getClassPK());
+
+		if (assetLicense.getUsageType() == AssetLicenseConstants.USAGE_TYPE_DEVELOPER) {
+			purchaseDeveloperLicenses = true;
+			selectedDeveloperLicenses = true;
+		}
+		else if (assetLicense.getUsageType() == AssetLicenseConstants.USAGE_TYPE_STANDARD) {
+			purchaseStandardLicenses = true;
+			selectedStandardLicenses = true;
+		}
+	}
+}
+
+int standardActiveAssetReceiptLicensesCount = AssetReceiptLicenseLocalServiceUtil.getActiveAssetReceiptLicensesCount(assetReceipt.getAssetReceiptId(), AssetLicenseConstants.USAGE_TYPE_STANDARD);
+%>
+
+<c:if test="<%= standardActiveAssetReceiptLicensesCount > 0 %>">
+	<aui:input disabled="<%= purchaseStandardLicenses %>" label="extend-liferay-instances-for-standard-licenses" name="cotermStandardLicenses" type="checkbox" value="<%= selectedStandardLicenses %>" />
+
+	<div class="aui-select-note">
+		<c:choose>
+			<c:when test="<%= assetReceipt.hasRenewedAssetReceiptLicenses(AssetLicenseConstants.USAGE_TYPE_STANDARD) %>">
+				<liferay-ui:message key="adding-standard-liferay-instances-to-this-project-requires-that-all-existing-standard-instances-are-updated-with-the-same-end-date" />
+
+				<liferay-ui:message arguments="<%= longDateFormatDate.format(assetReceipt.getRenewedAssetReceiptLicensesEndDate(AssetLicenseConstants.USAGE_TYPE_STANDARD)) %>" key="your-new-licenses-will-be-prorated-to-end-on-x" />
+			</c:when>
+			<c:otherwise>
+
+				<%
+				double price = MarketplaceCotermUtil.getCotermLicensePrice(assetReceipt.getAssetReceiptId(), storeCountryId, appEntryId, AssetLicenseConstants.USAGE_TYPE_STANDARD);
+				%>
+
+				<c:choose>
+					<c:when test="<%= purchaseStandardLicenses %>">
+						<liferay-ui:message key="adding-standard-liferay-instances-to-this-project-requires-that-all-existing-standard-instances-are-updated-with-the-same-end-date-1-year-from-now" />
+					</c:when>
+					<c:otherwise>
+						<liferay-ui:message key="extend-your-existing-standard-license-to-terminate-on-the-same-date" />
+					</c:otherwise>
+				</c:choose>
+
+				<liferay-ui:message arguments="<%= new String[] {CurrencyUtil.format(locale, storeCountryId, price)} %>" key="the-prorated-cost-for-extending-your-existing-liferay-instances-is-x-if-you-purchase-today" />
+			</c:otherwise>
+		</c:choose>
+	</div>
+</c:if>
+
+<%
+int developerActiveAssetReceiptLicensesCount = AssetReceiptLicenseLocalServiceUtil.getActiveAssetReceiptLicensesCount(assetReceipt.getAssetReceiptId(), AssetLicenseConstants.USAGE_TYPE_DEVELOPER);
+%>
+
+<c:if test="<%= developerActiveAssetReceiptLicensesCount > 0 %>">
+	<aui:input disabled="<%= purchaseDeveloperLicenses %>" helpMessage="developer-licenses-are-limited-to-10-unique-ip-addresses" label="extend-liferay-instances-for-developer-licenses" name="cotermDeveloperLicenses" type="checkbox" value="<%= selectedDeveloperLicenses %>" />
+
+	<div class="aui-select-note">
+		<c:choose>
+			<c:when test="<%= assetReceipt.hasRenewedAssetReceiptLicenses(AssetLicenseConstants.USAGE_TYPE_DEVELOPER) %>">
+				<liferay-ui:message key="adding-developer-liferay-instances-to-this-project-requires-that-all-existing-developer-instances-are-updated-with-the-same-end-date" />
+
+				<liferay-ui:message arguments="<%= longDateFormatDate.format(assetReceipt.getRenewedAssetReceiptLicensesEndDate(AssetLicenseConstants.USAGE_TYPE_DEVELOPER)) %>" key="your-new-licenses-will-be-prorated-to-end-on-x" />
+			</c:when>
+			<c:otherwise>
+
+				<%
+				double price = MarketplaceCotermUtil.getCotermLicensePrice(assetReceipt.getAssetReceiptId(), storeCountryId, appEntryId, AssetLicenseConstants.USAGE_TYPE_DEVELOPER);
+				%>
+
+				<c:choose>
+					<c:when test="<%= purchaseDeveloperLicenses %>">
+						<liferay-ui:message key="adding-developer-liferay-instances-to-this-project-requires-that-all-existing-developer-instances-are-updated-with-the-same-end-date-1-year-from-now" />
+					</c:when>
+					<c:otherwise>
+						<liferay-ui:message key="extend-your-existing-developer-license-to-terminate-on-the-same-date" />
+					</c:otherwise>
+				</c:choose>
+
+				<liferay-ui:message arguments="<%= new String[] {CurrencyUtil.format(locale, storeCountryId, price)} %>" key="the-prorated-cost-for-extending-your-existing-liferay-instances-is-x-if-you-purchase-today" />
+			</c:otherwise>
+		</c:choose>
+	</div>
+</c:if>

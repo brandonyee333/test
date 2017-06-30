@@ -1,0 +1,10 @@
+.osb-portlet-corp-project-admin {
+	.lfr-textarea {
+		height: 105px;
+		width: 500px;
+	}
+
+	.template-select {
+		text-align: right;
+	}
+}

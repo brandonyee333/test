@@ -1,0 +1,237 @@
+@import url(../../common/css/dialog.css);
+
+.osb-portlet-license {
+	.callout-a {
+		background-color: #FFF;
+	}
+
+	.checkboxes-input-column {
+		display: table-cell;
+		width: 178px;
+	}
+
+	.content-column {
+		padding-top: 20px;
+	}
+
+	.aui-button-input, .btn {
+		&.disabled-btn,
+		&.disabled-btn:active,
+		&.disabled-btn:focus,
+		&.disabled-btn:hover {
+			background-color: #7B7C7F;
+			border-color: #7B7C7F;
+			color: #BABEC2;
+			cursor: default;
+		}
+	}
+
+	.highlight-cluster {
+		border: 1px solid #000;
+	}
+
+	.info {
+		font-size: 10px;
+		padding: 10px;
+		vertical-align: bottom;
+	}
+
+	.info a {
+		vertical-align: bottom;
+	}
+
+	.large-btn {
+		padding: 5px 15px;
+		text-decoration: none;
+	}
+
+	.lfr-form-row .aui-field {
+		margin-right: 10px;
+	}
+
+	.lfr-table {
+		width: auto;
+	}
+
+	.license-customer .results-grid {
+		margin: 50px 50px 0 50px;
+	}
+
+	.license-customer .results-header {
+		background-color: #D1D6DC;
+	}
+
+	.license-customer .taglib-search-iterator {
+		border-collapse: separate;
+		*border-collapse: expression('separate', cellSpacing=0);
+		margin: 0 0 18px;
+	}
+
+	.license-customer .taglib-search-iterator td,
+	.license-customer .taglib-search-iterator th {
+		border-bottom: none;
+		border-top: 1px solid #BABEC2;
+		padding: 8px 10px 9px;
+	}
+
+	.license-input-heading {
+		border-bottom: 1px solid #CCC;
+		padding-bottom: 10px;
+	}
+
+	.license-tabs {
+		margin: 0 0 9px;
+		text-align: right;
+	}
+
+	.license-worker .taglib-search-iterator a {
+		color: #474A4B;
+	}
+
+	.m-lr-10-20 {
+		margin: 0 10px 0 20px;
+	}
+
+	.multiple-select {
+		height: 100px;
+	}
+
+	.results-header {
+		background: transparent;
+	}
+
+	.section-heading {
+		color: #3A3A3A;
+		font-size: 36px;
+		font-weight: normal;
+		padding-bottom: 1em;
+	}
+
+	.separator {
+		margin: 15px;
+	}
+
+	.taglib-search-iterator {
+		background: none;
+		border: 0;
+	}
+
+	.taglib-search-iterator a {
+		text-decoration: none;
+	}
+
+	.taglib-search-iterator a.btn-a {
+		color: #FFF;
+	}
+
+	.taglib-search-iterator .greyout {
+		color: #c7c8c8;
+	}
+
+	.taglib-search-iterator td {
+		border-bottom: 1px solid #BABEC2;
+		padding: 10px;
+	}
+
+	.taglib-search-iterator th {
+		border-bottom: 1px solid #BABEC1;
+		font-weight: bold;
+	}
+
+	.taglib-search-toggle {
+		padding: 0 20px;
+	}
+
+	#toggle_id_license_key_searchadvanced {
+		padding-top: 10px;
+	}
+
+	#toggle_id_license_key_searchbasic input {
+		border-radius: 2px;
+		-moz-border-radius: 2px;
+		-webkit-border-radius: 2px;
+		font: 20px/1.33 Arial;
+		height: 32px;
+		padding: 1px;
+	}
+
+	#toggle_id_license_key_searchbasic input.aui-button-input-submit {
+		height: 34px;
+		width: 160px;
+	}
+
+	#toggle_id_license_key_searchbasic input.aui-field-input {
+		border: 1px solid #BBBBBB;
+		margin: 0 20px 0 0;
+		width: 488px;
+	}
+
+	.u-nfo-c {
+		color: #1D6799;
+		font-family: 'CartoGothicStd', Arial, san-serif;
+		font-size: 2.5em;
+		font-weight: bold;
+	}
+
+	.content-column-content {
+		word-wrap: break-word;
+	}
+
+	.v-active {
+		background: #00ADEF;
+	}
+
+	.v-active {
+		background: #00ADEF;
+	}
+
+	.v-expired {
+		background: #EF000B;
+	}
+
+	.v-inactive {
+		background: #F08000;
+	}
+
+	.view-license-dialog {
+		input[type=button] {
+			margin-top: 30px;
+		}
+
+		.content {
+			margin: 10px;
+			text-align: center;
+			width: 50vw;
+		}
+	}
+}
+
+.vp320 .license-customer .results-grid {
+	margin: 10px;
+}
+
+.vp320 td,
+.vp320 th,
+.vp480 td,
+.vp480 th {
+	font-size: 10px;
+	padding: 3px 3px;
+}
+
+.vp320 td,
+.vp320 th {
+	font-size: 8px;
+}
+
+.vp320 .u-nfo-c,
+.vp480 .u-nfo-c {
+	font-size: 1.5em;
+}
+
+@media all and (max-width: 720px) {
+	.osb-portlet-license .checkboxes-input-column {
+		display: block;
+		float: left;
+		width: 100%;
+	}
+}

@@ -1,0 +1,99 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+package com.liferay.osb.admin.asset;
+
+import com.liferay.osb.model.AccountEntry;
+import com.liferay.osb.service.AccountEntryLocalServiceUtil;
+import com.liferay.osb.util.OSBConstants;
+import com.liferay.osb.util.OSBPortletKeys;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.security.permission.PermissionChecker;
+import com.liferay.portal.service.RoleLocalServiceUtil;
+import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portlet.asset.model.AssetEntry;
+import com.liferay.portlet.asset.model.AssetRenderer;
+import com.liferay.portlet.asset.model.BaseAssetRendererFactory;
+import com.liferay.portlet.asset.service.AssetEntryLocalServiceUtil;
+
+/**
+ * @author Amos Fong
+ */
+public class AccountEntryAssetRendererFactory extends BaseAssetRendererFactory {
+
+	public static final String CLASS_NAME = AccountEntry.class.getName();
+
+	public static final String TYPE = "support-project";
+
+	@Override
+	public AssetEntry getAssetEntry(long assetEntryId) {
+		return AssetEntryLocalServiceUtil.createAssetEntry(0);
+	}
+
+	@Override
+	public AssetEntry getAssetEntry(String className, long classPK) {
+		return AssetEntryLocalServiceUtil.createAssetEntry(0);
+	}
+
+	public AssetRenderer getAssetRenderer(long classPK, int type)
+		throws PortalException, SystemException {
+
+		AccountEntry accountEntry =
+			AccountEntryLocalServiceUtil.getAccountEntry(classPK);
+
+		return new AccountEntryAssetRenderer(accountEntry);
+	}
+
+	public String getClassName() {
+		return CLASS_NAME;
+	}
+
+	@Override
+	public String getPortletId() {
+		return OSBPortletKeys.OSB_ADMIN;
+	}
+
+	public String getType() {
+		return TYPE;
+	}
+
+	@Override
+	public boolean hasPermission(
+			PermissionChecker permissionChecker, long classPK, String actionId)
+		throws Exception {
+
+		if (RoleLocalServiceUtil.hasUserRole(
+				permissionChecker.getUserId(),
+				OSBConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
+
+			return true;
+		}
+
+		if (RoleLocalServiceUtil.hasUserRole(
+				permissionChecker.getUserId(),
+				OSBConstants.ROLE_OSB_ACCOUNT_ADMIN_ID)) {
+
+			return true;
+		}
+
+		return false;
+	}
+
+	@Override
+	protected String getIconPath(ThemeDisplay themeDisplay) {
+		return themeDisplay.getPathThemeImages() + "/trees/page.png";
+	}
+
+}

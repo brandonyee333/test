@@ -1,0 +1,86 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<liferay-ui:error exception="<%= RequiredProductEntryException.class %>" message="you-cannot-remove-products-that-are-used-in-licenses" />
+
+<liferay-ui:search-container
+	headerNames="name"
+	iteratorURL="<%= portletURL %>"
+>
+	<liferay-ui:search-container-results
+		results="<%= ProductEntryLocalServiceUtil.getProductEntries(searchContainer.getStart(), searchContainer.getEnd()) %>"
+		total="<%= ProductEntryLocalServiceUtil.getProductEntriesCount() %>"
+	/>
+
+	<liferay-ui:search-container-row
+		className="com.liferay.osb.model.ProductEntry"
+		escapedModel="<%= true %>"
+		keyProperty="productEntryId"
+		modelVar="productEntry"
+	>
+
+		<%
+		String rowURL = null;
+
+		if (permissionChecker.isOmniadmin()) {
+			PortletURL editProductEntryURL = renderResponse.createRenderURL();
+
+			editProductEntryURL.setParameter("mvcPath", "/admin/edit_product_entry.jsp");
+			editProductEntryURL.setParameter("redirect", portletURL.toString());
+			editProductEntryURL.setParameter("productEntryId", String.valueOf(productEntry.getProductEntryId()));
+			editProductEntryURL.setWindowState(LiferayWindowState.MAXIMIZED);
+
+			rowURL = editProductEntryURL.toString();
+		}
+		%>
+
+		<liferay-ui:search-container-column-text
+			href="<%= rowURL %>"
+			property="name"
+		/>
+
+		<liferay-ui:search-container-column-text
+			href="<%= rowURL %>"
+			name="type"
+			property="typeLabel"
+			translate="<%= true %>"
+		/>
+
+		<liferay-ui:search-container-column-text
+			href="<%= rowURL %>"
+			name="environment"
+			property="environmentLabel"
+			translate="<%= true %>"
+		/>
+
+		<c:if test="<%= permissionChecker.isOmniadmin() %>">
+			<liferay-ui:search-container-column-jsp
+				align="right"
+				path="/admin/product_entry_action.jsp"
+			/>
+		</c:if>
+	</liferay-ui:search-container-row>
+
+	<c:if test="<%= permissionChecker.isOmniadmin() %>">
+		<div>
+			<input onClick="location.href = '<portlet:renderURL windowState="<%= WindowState.MAXIMIZED.toString() %>"><portlet:param name="mvcPath" value="/admin/edit_product_entry.jsp" /><portlet:param name="redirect" value="<%= portletURL.toString() %>" /></portlet:renderURL>';" type="button" value="<liferay-ui:message key="add-product" />" />
+		</div>
+
+		<br />
+	</c:if>
+
+	<liferay-ui:search-iterator />
+</liferay-ui:search-container>

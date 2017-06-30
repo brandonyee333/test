@@ -1,0 +1,434 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+package com.liferay.osb.admin.servlet;
+
+import com.liferay.compat.portal.kernel.util.StringUtil;
+import com.liferay.osb.util.OSBConstants;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.Base64;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.model.Address;
+import com.liferay.portal.model.Company;
+import com.liferay.portal.model.User;
+import com.liferay.portal.service.CompanyLocalServiceUtil;
+import com.liferay.portlet.expando.DuplicateColumnNameException;
+import com.liferay.portlet.expando.NoSuchTableException;
+import com.liferay.portlet.expando.model.ExpandoColumn;
+import com.liferay.portlet.expando.model.ExpandoColumnConstants;
+import com.liferay.portlet.expando.model.ExpandoTable;
+import com.liferay.portlet.expando.model.ExpandoTableConstants;
+import com.liferay.portlet.expando.service.ExpandoColumnLocalServiceUtil;
+import com.liferay.portlet.expando.service.ExpandoTableLocalServiceUtil;
+import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
+import com.liferay.util.Encryptor;
+
+import java.security.SecureRandom;
+import java.security.Security;
+
+import javax.crypto.KeyGenerator;
+
+/**
+ * @author Brian Wing Shun Chan
+ * @author Amos Fong
+ * @author Peter Shin
+ */
+public class AdminServletContextListenerExpandoHelper {
+
+	public static void setup() throws Exception {
+		long companyId = OSBConstants.COMPANY_ID;
+
+		// Expando table - CUSTOM_FIELDS - Address
+
+		ExpandoTable table = null;
+
+		try {
+			table = ExpandoTableLocalServiceUtil.getTable(
+				companyId, Address.class.getName(),
+				ExpandoTableConstants.DEFAULT_TABLE_NAME);
+		}
+		catch (NoSuchTableException nste) {
+			table = ExpandoTableLocalServiceUtil.addTable(
+				companyId, Address.class.getName(),
+				ExpandoTableConstants.DEFAULT_TABLE_NAME);
+		}
+
+		try {
+			ExpandoColumnLocalServiceUtil.addColumn(
+				table.getTableId(), "osbCompanyName",
+				ExpandoColumnConstants.STRING);
+		}
+		catch (DuplicateColumnNameException dcne) {
+		}
+
+		try {
+			ExpandoColumnLocalServiceUtil.addColumn(
+				table.getTableId(), "vatNumber", ExpandoColumnConstants.STRING);
+		}
+		catch (DuplicateColumnNameException dcne) {
+		}
+
+		// Expando table - CUSTOM_FIELDS - User
+
+		try {
+			table = ExpandoTableLocalServiceUtil.getTable(
+				companyId, User.class.getName(),
+				ExpandoTableConstants.DEFAULT_TABLE_NAME);
+		}
+		catch (NoSuchTableException nste) {
+			table = ExpandoTableLocalServiceUtil.addTable(
+				companyId, User.class.getName(),
+				ExpandoTableConstants.DEFAULT_TABLE_NAME);
+		}
+
+		try {
+			ExpandoColumnLocalServiceUtil.addColumn(
+				table.getTableId(), "osbAgreedToContactEvents",
+				ExpandoColumnConstants.BOOLEAN);
+		}
+		catch (DuplicateColumnNameException dcne) {
+		}
+
+		try {
+			ExpandoColumnLocalServiceUtil.addColumn(
+				table.getTableId(), "osbAgreedToContactSales",
+				ExpandoColumnConstants.BOOLEAN);
+		}
+		catch (DuplicateColumnNameException dcne) {
+		}
+
+		try {
+			ExpandoColumnLocalServiceUtil.addColumn(
+				table.getTableId(), "osbAgreedToContactTrainings",
+				ExpandoColumnConstants.BOOLEAN);
+		}
+		catch (DuplicateColumnNameException dcne) {
+		}
+
+		try {
+			ExpandoColumnLocalServiceUtil.addColumn(
+				table.getTableId(), "osbAgreedToContactTrialLicenses",
+				ExpandoColumnConstants.BOOLEAN);
+		}
+		catch (DuplicateColumnNameException dcne) {
+		}
+
+		try {
+			ExpandoColumnLocalServiceUtil.addColumn(
+				table.getTableId(), "osbCompany",
+				ExpandoColumnConstants.STRING);
+		}
+		catch (DuplicateColumnNameException dcne) {
+		}
+
+		try {
+			ExpandoColumn expandoColumn =
+				ExpandoColumnLocalServiceUtil.addColumn(
+					table.getTableId(), "osbCompanyRole",
+					ExpandoColumnConstants.STRING_ARRAY,
+					getOSBCompanyRoleData());
+
+			ExpandoColumnLocalServiceUtil.updateTypeSettings(
+				expandoColumn.getColumnId(), "display-type=selection-list");
+		}
+		catch (DuplicateColumnNameException dcne) {
+		}
+
+		try {
+			ExpandoColumn expandoColumn =
+				ExpandoColumnLocalServiceUtil.addColumn(
+					table.getTableId(), "osbCountry",
+					ExpandoColumnConstants.STRING_ARRAY, getOSBCountryData());
+
+			ExpandoColumnLocalServiceUtil.updateTypeSettings(
+				expandoColumn.getColumnId(), "display-type=selection-list");
+		}
+		catch (DuplicateColumnNameException dcne) {
+		}
+
+		try {
+			ExpandoColumnLocalServiceUtil.addColumn(
+				table.getTableId(), "osbDisplayProfile",
+				ExpandoColumnConstants.BOOLEAN, true);
+		}
+		catch (DuplicateColumnNameException dcne) {
+		}
+
+		try {
+			ExpandoColumnLocalServiceUtil.addColumn(
+				table.getTableId(), "osbDisplayBadges",
+				ExpandoColumnConstants.BOOLEAN, true);
+		}
+		catch (DuplicateColumnNameException dcne) {
+		}
+
+		try {
+			ExpandoColumnLocalServiceUtil.addColumn(
+				table.getTableId(), "osbDisplayCertificates",
+				ExpandoColumnConstants.BOOLEAN, true);
+		}
+		catch (DuplicateColumnNameException dcne) {
+		}
+
+		try {
+			ExpandoColumn expandoColumn =
+				ExpandoColumnLocalServiceUtil.addColumn(
+					table.getTableId(), "osbHowDidYouHearAboutLiferay",
+					ExpandoColumnConstants.STRING_ARRAY,
+					getOSBHowDidYouHearAboutLiferayData());
+
+			ExpandoColumnLocalServiceUtil.updateTypeSettings(
+				expandoColumn.getColumnId(), "display-type=selection-list");
+		}
+		catch (DuplicateColumnNameException dcne) {
+		}
+
+		try {
+			ExpandoColumn expandoColumn =
+				ExpandoColumnLocalServiceUtil.addColumn(
+					table.getTableId(), "osbIndustry",
+					ExpandoColumnConstants.STRING_ARRAY, getOSBIndustryData());
+
+			ExpandoColumnLocalServiceUtil.updateTypeSettings(
+				expandoColumn.getColumnId(), "display-type=selection-list");
+		}
+		catch (DuplicateColumnNameException dcne) {
+		}
+
+		try {
+			ExpandoColumnLocalServiceUtil.addColumn(
+				table.getTableId(), "osbLiferaySyncEULA",
+				ExpandoColumnConstants.STRING_ARRAY);
+		}
+		catch (DuplicateColumnNameException dcne) {
+		}
+
+		try {
+			ExpandoColumnLocalServiceUtil.addColumn(
+				table.getTableId(), "osbPhoneNumber",
+				ExpandoColumnConstants.STRING);
+		}
+		catch (DuplicateColumnNameException dcne) {
+		}
+
+		try {
+			ExpandoColumnLocalServiceUtil.addColumn(
+				table.getTableId(), "osbSentInactiveEmail",
+				ExpandoColumnConstants.BOOLEAN, false);
+		}
+		catch (DuplicateColumnNameException dcne) {
+		}
+
+		try {
+			ExpandoColumnLocalServiceUtil.addColumn(
+				table.getTableId(), "osbStoreCountryId",
+				ExpandoColumnConstants.LONG);
+		}
+		catch (DuplicateColumnNameException dcne) {
+		}
+
+		try {
+			ExpandoColumnLocalServiceUtil.addColumn(
+				table.getTableId(), "osbStudioEULA",
+				ExpandoColumnConstants.STRING_ARRAY);
+		}
+		catch (DuplicateColumnNameException dcne) {
+		}
+
+		try {
+			ExpandoColumnLocalServiceUtil.addColumn(
+				table.getTableId(), "osbTrialEULA",
+				ExpandoColumnConstants.STRING_ARRAY);
+		}
+		catch (DuplicateColumnNameException dcne) {
+		}
+
+		try {
+			ExpandoColumn expandoColumn =
+				ExpandoColumnLocalServiceUtil.addColumn(
+					table.getTableId(), "osbWhatSolutionAreYouCurrentlyUsing",
+					ExpandoColumnConstants.STRING_ARRAY,
+					getOSBWhatSolutionsAreYouCurrentlyUsingData());
+
+			ExpandoColumnLocalServiceUtil.updateTypeSettings(
+				expandoColumn.getColumnId(), "display-type=selection-list");
+		}
+		catch (DuplicateColumnNameException dcne) {
+		}
+
+		// Expando table - OSB - User
+
+		try {
+			table = ExpandoTableLocalServiceUtil.getTable(
+				companyId, User.class.getName(), "OSB");
+		}
+		catch (NoSuchTableException nste) {
+			table = ExpandoTableLocalServiceUtil.addTable(
+				companyId, User.class.getName(), "OSB");
+		}
+
+		try {
+			ExpandoColumnLocalServiceUtil.addColumn(
+				table.getTableId(), "osbTrialPurchased",
+				ExpandoColumnConstants.BOOLEAN);
+		}
+		catch (DuplicateColumnNameException dcne) {
+		}
+
+		// Expando table - OSB_MARKETPLACE_SERVER - Company
+
+		try {
+			table = ExpandoTableLocalServiceUtil.getTable(
+				companyId, Company.class.getName(), "OSB_MARKETPLACE_SERVER");
+		}
+		catch (NoSuchTableException nste) {
+			table = ExpandoTableLocalServiceUtil.addTable(
+				companyId, Company.class.getName(), "OSB_MARKETPLACE_SERVER");
+		}
+
+		try {
+			ExpandoColumnLocalServiceUtil.addColumn(
+				table.getTableId(), "osbClientIdKey",
+				ExpandoColumnConstants.STRING);
+
+			ExpandoValueLocalServiceUtil.addValue(
+				companyId, Company.class.getName(), "OSB_MARKETPLACE_SERVER",
+				"osbClientIdKey", companyId, getOSBClientIdKey(companyId));
+		}
+		catch (DuplicateColumnNameException dcne) {
+		}
+	}
+
+	protected static String getOSBClientIdKey(long companyId)
+		throws PortalException, SystemException {
+
+		try {
+			Security.addProvider(Encryptor.getProvider());
+
+			KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+
+			keyGenerator.init(128, new SecureRandom());
+
+			return Base64.objectToString(keyGenerator.generateKey());
+		}
+		catch (Exception e) {
+			Company company = CompanyLocalServiceUtil.getCompany(companyId);
+
+			return company.getKey();
+		}
+	}
+
+	protected static String[] getOSBCompanyRoleData() {
+		StringBundler sb = new StringBundler(4);
+
+		sb.append("analyst,architect,business-development,");
+		sb.append("c-level-vp-executive,contractor-consultant,developer,");
+		sb.append("director,management,other,project-manager,");
+		sb.append("purchasing-finance");
+
+		return StringUtil.split(sb.toString());
+	}
+
+	protected static String[] getOSBCountryData() {
+		StringBundler sb = new StringBundler(46);
+
+		sb.append("afghanistan,albania,algeria,american-samoa,andorra,");
+		sb.append("angola,anguilla,antarctica,antigua,argentina,armenia,");
+		sb.append("aruba,australia,austria,azerbaijan,bahamas,bahrain,");
+		sb.append("bangladesh,barbados,belarus,belgium,belize,benin,");
+		sb.append("bermuda,bhutan,bolivia,bosnia-herzegovina,botswana,");
+		sb.append("brazil,british-virgin-islands,brunei,bulgaria,");
+		sb.append("burkina-faso,burma-myanmar,burundi,cambodia,cameroon,");
+		sb.append("canada,cape-verde-island,cayman-islands,");
+		sb.append("central-african-republic,chad,chile,china,");
+		sb.append("christmas-island,cocos-islands,colombia,comoros,");
+		sb.append("cook-islands,costa-rica,croatia,cuba,cyprus,");
+		sb.append("czech-republic,democratic-republic-of-congo,denmark,");
+		sb.append("djibouti,dominica,dominican-republic,ecuador,egypt,");
+		sb.append("el-salvador,equatorial-guinea,eritrea,estonia,");
+		sb.append("ethiopia,faeroe-islands,falkland-islands,fiji-islands,");
+		sb.append("finland,france,french-guiana,french-polynesia,gabon,");
+		sb.append("gambia,georgia,germany,ghana,gibraltar,greece,");
+		sb.append("greenland,grenada,guadeloupe,guam,guatemala,guinea,");
+		sb.append("guinea-bissau,guyana,haiti,honduras,hong-kong,hungary,");
+		sb.append("iceland,india,indonesia,iran,iraq,ireland,israel,");
+		sb.append("italy,ivory-coast,jamaica,japan,jordan,kazakhstan,");
+		sb.append("kenya,kiribati,kuwait,kyrgyzstan,laos,latvia,lebanon,");
+		sb.append("lesotho,liberia,libya,liechtenstein,lithuania,");
+		sb.append("luxembourg,macau,macedonia,madagascar,malawi,malaysia,");
+		sb.append("maldives,mali,malta,marshall-islands,martinique,");
+		sb.append("mauritania,mauritius,mayotte-island,mexico,micronesia,");
+		sb.append("moldova,monaco,mongolia,montenegro,montserrat,morocco,");
+		sb.append("mozambique,namibia,nauru,nepal,netherlands,new-caledonia,");
+		sb.append("new-zealand,nicaragua,niger,nigeria,niue,norfolk-island,");
+		sb.append("north-korea,norway,oman,pakistan,palau,palestine,");
+		sb.append("panama,papua-new-guinea,paraguay,peru,philippines,");
+		sb.append("poland,portugal,puerto-rico,qatar,republic-of-congo,");
+		sb.append("reunion-island,romania,russia,rwanda,san-marino,");
+		sb.append("sao-tome-principe,saudi-arabia,senegal,serbia,");
+		sb.append("seychelles,sierra-leone,singapore,slovakia,slovenia,");
+		sb.append("solomon-islands,somalia,south-africa,south-korea,");
+		sb.append("spain,sri-lanka,st-helena,st-kitts,st-lucia,");
+		sb.append("st-pierre-miquelon,st-vincent,sudan,suriname,");
+		sb.append("swaziland,sweden,switzerland,syria,taiwan,tajikistan,");
+		sb.append("tanzania,thailand,togo,tonga,trinidad-tobago,tunisia,");
+		sb.append("turkey,turkmenistan,turks-caicos,tuvalu,uganda,");
+		sb.append("ukraine,united-arab-emirates,united-kingdom,");
+		sb.append("united-states,uruguay,uzbekistan,vanuatu,vatican-city,");
+		sb.append("venezuela,vietnam,wallis-futuna,western-samoa,");
+		sb.append("yemen,zambia,zimbabwe");
+
+		return StringUtil.split(sb.toString());
+	}
+
+	protected static String[] getOSBHowDidYouHearAboutLiferayData() {
+		String s = "analyst-firm,other,printed-publication,".concat(
+			"trade-show-conference,web-search,word-of-mouth");
+
+		return StringUtil.split(s.toString());
+	}
+
+	protected static String[] getOSBIndustryData() {
+		StringBundler sb = new StringBundler(10);
+
+		sb.append("aerospace-and-defense,agriculture,automotive,");
+		sb.append("consulting-market-research,education,energy,engineering,");
+		sb.append("financial-services,government-federal,");
+		sb.append("government-state-local,healthcare,hospitality-leisure,");
+		sb.append("insurance,manufacturing,media-entertainment,");
+		sb.append("not-for-profit-ngo,pharmaceuticals,");
+		sb.append("professional-services-agency-business,");
+		sb.append("professional-services-technical-web-it,");
+		sb.append("retail-consumer-products,technology,telecommunications,");
+		sb.append("transportation,utilities,other");
+
+		return StringUtil.split(sb.toString());
+	}
+
+	protected static String[] getOSBWhatSolutionsAreYouCurrentlyUsingData() {
+		StringBundler sb = new StringBundler(7);
+
+		sb.append("liferay-portal-6-1-x-ce,liferay-portal-6-1-x-ee,");
+		sb.append("liferay-portal-6-0-x-ce,liferay-portal-6-0-x-ee,");
+		sb.append("liferay-portal-5-2-x-ce,liferay-portal-5-2-x-ee,");
+		sb.append("liferay-portal-5-1-x-ce,liferay-portal-5-1-x-ee,");
+		sb.append("liferay-portal-5-0-x-ce,liferay-portal-4-4-x-ce,");
+		sb.append("liferay-portal-4-3-x-ce-or-older,websphere-portal,");
+		sb.append("oracle-portal,bea-weblogic,microsoft-sharepoint,other");
+
+		return StringUtil.split(sb.toString());
+	}
+
+}

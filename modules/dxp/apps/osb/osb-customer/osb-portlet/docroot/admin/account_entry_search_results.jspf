@@ -1,0 +1,29 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%
+if (searchTerms.isAdvancedSearch()) {
+	results = AccountEntryLocalServiceUtil.search(searchTerms.getCreateUserIdObj(), searchTerms.getCreateDateGTDay(), searchTerms.getCreateDateGTMonth(), searchTerms.getCreateDateGTYear(), searchTerms.getCreateDateLTDay(), searchTerms.getCreateDateLTMonth(), searchTerms.getCreateDateLTYear(), searchTerms.getModifiedUserIdObj(), searchTerms.getModifiedDateGTDay(), searchTerms.getModifiedDateGTMonth(), searchTerms.getModifiedDateGTYear(), searchTerms.getModifiedDateLTDay(), searchTerms.getModifiedDateLTMonth(), searchTerms.getModifiedDateLTYear(), searchTerms.getName(), searchTerms.getCode(), searchTerms.getIndustries(), searchTerms.getPartnerManagedSupport(), searchTerms.getTiers(), searchTerms.getStatuses(), searchTerms.getInstructions(), searchTerms.getNotes(), searchTerms.getPartnerEntryCode(), searchTerms.getStreet(), searchTerms.getCountryIdObj(), searchTerms.getRegionIdObj(), searchTerms.getCity(), searchTerms.getZip(), searchTerms.getParams(), searchTerms.isAndOperator(), searchContainer.getStart(), searchContainer.getEnd(), new AccountEntryNameComparator(true));
+	total = AccountEntryLocalServiceUtil.searchCount(searchTerms.getCreateUserIdObj(), searchTerms.getCreateDateGTDay(), searchTerms.getCreateDateGTMonth(), searchTerms.getCreateDateGTYear(), searchTerms.getCreateDateLTDay(), searchTerms.getCreateDateLTMonth(), searchTerms.getCreateDateLTYear(), searchTerms.getModifiedUserIdObj(), searchTerms.getModifiedDateGTDay(), searchTerms.getModifiedDateGTMonth(), searchTerms.getModifiedDateGTYear(), searchTerms.getModifiedDateLTDay(), searchTerms.getModifiedDateLTMonth(), searchTerms.getModifiedDateLTYear(), searchTerms.getName(), searchTerms.getCode(), searchTerms.getIndustries(), searchTerms.getPartnerManagedSupport(), searchTerms.getTiers(), searchTerms.getStatuses(), searchTerms.getInstructions(), searchTerms.getNotes(), searchTerms.getPartnerEntryCode(), searchTerms.getStreet(), searchTerms.getCountryIdObj(), searchTerms.getRegionIdObj(), searchTerms.getCity(), searchTerms.getZip(), searchTerms.getParams(), searchTerms.isAndOperator());
+}
+else {
+	results = AccountEntryLocalServiceUtil.search(searchTerms.getKeywords(), searchTerms.getParams(), searchContainer.getStart(), searchContainer.getEnd(), new AccountEntryNameComparator(true));
+	total = AccountEntryLocalServiceUtil.searchCount(searchTerms.getKeywords(), searchTerms.getParams());
+}
+
+pageContext.setAttribute("results", results);
+pageContext.setAttribute("total", total);
+%>

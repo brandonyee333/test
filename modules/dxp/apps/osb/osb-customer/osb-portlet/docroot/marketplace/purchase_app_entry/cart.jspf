@@ -1,0 +1,118 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%
+String purchaseStep = ParamUtil.getString(request, "purchaseStep");
+%>
+
+<div class="cart">
+	<div class="cart-title">
+		<img src="<%= PortalUtil.getPathContext(request) %>/images/cart.png" />
+
+		<liferay-ui:message key="items-in-cart" />
+	</div>
+
+	<portlet:actionURL name="purchaseAppEntryLicense" var="purchaseAppEntryLicenseURL" />
+
+	<aui:form action="<%= purchaseAppEntryLicenseURL %>" method="post" name="fm1">
+		<aui:input name="<%= mvcPathParam %>" type="hidden" value="/marketplace/purchase_app_entry.jsp" />
+		<aui:input name="redirect" type="hidden" value="<%= currentURL %>" />
+		<aui:input name="ecDocumentEntryId" type="hidden" value="<%= ecDocumentEntryId %>" />
+		<aui:input name="appEntryId" type="hidden" value="<%= appEntryId %>" />
+		<aui:input name="purchaseType" type="hidden" value="<%= ecDocumentEntryExtraSettings.getPurchaseType() %>" />
+		<aui:input name="countryId" type="hidden" value="<%= storeCountryId %>" />
+
+		<liferay-ui:error exception="<%= RequiredQuantityException.class %>" message="you-must-purchase-at-least-one-license-to-proceed" />
+
+		<liferay-ui:search-container>
+			<liferay-ui:search-container-results
+				results="<%= ECDocumentItemLocalServiceUtil.getECDocumentItems(ecDocumentEntry.getEcDocumentEntryId(), QueryUtil.ALL_POS, QueryUtil.ALL_POS) %>"
+				total="<%= ECDocumentItemLocalServiceUtil.getECDocumentItemsCount(ecDocumentEntry.getEcDocumentEntryId()) %>"
+			/>
+
+			<liferay-ui:search-container-row
+				className="com.liferay.ecommerce.model.ECDocumentItem"
+				keyProperty="ecDocumentItemId"
+				modelVar="ecDocumentItem"
+			>
+				<liferay-portlet:actionURL name="deleteECDocumentItem" var="deleteECDocumentItemURL">
+					<portlet:param name="<%= mvcPathParam %>" value="/marketplace/purchase_app_entry.jsp" />
+					<portlet:param name="redirect" value="<%= currentURL %>" />
+					<portlet:param name="purchaseStep" value="summary" />
+					<portlet:param name="ecDocumentEntryId" value="<%= String.valueOf(ecDocumentEntryId) %>" />
+					<portlet:param name="appEntryId" value="<%= String.valueOf(appEntryId) %>" />
+					<portlet:param name="ecDocumentItemId" value="<%= String.valueOf(ecDocumentItem.getEcDocumentItemId()) %>" />
+				</liferay-portlet:actionURL>
+
+				<c:choose>
+					<c:when test="<%= ecDocumentItem.getClassPK() > 0 %>">
+						<%@ include file="/marketplace/purchase_app_entry/license_cart_columns.jspf" %>
+					</c:when>
+					<c:otherwise>
+						<%@ include file="/marketplace/purchase_app_entry/cart_columns.jspf" %>
+					</c:otherwise>
+				</c:choose>
+			</liferay-ui:search-container-row>
+
+			<liferay-ui:search-iterator paginate="<%= false %>" />
+		</liferay-ui:search-container>
+
+		<aui:button-row>
+			<aui:button type="submit" value="update" />
+		</aui:button-row>
+	</aui:form>
+
+	<table class="totals">
+		<tbody>
+			<tr>
+				<td>
+				</td>
+				<td class="col-3">
+					<liferay-ui:message key="subtotal" />
+				</td>
+				<td class="col-4">
+					<%= ecDocumentEntry.getFormattedSubtotal() %>
+				</td>
+			</tr>
+			<tr>
+				<td>
+				</td>
+				<td class="col-3">
+					<liferay-ui:message key="estimated-tax" />
+
+					<c:if test="<%= ArrayUtil.contains(PortletPropsValues.VAT_EU_COUNTRIES, storeCountry.getA2()) %>">
+						<span class="vat-number">
+							VAT #EU372002466
+						</span>
+					</c:if>
+				</td>
+				<td class="col-4">
+					<%= ecDocumentEntry.getFormattedTaxAmount() %>
+				</td>
+			</tr>
+			<tr>
+				<td>
+				</td>
+				<td class="col-3">
+					<liferay-ui:message key="total" />
+				</td>
+				<td class="col-4">
+					<%= ecDocumentEntry.getFormattedTotal() %>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

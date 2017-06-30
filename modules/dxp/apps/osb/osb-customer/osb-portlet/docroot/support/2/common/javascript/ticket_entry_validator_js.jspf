@@ -1,0 +1,78 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<aui:script>
+	function <portlet:namespace />validateRequiredField(node) {
+		var A = AUI();
+
+		var status = true;
+
+		if ((node.get("name") == '<portlet:namespace />resolution') || (node.get("name") == '<portlet:namespace />status')) {
+			var resolution = document.getElementById('<portlet:namespace />resolution');
+			var ticketStatus = document.getElementById('<portlet:namespace />status').value;
+
+			node = A.one(resolution);
+
+			if ((ticketStatus != <%= TicketEntryConstants.STATUS_CLOSED %>) || ((ticketStatus == <%= TicketEntryConstants.STATUS_CLOSED %>) && (resolution.value != 0))) {
+				node.setAttribute("data-field-required-status", "true");
+
+				status = false;
+			}
+			else {
+				node.setAttribute("data-field-required-status", "false");
+			}
+		}
+		else if ((A.Lang.trim(node.get("value")) && !node.test("select")) || (node.test("select") && (node.get("value") != 0) && (node.get("value") != ''))) {
+			node.setAttribute("data-field-required-status", "true");
+
+			status = false;
+		}
+		else {
+			node.setAttribute("data-field-required-status", "false");
+		}
+
+		var messageDisplayName = node.getAttribute("name") + "Message";
+
+		var messageDisplay = A.one('#' + messageDisplayName);
+
+		if (messageDisplay && status) {
+			messageDisplay.show();
+		}
+		else if (messageDisplay && !status) {
+			messageDisplay.hide();
+		}
+		else if (!messageDisplay && status) {
+			messageDisplay = A.Node.create('<div class="portlet-msg-error" />');
+
+			messageDisplay.setAttribute("id", messageDisplayName);
+			messageDisplay.setContent(node.getAttribute("field-required-message"));
+
+			var childNode = node;
+			var parentNode = node.get("parentNode");
+
+			while (!parentNode.test("div")) {
+				childNode = parentNode;
+				parentNode = parentNode.get("parentNode");
+
+				messageDisplay.setContent(parentNode.getAttribute("field-required-message"));
+			}
+
+			parentNode.insertBefore(messageDisplay, childNode);
+		}
+
+		return !status;
+	}
+</aui:script>

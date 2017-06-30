@@ -1,0 +1,197 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<div class="navigation-component view-navigation">
+	<ul class="nav-menu">
+
+		<%
+		if (MarketplaceUtil.isMarketplaceServer(request)) {
+			portletURL.setParameter("remoteMVCPath", "/marketplace/view_category.jsp");
+		}
+		else {
+			portletURL.setParameter("mvcPath", "/marketplace/view_category.jsp");
+		}
+
+		List<AssetCategory> assetCategories = AssetCategoryServiceUtil.getVocabularyCategories(AssetCategoryConstants.DEFAULT_PARENT_CATEGORY_ID, OSBConstants.ASSET_VOCABULARY_MARKETPLACE_ID, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+		%>
+
+		<li class="categories-nav class-toggle-off-click nav-item">
+			<a href="javascript:;">
+				<liferay-ui:message key="categories" />
+			</a>
+
+			<span class="children-marker parent-nav-marker"></span>
+
+			<ul class="child-nav-menu class-toggle-off-click-content drop-down-menu menu-depth-1">
+
+				<%
+				AssetCategory eePluginsAssetCategory = AssetCategoryServiceUtil.getCategory(OSBConstants.ASSET_CATEGORY_EE_PLUGINS_ID);
+
+				portletURL.setParameter("assetCategoryId", String.valueOf(eePluginsAssetCategory.getCategoryId()));
+				%>
+
+				<li class="class-toggle-off-click nav-item">
+					<a href="<%= portletURL.toString() %>">
+						<%= eePluginsAssetCategory.getTitle(themeDisplay.getLanguageId()) %>
+					</a>
+				</li>
+
+				<%
+				for (AssetCategory assetCategory : assetCategories) {
+					if (assetCategory.getCategoryId() == OSBConstants.ASSET_CATEGORY_EE_PLUGINS_ID) {
+						continue;
+					}
+
+					portletURL.setParameter("assetCategoryId", String.valueOf(assetCategory.getCategoryId()));
+				%>
+
+					<li class="class-toggle-off-click nav-item">
+						<a href="<%= portletURL.toString() %>">
+							<%= assetCategory.getTitle(themeDisplay.getLanguageId()) %>
+						</a>
+
+						<ul class="child-nav-menu indent-menu menu-depth-2">
+
+							<%
+							List<AssetCategory> childAssetCategories = AssetCategoryServiceUtil.getChildCategories(assetCategory.getCategoryId());
+
+							for (AssetCategory childAssetCategory : childAssetCategories) {
+								portletURL.setParameter("assetCategoryId", String.valueOf(childAssetCategory.getCategoryId()));
+							%>
+
+								<li class="nav-item">
+									<a href="<%= portletURL.toString() %>">
+										<%= childAssetCategory.getTitle(themeDisplay.getLanguageId()) %>
+									</a>
+								</li>
+
+							<%
+							}
+							%>
+
+						</ul>
+					</li>
+
+				<%
+				}
+				%>
+
+			</ul>
+		</li>
+
+		<c:if test="<%= !MarketplaceUtil.isMarketplaceServer(request) %>">
+			<%= _buildLayoutNavigation(request, themeDisplay) %>
+
+			<li class="liferay-home">
+				<a href="<%= PortalUtil.getPortalURL(request) %>">
+					<img alt="<liferay-ui:message key="liferay" />" height="25" src="<%= PortalUtil.getPathContext(request) %>/marketplace_navigation/images/liferay_logo.png" />
+
+					<span class="responsive-only">
+						Liferay.com
+					</span>
+				</a>
+			</li>
+		</c:if>
+	</ul>
+</div>
+
+<%!
+private String _buildChildLayoutNavigation(HttpServletRequest request, ThemeDisplay themeDisplay, Layout layout, int depth) throws Exception {
+	List<Layout> childLayouts = layout.getChildren();
+
+	StringBundler sb = new StringBundler(childLayouts.size() + 9);
+
+	if (depth == 1) {
+		sb.append("<li class=\"class-toggle-off-click nav-item\">");
+	}
+	else {
+		sb.append("<li class=\"class-toggle nav-item\">");
+	}
+
+	sb.append("<a href=\"javascript:;\" ");
+	sb.append(layout.getTarget());
+	sb.append(StringPool.GREATER_THAN);
+	sb.append(layout.getName(themeDisplay.getLocale()));
+	sb.append("</a><span class=\"children-marker\"></span>");
+
+	sb.append("<ul class=\"child-nav-menu class-toggle-off-click-content drop-down-menu menu-depth-");
+	sb.append(String.valueOf(depth));
+	sb.append("\">");
+
+	for (Layout childLayout : childLayouts) {
+		if (childLayout.isHidden()) {
+			continue;
+		}
+
+		if (childLayout.hasChildren() && (depth <= _MAX_LAYOUT_NAVIGATION_DEPTH)) {
+			sb.append(_buildChildLayoutNavigation(request, themeDisplay, childLayout, depth + 1));
+		}
+		else {
+			sb.append(_buildLayoutListItemNavigation(request, themeDisplay, childLayout));
+		}
+	}
+
+	sb.append("</ul>");
+
+	return sb.toString();
+}
+
+private String _buildLayoutListItemNavigation(HttpServletRequest request, ThemeDisplay themeDisplay, Layout layout) throws Exception {
+	StringBundler sb = new StringBundler(7);
+
+	sb.append("<li class=\"nav-item\"><a href=\"");
+
+	if (layout.isTypeURL()) {
+		sb.append(layout.getRegularURL(request));
+	}
+	else {
+		sb.append(layout.getFriendlyURL());
+	}
+
+	sb.append("\" ");
+	sb.append(layout.getTarget());
+	sb.append(StringPool.GREATER_THAN);
+	sb.append(layout.getName(themeDisplay.getLocale()));
+	sb.append("</a></li>");
+
+	return sb.toString();
+}
+
+private String _buildLayoutNavigation(HttpServletRequest request, ThemeDisplay themeDisplay) throws Exception {
+	Layout rootLayout = LayoutLocalServiceUtil.getFriendlyURLLayout(OSBConstants.GROUP_GUEST_ID, false, "/marketplace");
+
+	List<Layout> layouts = rootLayout.getChildren();
+
+	StringBundler sb = new StringBundler(layouts.size());
+
+	for (Layout layout : layouts) {
+		if (layout.isHidden()) {
+			continue;
+		}
+
+		if (layout.hasChildren()) {
+			sb.append(_buildChildLayoutNavigation(request, themeDisplay, layout, 1));
+		}
+		else {
+			sb.append(_buildLayoutListItemNavigation(request, themeDisplay, layout));
+		}
+	}
+
+	return sb.toString();
+}
+
+private final int _MAX_LAYOUT_NAVIGATION_DEPTH = 2;
+%>

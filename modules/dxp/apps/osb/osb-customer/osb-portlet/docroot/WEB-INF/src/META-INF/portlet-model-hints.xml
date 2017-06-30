@@ -1,0 +1,1590 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<hint-collection name="EDITOR">
+		<hint name="editor">true</hint>
+		<hint name="max-length">2000000</hint>
+	</hint-collection>
+	<model name="com.liferay.osb.model.AccountAttachment">
+		<field name="accountAttachmentId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="accountEntryId" type="long" />
+		<field name="accountProjectId" type="long" />
+		<field name="fileName" type="String" />
+		<field name="fileSize" type="long" />
+		<field name="type" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.AccountCall">
+		<field name="accountCallId" type="long" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedUserId" type="long" />
+		<field name="modifiedUserName" type="String" />
+		<field name="modifiedDate" type="Date" />
+		<field name="accountEntryId" type="long" />
+		<field name="type" type="int" />
+		<field name="callDate" type="Date" />
+		<field name="callLength" type="long" />
+		<field name="summary" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="clientsPresent" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="notes" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="actionItems" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+	</model>
+	<model name="com.liferay.osb.model.AccountCustomer">
+		<field name="accountCustomerId" type="long" />
+		<field name="userId" type="long" />
+		<field name="accountEntryId" type="long" />
+		<field name="role" type="int" />
+		<field name="notifications" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.AccountEntry">
+		<field name="accountEntryId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedUserId" type="long" />
+		<field name="modifiedUserName" type="String" />
+		<field name="modifiedDate" type="Date" />
+		<field name="corpProjectId" type="long" />
+		<field name="corpEntryName" type="String" />
+		<field name="name" type="String">
+			<hint name="max-length">500</hint>
+		</field>
+		<field name="code" type="String" />
+		<field name="redirectAccountEntryId" type="long" />
+		<field name="type" type="int" />
+		<field name="industry" type="int" />
+		<field name="countryId" type="long" />
+		<field name="partnerEntryId" type="long" />
+		<field name="partnerManagedSupport" type="boolean" />
+		<field name="tier" type="int" />
+		<field name="maxCustomers" type="int" />
+		<field name="instructions" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="notes" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="highestSupportResponseId" type="long" />
+		<field name="lastAuditDate" type="Date" />
+		<field name="status" type="int" />
+		<field name="statusByUserId" type="long" />
+		<field name="statusByUserName" type="String" />
+		<field name="statusDate" type="Date" />
+		<field name="statusMessage" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+	</model>
+	<model name="com.liferay.osb.model.AccountEntryLanguage">
+		<field name="accountEntryLanguageId" type="long" />
+		<field name="accountEntryId" type="long" />
+		<field name="languageId" type="String" />
+	</model>
+	<model name="com.liferay.osb.model.AccountEnvironment">
+		<field name="accountEnvironmentId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="accountEntryId" type="long" />
+		<field name="productEntryId" type="long" />
+		<field name="name" type="String" />
+		<field name="envOS" type="int" />
+		<field name="envOSCustom" type="String">
+			<hint name="max-length">150</hint>
+		</field>
+		<field name="envDB" type="int" />
+		<field name="envJVM" type="int" />
+		<field name="envAS" type="int" />
+		<field name="envLFR" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.AccountEnvironmentAttachment">
+		<field name="accountEnvironmentAttachmentId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="accountEnvironmentId" type="long" />
+		<field name="fileName" type="String" />
+		<field name="fileSize" type="long" />
+		<field name="type" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.AccountInformation">
+		<field name="accountInformationId" type="long" />
+		<field name="modifiedUserId" type="long" />
+		<field name="modifiedUserName" type="String" />
+		<field name="modifiedDate" type="Date" />
+		<field name="accountEntryId" type="long" />
+		<field name="accountProjectId" type="long" />
+		<field name="fieldId" type="int" />
+		<field name="data" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+	</model>
+	<model name="com.liferay.osb.model.AccountLink">
+		<field name="accountLinkId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="accountEntryId" type="long" />
+		<field name="url" type="String">
+			<hint-collection name="URL" />
+		</field>
+	</model>
+	<model name="com.liferay.osb.model.AccountProject">
+		<field name="accountProjectId" type="long" />
+		<field name="modifiedUserId" type="long" />
+		<field name="modifiedUserName" type="String" />
+		<field name="modifiedDate" type="Date" />
+		<field name="accountEntryId" type="long" />
+		<field name="name" type="String" />
+	</model>
+	<model name="com.liferay.osb.model.AccountWorker">
+		<field name="accountWorkerId" type="long" />
+		<field name="userId" type="long" />
+		<field name="accountEntryId" type="long" />
+		<field name="role" type="int" />
+		<field name="notifications" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.AppAudit">
+		<field name="uuid" type="String" />
+		<field name="appAuditId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="appEntryId" type="long" />
+		<field name="appVersionId" type="long" />
+		<field name="status" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.AppEntry">
+		<field name="uuid" type="String" />
+		<field name="appEntryId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="developerEntryId" type="long" />
+		<field name="developerName" type="String" />
+		<field name="title" type="String" />
+		<field name="description" type="String" localized="true">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="website" type="String">
+			<hint-collection name="URL" />
+		</field>
+		<field name="demoWebsite" type="String">
+			<hint-collection name="URL" />
+		</field>
+		<field name="documentationWebsite" type="String">
+			<hint-collection name="URL" />
+		</field>
+		<field name="referenceWebsite" type="String">
+			<hint-collection name="URL" />
+		</field>
+		<field name="sourceCodeWebsite" type="String">
+			<hint-collection name="URL" />
+		</field>
+		<field name="supportWebsite" type="String">
+			<hint-collection name="URL" />
+		</field>
+		<field name="labs" type="boolean" />
+		<field name="productType" type="int" />
+		<field name="version" type="String">
+			<hint name="max-length">20</hint>
+		</field>
+		<field name="changeLog" type="String" localized="true">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="iconImageId" type="long" />
+		<field name="paclEnabled" type="boolean" />
+		<field name="size" type="long" />
+		<field name="downloadCount" type="int" />
+		<field name="licenseType" type="int" />
+		<field name="licenseLifetime" type="long" />
+		<field name="supported" type="boolean" />
+		<field name="orderURL" type="String">
+			<hint-collection name="URL" />
+		</field>
+		<field name="hidden" type="boolean" />
+		<field name="portalRequired" type="boolean" />
+		<field name="status" type="int" />
+		<field name="statusByUserId" type="long" />
+		<field name="statusByUserName" type="String" />
+		<field name="statusDate" type="Date" />
+		<field name="statusVersionDate" type="Date" />
+	</model>
+	<model name="com.liferay.osb.model.AppEntryRel">
+		<field name="uuid" type="String" />
+		<field name="appEntryRelId" type="long" />
+		<field name="appEntryId1" type="long" />
+		<field name="appEntryId2" type="long" />
+		<field name="type" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.AppFlag">
+		<field name="uuid" type="String" />
+		<field name="appFlagId" type="long" />
+		<field name="createDate" type="Date" />
+		<field name="appEntryId" type="long" />
+		<field name="appVersionId" type="long" />
+		<field name="type" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.AppPackage">
+		<field name="appPackageId" type="long" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="appEntryId" type="long" />
+		<field name="appVersionId" type="long" />
+		<field name="compatibility" type="int" />
+		<field name="compatibilityPlus" type="boolean" />
+		<field name="prepackaged" type="boolean" />
+		<field name="downloadCount" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.AppPackagePlugin">
+		<field name="appPackagePluginId" type="long" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="appEntryId" type="long" />
+		<field name="appVersionId" type="long" />
+		<field name="appPackageId" type="long" />
+		<field name="assetAttachmentId" type="long" />
+		<field name="fileName" type="String">
+			<hint name="max-length">255</hint>
+		</field>
+		<field name="bundleSymbolicName" type="String">
+			<hint name="max-length">500</hint>
+		</field>
+		<field name="bundleVersion" type="String" />
+		<field name="contextName" type="String">
+			<hint name="max-length">255</hint>
+		</field>
+		<field name="paclEnabled" type="boolean" />
+		<field name="relengHash" type="String" />
+		<field name="portalRestartRequired" type="boolean" />
+	</model>
+	<model name="com.liferay.osb.model.AppPricing">
+		<field name="appPricingId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="appEntryId" type="long" />
+		<field name="appVersionId" type="long" />
+		<field name="name" type="String" />
+		<field name="currencyEntryId" type="long" />
+		<field name="standardSupportPrice" type="double" />
+		<field name="developerSupportPrice" type="double" />
+		<field name="rank" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.AppPricingItem">
+		<field name="appPricingItemId" type="long" />
+		<field name="appPricingId" type="long" />
+		<field name="assetLicenseId" type="long" />
+		<field name="currencyEntryId" type="long" />
+		<field name="price" type="double" />
+	</model>
+	<model name="com.liferay.osb.model.AppVersion">
+		<field name="appVersionId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="appEntryId" type="long" />
+		<field name="developerEntryId" type="long" />
+		<field name="developerName" type="String" />
+		<field name="title" type="String">
+			<hint name="display-width">50%</hint>
+		</field>
+		<field name="description" type="String" localized="true">
+			<hint-collection name="TEXTAREA" />
+			<hint name="display-width">90%</hint>
+		</field>
+		<field name="website" type="String">
+			<hint-collection name="URL" />
+			<hint name="display-width">90%</hint>
+		</field>
+		<field name="demoWebsite" type="String">
+			<hint-collection name="URL" />
+			<hint name="display-width">90%</hint>
+		</field>
+		<field name="documentationWebsite" type="String">
+			<hint-collection name="URL" />
+			<hint name="display-width">90%</hint>
+		</field>
+		<field name="referenceWebsite" type="String">
+			<hint-collection name="URL" />
+		</field>
+		<field name="sourceCodeWebsite" type="String">
+			<hint-collection name="URL" />
+			<hint name="display-width">90%</hint>
+		</field>
+		<field name="supportWebsite" type="String">
+			<hint-collection name="URL" />
+			<hint name="display-width">90%</hint>
+		</field>
+		<field name="labs" type="boolean" />
+		<field name="productType" type="int" />
+		<field name="version" type="String">
+			<hint name="max-length">20</hint>
+		</field>
+		<field name="versionId" type="int" />
+		<field name="versionOrder" type="int" />
+		<field name="changeLog" type="String" localized="true">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="iconImageId" type="long" />
+		<field name="size" type="long" />
+		<field name="downloadCount" type="int" />
+		<field name="paclEnabled" type="boolean" />
+		<field name="releaseDate" type="Date" />
+		<field name="releaseType" type="int" />
+		<field name="contractEntryId" type="long" />
+		<field name="supported" type="boolean" />
+		<field name="orderURL" type="String">
+			<hint-collection name="URL" />
+		</field>
+		<field name="hidden" type="boolean" />
+		<field name="portalRequired" type="boolean" />
+		<field name="status" type="int" />
+		<field name="statusByUserId" type="long" />
+		<field name="statusByUserName" type="String" />
+		<field name="statusDate" type="Date" />
+		<field name="statusMessage" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+	</model>
+	<model name="com.liferay.osb.model.AssetAttachment">
+		<field name="assetAttachmentId" type="long" />
+		<field name="userId" type="long" />
+		<field name="createDate" type="Date" />
+		<field name="classNameId" type="long" />
+		<field name="classPK" type="long" />
+		<field name="fileName" type="String">
+			<hint name="max-length">255</hint>
+		</field>
+		<field name="type" type="int" />
+		<field name="rank" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.AssetAudit">
+		<field name="assetAuditId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="legalEntityName" type="String" />
+		<field name="classNameId" type="long" />
+		<field name="classPK" type="long" />
+		<field name="vendorClassNameId" type="long" />
+		<field name="vendorClassPK" type="long" />
+		<field name="type" type="int" />
+		<field name="domain" type="int" />
+		<field name="time" type="long" />
+		<field name="currencyCode" type="String" />
+		<field name="price" type="double" />
+	</model>
+	<model name="com.liferay.osb.model.AssetLicense">
+		<field name="assetLicenseId" type="long" />
+		<field name="userId" type="long" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="classNameId" type="long" />
+		<field name="classPK" type="long" />
+		<field name="licenseId" type="String" />
+		<field name="name" type="String" />
+		<field name="requiredVersion" type="double" />
+		<field name="usageType" type="int" />
+		<field name="licenseType" type="int" />
+		<field name="licenseTypeAllotment" type="long" />
+		<field name="lifetime" type="long" />
+		<field name="status" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.AssetList">
+		<field name="assetListId" type="long" />
+		<field name="assetCategoryId" type="long" />
+		<field name="type" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.AssetListAssetEntry">
+		<field name="assetListAssetEntryId" type="long" />
+		<field name="assetListId" type="long" />
+		<field name="assetEntryId" type="long" />
+	</model>
+	<model name="com.liferay.osb.model.AssetReceipt">
+		<field name="assetReceiptId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="assetEntryId" type="long" />
+		<field name="ownerClassNameId" type="long" />
+		<field name="ownerClassPK" type="long" />
+		<field name="legalEntityName" type="String" />
+		<field name="productClassNameId" type="long" />
+		<field name="productClassPK" type="long" />
+		<field name="type" type="long" />
+		<field name="currencyEntryId" type="long" />
+		<field name="actualPrice" type="double" />
+	</model>
+	<model name="com.liferay.osb.model.AssetReceiptLicense">
+		<field name="uuid" type="String" />
+		<field name="assetReceiptLicenseId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="assetReceiptId" type="long" />
+		<field name="assetLicenseId" type="long" />
+		<field name="assetEntryId" type="long" />
+		<field name="ownerClassNameId" type="long" />
+		<field name="ownerClassPK" type="long" />
+		<field name="productClassNameId" type="long" />
+		<field name="productClassPK" type="long" />
+		<field name="productId" type="String" />
+		<field name="startDate" type="Date" />
+		<field name="endDate" type="Date" />
+		<field name="usageType" type="int" />
+		<field name="licenseType" type="int" />
+		<field name="licenseTypeAllotment" type="long" />
+		<field name="licenseLifetime" type="long" />
+	</model>
+	<model name="com.liferay.osb.model.AssetReceiptRedeemToken">
+		<field name="AssetReceiptRedeemTokenId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="classNameId" type="long" />
+		<field name="classPK" type="long" />
+		<field name="redeemEmailAddress" type="String" />
+		<field name="redeemDate" type="Date" />
+		<field name="token" type="String" />
+	</model>
+	<model name="com.liferay.osb.model.AssetReceiptSupport">
+		<field name="uuid" type="String" />
+		<field name="assetReceiptSupportId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="assetReceiptId" type="long" />
+		<field name="assetLicenseId" type="long" />
+		<field name="assetEntryId" type="long" />
+		<field name="ownerClassNameId" type="long" />
+		<field name="ownerClassPK" type="long" />
+		<field name="productClassNameId" type="long" />
+		<field name="productClassPK" type="long" />
+		<field name="productId" type="String" />
+		<field name="startDate" type="Date" />
+		<field name="endDate" type="Date" />
+		<field name="usageType" type="int" />
+		<field name="supportLifetime" type="long" />
+	</model>
+	<model name="com.liferay.osb.model.AssetRecommendationEntry">
+		<field name="assetRecommendationEntryId" type="long" />
+		<field name="assetRecommendationSetId" type="long" />
+		<field name="classNameId" type="long" />
+		<field name="classPK" type="long" />
+		<field name="viewedAlsoPurchasedCount" type="int" />
+		<field name="purchasedAlsoPurchasedCount" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.AssetRecommendationSet">
+		<field name="assetRecommendationSetId" type="long" />
+		<field name="classNameId" type="long" />
+		<field name="classPK" type="long" />
+	</model>
+	<model name="com.liferay.osb.model.AssetStatsDay">
+		<field name="assetStatsDayId" type="long" />
+		<field name="classNameId" type="long" />
+		<field name="classPK" type="long" />
+		<field name="day" type="int" />
+		<field name="year" type="int" />
+		<field name="viewCount" type="long" />
+		<field name="downloadCount" type="long" />
+		<field name="purchaseCount" type="long" />
+		<field name="currencyCodeRevenues" type="String" />
+	</model>
+	<model name="com.liferay.osb.model.AssetStatsMonth">
+		<field name="assetStatsMonthId" type="long" />
+		<field name="classNameId" type="long" />
+		<field name="classPK" type="long" />
+		<field name="month" type="int" />
+		<field name="year" type="int" />
+		<field name="viewCount" type="long" />
+		<field name="downloadCount" type="long" />
+		<field name="purchaseCount" type="long" />
+		<field name="currencyCodeRevenues" type="String" />
+	</model>
+	<model name="com.liferay.osb.model.AssetStatsWeek">
+		<field name="assetStatsWeekId" type="long" />
+		<field name="classNameId" type="long" />
+		<field name="classPK" type="long" />
+		<field name="week" type="int" />
+		<field name="year" type="int" />
+		<field name="viewCount" type="long" />
+		<field name="downloadCount" type="long" />
+		<field name="purchaseCount" type="long" />
+		<field name="currencyCodeRevenues" type="String" />
+	</model>
+	<model name="com.liferay.osb.model.AuditAction">
+		<field name="auditActionId" type="long" />
+		<field name="modifiedDate" type="Date" />
+		<field name="classNameId" type="long" />
+		<field name="classPK" type="long" />
+		<field name="mappingClassPK" type="long" />
+		<field name="action" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.AuditEntry">
+		<field name="auditEntryId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="classNameId" type="long" />
+		<field name="classPK" type="long" />
+		<field name="previousAuditEntryId" type="long" />
+		<field name="auditSetId" type="long" />
+		<field name="fieldClassNameId" type="long" />
+		<field name="fieldClassPK" type="long" />
+		<field name="action" type="int" />
+		<field name="field" type="int" />
+		<field name="visibility" type="int" />
+		<field name="oldLabel" type="String">
+			<hint name="max-length">255</hint>
+		</field>
+		<field name="oldValue" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="newLabel" type="String">
+			<hint name="max-length">255</hint>
+		</field>
+		<field name="newValue" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="i18n" type="boolean" />
+	</model>
+	<model name="com.liferay.osb.model.ContractAudit">
+		<field name="contractAuditId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="userEmailAddress" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="contractEntryId" type="long" />
+		<field name="signatoryClassNameId" type="long" />
+		<field name="signatoryClassPK" type="long" />
+		<field name="productClassNameId" type="long" />
+		<field name="productClassPK" type="long" />
+		<field name="type" type="String" />
+		<field name="languageId" type="String" />
+		<field name="version" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.ContractEntry">
+		<field name="contractEntryId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="classNameId" type="long" />
+		<field name="classPK" type="long" />
+		<field name="type" type="int" />
+		<field name="version" type="int" />
+		<field name="content" type="String" localized="true">
+			<hint-collection name="TEXTAREA" />
+			<hint name="max-length">200000</hint>
+		</field>
+	</model>
+	<model name="com.liferay.osb.model.CorpEntry">
+		<field name="corpEntryId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="name" type="String" />
+		<field name="description" type="String" localized="true">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="organizationId" type="long" />
+		<field name="logoId" type="long" />
+		<field name="addressId" type="long" />
+		<field name="contactEmailAddress" type="String">
+			<validator name="email" />
+		</field>
+		<field name="profileEmailAddress" type="String">
+			<validator name="email" />
+		</field>
+		<field name="phoneNumber" type="String" />
+		<field name="faxNumber" type="String" />
+		<field name="website" type="String">
+			<validator name="url" />
+		</field>
+		<field name="dossieraAccountKey" type="String" />
+		<field name="status" type="int" />
+		<field name="statusByUserId" type="long" />
+		<field name="statusByUserName" type="String" />
+		<field name="statusDate" type="Date" />
+		<field name="statusMessage" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+	</model>
+	<model name="com.liferay.osb.model.CorpGroup">
+		<field name="corpGroupId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="name" type="String">
+			<hint name="display-width">90%</hint>
+		</field>
+		<field name="description" type="String" localized="true">
+			<hint name="display-width">90%</hint>
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="organizationId" type="long" />
+		<field name="logoId" type="long" />
+		<field name="emailAddress" type="String">
+			<hint name="display-width">90%</hint>
+			<validator name="email" />
+		</field>
+		<field name="website" type="String">
+			<hint name="display-width">90%</hint>
+			<validator name="url" />
+		</field>
+	</model>
+	<model name="com.liferay.osb.model.CorpMembershipRequest">
+		<field name="corpMembershipRequestId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="corpEntryId" type="long" />
+		<field name="key" type="String" />
+		<field name="emailAddress" type="String" />
+		<field name="status" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.CorpProject">
+		<field name="corpProjectId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="dossieraProjectKey" type="String" />
+		<field name="salesforceProjectKey" type="String" />
+		<field name="name" type="String">
+			<hint name="max-length">150</hint>
+		</field>
+		<field name="organizationId" type="long" />
+	</model>
+	<model name="com.liferay.osb.model.CorpProjectMessage">
+		<field name="corpProjectMessageId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="corpProjectId" type="long" />
+		<field name="type" type="int" />
+		<field name="severityLevel" type="int" />
+		<field name="title" type="String">
+			<hint name="max-length">150</hint>
+		</field>
+		<field name="content" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="displayCP" type="boolean" />
+		<field name="displayLCS" type="boolean" />
+		<field name="displayLESA" type="boolean" />
+	</model>
+	<model name="com.liferay.osb.model.CountryAppPricing">
+		<field name="countryAppPricingId" type="long" />
+		<field name="appEntryId" type="long" />
+		<field name="appVersionId" type="long" />
+		<field name="appPricingId" type="long" />
+		<field name="countryId" type="long" />
+		<field name="name" type="String" />
+	</model>
+	<model name="com.liferay.osb.model.CurrencyEntry">
+		<field name="currencyEntryId" type="long" />
+		<field name="countryId" type="long" />
+		<field name="currencyCode" type="String" />
+		<field name="marketplaceEnabled" type="boolean" />
+		<field name="marketplaceMinPrice" type="double" />
+	</model>
+	<model name="com.liferay.osb.model.DeveloperEntry">
+		<field name="developerEntryId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="screenName" type="String" />
+		<field name="firstName" type="String" />
+		<field name="middleName" type="String" />
+		<field name="lastName" type="String" />
+		<field name="legalEntityName" type="String" />
+		<field name="emailAddress" type="String" />
+		<field name="contractEntryId" type="long" />
+		<field name="phoneNumber" type="String" />
+		<field name="faxNumber" type="String" />
+		<field name="domainName" type="String" />
+		<field name="domainStatus" type="int" />
+		<field name="addressId" type="long" />
+		<field name="countryId" type="long" />
+		<field name="profileDescription" type="String" localized="true" />
+		<field name="profileEmailAddress" type="String" />
+		<field name="profileLogoId" type="long" />
+		<field name="profileWebsite" type="String" />
+		<field name="paymentEmailAddress" type="String" />
+		<field name="googleAnalyticsKey" type="String" />
+		<field name="subscriptionExpirationDate" type="Date">
+			<hint name="show-time">false</hint>
+		</field>
+		<field name="subscriptionStatus" type="int" />
+		<field name="fatcaWithholdingPercentage" type="double" />
+		<field name="dossieraAccountKey" type="String" />
+		<field name="type" type="int" />
+		<field name="status" type="int" />
+		<field name="statusByUserId" type="long" />
+		<field name="statusByUserName" type="String" />
+		<field name="statusDate" type="Date" />
+		<field name="statusMessage" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+	</model>
+	<model name="com.liferay.osb.model.ExternalIdMapper">
+		<field name="externalIdMapperId" type="long" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="classNameId" type="long" />
+		<field name="classPK" type="long" />
+		<field name="type" type="int" />
+		<field name="externalId" type="String" />
+	</model>
+	<model name="com.liferay.osb.model.FeedbackEntry">
+		<field name="feedbackEntryId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="classNameId" type="long" />
+		<field name="classPK" type="long" />
+		<field name="satisfied" type="int" />
+		<field name="comments" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="pageURL" type="String">
+			<hint-collection name="URL" />
+		</field>
+	</model>
+	<model name="com.liferay.osb.model.HolidayCalendar">
+		<field name="holidayCalendarId" type="long" />
+		<field name="name" type="String" />
+		<field name="description" type="String" />
+	</model>
+	<model name="com.liferay.osb.model.HolidayCalendarRel">
+		<field name="holidayCalendarRelId" type="long" />
+		<field name="holidayCalendarId" type="long" />
+		<field name="userId" type="long" />
+	</model>
+	<model name="com.liferay.osb.model.HolidayEntry">
+		<field name="holidayEntryId" type="long" />
+		<field name="holidayCalendarId" type="long" />
+		<field name="name" type="String" />
+		<field name="description" type="String" />
+		<field name="startDate" type="Date" />
+		<field name="endDate" type="Date" />
+		<field name="repeatYearly" type="boolean" />
+	</model>
+	<model name="com.liferay.osb.model.LCSSubscriptionEntry">
+		<field name="lcsSubscriptionEntryId" type="long" />
+		<field name="lcsProjectId" type="long" />
+		<field name="product" type="String" />
+		<field name="productVersion" type="int" />
+		<field name="type" type="String" />
+		<field name="platform" type="String" />
+		<field name="platformVersion" type="String" />
+		<field name="serversAllowed" type="int" />
+		<field name="serversUsed" type="int" />
+		<field name="instanceSize" type="int" />
+		<field name="startDate" type="Date" />
+		<field name="endDate" type="Date" />
+		<field name="supportStartDate" type="Date" />
+		<field name="supportEndDate" type="Date" />
+		<field name="actualPrice" type="double" />
+		<field name="currencyCode" type="String" />
+		<field name="active" type="boolean" />
+	</model>
+	<model name="com.liferay.osb.model.LicenseEntry">
+		<field name="licenseEntryId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="productEntryId" type="long" />
+		<field name="name" type="String" />
+		<field name="type" type="String" />
+		<field name="portalVersionMin" type="int" />
+		<field name="portalVersionMax" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.LicenseKey">
+		<field name="licenseKeyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedUserId" type="long" />
+		<field name="modifiedUserName" type="String" />
+		<field name="modifiedDate" type="Date" />
+		<field name="licenseKeySetId" type="long" />
+		<field name="assetReceiptLicenseId" type="long" />
+		<field name="accountEntryId" type="long" />
+		<field name="orderEntryId" type="long" />
+		<field name="offeringEntryId" type="long" />
+		<field name="licenseEntryId" type="long" />
+		<field name="productEntryId" type="long" />
+		<field name="supportResponseId" type="long" />
+		<field name="accountEntryName" type="String">
+			<hint name="max-length">500</hint>
+		</field>
+		<field name="licenseEntryName" type="String" />
+		<field name="licenseEntryType" type="String" />
+		<field name="licenseVersion" type="int" />
+		<field name="productEntryName" type="String" />
+		<field name="productId" type="String" />
+		<field name="productVersion" type="int" />
+		<field name="productVersionLabel" type="String" />
+		<field name="clusterId" type="long" />
+		<field name="owner" type="String" />
+		<field name="maxServers" type="int" />
+		<field name="maxConcurrentUsers" type="long" />
+		<field name="maxUsers" type="long" />
+		<field name="maxHttpSessions" type="int" />
+		<field name="description" type="String">
+			<hint name="max-length">255</hint>
+		</field>
+		<field name="hostName" type="String" />
+		<field name="ipAddresses" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="macAddresses" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="serverId" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="key" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="startDate" type="Date" />
+		<field name="expirationDate" type="Date" />
+		<field name="additionalInfo" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="complimentary" type="boolean" />
+		<field name="active" type="boolean" />
+	</model>
+	<model name="com.liferay.osb.model.LicenseKeySet">
+		<field name="licenseKeySetId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="accountEntryId" type="long" />
+		<field name="name" type="String" />
+	</model>
+	<model name="com.liferay.osb.model.MarketingEvent">
+		<field name="marketingEventId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="type" type="int" />
+		<field name="defaultLanguageId" type="String" />
+		<field name="title" type="String" localized="true">
+			<hint name="display-width">350</hint>
+		</field>
+		<field name="titleURL" type="String">
+			<hint-collection name="URL" />
+			<hint name="display-width">350</hint>
+			<validator name="url" />
+		</field>
+		<field name="hostedBy" type="String">
+			<hint name="display-width">350</hint>
+		</field>
+		<field name="hostedByURL" type="String">
+			<hint-collection name="URL" />
+			<hint name="display-width">350</hint>
+			<validator name="url" />
+		</field>
+		<field name="summary" type="String" localized="true">
+			<hint-collection name="EDITOR" />
+		</field>
+		<field name="imageFileEntryId" type="long" />
+		<field name="slidesFileEntryId" type="long" />
+		<field name="videoTitle" type="String">
+			<hint name="display-width">350</hint>
+			<hint name="max-length">150</hint>
+		</field>
+		<field name="timeZoneId" type="String" />
+		<field name="startDate" type="Date" />
+		<field name="endDate" type="Date" />
+		<field name="dateTBA" type="boolean" />
+		<field name="addressId" type="long" />
+		<field name="globalRegion" type="int" />
+		<field name="online" type="boolean" />
+		<field name="registrationType" type="int" />
+		<field name="registrationURL" type="String">
+			<hint-collection name="URL" />
+			<hint name="display-width">350</hint>
+			<validator name="url" />
+		</field>
+	</model>
+	<model name="com.liferay.osb.model.OfferingBundle">
+		<field name="offeringBundleId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="name" type="String" />
+	</model>
+	<model name="com.liferay.osb.model.OfferingDefinition">
+		<field name="offeringDefinitionId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="productEntryId" type="long" />
+		<field name="supportResponseId" type="long" />
+		<field name="productDescription" type="String" />
+		<field name="licenses" type="boolean" />
+		<field name="unlimitedLicenses" type="boolean" />
+		<field name="maxConcurrentUsers" type="long" />
+		<field name="maxUsers" type="long" />
+		<field name="supportTickets" type="boolean" />
+	</model>
+	<model name="com.liferay.osb.model.OfferingEntry">
+		<field name="offeringEntryId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="accountEntryId" type="long" />
+		<field name="orderEntryId" type="long" />
+		<field name="productEntryId" type="long" />
+		<field name="supportResponseId" type="long" />
+		<field name="productDescription" type="String" />
+		<field name="type" type="int" />
+		<field name="version" type="int" />
+		<field name="platform" type="String" />
+		<field name="platformVersion" type="String" />
+		<field name="licenses" type="boolean" />
+		<field name="licenseLifetime" type="long" />
+		<field name="maxConcurrentUsers" type="long" />
+		<field name="maxUsers" type="long" />
+		<field name="supportTickets" type="boolean" />
+		<field name="supportLifetime" type="long" />
+		<field name="supportEndDate" type="Date" />
+		<field name="sizing" type="int" />
+		<field name="quantity" type="int" />
+		<field name="status" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.OrderEntry">
+		<field name="uuid" type="String" />
+		<field name="orderEntryId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedUserId" type="long" />
+		<field name="modifiedUserName" type="String" />
+		<field name="modifiedDate" type="Date" />
+		<field name="accountEntryId" type="long" />
+		<field name="purchaseOrderKey" type="String" />
+		<field name="startDate" type="Date">
+			<hint name="show-time">false</hint>
+		</field>
+		<field name="prorated" type="boolean" />
+		<field name="actualStartDate" type="Date">
+			<hint name="show-time">false</hint>
+		</field>
+		<field name="renewCount" type="int" />
+		<field name="status" type="int" />
+		<field name="statusByUserId" type="long" />
+		<field name="statusByUserName" type="String" />
+		<field name="statusDate" type="Date" />
+		<field name="statusMessage" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+	</model>
+	<model name="com.liferay.osb.model.PartnerEntry">
+		<field name="partnerEntryId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedUserId" type="long" />
+		<field name="modifiedUserName" type="String" />
+		<field name="modifiedDate" type="Date" />
+		<field name="parentPartnerEntryId" type="long" />
+		<field name="dossieraAccountKey" type="String" />
+		<field name="code" type="String">
+			<hint name="max-length">255</hint>
+		</field>
+		<field name="notes" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="status" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.PartnerWorker">
+		<field name="partnerWorkerId" type="long" />
+		<field name="userId" type="long" />
+		<field name="partnerEntryId" type="long" />
+		<field name="role" type="int" />
+		<field name="notifications" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.PortalRelease">
+		<field name="portalReleaseId" type="long" />
+		<field name="versionName" type="String" />
+		<field name="buildNumber" type="int" />
+		<field name="fixPackName" type="String" />
+		<field name="ee" type="boolean" />
+		<field name="marketplaceSupport" type="boolean" />
+		<field name="osgiSupport" type="boolean" />
+		<field name="paclSupport" type="boolean" />
+		<field name="hidden" type="boolean" />
+	</model>
+	<model name="com.liferay.osb.model.ProductEntry">
+		<field name="productEntryId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="name" type="String" />
+		<field name="type" type="int" />
+		<field name="environment" type="int" />
+		<field name="versionsListType" type="String" />
+	</model>
+	<model name="com.liferay.osb.model.SearchFilter">
+		<field name="searchFilterId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="classNameId" type="long" />
+		<field name="name" type="String" />
+		<field name="filter" type="String">
+			<hint-collection name="CLOB" />
+		</field>
+		<field name="visibility" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.SecurityPatch">
+		<field name="securityPatchId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="accountEntryId" type="long" />
+		<field name="ticketAttachmentId" type="long" />
+		<field name="portletId" type="String" />
+		<field name="envLFR" type="int" />
+		<field name="name" type="String">
+			<hint name="max-length">150</hint>
+		</field>
+		<field name="fileName" type="String">
+			<hint-collection name="URL" />
+		</field>
+	</model>
+	<model name="com.liferay.osb.model.SupportLabor">
+		<field name="supportLaborId" type="long" />
+		<field name="name" type="String" />
+		<field name="description" type="String" />
+		<field name="timeZoneId" type="String" />
+		<field name="sunOpen" type="int" />
+		<field name="sunClose" type="int" />
+		<field name="monOpen" type="int" />
+		<field name="monClose" type="int" />
+		<field name="tueOpen" type="int" />
+		<field name="tueClose" type="int" />
+		<field name="wedOpen" type="int" />
+		<field name="wedClose" type="int" />
+		<field name="thuOpen" type="int" />
+		<field name="thuClose" type="int" />
+		<field name="friOpen" type="int" />
+		<field name="friClose" type="int" />
+		<field name="satOpen" type="int" />
+		<field name="satClose" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.SupportRegion">
+		<field name="supportRegionId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="name" type="String" />
+		<field name="description" type="String" />
+		<field name="timeZoneId" type="String" />
+		<field name="managerUserId" type="long" />
+	</model>
+	<model name="com.liferay.osb.model.SupportResponse">
+		<field name="supportResponseId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="name" type="String" />
+		<field name="supportLevel" type="int" />
+		<field name="severity1Response" type="int" />
+		<field name="severity1Resolution" type="int" />
+		<field name="severity2Response" type="int" />
+		<field name="severity2Resolution" type="int" />
+		<field name="severity3Response" type="int" />
+		<field name="severity3Resolution" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.SupportTeam">
+		<field name="supportTeamId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="parentSupportTeamId" type="long" />
+		<field name="supportLaborId" type="long" />
+		<field name="locationSupportRegionId" type="long" />
+		<field name="name" type="String" />
+		<field name="description" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="type" type="int" />
+		<field name="assignedWork" type="double" />
+		<field name="maxWork" type="double" />
+	</model>
+	<model name="com.liferay.osb.model.SupportTeamLanguage">
+		<field name="supportTeamLanguageId" type="long" />
+		<field name="supportTeamId" type="long" />
+		<field name="languageId" type="String" />
+	</model>
+	<model name="com.liferay.osb.model.SupportWorker">
+		<field name="supportWorkerId" type="long" />
+		<field name="userId" type="long" />
+		<field name="supportTeamId" type="long" />
+		<field name="supportLaborId" type="long" />
+		<field name="autoAssign" type="boolean" />
+		<field name="assignedWork" type="double" />
+		<field name="maxWork" type="double" />
+		<field name="escalationLevel" type="int" />
+		<field name="role" type="int" />
+		<field name="escalationLevel2Role" type="int" />
+		<field name="notifications" type="int" />
+		<field name="clockedIn" type="boolean" />
+	</model>
+	<model name="com.liferay.osb.model.SupportWorkerAccountTier">
+		<field name="supportWorkerAccountTierId" type="long" />
+		<field name="supportWorkerId" type="long" />
+		<field name="accountTier" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.SupportWorkerComponent">
+		<field name="supportWorkerComponentId" type="long" />
+		<field name="supportWorkerId" type="long" />
+		<field name="component" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.SupportWorkerSeverity">
+		<field name="supportWorkerSeverityId" type="long" />
+		<field name="supportWorkerId" type="long" />
+		<field name="severity" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.TicketAttachment">
+		<field name="ticketAttachmentId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="ticketEntryId" type="long" />
+		<field name="ticketSolutionId" type="long" />
+		<field name="releaseNotesId" type="long" />
+		<field name="fileName" type="String">
+			<hint name="max-length">255</hint>
+		</field>
+		<field name="fileSize" type="long" />
+		<field name="type" type="int" />
+		<field name="visibility" type="int" />
+		<field name="extractedText" type="String">
+			<hint-collection name="CLOB" />
+		</field>
+		<field name="availableFileRepositoryIds" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="replicate" type="boolean" />
+		<field name="deleteDate" type="Date" />
+		<field name="status" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.TicketCall">
+		<field name="ticketCallId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="ticketEntryId" type="long" />
+		<field name="type" type="int" />
+		<field name="callDate" type="Date" />
+		<field name="callLength" type="long" />
+		<field name="customerName" type="String" />
+		<field name="customerContact" type="String" />
+		<field name="confirmation" type="String">
+			<hint-collection name="TEXTAREA" />
+			<hint name="max-length">200000</hint>
+		</field>
+		<field name="instructions" type="String">
+			<hint-collection name="TEXTAREA" />
+			<hint name="max-length">200000</hint>
+		</field>
+	</model>
+	<model name="com.liferay.osb.model.TicketCannedResponse">
+		<field name="ticketCannedResponseId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="name" type="String" localized="true" />
+		<field name="content" type="String" localized="true" />
+		<field name="useCount" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.TicketComment">
+		<field name="ticketCommentId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="ticketEntryId" type="long" />
+		<field name="body" type="String">
+			<hint-collection name="TEXTAREA" />
+			<hint name="max-length">200000</hint>
+		</field>
+		<field name="type" type="int" />
+		<field name="format" type="String" />
+		<field name="visibility" type="int" />
+		<field name="settings" type="String" />
+		<field name="status" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.TicketEntry">
+		<field name="ticketEntryId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="accountEntryId" type="long" />
+		<field name="orderEntryId" type="long" />
+		<field name="productEntryId" type="long" />
+		<field name="supportResponseId" type="long" />
+		<field name="offeringEntryId" type="long" />
+		<field name="supportRegionId" type="long" />
+		<field name="languageId" type="String" />
+		<field name="ticketId" type="long" />
+		<field name="subject" type="String">
+			<hint name="display-width">750</hint>
+			<hint name="max-length">255</hint>
+		</field>
+		<field name="description" type="String">
+			<hint name="display-height">300</hint>
+			<hint name="display-width">850</hint>
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="reproductionSteps" type="String">
+			<hint name="display-height">300</hint>
+			<hint name="display-width">850</hint>
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="severity" type="int" />
+		<field name="status" type="int" />
+		<field name="weight" type="int" />
+		<field name="escalationLevel" type="int" />
+		<field name="envName" type="String" />
+		<field name="envOS" type="int" />
+		<field name="envOSCustom" type="String">
+			<hint name="max-length">150</hint>
+		</field>
+		<field name="envDB" type="int" />
+		<field name="envJVM" type="int" />
+		<field name="envAS" type="int" />
+		<field name="envLFR" type="int" />
+		<field name="envBrowser" type="int" />
+		<field name="envBrowserCustom" type="String">
+			<hint name="max-length">150</hint>
+		</field>
+		<field name="envCS" type="int" />
+		<field name="envSearch" type="String" />
+		<field name="component" type="int" />
+		<field name="subcomponent" type="int" />
+		<field name="subcomponentCustom" type="String">
+			<hint name="max-length">150</hint>
+		</field>
+		<field name="resolution" type="int" />
+		<field name="holdDate" type="Date" />
+		<field name="closedDate" type="Date" />
+		<field name="dueDate" type="Date" />
+		<field name="ignoreDueDate" type="boolean" />
+		<field name="customerModifiedDate" type="Date" />
+		<field name="workerModifiedDate" type="Date" />
+	</model>
+	<model name="com.liferay.osb.model.TicketFeedback">
+		<field name="ticketFeedbackId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="accountEntryId" type="long" />
+		<field name="ticketEntryId" type="long" />
+		<field name="subject" type="int" />
+		<field name="satisfied" type="int" />
+		<field name="answer1" type="int" />
+		<field name="answer2" type="int" />
+		<field name="answer3" type="int" />
+		<field name="rating1" type="int" />
+		<field name="rating2" type="int" />
+		<field name="rating3" type="int" />
+		<field name="rating4" type="int" />
+		<field name="comments" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="status" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.TicketFlag">
+		<field name="ticketFlagId" type="long" />
+		<field name="userId" type="long" />
+		<field name="modifiedDate" type="Date" />
+		<field name="accountEntryId" type="long" />
+		<field name="ticketEntryId" type="long" />
+		<field name="type" type="int" />
+		<field name="flag" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.TicketInformation">
+		<field name="ticketInformationId" type="long" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="ticketEntryId" type="long" />
+		<field name="fieldId" type="long" />
+		<field name="data" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+	</model>
+	<model name="com.liferay.osb.model.TicketLink">
+		<field name="ticketLinkId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="ticketEntryId" type="long" />
+		<field name="ticketSolutionId" type="long" />
+		<field name="url" type="String">
+			<hint-collection name="URL" />
+		</field>
+		<field name="type" type="int" />
+		<field name="visibility" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.TicketSolution">
+		<field name="ticketSolutionId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="ticketEntryId" type="long" />
+		<field name="summary" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="useCustomerSummary" type="boolean" />
+		<field name="issueType" type="int" />
+		<field name="solution" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="type" type="int" />
+		<field name="customerSpecific" type="boolean" />
+		<field name="environmentSpecific" type="boolean" />
+		<field name="versionSpecific" type="boolean" />
+		<field name="reviewForKB" type="boolean" />
+		<field name="status" type="int" />
+		<field name="statusByUserId" type="long" />
+		<field name="statusByUserName" type="String" />
+		<field name="statusDate" type="Date" />
+		<field name="statusMessage" type="String">
+			<hint-collection name="TEXTAREA" />
+			<hint name="max-length">200000</hint>
+		</field>
+		<field name="statusReason" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.TicketWorker">
+		<field name="ticketWorkerId" type="long" />
+		<field name="userId" type="long" />
+		<field name="ticketEntryId" type="long" />
+		<field name="sourceClassNameId" type="long" />
+		<field name="sourceClassPK" type="long" />
+		<field name="role" type="int" />
+		<field name="primary" type="boolean" />
+	</model>
+	<model name="com.liferay.osb.model.TrainingCertificate">
+		<field name="trainingCertificateId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="trainingCustomerId" type="long" />
+		<field name="userProfileHistoryId" type="long" />
+		<field name="key" type="String" />
+		<field name="certifiedDate" type="Date" />
+		<field name="comments" type="String" />
+		<field name="surveyStatus" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.TrainingCertificateTemplate">
+		<field name="trainingCertificateTemplateId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="name" type="String" />
+		<field name="description" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="type" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.TrainingCourse">
+		<field name="trainingCourseId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="name" type="String" />
+		<field name="description" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="creditAmount" type="int" />
+		<field name="courseURL" type="String">
+			<hint-collection name="URL" />
+		</field>
+		<field name="archived" type="boolean" />
+	</model>
+	<model name="com.liferay.osb.model.TrainingCustomer">
+		<field name="trainingCustomerId" type="long" />
+		<field name="userId" type="long" />
+		<field name="classNameId" type="long" />
+		<field name="classPK" type="long" />
+		<field name="userProfileHistoryId" type="long" />
+		<field name="comments" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="status" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.TrainingEvent">
+		<field name="trainingEventId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="DDLRecordSetId" type="long" />
+		<field name="partnerEntryId" type="long" />
+		<field name="trainingCertificateTemplateId" type="long" />
+		<field name="trainingCourseId" type="long" />
+		<field name="trainingLocationId" type="long" />
+		<field name="name" type="String">
+			<hint name="max-length">150</hint>
+		</field>
+		<field name="emailAddress" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="portalMinorVersion" type="int" />
+		<field name="type" type="int" />
+		<field name="languageId" type="String" />
+		<field name="localizedSlides" type="boolean" />
+		<field name="timeZoneId" type="String" />
+		<field name="startDate" type="Date" />
+		<field name="endDate" type="Date" />
+		<field name="addressId" type="long" />
+		<field name="maxCustomers" type="int" />
+		<field name="enrollmentURL" type="String">
+			<hint-collection name="URL" />
+		</field>
+	</model>
+	<model name="com.liferay.osb.model.TrainingExam">
+		<field name="trainingExamId" type="long" />
+		<field name="trainingCertificateTemplateId" type="long" />
+		<field name="name" type="String" />
+	</model>
+	<model name="com.liferay.osb.model.TrainingExamResult">
+		<field name="trainingExamResultId" type="long" />
+		<field name="createDate" type="Date" />
+		<field name="trainingExamId" type="long" />
+		<field name="recordType" type="int" />
+		<field name="registrationNumber" type="String" />
+		<field name="formKey" type="String" />
+		<field name="startDate" type="Date" />
+		<field name="testScore" type="String" />
+		<field name="correctCount" type="int" />
+		<field name="incorrectCount" type="int" />
+		<field name="skippedCount" type="int" />
+		<field name="grade" type="int" />
+		<field name="status" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.TrainingExamResultItem">
+		<field name="trainingExamResultItemId" type="long" />
+		<field name="trainingExamResultId" type="long" />
+		<field name="trainingExamResultSectionId" type="long" />
+		<field name="name" type="String" />
+		<field name="status" type="String" />
+		<field name="key" type="String" />
+		<field name="distractorCount" type="int" />
+		<field name="type" type="String" />
+		<field name="response" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="score" type="String" />
+		<field name="time" type="int" />
+		<field name="learningResources" type="String" />
+	</model>
+	<model name="com.liferay.osb.model.TrainingExamResultSection">
+		<field name="trainingExamResultSectionId" type="long" />
+		<field name="trainingExamResultId" type="long" />
+		<field name="title" type="String" />
+		<field name="sectionKey" type="String" />
+		<field name="scoreIndicator" type="boolean" />
+		<field name="scoringAlgorithm" type="String" />
+		<field name="masteryScore" type="String" />
+		<field name="score" type="String" />
+		<field name="standardErrorOfEstimate" type="String" />
+		<field name="correctCount" type="int" />
+		<field name="incorrectCount" type="int" />
+		<field name="skippedCount" type="int" />
+		<field name="grade" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.TrainingImportLog">
+		<field name="trainingImportLogId" type="long" />
+		<field name="type" type="int" />
+		<field name="importDate" type="Date" />
+	</model>
+	<model name="com.liferay.osb.model.TrainingLinkedUser">
+		<field name="trainingLinkedUserId" type="long" />
+		<field name="userId" type="long" />
+		<field name="primaryUserId" type="long" />
+	</model>
+	<model name="com.liferay.osb.model.TrainingLocation">
+		<field name="trainingLocationId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="name" type="String" />
+		<field name="addressId" type="long" />
+	</model>
+	<model name="com.liferay.osb.model.TrainingWorker">
+		<field name="trainingWorkerId" type="long" />
+		<field name="userId" type="long" />
+		<field name="classNameId" type="long" />
+		<field name="classPK" type="long" />
+		<field name="userProfileHistoryId" type="long" />
+	</model>
+	<model name="com.liferay.osb.model.UserProfile">
+		<field name="userProfileId" type="long" />
+		<field name="userId" type="long" />
+		<field name="emailAddress" type="String" />
+		<field name="firstName" type="String" />
+		<field name="lastName" type="String" />
+		<field name="legalEntityName" type="String" />
+	</model>
+	<model name="com.liferay.osb.model.UserProfileHistory">
+		<field name="userProfileHistoryId" type="long" />
+		<field name="userId" type="long" />
+		<field name="createDate" type="Date" />
+		<field name="classNameId" type="long" />
+		<field name="classPK" type="long" />
+		<field name="emailAddress" type="String" />
+		<field name="firstName" type="String" />
+		<field name="lastName" type="String" />
+		<field name="legalEntityName" type="String" />
+	</model>
+</model-hints>

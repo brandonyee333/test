@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+	<category name="com.liferay.osb.hook.upgrade">
+		<priority value="ALL" />
+	</category>
+
+	<category name="com.liferay.osb.hook.upgrade.v3_6_0">
+		<priority value="ALL" />
+	</category>
+
+	<category name="com.liferay.osb.hook.upgrade.v3_7_6">
+		<priority value="ALL" />
+	</category>
+</log4j:configuration>

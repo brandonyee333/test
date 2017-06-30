@@ -1,0 +1,164 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%@ include file="/init.jsp" %>
+
+<%
+String redirect = ParamUtil.getString(request, "redirect");
+String backURL = ParamUtil.getString(request, "backURL", redirect);
+
+long licenseKeyId = ParamUtil.getLong(request, "licenseKeyId");
+
+LicenseKey licenseKey = LicenseKeyServiceUtil.getLicenseKey(licenseKeyId);
+
+OfferingEntry offeringEntry = licenseKey.getOfferingEntry();
+ProductEntry productEntry = ProductEntryLocalServiceUtil.fetchProductEntry(offeringEntry.getProductEntryId());
+
+PortletURL portletURL = renderResponse.createRenderURL();
+
+portletURL.setParameter("mvcPath", "/license/move_license_key.jsp");
+portletURL.setParameter("redirect", redirect);
+portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
+%>
+
+<script type="text/javascript">
+	function <portlet:namespace />moveLicenseKey(offeringEntryId) {
+		document.<portlet:namespace />fm.<portlet:namespace />offeringEntryId.value = offeringEntryId;
+		submitForm(document.<portlet:namespace />fm);
+	}
+</script>
+
+<portlet:actionURL name="updateLicenseKey" var="updateLicenseKeyURL">
+	<portlet:param name="mvcPath" value="/license/move_license_key.jsp" />
+</portlet:actionURL>
+
+<aui:form action="<%= updateLicenseKeyURL %>" class="uni-form" method="post" name="fm">
+	<input name="<portlet:namespace />redirect" type="hidden" value="<%= HtmlUtil.escape(redirect) %>" />
+	<input name="<portlet:namespace />backURL" type="hidden" value="<%= HtmlUtil.escape(backURL) %>" />
+	<input name="<portlet:namespace />licenseKeyId" type="hidden" value="<%= String.valueOf(licenseKey.getLicenseKeyId()) %>" />
+	<input name="<portlet:namespace />licenseKeySetId" type="hidden" value="<%= String.valueOf(licenseKey.getLicenseKeySetId()) %>" />
+	<input name="<portlet:namespace />active" type="hidden" value="<%= String.valueOf(licenseKey.getActive()) %>" />
+	<input name="<portlet:namespace />offeringEntryId" type="hidden" value="" />
+
+	<div class="cleared section">
+		<div class="fr">
+			<a class="btn" href="<%= HtmlUtil.escapeAttribute(backURL) %>">&lt; <liferay-ui:message key="back-to-previous-page" /></a>
+		</div>
+	</div>
+
+	Move License: <%= HtmlUtil.escape(licenseKey.getDescription()) %>
+
+	<h1 class="section-heading">
+		<liferay-ui:message key="choose-license" />
+	</h1>
+
+	<div class="callout-a">
+		<div class="callout-content">
+			<liferay-ui:search-container
+				delta="<%= 10 %>"
+				headerNames="name,type,start-date,lifetime,license-keys-available"
+				iteratorURL="<%= portletURL %>"
+			>
+
+				<%
+				LinkedHashMap params = new LinkedHashMap();
+
+				params.put("validLicense", new Long[] {0L, 0L});
+
+				List<OfferingEntryGroup> offeringEntryGroups = SupportUtil.getOfferingEntryGroups(0, licenseKey.getAccountEntryId(), new int[0], new int[0], 0, 0, 0, 0, 0, 0, params, true);
+				%>
+
+				<liferay-ui:search-container-results
+					results="<%= ListUtil.subList(offeringEntryGroups, searchContainer.getStart(), searchContainer.getEnd()) %>"
+					total="<%= offeringEntryGroups.size() %>"
+				/>
+
+				<liferay-ui:search-container-row
+					className="com.liferay.osb.model.OfferingEntryGroup"
+					modelVar="offeringEntryGroup"
+				>
+
+					<%
+					ProductEntry curProductEntry = offeringEntryGroup.getProductEntry();
+
+					String key = offeringEntryGroup.getKey();
+
+					String rowHREF = null;
+
+					if (!key.equals(offeringEntry.getKey()) && offeringEntryGroup.hasAvailableServers() && ((productEntry == null) || (productEntry.getEnvironment() == curProductEntry.getEnvironment()))) {
+						OfferingEntry availableOfferingEntry = offeringEntryGroup.getAvailableLicenseOfferingEntry();
+
+						StringBuilder sb = new StringBuilder();
+
+						sb.append("javascript:");
+						sb.append(renderResponse.getNamespace());
+						sb.append("moveLicenseKey(");
+						sb.append(availableOfferingEntry.getOfferingEntryId());
+						sb.append(");");
+
+						rowHREF = sb.toString();
+					}
+					%>
+
+					<liferay-ui:search-container-column-text
+						href="<%= rowHREF %>"
+						name="product"
+						value="<%= curProductEntry.getName() %>"
+					/>
+
+					<liferay-ui:search-container-column-text
+						href="<%= rowHREF %>"
+						name="lifetime"
+					>
+						<%= (offeringEntryGroup.getLicenseLifetime() / Time.DAY) + " Days" %>
+					</liferay-ui:search-container-column-text>
+
+					<liferay-ui:search-container-column-text
+						href="<%= rowHREF %>"
+						name="license-keys-available"
+					>
+						<%= offeringEntryGroup.getQuantity() - offeringEntryGroup.getLicenseKeysCount() %>
+					</liferay-ui:search-container-column-text>
+
+					<liferay-ui:search-container-column-text
+						href="<%= rowHREF %>"
+						name="type"
+						value="<%= LanguageUtil.get(pageContext, OfferingEntryConstants.getTypeLabel(offeringEntryGroup.getType())) %>"
+					/>
+
+					<liferay-ui:search-container-column-text
+						href="<%= rowHREF %>"
+					>
+						<c:choose>
+							<c:when test="<%= key.equals(offeringEntry.getKey()) %>">
+								<liferay-ui:icon
+									image="checked"
+									label="<%= true %>"
+									message="current"
+								/>
+							</c:when>
+							<c:when test="<%= offeringEntryGroup.hasAvailableServers() && ((productEntry == null) || (productEntry.getEnvironment() == curProductEntry.getEnvironment())) %>">
+								<input class="aui-button-input" onClick="<%= rowHREF %>" type="button" value="<liferay-ui:message key="choose" />" />
+							</c:when>
+						</c:choose>
+					</liferay-ui:search-container-column-text>
+				</liferay-ui:search-container-row>
+
+				<liferay-ui:search-iterator />
+			</liferay-ui:search-container>
+		</div>
+	</div>
+</aui:form>

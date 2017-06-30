@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+
+<ivy-module
+	version="2.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd"
+>
+	<info module="osb-portlet" organisation="com.liferay" />
+
+	<dependencies defaultconf="default">
+		<dependency name="asm" org="org.ow2.asm" rev="4.0" />
+		<dependency name="commons-lang3" org="org.apache.commons" rev="3.4" />
+		<dependency name="commons-csv" org="org.apache.commons" rev="1.4">
+			<artifact name="commons-csv" type="jar" />
+		</dependency>
+		<dependency name="itextpdf" org="com.itextpdf" rev="5.4.0" />
+		<dependency name="jsch" org="com.jcraft" rev="0.1.49" />
+		<dependency name="twitter4j-core" org="org.twitter4j" rev="3.0.6" />
+	</dependencies>
+</ivy-module>

@@ -1,0 +1,129 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%
+PortletURL portletURL = renderResponse.createRenderURL();
+
+portletURL.setParameter("mvcPath", "/corp_members/view.jsp");
+%>
+
+<liferay-ui:header
+	title="projects"
+/>
+
+<p>
+	<liferay-ui:message key="the-users-listed-will-have-access-to-the-liferay-services-associated-with-the-selected-project" />
+</p>
+
+<div class="card-container">
+
+	<%
+	List<CorpProject> corpProjects = CorpProjectLocalServiceUtil.getUserCorpProjects(themeDisplay.getUserId());
+	%>
+
+	<c:choose>
+		<c:when test="<%= !corpProjects.isEmpty() %>">
+			<h2>
+				<liferay-ui:message key="select-a-project" />
+			</h2>
+
+			<%
+			for (CorpProject corpProject : corpProjects) {
+				portletURL.setParameter("corpProjectId", String.valueOf(corpProject.getCorpProjectId()));
+			%>
+
+				<div class="card project" data-viewProjectUsersURL="<%= portletURL.toString() %>">
+					<div class="card-body">
+						<div class="name">
+							<%= HtmlUtil.escape(corpProject.getName()) %>
+						</div>
+
+						<div class="owner">
+							<%= StringUtil.shorten(HtmlUtil.escape(PortalUtil.getUserName(corpProject)), 20, StringPool.BLANK) %>
+						</div>
+
+						<liferay-util:include page="/corp_members/corp_project_user_avatars.jsp" servletContext="<%= application %>">
+							<liferay-util:param name="corpProjectId" value="<%= String.valueOf(corpProject.getCorpProjectId()) %>" />
+							<liferay-util:param name="seeMembersURL" value="<%= portletURL.toString() %>" />
+						</liferay-util:include>
+					</div>
+				</div>
+
+			<%
+			}
+			%>
+
+			<div class="cleared"><!-- --></div>
+		</c:when>
+		<c:otherwise>
+			<div class="portlet-msg-info">
+				<liferay-ui:message key="there-are-no-projects" />
+			</div>
+		</c:otherwise>
+	</c:choose>
+</div>
+
+<aui:script use="aui-base,aui-tooltip">
+	var cardContainer = A.one('.corp-members .card-container');
+
+	cardContainer.delegate(
+		'click',
+		function(event) {
+			var target = event.target;
+
+			if (target.hasClass('user') || target.ancestor('.user')) {
+				return;
+			}
+
+			window.location = event.currentTarget.attr('data-viewProjectUsersURL');
+		},
+		'.card'
+	);
+
+	cardContainer.delegate(
+		'mouseover',
+		function(event) {
+			var currentTarget = event.currentTarget;
+
+			if (currentTarget.hasClass('tooltip-enabled')) {
+				return;
+			}
+
+			currentTarget.addClass('tooltip-enabled');
+
+			currentTarget.all('.user').each(
+				function(user) {
+					new A.Tooltip(
+						{
+							align: {
+								node: user,
+								points: ['bl', 'tl']
+							},
+							anim: {
+								show: false,
+								hide: false
+							},
+							bodyContent: Liferay.Util.escapeHTML(user.attr('data-userFullName')),
+							hideDelay: 0,
+							trigger: user
+						}
+					).render();
+				}
+			);
+		},
+		'.card'
+	);
+</aui:script>

@@ -1,0 +1,106 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%
+PortletURL searchURL = renderResponse.createActionURL();
+
+searchURL.setParameter("mvcPath", "/admin/view.jsp");
+searchURL.setParameter("tabs1", "sales");
+searchURL.setParameter("tabs2", "offerings");
+
+pageContext.setAttribute("searchURL", searchURL);
+%>
+
+<aui:form action="<%= searchURL.toString() %>" method="get" name="fm" onSubmit="submitForm(this); return false;">
+	<liferay-portlet:renderURLParams varImpl="searchURL" />
+
+	<liferay-ui:error exception="<%= RequiredOfferingDefinitionException.class %>" message="you-cannot-remove-offering-definitions-that-have-been-ordered" />
+
+	<liferay-ui:search-container
+		searchContainer="<%= new OfferingDefinitionSearch(renderRequest, portletURL) %>"
+	>
+
+		<%
+		OfferingDefinitionDisplayTerms displayTerms = (OfferingDefinitionDisplayTerms)searchContainer.getDisplayTerms();
+		OfferingDefinitionSearchTerms searchTerms = (OfferingDefinitionSearchTerms)searchContainer.getSearchTerms();
+		%>
+
+		<%@ include file="/admin/offering_definition_search.jspf" %>
+
+		<liferay-ui:search-container-results>
+			<%@ include file="/admin/offering_definition_search_results.jspf" %>
+		</liferay-ui:search-container-results>
+
+		<liferay-ui:search-container-row
+			className="com.liferay.osb.model.OfferingDefinition"
+			escapedModel="<%= true %>"
+			keyProperty="offeringDefinitionId"
+			modelVar="offeringDefinition"
+		>
+			<liferay-portlet:renderURL varImpl="rowURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+				<portlet:param name="mvcPath" value="/admin/edit_offering_definition.jsp" />
+				<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
+				<portlet:param name="offeringDefinitionId" value="<%= String.valueOf(offeringDefinition.getOfferingDefinitionId()) %>" />
+			</liferay-portlet:renderURL>
+
+			<liferay-ui:search-container-column-text
+				href="<%= rowURL %>"
+				name="product"
+				property="productEntry.name"
+			/>
+
+			<liferay-ui:search-container-column-text
+				href="<%= rowURL %>"
+				name="product-description"
+				property="productDescription"
+			/>
+
+			<liferay-ui:search-container-column-text
+				href="<%= rowURL %>"
+				name="sla"
+				property="supportResponse.name"
+			/>
+
+			<liferay-ui:search-container-column-text
+				href="<%= rowURL %>"
+				name="licenses"
+				property="licensesLabel"
+			/>
+
+			<liferay-ui:search-container-column-text
+				href="<%= rowURL %>"
+				name="tickets"
+				property="supportTicketsLabel"
+				translate="<%= true %>"
+			/>
+
+			<liferay-ui:search-container-column-jsp
+				align="right"
+				path="/admin/offering_definition_action.jsp"
+			/>
+		</liferay-ui:search-container-row>
+
+		<br />
+
+		<div>
+			<input onClick="location.href = '<portlet:renderURL windowState="<%= WindowState.MAXIMIZED.toString() %>"><portlet:param name="mvcPath" value="/admin/edit_offering_definition.jsp" /><portlet:param name="redirect" value="<%= portletURL.toString() %>" /></portlet:renderURL>';" type="button" value="<liferay-ui:message key="add-offering" />" />
+		</div>
+
+		<br />
+
+		<liferay-ui:search-iterator />
+	</liferay-ui:search-container>
+</aui:form>

@@ -1,0 +1,41 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%
+for (AssetLicense assetLicense : assetLicenses) {
+	String price = StringPool.BLANK;
+
+	AppPricingItem appPricingItem = AppPricingItemLocalServiceUtil.fetchAppPricingItem(appPricing.getAppPricingId(), assetLicense.getAssetLicenseId());
+
+	if (appPricingItem != null) {
+		if (appPricingCurrencyNumberFormat != null) {
+			price = appPricingCurrencyNumberFormat.format(appPricingItem.getPrice());
+		}
+		else if (appPricingItem.getPrice() > 0) {
+			price = String.valueOf(appPricingItem.getPrice());
+		}
+	}
+%>
+
+	<div class="price" data-assetLicenseId="<%= assetLicense.getAssetLicenseId() %>">
+		<span><%= (assetLicense.getLicenseTypeAllotment() == AssetLicenseConstants.LICENSE_TYPE_ALLOTMENT_UNLIMITED) ? "&infin;" : assetLicense.getLicenseTypeAllotment() %></span>
+
+		<input class="edit-pricing-item" type="text" value="<%= price %>" />
+	</div>
+
+<%
+}
+%>

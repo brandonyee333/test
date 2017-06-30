@@ -1,0 +1,386 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+package com.liferay.osb.util;
+
+import com.liferay.compat.portal.kernel.portlet.PortletResponseUtil;
+import com.liferay.compat.portal.kernel.util.ArrayUtil;
+import com.liferay.compat.portal.kernel.util.ListUtil;
+import com.liferay.compat.portal.util.PortalUtil;
+import com.liferay.osb.NoSuchAssetAttachmentException;
+import com.liferay.osb.model.AssetAttachment;
+import com.liferay.osb.model.OfferingEntry;
+import com.liferay.osb.model.ProductEntry;
+import com.liferay.osb.model.ProductEntryConstants;
+import com.liferay.osb.model.TicketEntryConstants;
+import com.liferay.osb.model.TrainingCertificateTemplate;
+import com.liferay.osb.service.AssetAttachmentServiceUtil;
+import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
+import com.liferay.osb.service.TrainingCertificateTemplateLocalServiceUtil;
+import com.liferay.osb.support.util.SupportUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.StreamUtil;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.model.CompanyConstants;
+import com.liferay.portal.model.ListType;
+import com.liferay.portal.service.ListTypeServiceUtil;
+import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portlet.documentlibrary.NoSuchDirectoryException;
+import com.liferay.portlet.documentlibrary.store.DLStoreUtil;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * @author Douglas Wong
+ * @author Ryan Park
+ */
+public class OSBRequestUtil {
+
+	public static JSONArray getEarlierEnvLFRTypes(
+			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
+		throws SystemException {
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)resourceRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		int envLFR = ParamUtil.getInteger(resourceRequest, "envLFR");
+
+		List<ListType> envLFRTypes = new ArrayList<ListType>();
+
+		envLFRTypes.addAll(
+			ListTypeServiceUtil.getListTypes(
+				ProductEntryConstants.LIST_TYPE_PORTAL_ALL_VERSIONS));
+		envLFRTypes.addAll(
+			ListTypeServiceUtil.getListTypes(
+				ProductEntryConstants.
+					LIST_TYPE_DIGITAL_ENTERPRISE_ALL_VERSIONS));
+
+		Iterator<ListType> itr = envLFRTypes.iterator();
+
+		while (itr.hasNext()) {
+			ListType listType = itr.next();
+
+			if (ArrayUtil.contains(
+					ProductEntryConstants.LIST_TYPES_DEPRECATED,
+					listType.getListTypeId()) ||
+				(listType.getListTypeId() >= envLFR)) {
+
+				itr.remove();
+			}
+		}
+
+		return getJsonArray(envLFRTypes, themeDisplay.getLocale());
+	}
+
+	public static JSONArray getLaterEnvLFRTypes(
+			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
+		throws PortalException, SystemException {
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)resourceRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		int envLFR = ParamUtil.getInteger(resourceRequest, "envLFR");
+		int offeringEntryId = ParamUtil.getInteger(
+			resourceRequest, "offeringEntryId");
+
+		List<ListType> envLFRTypes = new ArrayList<ListType>();
+
+		if (offeringEntryId > 0) {
+			OfferingEntry offeringEntry =
+				OfferingEntryLocalServiceUtil.getOfferingEntry(offeringEntryId);
+
+			ProductEntry productEntry = offeringEntry.getProductEntry();
+
+			envLFRTypes = ListUtil.copy(productEntry.getAllVersionsListTypes());
+
+			Iterator<ListType> itr = envLFRTypes.iterator();
+
+			while (itr.hasNext()) {
+				ListType listType = itr.next();
+
+				if (listType.getListTypeId() <= envLFR) {
+					itr.remove();
+				}
+			}
+		}
+
+		return getJsonArray(envLFRTypes, themeDisplay.getLocale());
+	}
+
+	public static JSONObject getTicketEnvironment(
+			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
+		throws Exception {
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)resourceRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		int envLFR = ParamUtil.getInteger(resourceRequest, "envLFR");
+
+		List<ListType> envASListTypes = SupportUtil.getPortalEnvListTypes(
+			envLFR, TicketEntryConstants.LIST_TYPE_ENV_AS);
+
+		jsonObject.put(
+			"ENV_AS", getJsonArray(envASListTypes, themeDisplay.getLocale()));
+		jsonObject.put("ENV_AS#key", envASListTypes.hashCode());
+
+		List<ListType> envBrowserListTypes = SupportUtil.getPortalEnvListTypes(
+			envLFR, TicketEntryConstants.LIST_TYPE_ENV_BROWSER);
+
+		jsonObject.put(
+			"ENV_Browser",
+			getJsonArray(envBrowserListTypes, themeDisplay.getLocale()));
+		jsonObject.put("ENV_Browser#key", envBrowserListTypes.hashCode());
+
+		if (ProductEntryConstants.isPortalVersion6_2(envLFR) ||
+			ProductEntryConstants.isDigitalEnterpriseVersion7_0(envLFR)) {
+
+			List<ListType> envCSListTypes = SupportUtil.getPortalEnvListTypes(
+				envLFR, TicketEntryConstants.LIST_TYPE_ENV_CS);
+
+			jsonObject.put(
+				"ENV_CS",
+				getJsonArray(envCSListTypes, themeDisplay.getLocale()));
+			jsonObject.put("ENV_CS#key", envCSListTypes.hashCode());
+		}
+
+		List<ListType> envDBListTypes = SupportUtil.getPortalEnvListTypes(
+			envLFR, TicketEntryConstants.LIST_TYPE_ENV_DB);
+
+		jsonObject.put(
+			"ENV_DB", getJsonArray(envDBListTypes, themeDisplay.getLocale()));
+		jsonObject.put("ENV_DB#key", envDBListTypes.hashCode());
+
+		List<ListType> envJVMListTypes = SupportUtil.getPortalEnvListTypes(
+			envLFR, TicketEntryConstants.LIST_TYPE_ENV_JVM);
+
+		jsonObject.put(
+			"ENV_JVM", getJsonArray(envJVMListTypes, themeDisplay.getLocale()));
+		jsonObject.put("ENV_JVM#key", envJVMListTypes.hashCode());
+
+		List<ListType> envOSListTypes = SupportUtil.getPortalEnvListTypes(
+			envLFR, TicketEntryConstants.LIST_TYPE_ENV_OS);
+
+		jsonObject.put(
+			"ENV_OS", getJsonArray(envOSListTypes, themeDisplay.getLocale()));
+		jsonObject.put("ENV_OS#key", envOSListTypes.hashCode());
+
+		if (ProductEntryConstants.isDigitalEnterpriseVersion7_0(envLFR)) {
+			List<ListType> envSearchListTypes =
+				SupportUtil.getPortalEnvListTypes(
+					envLFR, TicketEntryConstants.LIST_TYPE_ENV_SEARCH);
+
+			jsonObject.put(
+				"ENV_Search",
+				getJsonArray(envSearchListTypes, themeDisplay.getLocale()));
+			jsonObject.put("ENV_Search#key", envSearchListTypes.hashCode());
+		}
+
+		return jsonObject;
+	}
+
+	public static JSONObject getTicketEnvLFR(
+		ResourceRequest resourceRequest, ResourceResponse resourceResponse) {
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)resourceRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		long offeringEntryId = ParamUtil.getLong(
+			resourceRequest, "offeringEntryId");
+
+		try {
+			OfferingEntry offeringEntry =
+				OfferingEntryLocalServiceUtil.getOfferingEntry(offeringEntryId);
+			ProductEntry productEntry = offeringEntry.getProductEntry();
+
+			List<ListType> envLFRTypes = ListUtil.copy(
+				productEntry.getAllVersionsListTypes());
+
+			Iterator<ListType> itr = envLFRTypes.iterator();
+
+			while (itr.hasNext()) {
+				ListType envLFRType = itr.next();
+
+				if (ArrayUtil.contains(
+						ProductEntryConstants.LIST_TYPES_DEPRECATED,
+						envLFRType.getListTypeId())) {
+
+					itr.remove();
+				}
+			}
+
+			jsonObject.put(
+				"ENV_LFR", getJsonArray(envLFRTypes, themeDisplay.getLocale()));
+			jsonObject.put("ENV_LFR#key", envLFRTypes.hashCode());
+			jsonObject.put("portal", !productEntry.isSocialOffice());
+		}
+		catch (Exception e) {
+		}
+
+		return jsonObject;
+	}
+
+	public static void sendError(
+			int status, Exception exception, ResourceRequest resourceRequest,
+			ResourceResponse resourceResponse)
+		throws IOException, ServletException {
+
+		HttpServletRequest request = PortalUtil.getHttpServletRequest(
+			resourceRequest);
+		HttpServletResponse response = PortalUtil.getHttpServletResponse(
+			resourceResponse);
+
+		PortalUtil.sendError(status, exception, request, response);
+	}
+
+	public static void serveAssetAttachment(
+			ResourceRequest resourceRequest, ResourceResponse resourceResponse,
+			int type)
+		throws Exception {
+
+		long assetAttachmentId = ParamUtil.getLong(
+			resourceRequest, "assetAttachmentId");
+
+		try {
+			AssetAttachment assetAttachment =
+				AssetAttachmentServiceUtil.fetchAssetAttachment(
+					assetAttachmentId);
+
+			if ((assetAttachment == null) &&
+				(assetAttachment.getType() != type)) {
+
+				if (_log.isDebugEnabled()) {
+					_log.debug(
+						"No asset attachment found with primary key " +
+							assetAttachmentId);
+				}
+
+				sendError(
+					HttpServletResponse.SC_NOT_FOUND,
+					new NoSuchAssetAttachmentException(), resourceRequest,
+					resourceResponse);
+
+				return;
+			}
+
+			String contentType = MimeTypesUtil.getContentType(
+				assetAttachment.getFileName());
+
+			PortletResponseUtil.sendFile(
+				resourceRequest, resourceResponse,
+				assetAttachment.getFileName(),
+				assetAttachment.getFileAsStream(), contentType);
+		}
+		catch (Exception e) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Unable to serve asset attachment " + assetAttachmentId);
+			}
+
+			sendError(
+				HttpServletResponse.SC_NOT_FOUND, e, resourceRequest,
+				resourceResponse);
+		}
+	}
+
+	public static void serveTrainingCertificateTemplateBadge(
+			ResourceRequest resourceRequest, ResourceResponse resourceResponse,
+			long trainingCertificateTemplateId)
+		throws PortalException, SystemException {
+
+		TrainingCertificateTemplate trainingCertificateTemplate =
+			TrainingCertificateTemplateLocalServiceUtil.
+				getTrainingCertificateTemplate(trainingCertificateTemplateId);
+
+		String fileName = null;
+
+		try {
+			String[] fileNames = DLStoreUtil.getFileNames(
+				CompanyConstants.SYSTEM, CompanyConstants.SYSTEM,
+				trainingCertificateTemplate.getBadgesDir());
+
+			fileName = fileNames[0];
+		}
+		catch (NoSuchDirectoryException nsde) {
+			return;
+		}
+
+		InputStream inputStream = null;
+
+		try {
+			inputStream = DLStoreUtil.getFileAsStream(
+				CompanyConstants.SYSTEM, CompanyConstants.SYSTEM, fileName);
+
+			String contentType = MimeTypesUtil.getContentType(fileName);
+
+			PortletResponseUtil.sendFile(
+				resourceRequest, resourceResponse, fileName, inputStream,
+				contentType);
+		}
+		catch (Exception e) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(e, e);
+			}
+		}
+		finally {
+			StreamUtil.cleanUp(inputStream);
+		}
+	}
+
+	protected static JSONArray getJsonArray(
+		List<ListType> listTypes, Locale locale) {
+
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+
+		for (ListType listType : listTypes) {
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+			jsonObject.put("value", String.valueOf(listType.getListTypeId()));
+			jsonObject.put(
+				"name", LanguageUtil.get(locale, listType.getName()));
+
+			jsonArray.put(jsonObject);
+		}
+
+		return jsonArray;
+	}
+
+	private static Log _log = LogFactoryUtil.getLog(OSBRequestUtil.class);
+
+}

@@ -1,0 +1,45 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%
+String tabs3 = ParamUtil.getString(request, "tabs3");
+
+PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(pageContext, "certification-exams"), currentURL);
+%>
+
+<liferay-ui:tabs
+	names="recent-results,candidates,exams,import-kryterion,import-prometric"
+	param="tabs3"
+	url="<%= portletURL.toString() %>"
+/>
+
+<c:choose>
+	<c:when test='<%= tabs3.equals("candidates") %>'>
+		<%@ include file="/admin/training_exam_result_users.jspf" %>
+	</c:when>
+	<c:when test='<%= tabs3.equals("exams") %>'>
+		<%@ include file="/admin/training_exams.jspf" %>
+	</c:when>
+	<c:when test='<%= tabs3.equals("import-kryterion") %>'>
+		<%@ include file="/admin/import_kryterion.jspf" %>
+	</c:when>
+	<c:when test='<%= tabs3.equals("import-prometric") %>'>
+		<%@ include file="/admin/import_prometric.jspf" %>
+	</c:when>
+	<c:otherwise>
+		<%@ include file="/admin/training_exam_results.jspf" %>
+	</c:otherwise>
+</c:choose>

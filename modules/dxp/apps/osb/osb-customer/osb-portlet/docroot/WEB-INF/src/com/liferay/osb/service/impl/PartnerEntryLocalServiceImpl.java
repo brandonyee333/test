@@ -1,0 +1,344 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+package com.liferay.osb.service.impl;
+
+import com.liferay.compat.portal.kernel.util.ArrayUtil;
+import com.liferay.compat.portal.kernel.util.Validator;
+import com.liferay.osb.DuplicatePartnerEntryCodeException;
+import com.liferay.osb.DuplicatePartnerEntryDossieraAccountKeyException;
+import com.liferay.osb.NoSuchPartnerEntryException;
+import com.liferay.osb.PartnerEntryCodeException;
+import com.liferay.osb.PartnerEntryParentPartnerEntryException;
+import com.liferay.osb.RequiredPartnerEntryException;
+import com.liferay.osb.model.AccountEntry;
+import com.liferay.osb.model.PartnerEntry;
+import com.liferay.osb.model.TicketEntryConstants;
+import com.liferay.osb.service.base.PartnerEntryLocalServiceBaseImpl;
+import com.liferay.osb.support.util.SupportUtil;
+import com.liferay.osb.util.WorkflowConstants;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.model.User;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+
+/**
+ * @author Brian Wing Shun Chan
+ * @author Amos Fong
+ */
+public class PartnerEntryLocalServiceImpl
+	extends PartnerEntryLocalServiceBaseImpl {
+
+	public PartnerEntry addPartnerEntry(
+			long userId, long parentPartnerEntryId, String dossieraAccountKey,
+			String code, String notes, long[] supportRegionIds)
+		throws PortalException, SystemException {
+
+		User user = userPersistence.findByPrimaryKey(userId);
+		Date now = new Date();
+
+		validate(
+			0, parentPartnerEntryId, dossieraAccountKey, code,
+			WorkflowConstants.STATUS_APPROVED);
+
+		long partnerEntryId = counterLocalService.increment();
+
+		PartnerEntry partnerEntry = partnerEntryPersistence.create(
+			partnerEntryId);
+
+		partnerEntry.setUserId(user.getUserId());
+		partnerEntry.setUserName(user.getFullName());
+		partnerEntry.setCreateDate(now);
+		partnerEntry.setModifiedUserId(user.getUserId());
+		partnerEntry.setModifiedUserName(user.getFullName());
+		partnerEntry.setModifiedDate(now);
+		partnerEntry.setParentPartnerEntryId(parentPartnerEntryId);
+		partnerEntry.setDossieraAccountKey(dossieraAccountKey);
+		partnerEntry.setCode(code);
+		partnerEntry.setNotes(notes);
+		partnerEntry.setStatus(WorkflowConstants.STATUS_APPROVED);
+
+		partnerEntryPersistence.update(partnerEntry, false);
+
+		if (ArrayUtil.isNotEmpty(supportRegionIds)) {
+			partnerEntryPersistence.addSupportRegions(
+				partnerEntryId, supportRegionIds);
+		}
+
+		return partnerEntry;
+	}
+
+	@Override
+	public PartnerEntry deletePartnerEntry(long partnerEntryId)
+		throws PortalException, SystemException {
+
+		if (accountEntryPersistence.countByPartnerEntryId(partnerEntryId) > 0) {
+			throw new RequiredPartnerEntryException(
+				RequiredPartnerEntryException.REFERENCED_ACCOUNT_ENTRY);
+		}
+
+		if (partnerEntryPersistence.countByParentPartnerEntryId(
+				partnerEntryId) > 0) {
+
+			throw new RequiredPartnerEntryException(
+				RequiredPartnerEntryException.REFERENCED_PARTNER_ENTRY);
+		}
+
+		if (partnerWorkerPersistence.countByPartnerEntryId(
+				partnerEntryId) > 0) {
+
+			throw new RequiredPartnerEntryException(
+				RequiredPartnerEntryException.REFERENCED_PARTNER_WORKER);
+		}
+
+		return partnerEntryPersistence.remove(partnerEntryId);
+	}
+
+	public PartnerEntry fetchPartnerEntry(String dossieraAccountKey)
+		throws SystemException {
+
+		return partnerEntryPersistence.fetchByDossieraAccountKey(
+			dossieraAccountKey);
+	}
+
+	public List<PartnerEntry> getChildPartnerEntries(
+			long partnerEntryId, boolean recursive)
+		throws SystemException {
+
+		List<PartnerEntry> childPartnerEntries =
+			partnerEntryPersistence.findByParentPartnerEntryId(partnerEntryId);
+
+		if (!recursive) {
+			return childPartnerEntries;
+		}
+
+		List<PartnerEntry> partnerEntries = new ArrayList<PartnerEntry>();
+
+		for (PartnerEntry childPartnerEntry : childPartnerEntries) {
+			partnerEntries.add(childPartnerEntry);
+			partnerEntries.addAll(
+				getChildPartnerEntries(
+					childPartnerEntry.getPartnerEntryId(), recursive));
+		}
+
+		return partnerEntries;
+	}
+
+	@Override
+	public PartnerEntry getPartnerEntry(long partnerEntryId)
+		throws PortalException, SystemException {
+
+		return partnerEntryPersistence.findByPrimaryKey(partnerEntryId);
+	}
+
+	public PartnerEntry getPartnerEntryByCode(String code)
+		throws PortalException, SystemException {
+
+		return partnerEntryPersistence.findByCode(code);
+	}
+
+	public List<PartnerEntry> getUserPartnerEntries(
+			long userId, int start, int end)
+		throws SystemException {
+
+		LinkedHashMap<String, Object> params =
+			new LinkedHashMap<String, Object>();
+
+		params.put("accountEntryMembership", new Long(userId));
+
+		return partnerEntryFinder.findByKeywords(null, params, start, end);
+	}
+
+	public List<PartnerEntry> search(
+			String code, int[] statuses, LinkedHashMap<String, Object> params,
+			boolean andOperator, int start, int end)
+		throws SystemException {
+
+		return partnerEntryFinder.findByC_S(
+			code, statuses, params, andOperator, start, end);
+	}
+
+	public List<PartnerEntry> search(
+			String keywords, LinkedHashMap<String, Object> params, int start,
+			int end)
+		throws SystemException {
+
+		return partnerEntryFinder.findByKeywords(keywords, params, start, end);
+	}
+
+	public int searchCount(
+			String code, int[] statuses, LinkedHashMap<String, Object> params,
+			boolean andOperator)
+		throws SystemException {
+
+		return partnerEntryFinder.countByC_S(
+			code, statuses, params, andOperator);
+	}
+
+	public int searchCount(
+			String keywords, LinkedHashMap<String, Object> params)
+		throws SystemException {
+
+		return partnerEntryFinder.countByKeywords(keywords, params);
+	}
+
+	public PartnerEntry updatePartnerEntry(
+			long userId, long partnerEntryId, String dossieraAccountKey,
+			String code, String notes, int status, long[] supportRegionIds)
+		throws PortalException, SystemException {
+
+		User user = userPersistence.findByPrimaryKey(userId);
+		Date now = new Date();
+
+		validate(partnerEntryId, 0, dossieraAccountKey, code, status);
+
+		PartnerEntry partnerEntry = partnerEntryPersistence.findByPrimaryKey(
+			partnerEntryId);
+
+		int oldStatus = partnerEntry.getStatus();
+
+		partnerEntry.setModifiedUserId(userId);
+		partnerEntry.setModifiedUserName(user.getFullName());
+		partnerEntry.setModifiedDate(now);
+		partnerEntry.setDossieraAccountKey(dossieraAccountKey);
+		partnerEntry.setCode(code);
+		partnerEntry.setNotes(notes);
+		partnerEntry.setStatus(status);
+
+		partnerEntryPersistence.update(partnerEntry, false);
+
+		if ((oldStatus != status) &&
+			(status == WorkflowConstants.STATUS_INACTIVE)) {
+
+			closePartnerEntry(user, partnerEntryId);
+		}
+
+		if (supportRegionIds != null) {
+			partnerEntryPersistence.setSupportRegions(
+				partnerEntryId, supportRegionIds);
+		}
+
+		return partnerEntry;
+	}
+
+	protected void closePartnerEntry(User user, long partnerEntryId)
+		throws PortalException, SystemException {
+
+		List<AccountEntry> accountEntries =
+			accountEntryPersistence.findByPartnerEntryId(partnerEntryId);
+
+		for (AccountEntry accountEntry : accountEntries) {
+			accountEntry.setModifiedUserId(user.getUserId());
+			accountEntry.setModifiedUserName(user.getFullName());
+			accountEntry.setModifiedDate(new Date());
+			accountEntry.setPartnerEntryId(partnerEntryId);
+			accountEntry.setPartnerManagedSupport(false);
+
+			accountEntryPersistence.update(accountEntry, false);
+		}
+
+		List<PartnerEntry> childPartnerEntries =
+			partnerEntryPersistence.findByParentPartnerEntryId(partnerEntryId);
+
+		for (PartnerEntry childPartnerEntry : childPartnerEntries) {
+			updatePartnerEntry(
+				user.getUserId(), childPartnerEntry.getPartnerEntryId(),
+				childPartnerEntry.getDossieraAccountKey(),
+				childPartnerEntry.getCode(), childPartnerEntry.getNotes(),
+				WorkflowConstants.STATUS_INACTIVE, null);
+		}
+	}
+
+	protected void validate(
+			long partnerEntryId, long parentPartnerEntryId,
+			String dossieraAccountKey, String code, int status)
+		throws PortalException, SystemException {
+
+		if (partnerEntryId > 0) {
+			PartnerEntry partnerEntry =
+				partnerEntryPersistence.findByPrimaryKey(partnerEntryId);
+
+			if ((status == WorkflowConstants.STATUS_INACTIVE) &&
+				(status != partnerEntry.getStatus())) {
+
+				LinkedHashMap<String, Object> params =
+					new LinkedHashMap<String, Object>();
+
+				long[] childPartnerEntryIds = SupportUtil.getPartnerEntryIds(
+					partnerEntryId);
+
+				params.put("partnerEntryIds", childPartnerEntryIds);
+
+				int ticketEntriesCount = ticketEntryLocalService.searchCount(
+					0, (String)null, new int[0], null, 0, 0, 0, 0, 0, 0, null,
+					null, null, TicketEntryConstants.STATUSES_ACTIVE,
+					new int[0], new int[0], new int[0], new long[0],
+					new long[0], new long[0], new long[0], new long[0],
+					new int[0], new int[0], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					params, true);
+
+				if (ticketEntriesCount > 0) {
+					throw new RequiredPartnerEntryException(
+						RequiredPartnerEntryException.REFERENCED_TICKET_ENTRY);
+				}
+			}
+		}
+
+		if (parentPartnerEntryId > 0) {
+			if (partnerEntryId == parentPartnerEntryId) {
+				throw new PartnerEntryParentPartnerEntryException();
+			}
+
+			try {
+				partnerEntryPersistence.findByPrimaryKey(parentPartnerEntryId);
+			}
+			catch (NoSuchPartnerEntryException nspee) {
+				throw new PartnerEntryParentPartnerEntryException();
+			}
+		}
+
+		if (Validator.isNotNull(dossieraAccountKey)) {
+			if (parentPartnerEntryId > 0) {
+				throw new PartnerEntryParentPartnerEntryException();
+			}
+
+			PartnerEntry partnerEntry =
+				partnerEntryPersistence.fetchByDossieraAccountKey(
+					dossieraAccountKey);
+
+			if ((partnerEntry != null) &&
+				(partnerEntry.getPartnerEntryId() != partnerEntryId)) {
+
+				throw new DuplicatePartnerEntryDossieraAccountKeyException();
+			}
+		}
+
+		if (Validator.isNull(code)) {
+			throw new PartnerEntryCodeException();
+		}
+
+		PartnerEntry partnerEntry = partnerEntryPersistence.fetchByCode(code);
+
+		if ((partnerEntry != null) &&
+			(partnerEntry.getPartnerEntryId() != partnerEntryId)) {
+
+			throw new DuplicatePartnerEntryCodeException();
+		}
+	}
+
+}

@@ -1,0 +1,221 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%
+Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
+%>
+
+<liferay-ui:search-toggle
+	buttonLabel="search"
+	displayTerms="<%= displayTerms %>"
+	id="toggle_id_training_event_search"
+>
+	<table class="lfr-table">
+	<tr>
+		<td>
+			<liferay-ui:message key="type" />
+		</td>
+		<td>
+			<liferay-ui:message key="client-name" />
+		</td>
+		<td>
+			<liferay-ui:message key="course" />
+		</td>
+		<td>
+			<liferay-ui:message key="version" />
+		</td>
+		<td>
+			<liferay-ui:message key="language" />
+		</td>
+		<td>
+			<liferay-ui:message key="partner" />
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<select id="<portlet:namespace /><%= displayTerms.TYPE %>" name="<portlet:namespace /><%= displayTerms.TYPE %>">
+				<option <%= (displayTerms.getType() == -1) ? "selected" : "" %> value="-1"></option>
+
+				<%
+				for (int curType : TrainingEventConstants.TYPES) {
+				%>
+
+					<option <%= (displayTerms.getType() == curType) ? "selected" : "" %> value="<%= curType %>"><liferay-ui:message key="<%= TrainingEventConstants.getTypeLabel(curType) %>" /></option>
+
+				<%
+				}
+				%>
+
+			</select>
+		</td>
+		<td>
+			<input id="<portlet:namespace /><%= displayTerms.CLIENT_NAME %>" name="<portlet:namespace /><%= displayTerms.CLIENT_NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getClientName()) %>" />
+		</td>
+		<td>
+			<input id="<portlet:namespace /><%= displayTerms.COURSE %>" name="<portlet:namespace /><%= displayTerms.COURSE %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getCourse()) %>" />
+		</td>
+		<td>
+			<select id="<portlet:namespace /><%= displayTerms.PORTAL_MINOR_VERSION %>" label="" name="<portlet:namespace /><%= displayTerms.PORTAL_MINOR_VERSION %>">
+				<option value=""></option>
+
+				<%
+				List<ListType> portalMinorVersionTypes = ListTypeServiceUtil.getListTypes(TrainingEventConstants.LIST_TYPE_PORTAL_MINOR_VERSIONS);
+
+				for (ListType portalMinorVersionType : portalMinorVersionTypes) {
+				%>
+
+					<option <%= (displayTerms.getPortalMinorVersion() == portalMinorVersionType.getListTypeId()) ? "selected" : "" %> value="<%= portalMinorVersionType.getListTypeId() %>"><%= portalMinorVersionType.getName() %></option>
+
+				<%
+				}
+				%>
+
+			</select>
+		</td>
+		<td>
+			<select id="<portlet:namespace /><%= displayTerms.LANGUAGE %>" label="" name="<portlet:namespace /><%= displayTerms.LANGUAGE %>">
+				<option value=""></option>
+
+				<%
+				Locale[] locales = LanguageUtil.getAvailableLocales();
+
+				for (Locale curLocale : locales) {
+					String curLanguageId = LocaleUtil.toLanguageId(curLocale);
+				%>
+
+					<option <%= curLanguageId.equals(displayTerms.getLanguage()) ? "selected" : "" %> value="<%= curLanguageId %>"><%= curLocale.getDisplayName(locale) %></option>
+
+				<%
+				}
+				%>
+
+			</select>
+		</td>
+		<td>
+			<input id="<portlet:namespace /><%= displayTerms.PARTNER %>" name="<portlet:namespace /><%= displayTerms.PARTNER %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getPartner()) %>" />
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<liferay-ui:message key="city" />
+		</td>
+		<td>
+			<liferay-ui:message key="country" />
+		</td>
+		<td colspan="4">
+			<liferay-ui:message key="region" />
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<input id="<portlet:namespace /><%= displayTerms.CITY %>" name="<portlet:namespace /><%= displayTerms.CITY %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getCity()) %>" />
+		</td>
+		<td>
+			<aui:select label="" name="<%= displayTerms.COUNTRY_ID %>"></aui:select>
+		</td>
+		<td colspan="4">
+			<aui:select label="" name="<%= displayTerms.REGION_ID %>"></aui:select>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<liferay-ui:message key="trainer-first-name" />
+		</td>
+		<td>
+			<liferay-ui:message key="trainer-last-name" />
+		</td>
+		<td colspan="4">
+			<liferay-ui:message key="trainer-email-address" />
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<input id="<portlet:namespace /><%= displayTerms.TRAINER_FIRST_NAME %>" name="<portlet:namespace /><%= displayTerms.TRAINER_FIRST_NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getTrainerFirstName()) %>" />
+		</td>
+		<td>
+			<input id="<portlet:namespace /><%= displayTerms.TRAINER_LAST_NAME %>" name="<portlet:namespace /><%= displayTerms.TRAINER_LAST_NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getTrainerLastName()) %>" />
+		</td>
+		<td colspan="4">
+			<input id="<portlet:namespace /><%= displayTerms.TRAINER_EMAIL_ADDRESS %>" name="<portlet:namespace /><%= displayTerms.TRAINER_EMAIL_ADDRESS %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getTrainerEmailAddress()) %>" />
+		</td>
+	</tr>
+
+	<c:if test='<%= tabs3.equals("all-classes") %>'>
+		<tr>
+			<td colspan="2">
+				<liferay-ui:message key="start-date-after" />
+			</td>
+			<td colspan="4">
+				<liferay-ui:message key="start-date-before" />
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<liferay-ui:input-date
+					dayNullable="<%= true %>"
+					dayParam="<%= displayTerms.START_DATE_GT_DAY %>"
+					dayValue="<%= displayTerms.getStartDateGTDay() %>"
+					monthNullable="<%= true %>"
+					monthParam="<%= displayTerms.START_DATE_GT_MONTH %>"
+					monthValue="<%= displayTerms.getStartDateGTMonth() %>"
+					yearNullable="<%= true %>"
+					yearParam="<%= displayTerms.START_DATE_GT_YEAR %>"
+					yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
+					yearRangeStart="<%= 2008 %>"
+					yearValue="<%= displayTerms.getStartDateGTYear() %>"
+				/>
+			</td>
+			<td colspan="4">
+				<liferay-ui:input-date
+					dayNullable="<%= true %>"
+					dayParam="<%= displayTerms.START_DATE_LT_DAY %>"
+					dayValue="<%= displayTerms.getStartDateLTDay() %>"
+					monthNullable="<%= true %>"
+					monthParam="<%= displayTerms.START_DATE_LT_MONTH %>"
+					monthValue="<%= displayTerms.getStartDateLTMonth() %>"
+					yearNullable="<%= true %>"
+					yearParam="<%= displayTerms.START_DATE_LT_YEAR %>"
+					yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
+					yearRangeStart="<%= 2008 %>"
+					yearValue="<%= displayTerms.getStartDateLTYear() %>"
+				/>
+			</td>
+		</tr>
+	</c:if>
+
+	</table>
+</liferay-ui:search-toggle>
+
+<aui:script use="liferay-dynamic-select">
+	new Liferay.DynamicSelect(
+		[
+			{
+				select: '<portlet:namespace /><%= displayTerms.COUNTRY_ID %>',
+				selectData: Liferay.Address.getCountries,
+				selectDesc: 'name',
+				selectId: 'countryId',
+				selectVal: '<%= displayTerms.getCountryId() %>'
+			},
+			{
+				select: '<portlet:namespace /><%= displayTerms.REGION_ID %>',
+				selectData: Liferay.Address.getRegions,
+				selectDesc: 'name',
+				selectId: 'regionId',
+				selectVal: '<%= displayTerms.getRegionId() %>'
+			}
+		]
+	);
+</aui:script>

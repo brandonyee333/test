@@ -1,0 +1,38 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%
+PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(pageContext, "import-prometric"), currentURL);
+%>
+
+<portlet:actionURL name="updateTrainingExamResults" var="updateTrainingExamResultsURL">
+	<portlet:param name="mvcPath" value="/admin/view.jsp" />
+	<portlet:param name="tabs1" value="tools" />
+	<portlet:param name="tabs2" value="import-prometric" />
+</portlet:actionURL>
+
+<aui:form action="<%= updateTrainingExamResultsURL %>" enctype="multipart/form-data" method="post" name="fm">
+	<input name="redirect" type="hidden" value="<%= currentURL %>" />
+	<input name="trainingExamResultsImporterType" type="hidden" value="<%= TrainingExamResultsImporterConstants.TRAINING_EXAM_RESULTS_IMPORTER_NAME_PROMETRIC %>" />
+
+	<liferay-ui:error exception="<%= FileExtensionException.class %>" message="please-select-a-valid-prometric-file" />
+
+	<div class="ctrl-holder">
+		<aui:input label="import-prometric-file" name="file" type="file" />
+	</div>
+
+	<input class="aui-button-input" type="submit" value="<liferay-ui:message key="submit" />" />
+</aui:form>

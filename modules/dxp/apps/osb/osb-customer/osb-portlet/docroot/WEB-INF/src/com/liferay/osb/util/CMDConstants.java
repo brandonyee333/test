@@ -1,0 +1,38 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+package com.liferay.osb.util;
+
+import com.liferay.portal.kernel.util.Constants;
+
+/**
+ * @author Amos Fong
+ */
+public interface CMDConstants extends Constants {
+
+	public static final String CAPTCHA = "captcha";
+
+	public static final String CLOSE = "close";
+
+	public static final String REPRODUCE = "reproduce";
+
+	public static final String UPDATE_PREFERENCES = "updatePreferences";
+
+	public static final String UPDATE_PROFILE_PREFERENCES =
+		"updateProfilePreferences";
+
+	public static final String UPDATE_TICKET_ENTRY_STATUS =
+		"updateTicketEntryStatus";
+
+}

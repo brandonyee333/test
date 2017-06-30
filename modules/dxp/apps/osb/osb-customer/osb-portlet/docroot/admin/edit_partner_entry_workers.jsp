@@ -1,0 +1,200 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%@ include file="/init.jsp" %>
+
+<%
+String tabs2 = ParamUtil.getString(request, "tabs2", "current");
+
+int cur = ParamUtil.getInteger(request, "cur");
+
+String redirect = ParamUtil.getString(request, "redirect");
+
+long partnerEntryId = ParamUtil.getLong(request, "partnerEntryId");
+
+PartnerEntry partnerEntry = PartnerEntryLocalServiceUtil.getPartnerEntry(partnerEntryId);
+
+PortletURL portletURL = renderResponse.createRenderURL();
+
+portletURL.setParameter("mvcPath", "/admin/edit_partner_entry_workers.jsp");
+portletURL.setParameter("tabs2", tabs2);
+portletURL.setParameter("redirect", redirect);
+portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
+%>
+
+<aui:form action="<%= portletURL.toString() %>" method="post" name="fm">
+	<input name="<portlet:namespace />assignmentsRedirect" type="hidden" value="" />
+	<input name="<portlet:namespace />partnerEntryId" type="hidden" value="<%= partnerEntryId %>" />
+
+	<liferay-ui:message arguments="<%= partnerEntry.getCode() %>" key="edit-workers-for-partner-x" />
+
+	<br /><br />
+
+	<liferay-ui:tabs
+		backURL="<%= redirect %>"
+		names="users"
+	/>
+
+	<input name="<portlet:namespace />addUserIds" type="hidden" value="" />
+	<input name="<portlet:namespace />removeUserIds" type="hidden" value="" />
+
+	<liferay-ui:tabs
+		names="current,available"
+		param="tabs2"
+		url="<%= portletURL.toString() %>"
+	/>
+
+	<%
+	UserPartnerWorkerChecker rowChecker = new UserPartnerWorkerChecker(renderResponse, partnerEntry);
+
+	LinkedHashMap userParams = new LinkedHashMap();
+
+	if (tabs2.equals("current")) {
+		userParams.put("status", WorkflowConstants.STATUS_ANY);
+		userParams.put("usersPartnerWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.service.persistence.UserFinder.joinByPartnerWorker"), new Long(partnerEntry.getPartnerEntryId())));
+	}
+	%>
+
+	<liferay-ui:user-search
+		portletURL="<%= portletURL %>"
+		rowChecker="<%= rowChecker %>"
+		userParams="<%= userParams %>"
+	>
+
+		<%
+		SearchContainer userSearchContainer = (SearchContainer)request.getAttribute(WebKeys.SEARCH_CONTAINER);
+		%>
+
+		<liferay-ui:search-container
+			headerNames="name,screen-name,email-address,role"
+			rowChecker="<%= rowChecker %>"
+			searchContainer="<%= userSearchContainer %>"
+		>
+			<liferay-ui:search-container-results
+				results="<%= userSearchContainer.getResults() %>"
+				total="<%= userSearchContainer.getTotal() %>"
+			/>
+
+			<liferay-ui:search-container-row
+				className="com.liferay.portal.model.User"
+				escapedModel="<%= true %>"
+				keyProperty="userId"
+				modelVar="curUser"
+			>
+
+				<%
+				PartnerWorker partnerWorker = null;
+
+				int role = 0;
+				int notifications = 0;
+
+				try {
+					partnerWorker = PartnerWorkerLocalServiceUtil.getPartnerWorker(curUser.getUserId(), partnerEntryId);
+
+					role = partnerWorker.getRole();
+					notifications = partnerWorker.getNotifications();
+				}
+				catch (Exception e) {
+				}
+
+				if (!curUser.isActive()) {
+					row.setClassName("inactive");
+				}
+				%>
+
+				<liferay-ui:search-container-column-text
+					name="name"
+					property="fullName"
+				/>
+
+				<liferay-ui:search-container-column-text
+					name="screen-name"
+					property="screenName"
+				/>
+
+				<liferay-ui:search-container-column-text
+					name="email-address"
+					property="emailAddress"
+				/>
+
+				<liferay-ui:search-container-column-text
+					name="notifications"
+				>
+					<select <%= curUser.isActive() ? StringPool.BLANK : "disabled" %> name="<portlet:namespace />notifications_<%= curUser.getUserId() %>">
+
+						<%
+						for (int i = 1; i <= 2; i++) {
+						%>
+
+							<option <%= (notifications == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(pageContext, PartnerWorkerConstants.getNotificationsLabel(i)) %></option>
+
+						<%
+						}
+						%>
+
+					</select>
+				</liferay-ui:search-container-column-text>
+
+				<liferay-ui:search-container-column-text
+					name="role"
+				>
+					<select <%= curUser.isActive() ? StringPool.BLANK : "disabled" %> name="<portlet:namespace />role_<%= curUser.getUserId() %>">
+						<option></option>
+
+						<%
+						for (int i = 1; i <= 3; i++) {
+						%>
+
+							<option <%= (role == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(pageContext, PartnerWorkerConstants.getRoleLabel(i)) %></option>
+
+						<%
+						}
+						%>
+
+					</select>
+				</liferay-ui:search-container-column-text>
+
+				<liferay-ui:search-container-column-text
+					name="user-status"
+				>
+					<%= RoleLocalServiceUtil.hasUserRole(curUser.getUserId(), OSBConstants.ROLE_VERIFIED_USER_ID) ? StringPool.BLANK : LanguageUtil.get(pageContext, "unverified") %>
+				</liferay-ui:search-container-column-text>
+			</liferay-ui:search-container-row>
+
+			<div class="separator"><!-- --></div>
+
+			<input onClick="<portlet:namespace />updatePartnerWorkers('<%= portletURL.toString() %>&<portlet:namespace />cur=<%= cur %>');" type="button" value="<liferay-ui:message key="update-associations" />" />
+
+			<br /><br />
+
+			<liferay-ui:search-iterator />
+		</liferay-ui:search-container>
+	</liferay-ui:user-search>
+</aui:form>
+
+<aui:script>
+	Liferay.provide(
+		window,
+		'<portlet:namespace />updatePartnerWorkers',
+		function(assignmentsRedirect) {
+			document.<portlet:namespace />fm.<portlet:namespace />assignmentsRedirect.value = assignmentsRedirect;
+			document.<portlet:namespace />fm.<portlet:namespace />addUserIds.value = Liferay.Util.listCheckedExcept(document.<portlet:namespace />fm, "<portlet:namespace />allRowIds");
+			document.<portlet:namespace />fm.<portlet:namespace />removeUserIds.value = Liferay.Util.listUncheckedExcept(document.<portlet:namespace />fm, "<portlet:namespace />allRowIds");
+			submitForm(document.<portlet:namespace />fm, "<portlet:actionURL name="updatePartnerWorkers"><portlet:param name="mvcPath" value="/admin/edit_partner_entry_workers.jsp" /></portlet:actionURL>");
+		},
+		['liferay-util-list-fields']
+	);
+</aui:script>

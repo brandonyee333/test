@@ -1,0 +1,683 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<div class="details">
+	<div class="owner-details">
+		<h3>
+			<liferay-ui:message key="owner" />
+		</h3>
+
+		<%
+		CorpEntry corpEntry = null;
+		User user2 = null;
+
+		if (developerEntry.isCompany()) {
+			corpEntry = CorpEntryLocalServiceUtil.getCorpEntry(developerEntry.getDossieraAccountKey());
+		}
+		else {
+			user2 = UserLocalServiceUtil.getUserById(developerEntry.getUserId());
+		}
+		%>
+
+		<div class="owner-icon">
+			<c:choose>
+				<c:when test="<%= developerEntry.isCompany() %>">
+					<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="serveMedia" var="iconURL">
+						<portlet:param name="assetAttachmentId" value="<%= String.valueOf(corpEntry.getLogoId()) %>" />
+					</liferay-portlet:resourceURL>
+
+					<img class="user-profile-image" src="<%= iconURL %>" />
+				</c:when>
+				<c:otherwise>
+					<img class="user-profile-image" src="<%= user2.getPortraitURL(themeDisplay) %>" />
+				</c:otherwise>
+			</c:choose>
+		</div>
+
+		<div class="owner-info">
+			<table class="lfr-table">
+			<tr>
+				<td class="lfr-label">
+					Type
+				</td>
+				<td>
+					<c:choose>
+						<c:when test="<%= developerEntry.isCompany() %>">
+							Company
+						</c:when>
+						<c:otherwise>
+							User
+						</c:otherwise>
+					</c:choose>
+				</td>
+			</tr>
+			<tr>
+				<td class="lfr-label">
+					Name
+				</td>
+				<td>
+					<a href="<%= developerEntry.getProfileURL(themeDisplay) %>" target="_blank"><%= HtmlUtil.escape(developerEntry.getName()) %></a>
+				</td>
+			</tr>
+			<tr>
+				<td class="lfr-label">
+					Email Address
+				</td>
+				<td>
+					<c:choose>
+						<c:when test="<%= developerEntry.isCompany() %>">
+							<a href="mailto:<%= corpEntry.getContactEmailAddress() %>"><%= corpEntry.getContactEmailAddress() %></a>
+						</c:when>
+						<c:otherwise>
+							<a href="mailto:<%= user2.getEmailAddress() %>"><%= user2.getEmailAddress() %></a>
+						</c:otherwise>
+					</c:choose>
+				</td>
+			</tr>
+
+			<c:if test="<%= developerEntry.isCompany() %>">
+				<tr>
+					<td>&nbsp;</td>
+					<td></td>
+				</tr>
+				<tr>
+
+					<%
+					long userId = actionableAppVersion.getUserId();
+
+					String userLabel = "Creator";
+					String userName = actionableAppVersion.getUserName();
+
+					if (actionableAppVersion.getStatus() == WorkflowConstants.STATUS_PENDING) {
+						userId = actionableAppVersion.getStatusByUserId();
+
+						userLabel = "Uploader";
+						userName = actionableAppVersion.getStatusByUserName();
+					}
+
+					userName = PortalUtil.getUserName(userId, userName);
+					%>
+
+					<td class="lfr-label">
+						<%= userLabel %>
+					</td>
+					<td>
+						<%= HtmlUtil.escape(userName) %>
+					</td>
+				</tr>
+			</c:if>
+
+			</table>
+		</div>
+	</div>
+
+	<div class="cleared"><!-- --></div>
+
+	<%
+	String cssClass = "app-entry-review";
+
+	if ((approvedAppVersion == null) || (approvedAppVersion.getAppVersionId() == actionableAppVersion.getAppVersionId())) {
+		approvedAppVersion = actionableAppVersion;
+
+		cssClass = "single-app-entry-review";
+	}
+	%>
+
+	<div class="app-details <%= cssClass %>">
+		<h3>
+			<liferay-ui:message key="app" />
+		</h3>
+
+		<table class="lfr-table">
+		<tr>
+			<td class="lfr-label">
+				App Entry ID
+			</td>
+			<td>
+				<%= appEntry.getAppEntryId() %>
+			</td>
+		</tr>
+		<tr>
+			<td class="lfr-label">
+				App Entry Status
+			</td>
+			<td class="status">
+				<liferay-ui:message key="<%= appEntry.getStatusLabel() %>" />
+
+				<c:if test="<%= appEntry.getStatus() != actionableAppVersion.getStatus() %>">
+					(<liferay-ui:message key="<%= actionableAppVersion.getStatusLabel() %>" />)
+				</c:if>
+			</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td class="lfr-label">
+				App Version ID
+			</td>
+			<td class="approved">
+				<%= approvedAppVersion.getAppVersionId() %>
+			</td>
+			<td class="latest">
+				<%= actionableAppVersion.getAppVersionId() %>
+			</td>
+		</tr>
+		<tr>
+			<td class="lfr-label">
+				App Version Status
+			</td>
+			<td class="approved status">
+				<liferay-ui:message key="<%= approvedAppVersion.getStatusLabel() %>" />
+			</td>
+			<td class="latest status">
+				<liferay-ui:message key="<%= actionableAppVersion.getStatusLabel() %>" />
+			</td>
+		</tr>
+		<tr>
+			<td class="lfr-label">
+				Status Message
+			</td>
+			<td class="approved">
+				<%= HtmlUtil.escape(approvedAppVersion.getStatusMessage()) %>
+			</td>
+			<td class="latest">
+				<%= HtmlUtil.escape(actionableAppVersion.getStatusMessage()) %>
+			</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td class="lfr-label">
+				New Release
+			</td>
+			<td class="approved">
+				<%= approvedAppVersion.isNewRelease() %>
+			</td>
+			<td class="latest">
+				<%= actionableAppVersion.isNewRelease() %>
+			</td>
+		</tr>
+		<tr>
+			<td class="lfr-label">
+				Hidden
+			</td>
+			<td class="approved">
+				<%= approvedAppVersion.isHidden() %>
+			</td>
+			<td class="latest">
+				<%= actionableAppVersion.isHidden() %>
+			</td>
+		</tr>
+		</table>
+
+		<h3>
+			<liferay-ui:message key="details" />
+		</h3>
+
+		<table class="lfr-table">
+		<tr>
+			<td class="lfr-label">
+				Icon
+			</td>
+			<td class="approved">
+				<div class="icon">
+					<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="serveIcon" var="approvedIconURL">
+						<portlet:param name="assetAttachmentId" value="<%= String.valueOf(approvedAppVersion.getIconImageId()) %>" />
+					</liferay-portlet:resourceURL>
+
+					<img class="icon-70" src="<%= approvedIconURL %>" />
+				</div>
+			</td>
+			<td class="latest">
+				<div class="icon">
+					<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="serveIcon" var="latestIconURL">
+						<portlet:param name="assetAttachmentId" value="<%= String.valueOf(actionableAppVersion.getIconImageId()) %>" />
+					</liferay-portlet:resourceURL>
+
+					<img class="icon-70" src="<%= latestIconURL %>" />
+				</div>
+			</td>
+		</tr>
+		<tr class="<%= !Validator.equals(approvedAppVersion.getTitle(), actionableAppVersion.getTitle()) ? "updated" : StringPool.BLANK %>">
+			<td class="lfr-label">
+				Title
+			</td>
+			<td class="approved">
+				<%= HtmlUtil.escape(approvedAppVersion.getTitle()) %>
+			</td>
+			<td class="latest">
+				<%= HtmlUtil.escape(actionableAppVersion.getTitle()) %>
+			</td>
+		</tr>
+		<tr class="<%= !Validator.equals(approvedAppVersion.getVersion(), actionableAppVersion.getVersion()) ? "updated" : StringPool.BLANK %>">
+			<td class="lfr-label">
+				Version
+			</td>
+			<td class="approved">
+				<%= HtmlUtil.escape(approvedAppVersion.getVersion()) %>
+			</td>
+			<td class="latest">
+				<%= HtmlUtil.escape(actionableAppVersion.getVersion()) %>
+			</td>
+		</tr>
+		<tr class="<%= !Validator.equals(approvedAppVersion.getVersion(), actionableAppVersion.getVersion()) ? "updated" : StringPool.BLANK %>">
+			<td class="lfr-label">
+				Modified Date
+			</td>
+			<td class="approved">
+				<%= mediumDateFormatDate.format(approvedAppVersion.getModifiedDate()) %>
+			</td>
+			<td class="latest">
+				<%= mediumDateFormatDate.format(actionableAppVersion.getModifiedDate()) %>
+			</td>
+		</tr>
+		<tr class="<%= !Validator.equals(approvedAppVersion.getWebsite(), actionableAppVersion.getWebsite()) ? "updated" : StringPool.BLANK %>">
+			<td class="lfr-label">
+				Website
+			</td>
+			<td class="approved">
+				<a href="<%= approvedAppVersion.getWebsite() %>" target="_blank"><%= HtmlUtil.escape(approvedAppVersion.getWebsite()) %></a>
+			</td>
+			<td class="latest">
+				<a href="<%= actionableAppVersion.getWebsite() %>" target="_blank"><%= HtmlUtil.escape(actionableAppVersion.getWebsite()) %></a>
+			</td>
+		</tr>
+		<tr class="<%= !Validator.equals(approvedAppVersion.getDemoWebsite(), actionableAppVersion.getDemoWebsite()) ? "updated" : StringPool.BLANK %>">
+			<td class="lfr-label">
+				Demo Website
+			</td>
+			<td class="approved">
+				<a href="<%= approvedAppVersion.getDemoWebsite() %>" target="_blank"><%= HtmlUtil.escape(approvedAppVersion.getDemoWebsite()) %></a>
+			</td>
+			<td class="latest">
+				<a href="<%= actionableAppVersion.getDemoWebsite() %>" target="_blank"><%= HtmlUtil.escape(actionableAppVersion.getDemoWebsite()) %></a>
+			</td>
+		</tr>
+		<tr class="<%= !Validator.equals(approvedAppVersion.getDocumentationWebsite(), actionableAppVersion.getDocumentationWebsite()) ? "updated" : StringPool.BLANK %>">
+			<td class="lfr-label">
+				Documentation Website
+			</td>
+			<td class="approved">
+				<a href="<%= approvedAppVersion.getDocumentationWebsite() %>" target="_blank"><%= HtmlUtil.escape(approvedAppVersion.getDocumentationWebsite()) %></a>
+			</td>
+			<td class="latest">
+				<a href="<%= actionableAppVersion.getDocumentationWebsite() %>" target="_blank"><%= HtmlUtil.escape(actionableAppVersion.getDocumentationWebsite()) %></a>
+			</td>
+		</tr>
+		<tr class="<%= !Validator.equals(approvedAppVersion.getDocumentationWebsite(), actionableAppVersion.getDocumentationWebsite()) ? "updated" : StringPool.BLANK %>">
+			<td class="lfr-label">
+				API Reference Website
+			</td>
+			<td class="approved">
+				<a href="<%= approvedAppVersion.getReferenceWebsite() %>" target="_blank"><%= HtmlUtil.escape(approvedAppVersion.getReferenceWebsite()) %></a>
+			</td>
+			<td class="latest">
+				<a href="<%= actionableAppVersion.getReferenceWebsite() %>" target="_blank"><%= HtmlUtil.escape(actionableAppVersion.getReferenceWebsite()) %></a>
+			</td>
+		</tr>
+		<tr class="<%= !Validator.equals(approvedAppVersion.getSourceCodeWebsite(), actionableAppVersion.getSourceCodeWebsite()) ? "updated" : StringPool.BLANK %>">
+			<td class="lfr-label">
+				Source Code
+			</td>
+			<td class="approved">
+				<a href="<%= approvedAppVersion.getSourceCodeWebsite() %>" target="_blank"><%= HtmlUtil.escape(approvedAppVersion.getSourceCodeWebsite()) %></a>
+			</td>
+			<td class="latest">
+				<a href="<%= actionableAppVersion.getSourceCodeWebsite() %>" target="_blank"><%= HtmlUtil.escape(actionableAppVersion.getSourceCodeWebsite()) %></a>
+			</td>
+		</tr>
+		<tr class="<%= !Validator.equals(approvedAppVersion.getSupportWebsite(), actionableAppVersion.getSupportWebsite()) ? "updated" : StringPool.BLANK %>">
+			<td class="lfr-label">
+				Support
+			</td>
+			<td class="approved">
+				<a href="<%= approvedAppVersion.getSupportWebsite() %>" target="_blank"><%= HtmlUtil.escape(approvedAppVersion.getSupportWebsite()) %></a>
+			</td>
+			<td class="latest">
+				<a href="<%= actionableAppVersion.getSupportWebsite() %>" target="_blank"><%= HtmlUtil.escape(actionableAppVersion.getSupportWebsite()) %></a>
+			</td>
+		</tr>
+		</table>
+
+		<h3>
+			<liferay-ui:message key="categorization" />
+		</h3>
+
+		<table class="lfr-table">
+
+		<%
+		String approvedAppVersionAssetCategoryNames = StringUtil.merge(AssetCategoryLocalServiceUtil.getCategoryNames(AppVersion.class.getName(), approvedAppVersion.getAppVersionId()), StringPool.COMMA_AND_SPACE);
+		String actionableAppVersionAssetCategoryNames = StringUtil.merge(AssetCategoryLocalServiceUtil.getCategoryNames(AppVersion.class.getName(), actionableAppVersion.getAppVersionId()), StringPool.COMMA_AND_SPACE);
+		%>
+
+		<tr class="<%= !approvedAppVersionAssetCategoryNames.equals(actionableAppVersionAssetCategoryNames) ? "updated" : StringPool.BLANK %>">
+			<td class="lfr-label">
+				Categories
+			</td>
+			<td class="approved">
+				<%= approvedAppVersionAssetCategoryNames %>
+			</td>
+			<td class="latest">
+				<%= actionableAppVersionAssetCategoryNames %>
+			</td>
+		</tr>
+
+		<%
+		String approvedAppVersionAssetTagNames = StringUtil.merge(AssetTagLocalServiceUtil.getTagNames(AppVersion.class.getName(), approvedAppVersion.getAppVersionId()), StringPool.COMMA_AND_SPACE);
+		String actionableAppVersionAssetTagNames = StringUtil.merge(AssetTagLocalServiceUtil.getTagNames(AppVersion.class.getName(), actionableAppVersion.getAppVersionId()), StringPool.COMMA_AND_SPACE);
+		%>
+
+		<tr class="<%= !approvedAppVersionAssetTagNames.equals(actionableAppVersionAssetTagNames) ? "updated" : StringPool.BLANK %>">
+			<td class="lfr-label">
+				Tags
+			</td>
+			<td class="approved">
+				<%= approvedAppVersionAssetTagNames %>
+			</td>
+			<td class="latest">
+				<%= actionableAppVersionAssetTagNames %>
+			</td>
+		</tr>
+		<tr class="<%= (approvedAppVersion.getLabs() != actionableAppVersion.getLabs()) ? "updated" : StringPool.BLANK %>">
+			<td class="lfr-label">
+				Labs
+			</td>
+			<td class="approved">
+				<%= approvedAppVersion.isLabs() %>
+			</td>
+			<td class="latest">
+				<%= actionableAppVersion.isLabs() %>
+			</td>
+		</tr>
+		</table>
+
+		<h3>
+			<liferay-ui:message key="descriptions" />
+		</h3>
+
+		<%
+		String approvedAppVersionDescription = _getLocalizedDisplay(approvedAppVersion.getDescriptionMap(), locale);
+
+		approvedAppVersionDescription = approvedAppVersionDescription.replace(StringPool.NEW_LINE, "<br />");
+
+		String actionableAppVersionDescription = _getLocalizedDisplay(actionableAppVersion.getDescriptionMap(), locale);
+
+		actionableAppVersionDescription = actionableAppVersionDescription.replace(StringPool.NEW_LINE, "<br />");
+		%>
+
+		<table class="lfr-table">
+		<tr class="<%= !approvedAppVersionDescription.equals(actionableAppVersionDescription) ? "updated" : StringPool.BLANK %>">
+			<td class="lfr-label">
+				Description
+			</td>
+			<td class="approved">
+				<%= approvedAppVersionDescription %>
+			</td>
+			<td class="latest">
+				<%= actionableAppVersionDescription %>
+			</td>
+		</tr>
+
+		<%
+		String approvedAppVersionChangeLog = _getLocalizedDisplay(approvedAppVersion.getChangeLogMap(), locale);
+
+		approvedAppVersionChangeLog = approvedAppVersionChangeLog.replace(StringPool.NEW_LINE, "<br />");
+
+		String actionableAppVersionChangeLog = _getLocalizedDisplay(actionableAppVersion.getChangeLogMap(), locale);
+
+		actionableAppVersionChangeLog = actionableAppVersionChangeLog.replace(StringPool.NEW_LINE, "<br />");
+		%>
+
+		<tr class="<%= !approvedAppVersionChangeLog.equals(actionableAppVersionChangeLog) ? "updated" : StringPool.BLANK %>">
+			<td class="lfr-label">
+				Change Log
+			</td>
+			<td class="approved">
+				<%= approvedAppVersionChangeLog %>
+			</td>
+			<td class="latest">
+				<%= actionableAppVersionChangeLog %>
+			</td>
+		</tr>
+		</table>
+
+		<h3>
+			<liferay-ui:message key="agreement" />
+		</h3>
+
+		<table class="lfr-table">
+
+		<%
+		String approvedAppVersionEulaContent = StringPool.BLANK;
+
+		if (approvedAppVersion.getContractEntryId() > 0) {
+			ContractEntry contractEntry = approvedAppVersion.getContractEntry();
+
+			approvedAppVersionEulaContent = _getLocalizedDisplay(contractEntry.getContentMap(), locale);
+
+			approvedAppVersionEulaContent = approvedAppVersionEulaContent.replace(StringPool.NEW_LINE, "<br />");
+		}
+
+		String actionableAppVersionEulaContent = StringPool.BLANK;
+
+		if (actionableAppVersion.getContractEntryId() > 0) {
+			ContractEntry contractEntry = actionableAppVersion.getContractEntry();
+
+			actionableAppVersionEulaContent = _getLocalizedDisplay(contractEntry.getContentMap(), locale);
+
+			actionableAppVersionEulaContent = actionableAppVersionEulaContent.replace(StringPool.NEW_LINE, "<br />");
+		}
+		%>
+
+		<tr class="<%= !approvedAppVersionEulaContent.equals(actionableAppVersionEulaContent) ? "updated" : StringPool.BLANK %>">
+			<td class="lfr-label">
+				EULA
+			</td>
+			<td class="approved">
+				<%= (approvedAppVersion.getContractEntryId() == 0) ? LanguageUtil.get(pageContext, "default-app-eula") : approvedAppVersionEulaContent %>
+			</td>
+			<td class="latest">
+				<%= (actionableAppVersion.getContractEntryId() == 0) ? LanguageUtil.get(pageContext, "default-app-eula") : actionableAppVersionEulaContent %>
+			</td>
+		</tr>
+		</table>
+
+		<h3>
+			<liferay-ui:message key="licensing" />
+		</h3>
+
+		<table class="lfr-table">
+		<tr class="<%= !Validator.equals(approvedAppVersion.getProductTypeLabel(), actionableAppVersion.getProductTypeLabel()) ? "updated" : StringPool.BLANK %>">
+			<td class="lfr-label">
+				Product Type
+			</td>
+			<td class="approved">
+				<%= LanguageUtil.get(pageContext, approvedAppVersion.getProductTypeLabel()) %>
+			</td>
+			<td class="latest">
+				<%= LanguageUtil.get(pageContext, actionableAppVersion.getProductTypeLabel()) %>
+			</td>
+		</tr>
+
+		<%
+		String approvedAppVersionLicenseType = "none";
+		String actionableAppVersionLicenseType = "none";
+
+		List<AssetLicense> approvedAssetLicenses = approvedAppVersion.getAssetLicenses();
+
+		if (!approvedAssetLicenses.isEmpty()) {
+			AssetLicense assetLicense = approvedAssetLicenses.get(0);
+
+			approvedAppVersionLicenseType = assetLicense.getLicenseTypeLabel();
+		}
+
+		List<AssetLicense> latestAssetLicenses = actionableAppVersion.getAssetLicenses();
+
+		if (!latestAssetLicenses.isEmpty()) {
+			AssetLicense assetLicense = latestAssetLicenses.get(0);
+
+			actionableAppVersionLicenseType = assetLicense.getLicenseTypeLabel();
+		}
+		%>
+
+		<tr class="<%= !approvedAppVersionLicenseType.equals(actionableAppVersionLicenseType) ? "updated" : StringPool.BLANK %>">
+			<td class="lfr-label">
+				License Type
+			</td>
+			<td class="approved">
+				<%= LanguageUtil.get(pageContext, approvedAppVersionLicenseType) %>
+			</td>
+			<td class="latest">
+				<%= LanguageUtil.get(pageContext, actionableAppVersionLicenseType) %>
+			</td>
+		</tr>
+		</table>
+
+		<h3>
+			<liferay-ui:message key="screen-captures" />
+		</h3>
+
+		<table class="lfr-table">
+		<tr>
+			<td class="lfr-label">
+				Screen Shots
+			</td>
+			<td class="approved">
+
+				<%
+				List<AssetAttachment> approvedAssetAttachments = AssetAttachmentLocalServiceUtil.getAssetAttachments(AppVersion.class.getName(), approvedAppVersion.getAppVersionId(), AssetAttachmentConstants.TYPE_MEDIA, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+
+				for (AssetAttachment assetAttachment : approvedAssetAttachments) {
+				%>
+
+					<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="serveMedia" var="approvedMediaURL">
+						<portlet:param name="assetAttachmentId" value="<%= String.valueOf(assetAttachment.getAssetAttachmentId()) %>" />
+					</liferay-portlet:resourceURL>
+
+					<a class="screenshot" href="<%= approvedMediaURL %>" target="_blank">
+						<img alt="<%= assetAttachment.getFileName() %>" class="screenshot-image" src="<%= approvedMediaURL %>" />
+					</a>
+
+				<%
+				}
+				%>
+
+			</td>
+			<td class="latest">
+
+				<%
+				List<AssetAttachment> latestAssetAttachments = AssetAttachmentLocalServiceUtil.getAssetAttachments(AppVersion.class.getName(), actionableAppVersion.getAppVersionId(), AssetAttachmentConstants.TYPE_MEDIA, QueryUtil.ALL_POS, QueryUtil.ALL_POS, new AssetAttachmentRankComparator());
+
+				for (AssetAttachment assetAttachment : latestAssetAttachments) {
+				%>
+
+					<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="serveMedia" var="latestMediaURL">
+						<portlet:param name="assetAttachmentId" value="<%= String.valueOf(assetAttachment.getAssetAttachmentId()) %>" />
+					</liferay-portlet:resourceURL>
+
+					<a class="screenshot" href="<%= latestMediaURL %>" target="_blank">
+						<img alt="<%= assetAttachment.getFileName() %>" class="screenshot-image" src="<%= latestMediaURL %>" />
+					</a>
+
+				<%
+				}
+				%>
+
+			</td>
+		</tr>
+		</table>
+
+		<h3>
+			<liferay-ui:message key="packages" />
+		</h3>
+
+		<table class="lfr-table">
+
+		<%
+		List<AppPackage> approvedAppPackages = AppPackageLocalServiceUtil.getAppPackages(approvedAppVersion.getAppVersionId(), QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+		List<AppPackage> latestAppPackages = AppPackageLocalServiceUtil.getAppPackages(actionableAppVersion.getAppVersionId(), QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+
+		Map<String, Long> approvedAppPackageIdMap = new LinkedHashMap<String, Long>();
+		Map<String, Long> latestAppPackageIdMap = new LinkedHashMap<String, Long>();
+
+		List<String> compatibilities = new ArrayList<String>();
+
+		for (AppPackage appPackage : approvedAppPackages) {
+			String compatibility = PortalReleaseUtil.getVersionName(appPackage);
+
+			if (!compatibilities.contains(compatibility)) {
+				compatibilities.add(compatibility);
+			}
+
+			approvedAppPackageIdMap.put(compatibility, appPackage.getAppPackageId());
+		}
+
+		for (AppPackage appPackage : latestAppPackages) {
+			String compatibility = PortalReleaseUtil.getVersionName(appPackage);
+
+			if (!compatibilities.contains(compatibility)) {
+				compatibilities.add(compatibility);
+			}
+
+			latestAppPackageIdMap.put(compatibility, appPackage.getAppPackageId());
+		}
+
+		boolean displayLinks = RoleLocalServiceUtil.hasUserRole(permissionChecker.getUserId(), OSBConstants.ROLE_OSB_MARKETPLACE_ADMIN_ID);
+
+		boolean displayContextWarning = false;
+
+		for (String compatibility : compatibilities) {
+		%>
+
+			<tr>
+				<td class="lfr-label">
+					<%= compatibility %>
+				</td>
+				<td class="approved">
+					<c:if test="<%= approvedAppPackageIdMap.containsKey(compatibility) %>">
+						<liferay-util:include page="/marketplace_admin/app_package.jsp" servletContext="<%= application %>">
+							<liferay-util:param name="appPackageId" value="<%= String.valueOf(approvedAppPackageIdMap.get(compatibility)) %>" />
+							<liferay-util:param name="displayLinks" value="<%= String.valueOf(displayLinks) %>" />
+						</liferay-util:include>
+					</c:if>
+				</td>
+				<td class="latest">
+					<c:if test="<%= latestAppPackageIdMap.containsKey(compatibility) %>">
+						<liferay-util:include page="/marketplace_admin/app_package.jsp" servletContext="<%= application %>">
+							<liferay-util:param name="appPackageId" value="<%= String.valueOf(latestAppPackageIdMap.get(compatibility)) %>" />
+							<liferay-util:param name="displayLinks" value="<%= String.valueOf(displayLinks) %>" />
+						</liferay-util:include>
+					</c:if>
+				</td>
+			</tr>
+
+		<%
+		}
+		%>
+
+		</table>
+
+		<c:if test="<%= displayContextWarning %>">
+			<div class="portlet-msg-alert">
+				This portlet contains WARs with conflicting context paths. Consider rejecting.
+			</div>
+		</c:if>
+	</div>
+</div>

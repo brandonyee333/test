@@ -1,0 +1,193 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%
+String tabs3 = ParamUtil.getString(request, "tabs3", "upcoming-classes");
+
+long trainingUserId = ParamUtil.getLong(request, "trainingUserId");
+
+portletURL.setParameter("tabs3", tabs3);
+portletURL.setParameter("trainingUserId", String.valueOf(trainingUserId));
+%>
+
+<liferay-ui:tabs
+	names="upcoming-classes,past-classes,all-classes"
+	param="tabs3"
+	url="<%= portletURL.toString() %>"
+/>
+
+<aui:form action="<%= portletURL.toString() %>" method="post" name="fm" onSubmit="submitForm(this); return false;">
+	<liferay-ui:error exception="<%= TrainingCustomerCertificateException.class %>" message="you-cannot-remove-classes-that-have-generated-certificate-keys" />
+	<liferay-ui:error exception="<%= TrainingCustomerStatusException.class %>" message="you-cannot-remove-classes-that-have-sent-out-surveys" />
+
+	<liferay-ui:search-container
+		searchContainer="<%= new TrainingEventSearch(renderRequest, portletURL) %>"
+	>
+
+		<%
+		TrainingEventDisplayTerms displayTerms = (TrainingEventDisplayTerms)searchContainer.getDisplayTerms();
+		TrainingEventSearchTerms searchTerms = (TrainingEventSearchTerms)searchContainer.getSearchTerms();
+
+		boolean asc = false;
+
+		if (tabs3.equals("past-classes")) {
+			searchTerms.setStartDateLT(new Date());
+		}
+		else if (!tabs3.equals("all-classes")) {
+			searchTerms.setStartDateGT(new Date());
+
+			asc = true;
+		}
+
+		if (Validator.isNull(searchContainer.getOrderByCol())) {
+			searchContainer.setOrderByComparator(new TrainingEventStartDateComparator(asc));
+		}
+		%>
+
+		<%@ include file="/admin/training_event_search.jspf" %>
+
+		<liferay-ui:search-container-results>
+			<%@ include file="/admin/training_event_search_results.jspf" %>
+		</liferay-ui:search-container-results>
+
+		<liferay-ui:search-container-row
+			className="com.liferay.osb.model.TrainingEvent"
+			escapedModel="<%= true %>"
+			keyProperty="trainingEventId"
+			modelVar="trainingEvent"
+		>
+			<liferay-portlet:renderURL varImpl="rowURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+				<portlet:param name="mvcPath" value='<%= RoleLocalServiceUtil.hasUserRole(permissionChecker.getUserId(), OSBConstants.ROLE_OSB_ADMINISTRATOR_ID) || RoleLocalServiceUtil.hasUserRole(permissionChecker.getUserId(), OSBConstants.ROLE_OSB_TRAINING_ADMIN_ID) ? "/admin/edit_training_event.jsp" : "/admin/view_training_event.jsp" %>' />
+				<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
+				<portlet:param name="trainingEventId" value="<%= String.valueOf(trainingEvent.getTrainingEventId()) %>" />
+			</liferay-portlet:renderURL>
+
+			<liferay-ui:search-container-column-text
+				href="<%= rowURL %>"
+				name="type"
+			>
+				<%= LanguageUtil.get(pageContext, trainingEvent.getTypeLabel()) %>
+			</liferay-ui:search-container-column-text>
+
+			<liferay-ui:search-container-column-text
+				href="<%= rowURL %>"
+				name="client-name"
+				property="name"
+			/>
+
+			<liferay-ui:search-container-column-text
+				href="<%= rowURL %>"
+				name="course"
+				property="trainingCourse.name"
+			/>
+
+			<liferay-ui:search-container-column-text
+				href="<%= rowURL %>"
+				name="credits"
+				property="trainingCourse.creditAmount"
+			/>
+
+			<liferay-ui:search-container-column-text
+				href="<%= rowURL %>"
+				name="location"
+				value="<%= trainingEvent.getAddressDisplayHTML() %>"
+			/>
+
+			<%
+			Locale eventLocale = LocaleUtil.fromLanguageId(trainingEvent.getLanguageId(), false);
+			%>
+
+			<liferay-ui:search-container-column-text
+				href="<%= rowURL %>"
+				name="language"
+				value="<%= eventLocale.getDisplayLanguage(locale) %>"
+			/>
+
+			<liferay-ui:search-container-column-text
+				buffer="buffer"
+				href="<%= rowURL %>"
+				name="partner"
+			>
+
+				<%
+				PartnerEntry partnerEntry = trainingEvent.getPartnerEntry();
+
+				if (partnerEntry != null) {
+					buffer.append(HtmlUtil.escape(partnerEntry.getCode()));
+				}
+				%>
+
+			</liferay-ui:search-container-column-text>
+
+			<liferay-ui:search-container-column-text
+				href="<%= rowURL %>"
+				name="start-date"
+				orderable="<%= true %>"
+				value="<%= longDateFormatDate.format(trainingEvent.getStartDate()) %>"
+			/>
+
+			<%
+			UserTrainingCustomerChecker rowChecker = new UserTrainingCustomerChecker(renderResponse, trainingEvent);
+
+			LinkedHashMap userParams = new LinkedHashMap();
+
+			userParams.put("usersTrainingCustomers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.service.persistence.UserFinder.joinByTrainingCustomer"), new Long[] {new Long(PortalUtil.getClassNameId(TrainingEvent.class)), new Long(trainingEvent.getTrainingEventId()), new Long(WorkflowConstants.STATUS_APPROVED), new Long(WorkflowConstants.STATUS_INCOMPLETE_TRAINING_REGISTRATION)}));
+
+			int customersCount = UserLocalServiceUtil.searchCount(company.getCompanyId(), null, WorkflowConstants.STATUS_ANY, userParams);
+			%>
+
+			<liferay-ui:search-container-column-text
+				href="<%= rowURL %>"
+				name="students"
+				value="<%= String.valueOf(customersCount) %>"
+			/>
+
+			<c:if test="<%= trainingUserId > 0 %>">
+
+				<%
+				TrainingCustomer trainingCustomer = TrainingCustomerLocalServiceUtil.fetchTrainingCustomer(trainingUserId, PortalUtil.getClassNameId(TrainingEvent.class), trainingEvent.getTrainingEventId());
+				%>
+
+				<liferay-ui:search-container-column-text
+					name="certificate-key"
+					value="<%= !TrainingCertificateLocalServiceUtil.hasTrainingCertificateCertifiedDate(trainingCustomer.getTrainingCustomerId()) ? StringPool.BLANK : trainingCustomer.getTrainingCertificateKey() %>"
+				/>
+			</c:if>
+
+			<liferay-ui:search-container-column-jsp
+				align="right"
+				path="/admin/training_event_action.jsp"
+			/>
+		</liferay-ui:search-container-row>
+
+		<c:choose>
+			<c:when test="<%= trainingUserId > 0 %>">
+				<div class="portlet-msg-info">
+					<%= LanguageUtil.format(pageContext, "classes-for-x", PortalUtil.getUserName(trainingUserId, StringPool.BLANK), false) %>
+				</div>
+			</c:when>
+			<c:when test="<%= RoleLocalServiceUtil.hasUserRole(permissionChecker.getUserId(), OSBConstants.ROLE_OSB_ADMINISTRATOR_ID) || RoleLocalServiceUtil.hasUserRole(permissionChecker.getUserId(), OSBConstants.ROLE_OSB_TRAINING_ADMIN_ID) %>">
+				<div>
+					<input onClick="location.href = '<portlet:renderURL windowState="<%= WindowState.MAXIMIZED.toString() %>"><portlet:param name="mvcPath" value="/admin/edit_training_event.jsp" /><portlet:param name="redirect" value="<%= portletURL.toString() %>" /></portlet:renderURL>';" type="button" value="<liferay-ui:message key="add-class" />" />
+				</div>
+
+				<br />
+			</c:when>
+		</c:choose>
+
+		<liferay-ui:search-iterator />
+	</liferay-ui:search-container>
+</aui:form>

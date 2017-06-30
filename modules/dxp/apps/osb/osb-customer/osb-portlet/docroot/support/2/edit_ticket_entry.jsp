@@ -1,0 +1,275 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%@ include file="/support/2/init.jsp" %>
+
+<%
+String tabs1 = ParamUtil.getString(request, "tabs1", "public");
+
+String redirect = ParamUtil.getString(request, "redirect");
+
+String backURL = ParamUtil.getString(request, "backURL", redirect);
+
+if (Validator.isNull(backURL)) {
+	PortletURL portletURL = renderResponse.createRenderURL();
+
+	portletURL.setParameter("mvcPath", "/support/2/view.jsp");
+	portletURL.setWindowState(LiferayWindowState.NORMAL);
+
+	backURL = portletURL.toString();
+}
+
+TicketEntry ticketEntry = (TicketEntry)request.getAttribute(OSBWebKeys.OSB_TICKET_ENTRY);
+
+long accountEntryId = BeanParamUtil.getLong(ticketEntry, request, "accountEntryId");
+
+AccountEntry accountEntry = null;
+
+if (accountEntryId > 0) {
+	accountEntry = AccountEntryServiceUtil.getAccountEntry(accountEntryId);
+}
+else {
+	accountEntry = ticketEntry.getAccountEntry();
+}
+
+long offeringEntryId = BeanParamUtil.getLong(ticketEntry, request, "offeringEntryId");
+
+OfferingEntry offeringEntry = null;
+
+if (offeringEntryId > 0) {
+	offeringEntry = OfferingEntryLocalServiceUtil.getOfferingEntry(offeringEntryId);
+}
+else {
+	offeringEntry = ticketEntry.getOfferingEntry();
+}
+
+ProductEntry productEntry = offeringEntry.getProductEntry();
+SupportResponse supportResponse = ticketEntry.getSupportResponse();
+
+int component = BeanParamUtil.getInteger(ticketEntry, request, "component");
+
+boolean hasUpdateAdmin = OSBTicketEntryPermission.contains(permissionChecker, ticketEntry, OSBActionKeys.UPDATE_ADMIN);
+
+boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(permissionChecker, ticketEntry, OSBActionKeys.UPDATE_ADVANCED);
+
+boolean hasUpdateBasic = hasUpdateAdvanced || OSBTicketEntryPermission.contains(permissionChecker, ticketEntry, OSBActionKeys.UPDATE_BASIC);
+
+boolean closed = false;
+
+if (ticketEntry.getStatus() == TicketEntryConstants.STATUS_CLOSED) {
+	closed = true;
+}
+
+boolean accountCustomer = false;
+
+if (AccountCustomerLocalServiceUtil.hasAccountCustomer(user.getUserId(), accountEntry.getAccountEntryId())) {
+	accountCustomer = true;
+}
+
+boolean partnerWorker = false;
+
+if (accountEntry.isPartnerManagedSupport() && PartnerWorkerLocalServiceUtil.hasPartnerWorker(user.getUserId(), accountEntry.getPartnerEntryId())) {
+	partnerWorker = true;
+}
+
+boolean ticketWorker = false;
+
+if (liferayIncOrg || partnerWorker) {
+	ticketWorker = true;
+}
+
+boolean canForward = false;
+
+if ((ticketEntry.getSeverity() == SupportResponseConstants.SEVERITY_CRITICAL) && supportResponse.isPlatinumLevel() && OSBTicketEntryPermission.contains(permissionChecker, ticketEntry, OSBActionKeys.FORWARD)) {
+	canForward = true;
+}
+
+PortletURL portletURL = renderResponse.createRenderURL();
+
+portletURL.setParameter("mvcPath", "/support/2/edit_ticket_entry.jsp");
+portletURL.setParameter("tabs1", tabs1);
+portletURL.setParameter("redirect", redirect);
+portletURL.setParameter("ticketEntryId", String.valueOf(ticketEntry.getTicketEntryId()));
+%>
+
+<%
+request.setAttribute("edit_ticket_entry.jsp-accountCustomer", accountCustomer);
+request.setAttribute("edit_ticket_entry.jsp-accountEntry", accountEntry);
+request.setAttribute("edit_ticket_entry.jsp-backURL", backURL);
+request.setAttribute("edit_ticket_entry.jsp-canForward", canForward);
+request.setAttribute("edit_ticket_entry.jsp-closed", closed);
+request.setAttribute("edit_ticket_entry.jsp-hasUpdateAdmin", hasUpdateAdmin);
+request.setAttribute("edit_ticket_entry.jsp-hasUpdateAdvanced", hasUpdateAdvanced);
+request.setAttribute("edit_ticket_entry.jsp-hasUpdateBasic", hasUpdateBasic);
+request.setAttribute("edit_ticket_entry.jsp-offeringEntry", offeringEntry);
+request.setAttribute("edit_ticket_entry.jsp-partnerWorker", partnerWorker);
+request.setAttribute("edit_ticket_entry.jsp-portletURL", portletURL);
+request.setAttribute("edit_ticket_entry.jsp-productEntry", productEntry);
+request.setAttribute("edit_ticket_entry.jsp-supportResponse", supportResponse);
+request.setAttribute("edit_ticket_entry.jsp-ticketWorker", ticketWorker);
+%>
+
+<div class="ticket-filter" id="<portlet:namespace />ticketFilter">
+	<div class="ticket-fade" id="<portlet:namespace />ticketFade"></div>
+</div>
+
+<liferay-util:include page="/support/2/edit_ticket_entry/exceptions.jsp" servletContext="<%= application %>" />
+
+<liferay-util:include page="/support/2/edit_ticket_entry/header.jsp" servletContext="<%= application %>" />
+
+<c:if test="<%= !screenShareMode && hasUpdateAdvanced && (!closed || liferayIncOrg) %>">
+	<liferay-util:include page="/common/dialog.jsp" servletContext="<%= application %>">
+		<liferay-util:param name="centered" value="<%= Boolean.TRUE.toString() %>" />
+		<liferay-util:param name="close" value="<%= Boolean.FALSE.toString() %>" />
+		<liferay-util:param name="cssClass" value="edit-ticket-dialog" />
+		<liferay-util:param name="draggable" value="<%= Boolean.FALSE.toString() %>" />
+		<liferay-util:param name="modal" value="<%= Boolean.TRUE.toString() %>" />
+		<liferay-util:param name="mvcPath" value="/support/2/edit_ticket_entry/edit_ticket_entry_dialog.jsp" />
+		<liferay-util:param name="paramNames" value="redirect, ticketEntryId" />
+		<liferay-util:param name="paramValues" value="<%= currentURL + StringPool.COMMA + String.valueOf(ticketEntry.getTicketEntryId()) %>" />
+		<liferay-util:param name="title" value='<%= LanguageUtil.get(pageContext, "edit-ticket") + StringPool.COLON + StringPool.SPACE + ticketEntry.getDisplayId() %>' />
+		<liferay-util:param name="width" value="760" />
+	</liferay-util:include>
+</c:if>
+
+<liferay-util:include page="/common/dialog.jsp" servletContext="<%= application %>">
+	<liferay-util:param name="centered" value="<%= Boolean.FALSE.toString() %>" />
+	<liferay-util:param name="close" value="<%= Boolean.FALSE.toString() %>" />
+	<liferay-util:param name="cssClass" value="login-info-dialog" />
+	<liferay-util:param name="draggable" value="<%= Boolean.FALSE.toString() %>" />
+	<liferay-util:param name="id" value="3" />
+	<liferay-util:param name="modal" value="<%= Boolean.FALSE.toString() %>" />
+	<liferay-util:param name="mvcPath" value="/support/2/edit_ticket_entry/login_info_dialog.jsp" />
+	<liferay-util:param name="width" value="715" />
+</liferay-util:include>
+
+<liferay-util:include page="/support/2/edit_ticket_entry/sidebar.jsp" servletContext="<%= application %>" />
+
+<liferay-util:include page="/support/2/edit_ticket_entry/details_tabs.jsp" servletContext="<%= application %>" />
+
+<c:if test="<%= canForward && clockedIn %>">
+	<liferay-util:include page="/support/2/edit_ticket_entry/forward.jsp" servletContext="<%= application %>" />
+</c:if>
+
+<liferay-util:include page="/support/2/edit_ticket_entry/discussion.jsp" servletContext="<%= application %>" />
+
+<%
+StringBundler sb = new StringBundler(5);
+
+sb.append(StringPool.OPEN_BRACKET);
+sb.append(ticketEntry.getDisplayId());
+sb.append(StringPool.CLOSE_BRACKET);
+sb.append(StringPool.SPACE);
+sb.append(ticketEntry.getSubject());
+
+PortalUtil.setPageSubtitle(sb.toString(), request);
+%>
+
+<aui:script>
+	if (window.parent.document.getElementById('<portlet:namespace />loginDialog')) {
+		window.parent.<portlet:namespace />openDialog(3);
+	}
+
+	function <portlet:namespace />closeTicket(resolution, addCommentBody) {
+		document.<portlet:namespace />fm1.<portlet:namespace /><%= CMDConstants.CMD %>.value = '<%= CMDConstants.CLOSE %>';
+		document.<portlet:namespace />fm1.<portlet:namespace />redirect.value = '<%= portletURL.toString() %>';
+		document.<portlet:namespace />fm1.<portlet:namespace />resolution.value = resolution;
+		document.<portlet:namespace />fm1.<portlet:namespace />body.value = addCommentBody;
+		submitForm(document.<portlet:namespace />fm1);
+	}
+
+	function <portlet:namespace />pinElement(id, pinOffset) {
+		var element = document.getElementById(id);
+
+		if (window.pageYOffset >= pinOffset) {
+			element.classList.add('pinned');
+		}
+		else {
+			element.classList.remove('pinned');
+		}
+	}
+
+	function <portlet:namespace />pinElements(pinElementIds, offsetElementIds, pinOffset) {
+		var totalPinOffset = pinOffset;
+
+		for (var index = 0; index < offsetElementIds.length; index++) {
+			var offsetElement = document.getElementById(offsetElementIds[index]);
+
+			totalPinOffset += offsetElement.offsetHeight;
+		}
+
+		for (var index = 0; index < pinElementIds.length; index++) {
+			<portlet:namespace />pinElement(pinElementIds[index], totalPinOffset);
+		}
+	}
+
+	function <portlet:namespace />setUpThreeDotMenus() {
+		var A = AUI();
+
+		A.all('.three-dot-icon').each(
+			function(icon) {
+				var event = A.Event.getListeners(icon, 'click');
+
+				var parent = icon.get('parentNode');
+
+				if (!event) {
+					icon.on(
+						'click',
+						function() {
+							parent.toggleClass('open-drop-down');
+						}
+					);
+
+					icon.on(
+						'clickoutside',
+						function() {
+							parent.removeClass('open-drop-down');
+						}
+					);
+				}
+			}
+		);
+	}
+</aui:script>
+
+<aui:script use="aui-base">
+	var pinElementIds = ['<portlet:namespace />discussionTabs', '<portlet:namespace />ticketFade', '<portlet:namespace />ticketFilter'];
+	var offsetElementIds = ['<portlet:namespace />showMoreButtonContainer', '<portlet:namespace />ticketTabContent'];
+
+	var advSearchIcon = document.getElementById('<portlet:namespace />advSearchIcon');
+
+	advSearchIcon.classList.add('active');
+
+	window.addEventListener(
+		'resize',
+		function() {
+			<portlet:namespace />updateShowMoreButton();
+		},
+		false
+	);
+
+	window.addEventListener(
+		'scroll',
+		function() {
+			<portlet:namespace />pinElements(pinElementIds, offsetElementIds, 60);
+		},
+		false
+	);
+
+	<c:if test="<%= clockedIn %>">
+		<portlet:namespace />setUpThreeDotMenus();
+	</c:if>
+</aui:script>

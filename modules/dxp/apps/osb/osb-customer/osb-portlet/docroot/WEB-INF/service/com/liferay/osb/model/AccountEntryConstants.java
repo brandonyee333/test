@@ -1,0 +1,142 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+package com.liferay.osb.model;
+
+import com.liferay.compat.portal.kernel.util.Validator;
+import com.liferay.osb.util.WorkflowConstants;
+import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.model.ListType;
+import com.liferay.portal.service.ListTypeServiceUtil;
+
+import java.util.Locale;
+
+/**
+ * @author Kyle Bischof
+ */
+public class AccountEntryConstants {
+
+	public static final int DEFAULT_REDIRECT_ACCOUNT_ENTRYID = 0;
+
+	public static final int INDUSTRY_OTHER = 35015;
+
+	public static final String LANGUAGE_ID_CHINESE = "zh_CN";
+
+	public static final String LANGUAGE_ID_ENGLISH = "en_US";
+
+	public static final String LANGUAGE_ID_JAPANESE = "ja_JP";
+
+	public static final String LANGUAGE_ID_PORTUGUESE = "pt_BR";
+
+	public static final String LANGUAGE_ID_SPANISH = "es_ES";
+
+	public static final String[] LANGUAGES = {
+		LANGUAGE_ID_CHINESE, LANGUAGE_ID_ENGLISH, LANGUAGE_ID_JAPANESE,
+		LANGUAGE_ID_PORTUGUESE, LANGUAGE_ID_SPANISH
+	};
+
+	public static final String LIST_TYPE_INDUSTRY =
+		AccountEntry.class.getName() + ".industry";
+
+	public static final int[] STATUSES = {
+		WorkflowConstants.STATUS_APPROVED, WorkflowConstants.STATUS_CLOSED,
+		WorkflowConstants.STATUS_EXPIRED, WorkflowConstants.STATUS_PENDING,
+		WorkflowConstants.STATUS_REJECTED
+	};
+
+	public static final int[] STATUSES_ACTIVE = {
+		WorkflowConstants.STATUS_APPROVED, WorkflowConstants.STATUS_CLOSED,
+		WorkflowConstants.STATUS_EXPIRED
+	};
+
+	public static final int TIER_OEM = 2;
+
+	public static final int TIER_PREMIER = 3;
+
+	public static final int TIER_REGULAR = 1;
+
+	public static final int TIER_STRATEGIC = 4;
+
+	public static final int[] TIERS = new int[] {
+		TIER_OEM, TIER_PREMIER, TIER_REGULAR, TIER_STRATEGIC
+	};
+
+	public static final int TYPE_GROUP = 1;
+
+	public static final int TYPE_INDIVIDUAL = 2;
+
+	public static final int TYPE_INTERNAL_TEST = 3;
+
+	public static final int TYPE_TRIAL = 4;
+
+	public static String getIndustryLabel(int industry) {
+		try {
+			ListType listType = ListTypeServiceUtil.getListType(industry);
+
+			return listType.getName();
+		}
+		catch (Exception e) {
+			return StringPool.BLANK;
+		}
+	}
+
+	public static String getLanguageLabel(String languageId) {
+		if (Validator.isNotNull(languageId)) {
+			Locale locale = LocaleUtil.fromLanguageId(languageId);
+
+			return locale.getDisplayLanguage();
+		}
+		else {
+			return StringPool.BLANK;
+		}
+	}
+
+	public static String getTierLabel(int tier) {
+		if (tier == TIER_OEM) {
+			return "oem";
+		}
+		else if (tier == TIER_PREMIER) {
+			return "premier";
+		}
+		else if (tier == TIER_REGULAR) {
+			return "regular";
+		}
+		else if (tier == TIER_STRATEGIC) {
+			return "strategic";
+		}
+		else {
+			return StringPool.BLANK;
+		}
+	}
+
+	public static String getTypeLabel(int type) {
+		if (type == TYPE_GROUP) {
+			return "group";
+		}
+		else if (type == TYPE_INDIVIDUAL) {
+			return "individual";
+		}
+		else if (type == TYPE_INTERNAL_TEST) {
+			return "internal-test";
+		}
+		else if (type == TYPE_TRIAL) {
+			return "trial";
+		}
+		else {
+			return null;
+		}
+	}
+
+}

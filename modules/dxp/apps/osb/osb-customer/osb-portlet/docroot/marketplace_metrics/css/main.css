@@ -1,0 +1,168 @@
+/* ---------- Global ---------- */
+
+/* ---------- General ---------- */
+
+.marketplace-metrics {
+	margin-bottom: 20px;
+
+	.taglib-header {
+		border: none;
+
+		.header-title {
+			color: #3A3A3A;
+			font-size: 36px;
+			font-weight: normal;
+			margin: 0;
+		}
+	}
+
+	h2 {
+		color: #3A3A3A;
+		font-size: 22px;
+		font-weight: normal;
+		margin: 1em 0 .5em;
+	}
+
+	.aui-field-select, .aui-field-date {
+		.aui-field-content {
+			margin-bottom: 1em;
+		}
+	}
+
+	.btn {
+		margin: 2px 0;
+	}
+
+	.loading-animation {
+		background: #EFEFEF url(@theme_image_path@/application/loading_indicator.gif) no-repeat 50% 50%;
+	}
+}
+
+/* ---------- Button ---------- */
+
+.marketplace-metrics button.aui-buttonitem {
+	background: transparent;
+	border: none;
+	padding: 1px;
+}
+
+/* ---------- Table ---------- */
+
+.marketplace-metrics table {
+	thead tr, .results-header {
+		background: transparent;
+		border-bottom: 1px solid #CCC;
+		border-top: 1px solid #CCC;
+
+		&:hover {
+			background: transparent;
+		}
+	}
+
+	th {
+		color: #7B7C7F;
+		font-weight: bold;
+	}
+
+	tr:hover {
+		background: #F9FAFA;
+	}
+
+	td, th {
+		padding: 5px 10px;
+	}
+
+	.results-header {
+		background: none;
+	}
+}
+
+/* ---------- Page ---------- */
+
+/* ---------- View ---------- */
+
+.marketplace-metrics.view {
+	.app-select {
+		margin-bottom: 1em;
+
+		.apps {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+		}
+
+		.list-selector {
+			display: inline-block;
+			margin: .5em 0;
+			padding: .5em 0;
+		}
+	}
+
+	.date-range-picker {
+		margin-bottom: 1em;
+
+		.aui-field-content {
+			display: inline-block;
+			margin-right: 2em;
+			vertical-align: top;
+		}
+
+		.btn.update {
+			display: inline-block;
+			margin-top: 1em;
+		}
+	}
+
+	.metric-graph {
+		height: 300px;
+		margin-bottom: 1em;
+		width: 100%;
+
+		&.small {
+			height: 250px;
+		}
+	}
+
+	.metric-graph, .metric-table {
+		.chart-message {
+			font-weight: bold;
+			margin: 3px 0;
+			text-align: center;
+		}
+	}
+
+	.metric-legend {
+		list-style-type: none;
+		margin-bottom: 2em;
+
+		ul {
+			text-align: center;
+		}
+
+		li {
+			color: #808080;
+			display: inline-block;
+			margin-right: 3em;
+		}
+
+		span {
+			display: inline-block;
+			height: 2px;
+			margin-bottom: 3px;
+			margin-right: .5em;
+			width: 20px;
+
+			&.blue {
+				background: #47A6DC;
+			}
+
+			&.green {
+				background: #4BBB80;
+			}
+
+			&.red {
+				background: #F05051;
+			}
+		}
+	}
+}

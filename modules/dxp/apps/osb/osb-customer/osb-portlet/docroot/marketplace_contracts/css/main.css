@@ -1,0 +1,50 @@
+/* ---------- Global ---------- */
+
+/* ---------- General ---------- */
+
+.marketplace-contracts {
+	.taglib-header {
+		border: none;
+
+		.header-title {
+			color: #3A3A3A;
+			font-size: 36px;
+			font-weight: bold;
+			margin: 0;
+		}
+	}
+}
+
+/* ---------- Page ---------- */
+
+/* ---------- View ---------- */
+
+.marketplace-contracts.view {
+	.item {
+		border-bottom: 1px solid #CCC;
+		margin-bottom: 2em;
+
+		.icon {
+			display: inline-block;
+			margin-bottom: 1em;
+		}
+
+		.title {
+			color: #3A3A3A;
+			display: inline-block;
+			font-size: 22px;
+			font-weight: normal;
+			margin-left: .5em;
+		}
+	}
+
+	.portlet-msg-info {
+		margin: 1em 0;
+	}
+}
+
+/* ---------- View configuration ---------- */
+
+.marketplace-contracts.view-configuration {
+	margin-left: 7px;
+}

@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!DOCTYPE display PUBLIC "-//Liferay//DTD Display 6.1.0//EN" "http://www.liferay.com/dtd/liferay-display_6_1_0.dtd">
+
+<display>
+	<category name="category.company">
+		<portlet id="16" />
+		<portlet id="17" />
+	</category>
+	<category name="category.hidden">
+		<portlet id="1" />
+		<portlet id="14" />
+		<portlet id="27" />
+		<portlet id="31" />
+	</category>
+	<category name="category.marketplace">
+		<portlet id="7" />
+		<portlet id="9" />
+		<portlet id="10" />
+		<portlet id="11" />
+		<portlet id="12" />
+		<portlet id="15" />
+		<portlet id="21" />
+		<portlet id="22" />
+		<portlet id="23" />
+		<portlet id="24" />
+		<portlet id="29" />
+	</category>
+	<category name="category.osb">
+		<portlet id="2" />
+		<portlet id="3" />
+		<portlet id="4" />
+		<portlet id="6" />
+		<portlet id="13" />
+		<portlet id="18" />
+		<portlet id="19" />
+		<portlet id="20" />
+		<portlet id="26" />
+		<portlet id="28" />
+		<portlet id="30" />
+		<portlet id="32" />
+		<portlet id="33" />
+		<portlet id="34" />
+		<portlet id="35" />
+		<portlet id="36" />
+	</category>
+</display>

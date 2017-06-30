@@ -1,0 +1,157 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+package com.liferay.osb.admin.workflow;
+
+import com.liferay.osb.model.AccountEntry;
+import com.liferay.osb.model.OrderEntry;
+import com.liferay.osb.service.LCSSubscriptionEntryLocalServiceUtil;
+import com.liferay.osb.service.OrderEntryLocalServiceUtil;
+import com.liferay.osb.util.SalesforceConstants;
+import com.liferay.osb.util.WorkflowConstants;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.workflow.BaseWorkflowHandler;
+import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.theme.ThemeDisplay;
+
+import java.io.Serializable;
+
+import java.util.Locale;
+import java.util.Map;
+
+/**
+ * @author Amos Fong
+ */
+public class OrderEntryWorkflowHandler extends BaseWorkflowHandler {
+
+	public static final String CLASS_NAME = OrderEntry.class.getName();
+
+	@Override
+	public String getClassName() {
+		return CLASS_NAME;
+	}
+
+	@Override
+	public String getType(Locale locale) {
+		return LanguageUtil.get(locale, "order");
+	}
+
+	@Override
+	public void startWorkflowInstance(
+			long companyId, long groupId, long userId, long classPK,
+			Object model, Map<String, Serializable> workflowContext)
+		throws PortalException, SystemException {
+
+		StringBundler sb = new StringBundler(5);
+
+		sb.append("Provisioning Task - ");
+
+		Integer salesforceOpportunityType = (Integer)workflowContext.get(
+			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_TYPE);
+
+		String salesforceOpportunityTypeLabel =
+			SalesforceConstants.getOpportunityTypeLabel(
+				salesforceOpportunityType);
+
+		sb.append(LanguageUtil.get(Locale.US, salesforceOpportunityTypeLabel));
+
+		sb.append(" for ");
+		sb.append(
+			(String)workflowContext.get(
+				WorkflowConstants.CONTEXT_SUPPORT_REGION_NAME));
+		sb.append(" Region - ");
+		sb.append(
+			(String)workflowContext.get(
+				WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_KEY));
+
+		workflowContext.put(
+			WorkflowConstants.CONTEXT_NOTIFICATION_SUBJECT, sb.toString());
+
+		super.startWorkflowInstance(
+			companyId, groupId, userId, classPK, model, workflowContext);
+	}
+
+	public OrderEntry updateStatus(
+			int status, Map<String, Serializable> workflowContext)
+		throws PortalException, SystemException {
+
+		try {
+			return doUpdateStatus(status, workflowContext);
+		}
+		catch (PortalException pe) {
+			_log.error(pe, pe);
+
+			throw pe;
+		}
+		catch (RuntimeException re) {
+			_log.error(re, re);
+
+			throw re;
+		}
+		catch (SystemException se) {
+			_log.error(se, se);
+
+			throw se;
+		}
+	}
+
+	protected OrderEntry doUpdateStatus(
+			int status, Map<String, Serializable> workflowContext)
+		throws PortalException, SystemException {
+
+		long userId = GetterUtil.getLong(
+			(String)workflowContext.get(WorkflowConstants.CONTEXT_USER_ID));
+		long classPK = GetterUtil.getLong(
+			(String)workflowContext.get(
+				WorkflowConstants.CONTEXT_ENTRY_CLASS_PK));
+		ServiceContext serviceContext = (ServiceContext)workflowContext.get(
+			WorkflowConstants.CONTEXT_SERVICE_CONTEXT);
+
+		OrderEntry orderEntry = OrderEntryLocalServiceUtil.updateStatus(
+			userId, classPK, status, serviceContext);
+
+		if (status == WorkflowConstants.STATUS_APPROVED) {
+			syncToLCS(orderEntry);
+		}
+
+		return orderEntry;
+	}
+
+	@Override
+	protected String getIconPath(ThemeDisplay themeDisplay) {
+		return themeDisplay.getPathThemeImages() + "/shopping/cart.png";
+	}
+
+	protected void syncToLCS(OrderEntry orderEntry) {
+		try {
+			AccountEntry accountEntry = orderEntry.getAccountEntry();
+
+			LCSSubscriptionEntryLocalServiceUtil.syncToLCS(
+				accountEntry.getCorpProjectId());
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+		}
+	}
+
+	private static Log _log = LogFactoryUtil.getLog(
+		OrderEntryWorkflowHandler.class);
+
+}

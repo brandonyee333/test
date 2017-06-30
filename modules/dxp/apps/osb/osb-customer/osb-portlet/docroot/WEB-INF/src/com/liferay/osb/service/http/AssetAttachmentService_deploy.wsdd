@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+
+<deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+	<service name="Plugin_OSB_AssetAttachmentService" provider="java:RPC" style="rpc" use="encoded">
+		<arrayMapping xmlns:ns="urn:http.service.osb.liferay.com" xmlns:cmp-ns="http://model.osb.liferay.com" qname="ns:ArrayOf_tns2_AssetAttachmentSoap" type="java:com.liferay.osb.model.AssetAttachmentSoap[]" innerType="cmp-ns:AssetAttachmentSoap" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></arrayMapping>
+		<arrayMapping xmlns:ns="urn:http.service.osb.liferay.com" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema" qname="ns:ArrayOf_xsd_string" type="java:java.lang.String[]" innerType="cmp-ns:string" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></arrayMapping>
+		<typeMapping xmlns:ns="http://model.osb.liferay.com" qname="ns:AssetAttachmentSoap" type="java:com.liferay.osb.model.AssetAttachmentSoap" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></typeMapping>
+		<typeMapping xmlns:ns="http://util.kernel.portal.liferay.com" qname="ns:OrderByComparator" type="java:com.liferay.portal.kernel.util.OrderByComparator" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></typeMapping>
+		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="http://model.osb.liferay.com" name="fetchAssetAttachment" qname="operNS:fetchAssetAttachment" returnQName="fetchAssetAttachmentReturn" returnType="rtns:AssetAttachmentSoap" soapAction="">
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="assetAttachmentId" type="tns:long"></parameter>
+		</operation>
+		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="urn:http.service.osb.liferay.com" xmlns:tns2="http://model.osb.liferay.com" name="getAssetAttachments" qname="operNS:getAssetAttachments" returnQName="getAssetAttachmentsReturn" returnType="rtns:ArrayOf_tns2_AssetAttachmentSoap" returnItemType="tns2:AssetAttachmentSoap" soapAction="">
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="className" type="tns:string"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="classPK" type="tns:long"></parameter>
+		</operation>
+		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="urn:http.service.osb.liferay.com" xmlns:tns2="http://model.osb.liferay.com" name="getAssetAttachments" qname="operNS:getAssetAttachments" returnQName="getAssetAttachmentsReturn" returnType="rtns:ArrayOf_tns2_AssetAttachmentSoap" returnItemType="tns2:AssetAttachmentSoap" soapAction="">
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="className" type="tns:string"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="classPK" type="tns:long"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="type" type="tns:int"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="start" type="tns:int"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="end" type="tns:int"></parameter>
+			<parameter xmlns:tns="http://util.kernel.portal.liferay.com" qname="obc" type="tns:OrderByComparator"></parameter>
+		</operation>
+		<parameter name="allowedMethods" value="fetchAssetAttachment getAssetAttachments" />
+		<parameter name="className" value="com.liferay.osb.service.http.AssetAttachmentServiceSoap" />
+		<parameter name="schemaUnqualified" value="http://model.osb.liferay.com,http://util.kernel.portal.liferay.com,urn:http.service.osb.liferay.com" />
+		<parameter name="typeMappingVersion" value="1.2" />
+		<parameter name="wsdlPortType" value="AssetAttachmentServiceSoap" />
+		<parameter name="wsdlServiceElement" value="AssetAttachmentServiceSoapService" />
+		<parameter name="wsdlServicePort" value="Plugin_OSB_AssetAttachmentService" />
+		<parameter name="wsdlTargetNamespace" value="urn:http.service.osb.liferay.com" />
+	</service>
+</deployment>

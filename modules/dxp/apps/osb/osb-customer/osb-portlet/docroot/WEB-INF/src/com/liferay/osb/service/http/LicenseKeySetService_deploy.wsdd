@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+
+<deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+	<service name="Plugin_OSB_LicenseKeySetService" provider="java:RPC" style="rpc" use="encoded">
+		<typeMapping xmlns:ns="http://model.osb.liferay.com" qname="ns:LicenseKeySetSoap" type="java:com.liferay.osb.model.LicenseKeySetSoap" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></typeMapping>
+		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="http://model.osb.liferay.com" name="addLicenseKeySet" qname="operNS:addLicenseKeySet" returnQName="addLicenseKeySetReturn" returnType="rtns:LicenseKeySetSoap" soapAction="">
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="userId" type="tns:long"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="accountEntryId" type="tns:long"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="name" type="tns:string"></parameter>
+		</operation>
+		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="http://model.osb.liferay.com" name="deleteLicenseKeySet" qname="operNS:deleteLicenseKeySet" returnQName="deleteLicenseKeySetReturn" returnType="rtns:LicenseKeySetSoap" soapAction="">
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="licenseKeySetId" type="tns:long"></parameter>
+		</operation>
+		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="http://www.w3.org/2001/XMLSchema" name="exportToXML" qname="operNS:exportToXML" returnQName="exportToXMLReturn" returnType="rtns:string" soapAction="">
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="licenseKeySetId" type="tns:long"></parameter>
+		</operation>
+		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="http://model.osb.liferay.com" name="getLicenseKeySet" qname="operNS:getLicenseKeySet" returnQName="getLicenseKeySetReturn" returnType="rtns:LicenseKeySetSoap" soapAction="">
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="licenseKeySetId" type="tns:long"></parameter>
+		</operation>
+		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="http://model.osb.liferay.com" name="updateLicenseKeySet" qname="operNS:updateLicenseKeySet" returnQName="updateLicenseKeySetReturn" returnType="rtns:LicenseKeySetSoap" soapAction="">
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="licenseKeySetId" type="tns:long"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="name" type="tns:string"></parameter>
+		</operation>
+		<parameter name="allowedMethods" value="addLicenseKeySet deleteLicenseKeySet exportToXML getLicenseKeySet updateLicenseKeySet" />
+		<parameter name="className" value="com.liferay.osb.service.http.LicenseKeySetServiceSoap" />
+		<parameter name="schemaUnqualified" value="http://model.osb.liferay.com" />
+		<parameter name="typeMappingVersion" value="1.2" />
+		<parameter name="wsdlPortType" value="LicenseKeySetServiceSoap" />
+		<parameter name="wsdlServiceElement" value="LicenseKeySetServiceSoapService" />
+		<parameter name="wsdlServicePort" value="Plugin_OSB_LicenseKeySetService" />
+		<parameter name="wsdlTargetNamespace" value="urn:http.service.osb.liferay.com" />
+	</service>
+</deployment>

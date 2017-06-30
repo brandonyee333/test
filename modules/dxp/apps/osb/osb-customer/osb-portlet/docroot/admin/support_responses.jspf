@@ -1,0 +1,96 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<liferay-ui:error exception="<%= RequiredSupportResponseException.class %>" message="you-cannot-remove-service-level-agreements-that-are-used-in-offerings" />
+
+<liferay-ui:search-container
+	headerNames="name,severity-1,severity-2,severity-3"
+	iteratorURL="<%= portletURL %>"
+>
+	<liferay-ui:search-container-results
+		results="<%= SupportResponseLocalServiceUtil.getSupportResponses(searchContainer.getStart(), searchContainer.getEnd()) %>"
+		total="<%= SupportResponseLocalServiceUtil.getSupportResponsesCount() %>"
+	/>
+
+	<liferay-ui:search-container-row
+		className="com.liferay.osb.model.SupportResponse"
+		escapedModel="<%= true %>"
+		keyProperty="supportResponseId"
+		modelVar="supportResponse"
+	>
+
+		<%
+		String rowURL = null;
+
+		if (permissionChecker.isOmniadmin()) {
+			PortletURL editSupportResponseURL = renderResponse.createRenderURL();
+
+			editSupportResponseURL.setParameter("mvcPath", "/admin/edit_support_response.jsp");
+			editSupportResponseURL.setParameter("redirect", portletURL.toString());
+			editSupportResponseURL.setParameter("supportResponseId", String.valueOf(supportResponse.getSupportResponseId()));
+			editSupportResponseURL.setWindowState(LiferayWindowState.MAXIMIZED);
+
+			rowURL = editSupportResponseURL.toString();
+		}
+		%>
+
+		<liferay-ui:search-container-column-text
+			href="<%= rowURL %>"
+			property="name"
+		/>
+
+		<liferay-ui:search-container-column-text
+			href="<%= rowURL %>"
+			name="service-level-agreement"
+			property="supportLevelLabel"
+		/>
+
+		<liferay-ui:search-container-column-text
+			href="<%= rowURL %>"
+			name="severity-1"
+			value='<%= LanguageUtil.format(pageContext, "x-hours", supportResponse.getSeverity1Response()) + " / " + LanguageUtil.format(pageContext, "x-days", supportResponse.getSeverity1Resolution()) %>'
+		/>
+
+		<liferay-ui:search-container-column-text
+			href="<%= rowURL %>"
+			name="severity-2"
+			value='<%= LanguageUtil.format(pageContext, "x-hours", supportResponse.getSeverity2Response()) + " / " + LanguageUtil.format(pageContext, "x-days", supportResponse.getSeverity2Resolution()) %>'
+		/>
+
+		<liferay-ui:search-container-column-text
+			href="<%= rowURL %>"
+			name="severity-3"
+			value='<%= LanguageUtil.format(pageContext, "x-hours", supportResponse.getSeverity3Response()) + " / " + LanguageUtil.format(pageContext, "x-days", supportResponse.getSeverity3Resolution()) %>'
+		/>
+
+		<c:if test="<%= permissionChecker.isOmniadmin() %>">
+			<liferay-ui:search-container-column-jsp
+				align="right"
+				path="/admin/support_response_action.jsp"
+			/>
+		</c:if>
+	</liferay-ui:search-container-row>
+
+	<c:if test="<%= permissionChecker.isOmniadmin() %>">
+		<div>
+			<input onClick="location.href = '<portlet:renderURL windowState="<%= WindowState.MAXIMIZED.toString() %>"><portlet:param name="mvcPath" value="/admin/edit_support_response.jsp" /><portlet:param name="redirect" value="<%= portletURL.toString() %>" /></portlet:renderURL>';" type="button" value="<liferay-ui:message key="add-support" />" />
+		</div>
+
+		<br />
+	</c:if>
+
+	<liferay-ui:search-iterator />
+</liferay-ui:search-container>

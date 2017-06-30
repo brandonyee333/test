@@ -1,0 +1,496 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%
+Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
+%>
+
+<div class="callout-a">
+	<liferay-ui:search-toggle
+		buttonLabel="search"
+		displayTerms="<%= displayTerms %>"
+		id="toggle_id_ticket_feedback_search"
+	>
+		<input class="aui-button-input aui-button-input-reset" onClick="<portlet:namespace />resetForm();" type="button" value="<liferay-ui:message key="reset" />" />
+
+		<div class="aui-helper-clearfix cleared">
+			<div class="aui-w25 content-column">
+				<div class="content-column-content left-column">
+					<h2 class="support-assignment support-input-heading">
+						<liferay-ui:message key="project" />
+					</h2>
+
+					<input id="<portlet:namespace /><%= displayTerms.ACCOUNT_ENTRY_NAME %>" name="<portlet:namespace /><%= displayTerms.ACCOUNT_ENTRY_NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getAccountEntryName()) %>" />
+				</div>
+			</div>
+
+			<div class="aui-w25 content-column">
+				<div class="content-column-content middle-column">
+					<h2 class="support-assignment support-input-heading">
+						<liferay-ui:message key="comments" />
+					</h2>
+
+					<input id="<portlet:namespace /><%= displayTerms.COMMENTS %>" name="<portlet:namespace /><%= displayTerms.COMMENTS %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getComments()) %>" />
+				</div>
+			</div>
+
+			<div class="aui-w25 content-column">
+				<div class="content-column-content right-column">
+					<h2 class="support-assignment support-input-heading">
+						<liferay-ui:message key="answered" />
+					</h2>
+
+					<select id="<portlet:namespace /><%= displayTerms.ANSWERED %>" name="<portlet:namespace /><%= displayTerms.ANSWERED %>">
+						<option <%= !displayTerms.hasAnswered() ? "selected" : "" %> value=""></option>
+						<option <%= (displayTerms.hasAnswered() && displayTerms.isAnswered()) ? "selected" : "" %> value="1"><liferay-ui:message key="yes" /></option>
+						<option <%= (displayTerms.hasAnswered() && !displayTerms.isAnswered()) ? "selected" : "" %> value="0"><liferay-ui:message key="no" /></option>
+					</select>
+				</div>
+			</div>
+
+			<div class="aui-w25 content-column">
+				<div class="content-column-content right-column">
+					<h2 class="support-assignment support-input-heading">
+						<liferay-ui:message key="assigned-to" />
+					</h2>
+
+					<%
+					String assignedTo = displayTerms.getAssignedTo();
+
+					long assignedToUserId = GetterUtil.getLong(assignedTo);
+					%>
+
+					<select id="<portlet:namespace /><%= displayTerms.ASSIGNED_TO %>" name="<portlet:namespace /><%= displayTerms.ASSIGNED_TO %>" onChange="<portlet:namespace />updateAssignedTo(this);">
+						<option value=""></option>
+						<option <%= (user.getUserId() == assignedToUserId) ? "selected" : "" %> value="<%= user.getUserId() %>"><liferay-ui:message key="me" /></option>
+
+						<c:if test='<%= assignedTo.startsWith("partnerEntryId-") || assignedTo.startsWith("supportTeamId-") || ((assignedToUserId > 0) && (user.getUserId() != assignedToUserId)) %>'>
+							<option selected value="<%= assignedTo %>"><%= HtmlUtil.escape(displayTerms.getAssignedName()) %></option>
+						</c:if>
+					</select>
+
+					<input id="<portlet:namespace /><%= displayTerms.ASSIGNED_NAME %>" name="<portlet:namespace /><%= displayTerms.ASSIGNED_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getAssignedName()) %>" />
+
+					&nbsp;<input class="aui-button-input" type="button" value="<liferay-ui:message key="choose" />" onClick="var assignedToWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/support/select_assigned_to.jsp" /></portlet:renderURL>', 'assigned_to', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); assignedToWindow.focus();" />
+				</div>
+			</div>
+		</div>
+
+		<br />
+
+		<div class="aui-helper-clearfix">
+			<div class="aui-w25 content-column">
+				<div class="content-column-content left-column">
+					<h2 class="support-assignment support-input-heading">
+						<liferay-ui:message key="final-resolution" />
+					</h2>
+
+					<select class="multiple-select" id="<portlet:namespace /><%= displayTerms.RATINGS_1 %>" multiple name="<portlet:namespace /><%= displayTerms.RATINGS_1 %>">
+						<option value=""><liferay-ui:message key="any" /></option>
+
+						<%
+						for (int i = 1; i <= 5; i++) {
+						%>
+
+							<option <%= (ArrayUtil.contains(displayTerms.getRatings1(), i)) ? "selected" : "" %> value="<%= i %>"><%= i %> - <%= LanguageUtil.get(pageContext, TicketFeedbackConstants.getRatingLabel(i)) %></option>
+
+						<%
+						}
+						%>
+
+					</select>
+				</div>
+			</div>
+
+			<div class="aui-w25 content-column">
+				<div class="content-column-content middle-column">
+					<h2 class="support-assignment support-input-heading">
+						<liferay-ui:message key="response-time" />
+					</h2>
+
+					<select class="multiple-select" id="<portlet:namespace /><%= displayTerms.RATINGS_2 %>" multiple name="<portlet:namespace /><%= displayTerms.RATINGS_2 %>">
+						<option value=""><liferay-ui:message key="any" /></option>
+
+						<%
+						for (int i = 1; i <= 5; i++) {
+						%>
+
+							<option <%= (ArrayUtil.contains(displayTerms.getRatings2(), i)) ? "selected" : "" %> value="<%= i %>"><%= i %> - <%= LanguageUtil.get(pageContext, TicketFeedbackConstants.getRatingLabel(i)) %></option>
+
+						<%
+						}
+						%>
+
+					</select>
+				</div>
+			</div>
+
+			<div class="aui-w25 content-column">
+				<div class="content-column-content middle-column">
+					<h2 class="support-assignment support-input-heading">
+						<liferay-ui:message key="tech-knowledge" />
+					</h2>
+
+					<select class="multiple-select" id="<portlet:namespace /><%= displayTerms.RATINGS_3 %>" multiple name="<portlet:namespace /><%= displayTerms.RATINGS_3 %>">
+						<option value=""><liferay-ui:message key="any" /></option>
+
+						<%
+						for (int i = 1; i <= 5; i++) {
+						%>
+
+							<option <%= (ArrayUtil.contains(displayTerms.getRatings3(), i)) ? "selected" : "" %> value="<%= i %>"><%= i %> - <%= LanguageUtil.get(pageContext, TicketFeedbackConstants.getRatingLabel(i)) %></option>
+
+						<%
+						}
+						%>
+
+					</select>
+				</div>
+			</div>
+
+			<div class="aui-w25 content-column">
+				<div class="content-column-content right-column">
+					<h2 class="support-assignment support-input-heading">
+						<liferay-ui:message key="professionalism" />
+					</h2>
+
+					<select class="multiple-select" id="<portlet:namespace /><%= displayTerms.RATINGS_4 %>" multiple name="<portlet:namespace /><%= displayTerms.RATINGS_4 %>">
+						<option value=""><liferay-ui:message key="any" /></option>
+
+						<%
+						for (int i = 1; i <= 5; i++) {
+						%>
+
+							<option <%= (ArrayUtil.contains(displayTerms.getRatings4(), i)) ? "selected" : "" %> value="<%= i %>"><%= i %> - <%= LanguageUtil.get(pageContext, TicketFeedbackConstants.getRatingLabel(i)) %></option>
+
+						<%
+						}
+						%>
+
+					</select>
+				</div>
+			</div>
+		</div>
+
+		<div class="aui-helper-clearfix feedback-dates-container">
+			<div class="aui-w25 content-column">
+				<div class="content-column-content left-column">
+					<h2 class="support-assignment support-input-heading">
+						<liferay-ui:message key="satisfied" />
+					</h2>
+
+					<select id="<portlet:namespace /><%= displayTerms.SATISFIED %>" name="<portlet:namespace /><%= displayTerms.SATISFIED %>">
+						<option value=""></option>
+						<option <%= (displayTerms.hasSatisfied() && displayTerms.isSatisfied()) ? "selected" : "" %> value="1"><liferay-ui:message key="yes" /></option>
+						<option <%= (displayTerms.hasSatisfied() && !displayTerms.isSatisfied()) ? "selected" : "" %> value="0"><liferay-ui:message key="no" /></option>
+					</select>
+				</div>
+			</div>
+
+			<div class="aui-w33 content-column">
+				<div class="content-column-content middle-column">
+					<h2 class="support-assignment support-input-heading">
+						<liferay-ui:message key="created-after" />
+					</h2>
+
+					<liferay-ui:input-date
+						dayNullable="<%= true %>"
+						dayParam="<%= displayTerms.CREATE_DATE_GT_DAY %>"
+						dayValue="<%= displayTerms.getCreateDateGTDay() %>"
+						monthNullable="<%= true %>"
+						monthParam="<%= displayTerms.CREATE_DATE_GT_MONTH %>"
+						monthValue="<%= displayTerms.getCreateDateGTMonth() %>"
+						yearNullable="<%= true %>"
+						yearParam="<%= displayTerms.CREATE_DATE_GT_YEAR %>"
+						yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
+						yearRangeStart="<%= 2012 %>"
+						yearValue="<%= displayTerms.getCreateDateGTYear() %>"
+					/>
+				</div>
+			</div>
+
+			<div class="aui-w33 content-column">
+				<div class="content-column-content right-column">
+					<h2 class="support-assignment support-input-heading">
+						<liferay-ui:message key="created-before" />
+					</h2>
+
+					<liferay-ui:input-date
+						dayNullable="<%= true %>"
+						dayParam="<%= displayTerms.CREATE_DATE_LT_DAY %>"
+						dayValue="<%= displayTerms.getCreateDateLTDay() %>"
+						monthNullable="<%= true %>"
+						monthParam="<%= displayTerms.CREATE_DATE_LT_MONTH %>"
+						monthValue="<%= displayTerms.getCreateDateLTMonth() %>"
+						yearNullable="<%= true %>"
+						yearParam="<%= displayTerms.CREATE_DATE_LT_YEAR %>"
+						yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
+						yearRangeStart="<%= 2012 %>"
+						yearValue="<%= displayTerms.getCreateDateLTYear() %>"
+					/>
+				</div>
+			</div>
+		</div>
+
+		<br />
+
+		<c:if test="<%= ticketWorker %>">
+			<div class="aui-helper-clearfix">
+				<div class="aui-w100 content-column">
+					<div class="content-column-content">
+						<h2 class="filter-label support-assignment support-input-heading" id="<portlet:namespace />filterLabel">
+							<liferay-ui:message key="custom-filters" />:
+						</h2>
+
+						<div id="<portlet:namespace />filterDisplay">
+							<select id="<portlet:namespace />searchFilterId" name="<portlet:namespace />searchFilterId" onChange="<portlet:namespace />updateSearch(this.value);">
+								<option value=""></option>
+
+								<%
+								long searchFilterId = ParamUtil.getLong(request, "searchFilterId");
+
+								List<SearchFilter> searchFilters = SearchFilterLocalServiceUtil.getSearchFilters(user.getUserId(), PortalUtil.getClassNameId(TicketFeedback.class.getName()));
+
+								for (SearchFilter searchFilter : searchFilters) {
+								%>
+
+									<option <%= (searchFilterId == searchFilter.getSearchFilterId()) ? "selected" : "" %> value="<%= searchFilter.getSearchFilterId() %>"><%= HtmlUtil.escape(searchFilter.getName()) %></option>
+
+								<%
+								}
+								%>
+
+							</select>
+
+							<%
+							SearchFilter searchFilter = null;
+
+							try {
+								if (searchFilterId > 0) {
+									searchFilter = SearchFilterLocalServiceUtil.getSearchFilter(searchFilterId);
+								}
+							}
+							catch (NoSuchSearchFilterException nssfe) {
+							}
+							%>
+
+							<span class='filter-actions <%= (searchFilter != null) ? "" : "aui-helper-hidden" %>' id="<portlet:namespace />filterActions">
+								<span onClick="<portlet:namespace />deleteSearchFilter();">
+									<liferay-ui:icon
+										image="delete"
+									/>
+								</span>
+
+								<span onClick='<portlet:namespace />toggleForm("<portlet:namespace />filterDisplay", "<portlet:namespace />editFilter"); <portlet:namespace />toggleForm("<portlet:namespace />addFilterButton", "<portlet:namespace />updateFilterButton"); document.<portlet:namespace />fm.<portlet:namespace />filterName.value = document.<portlet:namespace />fm.<portlet:namespace />searchFilterId[document.<portlet:namespace />fm.<portlet:namespace />searchFilterId.selectedIndex].text; document.<portlet:namespace />fm.<portlet:namespace />filterName.focus();'>
+									<liferay-ui:icon
+										image="edit"
+									/>
+								</span>
+							</span>
+
+							<span onClick='<portlet:namespace />toggleForm("<portlet:namespace />filterDisplay", "<portlet:namespace />editFilter"); <portlet:namespace />toggleForm("<portlet:namespace />updateFilterButton", "<portlet:namespace />addFilterButton"); document.<portlet:namespace />fm.<portlet:namespace />filterName.value = ""; document.<portlet:namespace />fm.<portlet:namespace />filterName.focus();'>
+								<liferay-ui:icon
+									image="add"
+								/>
+							</span>
+						</div>
+
+						<div id="<portlet:namespace />editFilter" style="display: none;">
+							<liferay-ui:input-field field="name" fieldParam="filterName" model="<%= SearchFilter.class %>" />
+
+							<input class="aui-button-input" id="<portlet:namespace />addFilterButton" onClick="<portlet:namespace />addSearchFilter();" type="button" value="<liferay-ui:message key="add-new-filter" />" />
+
+							<input class="aui-button-input" id="<portlet:namespace />updateFilterButton" onClick="<portlet:namespace />updateSearchFilter();" type="button" value="<liferay-ui:message key="update-filter" />" />
+
+							<input class="aui-button-input" onClick='<portlet:namespace />toggleForm("<portlet:namespace />editFilter", "<portlet:namespace />filterDisplay");' type="button" value="<liferay-ui:message key="cancel" />" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</c:if>
+
+		<br />
+	</liferay-ui:search-toggle>
+</div>
+
+<aui:script>
+	<c:if test="<%= ticketWorker %>">
+		function <portlet:namespace />addSearchFilter() {
+			document.<portlet:namespace />fm.<portlet:namespace />searchFilterId.selectedIndex = 0;
+			document.<portlet:namespace />fm.method = "post";
+			submitForm(document.<portlet:namespace />fm, "<portlet:actionURL name="updateSearchFilter"><portlet:param name="mvcPath" value="/support/view.jsp" /><portlet:param name="redirect" value="<%= portletURL.toString() %>" /></portlet:actionURL>");
+		}
+
+		function <portlet:namespace />deleteSearchFilter() {
+			if (!confirm('<%= UnicodeLanguageUtil.get(pageContext, "are-you-sure-you-want-to-delete-this") %>')) {
+				return;
+			}
+
+			var deleteURL = '<portlet:actionURL name="deleteSearchFilter"><portlet:param name="mvcPath" value="/support/view.jsp" /><portlet:param name="redirect" value="<%= portletURL.toString() %>" /></portlet:actionURL>';
+
+			document.<portlet:namespace />fm.method = "post";
+			submitForm(document.<portlet:namespace />fm, deleteURL);
+		}
+	</c:if>
+
+	function <portlet:namespace />resetForm() {
+		var A = AUI();
+
+		var advancedSearchDiv = A.one('#toggle_id_ticket_feedback_searchadvanced');
+
+		advancedSearchDiv.all(':input').each(
+			function(item, index, collection) {
+				var type = item.get('type');
+
+				if (type == 'select-multiple') {
+					item.all('option').each(
+						function(item, index, collection) {
+							item.attr('selected', '');
+						}
+					);
+				}
+				else if (type == 'select-one') {
+					item.attr('selectedIndex', 0);
+				}
+				else if (type == 'text') {
+					item.val('');
+				}
+			}
+		);
+
+		A.one('#<portlet:namespace />andOperator').val('1');
+
+		<c:if test="<%= ticketWorker %>">
+			A.one('#<portlet:namespace />filterActions').hide();
+		</c:if>
+	}
+
+	function <portlet:namespace />selectAssignedTo(value, name) {
+		var length = document.<portlet:namespace />fm.<portlet:namespace />assignedTo.length;
+
+		if (length < 2) {
+			document.<portlet:namespace />fm.<portlet:namespace />assignedTo.add(new Option(name, value));
+		}
+		else {
+			document.<portlet:namespace />fm.<portlet:namespace />assignedTo.options[2] = new Option(name, value);
+		}
+
+		document.<portlet:namespace />fm.<portlet:namespace />assignedTo.selectedIndex = 2;
+		document.<portlet:namespace />fm.<portlet:namespace />assignedName.value = name;
+	}
+
+	function <portlet:namespace />toggleForm(hideId, showId) {
+		document.getElementById(showId).style.display = "";
+		document.getElementById(hideId).style.display = "none";
+	}
+
+	function <portlet:namespace />updateAssignedTo(assignedTo) {
+		if (assignedTo.selectedIndex == 2) {
+			document.<portlet:namespace />fm.<portlet:namespace />assignedName.value = assignedTo.options[2].text;
+		}
+		else {
+			document.<portlet:namespace />fm.<portlet:namespace />assignedName.value = "";
+		}
+	}
+
+	function <portlet:namespace />updateSearchFields(fieldMap) {
+		<portlet:namespace />resetForm();
+
+		var A = AUI();
+
+		for (field in fieldMap) {
+			var fieldEl = A.one('#<portlet:namespace />' + field);
+
+			if (!fieldEl) {
+				continue;
+			}
+
+			if (fieldEl.get('type') == 'select-multiple') {
+				fieldEl.one('option[value=]').attr("selected", "");
+
+				var valueArray = fieldMap[field];
+
+				for (var i = 0; i < valueArray.length; i++) {
+					var fieldOption = fieldEl.one('option[value=' + valueArray[i] + ']');
+
+					if (fieldOption) {
+						fieldOption.attr("selected", "selected");
+					}
+				}
+			}
+			else {
+				fieldEl.val(fieldMap[field]);
+			}
+		}
+	}
+
+	<c:if test="<%= ticketWorker %>">
+		function <portlet:namespace />updateSearchFilter() {
+			var updateURL = "<portlet:actionURL name="updateSearchFilter"><portlet:param name="mvcPath" value="/support/view.jsp" /><portlet:param name="redirect" value="<%= portletURL.toString() %>" /></portlet:actionURL>";
+
+			document.<portlet:namespace />fm.method = "post";
+			submitForm(document.<portlet:namespace />fm, updateURL);
+		}
+	</c:if>
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />updateSearch',
+		function(filterId) {
+			var A = AUI();
+
+			if ((filterId == null) || (filterId == "")) {
+				A.one('#<portlet:namespace />filterActions').hide();
+
+				return;
+			}
+
+			var fieldMap = new Object();
+
+			A.io.request(
+				'<portlet:actionURL name="getSearchFilter"></portlet:actionURL>',
+				{
+					data: {
+						<portlet:namespace />searchFilterId: filterId
+					},
+					dataType: 'json',
+					on: {
+						start: function() {
+							A.one('#<portlet:namespace />filterLabel').attr('class', 'filter-label loading-animation');
+						},
+						success: function(event, id, obj) {
+							var instance = this;
+
+							var message = instance.get('responseData');
+
+							if (message) {
+								message.searchFilterId = filterId;
+
+								<portlet:namespace />updateSearchFields(message);
+							}
+
+							A.one('#<portlet:namespace />filterActions').show();
+							A.one('#<portlet:namespace />filterLabel').attr('class', 'filter-label');
+						}
+					}
+				}
+			);
+
+			<portlet:namespace />updateSearchFields(fieldMap);
+		},
+		['aui-io']
+	);
+</aui:script>

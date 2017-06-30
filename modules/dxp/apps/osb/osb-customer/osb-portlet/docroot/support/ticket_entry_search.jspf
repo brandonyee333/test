@@ -1,0 +1,1035 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%
+String actionName = ParamUtil.getString(request, ActionRequest.ACTION_NAME);
+
+Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
+%>
+
+<div class="callout-a">
+	<liferay-ui:search-toggle
+		buttonLabel="search"
+		displayTerms="<%= displayTerms %>"
+		id="toggle_id_ticket_entry_search"
+	>
+		<input class="aui-button-input aui-button-input-reset" onClick="<portlet:namespace />resetForm();" type="button" value="<liferay-ui:message key="reset" />" />
+
+		<div class="<%= request.getAttribute("liferay-ui:search-toggle:id") %>toggle-link top-searchtoggle-link">
+			<a href="javascript:;">&laquo; <liferay-ui:message key="basic" /></a>
+		</div>
+
+		<div class="aui-helper-clearfix cleared">
+			<div class="aui-w33 content-column">
+				<div class="content-column-content left-column">
+					<h2 class="support-assignment support-input-heading">
+						<liferay-ui:message key="project" />
+					</h2>
+
+					<div id="<portlet:namespace />accountEntryNameContainer">
+						<input id="<portlet:namespace /><%= displayTerms.ACCOUNT_ENTRY_NAME %>" name="<portlet:namespace /><%= displayTerms.ACCOUNT_ENTRY_NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getAccountEntryName()) %>" />
+					</div>
+				</div>
+			</div>
+
+			<div class="aui-w33 content-column">
+				<div class="content-column-content middle-column">
+					<h2 class="support-assignment support-input-heading">
+						<liferay-ui:message key="content" />
+					</h2>
+
+					<input id="<portlet:namespace /><%= displayTerms.CONTENT %>" name="<portlet:namespace /><%= displayTerms.CONTENT %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getContent()) %>" />
+				</div>
+			</div>
+
+			<div class="aui-w33 content-column">
+				<div class="content-column-content right-column">
+					<h2 class="support-assignment support-input-heading"><liferay-ui:message key="pending" /></h2>
+
+					<select id="<portlet:namespace /><%= displayTerms.PENDING_TYPES %>" name="<portlet:namespace /><%= displayTerms.PENDING_TYPES %>">
+						<option value=""></option>
+
+						<%
+						for (int pendingType : TicketFlagConstants.TYPES_PENDING) {
+						%>
+
+							<option <%= ArrayUtil.contains(displayTerms.getPendingTypes(), pendingType) ? "selected" : "" %> value="<%= pendingType %>"><%= LanguageUtil.get(pageContext, TicketFlagConstants.getTypeLabel(pendingType)) %></option>
+
+						<%
+						}
+						%>
+
+					</select>
+				</div>
+			</div>
+		</div>
+
+		<div class="aui-helper-clearfix cleared">
+			<div class="aui-w33 content-column">
+				<div class="content-column-content left-column">
+					<c:if test="<%= !screenShareMode && ticketWorker %>">
+						<h2 class="support-assignment support-input-heading">
+							<liferay-ui:message key="satisfied-due-date" />
+						</h2>
+
+						<select id="<portlet:namespace /><%= displayTerms.SATISFIED_DUE_DATE %>" name="<portlet:namespace /><%= displayTerms.SATISFIED_DUE_DATE %>">
+							<option <%= !displayTerms.hasSatisfiedDueDate() ? "selected" : "" %> value=""></option>
+							<option <%= (displayTerms.hasSatisfiedDueDate() && displayTerms.isSatisfiedDueDate()) ? "selected" : "" %> value="1"><liferay-ui:message key="yes" /></option>
+							<option <%= (displayTerms.hasSatisfiedDueDate() && !displayTerms.isSatisfiedDueDate()) ? "selected" : "" %> value="0"><liferay-ui:message key="no" /></option>
+						</select>
+					</c:if>
+				</div>
+			</div>
+
+			<div class="aui-w33 content-column">
+				<div class="content-column-content right-column">
+					<c:if test="<%= !screenShareMode && ticketWorker %>">
+						<h2 class="support-assignment support-input-heading">
+							<liferay-ui:message key="project-tier" />
+						</h2>
+
+						<select class="multiple-select" id="<portlet:namespace /><%= displayTerms.ACCOUNT_ENTRY_TIERS %>" multiple name="<portlet:namespace /><%= displayTerms.ACCOUNT_ENTRY_TIERS %>">
+							<option value=""><liferay-ui:message key="any" /></option>
+
+							<%
+							for (int accountEntryTier : AccountEntryConstants.TIERS) {
+							%>
+
+								<option <%= ArrayUtil.contains(displayTerms.getAccountEntryTiers(), accountEntryTier) ? "selected" : "" %> value="<%= accountEntryTier %>"><%= LanguageUtil.get(pageContext, AccountEntryConstants.getTierLabel(accountEntryTier)) %></option>
+
+							<%
+							}
+							%>
+
+						</select>
+					</c:if>
+				</div>
+			</div>
+		</div>
+
+		<c:if test="<%= !screenShareMode && ticketWorker %>">
+			<div class="aui-helper-clearfix">
+				<div class="aui-w50 content-column">
+					<div class="content-column-content left-column">
+						<h2 class="support-assignment support-input-heading">
+							<liferay-ui:message key="assigned-to" />
+						</h2>
+
+						<%
+						String assignedTo = displayTerms.getAssignedTo();
+						long assignedUserId = GetterUtil.getLong(assignedTo);
+						%>
+
+						<select id="<portlet:namespace /><%= displayTerms.ASSIGNED_TO %>" name="<portlet:namespace /><%= displayTerms.ASSIGNED_TO %>" onChange="<portlet:namespace />updateAssignedTo(this);">
+							<option value=""></option>
+							<option <%= (user.getUserId() == assignedUserId) ? "selected" : "" %> value="<%= user.getUserId() %>"><liferay-ui:message key="me" /></option>
+							<option <%= (Validator.isNotNull(assignedTo) && assignedTo.equals("no-one")) ? "selected" : "" %> value="no-one"><liferay-ui:message key="no-one" /></option>
+
+							<c:if test='<%= assignedTo.startsWith("partnerEntryId-") || assignedTo.startsWith("supportTeamId-") || ((assignedUserId > 0) && (user.getUserId() != assignedUserId)) %>'>
+								<option selected value="<%= assignedTo %>"><%= HtmlUtil.escape(displayTerms.getAssignedName()) %></option>
+							</c:if>
+						</select>
+
+						<input id="<portlet:namespace /><%= displayTerms.ASSIGNED_NAME %>" name="<portlet:namespace /><%= displayTerms.ASSIGNED_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getAssignedName()) %>" />
+
+						&nbsp;<input class="aui-button-input" type="button" value="<liferay-ui:message key="choose" />" onClick="var assignedToWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/support/select_assigned_to.jsp" /></portlet:renderURL>', 'assigned_to', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); assignedToWindow.focus();" />
+					</div>
+				</div>
+
+				<c:if test="<%= liferayIncOrg %>">
+					<div class="aui-w50 content-column">
+						<div class="content-column-content right-column">
+							<h2 class="support-assignment support-input-heading">
+								<liferay-ui:message key="project-worker" />
+							</h2>
+
+							<input id="<portlet:namespace /><%= displayTerms.ACCOUNT_WORKER_USER_IDS %>" name="<portlet:namespace /><%= displayTerms.ACCOUNT_WORKER_USER_IDS %>" type="hidden" value="<%= StringUtil.merge(displayTerms.getAccountWorkerUserIds()) %>" />
+							<input id="<portlet:namespace /><%= displayTerms.ACCOUNT_WORKER_ROLES %>" name="<portlet:namespace /><%= displayTerms.ACCOUNT_WORKER_ROLES %>" type="hidden" value="<%= StringUtil.merge(displayTerms.getAccountWorkerRoles()) %>" />
+							<input id="<portlet:namespace /><%= displayTerms.ACCOUNT_WORKER_NAMES %>" name="<portlet:namespace /><%= displayTerms.ACCOUNT_WORKER_NAMES %>" readonly="readonly" type="text" value="<%= HtmlUtil.escape(StringUtil.merge(displayTerms.getAccountWorkerNames())) %>" />
+
+							&nbsp;<input class="aui-button-input" type="button" value="<liferay-ui:message key="choose" />" onClick="var accountWorkerWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/support/select_account_worker.jsp" /></portlet:renderURL>', 'account_worker', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); accountWorkerWindow.focus();" />
+						</div>
+					</div>
+				</c:if>
+			</div>
+		</c:if>
+
+		<div class="aui-helper-clearfix">
+			<div class="aui-w33 content-column">
+				<div class="content-column-content left-column">
+					<h2 class="support-input-heading">
+						<liferay-ui:message key="severity" />
+					</h2>
+
+					<%
+					String[] severityLabels = new String[3];
+					int[] severityValues = new int[3];
+
+					for (int i = 0; i < 3; i++) {
+						severityLabels[i] = TicketEntryConstants.getSeverityLabel(i + 1);
+						severityValues[i] = i + 1;
+					}
+					%>
+
+					<liferay-util:include page="/common/multiple_select_checkboxes.jsp" servletContext="<%= application %>">
+						<liferay-util:param name="curValues" value="<%= StringUtil.merge(displayTerms.getSeverities()) %>" />
+						<liferay-util:param name="labels" value="<%= StringUtil.merge(severityLabels) %>" />
+						<liferay-util:param name="name" value="<%= displayTerms.SEVERITIES %>" />
+						<liferay-util:param name="values" value="<%= StringUtil.merge(severityValues) %>" />
+					</liferay-util:include>
+				</div>
+			</div>
+
+			<div class="aui-w33 content-column">
+				<div class="content-column-content middle-column">
+					<h2 class="support-input-heading">
+						<liferay-ui:message key="escalation-level" />
+					</h2>
+
+					<%
+					List<ListType> escalationLevelTypes = ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_ESCALATION_LEVEL);
+					%>
+
+					<liferay-util:include page="/common/multiple_select_checkboxes.jsp" servletContext="<%= application %>">
+						<liferay-util:param name="curValues" value="<%= StringUtil.merge(displayTerms.getEscalationLevels()) %>" />
+						<liferay-util:param name="labels" value='<%= ListUtil.toString(escalationLevelTypes, "name") %>' />
+						<liferay-util:param name="name" value="<%= displayTerms.ESCALATION_LEVELS %>" />
+						<liferay-util:param name="values" value='<%= ListUtil.toString(escalationLevelTypes, "listTypeId") %>' />
+					</liferay-util:include>
+				</div>
+			</div>
+
+			<div class="aui-w33 content-column">
+				<div class="content-column-content right-column">
+					<h2 class="support-input-heading">
+						<liferay-ui:message key="resolution" />
+					</h2>
+
+					<%
+					List<ListType> resolutionTypes = ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_RESOLUTION);
+					%>
+
+					<liferay-util:include page="/common/multiple_select_checkboxes.jsp" servletContext="<%= application %>">
+						<liferay-util:param name="curValues" value="<%= StringUtil.merge(displayTerms.getResolutions()) %>" />
+						<liferay-util:param name="labels" value='<%= ListUtil.toString(resolutionTypes, "name") %>' />
+						<liferay-util:param name="name" value="<%= displayTerms.RESOLUTIONS %>" />
+						<liferay-util:param name="values" value='<%= ListUtil.toString(resolutionTypes, "listTypeId") %>' />
+					</liferay-util:include>
+				</div>
+			</div>
+
+			<div class="aui-w100 content-column">
+				<div class="content-column-content">
+					<h2 class="support-input-heading">
+						<liferay-ui:message key="status" />
+					</h2>
+
+					<%
+					List<ListType> statusTypes = ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_STATUS);
+					%>
+
+					<liferay-util:include page="/common/multiple_select_checkboxes.jsp" servletContext="<%= application %>">
+						<liferay-util:param name="curValues" value="<%= StringUtil.merge(displayTerms.getStatuses()) %>" />
+						<liferay-util:param name="itemsPerColumn" value="6" />
+						<liferay-util:param name="labels" value='<%= "open," + ListUtil.toString(statusTypes, "name") %>' />
+						<liferay-util:param name="name" value="<%= displayTerms.STATUSES %>" />
+						<liferay-util:param name="values" value='<%= TicketEntryConstants.STATUS_OPEN + StringPool.COMMA + ListUtil.toString(statusTypes, "listTypeId") %>' />
+					</liferay-util:include>
+
+					<div class="select-clear-toggle-container">
+						<span class="select-all select-clear-toggle">
+							<liferay-ui:message key="select-all" />
+						</span>
+
+						<span class="divider">&nbsp;|&nbsp;</span>
+
+						<span class="clear-all select-clear-toggle">
+							<liferay-ui:message key="clear-all" />
+						</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="aui-w100 content-column">
+				<div class="content-column-content">
+					<h2 class="support-input-heading">
+						<liferay-ui:message key="component" />
+					</h2>
+
+					<%
+					List<ListType> componentTypes = ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_COMPONENT);
+					%>
+
+					<liferay-util:include page="/common/multiple_select_checkboxes.jsp" servletContext="<%= application %>">
+						<liferay-util:param name="curValues" value="<%= StringUtil.merge(displayTerms.getComponents()) %>" />
+						<liferay-util:param name="itemsPerColumn" value="17" />
+						<liferay-util:param name="labels" value='<%= ListUtil.toString(componentTypes, "name") %>' />
+						<liferay-util:param name="name" value="<%= displayTerms.COMPONENTS %>" />
+						<liferay-util:param name="values" value='<%= ListUtil.toString(componentTypes, "listTypeId") %>' />
+					</liferay-util:include>
+
+					<div class="select-clear-toggle-container">
+						<span class="select-all select-clear-toggle">
+							<liferay-ui:message key="select-all" />
+						</span>
+
+						<span class="divider">&nbsp;|&nbsp;</span>
+
+						<span class="clear-all select-clear-toggle">
+							<liferay-ui:message key="clear-all" />
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<c:if test="<%= !screenShareMode && ticketWorker %>">
+			<liferay-ui:panel collapsible="<%= true %>" extended="<%= true %>" id="envDetailsPanel" persistState="<%= true %>" title="environment-details">
+				<div class="aui-w100">
+					<h2 class="support-input-heading">
+						<liferay-ui:message key="product" />
+					</h2>
+
+					<%
+					List<ProductEntry> productEntries = ProductEntryLocalServiceUtil.getProductEntries(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+					%>
+
+					<liferay-util:include page="/common/multiple_select_checkboxes.jsp" servletContext="<%= application %>">
+						<liferay-util:param name="curValues" value="<%= StringUtil.merge(displayTerms.getProductEntryIds()) %>" />
+						<liferay-util:param name="itemsPerColumn" value="9" />
+						<liferay-util:param name="labels" value='<%= ListUtil.toString(productEntries, "name") %>' />
+						<liferay-util:param name="name" value="<%= displayTerms.PRODUCT_ENTRY_IDS %>" />
+						<liferay-util:param name="values" value='<%= ListUtil.toString(productEntries, "productEntryId") %>' />
+					</liferay-util:include>
+				</div>
+
+				<div class="aui-w100">
+					<h2 class="support-input-heading">
+						<liferay-ui:message key="liferay-version" />
+					</h2>
+
+					<%
+					List<ListType> envLFRTypes = ListUtil.copy(ListTypeServiceUtil.getListTypes(ProductEntryConstants.LIST_TYPE_PORTAL_ALL_VERSIONS));
+
+					envLFRTypes.addAll(ListTypeServiceUtil.getListTypes(ProductEntryConstants.LIST_TYPE_DIGITAL_ENTERPRISE_ALL_VERSIONS));
+					%>
+
+					<liferay-util:include page="/common/multiple_select_checkboxes.jsp" servletContext="<%= application %>">
+						<liferay-util:param name="curValues" value="<%= StringUtil.merge(displayTerms.getEnvLFRIds()) %>" />
+						<liferay-util:param name="itemsPerColumn" value="8" />
+						<liferay-util:param name="labels" value='<%= ListUtil.toString(envLFRTypes, "name") %>' />
+						<liferay-util:param name="name" value="<%= displayTerms.ENV_LFR_IDS %>" />
+						<liferay-util:param name="values" value='<%= ListUtil.toString(envLFRTypes, "listTypeId") %>' />
+					</liferay-util:include>
+				</div>
+
+				<div class="aui-w100">
+					<h2 class="support-input-heading">
+						<liferay-ui:message key="operating-system" />
+					</h2>
+
+					<%
+					List<ListType> envOSTypes = ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_ENV_OS);
+					%>
+
+					<liferay-util:include page="/common/multiple_select_checkboxes.jsp" servletContext="<%= application %>">
+						<liferay-util:param name="curValues" value="<%= StringUtil.merge(displayTerms.getEnvOSIds()) %>" />
+						<liferay-util:param name="itemsPerColumn" value="10" />
+						<liferay-util:param name="labels" value='<%= ListUtil.toString(envOSTypes, "name") %>' />
+						<liferay-util:param name="name" value="<%= displayTerms.ENV_OS_IDS %>" />
+						<liferay-util:param name="values" value='<%= ListUtil.toString(envOSTypes, "listTypeId") %>' />
+					</liferay-util:include>
+				</div>
+
+				<div class="aui-w100">
+					<h2 class="support-input-heading">
+						<liferay-ui:message key="application-server" />
+					</h2>
+
+					<%
+					List<ListType> envASTypes = ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_ENV_AS);
+					%>
+
+					<liferay-util:include page="/common/multiple_select_checkboxes.jsp" servletContext="<%= application %>">
+						<liferay-util:param name="curValues" value="<%= StringUtil.merge(displayTerms.getEnvASIds()) %>" />
+						<liferay-util:param name="itemsPerColumn" value="15" />
+						<liferay-util:param name="labels" value='<%= ListUtil.toString(envASTypes, "name") %>' />
+						<liferay-util:param name="name" value="<%= displayTerms.ENV_AS_IDS %>" />
+						<liferay-util:param name="values" value='<%= ListUtil.toString(envASTypes, "listTypeId") %>' />
+					</liferay-util:include>
+				</div>
+
+				<div class="aui-w100">
+					<h2 class="support-input-heading">
+						<liferay-ui:message key="java-virtual-machine" />
+					</h2>
+
+					<%
+					List<ListType> envJVMTypes = ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_ENV_JVM);
+					%>
+
+					<liferay-util:include page="/common/multiple_select_checkboxes.jsp" servletContext="<%= application %>">
+						<liferay-util:param name="curValues" value="<%= StringUtil.merge(displayTerms.getEnvJVMIds()) %>" />
+						<liferay-util:param name="itemsPerColumn" value="2" />
+						<liferay-util:param name="labels" value='<%= ListUtil.toString(envJVMTypes, "name") %>' />
+						<liferay-util:param name="name" value="<%= displayTerms.ENV_JVM_IDS %>" />
+						<liferay-util:param name="values" value='<%= ListUtil.toString(envJVMTypes, "listTypeId") %>' />
+					</liferay-util:include>
+				</div>
+
+				<div class="aui-w100">
+					<h2 class="support-input-heading">
+						<liferay-ui:message key="database" />
+					</h2>
+
+					<%
+					List<ListType> envDBTypes = ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_ENV_DB);
+					%>
+
+					<liferay-util:include page="/common/multiple_select_checkboxes.jsp" servletContext="<%= application %>">
+						<liferay-util:param name="curValues" value="<%= StringUtil.merge(displayTerms.getEnvDBIds()) %>" />
+						<liferay-util:param name="itemsPerColumn" value="9" />
+						<liferay-util:param name="labels" value='<%= ListUtil.toString(envDBTypes, "name") %>' />
+						<liferay-util:param name="name" value="<%= displayTerms.ENV_DB_IDS %>" />
+						<liferay-util:param name="values" value='<%= ListUtil.toString(envDBTypes, "listTypeId") %>' />
+					</liferay-util:include>
+				</div>
+			</liferay-ui:panel>
+		</c:if>
+
+		<div class="aui-helper-clearfix">
+			<div class="aui-w50 content-column">
+				<div class="content-column-content left-column">
+					<h2 class="support-input-heading">
+						<liferay-ui:message key="created-between" />
+					</h2>
+
+					<div class="aui-w100">
+						<liferay-ui:message key="begin-date" />
+
+						<liferay-ui:input-date
+							cssClass="aui-w100"
+							dayNullable="<%= true %>"
+							dayParam="<%= displayTerms.CREATE_DATE_GT_DAY %>"
+							dayValue="<%= displayTerms.getCreateDateGTDay() %>"
+							monthNullable="<%= true %>"
+							monthParam="<%= displayTerms.CREATE_DATE_GT_MONTH %>"
+							monthValue="<%= displayTerms.getCreateDateGTMonth() %>"
+							yearNullable="<%= true %>"
+							yearParam="<%= displayTerms.CREATE_DATE_GT_YEAR %>"
+							yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
+							yearRangeStart="<%= 2006 %>"
+							yearValue="<%= displayTerms.getCreateDateGTYear() %>"
+						/>
+					</div>
+
+					<div class="aui-w100">
+						<liferay-ui:message key="end-date" />
+
+						<liferay-ui:input-date
+							cssClass="aui-w100"
+							dayNullable="<%= true %>"
+							dayParam="<%= displayTerms.CREATE_DATE_LT_DAY %>"
+							dayValue="<%= displayTerms.getCreateDateLTDay() %>"
+							monthNullable="<%= true %>"
+							monthParam="<%= displayTerms.CREATE_DATE_LT_MONTH %>"
+							monthValue="<%= displayTerms.getCreateDateLTMonth() %>"
+							yearNullable="<%= true %>"
+							yearParam="<%= displayTerms.CREATE_DATE_LT_YEAR %>"
+							yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
+							yearRangeStart="<%= 2006 %>"
+							yearValue="<%= displayTerms.getCreateDateLTYear() %>"
+						/>
+					</div>
+				</div>
+			</div>
+
+			<div class="aui-w50 content-column">
+				<div class="content-column-content left-column">
+					<h2 class="support-input-heading">
+						<liferay-ui:message key="closed-between" />
+					</h2>
+
+					<div class="aui-w100">
+						<liferay-ui:message key="begin-date" />
+
+						<liferay-ui:input-date
+							cssClass="aui-w100"
+							dayNullable="<%= true %>"
+							dayParam="<%= displayTerms.CLOSED_DATE_GT_DAY %>"
+							dayValue="<%= displayTerms.getClosedDateGTDay() %>"
+							monthNullable="<%= true %>"
+							monthParam="<%= displayTerms.CLOSED_DATE_GT_MONTH %>"
+							monthValue="<%= displayTerms.getClosedDateGTMonth() %>"
+							yearNullable="<%= true %>"
+							yearParam="<%= displayTerms.CLOSED_DATE_GT_YEAR %>"
+							yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
+							yearRangeStart="<%= 2006 %>"
+							yearValue="<%= displayTerms.getClosedDateGTYear() %>"
+						/>
+					</div>
+
+					<div class="aui-w100">
+						<liferay-ui:message key="end-date" />
+
+						<liferay-ui:input-date
+							cssClass="aui-w100"
+							dayNullable="<%= true %>"
+							dayParam="<%= displayTerms.CLOSED_DATE_LT_DAY %>"
+							dayValue="<%= displayTerms.getClosedDateLTDay() %>"
+							monthNullable="<%= true %>"
+							monthParam="<%= displayTerms.CLOSED_DATE_LT_MONTH %>"
+							monthValue="<%= displayTerms.getClosedDateLTMonth() %>"
+							yearNullable="<%= true %>"
+							yearParam="<%= displayTerms.CLOSED_DATE_LT_YEAR %>"
+							yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
+							yearRangeStart="<%= 2006 %>"
+							yearValue="<%= displayTerms.getClosedDateLTYear() %>"
+						/>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<c:if test="<%= !screenShareMode && ticketWorker %>">
+			<div class="aui-helper-clearfix">
+				<div class="aui-w50 content-column">
+					<div class="content-column-content left-column">
+						<h2 class="support-input-heading">
+							<liferay-ui:message key="due-between" />
+						</h2>
+
+						<div class="aui-w100">
+							<liferay-ui:message key="begin-date" />
+
+							<liferay-ui:input-date
+								cssClass="aui-w100"
+								dayNullable="<%= true %>"
+								dayParam="<%= displayTerms.DUE_DATE_GT_DAY %>"
+								dayValue="<%= displayTerms.getDueDateGTDay() %>"
+								monthNullable="<%= true %>"
+								monthParam="<%= displayTerms.DUE_DATE_GT_MONTH %>"
+								monthValue="<%= displayTerms.getDueDateGTMonth() %>"
+								yearNullable="<%= true %>"
+								yearParam="<%= displayTerms.DUE_DATE_GT_YEAR %>"
+								yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
+								yearRangeStart="<%= 2006 %>"
+								yearValue="<%= displayTerms.getDueDateGTYear() %>"
+							/>
+						</div>
+
+						<div class="aui-w100">
+							<liferay-ui:message key="end-date" />
+
+							<liferay-ui:input-date
+								cssClass="aui-w100"
+								dayNullable="<%= true %>"
+								dayParam="<%= displayTerms.DUE_DATE_LT_DAY %>"
+								dayValue="<%= displayTerms.getDueDateLTDay() %>"
+								monthNullable="<%= true %>"
+								monthParam="<%= displayTerms.DUE_DATE_LT_MONTH %>"
+								monthValue="<%= displayTerms.getDueDateLTMonth() %>"
+								yearNullable="<%= true %>"
+								yearParam="<%= displayTerms.DUE_DATE_LT_YEAR %>"
+								yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
+								yearRangeStart="<%= 2006 %>"
+								yearValue="<%= displayTerms.getDueDateLTYear() %>"
+							/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</c:if>
+
+		<c:if test="<%= !screenShareMode && ticketWorker %>">
+			<div class="aui-helper-clearfix">
+				<div class="aui-w100 content-column">
+					<div class="content-column-content left-column">
+						<h2 class="filter-label support-assignment support-input-heading" id="<portlet:namespace />filterLabel">
+							<liferay-ui:message key="custom-filters" />:
+						</h2>
+
+						<div id="<portlet:namespace />filterDisplay">
+							<select id="<portlet:namespace />searchFilterId" name="<portlet:namespace />searchFilterId" onChange="<portlet:namespace />updateSearch(this.value);">
+								<option value=""></option>
+
+								<%
+								List<SearchFilter> searchFilters = SearchFilterLocalServiceUtil.getSearchFilters(user.getUserId(), PortalUtil.getClassNameId(TicketEntry.class.getName()));
+
+								for (SearchFilter searchFilter : searchFilters) {
+								%>
+
+									<option <%= (searchFilterId == searchFilter.getSearchFilterId()) ? "selected" : "" %> value="<%= searchFilter.getSearchFilterId() %>"><%= HtmlUtil.escape(searchFilter.getName()) %></option>
+
+								<%
+								}
+								%>
+
+							</select>
+
+							<%
+							SearchFilter searchFilter = null;
+
+							String searchFilterURL = StringPool.BLANK;
+
+							try {
+								if (searchFilterId > 0) {
+									searchFilter = SearchFilterLocalServiceUtil.getSearchFilter(searchFilterId);
+
+									searchFilterURL = SupportUtil.getFriendlySearchFilterURL(request, searchFilter.getSearchFilterId());
+								}
+							}
+							catch (NoSuchSearchFilterException nssfe) {
+							}
+							%>
+
+							<span class='filter-actions <%= (searchFilter != null) ? "" : "aui-helper-hidden" %>' id="<portlet:namespace />filterActions">
+								<span class="custom-filter-button" onClick="<portlet:namespace />deleteSearchFilter();">
+									<liferay-ui:icon
+										image="delete"
+									/>
+								</span>
+
+								<span class="custom-filter-button" onClick='<portlet:namespace />toggleForm("<portlet:namespace />filterDisplay", "<portlet:namespace />editFilter"); document.<portlet:namespace />fm.<portlet:namespace />editFilterName.focus();'>
+									<liferay-ui:icon
+										image="edit"
+									/>
+								</span>
+							</span>
+
+							<span class="custom-filter-button" onClick='<portlet:namespace />toggleForm("<portlet:namespace />filterDisplay", "<portlet:namespace />addFilter"); document.<portlet:namespace />fm.<portlet:namespace />addFilterName.focus();'>
+								<liferay-ui:icon
+									image="add"
+								/>
+							</span>
+
+							<a class="<%= ((searchFilter != null) && (searchFilter.getVisibility() == VisibilityConstants.PUBLIC)) ? StringPool.BLANK : "aui-helper-hidden" %> fr" href="<%= searchFilterURL %>" id="<portlet:namespace />searchFilterPermalink"><liferay-ui:message key="permalink" /></a>
+						</div>
+
+						<div id="<portlet:namespace />addFilter" style="display: none;">
+							<liferay-ui:input-field field="name" fieldParam="addFilterName" model="<%= SearchFilter.class %>" />
+
+							<aui:select inlineField="<%= true %>" label="visibility" name="addFilterVisibility">
+								<aui:option label="private" value="0" />
+								<aui:option label="<%= VisibilityConstants.toLabel(VisibilityConstants.PUBLIC) %>" value="<%= VisibilityConstants.PUBLIC %>" />
+							</aui:select>
+
+							<input class="aui-button-input" id="<portlet:namespace />addFilterButton" onClick="<portlet:namespace />addSearchFilter();" type="button" value="<liferay-ui:message key="add-new-filter" />" />
+
+							<input class="aui-button-input" onClick='<portlet:namespace />toggleForm("<portlet:namespace />addFilter", "<portlet:namespace />filterDisplay");' type="button" value="<liferay-ui:message key="cancel" />" />
+						</div>
+
+						<div id="<portlet:namespace />editFilter" style="display: none;">
+							<liferay-ui:input-field bean="<%= searchFilter %>" field="name" fieldParam="editFilterName" model="<%= SearchFilter.class %>" />
+
+							<aui:select inlineField="<%= true %>" label="visibility" name="editFilterVisibility">
+								<aui:option label="private" value="0" />
+								<aui:option label="<%= VisibilityConstants.toLabel(VisibilityConstants.PUBLIC) %>" selected="<%= (searchFilter != null) && (searchFilter.getVisibility() == VisibilityConstants.PUBLIC) %>" value="<%= VisibilityConstants.PUBLIC %>" />
+							</aui:select>
+
+							<input class="aui-button-input" id="<portlet:namespace />updateFilterButton" onClick="<portlet:namespace />updateSearchFilter();" type="button" value="<liferay-ui:message key="update-filter" />" />
+
+							<input class="aui-button-input" onClick='<portlet:namespace />toggleForm("<portlet:namespace />editFilter", "<portlet:namespace />filterDisplay");' type="button" value="<liferay-ui:message key="cancel" />" />
+						</div>
+					</div>
+				</div>
+
+				<div class="aui-w100 content-column">
+					<div class="content-column-content">
+						<input <%= displayTerms.isDatabaseSearch() ? "checked" : "" %> class="aui-field-input-choice" id="<portlet:namespace /><%= displayTerms.DATABASE_SEARCH %>" name="<portlet:namespace /><%= displayTerms.DATABASE_SEARCH %>" type="checkbox" />
+
+						<liferay-ui:message key="database-search" />
+					</div>
+				</div>
+			</div>
+		</c:if>
+
+		<br />
+
+		<c:if test='<%= liferayIncOrg && searchTerms.isAdvancedSearch() && themeDisplay.isLifecycleAction() && actionName.equals("search") %>'>
+			<div class="export-menu" id="<portlet:namespace />exportMenu">
+				<c:choose>
+					<c:when test="<%= (total <= 5000) && (total > 0) %>">
+						<a class="aui-button-input-export btn" href="javascript:;" type="button"><liferay-ui:message key="export" /></a>
+
+						<ul class="drop-down-menu">
+							<portlet:resourceURL id="exportTicketSearchResults" var="exportTicketDetailsURL">
+								<portlet:param name="export-selection" value="ticket-details" />
+							</portlet:resourceURL>
+
+							<li>
+								<a href="<%= exportTicketDetailsURL.toString() %>"><liferay-ui:message key="ticket-details" /></a>
+							</li>
+
+							<portlet:resourceURL id="exportTicketSearchResults" var="exportEnvironmentDetailsURL">
+								<portlet:param name="export-selection" value="environment-details" />
+							</portlet:resourceURL>
+
+							<li>
+								<a href="<%= exportEnvironmentDetailsURL.toString() %>"><liferay-ui:message key="environment-details" /></a>
+							</li>
+
+							<portlet:resourceURL id="exportTicketSearchResults" var="exportTicketSearchResultsURL" />
+
+							<li>
+								<a href="<%= exportTicketSearchResultsURL.toString() %>"><liferay-ui:message key="all" /></a>
+							</li>
+						</ul>
+					</c:when>
+					<c:otherwise>
+						<a class="aui-button-input-export btn disabled" type="button"><liferay-ui:message key="export" /></a>
+
+						<div class="export-help-icon">
+							<liferay-ui:icon-help message="search-results-must-be-5000-or-less" />
+						</div>
+					</c:otherwise>
+				</c:choose>
+			</div>
+		</c:if>
+	</liferay-ui:search-toggle>
+</div>
+
+<aui:script>
+	AUI().ready(
+		function(A) {
+			AUI().all('.toggle_id_ticket_entry_searchtoggle-link a').on(
+				'click',
+				function() {
+					window.scrollTo(0, 0);
+				}
+			);
+		}
+	);
+</aui:script>
+
+<c:if test='<%= liferayIncOrg && searchTerms.isAdvancedSearch() && themeDisplay.isLifecycleAction() && actionName.equals("search") %>'>
+	<aui:script use="aui-base">
+		var exportMenu = AUI().one('#<portlet:namespace />exportMenu');
+
+		exportMenu.on(
+			'click',
+			function() {
+				exportMenu.toggleClass('open-drop-down');
+			}
+		);
+
+		exportMenu.on(
+			'clickoutside',
+			function() {
+				exportMenu.removeClass('open-drop-down');
+			}
+		);
+	</aui:script>
+</c:if>
+
+<aui:script>
+	<c:if test="<%= !screenShareMode && ticketWorker %>">
+		function <portlet:namespace />addSearchFilter() {
+			document.<portlet:namespace />fm.<portlet:namespace />searchFilterId.selectedIndex = 0;
+			document.<portlet:namespace />fm.method = "post";
+			submitForm(document.<portlet:namespace />fm, "<portlet:actionURL name="updateSearchFilter"><portlet:param name="mvcPath" value="/support/view.jsp" /><portlet:param name="redirect" value="<%= portletURL.toString() %>" /></portlet:actionURL>");
+		}
+
+		function <portlet:namespace />deleteSearchFilter() {
+			if (!confirm('<%= UnicodeLanguageUtil.get(pageContext, "are-you-sure-you-want-to-delete-this") %>')) {
+				return;
+			}
+
+			var deleteURL = '<portlet:actionURL name="deleteSearchFilter"><portlet:param name="mvcPath" value="/support/view.jsp" /><portlet:param name="redirect" value="<%= portletURL.toString() %>" /></portlet:actionURL>';
+
+			document.<portlet:namespace />fm.method = "post";
+			submitForm(document.<portlet:namespace />fm, deleteURL);
+		}
+	</c:if>
+
+	function <portlet:namespace />resetForm() {
+		var A = AUI();
+
+		var advancedSearchDiv = A.one('#toggle_id_ticket_entry_searchadvanced');
+
+		advancedSearchDiv.all(':input').each(
+			function(item, index, collection) {
+				var type = item.get('type');
+
+				if (type == 'select-multiple') {
+					item.all('option').each(
+						function(item, index, collection) {
+							item.attr('selected', '');
+						}
+					);
+				}
+				else if (type == 'select-one') {
+					item.attr('selectedIndex', 0);
+				}
+				else if ((type == 'hidden') || (type == 'text') || (type == 'textarea')) {
+					item.val('');
+				}
+				else if ((type == 'checkbox') || (type == 'radio')) {
+					item.set('checked', false);
+				}
+			}
+		);
+
+		A.one('#<portlet:namespace />andOperator').val('1');
+
+		<c:if test="<%= !screenShareMode && ticketWorker %>">
+			A.one('#<portlet:namespace />filterActions').hide();
+		</c:if>
+	}
+
+	function <portlet:namespace />selectAccountWorker(userId, name, role) {
+		document.<portlet:namespace />fm.<portlet:namespace />accountWorkerUserIds.value = userId;
+		document.<portlet:namespace />fm.<portlet:namespace />accountWorkerNames.value = name;
+		document.<portlet:namespace />fm.<portlet:namespace />accountWorkerRoles.value = role;
+	}
+
+	function <portlet:namespace />selectAssignedTo(value, name) {
+		var length = document.<portlet:namespace />fm.<portlet:namespace />assignedTo.length;
+
+		if (length < 3) {
+			document.<portlet:namespace />fm.<portlet:namespace />assignedTo.add(new Option(name, value));
+		}
+		else {
+			document.<portlet:namespace />fm.<portlet:namespace />assignedTo.options[3] = new Option(name, value);
+		}
+
+		document.<portlet:namespace />fm.<portlet:namespace />assignedTo.selectedIndex = 3;
+		document.<portlet:namespace />fm.<portlet:namespace />assignedName.value = name;
+	}
+
+	function <portlet:namespace />toggleForm(hideId, showId) {
+		document.getElementById(showId).style.display = "";
+		document.getElementById(hideId).style.display = "none";
+	}
+
+	function <portlet:namespace />updateAssignedTo(assignedTo) {
+		if (assignedTo.selectedIndex == 3) {
+			document.<portlet:namespace />fm.<portlet:namespace />assignedName.value = assignedTo.options[3].text;
+		}
+		else {
+			document.<portlet:namespace />fm.<portlet:namespace />assignedName.value = "";
+		}
+	}
+
+	function <portlet:namespace />updateSearchFields(fieldMap) {
+		<portlet:namespace />resetForm();
+
+		var A = AUI();
+
+		if (fieldMap.andOperator) {
+			A.one('#<portlet:namespace />andOperator').val(fieldMap.andOperator);
+
+			delete fieldMap.andOperator;
+		}
+
+		if (fieldMap.<%= displayTerms.ASSIGNED_NAME %> && fieldMap.<%= displayTerms.ASSIGNED_TO %>) {
+			<portlet:namespace />selectAssignedTo(fieldMap.<%= displayTerms.ASSIGNED_TO %>, fieldMap.<%= displayTerms.ASSIGNED_NAME %>);
+
+			delete fieldMap.<%= displayTerms.ASSIGNED_NAME %>;
+			delete fieldMap.<%= displayTerms.ASSIGNED_TO %>;
+		}
+
+		for (field in fieldMap) {
+			var fieldEl = A.one('#<portlet:namespace />' + field);
+
+			if (fieldEl) {
+				if (fieldEl.get('type') == 'select-multiple') {
+					fieldEl.one('option[value=]').attr("selected", "");
+
+					var valueArray = fieldMap[field];
+
+					for (var i = 0; i < valueArray.length; i++) {
+						var fieldOption = fieldEl.one('option[value=' + valueArray[i] + ']');
+
+						if (fieldOption) {
+							fieldOption.attr("selected", "selected");
+						}
+					}
+				}
+				else {
+					fieldEl.val(fieldMap[field]);
+				}
+			}
+			else {
+				var valueArray = fieldMap[field];
+
+				if (valueArray instanceof Array) {
+					for (var i = 0; i < valueArray.length; i++) {
+						var checkbox = A.one('input[name=<portlet:namespace />' + field +'][value=' + valueArray[i] + ']');
+
+						if (checkbox) {
+							checkbox.attr("checked", "checked");
+						}
+					}
+				}
+			}
+		}
+	}
+
+	<c:if test="<%= !screenShareMode && ticketWorker %>">
+		function <portlet:namespace />updateSearchFilter() {
+			var updateURL = "<portlet:actionURL name="updateSearchFilter"><portlet:param name="mvcPath" value="/support/view.jsp" /><portlet:param name="redirect" value="<%= portletURL.toString() %>" /></portlet:actionURL>";
+
+			document.<portlet:namespace />fm.method = "post";
+			submitForm(document.<portlet:namespace />fm, updateURL);
+		}
+	</c:if>
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />updateSearch',
+		function(filterId) {
+			var A = AUI();
+
+			if ((filterId == null) || (filterId == "")) {
+				A.one('#<portlet:namespace />filterActions').hide();
+				A.one('#<portlet:namespace />searchFilterPermalink').hide();
+
+				return;
+			}
+
+			var fieldMap = new Object();
+
+			if (filterId == "inProgress") {
+				fieldMap.assignedTo = '<%= user.getUserId() %>';
+				fieldMap.statuses = ['<%= StringUtil.merge(TicketEntryConstants.STATUSES_IN_PROGRESS, "', '") %>'];
+			}
+			else if (filterId == "myOpen") {
+				fieldMap.assignedTo = '<%= user.getUserId() %>';
+				fieldMap.statuses = ['<%= StringUtil.merge(TicketEntryConstants.STATUSES_WORKER_OPEN, "', '") %>'];
+			}
+			else if (filterId == "myNeedResponse") {
+				fieldMap.pendingTypes = '<%= liferayIncOrg ? TicketFlagConstants.TYPE_PENDING_LIFERAY : TicketFlagConstants.TYPE_PENDING_PARTNER %>';
+				fieldMap.assignedTo = '<%= user.getUserId() %>';
+				fieldMap.statuses = ['<%= StringUtil.merge(TicketEntryConstants.STATUSES_OPEN, "', '") %>'];
+			}
+			else if (filterId == "open") {
+				fieldMap.statuses = ['<%= StringUtil.merge(TicketEntryConstants.STATUSES_OPEN, "', '") %>'];
+			}
+			else {
+				A.io.request(
+					'<portlet:actionURL name="getSearchFilter"></portlet:actionURL>',
+					{
+						data: {
+							<portlet:namespace />searchFilterId: filterId
+						},
+						dataType: 'json',
+						on: {
+							start: function() {
+								A.one('#<portlet:namespace />filterLabel').attr('class', 'filter-label loading-animation');
+
+								A.one('#<portlet:namespace />searchFilterPermalink').hide();
+							},
+							success: function(event, id, obj) {
+								var instance = this;
+
+								var message = instance.get('responseData');
+
+								if (message) {
+									<portlet:namespace />updateSearchFields(message.filter);
+
+									A.one('#<portlet:namespace />searchFilterId').val(filterId);
+
+									if (message.name) {
+										A.one('#<portlet:namespace />editFilterName').val(message.name);
+									}
+
+									if (message.visibility > 0) {
+										A.one('#<portlet:namespace />editFilterVisibility').val(message.visibility);
+
+										if (message.permalink != '') {
+											A.one('#<portlet:namespace />searchFilterPermalink').attr('href', message.permalink);
+
+											A.one('#<portlet:namespace />searchFilterPermalink').show();
+										}
+									}
+								}
+
+								A.one('#<portlet:namespace />filterActions').show();
+								A.one('#<portlet:namespace />filterLabel').attr('class', 'filter-label');
+							}
+						}
+					}
+				);
+			}
+
+			<portlet:namespace />updateSearchFields(fieldMap);
+		},
+		['aui-io']
+	);
+</aui:script>
+
+<aui:script use="node-event-delegate">
+	A.one('.osb-portlet-support').delegate(
+		'click',
+		function(event) {
+			var node = event.currentTarget;
+
+			var toggleStatus = false;
+
+			if (node.hasClass('select-all')) {
+				toggleStatus = true;
+			}
+
+			var sectionContainer = node.ancestor('.content-column-content');
+
+			sectionContainer.all('input[type=checkbox]').set('checked', toggleStatus);
+		},
+		'.select-clear-toggle-container .select-clear-toggle'
+	);
+</aui:script>
+
+<c:if test="<%= liferayIncOrg %>">
+	<aui:script use="aui-autocomplete">
+		var dataSource = new A.DataSource.IO(
+			{
+				source: '<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="accountEntries" />'
+			}
+		);
+
+		var autoComplete = new A.AutoComplete(
+			{
+				autoHighlight: true,
+				contentBox: '#<portlet:namespace />accountEntryNameContainer',
+				cssClass: 'auto-complete-container',
+				dataSource: dataSource,
+				input: '#<portlet:namespace /><%= displayTerms.ACCOUNT_ENTRY_NAME %>',
+				matchKey: 'name',
+				minQueryLength: 2,
+				on: {
+					itemSelect: function(event) {
+						if (event != null) {
+							document.getElementById("<portlet:namespace /><%= displayTerms.ACCOUNT_ENTRY_NAME %>").value = '"' + event.details[1].name + '"';
+						}
+					}
+				},
+				schema: {
+					resultFields: ['name', 'code']
+				},
+				schemaType: 'json',
+				typeAhead: true
+			}
+		);
+
+		autoComplete.generateRequest = function(name) {
+			return {
+				request: '&<portlet:namespace />name=' + name
+			};
+		};
+
+		autoComplete.render();
+	</aui:script>
+</c:if>

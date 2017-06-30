@@ -1,0 +1,132 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%
+PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(pageContext, "recent-results"), currentURL);
+%>
+
+<div class="training-exam-results">
+	<aui:form action="<%= portletURL.toString() %>" method="post" name="fm" onSubmit="submitForm(this); return false;">
+		<liferay-ui:search-container
+			searchContainer="<%= new TrainingExamResultSearch(renderRequest, portletURL) %>"
+		>
+
+			<%
+			TrainingExamResultDisplayTerms displayTerms = (TrainingExamResultDisplayTerms)searchContainer.getDisplayTerms();
+			TrainingExamResultSearchTerms searchTerms = (TrainingExamResultSearchTerms)searchContainer.getSearchTerms();
+			%>
+
+			<%@ include file="/admin/training_exam_result_user_search.jspf" %>
+
+			<liferay-ui:search-container-results>
+
+				<%
+				if (searchTerms.isAdvancedSearch()) {
+					results = TrainingExamResultLocalServiceUtil.search(searchTerms.getFirstName(), searchTerms.getLastName(), searchTerms.getEmailAddress(), searchTerms.getCandidateKey(), false, searchTerms.isAndOperator(), searchContainer.getStart(), searchContainer.getEnd(), null);
+				}
+				else {
+					results = TrainingExamResultLocalServiceUtil.search(searchTerms.getKeywords(), false, searchContainer.getStart(), searchContainer.getEnd(), new TrainingExamResultStartDateComparator());
+				}
+
+				if (searchTerms.isAdvancedSearch()) {
+					total = TrainingExamResultLocalServiceUtil.searchCount(searchTerms.getFirstName(), searchTerms.getLastName(), searchTerms.getEmailAddress(), searchTerms.getCandidateKey(), searchTerms.isAndOperator());
+				}
+				else {
+					total = TrainingExamResultLocalServiceUtil.searchCount(searchTerms.getKeywords());
+				}
+
+				pageContext.setAttribute("results", results);
+				pageContext.setAttribute("total", total);
+				%>
+
+			</liferay-ui:search-container-results>
+
+			<liferay-ui:search-container-row
+				className="com.liferay.osb.model.TrainingExamResult"
+				escapedModel="<%= true %>"
+				keyProperty="trainingExamResultId"
+				modelVar="trainingExamResult"
+			>
+				<portlet:renderURL var="rowURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+					<portlet:param name="mvcPath" value="/admin/training_exam_result.jsp" />
+					<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
+					<portlet:param name="trainingExamResultId" value="<%= String.valueOf(trainingExamResult.getTrainingExamResultId()) %>" />
+				</portlet:renderURL>
+
+				<%
+				User trainingExamResultUser = trainingExamResult.getUser();
+				%>
+
+				<liferay-ui:search-container-column-text
+					href="<%= rowURL %>"
+					name="id"
+					property="candidateKey"
+				/>
+
+				<liferay-ui:search-container-column-text
+					href="<%= rowURL %>"
+					name="first-name"
+					value="<%= HtmlUtil.escape(trainingExamResultUser.getFirstName()) %>"
+				/>
+
+				<liferay-ui:search-container-column-text
+					href="<%= rowURL %>"
+					name="last-name"
+					value="<%= HtmlUtil.escape(trainingExamResultUser.getLastName()) %>"
+				/>
+
+				<liferay-ui:search-container-column-text
+					href="<%= rowURL %>"
+					name="email-address"
+					value="<%= HtmlUtil.escape(trainingExamResultUser.getEmailAddress()) %>"
+				/>
+
+				<%
+				TrainingExam trainingExam = trainingExamResult.getTrainingExam();
+				%>
+
+				<liferay-ui:search-container-column-text
+					href="<%= rowURL %>"
+					name="test-id"
+					value="<%= StringUtil.valueOf(trainingExam.getTestKey()) %>"
+				/>
+
+				<liferay-ui:search-container-column-text
+					href="<%= rowURL %>"
+					name="test-date"
+					value="<%= longDateFormatDate.format(trainingExamResult.getStartDate()) %>"
+				/>
+
+				<liferay-ui:search-container-column-text
+					name="lcpa"
+				>
+					<c:if test="<%= ContractAuditLocalServiceUtil.hasContractAudit(ContractEntryConstants.DEFAULT_CLASS_NAME_ID, ContractEntryConstants.DEFAULT_CLASS_PK, ContractEntryConstants.TYPE_TRAINING_EXAM_EULA, User.class.getName(), trainingExamResultUser.getUserId()) %>">
+						<liferay-ui:icon image="checked" />
+					</c:if>
+				</liferay-ui:search-container-column-text>
+
+				<liferay-ui:search-container-column-text
+					cssClass="<%= TrainingExamResultConstants.getGradeLabel(trainingExamResult.getGrade()) %>"
+					name="results"
+					property="result"
+					translate="<%= true %>"
+				/>
+			</liferay-ui:search-container-row>
+
+			<liferay-ui:search-iterator />
+		</liferay-ui:search-container>
+	</aui:form>
+</div>

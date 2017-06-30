@@ -1,0 +1,315 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<div class="field-container field-horizontal aui-w30">
+	<span class="field">
+		<span class="field-content">
+			<label class="field-label">
+				<liferay-ui:message key="logo" />
+			</label>
+
+			<span class="field-element">
+				<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="serveMedia" var="logoURL">
+					<portlet:param name="assetAttachmentId" value="<%= String.valueOf(corpEntry.getLogoId()) %>" />
+				</liferay-portlet:resourceURL>
+
+				<img src="<%= logoURL %>" />
+			</span>
+		</span>
+	</span>
+
+	<span class="field">
+		<span class="field-content">
+			<label class="field-label">
+				<liferay-ui:message key="name" />
+			</label>
+
+			<span class="field-element">
+				<%= HtmlUtil.escape(corpEntry.getName()) %>
+			</span>
+		</span>
+	</span>
+
+	<span class="field">
+		<span class="field-content">
+			<label class="field-label">
+				<liferay-ui:message key="description" />
+			</label>
+
+			<span class="field-element">
+
+				<%
+				String description = _getLocalizedDisplay(corpEntry.getDescriptionMap(), locale);
+
+				description = description.replace(StringPool.NEW_LINE, "<br />");
+				%>
+
+				<%= description %>
+			</span>
+		</span>
+	</span>
+
+	<span class="field">
+		<span class="field-content">
+			<label class="field-label">
+				<liferay-ui:message key="profile-email" />
+			</label>
+
+			<span class="field-element">
+
+				<%
+				String corpEntryProfileEmailAddress = HtmlUtil.escape(corpEntry.getProfileEmailAddress());
+				%>
+
+				<a href="mailto:<%= corpEntryProfileEmailAddress %>"><%= corpEntryProfileEmailAddress %></a>
+			</span>
+		</span>
+	</span>
+
+	<span class="field">
+		<span class="field-content">
+			<label class="field-label">
+				<liferay-ui:message key="contact-email" />
+			</label>
+
+			<span class="field-element">
+
+				<%
+				String corpEntryContactEmailAddress = HtmlUtil.escape(corpEntry.getContactEmailAddress());
+				%>
+
+				<a href="mailto:<%= corpEntryContactEmailAddress %>"><%= corpEntryContactEmailAddress%></a>
+			</span>
+		</span>
+	</span>
+
+	<span class="field">
+		<span class="field-content">
+			<label class="field-label">
+				<liferay-ui:message key="homepage-url" />
+			</label>
+
+			<span class="field-element">
+
+				<%
+				String corpEntryWebsite = HtmlUtil.escape(corpEntry.getWebsite());
+				%>
+
+				<a href="<%= corpEntryWebsite %>" target="_blank"><%= corpEntryWebsite %></a>
+			</span>
+		</span>
+	</span>
+</div>
+
+<div class="field-container field-horizontal aui-w30">
+	<span class="field">
+		<span class="field-content">
+			<label class="field-label">
+				<liferay-ui:message key="address1" />
+			</label>
+
+			<span class="field-element">
+				<%= HtmlUtil.escape(corpEntry.getStreet1()) %>
+			</span>
+		</span>
+	</span>
+
+	<span class="field">
+		<span class="field-content">
+			<label class="field-label">
+				<liferay-ui:message key="address2" />
+			</label>
+
+			<span class="field-element">
+				<%= HtmlUtil.escape(corpEntry.getStreet2()) %>
+			</span>
+		</span>
+	</span>
+
+	<span class="field">
+		<span class="field-content">
+			<label class="field-label">
+				<liferay-ui:message key="address3" />
+			</label>
+
+			<span class="field-element">
+				<%= HtmlUtil.escape(corpEntry.getStreet3()) %>
+			</span>
+		</span>
+	</span>
+
+	<c:if test="<%= corpEntry.getCountryId() > 0 %>">
+		<span class="field">
+			<span class="field-content">
+				<label class="field-label">
+					<liferay-ui:message key="country" />
+				</label>
+
+				<span class="field-element">
+
+					<%
+					Country country = CountryServiceUtil.getCountry(corpEntry.getCountryId());
+					%>
+
+					<%= HtmlUtil.escape(country.getName()) %>
+				</span>
+			</span>
+		</span>
+	</c:if>
+
+	<c:if test="<%= corpEntry.getRegionId() > 0 %>">
+		<span class="field">
+			<span class="field-content">
+				<label class="field-label">
+					<liferay-ui:message key="region" />
+				</label>
+
+				<span class="field-element">
+
+					<%
+					Region region = RegionServiceUtil.getRegion(corpEntry.getRegionId());
+					%>
+
+					<%= HtmlUtil.escape(region.getName()) %>
+				</span>
+			</span>
+		</span>
+	</c:if>
+
+	<span class="field">
+		<span class="field-content">
+			<label class="field-label">
+				<liferay-ui:message key="city" />
+			</label>
+
+			<span class="field-element">
+				<%= HtmlUtil.escape(corpEntry.getCity()) %>
+			</span>
+		</span>
+	</span>
+
+	<span class="field">
+		<span class="field-content">
+			<label class="field-label">
+				<liferay-ui:message key="postal-code" />
+			</label>
+
+			<span class="field-element">
+				<%= HtmlUtil.escape(corpEntry.getZip()) %>
+			</span>
+		</span>
+	</span>
+
+	<span class="field">
+		<span class="field-content">
+			<label class="field-label">
+				<liferay-ui:message key="phone" />
+			</label>
+
+			<span class="field-element">
+				<%= HtmlUtil.escape(corpEntry.getPhoneNumber()) %>
+			</span>
+		</span>
+	</span>
+
+	<span class="field">
+		<span class="field-content">
+			<label class="field-label">
+				<liferay-ui:message key="fax" />
+			</label>
+
+			<span class="field-element">
+				<%= HtmlUtil.escape(corpEntry.getFaxNumber()) %>
+			</span>
+		</span>
+	</span>
+</div>
+
+<div class="field-container field-horizontal aui-w30">
+	<span class="field">
+		<span class="field-content">
+			<label class="field-label">
+				<liferay-ui:message key="status" />
+			</label>
+
+			<span class="field-element">
+				<liferay-ui:message key="<%= WorkflowConstants.toLabel(corpEntry.getStatus()) %>" />
+			</span>
+		</span>
+	</span>
+
+	<span class="field">
+		<span class="field-content">
+			<label class="field-label">
+				<liferay-ui:message key="status-changed-by" />
+			</label>
+
+			<span class="field-element">
+				<%= HtmlUtil.escape(corpEntry.getStatusByUserName()) %>
+			</span>
+		</span>
+	</span>
+
+	<span class="field">
+		<span class="field-content">
+			<label class="field-label">
+				<liferay-ui:message key="status-change-date" />
+			</label>
+
+			<span class="field-element">
+				<%= longDateFormatDateTime.format(corpEntry.getStatusDate()) %>
+			</span>
+		</span>
+	</span>
+
+	<span class="field">
+		<span class="field-content">
+			<label class="field-label">
+				<liferay-ui:message key="created-by" />
+			</label>
+
+			<span class="field-element">
+				<%= HtmlUtil.escape(corpEntry.getUserName()) %>
+			</span>
+		</span>
+	</span>
+
+	<span class="field">
+		<span class="field-content">
+			<label class="field-label">
+				<liferay-ui:message key="create-date" />
+			</label>
+
+			<span class="field-element">
+				<%= longDateFormatDateTime.format(corpEntry.getCreateDate()) %>
+			</span>
+		</span>
+	</span>
+
+	<c:if test="<%= Validator.isNotNull(corpEntry.getStatusMessage()) %>">
+		<span class="field">
+			<span class="field-content">
+				<label class="field-label">
+					<liferay-ui:message key="status-message" />
+				</label>
+
+				<span class="field-element">
+					<%= HtmlUtil.escape(corpEntry.getStatusMessage()) %>
+				</span>
+			</span>
+		</span>
+	</c:if>
+</div>

@@ -1,0 +1,92 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%
+int type = ParamUtil.getInteger(request, "type");
+%>
+
+<liferay-ui:search-container
+	emptyResultsMessage="there-are-no-contracts"
+	headerNames="date,version,user-name"
+	iteratorURL="<%= portletURL %>"
+>
+	<div class="search-form-container">
+		<aui:select changesContext="<%= true %>" name="contracts" onChange="location.href = this.value;">
+
+			<%
+			for (int curType : ContractEntryConstants.TYPES_MARKETPLACE) {
+				portletURL.setParameter("type", String.valueOf(curType));
+			%>
+
+				<aui:option label="<%= ContractEntryConstants.getDefaultTypeLabel(curType) %>" selected="<%= curType == type %>" value="<%= portletURL.toString() %>" />
+
+			<%
+			}
+			%>
+
+		</aui:select>
+	</div>
+
+	<div class="separator"><!-- --></div>
+
+	<div class="actions-container">
+		<liferay-portlet:renderURL var="addContractURL">
+			<portlet:param name="mvcPath" value="/marketplace_admin/edit_contract_entry.jsp" />
+			<portlet:param name="redirect" value="<%= currentURL %>" />
+			<portlet:param name="type" value="<%= String.valueOf(type) %>" />
+		</liferay-portlet:renderURL>
+
+		<aui:button onClick="<%= addContractURL.toString() %>" value='<%= LanguageUtil.format(pageContext, "add-x", ContractEntryConstants.getDefaultTypeLabel(type)) %>' />
+	</div>
+
+	<liferay-ui:search-container-results
+		results="<%= ContractEntryLocalServiceUtil.getContractEntries(ContractEntryConstants.DEFAULT_CLASS_NAME_ID, ContractEntryConstants.DEFAULT_CLASS_PK, type, searchContainer.getStart(), searchContainer.getEnd()) %>"
+		total="<%= ContractEntryLocalServiceUtil.getContractEntriesCount(ContractEntryConstants.DEFAULT_CLASS_NAME_ID, ContractEntryConstants.DEFAULT_CLASS_PK, type) %>"
+	/>
+
+	<liferay-ui:search-container-row
+		className="com.liferay.osb.model.ContractEntry"
+		escapedModel="<%= true %>"
+		keyProperty="contractEntryId"
+		modelVar="contractEntry"
+	>
+		<liferay-portlet:renderURL var="rowURL">
+			<portlet:param name="mvcPath" value="/marketplace_admin/edit_contract_entry.jsp" />
+			<portlet:param name="redirect" value="<%= currentURL %>" />
+			<portlet:param name="contractEntryId" value="<%= String.valueOf(contractEntry.getContractEntryId()) %>" />
+		</liferay-portlet:renderURL>
+
+		<liferay-ui:search-container-column-text
+			href="<%= rowURL %>"
+			name="date"
+			value="<%= longDateFormatDate.format(contractEntry.getCreateDate()) %>"
+		/>
+
+		<liferay-ui:search-container-column-text
+			href="<%= rowURL %>"
+			name="version"
+			value="<%= String.valueOf(contractEntry.getVersion()) %>"
+		/>
+
+		<liferay-ui:search-container-column-text
+			href="<%= rowURL %>"
+			name="user-name"
+			value="<%= contractEntry.getUserName() %>"
+		/>
+	</liferay-ui:search-container-row>
+
+	<liferay-ui:search-iterator />
+</liferay-ui:search-container>

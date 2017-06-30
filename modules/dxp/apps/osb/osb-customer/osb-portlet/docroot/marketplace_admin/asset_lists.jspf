@@ -1,0 +1,308 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%
+long assetCategoryId = ParamUtil.getLong(request, "assetCategoryId");
+%>
+
+<div class="asset-lists">
+	<div class="search-form-container">
+		<aui:select changesContext="<%= true %>" name="category" onChange="location.href = this.value;">
+
+			<%
+			portletURL.setParameter("assetCategoryId", "0");
+			%>
+
+			<aui:option label="home" value="<%= portletURL.toString() %>" />
+
+			<%
+			for (AssetCategory assetCategory : MarketplaceUtil.getAssetCategories()) {
+				portletURL.setParameter("assetCategoryId", String.valueOf(assetCategory.getCategoryId()));
+			%>
+
+				<aui:option label="<%= assetCategory.getName() %>" selected="<%= assetCategoryId == assetCategory.getCategoryId() %>" value="<%= portletURL.toString() %>" />
+
+			<%
+			}
+			%>
+
+		</aui:select>
+	</div>
+
+	<hr />
+
+	<portlet:actionURL name="updateAssetListAssetEntries" var="updateAssetListAssetEntriesURL">
+		<portlet:param name="redirect" value="<%= currentURL %>" />
+	</portlet:actionURL>
+
+	<aui:form action="<%= updateAssetListAssetEntriesURL %>" method="post" name="fm" onSubmit='<%= "event.preventDefault(); " + renderResponse.getNamespace() + "saveAssetListAssetEntries();" %>'>
+		<aui:input name="assetCategoryId" type="hidden" value="<%= assetCategoryId %>" />
+
+		<div class="actions-container">
+			<aui:button type="submit" />
+		</div>
+
+		<div class="asset-list-container">
+
+			<%
+			for (int assetListType : AssetListConstants.TYPES_EDITABLE_LISTS) {
+				String className = JournalArticle.class.getName();
+
+				if ((assetListType == AssetListConstants.TYPE_FEATURED) || (assetListType == AssetListConstants.TYPE_NEW_AND_INTERESTING)) {
+					className = AppEntry.class.getName();
+				}
+
+				List<AssetEntry> assetEntries = MarketplaceUtil.getAssetListAssetEntries(assetCategoryId, assetListType, false);
+
+				StringBundler sb = new StringBundler(assetEntries.size() * 2);
+
+				for (AssetEntry assetEntry : assetEntries) {
+					if (sb.length() > 0) {
+						sb.append(StringPool.COMMA);
+					}
+
+					sb.append(assetEntry.getEntryId());
+				}
+
+				String assetEntryIds = sb.toString();
+			%>
+
+				<div class="asset-list" data-assetListType="<%= assetListType %>">
+					<input class="asset-entry-ids" name="assetListAssetEntryIds<%= assetListType %>" type="hidden" value="<%= assetEntryIds %>" />
+					<input class="modified" name="assetListModified<%= assetListType %>" type="hidden" value="false" />
+
+					<div class="subheader">
+
+						<%
+						String assetListTitle = AssetListConstants.getTypeLabel(assetListType, assetCategoryId);
+
+						if (assetCategoryId > 0) {
+							AssetCategory assetCategory = AssetCategoryLocalServiceUtil.getAssetCategory(assetCategoryId);
+
+							assetListTitle = LanguageUtil.format(pageContext, assetListTitle, assetCategory.getTitle(themeDisplay.getLanguageId()));
+						}
+						else {
+							assetListTitle = LanguageUtil.get(pageContext, assetListTitle);
+						}
+						%>
+
+						<%= assetListTitle %>
+
+						<portlet:renderURL var="selectAssetEntryURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+							<portlet:param name="mvcPath" value="/marketplace_admin/select_asset_entry.jsp" />
+							<portlet:param name="assetCategoryId" value="<%= String.valueOf(assetCategoryId) %>" />
+							<portlet:param name="assetListType" value="<%= String.valueOf(assetListType) %>" />
+							<portlet:param name="className" value="<%= className %>" />
+						</portlet:renderURL>
+
+						<a class="add-asset-entry" href="javascript:var assetEntryWindow = window.open('<%= selectAssetEntryURL %>', 'asset_entry', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=900'); void(''); assetEntryWindow.focus();"><liferay-ui:message key="add" /></a>
+					</div>
+
+					<ul class="list">
+
+						<%
+						for (AssetEntry assetEntry : assetEntries) {
+							String cssClass = MarketplaceAdminUtil.getMarketplaceAssetEntryTypeLabel(assetEntry);
+
+							if (!assetEntry.getVisible()) {
+								cssClass += " inactive";
+							}
+						%>
+
+							<li class="asset-entry <%= cssClass %>" data-assetEntryId="<%= assetEntry.getEntryId() %>">
+								<div class="icon">
+									<img class="icon-45" src="<%= HtmlUtil.escapeAttribute(MarketplaceAdminUtil.getMarketplaceAssetEntryIconURL(assetEntry, renderResponse)) %>" />
+								</div>
+
+								<div class="data">
+									<div>
+										<span class="title"><%= HtmlUtil.escape(assetEntry.getTitle(locale)) %></span>
+									</div>
+
+									<div>
+										<span class="author"><%= HtmlUtil.escape(MarketplaceUtil.getAssetEntryAuthorName(assetEntry)) %></span>
+									</div>
+
+									<div>
+										<span class="type"><liferay-ui:message key="<%= MarketplaceAdminUtil.getMarketplaceAssetEntryTypeLabel(assetEntry) %>" /></span>
+
+										<span class="id"><%= assetEntry.getEntryId() %></span>
+
+										<span class="status"><liferay-ui:message key="<%= MarketplaceAdminUtil.getMarketplaceAssetEntryStatusLabel(assetEntry) %>" /></span>
+									</div>
+								</div>
+
+								<div class="action">
+									<a class="remove" href="javascript:;"><liferay-ui:message key="remove" /></a>
+								</div>
+							</li>
+
+						<%
+						}
+						%>
+
+					</ul>
+				</div>
+
+			<%
+			}
+			%>
+
+		</div>
+	</aui:form>
+
+	<ul class="aui-helper-hidden template">
+		<li class="asset-entry inactive" data-assetEntryId="0">
+			<div class="icon">
+				<img class="icon-45" />
+			</div>
+
+			<div class="data">
+				<div>
+					<span class="title"></span>
+				</div>
+
+				<div>
+					<span class="author"></span>
+				</div>
+
+				<div>
+					<span class="type"></span>
+
+					<span class="id"></span>
+
+					<span class="status"></span>
+				</div>
+			</div>
+
+			<div class="action">
+				<a class="remove" href="javascript:;"><liferay-ui:message key="remove" /></a>
+			</div>
+		</li>
+	</ul>
+</div>
+
+<aui:script>
+	var sortables = [];
+
+	function <portlet:namespace />saveAssetListAssetEntries() {
+		var A = AUI();
+
+		var assetLists = A.all('.osb-portlet-marketplace-admin .asset-list');
+
+		assetLists.each(
+			function(assetList) {
+				var assetEntryIds = assetList.one('input.asset-entry-ids')._node.value;
+
+				var curAssetEntryIds = [];
+
+				assetList.all('li.asset-entry').each(
+					function(assetEntry) {
+						curAssetEntryIds.push(assetEntry.getAttribute('data-assetEntryId'));
+					}
+				);
+
+				var curAssetEntryIdsString = curAssetEntryIds.join();
+
+				if (assetEntryIds != curAssetEntryIdsString) {
+					assetList.one('input.asset-entry-ids').attr('value', curAssetEntryIdsString);
+					assetList.one('input.modified').attr('value', true);
+				}
+			}
+		);
+
+		submitForm(document.<portlet:namespace />fm);
+	}
+
+	function <portlet:namespace />selectAssetEntry(entryId, productClassName, productClassPK, type, title, author, status, visible, iconURL, assetListType) {
+		var A = AUI();
+
+		var list = A.one('.asset-list[data-assetListType="' + assetListType + '"] .list');
+		var listItems = list.all('.asset-entry');
+
+		for (var i in listItems._nodes) {
+			var assetEntry = A.one(listItems._nodes[i]);
+
+			if (assetEntry.attr('data-assetEntryId') == entryId) {
+				return;
+			}
+		}
+
+		var listItem = A.one('.osb-portlet-marketplace-admin .template li.asset-entry');
+
+		listItem = listItem.cloneNode(true);
+
+		listItem.addClass(type);
+
+		listItem.attr('data-assetEntryId', entryId);
+
+		listItem.one('.author').html(author);
+		listItem.one('.id').html(entryId);
+		listItem.one('.status').html(status);
+		listItem.one('.title').html(title);
+		listItem.one('.type').html(Liferay.Language.get(type));
+
+		if (visible == 'true') {
+			listItem.removeClass('inactive');
+		}
+
+		listItem.one('.icon img').attr('src', iconURL);
+
+		list.append(listItem);
+
+		window.<portlet:namespace />addSortableItem(assetListType, listItem);
+	}
+</aui:script>
+
+<aui:script use="aui-sortable">
+	var sortables = [];
+
+	var addSortableItem = function(assetListType, listItem) {
+		sortables[assetListType].add(listItem);
+	}
+
+	window.<portlet:namespace />addSortableItem = addSortableItem;
+
+	var assetLists = A.all('.asset-list');
+
+	assetLists.each(
+		function(assetList) {
+			var assetListType = assetList.getAttribute('data-assetListType');
+
+			var sortable = new A.Sortable(
+				{
+					container: assetList.one('.list'),
+					nodes: assetList.all('.list li')
+				}
+			);
+
+			sortables[assetListType] = sortable;
+		}
+	);
+
+	A.one('div.asset-lists').delegate(
+		'click',
+		function(event) {
+			var target = event.currentTarget;
+
+			var list = target.ancestor('ul');
+			var listItem = target.ancestor('li');
+
+			list.removeChild(listItem);
+		},
+		'.remove'
+	);
+</aui:script>
