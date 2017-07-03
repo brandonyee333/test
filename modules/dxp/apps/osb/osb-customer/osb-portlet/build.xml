@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <!DOCTYPE project>
 
-<project name="osb-portlet" basedir="." default="deploy">
+<project basedir="." default="deploy" name="osb-portlet">
 	<property name="import.shared" value="ecommerce-shared,ip-geocoder-shared,json-web-service-client-shared,osb-restful-shared,osb-shared,osb-tools-shared" />
 
-	<import file="../build-common-portlet.xml" />
+	<import file="../../../../../tools/sdk/portlets/build-common-portlet.xml" />
 
 	<target name="build-lang">
 		<antcall target="build-lang-cmd">
@@ -45,15 +45,15 @@
 				<istrue value="${osb.ext.auto.direct.deploy.disabled}" />
 			</not>
 			<then>
-				<ant dir="${sdk.dir}/ext/osb-ext" target="direct-deploy" inheritAll="false" />
+				<ant dir="${sdk.dir}/ext/osb-ext" inheritAll="false" target="direct-deploy" />
 			</then>
 		</if>
 
-		<ant antfile="../build-common-portlet.xml" target="compile" />
+		<ant antfile="../../../../../tools/sdk/portlets/build-common-portlet.xml" target="compile" />
 	</target>
 
 	<target name="format-javadoc">
-		<ant antfile="../build-common-portlet.xml" target="format-javadoc" />
+		<ant antfile="../../../../../tools/sdk/portlets/build-common-portlet.xml" target="format-javadoc" />
 
 		<echo file="docroot/WEB-INF/src/META-INF/javadocs-all.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8"?><javadocs></javadocs>]]></echo>
 		<echo file="docroot/WEB-INF/src/META-INF/javadocs-rt.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8"?><javadocs></javadocs>]]></echo>
@@ -68,6 +68,6 @@
 			newenvironment="true"
 		/>
 
-		<ant antfile="../build-common-portlet.xml" target="format-source" />
+		<ant antfile="../../../../../tools/sdk/portlets/build-common-portlet.xml" target="format-source" />
 	</target>
 </project>
