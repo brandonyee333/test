@@ -6,6 +6,4 @@
 	<service-builder-import file="service-common.xml" />
 	<service-builder-import file="service-lesa.xml" />
 	<service-builder-import file="service-license.xml" />
-	<service-builder-import file="service-marketplace.xml" />
-	<service-builder-import file="service-training.xml" />
 </service-builder>

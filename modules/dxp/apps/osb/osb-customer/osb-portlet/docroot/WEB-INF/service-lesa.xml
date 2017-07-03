@@ -971,42 +971,6 @@
 
 		<reference package-path="com.liferay.portal" entity="Organization" />
 	</entity>
-	<entity name="SecurityPatch" local-service="true" remote-service="true">
-
-		<!-- PK fields -->
-
-		<column name="securityPatchId" type="long" primary="true" />
-
-		<!-- Audit fields -->
-
-		<column name="userId" type="long" />
-		<column name="userName" type="String" />
-		<column name="createDate" type="Date" />
-
-		<!-- Other fields -->
-
-		<column name="accountEntryId" type="long" />
-		<column name="ticketAttachmentId" type="long" />
-		<column name="portletId" type="String" />
-		<column name="envLFR" type="int" />
-		<column name="name" type="String" />
-		<column name="fileName" type="String" />
-
-		<!-- Finder methods -->
-
-		<finder name="PortletId" return-type="Collection">
-			<finder-column name="portletId" />
-		</finder>
-		<finder name="AEI_PI" return-type="Collection">
-			<finder-column name="accountEntryId" />
-			<finder-column name="portletId" />
-		</finder>
-
-		<!-- References -->
-
-		<reference package-path="com.liferay.portal" entity="ListType" />
-		<reference package-path="com.liferay.portal" entity="Organization" />
-	</entity>
 	<entity name="SupportLabor" local-service="true" remote-service="true">
 
 		<!-- PK fields -->
@@ -1911,7 +1875,6 @@
 		<exception>RequiredSupportRegion</exception>
 		<exception>RequiredTicketWorker</exception>
 		<exception>SearchFilterName</exception>
-		<exception>SecurityPatchEnvLFR</exception>
 		<exception>SupportLaborHour</exception>
 		<exception>SupportLaborName</exception>
 		<exception>SupportRegionName</exception>
