@@ -393,50 +393,6 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 
 			preferences.store();
 		}
-		else if (tabs2.equals("training-certificate")) {
-			String languageId = LanguageUtil.getLanguageId(actionRequest);
-
-			String tabs3 = ParamUtil.getString(actionRequest, "tabs3");
-
-			if (tabs3.equals("training-exam")) {
-				String emailTrainingExamCertificateSubject =
-					ParamUtil.getString(
-						actionRequest,
-						"emailTrainingExamCertificateSubject_" + languageId);
-
-				preferences.setValue(
-					"emailTrainingExamCertificateSubject_" + languageId,
-					emailTrainingExamCertificateSubject);
-
-				String emailTrainingExamCertificateBody = ParamUtil.getString(
-					actionRequest,
-					"emailTrainingExamCertificateBody_" + languageId);
-
-				preferences.setValue(
-					"emailTrainingExamCertificateBody_" + languageId,
-					emailTrainingExamCertificateBody);
-			}
-			else {
-				String emailTrainingEventCertificateSubject =
-					ParamUtil.getString(
-						actionRequest,
-						"emailTrainingEventCertificateSubject_" + languageId);
-
-				preferences.setValue(
-					"emailTrainingEventCertificateSubject_" + languageId,
-					emailTrainingEventCertificateSubject);
-
-				String emailTrainingEventCertificateBody = ParamUtil.getString(
-					actionRequest,
-					"emailTrainingEventCertificateBody_" + languageId);
-
-				preferences.setValue(
-					"emailTrainingEventCertificateBody_" + languageId,
-					emailTrainingEventCertificateBody);
-			}
-
-			preferences.store();
-		}
 		else {
 			String emailFromAddress = ParamUtil.getString(
 				actionRequest, "emailFromAddress");

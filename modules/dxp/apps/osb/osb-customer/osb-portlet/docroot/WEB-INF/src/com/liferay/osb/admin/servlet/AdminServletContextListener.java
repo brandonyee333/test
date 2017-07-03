@@ -25,7 +25,6 @@ import com.liferay.osb.model.CorpEntry;
 import com.liferay.osb.model.CorpMembershipRequest;
 import com.liferay.osb.model.TicketEntry;
 import com.liferay.osb.model.TicketEntryConstants;
-import com.liferay.osb.model.TrainingEvent;
 import com.liferay.osb.rabbitmq.RabbitMQConsumerRouter;
 import com.liferay.osb.service.permission.OSBCommonPermission;
 import com.liferay.osb.servlet.AdminServletContextListenerUpgradeHelper;
@@ -276,7 +275,6 @@ public class AdminServletContextListener
 		excludedEntryClassNames.add(CorpMembershipRequest.class.getName());
 		excludedEntryClassNames.add(Organization.class.getName());
 		excludedEntryClassNames.add(TicketEntry.class.getName());
-		excludedEntryClassNames.add(TrainingEvent.class.getName());
 		excludedEntryClassNames.add(User.class.getName());
 
 		searchEngineUtil.setExcludedEntryClassNames(excludedEntryClassNames);
@@ -651,40 +649,6 @@ public class AdminServletContextListener
 		OSBConstants.ROLE_OSB_SUPPORT_ADMIN_ID = role.getRoleId();
 
 		addAdministratorRole(OSBConstants.ROLE_OSB_SUPPORT_ADMIN_ID);
-
-		// OSB Training Admin role
-
-		try {
-			role = RoleLocalServiceUtil.getRole(
-				OSBConstants.COMPANY_ID, "OSB Training Admin");
-		}
-		catch (Exception e) {
-			role = RoleLocalServiceUtil.addRole(
-				OSBConstants.USER_DEFAULT_USER_ID, null, 0,
-				"OSB Training Admin", null, null, RoleConstants.TYPE_REGULAR,
-				null);
-		}
-
-		OSBConstants.ROLE_OSB_TRAINING_ADMIN_ID = role.getRoleId();
-
-		addAdministratorRole(OSBConstants.ROLE_OSB_TRAINING_ADMIN_ID);
-
-		// OSB Training Trainer role
-
-		try {
-			role = RoleLocalServiceUtil.getRole(
-				OSBConstants.COMPANY_ID, "OSB Training Trainer");
-		}
-		catch (Exception e) {
-			role = RoleLocalServiceUtil.addRole(
-				OSBConstants.USER_DEFAULT_USER_ID, null, 0,
-				"OSB Training Trainer", null, null, RoleConstants.TYPE_REGULAR,
-				null);
-		}
-
-		OSBConstants.ROLE_OSB_TRAINING_TRAINER_ID = role.getRoleId();
-
-		addAdministratorRole(OSBConstants.ROLE_OSB_TRAINING_TRAINER_ID);
 
 		// OSB Trial License Admin role
 

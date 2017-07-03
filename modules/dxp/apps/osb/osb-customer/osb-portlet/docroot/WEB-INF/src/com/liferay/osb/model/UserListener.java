@@ -22,9 +22,6 @@ import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
 import com.liferay.osb.service.SearchFilterLocalServiceUtil;
 import com.liferay.osb.service.SupportWorkerLocalServiceUtil;
 import com.liferay.osb.service.TicketWorkerLocalServiceUtil;
-import com.liferay.osb.service.TrainingCustomerLocalServiceUtil;
-import com.liferay.osb.service.TrainingExamResultLocalServiceUtil;
-import com.liferay.osb.service.TrainingWorkerLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.ModelListenerException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -145,29 +142,7 @@ public class UserListener extends BaseModelListener<User> {
 		}
 
 		try {
-			TrainingExamResultLocalServiceUtil.deleteTrainingExamResults(
-				userId);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
-
-		try {
 			TicketWorkerLocalServiceUtil.deleteTicketWorkers(userId);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
-
-		try {
-			TrainingCustomerLocalServiceUtil.deleteTrainingCustomers(userId);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
-
-		try {
-			TrainingWorkerLocalServiceUtil.deleteTrainingWorkers(userId);
 		}
 		catch (Exception e) {
 			_log.error(e, e);

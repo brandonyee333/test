@@ -652,7 +652,7 @@
 					(OSB_AssetReceiptLicense.productClassPK = OSB_AppVersion.appVersionId)
 			WHERE
 				(OSB_AssetReceiptLicense.productClassNameId = [$CLASS_NAME_ID_COM.LIFERAY.OSB.MODEL.APPVERSION$]) AND
-				(OSB_AssetReceiptLicense.ownerClassNameId = [$CLASS_NAME_ID_COM.LIFERAY.PORTAL.MODEL.USER$]) AND
+				(OSB_AssetReceiptLicense.ownerClassNameId = [$CLASS_NAME_ID_com.liferay.portal.kernel.model.USER$]) AND
 				(OSB_AssetReceiptLicense.ownerClassPK = ?)
 		]]>
 	</sql>
@@ -2193,435 +2193,7 @@
 				(OSB_TicketWorker.userId = ?)
 		]]>
 	</sql>
-	<sql id="com.liferay.osb.service.persistence.TrainingCustomerFinder.countByFN_LN_EA">
-		<![CDATA[
-			SELECT
-				COUNT(DISTINCT OSB_TrainingCustomer.userId) AS COUNT_VALUE
-			FROM
-				OSB_TrainingCustomer
-			INNER JOIN
-				User_ ON
-					(User_.userId = OSB_TrainingCustomer.userId)
-			WHERE
-				[$WHERE$]
-				(lower(User_.firstName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-				(lower(User_.lastName) LIKE ? [$AND_OR_NULL_CHECK$])
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.TrainingCustomerFinder.findByFN_LN_EA">
-		<![CDATA[
-			SELECT
-				DISTINCT OSB_TrainingCustomer.userId AS userId
-			FROM
-				OSB_TrainingCustomer
-			INNER JOIN
-				User_ ON
-					(User_.userId = OSB_TrainingCustomer.userId)
-			WHERE
-				[$WHERE$]
-				(lower(User_.firstName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-				(lower(User_.lastName) LIKE ? [$AND_OR_NULL_CHECK$])
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.TrainingCustomerFinder.joinByEmailAddress">
-		<![CDATA[
-			WHERE
-				(
-					(User_.emailAddress NOT LIKE ?) AND
-					(lower(User_.emailAddress) LIKE ? [$AND_OR_NULL_CHECK$])
-				)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.TrainingEventFinder.countByEndDate">
-		<![CDATA[
-			SELECT
-				COUNT(*) AS COUNT_VALUE
-			FROM
-				OSB_TrainingEvent
-			WHERE
-				(OSB_TrainingEvent.DDLRecordSetId IS NOT NULL) AND
-				(OSB_TrainingEvent.endDate > ?) AND
-				(OSB_TrainingEvent.endDate < ?)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.TrainingEventFinder.countByUserId">
-		<![CDATA[
-			SELECT
-				COUNT(*) AS COUNT_VALUE
-			FROM
-				OSB_TrainingEvent
-			INNER JOIN
-				OSB_TrainingCustomer ON
-					(OSB_TrainingCustomer.classNameId = [$CLASS_NAME_ID_COM.LIFERAY.OSB.MODEL.TRAININGEVENT$]) AND
-					(OSB_TrainingCustomer.classPK = OSB_TrainingEvent.trainingEventId)
-			WHERE
-				(OSB_TrainingCustomer.userId = ?)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.TrainingEventFinder.countByTCI_GtED">
-		<![CDATA[
-			SELECT
-				COUNT(*) AS COUNT_VALUE
-			FROM
-				OSB_TrainingEvent
-			WHERE
-				(OSB_TrainingEvent.trainingCourseId IN ([$TRAINING_COURSE_IDS$])) AND
-				(OSB_TrainingEvent.endDate > ?)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.TrainingEventFinder.countByT_N_C_PMV_C_R_C_L_P_SD_TFN_TLN_TEA">
-		<![CDATA[
-			SELECT
-				COUNT(DISTINCT OSB_TrainingEvent.trainingEventId) AS COUNT_VALUE
-			FROM
-				OSB_TrainingEvent
-			INNER JOIN
-				OSB_TrainingCourse ON
-					(OSB_TrainingCourse.trainingCourseId = OSB_TrainingEvent.trainingCourseId)
-			LEFT JOIN
-				Address ON
-					(OSB_TrainingEvent.addressId = Address.addressId)
-			LEFT JOIN
-				OSB_PartnerEntry ON
-					(OSB_TrainingEvent.partnerEntryId = OSB_PartnerEntry.partnerEntryId)
-			LEFT JOIN
-				OSB_TrainingWorker ON
-					(OSB_TrainingEvent.trainingEventId = OSB_TrainingWorker.classPK)
-			LEFT JOIN
-				User_ ON
-					(OSB_TrainingWorker.userId = User_.userId)
-			[$JOIN$]
-			WHERE
-				[$WHERE$]
-				(
-					(OSB_TrainingEvent.type_ = ?) [$AND_OR_CONNECTOR$]
-					(lower(OSB_TrainingEvent.name) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(lower(OSB_TrainingCourse.name) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(OSB_TrainingEvent.portalMinorVersion = ?) [$AND_OR_CONNECTOR$]
-					(lower(Address.city) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(Address.regionId = ?) [$AND_OR_CONNECTOR$]
-					(Address.countryId = ?) [$AND_OR_CONNECTOR$]
-					(lower(OSB_TrainingEvent.languageId) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(OSB_PartnerEntry.partnerEntryId = ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(OSB_TrainingEvent.startDate > ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(OSB_TrainingEvent.startDate < ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(lower(User_.firstName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(lower(User_.lastName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(lower(User_.emailAddress) LIKE ? [$AND_OR_NULL_CHECK$])
-				)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.TrainingEventFinder.filterByCountryIds">
-		<![CDATA[
-			WHERE
-				(Address.countryId IN ([$COUNTRY_IDS$]))
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.TrainingEventFinder.filterByOnline">
-		<![CDATA[
-			WHERE
-				(lower(Address.street1 [$OPERATOR$] 'online'))
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.TrainingEventFinder.filterByPortalMinorVersion">
-		<![CDATA[
-			WHERE
-				(OSB_TrainingEvent.portalMinorVersion = ?)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.TrainingEventFinder.filterByStartDate">
-		<![CDATA[
-			WHERE
-				(OSB_TrainingEvent.startDate > ?)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.TrainingEventFinder.filterByTrainingCourseIds">
-		<![CDATA[
-			WHERE
-				(OSB_TrainingEvent.trainingCourseId IN ([$TRAINING_COURSE_IDS$]))
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.TrainingEventFinder.filterByType">
-		<![CDATA[
-			WHERE
-				(OSB_TrainingEvent.type_ = ?)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.TrainingEventFinder.findByEndDate">
-		<![CDATA[
-			SELECT
-				{OSB_TrainingEvent.*}
-			FROM
-				OSB_TrainingEvent
-			WHERE
-				(OSB_TrainingEvent.DDLRecordSetId IS NOT NULL) AND
-				(OSB_TrainingEvent.endDate > ?) AND
-				(OSB_TrainingEvent.endDate < ?)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.TrainingEventFinder.findByUserId">
-		<![CDATA[
-			SELECT
-				{OSB_TrainingEvent.*}
-			FROM
-				OSB_TrainingEvent
-			INNER JOIN
-				OSB_TrainingCustomer ON
-					(OSB_TrainingCustomer.classNameId = [$CLASS_NAME_ID_COM.LIFERAY.OSB.MODEL.TRAININGEVENT$]) AND
-					(OSB_TrainingCustomer.classPK = OSB_TrainingEvent.trainingEventId)
-			WHERE
-				(OSB_TrainingCustomer.userId = ?)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.TrainingEventFinder.findByParams">
-		<![CDATA[
-			SELECT
-				{OSB_TrainingEvent.*}
-			FROM
-				OSB_TrainingEvent
-			LEFT JOIN
-				Address ON
-					(OSB_TrainingEvent.addressId = Address.addressId)
-			WHERE
-				[$WHERE$]
-			ORDER BY
-				OSB_TrainingEvent.endDate ASC
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.TrainingEventFinder.findByTCI_GtED">
-		<![CDATA[
-			SELECT
-				{OSB_TrainingEvent.*}
-			FROM
-				OSB_TrainingEvent
-			WHERE
-				(OSB_TrainingEvent.trainingCourseId IN ([$TRAINING_COURSE_IDS$])) AND
-				(OSB_TrainingEvent.endDate > ?)
-			ORDER BY
-				OSB_TrainingEvent.endDate ASC
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.TrainingEventFinder.findByT_N_C_PMV_C_R_C_L_P_SD_TFN_TLN_TEA">
-		<![CDATA[
-			SELECT
-				DISTINCT OSB_TrainingEvent.trainingEventId
-			FROM
-				OSB_TrainingEvent
-			INNER JOIN
-				OSB_TrainingCourse ON
-					(OSB_TrainingCourse.trainingCourseId = OSB_TrainingEvent.trainingCourseId)
-			LEFT JOIN
-				Address ON
-					(OSB_TrainingEvent.addressId = Address.addressId)
-			LEFT JOIN
-				OSB_PartnerEntry ON
-					(OSB_TrainingEvent.partnerEntryId = OSB_PartnerEntry.partnerEntryId)
-			LEFT JOIN
-				OSB_TrainingWorker ON
-					(OSB_TrainingEvent.trainingEventId = OSB_TrainingWorker.classPK)
-			LEFT JOIN
-				User_ ON
-					(OSB_TrainingWorker.userId = User_.userId)
-			[$JOIN$]
-			WHERE
-				[$WHERE$]
-				(
-					(OSB_TrainingEvent.type_ = ?) [$AND_OR_CONNECTOR$]
-					(lower(OSB_TrainingEvent.name) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(lower(OSB_TrainingCourse.name) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(OSB_TrainingEvent.portalMinorVersion = ?) [$AND_OR_CONNECTOR$]
-					(lower(Address.city) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(Address.regionId = ?) [$AND_OR_CONNECTOR$]
-					(Address.countryId = ?) [$AND_OR_CONNECTOR$]
-					(lower(OSB_TrainingEvent.languageId) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(OSB_PartnerEntry.partnerEntryId = ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(OSB_TrainingEvent.startDate > ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(OSB_TrainingEvent.startDate < ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(lower(User_.firstName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(lower(User_.lastName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(lower(User_.emailAddress) LIKE ? [$AND_OR_NULL_CHECK$])
-				)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.TrainingEventFinder.joinByDDLRecordSet">
-		<![CDATA[
-			LEFT JOIN
-				DDLRecordSet ON
-					(OSB_TrainingEvent.DDLRecordSetId = DDLRecordSet.recordSetId)
-			WHERE
-				(DDLRecordSet.scope = ?)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.TrainingExamResultFinder.countByU_EI_SD">
-		<![CDATA[
-			SELECT
-				COUNT(DISTINCT OSB_TrainingExamResult.trainingExamResultId) AS COUNT_VALUE
-			FROM
-				OSB_TrainingExamResult
-			INNER JOIN
-				OSB_TrainingCustomer ON
-					(OSB_TrainingCustomer.classNameId = [$CLASS_NAME_ID_COM.LIFERAY.OSB.MODEL.TRAININGEXAMRESULT$]) AND
-					(OSB_TrainingCustomer.classPK = OSB_TrainingExamResult.trainingExamResultId)
-			INNER JOIN
-				OSB_TrainingExam ON
-					(OSB_TrainingExam.trainingExamId = OSB_TrainingExamResult.trainingExamId)
-			INNER JOIN
-				OSB_ExternalIdMapper ON
-					(OSB_ExternalIdMapper.classNameId = [$CLASS_NAME_ID_COM.LIFERAY.OSB.MODEL.TRAININGEXAM$]) AND
-					(OSB_ExternalIdMapper.classPK = OSB_TrainingExam.trainingExamId)
-			WHERE
-				(
-					(OSB_TrainingCustomer.userId = ?) AND
-					(
-						(lower(OSB_ExternalIdMapper.externalId) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-						(OSB_TrainingExamResult.startDate > ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-						(OSB_TrainingExamResult.startDate < ? [$AND_OR_NULL_CHECK$])
-					)
-				)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.TrainingExamResultFinder.countByFN_LN_EA_EI">
-		<![CDATA[
-			SELECT
-				COUNT(DISTINCT OSB_TrainingCustomer.userId) AS COUNT_VALUE
-			FROM
-				OSB_TrainingExamResult
-			INNER JOIN
-				OSB_UserProfileHistory ON
-					(OSB_UserProfileHistory.classPK = OSB_TrainingExamResult.trainingExamResultId)
-			INNER JOIN
-				OSB_TrainingCustomer ON
-					(OSB_TrainingCustomer.classNameId = [$CLASS_NAME_ID_COM.LIFERAY.OSB.MODEL.TRAININGEXAMRESULT$]) AND
-					(OSB_TrainingCustomer.classPK = OSB_TrainingExamResult.trainingExamResultId)
-			INNER JOIN
-				OSB_ExternalIdMapper ON
-					(OSB_ExternalIdMapper.classNameId = [$CLASS_NAME_ID_COM.LIFERAY.PORTAL.MODEL.USER$]) AND
-					(OSB_ExternalIdMapper.classPK = OSB_TrainingCustomer.userId)
-			WHERE
-				(
-					(lower(OSB_UserProfileHistory.firstName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(lower(OSB_UserProfileHistory.lastName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(lower(OSB_UserProfileHistory.emailAddress) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(lower(OSB_ExternalIdMapper.externalId) LIKE ? [$AND_OR_NULL_CHECK$])
-				)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.TrainingExamResultFinder.findByU_EI_SD">
-		<![CDATA[
-			SELECT
-				DISTINCT {OSB_TrainingExamResult.*}
-			FROM
-				OSB_TrainingExamResult
-			INNER JOIN
-				OSB_TrainingCustomer ON
-					(OSB_TrainingCustomer.classNameId = [$CLASS_NAME_ID_COM.LIFERAY.OSB.MODEL.TRAININGEXAMRESULT$]) AND
-					(OSB_TrainingCustomer.classPK = OSB_TrainingExamResult.trainingExamResultId)
-			INNER JOIN
-				OSB_TrainingExam ON
-					(OSB_TrainingExam.trainingExamId = OSB_TrainingExamResult.trainingExamId)
-			INNER JOIN
-				OSB_ExternalIdMapper ON
-					(OSB_ExternalIdMapper.classNameId = [$CLASS_NAME_ID_COM.LIFERAY.OSB.MODEL.TRAININGEXAM$]) AND
-					(OSB_ExternalIdMapper.classPK = OSB_TrainingExam.trainingExamId)
-			WHERE
-				(
-					(OSB_TrainingCustomer.userId = ?) AND
-					(
-						(lower(OSB_ExternalIdMapper.externalId) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-						(OSB_TrainingExamResult.startDate > ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-						(OSB_TrainingExamResult.startDate < ? [$AND_OR_NULL_CHECK$])
-					)
-				)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.TrainingExamResultFinder.findByFN_LN_EA_EI">
-		<![CDATA[
-			SELECT
-				DISTINCT OSB_TrainingExamResult.trainingExamResultId AS trainingExamResultId
-			FROM
-				OSB_TrainingExamResult
-			INNER JOIN
-				OSB_UserProfileHistory ON
-					(OSB_UserProfileHistory.classPK = OSB_TrainingExamResult.trainingExamResultId)
-			INNER JOIN
-				OSB_TrainingCustomer ON
-					(OSB_TrainingCustomer.classNameId = [$CLASS_NAME_ID_COM.LIFERAY.OSB.MODEL.TRAININGEXAMRESULT$]) AND
-					(OSB_TrainingCustomer.classPK = OSB_TrainingExamResult.trainingExamResultId)
-			INNER JOIN
-				OSB_ExternalIdMapper ON
-					(OSB_ExternalIdMapper.classNameId = [$CLASS_NAME_ID_COM.LIFERAY.PORTAL.MODEL.USER$]) AND
-					(OSB_ExternalIdMapper.classPK = OSB_TrainingCustomer.userId)
-			INNER JOIN
-				User_ ON
-					(User_.userId = OSB_TrainingCustomer.userId)
-			WHERE
-				(
-					(lower(OSB_UserProfileHistory.firstName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(lower(OSB_UserProfileHistory.lastName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(lower(OSB_UserProfileHistory.emailAddress) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(lower(OSB_ExternalIdMapper.externalId) LIKE ? [$AND_OR_NULL_CHECK$])
-				)
-			GROUP BY
-				OSB_TrainingCustomer.userId
-			ORDER BY
-				User_.lastName ASC, User_.firstName ASC, OSB_TrainingExamResult.startDate DESC
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.TrainingExamResultItemFinder.filterByNoSectionKey">
-		<![CDATA[
-			WHERE
-				(OSB_TrainingExamResultSection.sectionKey NOT IN ([$TRAINING_EXAM_RESULT_SECTION_KEY$]))
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.TrainingExamResultItemFinder.findByTrainingExamResultId">
-		<![CDATA[
-			SELECT
-				DISTINCT {OSB_TrainingExamResultItem.*}
-			FROM
-				OSB_TrainingExamResultItem
-			INNER JOIN
-				OSB_TrainingExamResultSection ON
-					(OSB_TrainingExamResultSection.trainingExamResultSectionId = OSB_TrainingExamResultItem.trainingExamResultSectionId)
-			WHERE
-				[$WHERE$]
-				(OSB_TrainingExamResultSection.trainingExamResultId = ?)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.TrainingExamResultSectionFinder.filterByNoSectionKey">
-		<![CDATA[
-			WHERE
-				(OSB_TrainingExamResultSection.sectionKey NOT IN ([$TRAINING_EXAM_RESULT_SECTION_KEY$]))
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.TrainingExamResultSectionFinder.findByTrainingExamResultId">
-		<![CDATA[
-			SELECT
-				DISTINCT {OSB_TrainingExamResultSection.*}
-			FROM
-				OSB_TrainingExamResultSection
-			WHERE
-				[$WHERE$]
-				(OSB_TrainingExamResultSection.trainingExamResultId = ?)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.TrainingLocationFinder.findAll">
-		<![CDATA[
-			SELECT
-				{OSB_TrainingLocation.*}
-			FROM
-				OSB_TrainingLocation
-			INNER JOIN
-				Address ON
-					Address.addressId = OSB_TrainingLocation.addressId
-			LEFT JOIN
-				Country ON
-					Country.countryId = Address.countryId
-			LEFT JOIN
-				Region ON
-					Region.regionId = Address.regionId
-		]]>
-	</sql>
-	<sql id="com.liferay.portal.service.persistence.UserFinder.filterByStatusId">
+	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.filterByStatusId">
 		<![CDATA[
 			WHERE
 				(
@@ -2630,7 +2202,7 @@
 				)
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.service.persistence.UserFinder.joinByAccountCustomer">
+	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByAccountCustomer">
 		<![CDATA[
 			INNER JOIN
 				OSB_AccountCustomer ON
@@ -2642,7 +2214,7 @@
 				)
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.service.persistence.UserFinder.joinByAccountCustomerPartnerWorker">
+	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByAccountCustomerPartnerWorker">
 		<![CDATA[
 			LEFT JOIN
 				OSB_AccountCustomer ON
@@ -2663,7 +2235,7 @@
 				)
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.service.persistence.UserFinder.joinByAccountWorkerRole">
+	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByAccountWorkerRole">
 		<![CDATA[
 			INNER JOIN
 				OSB_AccountWorker ON
@@ -2672,7 +2244,7 @@
 				(OSB_AccountWorker.role = ?)
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.service.persistence.UserFinder.joinByPartnerEntryWorkers">
+	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByPartnerEntryWorkers">
 		<![CDATA[
 			INNER JOIN
 				OSB_PartnerWorker AS OSB_PartnerWorker1 ON
@@ -2688,21 +2260,21 @@
 				(OSB_PartnerWorker2.userId = ?)
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.service.persistence.UserFinder.joinByAccountEntryCreateUser">
+	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByAccountEntryCreateUser">
 		<![CDATA[
 			INNER JOIN
 				OSB_AccountEntry ON
 					(OSB_AccountEntry.userId = User_.userId)
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.service.persistence.UserFinder.joinByAccountEntryModifiedUser">
+	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByAccountEntryModifiedUser">
 		<![CDATA[
 			INNER JOIN
 				OSB_AccountEntry ON
 					(OSB_AccountEntry.modifiedUserId = User_.userId)
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.service.persistence.UserFinder.joinByAccountWorker">
+	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByAccountWorker">
 		<![CDATA[
 			INNER JOIN
 				OSB_AccountWorker ON
@@ -2711,7 +2283,7 @@
 				(OSB_AccountWorker.accountEntryId = ?)
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.service.persistence.UserFinder.joinByCorpEntry">
+	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByCorpEntry">
 		<![CDATA[
 			INNER JOIN
 				Users_Orgs ON
@@ -2723,7 +2295,7 @@
 				(OSB_CorpEntry.corpEntryId = ?)
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.service.persistence.UserFinder.joinByCorpProject">
+	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByCorpProject">
 		<![CDATA[
 			INNER JOIN
 				Users_Orgs ON
@@ -2735,21 +2307,21 @@
 				(OSB_CorpProject.corpProjectId = ?)
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.service.persistence.UserFinder.joinByLicenseKeyCreateUser">
+	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByLicenseKeyCreateUser">
 		<![CDATA[
 			INNER JOIN
 				OSB_LicenseKey ON
 					(OSB_LicenseKey.userId = User_.userId)
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.service.persistence.UserFinder.joinByLicenseKeyModifiedUser">
+	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByLicenseKeyModifiedUser">
 		<![CDATA[
 			INNER JOIN
 				OSB_LicenseKey ON
 					(OSB_LicenseKey.modifiedUserId = User_.userId)
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.service.persistence.UserFinder.joinByAvailableTicketWorkers">
+	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByAvailableTicketWorkers">
 		<![CDATA[
 			LEFT JOIN
 				Users_Orgs ON
@@ -2767,7 +2339,7 @@
 				)
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.service.persistence.UserFinder.joinByHolidayCalendar">
+	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByHolidayCalendar">
 		<![CDATA[
 			INNER JOIN
 				OSB_HolidayCalendarRel ON
@@ -2776,21 +2348,21 @@
 				(OSB_HolidayCalendarRel.holidayCalendarId = ?)
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.service.persistence.UserFinder.joinByOrderEntryCreateUser">
+	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByOrderEntryCreateUser">
 		<![CDATA[
 			INNER JOIN
 				OSB_OrderEntry ON
 					(OSB_OrderEntry.userId = User_.userId)
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.service.persistence.UserFinder.joinByOrderEntryModifiedUser">
+	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByOrderEntryModifiedUser">
 		<![CDATA[
 			INNER JOIN
 				OSB_OrderEntry ON
 					(OSB_OrderEntry.modifiedUserId = User_.userId)
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.service.persistence.UserFinder.joinByPartnerWorker">
+	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByPartnerWorker">
 		<![CDATA[
 			INNER JOIN
 				OSB_PartnerWorker ON
@@ -2799,14 +2371,14 @@
 				(OSB_PartnerWorker.partnerEntryId = ?)
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.service.persistence.UserFinder.joinBySupportWorker">
+	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinBySupportWorker">
 		<![CDATA[
 			INNER JOIN
 				OSB_SupportWorker ON
 					(OSB_SupportWorker.userId = User_.userId)
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.service.persistence.UserFinder.joinBySupportWorkerTeam">
+	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinBySupportWorkerTeam">
 		<![CDATA[
 			INNER JOIN
 				OSB_SupportWorker ON
@@ -2815,44 +2387,20 @@
 				(OSB_SupportWorker.supportTeamId = ?)
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.service.persistence.UserFinder.joinByTicketWorker">
+	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByTicketWorker">
 		<![CDATA[
 			INNER JOIN
 				OSB_TicketWorker ON
 					(OSB_TicketWorker.userId = User_.userId)
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.service.persistence.UserFinder.joinByTicketWorkerEntries">
+	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByTicketWorkerEntries">
 		<![CDATA[
 			INNER JOIN
 				OSB_TicketWorker ON
 					(OSB_TicketWorker.userId = User_.userId)
 			WHERE
 				(OSB_TicketWorker.ticketEntryId = ?)
-		]]>
-	</sql>
-	<sql id="com.liferay.portal.service.persistence.UserFinder.joinByTrainingCustomer">
-		<![CDATA[
-			INNER JOIN
-				OSB_TrainingCustomer ON
-					(OSB_TrainingCustomer.userId = User_.userId)
-			WHERE
-				(OSB_TrainingCustomer.classNameId = ?) AND
-				(OSB_TrainingCustomer.classPK = ?) AND
-				(
-					(User_.status = ?) OR
-					(User_.status = ?)
-				)
-		]]>
-	</sql>
-	<sql id="com.liferay.portal.service.persistence.UserFinder.joinByTrainingWorker">
-		<![CDATA[
-			INNER JOIN
-				OSB_TrainingWorker ON
-					(OSB_TrainingWorker.userId = User_.userId)
-			WHERE
-				(OSB_TrainingWorker.classNameId = ?) AND
-				(OSB_TrainingWorker.classPK = ?)
 		]]>
 	</sql>
 </custom-sql>

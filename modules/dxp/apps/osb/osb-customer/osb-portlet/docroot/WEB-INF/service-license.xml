@@ -351,8 +351,6 @@
 		<exception>RequiredProductEntry</exception>
 		<exception>RequiredSupportResponse</exception>
 		<exception>RequiredSupportTeam</exception>
-		<exception>RequiredTrainingCourse</exception>
-		<exception>RequiredTrainingLocation</exception>
 		<exception>TrialLicense</exception>
 	</exceptions>
 </service-builder>

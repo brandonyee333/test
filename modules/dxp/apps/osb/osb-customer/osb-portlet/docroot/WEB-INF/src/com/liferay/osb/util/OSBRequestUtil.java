@@ -319,50 +319,6 @@ public class OSBRequestUtil {
 		}
 	}
 
-	public static void serveTrainingCertificateTemplateBadge(
-			ResourceRequest resourceRequest, ResourceResponse resourceResponse,
-			long trainingCertificateTemplateId)
-		throws PortalException, SystemException {
-
-		TrainingCertificateTemplate trainingCertificateTemplate =
-			TrainingCertificateTemplateLocalServiceUtil.
-				getTrainingCertificateTemplate(trainingCertificateTemplateId);
-
-		String fileName = null;
-
-		try {
-			String[] fileNames = DLStoreUtil.getFileNames(
-				CompanyConstants.SYSTEM, CompanyConstants.SYSTEM,
-				trainingCertificateTemplate.getBadgesDir());
-
-			fileName = fileNames[0];
-		}
-		catch (NoSuchDirectoryException nsde) {
-			return;
-		}
-
-		InputStream inputStream = null;
-
-		try {
-			inputStream = DLStoreUtil.getFileAsStream(
-				CompanyConstants.SYSTEM, CompanyConstants.SYSTEM, fileName);
-
-			String contentType = MimeTypesUtil.getContentType(fileName);
-
-			PortletResponseUtil.sendFile(
-				resourceRequest, resourceResponse, fileName, inputStream,
-				contentType);
-		}
-		catch (Exception e) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(e, e);
-			}
-		}
-		finally {
-			StreamUtil.cleanUp(inputStream);
-		}
-	}
-
 	protected static JSONArray getJsonArray(
 		List<ListType> listTypes, Locale locale) {
 
