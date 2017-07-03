@@ -4,46 +4,18 @@
 <hook>
 	<portal-properties>portal.properties</portal-properties>
 	<language-properties>content/Language*.properties</language-properties>
-	<indexer-post-processor>
-		<indexer-class-name>com.liferay.portal.model.User</indexer-class-name>
-		<indexer-post-processor-impl>com.liferay.osb.hook.indexer.UserIndexerPostProcessor</indexer-post-processor-impl>
-	</indexer-post-processor>
 	<service>
-		<service-type>com.liferay.portal.service.GroupLocalService</service-type>
-		<service-impl>com.liferay.osb.hook.service.impl.OSBGroupLocalServiceImpl</service-impl>
-	</service>
-	<service>
-		<service-type>com.liferay.portal.service.UserLocalService</service-type>
+		<service-type>com.liferay.portal.kernel.service.UserLocalService</service-type>
 		<service-impl>com.liferay.osb.hook.service.impl.OSBUserLocalServiceImpl</service-impl>
 	</service>
 	<service>
-		<service-type>com.liferay.portal.service.UserService</service-type>
+		<service-type>com.liferay.portal.kernel.service.UserService</service-type>
 		<service-impl>com.liferay.osb.hook.service.impl.OSBUserServiceImpl</service-impl>
-	</service>
-	<service>
-		<service-type>com.liferay.portlet.dynamicdatalists.service.DDLRecordSetLocalService</service-type>
-		<service-impl>com.liferay.osb.hook.service.impl.OSBDDLRecordSetLocalServiceImpl</service-impl>
-	</service>
-	<service>
-		<service-type>com.liferay.portlet.dynamicdatamapping.service.DDMStructureLocalService</service-type>
-		<service-impl>com.liferay.osb.hook.service.impl.OSBDDMStructureLocalServiceImpl</service-impl>
-	</service>
-	<service>
-		<service-type>com.liferay.portlet.messageboards.service.MBMessageLocalService</service-type>
-		<service-impl>com.liferay.osb.hook.service.impl.OSBMBMessageLocalServiceImpl</service-impl>
-	</service>
-	<service>
-		<service-type>com.liferay.portlet.ratings.service.RatingsEntryLocalService</service-type>
-		<service-impl>com.liferay.osb.hook.service.impl.OSBRatingsEntryLocalServiceImpl</service-impl>
 	</service>
 	<!--<servlet-filter>
 		<servlet-filter-name>IP Geocoder Filter</servlet-filter-name>
 		<servlet-filter-impl>com.liferay.osb.hook.filter.IPGeocoderFilter</servlet-filter-impl>
 	</servlet-filter>-->
-	<servlet-filter>
-		<servlet-filter-name>Marketplace Filter</servlet-filter-name>
-		<servlet-filter-impl>com.liferay.osb.hook.filter.MarketplaceFilter</servlet-filter-impl>
-	</servlet-filter>
 	<servlet-filter>
 		<servlet-filter-name>OSB Secure LCS JSON Filter</servlet-filter-name>
 		<servlet-filter-impl>com.liferay.osb.servlet.filters.OSBSecureJSONFilter</servlet-filter-impl>
@@ -61,12 +33,6 @@
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>REQUEST</dispatcher>
 	</servlet-filter-mapping>-->
-	<servlet-filter-mapping>
-		<servlet-filter-name>Marketplace Filter</servlet-filter-name>
-		<url-pattern>/*</url-pattern>
-		<dispatcher>FORWARD</dispatcher>
-		<dispatcher>REQUEST</dispatcher>
-	</servlet-filter-mapping>
 	<servlet-filter-mapping>
 		<servlet-filter-name>OSB Secure LCS JSON Filter</servlet-filter-name>
 		<url-pattern>/api/jsonws/company/get-company-by-web-id/*</url-pattern>
@@ -93,13 +59,5 @@
 	<struts-action>
 		<struts-action-path>/my_workflow_tasks/edit_workflow_task</struts-action-path>
 		<struts-action-impl>com.liferay.osb.hook.action.OSBEditWorkflowTaskAction</struts-action-impl>
-	</struts-action>
-	<struts-action>
-		<struts-action-path>/portal/login</struts-action-path>
-		<struts-action-impl>com.liferay.osb.hook.action.MarketplaceServerLoginAction</struts-action-impl>
-	</struts-action>
-	<struts-action>
-		<struts-action-path>/portal/logout</struts-action-path>
-		<struts-action-impl>com.liferay.osb.hook.action.MarketplaceServerLogoutAction</struts-action-impl>
 	</struts-action>
 </hook>

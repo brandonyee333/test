@@ -205,10 +205,6 @@ public class AdminServletContextListener
 
 		AdminServletContextListenerExpandoHelper.setup();
 
-		// Journal
-
-		AdminServletContextListenerJournalHelper.setup();
-
 		// Upgrade
 
 		AdminServletContextListenerUpgradeHelper
