@@ -35,12 +35,14 @@ create table OSB_AccountCustomer (
 );
 
 create table OSB_AccountEntries_SupportRegions (
+	companyId LONG not null,
 	accountEntryId LONG not null,
 	supportRegionId LONG not null,
 	primary key (accountEntryId, supportRegionId)
 );
 
 create table OSB_AccountEntries_SupportTeams (
+	companyId LONG not null,
 	accountEntryId LONG not null,
 	supportTeamId LONG not null,
 	primary key (accountEntryId, supportTeamId)
@@ -546,7 +548,7 @@ create table OSB_ContractEntry (
 	classPK LONG,
 	type_ INTEGER,
 	version INTEGER,
-	content STRING null
+	content TEXT null
 );
 
 create table OSB_CorpEntry (
@@ -853,6 +855,7 @@ create table OSB_OfferingBundle (
 );
 
 create table OSB_OfferingBundles_OfferingDefinitions (
+	companyId LONG not null,
 	offeringBundleId LONG not null,
 	offeringDefinitionId LONG not null,
 	primary key (offeringBundleId, offeringDefinitionId)
@@ -924,6 +927,7 @@ create table OSB_OrderEntry (
 );
 
 create table OSB_PartnerEntries_SupportRegions (
+	companyId LONG not null,
 	partnerEntryId LONG not null,
 	supportRegionId LONG not null,
 	primary key (partnerEntryId, supportRegionId)
@@ -1123,6 +1127,7 @@ create table OSB_SupportTeamLanguage (
 );
 
 create table OSB_SupportTeams_SupportRegions (
+	companyId LONG not null,
 	supportRegionId LONG not null,
 	supportTeamId LONG not null,
 	primary key (supportRegionId, supportTeamId)

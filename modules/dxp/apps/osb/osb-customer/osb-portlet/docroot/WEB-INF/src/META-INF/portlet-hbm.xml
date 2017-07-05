@@ -13,43 +13,13 @@
 	<import class="com.liferay.osb.model.AccountLink" />
 	<import class="com.liferay.osb.model.AccountProject" />
 	<import class="com.liferay.osb.model.AccountWorker" />
-	<import class="com.liferay.osb.model.AppAudit" />
-	<import class="com.liferay.osb.model.AppEntry" />
-	<import class="com.liferay.osb.model.AppEntryRel" />
-	<import class="com.liferay.osb.model.AppFlag" />
-	<import class="com.liferay.osb.model.AppPackage" />
-	<import class="com.liferay.osb.model.AppPackagePlugin" />
-	<import class="com.liferay.osb.model.AppPricing" />
-	<import class="com.liferay.osb.model.AppPricingItem" />
-	<import class="com.liferay.osb.model.AppVersion" />
-	<import class="com.liferay.osb.model.AssetAttachment" />
-	<import class="com.liferay.osb.model.AssetAudit" />
 	<import class="com.liferay.osb.model.AssetLicense" />
-	<import class="com.liferay.osb.model.AssetList" />
-	<import class="com.liferay.osb.model.AssetListAssetEntry" />
-	<import class="com.liferay.osb.model.AssetReceipt" />
-	<import class="com.liferay.osb.model.AssetReceiptLicense" />
-	<import class="com.liferay.osb.model.AssetReceiptRedeemToken" />
-	<import class="com.liferay.osb.model.AssetReceiptSupport" />
-	<import class="com.liferay.osb.model.AssetRecommendationEntry" />
-	<import class="com.liferay.osb.model.AssetRecommendationSet" />
-	<import class="com.liferay.osb.model.AssetStatsDay" />
-	<import class="com.liferay.osb.model.AssetStatsMonth" />
-	<import class="com.liferay.osb.model.AssetStatsWeek" />
 	<import class="com.liferay.osb.model.AuditAction" />
 	<import class="com.liferay.osb.model.AuditEntry" />
 	<import class="com.liferay.osb.model.ContractAudit" />
 	<import class="com.liferay.osb.model.ContractEntry" />
-	<import class="com.liferay.osb.model.CorpEntry" />
-	<import class="com.liferay.osb.model.CorpGroup" />
-	<import class="com.liferay.osb.model.CorpMembershipRequest" />
-	<import class="com.liferay.osb.model.CorpProject" />
-	<import class="com.liferay.osb.model.CorpProjectMessage" />
-	<import class="com.liferay.osb.model.CountryAppPricing" />
 	<import class="com.liferay.osb.model.CurrencyEntry" />
-	<import class="com.liferay.osb.model.DeveloperEntry" />
 	<import class="com.liferay.osb.model.ExternalIdMapper" />
-	<import class="com.liferay.osb.model.FeedbackEntry" />
 	<import class="com.liferay.osb.model.HolidayCalendar" />
 	<import class="com.liferay.osb.model.HolidayCalendarRel" />
 	<import class="com.liferay.osb.model.HolidayEntry" />
@@ -57,19 +27,14 @@
 	<import class="com.liferay.osb.model.LicenseEntry" />
 	<import class="com.liferay.osb.model.LicenseKey" />
 	<import class="com.liferay.osb.model.LicenseKeySet" />
-	<import class="com.liferay.osb.model.MarketingEvent" />
 	<import class="com.liferay.osb.model.OfferingBundle" />
 	<import class="com.liferay.osb.model.OfferingDefinition" />
 	<import class="com.liferay.osb.model.OfferingEntry" />
 	<import class="com.liferay.osb.model.OrderEntry" />
-	<import class="com.liferay.osb.model.OSBCountry" />
-	<import class="com.liferay.osb.model.OSBRegion" />
 	<import class="com.liferay.osb.model.PartnerEntry" />
 	<import class="com.liferay.osb.model.PartnerWorker" />
-	<import class="com.liferay.osb.model.PortalRelease" />
 	<import class="com.liferay.osb.model.ProductEntry" />
 	<import class="com.liferay.osb.model.SearchFilter" />
-	<import class="com.liferay.osb.model.SecurityPatch" />
 	<import class="com.liferay.osb.model.SupportLabor" />
 	<import class="com.liferay.osb.model.SupportRegion" />
 	<import class="com.liferay.osb.model.SupportResponse" />
@@ -90,23 +55,7 @@
 	<import class="com.liferay.osb.model.TicketLink" />
 	<import class="com.liferay.osb.model.TicketSolution" />
 	<import class="com.liferay.osb.model.TicketWorker" />
-	<import class="com.liferay.osb.model.TrainingCertificate" />
-	<import class="com.liferay.osb.model.TrainingCertificateTemplate" />
-	<import class="com.liferay.osb.model.TrainingCourse" />
-	<import class="com.liferay.osb.model.TrainingCustomer" />
-	<import class="com.liferay.osb.model.TrainingEvent" />
-	<import class="com.liferay.osb.model.TrainingExam" />
-	<import class="com.liferay.osb.model.TrainingExamResult" />
-	<import class="com.liferay.osb.model.TrainingExamResultItem" />
-	<import class="com.liferay.osb.model.TrainingExamResultSection" />
-	<import class="com.liferay.osb.model.TrainingImportLog" />
-	<import class="com.liferay.osb.model.TrainingLinkedUser" />
-	<import class="com.liferay.osb.model.TrainingLocation" />
-	<import class="com.liferay.osb.model.TrainingWorker" />
-	<import class="com.liferay.osb.model.UserProfile" />
-	<import class="com.liferay.osb.model.UserProfileHistory" />
 	<class name="com.liferay.osb.model.impl.AccountAttachmentImpl" table="OSB_AccountAttachment">
-		<cache usage="read-write" />
 		<id name="accountAttachmentId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -117,10 +66,9 @@
 		<property name="accountProjectId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="fileName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="fileSize" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="type_" />
+		<property column="type_" name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.AccountCallImpl" table="OSB_AccountCall">
-		<cache usage="read-write" />
 		<id name="accountCallId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -129,7 +77,7 @@
 		<property name="modifiedUserName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
 		<property name="accountEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="type_" />
+		<property column="type_" name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="callDate" type="org.hibernate.type.TimestampType" />
 		<property name="callLength" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="summary" type="com.liferay.portal.dao.orm.hibernate.StringType" />
@@ -138,7 +86,6 @@
 		<property name="actionItems" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.AccountCustomerImpl" table="OSB_AccountCustomer">
-		<cache usage="read-write" />
 		<id name="accountCustomerId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -148,7 +95,6 @@
 		<property name="notifications" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.AccountEntryImpl" table="OSB_AccountEntry">
-		<cache usage="read-write" />
 		<id name="accountEntryId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -161,9 +107,9 @@
 		<property name="corpProjectId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="corpEntryName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="code" type="com.liferay.portal.dao.orm.hibernate.StringType" column="code_" />
+		<property column="code_" name="code" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="redirectAccountEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="type_" />
+		<property column="type_" name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="industry" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="countryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="partnerEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
@@ -181,7 +127,6 @@
 		<property name="statusMessage" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.AccountEntryLanguageImpl" table="OSB_AccountEntryLanguage">
-		<cache usage="read-write" />
 		<id name="accountEntryLanguageId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -189,7 +134,6 @@
 		<property name="languageId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.AccountEnvironmentImpl" table="OSB_AccountEnvironment">
-		<cache usage="read-write" />
 		<id name="accountEnvironmentId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -208,7 +152,6 @@
 		<property name="envLFR" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.AccountEnvironmentAttachmentImpl" table="OSB_AccountEnvironmentAttachment">
-		<cache usage="read-write" />
 		<id name="accountEnvironmentAttachmentId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -219,10 +162,9 @@
 		<property name="accountEnvironmentId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="fileName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="fileSize" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="type_" />
+		<property column="type_" name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.AccountInformationImpl" table="OSB_AccountInformation">
-		<cache usage="read-write" />
 		<id name="accountInformationId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -232,10 +174,9 @@
 		<property name="accountEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="accountProjectId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="fieldId" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="data" type="com.liferay.portal.dao.orm.hibernate.StringType" column="data_" />
+		<property column="data_" name="data" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.AccountLinkImpl" table="OSB_AccountLink">
-		<cache usage="read-write" />
 		<id name="accountLinkId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -246,7 +187,6 @@
 		<property name="url" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.AccountProjectImpl" table="OSB_AccountProject">
-		<cache usage="read-write" />
 		<id name="accountProjectId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -257,7 +197,6 @@
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.AccountWorkerImpl" table="OSB_AccountWorker">
-		<cache usage="read-write" />
 		<id name="accountWorkerId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -266,219 +205,7 @@
 		<property name="role" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="notifications" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
-	<class name="com.liferay.osb.model.impl.AppAuditImpl" table="OSB_AppAudit">
-		<cache usage="read-write" />
-		<id name="appAuditId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="uuid" type="com.liferay.portal.dao.orm.hibernate.StringType" column="uuid_" />
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="appEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="appVersionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.AppEntryImpl" table="OSB_AppEntry">
-		<cache usage="read-write" />
-		<id name="appEntryId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="uuid" type="com.liferay.portal.dao.orm.hibernate.StringType" column="uuid_" />
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
-		<property name="developerEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="developerName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="title" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="website" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="demoWebsite" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="documentationWebsite" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="referenceWebsite" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="sourceCodeWebsite" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="supportWebsite" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="labs" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="productType" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="version" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="changeLog" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="iconImageId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="paclEnabled" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="size" type="com.liferay.portal.dao.orm.hibernate.LongType" column="size_" />
-		<property name="downloadCount" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="licenseType" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="licenseLifetime" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="supported" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="orderURL" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="hidden" type="com.liferay.portal.dao.orm.hibernate.BooleanType" column="hidden_" />
-		<property name="portalRequired" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="statusByUserId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="statusByUserName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="statusDate" type="org.hibernate.type.TimestampType" />
-		<property name="statusVersionDate" type="org.hibernate.type.TimestampType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.AppEntryRelImpl" table="OSB_AppEntryRel">
-		<cache usage="read-write" />
-		<id name="appEntryRelId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="uuid" type="com.liferay.portal.dao.orm.hibernate.StringType" column="uuid_" />
-		<property name="appEntryId1" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="appEntryId2" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="type_" />
-	</class>
-	<class name="com.liferay.osb.model.impl.AppFlagImpl" table="OSB_AppFlag">
-		<cache usage="read-write" />
-		<id name="appFlagId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="uuid" type="com.liferay.portal.dao.orm.hibernate.StringType" column="uuid_" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="appEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="appVersionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="type_" />
-	</class>
-	<class name="com.liferay.osb.model.impl.AppPackageImpl" table="OSB_AppPackage">
-		<cache usage="read-write" />
-		<id name="appPackageId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
-		<property name="appEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="appVersionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="compatibility" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="compatibilityPlus" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="prepackaged" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="downloadCount" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.AppPackagePluginImpl" table="OSB_AppPackagePlugin">
-		<cache usage="read-write" />
-		<id name="appPackagePluginId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
-		<property name="appEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="appVersionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="appPackageId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="assetAttachmentId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="fileName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="bundleSymbolicName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="bundleVersion" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="contextName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="paclEnabled" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="relengHash" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="portalRestartRequired" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.AppPricingImpl" table="OSB_AppPricing">
-		<cache usage="read-write" />
-		<id name="appPricingId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
-		<property name="appEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="appVersionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="currencyEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="standardSupportPrice" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
-		<property name="developerSupportPrice" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
-		<property name="rank" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.AppPricingItemImpl" table="OSB_AppPricingItem">
-		<cache usage="read-write" />
-		<id name="appPricingItemId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="appPricingId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="assetLicenseId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="currencyEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="price" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.AppVersionImpl" table="OSB_AppVersion">
-		<cache usage="read-write" />
-		<id name="appVersionId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
-		<property name="appEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="developerEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="developerName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="title" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="website" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="demoWebsite" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="documentationWebsite" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="referenceWebsite" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="sourceCodeWebsite" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="supportWebsite" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="labs" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="productType" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="version" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="versionId" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="versionOrder" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="changeLog" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="iconImageId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="size" type="com.liferay.portal.dao.orm.hibernate.LongType" column="size_" />
-		<property name="downloadCount" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="paclEnabled" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="releaseDate" type="org.hibernate.type.TimestampType" />
-		<property name="releaseType" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="contractEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="supported" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="orderURL" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="hidden" type="com.liferay.portal.dao.orm.hibernate.BooleanType" column="hidden_" />
-		<property name="portalRequired" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="statusByUserId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="statusByUserName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="statusDate" type="org.hibernate.type.TimestampType" />
-		<property name="statusMessage" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.AssetAttachmentImpl" table="OSB_AssetAttachment">
-		<cache usage="read-write" />
-		<id name="assetAttachmentId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="fileName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="type_" />
-		<property name="rank" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.AssetAuditImpl" table="OSB_AssetAudit">
-		<cache usage="read-write" />
-		<id name="assetAuditId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
-		<property name="legalEntityName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="vendorClassNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="vendorClassPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="type_" />
-		<property name="domain" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="time" type="com.liferay.portal.dao.orm.hibernate.LongType" column="time_" />
-		<property name="currencyCode" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="price" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
-	</class>
 	<class name="com.liferay.osb.model.impl.AssetLicenseImpl" table="OSB_AssetLicense">
-		<cache usage="read-write" />
 		<id name="assetLicenseId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -496,165 +223,7 @@
 		<property name="lifetime" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
-	<class name="com.liferay.osb.model.impl.AssetListImpl" table="OSB_AssetList">
-		<cache usage="read-write" />
-		<id name="assetListId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="assetCategoryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="type_" />
-	</class>
-	<class name="com.liferay.osb.model.impl.AssetListAssetEntryImpl" table="OSB_AssetListAssetEntry">
-		<cache usage="read-write" />
-		<id name="assetListAssetEntryId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="assetListId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="assetEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.AssetReceiptImpl" table="OSB_AssetReceipt">
-		<cache usage="read-write" />
-		<id name="assetReceiptId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="assetEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="ownerClassNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="ownerClassPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="legalEntityName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="productClassNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="productClassPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="type" type="com.liferay.portal.dao.orm.hibernate.LongType" column="type_" />
-		<property name="currencyEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="actualPrice" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.AssetReceiptLicenseImpl" table="OSB_AssetReceiptLicense">
-		<cache usage="read-write" />
-		<id name="assetReceiptLicenseId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="uuid" type="com.liferay.portal.dao.orm.hibernate.StringType" column="uuid_" />
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
-		<property name="assetReceiptId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="assetLicenseId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="assetEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="ownerClassNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="ownerClassPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="productClassNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="productClassPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="productId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="startDate" type="org.hibernate.type.TimestampType" />
-		<property name="endDate" type="org.hibernate.type.TimestampType" />
-		<property name="usageType" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="licenseType" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="licenseTypeAllotment" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="licenseLifetime" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.AssetReceiptRedeemTokenImpl" table="OSB_AssetReceiptRedeemToken">
-		<cache usage="read-write" />
-		<id name="AssetReceiptRedeemTokenId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="redeemEmailAddress" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="redeemDate" type="org.hibernate.type.TimestampType" />
-		<property name="token" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.AssetReceiptSupportImpl" table="OSB_AssetReceiptSupport">
-		<cache usage="read-write" />
-		<id name="assetReceiptSupportId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="uuid" type="com.liferay.portal.dao.orm.hibernate.StringType" column="uuid_" />
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
-		<property name="assetReceiptId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="assetLicenseId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="assetEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="ownerClassNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="ownerClassPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="productClassNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="productClassPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="productId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="startDate" type="org.hibernate.type.TimestampType" />
-		<property name="endDate" type="org.hibernate.type.TimestampType" />
-		<property name="usageType" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="supportLifetime" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.AssetRecommendationEntryImpl" table="OSB_AssetRecommendationEntry">
-		<cache usage="read-write" />
-		<id name="assetRecommendationEntryId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="assetRecommendationSetId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="viewedAlsoPurchasedCount" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="purchasedAlsoPurchasedCount" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.AssetRecommendationSetImpl" table="OSB_AssetRecommendationSet">
-		<cache usage="read-write" />
-		<id name="assetRecommendationSetId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.AssetStatsDayImpl" table="OSB_AssetStatsDay">
-		<cache usage="read-write" />
-		<id name="assetStatsDayId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="day" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="year" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="viewCount" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="downloadCount" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="purchaseCount" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="currencyCodeRevenues" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.AssetStatsMonthImpl" table="OSB_AssetStatsMonth">
-		<cache usage="read-write" />
-		<id name="assetStatsMonthId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="month" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="year" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="viewCount" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="downloadCount" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="purchaseCount" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="currencyCodeRevenues" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.AssetStatsWeekImpl" table="OSB_AssetStatsWeek">
-		<cache usage="read-write" />
-		<id name="assetStatsWeekId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="week" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="year" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="viewCount" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="downloadCount" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="purchaseCount" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="currencyCodeRevenues" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-	</class>
 	<class name="com.liferay.osb.model.impl.AuditActionImpl" table="OSB_AuditAction">
-		<cache usage="read-write" />
 		<id name="auditActionId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -665,7 +234,6 @@
 		<property name="action" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.AuditEntryImpl" table="OSB_AuditEntry">
-		<cache usage="read-write" />
 		<id name="auditEntryId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -688,7 +256,6 @@
 		<property name="i18n" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.ContractAuditImpl" table="OSB_ContractAudit">
-		<cache usage="read-write" />
 		<id name="contractAuditId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -702,12 +269,11 @@
 		<property name="signatoryClassPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="productClassNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="productClassPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="type" type="com.liferay.portal.dao.orm.hibernate.StringType" column="type_" />
+		<property column="type_" name="type" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="languageId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="version" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.ContractEntryImpl" table="OSB_ContractEntry">
-		<cache usage="read-write" />
 		<id name="contractEntryId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -716,111 +282,11 @@
 		<property name="createDate" type="org.hibernate.type.TimestampType" />
 		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="type_" />
+		<property column="type_" name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="version" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="content" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
-	<class name="com.liferay.osb.model.impl.CorpEntryImpl" table="OSB_CorpEntry">
-		<cache usage="read-write" />
-		<id name="corpEntryId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
-		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="organizationId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="logoId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="addressId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="contactEmailAddress" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="profileEmailAddress" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="phoneNumber" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="faxNumber" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="website" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="dossieraAccountKey" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="statusByUserId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="statusByUserName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="statusDate" type="org.hibernate.type.TimestampType" />
-		<property name="statusMessage" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.CorpGroupImpl" table="OSB_CorpGroup">
-		<cache usage="read-write" />
-		<id name="corpGroupId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
-		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="organizationId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="logoId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="emailAddress" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="website" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.CorpMembershipRequestImpl" table="OSB_CorpMembershipRequest">
-		<cache usage="read-write" />
-		<id name="corpMembershipRequestId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
-		<property name="corpEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="key" type="com.liferay.portal.dao.orm.hibernate.StringType" column="key_" />
-		<property name="emailAddress" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.CorpProjectImpl" table="OSB_CorpProject">
-		<cache usage="read-write" />
-		<id name="corpProjectId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
-		<property name="dossieraProjectKey" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="salesforceProjectKey" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="organizationId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.CorpProjectMessageImpl" table="OSB_CorpProjectMessage">
-		<cache usage="read-write" />
-		<id name="corpProjectMessageId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
-		<property name="corpProjectId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="type_" />
-		<property name="severityLevel" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="title" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="content" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="displayCP" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="displayLCS" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="displayLESA" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.CountryAppPricingImpl" table="OSB_CountryAppPricing">
-		<cache usage="read-write" />
-		<id name="countryAppPricingId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="appEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="appVersionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="appPricingId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="countryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-	</class>
 	<class name="com.liferay.osb.model.impl.CurrencyEntryImpl" table="OSB_CurrencyEntry">
-		<cache usage="read-write" />
 		<id name="currencyEntryId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -829,46 +295,7 @@
 		<property name="marketplaceEnabled" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="marketplaceMinPrice" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
 	</class>
-	<class name="com.liferay.osb.model.impl.DeveloperEntryImpl" table="OSB_DeveloperEntry">
-		<cache usage="read-write" />
-		<id name="developerEntryId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="screenName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="firstName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="middleName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="lastName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="legalEntityName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="emailAddress" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="contractEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="phoneNumber" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="faxNumber" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="domainName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="domainStatus" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="addressId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="countryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="profileDescription" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="profileEmailAddress" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="profileLogoId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="profileWebsite" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="paymentEmailAddress" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="googleAnalyticsKey" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="subscriptionExpirationDate" type="org.hibernate.type.TimestampType" />
-		<property name="subscriptionStatus" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="fatcaWithholdingPercentage" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
-		<property name="dossieraAccountKey" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="type_" />
-		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="statusByUserId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="statusByUserName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="statusDate" type="org.hibernate.type.TimestampType" />
-		<property name="statusMessage" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-	</class>
 	<class name="com.liferay.osb.model.impl.ExternalIdMapperImpl" table="OSB_ExternalIdMapper">
-		<cache usage="read-write" />
 		<id name="externalIdMapperId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -876,25 +303,10 @@
 		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
 		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="type_" />
+		<property column="type_" name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="externalId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
-	<class name="com.liferay.osb.model.impl.FeedbackEntryImpl" table="OSB_FeedbackEntry">
-		<cache usage="read-write" />
-		<id name="feedbackEntryId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="satisfied" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="comments" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="pageURL" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-	</class>
 	<class name="com.liferay.osb.model.impl.HolidayCalendarImpl" table="OSB_HolidayCalendar">
-		<cache usage="read-write" />
 		<id name="holidayCalendarId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -902,7 +314,6 @@
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.HolidayCalendarRelImpl" table="OSB_HolidayCalendarRel">
-		<cache usage="read-write" />
 		<id name="holidayCalendarRelId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -910,7 +321,6 @@
 		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.HolidayEntryImpl" table="OSB_HolidayEntry">
-		<cache usage="read-write" />
 		<id name="holidayEntryId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -922,14 +332,13 @@
 		<property name="repeatYearly" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.LCSSubscriptionEntryImpl" table="OSB_LCSSubscriptionEntry">
-		<cache usage="read-write" />
 		<id name="lcsSubscriptionEntryId" type="long">
 			<generator class="assigned" />
 		</id>
 		<property name="lcsProjectId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="product" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="productVersion" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="type" type="com.liferay.portal.dao.orm.hibernate.StringType" column="type_" />
+		<property column="type_" name="type" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="platform" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="platformVersion" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="serversAllowed" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
@@ -941,10 +350,9 @@
 		<property name="supportEndDate" type="org.hibernate.type.TimestampType" />
 		<property name="actualPrice" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
 		<property name="currencyCode" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="active" type="com.liferay.portal.dao.orm.hibernate.BooleanType" column="active_" />
+		<property column="active_" name="active" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.LicenseEntryImpl" table="OSB_LicenseEntry">
-		<cache usage="read-write" />
 		<id name="licenseEntryId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -954,12 +362,11 @@
 		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
 		<property name="productEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="type" type="com.liferay.portal.dao.orm.hibernate.StringType" column="type_" />
+		<property column="type_" name="type" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="portalVersionMin" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="portalVersionMax" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.LicenseKeyImpl" table="OSB_LicenseKey">
-		<cache usage="read-write" />
 		<id name="licenseKeyId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -996,15 +403,14 @@
 		<property name="ipAddresses" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="macAddresses" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="serverId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="key" type="com.liferay.portal.dao.orm.hibernate.StringType" column="key_" />
+		<property column="key_" name="key" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="startDate" type="org.hibernate.type.TimestampType" />
 		<property name="expirationDate" type="org.hibernate.type.TimestampType" />
 		<property name="additionalInfo" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="complimentary" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="active" type="com.liferay.portal.dao.orm.hibernate.BooleanType" column="active_" />
+		<property column="active_" name="active" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.LicenseKeySetImpl" table="OSB_LicenseKeySet">
-		<cache usage="read-write" />
 		<id name="licenseKeySetId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -1015,38 +421,7 @@
 		<property name="accountEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
-	<class name="com.liferay.osb.model.impl.MarketingEventImpl" table="OSB_MarketingEvent">
-		<cache usage="read-write" />
-		<id name="marketingEventId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
-		<property name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="type_" />
-		<property name="defaultLanguageId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="title" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="titleURL" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="hostedBy" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="hostedByURL" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="summary" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="imageFileEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="slidesFileEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="videoTitle" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="timeZoneId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="startDate" type="org.hibernate.type.TimestampType" />
-		<property name="endDate" type="org.hibernate.type.TimestampType" />
-		<property name="dateTBA" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="addressId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="globalRegion" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="online" type="com.liferay.portal.dao.orm.hibernate.BooleanType" column="online_" />
-		<property name="registrationType" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="registrationURL" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-	</class>
 	<class name="com.liferay.osb.model.impl.OfferingBundleImpl" table="OSB_OfferingBundle">
-		<cache usage="read-write" />
 		<id name="offeringBundleId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -1056,7 +431,6 @@
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.OfferingDefinitionImpl" table="OSB_OfferingDefinition">
-		<cache usage="read-write" />
 		<id name="offeringDefinitionId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -1074,7 +448,6 @@
 		<property name="supportTickets" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.OfferingEntryImpl" table="OSB_OfferingEntry">
-		<cache usage="read-write" />
 		<id name="offeringEntryId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -1087,7 +460,7 @@
 		<property name="productEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="supportResponseId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="productDescription" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="type_" />
+		<property column="type_" name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="version" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="platform" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="platformVersion" type="com.liferay.portal.dao.orm.hibernate.StringType" />
@@ -1103,11 +476,10 @@
 		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.OrderEntryImpl" table="OSB_OrderEntry">
-		<cache usage="read-write" />
 		<id name="orderEntryId" type="long">
 			<generator class="assigned" />
 		</id>
-		<property name="uuid" type="com.liferay.portal.dao.orm.hibernate.StringType" column="uuid_" />
+		<property column="uuid_" name="uuid" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="createDate" type="org.hibernate.type.TimestampType" />
@@ -1127,7 +499,6 @@
 		<property name="statusMessage" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.PartnerEntryImpl" table="OSB_PartnerEntry">
-		<cache usage="read-write" />
 		<id name="partnerEntryId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -1139,12 +510,11 @@
 		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
 		<property name="parentPartnerEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="dossieraAccountKey" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="code" type="com.liferay.portal.dao.orm.hibernate.StringType" column="code_" />
+		<property column="code_" name="code" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="notes" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.PartnerWorkerImpl" table="OSB_PartnerWorker">
-		<cache usage="read-write" />
 		<id name="partnerWorkerId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -1153,22 +523,7 @@
 		<property name="role" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="notifications" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
-	<class name="com.liferay.osb.model.impl.PortalReleaseImpl" table="OSB_PortalRelease">
-		<cache usage="read-write" />
-		<id name="portalReleaseId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="versionName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="buildNumber" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="fixPackName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="ee" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="marketplaceSupport" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="osgiSupport" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="paclSupport" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="hidden" type="com.liferay.portal.dao.orm.hibernate.BooleanType" column="hidden_" />
-	</class>
 	<class name="com.liferay.osb.model.impl.ProductEntryImpl" table="OSB_ProductEntry">
-		<cache usage="read-write" />
 		<id name="productEntryId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -1177,12 +532,11 @@
 		<property name="createDate" type="org.hibernate.type.TimestampType" />
 		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="type_" />
+		<property column="type_" name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="environment" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="versionsListType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.SearchFilterImpl" table="OSB_SearchFilter">
-		<cache usage="read-write" />
 		<id name="searchFilterId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -1192,26 +546,10 @@
 		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
 		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="filter" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="filter" type="com.liferay.portal.dao.orm.hibernate.StringClobType" />
 		<property name="visibility" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
-	<class name="com.liferay.osb.model.impl.SecurityPatchImpl" table="OSB_SecurityPatch">
-		<cache usage="read-write" />
-		<id name="securityPatchId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="accountEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="ticketAttachmentId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="portletId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="envLFR" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="fileName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-	</class>
 	<class name="com.liferay.osb.model.impl.SupportLaborImpl" table="OSB_SupportLabor">
-		<cache usage="read-write" />
 		<id name="supportLaborId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -1234,7 +572,6 @@
 		<property name="satClose" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.SupportRegionImpl" table="OSB_SupportRegion">
-		<cache usage="read-write" />
 		<id name="supportRegionId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -1248,7 +585,6 @@
 		<property name="managerUserId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.SupportResponseImpl" table="OSB_SupportResponse">
-		<cache usage="read-write" />
 		<id name="supportResponseId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -1266,7 +602,6 @@
 		<property name="severity3Resolution" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.SupportTeamImpl" table="OSB_SupportTeam">
-		<cache usage="read-write" />
 		<id name="supportTeamId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -1279,12 +614,11 @@
 		<property name="locationSupportRegionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="type_" />
+		<property column="type_" name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="assignedWork" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
 		<property name="maxWork" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.SupportTeamLanguageImpl" table="OSB_SupportTeamLanguage">
-		<cache usage="read-write" />
 		<id name="supportTeamLanguageId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -1292,7 +626,6 @@
 		<property name="languageId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.SupportWorkerImpl" table="OSB_SupportWorker">
-		<cache usage="read-write" />
 		<id name="supportWorkerId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -1309,7 +642,6 @@
 		<property name="clockedIn" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.SupportWorkerAccountTierImpl" table="OSB_SupportWorkerAccountTier">
-		<cache usage="read-write" />
 		<id name="supportWorkerAccountTierId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -1317,7 +649,6 @@
 		<property name="accountTier" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.SupportWorkerComponentImpl" table="OSB_SupportWorkerComponent">
-		<cache usage="read-write" />
 		<id name="supportWorkerComponentId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -1325,7 +656,6 @@
 		<property name="component" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.SupportWorkerSeverityImpl" table="OSB_SupportWorkerSeverity">
-		<cache usage="read-write" />
 		<id name="supportWorkerSeverityId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -1333,7 +663,6 @@
 		<property name="severity" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.TicketAttachmentImpl" table="OSB_TicketAttachment">
-		<cache usage="read-write" />
 		<id name="ticketAttachmentId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -1345,16 +674,15 @@
 		<property name="releaseNotesId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="fileName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="fileSize" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="type_" />
+		<property column="type_" name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="visibility" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="extractedText" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="extractedText" type="com.liferay.portal.dao.orm.hibernate.StringClobType" />
 		<property name="availableFileRepositoryIds" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="replicate" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="deleteDate" type="org.hibernate.type.TimestampType" />
 		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.TicketCallImpl" table="OSB_TicketCall">
-		<cache usage="read-write" />
 		<id name="ticketCallId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -1362,7 +690,7 @@
 		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="createDate" type="org.hibernate.type.TimestampType" />
 		<property name="ticketEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="type_" />
+		<property column="type_" name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="callDate" type="org.hibernate.type.TimestampType" />
 		<property name="callLength" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="customerName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
@@ -1371,7 +699,6 @@
 		<property name="instructions" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.TicketCannedResponseImpl" table="OSB_TicketCannedResponse">
-		<cache usage="read-write" />
 		<id name="ticketCannedResponseId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -1384,7 +711,6 @@
 		<property name="useCount" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.TicketCommentImpl" table="OSB_TicketComment">
-		<cache usage="read-write" />
 		<id name="ticketCommentId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -1394,14 +720,13 @@
 		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
 		<property name="ticketEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="body" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="type_" />
+		<property column="type_" name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="format" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="visibility" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="settings" type="com.liferay.portal.dao.orm.hibernate.StringType" column="settings_" />
+		<property column="settings_" name="settings" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.TicketEntryImpl" table="OSB_TicketEntry">
-		<cache usage="read-write" />
 		<id name="ticketEntryId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -1447,7 +772,6 @@
 		<property name="workerModifiedDate" type="org.hibernate.type.TimestampType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.TicketFeedbackImpl" table="OSB_TicketFeedback">
-		<cache usage="read-write" />
 		<id name="ticketFeedbackId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -1470,7 +794,6 @@
 		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.TicketFlagImpl" table="OSB_TicketFlag">
-		<cache usage="read-write" />
 		<id name="ticketFlagId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -1478,11 +801,10 @@
 		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
 		<property name="accountEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="ticketEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="type_" />
+		<property column="type_" name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="flag" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.TicketInformationImpl" table="OSB_TicketInformation">
-		<cache usage="read-write" />
 		<id name="ticketInformationId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -1490,10 +812,9 @@
 		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
 		<property name="ticketEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="fieldId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="data" type="com.liferay.portal.dao.orm.hibernate.StringType" column="data_" />
+		<property column="data_" name="data" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.TicketLinkImpl" table="OSB_TicketLink">
-		<cache usage="read-write" />
 		<id name="ticketLinkId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -1503,11 +824,10 @@
 		<property name="ticketEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="ticketSolutionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="url" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="type_" />
+		<property column="type_" name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="visibility" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.TicketSolutionImpl" table="OSB_TicketSolution">
-		<cache usage="read-write" />
 		<id name="ticketSolutionId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -1519,7 +839,7 @@
 		<property name="useCustomerSummary" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="issueType" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="solution" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="type_" />
+		<property column="type_" name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="customerSpecific" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="environmentSpecific" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="versionSpecific" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
@@ -1532,7 +852,6 @@
 		<property name="statusReason" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.TicketWorkerImpl" table="OSB_TicketWorker">
-		<cache usage="read-write" />
 		<id name="ticketWorkerId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -1541,213 +860,6 @@
 		<property name="sourceClassNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="sourceClassPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="role" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="primary" type="com.liferay.portal.dao.orm.hibernate.BooleanType" column="primary_" />
-	</class>
-	<class name="com.liferay.osb.model.impl.TrainingCertificateImpl" table="OSB_TrainingCertificate">
-		<cache usage="read-write" />
-		<id name="trainingCertificateId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
-		<property name="trainingCustomerId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userProfileHistoryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="key" type="com.liferay.portal.dao.orm.hibernate.StringType" column="key_" />
-		<property name="certifiedDate" type="org.hibernate.type.TimestampType" />
-		<property name="comments" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="surveyStatus" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.TrainingCertificateTemplateImpl" table="OSB_TrainingCertificateTemplate">
-		<cache usage="read-write" />
-		<id name="trainingCertificateTemplateId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
-		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="type_" />
-	</class>
-	<class name="com.liferay.osb.model.impl.TrainingCourseImpl" table="OSB_TrainingCourse">
-		<cache usage="read-write" />
-		<id name="trainingCourseId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
-		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="creditAmount" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="courseURL" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="archived" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.TrainingCustomerImpl" table="OSB_TrainingCustomer">
-		<cache usage="read-write" />
-		<id name="trainingCustomerId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userProfileHistoryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="comments" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.TrainingEventImpl" table="OSB_TrainingEvent">
-		<cache usage="read-write" />
-		<id name="trainingEventId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
-		<property name="DDLRecordSetId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="partnerEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="trainingCertificateTemplateId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="trainingCourseId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="trainingLocationId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="emailAddress" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="portalMinorVersion" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="type_" />
-		<property name="languageId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="localizedSlides" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="timeZoneId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="startDate" type="org.hibernate.type.TimestampType" />
-		<property name="endDate" type="org.hibernate.type.TimestampType" />
-		<property name="addressId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="maxCustomers" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="enrollmentURL" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.TrainingExamImpl" table="OSB_TrainingExam">
-		<cache usage="read-write" />
-		<id name="trainingExamId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="trainingCertificateTemplateId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.TrainingExamResultImpl" table="OSB_TrainingExamResult">
-		<cache usage="read-write" />
-		<id name="trainingExamResultId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="trainingExamId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="recordType" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="registrationNumber" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="formKey" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="startDate" type="org.hibernate.type.TimestampType" />
-		<property name="testScore" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="correctCount" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="incorrectCount" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="skippedCount" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="grade" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.TrainingExamResultItemImpl" table="OSB_TrainingExamResultItem">
-		<cache usage="read-write" />
-		<id name="trainingExamResultItemId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="trainingExamResultId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="trainingExamResultSectionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="status" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="key" type="com.liferay.portal.dao.orm.hibernate.StringType" column="key_" />
-		<property name="distractorCount" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="type" type="com.liferay.portal.dao.orm.hibernate.StringType" column="type_" />
-		<property name="response" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="score" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="time" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="time_" />
-		<property name="learningResources" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.TrainingExamResultSectionImpl" table="OSB_TrainingExamResultSection">
-		<cache usage="read-write" />
-		<id name="trainingExamResultSectionId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="trainingExamResultId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="title" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="sectionKey" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="scoreIndicator" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="scoringAlgorithm" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="masteryScore" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="score" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="standardErrorOfEstimate" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="correctCount" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="incorrectCount" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="skippedCount" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="grade" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.TrainingImportLogImpl" table="OSB_TrainingImportLog">
-		<cache usage="read-write" />
-		<id name="trainingImportLogId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="type_" />
-		<property name="importDate" type="org.hibernate.type.TimestampType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.TrainingLinkedUserImpl" table="OSB_TrainingLinkedUser">
-		<cache usage="read-write" />
-		<id name="trainingLinkedUserId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="primaryUserId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.TrainingLocationImpl" table="OSB_TrainingLocation">
-		<cache usage="read-write" />
-		<id name="trainingLocationId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
-		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="addressId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.TrainingWorkerImpl" table="OSB_TrainingWorker">
-		<cache usage="read-write" />
-		<id name="trainingWorkerId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userProfileHistoryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.UserProfileImpl" table="OSB_UserProfile">
-		<cache usage="read-write" />
-		<id name="userProfileId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="emailAddress" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="firstName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="lastName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="legalEntityName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.UserProfileHistoryImpl" table="OSB_UserProfileHistory">
-		<cache usage="read-write" />
-		<id name="userProfileHistoryId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="emailAddress" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="firstName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="lastName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="legalEntityName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property column="primary_" name="primary" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
 </hibernate-mapping>
