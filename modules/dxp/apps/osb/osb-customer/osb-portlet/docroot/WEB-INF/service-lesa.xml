@@ -214,7 +214,7 @@
 		</finder>
 		<finder name="RAEI_NotT_S" return-type="Collection">
 			<finder-column name="redirectAccountEntryId" />
-			<finder-column name="type" comparator="!=" arrayable-operator="OR" />
+			<finder-column name="type" comparator="!=" arrayable-operator="AND" />
 			<finder-column name="status" arrayable-operator="OR" />
 		</finder>
 		<finder name="N_C_RAEI" return-type="Collection">
