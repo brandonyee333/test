@@ -39,19 +39,6 @@
 		</java>
 	</target>
 
-	<target name="compile">
-		<if>
-			<not>
-				<istrue value="${osb.ext.auto.direct.deploy.disabled}" />
-			</not>
-			<then>
-				<ant dir="${sdk.dir}/ext/osb-ext" inheritAll="false" target="direct-deploy" />
-			</then>
-		</if>
-
-		<ant antfile="../../../../../tools/sdk/portlets/build-common-portlet.xml" target="compile" />
-	</target>
-
 	<target name="format-javadoc">
 		<ant antfile="../../../../../tools/sdk/portlets/build-common-portlet.xml" target="format-javadoc" />
 
