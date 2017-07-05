@@ -514,6 +514,8 @@ public class ResourceBlockLocalServiceImpl
 	)
 	public void releaseResourceBlock(ResourceBlock resourceBlock) {
 		releaseResourceBlock(resourceBlock.getResourceBlockId());
+		resourceBlockPermissionPersistence.removeByResourceBlockId(
+			resourceBlock.getResourceBlockId());
 	}
 
 	@Override
