@@ -18,7 +18,7 @@ import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
-import com.liferay.portal.model.User;
+import com.liferay.portal.kernel.model.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

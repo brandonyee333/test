@@ -14,12 +14,12 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.compat.portal.kernel.util.Time;
-import com.liferay.compat.portal.util.PortalUtil;
-import com.liferay.osb.NoSuchAccountEntryException;
-import com.liferay.osb.OfferingEntryQuantityException;
-import com.liferay.osb.OfferingEntrySizingException;
-import com.liferay.osb.RequiredOfferingEntryException;
+import com.liferay.portal.kernel.util.Time;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.osb.exception.NoSuchAccountEntryException;
+import com.liferay.osb.exception.OfferingEntryQuantityException;
+import com.liferay.osb.exception.OfferingEntrySizingException;
+import com.liferay.osb.exception.RequiredOfferingEntryException;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AuditEntryConstants;
 import com.liferay.osb.model.OfferingEntry;
@@ -35,7 +35,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.model.User;
+import com.liferay.portal.kernel.model.User;
 
 import java.util.Date;
 import java.util.LinkedHashMap;

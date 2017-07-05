@@ -14,26 +14,26 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.compat.portal.kernel.util.Validator;
-import com.liferay.osb.AccountEnvironmentAttachmentException;
-import com.liferay.osb.AccountEnvironmentEnvASException;
-import com.liferay.osb.AccountEnvironmentEnvDBException;
-import com.liferay.osb.AccountEnvironmentEnvLFRException;
-import com.liferay.osb.AccountEnvironmentEnvOSException;
-import com.liferay.osb.AccountEnvironmentNameException;
-import com.liferay.osb.DuplicateAccountEnvironmentException;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.osb.exception.AccountEnvironmentAttachmentException;
+import com.liferay.osb.exception.AccountEnvironmentEnvASException;
+import com.liferay.osb.exception.AccountEnvironmentEnvDBException;
+import com.liferay.osb.exception.AccountEnvironmentEnvLFRException;
+import com.liferay.osb.exception.AccountEnvironmentEnvOSException;
+import com.liferay.osb.exception.AccountEnvironmentNameException;
+import com.liferay.osb.exception.DuplicateAccountEnvironmentException;
 import com.liferay.osb.model.AccountEnvironment;
 import com.liferay.osb.model.AccountEnvironmentAttachment;
 import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.model.TicketEntryConstants;
 import com.liferay.osb.service.base.AccountEnvironmentLocalServiceBaseImpl;
-import com.liferay.portal.NoSuchListTypeException;
+import com.liferay.portal.kernel.exception.NoSuchListTypeException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.ObjectValuePair;
-import com.liferay.portal.model.ListType;
-import com.liferay.portal.model.User;
+import com.liferay.portal.kernel.model.ListType;
+import com.liferay.portal.kernel.model.User;
 
 import java.io.File;
 

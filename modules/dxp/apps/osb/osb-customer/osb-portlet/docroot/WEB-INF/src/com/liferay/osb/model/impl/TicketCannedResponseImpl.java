@@ -14,7 +14,7 @@
 
 package com.liferay.osb.model.impl;
 
-import com.liferay.compat.portal.kernel.util.LocalizationUtil;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.StringPool;
 
 /**

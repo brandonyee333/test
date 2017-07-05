@@ -14,10 +14,10 @@
 
 package com.liferay.osb.hook.upgrade.v3_4_0;
 
-import com.liferay.compat.portal.kernel.util.LocalizationUtil;
-import com.liferay.compat.portal.kernel.util.StringUtil;
-import com.liferay.compat.portal.kernel.util.Validator;
-import com.liferay.compat.portal.util.PortalUtil;
+import com.liferay.portal.kernel.util.LocalizationUtil;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.ContractEntry;
 import com.liferay.osb.model.ContractEntryConstants;
@@ -29,8 +29,8 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

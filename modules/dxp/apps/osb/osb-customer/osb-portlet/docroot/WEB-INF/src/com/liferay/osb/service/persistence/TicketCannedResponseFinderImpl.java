@@ -14,7 +14,7 @@
 
 package com.liferay.osb.service.persistence;
 
-import com.liferay.compat.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.model.TicketCannedResponse;
 import com.liferay.osb.model.impl.TicketCannedResponseImpl;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -24,7 +24,7 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.Type;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.util.Iterator;

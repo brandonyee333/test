@@ -14,11 +14,11 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.compat.portal.kernel.util.Validator;
-import com.liferay.compat.portal.util.PortalUtil;
-import com.liferay.osb.TicketLinkTypeException;
-import com.liferay.osb.TicketLinkURLException;
-import com.liferay.osb.TicketLinkVisibilityException;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.osb.exception.TicketLinkTypeException;
+import com.liferay.osb.exception.TicketLinkURLException;
+import com.liferay.osb.exception.TicketLinkVisibilityException;
 import com.liferay.osb.model.AuditEntryConstants;
 import com.liferay.osb.model.TicketEntry;
 import com.liferay.osb.model.TicketLink;
@@ -28,8 +28,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.Date;
 import java.util.List;

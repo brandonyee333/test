@@ -14,8 +14,8 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.osb.AccountEnvironmentAttachmentSizeException;
-import com.liferay.osb.DuplicateAccountEnvironmentAttachmentException;
+import com.liferay.osb.exception.AccountEnvironmentAttachmentSizeException;
+import com.liferay.osb.exception.DuplicateAccountEnvironmentAttachmentException;
 import com.liferay.osb.model.AccountEnvironmentAttachment;
 import com.liferay.osb.service.base.AccountEnvironmentAttachmentLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
@@ -23,9 +23,9 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.model.CompanyConstants;
-import com.liferay.portal.model.User;
-import com.liferay.portlet.documentlibrary.store.DLStoreUtil;
+import com.liferay.portal.kernel.model.CompanyConstants;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.document.library.kernel.store.DLStoreUtil;
 
 import java.io.File;
 import java.io.InputStream;

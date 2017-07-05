@@ -20,7 +20,7 @@ import com.liferay.osb.model.AccountProjectConstants;
 import com.liferay.osb.service.base.AccountInformationLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
+import com.liferay.portal.kernel.model.User;
 
 import java.util.ArrayList;
 import java.util.Date;

@@ -14,15 +14,15 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.compat.portal.kernel.util.Validator;
-import com.liferay.osb.DuplicateSupportRegionException;
-import com.liferay.osb.RequiredSupportRegionException;
-import com.liferay.osb.SupportRegionNameException;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.osb.exception.DuplicateSupportRegionException;
+import com.liferay.osb.exception.RequiredSupportRegionException;
+import com.liferay.osb.exception.SupportRegionNameException;
 import com.liferay.osb.model.SupportRegion;
 import com.liferay.osb.service.base.SupportRegionLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
+import com.liferay.portal.kernel.model.User;
 
 import java.util.Date;
 import java.util.List;

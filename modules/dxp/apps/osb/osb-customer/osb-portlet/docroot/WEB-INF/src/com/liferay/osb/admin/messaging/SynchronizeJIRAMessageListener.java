@@ -14,9 +14,9 @@
 
 package com.liferay.osb.admin.messaging;
 
-import com.liferay.compat.portal.kernel.util.StringUtil;
-import com.liferay.compat.portal.kernel.util.Validator;
-import com.liferay.compat.portal.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.jira.service.JIRATicketLocalServiceUtil;
 import com.liferay.osb.model.ExternalIdMapperConstants;
 import com.liferay.osb.model.SupportResponseConstants;
@@ -35,7 +35,7 @@ import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.util.Portal;
+import com.liferay.portal.kernel.util.Portal;
 
 import java.text.Format;
 

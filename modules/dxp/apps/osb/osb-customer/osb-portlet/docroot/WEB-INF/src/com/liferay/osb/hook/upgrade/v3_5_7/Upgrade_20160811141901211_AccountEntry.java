@@ -14,8 +14,8 @@
 
 package com.liferay.osb.hook.upgrade.v3_5_7;
 
-import com.liferay.compat.portal.kernel.util.ArrayUtil;
-import com.liferay.compat.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;

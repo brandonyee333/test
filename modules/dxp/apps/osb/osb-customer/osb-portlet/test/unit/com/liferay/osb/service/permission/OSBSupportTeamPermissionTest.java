@@ -14,10 +14,10 @@
 
 package com.liferay.osb.service.permission;
 
-import com.liferay.osb.NoSuchSupportWorkerException;
+import com.liferay.osb.exception.NoSuchSupportWorkerException;
 import com.liferay.osb.model.SupportTeam;
 import com.liferay.osb.service.SupportWorkerLocalServiceUtil;
-import com.liferay.portal.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
 
 import org.apache.commons.lang.math.RandomUtils;
 

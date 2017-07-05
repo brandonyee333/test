@@ -14,7 +14,7 @@
 
 package com.liferay.osb.util;
 
-import com.liferay.portal.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
 
 /**
  * @author Amos Fong

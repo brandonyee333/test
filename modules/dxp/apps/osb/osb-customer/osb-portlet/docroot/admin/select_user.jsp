@@ -37,16 +37,16 @@ portletURL.setParameter("callback", callback);
 			LinkedHashMap userParams = new LinkedHashMap();
 
 			if (userParam.equals("accountEntryCreateUsers")) {
-				userParams.put(userParam, new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.service.persistence.UserFinder.joinByAccountEntryCreateUser"), StringPool.BLANK));
+				userParams.put(userParam, new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinByAccountEntryCreateUser"), StringPool.BLANK));
 			}
 			else if (userParam.equals("accountEntryModifiedUsers")) {
-				userParams.put(userParam, new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.service.persistence.UserFinder.joinByAccountEntryModifiedUser"), StringPool.BLANK));
+				userParams.put(userParam, new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinByAccountEntryModifiedUser"), StringPool.BLANK));
 			}
 			else if (userParam.equals("orderEntryCreateUsers")) {
-				userParams.put(userParam, new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.service.persistence.UserFinder.joinByOrderEntryCreateUser"), StringPool.BLANK));
+				userParams.put(userParam, new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinByOrderEntryCreateUser"), StringPool.BLANK));
 			}
 			else if (userParam.equals("orderEntryModifiedUsers")) {
-				userParams.put(userParam, new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.service.persistence.UserFinder.joinByOrderEntryModifiedUser"), StringPool.BLANK));
+				userParams.put(userParam, new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinByOrderEntryModifiedUser"), StringPool.BLANK));
 			}
 			%>
 
@@ -69,7 +69,7 @@ portletURL.setParameter("callback", callback);
 					/>
 
 					<liferay-ui:search-container-row
-						className="com.liferay.portal.model.User"
+						className="com.liferay.portal.kernel.model.User"
 						keyProperty="userId"
 						modelVar="curUser"
 					>

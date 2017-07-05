@@ -14,9 +14,9 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.compat.portal.kernel.util.ArrayUtil;
-import com.liferay.compat.portal.util.PortalUtil;
-import com.liferay.osb.NoSuchTicketWorkerException;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.osb.exception.NoSuchTicketWorkerException;
 import com.liferay.osb.model.AuditEntryConstants;
 import com.liferay.osb.model.TicketEntry;
 import com.liferay.osb.model.TicketEntryConstants;
@@ -31,7 +31,7 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.model.User;
+import com.liferay.portal.kernel.model.User;
 
 import java.util.ArrayList;
 import java.util.Date;

@@ -21,7 +21,7 @@
 						import com.liferay.portal.kernel.util.GetterUtil;
 						import com.liferay.portal.kernel.workflow.WorkflowConstants;
 						import com.liferay.portal.kernel.workflow.WorkflowStatusManagerUtil;
-						import com.liferay.portal.model.User;
+						import com.liferay.portal.kernel.model.User;
 
 						KaleoLogLocalServiceUtil = com.liferay.portal.kernel.bean.PortletBeanLocatorUtil.locate("kaleo-web", "com.liferay.portal.workflow.kaleo.service.KaleoLogLocalService");
 
@@ -51,7 +51,7 @@
 				<name>closed</name>
 				<script>
 					<![CDATA[
-						import com.liferay.portal.model.User;
+						import com.liferay.portal.kernel.model.User;
 						import com.liferay.portal.kernel.util.GetterUtil;
 
 						KaleoLogLocalServiceUtil = com.liferay.portal.kernel.bean.PortletBeanLocatorUtil.locate("kaleo-web", "com.liferay.portal.workflow.kaleo.service.KaleoLogLocalService");
@@ -96,7 +96,7 @@
 					<![CDATA[
 						import com.liferay.portal.kernel.util.GetterUtil;
 						import com.liferay.portal.kernel.workflow.WorkflowStatusManagerUtil;
-						import com.liferay.portal.model.User;
+						import com.liferay.portal.kernel.model.User;
 
 						KaleoLogLocalServiceUtil = com.liferay.portal.kernel.bean.PortletBeanLocatorUtil.locate("kaleo-web", "com.liferay.portal.workflow.kaleo.service.KaleoLogLocalService");
 
@@ -147,7 +147,7 @@
 				<description>Review Notification Email</description>
 				<template>
 					<![CDATA[
-						<#assign companyLocalServiceUtil = serviceLocator.findService("com.liferay.portal.service.CompanyLocalService") />
+						<#assign companyLocalServiceUtil = serviceLocator.findService("com.liferay.portal.kernel.service.CompanyLocalService") />
 
 						<#assign company = companyLocalServiceUtil.getCompany(getterUtil.getLong(companyId)) />
 
@@ -177,9 +177,9 @@
 					<![CDATA[
 						import com.liferay.portal.kernel.util.GetterUtil;
 						import com.liferay.portal.kernel.workflow.WorkflowConstants;
-						import com.liferay.portal.model.Role;
-						import com.liferay.portal.service.RoleLocalServiceUtil;
-						import com.liferay.portal.service.UserLocalServiceUtil;
+						import com.liferay.portal.kernel.model.Role;
+						import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
+						import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 
 						import java.util.ArrayList;
 

@@ -14,8 +14,8 @@
 
 package com.liferay.osb.hook.upgrade.v3_5_9;
 
-import com.liferay.compat.portal.kernel.util.StringUtil;
-import com.liferay.compat.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.LicenseKey;

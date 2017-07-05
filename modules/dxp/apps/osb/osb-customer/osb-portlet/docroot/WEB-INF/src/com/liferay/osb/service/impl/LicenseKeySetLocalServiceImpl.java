@@ -14,15 +14,15 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.compat.portal.kernel.util.Validator;
-import com.liferay.osb.LicenseKeySetNameException;
-import com.liferay.osb.NoSuchAccountEntryException;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.osb.exception.LicenseKeySetNameException;
+import com.liferay.osb.exception.NoSuchAccountEntryException;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.LicenseKeySet;
 import com.liferay.osb.service.base.LicenseKeySetLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
+import com.liferay.portal.kernel.model.User;
 
 import java.util.Date;
 import java.util.List;

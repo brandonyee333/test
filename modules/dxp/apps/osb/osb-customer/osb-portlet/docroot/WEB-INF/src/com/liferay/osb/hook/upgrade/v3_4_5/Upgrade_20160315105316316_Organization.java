@@ -14,11 +14,11 @@
 
 package com.liferay.osb.hook.upgrade.v3_4_5;
 
-import com.liferay.compat.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.util.OSBConstants;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 
 import java.util.ArrayList;
 import java.util.List;

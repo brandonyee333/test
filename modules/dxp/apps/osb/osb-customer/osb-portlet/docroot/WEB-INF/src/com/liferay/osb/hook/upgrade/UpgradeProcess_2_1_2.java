@@ -14,7 +14,7 @@
 
 package com.liferay.osb.hook.upgrade;
 
-import com.liferay.compat.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.osb.hook.upgrade.v2_1_2.UpgradeAssetAudit;
 import com.liferay.osb.hook.upgrade.v2_1_2.UpgradeAssetStatsDay;
 import com.liferay.osb.hook.upgrade.v2_1_2.UpgradeAssetStatsMonth;

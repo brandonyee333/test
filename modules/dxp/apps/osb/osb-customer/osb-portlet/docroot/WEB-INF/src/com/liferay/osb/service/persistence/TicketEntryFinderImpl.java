@@ -14,10 +14,10 @@
 
 package com.liferay.osb.service.persistence;
 
-import com.liferay.compat.portal.kernel.util.ArrayUtil;
-import com.liferay.compat.portal.kernel.util.StringUtil;
-import com.liferay.compat.portal.kernel.util.Validator;
-import com.liferay.compat.portal.util.PortalUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.model.TicketEntry;
 import com.liferay.osb.util.OSBCustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.PortalCustomSQLUtil;
@@ -31,7 +31,7 @@ import com.liferay.portal.kernel.util.CalendarUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.sql.Timestamp;

@@ -20,7 +20,7 @@ import com.liferay.osb.model.TicketWorker;
 import com.liferay.osb.model.TicketWorkerConstants;
 import com.liferay.osb.service.TicketWorkerLocalServiceUtil;
 import com.liferay.osb.util.OSBActionKeys;
-import com.liferay.portal.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
 
 import org.apache.commons.lang.math.RandomUtils;
 

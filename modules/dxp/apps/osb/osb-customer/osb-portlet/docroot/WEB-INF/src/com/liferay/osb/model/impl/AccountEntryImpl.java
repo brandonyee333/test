@@ -14,7 +14,7 @@
 
 package com.liferay.osb.model.impl;
 
-import com.liferay.compat.portal.util.PortalUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.model.AccountAttachment;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountEntry;
@@ -41,8 +41,8 @@ import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.model.Address;
-import com.liferay.portal.service.AddressLocalServiceUtil;
+import com.liferay.portal.kernel.model.Address;
+import com.liferay.portal.kernel.service.AddressLocalServiceUtil;
 
 import java.util.List;
 

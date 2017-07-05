@@ -14,11 +14,11 @@
 
 package com.liferay.osb.license.util;
 
-import com.liferay.compat.portal.kernel.util.ListUtil;
-import com.liferay.compat.portal.kernel.util.LocaleUtil;
-import com.liferay.compat.portal.kernel.util.LocalizationUtil;
-import com.liferay.compat.portal.kernel.util.StringUtil;
-import com.liferay.compat.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.LocalizationUtil;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.admin.util.KeyGenerator;
 import com.liferay.osb.model.LicenseEntryConstants;
 import com.liferay.osb.model.LicenseKey;
@@ -43,8 +43,8 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
-import com.liferay.portal.service.PortletPreferencesLocalServiceUtil;
-import com.liferay.portal.util.PortletKeys;
+import com.liferay.portal.kernel.service.PortletPreferencesLocalServiceUtil;
+import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.util.ContentUtil;
 import com.liferay.util.xml.DocUtil;
 

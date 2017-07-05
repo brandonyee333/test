@@ -14,17 +14,17 @@
 
 package com.liferay.osb.hook.upgrade.v3_0_5;
 
-import com.liferay.compat.portal.util.PortalUtil;
-import com.liferay.compat.portlet.messageboards.util.MBUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.message.boards.kernel.util.MBUtil;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.upgrade.UpgradeException;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portlet.messageboards.NoSuchCategoryException;
-import com.liferay.portlet.messageboards.model.MBCategory;
-import com.liferay.portlet.messageboards.service.MBCategoryLocalServiceUtil;
-import com.liferay.portlet.messageboards.service.MBMailingListLocalServiceUtil;
+import com.liferay.message.boards.kernel.NoSuchCategoryException;
+import com.liferay.message.boards.kernel.model.MBCategory;
+import com.liferay.message.boards.kernel.service.MBCategoryLocalServiceUtil;
+import com.liferay.message.boards.kernel.service.MBMailingListLocalServiceUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -38,10 +38,10 @@ portletURL.setParameter("callback", callback);
 				LinkedHashMap userParams = new LinkedHashMap();
 
 				if (userParam.equals("licenseKeyCreateUsers")) {
-					userParams.put(userParam, new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.service.persistence.UserFinder.joinByLicenseKeyCreateUser"), StringPool.BLANK));
+					userParams.put(userParam, new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinByLicenseKeyCreateUser"), StringPool.BLANK));
 				}
 				else if (userParam.equals("licenseKeyModifiedUsers")) {
-					userParams.put(userParam, new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.service.persistence.UserFinder.joinByLicenseKeyModifiedUser"), StringPool.BLANK));
+					userParams.put(userParam, new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinByLicenseKeyModifiedUser"), StringPool.BLANK));
 				}
 				%>
 
@@ -64,7 +64,7 @@ portletURL.setParameter("callback", callback);
 						/>
 
 						<liferay-ui:search-container-row
-							className="com.liferay.portal.model.User"
+							className="com.liferay.portal.kernel.model.User"
 							keyProperty="userId"
 							modelVar="curUser"
 						>

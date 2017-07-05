@@ -14,7 +14,7 @@
 
 package com.liferay.osb.hook.upgrade.v1_7_0;
 
-import com.liferay.compat.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.osb.model.AssetAttachment;
 import com.liferay.osb.model.AssetAttachmentConstants;
 import com.liferay.osb.model.CorpEntry;
@@ -27,8 +27,8 @@ import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.image.ImageBag;
 import com.liferay.portal.kernel.image.ImageToolUtil;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.model.CompanyConstants;
-import com.liferay.portlet.documentlibrary.store.DLStoreUtil;
+import com.liferay.portal.kernel.model.CompanyConstants;
+import com.liferay.document.library.kernel.store.DLStoreUtil;
 
 import java.awt.image.RenderedImage;
 

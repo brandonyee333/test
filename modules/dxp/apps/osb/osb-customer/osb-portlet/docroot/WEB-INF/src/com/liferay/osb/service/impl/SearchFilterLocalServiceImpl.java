@@ -14,13 +14,13 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.compat.portal.kernel.util.Validator;
-import com.liferay.osb.SearchFilterNameException;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.osb.exception.SearchFilterNameException;
 import com.liferay.osb.model.SearchFilter;
 import com.liferay.osb.service.base.SearchFilterLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
+import com.liferay.portal.kernel.model.User;
 
 import java.util.Date;
 import java.util.List;

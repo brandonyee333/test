@@ -14,13 +14,13 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.compat.portal.kernel.util.ArrayUtil;
-import com.liferay.compat.portal.kernel.util.Validator;
-import com.liferay.compat.portal.util.PortalUtil;
-import com.liferay.osb.DuplicateProductEntryException;
-import com.liferay.osb.ProductEntryEnvironmentException;
-import com.liferay.osb.ProductEntryNameException;
-import com.liferay.osb.RequiredProductEntryException;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.osb.exception.DuplicateProductEntryException;
+import com.liferay.osb.exception.ProductEntryEnvironmentException;
+import com.liferay.osb.exception.ProductEntryNameException;
+import com.liferay.osb.exception.RequiredProductEntryException;
 import com.liferay.osb.model.ExternalIdMapper;
 import com.liferay.osb.model.ExternalIdMapperConstants;
 import com.liferay.osb.model.ProductEntry;
@@ -28,7 +28,7 @@ import com.liferay.osb.service.base.ProductEntryLocalServiceBaseImpl;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
+import com.liferay.portal.kernel.model.User;
 
 import java.util.Date;
 import java.util.LinkedHashMap;

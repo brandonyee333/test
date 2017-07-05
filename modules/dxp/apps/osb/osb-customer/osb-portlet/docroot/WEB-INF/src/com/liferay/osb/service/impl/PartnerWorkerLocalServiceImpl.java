@@ -14,13 +14,13 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.osb.NoSuchPartnerWorkerException;
+import com.liferay.osb.exception.NoSuchPartnerWorkerException;
 import com.liferay.osb.model.PartnerWorker;
 import com.liferay.osb.service.base.PartnerWorkerLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.service.RoleLocalServiceUtil;
+import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 
 import java.util.List;
 

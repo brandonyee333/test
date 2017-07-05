@@ -16,7 +16,7 @@ package com.liferay.osb.service.permission;
 
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.util.OSBActionKeys;
-import com.liferay.portal.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
 
 import org.junit.Assert;
 import org.junit.Before;

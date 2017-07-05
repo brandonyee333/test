@@ -14,21 +14,21 @@
 
 package com.liferay.osb.model;
 
-import com.liferay.compat.portal.kernel.util.ArrayUtil;
-import com.liferay.compat.portal.util.PortalUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.downloads.portlet.DownloadsPortlet;
 import com.liferay.osb.securitypatch.portlet.SecurityPatchPortlet;
 import com.liferay.osb.service.AuditActionLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
-import com.liferay.portal.ModelListenerException;
+import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.audit.model.AuditEvent;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.model.BaseModel;
-import com.liferay.portal.model.BaseModelListener;
-import com.liferay.portlet.blogs.model.BlogsEntry;
-import com.liferay.portlet.expando.model.ExpandoValue;
+import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.model.BaseModelListener;
+import com.liferay.blogs.kernel.model.BlogsEntry;
+import com.liferay.expando.kernel.model.ExpandoValue;
 
 import java.util.Map;
 

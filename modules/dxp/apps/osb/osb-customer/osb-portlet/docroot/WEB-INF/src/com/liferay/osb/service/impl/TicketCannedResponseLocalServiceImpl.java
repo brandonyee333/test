@@ -14,16 +14,16 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.compat.portal.kernel.util.LocalizationUtil;
-import com.liferay.compat.portal.kernel.util.Validator;
-import com.liferay.osb.TicketCannedResponseContentException;
-import com.liferay.osb.TicketCannedResponseNameException;
+import com.liferay.portal.kernel.util.LocalizationUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.osb.exception.TicketCannedResponseContentException;
+import com.liferay.osb.exception.TicketCannedResponseNameException;
 import com.liferay.osb.model.TicketCannedResponse;
 import com.liferay.osb.service.base.TicketCannedResponseLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.model.User;
+import com.liferay.portal.kernel.model.User;
 
 import java.util.Date;
 import java.util.List;

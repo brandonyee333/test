@@ -14,7 +14,7 @@
 
 package com.liferay.osb.hook.upgrade.v3_7_7;
 
-import com.liferay.osb.AccountEntryMaximumCustomersException;
+import com.liferay.osb.exception.AccountEntryMaximumCustomersException;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.AccountCustomerConstants;
 import com.liferay.osb.model.AccountEntry;

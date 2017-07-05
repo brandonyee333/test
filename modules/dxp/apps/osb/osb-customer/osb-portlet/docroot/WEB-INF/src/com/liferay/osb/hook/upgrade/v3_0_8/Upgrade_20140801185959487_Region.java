@@ -16,7 +16,7 @@ package com.liferay.osb.hook.upgrade.v3_0_8;
 
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.portal.kernel.dao.db.DB;
-import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
+import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 
 /**
  * @author Sharon Li
@@ -34,7 +34,7 @@ public class Upgrade_20140801185959487_Region extends BaseUpgradeProcess {
 	}
 
 	protected void upgradeRegion() throws Exception {
-		DB db = DBFactoryUtil.getDB();
+		DB db = DBManagerUtil.getDB();
 
 		db.runSQLTemplate(
 			"com/liferay/osb/hook/upgrade/v3_0_8/dependencies/region.sql",

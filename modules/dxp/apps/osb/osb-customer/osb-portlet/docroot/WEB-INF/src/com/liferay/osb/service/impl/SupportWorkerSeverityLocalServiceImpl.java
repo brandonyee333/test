@@ -14,7 +14,7 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.compat.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.osb.model.SupportWorkerSeverity;
 import com.liferay.osb.service.base.SupportWorkerSeverityLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.SystemException;

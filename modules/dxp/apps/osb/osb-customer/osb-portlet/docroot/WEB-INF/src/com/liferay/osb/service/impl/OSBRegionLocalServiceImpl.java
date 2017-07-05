@@ -14,13 +14,13 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.compat.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.service.base.OSBRegionLocalServiceBaseImpl;
-import com.liferay.portal.RegionCodeException;
-import com.liferay.portal.RegionNameException;
+import com.liferay.portal.kernel.exception.RegionCodeException;
+import com.liferay.portal.kernel.exception.RegionNameException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.Region;
+import com.liferay.portal.kernel.model.Region;
 
 import java.util.List;
 

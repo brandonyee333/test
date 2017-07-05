@@ -26,7 +26,7 @@ import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

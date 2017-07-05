@@ -14,7 +14,7 @@
 
 package com.liferay.osb.hook.upgrade.v3_5_2;
 
-import com.liferay.compat.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.AuditEntry;
 import com.liferay.osb.model.AuditEntryConstants;

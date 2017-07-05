@@ -14,7 +14,7 @@
 
 package com.liferay.osb.hook.upgrade.v3_1_5;
 
-import com.liferay.compat.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.ecommerce.model.ECDocumentEntry;
 import com.liferay.ecommerce.service.ECDocumentEntryLocalServiceUtil;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;

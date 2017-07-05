@@ -14,7 +14,7 @@
 
 package com.liferay.osb.rabbitmq;
 
-import com.liferay.compat.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;

@@ -14,7 +14,7 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.osb.AppPackagePluginBundleSymbolicNameException;
+import com.liferay.osb.exception.AppPackagePluginBundleSymbolicNameException;
 import com.liferay.osb.model.AppPackage;
 import com.liferay.osb.model.AppPackagePlugin;
 import com.liferay.osb.model.AppVersion;

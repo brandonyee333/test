@@ -14,10 +14,10 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.compat.portal.util.PortalUtil;
-import com.liferay.osb.AccountEntryMaximumCustomersException;
-import com.liferay.osb.NoSuchAccountCustomerException;
-import com.liferay.osb.NoSuchAccountEntryException;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.osb.exception.AccountEntryMaximumCustomersException;
+import com.liferay.osb.exception.NoSuchAccountCustomerException;
+import com.liferay.osb.exception.NoSuchAccountEntryException;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountCustomerConstants;
 import com.liferay.osb.model.AccountEntry;
@@ -30,8 +30,8 @@ import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.RoleLocalServiceUtil;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 
 import java.util.Date;
 import java.util.List;

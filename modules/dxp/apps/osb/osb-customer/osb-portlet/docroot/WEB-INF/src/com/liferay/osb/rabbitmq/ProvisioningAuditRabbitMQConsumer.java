@@ -14,8 +14,8 @@
 
 package com.liferay.osb.rabbitmq;
 
-import com.liferay.compat.portal.kernel.util.ArrayUtil;
-import com.liferay.compat.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.osb.admin.util.AdminUtil;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AuditEntryConstants;
@@ -33,7 +33,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.model.Address;
+import com.liferay.portal.kernel.model.Address;
 
 import java.util.ArrayList;
 import java.util.Arrays;

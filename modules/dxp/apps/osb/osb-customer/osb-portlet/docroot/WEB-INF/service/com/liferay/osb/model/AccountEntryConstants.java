@@ -14,12 +14,12 @@
 
 package com.liferay.osb.model;
 
-import com.liferay.compat.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.model.ListType;
-import com.liferay.portal.service.ListTypeServiceUtil;
+import com.liferay.portal.kernel.model.ListType;
+import com.liferay.portal.kernel.service.ListTypeServiceUtil;
 
 import java.util.Locale;
 

@@ -14,19 +14,19 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.compat.portal.kernel.util.Validator;
-import com.liferay.compat.portal.util.PortalUtil;
-import com.liferay.osb.AccountCallDateException;
-import com.liferay.osb.AccountCallLengthException;
-import com.liferay.osb.AccountCallSummaryException;
-import com.liferay.osb.AccountCallTypeException;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.osb.exception.AccountCallDateException;
+import com.liferay.osb.exception.AccountCallLengthException;
+import com.liferay.osb.exception.AccountCallSummaryException;
+import com.liferay.osb.exception.AccountCallTypeException;
 import com.liferay.osb.model.AccountCall;
 import com.liferay.osb.service.base.AccountCallLocalServiceBaseImpl;
 import com.liferay.osb.util.comparator.AccountCallCreateDateComparator;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
+import com.liferay.portal.kernel.model.User;
 
 import java.util.Date;
 import java.util.List;

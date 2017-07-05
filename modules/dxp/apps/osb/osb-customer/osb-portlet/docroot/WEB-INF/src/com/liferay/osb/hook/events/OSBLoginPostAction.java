@@ -14,7 +14,7 @@
 
 package com.liferay.osb.hook.events;
 
-import com.liferay.compat.portal.util.PortalUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.ecommerce.model.ECDocumentEntry;
 import com.liferay.ecommerce.service.ECDocumentEntryLocalServiceUtil;
 import com.liferay.osb.marketplace.util.ECDocumentEntryExtraSettings;
@@ -24,8 +24,8 @@ import com.liferay.osb.service.CorpProjectLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.events.Action;
 import com.liferay.portal.kernel.events.ActionException;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

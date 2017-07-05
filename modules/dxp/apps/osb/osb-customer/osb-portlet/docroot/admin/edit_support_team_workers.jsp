@@ -79,7 +79,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 
 	if (tabs3.equals("current")) {
 		userParams.put("status", WorkflowConstants.STATUS_ANY);
-		userParams.put("usersSupportWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.service.persistence.UserFinder.joinBySupportWorkerTeam"), new Long(supportTeam.getSupportTeamId())));
+		userParams.put("usersSupportWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinBySupportWorkerTeam"), new Long(supportTeam.getSupportTeamId())));
 	}
 	%>
 
@@ -104,7 +104,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 			/>
 
 			<liferay-ui:search-container-row
-				className="com.liferay.portal.model.User"
+				className="com.liferay.portal.kernel.model.User"
 				escapedModel="<%= true %>"
 				keyProperty="userId"
 				modelVar="curUser"

@@ -14,7 +14,7 @@
 
 package com.liferay.osb.hook.upgrade.v3_2_3;
 
-import com.liferay.compat.portal.util.PortalUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.AuditEntry;
 import com.liferay.osb.model.AuditEntryConstants;
@@ -25,7 +25,7 @@ import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.service.ClassNameLocalServiceUtil;
+import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 
 import java.text.SimpleDateFormat;
 

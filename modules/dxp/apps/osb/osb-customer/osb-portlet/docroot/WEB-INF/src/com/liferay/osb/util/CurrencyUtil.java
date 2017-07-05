@@ -14,12 +14,12 @@
 
 package com.liferay.osb.util;
 
-import com.liferay.compat.portal.kernel.util.BigDecimalUtil;
-import com.liferay.compat.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.BigDecimalUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.Country;
-import com.liferay.portal.service.CountryServiceUtil;
+import com.liferay.portal.kernel.model.Country;
+import com.liferay.portal.kernel.service.CountryServiceUtil;
 
 import java.math.RoundingMode;
 

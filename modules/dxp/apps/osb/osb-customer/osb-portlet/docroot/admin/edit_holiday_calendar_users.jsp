@@ -60,7 +60,7 @@ portletURL.setParameter("holidayCalendarId", String.valueOf(holidayCalendarId));
 
 	if (tabs3.equals("current")) {
 		userParams.put("status", WorkflowConstants.STATUS_ANY);
-		userParams.put("usersSupportWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.service.persistence.UserFinder.joinByHolidayCalendar"), new Long(holidayCalendarId)));
+		userParams.put("usersSupportWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinByHolidayCalendar"), new Long(holidayCalendarId)));
 	}
 	%>
 
@@ -85,7 +85,7 @@ portletURL.setParameter("holidayCalendarId", String.valueOf(holidayCalendarId));
 			/>
 
 			<liferay-ui:search-container-row
-				className="com.liferay.portal.model.User"
+				className="com.liferay.portal.kernel.model.User"
 				escapedModel="<%= true %>"
 				keyProperty="userId"
 				modelVar="curUser"

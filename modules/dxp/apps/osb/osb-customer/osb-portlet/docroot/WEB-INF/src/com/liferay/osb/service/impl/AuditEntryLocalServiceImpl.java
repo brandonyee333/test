@@ -14,9 +14,9 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.compat.portal.kernel.util.ArrayUtil;
-import com.liferay.compat.portal.kernel.util.Validator;
-import com.liferay.compat.portal.util.PortalUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.model.AuditEntry;
 import com.liferay.osb.model.AuditEntryConstants;
 import com.liferay.osb.service.base.AuditEntryLocalServiceBaseImpl;

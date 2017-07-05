@@ -14,7 +14,7 @@
 
 package com.liferay.osb.admin.util;
 
-import com.liferay.compat.portal.kernel.search.BaseIndexer;
+import com.liferay.portal.kernel.search.BaseIndexer;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;

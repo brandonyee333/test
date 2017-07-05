@@ -14,9 +14,9 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.osb.DuplicateHolidayEntryException;
-import com.liferay.osb.HolidayEntryDateException;
-import com.liferay.osb.HolidayEntryStartDateLaterThanEndDateException;
+import com.liferay.osb.exception.DuplicateHolidayEntryException;
+import com.liferay.osb.exception.HolidayEntryDateException;
+import com.liferay.osb.exception.HolidayEntryStartDateLaterThanEndDateException;
 import com.liferay.osb.model.HolidayEntry;
 import com.liferay.osb.model.impl.HolidayEntryImpl;
 import com.liferay.osb.service.base.HolidayEntryLocalServiceBaseImpl;

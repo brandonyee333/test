@@ -51,7 +51,7 @@ String selectAll = "javascript:";
 		/>
 
 		<liferay-ui:search-container-row
-			className="com.liferay.portal.model.ListType"
+			className="com.liferay.portal.kernel.model.ListType"
 			modelVar="componentType"
 		>
 

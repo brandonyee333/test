@@ -14,7 +14,7 @@
 
 package com.liferay.osb.hook.upgrade.v3_6_0;
 
-import com.liferay.osb.NoSuchProductEntryException;
+import com.liferay.osb.exception.NoSuchProductEntryException;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.LicenseEntryConstants;
 import com.liferay.osb.model.OfferingEntry;

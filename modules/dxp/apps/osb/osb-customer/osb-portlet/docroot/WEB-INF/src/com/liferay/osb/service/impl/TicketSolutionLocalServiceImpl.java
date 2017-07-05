@@ -14,15 +14,15 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.compat.portal.kernel.util.ArrayUtil;
-import com.liferay.compat.portal.kernel.util.ListUtil;
-import com.liferay.compat.portal.kernel.util.Validator;
-import com.liferay.osb.TicketEntrySubcomponentException;
-import com.liferay.osb.TicketLinkTypeException;
-import com.liferay.osb.TicketSolutionBodyException;
-import com.liferay.osb.TicketSolutionStatusException;
-import com.liferay.osb.TicketSolutionStatusMessageException;
-import com.liferay.osb.TicketSolutionSummaryException;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.osb.exception.TicketEntrySubcomponentException;
+import com.liferay.osb.exception.TicketLinkTypeException;
+import com.liferay.osb.exception.TicketSolutionBodyException;
+import com.liferay.osb.exception.TicketSolutionStatusException;
+import com.liferay.osb.exception.TicketSolutionStatusMessageException;
+import com.liferay.osb.exception.TicketSolutionSummaryException;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AuditEntryConstants;
 import com.liferay.osb.model.TicketAttachment;
@@ -45,8 +45,8 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.File;
 

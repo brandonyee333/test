@@ -14,7 +14,7 @@
 
 package com.liferay.osb.hook.upgrade.v3_5_7;
 
-import com.liferay.osb.NoSuchAppEntryException;
+import com.liferay.osb.exception.NoSuchAppEntryException;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.AppEntry;
 import com.liferay.osb.model.AssetReceipt;

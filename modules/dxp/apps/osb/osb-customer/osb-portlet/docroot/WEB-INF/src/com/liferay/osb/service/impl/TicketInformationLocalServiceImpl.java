@@ -14,7 +14,7 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.compat.portal.util.PortalUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.model.AuditEntryConstants;
 import com.liferay.osb.model.TicketEntry;
 import com.liferay.osb.model.TicketInformation;
@@ -23,7 +23,7 @@ import com.liferay.osb.service.base.TicketInformationLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.ArrayList;
 import java.util.Date;

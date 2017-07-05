@@ -14,8 +14,8 @@
 
 package com.liferay.osb.support.search;
 
-import com.liferay.compat.portal.kernel.util.ArrayUtil;
-import com.liferay.compat.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.model.SupportTeam;
 import com.liferay.osb.model.TicketEntryConstants;
 import com.liferay.osb.model.TicketFlagConstants;

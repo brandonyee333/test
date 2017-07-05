@@ -14,7 +14,7 @@
 
 package com.liferay.osb.hook.upgrade.v3_2_2;
 
-import com.liferay.compat.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.TicketInformationConstants;
 import com.liferay.osb.model.impl.TicketInformationModelImpl;

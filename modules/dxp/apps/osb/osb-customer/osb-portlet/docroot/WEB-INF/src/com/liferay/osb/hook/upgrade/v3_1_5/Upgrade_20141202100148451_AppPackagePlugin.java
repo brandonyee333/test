@@ -14,7 +14,7 @@
 
 package com.liferay.osb.hook.upgrade.v3_1_5;
 
-import com.liferay.compat.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.util.ContextUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;

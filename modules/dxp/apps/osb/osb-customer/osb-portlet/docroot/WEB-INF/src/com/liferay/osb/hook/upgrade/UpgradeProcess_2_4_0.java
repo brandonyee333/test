@@ -14,7 +14,7 @@
 
 package com.liferay.osb.hook.upgrade;
 
-import com.liferay.compat.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.osb.hook.upgrade.v2_4_0.UpgradeExternalIdMapper;
 import com.liferay.osb.hook.upgrade.v2_4_0.UpgradeTrainingCertificate;
 import com.liferay.osb.hook.upgrade.v2_4_0.UpgradeTrainingCustomer;

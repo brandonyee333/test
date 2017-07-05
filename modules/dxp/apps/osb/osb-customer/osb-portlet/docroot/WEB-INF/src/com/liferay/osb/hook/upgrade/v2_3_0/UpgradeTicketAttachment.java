@@ -14,13 +14,13 @@
 
 package com.liferay.osb.hook.upgrade.v2_3_0;
 
-import com.liferay.compat.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.osb.model.TicketAttachment;
 import com.liferay.osb.service.TicketAttachmentLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
-import com.liferay.portal.model.CompanyConstants;
-import com.liferay.portlet.documentlibrary.store.DLStoreUtil;
+import com.liferay.portal.kernel.model.CompanyConstants;
+import com.liferay.document.library.kernel.store.DLStoreUtil;
 
 import java.util.List;
 

@@ -14,11 +14,11 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.compat.portal.kernel.util.StringUtil;
-import com.liferay.compat.portal.kernel.util.Time;
-import com.liferay.osb.NoSuchSupportTeamException;
-import com.liferay.osb.NoSuchSupportWorkerException;
-import com.liferay.osb.SupportWorkerMaxWorkException;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Time;
+import com.liferay.osb.exception.NoSuchSupportTeamException;
+import com.liferay.osb.exception.NoSuchSupportWorkerException;
+import com.liferay.osb.exception.SupportWorkerMaxWorkException;
 import com.liferay.osb.model.SupportResponse;
 import com.liferay.osb.model.SupportResponseConstants;
 import com.liferay.osb.model.SupportTeam;

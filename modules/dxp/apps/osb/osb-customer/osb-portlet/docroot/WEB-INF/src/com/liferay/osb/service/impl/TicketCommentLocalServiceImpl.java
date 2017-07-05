@@ -14,16 +14,16 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.compat.portal.kernel.util.ArrayUtil;
-import com.liferay.compat.portal.kernel.util.StringUtil;
-import com.liferay.compat.portal.kernel.util.Time;
-import com.liferay.compat.portal.kernel.util.Validator;
-import com.liferay.compat.portal.util.PortalUtil;
-import com.liferay.osb.MaximumDraftTicketCommentException;
-import com.liferay.osb.TicketCommentBodyException;
-import com.liferay.osb.TicketCommentPendingTypeException;
-import com.liferay.osb.TicketCommentVisibilityException;
-import com.liferay.osb.TicketEntryClosedException;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Time;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.osb.exception.MaximumDraftTicketCommentException;
+import com.liferay.osb.exception.TicketCommentBodyException;
+import com.liferay.osb.exception.TicketCommentPendingTypeException;
+import com.liferay.osb.exception.TicketCommentVisibilityException;
+import com.liferay.osb.exception.TicketEntryClosedException;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AuditEntryConstants;
 import com.liferay.osb.model.SupportResponse;
@@ -49,8 +49,8 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.workflow.WorkflowException;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.ArrayList;
 import java.util.Date;

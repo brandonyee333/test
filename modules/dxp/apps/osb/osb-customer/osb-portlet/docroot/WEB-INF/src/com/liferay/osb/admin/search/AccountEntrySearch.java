@@ -14,7 +14,7 @@
 
 package com.liferay.osb.admin.search;
 
-import com.liferay.compat.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 

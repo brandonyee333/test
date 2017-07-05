@@ -14,7 +14,7 @@
 
 package com.liferay.osb.support.messaging;
 
-import com.liferay.compat.portal.kernel.util.Time;
+import com.liferay.portal.kernel.util.Time;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.LicenseKey;

@@ -14,7 +14,7 @@
 
 package com.liferay.osb.service.permission;
 
-import com.liferay.osb.NoSuchSupportWorkerException;
+import com.liferay.osb.exception.NoSuchSupportWorkerException;
 import com.liferay.osb.model.SupportTeam;
 import com.liferay.osb.model.SupportWorker;
 import com.liferay.osb.model.SupportWorkerConstants;
@@ -22,9 +22,9 @@ import com.liferay.osb.service.SupportWorkerLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.security.auth.PrincipalException;
-import com.liferay.portal.security.permission.PermissionChecker;
-import com.liferay.portal.service.RoleLocalServiceUtil;
+import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 
 /**
  * @author Brent Krone-Schmidt

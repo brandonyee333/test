@@ -14,7 +14,7 @@
 
 package com.liferay.osb.support.search;
 
-import com.liferay.compat.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.osb.model.TicketFeedback;
 import com.liferay.osb.util.comparator.TicketFeedbackCreateDateComparator;
 import com.liferay.portal.kernel.dao.search.SearchContainer;

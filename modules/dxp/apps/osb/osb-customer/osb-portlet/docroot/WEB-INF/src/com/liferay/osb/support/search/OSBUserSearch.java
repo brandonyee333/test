@@ -17,10 +17,10 @@ package com.liferay.osb.support.search;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.model.User;
-import com.liferay.portal.util.comparator.UserEmailAddressComparator;
-import com.liferay.portal.util.comparator.UserFirstNameComparator;
-import com.liferay.portal.util.comparator.UserLastNameComparator;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.util.comparator.UserEmailAddressComparator;
+import com.liferay.portal.kernel.util.comparator.UserFirstNameComparator;
+import com.liferay.portal.kernel.util.comparator.UserLastNameComparator;
 
 import java.util.ArrayList;
 import java.util.HashMap;

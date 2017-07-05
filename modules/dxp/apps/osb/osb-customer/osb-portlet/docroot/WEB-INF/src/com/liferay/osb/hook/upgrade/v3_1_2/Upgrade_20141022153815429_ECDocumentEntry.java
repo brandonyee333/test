@@ -14,7 +14,7 @@
 
 package com.liferay.osb.hook.upgrade.v3_1_2;
 
-import com.liferay.compat.portal.kernel.util.BigDecimalUtil;
+import com.liferay.portal.kernel.util.BigDecimalUtil;
 import com.liferay.ecommerce.access.messaging.ECAccessUtil;
 import com.liferay.ecommerce.model.ECDocumentEntry;
 import com.liferay.ecommerce.service.ECDocumentEntryLocalServiceUtil;
@@ -28,7 +28,7 @@ import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
-import com.liferay.portal.model.Country;
+import com.liferay.portal.kernel.model.Country;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

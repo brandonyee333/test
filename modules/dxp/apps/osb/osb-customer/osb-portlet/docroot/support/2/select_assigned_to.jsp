@@ -206,10 +206,10 @@ if (liferayIncOrg) {
 					LinkedHashMap userParams = new LinkedHashMap();
 
 					if (liferayIncOrg) {
-						userParams.put("usersTicketWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.service.persistence.UserFinder.joinByTicketWorker"), null));
+						userParams.put("usersTicketWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinByTicketWorker"), null));
 					}
 					else {
-						userParams.put("usersPartnerEntryWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.service.persistence.UserFinder.joinByPartnerEntryWorkers"), user.getUserId()));
+						userParams.put("usersPartnerEntryWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinByPartnerEntryWorkers"), user.getUserId()));
 					}
 					%>
 
@@ -232,7 +232,7 @@ if (liferayIncOrg) {
 							/>
 
 							<liferay-ui:search-container-row
-								className="com.liferay.portal.model.User"
+								className="com.liferay.portal.kernel.model.User"
 								escapedModel="<%= true %>"
 								keyProperty="userId"
 								modelVar="curUser"

@@ -14,15 +14,15 @@
 
 package com.liferay.osb.servlet;
 
-import com.liferay.compat.portal.kernel.util.ListUtil;
-import com.liferay.compat.portal.kernel.util.StringUtil;
-import com.liferay.compat.portal.kernel.util.Validator;
-import com.liferay.osb.LicenseKeyRegistrationException;
-import com.liferay.osb.LicenseKeyServerIdException;
-import com.liferay.osb.MaximumLicenseKeyException;
-import com.liferay.osb.NoSuchAssetReceiptLicenseException;
-import com.liferay.osb.NoSuchOrderEntryException;
-import com.liferay.osb.OfferingEntryStatusException;
+import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.osb.exception.LicenseKeyRegistrationException;
+import com.liferay.osb.exception.LicenseKeyServerIdException;
+import com.liferay.osb.exception.MaximumLicenseKeyException;
+import com.liferay.osb.exception.NoSuchAssetReceiptLicenseException;
+import com.liferay.osb.exception.NoSuchOrderEntryException;
+import com.liferay.osb.exception.OfferingEntryStatusException;
 import com.liferay.osb.admin.util.KeyGenerator;
 import com.liferay.osb.license.util.LicenseUtil;
 import com.liferay.osb.model.AccountEntry;
@@ -56,7 +56,7 @@ import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portlet.asset.model.AssetEntry;
+import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.util.Encryptor;
 
 import java.io.IOException;

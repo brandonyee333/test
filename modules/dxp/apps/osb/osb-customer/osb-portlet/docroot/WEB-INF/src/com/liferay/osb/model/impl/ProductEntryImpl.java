@@ -14,8 +14,8 @@
 
 package com.liferay.osb.model.impl;
 
-import com.liferay.compat.portal.kernel.util.Validator;
-import com.liferay.compat.portal.util.PortalUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.model.ExternalIdMapper;
 import com.liferay.osb.model.ExternalIdMapperConstants;
 import com.liferay.osb.model.LicenseEntry;
@@ -26,8 +26,8 @@ import com.liferay.osb.service.LicenseEntryLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.model.ListType;
-import com.liferay.portal.service.ListTypeServiceUtil;
+import com.liferay.portal.kernel.model.ListType;
+import com.liferay.portal.kernel.service.ListTypeServiceUtil;
 
 import java.util.List;
 

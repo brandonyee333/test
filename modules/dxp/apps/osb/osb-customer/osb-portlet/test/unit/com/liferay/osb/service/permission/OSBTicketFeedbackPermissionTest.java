@@ -14,7 +14,7 @@
 
 package com.liferay.osb.service.permission;
 
-import com.liferay.compat.portal.kernel.util.Time;
+import com.liferay.portal.kernel.util.Time;
 import com.liferay.osb.model.TicketComment;
 import com.liferay.osb.model.TicketEntry;
 import com.liferay.osb.model.TicketEntryConstants;
@@ -28,8 +28,8 @@ import com.liferay.osb.service.TicketWorkerLocalServiceUtil;
 import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.VisibilityConstants;
-import com.liferay.portal.security.permission.PermissionChecker;
-import com.liferay.portal.service.OrganizationLocalServiceUtil;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
 
 import java.util.Date;
 

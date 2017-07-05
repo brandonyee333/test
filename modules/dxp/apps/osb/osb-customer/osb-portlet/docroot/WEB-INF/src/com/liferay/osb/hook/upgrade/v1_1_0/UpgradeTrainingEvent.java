@@ -14,14 +14,14 @@
 
 package com.liferay.osb.hook.upgrade.v1_1_0;
 
-import com.liferay.compat.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.osb.model.TrainingEvent;
 import com.liferay.osb.model.TrainingLocation;
 import com.liferay.osb.service.TrainingEventLocalServiceUtil;
 import com.liferay.osb.service.TrainingLocationLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
-import com.liferay.portal.model.Address;
-import com.liferay.portal.service.AddressLocalServiceUtil;
+import com.liferay.portal.kernel.model.Address;
+import com.liferay.portal.kernel.service.AddressLocalServiceUtil;
 
 import java.util.List;
 

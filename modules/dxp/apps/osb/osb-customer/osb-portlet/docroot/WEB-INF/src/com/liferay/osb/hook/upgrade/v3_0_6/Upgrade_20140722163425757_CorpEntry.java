@@ -14,11 +14,11 @@
 
 package com.liferay.osb.hook.upgrade.v3_0_6;
 
-import com.liferay.compat.portal.util.PortalUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.model.Organization;
+import com.liferay.portal.kernel.model.Organization;
 
 /**
  * @author Joan Kim

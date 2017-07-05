@@ -14,9 +14,9 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.compat.portal.kernel.util.ArrayUtil;
-import com.liferay.osb.NoSuchAccountEntryException;
-import com.liferay.osb.TicketFlagTypeException;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.osb.exception.NoSuchAccountEntryException;
+import com.liferay.osb.exception.TicketFlagTypeException;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.TicketFlag;
 import com.liferay.osb.model.TicketFlagConstants;

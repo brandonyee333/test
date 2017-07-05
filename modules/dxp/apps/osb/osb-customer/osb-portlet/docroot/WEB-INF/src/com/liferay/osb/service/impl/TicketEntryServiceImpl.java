@@ -14,8 +14,8 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.compat.portal.kernel.util.Validator;
-import com.liferay.osb.TicketEntryStatusException;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.osb.exception.TicketEntryStatusException;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.TicketAttachment;
 import com.liferay.osb.model.TicketComment;
@@ -38,8 +38,8 @@ import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.portal.security.permission.ActionKeys;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.ArrayList;
 import java.util.Date;

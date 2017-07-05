@@ -14,16 +14,16 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.compat.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.service.base.OSBCountryLocalServiceBaseImpl;
-import com.liferay.portal.CountryA2Exception;
-import com.liferay.portal.CountryA3Exception;
-import com.liferay.portal.CountryIddException;
-import com.liferay.portal.CountryNameException;
-import com.liferay.portal.CountryNumberException;
+import com.liferay.portal.kernel.exception.CountryA2Exception;
+import com.liferay.portal.kernel.exception.CountryA3Exception;
+import com.liferay.portal.kernel.exception.CountryIddException;
+import com.liferay.portal.kernel.exception.CountryNameException;
+import com.liferay.portal.kernel.exception.CountryNumberException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.Country;
+import com.liferay.portal.kernel.model.Country;
 
 import java.util.List;
 

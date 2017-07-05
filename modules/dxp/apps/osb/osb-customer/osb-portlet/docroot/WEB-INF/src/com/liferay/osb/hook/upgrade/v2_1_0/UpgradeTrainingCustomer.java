@@ -14,8 +14,8 @@
 
 package com.liferay.osb.hook.upgrade.v2_1_0;
 
-import com.liferay.compat.portal.kernel.upgrade.UpgradeProcess;
-import com.liferay.compat.portal.util.PortalUtil;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.model.TrainingEvent;
 
 /**

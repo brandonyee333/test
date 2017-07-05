@@ -14,7 +14,7 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.compat.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.osb.model.SupportTeam;
 import com.liferay.osb.model.SupportTeamLanguage;
 import com.liferay.osb.service.base.SupportTeamLanguageLocalServiceBaseImpl;

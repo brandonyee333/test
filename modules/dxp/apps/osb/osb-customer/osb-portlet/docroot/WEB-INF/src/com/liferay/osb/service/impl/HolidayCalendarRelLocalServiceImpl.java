@@ -14,7 +14,7 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.osb.NoSuchHolidayCalendarRelException;
+import com.liferay.osb.exception.NoSuchHolidayCalendarRelException;
 import com.liferay.osb.model.HolidayCalendarRel;
 import com.liferay.osb.service.base.HolidayCalendarRelLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;

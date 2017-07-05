@@ -14,12 +14,12 @@
 
 package com.liferay.osb.util;
 
-import com.liferay.compat.portal.kernel.util.Time;
+import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
-import com.liferay.portlet.documentlibrary.store.DLStoreUtil;
+import com.liferay.document.library.kernel.store.DLStoreUtil;
 
 import java.io.File;
 

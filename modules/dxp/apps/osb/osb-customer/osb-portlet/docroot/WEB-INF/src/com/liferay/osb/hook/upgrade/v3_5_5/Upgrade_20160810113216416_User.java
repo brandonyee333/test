@@ -18,7 +18,7 @@ import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

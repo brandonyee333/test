@@ -14,7 +14,7 @@
 
 package com.liferay.osb.hook.upgrade.v2_4_7;
 
-import com.liferay.compat.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.osb.model.TrainingCustomerConstants;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 

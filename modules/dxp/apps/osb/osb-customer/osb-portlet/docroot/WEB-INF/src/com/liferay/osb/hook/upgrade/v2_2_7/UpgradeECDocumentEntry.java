@@ -14,7 +14,7 @@
 
 package com.liferay.osb.hook.upgrade.v2_2_7;
 
-import com.liferay.compat.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
 /**
  * @author Ryan Park

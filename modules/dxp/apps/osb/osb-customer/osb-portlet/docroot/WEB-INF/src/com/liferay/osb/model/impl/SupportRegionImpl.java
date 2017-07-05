@@ -14,12 +14,12 @@
 
 package com.liferay.osb.model.impl;
 
-import com.liferay.compat.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.model.SupportTeam;
 import com.liferay.osb.service.SupportTeamLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 
 import java.util.List;
 import java.util.TimeZone;

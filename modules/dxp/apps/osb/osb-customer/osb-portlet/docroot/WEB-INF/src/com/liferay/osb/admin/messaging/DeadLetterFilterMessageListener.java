@@ -14,7 +14,7 @@
 
 package com.liferay.osb.admin.messaging;
 
-import com.liferay.compat.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.admin.util.AdminUtil;
 import com.liferay.osb.rabbitmq.DeadLetterFilterRabbitMQConsumer;
 import com.liferay.osb.util.PortletPropsValues;

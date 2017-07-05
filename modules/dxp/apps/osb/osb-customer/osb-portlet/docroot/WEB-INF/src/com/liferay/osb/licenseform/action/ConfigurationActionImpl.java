@@ -14,7 +14,7 @@
 
 package com.liferay.osb.licenseform.action;
 
-import com.liferay.compat.portal.kernel.portlet.DefaultConfigurationAction;
+import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ParamUtil;

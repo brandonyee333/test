@@ -14,7 +14,7 @@
 
 package com.liferay.osb.support.util.parser;
 
-import com.liferay.compat.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.TicketEntryLocalServiceUtil;

@@ -19,7 +19,7 @@ import com.liferay.osb.model.TicketEntry;
 import com.liferay.osb.model.impl.TicketWorkerImpl;
 import com.liferay.osb.service.TicketWorkerLocalServiceUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
-import com.liferay.portal.service.SubscriptionLocalServiceUtil;
+import com.liferay.portal.kernel.service.SubscriptionLocalServiceUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

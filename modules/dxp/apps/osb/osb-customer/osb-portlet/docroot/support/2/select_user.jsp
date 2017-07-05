@@ -41,15 +41,15 @@ portletURL.setParameter("callback", callback);
 
 				AccountEntry accountEntry = AccountEntryServiceUtil.getAccountEntry(ticketEntry.getAccountEntryId());
 
-				OSBCustomSQLParam osbCustomSQLParam = new OSBCustomSQLParam("usersAccountCustomerPartnerWorker", CustomSQLUtil.get("com.liferay.portal.service.persistence.UserFinder.joinByAccountCustomerPartnerWorker"), new Object[] {ticketEntry.getAccountEntryId(), new int[] {AccountCustomerConstants.ROLE_DEVELOPER, AccountCustomerConstants.ROLE_MANAGER}, accountEntry.getPartnerEntryId(), new int[] {PartnerWorkerConstants.ROLE_MANAGER, PartnerWorkerConstants.ROLE_MEMBER}});
+				OSBCustomSQLParam osbCustomSQLParam = new OSBCustomSQLParam("usersAccountCustomerPartnerWorker", CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinByAccountCustomerPartnerWorker"), new Object[] {ticketEntry.getAccountEntryId(), new int[] {AccountCustomerConstants.ROLE_DEVELOPER, AccountCustomerConstants.ROLE_MANAGER}, accountEntry.getPartnerEntryId(), new int[] {PartnerWorkerConstants.ROLE_MANAGER, PartnerWorkerConstants.ROLE_MEMBER}});
 
 				userParams.put("usersAccountCustomerPartnerWorker", osbCustomSQLParam);
 			}
 			else if (callback.equals("selectCreateUser")) {
-				userParams.put("accountCreateUsers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.service.persistence.UserFinder.joinByAccountEntryCreateUser"), StringPool.BLANK));
+				userParams.put("accountCreateUsers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinByAccountEntryCreateUser"), StringPool.BLANK));
 			}
 			else {
-				userParams.put("accountModifiedUsers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.service.persistence.UserFinder.joinByAccountEntryModifiedUser"), StringPool.BLANK));
+				userParams.put("accountModifiedUsers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinByAccountEntryModifiedUser"), StringPool.BLANK));
 			}
 			%>
 
@@ -72,7 +72,7 @@ portletURL.setParameter("callback", callback);
 					/>
 
 					<liferay-ui:search-container-row
-						className="com.liferay.portal.model.User"
+						className="com.liferay.portal.kernel.model.User"
 						keyProperty="userId"
 						modelVar="curUser"
 					>

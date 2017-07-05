@@ -14,9 +14,9 @@
 
 package com.liferay.osb.util.mvc;
 
-import com.liferay.compat.portal.kernel.util.StringUtil;
-import com.liferay.compat.portal.kernel.util.Validator;
-import com.liferay.compat.util.bridges.mvc.MVCPortlet;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.util.bridges.mvc.MVCPortlet;
 import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.portal.kernel.portlet.LiferayPortletMode;
 import com.liferay.portal.kernel.util.CharPool;

@@ -14,10 +14,10 @@
 
 package com.liferay.osb.model;
 
-import com.liferay.compat.portal.kernel.util.Validator;
-import com.liferay.compat.portal.util.PortalUtil;
-import com.liferay.portal.model.ListType;
-import com.liferay.portal.service.ListTypeServiceUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.model.ListType;
+import com.liferay.portal.kernel.service.ListTypeServiceUtil;
 
 /**
  * @author Kyle Bischof

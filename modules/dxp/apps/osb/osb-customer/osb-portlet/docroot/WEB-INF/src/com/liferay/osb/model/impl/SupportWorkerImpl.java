@@ -14,8 +14,8 @@
 
 package com.liferay.osb.model.impl;
 
-import com.liferay.compat.portal.kernel.util.Time;
-import com.liferay.osb.NoSuchSupportLaborException;
+import com.liferay.portal.kernel.util.Time;
+import com.liferay.osb.exception.NoSuchSupportLaborException;
 import com.liferay.osb.model.SupportLabor;
 import com.liferay.osb.model.SupportLaborConstants;
 import com.liferay.osb.model.SupportTeam;
@@ -29,11 +29,11 @@ import com.liferay.osb.service.SupportTeamLocalServiceUtil;
 import com.liferay.osb.service.SupportWorkerAccountTierLocalServiceUtil;
 import com.liferay.osb.service.SupportWorkerComponentLocalServiceUtil;
 import com.liferay.osb.service.SupportWorkerSeverityLocalServiceUtil;
-import com.liferay.portal.NoSuchUserException;
+import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;

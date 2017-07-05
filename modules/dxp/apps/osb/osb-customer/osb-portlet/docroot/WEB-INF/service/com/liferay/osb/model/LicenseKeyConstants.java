@@ -15,8 +15,8 @@
 package com.liferay.osb.model;
 
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.model.ListType;
-import com.liferay.portal.service.ListTypeServiceUtil;
+import com.liferay.portal.kernel.model.ListType;
+import com.liferay.portal.kernel.service.ListTypeServiceUtil;
 
 /**
  * @author Kyle Bischof

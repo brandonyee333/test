@@ -18,8 +18,8 @@ import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.service.OrderEntryLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portlet.asset.model.AssetRenderer;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.asset.kernel.model.AssetRenderer;
 
 /**
  * @author Amos Fong

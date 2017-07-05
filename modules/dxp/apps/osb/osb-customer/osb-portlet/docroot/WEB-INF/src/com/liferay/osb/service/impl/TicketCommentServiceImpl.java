@@ -14,7 +14,7 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.osb.TicketCommentBodyException;
+import com.liferay.osb.exception.TicketCommentBodyException;
 import com.liferay.osb.model.TicketComment;
 import com.liferay.osb.model.TicketSolutionConstants;
 import com.liferay.osb.service.base.TicketCommentServiceBaseImpl;
@@ -28,9 +28,9 @@ import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.portal.security.auth.PrincipalException;
-import com.liferay.portal.security.permission.ActionKeys;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.File;
 

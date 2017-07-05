@@ -76,16 +76,16 @@ portletURL.setParameter("ticketEntryId", String.valueOf(ticketEntryId));
 
 				if (tabs2.equals("current")) {
 					userParams.put("status", WorkflowConstants.STATUS_ANY);
-					userParams.put("usersTicketWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.service.persistence.UserFinder.joinByTicketWorkerEntries"), new Long(ticketEntry.getTicketEntryId())));
+					userParams.put("usersTicketWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinByTicketWorkerEntries"), new Long(ticketEntry.getTicketEntryId())));
 				}
 				else if (liferayIncOrg) {
-					userParams.put("availableTicketWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.service.persistence.UserFinder.joinByAvailableTicketWorkers"), new Long(OSBConstants.ORGANIZATION_LIFERAY_INC_ID)));
+					userParams.put("availableTicketWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinByAvailableTicketWorkers"), new Long(OSBConstants.ORGANIZATION_LIFERAY_INC_ID)));
 				}
 				else {
 					AccountEntry accountEntry = ticketEntry.getAccountEntry();
 
 					if (accountEntry.isPartnerManagedSupport()) {
-						userParams.put("usersPartnerWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.service.persistence.UserFinder.joinByPartnerWorker"), new Long(accountEntry.getPartnerEntryId())));
+						userParams.put("usersPartnerWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinByPartnerWorker"), new Long(accountEntry.getPartnerEntryId())));
 					}
 				}
 				%>
@@ -111,7 +111,7 @@ portletURL.setParameter("ticketEntryId", String.valueOf(ticketEntryId));
 						/>
 
 						<liferay-ui:search-container-row
-							className="com.liferay.portal.model.User"
+							className="com.liferay.portal.kernel.model.User"
 							escapedModel="<%= true %>"
 							keyProperty="userId"
 							modelVar="curUser"

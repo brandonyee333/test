@@ -44,7 +44,7 @@
 				<%
 				LinkedHashMap params = new LinkedHashMap();
 
-				params.put("usersSupportWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.service.persistence.UserFinder.joinBySupportWorker"), StringPool.BLANK));
+				params.put("usersSupportWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinBySupportWorker"), StringPool.BLANK));
 
 				List<User> users = UserLocalServiceUtil.search(company.getCompanyId(), null, WorkflowConstants.STATUS_APPROVED, params, QueryUtil.ALL_POS, QueryUtil.ALL_POS, new UserFirstNameComparator(true));
 

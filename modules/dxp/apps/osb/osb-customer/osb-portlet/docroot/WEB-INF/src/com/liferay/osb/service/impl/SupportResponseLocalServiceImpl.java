@@ -14,17 +14,17 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.compat.portal.kernel.util.Validator;
-import com.liferay.osb.DuplicateSupportResponseException;
-import com.liferay.osb.RequiredSupportResponseException;
-import com.liferay.osb.SupportResponseNameException;
-import com.liferay.osb.SupportResponseSupportLevelException;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.osb.exception.DuplicateSupportResponseException;
+import com.liferay.osb.exception.RequiredSupportResponseException;
+import com.liferay.osb.exception.SupportResponseNameException;
+import com.liferay.osb.exception.SupportResponseSupportLevelException;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.SupportResponse;
 import com.liferay.osb.service.base.SupportResponseLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
+import com.liferay.portal.kernel.model.User;
 
 import java.util.Date;
 import java.util.List;

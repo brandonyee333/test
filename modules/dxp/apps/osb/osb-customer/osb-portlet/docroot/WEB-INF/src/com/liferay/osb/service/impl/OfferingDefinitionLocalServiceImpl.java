@@ -14,14 +14,14 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.osb.DuplicateOfferingDefinitionException;
-import com.liferay.osb.RequiredOfferingDefinitionException;
+import com.liferay.osb.exception.DuplicateOfferingDefinitionException;
+import com.liferay.osb.exception.RequiredOfferingDefinitionException;
 import com.liferay.osb.model.OfferingDefinition;
 import com.liferay.osb.service.base.OfferingDefinitionLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
+import com.liferay.portal.kernel.model.User;
 
 import java.util.Date;
 import java.util.List;

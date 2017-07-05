@@ -14,19 +14,19 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.compat.portal.kernel.util.LocaleUtil;
-import com.liferay.compat.portal.kernel.util.Validator;
-import com.liferay.compat.portal.util.PortalUtil;
-import com.liferay.osb.ContractEntryContentException;
-import com.liferay.osb.NoSuchContractEntryException;
+import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.osb.exception.ContractEntryContentException;
+import com.liferay.osb.exception.NoSuchContractEntryException;
 import com.liferay.osb.model.ContractEntry;
 import com.liferay.osb.service.base.ContractEntryLocalServiceBaseImpl;
 import com.liferay.osb.util.comparator.ContractEntryVersionComparator;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.Date;
 import java.util.List;

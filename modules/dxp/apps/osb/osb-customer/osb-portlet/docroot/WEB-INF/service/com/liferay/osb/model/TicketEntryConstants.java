@@ -14,9 +14,9 @@
 
 package com.liferay.osb.model;
 
-import com.liferay.compat.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.model.ListType;
-import com.liferay.portal.service.ListTypeServiceUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.model.ListType;
+import com.liferay.portal.kernel.service.ListTypeServiceUtil;
 
 import java.util.HashMap;
 import java.util.Map;

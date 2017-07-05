@@ -24,7 +24,7 @@
 	/>
 
 	<liferay-ui:search-container-row
-		className="com.liferay.portal.model.Country"
+		className="com.liferay.portal.kernel.model.Country"
 		escapedModel="<%= true %>"
 		keyProperty="countryId"
 		modelVar="country"

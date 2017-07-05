@@ -14,13 +14,13 @@
 
 package com.liferay.osb.hook.upgrade.v3_5_8;
 
-import com.liferay.compat.portal.util.PortalUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.service.CorpEntryLocalServiceUtil;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.model.Organization;
+import com.liferay.portal.kernel.model.Organization;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

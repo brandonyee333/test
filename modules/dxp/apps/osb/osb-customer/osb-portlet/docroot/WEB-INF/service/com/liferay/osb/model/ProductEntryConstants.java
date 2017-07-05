@@ -14,7 +14,7 @@
 
 package com.liferay.osb.model;
 
-import com.liferay.compat.portal.util.PortalUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.Calendar;

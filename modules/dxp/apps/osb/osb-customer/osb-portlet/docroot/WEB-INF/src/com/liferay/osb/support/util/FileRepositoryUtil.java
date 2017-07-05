@@ -14,8 +14,8 @@
 
 package com.liferay.osb.support.util;
 
-import com.liferay.compat.portal.kernel.util.HttpUtil;
-import com.liferay.osb.FileRepositoryNotAvailableException;
+import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.osb.exception.FileRepositoryNotAvailableException;
 import com.liferay.osb.model.FileRepository;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.WorkflowConstants;

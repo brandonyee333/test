@@ -270,7 +270,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 
 				userParams.put("status", WorkflowConstants.STATUS_ANY);
 
-				OSBCustomSQLParam osbCustomSQLParam = new OSBCustomSQLParam("usersAccountCustomers", CustomSQLUtil.get("com.liferay.portal.service.persistence.UserFinder.joinByAccountCustomer"), new Object[] {accountEntry.getAccountEntryId(), AccountCustomerConstants.ROLES});
+				OSBCustomSQLParam osbCustomSQLParam = new OSBCustomSQLParam("usersAccountCustomers", CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinByAccountCustomer"), new Object[] {accountEntry.getAccountEntryId(), AccountCustomerConstants.ROLES});
 
 				userParams.put("usersAccountCustomers", osbCustomSQLParam);
 				%>
@@ -294,7 +294,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 						/>
 
 						<liferay-ui:search-container-row
-							className="com.liferay.portal.model.User"
+							className="com.liferay.portal.kernel.model.User"
 							escapedModel="<%= true %>"
 							keyProperty="userId"
 							modelVar="curUser"

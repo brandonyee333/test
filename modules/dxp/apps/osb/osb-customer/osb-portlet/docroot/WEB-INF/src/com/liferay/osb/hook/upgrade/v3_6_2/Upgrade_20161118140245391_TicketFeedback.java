@@ -14,7 +14,7 @@
 
 package com.liferay.osb.hook.upgrade.v3_6_2;
 
-import com.liferay.compat.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.TicketFeedback;
 import com.liferay.osb.model.TicketFeedbackConstants;

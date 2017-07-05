@@ -14,8 +14,8 @@
 
 package com.liferay.osb.hook.auth;
 
-import com.liferay.compat.portal.kernel.util.ArrayUtil;
-import com.liferay.compat.portal.util.PortalUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -27,8 +27,8 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.security.auth.AuthToken;
-import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portal.kernel.security.auth.AuthToken;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 
 import java.lang.reflect.Method;
 

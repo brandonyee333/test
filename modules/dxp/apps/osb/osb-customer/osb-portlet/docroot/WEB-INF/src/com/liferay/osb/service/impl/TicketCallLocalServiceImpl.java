@@ -14,13 +14,13 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.compat.portal.kernel.util.StringUtil;
-import com.liferay.compat.portal.kernel.util.Validator;
-import com.liferay.compat.portal.util.PortalUtil;
-import com.liferay.osb.TicketCallCustomerNameException;
-import com.liferay.osb.TicketCallDateException;
-import com.liferay.osb.TicketCallLengthException;
-import com.liferay.osb.TicketCallTypeException;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.osb.exception.TicketCallCustomerNameException;
+import com.liferay.osb.exception.TicketCallDateException;
+import com.liferay.osb.exception.TicketCallLengthException;
+import com.liferay.osb.exception.TicketCallTypeException;
 import com.liferay.osb.model.AuditEntryConstants;
 import com.liferay.osb.model.TicketCall;
 import com.liferay.osb.model.TicketComment;
@@ -34,8 +34,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.util.ContentUtil;
 
 import java.text.Format;

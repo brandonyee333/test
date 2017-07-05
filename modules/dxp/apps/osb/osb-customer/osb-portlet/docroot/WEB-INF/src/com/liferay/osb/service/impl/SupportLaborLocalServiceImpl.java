@@ -14,10 +14,10 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.compat.portal.kernel.util.Validator;
-import com.liferay.osb.NoSuchSupportWorkerException;
-import com.liferay.osb.SupportLaborHourException;
-import com.liferay.osb.SupportLaborNameException;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.osb.exception.NoSuchSupportWorkerException;
+import com.liferay.osb.exception.SupportLaborHourException;
+import com.liferay.osb.exception.SupportLaborNameException;
 import com.liferay.osb.model.SupportLabor;
 import com.liferay.osb.model.SupportWorker;
 import com.liferay.osb.service.base.SupportLaborLocalServiceBaseImpl;

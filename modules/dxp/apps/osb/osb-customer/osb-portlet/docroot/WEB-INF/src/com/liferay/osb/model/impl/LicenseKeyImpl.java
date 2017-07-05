@@ -14,7 +14,7 @@
 
 package com.liferay.osb.model.impl;
 
-import com.liferay.compat.portal.kernel.util.Time;
+import com.liferay.portal.kernel.util.Time;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.LicenseEntry;
 import com.liferay.osb.model.LicenseKeySet;

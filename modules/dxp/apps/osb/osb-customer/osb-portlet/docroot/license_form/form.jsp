@@ -116,7 +116,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 				<div class="unit">
 					<div class="unit-content">
 						<liferay-ui:custom-attribute
-							className="com.liferay.portal.model.User"
+							className="com.liferay.portal.kernel.model.User"
 							classPK="<%= 0 %>"
 							editable="<%= true %>"
 							name="osbCompany"
@@ -137,7 +137,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 				<div class="unit">
 					<div class="unit-content">
 						<liferay-ui:custom-attribute
-							className="com.liferay.portal.model.User"
+							className="com.liferay.portal.kernel.model.User"
 							classPK="<%= 0 %>"
 							editable="<%= true %>"
 							name="osbDepartment"
@@ -158,7 +158,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 				<div class="unit">
 					<div class="unit-content">
 						<liferay-ui:custom-attribute
-							className="com.liferay.portal.model.User"
+							className="com.liferay.portal.kernel.model.User"
 							classPK="<%= 0 %>"
 							editable="<%= true %>"
 							name="osbCompanyRole"
@@ -179,7 +179,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 				<div class="unit">
 					<div class="unit-content">
 						<liferay-ui:custom-attribute
-							className="com.liferay.portal.model.User"
+							className="com.liferay.portal.kernel.model.User"
 							classPK="<%= 0 %>"
 							editable="<%= true %>"
 							name="osbIndustry"
@@ -200,7 +200,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 				<div class="unit">
 					<div class="unit-content">
 						<liferay-ui:custom-attribute
-							className="com.liferay.portal.model.User"
+							className="com.liferay.portal.kernel.model.User"
 							classPK="<%= 0 %>"
 							editable="<%= true %>"
 							name="osbCountry"
@@ -277,7 +277,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 
 					<div class="ctrl-holder">
 						<liferay-ui:custom-attribute
-							className="com.liferay.portal.model.User"
+							className="com.liferay.portal.kernel.model.User"
 							classPK="<%= 0 %>"
 							editable="<%= true %>"
 							label="<%= true %>"
@@ -287,7 +287,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 
 					<div class="ctrl-holder">
 						<liferay-ui:custom-attribute
-							className="com.liferay.portal.model.User"
+							className="com.liferay.portal.kernel.model.User"
 							classPK="<%= 0 %>"
 							editable="<%= true %>"
 							label="<%= true %>"
@@ -297,7 +297,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 
 					<div class="ctrl-holder">
 						<liferay-ui:custom-attribute
-							className="com.liferay.portal.model.User"
+							className="com.liferay.portal.kernel.model.User"
 							classPK="<%= 0 %>"
 							editable="<%= true %>"
 							label="<%= true %>"

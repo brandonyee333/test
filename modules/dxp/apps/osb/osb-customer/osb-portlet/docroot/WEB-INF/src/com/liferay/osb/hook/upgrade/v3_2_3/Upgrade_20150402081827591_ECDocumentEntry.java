@@ -23,7 +23,7 @@ import com.liferay.osb.model.AssetLicenseConstants;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.UnicodeProperties;
-import com.liferay.portal.model.User;
+import com.liferay.portal.kernel.model.User;
 
 /**
  * @author Joan Kim

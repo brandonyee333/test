@@ -14,13 +14,13 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.compat.portal.kernel.util.ListUtil;
-import com.liferay.compat.portal.kernel.util.Validator;
-import com.liferay.osb.DuplicateSupportTeamException;
-import com.liferay.osb.RequiredSupportTeamException;
-import com.liferay.osb.SupportTeamLocationException;
-import com.liferay.osb.SupportTeamNameException;
-import com.liferay.osb.SupportTeamSupportLaborException;
+import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.osb.exception.DuplicateSupportTeamException;
+import com.liferay.osb.exception.RequiredSupportTeamException;
+import com.liferay.osb.exception.SupportTeamLocationException;
+import com.liferay.osb.exception.SupportTeamNameException;
+import com.liferay.osb.exception.SupportTeamSupportLaborException;
 import com.liferay.osb.model.SupportRegion;
 import com.liferay.osb.model.SupportTeam;
 import com.liferay.osb.model.SupportTeamLanguage;
@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.SetUtil;
-import com.liferay.portal.model.User;
+import com.liferay.portal.kernel.model.User;
 
 import java.util.Date;
 import java.util.List;

@@ -14,8 +14,8 @@
 
 package com.liferay.osb.util;
 
-import com.liferay.compat.portal.kernel.util.LocaleUtil;
-import com.liferay.compat.portal.kernel.util.Time;
+import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.Time;
 import com.liferay.osb.model.HolidayEntry;
 import com.liferay.osb.model.SupportLabor;
 import com.liferay.osb.model.SupportWorker;

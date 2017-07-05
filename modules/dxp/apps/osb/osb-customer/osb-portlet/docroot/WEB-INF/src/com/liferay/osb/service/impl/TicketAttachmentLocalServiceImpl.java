@@ -14,13 +14,13 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.compat.portal.kernel.util.ArrayUtil;
-import com.liferay.compat.portal.kernel.util.Validator;
-import com.liferay.compat.portal.util.PortalUtil;
-import com.liferay.osb.DuplicateTicketAttachmentException;
-import com.liferay.osb.TicketAttachmentAvailableFileRepositoryIdsException;
-import com.liferay.osb.TicketAttachmentVisibilityException;
-import com.liferay.osb.TicketEntryAttachmentSizeException;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.osb.exception.DuplicateTicketAttachmentException;
+import com.liferay.osb.exception.TicketAttachmentAvailableFileRepositoryIdsException;
+import com.liferay.osb.exception.TicketAttachmentVisibilityException;
+import com.liferay.osb.exception.TicketEntryAttachmentSizeException;
 import com.liferay.osb.model.AuditEntryConstants;
 import com.liferay.osb.model.FileRepository;
 import com.liferay.osb.model.SupportResponse;
@@ -52,14 +52,14 @@ import com.liferay.portal.kernel.zip.ZipReader;
 import com.liferay.portal.kernel.zip.ZipReaderFactoryUtil;
 import com.liferay.portal.kernel.zip.ZipWriter;
 import com.liferay.portal.kernel.zip.ZipWriterFactoryUtil;
-import com.liferay.portal.model.CompanyConstants;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.ServiceContext;
-import com.liferay.portlet.documentlibrary.DuplicateDirectoryException;
-import com.liferay.portlet.documentlibrary.DuplicateFileException;
-import com.liferay.portlet.documentlibrary.NoSuchFileException;
-import com.liferay.portlet.documentlibrary.store.DLStoreUtil;
-import com.liferay.portlet.documentlibrary.store.Store;
+import com.liferay.portal.kernel.model.CompanyConstants;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.document.library.kernel.exception.DuplicateDirectoryException;
+import com.liferay.document.library.kernel.exception.DuplicateFileException;
+import com.liferay.document.library.kernel.exception.NoSuchFileException;
+import com.liferay.document.library.kernel.store.DLStoreUtil;
+import com.liferay.document.library.kernel.store.Store;
 import com.liferay.releasenotes.model.ReleaseNotes;
 import com.liferay.releasenotes.service.ReleaseNotesLocalServiceUtil;
 

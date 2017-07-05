@@ -14,15 +14,15 @@
 
 package com.liferay.osb.licenseform.portlet;
 
-import com.liferay.compat.portal.kernel.util.StringUtil;
-import com.liferay.compat.portal.kernel.util.Validator;
-import com.liferay.compat.util.bridges.mvc.MVCPortlet;
-import com.liferay.osb.LicenseKeySingleUseException;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.util.bridges.mvc.MVCPortlet;
+import com.liferay.osb.exception.LicenseKeySingleUseException;
 import com.liferay.osb.service.LicenseKeyLocalServiceUtil;
 import com.liferay.osb.util.CMDConstants;
-import com.liferay.portal.RequiredFieldException;
-import com.liferay.portal.ReservedUserEmailAddressException;
-import com.liferay.portal.UserEmailAddressException;
+import com.liferay.portal.kernel.exception.RequiredFieldException;
+import com.liferay.portal.kernel.exception.ReservedUserEmailAddressException;
+import com.liferay.portal.kernel.exception.UserEmailAddressException;
 import com.liferay.portal.kernel.captcha.CaptchaTextException;
 import com.liferay.portal.kernel.captcha.CaptchaUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -35,8 +35,8 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portlet.PortletPreferencesFactoryUtil;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 
 import java.util.ArrayList;
 import java.util.List;

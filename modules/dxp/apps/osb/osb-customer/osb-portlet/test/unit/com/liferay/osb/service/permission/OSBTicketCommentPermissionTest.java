@@ -28,7 +28,7 @@ import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.osb.util.comparator.TicketCommentCreateDateComparator;
-import com.liferay.portal.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -16,7 +16,7 @@ package com.liferay.osb.model.impl;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import com.liferay.compat.portal.util.PortalUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.ExternalIdMapper;
 import com.liferay.osb.model.ExternalIdMapperConstants;

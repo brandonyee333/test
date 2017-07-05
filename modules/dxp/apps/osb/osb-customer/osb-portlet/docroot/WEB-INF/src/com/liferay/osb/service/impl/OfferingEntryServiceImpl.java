@@ -14,7 +14,7 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.compat.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.service.base.OfferingEntryServiceBaseImpl;
 import com.liferay.osb.service.permission.OSBOfferingEntryPermission;
@@ -22,7 +22,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
-import com.liferay.portal.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
 
 import java.util.Iterator;
 import java.util.List;

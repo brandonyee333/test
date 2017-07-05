@@ -14,14 +14,14 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.compat.portal.kernel.util.ListUtil;
-import com.liferay.compat.portal.kernel.util.Time;
-import com.liferay.compat.portal.kernel.util.Validator;
-import com.liferay.compat.portal.util.PortalUtil;
-import com.liferay.osb.NoSuchAccountEntryException;
-import com.liferay.osb.NoSuchOrderEntryException;
-import com.liferay.osb.OrderEntryActualStartDateException;
-import com.liferay.osb.OrderEntryStartDateException;
+import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.Time;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.osb.exception.NoSuchAccountEntryException;
+import com.liferay.osb.exception.NoSuchOrderEntryException;
+import com.liferay.osb.exception.OrderEntryActualStartDateException;
+import com.liferay.osb.exception.OrderEntryStartDateException;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountWorker;
 import com.liferay.osb.model.AuditEntryConstants;
@@ -47,10 +47,10 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
-import com.liferay.portal.model.Address;
-import com.liferay.portal.model.User;
-import com.liferay.portal.security.auth.PrincipalException;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.model.Address;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 

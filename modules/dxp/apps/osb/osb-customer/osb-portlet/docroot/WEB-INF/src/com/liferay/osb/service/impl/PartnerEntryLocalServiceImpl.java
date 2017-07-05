@@ -14,14 +14,14 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.compat.portal.kernel.util.ArrayUtil;
-import com.liferay.compat.portal.kernel.util.Validator;
-import com.liferay.osb.DuplicatePartnerEntryCodeException;
-import com.liferay.osb.DuplicatePartnerEntryDossieraAccountKeyException;
-import com.liferay.osb.NoSuchPartnerEntryException;
-import com.liferay.osb.PartnerEntryCodeException;
-import com.liferay.osb.PartnerEntryParentPartnerEntryException;
-import com.liferay.osb.RequiredPartnerEntryException;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.osb.exception.DuplicatePartnerEntryCodeException;
+import com.liferay.osb.exception.DuplicatePartnerEntryDossieraAccountKeyException;
+import com.liferay.osb.exception.NoSuchPartnerEntryException;
+import com.liferay.osb.exception.PartnerEntryCodeException;
+import com.liferay.osb.exception.PartnerEntryParentPartnerEntryException;
+import com.liferay.osb.exception.RequiredPartnerEntryException;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.model.TicketEntryConstants;
@@ -30,7 +30,7 @@ import com.liferay.osb.support.util.SupportUtil;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
+import com.liferay.portal.kernel.model.User;
 
 import java.util.ArrayList;
 import java.util.Date;

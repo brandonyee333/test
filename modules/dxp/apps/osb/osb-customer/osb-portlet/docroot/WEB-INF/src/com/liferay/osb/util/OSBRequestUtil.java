@@ -14,20 +14,18 @@
 
 package com.liferay.osb.util;
 
-import com.liferay.compat.portal.kernel.portlet.PortletResponseUtil;
-import com.liferay.compat.portal.kernel.util.ArrayUtil;
-import com.liferay.compat.portal.kernel.util.ListUtil;
-import com.liferay.compat.portal.util.PortalUtil;
-import com.liferay.osb.NoSuchAssetAttachmentException;
+import com.liferay.portal.kernel.portlet.PortletResponseUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.osb.exception.NoSuchAssetAttachmentException;
 import com.liferay.osb.model.AssetAttachment;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.model.TicketEntryConstants;
-import com.liferay.osb.model.TrainingCertificateTemplate;
 import com.liferay.osb.service.AssetAttachmentServiceUtil;
 import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
-import com.liferay.osb.service.TrainingCertificateTemplateLocalServiceUtil;
 import com.liferay.osb.support.util.SupportUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -41,12 +39,11 @@ import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.CompanyConstants;
-import com.liferay.portal.model.ListType;
-import com.liferay.portal.service.ListTypeServiceUtil;
-import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portlet.documentlibrary.NoSuchDirectoryException;
-import com.liferay.portlet.documentlibrary.store.DLStoreUtil;
+import com.liferay.portal.kernel.model.CompanyConstants;
+import com.liferay.portal.kernel.model.ListType;
+import com.liferay.portal.kernel.service.ListTypeServiceUtil;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.document.library.kernel.exception.NoSuchDirectoryException;
 
 import java.io.IOException;
 import java.io.InputStream;

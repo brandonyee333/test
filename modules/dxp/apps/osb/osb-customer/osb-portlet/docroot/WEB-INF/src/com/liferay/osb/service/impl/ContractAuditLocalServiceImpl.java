@@ -14,7 +14,7 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.compat.portal.util.PortalUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.model.ContractAudit;
 import com.liferay.osb.model.ContractEntry;
 import com.liferay.osb.service.base.ContractAuditLocalServiceBaseImpl;
@@ -22,7 +22,7 @@ import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
+import com.liferay.portal.kernel.model.User;
 
 import java.util.Date;
 import java.util.List;

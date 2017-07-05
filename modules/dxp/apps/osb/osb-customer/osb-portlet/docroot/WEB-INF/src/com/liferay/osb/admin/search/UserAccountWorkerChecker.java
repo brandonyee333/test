@@ -19,7 +19,7 @@ import com.liferay.osb.service.AccountWorkerLocalServiceUtil;
 import com.liferay.portal.kernel.dao.search.RowChecker;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.model.User;
+import com.liferay.portal.kernel.model.User;
 
 import javax.portlet.RenderResponse;
 

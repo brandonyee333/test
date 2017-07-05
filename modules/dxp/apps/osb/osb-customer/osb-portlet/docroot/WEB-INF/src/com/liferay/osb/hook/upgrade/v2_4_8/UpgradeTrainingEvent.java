@@ -14,8 +14,8 @@
 
 package com.liferay.osb.hook.upgrade.v2_4_8;
 
-import com.liferay.compat.portal.kernel.upgrade.UpgradeProcess;
-import com.liferay.compat.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.language.LanguageUtil;
 

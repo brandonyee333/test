@@ -14,8 +14,8 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.compat.portal.kernel.util.Validator;
-import com.liferay.osb.HolidayCalendarNameException;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.osb.exception.HolidayCalendarNameException;
 import com.liferay.osb.model.HolidayCalendar;
 import com.liferay.osb.model.HolidayEntry;
 import com.liferay.osb.service.base.HolidayCalendarLocalServiceBaseImpl;

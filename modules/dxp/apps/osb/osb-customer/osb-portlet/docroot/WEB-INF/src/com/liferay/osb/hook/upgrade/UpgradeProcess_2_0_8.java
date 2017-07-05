@@ -14,7 +14,7 @@
 
 package com.liferay.osb.hook.upgrade;
 
-import com.liferay.compat.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.osb.hook.upgrade.v2_0_8.UpgradeAppPackage;
 import com.liferay.osb.hook.upgrade.v2_0_8.UpgradeAppPackagePlugin;
 import com.liferay.osb.hook.upgrade.v2_0_8.UpgradeTicketComment;

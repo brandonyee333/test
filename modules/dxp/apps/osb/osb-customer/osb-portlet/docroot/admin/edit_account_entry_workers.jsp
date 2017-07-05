@@ -67,7 +67,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 
 	if (tabs2.equals("current")) {
 		userParams.put("status", WorkflowConstants.STATUS_ANY);
-		userParams.put("usersAccountWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.service.persistence.UserFinder.joinByAccountWorker"), new Long(accountEntry.getAccountEntryId())));
+		userParams.put("usersAccountWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinByAccountWorker"), new Long(accountEntry.getAccountEntryId())));
 	}
 	%>
 
@@ -92,7 +92,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 			/>
 
 			<liferay-ui:search-container-row
-				className="com.liferay.portal.model.User"
+				className="com.liferay.portal.kernel.model.User"
 				escapedModel="<%= true %>"
 				keyProperty="userId"
 				modelVar="curUser"

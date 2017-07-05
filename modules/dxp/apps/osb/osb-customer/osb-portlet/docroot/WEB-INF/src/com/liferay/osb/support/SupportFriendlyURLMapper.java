@@ -14,8 +14,8 @@
 
 package com.liferay.osb.support;
 
-import com.liferay.compat.portal.kernel.util.StringUtil;
-import com.liferay.compat.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.TicketEntry;
 import com.liferay.osb.model.TicketEntryDiscussion;

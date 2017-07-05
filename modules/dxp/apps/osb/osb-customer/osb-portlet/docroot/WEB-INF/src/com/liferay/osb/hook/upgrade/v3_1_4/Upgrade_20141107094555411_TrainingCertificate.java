@@ -14,7 +14,7 @@
 
 package com.liferay.osb.hook.upgrade.v3_1_4;
 
-import com.liferay.compat.portal.util.PortalUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.TrainingCertificate;
 import com.liferay.osb.model.TrainingCustomer;

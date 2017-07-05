@@ -14,7 +14,7 @@
 
 package com.liferay.osb.util.comparator;
 
-import com.liferay.compat.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.service.ProductEntryLocalServiceUtil;

@@ -14,7 +14,7 @@
 
 package com.liferay.osb.model.impl;
 
-import com.liferay.compat.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.osb.model.TicketAttachmentConstants;
 import com.liferay.osb.model.TicketEntry;
 import com.liferay.osb.service.TicketEntryLocalServiceUtil;
@@ -25,8 +25,8 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.model.CompanyConstants;
-import com.liferay.portlet.documentlibrary.store.DLStoreUtil;
+import com.liferay.portal.kernel.model.CompanyConstants;
+import com.liferay.document.library.kernel.store.DLStoreUtil;
 
 import java.io.File;
 

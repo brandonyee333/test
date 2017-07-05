@@ -14,7 +14,7 @@
 
 package com.liferay.osb.hook.upgrade;
 
-import com.liferay.compat.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.osb.hook.upgrade.v2_4_6.UpgradeDeveloperEntry;
 import com.liferay.osb.hook.upgrade.v2_4_6.UpgradeECDocumentItem;
 import com.liferay.osb.hook.upgrade.v2_4_6.UpgradeExpando;

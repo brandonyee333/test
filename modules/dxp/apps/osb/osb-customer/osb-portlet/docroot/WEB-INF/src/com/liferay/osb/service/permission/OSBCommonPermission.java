@@ -14,13 +14,13 @@
 
 package com.liferay.osb.service.permission;
 
-import com.liferay.compat.portal.util.PortalUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.PartnerEntry;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.security.permission.PermissionChecker;
-import com.liferay.portal.service.permission.CommonPermission;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.service.permission.CommonPermission;
 
 /**
  * @author Amos Fong

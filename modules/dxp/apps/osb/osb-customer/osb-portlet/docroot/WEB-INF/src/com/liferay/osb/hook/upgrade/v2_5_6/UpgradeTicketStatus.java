@@ -14,7 +14,7 @@
 
 package com.liferay.osb.hook.upgrade.v2_5_6;
 
-import com.liferay.compat.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.osb.model.TicketEntryConstants;
 import com.liferay.osb.model.TicketFlagConstants;
 import com.liferay.osb.util.OSBConstants;

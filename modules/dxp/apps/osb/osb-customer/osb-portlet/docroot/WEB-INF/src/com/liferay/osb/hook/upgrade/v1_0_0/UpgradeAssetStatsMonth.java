@@ -14,7 +14,7 @@
 
 package com.liferay.osb.hook.upgrade.v1_0_0;
 
-import com.liferay.compat.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.osb.model.AppEntry;
 import com.liferay.osb.model.AssetAudit;
 import com.liferay.osb.model.AssetAuditConstants;

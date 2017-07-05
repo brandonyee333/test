@@ -14,7 +14,7 @@
 
 package com.liferay.osb.license.search;
 
-import com.liferay.compat.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.license.util.LicenseUtil;
 import com.liferay.osb.model.LicenseKey;
 import com.liferay.osb.util.OSBPortletKeys;
@@ -25,8 +25,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portlet.PortalPreferences;
-import com.liferay.portlet.PortletPreferencesFactoryUtil;
+import com.liferay.portal.kernel.portlet.PortalPreferences;
+import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;

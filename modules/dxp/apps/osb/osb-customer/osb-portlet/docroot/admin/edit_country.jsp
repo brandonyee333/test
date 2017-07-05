@@ -150,7 +150,7 @@ request.setAttribute("view.jsp-portletURL", portletURL);
 		/>
 
 		<liferay-ui:search-container-row
-			className="com.liferay.portal.model.Region"
+			className="com.liferay.portal.kernel.model.Region"
 			escapedModel="<%= true %>"
 			keyProperty="regionId"
 			modelVar="region"
