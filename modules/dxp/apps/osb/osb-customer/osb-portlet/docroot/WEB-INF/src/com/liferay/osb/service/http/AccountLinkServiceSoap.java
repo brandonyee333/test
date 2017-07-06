@@ -16,9 +16,16 @@ package com.liferay.osb.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.service.AccountLinkServiceUtil;
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import java.rmi.RemoteException;
+
 /**
  * Provides the SOAP utility for the
- * {@link com.liferay.osb.service.AccountLinkServiceUtil} service utility. The
+ * {@link AccountLinkServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it is difficult for SOAP to
  * support certain types.
@@ -53,9 +60,36 @@ import aQute.bnd.annotation.ProviderType;
  * @author Brian Wing Shun Chan
  * @see AccountLinkServiceHttp
  * @see com.liferay.osb.model.AccountLinkSoap
- * @see com.liferay.osb.service.AccountLinkServiceUtil
+ * @see AccountLinkServiceUtil
  * @generated
  */
 @ProviderType
 public class AccountLinkServiceSoap {
+	public static void addAccountLinks(long accountEntryId,
+		java.lang.String[] urls) throws RemoteException {
+		try {
+			AccountLinkServiceUtil.addAccountLinks(accountEntryId, urls);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.AccountLinkSoap deleteAccountLink(
+		long accountLinkId) throws RemoteException {
+		try {
+			com.liferay.osb.model.AccountLink returnValue = AccountLinkServiceUtil.deleteAccountLink(accountLinkId);
+
+			return com.liferay.osb.model.AccountLinkSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	private static Log _log = LogFactoryUtil.getLog(AccountLinkServiceSoap.class);
 }

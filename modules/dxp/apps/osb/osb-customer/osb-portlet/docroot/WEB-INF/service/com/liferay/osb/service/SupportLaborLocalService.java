@@ -61,6 +61,9 @@ public interface SupportLaborLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link SupportLaborLocalServiceUtil} to access the support labor local service. Add custom service methods to {@link com.liferay.osb.service.impl.SupportLaborLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasSupportWorker(long supportWorkerId, long supportLaborId)
+		throws PortalException, SystemException;
 
 	/**
 	* Adds the support labor to the database. Also notifies the appropriate model listeners.
@@ -70,6 +73,13 @@ public interface SupportLaborLocalService extends BaseLocalService,
 	*/
 	@Indexable(type = IndexableType.REINDEX)
 	public SupportLabor addSupportLabor(SupportLabor supportLabor);
+
+	public SupportLabor addSupportLabor(java.lang.String name,
+		java.lang.String description, java.lang.String timeZoneId, int sunOpen,
+		int sunClose, int monOpen, int monClose, int tueOpen, int tueClose,
+		int wedOpen, int wedClose, int thuOpen, int thuClose, int friOpen,
+		int friClose, int satOpen, int satClose)
+		throws PortalException, SystemException;
 
 	/**
 	* Creates a new support labor with the primary key. Does not add the support labor to the database.
@@ -94,10 +104,11 @@ public interface SupportLaborLocalService extends BaseLocalService,
 	* @param supportLaborId the primary key of the support labor
 	* @return the support labor that was removed
 	* @throws PortalException if a support labor with the primary key could not be found
+	* @throws SystemException
 	*/
 	@Indexable(type = IndexableType.DELETE)
 	public SupportLabor deleteSupportLabor(long supportLaborId)
-		throws PortalException;
+		throws PortalException, SystemException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public SupportLabor fetchSupportLabor(long supportLaborId);
@@ -121,6 +132,13 @@ public interface SupportLaborLocalService extends BaseLocalService,
 	*/
 	@Indexable(type = IndexableType.REINDEX)
 	public SupportLabor updateSupportLabor(SupportLabor supportLabor);
+
+	public SupportLabor updateSupportLabor(long supportLaborId,
+		java.lang.String name, java.lang.String description,
+		java.lang.String timeZoneId, int sunOpen, int sunClose, int monOpen,
+		int monClose, int tueOpen, int tueClose, int wedOpen, int wedClose,
+		int thuOpen, int thuClose, int friOpen, int friClose, int satOpen,
+		int satClose) throws PortalException, SystemException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -232,4 +250,10 @@ public interface SupportLaborLocalService extends BaseLocalService,
 	*/
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
+
+	public void addSupportWorkers(long[] supportWorkerIds, long supportLaborId)
+		throws PortalException, SystemException;
+
+	public void removeSupportWorkers(long[] supportWorkerIds)
+		throws PortalException, SystemException;
 }

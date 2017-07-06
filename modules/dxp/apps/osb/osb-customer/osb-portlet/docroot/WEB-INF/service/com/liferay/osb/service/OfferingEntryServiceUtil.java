@@ -41,6 +41,30 @@ public class OfferingEntryServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.OfferingEntryServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static com.liferay.osb.model.OfferingEntry updateOfferingEntry(
+		long offeringEntryId, long accountEntryId, long orderEntryId,
+		long productEntryId, long supportResponseId,
+		java.lang.String productDescription, int type, int version,
+		boolean licenses, long licenseLifetime, long maxConcurrentUsers,
+		long maxUsers, boolean supportTickets, long supportLifetime,
+		int sizing, int quantity)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .updateOfferingEntry(offeringEntryId, accountEntryId,
+			orderEntryId, productEntryId, supportResponseId,
+			productDescription, type, version, licenses, licenseLifetime,
+			maxConcurrentUsers, maxUsers, supportTickets, supportLifetime,
+			sizing, quantity);
+	}
+
+	public static com.liferay.osb.model.OfferingEntry updateStatus(
+		long offeringEntryId, int status)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().updateStatus(offeringEntryId, status);
+	}
+
 	public static java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {
@@ -54,6 +78,20 @@ public class OfferingEntryServiceUtil {
 	*/
 	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static java.util.List<com.liferay.osb.model.OfferingEntry> getAccountEntryOfferingEntries(
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().getAccountEntryOfferingEntries(accountEntryId);
+	}
+
+	public static java.util.List<com.liferay.osb.model.OfferingEntry> getOrderEntryOfferingEntries(
+		long orderEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().getOrderEntryOfferingEntries(orderEntryId);
 	}
 
 	public static void clearService() {

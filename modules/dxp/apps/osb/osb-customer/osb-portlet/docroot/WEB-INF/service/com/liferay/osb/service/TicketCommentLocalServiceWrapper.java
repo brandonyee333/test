@@ -34,6 +34,23 @@ public class TicketCommentLocalServiceWrapper
 		_ticketCommentLocalService = ticketCommentLocalService;
 	}
 
+	@Override
+	public boolean hasVisibility(long userId, long ticketEntryId, int visibility)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _ticketCommentLocalService.hasVisibility(userId, ticketEntryId,
+			visibility);
+	}
+
+	@Override
+	public com.liferay.osb.model.TicketComment addAwayMessageTicketComment(
+		long userId, long ticketEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _ticketCommentLocalService.addAwayMessageTicketComment(userId,
+			ticketEntryId);
+	}
+
 	/**
 	* Adds the ticket comment to the database. Also notifies the appropriate model listeners.
 	*
@@ -44,6 +61,18 @@ public class TicketCommentLocalServiceWrapper
 	public com.liferay.osb.model.TicketComment addTicketComment(
 		com.liferay.osb.model.TicketComment ticketComment) {
 		return _ticketCommentLocalService.addTicketComment(ticketComment);
+	}
+
+	@Override
+	public com.liferay.osb.model.TicketComment addTicketComment(long userId,
+		long ticketEntryId, java.lang.String body, int type, int visibility,
+		int status, long ticketCannedResponseId, int[] pendingTypes,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _ticketCommentLocalService.addTicketComment(userId,
+			ticketEntryId, body, type, visibility, status,
+			ticketCannedResponseId, pendingTypes, serviceContext);
 	}
 
 	/**
@@ -85,9 +114,55 @@ public class TicketCommentLocalServiceWrapper
 	}
 
 	@Override
+	public com.liferay.osb.model.TicketComment deleteTicketComment(
+		long userId, com.liferay.osb.model.TicketComment ticketComment)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _ticketCommentLocalService.deleteTicketComment(userId,
+			ticketComment);
+	}
+
+	@Override
+	public com.liferay.osb.model.TicketComment deleteTicketComment(
+		long userId, long ticketCommentId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _ticketCommentLocalService.deleteTicketComment(userId,
+			ticketCommentId);
+	}
+
+	@Override
+	public com.liferay.osb.model.TicketComment fetchLastTicketComment(
+		long userId, long ticketEntryId, int visibility, int status,
+		com.liferay.portal.kernel.util.OrderByComparator obc)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _ticketCommentLocalService.fetchLastTicketComment(userId,
+			ticketEntryId, visibility, status, obc);
+	}
+
+	@Override
+	public com.liferay.osb.model.TicketComment fetchLastTicketComment(
+		long userId, long ticketEntryId, int visibility, int status, int type,
+		com.liferay.portal.kernel.util.OrderByComparator obc)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _ticketCommentLocalService.fetchLastTicketComment(userId,
+			ticketEntryId, visibility, status, type, obc);
+	}
+
+	@Override
 	public com.liferay.osb.model.TicketComment fetchTicketComment(
 		long ticketCommentId) {
 		return _ticketCommentLocalService.fetchTicketComment(ticketCommentId);
+	}
+
+	@Override
+	public com.liferay.osb.model.TicketComment getLastTicketComment(
+		long ticketEntryId, int visibility,
+		com.liferay.portal.kernel.util.OrderByComparator obc)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _ticketCommentLocalService.getLastTicketComment(ticketEntryId,
+			visibility, obc);
 	}
 
 	/**
@@ -114,6 +189,28 @@ public class TicketCommentLocalServiceWrapper
 	public com.liferay.osb.model.TicketComment updateTicketComment(
 		com.liferay.osb.model.TicketComment ticketComment) {
 		return _ticketCommentLocalService.updateTicketComment(ticketComment);
+	}
+
+	@Override
+	public com.liferay.osb.model.TicketComment updateTicketComment(
+		long userId, long ticketCommentId, long ticketEntryId,
+		java.lang.String body, int visibility, int status,
+		long ticketCannedResponseId, int[] pendingTypes,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _ticketCommentLocalService.updateTicketComment(userId,
+			ticketCommentId, ticketEntryId, body, visibility, status,
+			ticketCannedResponseId, pendingTypes, serviceContext);
+	}
+
+	@Override
+	public com.liferay.osb.model.TicketComment updateTicketCommentType(
+		long ticketCommentId, int type)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _ticketCommentLocalService.updateTicketCommentType(ticketCommentId,
+			type);
 	}
 
 	@Override
@@ -148,6 +245,14 @@ public class TicketCommentLocalServiceWrapper
 		return _ticketCommentLocalService.getPersistedModel(primaryKeyObj);
 	}
 
+	@Override
+	public int getOrganizationTicketCommentsCount(long[] organizationIds,
+		long ticketEntryId, int visibility)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _ticketCommentLocalService.getOrganizationTicketCommentsCount(organizationIds,
+			ticketEntryId, visibility);
+	}
+
 	/**
 	* Returns the number of ticket comments.
 	*
@@ -156,6 +261,30 @@ public class TicketCommentLocalServiceWrapper
 	@Override
 	public int getTicketCommentsCount() {
 		return _ticketCommentLocalService.getTicketCommentsCount();
+	}
+
+	@Override
+	public int getTicketCommentsCount(long ticketEntryId, int[] visibilities,
+		int[] statuses)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _ticketCommentLocalService.getTicketCommentsCount(ticketEntryId,
+			visibilities, statuses);
+	}
+
+	@Override
+	public int getTicketCommentsCount(long userId, long ticketEntryId,
+		int[] visibilities, int[] statuses)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _ticketCommentLocalService.getTicketCommentsCount(userId,
+			ticketEntryId, visibilities, statuses);
+	}
+
+	@Override
+	public int[] getUserVisibilities(long userId, long ticketEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _ticketCommentLocalService.getUserVisibilities(userId,
+			ticketEntryId);
 	}
 
 	@Override
@@ -246,6 +375,22 @@ public class TicketCommentLocalServiceWrapper
 		return _ticketCommentLocalService.getTicketComments(start, end);
 	}
 
+	@Override
+	public java.util.List<com.liferay.osb.model.TicketComment> getTicketComments(
+		long ticketEntryId, int[] visibilities, int[] statuses)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _ticketCommentLocalService.getTicketComments(ticketEntryId,
+			visibilities, statuses);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.TicketComment> getTicketComments(
+		long userId, long ticketEntryId, int[] visibilities, int[] statuses)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _ticketCommentLocalService.getTicketComments(userId,
+			ticketEntryId, visibilities, statuses);
+	}
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -271,6 +416,12 @@ public class TicketCommentLocalServiceWrapper
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return _ticketCommentLocalService.dynamicQueryCount(dynamicQuery,
 			projection);
+	}
+
+	@Override
+	public void resetSolutionTicketComment(long ticketEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		_ticketCommentLocalService.resetSolutionTicketComment(ticketEntryId);
 	}
 
 	@Override

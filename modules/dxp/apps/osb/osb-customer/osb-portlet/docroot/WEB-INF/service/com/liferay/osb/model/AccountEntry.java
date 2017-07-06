@@ -53,4 +53,51 @@ public interface AccountEntry extends AccountEntryModel, PersistedModel {
 				return AccountEntry.class;
 			}
 		};
+
+	public java.util.List<AccountAttachment> getAccountAttachments(
+		long accountProjectId)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	public java.util.List<AccountCustomer> getAccountCustomers()
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	public java.util.List<AccountWorker> getAccountWorkers()
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	public com.liferay.portal.kernel.model.Address getAddress()
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	public java.lang.String getEWSADossieraProjectKey()
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	public java.lang.String getIndustryLabel();
+
+	public java.lang.String[] getLanguageIds()
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	public java.util.List<OfferingEntry> getOfferingEntries()
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	public java.util.List<OrderEntry> getOrderEntries()
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	public PartnerEntry getPartnerEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
+
+	public java.lang.String getStatusLabel();
+
+	public long[] getSupportRegionIds()
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	public java.util.List<SupportRegion> getSupportRegions()
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	public java.lang.String getTypeLabel();
+
+	public void setAddress(com.liferay.portal.kernel.model.Address address);
+
+	public void setLanguageIds(java.lang.String[] languageIds);
+
+	public void setSupportRegionIds(long[] supportRegionIds);
 }

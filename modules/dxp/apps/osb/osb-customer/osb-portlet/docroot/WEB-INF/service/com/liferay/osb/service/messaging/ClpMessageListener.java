@@ -39,6 +39,8 @@ import com.liferay.osb.service.AccountProjectServiceUtil;
 import com.liferay.osb.service.AccountWorkerLocalServiceUtil;
 import com.liferay.osb.service.AccountWorkerServiceUtil;
 import com.liferay.osb.service.AssetLicenseLocalServiceUtil;
+import com.liferay.osb.service.AssetReceiptLicenseLocalServiceUtil;
+import com.liferay.osb.service.AssetReceiptLicenseServiceUtil;
 import com.liferay.osb.service.AuditActionLocalServiceUtil;
 import com.liferay.osb.service.AuditActionServiceUtil;
 import com.liferay.osb.service.AuditEntryLocalServiceUtil;
@@ -48,6 +50,8 @@ import com.liferay.osb.service.ContractAuditLocalServiceUtil;
 import com.liferay.osb.service.ContractAuditServiceUtil;
 import com.liferay.osb.service.ContractEntryLocalServiceUtil;
 import com.liferay.osb.service.ContractEntryServiceUtil;
+import com.liferay.osb.service.CorpProjectLocalServiceUtil;
+import com.liferay.osb.service.CorpProjectServiceUtil;
 import com.liferay.osb.service.CurrencyEntryLocalServiceUtil;
 import com.liferay.osb.service.CurrencyEntryServiceUtil;
 import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
@@ -180,6 +184,9 @@ public class ClpMessageListener extends BaseMessageListener {
 			AccountWorkerServiceUtil.clearService();
 			AssetLicenseLocalServiceUtil.clearService();
 
+			AssetReceiptLicenseLocalServiceUtil.clearService();
+
+			AssetReceiptLicenseServiceUtil.clearService();
 			AuditActionLocalServiceUtil.clearService();
 
 			AuditActionServiceUtil.clearService();
@@ -192,6 +199,9 @@ public class ClpMessageListener extends BaseMessageListener {
 			ContractEntryLocalServiceUtil.clearService();
 
 			ContractEntryServiceUtil.clearService();
+			CorpProjectLocalServiceUtil.clearService();
+
+			CorpProjectServiceUtil.clearService();
 			CurrencyEntryLocalServiceUtil.clearService();
 
 			CurrencyEntryServiceUtil.clearService();

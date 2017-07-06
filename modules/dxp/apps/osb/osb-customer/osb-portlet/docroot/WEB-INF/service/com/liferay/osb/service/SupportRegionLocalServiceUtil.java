@@ -82,6 +82,15 @@ public class SupportRegionLocalServiceUtil {
 		return getService().addSupportRegion(supportRegion);
 	}
 
+	public static com.liferay.osb.model.SupportRegion addSupportRegion(
+		long userId, java.lang.String name, java.lang.String description,
+		java.lang.String timeZoneId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .addSupportRegion(userId, name, description, timeZoneId);
+	}
+
 	/**
 	* Creates a new support region with the primary key. Does not add the support region to the database.
 	*
@@ -110,16 +119,24 @@ public class SupportRegionLocalServiceUtil {
 	* @param supportRegionId the primary key of the support region
 	* @return the support region that was removed
 	* @throws PortalException if a support region with the primary key could not be found
+	* @throws SystemException
 	*/
 	public static com.liferay.osb.model.SupportRegion deleteSupportRegion(
 		long supportRegionId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
 		return getService().deleteSupportRegion(supportRegionId);
 	}
 
 	public static com.liferay.osb.model.SupportRegion fetchSupportRegion(
 		long supportRegionId) {
 		return getService().fetchSupportRegion(supportRegionId);
+	}
+
+	public static com.liferay.osb.model.SupportRegion fetchSupportRegionByName(
+		java.lang.String name)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().fetchSupportRegionByName(name);
 	}
 
 	/**
@@ -144,6 +161,17 @@ public class SupportRegionLocalServiceUtil {
 	public static com.liferay.osb.model.SupportRegion updateSupportRegion(
 		com.liferay.osb.model.SupportRegion supportRegion) {
 		return getService().updateSupportRegion(supportRegion);
+	}
+
+	public static com.liferay.osb.model.SupportRegion updateSupportRegion(
+		long supportRegionId, java.lang.String name,
+		java.lang.String description, java.lang.String timeZoneId,
+		long[] supportTeamIds)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .updateSupportRegion(supportRegionId, name, description,
+			timeZoneId, supportTeamIds);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
@@ -259,8 +287,12 @@ public class SupportRegionLocalServiceUtil {
 				   .dynamicQuery(dynamicQuery, start, end, orderByComparator);
 	}
 
+	/**
+	* @throws SystemException
+	*/
 	public static java.util.List<com.liferay.osb.model.SupportRegion> getAccountEntrySupportRegions(
-		long accountEntryId) {
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
 		return getService().getAccountEntrySupportRegions(accountEntryId);
 	}
 

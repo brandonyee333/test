@@ -54,4 +54,6 @@ public interface ContractEntry extends ContractEntryModel, PersistedModel {
 				return ContractEntry.class;
 			}
 		};
+
+	public java.lang.String getTypeLabel();
 }

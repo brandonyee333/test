@@ -65,6 +65,14 @@ public class OfferingBundleLocalServiceUtil {
 		return getService().addOfferingBundle(offeringBundle);
 	}
 
+	public static com.liferay.osb.model.OfferingBundle addOfferingBundle(
+		long userId, java.lang.String name, long[] offeringDefinitionIds)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .addOfferingBundle(userId, name, offeringDefinitionIds);
+	}
+
 	/**
 	* Creates a new offering bundle with the primary key. Does not add the offering bundle to the database.
 	*
@@ -127,6 +135,16 @@ public class OfferingBundleLocalServiceUtil {
 	public static com.liferay.osb.model.OfferingBundle updateOfferingBundle(
 		com.liferay.osb.model.OfferingBundle offeringBundle) {
 		return getService().updateOfferingBundle(offeringBundle);
+	}
+
+	public static com.liferay.osb.model.OfferingBundle updateOfferingBundle(
+		long offeringBundleId, java.lang.String name,
+		long[] offeringDefinitionIds)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .updateOfferingBundle(offeringBundleId, name,
+			offeringDefinitionIds);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {

@@ -16,6 +16,8 @@ package com.liferay.osb.service;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.model.AccountCall;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
@@ -47,6 +49,16 @@ public interface AccountCallService extends BaseService, InvokableService {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AccountCallServiceUtil} to access the account call remote service. Add custom service methods to {@link com.liferay.osb.service.impl.AccountCallServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	public AccountCall deleteAccountCall(long accountCallId)
+		throws PortalException, SystemException;
+
+	public AccountCall updateAccountCall(long accountCallId,
+		long accountEntryId, int type, int callDateMonth, int callDateDay,
+		int callDateYear, int callDateHour, int callDateMinute,
+		long callLength, java.lang.String summary,
+		java.lang.String clientsPresent, java.lang.String notes,
+		java.lang.String actionItems) throws PortalException, SystemException;
+
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)

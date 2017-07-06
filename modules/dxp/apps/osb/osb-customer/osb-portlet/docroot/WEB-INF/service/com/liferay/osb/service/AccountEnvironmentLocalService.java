@@ -33,11 +33,14 @@ import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
+import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
+import java.io.File;
 import java.io.Serializable;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Provides the local service interface for AccountEnvironment. Methods of this
@@ -72,6 +75,13 @@ public interface AccountEnvironmentLocalService extends BaseLocalService,
 	public AccountEnvironment addAccountEnvironment(
 		AccountEnvironment accountEnvironment);
 
+	public AccountEnvironment addAccountEnvironment(long userId,
+		long accountEntryId, long productEntryId, java.lang.String name,
+		int envOS, java.lang.String envOSCustom, int envDB, int envJVM,
+		int envAS, int envLFR,
+		List<ObjectValuePair<java.lang.String, File>> files,
+		List<java.lang.Integer> types) throws PortalException, SystemException;
+
 	/**
 	* Creates a new account environment with the primary key. Does not add the account environment to the database.
 	*
@@ -97,10 +107,15 @@ public interface AccountEnvironmentLocalService extends BaseLocalService,
 	* @param accountEnvironmentId the primary key of the account environment
 	* @return the account environment that was removed
 	* @throws PortalException if a account environment with the primary key could not be found
+	* @throws SystemException
 	*/
 	@Indexable(type = IndexableType.DELETE)
 	public AccountEnvironment deleteAccountEnvironment(
-		long accountEnvironmentId) throws PortalException;
+		long accountEnvironmentId) throws PortalException, SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AccountEnvironment fetchAccountEnvironment(long accountEntryId,
+		long productEntryId, java.lang.String name) throws SystemException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AccountEnvironment fetchAccountEnvironment(long accountEnvironmentId);
@@ -125,6 +140,13 @@ public interface AccountEnvironmentLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public AccountEnvironment updateAccountEnvironment(
 		AccountEnvironment accountEnvironment);
+
+	public AccountEnvironment updateAccountEnvironment(long userId,
+		long accountEnvironmentId, long productEntryId, java.lang.String name,
+		int envOS, java.lang.String envOSCustom, int envDB, int envJVM,
+		int envAS, int envLFR,
+		List<ObjectValuePair<java.lang.String, File>> files,
+		List<java.lang.Integer> types) throws PortalException, SystemException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -218,6 +240,18 @@ public interface AccountEnvironmentLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountEnvironment> getAccountEnvironments(int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AccountEnvironment> getAccountEnvironments(long accountEntryId)
+		throws PortalException, SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AccountEnvironment> getAccountEnvironments(
+		long accountEntryId, long productEntryId) throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Map<java.lang.String, List<AccountEnvironment>> getAccountEnvironmentsMap(
+		long accountEntryId) throws PortalException, SystemException;
 
 	/**
 	* Returns the number of rows matching the dynamic query.

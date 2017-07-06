@@ -16,14 +16,22 @@ package com.liferay.osb.service;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.model.TicketComment;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.service.BaseService;
 import com.liferay.portal.kernel.service.InvokableService;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Transactional;
+import com.liferay.portal.kernel.util.ObjectValuePair;
+
+import java.io.File;
+
+import java.util.List;
 
 /**
  * Provides the remote service interface for TicketComment. Methods of this
@@ -47,6 +55,30 @@ public interface TicketCommentService extends BaseService, InvokableService {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link TicketCommentServiceUtil} to access the ticket comment remote service. Add custom service methods to {@link com.liferay.osb.service.impl.TicketCommentServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	public TicketComment addTicketComment(long userId, long ticketEntryId,
+		java.lang.String body, int type, int visibility, int status,
+		long ticketCannedResponseId, int[] pendingTypes,
+		ServiceContext serviceContext) throws PortalException, SystemException;
+
+	public TicketComment addTicketComment(long userId, long ticketEntryId,
+		java.lang.String body, int type, int visibility, int status,
+		long ticketCannedResponseId, int[] pendingTypes,
+		List<ObjectValuePair<java.lang.String, File>> files,
+		List<java.lang.Integer> types, ServiceContext serviceContext)
+		throws PortalException, SystemException;
+
+	public TicketComment deleteTicketComment(long ticketCommentId)
+		throws PortalException, SystemException;
+
+	public TicketComment updateTicketComment(long userId, long ticketCommentId,
+		long ticketEntryId, java.lang.String body, int visibility, int status,
+		long ticketCannedResponseId, int[] pendingTypes,
+		List<ObjectValuePair<java.lang.String, File>> files,
+		List<java.lang.Integer> types) throws PortalException, SystemException;
+
+	public TicketComment updateTicketCommentType(long ticketCommentId, int type)
+		throws PortalException, SystemException;
+
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)

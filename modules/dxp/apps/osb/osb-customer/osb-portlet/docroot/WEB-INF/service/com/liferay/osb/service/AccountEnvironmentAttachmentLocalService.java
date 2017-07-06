@@ -33,8 +33,11 @@ import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
+import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
+import java.io.File;
+import java.io.InputStream;
 import java.io.Serializable;
 
 import java.util.List;
@@ -72,6 +75,11 @@ public interface AccountEnvironmentAttachmentLocalService
 	public AccountEnvironmentAttachment addAccountEnvironmentAttachment(
 		AccountEnvironmentAttachment accountEnvironmentAttachment);
 
+	public AccountEnvironmentAttachment addAccountEnvironmentAttachment(
+		long userId, long accountEnvironmentId,
+		ObjectValuePair<java.lang.String, File> fileOVP, int type)
+		throws PortalException, SystemException;
+
 	/**
 	* Creates a new account environment attachment with the primary key. Does not add the account environment attachment to the database.
 	*
@@ -86,10 +94,13 @@ public interface AccountEnvironmentAttachmentLocalService
 	*
 	* @param accountEnvironmentAttachment the account environment attachment
 	* @return the account environment attachment that was removed
+	* @throws PortalException
+	* @throws SystemException
 	*/
 	@Indexable(type = IndexableType.DELETE)
 	public AccountEnvironmentAttachment deleteAccountEnvironmentAttachment(
-		AccountEnvironmentAttachment accountEnvironmentAttachment);
+		AccountEnvironmentAttachment accountEnvironmentAttachment)
+		throws PortalException, SystemException;
 
 	/**
 	* Deletes the account environment attachment with the primary key from the database. Also notifies the appropriate model listeners.
@@ -105,6 +116,10 @@ public interface AccountEnvironmentAttachmentLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AccountEnvironmentAttachment fetchAccountEnvironmentAttachment(
 		long accountEnvironmentAttachmentId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AccountEnvironmentAttachment fetchAccountEnvironmentAttachment(
+		long accountEnvironmentId, int type) throws SystemException;
 
 	/**
 	* Returns the account environment attachment with the primary key.
@@ -126,6 +141,11 @@ public interface AccountEnvironmentAttachmentLocalService
 	@Indexable(type = IndexableType.REINDEX)
 	public AccountEnvironmentAttachment updateAccountEnvironmentAttachment(
 		AccountEnvironmentAttachment accountEnvironmentAttachment);
+
+	public AccountEnvironmentAttachment updateAccountEnvironmentAttachment(
+		long accountEnvironmentAttachmentId, long accountEnvironmentId,
+		ObjectValuePair<java.lang.String, File> fileOVP, int type)
+		throws PortalException, SystemException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -154,6 +174,16 @@ public interface AccountEnvironmentAttachmentLocalService
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getAccountEnvironmentAttachmentsCount();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public File getFile(
+		AccountEnvironmentAttachment accountEnvironmentAttachment)
+		throws PortalException, SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public InputStream getFileAsStream(
+		AccountEnvironmentAttachment accountEnvironmentAttachment)
+		throws PortalException, SystemException;
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
@@ -221,6 +251,10 @@ public interface AccountEnvironmentAttachmentLocalService
 	public List<AccountEnvironmentAttachment> getAccountEnvironmentAttachments(
 		int start, int end);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AccountEnvironmentAttachment> getAccountEnvironmentAttachments(
+		long accountEnvironmentId) throws SystemException;
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -238,4 +272,14 @@ public interface AccountEnvironmentAttachmentLocalService
 	*/
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
+
+	public void addAccountEnvironmentAttachments(long userId,
+		long accountEnvironmentId,
+		List<ObjectValuePair<java.lang.String, File>> files,
+		List<java.lang.Integer> types) throws PortalException, SystemException;
+
+	public void updateAccountEnvironmentAttachments(long userId,
+		long accountEnvironmentId,
+		List<ObjectValuePair<java.lang.String, File>> files,
+		List<java.lang.Integer> types) throws PortalException, SystemException;
 }

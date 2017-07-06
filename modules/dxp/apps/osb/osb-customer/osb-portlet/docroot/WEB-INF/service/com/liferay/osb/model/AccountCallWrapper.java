@@ -196,6 +196,21 @@ public class AccountCallWrapper implements AccountCall,
 		return _accountCall.compareTo(accountCall);
 	}
 
+	@Override
+	public int getCallLengthHours() {
+		return _accountCall.getCallLengthHours();
+	}
+
+	@Override
+	public int getCallLengthMinutes() {
+		return _accountCall.getCallLengthMinutes();
+	}
+
+	@Override
+	public int getCallLengthSeconds() {
+		return _accountCall.getCallLengthSeconds();
+	}
+
 	/**
 	* Returns the type of this account call.
 	*
@@ -229,6 +244,11 @@ public class AccountCallWrapper implements AccountCall,
 	@Override
 	public java.lang.String getActionItems() {
 		return _accountCall.getActionItems();
+	}
+
+	@Override
+	public java.lang.String getCallLengthLabel() {
+		return _accountCall.getCallLengthLabel();
 	}
 
 	/**
@@ -279,6 +299,11 @@ public class AccountCallWrapper implements AccountCall,
 	@Override
 	public java.lang.String getSummary() {
 		return _accountCall.getSummary();
+	}
+
+	@Override
+	public java.lang.String getTypeLabel() {
+		return _accountCall.getTypeLabel();
 	}
 
 	@Override

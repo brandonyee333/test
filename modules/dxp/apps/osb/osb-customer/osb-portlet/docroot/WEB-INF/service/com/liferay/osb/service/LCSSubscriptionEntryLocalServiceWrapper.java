@@ -248,6 +248,14 @@ public class LCSSubscriptionEntryLocalServiceWrapper
 			end);
 	}
 
+	@Override
+	public java.util.List<com.liferay.osb.model.LCSSubscriptionEntry> getLCSSubscriptionEntries(
+		long corpProjectId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _lcsSubscriptionEntryLocalService.getLCSSubscriptionEntries(corpProjectId);
+	}
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -273,6 +281,13 @@ public class LCSSubscriptionEntryLocalServiceWrapper
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return _lcsSubscriptionEntryLocalService.dynamicQueryCount(dynamicQuery,
 			projection);
+	}
+
+	@Override
+	public void syncToLCS(long corpProjectId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_lcsSubscriptionEntryLocalService.syncToLCS(corpProjectId);
 	}
 
 	@Override

@@ -53,4 +53,106 @@ public interface TicketEntry extends TicketEntryModel, PersistedModel {
 				return TicketEntry.class;
 			}
 		};
+
+	public AccountEntry getAccountEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
+
+	public int getAccountTier()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
+
+	public java.lang.String getComponentIcon();
+
+	public java.lang.String getComponentLabel();
+
+	public java.lang.String getDisplayId()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
+
+	public java.lang.String getEnvASLabel();
+
+	public java.lang.String getEnvBrowserLabel();
+
+	public java.lang.String getEnvCSLabel();
+
+	public java.lang.String getEnvDBLabel();
+
+	public java.lang.String getEnvJVMLabel();
+
+	public java.lang.String getEnvLFRLabel();
+
+	public java.lang.String getEnvOSLabel();
+
+	public java.util.List<java.lang.String> getEnvSearchLabels();
+
+	public java.lang.String getEscalationLevelLabel();
+
+	public java.lang.String getLanguageLabel();
+
+	public OfferingEntry getOfferingEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
+
+	public OrderEntry getOrderEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
+
+	public ProductEntry getProductEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
+
+	public java.lang.String getResolutionLabel();
+
+	public java.lang.String getSeverityLabel();
+
+	public java.lang.String getStatusLabel();
+
+	public java.lang.String getSubcomponentLabel();
+
+	public java.lang.String getSupportPhaseLabel();
+
+	public SupportRegion getSupportRegion()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
+
+	public SupportResponse getSupportResponse()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
+
+	public java.util.List<TicketAttachment> getTicketAttachments()
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	public java.util.List<TicketAttachment> getTicketAttachments(int[] types,
+		int[] visibilities)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	public int getTicketAttachmentsCount(int[] visibilities)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	public java.util.Map<java.lang.Long, java.lang.String> getTicketInformationFieldsMap()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
+
+	@com.liferay.portal.kernel.json.JSON()
+	public java.util.List<TicketInformation> getTicketInformationList()
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	public java.lang.String getWeightLabel();
+
+	public double getWork()
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	public boolean hasParticipant(long userId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
+
+	public boolean isPendingCustomer()
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	public boolean isPendingLiferay()
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	public boolean isPendingPartner()
+		throws com.liferay.portal.kernel.exception.SystemException;
 }

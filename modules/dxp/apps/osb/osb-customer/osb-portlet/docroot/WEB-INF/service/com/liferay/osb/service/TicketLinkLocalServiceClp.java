@@ -32,95 +32,133 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 
 		_methodParameterTypes0 = new String[] { "com.liferay.osb.model.TicketLink" };
 
-		_methodName1 = "createTicketLink";
+		_methodName1 = "addTicketLink";
 
-		_methodParameterTypes1 = new String[] { "long" };
+		_methodParameterTypes1 = new String[] {
+				"long", "long", "long", "java.lang.String[][]",
+				"java.lang.Integer[][]", "int",
+				"com.liferay.portal.kernel.service.ServiceContext"
+			};
 
-		_methodName2 = "deleteTicketLink";
+		_methodName2 = "createTicketLink";
 
-		_methodParameterTypes2 = new String[] { "com.liferay.osb.model.TicketLink" };
+		_methodParameterTypes2 = new String[] { "long" };
 
 		_methodName3 = "deleteTicketLink";
 
-		_methodParameterTypes3 = new String[] { "long" };
+		_methodParameterTypes3 = new String[] { "com.liferay.osb.model.TicketLink" };
 
-		_methodName4 = "fetchTicketLink";
+		_methodName4 = "deleteTicketLink";
 
 		_methodParameterTypes4 = new String[] { "long" };
 
-		_methodName5 = "getTicketLink";
+		_methodName5 = "fetchTicketLink";
 
 		_methodParameterTypes5 = new String[] { "long" };
 
-		_methodName6 = "updateTicketLink";
+		_methodName6 = "getTicketLink";
 
-		_methodParameterTypes6 = new String[] { "com.liferay.osb.model.TicketLink" };
+		_methodParameterTypes6 = new String[] { "long" };
 
-		_methodName7 = "getActionableDynamicQuery";
+		_methodName7 = "updateTicketLink";
 
-		_methodParameterTypes7 = new String[] {  };
+		_methodParameterTypes7 = new String[] { "com.liferay.osb.model.TicketLink" };
 
-		_methodName8 = "dynamicQuery";
+		_methodName8 = "getActionableDynamicQuery";
 
 		_methodParameterTypes8 = new String[] {  };
 
-		_methodName9 = "getIndexableActionableDynamicQuery";
+		_methodName9 = "dynamicQuery";
 
 		_methodParameterTypes9 = new String[] {  };
 
-		_methodName10 = "deletePersistedModel";
+		_methodName10 = "getIndexableActionableDynamicQuery";
 
-		_methodParameterTypes10 = new String[] {
+		_methodParameterTypes10 = new String[] {  };
+
+		_methodName11 = "deletePersistedModel";
+
+		_methodParameterTypes11 = new String[] {
 				"com.liferay.portal.kernel.model.PersistedModel"
 			};
 
-		_methodName11 = "getPersistedModel";
+		_methodName12 = "getPersistedModel";
 
-		_methodParameterTypes11 = new String[] { "java.io.Serializable" };
+		_methodParameterTypes12 = new String[] { "java.io.Serializable" };
 
-		_methodName12 = "getTicketLinksCount";
+		_methodName13 = "getTicketLinksCount";
 
-		_methodParameterTypes12 = new String[] {  };
+		_methodParameterTypes13 = new String[] {  };
 
-		_methodName14 = "getOSGiServiceIdentifier";
+		_methodName14 = "getTicketLinksCount";
 
-		_methodParameterTypes14 = new String[] {  };
+		_methodParameterTypes14 = new String[] { "long", "int" };
 
-		_methodName15 = "dynamicQuery";
+		_methodName15 = "getTicketLinksCount";
 
-		_methodParameterTypes15 = new String[] {
+		_methodParameterTypes15 = new String[] { "long", "int[][]" };
+
+		_methodName17 = "getOSGiServiceIdentifier";
+
+		_methodParameterTypes17 = new String[] {  };
+
+		_methodName18 = "dynamicQuery";
+
+		_methodParameterTypes18 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
 			};
 
-		_methodName16 = "dynamicQuery";
+		_methodName19 = "dynamicQuery";
 
-		_methodParameterTypes16 = new String[] {
+		_methodParameterTypes19 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
 			};
 
-		_methodName17 = "dynamicQuery";
+		_methodName20 = "dynamicQuery";
 
-		_methodParameterTypes17 = new String[] {
+		_methodParameterTypes20 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName18 = "getTicketLinks";
+		_methodName21 = "getTicketLinks";
 
-		_methodParameterTypes18 = new String[] { "int", "int" };
+		_methodParameterTypes21 = new String[] { "int", "int" };
 
-		_methodName19 = "dynamicQueryCount";
+		_methodName22 = "getTicketLinks";
 
-		_methodParameterTypes19 = new String[] {
+		_methodParameterTypes22 = new String[] { "long", "int" };
+
+		_methodName23 = "getTicketLinks";
+
+		_methodParameterTypes23 = new String[] { "long", "int[][]" };
+
+		_methodName24 = "getTicketLinks";
+
+		_methodParameterTypes24 = new String[] { "long", "long" };
+
+		_methodName25 = "dynamicQueryCount";
+
+		_methodParameterTypes25 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
 			};
 
-		_methodName20 = "dynamicQueryCount";
+		_methodName26 = "dynamicQueryCount";
 
-		_methodParameterTypes20 = new String[] {
+		_methodParameterTypes26 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery",
 				"com.liferay.portal.kernel.dao.orm.Projection"
 			};
+
+		_methodName27 = "deleteTicketLink";
+
+		_methodParameterTypes27 = new String[] {
+				"long", "com.liferay.osb.model.TicketLink"
+			};
+
+		_methodName28 = "deleteTicketLink";
+
+		_methodParameterTypes28 = new String[] { "long", "long" };
 	}
 
 	@Override
@@ -149,12 +187,63 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 	}
 
 	@Override
-	public com.liferay.osb.model.TicketLink createTicketLink(long ticketLinkId) {
+	public com.liferay.osb.model.TicketLink addTicketLink(long userId,
+		long ticketEntryId, long ticketSolutionId, java.lang.String[] urls,
+		java.lang.Integer[] types, int visibility,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName1,
-					_methodParameterTypes1, new Object[] { ticketLinkId });
+					_methodParameterTypes1,
+					new Object[] {
+						userId,
+						
+					ticketEntryId,
+						
+					ticketSolutionId,
+						
+					ClpSerializer.translateInput(urls),
+						
+					ClpSerializer.translateInput(types),
+						
+					visibility,
+						
+					ClpSerializer.translateInput(serviceContext)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.TicketLink)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public com.liferay.osb.model.TicketLink createTicketLink(long ticketLinkId) {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName2,
+					_methodParameterTypes2, new Object[] { ticketLinkId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -177,8 +266,8 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName2,
-					_methodParameterTypes2,
+			returnObj = _invokableLocalService.invokeMethod(_methodName3,
+					_methodParameterTypes3,
 					new Object[] { ClpSerializer.translateInput(ticketLink) });
 		}
 		catch (Throwable t) {
@@ -202,8 +291,8 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName3,
-					_methodParameterTypes3, new Object[] { ticketLinkId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName4,
+					_methodParameterTypes4, new Object[] { ticketLinkId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -229,8 +318,8 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName4,
-					_methodParameterTypes4, new Object[] { ticketLinkId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName5,
+					_methodParameterTypes5, new Object[] { ticketLinkId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -253,8 +342,8 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName5,
-					_methodParameterTypes5, new Object[] { ticketLinkId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName6,
+					_methodParameterTypes6, new Object[] { ticketLinkId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -281,8 +370,8 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName6,
-					_methodParameterTypes6,
+			returnObj = _invokableLocalService.invokeMethod(_methodName7,
+					_methodParameterTypes7,
 					new Object[] { ClpSerializer.translateInput(ticketLink) });
 		}
 		catch (Throwable t) {
@@ -305,8 +394,8 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName7,
-					_methodParameterTypes7, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName8,
+					_methodParameterTypes8, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -328,8 +417,8 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName8,
-					_methodParameterTypes8, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName9,
+					_methodParameterTypes9, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -351,8 +440,8 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName9,
-					_methodParameterTypes9, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName10,
+					_methodParameterTypes10, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -376,8 +465,8 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName10,
-					_methodParameterTypes10,
+			returnObj = _invokableLocalService.invokeMethod(_methodName11,
+					_methodParameterTypes11,
 					new Object[] { ClpSerializer.translateInput(persistedModel) });
 		}
 		catch (Throwable t) {
@@ -406,8 +495,8 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName11,
-					_methodParameterTypes11,
+			returnObj = _invokableLocalService.invokeMethod(_methodName12,
+					_methodParameterTypes12,
 					new Object[] { ClpSerializer.translateInput(primaryKeyObj) });
 		}
 		catch (Throwable t) {
@@ -434,11 +523,73 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName12,
-					_methodParameterTypes12, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName13,
+					_methodParameterTypes13, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return ((Integer)returnObj).intValue();
+	}
+
+	@Override
+	public int getTicketLinksCount(long ticketEntryId, int visibility)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName14,
+					_methodParameterTypes14,
+					new Object[] { ticketEntryId, visibility });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return ((Integer)returnObj).intValue();
+	}
+
+	@Override
+	public int getTicketLinksCount(long ticketEntryId, int[] visibilities)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName15,
+					_methodParameterTypes15,
+					new Object[] {
+						ticketEntryId,
+						
+					ClpSerializer.translateInput(visibilities)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -464,8 +615,8 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName14,
-					_methodParameterTypes14, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName17,
+					_methodParameterTypes17, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -488,8 +639,8 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName15,
-					_methodParameterTypes15,
+			returnObj = _invokableLocalService.invokeMethod(_methodName18,
+					_methodParameterTypes18,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -514,8 +665,8 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName16,
-					_methodParameterTypes16,
+			returnObj = _invokableLocalService.invokeMethod(_methodName19,
+					_methodParameterTypes19,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -547,8 +698,8 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName17,
-					_methodParameterTypes17,
+			returnObj = _invokableLocalService.invokeMethod(_methodName20,
+					_methodParameterTypes20,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -580,11 +731,105 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName18,
-					_methodParameterTypes18, new Object[] { start, end });
+			returnObj = _invokableLocalService.invokeMethod(_methodName21,
+					_methodParameterTypes21, new Object[] { start, end });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.List<com.liferay.osb.model.TicketLink>)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.TicketLink> getTicketLinks(
+		long ticketEntryId, int visibility)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName22,
+					_methodParameterTypes22,
+					new Object[] { ticketEntryId, visibility });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.List<com.liferay.osb.model.TicketLink>)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.TicketLink> getTicketLinks(
+		long ticketEntryId, int[] visibilities)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName23,
+					_methodParameterTypes23,
+					new Object[] {
+						ticketEntryId,
+						
+					ClpSerializer.translateInput(visibilities)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.List<com.liferay.osb.model.TicketLink>)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.TicketLink> getTicketLinks(
+		long ticketEntryId, long ticketSolutionId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName24,
+					_methodParameterTypes24,
+					new Object[] { ticketEntryId, ticketSolutionId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -604,8 +849,8 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName19,
-					_methodParameterTypes19,
+			returnObj = _invokableLocalService.invokeMethod(_methodName25,
+					_methodParameterTypes25,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -630,8 +875,8 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName20,
-					_methodParameterTypes20,
+			returnObj = _invokableLocalService.invokeMethod(_methodName26,
+					_methodParameterTypes26,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -651,6 +896,66 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 		}
 
 		return ((Long)returnObj).longValue();
+	}
+
+	@Override
+	public void deleteTicketLink(long userId,
+		com.liferay.osb.model.TicketLink ticketLink)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		try {
+			_invokableLocalService.invokeMethod(_methodName27,
+				_methodParameterTypes27,
+				new Object[] { userId, ClpSerializer.translateInput(ticketLink) });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+	}
+
+	@Override
+	public void deleteTicketLink(long userId, long ticketLinkId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		try {
+			_invokableLocalService.invokeMethod(_methodName28,
+				_methodParameterTypes28, new Object[] { userId, ticketLinkId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
 	}
 
 	private InvokableLocalService _invokableLocalService;
@@ -680,12 +985,12 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 	private String[] _methodParameterTypes11;
 	private String _methodName12;
 	private String[] _methodParameterTypes12;
+	private String _methodName13;
+	private String[] _methodParameterTypes13;
 	private String _methodName14;
 	private String[] _methodParameterTypes14;
 	private String _methodName15;
 	private String[] _methodParameterTypes15;
-	private String _methodName16;
-	private String[] _methodParameterTypes16;
 	private String _methodName17;
 	private String[] _methodParameterTypes17;
 	private String _methodName18;
@@ -694,4 +999,20 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 	private String[] _methodParameterTypes19;
 	private String _methodName20;
 	private String[] _methodParameterTypes20;
+	private String _methodName21;
+	private String[] _methodParameterTypes21;
+	private String _methodName22;
+	private String[] _methodParameterTypes22;
+	private String _methodName23;
+	private String[] _methodParameterTypes23;
+	private String _methodName24;
+	private String[] _methodParameterTypes24;
+	private String _methodName25;
+	private String[] _methodParameterTypes25;
+	private String _methodName26;
+	private String[] _methodParameterTypes26;
+	private String _methodName27;
+	private String[] _methodParameterTypes27;
+	private String _methodName28;
+	private String[] _methodParameterTypes28;
 }

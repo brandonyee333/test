@@ -27,21 +27,32 @@ import java.util.Arrays;
 @ProviderType
 public class LCSSubscriptionEntryServiceClpInvoker {
 	public LCSSubscriptionEntryServiceClpInvoker() {
-		_methodName346 = "getOSGiServiceIdentifier";
+		_methodName386 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes346 = new String[] {  };
+		_methodParameterTypes386 = new String[] {  };
+
+		_methodName391 = "getLCSSubscriptionEntries";
+
+		_methodParameterTypes391 = new String[] { "long" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName346.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes346, parameterTypes)) {
+		if (_methodName386.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes386, parameterTypes)) {
 			return LCSSubscriptionEntryServiceUtil.getOSGiServiceIdentifier();
+		}
+
+		if (_methodName391.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes391, parameterTypes)) {
+			return LCSSubscriptionEntryServiceUtil.getLCSSubscriptionEntries(((Long)arguments[0]).longValue());
 		}
 
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName346;
-	private String[] _methodParameterTypes346;
+	private String _methodName386;
+	private String[] _methodParameterTypes386;
+	private String _methodName391;
+	private String[] _methodParameterTypes391;
 }

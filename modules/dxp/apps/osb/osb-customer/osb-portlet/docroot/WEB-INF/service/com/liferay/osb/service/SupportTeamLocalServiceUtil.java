@@ -72,6 +72,17 @@ public class SupportTeamLocalServiceUtil {
 		return getService().addSupportTeam(supportTeam);
 	}
 
+	public static com.liferay.osb.model.SupportTeam addSupportTeam(
+		long userId, long parentSupportTeamId, long supportLaborId,
+		long locationSupportRegionId, java.lang.String name,
+		java.lang.String description, int type)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .addSupportTeam(userId, parentSupportTeamId, supportLaborId,
+			locationSupportRegionId, name, description, type);
+	}
+
 	/**
 	* Creates a new support team with the primary key. Does not add the support team to the database.
 	*
@@ -100,10 +111,12 @@ public class SupportTeamLocalServiceUtil {
 	* @param supportTeamId the primary key of the support team
 	* @return the support team that was removed
 	* @throws PortalException if a support team with the primary key could not be found
+	* @throws SystemException
 	*/
 	public static com.liferay.osb.model.SupportTeam deleteSupportTeam(
 		long supportTeamId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
 		return getService().deleteSupportTeam(supportTeamId);
 	}
 
@@ -134,6 +147,19 @@ public class SupportTeamLocalServiceUtil {
 	public static com.liferay.osb.model.SupportTeam updateSupportTeam(
 		com.liferay.osb.model.SupportTeam supportTeam) {
 		return getService().updateSupportTeam(supportTeam);
+	}
+
+	public static com.liferay.osb.model.SupportTeam updateSupportTeam(
+		long supportTeamId, long parentSupportTeamId, long supportLaborId,
+		long locationSupportRegionId, java.lang.String name,
+		java.lang.String description, int type, long[] accountEntryIds,
+		long[] supportRegionIds)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .updateSupportTeam(supportTeamId, parentSupportTeamId,
+			supportLaborId, locationSupportRegionId, name, description, type,
+			accountEntryIds, supportRegionIds);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
@@ -178,6 +204,17 @@ public class SupportTeamLocalServiceUtil {
 	*/
 	public static int getSupportTeamsCount() {
 		return getService().getSupportTeamsCount();
+	}
+
+	public static int searchCount(java.lang.String keywords)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().searchCount(keywords);
+	}
+
+	public static int searchCount(java.lang.String name,
+		java.lang.Integer type, boolean andOperator)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().searchCount(name, type, andOperator);
 	}
 
 	public static java.lang.Object invokeMethod(java.lang.String name,
@@ -264,6 +301,18 @@ public class SupportTeamLocalServiceUtil {
 			orderByComparator);
 	}
 
+	public static java.util.List<com.liferay.osb.model.SupportTeam> getChildSupportTeams(
+		long supportTeamId, boolean recursive)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getChildSupportTeams(supportTeamId, recursive);
+	}
+
+	public static java.util.List<com.liferay.osb.model.SupportTeam> getSupportLaborSupportTeams(
+		long supportLaborId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getSupportLaborSupportTeams(supportLaborId);
+	}
+
 	public static java.util.List<com.liferay.osb.model.SupportTeam> getSupportRegionSupportTeams(
 		long supportRegionId) {
 		return getService().getSupportRegionSupportTeams(supportRegionId);
@@ -297,6 +346,32 @@ public class SupportTeamLocalServiceUtil {
 	public static java.util.List<com.liferay.osb.model.SupportTeam> getSupportTeams(
 		int start, int end) {
 		return getService().getSupportTeams(start, end);
+	}
+
+	public static java.util.List<com.liferay.osb.model.SupportTeam> getSupportTeams(
+		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getSupportTeams(start, end, obc);
+	}
+
+	public static java.util.List<com.liferay.osb.model.SupportTeam> getUserRoleSupportTeams(
+		long userId, int role)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getUserRoleSupportTeams(userId, role);
+	}
+
+	public static java.util.List<com.liferay.osb.model.SupportTeam> search(
+		java.lang.String keywords, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator obc)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().search(keywords, start, end, obc);
+	}
+
+	public static java.util.List<com.liferay.osb.model.SupportTeam> search(
+		java.lang.String name, java.lang.Integer type, boolean andSearch,
+		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().search(name, type, andSearch, start, end, obc);
 	}
 
 	/**
@@ -439,6 +514,21 @@ public class SupportTeamLocalServiceUtil {
 	public static void setAccountEntrySupportTeams(long accountEntryId,
 		long[] supportTeamIds) {
 		getService().setAccountEntrySupportTeams(accountEntryId, supportTeamIds);
+	}
+
+	public static void setChildSupportTeams(long parentSupportTeamId,
+		long[] childSupportTeamIds)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		getService()
+			.setChildSupportTeams(parentSupportTeamId, childSupportTeamIds);
+	}
+
+	public static void setSupportLaborId(long supportLaborId,
+		long[] supportTeamIds)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		getService().setSupportLaborId(supportLaborId, supportTeamIds);
 	}
 
 	public static void setSupportRegionSupportTeams(long supportRegionId,

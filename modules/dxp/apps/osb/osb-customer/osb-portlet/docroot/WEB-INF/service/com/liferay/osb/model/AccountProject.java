@@ -54,4 +54,11 @@ public interface AccountProject extends AccountProjectModel, PersistedModel {
 				return AccountProject.class;
 			}
 		};
+
+	public void addData(AccountInformation accountInformation);
+
+	public java.lang.String getData(int fieldId);
+
+	public void setData(
+		java.util.List<AccountInformation> accountInformationList);
 }

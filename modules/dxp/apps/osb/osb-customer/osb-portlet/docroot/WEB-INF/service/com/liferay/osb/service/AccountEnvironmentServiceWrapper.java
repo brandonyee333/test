@@ -35,6 +35,50 @@ public class AccountEnvironmentServiceWrapper
 	}
 
 	@Override
+	public com.liferay.osb.model.AccountEnvironment addAccountEnvironment(
+		long accountEntryId, long productEntryId, java.lang.String name,
+		int envOS, java.lang.String envOSCustom, int envDB, int envJVM,
+		int envAS, int envLFR,
+		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
+		java.util.List<java.lang.Integer> types)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountEnvironmentService.addAccountEnvironment(accountEntryId,
+			productEntryId, name, envOS, envOSCustom, envDB, envJVM, envAS,
+			envLFR, files, types);
+	}
+
+	@Override
+	public com.liferay.osb.model.AccountEnvironment deleteAccountEnvironment(
+		long accountEnvironmentId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountEnvironmentService.deleteAccountEnvironment(accountEnvironmentId);
+	}
+
+	@Override
+	public com.liferay.osb.model.AccountEnvironment getAccountEnvironment(
+		long accountEnvironmentId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountEnvironmentService.getAccountEnvironment(accountEnvironmentId);
+	}
+
+	@Override
+	public com.liferay.osb.model.AccountEnvironment updateAccountEnvironment(
+		long accountEnvironmentId, long productEntryId, java.lang.String name,
+		int envOS, java.lang.String envOSCustom, int envDB, int envJVM,
+		int envAS, int envLFR,
+		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
+		java.util.List<java.lang.Integer> types)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountEnvironmentService.updateAccountEnvironment(accountEnvironmentId,
+			productEntryId, name, envOS, envOSCustom, envDB, envJVM, envAS,
+			envLFR, files, types);
+	}
+
+	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {
@@ -50,6 +94,22 @@ public class AccountEnvironmentServiceWrapper
 	@Override
 	public java.lang.String getOSGiServiceIdentifier() {
 		return _accountEnvironmentService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountEnvironment> getAccountEnvironments(
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountEnvironmentService.getAccountEnvironments(accountEntryId);
+	}
+
+	@Override
+	public java.util.Map<java.lang.String, java.util.List<com.liferay.osb.model.AccountEnvironment>> getAccountEnvironmentsMap(
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountEnvironmentService.getAccountEnvironmentsMap(accountEntryId);
 	}
 
 	@Override

@@ -16,9 +16,17 @@ package com.liferay.osb.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.service.TicketAttachmentServiceUtil;
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.ListUtil;
+
+import java.rmi.RemoteException;
+
 /**
  * Provides the SOAP utility for the
- * {@link com.liferay.osb.service.TicketAttachmentServiceUtil} service utility. The
+ * {@link TicketAttachmentServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it is difficult for SOAP to
  * support certain types.
@@ -53,9 +61,193 @@ import aQute.bnd.annotation.ProviderType;
  * @author Brian Wing Shun Chan
  * @see TicketAttachmentServiceHttp
  * @see com.liferay.osb.model.TicketAttachmentSoap
- * @see com.liferay.osb.service.TicketAttachmentServiceUtil
+ * @see TicketAttachmentServiceUtil
  * @generated
  */
 @ProviderType
 public class TicketAttachmentServiceSoap {
+	public static com.liferay.osb.model.TicketAttachmentSoap addTicketAttachment(
+		long userId, long ticketEntryId, long ticketSolutionId,
+		java.lang.String fileName, long fileSize, int type, int visibility,
+		java.lang.String fileRepositoryId, int status)
+		throws RemoteException {
+		try {
+			com.liferay.osb.model.TicketAttachment returnValue = TicketAttachmentServiceUtil.addTicketAttachment(userId,
+					ticketEntryId, ticketSolutionId, fileName, fileSize, type,
+					visibility, fileRepositoryId, status);
+
+			return com.liferay.osb.model.TicketAttachmentSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.TicketAttachmentSoap[] addTicketAttachments(
+		long userId, long ticketEntryId, long ticketSolutionId,
+		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
+		java.util.List<java.lang.Integer> types, int visibility, int status,
+		int[] pendingTypes,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws RemoteException {
+		try {
+			java.util.List<com.liferay.osb.model.TicketAttachment> returnValue = TicketAttachmentServiceUtil.addTicketAttachments(userId,
+					ticketEntryId, ticketSolutionId, files, types, visibility,
+					status, pendingTypes, serviceContext);
+
+			return com.liferay.osb.model.TicketAttachmentSoap.toSoapModels(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.TicketAttachmentSoap[] addTicketAttachments(
+		long userId, long ticketEntryId, long ticketSolutionId,
+		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
+		java.util.List<java.lang.Integer> types, int visibility, int status,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws RemoteException {
+		try {
+			java.util.List<com.liferay.osb.model.TicketAttachment> returnValue = TicketAttachmentServiceUtil.addTicketAttachments(userId,
+					ticketEntryId, ticketSolutionId, files, types, visibility,
+					status, serviceContext);
+
+			return com.liferay.osb.model.TicketAttachmentSoap.toSoapModels(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static boolean checkAvailability(long ticketAttachmentId,
+		java.lang.String fileRepositoryId) throws RemoteException {
+		try {
+			boolean returnValue = TicketAttachmentServiceUtil.checkAvailability(ticketAttachmentId,
+					fileRepositoryId);
+
+			return returnValue;
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.TicketAttachmentSoap deleteTicketAttachment(
+		long ticketAttachmentId) throws RemoteException {
+		try {
+			com.liferay.osb.model.TicketAttachment returnValue = TicketAttachmentServiceUtil.deleteTicketAttachment(ticketAttachmentId);
+
+			return com.liferay.osb.model.TicketAttachmentSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.TicketAttachmentSoap getTicketAttachment(
+		long ticketAttachmentId) throws RemoteException {
+		try {
+			com.liferay.osb.model.TicketAttachment returnValue = TicketAttachmentServiceUtil.getTicketAttachment(ticketAttachmentId);
+
+			return com.liferay.osb.model.TicketAttachmentSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static java.lang.String getUploadToken(long ticketEntryId,
+		java.lang.String fileRepositoryId) throws RemoteException {
+		try {
+			java.lang.String returnValue = TicketAttachmentServiceUtil.getUploadToken(ticketEntryId,
+					fileRepositoryId);
+
+			return returnValue;
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.TicketAttachmentSoap replicateTicketAttachment(
+		long ticketAttachmentId) throws RemoteException {
+		try {
+			com.liferay.osb.model.TicketAttachment returnValue = TicketAttachmentServiceUtil.replicateTicketAttachment(ticketAttachmentId);
+
+			return com.liferay.osb.model.TicketAttachmentSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.TicketAttachmentSoap updateDeleteDate(
+		long ticketAttachmentId, java.util.Date deleteDate)
+		throws RemoteException {
+		try {
+			com.liferay.osb.model.TicketAttachment returnValue = TicketAttachmentServiceUtil.updateDeleteDate(ticketAttachmentId,
+					deleteDate);
+
+			return com.liferay.osb.model.TicketAttachmentSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.TicketAttachmentSoap updateTicketAttachment(
+		long ticketAttachmentId, long ticketEntryId, int type, int visibility,
+		int[] pendingTypes) throws RemoteException {
+		try {
+			com.liferay.osb.model.TicketAttachment returnValue = TicketAttachmentServiceUtil.updateTicketAttachment(ticketAttachmentId,
+					ticketEntryId, type, visibility, pendingTypes);
+
+			return com.liferay.osb.model.TicketAttachmentSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.TicketAttachmentSoap[] updateTicketAttachments(
+		Long[] ticketAttachmentIds, long ticketEntryId,
+		java.util.List<java.lang.Integer> types,
+		java.util.List<java.lang.Integer> visibilities, int[] pendingTypes)
+		throws RemoteException {
+		try {
+			java.util.List<com.liferay.osb.model.TicketAttachment> returnValue = TicketAttachmentServiceUtil.updateTicketAttachments(ListUtil.toList(
+						ticketAttachmentIds), ticketEntryId, types,
+					visibilities, pendingTypes);
+
+			return com.liferay.osb.model.TicketAttachmentSoap.toSoapModels(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	private static Log _log = LogFactoryUtil.getLog(TicketAttachmentServiceSoap.class);
 }

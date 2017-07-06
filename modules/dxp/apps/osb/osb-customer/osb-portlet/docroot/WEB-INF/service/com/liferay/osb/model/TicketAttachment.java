@@ -54,4 +54,31 @@ public interface TicketAttachment extends TicketAttachmentModel, PersistedModel 
 				return TicketAttachment.class;
 			}
 		};
+
+	public boolean fileExists()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
+
+	public java.util.Set<java.lang.String> getAvailableFileRepositoryIdsSet();
+
+	public int getContentLength();
+
+	public java.io.File getFile();
+
+	public java.lang.String getFilePath();
+
+	public java.lang.String getKey();
+
+	public TicketEntry getTicketEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
+
+	public java.lang.String getTypeLabel();
+
+	public java.lang.String getVisibilityLabel();
+
+	public void setAvailableFileRepositoryIdsSet(
+		java.util.Set<java.lang.String> availableFileRepositoryIds);
+
+	public void setFile(java.io.File file);
 }

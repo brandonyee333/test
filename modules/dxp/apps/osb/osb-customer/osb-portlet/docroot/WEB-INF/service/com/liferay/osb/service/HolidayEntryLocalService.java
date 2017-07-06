@@ -37,7 +37,9 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Provides the local service interface for HolidayEntry. Methods of this
@@ -70,6 +72,11 @@ public interface HolidayEntryLocalService extends BaseLocalService,
 	*/
 	@Indexable(type = IndexableType.REINDEX)
 	public HolidayEntry addHolidayEntry(HolidayEntry holidayEntry);
+
+	public HolidayEntry addHolidayEntry(long holidayCalendarId,
+		java.lang.String name, java.lang.String description, Date startDate,
+		Date endDate, boolean repeatYearly)
+		throws PortalException, SystemException;
 
 	/**
 	* Creates a new holiday entry with the primary key. Does not add the holiday entry to the database.
@@ -122,6 +129,11 @@ public interface HolidayEntryLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public HolidayEntry updateHolidayEntry(HolidayEntry holidayEntry);
 
+	public HolidayEntry updateHolidayEntry(long holidayEntryId,
+		long holidayCalendarId, java.lang.String name,
+		java.lang.String description, Date startDate, Date endDate,
+		boolean repeatYearly) throws PortalException, SystemException;
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
@@ -149,6 +161,10 @@ public interface HolidayEntryLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getHolidayEntriesCount();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getHolidayEntriesCount(long userId, Date date)
+		throws SystemException;
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
@@ -214,6 +230,15 @@ public interface HolidayEntryLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<HolidayEntry> getHolidayEntries(int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<HolidayEntry> getHolidayEntries(long holidayCalendarId)
+		throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<HolidayEntry> getHolidayEntriesBetween(long userId,
+		Date startDate, Date endDate, TimeZone timeZone)
+		throws SystemException;
 
 	/**
 	* Returns the number of rows matching the dynamic query.

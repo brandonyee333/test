@@ -41,6 +41,32 @@ public class SearchFilterServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.SearchFilterServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static com.liferay.osb.model.SearchFilter addSearchFilter(
+		long userId, long classNameId, java.lang.String name,
+		java.lang.String filter, int visibility)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .addSearchFilter(userId, classNameId, name, filter,
+			visibility);
+	}
+
+	public static com.liferay.osb.model.SearchFilter getSearchFilter(
+		long searchFilterId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().getSearchFilter(searchFilterId);
+	}
+
+	public static com.liferay.osb.model.SearchFilter updateSearchFilter(
+		long searchFilterId, java.lang.String name, java.lang.String filter,
+		int visibility)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .updateSearchFilter(searchFilterId, name, filter, visibility);
+	}
+
 	public static java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {
@@ -54,6 +80,12 @@ public class SearchFilterServiceUtil {
 	*/
 	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static void deleteSearchFilter(long searchFilterId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		getService().deleteSearchFilter(searchFilterId);
 	}
 
 	public static void clearService() {

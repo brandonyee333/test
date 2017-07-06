@@ -18,10 +18,14 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.transaction.Isolation;
+import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
+
+import java.util.List;
 
 /**
  * Provides the local service interface for OSBCountry. Methods of this
@@ -45,6 +49,25 @@ public interface OSBCountryLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link OSBCountryLocalServiceUtil} to access the osb country local service. Add custom service methods to {@link com.liferay.osb.service.impl.OSBCountryLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	public Country addCountry(java.lang.String name, java.lang.String a2,
+		java.lang.String a3, java.lang.String number, java.lang.String idd,
+		boolean active) throws PortalException, SystemException;
+
+	public Country deleteCountry(long countryId)
+		throws PortalException, SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Country getCountry(long countryId)
+		throws PortalException, SystemException;
+
+	public Country updateCountry(long countryId, java.lang.String name,
+		java.lang.String a2, java.lang.String a3, java.lang.String number,
+		java.lang.String idd, boolean active)
+		throws PortalException, SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getCountriesCount() throws SystemException;
+
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
@@ -56,4 +79,11 @@ public interface OSBCountryLocalService extends BaseLocalService,
 	* @return the OSGi service identifier
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Country> getCountries() throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Country> getCountries(int start, int end)
+		throws SystemException;
 }

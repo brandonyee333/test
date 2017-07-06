@@ -117,6 +117,21 @@ public class AccountCallLocalServiceUtil {
 		return getService().updateAccountCall(accountCall);
 	}
 
+	public static com.liferay.osb.model.AccountCall updateAccountCall(
+		long userId, long accountCallId, long accountEntryId, int type,
+		int callDateMonth, int callDateDay, int callDateYear, int callDateHour,
+		int callDateMinute, long callLength, java.lang.String summary,
+		java.lang.String clientsPresent, java.lang.String notes,
+		java.lang.String actionItems)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .updateAccountCall(userId, accountCallId, accountEntryId,
+			type, callDateMonth, callDateDay, callDateYear, callDateHour,
+			callDateMinute, callLength, summary, clientsPresent, notes,
+			actionItems);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
 		return getService().getActionableDynamicQuery();
 	}
@@ -232,6 +247,12 @@ public class AccountCallLocalServiceUtil {
 	public static java.util.List<com.liferay.osb.model.AccountCall> getAccountCalls(
 		int start, int end) {
 		return getService().getAccountCalls(start, end);
+	}
+
+	public static java.util.List<com.liferay.osb.model.AccountCall> getAccountCalls(
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getAccountCalls(accountEntryId);
 	}
 
 	/**

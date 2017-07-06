@@ -71,6 +71,9 @@ public interface LicenseKeySetLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public LicenseKeySet addLicenseKeySet(LicenseKeySet licenseKeySet);
 
+	public LicenseKeySet addLicenseKeySet(long userId, long accountEntryId,
+		java.lang.String name) throws PortalException, SystemException;
+
 	/**
 	* Creates a new license key set with the primary key. Does not add the license key set to the database.
 	*
@@ -122,6 +125,9 @@ public interface LicenseKeySetLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public LicenseKeySet updateLicenseKeySet(LicenseKeySet licenseKeySet);
 
+	public LicenseKeySet updateLicenseKeySet(long licenseKeySetId,
+		java.lang.String name) throws PortalException, SystemException;
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
@@ -141,6 +147,10 @@ public interface LicenseKeySetLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getAccountEntryLicenseKeySetsCount(long accountEntryId)
+		throws SystemException;
 
 	/**
 	* Returns the number of license key sets.
@@ -200,6 +210,10 @@ public interface LicenseKeySetLocalService extends BaseLocalService,
 	*/
 	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
 		int end, OrderByComparator<T> orderByComparator);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<LicenseKeySet> getAccountEntryLicenseKeySets(
+		long accountEntryId, int start, int end) throws SystemException;
 
 	/**
 	* Returns a range of all the license key sets.

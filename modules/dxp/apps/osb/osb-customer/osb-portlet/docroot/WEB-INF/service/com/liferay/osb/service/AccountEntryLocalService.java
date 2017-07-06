@@ -17,6 +17,10 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.model.AccountEntry;
+import com.liferay.osb.model.AccountWorker;
+import com.liferay.osb.model.CorpProject;
+import com.liferay.osb.model.OrderEntry;
+import com.liferay.osb.model.PartnerEntry;
 
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -24,12 +28,15 @@ import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -37,6 +44,8 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -75,6 +84,14 @@ public interface AccountEntryLocalService extends BaseLocalService,
 	public boolean hasSupportTeamAccountEntry(long supportTeamId,
 		long accountEntryId);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasValidLicenseAccountEntry(long userId)
+		throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasValidSupportAccountEntry(long userId)
+		throws SystemException;
+
 	/**
 	* Adds the account entry to the database. Also notifies the appropriate model listeners.
 	*
@@ -83,6 +100,24 @@ public interface AccountEntryLocalService extends BaseLocalService,
 	*/
 	@Indexable(type = IndexableType.REINDEX)
 	public AccountEntry addAccountEntry(AccountEntry accountEntry);
+
+	public AccountEntry addAccountEntry(long userId, long corpProjectId,
+		java.lang.String corpEntryName, java.lang.String name,
+		java.lang.String code, int type, int industry, long partnerEntryId,
+		boolean partnerManagedSupport, int tier, int maxCustomers,
+		java.lang.String instructions, java.lang.String notes,
+		java.lang.String[] languageIds, long[] supportRegionIds,
+		java.lang.String street1, java.lang.String street2,
+		java.lang.String street3, java.lang.String city, java.lang.String zip,
+		long regionId, long countryId, java.lang.String ewsaDossieraProjectKey)
+		throws PortalException, SystemException;
+
+	public AccountEntry addAccountEntryWithWorkflow(
+		java.lang.String salesforceOpportunityKey, AccountEntry accountEntry,
+		CorpProject corpProject, PartnerEntry partnerEntry, Address address,
+		AccountWorker accountWorker, List<OrderEntry> orderEntries,
+		ArrayList<User> users, ServiceContext serviceContext)
+		throws PortalException, SystemException;
 
 	/**
 	* Creates a new account entry with the primary key. Does not add the account entry to the database.
@@ -107,13 +142,22 @@ public interface AccountEntryLocalService extends BaseLocalService,
 	* @param accountEntryId the primary key of the account entry
 	* @return the account entry that was removed
 	* @throws PortalException if a account entry with the primary key could not be found
+	* @throws SystemException
 	*/
 	@Indexable(type = IndexableType.DELETE)
 	public AccountEntry deleteAccountEntry(long accountEntryId)
-		throws PortalException;
+		throws PortalException, SystemException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AccountEntry fetchAccountEntry(long accountEntryId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AccountEntry fetchCorpProjectAccountEntry(long corpProjectId)
+		throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AccountEntry fetchUserTrialAccountEntry(long userId)
+		throws SystemException;
 
 	/**
 	* Returns the account entry with the primary key.
@@ -121,10 +165,19 @@ public interface AccountEntryLocalService extends BaseLocalService,
 	* @param accountEntryId the primary key of the account entry
 	* @return the account entry
 	* @throws PortalException if a account entry with the primary key could not be found
+	* @throws SystemException
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AccountEntry getAccountEntry(long accountEntryId)
-		throws PortalException;
+		throws PortalException, SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AccountEntry getAccountEntryByCode(java.lang.String code)
+		throws PortalException, SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AccountEntry getAccountEntryByName(java.lang.String name)
+		throws PortalException, SystemException;
 
 	/**
 	* Updates the account entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
@@ -134,6 +187,35 @@ public interface AccountEntryLocalService extends BaseLocalService,
 	*/
 	@Indexable(type = IndexableType.REINDEX)
 	public AccountEntry updateAccountEntry(AccountEntry accountEntry);
+
+	public AccountEntry updateAccountEntry(long userId, long accountEntryId,
+		long corpProjectId, java.lang.String corpEntryName,
+		java.lang.String name, java.lang.String code, int type, int industry,
+		long partnerEntryId, boolean partnerManagedSupport, int tier,
+		int maxCustomers, java.lang.String instructions,
+		java.lang.String notes, java.lang.String[] languageIds,
+		long[] supportRegionIds, long addressId, java.lang.String street1,
+		java.lang.String street2, java.lang.String street3,
+		java.lang.String city, java.lang.String zip, long regionId,
+		long countryId, java.lang.String ewsaDossieraProjectKey)
+		throws PortalException, SystemException;
+
+	public AccountEntry updateCorpProject(long accountEntryId,
+		long corpProjectId) throws PortalException, SystemException;
+
+	public AccountEntry updateInstructions(long userId, long accountEntryId,
+		java.lang.String instructions) throws PortalException, SystemException;
+
+	public AccountEntry updateStatus(long userId, long accountEntryId,
+		int status, ServiceContext serviceContext)
+		throws PortalException, SystemException;
+
+	public AccountEntry updateStatus(long userId, long accountEntryId,
+		java.lang.String salesforceOpportunityKey, int status,
+		ServiceContext serviceContext) throws PortalException, SystemException;
+
+	public AccountEntry updateTier(long userId, long accountEntryId, int tier)
+		throws PortalException, SystemException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -168,6 +250,31 @@ public interface AccountEntryLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getSupportTeamAccountEntriesCount(long supportTeamId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getUserAccountEntriesCount(long userId)
+		throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int searchCount(java.lang.Long createUserId, int createDateGTDay,
+		int createDateGTMonth, int createDateGTYear, int createDateLTDay,
+		int createDateLTMonth, int createDateLTYear,
+		java.lang.Long modifiedUserId, int modifiedDateGTDay,
+		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
+		int modifiedDateLTMonth, int modifiedDateLTYear, java.lang.String name,
+		java.lang.String code, int[] industries,
+		java.lang.Boolean partnerManagedSupport, int[] tiers, int[] statuses,
+		java.lang.String instructions, java.lang.String notes,
+		java.lang.String partnerEntryCode, java.lang.String street,
+		java.lang.Long countryId, java.lang.Long regionId,
+		java.lang.String city, java.lang.String zip,
+		LinkedHashMap<java.lang.String, java.lang.Object> params,
+		boolean andOperator) throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int searchCount(java.lang.String keywords,
+		LinkedHashMap<java.lang.String, java.lang.Object> params)
+		throws SystemException;
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
@@ -235,6 +342,32 @@ public interface AccountEntryLocalService extends BaseLocalService,
 	public List<AccountEntry> getAccountEntries(int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AccountEntry> getAccountEntries(int[] notTypes, int[] statuses,
+		int start, int end) throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AccountEntry> getAccountEntries(int[] statuses, int start,
+		int end) throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AccountEntry> getActiveAccountEntries(int start, int end)
+		throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AccountEntry> getPartnerAccountEntries(long partnerEntryId)
+		throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AccountEntry> getRedirectAccountEntries(long accountEntryId)
+		throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AccountEntry> getSecurityPatchAccountEntries(
+		java.lang.String portletId,
+		LinkedHashMap<java.lang.String, java.lang.Object> params)
+		throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountEntry> getSupportRegionAccountEntries(
 		long supportRegionId);
 
@@ -257,6 +390,48 @@ public interface AccountEntryLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountEntry> getSupportTeamAccountEntries(long supportTeamId,
 		int start, int end, OrderByComparator<AccountEntry> orderByComparator);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AccountEntry> getUserAccountEntries(long userId, int start,
+		int end) throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<java.lang.Long> getUserAccountEntryIds(long userId, int start,
+		int end) throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<java.lang.String> getUserAccountEntryNames(long userId)
+		throws PortalException, SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AccountEntry> getUserActiveAccountEntries(long userId,
+		int start, int end) throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AccountEntry> search(java.lang.Long createUserId,
+		int createDateGTDay, int createDateGTMonth, int createDateGTYear,
+		int createDateLTDay, int createDateLTMonth, int createDateLTYear,
+		java.lang.Long modifiedUserId, int modifiedDateGTDay,
+		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
+		int modifiedDateLTMonth, int modifiedDateLTYear, java.lang.String name,
+		java.lang.String code, int[] industries,
+		java.lang.Boolean partnerManagedSupport, int[] tiers, int[] statuses,
+		java.lang.String instructions, java.lang.String notes,
+		java.lang.String partnerEntryCode, java.lang.String street,
+		java.lang.Long countryId, java.lang.Long regionId,
+		java.lang.String city, java.lang.String zip,
+		LinkedHashMap<java.lang.String, java.lang.Object> params,
+		boolean andOperator, int start, int end, OrderByComparator obc)
+		throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AccountEntry> search(java.lang.String keywords,
+		LinkedHashMap<java.lang.String, java.lang.Object> params, int start,
+		int end, OrderByComparator obc) throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AccountEntry> search(java.lang.String name,
+		java.lang.String code) throws SystemException;
 
 	/**
 	* Returns the number of rows matching the dynamic query.
@@ -318,6 +493,14 @@ public interface AccountEntryLocalService extends BaseLocalService,
 	public void addSupportTeamAccountEntry(long supportTeamId,
 		long accountEntryId);
 
+	public void addTrialAccountEntry(long userId, long trialLicenseKeyId)
+		throws java.lang.Exception;
+
+	public void auditAccountEntries() throws PortalException, SystemException;
+
+	public void auditAccountEntry(long userId, long accountEntryId)
+		throws PortalException, SystemException;
+
 	public void clearSupportRegionAccountEntries(long supportRegionId);
 
 	public void clearSupportTeamAccountEntries(long supportTeamId);
@@ -346,9 +529,32 @@ public interface AccountEntryLocalService extends BaseLocalService,
 	public void deleteSupportTeamAccountEntry(long supportTeamId,
 		long accountEntryId);
 
+	public void recalculateHighestSupportResponse(long accountEntryId)
+		throws PortalException, SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public void reindexAccountEntry(long accountEntryId)
+		throws PortalException, SystemException;
+
 	public void setSupportRegionAccountEntries(long supportRegionId,
 		long[] accountEntryIds);
 
 	public void setSupportTeamAccountEntries(long supportTeamId,
 		long[] accountEntryIds);
+
+	public void updateAccountEntryWithWorkflow(
+		java.lang.String salesforceOpportunityKey, AccountEntry accountEntry,
+		PartnerEntry partnerEntry, Address address,
+		List<OrderEntry> orderEntries, ServiceContext serviceContext)
+		throws PortalException, SystemException;
+
+	public void updateLastAuditDate(long userId, long accountEntryId,
+		java.lang.String auditLabel, java.lang.String auditValue)
+		throws PortalException, SystemException;
+
+	public void updateStatus(long accountEntryId)
+		throws PortalException, SystemException;
+
+	public void validate(AccountEntry accountEntry)
+		throws PortalException, SystemException;
 }

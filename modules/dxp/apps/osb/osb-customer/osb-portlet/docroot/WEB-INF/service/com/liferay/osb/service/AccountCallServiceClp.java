@@ -27,9 +27,120 @@ public class AccountCallServiceClp implements AccountCallService {
 	public AccountCallServiceClp(InvokableService invokableService) {
 		_invokableService = invokableService;
 
-		_methodName1 = "getOSGiServiceIdentifier";
+		_methodName0 = "deleteAccountCall";
 
-		_methodParameterTypes1 = new String[] {  };
+		_methodParameterTypes0 = new String[] { "long" };
+
+		_methodName1 = "updateAccountCall";
+
+		_methodParameterTypes1 = new String[] {
+				"long", "long", "int", "int", "int", "int", "int", "int", "long",
+				"java.lang.String", "java.lang.String", "java.lang.String",
+				"java.lang.String"
+			};
+
+		_methodName3 = "getOSGiServiceIdentifier";
+
+		_methodParameterTypes3 = new String[] {  };
+	}
+
+	@Override
+	public com.liferay.osb.model.AccountCall deleteAccountCall(
+		long accountCallId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableService.invokeMethod(_methodName0,
+					_methodParameterTypes0, new Object[] { accountCallId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.AccountCall)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public com.liferay.osb.model.AccountCall updateAccountCall(
+		long accountCallId, long accountEntryId, int type, int callDateMonth,
+		int callDateDay, int callDateYear, int callDateHour,
+		int callDateMinute, long callLength, java.lang.String summary,
+		java.lang.String clientsPresent, java.lang.String notes,
+		java.lang.String actionItems)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableService.invokeMethod(_methodName1,
+					_methodParameterTypes1,
+					new Object[] {
+						accountCallId,
+						
+					accountEntryId,
+						
+					type,
+						
+					callDateMonth,
+						
+					callDateDay,
+						
+					callDateYear,
+						
+					callDateHour,
+						
+					callDateMinute,
+						
+					callLength,
+						
+					ClpSerializer.translateInput(summary),
+						
+					ClpSerializer.translateInput(clientsPresent),
+						
+					ClpSerializer.translateInput(notes),
+						
+					ClpSerializer.translateInput(actionItems)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.AccountCall)ClpSerializer.translateOutput(returnObj);
 	}
 
 	@Override
@@ -44,8 +155,8 @@ public class AccountCallServiceClp implements AccountCallService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName1,
-					_methodParameterTypes1, new Object[] {  });
+			returnObj = _invokableService.invokeMethod(_methodName3,
+					_methodParameterTypes3, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -63,6 +174,10 @@ public class AccountCallServiceClp implements AccountCallService {
 	}
 
 	private InvokableService _invokableService;
+	private String _methodName0;
+	private String[] _methodParameterTypes0;
 	private String _methodName1;
 	private String[] _methodParameterTypes1;
+	private String _methodName3;
+	private String[] _methodParameterTypes3;
 }

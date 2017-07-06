@@ -27,9 +27,139 @@ public class TicketSolutionServiceClp implements TicketSolutionService {
 	public TicketSolutionServiceClp(InvokableService invokableService) {
 		_invokableService = invokableService;
 
-		_methodName1 = "getOSGiServiceIdentifier";
+		_methodName0 = "addTicketSolution";
 
-		_methodParameterTypes1 = new String[] {  };
+		_methodParameterTypes0 = new String[] {
+				"long", "long", "java.lang.String", "boolean", "int",
+				"java.lang.String", "int", "boolean", "boolean", "boolean",
+				"boolean", "int", "int", "java.lang.String", "java.util.List",
+				"java.util.List", "java.util.List"
+			};
+
+		_methodName1 = "updateTicketSolution";
+
+		_methodParameterTypes1 = new String[] {
+				"long", "long", "int", "long", "java.lang.String", "int"
+			};
+
+		_methodName3 = "getOSGiServiceIdentifier";
+
+		_methodParameterTypes3 = new String[] {  };
+	}
+
+	@Override
+	public com.liferay.osb.model.TicketSolution addTicketSolution(long userId,
+		long ticketEntryId, java.lang.String summary,
+		boolean useCustomerSummary, int issueType, java.lang.String solution,
+		int type, boolean customerSpecific, boolean environmentSpecific,
+		boolean versionSpecific, boolean reviewForKB, int status,
+		int ticketEntrySubcomponent,
+		java.lang.String ticketEntrySubcomponentCustom,
+		java.util.List<java.lang.String> ticketLinkURLs,
+		java.util.List<java.lang.Integer> ticketLinkTypes,
+		java.util.List<com.liferay.osb.model.TicketAttachment> ticketAttachments)
+		throws java.lang.Exception {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableService.invokeMethod(_methodName0,
+					_methodParameterTypes0,
+					new Object[] {
+						userId,
+						
+					ticketEntryId,
+						
+					ClpSerializer.translateInput(summary),
+						
+					useCustomerSummary,
+						
+					issueType,
+						
+					ClpSerializer.translateInput(solution),
+						
+					type,
+						
+					customerSpecific,
+						
+					environmentSpecific,
+						
+					versionSpecific,
+						
+					reviewForKB,
+						
+					status,
+						
+					ticketEntrySubcomponent,
+						
+					ClpSerializer.translateInput(ticketEntrySubcomponentCustom),
+						
+					ClpSerializer.translateInput(ticketLinkURLs),
+						
+					ClpSerializer.translateInput(ticketLinkTypes),
+						
+					ClpSerializer.translateInput(ticketAttachments)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof java.lang.Exception) {
+				throw (java.lang.Exception)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.TicketSolution)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public com.liferay.osb.model.TicketSolution updateTicketSolution(
+		long ticketSolutionId, long ticketEntryId, int status,
+		long statusByUserId, java.lang.String statusMessage, int statusReason)
+		throws java.lang.Exception {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableService.invokeMethod(_methodName1,
+					_methodParameterTypes1,
+					new Object[] {
+						ticketSolutionId,
+						
+					ticketEntryId,
+						
+					status,
+						
+					statusByUserId,
+						
+					ClpSerializer.translateInput(statusMessage),
+						
+					statusReason
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof java.lang.Exception) {
+				throw (java.lang.Exception)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.TicketSolution)ClpSerializer.translateOutput(returnObj);
 	}
 
 	@Override
@@ -44,8 +174,8 @@ public class TicketSolutionServiceClp implements TicketSolutionService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName1,
-					_methodParameterTypes1, new Object[] {  });
+			returnObj = _invokableService.invokeMethod(_methodName3,
+					_methodParameterTypes3, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -63,6 +193,10 @@ public class TicketSolutionServiceClp implements TicketSolutionService {
 	}
 
 	private InvokableService _invokableService;
+	private String _methodName0;
+	private String[] _methodParameterTypes0;
 	private String _methodName1;
 	private String[] _methodParameterTypes1;
+	private String _methodName3;
+	private String[] _methodParameterTypes3;
 }

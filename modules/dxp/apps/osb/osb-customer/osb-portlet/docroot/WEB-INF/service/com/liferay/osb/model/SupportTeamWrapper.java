@@ -188,6 +188,13 @@ public class SupportTeamWrapper implements SupportTeam,
 	}
 
 	@Override
+	public SupportTeam getParentSupportTeam()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _supportTeam.getParentSupportTeam();
+	}
+
+	@Override
 	public com.liferay.portal.kernel.model.CacheModel<SupportTeam> toCacheModel() {
 		return _supportTeam.toCacheModel();
 	}
@@ -310,6 +317,36 @@ public class SupportTeamWrapper implements SupportTeam,
 	@Override
 	public Date getModifiedDate() {
 		return _supportTeam.getModifiedDate();
+	}
+
+	@Override
+	public java.util.List<AccountEntry> getAccountEntries()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _supportTeam.getAccountEntries();
+	}
+
+	@Override
+	public java.util.List<SupportTeam> getChildSupportTeams()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _supportTeam.getChildSupportTeams();
+	}
+
+	@Override
+	public java.util.List<SupportTeam> getChildSupportTeams(boolean recursive)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _supportTeam.getChildSupportTeams(recursive);
+	}
+
+	@Override
+	public java.util.List<java.lang.String> getLanguageIds()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _supportTeam.getLanguageIds();
+	}
+
+	@Override
+	public java.util.List<SupportRegion> getSupportRegions()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _supportTeam.getSupportRegions();
 	}
 
 	/**

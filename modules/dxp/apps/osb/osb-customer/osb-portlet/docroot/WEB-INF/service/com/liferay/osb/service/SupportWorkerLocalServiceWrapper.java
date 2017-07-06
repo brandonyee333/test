@@ -34,6 +34,45 @@ public class SupportWorkerLocalServiceWrapper
 		_supportWorkerLocalService = supportWorkerLocalService;
 	}
 
+	@Override
+	public boolean hasSupportWorker(long userId, int notRole)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _supportWorkerLocalService.hasSupportWorker(userId, notRole);
+	}
+
+	@Override
+	public boolean hasSupportWorker(long userId, int role,
+		long locationSupportRegionId, java.lang.Integer supportTeamType)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _supportWorkerLocalService.hasSupportWorker(userId, role,
+			locationSupportRegionId, supportTeamType);
+	}
+
+	@Override
+	public boolean hasSupportWorker(long userId, long supportTeamId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _supportWorkerLocalService.hasSupportWorker(userId, supportTeamId);
+	}
+
+	@Override
+	public boolean hasSupportWorkerRole(long userId, int role)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _supportWorkerLocalService.hasSupportWorkerRole(userId, role);
+	}
+
+	@Override
+	public boolean isClockedIn(long userId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _supportWorkerLocalService.isClockedIn(userId);
+	}
+
+	@Override
+	public boolean isManagerOfWorker(long userId, long workerUserId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _supportWorkerLocalService.isManagerOfWorker(userId, workerUserId);
+	}
+
 	/**
 	* Adds the support worker to the database. Also notifies the appropriate model listeners.
 	*
@@ -90,6 +129,44 @@ public class SupportWorkerLocalServiceWrapper
 		return _supportWorkerLocalService.fetchSupportWorker(supportWorkerId);
 	}
 
+	@Override
+	public com.liferay.osb.model.SupportWorker getAvailableSupportWorker(
+		com.liferay.osb.model.TicketEntry ticketEntry)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _supportWorkerLocalService.getAvailableSupportWorker(ticketEntry);
+	}
+
+	@Override
+	public com.liferay.osb.model.SupportWorker getLongestOpenSupportWorker(
+		java.util.List<com.liferay.osb.model.SupportWorker> supportWorkers,
+		com.liferay.osb.model.TicketEntry ticketEntry)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _supportWorkerLocalService.getLongestOpenSupportWorker(supportWorkers,
+			ticketEntry);
+	}
+
+	@Override
+	public com.liferay.osb.model.SupportWorker getMostAvailableSupportWorker(
+		com.liferay.osb.model.TicketEntry ticketEntry,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _supportWorkerLocalService.getMostAvailableSupportWorker(ticketEntry,
+			params);
+	}
+
+	@Override
+	public com.liferay.osb.model.SupportWorker getNextOpenSupportWorker(
+		java.util.List<com.liferay.osb.model.SupportWorker> supportWorkers,
+		com.liferay.osb.model.TicketEntry ticketEntry)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _supportWorkerLocalService.getNextOpenSupportWorker(supportWorkers,
+			ticketEntry);
+	}
+
 	/**
 	* Returns the support worker with the primary key.
 	*
@@ -104,6 +181,14 @@ public class SupportWorkerLocalServiceWrapper
 		return _supportWorkerLocalService.getSupportWorker(supportWorkerId);
 	}
 
+	@Override
+	public com.liferay.osb.model.SupportWorker getSupportWorker(long userId,
+		long supportTeamId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _supportWorkerLocalService.getSupportWorker(userId, supportTeamId);
+	}
+
 	/**
 	* Updates the support worker in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
@@ -114,6 +199,18 @@ public class SupportWorkerLocalServiceWrapper
 	public com.liferay.osb.model.SupportWorker updateSupportWorker(
 		com.liferay.osb.model.SupportWorker supportWorker) {
 		return _supportWorkerLocalService.updateSupportWorker(supportWorker);
+	}
+
+	@Override
+	public com.liferay.osb.model.SupportWorker updateSupportWorker(
+		long supportWorkerId, long supportTeamId, boolean autoAssign,
+		double maxWork, int escalationlevel, int escalationLevel2Role,
+		int notifications)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _supportWorkerLocalService.updateSupportWorker(supportWorkerId,
+			supportTeamId, autoAssign, maxWork, escalationlevel,
+			escalationLevel2Role, notifications);
 	}
 
 	@Override
@@ -148,6 +245,12 @@ public class SupportWorkerLocalServiceWrapper
 		return _supportWorkerLocalService.getPersistedModel(primaryKeyObj);
 	}
 
+	@Override
+	public double getAssignedWork(long userId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _supportWorkerLocalService.getAssignedWork(userId);
+	}
+
 	/**
 	* Returns the number of support workers.
 	*
@@ -156,6 +259,30 @@ public class SupportWorkerLocalServiceWrapper
 	@Override
 	public int getSupportWorkersCount() {
 		return _supportWorkerLocalService.getSupportWorkersCount();
+	}
+
+	@Override
+	public int getSupportWorkersCountBySupportLaborId(long supportLaborId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _supportWorkerLocalService.getSupportWorkersCountBySupportLaborId(supportLaborId);
+	}
+
+	@Override
+	public int searchCount(long supportLaborId, java.lang.String firstName,
+		java.lang.String middleName, java.lang.String lastName,
+		java.lang.String screenName, java.lang.String emailAddress,
+		java.lang.String supportTeamName, boolean andSearch)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _supportWorkerLocalService.searchCount(supportLaborId,
+			firstName, middleName, lastName, screenName, emailAddress,
+			supportTeamName, andSearch);
+	}
+
+	@Override
+	public int searchCount(long supportLaborId, java.lang.String keywords)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _supportWorkerLocalService.searchCount(supportLaborId, keywords);
 	}
 
 	@Override
@@ -246,6 +373,75 @@ public class SupportWorkerLocalServiceWrapper
 		return _supportWorkerLocalService.getSupportWorkers(start, end);
 	}
 
+	@Override
+	public java.util.List<com.liferay.osb.model.SupportWorker> getSupportWorkersBySupportLaborId(
+		long supportLaborId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _supportWorkerLocalService.getSupportWorkersBySupportLaborId(supportLaborId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.SupportWorker> getSupportWorkersBySupportRegionId(
+		long supportRegionId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _supportWorkerLocalService.getSupportWorkersBySupportRegionId(supportRegionId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.SupportWorker> getTeamSupportWorkers(
+		long supportTeamId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _supportWorkerLocalService.getTeamSupportWorkers(supportTeamId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.SupportWorker> getUserSupportTeamManagers(
+		long userId, java.lang.Integer supportTeamType)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _supportWorkerLocalService.getUserSupportTeamManagers(userId,
+			supportTeamType);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.SupportWorker> getUserSupportWorkers(
+		long userId) throws com.liferay.portal.kernel.exception.SystemException {
+		return _supportWorkerLocalService.getUserSupportWorkers(userId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.SupportWorker> search(
+		java.lang.Boolean overUtilization, int escalationLevel,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _supportWorkerLocalService.search(overUtilization,
+			escalationLevel, params);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.SupportWorker> search(
+		long supportLaborId, java.lang.String firstName,
+		java.lang.String middleName, java.lang.String lastName,
+		java.lang.String screenName, java.lang.String emailAddress,
+		java.lang.String supportTeamName, boolean andSearch, int start,
+		int end, com.liferay.portal.kernel.util.OrderByComparator obc)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _supportWorkerLocalService.search(supportLaborId, firstName,
+			middleName, lastName, screenName, emailAddress, supportTeamName,
+			andSearch, start, end, obc);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.SupportWorker> search(
+		long supportLaborId, java.lang.String keywords, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator obc)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _supportWorkerLocalService.search(supportLaborId, keywords,
+			start, end, obc);
+	}
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -271,6 +467,68 @@ public class SupportWorkerLocalServiceWrapper
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return _supportWorkerLocalService.dynamicQueryCount(dynamicQuery,
 			projection);
+	}
+
+	@Override
+	public void addSupportWorkers(long[] userIds, long supportTeamId,
+		double[] maxWork, int[] escalationLevels, int[] roles,
+		int[] notifications)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_supportWorkerLocalService.addSupportWorkers(userIds, supportTeamId,
+			maxWork, escalationLevels, roles, notifications);
+	}
+
+	@Override
+	public void clockInOut(long supportWorkerId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_supportWorkerLocalService.clockInOut(supportWorkerId);
+	}
+
+	@Override
+	public void decreaseAssignedWork(long userId, double work)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		_supportWorkerLocalService.decreaseAssignedWork(userId, work);
+	}
+
+	@Override
+	public void decreaseTicketEntryAssignedWork(long ticketEntryId, double work)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		_supportWorkerLocalService.decreaseTicketEntryAssignedWork(ticketEntryId,
+			work);
+	}
+
+	@Override
+	public void deleteSupportWorkers(long userId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_supportWorkerLocalService.deleteSupportWorkers(userId);
+	}
+
+	@Override
+	public void deleteSupportWorkers(long[] userIds, long supportTeamId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_supportWorkerLocalService.deleteSupportWorkers(userIds, supportTeamId);
+	}
+
+	@Override
+	public void increaseAssignedWork(long userId, double work)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		_supportWorkerLocalService.increaseAssignedWork(userId, work);
+	}
+
+	@Override
+	public void increaseTicketEntryAssignedWork(long ticketEntryId, double work)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		_supportWorkerLocalService.increaseTicketEntryAssignedWork(ticketEntryId,
+			work);
+	}
+
+	@Override
+	public void recalculateUtilization() {
+		_supportWorkerLocalService.recalculateUtilization();
 	}
 
 	@Override

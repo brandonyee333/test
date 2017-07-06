@@ -35,99 +35,123 @@ public class ExternalIdMapperLocalServiceClp
 				"com.liferay.osb.model.ExternalIdMapper"
 			};
 
-		_methodName1 = "createExternalIdMapper";
+		_methodName1 = "addExternalIdMapper";
 
-		_methodParameterTypes1 = new String[] { "long" };
-
-		_methodName2 = "deleteExternalIdMapper";
-
-		_methodParameterTypes2 = new String[] {
-				"com.liferay.osb.model.ExternalIdMapper"
+		_methodParameterTypes1 = new String[] {
+				"long", "long", "int", "java.lang.String"
 			};
+
+		_methodName2 = "createExternalIdMapper";
+
+		_methodParameterTypes2 = new String[] { "long" };
 
 		_methodName3 = "deleteExternalIdMapper";
 
-		_methodParameterTypes3 = new String[] { "long" };
-
-		_methodName4 = "fetchExternalIdMapper";
-
-		_methodParameterTypes4 = new String[] { "long" };
-
-		_methodName5 = "getExternalIdMapper";
-
-		_methodParameterTypes5 = new String[] { "long" };
-
-		_methodName6 = "updateExternalIdMapper";
-
-		_methodParameterTypes6 = new String[] {
+		_methodParameterTypes3 = new String[] {
 				"com.liferay.osb.model.ExternalIdMapper"
 			};
 
-		_methodName7 = "getActionableDynamicQuery";
+		_methodName4 = "deleteExternalIdMapper";
 
-		_methodParameterTypes7 = new String[] {  };
+		_methodParameterTypes4 = new String[] { "long" };
 
-		_methodName8 = "dynamicQuery";
+		_methodName5 = "fetchExternalIdMapper";
 
-		_methodParameterTypes8 = new String[] {  };
+		_methodParameterTypes5 = new String[] { "long" };
 
-		_methodName9 = "getIndexableActionableDynamicQuery";
+		_methodName6 = "getExternalIdMapper";
+
+		_methodParameterTypes6 = new String[] { "long" };
+
+		_methodName7 = "updateExternalIdMapper";
+
+		_methodParameterTypes7 = new String[] {
+				"com.liferay.osb.model.ExternalIdMapper"
+			};
+
+		_methodName8 = "updateExternalIdMapper";
+
+		_methodParameterTypes8 = new String[] {
+				"long", "long", "long", "int", "java.lang.String"
+			};
+
+		_methodName9 = "getActionableDynamicQuery";
 
 		_methodParameterTypes9 = new String[] {  };
 
-		_methodName10 = "deletePersistedModel";
+		_methodName10 = "dynamicQuery";
 
-		_methodParameterTypes10 = new String[] {
+		_methodParameterTypes10 = new String[] {  };
+
+		_methodName11 = "getIndexableActionableDynamicQuery";
+
+		_methodParameterTypes11 = new String[] {  };
+
+		_methodName12 = "deletePersistedModel";
+
+		_methodParameterTypes12 = new String[] {
 				"com.liferay.portal.kernel.model.PersistedModel"
 			};
 
-		_methodName11 = "getPersistedModel";
+		_methodName13 = "getPersistedModel";
 
-		_methodParameterTypes11 = new String[] { "java.io.Serializable" };
+		_methodParameterTypes13 = new String[] { "java.io.Serializable" };
 
-		_methodName12 = "getExternalIdMappersCount";
-
-		_methodParameterTypes12 = new String[] {  };
-
-		_methodName14 = "getOSGiServiceIdentifier";
+		_methodName14 = "getExternalIdMappersCount";
 
 		_methodParameterTypes14 = new String[] {  };
 
-		_methodName15 = "dynamicQuery";
+		_methodName16 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes15 = new String[] {
-				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
-			};
-
-		_methodName16 = "dynamicQuery";
-
-		_methodParameterTypes16 = new String[] {
-				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
-			};
+		_methodParameterTypes16 = new String[] {  };
 
 		_methodName17 = "dynamicQuery";
 
 		_methodParameterTypes17 = new String[] {
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
+			};
+
+		_methodName18 = "dynamicQuery";
+
+		_methodParameterTypes18 = new String[] {
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
+			};
+
+		_methodName19 = "dynamicQuery";
+
+		_methodParameterTypes19 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName18 = "getExternalIdMappers";
+		_methodName20 = "getExternalIdMappers";
 
-		_methodParameterTypes18 = new String[] { "int", "int" };
+		_methodParameterTypes20 = new String[] { "int", "int" };
 
-		_methodName19 = "dynamicQueryCount";
+		_methodName21 = "getExternalIdMappers";
 
-		_methodParameterTypes19 = new String[] {
+		_methodParameterTypes21 = new String[] { "long", "int", "java.lang.String" };
+
+		_methodName22 = "getExternalIdMappers";
+
+		_methodParameterTypes22 = new String[] { "long", "long", "int" };
+
+		_methodName23 = "dynamicQueryCount";
+
+		_methodParameterTypes23 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
 			};
 
-		_methodName20 = "dynamicQueryCount";
+		_methodName24 = "dynamicQueryCount";
 
-		_methodParameterTypes20 = new String[] {
+		_methodParameterTypes24 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery",
 				"com.liferay.portal.kernel.dao.orm.Projection"
 			};
+
+		_methodName25 = "deleteExternalIdMapper";
+
+		_methodParameterTypes25 = new String[] { "long", "long", "int" };
 	}
 
 	@Override
@@ -157,13 +181,51 @@ public class ExternalIdMapperLocalServiceClp
 	}
 
 	@Override
+	public com.liferay.osb.model.ExternalIdMapper addExternalIdMapper(
+		long classNameId, long classPK, int type, java.lang.String externalId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName1,
+					_methodParameterTypes1,
+					new Object[] {
+						classNameId,
+						
+					classPK,
+						
+					type,
+						
+					ClpSerializer.translateInput(externalId)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.ExternalIdMapper)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
 	public com.liferay.osb.model.ExternalIdMapper createExternalIdMapper(
 		long externalIdMapperId) {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName1,
-					_methodParameterTypes1, new Object[] { externalIdMapperId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName2,
+					_methodParameterTypes2, new Object[] { externalIdMapperId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -186,8 +248,8 @@ public class ExternalIdMapperLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName2,
-					_methodParameterTypes2,
+			returnObj = _invokableLocalService.invokeMethod(_methodName3,
+					_methodParameterTypes3,
 					new Object[] { ClpSerializer.translateInput(
 							externalIdMapper) });
 		}
@@ -213,8 +275,8 @@ public class ExternalIdMapperLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName3,
-					_methodParameterTypes3, new Object[] { externalIdMapperId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName4,
+					_methodParameterTypes4, new Object[] { externalIdMapperId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -241,8 +303,8 @@ public class ExternalIdMapperLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName4,
-					_methodParameterTypes4, new Object[] { externalIdMapperId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName5,
+					_methodParameterTypes5, new Object[] { externalIdMapperId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -266,8 +328,8 @@ public class ExternalIdMapperLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName5,
-					_methodParameterTypes5, new Object[] { externalIdMapperId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName6,
+					_methodParameterTypes6, new Object[] { externalIdMapperId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -294,8 +356,8 @@ public class ExternalIdMapperLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName6,
-					_methodParameterTypes6,
+			returnObj = _invokableLocalService.invokeMethod(_methodName7,
+					_methodParameterTypes7,
 					new Object[] { ClpSerializer.translateInput(
 							externalIdMapper) });
 		}
@@ -315,12 +377,58 @@ public class ExternalIdMapperLocalServiceClp
 	}
 
 	@Override
+	public com.liferay.osb.model.ExternalIdMapper updateExternalIdMapper(
+		long externalIdMapperId, long classNameId, long classPK, int type,
+		java.lang.String externalId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName8,
+					_methodParameterTypes8,
+					new Object[] {
+						externalIdMapperId,
+						
+					classNameId,
+						
+					classPK,
+						
+					type,
+						
+					ClpSerializer.translateInput(externalId)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.ExternalIdMapper)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName7,
-					_methodParameterTypes7, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName9,
+					_methodParameterTypes9, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -342,8 +450,8 @@ public class ExternalIdMapperLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName8,
-					_methodParameterTypes8, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName10,
+					_methodParameterTypes10, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -365,8 +473,8 @@ public class ExternalIdMapperLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName9,
-					_methodParameterTypes9, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName11,
+					_methodParameterTypes11, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -390,8 +498,8 @@ public class ExternalIdMapperLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName10,
-					_methodParameterTypes10,
+			returnObj = _invokableLocalService.invokeMethod(_methodName12,
+					_methodParameterTypes12,
 					new Object[] { ClpSerializer.translateInput(persistedModel) });
 		}
 		catch (Throwable t) {
@@ -420,8 +528,8 @@ public class ExternalIdMapperLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName11,
-					_methodParameterTypes11,
+			returnObj = _invokableLocalService.invokeMethod(_methodName13,
+					_methodParameterTypes13,
 					new Object[] { ClpSerializer.translateInput(primaryKeyObj) });
 		}
 		catch (Throwable t) {
@@ -448,8 +556,8 @@ public class ExternalIdMapperLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName12,
-					_methodParameterTypes12, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName14,
+					_methodParameterTypes14, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -478,8 +586,8 @@ public class ExternalIdMapperLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName14,
-					_methodParameterTypes14, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName16,
+					_methodParameterTypes16, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -502,8 +610,8 @@ public class ExternalIdMapperLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName15,
-					_methodParameterTypes15,
+			returnObj = _invokableLocalService.invokeMethod(_methodName17,
+					_methodParameterTypes17,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -528,8 +636,8 @@ public class ExternalIdMapperLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName16,
-					_methodParameterTypes16,
+			returnObj = _invokableLocalService.invokeMethod(_methodName18,
+					_methodParameterTypes18,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -561,8 +669,8 @@ public class ExternalIdMapperLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName17,
-					_methodParameterTypes17,
+			returnObj = _invokableLocalService.invokeMethod(_methodName19,
+					_methodParameterTypes19,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -594,11 +702,77 @@ public class ExternalIdMapperLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName18,
-					_methodParameterTypes18, new Object[] { start, end });
+			returnObj = _invokableLocalService.invokeMethod(_methodName20,
+					_methodParameterTypes20, new Object[] { start, end });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.List<com.liferay.osb.model.ExternalIdMapper>)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.ExternalIdMapper> getExternalIdMappers(
+		long classNameId, int type, java.lang.String externalId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName21,
+					_methodParameterTypes21,
+					new Object[] {
+						classNameId,
+						
+					type,
+						
+					ClpSerializer.translateInput(externalId)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.List<com.liferay.osb.model.ExternalIdMapper>)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.ExternalIdMapper> getExternalIdMappers(
+		long classNameId, long classPK, int type)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName22,
+					_methodParameterTypes22,
+					new Object[] { classNameId, classPK, type });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -618,8 +792,8 @@ public class ExternalIdMapperLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName19,
-					_methodParameterTypes19,
+			returnObj = _invokableLocalService.invokeMethod(_methodName23,
+					_methodParameterTypes23,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -644,8 +818,8 @@ public class ExternalIdMapperLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName20,
-					_methodParameterTypes20,
+			returnObj = _invokableLocalService.invokeMethod(_methodName24,
+					_methodParameterTypes24,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -665,6 +839,31 @@ public class ExternalIdMapperLocalServiceClp
 		}
 
 		return ((Long)returnObj).longValue();
+	}
+
+	@Override
+	public void deleteExternalIdMapper(long classNameId, long classPK, int type)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		try {
+			_invokableLocalService.invokeMethod(_methodName25,
+				_methodParameterTypes25,
+				new Object[] { classNameId, classPK, type });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
 	}
 
 	private InvokableLocalService _invokableLocalService;
@@ -694,10 +893,10 @@ public class ExternalIdMapperLocalServiceClp
 	private String[] _methodParameterTypes11;
 	private String _methodName12;
 	private String[] _methodParameterTypes12;
+	private String _methodName13;
+	private String[] _methodParameterTypes13;
 	private String _methodName14;
 	private String[] _methodParameterTypes14;
-	private String _methodName15;
-	private String[] _methodParameterTypes15;
 	private String _methodName16;
 	private String[] _methodParameterTypes16;
 	private String _methodName17;
@@ -708,4 +907,14 @@ public class ExternalIdMapperLocalServiceClp
 	private String[] _methodParameterTypes19;
 	private String _methodName20;
 	private String[] _methodParameterTypes20;
+	private String _methodName21;
+	private String[] _methodParameterTypes21;
+	private String _methodName22;
+	private String[] _methodParameterTypes22;
+	private String _methodName23;
+	private String[] _methodParameterTypes23;
+	private String _methodName24;
+	private String[] _methodParameterTypes24;
+	private String _methodName25;
+	private String[] _methodParameterTypes25;
 }

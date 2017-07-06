@@ -45,6 +45,17 @@ public class TicketLinkLocalServiceWrapper implements TicketLinkLocalService,
 		return _ticketLinkLocalService.addTicketLink(ticketLink);
 	}
 
+	@Override
+	public com.liferay.osb.model.TicketLink addTicketLink(long userId,
+		long ticketEntryId, long ticketSolutionId, java.lang.String[] urls,
+		java.lang.Integer[] types, int visibility,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _ticketLinkLocalService.addTicketLink(userId, ticketEntryId,
+			ticketSolutionId, urls, types, visibility, serviceContext);
+	}
+
 	/**
 	* Creates a new ticket link with the primary key. Does not add the ticket link to the database.
 	*
@@ -154,6 +165,20 @@ public class TicketLinkLocalServiceWrapper implements TicketLinkLocalService,
 	}
 
 	@Override
+	public int getTicketLinksCount(long ticketEntryId, int visibility)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _ticketLinkLocalService.getTicketLinksCount(ticketEntryId,
+			visibility);
+	}
+
+	@Override
+	public int getTicketLinksCount(long ticketEntryId, int[] visibilities)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _ticketLinkLocalService.getTicketLinksCount(ticketEntryId,
+			visibilities);
+	}
+
+	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {
@@ -241,6 +266,29 @@ public class TicketLinkLocalServiceWrapper implements TicketLinkLocalService,
 		return _ticketLinkLocalService.getTicketLinks(start, end);
 	}
 
+	@Override
+	public java.util.List<com.liferay.osb.model.TicketLink> getTicketLinks(
+		long ticketEntryId, int visibility)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _ticketLinkLocalService.getTicketLinks(ticketEntryId, visibility);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.TicketLink> getTicketLinks(
+		long ticketEntryId, int[] visibilities)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _ticketLinkLocalService.getTicketLinks(ticketEntryId,
+			visibilities);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.TicketLink> getTicketLinks(
+		long ticketEntryId, long ticketSolutionId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _ticketLinkLocalService.getTicketLinks(ticketEntryId,
+			ticketSolutionId);
+	}
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -266,6 +314,21 @@ public class TicketLinkLocalServiceWrapper implements TicketLinkLocalService,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return _ticketLinkLocalService.dynamicQueryCount(dynamicQuery,
 			projection);
+	}
+
+	@Override
+	public void deleteTicketLink(long userId,
+		com.liferay.osb.model.TicketLink ticketLink)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_ticketLinkLocalService.deleteTicketLink(userId, ticketLink);
+	}
+
+	@Override
+	public void deleteTicketLink(long userId, long ticketLinkId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_ticketLinkLocalService.deleteTicketLink(userId, ticketLinkId);
 	}
 
 	@Override

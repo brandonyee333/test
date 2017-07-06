@@ -28,10 +28,12 @@ import com.liferay.osb.model.AccountLinkClp;
 import com.liferay.osb.model.AccountProjectClp;
 import com.liferay.osb.model.AccountWorkerClp;
 import com.liferay.osb.model.AssetLicenseClp;
+import com.liferay.osb.model.AssetReceiptLicenseClp;
 import com.liferay.osb.model.AuditActionClp;
 import com.liferay.osb.model.AuditEntryClp;
 import com.liferay.osb.model.ContractAuditClp;
 import com.liferay.osb.model.ContractEntryClp;
+import com.liferay.osb.model.CorpProjectClp;
 import com.liferay.osb.model.CurrencyEntryClp;
 import com.liferay.osb.model.ExternalIdMapperClp;
 import com.liferay.osb.model.HolidayCalendarClp;
@@ -204,6 +206,10 @@ public class ClpSerializer {
 			return translateInputAssetLicense(oldModel);
 		}
 
+		if (oldModelClassName.equals(AssetReceiptLicenseClp.class.getName())) {
+			return translateInputAssetReceiptLicense(oldModel);
+		}
+
 		if (oldModelClassName.equals(AuditActionClp.class.getName())) {
 			return translateInputAuditAction(oldModel);
 		}
@@ -218,6 +224,10 @@ public class ClpSerializer {
 
 		if (oldModelClassName.equals(ContractEntryClp.class.getName())) {
 			return translateInputContractEntry(oldModel);
+		}
+
+		if (oldModelClassName.equals(CorpProjectClp.class.getName())) {
+			return translateInputCorpProject(oldModel);
 		}
 
 		if (oldModelClassName.equals(CurrencyEntryClp.class.getName())) {
@@ -506,6 +516,17 @@ public class ClpSerializer {
 		return newModel;
 	}
 
+	public static Object translateInputAssetReceiptLicense(
+		BaseModel<?> oldModel) {
+		AssetReceiptLicenseClp oldClpModel = (AssetReceiptLicenseClp)oldModel;
+
+		BaseModel<?> newModel = oldClpModel.getAssetReceiptLicenseRemoteModel();
+
+		newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+		return newModel;
+	}
+
 	public static Object translateInputAuditAction(BaseModel<?> oldModel) {
 		AuditActionClp oldClpModel = (AuditActionClp)oldModel;
 
@@ -540,6 +561,16 @@ public class ClpSerializer {
 		ContractEntryClp oldClpModel = (ContractEntryClp)oldModel;
 
 		BaseModel<?> newModel = oldClpModel.getContractEntryRemoteModel();
+
+		newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+		return newModel;
+	}
+
+	public static Object translateInputCorpProject(BaseModel<?> oldModel) {
+		CorpProjectClp oldClpModel = (CorpProjectClp)oldModel;
+
+		BaseModel<?> newModel = oldClpModel.getCorpProjectRemoteModel();
 
 		newModel.setModelAttributes(oldClpModel.getModelAttributes());
 
@@ -1384,6 +1415,43 @@ public class ClpSerializer {
 		}
 
 		if (oldModelClassName.equals(
+					"com.liferay.osb.model.impl.AssetReceiptLicenseImpl")) {
+			return translateOutputAssetReceiptLicense(oldModel);
+		}
+		else if (oldModelClassName.endsWith("Clp")) {
+			try {
+				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
+
+				Method getClpSerializerClassMethod = oldModelClass.getMethod(
+						"getClpSerializerClass");
+
+				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
+
+				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
+
+				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
+						BaseModel.class);
+
+				Class<?> oldModelModelClass = oldModel.getModelClass();
+
+				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
+						oldModelModelClass.getSimpleName() + "RemoteModel");
+
+				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
+
+				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
+						oldRemoteModel);
+
+				return newModel;
+			}
+			catch (Throwable t) {
+				if (_log.isInfoEnabled()) {
+					_log.info("Unable to translate " + oldModelClassName, t);
+				}
+			}
+		}
+
+		if (oldModelClassName.equals(
 					"com.liferay.osb.model.impl.AuditActionImpl")) {
 			return translateOutputAuditAction(oldModel);
 		}
@@ -1497,6 +1565,43 @@ public class ClpSerializer {
 		if (oldModelClassName.equals(
 					"com.liferay.osb.model.impl.ContractEntryImpl")) {
 			return translateOutputContractEntry(oldModel);
+		}
+		else if (oldModelClassName.endsWith("Clp")) {
+			try {
+				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
+
+				Method getClpSerializerClassMethod = oldModelClass.getMethod(
+						"getClpSerializerClass");
+
+				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
+
+				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
+
+				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
+						BaseModel.class);
+
+				Class<?> oldModelModelClass = oldModel.getModelClass();
+
+				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
+						oldModelModelClass.getSimpleName() + "RemoteModel");
+
+				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
+
+				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
+						oldRemoteModel);
+
+				return newModel;
+			}
+			catch (Throwable t) {
+				if (_log.isInfoEnabled()) {
+					_log.info("Unable to translate " + oldModelClassName, t);
+				}
+			}
+		}
+
+		if (oldModelClassName.equals(
+					"com.liferay.osb.model.impl.CorpProjectImpl")) {
+			return translateOutputCorpProject(oldModel);
 		}
 		else if (oldModelClassName.endsWith("Clp")) {
 			try {
@@ -4050,6 +4155,12 @@ public class ClpSerializer {
 		}
 
 		if (className.equals(
+					"com.liferay.osb.exception.NoSuchAssetReceiptLicenseException")) {
+			return new com.liferay.osb.exception.NoSuchAssetReceiptLicenseException(throwable.getMessage(),
+				throwable.getCause());
+		}
+
+		if (className.equals(
 					"com.liferay.osb.exception.NoSuchAuditActionException")) {
 			return new com.liferay.osb.exception.NoSuchAuditActionException(throwable.getMessage(),
 				throwable.getCause());
@@ -4070,6 +4181,12 @@ public class ClpSerializer {
 		if (className.equals(
 					"com.liferay.osb.exception.NoSuchContractEntryException")) {
 			return new com.liferay.osb.exception.NoSuchContractEntryException(throwable.getMessage(),
+				throwable.getCause());
+		}
+
+		if (className.equals(
+					"com.liferay.osb.exception.NoSuchCorpProjectException")) {
+			return new com.liferay.osb.exception.NoSuchCorpProjectException(throwable.getMessage(),
 				throwable.getCause());
 		}
 
@@ -4422,6 +4539,17 @@ public class ClpSerializer {
 		return newModel;
 	}
 
+	public static Object translateOutputAssetReceiptLicense(
+		BaseModel<?> oldModel) {
+		AssetReceiptLicenseClp newModel = new AssetReceiptLicenseClp();
+
+		newModel.setModelAttributes(oldModel.getModelAttributes());
+
+		newModel.setAssetReceiptLicenseRemoteModel(oldModel);
+
+		return newModel;
+	}
+
 	public static Object translateOutputAuditAction(BaseModel<?> oldModel) {
 		AuditActionClp newModel = new AuditActionClp();
 
@@ -4458,6 +4586,16 @@ public class ClpSerializer {
 		newModel.setModelAttributes(oldModel.getModelAttributes());
 
 		newModel.setContractEntryRemoteModel(oldModel);
+
+		return newModel;
+	}
+
+	public static Object translateOutputCorpProject(BaseModel<?> oldModel) {
+		CorpProjectClp newModel = new CorpProjectClp();
+
+		newModel.setModelAttributes(oldModel.getModelAttributes());
+
+		newModel.setCorpProjectRemoteModel(oldModel);
 
 		return newModel;
 	}

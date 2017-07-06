@@ -61,6 +61,13 @@ public interface AccountWorkerLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AccountWorkerLocalServiceUtil} to access the account worker local service. Add custom service methods to {@link com.liferay.osb.service.impl.AccountWorkerLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasAccountWorker(long userId, long accountEntryId)
+		throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasAccountWorkerRole(long userId, int role)
+		throws SystemException;
 
 	/**
 	* Adds the account worker to the database. Also notifies the appropriate model listeners.
@@ -112,6 +119,10 @@ public interface AccountWorkerLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AccountWorker getAccountWorker(long accountWorkerId)
 		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AccountWorker getAccountWorker(long userId, long accountEntryId)
+		throws PortalException, SystemException;
 
 	/**
 	* Updates the account worker in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
@@ -215,6 +226,18 @@ public interface AccountWorkerLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountWorker> getAccountWorkers(int start, int end);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AccountWorker> getAccountWorkers(long accountEntryId)
+		throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AccountWorker> getAccountWorkers(long accountEntryId, int role)
+		throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AccountWorker> getUserAccountWorkers(long userId)
+		throws SystemException;
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -232,4 +255,17 @@ public interface AccountWorkerLocalService extends BaseLocalService,
 	*/
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
+
+	public void addAccountWorkers(long userId, long[] userIds,
+		long accountEntryId, int[] roles, int[] notifications)
+		throws PortalException, SystemException;
+
+	public void deleteAccountEntryAccountWorkers(long accountEntryId)
+		throws PortalException, SystemException;
+
+	public void deleteAccountWorkers(long userId)
+		throws PortalException, SystemException;
+
+	public void deleteAccountWorkers(long userId, long[] userIds,
+		long accountEntryId) throws PortalException, SystemException;
 }

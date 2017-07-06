@@ -41,6 +41,30 @@ public class OSBRegionServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.OSBRegionServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static com.liferay.portal.kernel.model.Region addRegion(
+		long countryId, java.lang.String regionCode, java.lang.String name,
+		boolean active)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().addRegion(countryId, regionCode, name, active);
+	}
+
+	public static com.liferay.portal.kernel.model.Region deleteRegion(
+		long regionId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().deleteRegion(regionId);
+	}
+
+	public static com.liferay.portal.kernel.model.Region updateRegion(
+		long regionId, long countryId, java.lang.String regionCode,
+		java.lang.String name, boolean active)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .updateRegion(regionId, countryId, regionCode, name, active);
+	}
+
 	public static java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {

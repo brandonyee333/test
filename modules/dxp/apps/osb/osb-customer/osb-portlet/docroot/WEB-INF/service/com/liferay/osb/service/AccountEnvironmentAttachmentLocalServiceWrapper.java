@@ -46,6 +46,17 @@ public class AccountEnvironmentAttachmentLocalServiceWrapper
 		return _accountEnvironmentAttachmentLocalService.addAccountEnvironmentAttachment(accountEnvironmentAttachment);
 	}
 
+	@Override
+	public com.liferay.osb.model.AccountEnvironmentAttachment addAccountEnvironmentAttachment(
+		long userId, long accountEnvironmentId,
+		com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File> fileOVP,
+		int type)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountEnvironmentAttachmentLocalService.addAccountEnvironmentAttachment(userId,
+			accountEnvironmentId, fileOVP, type);
+	}
+
 	/**
 	* Creates a new account environment attachment with the primary key. Does not add the account environment attachment to the database.
 	*
@@ -63,10 +74,14 @@ public class AccountEnvironmentAttachmentLocalServiceWrapper
 	*
 	* @param accountEnvironmentAttachment the account environment attachment
 	* @return the account environment attachment that was removed
+	* @throws PortalException
+	* @throws SystemException
 	*/
 	@Override
 	public com.liferay.osb.model.AccountEnvironmentAttachment deleteAccountEnvironmentAttachment(
-		com.liferay.osb.model.AccountEnvironmentAttachment accountEnvironmentAttachment) {
+		com.liferay.osb.model.AccountEnvironmentAttachment accountEnvironmentAttachment)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
 		return _accountEnvironmentAttachmentLocalService.deleteAccountEnvironmentAttachment(accountEnvironmentAttachment);
 	}
 
@@ -88,6 +103,14 @@ public class AccountEnvironmentAttachmentLocalServiceWrapper
 	public com.liferay.osb.model.AccountEnvironmentAttachment fetchAccountEnvironmentAttachment(
 		long accountEnvironmentAttachmentId) {
 		return _accountEnvironmentAttachmentLocalService.fetchAccountEnvironmentAttachment(accountEnvironmentAttachmentId);
+	}
+
+	@Override
+	public com.liferay.osb.model.AccountEnvironmentAttachment fetchAccountEnvironmentAttachment(
+		long accountEnvironmentId, int type)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountEnvironmentAttachmentLocalService.fetchAccountEnvironmentAttachment(accountEnvironmentId,
+			type);
 	}
 
 	/**
@@ -114,6 +137,17 @@ public class AccountEnvironmentAttachmentLocalServiceWrapper
 	public com.liferay.osb.model.AccountEnvironmentAttachment updateAccountEnvironmentAttachment(
 		com.liferay.osb.model.AccountEnvironmentAttachment accountEnvironmentAttachment) {
 		return _accountEnvironmentAttachmentLocalService.updateAccountEnvironmentAttachment(accountEnvironmentAttachment);
+	}
+
+	@Override
+	public com.liferay.osb.model.AccountEnvironmentAttachment updateAccountEnvironmentAttachment(
+		long accountEnvironmentAttachmentId, long accountEnvironmentId,
+		com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File> fileOVP,
+		int type)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountEnvironmentAttachmentLocalService.updateAccountEnvironmentAttachment(accountEnvironmentAttachmentId,
+			accountEnvironmentId, fileOVP, type);
 	}
 
 	@Override
@@ -156,6 +190,22 @@ public class AccountEnvironmentAttachmentLocalServiceWrapper
 	@Override
 	public int getAccountEnvironmentAttachmentsCount() {
 		return _accountEnvironmentAttachmentLocalService.getAccountEnvironmentAttachmentsCount();
+	}
+
+	@Override
+	public java.io.File getFile(
+		com.liferay.osb.model.AccountEnvironmentAttachment accountEnvironmentAttachment)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountEnvironmentAttachmentLocalService.getFile(accountEnvironmentAttachment);
+	}
+
+	@Override
+	public java.io.InputStream getFileAsStream(
+		com.liferay.osb.model.AccountEnvironmentAttachment accountEnvironmentAttachment)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountEnvironmentAttachmentLocalService.getFileAsStream(accountEnvironmentAttachment);
 	}
 
 	@Override
@@ -248,6 +298,13 @@ public class AccountEnvironmentAttachmentLocalServiceWrapper
 			end);
 	}
 
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountEnvironmentAttachment> getAccountEnvironmentAttachments(
+		long accountEnvironmentId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountEnvironmentAttachmentLocalService.getAccountEnvironmentAttachments(accountEnvironmentId);
+	}
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -273,6 +330,28 @@ public class AccountEnvironmentAttachmentLocalServiceWrapper
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return _accountEnvironmentAttachmentLocalService.dynamicQueryCount(dynamicQuery,
 			projection);
+	}
+
+	@Override
+	public void addAccountEnvironmentAttachments(long userId,
+		long accountEnvironmentId,
+		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
+		java.util.List<java.lang.Integer> types)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_accountEnvironmentAttachmentLocalService.addAccountEnvironmentAttachments(userId,
+			accountEnvironmentId, files, types);
+	}
+
+	@Override
+	public void updateAccountEnvironmentAttachments(long userId,
+		long accountEnvironmentId,
+		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
+		java.util.List<java.lang.Integer> types)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_accountEnvironmentAttachmentLocalService.updateAccountEnvironmentAttachments(userId,
+			accountEnvironmentId, files, types);
 	}
 
 	@Override

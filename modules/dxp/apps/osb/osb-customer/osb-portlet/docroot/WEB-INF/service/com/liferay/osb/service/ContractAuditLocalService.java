@@ -61,6 +61,24 @@ public interface ContractAuditLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ContractAuditLocalServiceUtil} to access the contract audit local service. Add custom service methods to {@link com.liferay.osb.service.impl.ContractAuditLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasContractAudit(long classNameId, long classPK, int type,
+		java.lang.String signatoryClassName, long signatoryClassPK)
+		throws PortalException, SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasContractAudit(long contractEntryId,
+		java.lang.String signatoryClassName, long signatoryClassPK)
+		throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasContractAudit(long userId, long contractEntryId)
+		throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasLatestContractAudit(long classNameId, long classPK,
+		int type, java.lang.String signatoryClassName, long signatoryClassPK)
+		throws PortalException, SystemException;
 
 	/**
 	* Adds the contract audit to the database. Also notifies the appropriate model listeners.
@@ -141,6 +159,15 @@ public interface ContractAuditLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getContractAuditCount(long contractEntryId,
+		java.lang.String signatoryClassName, long signatoryClassPK)
+		throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getContractAuditCount(long userId, long contractEntryId)
+		throws SystemException;
 
 	/**
 	* Returns the number of contract audits.
@@ -232,4 +259,9 @@ public interface ContractAuditLocalService extends BaseLocalService,
 	*/
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
+
+	public void addContractAudit(long userId, long contractEntryId,
+		java.lang.String signatoryClassName, long signatoryClassPK,
+		java.lang.String productClassName, long productClassPK)
+		throws PortalException, SystemException;
 }

@@ -160,6 +160,12 @@ public class PartnerEntryWrapper implements PartnerEntry,
 	}
 
 	@Override
+	public SupportRegion getSupportRegion()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _partnerEntry.getSupportRegion();
+	}
+
+	@Override
 	public boolean isCachedModel() {
 		return _partnerEntry.isCachedModel();
 	}
@@ -177,6 +183,13 @@ public class PartnerEntryWrapper implements PartnerEntry,
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _partnerEntry.getExpandoBridge();
+	}
+
+	@Override
+	public PartnerEntry getParentPartnerEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _partnerEntry.getParentPartnerEntry();
 	}
 
 	@Override
@@ -264,6 +277,11 @@ public class PartnerEntryWrapper implements PartnerEntry,
 		return _partnerEntry.getNotes();
 	}
 
+	@Override
+	public java.lang.String getStatusLabel() {
+		return _partnerEntry.getStatusLabel();
+	}
+
 	/**
 	* Returns the user name of this partner entry.
 	*
@@ -314,6 +332,25 @@ public class PartnerEntryWrapper implements PartnerEntry,
 		return _partnerEntry.getModifiedDate();
 	}
 
+	@Override
+	public java.util.List<AccountEntry> getAccountEntries()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _partnerEntry.getAccountEntries();
+	}
+
+	@Override
+	public java.util.List<PartnerEntry> getChildPartnerEntries(
+		boolean recursive)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _partnerEntry.getChildPartnerEntries(recursive);
+	}
+
+	@Override
+	public java.util.List<PartnerWorker> getPartnerWorkers()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _partnerEntry.getPartnerWorkers();
+	}
+
 	/**
 	* Returns the modified user ID of this partner entry.
 	*
@@ -362,6 +399,12 @@ public class PartnerEntryWrapper implements PartnerEntry,
 	@Override
 	public long getUserId() {
 		return _partnerEntry.getUserId();
+	}
+
+	@Override
+	public long[] getSupportRegionIds()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _partnerEntry.getSupportRegionIds();
 	}
 
 	@Override

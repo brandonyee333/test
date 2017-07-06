@@ -123,9 +123,50 @@ public class ContractEntryLocalServiceClpInvoker {
 				"com.liferay.osb.model.ContractEntry"
 			};
 
-		_methodName250 = "getOSGiServiceIdentifier";
+		_methodName286 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes250 = new String[] {  };
+		_methodParameterTypes286 = new String[] {  };
+
+		_methodName291 = "addContractEntry";
+
+		_methodParameterTypes291 = new String[] {
+				"long", "long", "long", "int", "java.util.Map",
+				"com.liferay.portal.kernel.service.ServiceContext"
+			};
+
+		_methodName292 = "addContractEntry";
+
+		_methodParameterTypes292 = new String[] {
+				"long", "java.lang.String", "long", "int", "java.util.Map",
+				"com.liferay.portal.kernel.service.ServiceContext"
+			};
+
+		_methodName293 = "getContractEntries";
+
+		_methodParameterTypes293 = new String[] {
+				"long", "long", "int", "int", "int"
+			};
+
+		_methodName294 = "getContractEntriesCount";
+
+		_methodParameterTypes294 = new String[] { "long", "long", "int" };
+
+		_methodName295 = "getLatestContractEntry";
+
+		_methodParameterTypes295 = new String[] { "long", "long", "int" };
+
+		_methodName296 = "getLatestContractEntry";
+
+		_methodParameterTypes296 = new String[] {
+				"java.lang.String", "long", "int"
+			};
+
+		_methodName297 = "updateContractEntry";
+
+		_methodParameterTypes297 = new String[] {
+				"long", "long", "java.util.Map",
+				"com.liferay.portal.kernel.service.ServiceContext"
+			};
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -232,9 +273,67 @@ public class ContractEntryLocalServiceClpInvoker {
 			return ContractEntryLocalServiceUtil.updateContractEntry((com.liferay.osb.model.ContractEntry)arguments[0]);
 		}
 
-		if (_methodName250.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes250, parameterTypes)) {
+		if (_methodName286.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes286, parameterTypes)) {
 			return ContractEntryLocalServiceUtil.getOSGiServiceIdentifier();
+		}
+
+		if (_methodName291.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes291, parameterTypes)) {
+			return ContractEntryLocalServiceUtil.addContractEntry(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				((Long)arguments[2]).longValue(),
+				((Integer)arguments[3]).intValue(),
+				(java.util.Map<java.util.Locale, java.lang.String>)arguments[4],
+				(com.liferay.portal.kernel.service.ServiceContext)arguments[5]);
+		}
+
+		if (_methodName292.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes292, parameterTypes)) {
+			return ContractEntryLocalServiceUtil.addContractEntry(((Long)arguments[0]).longValue(),
+				(java.lang.String)arguments[1],
+				((Long)arguments[2]).longValue(),
+				((Integer)arguments[3]).intValue(),
+				(java.util.Map<java.util.Locale, java.lang.String>)arguments[4],
+				(com.liferay.portal.kernel.service.ServiceContext)arguments[5]);
+		}
+
+		if (_methodName293.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes293, parameterTypes)) {
+			return ContractEntryLocalServiceUtil.getContractEntries(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				((Integer)arguments[2]).intValue(),
+				((Integer)arguments[3]).intValue(),
+				((Integer)arguments[4]).intValue());
+		}
+
+		if (_methodName294.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes294, parameterTypes)) {
+			return ContractEntryLocalServiceUtil.getContractEntriesCount(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				((Integer)arguments[2]).intValue());
+		}
+
+		if (_methodName295.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes295, parameterTypes)) {
+			return ContractEntryLocalServiceUtil.getLatestContractEntry(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				((Integer)arguments[2]).intValue());
+		}
+
+		if (_methodName296.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes296, parameterTypes)) {
+			return ContractEntryLocalServiceUtil.getLatestContractEntry((java.lang.String)arguments[0],
+				((Long)arguments[1]).longValue(),
+				((Integer)arguments[2]).intValue());
+		}
+
+		if (_methodName297.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes297, parameterTypes)) {
+			return ContractEntryLocalServiceUtil.updateContractEntry(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				(java.util.Map<java.util.Locale, java.lang.String>)arguments[2],
+				(com.liferay.portal.kernel.service.ServiceContext)arguments[3]);
 		}
 
 		throw new UnsupportedOperationException();
@@ -278,6 +377,20 @@ public class ContractEntryLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName250;
-	private String[] _methodParameterTypes250;
+	private String _methodName286;
+	private String[] _methodParameterTypes286;
+	private String _methodName291;
+	private String[] _methodParameterTypes291;
+	private String _methodName292;
+	private String[] _methodParameterTypes292;
+	private String _methodName293;
+	private String[] _methodParameterTypes293;
+	private String _methodName294;
+	private String[] _methodParameterTypes294;
+	private String _methodName295;
+	private String[] _methodParameterTypes295;
+	private String _methodName296;
+	private String[] _methodParameterTypes296;
+	private String _methodName297;
+	private String[] _methodParameterTypes297;
 }

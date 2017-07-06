@@ -35,6 +35,21 @@ public class TicketCannedResponseServiceWrapper
 	}
 
 	@Override
+	public int searchCount(java.lang.String keywords)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _ticketCannedResponseService.searchCount(keywords);
+	}
+
+	@Override
+	public int searchCount(java.lang.String name, java.lang.String content,
+		boolean andSearch)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _ticketCannedResponseService.searchCount(name, content, andSearch);
+	}
+
+	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {
@@ -50,6 +65,31 @@ public class TicketCannedResponseServiceWrapper
 	@Override
 	public java.lang.String getOSGiServiceIdentifier() {
 		return _ticketCannedResponseService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.TicketCannedResponse> search(
+		java.lang.String keywords, int start, int end)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _ticketCannedResponseService.search(keywords, start, end);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.TicketCannedResponse> search(
+		java.lang.String name, java.lang.String content, boolean andSearch,
+		int start, int end)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _ticketCannedResponseService.search(name, content, andSearch,
+			start, end);
+	}
+
+	@Override
+	public void incrementUseCount(long ticketCannedResponseId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_ticketCannedResponseService.incrementUseCount(ticketCannedResponseId);
 	}
 
 	@Override

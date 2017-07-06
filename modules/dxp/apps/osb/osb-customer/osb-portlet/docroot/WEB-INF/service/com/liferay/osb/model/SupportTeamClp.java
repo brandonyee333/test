@@ -503,6 +503,120 @@ public class SupportTeamClp extends BaseModelImpl<SupportTeam>
 		}
 	}
 
+	@Override
+	public java.util.List<AccountEntry> getAccountEntries() {
+		try {
+			String methodName = "getAccountEntries";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			java.util.List<AccountEntry> returnObj = (java.util.List<AccountEntry>)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
+	public java.util.List<SupportTeam> getChildSupportTeams() {
+		try {
+			String methodName = "getChildSupportTeams";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			java.util.List<SupportTeam> returnObj = (java.util.List<SupportTeam>)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
+	public java.util.List<SupportTeam> getChildSupportTeams(boolean recursive) {
+		try {
+			String methodName = "getChildSupportTeams";
+
+			Class<?>[] parameterTypes = new Class<?>[] { boolean.class };
+
+			Object[] parameterValues = new Object[] { recursive };
+
+			java.util.List<SupportTeam> returnObj = (java.util.List<SupportTeam>)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
+	public java.util.List<java.lang.String> getLanguageIds() {
+		try {
+			String methodName = "getLanguageIds";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			java.util.List<java.lang.String> returnObj = (java.util.List<java.lang.String>)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
+	public SupportTeam getParentSupportTeam() {
+		try {
+			String methodName = "getParentSupportTeam";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			SupportTeam returnObj = (SupportTeam)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
+	public java.util.List<SupportRegion> getSupportRegions() {
+		try {
+			String methodName = "getSupportRegions";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			java.util.List<SupportRegion> returnObj = (java.util.List<SupportRegion>)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
 	public BaseModel<?> getSupportTeamRemoteModel() {
 		return _supportTeamRemoteModel;
 	}

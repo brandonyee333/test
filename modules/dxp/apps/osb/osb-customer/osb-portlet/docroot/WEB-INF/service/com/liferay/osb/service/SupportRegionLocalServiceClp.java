@@ -58,300 +58,318 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 				"com.liferay.osb.model.SupportRegion"
 			};
 
-		_methodName7 = "createSupportRegion";
+		_methodName7 = "addSupportRegion";
 
-		_methodParameterTypes7 = new String[] { "long" };
-
-		_methodName8 = "deleteSupportRegion";
-
-		_methodParameterTypes8 = new String[] {
-				"com.liferay.osb.model.SupportRegion"
+		_methodParameterTypes7 = new String[] {
+				"long", "java.lang.String", "java.lang.String",
+				"java.lang.String"
 			};
+
+		_methodName8 = "createSupportRegion";
+
+		_methodParameterTypes8 = new String[] { "long" };
 
 		_methodName9 = "deleteSupportRegion";
 
-		_methodParameterTypes9 = new String[] { "long" };
-
-		_methodName10 = "fetchSupportRegion";
-
-		_methodParameterTypes10 = new String[] { "long" };
-
-		_methodName11 = "getSupportRegion";
-
-		_methodParameterTypes11 = new String[] { "long" };
-
-		_methodName12 = "updateSupportRegion";
-
-		_methodParameterTypes12 = new String[] {
+		_methodParameterTypes9 = new String[] {
 				"com.liferay.osb.model.SupportRegion"
 			};
 
-		_methodName13 = "getActionableDynamicQuery";
+		_methodName10 = "deleteSupportRegion";
 
-		_methodParameterTypes13 = new String[] {  };
+		_methodParameterTypes10 = new String[] { "long" };
 
-		_methodName14 = "dynamicQuery";
+		_methodName11 = "fetchSupportRegion";
 
-		_methodParameterTypes14 = new String[] {  };
+		_methodParameterTypes11 = new String[] { "long" };
 
-		_methodName15 = "getIndexableActionableDynamicQuery";
+		_methodName12 = "fetchSupportRegionByName";
 
-		_methodParameterTypes15 = new String[] {  };
+		_methodParameterTypes12 = new String[] { "java.lang.String" };
 
-		_methodName16 = "deletePersistedModel";
+		_methodName13 = "getSupportRegion";
 
-		_methodParameterTypes16 = new String[] {
+		_methodParameterTypes13 = new String[] { "long" };
+
+		_methodName14 = "updateSupportRegion";
+
+		_methodParameterTypes14 = new String[] {
+				"com.liferay.osb.model.SupportRegion"
+			};
+
+		_methodName15 = "updateSupportRegion";
+
+		_methodParameterTypes15 = new String[] {
+				"long", "java.lang.String", "java.lang.String",
+				"java.lang.String", "long[][]"
+			};
+
+		_methodName16 = "getActionableDynamicQuery";
+
+		_methodParameterTypes16 = new String[] {  };
+
+		_methodName17 = "dynamicQuery";
+
+		_methodParameterTypes17 = new String[] {  };
+
+		_methodName18 = "getIndexableActionableDynamicQuery";
+
+		_methodParameterTypes18 = new String[] {  };
+
+		_methodName19 = "deletePersistedModel";
+
+		_methodParameterTypes19 = new String[] {
 				"com.liferay.portal.kernel.model.PersistedModel"
 			};
 
-		_methodName17 = "getPersistedModel";
+		_methodName20 = "getPersistedModel";
 
-		_methodParameterTypes17 = new String[] { "java.io.Serializable" };
+		_methodParameterTypes20 = new String[] { "java.io.Serializable" };
 
-		_methodName18 = "getAccountEntrySupportRegionsCount";
-
-		_methodParameterTypes18 = new String[] { "long" };
-
-		_methodName19 = "getPartnerEntrySupportRegionsCount";
-
-		_methodParameterTypes19 = new String[] { "long" };
-
-		_methodName20 = "getSupportRegionsCount";
-
-		_methodParameterTypes20 = new String[] {  };
-
-		_methodName21 = "getSupportTeamSupportRegionsCount";
+		_methodName21 = "getAccountEntrySupportRegionsCount";
 
 		_methodParameterTypes21 = new String[] { "long" };
 
-		_methodName23 = "getOSGiServiceIdentifier";
+		_methodName22 = "getPartnerEntrySupportRegionsCount";
+
+		_methodParameterTypes22 = new String[] { "long" };
+
+		_methodName23 = "getSupportRegionsCount";
 
 		_methodParameterTypes23 = new String[] {  };
 
-		_methodName24 = "dynamicQuery";
+		_methodName24 = "getSupportTeamSupportRegionsCount";
 
-		_methodParameterTypes24 = new String[] {
+		_methodParameterTypes24 = new String[] { "long" };
+
+		_methodName26 = "getOSGiServiceIdentifier";
+
+		_methodParameterTypes26 = new String[] {  };
+
+		_methodName27 = "dynamicQuery";
+
+		_methodParameterTypes27 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
 			};
 
-		_methodName25 = "dynamicQuery";
+		_methodName28 = "dynamicQuery";
 
-		_methodParameterTypes25 = new String[] {
+		_methodParameterTypes28 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
 			};
 
-		_methodName26 = "dynamicQuery";
+		_methodName29 = "dynamicQuery";
 
-		_methodParameterTypes26 = new String[] {
+		_methodParameterTypes29 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName27 = "getAccountEntrySupportRegions";
-
-		_methodParameterTypes27 = new String[] { "long" };
-
-		_methodName28 = "getAccountEntrySupportRegions";
-
-		_methodParameterTypes28 = new String[] { "long", "int", "int" };
-
-		_methodName29 = "getAccountEntrySupportRegions";
-
-		_methodParameterTypes29 = new String[] {
-				"long", "int", "int",
-				"com.liferay.portal.kernel.util.OrderByComparator"
-			};
-
-		_methodName30 = "getPartnerEntrySupportRegions";
+		_methodName30 = "getAccountEntrySupportRegions";
 
 		_methodParameterTypes30 = new String[] { "long" };
 
-		_methodName31 = "getPartnerEntrySupportRegions";
+		_methodName31 = "getAccountEntrySupportRegions";
 
 		_methodParameterTypes31 = new String[] { "long", "int", "int" };
 
-		_methodName32 = "getPartnerEntrySupportRegions";
+		_methodName32 = "getAccountEntrySupportRegions";
 
 		_methodParameterTypes32 = new String[] {
 				"long", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName33 = "getSupportRegions";
+		_methodName33 = "getPartnerEntrySupportRegions";
 
-		_methodParameterTypes33 = new String[] { "int", "int" };
+		_methodParameterTypes33 = new String[] { "long" };
 
-		_methodName34 = "getSupportTeamSupportRegions";
+		_methodName34 = "getPartnerEntrySupportRegions";
 
-		_methodParameterTypes34 = new String[] { "long" };
+		_methodParameterTypes34 = new String[] { "long", "int", "int" };
 
-		_methodName35 = "getSupportTeamSupportRegions";
+		_methodName35 = "getPartnerEntrySupportRegions";
 
-		_methodParameterTypes35 = new String[] { "long", "int", "int" };
-
-		_methodName36 = "getSupportTeamSupportRegions";
-
-		_methodParameterTypes36 = new String[] {
+		_methodParameterTypes35 = new String[] {
 				"long", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName37 = "dynamicQueryCount";
+		_methodName36 = "getSupportRegions";
 
-		_methodParameterTypes37 = new String[] {
+		_methodParameterTypes36 = new String[] { "int", "int" };
+
+		_methodName37 = "getSupportTeamSupportRegions";
+
+		_methodParameterTypes37 = new String[] { "long" };
+
+		_methodName38 = "getSupportTeamSupportRegions";
+
+		_methodParameterTypes38 = new String[] { "long", "int", "int" };
+
+		_methodName39 = "getSupportTeamSupportRegions";
+
+		_methodParameterTypes39 = new String[] {
+				"long", "int", "int",
+				"com.liferay.portal.kernel.util.OrderByComparator"
+			};
+
+		_methodName40 = "dynamicQueryCount";
+
+		_methodParameterTypes40 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
 			};
 
-		_methodName38 = "dynamicQueryCount";
+		_methodName41 = "dynamicQueryCount";
 
-		_methodParameterTypes38 = new String[] {
+		_methodParameterTypes41 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery",
 				"com.liferay.portal.kernel.dao.orm.Projection"
 			};
 
-		_methodName39 = "getAccountEntryPrimaryKeys";
+		_methodName42 = "getAccountEntryPrimaryKeys";
 
-		_methodParameterTypes39 = new String[] { "long" };
+		_methodParameterTypes42 = new String[] { "long" };
 
-		_methodName40 = "getPartnerEntryPrimaryKeys";
+		_methodName43 = "getPartnerEntryPrimaryKeys";
 
-		_methodParameterTypes40 = new String[] { "long" };
+		_methodParameterTypes43 = new String[] { "long" };
 
-		_methodName41 = "getSupportTeamPrimaryKeys";
+		_methodName44 = "getSupportTeamPrimaryKeys";
 
-		_methodParameterTypes41 = new String[] { "long" };
+		_methodParameterTypes44 = new String[] { "long" };
 
-		_methodName42 = "addAccountEntrySupportRegion";
+		_methodName45 = "addAccountEntrySupportRegion";
 
-		_methodParameterTypes42 = new String[] {
+		_methodParameterTypes45 = new String[] {
 				"long", "com.liferay.osb.model.SupportRegion"
 			};
 
-		_methodName43 = "addAccountEntrySupportRegion";
+		_methodName46 = "addAccountEntrySupportRegion";
 
-		_methodParameterTypes43 = new String[] { "long", "long" };
+		_methodParameterTypes46 = new String[] { "long", "long" };
 
-		_methodName44 = "addAccountEntrySupportRegions";
+		_methodName47 = "addAccountEntrySupportRegions";
 
-		_methodParameterTypes44 = new String[] { "long", "java.util.List" };
+		_methodParameterTypes47 = new String[] { "long", "java.util.List" };
 
-		_methodName45 = "addAccountEntrySupportRegions";
+		_methodName48 = "addAccountEntrySupportRegions";
 
-		_methodParameterTypes45 = new String[] { "long", "long[][]" };
+		_methodParameterTypes48 = new String[] { "long", "long[][]" };
 
-		_methodName46 = "addPartnerEntrySupportRegion";
+		_methodName49 = "addPartnerEntrySupportRegion";
 
-		_methodParameterTypes46 = new String[] {
+		_methodParameterTypes49 = new String[] {
 				"long", "com.liferay.osb.model.SupportRegion"
 			};
 
-		_methodName47 = "addPartnerEntrySupportRegion";
+		_methodName50 = "addPartnerEntrySupportRegion";
 
-		_methodParameterTypes47 = new String[] { "long", "long" };
+		_methodParameterTypes50 = new String[] { "long", "long" };
 
-		_methodName48 = "addPartnerEntrySupportRegions";
+		_methodName51 = "addPartnerEntrySupportRegions";
 
-		_methodParameterTypes48 = new String[] { "long", "java.util.List" };
+		_methodParameterTypes51 = new String[] { "long", "java.util.List" };
 
-		_methodName49 = "addPartnerEntrySupportRegions";
+		_methodName52 = "addPartnerEntrySupportRegions";
 
-		_methodParameterTypes49 = new String[] { "long", "long[][]" };
+		_methodParameterTypes52 = new String[] { "long", "long[][]" };
 
-		_methodName50 = "addSupportTeamSupportRegion";
+		_methodName53 = "addSupportTeamSupportRegion";
 
-		_methodParameterTypes50 = new String[] {
+		_methodParameterTypes53 = new String[] {
 				"long", "com.liferay.osb.model.SupportRegion"
 			};
 
-		_methodName51 = "addSupportTeamSupportRegion";
+		_methodName54 = "addSupportTeamSupportRegion";
 
-		_methodParameterTypes51 = new String[] { "long", "long" };
+		_methodParameterTypes54 = new String[] { "long", "long" };
 
-		_methodName52 = "addSupportTeamSupportRegions";
+		_methodName55 = "addSupportTeamSupportRegions";
 
-		_methodParameterTypes52 = new String[] { "long", "java.util.List" };
+		_methodParameterTypes55 = new String[] { "long", "java.util.List" };
 
-		_methodName53 = "addSupportTeamSupportRegions";
+		_methodName56 = "addSupportTeamSupportRegions";
 
-		_methodParameterTypes53 = new String[] { "long", "long[][]" };
+		_methodParameterTypes56 = new String[] { "long", "long[][]" };
 
-		_methodName54 = "clearAccountEntrySupportRegions";
+		_methodName57 = "clearAccountEntrySupportRegions";
 
-		_methodParameterTypes54 = new String[] { "long" };
+		_methodParameterTypes57 = new String[] { "long" };
 
-		_methodName55 = "clearPartnerEntrySupportRegions";
+		_methodName58 = "clearPartnerEntrySupportRegions";
 
-		_methodParameterTypes55 = new String[] { "long" };
+		_methodParameterTypes58 = new String[] { "long" };
 
-		_methodName56 = "clearSupportTeamSupportRegions";
+		_methodName59 = "clearSupportTeamSupportRegions";
 
-		_methodParameterTypes56 = new String[] { "long" };
+		_methodParameterTypes59 = new String[] { "long" };
 
-		_methodName57 = "deleteAccountEntrySupportRegion";
+		_methodName60 = "deleteAccountEntrySupportRegion";
 
-		_methodParameterTypes57 = new String[] {
+		_methodParameterTypes60 = new String[] {
 				"long", "com.liferay.osb.model.SupportRegion"
 			};
 
-		_methodName58 = "deleteAccountEntrySupportRegion";
+		_methodName61 = "deleteAccountEntrySupportRegion";
 
-		_methodParameterTypes58 = new String[] { "long", "long" };
+		_methodParameterTypes61 = new String[] { "long", "long" };
 
-		_methodName59 = "deleteAccountEntrySupportRegions";
+		_methodName62 = "deleteAccountEntrySupportRegions";
 
-		_methodParameterTypes59 = new String[] { "long", "java.util.List" };
+		_methodParameterTypes62 = new String[] { "long", "java.util.List" };
 
-		_methodName60 = "deleteAccountEntrySupportRegions";
+		_methodName63 = "deleteAccountEntrySupportRegions";
 
-		_methodParameterTypes60 = new String[] { "long", "long[][]" };
+		_methodParameterTypes63 = new String[] { "long", "long[][]" };
 
-		_methodName61 = "deletePartnerEntrySupportRegion";
+		_methodName64 = "deletePartnerEntrySupportRegion";
 
-		_methodParameterTypes61 = new String[] {
+		_methodParameterTypes64 = new String[] {
 				"long", "com.liferay.osb.model.SupportRegion"
 			};
 
-		_methodName62 = "deletePartnerEntrySupportRegion";
+		_methodName65 = "deletePartnerEntrySupportRegion";
 
-		_methodParameterTypes62 = new String[] { "long", "long" };
+		_methodParameterTypes65 = new String[] { "long", "long" };
 
-		_methodName63 = "deletePartnerEntrySupportRegions";
+		_methodName66 = "deletePartnerEntrySupportRegions";
 
-		_methodParameterTypes63 = new String[] { "long", "java.util.List" };
+		_methodParameterTypes66 = new String[] { "long", "java.util.List" };
 
-		_methodName64 = "deletePartnerEntrySupportRegions";
+		_methodName67 = "deletePartnerEntrySupportRegions";
 
-		_methodParameterTypes64 = new String[] { "long", "long[][]" };
+		_methodParameterTypes67 = new String[] { "long", "long[][]" };
 
-		_methodName65 = "deleteSupportTeamSupportRegion";
+		_methodName68 = "deleteSupportTeamSupportRegion";
 
-		_methodParameterTypes65 = new String[] {
+		_methodParameterTypes68 = new String[] {
 				"long", "com.liferay.osb.model.SupportRegion"
 			};
 
-		_methodName66 = "deleteSupportTeamSupportRegion";
+		_methodName69 = "deleteSupportTeamSupportRegion";
 
-		_methodParameterTypes66 = new String[] { "long", "long" };
+		_methodParameterTypes69 = new String[] { "long", "long" };
 
-		_methodName67 = "deleteSupportTeamSupportRegions";
+		_methodName70 = "deleteSupportTeamSupportRegions";
 
-		_methodParameterTypes67 = new String[] { "long", "java.util.List" };
+		_methodParameterTypes70 = new String[] { "long", "java.util.List" };
 
-		_methodName68 = "deleteSupportTeamSupportRegions";
-
-		_methodParameterTypes68 = new String[] { "long", "long[][]" };
-
-		_methodName69 = "setAccountEntrySupportRegions";
-
-		_methodParameterTypes69 = new String[] { "long", "long[][]" };
-
-		_methodName70 = "setPartnerEntrySupportRegions";
-
-		_methodParameterTypes70 = new String[] { "long", "long[][]" };
-
-		_methodName71 = "setSupportTeamSupportRegions";
+		_methodName71 = "deleteSupportTeamSupportRegions";
 
 		_methodParameterTypes71 = new String[] { "long", "long[][]" };
+
+		_methodName72 = "setAccountEntrySupportRegions";
+
+		_methodParameterTypes72 = new String[] { "long", "long[][]" };
+
+		_methodName73 = "setPartnerEntrySupportRegions";
+
+		_methodParameterTypes73 = new String[] { "long", "long[][]" };
+
+		_methodName74 = "setSupportTeamSupportRegions";
+
+		_methodParameterTypes74 = new String[] { "long", "long[][]" };
 	}
 
 	@Override
@@ -524,13 +542,57 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 	}
 
 	@Override
+	public com.liferay.osb.model.SupportRegion addSupportRegion(long userId,
+		java.lang.String name, java.lang.String description,
+		java.lang.String timeZoneId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName7,
+					_methodParameterTypes7,
+					new Object[] {
+						userId,
+						
+					ClpSerializer.translateInput(name),
+						
+					ClpSerializer.translateInput(description),
+						
+					ClpSerializer.translateInput(timeZoneId)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.SupportRegion)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
 	public com.liferay.osb.model.SupportRegion createSupportRegion(
 		long supportRegionId) {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName7,
-					_methodParameterTypes7, new Object[] { supportRegionId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName8,
+					_methodParameterTypes8, new Object[] { supportRegionId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -553,8 +615,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName8,
-					_methodParameterTypes8,
+			returnObj = _invokableLocalService.invokeMethod(_methodName9,
+					_methodParameterTypes9,
 					new Object[] { ClpSerializer.translateInput(supportRegion) });
 		}
 		catch (Throwable t) {
@@ -575,18 +637,23 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 	@Override
 	public com.liferay.osb.model.SupportRegion deleteSupportRegion(
 		long supportRegionId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName9,
-					_methodParameterTypes9, new Object[] { supportRegionId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName10,
+					_methodParameterTypes10, new Object[] { supportRegionId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -607,11 +674,41 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName10,
-					_methodParameterTypes10, new Object[] { supportRegionId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName11,
+					_methodParameterTypes11, new Object[] { supportRegionId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.SupportRegion)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public com.liferay.osb.model.SupportRegion fetchSupportRegionByName(
+		java.lang.String name)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName12,
+					_methodParameterTypes12,
+					new Object[] { ClpSerializer.translateInput(name) });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -632,8 +729,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName11,
-					_methodParameterTypes11, new Object[] { supportRegionId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName13,
+					_methodParameterTypes13, new Object[] { supportRegionId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -660,8 +757,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName12,
-					_methodParameterTypes12,
+			returnObj = _invokableLocalService.invokeMethod(_methodName14,
+					_methodParameterTypes14,
 					new Object[] { ClpSerializer.translateInput(supportRegion) });
 		}
 		catch (Throwable t) {
@@ -680,12 +777,59 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 	}
 
 	@Override
+	public com.liferay.osb.model.SupportRegion updateSupportRegion(
+		long supportRegionId, java.lang.String name,
+		java.lang.String description, java.lang.String timeZoneId,
+		long[] supportTeamIds)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName15,
+					_methodParameterTypes15,
+					new Object[] {
+						supportRegionId,
+						
+					ClpSerializer.translateInput(name),
+						
+					ClpSerializer.translateInput(description),
+						
+					ClpSerializer.translateInput(timeZoneId),
+						
+					ClpSerializer.translateInput(supportTeamIds)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.SupportRegion)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName13,
-					_methodParameterTypes13, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName16,
+					_methodParameterTypes16, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -707,8 +851,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName14,
-					_methodParameterTypes14, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName17,
+					_methodParameterTypes17, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -730,8 +874,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName15,
-					_methodParameterTypes15, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName18,
+					_methodParameterTypes18, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -755,8 +899,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName16,
-					_methodParameterTypes16,
+			returnObj = _invokableLocalService.invokeMethod(_methodName19,
+					_methodParameterTypes19,
 					new Object[] { ClpSerializer.translateInput(persistedModel) });
 		}
 		catch (Throwable t) {
@@ -785,8 +929,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName17,
-					_methodParameterTypes17,
+			returnObj = _invokableLocalService.invokeMethod(_methodName20,
+					_methodParameterTypes20,
 					new Object[] { ClpSerializer.translateInput(primaryKeyObj) });
 		}
 		catch (Throwable t) {
@@ -813,8 +957,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName18,
-					_methodParameterTypes18, new Object[] { accountEntryId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName21,
+					_methodParameterTypes21, new Object[] { accountEntryId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -836,8 +980,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName19,
-					_methodParameterTypes19, new Object[] { partnerEntryId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName22,
+					_methodParameterTypes22, new Object[] { partnerEntryId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -859,8 +1003,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName20,
-					_methodParameterTypes20, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName23,
+					_methodParameterTypes23, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -882,8 +1026,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName21,
-					_methodParameterTypes21, new Object[] { supportTeamId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName24,
+					_methodParameterTypes24, new Object[] { supportTeamId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -912,8 +1056,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName23,
-					_methodParameterTypes23, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName26,
+					_methodParameterTypes26, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -936,8 +1080,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName24,
-					_methodParameterTypes24,
+			returnObj = _invokableLocalService.invokeMethod(_methodName27,
+					_methodParameterTypes27,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -962,8 +1106,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName25,
-					_methodParameterTypes25,
+			returnObj = _invokableLocalService.invokeMethod(_methodName28,
+					_methodParameterTypes28,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -995,8 +1139,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName26,
-					_methodParameterTypes26,
+			returnObj = _invokableLocalService.invokeMethod(_methodName29,
+					_methodParameterTypes29,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -1024,15 +1168,20 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.SupportRegion> getAccountEntrySupportRegions(
-		long accountEntryId) {
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName27,
-					_methodParameterTypes27, new Object[] { accountEntryId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName30,
+					_methodParameterTypes30, new Object[] { accountEntryId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -1052,8 +1201,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName28,
-					_methodParameterTypes28,
+			returnObj = _invokableLocalService.invokeMethod(_methodName31,
+					_methodParameterTypes31,
 					new Object[] { accountEntryId, start, end });
 		}
 		catch (Throwable t) {
@@ -1078,8 +1227,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName29,
-					_methodParameterTypes29,
+			returnObj = _invokableLocalService.invokeMethod(_methodName32,
+					_methodParameterTypes32,
 					new Object[] {
 						accountEntryId,
 						
@@ -1111,8 +1260,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName30,
-					_methodParameterTypes30, new Object[] { partnerEntryId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName33,
+					_methodParameterTypes33, new Object[] { partnerEntryId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1135,8 +1284,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName31,
-					_methodParameterTypes31,
+			returnObj = _invokableLocalService.invokeMethod(_methodName34,
+					_methodParameterTypes34,
 					new Object[] { partnerEntryId, start, end });
 		}
 		catch (Throwable t) {
@@ -1161,8 +1310,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName32,
-					_methodParameterTypes32,
+			returnObj = _invokableLocalService.invokeMethod(_methodName35,
+					_methodParameterTypes35,
 					new Object[] {
 						partnerEntryId,
 						
@@ -1194,8 +1343,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName33,
-					_methodParameterTypes33, new Object[] { start, end });
+			returnObj = _invokableLocalService.invokeMethod(_methodName36,
+					_methodParameterTypes36, new Object[] { start, end });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1218,8 +1367,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName34,
-					_methodParameterTypes34, new Object[] { supportTeamId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName37,
+					_methodParameterTypes37, new Object[] { supportTeamId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1242,8 +1391,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName35,
-					_methodParameterTypes35,
+			returnObj = _invokableLocalService.invokeMethod(_methodName38,
+					_methodParameterTypes38,
 					new Object[] { supportTeamId, start, end });
 		}
 		catch (Throwable t) {
@@ -1268,8 +1417,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName36,
-					_methodParameterTypes36,
+			returnObj = _invokableLocalService.invokeMethod(_methodName39,
+					_methodParameterTypes39,
 					new Object[] {
 						supportTeamId,
 						
@@ -1301,8 +1450,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName37,
-					_methodParameterTypes37,
+			returnObj = _invokableLocalService.invokeMethod(_methodName40,
+					_methodParameterTypes40,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -1327,8 +1476,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName38,
-					_methodParameterTypes38,
+			returnObj = _invokableLocalService.invokeMethod(_methodName41,
+					_methodParameterTypes41,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -1355,8 +1504,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName39,
-					_methodParameterTypes39, new Object[] { supportRegionId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName42,
+					_methodParameterTypes42, new Object[] { supportRegionId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1378,8 +1527,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName40,
-					_methodParameterTypes40, new Object[] { supportRegionId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName43,
+					_methodParameterTypes43, new Object[] { supportRegionId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1401,8 +1550,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName41,
-					_methodParameterTypes41, new Object[] { supportRegionId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName44,
+					_methodParameterTypes44, new Object[] { supportRegionId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1423,8 +1572,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 	public void addAccountEntrySupportRegion(long accountEntryId,
 		com.liferay.osb.model.SupportRegion supportRegion) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName42,
-				_methodParameterTypes42,
+			_invokableLocalService.invokeMethod(_methodName45,
+				_methodParameterTypes45,
 				new Object[] {
 					accountEntryId,
 					
@@ -1448,8 +1597,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 	public void addAccountEntrySupportRegion(long accountEntryId,
 		long supportRegionId) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName43,
-				_methodParameterTypes43,
+			_invokableLocalService.invokeMethod(_methodName46,
+				_methodParameterTypes46,
 				new Object[] { accountEntryId, supportRegionId });
 		}
 		catch (Throwable t) {
@@ -1469,8 +1618,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 	public void addAccountEntrySupportRegions(long accountEntryId,
 		java.util.List<com.liferay.osb.model.SupportRegion> supportRegions) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName44,
-				_methodParameterTypes44,
+			_invokableLocalService.invokeMethod(_methodName47,
+				_methodParameterTypes47,
 				new Object[] {
 					accountEntryId,
 					
@@ -1494,8 +1643,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 	public void addAccountEntrySupportRegions(long accountEntryId,
 		long[] supportRegionIds) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName45,
-				_methodParameterTypes45,
+			_invokableLocalService.invokeMethod(_methodName48,
+				_methodParameterTypes48,
 				new Object[] {
 					accountEntryId,
 					
@@ -1519,8 +1668,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 	public void addPartnerEntrySupportRegion(long partnerEntryId,
 		com.liferay.osb.model.SupportRegion supportRegion) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName46,
-				_methodParameterTypes46,
+			_invokableLocalService.invokeMethod(_methodName49,
+				_methodParameterTypes49,
 				new Object[] {
 					partnerEntryId,
 					
@@ -1544,8 +1693,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 	public void addPartnerEntrySupportRegion(long partnerEntryId,
 		long supportRegionId) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName47,
-				_methodParameterTypes47,
+			_invokableLocalService.invokeMethod(_methodName50,
+				_methodParameterTypes50,
 				new Object[] { partnerEntryId, supportRegionId });
 		}
 		catch (Throwable t) {
@@ -1565,8 +1714,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 	public void addPartnerEntrySupportRegions(long partnerEntryId,
 		java.util.List<com.liferay.osb.model.SupportRegion> supportRegions) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName48,
-				_methodParameterTypes48,
+			_invokableLocalService.invokeMethod(_methodName51,
+				_methodParameterTypes51,
 				new Object[] {
 					partnerEntryId,
 					
@@ -1590,8 +1739,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 	public void addPartnerEntrySupportRegions(long partnerEntryId,
 		long[] supportRegionIds) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName49,
-				_methodParameterTypes49,
+			_invokableLocalService.invokeMethod(_methodName52,
+				_methodParameterTypes52,
 				new Object[] {
 					partnerEntryId,
 					
@@ -1615,8 +1764,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 	public void addSupportTeamSupportRegion(long supportTeamId,
 		com.liferay.osb.model.SupportRegion supportRegion) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName50,
-				_methodParameterTypes50,
+			_invokableLocalService.invokeMethod(_methodName53,
+				_methodParameterTypes53,
 				new Object[] {
 					supportTeamId,
 					
@@ -1640,8 +1789,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 	public void addSupportTeamSupportRegion(long supportTeamId,
 		long supportRegionId) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName51,
-				_methodParameterTypes51,
+			_invokableLocalService.invokeMethod(_methodName54,
+				_methodParameterTypes54,
 				new Object[] { supportTeamId, supportRegionId });
 		}
 		catch (Throwable t) {
@@ -1661,8 +1810,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 	public void addSupportTeamSupportRegions(long supportTeamId,
 		java.util.List<com.liferay.osb.model.SupportRegion> supportRegions) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName52,
-				_methodParameterTypes52,
+			_invokableLocalService.invokeMethod(_methodName55,
+				_methodParameterTypes55,
 				new Object[] {
 					supportTeamId,
 					
@@ -1686,8 +1835,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 	public void addSupportTeamSupportRegions(long supportTeamId,
 		long[] supportRegionIds) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName53,
-				_methodParameterTypes53,
+			_invokableLocalService.invokeMethod(_methodName56,
+				_methodParameterTypes56,
 				new Object[] {
 					supportTeamId,
 					
@@ -1710,8 +1859,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 	@Override
 	public void clearAccountEntrySupportRegions(long accountEntryId) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName54,
-				_methodParameterTypes54, new Object[] { accountEntryId });
+			_invokableLocalService.invokeMethod(_methodName57,
+				_methodParameterTypes57, new Object[] { accountEntryId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1729,8 +1878,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 	@Override
 	public void clearPartnerEntrySupportRegions(long partnerEntryId) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName55,
-				_methodParameterTypes55, new Object[] { partnerEntryId });
+			_invokableLocalService.invokeMethod(_methodName58,
+				_methodParameterTypes58, new Object[] { partnerEntryId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1748,8 +1897,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 	@Override
 	public void clearSupportTeamSupportRegions(long supportTeamId) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName56,
-				_methodParameterTypes56, new Object[] { supportTeamId });
+			_invokableLocalService.invokeMethod(_methodName59,
+				_methodParameterTypes59, new Object[] { supportTeamId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1768,8 +1917,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 	public void deleteAccountEntrySupportRegion(long accountEntryId,
 		com.liferay.osb.model.SupportRegion supportRegion) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName57,
-				_methodParameterTypes57,
+			_invokableLocalService.invokeMethod(_methodName60,
+				_methodParameterTypes60,
 				new Object[] {
 					accountEntryId,
 					
@@ -1793,8 +1942,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 	public void deleteAccountEntrySupportRegion(long accountEntryId,
 		long supportRegionId) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName58,
-				_methodParameterTypes58,
+			_invokableLocalService.invokeMethod(_methodName61,
+				_methodParameterTypes61,
 				new Object[] { accountEntryId, supportRegionId });
 		}
 		catch (Throwable t) {
@@ -1814,8 +1963,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 	public void deleteAccountEntrySupportRegions(long accountEntryId,
 		java.util.List<com.liferay.osb.model.SupportRegion> supportRegions) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName59,
-				_methodParameterTypes59,
+			_invokableLocalService.invokeMethod(_methodName62,
+				_methodParameterTypes62,
 				new Object[] {
 					accountEntryId,
 					
@@ -1839,8 +1988,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 	public void deleteAccountEntrySupportRegions(long accountEntryId,
 		long[] supportRegionIds) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName60,
-				_methodParameterTypes60,
+			_invokableLocalService.invokeMethod(_methodName63,
+				_methodParameterTypes63,
 				new Object[] {
 					accountEntryId,
 					
@@ -1864,8 +2013,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 	public void deletePartnerEntrySupportRegion(long partnerEntryId,
 		com.liferay.osb.model.SupportRegion supportRegion) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName61,
-				_methodParameterTypes61,
+			_invokableLocalService.invokeMethod(_methodName64,
+				_methodParameterTypes64,
 				new Object[] {
 					partnerEntryId,
 					
@@ -1889,8 +2038,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 	public void deletePartnerEntrySupportRegion(long partnerEntryId,
 		long supportRegionId) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName62,
-				_methodParameterTypes62,
+			_invokableLocalService.invokeMethod(_methodName65,
+				_methodParameterTypes65,
 				new Object[] { partnerEntryId, supportRegionId });
 		}
 		catch (Throwable t) {
@@ -1910,8 +2059,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 	public void deletePartnerEntrySupportRegions(long partnerEntryId,
 		java.util.List<com.liferay.osb.model.SupportRegion> supportRegions) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName63,
-				_methodParameterTypes63,
+			_invokableLocalService.invokeMethod(_methodName66,
+				_methodParameterTypes66,
 				new Object[] {
 					partnerEntryId,
 					
@@ -1935,8 +2084,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 	public void deletePartnerEntrySupportRegions(long partnerEntryId,
 		long[] supportRegionIds) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName64,
-				_methodParameterTypes64,
+			_invokableLocalService.invokeMethod(_methodName67,
+				_methodParameterTypes67,
 				new Object[] {
 					partnerEntryId,
 					
@@ -1960,8 +2109,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 	public void deleteSupportTeamSupportRegion(long supportTeamId,
 		com.liferay.osb.model.SupportRegion supportRegion) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName65,
-				_methodParameterTypes65,
+			_invokableLocalService.invokeMethod(_methodName68,
+				_methodParameterTypes68,
 				new Object[] {
 					supportTeamId,
 					
@@ -1985,8 +2134,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 	public void deleteSupportTeamSupportRegion(long supportTeamId,
 		long supportRegionId) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName66,
-				_methodParameterTypes66,
+			_invokableLocalService.invokeMethod(_methodName69,
+				_methodParameterTypes69,
 				new Object[] { supportTeamId, supportRegionId });
 		}
 		catch (Throwable t) {
@@ -2006,8 +2155,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 	public void deleteSupportTeamSupportRegions(long supportTeamId,
 		java.util.List<com.liferay.osb.model.SupportRegion> supportRegions) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName67,
-				_methodParameterTypes67,
+			_invokableLocalService.invokeMethod(_methodName70,
+				_methodParameterTypes70,
 				new Object[] {
 					supportTeamId,
 					
@@ -2031,8 +2180,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 	public void deleteSupportTeamSupportRegions(long supportTeamId,
 		long[] supportRegionIds) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName68,
-				_methodParameterTypes68,
+			_invokableLocalService.invokeMethod(_methodName71,
+				_methodParameterTypes71,
 				new Object[] {
 					supportTeamId,
 					
@@ -2056,8 +2205,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 	public void setAccountEntrySupportRegions(long accountEntryId,
 		long[] supportRegionIds) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName69,
-				_methodParameterTypes69,
+			_invokableLocalService.invokeMethod(_methodName72,
+				_methodParameterTypes72,
 				new Object[] {
 					accountEntryId,
 					
@@ -2081,8 +2230,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 	public void setPartnerEntrySupportRegions(long partnerEntryId,
 		long[] supportRegionIds) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName70,
-				_methodParameterTypes70,
+			_invokableLocalService.invokeMethod(_methodName73,
+				_methodParameterTypes73,
 				new Object[] {
 					partnerEntryId,
 					
@@ -2106,8 +2255,8 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 	public void setSupportTeamSupportRegions(long supportTeamId,
 		long[] supportRegionIds) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName71,
-				_methodParameterTypes71,
+			_invokableLocalService.invokeMethod(_methodName74,
+				_methodParameterTypes74,
 				new Object[] {
 					supportTeamId,
 					
@@ -2172,12 +2321,12 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 	private String[] _methodParameterTypes20;
 	private String _methodName21;
 	private String[] _methodParameterTypes21;
+	private String _methodName22;
+	private String[] _methodParameterTypes22;
 	private String _methodName23;
 	private String[] _methodParameterTypes23;
 	private String _methodName24;
 	private String[] _methodParameterTypes24;
-	private String _methodName25;
-	private String[] _methodParameterTypes25;
 	private String _methodName26;
 	private String[] _methodParameterTypes26;
 	private String _methodName27;
@@ -2270,4 +2419,10 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 	private String[] _methodParameterTypes70;
 	private String _methodName71;
 	private String[] _methodParameterTypes71;
+	private String _methodName72;
+	private String[] _methodParameterTypes72;
+	private String _methodName73;
+	private String[] _methodParameterTypes73;
+	private String _methodName74;
+	private String[] _methodParameterTypes74;
 }

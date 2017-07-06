@@ -53,6 +53,14 @@ public class TicketFeedbackLocalServiceUtil {
 		return getService().addTicketFeedback(ticketFeedback);
 	}
 
+	public static com.liferay.osb.model.TicketFeedback addTicketFeedback(
+		long userId, long ticketEntryId, int subject, int satisfied)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .addTicketFeedback(userId, ticketEntryId, subject, satisfied);
+	}
+
 	/**
 	* Creates a new ticket feedback with the primary key. Does not add the ticket feedback to the database.
 	*
@@ -88,6 +96,13 @@ public class TicketFeedbackLocalServiceUtil {
 		return getService().deleteTicketFeedback(ticketFeedbackId);
 	}
 
+	public static com.liferay.osb.model.TicketFeedback fetchFirstOpenTicketFeedback(
+		long userId, long ticketEntryId, int subject)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .fetchFirstOpenTicketFeedback(userId, ticketEntryId, subject);
+	}
+
 	public static com.liferay.osb.model.TicketFeedback fetchTicketFeedback(
 		long ticketFeedbackId) {
 		return getService().fetchTicketFeedback(ticketFeedbackId);
@@ -115,6 +130,18 @@ public class TicketFeedbackLocalServiceUtil {
 	public static com.liferay.osb.model.TicketFeedback updateTicketFeedback(
 		com.liferay.osb.model.TicketFeedback ticketFeedback) {
 		return getService().updateTicketFeedback(ticketFeedback);
+	}
+
+	public static com.liferay.osb.model.TicketFeedback updateTicketFeedback(
+		long userId, long ticketFeedbackId, int satisfied, int answer1,
+		int answer2, int answer3, int rating1, int rating2, int rating3,
+		int rating4, java.lang.String comments)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .updateTicketFeedback(userId, ticketFeedbackId, satisfied,
+			answer1, answer2, answer3, rating1, rating2, rating3, rating4,
+			comments);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
@@ -151,6 +178,31 @@ public class TicketFeedbackLocalServiceUtil {
 	*/
 	public static int getTicketFeedbacksCount() {
 		return getService().getTicketFeedbacksCount();
+	}
+
+	public static int searchCount(java.lang.String keywords,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().searchCount(keywords, params);
+	}
+
+	public static int searchCount(java.lang.String name, int createdGTDay,
+		int createdGTMonth, int createdGTYear, int createdLTDay,
+		int createdLTMonth, int createdLTYear, int modifiedGTDay,
+		int modifiedGTMonth, int modifiedGTYear, int modifiedLTDay,
+		int modifiedLTMonth, int modifiedLTYear, java.lang.Integer satisfied,
+		java.lang.String comments, java.lang.Integer status,
+		java.lang.Integer[] ratings1, java.lang.Integer[] ratings2,
+		java.lang.Integer[] ratings3, java.lang.Integer[] ratings4,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+		boolean andSearch)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .searchCount(name, createdGTDay, createdGTMonth,
+			createdGTYear, createdLTDay, createdLTMonth, createdLTYear,
+			modifiedGTDay, modifiedGTMonth, modifiedGTYear, modifiedLTDay,
+			modifiedLTMonth, modifiedLTYear, satisfied, comments, status,
+			ratings1, ratings2, ratings3, ratings4, params, andSearch);
 	}
 
 	public static java.lang.Object invokeMethod(java.lang.String name,
@@ -234,6 +286,47 @@ public class TicketFeedbackLocalServiceUtil {
 		return getService().getTicketFeedbacks(start, end);
 	}
 
+	public static java.util.List<com.liferay.osb.model.TicketFeedback> getTicketFeedbacks(
+		long ticketEntryId, int subject)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getTicketFeedbacks(ticketEntryId, subject);
+	}
+
+	public static java.util.List<com.liferay.osb.model.TicketFeedback> getTicketFeedbacks(
+		long ticketEntryId, int subject, int status)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getTicketFeedbacks(ticketEntryId, subject, status);
+	}
+
+	public static java.util.List<com.liferay.osb.model.TicketFeedback> search(
+		java.lang.String keywords,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().search(keywords, params, start, end, obc);
+	}
+
+	public static java.util.List<com.liferay.osb.model.TicketFeedback> search(
+		java.lang.String name, int createdGTDay, int createdGTMonth,
+		int createdGTYear, int createdLTDay, int createdLTMonth,
+		int createdLTYear, int modifiedGTDay, int modifiedGTMonth,
+		int modifiedGTYear, int modifiedLTDay, int modifiedLTMonth,
+		int modifiedLTYear, java.lang.Integer satisfied,
+		java.lang.String comments, java.lang.Integer status,
+		java.lang.Integer[] ratings1, java.lang.Integer[] ratings2,
+		java.lang.Integer[] ratings3, java.lang.Integer[] ratings4,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+		boolean andSearch, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator obc)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .search(name, createdGTDay, createdGTMonth, createdGTYear,
+			createdLTDay, createdLTMonth, createdLTYear, modifiedGTDay,
+			modifiedGTMonth, modifiedGTYear, modifiedLTDay, modifiedLTMonth,
+			modifiedLTYear, satisfied, comments, status, ratings1, ratings2,
+			ratings3, ratings4, params, andSearch, start, end, obc);
+	}
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -256,6 +349,20 @@ public class TicketFeedbackLocalServiceUtil {
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
+	}
+
+	public static void sendCustomerNotifications() throws java.lang.Exception {
+		getService().sendCustomerNotifications();
+	}
+
+	public static void sendLiferayWorkerNotifications()
+		throws java.lang.Exception {
+		getService().sendLiferayWorkerNotifications();
+	}
+
+	public static void sendSupportTeamNotifications()
+		throws java.lang.Exception {
+		getService().sendSupportTeamNotifications();
 	}
 
 	public static void clearService() {

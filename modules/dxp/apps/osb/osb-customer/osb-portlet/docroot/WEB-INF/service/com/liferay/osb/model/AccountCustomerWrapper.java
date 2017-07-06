@@ -110,6 +110,18 @@ public class AccountCustomerWrapper implements AccountCustomer,
 	}
 
 	@Override
+	public AccountEntry getAccountEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountCustomer.getAccountEntry();
+	}
+
+	@Override
+	public boolean hasNotificationsOn() {
+		return _accountCustomer.hasNotificationsOn();
+	}
+
+	@Override
 	public boolean isCachedModel() {
 		return _accountCustomer.isCachedModel();
 	}
@@ -172,6 +184,16 @@ public class AccountCustomerWrapper implements AccountCustomer,
 	@Override
 	public java.lang.Object clone() {
 		return new AccountCustomerWrapper((AccountCustomer)_accountCustomer.clone());
+	}
+
+	@Override
+	public java.lang.String getNotificationsLabel() {
+		return _accountCustomer.getNotificationsLabel();
+	}
+
+	@Override
+	public java.lang.String getRoleLabel() {
+		return _accountCustomer.getRoleLabel();
 	}
 
 	/**

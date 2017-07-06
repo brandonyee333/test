@@ -261,6 +261,25 @@ public class OfferingBundleClp extends BaseModelImpl<OfferingBundle>
 		}
 	}
 
+	@Override
+	public java.util.List<OfferingDefinition> getOfferingDefinitions() {
+		try {
+			String methodName = "getOfferingDefinitions";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			java.util.List<OfferingDefinition> returnObj = (java.util.List<OfferingDefinition>)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
 	public BaseModel<?> getOfferingBundleRemoteModel() {
 		return _offeringBundleRemoteModel;
 	}

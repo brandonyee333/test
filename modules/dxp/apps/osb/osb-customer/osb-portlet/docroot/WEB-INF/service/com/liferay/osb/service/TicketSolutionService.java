@@ -16,6 +16,9 @@ package com.liferay.osb.service;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.model.TicketAttachment;
+import com.liferay.osb.model.TicketSolution;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
@@ -24,6 +27,8 @@ import com.liferay.portal.kernel.service.BaseService;
 import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Transactional;
+
+import java.util.List;
 
 /**
  * Provides the remote service interface for TicketSolution. Methods of this
@@ -47,6 +52,21 @@ public interface TicketSolutionService extends BaseService, InvokableService {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link TicketSolutionServiceUtil} to access the ticket solution remote service. Add custom service methods to {@link com.liferay.osb.service.impl.TicketSolutionServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	public TicketSolution addTicketSolution(long userId, long ticketEntryId,
+		java.lang.String summary, boolean useCustomerSummary, int issueType,
+		java.lang.String solution, int type, boolean customerSpecific,
+		boolean environmentSpecific, boolean versionSpecific,
+		boolean reviewForKB, int status, int ticketEntrySubcomponent,
+		java.lang.String ticketEntrySubcomponentCustom,
+		List<java.lang.String> ticketLinkURLs,
+		List<java.lang.Integer> ticketLinkTypes,
+		List<TicketAttachment> ticketAttachments) throws java.lang.Exception;
+
+	public TicketSolution updateTicketSolution(long ticketSolutionId,
+		long ticketEntryId, int status, long statusByUserId,
+		java.lang.String statusMessage, int statusReason)
+		throws java.lang.Exception;
+
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)

@@ -123,9 +123,47 @@ public class AccountEnvironmentLocalServiceClpInvoker {
 				"com.liferay.osb.model.AccountEnvironment"
 			};
 
-		_methodName254 = "getOSGiServiceIdentifier";
+		_methodName290 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes254 = new String[] {  };
+		_methodParameterTypes290 = new String[] {  };
+
+		_methodName295 = "addAccountEnvironment";
+
+		_methodParameterTypes295 = new String[] {
+				"long", "long", "long", "java.lang.String", "int",
+				"java.lang.String", "int", "int", "int", "int", "java.util.List",
+				"java.util.List"
+			};
+
+		_methodName296 = "deleteAccountEnvironment";
+
+		_methodParameterTypes296 = new String[] { "long" };
+
+		_methodName297 = "fetchAccountEnvironment";
+
+		_methodParameterTypes297 = new String[] {
+				"long", "long", "java.lang.String"
+			};
+
+		_methodName298 = "getAccountEnvironments";
+
+		_methodParameterTypes298 = new String[] { "long" };
+
+		_methodName299 = "getAccountEnvironments";
+
+		_methodParameterTypes299 = new String[] { "long", "long" };
+
+		_methodName300 = "getAccountEnvironmentsMap";
+
+		_methodParameterTypes300 = new String[] { "long" };
+
+		_methodName301 = "updateAccountEnvironment";
+
+		_methodParameterTypes301 = new String[] {
+				"long", "long", "long", "java.lang.String", "int",
+				"java.lang.String", "int", "int", "int", "int", "java.util.List",
+				"java.util.List"
+			};
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -232,9 +270,68 @@ public class AccountEnvironmentLocalServiceClpInvoker {
 			return AccountEnvironmentLocalServiceUtil.updateAccountEnvironment((com.liferay.osb.model.AccountEnvironment)arguments[0]);
 		}
 
-		if (_methodName254.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes254, parameterTypes)) {
+		if (_methodName290.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes290, parameterTypes)) {
 			return AccountEnvironmentLocalServiceUtil.getOSGiServiceIdentifier();
+		}
+
+		if (_methodName295.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes295, parameterTypes)) {
+			return AccountEnvironmentLocalServiceUtil.addAccountEnvironment(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				((Long)arguments[2]).longValue(),
+				(java.lang.String)arguments[3],
+				((Integer)arguments[4]).intValue(),
+				(java.lang.String)arguments[5],
+				((Integer)arguments[6]).intValue(),
+				((Integer)arguments[7]).intValue(),
+				((Integer)arguments[8]).intValue(),
+				((Integer)arguments[9]).intValue(),
+				(java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>>)arguments[10],
+				(java.util.List<java.lang.Integer>)arguments[11]);
+		}
+
+		if (_methodName296.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes296, parameterTypes)) {
+			return AccountEnvironmentLocalServiceUtil.deleteAccountEnvironment(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName297.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes297, parameterTypes)) {
+			return AccountEnvironmentLocalServiceUtil.fetchAccountEnvironment(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(), (java.lang.String)arguments[2]);
+		}
+
+		if (_methodName298.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes298, parameterTypes)) {
+			return AccountEnvironmentLocalServiceUtil.getAccountEnvironments(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName299.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes299, parameterTypes)) {
+			return AccountEnvironmentLocalServiceUtil.getAccountEnvironments(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue());
+		}
+
+		if (_methodName300.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes300, parameterTypes)) {
+			return AccountEnvironmentLocalServiceUtil.getAccountEnvironmentsMap(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName301.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes301, parameterTypes)) {
+			return AccountEnvironmentLocalServiceUtil.updateAccountEnvironment(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				((Long)arguments[2]).longValue(),
+				(java.lang.String)arguments[3],
+				((Integer)arguments[4]).intValue(),
+				(java.lang.String)arguments[5],
+				((Integer)arguments[6]).intValue(),
+				((Integer)arguments[7]).intValue(),
+				((Integer)arguments[8]).intValue(),
+				((Integer)arguments[9]).intValue(),
+				(java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>>)arguments[10],
+				(java.util.List<java.lang.Integer>)arguments[11]);
 		}
 
 		throw new UnsupportedOperationException();
@@ -278,6 +375,20 @@ public class AccountEnvironmentLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName254;
-	private String[] _methodParameterTypes254;
+	private String _methodName290;
+	private String[] _methodParameterTypes290;
+	private String _methodName295;
+	private String[] _methodParameterTypes295;
+	private String _methodName296;
+	private String[] _methodParameterTypes296;
+	private String _methodName297;
+	private String[] _methodParameterTypes297;
+	private String _methodName298;
+	private String[] _methodParameterTypes298;
+	private String _methodName299;
+	private String[] _methodParameterTypes299;
+	private String _methodName300;
+	private String[] _methodParameterTypes300;
+	private String _methodName301;
+	private String[] _methodParameterTypes301;
 }

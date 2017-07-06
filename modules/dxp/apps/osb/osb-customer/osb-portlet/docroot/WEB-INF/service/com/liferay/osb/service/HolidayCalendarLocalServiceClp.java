@@ -35,96 +35,108 @@ public class HolidayCalendarLocalServiceClp
 				"com.liferay.osb.model.HolidayCalendar"
 			};
 
-		_methodName1 = "createHolidayCalendar";
+		_methodName1 = "addHolidayCalendar";
 
-		_methodParameterTypes1 = new String[] { "long" };
-
-		_methodName2 = "deleteHolidayCalendar";
-
-		_methodParameterTypes2 = new String[] {
-				"com.liferay.osb.model.HolidayCalendar"
+		_methodParameterTypes1 = new String[] {
+				"java.lang.String", "java.lang.String", "java.util.List"
 			};
+
+		_methodName2 = "createHolidayCalendar";
+
+		_methodParameterTypes2 = new String[] { "long" };
 
 		_methodName3 = "deleteHolidayCalendar";
 
-		_methodParameterTypes3 = new String[] { "long" };
-
-		_methodName4 = "fetchHolidayCalendar";
-
-		_methodParameterTypes4 = new String[] { "long" };
-
-		_methodName5 = "getHolidayCalendar";
-
-		_methodParameterTypes5 = new String[] { "long" };
-
-		_methodName6 = "updateHolidayCalendar";
-
-		_methodParameterTypes6 = new String[] {
+		_methodParameterTypes3 = new String[] {
 				"com.liferay.osb.model.HolidayCalendar"
 			};
 
-		_methodName7 = "getActionableDynamicQuery";
+		_methodName4 = "deleteHolidayCalendar";
 
-		_methodParameterTypes7 = new String[] {  };
+		_methodParameterTypes4 = new String[] { "long" };
 
-		_methodName8 = "dynamicQuery";
+		_methodName5 = "fetchHolidayCalendar";
 
-		_methodParameterTypes8 = new String[] {  };
+		_methodParameterTypes5 = new String[] { "long" };
 
-		_methodName9 = "getIndexableActionableDynamicQuery";
+		_methodName6 = "getHolidayCalendar";
+
+		_methodParameterTypes6 = new String[] { "long" };
+
+		_methodName7 = "updateHolidayCalendar";
+
+		_methodParameterTypes7 = new String[] {
+				"com.liferay.osb.model.HolidayCalendar"
+			};
+
+		_methodName8 = "updateHolidayCalendar";
+
+		_methodParameterTypes8 = new String[] {
+				"long", "java.lang.String", "java.lang.String", "java.util.List"
+			};
+
+		_methodName9 = "getActionableDynamicQuery";
 
 		_methodParameterTypes9 = new String[] {  };
 
-		_methodName10 = "deletePersistedModel";
+		_methodName10 = "dynamicQuery";
 
-		_methodParameterTypes10 = new String[] {
+		_methodParameterTypes10 = new String[] {  };
+
+		_methodName11 = "getIndexableActionableDynamicQuery";
+
+		_methodParameterTypes11 = new String[] {  };
+
+		_methodName12 = "deletePersistedModel";
+
+		_methodParameterTypes12 = new String[] {
 				"com.liferay.portal.kernel.model.PersistedModel"
 			};
 
-		_methodName11 = "getPersistedModel";
+		_methodName13 = "getPersistedModel";
 
-		_methodParameterTypes11 = new String[] { "java.io.Serializable" };
+		_methodParameterTypes13 = new String[] { "java.io.Serializable" };
 
-		_methodName12 = "getHolidayCalendarsCount";
-
-		_methodParameterTypes12 = new String[] {  };
-
-		_methodName14 = "getOSGiServiceIdentifier";
+		_methodName14 = "getHolidayCalendarsCount";
 
 		_methodParameterTypes14 = new String[] {  };
 
-		_methodName15 = "dynamicQuery";
+		_methodName16 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes15 = new String[] {
-				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
-			};
-
-		_methodName16 = "dynamicQuery";
-
-		_methodParameterTypes16 = new String[] {
-				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
-			};
+		_methodParameterTypes16 = new String[] {  };
 
 		_methodName17 = "dynamicQuery";
 
 		_methodParameterTypes17 = new String[] {
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
+			};
+
+		_methodName18 = "dynamicQuery";
+
+		_methodParameterTypes18 = new String[] {
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
+			};
+
+		_methodName19 = "dynamicQuery";
+
+		_methodParameterTypes19 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName18 = "getHolidayCalendars";
+		_methodName20 = "getHolidayCalendars";
 
-		_methodParameterTypes18 = new String[] { "int", "int" };
+		_methodParameterTypes20 = new String[] { "int", "int" };
 
-		_methodName19 = "dynamicQueryCount";
+		_methodName21 = "dynamicQueryCount";
 
-		_methodParameterTypes19 = new String[] {
+		_methodParameterTypes21 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
 			};
 
-		_methodName20 = "dynamicQueryCount";
+		_methodName22 = "dynamicQueryCount";
 
-		_methodParameterTypes20 = new String[] {
+		_methodParameterTypes22 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery",
 				"com.liferay.portal.kernel.dao.orm.Projection"
 			};
@@ -156,13 +168,55 @@ public class HolidayCalendarLocalServiceClp
 	}
 
 	@Override
+	public com.liferay.osb.model.HolidayCalendar addHolidayCalendar(
+		java.lang.String name, java.lang.String description,
+		java.util.List<com.liferay.osb.model.HolidayEntry> holidayEntries)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName1,
+					_methodParameterTypes1,
+					new Object[] {
+						ClpSerializer.translateInput(name),
+						
+					ClpSerializer.translateInput(description),
+						
+					ClpSerializer.translateInput(holidayEntries)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.HolidayCalendar)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
 	public com.liferay.osb.model.HolidayCalendar createHolidayCalendar(
 		long holidayCalendarId) {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName1,
-					_methodParameterTypes1, new Object[] { holidayCalendarId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName2,
+					_methodParameterTypes2, new Object[] { holidayCalendarId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -185,8 +239,8 @@ public class HolidayCalendarLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName2,
-					_methodParameterTypes2,
+			returnObj = _invokableLocalService.invokeMethod(_methodName3,
+					_methodParameterTypes3,
 					new Object[] { ClpSerializer.translateInput(holidayCalendar) });
 		}
 		catch (Throwable t) {
@@ -207,18 +261,23 @@ public class HolidayCalendarLocalServiceClp
 	@Override
 	public com.liferay.osb.model.HolidayCalendar deleteHolidayCalendar(
 		long holidayCalendarId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName3,
-					_methodParameterTypes3, new Object[] { holidayCalendarId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName4,
+					_methodParameterTypes4, new Object[] { holidayCalendarId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -239,8 +298,8 @@ public class HolidayCalendarLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName4,
-					_methodParameterTypes4, new Object[] { holidayCalendarId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName5,
+					_methodParameterTypes5, new Object[] { holidayCalendarId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -264,8 +323,8 @@ public class HolidayCalendarLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName5,
-					_methodParameterTypes5, new Object[] { holidayCalendarId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName6,
+					_methodParameterTypes6, new Object[] { holidayCalendarId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -292,8 +351,8 @@ public class HolidayCalendarLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName6,
-					_methodParameterTypes6,
+			returnObj = _invokableLocalService.invokeMethod(_methodName7,
+					_methodParameterTypes7,
 					new Object[] { ClpSerializer.translateInput(holidayCalendar) });
 		}
 		catch (Throwable t) {
@@ -312,12 +371,57 @@ public class HolidayCalendarLocalServiceClp
 	}
 
 	@Override
+	public com.liferay.osb.model.HolidayCalendar updateHolidayCalendar(
+		long holidayCalendarId, java.lang.String name,
+		java.lang.String description,
+		java.util.List<com.liferay.osb.model.HolidayEntry> holidayEntries)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName8,
+					_methodParameterTypes8,
+					new Object[] {
+						holidayCalendarId,
+						
+					ClpSerializer.translateInput(name),
+						
+					ClpSerializer.translateInput(description),
+						
+					ClpSerializer.translateInput(holidayEntries)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.HolidayCalendar)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName7,
-					_methodParameterTypes7, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName9,
+					_methodParameterTypes9, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -339,8 +443,8 @@ public class HolidayCalendarLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName8,
-					_methodParameterTypes8, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName10,
+					_methodParameterTypes10, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -362,8 +466,8 @@ public class HolidayCalendarLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName9,
-					_methodParameterTypes9, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName11,
+					_methodParameterTypes11, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -387,8 +491,8 @@ public class HolidayCalendarLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName10,
-					_methodParameterTypes10,
+			returnObj = _invokableLocalService.invokeMethod(_methodName12,
+					_methodParameterTypes12,
 					new Object[] { ClpSerializer.translateInput(persistedModel) });
 		}
 		catch (Throwable t) {
@@ -417,8 +521,8 @@ public class HolidayCalendarLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName11,
-					_methodParameterTypes11,
+			returnObj = _invokableLocalService.invokeMethod(_methodName13,
+					_methodParameterTypes13,
 					new Object[] { ClpSerializer.translateInput(primaryKeyObj) });
 		}
 		catch (Throwable t) {
@@ -445,8 +549,8 @@ public class HolidayCalendarLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName12,
-					_methodParameterTypes12, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName14,
+					_methodParameterTypes14, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -475,8 +579,8 @@ public class HolidayCalendarLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName14,
-					_methodParameterTypes14, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName16,
+					_methodParameterTypes16, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -499,8 +603,8 @@ public class HolidayCalendarLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName15,
-					_methodParameterTypes15,
+			returnObj = _invokableLocalService.invokeMethod(_methodName17,
+					_methodParameterTypes17,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -525,8 +629,8 @@ public class HolidayCalendarLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName16,
-					_methodParameterTypes16,
+			returnObj = _invokableLocalService.invokeMethod(_methodName18,
+					_methodParameterTypes18,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -558,8 +662,8 @@ public class HolidayCalendarLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName17,
-					_methodParameterTypes17,
+			returnObj = _invokableLocalService.invokeMethod(_methodName19,
+					_methodParameterTypes19,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -591,8 +695,8 @@ public class HolidayCalendarLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName18,
-					_methodParameterTypes18, new Object[] { start, end });
+			returnObj = _invokableLocalService.invokeMethod(_methodName20,
+					_methodParameterTypes20, new Object[] { start, end });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -615,8 +719,8 @@ public class HolidayCalendarLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName19,
-					_methodParameterTypes19,
+			returnObj = _invokableLocalService.invokeMethod(_methodName21,
+					_methodParameterTypes21,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -641,8 +745,8 @@ public class HolidayCalendarLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName20,
-					_methodParameterTypes20,
+			returnObj = _invokableLocalService.invokeMethod(_methodName22,
+					_methodParameterTypes22,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -691,10 +795,10 @@ public class HolidayCalendarLocalServiceClp
 	private String[] _methodParameterTypes11;
 	private String _methodName12;
 	private String[] _methodParameterTypes12;
+	private String _methodName13;
+	private String[] _methodParameterTypes13;
 	private String _methodName14;
 	private String[] _methodParameterTypes14;
-	private String _methodName15;
-	private String[] _methodParameterTypes15;
 	private String _methodName16;
 	private String[] _methodParameterTypes16;
 	private String _methodName17;
@@ -705,4 +809,8 @@ public class HolidayCalendarLocalServiceClp
 	private String[] _methodParameterTypes19;
 	private String _methodName20;
 	private String[] _methodParameterTypes20;
+	private String _methodName21;
+	private String[] _methodParameterTypes21;
+	private String _methodName22;
+	private String[] _methodParameterTypes22;
 }

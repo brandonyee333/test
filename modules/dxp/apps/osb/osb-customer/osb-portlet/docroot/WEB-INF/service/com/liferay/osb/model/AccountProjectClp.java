@@ -292,6 +292,58 @@ public class AccountProjectClp extends BaseModelImpl<AccountProject>
 		}
 	}
 
+	@Override
+	public void addData(AccountInformation accountInformation) {
+		try {
+			String methodName = "addData";
+
+			Class<?>[] parameterTypes = new Class<?>[] { AccountInformation.class };
+
+			Object[] parameterValues = new Object[] { accountInformation };
+
+			invokeOnRemoteModel(methodName, parameterTypes, parameterValues);
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
+	public java.lang.String getData(int fieldId) {
+		try {
+			String methodName = "getData";
+
+			Class<?>[] parameterTypes = new Class<?>[] { int.class };
+
+			Object[] parameterValues = new Object[] { fieldId };
+
+			java.lang.String returnObj = (java.lang.String)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
+	public void setData(
+		java.util.List<AccountInformation> accountInformationList) {
+		try {
+			String methodName = "setData";
+
+			Class<?>[] parameterTypes = new Class<?>[] { java.util.List.class };
+
+			Object[] parameterValues = new Object[] { accountInformationList };
+
+			invokeOnRemoteModel(methodName, parameterTypes, parameterValues);
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
 	public BaseModel<?> getAccountProjectRemoteModel() {
 		return _accountProjectRemoteModel;
 	}

@@ -115,6 +115,21 @@ public class AccountCallLocalServiceWrapper implements AccountCallLocalService,
 	}
 
 	@Override
+	public com.liferay.osb.model.AccountCall updateAccountCall(long userId,
+		long accountCallId, long accountEntryId, int type, int callDateMonth,
+		int callDateDay, int callDateYear, int callDateHour,
+		int callDateMinute, long callLength, java.lang.String summary,
+		java.lang.String clientsPresent, java.lang.String notes,
+		java.lang.String actionItems)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountCallLocalService.updateAccountCall(userId,
+			accountCallId, accountEntryId, type, callDateMonth, callDateDay,
+			callDateYear, callDateHour, callDateMinute, callLength, summary,
+			clientsPresent, notes, actionItems);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
 		return _accountCallLocalService.getActionableDynamicQuery();
 	}
@@ -242,6 +257,13 @@ public class AccountCallLocalServiceWrapper implements AccountCallLocalService,
 	public java.util.List<com.liferay.osb.model.AccountCall> getAccountCalls(
 		int start, int end) {
 		return _accountCallLocalService.getAccountCalls(start, end);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountCall> getAccountCalls(
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountCallLocalService.getAccountCalls(accountEntryId);
 	}
 
 	/**

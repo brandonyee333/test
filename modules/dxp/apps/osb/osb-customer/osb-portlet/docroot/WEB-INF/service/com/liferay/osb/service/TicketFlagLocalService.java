@@ -61,6 +61,13 @@ public interface TicketFlagLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link TicketFlagLocalServiceUtil} to access the ticket flag local service. Add custom service methods to {@link com.liferay.osb.service.impl.TicketFlagLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasTicketFlag(long ticketEntryId, int type, int flag)
+		throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasTicketFlag(long userId, long accountEntryId,
+		long ticketEntryId, int type, int flag) throws SystemException;
 
 	/**
 	* Adds the ticket flag to the database. Also notifies the appropriate model listeners.
@@ -122,6 +129,10 @@ public interface TicketFlagLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public TicketFlag updateTicketFlag(TicketFlag ticketFlag);
 
+	public TicketFlag updateTicketFlag(long userId, long accountEntryId,
+		long ticketEntryId, int type, int flag)
+		throws PortalException, SystemException;
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
@@ -149,6 +160,14 @@ public interface TicketFlagLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getTicketFlagsCount();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getTicketFlagsCount(long ticketEntryId, int type, int flag)
+		throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int[] getTicketFlagTypes(long ticketEntryId, int[] types, int flag)
+		throws SystemException;
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
@@ -215,6 +234,14 @@ public interface TicketFlagLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TicketFlag> getTicketFlags(int start, int end);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TicketFlag> getTicketFlags(long ticketEntryId, int type,
+		int flag) throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TicketFlag> getTicketFlags(long ticketEntryId, int[] types,
+		int flag) throws SystemException;
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -232,4 +259,10 @@ public interface TicketFlagLocalService extends BaseLocalService,
 	*/
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
+
+	public void deleteTicketFlag(long userId, long accountEntryId,
+		long ticketEntryId, int type) throws PortalException, SystemException;
+
+	public void deleteTicketFlags(long ticketEntryId, int type, int flag)
+		throws SystemException;
 }

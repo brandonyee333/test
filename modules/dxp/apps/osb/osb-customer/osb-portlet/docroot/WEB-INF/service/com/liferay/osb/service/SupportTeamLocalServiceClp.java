@@ -50,233 +50,297 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 				"com.liferay.osb.model.SupportTeam"
 			};
 
-		_methodName5 = "createSupportTeam";
+		_methodName5 = "addSupportTeam";
 
-		_methodParameterTypes5 = new String[] { "long" };
-
-		_methodName6 = "deleteSupportTeam";
-
-		_methodParameterTypes6 = new String[] {
-				"com.liferay.osb.model.SupportTeam"
+		_methodParameterTypes5 = new String[] {
+				"long", "long", "long", "long", "java.lang.String",
+				"java.lang.String", "int"
 			};
+
+		_methodName6 = "createSupportTeam";
+
+		_methodParameterTypes6 = new String[] { "long" };
 
 		_methodName7 = "deleteSupportTeam";
 
-		_methodParameterTypes7 = new String[] { "long" };
-
-		_methodName8 = "fetchSupportTeam";
-
-		_methodParameterTypes8 = new String[] { "long" };
-
-		_methodName9 = "getSupportTeam";
-
-		_methodParameterTypes9 = new String[] { "long" };
-
-		_methodName10 = "updateSupportTeam";
-
-		_methodParameterTypes10 = new String[] {
+		_methodParameterTypes7 = new String[] {
 				"com.liferay.osb.model.SupportTeam"
 			};
 
-		_methodName11 = "getActionableDynamicQuery";
+		_methodName8 = "deleteSupportTeam";
 
-		_methodParameterTypes11 = new String[] {  };
+		_methodParameterTypes8 = new String[] { "long" };
 
-		_methodName12 = "dynamicQuery";
+		_methodName9 = "fetchSupportTeam";
 
-		_methodParameterTypes12 = new String[] {  };
+		_methodParameterTypes9 = new String[] { "long" };
 
-		_methodName13 = "getIndexableActionableDynamicQuery";
+		_methodName10 = "getSupportTeam";
+
+		_methodParameterTypes10 = new String[] { "long" };
+
+		_methodName11 = "updateSupportTeam";
+
+		_methodParameterTypes11 = new String[] {
+				"com.liferay.osb.model.SupportTeam"
+			};
+
+		_methodName12 = "updateSupportTeam";
+
+		_methodParameterTypes12 = new String[] {
+				"long", "long", "long", "long", "java.lang.String",
+				"java.lang.String", "int", "long[][]", "long[][]"
+			};
+
+		_methodName13 = "getActionableDynamicQuery";
 
 		_methodParameterTypes13 = new String[] {  };
 
-		_methodName14 = "deletePersistedModel";
+		_methodName14 = "dynamicQuery";
 
-		_methodParameterTypes14 = new String[] {
+		_methodParameterTypes14 = new String[] {  };
+
+		_methodName15 = "getIndexableActionableDynamicQuery";
+
+		_methodParameterTypes15 = new String[] {  };
+
+		_methodName16 = "deletePersistedModel";
+
+		_methodParameterTypes16 = new String[] {
 				"com.liferay.portal.kernel.model.PersistedModel"
 			};
 
-		_methodName15 = "getPersistedModel";
+		_methodName17 = "getPersistedModel";
 
-		_methodParameterTypes15 = new String[] { "java.io.Serializable" };
+		_methodParameterTypes17 = new String[] { "java.io.Serializable" };
 
-		_methodName16 = "getAccountEntrySupportTeamsCount";
+		_methodName18 = "getAccountEntrySupportTeamsCount";
 
-		_methodParameterTypes16 = new String[] { "long" };
+		_methodParameterTypes18 = new String[] { "long" };
 
-		_methodName17 = "getSupportRegionSupportTeamsCount";
+		_methodName19 = "getSupportRegionSupportTeamsCount";
 
-		_methodParameterTypes17 = new String[] { "long" };
+		_methodParameterTypes19 = new String[] { "long" };
 
-		_methodName18 = "getSupportTeamsCount";
-
-		_methodParameterTypes18 = new String[] {  };
-
-		_methodName20 = "getOSGiServiceIdentifier";
+		_methodName20 = "getSupportTeamsCount";
 
 		_methodParameterTypes20 = new String[] {  };
 
-		_methodName21 = "dynamicQuery";
+		_methodName21 = "searchCount";
 
-		_methodParameterTypes21 = new String[] {
+		_methodParameterTypes21 = new String[] { "java.lang.String" };
+
+		_methodName22 = "searchCount";
+
+		_methodParameterTypes22 = new String[] {
+				"java.lang.String", "java.lang.Integer", "boolean"
+			};
+
+		_methodName24 = "getOSGiServiceIdentifier";
+
+		_methodParameterTypes24 = new String[] {  };
+
+		_methodName25 = "dynamicQuery";
+
+		_methodParameterTypes25 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
 			};
 
-		_methodName22 = "dynamicQuery";
+		_methodName26 = "dynamicQuery";
 
-		_methodParameterTypes22 = new String[] {
+		_methodParameterTypes26 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
 			};
 
-		_methodName23 = "dynamicQuery";
+		_methodName27 = "dynamicQuery";
 
-		_methodParameterTypes23 = new String[] {
+		_methodParameterTypes27 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName24 = "getAccountEntrySupportTeams";
+		_methodName28 = "getAccountEntrySupportTeams";
 
-		_methodParameterTypes24 = new String[] { "long" };
+		_methodParameterTypes28 = new String[] { "long" };
 
-		_methodName25 = "getAccountEntrySupportTeams";
+		_methodName29 = "getAccountEntrySupportTeams";
 
-		_methodParameterTypes25 = new String[] { "long", "int", "int" };
+		_methodParameterTypes29 = new String[] { "long", "int", "int" };
 
-		_methodName26 = "getAccountEntrySupportTeams";
+		_methodName30 = "getAccountEntrySupportTeams";
 
-		_methodParameterTypes26 = new String[] {
+		_methodParameterTypes30 = new String[] {
 				"long", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName27 = "getSupportRegionSupportTeams";
+		_methodName31 = "getChildSupportTeams";
 
-		_methodParameterTypes27 = new String[] { "long" };
+		_methodParameterTypes31 = new String[] { "long", "boolean" };
 
-		_methodName28 = "getSupportRegionSupportTeams";
+		_methodName32 = "getSupportLaborSupportTeams";
 
-		_methodParameterTypes28 = new String[] { "long", "int", "int" };
+		_methodParameterTypes32 = new String[] { "long" };
 
-		_methodName29 = "getSupportRegionSupportTeams";
+		_methodName33 = "getSupportRegionSupportTeams";
 
-		_methodParameterTypes29 = new String[] {
+		_methodParameterTypes33 = new String[] { "long" };
+
+		_methodName34 = "getSupportRegionSupportTeams";
+
+		_methodParameterTypes34 = new String[] { "long", "int", "int" };
+
+		_methodName35 = "getSupportRegionSupportTeams";
+
+		_methodParameterTypes35 = new String[] {
 				"long", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName30 = "getSupportTeams";
+		_methodName36 = "getSupportTeams";
 
-		_methodParameterTypes30 = new String[] { "int", "int" };
+		_methodParameterTypes36 = new String[] { "int", "int" };
 
-		_methodName31 = "dynamicQueryCount";
+		_methodName37 = "getSupportTeams";
 
-		_methodParameterTypes31 = new String[] {
+		_methodParameterTypes37 = new String[] {
+				"int", "int", "com.liferay.portal.kernel.util.OrderByComparator"
+			};
+
+		_methodName38 = "getUserRoleSupportTeams";
+
+		_methodParameterTypes38 = new String[] { "long", "int" };
+
+		_methodName39 = "search";
+
+		_methodParameterTypes39 = new String[] {
+				"java.lang.String", "int", "int",
+				"com.liferay.portal.kernel.util.OrderByComparator"
+			};
+
+		_methodName40 = "search";
+
+		_methodParameterTypes40 = new String[] {
+				"java.lang.String", "java.lang.Integer", "boolean", "int", "int",
+				"com.liferay.portal.kernel.util.OrderByComparator"
+			};
+
+		_methodName41 = "dynamicQueryCount";
+
+		_methodParameterTypes41 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
 			};
 
-		_methodName32 = "dynamicQueryCount";
+		_methodName42 = "dynamicQueryCount";
 
-		_methodParameterTypes32 = new String[] {
+		_methodParameterTypes42 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery",
 				"com.liferay.portal.kernel.dao.orm.Projection"
 			};
 
-		_methodName33 = "getAccountEntryPrimaryKeys";
-
-		_methodParameterTypes33 = new String[] { "long" };
-
-		_methodName34 = "getSupportRegionPrimaryKeys";
-
-		_methodParameterTypes34 = new String[] { "long" };
-
-		_methodName35 = "addAccountEntrySupportTeam";
-
-		_methodParameterTypes35 = new String[] {
-				"long", "com.liferay.osb.model.SupportTeam"
-			};
-
-		_methodName36 = "addAccountEntrySupportTeam";
-
-		_methodParameterTypes36 = new String[] { "long", "long" };
-
-		_methodName37 = "addAccountEntrySupportTeams";
-
-		_methodParameterTypes37 = new String[] { "long", "java.util.List" };
-
-		_methodName38 = "addAccountEntrySupportTeams";
-
-		_methodParameterTypes38 = new String[] { "long", "long[][]" };
-
-		_methodName39 = "addSupportRegionSupportTeam";
-
-		_methodParameterTypes39 = new String[] {
-				"long", "com.liferay.osb.model.SupportTeam"
-			};
-
-		_methodName40 = "addSupportRegionSupportTeam";
-
-		_methodParameterTypes40 = new String[] { "long", "long" };
-
-		_methodName41 = "addSupportRegionSupportTeams";
-
-		_methodParameterTypes41 = new String[] { "long", "java.util.List" };
-
-		_methodName42 = "addSupportRegionSupportTeams";
-
-		_methodParameterTypes42 = new String[] { "long", "long[][]" };
-
-		_methodName43 = "clearAccountEntrySupportTeams";
+		_methodName43 = "getAccountEntryPrimaryKeys";
 
 		_methodParameterTypes43 = new String[] { "long" };
 
-		_methodName44 = "clearSupportRegionSupportTeams";
+		_methodName44 = "getSupportRegionPrimaryKeys";
 
 		_methodParameterTypes44 = new String[] { "long" };
 
-		_methodName45 = "deleteAccountEntrySupportTeam";
+		_methodName45 = "addAccountEntrySupportTeam";
 
 		_methodParameterTypes45 = new String[] {
 				"long", "com.liferay.osb.model.SupportTeam"
 			};
 
-		_methodName46 = "deleteAccountEntrySupportTeam";
+		_methodName46 = "addAccountEntrySupportTeam";
 
 		_methodParameterTypes46 = new String[] { "long", "long" };
 
-		_methodName47 = "deleteAccountEntrySupportTeams";
+		_methodName47 = "addAccountEntrySupportTeams";
 
 		_methodParameterTypes47 = new String[] { "long", "java.util.List" };
 
-		_methodName48 = "deleteAccountEntrySupportTeams";
+		_methodName48 = "addAccountEntrySupportTeams";
 
 		_methodParameterTypes48 = new String[] { "long", "long[][]" };
 
-		_methodName49 = "deleteSupportRegionSupportTeam";
+		_methodName49 = "addSupportRegionSupportTeam";
 
 		_methodParameterTypes49 = new String[] {
 				"long", "com.liferay.osb.model.SupportTeam"
 			};
 
-		_methodName50 = "deleteSupportRegionSupportTeam";
+		_methodName50 = "addSupportRegionSupportTeam";
 
 		_methodParameterTypes50 = new String[] { "long", "long" };
 
-		_methodName51 = "deleteSupportRegionSupportTeams";
+		_methodName51 = "addSupportRegionSupportTeams";
 
 		_methodParameterTypes51 = new String[] { "long", "java.util.List" };
 
-		_methodName52 = "deleteSupportRegionSupportTeams";
+		_methodName52 = "addSupportRegionSupportTeams";
 
 		_methodParameterTypes52 = new String[] { "long", "long[][]" };
 
-		_methodName53 = "setAccountEntrySupportTeams";
+		_methodName53 = "clearAccountEntrySupportTeams";
 
-		_methodParameterTypes53 = new String[] { "long", "long[][]" };
+		_methodParameterTypes53 = new String[] { "long" };
 
-		_methodName54 = "setSupportRegionSupportTeams";
+		_methodName54 = "clearSupportRegionSupportTeams";
 
-		_methodParameterTypes54 = new String[] { "long", "long[][]" };
+		_methodParameterTypes54 = new String[] { "long" };
+
+		_methodName55 = "deleteAccountEntrySupportTeam";
+
+		_methodParameterTypes55 = new String[] {
+				"long", "com.liferay.osb.model.SupportTeam"
+			};
+
+		_methodName56 = "deleteAccountEntrySupportTeam";
+
+		_methodParameterTypes56 = new String[] { "long", "long" };
+
+		_methodName57 = "deleteAccountEntrySupportTeams";
+
+		_methodParameterTypes57 = new String[] { "long", "java.util.List" };
+
+		_methodName58 = "deleteAccountEntrySupportTeams";
+
+		_methodParameterTypes58 = new String[] { "long", "long[][]" };
+
+		_methodName59 = "deleteSupportRegionSupportTeam";
+
+		_methodParameterTypes59 = new String[] {
+				"long", "com.liferay.osb.model.SupportTeam"
+			};
+
+		_methodName60 = "deleteSupportRegionSupportTeam";
+
+		_methodParameterTypes60 = new String[] { "long", "long" };
+
+		_methodName61 = "deleteSupportRegionSupportTeams";
+
+		_methodParameterTypes61 = new String[] { "long", "java.util.List" };
+
+		_methodName62 = "deleteSupportRegionSupportTeams";
+
+		_methodParameterTypes62 = new String[] { "long", "long[][]" };
+
+		_methodName63 = "setAccountEntrySupportTeams";
+
+		_methodParameterTypes63 = new String[] { "long", "long[][]" };
+
+		_methodName64 = "setChildSupportTeams";
+
+		_methodParameterTypes64 = new String[] { "long", "long[][]" };
+
+		_methodName65 = "setSupportLaborId";
+
+		_methodParameterTypes65 = new String[] { "long", "long[][]" };
+
+		_methodName66 = "setSupportRegionSupportTeams";
+
+		_methodParameterTypes66 = new String[] { "long", "long[][]" };
 	}
 
 	@Override
@@ -401,13 +465,64 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 	}
 
 	@Override
+	public com.liferay.osb.model.SupportTeam addSupportTeam(long userId,
+		long parentSupportTeamId, long supportLaborId,
+		long locationSupportRegionId, java.lang.String name,
+		java.lang.String description, int type)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName5,
+					_methodParameterTypes5,
+					new Object[] {
+						userId,
+						
+					parentSupportTeamId,
+						
+					supportLaborId,
+						
+					locationSupportRegionId,
+						
+					ClpSerializer.translateInput(name),
+						
+					ClpSerializer.translateInput(description),
+						
+					type
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.SupportTeam)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
 	public com.liferay.osb.model.SupportTeam createSupportTeam(
 		long supportTeamId) {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName5,
-					_methodParameterTypes5, new Object[] { supportTeamId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName6,
+					_methodParameterTypes6, new Object[] { supportTeamId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -430,8 +545,8 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName6,
-					_methodParameterTypes6,
+			returnObj = _invokableLocalService.invokeMethod(_methodName7,
+					_methodParameterTypes7,
 					new Object[] { ClpSerializer.translateInput(supportTeam) });
 		}
 		catch (Throwable t) {
@@ -452,18 +567,23 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 	@Override
 	public com.liferay.osb.model.SupportTeam deleteSupportTeam(
 		long supportTeamId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName7,
-					_methodParameterTypes7, new Object[] { supportTeamId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName8,
+					_methodParameterTypes8, new Object[] { supportTeamId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -484,8 +604,8 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName8,
-					_methodParameterTypes8, new Object[] { supportTeamId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName9,
+					_methodParameterTypes9, new Object[] { supportTeamId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -508,8 +628,8 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName9,
-					_methodParameterTypes9, new Object[] { supportTeamId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName10,
+					_methodParameterTypes10, new Object[] { supportTeamId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -536,8 +656,8 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName10,
-					_methodParameterTypes10,
+			returnObj = _invokableLocalService.invokeMethod(_methodName11,
+					_methodParameterTypes11,
 					new Object[] { ClpSerializer.translateInput(supportTeam) });
 		}
 		catch (Throwable t) {
@@ -556,12 +676,68 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 	}
 
 	@Override
+	public com.liferay.osb.model.SupportTeam updateSupportTeam(
+		long supportTeamId, long parentSupportTeamId, long supportLaborId,
+		long locationSupportRegionId, java.lang.String name,
+		java.lang.String description, int type, long[] accountEntryIds,
+		long[] supportRegionIds)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName12,
+					_methodParameterTypes12,
+					new Object[] {
+						supportTeamId,
+						
+					parentSupportTeamId,
+						
+					supportLaborId,
+						
+					locationSupportRegionId,
+						
+					ClpSerializer.translateInput(name),
+						
+					ClpSerializer.translateInput(description),
+						
+					type,
+						
+					ClpSerializer.translateInput(accountEntryIds),
+						
+					ClpSerializer.translateInput(supportRegionIds)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.SupportTeam)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName11,
-					_methodParameterTypes11, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName13,
+					_methodParameterTypes13, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -583,8 +759,8 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName12,
-					_methodParameterTypes12, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName14,
+					_methodParameterTypes14, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -606,8 +782,8 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName13,
-					_methodParameterTypes13, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName15,
+					_methodParameterTypes15, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -631,8 +807,8 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName14,
-					_methodParameterTypes14,
+			returnObj = _invokableLocalService.invokeMethod(_methodName16,
+					_methodParameterTypes16,
 					new Object[] { ClpSerializer.translateInput(persistedModel) });
 		}
 		catch (Throwable t) {
@@ -661,8 +837,8 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName15,
-					_methodParameterTypes15,
+			returnObj = _invokableLocalService.invokeMethod(_methodName17,
+					_methodParameterTypes17,
 					new Object[] { ClpSerializer.translateInput(primaryKeyObj) });
 		}
 		catch (Throwable t) {
@@ -689,8 +865,8 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName16,
-					_methodParameterTypes16, new Object[] { accountEntryId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName18,
+					_methodParameterTypes18, new Object[] { accountEntryId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -712,8 +888,8 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName17,
-					_methodParameterTypes17, new Object[] { supportRegionId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName19,
+					_methodParameterTypes19, new Object[] { supportRegionId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -735,11 +911,76 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName18,
-					_methodParameterTypes18, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName20,
+					_methodParameterTypes20, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return ((Integer)returnObj).intValue();
+	}
+
+	@Override
+	public int searchCount(java.lang.String keywords)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName21,
+					_methodParameterTypes21,
+					new Object[] { ClpSerializer.translateInput(keywords) });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return ((Integer)returnObj).intValue();
+	}
+
+	@Override
+	public int searchCount(java.lang.String name, java.lang.Integer type,
+		boolean andOperator)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName22,
+					_methodParameterTypes22,
+					new Object[] {
+						ClpSerializer.translateInput(name),
+						
+					ClpSerializer.translateInput(type),
+						
+					andOperator
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -765,8 +1006,8 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName20,
-					_methodParameterTypes20, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName24,
+					_methodParameterTypes24, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -789,8 +1030,8 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName21,
-					_methodParameterTypes21,
+			returnObj = _invokableLocalService.invokeMethod(_methodName25,
+					_methodParameterTypes25,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -815,8 +1056,8 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName22,
-					_methodParameterTypes22,
+			returnObj = _invokableLocalService.invokeMethod(_methodName26,
+					_methodParameterTypes26,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -848,8 +1089,8 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName23,
-					_methodParameterTypes23,
+			returnObj = _invokableLocalService.invokeMethod(_methodName27,
+					_methodParameterTypes27,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -881,8 +1122,8 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName24,
-					_methodParameterTypes24, new Object[] { accountEntryId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName28,
+					_methodParameterTypes28, new Object[] { accountEntryId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -905,8 +1146,8 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName25,
-					_methodParameterTypes25,
+			returnObj = _invokableLocalService.invokeMethod(_methodName29,
+					_methodParameterTypes29,
 					new Object[] { accountEntryId, start, end });
 		}
 		catch (Throwable t) {
@@ -931,8 +1172,8 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName26,
-					_methodParameterTypes26,
+			returnObj = _invokableLocalService.invokeMethod(_methodName30,
+					_methodParameterTypes30,
 					new Object[] {
 						accountEntryId,
 						
@@ -959,13 +1200,72 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 	}
 
 	@Override
+	public java.util.List<com.liferay.osb.model.SupportTeam> getChildSupportTeams(
+		long supportTeamId, boolean recursive)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName31,
+					_methodParameterTypes31,
+					new Object[] { supportTeamId, recursive });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.List<com.liferay.osb.model.SupportTeam>)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.SupportTeam> getSupportLaborSupportTeams(
+		long supportLaborId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName32,
+					_methodParameterTypes32, new Object[] { supportLaborId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.List<com.liferay.osb.model.SupportTeam>)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
 	public java.util.List<com.liferay.osb.model.SupportTeam> getSupportRegionSupportTeams(
 		long supportRegionId) {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName27,
-					_methodParameterTypes27, new Object[] { supportRegionId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName33,
+					_methodParameterTypes33, new Object[] { supportRegionId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -988,8 +1288,8 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName28,
-					_methodParameterTypes28,
+			returnObj = _invokableLocalService.invokeMethod(_methodName34,
+					_methodParameterTypes34,
 					new Object[] { supportRegionId, start, end });
 		}
 		catch (Throwable t) {
@@ -1014,8 +1314,8 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName29,
-					_methodParameterTypes29,
+			returnObj = _invokableLocalService.invokeMethod(_methodName35,
+					_methodParameterTypes35,
 					new Object[] {
 						supportRegionId,
 						
@@ -1047,11 +1347,152 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName30,
-					_methodParameterTypes30, new Object[] { start, end });
+			returnObj = _invokableLocalService.invokeMethod(_methodName36,
+					_methodParameterTypes36, new Object[] { start, end });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.List<com.liferay.osb.model.SupportTeam>)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.SupportTeam> getSupportTeams(
+		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName37,
+					_methodParameterTypes37,
+					new Object[] { start, end, ClpSerializer.translateInput(obc) });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.List<com.liferay.osb.model.SupportTeam>)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.SupportTeam> getUserRoleSupportTeams(
+		long userId, int role)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName38,
+					_methodParameterTypes38, new Object[] { userId, role });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.List<com.liferay.osb.model.SupportTeam>)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.SupportTeam> search(
+		java.lang.String keywords, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator obc)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName39,
+					_methodParameterTypes39,
+					new Object[] {
+						ClpSerializer.translateInput(keywords),
+						
+					start,
+						
+					end,
+						
+					ClpSerializer.translateInput(obc)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.List<com.liferay.osb.model.SupportTeam>)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.SupportTeam> search(
+		java.lang.String name, java.lang.Integer type, boolean andSearch,
+		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName40,
+					_methodParameterTypes40,
+					new Object[] {
+						ClpSerializer.translateInput(name),
+						
+					ClpSerializer.translateInput(type),
+						
+					andSearch,
+						
+					start,
+						
+					end,
+						
+					ClpSerializer.translateInput(obc)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -1071,8 +1512,8 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName31,
-					_methodParameterTypes31,
+			returnObj = _invokableLocalService.invokeMethod(_methodName41,
+					_methodParameterTypes41,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -1097,8 +1538,8 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName32,
-					_methodParameterTypes32,
+			returnObj = _invokableLocalService.invokeMethod(_methodName42,
+					_methodParameterTypes42,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -1125,8 +1566,8 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName33,
-					_methodParameterTypes33, new Object[] { supportTeamId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName43,
+					_methodParameterTypes43, new Object[] { supportTeamId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1148,8 +1589,8 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName34,
-					_methodParameterTypes34, new Object[] { supportTeamId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName44,
+					_methodParameterTypes44, new Object[] { supportTeamId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1168,236 +1609,6 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 
 	@Override
 	public void addAccountEntrySupportTeam(long accountEntryId,
-		com.liferay.osb.model.SupportTeam supportTeam) {
-		try {
-			_invokableLocalService.invokeMethod(_methodName35,
-				_methodParameterTypes35,
-				new Object[] {
-					accountEntryId,
-					
-				ClpSerializer.translateInput(supportTeam)
-				});
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-	}
-
-	@Override
-	public void addAccountEntrySupportTeam(long accountEntryId,
-		long supportTeamId) {
-		try {
-			_invokableLocalService.invokeMethod(_methodName36,
-				_methodParameterTypes36,
-				new Object[] { accountEntryId, supportTeamId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-	}
-
-	@Override
-	public void addAccountEntrySupportTeams(long accountEntryId,
-		java.util.List<com.liferay.osb.model.SupportTeam> supportTeams) {
-		try {
-			_invokableLocalService.invokeMethod(_methodName37,
-				_methodParameterTypes37,
-				new Object[] {
-					accountEntryId,
-					
-				ClpSerializer.translateInput(supportTeams)
-				});
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-	}
-
-	@Override
-	public void addAccountEntrySupportTeams(long accountEntryId,
-		long[] supportTeamIds) {
-		try {
-			_invokableLocalService.invokeMethod(_methodName38,
-				_methodParameterTypes38,
-				new Object[] {
-					accountEntryId,
-					
-				ClpSerializer.translateInput(supportTeamIds)
-				});
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-	}
-
-	@Override
-	public void addSupportRegionSupportTeam(long supportRegionId,
-		com.liferay.osb.model.SupportTeam supportTeam) {
-		try {
-			_invokableLocalService.invokeMethod(_methodName39,
-				_methodParameterTypes39,
-				new Object[] {
-					supportRegionId,
-					
-				ClpSerializer.translateInput(supportTeam)
-				});
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-	}
-
-	@Override
-	public void addSupportRegionSupportTeam(long supportRegionId,
-		long supportTeamId) {
-		try {
-			_invokableLocalService.invokeMethod(_methodName40,
-				_methodParameterTypes40,
-				new Object[] { supportRegionId, supportTeamId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-	}
-
-	@Override
-	public void addSupportRegionSupportTeams(long supportRegionId,
-		java.util.List<com.liferay.osb.model.SupportTeam> supportTeams) {
-		try {
-			_invokableLocalService.invokeMethod(_methodName41,
-				_methodParameterTypes41,
-				new Object[] {
-					supportRegionId,
-					
-				ClpSerializer.translateInput(supportTeams)
-				});
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-	}
-
-	@Override
-	public void addSupportRegionSupportTeams(long supportRegionId,
-		long[] supportTeamIds) {
-		try {
-			_invokableLocalService.invokeMethod(_methodName42,
-				_methodParameterTypes42,
-				new Object[] {
-					supportRegionId,
-					
-				ClpSerializer.translateInput(supportTeamIds)
-				});
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-	}
-
-	@Override
-	public void clearAccountEntrySupportTeams(long accountEntryId) {
-		try {
-			_invokableLocalService.invokeMethod(_methodName43,
-				_methodParameterTypes43, new Object[] { accountEntryId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-	}
-
-	@Override
-	public void clearSupportRegionSupportTeams(long supportRegionId) {
-		try {
-			_invokableLocalService.invokeMethod(_methodName44,
-				_methodParameterTypes44, new Object[] { supportRegionId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-	}
-
-	@Override
-	public void deleteAccountEntrySupportTeam(long accountEntryId,
 		com.liferay.osb.model.SupportTeam supportTeam) {
 		try {
 			_invokableLocalService.invokeMethod(_methodName45,
@@ -1422,7 +1633,7 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 	}
 
 	@Override
-	public void deleteAccountEntrySupportTeam(long accountEntryId,
+	public void addAccountEntrySupportTeam(long accountEntryId,
 		long supportTeamId) {
 		try {
 			_invokableLocalService.invokeMethod(_methodName46,
@@ -1443,7 +1654,7 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 	}
 
 	@Override
-	public void deleteAccountEntrySupportTeams(long accountEntryId,
+	public void addAccountEntrySupportTeams(long accountEntryId,
 		java.util.List<com.liferay.osb.model.SupportTeam> supportTeams) {
 		try {
 			_invokableLocalService.invokeMethod(_methodName47,
@@ -1468,7 +1679,7 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 	}
 
 	@Override
-	public void deleteAccountEntrySupportTeams(long accountEntryId,
+	public void addAccountEntrySupportTeams(long accountEntryId,
 		long[] supportTeamIds) {
 		try {
 			_invokableLocalService.invokeMethod(_methodName48,
@@ -1493,7 +1704,7 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 	}
 
 	@Override
-	public void deleteSupportRegionSupportTeam(long supportRegionId,
+	public void addSupportRegionSupportTeam(long supportRegionId,
 		com.liferay.osb.model.SupportTeam supportTeam) {
 		try {
 			_invokableLocalService.invokeMethod(_methodName49,
@@ -1518,7 +1729,7 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 	}
 
 	@Override
-	public void deleteSupportRegionSupportTeam(long supportRegionId,
+	public void addSupportRegionSupportTeam(long supportRegionId,
 		long supportTeamId) {
 		try {
 			_invokableLocalService.invokeMethod(_methodName50,
@@ -1539,7 +1750,7 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 	}
 
 	@Override
-	public void deleteSupportRegionSupportTeams(long supportRegionId,
+	public void addSupportRegionSupportTeams(long supportRegionId,
 		java.util.List<com.liferay.osb.model.SupportTeam> supportTeams) {
 		try {
 			_invokableLocalService.invokeMethod(_methodName51,
@@ -1564,7 +1775,7 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 	}
 
 	@Override
-	public void deleteSupportRegionSupportTeams(long supportRegionId,
+	public void addSupportRegionSupportTeams(long supportRegionId,
 		long[] supportTeamIds) {
 		try {
 			_invokableLocalService.invokeMethod(_methodName52,
@@ -1589,11 +1800,120 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 	}
 
 	@Override
-	public void setAccountEntrySupportTeams(long accountEntryId,
-		long[] supportTeamIds) {
+	public void clearAccountEntrySupportTeams(long accountEntryId) {
 		try {
 			_invokableLocalService.invokeMethod(_methodName53,
-				_methodParameterTypes53,
+				_methodParameterTypes53, new Object[] { accountEntryId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+	}
+
+	@Override
+	public void clearSupportRegionSupportTeams(long supportRegionId) {
+		try {
+			_invokableLocalService.invokeMethod(_methodName54,
+				_methodParameterTypes54, new Object[] { supportRegionId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+	}
+
+	@Override
+	public void deleteAccountEntrySupportTeam(long accountEntryId,
+		com.liferay.osb.model.SupportTeam supportTeam) {
+		try {
+			_invokableLocalService.invokeMethod(_methodName55,
+				_methodParameterTypes55,
+				new Object[] {
+					accountEntryId,
+					
+				ClpSerializer.translateInput(supportTeam)
+				});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+	}
+
+	@Override
+	public void deleteAccountEntrySupportTeam(long accountEntryId,
+		long supportTeamId) {
+		try {
+			_invokableLocalService.invokeMethod(_methodName56,
+				_methodParameterTypes56,
+				new Object[] { accountEntryId, supportTeamId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+	}
+
+	@Override
+	public void deleteAccountEntrySupportTeams(long accountEntryId,
+		java.util.List<com.liferay.osb.model.SupportTeam> supportTeams) {
+		try {
+			_invokableLocalService.invokeMethod(_methodName57,
+				_methodParameterTypes57,
+				new Object[] {
+					accountEntryId,
+					
+				ClpSerializer.translateInput(supportTeams)
+				});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+	}
+
+	@Override
+	public void deleteAccountEntrySupportTeams(long accountEntryId,
+		long[] supportTeamIds) {
+		try {
+			_invokableLocalService.invokeMethod(_methodName58,
+				_methodParameterTypes58,
 				new Object[] {
 					accountEntryId,
 					
@@ -1614,11 +1934,201 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 	}
 
 	@Override
+	public void deleteSupportRegionSupportTeam(long supportRegionId,
+		com.liferay.osb.model.SupportTeam supportTeam) {
+		try {
+			_invokableLocalService.invokeMethod(_methodName59,
+				_methodParameterTypes59,
+				new Object[] {
+					supportRegionId,
+					
+				ClpSerializer.translateInput(supportTeam)
+				});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+	}
+
+	@Override
+	public void deleteSupportRegionSupportTeam(long supportRegionId,
+		long supportTeamId) {
+		try {
+			_invokableLocalService.invokeMethod(_methodName60,
+				_methodParameterTypes60,
+				new Object[] { supportRegionId, supportTeamId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+	}
+
+	@Override
+	public void deleteSupportRegionSupportTeams(long supportRegionId,
+		java.util.List<com.liferay.osb.model.SupportTeam> supportTeams) {
+		try {
+			_invokableLocalService.invokeMethod(_methodName61,
+				_methodParameterTypes61,
+				new Object[] {
+					supportRegionId,
+					
+				ClpSerializer.translateInput(supportTeams)
+				});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+	}
+
+	@Override
+	public void deleteSupportRegionSupportTeams(long supportRegionId,
+		long[] supportTeamIds) {
+		try {
+			_invokableLocalService.invokeMethod(_methodName62,
+				_methodParameterTypes62,
+				new Object[] {
+					supportRegionId,
+					
+				ClpSerializer.translateInput(supportTeamIds)
+				});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+	}
+
+	@Override
+	public void setAccountEntrySupportTeams(long accountEntryId,
+		long[] supportTeamIds) {
+		try {
+			_invokableLocalService.invokeMethod(_methodName63,
+				_methodParameterTypes63,
+				new Object[] {
+					accountEntryId,
+					
+				ClpSerializer.translateInput(supportTeamIds)
+				});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+	}
+
+	@Override
+	public void setChildSupportTeams(long parentSupportTeamId,
+		long[] childSupportTeamIds)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		try {
+			_invokableLocalService.invokeMethod(_methodName64,
+				_methodParameterTypes64,
+				new Object[] {
+					parentSupportTeamId,
+					
+				ClpSerializer.translateInput(childSupportTeamIds)
+				});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+	}
+
+	@Override
+	public void setSupportLaborId(long supportLaborId, long[] supportTeamIds)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		try {
+			_invokableLocalService.invokeMethod(_methodName65,
+				_methodParameterTypes65,
+				new Object[] {
+					supportLaborId,
+					
+				ClpSerializer.translateInput(supportTeamIds)
+				});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+	}
+
+	@Override
 	public void setSupportRegionSupportTeams(long supportRegionId,
 		long[] supportTeamIds) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName54,
-				_methodParameterTypes54,
+			_invokableLocalService.invokeMethod(_methodName66,
+				_methodParameterTypes66,
 				new Object[] {
 					supportRegionId,
 					
@@ -1677,14 +2187,14 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 	private String[] _methodParameterTypes17;
 	private String _methodName18;
 	private String[] _methodParameterTypes18;
+	private String _methodName19;
+	private String[] _methodParameterTypes19;
 	private String _methodName20;
 	private String[] _methodParameterTypes20;
 	private String _methodName21;
 	private String[] _methodParameterTypes21;
 	private String _methodName22;
 	private String[] _methodParameterTypes22;
-	private String _methodName23;
-	private String[] _methodParameterTypes23;
 	private String _methodName24;
 	private String[] _methodParameterTypes24;
 	private String _methodName25;
@@ -1747,4 +2257,28 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 	private String[] _methodParameterTypes53;
 	private String _methodName54;
 	private String[] _methodParameterTypes54;
+	private String _methodName55;
+	private String[] _methodParameterTypes55;
+	private String _methodName56;
+	private String[] _methodParameterTypes56;
+	private String _methodName57;
+	private String[] _methodParameterTypes57;
+	private String _methodName58;
+	private String[] _methodParameterTypes58;
+	private String _methodName59;
+	private String[] _methodParameterTypes59;
+	private String _methodName60;
+	private String[] _methodParameterTypes60;
+	private String _methodName61;
+	private String[] _methodParameterTypes61;
+	private String _methodName62;
+	private String[] _methodParameterTypes62;
+	private String _methodName63;
+	private String[] _methodParameterTypes63;
+	private String _methodName64;
+	private String[] _methodParameterTypes64;
+	private String _methodName65;
+	private String[] _methodParameterTypes65;
+	private String _methodName66;
+	private String[] _methodParameterTypes66;
 }

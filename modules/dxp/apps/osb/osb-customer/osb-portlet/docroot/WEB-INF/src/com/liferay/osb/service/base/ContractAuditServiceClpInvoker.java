@@ -27,21 +27,39 @@ import java.util.Arrays;
 @ProviderType
 public class ContractAuditServiceClpInvoker {
 	public ContractAuditServiceClpInvoker() {
-		_methodName340 = "getOSGiServiceIdentifier";
+		_methodName380 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes340 = new String[] {  };
+		_methodParameterTypes380 = new String[] {  };
+
+		_methodName385 = "addContractAudit";
+
+		_methodParameterTypes385 = new String[] {
+				"long", "java.lang.String", "long", "java.lang.String", "long"
+			};
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName340.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes340, parameterTypes)) {
+		if (_methodName380.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes380, parameterTypes)) {
 			return ContractAuditServiceUtil.getOSGiServiceIdentifier();
+		}
+
+		if (_methodName385.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes385, parameterTypes)) {
+			ContractAuditServiceUtil.addContractAudit(((Long)arguments[0]).longValue(),
+				(java.lang.String)arguments[1],
+				((Long)arguments[2]).longValue(),
+				(java.lang.String)arguments[3], ((Long)arguments[4]).longValue());
+
+			return null;
 		}
 
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName340;
-	private String[] _methodParameterTypes340;
+	private String _methodName380;
+	private String[] _methodParameterTypes380;
+	private String _methodName385;
+	private String[] _methodParameterTypes385;
 }

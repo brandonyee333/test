@@ -53,4 +53,14 @@ public interface AccountCall extends AccountCallModel, PersistedModel {
 				return AccountCall.class;
 			}
 		};
+
+	public int getCallLengthHours();
+
+	public java.lang.String getCallLengthLabel();
+
+	public int getCallLengthMinutes();
+
+	public int getCallLengthSeconds();
+
+	public java.lang.String getTypeLabel();
 }

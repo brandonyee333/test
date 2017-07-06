@@ -28,119 +28,217 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 		InvokableLocalService invokableLocalService) {
 		_invokableLocalService = invokableLocalService;
 
-		_methodName0 = "addTicketComment";
+		_methodName0 = "hasVisibility";
 
-		_methodParameterTypes0 = new String[] {
-				"com.liferay.osb.model.TicketComment"
-			};
+		_methodParameterTypes0 = new String[] { "long", "long", "int" };
 
-		_methodName1 = "createTicketComment";
+		_methodName1 = "addAwayMessageTicketComment";
 
-		_methodParameterTypes1 = new String[] { "long" };
+		_methodParameterTypes1 = new String[] { "long", "long" };
 
-		_methodName2 = "deleteTicketComment";
+		_methodName2 = "addTicketComment";
 
 		_methodParameterTypes2 = new String[] {
 				"com.liferay.osb.model.TicketComment"
 			};
 
-		_methodName3 = "deleteTicketComment";
+		_methodName3 = "addTicketComment";
 
-		_methodParameterTypes3 = new String[] { "long" };
+		_methodParameterTypes3 = new String[] {
+				"long", "long", "java.lang.String", "int", "int", "int", "long",
+				"int[][]", "com.liferay.portal.kernel.service.ServiceContext"
+			};
 
-		_methodName4 = "fetchTicketComment";
+		_methodName4 = "createTicketComment";
 
 		_methodParameterTypes4 = new String[] { "long" };
 
-		_methodName5 = "getTicketComment";
+		_methodName5 = "deleteTicketComment";
 
-		_methodParameterTypes5 = new String[] { "long" };
-
-		_methodName6 = "updateTicketComment";
-
-		_methodParameterTypes6 = new String[] {
+		_methodParameterTypes5 = new String[] {
 				"com.liferay.osb.model.TicketComment"
 			};
 
-		_methodName7 = "getActionableDynamicQuery";
+		_methodName6 = "deleteTicketComment";
 
-		_methodParameterTypes7 = new String[] {  };
+		_methodParameterTypes6 = new String[] { "long" };
 
-		_methodName8 = "dynamicQuery";
+		_methodName7 = "deleteTicketComment";
 
-		_methodParameterTypes8 = new String[] {  };
+		_methodParameterTypes7 = new String[] {
+				"long", "com.liferay.osb.model.TicketComment"
+			};
 
-		_methodName9 = "getIndexableActionableDynamicQuery";
+		_methodName8 = "deleteTicketComment";
 
-		_methodParameterTypes9 = new String[] {  };
+		_methodParameterTypes8 = new String[] { "long", "long" };
 
-		_methodName10 = "deletePersistedModel";
+		_methodName9 = "fetchLastTicketComment";
+
+		_methodParameterTypes9 = new String[] {
+				"long", "long", "int", "int",
+				"com.liferay.portal.kernel.util.OrderByComparator"
+			};
+
+		_methodName10 = "fetchLastTicketComment";
 
 		_methodParameterTypes10 = new String[] {
+				"long", "long", "int", "int", "int",
+				"com.liferay.portal.kernel.util.OrderByComparator"
+			};
+
+		_methodName11 = "fetchTicketComment";
+
+		_methodParameterTypes11 = new String[] { "long" };
+
+		_methodName12 = "getLastTicketComment";
+
+		_methodParameterTypes12 = new String[] {
+				"long", "int",
+				"com.liferay.portal.kernel.util.OrderByComparator"
+			};
+
+		_methodName13 = "getTicketComment";
+
+		_methodParameterTypes13 = new String[] { "long" };
+
+		_methodName14 = "updateTicketComment";
+
+		_methodParameterTypes14 = new String[] {
+				"com.liferay.osb.model.TicketComment"
+			};
+
+		_methodName15 = "updateTicketComment";
+
+		_methodParameterTypes15 = new String[] {
+				"long", "long", "long", "java.lang.String", "int", "int", "long",
+				"int[][]", "com.liferay.portal.kernel.service.ServiceContext"
+			};
+
+		_methodName16 = "updateTicketCommentType";
+
+		_methodParameterTypes16 = new String[] { "long", "int" };
+
+		_methodName17 = "getActionableDynamicQuery";
+
+		_methodParameterTypes17 = new String[] {  };
+
+		_methodName18 = "dynamicQuery";
+
+		_methodParameterTypes18 = new String[] {  };
+
+		_methodName19 = "getIndexableActionableDynamicQuery";
+
+		_methodParameterTypes19 = new String[] {  };
+
+		_methodName20 = "deletePersistedModel";
+
+		_methodParameterTypes20 = new String[] {
 				"com.liferay.portal.kernel.model.PersistedModel"
 			};
 
-		_methodName11 = "getPersistedModel";
+		_methodName21 = "getPersistedModel";
 
-		_methodParameterTypes11 = new String[] { "java.io.Serializable" };
+		_methodParameterTypes21 = new String[] { "java.io.Serializable" };
 
-		_methodName12 = "getTicketCommentsCount";
+		_methodName22 = "getOrganizationTicketCommentsCount";
 
-		_methodParameterTypes12 = new String[] {  };
+		_methodParameterTypes22 = new String[] { "long[][]", "long", "int" };
 
-		_methodName14 = "getOSGiServiceIdentifier";
+		_methodName23 = "getTicketCommentsCount";
 
-		_methodParameterTypes14 = new String[] {  };
+		_methodParameterTypes23 = new String[] {  };
 
-		_methodName15 = "dynamicQuery";
+		_methodName24 = "getTicketCommentsCount";
 
-		_methodParameterTypes15 = new String[] {
+		_methodParameterTypes24 = new String[] { "long", "int[][]", "int[][]" };
+
+		_methodName25 = "getTicketCommentsCount";
+
+		_methodParameterTypes25 = new String[] {
+				"long", "long", "int[][]", "int[][]"
+			};
+
+		_methodName26 = "getUserVisibilities";
+
+		_methodParameterTypes26 = new String[] { "long", "long" };
+
+		_methodName28 = "getOSGiServiceIdentifier";
+
+		_methodParameterTypes28 = new String[] {  };
+
+		_methodName29 = "dynamicQuery";
+
+		_methodParameterTypes29 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
 			};
 
-		_methodName16 = "dynamicQuery";
+		_methodName30 = "dynamicQuery";
 
-		_methodParameterTypes16 = new String[] {
+		_methodParameterTypes30 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
 			};
 
-		_methodName17 = "dynamicQuery";
+		_methodName31 = "dynamicQuery";
 
-		_methodParameterTypes17 = new String[] {
+		_methodParameterTypes31 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName18 = "getTicketComments";
+		_methodName32 = "getTicketComments";
 
-		_methodParameterTypes18 = new String[] { "int", "int" };
+		_methodParameterTypes32 = new String[] { "int", "int" };
 
-		_methodName19 = "dynamicQueryCount";
+		_methodName33 = "getTicketComments";
 
-		_methodParameterTypes19 = new String[] {
+		_methodParameterTypes33 = new String[] { "long", "int[][]", "int[][]" };
+
+		_methodName34 = "getTicketComments";
+
+		_methodParameterTypes34 = new String[] {
+				"long", "long", "int[][]", "int[][]"
+			};
+
+		_methodName35 = "dynamicQueryCount";
+
+		_methodParameterTypes35 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
 			};
 
-		_methodName20 = "dynamicQueryCount";
+		_methodName36 = "dynamicQueryCount";
 
-		_methodParameterTypes20 = new String[] {
+		_methodParameterTypes36 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery",
 				"com.liferay.portal.kernel.dao.orm.Projection"
 			};
+
+		_methodName37 = "resetSolutionTicketComment";
+
+		_methodParameterTypes37 = new String[] { "long" };
 	}
 
 	@Override
-	public com.liferay.osb.model.TicketComment addTicketComment(
-		com.liferay.osb.model.TicketComment ticketComment) {
+	public boolean hasVisibility(long userId, long ticketEntryId, int visibility)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName0,
 					_methodParameterTypes0,
-					new Object[] { ClpSerializer.translateInput(ticketComment) });
+					new Object[] { userId, ticketEntryId, visibility });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -151,20 +249,31 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 			}
 		}
 
-		return (com.liferay.osb.model.TicketComment)ClpSerializer.translateOutput(returnObj);
+		return ((Boolean)returnObj).booleanValue();
 	}
 
 	@Override
-	public com.liferay.osb.model.TicketComment createTicketComment(
-		long ticketCommentId) {
+	public com.liferay.osb.model.TicketComment addAwayMessageTicketComment(
+		long userId, long ticketEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName1,
-					_methodParameterTypes1, new Object[] { ticketCommentId });
+					_methodParameterTypes1,
+					new Object[] { userId, ticketEntryId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -179,7 +288,7 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 	}
 
 	@Override
-	public com.liferay.osb.model.TicketComment deleteTicketComment(
+	public com.liferay.osb.model.TicketComment addTicketComment(
 		com.liferay.osb.model.TicketComment ticketComment) {
 		Object returnObj = null;
 
@@ -204,20 +313,46 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 	}
 
 	@Override
-	public com.liferay.osb.model.TicketComment deleteTicketComment(
-		long ticketCommentId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public com.liferay.osb.model.TicketComment addTicketComment(long userId,
+		long ticketEntryId, java.lang.String body, int type, int visibility,
+		int status, long ticketCannedResponseId, int[] pendingTypes,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName3,
-					_methodParameterTypes3, new Object[] { ticketCommentId });
+					_methodParameterTypes3,
+					new Object[] {
+						userId,
+						
+					ticketEntryId,
+						
+					ClpSerializer.translateInput(body),
+						
+					type,
+						
+					visibility,
+						
+					status,
+						
+					ticketCannedResponseId,
+						
+					ClpSerializer.translateInput(pendingTypes),
+						
+					ClpSerializer.translateInput(serviceContext)
+					});
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -233,7 +368,7 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 	}
 
 	@Override
-	public com.liferay.osb.model.TicketComment fetchTicketComment(
+	public com.liferay.osb.model.TicketComment createTicketComment(
 		long ticketCommentId) {
 		Object returnObj = null;
 
@@ -257,14 +392,292 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 	}
 
 	@Override
+	public com.liferay.osb.model.TicketComment deleteTicketComment(
+		com.liferay.osb.model.TicketComment ticketComment) {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName5,
+					_methodParameterTypes5,
+					new Object[] { ClpSerializer.translateInput(ticketComment) });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.TicketComment)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public com.liferay.osb.model.TicketComment deleteTicketComment(
+		long ticketCommentId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName6,
+					_methodParameterTypes6, new Object[] { ticketCommentId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.TicketComment)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public com.liferay.osb.model.TicketComment deleteTicketComment(
+		long userId, com.liferay.osb.model.TicketComment ticketComment)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName7,
+					_methodParameterTypes7,
+					new Object[] {
+						userId,
+						
+					ClpSerializer.translateInput(ticketComment)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.TicketComment)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public com.liferay.osb.model.TicketComment deleteTicketComment(
+		long userId, long ticketCommentId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName8,
+					_methodParameterTypes8,
+					new Object[] { userId, ticketCommentId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.TicketComment)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public com.liferay.osb.model.TicketComment fetchLastTicketComment(
+		long userId, long ticketEntryId, int visibility, int status,
+		com.liferay.portal.kernel.util.OrderByComparator obc)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName9,
+					_methodParameterTypes9,
+					new Object[] {
+						userId,
+						
+					ticketEntryId,
+						
+					visibility,
+						
+					status,
+						
+					ClpSerializer.translateInput(obc)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.TicketComment)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public com.liferay.osb.model.TicketComment fetchLastTicketComment(
+		long userId, long ticketEntryId, int visibility, int status, int type,
+		com.liferay.portal.kernel.util.OrderByComparator obc)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName10,
+					_methodParameterTypes10,
+					new Object[] {
+						userId,
+						
+					ticketEntryId,
+						
+					visibility,
+						
+					status,
+						
+					type,
+						
+					ClpSerializer.translateInput(obc)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.TicketComment)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public com.liferay.osb.model.TicketComment fetchTicketComment(
+		long ticketCommentId) {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName11,
+					_methodParameterTypes11, new Object[] { ticketCommentId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.TicketComment)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public com.liferay.osb.model.TicketComment getLastTicketComment(
+		long ticketEntryId, int visibility,
+		com.liferay.portal.kernel.util.OrderByComparator obc)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName12,
+					_methodParameterTypes12,
+					new Object[] {
+						ticketEntryId,
+						
+					visibility,
+						
+					ClpSerializer.translateInput(obc)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.TicketComment)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
 	public com.liferay.osb.model.TicketComment getTicketComment(
 		long ticketCommentId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName5,
-					_methodParameterTypes5, new Object[] { ticketCommentId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName13,
+					_methodParameterTypes13, new Object[] { ticketCommentId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -291,8 +704,8 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName6,
-					_methodParameterTypes6,
+			returnObj = _invokableLocalService.invokeMethod(_methodName14,
+					_methodParameterTypes14,
 					new Object[] { ClpSerializer.translateInput(ticketComment) });
 		}
 		catch (Throwable t) {
@@ -311,12 +724,103 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 	}
 
 	@Override
+	public com.liferay.osb.model.TicketComment updateTicketComment(
+		long userId, long ticketCommentId, long ticketEntryId,
+		java.lang.String body, int visibility, int status,
+		long ticketCannedResponseId, int[] pendingTypes,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName15,
+					_methodParameterTypes15,
+					new Object[] {
+						userId,
+						
+					ticketCommentId,
+						
+					ticketEntryId,
+						
+					ClpSerializer.translateInput(body),
+						
+					visibility,
+						
+					status,
+						
+					ticketCannedResponseId,
+						
+					ClpSerializer.translateInput(pendingTypes),
+						
+					ClpSerializer.translateInput(serviceContext)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.TicketComment)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public com.liferay.osb.model.TicketComment updateTicketCommentType(
+		long ticketCommentId, int type)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName16,
+					_methodParameterTypes16,
+					new Object[] { ticketCommentId, type });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.TicketComment)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName7,
-					_methodParameterTypes7, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName17,
+					_methodParameterTypes17, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -338,8 +842,8 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName8,
-					_methodParameterTypes8, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName18,
+					_methodParameterTypes18, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -361,8 +865,8 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName9,
-					_methodParameterTypes9, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName19,
+					_methodParameterTypes19, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -386,8 +890,8 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName10,
-					_methodParameterTypes10,
+			returnObj = _invokableLocalService.invokeMethod(_methodName20,
+					_methodParameterTypes20,
 					new Object[] { ClpSerializer.translateInput(persistedModel) });
 		}
 		catch (Throwable t) {
@@ -416,8 +920,8 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName11,
-					_methodParameterTypes11,
+			returnObj = _invokableLocalService.invokeMethod(_methodName21,
+					_methodParameterTypes21,
 					new Object[] { ClpSerializer.translateInput(primaryKeyObj) });
 		}
 		catch (Throwable t) {
@@ -440,12 +944,48 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 	}
 
 	@Override
+	public int getOrganizationTicketCommentsCount(long[] organizationIds,
+		long ticketEntryId, int visibility)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName22,
+					_methodParameterTypes22,
+					new Object[] {
+						ClpSerializer.translateInput(organizationIds),
+						
+					ticketEntryId,
+						
+					visibility
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return ((Integer)returnObj).intValue();
+	}
+
+	@Override
 	public int getTicketCommentsCount() {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName12,
-					_methodParameterTypes12, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName23,
+					_methodParameterTypes23, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -463,6 +1003,114 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 	}
 
 	@Override
+	public int getTicketCommentsCount(long ticketEntryId, int[] visibilities,
+		int[] statuses)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName24,
+					_methodParameterTypes24,
+					new Object[] {
+						ticketEntryId,
+						
+					ClpSerializer.translateInput(visibilities),
+						
+					ClpSerializer.translateInput(statuses)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return ((Integer)returnObj).intValue();
+	}
+
+	@Override
+	public int getTicketCommentsCount(long userId, long ticketEntryId,
+		int[] visibilities, int[] statuses)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName25,
+					_methodParameterTypes25,
+					new Object[] {
+						userId,
+						
+					ticketEntryId,
+						
+					ClpSerializer.translateInput(visibilities),
+						
+					ClpSerializer.translateInput(statuses)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return ((Integer)returnObj).intValue();
+	}
+
+	@Override
+	public int[] getUserVisibilities(long userId, long ticketEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName26,
+					_methodParameterTypes26,
+					new Object[] { userId, ticketEntryId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (int[])ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {
@@ -474,8 +1122,8 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName14,
-					_methodParameterTypes14, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName28,
+					_methodParameterTypes28, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -498,8 +1146,8 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName15,
-					_methodParameterTypes15,
+			returnObj = _invokableLocalService.invokeMethod(_methodName29,
+					_methodParameterTypes29,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -524,8 +1172,8 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName16,
-					_methodParameterTypes16,
+			returnObj = _invokableLocalService.invokeMethod(_methodName30,
+					_methodParameterTypes30,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -557,8 +1205,8 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName17,
-					_methodParameterTypes17,
+			returnObj = _invokableLocalService.invokeMethod(_methodName31,
+					_methodParameterTypes31,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -590,11 +1238,85 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName18,
-					_methodParameterTypes18, new Object[] { start, end });
+			returnObj = _invokableLocalService.invokeMethod(_methodName32,
+					_methodParameterTypes32, new Object[] { start, end });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.List<com.liferay.osb.model.TicketComment>)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.TicketComment> getTicketComments(
+		long ticketEntryId, int[] visibilities, int[] statuses)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName33,
+					_methodParameterTypes33,
+					new Object[] {
+						ticketEntryId,
+						
+					ClpSerializer.translateInput(visibilities),
+						
+					ClpSerializer.translateInput(statuses)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.List<com.liferay.osb.model.TicketComment>)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.TicketComment> getTicketComments(
+		long userId, long ticketEntryId, int[] visibilities, int[] statuses)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName34,
+					_methodParameterTypes34,
+					new Object[] {
+						userId,
+						
+					ticketEntryId,
+						
+					ClpSerializer.translateInput(visibilities),
+						
+					ClpSerializer.translateInput(statuses)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -614,8 +1336,8 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName19,
-					_methodParameterTypes19,
+			returnObj = _invokableLocalService.invokeMethod(_methodName35,
+					_methodParameterTypes35,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -640,8 +1362,8 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName20,
-					_methodParameterTypes20,
+			returnObj = _invokableLocalService.invokeMethod(_methodName36,
+					_methodParameterTypes36,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -661,6 +1383,30 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 		}
 
 		return ((Long)returnObj).longValue();
+	}
+
+	@Override
+	public void resetSolutionTicketComment(long ticketEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		try {
+			_invokableLocalService.invokeMethod(_methodName37,
+				_methodParameterTypes37, new Object[] { ticketEntryId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
 	}
 
 	private InvokableLocalService _invokableLocalService;
@@ -690,6 +1436,8 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 	private String[] _methodParameterTypes11;
 	private String _methodName12;
 	private String[] _methodParameterTypes12;
+	private String _methodName13;
+	private String[] _methodParameterTypes13;
 	private String _methodName14;
 	private String[] _methodParameterTypes14;
 	private String _methodName15;
@@ -704,4 +1452,36 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 	private String[] _methodParameterTypes19;
 	private String _methodName20;
 	private String[] _methodParameterTypes20;
+	private String _methodName21;
+	private String[] _methodParameterTypes21;
+	private String _methodName22;
+	private String[] _methodParameterTypes22;
+	private String _methodName23;
+	private String[] _methodParameterTypes23;
+	private String _methodName24;
+	private String[] _methodParameterTypes24;
+	private String _methodName25;
+	private String[] _methodParameterTypes25;
+	private String _methodName26;
+	private String[] _methodParameterTypes26;
+	private String _methodName28;
+	private String[] _methodParameterTypes28;
+	private String _methodName29;
+	private String[] _methodParameterTypes29;
+	private String _methodName30;
+	private String[] _methodParameterTypes30;
+	private String _methodName31;
+	private String[] _methodParameterTypes31;
+	private String _methodName32;
+	private String[] _methodParameterTypes32;
+	private String _methodName33;
+	private String[] _methodParameterTypes33;
+	private String _methodName34;
+	private String[] _methodParameterTypes34;
+	private String _methodName35;
+	private String[] _methodParameterTypes35;
+	private String _methodName36;
+	private String[] _methodParameterTypes36;
+	private String _methodName37;
+	private String[] _methodParameterTypes37;
 }

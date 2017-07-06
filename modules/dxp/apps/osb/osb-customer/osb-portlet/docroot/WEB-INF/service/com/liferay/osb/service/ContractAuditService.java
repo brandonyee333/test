@@ -58,4 +58,9 @@ public interface ContractAuditService extends BaseService, InvokableService {
 	* @return the OSGi service identifier
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
+
+	public void addContractAudit(long contractEntryId,
+		java.lang.String signatoryClassName, long signatoryClassPK,
+		java.lang.String productClassName, long productClassPK)
+		throws PortalException, SystemException;
 }

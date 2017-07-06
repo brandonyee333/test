@@ -16,6 +16,8 @@ package com.liferay.osb.service;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.model.SearchFilter;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
@@ -23,6 +25,7 @@ import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.service.BaseService;
 import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.transaction.Isolation;
+import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 
 /**
@@ -47,6 +50,18 @@ public interface SearchFilterService extends BaseService, InvokableService {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link SearchFilterServiceUtil} to access the search filter remote service. Add custom service methods to {@link com.liferay.osb.service.impl.SearchFilterServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	public SearchFilter addSearchFilter(long userId, long classNameId,
+		java.lang.String name, java.lang.String filter, int visibility)
+		throws PortalException, SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public SearchFilter getSearchFilter(long searchFilterId)
+		throws PortalException, SystemException;
+
+	public SearchFilter updateSearchFilter(long searchFilterId,
+		java.lang.String name, java.lang.String filter, int visibility)
+		throws PortalException, SystemException;
+
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
@@ -58,4 +73,7 @@ public interface SearchFilterService extends BaseService, InvokableService {
 	* @return the OSGi service identifier
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
+
+	public void deleteSearchFilter(long searchFilterId)
+		throws PortalException, SystemException;
 }

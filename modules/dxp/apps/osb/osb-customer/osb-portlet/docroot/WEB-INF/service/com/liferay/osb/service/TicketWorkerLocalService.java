@@ -61,6 +61,9 @@ public interface TicketWorkerLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link TicketWorkerLocalServiceUtil} to access the ticket worker local service. Add custom service methods to {@link com.liferay.osb.service.impl.TicketWorkerLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasTicketWorker(long userId, long ticketEntryId)
+		throws SystemException;
 
 	/**
 	* Adds the ticket worker to the database. Also notifies the appropriate model listeners.
@@ -100,7 +103,19 @@ public interface TicketWorkerLocalService extends BaseLocalService,
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TicketWorker fetchLatestTicketWorker(long ticketEntryId)
+		throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TicketWorker fetchPrimaryTicketWorker(long ticketEntryId)
+		throws PortalException, SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public TicketWorker fetchTicketWorker(long ticketWorkerId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TicketWorker fetchTicketWorker(long userId, long ticketEntryId)
+		throws SystemException;
 
 	/**
 	* Returns the ticket worker with the primary key.
@@ -112,6 +127,10 @@ public interface TicketWorkerLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public TicketWorker getTicketWorker(long ticketWorkerId)
 		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TicketWorker getTicketWorker(long userId, long ticketEntryId)
+		throws PortalException, SystemException;
 
 	/**
 	* Updates the ticket worker in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
@@ -150,6 +169,9 @@ public interface TicketWorkerLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getTicketWorkersCount();
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getUserTicketWorkersCount(long userId) throws SystemException;
+
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
@@ -161,6 +183,11 @@ public interface TicketWorkerLocalService extends BaseLocalService,
 	* @return the OSGi service identifier
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
+
+	public List<TicketWorker> addTicketWorkers(long userId, long[] userIds,
+		long ticketEntryId, long[] sourceClassNameIds, long[] sourceClassPKs,
+		int[] roles, long primaryUserId)
+		throws PortalException, SystemException;
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -215,6 +242,18 @@ public interface TicketWorkerLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TicketWorker> getTicketWorkers(int start, int end);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TicketWorker> getTicketWorkers(long sourceClassNameId,
+		long sourceClassPK) throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TicketWorker> getTicketWorkers(long ticketEntryId)
+		throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TicketWorker> getUserTicketWorkers(long userId)
+		throws SystemException;
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -232,4 +271,11 @@ public interface TicketWorkerLocalService extends BaseLocalService,
 	*/
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
+
+	public void deleteTicketWorkers(long userId)
+		throws PortalException, SystemException;
+
+	public void deleteTicketWorkers(long userId, long[] userIds,
+		long ticketEntryId, long primaryUserId)
+		throws PortalException, SystemException;
 }

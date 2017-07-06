@@ -55,4 +55,16 @@ public interface AccountEnvironment extends AccountEnvironmentModel,
 				return AccountEnvironment.class;
 			}
 		};
+
+	public java.lang.String getEnvASLabel();
+
+	public java.lang.String getEnvDBLabel();
+
+	public java.lang.String getEnvJVMLabel();
+
+	public java.lang.String getEnvLFRLabel();
+
+	public java.lang.String getEnvOSLabel();
+
+	public java.lang.String getSupportPhaseLabel();
 }

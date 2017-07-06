@@ -53,4 +53,15 @@ public interface SupportLabor extends SupportLaborModel, PersistedModel {
 				return SupportLabor.class;
 			}
 		};
+
+	public java.lang.String formatDayHours(java.util.Locale locale, int day);
+
+	public java.lang.String formatTime(java.util.Locale locale, int day,
+		int type);
+
+	public java.util.List<SupportTeam> getSupportTeams()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
+
+	public int getTime(int day, int type);
 }

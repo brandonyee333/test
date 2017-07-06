@@ -27,21 +27,68 @@ import java.util.Arrays;
 @ProviderType
 public class OSBCountryServiceClpInvoker {
 	public OSBCountryServiceClpInvoker() {
-		_methodName344 = "getOSGiServiceIdentifier";
+		_methodName384 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes344 = new String[] {  };
+		_methodParameterTypes384 = new String[] {  };
+
+		_methodName387 = "addCountry";
+
+		_methodParameterTypes387 = new String[] {
+				"java.lang.String", "java.lang.String", "java.lang.String",
+				"java.lang.String", "java.lang.String", "boolean"
+			};
+
+		_methodName388 = "deleteCountry";
+
+		_methodParameterTypes388 = new String[] { "long" };
+
+		_methodName389 = "updateCountry";
+
+		_methodParameterTypes389 = new String[] {
+				"long", "java.lang.String", "java.lang.String",
+				"java.lang.String", "java.lang.String", "java.lang.String",
+				"boolean"
+			};
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName344.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes344, parameterTypes)) {
+		if (_methodName384.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes384, parameterTypes)) {
 			return OSBCountryServiceUtil.getOSGiServiceIdentifier();
+		}
+
+		if (_methodName387.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes387, parameterTypes)) {
+			return OSBCountryServiceUtil.addCountry((java.lang.String)arguments[0],
+				(java.lang.String)arguments[1], (java.lang.String)arguments[2],
+				(java.lang.String)arguments[3], (java.lang.String)arguments[4],
+				((Boolean)arguments[5]).booleanValue());
+		}
+
+		if (_methodName388.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes388, parameterTypes)) {
+			return OSBCountryServiceUtil.deleteCountry(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName389.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes389, parameterTypes)) {
+			return OSBCountryServiceUtil.updateCountry(((Long)arguments[0]).longValue(),
+				(java.lang.String)arguments[1], (java.lang.String)arguments[2],
+				(java.lang.String)arguments[3], (java.lang.String)arguments[4],
+				(java.lang.String)arguments[5],
+				((Boolean)arguments[6]).booleanValue());
 		}
 
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName344;
-	private String[] _methodParameterTypes344;
+	private String _methodName384;
+	private String[] _methodParameterTypes384;
+	private String _methodName387;
+	private String[] _methodParameterTypes387;
+	private String _methodName388;
+	private String[] _methodParameterTypes388;
+	private String _methodName389;
+	private String[] _methodParameterTypes389;
 }

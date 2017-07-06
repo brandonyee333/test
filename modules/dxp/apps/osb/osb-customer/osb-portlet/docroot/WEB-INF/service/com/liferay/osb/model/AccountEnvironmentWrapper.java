@@ -268,6 +268,26 @@ public class AccountEnvironmentWrapper implements AccountEnvironment,
 		return new AccountEnvironmentWrapper((AccountEnvironment)_accountEnvironment.clone());
 	}
 
+	@Override
+	public java.lang.String getEnvASLabel() {
+		return _accountEnvironment.getEnvASLabel();
+	}
+
+	@Override
+	public java.lang.String getEnvDBLabel() {
+		return _accountEnvironment.getEnvDBLabel();
+	}
+
+	@Override
+	public java.lang.String getEnvJVMLabel() {
+		return _accountEnvironment.getEnvJVMLabel();
+	}
+
+	@Override
+	public java.lang.String getEnvLFRLabel() {
+		return _accountEnvironment.getEnvLFRLabel();
+	}
+
 	/**
 	* Returns the env os custom of this account environment.
 	*
@@ -278,6 +298,11 @@ public class AccountEnvironmentWrapper implements AccountEnvironment,
 		return _accountEnvironment.getEnvOSCustom();
 	}
 
+	@Override
+	public java.lang.String getEnvOSLabel() {
+		return _accountEnvironment.getEnvOSLabel();
+	}
+
 	/**
 	* Returns the name of this account environment.
 	*
@@ -286,6 +311,11 @@ public class AccountEnvironmentWrapper implements AccountEnvironment,
 	@Override
 	public java.lang.String getName() {
 		return _accountEnvironment.getName();
+	}
+
+	@Override
+	public java.lang.String getSupportPhaseLabel() {
+		return _accountEnvironment.getSupportPhaseLabel();
 	}
 
 	/**

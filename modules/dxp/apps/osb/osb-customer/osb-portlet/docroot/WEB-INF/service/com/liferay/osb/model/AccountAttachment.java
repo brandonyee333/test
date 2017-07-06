@@ -54,4 +54,14 @@ public interface AccountAttachment extends AccountAttachmentModel, PersistedMode
 				return AccountAttachment.class;
 			}
 		};
+
+	public boolean fileExists()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
+
+	public int getContentLength();
+
+	public java.lang.String getFileDir();
+
+	public java.lang.String getTypeLabel();
 }

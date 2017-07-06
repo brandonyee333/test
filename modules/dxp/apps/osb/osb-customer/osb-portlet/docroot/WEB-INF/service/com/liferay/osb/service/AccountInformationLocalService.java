@@ -17,6 +17,7 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.model.AccountInformation;
+import com.liferay.osb.model.AccountInformationDisplay;
 
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -38,6 +39,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import java.io.Serializable;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Provides the local service interface for AccountInformation. Methods of this
@@ -127,6 +129,10 @@ public interface AccountInformationLocalService extends BaseLocalService,
 		AccountInformation accountInformation);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AccountInformationDisplay getAccountInformationDisplay(
+		long accountEntryId) throws PortalException, SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
 	public DynamicQuery dynamicQuery();
@@ -205,6 +211,14 @@ public interface AccountInformationLocalService extends BaseLocalService,
 	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
 		int end, OrderByComparator<T> orderByComparator);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AccountInformation> getAccountEntryAccountInformation(
+		long accountEntryId) throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AccountInformation> getAccountInformation(long accountEntryId,
+		long accountProjectId) throws SystemException;
+
 	/**
 	* Returns a range of all the account informations.
 	*
@@ -218,6 +232,11 @@ public interface AccountInformationLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountInformation> getAccountInformations(int start, int end);
+
+	public List<AccountInformation> updateAccountInformation(long userId,
+		long accountEntryId, long accountProjectId,
+		Map<java.lang.Integer, java.lang.String> data)
+		throws PortalException, SystemException;
 
 	/**
 	* Returns the number of rows matching the dynamic query.
@@ -236,4 +255,7 @@ public interface AccountInformationLocalService extends BaseLocalService,
 	*/
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
+
+	public void deleteAccountInformation(long accountEntryId,
+		long accountProjectId) throws SystemException;
 }

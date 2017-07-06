@@ -16,6 +16,7 @@ package com.liferay.osb.service;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.model.TicketAttachment;
 import com.liferay.osb.model.TicketSolution;
 
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
@@ -71,6 +72,17 @@ public interface TicketSolutionLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public TicketSolution addTicketSolution(TicketSolution ticketSolution);
 
+	public TicketSolution addTicketSolution(long userId, long ticketEntryId,
+		java.lang.String summary, boolean useCustomerSummary, int issueType,
+		java.lang.String solution, int type, boolean customerSpecific,
+		boolean environmentSpecific, boolean versionSpecific,
+		boolean reviewForKB, int status, int ticketEntrySubcomponent,
+		java.lang.String ticketEntrySubcomponentCustom,
+		List<java.lang.String> ticketLinkURLs,
+		List<java.lang.Integer> ticketLinkTypes,
+		List<TicketAttachment> ticketAttachments)
+		throws PortalException, SystemException;
+
 	/**
 	* Creates a new ticket solution with the primary key. Does not add the ticket solution to the database.
 	*
@@ -102,6 +114,10 @@ public interface TicketSolutionLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public TicketSolution fetchTicketSolution(long ticketSolutionId);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TicketSolution getActiveTicketSolution(long ticketEntryId)
+		throws SystemException;
+
 	/**
 	* Returns the ticket solution with the primary key.
 	*
@@ -121,6 +137,11 @@ public interface TicketSolutionLocalService extends BaseLocalService,
 	*/
 	@Indexable(type = IndexableType.REINDEX)
 	public TicketSolution updateTicketSolution(TicketSolution ticketSolution);
+
+	public TicketSolution updateTicketSolution(long ticketSolutionId,
+		long ticketEntryId, int status, long statusByUserId,
+		java.lang.String statusMessage, int statusReason)
+		throws PortalException, SystemException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -215,6 +236,10 @@ public interface TicketSolutionLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TicketSolution> getTicketSolutions(int start, int end);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TicketSolution> getTicketSolutions(long ticketEntryId)
+		throws SystemException;
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -232,4 +257,7 @@ public interface TicketSolutionLocalService extends BaseLocalService,
 	*/
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
+
+	public void updateStatus(long ticketEntryId, int ticketEntryStatus,
+		int resolution) throws SystemException;
 }

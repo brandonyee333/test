@@ -123,9 +123,23 @@ public class AuditActionLocalServiceClpInvoker {
 				"com.liferay.osb.model.AuditAction"
 			};
 
-		_methodName250 = "getOSGiServiceIdentifier";
+		_methodName286 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes250 = new String[] {  };
+		_methodParameterTypes286 = new String[] {  };
+
+		_methodName291 = "deleteAuditActions";
+
+		_methodParameterTypes291 = new String[] { "java.util.Date" };
+
+		_methodName292 = "getAuditActions";
+
+		_methodParameterTypes292 = new String[] {
+				"java.util.Date", "long", "boolean", "int"
+			};
+
+		_methodName293 = "updateAuditAction";
+
+		_methodParameterTypes293 = new String[] { "long", "long", "long", "int" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -232,9 +246,32 @@ public class AuditActionLocalServiceClpInvoker {
 			return AuditActionLocalServiceUtil.updateAuditAction((com.liferay.osb.model.AuditAction)arguments[0]);
 		}
 
-		if (_methodName250.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes250, parameterTypes)) {
+		if (_methodName286.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes286, parameterTypes)) {
 			return AuditActionLocalServiceUtil.getOSGiServiceIdentifier();
+		}
+
+		if (_methodName291.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes291, parameterTypes)) {
+			AuditActionLocalServiceUtil.deleteAuditActions((java.util.Date)arguments[0]);
+
+			return null;
+		}
+
+		if (_methodName292.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes292, parameterTypes)) {
+			return AuditActionLocalServiceUtil.getAuditActions((java.util.Date)arguments[0],
+				((Long)arguments[1]).longValue(),
+				((Boolean)arguments[2]).booleanValue(),
+				((Integer)arguments[3]).intValue());
+		}
+
+		if (_methodName293.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes293, parameterTypes)) {
+			return AuditActionLocalServiceUtil.updateAuditAction(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				((Long)arguments[2]).longValue(),
+				((Integer)arguments[3]).intValue());
 		}
 
 		throw new UnsupportedOperationException();
@@ -278,6 +315,12 @@ public class AuditActionLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName250;
-	private String[] _methodParameterTypes250;
+	private String _methodName286;
+	private String[] _methodParameterTypes286;
+	private String _methodName291;
+	private String[] _methodParameterTypes291;
+	private String _methodName292;
+	private String[] _methodParameterTypes292;
+	private String _methodName293;
+	private String[] _methodParameterTypes293;
 }

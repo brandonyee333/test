@@ -45,6 +45,16 @@ public class ProductEntryLocalServiceWrapper implements ProductEntryLocalService
 		return _productEntryLocalService.addProductEntry(productEntry);
 	}
 
+	@Override
+	public com.liferay.osb.model.ProductEntry addProductEntry(long userId,
+		java.lang.String name, int type, int environment,
+		java.lang.String versionsListType, java.lang.String[] dossieraIdMappings)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _productEntryLocalService.addProductEntry(userId, name, type,
+			environment, versionsListType, dossieraIdMappings);
+	}
+
 	/**
 	* Creates a new product entry with the primary key. Does not add the product entry to the database.
 	*
@@ -75,11 +85,13 @@ public class ProductEntryLocalServiceWrapper implements ProductEntryLocalService
 	* @param productEntryId the primary key of the product entry
 	* @return the product entry that was removed
 	* @throws PortalException if a product entry with the primary key could not be found
+	* @throws SystemException
 	*/
 	@Override
 	public com.liferay.osb.model.ProductEntry deleteProductEntry(
 		long productEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
 		return _productEntryLocalService.deleteProductEntry(productEntryId);
 	}
 
@@ -87,6 +99,13 @@ public class ProductEntryLocalServiceWrapper implements ProductEntryLocalService
 	public com.liferay.osb.model.ProductEntry fetchProductEntry(
 		long productEntryId) {
 		return _productEntryLocalService.fetchProductEntry(productEntryId);
+	}
+
+	@Override
+	public com.liferay.osb.model.ProductEntry fetchProductEntryByName(
+		java.lang.String name)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _productEntryLocalService.fetchProductEntryByName(name);
 	}
 
 	/**
@@ -103,6 +122,14 @@ public class ProductEntryLocalServiceWrapper implements ProductEntryLocalService
 		return _productEntryLocalService.getProductEntry(productEntryId);
 	}
 
+	@Override
+	public com.liferay.osb.model.ProductEntry getProductEntryByName(
+		java.lang.String name)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _productEntryLocalService.getProductEntryByName(name);
+	}
+
 	/**
 	* Updates the product entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
@@ -113,6 +140,16 @@ public class ProductEntryLocalServiceWrapper implements ProductEntryLocalService
 	public com.liferay.osb.model.ProductEntry updateProductEntry(
 		com.liferay.osb.model.ProductEntry productEntry) {
 		return _productEntryLocalService.updateProductEntry(productEntry);
+	}
+
+	@Override
+	public com.liferay.osb.model.ProductEntry updateProductEntry(
+		long productEntryId, java.lang.String name, int type, int environment,
+		java.lang.String versionsListType, java.lang.String[] dossieraIdMappings)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _productEntryLocalService.updateProductEntry(productEntryId,
+			name, type, environment, versionsListType, dossieraIdMappings);
 	}
 
 	@Override
@@ -155,6 +192,13 @@ public class ProductEntryLocalServiceWrapper implements ProductEntryLocalService
 	@Override
 	public int getProductEntriesCount() {
 		return _productEntryLocalService.getProductEntriesCount();
+	}
+
+	@Override
+	public int searchCount(java.lang.String name,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _productEntryLocalService.searchCount(name, params);
 	}
 
 	@Override
@@ -243,6 +287,22 @@ public class ProductEntryLocalServiceWrapper implements ProductEntryLocalService
 	public java.util.List<com.liferay.osb.model.ProductEntry> getProductEntries(
 		int start, int end) {
 		return _productEntryLocalService.getProductEntries(start, end);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.ProductEntry> getProductEntries(
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _productEntryLocalService.getProductEntries(accountEntryId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.ProductEntry> search(
+		java.lang.String name,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+		int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _productEntryLocalService.search(name, params, start, end);
 	}
 
 	/**

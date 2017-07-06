@@ -34,11 +34,50 @@ public class LicenseKeySetServiceWrapper implements LicenseKeySetService,
 	}
 
 	@Override
+	public com.liferay.osb.model.LicenseKeySet addLicenseKeySet(long userId,
+		long accountEntryId, java.lang.String name)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _licenseKeySetService.addLicenseKeySet(userId, accountEntryId,
+			name);
+	}
+
+	@Override
+	public com.liferay.osb.model.LicenseKeySet deleteLicenseKeySet(
+		long licenseKeySetId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _licenseKeySetService.deleteLicenseKeySet(licenseKeySetId);
+	}
+
+	@Override
+	public com.liferay.osb.model.LicenseKeySet getLicenseKeySet(
+		long licenseKeySetId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _licenseKeySetService.getLicenseKeySet(licenseKeySetId);
+	}
+
+	@Override
+	public com.liferay.osb.model.LicenseKeySet updateLicenseKeySet(
+		long licenseKeySetId, java.lang.String name)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _licenseKeySetService.updateLicenseKeySet(licenseKeySetId, name);
+	}
+
+	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {
 		return _licenseKeySetService.invokeMethod(name, parameterTypes,
 			arguments);
+	}
+
+	@Override
+	public java.lang.String exportToXML(long licenseKeySetId)
+		throws java.lang.Exception {
+		return _licenseKeySetService.exportToXML(licenseKeySetId);
 	}
 
 	/**

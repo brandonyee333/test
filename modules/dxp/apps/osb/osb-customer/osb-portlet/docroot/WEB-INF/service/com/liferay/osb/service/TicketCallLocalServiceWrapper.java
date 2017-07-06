@@ -45,6 +45,21 @@ public class TicketCallLocalServiceWrapper implements TicketCallLocalService,
 		return _ticketCallLocalService.addTicketCall(ticketCall);
 	}
 
+	@Override
+	public com.liferay.osb.model.TicketCall addTicketCall(long userId,
+		long ticketEntryId, int type, int callDateMonth, int callDateDay,
+		int callDateYear, int callDateHour, int callDateMinute,
+		long callLength, java.lang.String customerName,
+		java.lang.String customerContact, java.lang.String confirmation,
+		java.lang.String instructions)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _ticketCallLocalService.addTicketCall(userId, ticketEntryId,
+			type, callDateMonth, callDateDay, callDateYear, callDateHour,
+			callDateMinute, callLength, customerName, customerContact,
+			confirmation, instructions);
+	}
+
 	/**
 	* Creates a new ticket call with the primary key. Does not add the ticket call to the database.
 	*

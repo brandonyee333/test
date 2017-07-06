@@ -52,6 +52,13 @@ public class SupportWorkerServiceWrapper implements SupportWorkerService,
 	}
 
 	@Override
+	public void clockInOut(long supportWorkerId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_supportWorkerService.clockInOut(supportWorkerId);
+	}
+
+	@Override
 	public SupportWorkerService getWrappedService() {
 		return _supportWorkerService;
 	}

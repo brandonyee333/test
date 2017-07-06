@@ -100,6 +100,13 @@ public class AccountWorkerWrapper implements AccountWorker,
 	}
 
 	@Override
+	public AccountEntry getAccountEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountWorker.getAccountEntry();
+	}
+
+	@Override
 	public AccountWorker toEscapedModel() {
 		return new AccountWorkerWrapper(_accountWorker.toEscapedModel());
 	}
@@ -172,6 +179,21 @@ public class AccountWorkerWrapper implements AccountWorker,
 	@Override
 	public java.lang.Object clone() {
 		return new AccountWorkerWrapper((AccountWorker)_accountWorker.clone());
+	}
+
+	@Override
+	public java.lang.String getKey() {
+		return _accountWorker.getKey();
+	}
+
+	@Override
+	public java.lang.String getNotificationsLabel() {
+		return _accountWorker.getNotificationsLabel();
+	}
+
+	@Override
+	public java.lang.String getRoleLabel() {
+		return _accountWorker.getRoleLabel();
 	}
 
 	/**

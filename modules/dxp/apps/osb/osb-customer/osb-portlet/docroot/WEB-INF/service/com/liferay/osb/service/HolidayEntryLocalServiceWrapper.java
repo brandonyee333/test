@@ -45,6 +45,17 @@ public class HolidayEntryLocalServiceWrapper implements HolidayEntryLocalService
 		return _holidayEntryLocalService.addHolidayEntry(holidayEntry);
 	}
 
+	@Override
+	public com.liferay.osb.model.HolidayEntry addHolidayEntry(
+		long holidayCalendarId, java.lang.String name,
+		java.lang.String description, java.util.Date startDate,
+		java.util.Date endDate, boolean repeatYearly)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _holidayEntryLocalService.addHolidayEntry(holidayCalendarId,
+			name, description, startDate, endDate, repeatYearly);
+	}
+
 	/**
 	* Creates a new holiday entry with the primary key. Does not add the holiday entry to the database.
 	*
@@ -116,6 +127,18 @@ public class HolidayEntryLocalServiceWrapper implements HolidayEntryLocalService
 	}
 
 	@Override
+	public com.liferay.osb.model.HolidayEntry updateHolidayEntry(
+		long holidayEntryId, long holidayCalendarId, java.lang.String name,
+		java.lang.String description, java.util.Date startDate,
+		java.util.Date endDate, boolean repeatYearly)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _holidayEntryLocalService.updateHolidayEntry(holidayEntryId,
+			holidayCalendarId, name, description, startDate, endDate,
+			repeatYearly);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
 		return _holidayEntryLocalService.getActionableDynamicQuery();
 	}
@@ -155,6 +178,12 @@ public class HolidayEntryLocalServiceWrapper implements HolidayEntryLocalService
 	@Override
 	public int getHolidayEntriesCount() {
 		return _holidayEntryLocalService.getHolidayEntriesCount();
+	}
+
+	@Override
+	public int getHolidayEntriesCount(long userId, java.util.Date date)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _holidayEntryLocalService.getHolidayEntriesCount(userId, date);
 	}
 
 	@Override
@@ -243,6 +272,22 @@ public class HolidayEntryLocalServiceWrapper implements HolidayEntryLocalService
 	public java.util.List<com.liferay.osb.model.HolidayEntry> getHolidayEntries(
 		int start, int end) {
 		return _holidayEntryLocalService.getHolidayEntries(start, end);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.HolidayEntry> getHolidayEntries(
+		long holidayCalendarId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _holidayEntryLocalService.getHolidayEntries(holidayCalendarId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.HolidayEntry> getHolidayEntriesBetween(
+		long userId, java.util.Date startDate, java.util.Date endDate,
+		java.util.TimeZone timeZone)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _holidayEntryLocalService.getHolidayEntriesBetween(userId,
+			startDate, endDate, timeZone);
 	}
 
 	/**

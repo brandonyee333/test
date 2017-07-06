@@ -33,6 +33,34 @@ public class SearchFilterServiceWrapper implements SearchFilterService,
 	}
 
 	@Override
+	public com.liferay.osb.model.SearchFilter addSearchFilter(long userId,
+		long classNameId, java.lang.String name, java.lang.String filter,
+		int visibility)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _searchFilterService.addSearchFilter(userId, classNameId, name,
+			filter, visibility);
+	}
+
+	@Override
+	public com.liferay.osb.model.SearchFilter getSearchFilter(
+		long searchFilterId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _searchFilterService.getSearchFilter(searchFilterId);
+	}
+
+	@Override
+	public com.liferay.osb.model.SearchFilter updateSearchFilter(
+		long searchFilterId, java.lang.String name, java.lang.String filter,
+		int visibility)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _searchFilterService.updateSearchFilter(searchFilterId, name,
+			filter, visibility);
+	}
+
+	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {
@@ -47,6 +75,13 @@ public class SearchFilterServiceWrapper implements SearchFilterService,
 	@Override
 	public java.lang.String getOSGiServiceIdentifier() {
 		return _searchFilterService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public void deleteSearchFilter(long searchFilterId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_searchFilterService.deleteSearchFilter(searchFilterId);
 	}
 
 	@Override

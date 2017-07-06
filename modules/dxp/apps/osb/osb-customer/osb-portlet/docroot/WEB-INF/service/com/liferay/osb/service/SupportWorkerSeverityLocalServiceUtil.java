@@ -234,6 +234,12 @@ public class SupportWorkerSeverityLocalServiceUtil {
 		return getService().getSupportWorkerSeverities(start, end);
 	}
 
+	public static java.util.List<com.liferay.osb.model.SupportWorkerSeverity> getSupportWorkerSeverities(
+		long supportWorkerId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getSupportWorkerSeverities(supportWorkerId);
+	}
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -256,6 +262,12 @@ public class SupportWorkerSeverityLocalServiceUtil {
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
+	}
+
+	public static void setSupportWorkerSeverities(long supportWorkerId,
+		int[] severities)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		getService().setSupportWorkerSeverities(supportWorkerId, severities);
 	}
 
 	public static void clearService() {

@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -38,6 +39,8 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import java.io.Serializable;
 
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * Provides the local service interface for ContractEntry. Methods of this
@@ -70,6 +73,15 @@ public interface ContractEntryLocalService extends BaseLocalService,
 	*/
 	@Indexable(type = IndexableType.REINDEX)
 	public ContractEntry addContractEntry(ContractEntry contractEntry);
+
+	public ContractEntry addContractEntry(long userId,
+		java.lang.String className, long classPK, int type,
+		Map<Locale, java.lang.String> contentMap, ServiceContext serviceContext)
+		throws PortalException, SystemException;
+
+	public ContractEntry addContractEntry(long userId, long classNameId,
+		long classPK, int type, Map<Locale, java.lang.String> contentMap,
+		ServiceContext serviceContext) throws PortalException, SystemException;
 
 	/**
 	* Creates a new contract entry with the primary key. Does not add the contract entry to the database.
@@ -113,6 +125,14 @@ public interface ContractEntryLocalService extends BaseLocalService,
 	public ContractEntry getContractEntry(long contractEntryId)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ContractEntry getLatestContractEntry(java.lang.String className,
+		long classPK, int type) throws PortalException, SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ContractEntry getLatestContractEntry(long classNameId, long classPK,
+		int type) throws PortalException, SystemException;
+
 	/**
 	* Updates the contract entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
@@ -121,6 +141,10 @@ public interface ContractEntryLocalService extends BaseLocalService,
 	*/
 	@Indexable(type = IndexableType.REINDEX)
 	public ContractEntry updateContractEntry(ContractEntry contractEntry);
+
+	public ContractEntry updateContractEntry(long userId, long contractEntryId,
+		Map<Locale, java.lang.String> contentMap, ServiceContext serviceContext)
+		throws PortalException, SystemException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -149,6 +173,10 @@ public interface ContractEntryLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getContractEntriesCount();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getContractEntriesCount(long classNameId, long classPK, int type)
+		throws SystemException;
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
@@ -214,6 +242,10 @@ public interface ContractEntryLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<ContractEntry> getContractEntries(int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<ContractEntry> getContractEntries(long classNameId,
+		long classPK, int type, int start, int end) throws SystemException;
 
 	/**
 	* Returns the number of rows matching the dynamic query.

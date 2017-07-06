@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -70,6 +71,20 @@ public interface AuditEntryLocalService extends BaseLocalService,
 	*/
 	@Indexable(type = IndexableType.REINDEX)
 	public AuditEntry addAuditEntry(AuditEntry auditEntry);
+
+	public AuditEntry addAuditEntry(long userId, java.lang.String userName,
+		Date createDate, long classNameId, long classPK, long auditSetId,
+		long fieldClassNameId, long fieldClassPK, int action, int field,
+		int visibility, java.lang.String oldLabel, java.lang.String oldValue,
+		java.lang.String newLabel, java.lang.String newValue)
+		throws PortalException, SystemException;
+
+	public AuditEntry addAuditEntry(long userId, java.lang.String userName,
+		Date createDate, long classNameId, long classPK, long auditSetId,
+		long fieldClassNameId, long fieldClassPK, int action, int field,
+		int visibility, java.lang.String oldLabel, java.lang.String oldValue,
+		java.lang.String newLabel, java.lang.String newValue, boolean i18n,
+		boolean trackChange) throws PortalException, SystemException;
 
 	/**
 	* Creates a new audit entry with the primary key. Does not add the audit entry to the database.
@@ -112,6 +127,14 @@ public interface AuditEntryLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AuditEntry getAuditEntry(long auditEntryId)
 		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AuditEntry getLastAuditEntry(long classNameId, long classPK,
+		int field, int action) throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AuditEntry getLastAuditEntry(long fieldClassNameId,
+		long fieldClassPK, int field) throws SystemException;
 
 	/**
 	* Updates the audit entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
@@ -215,6 +238,18 @@ public interface AuditEntryLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AuditEntry> getAuditEntries(int start, int end);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AuditEntry> getAuditEntries(Date createDate, long classNameId)
+		throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AuditEntry> getAuditEntries(long classNameId, long classPK,
+		int[] visibilities) throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<List<AuditEntry>> getAuditEntrySets(long classNameId,
+		long classPK, int[] visibilities) throws SystemException;
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -232,4 +267,12 @@ public interface AuditEntryLocalService extends BaseLocalService,
 	*/
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public long getNextAuditSetId(java.lang.String className, long classPK)
+		throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public long getNextAuditSetId(long classNameId, long classPK)
+		throws SystemException;
 }

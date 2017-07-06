@@ -53,6 +53,16 @@ public class LicenseEntryLocalServiceUtil {
 		return getService().addLicenseEntry(licenseEntry);
 	}
 
+	public static com.liferay.osb.model.LicenseEntry addLicenseEntry(
+		long userId, long productEntryId, java.lang.String name,
+		java.lang.String type, int portalVersionMin, int portalVersionMax)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .addLicenseEntry(userId, productEntryId, name, type,
+			portalVersionMin, portalVersionMax);
+	}
+
 	/**
 	* Creates a new license entry with the primary key. Does not add the license entry to the database.
 	*
@@ -81,10 +91,12 @@ public class LicenseEntryLocalServiceUtil {
 	* @param licenseEntryId the primary key of the license entry
 	* @return the license entry that was removed
 	* @throws PortalException if a license entry with the primary key could not be found
+	* @throws SystemException
 	*/
 	public static com.liferay.osb.model.LicenseEntry deleteLicenseEntry(
 		long licenseEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
 		return getService().deleteLicenseEntry(licenseEntryId);
 	}
 
@@ -106,6 +118,13 @@ public class LicenseEntryLocalServiceUtil {
 		return getService().getLicenseEntry(licenseEntryId);
 	}
 
+	public static com.liferay.osb.model.LicenseEntry getLicenseEntry(
+		long productEntryId, java.lang.String type)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().getLicenseEntry(productEntryId, type);
+	}
+
 	/**
 	* Updates the license entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
@@ -115,6 +134,16 @@ public class LicenseEntryLocalServiceUtil {
 	public static com.liferay.osb.model.LicenseEntry updateLicenseEntry(
 		com.liferay.osb.model.LicenseEntry licenseEntry) {
 		return getService().updateLicenseEntry(licenseEntry);
+	}
+
+	public static com.liferay.osb.model.LicenseEntry updateLicenseEntry(
+		long licenseEntryId, long productEntryId, java.lang.String name,
+		java.lang.String type, int portalVersionMin, int portalVersionMax)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .updateLicenseEntry(licenseEntryId, productEntryId, name,
+			type, portalVersionMin, portalVersionMax);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
@@ -232,6 +261,18 @@ public class LicenseEntryLocalServiceUtil {
 	public static java.util.List<com.liferay.osb.model.LicenseEntry> getLicenseEntries(
 		int start, int end) {
 		return getService().getLicenseEntries(start, end);
+	}
+
+	public static java.util.List<com.liferay.osb.model.LicenseEntry> getLicenseEntries(
+		long productEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getLicenseEntries(productEntryId);
+	}
+
+	public static java.util.List<com.liferay.osb.model.LicenseEntry> getLicenseEntries(
+		long productEntryId, int portalVersion)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getLicenseEntries(productEntryId, portalVersion);
 	}
 
 	/**

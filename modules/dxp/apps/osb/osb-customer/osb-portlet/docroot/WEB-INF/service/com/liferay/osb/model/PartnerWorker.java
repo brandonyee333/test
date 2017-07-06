@@ -54,4 +54,16 @@ public interface PartnerWorker extends PartnerWorkerModel, PersistedModel {
 				return PartnerWorker.class;
 			}
 		};
+
+	public java.lang.String getNotificationsLabel();
+
+	public PartnerEntry getPartnerEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
+
+	public java.lang.String getRoleLabel();
+
+	public boolean isActive()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
 }

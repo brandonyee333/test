@@ -53,6 +53,16 @@ public class ProductEntryLocalServiceUtil {
 		return getService().addProductEntry(productEntry);
 	}
 
+	public static com.liferay.osb.model.ProductEntry addProductEntry(
+		long userId, java.lang.String name, int type, int environment,
+		java.lang.String versionsListType, java.lang.String[] dossieraIdMappings)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .addProductEntry(userId, name, type, environment,
+			versionsListType, dossieraIdMappings);
+	}
+
 	/**
 	* Creates a new product entry with the primary key. Does not add the product entry to the database.
 	*
@@ -81,16 +91,24 @@ public class ProductEntryLocalServiceUtil {
 	* @param productEntryId the primary key of the product entry
 	* @return the product entry that was removed
 	* @throws PortalException if a product entry with the primary key could not be found
+	* @throws SystemException
 	*/
 	public static com.liferay.osb.model.ProductEntry deleteProductEntry(
 		long productEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
 		return getService().deleteProductEntry(productEntryId);
 	}
 
 	public static com.liferay.osb.model.ProductEntry fetchProductEntry(
 		long productEntryId) {
 		return getService().fetchProductEntry(productEntryId);
+	}
+
+	public static com.liferay.osb.model.ProductEntry fetchProductEntryByName(
+		java.lang.String name)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().fetchProductEntryByName(name);
 	}
 
 	/**
@@ -106,6 +124,13 @@ public class ProductEntryLocalServiceUtil {
 		return getService().getProductEntry(productEntryId);
 	}
 
+	public static com.liferay.osb.model.ProductEntry getProductEntryByName(
+		java.lang.String name)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().getProductEntryByName(name);
+	}
+
 	/**
 	* Updates the product entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
@@ -115,6 +140,16 @@ public class ProductEntryLocalServiceUtil {
 	public static com.liferay.osb.model.ProductEntry updateProductEntry(
 		com.liferay.osb.model.ProductEntry productEntry) {
 		return getService().updateProductEntry(productEntry);
+	}
+
+	public static com.liferay.osb.model.ProductEntry updateProductEntry(
+		long productEntryId, java.lang.String name, int type, int environment,
+		java.lang.String versionsListType, java.lang.String[] dossieraIdMappings)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .updateProductEntry(productEntryId, name, type, environment,
+			versionsListType, dossieraIdMappings);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
@@ -151,6 +186,12 @@ public class ProductEntryLocalServiceUtil {
 	*/
 	public static int getProductEntriesCount() {
 		return getService().getProductEntriesCount();
+	}
+
+	public static int searchCount(java.lang.String name,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().searchCount(name, params);
 	}
 
 	public static java.lang.Object invokeMethod(java.lang.String name,
@@ -232,6 +273,20 @@ public class ProductEntryLocalServiceUtil {
 	public static java.util.List<com.liferay.osb.model.ProductEntry> getProductEntries(
 		int start, int end) {
 		return getService().getProductEntries(start, end);
+	}
+
+	public static java.util.List<com.liferay.osb.model.ProductEntry> getProductEntries(
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getProductEntries(accountEntryId);
+	}
+
+	public static java.util.List<com.liferay.osb.model.ProductEntry> search(
+		java.lang.String name,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+		int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().search(name, params, start, end);
 	}
 
 	/**

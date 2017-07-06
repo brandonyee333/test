@@ -295,6 +295,11 @@ public class AuditEntryWrapper implements AuditEntry, ModelWrapper<AuditEntry> {
 		return new AuditEntryWrapper((AuditEntry)_auditEntry.clone());
 	}
 
+	@Override
+	public java.lang.String getActionLabel() {
+		return _auditEntry.getActionLabel();
+	}
+
 	/**
 	* Returns the fully qualified class name of this audit entry.
 	*
@@ -303,6 +308,16 @@ public class AuditEntryWrapper implements AuditEntry, ModelWrapper<AuditEntry> {
 	@Override
 	public java.lang.String getClassName() {
 		return _auditEntry.getClassName();
+	}
+
+	@Override
+	public java.lang.String getFieldClassNameIdLabel() {
+		return _auditEntry.getFieldClassNameIdLabel();
+	}
+
+	@Override
+	public java.lang.String getFieldLabel() {
+		return _auditEntry.getFieldLabel();
 	}
 
 	/**
@@ -363,6 +378,11 @@ public class AuditEntryWrapper implements AuditEntry, ModelWrapper<AuditEntry> {
 	@Override
 	public java.lang.String getUserUuid() {
 		return _auditEntry.getUserUuid();
+	}
+
+	@Override
+	public java.lang.String getVisibilityLabel() {
+		return _auditEntry.getVisibilityLabel();
 	}
 
 	@Override

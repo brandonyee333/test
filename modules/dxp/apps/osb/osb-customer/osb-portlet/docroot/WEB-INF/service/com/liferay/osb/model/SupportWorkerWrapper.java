@@ -150,6 +150,20 @@ public class SupportWorkerWrapper implements SupportWorker,
 	}
 
 	@Override
+	public SupportLabor getSupportLabor()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _supportWorker.getSupportLabor();
+	}
+
+	@Override
+	public SupportTeam getSupportTeam()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _supportWorker.getSupportTeam();
+	}
+
+	@Override
 	public SupportWorker toEscapedModel() {
 		return new SupportWorkerWrapper(_supportWorker.toEscapedModel());
 	}
@@ -179,6 +193,13 @@ public class SupportWorkerWrapper implements SupportWorker,
 		return _supportWorker.getClockedIn();
 	}
 
+	@Override
+	public boolean isActive()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _supportWorker.isActive();
+	}
+
 	/**
 	* Returns <code>true</code> if this support worker is auto assign.
 	*
@@ -187,6 +208,13 @@ public class SupportWorkerWrapper implements SupportWorker,
 	@Override
 	public boolean isAutoAssign() {
 		return _supportWorker.isAutoAssign();
+	}
+
+	@Override
+	public boolean isAvailable()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _supportWorker.isAvailable();
 	}
 
 	@Override
@@ -300,8 +328,32 @@ public class SupportWorkerWrapper implements SupportWorker,
 	}
 
 	@Override
+	public java.lang.Long getTimeUntilClose()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _supportWorker.getTimeUntilClose();
+	}
+
+	@Override
+	public java.lang.Long getTimeUntilOpen()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _supportWorker.getTimeUntilOpen();
+	}
+
+	@Override
 	public java.lang.Object clone() {
 		return new SupportWorkerWrapper((SupportWorker)_supportWorker.clone());
+	}
+
+	@Override
+	public java.lang.String getNotificationsLabel() {
+		return _supportWorker.getNotificationsLabel();
+	}
+
+	@Override
+	public java.lang.String getRoleLabel() {
+		return _supportWorker.getRoleLabel();
 	}
 
 	/**
@@ -322,6 +374,24 @@ public class SupportWorkerWrapper implements SupportWorker,
 	@Override
 	public java.lang.String toXmlString() {
 		return _supportWorker.toXmlString();
+	}
+
+	@Override
+	public java.util.List<java.lang.Integer> getAccountTiers()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _supportWorker.getAccountTiers();
+	}
+
+	@Override
+	public java.util.List<java.lang.Integer> getComponents()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _supportWorker.getComponents();
+	}
+
+	@Override
+	public java.util.List<java.lang.Integer> getSeverities()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _supportWorker.getSeverities();
 	}
 
 	/**

@@ -41,6 +41,10 @@ public class OfferingEntryLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.OfferingEntryLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static boolean hasActiveTrialOfferingEntry(long userId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().hasActiveTrialOfferingEntry(userId);
+	}
 
 	/**
 	* Adds the offering entry to the database. Also notifies the appropriate model listeners.
@@ -51,6 +55,22 @@ public class OfferingEntryLocalServiceUtil {
 	public static com.liferay.osb.model.OfferingEntry addOfferingEntry(
 		com.liferay.osb.model.OfferingEntry offeringEntry) {
 		return getService().addOfferingEntry(offeringEntry);
+	}
+
+	public static com.liferay.osb.model.OfferingEntry addOfferingEntry(
+		long userId, long accountEntryId, long orderEntryId,
+		long productEntryId, long supportResponseId,
+		java.lang.String productDescription, int type, int version,
+		boolean licenses, long licenseLifetime, long maxConcurrentUsers,
+		long maxUsers, boolean supportTickets, long supportLifetime,
+		int sizing, int quantity, int status)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .addOfferingEntry(userId, accountEntryId, orderEntryId,
+			productEntryId, supportResponseId, productDescription, type,
+			version, licenses, licenseLifetime, maxConcurrentUsers, maxUsers,
+			supportTickets, supportLifetime, sizing, quantity, status);
 	}
 
 	/**
@@ -69,9 +89,13 @@ public class OfferingEntryLocalServiceUtil {
 	*
 	* @param offeringEntry the offering entry
 	* @return the offering entry that was removed
+	* @throws PortalException
+	* @throws SystemException
 	*/
 	public static com.liferay.osb.model.OfferingEntry deleteOfferingEntry(
-		com.liferay.osb.model.OfferingEntry offeringEntry) {
+		com.liferay.osb.model.OfferingEntry offeringEntry)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
 		return getService().deleteOfferingEntry(offeringEntry);
 	}
 
@@ -81,15 +105,18 @@ public class OfferingEntryLocalServiceUtil {
 	* @param offeringEntryId the primary key of the offering entry
 	* @return the offering entry that was removed
 	* @throws PortalException if a offering entry with the primary key could not be found
+	* @throws SystemException
 	*/
 	public static com.liferay.osb.model.OfferingEntry deleteOfferingEntry(
 		long offeringEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
 		return getService().deleteOfferingEntry(offeringEntryId);
 	}
 
 	public static com.liferay.osb.model.OfferingEntry fetchOfferingEntry(
-		long offeringEntryId) {
+		long offeringEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
 		return getService().fetchOfferingEntry(offeringEntryId);
 	}
 
@@ -115,6 +142,30 @@ public class OfferingEntryLocalServiceUtil {
 	public static com.liferay.osb.model.OfferingEntry updateOfferingEntry(
 		com.liferay.osb.model.OfferingEntry offeringEntry) {
 		return getService().updateOfferingEntry(offeringEntry);
+	}
+
+	public static com.liferay.osb.model.OfferingEntry updateOfferingEntry(
+		long userId, long offeringEntryId, long accountEntryId,
+		long orderEntryId, long productEntryId, long supportResponseId,
+		java.lang.String productDescription, int type, int version,
+		boolean licenses, long licenseLifetime, long maxConcurrentUsers,
+		long maxUsers, boolean supportTickets, long supportLifetime,
+		int sizing, int quantity)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .updateOfferingEntry(userId, offeringEntryId,
+			accountEntryId, orderEntryId, productEntryId, supportResponseId,
+			productDescription, type, version, licenses, licenseLifetime,
+			maxConcurrentUsers, maxUsers, supportTickets, supportLifetime,
+			sizing, quantity);
+	}
+
+	public static com.liferay.osb.model.OfferingEntry updateStatus(
+		long userId, long offeringEntryId, int status)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().updateStatus(userId, offeringEntryId, status);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
@@ -144,6 +195,11 @@ public class OfferingEntryLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
+	public static int getAccountEntryOfferingEntriesCount(long accountEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getAccountEntryOfferingEntriesCount(accountEntryId);
+	}
+
 	/**
 	* Returns the number of offering entries.
 	*
@@ -151,6 +207,21 @@ public class OfferingEntryLocalServiceUtil {
 	*/
 	public static int getOfferingEntriesCount() {
 		return getService().getOfferingEntriesCount();
+	}
+
+	public static int searchCount(long userId, long accountEntryId,
+		int[] types, int[] statuses, int supportEndDateGTDay,
+		int supportEndDateGTMonth, int supportEndDateGTYear,
+		int supportEndDateLTDay, int supportEndDateLTMonth,
+		int supportEndDateLTYear,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+		boolean andSearch)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .searchCount(userId, accountEntryId, types, statuses,
+			supportEndDateGTDay, supportEndDateGTMonth, supportEndDateGTYear,
+			supportEndDateLTDay, supportEndDateLTMonth, supportEndDateLTYear,
+			params, andSearch);
 	}
 
 	public static java.lang.Object invokeMethod(java.lang.String name,
@@ -218,6 +289,12 @@ public class OfferingEntryLocalServiceUtil {
 				   .dynamicQuery(dynamicQuery, start, end, orderByComparator);
 	}
 
+	public static java.util.List<com.liferay.osb.model.OfferingEntry> getAccountEntryOfferingEntries(
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getAccountEntryOfferingEntries(accountEntryId);
+	}
+
 	/**
 	* Returns a range of all the offering entries.
 	*
@@ -232,6 +309,28 @@ public class OfferingEntryLocalServiceUtil {
 	public static java.util.List<com.liferay.osb.model.OfferingEntry> getOfferingEntries(
 		int start, int end) {
 		return getService().getOfferingEntries(start, end);
+	}
+
+	public static java.util.List<com.liferay.osb.model.OfferingEntry> getOrderEntryOfferingEntries(
+		long orderEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getOrderEntryOfferingEntries(orderEntryId);
+	}
+
+	public static java.util.List<com.liferay.osb.model.OfferingEntry> search(
+		long userId, long accountEntryId, int[] types, int[] statuses,
+		int supportEndDateGTDay, int supportEndDateGTMonth,
+		int supportEndDateGTYear, int supportEndDateLTDay,
+		int supportEndDateLTMonth, int supportEndDateLTYear,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+		boolean andSearch, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator obc)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .search(userId, accountEntryId, types, statuses,
+			supportEndDateGTDay, supportEndDateGTMonth, supportEndDateGTYear,
+			supportEndDateLTDay, supportEndDateLTMonth, supportEndDateLTYear,
+			params, andSearch, start, end, obc);
 	}
 
 	/**
@@ -256,6 +355,10 @@ public class OfferingEntryLocalServiceUtil {
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
+	}
+
+	public static void checkOfferingEntries() throws java.lang.Exception {
+		getService().checkOfferingEntries();
 	}
 
 	public static void clearService() {

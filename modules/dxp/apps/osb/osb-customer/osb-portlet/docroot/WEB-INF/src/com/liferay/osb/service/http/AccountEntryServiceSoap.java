@@ -16,9 +16,16 @@ package com.liferay.osb.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.service.AccountEntryServiceUtil;
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import java.rmi.RemoteException;
+
 /**
  * Provides the SOAP utility for the
- * {@link com.liferay.osb.service.AccountEntryServiceUtil} service utility. The
+ * {@link AccountEntryServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it is difficult for SOAP to
  * support certain types.
@@ -53,9 +60,140 @@ import aQute.bnd.annotation.ProviderType;
  * @author Brian Wing Shun Chan
  * @see AccountEntryServiceHttp
  * @see com.liferay.osb.model.AccountEntrySoap
- * @see com.liferay.osb.service.AccountEntryServiceUtil
+ * @see AccountEntryServiceUtil
  * @generated
  */
 @ProviderType
 public class AccountEntryServiceSoap {
+	public static com.liferay.osb.model.AccountEntrySoap fetchCorpProjectAccountEntry(
+		long corpProjectId) throws RemoteException {
+		try {
+			com.liferay.osb.model.AccountEntry returnValue = AccountEntryServiceUtil.fetchCorpProjectAccountEntry(corpProjectId);
+
+			return com.liferay.osb.model.AccountEntrySoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.AccountEntrySoap getAccountEntry(
+		long accountEntryId) throws RemoteException {
+		try {
+			com.liferay.osb.model.AccountEntry returnValue = AccountEntryServiceUtil.getAccountEntry(accountEntryId);
+
+			return com.liferay.osb.model.AccountEntrySoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.AccountEntrySoap getAccountEntryByCode(
+		java.lang.String code) throws RemoteException {
+		try {
+			com.liferay.osb.model.AccountEntry returnValue = AccountEntryServiceUtil.getAccountEntryByCode(code);
+
+			return com.liferay.osb.model.AccountEntrySoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.AccountEntrySoap[] getSecurityPatchAccountEntries(
+		java.lang.String portletId) throws RemoteException {
+		try {
+			java.util.List<com.liferay.osb.model.AccountEntry> returnValue = AccountEntryServiceUtil.getSecurityPatchAccountEntries(portletId);
+
+			return com.liferay.osb.model.AccountEntrySoap.toSoapModels(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.AccountEntrySoap[] search(
+		java.lang.String name, java.lang.String code) throws RemoteException {
+		try {
+			java.util.List<com.liferay.osb.model.AccountEntry> returnValue = AccountEntryServiceUtil.search(name,
+					code);
+
+			return com.liferay.osb.model.AccountEntrySoap.toSoapModels(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.AccountEntrySoap updateAccountEntry(
+		long accountEntryId, long corpProjectId,
+		java.lang.String corpEntryName, java.lang.String name,
+		java.lang.String code, int type, int industry, long partnerEntryId,
+		boolean partnerManagedSupport, int tier, int maxCustomers,
+		java.lang.String instructions, java.lang.String notes,
+		java.lang.String[] languageIds, long[] supportRegionIds,
+		long addressId, java.lang.String street1, java.lang.String street2,
+		java.lang.String street3, java.lang.String city, java.lang.String zip,
+		long regionId, long countryId, java.lang.String ewsaDossieraProjectKey)
+		throws RemoteException {
+		try {
+			com.liferay.osb.model.AccountEntry returnValue = AccountEntryServiceUtil.updateAccountEntry(accountEntryId,
+					corpProjectId, corpEntryName, name, code, type, industry,
+					partnerEntryId, partnerManagedSupport, tier, maxCustomers,
+					instructions, notes, languageIds, supportRegionIds,
+					addressId, street1, street2, street3, city, zip, regionId,
+					countryId, ewsaDossieraProjectKey);
+
+			return com.liferay.osb.model.AccountEntrySoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.AccountEntrySoap updateInstructions(
+		long accountEntryId, java.lang.String instructions)
+		throws RemoteException {
+		try {
+			com.liferay.osb.model.AccountEntry returnValue = AccountEntryServiceUtil.updateInstructions(accountEntryId,
+					instructions);
+
+			return com.liferay.osb.model.AccountEntrySoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.AccountEntrySoap updateTier(
+		long accountEntryId, int tier) throws RemoteException {
+		try {
+			com.liferay.osb.model.AccountEntry returnValue = AccountEntryServiceUtil.updateTier(accountEntryId,
+					tier);
+
+			return com.liferay.osb.model.AccountEntrySoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	private static Log _log = LogFactoryUtil.getLog(AccountEntryServiceSoap.class);
 }

@@ -198,6 +198,13 @@ public class OrderEntryWrapper implements OrderEntry, ModelWrapper<OrderEntry> {
 	}
 
 	@Override
+	public AccountEntry getAccountEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _orderEntry.getAccountEntry();
+	}
+
+	@Override
 	public OrderEntry toEscapedModel() {
 		return new OrderEntryWrapper(_orderEntry.toEscapedModel());
 	}
@@ -402,6 +409,12 @@ public class OrderEntryWrapper implements OrderEntry, ModelWrapper<OrderEntry> {
 		return _orderEntry.getPurchaseOrderKey();
 	}
 
+	@Override
+	public java.lang.String getSalesforceOpportunityKey()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _orderEntry.getSalesforceOpportunityKey();
+	}
+
 	/**
 	* Returns the status by user name of this order entry.
 	*
@@ -420,6 +433,11 @@ public class OrderEntryWrapper implements OrderEntry, ModelWrapper<OrderEntry> {
 	@Override
 	public java.lang.String getStatusByUserUuid() {
 		return _orderEntry.getStatusByUserUuid();
+	}
+
+	@Override
+	public java.lang.String getStatusLabel() {
+		return _orderEntry.getStatusLabel();
 	}
 
 	/**
@@ -520,6 +538,12 @@ public class OrderEntryWrapper implements OrderEntry, ModelWrapper<OrderEntry> {
 	@Override
 	public Date getStatusDate() {
 		return _orderEntry.getStatusDate();
+	}
+
+	@Override
+	public java.util.List<OfferingEntry> getOfferingEntries()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _orderEntry.getOfferingEntries();
 	}
 
 	/**
@@ -681,6 +705,12 @@ public class OrderEntryWrapper implements OrderEntry, ModelWrapper<OrderEntry> {
 	@Override
 	public void setNew(boolean n) {
 		_orderEntry.setNew(n);
+	}
+
+	@Override
+	public void setOfferingEntries(
+		java.util.List<OfferingEntry> offeringEntries) {
+		_orderEntry.setOfferingEntries(offeringEntries);
 	}
 
 	/**

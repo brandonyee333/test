@@ -213,6 +213,11 @@ public class TicketCallWrapper implements TicketCall, ModelWrapper<TicketCall> {
 		return new TicketCallWrapper((TicketCall)_ticketCall.clone());
 	}
 
+	@Override
+	public java.lang.String getCallLengthLabel() {
+		return _ticketCall.getCallLengthLabel();
+	}
+
 	/**
 	* Returns the confirmation of this ticket call.
 	*
@@ -251,6 +256,11 @@ public class TicketCallWrapper implements TicketCall, ModelWrapper<TicketCall> {
 	@Override
 	public java.lang.String getInstructions() {
 		return _ticketCall.getInstructions();
+	}
+
+	@Override
+	public java.lang.String getTypeLabel() {
+		return _ticketCall.getTypeLabel();
 	}
 
 	/**

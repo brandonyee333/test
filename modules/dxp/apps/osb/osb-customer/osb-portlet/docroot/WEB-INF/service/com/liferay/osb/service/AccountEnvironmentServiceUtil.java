@@ -41,6 +41,47 @@ public class AccountEnvironmentServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.AccountEnvironmentServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static com.liferay.osb.model.AccountEnvironment addAccountEnvironment(
+		long accountEntryId, long productEntryId, java.lang.String name,
+		int envOS, java.lang.String envOSCustom, int envDB, int envJVM,
+		int envAS, int envLFR,
+		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
+		java.util.List<java.lang.Integer> types)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .addAccountEnvironment(accountEntryId, productEntryId, name,
+			envOS, envOSCustom, envDB, envJVM, envAS, envLFR, files, types);
+	}
+
+	public static com.liferay.osb.model.AccountEnvironment deleteAccountEnvironment(
+		long accountEnvironmentId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().deleteAccountEnvironment(accountEnvironmentId);
+	}
+
+	public static com.liferay.osb.model.AccountEnvironment getAccountEnvironment(
+		long accountEnvironmentId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().getAccountEnvironment(accountEnvironmentId);
+	}
+
+	public static com.liferay.osb.model.AccountEnvironment updateAccountEnvironment(
+		long accountEnvironmentId, long productEntryId, java.lang.String name,
+		int envOS, java.lang.String envOSCustom, int envDB, int envJVM,
+		int envAS, int envLFR,
+		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
+		java.util.List<java.lang.Integer> types)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .updateAccountEnvironment(accountEnvironmentId,
+			productEntryId, name, envOS, envOSCustom, envDB, envJVM, envAS,
+			envLFR, files, types);
+	}
+
 	public static java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {
@@ -54,6 +95,20 @@ public class AccountEnvironmentServiceUtil {
 	*/
 	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static java.util.List<com.liferay.osb.model.AccountEnvironment> getAccountEnvironments(
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().getAccountEnvironments(accountEntryId);
+	}
+
+	public static java.util.Map<java.lang.String, java.util.List<com.liferay.osb.model.AccountEnvironment>> getAccountEnvironmentsMap(
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().getAccountEnvironmentsMap(accountEntryId);
 	}
 
 	public static void clearService() {

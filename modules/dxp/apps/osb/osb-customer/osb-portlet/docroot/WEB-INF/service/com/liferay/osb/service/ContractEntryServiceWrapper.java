@@ -34,6 +34,17 @@ public class ContractEntryServiceWrapper implements ContractEntryService,
 	}
 
 	@Override
+	public com.liferay.osb.model.ContractEntry addContractEntry(
+		long classNameId, long classPK, int type,
+		java.util.Map<java.util.Locale, java.lang.String> contentMap,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _contractEntryService.addContractEntry(classNameId, classPK,
+			type, contentMap, serviceContext);
+	}
+
+	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {

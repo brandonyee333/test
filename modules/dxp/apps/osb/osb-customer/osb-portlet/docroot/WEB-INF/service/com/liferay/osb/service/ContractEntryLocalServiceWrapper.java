@@ -46,6 +46,28 @@ public class ContractEntryLocalServiceWrapper
 		return _contractEntryLocalService.addContractEntry(contractEntry);
 	}
 
+	@Override
+	public com.liferay.osb.model.ContractEntry addContractEntry(long userId,
+		java.lang.String className, long classPK, int type,
+		java.util.Map<java.util.Locale, java.lang.String> contentMap,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _contractEntryLocalService.addContractEntry(userId, className,
+			classPK, type, contentMap, serviceContext);
+	}
+
+	@Override
+	public com.liferay.osb.model.ContractEntry addContractEntry(long userId,
+		long classNameId, long classPK, int type,
+		java.util.Map<java.util.Locale, java.lang.String> contentMap,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _contractEntryLocalService.addContractEntry(userId, classNameId,
+			classPK, type, contentMap, serviceContext);
+	}
+
 	/**
 	* Creates a new contract entry with the primary key. Does not add the contract entry to the database.
 	*
@@ -104,6 +126,24 @@ public class ContractEntryLocalServiceWrapper
 		return _contractEntryLocalService.getContractEntry(contractEntryId);
 	}
 
+	@Override
+	public com.liferay.osb.model.ContractEntry getLatestContractEntry(
+		java.lang.String className, long classPK, int type)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _contractEntryLocalService.getLatestContractEntry(className,
+			classPK, type);
+	}
+
+	@Override
+	public com.liferay.osb.model.ContractEntry getLatestContractEntry(
+		long classNameId, long classPK, int type)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _contractEntryLocalService.getLatestContractEntry(classNameId,
+			classPK, type);
+	}
+
 	/**
 	* Updates the contract entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
@@ -114,6 +154,17 @@ public class ContractEntryLocalServiceWrapper
 	public com.liferay.osb.model.ContractEntry updateContractEntry(
 		com.liferay.osb.model.ContractEntry contractEntry) {
 		return _contractEntryLocalService.updateContractEntry(contractEntry);
+	}
+
+	@Override
+	public com.liferay.osb.model.ContractEntry updateContractEntry(
+		long userId, long contractEntryId,
+		java.util.Map<java.util.Locale, java.lang.String> contentMap,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _contractEntryLocalService.updateContractEntry(userId,
+			contractEntryId, contentMap, serviceContext);
 	}
 
 	@Override
@@ -156,6 +207,13 @@ public class ContractEntryLocalServiceWrapper
 	@Override
 	public int getContractEntriesCount() {
 		return _contractEntryLocalService.getContractEntriesCount();
+	}
+
+	@Override
+	public int getContractEntriesCount(long classNameId, long classPK, int type)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _contractEntryLocalService.getContractEntriesCount(classNameId,
+			classPK, type);
 	}
 
 	@Override
@@ -244,6 +302,14 @@ public class ContractEntryLocalServiceWrapper
 	public java.util.List<com.liferay.osb.model.ContractEntry> getContractEntries(
 		int start, int end) {
 		return _contractEntryLocalService.getContractEntries(start, end);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.ContractEntry> getContractEntries(
+		long classNameId, long classPK, int type, int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _contractEntryLocalService.getContractEntries(classNameId,
+			classPK, type, start, end);
 	}
 
 	/**

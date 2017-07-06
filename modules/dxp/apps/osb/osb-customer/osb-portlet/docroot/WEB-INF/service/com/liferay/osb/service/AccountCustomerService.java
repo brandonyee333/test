@@ -23,7 +23,10 @@ import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.service.BaseService;
 import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.transaction.Isolation;
+import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
+
+import java.util.List;
 
 /**
  * Provides the remote service interface for AccountCustomer. Methods of this
@@ -58,4 +61,19 @@ public interface AccountCustomerService extends BaseService, InvokableService {
 	* @return the OSGi service identifier
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
+
+	@JSONWebService
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<java.lang.String> getCorpProjectAccountCustomerUUIDs(
+		long corpProjectId) throws PortalException, SystemException;
+
+	public void addAccountCustomers(long[] userIds, long accountEntryId,
+		int[] roles, int[] notifications)
+		throws PortalException, SystemException;
+
+	public void deleteAccountCustomers(long[] userIds, long accountEntryId)
+		throws PortalException, SystemException;
+
+	public void toggleNotifications(long accountCustomerId)
+		throws PortalException, SystemException;
 }

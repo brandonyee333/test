@@ -52,6 +52,22 @@ public class AccountWorkerServiceWrapper implements AccountWorkerService,
 	}
 
 	@Override
+	public void addAccountWorkers(long[] userIds, long accountEntryId,
+		int[] roles, int[] notifications)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_accountWorkerService.addAccountWorkers(userIds, accountEntryId, roles,
+			notifications);
+	}
+
+	@Override
+	public void deleteAccountWorkers(long[] userIds, long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_accountWorkerService.deleteAccountWorkers(userIds, accountEntryId);
+	}
+
+	@Override
 	public AccountWorkerService getWrappedService() {
 		return _accountWorkerService;
 	}

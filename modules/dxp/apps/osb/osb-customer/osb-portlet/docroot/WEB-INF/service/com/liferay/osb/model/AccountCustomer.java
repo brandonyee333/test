@@ -54,4 +54,14 @@ public interface AccountCustomer extends AccountCustomerModel, PersistedModel {
 				return AccountCustomer.class;
 			}
 		};
+
+	public AccountEntry getAccountEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
+
+	public java.lang.String getNotificationsLabel();
+
+	public java.lang.String getRoleLabel();
+
+	public boolean hasNotificationsOn();
 }

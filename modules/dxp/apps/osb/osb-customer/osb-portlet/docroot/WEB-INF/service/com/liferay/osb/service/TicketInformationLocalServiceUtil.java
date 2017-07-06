@@ -53,6 +53,13 @@ public class TicketInformationLocalServiceUtil {
 		return getService().addTicketInformation(ticketInformation);
 	}
 
+	public static com.liferay.osb.model.TicketInformation addTicketInformation(
+		long ticketEntryId, long fieldId, java.lang.String data)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().addTicketInformation(ticketEntryId, fieldId, data);
+	}
+
 	/**
 	* Creates a new ticket information with the primary key. Does not add the ticket information to the database.
 	*
@@ -159,6 +166,12 @@ public class TicketInformationLocalServiceUtil {
 		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
+	public static java.lang.String getData(long ticketEntryId, long fieldId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().getData(ticketEntryId, fieldId);
+	}
+
 	/**
 	* Returns the OSGi service identifier.
 	*
@@ -218,6 +231,12 @@ public class TicketInformationLocalServiceUtil {
 				   .dynamicQuery(dynamicQuery, start, end, orderByComparator);
 	}
 
+	public static java.util.List<com.liferay.osb.model.TicketInformation> getTicketInformationList(
+		long ticketEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getTicketInformationList(ticketEntryId);
+	}
+
 	/**
 	* Returns a range of all the ticket informations.
 	*
@@ -232,6 +251,31 @@ public class TicketInformationLocalServiceUtil {
 	public static java.util.List<com.liferay.osb.model.TicketInformation> getTicketInformations(
 		int start, int end) {
 		return getService().getTicketInformations(start, end);
+	}
+
+	public static java.util.List<com.liferay.osb.model.TicketInformation> updateTicketInformation(
+		long ticketEntryId,
+		java.util.Map<java.lang.Long, java.lang.String> fieldsMap)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().updateTicketInformation(ticketEntryId, fieldsMap);
+	}
+
+	public static java.util.List<com.liferay.osb.model.TicketInformation> updateTicketInformation(
+		long userId, java.lang.String userName, long ticketEntryId,
+		java.util.Map<java.lang.Long, java.lang.String> fieldsMap,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .updateTicketInformation(userId, userName, ticketEntryId,
+			fieldsMap, serviceContext);
+	}
+
+	public static java.util.Map<java.lang.Long, java.lang.String> getFieldsMap(
+		long ticketEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getFieldsMap(ticketEntryId);
 	}
 
 	/**

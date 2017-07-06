@@ -34,6 +34,19 @@ public class AccountWorkerLocalServiceWrapper
 		_accountWorkerLocalService = accountWorkerLocalService;
 	}
 
+	@Override
+	public boolean hasAccountWorker(long userId, long accountEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountWorkerLocalService.hasAccountWorker(userId,
+			accountEntryId);
+	}
+
+	@Override
+	public boolean hasAccountWorkerRole(long userId, int role)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountWorkerLocalService.hasAccountWorkerRole(userId, role);
+	}
+
 	/**
 	* Adds the account worker to the database. Also notifies the appropriate model listeners.
 	*
@@ -102,6 +115,15 @@ public class AccountWorkerLocalServiceWrapper
 		long accountWorkerId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountWorkerLocalService.getAccountWorker(accountWorkerId);
+	}
+
+	@Override
+	public com.liferay.osb.model.AccountWorker getAccountWorker(long userId,
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountWorkerLocalService.getAccountWorker(userId,
+			accountEntryId);
 	}
 
 	/**
@@ -246,6 +268,26 @@ public class AccountWorkerLocalServiceWrapper
 		return _accountWorkerLocalService.getAccountWorkers(start, end);
 	}
 
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountWorker> getAccountWorkers(
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountWorkerLocalService.getAccountWorkers(accountEntryId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountWorker> getAccountWorkers(
+		long accountEntryId, int role)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountWorkerLocalService.getAccountWorkers(accountEntryId, role);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountWorker> getUserAccountWorkers(
+		long userId) throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountWorkerLocalService.getUserAccountWorkers(userId);
+	}
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -271,6 +313,38 @@ public class AccountWorkerLocalServiceWrapper
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return _accountWorkerLocalService.dynamicQueryCount(dynamicQuery,
 			projection);
+	}
+
+	@Override
+	public void addAccountWorkers(long userId, long[] userIds,
+		long accountEntryId, int[] roles, int[] notifications)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_accountWorkerLocalService.addAccountWorkers(userId, userIds,
+			accountEntryId, roles, notifications);
+	}
+
+	@Override
+	public void deleteAccountEntryAccountWorkers(long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_accountWorkerLocalService.deleteAccountEntryAccountWorkers(accountEntryId);
+	}
+
+	@Override
+	public void deleteAccountWorkers(long userId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_accountWorkerLocalService.deleteAccountWorkers(userId);
+	}
+
+	@Override
+	public void deleteAccountWorkers(long userId, long[] userIds,
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_accountWorkerLocalService.deleteAccountWorkers(userId, userIds,
+			accountEntryId);
 	}
 
 	@Override

@@ -123,9 +123,36 @@ public class TicketSolutionLocalServiceClpInvoker {
 				"com.liferay.osb.model.TicketSolution"
 			};
 
-		_methodName254 = "getOSGiServiceIdentifier";
+		_methodName290 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes254 = new String[] {  };
+		_methodParameterTypes290 = new String[] {  };
+
+		_methodName295 = "addTicketSolution";
+
+		_methodParameterTypes295 = new String[] {
+				"long", "long", "java.lang.String", "boolean", "int",
+				"java.lang.String", "int", "boolean", "boolean", "boolean",
+				"boolean", "int", "int", "java.lang.String", "java.util.List",
+				"java.util.List", "java.util.List"
+			};
+
+		_methodName296 = "getActiveTicketSolution";
+
+		_methodParameterTypes296 = new String[] { "long" };
+
+		_methodName297 = "getTicketSolutions";
+
+		_methodParameterTypes297 = new String[] { "long" };
+
+		_methodName298 = "updateStatus";
+
+		_methodParameterTypes298 = new String[] { "long", "int", "int" };
+
+		_methodName299 = "updateTicketSolution";
+
+		_methodParameterTypes299 = new String[] {
+				"long", "long", "int", "long", "java.lang.String", "int"
+			};
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -232,9 +259,59 @@ public class TicketSolutionLocalServiceClpInvoker {
 			return TicketSolutionLocalServiceUtil.updateTicketSolution((com.liferay.osb.model.TicketSolution)arguments[0]);
 		}
 
-		if (_methodName254.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes254, parameterTypes)) {
+		if (_methodName290.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes290, parameterTypes)) {
 			return TicketSolutionLocalServiceUtil.getOSGiServiceIdentifier();
+		}
+
+		if (_methodName295.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes295, parameterTypes)) {
+			return TicketSolutionLocalServiceUtil.addTicketSolution(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				(java.lang.String)arguments[2],
+				((Boolean)arguments[3]).booleanValue(),
+				((Integer)arguments[4]).intValue(),
+				(java.lang.String)arguments[5],
+				((Integer)arguments[6]).intValue(),
+				((Boolean)arguments[7]).booleanValue(),
+				((Boolean)arguments[8]).booleanValue(),
+				((Boolean)arguments[9]).booleanValue(),
+				((Boolean)arguments[10]).booleanValue(),
+				((Integer)arguments[11]).intValue(),
+				((Integer)arguments[12]).intValue(),
+				(java.lang.String)arguments[13],
+				(java.util.List<java.lang.String>)arguments[14],
+				(java.util.List<java.lang.Integer>)arguments[15],
+				(java.util.List<com.liferay.osb.model.TicketAttachment>)arguments[16]);
+		}
+
+		if (_methodName296.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes296, parameterTypes)) {
+			return TicketSolutionLocalServiceUtil.getActiveTicketSolution(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName297.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes297, parameterTypes)) {
+			return TicketSolutionLocalServiceUtil.getTicketSolutions(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName298.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes298, parameterTypes)) {
+			TicketSolutionLocalServiceUtil.updateStatus(((Long)arguments[0]).longValue(),
+				((Integer)arguments[1]).intValue(),
+				((Integer)arguments[2]).intValue());
+
+			return null;
+		}
+
+		if (_methodName299.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes299, parameterTypes)) {
+			return TicketSolutionLocalServiceUtil.updateTicketSolution(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				((Integer)arguments[2]).intValue(),
+				((Long)arguments[3]).longValue(),
+				(java.lang.String)arguments[4],
+				((Integer)arguments[5]).intValue());
 		}
 
 		throw new UnsupportedOperationException();
@@ -278,6 +355,16 @@ public class TicketSolutionLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName254;
-	private String[] _methodParameterTypes254;
+	private String _methodName290;
+	private String[] _methodParameterTypes290;
+	private String _methodName295;
+	private String[] _methodParameterTypes295;
+	private String _methodName296;
+	private String[] _methodParameterTypes296;
+	private String _methodName297;
+	private String[] _methodParameterTypes297;
+	private String _methodName298;
+	private String[] _methodParameterTypes298;
+	private String _methodName299;
+	private String[] _methodParameterTypes299;
 }

@@ -205,6 +205,12 @@ public class OfferingBundleWrapper implements OfferingBundle,
 		return _offeringBundle.getCreateDate();
 	}
 
+	@Override
+	public java.util.List<OfferingDefinition> getOfferingDefinitions()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _offeringBundle.getOfferingDefinitions();
+	}
+
 	/**
 	* Returns the offering bundle ID of this offering bundle.
 	*

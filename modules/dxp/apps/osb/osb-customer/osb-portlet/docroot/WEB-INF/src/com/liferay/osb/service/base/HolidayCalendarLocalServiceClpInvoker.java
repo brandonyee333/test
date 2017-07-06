@@ -123,9 +123,25 @@ public class HolidayCalendarLocalServiceClpInvoker {
 				"com.liferay.osb.model.HolidayCalendar"
 			};
 
-		_methodName250 = "getOSGiServiceIdentifier";
+		_methodName286 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes250 = new String[] {  };
+		_methodParameterTypes286 = new String[] {  };
+
+		_methodName291 = "addHolidayCalendar";
+
+		_methodParameterTypes291 = new String[] {
+				"java.lang.String", "java.lang.String", "java.util.List"
+			};
+
+		_methodName292 = "deleteHolidayCalendar";
+
+		_methodParameterTypes292 = new String[] { "long" };
+
+		_methodName293 = "updateHolidayCalendar";
+
+		_methodParameterTypes293 = new String[] {
+				"long", "java.lang.String", "java.lang.String", "java.util.List"
+			};
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -232,9 +248,28 @@ public class HolidayCalendarLocalServiceClpInvoker {
 			return HolidayCalendarLocalServiceUtil.updateHolidayCalendar((com.liferay.osb.model.HolidayCalendar)arguments[0]);
 		}
 
-		if (_methodName250.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes250, parameterTypes)) {
+		if (_methodName286.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes286, parameterTypes)) {
 			return HolidayCalendarLocalServiceUtil.getOSGiServiceIdentifier();
+		}
+
+		if (_methodName291.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes291, parameterTypes)) {
+			return HolidayCalendarLocalServiceUtil.addHolidayCalendar((java.lang.String)arguments[0],
+				(java.lang.String)arguments[1],
+				(java.util.List<com.liferay.osb.model.HolidayEntry>)arguments[2]);
+		}
+
+		if (_methodName292.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes292, parameterTypes)) {
+			return HolidayCalendarLocalServiceUtil.deleteHolidayCalendar(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName293.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes293, parameterTypes)) {
+			return HolidayCalendarLocalServiceUtil.updateHolidayCalendar(((Long)arguments[0]).longValue(),
+				(java.lang.String)arguments[1], (java.lang.String)arguments[2],
+				(java.util.List<com.liferay.osb.model.HolidayEntry>)arguments[3]);
 		}
 
 		throw new UnsupportedOperationException();
@@ -278,6 +313,12 @@ public class HolidayCalendarLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName250;
-	private String[] _methodParameterTypes250;
+	private String _methodName286;
+	private String[] _methodParameterTypes286;
+	private String _methodName291;
+	private String[] _methodParameterTypes291;
+	private String _methodName292;
+	private String[] _methodParameterTypes292;
+	private String _methodName293;
+	private String[] _methodParameterTypes293;
 }

@@ -330,6 +330,11 @@ public class SupportLaborWrapper implements SupportLabor,
 		return _supportLabor.getThuOpen();
 	}
 
+	@Override
+	public int getTime(int day, int type) {
+		return _supportLabor.getTime(day, type);
+	}
+
 	/**
 	* Returns the tue close of this support labor.
 	*
@@ -385,6 +390,17 @@ public class SupportLaborWrapper implements SupportLabor,
 		return new SupportLaborWrapper((SupportLabor)_supportLabor.clone());
 	}
 
+	@Override
+	public java.lang.String formatDayHours(java.util.Locale locale, int day) {
+		return _supportLabor.formatDayHours(locale, day);
+	}
+
+	@Override
+	public java.lang.String formatTime(java.util.Locale locale, int day,
+		int type) {
+		return _supportLabor.formatTime(locale, day, type);
+	}
+
 	/**
 	* Returns the description of this support labor.
 	*
@@ -423,6 +439,13 @@ public class SupportLaborWrapper implements SupportLabor,
 	@Override
 	public java.lang.String toXmlString() {
 		return _supportLabor.toXmlString();
+	}
+
+	@Override
+	public java.util.List<SupportTeam> getSupportTeams()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _supportLabor.getSupportTeams();
 	}
 
 	/**

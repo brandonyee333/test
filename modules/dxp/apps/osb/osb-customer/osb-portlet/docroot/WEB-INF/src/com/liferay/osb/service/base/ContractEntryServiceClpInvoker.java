@@ -27,21 +27,39 @@ import java.util.Arrays;
 @ProviderType
 public class ContractEntryServiceClpInvoker {
 	public ContractEntryServiceClpInvoker() {
-		_methodName340 = "getOSGiServiceIdentifier";
+		_methodName380 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes340 = new String[] {  };
+		_methodParameterTypes380 = new String[] {  };
+
+		_methodName385 = "addContractEntry";
+
+		_methodParameterTypes385 = new String[] {
+				"long", "long", "int", "java.util.Map",
+				"com.liferay.portal.kernel.service.ServiceContext"
+			};
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName340.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes340, parameterTypes)) {
+		if (_methodName380.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes380, parameterTypes)) {
 			return ContractEntryServiceUtil.getOSGiServiceIdentifier();
+		}
+
+		if (_methodName385.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes385, parameterTypes)) {
+			return ContractEntryServiceUtil.addContractEntry(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				((Integer)arguments[2]).intValue(),
+				(java.util.Map<java.util.Locale, java.lang.String>)arguments[3],
+				(com.liferay.portal.kernel.service.ServiceContext)arguments[4]);
 		}
 
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName340;
-	private String[] _methodParameterTypes340;
+	private String _methodName380;
+	private String[] _methodParameterTypes380;
+	private String _methodName385;
+	private String[] _methodParameterTypes385;
 }

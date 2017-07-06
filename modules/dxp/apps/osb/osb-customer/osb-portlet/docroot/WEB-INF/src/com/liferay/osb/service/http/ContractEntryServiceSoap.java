@@ -16,9 +16,20 @@ package com.liferay.osb.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.service.ContractEntryServiceUtil;
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.LocalizationUtil;
+
+import java.rmi.RemoteException;
+
+import java.util.Locale;
+import java.util.Map;
+
 /**
  * Provides the SOAP utility for the
- * {@link com.liferay.osb.service.ContractEntryServiceUtil} service utility. The
+ * {@link ContractEntryServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it is difficult for SOAP to
  * support certain types.
@@ -53,9 +64,32 @@ import aQute.bnd.annotation.ProviderType;
  * @author Brian Wing Shun Chan
  * @see ContractEntryServiceHttp
  * @see com.liferay.osb.model.ContractEntrySoap
- * @see com.liferay.osb.service.ContractEntryServiceUtil
+ * @see ContractEntryServiceUtil
  * @generated
  */
 @ProviderType
 public class ContractEntryServiceSoap {
+	public static com.liferay.osb.model.ContractEntrySoap addContractEntry(
+		long classNameId, long classPK, int type,
+		java.lang.String[] contentMapLanguageIds,
+		java.lang.String[] contentMapValues,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws RemoteException {
+		try {
+			Map<Locale, String> contentMap = LocalizationUtil.getLocalizationMap(contentMapLanguageIds,
+					contentMapValues);
+
+			com.liferay.osb.model.ContractEntry returnValue = ContractEntryServiceUtil.addContractEntry(classNameId,
+					classPK, type, contentMap, serviceContext);
+
+			return com.liferay.osb.model.ContractEntrySoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	private static Log _log = LogFactoryUtil.getLog(ContractEntryServiceSoap.class);
 }

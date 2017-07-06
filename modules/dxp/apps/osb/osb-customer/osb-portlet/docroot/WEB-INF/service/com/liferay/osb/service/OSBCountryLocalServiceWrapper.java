@@ -34,6 +34,47 @@ public class OSBCountryLocalServiceWrapper implements OSBCountryLocalService,
 	}
 
 	@Override
+	public com.liferay.portal.kernel.model.Country addCountry(
+		java.lang.String name, java.lang.String a2, java.lang.String a3,
+		java.lang.String number, java.lang.String idd, boolean active)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _osbCountryLocalService.addCountry(name, a2, a3, number, idd,
+			active);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.Country deleteCountry(long countryId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _osbCountryLocalService.deleteCountry(countryId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.Country getCountry(long countryId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _osbCountryLocalService.getCountry(countryId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.Country updateCountry(
+		long countryId, java.lang.String name, java.lang.String a2,
+		java.lang.String a3, java.lang.String number, java.lang.String idd,
+		boolean active)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _osbCountryLocalService.updateCountry(countryId, name, a2, a3,
+			number, idd, active);
+	}
+
+	@Override
+	public int getCountriesCount()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _osbCountryLocalService.getCountriesCount();
+	}
+
+	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {
@@ -49,6 +90,19 @@ public class OSBCountryLocalServiceWrapper implements OSBCountryLocalService,
 	@Override
 	public java.lang.String getOSGiServiceIdentifier() {
 		return _osbCountryLocalService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public java.util.List<com.liferay.portal.kernel.model.Country> getCountries()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _osbCountryLocalService.getCountries();
+	}
+
+	@Override
+	public java.util.List<com.liferay.portal.kernel.model.Country> getCountries(
+		int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _osbCountryLocalService.getCountries(start, end);
 	}
 
 	@Override

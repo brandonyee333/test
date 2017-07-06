@@ -114,6 +114,13 @@ public class TicketWorkerWrapper implements TicketWorker,
 	}
 
 	@Override
+	public TicketEntry getTicketEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _ticketWorker.getTicketEntry();
+	}
+
+	@Override
 	public TicketWorker toEscapedModel() {
 		return new TicketWorkerWrapper(_ticketWorker.toEscapedModel());
 	}
@@ -196,6 +203,11 @@ public class TicketWorkerWrapper implements TicketWorker,
 	@Override
 	public java.lang.Object clone() {
 		return new TicketWorkerWrapper((TicketWorker)_ticketWorker.clone());
+	}
+
+	@Override
+	public java.lang.String getRoleLabel() {
+		return _ticketWorker.getRoleLabel();
 	}
 
 	/**

@@ -25,18 +25,24 @@ import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
+import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
+import java.io.File;
+import java.io.InputStream;
 import java.io.Serializable;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -61,6 +67,9 @@ public interface TicketAttachmentLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link TicketAttachmentLocalServiceUtil} to access the ticket attachment local service. Add custom service methods to {@link com.liferay.osb.service.impl.TicketAttachmentLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	public boolean checkAvailability(long ticketAttachmentId,
+		java.lang.String fileRepositoryId)
+		throws PortalException, SystemException;
 
 	/**
 	* Adds the ticket attachment to the database. Also notifies the appropriate model listeners.
@@ -71,6 +80,12 @@ public interface TicketAttachmentLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public TicketAttachment addTicketAttachment(
 		TicketAttachment ticketAttachment);
+
+	public TicketAttachment addTicketAttachment(long userId,
+		long ticketEntryId, long ticketSolutionId, java.lang.String fileName,
+		long fileSize, int type, int visibility,
+		java.lang.String fileRepositoryId, int status)
+		throws PortalException, SystemException;
 
 	/**
 	* Creates a new ticket attachment with the primary key. Does not add the ticket attachment to the database.
@@ -101,8 +116,24 @@ public interface TicketAttachmentLocalService extends BaseLocalService,
 	public TicketAttachment deleteTicketAttachment(long ticketAttachmentId)
 		throws PortalException;
 
+	public TicketAttachment deleteTicketAttachment(long userId,
+		TicketAttachment ticketAttachment)
+		throws PortalException, SystemException;
+
+	public TicketAttachment deleteTicketAttachment(long userId,
+		long ticketAttachmentId) throws PortalException, SystemException;
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public TicketAttachment fetchTicketAttachment(long ticketAttachmentId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TicketAttachment fetchTicketAttachment(long ticketEntryId, int type)
+		throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TicketAttachment fetchTicketAttachment(long ticketEntryId,
+		java.lang.String fileName, int visibility, int status)
+		throws SystemException;
 
 	/**
 	* Returns the ticket attachment with the primary key.
@@ -115,6 +146,13 @@ public interface TicketAttachmentLocalService extends BaseLocalService,
 	public TicketAttachment getTicketAttachment(long ticketAttachmentId)
 		throws PortalException;
 
+	public TicketAttachment replicateTicketAttachment(long userId,
+		long ticketAttachmentId) throws PortalException, SystemException;
+
+	public TicketAttachment updateDeleteDate(long userId,
+		long ticketAttachmentId, Date deleteDate)
+		throws PortalException, SystemException;
+
 	/**
 	* Updates the ticket attachment in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
@@ -124,6 +162,14 @@ public interface TicketAttachmentLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public TicketAttachment updateTicketAttachment(
 		TicketAttachment ticketAttachment);
+
+	public TicketAttachment updateTicketAttachment(long ticketAttachmentId,
+		long ticketEntryId, int type, int visibility)
+		throws PortalException, SystemException;
+
+	public TicketAttachment updateTicketAttachment(long ticketAttachmentId,
+		long ticketEntryId, long ticketSolutionId, int type, int visibility)
+		throws PortalException, SystemException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -153,6 +199,22 @@ public interface TicketAttachmentLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getTicketAttachmentsCount();
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getTicketAttachmentsCount(long ticketEntryId, int[] types,
+		int[] visibilities) throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getTicketAttachmentsCount(long ticketEntryId, int[] visibilities)
+		throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public File getTicketAttachmentsZipFile(long ticketEntryId,
+		int[] visibilities) throws PortalException, SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public InputStream getFileAsStream(TicketAttachment ticketAttachment)
+		throws PortalException, SystemException;
+
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
@@ -164,6 +226,12 @@ public interface TicketAttachmentLocalService extends BaseLocalService,
 	* @return the OSGi service identifier
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
+
+	public List<TicketAttachment> addTicketAttachments(long userId,
+		long ticketEntryId, long ticketSolutionId,
+		List<ObjectValuePair<java.lang.String, File>> files,
+		List<java.lang.Integer> types, int visibility, int status,
+		ServiceContext serviceContext) throws PortalException, SystemException;
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -218,6 +286,44 @@ public interface TicketAttachmentLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TicketAttachment> getTicketAttachments(int start, int end);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TicketAttachment> getTicketAttachments(int[] types)
+		throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TicketAttachment> getTicketAttachments(Date createDate, int type)
+		throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TicketAttachment> getTicketAttachments(long ticketEntryId)
+		throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TicketAttachment> getTicketAttachments(long ticketEntryId,
+		int[] types, int[] visibilities) throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TicketAttachment> getTicketAttachments(long ticketEntryId,
+		int[] types, int[] visibilities, int status) throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TicketAttachment> getTicketAttachments(long ticketEntryId,
+		int[] visibilities, int status) throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TicketAttachment> getTicketAttachments(long ticketEntryId,
+		long ticketSolutionId) throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TicketAttachment> getTicketAttachments(long userId,
+		long ticketEntryId, int visibility, int status)
+		throws SystemException;
+
+	public List<TicketAttachment> updateTicketAttachments(
+		List<java.lang.Long> ticketAttachmentIds, long ticketEntryId,
+		List<java.lang.Integer> types, List<java.lang.Integer> visibilities)
+		throws PortalException, SystemException;
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -235,4 +341,18 @@ public interface TicketAttachmentLocalService extends BaseLocalService,
 	*/
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
+
+	public void cleanTicketAttachments()
+		throws PortalException, SystemException;
+
+	public void deleteTicketAttachment(long userId, long ticketEntryId, int type)
+		throws PortalException, SystemException;
+
+	public void updateExtractedText(TicketAttachment ticketAttachment)
+		throws SystemException;
+
+	public void updateStatus(User user,
+		List<TicketAttachment> ticketAttachments, long ticketEntryId,
+		int status, ServiceContext serviceContext)
+		throws PortalException, SystemException;
 }

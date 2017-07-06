@@ -27,21 +27,64 @@ import java.util.Arrays;
 @ProviderType
 public class OSBRegionServiceClpInvoker {
 	public OSBRegionServiceClpInvoker() {
-		_methodName348 = "getOSGiServiceIdentifier";
+		_methodName388 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes348 = new String[] {  };
+		_methodParameterTypes388 = new String[] {  };
+
+		_methodName391 = "addRegion";
+
+		_methodParameterTypes391 = new String[] {
+				"long", "java.lang.String", "java.lang.String", "boolean"
+			};
+
+		_methodName392 = "deleteRegion";
+
+		_methodParameterTypes392 = new String[] { "long" };
+
+		_methodName393 = "updateRegion";
+
+		_methodParameterTypes393 = new String[] {
+				"long", "long", "java.lang.String", "java.lang.String",
+				"boolean"
+			};
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName348.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes348, parameterTypes)) {
+		if (_methodName388.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes388, parameterTypes)) {
 			return OSBRegionServiceUtil.getOSGiServiceIdentifier();
+		}
+
+		if (_methodName391.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes391, parameterTypes)) {
+			return OSBRegionServiceUtil.addRegion(((Long)arguments[0]).longValue(),
+				(java.lang.String)arguments[1], (java.lang.String)arguments[2],
+				((Boolean)arguments[3]).booleanValue());
+		}
+
+		if (_methodName392.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes392, parameterTypes)) {
+			return OSBRegionServiceUtil.deleteRegion(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName393.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes393, parameterTypes)) {
+			return OSBRegionServiceUtil.updateRegion(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				(java.lang.String)arguments[2], (java.lang.String)arguments[3],
+				((Boolean)arguments[4]).booleanValue());
 		}
 
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName348;
-	private String[] _methodParameterTypes348;
+	private String _methodName388;
+	private String[] _methodParameterTypes388;
+	private String _methodName391;
+	private String[] _methodParameterTypes391;
+	private String _methodName392;
+	private String[] _methodParameterTypes392;
+	private String _methodName393;
+	private String[] _methodParameterTypes393;
 }

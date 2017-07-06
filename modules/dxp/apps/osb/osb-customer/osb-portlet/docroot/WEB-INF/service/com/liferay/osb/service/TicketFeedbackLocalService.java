@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -71,6 +72,9 @@ public interface TicketFeedbackLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public TicketFeedback addTicketFeedback(TicketFeedback ticketFeedback);
 
+	public TicketFeedback addTicketFeedback(long userId, long ticketEntryId,
+		int subject, int satisfied) throws PortalException, SystemException;
+
 	/**
 	* Creates a new ticket feedback with the primary key. Does not add the ticket feedback to the database.
 	*
@@ -100,6 +104,10 @@ public interface TicketFeedbackLocalService extends BaseLocalService,
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TicketFeedback fetchFirstOpenTicketFeedback(long userId,
+		long ticketEntryId, int subject) throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public TicketFeedback fetchTicketFeedback(long ticketFeedbackId);
 
 	/**
@@ -121,6 +129,11 @@ public interface TicketFeedbackLocalService extends BaseLocalService,
 	*/
 	@Indexable(type = IndexableType.REINDEX)
 	public TicketFeedback updateTicketFeedback(TicketFeedback ticketFeedback);
+
+	public TicketFeedback updateTicketFeedback(long userId,
+		long ticketFeedbackId, int satisfied, int answer1, int answer2,
+		int answer3, int rating1, int rating2, int rating3, int rating4,
+		java.lang.String comments) throws PortalException, SystemException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -149,6 +162,23 @@ public interface TicketFeedbackLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getTicketFeedbacksCount();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int searchCount(java.lang.String keywords,
+		LinkedHashMap<java.lang.String, java.lang.Object> params)
+		throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int searchCount(java.lang.String name, int createdGTDay,
+		int createdGTMonth, int createdGTYear, int createdLTDay,
+		int createdLTMonth, int createdLTYear, int modifiedGTDay,
+		int modifiedGTMonth, int modifiedGTYear, int modifiedLTDay,
+		int modifiedLTMonth, int modifiedLTYear, java.lang.Integer satisfied,
+		java.lang.String comments, java.lang.Integer status,
+		java.lang.Integer[] ratings1, java.lang.Integer[] ratings2,
+		java.lang.Integer[] ratings3, java.lang.Integer[] ratings4,
+		LinkedHashMap<java.lang.String, java.lang.Object> params,
+		boolean andSearch) throws SystemException;
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
@@ -215,6 +245,32 @@ public interface TicketFeedbackLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TicketFeedback> getTicketFeedbacks(int start, int end);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TicketFeedback> getTicketFeedbacks(long ticketEntryId,
+		int subject) throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TicketFeedback> getTicketFeedbacks(long ticketEntryId,
+		int subject, int status) throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TicketFeedback> search(java.lang.String keywords,
+		LinkedHashMap<java.lang.String, java.lang.Object> params, int start,
+		int end, OrderByComparator obc) throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TicketFeedback> search(java.lang.String name, int createdGTDay,
+		int createdGTMonth, int createdGTYear, int createdLTDay,
+		int createdLTMonth, int createdLTYear, int modifiedGTDay,
+		int modifiedGTMonth, int modifiedGTYear, int modifiedLTDay,
+		int modifiedLTMonth, int modifiedLTYear, java.lang.Integer satisfied,
+		java.lang.String comments, java.lang.Integer status,
+		java.lang.Integer[] ratings1, java.lang.Integer[] ratings2,
+		java.lang.Integer[] ratings3, java.lang.Integer[] ratings4,
+		LinkedHashMap<java.lang.String, java.lang.Object> params,
+		boolean andSearch, int start, int end, OrderByComparator obc)
+		throws SystemException;
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -232,4 +288,10 @@ public interface TicketFeedbackLocalService extends BaseLocalService,
 	*/
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
+
+	public void sendCustomerNotifications() throws java.lang.Exception;
+
+	public void sendLiferayWorkerNotifications() throws java.lang.Exception;
+
+	public void sendSupportTeamNotifications() throws java.lang.Exception;
 }

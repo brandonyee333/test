@@ -248,6 +248,13 @@ public class SupportWorkerComponentLocalServiceWrapper
 			end);
 	}
 
+	@Override
+	public java.util.List<com.liferay.osb.model.SupportWorkerComponent> getSupportWorkerComponents(
+		long supportWorkerId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _supportWorkerComponentLocalService.getSupportWorkerComponents(supportWorkerId);
+	}
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -273,6 +280,14 @@ public class SupportWorkerComponentLocalServiceWrapper
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return _supportWorkerComponentLocalService.dynamicQueryCount(dynamicQuery,
 			projection);
+	}
+
+	@Override
+	public void setSupportWorkerComponents(long supportWorkerId,
+		int[] components)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		_supportWorkerComponentLocalService.setSupportWorkerComponents(supportWorkerId,
+			components);
 	}
 
 	@Override

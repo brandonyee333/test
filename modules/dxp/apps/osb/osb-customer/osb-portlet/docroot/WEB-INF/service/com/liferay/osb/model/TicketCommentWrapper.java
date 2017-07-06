@@ -185,6 +185,11 @@ public class TicketCommentWrapper implements TicketComment,
 	}
 
 	@Override
+	public com.liferay.portal.kernel.util.UnicodeProperties getSettingsProperties() {
+		return _ticketComment.getSettingsProperties();
+	}
+
+	@Override
 	public int compareTo(TicketComment ticketComment) {
 		return _ticketComment.compareTo(ticketComment);
 	}
@@ -254,6 +259,11 @@ public class TicketCommentWrapper implements TicketComment,
 		return _ticketComment.getFormat();
 	}
 
+	@Override
+	public java.lang.String getKey() {
+		return _ticketComment.getKey();
+	}
+
 	/**
 	* Returns the settings of this ticket comment.
 	*
@@ -262,6 +272,11 @@ public class TicketCommentWrapper implements TicketComment,
 	@Override
 	public java.lang.String getSettings() {
 		return _ticketComment.getSettings();
+	}
+
+	@Override
+	public java.lang.String getSettingsProperty(java.lang.String key) {
+		return _ticketComment.getSettingsProperty(key);
 	}
 
 	/**
@@ -282,6 +297,11 @@ public class TicketCommentWrapper implements TicketComment,
 	@Override
 	public java.lang.String getUserUuid() {
 		return _ticketComment.getUserUuid();
+	}
+
+	@Override
+	public java.lang.String getVisibilityLabel() {
+		return _ticketComment.getVisibilityLabel();
 	}
 
 	@Override
@@ -448,6 +468,17 @@ public class TicketCommentWrapper implements TicketComment,
 	@Override
 	public void setSettings(java.lang.String settings) {
 		_ticketComment.setSettings(settings);
+	}
+
+	@Override
+	public void setSettingsProperties(
+		com.liferay.portal.kernel.util.UnicodeProperties settingsProperties) {
+		_ticketComment.setSettingsProperties(settingsProperties);
+	}
+
+	@Override
+	public void setSettingsProperty(java.lang.String key, java.lang.String value) {
+		_ticketComment.setSettingsProperty(key, value);
 	}
 
 	/**

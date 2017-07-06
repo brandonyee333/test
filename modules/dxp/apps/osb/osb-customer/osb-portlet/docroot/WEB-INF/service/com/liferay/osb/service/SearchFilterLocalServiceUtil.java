@@ -53,6 +53,16 @@ public class SearchFilterLocalServiceUtil {
 		return getService().addSearchFilter(searchFilter);
 	}
 
+	public static com.liferay.osb.model.SearchFilter addSearchFilter(
+		long userId, long classNameId, java.lang.String name,
+		java.lang.String filter, int visibility)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .addSearchFilter(userId, classNameId, name, filter,
+			visibility);
+	}
+
 	/**
 	* Creates a new search filter with the primary key. Does not add the search filter to the database.
 	*
@@ -115,6 +125,15 @@ public class SearchFilterLocalServiceUtil {
 	public static com.liferay.osb.model.SearchFilter updateSearchFilter(
 		com.liferay.osb.model.SearchFilter searchFilter) {
 		return getService().updateSearchFilter(searchFilter);
+	}
+
+	public static com.liferay.osb.model.SearchFilter updateSearchFilter(
+		long searchFilterId, java.lang.String name, java.lang.String filter,
+		int visibility)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .updateSearchFilter(searchFilterId, name, filter, visibility);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
@@ -234,6 +253,12 @@ public class SearchFilterLocalServiceUtil {
 		return getService().getSearchFilters(start, end);
 	}
 
+	public static java.util.List<com.liferay.osb.model.SearchFilter> getSearchFilters(
+		long userId, long classNameId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getSearchFilters(userId, classNameId);
+	}
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -256,6 +281,11 @@ public class SearchFilterLocalServiceUtil {
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
+	}
+
+	public static void deleteSearchFilters(long userId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		getService().deleteSearchFilters(userId);
 	}
 
 	public static void clearService() {

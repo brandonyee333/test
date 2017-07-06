@@ -123,9 +123,38 @@ public class TicketInformationLocalServiceClpInvoker {
 				"com.liferay.osb.model.TicketInformation"
 			};
 
-		_methodName250 = "getOSGiServiceIdentifier";
+		_methodName286 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes250 = new String[] {  };
+		_methodParameterTypes286 = new String[] {  };
+
+		_methodName291 = "addTicketInformation";
+
+		_methodParameterTypes291 = new String[] {
+				"long", "long", "java.lang.String"
+			};
+
+		_methodName292 = "getData";
+
+		_methodParameterTypes292 = new String[] { "long", "long" };
+
+		_methodName293 = "getFieldsMap";
+
+		_methodParameterTypes293 = new String[] { "long" };
+
+		_methodName294 = "getTicketInformationList";
+
+		_methodParameterTypes294 = new String[] { "long" };
+
+		_methodName295 = "updateTicketInformation";
+
+		_methodParameterTypes295 = new String[] { "long", "java.util.Map" };
+
+		_methodName296 = "updateTicketInformation";
+
+		_methodParameterTypes296 = new String[] {
+				"long", "java.lang.String", "long", "java.util.Map",
+				"com.liferay.portal.kernel.service.ServiceContext"
+			};
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -232,9 +261,46 @@ public class TicketInformationLocalServiceClpInvoker {
 			return TicketInformationLocalServiceUtil.updateTicketInformation((com.liferay.osb.model.TicketInformation)arguments[0]);
 		}
 
-		if (_methodName250.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes250, parameterTypes)) {
+		if (_methodName286.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes286, parameterTypes)) {
 			return TicketInformationLocalServiceUtil.getOSGiServiceIdentifier();
+		}
+
+		if (_methodName291.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes291, parameterTypes)) {
+			return TicketInformationLocalServiceUtil.addTicketInformation(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(), (java.lang.String)arguments[2]);
+		}
+
+		if (_methodName292.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes292, parameterTypes)) {
+			return TicketInformationLocalServiceUtil.getData(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue());
+		}
+
+		if (_methodName293.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes293, parameterTypes)) {
+			return TicketInformationLocalServiceUtil.getFieldsMap(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName294.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes294, parameterTypes)) {
+			return TicketInformationLocalServiceUtil.getTicketInformationList(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName295.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes295, parameterTypes)) {
+			return TicketInformationLocalServiceUtil.updateTicketInformation(((Long)arguments[0]).longValue(),
+				(java.util.Map<java.lang.Long, java.lang.String>)arguments[1]);
+		}
+
+		if (_methodName296.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes296, parameterTypes)) {
+			return TicketInformationLocalServiceUtil.updateTicketInformation(((Long)arguments[0]).longValue(),
+				(java.lang.String)arguments[1],
+				((Long)arguments[2]).longValue(),
+				(java.util.Map<java.lang.Long, java.lang.String>)arguments[3],
+				(com.liferay.portal.kernel.service.ServiceContext)arguments[4]);
 		}
 
 		throw new UnsupportedOperationException();
@@ -278,6 +344,18 @@ public class TicketInformationLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName250;
-	private String[] _methodParameterTypes250;
+	private String _methodName286;
+	private String[] _methodParameterTypes286;
+	private String _methodName291;
+	private String[] _methodParameterTypes291;
+	private String _methodName292;
+	private String[] _methodParameterTypes292;
+	private String _methodName293;
+	private String[] _methodParameterTypes293;
+	private String _methodName294;
+	private String[] _methodParameterTypes294;
+	private String _methodName295;
+	private String[] _methodParameterTypes295;
+	private String _methodName296;
+	private String[] _methodParameterTypes296;
 }

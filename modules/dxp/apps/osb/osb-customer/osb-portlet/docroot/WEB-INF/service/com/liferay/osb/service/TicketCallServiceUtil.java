@@ -41,6 +41,21 @@ public class TicketCallServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.TicketCallServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static com.liferay.osb.model.TicketCall addTicketCall(
+		long ticketEntryId, int type, int callDateMonth, int callDateDay,
+		int callDateYear, int callDateHour, int callDateMinute,
+		long callLength, java.lang.String customerName,
+		java.lang.String customerContact, java.lang.String confirmation,
+		java.lang.String instructions)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .addTicketCall(ticketEntryId, type, callDateMonth,
+			callDateDay, callDateYear, callDateHour, callDateMinute,
+			callLength, customerName, customerContact, confirmation,
+			instructions);
+	}
+
 	public static java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {

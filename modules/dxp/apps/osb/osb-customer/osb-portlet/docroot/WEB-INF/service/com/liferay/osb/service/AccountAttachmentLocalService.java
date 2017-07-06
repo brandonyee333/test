@@ -33,8 +33,11 @@ import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
+import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
+import java.io.File;
+import java.io.InputStream;
 import java.io.Serializable;
 
 import java.util.List;
@@ -72,6 +75,11 @@ public interface AccountAttachmentLocalService extends BaseLocalService,
 	public AccountAttachment addAccountAttachment(
 		AccountAttachment accountAttachment);
 
+	public AccountAttachment addAccountAttachment(long userId,
+		long accountEntryId, long accountProjectId,
+		ObjectValuePair<java.lang.String, File> fileOVP, int type)
+		throws PortalException, SystemException;
+
 	/**
 	* Creates a new account attachment with the primary key. Does not add the account attachment to the database.
 	*
@@ -85,10 +93,13 @@ public interface AccountAttachmentLocalService extends BaseLocalService,
 	*
 	* @param accountAttachment the account attachment
 	* @return the account attachment that was removed
+	* @throws PortalException
+	* @throws SystemException
 	*/
 	@Indexable(type = IndexableType.DELETE)
 	public AccountAttachment deleteAccountAttachment(
-		AccountAttachment accountAttachment);
+		AccountAttachment accountAttachment)
+		throws PortalException, SystemException;
 
 	/**
 	* Deletes the account attachment with the primary key from the database. Also notifies the appropriate model listeners.
@@ -96,10 +107,11 @@ public interface AccountAttachmentLocalService extends BaseLocalService,
 	* @param accountAttachmentId the primary key of the account attachment
 	* @return the account attachment that was removed
 	* @throws PortalException if a account attachment with the primary key could not be found
+	* @throws SystemException
 	*/
 	@Indexable(type = IndexableType.DELETE)
 	public AccountAttachment deleteAccountAttachment(long accountAttachmentId)
-		throws PortalException;
+		throws PortalException, SystemException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AccountAttachment fetchAccountAttachment(long accountAttachmentId);
@@ -153,6 +165,10 @@ public interface AccountAttachmentLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getAccountAttachmentsCount();
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public InputStream getFileAsStream(AccountAttachment accountAttachment)
+		throws PortalException, SystemException;
+
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
@@ -164,6 +180,11 @@ public interface AccountAttachmentLocalService extends BaseLocalService,
 	* @return the OSGi service identifier
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
+
+	public List<AccountAttachment> addAccountAttachments(long userId,
+		long accountEntryId, long accountProjectId,
+		List<ObjectValuePair<java.lang.String, File>> files,
+		List<java.lang.Integer> types) throws PortalException, SystemException;
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -218,6 +239,18 @@ public interface AccountAttachmentLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountAttachment> getAccountAttachments(int start, int end);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AccountAttachment> getAccountAttachments(long accountEntryId)
+		throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AccountAttachment> getAccountAttachments(long accountEntryId,
+		long accountProjectId) throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AccountAttachment> getAccountAttachments(long accountEntryId,
+		long accountProjectId, int type) throws SystemException;
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -235,4 +268,11 @@ public interface AccountAttachmentLocalService extends BaseLocalService,
 	*/
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
+
+	public void deleteAccountAttachments(long accountEntryId,
+		long accountProjectId) throws PortalException, SystemException;
+
+	public void deleteAccountAttachments(long accountEntryId,
+		long accountProjectId, int type)
+		throws PortalException, SystemException;
 }

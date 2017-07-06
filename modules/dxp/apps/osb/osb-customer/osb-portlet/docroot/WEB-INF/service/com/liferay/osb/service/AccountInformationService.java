@@ -16,6 +16,8 @@ package com.liferay.osb.service;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.model.AccountInformation;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
@@ -24,6 +26,9 @@ import com.liferay.portal.kernel.service.BaseService;
 import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Transactional;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Provides the remote service interface for AccountInformation. Methods of this
@@ -58,4 +63,9 @@ public interface AccountInformationService extends BaseService, InvokableService
 	* @return the OSGi service identifier
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
+
+	public List<AccountInformation> updateAccountInformation(
+		long accountEntryId, long accountProjectId,
+		Map<java.lang.Integer, java.lang.String> data)
+		throws PortalException, SystemException;
 }

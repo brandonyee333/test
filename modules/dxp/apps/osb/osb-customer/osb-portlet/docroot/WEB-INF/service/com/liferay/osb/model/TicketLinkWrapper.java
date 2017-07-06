@@ -128,6 +128,13 @@ public class TicketLinkWrapper implements TicketLink, ModelWrapper<TicketLink> {
 	}
 
 	@Override
+	public TicketEntry getTicketEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _ticketLink.getTicketEntry();
+	}
+
+	@Override
 	public TicketLink toEscapedModel() {
 		return new TicketLinkWrapper(_ticketLink.toEscapedModel());
 	}
@@ -202,6 +209,11 @@ public class TicketLinkWrapper implements TicketLink, ModelWrapper<TicketLink> {
 		return new TicketLinkWrapper((TicketLink)_ticketLink.clone());
 	}
 
+	@Override
+	public java.lang.String getKey() {
+		return _ticketLink.getKey();
+	}
+
 	/**
 	* Returns the url of this ticket link.
 	*
@@ -230,6 +242,11 @@ public class TicketLinkWrapper implements TicketLink, ModelWrapper<TicketLink> {
 	@Override
 	public java.lang.String getUserUuid() {
 		return _ticketLink.getUserUuid();
+	}
+
+	@Override
+	public java.lang.String getVisibilityLabel() {
+		return _ticketLink.getVisibilityLabel();
 	}
 
 	@Override

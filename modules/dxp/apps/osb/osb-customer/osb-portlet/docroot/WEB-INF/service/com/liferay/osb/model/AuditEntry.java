@@ -53,4 +53,12 @@ public interface AuditEntry extends AuditEntryModel, PersistedModel {
 				return AuditEntry.class;
 			}
 		};
+
+	public java.lang.String getActionLabel();
+
+	public java.lang.String getFieldClassNameIdLabel();
+
+	public java.lang.String getFieldLabel();
+
+	public java.lang.String getVisibilityLabel();
 }

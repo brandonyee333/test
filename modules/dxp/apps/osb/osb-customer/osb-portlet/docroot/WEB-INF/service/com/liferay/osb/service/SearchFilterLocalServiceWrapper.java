@@ -45,6 +45,16 @@ public class SearchFilterLocalServiceWrapper implements SearchFilterLocalService
 		return _searchFilterLocalService.addSearchFilter(searchFilter);
 	}
 
+	@Override
+	public com.liferay.osb.model.SearchFilter addSearchFilter(long userId,
+		long classNameId, java.lang.String name, java.lang.String filter,
+		int visibility)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _searchFilterLocalService.addSearchFilter(userId, classNameId,
+			name, filter, visibility);
+	}
+
 	/**
 	* Creates a new search filter with the primary key. Does not add the search filter to the database.
 	*
@@ -113,6 +123,16 @@ public class SearchFilterLocalServiceWrapper implements SearchFilterLocalService
 	public com.liferay.osb.model.SearchFilter updateSearchFilter(
 		com.liferay.osb.model.SearchFilter searchFilter) {
 		return _searchFilterLocalService.updateSearchFilter(searchFilter);
+	}
+
+	@Override
+	public com.liferay.osb.model.SearchFilter updateSearchFilter(
+		long searchFilterId, java.lang.String name, java.lang.String filter,
+		int visibility)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _searchFilterLocalService.updateSearchFilter(searchFilterId,
+			name, filter, visibility);
 	}
 
 	@Override
@@ -245,6 +265,13 @@ public class SearchFilterLocalServiceWrapper implements SearchFilterLocalService
 		return _searchFilterLocalService.getSearchFilters(start, end);
 	}
 
+	@Override
+	public java.util.List<com.liferay.osb.model.SearchFilter> getSearchFilters(
+		long userId, long classNameId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _searchFilterLocalService.getSearchFilters(userId, classNameId);
+	}
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -270,6 +297,12 @@ public class SearchFilterLocalServiceWrapper implements SearchFilterLocalService
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return _searchFilterLocalService.dynamicQueryCount(dynamicQuery,
 			projection);
+	}
+
+	@Override
+	public void deleteSearchFilters(long userId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		_searchFilterLocalService.deleteSearchFilters(userId);
 	}
 
 	@Override

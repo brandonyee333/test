@@ -248,6 +248,13 @@ public class SupportWorkerAccountTierLocalServiceWrapper
 			end);
 	}
 
+	@Override
+	public java.util.List<com.liferay.osb.model.SupportWorkerAccountTier> getSupportWorkerAccountTiers(
+		long supportWorkerId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _supportWorkerAccountTierLocalService.getSupportWorkerAccountTiers(supportWorkerId);
+	}
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -273,6 +280,14 @@ public class SupportWorkerAccountTierLocalServiceWrapper
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return _supportWorkerAccountTierLocalService.dynamicQueryCount(dynamicQuery,
 			projection);
+	}
+
+	@Override
+	public void setSupportWorkerAccountTiers(long supportWorkerId,
+		int[] accountTiers)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		_supportWorkerAccountTierLocalService.setSupportWorkerAccountTiers(supportWorkerId,
+			accountTiers);
 	}
 
 	@Override

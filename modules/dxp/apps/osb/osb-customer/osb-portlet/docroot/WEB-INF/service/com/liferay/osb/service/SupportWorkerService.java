@@ -58,4 +58,7 @@ public interface SupportWorkerService extends BaseService, InvokableService {
 	* @return the OSGi service identifier
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
+
+	public void clockInOut(long supportWorkerId)
+		throws PortalException, SystemException;
 }

@@ -16,9 +16,16 @@ package com.liferay.osb.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.service.TicketCommentServiceUtil;
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import java.rmi.RemoteException;
+
 /**
  * Provides the SOAP utility for the
- * {@link com.liferay.osb.service.TicketCommentServiceUtil} service utility. The
+ * {@link TicketCommentServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it is difficult for SOAP to
  * support certain types.
@@ -53,9 +60,102 @@ import aQute.bnd.annotation.ProviderType;
  * @author Brian Wing Shun Chan
  * @see TicketCommentServiceHttp
  * @see com.liferay.osb.model.TicketCommentSoap
- * @see com.liferay.osb.service.TicketCommentServiceUtil
+ * @see TicketCommentServiceUtil
  * @generated
  */
 @ProviderType
 public class TicketCommentServiceSoap {
+	public static com.liferay.osb.model.TicketCommentSoap addTicketComment(
+		long userId, long ticketEntryId, java.lang.String body, int type,
+		int visibility, int status, long ticketCannedResponseId,
+		int[] pendingTypes,
+		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
+		java.util.List<java.lang.Integer> types,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws RemoteException {
+		try {
+			com.liferay.osb.model.TicketComment returnValue = TicketCommentServiceUtil.addTicketComment(userId,
+					ticketEntryId, body, type, visibility, status,
+					ticketCannedResponseId, pendingTypes, files, types,
+					serviceContext);
+
+			return com.liferay.osb.model.TicketCommentSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.TicketCommentSoap addTicketComment(
+		long userId, long ticketEntryId, java.lang.String body, int type,
+		int visibility, int status, long ticketCannedResponseId,
+		int[] pendingTypes,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws RemoteException {
+		try {
+			com.liferay.osb.model.TicketComment returnValue = TicketCommentServiceUtil.addTicketComment(userId,
+					ticketEntryId, body, type, visibility, status,
+					ticketCannedResponseId, pendingTypes, serviceContext);
+
+			return com.liferay.osb.model.TicketCommentSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.TicketCommentSoap deleteTicketComment(
+		long ticketCommentId) throws RemoteException {
+		try {
+			com.liferay.osb.model.TicketComment returnValue = TicketCommentServiceUtil.deleteTicketComment(ticketCommentId);
+
+			return com.liferay.osb.model.TicketCommentSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.TicketCommentSoap updateTicketComment(
+		long userId, long ticketCommentId, long ticketEntryId,
+		java.lang.String body, int visibility, int status,
+		long ticketCannedResponseId, int[] pendingTypes,
+		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
+		java.util.List<java.lang.Integer> types) throws RemoteException {
+		try {
+			com.liferay.osb.model.TicketComment returnValue = TicketCommentServiceUtil.updateTicketComment(userId,
+					ticketCommentId, ticketEntryId, body, visibility, status,
+					ticketCannedResponseId, pendingTypes, files, types);
+
+			return com.liferay.osb.model.TicketCommentSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.TicketCommentSoap updateTicketCommentType(
+		long ticketCommentId, int type) throws RemoteException {
+		try {
+			com.liferay.osb.model.TicketComment returnValue = TicketCommentServiceUtil.updateTicketCommentType(ticketCommentId,
+					type);
+
+			return com.liferay.osb.model.TicketCommentSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	private static Log _log = LogFactoryUtil.getLog(TicketCommentServiceSoap.class);
 }

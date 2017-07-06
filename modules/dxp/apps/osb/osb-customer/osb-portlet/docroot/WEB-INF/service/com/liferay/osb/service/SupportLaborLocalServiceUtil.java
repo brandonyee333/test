@@ -41,6 +41,12 @@ public class SupportLaborLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.SupportLaborLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static boolean hasSupportWorker(long supportWorkerId,
+		long supportLaborId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().hasSupportWorker(supportWorkerId, supportLaborId);
+	}
 
 	/**
 	* Adds the support labor to the database. Also notifies the appropriate model listeners.
@@ -51,6 +57,20 @@ public class SupportLaborLocalServiceUtil {
 	public static com.liferay.osb.model.SupportLabor addSupportLabor(
 		com.liferay.osb.model.SupportLabor supportLabor) {
 		return getService().addSupportLabor(supportLabor);
+	}
+
+	public static com.liferay.osb.model.SupportLabor addSupportLabor(
+		java.lang.String name, java.lang.String description,
+		java.lang.String timeZoneId, int sunOpen, int sunClose, int monOpen,
+		int monClose, int tueOpen, int tueClose, int wedOpen, int wedClose,
+		int thuOpen, int thuClose, int friOpen, int friClose, int satOpen,
+		int satClose)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .addSupportLabor(name, description, timeZoneId, sunOpen,
+			sunClose, monOpen, monClose, tueOpen, tueClose, wedOpen, wedClose,
+			thuOpen, thuClose, friOpen, friClose, satOpen, satClose);
 	}
 
 	/**
@@ -81,10 +101,12 @@ public class SupportLaborLocalServiceUtil {
 	* @param supportLaborId the primary key of the support labor
 	* @return the support labor that was removed
 	* @throws PortalException if a support labor with the primary key could not be found
+	* @throws SystemException
 	*/
 	public static com.liferay.osb.model.SupportLabor deleteSupportLabor(
 		long supportLaborId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
 		return getService().deleteSupportLabor(supportLaborId);
 	}
 
@@ -115,6 +137,21 @@ public class SupportLaborLocalServiceUtil {
 	public static com.liferay.osb.model.SupportLabor updateSupportLabor(
 		com.liferay.osb.model.SupportLabor supportLabor) {
 		return getService().updateSupportLabor(supportLabor);
+	}
+
+	public static com.liferay.osb.model.SupportLabor updateSupportLabor(
+		long supportLaborId, java.lang.String name,
+		java.lang.String description, java.lang.String timeZoneId, int sunOpen,
+		int sunClose, int monOpen, int monClose, int tueOpen, int tueClose,
+		int wedOpen, int wedClose, int thuOpen, int thuClose, int friOpen,
+		int friClose, int satOpen, int satClose)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .updateSupportLabor(supportLaborId, name, description,
+			timeZoneId, sunOpen, sunClose, monOpen, monClose, tueOpen,
+			tueClose, wedOpen, wedClose, thuOpen, thuClose, friOpen, friClose,
+			satOpen, satClose);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
@@ -256,6 +293,19 @@ public class SupportLaborLocalServiceUtil {
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
+	}
+
+	public static void addSupportWorkers(long[] supportWorkerIds,
+		long supportLaborId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		getService().addSupportWorkers(supportWorkerIds, supportLaborId);
+	}
+
+	public static void removeSupportWorkers(long[] supportWorkerIds)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		getService().removeSupportWorkers(supportWorkerIds);
 	}
 
 	public static void clearService() {

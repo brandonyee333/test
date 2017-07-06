@@ -489,6 +489,140 @@ public class PartnerEntryClp extends BaseModelImpl<PartnerEntry>
 		}
 	}
 
+	@Override
+	public java.util.List<AccountEntry> getAccountEntries() {
+		try {
+			String methodName = "getAccountEntries";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			java.util.List<AccountEntry> returnObj = (java.util.List<AccountEntry>)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
+	public java.util.List<PartnerEntry> getChildPartnerEntries(
+		boolean recursive) {
+		try {
+			String methodName = "getChildPartnerEntries";
+
+			Class<?>[] parameterTypes = new Class<?>[] { boolean.class };
+
+			Object[] parameterValues = new Object[] { recursive };
+
+			java.util.List<PartnerEntry> returnObj = (java.util.List<PartnerEntry>)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
+	public PartnerEntry getParentPartnerEntry() {
+		try {
+			String methodName = "getParentPartnerEntry";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			PartnerEntry returnObj = (PartnerEntry)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
+	public java.util.List<PartnerWorker> getPartnerWorkers() {
+		try {
+			String methodName = "getPartnerWorkers";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			java.util.List<PartnerWorker> returnObj = (java.util.List<PartnerWorker>)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
+	public java.lang.String getStatusLabel() {
+		try {
+			String methodName = "getStatusLabel";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			java.lang.String returnObj = (java.lang.String)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
+	public SupportRegion getSupportRegion() {
+		try {
+			String methodName = "getSupportRegion";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			SupportRegion returnObj = (SupportRegion)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
+	public long[] getSupportRegionIds() {
+		try {
+			String methodName = "getSupportRegionIds";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			long[] returnObj = (long[])invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
 	public BaseModel<?> getPartnerEntryRemoteModel() {
 		return _partnerEntryRemoteModel;
 	}

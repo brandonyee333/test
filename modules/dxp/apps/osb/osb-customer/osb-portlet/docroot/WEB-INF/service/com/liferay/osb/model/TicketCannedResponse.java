@@ -55,4 +55,8 @@ public interface TicketCannedResponse extends TicketCannedResponseModel,
 				return TicketCannedResponse.class;
 			}
 		};
+
+	public java.lang.String[] getAvailableLocales();
+
+	public java.lang.String getDefaultLocale();
 }

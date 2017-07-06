@@ -16,6 +16,8 @@ package com.liferay.osb.service;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.model.AccountProject;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
@@ -24,6 +26,8 @@ import com.liferay.portal.kernel.service.BaseService;
 import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Transactional;
+
+import java.util.Map;
 
 /**
  * Provides the remote service interface for AccountProject. Methods of this
@@ -47,6 +51,14 @@ public interface AccountProjectService extends BaseService, InvokableService {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AccountProjectServiceUtil} to access the account project remote service. Add custom service methods to {@link com.liferay.osb.service.impl.AccountProjectServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	public AccountProject deleteAccountProject(long accountProjectId)
+		throws PortalException, SystemException;
+
+	public AccountProject updateAccountProject(long accountProjectId,
+		long accountEntryId, java.lang.String name,
+		Map<java.lang.Integer, java.lang.String> data)
+		throws PortalException, SystemException;
+
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)

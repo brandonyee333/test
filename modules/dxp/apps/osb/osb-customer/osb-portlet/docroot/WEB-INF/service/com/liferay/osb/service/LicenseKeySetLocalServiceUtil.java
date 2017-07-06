@@ -53,6 +53,13 @@ public class LicenseKeySetLocalServiceUtil {
 		return getService().addLicenseKeySet(licenseKeySet);
 	}
 
+	public static com.liferay.osb.model.LicenseKeySet addLicenseKeySet(
+		long userId, long accountEntryId, java.lang.String name)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().addLicenseKeySet(userId, accountEntryId, name);
+	}
+
 	/**
 	* Creates a new license key set with the primary key. Does not add the license key set to the database.
 	*
@@ -117,6 +124,13 @@ public class LicenseKeySetLocalServiceUtil {
 		return getService().updateLicenseKeySet(licenseKeySet);
 	}
 
+	public static com.liferay.osb.model.LicenseKeySet updateLicenseKeySet(
+		long licenseKeySetId, java.lang.String name)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().updateLicenseKeySet(licenseKeySetId, name);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
 		return getService().getActionableDynamicQuery();
 	}
@@ -142,6 +156,11 @@ public class LicenseKeySetLocalServiceUtil {
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getPersistedModel(primaryKeyObj);
+	}
+
+	public static int getAccountEntryLicenseKeySetsCount(long accountEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getAccountEntryLicenseKeySetsCount(accountEntryId);
 	}
 
 	/**
@@ -216,6 +235,13 @@ public class LicenseKeySetLocalServiceUtil {
 		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
 		return getService()
 				   .dynamicQuery(dynamicQuery, start, end, orderByComparator);
+	}
+
+	public static java.util.List<com.liferay.osb.model.LicenseKeySet> getAccountEntryLicenseKeySets(
+		long accountEntryId, int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .getAccountEntryLicenseKeySets(accountEntryId, start, end);
 	}
 
 	/**

@@ -71,6 +71,12 @@ public interface SupportResponseLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public SupportResponse addSupportResponse(SupportResponse supportResponse);
 
+	public SupportResponse addSupportResponse(long userId,
+		java.lang.String name, int supportLevel, int severity1Response,
+		int severity1Resolution, int severity2Response,
+		int severity2Resolution, int severity3Response, int severity3Resolution)
+		throws PortalException, SystemException;
+
 	/**
 	* Creates a new support response with the primary key. Does not add the support response to the database.
 	*
@@ -95,13 +101,18 @@ public interface SupportResponseLocalService extends BaseLocalService,
 	* @param supportResponseId the primary key of the support response
 	* @return the support response that was removed
 	* @throws PortalException if a support response with the primary key could not be found
+	* @throws SystemException
 	*/
 	@Indexable(type = IndexableType.DELETE)
 	public SupportResponse deleteSupportResponse(long supportResponseId)
-		throws PortalException;
+		throws PortalException, SystemException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public SupportResponse fetchSupportResponse(long supportResponseId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public SupportResponse fetchSupportResponseByName(java.lang.String name)
+		throws SystemException;
 
 	/**
 	* Returns the support response with the primary key.
@@ -114,6 +125,10 @@ public interface SupportResponseLocalService extends BaseLocalService,
 	public SupportResponse getSupportResponse(long supportResponseId)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public SupportResponse getSupportResponseByName(java.lang.String name)
+		throws PortalException, SystemException;
+
 	/**
 	* Updates the support response in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
@@ -123,6 +138,12 @@ public interface SupportResponseLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public SupportResponse updateSupportResponse(
 		SupportResponse supportResponse);
+
+	public SupportResponse updateSupportResponse(long supportResponseId,
+		java.lang.String name, int supportLevel, int severity1Response,
+		int severity1Resolution, int severity2Response,
+		int severity2Resolution, int severity3Response, int severity3Resolution)
+		throws PortalException, SystemException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();

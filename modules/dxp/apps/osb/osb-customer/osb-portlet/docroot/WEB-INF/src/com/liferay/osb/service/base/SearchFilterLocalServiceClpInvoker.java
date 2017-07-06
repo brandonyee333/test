@@ -123,9 +123,29 @@ public class SearchFilterLocalServiceClpInvoker {
 				"com.liferay.osb.model.SearchFilter"
 			};
 
-		_methodName254 = "getOSGiServiceIdentifier";
+		_methodName290 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes254 = new String[] {  };
+		_methodParameterTypes290 = new String[] {  };
+
+		_methodName295 = "addSearchFilter";
+
+		_methodParameterTypes295 = new String[] {
+				"long", "long", "java.lang.String", "java.lang.String", "int"
+			};
+
+		_methodName296 = "deleteSearchFilters";
+
+		_methodParameterTypes296 = new String[] { "long" };
+
+		_methodName297 = "getSearchFilters";
+
+		_methodParameterTypes297 = new String[] { "long", "long" };
+
+		_methodName298 = "updateSearchFilter";
+
+		_methodParameterTypes298 = new String[] {
+				"long", "java.lang.String", "java.lang.String", "int"
+			};
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -232,9 +252,37 @@ public class SearchFilterLocalServiceClpInvoker {
 			return SearchFilterLocalServiceUtil.updateSearchFilter((com.liferay.osb.model.SearchFilter)arguments[0]);
 		}
 
-		if (_methodName254.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes254, parameterTypes)) {
+		if (_methodName290.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes290, parameterTypes)) {
 			return SearchFilterLocalServiceUtil.getOSGiServiceIdentifier();
+		}
+
+		if (_methodName295.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes295, parameterTypes)) {
+			return SearchFilterLocalServiceUtil.addSearchFilter(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				(java.lang.String)arguments[2], (java.lang.String)arguments[3],
+				((Integer)arguments[4]).intValue());
+		}
+
+		if (_methodName296.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes296, parameterTypes)) {
+			SearchFilterLocalServiceUtil.deleteSearchFilters(((Long)arguments[0]).longValue());
+
+			return null;
+		}
+
+		if (_methodName297.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes297, parameterTypes)) {
+			return SearchFilterLocalServiceUtil.getSearchFilters(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue());
+		}
+
+		if (_methodName298.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes298, parameterTypes)) {
+			return SearchFilterLocalServiceUtil.updateSearchFilter(((Long)arguments[0]).longValue(),
+				(java.lang.String)arguments[1], (java.lang.String)arguments[2],
+				((Integer)arguments[3]).intValue());
 		}
 
 		throw new UnsupportedOperationException();
@@ -278,6 +326,14 @@ public class SearchFilterLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName254;
-	private String[] _methodParameterTypes254;
+	private String _methodName290;
+	private String[] _methodParameterTypes290;
+	private String _methodName295;
+	private String[] _methodParameterTypes295;
+	private String _methodName296;
+	private String[] _methodParameterTypes296;
+	private String _methodName297;
+	private String[] _methodParameterTypes297;
+	private String _methodName298;
+	private String[] _methodParameterTypes298;
 }

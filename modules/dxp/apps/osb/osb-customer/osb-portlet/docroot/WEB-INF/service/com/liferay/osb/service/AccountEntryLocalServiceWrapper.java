@@ -57,6 +57,18 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 			accountEntryId);
 	}
 
+	@Override
+	public boolean hasValidLicenseAccountEntry(long userId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntryLocalService.hasValidLicenseAccountEntry(userId);
+	}
+
+	@Override
+	public boolean hasValidSupportAccountEntry(long userId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntryLocalService.hasValidSupportAccountEntry(userId);
+	}
+
 	/**
 	* Adds the account entry to the database. Also notifies the appropriate model listeners.
 	*
@@ -67,6 +79,44 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 	public com.liferay.osb.model.AccountEntry addAccountEntry(
 		com.liferay.osb.model.AccountEntry accountEntry) {
 		return _accountEntryLocalService.addAccountEntry(accountEntry);
+	}
+
+	@Override
+	public com.liferay.osb.model.AccountEntry addAccountEntry(long userId,
+		long corpProjectId, java.lang.String corpEntryName,
+		java.lang.String name, java.lang.String code, int type, int industry,
+		long partnerEntryId, boolean partnerManagedSupport, int tier,
+		int maxCustomers, java.lang.String instructions,
+		java.lang.String notes, java.lang.String[] languageIds,
+		long[] supportRegionIds, java.lang.String street1,
+		java.lang.String street2, java.lang.String street3,
+		java.lang.String city, java.lang.String zip, long regionId,
+		long countryId, java.lang.String ewsaDossieraProjectKey)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntryLocalService.addAccountEntry(userId, corpProjectId,
+			corpEntryName, name, code, type, industry, partnerEntryId,
+			partnerManagedSupport, tier, maxCustomers, instructions, notes,
+			languageIds, supportRegionIds, street1, street2, street3, city,
+			zip, regionId, countryId, ewsaDossieraProjectKey);
+	}
+
+	@Override
+	public com.liferay.osb.model.AccountEntry addAccountEntryWithWorkflow(
+		java.lang.String salesforceOpportunityKey,
+		com.liferay.osb.model.AccountEntry accountEntry,
+		com.liferay.osb.model.CorpProject corpProject,
+		com.liferay.osb.model.PartnerEntry partnerEntry,
+		com.liferay.portal.kernel.model.Address address,
+		com.liferay.osb.model.AccountWorker accountWorker,
+		java.util.List<com.liferay.osb.model.OrderEntry> orderEntries,
+		java.util.ArrayList<com.liferay.portal.kernel.model.User> users,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntryLocalService.addAccountEntryWithWorkflow(salesforceOpportunityKey,
+			accountEntry, corpProject, partnerEntry, address, accountWorker,
+			orderEntries, users, serviceContext);
 	}
 
 	/**
@@ -99,11 +149,13 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 	* @param accountEntryId the primary key of the account entry
 	* @return the account entry that was removed
 	* @throws PortalException if a account entry with the primary key could not be found
+	* @throws SystemException
 	*/
 	@Override
 	public com.liferay.osb.model.AccountEntry deleteAccountEntry(
 		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
 		return _accountEntryLocalService.deleteAccountEntry(accountEntryId);
 	}
 
@@ -113,18 +165,49 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 		return _accountEntryLocalService.fetchAccountEntry(accountEntryId);
 	}
 
+	@Override
+	public com.liferay.osb.model.AccountEntry fetchCorpProjectAccountEntry(
+		long corpProjectId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntryLocalService.fetchCorpProjectAccountEntry(corpProjectId);
+	}
+
+	@Override
+	public com.liferay.osb.model.AccountEntry fetchUserTrialAccountEntry(
+		long userId) throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntryLocalService.fetchUserTrialAccountEntry(userId);
+	}
+
 	/**
 	* Returns the account entry with the primary key.
 	*
 	* @param accountEntryId the primary key of the account entry
 	* @return the account entry
 	* @throws PortalException if a account entry with the primary key could not be found
+	* @throws SystemException
 	*/
 	@Override
 	public com.liferay.osb.model.AccountEntry getAccountEntry(
 		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
 		return _accountEntryLocalService.getAccountEntry(accountEntryId);
+	}
+
+	@Override
+	public com.liferay.osb.model.AccountEntry getAccountEntryByCode(
+		java.lang.String code)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntryLocalService.getAccountEntryByCode(code);
+	}
+
+	@Override
+	public com.liferay.osb.model.AccountEntry getAccountEntryByName(
+		java.lang.String name)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntryLocalService.getAccountEntryByName(name);
 	}
 
 	/**
@@ -137,6 +220,74 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 	public com.liferay.osb.model.AccountEntry updateAccountEntry(
 		com.liferay.osb.model.AccountEntry accountEntry) {
 		return _accountEntryLocalService.updateAccountEntry(accountEntry);
+	}
+
+	@Override
+	public com.liferay.osb.model.AccountEntry updateAccountEntry(long userId,
+		long accountEntryId, long corpProjectId,
+		java.lang.String corpEntryName, java.lang.String name,
+		java.lang.String code, int type, int industry, long partnerEntryId,
+		boolean partnerManagedSupport, int tier, int maxCustomers,
+		java.lang.String instructions, java.lang.String notes,
+		java.lang.String[] languageIds, long[] supportRegionIds,
+		long addressId, java.lang.String street1, java.lang.String street2,
+		java.lang.String street3, java.lang.String city, java.lang.String zip,
+		long regionId, long countryId, java.lang.String ewsaDossieraProjectKey)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntryLocalService.updateAccountEntry(userId,
+			accountEntryId, corpProjectId, corpEntryName, name, code, type,
+			industry, partnerEntryId, partnerManagedSupport, tier,
+			maxCustomers, instructions, notes, languageIds, supportRegionIds,
+			addressId, street1, street2, street3, city, zip, regionId,
+			countryId, ewsaDossieraProjectKey);
+	}
+
+	@Override
+	public com.liferay.osb.model.AccountEntry updateCorpProject(
+		long accountEntryId, long corpProjectId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntryLocalService.updateCorpProject(accountEntryId,
+			corpProjectId);
+	}
+
+	@Override
+	public com.liferay.osb.model.AccountEntry updateInstructions(long userId,
+		long accountEntryId, java.lang.String instructions)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntryLocalService.updateInstructions(userId,
+			accountEntryId, instructions);
+	}
+
+	@Override
+	public com.liferay.osb.model.AccountEntry updateStatus(long userId,
+		long accountEntryId, int status,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntryLocalService.updateStatus(userId, accountEntryId,
+			status, serviceContext);
+	}
+
+	@Override
+	public com.liferay.osb.model.AccountEntry updateStatus(long userId,
+		long accountEntryId, java.lang.String salesforceOpportunityKey,
+		int status,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntryLocalService.updateStatus(userId, accountEntryId,
+			salesforceOpportunityKey, status, serviceContext);
+	}
+
+	@Override
+	public com.liferay.osb.model.AccountEntry updateTier(long userId,
+		long accountEntryId, int tier)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntryLocalService.updateTier(userId, accountEntryId, tier);
 	}
 
 	@Override
@@ -189,6 +340,45 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 	@Override
 	public int getSupportTeamAccountEntriesCount(long supportTeamId) {
 		return _accountEntryLocalService.getSupportTeamAccountEntriesCount(supportTeamId);
+	}
+
+	@Override
+	public int getUserAccountEntriesCount(long userId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntryLocalService.getUserAccountEntriesCount(userId);
+	}
+
+	@Override
+	public int searchCount(java.lang.Long createUserId, int createDateGTDay,
+		int createDateGTMonth, int createDateGTYear, int createDateLTDay,
+		int createDateLTMonth, int createDateLTYear,
+		java.lang.Long modifiedUserId, int modifiedDateGTDay,
+		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
+		int modifiedDateLTMonth, int modifiedDateLTYear, java.lang.String name,
+		java.lang.String code, int[] industries,
+		java.lang.Boolean partnerManagedSupport, int[] tiers, int[] statuses,
+		java.lang.String instructions, java.lang.String notes,
+		java.lang.String partnerEntryCode, java.lang.String street,
+		java.lang.Long countryId, java.lang.Long regionId,
+		java.lang.String city, java.lang.String zip,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+		boolean andOperator)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntryLocalService.searchCount(createUserId,
+			createDateGTDay, createDateGTMonth, createDateGTYear,
+			createDateLTDay, createDateLTMonth, createDateLTYear,
+			modifiedUserId, modifiedDateGTDay, modifiedDateGTMonth,
+			modifiedDateGTYear, modifiedDateLTDay, modifiedDateLTMonth,
+			modifiedDateLTYear, name, code, industries, partnerManagedSupport,
+			tiers, statuses, instructions, notes, partnerEntryCode, street,
+			countryId, regionId, city, zip, params, andOperator);
+	}
+
+	@Override
+	public int searchCount(java.lang.String keywords,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntryLocalService.searchCount(keywords, params);
 	}
 
 	@Override
@@ -280,6 +470,51 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 	}
 
 	@Override
+	public java.util.List<com.liferay.osb.model.AccountEntry> getAccountEntries(
+		int[] notTypes, int[] statuses, int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntryLocalService.getAccountEntries(notTypes, statuses,
+			start, end);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountEntry> getAccountEntries(
+		int[] statuses, int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntryLocalService.getAccountEntries(statuses, start, end);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountEntry> getActiveAccountEntries(
+		int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntryLocalService.getActiveAccountEntries(start, end);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountEntry> getPartnerAccountEntries(
+		long partnerEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntryLocalService.getPartnerAccountEntries(partnerEntryId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountEntry> getRedirectAccountEntries(
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntryLocalService.getRedirectAccountEntries(accountEntryId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountEntry> getSecurityPatchAccountEntries(
+		java.lang.String portletId,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntryLocalService.getSecurityPatchAccountEntries(portletId,
+			params);
+	}
+
+	@Override
 	public java.util.List<com.liferay.osb.model.AccountEntry> getSupportRegionAccountEntries(
 		long supportRegionId) {
 		return _accountEntryLocalService.getSupportRegionAccountEntries(supportRegionId);
@@ -319,6 +554,83 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.osb.model.AccountEntry> orderByComparator) {
 		return _accountEntryLocalService.getSupportTeamAccountEntries(supportTeamId,
 			start, end, orderByComparator);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountEntry> getUserAccountEntries(
+		long userId, int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntryLocalService.getUserAccountEntries(userId, start,
+			end);
+	}
+
+	@Override
+	public java.util.List<java.lang.Long> getUserAccountEntryIds(long userId,
+		int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntryLocalService.getUserAccountEntryIds(userId, start,
+			end);
+	}
+
+	@Override
+	public java.util.List<java.lang.String> getUserAccountEntryNames(
+		long userId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntryLocalService.getUserAccountEntryNames(userId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountEntry> getUserActiveAccountEntries(
+		long userId, int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntryLocalService.getUserActiveAccountEntries(userId,
+			start, end);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountEntry> search(
+		java.lang.Long createUserId, int createDateGTDay,
+		int createDateGTMonth, int createDateGTYear, int createDateLTDay,
+		int createDateLTMonth, int createDateLTYear,
+		java.lang.Long modifiedUserId, int modifiedDateGTDay,
+		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
+		int modifiedDateLTMonth, int modifiedDateLTYear, java.lang.String name,
+		java.lang.String code, int[] industries,
+		java.lang.Boolean partnerManagedSupport, int[] tiers, int[] statuses,
+		java.lang.String instructions, java.lang.String notes,
+		java.lang.String partnerEntryCode, java.lang.String street,
+		java.lang.Long countryId, java.lang.Long regionId,
+		java.lang.String city, java.lang.String zip,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+		boolean andOperator, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator obc)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntryLocalService.search(createUserId, createDateGTDay,
+			createDateGTMonth, createDateGTYear, createDateLTDay,
+			createDateLTMonth, createDateLTYear, modifiedUserId,
+			modifiedDateGTDay, modifiedDateGTMonth, modifiedDateGTYear,
+			modifiedDateLTDay, modifiedDateLTMonth, modifiedDateLTYear, name,
+			code, industries, partnerManagedSupport, tiers, statuses,
+			instructions, notes, partnerEntryCode, street, countryId, regionId,
+			city, zip, params, andOperator, start, end, obc);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountEntry> search(
+		java.lang.String keywords,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntryLocalService.search(keywords, params, start, end,
+			obc);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountEntry> search(
+		java.lang.String name, java.lang.String code)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntryLocalService.search(name, code);
 	}
 
 	/**
@@ -427,6 +739,26 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 	}
 
 	@Override
+	public void addTrialAccountEntry(long userId, long trialLicenseKeyId)
+		throws java.lang.Exception {
+		_accountEntryLocalService.addTrialAccountEntry(userId, trialLicenseKeyId);
+	}
+
+	@Override
+	public void auditAccountEntries()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_accountEntryLocalService.auditAccountEntries();
+	}
+
+	@Override
+	public void auditAccountEntry(long userId, long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_accountEntryLocalService.auditAccountEntry(userId, accountEntryId);
+	}
+
+	@Override
 	public void clearSupportRegionAccountEntries(long supportRegionId) {
 		_accountEntryLocalService.clearSupportRegionAccountEntries(supportRegionId);
 	}
@@ -493,6 +825,20 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 	}
 
 	@Override
+	public void recalculateHighestSupportResponse(long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_accountEntryLocalService.recalculateHighestSupportResponse(accountEntryId);
+	}
+
+	@Override
+	public void reindexAccountEntry(long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_accountEntryLocalService.reindexAccountEntry(accountEntryId);
+	}
+
+	@Override
 	public void setSupportRegionAccountEntries(long supportRegionId,
 		long[] accountEntryIds) {
 		_accountEntryLocalService.setSupportRegionAccountEntries(supportRegionId,
@@ -504,6 +850,43 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 		long[] accountEntryIds) {
 		_accountEntryLocalService.setSupportTeamAccountEntries(supportTeamId,
 			accountEntryIds);
+	}
+
+	@Override
+	public void updateAccountEntryWithWorkflow(
+		java.lang.String salesforceOpportunityKey,
+		com.liferay.osb.model.AccountEntry accountEntry,
+		com.liferay.osb.model.PartnerEntry partnerEntry,
+		com.liferay.portal.kernel.model.Address address,
+		java.util.List<com.liferay.osb.model.OrderEntry> orderEntries,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_accountEntryLocalService.updateAccountEntryWithWorkflow(salesforceOpportunityKey,
+			accountEntry, partnerEntry, address, orderEntries, serviceContext);
+	}
+
+	@Override
+	public void updateLastAuditDate(long userId, long accountEntryId,
+		java.lang.String auditLabel, java.lang.String auditValue)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_accountEntryLocalService.updateLastAuditDate(userId, accountEntryId,
+			auditLabel, auditValue);
+	}
+
+	@Override
+	public void updateStatus(long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_accountEntryLocalService.updateStatus(accountEntryId);
+	}
+
+	@Override
+	public void validate(com.liferay.osb.model.AccountEntry accountEntry)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_accountEntryLocalService.validate(accountEntry);
 	}
 
 	@Override

@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -70,6 +71,11 @@ public interface TicketLinkLocalService extends BaseLocalService,
 	*/
 	@Indexable(type = IndexableType.REINDEX)
 	public TicketLink addTicketLink(TicketLink ticketLink);
+
+	public TicketLink addTicketLink(long userId, long ticketEntryId,
+		long ticketSolutionId, java.lang.String[] urls,
+		java.lang.Integer[] types, int visibility, ServiceContext serviceContext)
+		throws PortalException, SystemException;
 
 	/**
 	* Creates a new ticket link with the primary key. Does not add the ticket link to the database.
@@ -150,6 +156,14 @@ public interface TicketLinkLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getTicketLinksCount();
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getTicketLinksCount(long ticketEntryId, int visibility)
+		throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getTicketLinksCount(long ticketEntryId, int[] visibilities)
+		throws SystemException;
+
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
@@ -215,6 +229,18 @@ public interface TicketLinkLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TicketLink> getTicketLinks(int start, int end);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TicketLink> getTicketLinks(long ticketEntryId, int visibility)
+		throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TicketLink> getTicketLinks(long ticketEntryId,
+		int[] visibilities) throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TicketLink> getTicketLinks(long ticketEntryId,
+		long ticketSolutionId) throws SystemException;
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -232,4 +258,10 @@ public interface TicketLinkLocalService extends BaseLocalService,
 	*/
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
+
+	public void deleteTicketLink(long userId, TicketLink ticketLink)
+		throws PortalException, SystemException;
+
+	public void deleteTicketLink(long userId, long ticketLinkId)
+		throws PortalException, SystemException;
 }

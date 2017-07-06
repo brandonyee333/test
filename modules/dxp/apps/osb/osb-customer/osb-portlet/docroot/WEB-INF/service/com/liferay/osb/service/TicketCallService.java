@@ -16,6 +16,8 @@ package com.liferay.osb.service;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.model.TicketCall;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
@@ -47,6 +49,12 @@ public interface TicketCallService extends BaseService, InvokableService {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link TicketCallServiceUtil} to access the ticket call remote service. Add custom service methods to {@link com.liferay.osb.service.impl.TicketCallServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	public TicketCall addTicketCall(long ticketEntryId, int type,
+		int callDateMonth, int callDateDay, int callDateYear, int callDateHour,
+		int callDateMinute, long callLength, java.lang.String customerName,
+		java.lang.String customerContact, java.lang.String confirmation,
+		java.lang.String instructions) throws PortalException, SystemException;
+
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)

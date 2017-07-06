@@ -53,6 +53,13 @@ public class ExternalIdMapperLocalServiceUtil {
 		return getService().addExternalIdMapper(externalIdMapper);
 	}
 
+	public static com.liferay.osb.model.ExternalIdMapper addExternalIdMapper(
+		long classNameId, long classPK, int type, java.lang.String externalId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .addExternalIdMapper(classNameId, classPK, type, externalId);
+	}
+
 	/**
 	* Creates a new external ID mapper with the primary key. Does not add the external ID mapper to the database.
 	*
@@ -115,6 +122,16 @@ public class ExternalIdMapperLocalServiceUtil {
 	public static com.liferay.osb.model.ExternalIdMapper updateExternalIdMapper(
 		com.liferay.osb.model.ExternalIdMapper externalIdMapper) {
 		return getService().updateExternalIdMapper(externalIdMapper);
+	}
+
+	public static com.liferay.osb.model.ExternalIdMapper updateExternalIdMapper(
+		long externalIdMapperId, long classNameId, long classPK, int type,
+		java.lang.String externalId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .updateExternalIdMapper(externalIdMapperId, classNameId,
+			classPK, type, externalId);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
@@ -234,6 +251,18 @@ public class ExternalIdMapperLocalServiceUtil {
 		return getService().getExternalIdMappers(start, end);
 	}
 
+	public static java.util.List<com.liferay.osb.model.ExternalIdMapper> getExternalIdMappers(
+		long classNameId, int type, java.lang.String externalId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getExternalIdMappers(classNameId, type, externalId);
+	}
+
+	public static java.util.List<com.liferay.osb.model.ExternalIdMapper> getExternalIdMappers(
+		long classNameId, long classPK, int type)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getExternalIdMappers(classNameId, classPK, type);
+	}
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -256,6 +285,11 @@ public class ExternalIdMapperLocalServiceUtil {
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
+	}
+
+	public static void deleteExternalIdMapper(long classNameId, long classPK,
+		int type) throws com.liferay.portal.kernel.exception.SystemException {
+		getService().deleteExternalIdMapper(classNameId, classPK, type);
 	}
 
 	public static void clearService() {

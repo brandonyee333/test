@@ -320,6 +320,25 @@ public class LicenseKeySetClp extends BaseModelImpl<LicenseKeySet>
 		}
 	}
 
+	@Override
+	public AccountEntry getAccountEntry() {
+		try {
+			String methodName = "getAccountEntry";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			AccountEntry returnObj = (AccountEntry)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
 	public BaseModel<?> getLicenseKeySetRemoteModel() {
 		return _licenseKeySetRemoteModel;
 	}

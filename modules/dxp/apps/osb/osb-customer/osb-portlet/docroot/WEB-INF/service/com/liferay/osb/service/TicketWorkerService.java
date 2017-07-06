@@ -16,6 +16,8 @@ package com.liferay.osb.service;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.model.TicketWorker;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
@@ -24,6 +26,8 @@ import com.liferay.portal.kernel.service.BaseService;
 import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Transactional;
+
+import java.util.List;
 
 /**
  * Provides the remote service interface for TicketWorker. Methods of this
@@ -58,4 +62,17 @@ public interface TicketWorkerService extends BaseService, InvokableService {
 	* @return the OSGi service identifier
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
+
+	public List<TicketWorker> addTicketWorkers(long[] userIds,
+		long ticketEntryId, long[] sourceClassNameIds, long[] sourceClassPKs,
+		int[] roles, long primaryUserId)
+		throws PortalException, SystemException;
+
+	public List<TicketWorker> updateTicketWorkers(long[] addUserIds,
+		int[] addRoles, long[] removeUserIds, long ticketEntryId,
+		long[] sourceClassNameIds, long[] sourceClassPKs, long primaryUserId)
+		throws PortalException, SystemException;
+
+	public void deleteTicketWorkers(long[] userIds, long ticketEntryId,
+		long primaryUserId) throws PortalException, SystemException;
 }

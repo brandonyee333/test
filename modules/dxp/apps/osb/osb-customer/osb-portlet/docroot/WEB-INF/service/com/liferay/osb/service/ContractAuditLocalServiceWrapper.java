@@ -34,6 +34,39 @@ public class ContractAuditLocalServiceWrapper
 		_contractAuditLocalService = contractAuditLocalService;
 	}
 
+	@Override
+	public boolean hasContractAudit(long classNameId, long classPK, int type,
+		java.lang.String signatoryClassName, long signatoryClassPK)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _contractAuditLocalService.hasContractAudit(classNameId,
+			classPK, type, signatoryClassName, signatoryClassPK);
+	}
+
+	@Override
+	public boolean hasContractAudit(long contractEntryId,
+		java.lang.String signatoryClassName, long signatoryClassPK)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _contractAuditLocalService.hasContractAudit(contractEntryId,
+			signatoryClassName, signatoryClassPK);
+	}
+
+	@Override
+	public boolean hasContractAudit(long userId, long contractEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _contractAuditLocalService.hasContractAudit(userId,
+			contractEntryId);
+	}
+
+	@Override
+	public boolean hasLatestContractAudit(long classNameId, long classPK,
+		int type, java.lang.String signatoryClassName, long signatoryClassPK)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _contractAuditLocalService.hasLatestContractAudit(classNameId,
+			classPK, type, signatoryClassName, signatoryClassPK);
+	}
+
 	/**
 	* Adds the contract audit to the database. Also notifies the appropriate model listeners.
 	*
@@ -146,6 +179,21 @@ public class ContractAuditLocalServiceWrapper
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _contractAuditLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public int getContractAuditCount(long contractEntryId,
+		java.lang.String signatoryClassName, long signatoryClassPK)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _contractAuditLocalService.getContractAuditCount(contractEntryId,
+			signatoryClassName, signatoryClassPK);
+	}
+
+	@Override
+	public int getContractAuditCount(long userId, long contractEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _contractAuditLocalService.getContractAuditCount(userId,
+			contractEntryId);
 	}
 
 	/**
@@ -271,6 +319,17 @@ public class ContractAuditLocalServiceWrapper
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return _contractAuditLocalService.dynamicQueryCount(dynamicQuery,
 			projection);
+	}
+
+	@Override
+	public void addContractAudit(long userId, long contractEntryId,
+		java.lang.String signatoryClassName, long signatoryClassPK,
+		java.lang.String productClassName, long productClassPK)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_contractAuditLocalService.addContractAudit(userId, contractEntryId,
+			signatoryClassName, signatoryClassPK, productClassName,
+			productClassPK);
 	}
 
 	@Override

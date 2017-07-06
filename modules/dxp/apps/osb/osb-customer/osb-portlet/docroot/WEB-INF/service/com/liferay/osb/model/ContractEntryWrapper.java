@@ -286,6 +286,11 @@ public class ContractEntryWrapper implements ContractEntry,
 		return _contractEntry.getDefaultLanguageId();
 	}
 
+	@Override
+	public java.lang.String getTypeLabel() {
+		return _contractEntry.getTypeLabel();
+	}
+
 	/**
 	* Returns the user name of this contract entry.
 	*

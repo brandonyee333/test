@@ -31,6 +31,7 @@ import java.io.Serializable;
 import java.lang.reflect.Method;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -626,6 +627,84 @@ public class SupportLaborClp extends BaseModelImpl<SupportLabor>
 			catch (Exception e) {
 				throw new UnsupportedOperationException(e);
 			}
+		}
+	}
+
+	@Override
+	public java.lang.String formatDayHours(Locale locale, int day) {
+		try {
+			String methodName = "formatDayHours";
+
+			Class<?>[] parameterTypes = new Class<?>[] { Locale.class, int.class };
+
+			Object[] parameterValues = new Object[] { locale, day };
+
+			java.lang.String returnObj = (java.lang.String)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
+	public java.lang.String formatTime(Locale locale, int day, int type) {
+		try {
+			String methodName = "formatTime";
+
+			Class<?>[] parameterTypes = new Class<?>[] {
+					Locale.class, int.class, int.class
+				};
+
+			Object[] parameterValues = new Object[] { locale, day, type };
+
+			java.lang.String returnObj = (java.lang.String)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
+	public java.util.List<SupportTeam> getSupportTeams() {
+		try {
+			String methodName = "getSupportTeams";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			java.util.List<SupportTeam> returnObj = (java.util.List<SupportTeam>)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
+	public int getTime(int day, int type) {
+		try {
+			String methodName = "getTime";
+
+			Class<?>[] parameterTypes = new Class<?>[] { int.class, int.class };
+
+			Object[] parameterValues = new Object[] { day, type };
+
+			Integer returnObj = (Integer)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
 		}
 	}
 

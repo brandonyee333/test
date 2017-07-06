@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
+import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.service.BaseService;
 import com.liferay.portal.kernel.service.InvokableService;
@@ -47,6 +48,18 @@ public interface OSBCountryService extends BaseService, InvokableService {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link OSBCountryServiceUtil} to access the osb country remote service. Add custom service methods to {@link com.liferay.osb.service.impl.OSBCountryServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	public Country addCountry(java.lang.String name, java.lang.String a2,
+		java.lang.String a3, java.lang.String number, java.lang.String idd,
+		boolean active) throws PortalException, SystemException;
+
+	public Country deleteCountry(long countryId)
+		throws PortalException, SystemException;
+
+	public Country updateCountry(long countryId, java.lang.String name,
+		java.lang.String a2, java.lang.String a3, java.lang.String number,
+		java.lang.String idd, boolean active)
+		throws PortalException, SystemException;
+
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)

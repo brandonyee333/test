@@ -234,6 +234,12 @@ public class SupportTeamLanguageLocalServiceUtil {
 		return getService().getSupportTeamLanguages(start, end);
 	}
 
+	public static java.util.List<com.liferay.osb.model.SupportTeamLanguage> getSupportTeamLanguages(
+		long supportTeamId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getSupportTeamLanguages(supportTeamId);
+	}
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -256,6 +262,12 @@ public class SupportTeamLanguageLocalServiceUtil {
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
+	}
+
+	public static void setSupportTeamLanguageIds(long supportTeamId,
+		java.lang.String[] languageIds)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		getService().setSupportTeamLanguageIds(supportTeamId, languageIds);
 	}
 
 	public static void clearService() {

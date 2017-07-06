@@ -274,6 +274,13 @@ public class AccountEntryWrapper implements AccountEntry,
 		return new AccountEntryWrapper(_accountEntry.toUnescapedModel());
 	}
 
+	@Override
+	public PartnerEntry getPartnerEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntry.getPartnerEntry();
+	}
+
 	/**
 	* Returns the partner managed support of this account entry.
 	*
@@ -395,6 +402,12 @@ public class AccountEntryWrapper implements AccountEntry,
 	}
 
 	@Override
+	public com.liferay.portal.kernel.model.Address getAddress()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntry.getAddress();
+	}
+
+	@Override
 	public com.liferay.portal.kernel.model.CacheModel<AccountEntry> toCacheModel() {
 		return _accountEntry.toCacheModel();
 	}
@@ -489,6 +502,17 @@ public class AccountEntryWrapper implements AccountEntry,
 		return _accountEntry.getCorpEntryName();
 	}
 
+	@Override
+	public java.lang.String getEWSADossieraProjectKey()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntry.getEWSADossieraProjectKey();
+	}
+
+	@Override
+	public java.lang.String getIndustryLabel() {
+		return _accountEntry.getIndustryLabel();
+	}
+
 	/**
 	* Returns the instructions of this account entry.
 	*
@@ -559,6 +583,11 @@ public class AccountEntryWrapper implements AccountEntry,
 		return _accountEntry.getStatusByUserUuid();
 	}
 
+	@Override
+	public java.lang.String getStatusLabel() {
+		return _accountEntry.getStatusLabel();
+	}
+
 	/**
 	* Returns the status message of this account entry.
 	*
@@ -567,6 +596,11 @@ public class AccountEntryWrapper implements AccountEntry,
 	@Override
 	public java.lang.String getStatusMessage() {
 		return _accountEntry.getStatusMessage();
+	}
+
+	@Override
+	public java.lang.String getTypeLabel() {
+		return _accountEntry.getTypeLabel();
 	}
 
 	/**
@@ -597,6 +631,12 @@ public class AccountEntryWrapper implements AccountEntry,
 	@Override
 	public java.lang.String toXmlString() {
 		return _accountEntry.toXmlString();
+	}
+
+	@Override
+	public java.lang.String[] getLanguageIds()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntry.getLanguageIds();
 	}
 
 	/**
@@ -637,6 +677,43 @@ public class AccountEntryWrapper implements AccountEntry,
 	@Override
 	public Date getStatusDate() {
 		return _accountEntry.getStatusDate();
+	}
+
+	@Override
+	public java.util.List<AccountAttachment> getAccountAttachments(
+		long accountProjectId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntry.getAccountAttachments(accountProjectId);
+	}
+
+	@Override
+	public java.util.List<AccountCustomer> getAccountCustomers()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntry.getAccountCustomers();
+	}
+
+	@Override
+	public java.util.List<AccountWorker> getAccountWorkers()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntry.getAccountWorkers();
+	}
+
+	@Override
+	public java.util.List<OfferingEntry> getOfferingEntries()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntry.getOfferingEntries();
+	}
+
+	@Override
+	public java.util.List<OrderEntry> getOrderEntries()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntry.getOrderEntries();
+	}
+
+	@Override
+	public java.util.List<SupportRegion> getSupportRegions()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntry.getSupportRegions();
 	}
 
 	/**
@@ -740,6 +817,12 @@ public class AccountEntryWrapper implements AccountEntry,
 	}
 
 	@Override
+	public long[] getSupportRegionIds()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntry.getSupportRegionIds();
+	}
+
+	@Override
 	public void persist() {
 		_accountEntry.persist();
 	}
@@ -752,6 +835,11 @@ public class AccountEntryWrapper implements AccountEntry,
 	@Override
 	public void setAccountEntryId(long accountEntryId) {
 		_accountEntry.setAccountEntryId(accountEntryId);
+	}
+
+	@Override
+	public void setAddress(com.liferay.portal.kernel.model.Address address) {
+		_accountEntry.setAddress(address);
 	}
 
 	@Override
@@ -853,6 +941,11 @@ public class AccountEntryWrapper implements AccountEntry,
 	@Override
 	public void setInstructions(java.lang.String instructions) {
 		_accountEntry.setInstructions(instructions);
+	}
+
+	@Override
+	public void setLanguageIds(java.lang.String[] languageIds) {
+		_accountEntry.setLanguageIds(languageIds);
 	}
 
 	/**
@@ -1043,6 +1136,11 @@ public class AccountEntryWrapper implements AccountEntry,
 	@Override
 	public void setStatusMessage(java.lang.String statusMessage) {
 		_accountEntry.setStatusMessage(statusMessage);
+	}
+
+	@Override
+	public void setSupportRegionIds(long[] supportRegionIds) {
+		_accountEntry.setSupportRegionIds(supportRegionIds);
 	}
 
 	/**

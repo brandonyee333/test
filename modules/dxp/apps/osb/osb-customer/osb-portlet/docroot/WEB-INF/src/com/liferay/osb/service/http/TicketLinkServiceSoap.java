@@ -16,9 +16,16 @@ package com.liferay.osb.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.service.TicketLinkServiceUtil;
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import java.rmi.RemoteException;
+
 /**
  * Provides the SOAP utility for the
- * {@link com.liferay.osb.service.TicketLinkServiceUtil} service utility. The
+ * {@link TicketLinkServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it is difficult for SOAP to
  * support certain types.
@@ -53,9 +60,41 @@ import aQute.bnd.annotation.ProviderType;
  * @author Brian Wing Shun Chan
  * @see TicketLinkServiceHttp
  * @see com.liferay.osb.model.TicketLinkSoap
- * @see com.liferay.osb.service.TicketLinkServiceUtil
+ * @see TicketLinkServiceUtil
  * @generated
  */
 @ProviderType
 public class TicketLinkServiceSoap {
+	public static com.liferay.osb.model.TicketLinkSoap addTicketLink(
+		long userId, long ticketEntryId, long ticketSolutionId,
+		java.lang.String[] urls, java.lang.Integer[] types, int visibility,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws RemoteException {
+		try {
+			com.liferay.osb.model.TicketLink returnValue = TicketLinkServiceUtil.addTicketLink(userId,
+					ticketEntryId, ticketSolutionId, urls, types, visibility,
+					serviceContext);
+
+			return com.liferay.osb.model.TicketLinkSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static void deleteTicketLink(long ticketLinkId)
+		throws RemoteException {
+		try {
+			TicketLinkServiceUtil.deleteTicketLink(ticketLinkId);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	private static Log _log = LogFactoryUtil.getLog(TicketLinkServiceSoap.class);
 }

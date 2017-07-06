@@ -16,9 +16,16 @@ package com.liferay.osb.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.service.LicenseKeySetServiceUtil;
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import java.rmi.RemoteException;
+
 /**
  * Provides the SOAP utility for the
- * {@link com.liferay.osb.service.LicenseKeySetServiceUtil} service utility. The
+ * {@link LicenseKeySetServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it is difficult for SOAP to
  * support certain types.
@@ -53,9 +60,83 @@ import aQute.bnd.annotation.ProviderType;
  * @author Brian Wing Shun Chan
  * @see LicenseKeySetServiceHttp
  * @see com.liferay.osb.model.LicenseKeySetSoap
- * @see com.liferay.osb.service.LicenseKeySetServiceUtil
+ * @see LicenseKeySetServiceUtil
  * @generated
  */
 @ProviderType
 public class LicenseKeySetServiceSoap {
+	public static com.liferay.osb.model.LicenseKeySetSoap addLicenseKeySet(
+		long userId, long accountEntryId, java.lang.String name)
+		throws RemoteException {
+		try {
+			com.liferay.osb.model.LicenseKeySet returnValue = LicenseKeySetServiceUtil.addLicenseKeySet(userId,
+					accountEntryId, name);
+
+			return com.liferay.osb.model.LicenseKeySetSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.LicenseKeySetSoap deleteLicenseKeySet(
+		long licenseKeySetId) throws RemoteException {
+		try {
+			com.liferay.osb.model.LicenseKeySet returnValue = LicenseKeySetServiceUtil.deleteLicenseKeySet(licenseKeySetId);
+
+			return com.liferay.osb.model.LicenseKeySetSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static java.lang.String exportToXML(long licenseKeySetId)
+		throws RemoteException {
+		try {
+			java.lang.String returnValue = LicenseKeySetServiceUtil.exportToXML(licenseKeySetId);
+
+			return returnValue;
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.LicenseKeySetSoap getLicenseKeySet(
+		long licenseKeySetId) throws RemoteException {
+		try {
+			com.liferay.osb.model.LicenseKeySet returnValue = LicenseKeySetServiceUtil.getLicenseKeySet(licenseKeySetId);
+
+			return com.liferay.osb.model.LicenseKeySetSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.LicenseKeySetSoap updateLicenseKeySet(
+		long licenseKeySetId, java.lang.String name) throws RemoteException {
+		try {
+			com.liferay.osb.model.LicenseKeySet returnValue = LicenseKeySetServiceUtil.updateLicenseKeySet(licenseKeySetId,
+					name);
+
+			return com.liferay.osb.model.LicenseKeySetSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	private static Log _log = LogFactoryUtil.getLog(LicenseKeySetServiceSoap.class);
 }

@@ -166,6 +166,20 @@ public class OfferingDefinitionWrapper implements OfferingDefinition,
 		return new OfferingDefinitionWrapper(_offeringDefinition.toUnescapedModel());
 	}
 
+	@Override
+	public ProductEntry getProductEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _offeringDefinition.getProductEntry();
+	}
+
+	@Override
+	public SupportResponse getSupportResponse()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _offeringDefinition.getSupportResponse();
+	}
+
 	/**
 	* Returns the licenses of this offering definition.
 	*
@@ -257,6 +271,11 @@ public class OfferingDefinitionWrapper implements OfferingDefinition,
 	}
 
 	@Override
+	public int getQuantity() {
+		return _offeringDefinition.getQuantity();
+	}
+
+	@Override
 	public int hashCode() {
 		return _offeringDefinition.hashCode();
 	}
@@ -271,6 +290,21 @@ public class OfferingDefinitionWrapper implements OfferingDefinition,
 		return new OfferingDefinitionWrapper((OfferingDefinition)_offeringDefinition.clone());
 	}
 
+	@Override
+	public java.lang.String getLicensesLabel() {
+		return _offeringDefinition.getLicensesLabel();
+	}
+
+	@Override
+	public java.lang.String getMaxConcurrentUsersLabel() {
+		return _offeringDefinition.getMaxConcurrentUsersLabel();
+	}
+
+	@Override
+	public java.lang.String getMaxUsersLabel() {
+		return _offeringDefinition.getMaxUsersLabel();
+	}
+
 	/**
 	* Returns the product description of this offering definition.
 	*
@@ -279,6 +313,11 @@ public class OfferingDefinitionWrapper implements OfferingDefinition,
 	@Override
 	public java.lang.String getProductDescription() {
 		return _offeringDefinition.getProductDescription();
+	}
+
+	@Override
+	public java.lang.String getSupportTicketsLabel() {
+		return _offeringDefinition.getSupportTicketsLabel();
 	}
 
 	/**

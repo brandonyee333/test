@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -121,6 +122,9 @@ public interface AuditActionLocalService extends BaseLocalService,
 	*/
 	@Indexable(type = IndexableType.REINDEX)
 	public AuditAction updateAuditAction(AuditAction auditAction);
+
+	public AuditAction updateAuditAction(long classNameId, long classPK,
+		long mappingClassPK, int action) throws SystemException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -215,6 +219,11 @@ public interface AuditActionLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AuditAction> getAuditActions(int start, int end);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AuditAction> getAuditActions(Date modifiedDate,
+		long classNameId, boolean mapping, int action)
+		throws SystemException;
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -232,4 +241,6 @@ public interface AuditActionLocalService extends BaseLocalService,
 	*/
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
+
+	public void deleteAuditActions(Date modifiedDate) throws SystemException;
 }

@@ -81,10 +81,12 @@ public class AccountProjectLocalServiceUtil {
 	* @param accountProjectId the primary key of the account project
 	* @return the account project that was removed
 	* @throws PortalException if a account project with the primary key could not be found
+	* @throws SystemException
 	*/
 	public static com.liferay.osb.model.AccountProject deleteAccountProject(
 		long accountProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
 		return getService().deleteAccountProject(accountProjectId);
 	}
 
@@ -99,10 +101,12 @@ public class AccountProjectLocalServiceUtil {
 	* @param accountProjectId the primary key of the account project
 	* @return the account project
 	* @throws PortalException if a account project with the primary key could not be found
+	* @throws SystemException
 	*/
 	public static com.liferay.osb.model.AccountProject getAccountProject(
 		long accountProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
 		return getService().getAccountProject(accountProjectId);
 	}
 
@@ -115,6 +119,17 @@ public class AccountProjectLocalServiceUtil {
 	public static com.liferay.osb.model.AccountProject updateAccountProject(
 		com.liferay.osb.model.AccountProject accountProject) {
 		return getService().updateAccountProject(accountProject);
+	}
+
+	public static com.liferay.osb.model.AccountProject updateAccountProject(
+		long userId, long accountProjectId, long accountEntryId,
+		java.lang.String name,
+		java.util.Map<java.lang.Integer, java.lang.String> data)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .updateAccountProject(userId, accountProjectId,
+			accountEntryId, name, data);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
@@ -232,6 +247,12 @@ public class AccountProjectLocalServiceUtil {
 	public static java.util.List<com.liferay.osb.model.AccountProject> getAccountProjects(
 		int start, int end) {
 		return getService().getAccountProjects(start, end);
+	}
+
+	public static java.util.List<com.liferay.osb.model.AccountProject> getAccountProjects(
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getAccountProjects(accountEntryId);
 	}
 
 	/**

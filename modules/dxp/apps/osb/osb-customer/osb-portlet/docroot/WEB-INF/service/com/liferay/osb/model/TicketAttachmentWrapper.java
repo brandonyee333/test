@@ -189,6 +189,20 @@ public class TicketAttachmentWrapper implements TicketAttachment,
 		return new TicketAttachmentWrapper(_ticketAttachment.toUnescapedModel());
 	}
 
+	@Override
+	public TicketEntry getTicketEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _ticketAttachment.getTicketEntry();
+	}
+
+	@Override
+	public boolean fileExists()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _ticketAttachment.fileExists();
+	}
+
 	/**
 	* Returns the replicate of this ticket attachment.
 	*
@@ -239,6 +253,11 @@ public class TicketAttachmentWrapper implements TicketAttachment,
 		return _ticketAttachment.compareTo(ticketAttachment);
 	}
 
+	@Override
+	public int getContentLength() {
+		return _ticketAttachment.getContentLength();
+	}
+
 	/**
 	* Returns the status of this ticket attachment.
 	*
@@ -272,6 +291,11 @@ public class TicketAttachmentWrapper implements TicketAttachment,
 	@Override
 	public int hashCode() {
 		return _ticketAttachment.hashCode();
+	}
+
+	@Override
+	public java.io.File getFile() {
+		return _ticketAttachment.getFile();
 	}
 
 	@Override
@@ -314,6 +338,21 @@ public class TicketAttachmentWrapper implements TicketAttachment,
 		return _ticketAttachment.getFileName();
 	}
 
+	@Override
+	public java.lang.String getFilePath() {
+		return _ticketAttachment.getFilePath();
+	}
+
+	@Override
+	public java.lang.String getKey() {
+		return _ticketAttachment.getKey();
+	}
+
+	@Override
+	public java.lang.String getTypeLabel() {
+		return _ticketAttachment.getTypeLabel();
+	}
+
 	/**
 	* Returns the user name of this ticket attachment.
 	*
@@ -332,6 +371,11 @@ public class TicketAttachmentWrapper implements TicketAttachment,
 	@Override
 	public java.lang.String getUserUuid() {
 		return _ticketAttachment.getUserUuid();
+	}
+
+	@Override
+	public java.lang.String getVisibilityLabel() {
+		return _ticketAttachment.getVisibilityLabel();
 	}
 
 	@Override
@@ -362,6 +406,11 @@ public class TicketAttachmentWrapper implements TicketAttachment,
 	@Override
 	public Date getDeleteDate() {
 		return _ticketAttachment.getDeleteDate();
+	}
+
+	@Override
+	public java.util.Set<java.lang.String> getAvailableFileRepositoryIdsSet() {
+		return _ticketAttachment.getAvailableFileRepositoryIdsSet();
 	}
 
 	/**
@@ -451,6 +500,12 @@ public class TicketAttachmentWrapper implements TicketAttachment,
 	}
 
 	@Override
+	public void setAvailableFileRepositoryIdsSet(
+		java.util.Set<java.lang.String> availableFileRepositoryIds) {
+		_ticketAttachment.setAvailableFileRepositoryIdsSet(availableFileRepositoryIds);
+	}
+
+	@Override
 	public void setCachedModel(boolean cachedModel) {
 		_ticketAttachment.setCachedModel(cachedModel);
 	}
@@ -499,6 +554,11 @@ public class TicketAttachmentWrapper implements TicketAttachment,
 	@Override
 	public void setExtractedText(java.lang.String extractedText) {
 		_ticketAttachment.setExtractedText(extractedText);
+	}
+
+	@Override
+	public void setFile(java.io.File file) {
+		_ticketAttachment.setFile(file);
 	}
 
 	/**

@@ -53,6 +53,16 @@ public class AccountInformationServiceWrapper
 	}
 
 	@Override
+	public java.util.List<com.liferay.osb.model.AccountInformation> updateAccountInformation(
+		long accountEntryId, long accountProjectId,
+		java.util.Map<java.lang.Integer, java.lang.String> data)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountInformationService.updateAccountInformation(accountEntryId,
+			accountProjectId, data);
+	}
+
+	@Override
 	public AccountInformationService getWrappedService() {
 		return _accountInformationService;
 	}

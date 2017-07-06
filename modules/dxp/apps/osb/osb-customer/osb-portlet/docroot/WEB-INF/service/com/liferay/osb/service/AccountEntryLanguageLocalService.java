@@ -221,6 +221,10 @@ public interface AccountEntryLanguageLocalService extends BaseLocalService,
 	public List<AccountEntryLanguage> getAccountEntryLanguages(int start,
 		int end);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AccountEntryLanguage> getAccountEntryLanguages(
+		long accountEntryId) throws SystemException;
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -238,4 +242,7 @@ public interface AccountEntryLanguageLocalService extends BaseLocalService,
 	*/
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
+
+	public void setAccountEntryLanguageIds(long accountEntryId,
+		java.lang.String[] languageIds) throws SystemException;
 }

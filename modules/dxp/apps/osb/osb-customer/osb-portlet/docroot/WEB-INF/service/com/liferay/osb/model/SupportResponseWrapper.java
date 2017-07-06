@@ -185,6 +185,11 @@ public class SupportResponseWrapper implements SupportResponse,
 	}
 
 	@Override
+	public boolean isPlatinumLevel() {
+		return _supportResponse.isPlatinumLevel();
+	}
+
+	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _supportResponse.getExpandoBridge();
 	}
@@ -259,6 +264,16 @@ public class SupportResponseWrapper implements SupportResponse,
 		return _supportResponse.getSeverity3Response();
 	}
 
+	@Override
+	public int getSeverityResolution(int severityLevel) {
+		return _supportResponse.getSeverityResolution(severityLevel);
+	}
+
+	@Override
+	public int getSeverityResponse(int severityLevel) {
+		return _supportResponse.getSeverityResponse(severityLevel);
+	}
+
 	/**
 	* Returns the support level of this support response.
 	*
@@ -292,6 +307,11 @@ public class SupportResponseWrapper implements SupportResponse,
 	@Override
 	public java.lang.String getName() {
 		return _supportResponse.getName();
+	}
+
+	@Override
+	public java.lang.String getSupportLevelLabel() {
+		return _supportResponse.getSupportLevelLabel();
 	}
 
 	/**

@@ -16,9 +16,16 @@ package com.liferay.osb.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.service.AccountEnvironmentServiceUtil;
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import java.rmi.RemoteException;
+
 /**
  * Provides the SOAP utility for the
- * {@link com.liferay.osb.service.AccountEnvironmentServiceUtil} service utility. The
+ * {@link AccountEnvironmentServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it is difficult for SOAP to
  * support certain types.
@@ -53,9 +60,93 @@ import aQute.bnd.annotation.ProviderType;
  * @author Brian Wing Shun Chan
  * @see AccountEnvironmentServiceHttp
  * @see com.liferay.osb.model.AccountEnvironmentSoap
- * @see com.liferay.osb.service.AccountEnvironmentServiceUtil
+ * @see AccountEnvironmentServiceUtil
  * @generated
  */
 @ProviderType
 public class AccountEnvironmentServiceSoap {
+	public static com.liferay.osb.model.AccountEnvironmentSoap addAccountEnvironment(
+		long accountEntryId, long productEntryId, java.lang.String name,
+		int envOS, java.lang.String envOSCustom, int envDB, int envJVM,
+		int envAS, int envLFR,
+		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
+		java.util.List<java.lang.Integer> types) throws RemoteException {
+		try {
+			com.liferay.osb.model.AccountEnvironment returnValue = AccountEnvironmentServiceUtil.addAccountEnvironment(accountEntryId,
+					productEntryId, name, envOS, envOSCustom, envDB, envJVM,
+					envAS, envLFR, files, types);
+
+			return com.liferay.osb.model.AccountEnvironmentSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.AccountEnvironmentSoap deleteAccountEnvironment(
+		long accountEnvironmentId) throws RemoteException {
+		try {
+			com.liferay.osb.model.AccountEnvironment returnValue = AccountEnvironmentServiceUtil.deleteAccountEnvironment(accountEnvironmentId);
+
+			return com.liferay.osb.model.AccountEnvironmentSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.AccountEnvironmentSoap getAccountEnvironment(
+		long accountEnvironmentId) throws RemoteException {
+		try {
+			com.liferay.osb.model.AccountEnvironment returnValue = AccountEnvironmentServiceUtil.getAccountEnvironment(accountEnvironmentId);
+
+			return com.liferay.osb.model.AccountEnvironmentSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.AccountEnvironmentSoap[] getAccountEnvironments(
+		long accountEntryId) throws RemoteException {
+		try {
+			java.util.List<com.liferay.osb.model.AccountEnvironment> returnValue =
+				AccountEnvironmentServiceUtil.getAccountEnvironments(accountEntryId);
+
+			return com.liferay.osb.model.AccountEnvironmentSoap.toSoapModels(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.AccountEnvironmentSoap updateAccountEnvironment(
+		long accountEnvironmentId, long productEntryId, java.lang.String name,
+		int envOS, java.lang.String envOSCustom, int envDB, int envJVM,
+		int envAS, int envLFR,
+		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
+		java.util.List<java.lang.Integer> types) throws RemoteException {
+		try {
+			com.liferay.osb.model.AccountEnvironment returnValue = AccountEnvironmentServiceUtil.updateAccountEnvironment(accountEnvironmentId,
+					productEntryId, name, envOS, envOSCustom, envDB, envJVM,
+					envAS, envLFR, files, types);
+
+			return com.liferay.osb.model.AccountEnvironmentSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	private static Log _log = LogFactoryUtil.getLog(AccountEnvironmentServiceSoap.class);
 }

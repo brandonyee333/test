@@ -76,11 +76,13 @@ public class AccountProjectLocalServiceWrapper
 	* @param accountProjectId the primary key of the account project
 	* @return the account project that was removed
 	* @throws PortalException if a account project with the primary key could not be found
+	* @throws SystemException
 	*/
 	@Override
 	public com.liferay.osb.model.AccountProject deleteAccountProject(
 		long accountProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
 		return _accountProjectLocalService.deleteAccountProject(accountProjectId);
 	}
 
@@ -96,11 +98,13 @@ public class AccountProjectLocalServiceWrapper
 	* @param accountProjectId the primary key of the account project
 	* @return the account project
 	* @throws PortalException if a account project with the primary key could not be found
+	* @throws SystemException
 	*/
 	@Override
 	public com.liferay.osb.model.AccountProject getAccountProject(
 		long accountProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
 		return _accountProjectLocalService.getAccountProject(accountProjectId);
 	}
 
@@ -114,6 +118,17 @@ public class AccountProjectLocalServiceWrapper
 	public com.liferay.osb.model.AccountProject updateAccountProject(
 		com.liferay.osb.model.AccountProject accountProject) {
 		return _accountProjectLocalService.updateAccountProject(accountProject);
+	}
+
+	@Override
+	public com.liferay.osb.model.AccountProject updateAccountProject(
+		long userId, long accountProjectId, long accountEntryId,
+		java.lang.String name,
+		java.util.Map<java.lang.Integer, java.lang.String> data)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountProjectLocalService.updateAccountProject(userId,
+			accountProjectId, accountEntryId, name, data);
 	}
 
 	@Override
@@ -244,6 +259,13 @@ public class AccountProjectLocalServiceWrapper
 	public java.util.List<com.liferay.osb.model.AccountProject> getAccountProjects(
 		int start, int end) {
 		return _accountProjectLocalService.getAccountProjects(start, end);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountProject> getAccountProjects(
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountProjectLocalService.getAccountProjects(accountEntryId);
 	}
 
 	/**

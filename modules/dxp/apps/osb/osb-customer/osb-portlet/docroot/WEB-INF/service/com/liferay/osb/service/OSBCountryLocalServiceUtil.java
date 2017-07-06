@@ -41,6 +41,43 @@ public class OSBCountryLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.OSBCountryLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static com.liferay.portal.kernel.model.Country addCountry(
+		java.lang.String name, java.lang.String a2, java.lang.String a3,
+		java.lang.String number, java.lang.String idd, boolean active)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().addCountry(name, a2, a3, number, idd, active);
+	}
+
+	public static com.liferay.portal.kernel.model.Country deleteCountry(
+		long countryId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().deleteCountry(countryId);
+	}
+
+	public static com.liferay.portal.kernel.model.Country getCountry(
+		long countryId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().getCountry(countryId);
+	}
+
+	public static com.liferay.portal.kernel.model.Country updateCountry(
+		long countryId, java.lang.String name, java.lang.String a2,
+		java.lang.String a3, java.lang.String number, java.lang.String idd,
+		boolean active)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .updateCountry(countryId, name, a2, a3, number, idd, active);
+	}
+
+	public static int getCountriesCount()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getCountriesCount();
+	}
+
 	public static java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {
@@ -54,6 +91,17 @@ public class OSBCountryLocalServiceUtil {
 	*/
 	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static java.util.List<com.liferay.portal.kernel.model.Country> getCountries()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getCountries();
+	}
+
+	public static java.util.List<com.liferay.portal.kernel.model.Country> getCountries(
+		int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getCountries(start, end);
 	}
 
 	public static void clearService() {

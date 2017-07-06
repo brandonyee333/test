@@ -143,6 +143,13 @@ public class AccountEnvironmentAttachmentWrapper
 	}
 
 	@Override
+	public boolean fileExists()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountEnvironmentAttachment.fileExists();
+	}
+
+	@Override
 	public boolean isCachedModel() {
 		return _accountEnvironmentAttachment.isCachedModel();
 	}
@@ -173,6 +180,11 @@ public class AccountEnvironmentAttachmentWrapper
 		return _accountEnvironmentAttachment.compareTo(accountEnvironmentAttachment);
 	}
 
+	@Override
+	public int getContentLength() {
+		return _accountEnvironmentAttachment.getContentLength();
+	}
+
 	/**
 	* Returns the type of this account environment attachment.
 	*
@@ -196,6 +208,11 @@ public class AccountEnvironmentAttachmentWrapper
 	@Override
 	public java.lang.Object clone() {
 		return new AccountEnvironmentAttachmentWrapper((AccountEnvironmentAttachment)_accountEnvironmentAttachment.clone());
+	}
+
+	@Override
+	public java.lang.String getFileDir() {
+		return _accountEnvironmentAttachment.getFileDir();
 	}
 
 	/**

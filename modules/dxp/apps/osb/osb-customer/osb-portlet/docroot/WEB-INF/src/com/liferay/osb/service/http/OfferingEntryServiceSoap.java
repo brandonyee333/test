@@ -16,9 +16,16 @@ package com.liferay.osb.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.service.OfferingEntryServiceUtil;
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import java.rmi.RemoteException;
+
 /**
  * Provides the SOAP utility for the
- * {@link com.liferay.osb.service.OfferingEntryServiceUtil} service utility. The
+ * {@link OfferingEntryServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it is difficult for SOAP to
  * support certain types.
@@ -53,9 +60,76 @@ import aQute.bnd.annotation.ProviderType;
  * @author Brian Wing Shun Chan
  * @see OfferingEntryServiceHttp
  * @see com.liferay.osb.model.OfferingEntrySoap
- * @see com.liferay.osb.service.OfferingEntryServiceUtil
+ * @see OfferingEntryServiceUtil
  * @generated
  */
 @ProviderType
 public class OfferingEntryServiceSoap {
+	public static com.liferay.osb.model.OfferingEntrySoap[] getAccountEntryOfferingEntries(
+		long accountEntryId) throws RemoteException {
+		try {
+			java.util.List<com.liferay.osb.model.OfferingEntry> returnValue = OfferingEntryServiceUtil.getAccountEntryOfferingEntries(accountEntryId);
+
+			return com.liferay.osb.model.OfferingEntrySoap.toSoapModels(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.OfferingEntrySoap[] getOrderEntryOfferingEntries(
+		long orderEntryId) throws RemoteException {
+		try {
+			java.util.List<com.liferay.osb.model.OfferingEntry> returnValue = OfferingEntryServiceUtil.getOrderEntryOfferingEntries(orderEntryId);
+
+			return com.liferay.osb.model.OfferingEntrySoap.toSoapModels(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.OfferingEntrySoap updateOfferingEntry(
+		long offeringEntryId, long accountEntryId, long orderEntryId,
+		long productEntryId, long supportResponseId,
+		java.lang.String productDescription, int type, int version,
+		boolean licenses, long licenseLifetime, long maxConcurrentUsers,
+		long maxUsers, boolean supportTickets, long supportLifetime,
+		int sizing, int quantity) throws RemoteException {
+		try {
+			com.liferay.osb.model.OfferingEntry returnValue = OfferingEntryServiceUtil.updateOfferingEntry(offeringEntryId,
+					accountEntryId, orderEntryId, productEntryId,
+					supportResponseId, productDescription, type, version,
+					licenses, licenseLifetime, maxConcurrentUsers, maxUsers,
+					supportTickets, supportLifetime, sizing, quantity);
+
+			return com.liferay.osb.model.OfferingEntrySoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.OfferingEntrySoap updateStatus(
+		long offeringEntryId, int status) throws RemoteException {
+		try {
+			com.liferay.osb.model.OfferingEntry returnValue = OfferingEntryServiceUtil.updateStatus(offeringEntryId,
+					status);
+
+			return com.liferay.osb.model.OfferingEntrySoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	private static Log _log = LogFactoryUtil.getLog(OfferingEntryServiceSoap.class);
 }

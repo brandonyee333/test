@@ -59,6 +59,15 @@ public class OfferingBundleLocalServiceWrapper
 		return _offeringBundleLocalService.addOfferingBundle(offeringBundle);
 	}
 
+	@Override
+	public com.liferay.osb.model.OfferingBundle addOfferingBundle(long userId,
+		java.lang.String name, long[] offeringDefinitionIds)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _offeringBundleLocalService.addOfferingBundle(userId, name,
+			offeringDefinitionIds);
+	}
+
 	/**
 	* Creates a new offering bundle with the primary key. Does not add the offering bundle to the database.
 	*
@@ -127,6 +136,16 @@ public class OfferingBundleLocalServiceWrapper
 	public com.liferay.osb.model.OfferingBundle updateOfferingBundle(
 		com.liferay.osb.model.OfferingBundle offeringBundle) {
 		return _offeringBundleLocalService.updateOfferingBundle(offeringBundle);
+	}
+
+	@Override
+	public com.liferay.osb.model.OfferingBundle updateOfferingBundle(
+		long offeringBundleId, java.lang.String name,
+		long[] offeringDefinitionIds)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _offeringBundleLocalService.updateOfferingBundle(offeringBundleId,
+			name, offeringDefinitionIds);
 	}
 
 	@Override

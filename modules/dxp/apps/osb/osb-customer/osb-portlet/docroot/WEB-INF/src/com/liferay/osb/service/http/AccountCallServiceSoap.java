@@ -16,9 +16,16 @@ package com.liferay.osb.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.service.AccountCallServiceUtil;
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import java.rmi.RemoteException;
+
 /**
  * Provides the SOAP utility for the
- * {@link com.liferay.osb.service.AccountCallServiceUtil} service utility. The
+ * {@link AccountCallServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it is difficult for SOAP to
  * support certain types.
@@ -53,9 +60,45 @@ import aQute.bnd.annotation.ProviderType;
  * @author Brian Wing Shun Chan
  * @see AccountCallServiceHttp
  * @see com.liferay.osb.model.AccountCallSoap
- * @see com.liferay.osb.service.AccountCallServiceUtil
+ * @see AccountCallServiceUtil
  * @generated
  */
 @ProviderType
 public class AccountCallServiceSoap {
+	public static com.liferay.osb.model.AccountCallSoap deleteAccountCall(
+		long accountCallId) throws RemoteException {
+		try {
+			com.liferay.osb.model.AccountCall returnValue = AccountCallServiceUtil.deleteAccountCall(accountCallId);
+
+			return com.liferay.osb.model.AccountCallSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.AccountCallSoap updateAccountCall(
+		long accountCallId, long accountEntryId, int type, int callDateMonth,
+		int callDateDay, int callDateYear, int callDateHour,
+		int callDateMinute, long callLength, java.lang.String summary,
+		java.lang.String clientsPresent, java.lang.String notes,
+		java.lang.String actionItems) throws RemoteException {
+		try {
+			com.liferay.osb.model.AccountCall returnValue = AccountCallServiceUtil.updateAccountCall(accountCallId,
+					accountEntryId, type, callDateMonth, callDateDay,
+					callDateYear, callDateHour, callDateMinute, callLength,
+					summary, clientsPresent, notes, actionItems);
+
+			return com.liferay.osb.model.AccountCallSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	private static Log _log = LogFactoryUtil.getLog(AccountCallServiceSoap.class);
 }

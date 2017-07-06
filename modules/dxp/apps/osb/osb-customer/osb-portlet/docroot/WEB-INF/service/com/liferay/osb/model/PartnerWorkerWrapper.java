@@ -100,6 +100,13 @@ public class PartnerWorkerWrapper implements PartnerWorker,
 	}
 
 	@Override
+	public PartnerEntry getPartnerEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _partnerWorker.getPartnerEntry();
+	}
+
+	@Override
 	public PartnerWorker toEscapedModel() {
 		return new PartnerWorkerWrapper(_partnerWorker.toEscapedModel());
 	}
@@ -107,6 +114,13 @@ public class PartnerWorkerWrapper implements PartnerWorker,
 	@Override
 	public PartnerWorker toUnescapedModel() {
 		return new PartnerWorkerWrapper(_partnerWorker.toUnescapedModel());
+	}
+
+	@Override
+	public boolean isActive()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _partnerWorker.isActive();
 	}
 
 	@Override
@@ -172,6 +186,16 @@ public class PartnerWorkerWrapper implements PartnerWorker,
 	@Override
 	public java.lang.Object clone() {
 		return new PartnerWorkerWrapper((PartnerWorker)_partnerWorker.clone());
+	}
+
+	@Override
+	public java.lang.String getNotificationsLabel() {
+		return _partnerWorker.getNotificationsLabel();
+	}
+
+	@Override
+	public java.lang.String getRoleLabel() {
+		return _partnerWorker.getRoleLabel();
 	}
 
 	/**

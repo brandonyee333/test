@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -61,6 +62,12 @@ public interface TicketCommentLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link TicketCommentLocalServiceUtil} to access the ticket comment local service. Add custom service methods to {@link com.liferay.osb.service.impl.TicketCommentLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasVisibility(long userId, long ticketEntryId, int visibility)
+		throws PortalException, SystemException;
+
+	public TicketComment addAwayMessageTicketComment(long userId,
+		long ticketEntryId) throws PortalException, SystemException;
 
 	/**
 	* Adds the ticket comment to the database. Also notifies the appropriate model listeners.
@@ -70,6 +77,11 @@ public interface TicketCommentLocalService extends BaseLocalService,
 	*/
 	@Indexable(type = IndexableType.REINDEX)
 	public TicketComment addTicketComment(TicketComment ticketComment);
+
+	public TicketComment addTicketComment(long userId, long ticketEntryId,
+		java.lang.String body, int type, int visibility, int status,
+		long ticketCannedResponseId, int[] pendingTypes,
+		ServiceContext serviceContext) throws PortalException, SystemException;
 
 	/**
 	* Creates a new ticket comment with the primary key. Does not add the ticket comment to the database.
@@ -99,8 +111,29 @@ public interface TicketCommentLocalService extends BaseLocalService,
 	public TicketComment deleteTicketComment(long ticketCommentId)
 		throws PortalException;
 
+	public TicketComment deleteTicketComment(long userId,
+		TicketComment ticketComment) throws PortalException, SystemException;
+
+	public TicketComment deleteTicketComment(long userId, long ticketCommentId)
+		throws PortalException, SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TicketComment fetchLastTicketComment(long userId,
+		long ticketEntryId, int visibility, int status, OrderByComparator obc)
+		throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TicketComment fetchLastTicketComment(long userId,
+		long ticketEntryId, int visibility, int status, int type,
+		OrderByComparator obc) throws SystemException;
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public TicketComment fetchTicketComment(long ticketCommentId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TicketComment getLastTicketComment(long ticketEntryId,
+		int visibility, OrderByComparator obc)
+		throws PortalException, SystemException;
 
 	/**
 	* Returns the ticket comment with the primary key.
@@ -122,6 +155,14 @@ public interface TicketCommentLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public TicketComment updateTicketComment(TicketComment ticketComment);
 
+	public TicketComment updateTicketComment(long userId, long ticketCommentId,
+		long ticketEntryId, java.lang.String body, int visibility, int status,
+		long ticketCannedResponseId, int[] pendingTypes,
+		ServiceContext serviceContext) throws PortalException, SystemException;
+
+	public TicketComment updateTicketCommentType(long ticketCommentId, int type)
+		throws PortalException, SystemException;
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
@@ -142,6 +183,10 @@ public interface TicketCommentLocalService extends BaseLocalService,
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getOrganizationTicketCommentsCount(long[] organizationIds,
+		long ticketEntryId, int visibility) throws SystemException;
+
 	/**
 	* Returns the number of ticket comments.
 	*
@@ -149,6 +194,18 @@ public interface TicketCommentLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getTicketCommentsCount();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getTicketCommentsCount(long ticketEntryId, int[] visibilities,
+		int[] statuses) throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getTicketCommentsCount(long userId, long ticketEntryId,
+		int[] visibilities, int[] statuses) throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int[] getUserVisibilities(long userId, long ticketEntryId)
+		throws PortalException, SystemException;
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
@@ -215,6 +272,15 @@ public interface TicketCommentLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TicketComment> getTicketComments(int start, int end);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TicketComment> getTicketComments(long ticketEntryId,
+		int[] visibilities, int[] statuses) throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TicketComment> getTicketComments(long userId,
+		long ticketEntryId, int[] visibilities, int[] statuses)
+		throws SystemException;
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -232,4 +298,7 @@ public interface TicketCommentLocalService extends BaseLocalService,
 	*/
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
+
+	public void resetSolutionTicketComment(long ticketEntryId)
+		throws SystemException;
 }

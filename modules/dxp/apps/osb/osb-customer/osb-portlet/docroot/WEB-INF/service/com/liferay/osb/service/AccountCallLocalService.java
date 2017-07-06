@@ -122,6 +122,13 @@ public interface AccountCallLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public AccountCall updateAccountCall(AccountCall accountCall);
 
+	public AccountCall updateAccountCall(long userId, long accountCallId,
+		long accountEntryId, int type, int callDateMonth, int callDateDay,
+		int callDateYear, int callDateHour, int callDateMinute,
+		long callLength, java.lang.String summary,
+		java.lang.String clientsPresent, java.lang.String notes,
+		java.lang.String actionItems) throws PortalException, SystemException;
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
@@ -214,6 +221,10 @@ public interface AccountCallLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountCall> getAccountCalls(int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AccountCall> getAccountCalls(long accountEntryId)
+		throws SystemException;
 
 	/**
 	* Returns the number of rows matching the dynamic query.

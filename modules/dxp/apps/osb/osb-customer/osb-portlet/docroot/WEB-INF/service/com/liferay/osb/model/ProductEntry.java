@@ -53,4 +53,47 @@ public interface ProductEntry extends ProductEntryModel, PersistedModel {
 				return ProductEntry.class;
 			}
 		};
+
+	public java.util.List<com.liferay.portal.kernel.model.ListType> getAllVersionsListTypes()
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	public java.lang.String[] getDossieraIdMappings()
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	public java.lang.String getEnvironmentLabel();
+
+	public java.lang.String getLESADisplayName();
+
+	@com.liferay.portal.kernel.json.JSON()
+	public java.util.List<LicenseEntry> getLicenseEntries()
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	public java.lang.String getTypeLabel();
+
+	public java.util.List<com.liferay.portal.kernel.model.ListType> getVersionsListTypes()
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	public boolean isDeveloperTools();
+
+	public boolean isDeviceDetection();
+
+	public boolean isDigitalEnterprise();
+
+	public boolean isEnterpriseSearchPremium();
+
+	public boolean isEnterpriseSearchStandard();
+
+	public boolean isManagementTools();
+
+	public boolean isMobileExperience();
+
+	public boolean isPortal();
+
+	public boolean isProductivityTools();
+
+	public boolean isSocialOffice();
+
+	public boolean isTicketComponentRequired();
+
+	public boolean isUnlimitedEnterpriseWide();
 }

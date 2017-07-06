@@ -41,6 +41,34 @@ public class TicketSolutionServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.TicketSolutionServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static com.liferay.osb.model.TicketSolution addTicketSolution(
+		long userId, long ticketEntryId, java.lang.String summary,
+		boolean useCustomerSummary, int issueType, java.lang.String solution,
+		int type, boolean customerSpecific, boolean environmentSpecific,
+		boolean versionSpecific, boolean reviewForKB, int status,
+		int ticketEntrySubcomponent,
+		java.lang.String ticketEntrySubcomponentCustom,
+		java.util.List<java.lang.String> ticketLinkURLs,
+		java.util.List<java.lang.Integer> ticketLinkTypes,
+		java.util.List<com.liferay.osb.model.TicketAttachment> ticketAttachments)
+		throws java.lang.Exception {
+		return getService()
+				   .addTicketSolution(userId, ticketEntryId, summary,
+			useCustomerSummary, issueType, solution, type, customerSpecific,
+			environmentSpecific, versionSpecific, reviewForKB, status,
+			ticketEntrySubcomponent, ticketEntrySubcomponentCustom,
+			ticketLinkURLs, ticketLinkTypes, ticketAttachments);
+	}
+
+	public static com.liferay.osb.model.TicketSolution updateTicketSolution(
+		long ticketSolutionId, long ticketEntryId, int status,
+		long statusByUserId, java.lang.String statusMessage, int statusReason)
+		throws java.lang.Exception {
+		return getService()
+				   .updateTicketSolution(ticketSolutionId, ticketEntryId,
+			status, statusByUserId, statusMessage, statusReason);
+	}
+
 	public static java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {

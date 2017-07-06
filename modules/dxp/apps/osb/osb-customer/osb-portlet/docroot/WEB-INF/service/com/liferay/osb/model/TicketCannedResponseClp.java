@@ -561,6 +561,44 @@ public class TicketCannedResponseClp extends BaseModelImpl<TicketCannedResponse>
 		}
 	}
 
+	@Override
+	public java.lang.String[] getAvailableLocales() {
+		try {
+			String methodName = "getAvailableLocales";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			java.lang.String[] returnObj = (java.lang.String[])invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
+	public java.lang.String getDefaultLocale() {
+		try {
+			String methodName = "getDefaultLocale";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			java.lang.String returnObj = (java.lang.String)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
 	public BaseModel<?> getTicketCannedResponseRemoteModel() {
 		return _ticketCannedResponseRemoteModel;
 	}

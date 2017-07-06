@@ -56,6 +56,12 @@ public class SupportWorkerServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
+	public static void clockInOut(long supportWorkerId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		getService().clockInOut(supportWorkerId);
+	}
+
 	public static void clearService() {
 		_service = null;
 	}

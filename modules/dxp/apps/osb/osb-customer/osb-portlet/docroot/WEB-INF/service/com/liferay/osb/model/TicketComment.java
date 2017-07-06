@@ -54,4 +54,17 @@ public interface TicketComment extends TicketCommentModel, PersistedModel {
 				return TicketComment.class;
 			}
 		};
+
+	public java.lang.String getKey();
+
+	public com.liferay.portal.kernel.util.UnicodeProperties getSettingsProperties();
+
+	public java.lang.String getSettingsProperty(java.lang.String key);
+
+	public java.lang.String getVisibilityLabel();
+
+	public void setSettingsProperties(
+		com.liferay.portal.kernel.util.UnicodeProperties settingsProperties);
+
+	public void setSettingsProperty(java.lang.String key, java.lang.String value);
 }

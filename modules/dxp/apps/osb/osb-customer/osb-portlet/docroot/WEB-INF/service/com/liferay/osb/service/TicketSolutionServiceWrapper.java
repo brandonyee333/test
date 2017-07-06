@@ -34,6 +34,35 @@ public class TicketSolutionServiceWrapper implements TicketSolutionService,
 	}
 
 	@Override
+	public com.liferay.osb.model.TicketSolution addTicketSolution(long userId,
+		long ticketEntryId, java.lang.String summary,
+		boolean useCustomerSummary, int issueType, java.lang.String solution,
+		int type, boolean customerSpecific, boolean environmentSpecific,
+		boolean versionSpecific, boolean reviewForKB, int status,
+		int ticketEntrySubcomponent,
+		java.lang.String ticketEntrySubcomponentCustom,
+		java.util.List<java.lang.String> ticketLinkURLs,
+		java.util.List<java.lang.Integer> ticketLinkTypes,
+		java.util.List<com.liferay.osb.model.TicketAttachment> ticketAttachments)
+		throws java.lang.Exception {
+		return _ticketSolutionService.addTicketSolution(userId, ticketEntryId,
+			summary, useCustomerSummary, issueType, solution, type,
+			customerSpecific, environmentSpecific, versionSpecific,
+			reviewForKB, status, ticketEntrySubcomponent,
+			ticketEntrySubcomponentCustom, ticketLinkURLs, ticketLinkTypes,
+			ticketAttachments);
+	}
+
+	@Override
+	public com.liferay.osb.model.TicketSolution updateTicketSolution(
+		long ticketSolutionId, long ticketEntryId, int status,
+		long statusByUserId, java.lang.String statusMessage, int statusReason)
+		throws java.lang.Exception {
+		return _ticketSolutionService.updateTicketSolution(ticketSolutionId,
+			ticketEntryId, status, statusByUserId, statusMessage, statusReason);
+	}
+
+	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {

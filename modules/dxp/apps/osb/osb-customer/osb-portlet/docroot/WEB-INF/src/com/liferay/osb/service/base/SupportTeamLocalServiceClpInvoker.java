@@ -273,9 +273,77 @@ public class SupportTeamLocalServiceClpInvoker {
 
 		_methodParameterTypes53 = new String[] { "long", "long[][]" };
 
-		_methodName284 = "getOSGiServiceIdentifier";
+		_methodName320 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes284 = new String[] {  };
+		_methodParameterTypes320 = new String[] {  };
+
+		_methodName325 = "addSupportTeam";
+
+		_methodParameterTypes325 = new String[] {
+				"long", "long", "long", "long", "java.lang.String",
+				"java.lang.String", "int"
+			};
+
+		_methodName326 = "deleteSupportTeam";
+
+		_methodParameterTypes326 = new String[] { "long" };
+
+		_methodName327 = "getChildSupportTeams";
+
+		_methodParameterTypes327 = new String[] { "long", "boolean" };
+
+		_methodName328 = "getSupportLaborSupportTeams";
+
+		_methodParameterTypes328 = new String[] { "long" };
+
+		_methodName329 = "getSupportTeams";
+
+		_methodParameterTypes329 = new String[] {
+				"int", "int", "com.liferay.portal.kernel.util.OrderByComparator"
+			};
+
+		_methodName330 = "getUserRoleSupportTeams";
+
+		_methodParameterTypes330 = new String[] { "long", "int" };
+
+		_methodName331 = "search";
+
+		_methodParameterTypes331 = new String[] {
+				"java.lang.String", "int", "int",
+				"com.liferay.portal.kernel.util.OrderByComparator"
+			};
+
+		_methodName332 = "search";
+
+		_methodParameterTypes332 = new String[] {
+				"java.lang.String", "java.lang.Integer", "boolean", "int", "int",
+				"com.liferay.portal.kernel.util.OrderByComparator"
+			};
+
+		_methodName333 = "searchCount";
+
+		_methodParameterTypes333 = new String[] { "java.lang.String" };
+
+		_methodName334 = "searchCount";
+
+		_methodParameterTypes334 = new String[] {
+				"java.lang.String", "java.lang.Integer", "boolean"
+			};
+
+		_methodName335 = "setChildSupportTeams";
+
+		_methodParameterTypes335 = new String[] { "long", "long[][]" };
+
+		_methodName336 = "setSupportLaborId";
+
+		_methodParameterTypes336 = new String[] { "long", "long[][]" };
+
+		_methodName337 = "updateSupportTeam";
+
+		_methodParameterTypes337 = new String[] {
+				"long", "long", "long", "long", "java.lang.String",
+				"java.lang.String", "int", "long[][]", "long[][]"
+			};
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -622,9 +690,105 @@ public class SupportTeamLocalServiceClpInvoker {
 			return null;
 		}
 
-		if (_methodName284.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes284, parameterTypes)) {
+		if (_methodName320.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes320, parameterTypes)) {
 			return SupportTeamLocalServiceUtil.getOSGiServiceIdentifier();
+		}
+
+		if (_methodName325.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes325, parameterTypes)) {
+			return SupportTeamLocalServiceUtil.addSupportTeam(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				((Long)arguments[2]).longValue(),
+				((Long)arguments[3]).longValue(),
+				(java.lang.String)arguments[4], (java.lang.String)arguments[5],
+				((Integer)arguments[6]).intValue());
+		}
+
+		if (_methodName326.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes326, parameterTypes)) {
+			return SupportTeamLocalServiceUtil.deleteSupportTeam(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName327.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes327, parameterTypes)) {
+			return SupportTeamLocalServiceUtil.getChildSupportTeams(((Long)arguments[0]).longValue(),
+				((Boolean)arguments[1]).booleanValue());
+		}
+
+		if (_methodName328.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes328, parameterTypes)) {
+			return SupportTeamLocalServiceUtil.getSupportLaborSupportTeams(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName329.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes329, parameterTypes)) {
+			return SupportTeamLocalServiceUtil.getSupportTeams(((Integer)arguments[0]).intValue(),
+				((Integer)arguments[1]).intValue(),
+				(com.liferay.portal.kernel.util.OrderByComparator)arguments[2]);
+		}
+
+		if (_methodName330.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes330, parameterTypes)) {
+			return SupportTeamLocalServiceUtil.getUserRoleSupportTeams(((Long)arguments[0]).longValue(),
+				((Integer)arguments[1]).intValue());
+		}
+
+		if (_methodName331.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes331, parameterTypes)) {
+			return SupportTeamLocalServiceUtil.search((java.lang.String)arguments[0],
+				((Integer)arguments[1]).intValue(),
+				((Integer)arguments[2]).intValue(),
+				(com.liferay.portal.kernel.util.OrderByComparator)arguments[3]);
+		}
+
+		if (_methodName332.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes332, parameterTypes)) {
+			return SupportTeamLocalServiceUtil.search((java.lang.String)arguments[0],
+				(java.lang.Integer)arguments[1],
+				((Boolean)arguments[2]).booleanValue(),
+				((Integer)arguments[3]).intValue(),
+				((Integer)arguments[4]).intValue(),
+				(com.liferay.portal.kernel.util.OrderByComparator)arguments[5]);
+		}
+
+		if (_methodName333.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes333, parameterTypes)) {
+			return SupportTeamLocalServiceUtil.searchCount((java.lang.String)arguments[0]);
+		}
+
+		if (_methodName334.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes334, parameterTypes)) {
+			return SupportTeamLocalServiceUtil.searchCount((java.lang.String)arguments[0],
+				(java.lang.Integer)arguments[1],
+				((Boolean)arguments[2]).booleanValue());
+		}
+
+		if (_methodName335.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes335, parameterTypes)) {
+			SupportTeamLocalServiceUtil.setChildSupportTeams(((Long)arguments[0]).longValue(),
+				(long[])arguments[1]);
+
+			return null;
+		}
+
+		if (_methodName336.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes336, parameterTypes)) {
+			SupportTeamLocalServiceUtil.setSupportLaborId(((Long)arguments[0]).longValue(),
+				(long[])arguments[1]);
+
+			return null;
+		}
+
+		if (_methodName337.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes337, parameterTypes)) {
+			return SupportTeamLocalServiceUtil.updateSupportTeam(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				((Long)arguments[2]).longValue(),
+				((Long)arguments[3]).longValue(),
+				(java.lang.String)arguments[4], (java.lang.String)arguments[5],
+				((Integer)arguments[6]).intValue(), (long[])arguments[7],
+				(long[])arguments[8]);
 		}
 
 		throw new UnsupportedOperationException();
@@ -736,6 +900,32 @@ public class SupportTeamLocalServiceClpInvoker {
 	private String[] _methodParameterTypes52;
 	private String _methodName53;
 	private String[] _methodParameterTypes53;
-	private String _methodName284;
-	private String[] _methodParameterTypes284;
+	private String _methodName320;
+	private String[] _methodParameterTypes320;
+	private String _methodName325;
+	private String[] _methodParameterTypes325;
+	private String _methodName326;
+	private String[] _methodParameterTypes326;
+	private String _methodName327;
+	private String[] _methodParameterTypes327;
+	private String _methodName328;
+	private String[] _methodParameterTypes328;
+	private String _methodName329;
+	private String[] _methodParameterTypes329;
+	private String _methodName330;
+	private String[] _methodParameterTypes330;
+	private String _methodName331;
+	private String[] _methodParameterTypes331;
+	private String _methodName332;
+	private String[] _methodParameterTypes332;
+	private String _methodName333;
+	private String[] _methodParameterTypes333;
+	private String _methodName334;
+	private String[] _methodParameterTypes334;
+	private String _methodName335;
+	private String[] _methodParameterTypes335;
+	private String _methodName336;
+	private String[] _methodParameterTypes336;
+	private String _methodName337;
+	private String[] _methodParameterTypes337;
 }

@@ -54,4 +54,8 @@ public interface LicenseKeySet extends LicenseKeySetModel, PersistedModel {
 				return LicenseKeySet.class;
 			}
 		};
+
+	public AccountEntry getAccountEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
 }

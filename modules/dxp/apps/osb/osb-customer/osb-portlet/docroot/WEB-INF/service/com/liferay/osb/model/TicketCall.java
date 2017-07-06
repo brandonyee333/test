@@ -53,4 +53,8 @@ public interface TicketCall extends TicketCallModel, PersistedModel {
 				return TicketCall.class;
 			}
 		};
+
+	public java.lang.String getCallLengthLabel();
+
+	public java.lang.String getTypeLabel();
 }

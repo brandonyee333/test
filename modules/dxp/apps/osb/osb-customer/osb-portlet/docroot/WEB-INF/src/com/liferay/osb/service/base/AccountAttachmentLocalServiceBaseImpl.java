@@ -21,6 +21,7 @@ import com.liferay.osb.service.AccountAttachmentLocalService;
 import com.liferay.osb.service.persistence.AccountAttachmentPersistence;
 import com.liferay.osb.service.persistence.AccountCallPersistence;
 import com.liferay.osb.service.persistence.AccountCustomerPersistence;
+import com.liferay.osb.service.persistence.AccountEntryFinder;
 import com.liferay.osb.service.persistence.AccountEntryLanguagePersistence;
 import com.liferay.osb.service.persistence.AccountEntryPersistence;
 import com.liferay.osb.service.persistence.AccountEnvironmentAttachmentPersistence;
@@ -30,41 +31,56 @@ import com.liferay.osb.service.persistence.AccountLinkPersistence;
 import com.liferay.osb.service.persistence.AccountProjectPersistence;
 import com.liferay.osb.service.persistence.AccountWorkerPersistence;
 import com.liferay.osb.service.persistence.AssetLicensePersistence;
+import com.liferay.osb.service.persistence.AssetReceiptLicensePersistence;
 import com.liferay.osb.service.persistence.AuditActionPersistence;
 import com.liferay.osb.service.persistence.AuditEntryPersistence;
 import com.liferay.osb.service.persistence.ContractAuditPersistence;
 import com.liferay.osb.service.persistence.ContractEntryPersistence;
+import com.liferay.osb.service.persistence.CorpProjectPersistence;
 import com.liferay.osb.service.persistence.CurrencyEntryPersistence;
 import com.liferay.osb.service.persistence.ExternalIdMapperPersistence;
 import com.liferay.osb.service.persistence.HolidayCalendarPersistence;
 import com.liferay.osb.service.persistence.HolidayCalendarRelPersistence;
+import com.liferay.osb.service.persistence.HolidayEntryFinder;
 import com.liferay.osb.service.persistence.HolidayEntryPersistence;
 import com.liferay.osb.service.persistence.LCSSubscriptionEntryPersistence;
 import com.liferay.osb.service.persistence.LicenseEntryPersistence;
+import com.liferay.osb.service.persistence.LicenseKeyFinder;
 import com.liferay.osb.service.persistence.LicenseKeyPersistence;
 import com.liferay.osb.service.persistence.LicenseKeySetPersistence;
 import com.liferay.osb.service.persistence.OfferingBundlePersistence;
 import com.liferay.osb.service.persistence.OfferingDefinitionPersistence;
+import com.liferay.osb.service.persistence.OfferingEntryFinder;
 import com.liferay.osb.service.persistence.OfferingEntryPersistence;
+import com.liferay.osb.service.persistence.OrderEntryFinder;
 import com.liferay.osb.service.persistence.OrderEntryPersistence;
+import com.liferay.osb.service.persistence.PartnerEntryFinder;
 import com.liferay.osb.service.persistence.PartnerEntryPersistence;
 import com.liferay.osb.service.persistence.PartnerWorkerPersistence;
+import com.liferay.osb.service.persistence.ProductEntryFinder;
 import com.liferay.osb.service.persistence.ProductEntryPersistence;
 import com.liferay.osb.service.persistence.SearchFilterPersistence;
 import com.liferay.osb.service.persistence.SupportLaborPersistence;
 import com.liferay.osb.service.persistence.SupportRegionPersistence;
+import com.liferay.osb.service.persistence.SupportResponseFinder;
 import com.liferay.osb.service.persistence.SupportResponsePersistence;
+import com.liferay.osb.service.persistence.SupportTeamFinder;
 import com.liferay.osb.service.persistence.SupportTeamLanguagePersistence;
 import com.liferay.osb.service.persistence.SupportTeamPersistence;
 import com.liferay.osb.service.persistence.SupportWorkerAccountTierPersistence;
 import com.liferay.osb.service.persistence.SupportWorkerComponentPersistence;
+import com.liferay.osb.service.persistence.SupportWorkerFinder;
 import com.liferay.osb.service.persistence.SupportWorkerPersistence;
 import com.liferay.osb.service.persistence.SupportWorkerSeverityPersistence;
 import com.liferay.osb.service.persistence.TicketAttachmentPersistence;
 import com.liferay.osb.service.persistence.TicketCallPersistence;
+import com.liferay.osb.service.persistence.TicketCannedResponseFinder;
 import com.liferay.osb.service.persistence.TicketCannedResponsePersistence;
+import com.liferay.osb.service.persistence.TicketCommentFinder;
 import com.liferay.osb.service.persistence.TicketCommentPersistence;
+import com.liferay.osb.service.persistence.TicketEntryFinder;
 import com.liferay.osb.service.persistence.TicketEntryPersistence;
+import com.liferay.osb.service.persistence.TicketFeedbackFinder;
 import com.liferay.osb.service.persistence.TicketFeedbackPersistence;
 import com.liferay.osb.service.persistence.TicketFlagPersistence;
 import com.liferay.osb.service.persistence.TicketInformationPersistence;
@@ -157,11 +173,12 @@ public abstract class AccountAttachmentLocalServiceBaseImpl
 	 * @param accountAttachmentId the primary key of the account attachment
 	 * @return the account attachment that was removed
 	 * @throws PortalException if a account attachment with the primary key could not be found
+	 * @throws SystemException
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public AccountAttachment deleteAccountAttachment(long accountAttachmentId)
-		throws PortalException {
+		throws PortalException, SystemException {
 		return accountAttachmentPersistence.remove(accountAttachmentId);
 	}
 
@@ -170,11 +187,14 @@ public abstract class AccountAttachmentLocalServiceBaseImpl
 	 *
 	 * @param accountAttachment the account attachment
 	 * @return the account attachment that was removed
+	 * @throws PortalException
+	 * @throws SystemException
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public AccountAttachment deleteAccountAttachment(
-		AccountAttachment accountAttachment) {
+		AccountAttachment accountAttachment)
+		throws PortalException, SystemException {
 		return accountAttachmentPersistence.remove(accountAttachment);
 	}
 
@@ -522,6 +542,24 @@ public abstract class AccountAttachmentLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the account entry finder.
+	 *
+	 * @return the account entry finder
+	 */
+	public AccountEntryFinder getAccountEntryFinder() {
+		return accountEntryFinder;
+	}
+
+	/**
+	 * Sets the account entry finder.
+	 *
+	 * @param accountEntryFinder the account entry finder
+	 */
+	public void setAccountEntryFinder(AccountEntryFinder accountEntryFinder) {
+		this.accountEntryFinder = accountEntryFinder;
+	}
+
+	/**
 	 * Returns the account entry language local service.
 	 *
 	 * @return the account entry language local service
@@ -826,6 +864,44 @@ public abstract class AccountAttachmentLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the asset receipt license local service.
+	 *
+	 * @return the asset receipt license local service
+	 */
+	public com.liferay.osb.service.AssetReceiptLicenseLocalService getAssetReceiptLicenseLocalService() {
+		return assetReceiptLicenseLocalService;
+	}
+
+	/**
+	 * Sets the asset receipt license local service.
+	 *
+	 * @param assetReceiptLicenseLocalService the asset receipt license local service
+	 */
+	public void setAssetReceiptLicenseLocalService(
+		com.liferay.osb.service.AssetReceiptLicenseLocalService assetReceiptLicenseLocalService) {
+		this.assetReceiptLicenseLocalService = assetReceiptLicenseLocalService;
+	}
+
+	/**
+	 * Returns the asset receipt license persistence.
+	 *
+	 * @return the asset receipt license persistence
+	 */
+	public AssetReceiptLicensePersistence getAssetReceiptLicensePersistence() {
+		return assetReceiptLicensePersistence;
+	}
+
+	/**
+	 * Sets the asset receipt license persistence.
+	 *
+	 * @param assetReceiptLicensePersistence the asset receipt license persistence
+	 */
+	public void setAssetReceiptLicensePersistence(
+		AssetReceiptLicensePersistence assetReceiptLicensePersistence) {
+		this.assetReceiptLicensePersistence = assetReceiptLicensePersistence;
+	}
+
+	/**
 	 * Returns the audit action local service.
 	 *
 	 * @return the audit action local service
@@ -975,6 +1051,44 @@ public abstract class AccountAttachmentLocalServiceBaseImpl
 	public void setContractEntryPersistence(
 		ContractEntryPersistence contractEntryPersistence) {
 		this.contractEntryPersistence = contractEntryPersistence;
+	}
+
+	/**
+	 * Returns the corp project local service.
+	 *
+	 * @return the corp project local service
+	 */
+	public com.liferay.osb.service.CorpProjectLocalService getCorpProjectLocalService() {
+		return corpProjectLocalService;
+	}
+
+	/**
+	 * Sets the corp project local service.
+	 *
+	 * @param corpProjectLocalService the corp project local service
+	 */
+	public void setCorpProjectLocalService(
+		com.liferay.osb.service.CorpProjectLocalService corpProjectLocalService) {
+		this.corpProjectLocalService = corpProjectLocalService;
+	}
+
+	/**
+	 * Returns the corp project persistence.
+	 *
+	 * @return the corp project persistence
+	 */
+	public CorpProjectPersistence getCorpProjectPersistence() {
+		return corpProjectPersistence;
+	}
+
+	/**
+	 * Sets the corp project persistence.
+	 *
+	 * @param corpProjectPersistence the corp project persistence
+	 */
+	public void setCorpProjectPersistence(
+		CorpProjectPersistence corpProjectPersistence) {
+		this.corpProjectPersistence = corpProjectPersistence;
 	}
 
 	/**
@@ -1168,6 +1282,24 @@ public abstract class AccountAttachmentLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the holiday entry finder.
+	 *
+	 * @return the holiday entry finder
+	 */
+	public HolidayEntryFinder getHolidayEntryFinder() {
+		return holidayEntryFinder;
+	}
+
+	/**
+	 * Sets the holiday entry finder.
+	 *
+	 * @param holidayEntryFinder the holiday entry finder
+	 */
+	public void setHolidayEntryFinder(HolidayEntryFinder holidayEntryFinder) {
+		this.holidayEntryFinder = holidayEntryFinder;
+	}
+
+	/**
 	 * Returns the lcs subscription entry local service.
 	 *
 	 * @return the lcs subscription entry local service
@@ -1279,6 +1411,24 @@ public abstract class AccountAttachmentLocalServiceBaseImpl
 	public void setLicenseKeyPersistence(
 		LicenseKeyPersistence licenseKeyPersistence) {
 		this.licenseKeyPersistence = licenseKeyPersistence;
+	}
+
+	/**
+	 * Returns the license key finder.
+	 *
+	 * @return the license key finder
+	 */
+	public LicenseKeyFinder getLicenseKeyFinder() {
+		return licenseKeyFinder;
+	}
+
+	/**
+	 * Sets the license key finder.
+	 *
+	 * @param licenseKeyFinder the license key finder
+	 */
+	public void setLicenseKeyFinder(LicenseKeyFinder licenseKeyFinder) {
+		this.licenseKeyFinder = licenseKeyFinder;
 	}
 
 	/**
@@ -1434,6 +1584,24 @@ public abstract class AccountAttachmentLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the offering entry finder.
+	 *
+	 * @return the offering entry finder
+	 */
+	public OfferingEntryFinder getOfferingEntryFinder() {
+		return offeringEntryFinder;
+	}
+
+	/**
+	 * Sets the offering entry finder.
+	 *
+	 * @param offeringEntryFinder the offering entry finder
+	 */
+	public void setOfferingEntryFinder(OfferingEntryFinder offeringEntryFinder) {
+		this.offeringEntryFinder = offeringEntryFinder;
+	}
+
+	/**
 	 * Returns the order entry local service.
 	 *
 	 * @return the order entry local service
@@ -1469,6 +1637,24 @@ public abstract class AccountAttachmentLocalServiceBaseImpl
 	public void setOrderEntryPersistence(
 		OrderEntryPersistence orderEntryPersistence) {
 		this.orderEntryPersistence = orderEntryPersistence;
+	}
+
+	/**
+	 * Returns the order entry finder.
+	 *
+	 * @return the order entry finder
+	 */
+	public OrderEntryFinder getOrderEntryFinder() {
+		return orderEntryFinder;
+	}
+
+	/**
+	 * Sets the order entry finder.
+	 *
+	 * @param orderEntryFinder the order entry finder
+	 */
+	public void setOrderEntryFinder(OrderEntryFinder orderEntryFinder) {
+		this.orderEntryFinder = orderEntryFinder;
 	}
 
 	/**
@@ -1548,6 +1734,24 @@ public abstract class AccountAttachmentLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the partner entry finder.
+	 *
+	 * @return the partner entry finder
+	 */
+	public PartnerEntryFinder getPartnerEntryFinder() {
+		return partnerEntryFinder;
+	}
+
+	/**
+	 * Sets the partner entry finder.
+	 *
+	 * @param partnerEntryFinder the partner entry finder
+	 */
+	public void setPartnerEntryFinder(PartnerEntryFinder partnerEntryFinder) {
+		this.partnerEntryFinder = partnerEntryFinder;
+	}
+
+	/**
 	 * Returns the partner worker local service.
 	 *
 	 * @return the partner worker local service
@@ -1621,6 +1825,24 @@ public abstract class AccountAttachmentLocalServiceBaseImpl
 	public void setProductEntryPersistence(
 		ProductEntryPersistence productEntryPersistence) {
 		this.productEntryPersistence = productEntryPersistence;
+	}
+
+	/**
+	 * Returns the product entry finder.
+	 *
+	 * @return the product entry finder
+	 */
+	public ProductEntryFinder getProductEntryFinder() {
+		return productEntryFinder;
+	}
+
+	/**
+	 * Sets the product entry finder.
+	 *
+	 * @param productEntryFinder the product entry finder
+	 */
+	public void setProductEntryFinder(ProductEntryFinder productEntryFinder) {
+		this.productEntryFinder = productEntryFinder;
 	}
 
 	/**
@@ -1776,6 +1998,25 @@ public abstract class AccountAttachmentLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the support response finder.
+	 *
+	 * @return the support response finder
+	 */
+	public SupportResponseFinder getSupportResponseFinder() {
+		return supportResponseFinder;
+	}
+
+	/**
+	 * Sets the support response finder.
+	 *
+	 * @param supportResponseFinder the support response finder
+	 */
+	public void setSupportResponseFinder(
+		SupportResponseFinder supportResponseFinder) {
+		this.supportResponseFinder = supportResponseFinder;
+	}
+
+	/**
 	 * Returns the support team local service.
 	 *
 	 * @return the support team local service
@@ -1811,6 +2052,24 @@ public abstract class AccountAttachmentLocalServiceBaseImpl
 	public void setSupportTeamPersistence(
 		SupportTeamPersistence supportTeamPersistence) {
 		this.supportTeamPersistence = supportTeamPersistence;
+	}
+
+	/**
+	 * Returns the support team finder.
+	 *
+	 * @return the support team finder
+	 */
+	public SupportTeamFinder getSupportTeamFinder() {
+		return supportTeamFinder;
+	}
+
+	/**
+	 * Sets the support team finder.
+	 *
+	 * @param supportTeamFinder the support team finder
+	 */
+	public void setSupportTeamFinder(SupportTeamFinder supportTeamFinder) {
+		this.supportTeamFinder = supportTeamFinder;
 	}
 
 	/**
@@ -1887,6 +2146,24 @@ public abstract class AccountAttachmentLocalServiceBaseImpl
 	public void setSupportWorkerPersistence(
 		SupportWorkerPersistence supportWorkerPersistence) {
 		this.supportWorkerPersistence = supportWorkerPersistence;
+	}
+
+	/**
+	 * Returns the support worker finder.
+	 *
+	 * @return the support worker finder
+	 */
+	public SupportWorkerFinder getSupportWorkerFinder() {
+		return supportWorkerFinder;
+	}
+
+	/**
+	 * Sets the support worker finder.
+	 *
+	 * @param supportWorkerFinder the support worker finder
+	 */
+	public void setSupportWorkerFinder(SupportWorkerFinder supportWorkerFinder) {
+		this.supportWorkerFinder = supportWorkerFinder;
 	}
 
 	/**
@@ -2118,6 +2395,25 @@ public abstract class AccountAttachmentLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the ticket canned response finder.
+	 *
+	 * @return the ticket canned response finder
+	 */
+	public TicketCannedResponseFinder getTicketCannedResponseFinder() {
+		return ticketCannedResponseFinder;
+	}
+
+	/**
+	 * Sets the ticket canned response finder.
+	 *
+	 * @param ticketCannedResponseFinder the ticket canned response finder
+	 */
+	public void setTicketCannedResponseFinder(
+		TicketCannedResponseFinder ticketCannedResponseFinder) {
+		this.ticketCannedResponseFinder = ticketCannedResponseFinder;
+	}
+
+	/**
 	 * Returns the ticket comment local service.
 	 *
 	 * @return the ticket comment local service
@@ -2153,6 +2449,24 @@ public abstract class AccountAttachmentLocalServiceBaseImpl
 	public void setTicketCommentPersistence(
 		TicketCommentPersistence ticketCommentPersistence) {
 		this.ticketCommentPersistence = ticketCommentPersistence;
+	}
+
+	/**
+	 * Returns the ticket comment finder.
+	 *
+	 * @return the ticket comment finder
+	 */
+	public TicketCommentFinder getTicketCommentFinder() {
+		return ticketCommentFinder;
+	}
+
+	/**
+	 * Sets the ticket comment finder.
+	 *
+	 * @param ticketCommentFinder the ticket comment finder
+	 */
+	public void setTicketCommentFinder(TicketCommentFinder ticketCommentFinder) {
+		this.ticketCommentFinder = ticketCommentFinder;
 	}
 
 	/**
@@ -2194,6 +2508,24 @@ public abstract class AccountAttachmentLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the ticket entry finder.
+	 *
+	 * @return the ticket entry finder
+	 */
+	public TicketEntryFinder getTicketEntryFinder() {
+		return ticketEntryFinder;
+	}
+
+	/**
+	 * Sets the ticket entry finder.
+	 *
+	 * @param ticketEntryFinder the ticket entry finder
+	 */
+	public void setTicketEntryFinder(TicketEntryFinder ticketEntryFinder) {
+		this.ticketEntryFinder = ticketEntryFinder;
+	}
+
+	/**
 	 * Returns the ticket feedback local service.
 	 *
 	 * @return the ticket feedback local service
@@ -2229,6 +2561,25 @@ public abstract class AccountAttachmentLocalServiceBaseImpl
 	public void setTicketFeedbackPersistence(
 		TicketFeedbackPersistence ticketFeedbackPersistence) {
 		this.ticketFeedbackPersistence = ticketFeedbackPersistence;
+	}
+
+	/**
+	 * Returns the ticket feedback finder.
+	 *
+	 * @return the ticket feedback finder
+	 */
+	public TicketFeedbackFinder getTicketFeedbackFinder() {
+		return ticketFeedbackFinder;
+	}
+
+	/**
+	 * Sets the ticket feedback finder.
+	 *
+	 * @param ticketFeedbackFinder the ticket feedback finder
+	 */
+	public void setTicketFeedbackFinder(
+		TicketFeedbackFinder ticketFeedbackFinder) {
+		this.ticketFeedbackFinder = ticketFeedbackFinder;
 	}
 
 	/**
@@ -2665,6 +3016,8 @@ public abstract class AccountAttachmentLocalServiceBaseImpl
 	protected com.liferay.osb.service.AccountEntryLocalService accountEntryLocalService;
 	@BeanReference(type = AccountEntryPersistence.class)
 	protected AccountEntryPersistence accountEntryPersistence;
+	@BeanReference(type = AccountEntryFinder.class)
+	protected AccountEntryFinder accountEntryFinder;
 	@BeanReference(type = com.liferay.osb.service.AccountEntryLanguageLocalService.class)
 	protected com.liferay.osb.service.AccountEntryLanguageLocalService accountEntryLanguageLocalService;
 	@BeanReference(type = AccountEntryLanguagePersistence.class)
@@ -2697,6 +3050,10 @@ public abstract class AccountAttachmentLocalServiceBaseImpl
 	protected com.liferay.osb.service.AssetLicenseLocalService assetLicenseLocalService;
 	@BeanReference(type = AssetLicensePersistence.class)
 	protected AssetLicensePersistence assetLicensePersistence;
+	@BeanReference(type = com.liferay.osb.service.AssetReceiptLicenseLocalService.class)
+	protected com.liferay.osb.service.AssetReceiptLicenseLocalService assetReceiptLicenseLocalService;
+	@BeanReference(type = AssetReceiptLicensePersistence.class)
+	protected AssetReceiptLicensePersistence assetReceiptLicensePersistence;
 	@BeanReference(type = com.liferay.osb.service.AuditActionLocalService.class)
 	protected com.liferay.osb.service.AuditActionLocalService auditActionLocalService;
 	@BeanReference(type = AuditActionPersistence.class)
@@ -2713,6 +3070,10 @@ public abstract class AccountAttachmentLocalServiceBaseImpl
 	protected com.liferay.osb.service.ContractEntryLocalService contractEntryLocalService;
 	@BeanReference(type = ContractEntryPersistence.class)
 	protected ContractEntryPersistence contractEntryPersistence;
+	@BeanReference(type = com.liferay.osb.service.CorpProjectLocalService.class)
+	protected com.liferay.osb.service.CorpProjectLocalService corpProjectLocalService;
+	@BeanReference(type = CorpProjectPersistence.class)
+	protected CorpProjectPersistence corpProjectPersistence;
 	@BeanReference(type = com.liferay.osb.service.CurrencyEntryLocalService.class)
 	protected com.liferay.osb.service.CurrencyEntryLocalService currencyEntryLocalService;
 	@BeanReference(type = CurrencyEntryPersistence.class)
@@ -2733,6 +3094,8 @@ public abstract class AccountAttachmentLocalServiceBaseImpl
 	protected com.liferay.osb.service.HolidayEntryLocalService holidayEntryLocalService;
 	@BeanReference(type = HolidayEntryPersistence.class)
 	protected HolidayEntryPersistence holidayEntryPersistence;
+	@BeanReference(type = HolidayEntryFinder.class)
+	protected HolidayEntryFinder holidayEntryFinder;
 	@BeanReference(type = com.liferay.osb.service.LCSSubscriptionEntryLocalService.class)
 	protected com.liferay.osb.service.LCSSubscriptionEntryLocalService lcsSubscriptionEntryLocalService;
 	@BeanReference(type = LCSSubscriptionEntryPersistence.class)
@@ -2745,6 +3108,8 @@ public abstract class AccountAttachmentLocalServiceBaseImpl
 	protected com.liferay.osb.service.LicenseKeyLocalService licenseKeyLocalService;
 	@BeanReference(type = LicenseKeyPersistence.class)
 	protected LicenseKeyPersistence licenseKeyPersistence;
+	@BeanReference(type = LicenseKeyFinder.class)
+	protected LicenseKeyFinder licenseKeyFinder;
 	@BeanReference(type = com.liferay.osb.service.LicenseKeySetLocalService.class)
 	protected com.liferay.osb.service.LicenseKeySetLocalService licenseKeySetLocalService;
 	@BeanReference(type = LicenseKeySetPersistence.class)
@@ -2761,10 +3126,14 @@ public abstract class AccountAttachmentLocalServiceBaseImpl
 	protected com.liferay.osb.service.OfferingEntryLocalService offeringEntryLocalService;
 	@BeanReference(type = OfferingEntryPersistence.class)
 	protected OfferingEntryPersistence offeringEntryPersistence;
+	@BeanReference(type = OfferingEntryFinder.class)
+	protected OfferingEntryFinder offeringEntryFinder;
 	@BeanReference(type = com.liferay.osb.service.OrderEntryLocalService.class)
 	protected com.liferay.osb.service.OrderEntryLocalService orderEntryLocalService;
 	@BeanReference(type = OrderEntryPersistence.class)
 	protected OrderEntryPersistence orderEntryPersistence;
+	@BeanReference(type = OrderEntryFinder.class)
+	protected OrderEntryFinder orderEntryFinder;
 	@BeanReference(type = com.liferay.osb.service.OSBCountryLocalService.class)
 	protected com.liferay.osb.service.OSBCountryLocalService osbCountryLocalService;
 	@BeanReference(type = com.liferay.osb.service.OSBRegionLocalService.class)
@@ -2773,6 +3142,8 @@ public abstract class AccountAttachmentLocalServiceBaseImpl
 	protected com.liferay.osb.service.PartnerEntryLocalService partnerEntryLocalService;
 	@BeanReference(type = PartnerEntryPersistence.class)
 	protected PartnerEntryPersistence partnerEntryPersistence;
+	@BeanReference(type = PartnerEntryFinder.class)
+	protected PartnerEntryFinder partnerEntryFinder;
 	@BeanReference(type = com.liferay.osb.service.PartnerWorkerLocalService.class)
 	protected com.liferay.osb.service.PartnerWorkerLocalService partnerWorkerLocalService;
 	@BeanReference(type = PartnerWorkerPersistence.class)
@@ -2781,6 +3152,8 @@ public abstract class AccountAttachmentLocalServiceBaseImpl
 	protected com.liferay.osb.service.ProductEntryLocalService productEntryLocalService;
 	@BeanReference(type = ProductEntryPersistence.class)
 	protected ProductEntryPersistence productEntryPersistence;
+	@BeanReference(type = ProductEntryFinder.class)
+	protected ProductEntryFinder productEntryFinder;
 	@BeanReference(type = com.liferay.osb.service.SearchFilterLocalService.class)
 	protected com.liferay.osb.service.SearchFilterLocalService searchFilterLocalService;
 	@BeanReference(type = SearchFilterPersistence.class)
@@ -2797,10 +3170,14 @@ public abstract class AccountAttachmentLocalServiceBaseImpl
 	protected com.liferay.osb.service.SupportResponseLocalService supportResponseLocalService;
 	@BeanReference(type = SupportResponsePersistence.class)
 	protected SupportResponsePersistence supportResponsePersistence;
+	@BeanReference(type = SupportResponseFinder.class)
+	protected SupportResponseFinder supportResponseFinder;
 	@BeanReference(type = com.liferay.osb.service.SupportTeamLocalService.class)
 	protected com.liferay.osb.service.SupportTeamLocalService supportTeamLocalService;
 	@BeanReference(type = SupportTeamPersistence.class)
 	protected SupportTeamPersistence supportTeamPersistence;
+	@BeanReference(type = SupportTeamFinder.class)
+	protected SupportTeamFinder supportTeamFinder;
 	@BeanReference(type = com.liferay.osb.service.SupportTeamLanguageLocalService.class)
 	protected com.liferay.osb.service.SupportTeamLanguageLocalService supportTeamLanguageLocalService;
 	@BeanReference(type = SupportTeamLanguagePersistence.class)
@@ -2809,6 +3186,8 @@ public abstract class AccountAttachmentLocalServiceBaseImpl
 	protected com.liferay.osb.service.SupportWorkerLocalService supportWorkerLocalService;
 	@BeanReference(type = SupportWorkerPersistence.class)
 	protected SupportWorkerPersistence supportWorkerPersistence;
+	@BeanReference(type = SupportWorkerFinder.class)
+	protected SupportWorkerFinder supportWorkerFinder;
 	@BeanReference(type = com.liferay.osb.service.SupportWorkerAccountTierLocalService.class)
 	protected com.liferay.osb.service.SupportWorkerAccountTierLocalService supportWorkerAccountTierLocalService;
 	@BeanReference(type = SupportWorkerAccountTierPersistence.class)
@@ -2833,18 +3212,26 @@ public abstract class AccountAttachmentLocalServiceBaseImpl
 	protected com.liferay.osb.service.TicketCannedResponseLocalService ticketCannedResponseLocalService;
 	@BeanReference(type = TicketCannedResponsePersistence.class)
 	protected TicketCannedResponsePersistence ticketCannedResponsePersistence;
+	@BeanReference(type = TicketCannedResponseFinder.class)
+	protected TicketCannedResponseFinder ticketCannedResponseFinder;
 	@BeanReference(type = com.liferay.osb.service.TicketCommentLocalService.class)
 	protected com.liferay.osb.service.TicketCommentLocalService ticketCommentLocalService;
 	@BeanReference(type = TicketCommentPersistence.class)
 	protected TicketCommentPersistence ticketCommentPersistence;
+	@BeanReference(type = TicketCommentFinder.class)
+	protected TicketCommentFinder ticketCommentFinder;
 	@BeanReference(type = com.liferay.osb.service.TicketEntryLocalService.class)
 	protected com.liferay.osb.service.TicketEntryLocalService ticketEntryLocalService;
 	@BeanReference(type = TicketEntryPersistence.class)
 	protected TicketEntryPersistence ticketEntryPersistence;
+	@BeanReference(type = TicketEntryFinder.class)
+	protected TicketEntryFinder ticketEntryFinder;
 	@BeanReference(type = com.liferay.osb.service.TicketFeedbackLocalService.class)
 	protected com.liferay.osb.service.TicketFeedbackLocalService ticketFeedbackLocalService;
 	@BeanReference(type = TicketFeedbackPersistence.class)
 	protected TicketFeedbackPersistence ticketFeedbackPersistence;
+	@BeanReference(type = TicketFeedbackFinder.class)
+	protected TicketFeedbackFinder ticketFeedbackFinder;
 	@BeanReference(type = com.liferay.osb.service.TicketFlagLocalService.class)
 	protected com.liferay.osb.service.TicketFlagLocalService ticketFlagLocalService;
 	@BeanReference(type = TicketFlagPersistence.class)

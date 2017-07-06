@@ -164,6 +164,12 @@ public class SupportRegionWrapper implements SupportRegion,
 	}
 
 	@Override
+	public com.liferay.portal.kernel.model.User getManagerUser()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _supportRegion.getManagerUser();
+	}
+
+	@Override
 	public int compareTo(SupportRegion supportRegion) {
 		return _supportRegion.compareTo(supportRegion);
 	}
@@ -271,6 +277,17 @@ public class SupportRegionWrapper implements SupportRegion,
 	@Override
 	public Date getModifiedDate() {
 		return _supportRegion.getModifiedDate();
+	}
+
+	@Override
+	public java.util.List<SupportTeam> getSupportTeams()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _supportRegion.getSupportTeams();
+	}
+
+	@Override
+	public java.util.TimeZone getTimeZone() {
+		return _supportRegion.getTimeZone();
 	}
 
 	/**

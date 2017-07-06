@@ -123,9 +123,19 @@ public class AccountLinkLocalServiceClpInvoker {
 				"com.liferay.osb.model.AccountLink"
 			};
 
-		_methodName250 = "getOSGiServiceIdentifier";
+		_methodName286 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes250 = new String[] {  };
+		_methodParameterTypes286 = new String[] {  };
+
+		_methodName291 = "addAccountLinks";
+
+		_methodParameterTypes291 = new String[] {
+				"long", "long", "java.lang.String[][]"
+			};
+
+		_methodName292 = "getAccountLinks";
+
+		_methodParameterTypes292 = new String[] { "long" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -232,9 +242,23 @@ public class AccountLinkLocalServiceClpInvoker {
 			return AccountLinkLocalServiceUtil.updateAccountLink((com.liferay.osb.model.AccountLink)arguments[0]);
 		}
 
-		if (_methodName250.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes250, parameterTypes)) {
+		if (_methodName286.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes286, parameterTypes)) {
 			return AccountLinkLocalServiceUtil.getOSGiServiceIdentifier();
+		}
+
+		if (_methodName291.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes291, parameterTypes)) {
+			AccountLinkLocalServiceUtil.addAccountLinks(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				(java.lang.String[])arguments[2]);
+
+			return null;
+		}
+
+		if (_methodName292.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes292, parameterTypes)) {
+			return AccountLinkLocalServiceUtil.getAccountLinks(((Long)arguments[0]).longValue());
 		}
 
 		throw new UnsupportedOperationException();
@@ -278,6 +302,10 @@ public class AccountLinkLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName250;
-	private String[] _methodParameterTypes250;
+	private String _methodName286;
+	private String[] _methodParameterTypes286;
+	private String _methodName291;
+	private String[] _methodParameterTypes291;
+	private String _methodName292;
+	private String[] _methodParameterTypes292;
 }

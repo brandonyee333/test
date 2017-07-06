@@ -248,6 +248,13 @@ public class AccountEntryLanguageLocalServiceWrapper
 			end);
 	}
 
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountEntryLanguage> getAccountEntryLanguages(
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountEntryLanguageLocalService.getAccountEntryLanguages(accountEntryId);
+	}
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -273,6 +280,14 @@ public class AccountEntryLanguageLocalServiceWrapper
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return _accountEntryLanguageLocalService.dynamicQueryCount(dynamicQuery,
 			projection);
+	}
+
+	@Override
+	public void setAccountEntryLanguageIds(long accountEntryId,
+		java.lang.String[] languageIds)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		_accountEntryLanguageLocalService.setAccountEntryLanguageIds(accountEntryId,
+			languageIds);
 	}
 
 	@Override

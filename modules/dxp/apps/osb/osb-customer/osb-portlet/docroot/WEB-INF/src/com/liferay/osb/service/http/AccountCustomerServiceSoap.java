@@ -16,9 +16,16 @@ package com.liferay.osb.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.service.AccountCustomerServiceUtil;
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import java.rmi.RemoteException;
+
 /**
  * Provides the SOAP utility for the
- * {@link com.liferay.osb.service.AccountCustomerServiceUtil} service utility. The
+ * {@link AccountCustomerServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it is difficult for SOAP to
  * support certain types.
@@ -53,9 +60,62 @@ import aQute.bnd.annotation.ProviderType;
  * @author Brian Wing Shun Chan
  * @see AccountCustomerServiceHttp
  * @see com.liferay.osb.model.AccountCustomerSoap
- * @see com.liferay.osb.service.AccountCustomerServiceUtil
+ * @see AccountCustomerServiceUtil
  * @generated
  */
 @ProviderType
 public class AccountCustomerServiceSoap {
+	public static void addAccountCustomers(long[] userIds, long accountEntryId,
+		int[] roles, int[] notifications) throws RemoteException {
+		try {
+			AccountCustomerServiceUtil.addAccountCustomers(userIds,
+				accountEntryId, roles, notifications);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static void deleteAccountCustomers(long[] userIds,
+		long accountEntryId) throws RemoteException {
+		try {
+			AccountCustomerServiceUtil.deleteAccountCustomers(userIds,
+				accountEntryId);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static java.lang.String[] getCorpProjectAccountCustomerUUIDs(
+		long corpProjectId) throws RemoteException {
+		try {
+			java.util.List<java.lang.String> returnValue = AccountCustomerServiceUtil.getCorpProjectAccountCustomerUUIDs(corpProjectId);
+
+			return returnValue.toArray(new java.lang.String[returnValue.size()]);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static void toggleNotifications(long accountCustomerId)
+		throws RemoteException {
+		try {
+			AccountCustomerServiceUtil.toggleNotifications(accountCustomerId);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	private static Log _log = LogFactoryUtil.getLog(AccountCustomerServiceSoap.class);
 }

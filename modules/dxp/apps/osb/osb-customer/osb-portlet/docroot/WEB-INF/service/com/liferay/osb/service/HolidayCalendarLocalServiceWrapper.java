@@ -46,6 +46,16 @@ public class HolidayCalendarLocalServiceWrapper
 		return _holidayCalendarLocalService.addHolidayCalendar(holidayCalendar);
 	}
 
+	@Override
+	public com.liferay.osb.model.HolidayCalendar addHolidayCalendar(
+		java.lang.String name, java.lang.String description,
+		java.util.List<com.liferay.osb.model.HolidayEntry> holidayEntries)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _holidayCalendarLocalService.addHolidayCalendar(name,
+			description, holidayEntries);
+	}
+
 	/**
 	* Creates a new holiday calendar with the primary key. Does not add the holiday calendar to the database.
 	*
@@ -76,11 +86,13 @@ public class HolidayCalendarLocalServiceWrapper
 	* @param holidayCalendarId the primary key of the holiday calendar
 	* @return the holiday calendar that was removed
 	* @throws PortalException if a holiday calendar with the primary key could not be found
+	* @throws SystemException
 	*/
 	@Override
 	public com.liferay.osb.model.HolidayCalendar deleteHolidayCalendar(
 		long holidayCalendarId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
 		return _holidayCalendarLocalService.deleteHolidayCalendar(holidayCalendarId);
 	}
 
@@ -114,6 +126,17 @@ public class HolidayCalendarLocalServiceWrapper
 	public com.liferay.osb.model.HolidayCalendar updateHolidayCalendar(
 		com.liferay.osb.model.HolidayCalendar holidayCalendar) {
 		return _holidayCalendarLocalService.updateHolidayCalendar(holidayCalendar);
+	}
+
+	@Override
+	public com.liferay.osb.model.HolidayCalendar updateHolidayCalendar(
+		long holidayCalendarId, java.lang.String name,
+		java.lang.String description,
+		java.util.List<com.liferay.osb.model.HolidayEntry> holidayEntries)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _holidayCalendarLocalService.updateHolidayCalendar(holidayCalendarId,
+			name, description, holidayEntries);
 	}
 
 	@Override

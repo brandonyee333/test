@@ -117,6 +117,14 @@ public class AccountInformationLocalServiceWrapper
 	}
 
 	@Override
+	public com.liferay.osb.model.AccountInformationDisplay getAccountInformationDisplay(
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountInformationLocalService.getAccountInformationDisplay(accountEntryId);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
 		return _accountInformationLocalService.getActionableDynamicQuery();
 	}
@@ -230,6 +238,21 @@ public class AccountInformationLocalServiceWrapper
 			start, end, orderByComparator);
 	}
 
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountInformation> getAccountEntryAccountInformation(
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountInformationLocalService.getAccountEntryAccountInformation(accountEntryId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountInformation> getAccountInformation(
+		long accountEntryId, long accountProjectId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountInformationLocalService.getAccountInformation(accountEntryId,
+			accountProjectId);
+	}
+
 	/**
 	* Returns a range of all the account informations.
 	*
@@ -245,6 +268,16 @@ public class AccountInformationLocalServiceWrapper
 	public java.util.List<com.liferay.osb.model.AccountInformation> getAccountInformations(
 		int start, int end) {
 		return _accountInformationLocalService.getAccountInformations(start, end);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountInformation> updateAccountInformation(
+		long userId, long accountEntryId, long accountProjectId,
+		java.util.Map<java.lang.Integer, java.lang.String> data)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountInformationLocalService.updateAccountInformation(userId,
+			accountEntryId, accountProjectId, data);
 	}
 
 	/**
@@ -272,6 +305,14 @@ public class AccountInformationLocalServiceWrapper
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return _accountInformationLocalService.dynamicQueryCount(dynamicQuery,
 			projection);
+	}
+
+	@Override
+	public void deleteAccountInformation(long accountEntryId,
+		long accountProjectId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		_accountInformationLocalService.deleteAccountInformation(accountEntryId,
+			accountProjectId);
 	}
 
 	@Override

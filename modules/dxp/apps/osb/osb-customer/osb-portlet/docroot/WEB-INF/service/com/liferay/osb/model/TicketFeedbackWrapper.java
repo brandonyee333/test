@@ -192,6 +192,13 @@ public class TicketFeedbackWrapper implements TicketFeedback,
 	}
 
 	@Override
+	public TicketEntry getTicketEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _ticketFeedback.getTicketEntry();
+	}
+
+	@Override
 	public TicketFeedback toEscapedModel() {
 		return new TicketFeedbackWrapper(_ticketFeedback.toEscapedModel());
 	}
@@ -204,6 +211,11 @@ public class TicketFeedbackWrapper implements TicketFeedback,
 	@Override
 	public boolean isCachedModel() {
 		return _ticketFeedback.isCachedModel();
+	}
+
+	@Override
+	public boolean isClosed() {
+		return _ticketFeedback.isClosed();
 	}
 
 	@Override
@@ -224,6 +236,11 @@ public class TicketFeedbackWrapper implements TicketFeedback,
 	@Override
 	public com.liferay.portal.kernel.model.CacheModel<TicketFeedback> toCacheModel() {
 		return _ticketFeedback.toCacheModel();
+	}
+
+	@Override
+	public double getAverageRating() {
+		return _ticketFeedback.getAverageRating();
 	}
 
 	@Override
@@ -346,6 +363,26 @@ public class TicketFeedbackWrapper implements TicketFeedback,
 		return new TicketFeedbackWrapper((TicketFeedback)_ticketFeedback.clone());
 	}
 
+	@Override
+	public java.lang.String getAnswer1Label() {
+		return _ticketFeedback.getAnswer1Label();
+	}
+
+	@Override
+	public java.lang.String getAnswer2Label() {
+		return _ticketFeedback.getAnswer2Label();
+	}
+
+	@Override
+	public java.lang.String getAnswer3Label() {
+		return _ticketFeedback.getAnswer3Label();
+	}
+
+	@Override
+	public java.lang.String getAverageRatingDisplay() {
+		return _ticketFeedback.getAverageRatingDisplay();
+	}
+
 	/**
 	* Returns the comments of this ticket feedback.
 	*
@@ -354,6 +391,31 @@ public class TicketFeedbackWrapper implements TicketFeedback,
 	@Override
 	public java.lang.String getComments() {
 		return _ticketFeedback.getComments();
+	}
+
+	@Override
+	public java.lang.String getRating1Label() {
+		return _ticketFeedback.getRating1Label();
+	}
+
+	@Override
+	public java.lang.String getRating2Label() {
+		return _ticketFeedback.getRating2Label();
+	}
+
+	@Override
+	public java.lang.String getRating3Label() {
+		return _ticketFeedback.getRating3Label();
+	}
+
+	@Override
+	public java.lang.String getRating4Label() {
+		return _ticketFeedback.getRating4Label();
+	}
+
+	@Override
+	public java.lang.String getSatisfiedLabel() {
+		return _ticketFeedback.getSatisfiedLabel();
 	}
 
 	/**

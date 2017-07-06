@@ -123,9 +123,48 @@ public class ContractAuditLocalServiceClpInvoker {
 				"com.liferay.osb.model.ContractAudit"
 			};
 
-		_methodName250 = "getOSGiServiceIdentifier";
+		_methodName286 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes250 = new String[] {  };
+		_methodParameterTypes286 = new String[] {  };
+
+		_methodName291 = "addContractAudit";
+
+		_methodParameterTypes291 = new String[] {
+				"long", "long", "java.lang.String", "long", "java.lang.String",
+				"long"
+			};
+
+		_methodName292 = "getContractAuditCount";
+
+		_methodParameterTypes292 = new String[] { "long", "long" };
+
+		_methodName293 = "getContractAuditCount";
+
+		_methodParameterTypes293 = new String[] {
+				"long", "java.lang.String", "long"
+			};
+
+		_methodName294 = "hasContractAudit";
+
+		_methodParameterTypes294 = new String[] { "long", "long" };
+
+		_methodName295 = "hasContractAudit";
+
+		_methodParameterTypes295 = new String[] {
+				"long", "long", "int", "java.lang.String", "long"
+			};
+
+		_methodName296 = "hasContractAudit";
+
+		_methodParameterTypes296 = new String[] {
+				"long", "java.lang.String", "long"
+			};
+
+		_methodName297 = "hasLatestContractAudit";
+
+		_methodParameterTypes297 = new String[] {
+				"long", "long", "int", "java.lang.String", "long"
+			};
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -232,9 +271,60 @@ public class ContractAuditLocalServiceClpInvoker {
 			return ContractAuditLocalServiceUtil.updateContractAudit((com.liferay.osb.model.ContractAudit)arguments[0]);
 		}
 
-		if (_methodName250.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes250, parameterTypes)) {
+		if (_methodName286.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes286, parameterTypes)) {
 			return ContractAuditLocalServiceUtil.getOSGiServiceIdentifier();
+		}
+
+		if (_methodName291.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes291, parameterTypes)) {
+			ContractAuditLocalServiceUtil.addContractAudit(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				(java.lang.String)arguments[2],
+				((Long)arguments[3]).longValue(),
+				(java.lang.String)arguments[4], ((Long)arguments[5]).longValue());
+
+			return null;
+		}
+
+		if (_methodName292.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes292, parameterTypes)) {
+			return ContractAuditLocalServiceUtil.getContractAuditCount(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue());
+		}
+
+		if (_methodName293.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes293, parameterTypes)) {
+			return ContractAuditLocalServiceUtil.getContractAuditCount(((Long)arguments[0]).longValue(),
+				(java.lang.String)arguments[1], ((Long)arguments[2]).longValue());
+		}
+
+		if (_methodName294.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes294, parameterTypes)) {
+			return ContractAuditLocalServiceUtil.hasContractAudit(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue());
+		}
+
+		if (_methodName295.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes295, parameterTypes)) {
+			return ContractAuditLocalServiceUtil.hasContractAudit(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				((Integer)arguments[2]).intValue(),
+				(java.lang.String)arguments[3], ((Long)arguments[4]).longValue());
+		}
+
+		if (_methodName296.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes296, parameterTypes)) {
+			return ContractAuditLocalServiceUtil.hasContractAudit(((Long)arguments[0]).longValue(),
+				(java.lang.String)arguments[1], ((Long)arguments[2]).longValue());
+		}
+
+		if (_methodName297.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes297, parameterTypes)) {
+			return ContractAuditLocalServiceUtil.hasLatestContractAudit(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				((Integer)arguments[2]).intValue(),
+				(java.lang.String)arguments[3], ((Long)arguments[4]).longValue());
 		}
 
 		throw new UnsupportedOperationException();
@@ -278,6 +368,20 @@ public class ContractAuditLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName250;
-	private String[] _methodParameterTypes250;
+	private String _methodName286;
+	private String[] _methodParameterTypes286;
+	private String _methodName291;
+	private String[] _methodParameterTypes291;
+	private String _methodName292;
+	private String[] _methodParameterTypes292;
+	private String _methodName293;
+	private String[] _methodParameterTypes293;
+	private String _methodName294;
+	private String[] _methodParameterTypes294;
+	private String _methodName295;
+	private String[] _methodParameterTypes295;
+	private String _methodName296;
+	private String[] _methodParameterTypes296;
+	private String _methodName297;
+	private String[] _methodParameterTypes297;
 }

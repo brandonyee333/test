@@ -33,6 +33,29 @@ public class AccountCallServiceWrapper implements AccountCallService,
 	}
 
 	@Override
+	public com.liferay.osb.model.AccountCall deleteAccountCall(
+		long accountCallId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountCallService.deleteAccountCall(accountCallId);
+	}
+
+	@Override
+	public com.liferay.osb.model.AccountCall updateAccountCall(
+		long accountCallId, long accountEntryId, int type, int callDateMonth,
+		int callDateDay, int callDateYear, int callDateHour,
+		int callDateMinute, long callLength, java.lang.String summary,
+		java.lang.String clientsPresent, java.lang.String notes,
+		java.lang.String actionItems)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountCallService.updateAccountCall(accountCallId,
+			accountEntryId, type, callDateMonth, callDateDay, callDateYear,
+			callDateHour, callDateMinute, callLength, summary, clientsPresent,
+			notes, actionItems);
+	}
+
+	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {

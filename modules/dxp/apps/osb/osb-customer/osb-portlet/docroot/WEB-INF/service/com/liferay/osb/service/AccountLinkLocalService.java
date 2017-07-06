@@ -215,6 +215,10 @@ public interface AccountLinkLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountLink> getAccountLinks(int start, int end);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AccountLink> getAccountLinks(long accountEntryId)
+		throws SystemException;
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -232,4 +236,7 @@ public interface AccountLinkLocalService extends BaseLocalService,
 	*/
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
+
+	public void addAccountLinks(long userId, long accountEntryId,
+		java.lang.String[] urls) throws PortalException, SystemException;
 }

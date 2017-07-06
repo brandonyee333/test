@@ -16,9 +16,16 @@ package com.liferay.osb.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.service.TicketSolutionServiceUtil;
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import java.rmi.RemoteException;
+
 /**
  * Provides the SOAP utility for the
- * {@link com.liferay.osb.service.TicketSolutionServiceUtil} service utility. The
+ * {@link TicketSolutionServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it is difficult for SOAP to
  * support certain types.
@@ -53,9 +60,58 @@ import aQute.bnd.annotation.ProviderType;
  * @author Brian Wing Shun Chan
  * @see TicketSolutionServiceHttp
  * @see com.liferay.osb.model.TicketSolutionSoap
- * @see com.liferay.osb.service.TicketSolutionServiceUtil
+ * @see TicketSolutionServiceUtil
  * @generated
  */
 @ProviderType
 public class TicketSolutionServiceSoap {
+	public static com.liferay.osb.model.TicketSolutionSoap addTicketSolution(
+		long userId, long ticketEntryId, java.lang.String summary,
+		boolean useCustomerSummary, int issueType, java.lang.String solution,
+		int type, boolean customerSpecific, boolean environmentSpecific,
+		boolean versionSpecific, boolean reviewForKB, int status,
+		int ticketEntrySubcomponent,
+		java.lang.String ticketEntrySubcomponentCustom,
+		java.util.List<java.lang.String> ticketLinkURLs,
+		java.util.List<java.lang.Integer> ticketLinkTypes,
+		com.liferay.osb.model.TicketAttachmentSoap[] ticketAttachments)
+		throws RemoteException {
+		try {
+			com.liferay.osb.model.TicketSolution returnValue = TicketSolutionServiceUtil.addTicketSolution(userId,
+					ticketEntryId, summary, useCustomerSummary, issueType,
+					solution, type, customerSpecific, environmentSpecific,
+					versionSpecific, reviewForKB, status,
+					ticketEntrySubcomponent, ticketEntrySubcomponentCustom,
+					ticketLinkURLs, ticketLinkTypes,
+					com.liferay.osb.model.impl.TicketAttachmentModelImpl.toModels(
+						ticketAttachments));
+
+			return com.liferay.osb.model.TicketSolutionSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.TicketSolutionSoap updateTicketSolution(
+		long ticketSolutionId, long ticketEntryId, int status,
+		long statusByUserId, java.lang.String statusMessage, int statusReason)
+		throws RemoteException {
+		try {
+			com.liferay.osb.model.TicketSolution returnValue = TicketSolutionServiceUtil.updateTicketSolution(ticketSolutionId,
+					ticketEntryId, status, statusByUserId, statusMessage,
+					statusReason);
+
+			return com.liferay.osb.model.TicketSolutionSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	private static Log _log = LogFactoryUtil.getLog(TicketSolutionServiceSoap.class);
 }

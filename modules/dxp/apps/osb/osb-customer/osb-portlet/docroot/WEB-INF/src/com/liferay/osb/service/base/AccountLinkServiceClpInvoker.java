@@ -27,21 +27,46 @@ import java.util.Arrays;
 @ProviderType
 public class AccountLinkServiceClpInvoker {
 	public AccountLinkServiceClpInvoker() {
-		_methodName340 = "getOSGiServiceIdentifier";
+		_methodName380 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes340 = new String[] {  };
+		_methodParameterTypes380 = new String[] {  };
+
+		_methodName385 = "addAccountLinks";
+
+		_methodParameterTypes385 = new String[] { "long", "java.lang.String[][]" };
+
+		_methodName386 = "deleteAccountLink";
+
+		_methodParameterTypes386 = new String[] { "long" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName340.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes340, parameterTypes)) {
+		if (_methodName380.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes380, parameterTypes)) {
 			return AccountLinkServiceUtil.getOSGiServiceIdentifier();
+		}
+
+		if (_methodName385.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes385, parameterTypes)) {
+			AccountLinkServiceUtil.addAccountLinks(((Long)arguments[0]).longValue(),
+				(java.lang.String[])arguments[1]);
+
+			return null;
+		}
+
+		if (_methodName386.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes386, parameterTypes)) {
+			return AccountLinkServiceUtil.deleteAccountLink(((Long)arguments[0]).longValue());
 		}
 
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName340;
-	private String[] _methodParameterTypes340;
+	private String _methodName380;
+	private String[] _methodParameterTypes380;
+	private String _methodName385;
+	private String[] _methodParameterTypes385;
+	private String _methodName386;
+	private String[] _methodParameterTypes386;
 }

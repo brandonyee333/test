@@ -53,6 +53,16 @@ public class TicketCannedResponseLocalServiceUtil {
 		return getService().addTicketCannedResponse(ticketCannedResponse);
 	}
 
+	public static com.liferay.osb.model.TicketCannedResponse addTicketCannedResponse(
+		long userId, java.lang.String defaultLanguageId, java.lang.String name,
+		java.lang.String content)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .addTicketCannedResponse(userId, defaultLanguageId, name,
+			content);
+	}
+
 	/**
 	* Creates a new ticket canned response with the primary key. Does not add the ticket canned response to the database.
 	*
@@ -117,6 +127,17 @@ public class TicketCannedResponseLocalServiceUtil {
 		return getService().updateTicketCannedResponse(ticketCannedResponse);
 	}
 
+	public static com.liferay.osb.model.TicketCannedResponse updateTicketCannedResponse(
+		long ticketCannedResponseId, java.lang.String defaultLanguageId,
+		java.lang.String languageId, java.lang.String name,
+		java.lang.String content)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .updateTicketCannedResponse(ticketCannedResponseId,
+			defaultLanguageId, languageId, name, content);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
 		return getService().getActionableDynamicQuery();
 	}
@@ -151,6 +172,17 @@ public class TicketCannedResponseLocalServiceUtil {
 	*/
 	public static int getTicketCannedResponsesCount() {
 		return getService().getTicketCannedResponsesCount();
+	}
+
+	public static int searchCount(java.lang.String keywords)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().searchCount(keywords);
+	}
+
+	public static int searchCount(java.lang.String name,
+		java.lang.String content, boolean andSearch)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().searchCount(name, content, andSearch);
 	}
 
 	public static java.lang.Object invokeMethod(java.lang.String name,
@@ -234,6 +266,19 @@ public class TicketCannedResponseLocalServiceUtil {
 		return getService().getTicketCannedResponses(start, end);
 	}
 
+	public static java.util.List<com.liferay.osb.model.TicketCannedResponse> search(
+		java.lang.String keywords, int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().search(keywords, start, end);
+	}
+
+	public static java.util.List<com.liferay.osb.model.TicketCannedResponse> search(
+		java.lang.String name, java.lang.String content, boolean andSearch,
+		int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().search(name, content, andSearch, start, end);
+	}
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -256,6 +301,20 @@ public class TicketCannedResponseLocalServiceUtil {
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
+	}
+
+	public static void incrementUseCount(long ticketCannedResponseId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		getService().incrementUseCount(ticketCannedResponseId);
+	}
+
+	public static void removeCannedResponseLocale(long ticketCannedResponseId,
+		java.lang.String languageId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		getService()
+			.removeCannedResponseLocale(ticketCannedResponseId, languageId);
 	}
 
 	public static void clearService() {

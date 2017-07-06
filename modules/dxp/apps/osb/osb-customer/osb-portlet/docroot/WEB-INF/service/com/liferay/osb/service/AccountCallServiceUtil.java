@@ -41,6 +41,28 @@ public class AccountCallServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.AccountCallServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static com.liferay.osb.model.AccountCall deleteAccountCall(
+		long accountCallId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().deleteAccountCall(accountCallId);
+	}
+
+	public static com.liferay.osb.model.AccountCall updateAccountCall(
+		long accountCallId, long accountEntryId, int type, int callDateMonth,
+		int callDateDay, int callDateYear, int callDateHour,
+		int callDateMinute, long callLength, java.lang.String summary,
+		java.lang.String clientsPresent, java.lang.String notes,
+		java.lang.String actionItems)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .updateAccountCall(accountCallId, accountEntryId, type,
+			callDateMonth, callDateDay, callDateYear, callDateHour,
+			callDateMinute, callLength, summary, clientsPresent, notes,
+			actionItems);
+	}
+
 	public static java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {

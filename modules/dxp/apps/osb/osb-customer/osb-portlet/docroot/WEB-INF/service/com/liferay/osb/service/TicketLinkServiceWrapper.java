@@ -33,6 +33,17 @@ public class TicketLinkServiceWrapper implements TicketLinkService,
 	}
 
 	@Override
+	public com.liferay.osb.model.TicketLink addTicketLink(long userId,
+		long ticketEntryId, long ticketSolutionId, java.lang.String[] urls,
+		java.lang.Integer[] types, int visibility,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _ticketLinkService.addTicketLink(userId, ticketEntryId,
+			ticketSolutionId, urls, types, visibility, serviceContext);
+	}
+
+	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {
@@ -47,6 +58,13 @@ public class TicketLinkServiceWrapper implements TicketLinkService,
 	@Override
 	public java.lang.String getOSGiServiceIdentifier() {
 		return _ticketLinkService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public void deleteTicketLink(long ticketLinkId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_ticketLinkService.deleteTicketLink(ticketLinkId);
 	}
 
 	@Override

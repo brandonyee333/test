@@ -16,12 +16,21 @@ package com.liferay.osb.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.service.AccountCustomerServiceUtil;
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.security.auth.HttpPrincipal;
+import com.liferay.portal.kernel.service.http.TunnelUtil;
+import com.liferay.portal.kernel.util.MethodHandler;
+import com.liferay.portal.kernel.util.MethodKey;
+
 /**
  * Provides the HTTP utility for the
- * {@link com.liferay.osb.service.AccountCustomerServiceUtil} service utility. The
+ * {@link AccountCustomerServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it requires an additional
- * {@link com.liferay.portal.kernel.security.auth.HttpPrincipal} parameter.
+ * {@link HttpPrincipal} parameter.
  *
  * <p>
  * The benefits of using the HTTP utility is that it is fast and allows for
@@ -40,10 +49,160 @@ import aQute.bnd.annotation.ProviderType;
  *
  * @author Brian Wing Shun Chan
  * @see AccountCustomerServiceSoap
- * @see com.liferay.portal.kernel.security.auth.HttpPrincipal
- * @see com.liferay.osb.service.AccountCustomerServiceUtil
+ * @see HttpPrincipal
+ * @see AccountCustomerServiceUtil
  * @generated
  */
 @ProviderType
 public class AccountCustomerServiceHttp {
+	public static void addAccountCustomers(HttpPrincipal httpPrincipal,
+		long[] userIds, long accountEntryId, int[] roles, int[] notifications)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		try {
+			MethodKey methodKey = new MethodKey(AccountCustomerServiceUtil.class,
+					"addAccountCustomers", _addAccountCustomersParameterTypes0);
+
+			MethodHandler methodHandler = new MethodHandler(methodKey, userIds,
+					accountEntryId, roles, notifications);
+
+			try {
+				TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
+				}
+
+				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
+					throw (com.liferay.portal.kernel.exception.SystemException)e;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
+			}
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
+
+			throw se;
+		}
+	}
+
+	public static void deleteAccountCustomers(HttpPrincipal httpPrincipal,
+		long[] userIds, long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		try {
+			MethodKey methodKey = new MethodKey(AccountCustomerServiceUtil.class,
+					"deleteAccountCustomers",
+					_deleteAccountCustomersParameterTypes1);
+
+			MethodHandler methodHandler = new MethodHandler(methodKey, userIds,
+					accountEntryId);
+
+			try {
+				TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
+				}
+
+				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
+					throw (com.liferay.portal.kernel.exception.SystemException)e;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
+			}
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
+
+			throw se;
+		}
+	}
+
+	public static java.util.List<java.lang.String> getCorpProjectAccountCustomerUUIDs(
+		HttpPrincipal httpPrincipal, long corpProjectId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		try {
+			MethodKey methodKey = new MethodKey(AccountCustomerServiceUtil.class,
+					"getCorpProjectAccountCustomerUUIDs",
+					_getCorpProjectAccountCustomerUUIDsParameterTypes2);
+
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					corpProjectId);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
+				}
+
+				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
+					throw (com.liferay.portal.kernel.exception.SystemException)e;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
+			}
+
+			return (java.util.List<java.lang.String>)returnObj;
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
+
+			throw se;
+		}
+	}
+
+	public static void toggleNotifications(HttpPrincipal httpPrincipal,
+		long accountCustomerId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		try {
+			MethodKey methodKey = new MethodKey(AccountCustomerServiceUtil.class,
+					"toggleNotifications", _toggleNotificationsParameterTypes3);
+
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					accountCustomerId);
+
+			try {
+				TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
+				}
+
+				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
+					throw (com.liferay.portal.kernel.exception.SystemException)e;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
+			}
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
+
+			throw se;
+		}
+	}
+
+	private static Log _log = LogFactoryUtil.getLog(AccountCustomerServiceHttp.class);
+	private static final Class<?>[] _addAccountCustomersParameterTypes0 = new Class[] {
+			long[].class, long.class, int[].class, int[].class
+		};
+	private static final Class<?>[] _deleteAccountCustomersParameterTypes1 = new Class[] {
+			long[].class, long.class
+		};
+	private static final Class<?>[] _getCorpProjectAccountCustomerUUIDsParameterTypes2 =
+		new Class[] { long.class };
+	private static final Class<?>[] _toggleNotificationsParameterTypes3 = new Class[] {
+			long.class
+		};
 }

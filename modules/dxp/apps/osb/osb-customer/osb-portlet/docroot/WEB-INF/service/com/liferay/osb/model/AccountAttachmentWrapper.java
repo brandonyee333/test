@@ -139,6 +139,13 @@ public class AccountAttachmentWrapper implements AccountAttachment,
 	}
 
 	@Override
+	public boolean fileExists()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountAttachment.fileExists();
+	}
+
+	@Override
 	public boolean isCachedModel() {
 		return _accountAttachment.isCachedModel();
 	}
@@ -168,6 +175,11 @@ public class AccountAttachmentWrapper implements AccountAttachment,
 		return _accountAttachment.compareTo(accountAttachment);
 	}
 
+	@Override
+	public int getContentLength() {
+		return _accountAttachment.getContentLength();
+	}
+
 	/**
 	* Returns the type of this account attachment.
 	*
@@ -193,6 +205,11 @@ public class AccountAttachmentWrapper implements AccountAttachment,
 		return new AccountAttachmentWrapper((AccountAttachment)_accountAttachment.clone());
 	}
 
+	@Override
+	public java.lang.String getFileDir() {
+		return _accountAttachment.getFileDir();
+	}
+
 	/**
 	* Returns the file name of this account attachment.
 	*
@@ -201,6 +218,11 @@ public class AccountAttachmentWrapper implements AccountAttachment,
 	@Override
 	public java.lang.String getFileName() {
 		return _accountAttachment.getFileName();
+	}
+
+	@Override
+	public java.lang.String getTypeLabel() {
+		return _accountAttachment.getTypeLabel();
 	}
 
 	/**

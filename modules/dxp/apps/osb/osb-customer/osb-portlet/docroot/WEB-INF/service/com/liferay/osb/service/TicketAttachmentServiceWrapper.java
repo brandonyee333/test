@@ -34,6 +34,70 @@ public class TicketAttachmentServiceWrapper implements TicketAttachmentService,
 	}
 
 	@Override
+	public boolean checkAvailability(long ticketAttachmentId,
+		java.lang.String fileRepositoryId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _ticketAttachmentService.checkAvailability(ticketAttachmentId,
+			fileRepositoryId);
+	}
+
+	@Override
+	public com.liferay.osb.model.TicketAttachment addTicketAttachment(
+		long userId, long ticketEntryId, long ticketSolutionId,
+		java.lang.String fileName, long fileSize, int type, int visibility,
+		java.lang.String fileRepositoryId, int status)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _ticketAttachmentService.addTicketAttachment(userId,
+			ticketEntryId, ticketSolutionId, fileName, fileSize, type,
+			visibility, fileRepositoryId, status);
+	}
+
+	@Override
+	public com.liferay.osb.model.TicketAttachment deleteTicketAttachment(
+		long ticketAttachmentId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _ticketAttachmentService.deleteTicketAttachment(ticketAttachmentId);
+	}
+
+	@Override
+	public com.liferay.osb.model.TicketAttachment getTicketAttachment(
+		long ticketAttachmentId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _ticketAttachmentService.getTicketAttachment(ticketAttachmentId);
+	}
+
+	@Override
+	public com.liferay.osb.model.TicketAttachment replicateTicketAttachment(
+		long ticketAttachmentId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _ticketAttachmentService.replicateTicketAttachment(ticketAttachmentId);
+	}
+
+	@Override
+	public com.liferay.osb.model.TicketAttachment updateDeleteDate(
+		long ticketAttachmentId, java.util.Date deleteDate)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _ticketAttachmentService.updateDeleteDate(ticketAttachmentId,
+			deleteDate);
+	}
+
+	@Override
+	public com.liferay.osb.model.TicketAttachment updateTicketAttachment(
+		long ticketAttachmentId, long ticketEntryId, int type, int visibility,
+		int[] pendingTypes)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _ticketAttachmentService.updateTicketAttachment(ticketAttachmentId,
+			ticketEntryId, type, visibility, pendingTypes);
+	}
+
+	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {
@@ -49,6 +113,53 @@ public class TicketAttachmentServiceWrapper implements TicketAttachmentService,
 	@Override
 	public java.lang.String getOSGiServiceIdentifier() {
 		return _ticketAttachmentService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public java.lang.String getUploadToken(long ticketEntryId,
+		java.lang.String fileRepositoryId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _ticketAttachmentService.getUploadToken(ticketEntryId,
+			fileRepositoryId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.TicketAttachment> addTicketAttachments(
+		long userId, long ticketEntryId, long ticketSolutionId,
+		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
+		java.util.List<java.lang.Integer> types, int visibility, int status,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _ticketAttachmentService.addTicketAttachments(userId,
+			ticketEntryId, ticketSolutionId, files, types, visibility, status,
+			serviceContext);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.TicketAttachment> addTicketAttachments(
+		long userId, long ticketEntryId, long ticketSolutionId,
+		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
+		java.util.List<java.lang.Integer> types, int visibility, int status,
+		int[] pendingTypes,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _ticketAttachmentService.addTicketAttachments(userId,
+			ticketEntryId, ticketSolutionId, files, types, visibility, status,
+			pendingTypes, serviceContext);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.TicketAttachment> updateTicketAttachments(
+		java.util.List<java.lang.Long> ticketAttachmentIds, long ticketEntryId,
+		java.util.List<java.lang.Integer> types,
+		java.util.List<java.lang.Integer> visibilities, int[] pendingTypes)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _ticketAttachmentService.updateTicketAttachments(ticketAttachmentIds,
+			ticketEntryId, types, visibilities, pendingTypes);
 	}
 
 	@Override

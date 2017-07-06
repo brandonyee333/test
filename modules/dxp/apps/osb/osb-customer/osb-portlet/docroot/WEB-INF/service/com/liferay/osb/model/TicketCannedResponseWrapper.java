@@ -261,6 +261,11 @@ public class TicketCannedResponseWrapper implements TicketCannedResponse,
 		return _ticketCannedResponse.getDefaultLanguageId();
 	}
 
+	@Override
+	public java.lang.String getDefaultLocale() {
+		return _ticketCannedResponse.getDefaultLocale();
+	}
+
 	/**
 	* Returns the name of this ticket canned response.
 	*
@@ -361,6 +366,11 @@ public class TicketCannedResponseWrapper implements TicketCannedResponse,
 	@Override
 	public java.lang.String[] getAvailableLanguageIds() {
 		return _ticketCannedResponse.getAvailableLanguageIds();
+	}
+
+	@Override
+	public java.lang.String[] getAvailableLocales() {
+		return _ticketCannedResponse.getAvailableLocales();
 	}
 
 	/**

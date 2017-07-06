@@ -50,6 +50,14 @@ public class OrderEntryServiceWrapper implements OrderEntryService,
 	}
 
 	@Override
+	public java.util.List<com.liferay.osb.model.OrderEntry> getOrderEntries(
+		long corpProjectId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _orderEntryService.getOrderEntries(corpProjectId);
+	}
+
+	@Override
 	public OrderEntryService getWrappedService() {
 		return _orderEntryService;
 	}

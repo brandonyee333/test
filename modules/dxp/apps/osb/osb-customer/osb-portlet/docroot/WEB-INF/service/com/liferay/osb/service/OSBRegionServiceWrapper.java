@@ -33,6 +33,31 @@ public class OSBRegionServiceWrapper implements OSBRegionService,
 	}
 
 	@Override
+	public com.liferay.portal.kernel.model.Region addRegion(long countryId,
+		java.lang.String regionCode, java.lang.String name, boolean active)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _osbRegionService.addRegion(countryId, regionCode, name, active);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.Region deleteRegion(long regionId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _osbRegionService.deleteRegion(regionId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.Region updateRegion(long regionId,
+		long countryId, java.lang.String regionCode, java.lang.String name,
+		boolean active)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _osbRegionService.updateRegion(regionId, countryId, regionCode,
+			name, active);
+	}
+
+	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {

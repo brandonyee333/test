@@ -33,6 +33,14 @@ public class SupportLaborLocalServiceWrapper implements SupportLaborLocalService
 		_supportLaborLocalService = supportLaborLocalService;
 	}
 
+	@Override
+	public boolean hasSupportWorker(long supportWorkerId, long supportLaborId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _supportLaborLocalService.hasSupportWorker(supportWorkerId,
+			supportLaborId);
+	}
+
 	/**
 	* Adds the support labor to the database. Also notifies the appropriate model listeners.
 	*
@@ -43,6 +51,21 @@ public class SupportLaborLocalServiceWrapper implements SupportLaborLocalService
 	public com.liferay.osb.model.SupportLabor addSupportLabor(
 		com.liferay.osb.model.SupportLabor supportLabor) {
 		return _supportLaborLocalService.addSupportLabor(supportLabor);
+	}
+
+	@Override
+	public com.liferay.osb.model.SupportLabor addSupportLabor(
+		java.lang.String name, java.lang.String description,
+		java.lang.String timeZoneId, int sunOpen, int sunClose, int monOpen,
+		int monClose, int tueOpen, int tueClose, int wedOpen, int wedClose,
+		int thuOpen, int thuClose, int friOpen, int friClose, int satOpen,
+		int satClose)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _supportLaborLocalService.addSupportLabor(name, description,
+			timeZoneId, sunOpen, sunClose, monOpen, monClose, tueOpen,
+			tueClose, wedOpen, wedClose, thuOpen, thuClose, friOpen, friClose,
+			satOpen, satClose);
 	}
 
 	/**
@@ -75,11 +98,13 @@ public class SupportLaborLocalServiceWrapper implements SupportLaborLocalService
 	* @param supportLaborId the primary key of the support labor
 	* @return the support labor that was removed
 	* @throws PortalException if a support labor with the primary key could not be found
+	* @throws SystemException
 	*/
 	@Override
 	public com.liferay.osb.model.SupportLabor deleteSupportLabor(
 		long supportLaborId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
 		return _supportLaborLocalService.deleteSupportLabor(supportLaborId);
 	}
 
@@ -113,6 +138,21 @@ public class SupportLaborLocalServiceWrapper implements SupportLaborLocalService
 	public com.liferay.osb.model.SupportLabor updateSupportLabor(
 		com.liferay.osb.model.SupportLabor supportLabor) {
 		return _supportLaborLocalService.updateSupportLabor(supportLabor);
+	}
+
+	@Override
+	public com.liferay.osb.model.SupportLabor updateSupportLabor(
+		long supportLaborId, java.lang.String name,
+		java.lang.String description, java.lang.String timeZoneId, int sunOpen,
+		int sunClose, int monOpen, int monClose, int tueOpen, int tueClose,
+		int wedOpen, int wedClose, int thuOpen, int thuClose, int friOpen,
+		int friClose, int satOpen, int satClose)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _supportLaborLocalService.updateSupportLabor(supportLaborId,
+			name, description, timeZoneId, sunOpen, sunClose, monOpen,
+			monClose, tueOpen, tueClose, wedOpen, wedClose, thuOpen, thuClose,
+			friOpen, friClose, satOpen, satClose);
 	}
 
 	@Override
@@ -270,6 +310,21 @@ public class SupportLaborLocalServiceWrapper implements SupportLaborLocalService
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return _supportLaborLocalService.dynamicQueryCount(dynamicQuery,
 			projection);
+	}
+
+	@Override
+	public void addSupportWorkers(long[] supportWorkerIds, long supportLaborId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_supportLaborLocalService.addSupportWorkers(supportWorkerIds,
+			supportLaborId);
+	}
+
+	@Override
+	public void removeSupportWorkers(long[] supportWorkerIds)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_supportLaborLocalService.removeSupportWorkers(supportWorkerIds);
 	}
 
 	@Override

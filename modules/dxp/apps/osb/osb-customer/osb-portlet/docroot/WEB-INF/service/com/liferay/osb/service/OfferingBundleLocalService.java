@@ -78,6 +78,9 @@ public interface OfferingBundleLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public OfferingBundle addOfferingBundle(OfferingBundle offeringBundle);
 
+	public OfferingBundle addOfferingBundle(long userId, java.lang.String name,
+		long[] offeringDefinitionIds) throws PortalException, SystemException;
+
 	/**
 	* Creates a new offering bundle with the primary key. Does not add the offering bundle to the database.
 	*
@@ -128,6 +131,10 @@ public interface OfferingBundleLocalService extends BaseLocalService,
 	*/
 	@Indexable(type = IndexableType.REINDEX)
 	public OfferingBundle updateOfferingBundle(OfferingBundle offeringBundle);
+
+	public OfferingBundle updateOfferingBundle(long offeringBundleId,
+		java.lang.String name, long[] offeringDefinitionIds)
+		throws PortalException, SystemException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();

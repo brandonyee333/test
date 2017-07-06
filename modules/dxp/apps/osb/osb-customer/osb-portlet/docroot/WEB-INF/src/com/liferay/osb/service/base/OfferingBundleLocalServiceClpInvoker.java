@@ -198,9 +198,21 @@ public class OfferingBundleLocalServiceClpInvoker {
 
 		_methodParameterTypes36 = new String[] { "long", "long[][]" };
 
-		_methodName267 = "getOSGiServiceIdentifier";
+		_methodName303 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes267 = new String[] {  };
+		_methodParameterTypes303 = new String[] {  };
+
+		_methodName308 = "addOfferingBundle";
+
+		_methodParameterTypes308 = new String[] {
+				"long", "java.lang.String", "long[][]"
+			};
+
+		_methodName309 = "updateOfferingBundle";
+
+		_methodParameterTypes309 = new String[] {
+				"long", "java.lang.String", "long[][]"
+			};
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -427,9 +439,21 @@ public class OfferingBundleLocalServiceClpInvoker {
 			return null;
 		}
 
-		if (_methodName267.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes267, parameterTypes)) {
+		if (_methodName303.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes303, parameterTypes)) {
 			return OfferingBundleLocalServiceUtil.getOSGiServiceIdentifier();
+		}
+
+		if (_methodName308.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes308, parameterTypes)) {
+			return OfferingBundleLocalServiceUtil.addOfferingBundle(((Long)arguments[0]).longValue(),
+				(java.lang.String)arguments[1], (long[])arguments[2]);
+		}
+
+		if (_methodName309.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes309, parameterTypes)) {
+			return OfferingBundleLocalServiceUtil.updateOfferingBundle(((Long)arguments[0]).longValue(),
+				(java.lang.String)arguments[1], (long[])arguments[2]);
 		}
 
 		throw new UnsupportedOperationException();
@@ -507,6 +531,10 @@ public class OfferingBundleLocalServiceClpInvoker {
 	private String[] _methodParameterTypes35;
 	private String _methodName36;
 	private String[] _methodParameterTypes36;
-	private String _methodName267;
-	private String[] _methodParameterTypes267;
+	private String _methodName303;
+	private String[] _methodParameterTypes303;
+	private String _methodName308;
+	private String[] _methodParameterTypes308;
+	private String _methodName309;
+	private String[] _methodParameterTypes309;
 }

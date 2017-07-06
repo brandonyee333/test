@@ -91,6 +91,10 @@ public interface SupportRegionLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public SupportRegion addSupportRegion(SupportRegion supportRegion);
 
+	public SupportRegion addSupportRegion(long userId, java.lang.String name,
+		java.lang.String description, java.lang.String timeZoneId)
+		throws PortalException, SystemException;
+
 	/**
 	* Creates a new support region with the primary key. Does not add the support region to the database.
 	*
@@ -114,13 +118,18 @@ public interface SupportRegionLocalService extends BaseLocalService,
 	* @param supportRegionId the primary key of the support region
 	* @return the support region that was removed
 	* @throws PortalException if a support region with the primary key could not be found
+	* @throws SystemException
 	*/
 	@Indexable(type = IndexableType.DELETE)
 	public SupportRegion deleteSupportRegion(long supportRegionId)
-		throws PortalException;
+		throws PortalException, SystemException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public SupportRegion fetchSupportRegion(long supportRegionId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public SupportRegion fetchSupportRegionByName(java.lang.String name)
+		throws SystemException;
 
 	/**
 	* Returns the support region with the primary key.
@@ -141,6 +150,11 @@ public interface SupportRegionLocalService extends BaseLocalService,
 	*/
 	@Indexable(type = IndexableType.REINDEX)
 	public SupportRegion updateSupportRegion(SupportRegion supportRegion);
+
+	public SupportRegion updateSupportRegion(long supportRegionId,
+		java.lang.String name, java.lang.String description,
+		java.lang.String timeZoneId, long[] supportTeamIds)
+		throws PortalException, SystemException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -230,9 +244,12 @@ public interface SupportRegionLocalService extends BaseLocalService,
 	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
 		int end, OrderByComparator<T> orderByComparator);
 
+	/**
+	* @throws SystemException
+	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<SupportRegion> getAccountEntrySupportRegions(
-		long accountEntryId);
+		long accountEntryId) throws SystemException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<SupportRegion> getAccountEntrySupportRegions(

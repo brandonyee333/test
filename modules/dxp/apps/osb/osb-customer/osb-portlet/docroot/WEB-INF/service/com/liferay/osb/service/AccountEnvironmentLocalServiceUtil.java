@@ -53,6 +53,20 @@ public class AccountEnvironmentLocalServiceUtil {
 		return getService().addAccountEnvironment(accountEnvironment);
 	}
 
+	public static com.liferay.osb.model.AccountEnvironment addAccountEnvironment(
+		long userId, long accountEntryId, long productEntryId,
+		java.lang.String name, int envOS, java.lang.String envOSCustom,
+		int envDB, int envJVM, int envAS, int envLFR,
+		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
+		java.util.List<java.lang.Integer> types)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .addAccountEnvironment(userId, accountEntryId,
+			productEntryId, name, envOS, envOSCustom, envDB, envJVM, envAS,
+			envLFR, files, types);
+	}
+
 	/**
 	* Creates a new account environment with the primary key. Does not add the account environment to the database.
 	*
@@ -81,11 +95,20 @@ public class AccountEnvironmentLocalServiceUtil {
 	* @param accountEnvironmentId the primary key of the account environment
 	* @return the account environment that was removed
 	* @throws PortalException if a account environment with the primary key could not be found
+	* @throws SystemException
 	*/
 	public static com.liferay.osb.model.AccountEnvironment deleteAccountEnvironment(
 		long accountEnvironmentId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
 		return getService().deleteAccountEnvironment(accountEnvironmentId);
+	}
+
+	public static com.liferay.osb.model.AccountEnvironment fetchAccountEnvironment(
+		long accountEntryId, long productEntryId, java.lang.String name)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .fetchAccountEnvironment(accountEntryId, productEntryId, name);
 	}
 
 	public static com.liferay.osb.model.AccountEnvironment fetchAccountEnvironment(
@@ -115,6 +138,20 @@ public class AccountEnvironmentLocalServiceUtil {
 	public static com.liferay.osb.model.AccountEnvironment updateAccountEnvironment(
 		com.liferay.osb.model.AccountEnvironment accountEnvironment) {
 		return getService().updateAccountEnvironment(accountEnvironment);
+	}
+
+	public static com.liferay.osb.model.AccountEnvironment updateAccountEnvironment(
+		long userId, long accountEnvironmentId, long productEntryId,
+		java.lang.String name, int envOS, java.lang.String envOSCustom,
+		int envDB, int envJVM, int envAS, int envLFR,
+		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
+		java.util.List<java.lang.Integer> types)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .updateAccountEnvironment(userId, accountEnvironmentId,
+			productEntryId, name, envOS, envOSCustom, envDB, envJVM, envAS,
+			envLFR, files, types);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
@@ -232,6 +269,27 @@ public class AccountEnvironmentLocalServiceUtil {
 	public static java.util.List<com.liferay.osb.model.AccountEnvironment> getAccountEnvironments(
 		int start, int end) {
 		return getService().getAccountEnvironments(start, end);
+	}
+
+	public static java.util.List<com.liferay.osb.model.AccountEnvironment> getAccountEnvironments(
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().getAccountEnvironments(accountEntryId);
+	}
+
+	public static java.util.List<com.liferay.osb.model.AccountEnvironment> getAccountEnvironments(
+		long accountEntryId, long productEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .getAccountEnvironments(accountEntryId, productEntryId);
+	}
+
+	public static java.util.Map<java.lang.String, java.util.List<com.liferay.osb.model.AccountEnvironment>> getAccountEnvironmentsMap(
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().getAccountEnvironmentsMap(accountEntryId);
 	}
 
 	/**

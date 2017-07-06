@@ -41,6 +41,18 @@ public class TicketFlagLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.TicketFlagLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static boolean hasTicketFlag(long ticketEntryId, int type, int flag)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().hasTicketFlag(ticketEntryId, type, flag);
+	}
+
+	public static boolean hasTicketFlag(long userId, long accountEntryId,
+		long ticketEntryId, int type, int flag)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .hasTicketFlag(userId, accountEntryId, ticketEntryId, type,
+			flag);
+	}
 
 	/**
 	* Adds the ticket flag to the database. Also notifies the appropriate model listeners.
@@ -117,6 +129,15 @@ public class TicketFlagLocalServiceUtil {
 		return getService().updateTicketFlag(ticketFlag);
 	}
 
+	public static com.liferay.osb.model.TicketFlag updateTicketFlag(
+		long userId, long accountEntryId, long ticketEntryId, int type, int flag)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .updateTicketFlag(userId, accountEntryId, ticketEntryId,
+			type, flag);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
 		return getService().getActionableDynamicQuery();
 	}
@@ -151,6 +172,16 @@ public class TicketFlagLocalServiceUtil {
 	*/
 	public static int getTicketFlagsCount() {
 		return getService().getTicketFlagsCount();
+	}
+
+	public static int getTicketFlagsCount(long ticketEntryId, int type, int flag)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getTicketFlagsCount(ticketEntryId, type, flag);
+	}
+
+	public static int[] getTicketFlagTypes(long ticketEntryId, int[] types,
+		int flag) throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getTicketFlagTypes(ticketEntryId, types, flag);
 	}
 
 	public static java.lang.Object invokeMethod(java.lang.String name,
@@ -234,6 +265,18 @@ public class TicketFlagLocalServiceUtil {
 		return getService().getTicketFlags(start, end);
 	}
 
+	public static java.util.List<com.liferay.osb.model.TicketFlag> getTicketFlags(
+		long ticketEntryId, int type, int flag)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getTicketFlags(ticketEntryId, type, flag);
+	}
+
+	public static java.util.List<com.liferay.osb.model.TicketFlag> getTicketFlags(
+		long ticketEntryId, int[] types, int flag)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getTicketFlags(ticketEntryId, types, flag);
+	}
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -256,6 +299,19 @@ public class TicketFlagLocalServiceUtil {
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
+	}
+
+	public static void deleteTicketFlag(long userId, long accountEntryId,
+		long ticketEntryId, int type)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		getService()
+			.deleteTicketFlag(userId, accountEntryId, ticketEntryId, type);
+	}
+
+	public static void deleteTicketFlags(long ticketEntryId, int type, int flag)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		getService().deleteTicketFlags(ticketEntryId, type, flag);
 	}
 
 	public static void clearService() {

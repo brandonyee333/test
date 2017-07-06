@@ -57,6 +57,17 @@ public class PartnerEntryLocalServiceWrapper implements PartnerEntryLocalService
 		return _partnerEntryLocalService.addPartnerEntry(partnerEntry);
 	}
 
+	@Override
+	public com.liferay.osb.model.PartnerEntry addPartnerEntry(long userId,
+		long parentPartnerEntryId, java.lang.String dossieraAccountKey,
+		java.lang.String code, java.lang.String notes, long[] supportRegionIds)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _partnerEntryLocalService.addPartnerEntry(userId,
+			parentPartnerEntryId, dossieraAccountKey, code, notes,
+			supportRegionIds);
+	}
+
 	/**
 	* Creates a new partner entry with the primary key. Does not add the partner entry to the database.
 	*
@@ -87,12 +98,21 @@ public class PartnerEntryLocalServiceWrapper implements PartnerEntryLocalService
 	* @param partnerEntryId the primary key of the partner entry
 	* @return the partner entry that was removed
 	* @throws PortalException if a partner entry with the primary key could not be found
+	* @throws SystemException
 	*/
 	@Override
 	public com.liferay.osb.model.PartnerEntry deletePartnerEntry(
 		long partnerEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
 		return _partnerEntryLocalService.deletePartnerEntry(partnerEntryId);
+	}
+
+	@Override
+	public com.liferay.osb.model.PartnerEntry fetchPartnerEntry(
+		java.lang.String dossieraAccountKey)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _partnerEntryLocalService.fetchPartnerEntry(dossieraAccountKey);
 	}
 
 	@Override
@@ -107,12 +127,22 @@ public class PartnerEntryLocalServiceWrapper implements PartnerEntryLocalService
 	* @param partnerEntryId the primary key of the partner entry
 	* @return the partner entry
 	* @throws PortalException if a partner entry with the primary key could not be found
+	* @throws SystemException
 	*/
 	@Override
 	public com.liferay.osb.model.PartnerEntry getPartnerEntry(
 		long partnerEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
 		return _partnerEntryLocalService.getPartnerEntry(partnerEntryId);
+	}
+
+	@Override
+	public com.liferay.osb.model.PartnerEntry getPartnerEntryByCode(
+		java.lang.String code)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _partnerEntryLocalService.getPartnerEntryByCode(code);
 	}
 
 	/**
@@ -125,6 +155,18 @@ public class PartnerEntryLocalServiceWrapper implements PartnerEntryLocalService
 	public com.liferay.osb.model.PartnerEntry updatePartnerEntry(
 		com.liferay.osb.model.PartnerEntry partnerEntry) {
 		return _partnerEntryLocalService.updatePartnerEntry(partnerEntry);
+	}
+
+	@Override
+	public com.liferay.osb.model.PartnerEntry updatePartnerEntry(long userId,
+		long partnerEntryId, java.lang.String dossieraAccountKey,
+		java.lang.String code, java.lang.String notes, int status,
+		long[] supportRegionIds)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _partnerEntryLocalService.updatePartnerEntry(userId,
+			partnerEntryId, dossieraAccountKey, code, notes, status,
+			supportRegionIds);
 	}
 
 	@Override
@@ -172,6 +214,22 @@ public class PartnerEntryLocalServiceWrapper implements PartnerEntryLocalService
 	@Override
 	public int getSupportRegionPartnerEntriesCount(long supportRegionId) {
 		return _partnerEntryLocalService.getSupportRegionPartnerEntriesCount(supportRegionId);
+	}
+
+	@Override
+	public int searchCount(java.lang.String code, int[] statuses,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+		boolean andOperator)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _partnerEntryLocalService.searchCount(code, statuses, params,
+			andOperator);
+	}
+
+	@Override
+	public int searchCount(java.lang.String keywords,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _partnerEntryLocalService.searchCount(keywords, params);
 	}
 
 	@Override
@@ -245,6 +303,14 @@ public class PartnerEntryLocalServiceWrapper implements PartnerEntryLocalService
 			orderByComparator);
 	}
 
+	@Override
+	public java.util.List<com.liferay.osb.model.PartnerEntry> getChildPartnerEntries(
+		long partnerEntryId, boolean recursive)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _partnerEntryLocalService.getChildPartnerEntries(partnerEntryId,
+			recursive);
+	}
+
 	/**
 	* Returns a range of all the partner entries.
 	*
@@ -281,6 +347,33 @@ public class PartnerEntryLocalServiceWrapper implements PartnerEntryLocalService
 		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.osb.model.PartnerEntry> orderByComparator) {
 		return _partnerEntryLocalService.getSupportRegionPartnerEntries(supportRegionId,
 			start, end, orderByComparator);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.PartnerEntry> getUserPartnerEntries(
+		long userId, int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _partnerEntryLocalService.getUserPartnerEntries(userId, start,
+			end);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.PartnerEntry> search(
+		java.lang.String code, int[] statuses,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+		boolean andOperator, int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _partnerEntryLocalService.search(code, statuses, params,
+			andOperator, start, end);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.PartnerEntry> search(
+		java.lang.String keywords,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+		int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _partnerEntryLocalService.search(keywords, params, start, end);
 	}
 
 	/**

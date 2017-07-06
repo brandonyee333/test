@@ -34,6 +34,22 @@ public class AccountAttachmentServiceWrapper implements AccountAttachmentService
 	}
 
 	@Override
+	public com.liferay.osb.model.AccountAttachment deleteAccountAttachment(
+		long accountAttachmentId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountAttachmentService.deleteAccountAttachment(accountAttachmentId);
+	}
+
+	@Override
+	public com.liferay.osb.model.AccountAttachment getAccountAttachment(
+		long accountAttachmentId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountAttachmentService.getAccountAttachment(accountAttachmentId);
+	}
+
+	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {
@@ -49,6 +65,26 @@ public class AccountAttachmentServiceWrapper implements AccountAttachmentService
 	@Override
 	public java.lang.String getOSGiServiceIdentifier() {
 		return _accountAttachmentService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountAttachment> addAccountAttachments(
+		long accountEntryId, long accountProjectId,
+		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
+		java.util.List<java.lang.Integer> types)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountAttachmentService.addAccountAttachments(accountEntryId,
+			accountProjectId, files, types);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountAttachment> getAccountAttachments(
+		long accountEntryId, long accountProjectId, int type)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountAttachmentService.getAccountAttachments(accountEntryId,
+			accountProjectId, type);
 	}
 
 	@Override

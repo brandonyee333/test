@@ -84,6 +84,11 @@ public interface SupportTeamLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public SupportTeam addSupportTeam(SupportTeam supportTeam);
 
+	public SupportTeam addSupportTeam(long userId, long parentSupportTeamId,
+		long supportLaborId, long locationSupportRegionId,
+		java.lang.String name, java.lang.String description, int type)
+		throws PortalException, SystemException;
+
 	/**
 	* Creates a new support team with the primary key. Does not add the support team to the database.
 	*
@@ -107,10 +112,11 @@ public interface SupportTeamLocalService extends BaseLocalService,
 	* @param supportTeamId the primary key of the support team
 	* @return the support team that was removed
 	* @throws PortalException if a support team with the primary key could not be found
+	* @throws SystemException
 	*/
 	@Indexable(type = IndexableType.DELETE)
 	public SupportTeam deleteSupportTeam(long supportTeamId)
-		throws PortalException;
+		throws PortalException, SystemException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public SupportTeam fetchSupportTeam(long supportTeamId);
@@ -134,6 +140,12 @@ public interface SupportTeamLocalService extends BaseLocalService,
 	*/
 	@Indexable(type = IndexableType.REINDEX)
 	public SupportTeam updateSupportTeam(SupportTeam supportTeam);
+
+	public SupportTeam updateSupportTeam(long supportTeamId,
+		long parentSupportTeamId, long supportLaborId,
+		long locationSupportRegionId, java.lang.String name,
+		java.lang.String description, int type, long[] accountEntryIds,
+		long[] supportRegionIds) throws PortalException, SystemException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -168,6 +180,13 @@ public interface SupportTeamLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getSupportTeamsCount();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int searchCount(java.lang.String keywords) throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int searchCount(java.lang.String name, java.lang.Integer type,
+		boolean andOperator) throws SystemException;
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
@@ -232,6 +251,14 @@ public interface SupportTeamLocalService extends BaseLocalService,
 		int start, int end, OrderByComparator<SupportTeam> orderByComparator);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<SupportTeam> getChildSupportTeams(long supportTeamId,
+		boolean recursive) throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<SupportTeam> getSupportLaborSupportTeams(long supportLaborId)
+		throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<SupportTeam> getSupportRegionSupportTeams(long supportRegionId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -256,6 +283,23 @@ public interface SupportTeamLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<SupportTeam> getSupportTeams(int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<SupportTeam> getSupportTeams(int start, int end,
+		OrderByComparator obc) throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<SupportTeam> getUserRoleSupportTeams(long userId, int role)
+		throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<SupportTeam> search(java.lang.String keywords, int start,
+		int end, OrderByComparator obc) throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<SupportTeam> search(java.lang.String name,
+		java.lang.Integer type, boolean andSearch, int start, int end,
+		OrderByComparator obc) throws SystemException;
 
 	/**
 	* Returns the number of rows matching the dynamic query.
@@ -347,6 +391,12 @@ public interface SupportTeamLocalService extends BaseLocalService,
 
 	public void setAccountEntrySupportTeams(long accountEntryId,
 		long[] supportTeamIds);
+
+	public void setChildSupportTeams(long parentSupportTeamId,
+		long[] childSupportTeamIds) throws PortalException, SystemException;
+
+	public void setSupportLaborId(long supportLaborId, long[] supportTeamIds)
+		throws PortalException, SystemException;
 
 	public void setSupportRegionSupportTeams(long supportRegionId,
 		long[] supportTeamIds);

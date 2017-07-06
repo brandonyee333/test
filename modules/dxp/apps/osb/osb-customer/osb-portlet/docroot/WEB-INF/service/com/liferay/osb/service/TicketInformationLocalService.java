@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -38,6 +39,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import java.io.Serializable;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Provides the local service interface for TicketInformation. Methods of this
@@ -71,6 +73,10 @@ public interface TicketInformationLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public TicketInformation addTicketInformation(
 		TicketInformation ticketInformation);
+
+	public TicketInformation addTicketInformation(long ticketEntryId,
+		long fieldId, java.lang.String data)
+		throws PortalException, SystemException;
 
 	/**
 	* Creates a new ticket information with the primary key. Does not add the ticket information to the database.
@@ -158,6 +164,10 @@ public interface TicketInformationLocalService extends BaseLocalService,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.lang.String getData(long ticketEntryId, long fieldId)
+		throws PortalException, SystemException;
+
 	/**
 	* Returns the OSGi service identifier.
 	*
@@ -204,6 +214,10 @@ public interface TicketInformationLocalService extends BaseLocalService,
 	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
 		int end, OrderByComparator<T> orderByComparator);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TicketInformation> getTicketInformationList(long ticketEntryId)
+		throws SystemException;
+
 	/**
 	* Returns a range of all the ticket informations.
 	*
@@ -217,6 +231,19 @@ public interface TicketInformationLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TicketInformation> getTicketInformations(int start, int end);
+
+	public List<TicketInformation> updateTicketInformation(long ticketEntryId,
+		Map<java.lang.Long, java.lang.String> fieldsMap)
+		throws PortalException, SystemException;
+
+	public List<TicketInformation> updateTicketInformation(long userId,
+		java.lang.String userName, long ticketEntryId,
+		Map<java.lang.Long, java.lang.String> fieldsMap,
+		ServiceContext serviceContext) throws PortalException, SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Map<java.lang.Long, java.lang.String> getFieldsMap(
+		long ticketEntryId) throws SystemException;
 
 	/**
 	* Returns the number of rows matching the dynamic query.

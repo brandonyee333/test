@@ -16,12 +16,21 @@ package com.liferay.osb.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.service.AccountAttachmentServiceUtil;
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.security.auth.HttpPrincipal;
+import com.liferay.portal.kernel.service.http.TunnelUtil;
+import com.liferay.portal.kernel.util.MethodHandler;
+import com.liferay.portal.kernel.util.MethodKey;
+
 /**
  * Provides the HTTP utility for the
- * {@link com.liferay.osb.service.AccountAttachmentServiceUtil} service utility. The
+ * {@link AccountAttachmentServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it requires an additional
- * {@link com.liferay.portal.kernel.security.auth.HttpPrincipal} parameter.
+ * {@link HttpPrincipal} parameter.
  *
  * <p>
  * The benefits of using the HTTP utility is that it is fast and allows for
@@ -40,10 +49,178 @@ import aQute.bnd.annotation.ProviderType;
  *
  * @author Brian Wing Shun Chan
  * @see AccountAttachmentServiceSoap
- * @see com.liferay.portal.kernel.security.auth.HttpPrincipal
- * @see com.liferay.osb.service.AccountAttachmentServiceUtil
+ * @see HttpPrincipal
+ * @see AccountAttachmentServiceUtil
  * @generated
  */
 @ProviderType
 public class AccountAttachmentServiceHttp {
+	public static java.util.List<com.liferay.osb.model.AccountAttachment> addAccountAttachments(
+		HttpPrincipal httpPrincipal, long accountEntryId,
+		long accountProjectId,
+		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
+		java.util.List<java.lang.Integer> types)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		try {
+			MethodKey methodKey = new MethodKey(AccountAttachmentServiceUtil.class,
+					"addAccountAttachments",
+					_addAccountAttachmentsParameterTypes0);
+
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					accountEntryId, accountProjectId, files, types);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
+				}
+
+				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
+					throw (com.liferay.portal.kernel.exception.SystemException)e;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
+			}
+
+			return (java.util.List<com.liferay.osb.model.AccountAttachment>)returnObj;
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
+
+			throw se;
+		}
+	}
+
+	public static com.liferay.osb.model.AccountAttachment deleteAccountAttachment(
+		HttpPrincipal httpPrincipal, long accountAttachmentId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		try {
+			MethodKey methodKey = new MethodKey(AccountAttachmentServiceUtil.class,
+					"deleteAccountAttachment",
+					_deleteAccountAttachmentParameterTypes1);
+
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					accountAttachmentId);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
+				}
+
+				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
+					throw (com.liferay.portal.kernel.exception.SystemException)e;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
+			}
+
+			return (com.liferay.osb.model.AccountAttachment)returnObj;
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
+
+			throw se;
+		}
+	}
+
+	public static com.liferay.osb.model.AccountAttachment getAccountAttachment(
+		HttpPrincipal httpPrincipal, long accountAttachmentId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		try {
+			MethodKey methodKey = new MethodKey(AccountAttachmentServiceUtil.class,
+					"getAccountAttachment", _getAccountAttachmentParameterTypes2);
+
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					accountAttachmentId);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
+				}
+
+				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
+					throw (com.liferay.portal.kernel.exception.SystemException)e;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
+			}
+
+			return (com.liferay.osb.model.AccountAttachment)returnObj;
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
+
+			throw se;
+		}
+	}
+
+	public static java.util.List<com.liferay.osb.model.AccountAttachment> getAccountAttachments(
+		HttpPrincipal httpPrincipal, long accountEntryId,
+		long accountProjectId, int type)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		try {
+			MethodKey methodKey = new MethodKey(AccountAttachmentServiceUtil.class,
+					"getAccountAttachments",
+					_getAccountAttachmentsParameterTypes3);
+
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					accountEntryId, accountProjectId, type);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
+				}
+
+				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
+					throw (com.liferay.portal.kernel.exception.SystemException)e;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
+			}
+
+			return (java.util.List<com.liferay.osb.model.AccountAttachment>)returnObj;
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
+
+			throw se;
+		}
+	}
+
+	private static Log _log = LogFactoryUtil.getLog(AccountAttachmentServiceHttp.class);
+	private static final Class<?>[] _addAccountAttachmentsParameterTypes0 = new Class[] {
+			long.class, long.class, java.util.List.class, java.util.List.class
+		};
+	private static final Class<?>[] _deleteAccountAttachmentParameterTypes1 = new Class[] {
+			long.class
+		};
+	private static final Class<?>[] _getAccountAttachmentParameterTypes2 = new Class[] {
+			long.class
+		};
+	private static final Class<?>[] _getAccountAttachmentsParameterTypes3 = new Class[] {
+			long.class, long.class, int.class
+		};
 }

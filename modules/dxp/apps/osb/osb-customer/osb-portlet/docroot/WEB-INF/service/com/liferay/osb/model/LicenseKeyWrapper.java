@@ -347,6 +347,20 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	}
 
 	@Override
+	public AccountEntry getAccountEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _licenseKey.getAccountEntry();
+	}
+
+	@Override
+	public LicenseEntry getLicenseEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _licenseKey.getLicenseEntry();
+	}
+
+	@Override
 	public LicenseKey toEscapedModel() {
 		return new LicenseKeyWrapper(_licenseKey.toEscapedModel());
 	}
@@ -354,6 +368,41 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	@Override
 	public LicenseKey toUnescapedModel() {
 		return new LicenseKeyWrapper(_licenseKey.toUnescapedModel());
+	}
+
+	@Override
+	public LicenseKeySet getLicenseKeySet()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _licenseKey.getLicenseKeySet();
+	}
+
+	@Override
+	public OfferingEntry getOfferingEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _licenseKey.getOfferingEntry();
+	}
+
+	@Override
+	public OrderEntry getOrderEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _licenseKey.getOrderEntry();
+	}
+
+	@Override
+	public ProductEntry getProductEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _licenseKey.getProductEntry();
+	}
+
+	@Override
+	public boolean canRenew()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _licenseKey.canRenew();
 	}
 
 	/**
@@ -404,6 +453,11 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	@Override
 	public boolean isEscapedModel() {
 		return _licenseKey.isEscapedModel();
+	}
+
+	@Override
+	public boolean isExpired() {
+		return _licenseKey.isExpired();
 	}
 
 	@Override

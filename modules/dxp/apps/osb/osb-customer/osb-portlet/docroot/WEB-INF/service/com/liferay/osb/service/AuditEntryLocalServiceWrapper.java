@@ -45,6 +45,37 @@ public class AuditEntryLocalServiceWrapper implements AuditEntryLocalService,
 		return _auditEntryLocalService.addAuditEntry(auditEntry);
 	}
 
+	@Override
+	public com.liferay.osb.model.AuditEntry addAuditEntry(long userId,
+		java.lang.String userName, java.util.Date createDate, long classNameId,
+		long classPK, long auditSetId, long fieldClassNameId,
+		long fieldClassPK, int action, int field, int visibility,
+		java.lang.String oldLabel, java.lang.String oldValue,
+		java.lang.String newLabel, java.lang.String newValue)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _auditEntryLocalService.addAuditEntry(userId, userName,
+			createDate, classNameId, classPK, auditSetId, fieldClassNameId,
+			fieldClassPK, action, field, visibility, oldLabel, oldValue,
+			newLabel, newValue);
+	}
+
+	@Override
+	public com.liferay.osb.model.AuditEntry addAuditEntry(long userId,
+		java.lang.String userName, java.util.Date createDate, long classNameId,
+		long classPK, long auditSetId, long fieldClassNameId,
+		long fieldClassPK, int action, int field, int visibility,
+		java.lang.String oldLabel, java.lang.String oldValue,
+		java.lang.String newLabel, java.lang.String newValue, boolean i18n,
+		boolean trackChange)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _auditEntryLocalService.addAuditEntry(userId, userName,
+			createDate, classNameId, classPK, auditSetId, fieldClassNameId,
+			fieldClassPK, action, field, visibility, oldLabel, oldValue,
+			newLabel, newValue, i18n, trackChange);
+	}
+
 	/**
 	* Creates a new audit entry with the primary key. Does not add the audit entry to the database.
 	*
@@ -97,6 +128,22 @@ public class AuditEntryLocalServiceWrapper implements AuditEntryLocalService,
 	public com.liferay.osb.model.AuditEntry getAuditEntry(long auditEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _auditEntryLocalService.getAuditEntry(auditEntryId);
+	}
+
+	@Override
+	public com.liferay.osb.model.AuditEntry getLastAuditEntry(
+		long classNameId, long classPK, int field, int action)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _auditEntryLocalService.getLastAuditEntry(classNameId, classPK,
+			field, action);
+	}
+
+	@Override
+	public com.liferay.osb.model.AuditEntry getLastAuditEntry(
+		long fieldClassNameId, long fieldClassPK, int field)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _auditEntryLocalService.getLastAuditEntry(fieldClassNameId,
+			fieldClassPK, field);
 	}
 
 	/**
@@ -241,6 +288,29 @@ public class AuditEntryLocalServiceWrapper implements AuditEntryLocalService,
 		return _auditEntryLocalService.getAuditEntries(start, end);
 	}
 
+	@Override
+	public java.util.List<com.liferay.osb.model.AuditEntry> getAuditEntries(
+		java.util.Date createDate, long classNameId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _auditEntryLocalService.getAuditEntries(createDate, classNameId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.AuditEntry> getAuditEntries(
+		long classNameId, long classPK, int[] visibilities)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _auditEntryLocalService.getAuditEntries(classNameId, classPK,
+			visibilities);
+	}
+
+	@Override
+	public java.util.List<java.util.List<com.liferay.osb.model.AuditEntry>> getAuditEntrySets(
+		long classNameId, long classPK, int[] visibilities)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _auditEntryLocalService.getAuditEntrySets(classNameId, classPK,
+			visibilities);
+	}
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -266,6 +336,18 @@ public class AuditEntryLocalServiceWrapper implements AuditEntryLocalService,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return _auditEntryLocalService.dynamicQueryCount(dynamicQuery,
 			projection);
+	}
+
+	@Override
+	public long getNextAuditSetId(java.lang.String className, long classPK)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _auditEntryLocalService.getNextAuditSetId(className, classPK);
+	}
+
+	@Override
+	public long getNextAuditSetId(long classNameId, long classPK)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _auditEntryLocalService.getNextAuditSetId(classNameId, classPK);
 	}
 
 	@Override

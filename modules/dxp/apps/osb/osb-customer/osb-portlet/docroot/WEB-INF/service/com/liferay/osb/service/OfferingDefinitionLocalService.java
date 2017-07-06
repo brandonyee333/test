@@ -78,6 +78,12 @@ public interface OfferingDefinitionLocalService extends BaseLocalService,
 	public OfferingDefinition addOfferingDefinition(
 		OfferingDefinition offeringDefinition);
 
+	public OfferingDefinition addOfferingDefinition(long userId,
+		long productEntryId, long supportResponseId,
+		java.lang.String productDescription, boolean licenses,
+		boolean unlimitedLicenses, long maxConcurrentUsers, long maxUsers,
+		boolean supportTickets) throws PortalException, SystemException;
+
 	/**
 	* Creates a new offering definition with the primary key. Does not add the offering definition to the database.
 	*
@@ -103,10 +109,11 @@ public interface OfferingDefinitionLocalService extends BaseLocalService,
 	* @param offeringDefinitionId the primary key of the offering definition
 	* @return the offering definition that was removed
 	* @throws PortalException if a offering definition with the primary key could not be found
+	* @throws SystemException
 	*/
 	@Indexable(type = IndexableType.DELETE)
 	public OfferingDefinition deleteOfferingDefinition(
-		long offeringDefinitionId) throws PortalException;
+		long offeringDefinitionId) throws PortalException, SystemException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public OfferingDefinition fetchOfferingDefinition(long offeringDefinitionId);
@@ -131,6 +138,12 @@ public interface OfferingDefinitionLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public OfferingDefinition updateOfferingDefinition(
 		OfferingDefinition offeringDefinition);
+
+	public OfferingDefinition updateOfferingDefinition(
+		long offeringDefinitionId, long productEntryId, long supportResponseId,
+		java.lang.String productDescription, boolean licenses,
+		boolean unlimitedLicenses, long maxConcurrentUsers, long maxUsers,
+		boolean supportTickets) throws PortalException, SystemException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -162,6 +175,10 @@ public interface OfferingDefinitionLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getOfferingDefinitionsCount();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getOfferingDefinitionsCount(long[] productEntryIds,
+		long[] supportResponseIds) throws SystemException;
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
@@ -240,6 +257,19 @@ public interface OfferingDefinitionLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<OfferingDefinition> getOfferingDefinitions(int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<OfferingDefinition> getOfferingDefinitions(
+		long[] productEntryIds, long[] supportResponseIds, int start, int end)
+		throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<OfferingDefinition> getProductEntryOfferingDefinitions(
+		long productEntryId) throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<OfferingDefinition> getSupportResponseOfferingDefinitions(
+		long supportResponseId) throws SystemException;
 
 	/**
 	* Returns the number of rows matching the dynamic query.

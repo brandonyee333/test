@@ -234,6 +234,13 @@ public class OfferingEntryWrapper implements OfferingEntry,
 	}
 
 	@Override
+	public AccountEntry getAccountEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _offeringEntry.getAccountEntry();
+	}
+
+	@Override
 	public OfferingEntry toEscapedModel() {
 		return new OfferingEntryWrapper(_offeringEntry.toEscapedModel());
 	}
@@ -241,6 +248,34 @@ public class OfferingEntryWrapper implements OfferingEntry,
 	@Override
 	public OfferingEntry toUnescapedModel() {
 		return new OfferingEntryWrapper(_offeringEntry.toUnescapedModel());
+	}
+
+	@Override
+	public OfferingEntryGroup getOfferingEntryGroup()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _offeringEntry.getOfferingEntryGroup();
+	}
+
+	@Override
+	public OrderEntry getOrderEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _offeringEntry.getOrderEntry();
+	}
+
+	@Override
+	public ProductEntry getProductEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _offeringEntry.getProductEntry();
+	}
+
+	@Override
+	public SupportResponse getSupportResponse()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _offeringEntry.getSupportResponse();
 	}
 
 	/**
@@ -313,6 +348,19 @@ public class OfferingEntryWrapper implements OfferingEntry,
 		return _offeringEntry.compareTo(offeringEntry);
 	}
 
+	@Override
+	public int getAvailableServers()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _offeringEntry.getAvailableServers();
+	}
+
+	@Override
+	public int getLicenseKeysCount()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _offeringEntry.getLicenseKeysCount();
+	}
+
 	/**
 	* Returns the quantity of this offering entry.
 	*
@@ -341,6 +389,12 @@ public class OfferingEntryWrapper implements OfferingEntry,
 	@Override
 	public int getStatus() {
 		return _offeringEntry.getStatus();
+	}
+
+	@Override
+	public int getTicketEntriesCount()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _offeringEntry.getTicketEntriesCount();
 	}
 
 	/**
@@ -378,6 +432,13 @@ public class OfferingEntryWrapper implements OfferingEntry,
 		return new OfferingEntryWrapper((OfferingEntry)_offeringEntry.clone());
 	}
 
+	@Override
+	public java.lang.String getKey()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _offeringEntry.getKey();
+	}
+
 	/**
 	* Returns the platform of this offering entry.
 	*
@@ -406,6 +467,21 @@ public class OfferingEntryWrapper implements OfferingEntry,
 	@Override
 	public java.lang.String getProductDescription() {
 		return _offeringEntry.getProductDescription();
+	}
+
+	@Override
+	public java.lang.String getSizingLabel() {
+		return _offeringEntry.getSizingLabel();
+	}
+
+	@Override
+	public java.lang.String getStatusLabel() {
+		return _offeringEntry.getStatusLabel();
+	}
+
+	@Override
+	public java.lang.String getTypeLabel() {
+		return _offeringEntry.getTypeLabel();
 	}
 
 	/**
@@ -438,6 +514,13 @@ public class OfferingEntryWrapper implements OfferingEntry,
 		return _offeringEntry.toXmlString();
 	}
 
+	@Override
+	public Date getActualStartDate()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _offeringEntry.getActualStartDate();
+	}
+
 	/**
 	* Returns the create date of this offering entry.
 	*
@@ -458,6 +541,13 @@ public class OfferingEntryWrapper implements OfferingEntry,
 		return _offeringEntry.getModifiedDate();
 	}
 
+	@Override
+	public Date getStartDate()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _offeringEntry.getStartDate();
+	}
+
 	/**
 	* Returns the support end date of this offering entry.
 	*
@@ -466,6 +556,12 @@ public class OfferingEntryWrapper implements OfferingEntry,
 	@Override
 	public Date getSupportEndDate() {
 		return _offeringEntry.getSupportEndDate();
+	}
+
+	@Override
+	public java.util.List<LicenseKey> getLicenseKeys()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _offeringEntry.getLicenseKeys();
 	}
 
 	/**

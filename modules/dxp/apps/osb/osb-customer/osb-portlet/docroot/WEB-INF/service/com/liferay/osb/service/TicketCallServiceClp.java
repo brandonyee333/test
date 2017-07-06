@@ -27,9 +27,79 @@ public class TicketCallServiceClp implements TicketCallService {
 	public TicketCallServiceClp(InvokableService invokableService) {
 		_invokableService = invokableService;
 
-		_methodName1 = "getOSGiServiceIdentifier";
+		_methodName0 = "addTicketCall";
 
-		_methodParameterTypes1 = new String[] {  };
+		_methodParameterTypes0 = new String[] {
+				"long", "int", "int", "int", "int", "int", "int", "long",
+				"java.lang.String", "java.lang.String", "java.lang.String",
+				"java.lang.String"
+			};
+
+		_methodName2 = "getOSGiServiceIdentifier";
+
+		_methodParameterTypes2 = new String[] {  };
+	}
+
+	@Override
+	public com.liferay.osb.model.TicketCall addTicketCall(long ticketEntryId,
+		int type, int callDateMonth, int callDateDay, int callDateYear,
+		int callDateHour, int callDateMinute, long callLength,
+		java.lang.String customerName, java.lang.String customerContact,
+		java.lang.String confirmation, java.lang.String instructions)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableService.invokeMethod(_methodName0,
+					_methodParameterTypes0,
+					new Object[] {
+						ticketEntryId,
+						
+					type,
+						
+					callDateMonth,
+						
+					callDateDay,
+						
+					callDateYear,
+						
+					callDateHour,
+						
+					callDateMinute,
+						
+					callLength,
+						
+					ClpSerializer.translateInput(customerName),
+						
+					ClpSerializer.translateInput(customerContact),
+						
+					ClpSerializer.translateInput(confirmation),
+						
+					ClpSerializer.translateInput(instructions)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.TicketCall)ClpSerializer.translateOutput(returnObj);
 	}
 
 	@Override
@@ -44,8 +114,8 @@ public class TicketCallServiceClp implements TicketCallService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName1,
-					_methodParameterTypes1, new Object[] {  });
+			returnObj = _invokableService.invokeMethod(_methodName2,
+					_methodParameterTypes2, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -63,6 +133,8 @@ public class TicketCallServiceClp implements TicketCallService {
 	}
 
 	private InvokableService _invokableService;
-	private String _methodName1;
-	private String[] _methodParameterTypes1;
+	private String _methodName0;
+	private String[] _methodParameterTypes0;
+	private String _methodName2;
+	private String[] _methodParameterTypes2;
 }

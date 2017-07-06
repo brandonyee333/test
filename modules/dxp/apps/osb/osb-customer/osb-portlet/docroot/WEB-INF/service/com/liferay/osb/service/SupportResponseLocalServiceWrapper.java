@@ -46,6 +46,19 @@ public class SupportResponseLocalServiceWrapper
 		return _supportResponseLocalService.addSupportResponse(supportResponse);
 	}
 
+	@Override
+	public com.liferay.osb.model.SupportResponse addSupportResponse(
+		long userId, java.lang.String name, int supportLevel,
+		int severity1Response, int severity1Resolution, int severity2Response,
+		int severity2Resolution, int severity3Response, int severity3Resolution)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _supportResponseLocalService.addSupportResponse(userId, name,
+			supportLevel, severity1Response, severity1Resolution,
+			severity2Response, severity2Resolution, severity3Response,
+			severity3Resolution);
+	}
+
 	/**
 	* Creates a new support response with the primary key. Does not add the support response to the database.
 	*
@@ -76,11 +89,13 @@ public class SupportResponseLocalServiceWrapper
 	* @param supportResponseId the primary key of the support response
 	* @return the support response that was removed
 	* @throws PortalException if a support response with the primary key could not be found
+	* @throws SystemException
 	*/
 	@Override
 	public com.liferay.osb.model.SupportResponse deleteSupportResponse(
 		long supportResponseId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
 		return _supportResponseLocalService.deleteSupportResponse(supportResponseId);
 	}
 
@@ -88,6 +103,13 @@ public class SupportResponseLocalServiceWrapper
 	public com.liferay.osb.model.SupportResponse fetchSupportResponse(
 		long supportResponseId) {
 		return _supportResponseLocalService.fetchSupportResponse(supportResponseId);
+	}
+
+	@Override
+	public com.liferay.osb.model.SupportResponse fetchSupportResponseByName(
+		java.lang.String name)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _supportResponseLocalService.fetchSupportResponseByName(name);
 	}
 
 	/**
@@ -104,6 +126,14 @@ public class SupportResponseLocalServiceWrapper
 		return _supportResponseLocalService.getSupportResponse(supportResponseId);
 	}
 
+	@Override
+	public com.liferay.osb.model.SupportResponse getSupportResponseByName(
+		java.lang.String name)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _supportResponseLocalService.getSupportResponseByName(name);
+	}
+
 	/**
 	* Updates the support response in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
@@ -114,6 +144,19 @@ public class SupportResponseLocalServiceWrapper
 	public com.liferay.osb.model.SupportResponse updateSupportResponse(
 		com.liferay.osb.model.SupportResponse supportResponse) {
 		return _supportResponseLocalService.updateSupportResponse(supportResponse);
+	}
+
+	@Override
+	public com.liferay.osb.model.SupportResponse updateSupportResponse(
+		long supportResponseId, java.lang.String name, int supportLevel,
+		int severity1Response, int severity1Resolution, int severity2Response,
+		int severity2Resolution, int severity3Response, int severity3Resolution)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _supportResponseLocalService.updateSupportResponse(supportResponseId,
+			name, supportLevel, severity1Response, severity1Resolution,
+			severity2Response, severity2Resolution, severity3Response,
+			severity3Resolution);
 	}
 
 	@Override

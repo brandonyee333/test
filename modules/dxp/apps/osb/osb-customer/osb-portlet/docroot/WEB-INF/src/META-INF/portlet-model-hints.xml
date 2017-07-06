@@ -171,6 +171,28 @@
 		<field name="lifetime" type="long" />
 		<field name="status" type="int" />
 	</model>
+	<model name="com.liferay.osb.model.AssetReceiptLicense">
+		<field name="uuid" type="String" />
+		<field name="assetReceiptLicenseId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="assetReceiptId" type="long" />
+		<field name="assetLicenseId" type="long" />
+		<field name="assetEntryId" type="long" />
+		<field name="ownerClassNameId" type="long" />
+		<field name="ownerClassPK" type="long" />
+		<field name="productClassNameId" type="long" />
+		<field name="productClassPK" type="long" />
+		<field name="productId" type="String" />
+		<field name="startDate" type="Date" />
+		<field name="endDate" type="Date" />
+		<field name="usageType" type="int" />
+		<field name="licenseType" type="int" />
+		<field name="licenseTypeAllotment" type="long" />
+		<field name="licenseLifetime" type="long" />
+	</model>
 	<model name="com.liferay.osb.model.AuditAction">
 		<field name="auditActionId" type="long" />
 		<field name="modifiedDate" type="Date" />
@@ -236,6 +258,17 @@
 			<hint-collection name="TEXTAREA" />
 			<hint name="max-length">200000</hint>
 		</field>
+	</model>
+	<model name="com.liferay.osb.model.CorpProject">
+		<field name="corpProjectId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="dossieraProjectKey" type="String" />
+		<field name="salesforceProjectKey" type="String" />
+		<field name="name" type="String" />
+		<field name="organizationId" type="long" />
 	</model>
 	<model name="com.liferay.osb.model.CurrencyEntry">
 		<field name="currencyEntryId" type="long" />

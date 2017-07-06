@@ -123,9 +123,78 @@ public class OfferingEntryLocalServiceClpInvoker {
 				"com.liferay.osb.model.OfferingEntry"
 			};
 
-		_methodName254 = "getOSGiServiceIdentifier";
+		_methodName290 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes254 = new String[] {  };
+		_methodParameterTypes290 = new String[] {  };
+
+		_methodName295 = "addOfferingEntry";
+
+		_methodParameterTypes295 = new String[] {
+				"long", "long", "long", "long", "long", "java.lang.String",
+				"int", "int", "boolean", "long", "long", "long", "boolean",
+				"long", "int", "int", "int"
+			};
+
+		_methodName296 = "checkOfferingEntries";
+
+		_methodParameterTypes296 = new String[] {  };
+
+		_methodName297 = "deleteOfferingEntry";
+
+		_methodParameterTypes297 = new String[] { "long" };
+
+		_methodName298 = "deleteOfferingEntry";
+
+		_methodParameterTypes298 = new String[] {
+				"com.liferay.osb.model.OfferingEntry"
+			};
+
+		_methodName299 = "fetchOfferingEntry";
+
+		_methodParameterTypes299 = new String[] { "long" };
+
+		_methodName300 = "getAccountEntryOfferingEntries";
+
+		_methodParameterTypes300 = new String[] { "long" };
+
+		_methodName301 = "getAccountEntryOfferingEntriesCount";
+
+		_methodParameterTypes301 = new String[] { "long" };
+
+		_methodName302 = "getOrderEntryOfferingEntries";
+
+		_methodParameterTypes302 = new String[] { "long" };
+
+		_methodName303 = "hasActiveTrialOfferingEntry";
+
+		_methodParameterTypes303 = new String[] { "long" };
+
+		_methodName304 = "search";
+
+		_methodParameterTypes304 = new String[] {
+				"long", "long", "int[][]", "int[][]", "int", "int", "int", "int",
+				"int", "int", "java.util.LinkedHashMap", "boolean", "int", "int",
+				"com.liferay.portal.kernel.util.OrderByComparator"
+			};
+
+		_methodName305 = "searchCount";
+
+		_methodParameterTypes305 = new String[] {
+				"long", "long", "int[][]", "int[][]", "int", "int", "int", "int",
+				"int", "int", "java.util.LinkedHashMap", "boolean"
+			};
+
+		_methodName306 = "updateOfferingEntry";
+
+		_methodParameterTypes306 = new String[] {
+				"long", "long", "long", "long", "long", "long",
+				"java.lang.String", "int", "int", "boolean", "long", "long",
+				"long", "boolean", "long", "int", "int"
+			};
+
+		_methodName307 = "updateStatus";
+
+		_methodParameterTypes307 = new String[] { "long", "long", "int" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -232,9 +301,131 @@ public class OfferingEntryLocalServiceClpInvoker {
 			return OfferingEntryLocalServiceUtil.updateOfferingEntry((com.liferay.osb.model.OfferingEntry)arguments[0]);
 		}
 
-		if (_methodName254.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes254, parameterTypes)) {
+		if (_methodName290.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes290, parameterTypes)) {
 			return OfferingEntryLocalServiceUtil.getOSGiServiceIdentifier();
+		}
+
+		if (_methodName295.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes295, parameterTypes)) {
+			return OfferingEntryLocalServiceUtil.addOfferingEntry(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				((Long)arguments[2]).longValue(),
+				((Long)arguments[3]).longValue(),
+				((Long)arguments[4]).longValue(),
+				(java.lang.String)arguments[5],
+				((Integer)arguments[6]).intValue(),
+				((Integer)arguments[7]).intValue(),
+				((Boolean)arguments[8]).booleanValue(),
+				((Long)arguments[9]).longValue(),
+				((Long)arguments[10]).longValue(),
+				((Long)arguments[11]).longValue(),
+				((Boolean)arguments[12]).booleanValue(),
+				((Long)arguments[13]).longValue(),
+				((Integer)arguments[14]).intValue(),
+				((Integer)arguments[15]).intValue(),
+				((Integer)arguments[16]).intValue());
+		}
+
+		if (_methodName296.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes296, parameterTypes)) {
+			OfferingEntryLocalServiceUtil.checkOfferingEntries();
+
+			return null;
+		}
+
+		if (_methodName297.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes297, parameterTypes)) {
+			return OfferingEntryLocalServiceUtil.deleteOfferingEntry(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName298.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes298, parameterTypes)) {
+			return OfferingEntryLocalServiceUtil.deleteOfferingEntry((com.liferay.osb.model.OfferingEntry)arguments[0]);
+		}
+
+		if (_methodName299.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes299, parameterTypes)) {
+			return OfferingEntryLocalServiceUtil.fetchOfferingEntry(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName300.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes300, parameterTypes)) {
+			return OfferingEntryLocalServiceUtil.getAccountEntryOfferingEntries(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName301.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes301, parameterTypes)) {
+			return OfferingEntryLocalServiceUtil.getAccountEntryOfferingEntriesCount(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName302.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes302, parameterTypes)) {
+			return OfferingEntryLocalServiceUtil.getOrderEntryOfferingEntries(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName303.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes303, parameterTypes)) {
+			return OfferingEntryLocalServiceUtil.hasActiveTrialOfferingEntry(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName304.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes304, parameterTypes)) {
+			return OfferingEntryLocalServiceUtil.search(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(), (int[])arguments[2],
+				(int[])arguments[3], ((Integer)arguments[4]).intValue(),
+				((Integer)arguments[5]).intValue(),
+				((Integer)arguments[6]).intValue(),
+				((Integer)arguments[7]).intValue(),
+				((Integer)arguments[8]).intValue(),
+				((Integer)arguments[9]).intValue(),
+				(java.util.LinkedHashMap<java.lang.String, java.lang.Object>)arguments[10],
+				((Boolean)arguments[11]).booleanValue(),
+				((Integer)arguments[12]).intValue(),
+				((Integer)arguments[13]).intValue(),
+				(com.liferay.portal.kernel.util.OrderByComparator)arguments[14]);
+		}
+
+		if (_methodName305.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes305, parameterTypes)) {
+			return OfferingEntryLocalServiceUtil.searchCount(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(), (int[])arguments[2],
+				(int[])arguments[3], ((Integer)arguments[4]).intValue(),
+				((Integer)arguments[5]).intValue(),
+				((Integer)arguments[6]).intValue(),
+				((Integer)arguments[7]).intValue(),
+				((Integer)arguments[8]).intValue(),
+				((Integer)arguments[9]).intValue(),
+				(java.util.LinkedHashMap<java.lang.String, java.lang.Object>)arguments[10],
+				((Boolean)arguments[11]).booleanValue());
+		}
+
+		if (_methodName306.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes306, parameterTypes)) {
+			return OfferingEntryLocalServiceUtil.updateOfferingEntry(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				((Long)arguments[2]).longValue(),
+				((Long)arguments[3]).longValue(),
+				((Long)arguments[4]).longValue(),
+				((Long)arguments[5]).longValue(),
+				(java.lang.String)arguments[6],
+				((Integer)arguments[7]).intValue(),
+				((Integer)arguments[8]).intValue(),
+				((Boolean)arguments[9]).booleanValue(),
+				((Long)arguments[10]).longValue(),
+				((Long)arguments[11]).longValue(),
+				((Long)arguments[12]).longValue(),
+				((Boolean)arguments[13]).booleanValue(),
+				((Long)arguments[14]).longValue(),
+				((Integer)arguments[15]).intValue(),
+				((Integer)arguments[16]).intValue());
+		}
+
+		if (_methodName307.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes307, parameterTypes)) {
+			return OfferingEntryLocalServiceUtil.updateStatus(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				((Integer)arguments[2]).intValue());
 		}
 
 		throw new UnsupportedOperationException();
@@ -278,6 +469,32 @@ public class OfferingEntryLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName254;
-	private String[] _methodParameterTypes254;
+	private String _methodName290;
+	private String[] _methodParameterTypes290;
+	private String _methodName295;
+	private String[] _methodParameterTypes295;
+	private String _methodName296;
+	private String[] _methodParameterTypes296;
+	private String _methodName297;
+	private String[] _methodParameterTypes297;
+	private String _methodName298;
+	private String[] _methodParameterTypes298;
+	private String _methodName299;
+	private String[] _methodParameterTypes299;
+	private String _methodName300;
+	private String[] _methodParameterTypes300;
+	private String _methodName301;
+	private String[] _methodParameterTypes301;
+	private String _methodName302;
+	private String[] _methodParameterTypes302;
+	private String _methodName303;
+	private String[] _methodParameterTypes303;
+	private String _methodName304;
+	private String[] _methodParameterTypes304;
+	private String _methodName305;
+	private String[] _methodParameterTypes305;
+	private String _methodName306;
+	private String[] _methodParameterTypes306;
+	private String _methodName307;
+	private String[] _methodParameterTypes307;
 }

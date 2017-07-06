@@ -43,166 +43,198 @@ public class OfferingDefinitionLocalServiceClp
 				"com.liferay.osb.model.OfferingDefinition"
 			};
 
-		_methodName3 = "createOfferingDefinition";
+		_methodName3 = "addOfferingDefinition";
 
-		_methodParameterTypes3 = new String[] { "long" };
-
-		_methodName4 = "deleteOfferingDefinition";
-
-		_methodParameterTypes4 = new String[] {
-				"com.liferay.osb.model.OfferingDefinition"
+		_methodParameterTypes3 = new String[] {
+				"long", "long", "long", "java.lang.String", "boolean", "boolean",
+				"long", "long", "boolean"
 			};
+
+		_methodName4 = "createOfferingDefinition";
+
+		_methodParameterTypes4 = new String[] { "long" };
 
 		_methodName5 = "deleteOfferingDefinition";
 
-		_methodParameterTypes5 = new String[] { "long" };
-
-		_methodName6 = "fetchOfferingDefinition";
-
-		_methodParameterTypes6 = new String[] { "long" };
-
-		_methodName7 = "getOfferingDefinition";
-
-		_methodParameterTypes7 = new String[] { "long" };
-
-		_methodName8 = "updateOfferingDefinition";
-
-		_methodParameterTypes8 = new String[] {
+		_methodParameterTypes5 = new String[] {
 				"com.liferay.osb.model.OfferingDefinition"
 			};
 
-		_methodName9 = "getActionableDynamicQuery";
+		_methodName6 = "deleteOfferingDefinition";
 
-		_methodParameterTypes9 = new String[] {  };
+		_methodParameterTypes6 = new String[] { "long" };
 
-		_methodName10 = "dynamicQuery";
+		_methodName7 = "fetchOfferingDefinition";
 
-		_methodParameterTypes10 = new String[] {  };
+		_methodParameterTypes7 = new String[] { "long" };
 
-		_methodName11 = "getIndexableActionableDynamicQuery";
+		_methodName8 = "getOfferingDefinition";
+
+		_methodParameterTypes8 = new String[] { "long" };
+
+		_methodName9 = "updateOfferingDefinition";
+
+		_methodParameterTypes9 = new String[] {
+				"com.liferay.osb.model.OfferingDefinition"
+			};
+
+		_methodName10 = "updateOfferingDefinition";
+
+		_methodParameterTypes10 = new String[] {
+				"long", "long", "long", "java.lang.String", "boolean", "boolean",
+				"long", "long", "boolean"
+			};
+
+		_methodName11 = "getActionableDynamicQuery";
 
 		_methodParameterTypes11 = new String[] {  };
 
-		_methodName12 = "deletePersistedModel";
+		_methodName12 = "dynamicQuery";
 
-		_methodParameterTypes12 = new String[] {
+		_methodParameterTypes12 = new String[] {  };
+
+		_methodName13 = "getIndexableActionableDynamicQuery";
+
+		_methodParameterTypes13 = new String[] {  };
+
+		_methodName14 = "deletePersistedModel";
+
+		_methodParameterTypes14 = new String[] {
 				"com.liferay.portal.kernel.model.PersistedModel"
 			};
 
-		_methodName13 = "getPersistedModel";
+		_methodName15 = "getPersistedModel";
 
-		_methodParameterTypes13 = new String[] { "java.io.Serializable" };
+		_methodParameterTypes15 = new String[] { "java.io.Serializable" };
 
-		_methodName14 = "getOfferingBundleOfferingDefinitionsCount";
+		_methodName16 = "getOfferingBundleOfferingDefinitionsCount";
 
-		_methodParameterTypes14 = new String[] { "long" };
+		_methodParameterTypes16 = new String[] { "long" };
 
-		_methodName15 = "getOfferingDefinitionsCount";
-
-		_methodParameterTypes15 = new String[] {  };
-
-		_methodName17 = "getOSGiServiceIdentifier";
+		_methodName17 = "getOfferingDefinitionsCount";
 
 		_methodParameterTypes17 = new String[] {  };
 
-		_methodName18 = "dynamicQuery";
+		_methodName18 = "getOfferingDefinitionsCount";
 
-		_methodParameterTypes18 = new String[] {
+		_methodParameterTypes18 = new String[] { "long[][]", "long[][]" };
+
+		_methodName20 = "getOSGiServiceIdentifier";
+
+		_methodParameterTypes20 = new String[] {  };
+
+		_methodName21 = "dynamicQuery";
+
+		_methodParameterTypes21 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
 			};
 
-		_methodName19 = "dynamicQuery";
+		_methodName22 = "dynamicQuery";
 
-		_methodParameterTypes19 = new String[] {
+		_methodParameterTypes22 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
 			};
 
-		_methodName20 = "dynamicQuery";
+		_methodName23 = "dynamicQuery";
 
-		_methodParameterTypes20 = new String[] {
+		_methodParameterTypes23 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName21 = "getOfferingBundleOfferingDefinitions";
+		_methodName24 = "getOfferingBundleOfferingDefinitions";
 
-		_methodParameterTypes21 = new String[] { "long" };
+		_methodParameterTypes24 = new String[] { "long" };
 
-		_methodName22 = "getOfferingBundleOfferingDefinitions";
+		_methodName25 = "getOfferingBundleOfferingDefinitions";
 
-		_methodParameterTypes22 = new String[] { "long", "int", "int" };
+		_methodParameterTypes25 = new String[] { "long", "int", "int" };
 
-		_methodName23 = "getOfferingBundleOfferingDefinitions";
+		_methodName26 = "getOfferingBundleOfferingDefinitions";
 
-		_methodParameterTypes23 = new String[] {
+		_methodParameterTypes26 = new String[] {
 				"long", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName24 = "getOfferingDefinitions";
+		_methodName27 = "getOfferingDefinitions";
 
-		_methodParameterTypes24 = new String[] { "int", "int" };
+		_methodParameterTypes27 = new String[] { "int", "int" };
 
-		_methodName25 = "dynamicQueryCount";
+		_methodName28 = "getOfferingDefinitions";
 
-		_methodParameterTypes25 = new String[] {
+		_methodParameterTypes28 = new String[] {
+				"long[][]", "long[][]", "int", "int"
+			};
+
+		_methodName29 = "getProductEntryOfferingDefinitions";
+
+		_methodParameterTypes29 = new String[] { "long" };
+
+		_methodName30 = "getSupportResponseOfferingDefinitions";
+
+		_methodParameterTypes30 = new String[] { "long" };
+
+		_methodName31 = "dynamicQueryCount";
+
+		_methodParameterTypes31 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
 			};
 
-		_methodName26 = "dynamicQueryCount";
+		_methodName32 = "dynamicQueryCount";
 
-		_methodParameterTypes26 = new String[] {
+		_methodParameterTypes32 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery",
 				"com.liferay.portal.kernel.dao.orm.Projection"
 			};
 
-		_methodName27 = "getOfferingBundlePrimaryKeys";
+		_methodName33 = "getOfferingBundlePrimaryKeys";
 
-		_methodParameterTypes27 = new String[] { "long" };
+		_methodParameterTypes33 = new String[] { "long" };
 
-		_methodName28 = "addOfferingBundleOfferingDefinition";
+		_methodName34 = "addOfferingBundleOfferingDefinition";
 
-		_methodParameterTypes28 = new String[] {
+		_methodParameterTypes34 = new String[] {
 				"long", "com.liferay.osb.model.OfferingDefinition"
 			};
 
-		_methodName29 = "addOfferingBundleOfferingDefinition";
+		_methodName35 = "addOfferingBundleOfferingDefinition";
 
-		_methodParameterTypes29 = new String[] { "long", "long" };
+		_methodParameterTypes35 = new String[] { "long", "long" };
 
-		_methodName30 = "addOfferingBundleOfferingDefinitions";
+		_methodName36 = "addOfferingBundleOfferingDefinitions";
 
-		_methodParameterTypes30 = new String[] { "long", "java.util.List" };
+		_methodParameterTypes36 = new String[] { "long", "java.util.List" };
 
-		_methodName31 = "addOfferingBundleOfferingDefinitions";
-
-		_methodParameterTypes31 = new String[] { "long", "long[][]" };
-
-		_methodName32 = "clearOfferingBundleOfferingDefinitions";
-
-		_methodParameterTypes32 = new String[] { "long" };
-
-		_methodName33 = "deleteOfferingBundleOfferingDefinition";
-
-		_methodParameterTypes33 = new String[] {
-				"long", "com.liferay.osb.model.OfferingDefinition"
-			};
-
-		_methodName34 = "deleteOfferingBundleOfferingDefinition";
-
-		_methodParameterTypes34 = new String[] { "long", "long" };
-
-		_methodName35 = "deleteOfferingBundleOfferingDefinitions";
-
-		_methodParameterTypes35 = new String[] { "long", "java.util.List" };
-
-		_methodName36 = "deleteOfferingBundleOfferingDefinitions";
-
-		_methodParameterTypes36 = new String[] { "long", "long[][]" };
-
-		_methodName37 = "setOfferingBundleOfferingDefinitions";
+		_methodName37 = "addOfferingBundleOfferingDefinitions";
 
 		_methodParameterTypes37 = new String[] { "long", "long[][]" };
+
+		_methodName38 = "clearOfferingBundleOfferingDefinitions";
+
+		_methodParameterTypes38 = new String[] { "long" };
+
+		_methodName39 = "deleteOfferingBundleOfferingDefinition";
+
+		_methodParameterTypes39 = new String[] {
+				"long", "com.liferay.osb.model.OfferingDefinition"
+			};
+
+		_methodName40 = "deleteOfferingBundleOfferingDefinition";
+
+		_methodParameterTypes40 = new String[] { "long", "long" };
+
+		_methodName41 = "deleteOfferingBundleOfferingDefinitions";
+
+		_methodParameterTypes41 = new String[] { "long", "java.util.List" };
+
+		_methodName42 = "deleteOfferingBundleOfferingDefinitions";
+
+		_methodParameterTypes42 = new String[] { "long", "long[][]" };
+
+		_methodName43 = "setOfferingBundleOfferingDefinitions";
+
+		_methodParameterTypes43 = new String[] { "long", "long[][]" };
 	}
 
 	@Override
@@ -281,13 +313,69 @@ public class OfferingDefinitionLocalServiceClp
 	}
 
 	@Override
-	public com.liferay.osb.model.OfferingDefinition createOfferingDefinition(
-		long offeringDefinitionId) {
+	public com.liferay.osb.model.OfferingDefinition addOfferingDefinition(
+		long userId, long productEntryId, long supportResponseId,
+		java.lang.String productDescription, boolean licenses,
+		boolean unlimitedLicenses, long maxConcurrentUsers, long maxUsers,
+		boolean supportTickets)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName3,
 					_methodParameterTypes3,
+					new Object[] {
+						userId,
+						
+					productEntryId,
+						
+					supportResponseId,
+						
+					ClpSerializer.translateInput(productDescription),
+						
+					licenses,
+						
+					unlimitedLicenses,
+						
+					maxConcurrentUsers,
+						
+					maxUsers,
+						
+					supportTickets
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.OfferingDefinition)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public com.liferay.osb.model.OfferingDefinition createOfferingDefinition(
+		long offeringDefinitionId) {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName4,
+					_methodParameterTypes4,
 					new Object[] { offeringDefinitionId });
 		}
 		catch (Throwable t) {
@@ -311,8 +399,8 @@ public class OfferingDefinitionLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName4,
-					_methodParameterTypes4,
+			returnObj = _invokableLocalService.invokeMethod(_methodName5,
+					_methodParameterTypes5,
 					new Object[] {
 						ClpSerializer.translateInput(offeringDefinition)
 					});
@@ -335,12 +423,13 @@ public class OfferingDefinitionLocalServiceClp
 	@Override
 	public com.liferay.osb.model.OfferingDefinition deleteOfferingDefinition(
 		long offeringDefinitionId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName5,
-					_methodParameterTypes5,
+			returnObj = _invokableLocalService.invokeMethod(_methodName6,
+					_methodParameterTypes6,
 					new Object[] { offeringDefinitionId });
 		}
 		catch (Throwable t) {
@@ -348,6 +437,10 @@ public class OfferingDefinitionLocalServiceClp
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -368,8 +461,8 @@ public class OfferingDefinitionLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName6,
-					_methodParameterTypes6,
+			returnObj = _invokableLocalService.invokeMethod(_methodName7,
+					_methodParameterTypes7,
 					new Object[] { offeringDefinitionId });
 		}
 		catch (Throwable t) {
@@ -394,8 +487,8 @@ public class OfferingDefinitionLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName7,
-					_methodParameterTypes7,
+			returnObj = _invokableLocalService.invokeMethod(_methodName8,
+					_methodParameterTypes8,
 					new Object[] { offeringDefinitionId });
 		}
 		catch (Throwable t) {
@@ -423,8 +516,8 @@ public class OfferingDefinitionLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName8,
-					_methodParameterTypes8,
+			returnObj = _invokableLocalService.invokeMethod(_methodName9,
+					_methodParameterTypes9,
 					new Object[] {
 						ClpSerializer.translateInput(offeringDefinition)
 					});
@@ -445,12 +538,68 @@ public class OfferingDefinitionLocalServiceClp
 	}
 
 	@Override
+	public com.liferay.osb.model.OfferingDefinition updateOfferingDefinition(
+		long offeringDefinitionId, long productEntryId, long supportResponseId,
+		java.lang.String productDescription, boolean licenses,
+		boolean unlimitedLicenses, long maxConcurrentUsers, long maxUsers,
+		boolean supportTickets)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName10,
+					_methodParameterTypes10,
+					new Object[] {
+						offeringDefinitionId,
+						
+					productEntryId,
+						
+					supportResponseId,
+						
+					ClpSerializer.translateInput(productDescription),
+						
+					licenses,
+						
+					unlimitedLicenses,
+						
+					maxConcurrentUsers,
+						
+					maxUsers,
+						
+					supportTickets
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.OfferingDefinition)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName9,
-					_methodParameterTypes9, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName11,
+					_methodParameterTypes11, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -472,8 +621,8 @@ public class OfferingDefinitionLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName10,
-					_methodParameterTypes10, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName12,
+					_methodParameterTypes12, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -495,8 +644,8 @@ public class OfferingDefinitionLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName11,
-					_methodParameterTypes11, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName13,
+					_methodParameterTypes13, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -520,8 +669,8 @@ public class OfferingDefinitionLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName12,
-					_methodParameterTypes12,
+			returnObj = _invokableLocalService.invokeMethod(_methodName14,
+					_methodParameterTypes14,
 					new Object[] { ClpSerializer.translateInput(persistedModel) });
 		}
 		catch (Throwable t) {
@@ -550,8 +699,8 @@ public class OfferingDefinitionLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName13,
-					_methodParameterTypes13,
+			returnObj = _invokableLocalService.invokeMethod(_methodName15,
+					_methodParameterTypes15,
 					new Object[] { ClpSerializer.translateInput(primaryKeyObj) });
 		}
 		catch (Throwable t) {
@@ -578,8 +727,8 @@ public class OfferingDefinitionLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName14,
-					_methodParameterTypes14, new Object[] { offeringBundleId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName16,
+					_methodParameterTypes16, new Object[] { offeringBundleId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -601,11 +750,45 @@ public class OfferingDefinitionLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName15,
-					_methodParameterTypes15, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName17,
+					_methodParameterTypes17, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return ((Integer)returnObj).intValue();
+	}
+
+	@Override
+	public int getOfferingDefinitionsCount(long[] productEntryIds,
+		long[] supportResponseIds)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName18,
+					_methodParameterTypes18,
+					new Object[] {
+						ClpSerializer.translateInput(productEntryIds),
+						
+					ClpSerializer.translateInput(supportResponseIds)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -631,8 +814,8 @@ public class OfferingDefinitionLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName17,
-					_methodParameterTypes17, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName20,
+					_methodParameterTypes20, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -655,8 +838,8 @@ public class OfferingDefinitionLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName18,
-					_methodParameterTypes18,
+			returnObj = _invokableLocalService.invokeMethod(_methodName21,
+					_methodParameterTypes21,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -681,8 +864,8 @@ public class OfferingDefinitionLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName19,
-					_methodParameterTypes19,
+			returnObj = _invokableLocalService.invokeMethod(_methodName22,
+					_methodParameterTypes22,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -714,8 +897,8 @@ public class OfferingDefinitionLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName20,
-					_methodParameterTypes20,
+			returnObj = _invokableLocalService.invokeMethod(_methodName23,
+					_methodParameterTypes23,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -747,8 +930,8 @@ public class OfferingDefinitionLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName21,
-					_methodParameterTypes21, new Object[] { offeringBundleId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName24,
+					_methodParameterTypes24, new Object[] { offeringBundleId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -771,8 +954,8 @@ public class OfferingDefinitionLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName22,
-					_methodParameterTypes22,
+			returnObj = _invokableLocalService.invokeMethod(_methodName25,
+					_methodParameterTypes25,
 					new Object[] { offeringBundleId, start, end });
 		}
 		catch (Throwable t) {
@@ -797,8 +980,8 @@ public class OfferingDefinitionLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName23,
-					_methodParameterTypes23,
+			returnObj = _invokableLocalService.invokeMethod(_methodName26,
+					_methodParameterTypes26,
 					new Object[] {
 						offeringBundleId,
 						
@@ -830,11 +1013,107 @@ public class OfferingDefinitionLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName24,
-					_methodParameterTypes24, new Object[] { start, end });
+			returnObj = _invokableLocalService.invokeMethod(_methodName27,
+					_methodParameterTypes27, new Object[] { start, end });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.List<com.liferay.osb.model.OfferingDefinition>)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.OfferingDefinition> getOfferingDefinitions(
+		long[] productEntryIds, long[] supportResponseIds, int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName28,
+					_methodParameterTypes28,
+					new Object[] {
+						ClpSerializer.translateInput(productEntryIds),
+						
+					ClpSerializer.translateInput(supportResponseIds),
+						
+					start,
+						
+					end
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.List<com.liferay.osb.model.OfferingDefinition>)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.OfferingDefinition> getProductEntryOfferingDefinitions(
+		long productEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName29,
+					_methodParameterTypes29, new Object[] { productEntryId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.List<com.liferay.osb.model.OfferingDefinition>)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.OfferingDefinition> getSupportResponseOfferingDefinitions(
+		long supportResponseId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName30,
+					_methodParameterTypes30, new Object[] { supportResponseId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -854,8 +1133,8 @@ public class OfferingDefinitionLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName25,
-					_methodParameterTypes25,
+			returnObj = _invokableLocalService.invokeMethod(_methodName31,
+					_methodParameterTypes31,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -880,8 +1159,8 @@ public class OfferingDefinitionLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName26,
-					_methodParameterTypes26,
+			returnObj = _invokableLocalService.invokeMethod(_methodName32,
+					_methodParameterTypes32,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -908,8 +1187,8 @@ public class OfferingDefinitionLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName27,
-					_methodParameterTypes27,
+			returnObj = _invokableLocalService.invokeMethod(_methodName33,
+					_methodParameterTypes33,
 					new Object[] { offeringDefinitionId });
 		}
 		catch (Throwable t) {
@@ -931,8 +1210,8 @@ public class OfferingDefinitionLocalServiceClp
 	public void addOfferingBundleOfferingDefinition(long offeringBundleId,
 		com.liferay.osb.model.OfferingDefinition offeringDefinition) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName28,
-				_methodParameterTypes28,
+			_invokableLocalService.invokeMethod(_methodName34,
+				_methodParameterTypes34,
 				new Object[] {
 					offeringBundleId,
 					
@@ -956,8 +1235,8 @@ public class OfferingDefinitionLocalServiceClp
 	public void addOfferingBundleOfferingDefinition(long offeringBundleId,
 		long offeringDefinitionId) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName29,
-				_methodParameterTypes29,
+			_invokableLocalService.invokeMethod(_methodName35,
+				_methodParameterTypes35,
 				new Object[] { offeringBundleId, offeringDefinitionId });
 		}
 		catch (Throwable t) {
@@ -977,8 +1256,8 @@ public class OfferingDefinitionLocalServiceClp
 	public void addOfferingBundleOfferingDefinitions(long offeringBundleId,
 		java.util.List<com.liferay.osb.model.OfferingDefinition> offeringDefinitions) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName30,
-				_methodParameterTypes30,
+			_invokableLocalService.invokeMethod(_methodName36,
+				_methodParameterTypes36,
 				new Object[] {
 					offeringBundleId,
 					
@@ -1002,8 +1281,8 @@ public class OfferingDefinitionLocalServiceClp
 	public void addOfferingBundleOfferingDefinitions(long offeringBundleId,
 		long[] offeringDefinitionIds) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName31,
-				_methodParameterTypes31,
+			_invokableLocalService.invokeMethod(_methodName37,
+				_methodParameterTypes37,
 				new Object[] {
 					offeringBundleId,
 					
@@ -1026,8 +1305,8 @@ public class OfferingDefinitionLocalServiceClp
 	@Override
 	public void clearOfferingBundleOfferingDefinitions(long offeringBundleId) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName32,
-				_methodParameterTypes32, new Object[] { offeringBundleId });
+			_invokableLocalService.invokeMethod(_methodName38,
+				_methodParameterTypes38, new Object[] { offeringBundleId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1046,8 +1325,8 @@ public class OfferingDefinitionLocalServiceClp
 	public void deleteOfferingBundleOfferingDefinition(long offeringBundleId,
 		com.liferay.osb.model.OfferingDefinition offeringDefinition) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName33,
-				_methodParameterTypes33,
+			_invokableLocalService.invokeMethod(_methodName39,
+				_methodParameterTypes39,
 				new Object[] {
 					offeringBundleId,
 					
@@ -1071,8 +1350,8 @@ public class OfferingDefinitionLocalServiceClp
 	public void deleteOfferingBundleOfferingDefinition(long offeringBundleId,
 		long offeringDefinitionId) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName34,
-				_methodParameterTypes34,
+			_invokableLocalService.invokeMethod(_methodName40,
+				_methodParameterTypes40,
 				new Object[] { offeringBundleId, offeringDefinitionId });
 		}
 		catch (Throwable t) {
@@ -1092,8 +1371,8 @@ public class OfferingDefinitionLocalServiceClp
 	public void deleteOfferingBundleOfferingDefinitions(long offeringBundleId,
 		java.util.List<com.liferay.osb.model.OfferingDefinition> offeringDefinitions) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName35,
-				_methodParameterTypes35,
+			_invokableLocalService.invokeMethod(_methodName41,
+				_methodParameterTypes41,
 				new Object[] {
 					offeringBundleId,
 					
@@ -1117,8 +1396,8 @@ public class OfferingDefinitionLocalServiceClp
 	public void deleteOfferingBundleOfferingDefinitions(long offeringBundleId,
 		long[] offeringDefinitionIds) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName36,
-				_methodParameterTypes36,
+			_invokableLocalService.invokeMethod(_methodName42,
+				_methodParameterTypes42,
 				new Object[] {
 					offeringBundleId,
 					
@@ -1142,8 +1421,8 @@ public class OfferingDefinitionLocalServiceClp
 	public void setOfferingBundleOfferingDefinitions(long offeringBundleId,
 		long[] offeringDefinitionIds) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName37,
-				_methodParameterTypes37,
+			_invokableLocalService.invokeMethod(_methodName43,
+				_methodParameterTypes43,
 				new Object[] {
 					offeringBundleId,
 					
@@ -1196,12 +1475,12 @@ public class OfferingDefinitionLocalServiceClp
 	private String[] _methodParameterTypes14;
 	private String _methodName15;
 	private String[] _methodParameterTypes15;
+	private String _methodName16;
+	private String[] _methodParameterTypes16;
 	private String _methodName17;
 	private String[] _methodParameterTypes17;
 	private String _methodName18;
 	private String[] _methodParameterTypes18;
-	private String _methodName19;
-	private String[] _methodParameterTypes19;
 	private String _methodName20;
 	private String[] _methodParameterTypes20;
 	private String _methodName21;
@@ -1238,4 +1517,16 @@ public class OfferingDefinitionLocalServiceClp
 	private String[] _methodParameterTypes36;
 	private String _methodName37;
 	private String[] _methodParameterTypes37;
+	private String _methodName38;
+	private String[] _methodParameterTypes38;
+	private String _methodName39;
+	private String[] _methodParameterTypes39;
+	private String _methodName40;
+	private String[] _methodParameterTypes40;
+	private String _methodName41;
+	private String[] _methodParameterTypes41;
+	private String _methodName42;
+	private String[] _methodParameterTypes42;
+	private String _methodName43;
+	private String[] _methodParameterTypes43;
 }

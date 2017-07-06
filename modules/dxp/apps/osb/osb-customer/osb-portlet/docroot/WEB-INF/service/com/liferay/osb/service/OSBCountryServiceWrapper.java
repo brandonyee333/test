@@ -33,6 +33,33 @@ public class OSBCountryServiceWrapper implements OSBCountryService,
 	}
 
 	@Override
+	public com.liferay.portal.kernel.model.Country addCountry(
+		java.lang.String name, java.lang.String a2, java.lang.String a3,
+		java.lang.String number, java.lang.String idd, boolean active)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _osbCountryService.addCountry(name, a2, a3, number, idd, active);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.Country deleteCountry(long countryId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _osbCountryService.deleteCountry(countryId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.Country updateCountry(
+		long countryId, java.lang.String name, java.lang.String a2,
+		java.lang.String a3, java.lang.String number, java.lang.String idd,
+		boolean active)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _osbCountryService.updateCountry(countryId, name, a2, a3,
+			number, idd, active);
+	}
+
+	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {

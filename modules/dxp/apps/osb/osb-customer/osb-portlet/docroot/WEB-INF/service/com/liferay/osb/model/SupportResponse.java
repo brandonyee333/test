@@ -54,4 +54,12 @@ public interface SupportResponse extends SupportResponseModel, PersistedModel {
 				return SupportResponse.class;
 			}
 		};
+
+	public int getSeverityResolution(int severityLevel);
+
+	public int getSeverityResponse(int severityLevel);
+
+	public java.lang.String getSupportLevelLabel();
+
+	public boolean isPlatinumLevel();
 }

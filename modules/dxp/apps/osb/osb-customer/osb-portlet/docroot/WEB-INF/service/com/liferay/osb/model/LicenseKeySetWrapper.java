@@ -115,6 +115,13 @@ public class LicenseKeySetWrapper implements LicenseKeySet,
 	}
 
 	@Override
+	public AccountEntry getAccountEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _licenseKeySet.getAccountEntry();
+	}
+
+	@Override
 	public LicenseKeySet toEscapedModel() {
 		return new LicenseKeySetWrapper(_licenseKeySet.toEscapedModel());
 	}

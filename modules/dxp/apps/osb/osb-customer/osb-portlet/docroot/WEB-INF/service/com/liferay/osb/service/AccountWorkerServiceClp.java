@@ -30,6 +30,16 @@ public class AccountWorkerServiceClp implements AccountWorkerService {
 		_methodName1 = "getOSGiServiceIdentifier";
 
 		_methodParameterTypes1 = new String[] {  };
+
+		_methodName2 = "addAccountWorkers";
+
+		_methodParameterTypes2 = new String[] {
+				"long[][]", "long", "int[][]", "int[][]"
+			};
+
+		_methodName3 = "deleteAccountWorkers";
+
+		_methodParameterTypes3 = new String[] { "long[][]", "long" };
 	}
 
 	@Override
@@ -62,7 +72,84 @@ public class AccountWorkerServiceClp implements AccountWorkerService {
 		return (java.lang.String)ClpSerializer.translateOutput(returnObj);
 	}
 
+	@Override
+	public void addAccountWorkers(long[] userIds, long accountEntryId,
+		int[] roles, int[] notifications)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		try {
+			_invokableService.invokeMethod(_methodName2,
+				_methodParameterTypes2,
+				new Object[] {
+					ClpSerializer.translateInput(userIds),
+					
+				accountEntryId,
+					
+				ClpSerializer.translateInput(roles),
+					
+				ClpSerializer.translateInput(notifications)
+				});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+	}
+
+	@Override
+	public void deleteAccountWorkers(long[] userIds, long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		try {
+			_invokableService.invokeMethod(_methodName3,
+				_methodParameterTypes3,
+				new Object[] {
+					ClpSerializer.translateInput(userIds),
+					
+				accountEntryId
+				});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+	}
+
 	private InvokableService _invokableService;
 	private String _methodName1;
 	private String[] _methodParameterTypes1;
+	private String _methodName2;
+	private String[] _methodParameterTypes2;
+	private String _methodName3;
+	private String[] _methodParameterTypes3;
 }

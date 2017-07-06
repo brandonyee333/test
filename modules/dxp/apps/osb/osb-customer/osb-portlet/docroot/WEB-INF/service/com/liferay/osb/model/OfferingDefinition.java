@@ -55,4 +55,23 @@ public interface OfferingDefinition extends OfferingDefinitionModel,
 				return OfferingDefinition.class;
 			}
 		};
+
+	public java.lang.String getLicensesLabel();
+
+	public java.lang.String getMaxConcurrentUsersLabel();
+
+	public java.lang.String getMaxUsersLabel();
+
+	@com.liferay.portal.kernel.json.JSON()
+	public ProductEntry getProductEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
+
+	public int getQuantity();
+
+	public SupportResponse getSupportResponse()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
+
+	public java.lang.String getSupportTicketsLabel();
 }

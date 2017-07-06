@@ -16,6 +16,8 @@ package com.liferay.osb.service;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.model.LicenseKeySet;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
@@ -23,6 +25,7 @@ import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.service.BaseService;
 import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.transaction.Isolation;
+import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 
 /**
@@ -47,10 +50,27 @@ public interface LicenseKeySetService extends BaseService, InvokableService {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link LicenseKeySetServiceUtil} to access the license key set remote service. Add custom service methods to {@link com.liferay.osb.service.impl.LicenseKeySetServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	public LicenseKeySet addLicenseKeySet(long userId, long accountEntryId,
+		java.lang.String name) throws PortalException, SystemException;
+
+	public LicenseKeySet deleteLicenseKeySet(long licenseKeySetId)
+		throws PortalException, SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public LicenseKeySet getLicenseKeySet(long licenseKeySetId)
+		throws PortalException, SystemException;
+
+	public LicenseKeySet updateLicenseKeySet(long licenseKeySetId,
+		java.lang.String name) throws PortalException, SystemException;
+
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable;
+
+	@JSONWebService
+	public java.lang.String exportToXML(long licenseKeySetId)
+		throws java.lang.Exception;
 
 	/**
 	* Returns the OSGi service identifier.

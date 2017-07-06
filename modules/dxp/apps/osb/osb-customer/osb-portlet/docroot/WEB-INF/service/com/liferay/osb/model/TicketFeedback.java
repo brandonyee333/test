@@ -54,4 +54,30 @@ public interface TicketFeedback extends TicketFeedbackModel, PersistedModel {
 				return TicketFeedback.class;
 			}
 		};
+
+	public java.lang.String getAnswer1Label();
+
+	public java.lang.String getAnswer2Label();
+
+	public java.lang.String getAnswer3Label();
+
+	public double getAverageRating();
+
+	public java.lang.String getAverageRatingDisplay();
+
+	public java.lang.String getRating1Label();
+
+	public java.lang.String getRating2Label();
+
+	public java.lang.String getRating3Label();
+
+	public java.lang.String getRating4Label();
+
+	public java.lang.String getSatisfiedLabel();
+
+	public TicketEntry getTicketEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
+
+	public boolean isClosed();
 }

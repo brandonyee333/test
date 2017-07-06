@@ -54,4 +54,14 @@ public interface AccountWorker extends AccountWorkerModel, PersistedModel {
 				return AccountWorker.class;
 			}
 		};
+
+	public AccountEntry getAccountEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
+
+	public java.lang.String getKey();
+
+	public java.lang.String getNotificationsLabel();
+
+	public java.lang.String getRoleLabel();
 }

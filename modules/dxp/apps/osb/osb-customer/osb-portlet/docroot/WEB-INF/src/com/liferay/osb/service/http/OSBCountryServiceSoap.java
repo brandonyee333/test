@@ -16,9 +16,16 @@ package com.liferay.osb.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.service.OSBCountryServiceUtil;
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import java.rmi.RemoteException;
+
 /**
  * Provides the SOAP utility for the
- * {@link com.liferay.osb.service.OSBCountryServiceUtil} service utility. The
+ * {@link OSBCountryServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it is difficult for SOAP to
  * support certain types.
@@ -42,9 +49,58 @@ import aQute.bnd.annotation.ProviderType;
  *
  * @author Brian Wing Shun Chan
  * @see OSBCountryServiceHttp
- * @see com.liferay.osb.service.OSBCountryServiceUtil
+ * @see OSBCountryServiceUtil
  * @generated
  */
 @ProviderType
 public class OSBCountryServiceSoap {
+	public static com.liferay.portal.kernel.model.Country addCountry(
+		java.lang.String name, java.lang.String a2, java.lang.String a3,
+		java.lang.String number, java.lang.String idd, boolean active)
+		throws RemoteException {
+		try {
+			com.liferay.portal.kernel.model.Country returnValue = OSBCountryServiceUtil.addCountry(name,
+					a2, a3, number, idd, active);
+
+			return returnValue;
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.portal.kernel.model.Country deleteCountry(
+		long countryId) throws RemoteException {
+		try {
+			com.liferay.portal.kernel.model.Country returnValue = OSBCountryServiceUtil.deleteCountry(countryId);
+
+			return returnValue;
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.portal.kernel.model.Country updateCountry(
+		long countryId, java.lang.String name, java.lang.String a2,
+		java.lang.String a3, java.lang.String number, java.lang.String idd,
+		boolean active) throws RemoteException {
+		try {
+			com.liferay.portal.kernel.model.Country returnValue = OSBCountryServiceUtil.updateCountry(countryId,
+					name, a2, a3, number, idd, active);
+
+			return returnValue;
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	private static Log _log = LogFactoryUtil.getLog(OSBCountryServiceSoap.class);
 }

@@ -56,4 +56,12 @@ public interface AccountEnvironmentAttachment
 				return AccountEnvironmentAttachment.class;
 			}
 		};
+
+	public boolean fileExists()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
+
+	public int getContentLength();
+
+	public java.lang.String getFileDir();
 }

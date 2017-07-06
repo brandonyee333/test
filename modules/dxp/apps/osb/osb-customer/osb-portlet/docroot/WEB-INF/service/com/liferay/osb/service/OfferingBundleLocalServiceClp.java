@@ -42,166 +42,178 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 				"com.liferay.osb.model.OfferingBundle"
 			};
 
-		_methodName3 = "createOfferingBundle";
+		_methodName3 = "addOfferingBundle";
 
-		_methodParameterTypes3 = new String[] { "long" };
-
-		_methodName4 = "deleteOfferingBundle";
-
-		_methodParameterTypes4 = new String[] {
-				"com.liferay.osb.model.OfferingBundle"
+		_methodParameterTypes3 = new String[] {
+				"long", "java.lang.String", "long[][]"
 			};
+
+		_methodName4 = "createOfferingBundle";
+
+		_methodParameterTypes4 = new String[] { "long" };
 
 		_methodName5 = "deleteOfferingBundle";
 
-		_methodParameterTypes5 = new String[] { "long" };
-
-		_methodName6 = "fetchOfferingBundle";
-
-		_methodParameterTypes6 = new String[] { "long" };
-
-		_methodName7 = "getOfferingBundle";
-
-		_methodParameterTypes7 = new String[] { "long" };
-
-		_methodName8 = "updateOfferingBundle";
-
-		_methodParameterTypes8 = new String[] {
+		_methodParameterTypes5 = new String[] {
 				"com.liferay.osb.model.OfferingBundle"
 			};
 
-		_methodName9 = "getActionableDynamicQuery";
+		_methodName6 = "deleteOfferingBundle";
 
-		_methodParameterTypes9 = new String[] {  };
+		_methodParameterTypes6 = new String[] { "long" };
 
-		_methodName10 = "dynamicQuery";
+		_methodName7 = "fetchOfferingBundle";
 
-		_methodParameterTypes10 = new String[] {  };
+		_methodParameterTypes7 = new String[] { "long" };
 
-		_methodName11 = "getIndexableActionableDynamicQuery";
+		_methodName8 = "getOfferingBundle";
+
+		_methodParameterTypes8 = new String[] { "long" };
+
+		_methodName9 = "updateOfferingBundle";
+
+		_methodParameterTypes9 = new String[] {
+				"com.liferay.osb.model.OfferingBundle"
+			};
+
+		_methodName10 = "updateOfferingBundle";
+
+		_methodParameterTypes10 = new String[] {
+				"long", "java.lang.String", "long[][]"
+			};
+
+		_methodName11 = "getActionableDynamicQuery";
 
 		_methodParameterTypes11 = new String[] {  };
 
-		_methodName12 = "deletePersistedModel";
+		_methodName12 = "dynamicQuery";
 
-		_methodParameterTypes12 = new String[] {
+		_methodParameterTypes12 = new String[] {  };
+
+		_methodName13 = "getIndexableActionableDynamicQuery";
+
+		_methodParameterTypes13 = new String[] {  };
+
+		_methodName14 = "deletePersistedModel";
+
+		_methodParameterTypes14 = new String[] {
 				"com.liferay.portal.kernel.model.PersistedModel"
 			};
 
-		_methodName13 = "getPersistedModel";
+		_methodName15 = "getPersistedModel";
 
-		_methodParameterTypes13 = new String[] { "java.io.Serializable" };
+		_methodParameterTypes15 = new String[] { "java.io.Serializable" };
 
-		_methodName14 = "getOfferingBundlesCount";
+		_methodName16 = "getOfferingBundlesCount";
 
-		_methodParameterTypes14 = new String[] {  };
+		_methodParameterTypes16 = new String[] {  };
 
-		_methodName15 = "getOfferingDefinitionOfferingBundlesCount";
+		_methodName17 = "getOfferingDefinitionOfferingBundlesCount";
 
-		_methodParameterTypes15 = new String[] { "long" };
+		_methodParameterTypes17 = new String[] { "long" };
 
-		_methodName17 = "getOSGiServiceIdentifier";
+		_methodName19 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes17 = new String[] {  };
-
-		_methodName18 = "dynamicQuery";
-
-		_methodParameterTypes18 = new String[] {
-				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
-			};
-
-		_methodName19 = "dynamicQuery";
-
-		_methodParameterTypes19 = new String[] {
-				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
-			};
+		_methodParameterTypes19 = new String[] {  };
 
 		_methodName20 = "dynamicQuery";
 
 		_methodParameterTypes20 = new String[] {
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
+			};
+
+		_methodName21 = "dynamicQuery";
+
+		_methodParameterTypes21 = new String[] {
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
+			};
+
+		_methodName22 = "dynamicQuery";
+
+		_methodParameterTypes22 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName21 = "getOfferingBundles";
+		_methodName23 = "getOfferingBundles";
 
-		_methodParameterTypes21 = new String[] { "int", "int" };
-
-		_methodName22 = "getOfferingDefinitionOfferingBundles";
-
-		_methodParameterTypes22 = new String[] { "long" };
-
-		_methodName23 = "getOfferingDefinitionOfferingBundles";
-
-		_methodParameterTypes23 = new String[] { "long", "int", "int" };
+		_methodParameterTypes23 = new String[] { "int", "int" };
 
 		_methodName24 = "getOfferingDefinitionOfferingBundles";
 
-		_methodParameterTypes24 = new String[] {
+		_methodParameterTypes24 = new String[] { "long" };
+
+		_methodName25 = "getOfferingDefinitionOfferingBundles";
+
+		_methodParameterTypes25 = new String[] { "long", "int", "int" };
+
+		_methodName26 = "getOfferingDefinitionOfferingBundles";
+
+		_methodParameterTypes26 = new String[] {
 				"long", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName25 = "dynamicQueryCount";
+		_methodName27 = "dynamicQueryCount";
 
-		_methodParameterTypes25 = new String[] {
+		_methodParameterTypes27 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
 			};
 
-		_methodName26 = "dynamicQueryCount";
+		_methodName28 = "dynamicQueryCount";
 
-		_methodParameterTypes26 = new String[] {
+		_methodParameterTypes28 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery",
 				"com.liferay.portal.kernel.dao.orm.Projection"
 			};
 
-		_methodName27 = "getOfferingDefinitionPrimaryKeys";
+		_methodName29 = "getOfferingDefinitionPrimaryKeys";
 
-		_methodParameterTypes27 = new String[] { "long" };
+		_methodParameterTypes29 = new String[] { "long" };
 
-		_methodName28 = "addOfferingDefinitionOfferingBundle";
+		_methodName30 = "addOfferingDefinitionOfferingBundle";
 
-		_methodParameterTypes28 = new String[] {
+		_methodParameterTypes30 = new String[] {
 				"long", "com.liferay.osb.model.OfferingBundle"
 			};
 
-		_methodName29 = "addOfferingDefinitionOfferingBundle";
+		_methodName31 = "addOfferingDefinitionOfferingBundle";
 
-		_methodParameterTypes29 = new String[] { "long", "long" };
+		_methodParameterTypes31 = new String[] { "long", "long" };
 
-		_methodName30 = "addOfferingDefinitionOfferingBundles";
+		_methodName32 = "addOfferingDefinitionOfferingBundles";
 
-		_methodParameterTypes30 = new String[] { "long", "java.util.List" };
+		_methodParameterTypes32 = new String[] { "long", "java.util.List" };
 
-		_methodName31 = "addOfferingDefinitionOfferingBundles";
+		_methodName33 = "addOfferingDefinitionOfferingBundles";
 
-		_methodParameterTypes31 = new String[] { "long", "long[][]" };
+		_methodParameterTypes33 = new String[] { "long", "long[][]" };
 
-		_methodName32 = "clearOfferingDefinitionOfferingBundles";
+		_methodName34 = "clearOfferingDefinitionOfferingBundles";
 
-		_methodParameterTypes32 = new String[] { "long" };
+		_methodParameterTypes34 = new String[] { "long" };
 
-		_methodName33 = "deleteOfferingDefinitionOfferingBundle";
+		_methodName35 = "deleteOfferingDefinitionOfferingBundle";
 
-		_methodParameterTypes33 = new String[] {
+		_methodParameterTypes35 = new String[] {
 				"long", "com.liferay.osb.model.OfferingBundle"
 			};
 
-		_methodName34 = "deleteOfferingDefinitionOfferingBundle";
+		_methodName36 = "deleteOfferingDefinitionOfferingBundle";
 
-		_methodParameterTypes34 = new String[] { "long", "long" };
+		_methodParameterTypes36 = new String[] { "long", "long" };
 
-		_methodName35 = "deleteOfferingDefinitionOfferingBundles";
+		_methodName37 = "deleteOfferingDefinitionOfferingBundles";
 
-		_methodParameterTypes35 = new String[] { "long", "java.util.List" };
+		_methodParameterTypes37 = new String[] { "long", "java.util.List" };
 
-		_methodName36 = "deleteOfferingDefinitionOfferingBundles";
+		_methodName38 = "deleteOfferingDefinitionOfferingBundles";
 
-		_methodParameterTypes36 = new String[] { "long", "long[][]" };
+		_methodParameterTypes38 = new String[] { "long", "long[][]" };
 
-		_methodName37 = "setOfferingDefinitionOfferingBundles";
+		_methodName39 = "setOfferingDefinitionOfferingBundles";
 
-		_methodParameterTypes37 = new String[] { "long", "long[][]" };
+		_methodParameterTypes39 = new String[] { "long", "long[][]" };
 	}
 
 	@Override
@@ -280,13 +292,54 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 	}
 
 	@Override
+	public com.liferay.osb.model.OfferingBundle addOfferingBundle(long userId,
+		java.lang.String name, long[] offeringDefinitionIds)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName3,
+					_methodParameterTypes3,
+					new Object[] {
+						userId,
+						
+					ClpSerializer.translateInput(name),
+						
+					ClpSerializer.translateInput(offeringDefinitionIds)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.OfferingBundle)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
 	public com.liferay.osb.model.OfferingBundle createOfferingBundle(
 		long offeringBundleId) {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName3,
-					_methodParameterTypes3, new Object[] { offeringBundleId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName4,
+					_methodParameterTypes4, new Object[] { offeringBundleId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -309,8 +362,8 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName4,
-					_methodParameterTypes4,
+			returnObj = _invokableLocalService.invokeMethod(_methodName5,
+					_methodParameterTypes5,
 					new Object[] { ClpSerializer.translateInput(offeringBundle) });
 		}
 		catch (Throwable t) {
@@ -335,8 +388,8 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName5,
-					_methodParameterTypes5, new Object[] { offeringBundleId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName6,
+					_methodParameterTypes6, new Object[] { offeringBundleId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -363,8 +416,8 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName6,
-					_methodParameterTypes6, new Object[] { offeringBundleId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName7,
+					_methodParameterTypes7, new Object[] { offeringBundleId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -388,8 +441,8 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName7,
-					_methodParameterTypes7, new Object[] { offeringBundleId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName8,
+					_methodParameterTypes8, new Object[] { offeringBundleId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -416,8 +469,8 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName8,
-					_methodParameterTypes8,
+			returnObj = _invokableLocalService.invokeMethod(_methodName9,
+					_methodParameterTypes9,
 					new Object[] { ClpSerializer.translateInput(offeringBundle) });
 		}
 		catch (Throwable t) {
@@ -436,12 +489,54 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 	}
 
 	@Override
+	public com.liferay.osb.model.OfferingBundle updateOfferingBundle(
+		long offeringBundleId, java.lang.String name,
+		long[] offeringDefinitionIds)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName10,
+					_methodParameterTypes10,
+					new Object[] {
+						offeringBundleId,
+						
+					ClpSerializer.translateInput(name),
+						
+					ClpSerializer.translateInput(offeringDefinitionIds)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.OfferingBundle)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName9,
-					_methodParameterTypes9, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName11,
+					_methodParameterTypes11, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -463,8 +558,8 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName10,
-					_methodParameterTypes10, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName12,
+					_methodParameterTypes12, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -486,8 +581,8 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName11,
-					_methodParameterTypes11, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName13,
+					_methodParameterTypes13, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -511,8 +606,8 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName12,
-					_methodParameterTypes12,
+			returnObj = _invokableLocalService.invokeMethod(_methodName14,
+					_methodParameterTypes14,
 					new Object[] { ClpSerializer.translateInput(persistedModel) });
 		}
 		catch (Throwable t) {
@@ -541,8 +636,8 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName13,
-					_methodParameterTypes13,
+			returnObj = _invokableLocalService.invokeMethod(_methodName15,
+					_methodParameterTypes15,
 					new Object[] { ClpSerializer.translateInput(primaryKeyObj) });
 		}
 		catch (Throwable t) {
@@ -569,8 +664,8 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName14,
-					_methodParameterTypes14, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName16,
+					_methodParameterTypes16, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -593,8 +688,8 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName15,
-					_methodParameterTypes15,
+			returnObj = _invokableLocalService.invokeMethod(_methodName17,
+					_methodParameterTypes17,
 					new Object[] { offeringDefinitionId });
 		}
 		catch (Throwable t) {
@@ -624,8 +719,8 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName17,
-					_methodParameterTypes17, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName19,
+					_methodParameterTypes19, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -648,8 +743,8 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName18,
-					_methodParameterTypes18,
+			returnObj = _invokableLocalService.invokeMethod(_methodName20,
+					_methodParameterTypes20,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -674,8 +769,8 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName19,
-					_methodParameterTypes19,
+			returnObj = _invokableLocalService.invokeMethod(_methodName21,
+					_methodParameterTypes21,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -707,8 +802,8 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName20,
-					_methodParameterTypes20,
+			returnObj = _invokableLocalService.invokeMethod(_methodName22,
+					_methodParameterTypes22,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -740,8 +835,8 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName21,
-					_methodParameterTypes21, new Object[] { start, end });
+			returnObj = _invokableLocalService.invokeMethod(_methodName23,
+					_methodParameterTypes23, new Object[] { start, end });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -764,8 +859,8 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName22,
-					_methodParameterTypes22,
+			returnObj = _invokableLocalService.invokeMethod(_methodName24,
+					_methodParameterTypes24,
 					new Object[] { offeringDefinitionId });
 		}
 		catch (Throwable t) {
@@ -789,8 +884,8 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName23,
-					_methodParameterTypes23,
+			returnObj = _invokableLocalService.invokeMethod(_methodName25,
+					_methodParameterTypes25,
 					new Object[] { offeringDefinitionId, start, end });
 		}
 		catch (Throwable t) {
@@ -815,8 +910,8 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName24,
-					_methodParameterTypes24,
+			returnObj = _invokableLocalService.invokeMethod(_methodName26,
+					_methodParameterTypes26,
 					new Object[] {
 						offeringDefinitionId,
 						
@@ -848,8 +943,8 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName25,
-					_methodParameterTypes25,
+			returnObj = _invokableLocalService.invokeMethod(_methodName27,
+					_methodParameterTypes27,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -874,8 +969,8 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName26,
-					_methodParameterTypes26,
+			returnObj = _invokableLocalService.invokeMethod(_methodName28,
+					_methodParameterTypes28,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -902,8 +997,8 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName27,
-					_methodParameterTypes27, new Object[] { offeringBundleId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName29,
+					_methodParameterTypes29, new Object[] { offeringBundleId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -924,8 +1019,8 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 	public void addOfferingDefinitionOfferingBundle(long offeringDefinitionId,
 		com.liferay.osb.model.OfferingBundle offeringBundle) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName28,
-				_methodParameterTypes28,
+			_invokableLocalService.invokeMethod(_methodName30,
+				_methodParameterTypes30,
 				new Object[] {
 					offeringDefinitionId,
 					
@@ -949,8 +1044,8 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 	public void addOfferingDefinitionOfferingBundle(long offeringDefinitionId,
 		long offeringBundleId) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName29,
-				_methodParameterTypes29,
+			_invokableLocalService.invokeMethod(_methodName31,
+				_methodParameterTypes31,
 				new Object[] { offeringDefinitionId, offeringBundleId });
 		}
 		catch (Throwable t) {
@@ -971,8 +1066,8 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 		long offeringDefinitionId,
 		java.util.List<com.liferay.osb.model.OfferingBundle> offeringBundles) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName30,
-				_methodParameterTypes30,
+			_invokableLocalService.invokeMethod(_methodName32,
+				_methodParameterTypes32,
 				new Object[] {
 					offeringDefinitionId,
 					
@@ -996,8 +1091,8 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 	public void addOfferingDefinitionOfferingBundles(
 		long offeringDefinitionId, long[] offeringBundleIds) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName31,
-				_methodParameterTypes31,
+			_invokableLocalService.invokeMethod(_methodName33,
+				_methodParameterTypes33,
 				new Object[] {
 					offeringDefinitionId,
 					
@@ -1021,8 +1116,8 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 	public void clearOfferingDefinitionOfferingBundles(
 		long offeringDefinitionId) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName32,
-				_methodParameterTypes32, new Object[] { offeringDefinitionId });
+			_invokableLocalService.invokeMethod(_methodName34,
+				_methodParameterTypes34, new Object[] { offeringDefinitionId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1042,8 +1137,8 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 		long offeringDefinitionId,
 		com.liferay.osb.model.OfferingBundle offeringBundle) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName33,
-				_methodParameterTypes33,
+			_invokableLocalService.invokeMethod(_methodName35,
+				_methodParameterTypes35,
 				new Object[] {
 					offeringDefinitionId,
 					
@@ -1067,8 +1162,8 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 	public void deleteOfferingDefinitionOfferingBundle(
 		long offeringDefinitionId, long offeringBundleId) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName34,
-				_methodParameterTypes34,
+			_invokableLocalService.invokeMethod(_methodName36,
+				_methodParameterTypes36,
 				new Object[] { offeringDefinitionId, offeringBundleId });
 		}
 		catch (Throwable t) {
@@ -1089,8 +1184,8 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 		long offeringDefinitionId,
 		java.util.List<com.liferay.osb.model.OfferingBundle> offeringBundles) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName35,
-				_methodParameterTypes35,
+			_invokableLocalService.invokeMethod(_methodName37,
+				_methodParameterTypes37,
 				new Object[] {
 					offeringDefinitionId,
 					
@@ -1114,8 +1209,8 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 	public void deleteOfferingDefinitionOfferingBundles(
 		long offeringDefinitionId, long[] offeringBundleIds) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName36,
-				_methodParameterTypes36,
+			_invokableLocalService.invokeMethod(_methodName38,
+				_methodParameterTypes38,
 				new Object[] {
 					offeringDefinitionId,
 					
@@ -1139,8 +1234,8 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 	public void setOfferingDefinitionOfferingBundles(
 		long offeringDefinitionId, long[] offeringBundleIds) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName37,
-				_methodParameterTypes37,
+			_invokableLocalService.invokeMethod(_methodName39,
+				_methodParameterTypes39,
 				new Object[] {
 					offeringDefinitionId,
 					
@@ -1193,10 +1288,10 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 	private String[] _methodParameterTypes14;
 	private String _methodName15;
 	private String[] _methodParameterTypes15;
+	private String _methodName16;
+	private String[] _methodParameterTypes16;
 	private String _methodName17;
 	private String[] _methodParameterTypes17;
-	private String _methodName18;
-	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
 	private String _methodName20;
@@ -1235,4 +1330,8 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 	private String[] _methodParameterTypes36;
 	private String _methodName37;
 	private String[] _methodParameterTypes37;
+	private String _methodName38;
+	private String[] _methodParameterTypes38;
+	private String _methodName39;
+	private String[] _methodParameterTypes39;
 }

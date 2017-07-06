@@ -123,9 +123,27 @@ public class AccountProjectLocalServiceClpInvoker {
 				"com.liferay.osb.model.AccountProject"
 			};
 
-		_methodName250 = "getOSGiServiceIdentifier";
+		_methodName286 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes250 = new String[] {  };
+		_methodParameterTypes286 = new String[] {  };
+
+		_methodName291 = "deleteAccountProject";
+
+		_methodParameterTypes291 = new String[] { "long" };
+
+		_methodName292 = "getAccountProject";
+
+		_methodParameterTypes292 = new String[] { "long" };
+
+		_methodName293 = "getAccountProjects";
+
+		_methodParameterTypes293 = new String[] { "long" };
+
+		_methodName294 = "updateAccountProject";
+
+		_methodParameterTypes294 = new String[] {
+				"long", "long", "long", "java.lang.String", "java.util.Map"
+			};
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -232,9 +250,33 @@ public class AccountProjectLocalServiceClpInvoker {
 			return AccountProjectLocalServiceUtil.updateAccountProject((com.liferay.osb.model.AccountProject)arguments[0]);
 		}
 
-		if (_methodName250.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes250, parameterTypes)) {
+		if (_methodName286.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes286, parameterTypes)) {
 			return AccountProjectLocalServiceUtil.getOSGiServiceIdentifier();
+		}
+
+		if (_methodName291.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes291, parameterTypes)) {
+			return AccountProjectLocalServiceUtil.deleteAccountProject(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName292.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes292, parameterTypes)) {
+			return AccountProjectLocalServiceUtil.getAccountProject(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName293.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes293, parameterTypes)) {
+			return AccountProjectLocalServiceUtil.getAccountProjects(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName294.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes294, parameterTypes)) {
+			return AccountProjectLocalServiceUtil.updateAccountProject(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				((Long)arguments[2]).longValue(),
+				(java.lang.String)arguments[3],
+				(java.util.Map<java.lang.Integer, java.lang.String>)arguments[4]);
 		}
 
 		throw new UnsupportedOperationException();
@@ -278,6 +320,14 @@ public class AccountProjectLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName250;
-	private String[] _methodParameterTypes250;
+	private String _methodName286;
+	private String[] _methodParameterTypes286;
+	private String _methodName291;
+	private String[] _methodParameterTypes291;
+	private String _methodName292;
+	private String[] _methodParameterTypes292;
+	private String _methodName293;
+	private String[] _methodParameterTypes293;
+	private String _methodName294;
+	private String[] _methodParameterTypes294;
 }

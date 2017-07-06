@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
+import com.liferay.portal.kernel.model.Region;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.service.BaseService;
 import com.liferay.portal.kernel.service.InvokableService;
@@ -47,6 +48,17 @@ public interface OSBRegionService extends BaseService, InvokableService {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link OSBRegionServiceUtil} to access the osb region remote service. Add custom service methods to {@link com.liferay.osb.service.impl.OSBRegionServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	public Region addRegion(long countryId, java.lang.String regionCode,
+		java.lang.String name, boolean active)
+		throws PortalException, SystemException;
+
+	public Region deleteRegion(long regionId)
+		throws PortalException, SystemException;
+
+	public Region updateRegion(long regionId, long countryId,
+		java.lang.String regionCode, java.lang.String name, boolean active)
+		throws PortalException, SystemException;
+
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)

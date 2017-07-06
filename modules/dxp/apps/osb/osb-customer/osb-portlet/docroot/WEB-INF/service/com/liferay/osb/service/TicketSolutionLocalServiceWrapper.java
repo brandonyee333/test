@@ -46,6 +46,27 @@ public class TicketSolutionLocalServiceWrapper
 		return _ticketSolutionLocalService.addTicketSolution(ticketSolution);
 	}
 
+	@Override
+	public com.liferay.osb.model.TicketSolution addTicketSolution(long userId,
+		long ticketEntryId, java.lang.String summary,
+		boolean useCustomerSummary, int issueType, java.lang.String solution,
+		int type, boolean customerSpecific, boolean environmentSpecific,
+		boolean versionSpecific, boolean reviewForKB, int status,
+		int ticketEntrySubcomponent,
+		java.lang.String ticketEntrySubcomponentCustom,
+		java.util.List<java.lang.String> ticketLinkURLs,
+		java.util.List<java.lang.Integer> ticketLinkTypes,
+		java.util.List<com.liferay.osb.model.TicketAttachment> ticketAttachments)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _ticketSolutionLocalService.addTicketSolution(userId,
+			ticketEntryId, summary, useCustomerSummary, issueType, solution,
+			type, customerSpecific, environmentSpecific, versionSpecific,
+			reviewForKB, status, ticketEntrySubcomponent,
+			ticketEntrySubcomponentCustom, ticketLinkURLs, ticketLinkTypes,
+			ticketAttachments);
+	}
+
 	/**
 	* Creates a new ticket solution with the primary key. Does not add the ticket solution to the database.
 	*
@@ -90,6 +111,13 @@ public class TicketSolutionLocalServiceWrapper
 		return _ticketSolutionLocalService.fetchTicketSolution(ticketSolutionId);
 	}
 
+	@Override
+	public com.liferay.osb.model.TicketSolution getActiveTicketSolution(
+		long ticketEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _ticketSolutionLocalService.getActiveTicketSolution(ticketEntryId);
+	}
+
 	/**
 	* Returns the ticket solution with the primary key.
 	*
@@ -114,6 +142,16 @@ public class TicketSolutionLocalServiceWrapper
 	public com.liferay.osb.model.TicketSolution updateTicketSolution(
 		com.liferay.osb.model.TicketSolution ticketSolution) {
 		return _ticketSolutionLocalService.updateTicketSolution(ticketSolution);
+	}
+
+	@Override
+	public com.liferay.osb.model.TicketSolution updateTicketSolution(
+		long ticketSolutionId, long ticketEntryId, int status,
+		long statusByUserId, java.lang.String statusMessage, int statusReason)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _ticketSolutionLocalService.updateTicketSolution(ticketSolutionId,
+			ticketEntryId, status, statusByUserId, statusMessage, statusReason);
 	}
 
 	@Override
@@ -246,6 +284,13 @@ public class TicketSolutionLocalServiceWrapper
 		return _ticketSolutionLocalService.getTicketSolutions(start, end);
 	}
 
+	@Override
+	public java.util.List<com.liferay.osb.model.TicketSolution> getTicketSolutions(
+		long ticketEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _ticketSolutionLocalService.getTicketSolutions(ticketEntryId);
+	}
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -271,6 +316,14 @@ public class TicketSolutionLocalServiceWrapper
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return _ticketSolutionLocalService.dynamicQueryCount(dynamicQuery,
 			projection);
+	}
+
+	@Override
+	public void updateStatus(long ticketEntryId, int ticketEntryStatus,
+		int resolution)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		_ticketSolutionLocalService.updateStatus(ticketEntryId,
+			ticketEntryStatus, resolution);
 	}
 
 	@Override

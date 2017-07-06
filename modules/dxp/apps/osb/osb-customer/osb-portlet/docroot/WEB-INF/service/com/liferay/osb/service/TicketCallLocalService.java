@@ -71,6 +71,12 @@ public interface TicketCallLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public TicketCall addTicketCall(TicketCall ticketCall);
 
+	public TicketCall addTicketCall(long userId, long ticketEntryId, int type,
+		int callDateMonth, int callDateDay, int callDateYear, int callDateHour,
+		int callDateMinute, long callLength, java.lang.String customerName,
+		java.lang.String customerContact, java.lang.String confirmation,
+		java.lang.String instructions) throws PortalException, SystemException;
+
 	/**
 	* Creates a new ticket call with the primary key. Does not add the ticket call to the database.
 	*

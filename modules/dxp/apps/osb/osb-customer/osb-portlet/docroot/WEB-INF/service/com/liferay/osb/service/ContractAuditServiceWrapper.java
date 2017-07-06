@@ -52,6 +52,17 @@ public class ContractAuditServiceWrapper implements ContractAuditService,
 	}
 
 	@Override
+	public void addContractAudit(long contractEntryId,
+		java.lang.String signatoryClassName, long signatoryClassPK,
+		java.lang.String productClassName, long productClassPK)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_contractAuditService.addContractAudit(contractEntryId,
+			signatoryClassName, signatoryClassPK, productClassName,
+			productClassPK);
+	}
+
+	@Override
 	public ContractAuditService getWrappedService() {
 		return _contractAuditService;
 	}

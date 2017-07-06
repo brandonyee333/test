@@ -41,6 +41,48 @@ public class OSBRegionLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.OSBRegionLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static com.liferay.portal.kernel.model.Region addRegion(
+		long countryId, java.lang.String regionCode, java.lang.String name,
+		boolean active)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().addRegion(countryId, regionCode, name, active);
+	}
+
+	public static com.liferay.portal.kernel.model.Region deleteRegion(
+		long regionId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().deleteRegion(regionId);
+	}
+
+	public static com.liferay.portal.kernel.model.Region fetchRegion(
+		long countryId, java.lang.String name)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().fetchRegion(countryId, name);
+	}
+
+	public static com.liferay.portal.kernel.model.Region getRegion(
+		long regionId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().getRegion(regionId);
+	}
+
+	public static com.liferay.portal.kernel.model.Region updateRegion(
+		long regionId, long countryId, java.lang.String regionCode,
+		java.lang.String name, boolean active)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .updateRegion(regionId, countryId, regionCode, name, active);
+	}
+
+	public static int getRegionsCount(long countryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getRegionsCount(countryId);
+	}
+
 	public static java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {
@@ -54,6 +96,12 @@ public class OSBRegionLocalServiceUtil {
 	*/
 	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static java.util.List<com.liferay.portal.kernel.model.Region> getRegions(
+		long countryId, int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getRegions(countryId, start, end);
 	}
 
 	public static void clearService() {

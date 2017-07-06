@@ -56,6 +56,16 @@ public class ContractAuditServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
+	public static void addContractAudit(long contractEntryId,
+		java.lang.String signatoryClassName, long signatoryClassPK,
+		java.lang.String productClassName, long productClassPK)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		getService()
+			.addContractAudit(contractEntryId, signatoryClassName,
+			signatoryClassPK, productClassName, productClassPK);
+	}
+
 	public static void clearService() {
 		_service = null;
 	}

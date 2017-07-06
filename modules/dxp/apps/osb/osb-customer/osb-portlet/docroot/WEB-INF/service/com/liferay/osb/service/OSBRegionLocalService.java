@@ -18,10 +18,14 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.model.Region;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.transaction.Isolation;
+import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
+
+import java.util.List;
 
 /**
  * Provides the local service interface for OSBRegion. Methods of this
@@ -45,6 +49,28 @@ public interface OSBRegionLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link OSBRegionLocalServiceUtil} to access the osb region local service. Add custom service methods to {@link com.liferay.osb.service.impl.OSBRegionLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	public Region addRegion(long countryId, java.lang.String regionCode,
+		java.lang.String name, boolean active)
+		throws PortalException, SystemException;
+
+	public Region deleteRegion(long regionId)
+		throws PortalException, SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Region fetchRegion(long countryId, java.lang.String name)
+		throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Region getRegion(long regionId)
+		throws PortalException, SystemException;
+
+	public Region updateRegion(long regionId, long countryId,
+		java.lang.String regionCode, java.lang.String name, boolean active)
+		throws PortalException, SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getRegionsCount(long countryId) throws SystemException;
+
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
@@ -56,4 +82,8 @@ public interface OSBRegionLocalService extends BaseLocalService,
 	* @return the OSGi service identifier
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Region> getRegions(long countryId, int start, int end)
+		throws SystemException;
 }

@@ -221,6 +221,10 @@ public interface SupportWorkerAccountTierLocalService extends BaseLocalService,
 	public List<SupportWorkerAccountTier> getSupportWorkerAccountTiers(
 		int start, int end);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<SupportWorkerAccountTier> getSupportWorkerAccountTiers(
+		long supportWorkerId) throws SystemException;
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -238,4 +242,7 @@ public interface SupportWorkerAccountTierLocalService extends BaseLocalService,
 	*/
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
+
+	public void setSupportWorkerAccountTiers(long supportWorkerId,
+		int[] accountTiers) throws SystemException;
 }

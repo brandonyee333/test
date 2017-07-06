@@ -16,9 +16,16 @@ package com.liferay.osb.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.service.TicketWorkerServiceUtil;
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import java.rmi.RemoteException;
+
 /**
  * Provides the SOAP utility for the
- * {@link com.liferay.osb.service.TicketWorkerServiceUtil} service utility. The
+ * {@link TicketWorkerServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it is difficult for SOAP to
  * support certain types.
@@ -53,9 +60,59 @@ import aQute.bnd.annotation.ProviderType;
  * @author Brian Wing Shun Chan
  * @see TicketWorkerServiceHttp
  * @see com.liferay.osb.model.TicketWorkerSoap
- * @see com.liferay.osb.service.TicketWorkerServiceUtil
+ * @see TicketWorkerServiceUtil
  * @generated
  */
 @ProviderType
 public class TicketWorkerServiceSoap {
+	public static com.liferay.osb.model.TicketWorkerSoap[] addTicketWorkers(
+		long[] userIds, long ticketEntryId, long[] sourceClassNameIds,
+		long[] sourceClassPKs, int[] roles, long primaryUserId)
+		throws RemoteException {
+		try {
+			java.util.List<com.liferay.osb.model.TicketWorker> returnValue = TicketWorkerServiceUtil.addTicketWorkers(userIds,
+					ticketEntryId, sourceClassNameIds, sourceClassPKs, roles,
+					primaryUserId);
+
+			return com.liferay.osb.model.TicketWorkerSoap.toSoapModels(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static void deleteTicketWorkers(long[] userIds, long ticketEntryId,
+		long primaryUserId) throws RemoteException {
+		try {
+			TicketWorkerServiceUtil.deleteTicketWorkers(userIds, ticketEntryId,
+				primaryUserId);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.TicketWorkerSoap[] updateTicketWorkers(
+		long[] addUserIds, int[] addRoles, long[] removeUserIds,
+		long ticketEntryId, long[] sourceClassNameIds, long[] sourceClassPKs,
+		long primaryUserId) throws RemoteException {
+		try {
+			java.util.List<com.liferay.osb.model.TicketWorker> returnValue = TicketWorkerServiceUtil.updateTicketWorkers(addUserIds,
+					addRoles, removeUserIds, ticketEntryId, sourceClassNameIds,
+					sourceClassPKs, primaryUserId);
+
+			return com.liferay.osb.model.TicketWorkerSoap.toSoapModels(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	private static Log _log = LogFactoryUtil.getLog(TicketWorkerServiceSoap.class);
 }

@@ -162,6 +162,11 @@ public class AccountProjectWrapper implements AccountProject,
 		return new AccountProjectWrapper((AccountProject)_accountProject.clone());
 	}
 
+	@Override
+	public java.lang.String getData(int fieldId) {
+		return _accountProject.getData(fieldId);
+	}
+
 	/**
 	* Returns the modified user name of this account project.
 	*
@@ -253,6 +258,11 @@ public class AccountProjectWrapper implements AccountProject,
 	}
 
 	@Override
+	public void addData(AccountInformation accountInformation) {
+		_accountProject.addData(accountInformation);
+	}
+
+	@Override
 	public void persist() {
 		_accountProject.persist();
 	}
@@ -280,6 +290,12 @@ public class AccountProjectWrapper implements AccountProject,
 	@Override
 	public void setCachedModel(boolean cachedModel) {
 		_accountProject.setCachedModel(cachedModel);
+	}
+
+	@Override
+	public void setData(
+		java.util.List<AccountInformation> accountInformationList) {
+		_accountProject.setData(accountInformationList);
 	}
 
 	@Override

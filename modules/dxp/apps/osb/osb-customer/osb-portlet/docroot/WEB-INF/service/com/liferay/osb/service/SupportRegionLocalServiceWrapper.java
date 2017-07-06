@@ -82,6 +82,16 @@ public class SupportRegionLocalServiceWrapper
 		return _supportRegionLocalService.addSupportRegion(supportRegion);
 	}
 
+	@Override
+	public com.liferay.osb.model.SupportRegion addSupportRegion(long userId,
+		java.lang.String name, java.lang.String description,
+		java.lang.String timeZoneId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _supportRegionLocalService.addSupportRegion(userId, name,
+			description, timeZoneId);
+	}
+
 	/**
 	* Creates a new support region with the primary key. Does not add the support region to the database.
 	*
@@ -112,11 +122,13 @@ public class SupportRegionLocalServiceWrapper
 	* @param supportRegionId the primary key of the support region
 	* @return the support region that was removed
 	* @throws PortalException if a support region with the primary key could not be found
+	* @throws SystemException
 	*/
 	@Override
 	public com.liferay.osb.model.SupportRegion deleteSupportRegion(
 		long supportRegionId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
 		return _supportRegionLocalService.deleteSupportRegion(supportRegionId);
 	}
 
@@ -124,6 +136,13 @@ public class SupportRegionLocalServiceWrapper
 	public com.liferay.osb.model.SupportRegion fetchSupportRegion(
 		long supportRegionId) {
 		return _supportRegionLocalService.fetchSupportRegion(supportRegionId);
+	}
+
+	@Override
+	public com.liferay.osb.model.SupportRegion fetchSupportRegionByName(
+		java.lang.String name)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _supportRegionLocalService.fetchSupportRegionByName(name);
 	}
 
 	/**
@@ -150,6 +169,17 @@ public class SupportRegionLocalServiceWrapper
 	public com.liferay.osb.model.SupportRegion updateSupportRegion(
 		com.liferay.osb.model.SupportRegion supportRegion) {
 		return _supportRegionLocalService.updateSupportRegion(supportRegion);
+	}
+
+	@Override
+	public com.liferay.osb.model.SupportRegion updateSupportRegion(
+		long supportRegionId, java.lang.String name,
+		java.lang.String description, java.lang.String timeZoneId,
+		long[] supportTeamIds)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _supportRegionLocalService.updateSupportRegion(supportRegionId,
+			name, description, timeZoneId, supportTeamIds);
 	}
 
 	@Override
@@ -280,9 +310,13 @@ public class SupportRegionLocalServiceWrapper
 			end, orderByComparator);
 	}
 
+	/**
+	* @throws SystemException
+	*/
 	@Override
 	public java.util.List<com.liferay.osb.model.SupportRegion> getAccountEntrySupportRegions(
-		long accountEntryId) {
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
 		return _supportRegionLocalService.getAccountEntrySupportRegions(accountEntryId);
 	}
 

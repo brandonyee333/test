@@ -146,6 +146,13 @@ public class LicenseEntryWrapper implements LicenseEntry,
 	}
 
 	@Override
+	public ProductEntry getProductEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _licenseEntry.getProductEntry();
+	}
+
+	@Override
 	public boolean isCachedModel() {
 		return _licenseEntry.isCachedModel();
 	}
@@ -218,6 +225,11 @@ public class LicenseEntryWrapper implements LicenseEntry,
 	@Override
 	public java.lang.String getName() {
 		return _licenseEntry.getName();
+	}
+
+	@Override
+	public java.lang.String getPortalVersionLabel() {
+		return _licenseEntry.getPortalVersionLabel();
 	}
 
 	/**

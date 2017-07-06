@@ -27,21 +27,71 @@ import java.util.Arrays;
 @ProviderType
 public class TicketSolutionServiceClpInvoker {
 	public TicketSolutionServiceClpInvoker() {
-		_methodName346 = "getOSGiServiceIdentifier";
+		_methodName386 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes346 = new String[] {  };
+		_methodParameterTypes386 = new String[] {  };
+
+		_methodName391 = "addTicketSolution";
+
+		_methodParameterTypes391 = new String[] {
+				"long", "long", "java.lang.String", "boolean", "int",
+				"java.lang.String", "int", "boolean", "boolean", "boolean",
+				"boolean", "int", "int", "java.lang.String", "java.util.List",
+				"java.util.List", "java.util.List"
+			};
+
+		_methodName392 = "updateTicketSolution";
+
+		_methodParameterTypes392 = new String[] {
+				"long", "long", "int", "long", "java.lang.String", "int"
+			};
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName346.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes346, parameterTypes)) {
+		if (_methodName386.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes386, parameterTypes)) {
 			return TicketSolutionServiceUtil.getOSGiServiceIdentifier();
+		}
+
+		if (_methodName391.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes391, parameterTypes)) {
+			return TicketSolutionServiceUtil.addTicketSolution(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				(java.lang.String)arguments[2],
+				((Boolean)arguments[3]).booleanValue(),
+				((Integer)arguments[4]).intValue(),
+				(java.lang.String)arguments[5],
+				((Integer)arguments[6]).intValue(),
+				((Boolean)arguments[7]).booleanValue(),
+				((Boolean)arguments[8]).booleanValue(),
+				((Boolean)arguments[9]).booleanValue(),
+				((Boolean)arguments[10]).booleanValue(),
+				((Integer)arguments[11]).intValue(),
+				((Integer)arguments[12]).intValue(),
+				(java.lang.String)arguments[13],
+				(java.util.List<java.lang.String>)arguments[14],
+				(java.util.List<java.lang.Integer>)arguments[15],
+				(java.util.List<com.liferay.osb.model.TicketAttachment>)arguments[16]);
+		}
+
+		if (_methodName392.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes392, parameterTypes)) {
+			return TicketSolutionServiceUtil.updateTicketSolution(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				((Integer)arguments[2]).intValue(),
+				((Long)arguments[3]).longValue(),
+				(java.lang.String)arguments[4],
+				((Integer)arguments[5]).intValue());
 		}
 
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName346;
-	private String[] _methodParameterTypes346;
+	private String _methodName386;
+	private String[] _methodParameterTypes386;
+	private String _methodName391;
+	private String[] _methodParameterTypes391;
+	private String _methodName392;
+	private String[] _methodParameterTypes392;
 }

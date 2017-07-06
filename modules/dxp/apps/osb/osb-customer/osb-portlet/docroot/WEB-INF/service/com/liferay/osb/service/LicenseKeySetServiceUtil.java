@@ -41,10 +41,43 @@ public class LicenseKeySetServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.LicenseKeySetServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static com.liferay.osb.model.LicenseKeySet addLicenseKeySet(
+		long userId, long accountEntryId, java.lang.String name)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().addLicenseKeySet(userId, accountEntryId, name);
+	}
+
+	public static com.liferay.osb.model.LicenseKeySet deleteLicenseKeySet(
+		long licenseKeySetId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().deleteLicenseKeySet(licenseKeySetId);
+	}
+
+	public static com.liferay.osb.model.LicenseKeySet getLicenseKeySet(
+		long licenseKeySetId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().getLicenseKeySet(licenseKeySetId);
+	}
+
+	public static com.liferay.osb.model.LicenseKeySet updateLicenseKeySet(
+		long licenseKeySetId, java.lang.String name)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().updateLicenseKeySet(licenseKeySetId, name);
+	}
+
 	public static java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {
 		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
+
+	public static java.lang.String exportToXML(long licenseKeySetId)
+		throws java.lang.Exception {
+		return getService().exportToXML(licenseKeySetId);
 	}
 
 	/**

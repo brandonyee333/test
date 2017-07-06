@@ -30,6 +30,12 @@ public class ContractAuditServiceClp implements ContractAuditService {
 		_methodName1 = "getOSGiServiceIdentifier";
 
 		_methodParameterTypes1 = new String[] {  };
+
+		_methodName2 = "addContractAudit";
+
+		_methodParameterTypes2 = new String[] {
+				"long", "java.lang.String", "long", "java.lang.String", "long"
+			};
 	}
 
 	@Override
@@ -62,7 +68,51 @@ public class ContractAuditServiceClp implements ContractAuditService {
 		return (java.lang.String)ClpSerializer.translateOutput(returnObj);
 	}
 
+	@Override
+	public void addContractAudit(long contractEntryId,
+		java.lang.String signatoryClassName, long signatoryClassPK,
+		java.lang.String productClassName, long productClassPK)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		try {
+			_invokableService.invokeMethod(_methodName2,
+				_methodParameterTypes2,
+				new Object[] {
+					contractEntryId,
+					
+				ClpSerializer.translateInput(signatoryClassName),
+					
+				signatoryClassPK,
+					
+				ClpSerializer.translateInput(productClassName),
+					
+				productClassPK
+				});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+	}
+
 	private InvokableService _invokableService;
 	private String _methodName1;
 	private String[] _methodParameterTypes1;
+	private String _methodName2;
+	private String[] _methodParameterTypes2;
 }

@@ -28,105 +28,297 @@ public class ContractAuditLocalServiceClp implements ContractAuditLocalService {
 		InvokableLocalService invokableLocalService) {
 		_invokableLocalService = invokableLocalService;
 
-		_methodName0 = "addContractAudit";
+		_methodName0 = "hasContractAudit";
 
 		_methodParameterTypes0 = new String[] {
+				"long", "long", "int", "java.lang.String", "long"
+			};
+
+		_methodName1 = "hasContractAudit";
+
+		_methodParameterTypes1 = new String[] { "long", "java.lang.String", "long" };
+
+		_methodName2 = "hasContractAudit";
+
+		_methodParameterTypes2 = new String[] { "long", "long" };
+
+		_methodName3 = "hasLatestContractAudit";
+
+		_methodParameterTypes3 = new String[] {
+				"long", "long", "int", "java.lang.String", "long"
+			};
+
+		_methodName4 = "addContractAudit";
+
+		_methodParameterTypes4 = new String[] {
 				"com.liferay.osb.model.ContractAudit"
 			};
 
-		_methodName1 = "createContractAudit";
-
-		_methodParameterTypes1 = new String[] { "long" };
-
-		_methodName2 = "deleteContractAudit";
-
-		_methodParameterTypes2 = new String[] {
-				"com.liferay.osb.model.ContractAudit"
-			};
-
-		_methodName3 = "deleteContractAudit";
-
-		_methodParameterTypes3 = new String[] { "long" };
-
-		_methodName4 = "fetchContractAudit";
-
-		_methodParameterTypes4 = new String[] { "long" };
-
-		_methodName5 = "getContractAudit";
+		_methodName5 = "createContractAudit";
 
 		_methodParameterTypes5 = new String[] { "long" };
 
-		_methodName6 = "updateContractAudit";
+		_methodName6 = "deleteContractAudit";
 
 		_methodParameterTypes6 = new String[] {
 				"com.liferay.osb.model.ContractAudit"
 			};
 
-		_methodName7 = "getActionableDynamicQuery";
+		_methodName7 = "deleteContractAudit";
 
-		_methodParameterTypes7 = new String[] {  };
+		_methodParameterTypes7 = new String[] { "long" };
 
-		_methodName8 = "dynamicQuery";
+		_methodName8 = "fetchContractAudit";
 
-		_methodParameterTypes8 = new String[] {  };
+		_methodParameterTypes8 = new String[] { "long" };
 
-		_methodName9 = "getIndexableActionableDynamicQuery";
+		_methodName9 = "getContractAudit";
 
-		_methodParameterTypes9 = new String[] {  };
+		_methodParameterTypes9 = new String[] { "long" };
 
-		_methodName10 = "deletePersistedModel";
+		_methodName10 = "updateContractAudit";
 
 		_methodParameterTypes10 = new String[] {
-				"com.liferay.portal.kernel.model.PersistedModel"
+				"com.liferay.osb.model.ContractAudit"
 			};
 
-		_methodName11 = "getPersistedModel";
+		_methodName11 = "getActionableDynamicQuery";
 
-		_methodParameterTypes11 = new String[] { "java.io.Serializable" };
+		_methodParameterTypes11 = new String[] {  };
 
-		_methodName12 = "getContractAuditsCount";
+		_methodName12 = "dynamicQuery";
 
 		_methodParameterTypes12 = new String[] {  };
 
-		_methodName14 = "getOSGiServiceIdentifier";
+		_methodName13 = "getIndexableActionableDynamicQuery";
 
-		_methodParameterTypes14 = new String[] {  };
+		_methodParameterTypes13 = new String[] {  };
 
-		_methodName15 = "dynamicQuery";
+		_methodName14 = "deletePersistedModel";
 
-		_methodParameterTypes15 = new String[] {
+		_methodParameterTypes14 = new String[] {
+				"com.liferay.portal.kernel.model.PersistedModel"
+			};
+
+		_methodName15 = "getPersistedModel";
+
+		_methodParameterTypes15 = new String[] { "java.io.Serializable" };
+
+		_methodName16 = "getContractAuditCount";
+
+		_methodParameterTypes16 = new String[] {
+				"long", "java.lang.String", "long"
+			};
+
+		_methodName17 = "getContractAuditCount";
+
+		_methodParameterTypes17 = new String[] { "long", "long" };
+
+		_methodName18 = "getContractAuditsCount";
+
+		_methodParameterTypes18 = new String[] {  };
+
+		_methodName20 = "getOSGiServiceIdentifier";
+
+		_methodParameterTypes20 = new String[] {  };
+
+		_methodName21 = "dynamicQuery";
+
+		_methodParameterTypes21 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
 			};
 
-		_methodName16 = "dynamicQuery";
+		_methodName22 = "dynamicQuery";
 
-		_methodParameterTypes16 = new String[] {
+		_methodParameterTypes22 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
 			};
 
-		_methodName17 = "dynamicQuery";
+		_methodName23 = "dynamicQuery";
 
-		_methodParameterTypes17 = new String[] {
+		_methodParameterTypes23 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName18 = "getContractAudits";
+		_methodName24 = "getContractAudits";
 
-		_methodParameterTypes18 = new String[] { "int", "int" };
+		_methodParameterTypes24 = new String[] { "int", "int" };
 
-		_methodName19 = "dynamicQueryCount";
+		_methodName25 = "dynamicQueryCount";
 
-		_methodParameterTypes19 = new String[] {
+		_methodParameterTypes25 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
 			};
 
-		_methodName20 = "dynamicQueryCount";
+		_methodName26 = "dynamicQueryCount";
 
-		_methodParameterTypes20 = new String[] {
+		_methodParameterTypes26 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery",
 				"com.liferay.portal.kernel.dao.orm.Projection"
 			};
+
+		_methodName27 = "addContractAudit";
+
+		_methodParameterTypes27 = new String[] {
+				"long", "long", "java.lang.String", "long", "java.lang.String",
+				"long"
+			};
+	}
+
+	@Override
+	public boolean hasContractAudit(long classNameId, long classPK, int type,
+		java.lang.String signatoryClassName, long signatoryClassPK)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName0,
+					_methodParameterTypes0,
+					new Object[] {
+						classNameId,
+						
+					classPK,
+						
+					type,
+						
+					ClpSerializer.translateInput(signatoryClassName),
+						
+					signatoryClassPK
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return ((Boolean)returnObj).booleanValue();
+	}
+
+	@Override
+	public boolean hasContractAudit(long contractEntryId,
+		java.lang.String signatoryClassName, long signatoryClassPK)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName1,
+					_methodParameterTypes1,
+					new Object[] {
+						contractEntryId,
+						
+					ClpSerializer.translateInput(signatoryClassName),
+						
+					signatoryClassPK
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return ((Boolean)returnObj).booleanValue();
+	}
+
+	@Override
+	public boolean hasContractAudit(long userId, long contractEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName2,
+					_methodParameterTypes2,
+					new Object[] { userId, contractEntryId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return ((Boolean)returnObj).booleanValue();
+	}
+
+	@Override
+	public boolean hasLatestContractAudit(long classNameId, long classPK,
+		int type, java.lang.String signatoryClassName, long signatoryClassPK)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName3,
+					_methodParameterTypes3,
+					new Object[] {
+						classNameId,
+						
+					classPK,
+						
+					type,
+						
+					ClpSerializer.translateInput(signatoryClassName),
+						
+					signatoryClassPK
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return ((Boolean)returnObj).booleanValue();
 	}
 
 	@Override
@@ -135,8 +327,8 @@ public class ContractAuditLocalServiceClp implements ContractAuditLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName0,
-					_methodParameterTypes0,
+			returnObj = _invokableLocalService.invokeMethod(_methodName4,
+					_methodParameterTypes4,
 					new Object[] { ClpSerializer.translateInput(contractAudit) });
 		}
 		catch (Throwable t) {
@@ -160,8 +352,8 @@ public class ContractAuditLocalServiceClp implements ContractAuditLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName1,
-					_methodParameterTypes1, new Object[] { contractAuditId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName5,
+					_methodParameterTypes5, new Object[] { contractAuditId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -184,8 +376,8 @@ public class ContractAuditLocalServiceClp implements ContractAuditLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName2,
-					_methodParameterTypes2,
+			returnObj = _invokableLocalService.invokeMethod(_methodName6,
+					_methodParameterTypes6,
 					new Object[] { ClpSerializer.translateInput(contractAudit) });
 		}
 		catch (Throwable t) {
@@ -210,8 +402,8 @@ public class ContractAuditLocalServiceClp implements ContractAuditLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName3,
-					_methodParameterTypes3, new Object[] { contractAuditId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName7,
+					_methodParameterTypes7, new Object[] { contractAuditId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -238,8 +430,8 @@ public class ContractAuditLocalServiceClp implements ContractAuditLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName4,
-					_methodParameterTypes4, new Object[] { contractAuditId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName8,
+					_methodParameterTypes8, new Object[] { contractAuditId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -263,8 +455,8 @@ public class ContractAuditLocalServiceClp implements ContractAuditLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName5,
-					_methodParameterTypes5, new Object[] { contractAuditId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName9,
+					_methodParameterTypes9, new Object[] { contractAuditId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -291,8 +483,8 @@ public class ContractAuditLocalServiceClp implements ContractAuditLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName6,
-					_methodParameterTypes6,
+			returnObj = _invokableLocalService.invokeMethod(_methodName10,
+					_methodParameterTypes10,
 					new Object[] { ClpSerializer.translateInput(contractAudit) });
 		}
 		catch (Throwable t) {
@@ -315,8 +507,8 @@ public class ContractAuditLocalServiceClp implements ContractAuditLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName7,
-					_methodParameterTypes7, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName11,
+					_methodParameterTypes11, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -338,8 +530,8 @@ public class ContractAuditLocalServiceClp implements ContractAuditLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName8,
-					_methodParameterTypes8, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName12,
+					_methodParameterTypes12, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -361,8 +553,8 @@ public class ContractAuditLocalServiceClp implements ContractAuditLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName9,
-					_methodParameterTypes9, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName13,
+					_methodParameterTypes13, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -386,8 +578,8 @@ public class ContractAuditLocalServiceClp implements ContractAuditLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName10,
-					_methodParameterTypes10,
+			returnObj = _invokableLocalService.invokeMethod(_methodName14,
+					_methodParameterTypes14,
 					new Object[] { ClpSerializer.translateInput(persistedModel) });
 		}
 		catch (Throwable t) {
@@ -416,8 +608,8 @@ public class ContractAuditLocalServiceClp implements ContractAuditLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName11,
-					_methodParameterTypes11,
+			returnObj = _invokableLocalService.invokeMethod(_methodName15,
+					_methodParameterTypes15,
 					new Object[] { ClpSerializer.translateInput(primaryKeyObj) });
 		}
 		catch (Throwable t) {
@@ -440,12 +632,77 @@ public class ContractAuditLocalServiceClp implements ContractAuditLocalService {
 	}
 
 	@Override
+	public int getContractAuditCount(long contractEntryId,
+		java.lang.String signatoryClassName, long signatoryClassPK)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName16,
+					_methodParameterTypes16,
+					new Object[] {
+						contractEntryId,
+						
+					ClpSerializer.translateInput(signatoryClassName),
+						
+					signatoryClassPK
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return ((Integer)returnObj).intValue();
+	}
+
+	@Override
+	public int getContractAuditCount(long userId, long contractEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName17,
+					_methodParameterTypes17,
+					new Object[] { userId, contractEntryId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return ((Integer)returnObj).intValue();
+	}
+
+	@Override
 	public int getContractAuditsCount() {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName12,
-					_methodParameterTypes12, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName18,
+					_methodParameterTypes18, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -474,8 +731,8 @@ public class ContractAuditLocalServiceClp implements ContractAuditLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName14,
-					_methodParameterTypes14, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName20,
+					_methodParameterTypes20, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -498,8 +755,8 @@ public class ContractAuditLocalServiceClp implements ContractAuditLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName15,
-					_methodParameterTypes15,
+			returnObj = _invokableLocalService.invokeMethod(_methodName21,
+					_methodParameterTypes21,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -524,8 +781,8 @@ public class ContractAuditLocalServiceClp implements ContractAuditLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName16,
-					_methodParameterTypes16,
+			returnObj = _invokableLocalService.invokeMethod(_methodName22,
+					_methodParameterTypes22,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -557,8 +814,8 @@ public class ContractAuditLocalServiceClp implements ContractAuditLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName17,
-					_methodParameterTypes17,
+			returnObj = _invokableLocalService.invokeMethod(_methodName23,
+					_methodParameterTypes23,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -590,8 +847,8 @@ public class ContractAuditLocalServiceClp implements ContractAuditLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName18,
-					_methodParameterTypes18, new Object[] { start, end });
+			returnObj = _invokableLocalService.invokeMethod(_methodName24,
+					_methodParameterTypes24, new Object[] { start, end });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -614,8 +871,8 @@ public class ContractAuditLocalServiceClp implements ContractAuditLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName19,
-					_methodParameterTypes19,
+			returnObj = _invokableLocalService.invokeMethod(_methodName25,
+					_methodParameterTypes25,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -640,8 +897,8 @@ public class ContractAuditLocalServiceClp implements ContractAuditLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName20,
-					_methodParameterTypes20,
+			returnObj = _invokableLocalService.invokeMethod(_methodName26,
+					_methodParameterTypes26,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -661,6 +918,50 @@ public class ContractAuditLocalServiceClp implements ContractAuditLocalService {
 		}
 
 		return ((Long)returnObj).longValue();
+	}
+
+	@Override
+	public void addContractAudit(long userId, long contractEntryId,
+		java.lang.String signatoryClassName, long signatoryClassPK,
+		java.lang.String productClassName, long productClassPK)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		try {
+			_invokableLocalService.invokeMethod(_methodName27,
+				_methodParameterTypes27,
+				new Object[] {
+					userId,
+					
+				contractEntryId,
+					
+				ClpSerializer.translateInput(signatoryClassName),
+					
+				signatoryClassPK,
+					
+				ClpSerializer.translateInput(productClassName),
+					
+				productClassPK
+				});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
 	}
 
 	private InvokableLocalService _invokableLocalService;
@@ -690,6 +991,8 @@ public class ContractAuditLocalServiceClp implements ContractAuditLocalService {
 	private String[] _methodParameterTypes11;
 	private String _methodName12;
 	private String[] _methodParameterTypes12;
+	private String _methodName13;
+	private String[] _methodParameterTypes13;
 	private String _methodName14;
 	private String[] _methodParameterTypes14;
 	private String _methodName15;
@@ -700,8 +1003,20 @@ public class ContractAuditLocalServiceClp implements ContractAuditLocalService {
 	private String[] _methodParameterTypes17;
 	private String _methodName18;
 	private String[] _methodParameterTypes18;
-	private String _methodName19;
-	private String[] _methodParameterTypes19;
 	private String _methodName20;
 	private String[] _methodParameterTypes20;
+	private String _methodName21;
+	private String[] _methodParameterTypes21;
+	private String _methodName22;
+	private String[] _methodParameterTypes22;
+	private String _methodName23;
+	private String[] _methodParameterTypes23;
+	private String _methodName24;
+	private String[] _methodParameterTypes24;
+	private String _methodName25;
+	private String[] _methodParameterTypes25;
+	private String _methodName26;
+	private String[] _methodParameterTypes26;
+	private String _methodName27;
+	private String[] _methodParameterTypes27;
 }

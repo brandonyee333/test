@@ -117,6 +117,14 @@ public class AuditActionLocalServiceUtil {
 		return getService().updateAuditAction(auditAction);
 	}
 
+	public static com.liferay.osb.model.AuditAction updateAuditAction(
+		long classNameId, long classPK, long mappingClassPK, int action)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .updateAuditAction(classNameId, classPK, mappingClassPK,
+			action);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
 		return getService().getActionableDynamicQuery();
 	}
@@ -234,6 +242,13 @@ public class AuditActionLocalServiceUtil {
 		return getService().getAuditActions(start, end);
 	}
 
+	public static java.util.List<com.liferay.osb.model.AuditAction> getAuditActions(
+		java.util.Date modifiedDate, long classNameId, boolean mapping,
+		int action) throws com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .getAuditActions(modifiedDate, classNameId, mapping, action);
+	}
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -256,6 +271,11 @@ public class AuditActionLocalServiceUtil {
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
+	}
+
+	public static void deleteAuditActions(java.util.Date modifiedDate)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		getService().deleteAuditActions(modifiedDate);
 	}
 
 	public static void clearService() {

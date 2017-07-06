@@ -16,9 +16,16 @@ package com.liferay.osb.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.service.SearchFilterServiceUtil;
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import java.rmi.RemoteException;
+
 /**
  * Provides the SOAP utility for the
- * {@link com.liferay.osb.service.SearchFilterServiceUtil} service utility. The
+ * {@link SearchFilterServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it is difficult for SOAP to
  * support certain types.
@@ -53,9 +60,68 @@ import aQute.bnd.annotation.ProviderType;
  * @author Brian Wing Shun Chan
  * @see SearchFilterServiceHttp
  * @see com.liferay.osb.model.SearchFilterSoap
- * @see com.liferay.osb.service.SearchFilterServiceUtil
+ * @see SearchFilterServiceUtil
  * @generated
  */
 @ProviderType
 public class SearchFilterServiceSoap {
+	public static com.liferay.osb.model.SearchFilterSoap addSearchFilter(
+		long userId, long classNameId, java.lang.String name,
+		java.lang.String filter, int visibility) throws RemoteException {
+		try {
+			com.liferay.osb.model.SearchFilter returnValue = SearchFilterServiceUtil.addSearchFilter(userId,
+					classNameId, name, filter, visibility);
+
+			return com.liferay.osb.model.SearchFilterSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static void deleteSearchFilter(long searchFilterId)
+		throws RemoteException {
+		try {
+			SearchFilterServiceUtil.deleteSearchFilter(searchFilterId);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.SearchFilterSoap getSearchFilter(
+		long searchFilterId) throws RemoteException {
+		try {
+			com.liferay.osb.model.SearchFilter returnValue = SearchFilterServiceUtil.getSearchFilter(searchFilterId);
+
+			return com.liferay.osb.model.SearchFilterSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.SearchFilterSoap updateSearchFilter(
+		long searchFilterId, java.lang.String name, java.lang.String filter,
+		int visibility) throws RemoteException {
+		try {
+			com.liferay.osb.model.SearchFilter returnValue = SearchFilterServiceUtil.updateSearchFilter(searchFilterId,
+					name, filter, visibility);
+
+			return com.liferay.osb.model.SearchFilterSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	private static Log _log = LogFactoryUtil.getLog(SearchFilterServiceSoap.class);
 }

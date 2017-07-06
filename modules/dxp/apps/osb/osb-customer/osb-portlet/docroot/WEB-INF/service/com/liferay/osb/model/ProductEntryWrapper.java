@@ -144,13 +144,73 @@ public class ProductEntryWrapper implements ProductEntry,
 	}
 
 	@Override
+	public boolean isDeveloperTools() {
+		return _productEntry.isDeveloperTools();
+	}
+
+	@Override
+	public boolean isDeviceDetection() {
+		return _productEntry.isDeviceDetection();
+	}
+
+	@Override
+	public boolean isDigitalEnterprise() {
+		return _productEntry.isDigitalEnterprise();
+	}
+
+	@Override
+	public boolean isEnterpriseSearchPremium() {
+		return _productEntry.isEnterpriseSearchPremium();
+	}
+
+	@Override
+	public boolean isEnterpriseSearchStandard() {
+		return _productEntry.isEnterpriseSearchStandard();
+	}
+
+	@Override
 	public boolean isEscapedModel() {
 		return _productEntry.isEscapedModel();
 	}
 
 	@Override
+	public boolean isManagementTools() {
+		return _productEntry.isManagementTools();
+	}
+
+	@Override
+	public boolean isMobileExperience() {
+		return _productEntry.isMobileExperience();
+	}
+
+	@Override
 	public boolean isNew() {
 		return _productEntry.isNew();
+	}
+
+	@Override
+	public boolean isPortal() {
+		return _productEntry.isPortal();
+	}
+
+	@Override
+	public boolean isProductivityTools() {
+		return _productEntry.isProductivityTools();
+	}
+
+	@Override
+	public boolean isSocialOffice() {
+		return _productEntry.isSocialOffice();
+	}
+
+	@Override
+	public boolean isTicketComponentRequired() {
+		return _productEntry.isTicketComponentRequired();
+	}
+
+	@Override
+	public boolean isUnlimitedEnterpriseWide() {
+		return _productEntry.isUnlimitedEnterpriseWide();
 	}
 
 	@Override
@@ -203,6 +263,16 @@ public class ProductEntryWrapper implements ProductEntry,
 		return new ProductEntryWrapper((ProductEntry)_productEntry.clone());
 	}
 
+	@Override
+	public java.lang.String getEnvironmentLabel() {
+		return _productEntry.getEnvironmentLabel();
+	}
+
+	@Override
+	public java.lang.String getLESADisplayName() {
+		return _productEntry.getLESADisplayName();
+	}
+
 	/**
 	* Returns the name of this product entry.
 	*
@@ -211,6 +281,11 @@ public class ProductEntryWrapper implements ProductEntry,
 	@Override
 	public java.lang.String getName() {
 		return _productEntry.getName();
+	}
+
+	@Override
+	public java.lang.String getTypeLabel() {
+		return _productEntry.getTypeLabel();
 	}
 
 	/**
@@ -253,6 +328,12 @@ public class ProductEntryWrapper implements ProductEntry,
 		return _productEntry.toXmlString();
 	}
 
+	@Override
+	public java.lang.String[] getDossieraIdMappings()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _productEntry.getDossieraIdMappings();
+	}
+
 	/**
 	* Returns the create date of this product entry.
 	*
@@ -271,6 +352,24 @@ public class ProductEntryWrapper implements ProductEntry,
 	@Override
 	public Date getModifiedDate() {
 		return _productEntry.getModifiedDate();
+	}
+
+	@Override
+	public java.util.List<com.liferay.portal.kernel.model.ListType> getAllVersionsListTypes()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _productEntry.getAllVersionsListTypes();
+	}
+
+	@Override
+	public java.util.List<LicenseEntry> getLicenseEntries()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _productEntry.getLicenseEntries();
+	}
+
+	@Override
+	public java.util.List<com.liferay.portal.kernel.model.ListType> getVersionsListTypes()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _productEntry.getVersionsListTypes();
 	}
 
 	/**

@@ -234,6 +234,12 @@ public class AccountLinkLocalServiceUtil {
 		return getService().getAccountLinks(start, end);
 	}
 
+	public static java.util.List<com.liferay.osb.model.AccountLink> getAccountLinks(
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getAccountLinks(accountEntryId);
+	}
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -256,6 +262,13 @@ public class AccountLinkLocalServiceUtil {
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
+	}
+
+	public static void addAccountLinks(long userId, long accountEntryId,
+		java.lang.String[] urls)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		getService().addAccountLinks(userId, accountEntryId, urls);
 	}
 
 	public static void clearService() {

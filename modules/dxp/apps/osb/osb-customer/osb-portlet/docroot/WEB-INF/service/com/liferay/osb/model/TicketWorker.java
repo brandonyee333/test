@@ -53,4 +53,10 @@ public interface TicketWorker extends TicketWorkerModel, PersistedModel {
 				return TicketWorker.class;
 			}
 		};
+
+	public java.lang.String getRoleLabel();
+
+	public TicketEntry getTicketEntry()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
 }

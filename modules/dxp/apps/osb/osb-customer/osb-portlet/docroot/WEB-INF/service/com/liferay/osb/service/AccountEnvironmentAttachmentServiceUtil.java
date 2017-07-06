@@ -41,6 +41,14 @@ public class AccountEnvironmentAttachmentServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.AccountEnvironmentAttachmentServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static com.liferay.osb.model.AccountEnvironmentAttachment getAccountEnvironmentAttachment(
+		long accountEnvironmentAttachmentId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .getAccountEnvironmentAttachment(accountEnvironmentAttachmentId);
+	}
+
 	public static java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {

@@ -54,4 +54,7 @@ public interface OfferingBundle extends OfferingBundleModel, PersistedModel {
 				return OfferingBundle.class;
 			}
 		};
+
+	public java.util.List<OfferingDefinition> getOfferingDefinitions()
+		throws com.liferay.portal.kernel.exception.SystemException;
 }

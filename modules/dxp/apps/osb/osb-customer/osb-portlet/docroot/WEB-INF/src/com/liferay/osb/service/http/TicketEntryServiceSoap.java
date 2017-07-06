@@ -16,9 +16,16 @@ package com.liferay.osb.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.service.TicketEntryServiceUtil;
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import java.rmi.RemoteException;
+
 /**
  * Provides the SOAP utility for the
- * {@link com.liferay.osb.service.TicketEntryServiceUtil} service utility. The
+ * {@link TicketEntryServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it is difficult for SOAP to
  * support certain types.
@@ -53,9 +60,177 @@ import aQute.bnd.annotation.ProviderType;
  * @author Brian Wing Shun Chan
  * @see TicketEntryServiceHttp
  * @see com.liferay.osb.model.TicketEntrySoap
- * @see com.liferay.osb.service.TicketEntryServiceUtil
+ * @see TicketEntryServiceUtil
  * @generated
  */
 @ProviderType
 public class TicketEntryServiceSoap {
+	public static void closeTicketEntry(long ticketEntryId, int resolution,
+		java.lang.String body) throws RemoteException {
+		try {
+			TicketEntryServiceUtil.closeTicketEntry(ticketEntryId, resolution,
+				body);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static void escalateTicketEntry(long ticketEntryId)
+		throws RemoteException {
+		try {
+			TicketEntryServiceUtil.escalateTicketEntry(ticketEntryId);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.TicketEntrySoap forwardTicketEntry(
+		long ticketEntryId, java.lang.String commentBody)
+		throws RemoteException {
+		try {
+			com.liferay.osb.model.TicketEntry returnValue = TicketEntryServiceUtil.forwardTicketEntry(ticketEntryId,
+					commentBody);
+
+			return com.liferay.osb.model.TicketEntrySoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.TicketEntrySoap[] getTicketEntries(
+		long accountEntryId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator obc)
+		throws RemoteException {
+		try {
+			java.util.List<com.liferay.osb.model.TicketEntry> returnValue = TicketEntryServiceUtil.getTicketEntries(accountEntryId,
+					start, end, obc);
+
+			return com.liferay.osb.model.TicketEntrySoap.toSoapModels(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static int getTicketEntriesCount(long accountEntryId)
+		throws RemoteException {
+		try {
+			int returnValue = TicketEntryServiceUtil.getTicketEntriesCount(accountEntryId);
+
+			return returnValue;
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.TicketEntrySoap getTicketEntry(
+		long ticketEntryId) throws RemoteException {
+		try {
+			com.liferay.osb.model.TicketEntry returnValue = TicketEntryServiceUtil.getTicketEntry(ticketEntryId);
+
+			return com.liferay.osb.model.TicketEntrySoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.TicketEntrySoap getTicketEntry(
+		long accountEntryId, long ticketId) throws RemoteException {
+		try {
+			com.liferay.osb.model.TicketEntry returnValue = TicketEntryServiceUtil.getTicketEntry(accountEntryId,
+					ticketId);
+
+			return com.liferay.osb.model.TicketEntrySoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.TicketEntrySoap[] search(
+		java.lang.String keywords, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator obc)
+		throws RemoteException {
+		try {
+			java.util.List<com.liferay.osb.model.TicketEntry> returnValue = TicketEntryServiceUtil.search(keywords,
+					start, end, obc);
+
+			return com.liferay.osb.model.TicketEntrySoap.toSoapModels(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static int searchCount(java.lang.String keywords)
+		throws RemoteException {
+		try {
+			int returnValue = TicketEntryServiceUtil.searchCount(keywords);
+
+			return returnValue;
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.TicketEntrySoap updatePendingTypes(
+		long ticketEntryId, int[] pendingTypes) throws RemoteException {
+		try {
+			com.liferay.osb.model.TicketEntry returnValue = TicketEntryServiceUtil.updatePendingTypes(ticketEntryId,
+					pendingTypes);
+
+			return com.liferay.osb.model.TicketEntrySoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.TicketEntrySoap updateTicketEntry(
+		long userId, long ticketEntryId, long assigneeUserId,
+		long supportRegionId, int dueDateMonth, int dueDateDay,
+		int dueDateYear, int dueDateHour, int dueDateMinute)
+		throws RemoteException {
+		try {
+			com.liferay.osb.model.TicketEntry returnValue = TicketEntryServiceUtil.updateTicketEntry(userId,
+					ticketEntryId, assigneeUserId, supportRegionId,
+					dueDateMonth, dueDateDay, dueDateYear, dueDateHour,
+					dueDateMinute);
+
+			return com.liferay.osb.model.TicketEntrySoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	private static Log _log = LogFactoryUtil.getLog(TicketEntryServiceSoap.class);
 }

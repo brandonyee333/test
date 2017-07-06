@@ -16,9 +16,16 @@ package com.liferay.osb.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.service.TicketCallServiceUtil;
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import java.rmi.RemoteException;
+
 /**
  * Provides the SOAP utility for the
- * {@link com.liferay.osb.service.TicketCallServiceUtil} service utility. The
+ * {@link TicketCallServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it is difficult for SOAP to
  * support certain types.
@@ -53,9 +60,31 @@ import aQute.bnd.annotation.ProviderType;
  * @author Brian Wing Shun Chan
  * @see TicketCallServiceHttp
  * @see com.liferay.osb.model.TicketCallSoap
- * @see com.liferay.osb.service.TicketCallServiceUtil
+ * @see TicketCallServiceUtil
  * @generated
  */
 @ProviderType
 public class TicketCallServiceSoap {
+	public static com.liferay.osb.model.TicketCallSoap addTicketCall(
+		long ticketEntryId, int type, int callDateMonth, int callDateDay,
+		int callDateYear, int callDateHour, int callDateMinute,
+		long callLength, java.lang.String customerName,
+		java.lang.String customerContact, java.lang.String confirmation,
+		java.lang.String instructions) throws RemoteException {
+		try {
+			com.liferay.osb.model.TicketCall returnValue = TicketCallServiceUtil.addTicketCall(ticketEntryId,
+					type, callDateMonth, callDateDay, callDateYear,
+					callDateHour, callDateMinute, callLength, customerName,
+					customerContact, confirmation, instructions);
+
+			return com.liferay.osb.model.TicketCallSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	private static Log _log = LogFactoryUtil.getLog(TicketCallServiceSoap.class);
 }

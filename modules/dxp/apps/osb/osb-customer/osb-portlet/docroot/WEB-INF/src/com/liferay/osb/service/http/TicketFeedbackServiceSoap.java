@@ -16,9 +16,16 @@ package com.liferay.osb.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.service.TicketFeedbackServiceUtil;
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import java.rmi.RemoteException;
+
 /**
  * Provides the SOAP utility for the
- * {@link com.liferay.osb.service.TicketFeedbackServiceUtil} service utility. The
+ * {@link TicketFeedbackServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it is difficult for SOAP to
  * support certain types.
@@ -53,9 +60,103 @@ import aQute.bnd.annotation.ProviderType;
  * @author Brian Wing Shun Chan
  * @see TicketFeedbackServiceHttp
  * @see com.liferay.osb.model.TicketFeedbackSoap
- * @see com.liferay.osb.service.TicketFeedbackServiceUtil
+ * @see TicketFeedbackServiceUtil
  * @generated
  */
 @ProviderType
 public class TicketFeedbackServiceSoap {
+	public static com.liferay.osb.model.TicketFeedbackSoap addTicketFeedback(
+		long ticketEntryId, int subject, int satisfied)
+		throws RemoteException {
+		try {
+			com.liferay.osb.model.TicketFeedback returnValue = TicketFeedbackServiceUtil.addTicketFeedback(ticketEntryId,
+					subject, satisfied);
+
+			return com.liferay.osb.model.TicketFeedbackSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.TicketFeedbackSoap fetchFirstOpenTicketFeedback(
+		long userId, long ticketEntryId, int subject) throws RemoteException {
+		try {
+			com.liferay.osb.model.TicketFeedback returnValue = TicketFeedbackServiceUtil.fetchFirstOpenTicketFeedback(userId,
+					ticketEntryId, subject);
+
+			return com.liferay.osb.model.TicketFeedbackSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.TicketFeedbackSoap fetchFirstTicketFeedback(
+		long ticketEntryId, int subject) throws RemoteException {
+		try {
+			com.liferay.osb.model.TicketFeedback returnValue = TicketFeedbackServiceUtil.fetchFirstTicketFeedback(ticketEntryId,
+					subject);
+
+			return com.liferay.osb.model.TicketFeedbackSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.TicketFeedbackSoap getTicketFeedback(
+		long ticketFeedbackId) throws RemoteException {
+		try {
+			com.liferay.osb.model.TicketFeedback returnValue = TicketFeedbackServiceUtil.getTicketFeedback(ticketFeedbackId);
+
+			return com.liferay.osb.model.TicketFeedbackSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.TicketFeedbackSoap[] getTicketFeedbacks(
+		long ticketEntryId, int subject) throws RemoteException {
+		try {
+			java.util.List<com.liferay.osb.model.TicketFeedback> returnValue = TicketFeedbackServiceUtil.getTicketFeedbacks(ticketEntryId,
+					subject);
+
+			return com.liferay.osb.model.TicketFeedbackSoap.toSoapModels(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.TicketFeedbackSoap updateTicketFeedback(
+		long ticketFeedbackId, int satisfied, int answer1, int answer2,
+		int answer3, int rating1, int rating2, int rating3, int rating4,
+		java.lang.String comments) throws RemoteException {
+		try {
+			com.liferay.osb.model.TicketFeedback returnValue = TicketFeedbackServiceUtil.updateTicketFeedback(ticketFeedbackId,
+					satisfied, answer1, answer2, answer3, rating1, rating2,
+					rating3, rating4, comments);
+
+			return com.liferay.osb.model.TicketFeedbackSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	private static Log _log = LogFactoryUtil.getLog(TicketFeedbackServiceSoap.class);
 }

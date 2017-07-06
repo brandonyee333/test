@@ -221,6 +221,10 @@ public interface SupportWorkerComponentLocalService extends BaseLocalService,
 	public List<SupportWorkerComponent> getSupportWorkerComponents(int start,
 		int end);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<SupportWorkerComponent> getSupportWorkerComponents(
+		long supportWorkerId) throws SystemException;
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -238,4 +242,7 @@ public interface SupportWorkerComponentLocalService extends BaseLocalService,
 	*/
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
+
+	public void setSupportWorkerComponents(long supportWorkerId,
+		int[] components) throws SystemException;
 }

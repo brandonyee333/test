@@ -72,6 +72,9 @@ public interface ExternalIdMapperLocalService extends BaseLocalService,
 	public ExternalIdMapper addExternalIdMapper(
 		ExternalIdMapper externalIdMapper);
 
+	public ExternalIdMapper addExternalIdMapper(long classNameId, long classPK,
+		int type, java.lang.String externalId) throws SystemException;
+
 	/**
 	* Creates a new external ID mapper with the primary key. Does not add the external ID mapper to the database.
 	*
@@ -124,6 +127,10 @@ public interface ExternalIdMapperLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public ExternalIdMapper updateExternalIdMapper(
 		ExternalIdMapper externalIdMapper);
+
+	public ExternalIdMapper updateExternalIdMapper(long externalIdMapperId,
+		long classNameId, long classPK, int type, java.lang.String externalId)
+		throws PortalException, SystemException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -218,6 +225,14 @@ public interface ExternalIdMapperLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<ExternalIdMapper> getExternalIdMappers(int start, int end);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<ExternalIdMapper> getExternalIdMappers(long classNameId,
+		int type, java.lang.String externalId) throws SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<ExternalIdMapper> getExternalIdMappers(long classNameId,
+		long classPK, int type) throws SystemException;
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -235,4 +250,7 @@ public interface ExternalIdMapperLocalService extends BaseLocalService,
 	*/
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
+
+	public void deleteExternalIdMapper(long classNameId, long classPK, int type)
+		throws SystemException;
 }

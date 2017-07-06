@@ -27,21 +27,45 @@ import java.util.Arrays;
 @ProviderType
 public class TicketCallServiceClpInvoker {
 	public TicketCallServiceClpInvoker() {
-		_methodName340 = "getOSGiServiceIdentifier";
+		_methodName380 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes340 = new String[] {  };
+		_methodParameterTypes380 = new String[] {  };
+
+		_methodName385 = "addTicketCall";
+
+		_methodParameterTypes385 = new String[] {
+				"long", "int", "int", "int", "int", "int", "int", "long",
+				"java.lang.String", "java.lang.String", "java.lang.String",
+				"java.lang.String"
+			};
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName340.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes340, parameterTypes)) {
+		if (_methodName380.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes380, parameterTypes)) {
 			return TicketCallServiceUtil.getOSGiServiceIdentifier();
+		}
+
+		if (_methodName385.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes385, parameterTypes)) {
+			return TicketCallServiceUtil.addTicketCall(((Long)arguments[0]).longValue(),
+				((Integer)arguments[1]).intValue(),
+				((Integer)arguments[2]).intValue(),
+				((Integer)arguments[3]).intValue(),
+				((Integer)arguments[4]).intValue(),
+				((Integer)arguments[5]).intValue(),
+				((Integer)arguments[6]).intValue(),
+				((Long)arguments[7]).longValue(),
+				(java.lang.String)arguments[8], (java.lang.String)arguments[9],
+				(java.lang.String)arguments[10], (java.lang.String)arguments[11]);
 		}
 
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName340;
-	private String[] _methodParameterTypes340;
+	private String _methodName380;
+	private String[] _methodParameterTypes380;
+	private String _methodName385;
+	private String[] _methodParameterTypes385;
 }

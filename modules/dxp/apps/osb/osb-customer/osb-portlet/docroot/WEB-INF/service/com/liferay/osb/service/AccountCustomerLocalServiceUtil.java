@@ -41,6 +41,10 @@ public class AccountCustomerLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.AccountCustomerLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static boolean hasAccountCustomer(long userId, long accountEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().hasAccountCustomer(userId, accountEntryId);
+	}
 
 	/**
 	* Adds the account customer to the database. Also notifies the appropriate model listeners.
@@ -88,9 +92,22 @@ public class AccountCustomerLocalServiceUtil {
 		return getService().deleteAccountCustomer(accountCustomerId);
 	}
 
+	public static com.liferay.osb.model.AccountCustomer deleteAccountCustomer(
+		long userId, com.liferay.osb.model.AccountCustomer accountCustomer)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().deleteAccountCustomer(userId, accountCustomer);
+	}
+
 	public static com.liferay.osb.model.AccountCustomer fetchAccountCustomer(
 		long accountCustomerId) {
 		return getService().fetchAccountCustomer(accountCustomerId);
+	}
+
+	public static com.liferay.osb.model.AccountCustomer fetchAccountCustomer(
+		long userId, long accountEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().fetchAccountCustomer(userId, accountEntryId);
 	}
 
 	/**
@@ -104,6 +121,13 @@ public class AccountCustomerLocalServiceUtil {
 		long accountCustomerId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getAccountCustomer(accountCustomerId);
+	}
+
+	public static com.liferay.osb.model.AccountCustomer getAccountCustomer(
+		long userId, long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().getAccountCustomer(userId, accountEntryId);
 	}
 
 	/**
@@ -234,6 +258,29 @@ public class AccountCustomerLocalServiceUtil {
 		return getService().getAccountCustomers(start, end);
 	}
 
+	public static java.util.List<com.liferay.osb.model.AccountCustomer> getAccountCustomers(
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getAccountCustomers(accountEntryId);
+	}
+
+	public static java.util.List<com.liferay.osb.model.AccountCustomer> getAccountCustomers(
+		long accountEntryId, int role)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getAccountCustomers(accountEntryId, role);
+	}
+
+	public static java.util.List<com.liferay.osb.model.AccountCustomer> getUserAccountCustomers(
+		long userId) throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getUserAccountCustomers(userId);
+	}
+
+	public static java.util.List<com.liferay.osb.model.AccountCustomer> getUserAccountCustomers(
+		long userId, int[] roles)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getUserAccountCustomers(userId, roles);
+	}
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -256,6 +303,40 @@ public class AccountCustomerLocalServiceUtil {
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
+	}
+
+	public static void addAccountCustomers(long userId, long[] userIds,
+		long accountEntryId, int[] roles, int[] notifications)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		getService()
+			.addAccountCustomers(userId, userIds, accountEntryId, roles,
+			notifications);
+	}
+
+	public static void deleteAccountCustomers(long userId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		getService().deleteAccountCustomers(userId);
+	}
+
+	public static void deleteAccountCustomers(long userId, long[] userIds,
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		getService().deleteAccountCustomers(userId, userIds, accountEntryId);
+	}
+
+	public static void deleteAccountEntryAccountCustomers(long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		getService().deleteAccountEntryAccountCustomers(accountEntryId);
+	}
+
+	public static void toggleNotifications(long accountCustomerId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		getService().toggleNotifications(accountCustomerId);
 	}
 
 	public static void clearService() {

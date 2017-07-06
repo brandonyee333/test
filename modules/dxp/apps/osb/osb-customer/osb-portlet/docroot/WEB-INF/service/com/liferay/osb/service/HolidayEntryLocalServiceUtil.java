@@ -53,6 +53,17 @@ public class HolidayEntryLocalServiceUtil {
 		return getService().addHolidayEntry(holidayEntry);
 	}
 
+	public static com.liferay.osb.model.HolidayEntry addHolidayEntry(
+		long holidayCalendarId, java.lang.String name,
+		java.lang.String description, java.util.Date startDate,
+		java.util.Date endDate, boolean repeatYearly)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .addHolidayEntry(holidayCalendarId, name, description,
+			startDate, endDate, repeatYearly);
+	}
+
 	/**
 	* Creates a new holiday entry with the primary key. Does not add the holiday entry to the database.
 	*
@@ -117,6 +128,17 @@ public class HolidayEntryLocalServiceUtil {
 		return getService().updateHolidayEntry(holidayEntry);
 	}
 
+	public static com.liferay.osb.model.HolidayEntry updateHolidayEntry(
+		long holidayEntryId, long holidayCalendarId, java.lang.String name,
+		java.lang.String description, java.util.Date startDate,
+		java.util.Date endDate, boolean repeatYearly)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .updateHolidayEntry(holidayEntryId, holidayCalendarId, name,
+			description, startDate, endDate, repeatYearly);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
 		return getService().getActionableDynamicQuery();
 	}
@@ -151,6 +173,11 @@ public class HolidayEntryLocalServiceUtil {
 	*/
 	public static int getHolidayEntriesCount() {
 		return getService().getHolidayEntriesCount();
+	}
+
+	public static int getHolidayEntriesCount(long userId, java.util.Date date)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getHolidayEntriesCount(userId, date);
 	}
 
 	public static java.lang.Object invokeMethod(java.lang.String name,
@@ -232,6 +259,21 @@ public class HolidayEntryLocalServiceUtil {
 	public static java.util.List<com.liferay.osb.model.HolidayEntry> getHolidayEntries(
 		int start, int end) {
 		return getService().getHolidayEntries(start, end);
+	}
+
+	public static java.util.List<com.liferay.osb.model.HolidayEntry> getHolidayEntries(
+		long holidayCalendarId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getHolidayEntries(holidayCalendarId);
+	}
+
+	public static java.util.List<com.liferay.osb.model.HolidayEntry> getHolidayEntriesBetween(
+		long userId, java.util.Date startDate, java.util.Date endDate,
+		java.util.TimeZone timeZone)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .getHolidayEntriesBetween(userId, startDate, endDate,
+			timeZone);
 	}
 
 	/**

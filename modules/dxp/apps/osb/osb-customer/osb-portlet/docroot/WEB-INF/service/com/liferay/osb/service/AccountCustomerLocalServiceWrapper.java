@@ -34,6 +34,13 @@ public class AccountCustomerLocalServiceWrapper
 		_accountCustomerLocalService = accountCustomerLocalService;
 	}
 
+	@Override
+	public boolean hasAccountCustomer(long userId, long accountEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountCustomerLocalService.hasAccountCustomer(userId,
+			accountEntryId);
+	}
+
 	/**
 	* Adds the account customer to the database. Also notifies the appropriate model listeners.
 	*
@@ -85,9 +92,26 @@ public class AccountCustomerLocalServiceWrapper
 	}
 
 	@Override
+	public com.liferay.osb.model.AccountCustomer deleteAccountCustomer(
+		long userId, com.liferay.osb.model.AccountCustomer accountCustomer)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountCustomerLocalService.deleteAccountCustomer(userId,
+			accountCustomer);
+	}
+
+	@Override
 	public com.liferay.osb.model.AccountCustomer fetchAccountCustomer(
 		long accountCustomerId) {
 		return _accountCustomerLocalService.fetchAccountCustomer(accountCustomerId);
+	}
+
+	@Override
+	public com.liferay.osb.model.AccountCustomer fetchAccountCustomer(
+		long userId, long accountEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountCustomerLocalService.fetchAccountCustomer(userId,
+			accountEntryId);
 	}
 
 	/**
@@ -102,6 +126,15 @@ public class AccountCustomerLocalServiceWrapper
 		long accountCustomerId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountCustomerLocalService.getAccountCustomer(accountCustomerId);
+	}
+
+	@Override
+	public com.liferay.osb.model.AccountCustomer getAccountCustomer(
+		long userId, long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _accountCustomerLocalService.getAccountCustomer(userId,
+			accountEntryId);
 	}
 
 	/**
@@ -247,6 +280,35 @@ public class AccountCustomerLocalServiceWrapper
 		return _accountCustomerLocalService.getAccountCustomers(start, end);
 	}
 
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountCustomer> getAccountCustomers(
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountCustomerLocalService.getAccountCustomers(accountEntryId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountCustomer> getAccountCustomers(
+		long accountEntryId, int role)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountCustomerLocalService.getAccountCustomers(accountEntryId,
+			role);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountCustomer> getUserAccountCustomers(
+		long userId) throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountCustomerLocalService.getUserAccountCustomers(userId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountCustomer> getUserAccountCustomers(
+		long userId, int[] roles)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _accountCustomerLocalService.getUserAccountCustomers(userId,
+			roles);
+	}
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -272,6 +334,45 @@ public class AccountCustomerLocalServiceWrapper
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return _accountCustomerLocalService.dynamicQueryCount(dynamicQuery,
 			projection);
+	}
+
+	@Override
+	public void addAccountCustomers(long userId, long[] userIds,
+		long accountEntryId, int[] roles, int[] notifications)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_accountCustomerLocalService.addAccountCustomers(userId, userIds,
+			accountEntryId, roles, notifications);
+	}
+
+	@Override
+	public void deleteAccountCustomers(long userId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_accountCustomerLocalService.deleteAccountCustomers(userId);
+	}
+
+	@Override
+	public void deleteAccountCustomers(long userId, long[] userIds,
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_accountCustomerLocalService.deleteAccountCustomers(userId, userIds,
+			accountEntryId);
+	}
+
+	@Override
+	public void deleteAccountEntryAccountCustomers(long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_accountCustomerLocalService.deleteAccountEntryAccountCustomers(accountEntryId);
+	}
+
+	@Override
+	public void toggleNotifications(long accountCustomerId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_accountCustomerLocalService.toggleNotifications(accountCustomerId);
 	}
 
 	@Override

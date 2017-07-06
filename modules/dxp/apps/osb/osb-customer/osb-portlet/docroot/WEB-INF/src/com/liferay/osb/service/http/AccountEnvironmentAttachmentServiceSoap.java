@@ -16,9 +16,16 @@ package com.liferay.osb.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.service.AccountEnvironmentAttachmentServiceUtil;
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import java.rmi.RemoteException;
+
 /**
  * Provides the SOAP utility for the
- * {@link com.liferay.osb.service.AccountEnvironmentAttachmentServiceUtil} service utility. The
+ * {@link AccountEnvironmentAttachmentServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it is difficult for SOAP to
  * support certain types.
@@ -53,9 +60,24 @@ import aQute.bnd.annotation.ProviderType;
  * @author Brian Wing Shun Chan
  * @see AccountEnvironmentAttachmentServiceHttp
  * @see com.liferay.osb.model.AccountEnvironmentAttachmentSoap
- * @see com.liferay.osb.service.AccountEnvironmentAttachmentServiceUtil
+ * @see AccountEnvironmentAttachmentServiceUtil
  * @generated
  */
 @ProviderType
 public class AccountEnvironmentAttachmentServiceSoap {
+	public static com.liferay.osb.model.AccountEnvironmentAttachmentSoap getAccountEnvironmentAttachment(
+		long accountEnvironmentAttachmentId) throws RemoteException {
+		try {
+			com.liferay.osb.model.AccountEnvironmentAttachment returnValue = AccountEnvironmentAttachmentServiceUtil.getAccountEnvironmentAttachment(accountEnvironmentAttachmentId);
+
+			return com.liferay.osb.model.AccountEnvironmentAttachmentSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	private static Log _log = LogFactoryUtil.getLog(AccountEnvironmentAttachmentServiceSoap.class);
 }
