@@ -14,7 +14,7 @@
 
 package com.liferay.osb.model.impl;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+// import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.model.AccountEntry;
@@ -49,7 +49,7 @@ public class OrderEntryImpl extends OrderEntryBaseImpl {
 			getAccountEntryId());
 	}
 
-	@JsonDeserialize(contentAs = OfferingEntryJSONModel.class)
+	// @JsonDeserialize(contentAs = OfferingEntryJSONModel.class)
 	public List<OfferingEntry> getOfferingEntries() throws SystemException {
 		if (_offeringEntries == null) {
 			_offeringEntries =
