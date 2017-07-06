@@ -4,6 +4,7 @@
 <service-builder package-path="com.liferay.osb">
 	<namespace>OSB</namespace>
 	<service-builder-import file="service-common.xml" />
+	<service-builder-import file="service-dummy-placeholder.xml" />
 	<service-builder-import file="service-lesa.xml" />
 	<service-builder-import file="service-license.xml" />
 </service-builder>
