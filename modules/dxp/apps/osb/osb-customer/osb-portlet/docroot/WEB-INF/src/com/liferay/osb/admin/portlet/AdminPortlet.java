@@ -61,21 +61,11 @@ import com.liferay.osb.exception.HolidayEntryDateException;
 import com.liferay.osb.exception.HolidayEntryStartDateLaterThanEndDateException;
 import com.liferay.osb.exception.LicenseEntryNameException;
 import com.liferay.osb.exception.LicenseEntryPortalVersionException;
-import com.liferay.osb.exception.MarketingEventEndDateException;
-import com.liferay.osb.exception.MarketingEventHostedByException;
-import com.liferay.osb.exception.MarketingEventHostedByURLException;
-import com.liferay.osb.exception.MarketingEventRegistrationURLException;
-import com.liferay.osb.exception.MarketingEventStartDateException;
-import com.liferay.osb.exception.MarketingEventTitleException;
-import com.liferay.osb.exception.MarketingEventTitleURLException;
-import com.liferay.osb.exception.MarketingEventVideoTitleException;
 import com.liferay.osb.exception.NoSuchAccountEntryException;
 import com.liferay.osb.exception.NoSuchCurrencyEntryException;
 import com.liferay.osb.exception.NoSuchOfferingDefinitionException;
 import com.liferay.osb.exception.NoSuchProductEntryException;
 import com.liferay.osb.exception.NoSuchSupportResponseException;
-import com.liferay.osb.exception.NoSuchTrainingCourseException;
-import com.liferay.osb.exception.NoSuchTrainingLocationException;
 import com.liferay.osb.exception.OfferingBundleNameException;
 import com.liferay.osb.exception.OrderEntryActualStartDateException;
 import com.liferay.osb.exception.PartnerEntryCodeException;
@@ -84,7 +74,6 @@ import com.liferay.osb.exception.PartnerTemplateException;
 import com.liferay.osb.exception.ProductEntryEnvironmentException;
 import com.liferay.osb.exception.ProductEntryNameException;
 import com.liferay.osb.exception.RequiredAccountEntryException;
-import com.liferay.osb.exception.RequiredDDLRecordSetDDLRecordException;
 import com.liferay.osb.exception.RequiredLicenseEntryException;
 import com.liferay.osb.exception.RequiredOfferingDefinitionException;
 import com.liferay.osb.exception.RequiredOfferingEntryException;
@@ -93,10 +82,6 @@ import com.liferay.osb.exception.RequiredProductEntryException;
 import com.liferay.osb.exception.RequiredSupportRegionException;
 import com.liferay.osb.exception.RequiredSupportResponseException;
 import com.liferay.osb.exception.RequiredSupportTeamException;
-import com.liferay.osb.exception.RequiredTrainingCertificateTemplateException;
-import com.liferay.osb.exception.RequiredTrainingCourseException;
-import com.liferay.osb.exception.RequiredTrainingEventException;
-import com.liferay.osb.exception.RequiredTrainingLocationException;
 import com.liferay.osb.exception.SupportLaborHourException;
 import com.liferay.osb.exception.SupportLaborNameException;
 import com.liferay.osb.exception.SupportRegionNameException;
@@ -109,15 +94,6 @@ import com.liferay.osb.exception.SupportTeamSupportLaborException;
 import com.liferay.osb.exception.SupportWorkerMaxWorkException;
 import com.liferay.osb.exception.TicketCannedResponseContentException;
 import com.liferay.osb.exception.TicketCannedResponseNameException;
-import com.liferay.osb.exception.TrainingCertificateTemplateNameException;
-import com.liferay.osb.exception.TrainingCourseNameException;
-import com.liferay.osb.exception.TrainingCustomerCertificateException;
-import com.liferay.osb.exception.TrainingCustomerStatusException;
-import com.liferay.osb.exception.TrainingLocationNameException;
-import com.liferay.osb.exception.UserProfileFirstNameException;
-import com.liferay.osb.exception.UserProfileHistoryFirstNameException;
-import com.liferay.osb.exception.UserProfileHistoryLastNameException;
-import com.liferay.osb.exception.UserProfileLastNameException;
 import com.liferay.osb.admin.util.AdminUtil;
 import com.liferay.osb.admin.util.KeyGenerator;
 import com.liferay.osb.model.AccountAttachment;
@@ -128,22 +104,12 @@ import com.liferay.osb.model.AccountEnvironmentAttachment;
 import com.liferay.osb.model.AccountEnvironmentAttachmentConstants;
 import com.liferay.osb.model.ContractEntryConstants;
 import com.liferay.osb.model.HolidayEntry;
-import com.liferay.osb.model.MarketingEvent;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.model.SupportWorkerConstants;
 import com.liferay.osb.model.TicketSolutionConstants;
-import com.liferay.osb.model.TrainingCertificate;
-import com.liferay.osb.model.TrainingCertificateTemplate;
-import com.liferay.osb.model.TrainingCustomer;
-import com.liferay.osb.model.TrainingCustomerConstants;
-import com.liferay.osb.model.TrainingEvent;
-import com.liferay.osb.model.TrainingExamResult;
-import com.liferay.osb.model.TrainingLocation;
-import com.liferay.osb.model.UserProfile;
-import com.liferay.osb.model.UserProfileHistory;
 import com.liferay.osb.model.impl.OfferingEntryImpl;
 import com.liferay.osb.rabbitmq.RabbitMQConsumerRouter;
 import com.liferay.osb.service.AccountAttachmentLocalServiceUtil;
@@ -160,7 +126,6 @@ import com.liferay.osb.service.HolidayCalendarRelLocalServiceUtil;
 import com.liferay.osb.service.HolidayEntryLocalServiceUtil;
 import com.liferay.osb.service.LCSSubscriptionEntryLocalServiceUtil;
 import com.liferay.osb.service.LicenseEntryLocalServiceUtil;
-import com.liferay.osb.service.MarketingEventLocalServiceUtil;
 import com.liferay.osb.service.OSBCountryServiceUtil;
 import com.liferay.osb.service.OSBRegionServiceUtil;
 import com.liferay.osb.service.OfferingBundleLocalServiceUtil;
@@ -181,23 +146,6 @@ import com.liferay.osb.service.SupportWorkerServiceUtil;
 import com.liferay.osb.service.SupportWorkerSeverityLocalServiceUtil;
 import com.liferay.osb.service.TicketAttachmentLocalServiceUtil;
 import com.liferay.osb.service.TicketCannedResponseLocalServiceUtil;
-import com.liferay.osb.service.TrainingCertificateLocalServiceUtil;
-import com.liferay.osb.service.TrainingCertificateTemplateLocalServiceUtil;
-import com.liferay.osb.service.TrainingCourseLocalServiceUtil;
-import com.liferay.osb.service.TrainingCustomerLocalServiceUtil;
-import com.liferay.osb.service.TrainingEventLocalServiceUtil;
-import com.liferay.osb.service.TrainingExamLocalServiceUtil;
-import com.liferay.osb.service.TrainingExamResultLocalServiceUtil;
-import com.liferay.osb.service.TrainingLinkedUserLocalServiceUtil;
-import com.liferay.osb.service.TrainingLocationLocalServiceUtil;
-import com.liferay.osb.service.TrainingWorkerLocalServiceUtil;
-import com.liferay.osb.service.UserProfileHistoryLocalServiceUtil;
-import com.liferay.osb.service.UserProfileLocalServiceUtil;
-import com.liferay.osb.training.exporter.TrainingSurveyResultsReportUtil;
-import com.liferay.osb.training.importer.KryterionTrainingExamResultsImporterImpl;
-import com.liferay.osb.training.importer.PrometricTrainingExamResultsImporterImpl;
-import com.liferay.osb.training.importer.TrainingExamResultsImporter;
-import com.liferay.osb.training.importer.TrainingExamResultsImporterFactoryUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
 import com.liferay.osb.util.OSBRequestUtil;
@@ -313,23 +261,6 @@ import javax.servlet.http.HttpServletRequest;
  * @author Haote Chou
  */
 public class AdminPortlet extends MVCPortlet {
-
-	public void addContractEntry(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		int type = ParamUtil.getInteger(actionRequest, "type");
-		Map<Locale, String> contentMap = LocalizationUtil.getLocalizationMap(
-			actionRequest, "content");
-
-		ServiceContext serviceContext = ServiceContextFactory.getInstance(
-			actionRequest);
-
-		ContractEntryServiceUtil.addContractEntry(
-			ContractEntryConstants.DEFAULT_CLASS_NAME_ID,
-			ContractEntryConstants.DEFAULT_CLASS_PK, type, contentMap,
-			serviceContext);
-	}
 
 	public void auditAccountEntry(
 			ActionRequest actionRequest, ActionResponse actionResponse)
@@ -480,16 +411,6 @@ public class AdminPortlet extends MVCPortlet {
 		OSBCountryServiceUtil.deleteCountry(countryId);
 	}
 
-	public void deleteCurrencyEntry(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long currencyEntryId = ParamUtil.getLong(
-			actionRequest, "currencyEntryId");
-
-		CurrencyEntryLocalServiceUtil.deleteCurrencyEntry(currencyEntryId);
-	}
-
 	public void deleteHolidayCalendar(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
@@ -509,16 +430,6 @@ public class AdminPortlet extends MVCPortlet {
 			actionRequest, "licenseEntryId");
 
 		LicenseEntryLocalServiceUtil.deleteLicenseEntry(licenseEntryId);
-	}
-
-	public void deleteMarketingEvent(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long marketingEventId = ParamUtil.getLong(
-			actionRequest, "marketingEventId");
-
-		MarketingEventLocalServiceUtil.deleteMarketingEvent(marketingEventId);
 	}
 
 	public void deleteOfferingBundle(
@@ -634,160 +545,6 @@ public class AdminPortlet extends MVCPortlet {
 			ticketCannedResponseId);
 	}
 
-	public void deleteTrainingCertificateTemplate(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long trainingCertificateTemplateId = ParamUtil.getLong(
-			actionRequest, "trainingCertificateTemplateId");
-
-		TrainingCertificateTemplateLocalServiceUtil.
-			deleteTrainingCertificateTemplate(trainingCertificateTemplateId);
-	}
-
-	public void deleteTrainingCourse(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long trainingCourseId = ParamUtil.getLong(
-			actionRequest, "trainingCourseId");
-
-		TrainingCourseLocalServiceUtil.deleteTrainingCourse(trainingCourseId);
-	}
-
-	public void deleteTrainingCustomer(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long trainingCustomerId = ParamUtil.getLong(
-			actionRequest, "trainingCustomerId");
-
-		TrainingCustomerLocalServiceUtil.deleteTrainingCustomer(
-			trainingCustomerId);
-	}
-
-	public void deleteTrainingCustomers(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long trainingUserId = ParamUtil.getLong(
-			actionRequest, "trainingUserId");
-
-		TrainingCustomerLocalServiceUtil.deleteTrainingCustomers(
-			trainingUserId);
-	}
-
-	public void deleteTrainingEvent(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long trainingEventId = ParamUtil.getLong(
-			actionRequest, "trainingEventId");
-
-		TrainingEventLocalServiceUtil.deleteTrainingEvent(trainingEventId);
-	}
-
-	public void deleteTrainingExamResult(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long trainingExamResultId = ParamUtil.getLong(
-			actionRequest, "trainingExamResultId");
-
-		TrainingExamResultLocalServiceUtil.deleteTrainingExamResult(
-			trainingExamResultId);
-	}
-
-	public void deleteTrainingLocation(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long trainingLocationId = ParamUtil.getLong(
-			actionRequest, "trainingLocationId");
-
-		TrainingLocationLocalServiceUtil.deleteTrainingLocation(
-			trainingLocationId);
-	}
-
-	public void deleteTrainingSurvey(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long ddlRecordSetId = ParamUtil.getLong(
-			actionRequest, "ddlRecordSetId");
-
-		DDLRecordSetLocalServiceUtil.deleteRecordSet(ddlRecordSetId);
-	}
-
-	public void importTrainingCustomers(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		UploadPortletRequest uploadPortletRequest =
-			PortalUtil.getUploadPortletRequest(actionRequest);
-
-		try {
-			File file = uploadPortletRequest.getFile("file");
-
-			if (file == null) {
-				return;
-			}
-
-			Document document = SAXReaderUtil.read(new FileReader(file));
-
-			Element rootElement = document.getRootElement();
-
-			for (Element trainingCustomerElement : rootElement.elements()) {
-				updateTrainingCustomer(
-					uploadPortletRequest, trainingCustomerElement);
-			}
-		}
-		finally {
-			uploadPortletRequest.cleanUp();
-		}
-	}
-
-	public void importTrainingSurveys(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		UploadPortletRequest uploadPortletRequest =
-			PortalUtil.getUploadPortletRequest(actionRequest);
-
-		try {
-			File file = uploadPortletRequest.getFile("file");
-
-			if (file == null) {
-				return;
-			}
-
-			String extension = FileUtil.getExtension(file.getName());
-
-			if (!extension.equals("xml")) {
-				throw new FileExtensionException();
-			}
-
-			Document document = SAXReaderUtil.read(new FileReader(file));
-
-			Element rootElement = document.getRootElement();
-
-			List<Element> invoiceRetElements = rootElement.elements(
-				"SurveyResult");
-
-			for (Element invoiceRetElement : invoiceRetElements) {
-				try {
-					updateTrainingSurvey(
-						uploadPortletRequest, invoiceRetElement);
-				}
-				catch (Exception e) {
-				}
-			}
-		}
-		finally {
-			uploadPortletRequest.cleanUp();
-		}
-	}
-
 	public void migrateTicketAttachments(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
@@ -882,92 +639,6 @@ public class AdminPortlet extends MVCPortlet {
 		syncToLCS(actionRequest, actionResponse, orderEntry);
 	}
 
-	public void sendTrainingCertificate(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long trainingCustomerId = ParamUtil.getLong(
-			actionRequest, "trainingCustomerId");
-
-		TrainingCustomer trainingCustomer =
-			TrainingCustomerLocalServiceUtil.getTrainingCustomer(
-				trainingCustomerId);
-
-		sendTrainingCertificate(trainingCustomer);
-	}
-
-	public void sendTrainingCertificates(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		List<TrainingCustomer> trainingCustomers =
-			new ArrayList<TrainingCustomer>();
-
-		long classPK = ParamUtil.getLong(actionRequest, "classPK");
-		long classNameId = ParamUtil.getLong(actionRequest, "classNameId");
-
-		if (classNameId == PortalUtil.getClassNameId(TrainingEvent.class)) {
-			TrainingEvent trainingEvent =
-				TrainingEventLocalServiceUtil.getTrainingEvent(classPK);
-
-			trainingCustomers.addAll(trainingEvent.getTrainingCustomers());
-		}
-		else if (classNameId ==
-					PortalUtil.getClassNameId(TrainingExamResult.class)) {
-
-			TrainingExamResult trainingExamResult =
-				TrainingExamResultLocalServiceUtil.getTrainingExamResult(
-					classPK);
-
-			trainingCustomers.add(trainingExamResult.getTrainingCustomer());
-		}
-
-		for (TrainingCustomer trainingCustomer : trainingCustomers) {
-			if (!TrainingCertificateLocalServiceUtil.
-					hasTrainingCertificateCertifiedDate(
-						trainingCustomer.getTrainingCustomerId())) {
-
-				continue;
-			}
-
-			sendTrainingCertificate(trainingCustomer);
-		}
-	}
-
-	public void sendTrainingSurvey(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long trainingCustomerId = ParamUtil.getLong(
-			actionRequest, "trainingCustomerId");
-
-		TrainingCustomer trainingCustomer =
-			TrainingCustomerLocalServiceUtil.getTrainingCustomer(
-				trainingCustomerId);
-
-		long trainingSurveyPlid = PortalUtil.getPlidFromPortletId(
-			OSBConstants.GROUP_GUEST_ID, OSBPortletKeys.OSB_TRAINING_SURVEY);
-
-		PortletURL portletURL = PortletURLFactoryUtil.create(
-			PortalUtil.getHttpServletRequest(actionRequest),
-			OSBPortletKeys.OSB_TRAINING_SURVEY, trainingSurveyPlid,
-			PortletRequest.RENDER_PHASE);
-
-		String className = trainingCustomer.getClassName();
-
-		if (className.equals(TrainingEvent.class.getName())) {
-			TrainingEvent trainingEvent =
-				TrainingEventLocalServiceUtil.getTrainingEvent(
-					trainingCustomer.getClassPK());
-
-			portletURL.setParameter(
-				"ddlRecordSetId",
-				String.valueOf(trainingEvent.getDDLRecordSetId()));
-		}
-
-		sendTrainingSurvey(trainingCustomer, portletURL.toString());
-	}
-
 	@Override
 	public void serveResource(
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
@@ -985,85 +656,6 @@ public class AdminPortlet extends MVCPortlet {
 			else if (resourceID.equals("accountEnvironmentAttachment")) {
 				serveAccountEnvironmentAttachment(
 					resourceRequest, resourceResponse);
-			}
-			else if (resourceID.equals("exportAllSurveyResults")) {
-				File file =
-					TrainingSurveyResultsReportUtil.getAllSurveyResultsXLS(
-						resourceRequest, resourceResponse);
-
-				String contentType = MimeTypesUtil.getContentType(
-					file.getName());
-
-				PortletResponseUtil.sendFile(
-					resourceRequest, resourceResponse, "all_survey_results.xls",
-						new FileInputStream(file), contentType);
-			}
-			else if (resourceID.equals("exportSurveyResults")) {
-				long ddlRecordSetId = ParamUtil.getLong(
-					resourceRequest, "ddlRecordSetId");
-
-				DDLRecordSet ddlRecordSet =
-					DDLRecordSetLocalServiceUtil.getDDLRecordSet(
-						ddlRecordSetId);
-
-				TrainingEvent trainingEvent =
-					TrainingEventLocalServiceUtil.
-						getTrainingEventByDDLRecordSetId(ddlRecordSetId);
-
-				Locale locale = LocaleUtil.fromLanguageId(
-					trainingEvent.getLanguageId(), false);
-
-				sendCsvFile(
-					resourceRequest, resourceResponse,
-					ddlRecordSet.getName(locale),
-					getSurveyResultsCSV(ddlRecordSetId));
-			}
-			else if (resourceID.equals("generateCertificate")) {
-				long trainingCustomerId = ParamUtil.getLong(
-					resourceRequest, "trainingCustomerId");
-
-				TrainingCertificateLocalServiceUtil.getTrainingCertificate(
-					resourceResponse, trainingCustomerId);
-			}
-			else if (resourceID.equals("generateCertificateTemplate")) {
-				long trainingCertificateTemplateId = ParamUtil.getLong(
-					resourceRequest, "trainingCertificateTemplateId");
-
-				if (trainingCertificateTemplateId > 0) {
-					serveTrainingCertificateTemplate(
-						resourceRequest, resourceResponse,
-						trainingCertificateTemplateId);
-				}
-			}
-			else if (resourceID.equals("getAddress")) {
-				long trainingLocationId = ParamUtil.getLong(
-					resourceRequest, "trainingLocationId");
-
-				TrainingLocation trainingLocation =
-					TrainingLocationLocalServiceUtil.getTrainingLocation(
-						trainingLocationId);
-
-				Address address = AddressLocalServiceUtil.getAddress(
-					trainingLocation.getAddressId());
-
-				JSONObject addressJSONObject = JSONFactoryUtil.createJSONObject(
-					JSONFactoryUtil.looseSerialize(address));
-
-				List<Region> regions = RegionServiceUtil.getRegions(
-					address.getCountryId());
-
-				addressJSONObject.put(
-					"regions", JSONFactoryUtil.looseSerialize(regions));
-
-				writeJSON(resourceRequest, resourceResponse, addressJSONObject);
-			}
-			else if (resourceID.equals("serveBadge")) {
-				long trainingCertificateTemplateId = ParamUtil.getLong(
-					resourceRequest, "trainingCertificateTemplateId");
-
-				OSBRequestUtil.serveTrainingCertificateTemplateBadge(
-					resourceRequest, resourceResponse,
-					trainingCertificateTemplateId);
 			}
 			else if (resourceID.equals("ticketEnvironment")) {
 				JSONObject jsonObject = OSBRequestUtil.getTicketEnvironment(
@@ -1347,33 +939,6 @@ public class AdminPortlet extends MVCPortlet {
 		}
 	}
 
-	public void updateCurrencyEntry(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long currencyEntryId = ParamUtil.getLong(
-			actionRequest, "currencyEntryId");
-
-		long countryId = ParamUtil.getLong(actionRequest, "countryId");
-		String currencyCode = ParamUtil.getString(
-			actionRequest, "currencyCode");
-		boolean marketplaceEnabled = ParamUtil.getBoolean(
-			actionRequest, "marketplaceEnabled");
-		double marketplaceMinPrice = ParamUtil.getDouble(
-			actionRequest, "marketplaceMinPrice");
-
-		if (currencyEntryId <= 0) {
-			CurrencyEntryLocalServiceUtil.addCurrencyEntry(
-				countryId, currencyCode, marketplaceEnabled,
-				marketplaceMinPrice);
-		}
-		else {
-			CurrencyEntryLocalServiceUtil.updateCurrencyEntry(
-				currencyEntryId, countryId, currencyCode, marketplaceEnabled,
-				marketplaceMinPrice);
-		}
-	}
-
 	public void updateHolidayCalendar(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
@@ -1516,111 +1081,6 @@ public class AdminPortlet extends MVCPortlet {
 			LicenseEntryLocalServiceUtil.updateLicenseEntry(
 				licenseEntryId, productEntryId, name, type, portalVersionMin,
 				portalVersionMax);
-		}
-	}
-
-	public void updateMarketingEvent(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		long marketingEventId = ParamUtil.getLong(
-			actionRequest, "marketingEventId");
-
-		int type = ParamUtil.getInteger(actionRequest, "type");
-		String defaultLanguageId = ParamUtil.getString(
-			actionRequest, "defaultLanguageId");
-		Map<Locale, String> titleMap =
-			AdminUtil.getMarketingEventLocalizationMap(actionRequest, "title");
-		String titleURL = ParamUtil.getString(actionRequest, "titleURL");
-		String hostedBy = ParamUtil.getString(actionRequest, "hostedBy");
-		String hostedByURL = ParamUtil.getString(actionRequest, "hostedByURL");
-		Map<Locale, String> summaryMap =
-			AdminUtil.getMarketingEventLocalizationMap(
-				actionRequest, "summary");
-		long imageFileEntryId = ParamUtil.getLong(
-			actionRequest, "imageFileEntryId");
-		long slidesFileEntryId = ParamUtil.getLong(
-			actionRequest, "slidesFileEntryId");
-		String videoTitle = ParamUtil.getString(actionRequest, "videoTitle");
-		String timeZoneId = ParamUtil.getString(actionRequest, "timeZoneId");
-		boolean dateTBA = ParamUtil.getBoolean(actionRequest, "dateTBA");
-		int globalRegion = ParamUtil.getInteger(actionRequest, "globalRegion");
-		boolean online = ParamUtil.getBoolean(actionRequest, "online");
-		int registrationType = ParamUtil.getInteger(
-			actionRequest, "registrationType");
-		String registrationURL = ParamUtil.getString(
-			actionRequest, "registrationURL");
-
-		int startDateMonth = ParamUtil.getInteger(
-			actionRequest, "startDateMonth");
-		int startDateDay = ParamUtil.getInteger(actionRequest, "startDateDay");
-		int startDateYear = ParamUtil.getInteger(
-			actionRequest, "startDateYear");
-		int startDateHour = ParamUtil.getInteger(
-			actionRequest, "startDateHour");
-		int startDateMinute = ParamUtil.getInteger(
-			actionRequest, "startDateMinute");
-		int startDateAmPm = ParamUtil.getInteger(
-			actionRequest, "startDateAmPm");
-
-		if (startDateAmPm == Calendar.PM) {
-			startDateHour += 12;
-		}
-
-		int endDateMonth = ParamUtil.getInteger(actionRequest, "endDateMonth");
-		int endDateDay = ParamUtil.getInteger(actionRequest, "endDateDay");
-		int endDateYear = ParamUtil.getInteger(actionRequest, "endDateYear");
-		int endDateHour = ParamUtil.getInteger(actionRequest, "endDateHour");
-		int endDateMinute = ParamUtil.getInteger(
-			actionRequest, "endDateMinute");
-		int endDateAmPm = ParamUtil.getInteger(actionRequest, "endDateAmPm");
-
-		if (endDateAmPm == Calendar.PM) {
-			endDateHour += 12;
-		}
-
-		String addressStreet1 = ParamUtil.getString(
-			actionRequest, "addressStreet1");
-		String addressStreet2 = ParamUtil.getString(
-			actionRequest, "addressStreet2");
-		String addressStreet3 = ParamUtil.getString(
-			actionRequest, "addressStreet3");
-		String addressCity = ParamUtil.getString(actionRequest, "addressCity");
-		String addressZip = ParamUtil.getString(actionRequest, "addressZip");
-		long addressRegionId = ParamUtil.getLong(
-			actionRequest, "addressRegionId");
-		long addressCountryId = ParamUtil.getLong(
-			actionRequest, "addressCountryId");
-
-		ServiceContext serviceContext = ServiceContextFactory.getInstance(
-			MarketingEvent.class.getName(), actionRequest);
-
-		if (marketingEventId <= 0) {
-			MarketingEventLocalServiceUtil.addMarketingEvent(
-				themeDisplay.getUserId(), type, defaultLanguageId, titleMap,
-				titleURL, hostedBy, hostedByURL, summaryMap, imageFileEntryId,
-				slidesFileEntryId, videoTitle, timeZoneId, startDateMonth,
-				startDateDay, startDateYear, startDateHour, startDateMinute,
-				endDateMonth, endDateDay, endDateYear, endDateHour,
-				endDateMinute, dateTBA, addressStreet1, addressStreet2,
-				addressStreet3, addressCity, addressZip, addressRegionId,
-				addressCountryId, globalRegion, online, registrationType,
-				registrationURL, serviceContext);
-		}
-		else {
-			MarketingEventLocalServiceUtil.updateMarketingEvent(
-				marketingEventId, type, defaultLanguageId, titleMap, titleURL,
-				hostedBy, hostedByURL, summaryMap, imageFileEntryId,
-				slidesFileEntryId, videoTitle, timeZoneId, startDateMonth,
-				startDateDay, startDateYear, startDateHour, startDateMinute,
-				endDateMonth, endDateDay, endDateYear, endDateHour,
-				endDateMinute, dateTBA, addressStreet1, addressStreet2,
-				addressStreet3, addressCity, addressZip, addressRegionId,
-				addressCountryId, globalRegion, online, registrationType,
-				registrationURL, serviceContext);
 		}
 	}
 
@@ -2204,577 +1664,6 @@ public class AdminPortlet extends MVCPortlet {
 		}
 	}
 
-	public void updateTrainingCertificate(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long trainingCustomerId = ParamUtil.getLong(
-			actionRequest, "trainingCustomerId");
-
-		TrainingCustomer trainingCustomer =
-			TrainingCustomerLocalServiceUtil.getTrainingCustomer(
-				trainingCustomerId);
-
-		String trainingCertificateKey =
-			trainingCustomer.getTrainingCertificateKey();
-
-		TrainingCertificate trainingCertificate =
-			TrainingCertificateLocalServiceUtil.getTrainingCertificate(
-				trainingCertificateKey);
-
-		String firstName = ParamUtil.getString(actionRequest, "firstName");
-		String lastName = ParamUtil.getString(actionRequest, "lastName");
-		String emailAddress = ParamUtil.getString(
-			actionRequest, "emailAddress");
-		String legalEntityName = ParamUtil.getString(
-			actionRequest, "legalEntityName");
-
-		TrainingCertificateLocalServiceUtil.updateUserProfileHistoryId(
-			trainingCertificate.getTrainingCertificateId(),
-			trainingCustomer.getUserId(), emailAddress, firstName, lastName,
-			legalEntityName);
-	}
-
-	public void updateTrainingCertificateTemplate(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		UploadPortletRequest uploadPortletRequest =
-			PortalUtil.getUploadPortletRequest(actionRequest);
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		long trainingCertificateTemplateId = ParamUtil.getLong(
-			uploadPortletRequest, "trainingCertificateTemplateId");
-
-		String name = ParamUtil.getString(uploadPortletRequest, "name");
-		String description = ParamUtil.getString(
-			uploadPortletRequest, "description");
-		int type = ParamUtil.getInteger(uploadPortletRequest, "type");
-		String badgeFileName = uploadPortletRequest.getFileName("badgeFile");
-		String templateFileName = uploadPortletRequest.getFileName(
-			"templateFile");
-
-		InputStream badgeInputStream = null;
-
-		InputStream templateInputStream = null;
-
-		try {
-			badgeInputStream = uploadPortletRequest.getFileAsStream(
-				"badgeFile");
-
-			templateInputStream = uploadPortletRequest.getFileAsStream(
-				"templateFile");
-
-			if (trainingCertificateTemplateId <= 0) {
-				TrainingCertificateTemplateLocalServiceUtil.
-					addTrainingCertificateTemplate(
-						themeDisplay.getUserId(), name, description, type,
-						templateFileName, templateInputStream, badgeFileName,
-						badgeInputStream);
-			}
-			else {
-				TrainingCertificateTemplateLocalServiceUtil.
-					updateTrainingCertificateTemplate(
-						themeDisplay.getCompanyId(),
-						trainingCertificateTemplateId, name, description, type,
-						templateFileName, templateInputStream, badgeFileName,
-						badgeInputStream);
-			}
-		}
-		finally {
-			StreamUtil.cleanUp(badgeInputStream);
-
-			StreamUtil.cleanUp(templateInputStream);
-
-			uploadPortletRequest.cleanUp();
-		}
-	}
-
-	public void updateTrainingCourse(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		long trainingCourseId = ParamUtil.getLong(
-			actionRequest, "trainingCourseId");
-
-		String name = ParamUtil.getString(actionRequest, "name");
-		String description = ParamUtil.getString(actionRequest, "description");
-		int creditAmount = ParamUtil.getInteger(actionRequest, "creditAmount");
-		String courseURL = ParamUtil.getString(actionRequest, "courseURL");
-		boolean archived = ParamUtil.getBoolean(actionRequest, "archived");
-
-		if (trainingCourseId <= 0) {
-			TrainingCourseLocalServiceUtil.addTrainingCourse(
-				themeDisplay.getUserId(), name, description, creditAmount,
-				courseURL, archived);
-		}
-		else {
-			TrainingCourseLocalServiceUtil.updateTrainingCourse(
-				trainingCourseId, name, description, creditAmount, courseURL,
-				archived);
-		}
-	}
-
-	public void updateTrainingCustomer(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		long trainingCustomerId = ParamUtil.getLong(
-			actionRequest, "trainingCustomerId");
-
-		long trainingEventId = ParamUtil.getLong(
-			actionRequest, "trainingEventId");
-		String firstName = ParamUtil.getString(actionRequest, "firstName");
-		String lastName = ParamUtil.getString(actionRequest, "lastName");
-		String emailAddress = ParamUtil.getString(
-			actionRequest, "emailAddress");
-
-		String legalEntityName = StringPool.BLANK;
-
-		TrainingCustomer trainingCustomer =
-			TrainingCustomerLocalServiceUtil.fetchTrainingCustomer(
-				trainingCustomerId);
-
-		if (trainingCustomer != null) {
-			User user = trainingCustomer.getUser();
-
-			ExpandoBridge expandoBridge = user.getExpandoBridge();
-
-			legalEntityName = (String)expandoBridge.getAttribute(
-				"osbCompany", false);
-		}
-
-		TrainingCustomerLocalServiceUtil.updateTrainingCustomer(
-			themeDisplay.getUserId(), trainingCustomerId,
-			PortalUtil.getClassNameId(TrainingEvent.class), trainingEventId,
-			emailAddress, firstName, lastName, legalEntityName);
-	}
-
-	public void updateTrainingCustomerAttendence(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long[] trainingCustomerIds = ParamUtil.getLongValues(
-			actionRequest, "trainingCustomerIds");
-
-		List<Long> trainingCustomerIdsList = ListUtil.toList(
-			trainingCustomerIds);
-
-		Iterator<Long> itr = trainingCustomerIdsList.iterator();
-
-		while (itr.hasNext()) {
-			Long trainingCustomerId = itr.next();
-
-			TrainingCustomer trainingCustomer =
-				TrainingCustomerLocalServiceUtil.getTrainingCustomer(
-					trainingCustomerId);
-
-			if (trainingCustomer.getStatus() !=
-					TrainingCustomerConstants.STATUS_REGISTERED) {
-
-				itr.remove();
-			}
-		}
-
-		trainingCustomerIds = ArrayUtil.toLongArray(trainingCustomerIdsList);
-
-		long trainingEventId = ParamUtil.getLong(
-			actionRequest, "trainingEventId");
-
-		List<TrainingCustomer> trainingCustomers =
-			TrainingCustomerLocalServiceUtil.updateStatuses(
-				trainingCustomerIds, trainingEventId,
-				TrainingCustomerConstants.
-					STATUS_PENDING_PARTICIPANT_FORM_COMPLETION);
-
-		long trainingSurveyPlid = PortalUtil.getPlidFromPortletId(
-			OSBConstants.GROUP_GUEST_ID, OSBPortletKeys.OSB_TRAINING_SURVEY);
-
-		PortletURL portletURL = PortletURLFactoryUtil.create(
-			PortalUtil.getHttpServletRequest(actionRequest),
-			OSBPortletKeys.OSB_TRAINING_SURVEY, trainingSurveyPlid,
-			PortletRequest.RENDER_PHASE);
-
-		TrainingEvent trainingEvent =
-			TrainingEventLocalServiceUtil.getTrainingEvent(trainingEventId);
-
-		portletURL.setParameter(
-			"ddlRecordSetId",
-			String.valueOf(trainingEvent.getDDLRecordSetId()));
-
-		for (TrainingCustomer trainingCustomer : trainingCustomers) {
-			sendTrainingSurvey(trainingCustomer, portletURL.toString());
-		}
-	}
-
-	public void updateTrainingCustomers(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long[] addUserIds = StringUtil.split(
-			ParamUtil.getString(actionRequest, "addUserIds"), 0L);
-		long[] removeUserIds = StringUtil.split(
-			ParamUtil.getString(actionRequest, "removeUserIds"), 0L);
-
-		long trainingEventId = ParamUtil.getLong(
-			actionRequest, "trainingEventId");
-
-		String userProfileIdsJSON = ParamUtil.getString(
-			actionRequest, "userProfileIdsJSON");
-
-		TrainingCustomerLocalServiceUtil.addTrainingCustomers(
-			addUserIds, PortalUtil.getClassNameId(TrainingEvent.class),
-			trainingEventId, getUserProfileIds(userProfileIdsJSON));
-		TrainingCustomerLocalServiceUtil.deleteTrainingCustomers(
-			removeUserIds, PortalUtil.getClassNameId(TrainingEvent.class),
-			trainingEventId);
-	}
-
-	public void updateTrainingEvent(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		long trainingEventId = ParamUtil.getLong(
-			actionRequest, "trainingEventId");
-
-		long ddlRecordSetId = ParamUtil.getLong(
-			actionRequest, "ddlRecordSetId");
-		long ddmStructureId = ParamUtil.getLong(
-			actionRequest, "ddmStructureId");
-		long partnerEntryId = ParamUtil.getLong(
-			actionRequest, "partnerEntryId");
-		long trainingCertificateTemplateId = ParamUtil.getLong(
-			actionRequest, "trainingCertificateTemplateId");
-		long trainingCourseId = ParamUtil.getLong(
-			actionRequest, "trainingCourseId");
-		long trainingLocationId = ParamUtil.getLong(
-			actionRequest, "eventTrainingLocationId");
-		String name = ParamUtil.getString(actionRequest, "name");
-		String emailAddress = ParamUtil.getString(
-			actionRequest, "emailAddress");
-		int portalMinorVersion = ParamUtil.getInteger(
-			actionRequest, "portalMinorVersion");
-		int type = ParamUtil.getInteger(actionRequest, "type");
-		String languageId = ParamUtil.getString(actionRequest, "languageId");
-		boolean localizedSlides = ParamUtil.getBoolean(
-			actionRequest, "localizedSlides");
-
-		if (ArrayUtil.contains(
-				PortletPropsValues.TRAINING_EVENT_LOCALIZED_SLIDES,
-				languageId)) {
-
-			localizedSlides = true;
-		}
-
-		String timeZoneId = ParamUtil.getString(actionRequest, "timeZoneId");
-
-		int startDateMonth = ParamUtil.getInteger(
-			actionRequest, "startDateMonth");
-		int startDateDay = ParamUtil.getInteger(actionRequest, "startDateDay");
-		int startDateYear = ParamUtil.getInteger(
-			actionRequest, "startDateYear");
-		int startDateHour = ParamUtil.getInteger(
-			actionRequest, "startDateHour");
-		int startDateMinute = ParamUtil.getInteger(
-			actionRequest, "startDateMinute");
-		int startDateAmPm = ParamUtil.getInteger(
-			actionRequest, "startDateAmPm");
-
-		if (startDateAmPm == Calendar.PM) {
-			startDateHour += 12;
-		}
-
-		int endDateMonth = ParamUtil.getInteger(actionRequest, "endDateMonth");
-		int endDateDay = ParamUtil.getInteger(actionRequest, "endDateDay");
-		int endDateYear = ParamUtil.getInteger(actionRequest, "endDateYear");
-		int endDateHour = ParamUtil.getInteger(actionRequest, "endDateHour");
-		int endDateMinute = ParamUtil.getInteger(
-			actionRequest, "endDateMinute");
-		int endDateAmPm = ParamUtil.getInteger(actionRequest, "endDateAmPm");
-
-		if (endDateAmPm == Calendar.PM) {
-			endDateHour += 12;
-		}
-
-		String addressStreet1 = ParamUtil.getString(
-			actionRequest, "addressStreet1");
-		String addressStreet2 = ParamUtil.getString(
-			actionRequest, "addressStreet2");
-		String addressStreet3 = ParamUtil.getString(
-			actionRequest, "addressStreet3");
-		String addressCity = ParamUtil.getString(actionRequest, "addressCity");
-		String addressZip = ParamUtil.getString(actionRequest, "addressZip");
-		long addressRegionId = ParamUtil.getLong(
-			actionRequest, "addressRegionId");
-		long addressCountryId = ParamUtil.getLong(
-			actionRequest, "addressCountryId");
-		int maxCustomers = ParamUtil.getInteger(actionRequest, "maxCustomers");
-		String enrollmentURL = ParamUtil.getString(
-			actionRequest, "enrollmentURL");
-
-		ServiceContext serviceContext = ServiceContextFactory.getInstance(
-			DDLRecordSet.class.getName(), actionRequest);
-
-		TrainingEvent trainingEvent = null;
-
-		if (trainingEventId <= 0) {
-			trainingEvent = TrainingEventLocalServiceUtil.addTrainingEvent(
-				themeDisplay.getUserId(), ddmStructureId, partnerEntryId,
-				trainingCertificateTemplateId, trainingCourseId,
-				trainingLocationId, name, emailAddress, portalMinorVersion,
-				type, languageId, localizedSlides, timeZoneId, startDateMonth,
-				startDateDay, startDateYear, startDateHour, startDateMinute,
-				endDateMonth, endDateDay, endDateYear, endDateHour,
-				endDateMinute, addressStreet1, addressStreet2, addressStreet3,
-				addressCity, addressZip, addressRegionId, addressCountryId,
-				maxCustomers, enrollmentURL, serviceContext);
-
-			actionRequest.setAttribute(
-				OSBWebKeys.OSB_TRAINING_EVENT_ID,
-				trainingEvent.getTrainingEventId());
-		}
-		else {
-			trainingEvent = TrainingEventLocalServiceUtil.updateTrainingEvent(
-				trainingEventId, ddmStructureId, ddlRecordSetId, partnerEntryId,
-				trainingCertificateTemplateId, trainingCourseId,
-				trainingLocationId, name, emailAddress, portalMinorVersion,
-				type, languageId, localizedSlides, timeZoneId, startDateMonth,
-				startDateDay, startDateYear, startDateHour, startDateMinute,
-				endDateMonth, endDateDay, endDateYear, endDateHour,
-				endDateMinute, addressStreet1, addressStreet2, addressStreet3,
-				addressCity, addressZip, addressRegionId, addressCountryId,
-				maxCustomers, enrollmentURL, serviceContext);
-		}
-	}
-
-	public void updateTrainingExam(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long trainingExamId = ParamUtil.getLong(
-			actionRequest, "trainingExamId");
-
-		long trainingCertificateTemplateId = ParamUtil.getLong(
-			actionRequest, "trainingCertificateTemplateId");
-
-		TrainingExamLocalServiceUtil.updateTrainingExam(
-			trainingExamId, trainingCertificateTemplateId);
-	}
-
-	public void updateTrainingExamResult(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long trainingExamResultId = ParamUtil.getLong(
-			actionRequest, "trainingExamResultId");
-
-		String firstName = ParamUtil.getString(actionRequest, "firstName");
-		String lastName = ParamUtil.getString(actionRequest, "lastName");
-		String emailAddress = ParamUtil.getString(
-			actionRequest, "emailAddress");
-		String legalEntityName = ParamUtil.getString(
-			actionRequest, "legalEntityName");
-
-		TrainingExamResult trainingExamResult =
-			TrainingExamResultLocalServiceUtil.getTrainingExamResult(
-				trainingExamResultId);
-
-		TrainingCustomer trainingCustomer =
-			trainingExamResult.getTrainingCustomer();
-
-		TrainingCertificate trainingCertificate =
-			TrainingCertificateLocalServiceUtil.
-				getTrainingCertificateByTrainingCustomerId(
-					trainingCustomer.getTrainingCustomerId());
-
-		TrainingCertificateLocalServiceUtil.updateUserProfileHistoryId(
-			trainingCertificate.getTrainingCertificateId(),
-			trainingCustomer.getUserId(), emailAddress, firstName, lastName,
-			legalEntityName);
-	}
-
-	public void updateTrainingExamResults(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		UploadPortletRequest uploadPortletRequest =
-			PortalUtil.getUploadPortletRequest(actionRequest);
-
-		ThemeDisplay themeDisplay =
-			(ThemeDisplay)uploadPortletRequest.getAttribute(
-				WebKeys.THEME_DISPLAY);
-
-		String trainingExamResultsImporterType = ParamUtil.getString(
-			uploadPortletRequest, "trainingExamResultsImporterType");
-
-		TrainingExamResultsImporter trainingExamResultsImporter =
-			TrainingExamResultsImporterFactoryUtil.
-				createTrainingExamResultsImporter(
-					trainingExamResultsImporterType);
-
-		if (trainingExamResultsImporter instanceof
-				PrometricTrainingExamResultsImporterImpl) {
-
-			InputStream inputStream = null;
-
-			try {
-				inputStream = uploadPortletRequest.getFileAsStream("file");
-
-				PrometricTrainingExamResultsImporterImpl
-					prometricTrainingExamResultsImporter =
-						(PrometricTrainingExamResultsImporterImpl)
-							trainingExamResultsImporter;
-
-				prometricTrainingExamResultsImporter.importTrainingExamResult(
-					inputStream);
-			}
-			finally {
-				StreamUtil.cleanUp(inputStream);
-
-				uploadPortletRequest.cleanUp();
-			}
-		}
-		else if (trainingExamResultsImporter instanceof
-					KryterionTrainingExamResultsImporterImpl) {
-
-			KryterionTrainingExamResultsImporterImpl
-				kryterionTrainingExamResultsImporterImpl =
-					(KryterionTrainingExamResultsImporterImpl)
-						trainingExamResultsImporter;
-
-			int startDateDay = ParamUtil.getInteger(
-				actionRequest, "startDateDay");
-			int startDateMonth = ParamUtil.getInteger(
-				actionRequest, "startDateMonth");
-			int startDateYear = ParamUtil.getInteger(
-				actionRequest, "startDateYear");
-
-			Date startDate = PortalUtil.getDate(
-				startDateMonth, startDateDay, startDateYear,
-				themeDisplay.getTimeZone(), PortalException.class);
-
-			int endDateDay = ParamUtil.getInteger(actionRequest, "endDateDay");
-			int endDateMonth = ParamUtil.getInteger(
-				actionRequest, "endDateMonth");
-			int endDateYear = ParamUtil.getInteger(
-				actionRequest, "endDateYear");
-
-			Date endDate = PortalUtil.getDate(
-				endDateMonth, endDateDay, endDateYear,
-				themeDisplay.getTimeZone(), PortalException.class);
-
-			kryterionTrainingExamResultsImporterImpl.importTrainingExamResults(
-				startDate, endDate);
-		}
-	}
-
-	public void updateTrainingLinkedUser(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		String cmd = ParamUtil.getString(actionRequest, Constants.CMD);
-
-		long primaryUserId = ParamUtil.getLong(actionRequest, "primaryUserId");
-		long oldPrimaryUserId = ParamUtil.getLong(
-			actionRequest, "oldPrimaryUserId", primaryUserId);
-		long[] addUserIds = StringUtil.split(
-			ParamUtil.getString(actionRequest, "addUserIds"), 0L);
-		long[] removeUserIds = StringUtil.split(
-			ParamUtil.getString(actionRequest, "removeUserIds"), 0L);
-
-		if (cmd.equals(Constants.UPDATE)) {
-			TrainingLinkedUserLocalServiceUtil.updateTrainingLinkedUsers(
-				primaryUserId, oldPrimaryUserId, addUserIds);
-		}
-		else {
-			TrainingLinkedUserLocalServiceUtil.addTrainingLinkedUsers(
-				primaryUserId, oldPrimaryUserId, addUserIds);
-			TrainingLinkedUserLocalServiceUtil.unsetTrainingLinkedUsers(
-				primaryUserId, removeUserIds);
-		}
-	}
-
-	public void updateTrainingLocation(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		long trainingLocationId = ParamUtil.getLong(
-			actionRequest, "trainingLocationId");
-
-		String name = ParamUtil.getString(actionRequest, "name");
-		String street1 = ParamUtil.getString(actionRequest, "street1");
-		String street2 = ParamUtil.getString(actionRequest, "street2");
-		String street3 = ParamUtil.getString(actionRequest, "street3");
-		String city = ParamUtil.getString(actionRequest, "city");
-		String zip = ParamUtil.getString(actionRequest, "zip");
-		long regionId = ParamUtil.getLong(actionRequest, "regionId");
-		long countryId = ParamUtil.getLong(actionRequest, "countryId");
-
-		if (trainingLocationId <= 0) {
-			TrainingLocationLocalServiceUtil.addTrainingLocation(
-				themeDisplay.getUserId(), name, street1, street2, street3, city,
-				zip, regionId, countryId);
-		}
-		else {
-			TrainingLocationLocalServiceUtil.updateTrainingLocation(
-				trainingLocationId, name, street1, street2, street3, city, zip,
-				regionId, countryId);
-		}
-	}
-
-	public void updateTrainingWorkers(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long[] addUserIds = StringUtil.split(
-			ParamUtil.getString(actionRequest, "addUserIds"), 0L);
-		long[] removeUserIds = StringUtil.split(
-			ParamUtil.getString(actionRequest, "removeUserIds"), 0L);
-
-		long trainingEventId = ParamUtil.getLong(
-			actionRequest, "trainingEventId");
-
-		String userProfileIdsJSON = ParamUtil.getString(
-			actionRequest, "userProfileIdsJSON");
-
-		TrainingWorkerLocalServiceUtil.addTrainingWorkers(
-			addUserIds, PortalUtil.getClassNameId(TrainingEvent.class),
-			trainingEventId, getUserProfileIds(userProfileIdsJSON));
-		TrainingWorkerLocalServiceUtil.deleteTrainingWorkers(
-			removeUserIds, PortalUtil.getClassNameId(TrainingEvent.class),
-			trainingEventId);
-	}
-
-	public void updateUserProfile(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long userId = ParamUtil.getLong(actionRequest, "userId");
-		String firstName = ParamUtil.getString(actionRequest, "firstName");
-		String lastName = ParamUtil.getString(actionRequest, "lastName");
-		String emailAddress = ParamUtil.getString(
-			actionRequest, "emailAddress");
-		String legalEntityName = ParamUtil.getString(
-			actionRequest, "legalEntityName");
-
-		UserProfileLocalServiceUtil.addUserProfile(
-			userId, emailAddress, firstName, lastName, legalEntityName);
-	}
-
 	protected Properties getLicenseProperties(
 			ObjectInputStream objectInputStream)
 		throws ClassNotFoundException, IOException {
@@ -2841,10 +1730,6 @@ public class AdminPortlet extends MVCPortlet {
 		String actionName = ParamUtil.getString(
 			actionRequest, ActionRequest.ACTION_NAME);
 
-		if (actionName.equals("updateTrainingEvent")) {
-			redirect = getTrainingEventRedirect(actionRequest);
-		}
-
 		if (Validator.isNull(redirect)) {
 			redirect = ParamUtil.getString(
 				actionRequest, "assignmentsRedirect");
@@ -2855,173 +1740,6 @@ public class AdminPortlet extends MVCPortlet {
 		}
 
 		return redirect;
-	}
-
-	protected String getSurveyResultsCSV(long ddlRecordSetId) throws Exception {
-		DDLRecordSet ddlRecordSet = DDLRecordSetLocalServiceUtil.getRecordSet(
-			ddlRecordSetId);
-
-		List<DDLRecord> ddlRecords = DDLRecordLocalServiceUtil.getRecords(
-			ddlRecordSet.getRecordSetId());
-
-		DDMStructure ddmStructure = ddlRecordSet.getDDMStructure(0);
-
-		TrainingEvent trainingEvent =
-			TrainingEventLocalServiceUtil.getTrainingEventByDDLRecordSetId(
-				ddlRecordSetId);
-
-		Map<String, Map<String, String>> fieldsMap = ddmStructure.getFieldsMap(
-			trainingEvent.getLanguageId());
-
-		StringBundler sb = new StringBundler(
-			(ddlRecords.size() * ((fieldsMap.size() * 2) + 6)) +
-				(fieldsMap.size() * 2) + 18);
-
-		sb.append(
-			"Type,Client Name,Course,Location,Partner,Start Date,Trainer\n");
-
-		sb.append(
-			CSVUtil.encode(
-				StringUtil.upperCaseFirstLetter(trainingEvent.getTypeLabel())));
-		sb.append(StringPool.COMMA);
-		sb.append(CSVUtil.encode(trainingEvent.getName()));
-		sb.append(StringPool.COMMA);
-		sb.append(CSVUtil.encode(trainingEvent.getTrainingCourse().getName()));
-		sb.append(StringPool.COMMA);
-		sb.append(CSVUtil.encode(trainingEvent.getAddressDisplayHTML()));
-		sb.append(StringPool.COMMA);
-
-		PartnerEntry partnerEntry = trainingEvent.getPartnerEntry();
-
-		if (partnerEntry != null) {
-			sb.append(CSVUtil.encode(partnerEntry.getCode()));
-		}
-		else {
-			sb.append(StringPool.BLANK);
-		}
-
-		sb.append(StringPool.COMMA);
-
-		Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
-			"MMMMM d, yyyy");
-
-		sb.append(
-			CSVUtil.encode(dateFormat.format(trainingEvent.getStartDate())));
-
-		sb.append(StringPool.COMMA);
-
-		sb.append(
-			CSVUtil.encode(trainingEvent.getTrainingWorkersDisplayHTML()));
-		sb.append(StringPool.NEW_LINE);
-		sb.append(StringPool.NEW_LINE);
-		sb.append("First Name,Last Name,Email Address,");
-
-		for (Map<String, String> fields : fieldsMap.values()) {
-			String label = fields.get(FieldConstants.LABEL);
-
-			sb.append(CSVUtil.encode(label));
-			sb.append(StringPool.COMMA);
-		}
-
-		sb.setIndex(sb.index() - 1);
-		sb.append(StringPool.NEW_LINE);
-
-		for (DDLRecord ddlRecord : ddlRecords) {
-			TrainingCustomer trainingCustomer =
-				TrainingCustomerLocalServiceUtil.getTrainingCustomer(
-					ddlRecord.getUserId(),
-					PortalUtil.getClassNameId(TrainingEvent.class),
-					trainingEvent.getTrainingEventId());
-
-			UserProfileHistory userProfileHistory =
-				UserProfileHistoryLocalServiceUtil.getUserProfileHistory(
-					trainingCustomer.getUserProfileHistoryId());
-
-			sb.append(CSVUtil.encode(userProfileHistory.getFirstName()));
-			sb.append(StringPool.COMMA);
-			sb.append(CSVUtil.encode(userProfileHistory.getLastName()));
-			sb.append(StringPool.COMMA);
-			sb.append(CSVUtil.encode(userProfileHistory.getEmailAddress()));
-			sb.append(StringPool.COMMA);
-
-			DDLRecordVersion recordVersion = ddlRecord.getRecordVersion();
-
-			Fields fields = StorageEngineUtil.getFields(
-				recordVersion.getDDMStorageId());
-
-			for (Map<String, String> fieldMap : fieldsMap.values()) {
-				String name = fieldMap.get(FieldConstants.NAME);
-				String value = StringPool.BLANK;
-
-				if (fields.contains(name)) {
-					Field field = fields.get(name);
-
-					value = field.getRenderedValue(
-						LocaleUtil.fromLanguageId(
-							trainingEvent.getLanguageId(), false));
-				}
-
-				sb.append(CSVUtil.encode(value));
-				sb.append(StringPool.COMMA);
-			}
-
-			sb.setIndex(sb.index() - 1);
-			sb.append(StringPool.NEW_LINE);
-		}
-
-		return sb.toString();
-	}
-
-	protected String getTrainingEventRedirect(ActionRequest actionRequest) {
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		HttpServletRequest request = PortalUtil.getHttpServletRequest(
-			actionRequest);
-
-		PortletURL portletURL = PortletURLFactoryUtil.create(
-			request, OSBPortletKeys.OSB_ADMIN, themeDisplay.getPlid(),
-			PortletRequest.RENDER_PHASE);
-
-		portletURL.setParameter("mvcPath", "/admin/edit_training_event.jsp");
-		portletURL.setParameter(
-			"backURL", ParamUtil.getString(actionRequest, "backURL"));
-
-		Long trainingEventId = (Long)actionRequest.getAttribute(
-			OSBWebKeys.OSB_TRAINING_EVENT_ID);
-
-		if (trainingEventId == null) {
-			return null;
-		}
-
-		portletURL.setParameter(
-			"trainingEventId", String.valueOf(trainingEventId));
-
-		return portletURL.toString();
-	}
-
-	protected Map<Long, Long> getUserProfileIds(String userProfileIdsJSON)
-		throws Exception {
-
-		Map<Long, Long> userProfileIdsMap = new HashMap<Long, Long>();
-
-		if (Validator.isNotNull(userProfileIdsJSON)) {
-			JSONObject userProfileIdsJSONObject =
-				JSONFactoryUtil.createJSONObject(userProfileIdsJSON);
-
-			Iterator<String> iterator = userProfileIdsJSONObject.keys();
-
-			while (iterator.hasNext()) {
-				String key = iterator.next();
-
-				String value = userProfileIdsJSONObject.getString(key);
-
-				userProfileIdsMap.put(
-					GetterUtil.getLong(key), GetterUtil.getLong(value));
-			}
-		}
-
-		return userProfileIdsMap;
 	}
 
 	@Override
@@ -3047,28 +1765,7 @@ public class AdminPortlet extends MVCPortlet {
 
 			if (RoleLocalServiceUtil.hasUserRole(
 					themeDisplay.getUserId(),
-					OSBConstants.ROLE_OSB_MARKETING_ADMIN_ID)) {
-
-				return true;
-			}
-
-			if (RoleLocalServiceUtil.hasUserRole(
-					themeDisplay.getUserId(),
 					OSBConstants.ROLE_OSB_SUPPORT_ADMIN_ID)) {
-
-				return true;
-			}
-
-			if (RoleLocalServiceUtil.hasUserRole(
-					themeDisplay.getUserId(),
-					OSBConstants.ROLE_OSB_TRAINING_ADMIN_ID)) {
-
-				return true;
-			}
-
-			if (RoleLocalServiceUtil.hasUserRole(
-					themeDisplay.getUserId(),
-					OSBConstants.ROLE_OSB_TRAINING_TRAINER_ID)) {
 
 				return true;
 			}
@@ -3106,11 +1803,8 @@ public class AdminPortlet extends MVCPortlet {
 			cause instanceof CountryIddException ||
 			cause instanceof CountryNameException ||
 			cause instanceof CountryNumberException ||
-			cause instanceof CurrencyEntryCodeException ||
-			cause instanceof CurrencyEntryCountryException ||
 			cause instanceof DuplicateAccountEntryException ||
 			cause instanceof DuplicateAccountEnvironmentException ||
-			cause instanceof DuplicateCurrencyEntryException ||
 			cause instanceof DuplicateHolidayEntryException ||
 			cause instanceof DuplicateOfferingBundleException ||
 			cause instanceof DuplicateOfferingDefinitionException ||
@@ -3131,22 +1825,11 @@ public class AdminPortlet extends MVCPortlet {
 			cause instanceof HolidayEntryStartDateLaterThanEndDateException ||
 			cause instanceof LicenseEntryNameException ||
 			cause instanceof LicenseEntryPortalVersionException ||
-			cause instanceof MarketingEventEndDateException ||
-			cause instanceof MarketingEventHostedByException ||
-			cause instanceof MarketingEventHostedByURLException ||
-			cause instanceof MarketingEventRegistrationURLException ||
-			cause instanceof MarketingEventStartDateException ||
-			cause instanceof MarketingEventTitleException ||
-			cause instanceof MarketingEventTitleURLException ||
-			cause instanceof MarketingEventVideoTitleException ||
 			cause instanceof NoSuchAccountEntryException ||
-			cause instanceof NoSuchCurrencyEntryException ||
 			cause instanceof NoSuchListTypeException ||
 			cause instanceof NoSuchOfferingDefinitionException ||
 			cause instanceof NoSuchProductEntryException ||
 			cause instanceof NoSuchSupportResponseException ||
-			cause instanceof NoSuchTrainingCourseException ||
-			cause instanceof NoSuchTrainingLocationException ||
 			cause instanceof OfferingBundleNameException ||
 			cause instanceof OrderEntryActualStartDateException ||
 			cause instanceof PrincipalException ||
@@ -3158,7 +1841,6 @@ public class AdminPortlet extends MVCPortlet {
 			cause instanceof RegionCodeException ||
 			cause instanceof RegionNameException ||
 			cause instanceof RequiredAccountEntryException ||
-			cause instanceof RequiredDDLRecordSetDDLRecordException ||
 			cause instanceof RequiredLicenseEntryException ||
 			cause instanceof RequiredOfferingDefinitionException ||
 			cause instanceof RequiredOfferingEntryException ||
@@ -3167,10 +1849,6 @@ public class AdminPortlet extends MVCPortlet {
 			cause instanceof RequiredSupportRegionException ||
 			cause instanceof RequiredSupportResponseException ||
 			cause instanceof RequiredSupportTeamException ||
-			cause instanceof RequiredTrainingCertificateTemplateException ||
-			cause instanceof RequiredTrainingCourseException ||
-			cause instanceof RequiredTrainingLocationException ||
-			cause instanceof RequiredTrainingEventException ||
 			cause instanceof ReservedUserEmailAddressException ||
 			cause instanceof SupportLaborHourException ||
 			cause instanceof SupportLaborNameException ||
@@ -3184,67 +1862,13 @@ public class AdminPortlet extends MVCPortlet {
 			cause instanceof SupportWorkerMaxWorkException ||
 			cause instanceof TicketCannedResponseContentException ||
 			cause instanceof TicketCannedResponseNameException ||
-			cause instanceof TrainingCertificateTemplateNameException ||
-			cause instanceof TrainingCourseNameException ||
-			cause instanceof TrainingCustomerCertificateException ||
-			cause instanceof TrainingCustomerStatusException ||
-			cause instanceof TrainingLocationNameException ||
-			cause instanceof UserEmailAddressException ||
-			cause instanceof UserProfileFirstNameException ||
-			cause instanceof UserProfileHistoryFirstNameException ||
-			cause instanceof UserProfileHistoryLastNameException ||
-			cause instanceof UserProfileLastNameException) {
+			cause instanceof UserEmailAddressException) {
 
 			return true;
 		}
 		else {
 			return false;
 		}
-	}
-
-	protected void sendCsvFile(
-			ResourceRequest resourceRequest, ResourceResponse resourceResponse,
-			String title, String content)
-		throws Exception {
-
-		try {
-			PortletResponseUtil.sendFile(
-				resourceRequest, resourceResponse, title + ".csv",
-				content.getBytes(), ContentTypes.TEXT_CSV_UTF8);
-		}
-		catch (Exception e) {
-		}
-	}
-
-	protected void sendTrainingCertificate(TrainingCustomer trainingCustomer)
-		throws Exception {
-
-		Message message = new Message();
-
-		Map<String, Object> values = new HashMap<String, Object>();
-
-		values.put(
-			"trainingCustomerId", trainingCustomer.getTrainingCustomerId());
-
-		message.setValues(values);
-
-		MessageBusUtil.sendMessage("liferay/osb_training_certificate", message);
-	}
-
-	protected void sendTrainingSurvey(
-		TrainingCustomer trainingCustomer, String trainingSurveyURL) {
-
-		Message message = new Message();
-
-		Map<String, Object> values = new HashMap<String, Object>();
-
-		values.put(
-			"trainingCustomerId", trainingCustomer.getTrainingCustomerId());
-		values.put("trainingSurveyURL", trainingSurveyURL);
-
-		message.setValues(values);
-
-		MessageBusUtil.sendMessage("liferay/osb_training_survey", message);
 	}
 
 	protected void serveAccountAttachment(
@@ -3316,28 +1940,6 @@ public class AdminPortlet extends MVCPortlet {
 			HttpHeaders.CONTENT_DISPOSITION_ATTACHMENT);
 	}
 
-	protected void serveTrainingCertificateTemplate(
-			ResourceRequest resourceRequest, ResourceResponse resourceResponse,
-			long trainingCertificateTemplateId)
-		throws Exception {
-
-		TrainingCertificateTemplate trainingCertificateTemplate =
-			TrainingCertificateTemplateLocalServiceUtil.
-				getTrainingCertificateTemplate(trainingCertificateTemplateId);
-
-		String[] fileNames = DLStoreUtil.getFileNames(
-			CompanyConstants.SYSTEM, CompanyConstants.SYSTEM,
-				trainingCertificateTemplate.getTemplatesDir());
-
-		InputStream inputStream = DLStoreUtil.getFileAsStream(
-			CompanyConstants.SYSTEM, CompanyConstants.SYSTEM, fileNames[0]);
-
-		PortletResponseUtil.sendFile(
-			resourceRequest, resourceResponse, fileNames[0], inputStream, 0,
-			ContentTypes.APPLICATION_PDF,
-			HttpHeaders.CONTENT_DISPOSITION_ATTACHMENT);
-	}
-
 	protected void syncToLCS(
 			ActionRequest actionRequest, ActionResponse actionResponse,
 			OrderEntry orderEntry)
@@ -3406,167 +2008,6 @@ public class AdminPortlet extends MVCPortlet {
 		finally {
 			uploadPortletRequest.cleanUp();
 		}
-	}
-
-	protected void updateTrainingCustomer(
-			UploadPortletRequest uploadPortletRequest,
-			Element trainingCustomerElement)
-		throws Exception {
-
-		long trainingEventId = GetterUtil.getLong(
-			trainingCustomerElement.elementText("trainingEventId"));
-
-		try {
-			TrainingEventLocalServiceUtil.getTrainingEvent(trainingEventId);
-		}
-		catch (Exception e) {
-			throw new RequiredTrainingEventException();
-		}
-
-		User user = null;
-
-		String emailAddress = trainingCustomerElement.elementText("email");
-
-		if (Validator.isNotNull(emailAddress)) {
-			emailAddress = emailAddress.trim().toLowerCase();
-
-			user = UserLocalServiceUtil.fetchUserByEmailAddress(
-				OSBConstants.COMPANY_ID, emailAddress);
-		}
-
-		TrainingCustomer trainingCustomer = null;
-
-		String firstName = trainingCustomerElement.elementText("firstName");
-		String lastName = trainingCustomerElement.elementText("lastName");
-		String legalEntityName = trainingCustomerElement.elementText("company");
-
-		long userProfileId = 0;
-
-		if (user != null) {
-			trainingCustomer =
-				TrainingCustomerLocalServiceUtil.fetchTrainingCustomer(
-					user.getUserId(),
-					PortalUtil.getClassNameId(TrainingEvent.class),
-					trainingEventId);
-
-			if (trainingCustomer != null) {
-				throw new RequiredTrainingEventException();
-			}
-
-			UserProfile userProfile =
-				UserProfileLocalServiceUtil.addUserProfile(
-					user.getUserId(), emailAddress, firstName, lastName,
-					legalEntityName);
-
-			userProfileId = userProfile.getUserProfileId();
-
-			trainingCustomer =
-				TrainingCustomerLocalServiceUtil.addTrainingCustomer(
-					user.getUserId(),
-					PortalUtil.getClassNameId(TrainingEvent.class),
-					trainingEventId, userProfile.getUserProfileId());
-		}
-		else {
-			trainingCustomer =
-				TrainingCustomerLocalServiceUtil.updateTrainingCustomer(
-					OSBConstants.USER_DEFAULT_USER_ID, 0,
-					PortalUtil.getClassNameId(TrainingEvent.class),
-					trainingEventId, emailAddress, firstName, lastName,
-					legalEntityName);
-		}
-
-		String key = trainingCustomerElement.elementText(
-			"previousCertificateKey");
-
-		if (Validator.isNull(key)) {
-			key = trainingCustomerElement.elementText("certificateKey");
-		}
-
-		key = key.replaceAll(StringPool.SPACE, StringPool.BLANK);
-
-		try {
-			TrainingCertificateLocalServiceUtil.getTrainingCertificate(key);
-
-			return;
-		}
-		catch (Exception e) {
-		}
-
-		TrainingCertificateLocalServiceUtil.addTrainingCertificate(
-			OSBConstants.USER_DEFAULT_USER_ID,
-			trainingCustomer.getTrainingCustomerId(), key, 0, userProfileId);
-	}
-
-	protected void updateTrainingSurvey(
-			UploadPortletRequest uploadPortletRequest,
-			Element trainingSurveyElement)
-		throws Exception {
-
-		long userId = GetterUtil.getLong(
-			trainingSurveyElement.elementText("UserId"));
-
-		long trainingEventId = GetterUtil.getLong(
-			trainingSurveyElement.elementText("TrainingEventId"));
-
-		TrainingCustomer trainingCustomer =
-			TrainingCustomerLocalServiceUtil.fetchTrainingCustomer(
-				userId, PortalUtil.getClassNameId(TrainingEvent.class),
-				trainingEventId);
-
-		if (trainingCustomer == null) {
-			return;
-		}
-		else if (!TrainingCertificateLocalServiceUtil.hasTrainingCertificate(
-					trainingCustomer.getTrainingCustomerId())) {
-
-			TrainingCertificateLocalServiceUtil.addTrainingCertificate(
-				OSBConstants.USER_DEFAULT_USER_ID,
-				trainingCustomer.getTrainingCustomerId(), null, 0, 0);
-		}
-
-		ServiceContext serviceContext = ServiceContextFactory.getInstance(
-			DDLRecord.class.getName(), uploadPortletRequest);
-
-		serviceContext.setUserId(userId);
-
-		TrainingEvent trainingEvent =
-			TrainingEventLocalServiceUtil.getTrainingEvent(trainingEventId);
-
-		DDLRecordSet ddlRecordSet =
-			DDLRecordSetLocalServiceUtil.getDDLRecordSet(
-				trainingEvent.getDDLRecordSetId());
-
-		DDMStructure ddmStructure = ddlRecordSet.getDDMStructure();
-
-		Element customerResponseElement = trainingSurveyElement.element(
-			"CustomerResponse");
-
-		List<Element> elements = customerResponseElement.elements();
-
-		for (Element element : elements) {
-			String key = element.attributeValue("key");
-
-			if (!ddmStructure.hasField(key)) {
-				continue;
-			}
-
-			serviceContext.setAttribute(key, element.getStringValue());
-		}
-
-		long ddlRecordId = 0;
-
-		List<DDLRecord> ddlRecords = DDLRecordLocalServiceUtil.getRecords(
-			trainingEvent.getDDLRecordSetId(), userId);
-
-		if (!ddlRecords.isEmpty()) {
-			DDLRecord ddlRecord = ddlRecords.get(0);
-
-			ddlRecordId = ddlRecord.getRecordId();
-		}
-
-		DDLUtil.updateRecord(
-			ddlRecordId, trainingEvent.getDDLRecordSetId(), true, false,
-			serviceContext);
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(AdminPortlet.class);
