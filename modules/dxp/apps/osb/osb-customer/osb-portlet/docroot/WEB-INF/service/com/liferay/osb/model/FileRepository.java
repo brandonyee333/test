@@ -66,7 +66,7 @@ public class FileRepository {
 	}
 
 	public String getStatusLabel() {
-		return WorkflowConstants.toLabel(_status);
+		return WorkflowConstants.getStatusLabel(_status);
 	}
 
 	public long[] getSupportRegionIds() {

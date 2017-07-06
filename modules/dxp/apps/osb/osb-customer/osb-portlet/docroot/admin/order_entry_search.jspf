@@ -84,7 +84,7 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 					for (int status : OrderEntryConstants.STATUSES) {
 					%>
 
-						<option <%= ArrayUtil.contains(displayTerms.getStatuses(), status) ? "selected" : "" %> value="<%= status %>"><%= LanguageUtil.get(pageContext, WorkflowConstants.toLabel(status)) %></option>
+						<option <%= ArrayUtil.contains(displayTerms.getStatuses(), status) ? "selected" : "" %> value="<%= status %>"><%= LanguageUtil.get(pageContext, WorkflowConstants.getStatusLabel(status)) %></option>
 
 					<%
 					}

@@ -179,7 +179,7 @@ public class AccountEntryImpl extends AccountEntryBaseImpl {
 	}
 
 	public String getStatusLabel() {
-		return WorkflowConstants.toLabel(getStatus());
+		return WorkflowConstants.getStatusLabel(getStatus());
 	}
 
 	public long[] getSupportRegionIds() throws SystemException {

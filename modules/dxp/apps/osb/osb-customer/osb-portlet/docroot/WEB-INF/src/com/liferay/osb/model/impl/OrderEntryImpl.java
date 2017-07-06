@@ -80,7 +80,7 @@ public class OrderEntryImpl extends OrderEntryBaseImpl {
 	}
 
 	public String getStatusLabel() {
-		return WorkflowConstants.toLabel(getStatus());
+		return WorkflowConstants.getStatusLabel(getStatus());
 	}
 
 	public void setOfferingEntries(List<OfferingEntry> offeringEntries) {

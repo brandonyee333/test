@@ -65,7 +65,7 @@ public class PartnerEntryImpl extends PartnerEntryBaseImpl {
 	}
 
 	public String getStatusLabel() {
-		return WorkflowConstants.toLabel(getStatus());
+		return WorkflowConstants.getStatusLabel(getStatus());
 	}
 
 	public SupportRegion getSupportRegion() throws SystemException {

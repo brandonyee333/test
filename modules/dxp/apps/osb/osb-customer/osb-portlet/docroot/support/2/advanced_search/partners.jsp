@@ -59,7 +59,7 @@ PartnerEntryDisplayTerms displayTerms = new PartnerEntryDisplayTerms(renderReque
 		<div class="search-param-dropdown status" id="<portlet:namespace />status">
 
 			<%
-			String[] statusLabels = new String[] {WorkflowConstants.toLabel(WorkflowConstants.STATUS_APPROVED), WorkflowConstants.toLabel(WorkflowConstants.STATUS_INACTIVE)};
+			String[] statusLabels = new String[] {WorkflowConstants.getStatusLabel(WorkflowConstants.STATUS_APPROVED), WorkflowConstants.getStatusLabel(WorkflowConstants.STATUS_INACTIVE)};
 			int[] statusValues = new int[] {WorkflowConstants.STATUS_APPROVED, WorkflowConstants.STATUS_INACTIVE};
 			%>
 

@@ -92,7 +92,7 @@ public class WorkflowConstants
 
 	public static final int STATUS_REJECTED = 500;
 
-	public static String toLabel(int status) {
+	public static String getStatusLabel(int status) {
 		if (status == STATUS_CLOSED) {
 			return LABEL_CLOSED;
 		}
@@ -112,12 +112,12 @@ public class WorkflowConstants
 			return LABEL_REJECTED;
 		}
 		else {
-			return com.liferay.portal.kernel.workflow.WorkflowConstants.toLabel(
-				status);
+			return com.liferay.portal.kernel.workflow.WorkflowConstants.
+				getStatusLabel(status);
 		}
 	}
 
-	public static int toStatus(String label) {
+	public static int getLabelStatus(String label) {
 		if (label.equals(LABEL_INCOMPLETE_TRAINING_REGISTRATION)) {
 			return STATUS_INCOMPLETE_TRAINING_REGISTRATION;
 		}
@@ -129,8 +129,8 @@ public class WorkflowConstants
 		}
 		else {
 			return
-				com.liferay.portal.kernel.workflow.WorkflowConstants.toStatus(
-					label);
+				com.liferay.portal.kernel.workflow.WorkflowConstants.
+					getLabelStatus(label);
 		}
 	}
 

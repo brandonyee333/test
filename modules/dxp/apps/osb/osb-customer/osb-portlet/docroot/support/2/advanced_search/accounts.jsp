@@ -84,7 +84,7 @@ AccountEntryDisplayTerms displayTerms = new AccountEntryDisplayTerms(renderReque
 			String[] statusLabels = new String[statusValues.length];
 
 			for (int i = 0; i < statusValues.length; i++) {
-				statusLabels[i] = WorkflowConstants.toLabel(statusValues[i]);
+				statusLabels[i] = WorkflowConstants.getStatusLabel(statusValues[i]);
 			}
 			%>
 

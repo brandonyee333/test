@@ -1435,7 +1435,7 @@ public class AccountEntryLocalServiceImpl
 				classNameId, accountEntryId, 0, classNameId, accountEntryId,
 				AuditEntryConstants.ACTION_UPDATE,
 				AuditEntryConstants.FIELD_STATUS, VisibilityConstants.ADMIN,
-				WorkflowConstants.toLabel(oldStatus), String.valueOf(oldStatus),
+				WorkflowConstants.getStatusLabel(oldStatus), String.valueOf(oldStatus),
 				accountEntry.getStatusLabel(),
 				String.valueOf(accountEntry.getStatus()));
 		}
