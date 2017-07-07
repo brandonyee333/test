@@ -27,63 +27,63 @@ import java.util.Arrays;
 @ProviderType
 public class LicenseKeySetServiceClpInvoker {
 	public LicenseKeySetServiceClpInvoker() {
-		_methodName386 = "getOSGiServiceIdentifier";
+		_methodName380 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes386 = new String[] {  };
+		_methodParameterTypes380 = new String[] {  };
 
-		_methodName391 = "addLicenseKeySet";
+		_methodName385 = "addLicenseKeySet";
 
-		_methodParameterTypes391 = new String[] {
+		_methodParameterTypes385 = new String[] {
 				"long", "long", "java.lang.String"
 			};
 
-		_methodName392 = "deleteLicenseKeySet";
+		_methodName386 = "deleteLicenseKeySet";
 
-		_methodParameterTypes392 = new String[] { "long" };
+		_methodParameterTypes386 = new String[] { "long" };
 
-		_methodName393 = "exportToXML";
+		_methodName387 = "exportToXML";
 
-		_methodParameterTypes393 = new String[] { "long" };
+		_methodParameterTypes387 = new String[] { "long" };
 
-		_methodName394 = "getLicenseKeySet";
+		_methodName388 = "getLicenseKeySet";
 
-		_methodParameterTypes394 = new String[] { "long" };
+		_methodParameterTypes388 = new String[] { "long" };
 
-		_methodName395 = "updateLicenseKeySet";
+		_methodName389 = "updateLicenseKeySet";
 
-		_methodParameterTypes395 = new String[] { "long", "java.lang.String" };
+		_methodParameterTypes389 = new String[] { "long", "java.lang.String" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName386.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes386, parameterTypes)) {
+		if (_methodName380.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes380, parameterTypes)) {
 			return LicenseKeySetServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName391.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes391, parameterTypes)) {
+		if (_methodName385.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes385, parameterTypes)) {
 			return LicenseKeySetServiceUtil.addLicenseKeySet(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(), (java.lang.String)arguments[2]);
 		}
 
-		if (_methodName392.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes392, parameterTypes)) {
+		if (_methodName386.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes386, parameterTypes)) {
 			return LicenseKeySetServiceUtil.deleteLicenseKeySet(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName393.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes393, parameterTypes)) {
+		if (_methodName387.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes387, parameterTypes)) {
 			return LicenseKeySetServiceUtil.exportToXML(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName394.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes394, parameterTypes)) {
+		if (_methodName388.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes388, parameterTypes)) {
 			return LicenseKeySetServiceUtil.getLicenseKeySet(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName395.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes395, parameterTypes)) {
+		if (_methodName389.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes389, parameterTypes)) {
 			return LicenseKeySetServiceUtil.updateLicenseKeySet(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1]);
 		}
@@ -91,16 +91,16 @@ public class LicenseKeySetServiceClpInvoker {
 		throw new UnsupportedOperationException();
 	}
 
+	private String _methodName380;
+	private String[] _methodParameterTypes380;
+	private String _methodName385;
+	private String[] _methodParameterTypes385;
 	private String _methodName386;
 	private String[] _methodParameterTypes386;
-	private String _methodName391;
-	private String[] _methodParameterTypes391;
-	private String _methodName392;
-	private String[] _methodParameterTypes392;
-	private String _methodName393;
-	private String[] _methodParameterTypes393;
-	private String _methodName394;
-	private String[] _methodParameterTypes394;
-	private String _methodName395;
-	private String[] _methodParameterTypes395;
+	private String _methodName387;
+	private String[] _methodParameterTypes387;
+	private String _methodName388;
+	private String[] _methodParameterTypes388;
+	private String _methodName389;
+	private String[] _methodParameterTypes389;
 }

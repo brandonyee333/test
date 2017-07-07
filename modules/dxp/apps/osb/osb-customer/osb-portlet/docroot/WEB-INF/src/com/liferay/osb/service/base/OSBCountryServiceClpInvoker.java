@@ -27,24 +27,24 @@ import java.util.Arrays;
 @ProviderType
 public class OSBCountryServiceClpInvoker {
 	public OSBCountryServiceClpInvoker() {
-		_methodName384 = "getOSGiServiceIdentifier";
+		_methodName378 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes384 = new String[] {  };
+		_methodParameterTypes378 = new String[] {  };
 
-		_methodName387 = "addCountry";
+		_methodName381 = "addCountry";
 
-		_methodParameterTypes387 = new String[] {
+		_methodParameterTypes381 = new String[] {
 				"java.lang.String", "java.lang.String", "java.lang.String",
 				"java.lang.String", "java.lang.String", "boolean"
 			};
 
-		_methodName388 = "deleteCountry";
+		_methodName382 = "deleteCountry";
 
-		_methodParameterTypes388 = new String[] { "long" };
+		_methodParameterTypes382 = new String[] { "long" };
 
-		_methodName389 = "updateCountry";
+		_methodName383 = "updateCountry";
 
-		_methodParameterTypes389 = new String[] {
+		_methodParameterTypes383 = new String[] {
 				"long", "java.lang.String", "java.lang.String",
 				"java.lang.String", "java.lang.String", "java.lang.String",
 				"boolean"
@@ -53,26 +53,26 @@ public class OSBCountryServiceClpInvoker {
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName384.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes384, parameterTypes)) {
+		if (_methodName378.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes378, parameterTypes)) {
 			return OSBCountryServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName387.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes387, parameterTypes)) {
+		if (_methodName381.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes381, parameterTypes)) {
 			return OSBCountryServiceUtil.addCountry((java.lang.String)arguments[0],
 				(java.lang.String)arguments[1], (java.lang.String)arguments[2],
 				(java.lang.String)arguments[3], (java.lang.String)arguments[4],
 				((Boolean)arguments[5]).booleanValue());
 		}
 
-		if (_methodName388.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes388, parameterTypes)) {
+		if (_methodName382.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes382, parameterTypes)) {
 			return OSBCountryServiceUtil.deleteCountry(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName389.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes389, parameterTypes)) {
+		if (_methodName383.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes383, parameterTypes)) {
 			return OSBCountryServiceUtil.updateCountry(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1], (java.lang.String)arguments[2],
 				(java.lang.String)arguments[3], (java.lang.String)arguments[4],
@@ -83,12 +83,12 @@ public class OSBCountryServiceClpInvoker {
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName384;
-	private String[] _methodParameterTypes384;
-	private String _methodName387;
-	private String[] _methodParameterTypes387;
-	private String _methodName388;
-	private String[] _methodParameterTypes388;
-	private String _methodName389;
-	private String[] _methodParameterTypes389;
+	private String _methodName378;
+	private String[] _methodParameterTypes378;
+	private String _methodName381;
+	private String[] _methodParameterTypes381;
+	private String _methodName382;
+	private String[] _methodParameterTypes382;
+	private String _methodName383;
+	private String[] _methodParameterTypes383;
 }

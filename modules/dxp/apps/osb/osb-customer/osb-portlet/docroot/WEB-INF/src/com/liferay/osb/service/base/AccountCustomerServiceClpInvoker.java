@@ -27,38 +27,38 @@ import java.util.Arrays;
 @ProviderType
 public class AccountCustomerServiceClpInvoker {
 	public AccountCustomerServiceClpInvoker() {
-		_methodName386 = "getOSGiServiceIdentifier";
+		_methodName380 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes386 = new String[] {  };
+		_methodParameterTypes380 = new String[] {  };
 
-		_methodName391 = "addAccountCustomers";
+		_methodName385 = "addAccountCustomers";
 
-		_methodParameterTypes391 = new String[] {
+		_methodParameterTypes385 = new String[] {
 				"long[][]", "long", "int[][]", "int[][]"
 			};
 
-		_methodName392 = "deleteAccountCustomers";
+		_methodName386 = "deleteAccountCustomers";
 
-		_methodParameterTypes392 = new String[] { "long[][]", "long" };
+		_methodParameterTypes386 = new String[] { "long[][]", "long" };
 
-		_methodName393 = "getCorpProjectAccountCustomerUUIDs";
+		_methodName387 = "getCorpProjectAccountCustomerUUIDs";
 
-		_methodParameterTypes393 = new String[] { "long" };
+		_methodParameterTypes387 = new String[] { "long" };
 
-		_methodName394 = "toggleNotifications";
+		_methodName388 = "toggleNotifications";
 
-		_methodParameterTypes394 = new String[] { "long" };
+		_methodParameterTypes388 = new String[] { "long" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName386.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes386, parameterTypes)) {
+		if (_methodName380.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes380, parameterTypes)) {
 			return AccountCustomerServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName391.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes391, parameterTypes)) {
+		if (_methodName385.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes385, parameterTypes)) {
 			AccountCustomerServiceUtil.addAccountCustomers((long[])arguments[0],
 				((Long)arguments[1]).longValue(), (int[])arguments[2],
 				(int[])arguments[3]);
@@ -66,21 +66,21 @@ public class AccountCustomerServiceClpInvoker {
 			return null;
 		}
 
-		if (_methodName392.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes392, parameterTypes)) {
+		if (_methodName386.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes386, parameterTypes)) {
 			AccountCustomerServiceUtil.deleteAccountCustomers((long[])arguments[0],
 				((Long)arguments[1]).longValue());
 
 			return null;
 		}
 
-		if (_methodName393.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes393, parameterTypes)) {
+		if (_methodName387.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes387, parameterTypes)) {
 			return AccountCustomerServiceUtil.getCorpProjectAccountCustomerUUIDs(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName394.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes394, parameterTypes)) {
+		if (_methodName388.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes388, parameterTypes)) {
 			AccountCustomerServiceUtil.toggleNotifications(((Long)arguments[0]).longValue());
 
 			return null;
@@ -89,14 +89,14 @@ public class AccountCustomerServiceClpInvoker {
 		throw new UnsupportedOperationException();
 	}
 
+	private String _methodName380;
+	private String[] _methodParameterTypes380;
+	private String _methodName385;
+	private String[] _methodParameterTypes385;
 	private String _methodName386;
 	private String[] _methodParameterTypes386;
-	private String _methodName391;
-	private String[] _methodParameterTypes391;
-	private String _methodName392;
-	private String[] _methodParameterTypes392;
-	private String _methodName393;
-	private String[] _methodParameterTypes393;
-	private String _methodName394;
-	private String[] _methodParameterTypes394;
+	private String _methodName387;
+	private String[] _methodParameterTypes387;
+	private String _methodName388;
+	private String[] _methodParameterTypes388;
 }

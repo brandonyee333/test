@@ -34,11 +34,9 @@ import com.liferay.osb.service.persistence.AssetLicensePersistence;
 import com.liferay.osb.service.persistence.AssetReceiptLicensePersistence;
 import com.liferay.osb.service.persistence.AuditActionPersistence;
 import com.liferay.osb.service.persistence.AuditEntryPersistence;
-import com.liferay.osb.service.persistence.ContractAuditPersistence;
-import com.liferay.osb.service.persistence.ContractEntryPersistence;
 import com.liferay.osb.service.persistence.CorpProjectPersistence;
-import com.liferay.osb.service.persistence.CurrencyEntryPersistence;
 import com.liferay.osb.service.persistence.ExternalIdMapperPersistence;
+import com.liferay.osb.service.persistence.FeedbackEntryPersistence;
 import com.liferay.osb.service.persistence.HolidayCalendarPersistence;
 import com.liferay.osb.service.persistence.HolidayCalendarRelPersistence;
 import com.liferay.osb.service.persistence.HolidayEntryFinder;
@@ -60,6 +58,7 @@ import com.liferay.osb.service.persistence.PartnerWorkerPersistence;
 import com.liferay.osb.service.persistence.ProductEntryFinder;
 import com.liferay.osb.service.persistence.ProductEntryPersistence;
 import com.liferay.osb.service.persistence.SearchFilterPersistence;
+import com.liferay.osb.service.persistence.SecurityPatchPersistence;
 import com.liferay.osb.service.persistence.SupportLaborPersistence;
 import com.liferay.osb.service.persistence.SupportRegionPersistence;
 import com.liferay.osb.service.persistence.SupportResponseFinder;
@@ -973,82 +972,6 @@ public abstract class TicketInformationLocalServiceBaseImpl
 	}
 
 	/**
-	 * Returns the contract audit local service.
-	 *
-	 * @return the contract audit local service
-	 */
-	public com.liferay.osb.service.ContractAuditLocalService getContractAuditLocalService() {
-		return contractAuditLocalService;
-	}
-
-	/**
-	 * Sets the contract audit local service.
-	 *
-	 * @param contractAuditLocalService the contract audit local service
-	 */
-	public void setContractAuditLocalService(
-		com.liferay.osb.service.ContractAuditLocalService contractAuditLocalService) {
-		this.contractAuditLocalService = contractAuditLocalService;
-	}
-
-	/**
-	 * Returns the contract audit persistence.
-	 *
-	 * @return the contract audit persistence
-	 */
-	public ContractAuditPersistence getContractAuditPersistence() {
-		return contractAuditPersistence;
-	}
-
-	/**
-	 * Sets the contract audit persistence.
-	 *
-	 * @param contractAuditPersistence the contract audit persistence
-	 */
-	public void setContractAuditPersistence(
-		ContractAuditPersistence contractAuditPersistence) {
-		this.contractAuditPersistence = contractAuditPersistence;
-	}
-
-	/**
-	 * Returns the contract entry local service.
-	 *
-	 * @return the contract entry local service
-	 */
-	public com.liferay.osb.service.ContractEntryLocalService getContractEntryLocalService() {
-		return contractEntryLocalService;
-	}
-
-	/**
-	 * Sets the contract entry local service.
-	 *
-	 * @param contractEntryLocalService the contract entry local service
-	 */
-	public void setContractEntryLocalService(
-		com.liferay.osb.service.ContractEntryLocalService contractEntryLocalService) {
-		this.contractEntryLocalService = contractEntryLocalService;
-	}
-
-	/**
-	 * Returns the contract entry persistence.
-	 *
-	 * @return the contract entry persistence
-	 */
-	public ContractEntryPersistence getContractEntryPersistence() {
-		return contractEntryPersistence;
-	}
-
-	/**
-	 * Sets the contract entry persistence.
-	 *
-	 * @param contractEntryPersistence the contract entry persistence
-	 */
-	public void setContractEntryPersistence(
-		ContractEntryPersistence contractEntryPersistence) {
-		this.contractEntryPersistence = contractEntryPersistence;
-	}
-
-	/**
 	 * Returns the corp project local service.
 	 *
 	 * @return the corp project local service
@@ -1087,44 +1010,6 @@ public abstract class TicketInformationLocalServiceBaseImpl
 	}
 
 	/**
-	 * Returns the currency entry local service.
-	 *
-	 * @return the currency entry local service
-	 */
-	public com.liferay.osb.service.CurrencyEntryLocalService getCurrencyEntryLocalService() {
-		return currencyEntryLocalService;
-	}
-
-	/**
-	 * Sets the currency entry local service.
-	 *
-	 * @param currencyEntryLocalService the currency entry local service
-	 */
-	public void setCurrencyEntryLocalService(
-		com.liferay.osb.service.CurrencyEntryLocalService currencyEntryLocalService) {
-		this.currencyEntryLocalService = currencyEntryLocalService;
-	}
-
-	/**
-	 * Returns the currency entry persistence.
-	 *
-	 * @return the currency entry persistence
-	 */
-	public CurrencyEntryPersistence getCurrencyEntryPersistence() {
-		return currencyEntryPersistence;
-	}
-
-	/**
-	 * Sets the currency entry persistence.
-	 *
-	 * @param currencyEntryPersistence the currency entry persistence
-	 */
-	public void setCurrencyEntryPersistence(
-		CurrencyEntryPersistence currencyEntryPersistence) {
-		this.currencyEntryPersistence = currencyEntryPersistence;
-	}
-
-	/**
 	 * Returns the external ID mapper local service.
 	 *
 	 * @return the external ID mapper local service
@@ -1160,6 +1045,44 @@ public abstract class TicketInformationLocalServiceBaseImpl
 	public void setExternalIdMapperPersistence(
 		ExternalIdMapperPersistence externalIdMapperPersistence) {
 		this.externalIdMapperPersistence = externalIdMapperPersistence;
+	}
+
+	/**
+	 * Returns the feedback entry local service.
+	 *
+	 * @return the feedback entry local service
+	 */
+	public com.liferay.osb.service.FeedbackEntryLocalService getFeedbackEntryLocalService() {
+		return feedbackEntryLocalService;
+	}
+
+	/**
+	 * Sets the feedback entry local service.
+	 *
+	 * @param feedbackEntryLocalService the feedback entry local service
+	 */
+	public void setFeedbackEntryLocalService(
+		com.liferay.osb.service.FeedbackEntryLocalService feedbackEntryLocalService) {
+		this.feedbackEntryLocalService = feedbackEntryLocalService;
+	}
+
+	/**
+	 * Returns the feedback entry persistence.
+	 *
+	 * @return the feedback entry persistence
+	 */
+	public FeedbackEntryPersistence getFeedbackEntryPersistence() {
+		return feedbackEntryPersistence;
+	}
+
+	/**
+	 * Sets the feedback entry persistence.
+	 *
+	 * @param feedbackEntryPersistence the feedback entry persistence
+	 */
+	public void setFeedbackEntryPersistence(
+		FeedbackEntryPersistence feedbackEntryPersistence) {
+		this.feedbackEntryPersistence = feedbackEntryPersistence;
 	}
 
 	/**
@@ -1876,6 +1799,44 @@ public abstract class TicketInformationLocalServiceBaseImpl
 	public void setSearchFilterPersistence(
 		SearchFilterPersistence searchFilterPersistence) {
 		this.searchFilterPersistence = searchFilterPersistence;
+	}
+
+	/**
+	 * Returns the security patch local service.
+	 *
+	 * @return the security patch local service
+	 */
+	public com.liferay.osb.service.SecurityPatchLocalService getSecurityPatchLocalService() {
+		return securityPatchLocalService;
+	}
+
+	/**
+	 * Sets the security patch local service.
+	 *
+	 * @param securityPatchLocalService the security patch local service
+	 */
+	public void setSecurityPatchLocalService(
+		com.liferay.osb.service.SecurityPatchLocalService securityPatchLocalService) {
+		this.securityPatchLocalService = securityPatchLocalService;
+	}
+
+	/**
+	 * Returns the security patch persistence.
+	 *
+	 * @return the security patch persistence
+	 */
+	public SecurityPatchPersistence getSecurityPatchPersistence() {
+		return securityPatchPersistence;
+	}
+
+	/**
+	 * Sets the security patch persistence.
+	 *
+	 * @param securityPatchPersistence the security patch persistence
+	 */
+	public void setSecurityPatchPersistence(
+		SecurityPatchPersistence securityPatchPersistence) {
+		this.securityPatchPersistence = securityPatchPersistence;
 	}
 
 	/**
@@ -3019,26 +2980,18 @@ public abstract class TicketInformationLocalServiceBaseImpl
 	protected com.liferay.osb.service.AuditEntryLocalService auditEntryLocalService;
 	@BeanReference(type = AuditEntryPersistence.class)
 	protected AuditEntryPersistence auditEntryPersistence;
-	@BeanReference(type = com.liferay.osb.service.ContractAuditLocalService.class)
-	protected com.liferay.osb.service.ContractAuditLocalService contractAuditLocalService;
-	@BeanReference(type = ContractAuditPersistence.class)
-	protected ContractAuditPersistence contractAuditPersistence;
-	@BeanReference(type = com.liferay.osb.service.ContractEntryLocalService.class)
-	protected com.liferay.osb.service.ContractEntryLocalService contractEntryLocalService;
-	@BeanReference(type = ContractEntryPersistence.class)
-	protected ContractEntryPersistence contractEntryPersistence;
 	@BeanReference(type = com.liferay.osb.service.CorpProjectLocalService.class)
 	protected com.liferay.osb.service.CorpProjectLocalService corpProjectLocalService;
 	@BeanReference(type = CorpProjectPersistence.class)
 	protected CorpProjectPersistence corpProjectPersistence;
-	@BeanReference(type = com.liferay.osb.service.CurrencyEntryLocalService.class)
-	protected com.liferay.osb.service.CurrencyEntryLocalService currencyEntryLocalService;
-	@BeanReference(type = CurrencyEntryPersistence.class)
-	protected CurrencyEntryPersistence currencyEntryPersistence;
 	@BeanReference(type = com.liferay.osb.service.ExternalIdMapperLocalService.class)
 	protected com.liferay.osb.service.ExternalIdMapperLocalService externalIdMapperLocalService;
 	@BeanReference(type = ExternalIdMapperPersistence.class)
 	protected ExternalIdMapperPersistence externalIdMapperPersistence;
+	@BeanReference(type = com.liferay.osb.service.FeedbackEntryLocalService.class)
+	protected com.liferay.osb.service.FeedbackEntryLocalService feedbackEntryLocalService;
+	@BeanReference(type = FeedbackEntryPersistence.class)
+	protected FeedbackEntryPersistence feedbackEntryPersistence;
 	@BeanReference(type = com.liferay.osb.service.HolidayCalendarLocalService.class)
 	protected com.liferay.osb.service.HolidayCalendarLocalService holidayCalendarLocalService;
 	@BeanReference(type = HolidayCalendarPersistence.class)
@@ -3115,6 +3068,10 @@ public abstract class TicketInformationLocalServiceBaseImpl
 	protected com.liferay.osb.service.SearchFilterLocalService searchFilterLocalService;
 	@BeanReference(type = SearchFilterPersistence.class)
 	protected SearchFilterPersistence searchFilterPersistence;
+	@BeanReference(type = com.liferay.osb.service.SecurityPatchLocalService.class)
+	protected com.liferay.osb.service.SecurityPatchLocalService securityPatchLocalService;
+	@BeanReference(type = SecurityPatchPersistence.class)
+	protected SecurityPatchPersistence securityPatchPersistence;
 	@BeanReference(type = com.liferay.osb.service.SupportLaborLocalService.class)
 	protected com.liferay.osb.service.SupportLaborLocalService supportLaborLocalService;
 	@BeanReference(type = SupportLaborPersistence.class)

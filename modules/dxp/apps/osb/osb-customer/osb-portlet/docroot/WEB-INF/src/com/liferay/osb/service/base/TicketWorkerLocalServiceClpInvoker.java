@@ -123,62 +123,62 @@ public class TicketWorkerLocalServiceClpInvoker {
 				"com.liferay.osb.model.TicketWorker"
 			};
 
-		_methodName286 = "getOSGiServiceIdentifier";
+		_methodName282 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes286 = new String[] {  };
+		_methodParameterTypes282 = new String[] {  };
 
-		_methodName291 = "addTicketWorkers";
+		_methodName287 = "addTicketWorkers";
 
-		_methodParameterTypes291 = new String[] {
+		_methodParameterTypes287 = new String[] {
 				"long", "long[][]", "long", "long[][]", "long[][]", "int[][]",
 				"long"
 			};
 
-		_methodName292 = "deleteTicketWorkers";
+		_methodName288 = "deleteTicketWorkers";
 
-		_methodParameterTypes292 = new String[] { "long" };
+		_methodParameterTypes288 = new String[] { "long" };
 
-		_methodName293 = "deleteTicketWorkers";
+		_methodName289 = "deleteTicketWorkers";
 
-		_methodParameterTypes293 = new String[] {
+		_methodParameterTypes289 = new String[] {
 				"long", "long[][]", "long", "long"
 			};
 
-		_methodName294 = "fetchLatestTicketWorker";
+		_methodName290 = "fetchLatestTicketWorker";
+
+		_methodParameterTypes290 = new String[] { "long" };
+
+		_methodName291 = "fetchPrimaryTicketWorker";
+
+		_methodParameterTypes291 = new String[] { "long" };
+
+		_methodName292 = "fetchTicketWorker";
+
+		_methodParameterTypes292 = new String[] { "long", "long" };
+
+		_methodName293 = "getTicketWorker";
+
+		_methodParameterTypes293 = new String[] { "long", "long" };
+
+		_methodName294 = "getTicketWorkers";
 
 		_methodParameterTypes294 = new String[] { "long" };
 
-		_methodName295 = "fetchPrimaryTicketWorker";
+		_methodName295 = "getTicketWorkers";
 
-		_methodParameterTypes295 = new String[] { "long" };
+		_methodParameterTypes295 = new String[] { "long", "long" };
 
-		_methodName296 = "fetchTicketWorker";
+		_methodName296 = "getUserTicketWorkers";
 
-		_methodParameterTypes296 = new String[] { "long", "long" };
+		_methodParameterTypes296 = new String[] { "long" };
 
-		_methodName297 = "getTicketWorker";
+		_methodName297 = "getUserTicketWorkersCount";
 
-		_methodParameterTypes297 = new String[] { "long", "long" };
+		_methodParameterTypes297 = new String[] { "long" };
 
-		_methodName298 = "getTicketWorkers";
+		_methodName298 = "hasTicketWorker";
 
-		_methodParameterTypes298 = new String[] { "long" };
-
-		_methodName299 = "getTicketWorkers";
-
-		_methodParameterTypes299 = new String[] { "long", "long" };
-
-		_methodName300 = "getUserTicketWorkers";
-
-		_methodParameterTypes300 = new String[] { "long" };
-
-		_methodName301 = "getUserTicketWorkersCount";
-
-		_methodParameterTypes301 = new String[] { "long" };
-
-		_methodName302 = "hasTicketWorker";
-
-		_methodParameterTypes302 = new String[] { "long", "long" };
+		_methodParameterTypes298 = new String[] { "long", "long" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -285,28 +285,28 @@ public class TicketWorkerLocalServiceClpInvoker {
 			return TicketWorkerLocalServiceUtil.updateTicketWorker((com.liferay.osb.model.TicketWorker)arguments[0]);
 		}
 
-		if (_methodName286.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes286, parameterTypes)) {
+		if (_methodName282.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes282, parameterTypes)) {
 			return TicketWorkerLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName291.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes291, parameterTypes)) {
+		if (_methodName287.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes287, parameterTypes)) {
 			return TicketWorkerLocalServiceUtil.addTicketWorkers(((Long)arguments[0]).longValue(),
 				(long[])arguments[1], ((Long)arguments[2]).longValue(),
 				(long[])arguments[3], (long[])arguments[4],
 				(int[])arguments[5], ((Long)arguments[6]).longValue());
 		}
 
-		if (_methodName292.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes292, parameterTypes)) {
+		if (_methodName288.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes288, parameterTypes)) {
 			TicketWorkerLocalServiceUtil.deleteTicketWorkers(((Long)arguments[0]).longValue());
 
 			return null;
 		}
 
-		if (_methodName293.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes293, parameterTypes)) {
+		if (_methodName289.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes289, parameterTypes)) {
 			TicketWorkerLocalServiceUtil.deleteTicketWorkers(((Long)arguments[0]).longValue(),
 				(long[])arguments[1], ((Long)arguments[2]).longValue(),
 				((Long)arguments[3]).longValue());
@@ -314,51 +314,51 @@ public class TicketWorkerLocalServiceClpInvoker {
 			return null;
 		}
 
-		if (_methodName294.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes294, parameterTypes)) {
+		if (_methodName290.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes290, parameterTypes)) {
 			return TicketWorkerLocalServiceUtil.fetchLatestTicketWorker(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName295.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes295, parameterTypes)) {
+		if (_methodName291.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes291, parameterTypes)) {
 			return TicketWorkerLocalServiceUtil.fetchPrimaryTicketWorker(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName296.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes296, parameterTypes)) {
+		if (_methodName292.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes292, parameterTypes)) {
 			return TicketWorkerLocalServiceUtil.fetchTicketWorker(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue());
 		}
 
-		if (_methodName297.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes297, parameterTypes)) {
+		if (_methodName293.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes293, parameterTypes)) {
 			return TicketWorkerLocalServiceUtil.getTicketWorker(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue());
 		}
 
-		if (_methodName298.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes298, parameterTypes)) {
+		if (_methodName294.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes294, parameterTypes)) {
 			return TicketWorkerLocalServiceUtil.getTicketWorkers(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName299.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes299, parameterTypes)) {
+		if (_methodName295.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes295, parameterTypes)) {
 			return TicketWorkerLocalServiceUtil.getTicketWorkers(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue());
 		}
 
-		if (_methodName300.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes300, parameterTypes)) {
+		if (_methodName296.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes296, parameterTypes)) {
 			return TicketWorkerLocalServiceUtil.getUserTicketWorkers(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName301.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes301, parameterTypes)) {
+		if (_methodName297.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes297, parameterTypes)) {
 			return TicketWorkerLocalServiceUtil.getUserTicketWorkersCount(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName302.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes302, parameterTypes)) {
+		if (_methodName298.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes298, parameterTypes)) {
 			return TicketWorkerLocalServiceUtil.hasTicketWorker(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue());
 		}
@@ -404,8 +404,16 @@ public class TicketWorkerLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName286;
-	private String[] _methodParameterTypes286;
+	private String _methodName282;
+	private String[] _methodParameterTypes282;
+	private String _methodName287;
+	private String[] _methodParameterTypes287;
+	private String _methodName288;
+	private String[] _methodParameterTypes288;
+	private String _methodName289;
+	private String[] _methodParameterTypes289;
+	private String _methodName290;
+	private String[] _methodParameterTypes290;
 	private String _methodName291;
 	private String[] _methodParameterTypes291;
 	private String _methodName292;
@@ -422,12 +430,4 @@ public class TicketWorkerLocalServiceClpInvoker {
 	private String[] _methodParameterTypes297;
 	private String _methodName298;
 	private String[] _methodParameterTypes298;
-	private String _methodName299;
-	private String[] _methodParameterTypes299;
-	private String _methodName300;
-	private String[] _methodParameterTypes300;
-	private String _methodName301;
-	private String[] _methodParameterTypes301;
-	private String _methodName302;
-	private String[] _methodParameterTypes302;
 }

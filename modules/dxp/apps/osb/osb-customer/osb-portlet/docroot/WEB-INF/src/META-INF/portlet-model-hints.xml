@@ -229,36 +229,6 @@
 		</field>
 		<field name="i18n" type="boolean" />
 	</model>
-	<model name="com.liferay.osb.model.ContractAudit">
-		<field name="contractAuditId" type="long" />
-		<field name="userId" type="long" />
-		<field name="userName" type="String" />
-		<field name="userEmailAddress" type="String" />
-		<field name="createDate" type="Date" />
-		<field name="modifiedDate" type="Date" />
-		<field name="contractEntryId" type="long" />
-		<field name="signatoryClassNameId" type="long" />
-		<field name="signatoryClassPK" type="long" />
-		<field name="productClassNameId" type="long" />
-		<field name="productClassPK" type="long" />
-		<field name="type" type="String" />
-		<field name="languageId" type="String" />
-		<field name="version" type="int" />
-	</model>
-	<model name="com.liferay.osb.model.ContractEntry">
-		<field name="contractEntryId" type="long" />
-		<field name="userId" type="long" />
-		<field name="userName" type="String" />
-		<field name="createDate" type="Date" />
-		<field name="classNameId" type="long" />
-		<field name="classPK" type="long" />
-		<field name="type" type="int" />
-		<field name="version" type="int" />
-		<field localized="true" name="content" type="String">
-			<hint-collection name="TEXTAREA" />
-			<hint name="max-length">200000</hint>
-		</field>
-	</model>
 	<model name="com.liferay.osb.model.CorpProject">
 		<field name="corpProjectId" type="long" />
 		<field name="userId" type="long" />
@@ -270,13 +240,6 @@
 		<field name="name" type="String" />
 		<field name="organizationId" type="long" />
 	</model>
-	<model name="com.liferay.osb.model.CurrencyEntry">
-		<field name="currencyEntryId" type="long" />
-		<field name="countryId" type="long" />
-		<field name="currencyCode" type="String" />
-		<field name="marketplaceEnabled" type="boolean" />
-		<field name="marketplaceMinPrice" type="double" />
-	</model>
 	<model name="com.liferay.osb.model.ExternalIdMapper">
 		<field name="externalIdMapperId" type="long" />
 		<field name="createDate" type="Date" />
@@ -285,6 +248,17 @@
 		<field name="classPK" type="long" />
 		<field name="type" type="int" />
 		<field name="externalId" type="String" />
+	</model>
+	<model name="com.liferay.osb.model.FeedbackEntry">
+		<field name="feedbackEntryId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="classNameId" type="long" />
+		<field name="classPK" type="long" />
+		<field name="satisfied" type="int" />
+		<field name="comments" type="String" />
+		<field name="pageURL" type="String" />
 	</model>
 	<model name="com.liferay.osb.model.HolidayCalendar">
 		<field name="holidayCalendarId" type="long" />
@@ -524,6 +498,18 @@
 			<hint-collection name="CLOB" />
 		</field>
 		<field name="visibility" type="int" />
+	</model>
+	<model name="com.liferay.osb.model.SecurityPatch">
+		<field name="securityPatchId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="accountEntryId" type="long" />
+		<field name="ticketAttachmentId" type="long" />
+		<field name="portletId" type="String" />
+		<field name="envLFR" type="int" />
+		<field name="name" type="String" />
+		<field name="fileName" type="String" />
 	</model>
 	<model name="com.liferay.osb.model.SupportLabor">
 		<field name="supportLaborId" type="long" />

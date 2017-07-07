@@ -27,23 +27,23 @@ import java.util.Arrays;
 @ProviderType
 public class TicketWorkerServiceClpInvoker {
 	public TicketWorkerServiceClpInvoker() {
-		_methodName380 = "getOSGiServiceIdentifier";
+		_methodName374 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes380 = new String[] {  };
+		_methodParameterTypes374 = new String[] {  };
 
-		_methodName385 = "addTicketWorkers";
+		_methodName379 = "addTicketWorkers";
 
-		_methodParameterTypes385 = new String[] {
+		_methodParameterTypes379 = new String[] {
 				"long[][]", "long", "long[][]", "long[][]", "int[][]", "long"
 			};
 
-		_methodName386 = "deleteTicketWorkers";
+		_methodName380 = "deleteTicketWorkers";
 
-		_methodParameterTypes386 = new String[] { "long[][]", "long", "long" };
+		_methodParameterTypes380 = new String[] { "long[][]", "long", "long" };
 
-		_methodName387 = "updateTicketWorkers";
+		_methodName381 = "updateTicketWorkers";
 
-		_methodParameterTypes387 = new String[] {
+		_methodParameterTypes381 = new String[] {
 				"long[][]", "int[][]", "long[][]", "long", "long[][]",
 				"long[][]", "long"
 			};
@@ -51,21 +51,21 @@ public class TicketWorkerServiceClpInvoker {
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName380.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes380, parameterTypes)) {
+		if (_methodName374.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes374, parameterTypes)) {
 			return TicketWorkerServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName385.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes385, parameterTypes)) {
+		if (_methodName379.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes379, parameterTypes)) {
 			return TicketWorkerServiceUtil.addTicketWorkers((long[])arguments[0],
 				((Long)arguments[1]).longValue(), (long[])arguments[2],
 				(long[])arguments[3], (int[])arguments[4],
 				((Long)arguments[5]).longValue());
 		}
 
-		if (_methodName386.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes386, parameterTypes)) {
+		if (_methodName380.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes380, parameterTypes)) {
 			TicketWorkerServiceUtil.deleteTicketWorkers((long[])arguments[0],
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue());
@@ -73,8 +73,8 @@ public class TicketWorkerServiceClpInvoker {
 			return null;
 		}
 
-		if (_methodName387.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes387, parameterTypes)) {
+		if (_methodName381.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes381, parameterTypes)) {
 			return TicketWorkerServiceUtil.updateTicketWorkers((long[])arguments[0],
 				(int[])arguments[1], (long[])arguments[2],
 				((Long)arguments[3]).longValue(), (long[])arguments[4],
@@ -84,12 +84,12 @@ public class TicketWorkerServiceClpInvoker {
 		throw new UnsupportedOperationException();
 	}
 
+	private String _methodName374;
+	private String[] _methodParameterTypes374;
+	private String _methodName379;
+	private String[] _methodParameterTypes379;
 	private String _methodName380;
 	private String[] _methodParameterTypes380;
-	private String _methodName385;
-	private String[] _methodParameterTypes385;
-	private String _methodName386;
-	private String[] _methodParameterTypes386;
-	private String _methodName387;
-	private String[] _methodParameterTypes387;
+	private String _methodName381;
+	private String[] _methodParameterTypes381;
 }

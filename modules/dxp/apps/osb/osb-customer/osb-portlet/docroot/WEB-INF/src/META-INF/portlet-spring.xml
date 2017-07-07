@@ -367,20 +367,14 @@
 	<bean class="com.liferay.osb.service.impl.AuditEntryLocalServiceImpl" id="com.liferay.osb.service.AuditEntryLocalService" />
 	<bean class="com.liferay.osb.service.impl.AuditEntryServiceImpl" id="com.liferay.osb.service.AuditEntryService" />
 	<bean class="com.liferay.osb.service.persistence.impl.AuditEntryPersistenceImpl" id="com.liferay.osb.service.persistence.AuditEntryPersistence" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.impl.ContractAuditLocalServiceImpl" id="com.liferay.osb.service.ContractAuditLocalService" />
-	<bean class="com.liferay.osb.service.impl.ContractAuditServiceImpl" id="com.liferay.osb.service.ContractAuditService" />
-	<bean class="com.liferay.osb.service.persistence.impl.ContractAuditPersistenceImpl" id="com.liferay.osb.service.persistence.ContractAuditPersistence" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.impl.ContractEntryLocalServiceImpl" id="com.liferay.osb.service.ContractEntryLocalService" />
-	<bean class="com.liferay.osb.service.impl.ContractEntryServiceImpl" id="com.liferay.osb.service.ContractEntryService" />
-	<bean class="com.liferay.osb.service.persistence.impl.ContractEntryPersistenceImpl" id="com.liferay.osb.service.persistence.ContractEntryPersistence" parent="basePersistence" />
 	<bean class="com.liferay.osb.service.impl.CorpProjectLocalServiceImpl" id="com.liferay.osb.service.CorpProjectLocalService" />
 	<bean class="com.liferay.osb.service.impl.CorpProjectServiceImpl" id="com.liferay.osb.service.CorpProjectService" />
 	<bean class="com.liferay.osb.service.persistence.impl.CorpProjectPersistenceImpl" id="com.liferay.osb.service.persistence.CorpProjectPersistence" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.impl.CurrencyEntryLocalServiceImpl" id="com.liferay.osb.service.CurrencyEntryLocalService" />
-	<bean class="com.liferay.osb.service.impl.CurrencyEntryServiceImpl" id="com.liferay.osb.service.CurrencyEntryService" />
-	<bean class="com.liferay.osb.service.persistence.impl.CurrencyEntryPersistenceImpl" id="com.liferay.osb.service.persistence.CurrencyEntryPersistence" parent="basePersistence" />
 	<bean class="com.liferay.osb.service.impl.ExternalIdMapperLocalServiceImpl" id="com.liferay.osb.service.ExternalIdMapperLocalService" />
 	<bean class="com.liferay.osb.service.persistence.impl.ExternalIdMapperPersistenceImpl" id="com.liferay.osb.service.persistence.ExternalIdMapperPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.service.impl.FeedbackEntryLocalServiceImpl" id="com.liferay.osb.service.FeedbackEntryLocalService" />
+	<bean class="com.liferay.osb.service.impl.FeedbackEntryServiceImpl" id="com.liferay.osb.service.FeedbackEntryService" />
+	<bean class="com.liferay.osb.service.persistence.impl.FeedbackEntryPersistenceImpl" id="com.liferay.osb.service.persistence.FeedbackEntryPersistence" parent="basePersistence" />
 	<bean class="com.liferay.osb.service.impl.HolidayCalendarLocalServiceImpl" id="com.liferay.osb.service.HolidayCalendarLocalService" />
 	<bean class="com.liferay.osb.service.impl.HolidayCalendarServiceImpl" id="com.liferay.osb.service.HolidayCalendarService" />
 	<bean class="com.liferay.osb.service.persistence.impl.HolidayCalendarPersistenceImpl" id="com.liferay.osb.service.persistence.HolidayCalendarPersistence" parent="basePersistence" />
@@ -436,6 +430,9 @@
 	<bean class="com.liferay.osb.service.impl.SearchFilterLocalServiceImpl" id="com.liferay.osb.service.SearchFilterLocalService" />
 	<bean class="com.liferay.osb.service.impl.SearchFilterServiceImpl" id="com.liferay.osb.service.SearchFilterService" />
 	<bean class="com.liferay.osb.service.persistence.impl.SearchFilterPersistenceImpl" id="com.liferay.osb.service.persistence.SearchFilterPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.service.impl.SecurityPatchLocalServiceImpl" id="com.liferay.osb.service.SecurityPatchLocalService" />
+	<bean class="com.liferay.osb.service.impl.SecurityPatchServiceImpl" id="com.liferay.osb.service.SecurityPatchService" />
+	<bean class="com.liferay.osb.service.persistence.impl.SecurityPatchPersistenceImpl" id="com.liferay.osb.service.persistence.SecurityPatchPersistence" parent="basePersistence" />
 	<bean class="com.liferay.osb.service.impl.SupportLaborLocalServiceImpl" id="com.liferay.osb.service.SupportLaborLocalService" />
 	<bean class="com.liferay.osb.service.impl.SupportLaborServiceImpl" id="com.liferay.osb.service.SupportLaborService" />
 	<bean class="com.liferay.osb.service.persistence.impl.SupportLaborPersistenceImpl" id="com.liferay.osb.service.persistence.SupportLaborPersistence" parent="basePersistence" />

@@ -27,59 +27,59 @@ import java.util.Arrays;
 @ProviderType
 public class PartnerEntryServiceClpInvoker {
 	public PartnerEntryServiceClpInvoker() {
-		_methodName392 = "getOSGiServiceIdentifier";
+		_methodName386 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes392 = new String[] {  };
+		_methodParameterTypes386 = new String[] {  };
 
-		_methodName397 = "getPartnerEntry";
+		_methodName391 = "getPartnerEntry";
 
-		_methodParameterTypes397 = new String[] { "long" };
+		_methodParameterTypes391 = new String[] { "long" };
 
-		_methodName398 = "search";
+		_methodName392 = "search";
 
-		_methodParameterTypes398 = new String[] {
+		_methodParameterTypes392 = new String[] {
 				"java.lang.String", "int[][]", "java.util.LinkedHashMap",
 				"boolean", "int", "int"
 			};
 
-		_methodName399 = "search";
+		_methodName393 = "search";
 
-		_methodParameterTypes399 = new String[] {
+		_methodParameterTypes393 = new String[] {
 				"java.lang.String", "java.util.LinkedHashMap", "int", "int"
 			};
 
-		_methodName400 = "searchCount";
+		_methodName394 = "searchCount";
 
-		_methodParameterTypes400 = new String[] { "java.lang.String" };
+		_methodParameterTypes394 = new String[] { "java.lang.String" };
 
-		_methodName401 = "searchCount";
+		_methodName395 = "searchCount";
 
-		_methodParameterTypes401 = new String[] {
+		_methodParameterTypes395 = new String[] {
 				"java.lang.String", "int[][]", "java.util.LinkedHashMap",
 				"boolean"
 			};
 
-		_methodName402 = "searchCount";
+		_methodName396 = "searchCount";
 
-		_methodParameterTypes402 = new String[] {
+		_methodParameterTypes396 = new String[] {
 				"java.lang.String", "java.util.LinkedHashMap"
 			};
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName392.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes392, parameterTypes)) {
+		if (_methodName386.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes386, parameterTypes)) {
 			return PartnerEntryServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName397.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes397, parameterTypes)) {
+		if (_methodName391.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes391, parameterTypes)) {
 			return PartnerEntryServiceUtil.getPartnerEntry(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName398.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes398, parameterTypes)) {
+		if (_methodName392.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes392, parameterTypes)) {
 			return PartnerEntryServiceUtil.search((java.lang.String)arguments[0],
 				(int[])arguments[1],
 				(java.util.LinkedHashMap<java.lang.String, java.lang.Object>)arguments[2],
@@ -88,29 +88,29 @@ public class PartnerEntryServiceClpInvoker {
 				((Integer)arguments[5]).intValue());
 		}
 
-		if (_methodName399.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes399, parameterTypes)) {
+		if (_methodName393.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes393, parameterTypes)) {
 			return PartnerEntryServiceUtil.search((java.lang.String)arguments[0],
 				(java.util.LinkedHashMap<java.lang.String, java.lang.Object>)arguments[1],
 				((Integer)arguments[2]).intValue(),
 				((Integer)arguments[3]).intValue());
 		}
 
-		if (_methodName400.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes400, parameterTypes)) {
+		if (_methodName394.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes394, parameterTypes)) {
 			return PartnerEntryServiceUtil.searchCount((java.lang.String)arguments[0]);
 		}
 
-		if (_methodName401.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes401, parameterTypes)) {
+		if (_methodName395.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes395, parameterTypes)) {
 			return PartnerEntryServiceUtil.searchCount((java.lang.String)arguments[0],
 				(int[])arguments[1],
 				(java.util.LinkedHashMap<java.lang.String, java.lang.Object>)arguments[2],
 				((Boolean)arguments[3]).booleanValue());
 		}
 
-		if (_methodName402.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes402, parameterTypes)) {
+		if (_methodName396.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes396, parameterTypes)) {
 			return PartnerEntryServiceUtil.searchCount((java.lang.String)arguments[0],
 				(java.util.LinkedHashMap<java.lang.String, java.lang.Object>)arguments[1]);
 		}
@@ -118,18 +118,18 @@ public class PartnerEntryServiceClpInvoker {
 		throw new UnsupportedOperationException();
 	}
 
+	private String _methodName386;
+	private String[] _methodParameterTypes386;
+	private String _methodName391;
+	private String[] _methodParameterTypes391;
 	private String _methodName392;
 	private String[] _methodParameterTypes392;
-	private String _methodName397;
-	private String[] _methodParameterTypes397;
-	private String _methodName398;
-	private String[] _methodParameterTypes398;
-	private String _methodName399;
-	private String[] _methodParameterTypes399;
-	private String _methodName400;
-	private String[] _methodParameterTypes400;
-	private String _methodName401;
-	private String[] _methodParameterTypes401;
-	private String _methodName402;
-	private String[] _methodParameterTypes402;
+	private String _methodName393;
+	private String[] _methodParameterTypes393;
+	private String _methodName394;
+	private String[] _methodParameterTypes394;
+	private String _methodName395;
+	private String[] _methodParameterTypes395;
+	private String _methodName396;
+	private String[] _methodParameterTypes396;
 }

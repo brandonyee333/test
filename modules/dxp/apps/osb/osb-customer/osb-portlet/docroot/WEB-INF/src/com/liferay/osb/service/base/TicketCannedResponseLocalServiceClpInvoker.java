@@ -123,48 +123,48 @@ public class TicketCannedResponseLocalServiceClpInvoker {
 				"com.liferay.osb.model.TicketCannedResponse"
 			};
 
-		_methodName286 = "getOSGiServiceIdentifier";
+		_methodName282 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes286 = new String[] {  };
+		_methodParameterTypes282 = new String[] {  };
 
-		_methodName291 = "addTicketCannedResponse";
+		_methodName287 = "addTicketCannedResponse";
 
-		_methodParameterTypes291 = new String[] {
+		_methodParameterTypes287 = new String[] {
 				"long", "java.lang.String", "java.lang.String",
 				"java.lang.String"
 			};
 
-		_methodName292 = "incrementUseCount";
+		_methodName288 = "incrementUseCount";
 
-		_methodParameterTypes292 = new String[] { "long" };
+		_methodParameterTypes288 = new String[] { "long" };
 
-		_methodName293 = "removeCannedResponseLocale";
+		_methodName289 = "removeCannedResponseLocale";
 
-		_methodParameterTypes293 = new String[] { "long", "java.lang.String" };
+		_methodParameterTypes289 = new String[] { "long", "java.lang.String" };
 
-		_methodName294 = "search";
+		_methodName290 = "search";
 
-		_methodParameterTypes294 = new String[] { "java.lang.String", "int", "int" };
+		_methodParameterTypes290 = new String[] { "java.lang.String", "int", "int" };
 
-		_methodName295 = "search";
+		_methodName291 = "search";
 
-		_methodParameterTypes295 = new String[] {
+		_methodParameterTypes291 = new String[] {
 				"java.lang.String", "java.lang.String", "boolean", "int", "int"
 			};
 
-		_methodName296 = "searchCount";
+		_methodName292 = "searchCount";
 
-		_methodParameterTypes296 = new String[] { "java.lang.String" };
+		_methodParameterTypes292 = new String[] { "java.lang.String" };
 
-		_methodName297 = "searchCount";
+		_methodName293 = "searchCount";
 
-		_methodParameterTypes297 = new String[] {
+		_methodParameterTypes293 = new String[] {
 				"java.lang.String", "java.lang.String", "boolean"
 			};
 
-		_methodName298 = "updateTicketCannedResponse";
+		_methodName294 = "updateTicketCannedResponse";
 
-		_methodParameterTypes298 = new String[] {
+		_methodParameterTypes294 = new String[] {
 				"long", "java.lang.String", "java.lang.String",
 				"java.lang.String", "java.lang.String"
 			};
@@ -274,42 +274,42 @@ public class TicketCannedResponseLocalServiceClpInvoker {
 			return TicketCannedResponseLocalServiceUtil.updateTicketCannedResponse((com.liferay.osb.model.TicketCannedResponse)arguments[0]);
 		}
 
-		if (_methodName286.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes286, parameterTypes)) {
+		if (_methodName282.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes282, parameterTypes)) {
 			return TicketCannedResponseLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName291.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes291, parameterTypes)) {
+		if (_methodName287.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes287, parameterTypes)) {
 			return TicketCannedResponseLocalServiceUtil.addTicketCannedResponse(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1], (java.lang.String)arguments[2],
 				(java.lang.String)arguments[3]);
 		}
 
-		if (_methodName292.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes292, parameterTypes)) {
+		if (_methodName288.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes288, parameterTypes)) {
 			TicketCannedResponseLocalServiceUtil.incrementUseCount(((Long)arguments[0]).longValue());
 
 			return null;
 		}
 
-		if (_methodName293.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes293, parameterTypes)) {
+		if (_methodName289.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes289, parameterTypes)) {
 			TicketCannedResponseLocalServiceUtil.removeCannedResponseLocale(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1]);
 
 			return null;
 		}
 
-		if (_methodName294.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes294, parameterTypes)) {
+		if (_methodName290.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes290, parameterTypes)) {
 			return TicketCannedResponseLocalServiceUtil.search((java.lang.String)arguments[0],
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue());
 		}
 
-		if (_methodName295.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes295, parameterTypes)) {
+		if (_methodName291.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes291, parameterTypes)) {
 			return TicketCannedResponseLocalServiceUtil.search((java.lang.String)arguments[0],
 				(java.lang.String)arguments[1],
 				((Boolean)arguments[2]).booleanValue(),
@@ -317,20 +317,20 @@ public class TicketCannedResponseLocalServiceClpInvoker {
 				((Integer)arguments[4]).intValue());
 		}
 
-		if (_methodName296.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes296, parameterTypes)) {
+		if (_methodName292.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes292, parameterTypes)) {
 			return TicketCannedResponseLocalServiceUtil.searchCount((java.lang.String)arguments[0]);
 		}
 
-		if (_methodName297.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes297, parameterTypes)) {
+		if (_methodName293.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes293, parameterTypes)) {
 			return TicketCannedResponseLocalServiceUtil.searchCount((java.lang.String)arguments[0],
 				(java.lang.String)arguments[1],
 				((Boolean)arguments[2]).booleanValue());
 		}
 
-		if (_methodName298.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes298, parameterTypes)) {
+		if (_methodName294.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes294, parameterTypes)) {
 			return TicketCannedResponseLocalServiceUtil.updateTicketCannedResponse(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1], (java.lang.String)arguments[2],
 				(java.lang.String)arguments[3], (java.lang.String)arguments[4]);
@@ -377,8 +377,16 @@ public class TicketCannedResponseLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName286;
-	private String[] _methodParameterTypes286;
+	private String _methodName282;
+	private String[] _methodParameterTypes282;
+	private String _methodName287;
+	private String[] _methodParameterTypes287;
+	private String _methodName288;
+	private String[] _methodParameterTypes288;
+	private String _methodName289;
+	private String[] _methodParameterTypes289;
+	private String _methodName290;
+	private String[] _methodParameterTypes290;
 	private String _methodName291;
 	private String[] _methodParameterTypes291;
 	private String _methodName292;
@@ -387,12 +395,4 @@ public class TicketCannedResponseLocalServiceClpInvoker {
 	private String[] _methodParameterTypes293;
 	private String _methodName294;
 	private String[] _methodParameterTypes294;
-	private String _methodName295;
-	private String[] _methodParameterTypes295;
-	private String _methodName296;
-	private String[] _methodParameterTypes296;
-	private String _methodName297;
-	private String[] _methodParameterTypes297;
-	private String _methodName298;
-	private String[] _methodParameterTypes298;
 }

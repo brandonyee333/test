@@ -27,23 +27,23 @@ import java.util.Arrays;
 @ProviderType
 public class OSBRegionServiceClpInvoker {
 	public OSBRegionServiceClpInvoker() {
-		_methodName388 = "getOSGiServiceIdentifier";
+		_methodName382 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes388 = new String[] {  };
+		_methodParameterTypes382 = new String[] {  };
 
-		_methodName391 = "addRegion";
+		_methodName385 = "addRegion";
 
-		_methodParameterTypes391 = new String[] {
+		_methodParameterTypes385 = new String[] {
 				"long", "java.lang.String", "java.lang.String", "boolean"
 			};
 
-		_methodName392 = "deleteRegion";
+		_methodName386 = "deleteRegion";
 
-		_methodParameterTypes392 = new String[] { "long" };
+		_methodParameterTypes386 = new String[] { "long" };
 
-		_methodName393 = "updateRegion";
+		_methodName387 = "updateRegion";
 
-		_methodParameterTypes393 = new String[] {
+		_methodParameterTypes387 = new String[] {
 				"long", "long", "java.lang.String", "java.lang.String",
 				"boolean"
 			};
@@ -51,25 +51,25 @@ public class OSBRegionServiceClpInvoker {
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName388.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes388, parameterTypes)) {
+		if (_methodName382.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes382, parameterTypes)) {
 			return OSBRegionServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName391.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes391, parameterTypes)) {
+		if (_methodName385.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes385, parameterTypes)) {
 			return OSBRegionServiceUtil.addRegion(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1], (java.lang.String)arguments[2],
 				((Boolean)arguments[3]).booleanValue());
 		}
 
-		if (_methodName392.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes392, parameterTypes)) {
+		if (_methodName386.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes386, parameterTypes)) {
 			return OSBRegionServiceUtil.deleteRegion(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName393.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes393, parameterTypes)) {
+		if (_methodName387.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes387, parameterTypes)) {
 			return OSBRegionServiceUtil.updateRegion(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				(java.lang.String)arguments[2], (java.lang.String)arguments[3],
@@ -79,12 +79,12 @@ public class OSBRegionServiceClpInvoker {
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName388;
-	private String[] _methodParameterTypes388;
-	private String _methodName391;
-	private String[] _methodParameterTypes391;
-	private String _methodName392;
-	private String[] _methodParameterTypes392;
-	private String _methodName393;
-	private String[] _methodParameterTypes393;
+	private String _methodName382;
+	private String[] _methodParameterTypes382;
+	private String _methodName385;
+	private String[] _methodParameterTypes385;
+	private String _methodName386;
+	private String[] _methodParameterTypes386;
+	private String _methodName387;
+	private String[] _methodParameterTypes387;
 }

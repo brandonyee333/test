@@ -46,15 +46,11 @@ import com.liferay.osb.service.AuditActionServiceUtil;
 import com.liferay.osb.service.AuditEntryLocalServiceUtil;
 import com.liferay.osb.service.AuditEntryServiceUtil;
 import com.liferay.osb.service.ClpSerializer;
-import com.liferay.osb.service.ContractAuditLocalServiceUtil;
-import com.liferay.osb.service.ContractAuditServiceUtil;
-import com.liferay.osb.service.ContractEntryLocalServiceUtil;
-import com.liferay.osb.service.ContractEntryServiceUtil;
 import com.liferay.osb.service.CorpProjectLocalServiceUtil;
 import com.liferay.osb.service.CorpProjectServiceUtil;
-import com.liferay.osb.service.CurrencyEntryLocalServiceUtil;
-import com.liferay.osb.service.CurrencyEntryServiceUtil;
 import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
+import com.liferay.osb.service.FeedbackEntryLocalServiceUtil;
+import com.liferay.osb.service.FeedbackEntryServiceUtil;
 import com.liferay.osb.service.HolidayCalendarLocalServiceUtil;
 import com.liferay.osb.service.HolidayCalendarRelLocalServiceUtil;
 import com.liferay.osb.service.HolidayCalendarRelServiceUtil;
@@ -89,6 +85,8 @@ import com.liferay.osb.service.ProductEntryLocalServiceUtil;
 import com.liferay.osb.service.ProductEntryServiceUtil;
 import com.liferay.osb.service.SearchFilterLocalServiceUtil;
 import com.liferay.osb.service.SearchFilterServiceUtil;
+import com.liferay.osb.service.SecurityPatchLocalServiceUtil;
+import com.liferay.osb.service.SecurityPatchServiceUtil;
 import com.liferay.osb.service.SupportLaborLocalServiceUtil;
 import com.liferay.osb.service.SupportLaborServiceUtil;
 import com.liferay.osb.service.SupportRegionLocalServiceUtil;
@@ -193,20 +191,14 @@ public class ClpMessageListener extends BaseMessageListener {
 			AuditEntryLocalServiceUtil.clearService();
 
 			AuditEntryServiceUtil.clearService();
-			ContractAuditLocalServiceUtil.clearService();
-
-			ContractAuditServiceUtil.clearService();
-			ContractEntryLocalServiceUtil.clearService();
-
-			ContractEntryServiceUtil.clearService();
 			CorpProjectLocalServiceUtil.clearService();
 
 			CorpProjectServiceUtil.clearService();
-			CurrencyEntryLocalServiceUtil.clearService();
-
-			CurrencyEntryServiceUtil.clearService();
 			ExternalIdMapperLocalServiceUtil.clearService();
 
+			FeedbackEntryLocalServiceUtil.clearService();
+
+			FeedbackEntryServiceUtil.clearService();
 			HolidayCalendarLocalServiceUtil.clearService();
 
 			HolidayCalendarServiceUtil.clearService();
@@ -258,6 +250,9 @@ public class ClpMessageListener extends BaseMessageListener {
 			SearchFilterLocalServiceUtil.clearService();
 
 			SearchFilterServiceUtil.clearService();
+			SecurityPatchLocalServiceUtil.clearService();
+
+			SecurityPatchServiceUtil.clearService();
 			SupportLaborLocalServiceUtil.clearService();
 
 			SupportLaborServiceUtil.clearService();

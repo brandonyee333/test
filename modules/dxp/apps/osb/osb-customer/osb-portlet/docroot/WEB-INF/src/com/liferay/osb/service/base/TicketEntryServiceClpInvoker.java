@@ -27,54 +27,54 @@ import java.util.Arrays;
 @ProviderType
 public class TicketEntryServiceClpInvoker {
 	public TicketEntryServiceClpInvoker() {
-		_methodName410 = "getOSGiServiceIdentifier";
+		_methodName404 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes410 = new String[] {  };
+		_methodParameterTypes404 = new String[] {  };
 
-		_methodName415 = "addTicketEntry";
+		_methodName409 = "addTicketEntry";
 
-		_methodParameterTypes415 = new String[] {
+		_methodParameterTypes409 = new String[] {
 				"long", "long", "long", "java.lang.String", "long",
 				"java.lang.String", "java.lang.String", "int", "int", "int",
 				"int", "int", "int", "java.util.Map", "java.util.List"
 			};
 
-		_methodName416 = "closeTicketEntry";
+		_methodName410 = "closeTicketEntry";
 
-		_methodParameterTypes416 = new String[] {
+		_methodParameterTypes410 = new String[] {
 				"long", "int", "java.lang.String"
 			};
 
-		_methodName417 = "escalateTicketEntry";
+		_methodName411 = "escalateTicketEntry";
 
-		_methodParameterTypes417 = new String[] { "long" };
+		_methodParameterTypes411 = new String[] { "long" };
 
-		_methodName418 = "forwardTicketEntry";
+		_methodName412 = "forwardTicketEntry";
 
-		_methodParameterTypes418 = new String[] { "long", "java.lang.String" };
+		_methodParameterTypes412 = new String[] { "long", "java.lang.String" };
 
-		_methodName419 = "getTicketEntries";
+		_methodName413 = "getTicketEntries";
 
-		_methodParameterTypes419 = new String[] {
+		_methodParameterTypes413 = new String[] {
 				"long", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName420 = "getTicketEntriesCount";
+		_methodName414 = "getTicketEntriesCount";
 
-		_methodParameterTypes420 = new String[] { "long" };
+		_methodParameterTypes414 = new String[] { "long" };
 
-		_methodName421 = "getTicketEntry";
+		_methodName415 = "getTicketEntry";
 
-		_methodParameterTypes421 = new String[] { "long" };
+		_methodParameterTypes415 = new String[] { "long" };
 
-		_methodName422 = "getTicketEntry";
+		_methodName416 = "getTicketEntry";
 
-		_methodParameterTypes422 = new String[] { "long", "long" };
+		_methodParameterTypes416 = new String[] { "long", "long" };
 
-		_methodName423 = "search";
+		_methodName417 = "search";
 
-		_methodParameterTypes423 = new String[] {
+		_methodParameterTypes417 = new String[] {
 				"long", "long", "java.lang.String", "int[][]",
 				"java.lang.Boolean", "java.util.Date", "java.util.Date",
 				"java.lang.String", "int[][]", "int[][]", "int[][]", "long[][]",
@@ -84,16 +84,16 @@ public class TicketEntryServiceClpInvoker {
 				"int", "com.liferay.portal.kernel.search.Sort[][]"
 			};
 
-		_methodName424 = "search";
+		_methodName418 = "search";
 
-		_methodParameterTypes424 = new String[] {
+		_methodParameterTypes418 = new String[] {
 				"long", "long", "java.lang.String", "java.util.LinkedHashMap",
 				"int", "int", "com.liferay.portal.kernel.search.Sort[][]"
 			};
 
-		_methodName425 = "search";
+		_methodName419 = "search";
 
-		_methodParameterTypes425 = new String[] {
+		_methodParameterTypes419 = new String[] {
 				"long", "java.lang.String", "int[][]", "java.lang.Boolean",
 				"int", "int", "int", "int", "int", "int", "java.lang.String",
 				"java.lang.String", "java.lang.String", "int[][]", "int[][]",
@@ -104,16 +104,16 @@ public class TicketEntryServiceClpInvoker {
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName426 = "search";
+		_methodName420 = "search";
 
-		_methodParameterTypes426 = new String[] {
+		_methodParameterTypes420 = new String[] {
 				"java.lang.String", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName427 = "searchCount";
+		_methodName421 = "searchCount";
 
-		_methodParameterTypes427 = new String[] {
+		_methodParameterTypes421 = new String[] {
 				"long", "java.lang.String", "int[][]", "java.lang.Boolean",
 				"int", "int", "int", "int", "int", "int", "java.lang.String",
 				"java.lang.String", "java.lang.String", "int[][]", "int[][]",
@@ -123,24 +123,24 @@ public class TicketEntryServiceClpInvoker {
 				"int", "java.util.LinkedHashMap", "boolean"
 			};
 
-		_methodName428 = "searchCount";
+		_methodName422 = "searchCount";
 
-		_methodParameterTypes428 = new String[] { "java.lang.String" };
+		_methodParameterTypes422 = new String[] { "java.lang.String" };
 
-		_methodName429 = "updatePendingTypes";
+		_methodName423 = "updatePendingTypes";
 
-		_methodParameterTypes429 = new String[] { "long", "int[][]" };
+		_methodParameterTypes423 = new String[] { "long", "int[][]" };
 
-		_methodName430 = "updateTicketEntry";
+		_methodName424 = "updateTicketEntry";
 
-		_methodParameterTypes430 = new String[] {
+		_methodParameterTypes424 = new String[] {
 				"long", "long", "long", "long", "int", "int", "int", "int",
 				"int"
 			};
 
-		_methodName431 = "updateTicketEntry";
+		_methodName425 = "updateTicketEntry";
 
-		_methodParameterTypes431 = new String[] {
+		_methodParameterTypes425 = new String[] {
 				"long", "long", "long", "long", "long", "java.lang.String",
 				"java.lang.String", "java.lang.String", "java.lang.String",
 				"int", "int", "int", "int", "int", "int", "java.lang.String",
@@ -152,13 +152,13 @@ public class TicketEntryServiceClpInvoker {
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName410.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes410, parameterTypes)) {
+		if (_methodName404.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes404, parameterTypes)) {
 			return TicketEntryServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName415.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes415, parameterTypes)) {
+		if (_methodName409.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes409, parameterTypes)) {
 			return TicketEntryServiceUtil.addTicketEntry(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue(),
@@ -175,8 +175,8 @@ public class TicketEntryServiceClpInvoker {
 				(java.util.List<com.liferay.osb.model.TicketAttachment>)arguments[14]);
 		}
 
-		if (_methodName416.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes416, parameterTypes)) {
+		if (_methodName410.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes410, parameterTypes)) {
 			TicketEntryServiceUtil.closeTicketEntry(((Long)arguments[0]).longValue(),
 				((Integer)arguments[1]).intValue(),
 				(java.lang.String)arguments[2]);
@@ -184,45 +184,45 @@ public class TicketEntryServiceClpInvoker {
 			return null;
 		}
 
-		if (_methodName417.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes417, parameterTypes)) {
+		if (_methodName411.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes411, parameterTypes)) {
 			TicketEntryServiceUtil.escalateTicketEntry(((Long)arguments[0]).longValue());
 
 			return null;
 		}
 
-		if (_methodName418.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes418, parameterTypes)) {
+		if (_methodName412.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes412, parameterTypes)) {
 			return TicketEntryServiceUtil.forwardTicketEntry(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1]);
 		}
 
-		if (_methodName419.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes419, parameterTypes)) {
+		if (_methodName413.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes413, parameterTypes)) {
 			return TicketEntryServiceUtil.getTicketEntries(((Long)arguments[0]).longValue(),
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue(),
 				(com.liferay.portal.kernel.util.OrderByComparator)arguments[3]);
 		}
 
-		if (_methodName420.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes420, parameterTypes)) {
+		if (_methodName414.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes414, parameterTypes)) {
 			return TicketEntryServiceUtil.getTicketEntriesCount(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName421.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes421, parameterTypes)) {
+		if (_methodName415.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes415, parameterTypes)) {
 			return TicketEntryServiceUtil.getTicketEntry(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName422.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes422, parameterTypes)) {
+		if (_methodName416.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes416, parameterTypes)) {
 			return TicketEntryServiceUtil.getTicketEntry(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue());
 		}
 
-		if (_methodName423.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes423, parameterTypes)) {
+		if (_methodName417.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes417, parameterTypes)) {
 			return TicketEntryServiceUtil.search(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				(java.lang.String)arguments[2], (int[])arguments[3],
@@ -242,8 +242,8 @@ public class TicketEntryServiceClpInvoker {
 				(com.liferay.portal.kernel.search.Sort[])arguments[26]);
 		}
 
-		if (_methodName424.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes424, parameterTypes)) {
+		if (_methodName418.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes418, parameterTypes)) {
 			return TicketEntryServiceUtil.search(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				(java.lang.String)arguments[2],
@@ -253,8 +253,8 @@ public class TicketEntryServiceClpInvoker {
 				(com.liferay.portal.kernel.search.Sort[])arguments[6]);
 		}
 
-		if (_methodName425.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes425, parameterTypes)) {
+		if (_methodName419.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes419, parameterTypes)) {
 			return TicketEntryServiceUtil.search(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1], (int[])arguments[2],
 				(java.lang.Boolean)arguments[3],
@@ -291,16 +291,16 @@ public class TicketEntryServiceClpInvoker {
 				(com.liferay.portal.kernel.util.OrderByComparator)arguments[40]);
 		}
 
-		if (_methodName426.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes426, parameterTypes)) {
+		if (_methodName420.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes420, parameterTypes)) {
 			return TicketEntryServiceUtil.search((java.lang.String)arguments[0],
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue(),
 				(com.liferay.portal.kernel.util.OrderByComparator)arguments[3]);
 		}
 
-		if (_methodName427.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes427, parameterTypes)) {
+		if (_methodName421.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes421, parameterTypes)) {
 			return TicketEntryServiceUtil.searchCount(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1], (int[])arguments[2],
 				(java.lang.Boolean)arguments[3],
@@ -334,19 +334,19 @@ public class TicketEntryServiceClpInvoker {
 				((Boolean)arguments[37]).booleanValue());
 		}
 
-		if (_methodName428.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes428, parameterTypes)) {
+		if (_methodName422.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes422, parameterTypes)) {
 			return TicketEntryServiceUtil.searchCount((java.lang.String)arguments[0]);
 		}
 
-		if (_methodName429.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes429, parameterTypes)) {
+		if (_methodName423.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes423, parameterTypes)) {
 			return TicketEntryServiceUtil.updatePendingTypes(((Long)arguments[0]).longValue(),
 				(int[])arguments[1]);
 		}
 
-		if (_methodName430.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes430, parameterTypes)) {
+		if (_methodName424.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes424, parameterTypes)) {
 			return TicketEntryServiceUtil.updateTicketEntry(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue(),
@@ -358,8 +358,8 @@ public class TicketEntryServiceClpInvoker {
 				((Integer)arguments[8]).intValue());
 		}
 
-		if (_methodName431.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes431, parameterTypes)) {
+		if (_methodName425.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes425, parameterTypes)) {
 			return TicketEntryServiceUtil.updateTicketEntry(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue(),
@@ -390,8 +390,20 @@ public class TicketEntryServiceClpInvoker {
 		throw new UnsupportedOperationException();
 	}
 
+	private String _methodName404;
+	private String[] _methodParameterTypes404;
+	private String _methodName409;
+	private String[] _methodParameterTypes409;
 	private String _methodName410;
 	private String[] _methodParameterTypes410;
+	private String _methodName411;
+	private String[] _methodParameterTypes411;
+	private String _methodName412;
+	private String[] _methodParameterTypes412;
+	private String _methodName413;
+	private String[] _methodParameterTypes413;
+	private String _methodName414;
+	private String[] _methodParameterTypes414;
 	private String _methodName415;
 	private String[] _methodParameterTypes415;
 	private String _methodName416;
@@ -414,16 +426,4 @@ public class TicketEntryServiceClpInvoker {
 	private String[] _methodParameterTypes424;
 	private String _methodName425;
 	private String[] _methodParameterTypes425;
-	private String _methodName426;
-	private String[] _methodParameterTypes426;
-	private String _methodName427;
-	private String[] _methodParameterTypes427;
-	private String _methodName428;
-	private String[] _methodParameterTypes428;
-	private String _methodName429;
-	private String[] _methodParameterTypes429;
-	private String _methodName430;
-	private String[] _methodParameterTypes430;
-	private String _methodName431;
-	private String[] _methodParameterTypes431;
 }

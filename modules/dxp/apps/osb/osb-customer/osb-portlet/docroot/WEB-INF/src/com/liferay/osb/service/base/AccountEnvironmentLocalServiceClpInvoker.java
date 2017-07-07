@@ -123,43 +123,43 @@ public class AccountEnvironmentLocalServiceClpInvoker {
 				"com.liferay.osb.model.AccountEnvironment"
 			};
 
-		_methodName290 = "getOSGiServiceIdentifier";
+		_methodName286 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes290 = new String[] {  };
+		_methodParameterTypes286 = new String[] {  };
 
-		_methodName295 = "addAccountEnvironment";
+		_methodName291 = "addAccountEnvironment";
 
-		_methodParameterTypes295 = new String[] {
+		_methodParameterTypes291 = new String[] {
 				"long", "long", "long", "java.lang.String", "int",
 				"java.lang.String", "int", "int", "int", "int", "java.util.List",
 				"java.util.List"
 			};
 
-		_methodName296 = "deleteAccountEnvironment";
+		_methodName292 = "deleteAccountEnvironment";
 
-		_methodParameterTypes296 = new String[] { "long" };
+		_methodParameterTypes292 = new String[] { "long" };
 
-		_methodName297 = "fetchAccountEnvironment";
+		_methodName293 = "fetchAccountEnvironment";
 
-		_methodParameterTypes297 = new String[] {
+		_methodParameterTypes293 = new String[] {
 				"long", "long", "java.lang.String"
 			};
 
-		_methodName298 = "getAccountEnvironments";
+		_methodName294 = "getAccountEnvironments";
 
-		_methodParameterTypes298 = new String[] { "long" };
+		_methodParameterTypes294 = new String[] { "long" };
 
-		_methodName299 = "getAccountEnvironments";
+		_methodName295 = "getAccountEnvironments";
 
-		_methodParameterTypes299 = new String[] { "long", "long" };
+		_methodParameterTypes295 = new String[] { "long", "long" };
 
-		_methodName300 = "getAccountEnvironmentsMap";
+		_methodName296 = "getAccountEnvironmentsMap";
 
-		_methodParameterTypes300 = new String[] { "long" };
+		_methodParameterTypes296 = new String[] { "long" };
 
-		_methodName301 = "updateAccountEnvironment";
+		_methodName297 = "updateAccountEnvironment";
 
-		_methodParameterTypes301 = new String[] {
+		_methodParameterTypes297 = new String[] {
 				"long", "long", "long", "java.lang.String", "int",
 				"java.lang.String", "int", "int", "int", "int", "java.util.List",
 				"java.util.List"
@@ -270,13 +270,13 @@ public class AccountEnvironmentLocalServiceClpInvoker {
 			return AccountEnvironmentLocalServiceUtil.updateAccountEnvironment((com.liferay.osb.model.AccountEnvironment)arguments[0]);
 		}
 
-		if (_methodName290.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes290, parameterTypes)) {
+		if (_methodName286.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes286, parameterTypes)) {
 			return AccountEnvironmentLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName295.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes295, parameterTypes)) {
+		if (_methodName291.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes291, parameterTypes)) {
 			return AccountEnvironmentLocalServiceUtil.addAccountEnvironment(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue(),
@@ -291,35 +291,35 @@ public class AccountEnvironmentLocalServiceClpInvoker {
 				(java.util.List<java.lang.Integer>)arguments[11]);
 		}
 
-		if (_methodName296.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes296, parameterTypes)) {
+		if (_methodName292.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes292, parameterTypes)) {
 			return AccountEnvironmentLocalServiceUtil.deleteAccountEnvironment(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName297.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes297, parameterTypes)) {
+		if (_methodName293.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes293, parameterTypes)) {
 			return AccountEnvironmentLocalServiceUtil.fetchAccountEnvironment(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(), (java.lang.String)arguments[2]);
 		}
 
-		if (_methodName298.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes298, parameterTypes)) {
+		if (_methodName294.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes294, parameterTypes)) {
 			return AccountEnvironmentLocalServiceUtil.getAccountEnvironments(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName299.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes299, parameterTypes)) {
+		if (_methodName295.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes295, parameterTypes)) {
 			return AccountEnvironmentLocalServiceUtil.getAccountEnvironments(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue());
 		}
 
-		if (_methodName300.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes300, parameterTypes)) {
+		if (_methodName296.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes296, parameterTypes)) {
 			return AccountEnvironmentLocalServiceUtil.getAccountEnvironmentsMap(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName301.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes301, parameterTypes)) {
+		if (_methodName297.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes297, parameterTypes)) {
 			return AccountEnvironmentLocalServiceUtil.updateAccountEnvironment(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue(),
@@ -375,20 +375,20 @@ public class AccountEnvironmentLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName290;
-	private String[] _methodParameterTypes290;
+	private String _methodName286;
+	private String[] _methodParameterTypes286;
+	private String _methodName291;
+	private String[] _methodParameterTypes291;
+	private String _methodName292;
+	private String[] _methodParameterTypes292;
+	private String _methodName293;
+	private String[] _methodParameterTypes293;
+	private String _methodName294;
+	private String[] _methodParameterTypes294;
 	private String _methodName295;
 	private String[] _methodParameterTypes295;
 	private String _methodName296;
 	private String[] _methodParameterTypes296;
 	private String _methodName297;
 	private String[] _methodParameterTypes297;
-	private String _methodName298;
-	private String[] _methodParameterTypes298;
-	private String _methodName299;
-	private String[] _methodParameterTypes299;
-	private String _methodName300;
-	private String[] _methodParameterTypes300;
-	private String _methodName301;
-	private String[] _methodParameterTypes301;
 }

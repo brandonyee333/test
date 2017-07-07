@@ -198,42 +198,42 @@ public class OfferingDefinitionLocalServiceClpInvoker {
 
 		_methodParameterTypes36 = new String[] { "long", "long[][]" };
 
-		_methodName303 = "getOSGiServiceIdentifier";
+		_methodName299 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes303 = new String[] {  };
+		_methodParameterTypes299 = new String[] {  };
 
-		_methodName308 = "addOfferingDefinition";
+		_methodName304 = "addOfferingDefinition";
 
-		_methodParameterTypes308 = new String[] {
+		_methodParameterTypes304 = new String[] {
 				"long", "long", "long", "java.lang.String", "boolean", "boolean",
 				"long", "long", "boolean"
 			};
 
-		_methodName309 = "deleteOfferingDefinition";
+		_methodName305 = "deleteOfferingDefinition";
 
-		_methodParameterTypes309 = new String[] { "long" };
+		_methodParameterTypes305 = new String[] { "long" };
 
-		_methodName310 = "getOfferingDefinitions";
+		_methodName306 = "getOfferingDefinitions";
 
-		_methodParameterTypes310 = new String[] {
+		_methodParameterTypes306 = new String[] {
 				"long[][]", "long[][]", "int", "int"
 			};
 
-		_methodName311 = "getOfferingDefinitionsCount";
+		_methodName307 = "getOfferingDefinitionsCount";
 
-		_methodParameterTypes311 = new String[] { "long[][]", "long[][]" };
+		_methodParameterTypes307 = new String[] { "long[][]", "long[][]" };
 
-		_methodName312 = "getProductEntryOfferingDefinitions";
+		_methodName308 = "getProductEntryOfferingDefinitions";
 
-		_methodParameterTypes312 = new String[] { "long" };
+		_methodParameterTypes308 = new String[] { "long" };
 
-		_methodName313 = "getSupportResponseOfferingDefinitions";
+		_methodName309 = "getSupportResponseOfferingDefinitions";
 
-		_methodParameterTypes313 = new String[] { "long" };
+		_methodParameterTypes309 = new String[] { "long" };
 
-		_methodName314 = "updateOfferingDefinition";
+		_methodName310 = "updateOfferingDefinition";
 
-		_methodParameterTypes314 = new String[] {
+		_methodParameterTypes310 = new String[] {
 				"long", "long", "long", "java.lang.String", "boolean", "boolean",
 				"long", "long", "boolean"
 			};
@@ -463,13 +463,13 @@ public class OfferingDefinitionLocalServiceClpInvoker {
 			return null;
 		}
 
-		if (_methodName303.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes303, parameterTypes)) {
+		if (_methodName299.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes299, parameterTypes)) {
 			return OfferingDefinitionLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName308.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes308, parameterTypes)) {
+		if (_methodName304.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes304, parameterTypes)) {
 			return OfferingDefinitionLocalServiceUtil.addOfferingDefinition(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue(),
@@ -481,36 +481,36 @@ public class OfferingDefinitionLocalServiceClpInvoker {
 				((Boolean)arguments[8]).booleanValue());
 		}
 
-		if (_methodName309.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes309, parameterTypes)) {
+		if (_methodName305.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes305, parameterTypes)) {
 			return OfferingDefinitionLocalServiceUtil.deleteOfferingDefinition(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName310.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes310, parameterTypes)) {
+		if (_methodName306.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes306, parameterTypes)) {
 			return OfferingDefinitionLocalServiceUtil.getOfferingDefinitions((long[])arguments[0],
 				(long[])arguments[1], ((Integer)arguments[2]).intValue(),
 				((Integer)arguments[3]).intValue());
 		}
 
-		if (_methodName311.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes311, parameterTypes)) {
+		if (_methodName307.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes307, parameterTypes)) {
 			return OfferingDefinitionLocalServiceUtil.getOfferingDefinitionsCount((long[])arguments[0],
 				(long[])arguments[1]);
 		}
 
-		if (_methodName312.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes312, parameterTypes)) {
+		if (_methodName308.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes308, parameterTypes)) {
 			return OfferingDefinitionLocalServiceUtil.getProductEntryOfferingDefinitions(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName313.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes313, parameterTypes)) {
+		if (_methodName309.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes309, parameterTypes)) {
 			return OfferingDefinitionLocalServiceUtil.getSupportResponseOfferingDefinitions(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName314.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes314, parameterTypes)) {
+		if (_methodName310.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes310, parameterTypes)) {
 			return OfferingDefinitionLocalServiceUtil.updateOfferingDefinition(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue(),
@@ -597,20 +597,20 @@ public class OfferingDefinitionLocalServiceClpInvoker {
 	private String[] _methodParameterTypes35;
 	private String _methodName36;
 	private String[] _methodParameterTypes36;
-	private String _methodName303;
-	private String[] _methodParameterTypes303;
+	private String _methodName299;
+	private String[] _methodParameterTypes299;
+	private String _methodName304;
+	private String[] _methodParameterTypes304;
+	private String _methodName305;
+	private String[] _methodParameterTypes305;
+	private String _methodName306;
+	private String[] _methodParameterTypes306;
+	private String _methodName307;
+	private String[] _methodParameterTypes307;
 	private String _methodName308;
 	private String[] _methodParameterTypes308;
 	private String _methodName309;
 	private String[] _methodParameterTypes309;
 	private String _methodName310;
 	private String[] _methodParameterTypes310;
-	private String _methodName311;
-	private String[] _methodParameterTypes311;
-	private String _methodName312;
-	private String[] _methodParameterTypes312;
-	private String _methodName313;
-	private String[] _methodParameterTypes313;
-	private String _methodName314;
-	private String[] _methodParameterTypes314;
 }

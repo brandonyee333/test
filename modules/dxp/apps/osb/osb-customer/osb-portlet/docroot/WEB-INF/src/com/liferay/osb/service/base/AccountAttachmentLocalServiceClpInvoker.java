@@ -123,56 +123,56 @@ public class AccountAttachmentLocalServiceClpInvoker {
 				"com.liferay.osb.model.AccountAttachment"
 			};
 
-		_methodName290 = "getOSGiServiceIdentifier";
+		_methodName286 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes290 = new String[] {  };
+		_methodParameterTypes286 = new String[] {  };
 
-		_methodName295 = "addAccountAttachment";
+		_methodName291 = "addAccountAttachment";
 
-		_methodParameterTypes295 = new String[] {
+		_methodParameterTypes291 = new String[] {
 				"long", "long", "long",
 				"com.liferay.portal.kernel.util.ObjectValuePair", "int"
 			};
 
-		_methodName296 = "addAccountAttachments";
+		_methodName292 = "addAccountAttachments";
 
-		_methodParameterTypes296 = new String[] {
+		_methodParameterTypes292 = new String[] {
 				"long", "long", "long", "java.util.List", "java.util.List"
 			};
 
-		_methodName297 = "deleteAccountAttachment";
+		_methodName293 = "deleteAccountAttachment";
 
-		_methodParameterTypes297 = new String[] {
+		_methodParameterTypes293 = new String[] {
 				"com.liferay.osb.model.AccountAttachment"
 			};
 
-		_methodName298 = "deleteAccountAttachment";
+		_methodName294 = "deleteAccountAttachment";
 
-		_methodParameterTypes298 = new String[] { "long" };
+		_methodParameterTypes294 = new String[] { "long" };
 
-		_methodName299 = "deleteAccountAttachments";
+		_methodName295 = "deleteAccountAttachments";
 
-		_methodParameterTypes299 = new String[] { "long", "long" };
+		_methodParameterTypes295 = new String[] { "long", "long" };
 
-		_methodName300 = "deleteAccountAttachments";
+		_methodName296 = "deleteAccountAttachments";
 
-		_methodParameterTypes300 = new String[] { "long", "long", "int" };
+		_methodParameterTypes296 = new String[] { "long", "long", "int" };
 
-		_methodName301 = "getAccountAttachments";
+		_methodName297 = "getAccountAttachments";
 
-		_methodParameterTypes301 = new String[] { "long" };
+		_methodParameterTypes297 = new String[] { "long" };
 
-		_methodName302 = "getAccountAttachments";
+		_methodName298 = "getAccountAttachments";
 
-		_methodParameterTypes302 = new String[] { "long", "long" };
+		_methodParameterTypes298 = new String[] { "long", "long" };
 
-		_methodName303 = "getAccountAttachments";
+		_methodName299 = "getAccountAttachments";
 
-		_methodParameterTypes303 = new String[] { "long", "long", "int" };
+		_methodParameterTypes299 = new String[] { "long", "long", "int" };
 
-		_methodName304 = "getFileAsStream";
+		_methodName300 = "getFileAsStream";
 
-		_methodParameterTypes304 = new String[] {
+		_methodParameterTypes300 = new String[] {
 				"com.liferay.osb.model.AccountAttachment"
 			};
 	}
@@ -281,13 +281,13 @@ public class AccountAttachmentLocalServiceClpInvoker {
 			return AccountAttachmentLocalServiceUtil.updateAccountAttachment((com.liferay.osb.model.AccountAttachment)arguments[0]);
 		}
 
-		if (_methodName290.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes290, parameterTypes)) {
+		if (_methodName286.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes286, parameterTypes)) {
 			return AccountAttachmentLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName295.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes295, parameterTypes)) {
+		if (_methodName291.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes291, parameterTypes)) {
 			return AccountAttachmentLocalServiceUtil.addAccountAttachment(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue(),
@@ -295,8 +295,8 @@ public class AccountAttachmentLocalServiceClpInvoker {
 				((Integer)arguments[4]).intValue());
 		}
 
-		if (_methodName296.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes296, parameterTypes)) {
+		if (_methodName292.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes292, parameterTypes)) {
 			return AccountAttachmentLocalServiceUtil.addAccountAttachments(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue(),
@@ -304,53 +304,53 @@ public class AccountAttachmentLocalServiceClpInvoker {
 				(java.util.List<java.lang.Integer>)arguments[4]);
 		}
 
+		if (_methodName293.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes293, parameterTypes)) {
+			return AccountAttachmentLocalServiceUtil.deleteAccountAttachment((com.liferay.osb.model.AccountAttachment)arguments[0]);
+		}
+
+		if (_methodName294.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes294, parameterTypes)) {
+			return AccountAttachmentLocalServiceUtil.deleteAccountAttachment(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName295.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes295, parameterTypes)) {
+			AccountAttachmentLocalServiceUtil.deleteAccountAttachments(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue());
+
+			return null;
+		}
+
+		if (_methodName296.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes296, parameterTypes)) {
+			AccountAttachmentLocalServiceUtil.deleteAccountAttachments(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				((Integer)arguments[2]).intValue());
+
+			return null;
+		}
+
 		if (_methodName297.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes297, parameterTypes)) {
-			return AccountAttachmentLocalServiceUtil.deleteAccountAttachment((com.liferay.osb.model.AccountAttachment)arguments[0]);
+			return AccountAttachmentLocalServiceUtil.getAccountAttachments(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName298.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes298, parameterTypes)) {
-			return AccountAttachmentLocalServiceUtil.deleteAccountAttachment(((Long)arguments[0]).longValue());
+			return AccountAttachmentLocalServiceUtil.getAccountAttachments(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue());
 		}
 
 		if (_methodName299.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes299, parameterTypes)) {
-			AccountAttachmentLocalServiceUtil.deleteAccountAttachments(((Long)arguments[0]).longValue(),
-				((Long)arguments[1]).longValue());
-
-			return null;
+			return AccountAttachmentLocalServiceUtil.getAccountAttachments(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				((Integer)arguments[2]).intValue());
 		}
 
 		if (_methodName300.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes300, parameterTypes)) {
-			AccountAttachmentLocalServiceUtil.deleteAccountAttachments(((Long)arguments[0]).longValue(),
-				((Long)arguments[1]).longValue(),
-				((Integer)arguments[2]).intValue());
-
-			return null;
-		}
-
-		if (_methodName301.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes301, parameterTypes)) {
-			return AccountAttachmentLocalServiceUtil.getAccountAttachments(((Long)arguments[0]).longValue());
-		}
-
-		if (_methodName302.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes302, parameterTypes)) {
-			return AccountAttachmentLocalServiceUtil.getAccountAttachments(((Long)arguments[0]).longValue(),
-				((Long)arguments[1]).longValue());
-		}
-
-		if (_methodName303.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes303, parameterTypes)) {
-			return AccountAttachmentLocalServiceUtil.getAccountAttachments(((Long)arguments[0]).longValue(),
-				((Long)arguments[1]).longValue(),
-				((Integer)arguments[2]).intValue());
-		}
-
-		if (_methodName304.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes304, parameterTypes)) {
 			return AccountAttachmentLocalServiceUtil.getFileAsStream((com.liferay.osb.model.AccountAttachment)arguments[0]);
 		}
 
@@ -395,8 +395,16 @@ public class AccountAttachmentLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName290;
-	private String[] _methodParameterTypes290;
+	private String _methodName286;
+	private String[] _methodParameterTypes286;
+	private String _methodName291;
+	private String[] _methodParameterTypes291;
+	private String _methodName292;
+	private String[] _methodParameterTypes292;
+	private String _methodName293;
+	private String[] _methodParameterTypes293;
+	private String _methodName294;
+	private String[] _methodParameterTypes294;
 	private String _methodName295;
 	private String[] _methodParameterTypes295;
 	private String _methodName296;
@@ -409,12 +417,4 @@ public class AccountAttachmentLocalServiceClpInvoker {
 	private String[] _methodParameterTypes299;
 	private String _methodName300;
 	private String[] _methodParameterTypes300;
-	private String _methodName301;
-	private String[] _methodParameterTypes301;
-	private String _methodName302;
-	private String[] _methodParameterTypes302;
-	private String _methodName303;
-	private String[] _methodParameterTypes303;
-	private String _methodName304;
-	private String[] _methodParameterTypes304;
 }

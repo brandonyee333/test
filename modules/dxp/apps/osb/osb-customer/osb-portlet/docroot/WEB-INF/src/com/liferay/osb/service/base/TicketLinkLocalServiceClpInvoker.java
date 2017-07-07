@@ -119,47 +119,47 @@ public class TicketLinkLocalServiceClpInvoker {
 				"com.liferay.osb.model.TicketLink"
 			};
 
-		_methodName290 = "getOSGiServiceIdentifier";
+		_methodName286 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes290 = new String[] {  };
+		_methodParameterTypes286 = new String[] {  };
 
-		_methodName295 = "addTicketLink";
+		_methodName291 = "addTicketLink";
 
-		_methodParameterTypes295 = new String[] {
+		_methodParameterTypes291 = new String[] {
 				"long", "long", "long", "java.lang.String[][]",
 				"java.lang.Integer[][]", "int",
 				"com.liferay.portal.kernel.service.ServiceContext"
 			};
 
-		_methodName296 = "deleteTicketLink";
+		_methodName292 = "deleteTicketLink";
 
-		_methodParameterTypes296 = new String[] { "long", "long" };
+		_methodParameterTypes292 = new String[] { "long", "long" };
 
-		_methodName297 = "deleteTicketLink";
+		_methodName293 = "deleteTicketLink";
 
-		_methodParameterTypes297 = new String[] {
+		_methodParameterTypes293 = new String[] {
 				"long", "com.liferay.osb.model.TicketLink"
 			};
 
-		_methodName298 = "getTicketLinks";
+		_methodName294 = "getTicketLinks";
 
-		_methodParameterTypes298 = new String[] { "long", "int" };
+		_methodParameterTypes294 = new String[] { "long", "int" };
 
-		_methodName299 = "getTicketLinks";
+		_methodName295 = "getTicketLinks";
 
-		_methodParameterTypes299 = new String[] { "long", "int[][]" };
+		_methodParameterTypes295 = new String[] { "long", "int[][]" };
 
-		_methodName300 = "getTicketLinks";
+		_methodName296 = "getTicketLinks";
 
-		_methodParameterTypes300 = new String[] { "long", "long" };
+		_methodParameterTypes296 = new String[] { "long", "long" };
 
-		_methodName301 = "getTicketLinksCount";
+		_methodName297 = "getTicketLinksCount";
 
-		_methodParameterTypes301 = new String[] { "long", "int" };
+		_methodParameterTypes297 = new String[] { "long", "int" };
 
-		_methodName302 = "getTicketLinksCount";
+		_methodName298 = "getTicketLinksCount";
 
-		_methodParameterTypes302 = new String[] { "long", "int[][]" };
+		_methodParameterTypes298 = new String[] { "long", "int[][]" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -266,13 +266,13 @@ public class TicketLinkLocalServiceClpInvoker {
 			return TicketLinkLocalServiceUtil.updateTicketLink((com.liferay.osb.model.TicketLink)arguments[0]);
 		}
 
-		if (_methodName290.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes290, parameterTypes)) {
+		if (_methodName286.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes286, parameterTypes)) {
 			return TicketLinkLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName295.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes295, parameterTypes)) {
+		if (_methodName291.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes291, parameterTypes)) {
 			return TicketLinkLocalServiceUtil.addTicketLink(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue(),
@@ -282,48 +282,48 @@ public class TicketLinkLocalServiceClpInvoker {
 				(com.liferay.portal.kernel.service.ServiceContext)arguments[6]);
 		}
 
-		if (_methodName296.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes296, parameterTypes)) {
+		if (_methodName292.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes292, parameterTypes)) {
 			TicketLinkLocalServiceUtil.deleteTicketLink(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue());
 
 			return null;
 		}
 
-		if (_methodName297.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes297, parameterTypes)) {
+		if (_methodName293.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes293, parameterTypes)) {
 			TicketLinkLocalServiceUtil.deleteTicketLink(((Long)arguments[0]).longValue(),
 				(com.liferay.osb.model.TicketLink)arguments[1]);
 
 			return null;
 		}
 
-		if (_methodName298.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes298, parameterTypes)) {
+		if (_methodName294.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes294, parameterTypes)) {
 			return TicketLinkLocalServiceUtil.getTicketLinks(((Long)arguments[0]).longValue(),
 				((Integer)arguments[1]).intValue());
 		}
 
-		if (_methodName299.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes299, parameterTypes)) {
+		if (_methodName295.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes295, parameterTypes)) {
 			return TicketLinkLocalServiceUtil.getTicketLinks(((Long)arguments[0]).longValue(),
 				(int[])arguments[1]);
 		}
 
-		if (_methodName300.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes300, parameterTypes)) {
+		if (_methodName296.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes296, parameterTypes)) {
 			return TicketLinkLocalServiceUtil.getTicketLinks(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue());
 		}
 
-		if (_methodName301.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes301, parameterTypes)) {
+		if (_methodName297.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes297, parameterTypes)) {
 			return TicketLinkLocalServiceUtil.getTicketLinksCount(((Long)arguments[0]).longValue(),
 				((Integer)arguments[1]).intValue());
 		}
 
-		if (_methodName302.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes302, parameterTypes)) {
+		if (_methodName298.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes298, parameterTypes)) {
 			return TicketLinkLocalServiceUtil.getTicketLinksCount(((Long)arguments[0]).longValue(),
 				(int[])arguments[1]);
 		}
@@ -369,8 +369,16 @@ public class TicketLinkLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName290;
-	private String[] _methodParameterTypes290;
+	private String _methodName286;
+	private String[] _methodParameterTypes286;
+	private String _methodName291;
+	private String[] _methodParameterTypes291;
+	private String _methodName292;
+	private String[] _methodParameterTypes292;
+	private String _methodName293;
+	private String[] _methodParameterTypes293;
+	private String _methodName294;
+	private String[] _methodParameterTypes294;
 	private String _methodName295;
 	private String[] _methodParameterTypes295;
 	private String _methodName296;
@@ -379,12 +387,4 @@ public class TicketLinkLocalServiceClpInvoker {
 	private String[] _methodParameterTypes297;
 	private String _methodName298;
 	private String[] _methodParameterTypes298;
-	private String _methodName299;
-	private String[] _methodParameterTypes299;
-	private String _methodName300;
-	private String[] _methodParameterTypes300;
-	private String _methodName301;
-	private String[] _methodParameterTypes301;
-	private String _methodName302;
-	private String[] _methodParameterTypes302;
 }

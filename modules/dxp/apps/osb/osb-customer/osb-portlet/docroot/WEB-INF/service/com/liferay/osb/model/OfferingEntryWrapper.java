@@ -251,13 +251,6 @@ public class OfferingEntryWrapper implements OfferingEntry,
 	}
 
 	@Override
-	public OfferingEntryGroup getOfferingEntryGroup()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
-		return _offeringEntry.getOfferingEntryGroup();
-	}
-
-	@Override
 	public OrderEntry getOrderEntry()
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
@@ -336,6 +329,13 @@ public class OfferingEntryWrapper implements OfferingEntry,
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _offeringEntry.getExpandoBridge();
+	}
+
+	@Override
+	public OfferingEntryGroup getOfferingEntryGroup()
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _offeringEntry.getOfferingEntryGroup();
 	}
 
 	@Override
