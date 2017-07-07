@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.Date;
 import java.util.List;
@@ -85,8 +86,12 @@ public class AccountCustomerLocalServiceImpl
 				accountCustomer.setAccountEntryId(accountEntryId);
 				accountCustomer.setRole(roles[i]);
 				accountCustomer.setNotifications(notifications[i]);
+				
+				//TODO implement serviceContext how needed
+				
+				ServiceContext serviceContext = new ServiceContext();
 
-				accountCustomerPersistence.update(accountCustomer, false);
+				accountCustomerPersistence.update(accountCustomer, serviceContext);
 
 				try {
 					if (accountEntry.getType() !=
@@ -133,8 +138,12 @@ public class AccountCustomerLocalServiceImpl
 
 				accountCustomer.setRole(roles[i]);
 				accountCustomer.setNotifications(notifications[i]);
+				
+				//TODO implement serviceContext how needed
+				
+				ServiceContext serviceContext = new ServiceContext();
 
-				accountCustomerPersistence.update(accountCustomer, false);
+				accountCustomerPersistence.update(accountCustomer, serviceContext);
 
 				if (oldRole != roles[i]) {
 					auditEntryLocalService.addAuditEntry(
@@ -285,8 +294,12 @@ public class AccountCustomerLocalServiceImpl
 			accountCustomer.setNotifications(
 				AccountCustomerConstants.NOTIFICATIONS_NONE);
 		}
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		accountCustomerPersistence.update(accountCustomer, false);
+		accountCustomerPersistence.update(accountCustomer, serviceContext);
 	}
 
 	protected void assignOrganizations(long[] userIds, long organizationId)

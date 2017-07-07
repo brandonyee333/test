@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.Date;
 import java.util.List;
@@ -68,8 +69,12 @@ public class ContractAuditLocalServiceImpl
 		}
 
 		contractAudit.setVersion(contractEntry.getVersion());
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		contractAuditPersistence.update(contractAudit, false);
+		contractAuditPersistence.update(contractAudit, serviceContext);
 	}
 
 	public int getContractAuditCount(long userId, long contractEntryId)

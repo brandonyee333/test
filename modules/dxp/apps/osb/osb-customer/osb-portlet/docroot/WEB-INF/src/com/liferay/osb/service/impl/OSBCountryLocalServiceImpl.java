@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.exception.CountryNumberException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.Country;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -49,8 +50,12 @@ public class OSBCountryLocalServiceImpl extends OSBCountryLocalServiceBaseImpl {
 		country.setNumber(number);
 		country.setIdd(idd);
 		country.setActive(active);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		return countryPersistence.update(country, false);
+		return countryPersistence.update(country, serviceContext);
 	}
 
 	public Country deleteCountry(long countryId)
@@ -94,8 +99,12 @@ public class OSBCountryLocalServiceImpl extends OSBCountryLocalServiceBaseImpl {
 		country.setNumber(number);
 		country.setIdd(idd);
 		country.setActive(active);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		return countryPersistence.update(country, false);
+		return countryPersistence.update(country, serviceContext);
 	}
 
 	protected void validate(

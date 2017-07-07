@@ -23,6 +23,7 @@ import com.liferay.osb.service.base.HolidayEntryLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.DateUtil;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -55,8 +56,12 @@ public class HolidayEntryLocalServiceImpl
 		holidayEntry.setStartDate(startDate);
 		holidayEntry.setEndDate(endDate);
 		holidayEntry.setRepeatYearly(repeatYearly);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		holidayEntryPersistence.update(holidayEntry, false);
+		holidayEntryPersistence.update(holidayEntry, serviceContext);
 
 		return holidayEntry;
 	}
@@ -107,8 +112,12 @@ public class HolidayEntryLocalServiceImpl
 		holidayEntry.setStartDate(startDate);
 		holidayEntry.setEndDate(endDate);
 		holidayEntry.setRepeatYearly(repeatYearly);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		holidayEntryPersistence.update(holidayEntry, false);
+		holidayEntryPersistence.update(holidayEntry, serviceContext);
 
 		return holidayEntry;
 	}

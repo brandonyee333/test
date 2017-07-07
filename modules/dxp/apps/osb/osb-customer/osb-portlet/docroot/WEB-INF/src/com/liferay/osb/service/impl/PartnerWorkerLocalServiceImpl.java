@@ -21,6 +21,7 @@ import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -53,8 +54,12 @@ public class PartnerWorkerLocalServiceImpl
 
 			partnerWorker.setRole(roles[i]);
 			partnerWorker.setNotifications(notifications[i]);
+			
+			//TODO implement serviceContext how needed
+			
+			ServiceContext serviceContext = new ServiceContext();
 
-			partnerWorkerPersistence.update(partnerWorker, false);
+			partnerWorkerPersistence.update(partnerWorker, serviceContext);
 		}
 
 		for (long userId : userIds) {

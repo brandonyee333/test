@@ -23,6 +23,7 @@ import com.liferay.osb.model.TicketFlagConstants;
 import com.liferay.osb.service.base.TicketFlagLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -142,8 +143,12 @@ public class TicketFlagLocalServiceImpl extends TicketFlagLocalServiceBaseImpl {
 		ticketFlag.setTicketEntryId(ticketEntryId);
 		ticketFlag.setType(type);
 		ticketFlag.setFlag(flag);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		ticketFlagPersistence.update(ticketFlag, false);
+		ticketFlagPersistence.update(ticketFlag, serviceContext);
 
 		return ticketFlag;
 	}

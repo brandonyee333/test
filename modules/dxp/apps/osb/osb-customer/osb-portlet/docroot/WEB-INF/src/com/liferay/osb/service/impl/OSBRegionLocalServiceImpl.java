@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.exception.RegionNameException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.Region;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -43,8 +44,12 @@ public class OSBRegionLocalServiceImpl extends OSBRegionLocalServiceBaseImpl {
 		region.setRegionCode(regionCode);
 		region.setName(name);
 		region.setActive(active);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		return regionPersistence.update(region, false);
+		return regionPersistence.update(region, serviceContext);
 	}
 
 	public Region deleteRegion(long regionId)
@@ -96,8 +101,12 @@ public class OSBRegionLocalServiceImpl extends OSBRegionLocalServiceBaseImpl {
 		region.setRegionCode(regionCode);
 		region.setName(name);
 		region.setActive(active);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		return regionPersistence.update(region, false);
+		return regionPersistence.update(region, serviceContext);
 	}
 
 	protected void validate(

@@ -22,6 +22,7 @@ import com.liferay.osb.service.base.OfferingBundleLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.Date;
 
@@ -48,8 +49,12 @@ public class OfferingBundleLocalServiceImpl
 		offeringBundle.setUserName(user.getFullName());
 		offeringBundle.setCreateDate(new Date());
 		offeringBundle.setName(name);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		offeringBundlePersistence.update(offeringBundle, false);
+		offeringBundlePersistence.update(offeringBundle, serviceContext);
 
 		offeringBundlePersistence.setOfferingDefinitions(
 			offeringBundleId, offeringDefinitionIds);
@@ -67,8 +72,12 @@ public class OfferingBundleLocalServiceImpl
 			offeringBundlePersistence.findByPrimaryKey(offeringBundleId);
 
 		offeringBundle.setName(name);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		offeringBundlePersistence.update(offeringBundle, false);
+		offeringBundlePersistence.update(offeringBundle, serviceContext);
 
 		offeringBundlePersistence.setOfferingDefinitions(
 			offeringBundleId, offeringDefinitionIds);

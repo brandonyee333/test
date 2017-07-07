@@ -23,6 +23,7 @@ import com.liferay.osb.service.base.SupportRegionLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.Date;
 import java.util.List;
@@ -54,8 +55,12 @@ public class SupportRegionLocalServiceImpl
 		supportRegion.setName(name);
 		supportRegion.setDescription(description);
 		supportRegion.setTimeZoneId(timeZoneId);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		supportRegionPersistence.update(supportRegion, false);
+		supportRegionPersistence.update(supportRegion, serviceContext);
 
 		return supportRegion;
 	}
@@ -112,8 +117,12 @@ public class SupportRegionLocalServiceImpl
 		supportRegion.setName(name);
 		supportRegion.setDescription(description);
 		supportRegion.setTimeZoneId(timeZoneId);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		supportRegionPersistence.update(supportRegion, false);
+		supportRegionPersistence.update(supportRegion, serviceContext);
 
 		if (supportTeamIds != null) {
 			supportRegionPersistence.setSupportTeams(

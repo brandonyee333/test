@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.Date;
 import java.util.List;
@@ -62,8 +63,12 @@ public class TicketCannedResponseLocalServiceImpl
 		ticketCannedResponse.setModifiedDate(now);
 		ticketCannedResponse.setName(nameXml);
 		ticketCannedResponse.setContent(contentXml);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		ticketCannedResponsePersistence.update(ticketCannedResponse, false);
+		ticketCannedResponsePersistence.update(ticketCannedResponse, serviceContext);
 
 		return ticketCannedResponse;
 	}
@@ -78,8 +83,12 @@ public class TicketCannedResponseLocalServiceImpl
 		int useCount = ticketCannedResponse.getUseCount();
 
 		ticketCannedResponse.setUseCount(useCount + 1);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		ticketCannedResponsePersistence.update(ticketCannedResponse, false);
+		ticketCannedResponsePersistence.update(ticketCannedResponse, serviceContext);
 	}
 
 	public void removeCannedResponseLocale(
@@ -107,8 +116,12 @@ public class TicketCannedResponseLocalServiceImpl
 		ticketCannedResponse.setModifiedDate(new Date());
 		ticketCannedResponse.setName(nameXml);
 		ticketCannedResponse.setContent(contentXml);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		ticketCannedResponsePersistence.update(ticketCannedResponse, false);
+		ticketCannedResponsePersistence.update(ticketCannedResponse, serviceContext);
 	}
 
 	public List<TicketCannedResponse> search(
@@ -162,8 +175,12 @@ public class TicketCannedResponseLocalServiceImpl
 		ticketCannedResponse.setModifiedDate(new Date());
 		ticketCannedResponse.setName(nameXml);
 		ticketCannedResponse.setContent(contentXml);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		ticketCannedResponsePersistence.update(ticketCannedResponse, false);
+		ticketCannedResponsePersistence.update(ticketCannedResponse, serviceContext);
 
 		return ticketCannedResponse;
 	}

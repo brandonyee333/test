@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -94,8 +95,12 @@ public class OfferingEntryLocalServiceImpl
 		offeringEntry.setSizing(sizing);
 		offeringEntry.setQuantity(quantity);
 		offeringEntry.setStatus(status);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		offeringEntryPersistence.update(offeringEntry, false);
+		offeringEntryPersistence.update(offeringEntry, serviceContext);
 
 		accountEntryLocalService.recalculateHighestSupportResponse(
 			accountEntryId);
@@ -299,8 +304,12 @@ public class OfferingEntryLocalServiceImpl
 		offeringEntry.setSupportEndDate(supportEndDate);
 		offeringEntry.setSizing(sizing);
 		offeringEntry.setQuantity(quantity);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		return offeringEntryPersistence.update(offeringEntry, false);
+		return offeringEntryPersistence.update(offeringEntry, serviceContext);
 	}
 
 	public OfferingEntry updateStatus(
@@ -318,8 +327,12 @@ public class OfferingEntryLocalServiceImpl
 		}
 
 		offeringEntry.setStatus(status);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		offeringEntryPersistence.update(offeringEntry, false);
+		offeringEntryPersistence.update(offeringEntry, serviceContext);
 
 		accountEntryLocalService.recalculateHighestSupportResponse(
 			offeringEntry.getAccountEntryId());

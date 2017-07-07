@@ -21,6 +21,7 @@ import com.liferay.osb.model.HolidayEntry;
 import com.liferay.osb.service.base.HolidayCalendarLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.HashSet;
 import java.util.List;
@@ -47,8 +48,12 @@ public class HolidayCalendarLocalServiceImpl
 
 		holidayCalendar.setName(name);
 		holidayCalendar.setDescription(description);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		holidayCalendarPersistence.update(holidayCalendar, false);
+		holidayCalendarPersistence.update(holidayCalendar, serviceContext);
 
 		// Holiday entries
 
@@ -97,8 +102,12 @@ public class HolidayCalendarLocalServiceImpl
 
 		holidayCalendar.setName(name);
 		holidayCalendar.setDescription(description);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		holidayCalendarPersistence.update(holidayCalendar, false);
+		holidayCalendarPersistence.update(holidayCalendar, serviceContext);
 
 		// Holiday entries
 

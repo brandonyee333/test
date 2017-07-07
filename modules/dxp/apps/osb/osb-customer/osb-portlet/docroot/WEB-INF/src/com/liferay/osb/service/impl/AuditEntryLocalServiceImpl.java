@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -101,8 +102,12 @@ public class AuditEntryLocalServiceImpl extends AuditEntryLocalServiceBaseImpl {
 		auditEntry.setNewLabel(newLabel);
 		auditEntry.setNewValue(newValue);
 		auditEntry.setI18n(i18n);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		auditEntryPersistence.update(auditEntry, false);
+		auditEntryPersistence.update(auditEntry, serviceContext);
 
 		return auditEntry;
 	}

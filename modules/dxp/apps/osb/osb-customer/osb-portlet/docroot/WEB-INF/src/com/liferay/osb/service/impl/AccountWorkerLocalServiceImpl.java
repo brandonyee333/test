@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.Date;
 import java.util.List;
@@ -74,8 +75,12 @@ public class AccountWorkerLocalServiceImpl
 				accountWorker.setAccountEntryId(accountEntryId);
 				accountWorker.setRole(roles[i]);
 				accountWorker.setNotifications(notifications[i]);
+				
+				//TODO implement serviceContext how needed
+				
+				ServiceContext serviceContext = new ServiceContext();
 
-				accountWorkerPersistence.update(accountWorker, false);
+				accountWorkerPersistence.update(accountWorker, serviceContext);
 
 				auditEntryLocalService.addAuditEntry(
 					userId, user.getFullName(), now, classNameId,
@@ -105,8 +110,12 @@ public class AccountWorkerLocalServiceImpl
 
 				accountWorker.setRole(roles[i]);
 				accountWorker.setNotifications(notifications[i]);
+				
+				//TODO implement serviceContext how needed
+				
+				ServiceContext serviceContext = new ServiceContext();
 
-				accountWorkerPersistence.update(accountWorker, false);
+				accountWorkerPersistence.update(accountWorker, serviceContext);
 
 				if (oldRole != roles[i]) {
 					auditEntryLocalService.addAuditEntry(

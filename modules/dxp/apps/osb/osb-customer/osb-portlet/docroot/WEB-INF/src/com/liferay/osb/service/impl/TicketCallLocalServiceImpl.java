@@ -80,8 +80,12 @@ public class TicketCallLocalServiceImpl extends TicketCallLocalServiceBaseImpl {
 		ticketCall.setCustomerContact(customerContact);
 		ticketCall.setConfirmation(confirmation);
 		ticketCall.setInstructions(instructions);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		ticketCallPersistence.update(ticketCall, false);
+		ticketCallPersistence.update(ticketCall, serviceContext);
 
 		// Ticket comments
 

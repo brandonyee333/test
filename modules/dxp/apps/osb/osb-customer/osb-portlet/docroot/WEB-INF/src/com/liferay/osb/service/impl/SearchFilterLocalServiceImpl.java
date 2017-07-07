@@ -21,6 +21,7 @@ import com.liferay.osb.service.base.SearchFilterLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.Date;
 import java.util.List;
@@ -54,8 +55,12 @@ public class SearchFilterLocalServiceImpl
 		searchFilter.setName(name);
 		searchFilter.setFilter(filter);
 		searchFilter.setVisibility(visibility);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		searchFilterPersistence.update(searchFilter, false);
+		searchFilterPersistence.update(searchFilter, serviceContext);
 
 		return searchFilter;
 	}
@@ -83,8 +88,12 @@ public class SearchFilterLocalServiceImpl
 		searchFilter.setName(name);
 		searchFilter.setFilter(filter);
 		searchFilter.setVisibility(visibility);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		searchFilterPersistence.update(searchFilter, false);
+		searchFilterPersistence.update(searchFilter, serviceContext);
 
 		return searchFilter;
 	}

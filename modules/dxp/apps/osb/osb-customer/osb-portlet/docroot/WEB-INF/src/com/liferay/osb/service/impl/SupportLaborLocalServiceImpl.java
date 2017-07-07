@@ -23,6 +23,7 @@ import com.liferay.osb.model.SupportWorker;
 import com.liferay.osb.service.base.SupportLaborLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -66,14 +67,22 @@ public class SupportLaborLocalServiceImpl
 		supportLabor.setFriClose(friClose);
 		supportLabor.setSatOpen(satOpen);
 		supportLabor.setSatClose(satClose);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		supportLaborPersistence.update(supportLabor, false);
+		supportLaborPersistence.update(supportLabor, serviceContext);
 
 		return supportLabor;
 	}
 
 	public void addSupportWorkers(long[] supportWorkerIds, long supportLaborId)
 		throws PortalException, SystemException {
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
 		for (long supportWorkerId : supportWorkerIds) {
 			SupportWorker supportWorker =
@@ -81,7 +90,7 @@ public class SupportLaborLocalServiceImpl
 
 			supportWorker.setSupportLaborId(supportLaborId);
 
-			supportWorkerPersistence.update(supportWorker, false);
+			supportWorkerPersistence.update(supportWorker, serviceContext);
 		}
 	}
 
@@ -94,11 +103,15 @@ public class SupportLaborLocalServiceImpl
 
 		List<SupportWorker> supportWorkers =
 			supportWorkerPersistence.findBySupportLaborId(supportLaborId);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
 		for (SupportWorker supportWorker : supportWorkers) {
 			supportWorker.setSupportLaborId(0);
 
-			supportWorkerPersistence.update(supportWorker, false);
+			supportWorkerPersistence.update(supportWorker, serviceContext);
 		}
 
 		return supportLabor;
@@ -119,6 +132,10 @@ public class SupportLaborLocalServiceImpl
 
 	public void removeSupportWorkers(long[] supportWorkerIds)
 		throws PortalException, SystemException {
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
 		for (long supportWorkerId : supportWorkerIds) {
 			try {
@@ -127,7 +144,7 @@ public class SupportLaborLocalServiceImpl
 
 				supportWorker.setSupportLaborId(0);
 
-				supportWorkerPersistence.update(supportWorker, false);
+				supportWorkerPersistence.update(supportWorker, serviceContext);
 			}
 			catch (NoSuchSupportWorkerException nsswe) {
 			}
@@ -167,8 +184,12 @@ public class SupportLaborLocalServiceImpl
 		supportLabor.setFriClose(friClose);
 		supportLabor.setSatOpen(satOpen);
 		supportLabor.setSatClose(satClose);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		supportLaborPersistence.update(supportLabor, false);
+		supportLaborPersistence.update(supportLabor, serviceContext);
 
 		return supportLabor;
 	}

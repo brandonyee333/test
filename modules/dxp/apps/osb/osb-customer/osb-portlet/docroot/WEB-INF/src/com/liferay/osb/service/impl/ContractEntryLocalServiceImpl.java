@@ -84,8 +84,10 @@ public class ContractEntryLocalServiceImpl
 		else {
 			contractEntry.setContentMap(contentMap);
 		}
+		
+		//TODO implement serviceContext how needed
 
-		contractEntryPersistence.update(contractEntry, false);
+		contractEntryPersistence.update(contractEntry, serviceContext);
 
 		return contractEntry;
 	}
@@ -160,7 +162,9 @@ public class ContractEntryLocalServiceImpl
 			contractEntry.setContentMap(contentMap);
 		}
 
-		contractEntryPersistence.update(contractEntry, false);
+		//TODO implement serviceContext how needed
+		
+		contractEntryPersistence.update(contractEntry, serviceContext);
 
 		return contractEntry;
 	}

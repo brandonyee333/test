@@ -30,6 +30,7 @@ import com.liferay.document.library.kernel.exception.DuplicateDirectoryException
 import com.liferay.document.library.kernel.exception.DuplicateFileException;
 import com.liferay.document.library.kernel.exception.NoSuchFileException;
 import com.liferay.document.library.kernel.store.DLStoreUtil;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.File;
 import java.io.InputStream;
@@ -71,8 +72,12 @@ public class AccountAttachmentLocalServiceImpl
 		accountAttachment.setFileName(fileName);
 		accountAttachment.setFileSize(file.length());
 		accountAttachment.setType(type);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		accountAttachmentPersistence.update(accountAttachment, false);
+		accountAttachmentPersistence.update(accountAttachment, serviceContext);
 
 		// File
 

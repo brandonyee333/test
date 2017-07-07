@@ -17,6 +17,7 @@ package com.liferay.osb.service.impl;
 import com.liferay.osb.model.AuditAction;
 import com.liferay.osb.service.base.AuditActionLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.Date;
 import java.util.List;
@@ -64,8 +65,12 @@ public class AuditActionLocalServiceImpl
 
 		auditAction.setModifiedDate(new Date());
 		auditAction.setAction(action);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		auditActionPersistence.update(auditAction, false);
+		auditActionPersistence.update(auditAction, serviceContext);
 
 		return auditAction;
 	}

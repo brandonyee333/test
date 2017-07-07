@@ -167,8 +167,12 @@ public class AccountEntryLocalServiceImpl
 		accountEntry.setInstructions(instructions);
 		accountEntry.setNotes(notes);
 		accountEntry.setStatus(WorkflowConstants.STATUS_CLOSED);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		accountEntryPersistence.update(accountEntry, false);
+		accountEntryPersistence.update(accountEntry, serviceContext);
 
 		// Address
 
@@ -444,8 +448,12 @@ public class AccountEntryLocalServiceImpl
 
 		if (countryId != 0) {
 			accountEntry.setCountryId(countryId);
+			
+			//TODO implement serviceContext how needed
+			
+			ServiceContext serviceContext = new ServiceContext();
 
-			accountEntryPersistence.update(accountEntry, false);
+			accountEntryPersistence.update(accountEntry, serviceContext);
 		}
 
 		// Account customer
@@ -896,8 +904,12 @@ public class AccountEntryLocalServiceImpl
 		else {
 			accountEntry.setHighestSupportResponseId(0);
 		}
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		accountEntryPersistence.update(accountEntry, false);
+		accountEntryPersistence.update(accountEntry, serviceContext);
 	}
 
 	public void reindexAccountEntry(long accountEntryId)
@@ -1056,8 +1068,12 @@ public class AccountEntryLocalServiceImpl
 				addressId, street1, street2, street3, city, zip, regionId,
 				countryId, 0, false, true);
 		}
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		accountEntryPersistence.update(accountEntry, false);
+		accountEntryPersistence.update(accountEntry, serviceContext);
 
 		if (!oldCode.equals(code)) {
 			long ticketCount = ticketEntryPersistence.countByAccountEntryId(
@@ -1352,8 +1368,12 @@ public class AccountEntryLocalServiceImpl
 			accountEntryId);
 
 		accountEntry.setCorpProjectId(corpProjectId);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		accountEntryPersistence.update(accountEntry, false);
+		accountEntryPersistence.update(accountEntry, serviceContext);
 
 		return accountEntry;
 	}
@@ -1370,8 +1390,12 @@ public class AccountEntryLocalServiceImpl
 		AccountEntry oldAccountEntry = (AccountEntry)accountEntry.clone();
 
 		accountEntry.setInstructions(instructions);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		accountEntryPersistence.update(accountEntry, false);
+		accountEntryPersistence.update(accountEntry, serviceContext);
 
 		updateAuditEntry(
 			user.getUserId(), user.getFullName(), oldAccountEntry,
@@ -1392,8 +1416,12 @@ public class AccountEntryLocalServiceImpl
 			accountEntryId);
 
 		accountEntry.setLastAuditDate(now);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		accountEntryPersistence.update(accountEntry, false);
+		accountEntryPersistence.update(accountEntry, serviceContext);
 
 		long classNameId = PortalUtil.getClassNameId(
 			AccountEntry.class.getName());
@@ -1421,8 +1449,12 @@ public class AccountEntryLocalServiceImpl
 		}
 
 		accountEntry.setStatus(getStatus(accountEntryId));
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		accountEntryPersistence.update(accountEntry, false);
+		accountEntryPersistence.update(accountEntry, serviceContext);
 
 		if ((oldStatus != accountEntry.getStatus()) &&
 			(accountEntry.getStatus() == WorkflowConstants.STATUS_CLOSED)) {
@@ -1486,8 +1518,10 @@ public class AccountEntryLocalServiceImpl
 			accountEntry.setStatusByUserId(userId);
 			accountEntry.setStatusByUserName(user.getFullName());
 			accountEntry.setStatusDate(serviceContext.getModifiedDate(now));
+			
+			//TODO implement serviceContext how needed
 
-			accountEntry = accountEntryPersistence.update(accountEntry, false);
+			accountEntry = accountEntryPersistence.update(accountEntry, serviceContext);
 		}
 
 		if ((status == WorkflowConstants.STATUS_APPROVED) ||
@@ -1639,8 +1673,12 @@ public class AccountEntryLocalServiceImpl
 		AccountEntry oldAccountEntry = (AccountEntry)accountEntry.clone();
 
 		accountEntry.setTier(tier);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		accountEntryPersistence.update(accountEntry, false);
+		accountEntryPersistence.update(accountEntry, serviceContext);
 
 		updateAuditEntry(
 			user.getUserId(), user.getFullName(), oldAccountEntry,
@@ -1675,8 +1713,12 @@ public class AccountEntryLocalServiceImpl
 		accountEntry.setName(name);
 		accountEntry.setCode(code);
 		accountEntry.setRedirectAccountEntryId(redirectAccountEntryId);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		accountEntryPersistence.update(accountEntry, false);
+		accountEntryPersistence.update(accountEntry, serviceContext);
 	}
 
 	protected String formatLanguageIds(String[] languageIds) {

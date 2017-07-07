@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.util.dao.orm.CustomSQLUtil;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,6 +60,10 @@ public class SupportWorkerLocalServiceImpl
 
 		SupportTeam supportTeam = supportTeamPersistence.findByPrimaryKey(
 			supportTeamId);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
 		for (int i = 0; i < userIds.length; i++) {
 			long userId = userIds[i];
@@ -107,9 +112,9 @@ public class SupportWorkerLocalServiceImpl
 			supportWorker.setRole(roles[i]);
 			supportWorker.setNotifications(notifications[i]);
 
-			supportWorkerPersistence.update(supportWorker, false);
+			supportWorkerPersistence.update(supportWorker, serviceContext);
 
-			supportTeamPersistence.update(supportTeam, false);
+			supportTeamPersistence.update(supportTeam, serviceContext);
 		}
 	}
 
@@ -122,6 +127,10 @@ public class SupportWorkerLocalServiceImpl
 			supportWorkerPersistence.findByUserId(supportWorker.getUserId());
 
 		Boolean clockIn = null;
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
 		for (SupportWorker curSupportWorker : supportWorkers) {
 			if (clockIn == null) {
@@ -130,7 +139,7 @@ public class SupportWorkerLocalServiceImpl
 
 			curSupportWorker.setClockedIn(clockIn);
 
-			supportWorkerPersistence.update(curSupportWorker, false);
+			supportWorkerPersistence.update(curSupportWorker, serviceContext);
 		}
 	}
 
@@ -140,12 +149,16 @@ public class SupportWorkerLocalServiceImpl
 		try {
 			List<SupportWorker> supportWorkers =
 				supportWorkerPersistence.findByUserId(userId);
+			
+			//TODO implement serviceContext how needed
+			
+			ServiceContext serviceContext = new ServiceContext();
 
 			for (SupportWorker supportWorker : supportWorkers) {
 				supportWorker.setAssignedWork(
 					supportWorker.getAssignedWork() - work);
 
-				supportWorkerPersistence.update(supportWorker, false);
+				supportWorkerPersistence.update(supportWorker, serviceContext);
 
 				SupportTeam supportTeam =
 					supportTeamPersistence.findByPrimaryKey(
@@ -154,7 +167,7 @@ public class SupportWorkerLocalServiceImpl
 				supportTeam.setAssignedWork(
 					supportTeam.getAssignedWork() - work);
 
-				supportTeamPersistence.update(supportTeam, false);
+				supportTeamPersistence.update(supportTeam, serviceContext);
 			}
 		}
 		catch (NoSuchSupportTeamException nsste) {
@@ -217,8 +230,12 @@ public class SupportWorkerLocalServiceImpl
 
 		supportTeam.setAssignedWork(supportTeamAssignedWork);
 		supportTeam.setMaxWork(supportTeamMaxWork);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		supportTeamPersistence.update(supportTeam, false);
+		supportTeamPersistence.update(supportTeam, serviceContext);
 	}
 
 	public double getAssignedWork(long userId) throws SystemException {
@@ -649,12 +666,16 @@ public class SupportWorkerLocalServiceImpl
 		try {
 			List<SupportWorker> supportWorkers =
 				supportWorkerPersistence.findByUserId(userId);
+			
+			//TODO implement serviceContext how needed
+			
+			ServiceContext serviceContext = new ServiceContext();
 
 			for (SupportWorker supportWorker : supportWorkers) {
 				supportWorker.setAssignedWork(
 					supportWorker.getAssignedWork() + work);
 
-				supportWorkerPersistence.update(supportWorker, false);
+				supportWorkerPersistence.update(supportWorker, serviceContext);
 
 				SupportTeam supportTeam =
 					supportTeamPersistence.findByPrimaryKey(
@@ -663,7 +684,7 @@ public class SupportWorkerLocalServiceImpl
 				supportTeam.setAssignedWork(
 					supportTeam.getAssignedWork() + work);
 
-				supportTeamPersistence.update(supportTeam, false);
+				supportTeamPersistence.update(supportTeam, serviceContext);
 			}
 		}
 		catch (NoSuchSupportTeamException nsste) {
@@ -824,6 +845,10 @@ public class SupportWorkerLocalServiceImpl
 
 		SupportWorker supportWorker = supportWorkerPersistence.findByPrimaryKey(
 			supportWorkerId);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
 		if (supportTeamId != supportWorker.getSupportTeamId()) {
 			SupportTeam oldSupportTeam = supportWorker.getSupportTeam();
@@ -839,7 +864,7 @@ public class SupportWorkerLocalServiceImpl
 					supportWorker.getAssignedWork());
 			supportTeam.setMaxWork(supportTeam.getMaxWork() + maxWork);
 
-			supportTeamPersistence.update(oldSupportTeam, false);
+			supportTeamPersistence.update(oldSupportTeam, serviceContext);
 		}
 		else {
 			supportTeam.setMaxWork(
@@ -847,7 +872,7 @@ public class SupportWorkerLocalServiceImpl
 					supportWorker.getMaxWork());
 		}
 
-		supportTeamPersistence.update(supportTeam, false);
+		supportTeamPersistence.update(supportTeam, serviceContext);
 
 		supportWorker.setSupportTeamId(supportTeamId);
 		supportWorker.setAutoAssign(autoAssign);
@@ -867,7 +892,7 @@ public class SupportWorkerLocalServiceImpl
 
 		supportWorker.setNotifications(notifications);
 
-		supportWorkerPersistence.update(supportWorker, false);
+		supportWorkerPersistence.update(supportWorker, serviceContext);
 
 		return supportWorker;
 	}

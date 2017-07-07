@@ -53,8 +53,12 @@ public class TicketInformationLocalServiceImpl
 		ticketInformation.setTicketEntryId(ticketEntryId);
 		ticketInformation.setFieldId(fieldId);
 		ticketInformation.setData(data);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		return ticketInformationPersistence.update(ticketInformation, false);
+		return ticketInformationPersistence.update(ticketInformation, serviceContext);
 	}
 
 	public String getData(long ticketEntryId, long fieldId)
@@ -94,6 +98,10 @@ public class TicketInformationLocalServiceImpl
 
 		List<TicketInformation> ticketInformationList =
 			new ArrayList<TicketInformation>();
+		
+		//TODO implement serviceContext as needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
 		for (Map.Entry<Long, String> entry : fieldsMap.entrySet()) {
 			long fieldId = entry.getKey();
@@ -112,7 +120,7 @@ public class TicketInformationLocalServiceImpl
 				ticketInformation.setData(data);
 
 				ticketInformation = ticketInformationPersistence.update(
-					ticketInformation, false);
+					ticketInformation, serviceContext);
 			}
 
 			ticketInformationList.add(ticketInformation);
@@ -148,9 +156,11 @@ public class TicketInformationLocalServiceImpl
 			else {
 				ticketInformation.setModifiedDate(now);
 				ticketInformation.setData(data);
+				
+				//TODO implement serviceContext as needed
 
 				ticketInformation = ticketInformationPersistence.update(
-					ticketInformation, false);
+					ticketInformation, serviceContext);
 			}
 
 			ticketInformationList.add(ticketInformation);

@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -63,6 +64,10 @@ public class TicketWorkerLocalServiceImpl
 
 		long classNameId = PortalUtil.getClassNameId(TicketEntry.class);
 		long fieldClassNameId = PortalUtil.getClassNameId(TicketWorker.class);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
 		for (int i = 0; i < userIds.length; i++) {
 			long curUserId = userIds[i];
@@ -93,7 +98,7 @@ public class TicketWorkerLocalServiceImpl
 
 				ticketWorker.setRole(role);
 
-				ticketWorkerPersistence.update(ticketWorker, false);
+				ticketWorkerPersistence.update(ticketWorker, serviceContext);
 
 				ticketWorkers.add(ticketWorker);
 
@@ -130,7 +135,7 @@ public class TicketWorkerLocalServiceImpl
 
 				ticketWorker.setRole(role);
 
-				ticketWorkerPersistence.update(ticketWorker, false);
+				ticketWorkerPersistence.update(ticketWorker, serviceContext);
 
 				// Audit entry
 
@@ -156,7 +161,7 @@ public class TicketWorkerLocalServiceImpl
 
 		ticketEntry.setModifiedDate(now);
 
-		ticketEntryPersistence.update(ticketEntry, false);
+		ticketEntryPersistence.update(ticketEntry, serviceContext);
 
 		ticketEntryLocalService.reindexTicketEntry(ticketEntry);
 
@@ -260,8 +265,12 @@ public class TicketWorkerLocalServiceImpl
 		// Ticket entry
 
 		ticketEntry.setModifiedDate(now);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		ticketEntryPersistence.update(ticketEntry, false);
+		ticketEntryPersistence.update(ticketEntry, serviceContext);
 
 		ticketEntryLocalService.reindexTicketEntry(ticketEntry);
 
@@ -459,9 +468,13 @@ public class TicketWorkerLocalServiceImpl
 		throws SystemException {
 
 		primaryTicketWorker.setPrimary(false);
+		
+		//TODO implement serviceContext as needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
 		primaryTicketWorker = ticketWorkerPersistence.update(
-			primaryTicketWorker, false);
+			primaryTicketWorker, serviceContext);
 
 		updateAssignedWork(
 			status, primaryTicketWorker.getUserId(), work, false);
@@ -475,9 +488,13 @@ public class TicketWorkerLocalServiceImpl
 		throws SystemException {
 
 		primaryTicketWorker.setPrimary(true);
+		
+		//TODO implement serviceContext as needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
 		primaryTicketWorker = ticketWorkerPersistence.update(
-			primaryTicketWorker, false);
+			primaryTicketWorker, serviceContext);
 
 		updateAssignedWork(status, primaryTicketWorker.getUserId(), work, true);
 

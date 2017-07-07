@@ -31,6 +31,7 @@ import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -72,8 +73,12 @@ public class PartnerEntryLocalServiceImpl
 		partnerEntry.setCode(code);
 		partnerEntry.setNotes(notes);
 		partnerEntry.setStatus(WorkflowConstants.STATUS_APPROVED);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		partnerEntryPersistence.update(partnerEntry, false);
+		partnerEntryPersistence.update(partnerEntry, serviceContext);
 
 		if (ArrayUtil.isNotEmpty(supportRegionIds)) {
 			partnerEntryPersistence.addSupportRegions(
@@ -219,8 +224,12 @@ public class PartnerEntryLocalServiceImpl
 		partnerEntry.setCode(code);
 		partnerEntry.setNotes(notes);
 		partnerEntry.setStatus(status);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		partnerEntryPersistence.update(partnerEntry, false);
+		partnerEntryPersistence.update(partnerEntry, serviceContext);
 
 		if ((oldStatus != status) &&
 			(status == WorkflowConstants.STATUS_INACTIVE)) {
@@ -248,8 +257,12 @@ public class PartnerEntryLocalServiceImpl
 			accountEntry.setModifiedDate(new Date());
 			accountEntry.setPartnerEntryId(partnerEntryId);
 			accountEntry.setPartnerManagedSupport(false);
+			
+			//TODO implement serviceContext how needed
+			
+			ServiceContext serviceContext = new ServiceContext();
 
-			accountEntryPersistence.update(accountEntry, false);
+			accountEntryPersistence.update(accountEntry, serviceContext);
 		}
 
 		List<PartnerEntry> childPartnerEntries =

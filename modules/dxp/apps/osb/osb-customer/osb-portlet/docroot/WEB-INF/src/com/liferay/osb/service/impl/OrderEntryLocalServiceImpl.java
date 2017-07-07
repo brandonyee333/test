@@ -313,8 +313,12 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 		orderEntry.setProrated(prorated);
 		orderEntry.setActualStartDate(actualStartDate);
 		orderEntry.setStatus(status);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		orderEntryPersistence.update(orderEntry, false);
+		orderEntryPersistence.update(orderEntry, serviceContext);
 
 		// External ids
 
@@ -417,8 +421,12 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 			orderEntryId);
 
 		orderEntry.setRenewCount(renewCount);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		orderEntryPersistence.update(orderEntry, false);
+		orderEntryPersistence.update(orderEntry, serviceContext);
 
 		// Offering entries
 
@@ -438,7 +446,7 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 				offeringEntry.setStatus(OfferingEntryConstants.STATUS_ACTIVE);
 			}
 
-			offeringEntryPersistence.update(offeringEntry, false);
+			offeringEntryPersistence.update(offeringEntry, serviceContext);
 		}
 
 		// Account entry
@@ -606,8 +614,12 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 		orderEntry.setStartDate(startDate);
 		orderEntry.setProrated(prorated);
 		orderEntry.setActualStartDate(actualStartDate);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		orderEntryPersistence.update(orderEntry, false);
+		orderEntryPersistence.update(orderEntry, serviceContext);
 
 		// External ids
 
@@ -718,8 +730,10 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 		orderEntry.setStatusByUserId(userId);
 		orderEntry.setStatusByUserName(user.getFullName());
 		orderEntry.setStatusDate(serviceContext.getModifiedDate(now));
+		
+		//TODO implement serviceContext how needed
 
-		orderEntry = orderEntryPersistence.update(orderEntry, false);
+		orderEntry = orderEntryPersistence.update(orderEntry, serviceContext);
 
 		// Offering entries
 

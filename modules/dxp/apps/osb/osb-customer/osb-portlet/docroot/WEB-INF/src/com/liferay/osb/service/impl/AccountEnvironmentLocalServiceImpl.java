@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.File;
 
@@ -81,8 +82,12 @@ public class AccountEnvironmentLocalServiceImpl
 		accountEnvironment.setEnvJVM(envJVM);
 		accountEnvironment.setEnvAS(envAS);
 		accountEnvironment.setEnvLFR(envLFR);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		accountEnvironmentPersistence.update(accountEnvironment, false);
+		accountEnvironmentPersistence.update(accountEnvironment, serviceContext);
 
 		if (!files.isEmpty()) {
 			accountEnvironmentAttachmentLocalService.
@@ -196,8 +201,12 @@ public class AccountEnvironmentLocalServiceImpl
 		accountEnvironment.setEnvJVM(envJVM);
 		accountEnvironment.setEnvAS(envAS);
 		accountEnvironment.setEnvLFR(envLFR);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		accountEnvironmentPersistence.update(accountEnvironment, false);
+		accountEnvironmentPersistence.update(accountEnvironment, serviceContext);
 
 		if (!files.isEmpty()) {
 			accountEnvironmentAttachmentLocalService.

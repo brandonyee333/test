@@ -14,8 +14,9 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.PortalUtil;
+import java.util.Date;
+import java.util.List;
+
 import com.liferay.osb.exception.AccountCallDateException;
 import com.liferay.osb.exception.AccountCallLengthException;
 import com.liferay.osb.exception.AccountCallSummaryException;
@@ -27,9 +28,9 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.User;
-
-import java.util.Date;
-import java.util.List;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 /**
  * @author Alan Zhang
@@ -89,8 +90,12 @@ public class AccountCallLocalServiceImpl
 		accountCall.setClientsPresent(clientsPresent);
 		accountCall.setNotes(notes);
 		accountCall.setActionItems(actionItems);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		accountCallPersistence.update(accountCall, false);
+		accountCallPersistence.update(accountCall, serviceContext);
 
 		return accountCall;
 	}

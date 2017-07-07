@@ -55,6 +55,7 @@ import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.SubscriptionSender;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -100,8 +101,12 @@ public class TicketFeedbackLocalServiceImpl
 		ticketFeedback.setSatisfied(satisfied);
 		ticketFeedback.setAccountEntryId(ticketEntry.getAccountEntryId());
 		ticketFeedback.setStatus(TicketFeedbackConstants.STATUS_ANSWERED);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		ticketFeedbackPersistence.update(ticketFeedback, false);
+		ticketFeedbackPersistence.update(ticketFeedback, serviceContext);
 
 		if (!accountCustomerLocalService.hasAccountCustomer(
 				userId, ticketEntry.getAccountEntryId()) ||
@@ -511,8 +516,12 @@ public class TicketFeedbackLocalServiceImpl
 		ticketFeedback.setRating4(rating4);
 		ticketFeedback.setComments(comments);
 		ticketFeedback.setStatus(TicketFeedbackConstants.STATUS_ANSWERED);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		ticketFeedbackPersistence.update(ticketFeedback, false);
+		ticketFeedbackPersistence.update(ticketFeedback, serviceContext);
 
 		if (ticketFeedback.getSubject() ==
 				TicketFeedbackConstants.SUBJECT_LIFERAY) {
@@ -543,8 +552,12 @@ public class TicketFeedbackLocalServiceImpl
 		}
 
 		ticketFeedback.setModifiedDate(new Date());
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		ticketFeedbackPersistence.update(ticketFeedback, false);
+		ticketFeedbackPersistence.update(ticketFeedback, serviceContext);
 
 		PortletPreferences preferences = SupportUtil.getPortletPreferences();
 
@@ -681,8 +694,12 @@ public class TicketFeedbackLocalServiceImpl
 		}
 
 		ticketFeedback.setModifiedDate(new Date());
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		ticketFeedbackPersistence.update(ticketFeedback, false);
+		ticketFeedbackPersistence.update(ticketFeedback, serviceContext);
 
 		PortletPreferences preferences = SupportUtil.getPortletPreferences();
 

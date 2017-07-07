@@ -23,6 +23,7 @@ import com.liferay.osb.service.base.LicenseKeySetLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.Date;
 import java.util.List;
@@ -53,8 +54,12 @@ public class LicenseKeySetLocalServiceImpl
 		licenseKeySet.setModifiedDate(now);
 		licenseKeySet.setAccountEntryId(accountEntryId);
 		licenseKeySet.setName(name);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		licenseKeySetPersistence.update(licenseKeySet, false);
+		licenseKeySetPersistence.update(licenseKeySet, serviceContext);
 
 		return licenseKeySet;
 	}
@@ -83,8 +88,12 @@ public class LicenseKeySetLocalServiceImpl
 
 		licenseKeySet.setModifiedDate(new Date());
 		licenseKeySet.setName(name);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		licenseKeySetPersistence.update(licenseKeySet, false);
+		licenseKeySetPersistence.update(licenseKeySet, serviceContext);
 
 		return licenseKeySet;
 	}

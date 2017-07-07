@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.osb.model.SupportWorkerAccountTier;
 import com.liferay.osb.service.base.SupportWorkerAccountTierLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -66,9 +67,13 @@ public class SupportWorkerAccountTierLocalServiceImpl
 
 			supportWorkerAccountTier.setSupportWorkerId(supportWorkerId);
 			supportWorkerAccountTier.setAccountTier(accountTier);
+			
+			//TODO implement serviceContext how needed
+			
+			ServiceContext serviceContext = new ServiceContext();
 
 			supportWorkerAccountTierPersistence.update(
-				supportWorkerAccountTier, false);
+				supportWorkerAccountTier, serviceContext);
 		}
 	}
 

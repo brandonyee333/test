@@ -23,6 +23,7 @@ import com.liferay.osb.service.base.LicenseEntryLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.Date;
 import java.util.Iterator;
@@ -59,8 +60,12 @@ public class LicenseEntryLocalServiceImpl
 		licenseEntry.setType(type);
 		licenseEntry.setPortalVersionMin(portalVersionMin);
 		licenseEntry.setPortalVersionMax(portalVersionMax);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		licenseEntryPersistence.update(licenseEntry, false);
+		licenseEntryPersistence.update(licenseEntry, serviceContext);
 
 		return licenseEntry;
 	}
@@ -124,8 +129,12 @@ public class LicenseEntryLocalServiceImpl
 		licenseEntry.setType(type);
 		licenseEntry.setPortalVersionMin(portalVersionMin);
 		licenseEntry.setPortalVersionMax(portalVersionMax);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		licenseEntryPersistence.update(licenseEntry, false);
+		licenseEntryPersistence.update(licenseEntry, serviceContext);
 
 		return licenseEntry;
 	}

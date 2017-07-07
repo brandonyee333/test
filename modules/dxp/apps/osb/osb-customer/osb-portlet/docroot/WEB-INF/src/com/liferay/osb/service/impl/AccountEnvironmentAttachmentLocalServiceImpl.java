@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.document.library.kernel.store.DLStoreUtil;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.File;
 import java.io.InputStream;
@@ -66,9 +67,13 @@ public class AccountEnvironmentAttachmentLocalServiceImpl
 		accountEnvironmentAttachment.setFileName(fileName);
 		accountEnvironmentAttachment.setFileSize(file.length());
 		accountEnvironmentAttachment.setType(type);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
 		accountEnvironmentAttachmentPersistence.update(
-			accountEnvironmentAttachment, false);
+			accountEnvironmentAttachment, serviceContext);
 
 		deleteFile(accountEnvironmentAttachment.getFileDir(), fileName);
 
@@ -165,9 +170,13 @@ public class AccountEnvironmentAttachmentLocalServiceImpl
 		accountEnvironmentAttachment.setFileName(fileName);
 		accountEnvironmentAttachment.setFileSize(file.length());
 		accountEnvironmentAttachment.setType(type);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
 		accountEnvironmentAttachmentPersistence.update(
-			accountEnvironmentAttachment, false);
+			accountEnvironmentAttachment, serviceContext);
 
 		deleteFile(accountEnvironmentAttachment.getFileDir(), oldFileName);
 

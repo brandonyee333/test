@@ -18,6 +18,7 @@ import com.liferay.osb.model.ExternalIdMapper;
 import com.liferay.osb.service.base.ExternalIdMapperLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.Date;
 import java.util.List;
@@ -45,8 +46,12 @@ public class ExternalIdMapperLocalServiceImpl
 		externalIdMapper.setClassPK(classPK);
 		externalIdMapper.setType(type);
 		externalIdMapper.setExternalId(externalId);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		externalIdMapperPersistence.update(externalIdMapper, false);
+		externalIdMapperPersistence.update(externalIdMapper, serviceContext);
 
 		return externalIdMapper;
 	}
@@ -86,8 +91,12 @@ public class ExternalIdMapperLocalServiceImpl
 		externalIdMapper.setClassPK(classPK);
 		externalIdMapper.setType(type);
 		externalIdMapper.setExternalId(externalId);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		externalIdMapperPersistence.update(externalIdMapper, false);
+		externalIdMapperPersistence.update(externalIdMapper, serviceContext);
 
 		return externalIdMapper;
 	}

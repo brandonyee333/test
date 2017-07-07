@@ -224,6 +224,10 @@ public class TicketEntryLocalServiceImpl
 			SupportUtil.getCommentTicketEntryInactiveMap(preferences);
 
 		Locale defaultLocale = LocaleUtil.getDefault();
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
 		for (TicketEntry ticketEntry : ticketEntries) {
 			Date dueDate = ticketEntry.getDueDate();
@@ -260,7 +264,7 @@ public class TicketEntryLocalServiceImpl
 				ticketEntry.setDueDate(new Date(dueDate.getTime() + Time.DAY));
 				ticketEntry.setWorkerModifiedDate(now);
 
-				ticketEntryPersistence.update(ticketEntry, false);
+				ticketEntryPersistence.update(ticketEntry, serviceContext);
 
 				updateAuditEntry(
 					OSBConstants.USER_DEFAULT_USER_ID, StringPool.BLANK, 0,
@@ -307,7 +311,7 @@ public class TicketEntryLocalServiceImpl
 				ticketEntry.setCustomerModifiedDate(newCustomerModifiedDate);
 				ticketEntry.setWorkerModifiedDate(newWorkerModifiedDate);
 
-				ticketEntryPersistence.update(ticketEntry, false);
+				ticketEntryPersistence.update(ticketEntry, serviceContext);
 
 				Date newDueDate = ticketEntry.getDueDate();
 
@@ -362,7 +366,7 @@ public class TicketEntryLocalServiceImpl
 
 				ticketEntry.setModifiedDate(now);
 				ticketEntry.setWorkerModifiedDate(newWorkerModifiedDate);
-				ticketEntryPersistence.update(ticketEntry, false);
+				ticketEntryPersistence.update(ticketEntry, serviceContext);
 
 				sendEmail(
 					0, ticketEntry, null, OSBMailActionKeys.INACTIVE_WARNING);
@@ -383,6 +387,10 @@ public class TicketEntryLocalServiceImpl
 				new long[0], new int[0], new int[0], null, null, null, null,
 				null, null, null, null, null, true, QueryUtil.ALL_POS,
 				QueryUtil.ALL_POS, null);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
 		for (TicketEntry ticketEntry : ticketEntries) {
 			Date dueDate = ticketEntry.getDueDate();
@@ -403,7 +411,7 @@ public class TicketEntryLocalServiceImpl
 			ticketEntry.setDueDate(dueDate);
 			ticketEntry.setHoldDate(now);
 
-			ticketEntryPersistence.update(ticketEntry, false);
+			ticketEntryPersistence.update(ticketEntry, serviceContext);
 
 			reindexTicketEntry(ticketEntry.getTicketEntryId());
 		}
@@ -486,8 +494,12 @@ public class TicketEntryLocalServiceImpl
 			ticketEntry.setEscalationLevel(
 				TicketEntryConstants.ESCALATION_LEVEL_2);
 		}
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		ticketEntryPersistence.update(ticketEntry, false);
+		ticketEntryPersistence.update(ticketEntry, serviceContext);
 
 		auditEntryLocalService.addAuditEntry(
 			user.getUserId(), user.getFullName(), new Date(),
@@ -1305,8 +1317,12 @@ public class TicketEntryLocalServiceImpl
 		}
 
 		ticketEntry.setCustomerModifiedDate(customerModifiedDate);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		ticketEntryPersistence.update(ticketEntry, false);
+		ticketEntryPersistence.update(ticketEntry, serviceContext);
 
 		return ticketEntry;
 	}
@@ -1407,8 +1423,12 @@ public class TicketEntryLocalServiceImpl
 			ticketEntryId);
 
 		ticketEntry.setTicketId(ticketId);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		ticketEntryPersistence.update(ticketEntry, false);
+		ticketEntryPersistence.update(ticketEntry, serviceContext);
 
 		reindexTicketEntry(ticketEntry);
 
@@ -1423,8 +1443,12 @@ public class TicketEntryLocalServiceImpl
 			ticketEntryId);
 
 		ticketEntry.setWorkerModifiedDate(workerModifiedDate);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		ticketEntryPersistence.update(ticketEntry, false);
+		ticketEntryPersistence.update(ticketEntry, serviceContext);
 
 		return ticketEntry;
 	}
@@ -1608,8 +1632,12 @@ public class TicketEntryLocalServiceImpl
 		ticketEntry.setIgnoreDueDate(false);
 		ticketEntry.setCustomerModifiedDate(now);
 		ticketEntry.setWorkerModifiedDate(now);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		ticketEntryPersistence.update(ticketEntry, false);
+		ticketEntryPersistence.update(ticketEntry, serviceContext);
 
 		// Ticket information
 
@@ -1658,7 +1686,7 @@ public class TicketEntryLocalServiceImpl
 
 		ticketEntry.setTicketId(ticketId);
 
-		ticketEntryPersistence.update(ticketEntry, false);
+		ticketEntryPersistence.update(ticketEntry, serviceContext);
 
 		// Ticket worker
 
@@ -2064,8 +2092,12 @@ public class TicketEntryLocalServiceImpl
 			Date oldDueDate = ticketEntry.getDueDate();
 
 			ticketEntry.setDueDate(dueDate);
+			
+			//TODO implement serviceContext how needed
+			
+			ServiceContext serviceContext = new ServiceContext();
 
-			ticketEntryPersistence.update(ticketEntry, false);
+			ticketEntryPersistence.update(ticketEntry, serviceContext);
 
 			if (oldDueDate.getTime() != dueDate.getTime()) {
 				auditEntryLocalService.addAuditEntry(
@@ -2209,8 +2241,10 @@ public class TicketEntryLocalServiceImpl
 		ticketEntry.setIgnoreDueDate(ignoreDueDate);
 		ticketEntry.setCustomerModifiedDate(customerModifiedDate);
 		ticketEntry.setWorkerModifiedDate(workerModifiedDate);
+		
+		//TODO implement serviceContext how needed
 
-		ticketEntryPersistence.update(ticketEntry, false);
+		ticketEntryPersistence.update(ticketEntry, serviceContext);
 
 		long auditSetId = auditEntryLocalService.getNextAuditSetId(
 			TicketEntry.class.getName(), ticketEntryId);
@@ -2263,7 +2297,7 @@ public class TicketEntryLocalServiceImpl
 
 		ticketEntry.setTicketId(ticketId);
 
-		ticketEntryPersistence.update(ticketEntry, false);
+		ticketEntryPersistence.update(ticketEntry, serviceContext);
 
 		if (oldTicketEntry.getStatus() != status) {
 
@@ -2302,7 +2336,7 @@ public class TicketEntryLocalServiceImpl
 					ticketFeedback.setStatus(
 						TicketFeedbackConstants.STATUS_CLOSED);
 
-					ticketFeedbackPersistence.update(ticketFeedback, false);
+					ticketFeedbackPersistence.update(ticketFeedback, serviceContext);
 				}
 			}
 		}
@@ -3543,8 +3577,12 @@ public class TicketEntryLocalServiceImpl
 		}
 
 		ticketEntry.setModifiedDate(now);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		ticketEntryPersistence.update(ticketEntry, false);
+		ticketEntryPersistence.update(ticketEntry, serviceContext);
 
 		reindexTicketEntry(ticketEntry);
 

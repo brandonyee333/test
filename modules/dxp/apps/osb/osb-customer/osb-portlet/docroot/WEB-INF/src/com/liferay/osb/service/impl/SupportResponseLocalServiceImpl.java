@@ -25,6 +25,7 @@ import com.liferay.osb.service.base.SupportResponseLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.Date;
 import java.util.List;
@@ -65,8 +66,12 @@ public class SupportResponseLocalServiceImpl
 		supportResponse.setSeverity2Resolution(severity2Resolution);
 		supportResponse.setSeverity3Response(severity3Response);
 		supportResponse.setSeverity3Resolution(severity3Resolution);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		supportResponsePersistence.update(supportResponse, false);
+		supportResponsePersistence.update(supportResponse, serviceContext);
 
 		recalculateHighestSupportResponses(supportResponseId);
 
@@ -124,8 +129,12 @@ public class SupportResponseLocalServiceImpl
 		supportResponse.setSeverity2Resolution(severity2Resolution);
 		supportResponse.setSeverity3Response(severity3Response);
 		supportResponse.setSeverity3Resolution(severity3Resolution);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		supportResponsePersistence.update(supportResponse, false);
+		supportResponsePersistence.update(supportResponse, serviceContext);
 
 		recalculateHighestSupportResponses(supportResponseId);
 

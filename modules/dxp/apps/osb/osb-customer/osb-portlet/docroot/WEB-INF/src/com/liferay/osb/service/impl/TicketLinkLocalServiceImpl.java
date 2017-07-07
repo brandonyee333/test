@@ -80,8 +80,10 @@ public class TicketLinkLocalServiceImpl extends TicketLinkLocalServiceBaseImpl {
 			ticketLink.setUrl(urls[i]);
 			ticketLink.setType(types[i]);
 			ticketLink.setVisibility(visibility);
+			
+			//TODO implement serviceContext as needed
 
-			ticketLinkPersistence.update(ticketLink, false);
+			ticketLinkPersistence.update(ticketLink, serviceContext);
 
 			auditEntryLocalService.addAuditEntry(
 				userId, user.getFullName(), now,

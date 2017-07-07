@@ -197,8 +197,10 @@ public class TicketCommentLocalServiceImpl
 			ticketComment.setSettingsProperty(
 				"statusReason", String.valueOf(statusReason));
 		}
+		
+		//TODO implement serviceContext how needed
 
-		ticketCommentPersistence.update(ticketComment, false);
+		ticketCommentPersistence.update(ticketComment, serviceContext);
 
 		int auditAction = GetterUtil.getInteger(
 			serviceContext.getAttribute("auditAction"));
@@ -386,12 +388,16 @@ public class TicketCommentLocalServiceImpl
 				ticketEntryId, TicketCommentConstants.TYPE_SOLUTION);
 
 		Date now = new Date();
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
 		for (TicketComment ticketComment : ticketComments) {
 			ticketComment.setModifiedDate(now);
 			ticketComment.setType(TicketCommentConstants.TYPE_NORMAL);
 
-			ticketCommentPersistence.update(ticketComment, false);
+			ticketCommentPersistence.update(ticketComment, serviceContext);
 		}
 	}
 
@@ -424,8 +430,10 @@ public class TicketCommentLocalServiceImpl
 			ticketComment.setSettingsProperty(
 				"pendingTypes", StringUtil.merge(pendingTypes));
 		}
+		
+		//TODO implement serviceContext how needed
 
-		ticketCommentPersistence.update(ticketComment, false);
+		ticketCommentPersistence.update(ticketComment, serviceContext);
 
 		int auditAction = GetterUtil.getInteger(
 			serviceContext.getAttribute("auditAction"));
@@ -464,8 +472,12 @@ public class TicketCommentLocalServiceImpl
 
 		ticketComment.setModifiedDate(now);
 		ticketComment.setType(type);
+		
+		//TODO implement serviceContext how needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		return ticketCommentPersistence.update(ticketComment, false);
+		return ticketCommentPersistence.update(ticketComment, serviceContext);
 	}
 
 	protected void updateStatus(
@@ -485,8 +497,10 @@ public class TicketCommentLocalServiceImpl
 		}
 
 		ticketComment.setStatus(status);
+		
+		//TODO implement serviceContext how needed
 
-		ticketCommentPersistence.update(ticketComment, false);
+		ticketCommentPersistence.update(ticketComment, serviceContext);
 
 		if (status != WorkflowConstants.STATUS_APPROVED) {
 			return;
