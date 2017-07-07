@@ -16,10 +16,20 @@ package com.liferay.osb.hook.upgrade.v2_4_6;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+*/
+
 /**
  * @author Joan Kim
  */
 public class UpgradeECDocumentItem extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -31,5 +41,8 @@ public class UpgradeECDocumentItem extends UpgradeProcess {
 			"create index IX_B6333F7B on ECommerce_ECDocumentItem " +
 				"(ecDocumentEntryId, classNameId)");
 	}
+
+}
+*/
 
 }

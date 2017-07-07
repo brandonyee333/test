@@ -23,6 +23,11 @@ public class Upgrade_20161027110154893_Webinar
 	extends Upgrade_20150617144546039_ObsoleteData {
 
 	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*	
+	@Override
 	public long getTimestamp() {
 		return 20161027110154893L;
 	}
@@ -39,5 +44,6 @@ public class Upgrade_20161027110154893_Webinar
 		runSQL("drop table OSB_WebinarCustomer");
 		runSQL("drop table OSB_WebinarEvent");
 	}
+*/
 
 }

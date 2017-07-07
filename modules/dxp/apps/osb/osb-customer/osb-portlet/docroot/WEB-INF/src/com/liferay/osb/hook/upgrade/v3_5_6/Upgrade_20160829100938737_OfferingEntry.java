@@ -14,7 +14,9 @@
 
 package com.liferay.osb.hook.upgrade.v3_5_6;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
@@ -28,11 +30,19 @@ import java.sql.ResultSet;
 
 import java.util.Date;
 
+*/
+
 /**
  * @author Amos Fong
  */
 public class Upgrade_20160829100938737_OfferingEntry
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -89,5 +99,8 @@ public class Upgrade_20160829100938737_OfferingEntry
 			DataAccess.cleanUp(con, ps, rs);
 		}
 	}
+
+}
+*/
 
 }

@@ -14,7 +14,9 @@
 
 package com.liferay.osb.hook.upgrade.v3_5_1;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.OfferingDefinition;
 import com.liferay.osb.service.OfferingBundleLocalServiceUtil;
 import com.liferay.osb.service.OfferingDefinitionLocalServiceUtil;
@@ -31,11 +33,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+*/
+
 /**
  * @author Amos Fong
  */
 public class Upgrade_20160602105202547_OfferingDefinition
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -111,7 +121,7 @@ public class Upgrade_20160602105202547_OfferingDefinition
 			return false;
 		}
 
-		/*int offeringEntryCount =
+		int offeringEntryCount =
 			OfferingEntryLocalServiceUtil.
 				getOfferingDefinitionOfferingEntriesCount(
 					offeringDefinition.getOfferingDefinitionId());
@@ -122,7 +132,7 @@ public class Upgrade_20160602105202547_OfferingDefinition
 
 		if (offeringEntryCount > offeringEntryCount2) {
 			return true;
-		}*/
+		}
 
 		return false;
 	}
@@ -133,7 +143,7 @@ public class Upgrade_20160602105202547_OfferingDefinition
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
 		for (OfferingDefinition offeringDefinition : offeringDefinitions) {
-			/*int servers = offeringDefinition.getServers();
+			int servers = offeringDefinition.getServers();
 
 			if (servers > 1) {
 				List<OfferingEntry> offeringEntries =
@@ -153,7 +163,7 @@ public class Upgrade_20160602105202547_OfferingDefinition
 
 				OfferingDefinitionLocalServiceUtil.updateOfferingDefinition(
 					offeringDefinition, false);
-			}*/
+			}
 
 			String key = getKey(offeringDefinition);
 
@@ -219,5 +229,8 @@ public class Upgrade_20160602105202547_OfferingDefinition
 
 	private Map<String, OfferingDefinition> _offeringDefinitionsMap =
 		new HashMap<String, OfferingDefinition>();
+
+}
+*/
 
 }

@@ -14,13 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_2_8;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Rachael Koestartyo
  */
 public class Upgrade_20150615165456812_MarketingEvent
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -37,5 +47,8 @@ public class Upgrade_20150615165456812_MarketingEvent
 			runSQL("alter table OSB_MarketingEvent add slidesFileEntryId LONG");
 		}
 	}
+
+}
+*/
 
 }

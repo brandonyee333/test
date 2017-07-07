@@ -14,13 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_1_8;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Val Nagy
  */
 public class Upgrade_20150116154221344_TrainingEvent
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -37,5 +47,8 @@ public class Upgrade_20150116154221344_TrainingEvent
 
 		runSQL("update OSB_TrainingEvent set localizedSlides = 1");
 	}
+
+}
+*/
 
 }

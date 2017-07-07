@@ -14,13 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v2_5_6;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Alan Zhang
  * @author Sharon Li
  */
-public class UpgradeListType extends BaseUpgradeProcess {
+public class UpgradeListType extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -49,5 +59,9 @@ public class UpgradeListType extends BaseUpgradeProcess {
 			"delete from ListType where listTypeId = " +
 				UpgradeTicketStatus.STATUS_REVIEWING_PATCH);
 	}
+
+}
+
+*/
 
 }

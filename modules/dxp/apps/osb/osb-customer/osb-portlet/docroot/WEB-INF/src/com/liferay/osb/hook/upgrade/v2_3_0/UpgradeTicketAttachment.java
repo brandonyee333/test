@@ -15,6 +15,8 @@
 package com.liferay.osb.hook.upgrade.v2_3_0;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.osb.model.TicketAttachment;
 import com.liferay.osb.service.TicketAttachmentLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
@@ -24,11 +26,19 @@ import com.liferay.document.library.kernel.store.DLStoreUtil;
 
 import java.util.List;
 
+*/
+
 /**
  * @author Alan Zhang
  * @author Brent Krone-Schmidt
  */
 public class UpgradeTicketAttachment extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -76,5 +86,8 @@ public class UpgradeTicketAttachment extends UpgradeProcess {
 			updateTicketAttachment(ticketAttachment);
 		}
 	}
+
+}
+*/
 
 }

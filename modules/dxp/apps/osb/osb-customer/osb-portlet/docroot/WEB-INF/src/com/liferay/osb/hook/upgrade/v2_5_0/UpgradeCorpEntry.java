@@ -16,10 +16,20 @@ package com.liferay.osb.hook.upgrade.v2_5_0;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+*/
+
 /**
  * @author Douglas Wong
  */
 public class UpgradeCorpEntry extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -31,5 +41,8 @@ public class UpgradeCorpEntry extends UpgradeProcess {
 			runSQL("alter table OSB_CorpEntry drop column employerId");
 		}
 	}
+
+}
+*/
 
 }

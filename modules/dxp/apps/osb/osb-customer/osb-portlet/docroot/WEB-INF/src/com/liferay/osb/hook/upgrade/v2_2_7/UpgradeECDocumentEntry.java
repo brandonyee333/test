@@ -16,10 +16,20 @@ package com.liferay.osb.hook.upgrade.v2_2_7;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+*/
+
 /**
  * @author Ryan Park
  */
 public class UpgradeECDocumentEntry extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -37,5 +47,8 @@ public class UpgradeECDocumentEntry extends UpgradeProcess {
 			"alter table ECommerce_ECDocumentEntry " +
 				"add column billingEmailAddress STRING");
 	}
+
+}
+*/
 
 }

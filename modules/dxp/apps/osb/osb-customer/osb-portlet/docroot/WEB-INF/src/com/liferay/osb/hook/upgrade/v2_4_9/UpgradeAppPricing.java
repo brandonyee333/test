@@ -16,10 +16,20 @@ package com.liferay.osb.hook.upgrade.v2_4_9;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+*/
+
 /**
  * @author Ryan Park
  */
 public class UpgradeAppPricing extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -47,5 +57,8 @@ public class UpgradeAppPricing extends UpgradeProcess {
 
 		runSQL("alter table OSB_AppPricing drop column supportPrice");
 	}
+
+}
+*/
 
 }

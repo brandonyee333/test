@@ -14,13 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_6_1;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Haote Chou
  */
 public class Upgrade_20161102150010569_TrainingEvent
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -53,5 +63,8 @@ public class Upgrade_20161102150010569_TrainingEvent
 			"update OSB_TrainingEvent set portalMinorVersion = 50005 " +
 				"where portalMinorVersion = 22005");
 	}
+
+}
+*/
 
 }

@@ -15,6 +15,8 @@
 package com.liferay.osb.hook.upgrade.v2_3_1;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.model.AssetLicense;
 import com.liferay.osb.model.AssetReceiptLicense;
@@ -28,10 +30,18 @@ import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 
 import java.util.List;
 
+*/
+
 /**
  * @author Joan Kim
  */
 public class UpgradeAssetReceiptLicense extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	protected DynamicQuery buildDynamicQuery() {
 		Junction junction = RestrictionsFactoryUtil.conjunction();
@@ -70,5 +80,8 @@ public class UpgradeAssetReceiptLicense extends UpgradeProcess {
 				assetReceiptLicense);
 		}
 	}
+
+}
+*/
 
 }

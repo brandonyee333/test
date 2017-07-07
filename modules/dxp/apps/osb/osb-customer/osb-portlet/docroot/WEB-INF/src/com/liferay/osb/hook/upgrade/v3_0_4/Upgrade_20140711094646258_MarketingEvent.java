@@ -14,13 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_0_4;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Rachael Koestartyo
  */
 public class Upgrade_20140711094646258_MarketingEvent
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -39,5 +49,8 @@ public class Upgrade_20140711094646258_MarketingEvent
 					"VARCHAR(150)");
 		}
 	}
+
+}
+*/
 
 }

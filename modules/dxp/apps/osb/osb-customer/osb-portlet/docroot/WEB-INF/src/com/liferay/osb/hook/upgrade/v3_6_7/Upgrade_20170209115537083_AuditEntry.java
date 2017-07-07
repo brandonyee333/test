@@ -14,12 +14,22 @@
 
 package com.liferay.osb.hook.upgrade.v3_6_7;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Amos Fong
  */
-public class Upgrade_20170209115537083_AuditEntry extends BaseUpgradeProcess {
+public class Upgrade_20170209115537083_AuditEntry extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -31,5 +41,8 @@ public class Upgrade_20170209115537083_AuditEntry extends BaseUpgradeProcess {
 		runSQL("alter table OSB_AuditEntry modify oldLabel VARCHAR(255)");
 		runSQL("alter table OSB_AuditEntry modify newLabel VARCHAR(255)");
 	}
+
+}
+*/
 
 }

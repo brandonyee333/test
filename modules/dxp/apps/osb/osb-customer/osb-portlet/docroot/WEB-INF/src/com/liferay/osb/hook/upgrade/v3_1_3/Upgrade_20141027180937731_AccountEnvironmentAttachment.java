@@ -14,13 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_1_3;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Amos Fong
  */
 public class Upgrade_20141027180937731_AccountEnvironmentAttachment
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -33,5 +43,8 @@ public class Upgrade_20141027180937731_AccountEnvironmentAttachment
 			"alter table OSB_AccountEnvironmentAttachment change fileSize " +
 				"fileSize LONG");
 	}
+
+}
+*/
 
 }

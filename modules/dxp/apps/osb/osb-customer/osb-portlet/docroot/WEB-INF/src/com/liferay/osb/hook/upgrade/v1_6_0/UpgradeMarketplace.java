@@ -16,10 +16,20 @@ package com.liferay.osb.hook.upgrade.v1_6_0;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+*/
+
 /**
  * @author Ryan Park
  */
 public class UpgradeMarketplace extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -29,5 +39,8 @@ public class UpgradeMarketplace extends UpgradeProcess {
 	protected void updateAppEntry() throws Exception {
 		runSQL("update OSB_AppEntry set licenseType = -1");
 	}
+
+}
+*/
 
 }

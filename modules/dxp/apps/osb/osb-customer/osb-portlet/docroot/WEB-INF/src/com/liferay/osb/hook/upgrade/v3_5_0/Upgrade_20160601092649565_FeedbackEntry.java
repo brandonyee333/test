@@ -14,14 +14,24 @@
 
 package com.liferay.osb.hook.upgrade.v3_5_0;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.impl.FeedbackEntryModelImpl;
+
+*/
 
 /**
  * @author Kyle Bischof
  */
 public class Upgrade_20160601092649565_FeedbackEntry
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -34,5 +44,8 @@ public class Upgrade_20160601092649565_FeedbackEntry
 			runSQL(FeedbackEntryModelImpl.TABLE_SQL_CREATE);
 		}
 	}
+
+}
+*/
 
 }

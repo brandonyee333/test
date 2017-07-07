@@ -16,10 +16,20 @@ package com.liferay.osb.hook.upgrade.v2_3_0;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+*/
+
 /**
  * @author Ryan Park
  */
 public class UpgradeECDocumentItem extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -35,5 +45,8 @@ public class UpgradeECDocumentItem extends UpgradeProcess {
 			"alter table ECommerce_ECDocumentItem " +
 				"add column taxProcessed BOOLEAN");
 	}
+
+}
+*/
 
 }

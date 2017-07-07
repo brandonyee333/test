@@ -14,14 +14,24 @@
 
 package com.liferay.osb.hook.upgrade.v3_0_5;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.util.StringBundler;
+
+*/
 
 /**
  * @author Ryan Park
  */
-public class Upgrade_20140722091751049_CorpProject extends BaseUpgradeProcess {
+public class Upgrade_20140722091751049_CorpProject extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -44,5 +54,8 @@ public class Upgrade_20140722091751049_CorpProject extends BaseUpgradeProcess {
 
 		runSQL(sb.toString());
 	}
+
+}
+*/
 
 }

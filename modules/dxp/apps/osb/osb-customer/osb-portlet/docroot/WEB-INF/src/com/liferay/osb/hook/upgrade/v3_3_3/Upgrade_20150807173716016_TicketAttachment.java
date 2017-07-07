@@ -14,7 +14,9 @@
 
 package com.liferay.osb.hook.upgrade.v3_3_3;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.FileRepository;
 import com.liferay.osb.model.TicketAttachment;
 import com.liferay.osb.model.TicketAttachmentConstants;
@@ -32,11 +34,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+*/
+
 /**
  * @author Alan Zhang
  */
 public class Upgrade_20150807173716016_TicketAttachment
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -147,5 +157,8 @@ public class Upgrade_20150807173716016_TicketAttachment
 
 	private static Log _log = LogFactoryUtil.getLog(
 		Upgrade_20150807173716016_TicketAttachment.class);
+
+}
+*/
 
 }

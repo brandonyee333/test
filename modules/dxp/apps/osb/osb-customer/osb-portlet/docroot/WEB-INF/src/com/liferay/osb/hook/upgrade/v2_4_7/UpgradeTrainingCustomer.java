@@ -15,6 +15,8 @@
 package com.liferay.osb.hook.upgrade.v2_4_7;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.osb.model.TrainingCustomerConstants;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 
@@ -22,10 +24,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+*/
+
 /**
  * @author Calvin Keum
  */
 public class UpgradeTrainingCustomer extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -65,5 +75,8 @@ public class UpgradeTrainingCustomer extends UpgradeProcess {
 			DataAccess.cleanUp(con, ps, rs);
 		}
 	}
+
+}
+*/
 
 }

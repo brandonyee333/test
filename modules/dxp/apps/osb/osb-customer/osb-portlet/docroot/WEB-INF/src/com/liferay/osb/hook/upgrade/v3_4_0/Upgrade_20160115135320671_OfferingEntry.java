@@ -14,13 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_4_0;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Amos Fong
  */
 public class Upgrade_20160115135320671_OfferingEntry
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -31,5 +41,8 @@ public class Upgrade_20160115135320671_OfferingEntry
 	protected void doUpgrade() throws Exception {
 		runSQL("update OSB_OfferingEntry set processorCoresAllowed = 8");
 	}
+
+}
+*/
 
 }

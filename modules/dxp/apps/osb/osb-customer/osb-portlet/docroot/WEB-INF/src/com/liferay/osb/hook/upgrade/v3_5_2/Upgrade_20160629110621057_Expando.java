@@ -14,7 +14,9 @@
 
 package com.liferay.osb.hook.upgrade.v3_5_2;
 
-import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -29,12 +31,20 @@ import com.liferay.expando.kernel.service.ExpandoValueLocalServiceUtil;
 
 import java.util.List;
 
+*/
+
 /**
  * @author Douglas Wong
  * @author Rachael Koestartyo
  * @author Peter Shin
  */
-public class Upgrade_20160629110621057_Expando extends BaseUpgradeProcess {
+public class Upgrade_20160629110621057_Expando extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -98,5 +108,8 @@ public class Upgrade_20160629110621057_Expando extends BaseUpgradeProcess {
 
 	private static Log _log = LogFactoryUtil.getLog(
 		Upgrade_20160629110621057_Expando.class);
+
+}
+*/
 
 }

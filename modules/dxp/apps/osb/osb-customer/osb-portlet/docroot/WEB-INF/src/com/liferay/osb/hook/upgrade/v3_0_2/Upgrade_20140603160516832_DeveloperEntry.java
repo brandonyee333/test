@@ -14,13 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_0_2;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Douglas Wong
  */
 public class Upgrade_20140603160516832_DeveloperEntry
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -41,5 +51,8 @@ public class Upgrade_20140603160516832_DeveloperEntry
 
 		runSQL("update OSB_DeveloperEntry set fatcaWithholdingPercentage = -1");
 	}
+
+}
+*/
 
 }

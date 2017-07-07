@@ -14,12 +14,22 @@
 
 package com.liferay.osb.hook.upgrade.v3_1_0;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Amos Fong
  */
-public class Upgrade_20140919153050057_AppPackage extends BaseUpgradeProcess {
+public class Upgrade_20140919153050057_AppPackage extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -36,5 +46,8 @@ public class Upgrade_20140919153050057_AppPackage extends BaseUpgradeProcess {
 			"alter table OSB_AppPackage change column bundle prepackaged " +
 				"BOOLEAN");
 	}
+
+}
+*/
 
 }

@@ -14,7 +14,9 @@
 
 package com.liferay.osb.hook.upgrade.v3_0_2;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.CorpEntry;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.expando.kernel.exception.NoSuchTableException;
@@ -23,10 +25,18 @@ import com.liferay.expando.kernel.model.ExpandoTable;
 import com.liferay.expando.kernel.service.ExpandoColumnLocalServiceUtil;
 import com.liferay.expando.kernel.service.ExpandoTableLocalServiceUtil;
 
+*/
+
 /**
  * @author Amos Fong
  */
-public class Upgrade_20140602162601983_Expando extends BaseUpgradeProcess {
+public class Upgrade_20140602162601983_Expando extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -58,5 +68,8 @@ public class Upgrade_20140602162601983_Expando extends BaseUpgradeProcess {
 				expandoColumn.getColumnId());
 		}
 	}
+
+}
+*/
 
 }

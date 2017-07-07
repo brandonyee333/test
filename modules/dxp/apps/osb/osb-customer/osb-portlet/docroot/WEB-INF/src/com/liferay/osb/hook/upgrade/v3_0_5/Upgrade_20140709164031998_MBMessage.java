@@ -14,7 +14,9 @@
 
 package com.liferay.osb.hook.upgrade.v3_0_5;
 
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.message.boards.kernel.util.MBUtil;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.util.OSBConstants;
@@ -30,10 +32,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+*/
+
 /**
  * @author Joan Kim
  */
-public class Upgrade_20140709164031998_MBMessage extends BaseUpgradeProcess {
+public class Upgrade_20140709164031998_MBMessage extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -290,5 +300,8 @@ public class Upgrade_20140709164031998_MBMessage extends BaseUpgradeProcess {
 
 	private static final long _MB_CATEGORY_DEVELOPER_PORTAL_DEVELOPERS_ID =
 		33575418;
+
+}
+*/
 
 }

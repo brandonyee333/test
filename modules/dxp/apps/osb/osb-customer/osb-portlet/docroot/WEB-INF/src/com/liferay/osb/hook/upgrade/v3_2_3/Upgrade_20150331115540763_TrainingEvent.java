@@ -14,13 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_2_3;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Abhishek Jain
  */
 public class Upgrade_20150331115540763_TrainingEvent
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -39,5 +49,8 @@ public class Upgrade_20150331115540763_TrainingEvent
 
 		runSQL("alter table OSB_TrainingEvent modify emailAddress longtext");
 	}
+
+}
+*/
 
 }

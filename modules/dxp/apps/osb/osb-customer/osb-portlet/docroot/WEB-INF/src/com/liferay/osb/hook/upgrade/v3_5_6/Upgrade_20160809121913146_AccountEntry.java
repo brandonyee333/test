@@ -14,13 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_5_6;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.util.OSBConstants;
+
+*/
 
 /**
  * @author Kyle Bischof
  */
-public class Upgrade_20160809121913146_AccountEntry extends BaseUpgradeProcess {
+public class Upgrade_20160809121913146_AccountEntry extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -51,5 +61,8 @@ public class Upgrade_20160809121913146_AccountEntry extends BaseUpgradeProcess {
 					"redirectAccountEntryId, type_)");
 		}
 	}
+
+}
+*/
 
 }

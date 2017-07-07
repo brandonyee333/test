@@ -16,10 +16,20 @@ package com.liferay.osb.hook.upgrade.v2_5_7;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+*/
+
 /**
  * @author Alan Zhang
  */
 public class UpgradeListType extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -31,5 +41,8 @@ public class UpgradeListType extends UpgradeProcess {
 			"update ListType set name = 'pending-customer' where " +
 				"listTypeId = 32003");
 	}
+
+}
+*/
 
 }

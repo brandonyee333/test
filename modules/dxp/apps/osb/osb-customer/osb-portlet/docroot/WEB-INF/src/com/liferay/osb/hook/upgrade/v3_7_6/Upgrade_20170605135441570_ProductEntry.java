@@ -14,12 +14,22 @@
 
 package com.liferay.osb.hook.upgrade.v3_7_6;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Amos Fong
  */
-public class Upgrade_20170605135441570_ProductEntry extends BaseUpgradeProcess {
+public class Upgrade_20170605135441570_ProductEntry extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -71,5 +81,8 @@ public class Upgrade_20170605135441570_ProductEntry extends BaseUpgradeProcess {
 	private static final long _PRODUCT_ENTRY_PORTAL_LIMITED_ID = 11342216;
 
 	private static final long _PRODUCT_ENTRY_PORTAL_NON_PROD_ID = 5968274;
+
+}
+*/
 
 }

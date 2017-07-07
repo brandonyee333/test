@@ -14,13 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_1_7;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Joan Kim
  */
 public class Upgrade_20150116093802297_AssetAttachment
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -37,5 +47,8 @@ public class Upgrade_20150116093802297_AssetAttachment
 			"alter table OSB_AssetAttachment add column rank " +
 				"integer default 0");
 	}
+
+}
+*/
 
 }

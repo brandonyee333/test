@@ -14,13 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_2_5;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Douglas Wong
  */
 public class Upgrade_20150505154554204_TrainingExamResult
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -42,5 +52,8 @@ public class Upgrade_20150505154554204_TrainingExamResult
 					"(startDate, grade, status)");
 		}
 	}
+
+}
+*/
 
 }

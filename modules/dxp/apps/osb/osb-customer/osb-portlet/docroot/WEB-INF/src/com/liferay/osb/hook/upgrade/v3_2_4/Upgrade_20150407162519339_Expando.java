@@ -14,7 +14,9 @@
 
 package com.liferay.osb.hook.upgrade.v3_2_4;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -36,10 +38,18 @@ import com.liferay.expando.kernel.service.ExpandoTableLocalServiceUtil;
 import java.util.HashMap;
 import java.util.Map;
 
+*/
+
 /**
  * @author Abhishek Jain
  */
-public class Upgrade_20150407162519339_Expando extends BaseUpgradeProcess {
+public class Upgrade_20150407162519339_Expando extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -97,5 +107,8 @@ public class Upgrade_20150407162519339_Expando extends BaseUpgradeProcess {
 	}
 
 	private static final String _EXPANDO_COLUMN_NAME = "osbDisplayCertificates";
+
+}
+*/
 
 }

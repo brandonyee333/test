@@ -16,10 +16,20 @@ package com.liferay.osb.hook.upgrade.v2_1_5;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+*/
+
 /**
  * @author Ryan Park
  */
 public class UpgradeAssetReceiptLicense extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -39,5 +49,8 @@ public class UpgradeAssetReceiptLicense extends UpgradeProcess {
 			"alter table OSB_AssetReceiptLicense drop column purchasedPrice");
 		runSQL("alter table OSB_AssetReceiptLicense drop column actualPrice");
 	}
+
+}
+*/
 
 }

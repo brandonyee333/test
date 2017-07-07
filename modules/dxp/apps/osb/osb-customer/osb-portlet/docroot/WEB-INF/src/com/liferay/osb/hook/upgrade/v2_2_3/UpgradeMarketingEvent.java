@@ -15,12 +15,22 @@
 package com.liferay.osb.hook.upgrade.v2_2_3;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.osb.model.impl.MarketingEventModelImpl;
+
+*/
 
 /**
  * @author Rachael Koestartyo
  */
 public class UpgradeMarketingEvent extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -37,5 +47,8 @@ public class UpgradeMarketingEvent extends UpgradeProcess {
 		runSQL("create index IX_F81473A on OSB_MarketingEvent (type_)");
 		runSQL("create index IX_EED5EFA6 on OSB_MarketingEvent (globalRegion)");
 	}
+
+}
+*/
 
 }

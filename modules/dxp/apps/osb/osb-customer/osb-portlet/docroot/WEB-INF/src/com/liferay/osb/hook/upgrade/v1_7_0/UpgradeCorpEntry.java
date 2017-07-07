@@ -15,6 +15,8 @@
 package com.liferay.osb.hook.upgrade.v1_7_0;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.osb.model.AssetAttachment;
 import com.liferay.osb.model.AssetAttachmentConstants;
 import com.liferay.osb.model.CorpEntry;
@@ -36,10 +38,18 @@ import java.io.File;
 
 import java.util.List;
 
+*/
+
 /**
  * @author Douglas Wong
  */
 public class UpgradeCorpEntry extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -105,5 +115,8 @@ public class UpgradeCorpEntry extends UpgradeProcess {
 
 		CorpEntryLocalServiceUtil.updateCorpEntry(corpEntry);
 	}
+
+}
+*/
 
 }

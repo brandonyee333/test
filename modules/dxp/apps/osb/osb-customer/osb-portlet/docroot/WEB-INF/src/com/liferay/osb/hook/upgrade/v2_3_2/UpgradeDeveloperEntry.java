@@ -16,10 +16,20 @@ package com.liferay.osb.hook.upgrade.v2_3_2;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+*/
+
 /**
  * @author Ryan Park
  */
 public class UpgradeDeveloperEntry extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -33,5 +43,8 @@ public class UpgradeDeveloperEntry extends UpgradeProcess {
 
 		runSQL("alter table OSB_DeveloperEntry add column countryId LONG");
 	}
+
+}
+*/
 
 }

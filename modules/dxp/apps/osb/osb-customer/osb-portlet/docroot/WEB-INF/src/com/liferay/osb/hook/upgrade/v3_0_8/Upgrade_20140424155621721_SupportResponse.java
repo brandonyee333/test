@@ -14,13 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_0_8;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Brent Krone-Schmidt
  */
 public class Upgrade_20140424155621721_SupportResponse
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -77,5 +87,8 @@ public class Upgrade_20140424155621721_SupportResponse
 			"update OSB_SupportResponse set supportLevel = 4 where " +
 				"(name like '%basic%') or (name like '%limited%')");
 	}
+
+}
+*/
 
 }

@@ -15,13 +15,23 @@
 package com.liferay.osb.hook.upgrade.v2_3_6;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+*/
 
 /**
  * @author Joan Kim
  */
 public class UpgradeAssetReceipt extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -44,5 +54,8 @@ public class UpgradeAssetReceipt extends UpgradeProcess {
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(UpgradeAssetReceipt.class);
+
+}
+*/
 
 }

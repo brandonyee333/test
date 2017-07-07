@@ -16,10 +16,20 @@ package com.liferay.osb.hook.upgrade.v2_5_8;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+*/
+
 /**
  * @author Douglas Wong
  */
 public class UpgradeECProductEntry extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -31,5 +41,8 @@ public class UpgradeECProductEntry extends UpgradeProcess {
 			"create unique index IX_591C9BCF on ECommerce_ECProductEntry " +
 				"(ecProductTypeId, name)");
 	}
+
+}
+*/
 
 }

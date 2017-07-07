@@ -14,14 +14,24 @@
 
 package com.liferay.osb.hook.upgrade.v3_6_7;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.AssetAudit;
 import com.liferay.osb.service.AssetAuditLocalServiceUtil;
+
+*/
 
 /**
  * @author Kyle Bischof
  */
-public class Upgrade_20170213164349433_AssetAudit extends BaseUpgradeProcess {
+public class Upgrade_20170213164349433_AssetAudit extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -45,5 +55,8 @@ public class Upgrade_20170213164349433_AssetAudit extends BaseUpgradeProcess {
 
 		runSQL("alter table OSB_AssetAudit modify legalEntityName VARCHAR(75)");
 	}
+
+}
+*/
 
 }

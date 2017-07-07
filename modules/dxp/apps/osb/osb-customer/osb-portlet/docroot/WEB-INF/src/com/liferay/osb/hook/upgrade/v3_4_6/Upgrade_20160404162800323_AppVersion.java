@@ -14,12 +14,22 @@
 
 package com.liferay.osb.hook.upgrade.v3_4_6;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Amos Fong
  */
-public class Upgrade_20160404162800323_AppVersion extends BaseUpgradeProcess {
+public class Upgrade_20160404162800323_AppVersion extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -36,5 +46,8 @@ public class Upgrade_20160404162800323_AppVersion extends BaseUpgradeProcess {
 			"alter table OSB_AppVersion add column portalRequired BOOLEAN " +
 				"default false");
 	}
+
+}
+*/
 
 }

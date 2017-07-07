@@ -14,14 +14,24 @@
 
 package com.liferay.osb.hook.upgrade.v3_2_2;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.impl.TrainingLinkedUserModelImpl;
+
+*/
 
 /**
  * @author Douglas Wong
  */
 public class Upgrade_20150316165503668_TrainingLinkedUser
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -43,5 +53,8 @@ public class Upgrade_20150316165503668_TrainingLinkedUser
 			"create unique index IX_DEA7805F on OSB_TrainingLinkedUser " +
 				"(userId)");
 	}
+
+}
+*/
 
 }

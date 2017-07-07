@@ -16,10 +16,20 @@ package com.liferay.osb.hook.upgrade.v2_0_2;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+*/
+
 /**
  * @author Lin Cui
  */
 public class UpgradeAuditEntry extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -69,5 +79,8 @@ public class UpgradeAuditEntry extends UpgradeProcess {
 				"'com.liferay.osb.model.AuditEntry.field' where " +
 					"(listTypeId >= 34001) and (listTypeId <= 34099)");
 	}
+
+}
+*/
 
 }

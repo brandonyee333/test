@@ -16,10 +16,20 @@ package com.liferay.osb.hook.upgrade.v2_2_9;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+*/
+
 /**
  * @author Ryan Park
  */
 public class UpgradeAppPricingItem extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -33,5 +43,8 @@ public class UpgradeAppPricingItem extends UpgradeProcess {
 			"create unique index IX_EE718AF3 on " +
 				"OSB_AppPricingItem (appPricingId, assetLicenseId)");
 	}
+
+}
+*/
 
 }

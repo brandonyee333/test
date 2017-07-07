@@ -14,7 +14,9 @@
 
 package com.liferay.osb.hook.upgrade.v3_5_7;
 
-import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.AccountEntry;
@@ -38,10 +40,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+*/
+
 /**
  * @author Amos Fong
  */
-public class Upgrade_20160811141901211_AccountEntry extends BaseUpgradeProcess {
+public class Upgrade_20160811141901211_AccountEntry extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -203,5 +213,8 @@ public class Upgrade_20160811141901211_AccountEntry extends BaseUpgradeProcess {
 	}
 
 	private static final long _SUPPORT_REGION_NOT_AVAILABLE_ID = 78237012;
+
+}
+*/
 
 }

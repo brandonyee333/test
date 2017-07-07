@@ -14,14 +14,24 @@
 
 package com.liferay.osb.hook.upgrade.v3_4_7;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.service.PortalReleaseLocalServiceUtil;
+
+*/
 
 /**
  * @author Yury Butrymovich
  */
 public class Upgrade_20160414080234954_PortalRelease
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -59,5 +69,8 @@ public class Upgrade_20160414080234954_PortalRelease
 			"Liferay DXP Digital Enterprise 7.0", 7010, false, true, true, true,
 			true);
 	}
+
+}
+*/
 
 }

@@ -14,7 +14,9 @@
 
 package com.liferay.osb.hook.upgrade.v3_1_1;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.marketplace.util.MarketplaceEcommerceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
@@ -36,11 +38,19 @@ import java.sql.ResultSet;
 
 import java.util.List;
 
+*/
+
 /**
  * @author Douglas Wong
  */
 public class Upgrade_20141007101622091_ECDocumentEntry
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -108,5 +118,8 @@ public class Upgrade_20141007101622091_ECDocumentEntry
 
 	private static Log _log = LogFactoryUtil.getLog(
 		Upgrade_20141007101622091_ECDocumentEntry.class);
+
+}
+*/
 
 }

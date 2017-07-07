@@ -14,13 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_6_1;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Yury Butrymovich
  */
 public class Upgrade_20161028115935722_AssetAttachment
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -31,5 +41,8 @@ public class Upgrade_20161028115935722_AssetAttachment
 	protected void doUpgrade() throws Exception {
 		runSQL("alter table OSB_AssetAttachment modify fileName VARCHAR(255)");
 	}
+
+}
+*/
 
 }

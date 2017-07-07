@@ -14,12 +14,22 @@
 
 package com.liferay.osb.hook.upgrade.v2_2_7;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Brent Krone-Schmidt
  */
-public class UpgradeListType extends BaseUpgradeProcess {
+public class UpgradeListType extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -31,5 +41,9 @@ public class UpgradeListType extends BaseUpgradeProcess {
 			34028, "environment-name",
 			"com.liferay.osb.model.AuditEntry.field");
 	}
+
+}
+
+*/
 
 }

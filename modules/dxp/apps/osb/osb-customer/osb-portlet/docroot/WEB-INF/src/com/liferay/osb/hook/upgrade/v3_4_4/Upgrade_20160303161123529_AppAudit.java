@@ -14,14 +14,24 @@
 
 package com.liferay.osb.hook.upgrade.v3_4_4;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.impl.AppAuditModelImpl;
+
+*/
 
 /**
  * @author Amos Fong
  * @author Haote Chou
  */
-public class Upgrade_20160303161123529_AppAudit extends BaseUpgradeProcess {
+public class Upgrade_20160303161123529_AppAudit extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -32,5 +42,8 @@ public class Upgrade_20160303161123529_AppAudit extends BaseUpgradeProcess {
 	protected void doUpgrade() throws Exception {
 		runSQL(AppAuditModelImpl.TABLE_SQL_CREATE);
 	}
+
+}
+*/
 
 }

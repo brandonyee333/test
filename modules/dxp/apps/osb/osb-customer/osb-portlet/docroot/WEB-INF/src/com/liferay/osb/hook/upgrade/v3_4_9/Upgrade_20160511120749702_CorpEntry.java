@@ -14,12 +14,22 @@
 
 package com.liferay.osb.hook.upgrade.v3_4_9;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Yury Butrymovich
  */
-public class Upgrade_20160511120749702_CorpEntry extends BaseUpgradeProcess {
+public class Upgrade_20160511120749702_CorpEntry extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -30,5 +40,8 @@ public class Upgrade_20160511120749702_CorpEntry extends BaseUpgradeProcess {
 	protected void doUpgrade() throws Exception {
 		runSQL("alter table OSB_CorpEntry add column dossieraKey VARCHAR(75)");
 	}
+
+}
+*/
 
 }

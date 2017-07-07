@@ -14,13 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_3_1;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.impl.TicketEntryImpl;
+
+*/
 
 /**
  * @author Brent Krone-Schmidt
  */
-public class Upgrade_20150720112412210_TicketEntry extends BaseUpgradeProcess {
+public class Upgrade_20150720112412210_TicketEntry extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -37,5 +47,8 @@ public class Upgrade_20150720112412210_TicketEntry extends BaseUpgradeProcess {
 			"alter table " + TicketEntryImpl.TABLE_NAME + " add " +
 				"subcomponentCustom VARCHAR(150)");
 	}
+
+}
+*/
 
 }

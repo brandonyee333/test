@@ -14,12 +14,22 @@
 
 package com.liferay.osb.hook.upgrade.v3_6_1;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Amos Fong
  */
-public class Upgrade_20161101094342547_ListType extends BaseUpgradeProcess {
+public class Upgrade_20161101094342547_ListType extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -30,5 +40,8 @@ public class Upgrade_20161101094342547_ListType extends BaseUpgradeProcess {
 	protected void doUpgrade() throws Exception {
 		runSQL("update ListType set name = '7.0' where listTypeId = 41000");
 	}
+
+}
+*/
 
 }

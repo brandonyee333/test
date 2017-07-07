@@ -14,14 +14,24 @@
 
 package com.liferay.osb.hook.upgrade.v3_2_2;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.TrainingCertificateConstants;
+
+*/
 
 /**
  * @author Ryan Park
  */
 public class Upgrade_20150319142022444_TrainingCertificate
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -35,5 +45,8 @@ public class Upgrade_20150319142022444_TrainingCertificate
 				TrainingCertificateConstants.SURVEY_STATUS_NOT_APPLICABLE +
 					" where surveyStatus is null");
 	}
+
+}
+*/
 
 }

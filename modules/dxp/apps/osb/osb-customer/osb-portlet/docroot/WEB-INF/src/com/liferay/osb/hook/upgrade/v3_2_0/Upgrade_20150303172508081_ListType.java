@@ -14,13 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_2_0;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.TicketEntryConstants;
+
+*/
 
 /**
  * @author Amos Fong
  */
-public class Upgrade_20150303172508081_ListType extends BaseUpgradeProcess {
+public class Upgrade_20150303172508081_ListType extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -36,5 +46,8 @@ public class Upgrade_20150303172508081_ListType extends BaseUpgradeProcess {
 			TicketEntryConstants.ENV_OS_RED_HAT_ENTERPRISE_7,
 			"red-hat-enterprise-7", "com.liferay.osb.model.TicketEntry.envOS");
 	}
+
+}
+*/
 
 }

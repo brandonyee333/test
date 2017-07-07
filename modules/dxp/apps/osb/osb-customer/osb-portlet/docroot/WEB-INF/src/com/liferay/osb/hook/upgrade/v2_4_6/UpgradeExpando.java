@@ -15,6 +15,8 @@
 package com.liferay.osb.hook.upgrade.v2_4_6;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.osb.model.CorpEntry;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.expando.kernel.exception.NoSuchTableException;
@@ -24,10 +26,18 @@ import com.liferay.expando.kernel.model.ExpandoTable;
 import com.liferay.expando.kernel.service.ExpandoColumnLocalServiceUtil;
 import com.liferay.expando.kernel.service.ExpandoTableLocalServiceUtil;
 
+*/
+
 /**
  * @author Peter Shin
  */
 public class UpgradeExpando extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -61,5 +71,8 @@ public class UpgradeExpando extends UpgradeProcess {
 			expandoTable.getTableId(), "osbClassification",
 			ExpandoColumnConstants.STRING_ARRAY, new String[0]);
 	}
+
+}
+*/
 
 }

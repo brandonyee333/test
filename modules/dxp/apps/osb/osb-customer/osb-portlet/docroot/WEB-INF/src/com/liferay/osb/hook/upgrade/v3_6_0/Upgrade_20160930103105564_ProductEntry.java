@@ -14,7 +14,9 @@
 
 package com.liferay.osb.hook.upgrade.v3_6_0;
 
-import com.liferay.osb.exception.NoSuchProductEntryException;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.exception.NoSuchProductEntryException;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.LicenseEntryConstants;
 import com.liferay.osb.model.OfferingEntry;
@@ -37,10 +39,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+*/
+
 /**
  * @author Amos Fong
  */
-public class Upgrade_20160930103105564_ProductEntry extends BaseUpgradeProcess {
+public class Upgrade_20160930103105564_ProductEntry extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -455,5 +465,8 @@ public class Upgrade_20160930103105564_ProductEntry extends BaseUpgradeProcess {
 	private long _deNonProductionProductEntryId;
 	private long _deOEMProductEntryId;
 	private long _deProductionProductEntryId;
+
+}
+*/
 
 }

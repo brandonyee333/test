@@ -14,13 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_7_4;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Kyle Bischof
  */
 public class Upgrade_20170503160052897_SupportRegion
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -60,5 +70,8 @@ public class Upgrade_20170503160052897_SupportRegion
 			"update OSB_SupportRegion set managerUserId = 4260579 where name " +
 				"= 'US'");
 	}
+
+}
+*/
 
 }

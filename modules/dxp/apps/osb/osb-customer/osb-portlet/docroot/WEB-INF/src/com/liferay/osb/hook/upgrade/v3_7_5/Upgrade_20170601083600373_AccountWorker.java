@@ -14,7 +14,9 @@
 
 package com.liferay.osb.hook.upgrade.v3_7_5;
 
-import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.AccountEntry;
@@ -33,11 +35,19 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import java.util.Date;
 import java.util.List;
 
+*/
+
 /**
  * @author Kyle Bischof
  */
 public class Upgrade_20170601083600373_AccountWorker
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -96,5 +106,8 @@ public class Upgrade_20170601083600373_AccountWorker
 				String.valueOf(accountWorker.getRole()));
 		}
 	}
+
+}
+*/
 
 }

@@ -14,14 +14,24 @@
 
 package com.liferay.osb.hook.upgrade.v3_3_4;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.impl.SecurityPatchImpl;
+
+*/
 
 /**
  * @author Alan Zhang
  */
 public class Upgrade_20150907164802988_SecurityPatch
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -38,5 +48,8 @@ public class Upgrade_20150907164802988_SecurityPatch
 			"alter table " + SecurityPatchImpl.TABLE_NAME + " add name " +
 				"VARCHAR(150)");
 	}
+
+}
+*/
 
 }

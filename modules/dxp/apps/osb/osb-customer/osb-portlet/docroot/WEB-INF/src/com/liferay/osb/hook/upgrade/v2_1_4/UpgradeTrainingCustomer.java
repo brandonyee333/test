@@ -16,10 +16,20 @@ package com.liferay.osb.hook.upgrade.v2_1_4;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+*/
+
 /**
  * @author Calvin Keum
  */
 public class UpgradeTrainingCustomer extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -61,5 +71,8 @@ public class UpgradeTrainingCustomer extends UpgradeProcess {
 			31561881, 31456864, 31456878, 31456892
 		}
 	};
+
+}
+*/
 
 }

@@ -14,13 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_1_2;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Ryan Park
  */
 public class Upgrade_20141021161047483_ECDocumentEntry
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -35,5 +45,8 @@ public class Upgrade_20141021161047483_ECDocumentEntry
 
 		runSQL("alter table ECommerce_ECDocumentEntry add ecAccessKeyId LONG");
 	}
+
+}
+*/
 
 }

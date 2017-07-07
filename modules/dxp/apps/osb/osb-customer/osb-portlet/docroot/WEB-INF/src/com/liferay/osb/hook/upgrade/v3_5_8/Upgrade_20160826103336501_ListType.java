@@ -14,13 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_5_8;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.TicketEntryConstants;
+
+*/
 
 /**
  * @author Jenny Chen
  */
-public class Upgrade_20160826103336501_ListType extends BaseUpgradeProcess {
+public class Upgrade_20160826103336501_ListType extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -33,5 +43,8 @@ public class Upgrade_20160826103336501_ListType extends BaseUpgradeProcess {
 			"update ListType set name = 'enterprise-search' where listTypeId" +
 				" = " + TicketEntryConstants.COMPONENT_ENTERPRISE_SEARCH);
 	}
+
+}
+*/
 
 }

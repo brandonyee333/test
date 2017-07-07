@@ -15,6 +15,8 @@
 package com.liferay.osb.hook.upgrade.v2_4_3;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.model.User;
@@ -26,10 +28,18 @@ import com.liferay.expando.kernel.model.ExpandoTableConstants;
 import com.liferay.expando.kernel.service.ExpandoColumnLocalServiceUtil;
 import com.liferay.expando.kernel.service.ExpandoTableLocalServiceUtil;
 
+*/
+
 /**
  * @author Rachael Koestartyo
  */
 public class UpgradeExpando extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -62,5 +72,8 @@ public class UpgradeExpando extends UpgradeProcess {
 	}
 
 	private static final String _EXPANDO_COLUMN_NAME = "osbNickname";
+
+}
+*/
 
 }

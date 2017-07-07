@@ -14,13 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v1_3_0;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.TicketEntryConstants;
+
+*/
 
 /**
  * @author Alan Zhang
  */
-public class UpgradeTicketEnvironment extends BaseUpgradeProcess {
+public class UpgradeTicketEnvironment extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -40,5 +50,8 @@ public class UpgradeTicketEnvironment extends BaseUpgradeProcess {
 			TicketEntryConstants.ENV_OS_UBUNTU_11, "ubuntu-11",
 			"com.liferay.osb.model.TicketEntry.envOS");
 	}
+}
+
+*/
 
 }

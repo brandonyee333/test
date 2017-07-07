@@ -14,13 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_0_8;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.portal.kernel.util.StringBundler;
+
+*/
 
 /**
  * @author Ryan Park
  */
-public class Upgrade_20140820112944019_ECAccessKey extends BaseUpgradeProcess {
+public class Upgrade_20140820112944019_ECAccessKey extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -47,5 +57,8 @@ public class Upgrade_20140820112944019_ECAccessKey extends BaseUpgradeProcess {
 		runSQL("create index IX_E5247106 on ECommerce_ECAccessKey (groupId)");
 		runSQL("create index IX_78819C5 on ECommerce_ECAccessKey (token)");
 	}
+
+}
+*/
 
 }

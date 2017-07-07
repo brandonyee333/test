@@ -14,12 +14,22 @@
 
 package com.liferay.osb.hook.upgrade.v2_1_6;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Alan Zhang
  */
-public class UpgradeListType extends BaseUpgradeProcess {
+public class UpgradeListType extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -30,5 +40,9 @@ public class UpgradeListType extends BaseUpgradeProcess {
 		insertListType(
 			26023, "calendar", "com.liferay.osb.model.TicketEntry.component");
 	}
+
+}
+
+*/
 
 }

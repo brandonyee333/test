@@ -16,10 +16,20 @@ package com.liferay.osb.hook.upgrade.v2_0_6;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+*/
+
 /**
  * @author Lin Cui
  */
 public class UpgradeAuditEntry extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -31,5 +41,8 @@ public class UpgradeAuditEntry extends UpgradeProcess {
 			"create index IX_558935D2 on OSB_AuditEntry " +
 				"(createDate, classNameId)");
 	}
+
+}
+*/
 
 }

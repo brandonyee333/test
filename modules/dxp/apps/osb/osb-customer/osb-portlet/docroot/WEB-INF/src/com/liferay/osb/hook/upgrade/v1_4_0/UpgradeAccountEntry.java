@@ -16,10 +16,20 @@ package com.liferay.osb.hook.upgrade.v1_4_0;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+*/
+
 /**
  * @author Lin Cui
  */
 public class UpgradeAccountEntry extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -39,5 +49,8 @@ public class UpgradeAccountEntry extends UpgradeProcess {
 				"(highestSupportResponseId)");
 		runSQL("update OSB_AccountEntry set highestSupportResponseId = 0");
 	}
+
+}
+*/
 
 }

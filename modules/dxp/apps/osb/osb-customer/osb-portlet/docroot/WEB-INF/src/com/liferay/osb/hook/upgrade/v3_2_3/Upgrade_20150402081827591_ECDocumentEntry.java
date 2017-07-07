@@ -14,7 +14,9 @@
 
 package com.liferay.osb.hook.upgrade.v3_2_3;
 
-import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.marketplace.util.ECDocumentItemExtraSettings;
 import com.liferay.osb.marketplace.util.ECommerceConstants;
@@ -25,11 +27,19 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.model.User;
 
+*/
+
 /**
  * @author Joan Kim
  */
 public class Upgrade_20150402081827591_ECDocumentEntry
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -159,5 +169,8 @@ public class Upgrade_20150402081827591_ECDocumentEntry
 	protected String getTaxProcessor() {
 		return "com.liferay.ecommerce.tax.processor.AvalaraTaxProcessor";
 	}
+
+}
+*/
 
 }

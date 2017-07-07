@@ -14,13 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_0_5;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Calvin Keum
  */
 public class Upgrade_20140716145352117_TrainingCustomer
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -95,5 +105,8 @@ public class Upgrade_20140716145352117_TrainingCustomer
 			"delete from OSB_UserProfileHistory where userProfileHistoryId " +
 				"= 38399116");
 	}
+
+}
+*/
 
 }

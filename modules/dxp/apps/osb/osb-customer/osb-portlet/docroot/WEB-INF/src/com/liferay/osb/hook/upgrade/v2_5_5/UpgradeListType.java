@@ -14,12 +14,22 @@
 
 package com.liferay.osb.hook.upgrade.v2_5_5;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Alan Zhang
  */
-public class UpgradeListType extends BaseUpgradeProcess {
+public class UpgradeListType extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -31,5 +41,9 @@ public class UpgradeListType extends BaseUpgradeProcess {
 			23042, "3.0.2",
 			"com.liferay.osb.model.ProductEntry.socialOfficeAllVersions");
 	}
+
+}
+
+*/
 
 }

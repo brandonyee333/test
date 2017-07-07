@@ -14,13 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_2_8;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Alan Zhang
  */
 public class Upgrade_20150414105351569_TicketAttachment
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -46,5 +56,8 @@ public class Upgrade_20150414105351569_TicketAttachment
 				"alter table OSB_TicketAttachment add column deleteDate DATE");
 		}
 	}
+
+}
+*/
 
 }

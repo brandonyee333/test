@@ -14,13 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_2_4;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Jeremy Fu
  */
 public class Upgrade_20150402102624224_TicketFeedback
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -58,5 +68,8 @@ public class Upgrade_20150402102624224_TicketFeedback
 					"(ticketEntryId, subject)");
 		}
 	}
+
+}
+*/
 
 }

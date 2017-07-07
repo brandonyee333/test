@@ -14,13 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_1_3;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.util.DDLRecordSetConstants;
+
+*/
 
 /**
  * @author Val Nagy
  */
-public class Upgrade_20141028150228596_DDLRecordSet extends BaseUpgradeProcess {
+public class Upgrade_20141028150228596_DDLRecordSet extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -38,5 +48,8 @@ public class Upgrade_20141028150228596_DDLRecordSet extends BaseUpgradeProcess {
 				"(select DDLRecordSetId from OSB_TrainingEvent) and " +
 					"scope = " + DDLRecordSetConstants.SCOPE_TRAINING_EVENTS);
 	}
+
+}
+*/
 
 }

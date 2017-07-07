@@ -15,6 +15,8 @@
 package com.liferay.osb.hook.upgrade.v1_1_0;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.osb.model.TrainingEvent;
 import com.liferay.osb.model.TrainingLocation;
 import com.liferay.osb.service.TrainingEventLocalServiceUtil;
@@ -25,10 +27,18 @@ import com.liferay.portal.kernel.service.AddressLocalServiceUtil;
 
 import java.util.List;
 
+*/
+
 /**
  * @author Calvin Keum
  */
 public class UpgradeTrainingEvent extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -82,5 +92,8 @@ public class UpgradeTrainingEvent extends UpgradeProcess {
 			TrainingEventLocalServiceUtil.updateTrainingEvent(trainingEvent);
 		}
 	}
+
+}
+*/
 
 }

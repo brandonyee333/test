@@ -15,6 +15,8 @@
 package com.liferay.osb.hook.upgrade.v2_0_3;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountWorker;
@@ -31,10 +33,18 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import java.util.Date;
 import java.util.List;
 
+*/
+
 /**
  * @author Lin Cui
  */
 public class UpgradeAuditEntry extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -85,5 +95,8 @@ public class UpgradeAuditEntry extends UpgradeProcess {
 			}
 		}
 	}
+
+}
+*/
 
 }

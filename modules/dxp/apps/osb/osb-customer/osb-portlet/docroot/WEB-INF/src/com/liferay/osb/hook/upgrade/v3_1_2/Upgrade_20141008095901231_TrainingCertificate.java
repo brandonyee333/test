@@ -14,7 +14,9 @@
 
 package com.liferay.osb.hook.upgrade.v3_1_2;
 
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.TrainingCertificate;
 import com.liferay.osb.model.TrainingCertificateConstants;
@@ -31,11 +33,19 @@ import com.liferay.portlet.dynamicdatalists.service.DDLRecordLocalServiceUtil;
 
 import java.util.List;
 
+*/
+
 /**
  * @author Danny Situ
  */
 public class Upgrade_20141008095901231_TrainingCertificate
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -124,5 +134,8 @@ public class Upgrade_20141008095901231_TrainingCertificate
 				userProfileHistory.getUserProfileHistoryId());
 		}
 	}
+
+}
+*/
 
 }

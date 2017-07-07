@@ -14,7 +14,9 @@
 
 package com.liferay.osb.hook.upgrade.v3_6_2;
 
-import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.TicketFeedback;
 import com.liferay.osb.model.TicketFeedbackConstants;
@@ -23,11 +25,19 @@ import com.liferay.portal.kernel.exception.SystemException;
 
 import java.util.List;
 
+*/
+
 /**
  * @author Kyle Bischof
  */
 public class Upgrade_20161118140245391_TicketFeedback
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -61,5 +71,8 @@ public class Upgrade_20161118140245391_TicketFeedback
 		deleteTicketFeedbacks(vicses10TicketEntryId);
 		deleteTicketFeedbacks(vicses15TicketEntryId);
 	}
+
+}
+*/
 
 }

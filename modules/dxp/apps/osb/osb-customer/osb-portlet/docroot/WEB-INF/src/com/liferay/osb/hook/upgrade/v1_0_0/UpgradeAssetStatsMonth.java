@@ -15,6 +15,8 @@
 package com.liferay.osb.hook.upgrade.v1_0_0;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.osb.model.AppEntry;
 import com.liferay.osb.model.AssetAudit;
 import com.liferay.osb.model.AssetAuditConstants;
@@ -33,10 +35,18 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+*/
+
 /**
  * @author Peter Shin
  */
 public class UpgradeAssetStatsMonth extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -156,5 +166,8 @@ public class UpgradeAssetStatsMonth extends UpgradeProcess {
 	}
 
 	private static final int _DEFAULT_INTERVAL = 200;
+
+}
+*/
 
 }

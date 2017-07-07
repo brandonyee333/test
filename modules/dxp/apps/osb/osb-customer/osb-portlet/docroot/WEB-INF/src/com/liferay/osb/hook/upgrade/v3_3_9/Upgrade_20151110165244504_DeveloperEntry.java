@@ -14,13 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_3_9;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Ryan Park
  */
 public class Upgrade_20151110165244504_DeveloperEntry
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -33,5 +43,8 @@ public class Upgrade_20151110165244504_DeveloperEntry
 			"update OSB_DeveloperEntry set subscriptionExpirationDate = " +
 				"'2116-01-01' where subscriptionExpirationDate is not null");
 	}
+
+}
+*/
 
 }

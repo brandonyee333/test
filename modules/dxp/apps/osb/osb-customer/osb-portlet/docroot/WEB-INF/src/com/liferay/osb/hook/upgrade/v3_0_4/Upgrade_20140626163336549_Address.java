@@ -14,7 +14,9 @@
 
 package com.liferay.osb.hook.upgrade.v3_0_4;
 
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.AccountEntry;
@@ -28,10 +30,18 @@ import com.liferay.portal.kernel.service.AddressLocalServiceUtil;
 import java.util.Date;
 import java.util.List;
 
+*/
+
 /**
  * @author Sharon Li
  */
-public class Upgrade_20140626163336549_Address extends BaseUpgradeProcess {
+public class Upgrade_20140626163336549_Address extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	public Address addAddress(
 			long userId, String userName, String className, long classPK,
@@ -86,5 +96,8 @@ public class Upgrade_20140626163336549_Address extends BaseUpgradeProcess {
 			}
 		}
 	}
+
+}
+*/
 
 }

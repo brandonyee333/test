@@ -14,7 +14,9 @@
 
 package com.liferay.osb.hook.upgrade.v3_1_6;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.AssetReceipt;
 import com.liferay.osb.service.AssetReceiptLocalServiceUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
@@ -24,11 +26,19 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+*/
+
 /**
  * @author Joan Kim
  */
 public class Upgrade_20141218102834000_AssetReceiptLicense
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -76,5 +86,8 @@ public class Upgrade_20141218102834000_AssetReceiptLicense
 			DataAccess.cleanUp(con, ps, rs);
 		}
 	}
+
+}
+*/
 
 }

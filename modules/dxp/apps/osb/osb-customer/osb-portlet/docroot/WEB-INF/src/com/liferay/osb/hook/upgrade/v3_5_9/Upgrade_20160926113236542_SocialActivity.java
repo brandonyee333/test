@@ -14,13 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_5_9;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Amos Fong
  */
 public class Upgrade_20160926113236542_SocialActivity
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -33,5 +43,8 @@ public class Upgrade_20160926113236542_SocialActivity
 			"delete from SocialActivity where classNameId = 10057 and " +
 				"classPK not in (select messageId from MBMessage)");
 	}
+
+}
+*/
 
 }

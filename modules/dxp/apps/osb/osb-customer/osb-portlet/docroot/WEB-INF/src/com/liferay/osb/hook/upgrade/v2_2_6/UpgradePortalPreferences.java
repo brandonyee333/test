@@ -15,12 +15,22 @@
 package com.liferay.osb.hook.upgrade.v2_2_6;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.StringBundler;
+
+*/
 
 /**
  * @author Rachael Koestartyo
  */
 public class UpgradePortalPreferences extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -37,5 +47,8 @@ public class UpgradePortalPreferences extends UpgradeProcess {
 
 		runSQL(sb.toString());
 	}
+
+}
+*/
 
 }

@@ -14,14 +14,24 @@
 
 package com.liferay.osb.hook.upgrade.v3_1_7;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.impl.AssetReceiptRedeemTokenModelImpl;
+
+*/
 
 /**
  * @author Douglas Wong
  */
 public class Upgrade_20150115152532804_AssetReceiptRedeemToken
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -43,5 +53,8 @@ public class Upgrade_20150115152532804_AssetReceiptRedeemToken
 			"create unique index IX_2605E56F on OSB_AssetReceiptRedeemToken " +
 				"(token)");
 	}
+
+}
+*/
 
 }

@@ -14,13 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_4_3;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.util.PortletPropsValues;
+
+*/
 
 /**
  * @author Yury Butrymovich
  */
-public class Upgrade_20160217162000647_AppVersion extends BaseUpgradeProcess {
+public class Upgrade_20160217162000647_AppVersion extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -41,5 +51,8 @@ public class Upgrade_20160217162000647_AppVersion extends BaseUpgradeProcess {
 			"update OSB_AppVersion set hidden_ = true where appEntryId = " +
 				PortletPropsValues.MARKETPLACE_APP_ENTRY_ID);
 	}
+
+}
+*/
 
 }

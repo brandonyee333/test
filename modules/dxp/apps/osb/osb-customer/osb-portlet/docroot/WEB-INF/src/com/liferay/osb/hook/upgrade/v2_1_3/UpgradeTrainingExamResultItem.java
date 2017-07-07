@@ -16,10 +16,20 @@ package com.liferay.osb.hook.upgrade.v2_1_3;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+*/
+
 /**
  * @author Calvin Keum
  */
 public class UpgradeTrainingExamResultItem extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -31,5 +41,8 @@ public class UpgradeTrainingExamResultItem extends UpgradeProcess {
 			"alter_column_type OSB_TrainingExamResultItem response " +
 				"STRING null");
 	}
+
+}
+*/
 
 }

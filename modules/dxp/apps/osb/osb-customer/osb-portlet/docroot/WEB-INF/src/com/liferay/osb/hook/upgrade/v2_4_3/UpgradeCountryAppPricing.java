@@ -16,10 +16,20 @@ package com.liferay.osb.hook.upgrade.v2_4_3;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+*/
+
 /**
  * @author Joan Kim
  */
 public class UpgradeCountryAppPricing extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -29,5 +39,8 @@ public class UpgradeCountryAppPricing extends UpgradeProcess {
 	protected void upgradeCountryAppPricing() throws Exception {
 		runSQL("create index IX_CBEE1A21 on OSB_CountryAppPricing (countryId)");
 	}
+
+}
+*/
 
 }

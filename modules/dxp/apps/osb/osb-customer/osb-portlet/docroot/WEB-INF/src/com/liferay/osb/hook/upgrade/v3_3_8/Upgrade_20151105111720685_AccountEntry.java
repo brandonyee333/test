@@ -14,12 +14,22 @@
 
 package com.liferay.osb.hook.upgrade.v3_3_8;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Kyle Bischof
  */
-public class Upgrade_20151105111720685_AccountEntry extends BaseUpgradeProcess {
+public class Upgrade_20151105111720685_AccountEntry extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -42,5 +52,8 @@ public class Upgrade_20151105111720685_AccountEntry extends BaseUpgradeProcess {
 					"renewalContactUserId LONG");
 		}
 	}
+
+}
+*/
 
 }

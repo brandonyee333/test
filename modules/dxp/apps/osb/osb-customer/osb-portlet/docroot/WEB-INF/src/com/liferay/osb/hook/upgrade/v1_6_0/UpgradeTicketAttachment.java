@@ -16,10 +16,20 @@ package com.liferay.osb.hook.upgrade.v1_6_0;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+*/
+
 /**
  * @author Lin Cui
  */
 public class UpgradeTicketAttachment extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -45,5 +55,8 @@ public class UpgradeTicketAttachment extends UpgradeProcess {
 			"create unique index IX_161D6F5C on OSB_TicketAttachment " +
 				"(ticketEntryId, fileName, visibility)");
 	}
+
+}
+*/
 
 }

@@ -14,12 +14,22 @@
 
 package com.liferay.osb.hook.upgrade.v3_6_0;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Joan H. Kim
  */
-public class Upgrade_20161014094443155_Country extends BaseUpgradeProcess {
+public class Upgrade_20161014094443155_Country extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -34,5 +44,8 @@ public class Upgrade_20161014094443155_Country extends BaseUpgradeProcess {
 		runSQL(
 			"update Country set a2 = 'RS', a3 = 'SRB' where countryId = 189");
 	}
+
+}
+*/
 
 }

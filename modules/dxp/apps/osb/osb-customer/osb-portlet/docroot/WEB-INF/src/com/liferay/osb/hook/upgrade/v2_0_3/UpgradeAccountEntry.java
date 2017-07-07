@@ -16,10 +16,20 @@ package com.liferay.osb.hook.upgrade.v2_0_3;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+*/
+
 /**
  * @author Alan Zhang
  */
 public class UpgradeAccountEntry extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -35,5 +45,8 @@ public class UpgradeAccountEntry extends UpgradeProcess {
 
 		runSQL("update OSB_AccountEntry set priority = 0");
 	}
+
+}
+*/
 
 }

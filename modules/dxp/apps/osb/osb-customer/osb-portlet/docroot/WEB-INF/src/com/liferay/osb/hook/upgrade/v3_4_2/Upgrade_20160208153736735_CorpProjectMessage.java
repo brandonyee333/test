@@ -14,14 +14,24 @@
 
 package com.liferay.osb.hook.upgrade.v3_4_2;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.impl.CorpProjectMessageModelImpl;
+
+*/
 
 /**
  * @author Amos Fong
  */
 public class Upgrade_20160208153736735_CorpProjectMessage
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -39,5 +49,8 @@ public class Upgrade_20160208153736735_CorpProjectMessage
 			"create index IX_F22B253A on OSB_CorpProjectMessage " +
 				"(corpProjectId, type_)");
 	}
+
+}
+*/
 
 }

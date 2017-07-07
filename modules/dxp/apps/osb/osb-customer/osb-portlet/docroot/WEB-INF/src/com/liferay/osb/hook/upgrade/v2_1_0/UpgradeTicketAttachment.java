@@ -16,10 +16,20 @@ package com.liferay.osb.hook.upgrade.v2_1_0;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+*/
+
 /**
  * @author Rachael Koestartyo
  */
 public class UpgradeTicketAttachment extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -32,5 +42,8 @@ public class UpgradeTicketAttachment extends UpgradeProcess {
 				"where (createDate < '2013-08-19 02:52:46') and " +
 					"(fileName like 'liferay-hotfix%')");
 	}
+
+}
+*/
 
 }

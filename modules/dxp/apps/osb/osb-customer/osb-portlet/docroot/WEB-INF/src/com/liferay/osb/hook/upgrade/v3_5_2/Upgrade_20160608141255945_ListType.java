@@ -14,7 +14,9 @@
 
 package com.liferay.osb.hook.upgrade.v3_5_2;
 
-import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.AuditEntry;
 import com.liferay.osb.model.AuditEntryConstants;
@@ -29,10 +31,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+*/
+
 /**
  * @author Jenny Chen
  */
-public class Upgrade_20160608141255945_ListType extends BaseUpgradeProcess {
+public class Upgrade_20160608141255945_ListType extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -369,5 +379,8 @@ public class Upgrade_20160608141255945_ListType extends BaseUpgradeProcess {
 			DataAccess.cleanUp(con, ps);
 		}
 	}
+
+}
+*/
 
 }

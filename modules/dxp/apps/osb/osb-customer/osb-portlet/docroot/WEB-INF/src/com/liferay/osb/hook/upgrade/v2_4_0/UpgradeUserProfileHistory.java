@@ -16,10 +16,20 @@ package com.liferay.osb.hook.upgrade.v2_4_0;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+*/
+
 /**
  * @author Calvin Keum
  */
 public class UpgradeUserProfileHistory extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -31,5 +41,8 @@ public class UpgradeUserProfileHistory extends UpgradeProcess {
 			"update OSB_UserProfileHistory set userId = 6149251 where " +
 				"userProfileHistoryId = 34875617");
 	}
+
+}
+*/
 
 }

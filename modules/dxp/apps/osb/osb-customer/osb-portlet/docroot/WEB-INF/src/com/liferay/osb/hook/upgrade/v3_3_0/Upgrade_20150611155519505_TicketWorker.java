@@ -14,7 +14,9 @@
 
 package com.liferay.osb.hook.upgrade.v3_3_0;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.TicketEntry;
 import com.liferay.osb.model.impl.TicketWorkerImpl;
 import com.liferay.osb.service.TicketWorkerLocalServiceUtil;
@@ -25,10 +27,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+*/
+
 /**
  * @author Jeremy Fu
  */
-public class Upgrade_20150611155519505_TicketWorker extends BaseUpgradeProcess {
+public class Upgrade_20150611155519505_TicketWorker extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -72,5 +82,8 @@ public class Upgrade_20150611155519505_TicketWorker extends BaseUpgradeProcess {
 			DataAccess.cleanUp(con, ps, rs);
 		}
 	}
+
+}
+*/
 
 }

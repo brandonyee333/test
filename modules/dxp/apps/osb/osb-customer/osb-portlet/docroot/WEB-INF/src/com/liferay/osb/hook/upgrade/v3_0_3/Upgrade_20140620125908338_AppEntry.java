@@ -14,7 +14,9 @@
 
 package com.liferay.osb.hook.upgrade.v3_0_3;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.AppEntry;
 import com.liferay.osb.service.AppEntryLocalServiceUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
@@ -24,10 +26,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+*/
+
 /**
  * @author Joan Kim
  */
-public class Upgrade_20140620125908338_AppEntry extends BaseUpgradeProcess {
+public class Upgrade_20140620125908338_AppEntry extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -100,5 +110,8 @@ public class Upgrade_20140620125908338_AppEntry extends BaseUpgradeProcess {
 	private static final long[] _MALFORMED_APP_ENTRY_IDS = {
 		17109010, 27269710, 27269788, 27269997
 	};
+
+}
+*/
 
 }

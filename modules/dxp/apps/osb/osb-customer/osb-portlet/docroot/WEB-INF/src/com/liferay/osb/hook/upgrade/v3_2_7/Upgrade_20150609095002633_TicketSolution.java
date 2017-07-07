@@ -14,14 +14,24 @@
 
 package com.liferay.osb.hook.upgrade.v3_2_7;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.impl.TicketSolutionImpl;
+
+*/
 
 /**
  * @author Brent Krone-Schmidt
  */
 public class Upgrade_20150609095002633_TicketSolution
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -40,5 +50,8 @@ public class Upgrade_20150609095002633_TicketSolution
 			"alter table " + TicketSolutionImpl.TABLE_NAME + " add " +
 				"useCustomerSummary BOOLEAN");
 	}
+
+}
+*/
 
 }

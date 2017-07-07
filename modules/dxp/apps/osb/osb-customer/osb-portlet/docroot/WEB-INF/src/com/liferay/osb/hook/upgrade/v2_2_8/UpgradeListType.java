@@ -14,12 +14,22 @@
 
 package com.liferay.osb.hook.upgrade.v2_2_8;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Calvin Keum
  */
-public class UpgradeListType extends BaseUpgradeProcess {
+public class UpgradeListType extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -45,5 +55,9 @@ public class UpgradeListType extends BaseUpgradeProcess {
 		catch (Exception e) {
 		}
 	}
+
+}
+
+*/
 
 }

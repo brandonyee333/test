@@ -14,13 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_6_1;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Amos Fong
  */
 public class Upgrade_20161101110614967_OfferingEntry
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -39,5 +49,8 @@ public class Upgrade_20161101110614967_OfferingEntry
 			runSQL("create index IX_CE314FD7 on OSB_OfferingEntry (version)");
 		}
 	}
+
+}
+*/
 
 }

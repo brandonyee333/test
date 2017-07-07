@@ -14,13 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_5_3;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Yury Butrymovich
  */
 public class Upgrade_20160705112809820_PortalRelease
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -36,5 +46,8 @@ public class Upgrade_20160705112809820_PortalRelease
 		runSQL(
 			"alter table OSB_PortalRelease add column fixPackName VARCHAR(75)");
 	}
+
+}
+*/
 
 }

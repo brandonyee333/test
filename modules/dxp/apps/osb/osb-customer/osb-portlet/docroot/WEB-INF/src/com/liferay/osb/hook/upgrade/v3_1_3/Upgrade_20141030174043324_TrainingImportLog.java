@@ -14,14 +14,24 @@
 
 package com.liferay.osb.hook.upgrade.v3_1_3;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.impl.TrainingImportLogModelImpl;
+
+*/
 
 /**
  * @author Val Nagy
  */
 public class Upgrade_20141030174043324_TrainingImportLog
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -38,5 +48,8 @@ public class Upgrade_20141030174043324_TrainingImportLog
 
 		runSQL("create index IX_FE8EC56B on OSB_TrainingImportLog (type_)");
 	}
+
+}
+*/
 
 }

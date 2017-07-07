@@ -14,14 +14,24 @@
 
 package com.liferay.osb.hook.upgrade.v3_1_4;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.impl.SecurityPatchModelImpl;
+
+*/
 
 /**
  * @author Alan Zhang
  */
 public class Upgrade_20141120165454243_SecurityPatch
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -41,5 +51,8 @@ public class Upgrade_20141120165454243_SecurityPatch
 				"portletId)");
 		runSQL("create index IX_36A4B1D8 on OSB_SecurityPatch (portletId)");
 	}
+
+}
+*/
 
 }

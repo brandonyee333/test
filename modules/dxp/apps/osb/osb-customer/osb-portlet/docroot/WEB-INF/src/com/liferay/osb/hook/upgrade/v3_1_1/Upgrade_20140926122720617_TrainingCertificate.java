@@ -14,13 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_1_1;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Danny Situ
  */
 public class Upgrade_20140926122720617_TrainingCertificate
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -43,5 +53,8 @@ public class Upgrade_20140926122720617_TrainingCertificate
 
 		runSQL("update OSB_TrainingCertificate set userProfileHistoryId = 0");
 	}
+
+}
+*/
 
 }

@@ -14,14 +14,24 @@
 
 package com.liferay.osb.hook.upgrade.v3_4_9;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.service.PortalReleaseLocalServiceUtil;
+
+*/
 
 /**
  * @author Yury Butrymovich
  */
 public class Upgrade_20160519114642271_PortalRelease
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -33,5 +43,8 @@ public class Upgrade_20160519114642271_PortalRelease
 		PortalReleaseLocalServiceUtil.addPortalRelease(
 			"Liferay CE Portal 7.0 GA2", 7001, false, true, true, true, true);
 	}
+
+}
+*/
 
 }

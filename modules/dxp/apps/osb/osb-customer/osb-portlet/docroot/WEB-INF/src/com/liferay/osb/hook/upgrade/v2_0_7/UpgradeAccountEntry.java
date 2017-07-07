@@ -16,10 +16,20 @@ package com.liferay.osb.hook.upgrade.v2_0_7;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+*/
+
 /**
  * @author Lin Cui
  */
 public class UpgradeAccountEntry extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -33,5 +43,8 @@ public class UpgradeAccountEntry extends UpgradeProcess {
 
 		runSQL("alter table OSB_AccountEntry add column status INTEGER");
 	}
+
+}
+*/
 
 }

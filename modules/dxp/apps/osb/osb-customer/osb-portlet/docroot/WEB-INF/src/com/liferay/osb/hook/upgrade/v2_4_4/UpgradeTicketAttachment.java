@@ -15,6 +15,8 @@
 package com.liferay.osb.hook.upgrade.v2_4_4;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.osb.model.TicketAttachment;
 import com.liferay.osb.model.TicketAttachmentConstants;
 import com.liferay.osb.service.TicketAttachmentLocalServiceUtil;
@@ -30,11 +32,19 @@ import java.sql.ResultSet;
 
 import java.util.List;
 
+*/
+
 /**
  * @author Brent Krone-Schmidt
  * @author Alan Zhang
  */
 public class UpgradeTicketAttachment extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	protected void deleteTicketAttachments(long ticketEntryId)
 		throws PortalException, SystemException {
@@ -126,5 +136,8 @@ public class UpgradeTicketAttachment extends UpgradeProcess {
 			DataAccess.cleanUp(con, ps, rs);
 		}
 	}
+
+}
+*/
 
 }

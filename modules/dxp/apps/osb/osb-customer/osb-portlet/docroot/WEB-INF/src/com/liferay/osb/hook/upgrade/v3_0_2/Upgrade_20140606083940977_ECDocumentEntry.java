@@ -14,13 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_0_2;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Joan Kim
  */
 public class Upgrade_20140606083940977_ECDocumentEntry
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -41,5 +51,8 @@ public class Upgrade_20140606083940977_ECDocumentEntry
 			"alter table ECommerce_ECDocumentEntry add column vatNumber " +
 				"VARCHAR(75)");
 	}
+
+}
+*/
 
 }

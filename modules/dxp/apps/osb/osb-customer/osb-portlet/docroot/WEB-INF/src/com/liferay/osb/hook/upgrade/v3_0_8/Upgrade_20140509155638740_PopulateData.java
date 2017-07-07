@@ -14,7 +14,9 @@
 
 package com.liferay.osb.hook.upgrade.v3_0_8;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.SupportTeamConstants;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -23,10 +25,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+*/
+
 /**
  * @author Brent Krone-Schmidt
  */
-public class Upgrade_20140509155638740_PopulateData extends BaseUpgradeProcess {
+public class Upgrade_20140509155638740_PopulateData extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -517,5 +527,8 @@ public class Upgrade_20140509155638740_PopulateData extends BaseUpgradeProcess {
 
 		runSQL(sb.toString());
 	}
+
+}
+*/
 
 }

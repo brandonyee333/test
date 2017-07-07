@@ -16,10 +16,20 @@ package com.liferay.osb.hook.upgrade.v1_5_0;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+*/
+
 /**
  * @author Douglas Wong
  */
 public class UpgradeMarketplace extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -62,5 +72,8 @@ public class UpgradeMarketplace extends UpgradeProcess {
 
 		runSQL("update OSB_AppVersion set licenseSupportPercent = -1");
 	}
+
+}
+*/
 
 }

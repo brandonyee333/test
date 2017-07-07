@@ -14,12 +14,22 @@
 
 package com.liferay.osb.hook.upgrade.v3_0_6;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Alan Zhang
  */
-public class Upgrade_20140728135826405_ListType extends BaseUpgradeProcess {
+public class Upgrade_20140728135826405_ListType extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -31,5 +41,8 @@ public class Upgrade_20140728135826405_ListType extends BaseUpgradeProcess {
 		insertListType(
 			34030, "ticket-call", "com.liferay.osb.model.AuditEntry.field");
 	}
+
+}
+*/
 
 }

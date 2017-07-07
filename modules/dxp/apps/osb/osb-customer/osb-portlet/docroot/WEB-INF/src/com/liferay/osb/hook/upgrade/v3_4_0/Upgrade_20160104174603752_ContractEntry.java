@@ -14,7 +14,9 @@
 
 package com.liferay.osb.hook.upgrade.v3_4_0;
 
-import com.liferay.portal.kernel.util.LocalizationUtil;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -40,11 +42,19 @@ import java.text.SimpleDateFormat;
 
 import java.util.Date;
 
+*/
+
 /**
  * @author Douglas Wong
  */
 public class Upgrade_20160104174603752_ContractEntry
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -359,5 +369,8 @@ public class Upgrade_20160104174603752_ContractEntry
 
 	private static Log _log = LogFactoryUtil.getLog(
 		Upgrade_20160104174603752_ContractEntry.class);
+
+}
+*/
 
 }

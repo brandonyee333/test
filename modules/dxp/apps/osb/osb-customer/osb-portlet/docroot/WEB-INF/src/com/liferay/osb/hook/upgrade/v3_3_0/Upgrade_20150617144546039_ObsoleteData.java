@@ -14,7 +14,9 @@
 
 package com.liferay.osb.hook.upgrade.v3_3_0;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.Layout;
@@ -25,10 +27,18 @@ import com.liferay.message.boards.kernel.service.MBThreadLocalServiceUtil;
 
 import java.util.List;
 
+*/
+
 /**
  * @author Amos Fong
  */
-public class Upgrade_20150617144546039_ObsoleteData extends BaseUpgradeProcess {
+public class Upgrade_20150617144546039_ObsoleteData extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -99,7 +109,7 @@ public class Upgrade_20150617144546039_ObsoleteData extends BaseUpgradeProcess {
 		deleteResourceActions("com.liferay.portlet.tasks.model.TasksProposal");
 		deleteResourceActions("my_summary_portlet_WAR_mysummaryportlet");
 
-		/*Run in scripting console because it takes too long
+		Run in scripting console because it takes too long
 
 		deleteLayoutMBDiscussions();
 
@@ -113,7 +123,7 @@ public class Upgrade_20150617144546039_ObsoleteData extends BaseUpgradeProcess {
 		deleteResourcePermissions("8_WAR_wolportlet");
 		deleteResourcePermissions("9_WAR_wolportlet");
 		deleteResourcePermissions("10_WAR_wolportlet");
-		deleteResourcePermissions("1_WAR_eloquaportlet");*/
+		deleteResourcePermissions("1_WAR_eloquaportlet");
 	}
 
 	protected void dropObsoleteTables() throws Exception {
@@ -144,5 +154,8 @@ public class Upgrade_20150617144546039_ObsoleteData extends BaseUpgradeProcess {
 		runSQL("drop table WSRPPortlet");
 		runSQL("drop table WSRPProducer");
 	}
+
+}
+*/
 
 }

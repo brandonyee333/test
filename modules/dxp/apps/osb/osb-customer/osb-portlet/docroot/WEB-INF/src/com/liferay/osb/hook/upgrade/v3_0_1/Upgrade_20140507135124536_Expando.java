@@ -14,7 +14,9 @@
 
 package com.liferay.osb.hook.upgrade.v3_0_1;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -36,10 +38,18 @@ import com.liferay.expando.kernel.service.ExpandoTableLocalServiceUtil;
 import java.util.HashMap;
 import java.util.Map;
 
+*/
+
 /**
  * @author Rachael Koestartyo
  */
-public class Upgrade_20140507135124536_Expando extends BaseUpgradeProcess {
+public class Upgrade_20140507135124536_Expando extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -109,5 +119,8 @@ public class Upgrade_20140507135124536_Expando extends BaseUpgradeProcess {
 		"development-engineering", "finance", "hr", "it-support",
 		"legal-procurement", "marketing", "operations", "sales", "other"
 	};
+
+}
+*/
 
 }

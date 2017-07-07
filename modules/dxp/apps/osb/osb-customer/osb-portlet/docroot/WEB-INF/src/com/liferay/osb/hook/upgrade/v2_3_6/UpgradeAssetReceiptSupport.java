@@ -16,10 +16,20 @@ package com.liferay.osb.hook.upgrade.v2_3_6;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+*/
+
 /**
  * @author Joan Kim
  */
 public class UpgradeAssetReceiptSupport extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -31,5 +41,8 @@ public class UpgradeAssetReceiptSupport extends UpgradeProcess {
 			"create index IX_512EDDE3 on OSB_AssetReceiptSupport " +
 				"(assetReceiptId)");
 	}
+
+}
+*/
 
 }

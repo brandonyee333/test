@@ -14,7 +14,9 @@
 
 package com.liferay.osb.hook.upgrade.v3_5_7;
 
-import com.liferay.osb.exception.NoSuchAppEntryException;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.exception.NoSuchAppEntryException;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.AppEntry;
 import com.liferay.osb.model.AssetReceipt;
@@ -27,10 +29,18 @@ import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 
 import java.util.List;
 
+*/
+
 /**
  * @author Haote Chou
  */
-public class Upgrade_20160908102558797_AssetReceipt extends BaseUpgradeProcess {
+public class Upgrade_20160908102558797_AssetReceipt extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -93,5 +103,8 @@ public class Upgrade_20160908102558797_AssetReceipt extends BaseUpgradeProcess {
 
 		return appEntryIds;
 	}
+
+}
+*/
 
 }

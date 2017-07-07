@@ -14,12 +14,22 @@
 
 package com.liferay.osb.hook.upgrade.v3_6_3;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Amos Fong
  */
-public class Upgrade_20161207104553804_Entity extends BaseUpgradeProcess {
+public class Upgrade_20161207104553804_Entity extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -36,5 +46,8 @@ public class Upgrade_20161207104553804_Entity extends BaseUpgradeProcess {
 			"create index IX_8472FBAC on OSB_LicenseKey (offeringEntryId, " +
 				"licenseEntryType, complimentary, active_)");
 	}
+
+}
+*/
 
 }

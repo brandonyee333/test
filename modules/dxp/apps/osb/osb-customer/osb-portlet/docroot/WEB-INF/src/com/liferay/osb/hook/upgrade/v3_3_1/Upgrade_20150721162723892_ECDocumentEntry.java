@@ -14,7 +14,9 @@
 
 package com.liferay.osb.hook.upgrade.v3_3_1;
 
-import com.liferay.ecommerce.model.ECDocumentEntry;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.ecommerce.model.ECDocumentEntry;
 import com.liferay.ecommerce.model.ECDocumentEntryConstants;
 import com.liferay.ecommerce.service.ECDocumentEntryLocalServiceUtil;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
@@ -28,11 +30,19 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+*/
+
 /**
  * @author Joan Kim
  */
 public class Upgrade_20150721162723892_ECDocumentEntry
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -84,5 +94,8 @@ public class Upgrade_20150721162723892_ECDocumentEntry
 			DataAccess.cleanUp(con, ps, rs);
 		}
 	}
+
+}
+*/
 
 }

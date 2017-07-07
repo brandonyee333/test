@@ -14,7 +14,9 @@
 
 package com.liferay.osb.hook.upgrade.v3_2_8;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
@@ -29,11 +31,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+*/
+
 /**
  * @author Amos Fong
  */
 public class Upgrade_20150611162042197_OfferingEntry
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -105,7 +115,7 @@ public class Upgrade_20150611162042197_OfferingEntry
 				continue;
 			}
 
-			/*String key =
+			String key =
 				offeringEntry.getOfferingDefinitionId() + "#" +
 					offeringEntry.getType();
 
@@ -127,7 +137,7 @@ public class Upgrade_20150611162042197_OfferingEntry
 			}
 			else {
 				mergedOfferingEntries.put(key, offeringEntry);
-			}*/
+			}
 		}
 
 		for (OfferingEntry offeringEntry : mergedOfferingEntries.values()) {
@@ -162,5 +172,8 @@ public class Upgrade_20150611162042197_OfferingEntry
 
 		runSQL(sb.toString());
 	}
+
+}
+*/
 
 }

@@ -14,13 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_2_0;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Ryan Park
  */
 public class Upgrade_20150224125749290_ECDocumentEntry
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -42,5 +52,8 @@ public class Upgrade_20150224125749290_ECDocumentEntry
 			"update ECommerce_ECDocumentEntry set taxProcessed = true " +
 				"where type_ = 1");
 	}
+
+}
+*/
 
 }

@@ -14,14 +14,24 @@
 
 package com.liferay.osb.hook.upgrade.v3_0_8;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.impl.SupportRegionModelImpl;
+
+*/
 
 /**
  * @author Brent Krone-Schmidt
  */
 public class Upgrade_20140424155616603_SupportRegion
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -73,5 +83,8 @@ public class Upgrade_20140424155616603_SupportRegion
 	protected void doUpgrade() throws Exception {
 		createSupportRegion();
 	}
+
+}
+*/
 
 }

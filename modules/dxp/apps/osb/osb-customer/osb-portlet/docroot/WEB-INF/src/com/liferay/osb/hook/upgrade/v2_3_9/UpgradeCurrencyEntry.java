@@ -16,11 +16,21 @@ package com.liferay.osb.hook.upgrade.v2_3_9;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+*/
+
 /**
  * @author Douglas Wong
  * @author Ryan Park
  */
 public class UpgradeCurrencyEntry extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -35,5 +45,8 @@ public class UpgradeCurrencyEntry extends UpgradeProcess {
 		runSQL("alter table OSB_CurrencyEntry add marketplaceEnabled BOOLEAN");
 		runSQL("alter table OSB_CurrencyEntry add marketplaceMinPrice DOUBLE");
 	}
+
+}
+*/
 
 }

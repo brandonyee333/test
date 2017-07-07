@@ -14,7 +14,9 @@
 
 package com.liferay.osb.hook.upgrade.v3_1_4;
 
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.TrainingCertificate;
 import com.liferay.osb.model.TrainingCustomer;
@@ -27,11 +29,19 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 
 import java.util.List;
 
+*/
+
 /**
  * @author Val Nagy
  */
 public class Upgrade_20141107094555411_TrainingCertificate
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -96,5 +106,8 @@ public class Upgrade_20141107094555411_TrainingCertificate
 				userProfileHistory.getUserProfileHistoryId());
 		}
 	}
+
+}
+*/
 
 }

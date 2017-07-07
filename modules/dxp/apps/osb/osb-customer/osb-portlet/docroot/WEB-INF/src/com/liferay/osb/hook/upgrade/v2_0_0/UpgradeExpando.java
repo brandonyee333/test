@@ -15,6 +15,8 @@
 package com.liferay.osb.hook.upgrade.v2_0_0;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.model.Company;
@@ -30,10 +32,18 @@ import com.liferay.expando.kernel.service.ExpandoValueLocalServiceUtil;
 
 import java.util.List;
 
+*/
+
 /**
  * @author Peter Shin
  */
 public class UpgradeExpando extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -138,5 +148,8 @@ public class UpgradeExpando extends UpgradeProcess {
 		ExpandoColumnLocalServiceUtil.deleteColumn(
 			oldExpandoColumn.getColumnId());
 	}
+
+}
+*/
 
 }

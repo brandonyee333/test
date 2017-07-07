@@ -16,10 +16,20 @@ package com.liferay.osb.hook.upgrade.v2_1_2;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+*/
+
 /**
  * @author Ryan Park
  */
 public class UpgradeAssetAudit extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -30,5 +40,8 @@ public class UpgradeAssetAudit extends UpgradeProcess {
 		runSQL("alter table OSB_AssetAudit add column currencyCode STRING");
 		runSQL("alter table OSB_AssetAudit add column price DOUBLE");
 	}
+
+}
+*/
 
 }

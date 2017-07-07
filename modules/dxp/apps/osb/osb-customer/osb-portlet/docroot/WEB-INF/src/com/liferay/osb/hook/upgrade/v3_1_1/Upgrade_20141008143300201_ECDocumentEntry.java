@@ -14,14 +14,24 @@
 
 package com.liferay.osb.hook.upgrade.v3_1_1;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.portal.kernel.util.StringBundler;
+
+*/
 
 /**
  * @author Ryan Park
  */
 public class Upgrade_20141008143300201_ECDocumentEntry
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -44,5 +54,8 @@ public class Upgrade_20141008143300201_ECDocumentEntry
 	}
 
 	private static final long _MALFORMED_EC_DOCUMENT_ENTRY_ID = 124003;
+
+}
+*/
 
 }

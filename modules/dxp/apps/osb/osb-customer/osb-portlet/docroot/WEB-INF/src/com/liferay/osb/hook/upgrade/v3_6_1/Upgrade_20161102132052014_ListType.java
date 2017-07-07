@@ -14,13 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_6_1;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.TrainingEventConstants;
+
+*/
 
 /**
  * @author Haote Chou
  */
-public class Upgrade_20161102132052014_ListType extends BaseUpgradeProcess {
+public class Upgrade_20161102132052014_ListType extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -53,5 +63,8 @@ public class Upgrade_20161102132052014_ListType extends BaseUpgradeProcess {
 			50005, "7.0",
 			TrainingEventConstants.LIST_TYPE_PORTAL_MINOR_VERSIONS);
 	}
+
+}
+*/
 
 }

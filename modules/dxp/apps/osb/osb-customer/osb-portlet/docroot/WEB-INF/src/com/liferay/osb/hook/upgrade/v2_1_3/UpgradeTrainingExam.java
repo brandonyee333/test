@@ -16,10 +16,20 @@ package com.liferay.osb.hook.upgrade.v2_1_3;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+*/
+
 /**
  * @author Calvin Keum
  */
 public class UpgradeTrainingExam extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -41,5 +51,8 @@ public class UpgradeTrainingExam extends UpgradeProcess {
 					"(trainingCertificateTemplateId)");
 		}
 	}
+
+}
+*/
 
 }

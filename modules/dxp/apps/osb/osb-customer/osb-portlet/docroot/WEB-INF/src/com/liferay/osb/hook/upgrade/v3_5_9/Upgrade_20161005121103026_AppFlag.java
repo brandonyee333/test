@@ -14,13 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_5_9;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.impl.AppFlagModelImpl;
+
+*/
 
 /**
  * @author Enoch Chu
  */
-public class Upgrade_20161005121103026_AppFlag extends BaseUpgradeProcess {
+public class Upgrade_20161005121103026_AppFlag extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -31,5 +41,8 @@ public class Upgrade_20161005121103026_AppFlag extends BaseUpgradeProcess {
 	protected void doUpgrade() throws Exception {
 		runSQL(AppFlagModelImpl.TABLE_SQL_CREATE);
 	}
+
+}
+*/
 
 }

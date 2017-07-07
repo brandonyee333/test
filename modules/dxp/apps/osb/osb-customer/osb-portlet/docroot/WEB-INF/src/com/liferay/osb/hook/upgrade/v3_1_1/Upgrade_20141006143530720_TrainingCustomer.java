@@ -14,14 +14,24 @@
 
 package com.liferay.osb.hook.upgrade.v3_1_1;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Amos Fong
  * @author Calvin Keum
  */
 public class Upgrade_20141006143530720_TrainingCustomer
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -46,5 +56,8 @@ public class Upgrade_20141006143530720_TrainingCustomer
 			"update OSB_UserProfileHistory set emailAddress = " +
 				"'tungls1@gmail.com' where userProfileHistoryId = 43538561");
 	}
+
+}
+*/
 
 }

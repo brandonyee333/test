@@ -14,14 +14,24 @@
 
 package com.liferay.osb.hook.upgrade.v3_1_6;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.impl.PartnerEntryModelImpl;
+
+*/
 
 /**
  * @author Sharon Li
  */
 public class Upgrade_20141218193532347_PartnerEntries_SupportRegions
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -56,7 +66,7 @@ public class Upgrade_20141218193532347_PartnerEntries_SupportRegions
 	}
 
 	protected void populatePartnerData() throws Exception {
-		/*
+
 		long[][] supportResponseIds = {
 			{OSBConstants.SUPPORT_REGION_BRAZIL_ID, _ASSET_CATEGORY_BRAZIL_ID},
 			{OSBConstants.SUPPORT_REGION_CHINA_ID, _ASSET_CATEGORY_CHINA_ID},
@@ -89,7 +99,7 @@ public class Upgrade_20141218193532347_PartnerEntries_SupportRegions
 
 			runSQL(sb.toString());
 		}
-		*/
+
 	}
 
 	private final long _ASSET_CATEGORY_BRAZIL_ID = 21343273;
@@ -105,5 +115,8 @@ public class Upgrade_20141218193532347_PartnerEntries_SupportRegions
 	private final long _ASSET_CATEGORY_US_ID = 21343278;
 
 	private final long _PARTNER_ENTRY_CLASS_NAME_ID = 4840271;
+
+}
+*/
 
 }

@@ -14,15 +14,25 @@
 
 package com.liferay.osb.hook.upgrade.v3_0_8;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.impl.HolidayCalendarModelImpl;
 import com.liferay.osb.model.impl.HolidayCalendarRelImpl;
+
+*/
 
 /**
  * @author Brent Krone-Schmidt
  */
 public class Upgrade_20140424154131198_HolidayCalendar
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -55,5 +65,8 @@ public class Upgrade_20140424154131198_HolidayCalendar
 		createHolidayCalendar();
 		createHolidayCalendarRel();
 	}
+
+}
+*/
 
 }

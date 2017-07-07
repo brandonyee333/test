@@ -16,10 +16,20 @@ package com.liferay.osb.hook.upgrade.v2_5_1;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+*/
+
 /**
  * @author Wesley Gong
  */
 public class UpgradeTrainingEvent extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -41,5 +51,8 @@ public class UpgradeTrainingEvent extends UpgradeProcess {
 				"alter table OSB_TrainingEvent add column name VARCHAR(150)");
 		}
 	}
+
+}
+*/
 
 }

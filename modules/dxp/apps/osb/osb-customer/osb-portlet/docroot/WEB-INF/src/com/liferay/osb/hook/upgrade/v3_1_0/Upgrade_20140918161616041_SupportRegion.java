@@ -14,13 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_1_0;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Amos Fong
  */
 public class Upgrade_20140918161616041_SupportRegion
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -65,5 +75,8 @@ public class Upgrade_20140918161616041_SupportRegion
 			"update OSB_SupportRegion set timeZoneId = 'America/Los_Angeles' " +
 				"where name = 'US'");
 	}
+
+}
+*/
 
 }

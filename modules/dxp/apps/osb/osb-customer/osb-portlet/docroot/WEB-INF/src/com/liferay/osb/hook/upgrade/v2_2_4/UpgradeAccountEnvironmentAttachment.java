@@ -15,12 +15,22 @@
 package com.liferay.osb.hook.upgrade.v2_2_4;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.osb.model.impl.AccountEnvironmentAttachmentModelImpl;
+
+*/
 
 /**
  * @author Lin Cui
  */
 public class UpgradeAccountEnvironmentAttachment extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -41,5 +51,8 @@ public class UpgradeAccountEnvironmentAttachment extends UpgradeProcess {
 			"create index IX_4F61A1D7 on OSB_AccountEnvironmentAttachment " +
 				"(accountEnvironmentId, type_)");
 	}
+
+}
+*/
 
 }

@@ -14,14 +14,24 @@
 
 package com.liferay.osb.hook.upgrade.v3_7_3;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.TicketAttachmentConstants;
+
+*/
 
 /**
  * @author Kyle Bischof
  */
 public class Upgrade_20170425104053561_TicketAttachment
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -36,5 +46,8 @@ public class Upgrade_20170425104053561_TicketAttachment
 					"fileName like 'liferay-hotfix%' and type_ = " +
 						TicketAttachmentConstants.TYPE_LARGE_FILE);
 	}
+
+}
+*/
 
 }

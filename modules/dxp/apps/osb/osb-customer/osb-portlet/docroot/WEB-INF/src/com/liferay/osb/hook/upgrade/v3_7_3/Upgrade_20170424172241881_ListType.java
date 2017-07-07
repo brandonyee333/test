@@ -14,13 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_7_3;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.AccountEntryConstants;
+
+*/
 
 /**
  * @author Amos Fong
  */
-public class Upgrade_20170424172241881_ListType extends BaseUpgradeProcess {
+public class Upgrade_20170424172241881_ListType extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -32,5 +42,8 @@ public class Upgrade_20170424172241881_ListType extends BaseUpgradeProcess {
 		insertListType(
 			35028, "food-services", AccountEntryConstants.LIST_TYPE_INDUSTRY);
 	}
+
+}
+*/
 
 }

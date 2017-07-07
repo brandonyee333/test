@@ -14,7 +14,9 @@
 
 package com.liferay.osb.hook.upgrade.v3_4_3;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
@@ -31,10 +33,18 @@ import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.List;
 
+*/
+
 /**
  * @author Amos Fong
  */
-public class Upgrade_20160223143315110_CorpProject extends BaseUpgradeProcess {
+public class Upgrade_20160223143315110_CorpProject extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -111,5 +121,8 @@ public class Upgrade_20160223143315110_CorpProject extends BaseUpgradeProcess {
 
 	private static Log _log = LogFactoryUtil.getLog(
 		Upgrade_20160223143315110_CorpProject.class);
+
+}
+*/
 
 }

@@ -16,10 +16,20 @@ package com.liferay.osb.hook.upgrade.v1_2_0;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
+/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+*/
+
 /**
  * @author Douglas Wong
  */
 public class UpgradeAssetLicense extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -33,5 +43,8 @@ public class UpgradeAssetLicense extends UpgradeProcess {
 			runSQL("update OSB_AssetLicense set status = 0");
 		}
 	}
+
+}
+*/
 
 }

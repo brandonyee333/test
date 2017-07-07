@@ -14,13 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_2_0;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+
+*/
 
 /**
  * @author Kyle Bischof
  */
 public class Upgrade_20150128090715904_TicketComment
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -37,5 +47,8 @@ public class Upgrade_20150128090715904_TicketComment
 			"create index IX_565F15CA on OSB_TicketComment (" +
 				"userId, ticketEntryId, visibility, status, type_)");
 	}
+
+}
+*/
 
 }

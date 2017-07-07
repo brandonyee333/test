@@ -14,7 +14,9 @@
 
 package com.liferay.osb.hook.upgrade.v3_6_7;
 
-import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.TrainingCustomer;
 import com.liferay.osb.model.TrainingEvent;
 import com.liferay.osb.service.TrainingCustomerLocalServiceUtil;
@@ -23,11 +25,19 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 
+*/
+
 /**
  * @author Haote Chou
  */
 public class Upgrade_20170131094443006_TrainingCustomer
-	extends BaseUpgradeProcess {
+	extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+	}
+
+/*
 
 	@Override
 	public long getTimestamp() {
@@ -68,5 +78,8 @@ public class Upgrade_20170131094443006_TrainingCustomer
 				trainingCustomer);
 		}
 	}
+
+}
+*/
 
 }
