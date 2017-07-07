@@ -46,10 +46,10 @@ import javax.servlet.http.HttpServletResponse;
  */
 public abstract class SimpleRestfulServlet extends HttpServlet {
 
-	protected abstract long getResourceId(String path)
+	protected abstract String getResourceKey(HttpServletRequest request)
 		throws PrincipalException;
 
-	protected abstract String getResourceName(String path)
+	protected abstract String getResourceName(HttpServletRequest request)
 		throws NoResourceException;
 
 	protected abstract boolean isAuthorized(HttpServletRequest request);
@@ -123,31 +123,28 @@ public abstract class SimpleRestfulServlet extends HttpServlet {
 		}
 	}
 
-	protected static final long NULL_RESOURCE_ID = -1;
-
 	private void _callMethod(
 			HttpServletRequest request, HttpServletResponse response)
 		throws Exception {
 
-		String path = HttpUtil.fixPath(request.getPathInfo(), true, true);
-
 		if (_log.isDebugEnabled()) {
-			_log.debug("Path " + path);
+			_log.debug(
+				"Path " + HttpUtil.fixPath(request.getPathInfo(), true, true));
 		}
 
 		String requestMethod = request.getMethod();
 
-		String resourceName = getResourceName(path);
-		long resourceId = getResourceId(path);
+		String resourceName = getResourceName(request);
+		String resourceKey = getResourceKey(request);
 
-		Method method = _getMethod(requestMethod, resourceName, resourceId);
+		Method method = _getMethod(requestMethod, resourceName, resourceKey);
 
 		try {
-			if (resourceId == NULL_RESOURCE_ID) {
+			if (resourceKey == null) {
 				method.invoke(this, request, response);
 			}
 			else {
-				method.invoke(this, request, response, resourceId);
+				method.invoke(this, request, response, resourceKey);
 			}
 		}
 		catch (InvocationTargetException ite) {
@@ -156,16 +153,16 @@ public abstract class SimpleRestfulServlet extends HttpServlet {
 	}
 
 	private Method _getMethod(
-			String requestMethod, String resourceName, long resourceId)
+			String requestMethod, String resourceName, String resourceKey)
 		throws NoSuchMethodException {
 
 		Tuple key = null;
 
-		if (resourceId == NULL_RESOURCE_ID) {
+		if (resourceKey == null) {
 			key = new Tuple(requestMethod, resourceName);
 		}
 		else {
-			key = new Tuple(requestMethod, resourceName, "resourceId");
+			key = new Tuple(requestMethod, resourceName, "resourceKey");
 		}
 
 		Method method = _methods.get(key);
@@ -178,7 +175,7 @@ public abstract class SimpleRestfulServlet extends HttpServlet {
 
 		Class<?> clazz = getClass();
 
-		if (resourceId == NULL_RESOURCE_ID) {
+		if (resourceKey == null) {
 			method = clazz.getMethod(
 				methodName, HttpServletRequest.class,
 				HttpServletResponse.class);
@@ -186,7 +183,7 @@ public abstract class SimpleRestfulServlet extends HttpServlet {
 		else {
 			method = clazz.getMethod(
 				methodName, HttpServletRequest.class, HttpServletResponse.class,
-				long.class);
+				String.class);
 		}
 
 		_methods.put(key, method);
