@@ -18,13 +18,10 @@ import com.liferay.portal.kernel.portlet.PortletResponseUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.osb.exception.NoSuchAssetAttachmentException;
-import com.liferay.osb.model.AssetAttachment;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.model.TicketEntryConstants;
-import com.liferay.osb.service.AssetAttachmentServiceUtil;
 import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
 import com.liferay.osb.support.util.SupportUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -264,56 +261,6 @@ public class OSBRequestUtil {
 			resourceResponse);
 
 		PortalUtil.sendError(status, exception, request, response);
-	}
-
-	public static void serveAssetAttachment(
-			ResourceRequest resourceRequest, ResourceResponse resourceResponse,
-			int type)
-		throws Exception {
-
-		long assetAttachmentId = ParamUtil.getLong(
-			resourceRequest, "assetAttachmentId");
-
-		try {
-			AssetAttachment assetAttachment =
-				AssetAttachmentServiceUtil.fetchAssetAttachment(
-					assetAttachmentId);
-
-			if ((assetAttachment == null) &&
-				(assetAttachment.getType() != type)) {
-
-				if (_log.isDebugEnabled()) {
-					_log.debug(
-						"No asset attachment found with primary key " +
-							assetAttachmentId);
-				}
-
-				sendError(
-					HttpServletResponse.SC_NOT_FOUND,
-					new NoSuchAssetAttachmentException(), resourceRequest,
-					resourceResponse);
-
-				return;
-			}
-
-			String contentType = MimeTypesUtil.getContentType(
-				assetAttachment.getFileName());
-
-			PortletResponseUtil.sendFile(
-				resourceRequest, resourceResponse,
-				assetAttachment.getFileName(),
-				assetAttachment.getFileAsStream(), contentType);
-		}
-		catch (Exception e) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(
-					"Unable to serve asset attachment " + assetAttachmentId);
-			}
-
-			sendError(
-				HttpServletResponse.SC_NOT_FOUND, e, resourceRequest,
-				resourceResponse);
-		}
 	}
 
 	protected static JSONArray getJsonArray(
