@@ -147,6 +147,15 @@
 		<css-class-wrapper>osb-portlet-support</css-class-wrapper>
 	</portlet>
 	<portlet>
+ 	<portlet>
+		<portlet-name>3</portlet-name>
+		<configuration-action-class>com.liferay.osb.downloads.action.ConfigurationActionImpl</configuration-action-class>
+		<preferences-company-wide>true</preferences-company-wide>
+		<preferences-unique-per-layout>false</preferences-unique-per-layout>
+		<css-class-wrapper>osb-portlet-downloads</css-class-wrapper>
+		<add-default-resource>true</add-default-resource>
+	</portlet>
+	<portlet>
 		<portlet-name>4</portlet-name>
 		<friendly-url-mapper-class>com.liferay.portal.kernel.portlet.DefaultFriendlyURLMapper</friendly-url-mapper-class>
 		<friendly-url-mapping>license</friendly-url-mapping>
@@ -160,6 +169,21 @@
 		<preferences-unique-per-layout>true</preferences-unique-per-layout>
 		<header-portlet-css>/license_form/css/main.css</header-portlet-css>
 		<css-class-wrapper>osb-portlet-license-form</css-class-wrapper>
+	</portlet>
+	<portlet>
+		<portlet-name>32</portlet-name>
+		<configuration-action-class>com.liferay.osb.securitypatch.action.ConfigurationActionImpl</configuration-action-class>
+		<portlet-layout-listener-class>com.liferay.osb.securitypatch.SecurityPatchPortletLayoutListener</portlet-layout-listener-class>
+		<preferences-unique-per-layout>true</preferences-unique-per-layout>
+		<instanceable>true</instanceable>
+		<header-portlet-css>/security_patch/css/main.css</header-portlet-css>
+		<css-class-wrapper>osb-portlet-security-patch</css-class-wrapper>
+	</portlet>
+	<portlet>
+		<portlet-name>36</portlet-name>
+		<preferences-unique-per-layout>true</preferences-unique-per-layout>
+		<header-portlet-css>/page_feedback/css/main.css</header-portlet-css>
+		<css-class-wrapper>osb-portlet-page-feedback</css-class-wrapper>
 	</portlet>
 	<role-mapper>
 		<role-name>administrator</role-name>

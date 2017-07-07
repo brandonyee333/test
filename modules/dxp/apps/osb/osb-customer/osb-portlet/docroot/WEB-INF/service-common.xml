@@ -49,6 +49,26 @@
 			<finder-column name="action" />
 		</finder>
 	</entity>
+	<entity name="FeedbackEntry" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="feedbackEntryId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="classNameId" type="long" />
+		<column name="classPK" type="long" />
+		<column name="satisfied" type="int" />
+		<column name="comments" type="String" />
+		<column name="pageURL" type="String" />
+	</entity>
 	<entity name="LCSSubscriptionEntry" local-service="true" remote-service="true">
 
 		<!-- PK fields -->

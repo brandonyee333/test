@@ -74,6 +74,45 @@
 			<role-name>user</role-name>
 		</security-role-ref>
 	</portlet>
+ 	<portlet>
+		<portlet-name>3</portlet-name>
+		<display-name>Downloads</display-name>
+		<portlet-class>com.liferay.osb.downloads.portlet.DownloadsPortlet</portlet-class>
+		<init-param>
+			<name>check-auth-token</name>
+			<value>false</value>
+		</init-param>
+		<init-param>
+			<name>jsp-path</name>
+			<value>/downloads/</value>
+		</init-param>
+		<init-param>
+			<name>view-jsp</name>
+			<value>/downloads/view.jsp</value>
+		</init-param>
+		<expiration-cache>0</expiration-cache>
+		<supports>
+			<mime-type>text/html</mime-type>
+		</supports>
+		<resource-bundle>content.Language</resource-bundle>
+		<portlet-info>
+			<title>Downloads</title>
+			<short-title>Downloads</short-title>
+			<keywords>Downloads</keywords>
+		</portlet-info>
+		<security-role-ref>
+			<role-name>administrator</role-name>
+		</security-role-ref>
+		<security-role-ref>
+			<role-name>guest</role-name>
+		</security-role-ref>
+		<security-role-ref>
+			<role-name>power-user</role-name>
+		</security-role-ref>
+		<security-role-ref>
+			<role-name>user</role-name>
+		</security-role-ref>
+	</portlet>
 	<portlet>
 		<portlet-name>4</portlet-name>
 		<display-name>License</display-name>
@@ -138,6 +177,84 @@
 			<title>License Form</title>
 			<short-title>License Form</short-title>
 			<keywords>License Form</keywords>
+		</portlet-info>
+		<security-role-ref>
+			<role-name>administrator</role-name>
+		</security-role-ref>
+		<security-role-ref>
+			<role-name>guest</role-name>
+		</security-role-ref>
+		<security-role-ref>
+			<role-name>power-user</role-name>
+		</security-role-ref>
+		<security-role-ref>
+			<role-name>user</role-name>
+		</security-role-ref>
+	</portlet>
+	<portlet>
+		<portlet-name>32</portlet-name>
+		<display-name>Security Patch</display-name>
+		<portlet-class>com.liferay.osb.securitypatch.portlet.SecurityPatchPortlet</portlet-class>
+		<init-param>
+			<name>copy-request-parameters</name>
+			<value>true</value>
+		</init-param>
+		<init-param>
+			<name>jsp-path</name>
+			<value>/security_patch/</value>
+		</init-param>
+		<init-param>
+			<name>view-jsp</name>
+			<value>/security_patch/view.jsp</value>
+		</init-param>
+		<expiration-cache>0</expiration-cache>
+		<supports>
+			<mime-type>text/html</mime-type>
+		</supports>
+		<resource-bundle>content.Language</resource-bundle>
+		<portlet-info>
+			<title>Security Patch</title>
+			<short-title>Security Patch</short-title>
+			<keywords>Security Patch</keywords>
+		</portlet-info>
+		<security-role-ref>
+			<role-name>administrator</role-name>
+		</security-role-ref>
+		<security-role-ref>
+			<role-name>guest</role-name>
+		</security-role-ref>
+		<security-role-ref>
+			<role-name>power-user</role-name>
+		</security-role-ref>
+		<security-role-ref>
+			<role-name>user</role-name>
+		</security-role-ref>
+	</portlet>
+	<portlet>
+		<portlet-name>36</portlet-name>
+		<display-name>Page Feedback</display-name>
+		<portlet-class>com.liferay.osb.pagefeedback.portlet.PageFeedbackPortlet</portlet-class>
+		<init-param>
+			<name>copy-request-parameters</name>
+			<value>true</value>
+		</init-param>
+		<init-param>
+			<name>jsp-path</name>
+			<value>/page_feedback/</value>
+		</init-param>
+		<init-param>
+			<name>view-jsp</name>
+			<value>/page_feedback/view.jsp</value>
+		</init-param>
+		<expiration-cache>0</expiration-cache>
+		<supports>
+			<mime-type>text/html</mime-type>
+		</supports>
+		<resource-bundle>content.Language</resource-bundle>
+		<portlet-info>
+			<title>Page Feedback</title>
+			<short-title>Page Feedback</short-title>
+			<keywords>Page Feedback</keywords>
 		</portlet-info>
 		<security-role-ref>
 			<role-name>administrator</role-name>
