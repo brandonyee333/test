@@ -16,8 +16,6 @@ package com.liferay.osb.model;
 
 import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
 import com.liferay.osb.service.AccountWorkerLocalServiceUtil;
-import com.liferay.osb.service.AssetReceiptLocalServiceUtil;
-import com.liferay.osb.service.DeveloperEntryLocalServiceUtil;
 import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
 import com.liferay.osb.service.SearchFilterLocalServiceUtil;
 import com.liferay.osb.service.SupportWorkerLocalServiceUtil;
@@ -100,21 +98,6 @@ public class UserListener extends BaseModelListener<User> {
 
 		try {
 			AccountWorkerLocalServiceUtil.deleteAccountWorkers(userId);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
-
-		try {
-			AssetReceiptLocalServiceUtil.deleteAssetReceipts(
-				User.class.getName(), userId);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
-
-		try {
-			DeveloperEntryLocalServiceUtil.deleteUserDeveloperEntry(userId);
 		}
 		catch (Exception e) {
 			_log.error(e, e);

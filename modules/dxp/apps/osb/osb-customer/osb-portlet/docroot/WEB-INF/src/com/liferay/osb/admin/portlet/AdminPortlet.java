@@ -70,7 +70,6 @@ import com.liferay.osb.exception.OfferingBundleNameException;
 import com.liferay.osb.exception.OrderEntryActualStartDateException;
 import com.liferay.osb.exception.PartnerEntryCodeException;
 import com.liferay.osb.exception.PartnerEntryParentPartnerEntryException;
-import com.liferay.osb.exception.PartnerTemplateException;
 import com.liferay.osb.exception.ProductEntryEnvironmentException;
 import com.liferay.osb.exception.ProductEntryNameException;
 import com.liferay.osb.exception.RequiredAccountEntryException;
@@ -1835,7 +1834,6 @@ public class AdminPortlet extends MVCPortlet {
 			cause instanceof PrincipalException ||
 			cause instanceof PartnerEntryCodeException ||
 			cause instanceof PartnerEntryParentPartnerEntryException ||
-			cause instanceof PartnerTemplateException ||
 			cause instanceof ProductEntryEnvironmentException ||
 			cause instanceof ProductEntryNameException ||
 			cause instanceof RegionCodeException ||

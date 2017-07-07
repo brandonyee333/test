@@ -20,9 +20,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.hook.auth.OSBAuthToken;
 import com.liferay.osb.license.messaging.RegisterTrialLicenseMessageListener;
-import com.liferay.osb.model.AppEntry;
-import com.liferay.osb.model.CorpEntry;
-import com.liferay.osb.model.CorpMembershipRequest;
 import com.liferay.osb.model.TicketEntry;
 import com.liferay.osb.model.TicketEntryConstants;
 import com.liferay.osb.rabbitmq.RabbitMQConsumerRouter;
@@ -33,7 +30,7 @@ import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.portal.kernel.exception.NoSuchOrganizationException;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.db.DB;
-import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
+import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -56,7 +53,7 @@ import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.AuthToken;
-import com.liferay.portal.security.auth.AuthTokenUtil;
+import com.liferay.portal.kernel.security.auth.AuthTokenUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.ListTypeServiceUtil;
@@ -114,7 +111,7 @@ public class AdminServletContextListener
 			return;
 		}
 
-		DB db = DBFactoryUtil.getDB();
+		DB db = DBManagerUtil.getDB();
 
 		String template = StringUtil.read(
 			_servletContext.getResourceAsStream("/WEB-INF/sql/osb.sql"));
@@ -196,10 +193,6 @@ public class AdminServletContextListener
 
 		AdminServletContextListenerAuditActionHelper.setup();
 
-		// E-commerce
-
-		AdminServletContextListenerECommerceHelper.setup();
-
 		// Expando
 
 		AdminServletContextListenerExpandoHelper.setup();
@@ -270,9 +263,6 @@ public class AdminServletContextListener
 
 		List<String> excludedEntryClassNames = new ArrayList<String>(8);
 
-		excludedEntryClassNames.add(AppEntry.class.getName());
-		excludedEntryClassNames.add(CorpEntry.class.getName());
-		excludedEntryClassNames.add(CorpMembershipRequest.class.getName());
 		excludedEntryClassNames.add(Organization.class.getName());
 		excludedEntryClassNames.add(TicketEntry.class.getName());
 		excludedEntryClassNames.add(User.class.getName());
