@@ -16,6 +16,7 @@ package com.liferay.osb.servlet;
 
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -57,7 +58,8 @@ public class UserEmailVerificationServlet extends HttpServlet {
 			User user = null;
 
 			if (Validator.isNotNull(userUuid)) {
-				user = UserLocalServiceUtil.getUserByUuid(userUuid);
+				user = UserLocalServiceUtil.getUserByUuidAndCompanyId(
+					userUuid, OSBConstants.COMPANY_ID);
 			}
 			else {
 				long userId = PortalUtil.getUserId(request);

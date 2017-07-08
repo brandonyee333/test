@@ -430,7 +430,8 @@ public class AccountEntryLocalServiceImpl
 			}
 
 			try {
-				Country country = countryService.getCountryByName(countryName);
+				Country country = countryLocalService.getCountryByName(
+					countryName);
 
 				countryId = country.getCountryId();
 			}
@@ -1814,7 +1815,7 @@ public class AccountEntryLocalServiceImpl
 			ProductEntry.class.getName() + StringPool.PERIOD +
 				productEntry.getVersionsListType();
 
-		List<ListType> productVersionTypes = listTypeService.getListTypes(
+		List<ListType> productVersionTypes = listTypeLocalService.getListTypes(
 			listType);
 
 		ListType latestProductVersionType = productVersionTypes.get(

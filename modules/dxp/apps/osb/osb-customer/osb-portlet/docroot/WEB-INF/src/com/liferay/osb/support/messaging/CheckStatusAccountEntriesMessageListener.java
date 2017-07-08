@@ -62,6 +62,7 @@ public class CheckStatusAccountEntriesMessageListener
 			AccountEntryLocalServiceUtil.deleteAccountEntry(
 				accountEntry.getAccountEntryId());
 
+			/* TODO add in CorpProject integration
 			CorpProjectLocalServiceUtil.deleteUserCorpProjectRoles(
 				accountEntry.getUserId(), accountEntry.getCorpProjectId(),
 				new long[]{accountEntry.getUserId()},
@@ -69,6 +70,7 @@ public class CheckStatusAccountEntriesMessageListener
 
 			CorpProjectLocalServiceUtil.deleteCorpProject(
 				accountEntry.getCorpProjectId());
+			*/
 		}
 	}
 

@@ -249,7 +249,7 @@ public class AccountEnvironmentLocalServiceImpl
 		}
 
 		try {
-			listTypeService.validate(
+			listTypeLocalService.validate(
 				envAS, TicketEntryConstants.LIST_TYPE_ENV_AS);
 		}
 		catch (NoSuchListTypeException nslte) {
@@ -257,7 +257,7 @@ public class AccountEnvironmentLocalServiceImpl
 		}
 
 		try {
-			listTypeService.validate(
+			listTypeLocalService.validate(
 				envDB, TicketEntryConstants.LIST_TYPE_ENV_DB);
 		}
 		catch (NoSuchListTypeException nslte) {
@@ -265,7 +265,7 @@ public class AccountEnvironmentLocalServiceImpl
 		}
 
 		try {
-			listTypeService.validate(
+			listTypeLocalService.validate(
 				envOS, TicketEntryConstants.LIST_TYPE_ENV_OS);
 		}
 		catch (NoSuchListTypeException nslte) {
@@ -277,7 +277,7 @@ public class AccountEnvironmentLocalServiceImpl
 
 		if (productEntry.isSocialOffice()) {
 			try {
-				listTypeService.validate(
+				listTypeLocalService.validate(
 					envLFR,
 					ProductEntryConstants.LIST_TYPE_SOCIAL_OFFICE_ALL_VERSIONS);
 			}
@@ -287,7 +287,7 @@ public class AccountEnvironmentLocalServiceImpl
 		}
 		else {
 			try {
-				ListType listType = listTypeService.getListType(envLFR);
+				ListType listType = listTypeLocalService.getListType(envLFR);
 
 				String type = listType.getType();
 
