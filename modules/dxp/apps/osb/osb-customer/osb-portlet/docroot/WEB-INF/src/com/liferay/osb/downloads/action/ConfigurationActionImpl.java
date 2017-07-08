@@ -14,7 +14,7 @@
 
 package com.liferay.osb.downloads.action;
 
-import com.liferay.compat.portal.kernel.portlet.DefaultConfigurationAction;
+import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;

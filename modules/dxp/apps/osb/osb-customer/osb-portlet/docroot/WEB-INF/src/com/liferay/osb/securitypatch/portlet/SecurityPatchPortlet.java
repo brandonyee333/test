@@ -17,10 +17,10 @@ package com.liferay.osb.securitypatch.portlet;
 import java.io.IOException;
 import java.util.List;
 
-import com.liferay.compat.portal.kernel.util.HttpUtil;
-import com.liferay.compat.portal.kernel.util.Validator;
-import com.liferay.compat.portal.util.PortalUtil;
-import com.liferay.compat.util.bridges.mvc.MVCPortlet;
+import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.util.bridges.mvc.MVCPortlet;
 import com.liferay.osb.model.SecurityPatch;
 import com.liferay.osb.model.TicketAttachment;
 import com.liferay.osb.service.SecurityPatchLocalServiceUtil;
@@ -42,6 +42,12 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.WebKeys;
+
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.PortletException;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
 
 /**
  * @author Alan Zhang

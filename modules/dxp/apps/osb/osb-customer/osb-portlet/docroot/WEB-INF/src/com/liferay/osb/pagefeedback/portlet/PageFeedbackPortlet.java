@@ -14,8 +14,8 @@
 
 package com.liferay.osb.pagefeedback.portlet;
 
-import com.liferay.compat.portal.util.PortalUtil;
-import com.liferay.compat.util.bridges.mvc.MVCPortlet;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.util.bridges.mvc.MVCPortlet;
 import com.liferay.osb.model.FeedbackEntry;
 import com.liferay.osb.service.FeedbackEntryLocalServiceUtil;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -24,6 +24,9 @@ import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
 
 /**
  * @author Jenny Chen

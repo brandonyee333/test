@@ -10,7 +10,7 @@
 	<bean id="com.liferay.osb.hook.upgrade.BaseUpgradeProcess" class="com.liferay.osb.hook.upgrade.BaseUpgradeProcess" />
 	<bean id="com.liferay.osb.remote.RemoteDossieraWebServiceImpl" class="com.liferay.osb.remote.RemoteDossieraWebServiceImpl">
 		<property name="JSONWebServiceClient">
-			<bean class="com.liferay.jsonwebserviceclient.JSONWebServiceClientImpl">
+			<bean class="com.liferay.petra.json.web.service.client.JSONWebServiceClientImpl">
 				<property name="hostName" value="#{T(com.liferay.util.portlet.PortletProps).get('remote.rest.service.api.dossiera.host')}" />
 				<property name="hostPort" value="#{T(com.liferay.util.portlet.PortletProps).get('remote.rest.service.api.dossiera.port')}" />
 				<property name="protocol" value="#{T(com.liferay.util.portlet.PortletProps).get('remote.rest.service.api.dossiera.protocol')}" />
@@ -19,7 +19,7 @@
 	</bean>
 	<bean id="com.liferay.osb.remote.RemoteLCSWebServiceImpl" class="com.liferay.osb.remote.RemoteLCSWebServiceImpl">
 		<property name="JSONWebServiceClient">
-			<bean class="com.liferay.jsonwebserviceclient.JSONWebServiceClientImpl">
+			<bean class="com.liferay.petra.json.web.service.client.JSONWebServiceClientImpl">
 				<property name="hostName" value="#{T(com.liferay.util.portlet.PortletProps).get('remote.json.service.api.lcs.host')}" />
 				<property name="hostPort" value="#{T(com.liferay.util.portlet.PortletProps).get('remote.json.service.api.lcs.port')}" />
 				<property name="protocol" value="#{T(com.liferay.util.portlet.PortletProps).get('remote.json.service.api.lcs.protocol')}" />

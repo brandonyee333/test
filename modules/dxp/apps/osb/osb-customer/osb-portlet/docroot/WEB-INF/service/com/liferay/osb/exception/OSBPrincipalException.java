@@ -15,7 +15,7 @@ package com.liferay.osb.exception;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.security.auth.PrincipalException;
 
 /**
  * @author Jeremy Fu

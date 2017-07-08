@@ -58,6 +58,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import javax.portlet.PortletRequest;
+
 /**
  * @author Peter Shin
  * @author Alan Zhang

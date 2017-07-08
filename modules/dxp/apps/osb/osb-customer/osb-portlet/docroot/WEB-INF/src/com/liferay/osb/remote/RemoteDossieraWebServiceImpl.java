@@ -14,9 +14,9 @@
 
 package com.liferay.osb.remote;
 
-import com.liferay.jsonwebserviceclient.BaseJSONWebServiceClientHandler;
-import com.liferay.jsonwebserviceclient.JSONWebServiceClient;
-import com.liferay.jsonwebserviceclient.JSONWebServiceTransportException;
+import com.liferay.petra.json.web.service.client.BaseJSONWebServiceClientHandler;
+import com.liferay.petra.json.web.service.client.JSONWebServiceClient;
+import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
 import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;

@@ -21,7 +21,7 @@ import com.liferay.osb.securitypatch.portlet.SecurityPatchPortlet;
 import com.liferay.osb.service.AuditActionLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.ModelListenerException;
-import com.liferay.portal.audit.model.AuditEvent;
+import com.liferay.portal.security.audit.AuditEvent;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;

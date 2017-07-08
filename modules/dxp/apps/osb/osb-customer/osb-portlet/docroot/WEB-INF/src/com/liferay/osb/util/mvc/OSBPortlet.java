@@ -45,7 +45,7 @@ public class OSBPortlet extends MVCPortlet {
 			return;
 		}
 
-		String path = getPath(renderRequest);
+		String path = getPath(renderRequest, renderResponse);
 
 		if (Validator.isNull(path)) {
 			path = getDefaultPath(renderRequest);

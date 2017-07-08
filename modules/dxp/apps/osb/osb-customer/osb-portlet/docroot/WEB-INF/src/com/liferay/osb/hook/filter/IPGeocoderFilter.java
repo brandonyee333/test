@@ -16,8 +16,8 @@ package com.liferay.osb.hook.filter;
 
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.ipgeocoder.model.IPInfo;
-import com.liferay.ipgeocoder.util.IPGeocoderUtil;
+import com.liferay.ip.geocoder.IPInfo;
+import com.liferay.ip.geocoder.internal.IPGeocoderImpl;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.BaseFilter;

@@ -242,6 +242,7 @@ import javax.portlet.ActionResponse;
 import javax.portlet.PortletException;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
@@ -2458,8 +2459,10 @@ public class SupportPortlet extends MVCPortlet {
 	}
 
 	@Override
-	protected String getPath(PortletRequest portletRequest) {
-		String mvcPath = super.getPath(portletRequest);
+	protected String getPath(
+		PortletRequest portletRequest, PortletRequest portletResponse) {
+
+		String mvcPath = super.getPath(portletRequest, portletResponse);
 
 		return getMVCPath(portletRequest, mvcPath);
 	}
