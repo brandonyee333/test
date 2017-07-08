@@ -487,7 +487,7 @@ public class AdminServletContextListener
 		catch (Exception e) {
 			role = RoleLocalServiceUtil.addRole(
 				OSBConstants.USER_DEFAULT_USER_ID, null, 0, "OSB Account Admin",
-				null, null, RoleConstants.TYPE_REGULAR, null);
+				null, null, RoleConstants.TYPE_REGULAR, null, null);
 		}
 
 		OSBConstants.ROLE_OSB_ACCOUNT_ADMIN_ID = role.getRoleId();
@@ -503,7 +503,7 @@ public class AdminServletContextListener
 		catch (Exception e) {
 			role = RoleLocalServiceUtil.addRole(
 				OSBConstants.USER_DEFAULT_USER_ID, null, 0, "OSB Administrator",
-				null, null, RoleConstants.TYPE_REGULAR, null);
+				null, null, RoleConstants.TYPE_REGULAR, null, null);
 		}
 
 		OSBConstants.ROLE_OSB_ADMINISTRATOR_ID = role.getRoleId();
@@ -519,7 +519,7 @@ public class AdminServletContextListener
 		catch (Exception e) {
 			role = RoleLocalServiceUtil.addRole(
 				OSBConstants.USER_DEFAULT_USER_ID, null, 0, "OSB Corp Admin",
-				null, null, RoleConstants.TYPE_ORGANIZATION, null);
+				null, null, RoleConstants.TYPE_ORGANIZATION, null, null);
 		}
 
 		OSBConstants.ROLE_OSB_CORP_ADMIN_ID = role.getRoleId();
@@ -535,7 +535,7 @@ public class AdminServletContextListener
 		catch (Exception e) {
 			role = RoleLocalServiceUtil.addRole(
 				OSBConstants.USER_DEFAULT_USER_ID, null, 0, "OSB Corp Buyer",
-				null, null, RoleConstants.TYPE_ORGANIZATION, null);
+				null, null, RoleConstants.TYPE_ORGANIZATION, null, null);
 		}
 
 		OSBConstants.ROLE_OSB_CORP_BUYER_ID = role.getRoleId();
@@ -552,7 +552,7 @@ public class AdminServletContextListener
 			role = RoleLocalServiceUtil.addRole(
 				OSBConstants.USER_DEFAULT_USER_ID, null, 0,
 				"OSB Corp Developer", null, null,
-				RoleConstants.TYPE_ORGANIZATION, null);
+				RoleConstants.TYPE_ORGANIZATION, null, null);
 		}
 
 		OSBConstants.ROLE_OSB_CORP_DEVELOPER_ID = role.getRoleId();
@@ -568,7 +568,7 @@ public class AdminServletContextListener
 		catch (Exception e) {
 			role = RoleLocalServiceUtil.addRole(
 				OSBConstants.USER_DEFAULT_USER_ID, null, 0, "OSB Corp LCS User",
-				null, null, RoleConstants.TYPE_ORGANIZATION, null);
+				null, null, RoleConstants.TYPE_ORGANIZATION, null, null);
 		}
 
 		OSBConstants.ROLE_OSB_CORP_LCS_USER_ID = role.getRoleId();
@@ -585,7 +585,7 @@ public class AdminServletContextListener
 			role = RoleLocalServiceUtil.addRole(
 				OSBConstants.USER_DEFAULT_USER_ID, null, 0,
 				"OSB Corp Project Admin", null, null,
-				RoleConstants.TYPE_REGULAR, null);
+				RoleConstants.TYPE_REGULAR, null, null);
 		}
 
 		OSBConstants.ROLE_OSB_CORP_PROJECT_ADMIN_ID = role.getRoleId();
@@ -600,7 +600,7 @@ public class AdminServletContextListener
 			role = RoleLocalServiceUtil.addRole(
 				OSBConstants.USER_DEFAULT_USER_ID, null, 0,
 				"OSB Marketing Admin", null, null, RoleConstants.TYPE_REGULAR,
-				null);
+				null, null);
 		}
 
 		OSBConstants.ROLE_OSB_MARKETING_ADMIN_ID = role.getRoleId();
@@ -617,7 +617,7 @@ public class AdminServletContextListener
 			role = RoleLocalServiceUtil.addRole(
 				OSBConstants.USER_DEFAULT_USER_ID, null, 0,
 				"OSB Marketplace Admin", null, null, RoleConstants.TYPE_REGULAR,
-				null);
+				null, null);
 		}
 
 		OSBConstants.ROLE_OSB_MARKETPLACE_ADMIN_ID = role.getRoleId();
@@ -633,7 +633,7 @@ public class AdminServletContextListener
 		catch (Exception e) {
 			role = RoleLocalServiceUtil.addRole(
 				OSBConstants.USER_DEFAULT_USER_ID, null, 0, "OSB Support Admin",
-				null, null, RoleConstants.TYPE_REGULAR, null);
+				null, null, RoleConstants.TYPE_REGULAR, null, null);
 		}
 
 		OSBConstants.ROLE_OSB_SUPPORT_ADMIN_ID = role.getRoleId();
@@ -650,7 +650,7 @@ public class AdminServletContextListener
 			role = RoleLocalServiceUtil.addRole(
 				OSBConstants.USER_DEFAULT_USER_ID, null, 0,
 				"OSB Trial License Admin", null, null,
-				RoleConstants.TYPE_REGULAR, null);
+				RoleConstants.TYPE_REGULAR, null, null);
 		}
 
 		OSBConstants.ROLE_OSB_TRIAL_LICENSE_ADMIN_ID = role.getRoleId();
