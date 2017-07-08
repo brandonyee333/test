@@ -23,7 +23,16 @@ import com.liferay.portal.kernel.exception.PortalException;
 @ProviderType
 public class TicketEntryAttachmentSizeException extends PortalException {
 
+	public static final int EMPTY_FILE = 1;
+
+	public static final int EXCEEDS_LIMIT = 2;
+
 	public TicketEntryAttachmentSizeException() {
+		super();
+	}
+
+	public TicketEntryAttachmentSizeException(int type) {
+		_type = type;
 	}
 
 	public TicketEntryAttachmentSizeException(String msg) {
@@ -37,5 +46,11 @@ public class TicketEntryAttachmentSizeException extends PortalException {
 	public TicketEntryAttachmentSizeException(Throwable cause) {
 		super(cause);
 	}
+
+	public int getType() {
+		return _type;
+	}
+
+	private int _type;
 
 }

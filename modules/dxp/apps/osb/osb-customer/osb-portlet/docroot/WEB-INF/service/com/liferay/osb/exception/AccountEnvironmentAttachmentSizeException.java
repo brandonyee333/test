@@ -23,19 +23,36 @@ import com.liferay.portal.kernel.exception.PortalException;
 @ProviderType
 public class AccountEnvironmentAttachmentSizeException extends PortalException {
 
+	public static final int EMPTY_FILE = 1;
+
+	public static final int EXCEEDS_LIMIT = 2;
+
 	public AccountEnvironmentAttachmentSizeException() {
+		super();
+	}
+
+	public AccountEnvironmentAttachmentSizeException(int type) {
+		_type = type;
 	}
 
 	public AccountEnvironmentAttachmentSizeException(String msg) {
 		super(msg);
 	}
 
-	public AccountEnvironmentAttachmentSizeException(String msg, Throwable cause) {
+	public AccountEnvironmentAttachmentSizeException(
+		String msg, Throwable cause) {
+
 		super(msg, cause);
 	}
 
 	public AccountEnvironmentAttachmentSizeException(Throwable cause) {
 		super(cause);
 	}
+
+	public int getType() {
+		return _type;
+	}
+
+	private int _type;
 
 }

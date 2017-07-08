@@ -18,24 +18,27 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.exception.PortalException;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Jeremy Fu
  */
 @ProviderType
-public class OSBPrincipalException extends PortalException {
+public class OSBPrincipalException extends PrincipalException {
 
-	public OSBPrincipalException() {
-	}
+	public static final int TYPE_GENERAL = 1;
 
-	public OSBPrincipalException(String msg) {
-		super(msg);
+	public static final int TYPE_TICKET_CLOSED = 2;
+
+	public OSBPrincipalException(int type) {
+		_type = type;
 	}
 
 	public OSBPrincipalException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
 
-	public OSBPrincipalException(Throwable cause) {
-		super(cause);
+	public int getType() {
+		return _type;
 	}
+
+	private int _type;
 
 }

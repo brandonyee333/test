@@ -23,7 +23,19 @@ import com.liferay.portal.kernel.exception.PortalException;
 @ProviderType
 public class RequiredPartnerEntryException extends PortalException {
 
+	public static final int REFERENCED_ACCOUNT_ENTRY = 1;
+
+	public static final int REFERENCED_PARTNER_ENTRY = 2;
+
+	public static final int REFERENCED_PARTNER_WORKER = 3;
+
+	public static final int REFERENCED_TICKET_ENTRY = 4;
+
 	public RequiredPartnerEntryException() {
+	}
+
+	public RequiredPartnerEntryException(int type) {
+		_type = type;
 	}
 
 	public RequiredPartnerEntryException(String msg) {
@@ -37,5 +49,11 @@ public class RequiredPartnerEntryException extends PortalException {
 	public RequiredPartnerEntryException(Throwable cause) {
 		super(cause);
 	}
+
+	public int getType() {
+		return _type;
+	}
+
+	private int _type;
 
 }
