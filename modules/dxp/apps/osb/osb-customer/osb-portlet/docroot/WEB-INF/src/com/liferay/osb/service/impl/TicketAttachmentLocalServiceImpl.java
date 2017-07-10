@@ -206,8 +206,6 @@ public class TicketAttachmentLocalServiceImpl
 			ticketAttachment.setVisibility(visibility);
 			
 			//TODO implement serviceContext how needed
-			
-			ServiceContext serviceContext = new ServiceContext();
 
 			ticketAttachmentPersistence.update(ticketAttachment, serviceContext);
 
@@ -640,8 +638,6 @@ public class TicketAttachmentLocalServiceImpl
 		Date now = serviceContext.getCreateDate(new Date());
 		
 		//TODO implement serviceContext how needed
-		
-		ServiceContext serviceContext = new ServiceContext();
 
 		for (TicketAttachment ticketAttachment : ticketAttachments) {
 			if (status == WorkflowConstants.STATUS_APPROVED) {

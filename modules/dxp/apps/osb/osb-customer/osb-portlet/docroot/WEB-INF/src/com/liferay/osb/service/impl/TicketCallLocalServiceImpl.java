@@ -89,8 +89,6 @@ public class TicketCallLocalServiceImpl extends TicketCallLocalServiceBaseImpl {
 
 		// Ticket comments
 
-		ServiceContext serviceContext = new ServiceContext();
-
 		serviceContext.setAttribute("auditEnabled", false);
 
 		String commentBodyLiferay = getTicketCommentBody(

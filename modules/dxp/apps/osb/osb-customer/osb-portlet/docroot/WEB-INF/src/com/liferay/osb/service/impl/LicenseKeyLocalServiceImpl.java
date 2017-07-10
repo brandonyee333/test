@@ -657,8 +657,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				renewedLicenseKey.getExpirationDate());
 			
 			//TODO implement serviceContext how needed
-			
-			ServiceContext serviceContext = new ServiceContext();
 
 			offeringEntryPersistence.update(offeringEntry, serviceContext);
 

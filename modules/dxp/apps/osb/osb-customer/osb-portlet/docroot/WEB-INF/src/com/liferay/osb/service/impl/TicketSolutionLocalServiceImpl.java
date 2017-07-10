@@ -131,8 +131,6 @@ public class TicketSolutionLocalServiceImpl
 
 		ticketSolutionPersistence.update(ticketSolution, serviceContext);
 
-		ServiceContext serviceContext = new ServiceContext();
-
 		serviceContext.setCreateDate(now);
 
 		serviceContext.setAttribute(
