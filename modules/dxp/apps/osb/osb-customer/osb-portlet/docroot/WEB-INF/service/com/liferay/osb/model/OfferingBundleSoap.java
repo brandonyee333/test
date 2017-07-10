@@ -35,6 +35,7 @@ public class OfferingBundleSoap implements Serializable {
 		OfferingBundleSoap soapModel = new OfferingBundleSoap();
 
 		soapModel.setOfferingBundleId(model.getOfferingBundleId());
+		soapModel.setCompanyId(model.getCompanyId());
 		soapModel.setUserId(model.getUserId());
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
@@ -99,6 +100,14 @@ public class OfferingBundleSoap implements Serializable {
 		_offeringBundleId = offeringBundleId;
 	}
 
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	public void setCompanyId(long companyId) {
+		_companyId = companyId;
+	}
+
 	public long getUserId() {
 		return _userId;
 	}
@@ -132,6 +141,7 @@ public class OfferingBundleSoap implements Serializable {
 	}
 
 	private long _offeringBundleId;
+	private long _companyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;

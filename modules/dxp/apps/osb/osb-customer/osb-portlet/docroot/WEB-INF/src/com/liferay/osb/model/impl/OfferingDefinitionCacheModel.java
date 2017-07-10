@@ -66,10 +66,12 @@ public class OfferingDefinitionCacheModel implements CacheModel<OfferingDefiniti
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(27);
+		StringBundler sb = new StringBundler(29);
 
 		sb.append("{offeringDefinitionId=");
 		sb.append(offeringDefinitionId);
+		sb.append(", companyId=");
+		sb.append(companyId);
 		sb.append(", userId=");
 		sb.append(userId);
 		sb.append(", userName=");
@@ -104,6 +106,7 @@ public class OfferingDefinitionCacheModel implements CacheModel<OfferingDefiniti
 		OfferingDefinitionImpl offeringDefinitionImpl = new OfferingDefinitionImpl();
 
 		offeringDefinitionImpl.setOfferingDefinitionId(offeringDefinitionId);
+		offeringDefinitionImpl.setCompanyId(companyId);
 		offeringDefinitionImpl.setUserId(userId);
 
 		if (userName == null) {
@@ -152,6 +155,8 @@ public class OfferingDefinitionCacheModel implements CacheModel<OfferingDefiniti
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		offeringDefinitionId = objectInput.readLong();
 
+		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
@@ -177,6 +182,8 @@ public class OfferingDefinitionCacheModel implements CacheModel<OfferingDefiniti
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(offeringDefinitionId);
+
+		objectOutput.writeLong(companyId);
 
 		objectOutput.writeLong(userId);
 
@@ -213,6 +220,7 @@ public class OfferingDefinitionCacheModel implements CacheModel<OfferingDefiniti
 	}
 
 	public long offeringDefinitionId;
+	public long companyId;
 	public long userId;
 	public String userName;
 	public long createDate;

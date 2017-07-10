@@ -38,6 +38,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.CompanyProvider;
+import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.TableMapper;
 import com.liferay.portal.kernel.service.persistence.impl.TableMapperFactory;
@@ -2581,6 +2582,8 @@ public class OfferingDefinitionPersistenceImpl extends BasePersistenceImpl<Offer
 		offeringDefinition.setNew(true);
 		offeringDefinition.setPrimaryKey(offeringDefinitionId);
 
+		offeringDefinition.setCompanyId(companyProvider.getCompanyId());
+
 		return offeringDefinition;
 	}
 
@@ -2852,6 +2855,7 @@ public class OfferingDefinitionPersistenceImpl extends BasePersistenceImpl<Offer
 		offeringDefinitionImpl.setPrimaryKey(offeringDefinition.getPrimaryKey());
 
 		offeringDefinitionImpl.setOfferingDefinitionId(offeringDefinition.getOfferingDefinitionId());
+		offeringDefinitionImpl.setCompanyId(offeringDefinition.getCompanyId());
 		offeringDefinitionImpl.setUserId(offeringDefinition.getUserId());
 		offeringDefinitionImpl.setUserName(offeringDefinition.getUserName());
 		offeringDefinitionImpl.setCreateDate(offeringDefinition.getCreateDate());
@@ -3580,7 +3584,7 @@ public class OfferingDefinitionPersistenceImpl extends BasePersistenceImpl<Offer
 			"OSB_OfferingBundles_OfferingDefinitions");
 	}
 
-	@BeanReference(type = CompanyProvider.class)
+	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
 	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
 	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();

@@ -82,6 +82,7 @@ public class PartnerEntryClp extends BaseModelImpl<PartnerEntry>
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("partnerEntryId", getPartnerEntryId());
+		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
@@ -106,6 +107,12 @@ public class PartnerEntryClp extends BaseModelImpl<PartnerEntry>
 
 		if (partnerEntryId != null) {
 			setPartnerEntryId(partnerEntryId);
+		}
+
+		Long companyId = (Long)attributes.get("companyId");
+
+		if (companyId != null) {
+			setCompanyId(companyId);
 		}
 
 		Long userId = (Long)attributes.get("userId");
@@ -194,6 +201,29 @@ public class PartnerEntryClp extends BaseModelImpl<PartnerEntry>
 				Method method = clazz.getMethod("setPartnerEntryId", long.class);
 
 				method.invoke(_partnerEntryRemoteModel, partnerEntryId);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	@Override
+	public void setCompanyId(long companyId) {
+		_companyId = companyId;
+
+		if (_partnerEntryRemoteModel != null) {
+			try {
+				Class<?> clazz = _partnerEntryRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setCompanyId", long.class);
+
+				method.invoke(_partnerEntryRemoteModel, companyId);
 			}
 			catch (Exception e) {
 				throw new UnsupportedOperationException(e);
@@ -693,6 +723,7 @@ public class PartnerEntryClp extends BaseModelImpl<PartnerEntry>
 		PartnerEntryClp clone = new PartnerEntryClp();
 
 		clone.setPartnerEntryId(getPartnerEntryId());
+		clone.setCompanyId(getCompanyId());
 		clone.setUserId(getUserId());
 		clone.setUserName(getUserName());
 		clone.setCreateDate(getCreateDate());
@@ -764,10 +795,12 @@ public class PartnerEntryClp extends BaseModelImpl<PartnerEntry>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(25);
+		StringBundler sb = new StringBundler(27);
 
 		sb.append("{partnerEntryId=");
 		sb.append(getPartnerEntryId());
+		sb.append(", companyId=");
+		sb.append(getCompanyId());
 		sb.append(", userId=");
 		sb.append(getUserId());
 		sb.append(", userName=");
@@ -797,7 +830,7 @@ public class PartnerEntryClp extends BaseModelImpl<PartnerEntry>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(40);
+		StringBundler sb = new StringBundler(43);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.PartnerEntry");
@@ -806,6 +839,10 @@ public class PartnerEntryClp extends BaseModelImpl<PartnerEntry>
 		sb.append(
 			"<column><column-name>partnerEntryId</column-name><column-value><![CDATA[");
 		sb.append(getPartnerEntryId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>companyId</column-name><column-value><![CDATA[");
+		sb.append(getCompanyId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
@@ -858,6 +895,7 @@ public class PartnerEntryClp extends BaseModelImpl<PartnerEntry>
 	}
 
 	private long _partnerEntryId;
+	private long _companyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;

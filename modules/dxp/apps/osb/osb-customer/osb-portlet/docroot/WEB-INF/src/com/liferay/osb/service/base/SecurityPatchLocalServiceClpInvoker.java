@@ -126,6 +126,37 @@ public class SecurityPatchLocalServiceClpInvoker {
 		_methodName290 = "getOSGiServiceIdentifier";
 
 		_methodParameterTypes290 = new String[] {  };
+
+		_methodName295 = "addSecurityPatch";
+
+		_methodParameterTypes295 = new String[] {
+				"long", "long", "long", "java.lang.String", "int",
+				"java.lang.String", "java.lang.String"
+			};
+
+		_methodName296 = "addSecurityPatch";
+
+		_methodParameterTypes296 = new String[] {
+				"long", "long", "java.lang.String", "int", "java.lang.String"
+			};
+
+		_methodName297 = "deleteSecurityPatches";
+
+		_methodParameterTypes297 = new String[] { "java.lang.String" };
+
+		_methodName298 = "getSecurityPatches";
+
+		_methodParameterTypes298 = new String[] { "long", "java.lang.String" };
+
+		_methodName299 = "getSecurityPatchName";
+
+		_methodParameterTypes299 = new String[] {
+				"int", "com.liferay.osb.model.TicketAttachment"
+			};
+
+		_methodName300 = "updateSecurityPatch";
+
+		_methodParameterTypes300 = new String[] { "long", "java.lang.String" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -237,6 +268,50 @@ public class SecurityPatchLocalServiceClpInvoker {
 			return SecurityPatchLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
+		if (_methodName295.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes295, parameterTypes)) {
+			return SecurityPatchLocalServiceUtil.addSecurityPatch(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				((Long)arguments[2]).longValue(),
+				(java.lang.String)arguments[3],
+				((Integer)arguments[4]).intValue(),
+				(java.lang.String)arguments[5], (java.lang.String)arguments[6]);
+		}
+
+		if (_methodName296.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes296, parameterTypes)) {
+			return SecurityPatchLocalServiceUtil.addSecurityPatch(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				(java.lang.String)arguments[2],
+				((Integer)arguments[3]).intValue(),
+				(java.lang.String)arguments[4]);
+		}
+
+		if (_methodName297.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes297, parameterTypes)) {
+			SecurityPatchLocalServiceUtil.deleteSecurityPatches((java.lang.String)arguments[0]);
+
+			return null;
+		}
+
+		if (_methodName298.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes298, parameterTypes)) {
+			return SecurityPatchLocalServiceUtil.getSecurityPatches(((Long)arguments[0]).longValue(),
+				(java.lang.String)arguments[1]);
+		}
+
+		if (_methodName299.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes299, parameterTypes)) {
+			return SecurityPatchLocalServiceUtil.getSecurityPatchName(((Integer)arguments[0]).intValue(),
+				(com.liferay.osb.model.TicketAttachment)arguments[1]);
+		}
+
+		if (_methodName300.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes300, parameterTypes)) {
+			return SecurityPatchLocalServiceUtil.updateSecurityPatch(((Long)arguments[0]).longValue(),
+				(java.lang.String)arguments[1]);
+		}
+
 		throw new UnsupportedOperationException();
 	}
 
@@ -280,4 +355,16 @@ public class SecurityPatchLocalServiceClpInvoker {
 	private String[] _methodParameterTypes19;
 	private String _methodName290;
 	private String[] _methodParameterTypes290;
+	private String _methodName295;
+	private String[] _methodParameterTypes295;
+	private String _methodName296;
+	private String[] _methodParameterTypes296;
+	private String _methodName297;
+	private String[] _methodParameterTypes297;
+	private String _methodName298;
+	private String[] _methodParameterTypes298;
+	private String _methodName299;
+	private String[] _methodParameterTypes299;
+	private String _methodName300;
+	private String[] _methodParameterTypes300;
 }

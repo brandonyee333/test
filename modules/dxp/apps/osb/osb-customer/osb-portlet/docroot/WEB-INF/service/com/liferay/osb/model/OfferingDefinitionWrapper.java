@@ -59,6 +59,7 @@ public class OfferingDefinitionWrapper implements OfferingDefinition,
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("offeringDefinitionId", getOfferingDefinitionId());
+		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
@@ -81,6 +82,12 @@ public class OfferingDefinitionWrapper implements OfferingDefinition,
 
 		if (offeringDefinitionId != null) {
 			setOfferingDefinitionId(offeringDefinitionId);
+		}
+
+		Long companyId = (Long)attributes.get("companyId");
+
+		if (companyId != null) {
+			setCompanyId(companyId);
 		}
 
 		Long userId = (Long)attributes.get("userId");
@@ -371,6 +378,16 @@ public class OfferingDefinitionWrapper implements OfferingDefinition,
 	}
 
 	/**
+	* Returns the company ID of this offering definition.
+	*
+	* @return the company ID of this offering definition
+	*/
+	@Override
+	public long getCompanyId() {
+		return _offeringDefinition.getCompanyId();
+	}
+
+	/**
 	* Returns the max concurrent users of this offering definition.
 	*
 	* @return the max concurrent users of this offering definition
@@ -448,6 +465,16 @@ public class OfferingDefinitionWrapper implements OfferingDefinition,
 	@Override
 	public void setCachedModel(boolean cachedModel) {
 		_offeringDefinition.setCachedModel(cachedModel);
+	}
+
+	/**
+	* Sets the company ID of this offering definition.
+	*
+	* @param companyId the company ID of this offering definition
+	*/
+	@Override
+	public void setCompanyId(long companyId) {
+		_offeringDefinition.setCompanyId(companyId);
 	}
 
 	/**

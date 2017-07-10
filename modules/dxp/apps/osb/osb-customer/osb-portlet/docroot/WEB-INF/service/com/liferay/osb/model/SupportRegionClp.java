@@ -82,6 +82,7 @@ public class SupportRegionClp extends BaseModelImpl<SupportRegion>
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("supportRegionId", getSupportRegionId());
+		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
@@ -103,6 +104,12 @@ public class SupportRegionClp extends BaseModelImpl<SupportRegion>
 
 		if (supportRegionId != null) {
 			setSupportRegionId(supportRegionId);
+		}
+
+		Long companyId = (Long)attributes.get("companyId");
+
+		if (companyId != null) {
+			setCompanyId(companyId);
 		}
 
 		Long userId = (Long)attributes.get("userId");
@@ -173,6 +180,29 @@ public class SupportRegionClp extends BaseModelImpl<SupportRegion>
 				Method method = clazz.getMethod("setSupportRegionId", long.class);
 
 				method.invoke(_supportRegionRemoteModel, supportRegionId);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	@Override
+	public void setCompanyId(long companyId) {
+		_companyId = companyId;
+
+		if (_supportRegionRemoteModel != null) {
+			try {
+				Class<?> clazz = _supportRegionRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setCompanyId", long.class);
+
+				method.invoke(_supportRegionRemoteModel, companyId);
 			}
 			catch (Exception e) {
 				throw new UnsupportedOperationException(e);
@@ -524,6 +554,7 @@ public class SupportRegionClp extends BaseModelImpl<SupportRegion>
 		SupportRegionClp clone = new SupportRegionClp();
 
 		clone.setSupportRegionId(getSupportRegionId());
+		clone.setCompanyId(getCompanyId());
 		clone.setUserId(getUserId());
 		clone.setUserName(getUserName());
 		clone.setCreateDate(getCreateDate());
@@ -592,10 +623,12 @@ public class SupportRegionClp extends BaseModelImpl<SupportRegion>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(19);
+		StringBundler sb = new StringBundler(21);
 
 		sb.append("{supportRegionId=");
 		sb.append(getSupportRegionId());
+		sb.append(", companyId=");
+		sb.append(getCompanyId());
 		sb.append(", userId=");
 		sb.append(getUserId());
 		sb.append(", userName=");
@@ -619,7 +652,7 @@ public class SupportRegionClp extends BaseModelImpl<SupportRegion>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(31);
+		StringBundler sb = new StringBundler(34);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.SupportRegion");
@@ -628,6 +661,10 @@ public class SupportRegionClp extends BaseModelImpl<SupportRegion>
 		sb.append(
 			"<column><column-name>supportRegionId</column-name><column-value><![CDATA[");
 		sb.append(getSupportRegionId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>companyId</column-name><column-value><![CDATA[");
+		sb.append(getCompanyId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
@@ -668,6 +705,7 @@ public class SupportRegionClp extends BaseModelImpl<SupportRegion>
 	}
 
 	private long _supportRegionId;
+	private long _companyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;

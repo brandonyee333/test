@@ -59,6 +59,7 @@ public class SupportTeamWrapper implements SupportTeam,
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("supportTeamId", getSupportTeamId());
+		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
@@ -81,6 +82,12 @@ public class SupportTeamWrapper implements SupportTeam,
 
 		if (supportTeamId != null) {
 			setSupportTeamId(supportTeamId);
+		}
+
+		Long companyId = (Long)attributes.get("companyId");
+
+		if (companyId != null) {
+			setCompanyId(companyId);
 		}
 
 		Long userId = (Long)attributes.get("userId");
@@ -350,6 +357,16 @@ public class SupportTeamWrapper implements SupportTeam,
 	}
 
 	/**
+	* Returns the company ID of this support team.
+	*
+	* @return the company ID of this support team
+	*/
+	@Override
+	public long getCompanyId() {
+		return _supportTeam.getCompanyId();
+	}
+
+	/**
 	* Returns the location support region ID of this support team.
 	*
 	* @return the location support region ID of this support team
@@ -427,6 +444,16 @@ public class SupportTeamWrapper implements SupportTeam,
 	@Override
 	public void setCachedModel(boolean cachedModel) {
 		_supportTeam.setCachedModel(cachedModel);
+	}
+
+	/**
+	* Sets the company ID of this support team.
+	*
+	* @param companyId the company ID of this support team
+	*/
+	@Override
+	public void setCompanyId(long companyId) {
+		_supportTeam.setCompanyId(companyId);
 	}
 
 	/**

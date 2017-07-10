@@ -82,6 +82,7 @@ public class SupportTeamClp extends BaseModelImpl<SupportTeam>
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("supportTeamId", getSupportTeamId());
+		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
@@ -107,6 +108,12 @@ public class SupportTeamClp extends BaseModelImpl<SupportTeam>
 
 		if (supportTeamId != null) {
 			setSupportTeamId(supportTeamId);
+		}
+
+		Long companyId = (Long)attributes.get("companyId");
+
+		if (companyId != null) {
+			setCompanyId(companyId);
 		}
 
 		Long userId = (Long)attributes.get("userId");
@@ -202,6 +209,29 @@ public class SupportTeamClp extends BaseModelImpl<SupportTeam>
 				Method method = clazz.getMethod("setSupportTeamId", long.class);
 
 				method.invoke(_supportTeamRemoteModel, supportTeamId);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	@Override
+	public void setCompanyId(long companyId) {
+		_companyId = companyId;
+
+		if (_supportTeamRemoteModel != null) {
+			try {
+				Class<?> clazz = _supportTeamRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setCompanyId", long.class);
+
+				method.invoke(_supportTeamRemoteModel, companyId);
 			}
 			catch (Exception e) {
 				throw new UnsupportedOperationException(e);
@@ -687,6 +717,7 @@ public class SupportTeamClp extends BaseModelImpl<SupportTeam>
 		SupportTeamClp clone = new SupportTeamClp();
 
 		clone.setSupportTeamId(getSupportTeamId());
+		clone.setCompanyId(getCompanyId());
 		clone.setUserId(getUserId());
 		clone.setUserName(getUserName());
 		clone.setCreateDate(getCreateDate());
@@ -759,10 +790,12 @@ public class SupportTeamClp extends BaseModelImpl<SupportTeam>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(27);
+		StringBundler sb = new StringBundler(29);
 
 		sb.append("{supportTeamId=");
 		sb.append(getSupportTeamId());
+		sb.append(", companyId=");
+		sb.append(getCompanyId());
 		sb.append(", userId=");
 		sb.append(getUserId());
 		sb.append(", userName=");
@@ -794,7 +827,7 @@ public class SupportTeamClp extends BaseModelImpl<SupportTeam>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(43);
+		StringBundler sb = new StringBundler(46);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.SupportTeam");
@@ -803,6 +836,10 @@ public class SupportTeamClp extends BaseModelImpl<SupportTeam>
 		sb.append(
 			"<column><column-name>supportTeamId</column-name><column-value><![CDATA[");
 		sb.append(getSupportTeamId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>companyId</column-name><column-value><![CDATA[");
+		sb.append(getCompanyId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
@@ -859,6 +896,7 @@ public class SupportTeamClp extends BaseModelImpl<SupportTeam>
 	}
 
 	private long _supportTeamId;
+	private long _companyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;

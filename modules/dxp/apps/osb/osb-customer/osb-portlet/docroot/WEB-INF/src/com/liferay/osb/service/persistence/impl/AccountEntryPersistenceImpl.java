@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.CompanyProvider;
+import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.TableMapper;
 import com.liferay.portal.kernel.service.persistence.impl.TableMapperFactory;
@@ -5806,6 +5807,8 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 		accountEntry.setNew(true);
 		accountEntry.setPrimaryKey(accountEntryId);
 
+		accountEntry.setCompanyId(companyProvider.getCompanyId());
+
 		return accountEntry;
 	}
 
@@ -6154,6 +6157,7 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 		accountEntryImpl.setPrimaryKey(accountEntry.getPrimaryKey());
 
 		accountEntryImpl.setAccountEntryId(accountEntry.getAccountEntryId());
+		accountEntryImpl.setCompanyId(accountEntry.getCompanyId());
 		accountEntryImpl.setUserId(accountEntry.getUserId());
 		accountEntryImpl.setUserName(accountEntry.getUserName());
 		accountEntryImpl.setCreateDate(accountEntry.getCreateDate());
@@ -7210,7 +7214,7 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 		TableMapperFactory.removeTableMapper("OSB_AccountEntries_SupportTeams");
 	}
 
-	@BeanReference(type = CompanyProvider.class)
+	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
 	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
 	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();

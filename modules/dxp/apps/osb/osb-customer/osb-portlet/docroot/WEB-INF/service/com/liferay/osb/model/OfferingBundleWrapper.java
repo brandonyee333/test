@@ -59,6 +59,7 @@ public class OfferingBundleWrapper implements OfferingBundle,
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("offeringBundleId", getOfferingBundleId());
+		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
@@ -73,6 +74,12 @@ public class OfferingBundleWrapper implements OfferingBundle,
 
 		if (offeringBundleId != null) {
 			setOfferingBundleId(offeringBundleId);
+		}
+
+		Long companyId = (Long)attributes.get("companyId");
+
+		if (companyId != null) {
+			setCompanyId(companyId);
 		}
 
 		Long userId = (Long)attributes.get("userId");
@@ -212,6 +219,16 @@ public class OfferingBundleWrapper implements OfferingBundle,
 	}
 
 	/**
+	* Returns the company ID of this offering bundle.
+	*
+	* @return the company ID of this offering bundle
+	*/
+	@Override
+	public long getCompanyId() {
+		return _offeringBundle.getCompanyId();
+	}
+
+	/**
 	* Returns the offering bundle ID of this offering bundle.
 	*
 	* @return the offering bundle ID of this offering bundle
@@ -249,6 +266,16 @@ public class OfferingBundleWrapper implements OfferingBundle,
 	@Override
 	public void setCachedModel(boolean cachedModel) {
 		_offeringBundle.setCachedModel(cachedModel);
+	}
+
+	/**
+	* Sets the company ID of this offering bundle.
+	*
+	* @param companyId the company ID of this offering bundle
+	*/
+	@Override
+	public void setCompanyId(long companyId) {
+		_offeringBundle.setCompanyId(companyId);
 	}
 
 	/**

@@ -16,9 +16,16 @@ package com.liferay.osb.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.service.SecurityPatchServiceUtil;
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import java.rmi.RemoteException;
+
 /**
  * Provides the SOAP utility for the
- * {@link com.liferay.osb.service.SecurityPatchServiceUtil} service utility. The
+ * {@link SecurityPatchServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it is difficult for SOAP to
  * support certain types.
@@ -53,9 +60,24 @@ import aQute.bnd.annotation.ProviderType;
  * @author Brian Wing Shun Chan
  * @see SecurityPatchServiceHttp
  * @see com.liferay.osb.model.SecurityPatchSoap
- * @see com.liferay.osb.service.SecurityPatchServiceUtil
+ * @see SecurityPatchServiceUtil
  * @generated
  */
 @ProviderType
 public class SecurityPatchServiceSoap {
+	public static com.liferay.osb.model.SecurityPatchSoap getSecurityPatch(
+		long securityPatchId) throws RemoteException {
+		try {
+			com.liferay.osb.model.SecurityPatch returnValue = SecurityPatchServiceUtil.getSecurityPatch(securityPatchId);
+
+			return com.liferay.osb.model.SecurityPatchSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	private static Log _log = LogFactoryUtil.getLog(SecurityPatchServiceSoap.class);
 }

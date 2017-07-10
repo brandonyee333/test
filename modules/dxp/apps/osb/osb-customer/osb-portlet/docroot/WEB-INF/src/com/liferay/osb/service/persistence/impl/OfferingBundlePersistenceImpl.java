@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.CompanyProvider;
+import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.TableMapper;
 import com.liferay.portal.kernel.service.persistence.impl.TableMapperFactory;
@@ -458,6 +459,8 @@ public class OfferingBundlePersistenceImpl extends BasePersistenceImpl<OfferingB
 		offeringBundle.setNew(true);
 		offeringBundle.setPrimaryKey(offeringBundleId);
 
+		offeringBundle.setCompanyId(companyProvider.getCompanyId());
+
 		return offeringBundle;
 	}
 
@@ -612,6 +615,7 @@ public class OfferingBundlePersistenceImpl extends BasePersistenceImpl<OfferingB
 		offeringBundleImpl.setPrimaryKey(offeringBundle.getPrimaryKey());
 
 		offeringBundleImpl.setOfferingBundleId(offeringBundle.getOfferingBundleId());
+		offeringBundleImpl.setCompanyId(offeringBundle.getCompanyId());
 		offeringBundleImpl.setUserId(offeringBundle.getUserId());
 		offeringBundleImpl.setUserName(offeringBundle.getUserName());
 		offeringBundleImpl.setCreateDate(offeringBundle.getCreateDate());
@@ -1331,7 +1335,7 @@ public class OfferingBundlePersistenceImpl extends BasePersistenceImpl<OfferingB
 			"OSB_OfferingBundles_OfferingDefinitions");
 	}
 
-	@BeanReference(type = CompanyProvider.class)
+	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
 	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
 	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();

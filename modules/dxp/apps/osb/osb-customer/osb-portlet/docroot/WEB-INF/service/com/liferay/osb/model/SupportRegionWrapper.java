@@ -59,6 +59,7 @@ public class SupportRegionWrapper implements SupportRegion,
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("supportRegionId", getSupportRegionId());
+		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
@@ -77,6 +78,12 @@ public class SupportRegionWrapper implements SupportRegion,
 
 		if (supportRegionId != null) {
 			setSupportRegionId(supportRegionId);
+		}
+
+		Long companyId = (Long)attributes.get("companyId");
+
+		if (companyId != null) {
+			setCompanyId(companyId);
 		}
 
 		Long userId = (Long)attributes.get("userId");
@@ -291,6 +298,16 @@ public class SupportRegionWrapper implements SupportRegion,
 	}
 
 	/**
+	* Returns the company ID of this support region.
+	*
+	* @return the company ID of this support region
+	*/
+	@Override
+	public long getCompanyId() {
+		return _supportRegion.getCompanyId();
+	}
+
+	/**
 	* Returns the manager user ID of this support region.
 	*
 	* @return the manager user ID of this support region
@@ -338,6 +355,16 @@ public class SupportRegionWrapper implements SupportRegion,
 	@Override
 	public void setCachedModel(boolean cachedModel) {
 		_supportRegion.setCachedModel(cachedModel);
+	}
+
+	/**
+	* Sets the company ID of this support region.
+	*
+	* @param companyId the company ID of this support region
+	*/
+	@Override
+	public void setCompanyId(long companyId) {
+		_supportRegion.setCompanyId(companyId);
 	}
 
 	/**

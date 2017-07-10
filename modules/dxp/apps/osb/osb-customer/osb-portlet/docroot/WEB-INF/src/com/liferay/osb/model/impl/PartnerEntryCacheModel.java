@@ -66,10 +66,12 @@ public class PartnerEntryCacheModel implements CacheModel<PartnerEntry>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(25);
+		StringBundler sb = new StringBundler(27);
 
 		sb.append("{partnerEntryId=");
 		sb.append(partnerEntryId);
+		sb.append(", companyId=");
+		sb.append(companyId);
 		sb.append(", userId=");
 		sb.append(userId);
 		sb.append(", userName=");
@@ -102,6 +104,7 @@ public class PartnerEntryCacheModel implements CacheModel<PartnerEntry>,
 		PartnerEntryImpl partnerEntryImpl = new PartnerEntryImpl();
 
 		partnerEntryImpl.setPartnerEntryId(partnerEntryId);
+		partnerEntryImpl.setCompanyId(companyId);
 		partnerEntryImpl.setUserId(userId);
 
 		if (userName == null) {
@@ -168,6 +171,8 @@ public class PartnerEntryCacheModel implements CacheModel<PartnerEntry>,
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		partnerEntryId = objectInput.readLong();
 
+		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
@@ -188,6 +193,8 @@ public class PartnerEntryCacheModel implements CacheModel<PartnerEntry>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(partnerEntryId);
+
+		objectOutput.writeLong(companyId);
 
 		objectOutput.writeLong(userId);
 
@@ -238,6 +245,7 @@ public class PartnerEntryCacheModel implements CacheModel<PartnerEntry>,
 	}
 
 	public long partnerEntryId;
+	public long companyId;
 	public long userId;
 	public String userName;
 	public long createDate;

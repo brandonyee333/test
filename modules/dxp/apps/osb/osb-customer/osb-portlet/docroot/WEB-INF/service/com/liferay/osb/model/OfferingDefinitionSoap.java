@@ -35,6 +35,7 @@ public class OfferingDefinitionSoap implements Serializable {
 		OfferingDefinitionSoap soapModel = new OfferingDefinitionSoap();
 
 		soapModel.setOfferingDefinitionId(model.getOfferingDefinitionId());
+		soapModel.setCompanyId(model.getCompanyId());
 		soapModel.setUserId(model.getUserId());
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
@@ -108,6 +109,14 @@ public class OfferingDefinitionSoap implements Serializable {
 
 	public void setOfferingDefinitionId(long offeringDefinitionId) {
 		_offeringDefinitionId = offeringDefinitionId;
+	}
+
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	public void setCompanyId(long companyId) {
+		_companyId = companyId;
 	}
 
 	public long getUserId() {
@@ -219,6 +228,7 @@ public class OfferingDefinitionSoap implements Serializable {
 	}
 
 	private long _offeringDefinitionId;
+	private long _companyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;

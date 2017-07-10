@@ -71,6 +71,7 @@ public class PartnerEntryModelImpl extends BaseModelImpl<PartnerEntry>
 	public static final String TABLE_NAME = "OSB_PartnerEntry";
 	public static final Object[][] TABLE_COLUMNS = {
 			{ "partnerEntryId", Types.BIGINT },
+			{ "companyId", Types.BIGINT },
 			{ "userId", Types.BIGINT },
 			{ "userName", Types.VARCHAR },
 			{ "createDate", Types.TIMESTAMP },
@@ -87,6 +88,7 @@ public class PartnerEntryModelImpl extends BaseModelImpl<PartnerEntry>
 
 	static {
 		TABLE_COLUMNS_MAP.put("partnerEntryId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
@@ -100,7 +102,7 @@ public class PartnerEntryModelImpl extends BaseModelImpl<PartnerEntry>
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table OSB_PartnerEntry (partnerEntryId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedUserId LONG,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,parentPartnerEntryId LONG,dossieraAccountKey VARCHAR(75) null,code_ VARCHAR(255) null,notes STRING null,status INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table OSB_PartnerEntry (partnerEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedUserId LONG,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,parentPartnerEntryId LONG,dossieraAccountKey VARCHAR(75) null,code_ VARCHAR(255) null,notes STRING null,status INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table OSB_PartnerEntry";
 	public static final String ORDER_BY_JPQL = " ORDER BY partnerEntry.code ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY OSB_PartnerEntry.code_ ASC";
@@ -134,6 +136,7 @@ public class PartnerEntryModelImpl extends BaseModelImpl<PartnerEntry>
 		PartnerEntry model = new PartnerEntryImpl();
 
 		model.setPartnerEntryId(soapModel.getPartnerEntryId());
+		model.setCompanyId(soapModel.getCompanyId());
 		model.setUserId(soapModel.getUserId());
 		model.setUserName(soapModel.getUserName());
 		model.setCreateDate(soapModel.getCreateDate());
@@ -224,6 +227,7 @@ public class PartnerEntryModelImpl extends BaseModelImpl<PartnerEntry>
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("partnerEntryId", getPartnerEntryId());
+		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
@@ -248,6 +252,12 @@ public class PartnerEntryModelImpl extends BaseModelImpl<PartnerEntry>
 
 		if (partnerEntryId != null) {
 			setPartnerEntryId(partnerEntryId);
+		}
+
+		Long companyId = (Long)attributes.get("companyId");
+
+		if (companyId != null) {
+			setCompanyId(companyId);
 		}
 
 		Long userId = (Long)attributes.get("userId");
@@ -326,6 +336,17 @@ public class PartnerEntryModelImpl extends BaseModelImpl<PartnerEntry>
 	@Override
 	public void setPartnerEntryId(long partnerEntryId) {
 		_partnerEntryId = partnerEntryId;
+	}
+
+	@JSON
+	@Override
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	@Override
+	public void setCompanyId(long companyId) {
+		_companyId = companyId;
 	}
 
 	@JSON
@@ -550,7 +571,7 @@ public class PartnerEntryModelImpl extends BaseModelImpl<PartnerEntry>
 
 	@Override
 	public ExpandoBridge getExpandoBridge() {
-		return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+		return ExpandoBridgeFactoryUtil.getExpandoBridge(getCompanyId(),
 			PartnerEntry.class.getName(), getPrimaryKey());
 	}
 
@@ -576,6 +597,7 @@ public class PartnerEntryModelImpl extends BaseModelImpl<PartnerEntry>
 		PartnerEntryImpl partnerEntryImpl = new PartnerEntryImpl();
 
 		partnerEntryImpl.setPartnerEntryId(getPartnerEntryId());
+		partnerEntryImpl.setCompanyId(getCompanyId());
 		partnerEntryImpl.setUserId(getUserId());
 		partnerEntryImpl.setUserName(getUserName());
 		partnerEntryImpl.setCreateDate(getCreateDate());
@@ -666,6 +688,8 @@ public class PartnerEntryModelImpl extends BaseModelImpl<PartnerEntry>
 
 		partnerEntryCacheModel.partnerEntryId = getPartnerEntryId();
 
+		partnerEntryCacheModel.companyId = getCompanyId();
+
 		partnerEntryCacheModel.userId = getUserId();
 
 		partnerEntryCacheModel.userName = getUserName();
@@ -737,10 +761,12 @@ public class PartnerEntryModelImpl extends BaseModelImpl<PartnerEntry>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(25);
+		StringBundler sb = new StringBundler(27);
 
 		sb.append("{partnerEntryId=");
 		sb.append(getPartnerEntryId());
+		sb.append(", companyId=");
+		sb.append(getCompanyId());
 		sb.append(", userId=");
 		sb.append(getUserId());
 		sb.append(", userName=");
@@ -770,7 +796,7 @@ public class PartnerEntryModelImpl extends BaseModelImpl<PartnerEntry>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(40);
+		StringBundler sb = new StringBundler(43);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.PartnerEntry");
@@ -779,6 +805,10 @@ public class PartnerEntryModelImpl extends BaseModelImpl<PartnerEntry>
 		sb.append(
 			"<column><column-name>partnerEntryId</column-name><column-value><![CDATA[");
 		sb.append(getPartnerEntryId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>companyId</column-name><column-value><![CDATA[");
+		sb.append(getCompanyId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
@@ -835,6 +865,7 @@ public class PartnerEntryModelImpl extends BaseModelImpl<PartnerEntry>
 			PartnerEntry.class
 		};
 	private long _partnerEntryId;
+	private long _companyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;

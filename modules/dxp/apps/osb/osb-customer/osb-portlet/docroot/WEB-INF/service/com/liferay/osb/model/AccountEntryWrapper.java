@@ -59,6 +59,7 @@ public class AccountEntryWrapper implements AccountEntry,
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("accountEntryId", getAccountEntryId());
+		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
@@ -96,6 +97,12 @@ public class AccountEntryWrapper implements AccountEntry,
 
 		if (accountEntryId != null) {
 			setAccountEntryId(accountEntryId);
+		}
+
+		Long companyId = (Long)attributes.get("companyId");
+
+		if (companyId != null) {
+			setCompanyId(companyId);
 		}
 
 		Long userId = (Long)attributes.get("userId");
@@ -727,6 +734,16 @@ public class AccountEntryWrapper implements AccountEntry,
 	}
 
 	/**
+	* Returns the company ID of this account entry.
+	*
+	* @return the company ID of this account entry
+	*/
+	@Override
+	public long getCompanyId() {
+		return _accountEntry.getCompanyId();
+	}
+
+	/**
 	* Returns the corp project ID of this account entry.
 	*
 	* @return the corp project ID of this account entry
@@ -855,6 +872,16 @@ public class AccountEntryWrapper implements AccountEntry,
 	@Override
 	public void setCode(java.lang.String code) {
 		_accountEntry.setCode(code);
+	}
+
+	/**
+	* Sets the company ID of this account entry.
+	*
+	* @param companyId the company ID of this account entry
+	*/
+	@Override
+	public void setCompanyId(long companyId) {
+		_accountEntry.setCompanyId(companyId);
 	}
 
 	/**

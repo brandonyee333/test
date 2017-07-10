@@ -66,10 +66,12 @@ public class SupportTeamCacheModel implements CacheModel<SupportTeam>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(27);
+		StringBundler sb = new StringBundler(29);
 
 		sb.append("{supportTeamId=");
 		sb.append(supportTeamId);
+		sb.append(", companyId=");
+		sb.append(companyId);
 		sb.append(", userId=");
 		sb.append(userId);
 		sb.append(", userName=");
@@ -104,6 +106,7 @@ public class SupportTeamCacheModel implements CacheModel<SupportTeam>,
 		SupportTeamImpl supportTeamImpl = new SupportTeamImpl();
 
 		supportTeamImpl.setSupportTeamId(supportTeamId);
+		supportTeamImpl.setCompanyId(companyId);
 		supportTeamImpl.setUserId(userId);
 
 		if (userName == null) {
@@ -158,6 +161,8 @@ public class SupportTeamCacheModel implements CacheModel<SupportTeam>,
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		supportTeamId = objectInput.readLong();
 
+		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
@@ -182,6 +187,8 @@ public class SupportTeamCacheModel implements CacheModel<SupportTeam>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(supportTeamId);
+
+		objectOutput.writeLong(companyId);
 
 		objectOutput.writeLong(userId);
 
@@ -223,6 +230,7 @@ public class SupportTeamCacheModel implements CacheModel<SupportTeam>,
 	}
 
 	public long supportTeamId;
+	public long companyId;
 	public long userId;
 	public String userName;
 	public long createDate;

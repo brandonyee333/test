@@ -35,6 +35,7 @@ public class SupportRegionSoap implements Serializable {
 		SupportRegionSoap soapModel = new SupportRegionSoap();
 
 		soapModel.setSupportRegionId(model.getSupportRegionId());
+		soapModel.setCompanyId(model.getCompanyId());
 		soapModel.setUserId(model.getUserId());
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
@@ -103,6 +104,14 @@ public class SupportRegionSoap implements Serializable {
 		_supportRegionId = supportRegionId;
 	}
 
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	public void setCompanyId(long companyId) {
+		_companyId = companyId;
+	}
+
 	public long getUserId() {
 		return _userId;
 	}
@@ -168,6 +177,7 @@ public class SupportRegionSoap implements Serializable {
 	}
 
 	private long _supportRegionId;
+	private long _companyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;

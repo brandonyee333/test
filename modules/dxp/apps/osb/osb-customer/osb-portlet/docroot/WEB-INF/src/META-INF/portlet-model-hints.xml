@@ -48,6 +48,7 @@
 	</model>
 	<model name="com.liferay.osb.model.AccountEntry">
 		<field name="accountEntryId" type="long" />
+		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
 		<field name="userName" type="String" />
 		<field name="createDate" type="Date" />
@@ -377,6 +378,7 @@
 	</model>
 	<model name="com.liferay.osb.model.OfferingBundle">
 		<field name="offeringBundleId" type="long" />
+		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
 		<field name="userName" type="String" />
 		<field name="createDate" type="Date" />
@@ -384,6 +386,7 @@
 	</model>
 	<model name="com.liferay.osb.model.OfferingDefinition">
 		<field name="offeringDefinitionId" type="long" />
+		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
 		<field name="userName" type="String" />
 		<field name="createDate" type="Date" />
@@ -452,6 +455,7 @@
 	</model>
 	<model name="com.liferay.osb.model.PartnerEntry">
 		<field name="partnerEntryId" type="long" />
+		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
 		<field name="userName" type="String" />
 		<field name="createDate" type="Date" />
@@ -533,6 +537,7 @@
 	</model>
 	<model name="com.liferay.osb.model.SupportRegion">
 		<field name="supportRegionId" type="long" />
+		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
 		<field name="userName" type="String" />
 		<field name="createDate" type="Date" />
@@ -559,6 +564,7 @@
 	</model>
 	<model name="com.liferay.osb.model.SupportTeam">
 		<field name="supportTeamId" type="long" />
+		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
 		<field name="userName" type="String" />
 		<field name="createDate" type="Date" />

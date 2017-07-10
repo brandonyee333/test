@@ -50,6 +50,7 @@ create table OSB_AccountEntries_SupportTeams (
 
 create table OSB_AccountEntry (
 	accountEntryId LONG not null primary key,
+	companyId LONG,
 	userId LONG,
 	userName VARCHAR(75) null,
 	createDate DATE null,
@@ -151,195 +152,6 @@ create table OSB_AccountWorker (
 	notifications INTEGER
 );
 
-create table OSB_AppAudit (
-	uuid_ VARCHAR(75) null,
-	appAuditId LONG not null primary key,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	appEntryId LONG,
-	appVersionId LONG,
-	status INTEGER
-);
-
-create table OSB_AppEntry (
-	uuid_ VARCHAR(75) null,
-	appEntryId LONG not null primary key,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	modifiedDate DATE null,
-	developerEntryId LONG,
-	developerName VARCHAR(75) null,
-	title VARCHAR(75) null,
-	description STRING null,
-	website STRING null,
-	demoWebsite STRING null,
-	documentationWebsite STRING null,
-	referenceWebsite STRING null,
-	sourceCodeWebsite STRING null,
-	supportWebsite STRING null,
-	labs BOOLEAN,
-	productType INTEGER,
-	version VARCHAR(20) null,
-	changeLog STRING null,
-	iconImageId LONG,
-	paclEnabled BOOLEAN,
-	size_ LONG,
-	downloadCount INTEGER,
-	licenseType INTEGER,
-	licenseLifetime LONG,
-	supported BOOLEAN,
-	orderURL STRING null,
-	hidden_ BOOLEAN,
-	portalRequired BOOLEAN,
-	status INTEGER,
-	statusByUserId LONG,
-	statusByUserName VARCHAR(75) null,
-	statusDate DATE null,
-	statusVersionDate DATE null
-);
-
-create table OSB_AppEntryRel (
-	uuid_ VARCHAR(75) null,
-	appEntryRelId LONG not null primary key,
-	appEntryId1 LONG,
-	appEntryId2 LONG,
-	type_ INTEGER
-);
-
-create table OSB_AppFlag (
-	uuid_ VARCHAR(75) null,
-	appFlagId LONG not null primary key,
-	createDate DATE null,
-	appEntryId LONG,
-	appVersionId LONG,
-	type_ INTEGER
-);
-
-create table OSB_AppPackage (
-	appPackageId LONG not null primary key,
-	createDate DATE null,
-	modifiedDate DATE null,
-	appEntryId LONG,
-	appVersionId LONG,
-	compatibility INTEGER,
-	compatibilityPlus BOOLEAN,
-	prepackaged BOOLEAN,
-	downloadCount INTEGER
-);
-
-create table OSB_AppPackagePlugin (
-	appPackagePluginId LONG not null primary key,
-	createDate DATE null,
-	modifiedDate DATE null,
-	appEntryId LONG,
-	appVersionId LONG,
-	appPackageId LONG,
-	assetAttachmentId LONG,
-	fileName VARCHAR(255) null,
-	bundleSymbolicName VARCHAR(500) null,
-	bundleVersion VARCHAR(75) null,
-	contextName VARCHAR(255) null,
-	paclEnabled BOOLEAN,
-	relengHash VARCHAR(75) null,
-	portalRestartRequired BOOLEAN
-);
-
-create table OSB_AppPricing (
-	appPricingId LONG not null primary key,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	modifiedDate DATE null,
-	appEntryId LONG,
-	appVersionId LONG,
-	name VARCHAR(75) null,
-	currencyEntryId LONG,
-	standardSupportPrice DOUBLE,
-	developerSupportPrice DOUBLE,
-	rank INTEGER
-);
-
-create table OSB_AppPricingItem (
-	appPricingItemId LONG not null primary key,
-	appPricingId LONG,
-	assetLicenseId LONG,
-	currencyEntryId LONG,
-	price DOUBLE
-);
-
-create table OSB_AppVersion (
-	appVersionId LONG not null primary key,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	modifiedDate DATE null,
-	appEntryId LONG,
-	developerEntryId LONG,
-	developerName VARCHAR(75) null,
-	title VARCHAR(75) null,
-	description STRING null,
-	website STRING null,
-	demoWebsite STRING null,
-	documentationWebsite STRING null,
-	referenceWebsite STRING null,
-	sourceCodeWebsite STRING null,
-	supportWebsite STRING null,
-	labs BOOLEAN,
-	productType INTEGER,
-	version VARCHAR(20) null,
-	versionId INTEGER,
-	versionOrder INTEGER,
-	changeLog STRING null,
-	iconImageId LONG,
-	size_ LONG,
-	downloadCount INTEGER,
-	paclEnabled BOOLEAN,
-	releaseDate DATE null,
-	releaseType INTEGER,
-	contractEntryId LONG,
-	supported BOOLEAN,
-	orderURL STRING null,
-	hidden_ BOOLEAN,
-	portalRequired BOOLEAN,
-	status INTEGER,
-	statusByUserId LONG,
-	statusByUserName VARCHAR(75) null,
-	statusDate DATE null,
-	statusMessage STRING null
-);
-
-create table OSB_AssetAttachment (
-	assetAttachmentId LONG not null primary key,
-	userId LONG,
-	createDate DATE null,
-	classNameId LONG,
-	classPK LONG,
-	fileName VARCHAR(255) null,
-	type_ INTEGER,
-	rank INTEGER
-);
-
-create table OSB_AssetAudit (
-	assetAuditId LONG not null primary key,
-	companyId LONG,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	modifiedDate DATE null,
-	legalEntityName VARCHAR(75) null,
-	classNameId LONG,
-	classPK LONG,
-	vendorClassNameId LONG,
-	vendorClassPK LONG,
-	type_ INTEGER,
-	domain INTEGER,
-	time_ LONG,
-	currencyCode VARCHAR(75) null,
-	price DOUBLE
-);
-
 create table OSB_AssetLicense (
 	assetLicenseId LONG not null primary key,
 	userId LONG,
@@ -355,34 +167,6 @@ create table OSB_AssetLicense (
 	licenseTypeAllotment LONG,
 	lifetime LONG,
 	status INTEGER
-);
-
-create table OSB_AssetList (
-	assetListId LONG not null primary key,
-	assetCategoryId LONG,
-	type_ INTEGER
-);
-
-create table OSB_AssetListAssetEntry (
-	assetListAssetEntryId LONG not null primary key,
-	assetListId LONG,
-	assetEntryId LONG
-);
-
-create table OSB_AssetReceipt (
-	assetReceiptId LONG not null primary key,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	assetEntryId LONG,
-	ownerClassNameId LONG,
-	ownerClassPK LONG,
-	legalEntityName VARCHAR(75) null,
-	productClassNameId LONG,
-	productClassPK LONG,
-	type_ LONG,
-	currencyEntryId LONG,
-	actualPrice DOUBLE
 );
 
 create table OSB_AssetReceiptLicense (
@@ -406,90 +190,6 @@ create table OSB_AssetReceiptLicense (
 	licenseType INTEGER,
 	licenseTypeAllotment LONG,
 	licenseLifetime LONG
-);
-
-create table OSB_AssetReceiptRedeemToken (
-	AssetReceiptRedeemTokenId LONG not null primary key,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	classNameId LONG,
-	classPK LONG,
-	redeemEmailAddress VARCHAR(75) null,
-	redeemDate DATE null,
-	token VARCHAR(75) null
-);
-
-create table OSB_AssetReceiptSupport (
-	uuid_ VARCHAR(75) null,
-	assetReceiptSupportId LONG not null primary key,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	modifiedDate DATE null,
-	assetReceiptId LONG,
-	assetLicenseId LONG,
-	assetEntryId LONG,
-	ownerClassNameId LONG,
-	ownerClassPK LONG,
-	productClassNameId LONG,
-	productClassPK LONG,
-	productId VARCHAR(75) null,
-	startDate DATE null,
-	endDate DATE null,
-	usageType INTEGER,
-	supportLifetime LONG
-);
-
-create table OSB_AssetRecommendationEntry (
-	assetRecommendationEntryId LONG not null primary key,
-	assetRecommendationSetId LONG,
-	classNameId LONG,
-	classPK LONG,
-	viewedAlsoPurchasedCount INTEGER,
-	purchasedAlsoPurchasedCount INTEGER
-);
-
-create table OSB_AssetRecommendationSet (
-	assetRecommendationSetId LONG not null primary key,
-	classNameId LONG,
-	classPK LONG
-);
-
-create table OSB_AssetStatsDay (
-	assetStatsDayId LONG not null primary key,
-	classNameId LONG,
-	classPK LONG,
-	day INTEGER,
-	year INTEGER,
-	viewCount LONG,
-	downloadCount LONG,
-	purchaseCount LONG,
-	currencyCodeRevenues VARCHAR(75) null
-);
-
-create table OSB_AssetStatsMonth (
-	assetStatsMonthId LONG not null primary key,
-	classNameId LONG,
-	classPK LONG,
-	month INTEGER,
-	year INTEGER,
-	viewCount LONG,
-	downloadCount LONG,
-	purchaseCount LONG,
-	currencyCodeRevenues VARCHAR(75) null
-);
-
-create table OSB_AssetStatsWeek (
-	assetStatsWeekId LONG not null primary key,
-	classNameId LONG,
-	classPK LONG,
-	week INTEGER,
-	year INTEGER,
-	viewCount LONG,
-	downloadCount LONG,
-	purchaseCount LONG,
-	currencyCodeRevenues VARCHAR(75) null
 );
 
 create table OSB_AuditAction (
@@ -522,91 +222,6 @@ create table OSB_AuditEntry (
 	i18n BOOLEAN
 );
 
-create table OSB_ContractAudit (
-	contractAuditId LONG not null primary key,
-	userId LONG,
-	userName VARCHAR(75) null,
-	userEmailAddress VARCHAR(75) null,
-	createDate DATE null,
-	modifiedDate DATE null,
-	contractEntryId LONG,
-	signatoryClassNameId LONG,
-	signatoryClassPK LONG,
-	productClassNameId LONG,
-	productClassPK LONG,
-	type_ VARCHAR(75) null,
-	languageId VARCHAR(75) null,
-	version INTEGER
-);
-
-create table OSB_ContractEntry (
-	contractEntryId LONG not null primary key,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	classNameId LONG,
-	classPK LONG,
-	type_ INTEGER,
-	version INTEGER,
-	content TEXT null
-);
-
-create table OSB_CorpEntry (
-	corpEntryId LONG not null primary key,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	modifiedDate DATE null,
-	name VARCHAR(75) null,
-	description STRING null,
-	organizationId LONG,
-	logoId LONG,
-	addressId LONG,
-	contactEmailAddress VARCHAR(75) null,
-	profileEmailAddress VARCHAR(75) null,
-	phoneNumber VARCHAR(75) null,
-	faxNumber VARCHAR(75) null,
-	website VARCHAR(75) null,
-	dossieraAccountKey VARCHAR(75) null,
-	status INTEGER,
-	statusByUserId LONG,
-	statusByUserName VARCHAR(75) null,
-	statusDate DATE null,
-	statusMessage STRING null
-);
-
-create table OSB_CorpEntry_CorpGroup (
-	corpEntryId LONG not null,
-	corpGroupId LONG not null,
-	primary key (corpEntryId, corpGroupId)
-);
-
-create table OSB_CorpGroup (
-	corpGroupId LONG not null primary key,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	modifiedDate DATE null,
-	name VARCHAR(75) null,
-	description STRING null,
-	organizationId LONG,
-	logoId LONG,
-	emailAddress VARCHAR(75) null,
-	website VARCHAR(75) null
-);
-
-create table OSB_CorpMembershipRequest (
-	corpMembershipRequestId LONG not null primary key,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	modifiedDate DATE null,
-	corpEntryId LONG,
-	key_ VARCHAR(75) null,
-	emailAddress VARCHAR(75) null,
-	status INTEGER
-);
-
 create table OSB_CorpProject (
 	corpProjectId LONG not null primary key,
 	userId LONG,
@@ -615,77 +230,8 @@ create table OSB_CorpProject (
 	modifiedDate DATE null,
 	dossieraProjectKey VARCHAR(75) null,
 	salesforceProjectKey VARCHAR(75) null,
-	name VARCHAR(150) null,
+	name VARCHAR(75) null,
 	organizationId LONG
-);
-
-create table OSB_CorpProjectMessage (
-	corpProjectMessageId LONG not null primary key,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	modifiedDate DATE null,
-	corpProjectId LONG,
-	type_ INTEGER,
-	severityLevel INTEGER,
-	title VARCHAR(150) null,
-	content STRING null,
-	displayCP BOOLEAN,
-	displayLCS BOOLEAN,
-	displayLESA BOOLEAN
-);
-
-create table OSB_CountryAppPricing (
-	countryAppPricingId LONG not null primary key,
-	appEntryId LONG,
-	appVersionId LONG,
-	appPricingId LONG,
-	countryId LONG,
-	name VARCHAR(75) null
-);
-
-create table OSB_CurrencyEntry (
-	currencyEntryId LONG not null primary key,
-	countryId LONG,
-	currencyCode VARCHAR(75) null,
-	marketplaceEnabled BOOLEAN,
-	marketplaceMinPrice DOUBLE
-);
-
-create table OSB_DeveloperEntry (
-	developerEntryId LONG not null primary key,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	screenName VARCHAR(75) null,
-	firstName VARCHAR(75) null,
-	middleName VARCHAR(75) null,
-	lastName VARCHAR(75) null,
-	legalEntityName VARCHAR(75) null,
-	emailAddress VARCHAR(75) null,
-	contractEntryId LONG,
-	phoneNumber VARCHAR(75) null,
-	faxNumber VARCHAR(75) null,
-	domainName VARCHAR(75) null,
-	domainStatus INTEGER,
-	addressId LONG,
-	countryId LONG,
-	profileDescription STRING null,
-	profileEmailAddress VARCHAR(75) null,
-	profileLogoId LONG,
-	profileWebsite VARCHAR(75) null,
-	paymentEmailAddress VARCHAR(75) null,
-	googleAnalyticsKey VARCHAR(75) null,
-	subscriptionExpirationDate DATE null,
-	subscriptionStatus INTEGER,
-	fatcaWithholdingPercentage DOUBLE,
-	dossieraAccountKey VARCHAR(75) null,
-	type_ INTEGER,
-	status INTEGER,
-	statusByUserId LONG,
-	statusByUserName VARCHAR(75) null,
-	statusDate DATE null,
-	statusMessage STRING null
 );
 
 create table OSB_ExternalIdMapper (
@@ -706,8 +252,8 @@ create table OSB_FeedbackEntry (
 	classNameId LONG,
 	classPK LONG,
 	satisfied INTEGER,
-	comments STRING null,
-	pageURL STRING null
+	comments VARCHAR(75) null,
+	pageURL VARCHAR(75) null
 );
 
 create table OSB_HolidayCalendar (
@@ -818,36 +364,9 @@ create table OSB_LicenseKeySet (
 	name VARCHAR(75) null
 );
 
-create table OSB_MarketingEvent (
-	marketingEventId LONG not null primary key,
-	companyId LONG,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	modifiedDate DATE null,
-	type_ INTEGER,
-	defaultLanguageId VARCHAR(75) null,
-	title STRING null,
-	titleURL STRING null,
-	hostedBy VARCHAR(75) null,
-	hostedByURL STRING null,
-	summary STRING null,
-	imageFileEntryId LONG,
-	slidesFileEntryId LONG,
-	videoTitle VARCHAR(150) null,
-	timeZoneId VARCHAR(75) null,
-	startDate DATE null,
-	endDate DATE null,
-	dateTBA BOOLEAN,
-	addressId LONG,
-	globalRegion INTEGER,
-	online_ BOOLEAN,
-	registrationType INTEGER,
-	registrationURL STRING null
-);
-
 create table OSB_OfferingBundle (
 	offeringBundleId LONG not null primary key,
+	companyId LONG,
 	userId LONG,
 	userName VARCHAR(75) null,
 	createDate DATE null,
@@ -863,6 +382,7 @@ create table OSB_OfferingBundles_OfferingDefinitions (
 
 create table OSB_OfferingDefinition (
 	offeringDefinitionId LONG not null primary key,
+	companyId LONG,
 	userId LONG,
 	userName VARCHAR(75) null,
 	createDate DATE null,
@@ -935,6 +455,7 @@ create table OSB_PartnerEntries_SupportRegions (
 
 create table OSB_PartnerEntry (
 	partnerEntryId LONG not null primary key,
+	companyId LONG,
 	userId LONG,
 	userName VARCHAR(75) null,
 	createDate DATE null,
@@ -956,18 +477,6 @@ create table OSB_PartnerWorker (
 	notifications INTEGER
 );
 
-create table OSB_PortalRelease (
-	portalReleaseId LONG not null primary key,
-	versionName VARCHAR(75) null,
-	buildNumber INTEGER,
-	fixPackName VARCHAR(75) null,
-	ee BOOLEAN,
-	marketplaceSupport BOOLEAN,
-	osgiSupport BOOLEAN,
-	paclSupport BOOLEAN,
-	hidden_ BOOLEAN
-);
-
 create table OSB_ProductEntry (
 	productEntryId LONG not null primary key,
 	userId LONG,
@@ -978,56 +487,6 @@ create table OSB_ProductEntry (
 	type_ INTEGER,
 	environment INTEGER,
 	versionsListType VARCHAR(75) null
-);
-
-create table OSB_ProductSubscription (
-	productSubscriptionId LONG not null primary key,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	productEntryId LONG,
-	startDate DATE null,
-	endDate DATE null,
-	actualPrice DOUBLE,
-	currencyCode VARCHAR(75) null,
-	quantity INTEGER,
-	unlimitedQuantity BOOLEAN
-);
-
-create table OSB_SalesPartnership (
-	salesPartnershipId LONG not null primary key,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	modifiedDate DATE null,
-	corpEntryId LONG,
-	type_ INTEGER,
-	status INTEGER,
-	statusByUserId LONG,
-	statusByUserName VARCHAR(75) null,
-	statusDate DATE null
-);
-
-create table OSB_SalesPartnershipAssignment (
-	salesPartnershipAssignmentId LONG not null primary key,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	modifiedDate DATE null,
-	salesPartnershipId LONG,
-	salesPartnershipCountryId LONG,
-	level INTEGER
-);
-
-create table OSB_SalesPartnershipCountry (
-	salesPartnershipCountryId LONG not null primary key,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	modifiedDate DATE null,
-	name VARCHAR(75) null,
-	label STRING null,
-	active_ BOOLEAN
 );
 
 create table OSB_SearchFilter (
@@ -1051,8 +510,8 @@ create table OSB_SecurityPatch (
 	ticketAttachmentId LONG,
 	portletId VARCHAR(75) null,
 	envLFR INTEGER,
-	name VARCHAR(150) null,
-	fileName STRING null
+	name VARCHAR(75) null,
+	fileName VARCHAR(75) null
 );
 
 create table OSB_SupportLabor (
@@ -1078,6 +537,7 @@ create table OSB_SupportLabor (
 
 create table OSB_SupportRegion (
 	supportRegionId LONG not null primary key,
+	companyId LONG,
 	userId LONG,
 	userName VARCHAR(75) null,
 	createDate DATE null,
@@ -1106,6 +566,7 @@ create table OSB_SupportResponse (
 
 create table OSB_SupportTeam (
 	supportTeamId LONG not null primary key,
+	companyId LONG,
 	userId LONG,
 	userName VARCHAR(75) null,
 	createDate DATE null,
@@ -1353,202 +814,4 @@ create table OSB_TicketWorker (
 	sourceClassPK LONG,
 	role INTEGER,
 	primary_ BOOLEAN
-);
-
-create table OSB_TrainingCertificate (
-	trainingCertificateId LONG not null primary key,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	modifiedDate DATE null,
-	trainingCustomerId LONG,
-	userProfileHistoryId LONG,
-	key_ VARCHAR(75) null,
-	certifiedDate DATE null,
-	comments VARCHAR(75) null,
-	surveyStatus INTEGER
-);
-
-create table OSB_TrainingCertificateTemplate (
-	trainingCertificateTemplateId LONG not null primary key,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	modifiedDate DATE null,
-	name VARCHAR(75) null,
-	description STRING null,
-	type_ INTEGER
-);
-
-create table OSB_TrainingCourse (
-	trainingCourseId LONG not null primary key,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	modifiedDate DATE null,
-	name VARCHAR(75) null,
-	description STRING null,
-	creditAmount INTEGER,
-	courseURL STRING null,
-	archived BOOLEAN
-);
-
-create table OSB_TrainingCustomer (
-	trainingCustomerId LONG not null primary key,
-	userId LONG,
-	classNameId LONG,
-	classPK LONG,
-	userProfileHistoryId LONG,
-	comments STRING null,
-	status INTEGER
-);
-
-create table OSB_TrainingEvent (
-	trainingEventId LONG not null primary key,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	modifiedDate DATE null,
-	DDLRecordSetId LONG,
-	partnerEntryId LONG,
-	trainingCertificateTemplateId LONG,
-	trainingCourseId LONG,
-	trainingLocationId LONG,
-	name VARCHAR(150) null,
-	emailAddress STRING null,
-	portalMinorVersion INTEGER,
-	type_ INTEGER,
-	languageId VARCHAR(75) null,
-	localizedSlides BOOLEAN,
-	timeZoneId VARCHAR(75) null,
-	startDate DATE null,
-	endDate DATE null,
-	addressId LONG,
-	maxCustomers INTEGER,
-	enrollmentURL STRING null
-);
-
-create table OSB_TrainingExam (
-	trainingExamId LONG not null primary key,
-	trainingCertificateTemplateId LONG,
-	name VARCHAR(75) null
-);
-
-create table OSB_TrainingExamResult (
-	trainingExamResultId LONG not null primary key,
-	createDate DATE null,
-	trainingExamId LONG,
-	recordType INTEGER,
-	registrationNumber VARCHAR(75) null,
-	formKey VARCHAR(75) null,
-	startDate DATE null,
-	testScore VARCHAR(75) null,
-	correctCount INTEGER,
-	incorrectCount INTEGER,
-	skippedCount INTEGER,
-	grade INTEGER,
-	status INTEGER
-);
-
-create table OSB_TrainingExamResultItem (
-	trainingExamResultItemId LONG not null primary key,
-	trainingExamResultId LONG,
-	trainingExamResultSectionId LONG,
-	name VARCHAR(75) null,
-	status VARCHAR(75) null,
-	key_ VARCHAR(75) null,
-	distractorCount INTEGER,
-	type_ VARCHAR(75) null,
-	response STRING null,
-	score VARCHAR(75) null,
-	time_ INTEGER,
-	learningResources VARCHAR(75) null
-);
-
-create table OSB_TrainingExamResultSection (
-	trainingExamResultSectionId LONG not null primary key,
-	trainingExamResultId LONG,
-	title VARCHAR(75) null,
-	sectionKey VARCHAR(75) null,
-	scoreIndicator BOOLEAN,
-	scoringAlgorithm VARCHAR(75) null,
-	masteryScore VARCHAR(75) null,
-	score VARCHAR(75) null,
-	standardErrorOfEstimate VARCHAR(75) null,
-	correctCount INTEGER,
-	incorrectCount INTEGER,
-	skippedCount INTEGER,
-	grade INTEGER
-);
-
-create table OSB_TrainingImportLog (
-	trainingImportLogId LONG not null primary key,
-	type_ INTEGER,
-	importDate DATE null
-);
-
-create table OSB_TrainingLinkedUser (
-	trainingLinkedUserId LONG not null primary key,
-	userId LONG,
-	primaryUserId LONG
-);
-
-create table OSB_TrainingLocation (
-	trainingLocationId LONG not null primary key,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	modifiedDate DATE null,
-	name VARCHAR(75) null,
-	addressId LONG
-);
-
-create table OSB_TrainingWorker (
-	trainingWorkerId LONG not null primary key,
-	userId LONG,
-	classNameId LONG,
-	classPK LONG,
-	userProfileHistoryId LONG
-);
-
-create table OSB_UserProfile (
-	userProfileId LONG not null primary key,
-	userId LONG,
-	emailAddress VARCHAR(75) null,
-	firstName VARCHAR(75) null,
-	lastName VARCHAR(75) null,
-	legalEntityName VARCHAR(75) null
-);
-
-create table OSB_UserProfileHistory (
-	userProfileHistoryId LONG not null primary key,
-	userId LONG,
-	createDate DATE null,
-	classNameId LONG,
-	classPK LONG,
-	emailAddress VARCHAR(75) null,
-	firstName VARCHAR(75) null,
-	lastName VARCHAR(75) null,
-	legalEntityName VARCHAR(75) null
-);
-
-create table OSB_WebinarCustomer (
-	webinarCustomerId LONG not null primary key,
-	userId LONG,
-	webinarEventId LONG,
-	attended BOOLEAN
-);
-
-create table OSB_WebinarEvent (
-	webinarEventId LONG not null primary key,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	name VARCHAR(75) null,
-	description STRING null,
-	summary STRING null,
-	airDate DATE null,
-	registrationURL STRING null,
-	archiveURL STRING null,
-	slidesFileEntryId LONG
 );

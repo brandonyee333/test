@@ -82,6 +82,7 @@ public class OfferingDefinitionClp extends BaseModelImpl<OfferingDefinition>
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("offeringDefinitionId", getOfferingDefinitionId());
+		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
@@ -107,6 +108,12 @@ public class OfferingDefinitionClp extends BaseModelImpl<OfferingDefinition>
 
 		if (offeringDefinitionId != null) {
 			setOfferingDefinitionId(offeringDefinitionId);
+		}
+
+		Long companyId = (Long)attributes.get("companyId");
+
+		if (companyId != null) {
+			setCompanyId(companyId);
 		}
 
 		Long userId = (Long)attributes.get("userId");
@@ -203,6 +210,29 @@ public class OfferingDefinitionClp extends BaseModelImpl<OfferingDefinition>
 
 				method.invoke(_offeringDefinitionRemoteModel,
 					offeringDefinitionId);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	@Override
+	public void setCompanyId(long companyId) {
+		_companyId = companyId;
+
+		if (_offeringDefinitionRemoteModel != null) {
+			try {
+				Class<?> clazz = _offeringDefinitionRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setCompanyId", long.class);
+
+				method.invoke(_offeringDefinitionRemoteModel, companyId);
 			}
 			catch (Exception e) {
 				throw new UnsupportedOperationException(e);
@@ -727,6 +757,7 @@ public class OfferingDefinitionClp extends BaseModelImpl<OfferingDefinition>
 		OfferingDefinitionClp clone = new OfferingDefinitionClp();
 
 		clone.setOfferingDefinitionId(getOfferingDefinitionId());
+		clone.setCompanyId(getCompanyId());
 		clone.setUserId(getUserId());
 		clone.setUserName(getUserName());
 		clone.setCreateDate(getCreateDate());
@@ -821,10 +852,12 @@ public class OfferingDefinitionClp extends BaseModelImpl<OfferingDefinition>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(27);
+		StringBundler sb = new StringBundler(29);
 
 		sb.append("{offeringDefinitionId=");
 		sb.append(getOfferingDefinitionId());
+		sb.append(", companyId=");
+		sb.append(getCompanyId());
 		sb.append(", userId=");
 		sb.append(getUserId());
 		sb.append(", userName=");
@@ -856,7 +889,7 @@ public class OfferingDefinitionClp extends BaseModelImpl<OfferingDefinition>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(43);
+		StringBundler sb = new StringBundler(46);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.OfferingDefinition");
@@ -865,6 +898,10 @@ public class OfferingDefinitionClp extends BaseModelImpl<OfferingDefinition>
 		sb.append(
 			"<column><column-name>offeringDefinitionId</column-name><column-value><![CDATA[");
 		sb.append(getOfferingDefinitionId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>companyId</column-name><column-value><![CDATA[");
+		sb.append(getCompanyId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
@@ -921,6 +958,7 @@ public class OfferingDefinitionClp extends BaseModelImpl<OfferingDefinition>
 	}
 
 	private long _offeringDefinitionId;
+	private long _companyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;

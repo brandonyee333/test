@@ -35,6 +35,7 @@ public class PartnerEntrySoap implements Serializable {
 		PartnerEntrySoap soapModel = new PartnerEntrySoap();
 
 		soapModel.setPartnerEntryId(model.getPartnerEntryId());
+		soapModel.setCompanyId(model.getCompanyId());
 		soapModel.setUserId(model.getUserId());
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
@@ -104,6 +105,14 @@ public class PartnerEntrySoap implements Serializable {
 
 	public void setPartnerEntryId(long partnerEntryId) {
 		_partnerEntryId = partnerEntryId;
+	}
+
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	public void setCompanyId(long companyId) {
+		_companyId = companyId;
 	}
 
 	public long getUserId() {
@@ -195,6 +204,7 @@ public class PartnerEntrySoap implements Serializable {
 	}
 
 	private long _partnerEntryId;
+	private long _companyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;

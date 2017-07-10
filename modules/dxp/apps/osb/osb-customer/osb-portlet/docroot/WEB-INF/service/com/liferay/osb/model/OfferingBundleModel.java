@@ -21,6 +21,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.ShardedModel;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -41,7 +42,8 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public interface OfferingBundleModel extends BaseModel<OfferingBundle> {
+public interface OfferingBundleModel extends BaseModel<OfferingBundle>,
+	ShardedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -75,6 +77,22 @@ public interface OfferingBundleModel extends BaseModel<OfferingBundle> {
 	 * @param offeringBundleId the offering bundle ID of this offering bundle
 	 */
 	public void setOfferingBundleId(long offeringBundleId);
+
+	/**
+	 * Returns the company ID of this offering bundle.
+	 *
+	 * @return the company ID of this offering bundle
+	 */
+	@Override
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this offering bundle.
+	 *
+	 * @param companyId the company ID of this offering bundle
+	 */
+	@Override
+	public void setCompanyId(long companyId);
 
 	/**
 	 * Returns the user ID of this offering bundle.

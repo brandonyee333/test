@@ -19,8 +19,10 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.model.AuditedModel;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.ShardedModel;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -41,7 +43,8 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public interface SupportTeamModel extends BaseModel<SupportTeam> {
+public interface SupportTeamModel extends AuditedModel, BaseModel<SupportTeam>,
+	ShardedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -77,10 +80,27 @@ public interface SupportTeamModel extends BaseModel<SupportTeam> {
 	public void setSupportTeamId(long supportTeamId);
 
 	/**
+	 * Returns the company ID of this support team.
+	 *
+	 * @return the company ID of this support team
+	 */
+	@Override
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this support team.
+	 *
+	 * @param companyId the company ID of this support team
+	 */
+	@Override
+	public void setCompanyId(long companyId);
+
+	/**
 	 * Returns the user ID of this support team.
 	 *
 	 * @return the user ID of this support team
 	 */
+	@Override
 	public long getUserId();
 
 	/**
@@ -88,6 +108,7 @@ public interface SupportTeamModel extends BaseModel<SupportTeam> {
 	 *
 	 * @param userId the user ID of this support team
 	 */
+	@Override
 	public void setUserId(long userId);
 
 	/**
@@ -95,6 +116,7 @@ public interface SupportTeamModel extends BaseModel<SupportTeam> {
 	 *
 	 * @return the user uuid of this support team
 	 */
+	@Override
 	public String getUserUuid();
 
 	/**
@@ -102,6 +124,7 @@ public interface SupportTeamModel extends BaseModel<SupportTeam> {
 	 *
 	 * @param userUuid the user uuid of this support team
 	 */
+	@Override
 	public void setUserUuid(String userUuid);
 
 	/**
@@ -110,6 +133,7 @@ public interface SupportTeamModel extends BaseModel<SupportTeam> {
 	 * @return the user name of this support team
 	 */
 	@AutoEscape
+	@Override
 	public String getUserName();
 
 	/**
@@ -117,6 +141,7 @@ public interface SupportTeamModel extends BaseModel<SupportTeam> {
 	 *
 	 * @param userName the user name of this support team
 	 */
+	@Override
 	public void setUserName(String userName);
 
 	/**
@@ -124,6 +149,7 @@ public interface SupportTeamModel extends BaseModel<SupportTeam> {
 	 *
 	 * @return the create date of this support team
 	 */
+	@Override
 	public Date getCreateDate();
 
 	/**
@@ -131,6 +157,7 @@ public interface SupportTeamModel extends BaseModel<SupportTeam> {
 	 *
 	 * @param createDate the create date of this support team
 	 */
+	@Override
 	public void setCreateDate(Date createDate);
 
 	/**
@@ -138,6 +165,7 @@ public interface SupportTeamModel extends BaseModel<SupportTeam> {
 	 *
 	 * @return the modified date of this support team
 	 */
+	@Override
 	public Date getModifiedDate();
 
 	/**
@@ -145,6 +173,7 @@ public interface SupportTeamModel extends BaseModel<SupportTeam> {
 	 *
 	 * @param modifiedDate the modified date of this support team
 	 */
+	@Override
 	public void setModifiedDate(Date modifiedDate);
 
 	/**

@@ -38,6 +38,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.CompanyProvider;
+import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.TableMapper;
 import com.liferay.portal.kernel.service.persistence.impl.TableMapperFactory;
@@ -1284,6 +1285,8 @@ public class PartnerEntryPersistenceImpl extends BasePersistenceImpl<PartnerEntr
 		partnerEntry.setNew(true);
 		partnerEntry.setPrimaryKey(partnerEntryId);
 
+		partnerEntry.setCompanyId(companyProvider.getCompanyId());
+
 		return partnerEntry;
 	}
 
@@ -1492,6 +1495,7 @@ public class PartnerEntryPersistenceImpl extends BasePersistenceImpl<PartnerEntr
 		partnerEntryImpl.setPrimaryKey(partnerEntry.getPrimaryKey());
 
 		partnerEntryImpl.setPartnerEntryId(partnerEntry.getPartnerEntryId());
+		partnerEntryImpl.setCompanyId(partnerEntry.getCompanyId());
 		partnerEntryImpl.setUserId(partnerEntry.getUserId());
 		partnerEntryImpl.setUserName(partnerEntry.getUserName());
 		partnerEntryImpl.setCreateDate(partnerEntry.getCreateDate());
@@ -2222,7 +2226,7 @@ public class PartnerEntryPersistenceImpl extends BasePersistenceImpl<PartnerEntr
 			"OSB_PartnerEntries_SupportRegions");
 	}
 
-	@BeanReference(type = CompanyProvider.class)
+	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
 	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
 	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();

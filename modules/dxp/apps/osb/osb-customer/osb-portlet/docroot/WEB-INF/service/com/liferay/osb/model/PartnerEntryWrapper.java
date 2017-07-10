@@ -59,6 +59,7 @@ public class PartnerEntryWrapper implements PartnerEntry,
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("partnerEntryId", getPartnerEntryId());
+		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
@@ -80,6 +81,12 @@ public class PartnerEntryWrapper implements PartnerEntry,
 
 		if (partnerEntryId != null) {
 			setPartnerEntryId(partnerEntryId);
+		}
+
+		Long companyId = (Long)attributes.get("companyId");
+
+		if (companyId != null) {
+			setCompanyId(companyId);
 		}
 
 		Long userId = (Long)attributes.get("userId");
@@ -352,6 +359,16 @@ public class PartnerEntryWrapper implements PartnerEntry,
 	}
 
 	/**
+	* Returns the company ID of this partner entry.
+	*
+	* @return the company ID of this partner entry
+	*/
+	@Override
+	public long getCompanyId() {
+		return _partnerEntry.getCompanyId();
+	}
+
+	/**
 	* Returns the modified user ID of this partner entry.
 	*
 	* @return the modified user ID of this partner entry
@@ -425,6 +442,16 @@ public class PartnerEntryWrapper implements PartnerEntry,
 	@Override
 	public void setCode(java.lang.String code) {
 		_partnerEntry.setCode(code);
+	}
+
+	/**
+	* Sets the company ID of this partner entry.
+	*
+	* @param companyId the company ID of this partner entry
+	*/
+	@Override
+	public void setCompanyId(long companyId) {
+		_partnerEntry.setCompanyId(companyId);
 	}
 
 	/**

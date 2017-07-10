@@ -34,99 +34,130 @@ public class SecurityPatchLocalServiceClp implements SecurityPatchLocalService {
 				"com.liferay.osb.model.SecurityPatch"
 			};
 
-		_methodName1 = "createSecurityPatch";
+		_methodName1 = "addSecurityPatch";
 
-		_methodParameterTypes1 = new String[] { "long" };
-
-		_methodName2 = "deleteSecurityPatch";
-
-		_methodParameterTypes2 = new String[] {
-				"com.liferay.osb.model.SecurityPatch"
+		_methodParameterTypes1 = new String[] {
+				"long", "long", "long", "java.lang.String", "int",
+				"java.lang.String", "java.lang.String"
 			};
 
-		_methodName3 = "deleteSecurityPatch";
+		_methodName2 = "addSecurityPatch";
+
+		_methodParameterTypes2 = new String[] {
+				"long", "long", "java.lang.String", "int", "java.lang.String"
+			};
+
+		_methodName3 = "createSecurityPatch";
 
 		_methodParameterTypes3 = new String[] { "long" };
 
-		_methodName4 = "fetchSecurityPatch";
+		_methodName4 = "deleteSecurityPatch";
 
-		_methodParameterTypes4 = new String[] { "long" };
-
-		_methodName5 = "getSecurityPatch";
-
-		_methodParameterTypes5 = new String[] { "long" };
-
-		_methodName6 = "updateSecurityPatch";
-
-		_methodParameterTypes6 = new String[] {
+		_methodParameterTypes4 = new String[] {
 				"com.liferay.osb.model.SecurityPatch"
 			};
 
-		_methodName7 = "getActionableDynamicQuery";
+		_methodName5 = "deleteSecurityPatch";
 
-		_methodParameterTypes7 = new String[] {  };
+		_methodParameterTypes5 = new String[] { "long" };
 
-		_methodName8 = "dynamicQuery";
+		_methodName6 = "fetchSecurityPatch";
 
-		_methodParameterTypes8 = new String[] {  };
+		_methodParameterTypes6 = new String[] { "long" };
 
-		_methodName9 = "getIndexableActionableDynamicQuery";
+		_methodName7 = "getSecurityPatch";
 
-		_methodParameterTypes9 = new String[] {  };
+		_methodParameterTypes7 = new String[] { "long" };
 
-		_methodName10 = "deletePersistedModel";
+		_methodName8 = "updateSecurityPatch";
 
-		_methodParameterTypes10 = new String[] {
-				"com.liferay.portal.kernel.model.PersistedModel"
+		_methodParameterTypes8 = new String[] {
+				"com.liferay.osb.model.SecurityPatch"
 			};
 
-		_methodName11 = "getPersistedModel";
+		_methodName9 = "updateSecurityPatch";
 
-		_methodParameterTypes11 = new String[] { "java.io.Serializable" };
+		_methodParameterTypes9 = new String[] { "long", "java.lang.String" };
 
-		_methodName12 = "getSecurityPatchsCount";
+		_methodName10 = "getActionableDynamicQuery";
+
+		_methodParameterTypes10 = new String[] {  };
+
+		_methodName11 = "dynamicQuery";
+
+		_methodParameterTypes11 = new String[] {  };
+
+		_methodName12 = "getIndexableActionableDynamicQuery";
 
 		_methodParameterTypes12 = new String[] {  };
 
-		_methodName14 = "getOSGiServiceIdentifier";
+		_methodName13 = "deletePersistedModel";
 
-		_methodParameterTypes14 = new String[] {  };
-
-		_methodName15 = "dynamicQuery";
-
-		_methodParameterTypes15 = new String[] {
-				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
+		_methodParameterTypes13 = new String[] {
+				"com.liferay.portal.kernel.model.PersistedModel"
 			};
 
-		_methodName16 = "dynamicQuery";
+		_methodName14 = "getPersistedModel";
 
-		_methodParameterTypes16 = new String[] {
-				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
+		_methodParameterTypes14 = new String[] { "java.io.Serializable" };
+
+		_methodName15 = "getSecurityPatchsCount";
+
+		_methodParameterTypes15 = new String[] {  };
+
+		_methodName17 = "getOSGiServiceIdentifier";
+
+		_methodParameterTypes17 = new String[] {  };
+
+		_methodName18 = "getSecurityPatchName";
+
+		_methodParameterTypes18 = new String[] {
+				"int", "com.liferay.osb.model.TicketAttachment"
 			};
 
-		_methodName17 = "dynamicQuery";
-
-		_methodParameterTypes17 = new String[] {
-				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int",
-				"com.liferay.portal.kernel.util.OrderByComparator"
-			};
-
-		_methodName18 = "getSecurityPatchs";
-
-		_methodParameterTypes18 = new String[] { "int", "int" };
-
-		_methodName19 = "dynamicQueryCount";
+		_methodName19 = "dynamicQuery";
 
 		_methodParameterTypes19 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
 			};
 
-		_methodName20 = "dynamicQueryCount";
+		_methodName20 = "dynamicQuery";
 
 		_methodParameterTypes20 = new String[] {
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
+			};
+
+		_methodName21 = "dynamicQuery";
+
+		_methodParameterTypes21 = new String[] {
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int",
+				"com.liferay.portal.kernel.util.OrderByComparator"
+			};
+
+		_methodName22 = "getSecurityPatches";
+
+		_methodParameterTypes22 = new String[] { "long", "java.lang.String" };
+
+		_methodName23 = "getSecurityPatchs";
+
+		_methodParameterTypes23 = new String[] { "int", "int" };
+
+		_methodName24 = "dynamicQueryCount";
+
+		_methodParameterTypes24 = new String[] {
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
+			};
+
+		_methodName25 = "dynamicQueryCount";
+
+		_methodParameterTypes25 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery",
 				"com.liferay.portal.kernel.dao.orm.Projection"
 			};
+
+		_methodName26 = "deleteSecurityPatches";
+
+		_methodParameterTypes26 = new String[] { "java.lang.String" };
 	}
 
 	@Override
@@ -155,13 +186,110 @@ public class SecurityPatchLocalServiceClp implements SecurityPatchLocalService {
 	}
 
 	@Override
+	public com.liferay.osb.model.SecurityPatch addSecurityPatch(long userId,
+		long accountEntryId, long ticketAttachmentId,
+		java.lang.String portletId, int envLFR, java.lang.String name,
+		java.lang.String fileName)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName1,
+					_methodParameterTypes1,
+					new Object[] {
+						userId,
+						
+					accountEntryId,
+						
+					ticketAttachmentId,
+						
+					ClpSerializer.translateInput(portletId),
+						
+					envLFR,
+						
+					ClpSerializer.translateInput(name),
+						
+					ClpSerializer.translateInput(fileName)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.SecurityPatch)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public com.liferay.osb.model.SecurityPatch addSecurityPatch(long userId,
+		long ticketAttachmentId, java.lang.String portletId, int envLFR,
+		java.lang.String fileName)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName2,
+					_methodParameterTypes2,
+					new Object[] {
+						userId,
+						
+					ticketAttachmentId,
+						
+					ClpSerializer.translateInput(portletId),
+						
+					envLFR,
+						
+					ClpSerializer.translateInput(fileName)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.SecurityPatch)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
 	public com.liferay.osb.model.SecurityPatch createSecurityPatch(
 		long securityPatchId) {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName1,
-					_methodParameterTypes1, new Object[] { securityPatchId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName3,
+					_methodParameterTypes3, new Object[] { securityPatchId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -184,8 +312,8 @@ public class SecurityPatchLocalServiceClp implements SecurityPatchLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName2,
-					_methodParameterTypes2,
+			returnObj = _invokableLocalService.invokeMethod(_methodName4,
+					_methodParameterTypes4,
 					new Object[] { ClpSerializer.translateInput(securityPatch) });
 		}
 		catch (Throwable t) {
@@ -205,59 +333,6 @@ public class SecurityPatchLocalServiceClp implements SecurityPatchLocalService {
 
 	@Override
 	public com.liferay.osb.model.SecurityPatch deleteSecurityPatch(
-		long securityPatchId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName3,
-					_methodParameterTypes3, new Object[] { securityPatchId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (com.liferay.osb.model.SecurityPatch)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
-	public com.liferay.osb.model.SecurityPatch fetchSecurityPatch(
-		long securityPatchId) {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName4,
-					_methodParameterTypes4, new Object[] { securityPatchId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (com.liferay.osb.model.SecurityPatch)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
-	public com.liferay.osb.model.SecurityPatch getSecurityPatch(
 		long securityPatchId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
@@ -286,13 +361,66 @@ public class SecurityPatchLocalServiceClp implements SecurityPatchLocalService {
 	}
 
 	@Override
+	public com.liferay.osb.model.SecurityPatch fetchSecurityPatch(
+		long securityPatchId) {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName6,
+					_methodParameterTypes6, new Object[] { securityPatchId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.SecurityPatch)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public com.liferay.osb.model.SecurityPatch getSecurityPatch(
+		long securityPatchId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName7,
+					_methodParameterTypes7, new Object[] { securityPatchId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.SecurityPatch)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
 	public com.liferay.osb.model.SecurityPatch updateSecurityPatch(
 		com.liferay.osb.model.SecurityPatch securityPatch) {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName6,
-					_methodParameterTypes6,
+			returnObj = _invokableLocalService.invokeMethod(_methodName8,
+					_methodParameterTypes8,
 					new Object[] { ClpSerializer.translateInput(securityPatch) });
 		}
 		catch (Throwable t) {
@@ -311,12 +439,51 @@ public class SecurityPatchLocalServiceClp implements SecurityPatchLocalService {
 	}
 
 	@Override
+	public com.liferay.osb.model.SecurityPatch updateSecurityPatch(
+		long securityPatchId, java.lang.String name)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName9,
+					_methodParameterTypes9,
+					new Object[] {
+						securityPatchId,
+						
+					ClpSerializer.translateInput(name)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.SecurityPatch)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName7,
-					_methodParameterTypes7, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName10,
+					_methodParameterTypes10, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -338,8 +505,8 @@ public class SecurityPatchLocalServiceClp implements SecurityPatchLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName8,
-					_methodParameterTypes8, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName11,
+					_methodParameterTypes11, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -361,8 +528,8 @@ public class SecurityPatchLocalServiceClp implements SecurityPatchLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName9,
-					_methodParameterTypes9, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName12,
+					_methodParameterTypes12, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -386,8 +553,8 @@ public class SecurityPatchLocalServiceClp implements SecurityPatchLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName10,
-					_methodParameterTypes10,
+			returnObj = _invokableLocalService.invokeMethod(_methodName13,
+					_methodParameterTypes13,
 					new Object[] { ClpSerializer.translateInput(persistedModel) });
 		}
 		catch (Throwable t) {
@@ -416,8 +583,8 @@ public class SecurityPatchLocalServiceClp implements SecurityPatchLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName11,
-					_methodParameterTypes11,
+			returnObj = _invokableLocalService.invokeMethod(_methodName14,
+					_methodParameterTypes14,
 					new Object[] { ClpSerializer.translateInput(primaryKeyObj) });
 		}
 		catch (Throwable t) {
@@ -444,8 +611,8 @@ public class SecurityPatchLocalServiceClp implements SecurityPatchLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName12,
-					_methodParameterTypes12, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName15,
+					_methodParameterTypes15, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -474,8 +641,37 @@ public class SecurityPatchLocalServiceClp implements SecurityPatchLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName14,
-					_methodParameterTypes14, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName17,
+					_methodParameterTypes17, new Object[] {  });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.lang.String)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public java.lang.String getSecurityPatchName(int envLFR,
+		com.liferay.osb.model.TicketAttachment ticketAttachment) {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName18,
+					_methodParameterTypes18,
+					new Object[] {
+						envLFR,
+						
+					ClpSerializer.translateInput(ticketAttachment)
+					});
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -498,8 +694,8 @@ public class SecurityPatchLocalServiceClp implements SecurityPatchLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName15,
-					_methodParameterTypes15,
+			returnObj = _invokableLocalService.invokeMethod(_methodName19,
+					_methodParameterTypes19,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -524,8 +720,8 @@ public class SecurityPatchLocalServiceClp implements SecurityPatchLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName16,
-					_methodParameterTypes16,
+			returnObj = _invokableLocalService.invokeMethod(_methodName20,
+					_methodParameterTypes20,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -557,8 +753,8 @@ public class SecurityPatchLocalServiceClp implements SecurityPatchLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName17,
-					_methodParameterTypes17,
+			returnObj = _invokableLocalService.invokeMethod(_methodName21,
+					_methodParameterTypes21,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -585,13 +781,47 @@ public class SecurityPatchLocalServiceClp implements SecurityPatchLocalService {
 	}
 
 	@Override
+	public java.util.List<com.liferay.osb.model.SecurityPatch> getSecurityPatches(
+		long accountEntryId, java.lang.String portletId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName22,
+					_methodParameterTypes22,
+					new Object[] {
+						accountEntryId,
+						
+					ClpSerializer.translateInput(portletId)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.List<com.liferay.osb.model.SecurityPatch>)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
 	public java.util.List<com.liferay.osb.model.SecurityPatch> getSecurityPatchs(
 		int start, int end) {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName18,
-					_methodParameterTypes18, new Object[] { start, end });
+			returnObj = _invokableLocalService.invokeMethod(_methodName23,
+					_methodParameterTypes23, new Object[] { start, end });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -614,8 +844,8 @@ public class SecurityPatchLocalServiceClp implements SecurityPatchLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName19,
-					_methodParameterTypes19,
+			returnObj = _invokableLocalService.invokeMethod(_methodName24,
+					_methodParameterTypes24,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -640,8 +870,8 @@ public class SecurityPatchLocalServiceClp implements SecurityPatchLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName20,
-					_methodParameterTypes20,
+			returnObj = _invokableLocalService.invokeMethod(_methodName25,
+					_methodParameterTypes25,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -661,6 +891,31 @@ public class SecurityPatchLocalServiceClp implements SecurityPatchLocalService {
 		}
 
 		return ((Long)returnObj).longValue();
+	}
+
+	@Override
+	public void deleteSecurityPatches(java.lang.String portletId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		try {
+			_invokableLocalService.invokeMethod(_methodName26,
+				_methodParameterTypes26,
+				new Object[] { ClpSerializer.translateInput(portletId) });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
 	}
 
 	private InvokableLocalService _invokableLocalService;
@@ -690,12 +945,12 @@ public class SecurityPatchLocalServiceClp implements SecurityPatchLocalService {
 	private String[] _methodParameterTypes11;
 	private String _methodName12;
 	private String[] _methodParameterTypes12;
+	private String _methodName13;
+	private String[] _methodParameterTypes13;
 	private String _methodName14;
 	private String[] _methodParameterTypes14;
 	private String _methodName15;
 	private String[] _methodParameterTypes15;
-	private String _methodName16;
-	private String[] _methodParameterTypes16;
 	private String _methodName17;
 	private String[] _methodParameterTypes17;
 	private String _methodName18;
@@ -704,4 +959,16 @@ public class SecurityPatchLocalServiceClp implements SecurityPatchLocalService {
 	private String[] _methodParameterTypes19;
 	private String _methodName20;
 	private String[] _methodParameterTypes20;
+	private String _methodName21;
+	private String[] _methodParameterTypes21;
+	private String _methodName22;
+	private String[] _methodParameterTypes22;
+	private String _methodName23;
+	private String[] _methodParameterTypes23;
+	private String _methodName24;
+	private String[] _methodParameterTypes24;
+	private String _methodName25;
+	private String[] _methodParameterTypes25;
+	private String _methodName26;
+	private String[] _methodParameterTypes26;
 }

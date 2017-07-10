@@ -71,6 +71,7 @@ public class OfferingDefinitionModelImpl extends BaseModelImpl<OfferingDefinitio
 	public static final String TABLE_NAME = "OSB_OfferingDefinition";
 	public static final Object[][] TABLE_COLUMNS = {
 			{ "offeringDefinitionId", Types.BIGINT },
+			{ "companyId", Types.BIGINT },
 			{ "userId", Types.BIGINT },
 			{ "userName", Types.VARCHAR },
 			{ "createDate", Types.TIMESTAMP },
@@ -88,6 +89,7 @@ public class OfferingDefinitionModelImpl extends BaseModelImpl<OfferingDefinitio
 
 	static {
 		TABLE_COLUMNS_MAP.put("offeringDefinitionId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
@@ -102,7 +104,7 @@ public class OfferingDefinitionModelImpl extends BaseModelImpl<OfferingDefinitio
 		TABLE_COLUMNS_MAP.put("supportTickets", Types.BOOLEAN);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table OSB_OfferingDefinition (offeringDefinitionId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,productEntryId LONG,supportResponseId LONG,productDescription VARCHAR(75) null,licenses BOOLEAN,unlimitedLicenses BOOLEAN,maxConcurrentUsers LONG,maxUsers LONG,supportTickets BOOLEAN)";
+	public static final String TABLE_SQL_CREATE = "create table OSB_OfferingDefinition (offeringDefinitionId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,productEntryId LONG,supportResponseId LONG,productDescription VARCHAR(75) null,licenses BOOLEAN,unlimitedLicenses BOOLEAN,maxConcurrentUsers LONG,maxUsers LONG,supportTickets BOOLEAN)";
 	public static final String TABLE_SQL_DROP = "drop table OSB_OfferingDefinition";
 	public static final String ORDER_BY_JPQL = " ORDER BY offeringDefinition.productEntryId ASC, offeringDefinition.supportResponseId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY OSB_OfferingDefinition.productEntryId ASC, OSB_OfferingDefinition.supportResponseId ASC";
@@ -139,6 +141,7 @@ public class OfferingDefinitionModelImpl extends BaseModelImpl<OfferingDefinitio
 		OfferingDefinition model = new OfferingDefinitionImpl();
 
 		model.setOfferingDefinitionId(soapModel.getOfferingDefinitionId());
+		model.setCompanyId(soapModel.getCompanyId());
 		model.setUserId(soapModel.getUserId());
 		model.setUserName(soapModel.getUserName());
 		model.setCreateDate(soapModel.getCreateDate());
@@ -231,6 +234,7 @@ public class OfferingDefinitionModelImpl extends BaseModelImpl<OfferingDefinitio
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("offeringDefinitionId", getOfferingDefinitionId());
+		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
@@ -256,6 +260,12 @@ public class OfferingDefinitionModelImpl extends BaseModelImpl<OfferingDefinitio
 
 		if (offeringDefinitionId != null) {
 			setOfferingDefinitionId(offeringDefinitionId);
+		}
+
+		Long companyId = (Long)attributes.get("companyId");
+
+		if (companyId != null) {
+			setCompanyId(companyId);
 		}
 
 		Long userId = (Long)attributes.get("userId");
@@ -340,6 +350,17 @@ public class OfferingDefinitionModelImpl extends BaseModelImpl<OfferingDefinitio
 	@Override
 	public void setOfferingDefinitionId(long offeringDefinitionId) {
 		_offeringDefinitionId = offeringDefinitionId;
+	}
+
+	@JSON
+	@Override
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	@Override
+	public void setCompanyId(long companyId) {
+		_companyId = companyId;
 	}
 
 	@JSON
@@ -600,7 +621,7 @@ public class OfferingDefinitionModelImpl extends BaseModelImpl<OfferingDefinitio
 
 	@Override
 	public ExpandoBridge getExpandoBridge() {
-		return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+		return ExpandoBridgeFactoryUtil.getExpandoBridge(getCompanyId(),
 			OfferingDefinition.class.getName(), getPrimaryKey());
 	}
 
@@ -626,6 +647,7 @@ public class OfferingDefinitionModelImpl extends BaseModelImpl<OfferingDefinitio
 		OfferingDefinitionImpl offeringDefinitionImpl = new OfferingDefinitionImpl();
 
 		offeringDefinitionImpl.setOfferingDefinitionId(getOfferingDefinitionId());
+		offeringDefinitionImpl.setCompanyId(getCompanyId());
 		offeringDefinitionImpl.setUserId(getUserId());
 		offeringDefinitionImpl.setUserName(getUserName());
 		offeringDefinitionImpl.setCreateDate(getCreateDate());
@@ -753,6 +775,8 @@ public class OfferingDefinitionModelImpl extends BaseModelImpl<OfferingDefinitio
 
 		offeringDefinitionCacheModel.offeringDefinitionId = getOfferingDefinitionId();
 
+		offeringDefinitionCacheModel.companyId = getCompanyId();
+
 		offeringDefinitionCacheModel.userId = getUserId();
 
 		offeringDefinitionCacheModel.userName = getUserName();
@@ -808,10 +832,12 @@ public class OfferingDefinitionModelImpl extends BaseModelImpl<OfferingDefinitio
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(27);
+		StringBundler sb = new StringBundler(29);
 
 		sb.append("{offeringDefinitionId=");
 		sb.append(getOfferingDefinitionId());
+		sb.append(", companyId=");
+		sb.append(getCompanyId());
 		sb.append(", userId=");
 		sb.append(getUserId());
 		sb.append(", userName=");
@@ -843,7 +869,7 @@ public class OfferingDefinitionModelImpl extends BaseModelImpl<OfferingDefinitio
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(43);
+		StringBundler sb = new StringBundler(46);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.OfferingDefinition");
@@ -852,6 +878,10 @@ public class OfferingDefinitionModelImpl extends BaseModelImpl<OfferingDefinitio
 		sb.append(
 			"<column><column-name>offeringDefinitionId</column-name><column-value><![CDATA[");
 		sb.append(getOfferingDefinitionId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>companyId</column-name><column-value><![CDATA[");
+		sb.append(getCompanyId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
@@ -912,6 +942,7 @@ public class OfferingDefinitionModelImpl extends BaseModelImpl<OfferingDefinitio
 			OfferingDefinition.class
 		};
 	private long _offeringDefinitionId;
+	private long _companyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;

@@ -19,8 +19,10 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.model.AuditedModel;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.ShardedModel;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -41,7 +43,8 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public interface PartnerEntryModel extends BaseModel<PartnerEntry> {
+public interface PartnerEntryModel extends AuditedModel, BaseModel<PartnerEntry>,
+	ShardedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -77,10 +80,27 @@ public interface PartnerEntryModel extends BaseModel<PartnerEntry> {
 	public void setPartnerEntryId(long partnerEntryId);
 
 	/**
+	 * Returns the company ID of this partner entry.
+	 *
+	 * @return the company ID of this partner entry
+	 */
+	@Override
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this partner entry.
+	 *
+	 * @param companyId the company ID of this partner entry
+	 */
+	@Override
+	public void setCompanyId(long companyId);
+
+	/**
 	 * Returns the user ID of this partner entry.
 	 *
 	 * @return the user ID of this partner entry
 	 */
+	@Override
 	public long getUserId();
 
 	/**
@@ -88,6 +108,7 @@ public interface PartnerEntryModel extends BaseModel<PartnerEntry> {
 	 *
 	 * @param userId the user ID of this partner entry
 	 */
+	@Override
 	public void setUserId(long userId);
 
 	/**
@@ -95,6 +116,7 @@ public interface PartnerEntryModel extends BaseModel<PartnerEntry> {
 	 *
 	 * @return the user uuid of this partner entry
 	 */
+	@Override
 	public String getUserUuid();
 
 	/**
@@ -102,6 +124,7 @@ public interface PartnerEntryModel extends BaseModel<PartnerEntry> {
 	 *
 	 * @param userUuid the user uuid of this partner entry
 	 */
+	@Override
 	public void setUserUuid(String userUuid);
 
 	/**
@@ -110,6 +133,7 @@ public interface PartnerEntryModel extends BaseModel<PartnerEntry> {
 	 * @return the user name of this partner entry
 	 */
 	@AutoEscape
+	@Override
 	public String getUserName();
 
 	/**
@@ -117,6 +141,7 @@ public interface PartnerEntryModel extends BaseModel<PartnerEntry> {
 	 *
 	 * @param userName the user name of this partner entry
 	 */
+	@Override
 	public void setUserName(String userName);
 
 	/**
@@ -124,6 +149,7 @@ public interface PartnerEntryModel extends BaseModel<PartnerEntry> {
 	 *
 	 * @return the create date of this partner entry
 	 */
+	@Override
 	public Date getCreateDate();
 
 	/**
@@ -131,6 +157,7 @@ public interface PartnerEntryModel extends BaseModel<PartnerEntry> {
 	 *
 	 * @param createDate the create date of this partner entry
 	 */
+	@Override
 	public void setCreateDate(Date createDate);
 
 	/**
@@ -181,6 +208,7 @@ public interface PartnerEntryModel extends BaseModel<PartnerEntry> {
 	 *
 	 * @return the modified date of this partner entry
 	 */
+	@Override
 	public Date getModifiedDate();
 
 	/**
@@ -188,6 +216,7 @@ public interface PartnerEntryModel extends BaseModel<PartnerEntry> {
 	 *
 	 * @param modifiedDate the modified date of this partner entry
 	 */
+	@Override
 	public void setModifiedDate(Date modifiedDate);
 
 	/**

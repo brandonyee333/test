@@ -19,8 +19,10 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.model.AuditedModel;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.ShardedModel;
 import com.liferay.portal.kernel.model.WorkflowedModel;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -42,8 +44,8 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public interface AccountEntryModel extends BaseModel<AccountEntry>,
-	WorkflowedModel {
+public interface AccountEntryModel extends AuditedModel, BaseModel<AccountEntry>,
+	ShardedModel, WorkflowedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -79,10 +81,27 @@ public interface AccountEntryModel extends BaseModel<AccountEntry>,
 	public void setAccountEntryId(long accountEntryId);
 
 	/**
+	 * Returns the company ID of this account entry.
+	 *
+	 * @return the company ID of this account entry
+	 */
+	@Override
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this account entry.
+	 *
+	 * @param companyId the company ID of this account entry
+	 */
+	@Override
+	public void setCompanyId(long companyId);
+
+	/**
 	 * Returns the user ID of this account entry.
 	 *
 	 * @return the user ID of this account entry
 	 */
+	@Override
 	public long getUserId();
 
 	/**
@@ -90,6 +109,7 @@ public interface AccountEntryModel extends BaseModel<AccountEntry>,
 	 *
 	 * @param userId the user ID of this account entry
 	 */
+	@Override
 	public void setUserId(long userId);
 
 	/**
@@ -97,6 +117,7 @@ public interface AccountEntryModel extends BaseModel<AccountEntry>,
 	 *
 	 * @return the user uuid of this account entry
 	 */
+	@Override
 	public String getUserUuid();
 
 	/**
@@ -104,6 +125,7 @@ public interface AccountEntryModel extends BaseModel<AccountEntry>,
 	 *
 	 * @param userUuid the user uuid of this account entry
 	 */
+	@Override
 	public void setUserUuid(String userUuid);
 
 	/**
@@ -112,6 +134,7 @@ public interface AccountEntryModel extends BaseModel<AccountEntry>,
 	 * @return the user name of this account entry
 	 */
 	@AutoEscape
+	@Override
 	public String getUserName();
 
 	/**
@@ -119,6 +142,7 @@ public interface AccountEntryModel extends BaseModel<AccountEntry>,
 	 *
 	 * @param userName the user name of this account entry
 	 */
+	@Override
 	public void setUserName(String userName);
 
 	/**
@@ -126,6 +150,7 @@ public interface AccountEntryModel extends BaseModel<AccountEntry>,
 	 *
 	 * @return the create date of this account entry
 	 */
+	@Override
 	public Date getCreateDate();
 
 	/**
@@ -133,6 +158,7 @@ public interface AccountEntryModel extends BaseModel<AccountEntry>,
 	 *
 	 * @param createDate the create date of this account entry
 	 */
+	@Override
 	public void setCreateDate(Date createDate);
 
 	/**
@@ -183,6 +209,7 @@ public interface AccountEntryModel extends BaseModel<AccountEntry>,
 	 *
 	 * @return the modified date of this account entry
 	 */
+	@Override
 	public Date getModifiedDate();
 
 	/**
@@ -190,6 +217,7 @@ public interface AccountEntryModel extends BaseModel<AccountEntry>,
 	 *
 	 * @param modifiedDate the modified date of this account entry
 	 */
+	@Override
 	public void setModifiedDate(Date modifiedDate);
 
 	/**

@@ -82,6 +82,7 @@ public class OfferingBundleClp extends BaseModelImpl<OfferingBundle>
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("offeringBundleId", getOfferingBundleId());
+		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
@@ -99,6 +100,12 @@ public class OfferingBundleClp extends BaseModelImpl<OfferingBundle>
 
 		if (offeringBundleId != null) {
 			setOfferingBundleId(offeringBundleId);
+		}
+
+		Long companyId = (Long)attributes.get("companyId");
+
+		if (companyId != null) {
+			setCompanyId(companyId);
 		}
 
 		Long userId = (Long)attributes.get("userId");
@@ -146,6 +153,29 @@ public class OfferingBundleClp extends BaseModelImpl<OfferingBundle>
 						long.class);
 
 				method.invoke(_offeringBundleRemoteModel, offeringBundleId);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	@Override
+	public void setCompanyId(long companyId) {
+		_companyId = companyId;
+
+		if (_offeringBundleRemoteModel != null) {
+			try {
+				Class<?> clazz = _offeringBundleRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setCompanyId", long.class);
+
+				method.invoke(_offeringBundleRemoteModel, companyId);
 			}
 			catch (Exception e) {
 				throw new UnsupportedOperationException(e);
@@ -352,6 +382,7 @@ public class OfferingBundleClp extends BaseModelImpl<OfferingBundle>
 		OfferingBundleClp clone = new OfferingBundleClp();
 
 		clone.setOfferingBundleId(getOfferingBundleId());
+		clone.setCompanyId(getCompanyId());
 		clone.setUserId(getUserId());
 		clone.setUserName(getUserName());
 		clone.setCreateDate(getCreateDate());
@@ -416,10 +447,12 @@ public class OfferingBundleClp extends BaseModelImpl<OfferingBundle>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(11);
+		StringBundler sb = new StringBundler(13);
 
 		sb.append("{offeringBundleId=");
 		sb.append(getOfferingBundleId());
+		sb.append(", companyId=");
+		sb.append(getCompanyId());
 		sb.append(", userId=");
 		sb.append(getUserId());
 		sb.append(", userName=");
@@ -435,7 +468,7 @@ public class OfferingBundleClp extends BaseModelImpl<OfferingBundle>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(19);
+		StringBundler sb = new StringBundler(22);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.OfferingBundle");
@@ -444,6 +477,10 @@ public class OfferingBundleClp extends BaseModelImpl<OfferingBundle>
 		sb.append(
 			"<column><column-name>offeringBundleId</column-name><column-value><![CDATA[");
 		sb.append(getOfferingBundleId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>companyId</column-name><column-value><![CDATA[");
+		sb.append(getCompanyId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
@@ -468,6 +505,7 @@ public class OfferingBundleClp extends BaseModelImpl<OfferingBundle>
 	}
 
 	private long _offeringBundleId;
+	private long _companyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;

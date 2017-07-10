@@ -71,6 +71,7 @@ public class OfferingBundleModelImpl extends BaseModelImpl<OfferingBundle>
 	public static final String TABLE_NAME = "OSB_OfferingBundle";
 	public static final Object[][] TABLE_COLUMNS = {
 			{ "offeringBundleId", Types.BIGINT },
+			{ "companyId", Types.BIGINT },
 			{ "userId", Types.BIGINT },
 			{ "userName", Types.VARCHAR },
 			{ "createDate", Types.TIMESTAMP },
@@ -80,13 +81,14 @@ public class OfferingBundleModelImpl extends BaseModelImpl<OfferingBundle>
 
 	static {
 		TABLE_COLUMNS_MAP.put("offeringBundleId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table OSB_OfferingBundle (offeringBundleId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,name VARCHAR(75) null)";
+	public static final String TABLE_SQL_CREATE = "create table OSB_OfferingBundle (offeringBundleId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,name VARCHAR(75) null)";
 	public static final String TABLE_SQL_DROP = "drop table OSB_OfferingBundle";
 	public static final String ORDER_BY_JPQL = " ORDER BY offeringBundle.name ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY OSB_OfferingBundle.name ASC";
@@ -118,6 +120,7 @@ public class OfferingBundleModelImpl extends BaseModelImpl<OfferingBundle>
 		OfferingBundle model = new OfferingBundleImpl();
 
 		model.setOfferingBundleId(soapModel.getOfferingBundleId());
+		model.setCompanyId(soapModel.getCompanyId());
 		model.setUserId(soapModel.getUserId());
 		model.setUserName(soapModel.getUserName());
 		model.setCreateDate(soapModel.getCreateDate());
@@ -201,6 +204,7 @@ public class OfferingBundleModelImpl extends BaseModelImpl<OfferingBundle>
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("offeringBundleId", getOfferingBundleId());
+		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
@@ -218,6 +222,12 @@ public class OfferingBundleModelImpl extends BaseModelImpl<OfferingBundle>
 
 		if (offeringBundleId != null) {
 			setOfferingBundleId(offeringBundleId);
+		}
+
+		Long companyId = (Long)attributes.get("companyId");
+
+		if (companyId != null) {
+			setCompanyId(companyId);
 		}
 
 		Long userId = (Long)attributes.get("userId");
@@ -254,6 +264,17 @@ public class OfferingBundleModelImpl extends BaseModelImpl<OfferingBundle>
 	@Override
 	public void setOfferingBundleId(long offeringBundleId) {
 		_offeringBundleId = offeringBundleId;
+	}
+
+	@JSON
+	@Override
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	@Override
+	public void setCompanyId(long companyId) {
+		_companyId = companyId;
 	}
 
 	@JSON
@@ -342,7 +363,7 @@ public class OfferingBundleModelImpl extends BaseModelImpl<OfferingBundle>
 
 	@Override
 	public ExpandoBridge getExpandoBridge() {
-		return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+		return ExpandoBridgeFactoryUtil.getExpandoBridge(getCompanyId(),
 			OfferingBundle.class.getName(), getPrimaryKey());
 	}
 
@@ -368,6 +389,7 @@ public class OfferingBundleModelImpl extends BaseModelImpl<OfferingBundle>
 		OfferingBundleImpl offeringBundleImpl = new OfferingBundleImpl();
 
 		offeringBundleImpl.setOfferingBundleId(getOfferingBundleId());
+		offeringBundleImpl.setCompanyId(getCompanyId());
 		offeringBundleImpl.setUserId(getUserId());
 		offeringBundleImpl.setUserName(getUserName());
 		offeringBundleImpl.setCreateDate(getCreateDate());
@@ -443,6 +465,8 @@ public class OfferingBundleModelImpl extends BaseModelImpl<OfferingBundle>
 
 		offeringBundleCacheModel.offeringBundleId = getOfferingBundleId();
 
+		offeringBundleCacheModel.companyId = getCompanyId();
+
 		offeringBundleCacheModel.userId = getUserId();
 
 		offeringBundleCacheModel.userName = getUserName();
@@ -475,10 +499,12 @@ public class OfferingBundleModelImpl extends BaseModelImpl<OfferingBundle>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(11);
+		StringBundler sb = new StringBundler(13);
 
 		sb.append("{offeringBundleId=");
 		sb.append(getOfferingBundleId());
+		sb.append(", companyId=");
+		sb.append(getCompanyId());
 		sb.append(", userId=");
 		sb.append(getUserId());
 		sb.append(", userName=");
@@ -494,7 +520,7 @@ public class OfferingBundleModelImpl extends BaseModelImpl<OfferingBundle>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(19);
+		StringBundler sb = new StringBundler(22);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.OfferingBundle");
@@ -503,6 +529,10 @@ public class OfferingBundleModelImpl extends BaseModelImpl<OfferingBundle>
 		sb.append(
 			"<column><column-name>offeringBundleId</column-name><column-value><![CDATA[");
 		sb.append(getOfferingBundleId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>companyId</column-name><column-value><![CDATA[");
+		sb.append(getCompanyId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
@@ -531,6 +561,7 @@ public class OfferingBundleModelImpl extends BaseModelImpl<OfferingBundle>
 			OfferingBundle.class
 		};
 	private long _offeringBundleId;
+	private long _companyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;

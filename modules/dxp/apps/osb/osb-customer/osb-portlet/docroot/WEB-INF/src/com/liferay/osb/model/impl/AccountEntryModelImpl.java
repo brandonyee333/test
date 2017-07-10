@@ -72,6 +72,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 	public static final String TABLE_NAME = "OSB_AccountEntry";
 	public static final Object[][] TABLE_COLUMNS = {
 			{ "accountEntryId", Types.BIGINT },
+			{ "companyId", Types.BIGINT },
 			{ "userId", Types.BIGINT },
 			{ "userName", Types.VARCHAR },
 			{ "createDate", Types.TIMESTAMP },
@@ -104,6 +105,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 
 	static {
 		TABLE_COLUMNS_MAP.put("accountEntryId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
@@ -133,7 +135,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		TABLE_COLUMNS_MAP.put("statusMessage", Types.VARCHAR);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table OSB_AccountEntry (accountEntryId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedUserId LONG,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,corpProjectId LONG,corpEntryName VARCHAR(75) null,name VARCHAR(500) null,code_ VARCHAR(75) null,redirectAccountEntryId LONG,type_ INTEGER,industry INTEGER,countryId LONG,partnerEntryId LONG,partnerManagedSupport BOOLEAN,tier INTEGER,maxCustomers INTEGER,instructions STRING null,notes STRING null,highestSupportResponseId LONG,lastAuditDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,statusMessage STRING null)";
+	public static final String TABLE_SQL_CREATE = "create table OSB_AccountEntry (accountEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedUserId LONG,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,corpProjectId LONG,corpEntryName VARCHAR(75) null,name VARCHAR(500) null,code_ VARCHAR(75) null,redirectAccountEntryId LONG,type_ INTEGER,industry INTEGER,countryId LONG,partnerEntryId LONG,partnerManagedSupport BOOLEAN,tier INTEGER,maxCustomers INTEGER,instructions STRING null,notes STRING null,highestSupportResponseId LONG,lastAuditDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,statusMessage STRING null)";
 	public static final String TABLE_SQL_DROP = "drop table OSB_AccountEntry";
 	public static final String ORDER_BY_JPQL = " ORDER BY accountEntry.name ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY OSB_AccountEntry.name ASC";
@@ -173,6 +175,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		AccountEntry model = new AccountEntryImpl();
 
 		model.setAccountEntryId(soapModel.getAccountEntryId());
+		model.setCompanyId(soapModel.getCompanyId());
 		model.setUserId(soapModel.getUserId());
 		model.setUserName(soapModel.getUserName());
 		model.setCreateDate(soapModel.getCreateDate());
@@ -293,6 +296,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("accountEntryId", getAccountEntryId());
+		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
@@ -333,6 +337,12 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 
 		if (accountEntryId != null) {
 			setAccountEntryId(accountEntryId);
+		}
+
+		Long companyId = (Long)attributes.get("companyId");
+
+		if (companyId != null) {
+			setCompanyId(companyId);
 		}
 
 		Long userId = (Long)attributes.get("userId");
@@ -510,6 +520,17 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 	@Override
 	public void setAccountEntryId(long accountEntryId) {
 		_accountEntryId = accountEntryId;
+	}
+
+	@JSON
+	@Override
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	@Override
+	public void setCompanyId(long companyId) {
+		_companyId = companyId;
 	}
 
 	@JSON
@@ -1104,7 +1125,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 
 	@Override
 	public ExpandoBridge getExpandoBridge() {
-		return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+		return ExpandoBridgeFactoryUtil.getExpandoBridge(getCompanyId(),
 			AccountEntry.class.getName(), getPrimaryKey());
 	}
 
@@ -1130,6 +1151,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		AccountEntryImpl accountEntryImpl = new AccountEntryImpl();
 
 		accountEntryImpl.setAccountEntryId(getAccountEntryId());
+		accountEntryImpl.setCompanyId(getCompanyId());
 		accountEntryImpl.setUserId(getUserId());
 		accountEntryImpl.setUserName(getUserName());
 		accountEntryImpl.setCreateDate(getCreateDate());
@@ -1259,6 +1281,8 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		AccountEntryCacheModel accountEntryCacheModel = new AccountEntryCacheModel();
 
 		accountEntryCacheModel.accountEntryId = getAccountEntryId();
+
+		accountEntryCacheModel.companyId = getCompanyId();
 
 		accountEntryCacheModel.userId = getUserId();
 
@@ -1401,10 +1425,12 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(57);
+		StringBundler sb = new StringBundler(59);
 
 		sb.append("{accountEntryId=");
 		sb.append(getAccountEntryId());
+		sb.append(", companyId=");
+		sb.append(getCompanyId());
 		sb.append(", userId=");
 		sb.append(getUserId());
 		sb.append(", userName=");
@@ -1466,7 +1492,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(88);
+		StringBundler sb = new StringBundler(91);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.AccountEntry");
@@ -1475,6 +1501,10 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		sb.append(
 			"<column><column-name>accountEntryId</column-name><column-value><![CDATA[");
 		sb.append(getAccountEntryId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>companyId</column-name><column-value><![CDATA[");
+		sb.append(getCompanyId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
@@ -1595,6 +1625,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 			AccountEntry.class
 		};
 	private long _accountEntryId;
+	private long _companyId;
 	private long _userId;
 	private long _originalUserId;
 	private boolean _setOriginalUserId;

@@ -66,10 +66,12 @@ public class OfferingBundleCacheModel implements CacheModel<OfferingBundle>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(11);
+		StringBundler sb = new StringBundler(13);
 
 		sb.append("{offeringBundleId=");
 		sb.append(offeringBundleId);
+		sb.append(", companyId=");
+		sb.append(companyId);
 		sb.append(", userId=");
 		sb.append(userId);
 		sb.append(", userName=");
@@ -88,6 +90,7 @@ public class OfferingBundleCacheModel implements CacheModel<OfferingBundle>,
 		OfferingBundleImpl offeringBundleImpl = new OfferingBundleImpl();
 
 		offeringBundleImpl.setOfferingBundleId(offeringBundleId);
+		offeringBundleImpl.setCompanyId(companyId);
 		offeringBundleImpl.setUserId(userId);
 
 		if (userName == null) {
@@ -120,6 +123,8 @@ public class OfferingBundleCacheModel implements CacheModel<OfferingBundle>,
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		offeringBundleId = objectInput.readLong();
 
+		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
@@ -130,6 +135,8 @@ public class OfferingBundleCacheModel implements CacheModel<OfferingBundle>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(offeringBundleId);
+
+		objectOutput.writeLong(companyId);
 
 		objectOutput.writeLong(userId);
 
@@ -151,6 +158,7 @@ public class OfferingBundleCacheModel implements CacheModel<OfferingBundle>,
 	}
 
 	public long offeringBundleId;
+	public long companyId;
 	public long userId;
 	public String userName;
 	public long createDate;

@@ -66,10 +66,12 @@ public class SupportRegionCacheModel implements CacheModel<SupportRegion>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(19);
+		StringBundler sb = new StringBundler(21);
 
 		sb.append("{supportRegionId=");
 		sb.append(supportRegionId);
+		sb.append(", companyId=");
+		sb.append(companyId);
 		sb.append(", userId=");
 		sb.append(userId);
 		sb.append(", userName=");
@@ -96,6 +98,7 @@ public class SupportRegionCacheModel implements CacheModel<SupportRegion>,
 		SupportRegionImpl supportRegionImpl = new SupportRegionImpl();
 
 		supportRegionImpl.setSupportRegionId(supportRegionId);
+		supportRegionImpl.setCompanyId(companyId);
 		supportRegionImpl.setUserId(userId);
 
 		if (userName == null) {
@@ -151,6 +154,8 @@ public class SupportRegionCacheModel implements CacheModel<SupportRegion>,
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		supportRegionId = objectInput.readLong();
 
+		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
@@ -166,6 +171,8 @@ public class SupportRegionCacheModel implements CacheModel<SupportRegion>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(supportRegionId);
+
+		objectOutput.writeLong(companyId);
 
 		objectOutput.writeLong(userId);
 
@@ -204,6 +211,7 @@ public class SupportRegionCacheModel implements CacheModel<SupportRegion>,
 	}
 
 	public long supportRegionId;
+	public long companyId;
 	public long userId;
 	public String userName;
 	public long createDate;

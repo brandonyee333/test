@@ -41,6 +41,13 @@ public class SecurityPatchServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.SecurityPatchServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static com.liferay.osb.model.SecurityPatch getSecurityPatch(
+		long securityPatchId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().getSecurityPatch(securityPatchId);
+	}
+
 	public static java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {

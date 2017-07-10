@@ -35,6 +35,7 @@ public class AccountEntrySoap implements Serializable {
 		AccountEntrySoap soapModel = new AccountEntrySoap();
 
 		soapModel.setAccountEntryId(model.getAccountEntryId());
+		soapModel.setCompanyId(model.getCompanyId());
 		soapModel.setUserId(model.getUserId());
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
@@ -120,6 +121,14 @@ public class AccountEntrySoap implements Serializable {
 
 	public void setAccountEntryId(long accountEntryId) {
 		_accountEntryId = accountEntryId;
+	}
+
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	public void setCompanyId(long companyId) {
+		_companyId = companyId;
 	}
 
 	public long getUserId() {
@@ -343,6 +352,7 @@ public class AccountEntrySoap implements Serializable {
 	}
 
 	private long _accountEntryId;
+	private long _companyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;

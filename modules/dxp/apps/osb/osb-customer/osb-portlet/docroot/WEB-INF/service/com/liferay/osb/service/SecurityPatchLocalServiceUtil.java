@@ -53,6 +53,27 @@ public class SecurityPatchLocalServiceUtil {
 		return getService().addSecurityPatch(securityPatch);
 	}
 
+	public static com.liferay.osb.model.SecurityPatch addSecurityPatch(
+		long userId, long accountEntryId, long ticketAttachmentId,
+		java.lang.String portletId, int envLFR, java.lang.String name,
+		java.lang.String fileName)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .addSecurityPatch(userId, accountEntryId,
+			ticketAttachmentId, portletId, envLFR, name, fileName);
+	}
+
+	public static com.liferay.osb.model.SecurityPatch addSecurityPatch(
+		long userId, long ticketAttachmentId, java.lang.String portletId,
+		int envLFR, java.lang.String fileName)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .addSecurityPatch(userId, ticketAttachmentId, portletId,
+			envLFR, fileName);
+	}
+
 	/**
 	* Creates a new security patch with the primary key. Does not add the security patch to the database.
 	*
@@ -117,6 +138,13 @@ public class SecurityPatchLocalServiceUtil {
 		return getService().updateSecurityPatch(securityPatch);
 	}
 
+	public static com.liferay.osb.model.SecurityPatch updateSecurityPatch(
+		long securityPatchId, java.lang.String name)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().updateSecurityPatch(securityPatchId, name);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
 		return getService().getActionableDynamicQuery();
 	}
@@ -166,6 +194,11 @@ public class SecurityPatchLocalServiceUtil {
 	*/
 	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static java.lang.String getSecurityPatchName(int envLFR,
+		com.liferay.osb.model.TicketAttachment ticketAttachment) {
+		return getService().getSecurityPatchName(envLFR, ticketAttachment);
 	}
 
 	/**
@@ -218,6 +251,12 @@ public class SecurityPatchLocalServiceUtil {
 				   .dynamicQuery(dynamicQuery, start, end, orderByComparator);
 	}
 
+	public static java.util.List<com.liferay.osb.model.SecurityPatch> getSecurityPatches(
+		long accountEntryId, java.lang.String portletId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getSecurityPatches(accountEntryId, portletId);
+	}
+
 	/**
 	* Returns a range of all the security patchs.
 	*
@@ -256,6 +295,11 @@ public class SecurityPatchLocalServiceUtil {
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
+	}
+
+	public static void deleteSecurityPatches(java.lang.String portletId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		getService().deleteSecurityPatches(portletId);
 	}
 
 	public static void clearService() {

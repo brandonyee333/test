@@ -19,8 +19,10 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.model.AuditedModel;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.ShardedModel;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -41,7 +43,8 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public interface SupportRegionModel extends BaseModel<SupportRegion> {
+public interface SupportRegionModel extends AuditedModel,
+	BaseModel<SupportRegion>, ShardedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -77,10 +80,27 @@ public interface SupportRegionModel extends BaseModel<SupportRegion> {
 	public void setSupportRegionId(long supportRegionId);
 
 	/**
+	 * Returns the company ID of this support region.
+	 *
+	 * @return the company ID of this support region
+	 */
+	@Override
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this support region.
+	 *
+	 * @param companyId the company ID of this support region
+	 */
+	@Override
+	public void setCompanyId(long companyId);
+
+	/**
 	 * Returns the user ID of this support region.
 	 *
 	 * @return the user ID of this support region
 	 */
+	@Override
 	public long getUserId();
 
 	/**
@@ -88,6 +108,7 @@ public interface SupportRegionModel extends BaseModel<SupportRegion> {
 	 *
 	 * @param userId the user ID of this support region
 	 */
+	@Override
 	public void setUserId(long userId);
 
 	/**
@@ -95,6 +116,7 @@ public interface SupportRegionModel extends BaseModel<SupportRegion> {
 	 *
 	 * @return the user uuid of this support region
 	 */
+	@Override
 	public String getUserUuid();
 
 	/**
@@ -102,6 +124,7 @@ public interface SupportRegionModel extends BaseModel<SupportRegion> {
 	 *
 	 * @param userUuid the user uuid of this support region
 	 */
+	@Override
 	public void setUserUuid(String userUuid);
 
 	/**
@@ -110,6 +133,7 @@ public interface SupportRegionModel extends BaseModel<SupportRegion> {
 	 * @return the user name of this support region
 	 */
 	@AutoEscape
+	@Override
 	public String getUserName();
 
 	/**
@@ -117,6 +141,7 @@ public interface SupportRegionModel extends BaseModel<SupportRegion> {
 	 *
 	 * @param userName the user name of this support region
 	 */
+	@Override
 	public void setUserName(String userName);
 
 	/**
@@ -124,6 +149,7 @@ public interface SupportRegionModel extends BaseModel<SupportRegion> {
 	 *
 	 * @return the create date of this support region
 	 */
+	@Override
 	public Date getCreateDate();
 
 	/**
@@ -131,6 +157,7 @@ public interface SupportRegionModel extends BaseModel<SupportRegion> {
 	 *
 	 * @param createDate the create date of this support region
 	 */
+	@Override
 	public void setCreateDate(Date createDate);
 
 	/**
@@ -138,6 +165,7 @@ public interface SupportRegionModel extends BaseModel<SupportRegion> {
 	 *
 	 * @return the modified date of this support region
 	 */
+	@Override
 	public Date getModifiedDate();
 
 	/**
@@ -145,6 +173,7 @@ public interface SupportRegionModel extends BaseModel<SupportRegion> {
 	 *
 	 * @param modifiedDate the modified date of this support region
 	 */
+	@Override
 	public void setModifiedDate(Date modifiedDate);
 
 	/**

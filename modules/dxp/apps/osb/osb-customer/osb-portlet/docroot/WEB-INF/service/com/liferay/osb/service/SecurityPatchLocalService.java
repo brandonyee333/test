@@ -17,6 +17,7 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.model.SecurityPatch;
+import com.liferay.osb.model.TicketAttachment;
 
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -71,6 +72,15 @@ public interface SecurityPatchLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public SecurityPatch addSecurityPatch(SecurityPatch securityPatch);
 
+	public SecurityPatch addSecurityPatch(long userId, long accountEntryId,
+		long ticketAttachmentId, java.lang.String portletId, int envLFR,
+		java.lang.String name, java.lang.String fileName)
+		throws PortalException, SystemException;
+
+	public SecurityPatch addSecurityPatch(long userId, long ticketAttachmentId,
+		java.lang.String portletId, int envLFR, java.lang.String fileName)
+		throws PortalException, SystemException;
+
 	/**
 	* Creates a new security patch with the primary key. Does not add the security patch to the database.
 	*
@@ -122,6 +132,9 @@ public interface SecurityPatchLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public SecurityPatch updateSecurityPatch(SecurityPatch securityPatch);
 
+	public SecurityPatch updateSecurityPatch(long securityPatchId,
+		java.lang.String name) throws PortalException, SystemException;
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
@@ -162,6 +175,10 @@ public interface SecurityPatchLocalService extends BaseLocalService,
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.lang.String getSecurityPatchName(int envLFR,
+		TicketAttachment ticketAttachment);
+
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
 	*
@@ -201,6 +218,10 @@ public interface SecurityPatchLocalService extends BaseLocalService,
 	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
 		int end, OrderByComparator<T> orderByComparator);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<SecurityPatch> getSecurityPatches(long accountEntryId,
+		java.lang.String portletId) throws SystemException;
+
 	/**
 	* Returns a range of all the security patchs.
 	*
@@ -232,4 +253,7 @@ public interface SecurityPatchLocalService extends BaseLocalService,
 	*/
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
+
+	public void deleteSecurityPatches(java.lang.String portletId)
+		throws SystemException;
 }

@@ -66,10 +66,12 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(57);
+		StringBundler sb = new StringBundler(59);
 
 		sb.append("{accountEntryId=");
 		sb.append(accountEntryId);
+		sb.append(", companyId=");
+		sb.append(companyId);
 		sb.append(", userId=");
 		sb.append(userId);
 		sb.append(", userName=");
@@ -134,6 +136,7 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 		AccountEntryImpl accountEntryImpl = new AccountEntryImpl();
 
 		accountEntryImpl.setAccountEntryId(accountEntryId);
+		accountEntryImpl.setCompanyId(companyId);
 		accountEntryImpl.setUserId(userId);
 
 		if (userName == null) {
@@ -254,6 +257,8 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		accountEntryId = objectInput.readLong();
 
+		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
@@ -300,6 +305,8 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(accountEntryId);
+
+		objectOutput.writeLong(companyId);
 
 		objectOutput.writeLong(userId);
 
@@ -401,6 +408,7 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 	}
 
 	public long accountEntryId;
+	public long companyId;
 	public long userId;
 	public String userName;
 	public long createDate;

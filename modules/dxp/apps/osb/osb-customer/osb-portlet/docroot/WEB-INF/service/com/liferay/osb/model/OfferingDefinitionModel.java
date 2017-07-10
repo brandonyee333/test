@@ -19,8 +19,10 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.model.AuditedModel;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.ShardedModel;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -41,7 +43,8 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public interface OfferingDefinitionModel extends BaseModel<OfferingDefinition> {
+public interface OfferingDefinitionModel extends AuditedModel,
+	BaseModel<OfferingDefinition>, ShardedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -77,10 +80,27 @@ public interface OfferingDefinitionModel extends BaseModel<OfferingDefinition> {
 	public void setOfferingDefinitionId(long offeringDefinitionId);
 
 	/**
+	 * Returns the company ID of this offering definition.
+	 *
+	 * @return the company ID of this offering definition
+	 */
+	@Override
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this offering definition.
+	 *
+	 * @param companyId the company ID of this offering definition
+	 */
+	@Override
+	public void setCompanyId(long companyId);
+
+	/**
 	 * Returns the user ID of this offering definition.
 	 *
 	 * @return the user ID of this offering definition
 	 */
+	@Override
 	public long getUserId();
 
 	/**
@@ -88,6 +108,7 @@ public interface OfferingDefinitionModel extends BaseModel<OfferingDefinition> {
 	 *
 	 * @param userId the user ID of this offering definition
 	 */
+	@Override
 	public void setUserId(long userId);
 
 	/**
@@ -95,6 +116,7 @@ public interface OfferingDefinitionModel extends BaseModel<OfferingDefinition> {
 	 *
 	 * @return the user uuid of this offering definition
 	 */
+	@Override
 	public String getUserUuid();
 
 	/**
@@ -102,6 +124,7 @@ public interface OfferingDefinitionModel extends BaseModel<OfferingDefinition> {
 	 *
 	 * @param userUuid the user uuid of this offering definition
 	 */
+	@Override
 	public void setUserUuid(String userUuid);
 
 	/**
@@ -110,6 +133,7 @@ public interface OfferingDefinitionModel extends BaseModel<OfferingDefinition> {
 	 * @return the user name of this offering definition
 	 */
 	@AutoEscape
+	@Override
 	public String getUserName();
 
 	/**
@@ -117,6 +141,7 @@ public interface OfferingDefinitionModel extends BaseModel<OfferingDefinition> {
 	 *
 	 * @param userName the user name of this offering definition
 	 */
+	@Override
 	public void setUserName(String userName);
 
 	/**
@@ -124,6 +149,7 @@ public interface OfferingDefinitionModel extends BaseModel<OfferingDefinition> {
 	 *
 	 * @return the create date of this offering definition
 	 */
+	@Override
 	public Date getCreateDate();
 
 	/**
@@ -131,6 +157,7 @@ public interface OfferingDefinitionModel extends BaseModel<OfferingDefinition> {
 	 *
 	 * @param createDate the create date of this offering definition
 	 */
+	@Override
 	public void setCreateDate(Date createDate);
 
 	/**
@@ -138,6 +165,7 @@ public interface OfferingDefinitionModel extends BaseModel<OfferingDefinition> {
 	 *
 	 * @return the modified date of this offering definition
 	 */
+	@Override
 	public Date getModifiedDate();
 
 	/**
@@ -145,6 +173,7 @@ public interface OfferingDefinitionModel extends BaseModel<OfferingDefinition> {
 	 *
 	 * @param modifiedDate the modified date of this offering definition
 	 */
+	@Override
 	public void setModifiedDate(Date modifiedDate);
 
 	/**

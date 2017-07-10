@@ -35,6 +35,7 @@ public class SupportTeamSoap implements Serializable {
 		SupportTeamSoap soapModel = new SupportTeamSoap();
 
 		soapModel.setSupportTeamId(model.getSupportTeamId());
+		soapModel.setCompanyId(model.getCompanyId());
 		soapModel.setUserId(model.getUserId());
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
@@ -105,6 +106,14 @@ public class SupportTeamSoap implements Serializable {
 
 	public void setSupportTeamId(long supportTeamId) {
 		_supportTeamId = supportTeamId;
+	}
+
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	public void setCompanyId(long companyId) {
+		_companyId = companyId;
 	}
 
 	public long getUserId() {
@@ -204,6 +213,7 @@ public class SupportTeamSoap implements Serializable {
 	}
 
 	private long _supportTeamId;
+	private long _companyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;

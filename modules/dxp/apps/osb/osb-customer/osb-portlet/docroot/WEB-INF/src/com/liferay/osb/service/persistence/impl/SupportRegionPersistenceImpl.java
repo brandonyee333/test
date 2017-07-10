@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.CompanyProvider;
+import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.TableMapper;
 import com.liferay.portal.kernel.service.persistence.impl.TableMapperFactory;
@@ -462,6 +463,8 @@ public class SupportRegionPersistenceImpl extends BasePersistenceImpl<SupportReg
 		supportRegion.setNew(true);
 		supportRegion.setPrimaryKey(supportRegionId);
 
+		supportRegion.setCompanyId(companyProvider.getCompanyId());
+
 		return supportRegion;
 	}
 
@@ -643,6 +646,7 @@ public class SupportRegionPersistenceImpl extends BasePersistenceImpl<SupportReg
 		supportRegionImpl.setPrimaryKey(supportRegion.getPrimaryKey());
 
 		supportRegionImpl.setSupportRegionId(supportRegion.getSupportRegionId());
+		supportRegionImpl.setCompanyId(supportRegion.getCompanyId());
 		supportRegionImpl.setUserId(supportRegion.getUserId());
 		supportRegionImpl.setUserName(supportRegion.getUserName());
 		supportRegionImpl.setCreateDate(supportRegion.getCreateDate());
@@ -1986,7 +1990,7 @@ public class SupportRegionPersistenceImpl extends BasePersistenceImpl<SupportReg
 		TableMapperFactory.removeTableMapper("OSB_SupportTeams_SupportRegions");
 	}
 
-	@BeanReference(type = CompanyProvider.class)
+	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
 	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
 	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
