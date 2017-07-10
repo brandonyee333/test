@@ -1541,50 +1541,9 @@ public class SupportPortlet extends MVCPortlet {
 			updateProfilePreferences(actionRequest, portletPreferences);
 		}
 
-		boolean userVersion2Enabled = SupportUtil.getUserPreferenceValue(
-			themeDisplay.getUserId(), "version2Enabled");
-
-		boolean version2Enabled = ParamUtil.getBoolean(
-			actionRequest, "version2Enabled");
-
-		Layout layout = themeDisplay.getLayout();
-
 		PortletURL portletURL = PortletURLFactoryUtil.create(
 			actionRequest, OSBPortletKeys.OSB_SUPPORT, themeDisplay.getPlid(),
 			PortletRequest.RENDER_PHASE);
-
-		if (version2Enabled) {
-			LayoutLocalServiceUtil.updateLookAndFeel(
-				layout.getGroupId(), false, layout.getLayoutId(),
-				"osbsupport_WAR_osbsupporttheme", "01", "", false);
-
-			if (userVersion2Enabled != version2Enabled) {
-				portletURL.setParameter("mvcPath", "/support/2/view.jsp");
-			}
-			else {
-				portletURL.setParameter(
-					"mvcPath", "/support/2/preferences.jsp");
-			}
-		}
-		else {
-			LayoutLocalServiceUtil.updateLookAndFeel(
-				layout.getGroupId(), false, layout.getLayoutId(),
-				"osbcommunity_WAR_osbcommunitytheme", "01", "", false);
-
-			portletURL.setParameter("mvcPath", "/support/view.jsp");
-
-			if (userVersion2Enabled != version2Enabled) {
-				portletURL.setParameter("tabs1", "tickets");
-			}
-			else {
-				portletURL.setParameter("tabs1", "preferences");
-			}
-		}
-
-		portletPreferences.setValue(
-			"version2Enabled", String.valueOf(version2Enabled));
-
-		portletPreferences.store();
 
 		actionResponse.sendRedirect(portletURL.toString());
 	}
@@ -2355,8 +2314,6 @@ public class SupportPortlet extends MVCPortlet {
 		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		themeDisplay.setControlPanelCategory(null);
-
 		long ticketEntryId = ParamUtil.getLong(renderRequest, "ticketEntryId");
 		String ticketDisplayId = ParamUtil.getString(
 			renderRequest, "ticketDisplayId");
@@ -2460,7 +2417,7 @@ public class SupportPortlet extends MVCPortlet {
 
 	@Override
 	protected String getPath(
-		PortletRequest portletRequest, PortletRequest portletResponse) {
+		PortletRequest portletRequest, PortletResponse portletResponse) {
 
 		String mvcPath = super.getPath(portletRequest, portletResponse);
 
