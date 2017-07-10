@@ -113,6 +113,7 @@ import java.net.URL;
 import java.text.Format;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -1059,8 +1060,11 @@ public class SupportUtil {
 
 		listTypes = ListUtil.copy(listTypes);
 
-		int[] listTypeIds = TicketEntryConstants.getEnvListTypeIds(
+		int[] envListTypeIds = TicketEntryConstants.getEnvListTypeIds(
 			envLFR, envListType);
+
+		long[] listTypeIds = 
+			Arrays.stream(envListTypeIds).asLongStream().toArray();
 
 		Iterator<ListType> itr = listTypes.iterator();
 

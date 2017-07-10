@@ -46,6 +46,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -84,12 +85,15 @@ public class OSBRequestUtil {
 
 		Iterator<ListType> itr = envLFRTypes.iterator();
 
+		long[] listTypesDeprecated = 
+			Arrays.stream(ProductEntryConstants.LIST_TYPES_DEPRECATED).
+				asLongStream().toArray();
+
 		while (itr.hasNext()) {
 			ListType listType = itr.next();
 
 			if (ArrayUtil.contains(
-					ProductEntryConstants.LIST_TYPES_DEPRECATED,
-					listType.getListTypeId()) ||
+					listTypesDeprecated, listType.getListTypeId()) ||
 				(listType.getListTypeId() >= envLFR)) {
 
 				itr.remove();
@@ -228,12 +232,15 @@ public class OSBRequestUtil {
 
 			Iterator<ListType> itr = envLFRTypes.iterator();
 
+			long[] listTypesDeprecated = 
+				Arrays.stream(ProductEntryConstants.LIST_TYPES_DEPRECATED).
+					asLongStream().toArray();
+
 			while (itr.hasNext()) {
 				ListType envLFRType = itr.next();
 
 				if (ArrayUtil.contains(
-						ProductEntryConstants.LIST_TYPES_DEPRECATED,
-						envLFRType.getListTypeId())) {
+						listTypesDeprecated, envLFRType.getListTypeId())) {
 
 					itr.remove();
 				}
