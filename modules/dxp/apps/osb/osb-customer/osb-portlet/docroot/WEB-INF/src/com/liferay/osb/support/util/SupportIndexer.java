@@ -14,10 +14,6 @@
 
 package com.liferay.osb.support.util;
 
-import com.liferay.portal.kernel.search.BaseIndexer;
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountWorkerConstants;
@@ -39,18 +35,20 @@ import com.liferay.osb.service.TicketAttachmentLocalServiceUtil;
 import com.liferay.osb.service.TicketEntryLocalServiceUtil;
 import com.liferay.osb.service.TicketFlagLocalServiceUtil;
 import com.liferay.osb.service.TicketWorkerLocalServiceUtil;
-import com.liferay.osb.service.persistence.TicketEntryActionableDynamicQuery;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
 import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.osb.util.VisibilityConstants;
-import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Subscription;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.search.BaseIndexer;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.BooleanQuery;
 import com.liferay.portal.kernel.search.BooleanQueryFactoryUtil;
@@ -62,21 +60,20 @@ import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.SearchEngineUtil;
 import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.search.Summary;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
-import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.model.Subscription;
-import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
 import com.liferay.portal.kernel.service.SubscriptionLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.io.InputStream;
-
 import java.text.Format;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -86,7 +83,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-import javax.portlet.PortletURL;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 
 /**
  * @author Shinn Lok
@@ -98,6 +96,11 @@ public class SupportIndexer extends BaseIndexer {
 	};
 
 	public static final String PORTLET_ID = OSBPortletKeys.OSB_SUPPORT;
+
+	@Override
+	public String getClassName() {
+		return TicketEntry.class.getName();
+	}
 
 	public String[] getClassNames() {
 		return CLASS_NAMES;
@@ -145,7 +148,7 @@ public class SupportIndexer extends BaseIndexer {
 			subsearchQuery, searchContext, "closedDate", closedDateGT,
 			closedDateLT);
 
-		addSearchArrayQuery(subsearchQuery, searchContext, "component");
+		addSearchTerm(subsearchQuery, searchContext, "component", false);
 
 		Date createDateGT = (Date)searchContext.getAttribute("createDateGT");
 		Date createDateLT = (Date)searchContext.getAttribute("createDateLT");
@@ -160,14 +163,14 @@ public class SupportIndexer extends BaseIndexer {
 		_addDateQuery(
 			subsearchQuery, searchContext, "dueDate", dueDateGT, dueDateLT);
 
-		addSearchArrayQuery(subsearchQuery, searchContext, "envAS");
-		addSearchArrayQuery(subsearchQuery, searchContext, "envDB");
-		addSearchArrayQuery(subsearchQuery, searchContext, "envJVM");
-		addSearchArrayQuery(subsearchQuery, searchContext, "envLFR");
-		addSearchArrayQuery(subsearchQuery, searchContext, "envOS");
-		addSearchArrayQuery(subsearchQuery, searchContext, "escalationLevel");
+		addSearchTerm(subsearchQuery, searchContext, "envAS", false);
+		addSearchTerm(subsearchQuery, searchContext, "envDB", false);
+		addSearchTerm(subsearchQuery, searchContext, "envJVM", false);
+		addSearchTerm(subsearchQuery, searchContext, "envLFR", false);
+		addSearchTerm(subsearchQuery, searchContext, "envOS", false);
+		addSearchTerm(subsearchQuery, searchContext, "escalationLevel", false);
 		addSearchTerm(subsearchQuery, searchContext, "satisfiedDueDate", false);
-		addSearchArrayQuery(subsearchQuery, searchContext, "severity");
+		addSearchTerm(subsearchQuery, searchContext, "severity", false);
 
 		Long userId = (Long)searchContext.getAttribute("userId");
 
@@ -530,7 +533,7 @@ public class SupportIndexer extends BaseIndexer {
 	@Override
 	protected Summary doGetSummary(
 		Document document, Locale locale, String snippet,
-		PortletURL portletURL) {
+		PortletRequest portletRequest, PortletResponse portletResponse) {
 
 		String title = document.get(Field.TITLE);
 
@@ -543,13 +546,15 @@ public class SupportIndexer extends BaseIndexer {
 
 		String entryClassName = document.get(Field.ENTRY_CLASS_NAME);
 
-		if (entryClassName.equals(TicketEntry.class.getName())) {
+		// TODO do we need this logic still?
+
+		/*if (entryClassName.equals(TicketEntry.class.getName())) {
 			String entryClassPK = document.get(Field.ENTRY_CLASS_PK);
 
 			portletURL.setParameter("ticketEntryId", entryClassPK);
-		}
+		}*/
 
-		return new Summary(title, description, portletURL);
+		return new Summary(locale, title, description);
 	}
 
 	@Override
@@ -828,8 +833,8 @@ public class SupportIndexer extends BaseIndexer {
 	protected void reindexEntries(long companyId)
 		throws PortalException, SystemException {
 
-		ActionableDynamicQuery actionableDynamicQuery =
-			new TicketEntryActionableDynamicQuery() {
+		IndexableActionableDynamicQuery actionableDynamicQuery =
+			new IndexableActionableDynamicQuery() {
 
 			@Override
 			protected void addDefaultCriteria(DynamicQuery dynamicQuery) {
@@ -843,7 +848,7 @@ public class SupportIndexer extends BaseIndexer {
 
 				Document document = getDocument(ticketEntry);
 
-				addDocument(document);
+				addDocuments(document);
 			}
 
 		};
@@ -899,8 +904,9 @@ public class SupportIndexer extends BaseIndexer {
 			BooleanQuery accountEntryTierQuery = BooleanQueryFactoryUtil.create(
 				searchContext);
 
-			addSearchArrayQuery(
-				accountEntryTierQuery, searchContext, "accountEntryTier");
+			addSearchTerm(
+				accountEntryTierQuery, searchContext, "accountEntryTier",
+				false);
 
 			accountEntryQuery.add(
 				accountEntryTierQuery, BooleanClauseOccur.SHOULD);
