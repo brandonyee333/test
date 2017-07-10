@@ -679,7 +679,7 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 
 		ListType listType = listTypes.get(listTypes.size() - 1);
 
-		return listType.getListTypeId();
+		return (int)listType.getListTypeId();
 	}
 
 	protected boolean hasUnlimitedEnterpriseWide(List<OrderEntry> orderEntries)
@@ -829,7 +829,7 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 		name = StringUtil.shorten(name, 150);
 
 		CorpProject corpProject = CorpProjectLocalServiceUtil.fetchCorpProject(
-			dossieraProjectKey);
+			Long.valueOf(dossieraProjectKey));
 
 		if (corpProject == null) {
 			if ((salesforceOpportunityType ==

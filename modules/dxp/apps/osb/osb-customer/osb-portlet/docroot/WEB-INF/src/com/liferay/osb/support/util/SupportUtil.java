@@ -946,7 +946,7 @@ public class SupportUtil {
 			}
 
 			if (listTypeName.equals(name)) {
-				return listType.getListTypeId();
+				return (int)listType.getListTypeId();
 			}
 		}
 
