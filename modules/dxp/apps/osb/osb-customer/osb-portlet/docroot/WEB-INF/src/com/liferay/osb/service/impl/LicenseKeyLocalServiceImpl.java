@@ -14,11 +14,8 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Time;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.asset.kernel.model.AssetEntry;
+import com.liferay.osb.admin.util.KeyGenerator;
 import com.liferay.osb.exception.DuplicateHostNameException;
 import com.liferay.osb.exception.DuplicateIPAddressException;
 import com.liferay.osb.exception.DuplicateMACAddressException;
@@ -37,7 +34,6 @@ import com.liferay.osb.exception.LicenseKeyServerInfoException;
 import com.liferay.osb.exception.LicenseKeySingleUseException;
 import com.liferay.osb.exception.MaximumLicenseKeyException;
 import com.liferay.osb.exception.OfferingEntryStatusException;
-import com.liferay.osb.admin.util.KeyGenerator;
 import com.liferay.osb.license.util.LicenseUtil;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
@@ -63,19 +59,23 @@ import com.liferay.osb.util.OSBPortletKeys;
 import com.liferay.osb.util.comparator.LicenseKeyExpirationDateComparator;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.CharPool;
-import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.service.ListTypeServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.CharPool;
+import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SubscriptionSender;
-import com.liferay.asset.kernel.model.AssetEntry;
+import com.liferay.portal.kernel.util.Time;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.io.File;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -1683,7 +1683,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				ProductEntry.class.getName() + StringPool.PERIOD +
 					productEntry.getVersionsListType();
 
-			listTypeService.validate(
+			ListTypeServiceUtil.validate(
 				productVersion, ProductEntryConstants.getAllListType(listType));
 		}
 		catch (Exception e) {

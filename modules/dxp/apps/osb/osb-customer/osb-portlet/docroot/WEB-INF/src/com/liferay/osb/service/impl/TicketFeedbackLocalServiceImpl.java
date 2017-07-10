@@ -14,11 +14,8 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Time;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.mail.kernel.model.MailMessage;
+import com.liferay.mail.kernel.service.MailServiceUtil;
 import com.liferay.osb.exception.DuplicateTicketFeedbackException;
 import com.liferay.osb.exception.TicketFeedbackAnswerException;
 import com.liferay.osb.exception.TicketFeedbackRatingException;
@@ -39,23 +36,27 @@ import com.liferay.osb.support.util.SupportUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
 import com.liferay.osb.util.PortletPropsValues;
-import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.mail.kernel.model.MailMessage;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.CalendarUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
-import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SubscriptionSender;
-import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.Time;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -65,7 +66,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.mail.internet.InternetAddress;
-
 import javax.portlet.PortletPreferences;
 
 /**
@@ -681,7 +681,7 @@ public class TicketFeedbackLocalServiceImpl
 					ticketFeedback.getTicketFeedbackId(),
 					PortalUUIDUtil.generate()));
 
-			mailService.sendEmail(mailMessage);
+			MailServiceUtil.sendEmail(mailMessage);
 		}
 	}
 
@@ -838,7 +838,7 @@ public class TicketFeedbackLocalServiceImpl
 					ticketFeedback.getTicketFeedbackId(),
 					PortalUUIDUtil.generate()));
 
-			mailService.sendEmail(mailMessage);
+			MailServiceUtil.sendEmail(mailMessage);
 		}
 	}
 
@@ -953,7 +953,7 @@ public class TicketFeedbackLocalServiceImpl
 					ticketFeedback.getTicketFeedbackId(),
 					PortalUUIDUtil.generate()));
 
-			mailService.sendEmail(mailMessage);
+			MailServiceUtil.sendEmail(mailMessage);
 		}
 	}
 

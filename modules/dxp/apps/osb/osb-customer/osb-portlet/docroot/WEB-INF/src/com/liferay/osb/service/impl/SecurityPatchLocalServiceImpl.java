@@ -14,9 +14,6 @@
 
 package com.liferay.osb.service.impl;
 
-import java.util.Date;
-import java.util.List;
-
 import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.model.SecurityPatch;
 import com.liferay.osb.model.TicketAttachment;
@@ -28,7 +25,12 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.ListTypeServiceUtil;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.StringBundler;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Amos Fong
@@ -59,8 +61,12 @@ public class SecurityPatchLocalServiceImpl
 		securityPatch.setEnvLFR(envLFR);
 		securityPatch.setName(name);
 		securityPatch.setFileName(fileName);
+		
+		// TODO implement serviceContext as needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		securityPatchPersistence.update(securityPatch, false);
+		securityPatchPersistence.update(securityPatch, serviceContext);
 
 		return securityPatch;
 	}
@@ -113,14 +119,18 @@ public class SecurityPatchLocalServiceImpl
 			securityPatchId);
 
 		securityPatch.setName(name);
+		
+		// TODO implement serviceContext as needed
+		
+		ServiceContext serviceContext = new ServiceContext();
 
-		return securityPatchPersistence.update(securityPatch, false);
+		return securityPatchPersistence.update(securityPatch, serviceContext);
 	}
 
 	protected void validate(int envLFR)
 		throws PortalException, SystemException {
 
-		ListType listType = listTypeService.getListType(envLFR);
+		ListType listType = ListTypeServiceUtil.getListType(envLFR);
 
 		String type = listType.getType();
 
