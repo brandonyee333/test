@@ -79,7 +79,9 @@ import com.liferay.portal.kernel.service.CountryServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.SubscriptionSender;
+/* TODO update rabbitMQ integration
 import com.liferay.rabbitmq.consumer.RabbitMQConsumer;
+*/
 import com.liferay.util.portlet.PortletProps;
 
 import java.text.Format;
@@ -96,8 +98,9 @@ import java.util.TreeMap;
 /**
  * @author Amos Fong
  */
-public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
-
+public abstract class ProvisioningRabbitMQConsumer {
+	// implements RabbitMQConsumer {
+/* TODO update rabbitMQ integration
 	public int parse(
 		String routingKey, String message, Map<String, Object> properties) {
 
@@ -118,7 +121,7 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 			return RESPONSE_REJECT;
 		}
 	}
-
+*/
 	protected ServiceContext createServiceContext(JSONObject jsonObject) {
 		ServiceContext serviceContext = new ServiceContext();
 
@@ -827,9 +830,12 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 		String name = projectJSONObject.getString("_name");
 
 		name = StringUtil.shorten(name, 150);
-
+// TODO remove CorpProject null initialization
+		CorpProject corpProject = null;
+/* TODO add in CorpProject integration
 		CorpProject corpProject = CorpProjectLocalServiceUtil.fetchCorpProject(
 			Long.valueOf(dossieraProjectKey));
+*/
 
 		if (corpProject == null) {
 			if ((salesforceOpportunityType ==

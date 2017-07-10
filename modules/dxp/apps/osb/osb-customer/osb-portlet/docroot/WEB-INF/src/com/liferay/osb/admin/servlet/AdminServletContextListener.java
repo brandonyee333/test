@@ -22,7 +22,6 @@ import com.liferay.osb.hook.auth.OSBAuthToken;
 import com.liferay.osb.license.messaging.RegisterTrialLicenseMessageListener;
 import com.liferay.osb.model.TicketEntry;
 import com.liferay.osb.model.TicketEntryConstants;
-import com.liferay.osb.rabbitmq.RabbitMQConsumerRouter;
 import com.liferay.osb.service.permission.OSBCommonPermission;
 import com.liferay.osb.servlet.AdminServletContextListenerUpgradeHelper;
 import com.liferay.osb.util.OSBConstants;
@@ -63,8 +62,11 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.service.permission.CommonPermission;
 import com.liferay.portal.kernel.service.permission.CommonPermissionUtil;
+/* TODO update rabbitMQ integration
+import com.liferay.osb.rabbitmq.RabbitMQConsumerRouter;
 import com.liferay.rabbitmq.consumer.RabbitMQConsumer;
 import com.liferay.rabbitmq.service.ConsumerManagerLocalServiceUtil;
+*/
 
 import java.util.ArrayList;
 import java.util.List;
@@ -150,11 +152,12 @@ public class AdminServletContextListener
 			osbCommonPermission.getCommonPermission());
 
 		// RabbitMQ
-
+/* TODO update rabbitMQ integration
 		if (Validator.isNotNull(_rabbitMQConsumerKey)) {
 			ConsumerManagerLocalServiceUtil.unregisterConsumer(
 				_rabbitMQConsumerKey);
 		}
+*/
 	}
 
 	@Override
@@ -237,7 +240,7 @@ public class AdminServletContextListener
 		commonPermissionUtil.setCommonPermission(osbCommonPermission);
 
 		// RabbitMQ
-
+/* TODO update rabbitMQ integration
 		if (Validator.isNotNull(
 				PortletPropsValues.RABBITMQ_MESSAGE_QUEUE_NAME)) {
 
@@ -254,7 +257,7 @@ public class AdminServletContextListener
 				_log.error("Unable to register consumer", e);
 			}
 		}
-
+*/
 		// Search
 
 		SearchEngineUtil searchEngineUtil =

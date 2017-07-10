@@ -16,14 +16,17 @@ package com.liferay.osb.admin.messaging;
 
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.admin.util.AdminUtil;
-import com.liferay.osb.rabbitmq.DeadLetterFilterRabbitMQConsumer;
 import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
+
+/* TODO update rabbitMQ integration
+import com.liferay.osb.rabbitmq.DeadLetterFilterRabbitMQConsumer;
 import com.liferay.rabbitmq.consumer.RabbitMQConsumer;
 import com.liferay.rabbitmq.service.ConsumerManagerLocalServiceUtil;
+*/
 
 import javax.portlet.PortletPreferences;
 
@@ -50,6 +53,7 @@ public class DeadLetterFilterMessageListener extends BaseMessageListener {
 			return;
 		}
 
+/* TODO update rabbitMQ integration
 		try {
 			RabbitMQConsumer rabbitMQConsumer =
 				new DeadLetterFilterRabbitMQConsumer(deadLetterFilterScript);
@@ -61,6 +65,7 @@ public class DeadLetterFilterMessageListener extends BaseMessageListener {
 		catch (Exception e) {
 			_log.error(e, e);
 		}
+*/
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(

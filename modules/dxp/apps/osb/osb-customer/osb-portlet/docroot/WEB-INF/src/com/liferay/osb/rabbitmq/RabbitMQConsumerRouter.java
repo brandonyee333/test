@@ -16,7 +16,9 @@ package com.liferay.osb.rabbitmq;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+/* TODO update rabbitMQ integration
 import com.liferay.rabbitmq.consumer.RabbitMQConsumer;
+*/
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,8 +26,8 @@ import java.util.Map;
 /**
  * @author Amos Fong
  */
-public class RabbitMQConsumerRouter implements RabbitMQConsumer {
-
+public class RabbitMQConsumerRouter { // implements RabbitMQConsumer {
+/* TODO update rabbitMQ integration
 	public RabbitMQConsumerRouter() {
 		_rabbitMQConsumersMap.put(
 			"dossiera.provisioning.create",
@@ -52,11 +54,13 @@ public class RabbitMQConsumerRouter implements RabbitMQConsumer {
 			return RESPONSE_ACK;
 		}
 	}
-
+*/
 	private static Log _log = LogFactoryUtil.getLog(
 		RabbitMQConsumerRouter.class);
 
+/* TODO update rabbitMQ integration
 	private Map<String, RabbitMQConsumer> _rabbitMQConsumersMap =
 		new HashMap<String, RabbitMQConsumer>();
+*/
 
 }

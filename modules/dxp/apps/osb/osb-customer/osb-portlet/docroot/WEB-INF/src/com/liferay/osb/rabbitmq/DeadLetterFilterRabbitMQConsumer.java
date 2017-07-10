@@ -22,7 +22,9 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.scripting.ScriptingUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+/* TODO update rabbitMQ integration
 import com.liferay.rabbitmq.consumer.RabbitMQConsumer;
+*/
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -32,19 +34,19 @@ import java.util.Set;
 /**
  * @author Amos Fong
  */
-public class DeadLetterFilterRabbitMQConsumer implements RabbitMQConsumer {
+public class DeadLetterFilterRabbitMQConsumer { // implements RabbitMQConsumer {
 
 	public DeadLetterFilterRabbitMQConsumer(String script) {
 		_script = script;
 	}
-
+/* TODO update rabbitMQ integration
 	public int parse(
 		String routingKey, String message, Map<String, Object> properties) {
 
 		JSONObject jsonObject = null;
 
 		try {
-			jsonObject = JSONFactoryUtil.createJSONObject(message);
+			jsonObject = JSONFactoryUtil.createJSONObject(m	essage);
 		}
 		catch (JSONException jsone) {
 			if (_log.isWarnEnabled()) {
@@ -82,7 +84,7 @@ public class DeadLetterFilterRabbitMQConsumer implements RabbitMQConsumer {
 
 		return RESPONSE_REPUBLISH;
 	}
-
+*/
 	private static Log _log = LogFactoryUtil.getLog(
 		DeadLetterFilterRabbitMQConsumer.class);
 
