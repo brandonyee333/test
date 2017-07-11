@@ -79,8 +79,7 @@ public class AdminServletContextListenerWorkflowHelper {
 				WorkflowDefinitionManagerUtil.deployWorkflowDefinition(
 					OSBConstants.COMPANY_ID,
 					OSBConstants.USER_AMOS_FONG_USER_ID,
-					"OSB Provisioning Approval",
-					new ByteArrayInputStream(bytes));
+					"OSB Provisioning Approval", bytes);
 
 			WorkflowDefinitionLinkLocalServiceUtil.updateWorkflowDefinitionLink(
 				OSBConstants.USER_AMOS_FONG_USER_ID, OSBConstants.COMPANY_ID, 0,

@@ -55,8 +55,8 @@ public class AdminServletContextListenerAssetHelper {
 
 			AssetVocabulary assetVocabulary =
 				AssetVocabularyLocalServiceUtil.addVocabulary(
-					OSBConstants.USER_SUPPORT_PM_USER_ID, null, titleMap, null,
-					StringPool.BLANK, serviceContext);
+					OSBConstants.USER_SUPPORT_PM_USER_ID, 0L, StringPool.BLANK, 
+					titleMap, null, StringPool.BLANK, serviceContext);
 
 			addAssetCategory(assetVocabulary.getVocabularyId(), 0, "Brazil");
 			addAssetCategory(assetVocabulary.getVocabularyId(), 0, "China");
@@ -100,8 +100,8 @@ public class AdminServletContextListenerAssetHelper {
 
 			AssetVocabulary assetVocabulary =
 				AssetVocabularyLocalServiceUtil.addVocabulary(
-					OSBConstants.USER_SUPPORT_PM_USER_ID, null, titleMap, null,
-					StringPool.BLANK, serviceContext);
+					OSBConstants.USER_SUPPORT_PM_USER_ID, 0L, StringPool.BLANK,
+					titleMap, null, StringPool.BLANK, serviceContext);
 
 			if (PortletPropsValues.DEVELOPER_MODE_ENABLED) {
 				OSBConstants.ASSET_VOCABULARY_MARKETPLACE_ID =
@@ -162,8 +162,9 @@ public class AdminServletContextListenerAssetHelper {
 		serviceContext.setScopeGroupId(OSBConstants.GROUP_GUEST_ID);
 
 		return AssetCategoryLocalServiceUtil.addCategory(
-			OSBConstants.USER_SUPPORT_PM_USER_ID, parentCategoryId, titleMap,
-			null, vocabularyId, null, serviceContext);
+			OSBConstants.USER_SUPPORT_PM_USER_ID, OSBConstants.GROUP_GUEST_ID, 
+			parentCategoryId, titleMap, null, vocabularyId, null, 
+			serviceContext);
 	}
 
 }
