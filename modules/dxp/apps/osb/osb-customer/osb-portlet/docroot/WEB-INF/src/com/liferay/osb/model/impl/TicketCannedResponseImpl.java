@@ -27,7 +27,7 @@ public class TicketCannedResponseImpl extends TicketCannedResponseBaseImpl {
 	}
 
 	public String[] getAvailableLocales() {
-		return LocalizationUtil.getAvailableLocales(getName());
+		return LocalizationUtil.getAvailableLanguageIds(getName());
 	}
 
 	public String getDefaultLocale() {
@@ -37,7 +37,7 @@ public class TicketCannedResponseImpl extends TicketCannedResponseBaseImpl {
 			return StringPool.BLANK;
 		}
 
-		return LocalizationUtil.getDefaultLocale(name);
+		return LocalizationUtil.getDefaultLanguageId(name);
 	}
 
 }
