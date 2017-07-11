@@ -146,7 +146,6 @@
 		<header-portlet-javascript>/common/javascript/resumable.js</header-portlet-javascript>
 		<css-class-wrapper>osb-portlet-support</css-class-wrapper>
 	</portlet>
-	<portlet>
  	<portlet>
 		<portlet-name>3</portlet-name>
 		<configuration-action-class>com.liferay.osb.downloads.action.ConfigurationActionImpl</configuration-action-class>
