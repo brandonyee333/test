@@ -16,6 +16,7 @@ package com.liferay.osb.hook.filter;
 
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.ip.geocoder.IPGeocoder;
 import com.liferay.ip.geocoder.IPInfo;
 import com.liferay.ip.geocoder.internal.IPGeocoderImpl;
 import com.liferay.portal.kernel.log.Log;
@@ -88,7 +89,9 @@ public class IPGeocoderFilter extends BaseFilter {
 			return null;
 		}
 
-		IPInfo ipInfo = IPGeocoderUtil.getIPInfo(request.getRemoteAddr());
+		IPGeocoder ipGeocoder = (IPGeocoder)request.getAttribute("IP_GEOCODER");
+
+		IPInfo ipInfo = ipGeocoder.getIPInfo(request.getRemoteAddr());
 
 		if ((ipInfo == null) || Validator.isNull(ipInfo.getCountryCode())) {
 			if (_log.isDebugEnabled()) {
