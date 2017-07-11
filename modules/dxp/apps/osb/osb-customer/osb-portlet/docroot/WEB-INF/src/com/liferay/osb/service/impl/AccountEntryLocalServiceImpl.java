@@ -211,6 +211,7 @@ public class AccountEntryLocalServiceImpl
 			ArrayList<User> users, ServiceContext serviceContext)
 		throws PortalException, SystemException {
 
+		/* TODO corp project dependencies
 		// Corp project
 
 		if (corpProject.getCorpProjectId() > 0) {
@@ -222,6 +223,7 @@ public class AccountEntryLocalServiceImpl
 				corpProject.getUserId(), 0, corpProject.getDossieraProjectKey(),
 				corpProject.getSalesforceProjectKey(), corpProject.getName());
 		}
+		**/
 
 		// Partner entry
 
@@ -287,6 +289,7 @@ public class AccountEntryLocalServiceImpl
 				continue;
 			}
 
+			/* TODO corp project dependencies
 			corpProjectLocalService.addCorpProjectUsers(
 				corpProject.getCorpProjectId(), new long[] {user.getUserId()});
 
@@ -302,6 +305,7 @@ public class AccountEntryLocalServiceImpl
 				accountEntry.getUserId(), corpProject.getCorpProjectId(),
 				new long[] {user.getUserId()},
 				OSBConstants.ROLE_OSB_CORP_LCS_USER_ID);
+			**/
 
 			accountCustomerLocalService.addAccountCustomers(
 				accountEntry.getUserId(), new long[] {user.getUserId()},
@@ -404,12 +408,14 @@ public class AccountEntryLocalServiceImpl
 
 		companyName = getTrialName(companyName);
 
+		/* TODO corp project dependencies
 		CorpProject corpProject = corpProjectLocalService.addCorpProject(
 			userId, userId, StringPool.BLANK, StringPool.BLANK, companyName);
 
 		corpProjectLocalService.addUserCorpProjectRoles(
 			userId, corpProject.getCorpProjectId(), new long[] {userId},
 			OSBConstants.ROLE_OSB_CORP_LCS_USER_ID);
+		**/
 
 		// Account entry
 
@@ -445,6 +451,9 @@ public class AccountEntryLocalServiceImpl
 			}
 		}
 
+		AccountEntry accountEntry = null;
+
+		/* TODO corp project dependencies
 		AccountEntry accountEntry = addAccountEntry(
 			userId, corpProject.getCorpProjectId(), StringPool.BLANK,
 			companyName, null, AccountEntryConstants.TYPE_TRIAL, industry, 0L,
@@ -452,6 +461,7 @@ public class AccountEntryLocalServiceImpl
 			StringPool.BLANK, new String[0], new long[0], "N/A",
 			StringPool.BLANK, StringPool.BLANK, "N/A", "N/A", 0L, countryId,
 			StringPool.BLANK);
+		**/
 
 		if (countryId != 0) {
 			accountEntry.setCountryId(countryId);
@@ -537,10 +547,12 @@ public class AccountEntryLocalServiceImpl
 				orderEntry.getOrderEntryId());
 		}
 
+		/* TODO corp project dependencies
 		// LCS
 
 		lcsSubscriptionEntryLocalService.syncToLCS(
 			corpProject.getCorpProjectId());
+		**/
 	}
 
 	public void auditAccountEntries() throws PortalException, SystemException {
@@ -1839,7 +1851,7 @@ public class AccountEntryLocalServiceImpl
 				productVersionTypes.size() - 2);
 		}
 
-		return latestProductVersionType.getListTypeId();
+		return (int)latestProductVersionType.getListTypeId();
 	}
 
 	protected int getStatus(long accountEntryId) throws SystemException {
