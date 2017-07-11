@@ -14,7 +14,6 @@
 
 package com.liferay.osb.admin.workflow;
 
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.LCSSubscriptionEntryLocalServiceUtil;
@@ -27,16 +26,16 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.workflow.BaseWorkflowHandler;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.Constants;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.workflow.BaseWorkflowHandler;
 
 import java.io.Serializable;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -45,7 +44,7 @@ import java.util.Map;
 /**
  * @author Amos Fong
  */
-public class AccountEntryWorkflowHandler extends BaseWorkflowHandler {
+public class AccountEntryWorkflowHandler<T> extends BaseWorkflowHandler<T> {
 
 	public static final String CLASS_NAME = AccountEntry.class.getName();
 
@@ -61,9 +60,9 @@ public class AccountEntryWorkflowHandler extends BaseWorkflowHandler {
 
 	@Override
 	public void startWorkflowInstance(
-			long companyId, long groupId, long userId, long classPK,
-			Object model, Map<String, Serializable> workflowContext)
-		throws PortalException, SystemException {
+			long companyId, long groupId, long userId, long classPK, T model,
+			Map<String, Serializable> workflowContext)
+		throws PortalException {
 
 		StringBundler sb = new StringBundler(6);
 
@@ -90,9 +89,10 @@ public class AccountEntryWorkflowHandler extends BaseWorkflowHandler {
 			companyId, groupId, userId, classPK, model, workflowContext);
 	}
 
-	public AccountEntry updateStatus(
-			int status, Map<String, Serializable> workflowContext)
-		throws PortalException, SystemException {
+	@Override
+	public Object updateStatus(
+			int status, Map workflowContext) 
+		throws PortalException {
 
 		try {
 			return doUpdateStatus(status, workflowContext);
@@ -107,14 +107,9 @@ public class AccountEntryWorkflowHandler extends BaseWorkflowHandler {
 
 			throw re;
 		}
-		catch (SystemException se) {
-			_log.error(se, se);
-
-			throw se;
-		}
 	}
 
-	protected AccountEntry doUpdateStatus(
+	protected Object doUpdateStatus(
 			int status, Map<String, Serializable> workflowContext)
 		throws PortalException, SystemException {
 
@@ -179,7 +174,6 @@ public class AccountEntryWorkflowHandler extends BaseWorkflowHandler {
 		return accountEntry;
 	}
 
-	@Override
 	protected String getIconPath(ThemeDisplay themeDisplay) {
 		return themeDisplay.getPathThemeImages() + "/trees/page.png";
 	}
