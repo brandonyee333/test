@@ -60,8 +60,10 @@ import com.liferay.document.library.kernel.exception.DuplicateFileException;
 import com.liferay.document.library.kernel.exception.NoSuchFileException;
 import com.liferay.document.library.kernel.store.DLStoreUtil;
 import com.liferay.document.library.kernel.store.Store;
+/* TODO implement releaseNotes portlet
 import com.liferay.releasenotes.model.ReleaseNotes;
 import com.liferay.releasenotes.service.ReleaseNotesLocalServiceUtil;
+*/
 
 import java.io.File;
 import java.io.IOException;
@@ -365,12 +367,14 @@ public class TicketAttachmentLocalServiceImpl
 				TicketAttachmentConstants.TYPE_HOTFIX) &&
 			(ticketAttachment.getReleaseNotesId() > 0)) {
 
+			/* TODO implement releaseNotes portlet
 			try {
 				ReleaseNotesLocalServiceUtil.deleteReleaseNotes(
 					ticketAttachment.getReleaseNotesId());
 			}
 			catch (Exception e) {
 			}
+			*/
 		}
 
 		// Audit entry
@@ -653,6 +657,7 @@ public class TicketAttachmentLocalServiceImpl
 						TicketAttachmentConstants.TYPE_HOTFIX) &&
 					fileName.endsWith(".zip")) {
 
+					/* TODO implement releaseNotes portlet
 					ReleaseNotes releaseNotes = addReleaseNotes(
 						ticketAttachment.getUserId(),
 						ticketAttachment.getFilePath());
@@ -661,6 +666,7 @@ public class TicketAttachmentLocalServiceImpl
 						ticketAttachment.setReleaseNotesId(
 							releaseNotes.getReleaseNotesId());
 					}
+					*/
 				}
 			}
 
@@ -758,6 +764,7 @@ public class TicketAttachmentLocalServiceImpl
 			ticketAttachment.getFilePath() + StringPool.SLASH +
 				Store.VERSION_DEFAULT;
 
+		/* TODO implement releaseNotes portlet
 		ReleaseNotes releaseNotes = null;
 
 		String fileName = ticketAttachment.getFileName();
@@ -768,6 +775,7 @@ public class TicketAttachmentLocalServiceImpl
 			releaseNotes = addReleaseNotes(
 				ticketAttachment.getUserId(), ticketAttachment.getFilePath());
 		}
+		*/
 
 		ticketAttachment.setTicketEntryId(ticketEntryId);
 		ticketAttachment.setTicketSolutionId(ticketSolutionId);
@@ -775,10 +783,12 @@ public class TicketAttachmentLocalServiceImpl
 		ticketAttachment.setVisibility(visibility);
 		ticketAttachment.setStatus(WorkflowConstants.STATUS_APPROVED);
 
+		/* TODO implement releaseNotes portlet
 		if (releaseNotes != null) {
 			ticketAttachment.setReleaseNotesId(
 				releaseNotes.getReleaseNotesId());
 		}
+		*/
 		
 		//TODO implement serviceContext how needed
 		
@@ -830,6 +840,7 @@ public class TicketAttachmentLocalServiceImpl
 		return ticketAttachments;
 	}
 
+	/* TODO implement releaseNotes portlet
 	protected ReleaseNotes addReleaseNotes(long userId, String fileName) {
 		InputStream inputStream = null;
 
@@ -869,6 +880,7 @@ public class TicketAttachmentLocalServiceImpl
 
 		return null;
 	}
+	*/
 
 	protected void deleteInactiveTicketAttachments()
 		throws PortalException, SystemException {

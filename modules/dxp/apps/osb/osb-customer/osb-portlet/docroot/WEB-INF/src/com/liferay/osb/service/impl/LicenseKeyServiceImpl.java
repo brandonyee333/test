@@ -21,7 +21,9 @@ import com.liferay.osb.exception.LicenseKeyVersionException;
 import com.liferay.osb.license.util.LicenseUtil;
 import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.AccountWorkerConstants;
+/* TODO implement assetReceipt
 import com.liferay.osb.model.AssetReceipt;
+*/
 import com.liferay.osb.model.AssetReceiptLicense;
 import com.liferay.osb.model.LicenseEntry;
 import com.liferay.osb.model.LicenseEntryConstants;
@@ -31,7 +33,9 @@ import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.service.base.LicenseKeyServiceBaseImpl;
 import com.liferay.osb.service.permission.OSBAccountEntryPermission;
+/* TODO implement assetReceipt
 import com.liferay.osb.service.permission.OSBAssetReceiptPermission;
+*/
 import com.liferay.osb.service.permission.OSBLicenseKeyPermission;
 import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.osb.util.OSBConstants;
@@ -193,11 +197,13 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			assetReceiptLicensePersistence.findByPrimaryKey(
 				assetReceiptLicenseId);
 
+		/* TODO implement assetReceipt
 		AssetReceipt assetReceipt = assetReceiptPersistence.findByPrimaryKey(
 			assetReceiptLicense.getAssetReceiptId());
 
 		OSBAssetReceiptPermission.check(
 			getPermissionChecker(), assetReceipt, OSBActionKeys.ADD_LICENSE);
+		*/
 
 		return licenseKeyLocalService.addLicenseKey(
 			userId, assetReceiptLicense, owner, description, hostNames,
@@ -231,12 +237,14 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 				assetReceiptLicensePersistence.findByPrimaryKey(
 					licenseKey.getAssetReceiptLicenseId());
 
+			/* TODO implement assetReceipt
 			AssetReceipt assetReceipt =
 				assetReceiptPersistence.findByPrimaryKey(
 					assetReceiptLicense.getAssetReceiptId());
 
 			OSBAssetReceiptPermission.check(
 				getPermissionChecker(), assetReceipt, OSBActionKeys.VIEW);
+			*/
 		}
 		else {
 			OSBLicenseKeyPermission.check(
@@ -319,10 +327,12 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			assetReceiptLicensePersistence.findByPrimaryKey(
 				licenseKey.getAssetReceiptLicenseId());
 
+		/* TODO implement assetReceipt
 		AssetReceipt assetReceipt = assetReceiptLicense.getAssetReceipt();
 
 		OSBAssetReceiptPermission.check(
 			getPermissionChecker(), assetReceipt, OSBActionKeys.RENEW_LICENSE);
+		*/
 
 		return licenseKeyLocalService.renewLicenseKey(
 			getUserId(), licenseKeyId);
@@ -471,12 +481,14 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 					assetReceiptLicensePersistence.findByPrimaryKey(
 						licenseKey.getAssetReceiptLicenseId());
 
+				/* TODO implement assetReceipt
 				AssetReceipt assetReceipt =
 					assetReceiptPersistence.findByPrimaryKey(
 						assetReceiptLicense.getAssetReceiptId());
 
 				OSBAssetReceiptPermission.check(
 					getPermissionChecker(), assetReceipt, OSBActionKeys.MANAGE);
+				*/
 			}
 		}
 		else {
