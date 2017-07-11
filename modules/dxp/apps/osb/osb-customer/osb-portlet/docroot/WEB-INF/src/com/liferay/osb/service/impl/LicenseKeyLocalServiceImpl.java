@@ -105,15 +105,20 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		throws PortalException, SystemException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
+
+		/* TODO update AssetReceiptLicense missing placeholder method
 		AssetEntry assetEntry = assetReceiptLicense.getAssetEntry();
+		**/
 
 		int licenseVersion = 3;
 
 		owner = LicenseUtil.trimText(owner);
 		description = LicenseUtil.trimText(description);
 
+		/* TODO update AssetReceiptLicense missing placeholder method
 		String productEntryName = LicenseUtil.trimText(assetEntry.getTitle());
 		String productId = assetEntry.getClassUuid();
+		**/
 
 		int productVersion = 0;
 
@@ -179,6 +184,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				assetReceiptLicense.getLicenseType());
 */
 
+			/* TODO AssetReceiptLicense dependency
 			String key = KeyGenerator.generate(
 				StringPool.BLANK, StringPool.BLANK, licenseKeyType,
 				licenseVersion, productEntryName, productId,
@@ -186,6 +192,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				assetReceiptLicense.getMaxUsers(), description, hostName,
 				curIpAddresses, curMacAddresses, new String[] {serverId},
 				startDate, expirationDate);
+			**/
 
 			long licenseKeyId = counterLocalService.increment();
 
@@ -199,20 +206,28 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			licenseKey.setModifiedDate(now);
 			licenseKey.setAssetReceiptLicenseId(
 				assetReceiptLicense.getAssetReceiptLicenseId());
+			/* TODO AssetReceiptLicense dependency
 			licenseKey.setLicenseEntryType(licenseKeyType);
+			**/
 			licenseKey.setLicenseVersion(licenseVersion);
+			/* TODO AssetReceiptLicense dependency
 			licenseKey.setProductEntryName(productEntryName);
 			licenseKey.setProductId(productId);
+			**/
 			licenseKey.setProductVersion(productVersion);
 			licenseKey.setProductVersionLabel(String.valueOf(productVersion));
 			licenseKey.setOwner(owner);
+			/* TODO AssetReceiptLicense dependency
 			licenseKey.setMaxUsers(assetReceiptLicense.getMaxUsers());
+			**/
 			licenseKey.setDescription(description);
 			licenseKey.setHostName(hostName);
 			licenseKey.setIpAddresses(curIpAddresses);
 			licenseKey.setMacAddresses(curMacAddresses);
 			licenseKey.setServerId(serverId);
+			/* TODO AssetReceiptLicense dependency
 			licenseKey.setKey(key);
+			**/
 			licenseKey.setStartDate(startDate);
 			licenseKey.setExpirationDate(expirationDate);
 			licenseKey.setComplimentary(false);
@@ -1583,6 +1598,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			AssetReceiptLicense assetReceiptLicense, int numberOfKeys)
 		throws PortalException, SystemException {
 
+		/* TODO update AssetReceiptLicense missing placeholder method
 		if (assetReceiptLicense.hasUnlimitedServers()) {
 			return;
 		}
@@ -1590,6 +1606,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		if (assetReceiptLicense.getAvailableLicenseKeyCount() < numberOfKeys) {
 			throw new MaximumLicenseKeyException();
 		}
+		**/
 	}
 
 	protected void validate(

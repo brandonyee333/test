@@ -27,8 +27,6 @@ import com.liferay.osb.admin.util.KeyGenerator;
 import com.liferay.osb.license.util.LicenseUtil;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AssetLicense;
-import com.liferay.osb.model.AssetLicenseConstants;
-import com.liferay.osb.model.AssetReceipt;
 import com.liferay.osb.model.AssetReceiptLicense;
 import com.liferay.osb.model.LicenseEntry;
 import com.liferay.osb.model.LicenseEntryConstants;
@@ -58,6 +56,10 @@ import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.util.Encryptor;
+/* TODO check dependency import
+import com.liferay.osb.model.AssetLicenseConstants;
+import com.liferay.osb.model.AssetReceipt;
+**/
 
 import java.io.IOException;
 
@@ -506,6 +508,7 @@ public class LicenseServlet extends HttpServlet {
 
 			int licenseEntryType = assetReceiptLicense.getLicenseType();
 
+			/* TODO check License/Marketplace dependency
 			if (licenseEntryType ==
 					AssetLicenseConstants.LICENSE_TYPE_PER_USER) {
 
@@ -517,6 +520,7 @@ public class LicenseServlet extends HttpServlet {
 					continue;
 				}
 			}
+			**/
 
 			if (productVersion > 0) {
 				if (licenseKey.getProductVersion() > productVersion) {
@@ -618,6 +622,7 @@ public class LicenseServlet extends HttpServlet {
 
 		String licensesLeft = StringPool.BLANK;
 
+		/* TODO AssetReceiptLicense placeholder methods missing
 		if (assetReceiptLicense.hasUnlimitedServers()) {
 			licensesLeft = "unlimited";
 		}
@@ -640,6 +645,7 @@ public class LicenseServlet extends HttpServlet {
 		AssetEntry assetEntry = assetReceiptLicense.getAssetEntry();
 
 		productsJsonObject.put(assetEntry.getTitle(), licensesLeft);
+		**/
 
 		return productsJsonObject;
 	}
@@ -772,6 +778,7 @@ public class LicenseServlet extends HttpServlet {
 			return;
 		}
 
+		/* TODO AssetReceiptLicense placeholder methods missing
 		try {
 			AssetReceiptLicense assetReceiptLicense =
 				AssetReceiptLicenseLocalServiceUtil.getAssetReceiptLicense(
@@ -792,6 +799,7 @@ public class LicenseServlet extends HttpServlet {
 				throw nsare;
 			}
 		}
+		**/
 
 		OrderEntry orderEntry = OrderEntryLocalServiceUtil.getOrderEntry(
 			orderUuid);
@@ -813,6 +821,7 @@ public class LicenseServlet extends HttpServlet {
 			return;
 		}
 
+		/* TODO AssetReceiptLicense placeholder methods missing
 		try {
 			AssetReceiptLicense assetReceiptLicense =
 				AssetReceiptLicenseLocalServiceUtil.getAssetReceiptLicense(
@@ -835,6 +844,7 @@ public class LicenseServlet extends HttpServlet {
 				throw nsare;
 			}
 		}
+		**/
 
 		OrderEntry orderEntry = OrderEntryLocalServiceUtil.getOrderEntry(
 			orderUuid);
@@ -857,8 +867,10 @@ public class LicenseServlet extends HttpServlet {
 			return;
 		}
 
+		/* TODO AssetReceiptLicense placeholder methods missing
 		AssetReceipt assetReceipt = assetReceiptLicense.getAssetReceipt();
 		AssetLicense assetLicense = assetReceiptLicense.getAssetLicense();
+		**/
 
 		int version = jsonObject.getInt("version");
 		String hostName = jsonObject.getString("hostName");
@@ -898,6 +910,7 @@ public class LicenseServlet extends HttpServlet {
 
 		LicenseKey licenseKey = null;
 
+		/* TODO AssetReceiptLicense placeholder methods missing
 		if (licenseKeys.isEmpty()) {
 			licenseKey = LicenseKeyLocalServiceUtil.addLicenseKey(
 				assetReceiptLicense.getUserId(), assetReceiptLicense,
@@ -910,6 +923,7 @@ public class LicenseServlet extends HttpServlet {
 		else {
 			licenseKey = licenseKeys.get(0);
 		}
+		**/
 
 		responseJSONObject.put(
 			"licenseXML", LicenseUtil.exportToXML(licenseKey));
