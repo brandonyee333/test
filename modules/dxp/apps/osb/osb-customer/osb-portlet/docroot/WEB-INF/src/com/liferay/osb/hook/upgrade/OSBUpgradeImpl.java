@@ -14,7 +14,9 @@
 
 package com.liferay.osb.hook.upgrade;
 
+/* TODO update rabbitMQ integration
 import com.liferay.osb.tools.BaseUpgradeImpl;
+*/
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -35,8 +37,8 @@ import com.liferay.expando.kernel.service.ExpandoValueLocalServiceUtil;
 /**
  * @author Amos Fong
  */
-public class OSBUpgradeImpl extends BaseUpgradeImpl {
-
+public class OSBUpgradeImpl { // extends BaseUpgradeImpl {
+/* TODO update custom upgrade class
 	@Override
 	public int[] getDeveloperBuildNumbers(String servletContextName)
 		throws SystemException {
@@ -118,5 +120,5 @@ public class OSBUpgradeImpl extends BaseUpgradeImpl {
 	private static final String _EXPANDO_COLUMN_NAME = "runTime";
 
 	private static Log _log = LogFactoryUtil.getLog(OSBUpgradeImpl.class);
-
+*/
 }

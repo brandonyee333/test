@@ -58,7 +58,9 @@ import com.liferay.osb.rabbitmq.ProvisioningAuditRabbitMQConsumer;
 */
 import com.liferay.osb.remote.RemoteDossieraWebServiceUtil;
 import com.liferay.osb.service.base.AccountEntryLocalServiceBaseImpl;
+/* TODO update OSBUtil integration
 import com.liferay.osb.shared.util.OSBUtil;
+*/
 import com.liferay.osb.support.util.SupportUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.PortletPropsKeys;
@@ -2501,11 +2503,11 @@ public class AccountEntryLocalServiceImpl
 
 	protected void validateTrial(long userId)
 		throws PortalException, SystemException {
-
+/* TODO update OSBUtil integration
 		if (!OSBUtil.isTrialEULA(OSBConstants.COMPANY_ID, userId)) {
 			throw new PrincipalException();
 		}
-
+*/
 		if (accountEntryPersistence.countByU_T(
 				userId, AccountEntryConstants.TYPE_TRIAL) > 0) {
 

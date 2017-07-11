@@ -37,8 +37,10 @@ import com.liferay.osb.exception.OfferingEntryStatusException;
 import com.liferay.osb.license.util.LicenseUtil;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
+/* TODO update app license integration
 import com.liferay.osb.model.AppVersion;
 import com.liferay.osb.model.AssetLicenseConstants;
+*/
 import com.liferay.osb.model.AssetReceiptLicense;
 import com.liferay.osb.model.LicenseEntry;
 import com.liferay.osb.model.LicenseEntryConstants;
@@ -117,7 +119,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		String productClassName = PortalUtil.getClassName(
 			assetReceiptLicense.getProductClassNameId());
-
+/* TODO update app license integration
 		if (productClassName.equals(AppVersion.class.getName())) {
 			long productClassPK = assetReceiptLicense.getProductClassPK();
 
@@ -126,7 +128,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 			productVersion = appVersion.getVersionId();
 		}
-
+*/
 		Date startDate = getLicenseKeyStartDate(
 			startDateMonth, startDateDay, startDateYear, user.getTimeZone(),
 			assetReceiptLicense.getStartDate());
@@ -170,8 +172,12 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				serverId = serverIds[i];
 			}
 
+// TODO remove temp update app license integration
+			String licenseType = StringPool.BLANK;
+/* TODO update app license integration
 			String licenseKeyType = AssetLicenseConstants.getLicenseKeyType(
 				assetReceiptLicense.getLicenseType());
+*/
 
 			String key = KeyGenerator.generate(
 				StringPool.BLANK, StringPool.BLANK, licenseKeyType,

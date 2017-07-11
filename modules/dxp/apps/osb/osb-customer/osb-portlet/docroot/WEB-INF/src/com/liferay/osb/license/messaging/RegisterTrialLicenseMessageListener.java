@@ -15,7 +15,9 @@
 package com.liferay.osb.license.messaging;
 
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
+/* TODO update OSBUtil integration
 import com.liferay.osb.shared.util.OSBUtil;
+*/
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -37,9 +39,10 @@ public class RegisterTrialLicenseMessageListener extends BaseMessageListener {
 			AccountEntryLocalServiceUtil.addTrialAccountEntry(userId, 0);
 		}
 		catch (Exception e) {
+/* TODO update OSBUtil integration
 			OSBUtil.setTrialEULA(
 				OSBConstants.COMPANY_ID, userId, new String[0]);
-
+*/
 			_log.error(e, e);
 		}
 	}

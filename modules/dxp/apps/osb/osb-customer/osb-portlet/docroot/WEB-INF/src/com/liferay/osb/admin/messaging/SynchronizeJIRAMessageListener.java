@@ -17,7 +17,9 @@ package com.liferay.osb.admin.messaging;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.PortalUtil;
+/* TODO update JIRA integration
 import com.liferay.jira.service.JIRATicketLocalServiceUtil;
+*/
 import com.liferay.osb.model.ExternalIdMapperConstants;
 import com.liferay.osb.model.SupportResponseConstants;
 import com.liferay.osb.model.TicketEntry;
@@ -57,25 +59,31 @@ public class SynchronizeJIRAMessageListener extends BaseMessageListener {
 		Map<String, Object> customFields = _getCustomFields(message);
 		String status = _getStatus(message);
 
+// TODO remove temporary JIRA integration
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
 		if (Validator.isNotNull(jiraTicketKey)) {
+/* TODO update JIRA integration
 			JSONObject jsonObject = JIRATicketLocalServiceUtil.getJIRATicket(
 				jiraTicketKey);
-
+*/
 			String summary = _getSummary(jsonObject, status);
 			status = _getStatus(jsonObject, status);
 
+/* TODO update JIRA integration
 			JIRATicketLocalServiceUtil.updateJIRATicket(
 				jiraTicketKey, summary, description, assigneeName, customFields,
 				status);
+*/
 		}
 		else {
 			String issueType = _getIssueType(message);
 			String summary = message.getString("displayId");
-
+/* TODO update JIRA integration
 			JSONObject jsonObject = JIRATicketLocalServiceUtil.createJIRATicket(
 				issueType, summary, description, assigneeName, customFields,
 				status);
-
+*/
 			long classNameId = PortalUtil.getClassNameId(TicketEntry.class);
 			long ticketEntryId = message.getLong("ticketEntryId");
 			String externalId = jsonObject.getString("key");
@@ -302,8 +310,13 @@ public class SynchronizeJIRAMessageListener extends BaseMessageListener {
 		sb.append(displayId);
 		sb.append(" | REOPENED')");
 
+// TODO remove temporary JIRA integration
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+/* TODO update JIRA integration
 		JSONObject jsonObject = JIRATicketLocalServiceUtil.getJIRATickets(
 			sb.toString());
+*/
 
 		JSONArray jsonArray = jsonObject.getJSONArray("issues");
 

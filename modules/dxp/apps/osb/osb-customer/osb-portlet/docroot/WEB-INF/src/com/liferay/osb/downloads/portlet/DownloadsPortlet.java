@@ -26,7 +26,9 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.util.bridges.mvc.MVCPortlet;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.osb.downloads.util.DownloadsUtil;
+/* TODO update OSBUtil integration
 import com.liferay.osb.shared.util.OSBUtil;
+*/
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.audit.AuditMessage;
 import com.liferay.portal.kernel.audit.AuditRouterUtil;
@@ -307,6 +309,7 @@ public class DownloadsPortlet extends MVCPortlet {
 			return false;
 		}
 
+/* TODO update OSBUtil integration
 		if (fileName.startsWith("/trial/sync/")) {
 			if (OSBUtil.isLiferaySyncEULA(
 					themeDisplay.getCompanyId(), themeDisplay.getUserId())) {
@@ -321,7 +324,7 @@ public class DownloadsPortlet extends MVCPortlet {
 				return true;
 			}
 		}
-
+*/
 		return false;
 	}
 
