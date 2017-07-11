@@ -23,7 +23,6 @@ import com.liferay.osb.license.messaging.RegisterTrialLicenseMessageListener;
 import com.liferay.osb.model.TicketEntry;
 import com.liferay.osb.model.TicketEntryConstants;
 import com.liferay.osb.service.permission.OSBCommonPermission;
-import com.liferay.osb.servlet.AdminServletContextListenerUpgradeHelper;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.portal.kernel.exception.NoSuchOrganizationException;
@@ -135,9 +134,11 @@ public class AdminServletContextListener
 			(AuthTokenUtil)PortalBeanLocatorUtil.locate(
 				AuthTokenUtil.class.getName());
 
+		/* TODO fix authToken implementation
 		OSBAuthToken osbAuthToken = (OSBAuthToken)AuthTokenUtil.getAuthToken();
 
 		authTokenUtil.setAuthToken(osbAuthToken.getAuthToken());
+		*/
 
 		// Common permission
 
@@ -200,15 +201,6 @@ public class AdminServletContextListener
 
 		AdminServletContextListenerExpandoHelper.setup();
 
-		// Upgrade
-
-		AdminServletContextListenerUpgradeHelper
-			adminServletContextListenerUpgradeHelper =
-				new AdminServletContextListenerUpgradeHelper();
-
-		adminServletContextListenerUpgradeHelper.setup(
-			_servletContext.getServletContextName());
-
 		// Workflow
 
 		AdminServletContextListenerWorkflowHelper.setup();
@@ -219,11 +211,13 @@ public class AdminServletContextListener
 			(AuthTokenUtil)PortalBeanLocatorUtil.locate(
 				AuthTokenUtil.class.getName());
 
+		/* TODO fix authToken implementation
 		AuthToken originalAuthToken = AuthTokenUtil.getAuthToken();
 
 		AuthToken osbAuthToken = new OSBAuthToken(originalAuthToken);
 
 		authTokenUtil.setAuthToken(osbAuthToken);
+		*/
 
 		// Common permission
 
@@ -270,7 +264,9 @@ public class AdminServletContextListener
 		excludedEntryClassNames.add(TicketEntry.class.getName());
 		excludedEntryClassNames.add(User.class.getName());
 
+		/* TODO need to set via a configuration per SearchEngineHelperConfiguration
 		searchEngineUtil.setExcludedEntryClassNames(excludedEntryClassNames);
+		*/
 	}
 
 	protected void setupDeveloperMode() throws Exception {
@@ -320,12 +316,12 @@ public class AdminServletContextListener
 			group = GroupLocalServiceUtil.getGroup(
 				OSBConstants.COMPANY_ID, "Customer Portal");
 		}
-		catch (Exception e) {
+		catch (Exception e) {			
 			group = GroupLocalServiceUtil.addGroup(
-				OSBConstants.USER_SUPPORT_PM_USER_ID, null, 0,
-				"Customer Portal", StringPool.BLANK,
-				GroupConstants.TYPE_SITE_PRIVATE, "/customer", true, true,
-				null);
+				OSBConstants.USER_SUPPORT_PM_USER_ID, 0, null, 0, 0, 
+				"Customer Portal", StringPool.BLANK, 
+				GroupConstants.TYPE_SITE_PRIVATE, false, 0, "/customer", true, 
+				true, null);
 		}
 
 		OSBConstants.GROUP_CUSTOMER_ID = group.getGroupId();
@@ -355,8 +351,8 @@ public class AdminServletContextListener
 		catch (NoSuchOrganizationException nsoe) {
 			organization = OrganizationLocalServiceUtil.addOrganization(
 				OSBConstants.USER_SUPPORT_PM_USER_ID, 0L, "Corporation Parent",
-				OrganizationConstants.TYPE_REGULAR_ORGANIZATION, true, 0, 0,
-				OSBConstants.ORGANIZATION_FULL_MEMBER_STATUS_ID,
+				OrganizationConstants.TYPE_REGULAR_ORGANIZATION, 0L, 0L,
+				(long)OSBConstants.ORGANIZATION_FULL_MEMBER_STATUS_ID,
 				"The parent organization of all corporations", false,
 				new ServiceContext());
 		}
@@ -380,8 +376,8 @@ public class AdminServletContextListener
 				OrganizationLocalServiceUtil.addOrganization(
 					OSBConstants.USER_SUPPORT_PM_USER_ID, 0L,
 					"Corporation Group Parent",
-					OrganizationConstants.TYPE_REGULAR_ORGANIZATION, true, 0, 0,
-					OSBConstants.ORGANIZATION_FULL_MEMBER_STATUS_ID,
+					OrganizationConstants.TYPE_REGULAR_ORGANIZATION, 0L, 0L,
+					(long)OSBConstants.ORGANIZATION_FULL_MEMBER_STATUS_ID,
 					"The parent organization of all corporation groups", false,
 					new ServiceContext());
 		}
@@ -405,8 +401,8 @@ public class AdminServletContextListener
 				OrganizationLocalServiceUtil.addOrganization(
 					OSBConstants.USER_SUPPORT_PM_USER_ID, 0L,
 					"Corporation Project Parent",
-					OrganizationConstants.TYPE_REGULAR_ORGANIZATION, true, 0, 0,
-					OSBConstants.ORGANIZATION_FULL_MEMBER_STATUS_ID,
+					OrganizationConstants.TYPE_REGULAR_ORGANIZATION, 0L, 0L,
+					(long)OSBConstants.ORGANIZATION_FULL_MEMBER_STATUS_ID,
 					"The parent organization of all corporation projects",
 					false, new ServiceContext());
 		}
@@ -429,7 +425,7 @@ public class AdminServletContextListener
 				OSBConstants.USER_DEFAULT_USER_ID,
 				OrganizationConstants.DEFAULT_PARENT_ORGANIZATION_ID,
 				"Customer", OrganizationConstants.TYPE_REGULAR_ORGANIZATION,
-				true, 0, 0, ListTypeConstants.ORGANIZATION_STATUS_DEFAULT,
+				0L, 0L, (long)ListTypeConstants.ORGANIZATION_STATUS_DEFAULT,
 				StringPool.BLANK, false, new ServiceContext());
 		}
 
@@ -451,8 +447,8 @@ public class AdminServletContextListener
 					OSBConstants.USER_DEFAULT_USER_ID,
 					OrganizationConstants.DEFAULT_PARENT_ORGANIZATION_ID,
 					"Liferay, Inc.",
-					OrganizationConstants.TYPE_REGULAR_ORGANIZATION, true, 5,
-					19, ListTypeConstants.ORGANIZATION_STATUS_DEFAULT,
+					OrganizationConstants.TYPE_REGULAR_ORGANIZATION, 5L,
+					19L, (long)ListTypeConstants.ORGANIZATION_STATUS_DEFAULT,
 					StringPool.BLANK, false, new ServiceContext());
 		}
 
@@ -471,8 +467,8 @@ public class AdminServletContextListener
 			partnerOrganization = OrganizationLocalServiceUtil.addOrganization(
 				OSBConstants.USER_DEFAULT_USER_ID,
 				OrganizationConstants.DEFAULT_PARENT_ORGANIZATION_ID, "Partner",
-				OrganizationConstants.TYPE_REGULAR_ORGANIZATION, true, 0, 19,
-				ListTypeConstants.ORGANIZATION_STATUS_DEFAULT, StringPool.BLANK,
+				OrganizationConstants.TYPE_REGULAR_ORGANIZATION, 0L, 19L,
+				(long)ListTypeConstants.ORGANIZATION_STATUS_DEFAULT, StringPool.BLANK,
 				false, new ServiceContext());
 		}
 
