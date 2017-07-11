@@ -141,7 +141,7 @@ public class IPGeocoderFilter extends BaseFilter {
 
 		if (redirect == null) {
 			processFilter(
-				IPGeocoderFilter.class, request, response, filterChain);
+				IPGeocoderFilter.class.getName(), request, response, filterChain);
 
 			return;
 		}
