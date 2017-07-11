@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.search.DocumentImpl;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.SearchContext;
+import com.liferay.portal.kernel.search.SearchEngineHelperUtil;
 import com.liferay.portal.kernel.search.SearchEngineUtil;
 import com.liferay.portal.kernel.search.Summary;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -45,6 +46,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 import javax.portlet.PortletURL;
 
 /**
@@ -76,8 +79,11 @@ public class WorkflowIndexer extends BaseIndexer {
 			PORTLET_ID, WorkflowTask.class.getName(),
 			String.valueOf(workflowTask.getWorkflowTaskId()));
 
+		String searchEngineId = SearchEngineHelperUtil.getSearchEngineId(
+			document);
+
 		SearchEngineUtil.deleteDocument(
-			OSBConstants.COMPANY_ID, document.get(Field.UID));
+			searchEngineId, OSBConstants.COMPANY_ID, document.get(Field.UID));
 	}
 
 	@Override
@@ -166,8 +172,9 @@ public class WorkflowIndexer extends BaseIndexer {
 
 	@Override
 	protected Summary doGetSummary(
-		Document document, Locale locale, String snippet,
-		PortletURL portletURL) {
+			Document document, Locale locale, String snippet, 
+			PortletRequest portletRequest, PortletResponse portletResponse) 
+		throws Exception {
 
 		return null;
 	}
@@ -176,7 +183,11 @@ public class WorkflowIndexer extends BaseIndexer {
 	protected void doReindex(Object obj) throws Exception {
 		Document document = getDocument(obj);
 
-		SearchEngineUtil.updateDocument(OSBConstants.COMPANY_ID, document);
+		String searchEngineId = SearchEngineHelperUtil.getSearchEngineId(
+			document);
+
+		SearchEngineUtil.updateDocument(
+			searchEngineId, OSBConstants.COMPANY_ID, document);
 	}
 
 	@Override
@@ -233,9 +244,20 @@ public class WorkflowIndexer extends BaseIndexer {
 			}
 		}
 
-		SearchEngineUtil.updateDocuments(companyId, documents);
+		String searchEngineId = SearchEngineHelperUtil.getSearchEngineId(
+			documents);
+
+		SearchEngineUtil.updateDocuments(searchEngineId, companyId, documents);
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(WorkflowIndexer.class);
+
+	@Override
+	public String getClassName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 
 }
