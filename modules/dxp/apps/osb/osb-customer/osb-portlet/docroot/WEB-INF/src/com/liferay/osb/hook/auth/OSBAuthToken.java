@@ -99,6 +99,7 @@ public class OSBAuthToken implements AuthToken {
 					actionMethodName = actionMethod.getName();
 				}
 
+				/* TODO Need to test JSON Web Service without the PropsKeys, see LPS-28844
 				String[] jsonWebServicePublicMethods = PropsUtil.getArray(
 					PropsKeys.JSONWS_WEB_SERVICE_PUBLIC_METHODS);
 
@@ -107,6 +108,7 @@ public class OSBAuthToken implements AuthToken {
 
 					return true;
 				}
+				**/
 			}
 			catch (Exception e) {
 			}
