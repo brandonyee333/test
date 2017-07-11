@@ -53,7 +53,6 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 				SessionMessages.KEY_SUFFIX_UPDATED_CONFIGURATION);
 	}
 
-	@Override
 	public String render(
 			PortletConfig portletConfig, RenderRequest renderRequest,
 			RenderResponse renderResponse)

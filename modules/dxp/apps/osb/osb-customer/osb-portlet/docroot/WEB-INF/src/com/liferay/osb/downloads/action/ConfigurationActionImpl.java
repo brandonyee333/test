@@ -72,7 +72,6 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 		}
 	}
 
-	@Override
 	public String render(
 			PortletConfig portletConfig, RenderRequest renderRequest,
 			RenderResponse renderResponse)
