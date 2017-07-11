@@ -17,6 +17,7 @@ package com.liferay.osb.securitypatch;
 import com.liferay.osb.service.SecurityPatchLocalServiceUtil;
 import com.liferay.portal.kernel.portlet.PortletLayoutListener;
 import com.liferay.portal.kernel.portlet.PortletLayoutListenerException;
+import com.liferay.portal.kernel.util.UnicodeProperties;
 
 /**
  * @author Alan Zhang
@@ -42,6 +43,15 @@ public class SecurityPatchPortletLayoutListener
 		catch (Exception e) {
 			throw new PortletLayoutListenerException(e);
 		}
+	}
+
+	@Override
+	public void onSetup(String portletId, long plid) {
+	}
+
+	@Override
+	public void updatePropertiesOnRemoveFromLayout(
+			String portletId, UnicodeProperties typeSettingsProperties) {
 	}
 
 }
