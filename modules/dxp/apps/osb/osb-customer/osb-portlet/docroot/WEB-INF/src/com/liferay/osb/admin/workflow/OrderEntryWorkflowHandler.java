@@ -39,7 +39,7 @@ import java.util.Map;
 /**
  * @author Amos Fong
  */
-public class OrderEntryWorkflowHandler extends BaseWorkflowHandler {
+public class OrderEntryWorkflowHandler<T> extends BaseWorkflowHandler<T> {
 
 	public static final String CLASS_NAME = OrderEntry.class.getName();
 
@@ -56,7 +56,7 @@ public class OrderEntryWorkflowHandler extends BaseWorkflowHandler {
 	@Override
 	public void startWorkflowInstance(
 			long companyId, long groupId, long userId, long classPK,
-			Object model, Map<String, Serializable> workflowContext)
+			T model, Map<String, Serializable> workflowContext)
 		throws PortalException, SystemException {
 
 		StringBundler sb = new StringBundler(5);
@@ -88,7 +88,7 @@ public class OrderEntryWorkflowHandler extends BaseWorkflowHandler {
 			companyId, groupId, userId, classPK, model, workflowContext);
 	}
 
-	public OrderEntry updateStatus(
+	public T updateStatus(
 			int status, Map<String, Serializable> workflowContext)
 		throws PortalException, SystemException {
 
@@ -105,14 +105,9 @@ public class OrderEntryWorkflowHandler extends BaseWorkflowHandler {
 
 			throw re;
 		}
-		catch (SystemException se) {
-			_log.error(se, se);
-
-			throw se;
-		}
 	}
 
-	protected OrderEntry doUpdateStatus(
+	protected T doUpdateStatus(
 			int status, Map<String, Serializable> workflowContext)
 		throws PortalException, SystemException {
 
@@ -131,10 +126,9 @@ public class OrderEntryWorkflowHandler extends BaseWorkflowHandler {
 			syncToLCS(orderEntry);
 		}
 
-		return orderEntry;
+		return (T)orderEntry;
 	}
 
-	@Override
 	protected String getIconPath(ThemeDisplay themeDisplay) {
 		return themeDisplay.getPathThemeImages() + "/shopping/cart.png";
 	}

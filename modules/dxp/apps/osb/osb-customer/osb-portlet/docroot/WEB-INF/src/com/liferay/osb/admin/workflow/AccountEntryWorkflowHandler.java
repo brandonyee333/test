@@ -90,8 +90,8 @@ public class AccountEntryWorkflowHandler<T> extends BaseWorkflowHandler<T> {
 	}
 
 	@Override
-	public Object updateStatus(
-			int status, Map workflowContext) 
+	public T updateStatus(
+			int status, Map<String, Serializable> workflowContext) 
 		throws PortalException {
 
 		try {
@@ -109,7 +109,7 @@ public class AccountEntryWorkflowHandler<T> extends BaseWorkflowHandler<T> {
 		}
 	}
 
-	protected Object doUpdateStatus(
+	protected T doUpdateStatus(
 			int status, Map<String, Serializable> workflowContext)
 		throws PortalException, SystemException {
 
@@ -171,7 +171,7 @@ public class AccountEntryWorkflowHandler<T> extends BaseWorkflowHandler<T> {
 			syncToLCS(accountEntry);
 		}
 
-		return accountEntry;
+		return (T)accountEntry;
 	}
 
 	protected String getIconPath(ThemeDisplay themeDisplay) {
