@@ -29,9 +29,12 @@ import com.liferay.asset.kernel.model.BaseAssetRenderer;
 import java.util.Locale;
 
 import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Amos Fong
@@ -138,11 +141,34 @@ public class AccountEntryAssetRenderer extends BaseAssetRenderer {
 		return "/admin/asset/account_entry/" + template + ".jsp";
 	}
 
-	@Override
 	protected String getIconPath(ThemeDisplay themeDisplay) {
 		return themeDisplay.getPathThemeImages() + "/trees/page.png";
 	}
 
 	private AccountEntry _accountEntry;
+
+	@Override
+	public Object getAssetObject() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getClassName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getSummary(PortletRequest portletRequest, PortletResponse portletResponse) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean include(HttpServletRequest request, HttpServletResponse response, String template) throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 }
