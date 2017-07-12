@@ -16,20 +16,10 @@
 	<bean id="destination.osb_synchronize_jira" class="com.liferay.portal.kernel.messaging.ParallelDestination">
 		<property name="name" value="liferay/osb_synchronize_jira" />
 	</bean>
-	<bean id="destination.osb_training_certificate" class="com.liferay.portal.kernel.messaging.ParallelDestination">
-		<property name="name" value="liferay/osb_training_certificate" />
-	</bean>
-	<bean id="destination.osb_training_survey" class="com.liferay.portal.kernel.messaging.ParallelDestination">
-		<property name="name" value="liferay/osb_training_survey" />
-	</bean>
 
 	<!-- Listeners -->
 
-	<bean id="messageListener.ec_country" class="com.liferay.osb.marketplace.messaging.ECCountryMessageListener" />
-	<bean id="messageListener.ec_document_entry" class="com.liferay.osb.marketplace.messaging.ECDocumentEntryMessageListener" />
 	<bean id="messageListener.osb_synchronize_jira" class="com.liferay.osb.admin.messaging.SynchronizeJIRAMessageListener" />
-	<bean id="messageListener.osb_training_certificate" class="com.liferay.osb.admin.messaging.TrainingCertificateMessageListener" />
-	<bean id="messageListener.osb_training_survey" class="com.liferay.osb.admin.messaging.TrainingSurveyMessageListener" />
 
 	<!-- Configurator -->
 
@@ -38,35 +28,13 @@
 			<list>
 				<ref bean="destination.osb_asset_receipt" />
 				<ref bean="destination.osb_synchronize_jira" />
-				<ref bean="destination.osb_training_certificate" />
-				<ref bean="destination.osb_training_survey" />
 			</list>
 		</property>
 		<property name="messageListeners">
 			<map key-type="java.lang.String" value-type="java.util.List">
-				<entry key="liferay/ec_country">
-					<list value-type="com.liferay.portal.kernel.messaging.MessageListener">
-						<ref bean="messageListener.ec_country" />
-					</list>
-				</entry>
-				<entry key="liferay/ec_document_entry">
-					<list value-type="com.liferay.portal.kernel.messaging.MessageListener">
-						<ref bean="messageListener.ec_document_entry" />
-					</list>
-				</entry>
 				<entry key="liferay/osb_synchronize_jira">
 					<list value-type="com.liferay.portal.kernel.messaging.MessageListener">
 						<ref bean="messageListener.osb_synchronize_jira" />
-					</list>
-				</entry>
-				<entry key="liferay/osb_training_certificate">
-					<list value-type="com.liferay.portal.kernel.messaging.MessageListener">
-						<ref bean="messageListener.osb_training_certificate" />
-					</list>
-				</entry>
-				<entry key="liferay/osb_training_survey">
-					<list value-type="com.liferay.portal.kernel.messaging.MessageListener">
-						<ref bean="messageListener.osb_training_survey" />
 					</list>
 				</entry>
 			</map>

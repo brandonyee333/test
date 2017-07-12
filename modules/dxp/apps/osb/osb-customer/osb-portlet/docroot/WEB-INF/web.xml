@@ -58,11 +58,6 @@
 		<load-on-startup>2</load-on-startup>
 	</servlet>
 	<servlet>
-		<servlet-name>Training Servlet</servlet-name>
-		<servlet-class>com.liferay.osb.servlet.TrainingServlet</servlet-class>
-		<load-on-startup>2</load-on-startup>
-	</servlet>
-	<servlet>
 		<servlet-name>User Email Verification Servlet</servlet-name>
 		<servlet-class>com.liferay.portal.kernel.servlet.PortalDelegateServlet</servlet-class>
 		<init-param>
@@ -91,10 +86,6 @@
 	<servlet-mapping>
 		<servlet-name>License Servlet</servlet-name>
 		<url-pattern>/license</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>Training Servlet</servlet-name>
-		<url-pattern>/training/*</url-pattern>
 	</servlet-mapping>
 	<jsp-config>
 		<taglib>
