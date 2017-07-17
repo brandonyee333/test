@@ -53,7 +53,8 @@ public class AdminServletContextListenerAssetHelper {
 			serviceContext.setAddGroupPermissions(true);
 			serviceContext.setScopeGroupId(OSBConstants.GROUP_GLOBAL_ID);
 
-			AssetVocabulary assetVocabulary =
+			// TODO need database to grab OSBConstants.USER_SUPPORT_PM_USER_ID
+			/*AssetVocabulary assetVocabulary =
 				AssetVocabularyLocalServiceUtil.addVocabulary(
 					OSBConstants.USER_SUPPORT_PM_USER_ID, 0L, StringPool.BLANK, 
 					titleMap, null, StringPool.BLANK, serviceContext);
@@ -64,7 +65,7 @@ public class AdminServletContextListenerAssetHelper {
 			addAssetCategory(assetVocabulary.getVocabularyId(), 0, "India");
 			addAssetCategory(assetVocabulary.getVocabularyId(), 0, "Spain");
 			addAssetCategory(
-				assetVocabulary.getVocabularyId(), 0, "United States");
+				assetVocabulary.getVocabularyId(), 0, "United States");*/
 		}
 
 		try {

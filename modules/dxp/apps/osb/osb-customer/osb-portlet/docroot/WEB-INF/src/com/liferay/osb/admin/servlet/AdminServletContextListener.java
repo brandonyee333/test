@@ -122,11 +122,12 @@ public class AdminServletContextListener
 
 	@Override
 	protected void doPortalDestroy() {
-		_registerTrialLicenseDestination.unregister(
+		/* TODO deploy error, need to fix when we figure out how to set up trial licenses
+			_registerTrialLicenseDestination.unregister(
 			_registerTrialLicenseMessageListener);
 
 		MessageBusUtil.removeDestination(
-			_registerTrialLicenseDestination.getName());
+			_registerTrialLicenseDestination.getName());*/
 
 		// Auth token
 
@@ -142,7 +143,8 @@ public class AdminServletContextListener
 
 		// Common permission
 
-		CommonPermissionUtil commonPermissionUtil =
+		// TODO fix cast from CommonPermission to OSBCommonPermission
+		/*CommonPermissionUtil commonPermissionUtil =
 			(CommonPermissionUtil)PortalBeanLocatorUtil.locate(
 				CommonPermissionUtil.class.getName());
 
@@ -150,7 +152,7 @@ public class AdminServletContextListener
 			(OSBCommonPermission)CommonPermissionUtil.getCommonPermission();
 
 		commonPermissionUtil.setCommonPermission(
-			osbCommonPermission.getCommonPermission());
+			osbCommonPermission.getCommonPermission());*/
 
 		// RabbitMQ
 /* TODO update rabbitMQ integration
@@ -167,6 +169,8 @@ public class AdminServletContextListener
 
 		// Messaging
 
+		/* TODO deploy error, need to fix when we figure out how to set up trial licenses
+ 		
 		SerialDestination serialDestination = new SerialDestination();
 
 		serialDestination.setName("liferay/osb_portlet_license");
@@ -181,7 +185,7 @@ public class AdminServletContextListener
 			new RegisterTrialLicenseMessageListener();
 
 		_registerTrialLicenseDestination.register(
-			_registerTrialLicenseMessageListener);
+			_registerTrialLicenseMessageListener);*/
 
 		// Developer mode
 
@@ -191,7 +195,9 @@ public class AdminServletContextListener
 
 		// Asset
 
-		AdminServletContextListenerAssetHelper.setup();
+		// TODO need database for OSBConstants.*_USER_ID calls
+		// Do we even need this? marketplace?
+		//AdminServletContextListenerAssetHelper.setup();
 
 		// Audit action
 
@@ -199,11 +205,13 @@ public class AdminServletContextListener
 
 		// Expando
 
-		AdminServletContextListenerExpandoHelper.setup();
+		// TODO need database for Role values called
+		// AdminServletContextListenerExpandoHelper.setup();
 
 		// Workflow
 
-		AdminServletContextListenerWorkflowHelper.setup();
+		//TODO need database for userId values
+		//AdminServletContextListenerWorkflowHelper.setup();
 
 		// Auth token
 
@@ -254,9 +262,10 @@ public class AdminServletContextListener
 */
 		// Search
 
-		SearchEngineUtil searchEngineUtil =
+		// TODO searchEngineUtil deprecated, need to update
+		/*SearchEngineUtil searchEngineUtil =
 			(SearchEngineUtil)PortalBeanLocatorUtil.locate(
-				SearchEngineUtil.class.getName());
+				SearchEngineUtil.class.getName());*/
 
 		List<String> excludedEntryClassNames = new ArrayList<String>(8);
 
