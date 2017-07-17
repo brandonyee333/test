@@ -5,6 +5,8 @@
 
 	portal_permission_util = serviceLocator.findService("com.liferay.portal.kernel.service.permission.PortalPermission")
 
+	role_util = serviceLocator.findService("com.liferay.portal.kernel.service.persistence.RolePersistence")
+
 	ancestor_layout = layout_local_service.getLayout(layout.getAncestorPlid())
 />
 
@@ -59,25 +61,49 @@
 </#if>
 
 <#assign
-	userGroupIds = user.getUserGroupIds()
+	userRoleIds = user.getRoleIds()
 
 	customer = false
+	liferayEmployee = false
+	partner = false
+	trial = false
+	hideLesa = false
+
+	trialRoleId = 214323
 />
 
-<#if arrayUtil.contains(userGroupIds, 84013)>
+<#if arrayUtil.contains(userRoleIds, 10827)>
 	<#assign customer = true />
 </#if>
 
-<#assign liferayEmployee = false />
-
-<#if arrayUtil.contains(userGroupIds, 80690)>
+<#if arrayUtil.contains(userRoleIds, 10946)>
 	<#assign liferayEmployee = true />
 </#if>
 
-<#assign partner = false />
-
-<#if arrayUtil.contains(userGroupIds, 84039)>
+<#if arrayUtil.contains(userRoleIds, 54427)>
 	<#assign partner = true />
+</#if>
+
+<#if arrayUtil.contains(userRoleIds, trialRoleId)>
+	<#assign trial = true />
+</#if>
+
+<#if !trial>
+	<#assign
+		groupPks = role_util.getGroupPrimaryKeys(trialRoleId)
+		userGroupIds = user.getUserGroupIds()
+	/>
+	<#list groupPks as groupPk>
+		<#assign groupKey = group_local_service.getGroup(groupPk).getGroupKey() />
+		<#if arrayUtil.contains(userGroupIds, groupKey?number)>
+			<#assign trial = true />
+			<#break>
+		</#if>
+	</#list>
+</#if>
+
+<#if trial && !(customer || liferayEmployee || partner)>
+	<#assign hideLesa = true />
 </#if>
 
 <#macro print_navigation layout_friendly_url>
@@ -117,81 +143,85 @@
 					</#list>
 				</#if>
 
-				<#if cur_layout.hasChildren()>
-					<li class="nav-item nav-item-${nav_index} parent-item root-item toggle-menu">
-						<a class="${cur_layout_nav_item_selected_css_class}" href="javascript:;" ${cur_layout.getTarget()}>${cur_layout_name}</a>
-
-						<span class="children-marker responsive-only"></span>
+				<#if hideLesa && cur_layout_name == "LESA">
+					<#-- Skip LESA and all its related child links. -->
 				<#else>
-					<li class="nav-item nav-item-${nav_index} root-item">
-						<#assign cur_layout_href = cur_layout.getFriendlyURL() />
+					<#if cur_layout.hasChildren()>
+						<li class="nav-item nav-item-${nav_index} parent-item root-item toggle-menu">
+							<a class="${cur_layout_nav_item_selected_css_class}" href="javascript:;" ${cur_layout.getTarget()}>${cur_layout_name}</a>
 
-						<#if cur_layout.isTypeURL()>
-							<#assign cur_layout_href = cur_layout.getRegularURL(request) />
-						</#if>
+							<span class="children-marker responsive-only"></span>
+					<#else>
+						<li class="nav-item nav-item-${nav_index} root-item">
+							<#assign cur_layout_href = cur_layout.getFriendlyURL() />
 
-						<a class="${cur_layout_nav_item_selected_css_class}" href="${cur_layout_href}" onClick="_gaq.push(['_trackEvent', 'Navigation Clicks', '${root_layout_name}', '${cur_layout_name}']);" ${cur_layout.getTarget()}>${cur_layout_name}</a>
-				</#if>
-
-				<#if cur_layout.hasChildren()>
-					<ul class="child-menu drop-down-menu toggle-menu-content">
-						<#list cur_layout.getChildren() as child_layout>
-							<#assign
-								child_layout_name = child_layout.getName(locale)
-
-								child_nav_index = child_layout?index + 1
-							/>
-
-							<#if child_layout.hasChildren()>
-								<li class="child-item nav-item nav-item-${child_nav_index} parent-item" id="childItem${child_nav_index}">
-
-								<span class="children-marker responsive-only toggle-menu" data-target-node="#childItem${child_nav_index}"></span>
-							<#else>
-								<li class="child-item nav-item" id="childItem${child_nav_index}">
+							<#if cur_layout.isTypeURL()>
+								<#assign cur_layout_href = cur_layout.getRegularURL(request) />
 							</#if>
 
-							<#assign child_layout_href = child_layout.getFriendlyURL() />
+							<a class="${cur_layout_nav_item_selected_css_class}" href="${cur_layout_href}" onClick="_gaq.push(['_trackEvent', 'Navigation Clicks', '${root_layout_name}', '${cur_layout_name}']);" ${cur_layout.getTarget()}>${cur_layout_name}</a>
+					</#if>
 
-							<#if child_layout.isTypeURL()>
-								<#assign child_layout_href = child_layout.getRegularURL(request) />
-							</#if>
+					<#if cur_layout.hasChildren()>
+						<ul class="child-menu drop-down-menu toggle-menu-content">
+							<#list cur_layout.getChildren() as child_layout>
+								<#assign
+									child_layout_name = child_layout.getName(locale)
 
-							<#assign child_layout_nav_item_selected_css_class = "" />
+									child_nav_index = child_layout?index + 1
+								/>
 
-							<#if getterUtil.getInteger(child_layout.getTypeSettingsProperty("linkToLayoutId")) == layout.getLayoutId()>
-								<#assign child_layout_nav_item_selected_css_class = "selected" />
-							</#if>
+								<#if child_layout.hasChildren()>
+									<li class="child-item nav-item nav-item-${child_nav_index} parent-item" id="childItem${child_nav_index}">
 
-							<a class="${child_layout_nav_item_selected_css_class}" href="${child_layout_href}" onClick="_gaq.push(['_trackEvent', 'Navigation Clicks', '${root_layout_name}', '${cur_layout_name} - ${child_layout_name}']);" ${child_layout.getTarget()}>${child_layout_name}</a>
+									<span class="children-marker responsive-only toggle-menu" data-target-node="#childItem${child_nav_index}"></span>
+								<#else>
+									<li class="child-item nav-item" id="childItem${child_nav_index}">
+								</#if>
 
-							<#if child_layout.hasChildren()>
-								<ul class="grand-child-menu">
-									<#list child_layout.getChildren() as grand_child_layout>
-										<#assign
-											grand_child_layout_name = grand_child_layout.getName(locale)
-											grand_child_layout_css_class = "grand-child-item nav-item"
+								<#assign child_layout_href = child_layout.getFriendlyURL() />
 
-											grand_child_layout_href = child_layout.getFriendlyURL()
-										/>
+								<#if child_layout.isTypeURL()>
+									<#assign child_layout_href = child_layout.getRegularURL(request) />
+								</#if>
 
-										<#if grand_child_layout.isTypeURL()>
-											<#assign grand_child_layout_href = grand_child_layout.getRegularURL(request) />
-										</#if>
+								<#assign child_layout_nav_item_selected_css_class = "" />
 
-										<#if grand_child_layout?is_last>
-											<#assign grand_child_layout_css_class = grand_child_layout_css_class + " last" />
-										</#if>
+								<#if getterUtil.getInteger(child_layout.getTypeSettingsProperty("linkToLayoutId")) == layout.getLayoutId()>
+									<#assign child_layout_nav_item_selected_css_class = "selected" />
+								</#if>
 
-										<li class="${grand_child_layout_css_class}">
-											<a href="${grand_child_layout_href}" onClick="_gaq.push(['_trackEvent', 'Navigation Clicks', '${root_layout_name}', '${child_layout_name} - ${grand_child_layout_name}']);" ${grand_child_layout.getTarget()}>${grand_child_layout_name}</a>
-										</li>
-									</#list>
-								</ul>
-							</#if>
+								<a class="${child_layout_nav_item_selected_css_class}" href="${child_layout_href}" onClick="_gaq.push(['_trackEvent', 'Navigation Clicks', '${root_layout_name}', '${cur_layout_name} - ${child_layout_name}']);" ${child_layout.getTarget()}>${child_layout_name}</a>
 
-							</li>
-						</#list>
-					</ul>
+								<#if child_layout.hasChildren()>
+									<ul class="grand-child-menu">
+										<#list child_layout.getChildren() as grand_child_layout>
+											<#assign
+												grand_child_layout_name = grand_child_layout.getName(locale)
+												grand_child_layout_css_class = "grand-child-item nav-item"
+
+												grand_child_layout_href = child_layout.getFriendlyURL()
+											/>
+
+											<#if grand_child_layout.isTypeURL()>
+												<#assign grand_child_layout_href = grand_child_layout.getRegularURL(request) />
+											</#if>
+
+											<#if grand_child_layout?is_last>
+												<#assign grand_child_layout_css_class = grand_child_layout_css_class + " last" />
+											</#if>
+
+											<li class="${grand_child_layout_css_class}">
+												<a href="${grand_child_layout_href}" onClick="_gaq.push(['_trackEvent', 'Navigation Clicks', '${root_layout_name}', '${child_layout_name} - ${grand_child_layout_name}']);" ${grand_child_layout.getTarget()}>${grand_child_layout_name}</a>
+											</li>
+										</#list>
+									</ul>
+								</#if>
+
+								</li>
+							</#list>
+						</ul>
+					</#if>
 				</#if>
 
 				</li>
