@@ -7,31 +7,5 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
 >
-	<bean id="com.liferay.osb.hook.upgrade.BaseUpgradeProcess" class="com.liferay.osb.hook.upgrade.BaseUpgradeProcess" />
-	<bean id="com.liferay.osb.remote.RemoteDossieraWebServiceImpl" class="com.liferay.osb.remote.RemoteDossieraWebServiceImpl">
-		<property name="JSONWebServiceClient">
-			<bean class="com.liferay.petra.json.web.service.client.JSONWebServiceClientImpl">
-				<property name="hostName" value="#{T(com.liferay.util.portlet.PortletProps).get('remote.rest.service.api.dossiera.host')}" />
-				<property name="hostPort" value="#{T(com.liferay.util.portlet.PortletProps).get('remote.rest.service.api.dossiera.port')}" />
-				<property name="protocol" value="#{T(com.liferay.util.portlet.PortletProps).get('remote.rest.service.api.dossiera.protocol')}" />
-			</bean>
-		</property>
-	</bean>
-	<bean id="com.liferay.osb.remote.RemoteLCSWebServiceImpl" class="com.liferay.osb.remote.RemoteLCSWebServiceImpl">
-		<property name="JSONWebServiceClient">
-			<bean class="com.liferay.petra.json.web.service.client.JSONWebServiceClientImpl">
-				<property name="hostName" value="#{T(com.liferay.util.portlet.PortletProps).get('remote.json.service.api.lcs.host')}" />
-				<property name="hostPort" value="#{T(com.liferay.util.portlet.PortletProps).get('remote.json.service.api.lcs.port')}" />
-				<property name="protocol" value="#{T(com.liferay.util.portlet.PortletProps).get('remote.json.service.api.lcs.protocol')}" />
-			</bean>
-		</property>
-	</bean>
-	<bean id="com.liferay.osb.remote.RemoteDossieraWebServiceUtil" class="com.liferay.osb.remote.RemoteDossieraWebServiceUtil">
-		<property name="RemoteDossieraWebService" ref="com.liferay.osb.remote.RemoteDossieraWebServiceImpl" />
-	</bean>
-	<bean id="com.liferay.osb.remote.RemoteLCSWebServiceUtil" class="com.liferay.osb.remote.RemoteLCSWebServiceUtil">
-		<property name="RemoteLCSWebService" ref="com.liferay.osb.remote.RemoteLCSWebServiceImpl" />
-	</bean>
-	<bean id="com.liferay.osb.servlet.AdminServletContextListenerUpgradeHelper" class="com.liferay.osb.servlet.AdminServletContextListenerUpgradeHelper" />
-	<bean id="com.liferay.osb.tools.Upgrade" class="com.liferay.osb.hook.upgrade.OSBUpgradeImpl" />
+
 </beans>
