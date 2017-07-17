@@ -89,9 +89,52 @@ import javax.portlet.PortletResponse;
 /**
  * @author Shinn Lok
  */
-public class SupportIndexer extends BaseIndexer {
+public class SupportIndexer<T> extends BaseIndexer<T> {
 
-	public static final String[] CLASS_NAMES = {
+	@Override
+	public String getClassName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected void doDelete(T object) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected Document doGetDocument(T object) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Summary doGetSummary(Document document, Locale locale, String snippet, PortletRequest portletRequest,
+			PortletResponse portletResponse) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected void doReindex(String className, long classPK) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void doReindex(String[] ids) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void doReindex(T object) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/*public static final String[] CLASS_NAMES = {
 		TicketEntry.class.getName()
 	};
 
@@ -548,11 +591,11 @@ public class SupportIndexer extends BaseIndexer {
 
 		// TODO do we need this logic still?
 
-		/*if (entryClassName.equals(TicketEntry.class.getName())) {
+		if (entryClassName.equals(TicketEntry.class.getName())) {
 			String entryClassPK = document.get(Field.ENTRY_CLASS_PK);
 
 			portletURL.setParameter("ticketEntryId", entryClassPK);
-		}*/
+		}
 
 		return new Summary(locale, title, description);
 	}
@@ -846,6 +889,7 @@ public class SupportIndexer extends BaseIndexer {
 
 				TicketEntry ticketEntry = (TicketEntry)object;
 
+				// TODO refactor document object
 				Document document = getDocument(ticketEntry);
 
 				addDocuments(document);
@@ -862,6 +906,7 @@ public class SupportIndexer extends BaseIndexer {
 	protected void reindexTicketEntry(TicketEntry ticketEntry)
 		throws SearchException {
 
+		// TODO refactor document object
 		Document document = getDocument(ticketEntry);
 
 		SearchEngineUtil.updateDocument(
@@ -1154,5 +1199,5 @@ public class SupportIndexer extends BaseIndexer {
 
 	private Format _dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
 		"yyyyMMddHHmmss");
-
+*/
 }

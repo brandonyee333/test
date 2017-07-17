@@ -53,9 +53,52 @@ import javax.portlet.PortletURL;
 /**
  * @author Amos Fong
  */
-public class WorkflowIndexer extends BaseIndexer {
+public class WorkflowIndexer<T> extends BaseIndexer<T> {
 
-	public static final String[] CLASS_NAMES = {
+	@Override
+	public String getClassName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected void doDelete(T object) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected Document doGetDocument(T object) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Summary doGetSummary(Document document, Locale locale, String snippet, PortletRequest portletRequest,
+			PortletResponse portletResponse) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected void doReindex(String className, long classPK) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void doReindex(String[] ids) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void doReindex(T object) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/*public static final String[] CLASS_NAMES = {
 		WorkflowTask.class.getName()
 	};
 
@@ -258,6 +301,6 @@ public class WorkflowIndexer extends BaseIndexer {
 		return null;
 	}
 
-
+*/
 
 }

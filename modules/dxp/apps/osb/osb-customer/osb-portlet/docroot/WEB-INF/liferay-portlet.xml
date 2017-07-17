@@ -5,7 +5,7 @@
 	<portlet>
 		<portlet-name>1</portlet-name>
 		<configuration-action-class>com.liferay.osb.admin.action.ConfigurationActionImpl</configuration-action-class>
-		<indexer-class>com.liferay.osb.admin.util.WorkflowIndexer</indexer-class>
+		<!-- <indexer-class>com.liferay.osb.admin.util.WorkflowIndexer</indexer-class> -->
 		<scheduler-entry>
 			<scheduler-event-listener-class>com.liferay.osb.admin.messaging.AuditAccountEntryMessageListener</scheduler-event-listener-class>
 			<trigger>
@@ -75,7 +75,7 @@
 	</portlet>
 	<portlet>
 		<portlet-name>2</portlet-name>
-		<indexer-class>com.liferay.osb.support.util.SupportIndexer</indexer-class>
+		<!-- <indexer-class>com.liferay.osb.support.util.SupportIndexer</indexer-class> -->
 		<scheduler-entry>
 			<scheduler-event-listener-class>com.liferay.osb.support.messaging.CheckInactiveTicketEntriesMessageListener</scheduler-event-listener-class>
 			<trigger>
