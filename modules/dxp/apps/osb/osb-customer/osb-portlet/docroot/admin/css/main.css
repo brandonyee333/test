@@ -257,16 +257,6 @@ $text-color: #474A4B;
 		}
 	}
 
-	.legal-entity-name {
-		.aui-field-wrapper-content {
-			margin: 0;
-		}
-
-		.lfr-input-text {
-			width: 150px;
-		}
-	}
-
 	.show-in-ticket-view label {
 		font-weight: bold;
 	}
@@ -278,15 +268,6 @@ $text-color: #474A4B;
 
 	.lfr-textarea {
 		width: 500px;
-	}
-
-	.marketing .start-date {
-		width: 100%;
-
-		.anytime {
-			float: left;
-			width: initial;
-		}
 	}
 
 	.multiple-select {
@@ -305,51 +286,6 @@ $text-color: #474A4B;
 
 	.collapse .taglib-text, .expand .taglib-text {
 		text-decoration: none;
-	}
-
-	.edit-marketing-event {
-		.aui-choice-label {
-			font-weight: bold;
-		}
-
-		.aui-field-input-text {
-			width: 350px;
-		}
-
-		.lfr-panel-basic {
-			margin-bottom: 10px;
-
-			.lfr-panel-content {
-				padding-left: 0;
-			}
-
-			.lfr-panel-titlebar {
-				border-bottom: 1px solid #AAA;
-			}
-		}
-
-		.lfr-translation-manager-add-menu {
-			margin: 0 0 5px;
-		}
-
-		.translations .label {
-			display: inline-block;
-			margin: 6px 3px;
-
-			.remove, .text {
-				background-color: #E0EAF1;
-				border: 1px solid #B3CEE1;
-				border-width: 0 1px 1px 0;
-				color: #4A6B82;
-				margin: 0;
-				padding: 4px 8px;
-				text-decoration: none;
-
-				&:hover {
-					background-color: #C4DAE9;
-				}
-			}
-		}
 	}
 
 	.manager-dashboard {
@@ -440,102 +376,5 @@ $text-color: #474A4B;
 		text-align: center;
 		vertical-align: middle;
 		width: 100%;
-	}
-}
-
-/* ---------- Page ---------- */
-
-/* ---------- Edit training contract entry ---------- */
-
-.admin.edit-training-contract-entry {
-	textarea {
-		height: 250px;
-		resize: vertical;
-		width: 90%;
-	}
-
-	.language-container {
-		background-color: #CCC;
-		margin: 10px 9.5% 10px 0;
-		padding: 10px;
-
-		.aui-field-label {
-			padding-top: 0;
-		}
-
-		.lfr-token {
-			margin: 3px;
-			padding: 0.3em 0.5em 0.3em;
-		}
-	}
-}
-
-/* ---------- Edit training event ---------- */
-
-.admin.edit-training-event {
-	.lfr-search-container {
-		margin: 20px 0;
-	}
-}
-
-/* ---------- Edit training linked user ---------- */
-
-.admin.edit-training-linked-user {
-	.field-container {
-		margin: 0 0 30px;
-
-		.field {
-			display: block;
-			margin: 0 0 6px;
-
-			.field-label {
-				display: inline-block;
-				font-weight: bold;
-				width: 120px;
-			}
-		}
-	}
-
-	.update-btn input {
-		margin-bottom: 15px;
-	}
-}
-
-/* ---------- Training customers ---------- */
-
-.admin.training-customers {
-	.link-icon {
-		height: 16px;
-	}
-}
-
-/* ---------- Training exam results ---------- */
-
-.training-exam-results {
-	.col-results {
-		font-weight: bold;
-
-		&.failed {
-			color: #F00;
-		}
-
-		&.incomplete {
-			color: #FFFF00;
-		}
-
-		&.passed {
-			color: #008000;
-		}
-	}
-}
-
-/* ---------- Training linked user search ---------- */
-
-.admin.training-linked-user-search {
-	padding-bottom: 20px;
-
-	.user-search-term {
-		display: inline-block;
-		padding: 10px 10px 10px 0;
 	}
 }

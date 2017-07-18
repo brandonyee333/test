@@ -24,7 +24,7 @@ String tabs3 = ParamUtil.getString(request, "tabs3");
 String tabsNames = StringPool.BLANK;
 
 if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
-	tabsNames = "projects,partners,sales,support,training,marketing,tools";
+	tabsNames = "projects,partners,sales,support,tools";
 }
 else {
 	List<String> tabsNamesList = new ArrayList<String>();
@@ -37,14 +37,6 @@ else {
 
 	if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstants.ROLE_OSB_SUPPORT_ADMIN_ID)) {
 		tabsNamesList.add("support");
-	}
-
-	if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstants.ROLE_OSB_TRAINING_ADMIN_ID) || RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstants.ROLE_OSB_TRAINING_TRAINER_ID)) {
-		tabsNamesList.add("training");
-	}
-
-	if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstants.ROLE_OSB_MARKETING_ADMIN_ID)) {
-		tabsNamesList.add("marketing");
 	}
 
 	if (!tabsNamesList.contains(tabs1)) {
@@ -79,9 +71,6 @@ request.setAttribute("view.jsp-portletURL", portletURL);
 />
 
 <c:choose>
-	<c:when test='<%= tabs1.equals("marketing") %>'>
-		<liferay-util:include page="/admin/marketing.jsp" servletContext="<%= application %>" />
-	</c:when>
 	<c:when test='<%= tabs1.equals("partners") %>'>
 		<liferay-util:include page="/admin/partners.jsp" servletContext="<%= application %>" />
 	</c:when>
@@ -93,9 +82,6 @@ request.setAttribute("view.jsp-portletURL", portletURL);
 	</c:when>
 	<c:when test='<%= tabs1.equals("tools") %>'>
 		<liferay-util:include page="/admin/tools.jsp" servletContext="<%= application %>" />
-	</c:when>
-	<c:when test='<%= tabs1.equals("training") %>'>
-		<liferay-util:include page="/admin/training.jsp" servletContext="<%= application %>" />
 	</c:when>
 	<c:otherwise>
 		<liferay-util:include page="/admin/accounts.jsp" servletContext="<%= application %>" />

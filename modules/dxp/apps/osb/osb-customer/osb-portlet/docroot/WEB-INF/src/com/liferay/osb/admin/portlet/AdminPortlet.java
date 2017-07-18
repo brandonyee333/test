@@ -117,8 +117,6 @@ import com.liferay.osb.service.HolidayCalendarRelLocalServiceUtil;
 import com.liferay.osb.service.HolidayEntryLocalServiceUtil;
 import com.liferay.osb.service.LCSSubscriptionEntryLocalServiceUtil;
 import com.liferay.osb.service.LicenseEntryLocalServiceUtil;
-import com.liferay.osb.service.OSBCountryServiceUtil;
-import com.liferay.osb.service.OSBRegionServiceUtil;
 import com.liferay.osb.service.OfferingBundleLocalServiceUtil;
 import com.liferay.osb.service.OfferingDefinitionLocalServiceUtil;
 import com.liferay.osb.service.OrderEntryLocalServiceUtil;
@@ -149,15 +147,8 @@ import com.liferay.portal.kernel.exception.AddressStreetException;
 import com.liferay.portal.kernel.exception.AddressZipException;
 import com.liferay.portal.kernel.exception.ContactFirstNameException;
 import com.liferay.portal.kernel.exception.ContactLastNameException;
-import com.liferay.portal.kernel.exception.CountryA2Exception;
-import com.liferay.portal.kernel.exception.CountryA3Exception;
-import com.liferay.portal.kernel.exception.CountryIddException;
-import com.liferay.portal.kernel.exception.CountryNameException;
-import com.liferay.portal.kernel.exception.CountryNumberException;
 import com.liferay.portal.kernel.exception.DuplicateUserEmailAddressException;
 import com.liferay.portal.kernel.exception.NoSuchListTypeException;
-import com.liferay.portal.kernel.exception.RegionCodeException;
-import com.liferay.portal.kernel.exception.RegionNameException;
 import com.liferay.portal.kernel.exception.ReservedUserEmailAddressException;
 import com.liferay.portal.kernel.exception.UserEmailAddressException;
 import com.liferay.portal.kernel.audit.AuditMessage;
@@ -197,13 +188,11 @@ import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.Phone;
 import com.liferay.portal.kernel.model.Portlet;
-import com.liferay.portal.kernel.model.Region;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.AddressLocalServiceUtil;
 import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
-import com.liferay.portal.kernel.service.RegionServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
@@ -397,15 +386,6 @@ public class AdminPortlet extends MVCPortlet {
 		AccountEntryLocalServiceUtil.deleteAccountEntry(accountEntryId);
 	}
 
-	public void deleteCountry(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long countryId = ParamUtil.getLong(actionRequest, "countryId");
-
-		OSBCountryServiceUtil.deleteCountry(countryId);
-	}
-
 	public void deleteHolidayCalendar(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
@@ -478,15 +458,6 @@ public class AdminPortlet extends MVCPortlet {
 			actionRequest, "productEntryId");
 
 		ProductEntryLocalServiceUtil.deleteProductEntry(productEntryId);
-	}
-
-	public void deleteRegion(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long regionId = ParamUtil.getLong(actionRequest, "regionId");
-
-		OSBRegionServiceUtil.deleteRegion(regionId);
 	}
 
 	public void deleteSupportLabor(
@@ -912,28 +883,6 @@ public class AdminPortlet extends MVCPortlet {
 			removeUserIds, accountEntryId);
 	}
 
-	public void updateCountry(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long countryId = ParamUtil.getLong(actionRequest, "countryId");
-
-		String name = ParamUtil.getString(actionRequest, "name");
-		String a2 = ParamUtil.getString(actionRequest, "a2");
-		String a3 = ParamUtil.getString(actionRequest, "a3");
-		String number = ParamUtil.getString(actionRequest, "number");
-		String idd = ParamUtil.getString(actionRequest, "idd");
-		boolean active = ParamUtil.getBoolean(actionRequest, "active");
-
-		if (countryId <= 0) {
-			OSBCountryServiceUtil.addCountry(name, a2, a3, number, idd, active);
-		}
-		else {
-			OSBCountryServiceUtil.updateCountry(
-				countryId, name, a2, a3, number, idd, active);
-		}
-	}
-
 	public void updateHolidayCalendar(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
@@ -1347,26 +1296,6 @@ public class AdminPortlet extends MVCPortlet {
 			ProductEntryLocalServiceUtil.updateProductEntry(
 				productEntryId, name, type, environment, versionsListType,
 				dossieraIdMappings);
-		}
-	}
-
-	public void updateRegion(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long regionId = ParamUtil.getLong(actionRequest, "regionId");
-
-		long countryId = ParamUtil.getLong(actionRequest, "countryId");
-		String regionCode = ParamUtil.getString(actionRequest, "regionCode");
-		String name = ParamUtil.getString(actionRequest, "name");
-		boolean active = ParamUtil.getBoolean(actionRequest, "active");
-
-		if (regionId <= 0) {
-			OSBRegionServiceUtil.addRegion(countryId, regionCode, name, active);
-		}
-		else {
-			OSBRegionServiceUtil.updateRegion(
-				regionId, countryId, regionCode, name, active);
 		}
 	}
 
@@ -1793,11 +1722,6 @@ public class AdminPortlet extends MVCPortlet {
 			cause instanceof AddressZipException ||
 			cause instanceof ContactFirstNameException ||
 			cause instanceof ContactLastNameException ||
-			cause instanceof CountryA2Exception ||
-			cause instanceof CountryA3Exception ||
-			cause instanceof CountryIddException ||
-			cause instanceof CountryNameException ||
-			cause instanceof CountryNumberException ||
 			cause instanceof DuplicateAccountEntryException ||
 			cause instanceof DuplicateAccountEnvironmentException ||
 			cause instanceof DuplicateHolidayEntryException ||
@@ -1832,8 +1756,6 @@ public class AdminPortlet extends MVCPortlet {
 			cause instanceof PartnerEntryParentPartnerEntryException ||
 			cause instanceof ProductEntryEnvironmentException ||
 			cause instanceof ProductEntryNameException ||
-			cause instanceof RegionCodeException ||
-			cause instanceof RegionNameException ||
 			cause instanceof RequiredAccountEntryException ||
 			cause instanceof RequiredLicenseEntryException ||
 			cause instanceof RequiredOfferingDefinitionException ||

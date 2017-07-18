@@ -23,26 +23,14 @@ PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 %>
 
 <liferay-ui:tabs
-	names="reindex,data-migration,debugging,import-training-customers,import-training-surveys,sync-to-lcs"
+	names="reindex,debugging"
 	param="tabs2"
 	url="<%= portletURL.toString() %>"
 />
 
 <c:choose>
-	<c:when test='<%= tabs2.equals("data-migration") %>'>
-		<%@ include file="/admin/data_migration.jspf" %>
-	</c:when>
 	<c:when test='<%= tabs2.equals("debugging") %>'>
 		<%@ include file="/admin/debugging.jspf" %>
-	</c:when>
-	<c:when test='<%= tabs2.equals("import-training-customers") %>'>
-		<%@ include file="/admin/import_training_customers.jspf" %>
-	</c:when>
-	<c:when test='<%= tabs2.equals("import-training-surveys") %>'>
-		<%@ include file="/admin/import_training_surveys.jspf" %>
-	</c:when>
-	<c:when test='<%= tabs2.equals("sync-to-lcs") %>'>
-		<%@ include file="/admin/sync_to_lcs.jspf" %>
 	</c:when>
 	<c:otherwise>
 		<%@ include file="/admin/reindex.jspf" %>

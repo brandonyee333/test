@@ -46,28 +46,7 @@ public class OSBAdminControlPanelEntry extends BaseControlPanelEntry {
 
 		if (RoleLocalServiceUtil.hasUserRole(
 				permissionChecker.getUserId(),
-				OSBConstants.ROLE_OSB_MARKETING_ADMIN_ID)) {
-
-			return true;
-		}
-
-		if (RoleLocalServiceUtil.hasUserRole(
-				permissionChecker.getUserId(),
 				OSBConstants.ROLE_OSB_SUPPORT_ADMIN_ID)) {
-
-			return true;
-		}
-
-		if (RoleLocalServiceUtil.hasUserRole(
-				permissionChecker.getUserId(),
-				OSBConstants.ROLE_OSB_TRAINING_ADMIN_ID)) {
-
-			return true;
-		}
-
-		if (RoleLocalServiceUtil.hasUserRole(
-				permissionChecker.getUserId(),
-				OSBConstants.ROLE_OSB_TRAINING_TRAINER_ID)) {
 
 			return true;
 		}

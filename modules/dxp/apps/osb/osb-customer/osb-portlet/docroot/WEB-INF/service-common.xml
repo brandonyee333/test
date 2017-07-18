@@ -101,24 +101,7 @@
 
 		<reference package-path="com.liferay.portal" entity="Role" />
 	</entity>
-	<entity name="OSBCountry" local-service="true" remote-service="true">
-
-		<!-- References -->
-
-		<reference package-path="com.liferay.portal" entity="Country" />
-	</entity>
-
-	<entity name="OSBRegion" local-service="true" remote-service="true">
-
-		<!-- References -->
-
-		<reference package-path="com.liferay.portal" entity="Country" />
-		<reference package-path="com.liferay.portal" entity="Region" />
-	</entity>
 	<exceptions>
-		<exception>CurrencyEntryCode</exception>
-		<exception>CurrencyEntryCountry</exception>
-		<exception>DuplicateCurrencyEntry</exception>
 		<exception>UnverifiedUser</exception>
 	</exceptions>
 </service-builder>

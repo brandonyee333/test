@@ -22,7 +22,7 @@ String tabs2 = ParamUtil.getString(request, "tabs2");
 String tabs2Names = StringPool.BLANK;
 
 if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
-	tabs2Names = "orders,offerings,offering-bundles,service-level-agreements,products,licenses,currencies,countries";
+	tabs2Names = "orders,offerings,offering-bundles,service-level-agreements,products,licenses";
 }
 else {
 	String[] tabs2NamesArray = new String[0];
@@ -48,12 +48,6 @@ PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 />
 
 <c:choose>
-	<c:when test='<%= tabs2.equals("countries") %>'>
-		<%@ include file="/admin/countries.jspf" %>
-	</c:when>
-	<c:when test='<%= tabs2.equals("currencies") %>'>
-		<%@ include file="/admin/currencies.jspf" %>
-	</c:when>
 	<c:when test='<%= tabs2.equals("licenses") %>'>
 		<%@ include file="/admin/licenses.jspf" %>
 	</c:when>

@@ -44,7 +44,6 @@ import com.liferay.osb.model.impl.OrderEntryImpl;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.CorpProjectLocalServiceUtil;
 import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
-import com.liferay.osb.service.OSBRegionLocalServiceUtil;
 import com.liferay.osb.service.PartnerEntryLocalServiceUtil;
 import com.liferay.osb.service.ProductEntryLocalServiceUtil;
 import com.liferay.osb.service.SupportRegionLocalServiceUtil;
@@ -76,6 +75,7 @@ import com.liferay.portal.kernel.model.Region;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.AddressLocalServiceUtil;
 import com.liferay.portal.kernel.service.CountryServiceUtil;
+import com.liferay.portal.kernel.service.RegionServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.SubscriptionSender;
@@ -217,12 +217,16 @@ public abstract class ProvisioningRabbitMQConsumer {
 					countryName);
 
 				address.setCountryId(country.getCountryId());
-
-				Region region = OSBRegionLocalServiceUtil.fetchRegion(
-					country.getCountryId(), regionName);
-
-				if (region != null) {
-					address.setRegionId(region.getRegionId());
+				
+				List<Region> regions = RegionServiceUtil.getRegions(
+					country.getCountryId());
+				
+				for (Region region : regions) {
+					if (regionName.equals(region.getName())) {
+						address.setRegionId(region.getRegionId());
+						
+						break;
+					}
 				}
 			}
 			catch (Exception e) {

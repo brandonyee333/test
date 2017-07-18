@@ -71,17 +71,11 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 
 		String tabs1 = ParamUtil.getString(actionRequest, "tabs1");
 
-		if (tabs1.equals("captcha")) {
-			updateCaptcha(actionRequest, preferences);
-		}
-		else if (tabs1.equals("email-notifications")) {
+		if (tabs1.equals("email-notifications")) {
 			updateEmailNotifications(actionRequest, preferences);
 		}
 		else if (tabs1.equals("rabbitmq")) {
 			updateRabbitMQ(actionRequest, preferences);
-		}
-		else if (tabs1.equals("salesforce")) {
-			updateSalesforce(actionRequest, preferences);
 		}
 		else if (tabs1.equals("support")) {
 			updateSupport(actionRequest, preferences);
@@ -206,21 +200,6 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 		preferences.setValue(
 			"announcementDisplayDate",
 			String.valueOf(announcementDisplayDate.getTime()));
-
-		preferences.store();
-	}
-
-	protected void updateCaptcha(
-			ActionRequest actionRequest, PortletPreferences preferences)
-		throws Exception {
-
-		boolean showCaptcha = ParamUtil.getBoolean(
-			actionRequest, "showCaptcha");
-		boolean enableHoneypot = ParamUtil.getBoolean(
-			actionRequest, "enableHoneypot");
-
-		preferences.setValue("showCaptcha", String.valueOf(showCaptcha));
-		preferences.setValue("enableHoneypot", String.valueOf(enableHoneypot));
 
 		preferences.store();
 	}
@@ -480,60 +459,6 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 		preferences.store();
 	}
 
-	protected void updateNewUi(
-			ActionRequest actionRequest, PortletPreferences preferences)
-		throws Exception {
-
-		boolean support2Enabled = ParamUtil.getBoolean(
-			actionRequest, "support2Enabled");
-		boolean support2Partners = ParamUtil.getBoolean(
-			actionRequest, "support2Partners");
-		boolean support2PremierAccountTier = ParamUtil.getBoolean(
-			actionRequest, "support2PremierAccountTier");
-		boolean support2StrategicAccountTier = ParamUtil.getBoolean(
-			actionRequest, "support2StrategicAccountTier");
-		boolean support2OEMAccountTier = ParamUtil.getBoolean(
-			actionRequest, "support2OEMAccountTier");
-		boolean support2RegularAccountTier = ParamUtil.getBoolean(
-			actionRequest, "support2RegularAccountTier");
-		boolean support2LiferayAnnouncement = ParamUtil.getBoolean(
-			actionRequest, "support2LiferayAnnouncement");
-		boolean support2CustomerAnnouncement = ParamUtil.getBoolean(
-			actionRequest, "support2CustomerAnnouncement");
-		String support2EnabledAccounts = ParamUtil.getString(
-			actionRequest, "support2EnabledAccounts");
-		String support2EnabledPartners = ParamUtil.getString(
-			actionRequest, "support2EnabledPartners");
-
-		preferences.setValue(
-			"support2Enabled", String.valueOf(support2Enabled));
-		preferences.setValue(
-			"support2Partners", String.valueOf(support2Partners));
-		preferences.setValue(
-			"support2PremierAccountTier",
-			String.valueOf(support2PremierAccountTier));
-		preferences.setValue(
-			"support2StrategicAccountTier",
-			String.valueOf(support2StrategicAccountTier));
-		preferences.setValue(
-			"support2OEMAccountTier", String.valueOf(support2OEMAccountTier));
-		preferences.setValue(
-			"support2RegularAccountTier",
-			String.valueOf(support2RegularAccountTier));
-		preferences.setValue(
-			"support2LiferayAnnouncement",
-			String.valueOf(support2LiferayAnnouncement));
-		preferences.setValue(
-			"support2CustomerAnnouncement",
-			String.valueOf(support2CustomerAnnouncement));
-		preferences.setValue(
-			"support2EnabledAccounts", support2EnabledAccounts);
-		preferences.setValue(
-			"support2EnabledPartners", support2EnabledPartners);
-
-		preferences.store();
-	}
-
 	protected void updateProductLink(
 			ActionRequest actionRequest, PortletPreferences preferences)
 		throws Exception {
@@ -603,21 +528,6 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 		}
 	}
 
-	protected void updateSalesforce(
-			ActionRequest actionRequest, PortletPreferences preferences)
-		throws Exception {
-
-		String[] annualLicenseSubscriptionSellers = StringUtil.split(
-			ParamUtil.getString(
-				actionRequest, "annualLicenseSubscriptionSellers"));
-
-		preferences.setValues(
-			"annualLicenseSubscriptionSellers",
-			annualLicenseSubscriptionSellers);
-
-		preferences.store();
-	}
-
 	protected void updateStatusMessage(
 			ActionRequest actionRequest, PortletPreferences preferences)
 		throws Exception {
@@ -665,9 +575,6 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 		}
 		else if (tabs2.equals("indexing")) {
 			updateIndexing(actionRequest, preferences);
-		}
-		else if (tabs2.equals("new-ui")) {
-			updateNewUi(actionRequest, preferences);
 		}
 		else if (tabs2.equals("product-messages")) {
 			updateProductLink(actionRequest, preferences);

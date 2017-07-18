@@ -286,29 +286,6 @@ public class AdminServletContextListenerExpandoHelper {
 		}
 		catch (DuplicateColumnNameException dcne) {
 		}
-
-		// Expando table - OSB_MARKETPLACE_SERVER - Company
-
-		try {
-			table = ExpandoTableLocalServiceUtil.getTable(
-				companyId, Company.class.getName(), "OSB_MARKETPLACE_SERVER");
-		}
-		catch (NoSuchTableException nste) {
-			table = ExpandoTableLocalServiceUtil.addTable(
-				companyId, Company.class.getName(), "OSB_MARKETPLACE_SERVER");
-		}
-
-		try {
-			ExpandoColumnLocalServiceUtil.addColumn(
-				table.getTableId(), "osbClientIdKey",
-				ExpandoColumnConstants.STRING);
-
-			ExpandoValueLocalServiceUtil.addValue(
-				companyId, Company.class.getName(), "OSB_MARKETPLACE_SERVER",
-				"osbClientIdKey", companyId, getOSBClientIdKey(companyId));
-		}
-		catch (DuplicateColumnNameException dcne) {
-		}
 	}
 
 	protected static String getOSBClientIdKey(long companyId)

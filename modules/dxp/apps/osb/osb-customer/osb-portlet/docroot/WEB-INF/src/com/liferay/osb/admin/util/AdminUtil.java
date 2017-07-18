@@ -161,52 +161,6 @@ public class AdminUtil {
 		return sb.toString();
 	}
 
-	public static Map<Locale, String> getEmailInactiveUserBodyMap(
-		PortletPreferences preferences) {
-
-		Map<Locale, String> map = LocalizationUtil.getLocalizationMap(
-			preferences, "emailInactiveUserBody");
-
-		Locale defaultLocale = LocaleUtil.getDefault();
-
-		String defaultValue = map.get(defaultLocale);
-
-		if (Validator.isNotNull(defaultValue)) {
-			return map;
-		}
-
-		map.put(
-			defaultLocale,
-			ContentUtil.get(
-				"com/liferay/osb/admin/dependencies/" +
-					"email_inactive_user_body.tmpl"));
-
-		return map;
-	}
-
-	public static Map<Locale, String> getEmailInactiveUserSubjectMap(
-		PortletPreferences preferences) {
-
-		Map<Locale, String> map = LocalizationUtil.getLocalizationMap(
-			preferences, "emailInactiveUserSubject");
-
-		Locale defaultLocale = LocaleUtil.getDefault();
-
-		String defaultValue = map.get(defaultLocale);
-
-		if (Validator.isNotNull(defaultValue)) {
-			return map;
-		}
-
-		map.put(
-			defaultLocale,
-			ContentUtil.get(
-				"com/liferay/osb/admin/dependencies/" +
-					"email_inactive_user_subject.tmpl"));
-
-		return map;
-	}
-
 	public static Map<Locale, String> getEmailProvisioningCreateAccountBodyMap(
 		PortletPreferences preferences) {
 
@@ -293,26 +247,6 @@ public class AdminUtil {
 			fileRepositoriesProperties.getProperty(fileRepositoryId);
 
 		return new FileRepository(fileRepositoryProperties);
-	}
-
-	public static Map<Locale, String> getMarketingEventLocalizationMap(
-		PortletRequest portletRequest, String param) {
-
-		Map<Locale, String> localizationMap = new HashMap<Locale, String>();
-
-		String[] translationLanguageIds = StringUtil.split(
-			ParamUtil.getString(portletRequest, "translation_languageIds"));
-
-		for (String translationLanguageId : translationLanguageIds) {
-			String value = ParamUtil.getString(
-				portletRequest,
-				"translation_" + translationLanguageId + "_" + param);
-
-			localizationMap.put(
-				LocaleUtil.fromLanguageId(translationLanguageId), value);
-		}
-
-		return localizationMap;
 	}
 
 	public static PortletPreferences getPortletPreferences()

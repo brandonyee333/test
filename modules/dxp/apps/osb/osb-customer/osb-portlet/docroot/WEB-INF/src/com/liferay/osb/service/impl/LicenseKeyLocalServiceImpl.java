@@ -54,7 +54,6 @@ import com.liferay.osb.model.OfferingEntryGroup;
 import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.ProductEntryConstants;
-import com.liferay.osb.service.OSBCountryLocalServiceUtil;
 import com.liferay.osb.service.base.LicenseKeyLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
@@ -64,6 +63,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.service.CountryServiceUtil;
 import com.liferay.portal.kernel.service.ListTypeServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -894,7 +894,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		User user = userPersistence.findByPrimaryKey(licenseKey.getUserId());
 
-		Country country = OSBCountryLocalServiceUtil.getCountry(
+		Country country = CountryServiceUtil.getCountry(
 			accountEntry.getCountryId());
 
 		for (Map.Entry<Locale, String> bodyEntry : bodyMap.entrySet()) {

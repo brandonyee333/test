@@ -59,25 +59,12 @@ Locale[] locales = LanguageUtil.getAvailableLocales();
 	<liferay-ui:error key="componentMessageLinkInvalid" message="please-enter-a-valid-component-message-link" />
 
 	<liferay-ui:tabs
-		names="captcha,email-notifications,rabbitmq,salesforce,support,trial"
+		names="email-notifications,rabbitmq,support,trial"
 		param="tabs1"
 		url="<%= portletURL %>"
 	/>
 
 	<c:choose>
-		<c:when test='<%= tabs1.equals("captcha") %>'>
-
-			<%
-			boolean showCaptcha = PrefsParamUtil.getBoolean(portletPreferences, request, "showCaptcha", true);
-			boolean enableHoneypot = PrefsParamUtil.getBoolean(portletPreferences, request, "enableHoneypot", true);
-			%>
-
-			<aui:fieldset>
-				<aui:input label="show-captcha-for-create-account-trial-page" name="showCaptcha" type="checkbox" value="<%= showCaptcha %>" />
-
-				<aui:input label="enable-honeypot-for-create-account-pages" name="enableHoneypot" type="checkbox" value="<%= enableHoneypot %>" />
-			</aui:fieldset>
-		</c:when>
 		<c:when test='<%= tabs1.equals("rabbitmq") %>'>
 			<liferay-ui:error key="deadLetterFilterScriptCompile">
 				<liferay-ui:message key="there-was-an-error-with-your-script" />
@@ -124,19 +111,9 @@ Locale[] locales = LanguageUtil.getAvailableLocales();
 				<aui:input cssClass="lfr-textarea-container" label="script" name="deadLetterFilterScript" type="textarea" value='<%= PrefsParamUtil.getString(portletPreferences, request, "deadLetterFilterScript", StringPool.BLANK) %>' />
 			</aui:fieldset>
 		</c:when>
-		<c:when test='<%= tabs1.equals("salesforce") %>'>
-
-			<%
-			String annualLicenseSubscriptionSellers = StringUtil.merge(portletPreferences.getValues("annualLicenseSubscriptionSellers", new String[0]), StringPool.NEW_LINE);
-			%>
-
-			<aui:fieldset>
-				<aui:input cssClass="lfr-textarea-container" label="" name="annualLicenseSubscriptionSellers" type="textarea" value="<%= annualLicenseSubscriptionSellers %>" />
-			</aui:fieldset>
-		</c:when>
 		<c:when test='<%= tabs1.equals("support") %>'>
 			<liferay-ui:tabs
-				names="automatic-comments,ticket-weight,product-messages,component-messages,dxp-message,escalation-details,attachment-keywords,status-messages,tier-messages,assignment-ratio,file-repositories,banner,indexing,new-ui"
+				names="automatic-comments,ticket-weight,product-messages,component-messages,dxp-message,escalation-details,attachment-keywords,status-messages,tier-messages,assignment-ratio,file-repositories,banner,indexing"
 				param="tabs2"
 				url="<%= portletURL %>"
 			/>
@@ -683,33 +660,6 @@ Locale[] locales = LanguageUtil.getAvailableLocales();
 
 					<aui:input checked='<%= !PrefsParamUtil.getBoolean(portletPreferences, request, "elasticsearchEnabled", false) %>' label="lucene" name="elasticsearchEnabled" type="radio" value="false" />
 				</c:when>
-				<c:when test='<%= tabs2.equals("new-ui") %>'>
-					<aui:fieldset>
-						<aui:input label="enable-lesa2-ui" name="support2Enabled" type="checkbox" value='<%= PrefsParamUtil.getBoolean(portletPreferences, request, "support2Enabled", false) %>' />
-					</aui:fieldset>
-
-					<aui:fieldset>
-						<aui:input label="show-lesa2-ui-for-partners" name="support2Partners" type="checkbox" value='<%= PrefsParamUtil.getBoolean(portletPreferences, request, "support2Partners", false) %>' />
-
-						<aui:input label="show-lesa2-ui-for-premier-projects" name="support2PremierAccountTier" type="checkbox" value='<%= PrefsParamUtil.getBoolean(portletPreferences, request, "support2PremierAccountTier", false) %>' />
-
-						<aui:input label="show-lesa2-ui-for-strategic-projects" name="support2StrategicAccountTier" type="checkbox" value='<%= PrefsParamUtil.getBoolean(portletPreferences, request, "support2StrategicAccountTier", false) %>' />
-
-						<aui:input label="show-lesa2-ui-for-oem-projects" name="support2OEMAccountTier" type="checkbox" value='<%= PrefsParamUtil.getBoolean(portletPreferences, request, "support2OEMAccountTier", false) %>' />
-
-						<aui:input label="show-lesa2-ui-for-regular-projects" name="support2RegularAccountTier" type="checkbox" value='<%= PrefsParamUtil.getBoolean(portletPreferences, request, "support2RegularAccountTier", false) %>' />
-
-						<aui:input cssClass="lfr-textarea-container" label="show-lesa2-ui-for-specific-projects" name="support2EnabledAccounts" type="textarea" value='<%= PrefsParamUtil.getString(portletPreferences, request, "support2EnabledAccounts", null) %>' />
-
-						<aui:input cssClass="lfr-textarea-container" label="show-lesa2-ui-for-specific-partners" name="support2EnabledPartners" type="textarea" value='<%= PrefsParamUtil.getString(portletPreferences, request, "support2EnabledPartners", null) %>' />
-					</aui:fieldset>
-
-					<aui:fieldset>
-						<aui:input label="show-lesa2-ui-announcement-to-liferay-employees" name="support2LiferayAnnouncement" type="checkbox" value='<%= PrefsParamUtil.getBoolean(portletPreferences, request, "support2LiferayAnnouncement", false) %>' />
-
-						<aui:input label="show-lesa2-ui-announcement-to-customers" name="support2CustomerAnnouncement" type="checkbox" value='<%= PrefsParamUtil.getBoolean(portletPreferences, request, "support2CustomerAnnouncement", false) %>' />
-					</aui:fieldset>
-				</c:when>
 				<c:when test='<%= tabs2.equals("product-messages") %>'>
 
 					<%
@@ -1036,28 +986,17 @@ Locale[] locales = LanguageUtil.getAvailableLocales();
 			String emailTicketEntryBody = PrefsParamUtil.getString(portletPreferences, request, "emailTicketEntryBody_" + currentLanguageId, StringPool.BLANK);
 			String emailTicketEntryCommentTemplate = PrefsParamUtil.getString(portletPreferences, request, "emailTicketEntryCommentTemplate_" + currentLanguageId, StringPool.BLANK);
 			String emailTicketEntryDueDateTemplate = PrefsParamUtil.getString(portletPreferences, request, "emailTicketEntryDueDateTemplate_" + currentLanguageId, StringPool.BLANK);
-
-			String emailTrainingEventCertificateSubject = PrefsParamUtil.getString(portletPreferences, request, "emailTrainingEventCertificateSubject_" + currentLanguageId, StringPool.BLANK);
-			String emailTrainingEventCertificateBody = PrefsParamUtil.getString(portletPreferences, request, "emailTrainingEventCertificateBody_" + currentLanguageId, StringPool.BLANK);
-
-			String emailTrainingEventSurveySubject = PrefsParamUtil.getString(portletPreferences, request, "emailTrainingEventSurveySubject_" + currentLanguageId, StringPool.BLANK);
-			String emailTrainingEventSurveyBody = PrefsParamUtil.getString(portletPreferences, request, "emailTrainingEventSurveyBody_" + currentLanguageId, StringPool.BLANK);
-
-			String emailTrainingExamCertificateSubject = PrefsParamUtil.getString(portletPreferences, request, "emailTrainingExamCertificateSubject_" + currentLanguageId, StringPool.BLANK);
-			String emailTrainingExamCertificateBody = PrefsParamUtil.getString(portletPreferences, request, "emailTrainingExamCertificateBody_" + currentLanguageId, StringPool.BLANK);
 			%>
 
 			<liferay-ui:tabs
-				names="general,liferay-feedback,provisioning-create-account,ticket-notification,training-certificate"
+				names="general,liferay-feedback,provisioning-create-account,ticket-notification,"
 				param="tabs2"
 				url="<%= portletURL %>"
 			/>
 
-			<c:if test='<%= !tabs2.equals("training-certificate") %>'>
-				<span class="portlet-msg-info">
-					<liferay-ui:message key="enter-custom-values-or-leave-it-blank-to-use-the-default-portal-settings" />
-				</span>
-			</c:if>
+			<span class="portlet-msg-info">
+				<liferay-ui:message key="enter-custom-values-or-leave-it-blank-to-use-the-default-portal-settings" />
+			</span>
 
 			<c:choose>
 				<c:when test='<%= tabs2.equals("liferay-feedback") %>'>
@@ -1453,236 +1392,6 @@ Locale[] locales = LanguageUtil.getAvailableLocales();
 							</dd>
 						</dl>
 					</div>
-				</c:when>
-				<c:when test='<%= tabs2.equals("training-certificate") %>'>
-					<liferay-ui:tabs
-						names="training-certificate,training-survey,certification-exam"
-						param="tabs3"
-						url="<%= portletURL %>"
-					/>
-
-					<span class="portlet-msg-info">
-						<liferay-ui:message key="enter-custom-values-or-leave-it-blank-to-use-the-default-portal-settings" />
-					</span>
-
-					<c:choose>
-						<c:when test='<%= tabs3.equals("certification-exam") %>'>
-							<table class="lfr-table">
-							<tr>
-								<td>
-									<liferay-ui:message key="language" />
-								</td>
-								<td>
-									<select name="<portlet:namespace />languageId" onChange="<portlet:namespace />updateForm();">
-
-										<%
-										for (int i = 0; i < locales.length; i++) {
-											String optionStyle = StringPool.BLANK;
-
-											if (Validator.isNotNull(portletPreferences.getValue("emailTrainingExamCertificateSubject_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK)) ||
-												Validator.isNotNull(portletPreferences.getValue("emailTrainingExamCertificateBody_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK))) {
-
-												optionStyle = "style=\"font-weight: bold;\"";
-											}
-										%>
-
-											<option <%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) ? "selected" : "" %> <%= optionStyle %> value="<%= LocaleUtil.toLanguageId(locales[i]) %>"><%= locales[i].getDisplayName(locale) %></option>
-
-										<%
-										}
-										%>
-
-									</select>
-								</td>
-							</tr>
-							</table>
-
-							<aui:fieldset>
-								<aui:input cssClass="lfr-input-text-container" label="subject" name='<%= "emailTrainingExamCertificateSubject_" + currentLanguageId %>' value="<%= emailTrainingExamCertificateSubject %>" />
-
-								<aui:input cssClass="lfr-textarea-container" label="body" name='<%= "emailTrainingExamCertificateBody_" + currentLanguageId %>' type="textarea" value="<%= emailTrainingExamCertificateBody %>" />
-							</aui:fieldset>
-
-							<div class="definition-of-terms">
-								<h4>
-									<liferay-ui:message key="definition-of-terms" />
-								</h4>
-
-								<dl>
-									<dt>
-										[$CERTIFICATE_KEY$]
-									</dt>
-									<dd>
-										The training customer's certificate key
-									</dd>
-									<dt>
-										[$CUSTOMER_FULL_NAME$]
-									</dt>
-									<dd>
-										The training customer's full name
-									</dd>
-									<dt>
-										[$EXAM_NAME$]
-									</dt>
-									<dd>
-										The training exam's name
-									</dd>
-								</dl>
-							</div>
-						</c:when>
-						<c:when test='<%= tabs3.equals("training-survey") %>'>
-							<table class="lfr-table">
-							<tr>
-								<td>
-									<liferay-ui:message key="language" />
-								</td>
-								<td>
-									<select name="<portlet:namespace />languageId" onChange="<portlet:namespace />updateForm();">
-
-										<%
-										for (int i = 0; i < locales.length; i++) {
-											String optionStyle = StringPool.BLANK;
-
-											if (Validator.isNotNull(portletPreferences.getValue("emailTrainingEventSurveySubject_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK)) ||
-												Validator.isNotNull(portletPreferences.getValue("emailTrainingEventSurveyBody_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK))) {
-
-												optionStyle = "style=\"font-weight: bold;\"";
-											}
-										%>
-
-											<option <%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) ? "selected" : "" %> <%= optionStyle %> value="<%= LocaleUtil.toLanguageId(locales[i]) %>"><%= locales[i].getDisplayName(locale) %></option>
-
-										<%
-										}
-										%>
-
-									</select>
-								</td>
-							</tr>
-							</table>
-
-							<aui:fieldset>
-								<aui:input cssClass="lfr-input-text-container" label="subject" name='<%= "emailTrainingEventSurveySubject_" + currentLanguageId %>' value="<%= emailTrainingEventSurveySubject %>" />
-
-								<aui:input cssClass="lfr-textarea-container" label="body" name='<%= "emailTrainingEventSurveyBody_" + currentLanguageId %>' type="textarea" value="<%= emailTrainingEventSurveyBody %>" />
-							</aui:fieldset>
-
-							<div class="definition-of-terms">
-								<h4>
-									<liferay-ui:message key="definition-of-terms" />
-								</h4>
-
-								<dl>
-									<dt>
-										[$CLASS_END_DATE$]
-									</dt>
-									<dd>
-										The training class' end date
-									</dd>
-									<dt>
-										[$CLASS_START_DATE$]
-									</dt>
-									<dd>
-										The training class' start date
-									</dd>
-									<dt>
-										[$COURSE_NAME$]
-									</dt>
-									<dd>
-										The training course's name
-									</dd>
-									<dt>
-										[$CUSTOMER_FULL_NAME$]
-									</dt>
-									<dd>
-										The training customer's full name
-									</dd>
-									<dt>
-										[$TRAINING_SURVEY_URL$]
-									</dt>
-									<dd>
-										The survey URL for the training customer
-									</dd>
-								</dl>
-							</div>
-						</c:when>
-						<c:otherwise>
-							<table class="lfr-table">
-							<tr>
-								<td>
-									<liferay-ui:message key="language" />
-								</td>
-								<td>
-									<select name="<portlet:namespace />languageId" onChange="<portlet:namespace />updateForm();">
-
-										<%
-										for (int i = 0; i < locales.length; i++) {
-											String optionStyle = StringPool.BLANK;
-
-											if (Validator.isNotNull(portletPreferences.getValue("emailTrainingEventCertificateSubject_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK)) ||
-												Validator.isNotNull(portletPreferences.getValue("emailTrainingEventCertificateBody_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK))) {
-
-												optionStyle = "style=\"font-weight: bold;\"";
-											}
-										%>
-
-											<option <%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) ? "selected" : "" %> <%= optionStyle %> value="<%= LocaleUtil.toLanguageId(locales[i]) %>"><%= locales[i].getDisplayName(locale) %></option>
-
-										<%
-										}
-										%>
-
-									</select>
-								</td>
-							</tr>
-							</table>
-
-							<aui:fieldset>
-								<aui:input cssClass="lfr-input-text-container" label="subject" name='<%= "emailTrainingEventCertificateSubject_" + currentLanguageId %>' value="<%= emailTrainingEventCertificateSubject %>" />
-
-								<aui:input cssClass="lfr-textarea-container" label="body" name='<%= "emailTrainingEventCertificateBody_" + currentLanguageId %>' type="textarea" value="<%= emailTrainingEventCertificateBody %>" />
-							</aui:fieldset>
-
-							<div class="definition-of-terms">
-								<h4>
-									<liferay-ui:message key="definition-of-terms" />
-								</h4>
-
-								<dl>
-									<dt>
-										[$CERTIFICATE_KEY$]
-									</dt>
-									<dd>
-										The training customer's certificate key
-									</dd>
-									<dt>
-										[$CLASS_START_DATE$]
-									</dt>
-									<dd>
-										The training class' start date
-									</dd>
-									<dt>
-										[$COURSE_NAME$]
-									</dt>
-									<dd>
-										The training course's name
-									</dd>
-									<dt>
-										[$CUSTOMER_FULL_NAME$]
-									</dt>
-									<dd>
-										The training customer's full name
-									</dd>
-									<dt>
-										[$VERSION$]
-									</dt>
-									<dd>
-										The training course's version
-									</dd>
-								</dl>
-							</div>
-						</c:otherwise>
-					</c:choose>
 				</c:when>
 				<c:otherwise>
 					<aui:fieldset>

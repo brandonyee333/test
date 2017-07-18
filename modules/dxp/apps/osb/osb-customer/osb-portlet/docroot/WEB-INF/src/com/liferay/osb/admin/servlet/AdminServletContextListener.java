@@ -196,7 +196,6 @@ public class AdminServletContextListener
 		// Asset
 
 		// TODO need database for OSBConstants.*_USER_ID calls
-		// Do we even need this? marketplace?
 		//AdminServletContextListenerAssetHelper.setup();
 
 		// Audit action
@@ -610,27 +609,6 @@ public class AdminServletContextListener
 				"OSB Marketing Admin", null, null, RoleConstants.TYPE_REGULAR,
 				null, null);
 		}
-
-		OSBConstants.ROLE_OSB_MARKETING_ADMIN_ID = role.getRoleId();
-
-		addAdministratorRole(OSBConstants.ROLE_OSB_MARKETING_ADMIN_ID);
-
-		// OSB Marketplace Admin role
-
-		try {
-			role = RoleLocalServiceUtil.getRole(
-				OSBConstants.COMPANY_ID, "OSB Marketplace Admin");
-		}
-		catch (Exception e) {
-			role = RoleLocalServiceUtil.addRole(
-				OSBConstants.USER_DEFAULT_USER_ID, null, 0,
-				"OSB Marketplace Admin", null, null, RoleConstants.TYPE_REGULAR,
-				null, null);
-		}
-
-		OSBConstants.ROLE_OSB_MARKETPLACE_ADMIN_ID = role.getRoleId();
-
-		addAdministratorRole(OSBConstants.ROLE_OSB_MARKETPLACE_ADMIN_ID);
 
 		// OSB Support Admin role
 
