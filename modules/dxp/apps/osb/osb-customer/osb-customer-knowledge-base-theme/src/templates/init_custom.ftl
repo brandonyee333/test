@@ -3,9 +3,9 @@
 
 	layout_local_service = serviceLocator.findService("com.liferay.portal.kernel.service.LayoutLocalService")
 
-	portal_permission_util = serviceLocator.findService("com.liferay.portal.kernel.service.permission.PortalPermission")
+	role_local_service = serviceLocator.findService("com.liferay.portal.kernel.service.RoleLocalService")
 
-	role_util = serviceLocator.findService("com.liferay.portal.kernel.service.persistence.RolePersistence")
+	portal_permission_util = serviceLocator.findService("com.liferay.portal.kernel.service.permission.PortalPermission")
 
 	ancestor_layout = layout_local_service.getLayout(layout.getAncestorPlid())
 />
@@ -90,7 +90,7 @@
 
 <#if !trial>
 	<#assign
-		groupPks = role_util.getGroupPrimaryKeys(trialRoleId)
+		groupPks = role_local_service.getGroupPrimaryKeys(trialRoleId)
 		userGroupIds = user.getUserGroupIds()
 	/>
 	<#list groupPks as groupPk>
@@ -143,9 +143,7 @@
 					</#list>
 				</#if>
 
-				<#if hideLesa && cur_layout_name == "LESA">
-					<#-- Skip LESA and all its related child links. -->
-				<#else>
+				<#if !(hideLesa && stringUtil.equals(cur_layout_name, "LESA"))>
 					<#if cur_layout.hasChildren()>
 						<li class="nav-item nav-item-${nav_index} parent-item root-item toggle-menu">
 							<a class="${cur_layout_nav_item_selected_css_class}" href="javascript:;" ${cur_layout.getTarget()}>${cur_layout_name}</a>
