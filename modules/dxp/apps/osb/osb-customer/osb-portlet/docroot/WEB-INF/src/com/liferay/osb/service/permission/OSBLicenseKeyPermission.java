@@ -121,11 +121,13 @@ public class OSBLicenseKeyPermission {
 		}
 
 		if (actionId.equals(OSBActionKeys.UPDATE_ADVANCED)) {
+			
+			/* TODO update app license integration
 			if (RoleLocalServiceUtil.hasUserRole(
 					permissionChecker.getUserId(),
 					OSBConstants.ROLE_OSB_MARKETPLACE_ADMIN_ID)) {
 
-/* TODO update app license integration
+
 				AssetReceiptLicense assetReceiptLicense =
 					AssetReceiptLicenseLocalServiceUtil.
 						fetchAssetReceiptLicense(
@@ -148,8 +150,8 @@ public class OSBLicenseKeyPermission {
 
 					return true;
 				}
-*/
 			}
+			*/
 
 			return false;
 		}

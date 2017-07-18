@@ -25,36 +25,15 @@ public class OSBConstants {
 
 	public static long ACCOUNT_ENTRY_TRIAL_ID = 8264303;
 
-	public static long ASSET_CATEGORY_EE_PLUGINS_ID = 12729032;
-
-	public static long ASSET_CATEGORY_HIGHLIGHTED_BLOG_STREAM_ID = 39286915;
-
-	public static long ASSET_VOCABULARY_MARKETPLACE_ID = 11232556;
-
 	public static final String ATTACHMENTS_DIR_ACCOUNT_ENTRY =
 		"osb/accountentry/";
 
 	public static final String ATTACHMENTS_DIR_ACCOUNT_ENVIRONMENT =
 		"osb/accountenvironment/";
 
-	public static final String ATTACHMENTS_DIR_MARKETPLACE = "osb/marketplace/";
-
 	public static final String ATTACHMENTS_DIR_SUPPORT = "osb/support/";
 
-	public static final int BUSINESS_LIST_TYPE_ID = 11000;
-
 	public static long COMPANY_ID = 1;
-
-	public static String CORP_ENTRY_LIFERAY_INC_DOSSIERA_ACCOUNT_KEY =
-		"Liferay_Inc_000000";
-
-	public static long CORP_ENTRY_LIFERAY_INC_ID = 15097278;
-
-	public static long DEVELOPER_ENTRY_LIFERAY_INC_ID = 21546273;
-
-	public static final long DL_FILE_ENTRY_CERTIFIED_DEVELOPER_61_ID = 29088458;
-
-	public static final long DL_FILE_ENTRY_CERTIFIED_DEVELOPER_62_ID = 46757988;
 
 	public static final String EMAIL_SUPPORT_FROM_NAME_SUFFIX =
 		" [LESA Support]";
@@ -68,18 +47,6 @@ public class OSBConstants {
 	public static long GROUP_GLOBAL_ID = 8431626;
 
 	public static long GROUP_GUEST_ID = 14;
-
-	public static long GROUP_MARKETPLACE_DEVELOPER_PORTAL_ID = 33392425;
-
-	public static String JOURNAL_TEMPLATE_MARKETPLACE_BANNER_ID;
-
-	public static String JOURNAL_TEMPLATE_MARKETPLACE_MEDIUM_AD_ID;
-
-	public static String MARKETPLACE_FAX_NUMBER = "+1 (909) 333-4058";
-
-	public static final int MARKETPLACE_SEARCH_DEFAULT_DELTA = 30;
-
-	public static final int MARKETPLACE_SUBSCRIPTION_PROMOTION_YEAR = 2115;
 
 	public static long OFFERING_DEFINITION_TRIAL_ID = 5638713;
 
@@ -111,8 +78,6 @@ public class OSBConstants {
 
 	public static final String OSB_DIR = "osb/";
 
-	public static final String PROMETRIC_DIR = "prometric/";
-
 	public static long ROLE_LIFERAY_EMPLOYEE_ID = 38751983;
 
 	public static long ROLE_OSB_ACCOUNT_ADMIN_ID = 10053303;
@@ -129,23 +94,7 @@ public class OSBConstants {
 
 	public static long ROLE_OSB_CORP_PROJECT_ADMIN_ID = 84895639;
 
-	public static long ROLE_OSB_MARKETING_ADMIN_ID = 5275463;
-
-	public static long ROLE_OSB_MARKETPLACE_ADMIN_ID = 12324889;
-
-	public static long ROLE_OSB_MARKETPLACE_TESTER_ID = 88244231;
-
 	public static long ROLE_OSB_SUPPORT_ADMIN_ID = 11496283;
-
-	public static long ROLE_OSB_TRAINING_ADMIN_ID = 5275468;
-
-	public static long ROLE_OSB_TRAINING_EXAM_DOCUMENT_61_ID = 29099023;
-
-	public static long ROLE_OSB_TRAINING_EXAM_PAGE_61_ID = 29099020;
-
-	public static long ROLE_OSB_TRAINING_EXAM_PAGE_62_ID = 45036030;
-
-	public static long ROLE_OSB_TRAINING_TRAINER_ID = 37313611;
 
 	public static long ROLE_OSB_TRIAL_LICENSE_ADMIN_ID = 80745250;
 
@@ -160,12 +109,6 @@ public class OSBConstants {
 	public static final String TEMP_DIR = OSB_DIR + "temp/";
 
 	public static long TEXTAREA_MAX_LENGTH = 12000;
-
-	public static final long
-		TRAINING_CERTIFICATE_TEMPLATE_CERTIFIED_DEVELOPER_61_ID = 34380199;
-
-	public static final long
-		TRAINING_CERTIFICATE_TEMPLATE_CERTIFIED_DEVELOPER_62_ID = 44646401;
 
 	public static long USER_AMOS_FONG_USER_ID = 1395288;
 
