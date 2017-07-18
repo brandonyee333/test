@@ -128,10 +128,7 @@ public class OSBAuthToken implements AuthToken {
 				return true;
 			}
 		}
-		else if (ppid.equals(OSBPortletKeys.OSB_MARKETPLACE_ADMIN) ||
-				 ppid.equals(OSBPortletKeys.OSB_MARKETPLACE_DEVELOPER_APPS) ||
-				 ppid.equals(OSBPortletKeys.OSB_SUPPORT)) {
-
+		else if (ppid.equals(OSBPortletKeys.OSB_SUPPORT)) {
 			String portletNamespace = PortalUtil.getPortletNamespace(ppid);
 
 			String actionName = ParamUtil.getString(
@@ -143,9 +140,6 @@ public class OSBAuthToken implements AuthToken {
 
 				return true;
 			}
-		}
-		else if (ppid.equals(OSBPortletKeys.OSB_MARKETPLACE_SERVER)) {
-			return true;
 		}
 
 		return false;
