@@ -61,45 +61,30 @@
 </#if>
 
 <#assign
-	userRoleIds = user.getRoleIds()
-
 	customer = false
+	hideLesa = false
 	liferayEmployee = false
 	partner = false
 	trial = false
-	hideLesa = false
 
-	trialRoleId = 214323
+	userId = user.getUserId()
+	companyId = user.getCompanyId()
 />
 
-<#if arrayUtil.contains(userRoleIds, 10827)>
+<#if role_local_service.hasUserRoles(userId, companyId, ['Customer'], true)>
 	<#assign customer = true />
 </#if>
 
-<#if arrayUtil.contains(userRoleIds, 10946)>
+<#if role_local_service.hasUserRoles(userId, companyId, ['Liferay Employee'], true)>
 	<#assign liferayEmployee = true />
 </#if>
 
-<#if arrayUtil.contains(userRoleIds, 54427)>
+<#if role_local_service.hasUserRoles(userId, companyId, ['Partner'], true)>
 	<#assign partner = true />
 </#if>
 
-<#if arrayUtil.contains(userRoleIds, trialRoleId)>
+<#if role_local_service.hasUserRoles(userId, companyId, ['Trial'], true)>
 	<#assign trial = true />
-</#if>
-
-<#if !trial>
-	<#assign
-		groupPks = role_local_service.getGroupPrimaryKeys(trialRoleId)
-		userGroupIds = user.getUserGroupIds()
-	/>
-	<#list groupPks as groupPk>
-		<#assign groupKey = group_local_service.getGroup(groupPk).getGroupKey() />
-		<#if arrayUtil.contains(userGroupIds, groupKey?number)>
-			<#assign trial = true />
-			<#break>
-		</#if>
-	</#list>
 </#if>
 
 <#if trial && !(customer || liferayEmployee || partner)>
