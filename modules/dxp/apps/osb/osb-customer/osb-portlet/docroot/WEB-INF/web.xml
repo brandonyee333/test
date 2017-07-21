@@ -58,19 +58,6 @@
 		<load-on-startup>2</load-on-startup>
 	</servlet>
 	<servlet>
-		<servlet-name>User Email Verification Servlet</servlet-name>
-		<servlet-class>com.liferay.portal.kernel.servlet.PortalDelegateServlet</servlet-class>
-		<init-param>
-			<param-name>servlet-class</param-name>
-			<param-value>com.liferay.osb.servlet.UserEmailVerificationServlet</param-value>
-		</init-param>
-		<init-param>
-			<param-name>sub-context</param-name>
-			<param-value>user_email_verification</param-value>
-		</init-param>
-		<load-on-startup>2</load-on-startup>
-	</servlet>
-	<servlet>
 		<servlet-name>User Session Validation Servlet</servlet-name>
 		<servlet-class>com.liferay.portal.kernel.servlet.PortalDelegateServlet</servlet-class>
 		<init-param>
