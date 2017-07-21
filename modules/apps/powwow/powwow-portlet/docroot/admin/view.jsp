@@ -16,6 +16,8 @@
 
 <%@ include file="/init.jsp" %>
 
+Test CI
+
 <liferay-ui:search-container
 	emptyResultsMessage="there-are-no-servers"
 	iteratorURL="<%= portletURL %>"
