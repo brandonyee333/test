@@ -64,13 +64,13 @@
 							<a href="https://www.liferay.com/web/${user.getScreenName()}/profile"><@liferay.language key="profile" /></a>
 						</li>
 
-						<#if customer || liferayEmployee || partner>
+						<#if customer || liferay_employee || partner>
 							<li>
 								<a href="https://www.liferay.com/group/customer"><@liferay.language key="customer-portal" /></a>
 							</li>
 						</#if>
 
-						<#if liferayEmployee || partner>
+						<#if liferay_employee || partner>
 							<li>
 								<a href="https://www.liferay.com/group/partner"><@liferay.language key="partner-portal" /></a>
 							</li>

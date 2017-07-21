@@ -61,34 +61,17 @@
 </#if>
 
 <#assign
-	customer = false
-	hideLesa = false
-	liferayEmployee = false
-	partner = false
-	trial = false
+	customer = role_local_service.hasUserRoles(user_id, company_id, ['Customer'], true)
 
-	userId = user.getUserId()
-	companyId = user.getCompanyId()
+	liferay_employee = role_local_service.hasUserRoles(user_id, company_id, ['Liferay Employee'], true)
+
+	partner = role_local_service.hasUserRoles(user_id, company_id, ['Partner'], true)
+
+	show_lesa = false
 />
 
-<#if role_local_service.hasUserRoles(userId, companyId, ['Customer'], true)>
-	<#assign customer = true />
-</#if>
-
-<#if role_local_service.hasUserRoles(userId, companyId, ['Liferay Employee'], true)>
-	<#assign liferayEmployee = true />
-</#if>
-
-<#if role_local_service.hasUserRoles(userId, companyId, ['Partner'], true)>
-	<#assign partner = true />
-</#if>
-
-<#if role_local_service.hasUserRoles(userId, companyId, ['Trial'], true)>
-	<#assign trial = true />
-</#if>
-
-<#if trial && !(customer || liferayEmployee || partner)>
-	<#assign hideLesa = true />
+<#if customer || liferay_employee || partner>
+	<#assign show_lesa = true />
 </#if>
 
 <#macro print_navigation layout_friendly_url>
@@ -128,7 +111,7 @@
 					</#list>
 				</#if>
 
-				<#if !(hideLesa && stringUtil.equals(cur_layout_name, "LESA"))>
+				<#if !stringUtil.equals(cur_layout_name, "LESA") || show_lesa>
 					<#if cur_layout.hasChildren()>
 						<li class="nav-item nav-item-${nav_index} parent-item root-item toggle-menu">
 							<a class="${cur_layout_nav_item_selected_css_class}" href="javascript:;" ${cur_layout.getTarget()}>${cur_layout_name}</a>
