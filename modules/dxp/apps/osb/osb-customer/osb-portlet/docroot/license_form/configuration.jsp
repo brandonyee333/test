@@ -30,7 +30,7 @@ int productVersion = PrefsParamUtil.getInteger(portletPreferences, request, "pro
 
 	<liferay-portlet:actionURL portletConfiguration="true" var="configurationURL" />
 
-	<aui:form action="<%= configurationURL %>" method="post" name="fm">
+	<aui:form action="<%= configurationURL %>">
 		<aui:input name="<%= Constants.CMD %>" type="hidden" value="<%= Constants.UPDATE %>" />
 
 		<aui:input cssClass="lfr-input-text-container" label="order-uuid" name="orderUuid" value="<%= orderUuid %>" />
@@ -57,7 +57,7 @@ int productVersion = PrefsParamUtil.getInteger(portletPreferences, request, "pro
 					<option disabled>--------</option>
 				</c:if>
 
-				<option <%= (productVersionType.getListTypeId() == productVersion) ? "selected" : "" %> value="<%= productVersionType.getListTypeId() %>"><%= LanguageUtil.get(pageContext, productVersionType.getName()) %></option>
+				<option <%= (productVersionType.getListTypeId() == productVersion) ? "selected" : "" %> value="<%= productVersionType.getListTypeId() %>"><%= LanguageUtil.get(request, productVersionType.getName()) %></option>
 
 			<%
 				previousNamePrefix = namePrefix;

@@ -33,9 +33,9 @@ int productVersion = GetterUtil.getInteger(portletPreferences.getValue("productV
 %>
 
 <c:choose>
-	<c:when test='<%= SessionMessages.contains(portletSession, "licenseKeySent") %>'>
+	<c:when test='<%= SessionMessages.contains(request, "licenseKeySent") %>'>
 		<p>
-			<liferay-ui:message key="thank-you" /> <%= LanguageUtil.format(pageContext, "your-license-key-was-sent-to-x", SessionMessages.get(portletSession, "licenseKeySent")) %>
+			<liferay-ui:message key="thank-you" /> <%= LanguageUtil.format(request, "your-license-key-was-sent-to-x", SessionMessages.get(request, "license_key_sent")) %>
 		</p>
 
 		<a href="/"><liferay-ui:message arguments='<%= "Liferay.com" %>' key="back-to-x" /></a>

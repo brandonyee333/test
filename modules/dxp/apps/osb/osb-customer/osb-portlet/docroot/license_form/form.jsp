@@ -24,7 +24,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 	<portlet:param name="mvcPath" value="/license_form/view.jsp" />
 </portlet:actionURL>
 
-<aui:form action="<%= registerLicenseKeyURL %>" method="post" name="fm">
+<aui:form action="<%= registerLicenseKeyURL %>">
 	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 
 	<liferay-ui:error exception="<%= CaptchaMaxChallengesException.class %>" message="maximum-number-of-captcha-attempts-exceeded" />
@@ -264,7 +264,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 			<div class="unit">
 				<aui:input label="i-agree-to-allow-liferay-and-its-affiliates-to-contact-me-via-email" name="agreedToContact" type="checkbox" />
 
-				<div class="agreedToContactNotifications aui-helper-hidden" id="<portlet:namespace />agreedToContactNotifications">
+				<div class="contact-agreement-notification hide" id="<portlet:namespace />contact-agreement-notification">
 					<strong><liferay-ui:message key="liferay-may-send-me-email-regarding-the-following" />:</strong>
 
 					<div class="ctrl-holder">
@@ -365,19 +365,19 @@ String redirect = ParamUtil.getString(request, "redirect");
 	var agreedToContactCheckBox = A.one('#<portlet:namespace />agreedToContactCheckbox');
 
 	if (agreedToContactCheckBox.get('checked')) {
-		A.one('#<portlet:namespace />agreedToContactNotifications').show();
+		A.one('#<portlet:namespace />contact-agreement-notification').show();
 	}
 
 	agreedToContactCheckBox.on(
 		'click',
 		function() {
 			if (this.get('checked')) {
-				A.one('#<portlet:namespace />agreedToContactNotifications').show();
+				A.one('#<portlet:namespace />contact-agreement-notification').show();
 			}
 			else {
-				A.one('#<portlet:namespace />agreedToContactNotifications').hide();
+				A.one('#<portlet:namespace />contact-agreement-notification').hide();
 
-				var agreedToContactCheckBoxes = A.all('#<portlet:namespace />agreedToContactNotifications input[type=checkbox]');
+				var agreedToContactCheckBoxes = A.all('#<portlet:namespace />contact-agreement-notification input[type=checkbox]');
 
 				agreedToContactCheckBoxes.each(
 					function(item, index, collection) {

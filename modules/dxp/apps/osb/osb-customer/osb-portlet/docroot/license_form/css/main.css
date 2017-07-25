@@ -1,11 +1,9 @@
-@import "compass";
-
 .osb-portlet-license-form {
 	input[type=checkbox] {
 		margin: 2px;
 	}
 
-	.agreedToContactNotifications .ctrl-holder {
+	.contact-agreement-notification .ctrl-holder {
 		padding-left: 1em;
 	}
 
@@ -30,5 +28,5 @@
 /* ---------- Extras ---------- */
 
 .osb-portlet-license-form .lfr-input-text {
-	@include border-radius(2px);
+	border-radius: 2px;
 }
