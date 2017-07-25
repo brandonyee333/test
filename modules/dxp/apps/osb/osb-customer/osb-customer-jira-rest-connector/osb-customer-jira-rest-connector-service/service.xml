@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.0.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_0_0.dtd">
+
+<service-builder auto-import-default-references="false" auto-namespace-tables="false" package-path="com.liferay.osb.customer.jira.rest.connector">
+	<author>Noah Sherrill</author>
+	<namespace>JIRA</namespace>
+	<entity local-service="true" name="JIRATicket" remote-service="false" />
+	<exceptions>
+		<exception>JIRAResponse</exception>
+		<exception>JIRAResponseIO</exception>
+		<exception>JIRAResponseTicketNotFound</exception>
+		<exception>JIRATicketCustomFieldName</exception>
+		<exception>JIRATicketCustomFieldValue</exception>
+		<exception>JIRATicketIssueType</exception>
+		<exception>JIRATicketSummary</exception>
+		<exception>JIRATicketTicketKey</exception>
+	</exceptions>
+</service-builder>
