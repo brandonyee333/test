@@ -16,7 +16,6 @@ package com.liferay.jenkins.results.parser;
 
 import java.io.CharArrayWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
@@ -174,11 +173,13 @@ public class Dom4JUtil {
 	}
 
 	public static Document parse(File xmlFile)
-		throws DocumentException, FileNotFoundException {
+		throws DocumentException, IOException {
 
 		SAXReader saxReader = new SAXReader();
 
-		return saxReader.read(new FileReader(xmlFile));
+		try (FileReader fileReader = new FileReader(xmlFile)) {
+			return saxReader.read(fileReader);
+		}
 	}
 
 	public static Document parse(String xml) throws DocumentException {
