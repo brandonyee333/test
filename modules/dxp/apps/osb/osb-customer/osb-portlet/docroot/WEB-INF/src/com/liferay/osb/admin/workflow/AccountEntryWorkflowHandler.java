@@ -19,7 +19,6 @@ import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.LCSSubscriptionEntryLocalServiceUtil;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -28,7 +27,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -36,6 +34,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.BaseWorkflowHandler;
 
 import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -90,8 +89,7 @@ public class AccountEntryWorkflowHandler<T> extends BaseWorkflowHandler<T> {
 	}
 
 	@Override
-	public T updateStatus(
-			int status, Map<String, Serializable> workflowContext) 
+	public T updateStatus(int status, Map<String, Serializable> workflowContext)
 		throws PortalException {
 
 		try {
@@ -111,7 +109,7 @@ public class AccountEntryWorkflowHandler<T> extends BaseWorkflowHandler<T> {
 
 	protected T doUpdateStatus(
 			int status, Map<String, Serializable> workflowContext)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		long userId = GetterUtil.getLong(
 			(String)workflowContext.get(WorkflowConstants.CONTEXT_USER_ID));
@@ -144,7 +142,7 @@ public class AccountEntryWorkflowHandler<T> extends BaseWorkflowHandler<T> {
 				serviceContext);
 		}
 		else {
-			List<Long> orderEntryIds = new ArrayList<Long>();
+			List<Long> orderEntryIds = new ArrayList<>();
 
 			String orderEntries = (String)workflowContext.get(
 				WorkflowConstants.CONTEXT_ORDER_ENTRIES);
@@ -174,10 +172,6 @@ public class AccountEntryWorkflowHandler<T> extends BaseWorkflowHandler<T> {
 		return (T)accountEntry;
 	}
 
-	protected String getIconPath(ThemeDisplay themeDisplay) {
-		return themeDisplay.getPathThemeImages() + "/trees/page.png";
-	}
-
 	protected void syncToLCS(AccountEntry accountEntry) {
 		try {
 			LCSSubscriptionEntryLocalServiceUtil.syncToLCS(
@@ -188,7 +182,7 @@ public class AccountEntryWorkflowHandler<T> extends BaseWorkflowHandler<T> {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		AccountEntryWorkflowHandler.class);
 
 }

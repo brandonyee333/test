@@ -21,15 +21,13 @@ import com.liferay.osb.service.OrderEntryLocalServiceUtil;
 import com.liferay.osb.util.SalesforceConstants;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.workflow.BaseWorkflowHandler;
-import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
 
 import java.io.Serializable;
 
@@ -55,9 +53,9 @@ public class OrderEntryWorkflowHandler<T> extends BaseWorkflowHandler<T> {
 
 	@Override
 	public void startWorkflowInstance(
-			long companyId, long groupId, long userId, long classPK,
-			T model, Map<String, Serializable> workflowContext)
-		throws PortalException, SystemException {
+			long companyId, long groupId, long userId, long classPK, T model,
+			Map<String, Serializable> workflowContext)
+		throws PortalException {
 
 		StringBundler sb = new StringBundler(5);
 
@@ -88,9 +86,8 @@ public class OrderEntryWorkflowHandler<T> extends BaseWorkflowHandler<T> {
 			companyId, groupId, userId, classPK, model, workflowContext);
 	}
 
-	public T updateStatus(
-			int status, Map<String, Serializable> workflowContext)
-		throws PortalException, SystemException {
+	public T updateStatus(int status, Map<String, Serializable> workflowContext)
+		throws PortalException {
 
 		try {
 			return doUpdateStatus(status, workflowContext);
@@ -109,7 +106,7 @@ public class OrderEntryWorkflowHandler<T> extends BaseWorkflowHandler<T> {
 
 	protected T doUpdateStatus(
 			int status, Map<String, Serializable> workflowContext)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		long userId = GetterUtil.getLong(
 			(String)workflowContext.get(WorkflowConstants.CONTEXT_USER_ID));
@@ -129,10 +126,6 @@ public class OrderEntryWorkflowHandler<T> extends BaseWorkflowHandler<T> {
 		return (T)orderEntry;
 	}
 
-	protected String getIconPath(ThemeDisplay themeDisplay) {
-		return themeDisplay.getPathThemeImages() + "/shopping/cart.png";
-	}
-
 	protected void syncToLCS(OrderEntry orderEntry) {
 		try {
 			AccountEntry accountEntry = orderEntry.getAccountEntry();
@@ -145,7 +138,7 @@ public class OrderEntryWorkflowHandler<T> extends BaseWorkflowHandler<T> {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		OrderEntryWorkflowHandler.class);
 
 }

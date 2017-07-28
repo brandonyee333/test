@@ -141,7 +141,7 @@ public class AccountEntryLocalServiceImpl
 			long[] supportRegionIds, String street1, String street2,
 			String street3, String city, String zip, long regionId,
 			long countryId, String ewsaDossieraProjectKey)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		// Account entry
 
@@ -173,16 +173,16 @@ public class AccountEntryLocalServiceImpl
 		accountEntry.setInstructions(instructions);
 		accountEntry.setNotes(notes);
 		accountEntry.setStatus(WorkflowConstants.STATUS_CLOSED);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		accountEntryPersistence.update(accountEntry, serviceContext);
 
 		// Address
 
-		AddressLocalServiceUtil.addAddress(
+		addressLocalService.addAddress(
 			userId, AccountEntry.class.getName(),
 			accountEntry.getAccountEntryId(), street1, street2, street3, city,
 			zip, regionId, countryId, 0, false, true, serviceContext);
@@ -209,9 +209,10 @@ public class AccountEntryLocalServiceImpl
 			CorpProject corpProject, PartnerEntry partnerEntry, Address address,
 			AccountWorker accountWorker, List<OrderEntry> orderEntries,
 			ArrayList<User> users, ServiceContext serviceContext)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		/* TODO corp project dependencies
+
 		// Corp project
 
 		if (corpProject.getCorpProjectId() > 0) {
@@ -223,6 +224,7 @@ public class AccountEntryLocalServiceImpl
 				corpProject.getUserId(), 0, corpProject.getDossieraProjectKey(),
 				corpProject.getSalesforceProjectKey(), corpProject.getName());
 		}
+
 		**/
 
 		// Partner entry
@@ -261,7 +263,7 @@ public class AccountEntryLocalServiceImpl
 
 		// Order entry
 
-		List<OrderEntry> addedOrderEntries = new ArrayList<OrderEntry>();
+		List<OrderEntry> addedOrderEntries = new ArrayList<>();
 
 		for (OrderEntry orderEntry : orderEntries) {
 			Calendar startCal = Calendar.getInstance();
@@ -318,8 +320,7 @@ public class AccountEntryLocalServiceImpl
 
 		// Workflow
 
-		HashMap<String, Serializable> workflowContext =
-			new HashMap<String, Serializable>();
+		HashMap<String, Serializable> workflowContext = new HashMap<>();
 
 		workflowContext.put(
 			WorkflowConstants.CONTEXT_ACCOUNT_ENTRY_NAME,
@@ -442,8 +443,7 @@ public class AccountEntryLocalServiceImpl
 			}
 
 			try {
-				Country country = CountryServiceUtil.getCountryByName(
-					countryName);
+				Country country = countryPersistence.findByName(countryName);
 
 				countryId = country.getCountryId();
 			}
@@ -465,9 +465,9 @@ public class AccountEntryLocalServiceImpl
 
 		if (countryId != 0) {
 			accountEntry.setCountryId(countryId);
-			
+
 			//TODO implement serviceContext how needed
-			
+
 			ServiceContext serviceContext = new ServiceContext();
 
 			accountEntryPersistence.update(accountEntry, serviceContext);
@@ -548,6 +548,7 @@ public class AccountEntryLocalServiceImpl
 		}
 
 		/* TODO corp project dependencies
+
 		// LCS
 
 		lcsSubscriptionEntryLocalService.syncToLCS(
@@ -555,7 +556,7 @@ public class AccountEntryLocalServiceImpl
 		**/
 	}
 
-	public void auditAccountEntries() throws PortalException, SystemException {
+	public void auditAccountEntries() throws PortalException {
 		if (!PortletPropsValues.REMOTE_REST_SERVICE_API_DOSSIERA_ENABLED) {
 			return;
 		}
@@ -578,7 +579,7 @@ public class AccountEntryLocalServiceImpl
 	}
 
 	public void auditAccountEntry(long userId, long accountEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (!PortletPropsValues.REMOTE_REST_SERVICE_API_DOSSIERA_ENABLED) {
 			return;
@@ -640,15 +641,15 @@ public class AccountEntryLocalServiceImpl
 
 	@Override
 	public AccountEntry deleteAccountEntry(long accountEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		// Account entry
 
 		if ((accountEntryId == OSBConstants.ACCOUNT_ENTRY_TRIAL_ID) ||
-			(accountCustomerPersistence.countByAccountEntryId(
-				accountEntryId) > 0) ||
-			(accountWorkerPersistence.countByAccountEntryId(
-				accountEntryId) > 0)) {
+			(accountCustomerPersistence.countByAccountEntryId(accountEntryId) >
+				0) ||
+			(accountWorkerPersistence.countByAccountEntryId(accountEntryId) >
+				0)) {
 
 			throw new RequiredAccountEntryException();
 		}
@@ -708,30 +709,24 @@ public class AccountEntryLocalServiceImpl
 	}
 
 	@Override
-	public AccountEntry fetchCorpProjectAccountEntry(long corpProjectId)
-		throws SystemException {
-
+	public AccountEntry fetchCorpProjectAccountEntry(long corpProjectId) {
 		return accountEntryPersistence.fetchByCorpProjectId(corpProjectId);
 	}
 
-	public AccountEntry fetchUserTrialAccountEntry(long userId)
-		throws SystemException {
-
+	public AccountEntry fetchUserTrialAccountEntry(long userId) {
 		return accountEntryPersistence.fetchByU_T_First(
 			userId, AccountEntryConstants.TYPE_TRIAL, null);
 	}
 
 	@Override
 	public List<AccountEntry> getAccountEntries(
-			int[] statuses, int start, int end)
-		throws SystemException {
+		int[] statuses, int start, int end) {
 
 		return accountEntryPersistence.findByRAEI_S(0, statuses, start, end);
 	}
 
 	public List<AccountEntry> getAccountEntries(
-			int[] notTypes, int[] statuses, int start, int end)
-		throws SystemException {
+		int[] notTypes, int[] statuses, int start, int end) {
 
 		return accountEntryPersistence.findByRAEI_NotT_S(
 			0, notTypes, statuses, start, end);
@@ -739,13 +734,13 @@ public class AccountEntryLocalServiceImpl
 
 	@Override
 	public AccountEntry getAccountEntry(long accountEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		return accountEntryPersistence.findByPrimaryKey(accountEntryId);
 	}
 
 	public AccountEntry getAccountEntryByCode(String code)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		AccountEntry accountEntry = accountEntryPersistence.findByCode(code);
 
@@ -760,16 +755,13 @@ public class AccountEntryLocalServiceImpl
 	}
 
 	public AccountEntry getAccountEntryByName(String name)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		return accountEntryPersistence.findByName_First(name, null);
 	}
 
-	public List<AccountEntry> getActiveAccountEntries(int start, int end)
-		throws SystemException {
-
-		LinkedHashMap<String, Object> params =
-			new LinkedHashMap<String, Object>();
+	public List<AccountEntry> getActiveAccountEntries(int start, int end) {
+		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
 		params.put("activeSupport", true);
 		params.put("expiredSupport", new boolean[] {false, true});
@@ -778,57 +770,47 @@ public class AccountEntryLocalServiceImpl
 			null, params, start, end, new AccountEntryNameComparator(true));
 	}
 
-	public List<AccountEntry> getPartnerAccountEntries(long partnerEntryId)
-		throws SystemException {
-
+	public List<AccountEntry> getPartnerAccountEntries(long partnerEntryId) {
 		return accountEntryPersistence.findByPartnerEntryId(partnerEntryId);
 	}
 
-	public List<AccountEntry> getRedirectAccountEntries(long accountEntryId)
-		throws SystemException {
-
+	public List<AccountEntry> getRedirectAccountEntries(long accountEntryId) {
 		return accountEntryPersistence.findByRedirectAccountEntryId(
 			accountEntryId);
 	}
 
 	public List<AccountEntry> getSecurityPatchAccountEntries(
-			String portletId, LinkedHashMap<String, Object> params)
-		throws SystemException {
+		String portletId, LinkedHashMap<String, Object> params) {
 
 		return accountEntryFinder.findBySecurityPatch(portletId, params);
 	}
 
 	public List<AccountEntry> getUserAccountEntries(
-			long userId, int start, int end)
-		throws SystemException {
+		long userId, int start, int end) {
 
-		LinkedHashMap<String, Object> params =
-			new LinkedHashMap<String, Object>();
+		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
-		params.put("accountEntryMembership", new Long(userId));
+		params.put("accountEntryMembership", Long.valueOf(userId));
 		params.put("status", AccountEntryConstants.STATUSES_ACTIVE);
 
 		return accountEntryFinder.findByKeywords(
 			null, params, start, end, new AccountEntryNameComparator(true));
 	}
 
-	public int getUserAccountEntriesCount(long userId) throws SystemException {
-		LinkedHashMap<String, Object> params =
-			new LinkedHashMap<String, Object>();
+	public int getUserAccountEntriesCount(long userId) {
+		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
-		params.put("accountEntryMembership", new Long(userId));
+		params.put("accountEntryMembership", Long.valueOf(userId));
 		params.put("status", AccountEntryConstants.STATUSES_ACTIVE);
 
 		return accountEntryFinder.countByKeywords(null, params);
 	}
 
-	public List<Long> getUserAccountEntryIds(long userId, int start, int end)
-		throws SystemException {
-
+	public List<Long> getUserAccountEntryIds(long userId, int start, int end) {
 		List<AccountEntry> accountEntries = getUserAccountEntries(
 			userId, start, end);
 
-		List<Long> accountEntryIds = new ArrayList<Long>(accountEntries.size());
+		List<Long> accountEntryIds = new ArrayList<>(accountEntries.size());
 
 		for (AccountEntry accountEntry : accountEntries) {
 			accountEntryIds.add(accountEntry.getAccountEntryId());
@@ -838,7 +820,7 @@ public class AccountEntryLocalServiceImpl
 	}
 
 	public List<String> getUserAccountEntryNames(long userId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		LinkedHashMap params = new LinkedHashMap();
 
@@ -847,8 +829,7 @@ public class AccountEntryLocalServiceImpl
 		List<AccountEntry> accountEntries = accountEntryFinder.findByKeywords(
 			null, params, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 
-		List<String> accountEntryNames = new ArrayList<String>(
-			accountEntries.size());
+		List<String> accountEntryNames = new ArrayList<>(accountEntries.size());
 
 		for (AccountEntry accountEntry : accountEntries) {
 			accountEntryNames.add(accountEntry.getName());
@@ -858,13 +839,11 @@ public class AccountEntryLocalServiceImpl
 	}
 
 	public List<AccountEntry> getUserActiveAccountEntries(
-			long userId, int start, int end)
-		throws SystemException {
+		long userId, int start, int end) {
 
-		LinkedHashMap<String, Object> params =
-			new LinkedHashMap<String, Object>();
+		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
-		params.put("accountEntryMembership", new Long(userId));
+		params.put("accountEntryMembership", Long.valueOf(userId));
 		params.put("activeSupport", true);
 		params.put("expiredSupport", new boolean[] {false, true});
 
@@ -872,15 +851,13 @@ public class AccountEntryLocalServiceImpl
 			null, params, start, end, new AccountEntryNameComparator(true));
 	}
 
-	public boolean hasValidLicenseAccountEntry(long userId)
-		throws SystemException {
+	public boolean hasValidLicenseAccountEntry(long userId) {
+		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
-		LinkedHashMap<String, Object> params =
-			new LinkedHashMap<String, Object>();
-
-		params.put("accountEntryMembership", new Long(userId));
+		params.put("accountEntryMembership", Long.valueOf(userId));
 		params.put(
-			"activeLicense", new Long(OfferingEntryConstants.STATUS_ACTIVE));
+			"activeLicense",
+			Long.valueOf(OfferingEntryConstants.STATUS_ACTIVE));
 
 		if (accountEntryFinder.countByKeywords(null, params) > 0) {
 			return true;
@@ -890,13 +867,10 @@ public class AccountEntryLocalServiceImpl
 		}
 	}
 
-	public boolean hasValidSupportAccountEntry(long userId)
-		throws SystemException {
+	public boolean hasValidSupportAccountEntry(long userId) {
+		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
-		LinkedHashMap<String, Object> params =
-			new LinkedHashMap<String, Object>();
-
-		params.put("accountEntryMembership", new Long(userId));
+		params.put("accountEntryMembership", Long.valueOf(userId));
 		params.put("activeSupport", true);
 		params.put("ticketSupport", true);
 
@@ -909,7 +883,7 @@ public class AccountEntryLocalServiceImpl
 	}
 
 	public void recalculateHighestSupportResponse(long accountEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
 			accountEntryId);
@@ -924,16 +898,16 @@ public class AccountEntryLocalServiceImpl
 		else {
 			accountEntry.setHighestSupportResponseId(0);
 		}
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		accountEntryPersistence.update(accountEntry, serviceContext);
 	}
 
 	public void reindexAccountEntry(long accountEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		List<TicketEntry> ticketEntries =
 			ticketEntryPersistence.findByAccountEntryId(accountEntryId);
@@ -945,18 +919,16 @@ public class AccountEntryLocalServiceImpl
 	}
 
 	public List<AccountEntry> search(
-			Long createUserId, int createDateGTDay, int createDateGTMonth,
-			int createDateGTYear, int createDateLTDay, int createDateLTMonth,
-			int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
-			int modifiedDateGTMonth, int modifiedDateGTYear,
-			int modifiedDateLTDay, int modifiedDateLTMonth,
-			int modifiedDateLTYear, String name, String code, int[] industries,
-			Boolean partnerManagedSupport, int[] tiers, int[] statuses,
-			String instructions, String notes, String partnerEntryCode,
-			String street, Long countryId, Long regionId, String city,
-			String zip, LinkedHashMap<String, Object> params,
-			boolean andOperator, int start, int end, OrderByComparator obc)
-		throws SystemException {
+		Long createUserId, int createDateGTDay, int createDateGTMonth,
+		int createDateGTYear, int createDateLTDay, int createDateLTMonth,
+		int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
+		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
+		int modifiedDateLTMonth, int modifiedDateLTYear, String name,
+		String code, int[] industries, Boolean partnerManagedSupport,
+		int[] tiers, int[] statuses, String instructions, String notes,
+		String partnerEntryCode, String street, Long countryId, Long regionId,
+		String city, String zip, LinkedHashMap<String, Object> params,
+		boolean andOperator, int start, int end, OrderByComparator obc) {
 
 		Date createDateGT = PortalUtil.getDate(
 			createDateGTMonth, createDateGTDay, createDateGTYear);
@@ -977,34 +949,29 @@ public class AccountEntryLocalServiceImpl
 	}
 
 	public List<AccountEntry> search(
-			String keywords, LinkedHashMap<String, Object> params, int start,
-			int end, OrderByComparator obc)
-		throws SystemException {
+		String keywords, LinkedHashMap<String, Object> params, int start,
+		int end, OrderByComparator obc) {
 
 		return accountEntryFinder.findByKeywords(
 			keywords, params, start, end, obc);
 	}
 
-	public List<AccountEntry> search(String name, String code)
-		throws SystemException {
-
+	public List<AccountEntry> search(String name, String code) {
 		return accountEntryPersistence.findByN_C_RAEI(
 			name, code, AccountEntryConstants.DEFAULT_REDIRECT_ACCOUNT_ENTRYID);
 	}
 
 	public int searchCount(
-			Long createUserId, int createDateGTDay, int createDateGTMonth,
-			int createDateGTYear, int createDateLTDay, int createDateLTMonth,
-			int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
-			int modifiedDateGTMonth, int modifiedDateGTYear,
-			int modifiedDateLTDay, int modifiedDateLTMonth,
-			int modifiedDateLTYear, String name, String code, int[] industries,
-			Boolean partnerManagedSupport, int[] tiers, int[] statuses,
-			String instructions, String notes, String partnerEntryCode,
-			String street, Long countryId, Long regionId, String city,
-			String zip, LinkedHashMap<String, Object> params,
-			boolean andOperator)
-		throws SystemException {
+		Long createUserId, int createDateGTDay, int createDateGTMonth,
+		int createDateGTYear, int createDateLTDay, int createDateLTMonth,
+		int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
+		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
+		int modifiedDateLTMonth, int modifiedDateLTYear, String name,
+		String code, int[] industries, Boolean partnerManagedSupport,
+		int[] tiers, int[] statuses, String instructions, String notes,
+		String partnerEntryCode, String street, Long countryId, Long regionId,
+		String city, String zip, LinkedHashMap<String, Object> params,
+		boolean andOperator) {
 
 		Date createDateGT = PortalUtil.getDate(
 			createDateGTMonth, createDateGTDay, createDateGTYear);
@@ -1025,8 +992,7 @@ public class AccountEntryLocalServiceImpl
 	}
 
 	public int searchCount(
-			String keywords, LinkedHashMap<String, Object> params)
-		throws SystemException {
+		String keywords, LinkedHashMap<String, Object> params) {
 
 		return accountEntryFinder.countByKeywords(keywords, params);
 	}
@@ -1040,7 +1006,7 @@ public class AccountEntryLocalServiceImpl
 			String street1, String street2, String street3, String city,
 			String zip, long regionId, long countryId,
 			String ewsaDossieraProjectKey)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		code = code.toUpperCase();
@@ -1078,23 +1044,24 @@ public class AccountEntryLocalServiceImpl
 		accountEntry.setNotes(notes);
 
 		if (addressId <= 0) {
+
 			// TODO implement serviceContext as needed
-			
+
 			ServiceContext serviceContext = new ServiceContext();
-			
-			AddressLocalServiceUtil.addAddress(
+
+			addressLocalService.addAddress(
 				userId, AccountEntry.class.getName(), accountEntryId, street1,
 				street2, street3, city, zip, regionId, countryId, 0, false,
 				true, serviceContext);
 		}
 		else {
-			AddressLocalServiceUtil.updateAddress(
+			addressLocalService.updateAddress(
 				addressId, street1, street2, street3, city, zip, regionId,
 				countryId, 0, false, true);
 		}
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		accountEntryPersistence.update(accountEntry, serviceContext);
@@ -1139,7 +1106,7 @@ public class AccountEntryLocalServiceImpl
 			String salesforceOpportunityKey, AccountEntry accountEntry,
 			PartnerEntry partnerEntry, Address address,
 			List<OrderEntry> orderEntries, ServiceContext serviceContext)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		long classNameId = PortalUtil.getClassNameId(
 			OrderEntry.class.getName());
@@ -1154,14 +1121,13 @@ public class AccountEntryLocalServiceImpl
 				"No orders found with key " + salesforceOpportunityKey);
 		}
 
-		HashMap<String, Serializable> workflowContext =
-			new HashMap<String, Serializable>();
+		HashMap<String, Serializable> workflowContext = new HashMap<>();
 
 		workflowContext.put(
 			WorkflowConstants.CONTEXT_ACCOUNT_ENTRY_NAME,
 			accountEntry.getName());
 
-		List<Long> existingOrderEntryIds = new ArrayList<Long>();
+		List<Long> existingOrderEntryIds = new ArrayList<>();
 
 		for (ExternalIdMapper externalIdMapper : externalIdMappers) {
 			OrderEntry orderEntry = orderEntryPersistence.findByPrimaryKey(
@@ -1180,10 +1146,8 @@ public class AccountEntryLocalServiceImpl
 			WorkflowConstants.CONTEXT_EXISTING_ORDER_ENTRY_IDS,
 			StringUtil.merge(existingOrderEntryIds));
 
-		TreeMap<String, String> oldAccountEntryAttributes =
-			new TreeMap<String, String>();
-		TreeMap<String, String> newAccountEntryAttributes =
-			new TreeMap<String, String>();
+		TreeMap<String, String> oldAccountEntryAttributes = new TreeMap<>();
+		TreeMap<String, String> newAccountEntryAttributes = new TreeMap<>();
 
 		AccountEntry oldAccountEntry = accountEntryPersistence.findByPrimaryKey(
 			accountEntry.getAccountEntryId());
@@ -1384,7 +1348,7 @@ public class AccountEntryLocalServiceImpl
 
 	public AccountEntry updateCorpProject(
 			long accountEntryId, long corpProjectId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		validate(accountEntryId, corpProjectId);
 
@@ -1392,9 +1356,9 @@ public class AccountEntryLocalServiceImpl
 			accountEntryId);
 
 		accountEntry.setCorpProjectId(corpProjectId);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		accountEntryPersistence.update(accountEntry, serviceContext);
@@ -1404,7 +1368,7 @@ public class AccountEntryLocalServiceImpl
 
 	public AccountEntry updateInstructions(
 			long userId, long accountEntryId, String instructions)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 
@@ -1414,9 +1378,9 @@ public class AccountEntryLocalServiceImpl
 		AccountEntry oldAccountEntry = (AccountEntry)accountEntry.clone();
 
 		accountEntry.setInstructions(instructions);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		accountEntryPersistence.update(accountEntry, serviceContext);
@@ -1431,7 +1395,7 @@ public class AccountEntryLocalServiceImpl
 	public void updateLastAuditDate(
 			long userId, long accountEntryId, String auditLabel,
 			String auditValue)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		Date now = new Date();
@@ -1440,9 +1404,9 @@ public class AccountEntryLocalServiceImpl
 			accountEntryId);
 
 		accountEntry.setLastAuditDate(now);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		accountEntryPersistence.update(accountEntry, serviceContext);
@@ -1458,9 +1422,7 @@ public class AccountEntryLocalServiceImpl
 			false);
 	}
 
-	public void updateStatus(long accountEntryId)
-		throws PortalException, SystemException {
-
+	public void updateStatus(long accountEntryId) throws PortalException {
 		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
 			accountEntryId);
 
@@ -1473,9 +1435,9 @@ public class AccountEntryLocalServiceImpl
 		}
 
 		accountEntry.setStatus(getStatus(accountEntryId));
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		accountEntryPersistence.update(accountEntry, serviceContext);
@@ -1491,8 +1453,8 @@ public class AccountEntryLocalServiceImpl
 				classNameId, accountEntryId, 0, classNameId, accountEntryId,
 				AuditEntryConstants.ACTION_UPDATE,
 				AuditEntryConstants.FIELD_STATUS, VisibilityConstants.ADMIN,
-				WorkflowConstants.getStatusLabel(oldStatus), String.valueOf(oldStatus),
-				accountEntry.getStatusLabel(),
+				WorkflowConstants.getStatusLabel(oldStatus),
+				String.valueOf(oldStatus), accountEntry.getStatusLabel(),
 				String.valueOf(accountEntry.getStatus()));
 		}
 	}
@@ -1500,7 +1462,7 @@ public class AccountEntryLocalServiceImpl
 	public AccountEntry updateStatus(
 			long userId, long accountEntryId, int status,
 			ServiceContext serviceContext)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		Date now = new Date();
@@ -1542,10 +1504,11 @@ public class AccountEntryLocalServiceImpl
 			accountEntry.setStatusByUserId(userId);
 			accountEntry.setStatusByUserName(user.getFullName());
 			accountEntry.setStatusDate(serviceContext.getModifiedDate(now));
-			
+
 			//TODO implement serviceContext how needed
 
-			accountEntry = accountEntryPersistence.update(accountEntry, serviceContext);
+			accountEntry = accountEntryPersistence.update(
+				accountEntry, serviceContext);
 		}
 
 		if ((status == WorkflowConstants.STATUS_APPROVED) ||
@@ -1576,7 +1539,7 @@ public class AccountEntryLocalServiceImpl
 	public AccountEntry updateStatus(
 			long userId, long accountEntryId, String salesforceOpportunityKey,
 			int status, ServiceContext serviceContext)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
 			accountEntryId);
@@ -1687,7 +1650,7 @@ public class AccountEntryLocalServiceImpl
 	}
 
 	public AccountEntry updateTier(long userId, long accountEntryId, int tier)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 
@@ -1697,9 +1660,9 @@ public class AccountEntryLocalServiceImpl
 		AccountEntry oldAccountEntry = (AccountEntry)accountEntry.clone();
 
 		accountEntry.setTier(tier);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		accountEntryPersistence.update(accountEntry, serviceContext);
@@ -1711,9 +1674,7 @@ public class AccountEntryLocalServiceImpl
 		return accountEntry;
 	}
 
-	public void validate(AccountEntry accountEntry)
-		throws PortalException, SystemException {
-
+	public void validate(AccountEntry accountEntry) throws PortalException {
 		validate(
 			accountEntry.getAccountEntryId(), accountEntry.getCorpProjectId(),
 			accountEntry.getName(), accountEntry.getCode(),
@@ -1723,8 +1684,7 @@ public class AccountEntryLocalServiceImpl
 	}
 
 	protected void addRedirectAccountEntry(
-			User user, String name, String code, long redirectAccountEntryId)
-		throws SystemException {
+		User user, String name, String code, long redirectAccountEntryId) {
 
 		long accountEntryId = counterLocalService.increment();
 
@@ -1737,17 +1697,16 @@ public class AccountEntryLocalServiceImpl
 		accountEntry.setName(name);
 		accountEntry.setCode(code);
 		accountEntry.setRedirectAccountEntryId(redirectAccountEntryId);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		accountEntryPersistence.update(accountEntry, serviceContext);
 	}
 
 	protected String formatLanguageIds(String[] languageIds) {
-		List<String> formattedLanguageIds = new ArrayList<String>(
-			languageIds.length);
+		List<String> formattedLanguageIds = new ArrayList<>(languageIds.length);
 
 		for (String languageId : languageIds) {
 			Locale locale = LocaleUtil.fromLanguageId(languageId);
@@ -1758,10 +1717,8 @@ public class AccountEntryLocalServiceImpl
 		return StringUtil.merge(formattedLanguageIds);
 	}
 
-	protected String formatSupportRegionIds(long[] supportRegionIds)
-		throws SystemException {
-
-		List<String> supportRegionNames = new ArrayList<String>(
+	protected String formatSupportRegionIds(long[] supportRegionIds) {
+		List<String> supportRegionNames = new ArrayList<>(
 			supportRegionIds.length);
 
 		for (long supportRegionId : supportRegionIds) {
@@ -1792,9 +1749,7 @@ public class AccountEntryLocalServiceImpl
 		return code;
 	}
 
-	protected String getCode(String corpEntryName, String name, String code)
-		throws SystemException {
-
+	protected String getCode(String corpEntryName, String name, String code) {
 		if (Validator.isNull(code)) {
 			code = getCode(corpEntryName, name);
 
@@ -1822,7 +1777,7 @@ public class AccountEntryLocalServiceImpl
 
 	protected int getLatestProductVersion(
 			PortletPreferences portletPreferences, long productEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		int trialLiferayVersion = GetterUtil.getInteger(
 			portletPreferences.getValue("trialLiferayVersion", null));
@@ -1854,7 +1809,7 @@ public class AccountEntryLocalServiceImpl
 		return (int)latestProductVersionType.getListTypeId();
 	}
 
-	protected int getStatus(long accountEntryId) throws SystemException {
+	protected int getStatus(long accountEntryId) {
 		List<OfferingEntry> offeringEntries =
 			offeringEntryPersistence.findByAccountEntryId(accountEntryId);
 
@@ -1888,7 +1843,7 @@ public class AccountEntryLocalServiceImpl
 		return status;
 	}
 
-	protected String getTrialName(String name) throws SystemException {
+	protected String getTrialName(String name) {
 		String trialName = "Trial - " + name;
 
 		int count = 1;
@@ -1902,7 +1857,7 @@ public class AccountEntryLocalServiceImpl
 		return trialName;
 	}
 
-	protected boolean isDuplicateCode(String code) throws SystemException {
+	protected boolean isDuplicateCode(String code) {
 		if (accountEntryPersistence.countByCode(code) > 0) {
 			return true;
 		}
@@ -1911,7 +1866,7 @@ public class AccountEntryLocalServiceImpl
 		}
 	}
 
-	protected boolean isDuplicateTrialName(String name) throws SystemException {
+	protected boolean isDuplicateTrialName(String name) {
 		if (accountEntryPersistence.countByName(name) > 0) {
 			return true;
 		}
@@ -1921,7 +1876,7 @@ public class AccountEntryLocalServiceImpl
 	}
 
 	protected void sendEmail(AccountEntry accountEntry, int oldTier)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		PortletPreferences preferences = SupportUtil.getPortletPreferences();
 
@@ -1938,12 +1893,8 @@ public class AccountEntryLocalServiceImpl
 		for (Map.Entry<Locale, String> subjectEntry : subjectMap.entrySet()) {
 			String subject = StringUtil.replace(
 				subjectEntry.getValue(),
-				new String[] {
-					"[$ACCOUNT_ENTRY_NAME$]"
-				},
-				new String[] {
-					accountEntry.getName()
-				});
+				new String[] {"[$ACCOUNT_ENTRY_NAME$]"},
+				new String[] {accountEntry.getName()});
 
 			subjectEntry.setValue(subject);
 		}
@@ -2012,8 +1963,7 @@ public class AccountEntryLocalServiceImpl
 	}
 
 	protected void sendUserCreationNotification(
-			List<User> users, AccountEntry accountEntry)
-		throws SystemException {
+		List<User> users, AccountEntry accountEntry) {
 
 		String supportRegionName = StringPool.BLANK;
 
@@ -2098,7 +2048,7 @@ public class AccountEntryLocalServiceImpl
 	protected void updateAuditEntry(
 			long userId, String userName, AccountEntry oldAccountEntry,
 			AccountEntry accountEntry)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		long classPK = accountEntry.getAccountEntryId();
 		Date createDate = accountEntry.getModifiedDate();
@@ -2368,7 +2318,7 @@ public class AccountEntryLocalServiceImpl
 
 	protected void updateEWSADosseriaProjectKey(
 			long accountEntryId, String ewsaDossieraProjectKey)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		long classNameId = PortalUtil.getClassNameId(AccountEntry.class);
 
@@ -2403,7 +2353,7 @@ public class AccountEntryLocalServiceImpl
 	}
 
 	protected void validate(long accountEntryId, long corpProjectId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (corpProjectId > 0) {
 			AccountEntry accountEntry =
@@ -2421,7 +2371,7 @@ public class AccountEntryLocalServiceImpl
 			long accountEntryId, long corpProjectId, String name, String code,
 			int type, int industry, long partnerEntryId, int maxCustomers,
 			String[] languageIds, long[] supportRegionIds)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		validate(accountEntryId, corpProjectId);
 
@@ -2453,7 +2403,7 @@ public class AccountEntryLocalServiceImpl
 		}
 
 		try {
-			ListTypeServiceUtil.validate(
+			listTypeLocalService.validate(
 				industry, AccountEntryConstants.LIST_TYPE_INDUSTRY);
 		}
 		catch (NoSuchListTypeException nslte) {
@@ -2513,12 +2463,14 @@ public class AccountEntryLocalServiceImpl
 		}
 	}
 
-	protected void validateTrial(long userId)
-		throws PortalException, SystemException {
+	protected void validateTrial(long userId) throws PortalException {
+
 /* TODO update OSBUtil integration
+
 		if (!OSBUtil.isTrialEULA(OSBConstants.COMPANY_ID, userId)) {
 			throw new PrincipalException();
 		}
+
 */
 		if (accountEntryPersistence.countByU_T(
 				userId, AccountEntryConstants.TYPE_TRIAL) > 0) {
@@ -2527,7 +2479,7 @@ public class AccountEntryLocalServiceImpl
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		AccountEntryLocalServiceImpl.class);
 
 }

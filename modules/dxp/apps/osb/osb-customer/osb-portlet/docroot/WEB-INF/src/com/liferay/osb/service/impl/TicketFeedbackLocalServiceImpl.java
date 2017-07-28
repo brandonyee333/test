@@ -15,7 +15,7 @@
 package com.liferay.osb.service.impl;
 
 import com.liferay.mail.kernel.model.MailMessage;
-import com.liferay.mail.kernel.service.MailServiceUtil;
+import com.liferay.mail.kernel.service.MailService;
 import com.liferay.osb.exception.DuplicateTicketFeedbackException;
 import com.liferay.osb.exception.TicketFeedbackAnswerException;
 import com.liferay.osb.exception.TicketFeedbackRatingException;
@@ -36,6 +36,7 @@ import com.liferay.osb.support.util.SupportUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
 import com.liferay.osb.util.PortletPropsValues;
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -66,6 +67,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.mail.internet.InternetAddress;
+
 import javax.portlet.PortletPreferences;
 
 /**
@@ -78,7 +80,7 @@ public class TicketFeedbackLocalServiceImpl
 
 	public TicketFeedback addTicketFeedback(
 			long userId, long ticketEntryId, int subject, int satisfied)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		TicketEntry ticketEntry = ticketEntryPersistence.findByPrimaryKey(
@@ -101,9 +103,9 @@ public class TicketFeedbackLocalServiceImpl
 		ticketFeedback.setSatisfied(satisfied);
 		ticketFeedback.setAccountEntryId(ticketEntry.getAccountEntryId());
 		ticketFeedback.setStatus(TicketFeedbackConstants.STATUS_ANSWERED);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		ticketFeedbackPersistence.update(ticketFeedback, serviceContext);
@@ -138,8 +140,7 @@ public class TicketFeedbackLocalServiceImpl
 	}
 
 	public TicketFeedback fetchFirstOpenTicketFeedback(
-			long userId, long ticketEntryId, int subject)
-		throws SystemException {
+		long userId, long ticketEntryId, int subject) {
 
 		return ticketFeedbackPersistence.fetchByU_TEI_S_NotS_First(
 			userId, ticketEntryId, subject,
@@ -147,31 +148,27 @@ public class TicketFeedbackLocalServiceImpl
 	}
 
 	public List<TicketFeedback> getTicketFeedbacks(
-			long ticketEntryId, int subject)
-		throws SystemException {
+		long ticketEntryId, int subject) {
 
 		return ticketFeedbackPersistence.findByTEI_S(ticketEntryId, subject);
 	}
 
 	public List<TicketFeedback> getTicketFeedbacks(
-			long ticketEntryId, int subject, int status)
-		throws SystemException {
+		long ticketEntryId, int subject, int status) {
 
 		return ticketFeedbackPersistence.findByTEI_S_S(
 			ticketEntryId, subject, status);
 	}
 
 	public List<TicketFeedback> search(
-			String name, int createdGTDay, int createdGTMonth,
-			int createdGTYear, int createdLTDay, int createdLTMonth,
-			int createdLTYear, int modifiedGTDay, int modifiedGTMonth,
-			int modifiedGTYear, int modifiedLTDay, int modifiedLTMonth,
-			int modifiedLTYear, Integer satisfied, String comments,
-			Integer status, Integer[] ratings1, Integer[] ratings2,
-			Integer[] ratings3, Integer[] ratings4,
-			LinkedHashMap<String, Object> params, boolean andSearch, int start,
-			int end, OrderByComparator obc)
-		throws SystemException {
+		String name, int createdGTDay, int createdGTMonth, int createdGTYear,
+		int createdLTDay, int createdLTMonth, int createdLTYear,
+		int modifiedGTDay, int modifiedGTMonth, int modifiedGTYear,
+		int modifiedLTDay, int modifiedLTMonth, int modifiedLTYear,
+		Integer satisfied, String comments, Integer status, Integer[] ratings1,
+		Integer[] ratings2, Integer[] ratings3, Integer[] ratings4,
+		LinkedHashMap<String, Object> params, boolean andSearch, int start,
+		int end, OrderByComparator obc) {
 
 		Date createDateGT = PortalUtil.getDate(
 			createdGTMonth, createdGTDay, createdGTYear);
@@ -190,24 +187,21 @@ public class TicketFeedbackLocalServiceImpl
 	}
 
 	public List<TicketFeedback> search(
-			String keywords, LinkedHashMap<String, Object> params, int start,
-			int end, OrderByComparator obc)
-		throws SystemException {
+		String keywords, LinkedHashMap<String, Object> params, int start,
+		int end, OrderByComparator obc) {
 
 		return ticketFeedbackFinder.findByKeywords(
 			keywords, params, start, end, obc);
 	}
 
 	public int searchCount(
-			String name, int createdGTDay, int createdGTMonth,
-			int createdGTYear, int createdLTDay, int createdLTMonth,
-			int createdLTYear, int modifiedGTDay, int modifiedGTMonth,
-			int modifiedGTYear, int modifiedLTDay, int modifiedLTMonth,
-			int modifiedLTYear, Integer satisfied, String comments,
-			Integer status, Integer[] ratings1, Integer[] ratings2,
-			Integer[] ratings3, Integer[] ratings4,
-			LinkedHashMap<String, Object> params, boolean andSearch)
-		throws SystemException {
+		String name, int createdGTDay, int createdGTMonth, int createdGTYear,
+		int createdLTDay, int createdLTMonth, int createdLTYear,
+		int modifiedGTDay, int modifiedGTMonth, int modifiedGTYear,
+		int modifiedLTDay, int modifiedLTMonth, int modifiedLTYear,
+		Integer satisfied, String comments, Integer status, Integer[] ratings1,
+		Integer[] ratings2, Integer[] ratings3, Integer[] ratings4,
+		LinkedHashMap<String, Object> params, boolean andSearch) {
 
 		Date createDateGT = PortalUtil.getDate(
 			createdGTMonth, createdGTDay, createdGTYear);
@@ -225,8 +219,7 @@ public class TicketFeedbackLocalServiceImpl
 	}
 
 	public int searchCount(
-			String keywords, LinkedHashMap<String, Object> params)
-		throws SystemException {
+		String keywords, LinkedHashMap<String, Object> params) {
 
 		return ticketFeedbackFinder.countByKeywords(keywords, params);
 	}
@@ -339,8 +332,7 @@ public class TicketFeedbackLocalServiceImpl
 				supportTeamLocalService.getChildSupportTeams(
 					supportTeam.getSupportTeamId(), true);
 
-			LinkedHashMap<String, Object> params =
-				new LinkedHashMap<String, Object>();
+			LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
 			params.put(
 				"supportTeam", new Long[] {supportTeam.getSupportTeamId()});
@@ -389,13 +381,8 @@ public class TicketFeedbackLocalServiceImpl
 
 			for (Map.Entry<Locale, String> bodyEntry : bodyMap.entrySet()) {
 				String body = StringUtil.replace(
-					bodyEntry.getValue(),
-					new String[] {
-						"[$FEEDBACK_ENTRIES$]"
-					},
-					new String[] {
-						sb.toString()
-					});
+					bodyEntry.getValue(), new String[] {"[$FEEDBACK_ENTRIES$]"},
+					new String[] {sb.toString()});
 
 				bodyEntry.setValue(body);
 			}
@@ -484,7 +471,7 @@ public class TicketFeedbackLocalServiceImpl
 			long userId, long ticketFeedbackId, int satisfied, int answer1,
 			int answer2, int answer3, int rating1, int rating2, int rating3,
 			int rating4, String comments)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		Date now = new Date();
@@ -516,9 +503,9 @@ public class TicketFeedbackLocalServiceImpl
 		ticketFeedback.setRating4(rating4);
 		ticketFeedback.setComments(comments);
 		ticketFeedback.setStatus(TicketFeedbackConstants.STATUS_ANSWERED);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		ticketFeedbackPersistence.update(ticketFeedback, serviceContext);
@@ -552,9 +539,9 @@ public class TicketFeedbackLocalServiceImpl
 		}
 
 		ticketFeedback.setModifiedDate(new Date());
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		ticketFeedbackPersistence.update(ticketFeedback, serviceContext);
@@ -572,8 +559,8 @@ public class TicketFeedbackLocalServiceImpl
 		TicketEntry ticketEntry = ticketFeedback.getTicketEntry();
 
 		String ticketEntryURL =
-			layoutFullURL + Portal.FRIENDLY_URL_SEPARATOR +
-				"support/ticket/" + ticketEntry.getDisplayId();
+			layoutFullURL + Portal.FRIENDLY_URL_SEPARATOR + "support/ticket/" +
+				ticketEntry.getDisplayId();
 
 		String fromName = null;
 
@@ -632,13 +619,8 @@ public class TicketFeedbackLocalServiceImpl
 			}
 
 			subject = StringUtil.replace(
-				subject,
-				new String[] {
-					"[$TICKET_DISPLAY_ID$]"
-				},
-				new String[] {
-					ticketEntry.getDisplayId()
-				});
+				subject, new String[] {"[$TICKET_DISPLAY_ID$]"},
+				new String[] {ticketEntry.getDisplayId()});
 
 			String body = bodyMap.get(user.getLocale());
 
@@ -681,7 +663,7 @@ public class TicketFeedbackLocalServiceImpl
 					ticketFeedback.getTicketFeedbackId(),
 					PortalUUIDUtil.generate()));
 
-			MailServiceUtil.sendEmail(mailMessage);
+			mailService.sendEmail(mailMessage);
 		}
 	}
 
@@ -694,9 +676,9 @@ public class TicketFeedbackLocalServiceImpl
 		}
 
 		ticketFeedback.setModifiedDate(new Date());
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		ticketFeedbackPersistence.update(ticketFeedback, serviceContext);
@@ -719,8 +701,8 @@ public class TicketFeedbackLocalServiceImpl
 		TicketEntry ticketEntry = ticketFeedback.getTicketEntry();
 
 		String ticketEntryURL =
-			layoutFullURL + Portal.FRIENDLY_URL_SEPARATOR +
-				"support/ticket/" + ticketEntry.getDisplayId();
+			layoutFullURL + Portal.FRIENDLY_URL_SEPARATOR + "support/ticket/" +
+				ticketEntry.getDisplayId();
 
 		String escalationTime = StringPool.BLANK;
 
@@ -738,13 +720,8 @@ public class TicketFeedbackLocalServiceImpl
 
 		for (Map.Entry<Locale, String> subjectEntry : subjectMap.entrySet()) {
 			String subject = StringUtil.replace(
-				subjectEntry.getValue(),
-				new String[] {
-					"[$TICKET_DISPLAY_ID$]"
-				},
-				new String[] {
-					ticketEntry.getDisplayId()
-				});
+				subjectEntry.getValue(), new String[] {"[$TICKET_DISPLAY_ID$]"},
+				new String[] {ticketEntry.getDisplayId()});
 
 			subjectEntry.setValue(subject);
 		}
@@ -756,7 +733,7 @@ public class TicketFeedbackLocalServiceImpl
 				body,
 				new String[] {
 					"[$ESCALATION_TIME$]", "[$TICKET_FEEDBACK_URL$]",
-					"[$TICKET_DISPLAY_ID$]", "[$TICKET_ENTRY_URL$]",
+					"[$TICKET_DISPLAY_ID$]", "[$TICKET_ENTRY_URL$]"
 				},
 				new String[] {
 					escalationTime, ticketFeedbackURL,
@@ -838,7 +815,7 @@ public class TicketFeedbackLocalServiceImpl
 					ticketFeedback.getTicketFeedbackId(),
 					PortalUUIDUtil.generate()));
 
-			MailServiceUtil.sendEmail(mailMessage);
+			mailService.sendEmail(mailMessage);
 		}
 	}
 
@@ -858,18 +835,13 @@ public class TicketFeedbackLocalServiceImpl
 		TicketEntry ticketEntry = ticketFeedback.getTicketEntry();
 
 		String ticketEntryURL =
-			layoutFullURL + Portal.FRIENDLY_URL_SEPARATOR +
-				"support/ticket/" + ticketEntry.getDisplayId();
+			layoutFullURL + Portal.FRIENDLY_URL_SEPARATOR + "support/ticket/" +
+				ticketEntry.getDisplayId();
 
 		for (Map.Entry<Locale, String> subjectEntry : subjectMap.entrySet()) {
 			String subject = StringUtil.replace(
-				subjectEntry.getValue(),
-				new String[] {
-					"[$TICKET_DISPLAY_ID$]"
-				},
-				new String[] {
-					ticketEntry.getDisplayId()
-				});
+				subjectEntry.getValue(), new String[] {"[$TICKET_DISPLAY_ID$]"},
+				new String[] {ticketEntry.getDisplayId()});
 
 			subjectEntry.setValue(subject);
 		}
@@ -953,14 +925,14 @@ public class TicketFeedbackLocalServiceImpl
 					ticketFeedback.getTicketFeedbackId(),
 					PortalUUIDUtil.generate()));
 
-			MailServiceUtil.sendEmail(mailMessage);
+			mailService.sendEmail(mailMessage);
 		}
 	}
 
 	protected void validate(
 			long userId, long ticketEntryId, int subject, int satisfied,
 			boolean update)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if ((satisfied < TicketFeedbackConstants.SATISFIED_YES) ||
 			(satisfied > TicketFeedbackConstants.SATISFIED_NOT_APPLICABLE)) {
@@ -1011,5 +983,8 @@ public class TicketFeedbackLocalServiceImpl
 			throw new TicketFeedbackRatingException();
 		}
 	}
+
+	@BeanReference(type = MailService.class)
+	protected MailService mailService;
 
 }

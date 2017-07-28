@@ -14,8 +14,8 @@
 
 package com.liferay.osb.downloads.action;
 
-import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.Constants;
@@ -25,13 +25,18 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletConfig;
 import javax.portlet.PortletPreferences;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Amos Fong
  */
 public class ConfigurationActionImpl extends DefaultConfigurationAction {
+
+	@Override
+	public String getJspPath(HttpServletRequest request) {
+		return "/downloads/configuration.jsp";
+	}
 
 	@Override
 	public void processAction(
@@ -70,14 +75,6 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 				portletConfig.getPortletName() +
 					SessionMessages.KEY_SUFFIX_UPDATED_CONFIGURATION);
 		}
-	}
-
-	public String render(
-			PortletConfig portletConfig, RenderRequest renderRequest,
-			RenderResponse renderResponse)
-		throws Exception {
-
-		return "/downloads/configuration.jsp";
 	}
 
 	protected void updateCustomerAccess(

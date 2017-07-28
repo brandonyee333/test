@@ -15,7 +15,7 @@
 package com.liferay.osb.service.impl;
 
 import com.liferay.mail.kernel.model.MailMessage;
-import com.liferay.mail.kernel.service.MailServiceUtil;
+import com.liferay.mail.kernel.service.MailService;
 import com.liferay.osb.exception.MaximumTicketEntryException;
 import com.liferay.osb.exception.NoSuchTicketEntryException;
 import com.liferay.osb.exception.OfferingEntrySupportExpiredException;
@@ -75,7 +75,6 @@ import com.liferay.osb.model.TicketSolutionConstants;
 import com.liferay.osb.model.TicketWorker;
 import com.liferay.osb.model.TicketWorkerConstants;
 import com.liferay.osb.model.impl.TicketEntryImpl;
-import com.liferay.osb.service.SupportResponseLocalServiceUtil;
 import com.liferay.osb.service.base.TicketEntryLocalServiceBaseImpl;
 import com.liferay.osb.support.util.FileRepositoryUtil;
 import com.liferay.osb.support.util.SupportUtil;
@@ -86,6 +85,7 @@ import com.liferay.osb.util.OSBMailActionKeys;
 import com.liferay.osb.util.OSBPortletKeys;
 import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.osb.util.VisibilityConstants;
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.NoSuchListTypeException;
 import com.liferay.portal.kernel.exception.NoSuchUserException;
@@ -108,7 +108,6 @@ import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.search.QueryConfig;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.Sort;
-import com.liferay.portal.kernel.service.ListTypeServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateUtil;
@@ -133,8 +132,10 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.io.File;
 import java.io.Serializable;
+
 import java.text.DateFormat;
 import java.text.Format;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -148,6 +149,7 @@ import java.util.Set;
 import java.util.TimeZone;
 
 import javax.mail.internet.InternetAddress;
+
 import javax.portlet.PortletPreferences;
 
 /**
@@ -164,7 +166,7 @@ public class TicketEntryLocalServiceImpl
 			int escalationLevel, int component, int subcomponent,
 			Map<Long, String> ticketInformationFieldsMap,
 			List<TicketAttachment> ticketAttachments)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketEntry ticketEntry = null;
 
@@ -197,8 +199,7 @@ public class TicketEntryLocalServiceImpl
 			now.getTime() - (2 * Time.DAY) + (2 * Time.HOUR) +
 				(35 * Time.MINUTE));
 
-		LinkedHashMap<String, Object> params =
-			new LinkedHashMap<String, Object>();
+		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
 		params.put(
 			"pendingTypes",
@@ -223,9 +224,9 @@ public class TicketEntryLocalServiceImpl
 			SupportUtil.getCommentTicketEntryInactiveMap(preferences);
 
 		Locale defaultLocale = LocaleUtil.getDefault();
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		for (TicketEntry ticketEntry : ticketEntries) {
@@ -386,9 +387,9 @@ public class TicketEntryLocalServiceImpl
 				new long[0], new int[0], new int[0], null, null, null, null,
 				null, null, null, null, null, true, QueryUtil.ALL_POS,
 				QueryUtil.ALL_POS, null);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		for (TicketEntry ticketEntry : ticketEntries) {
@@ -417,7 +418,7 @@ public class TicketEntryLocalServiceImpl
 	}
 
 	public void deleteTicketEntries(long accountEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		List<TicketEntry> ticketEntries =
 			ticketEntryPersistence.findByAccountEntryId(accountEntryId);
@@ -429,7 +430,7 @@ public class TicketEntryLocalServiceImpl
 
 	@Override
 	public TicketEntry deleteTicketEntry(TicketEntry ticketEntry)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		// Ticket entry
 
@@ -476,7 +477,7 @@ public class TicketEntryLocalServiceImpl
 	}
 
 	public void escalateTicketEntry(long userId, long ticketEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 
@@ -493,9 +494,9 @@ public class TicketEntryLocalServiceImpl
 			ticketEntry.setEscalationLevel(
 				TicketEntryConstants.ESCALATION_LEVEL_2);
 		}
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		ticketEntryPersistence.update(ticketEntry, serviceContext);
@@ -563,7 +564,7 @@ public class TicketEntryLocalServiceImpl
 
 	public TicketEntry forwardTicketEntry(
 			long userId, long ticketEntryId, String commentBody)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		// Ticket worker
 
@@ -691,17 +692,14 @@ public class TicketEntryLocalServiceImpl
 	}
 
 	public List<TicketEntry> getTicketEntries(
-			Date modifiedDate, int start, int end)
-		throws SystemException {
+		Date modifiedDate, int start, int end) {
 
 		return ticketEntryPersistence.findByGtModifiedDate(
 			modifiedDate, start, end);
 	}
 
-	public Tuple getTicketEntries(Hits hits)
-		throws PortalException, SystemException {
-
-		List<TicketEntry> ticketEntries = new ArrayList<TicketEntry>();
+	public Tuple getTicketEntries(Hits hits) throws PortalException {
+		List<TicketEntry> ticketEntries = new ArrayList<>();
 
 		boolean corruptIndex = false;
 
@@ -724,32 +722,27 @@ public class TicketEntryLocalServiceImpl
 		return new Tuple(ticketEntries, corruptIndex);
 	}
 
-	public List<TicketEntry> getTicketEntries(long accountEntryId)
-		throws SystemException {
-
+	public List<TicketEntry> getTicketEntries(long accountEntryId) {
 		return ticketEntryPersistence.findByAccountEntryId(accountEntryId);
 	}
 
 	public List<TicketEntry> getTicketEntries(
-			long accountEntryId, int start, int end, OrderByComparator obc)
-		throws SystemException {
+		long accountEntryId, int start, int end, OrderByComparator obc) {
 
 		return ticketEntryPersistence.findByAccountEntryId(
 			accountEntryId, start, end, obc);
 	}
 
-	public int getTicketEntriesCount(Date modifiedDate) throws SystemException {
+	public int getTicketEntriesCount(Date modifiedDate) {
 		return ticketEntryPersistence.countByGtModifiedDate(modifiedDate);
 	}
 
-	public int getTicketEntriesCount(long accountEntryId)
-		throws SystemException {
-
+	public int getTicketEntriesCount(long accountEntryId) {
 		return ticketEntryPersistence.countByAccountEntryId(accountEntryId);
 	}
 
 	public TicketEntry getTicketEntry(long accountEntryId, long ticketId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		return ticketEntryPersistence.findByAEI_TI(accountEntryId, ticketId);
 	}
@@ -757,10 +750,9 @@ public class TicketEntryLocalServiceImpl
 	public List<TicketEntry> getTicketFeedbackTicketEntries(
 			long userId, int createdGTDay, int createdGTMonth,
 			int createdGTYear, int status)
-		throws PortalException, SystemException {
+		throws PortalException {
 
-		LinkedHashMap<String, Object> params =
-			new LinkedHashMap<String, Object>();
+		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
 		params.put("accountEntryMembership", userId);
 
@@ -770,7 +762,7 @@ public class TicketEntryLocalServiceImpl
 				0, 0, 0, 0, 0, 0, 0, null, null, status, null, null, null, null,
 				params, true, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 
-		List<TicketEntry> ticketEntries = new ArrayList<TicketEntry>(
+		List<TicketEntry> ticketEntries = new ArrayList<>(
 			ticketFeedbacks.size());
 
 		for (TicketFeedback ticketFeedback : ticketFeedbacks) {
@@ -781,9 +773,9 @@ public class TicketEntryLocalServiceImpl
 	}
 
 	public int[] getUserVisibilities(long userId, long ticketEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
-		List<Integer> userVisibilities = new ArrayList<Integer>();
+		List<Integer> userVisibilities = new ArrayList<>();
 
 		for (int i = 1; i < 4; i++) {
 			if (!hasVisibility(userId, ticketEntryId, i)) {
@@ -796,22 +788,18 @@ public class TicketEntryLocalServiceImpl
 		return ArrayUtil.toArray(userVisibilities.toArray(new Integer[0]));
 	}
 
-	public List<TicketEntry> getValidTicketEntries(long offeringEntryId)
-		throws SystemException {
-
+	public List<TicketEntry> getValidTicketEntries(long offeringEntryId) {
 		return ticketEntryPersistence.findByOEI_NotR(
 			offeringEntryId, TicketEntryConstants.RESOLUTION_REDIRECTED);
 	}
 
-	public int getValidTicketEntriesCount(long offeringEntryId)
-		throws SystemException {
-
+	public int getValidTicketEntriesCount(long offeringEntryId) {
 		return ticketEntryPersistence.countByOEI_NotR(
 			offeringEntryId, TicketEntryConstants.RESOLUTION_REDIRECTED);
 	}
 
 	public boolean hasParticipant(long userId, long ticketEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketEntry ticketEntry = ticketEntryPersistence.findByPrimaryKey(
 			ticketEntryId);
@@ -819,16 +807,13 @@ public class TicketEntryLocalServiceImpl
 		return hasParticipant(userId, ticketEntry);
 	}
 
-	public boolean hasParticipant(long userId, TicketEntry ticketEntry)
-		throws SystemException {
-
+	public boolean hasParticipant(long userId, TicketEntry ticketEntry) {
 		if (ticketEntry.getUserId() == userId) {
 			return true;
 		}
 
-		TicketWorker ticketWorker =
-			ticketWorkerLocalService.fetchTicketWorker(
-				userId, ticketEntry.getTicketEntryId());
+		TicketWorker ticketWorker = ticketWorkerLocalService.fetchTicketWorker(
+			userId, ticketEntry.getTicketEntryId());
 
 		if ((ticketWorker != null) &&
 			(ticketWorker.getRole() != TicketWorkerConstants.ROLE_NONE)) {
@@ -840,8 +825,8 @@ public class TicketEntryLocalServiceImpl
 				userId, ticketEntry.getTicketEntryId(),
 				new int[] {
 					VisibilityConstants.LIFERAY_INC, VisibilityConstants.PUBLIC,
-					VisibilityConstants.WORKERS
-				},
+				VisibilityConstants.WORKERS
+					},
 				new int[] {WorkflowConstants.STATUS_APPROVED}) > 0) {
 
 			return true;
@@ -875,7 +860,7 @@ public class TicketEntryLocalServiceImpl
 
 	public boolean hasVisibility(
 			long userId, long ticketEntryId, int visibility)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (visibility == VisibilityConstants.PUBLIC) {
 			return true;
@@ -903,9 +888,7 @@ public class TicketEntryLocalServiceImpl
 		return false;
 	}
 
-	public void reindexTicketEntry(long ticketEntryId)
-		throws PortalException, SystemException {
-
+	public void reindexTicketEntry(long ticketEntryId) throws PortalException {
 		TicketEntry ticketEntry = ticketEntryPersistence.fetchByPrimaryKey(
 			ticketEntryId);
 
@@ -926,24 +909,21 @@ public class TicketEntryLocalServiceImpl
 	}
 
 	public Hits search(
-			long searchUserId, long reportedByUserId, long accountEntryId,
-			String name, int[] accountEntryTiers, Boolean satisfiedDueDate,
-			Date createDateGT, Date createDateLT, String content, int[] status,
-			int[] severity, int[] escalationLevel, long[] envOS, long[] envDB,
-			long[] envJVM, long[] envAS, long[] envLFR, int[] components,
-			int[] resolution, Date closedDateGT, Date closedDateLT,
-			Date dueDateGT, Date dueDateLT,
-			LinkedHashMap<String, Object> params, boolean andSearch, int start,
-			int end, Sort[] sorts)
-		throws SystemException {
+		long searchUserId, long reportedByUserId, long accountEntryId,
+		String name, int[] accountEntryTiers, Boolean satisfiedDueDate,
+		Date createDateGT, Date createDateLT, String content, int[] status,
+		int[] severity, int[] escalationLevel, long[] envOS, long[] envDB,
+		long[] envJVM, long[] envAS, long[] envLFR, int[] components,
+		int[] resolution, Date closedDateGT, Date closedDateLT, Date dueDateGT,
+		Date dueDateLT, LinkedHashMap<String, Object> params, boolean andSearch,
+		int start, int end, Sort[] sorts) {
 
 		try {
 			SearchContext searchContext = new SearchContext();
 
 			searchContext.setAndSearch(andSearch);
 
-			Map<String, Serializable> attributes =
-				new HashMap<String, Serializable>();
+			Map<String, Serializable> attributes = new HashMap<>();
 
 			attributes.put("accountEntryCode", name);
 			attributes.put("accountEntryId", accountEntryId);
@@ -997,10 +977,9 @@ public class TicketEntryLocalServiceImpl
 	}
 
 	public Hits search(
-			long searchUserId, long reportedByUserId, long accountEntryId,
-			String keywords, LinkedHashMap<String, Object> params, int start,
-			int end, Sort[] sorts)
-		throws SystemException {
+		long searchUserId, long reportedByUserId, long accountEntryId,
+		String keywords, LinkedHashMap<String, Object> params, int start,
+		int end, Sort[] sorts) {
 
 		String name = null;
 		String content = null;
@@ -1023,20 +1002,19 @@ public class TicketEntryLocalServiceImpl
 	}
 
 	public List<TicketEntry> search(
-			long reportedByUserId, String name, int[] accountEntryTiers,
-			Boolean satisfiedDueDate, int createDateGTDay,
-			int createDateGTMonth, int createDateGTYear, int createDateLTDay,
-			int createDateLTMonth, int createDateLTYear, String subject,
-			String description, String body, int[] status, int[] severity,
-			int[] weights, int[] escalationLevel, long[] envOS, long[] envDB,
-			long[] envJVM, long[] envAS, long[] envLFR, int[] components,
-			int[] resolution, int closedDateGTDay, int closedDateGTMonth,
-			int closedDateGTYear, int closedDateLTDay, int closedDateLTMonth,
-			int closedDateLTYear, int dueDateGTDay, int dueDateGTMonth,
-			int dueDateGTYear, int dueDateLTDay, int dueDateLTMonth,
-			int dueDateLTYear, LinkedHashMap<String, Object> params,
-			boolean andSearch, int start, int end, OrderByComparator obc)
-		throws SystemException {
+		long reportedByUserId, String name, int[] accountEntryTiers,
+		Boolean satisfiedDueDate, int createDateGTDay, int createDateGTMonth,
+		int createDateGTYear, int createDateLTDay, int createDateLTMonth,
+		int createDateLTYear, String subject, String description, String body,
+		int[] status, int[] severity, int[] weights, int[] escalationLevel,
+		long[] envOS, long[] envDB, long[] envJVM, long[] envAS, long[] envLFR,
+		int[] components, int[] resolution, int closedDateGTDay,
+		int closedDateGTMonth, int closedDateGTYear, int closedDateLTDay,
+		int closedDateLTMonth, int closedDateLTYear, int dueDateGTDay,
+		int dueDateGTMonth, int dueDateGTYear, int dueDateLTDay,
+		int dueDateLTMonth, int dueDateLTYear,
+		LinkedHashMap<String, Object> params, boolean andSearch, int start,
+		int end, OrderByComparator obc) {
 
 		Date createDateGT = PortalUtil.getDate(
 			createDateGTMonth, createDateGTDay, createDateGTYear);
@@ -1061,29 +1039,26 @@ public class TicketEntryLocalServiceImpl
 	}
 
 	public List<TicketEntry> search(
-			String keywords, LinkedHashMap<String, Object> params, int start,
-			int end, OrderByComparator obc)
-		throws SystemException {
+		String keywords, LinkedHashMap<String, Object> params, int start,
+		int end, OrderByComparator obc) {
 
 		return ticketEntryFinder.findByKeywords(
 			keywords, params, start, end, obc);
 	}
 
 	public int searchCount(
-			long reportedByUserId, String name, int[] accountEntryTiers,
-			Boolean satisfiedDueDate, int createDateGTDay,
-			int createDateGTMonth, int createDateGTYear, int createDateLTDay,
-			int createDateLTMonth, int createDateLTYear, String subject,
-			String description, String body, int[] status, int[] severity,
-			int[] weights, int[] escalationLevel, long[] envOS, long[] envDB,
-			long[] envJVM, long[] envAS, long[] envLFR, int[] components,
-			int[] resolution, int closedDateGTDay, int closedDateGTMonth,
-			int closedDateGTYear, int closedDateLTDay, int closedDateLTMonth,
-			int closedDateLTYear, int dueDateGTDay, int dueDateGTMonth,
-			int dueDateGTYear, int dueDateLTDay, int dueDateLTMonth,
-			int dueDateLTYear, LinkedHashMap<String, Object> params,
-			boolean andSearch)
-		throws SystemException {
+		long reportedByUserId, String name, int[] accountEntryTiers,
+		Boolean satisfiedDueDate, int createDateGTDay, int createDateGTMonth,
+		int createDateGTYear, int createDateLTDay, int createDateLTMonth,
+		int createDateLTYear, String subject, String description, String body,
+		int[] status, int[] severity, int[] weights, int[] escalationLevel,
+		long[] envOS, long[] envDB, long[] envJVM, long[] envAS, long[] envLFR,
+		int[] components, int[] resolution, int closedDateGTDay,
+		int closedDateGTMonth, int closedDateGTYear, int closedDateLTDay,
+		int closedDateLTMonth, int closedDateLTYear, int dueDateGTDay,
+		int dueDateGTMonth, int dueDateGTYear, int dueDateLTDay,
+		int dueDateLTMonth, int dueDateLTYear,
+		LinkedHashMap<String, Object> params, boolean andSearch) {
 
 		Date createDateGT = PortalUtil.getDate(
 			createDateGTMonth, createDateGTDay, createDateGTYear);
@@ -1107,8 +1082,7 @@ public class TicketEntryLocalServiceImpl
 	}
 
 	public int searchCount(
-			String keywords, LinkedHashMap<String, Object> params)
-		throws SystemException {
+		String keywords, LinkedHashMap<String, Object> params) {
 
 		return ticketEntryFinder.countByKeywords(keywords, params);
 	}
@@ -1116,7 +1090,7 @@ public class TicketEntryLocalServiceImpl
 	public void sendEmail(
 			long userId, long ticketEntryId, TicketComment ticketComment,
 			String action)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketEntry ticketEntry = ticketEntryPersistence.fetchByPrimaryKey(
 			ticketEntryId);
@@ -1127,7 +1101,7 @@ public class TicketEntryLocalServiceImpl
 	public void sendEmail(
 			long userId, TicketEntry ticketEntry, TicketComment ticketComment,
 			String action)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		try {
 			doSendEmail(userId, ticketEntry, ticketComment, action);
@@ -1143,9 +1117,7 @@ public class TicketEntryLocalServiceImpl
 		}
 	}
 
-	public void syncToJIRA(long ticketEntryId)
-		throws PortalException, SystemException {
-
+	public void syncToJIRA(long ticketEntryId) throws PortalException {
 		if (!TicketEntryThreadLocal.isSyncToJIRA()) {
 			return;
 		}
@@ -1201,7 +1173,7 @@ public class TicketEntryLocalServiceImpl
 		List<TicketWorker> ticketWorkers =
 			ticketWorkerLocalService.getTicketWorkers(ticketEntryId);
 
-		Set<String> otherTicketWorkerScreenNames = new HashSet<String>();
+		Set<String> otherTicketWorkerScreenNames = new HashSet<>();
 
 		for (TicketWorker ticketWorker : ticketWorkers) {
 			if ((primaryTicketWorker != null) &&
@@ -1274,7 +1246,7 @@ public class TicketEntryLocalServiceImpl
 
 	public TicketEntry updateCustomerModifiedDate(
 			long userId, long ticketEntryId, Date customerModifiedDate)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketEntry ticketEntry = ticketEntryPersistence.findByPrimaryKey(
 			ticketEntryId);
@@ -1316,9 +1288,9 @@ public class TicketEntryLocalServiceImpl
 		}
 
 		ticketEntry.setCustomerModifiedDate(customerModifiedDate);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		ticketEntryPersistence.update(ticketEntry, serviceContext);
@@ -1328,7 +1300,7 @@ public class TicketEntryLocalServiceImpl
 
 	public TicketEntry updatePendingTypes(
 			long userId, long ticketEntryId, int[] pendingTypes)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketEntry ticketEntry = ticketEntryPersistence.findByPrimaryKey(
 			ticketEntryId);
@@ -1350,7 +1322,7 @@ public class TicketEntryLocalServiceImpl
 			long userId, long ticketEntryId, long assigneeUserId,
 			long supportRegionId, int dueDateMonth, int dueDateDay,
 			int dueDateYear, int dueDateHour, int dueDateMinute)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketEntry ticketEntry = null;
 
@@ -1386,7 +1358,7 @@ public class TicketEntryLocalServiceImpl
 			Map<Long, String> ticketInformationFieldsMap, int[] pendingTypes,
 			List<TicketAttachment> ticketAttachments,
 			ServiceContext serviceContext)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketEntry ticketEntry = null;
 
@@ -1416,15 +1388,15 @@ public class TicketEntryLocalServiceImpl
 	}
 
 	public TicketEntry updateTicketId(long ticketEntryId, long ticketId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketEntry ticketEntry = ticketEntryPersistence.findByPrimaryKey(
 			ticketEntryId);
 
 		ticketEntry.setTicketId(ticketId);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		ticketEntryPersistence.update(ticketEntry, serviceContext);
@@ -1436,15 +1408,15 @@ public class TicketEntryLocalServiceImpl
 
 	public TicketEntry updateWorkerModifiedDate(
 			long ticketEntryId, Date workerModifiedDate)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketEntry ticketEntry = ticketEntryPersistence.findByPrimaryKey(
 			ticketEntryId);
 
 		ticketEntry.setWorkerModifiedDate(workerModifiedDate);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		ticketEntryPersistence.update(ticketEntry, serviceContext);
@@ -1454,7 +1426,7 @@ public class TicketEntryLocalServiceImpl
 
 	protected boolean assignAvailableTicketWorker(
 			AccountEntry accountEntry, TicketEntry ticketEntry)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		long userId = 0;
 		long sourceClassNameId = 0;
@@ -1547,13 +1519,14 @@ public class TicketEntryLocalServiceImpl
 			int escalationLevel, int component, int subcomponent,
 			Map<Long, String> ticketInformationFieldsMap,
 			List<TicketAttachment> ticketAttachments)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		// Ticket entry
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		OfferingEntry offeringEntry = offeringEntryPersistence.findByPrimaryKey(
 			offeringEntryId);
+
 		ProductEntry productEntry = offeringEntry.getProductEntry();
 		Date now = new Date();
 
@@ -1631,9 +1604,9 @@ public class TicketEntryLocalServiceImpl
 		ticketEntry.setIgnoreDueDate(false);
 		ticketEntry.setCustomerModifiedDate(now);
 		ticketEntry.setWorkerModifiedDate(now);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		ticketEntryPersistence.update(ticketEntry, serviceContext);
@@ -1645,9 +1618,8 @@ public class TicketEntryLocalServiceImpl
 
 		// Ticket attachments
 
-		List<ObjectValuePair<String, File>> files =
-			new ArrayList<ObjectValuePair<String, File>>();
-		List<Integer> types = new ArrayList<Integer>();
+		List<ObjectValuePair<String, File>> files = new ArrayList<>();
+		List<Integer> types = new ArrayList<>();
 
 		for (TicketAttachment ticketAttachment : ticketAttachments) {
 			if (ticketAttachment.getTicketAttachmentId() > 0) {
@@ -1659,9 +1631,8 @@ public class TicketEntryLocalServiceImpl
 				continue;
 			}
 
-			ObjectValuePair<String, File> ovp =
-				new ObjectValuePair<String, File>(
-					ticketAttachment.getFileName(), ticketAttachment.getFile());
+			ObjectValuePair<String, File> ovp = new ObjectValuePair<>(
+				ticketAttachment.getFileName(), ticketAttachment.getFile());
 
 			files.add(ovp);
 
@@ -1789,8 +1760,8 @@ public class TicketEntryLocalServiceImpl
 			OSBConstants.GROUP_CUSTOMER_ID, OSBPortletKeys.OSB_SUPPORT);
 
 		String ticketEntryURL =
-			layoutFullURL + Portal.FRIENDLY_URL_SEPARATOR +
-				"support/ticket/" + ticketEntry.getDisplayId();
+			layoutFullURL + Portal.FRIENDLY_URL_SEPARATOR + "support/ticket/" +
+				ticketEntry.getDisplayId();
 
 		AccountEntry accountEntry = ticketEntry.getAccountEntry();
 		OfferingEntry offeringEntry = ticketEntry.getOfferingEntry();
@@ -2030,9 +2001,10 @@ public class TicketEntryLocalServiceImpl
 			long userId, long ticketEntryId, long assigneeUserId,
 			long supportRegionId, int dueDateMonth, int dueDateDay,
 			int dueDateYear, int dueDateHour, int dueDateMinute)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
+
 		Date dueDate = PortalUtil.getDate(
 			dueDateMonth, dueDateDay, dueDateYear, dueDateHour, dueDateMinute,
 			user.getTimeZone(), (Class<? extends PortalException>)null);
@@ -2053,14 +2025,12 @@ public class TicketEntryLocalServiceImpl
 
 		if (assigneeUserId != 0) {
 			ticketWorkerLocalService.addTicketWorkers(
-				userId, new long[] {assigneeUserId}, ticketEntryId,
-				new long[0], new long[0],
-				new int[] {TicketWorkerConstants.ROLE_DEVELOPER},
+				userId, new long[] {assigneeUserId}, ticketEntryId, new long[0],
+				new long[0], new int[] {TicketWorkerConstants.ROLE_DEVELOPER},
 				assigneeUserId);
 		}
 		else if (supportRegionId != 0) {
-			LinkedHashMap<String, Object> params =
-				new LinkedHashMap<String, Object>();
+			LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
 			params.put("accountTier", ticketEntry.getAccountTier());
 
@@ -2091,9 +2061,9 @@ public class TicketEntryLocalServiceImpl
 			Date oldDueDate = ticketEntry.getDueDate();
 
 			ticketEntry.setDueDate(dueDate);
-			
+
 			//TODO implement serviceContext how needed
-			
+
 			ServiceContext serviceContext = new ServiceContext();
 
 			ticketEntryPersistence.update(ticketEntry, serviceContext);
@@ -2126,13 +2096,14 @@ public class TicketEntryLocalServiceImpl
 			Map<Long, String> ticketInformationFieldsMap, int[] pendingTypes,
 			List<TicketAttachment> ticketAttachments,
 			ServiceContext serviceContext)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		// Ticket entry
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		OfferingEntry offeringEntry = offeringEntryPersistence.findByPrimaryKey(
 			offeringEntryId);
+
 		ProductEntry productEntry = offeringEntry.getProductEntry();
 		Date dueDate = PortalUtil.getDate(
 			dueDateMonth, dueDateDay, dueDateYear, dueDateHour, dueDateMinute,
@@ -2162,7 +2133,7 @@ public class TicketEntryLocalServiceImpl
 				SupportResponseConstants.SEVERITY_CRITICAL) &&
 			((oldEnvironment == ProductEntryConstants.ENVIRONMENT_ANY) ||
 			 (oldEnvironment ==
-			 	ProductEntryConstants.ENVIRONMENT_PRODUCTION)) &&
+				 ProductEntryConstants.ENVIRONMENT_PRODUCTION)) &&
 			((environment != ProductEntryConstants.ENVIRONMENT_ANY) &&
 			 (environment != ProductEntryConstants.ENVIRONMENT_PRODUCTION))) {
 
@@ -2240,7 +2211,7 @@ public class TicketEntryLocalServiceImpl
 		ticketEntry.setIgnoreDueDate(ignoreDueDate);
 		ticketEntry.setCustomerModifiedDate(customerModifiedDate);
 		ticketEntry.setWorkerModifiedDate(workerModifiedDate);
-		
+
 		//TODO implement serviceContext how needed
 
 		ticketEntryPersistence.update(ticketEntry, serviceContext);
@@ -2259,9 +2230,8 @@ public class TicketEntryLocalServiceImpl
 
 		// Ticket attachments
 
-		List<ObjectValuePair<String, File>> files =
-			new ArrayList<ObjectValuePair<String, File>>();
-		List<Integer> types = new ArrayList<Integer>();
+		List<ObjectValuePair<String, File>> files = new ArrayList<>();
+		List<Integer> types = new ArrayList<>();
 
 		for (TicketAttachment ticketAttachment : ticketAttachments) {
 			if (ticketAttachment.getTicketAttachmentId() > 0) {
@@ -2273,9 +2243,8 @@ public class TicketEntryLocalServiceImpl
 				continue;
 			}
 
-			ObjectValuePair<String, File> ovp =
-				new ObjectValuePair<String, File>(
-					ticketAttachment.getFileName(), ticketAttachment.getFile());
+			ObjectValuePair<String, File> ovp = new ObjectValuePair<>(
+				ticketAttachment.getFileName(), ticketAttachment.getFile());
 
 			files.add(ovp);
 
@@ -2335,7 +2304,8 @@ public class TicketEntryLocalServiceImpl
 					ticketFeedback.setStatus(
 						TicketFeedbackConstants.STATUS_CLOSED);
 
-					ticketFeedbackPersistence.update(ticketFeedback, serviceContext);
+					ticketFeedbackPersistence.update(
+						ticketFeedback, serviceContext);
 				}
 			}
 		}
@@ -2454,8 +2424,8 @@ public class TicketEntryLocalServiceImpl
 			OSBConstants.GROUP_CUSTOMER_ID, OSBPortletKeys.OSB_SUPPORT);
 
 		String ticketEntryURL =
-			layoutFullURL + Portal.FRIENDLY_URL_SEPARATOR +
-				"support/ticket/" + ticketEntry.getDisplayId();
+			layoutFullURL + Portal.FRIENDLY_URL_SEPARATOR + "support/ticket/" +
+				ticketEntry.getDisplayId();
 
 		String permalinkURL =
 			ticketEntryURL + "/comment/" + ticketComment.getTicketCommentId();
@@ -2498,9 +2468,9 @@ public class TicketEntryLocalServiceImpl
 	protected Set<Long> getCustomerUserIds(
 			TicketEntry ticketEntry, TicketComment ticketComment, String action,
 			Set<Long> workerUserIds)
-		throws PortalException, SystemException {
+		throws PortalException {
 
-		Set<Long> customerUserIds = new HashSet<Long>();
+		Set<Long> customerUserIds = new HashSet<>();
 
 		if (action.equals(OSBMailActionKeys.ASSIGNED) ||
 			action.equals(OSBMailActionKeys.ESCALATED) ||
@@ -2508,7 +2478,7 @@ public class TicketEntryLocalServiceImpl
 			action.equals(OSBMailActionKeys.INACTIVE_WARNING) ||
 			(action.equals(OSBMailActionKeys.LOGGED_CALL) &&
 			 (ticketComment.getVisibility() ==
-				VisibilityConstants.LIFERAY_INC)) ||
+				 VisibilityConstants.LIFERAY_INC)) ||
 			action.equals(OSBMailActionKeys.UNASSIGNED) ||
 			action.equals(OSBMailActionKeys.UNASSIGNED_ESCALATION)) {
 
@@ -2568,7 +2538,7 @@ public class TicketEntryLocalServiceImpl
 
 	protected Date getDefaultDueDate(
 			Date createDate, TicketEntry ticketEntry, int severity)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		SupportResponse supportResponse = ticketEntry.getSupportResponse();
 
@@ -2607,13 +2577,8 @@ public class TicketEntryLocalServiceImpl
 			user.getLocale(), user.getTimeZone());
 
 		dueDateTemplate = StringUtil.replace(
-			dueDateTemplate,
-			new String[] {
-				"[$DUE_DATE$]"
-			},
-			new String[] {
-				dateFormatDateTime.format(ticketEntry.getDueDate())
-			});
+			dueDateTemplate, new String[] {"[$DUE_DATE$]"},
+			new String[] {dateFormatDateTime.format(ticketEntry.getDueDate())});
 
 		return dueDateTemplate;
 	}
@@ -2683,7 +2648,7 @@ public class TicketEntryLocalServiceImpl
 	protected Date getProgressingDueDate(
 			TicketEntry ticketEntry, SupportResponse supportResponse,
 			long offeringEntryId, int severity, int status)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		Date dueDate = ticketEntry.getDueDate();
 		Date now = new Date();
@@ -2695,9 +2660,8 @@ public class TicketEntryLocalServiceImpl
 		if ((ticketEntry.getOfferingEntryId() != offeringEntryId) ||
 			(ticketEntry.getSeverity() != severity)) {
 
-			int curSeverityResolution =
-				supportResponse.getSeverityResolution(
-					ticketEntry.getSeverity());
+			int curSeverityResolution = supportResponse.getSeverityResolution(
+				ticketEntry.getSeverity());
 
 			int severityResolution = supportResponse.getSeverityResolution(
 				severity);
@@ -2763,7 +2727,7 @@ public class TicketEntryLocalServiceImpl
 	}
 
 	protected long getSupportResponseId(OfferingEntry offeringEntry)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		SupportResponse supportResponse = offeringEntry.getSupportResponse();
 
@@ -2785,8 +2749,7 @@ public class TicketEntryLocalServiceImpl
 		}
 
 		SupportResponse limitedSupportResponse =
-			SupportResponseLocalServiceUtil.fetchSupportResponseByName(
-				"Limited");
+			supportResponseLocalService.fetchSupportResponseByName("Limited");
 
 		if (limitedSupportResponse != null) {
 			return limitedSupportResponse.getSupportResponseId();
@@ -2796,8 +2759,7 @@ public class TicketEntryLocalServiceImpl
 	}
 
 	protected long getTicketId(
-			TicketEntry ticketEntry, OfferingEntry offeringEntry)
-		throws SystemException {
+		TicketEntry ticketEntry, OfferingEntry offeringEntry) {
 
 		if (ticketEntry.getAccountEntryId() !=
 				offeringEntry.getAccountEntryId()) {
@@ -2845,8 +2807,8 @@ public class TicketEntryLocalServiceImpl
 			 (ticketEntry.getClosedDate() == null)) ||
 			(ArrayUtil.contains(TicketEntryConstants.STATUSES_ACTIVE, status) &&
 			 !ArrayUtil.contains(
-				TicketEntryConstants.STATUSES_ACTIVE,
-				ticketEntry.getStatus()))) {
+				 TicketEntryConstants.STATUSES_ACTIVE,
+				 ticketEntry.getStatus()))) {
 
 			return new Date();
 		}
@@ -2857,9 +2819,9 @@ public class TicketEntryLocalServiceImpl
 	protected Set<Long> getWorkerUserIds(
 			TicketEntry ticketEntry, SupportResponse supportResponse,
 			TicketComment ticketComment, String action)
-		throws PortalException, SystemException {
+		throws PortalException {
 
-		Set<Long> workerUserIds = new HashSet<Long>();
+		Set<Long> workerUserIds = new HashSet<>();
 
 		if (action.equals(OSBMailActionKeys.LOGGED_CALL) &&
 			(ticketComment.getVisibility() == VisibilityConstants.PUBLIC)) {
@@ -2960,8 +2922,7 @@ public class TicketEntryLocalServiceImpl
 
 		// Support workers
 
-		LinkedHashMap<String, Object> params =
-			new LinkedHashMap<String, Object>();
+		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
 		params.put("supportRegion", ticketEntry.getSupportRegionId());
 		params.put(
@@ -3042,7 +3003,7 @@ public class TicketEntryLocalServiceImpl
 	}
 
 	protected boolean hasAvailableTicketWorker(TicketEntry ticketEntry)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (ticketEntry.getEscalationLevel() ==
 				TicketEntryConstants.ESCALATION_LEVEL_P1) {
@@ -3227,7 +3188,7 @@ public class TicketEntryLocalServiceImpl
 					user.getCompanyMx(), "ticket_entry",
 					ticketEntry.getTicketEntryId(), PortalUUIDUtil.generate()));
 
-			MailServiceUtil.sendEmail(mailMessage);
+			mailService.sendEmail(mailMessage);
 		}
 	}
 
@@ -3235,7 +3196,7 @@ public class TicketEntryLocalServiceImpl
 			long userId, String userName, long auditSetId,
 			TicketEntry oldTicketEntry, TicketEntry ticketEntry,
 			ServiceContext serviceContext)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		long classPK = ticketEntry.getTicketEntryId();
 		Date createDate = ticketEntry.getModifiedDate();
@@ -3288,9 +3249,11 @@ public class TicketEntryLocalServiceImpl
 
 		if (oldSupportRegionId != ticketEntry.getSupportRegionId()) {
 			SupportRegion oldSupportRegion = oldTicketEntry.getSupportRegion();
+
 			String oldSupportRegionName = oldSupportRegion.getName();
 
 			SupportRegion supportRegion = ticketEntry.getSupportRegion();
+
 			String supportRegionName = supportRegion.getName();
 
 			auditEntryLocalService.addAuditEntry(
@@ -3479,7 +3442,7 @@ public class TicketEntryLocalServiceImpl
 
 	protected TicketEntry updatePendingTypes(
 			long userId, TicketEntry ticketEntry, int[] pendingTypes)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (pendingTypes == null) {
 			return ticketEntry;
@@ -3495,7 +3458,7 @@ public class TicketEntryLocalServiceImpl
 		long fieldClassNameId = PortalUtil.getClassNameId(
 			TicketFlag.class.getName());
 
-		Set<Integer> previousPendingTypes = new HashSet<Integer>();
+		Set<Integer> previousPendingTypes = new HashSet<>();
 
 		List<TicketFlag> ticketFlags = ticketFlagPersistence.findByTEI_T_F(
 			ticketEntry.getTicketEntryId(), TicketFlagConstants.TYPES_PENDING,
@@ -3576,9 +3539,9 @@ public class TicketEntryLocalServiceImpl
 		}
 
 		ticketEntry.setModifiedDate(now);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		ticketEntryPersistence.update(ticketEntry, serviceContext);
@@ -3591,7 +3554,7 @@ public class TicketEntryLocalServiceImpl
 	protected void updateSupportWorkerAssignedWork(
 			long ticketEntryId, int oldStatus, int status, int oldWeight,
 			int weight)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if ((oldStatus == status) && (oldWeight == weight)) {
 			return;
@@ -3608,7 +3571,7 @@ public class TicketEntryLocalServiceImpl
 		else if (!ArrayUtil.contains(
 					TicketEntryConstants.STATUSES_INACTIVE, oldStatus) &&
 				 ArrayUtil.contains(
-					TicketEntryConstants.STATUSES_INACTIVE, status)) {
+					 TicketEntryConstants.STATUSES_INACTIVE, status)) {
 
 			supportWorkerLocalService.decreaseTicketEntryAssignedWork(
 				ticketEntryId, TicketEntryImpl.getWork(oldWeight));
@@ -3624,7 +3587,7 @@ public class TicketEntryLocalServiceImpl
 
 	protected void updateTicketAttachmentDeleteDates(
 			long ticketEntryId, Date deleteDate)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		int[] visibilities = new int[] {
 			VisibilityConstants.LIFERAY_INC, VisibilityConstants.PUBLIC,
@@ -3650,7 +3613,7 @@ public class TicketEntryLocalServiceImpl
 			String subcomponentCustom, int resolution,
 			Map<Long, String> ticketInformationFieldsMap,
 			List<TicketAttachment> ticketAttachments)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (offeringEntry.getStatus() != OfferingEntryConstants.STATUS_ACTIVE) {
 			throw new OfferingEntrySupportExpiredException();
@@ -3680,7 +3643,7 @@ public class TicketEntryLocalServiceImpl
 			int weight, int component, int subcomponent, int resolution,
 			Map<Long, String> ticketInformationFieldsMap,
 			List<TicketAttachment> ticketAttachments)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (validateType.startsWith("update") ||
 			Validator.isNotNull(languageId)) {
@@ -3709,7 +3672,7 @@ public class TicketEntryLocalServiceImpl
 		}
 
 		try {
-			ListTypeServiceUtil.validate(
+			listTypeLocalService.validate(
 				status, TicketEntryConstants.LIST_TYPE_STATUS);
 		}
 		catch (NoSuchListTypeException nslte) {
@@ -3718,7 +3681,7 @@ public class TicketEntryLocalServiceImpl
 
 		if (status == TicketEntryConstants.STATUS_CLOSED) {
 			try {
-				ListTypeServiceUtil.validate(
+				listTypeLocalService.validate(
 					resolution, TicketEntryConstants.LIST_TYPE_RESOLUTION);
 			}
 			catch (NoSuchListTypeException nslte) {
@@ -3727,7 +3690,7 @@ public class TicketEntryLocalServiceImpl
 		}
 		else {
 			try {
-				ListTypeServiceUtil.validate(
+				listTypeLocalService.validate(
 					resolution, TicketEntryConstants.LIST_TYPE_RESOLUTION);
 
 				throw new TicketEntryResolutionException();
@@ -3737,7 +3700,7 @@ public class TicketEntryLocalServiceImpl
 		}
 
 		try {
-			ListTypeServiceUtil.validate(
+			listTypeLocalService.validate(
 				component, TicketEntryConstants.LIST_TYPE_COMPONENT);
 		}
 		catch (NoSuchListTypeException nslte) {
@@ -3786,9 +3749,9 @@ public class TicketEntryLocalServiceImpl
 			String validateType, ProductEntry productEntry, int component,
 			Map<Long, String> ticketInformationFieldsMap,
 			List<TicketAttachment> ticketAttachments)
-		throws PortalException, SystemException {
+		throws PortalException {
 
-		List<Integer> ticketAttachmentTypes = new ArrayList<Integer>();
+		List<Integer> ticketAttachmentTypes = new ArrayList<>();
 
 		for (TicketAttachment ticketAttachment : ticketAttachments) {
 			ticketAttachmentTypes.add(ticketAttachment.getType());
@@ -3893,14 +3856,14 @@ public class TicketEntryLocalServiceImpl
 			String envOSCustom, int envDB, int envAS, int envLFR, int envJVM,
 			int envBrowser, String envBrowserCustom, int envCS,
 			String envSearch)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (envOS <= 0) {
 			throw new TicketInformationException("operating-system");
 		}
 
 		try {
-			ListTypeServiceUtil.validate(
+			listTypeLocalService.validate(
 				envOS, TicketEntryConstants.LIST_TYPE_ENV_OS);
 		}
 		catch (NoSuchListTypeException nslte) {
@@ -3926,7 +3889,7 @@ public class TicketEntryLocalServiceImpl
 		}
 
 		try {
-			ListTypeServiceUtil.validate(
+			listTypeLocalService.validate(
 				envDB, TicketEntryConstants.LIST_TYPE_ENV_DB);
 		}
 		catch (NoSuchListTypeException nslte) {
@@ -3938,7 +3901,7 @@ public class TicketEntryLocalServiceImpl
 		}
 
 		try {
-			ListTypeServiceUtil.validate(
+			listTypeLocalService.validate(
 				envAS, TicketEntryConstants.LIST_TYPE_ENV_AS);
 		}
 		catch (NoSuchListTypeException nslte) {
@@ -3951,7 +3914,7 @@ public class TicketEntryLocalServiceImpl
 
 		if (productEntry.isSocialOffice()) {
 			try {
-				ListTypeServiceUtil.validate(
+				listTypeLocalService.validate(
 					envLFR,
 					ProductEntryConstants.LIST_TYPE_SOCIAL_OFFICE_ALL_VERSIONS);
 			}
@@ -3961,7 +3924,7 @@ public class TicketEntryLocalServiceImpl
 		}
 		else {
 			try {
-				ListType listType = ListTypeServiceUtil.getListType(envLFR);
+				ListType listType = listTypeLocalService.getListType(envLFR);
 
 				String type = listType.getType();
 
@@ -3984,7 +3947,7 @@ public class TicketEntryLocalServiceImpl
 		}
 
 		try {
-			ListTypeServiceUtil.validate(
+			listTypeLocalService.validate(
 				envJVM, TicketEntryConstants.LIST_TYPE_ENV_JVM);
 		}
 		catch (NoSuchListTypeException nslte) {
@@ -3993,7 +3956,7 @@ public class TicketEntryLocalServiceImpl
 
 		if (envBrowser > 0) {
 			try {
-				ListTypeServiceUtil.validate(
+				listTypeLocalService.validate(
 					envBrowser, TicketEntryConstants.LIST_TYPE_ENV_BROWSER);
 			}
 			catch (NoSuchListTypeException nslte) {
@@ -4017,7 +3980,7 @@ public class TicketEntryLocalServiceImpl
 
 		if (envCS > 0) {
 			try {
-				ListTypeServiceUtil.validate(
+				listTypeLocalService.validate(
 					envCS, TicketEntryConstants.LIST_TYPE_ENV_CS);
 			}
 			catch (NoSuchListTypeException nslte) {
@@ -4037,7 +4000,7 @@ public class TicketEntryLocalServiceImpl
 					envSearch, StringPool.NEW_LINE, 0);
 
 				for (int envSearches : envSearchesList) {
-					ListTypeServiceUtil.validate(
+					listTypeLocalService.validate(
 						envSearches, TicketEntryConstants.LIST_TYPE_ENV_SEARCH);
 				}
 			}
@@ -4092,7 +4055,7 @@ public class TicketEntryLocalServiceImpl
 
 	protected void validatePendingTypes(
 			long userId, long accountEntryId, int[] pendingTypes)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (ArrayUtil.isEmpty(pendingTypes) &&
 			!accountCustomerLocalService.hasAccountCustomer(
@@ -4107,7 +4070,7 @@ public class TicketEntryLocalServiceImpl
 			int docLibPersistence, String stepsToUpgrade,
 			int databaseUploadMethod, int dataFolderUploadMethod,
 			List<Integer> ticketAttachmentTypes)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (toEnvLFR <= 0) {
 			throw new TicketInformationException(
@@ -4115,7 +4078,7 @@ public class TicketEntryLocalServiceImpl
 		}
 
 		try {
-			ListType listType = ListTypeServiceUtil.getListType(toEnvLFR);
+			ListType listType = listTypeLocalService.getListType(toEnvLFR);
 
 			String type = listType.getType();
 
@@ -4200,5 +4163,8 @@ public class TicketEntryLocalServiceImpl
 			throw new RequiredFieldException("to-portal-ext", "to-portal-ext");
 		}
 	}
+
+	@BeanReference(type = MailService.class)
+	protected MailService mailService;
 
 }

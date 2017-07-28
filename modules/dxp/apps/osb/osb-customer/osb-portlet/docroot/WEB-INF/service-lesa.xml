@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
-<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 6.0.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_6_0_0.dtd">
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.0.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_0_0.dtd">
 
 <service-builder>
-	<entity name="AccountAttachment" local-service="true" remote-service="true">
+	<entity local-service="true" name="AccountAttachment" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="accountAttachmentId" type="long" primary="true" />
+		<column name="accountAttachmentId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -51,13 +51,13 @@
 
 		<!-- References -->
 
-		<reference package-path="com.liferay.portal" entity="Organization" />
+		<reference entity="Organization" package-path="com.liferay.portal" />
 	</entity>
-	<entity name="AccountCall" local-service="true" remote-service="true">
+	<entity local-service="true" name="AccountCall" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="accountCallId" type="long" primary="true" />
+		<column name="accountCallId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -89,11 +89,11 @@
 			<finder-column name="accountEntryId" />
 		</finder>
 	</entity>
-	<entity name="AccountCustomer" local-service="true" remote-service="true">
+	<entity local-service="true" name="AccountCustomer" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="accountCustomerId" type="long" primary="true" />
+		<column name="accountCustomerId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -119,26 +119,27 @@
 		</finder>
 		<finder name="U_R" return-type="Collection">
 			<finder-column name="userId" />
-			<finder-column name="role" arrayable-operator="OR" />
+			<finder-column arrayable-operator="OR" name="role" />
 		</finder>
 		<finder name="AEI_NotR" return-type="Collection">
 			<finder-column name="accountEntryId" />
-			<finder-column name="role" comparator="!=" />
+			<finder-column comparator="!=" name="role" />
 		</finder>
 		<finder name="AEI_NotN" return-type="Collection">
 			<finder-column name="accountEntryId" />
-			<finder-column name="notifications" comparator="!=" />
+			<finder-column comparator="!=" name="notifications" />
 		</finder>
 
 		<!-- References -->
 
-		<reference package-path="com.liferay.portal" entity="Organization" />
+		<reference entity="Organization" package-path="com.liferay.portal" />
+		<reference entity="Role" package-path="com.liferay.portal" />
 	</entity>
-	<entity name="AccountEntry" local-service="true" remote-service="true">
+	<entity local-service="true" name="AccountEntry" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="accountEntryId" type="long" primary="true" />
+		<column name="accountEntryId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -152,8 +153,8 @@
 
 		<!-- Relationships -->
 
-		<column name="supportRegions" type="Collection" entity="SupportRegion" mapping-table="AccountEntries_SupportRegions" />
-		<column name="supportTeams" type="Collection" entity="SupportTeam" mapping-table="AccountEntries_SupportTeams" />
+		<column entity="SupportRegion" mapping-table="AccountEntries_SupportRegions" name="supportRegions" type="Collection" />
+		<column entity="SupportTeam" mapping-table="AccountEntries_SupportTeams" name="supportTeams" type="Collection" />
 
 		<!-- Other fields -->
 
@@ -182,7 +183,7 @@
 		<!-- Order -->
 
 		<order by="asc">
-			<order-column name="name" case-sensitive="false" />
+			<order-column case-sensitive="false" name="name" />
 		</order>
 
 		<!-- Finder methods -->
@@ -194,7 +195,7 @@
 			<finder-column name="name" />
 		</finder>
 		<finder name="Code" return-type="AccountEntry" unique="true">
-			<finder-column name="code" case-sensitive="false" />
+			<finder-column case-sensitive="false" name="code" />
 		</finder>
 		<finder name="RedirectAccountEntryId" return-type="Collection">
 			<finder-column name="redirectAccountEntryId" />
@@ -211,32 +212,32 @@
 		</finder>
 		<finder name="RAEI_S" return-type="Collection">
 			<finder-column name="redirectAccountEntryId" />
-			<finder-column name="status" arrayable-operator="OR" />
+			<finder-column arrayable-operator="OR" name="status" />
 		</finder>
 		<finder name="RAEI_NotT_S" return-type="Collection">
 			<finder-column name="redirectAccountEntryId" />
-			<finder-column name="type" comparator="!=" arrayable-operator="AND" />
-			<finder-column name="status" arrayable-operator="OR" />
+			<finder-column arrayable-operator="AND" comparator="!=" name="type" />
+			<finder-column arrayable-operator="OR" name="status" />
 		</finder>
 		<finder name="N_C_RAEI" return-type="Collection">
-			<finder-column name="name" case-sensitive="false" comparator="LIKE" />
-			<finder-column name="code" case-sensitive="false" comparator="LIKE" />
+			<finder-column case-sensitive="false" comparator="LIKE" name="name" />
+			<finder-column case-sensitive="false" comparator="LIKE" name="code" />
 			<finder-column name="redirectAccountEntryId" />
 		</finder>
 
 		<!-- References -->
 
-		<reference package-path="com.liferay.portal" entity="Address" />
-		<reference package-path="com.liferay.portal" entity="Country" />
-		<reference package-path="com.liferay.portal" entity="ListType" />
-		<reference package-path="com.liferay.portal" entity="Organization" />
-		<reference package-path="com.liferay.portal" entity="WorkflowInstanceLink" />
+		<reference entity="Address" package-path="com.liferay.portal" />
+		<reference entity="Country" package-path="com.liferay.portal" />
+		<reference entity="ListType" package-path="com.liferay.portal" />
+		<reference entity="Organization" package-path="com.liferay.portal" />
+		<reference entity="WorkflowInstanceLink" package-path="com.liferay.portal" />
 	</entity>
-	<entity name="AccountEntryLanguage" local-service="true" remote-service="true">
+	<entity local-service="true" name="AccountEntryLanguage" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="accountEntryLanguageId" type="long" primary="true" />
+		<column name="accountEntryLanguageId" primary="true" type="long" />
 
 		<!-- Other fields -->
 
@@ -255,11 +256,11 @@
 			<finder-column name="accountEntryId" />
 		</finder>
 	</entity>
-	<entity name="AccountEnvironment" local-service="true" remote-service="true">
+	<entity local-service="true" name="AccountEnvironment" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="accountEnvironmentId" type="long" primary="true" />
+		<column name="accountEnvironmentId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -297,13 +298,13 @@
 
 		<!-- References -->
 
-		<reference package-path="com.liferay.portal" entity="ListType" />
+		<reference entity="ListType" package-path="com.liferay.portal" />
 	</entity>
-	<entity name="AccountEnvironmentAttachment" local-service="true" remote-service="true">
+	<entity local-service="true" name="AccountEnvironmentAttachment" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="accountEnvironmentAttachmentId" type="long" primary="true" />
+		<column name="accountEnvironmentAttachmentId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -333,11 +334,11 @@
 			<finder-column name="type" />
 		</finder>
 	</entity>
-	<entity name="AccountInformation" local-service="true" remote-service="true">
+	<entity local-service="true" name="AccountInformation" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="accountInformationId" type="long" primary="true" />
+		<column name="accountInformationId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -360,7 +361,7 @@
 		</finder>
 		<finder name="AEI_NotAPI" return-type="Collection">
 			<finder-column name="accountEntryId" />
-			<finder-column name="accountProjectId" comparator="!=" />
+			<finder-column comparator="!=" name="accountProjectId" />
 		</finder>
 		<finder name="AEI_API_FI" return-type="AccountInformation" unique="true">
 			<finder-column name="accountEntryId" />
@@ -368,11 +369,11 @@
 			<finder-column name="fieldId" />
 		</finder>
 	</entity>
-	<entity name="AccountLink" local-service="true" remote-service="true">
+	<entity local-service="true" name="AccountLink" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="accountLinkId" type="long" primary="true" />
+		<column name="accountLinkId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -391,11 +392,11 @@
 			<finder-column name="accountEntryId" />
 		</finder>
 	</entity>
-	<entity name="AccountProject" local-service="true" remote-service="true">
+	<entity local-service="true" name="AccountProject" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="accountProjectId" type="long" primary="true" />
+		<column name="accountProjectId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -414,11 +415,11 @@
 			<finder-column name="accountEntryId" />
 		</finder>
 	</entity>
-	<entity name="AccountWorker" local-service="true" remote-service="true">
+	<entity local-service="true" name="AccountWorker" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="accountWorkerId" type="long" primary="true" />
+		<column name="accountWorkerId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -452,14 +453,14 @@
 		</finder>
 		<finder name="AEI_NotN" return-type="Collection">
 			<finder-column name="accountEntryId" />
-			<finder-column name="notifications" comparator="!=" />
+			<finder-column comparator="!=" name="notifications" />
 		</finder>
 	</entity>
-	<entity name="AuditEntry" local-service="true" remote-service="true">
+	<entity local-service="true" name="AuditEntry" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="auditEntryId" type="long" primary="true" />
+		<column name="auditEntryId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -499,7 +500,7 @@
 		<finder name="C_C_V" return-type="Collection">
 			<finder-column name="classNameId" />
 			<finder-column name="classPK" />
-			<finder-column name="visibility" arrayable-operator="OR" />
+			<finder-column arrayable-operator="OR" name="visibility" />
 		</finder>
 		<finder name="FC_FC_F" return-type="Collection">
 			<finder-column name="fieldClassNameId" />
@@ -513,11 +514,11 @@
 			<finder-column name="action" />
 		</finder>
 	</entity>
-	<entity name="ExternalIdMapper" local-service="true" remote-service="false">
+	<entity local-service="true" name="ExternalIdMapper" remote-service="false">
 
 		<!-- PK fields -->
 
-		<column name="externalIdMapperId" type="long" primary="true" />
+		<column name="externalIdMapperId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -548,22 +549,22 @@
 			<finder-column name="externalId" />
 		</finder>
 	</entity>
-	<entity name="HolidayCalendar" local-service="true" remote-service="true">
+	<entity local-service="true" name="HolidayCalendar" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="holidayCalendarId" type="long" primary="true" />
+		<column name="holidayCalendarId" primary="true" type="long" />
 
 		<!-- Other fields -->
 
 		<column name="name" type="String" />
 		<column name="description" type="String" />
 	</entity>
-	<entity name="HolidayCalendarRel" local-service="true" remote-service="true">
+	<entity local-service="true" name="HolidayCalendarRel" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="holidayCalendarRelId" type="long" primary="true" />
+		<column name="holidayCalendarRelId" primary="true" type="long" />
 
 		<!--  Other fields -->
 
@@ -583,11 +584,11 @@
 			<finder-column name="userId" />
 		</finder>
 	</entity>
-	<entity name="HolidayEntry" local-service="true" remote-service="true">
+	<entity local-service="true" name="HolidayEntry" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="holidayEntryId" type="long" primary="true" />
+		<column name="holidayEntryId" primary="true" type="long" />
 
 		<!-- Other fields -->
 
@@ -604,11 +605,11 @@
 			<finder-column name="holidayCalendarId" />
 		</finder>
 	</entity>
-	<entity name="OfferingBundle" local-service="true" remote-service="true">
+	<entity local-service="true" name="OfferingBundle" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="offeringBundleId" type="long" primary="true" />
+		<column name="offeringBundleId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -619,7 +620,7 @@
 
 		<!-- Relationships -->
 
-		<column name="offeringDefinitions" type="Collection" entity="OfferingDefinition" mapping-table="OfferingBundles_OfferingDefinitions" />
+		<column entity="OfferingDefinition" mapping-table="OfferingBundles_OfferingDefinitions" name="offeringDefinitions" type="Collection" />
 
 		<!-- Other fields -->
 
@@ -637,14 +638,14 @@
 			<finder-column name="name" />
 		</finder>
 	</entity>
-	<entity name="OfferingDefinition" local-service="true" remote-service="true">
+	<entity local-service="true" name="OfferingDefinition" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="offeringDefinitionId" type="long" primary="true" />
+		<column name="offeringDefinitionId" primary="true" type="long" />
 
 		<!-- Audit fields -->
-	
+
 		<column name="companyId" type="long" />
 		<column name="userId" type="long" />
 		<column name="userName" type="String" />
@@ -653,7 +654,7 @@
 
 		<!-- Relationships -->
 
-		<column name="offeringBundles" type="Collection" entity="OfferingBundle" mapping-table="OfferingBundles_OfferingDefinitions" />
+		<column entity="OfferingBundle" mapping-table="OfferingBundles_OfferingDefinitions" name="offeringBundles" type="Collection" />
 
 		<!-- Other fields -->
 
@@ -682,8 +683,8 @@
 			<finder-column name="supportResponseId" />
 		</finder>
 		<finder name="PEI_SRI" return-type="Collection">
-			<finder-column name="productEntryId" arrayable-operator="OR" />
-			<finder-column name="supportResponseId" arrayable-operator="OR" />
+			<finder-column arrayable-operator="OR" name="productEntryId" />
+			<finder-column arrayable-operator="OR" name="supportResponseId" />
 		</finder>
 		<finder name="PEI_SRI_PD_L_UL_ST" return-type="OfferingDefinition">
 			<finder-column name="productEntryId" />
@@ -694,11 +695,11 @@
 			<finder-column name="supportTickets" />
 		</finder>
 	</entity>
-	<entity name="OfferingEntry" local-service="true" remote-service="true">
+	<entity local-service="true" name="OfferingEntry" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="offeringEntryId" type="long" primary="true" />
+		<column name="offeringEntryId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -765,14 +766,14 @@
 
 		<!-- References -->
 
-		<reference package-path="com.liferay.mail" entity="Mail" />
-		<reference package-path="com.liferay.portal" entity="Company" />
+		<reference entity="Mail" package-path="com.liferay.mail" />
+		<reference entity="Company" package-path="com.liferay.portal" />
 	</entity>
-	<entity name="OrderEntry" uuid="true" local-service="true" remote-service="true">
+	<entity local-service="true" name="OrderEntry" remote-service="true" uuid="true">
 
 		<!-- PK fields -->
 
-		<column name="orderEntryId" type="long" primary="true" />
+		<column name="orderEntryId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -805,13 +806,13 @@
 
 		<!-- References -->
 
-		<reference package-path="com.liferay.portal" entity="Role" />
+		<reference entity="Role" package-path="com.liferay.portal" />
 	</entity>
-	<entity name="PartnerEntry" local-service="true" remote-service="true">
+	<entity local-service="true" name="PartnerEntry" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="partnerEntryId" type="long" primary="true" />
+		<column name="partnerEntryId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -825,7 +826,7 @@
 
 		<!-- Relationships -->
 
-		<column name="supportRegions" type="Collection" entity="SupportRegion" mapping-table="PartnerEntries_SupportRegions" />
+		<column entity="SupportRegion" mapping-table="PartnerEntries_SupportRegions" name="supportRegions" type="Collection" />
 
 		<!-- Other fields -->
 
@@ -838,7 +839,7 @@
 		<!-- Order -->
 
 		<order by="asc">
-			<order-column name="code" case-sensitive="false" />
+			<order-column case-sensitive="false" name="code" />
 		</order>
 
 		<!-- Finder methods -->
@@ -855,14 +856,14 @@
 
 		<!-- References -->
 
-		<reference package-path="com.liferay.portal" entity="Address" />
-		<reference package-path="com.liferay.portal" entity="Organization" />
+		<reference entity="Address" package-path="com.liferay.portal" />
+		<reference entity="Organization" package-path="com.liferay.portal" />
 	</entity>
-	<entity name="PartnerWorker" local-service="true" remote-service="true">
+	<entity local-service="true" name="PartnerWorker" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="partnerWorkerId" type="long" primary="true" />
+		<column name="partnerWorkerId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -887,8 +888,8 @@
 			<finder-column name="partnerEntryId" />
 		</finder>
 		<finder name="U_R" return-type="Collection">
-			<finder-column name="userId" arrayable-operator="OR" />
-			<finder-column name="role" arrayable-operator="OR" />
+			<finder-column arrayable-operator="OR" name="userId" />
+			<finder-column arrayable-operator="OR" name="role" />
 		</finder>
 		<finder name="PEI_R" return-type="Collection">
 			<finder-column name="partnerEntryId" />
@@ -896,18 +897,19 @@
 		</finder>
 		<finder name="PEI_NotN" return-type="Collection">
 			<finder-column name="partnerEntryId" />
-			<finder-column name="notifications" comparator="!=" />
+			<finder-column comparator="!=" name="notifications" />
 		</finder>
 
 		<!-- References -->
 
-		<reference package-path="com.liferay.portal" entity="Organization" />
+		<reference entity="Organization" package-path="com.liferay.portal" />
+		<reference entity="Role" package-path="com.liferay.portal" />
 	</entity>
-	<entity name="ProductEntry" local-service="true" remote-service="true">
+	<entity local-service="true" name="ProductEntry" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="productEntryId" type="long" primary="true" />
+		<column name="productEntryId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -926,7 +928,7 @@
 		<!-- Order -->
 
 		<order by="asc">
-			<order-column name="name" case-sensitive="false" />
+			<order-column case-sensitive="false" name="name" />
 		</order>
 
 		<!-- Finder methods -->
@@ -935,11 +937,11 @@
 			<finder-column name="name" />
 		</finder>
 	</entity>
-	<entity name="SearchFilter" local-service="true" remote-service="true">
+	<entity local-service="true" name="SearchFilter" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="searchFilterId" type="long" primary="true" />
+		<column name="searchFilterId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -958,7 +960,7 @@
 		<!-- Order -->
 
 		<order by="asc">
-			<order-column name="name" case-sensitive="false" />
+			<order-column case-sensitive="false" name="name" />
 		</order>
 
 		<!-- Finder methods -->
@@ -973,13 +975,13 @@
 
 		<!-- References -->
 
-		<reference package-path="com.liferay.portal" entity="Organization" />
+		<reference entity="Organization" package-path="com.liferay.portal" />
 	</entity>
-	<entity name="SecurityPatch" local-service="true" remote-service="true">
+	<entity local-service="true" name="SecurityPatch" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="securityPatchId" type="long" primary="true" />
+		<column name="securityPatchId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -1008,14 +1010,14 @@
 
 		<!-- References -->
 
-		<reference package-path="com.liferay.portal" entity="ListType" />
-		<reference package-path="com.liferay.portal" entity="Organization" />
+		<reference entity="ListType" package-path="com.liferay.portal" />
+		<reference entity="Organization" package-path="com.liferay.portal" />
 	</entity>
-	<entity name="SupportLabor" local-service="true" remote-service="true">
+	<entity local-service="true" name="SupportLabor" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="supportLaborId" type="long" primary="true" />
+		<column name="supportLaborId" primary="true" type="long" />
 
 		<!-- Other fields -->
 
@@ -1043,11 +1045,11 @@
 			<order-column name="name" />
 		</order>
 	</entity>
-	<entity name="SupportRegion" local-service="true" remote-service="true">
+	<entity local-service="true" name="SupportRegion" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="supportRegionId" type="long" primary="true" />
+		<column name="supportRegionId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -1066,14 +1068,14 @@
 
 		<!-- Relationships -->
 
-		<column name="accountEntries" type="Collection" entity="AccountEntry" mapping-table="AccountEntries_SupportRegions" />
-		<column name="partnerEntries" type="Collection" entity="PartnerEntry" mapping-table="PartnerEntries_SupportRegions" />
-		<column name="supportTeams" type="Collection" entity="SupportTeam" mapping-table="SupportTeams_SupportRegions" />
+		<column entity="AccountEntry" mapping-table="AccountEntries_SupportRegions" name="accountEntries" type="Collection" />
+		<column entity="PartnerEntry" mapping-table="PartnerEntries_SupportRegions" name="partnerEntries" type="Collection" />
+		<column entity="SupportTeam" mapping-table="SupportTeams_SupportRegions" name="supportTeams" type="Collection" />
 
 		<!-- Order -->
 
 		<order by="asc">
-			<order-column name="name" case-sensitive="false" />
+			<order-column case-sensitive="false" name="name" />
 		</order>
 
 		<!-- Finder methods -->
@@ -1082,11 +1084,11 @@
 			<finder-column name="name" />
 		</finder>
 	</entity>
-	<entity name="SupportResponse" local-service="true" remote-service="true">
+	<entity local-service="true" name="SupportResponse" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="supportResponseId" type="long" primary="true" />
+		<column name="supportResponseId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -1109,7 +1111,7 @@
 		<!-- Order -->
 
 		<order by="asc">
-			<order-column name="name" case-sensitive="false" />
+			<order-column case-sensitive="false" name="name" />
 		</order>
 
 		<!-- Finder methods -->
@@ -1121,11 +1123,11 @@
 			<finder-column name="supportLevel" />
 		</finder>
 	</entity>
-	<entity name="SupportTeam" local-service="true" remote-service="true">
+	<entity local-service="true" name="SupportTeam" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="supportTeamId" type="long" primary="true" />
+		<column name="supportTeamId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -1148,13 +1150,13 @@
 
 		<!-- Relationships -->
 
-		<column name="accountEntries" type="Collection" entity="AccountEntry" mapping-table="AccountEntries_SupportTeams" />
-		<column name="supportRegions" type="Collection" entity="SupportRegion" mapping-table="SupportTeams_SupportRegions" />
+		<column entity="AccountEntry" mapping-table="AccountEntries_SupportTeams" name="accountEntries" type="Collection" />
+		<column entity="SupportRegion" mapping-table="SupportTeams_SupportRegions" name="supportRegions" type="Collection" />
 
 		<!-- Order -->
 
 		<order by="asc">
-			<order-column name="name" case-sensitive="false" />
+			<order-column case-sensitive="false" name="name" />
 		</order>
 
 		<!-- Finder methods -->
@@ -1169,11 +1171,11 @@
 			<finder-column name="name" />
 		</finder>
 	</entity>
-	<entity name="SupportTeamLanguage" local-service="true" remote-service="true">
+	<entity local-service="true" name="SupportTeamLanguage" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="supportTeamLanguageId" type="long" primary="true" />
+		<column name="supportTeamLanguageId" primary="true" type="long" />
 
 		<!-- Other fields -->
 
@@ -1192,11 +1194,11 @@
 			<finder-column name="supportTeamId" />
 		</finder>
 	</entity>
-	<entity name="SupportWorker" local-service="true" remote-service="true">
+	<entity local-service="true" name="SupportWorker" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="supportWorkerId" type="long" primary="true" />
+		<column name="supportWorkerId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -1231,16 +1233,16 @@
 			<finder-column name="supportTeamId" />
 		</finder>
 		<finder name="U_MW_R" return-type="Collection">
-			<finder-column name="userId" arrayable-operator="OR" />
-			<finder-column name="maxWork" comparator="!=" />
-			<finder-column name="role" arrayable-operator="OR" />
+			<finder-column arrayable-operator="OR" name="userId" />
+			<finder-column comparator="!=" name="maxWork" />
+			<finder-column arrayable-operator="OR" name="role" />
 		</finder>
 	</entity>
-	<entity name="SupportWorkerComponent" local-service="true" remote-service="true">
+	<entity local-service="true" name="SupportWorkerComponent" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="supportWorkerComponentId" type="long" primary="true" />
+		<column name="supportWorkerComponentId" primary="true" type="long" />
 
 		<!-- Other fields -->
 
@@ -1259,11 +1261,11 @@
 			<finder-column name="supportWorkerId" />
 		</finder>
 	</entity>
-	<entity name="SupportWorkerSeverity" local-service="true" remote-service="true">
+	<entity local-service="true" name="SupportWorkerSeverity" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="supportWorkerSeverityId" type="long" primary="true" />
+		<column name="supportWorkerSeverityId" primary="true" type="long" />
 
 		<!-- Other fields -->
 
@@ -1282,11 +1284,11 @@
 			<finder-column name="supportWorkerId" />
 		</finder>
 	</entity>
-	<entity name="SupportWorkerAccountTier" local-service="true" remote-service="true">
+	<entity local-service="true" name="SupportWorkerAccountTier" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="supportWorkerAccountTierId" type="long" primary="true" />
+		<column name="supportWorkerAccountTierId" primary="true" type="long" />
 
 		<!-- Other fields -->
 
@@ -1305,11 +1307,11 @@
 			<finder-column name="supportWorkerId" />
 		</finder>
 	</entity>
-	<entity name="TicketAttachment" local-service="true" remote-service="true">
+	<entity local-service="true" name="TicketAttachment" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="ticketAttachmentId" type="long" primary="true" />
+		<column name="ticketAttachmentId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -1341,14 +1343,14 @@
 		<!-- Finder methods -->
 
 		<finder name="Type" return-type="Collection">
-			<finder-column name="type" arrayable-operator="OR" />
+			<finder-column arrayable-operator="OR" name="type" />
 		</finder>
 		<finder name="CD_TEI" return-type="Collection">
-			<finder-column name="createDate" comparator="&lt;" />
+			<finder-column comparator="&lt;" name="createDate" />
 			<finder-column name="ticketEntryId" />
 		</finder>
 		<finder name="CD_T" return-type="Collection">
-			<finder-column name="createDate" comparator="&lt;" />
+			<finder-column comparator="&lt;" name="createDate" />
 			<finder-column name="type" />
 		</finder>
 		<finder name="TEI_TSI" return-type="Collection">
@@ -1360,8 +1362,8 @@
 			<finder-column name="status" />
 		</finder>
 		<finder name="T_DD" return-type="Collection">
-			<finder-column name="type" arrayable-operator="OR" />
-			<finder-column name="deleteDate" comparator="&lt;" />
+			<finder-column arrayable-operator="OR" name="type" />
+			<finder-column comparator="&lt;" name="deleteDate" />
 		</finder>
 		<finder name="TEI_T_S" return-type="Collection">
 			<finder-column name="ticketEntryId" />
@@ -1382,20 +1384,20 @@
 		</finder>
 		<finder name="TEI_T_V_S" return-type="Collection">
 			<finder-column name="ticketEntryId" />
-			<finder-column name="type" arrayable-operator="OR" />
-			<finder-column name="visibility" arrayable-operator="OR" />
+			<finder-column arrayable-operator="OR" name="type" />
+			<finder-column arrayable-operator="OR" name="visibility" />
 			<finder-column name="status" />
 		</finder>
 
 		<!-- References -->
 
-		<reference package-path="com.liferay.portal" entity="Organization" />
+		<reference entity="Organization" package-path="com.liferay.portal" />
 	</entity>
-	<entity name="TicketCall" local-service="true" remote-service="true">
+	<entity local-service="true" name="TicketCall" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="ticketCallId" type="long" primary="true" />
+		<column name="ticketCallId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -1420,11 +1422,11 @@
 			<order-column name="createDate" />
 		</order>
 	</entity>
-	<entity name="TicketCannedResponse" local-service="true" remote-service="true">
+	<entity local-service="true" name="TicketCannedResponse" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="ticketCannedResponseId" type="long" primary="true" />
+		<column name="ticketCannedResponseId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -1435,21 +1437,21 @@
 
 		<!-- Other fields -->
 
-		<column name="name" type="String" localized="true" />
-		<column name="content" type="String" localized="true" />
+		<column localized="true" name="name" type="String" />
+		<column localized="true" name="content" type="String" />
 		<column name="useCount" type="int" />
 
 		<!-- Order -->
 
 		<order by="asc">
-			<order-column name="name" case-sensitive="false" />
+			<order-column case-sensitive="false" name="name" />
 		</order>
 	</entity>
-	<entity name="TicketComment" local-service="true" remote-service="true">
+	<entity local-service="true" name="TicketComment" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="ticketCommentId" type="long" primary="true" />
+		<column name="ticketCommentId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -1486,14 +1488,14 @@
 		</finder>
 		<finder name="TEI_V_S" return-type="Collection">
 			<finder-column name="ticketEntryId" />
-			<finder-column name="visibility" arrayable-operator="OR" />
-			<finder-column name="status" arrayable-operator="OR" />
+			<finder-column arrayable-operator="OR" name="visibility" />
+			<finder-column arrayable-operator="OR" name="status" />
 		</finder>
 		<finder name="U_TEI_V_S" return-type="Collection">
 			<finder-column name="userId" />
 			<finder-column name="ticketEntryId" />
-			<finder-column name="visibility" arrayable-operator="OR" />
-			<finder-column name="status" arrayable-operator="OR" />
+			<finder-column arrayable-operator="OR" name="visibility" />
+			<finder-column arrayable-operator="OR" name="status" />
 		</finder>
 		<finder name="U_TEI_V_S_T" return-type="Collection">
 			<finder-column name="userId" />
@@ -1505,13 +1507,13 @@
 
 		<!-- References -->
 
-		<reference package-path="com.liferay.portal" entity="Organization" />
+		<reference entity="Organization" package-path="com.liferay.portal" />
 	</entity>
-	<entity name="TicketEntry" local-service="true" remote-service="true">
+	<entity local-service="true" name="TicketEntry" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="ticketEntryId" type="long" primary="true" />
+		<column name="ticketEntryId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -1582,23 +1584,23 @@
 		</finder>
 		<finder name="OEI_NotR" return-type="Collection">
 			<finder-column name="offeringEntryId" />
-			<finder-column name="resolution" comparator="!=" />
+			<finder-column comparator="!=" name="resolution" />
 		</finder>
 
 		<!-- References -->
 
-		<reference package-path="com.liferay.mail" entity="Mail" />
-		<reference package-path="com.liferay.portal" entity="Company" />
-		<reference package-path="com.liferay.portal" entity="ListType" />
-		<reference package-path="com.liferay.portal" entity="Organization" />
-		<reference package-path="com.liferay.portal" entity="PortletPreferences" />
-		<reference package-path="com.liferay.portal" entity="Subscription" />
+		<reference entity="Mail" package-path="com.liferay.mail" />
+		<reference entity="Company" package-path="com.liferay.portal" />
+		<reference entity="ListType" package-path="com.liferay.portal" />
+		<reference entity="Organization" package-path="com.liferay.portal" />
+		<reference entity="PortletPreferences" package-path="com.liferay.portal" />
+		<reference entity="Subscription" package-path="com.liferay.portal" />
 	</entity>
-	<entity name="TicketFeedback" local-service="true" remote-service="true">
+	<entity local-service="true" name="TicketFeedback" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="ticketFeedbackId" type="long" primary="true" />
+		<column name="ticketFeedbackId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -1635,7 +1637,7 @@
 		<finder name="TEI_S_NotS" return-type="Collection">
 			<finder-column name="ticketEntryId" />
 			<finder-column name="subject" />
-			<finder-column name="status" comparator="!=" />
+			<finder-column comparator="!=" name="status" />
 		</finder>
 		<finder name="TEI_S_S" return-type="Collection">
 			<finder-column name="ticketEntryId" />
@@ -1646,20 +1648,20 @@
 			<finder-column name="userId" />
 			<finder-column name="ticketEntryId" />
 			<finder-column name="subject" />
-			<finder-column name="status" comparator="!=" />
+			<finder-column comparator="!=" name="status" />
 		</finder>
 
 		<!-- References -->
 
-		<reference package-path="com.liferay.mail" entity="Mail" />
-		<reference package-path="com.liferay.portal" entity="Organization" />
-		<reference package-path="com.liferay.portal" entity="PortletPreferences" />
+		<reference entity="Mail" package-path="com.liferay.mail" />
+		<reference entity="Organization" package-path="com.liferay.portal" />
+		<reference entity="PortletPreferences" package-path="com.liferay.portal" />
 	</entity>
-	<entity name="TicketFlag" local-service="true" remote-service="true">
+	<entity local-service="true" name="TicketFlag" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="ticketFlagId" type="long" primary="true" />
+		<column name="ticketFlagId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -1688,7 +1690,7 @@
 		</finder>
 		<finder name="TEI_T_F" return-type="Collection">
 			<finder-column name="ticketEntryId" />
-			<finder-column name="type" arrayable-operator="OR" />
+			<finder-column arrayable-operator="OR" name="type" />
 			<finder-column name="flag" />
 		</finder>
 		<finder name="U_AEI_TEI_T" return-type="TicketFlag" unique="true">
@@ -1698,11 +1700,11 @@
 			<finder-column name="type" />
 		</finder>
 	</entity>
-	<entity name="TicketInformation" local-service="true" remote-service="true">
+	<entity local-service="true" name="TicketInformation" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="ticketInformationId" type="long" primary="true" />
+		<column name="ticketInformationId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -1725,11 +1727,11 @@
 			<finder-column name="fieldId" />
 		</finder>
 	</entity>
-	<entity name="TicketLink" local-service="true" remote-service="true">
+	<entity local-service="true" name="TicketLink" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="ticketLinkId" type="long" primary="true" />
+		<column name="ticketLinkId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -1756,18 +1758,18 @@
 		</finder>
 		<finder name="TEI_V" return-type="Collection">
 			<finder-column name="ticketEntryId" />
-			<finder-column name="visibility" arrayable-operator="OR" />
+			<finder-column arrayable-operator="OR" name="visibility" />
 		</finder>
 
 		<!-- References -->
 
-		<reference package-path="com.liferay.portal" entity="Organization" />
+		<reference entity="Organization" package-path="com.liferay.portal" />
 	</entity>
-	<entity name="TicketSolution" local-service="true" remote-service="true">
+	<entity local-service="true" name="TicketSolution" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="ticketSolutionId" type="long" primary="true" />
+		<column name="ticketSolutionId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -1808,13 +1810,13 @@
 
 		<!-- References -->
 
-		<reference package-path="com.liferay.portal" entity="Organization" />
+		<reference entity="Organization" package-path="com.liferay.portal" />
 	</entity>
-	<entity name="TicketWorker" local-service="true" remote-service="true">
+	<entity local-service="true" name="TicketWorker" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="ticketWorkerId" type="long" primary="true" />
+		<column name="ticketWorkerId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 

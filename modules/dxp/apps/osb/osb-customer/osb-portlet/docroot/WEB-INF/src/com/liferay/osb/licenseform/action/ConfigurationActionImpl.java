@@ -23,13 +23,18 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletConfig;
 import javax.portlet.PortletPreferences;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Amos Fong
  */
 public class ConfigurationActionImpl extends DefaultConfigurationAction {
+
+	@Override
+	public String getJspPath(HttpServletRequest request) {
+		return "/license_form/configuration.jsp";
+	}
 
 	@Override
 	public void processAction(
@@ -51,14 +56,6 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 			actionRequest,
 			portletConfig.getPortletName() +
 				SessionMessages.KEY_SUFFIX_UPDATED_CONFIGURATION);
-	}
-
-	public String render(
-			PortletConfig portletConfig, RenderRequest renderRequest,
-			RenderResponse renderResponse)
-		throws Exception {
-
-		return "/license_form/configuration.jsp";
 	}
 
 	protected void updateGeneral(

@@ -19,8 +19,6 @@ import com.liferay.osb.model.PartnerWorker;
 import com.liferay.osb.service.base.PartnerWorkerLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
@@ -34,7 +32,7 @@ public class PartnerWorkerLocalServiceImpl
 	public void addPartnerWorkers(
 			long[] userIds, long partnerEntryId, int[] roles,
 			int[] notifications)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		for (int i = 0; i < userIds.length; i++) {
 			long userId = userIds[i];
@@ -54,9 +52,9 @@ public class PartnerWorkerLocalServiceImpl
 
 			partnerWorker.setRole(roles[i]);
 			partnerWorker.setNotifications(notifications[i]);
-			
+
 			//TODO implement serviceContext how needed
-			
+
 			ServiceContext serviceContext = new ServiceContext();
 
 			partnerWorkerPersistence.update(partnerWorker, serviceContext);
@@ -67,20 +65,18 @@ public class PartnerWorkerLocalServiceImpl
 		}
 	}
 
-	public void deletePartnerWorkers(long userId)
-		throws PortalException, SystemException {
-
+	public void deletePartnerWorkers(long userId) throws PortalException {
 		try {
 			partnerWorkerPersistence.removeByUserId(userId);
 
 			unassignOrganizations(userId);
 		}
-		catch (NoSuchPartnerWorkerException nstwe) {
+		catch (NoSuchPartnerWorkerException nspwe) {
 		}
 	}
 
 	public void deletePartnerWorkers(long[] userIds, long partnerEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		for (long userId : userIds) {
 			try {
@@ -88,42 +84,36 @@ public class PartnerWorkerLocalServiceImpl
 
 				unassignOrganizations(userId);
 			}
-			catch (NoSuchPartnerWorkerException nstwe) {
+			catch (NoSuchPartnerWorkerException nspwe) {
 			}
 		}
 	}
 
-	public PartnerWorker fetchPartnerWorker(long userId, long partnerEntryId)
-		throws SystemException {
-
+	public PartnerWorker fetchPartnerWorker(long userId, long partnerEntryId) {
 		return partnerWorkerPersistence.fetchByU_PEI(userId, partnerEntryId);
 	}
 
 	public PartnerWorker getPartnerWorker(long userId, long partnerEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		return partnerWorkerPersistence.findByU_PEI(userId, partnerEntryId);
 	}
 
-	public List<PartnerWorker> getPartnerWorkers(long partnerEntryId)
-		throws SystemException {
-
+	public List<PartnerWorker> getPartnerWorkers(long partnerEntryId) {
 		return partnerWorkerPersistence.findByPartnerEntryId(partnerEntryId);
 	}
 
-	public List<PartnerWorker> getPartnerWorkers(long partnerEntryId, int role)
-		throws SystemException {
+	public List<PartnerWorker> getPartnerWorkers(
+		long partnerEntryId, int role) {
 
 		return partnerWorkerPersistence.findByPEI_R(partnerEntryId, role);
 	}
 
-	public List<PartnerWorker> getUserPartnerWorkers(long userId)
-		throws SystemException {
-
+	public List<PartnerWorker> getUserPartnerWorkers(long userId) {
 		return partnerWorkerPersistence.findByUserId(userId);
 	}
 
-	public boolean hasPartnerWorker(long userId) throws SystemException {
+	public boolean hasPartnerWorker(long userId) {
 		if (partnerWorkerPersistence.countByUserId(userId) > 0) {
 			return true;
 		}
@@ -132,9 +122,7 @@ public class PartnerWorkerLocalServiceImpl
 		}
 	}
 
-	public boolean hasPartnerWorker(long userId, long partnerEntryId)
-		throws SystemException {
-
+	public boolean hasPartnerWorker(long userId, long partnerEntryId) {
 		if (partnerWorkerPersistence.countByU_PEI(userId, partnerEntryId) > 0) {
 			return true;
 		}
@@ -143,9 +131,7 @@ public class PartnerWorkerLocalServiceImpl
 		}
 	}
 
-	public boolean hasPartnerWorkerRole(long userId, int role)
-		throws SystemException {
-
+	public boolean hasPartnerWorkerRole(long userId, int role) {
 		List<PartnerWorker> partnerWorkers = getUserPartnerWorkers(userId);
 
 		for (PartnerWorker partnerWorker : partnerWorkers) {
@@ -157,12 +143,10 @@ public class PartnerWorkerLocalServiceImpl
 		return false;
 	}
 
-	protected void assignOrganizations(long userId)
-		throws PortalException, SystemException {
-
+	protected void assignOrganizations(long userId) throws PortalException {
 		if (!organizationLocalService.hasUserOrganization(
 				userId, OSBConstants.ORGANIZATION_PARTNER_ID) &&
-			RoleLocalServiceUtil.hasUserRole(
+			roleLocalService.hasUserRole(
 				userId, OSBConstants.ROLE_VERIFIED_USER_ID)) {
 
 			userLocalService.addOrganizationUsers(
@@ -170,9 +154,7 @@ public class PartnerWorkerLocalServiceImpl
 		}
 	}
 
-	protected void unassignOrganizations(long userId)
-		throws PortalException, SystemException {
-
+	protected void unassignOrganizations(long userId) throws PortalException {
 		if (organizationLocalService.hasUserOrganization(
 				userId, OSBConstants.ORGANIZATION_PARTNER_ID)) {
 

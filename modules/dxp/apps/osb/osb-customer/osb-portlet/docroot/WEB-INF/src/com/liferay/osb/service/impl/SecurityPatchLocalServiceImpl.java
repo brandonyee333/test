@@ -22,10 +22,8 @@ import com.liferay.osb.model.TicketEntryConstants;
 import com.liferay.osb.service.base.SecurityPatchLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.NoSuchListTypeException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.ListTypeServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.StringBundler;
 
@@ -41,7 +39,7 @@ public class SecurityPatchLocalServiceImpl
 	public SecurityPatch addSecurityPatch(
 			long userId, long accountEntryId, long ticketAttachmentId,
 			String portletId, int envLFR, String name, String fileName)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 
@@ -61,9 +59,9 @@ public class SecurityPatchLocalServiceImpl
 		securityPatch.setEnvLFR(envLFR);
 		securityPatch.setName(name);
 		securityPatch.setFileName(fileName);
-		
+
 		// TODO implement serviceContext as needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		securityPatchPersistence.update(securityPatch, serviceContext);
@@ -74,7 +72,7 @@ public class SecurityPatchLocalServiceImpl
 	public SecurityPatch addSecurityPatch(
 			long userId, long ticketAttachmentId, String portletId, int envLFR,
 			String fileName)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketAttachment ticketAttachment =
 			ticketAttachmentPersistence.findByPrimaryKey(ticketAttachmentId);
@@ -89,13 +87,12 @@ public class SecurityPatchLocalServiceImpl
 			portletId, envLFR, name, fileName);
 	}
 
-	public void deleteSecurityPatches(String portletId) throws SystemException {
+	public void deleteSecurityPatches(String portletId) {
 		securityPatchPersistence.removeByPortletId(portletId);
 	}
 
 	public List<SecurityPatch> getSecurityPatches(
-			long accountEntryId, String portletId)
-		throws SystemException {
+		long accountEntryId, String portletId) {
 
 		return securityPatchPersistence.findByAEI_PI(accountEntryId, portletId);
 	}
@@ -113,24 +110,22 @@ public class SecurityPatchLocalServiceImpl
 	}
 
 	public SecurityPatch updateSecurityPatch(long securityPatchId, String name)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		SecurityPatch securityPatch = securityPatchPersistence.findByPrimaryKey(
 			securityPatchId);
 
 		securityPatch.setName(name);
-		
+
 		// TODO implement serviceContext as needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		return securityPatchPersistence.update(securityPatch, serviceContext);
 	}
 
-	protected void validate(int envLFR)
-		throws PortalException, SystemException {
-
-		ListType listType = ListTypeServiceUtil.getListType(envLFR);
+	protected void validate(int envLFR) throws PortalException {
+		ListType listType = listTypeLocalService.getListType(envLFR);
 
 		String type = listType.getType();
 
@@ -143,4 +138,4 @@ public class SecurityPatchLocalServiceImpl
 		}
 	}
 
-} 
+}

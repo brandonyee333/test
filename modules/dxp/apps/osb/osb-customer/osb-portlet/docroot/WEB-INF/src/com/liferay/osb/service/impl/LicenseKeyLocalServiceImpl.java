@@ -14,7 +14,6 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.osb.admin.util.KeyGenerator;
 import com.liferay.osb.exception.DuplicateHostNameException;
 import com.liferay.osb.exception.DuplicateIPAddressException;
@@ -102,7 +101,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			String description, String[] hostNames, String[] ipAddresses,
 			String[] macAddresses, String[] serverIds, int startDateMonth,
 			int startDateDay, int startDateYear)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 
@@ -125,6 +124,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		String productClassName = PortalUtil.getClassName(
 			assetReceiptLicense.getProductClassNameId());
 /* TODO update app license integration
+
 		if (productClassName.equals(AppVersion.class.getName())) {
 			long productClassPK = assetReceiptLicense.getProductClassPK();
 
@@ -133,6 +133,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 			productVersion = appVersion.getVersionId();
 		}
+
 */
 		Date startDate = getLicenseKeyStartDate(
 			startDateMonth, startDateDay, startDateYear, user.getTimeZone(),
@@ -178,6 +179,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			}
 
 // TODO remove temp update app license integration
+
 			String licenseType = StringPool.BLANK;
 /* TODO update app license integration
 			String licenseKeyType = AssetLicenseConstants.getLicenseKeyType(
@@ -232,9 +234,9 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			licenseKey.setExpirationDate(expirationDate);
 			licenseKey.setComplimentary(false);
 			licenseKey.setActive(true);
-			
+
 			//TODO implement serviceContext how needed
-			
+
 			ServiceContext serviceContext = new ServiceContext();
 
 			licenseKeyPersistence.update(licenseKey, serviceContext);
@@ -252,7 +254,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			String[] macAddresses, String[] serverIds, int startDateMonth,
 			int startDateDay, int startDateYear, String additionalInfo,
 			boolean complimentary, boolean active)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		AccountEntry accountEntry = offeringEntry.getAccountEntry();
@@ -322,7 +324,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			String[] ipAddresses, String[] macAddresses, String[] serverIds,
 			int startDateMonth, int startDateDay, int startDateYear,
 			boolean complimentary, boolean active)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		LicenseKeySet licenseKeySet = null;
 
@@ -363,6 +365,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		OfferingEntry offeringEntry = getSingleUseOfferingEntry(
 			orderEntry.getAccountEntryId(), orderEntry.getOrderEntryId(),
 			productVersion);
+
 		LicenseEntry licenseEntry = licenseEntryLocalService.getLicenseEntry(
 			offeringEntry.getProductEntryId(),
 			LicenseEntryConstants.TYPE_DEVELOPER);
@@ -387,7 +390,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	}
 
 	public void buyLicenseKey(long companyId, long userId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		boolean osbTrialpurchased = expandoValueLocalService.getData(
 			companyId, User.class.getName(), "OSB", "osbTrialPurchased", userId,
@@ -402,31 +405,26 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			true);
 	}
 
-	public List<LicenseKey> getAccountEntryLicenseKeys(long accountEntryId)
-		throws SystemException {
-
+	public List<LicenseKey> getAccountEntryLicenseKeys(long accountEntryId) {
 		return licenseKeyPersistence.findByAccountEntryId(accountEntryId);
 	}
 
 	public List<LicenseKey> getAssetReceiptLicenseLicenseKeys(
-			long assetReceiptLicenseId, boolean active)
-		throws SystemException {
+		long assetReceiptLicenseId, boolean active) {
 
 		return licenseKeyPersistence.findByARLI_A(
 			assetReceiptLicenseId, active);
 	}
 
 	public List<LicenseKey> getAssetReceiptLicenseLicenseKeys(
-			long assetReceiptLicenseId, boolean complimentary, boolean active)
-		throws SystemException {
+		long assetReceiptLicenseId, boolean complimentary, boolean active) {
 
 		return licenseKeyPersistence.findByARLI_C_A(
 			assetReceiptLicenseId, complimentary, active);
 	}
 
 	public int getAssetReceiptLicenseLicenseKeysCount(
-			long assetReceiptLicenseId, boolean complimentary, boolean active)
-		throws SystemException {
+		long assetReceiptLicenseId, boolean complimentary, boolean active) {
 
 		return licenseKeyPersistence.countByARLI_C_A(
 			assetReceiptLicenseId, complimentary, active);
@@ -434,110 +432,90 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 	public LicenseKey getFirstLicenseKey(
 			long accountEntryId, OrderByComparator obc)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		return licenseKeyPersistence.findByAccountEntryId_First(
 			accountEntryId, obc);
 	}
 
-	public List<LicenseKey> getLicenseKeys(long userId, long accountEntryId)
-		throws SystemException {
-
+	public List<LicenseKey> getLicenseKeys(long userId, long accountEntryId) {
 		return licenseKeyPersistence.findByU_AEI(userId, accountEntryId);
 	}
 
-	public List<LicenseKey> getLicenseKeys(long userId, String productId)
-		throws SystemException {
-
+	public List<LicenseKey> getLicenseKeys(long userId, String productId) {
 		return licenseKeyPersistence.findByU_ARLI_PI(userId, 0, productId);
 	}
 
 	public List<LicenseKey> getLicenseKeys(
-			long assetReceiptLicenseId, String productId, String serverId,
-			boolean active, int start, int end, OrderByComparator obc)
-		throws SystemException {
+		long assetReceiptLicenseId, String productId, String serverId,
+		boolean active, int start, int end, OrderByComparator obc) {
 
 		return licenseKeyPersistence.findByARLI_PI_SI_A(
 			assetReceiptLicenseId, productId, serverId, active, start, end,
 			obc);
 	}
 
-	public List<LicenseKey> getLicenseKeys(String productId, String serverId)
-		throws SystemException {
-
+	public List<LicenseKey> getLicenseKeys(String productId, String serverId) {
 		return licenseKeyPersistence.findByPI_SI(productId, serverId);
 	}
 
 	public List<LicenseKey> getLicenseKeysByName(
-			String productEntryName, String serverId, boolean active, int start,
-			int end, OrderByComparator obc)
-		throws SystemException {
+		String productEntryName, String serverId, boolean active, int start,
+		int end, OrderByComparator obc) {
 
 		return licenseKeyPersistence.findByPEN_SI_A(
 			productEntryName, serverId, active, start, end, obc);
 	}
 
-	public List<LicenseKey> getLicenseKeySetLicenseKeys(long licenseKeySetId)
-		throws SystemException {
-
+	public List<LicenseKey> getLicenseKeySetLicenseKeys(long licenseKeySetId) {
 		return licenseKeyPersistence.findByLicenseKeySetId(licenseKeySetId);
 	}
 
 	public List<LicenseKey> getOfferingEntryGroupLicenseKeys(
-			long[] offeringEntryIds, boolean complimentary, boolean active,
-			int start, int end, OrderByComparator obc)
-		throws SystemException {
+		long[] offeringEntryIds, boolean complimentary, boolean active,
+		int start, int end, OrderByComparator obc) {
 
 		return licenseKeyPersistence.findByOEI_C_A(
 			offeringEntryIds, complimentary, active, start, end, obc);
 	}
 
 	public int getOfferingEntryGroupLicenseKeysCount(
-			long[] offeringEntryIds, boolean complimentary, boolean active)
-		throws SystemException {
+		long[] offeringEntryIds, boolean complimentary, boolean active) {
 
 		return licenseKeyPersistence.countByOEI_C_A(
 			offeringEntryIds, complimentary, active);
 	}
 
-	public List<LicenseKey> getOfferingEntryLicenseKeys(long offeringEntryId)
-		throws SystemException {
-
+	public List<LicenseKey> getOfferingEntryLicenseKeys(long offeringEntryId) {
 		return licenseKeyPersistence.findByOfferingEntryId(offeringEntryId);
 	}
 
 	public List<LicenseKey> getOfferingEntryLicenseKeys(
-			long offeringEntryId, boolean complimentary, boolean active)
-		throws SystemException {
+		long offeringEntryId, boolean complimentary, boolean active) {
 
 		return licenseKeyPersistence.findByOEI_C_A(
 			offeringEntryId, complimentary, active);
 	}
 
 	public List<LicenseKey> getOfferingEntryLicenseKeys(
-			long offeringEntryId, long clusterId)
-		throws SystemException {
+		long offeringEntryId, long clusterId) {
 
 		return licenseKeyPersistence.findByOEI_CI(offeringEntryId, clusterId);
 	}
 
 	public List<LicenseKey> getOfferingEntryLicenseKeys(
-			long offeringEntryId, long clusterId, boolean active)
-		throws SystemException {
+		long offeringEntryId, long clusterId, boolean active) {
 
 		return licenseKeyPersistence.findByOEI_CI_A(
 			offeringEntryId, clusterId, active);
 	}
 
-	public int getOfferingEntryLicenseKeysCount(long offeringEntryId)
-		throws SystemException {
-
+	public int getOfferingEntryLicenseKeysCount(long offeringEntryId) {
 		return licenseKeyPersistence.countByOfferingEntryId(offeringEntryId);
 	}
 
 	public int getOfferingEntryLicenseKeysCount(
-			long offeringEntryId, boolean complimentary, boolean active)
-		throws SystemException {
+		long offeringEntryId, boolean complimentary, boolean active) {
 
 		int count = licenseKeyPersistence.countByOEI_NotLET_C_A(
 			offeringEntryId, LicenseEntryConstants.TYPE_CLUSTER, complimentary,
@@ -547,7 +525,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			offeringEntryId, LicenseEntryConstants.TYPE_CLUSTER, complimentary,
 			active);
 
-		Set<Long> clusterIds = new HashSet<Long>();
+		Set<Long> clusterIds = new HashSet<>();
 
 		for (LicenseKey licenseKey : licenseKeys) {
 			if (licenseKey.getLicenseVersion() >= 3) {
@@ -565,28 +543,24 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	}
 
 	public int getOfferingEntryLicenseKeysCount(
-			long offeringEntryId, long clusterId)
-		throws SystemException {
+		long offeringEntryId, long clusterId) {
 
 		return licenseKeyPersistence.countByOEI_CI(offeringEntryId, clusterId);
 	}
 
 	public int getOfferingEntryLicenseKeysCount(
-			long offeringEntryId, long clusterId, boolean active)
-		throws SystemException {
+		long offeringEntryId, long clusterId, boolean active) {
 
 		return licenseKeyPersistence.countByOEI_CI_A(
 			offeringEntryId, clusterId, active);
 	}
 
-	public int getUserLicenseKeysCount(long userId, long accountEntryId)
-		throws SystemException {
-
+	public int getUserLicenseKeysCount(long userId, long accountEntryId) {
 		return licenseKeyPersistence.countByU_AEI(userId, accountEntryId);
 	}
 
 	public LicenseKey renewLicenseKey(long userId, long licenseKeyId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		LicenseKey licenseKey = licenseKeyPersistence.findByPrimaryKey(
 			licenseKeyId);
@@ -613,9 +587,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			new String[] {licenseKey.getHostName()},
 			new String[] {licenseKey.getIpAddresses()},
 			new String[] {licenseKey.getMacAddresses()},
-			new String[] {licenseKey.getServerId()},
-			cal.get(Calendar.MONTH), cal.get(Calendar.DATE),
-			cal.get(Calendar.YEAR));
+			new String[] {licenseKey.getServerId()}, cal.get(Calendar.MONTH),
+			cal.get(Calendar.DATE), cal.get(Calendar.YEAR));
 	}
 
 	public LicenseKey renewLicenseKey(
@@ -625,6 +598,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		User user = userPersistence.findByPrimaryKey(userId);
 		LicenseKey licenseKey = licenseKeyPersistence.findByPrimaryKey(
 			licenseKeyId);
+
 		LicenseKeySet licenseKeySet = licenseKeySetPersistence.findByPrimaryKey(
 			licenseKey.getLicenseKeySetId());
 		ProductEntry productEntry = productEntryPersistence.findByPrimaryKey(
@@ -636,9 +610,9 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		}
 
 		licenseKey.setActive(false);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		licenseKeyPersistence.update(licenseKey, serviceContext);
@@ -676,7 +650,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 			offeringEntry.setSupportEndDate(
 				renewedLicenseKey.getExpirationDate());
-			
+
 			//TODO implement serviceContext how needed
 
 			offeringEntryPersistence.update(offeringEntry, serviceContext);
@@ -717,9 +691,9 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			lastLicenseKey.getOfferingEntryId());
 
 		lastLicenseKey.setActive(false);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		licenseKeyPersistence.update(lastLicenseKey, serviceContext);
@@ -744,24 +718,22 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	}
 
 	public List<LicenseKey> search(
-			Long createUserId, int createDateGTDay, int createDateGTMonth,
-			int createDateGTYear, int createDateLTDay, int createDateLTMonth,
-			int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
-			int modifiedDateGTMonth, int modifiedDateGTYear,
-			int modifiedDateLTDay, int modifiedDateLTMonth,
-			int modifiedDateLTYear, String accountEntryName,
-			String licenseKeySetName, int startDateGTDay, int startDateGTMonth,
-			int startDateGTYear, int startDateLTDay, int startDateLTMonth,
-			int startDateLTYear, long[] licenseEntryIds, long[] productEntryIds,
-			String productEntryName, String productId, int[] productVersions,
-			String owner, String description, String hostName, String ipAddress,
-			String macAddress, String serverId, String key,
-			int expirationDateGTDay, int expirationDateGTMonth,
-			int expirationDateGTYear, int expirationDateLTDay,
-			int expirationDateLTMonth, int expirationDateLTYear,
-			LinkedHashMap<String, Object> params, boolean andSearch, int start,
-			int end, OrderByComparator obc)
-		throws SystemException {
+		Long createUserId, int createDateGTDay, int createDateGTMonth,
+		int createDateGTYear, int createDateLTDay, int createDateLTMonth,
+		int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
+		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
+		int modifiedDateLTMonth, int modifiedDateLTYear,
+		String accountEntryName, String licenseKeySetName, int startDateGTDay,
+		int startDateGTMonth, int startDateGTYear, int startDateLTDay,
+		int startDateLTMonth, int startDateLTYear, long[] licenseEntryIds,
+		long[] productEntryIds, String productEntryName, String productId,
+		int[] productVersions, String owner, String description,
+		String hostName, String ipAddress, String macAddress, String serverId,
+		String key, int expirationDateGTDay, int expirationDateGTMonth,
+		int expirationDateGTYear, int expirationDateLTDay,
+		int expirationDateLTMonth, int expirationDateLTYear,
+		LinkedHashMap<String, Object> params, boolean andSearch, int start,
+		int end, OrderByComparator obc) {
 
 		Date createDateGT = PortalUtil.getDate(
 			createDateGTMonth, createDateGTDay, createDateGTYear);
@@ -790,32 +762,29 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	}
 
 	public List<LicenseKey> search(
-			String keywords, LinkedHashMap<String, Object> params, int start,
-			int end, OrderByComparator obc)
-		throws SystemException {
+		String keywords, LinkedHashMap<String, Object> params, int start,
+		int end, OrderByComparator obc) {
 
 		return licenseKeyFinder.findByKeywords(
 			keywords, params, start, end, obc);
 	}
 
 	public int searchCount(
-			Long createUserId, int createDateGTDay, int createDateGTMonth,
-			int createDateGTYear, int createDateLTDay, int createDateLTMonth,
-			int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
-			int modifiedDateGTMonth, int modifiedDateGTYear,
-			int modifiedDateLTDay, int modifiedDateLTMonth,
-			int modifiedDateLTYear, String accountEntryName,
-			String licenseKeySetName, int startDateGTDay, int startDateGTMonth,
-			int startDateGTYear, int startDateLTDay, int startDateLTMonth,
-			int startDateLTYear, long[] licenseEntryIds, long[] productEntryIds,
-			String productEntryName, String productId, int[] productVersions,
-			String owner, String description, String hostName, String ipAddress,
-			String macAddress, String serverId, String key,
-			int expirationDateGTDay, int expirationDateGTMonth,
-			int expirationDateGTYear, int expirationDateLTDay,
-			int expirationDateLTMonth, int expirationDateLTYear,
-			LinkedHashMap<String, Object> params, boolean andSearch)
-		throws SystemException {
+		Long createUserId, int createDateGTDay, int createDateGTMonth,
+		int createDateGTYear, int createDateLTDay, int createDateLTMonth,
+		int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
+		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
+		int modifiedDateLTMonth, int modifiedDateLTYear,
+		String accountEntryName, String licenseKeySetName, int startDateGTDay,
+		int startDateGTMonth, int startDateGTYear, int startDateLTDay,
+		int startDateLTMonth, int startDateLTYear, long[] licenseEntryIds,
+		long[] productEntryIds, String productEntryName, String productId,
+		int[] productVersions, String owner, String description,
+		String hostName, String ipAddress, String macAddress, String serverId,
+		String key, int expirationDateGTDay, int expirationDateGTMonth,
+		int expirationDateGTYear, int expirationDateLTDay,
+		int expirationDateLTMonth, int expirationDateLTYear,
+		LinkedHashMap<String, Object> params, boolean andSearch) {
 
 		Date createDateGT = PortalUtil.getDate(
 			createDateGTMonth, createDateGTDay, createDateGTYear);
@@ -844,8 +813,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	}
 
 	public int searchCount(
-			String keywords, LinkedHashMap<String, Object> params)
-		throws SystemException {
+		String keywords, LinkedHashMap<String, Object> params) {
 
 		return licenseKeyFinder.countByKeywords(keywords, params);
 	}
@@ -874,27 +842,23 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			OSBConstants.GROUP_CUSTOMER_ID, OSBPortletKeys.OSB_LICENSE);
 
 		String licenseURL =
-			layoutURL + Portal.FRIENDLY_URL_SEPARATOR +
-				"license/offering/" + licenseKey.getOfferingEntryId();
+			layoutURL + Portal.FRIENDLY_URL_SEPARATOR + "license/offering/" +
+				licenseKey.getOfferingEntryId();
 
 		AccountEntry accountEntry = licenseKey.getAccountEntry();
 
 		for (Map.Entry<Locale, String> subjectEntry : subjectMap.entrySet()) {
 			String subject = StringUtil.replace(
 				subjectEntry.getValue(),
-				new String[] {
-					"[$ACCOUNT_ENTRY_NAME$]"
-				},
-				new String[] {
-					accountEntry.getName()
-				});
+				new String[] {"[$ACCOUNT_ENTRY_NAME$]"},
+				new String[] {accountEntry.getName()});
 
 			subjectEntry.setValue(subject);
 		}
 
 		User user = userPersistence.findByPrimaryKey(licenseKey.getUserId());
 
-		Country country = CountryServiceUtil.getCountry(
+		Country country = countryPersistence.findByPrimaryKey(
 			accountEntry.getCountryId());
 
 		for (Map.Entry<Locale, String> bodyEntry : bodyMap.entrySet()) {
@@ -933,7 +897,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	public void updateLicenseKey(
 			long userId, long licenseKeyId, long assetReceiptLicenseId,
 			boolean active)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 
@@ -953,9 +917,9 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		licenseKey.setModifiedDate(new Date());
 		licenseKey.setAssetReceiptLicenseId(assetReceiptLicenseId);
 		licenseKey.setActive(active);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		licenseKeyPersistence.update(licenseKey, serviceContext);
@@ -964,7 +928,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	public void updateLicenseKey(
 			long licenseKeyId, long accountEntryId, long offeringEntryId,
 			long orderEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		LicenseKey licenseKey = licenseKeyPersistence.findByPrimaryKey(
 			licenseKeyId);
@@ -972,9 +936,9 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		licenseKey.setAccountEntryId(accountEntryId);
 		licenseKey.setOfferingEntryId(offeringEntryId);
 		licenseKey.setOrderEntryId(orderEntryId);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		licenseKeyPersistence.update(licenseKey, serviceContext);
@@ -983,7 +947,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	public void updateLicenseKey(
 			long userId, long licenseKeyId, long licenseKeySetId,
 			long offeringEntryId, String name, boolean active)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		LicenseKey licenseKey = licenseKeyPersistence.findByPrimaryKey(
 			licenseKeyId);
@@ -1073,7 +1037,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			long clusterId, String owner, int maxServers, String description,
 			String[] serverIds, Date startDate, Date expirationDate,
 			String additionalInfo, boolean complimentary, boolean active)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (clusterId <= 0) {
 			clusterId = counterLocalService.increment(
@@ -1091,7 +1055,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		if ((licenseVersion != 2) ||
 			(!licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) &&
 			 !licenseEntryType.equals(
-				LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER))) {
+				 LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER))) {
 
 			maxServers = 1;
 		}
@@ -1115,7 +1079,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			((licenseVersion != 2) &&
 			 (licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) ||
 			  licenseEntryType.equals(
-				LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER)))) {
+				  LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER)))) {
 
 			macAddresses = serverIds;
 		}
@@ -1168,18 +1132,16 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	}
 
 	protected LicenseKey doAddLicenseKey(
-			User user, Date now, LicenseKeySet licenseKeySet,
-			OfferingEntry offeringEntry, LicenseEntry licenseEntry,
-			String accountEntryName, String licenseEntryName,
-			String licenseEntryType, int licenseVersion,
-			String productEntryName, int productVersion,
-			String productVersionLabel, long clusterId, String owner,
-			int maxServers, long maxConcurrentUsers, long maxUsers,
-			int maxHttpSessions, String description, String hostName,
-			String ipAddresses, String macAddresses, String serverId,
-			String key, Date startDate, Date expirationDate,
-			String additionalInfo, boolean complimentary, boolean active)
-		throws SystemException {
+		User user, Date now, LicenseKeySet licenseKeySet,
+		OfferingEntry offeringEntry, LicenseEntry licenseEntry,
+		String accountEntryName, String licenseEntryName,
+		String licenseEntryType, int licenseVersion, String productEntryName,
+		int productVersion, String productVersionLabel, long clusterId,
+		String owner, int maxServers, long maxConcurrentUsers, long maxUsers,
+		int maxHttpSessions, String description, String hostName,
+		String ipAddresses, String macAddresses, String serverId, String key,
+		Date startDate, Date expirationDate, String additionalInfo,
+		boolean complimentary, boolean active) {
 
 		long licenseKeyId = counterLocalService.increment();
 
@@ -1224,9 +1186,9 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		licenseKey.setAdditionalInfo(additionalInfo);
 		licenseKey.setComplimentary(complimentary);
 		licenseKey.setActive(active);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		return licenseKeyPersistence.update(licenseKey, serviceContext);
@@ -1242,7 +1204,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			String[] macAddresses, String[] serverIds, Date startDate,
 			Date expirationDate, String additionalInfo, boolean complimentary,
 			boolean active)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		String accountEntryName = LicenseUtil.trimText(accountEntry.getName());
 		String licenseEntryName = LicenseUtil.trimText(licenseEntry.getName());
@@ -1375,7 +1337,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			List<LicenseKey> clusterLicenseKeys, long userId, long licenseKeyId,
 			long licenseKeySetId, long offeringEntryId, String name,
 			boolean active)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 
@@ -1410,9 +1372,9 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				offeringEntry.getSupportResponseId());
 			clusterLicenseKey.setClusterId(clusterId);
 			clusterLicenseKey.setActive(active);
-			
+
 			//TODO implement serviceContext how needed
-			
+
 			ServiceContext serviceContext = new ServiceContext();
 
 			licenseKeyPersistence.update(clusterLicenseKey, serviceContext);
@@ -1424,7 +1386,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			List<LicenseKey> clusterLicenseKeys, long userId, long licenseKeyId,
 			long licenseKeySetId, long offeringEntryId, String name,
 			boolean active)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 
@@ -1464,9 +1426,9 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			clusterLicenseKey.setSupportResponseId(
 				offeringEntry.getSupportResponseId());
 			clusterLicenseKey.setClusterId(clusterId);
-			
+
 			//TODO implement serviceContext how needed
-			
+
 			ServiceContext serviceContext = new ServiceContext();
 
 			licenseKeyPersistence.update(clusterLicenseKey, serviceContext);
@@ -1474,8 +1436,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	}
 
 	protected List<LicenseKey> getClusterLicenseKeys(
-			LicenseKey licenseKey, String type)
-		throws SystemException {
+		LicenseKey licenseKey, String type) {
 
 		if ((type.equals(LicenseEntryConstants.TYPE_CLUSTER) ||
 			 type.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER)) &&
@@ -1485,7 +1446,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				licenseKey.getOfferingEntryId(), licenseKey.getClusterId());
 		}
 		else {
-			List<LicenseKey> clusterLicenseKeys = new ArrayList<LicenseKey>();
+			List<LicenseKey> clusterLicenseKeys = new ArrayList<>();
 
 			clusterLicenseKeys.add(licenseKey);
 
@@ -1513,7 +1474,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	}
 
 	protected LicenseKeySet getSingleUseLicenseKeySet(long accountEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		List<LicenseKeySet> licenseKeySets =
 			licenseKeySetPersistence.findByU_AEI_N(
@@ -1532,7 +1493,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 	protected OfferingEntry getSingleUseOfferingEntry(
 			long accountEntryId, long orderEntryId, int productVersion)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		List<OfferingEntry> offeringEntries =
 			offeringEntryPersistence.findByU_AEI_OEI_T(
@@ -1596,9 +1557,10 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 	protected void validate(
 			AssetReceiptLicense assetReceiptLicense, int numberOfKeys)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		/* TODO update AssetReceiptLicense missing placeholder method
+
 		if (assetReceiptLicense.hasUnlimitedServers()) {
 			return;
 		}
@@ -1606,6 +1568,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		if (assetReceiptLicense.getAvailableLicenseKeyCount() < numberOfKeys) {
 			throw new MaximumLicenseKeyException();
 		}
+
 		**/
 	}
 
@@ -1613,7 +1576,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			AssetReceiptLicense assetReceiptLicense, String owner,
 			String description, String[] hostNames, String[] ipAddresses,
 			String[] macAddresses)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (Validator.isNull(owner)) {
 			throw new LicenseKeyOwnerException();
@@ -1627,9 +1590,9 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			throw new LicenseKeyHostNameException();
 		}
 
-		Set<String> distinctHostNames = new HashSet<String>();
-		Set<String> distinctIpAddresses = new HashSet<String>();
-		Set<String> distinctMacAddresses = new HashSet<String>();
+		Set<String> distinctHostNames = new HashSet<>();
+		Set<String> distinctIpAddresses = new HashSet<>();
+		Set<String> distinctMacAddresses = new HashSet<>();
 
 		for (int i = 0; i < hostNames.length; i++) {
 			String hostName = hostNames[i];
@@ -1677,7 +1640,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	}
 
 	protected void validate(OfferingEntry offeringEntry, int numberOfKeys)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OfferingEntryGroup offeringEntryGroup =
 			offeringEntry.getOfferingEntryGroup();
@@ -1695,7 +1658,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			String owner, int maxServers, String description,
 			String[] hostNames, String[] ipAddresses, String[] macAddresses,
 			String[] serverIds, boolean complimentary)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (offeringEntry.getStatus() != OfferingEntryConstants.STATUS_ACTIVE) {
 			throw new OfferingEntryStatusException();
@@ -1706,7 +1669,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				ProductEntry.class.getName() + StringPool.PERIOD +
 					productEntry.getVersionsListType();
 
-			ListTypeServiceUtil.validate(
+			listTypeLocalService.validate(
 				productVersion, ProductEntryConstants.getAllListType(listType));
 		}
 		catch (Exception e) {
@@ -1856,7 +1819,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	}
 
 	protected void validateSingleUse(long orderEntryId, String emailAddress)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		int count = licenseKeyPersistence.countByOEI_O(
 			orderEntryId, emailAddress);

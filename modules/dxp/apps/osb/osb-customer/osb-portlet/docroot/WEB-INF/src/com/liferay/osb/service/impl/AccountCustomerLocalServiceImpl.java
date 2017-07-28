@@ -14,7 +14,6 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.exception.AccountEntryMaximumCustomersException;
 import com.liferay.osb.exception.NoSuchAccountCustomerException;
 import com.liferay.osb.exception.NoSuchAccountEntryException;
@@ -28,11 +27,10 @@ import com.liferay.osb.support.util.SupportUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.Date;
 import java.util.List;
@@ -49,7 +47,7 @@ public class AccountCustomerLocalServiceImpl
 	public void addAccountCustomers(
 			long userId, long[] userIds, long accountEntryId, int[] roles,
 			int[] notifications)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		Date now = new Date();
@@ -86,12 +84,13 @@ public class AccountCustomerLocalServiceImpl
 				accountCustomer.setAccountEntryId(accountEntryId);
 				accountCustomer.setRole(roles[i]);
 				accountCustomer.setNotifications(notifications[i]);
-				
+
 				//TODO implement serviceContext how needed
-				
+
 				ServiceContext serviceContext = new ServiceContext();
 
-				accountCustomerPersistence.update(accountCustomer, serviceContext);
+				accountCustomerPersistence.update(
+					accountCustomer, serviceContext);
 
 				try {
 					if (accountEntry.getType() !=
@@ -138,12 +137,13 @@ public class AccountCustomerLocalServiceImpl
 
 				accountCustomer.setRole(roles[i]);
 				accountCustomer.setNotifications(notifications[i]);
-				
+
 				//TODO implement serviceContext how needed
-				
+
 				ServiceContext serviceContext = new ServiceContext();
 
-				accountCustomerPersistence.update(accountCustomer, serviceContext);
+				accountCustomerPersistence.update(
+					accountCustomer, serviceContext);
 
 				if (oldRole != roles[i]) {
 					auditEntryLocalService.addAuditEntry(
@@ -165,7 +165,7 @@ public class AccountCustomerLocalServiceImpl
 		}
 		else if (accountEntry.isApproved() &&
 				 (accountEntry.getType() !=
-					AccountEntryConstants.TYPE_INTERNAL_TEST)) {
+					 AccountEntryConstants.TYPE_INTERNAL_TEST)) {
 
 			assignOrganizations(userIds, OSBConstants.ORGANIZATION_CUSTOMER_ID);
 		}
@@ -174,7 +174,7 @@ public class AccountCustomerLocalServiceImpl
 	@Override
 	public AccountCustomer deleteAccountCustomer(
 			long userId, AccountCustomer accountCustomer)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		deleteAccountCustomer(accountCustomer);
 
@@ -183,9 +183,7 @@ public class AccountCustomerLocalServiceImpl
 		return accountCustomer;
 	}
 
-	public void deleteAccountCustomers(long userId)
-		throws PortalException, SystemException {
-
+	public void deleteAccountCustomers(long userId) throws PortalException {
 		List<AccountCustomer> accountCustomers =
 			accountCustomerPersistence.findByUserId(userId);
 
@@ -197,7 +195,7 @@ public class AccountCustomerLocalServiceImpl
 
 	public void deleteAccountCustomers(
 			long userId, long[] userIds, long accountEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		for (long curUserId : userIds) {
 			try {
@@ -207,14 +205,14 @@ public class AccountCustomerLocalServiceImpl
 
 				deleteAccountCustomer(userId, accountCustomer);
 			}
-			catch (NoSuchAccountCustomerException nstce) {
+			catch (NoSuchAccountCustomerException nsace) {
 			}
 		}
 	}
 
 	@Override
 	public void deleteAccountEntryAccountCustomers(long accountEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		List<AccountCustomer> accountCustomers =
 			accountCustomerPersistence.findByAccountEntryId(accountEntryId);
@@ -226,47 +224,38 @@ public class AccountCustomerLocalServiceImpl
 	}
 
 	public AccountCustomer fetchAccountCustomer(
-			long userId, long accountEntryId)
-		throws SystemException {
+		long userId, long accountEntryId) {
 
 		return accountCustomerPersistence.fetchByU_AEI(userId, accountEntryId);
 	}
 
 	public AccountCustomer getAccountCustomer(long userId, long accountEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		return accountCustomerPersistence.findByU_AEI(userId, accountEntryId);
 	}
 
-	public List<AccountCustomer> getAccountCustomers(long accountEntryId)
-		throws SystemException {
-
+	public List<AccountCustomer> getAccountCustomers(long accountEntryId) {
 		return accountCustomerPersistence.findByAccountEntryId(accountEntryId);
 	}
 
 	public List<AccountCustomer> getAccountCustomers(
-			long accountEntryId, int role)
-		throws SystemException {
+		long accountEntryId, int role) {
 
 		return accountCustomerPersistence.findByAEI_NotR(accountEntryId, role);
 	}
 
-	public List<AccountCustomer> getUserAccountCustomers(long userId)
-		throws SystemException {
-
+	public List<AccountCustomer> getUserAccountCustomers(long userId) {
 		return accountCustomerPersistence.findByUserId(userId);
 	}
 
 	public List<AccountCustomer> getUserAccountCustomers(
-			long userId, int[] roles)
-		throws SystemException {
+		long userId, int[] roles) {
 
 		return accountCustomerPersistence.findByU_R(userId, roles);
 	}
 
-	public boolean hasAccountCustomer(long userId, long accountEntryId)
-		throws SystemException {
-
+	public boolean hasAccountCustomer(long userId, long accountEntryId) {
 		AccountCustomer accountCustomer =
 			accountCustomerPersistence.fetchByU_AEI(userId, accountEntryId);
 
@@ -279,7 +268,7 @@ public class AccountCustomerLocalServiceImpl
 	}
 
 	public void toggleNotifications(long accountCustomerId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		AccountCustomer accountCustomer =
 			accountCustomerPersistence.findByPrimaryKey(accountCustomerId);
@@ -294,21 +283,21 @@ public class AccountCustomerLocalServiceImpl
 			accountCustomer.setNotifications(
 				AccountCustomerConstants.NOTIFICATIONS_NONE);
 		}
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		accountCustomerPersistence.update(accountCustomer, serviceContext);
 	}
 
 	protected void assignOrganizations(long[] userIds, long organizationId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		for (long userId : userIds) {
 			if (!organizationLocalService.hasUserOrganization(
 					userId, organizationId) &&
-				RoleLocalServiceUtil.hasUserRole(
+				roleLocalService.hasUserRole(
 					userId, OSBConstants.ROLE_VERIFIED_USER_ID)) {
 
 				userLocalService.addOrganizationUsers(
@@ -319,7 +308,7 @@ public class AccountCustomerLocalServiceImpl
 
 	protected void updateAuditEntry(
 			long userId, AccountCustomer accountCustomer)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		User accountCustomerUser = userPersistence.findByPrimaryKey(
@@ -352,9 +341,7 @@ public class AccountCustomerLocalServiceImpl
 			StringPool.BLANK);
 	}
 
-	protected void validate(long accountEntryId)
-		throws PortalException, SystemException {
-
+	protected void validate(long accountEntryId) throws PortalException {
 		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
 			accountEntryId);
 

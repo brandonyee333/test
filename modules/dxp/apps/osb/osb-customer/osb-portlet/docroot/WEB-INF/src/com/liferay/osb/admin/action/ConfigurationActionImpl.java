@@ -14,26 +14,26 @@
 
 package com.liferay.osb.admin.action;
 
-import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.admin.util.AdminUtil;
 import com.liferay.osb.service.SupportWorkerLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.scripting.ScriptingUtil;
-import com.liferay.portal.kernel.servlet.SessionErrors;
-import com.liferay.portal.kernel.servlet.SessionMessages;
-import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.UnicodeProperties;
-import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.Constants;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnicodeProperties;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -46,14 +46,19 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletConfig;
 import javax.portlet.PortletPreferences;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Amos Fong
  * @author Joan Kim
  */
 public class ConfigurationActionImpl extends DefaultConfigurationAction {
+
+	@Override
+	public String getJspPath(HttpServletRequest request) {
+		return "/admin/configuration.jsp";
+	}
 
 	@Override
 	public void processAction(
@@ -90,14 +95,6 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 				portletConfig.getPortletName() +
 					SessionMessages.KEY_SUFFIX_UPDATED_CONFIGURATION);
 		}
-	}
-
-	public String render(
-			PortletConfig portletConfig, RenderRequest renderRequest,
-			RenderResponse renderResponse)
-		throws Exception {
-
-		return "/admin/configuration.jsp";
 	}
 
 	protected void updateAssignmentRatio(
@@ -500,15 +497,14 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 
 		try {
 			if (Validator.isNotNull(deadLetterFilterScript)) {
-				Map<String, Object> inputObjects =
-					new HashMap<String, Object>();
+				Map<String, Object> inputObjects = new HashMap<>();
 
 				inputObjects.put(
 					"messageJSONObject", JSONFactoryUtil.createJSONObject());
 				inputObjects.put("properties", new HashMap<String, Object>());
 				inputObjects.put("routingKey", StringPool.BLANK);
 
-				Set<String> outputNames = new HashSet<String>();
+				Set<String> outputNames = new HashSet<>();
 
 				outputNames.add("response");
 

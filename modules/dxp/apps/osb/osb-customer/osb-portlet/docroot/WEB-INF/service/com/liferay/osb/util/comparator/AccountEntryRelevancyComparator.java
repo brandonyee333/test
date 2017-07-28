@@ -14,12 +14,12 @@
 
 package com.liferay.osb.util.comparator;
 
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 /**
  * @author Amos Fong
@@ -27,10 +27,11 @@ import com.liferay.portal.kernel.util.StringPool;
 public class AccountEntryRelevancyComparator extends OrderByComparator {
 
 	public AccountEntryRelevancyComparator(String keywords) {
-		_keywords = keywords.toLowerCase();
-		_keywords = _keywords.trim();
+		keywords = keywords.toLowerCase();
 
-		_sanitizedKeywords = StringUtil.extractChars(keywords);
+		_keywords = keywords.trim();
+
+		_sanitizedKeywords = StringUtil.extractChars(_keywords);
 	}
 
 	@Override
@@ -101,7 +102,7 @@ public class AccountEntryRelevancyComparator extends OrderByComparator {
 		return sb.toString();
 	}
 
-	private String _keywords;
-	private String _sanitizedKeywords;
+	private final String _keywords;
+	private final String _sanitizedKeywords;
 
 }

@@ -1,11 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE liferay-portlet-app PUBLIC "-//Liferay//DTD Portlet Application 6.1.0//EN" "http://www.liferay.com/dtd/liferay-portlet-app_6_1_0.dtd">
+<?xml version="1.0"?>
+<!DOCTYPE liferay-portlet-app PUBLIC "-//Liferay//DTD Portlet Application 7.0.0//EN" "http://www.liferay.com/dtd/liferay-portlet-app_7_0_0.dtd">
 
 <liferay-portlet-app>
 	<portlet>
 		<portlet-name>1</portlet-name>
 		<configuration-action-class>com.liferay.osb.admin.action.ConfigurationActionImpl</configuration-action-class>
-		<!-- <indexer-class>com.liferay.osb.admin.util.WorkflowIndexer</indexer-class> -->
 		<scheduler-entry>
 			<scheduler-event-listener-class>com.liferay.osb.admin.messaging.AuditAccountEntryMessageListener</scheduler-event-listener-class>
 			<trigger>
@@ -66,7 +65,6 @@
 	</portlet>
 	<portlet>
 		<portlet-name>2</portlet-name>
-		<!-- <indexer-class>com.liferay.osb.support.util.SupportIndexer</indexer-class> -->
 		<scheduler-entry>
 			<scheduler-event-listener-class>com.liferay.osb.support.messaging.CheckInactiveTicketEntriesMessageListener</scheduler-event-listener-class>
 			<trigger>
@@ -136,7 +134,7 @@
 		<header-portlet-javascript>/common/javascript/resumable.js</header-portlet-javascript>
 		<css-class-wrapper>osb-portlet-support</css-class-wrapper>
 	</portlet>
- 	<portlet>
+	<portlet>
 		<portlet-name>3</portlet-name>
 		<configuration-action-class>com.liferay.osb.downloads.action.ConfigurationActionImpl</configuration-action-class>
 		<preferences-company-wide>true</preferences-company-wide>
