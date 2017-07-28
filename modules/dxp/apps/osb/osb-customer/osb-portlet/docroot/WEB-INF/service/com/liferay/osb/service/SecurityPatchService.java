@@ -52,7 +52,7 @@ public interface SecurityPatchService extends BaseService, InvokableService {
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public SecurityPatch getSecurityPatch(long securityPatchId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,

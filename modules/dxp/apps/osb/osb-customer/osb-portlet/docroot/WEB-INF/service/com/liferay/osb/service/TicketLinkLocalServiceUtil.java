@@ -57,8 +57,7 @@ public class TicketLinkLocalServiceUtil {
 		long ticketEntryId, long ticketSolutionId, java.lang.String[] urls,
 		java.lang.Integer[] types, int visibility,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addTicketLink(userId, ticketEntryId, ticketSolutionId,
 			urls, types, visibility, serviceContext);
@@ -164,13 +163,11 @@ public class TicketLinkLocalServiceUtil {
 		return getService().getTicketLinksCount();
 	}
 
-	public static int getTicketLinksCount(long ticketEntryId, int visibility)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public static int getTicketLinksCount(long ticketEntryId, int visibility) {
 		return getService().getTicketLinksCount(ticketEntryId, visibility);
 	}
 
-	public static int getTicketLinksCount(long ticketEntryId, int[] visibilities)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public static int getTicketLinksCount(long ticketEntryId, int[] visibilities) {
 		return getService().getTicketLinksCount(ticketEntryId, visibilities);
 	}
 
@@ -256,20 +253,17 @@ public class TicketLinkLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.osb.model.TicketLink> getTicketLinks(
-		long ticketEntryId, int visibility)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long ticketEntryId, int visibility) {
 		return getService().getTicketLinks(ticketEntryId, visibility);
 	}
 
 	public static java.util.List<com.liferay.osb.model.TicketLink> getTicketLinks(
-		long ticketEntryId, int[] visibilities)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long ticketEntryId, int[] visibilities) {
 		return getService().getTicketLinks(ticketEntryId, visibilities);
 	}
 
 	public static java.util.List<com.liferay.osb.model.TicketLink> getTicketLinks(
-		long ticketEntryId, long ticketSolutionId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long ticketEntryId, long ticketSolutionId) {
 		return getService().getTicketLinks(ticketEntryId, ticketSolutionId);
 	}
 
@@ -299,14 +293,12 @@ public class TicketLinkLocalServiceUtil {
 
 	public static void deleteTicketLink(long userId,
 		com.liferay.osb.model.TicketLink ticketLink)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().deleteTicketLink(userId, ticketLink);
 	}
 
 	public static void deleteTicketLink(long userId, long ticketLinkId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().deleteTicketLink(userId, ticketLinkId);
 	}
 

@@ -56,8 +56,7 @@ public class AccountInformationServiceWrapper
 	public java.util.List<com.liferay.osb.model.AccountInformation> updateAccountInformation(
 		long accountEntryId, long accountProjectId,
 		java.util.Map<java.lang.Integer, java.lang.String> data)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountInformationService.updateAccountInformation(accountEntryId,
 			accountProjectId, data);
 	}

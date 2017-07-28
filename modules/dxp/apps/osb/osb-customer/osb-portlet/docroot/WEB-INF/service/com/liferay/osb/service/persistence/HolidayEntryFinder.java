@@ -23,11 +23,9 @@ import aQute.bnd.annotation.ProviderType;
 @ProviderType
 public interface HolidayEntryFinder {
 	public java.util.List<com.liferay.osb.model.HolidayEntry> findByU_RY(
-		long userId, boolean repeatYearly)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		long userId, boolean repeatYearly);
 
 	public java.util.List<com.liferay.osb.model.HolidayEntry> findByU_RY_SD_ED(
 		long userId, java.lang.Boolean repeatYearly, java.util.Date startDate,
-		java.util.Date endDate)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		java.util.Date endDate);
 }

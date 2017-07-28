@@ -65,14 +65,13 @@ public interface TicketWorkerService extends BaseService, InvokableService {
 
 	public List<TicketWorker> addTicketWorkers(long[] userIds,
 		long ticketEntryId, long[] sourceClassNameIds, long[] sourceClassPKs,
-		int[] roles, long primaryUserId)
-		throws PortalException, SystemException;
+		int[] roles, long primaryUserId) throws PortalException;
 
 	public List<TicketWorker> updateTicketWorkers(long[] addUserIds,
 		int[] addRoles, long[] removeUserIds, long ticketEntryId,
 		long[] sourceClassNameIds, long[] sourceClassPKs, long primaryUserId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public void deleteTicketWorkers(long[] userIds, long ticketEntryId,
-		long primaryUserId) throws PortalException, SystemException;
+		long primaryUserId) throws PortalException;
 }

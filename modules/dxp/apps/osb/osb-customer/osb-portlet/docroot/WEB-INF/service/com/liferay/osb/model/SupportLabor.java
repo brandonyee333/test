@@ -60,8 +60,7 @@ public interface SupportLabor extends SupportLaborModel, PersistedModel {
 		int type);
 
 	public java.util.List<SupportTeam> getSupportTeams()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public int getTime(int day, int type);
 }

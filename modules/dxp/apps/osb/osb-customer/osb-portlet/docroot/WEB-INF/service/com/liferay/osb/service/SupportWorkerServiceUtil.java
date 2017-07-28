@@ -57,8 +57,7 @@ public class SupportWorkerServiceUtil {
 	}
 
 	public static void clockInOut(long supportWorkerId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().clockInOut(supportWorkerId);
 	}
 

@@ -619,8 +619,7 @@ public class AccountLinkLocalServiceClp implements AccountLinkLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.AccountLink> getAccountLinks(
-		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountEntryId) {
 		Object returnObj = null;
 
 		try {
@@ -629,10 +628,6 @@ public class AccountLinkLocalServiceClp implements AccountLinkLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -704,8 +699,7 @@ public class AccountLinkLocalServiceClp implements AccountLinkLocalService {
 	@Override
 	public void addAccountLinks(long userId, long accountEntryId,
 		java.lang.String[] urls)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName22,
 				_methodParameterTypes22,
@@ -722,10 +716,6 @@ public class AccountLinkLocalServiceClp implements AccountLinkLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {

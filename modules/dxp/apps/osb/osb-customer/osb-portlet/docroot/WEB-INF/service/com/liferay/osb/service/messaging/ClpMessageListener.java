@@ -65,10 +65,6 @@ import com.liferay.osb.service.LicenseKeyLocalServiceUtil;
 import com.liferay.osb.service.LicenseKeyServiceUtil;
 import com.liferay.osb.service.LicenseKeySetLocalServiceUtil;
 import com.liferay.osb.service.LicenseKeySetServiceUtil;
-import com.liferay.osb.service.OSBCountryLocalServiceUtil;
-import com.liferay.osb.service.OSBCountryServiceUtil;
-import com.liferay.osb.service.OSBRegionLocalServiceUtil;
-import com.liferay.osb.service.OSBRegionServiceUtil;
 import com.liferay.osb.service.OfferingBundleLocalServiceUtil;
 import com.liferay.osb.service.OfferingBundleServiceUtil;
 import com.liferay.osb.service.OfferingDefinitionLocalServiceUtil;
@@ -127,7 +123,6 @@ import com.liferay.osb.service.TicketSolutionLocalServiceUtil;
 import com.liferay.osb.service.TicketSolutionServiceUtil;
 import com.liferay.osb.service.TicketWorkerLocalServiceUtil;
 import com.liferay.osb.service.TicketWorkerServiceUtil;
-
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
 
@@ -136,6 +131,7 @@ import com.liferay.portal.kernel.messaging.Message;
  */
 @ProviderType
 public class ClpMessageListener extends BaseMessageListener {
+
 	public static String getServletContextName() {
 		return ClpSerializer.getServletContextName();
 	}
@@ -146,7 +142,8 @@ public class ClpMessageListener extends BaseMessageListener {
 		String servletContextName = message.getString("servletContextName");
 
 		if (command.equals("undeploy") &&
-				servletContextName.equals(getServletContextName())) {
+			servletContextName.equals(getServletContextName())) {
+
 			AccountAttachmentLocalServiceUtil.clearService();
 
 			AccountAttachmentServiceUtil.clearService();
@@ -232,12 +229,6 @@ public class ClpMessageListener extends BaseMessageListener {
 			OrderEntryLocalServiceUtil.clearService();
 
 			OrderEntryServiceUtil.clearService();
-			OSBCountryLocalServiceUtil.clearService();
-
-			OSBCountryServiceUtil.clearService();
-			OSBRegionLocalServiceUtil.clearService();
-
-			OSBRegionServiceUtil.clearService();
 			PartnerEntryLocalServiceUtil.clearService();
 
 			PartnerEntryServiceUtil.clearService();
@@ -315,4 +306,5 @@ public class ClpMessageListener extends BaseMessageListener {
 			TicketWorkerServiceUtil.clearService();
 		}
 	}
+
 }

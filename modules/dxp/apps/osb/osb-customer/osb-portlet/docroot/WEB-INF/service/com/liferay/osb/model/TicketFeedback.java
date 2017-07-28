@@ -76,8 +76,7 @@ public interface TicketFeedback extends TicketFeedbackModel, PersistedModel {
 	public java.lang.String getSatisfiedLabel();
 
 	public TicketEntry getTicketEntry()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public boolean isClosed();
 }

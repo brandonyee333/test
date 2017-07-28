@@ -42,15 +42,13 @@ public class TicketCannedResponseServiceUtil {
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.TicketCannedResponseServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static int searchCount(java.lang.String keywords)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().searchCount(keywords);
 	}
 
 	public static int searchCount(java.lang.String name,
 		java.lang.String content, boolean andSearch)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().searchCount(name, content, andSearch);
 	}
 
@@ -71,22 +69,19 @@ public class TicketCannedResponseServiceUtil {
 
 	public static java.util.List<com.liferay.osb.model.TicketCannedResponse> search(
 		java.lang.String keywords, int start, int end)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().search(keywords, start, end);
 	}
 
 	public static java.util.List<com.liferay.osb.model.TicketCannedResponse> search(
 		java.lang.String name, java.lang.String content, boolean andSearch,
 		int start, int end)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().search(name, content, andSearch, start, end);
 	}
 
 	public static void incrementUseCount(long ticketCannedResponseId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().incrementUseCount(ticketCannedResponseId);
 	}
 

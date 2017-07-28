@@ -60,8 +60,7 @@ public class OfferingEntryServiceClp implements OfferingEntryService {
 		boolean licenses, long licenseLifetime, long maxConcurrentUsers,
 		long maxUsers, boolean supportTickets, long supportLifetime,
 		int sizing, int quantity)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -108,10 +107,6 @@ public class OfferingEntryServiceClp implements OfferingEntryService {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
 			}
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -127,8 +122,7 @@ public class OfferingEntryServiceClp implements OfferingEntryService {
 	@Override
 	public com.liferay.osb.model.OfferingEntry updateStatus(
 		long offeringEntryId, int status)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -141,10 +135,6 @@ public class OfferingEntryServiceClp implements OfferingEntryService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -192,8 +182,7 @@ public class OfferingEntryServiceClp implements OfferingEntryService {
 	@Override
 	public java.util.List<com.liferay.osb.model.OfferingEntry> getAccountEntryOfferingEntries(
 		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -205,10 +194,6 @@ public class OfferingEntryServiceClp implements OfferingEntryService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -226,8 +211,7 @@ public class OfferingEntryServiceClp implements OfferingEntryService {
 	@Override
 	public java.util.List<com.liferay.osb.model.OfferingEntry> getOrderEntryOfferingEntries(
 		long orderEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -239,10 +223,6 @@ public class OfferingEntryServiceClp implements OfferingEntryService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {

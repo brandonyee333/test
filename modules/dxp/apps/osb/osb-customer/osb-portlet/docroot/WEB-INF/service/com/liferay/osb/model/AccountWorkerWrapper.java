@@ -101,8 +101,7 @@ public class AccountWorkerWrapper implements AccountWorker,
 
 	@Override
 	public AccountEntry getAccountEntry()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountWorker.getAccountEntry();
 	}
 

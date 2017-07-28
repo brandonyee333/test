@@ -226,8 +226,7 @@ public class TicketFeedbackLocalServiceClp implements TicketFeedbackLocalService
 	@Override
 	public com.liferay.osb.model.TicketFeedback addTicketFeedback(long userId,
 		long ticketEntryId, int subject, int satisfied)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -240,10 +239,6 @@ public class TicketFeedbackLocalServiceClp implements TicketFeedbackLocalService
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -338,8 +333,7 @@ public class TicketFeedbackLocalServiceClp implements TicketFeedbackLocalService
 
 	@Override
 	public com.liferay.osb.model.TicketFeedback fetchFirstOpenTicketFeedback(
-		long userId, long ticketEntryId, int subject)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long userId, long ticketEntryId, int subject) {
 		Object returnObj = null;
 
 		try {
@@ -349,10 +343,6 @@ public class TicketFeedbackLocalServiceClp implements TicketFeedbackLocalService
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -449,8 +439,7 @@ public class TicketFeedbackLocalServiceClp implements TicketFeedbackLocalService
 		long userId, long ticketFeedbackId, int satisfied, int answer1,
 		int answer2, int answer3, int rating1, int rating2, int rating3,
 		int rating4, java.lang.String comments)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -485,10 +474,6 @@ public class TicketFeedbackLocalServiceClp implements TicketFeedbackLocalService
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -657,8 +642,7 @@ public class TicketFeedbackLocalServiceClp implements TicketFeedbackLocalService
 
 	@Override
 	public int searchCount(java.lang.String keywords,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params) {
 		Object returnObj = null;
 
 		try {
@@ -672,10 +656,6 @@ public class TicketFeedbackLocalServiceClp implements TicketFeedbackLocalService
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -699,8 +679,7 @@ public class TicketFeedbackLocalServiceClp implements TicketFeedbackLocalService
 		java.lang.Integer[] ratings1, java.lang.Integer[] ratings2,
 		java.lang.Integer[] ratings3, java.lang.Integer[] ratings4,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andSearch)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		boolean andSearch) {
 		Object returnObj = null;
 
 		try {
@@ -754,10 +733,6 @@ public class TicketFeedbackLocalServiceClp implements TicketFeedbackLocalService
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -919,8 +894,7 @@ public class TicketFeedbackLocalServiceClp implements TicketFeedbackLocalService
 
 	@Override
 	public java.util.List<com.liferay.osb.model.TicketFeedback> getTicketFeedbacks(
-		long ticketEntryId, int subject)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long ticketEntryId, int subject) {
 		Object returnObj = null;
 
 		try {
@@ -930,10 +904,6 @@ public class TicketFeedbackLocalServiceClp implements TicketFeedbackLocalService
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -949,8 +919,7 @@ public class TicketFeedbackLocalServiceClp implements TicketFeedbackLocalService
 
 	@Override
 	public java.util.List<com.liferay.osb.model.TicketFeedback> getTicketFeedbacks(
-		long ticketEntryId, int subject, int status)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long ticketEntryId, int subject, int status) {
 		Object returnObj = null;
 
 		try {
@@ -960,10 +929,6 @@ public class TicketFeedbackLocalServiceClp implements TicketFeedbackLocalService
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -981,8 +946,7 @@ public class TicketFeedbackLocalServiceClp implements TicketFeedbackLocalService
 	public java.util.List<com.liferay.osb.model.TicketFeedback> search(
 		java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc) {
 		Object returnObj = null;
 
 		try {
@@ -1002,10 +966,6 @@ public class TicketFeedbackLocalServiceClp implements TicketFeedbackLocalService
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -1031,8 +991,7 @@ public class TicketFeedbackLocalServiceClp implements TicketFeedbackLocalService
 		java.lang.Integer[] ratings3, java.lang.Integer[] ratings4,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andSearch, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.portal.kernel.util.OrderByComparator obc) {
 		Object returnObj = null;
 
 		try {
@@ -1092,10 +1051,6 @@ public class TicketFeedbackLocalServiceClp implements TicketFeedbackLocalService
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;

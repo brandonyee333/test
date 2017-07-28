@@ -223,7 +223,7 @@ public interface SupportWorkerSeverityLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<SupportWorkerSeverity> getSupportWorkerSeverities(
-		long supportWorkerId) throws SystemException;
+		long supportWorkerId);
 
 	/**
 	* Returns the number of rows matching the dynamic query.
@@ -244,5 +244,5 @@ public interface SupportWorkerSeverityLocalService extends BaseLocalService,
 		Projection projection);
 
 	public void setSupportWorkerSeverities(long supportWorkerId,
-		int[] severities) throws SystemException;
+		int[] severities);
 }

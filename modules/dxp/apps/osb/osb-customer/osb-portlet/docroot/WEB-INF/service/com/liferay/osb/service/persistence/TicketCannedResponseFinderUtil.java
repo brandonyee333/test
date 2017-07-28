@@ -25,28 +25,24 @@ import com.liferay.portal.kernel.util.ReferenceRegistry;
  */
 @ProviderType
 public class TicketCannedResponseFinderUtil {
-	public static int countByKeywords(java.lang.String keywords)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public static int countByKeywords(java.lang.String keywords) {
 		return getFinder().countByKeywords(keywords);
 	}
 
 	public static int countByN_C(java.lang.String name,
-		java.lang.String content, boolean andOperator)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.lang.String content, boolean andOperator) {
 		return getFinder().countByN_C(name, content, andOperator);
+	}
+
+	public static java.util.List<com.liferay.osb.model.TicketCannedResponse> findByKeywords(
+		java.lang.String keywords, int start, int end) {
+		return getFinder().findByKeywords(keywords, start, end);
 	}
 
 	public static java.util.List<com.liferay.osb.model.TicketCannedResponse> findByN_C(
 		java.lang.String name, java.lang.String content, boolean andOperator,
-		int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int start, int end) {
 		return getFinder().findByN_C(name, content, andOperator, start, end);
-	}
-
-	public static java.util.List<com.liferay.osb.model.TicketCannedResponse> findByKeywords(
-		java.lang.String keywords, int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException {
-		return getFinder().findByKeywords(keywords, start, end);
 	}
 
 	public static TicketCannedResponseFinder getFinder() {

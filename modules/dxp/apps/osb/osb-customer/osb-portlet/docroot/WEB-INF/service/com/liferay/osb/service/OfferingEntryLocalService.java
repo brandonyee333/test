@@ -63,8 +63,7 @@ public interface OfferingEntryLocalService extends BaseLocalService,
 	 * Never modify or reference this interface directly. Always use {@link OfferingEntryLocalServiceUtil} to access the offering entry local service. Add custom service methods to {@link com.liferay.osb.service.impl.OfferingEntryLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasActiveTrialOfferingEntry(long userId)
-		throws SystemException;
+	public boolean hasActiveTrialOfferingEntry(long userId);
 
 	/**
 	* Adds the offering entry to the database. Also notifies the appropriate model listeners.
@@ -80,8 +79,7 @@ public interface OfferingEntryLocalService extends BaseLocalService,
 		java.lang.String productDescription, int type, int version,
 		boolean licenses, long licenseLifetime, long maxConcurrentUsers,
 		long maxUsers, boolean supportTickets, long supportLifetime,
-		int sizing, int quantity, int status)
-		throws PortalException, SystemException;
+		int sizing, int quantity, int status) throws PortalException;
 
 	/**
 	* Creates a new offering entry with the primary key. Does not add the offering entry to the database.
@@ -97,11 +95,10 @@ public interface OfferingEntryLocalService extends BaseLocalService,
 	* @param offeringEntry the offering entry
 	* @return the offering entry that was removed
 	* @throws PortalException
-	* @throws SystemException
 	*/
 	@Indexable(type = IndexableType.DELETE)
 	public OfferingEntry deleteOfferingEntry(OfferingEntry offeringEntry)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	/**
 	* Deletes the offering entry with the primary key from the database. Also notifies the appropriate model listeners.
@@ -109,15 +106,13 @@ public interface OfferingEntryLocalService extends BaseLocalService,
 	* @param offeringEntryId the primary key of the offering entry
 	* @return the offering entry that was removed
 	* @throws PortalException if a offering entry with the primary key could not be found
-	* @throws SystemException
 	*/
 	@Indexable(type = IndexableType.DELETE)
 	public OfferingEntry deleteOfferingEntry(long offeringEntryId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public OfferingEntry fetchOfferingEntry(long offeringEntryId)
-		throws SystemException;
+	public OfferingEntry fetchOfferingEntry(long offeringEntryId);
 
 	/**
 	* Returns the offering entry with the primary key.
@@ -145,10 +140,10 @@ public interface OfferingEntryLocalService extends BaseLocalService,
 		int version, boolean licenses, long licenseLifetime,
 		long maxConcurrentUsers, long maxUsers, boolean supportTickets,
 		long supportLifetime, int sizing, int quantity)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public OfferingEntry updateStatus(long userId, long offeringEntryId,
-		int status) throws PortalException, SystemException;
+		int status) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -171,8 +166,7 @@ public interface OfferingEntryLocalService extends BaseLocalService,
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getAccountEntryOfferingEntriesCount(long accountEntryId)
-		throws SystemException;
+	public int getAccountEntryOfferingEntriesCount(long accountEntryId);
 
 	/**
 	* Returns the number of offering entries.
@@ -188,7 +182,7 @@ public interface OfferingEntryLocalService extends BaseLocalService,
 		int supportEndDateGTYear, int supportEndDateLTDay,
 		int supportEndDateLTMonth, int supportEndDateLTYear,
 		LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andSearch) throws SystemException;
+		boolean andSearch);
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
@@ -243,7 +237,7 @@ public interface OfferingEntryLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<OfferingEntry> getAccountEntryOfferingEntries(
-		long accountEntryId) throws SystemException;
+		long accountEntryId);
 
 	/**
 	* Returns a range of all the offering entries.
@@ -260,8 +254,7 @@ public interface OfferingEntryLocalService extends BaseLocalService,
 	public List<OfferingEntry> getOfferingEntries(int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<OfferingEntry> getOrderEntryOfferingEntries(long orderEntryId)
-		throws SystemException;
+	public List<OfferingEntry> getOrderEntryOfferingEntries(long orderEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<OfferingEntry> search(long userId, long accountEntryId,
@@ -270,8 +263,7 @@ public interface OfferingEntryLocalService extends BaseLocalService,
 		int supportEndDateLTDay, int supportEndDateLTMonth,
 		int supportEndDateLTYear,
 		LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andSearch, int start, int end, OrderByComparator obc)
-		throws SystemException;
+		boolean andSearch, int start, int end, OrderByComparator obc);
 
 	/**
 	* Returns the number of rows matching the dynamic query.

@@ -63,8 +63,7 @@ public class TicketSolutionLocalServiceUtil {
 		java.util.List<java.lang.String> ticketLinkURLs,
 		java.util.List<java.lang.Integer> ticketLinkTypes,
 		java.util.List<com.liferay.osb.model.TicketAttachment> ticketAttachments)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addTicketSolution(userId, ticketEntryId, summary,
 			useCustomerSummary, issueType, solution, type, customerSpecific,
@@ -114,8 +113,7 @@ public class TicketSolutionLocalServiceUtil {
 	}
 
 	public static com.liferay.osb.model.TicketSolution getActiveTicketSolution(
-		long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long ticketEntryId) {
 		return getService().getActiveTicketSolution(ticketEntryId);
 	}
 
@@ -146,8 +144,7 @@ public class TicketSolutionLocalServiceUtil {
 	public static com.liferay.osb.model.TicketSolution updateTicketSolution(
 		long ticketSolutionId, long ticketEntryId, int status,
 		long statusByUserId, java.lang.String statusMessage, int statusReason)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateTicketSolution(ticketSolutionId, ticketEntryId,
 			status, statusByUserId, statusMessage, statusReason);
@@ -271,8 +268,7 @@ public class TicketSolutionLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.osb.model.TicketSolution> getTicketSolutions(
-		long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long ticketEntryId) {
 		return getService().getTicketSolutions(ticketEntryId);
 	}
 
@@ -301,8 +297,7 @@ public class TicketSolutionLocalServiceUtil {
 	}
 
 	public static void updateStatus(long ticketEntryId, int ticketEntryStatus,
-		int resolution)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int resolution) {
 		getService().updateStatus(ticketEntryId, ticketEntryStatus, resolution);
 	}
 

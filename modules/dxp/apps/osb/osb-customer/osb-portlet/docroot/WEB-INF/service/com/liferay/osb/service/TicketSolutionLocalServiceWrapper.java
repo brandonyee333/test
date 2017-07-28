@@ -57,8 +57,7 @@ public class TicketSolutionLocalServiceWrapper
 		java.util.List<java.lang.String> ticketLinkURLs,
 		java.util.List<java.lang.Integer> ticketLinkTypes,
 		java.util.List<com.liferay.osb.model.TicketAttachment> ticketAttachments)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketSolutionLocalService.addTicketSolution(userId,
 			ticketEntryId, summary, useCustomerSummary, issueType, solution,
 			type, customerSpecific, environmentSpecific, versionSpecific,
@@ -113,8 +112,7 @@ public class TicketSolutionLocalServiceWrapper
 
 	@Override
 	public com.liferay.osb.model.TicketSolution getActiveTicketSolution(
-		long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long ticketEntryId) {
 		return _ticketSolutionLocalService.getActiveTicketSolution(ticketEntryId);
 	}
 
@@ -148,8 +146,7 @@ public class TicketSolutionLocalServiceWrapper
 	public com.liferay.osb.model.TicketSolution updateTicketSolution(
 		long ticketSolutionId, long ticketEntryId, int status,
 		long statusByUserId, java.lang.String statusMessage, int statusReason)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketSolutionLocalService.updateTicketSolution(ticketSolutionId,
 			ticketEntryId, status, statusByUserId, statusMessage, statusReason);
 	}
@@ -286,8 +283,7 @@ public class TicketSolutionLocalServiceWrapper
 
 	@Override
 	public java.util.List<com.liferay.osb.model.TicketSolution> getTicketSolutions(
-		long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long ticketEntryId) {
 		return _ticketSolutionLocalService.getTicketSolutions(ticketEntryId);
 	}
 
@@ -320,8 +316,7 @@ public class TicketSolutionLocalServiceWrapper
 
 	@Override
 	public void updateStatus(long ticketEntryId, int ticketEntryStatus,
-		int resolution)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int resolution) {
 		_ticketSolutionLocalService.updateStatus(ticketEntryId,
 			ticketEntryStatus, resolution);
 	}

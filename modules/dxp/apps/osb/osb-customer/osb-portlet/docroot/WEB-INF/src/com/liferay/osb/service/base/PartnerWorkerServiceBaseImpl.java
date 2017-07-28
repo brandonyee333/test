@@ -95,6 +95,7 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.OrganizationPersistence;
+import com.liferay.portal.kernel.service.persistence.RolePersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 
@@ -1823,82 +1824,6 @@ public abstract class PartnerWorkerServiceBaseImpl extends BaseServiceImpl
 	 */
 	public void setOrderEntryFinder(OrderEntryFinder orderEntryFinder) {
 		this.orderEntryFinder = orderEntryFinder;
-	}
-
-	/**
-	 * Returns the osb country local service.
-	 *
-	 * @return the osb country local service
-	 */
-	public com.liferay.osb.service.OSBCountryLocalService getOSBCountryLocalService() {
-		return osbCountryLocalService;
-	}
-
-	/**
-	 * Sets the osb country local service.
-	 *
-	 * @param osbCountryLocalService the osb country local service
-	 */
-	public void setOSBCountryLocalService(
-		com.liferay.osb.service.OSBCountryLocalService osbCountryLocalService) {
-		this.osbCountryLocalService = osbCountryLocalService;
-	}
-
-	/**
-	 * Returns the osb country remote service.
-	 *
-	 * @return the osb country remote service
-	 */
-	public com.liferay.osb.service.OSBCountryService getOSBCountryService() {
-		return osbCountryService;
-	}
-
-	/**
-	 * Sets the osb country remote service.
-	 *
-	 * @param osbCountryService the osb country remote service
-	 */
-	public void setOSBCountryService(
-		com.liferay.osb.service.OSBCountryService osbCountryService) {
-		this.osbCountryService = osbCountryService;
-	}
-
-	/**
-	 * Returns the osb region local service.
-	 *
-	 * @return the osb region local service
-	 */
-	public com.liferay.osb.service.OSBRegionLocalService getOSBRegionLocalService() {
-		return osbRegionLocalService;
-	}
-
-	/**
-	 * Sets the osb region local service.
-	 *
-	 * @param osbRegionLocalService the osb region local service
-	 */
-	public void setOSBRegionLocalService(
-		com.liferay.osb.service.OSBRegionLocalService osbRegionLocalService) {
-		this.osbRegionLocalService = osbRegionLocalService;
-	}
-
-	/**
-	 * Returns the osb region remote service.
-	 *
-	 * @return the osb region remote service
-	 */
-	public com.liferay.osb.service.OSBRegionService getOSBRegionService() {
-		return osbRegionService;
-	}
-
-	/**
-	 * Sets the osb region remote service.
-	 *
-	 * @param osbRegionService the osb region remote service
-	 */
-	public void setOSBRegionService(
-		com.liferay.osb.service.OSBRegionService osbRegionService) {
-		this.osbRegionService = osbRegionService;
 	}
 
 	/**
@@ -3644,6 +3569,62 @@ public abstract class PartnerWorkerServiceBaseImpl extends BaseServiceImpl
 	}
 
 	/**
+	 * Returns the role local service.
+	 *
+	 * @return the role local service
+	 */
+	public com.liferay.portal.kernel.service.RoleLocalService getRoleLocalService() {
+		return roleLocalService;
+	}
+
+	/**
+	 * Sets the role local service.
+	 *
+	 * @param roleLocalService the role local service
+	 */
+	public void setRoleLocalService(
+		com.liferay.portal.kernel.service.RoleLocalService roleLocalService) {
+		this.roleLocalService = roleLocalService;
+	}
+
+	/**
+	 * Returns the role remote service.
+	 *
+	 * @return the role remote service
+	 */
+	public com.liferay.portal.kernel.service.RoleService getRoleService() {
+		return roleService;
+	}
+
+	/**
+	 * Sets the role remote service.
+	 *
+	 * @param roleService the role remote service
+	 */
+	public void setRoleService(
+		com.liferay.portal.kernel.service.RoleService roleService) {
+		this.roleService = roleService;
+	}
+
+	/**
+	 * Returns the role persistence.
+	 *
+	 * @return the role persistence
+	 */
+	public RolePersistence getRolePersistence() {
+		return rolePersistence;
+	}
+
+	/**
+	 * Sets the role persistence.
+	 *
+	 * @param rolePersistence the role persistence
+	 */
+	public void setRolePersistence(RolePersistence rolePersistence) {
+		this.rolePersistence = rolePersistence;
+	}
+
+	/**
 	 * Returns the user local service.
 	 *
 	 * @return the user local service
@@ -3951,14 +3932,6 @@ public abstract class PartnerWorkerServiceBaseImpl extends BaseServiceImpl
 	protected OrderEntryPersistence orderEntryPersistence;
 	@BeanReference(type = OrderEntryFinder.class)
 	protected OrderEntryFinder orderEntryFinder;
-	@BeanReference(type = com.liferay.osb.service.OSBCountryLocalService.class)
-	protected com.liferay.osb.service.OSBCountryLocalService osbCountryLocalService;
-	@BeanReference(type = com.liferay.osb.service.OSBCountryService.class)
-	protected com.liferay.osb.service.OSBCountryService osbCountryService;
-	@BeanReference(type = com.liferay.osb.service.OSBRegionLocalService.class)
-	protected com.liferay.osb.service.OSBRegionLocalService osbRegionLocalService;
-	@BeanReference(type = com.liferay.osb.service.OSBRegionService.class)
-	protected com.liferay.osb.service.OSBRegionService osbRegionService;
 	@BeanReference(type = com.liferay.osb.service.PartnerEntryLocalService.class)
 	protected com.liferay.osb.service.PartnerEntryLocalService partnerEntryLocalService;
 	@BeanReference(type = com.liferay.osb.service.PartnerEntryService.class)
@@ -4143,6 +4116,12 @@ public abstract class PartnerWorkerServiceBaseImpl extends BaseServiceImpl
 	protected OrganizationPersistence organizationPersistence;
 	@BeanReference(type = com.liferay.portal.kernel.service.ResourceLocalService.class)
 	protected com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService;
+	@BeanReference(type = com.liferay.portal.kernel.service.RoleLocalService.class)
+	protected com.liferay.portal.kernel.service.RoleLocalService roleLocalService;
+	@BeanReference(type = com.liferay.portal.kernel.service.RoleService.class)
+	protected com.liferay.portal.kernel.service.RoleService roleService;
+	@BeanReference(type = RolePersistence.class)
+	protected RolePersistence rolePersistence;
 	@BeanReference(type = com.liferay.portal.kernel.service.UserLocalService.class)
 	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
 	@BeanReference(type = com.liferay.portal.kernel.service.UserService.class)

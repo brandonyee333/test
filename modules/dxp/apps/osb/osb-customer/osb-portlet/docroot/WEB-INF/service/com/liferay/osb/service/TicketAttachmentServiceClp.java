@@ -94,8 +94,7 @@ public class TicketAttachmentServiceClp implements TicketAttachmentService {
 	@Override
 	public boolean checkAvailability(long ticketAttachmentId,
 		java.lang.String fileRepositoryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -112,10 +111,6 @@ public class TicketAttachmentServiceClp implements TicketAttachmentService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -135,8 +130,7 @@ public class TicketAttachmentServiceClp implements TicketAttachmentService {
 		long userId, long ticketEntryId, long ticketSolutionId,
 		java.lang.String fileName, long fileSize, int type, int visibility,
 		java.lang.String fileRepositoryId, int status)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -169,10 +163,6 @@ public class TicketAttachmentServiceClp implements TicketAttachmentService {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
 			}
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -188,8 +178,7 @@ public class TicketAttachmentServiceClp implements TicketAttachmentService {
 	@Override
 	public com.liferay.osb.model.TicketAttachment deleteTicketAttachment(
 		long ticketAttachmentId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -201,10 +190,6 @@ public class TicketAttachmentServiceClp implements TicketAttachmentService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -222,8 +207,7 @@ public class TicketAttachmentServiceClp implements TicketAttachmentService {
 	@Override
 	public com.liferay.osb.model.TicketAttachment getTicketAttachment(
 		long ticketAttachmentId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -235,10 +219,6 @@ public class TicketAttachmentServiceClp implements TicketAttachmentService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -256,8 +236,7 @@ public class TicketAttachmentServiceClp implements TicketAttachmentService {
 	@Override
 	public com.liferay.osb.model.TicketAttachment replicateTicketAttachment(
 		long ticketAttachmentId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -269,10 +248,6 @@ public class TicketAttachmentServiceClp implements TicketAttachmentService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -290,8 +265,7 @@ public class TicketAttachmentServiceClp implements TicketAttachmentService {
 	@Override
 	public com.liferay.osb.model.TicketAttachment updateDeleteDate(
 		long ticketAttachmentId, java.util.Date deleteDate)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -310,10 +284,6 @@ public class TicketAttachmentServiceClp implements TicketAttachmentService {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
 			}
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -330,8 +300,7 @@ public class TicketAttachmentServiceClp implements TicketAttachmentService {
 	public com.liferay.osb.model.TicketAttachment updateTicketAttachment(
 		long ticketAttachmentId, long ticketEntryId, int type, int visibility,
 		int[] pendingTypes)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -354,10 +323,6 @@ public class TicketAttachmentServiceClp implements TicketAttachmentService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -405,8 +370,7 @@ public class TicketAttachmentServiceClp implements TicketAttachmentService {
 	@Override
 	public java.lang.String getUploadToken(long ticketEntryId,
 		java.lang.String fileRepositoryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -423,10 +387,6 @@ public class TicketAttachmentServiceClp implements TicketAttachmentService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -447,8 +407,7 @@ public class TicketAttachmentServiceClp implements TicketAttachmentService {
 		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
 		java.util.List<java.lang.Integer> types, int visibility, int status,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -479,10 +438,6 @@ public class TicketAttachmentServiceClp implements TicketAttachmentService {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
 			}
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -502,8 +457,7 @@ public class TicketAttachmentServiceClp implements TicketAttachmentService {
 		java.util.List<java.lang.Integer> types, int visibility, int status,
 		int[] pendingTypes,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -536,10 +490,6 @@ public class TicketAttachmentServiceClp implements TicketAttachmentService {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
 			}
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -557,8 +507,7 @@ public class TicketAttachmentServiceClp implements TicketAttachmentService {
 		java.util.List<java.lang.Long> ticketAttachmentIds, long ticketEntryId,
 		java.util.List<java.lang.Integer> types,
 		java.util.List<java.lang.Integer> visibilities, int[] pendingTypes)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -581,10 +530,6 @@ public class TicketAttachmentServiceClp implements TicketAttachmentService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {

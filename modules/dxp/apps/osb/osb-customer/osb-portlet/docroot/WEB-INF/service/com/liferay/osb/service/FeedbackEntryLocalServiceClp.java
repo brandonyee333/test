@@ -167,8 +167,7 @@ public class FeedbackEntryLocalServiceClp implements FeedbackEntryLocalService {
 	@Override
 	public com.liferay.osb.model.FeedbackEntry addFeedbackEntry(long userId,
 		long classNameId, long classPK, int satisfied, java.lang.String pageURL)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -191,10 +190,6 @@ public class FeedbackEntryLocalServiceClp implements FeedbackEntryLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -368,8 +363,7 @@ public class FeedbackEntryLocalServiceClp implements FeedbackEntryLocalService {
 	@Override
 	public com.liferay.osb.model.FeedbackEntry updateFeedbackEntry(
 		long feedbackEntryId, java.lang.String comments)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -386,10 +380,6 @@ public class FeedbackEntryLocalServiceClp implements FeedbackEntryLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {

@@ -235,8 +235,7 @@ public class OfferingEntryWrapper implements OfferingEntry,
 
 	@Override
 	public AccountEntry getAccountEntry()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _offeringEntry.getAccountEntry();
 	}
 
@@ -252,22 +251,19 @@ public class OfferingEntryWrapper implements OfferingEntry,
 
 	@Override
 	public OrderEntry getOrderEntry()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _offeringEntry.getOrderEntry();
 	}
 
 	@Override
 	public ProductEntry getProductEntry()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _offeringEntry.getProductEntry();
 	}
 
 	@Override
 	public SupportResponse getSupportResponse()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _offeringEntry.getSupportResponse();
 	}
 
@@ -333,8 +329,7 @@ public class OfferingEntryWrapper implements OfferingEntry,
 
 	@Override
 	public OfferingEntryGroup getOfferingEntryGroup()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _offeringEntry.getOfferingEntryGroup();
 	}
 
@@ -350,14 +345,12 @@ public class OfferingEntryWrapper implements OfferingEntry,
 
 	@Override
 	public int getAvailableServers()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _offeringEntry.getAvailableServers();
 	}
 
 	@Override
-	public int getLicenseKeysCount()
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public int getLicenseKeysCount() {
 		return _offeringEntry.getLicenseKeysCount();
 	}
 
@@ -392,8 +385,7 @@ public class OfferingEntryWrapper implements OfferingEntry,
 	}
 
 	@Override
-	public int getTicketEntriesCount()
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public int getTicketEntriesCount() {
 		return _offeringEntry.getTicketEntriesCount();
 	}
 
@@ -434,8 +426,7 @@ public class OfferingEntryWrapper implements OfferingEntry,
 
 	@Override
 	public java.lang.String getKey()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _offeringEntry.getKey();
 	}
 
@@ -516,8 +507,7 @@ public class OfferingEntryWrapper implements OfferingEntry,
 
 	@Override
 	public Date getActualStartDate()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _offeringEntry.getActualStartDate();
 	}
 
@@ -543,8 +533,7 @@ public class OfferingEntryWrapper implements OfferingEntry,
 
 	@Override
 	public Date getStartDate()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _offeringEntry.getStartDate();
 	}
 
@@ -559,8 +548,7 @@ public class OfferingEntryWrapper implements OfferingEntry,
 	}
 
 	@Override
-	public java.util.List<LicenseKey> getLicenseKeys()
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public java.util.List<LicenseKey> getLicenseKeys() {
 		return _offeringEntry.getLicenseKeys();
 	}
 

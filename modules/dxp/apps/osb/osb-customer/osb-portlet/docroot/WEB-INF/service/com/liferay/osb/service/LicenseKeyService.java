@@ -58,7 +58,7 @@ public interface LicenseKeyService extends BaseService, InvokableService {
 	@JSONWebService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public boolean isActive(long corpProjectId, java.lang.String key)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	/**
 	* Adds a license key.
@@ -106,14 +106,14 @@ public interface LicenseKeyService extends BaseService, InvokableService {
 		java.lang.String hostName, java.lang.String ipAddresses,
 		java.lang.String macAddresses, java.lang.String serverId,
 		int startDateMonth, int startDateDay, int startDateYear)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public LicenseKey addLicenseKey(long userId, long assetReceiptLicenseId,
 		java.lang.String owner, java.lang.String description,
 		java.lang.String[] hostNames, java.lang.String[] ipAddresses,
 		java.lang.String[] macAddresses, java.lang.String[] serverIds,
 		int startDateMonth, int startDateDay, int startDateYear)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public LicenseKey addLicenseKey(long userId, long licenseKeySetId,
 		java.lang.String name, long offeringEntryId, long licenseEntryId,
@@ -123,22 +123,21 @@ public interface LicenseKeyService extends BaseService, InvokableService {
 		java.lang.String[] ipAddresses, java.lang.String[] macAddresses,
 		java.lang.String[] serverIds, int startDateMonth, int startDateDay,
 		int startDateYear, boolean complimentary, boolean active)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public LicenseKey getLicenseKey(long licenseKeyId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public LicenseKey renewLicenseKey(long licenseKeyId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public LicenseKey renewLicenseKey(long licenseKeyId, Date startDate,
 		int renewTime) throws java.lang.Exception;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getOfferingEntryGroupLicenseKeysCount(long[] offeringEntryIds,
-		boolean complimentary, boolean active)
-		throws PortalException, SystemException;
+		boolean complimentary, boolean active) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(java.lang.Long createUserId, int createDateGTDay,
@@ -160,12 +159,12 @@ public interface LicenseKeyService extends BaseService, InvokableService {
 		int expirationDateGTYear, int expirationDateLTDay,
 		int expirationDateLTMonth, int expirationDateLTYear,
 		LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andSearch) throws PortalException, SystemException;
+		boolean andSearch) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(java.lang.String keywords,
 		LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
@@ -185,17 +184,16 @@ public interface LicenseKeyService extends BaseService, InvokableService {
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getLicenseKeySetLicenseKeys(long licenseKeySetId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getLicenseKeys(long userId,
-		java.lang.String productId) throws PortalException, SystemException;
+		java.lang.String productId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getOfferingEntryGroupLicenseKeys(
 		long[] offeringEntryIds, boolean complimentary, boolean active,
-		int start, int end, OrderByComparator obc)
-		throws PortalException, SystemException;
+		int start, int end, OrderByComparator obc) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> search(java.lang.Long createUserId,
@@ -218,22 +216,21 @@ public interface LicenseKeyService extends BaseService, InvokableService {
 		int expirationDateLTMonth, int expirationDateLTYear,
 		LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andSearch, int start, int end, OrderByComparator obc)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> search(java.lang.String keywords,
 		LinkedHashMap<java.lang.String, java.lang.Object> params, int start,
-		int end, OrderByComparator obc) throws PortalException, SystemException;
+		int end, OrderByComparator obc) throws PortalException;
 
 	@JSONWebService
 	public void updateLicenseKey(long licenseKeyId, boolean active)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public void updateLicenseKey(long userId, long licenseKeyId,
-		long assetReceiptLicenseId, boolean active)
-		throws PortalException, SystemException;
+		long assetReceiptLicenseId, boolean active) throws PortalException;
 
 	public void updateLicenseKey(long userId, long licenseKeyId,
 		long licenseKeySetId, long offeringEntryId, java.lang.String name,
-		boolean active) throws PortalException, SystemException;
+		boolean active) throws PortalException;
 }

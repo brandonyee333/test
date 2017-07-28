@@ -119,8 +119,7 @@ public class AccountInformationLocalServiceUtil {
 
 	public static com.liferay.osb.model.AccountInformationDisplay getAccountInformationDisplay(
 		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getAccountInformationDisplay(accountEntryId);
 	}
 
@@ -226,14 +225,12 @@ public class AccountInformationLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.osb.model.AccountInformation> getAccountEntryAccountInformation(
-		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountEntryId) {
 		return getService().getAccountEntryAccountInformation(accountEntryId);
 	}
 
 	public static java.util.List<com.liferay.osb.model.AccountInformation> getAccountInformation(
-		long accountEntryId, long accountProjectId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountEntryId, long accountProjectId) {
 		return getService()
 				   .getAccountInformation(accountEntryId, accountProjectId);
 	}
@@ -257,8 +254,7 @@ public class AccountInformationLocalServiceUtil {
 	public static java.util.List<com.liferay.osb.model.AccountInformation> updateAccountInformation(
 		long userId, long accountEntryId, long accountProjectId,
 		java.util.Map<java.lang.Integer, java.lang.String> data)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateAccountInformation(userId, accountEntryId,
 			accountProjectId, data);
@@ -289,8 +285,7 @@ public class AccountInformationLocalServiceUtil {
 	}
 
 	public static void deleteAccountInformation(long accountEntryId,
-		long accountProjectId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountProjectId) {
 		getService().deleteAccountInformation(accountEntryId, accountProjectId);
 	}
 

@@ -98,6 +98,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
+import com.liferay.portal.kernel.service.persistence.CountryPersistence;
 import com.liferay.portal.kernel.service.persistence.ListTypePersistence;
 import com.liferay.portal.kernel.service.persistence.PhonePersistence;
 import com.liferay.portal.kernel.service.persistence.RolePersistence;
@@ -1831,82 +1832,6 @@ public abstract class LicenseKeyServiceBaseImpl extends BaseServiceImpl
 	}
 
 	/**
-	 * Returns the osb country local service.
-	 *
-	 * @return the osb country local service
-	 */
-	public com.liferay.osb.service.OSBCountryLocalService getOSBCountryLocalService() {
-		return osbCountryLocalService;
-	}
-
-	/**
-	 * Sets the osb country local service.
-	 *
-	 * @param osbCountryLocalService the osb country local service
-	 */
-	public void setOSBCountryLocalService(
-		com.liferay.osb.service.OSBCountryLocalService osbCountryLocalService) {
-		this.osbCountryLocalService = osbCountryLocalService;
-	}
-
-	/**
-	 * Returns the osb country remote service.
-	 *
-	 * @return the osb country remote service
-	 */
-	public com.liferay.osb.service.OSBCountryService getOSBCountryService() {
-		return osbCountryService;
-	}
-
-	/**
-	 * Sets the osb country remote service.
-	 *
-	 * @param osbCountryService the osb country remote service
-	 */
-	public void setOSBCountryService(
-		com.liferay.osb.service.OSBCountryService osbCountryService) {
-		this.osbCountryService = osbCountryService;
-	}
-
-	/**
-	 * Returns the osb region local service.
-	 *
-	 * @return the osb region local service
-	 */
-	public com.liferay.osb.service.OSBRegionLocalService getOSBRegionLocalService() {
-		return osbRegionLocalService;
-	}
-
-	/**
-	 * Sets the osb region local service.
-	 *
-	 * @param osbRegionLocalService the osb region local service
-	 */
-	public void setOSBRegionLocalService(
-		com.liferay.osb.service.OSBRegionLocalService osbRegionLocalService) {
-		this.osbRegionLocalService = osbRegionLocalService;
-	}
-
-	/**
-	 * Returns the osb region remote service.
-	 *
-	 * @return the osb region remote service
-	 */
-	public com.liferay.osb.service.OSBRegionService getOSBRegionService() {
-		return osbRegionService;
-	}
-
-	/**
-	 * Sets the osb region remote service.
-	 *
-	 * @param osbRegionService the osb region remote service
-	 */
-	public void setOSBRegionService(
-		com.liferay.osb.service.OSBRegionService osbRegionService) {
-		this.osbRegionService = osbRegionService;
-	}
-
-	/**
 	 * Returns the partner entry local service.
 	 *
 	 * @return the partner entry local service
@@ -3573,6 +3498,43 @@ public abstract class LicenseKeyServiceBaseImpl extends BaseServiceImpl
 	}
 
 	/**
+	 * Returns the country remote service.
+	 *
+	 * @return the country remote service
+	 */
+	public com.liferay.portal.kernel.service.CountryService getCountryService() {
+		return countryService;
+	}
+
+	/**
+	 * Sets the country remote service.
+	 *
+	 * @param countryService the country remote service
+	 */
+	public void setCountryService(
+		com.liferay.portal.kernel.service.CountryService countryService) {
+		this.countryService = countryService;
+	}
+
+	/**
+	 * Returns the country persistence.
+	 *
+	 * @return the country persistence
+	 */
+	public CountryPersistence getCountryPersistence() {
+		return countryPersistence;
+	}
+
+	/**
+	 * Sets the country persistence.
+	 *
+	 * @param countryPersistence the country persistence
+	 */
+	public void setCountryPersistence(CountryPersistence countryPersistence) {
+		this.countryPersistence = countryPersistence;
+	}
+
+	/**
 	 * Returns the list type local service.
 	 *
 	 * @return the list type local service
@@ -4181,14 +4143,6 @@ public abstract class LicenseKeyServiceBaseImpl extends BaseServiceImpl
 	protected OrderEntryPersistence orderEntryPersistence;
 	@BeanReference(type = OrderEntryFinder.class)
 	protected OrderEntryFinder orderEntryFinder;
-	@BeanReference(type = com.liferay.osb.service.OSBCountryLocalService.class)
-	protected com.liferay.osb.service.OSBCountryLocalService osbCountryLocalService;
-	@BeanReference(type = com.liferay.osb.service.OSBCountryService.class)
-	protected com.liferay.osb.service.OSBCountryService osbCountryService;
-	@BeanReference(type = com.liferay.osb.service.OSBRegionLocalService.class)
-	protected com.liferay.osb.service.OSBRegionLocalService osbRegionLocalService;
-	@BeanReference(type = com.liferay.osb.service.OSBRegionService.class)
-	protected com.liferay.osb.service.OSBRegionService osbRegionService;
 	@BeanReference(type = com.liferay.osb.service.PartnerEntryLocalService.class)
 	protected com.liferay.osb.service.PartnerEntryLocalService partnerEntryLocalService;
 	@BeanReference(type = com.liferay.osb.service.PartnerEntryService.class)
@@ -4365,6 +4319,10 @@ public abstract class LicenseKeyServiceBaseImpl extends BaseServiceImpl
 	protected com.liferay.portal.kernel.service.ClassNameService classNameService;
 	@BeanReference(type = ClassNamePersistence.class)
 	protected ClassNamePersistence classNamePersistence;
+	@BeanReference(type = com.liferay.portal.kernel.service.CountryService.class)
+	protected com.liferay.portal.kernel.service.CountryService countryService;
+	@BeanReference(type = CountryPersistence.class)
+	protected CountryPersistence countryPersistence;
 	@BeanReference(type = com.liferay.portal.kernel.service.ListTypeLocalService.class)
 	protected com.liferay.portal.kernel.service.ListTypeLocalService listTypeLocalService;
 	@BeanReference(type = com.liferay.portal.kernel.service.ListTypeService.class)

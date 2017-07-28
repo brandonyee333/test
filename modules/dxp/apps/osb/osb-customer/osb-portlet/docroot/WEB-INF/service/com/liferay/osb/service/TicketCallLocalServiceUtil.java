@@ -59,8 +59,7 @@ public class TicketCallLocalServiceUtil {
 		long callLength, java.lang.String customerName,
 		java.lang.String customerContact, java.lang.String confirmation,
 		java.lang.String instructions)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addTicketCall(userId, ticketEntryId, type, callDateMonth,
 			callDateDay, callDateYear, callDateHour, callDateMinute,

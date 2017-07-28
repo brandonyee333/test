@@ -208,9 +208,7 @@ public class AccountEnvironmentAttachmentLocalServiceClp
 	public com.liferay.osb.model.AccountEnvironmentAttachment addAccountEnvironmentAttachment(
 		long userId, long accountEnvironmentId,
 		com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File> fileOVP,
-		int type)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		int type) throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -231,10 +229,6 @@ public class AccountEnvironmentAttachmentLocalServiceClp
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -277,8 +271,7 @@ public class AccountEnvironmentAttachmentLocalServiceClp
 	@Override
 	public com.liferay.osb.model.AccountEnvironmentAttachment deleteAccountEnvironmentAttachment(
 		com.liferay.osb.model.AccountEnvironmentAttachment accountEnvironmentAttachment)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -294,10 +287,6 @@ public class AccountEnvironmentAttachmentLocalServiceClp
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -369,8 +358,7 @@ public class AccountEnvironmentAttachmentLocalServiceClp
 
 	@Override
 	public com.liferay.osb.model.AccountEnvironmentAttachment fetchAccountEnvironmentAttachment(
-		long accountEnvironmentId, int type)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountEnvironmentId, int type) {
 		Object returnObj = null;
 
 		try {
@@ -380,10 +368,6 @@ public class AccountEnvironmentAttachmentLocalServiceClp
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -459,9 +443,7 @@ public class AccountEnvironmentAttachmentLocalServiceClp
 	public com.liferay.osb.model.AccountEnvironmentAttachment updateAccountEnvironmentAttachment(
 		long accountEnvironmentAttachmentId, long accountEnvironmentId,
 		com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File> fileOVP,
-		int type)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		int type) throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -482,10 +464,6 @@ public class AccountEnvironmentAttachmentLocalServiceClp
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -655,8 +633,7 @@ public class AccountEnvironmentAttachmentLocalServiceClp
 	@Override
 	public java.io.File getFile(
 		com.liferay.osb.model.AccountEnvironmentAttachment accountEnvironmentAttachment)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -674,10 +651,6 @@ public class AccountEnvironmentAttachmentLocalServiceClp
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
 			}
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -693,8 +666,7 @@ public class AccountEnvironmentAttachmentLocalServiceClp
 	@Override
 	public java.io.InputStream getFileAsStream(
 		com.liferay.osb.model.AccountEnvironmentAttachment accountEnvironmentAttachment)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -710,10 +682,6 @@ public class AccountEnvironmentAttachmentLocalServiceClp
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -876,8 +844,7 @@ public class AccountEnvironmentAttachmentLocalServiceClp
 
 	@Override
 	public java.util.List<com.liferay.osb.model.AccountEnvironmentAttachment> getAccountEnvironmentAttachments(
-		long accountEnvironmentId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountEnvironmentId) {
 		Object returnObj = null;
 
 		try {
@@ -887,10 +854,6 @@ public class AccountEnvironmentAttachmentLocalServiceClp
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -964,8 +927,7 @@ public class AccountEnvironmentAttachmentLocalServiceClp
 		long accountEnvironmentId,
 		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
 		java.util.List<java.lang.Integer> types)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName27,
 				_methodParameterTypes27,
@@ -986,10 +948,6 @@ public class AccountEnvironmentAttachmentLocalServiceClp
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
 			}
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -1005,8 +963,7 @@ public class AccountEnvironmentAttachmentLocalServiceClp
 		long accountEnvironmentId,
 		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
 		java.util.List<java.lang.Integer> types)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName28,
 				_methodParameterTypes28,
@@ -1025,10 +982,6 @@ public class AccountEnvironmentAttachmentLocalServiceClp
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {

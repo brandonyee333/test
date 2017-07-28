@@ -57,8 +57,7 @@ public class SecurityPatchLocalServiceUtil {
 		long userId, long accountEntryId, long ticketAttachmentId,
 		java.lang.String portletId, int envLFR, java.lang.String name,
 		java.lang.String fileName)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addSecurityPatch(userId, accountEntryId,
 			ticketAttachmentId, portletId, envLFR, name, fileName);
@@ -67,8 +66,7 @@ public class SecurityPatchLocalServiceUtil {
 	public static com.liferay.osb.model.SecurityPatch addSecurityPatch(
 		long userId, long ticketAttachmentId, java.lang.String portletId,
 		int envLFR, java.lang.String fileName)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addSecurityPatch(userId, ticketAttachmentId, portletId,
 			envLFR, fileName);
@@ -140,8 +138,7 @@ public class SecurityPatchLocalServiceUtil {
 
 	public static com.liferay.osb.model.SecurityPatch updateSecurityPatch(
 		long securityPatchId, java.lang.String name)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updateSecurityPatch(securityPatchId, name);
 	}
 
@@ -252,8 +249,7 @@ public class SecurityPatchLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.osb.model.SecurityPatch> getSecurityPatches(
-		long accountEntryId, java.lang.String portletId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountEntryId, java.lang.String portletId) {
 		return getService().getSecurityPatches(accountEntryId, portletId);
 	}
 
@@ -297,8 +293,7 @@ public class SecurityPatchLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static void deleteSecurityPatches(java.lang.String portletId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public static void deleteSecurityPatches(java.lang.String portletId) {
 		getService().deleteSecurityPatches(portletId);
 	}
 

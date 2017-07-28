@@ -57,8 +57,7 @@ import com.liferay.portal.kernel.util.MethodKey;
 public class OfferingEntryServiceHttp {
 	public static java.util.List<com.liferay.osb.model.OfferingEntry> getAccountEntryOfferingEntries(
 		HttpPrincipal httpPrincipal, long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(OfferingEntryServiceUtil.class,
 					"getAccountEntryOfferingEntries",
@@ -77,10 +76,6 @@ public class OfferingEntryServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -95,8 +90,7 @@ public class OfferingEntryServiceHttp {
 
 	public static java.util.List<com.liferay.osb.model.OfferingEntry> getOrderEntryOfferingEntries(
 		HttpPrincipal httpPrincipal, long orderEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(OfferingEntryServiceUtil.class,
 					"getOrderEntryOfferingEntries",
@@ -113,10 +107,6 @@ public class OfferingEntryServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
@@ -138,8 +128,7 @@ public class OfferingEntryServiceHttp {
 		boolean licenses, long licenseLifetime, long maxConcurrentUsers,
 		long maxUsers, boolean supportTickets, long supportLifetime,
 		int sizing, int quantity)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(OfferingEntryServiceUtil.class,
 					"updateOfferingEntry", _updateOfferingEntryParameterTypes2);
@@ -161,10 +150,6 @@ public class OfferingEntryServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -179,8 +164,7 @@ public class OfferingEntryServiceHttp {
 
 	public static com.liferay.osb.model.OfferingEntry updateStatus(
 		HttpPrincipal httpPrincipal, long offeringEntryId, int status)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(OfferingEntryServiceUtil.class,
 					"updateStatus", _updateStatusParameterTypes3);
@@ -196,10 +180,6 @@ public class OfferingEntryServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);

@@ -123,32 +123,32 @@ public class SupportResponseLocalServiceClpInvoker {
 				"com.liferay.osb.model.SupportResponse"
 			};
 
-		_methodName282 = "getOSGiServiceIdentifier";
+		_methodName278 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes282 = new String[] {  };
+		_methodParameterTypes278 = new String[] {  };
 
-		_methodName287 = "addSupportResponse";
+		_methodName283 = "addSupportResponse";
 
-		_methodParameterTypes287 = new String[] {
+		_methodParameterTypes283 = new String[] {
 				"long", "java.lang.String", "int", "int", "int", "int", "int",
 				"int", "int"
 			};
 
-		_methodName288 = "deleteSupportResponse";
+		_methodName284 = "deleteSupportResponse";
 
-		_methodParameterTypes288 = new String[] { "long" };
+		_methodParameterTypes284 = new String[] { "long" };
 
-		_methodName289 = "fetchSupportResponseByName";
+		_methodName285 = "fetchSupportResponseByName";
 
-		_methodParameterTypes289 = new String[] { "java.lang.String" };
+		_methodParameterTypes285 = new String[] { "java.lang.String" };
 
-		_methodName290 = "getSupportResponseByName";
+		_methodName286 = "getSupportResponseByName";
 
-		_methodParameterTypes290 = new String[] { "java.lang.String" };
+		_methodParameterTypes286 = new String[] { "java.lang.String" };
 
-		_methodName291 = "updateSupportResponse";
+		_methodName287 = "updateSupportResponse";
 
-		_methodParameterTypes291 = new String[] {
+		_methodParameterTypes287 = new String[] {
 				"long", "java.lang.String", "int", "int", "int", "int", "int",
 				"int", "int"
 			};
@@ -258,13 +258,13 @@ public class SupportResponseLocalServiceClpInvoker {
 			return SupportResponseLocalServiceUtil.updateSupportResponse((com.liferay.osb.model.SupportResponse)arguments[0]);
 		}
 
-		if (_methodName282.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes282, parameterTypes)) {
+		if (_methodName278.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes278, parameterTypes)) {
 			return SupportResponseLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName287.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes287, parameterTypes)) {
+		if (_methodName283.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes283, parameterTypes)) {
 			return SupportResponseLocalServiceUtil.addSupportResponse(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1],
 				((Integer)arguments[2]).intValue(),
@@ -276,23 +276,23 @@ public class SupportResponseLocalServiceClpInvoker {
 				((Integer)arguments[8]).intValue());
 		}
 
-		if (_methodName288.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes288, parameterTypes)) {
+		if (_methodName284.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes284, parameterTypes)) {
 			return SupportResponseLocalServiceUtil.deleteSupportResponse(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName289.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes289, parameterTypes)) {
+		if (_methodName285.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes285, parameterTypes)) {
 			return SupportResponseLocalServiceUtil.fetchSupportResponseByName((java.lang.String)arguments[0]);
 		}
 
-		if (_methodName290.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes290, parameterTypes)) {
+		if (_methodName286.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes286, parameterTypes)) {
 			return SupportResponseLocalServiceUtil.getSupportResponseByName((java.lang.String)arguments[0]);
 		}
 
-		if (_methodName291.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes291, parameterTypes)) {
+		if (_methodName287.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes287, parameterTypes)) {
 			return SupportResponseLocalServiceUtil.updateSupportResponse(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1],
 				((Integer)arguments[2]).intValue(),
@@ -345,16 +345,16 @@ public class SupportResponseLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName282;
-	private String[] _methodParameterTypes282;
+	private String _methodName278;
+	private String[] _methodParameterTypes278;
+	private String _methodName283;
+	private String[] _methodParameterTypes283;
+	private String _methodName284;
+	private String[] _methodParameterTypes284;
+	private String _methodName285;
+	private String[] _methodParameterTypes285;
+	private String _methodName286;
+	private String[] _methodParameterTypes286;
 	private String _methodName287;
 	private String[] _methodParameterTypes287;
-	private String _methodName288;
-	private String[] _methodParameterTypes288;
-	private String _methodName289;
-	private String[] _methodParameterTypes289;
-	private String _methodName290;
-	private String[] _methodParameterTypes290;
-	private String _methodName291;
-	private String[] _methodParameterTypes291;
 }

@@ -173,8 +173,7 @@ public class LicenseKeySetLocalServiceClp implements LicenseKeySetLocalService {
 	@Override
 	public com.liferay.osb.model.LicenseKeySet addLicenseKeySet(long userId,
 		long accountEntryId, java.lang.String name)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -193,10 +192,6 @@ public class LicenseKeySetLocalServiceClp implements LicenseKeySetLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -370,8 +365,7 @@ public class LicenseKeySetLocalServiceClp implements LicenseKeySetLocalService {
 	@Override
 	public com.liferay.osb.model.LicenseKeySet updateLicenseKeySet(
 		long licenseKeySetId, java.lang.String name)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -388,10 +382,6 @@ public class LicenseKeySetLocalServiceClp implements LicenseKeySetLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -536,8 +526,7 @@ public class LicenseKeySetLocalServiceClp implements LicenseKeySetLocalService {
 	}
 
 	@Override
-	public int getAccountEntryLicenseKeySetsCount(long accountEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public int getAccountEntryLicenseKeySetsCount(long accountEntryId) {
 		Object returnObj = null;
 
 		try {
@@ -546,10 +535,6 @@ public class LicenseKeySetLocalServiceClp implements LicenseKeySetLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -710,8 +695,7 @@ public class LicenseKeySetLocalServiceClp implements LicenseKeySetLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.LicenseKeySet> getAccountEntryLicenseKeySets(
-		long accountEntryId, int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountEntryId, int start, int end) {
 		Object returnObj = null;
 
 		try {
@@ -721,10 +705,6 @@ public class LicenseKeySetLocalServiceClp implements LicenseKeySetLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;

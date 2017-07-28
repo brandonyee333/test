@@ -53,8 +53,7 @@ public class OrderEntryLocalServiceWrapper implements OrderEntryLocalService,
 		int actualStartDateYear, int status,
 		java.lang.String salesforceOpportunityKey,
 		java.util.List<com.liferay.osb.model.OfferingEntry> offeringEntries)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _orderEntryLocalService.addOrderEntry(userId, accountEntryId,
 			purchaseOrderKey, startDateMonth, startDateDay, startDateYear,
 			prorated, actualStartDateMonth, actualStartDateDay,
@@ -79,13 +78,11 @@ public class OrderEntryLocalServiceWrapper implements OrderEntryLocalService,
 	* @param orderEntry the order entry
 	* @return the order entry that was removed
 	* @throws PortalException
-	* @throws SystemException
 	*/
 	@Override
 	public com.liferay.osb.model.OrderEntry deleteOrderEntry(
 		com.liferay.osb.model.OrderEntry orderEntry)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _orderEntryLocalService.deleteOrderEntry(orderEntry);
 	}
 
@@ -95,12 +92,10 @@ public class OrderEntryLocalServiceWrapper implements OrderEntryLocalService,
 	* @param orderEntryId the primary key of the order entry
 	* @return the order entry that was removed
 	* @throws PortalException if a order entry with the primary key could not be found
-	* @throws SystemException
 	*/
 	@Override
 	public com.liferay.osb.model.OrderEntry deleteOrderEntry(long orderEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _orderEntryLocalService.deleteOrderEntry(orderEntryId);
 	}
 
@@ -111,8 +106,7 @@ public class OrderEntryLocalServiceWrapper implements OrderEntryLocalService,
 
 	@Override
 	public com.liferay.osb.model.OrderEntry getOrderEntry(java.lang.String uuid)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _orderEntryLocalService.getOrderEntry(uuid);
 	}
 
@@ -132,8 +126,7 @@ public class OrderEntryLocalServiceWrapper implements OrderEntryLocalService,
 	@Override
 	public com.liferay.osb.model.OrderEntry renewOrderEntry(long userId,
 		long orderEntryId, int renewCount)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _orderEntryLocalService.renewOrderEntry(userId, orderEntryId,
 			renewCount);
 	}
@@ -158,8 +151,7 @@ public class OrderEntryLocalServiceWrapper implements OrderEntryLocalService,
 		int actualStartDateMonth, int actualStartDateDay,
 		int actualStartDateYear, java.lang.String salesforceOpportunityKey,
 		java.util.List<com.liferay.osb.model.OfferingEntry> offeringEntries)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _orderEntryLocalService.updateOrderEntry(userId, orderEntryId,
 			accountEntryId, purchaseOrderKey, startDateMonth, startDateDay,
 			startDateYear, prorated, actualStartDateMonth, actualStartDateDay,
@@ -170,8 +162,7 @@ public class OrderEntryLocalServiceWrapper implements OrderEntryLocalService,
 	public com.liferay.osb.model.OrderEntry updateStatus(long userId,
 		long orderEntryId, int status,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _orderEntryLocalService.updateStatus(userId, orderEntryId,
 			status, serviceContext);
 	}
@@ -233,8 +224,7 @@ public class OrderEntryLocalServiceWrapper implements OrderEntryLocalService,
 		int actualStartDateGTYear, int actualStartDateLTDay,
 		int actualStartDateLTMonth, int actualStartDateLTYear,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andOperator)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		boolean andOperator) {
 		return _orderEntryLocalService.searchCount(createUserId,
 			createDateGTDay, createDateGTMonth, createDateGTYear,
 			createDateLTDay, createDateLTMonth, createDateLTYear,
@@ -250,8 +240,7 @@ public class OrderEntryLocalServiceWrapper implements OrderEntryLocalService,
 
 	@Override
 	public int searchCount(java.lang.String keywords,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params) {
 		return _orderEntryLocalService.searchCount(keywords, params);
 	}
 
@@ -283,8 +272,7 @@ public class OrderEntryLocalServiceWrapper implements OrderEntryLocalService,
 		com.liferay.osb.model.AccountWorker accountWorker,
 		java.util.List<com.liferay.osb.model.OrderEntry> orderEntries,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _orderEntryLocalService.addOrderEntriesWithWorkflow(salesforceOpportunityKey,
 			accountEntry, corpProject, partnerEntry, address, accountWorker,
 			orderEntries, serviceContext);
@@ -345,8 +333,7 @@ public class OrderEntryLocalServiceWrapper implements OrderEntryLocalService,
 
 	@Override
 	public java.util.List<com.liferay.osb.model.OrderEntry> getAccountEntryOrderEntries(
-		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountEntryId) {
 		return _orderEntryLocalService.getAccountEntryOrderEntries(accountEntryId);
 	}
 
@@ -384,8 +371,7 @@ public class OrderEntryLocalServiceWrapper implements OrderEntryLocalService,
 		int actualStartDateLTMonth, int actualStartDateLTYear,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.portal.kernel.util.OrderByComparator obc) {
 		return _orderEntryLocalService.search(createUserId, createDateGTDay,
 			createDateGTMonth, createDateGTYear, createDateLTDay,
 			createDateLTMonth, createDateLTYear, modifiedUserId,
@@ -403,8 +389,7 @@ public class OrderEntryLocalServiceWrapper implements OrderEntryLocalService,
 	public java.util.List<com.liferay.osb.model.OrderEntry> search(
 		java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc) {
 		return _orderEntryLocalService.search(keywords, params, start, end, obc);
 	}
 

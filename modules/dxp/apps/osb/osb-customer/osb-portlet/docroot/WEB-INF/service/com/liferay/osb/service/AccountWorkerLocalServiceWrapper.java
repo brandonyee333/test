@@ -35,15 +35,13 @@ public class AccountWorkerLocalServiceWrapper
 	}
 
 	@Override
-	public boolean hasAccountWorker(long userId, long accountEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public boolean hasAccountWorker(long userId, long accountEntryId) {
 		return _accountWorkerLocalService.hasAccountWorker(userId,
 			accountEntryId);
 	}
 
 	@Override
-	public boolean hasAccountWorkerRole(long userId, int role)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public boolean hasAccountWorkerRole(long userId, int role) {
 		return _accountWorkerLocalService.hasAccountWorkerRole(userId, role);
 	}
 
@@ -120,8 +118,7 @@ public class AccountWorkerLocalServiceWrapper
 	@Override
 	public com.liferay.osb.model.AccountWorker getAccountWorker(long userId,
 		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountWorkerLocalService.getAccountWorker(userId,
 			accountEntryId);
 	}
@@ -270,21 +267,19 @@ public class AccountWorkerLocalServiceWrapper
 
 	@Override
 	public java.util.List<com.liferay.osb.model.AccountWorker> getAccountWorkers(
-		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountEntryId) {
 		return _accountWorkerLocalService.getAccountWorkers(accountEntryId);
 	}
 
 	@Override
 	public java.util.List<com.liferay.osb.model.AccountWorker> getAccountWorkers(
-		long accountEntryId, int role)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountEntryId, int role) {
 		return _accountWorkerLocalService.getAccountWorkers(accountEntryId, role);
 	}
 
 	@Override
 	public java.util.List<com.liferay.osb.model.AccountWorker> getUserAccountWorkers(
-		long userId) throws com.liferay.portal.kernel.exception.SystemException {
+		long userId) {
 		return _accountWorkerLocalService.getUserAccountWorkers(userId);
 	}
 
@@ -318,31 +313,27 @@ public class AccountWorkerLocalServiceWrapper
 	@Override
 	public void addAccountWorkers(long userId, long[] userIds,
 		long accountEntryId, int[] roles, int[] notifications)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		_accountWorkerLocalService.addAccountWorkers(userId, userIds,
 			accountEntryId, roles, notifications);
 	}
 
 	@Override
 	public void deleteAccountEntryAccountWorkers(long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		_accountWorkerLocalService.deleteAccountEntryAccountWorkers(accountEntryId);
 	}
 
 	@Override
 	public void deleteAccountWorkers(long userId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		_accountWorkerLocalService.deleteAccountWorkers(userId);
 	}
 
 	@Override
 	public void deleteAccountWorkers(long userId, long[] userIds,
 		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		_accountWorkerLocalService.deleteAccountWorkers(userId, userIds,
 			accountEntryId);
 	}

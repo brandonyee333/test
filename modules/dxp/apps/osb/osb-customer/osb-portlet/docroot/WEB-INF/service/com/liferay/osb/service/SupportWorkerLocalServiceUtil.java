@@ -41,37 +41,31 @@ public class SupportWorkerLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.SupportWorkerLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static boolean hasSupportWorker(long userId, int notRole)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public static boolean hasSupportWorker(long userId, int notRole) {
 		return getService().hasSupportWorker(userId, notRole);
 	}
 
 	public static boolean hasSupportWorker(long userId, int role,
-		long locationSupportRegionId, java.lang.Integer supportTeamType)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long locationSupportRegionId, java.lang.Integer supportTeamType) {
 		return getService()
 				   .hasSupportWorker(userId, role, locationSupportRegionId,
 			supportTeamType);
 	}
 
-	public static boolean hasSupportWorker(long userId, long supportTeamId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public static boolean hasSupportWorker(long userId, long supportTeamId) {
 		return getService().hasSupportWorker(userId, supportTeamId);
 	}
 
-	public static boolean hasSupportWorkerRole(long userId, int role)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public static boolean hasSupportWorkerRole(long userId, int role) {
 		return getService().hasSupportWorkerRole(userId, role);
 	}
 
-	public static boolean isClockedIn(long userId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public static boolean isClockedIn(long userId) {
 		return getService().isClockedIn(userId);
 	}
 
 	public static boolean isManagerOfWorker(long userId, long workerUserId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().isManagerOfWorker(userId, workerUserId);
 	}
 
@@ -128,16 +122,14 @@ public class SupportWorkerLocalServiceUtil {
 
 	public static com.liferay.osb.model.SupportWorker getAvailableSupportWorker(
 		com.liferay.osb.model.TicketEntry ticketEntry)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getAvailableSupportWorker(ticketEntry);
 	}
 
 	public static com.liferay.osb.model.SupportWorker getLongestOpenSupportWorker(
 		java.util.List<com.liferay.osb.model.SupportWorker> supportWorkers,
 		com.liferay.osb.model.TicketEntry ticketEntry)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .getLongestOpenSupportWorker(supportWorkers, ticketEntry);
 	}
@@ -145,16 +137,14 @@ public class SupportWorkerLocalServiceUtil {
 	public static com.liferay.osb.model.SupportWorker getMostAvailableSupportWorker(
 		com.liferay.osb.model.TicketEntry ticketEntry,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getMostAvailableSupportWorker(ticketEntry, params);
 	}
 
 	public static com.liferay.osb.model.SupportWorker getNextOpenSupportWorker(
 		java.util.List<com.liferay.osb.model.SupportWorker> supportWorkers,
 		com.liferay.osb.model.TicketEntry ticketEntry)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getNextOpenSupportWorker(supportWorkers, ticketEntry);
 	}
 
@@ -173,8 +163,7 @@ public class SupportWorkerLocalServiceUtil {
 
 	public static com.liferay.osb.model.SupportWorker getSupportWorker(
 		long userId, long supportTeamId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getSupportWorker(userId, supportTeamId);
 	}
 
@@ -193,8 +182,7 @@ public class SupportWorkerLocalServiceUtil {
 		long supportWorkerId, long supportTeamId, boolean autoAssign,
 		double maxWork, int escalationlevel, int escalationLevel2Role,
 		int notifications)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateSupportWorker(supportWorkerId, supportTeamId,
 			autoAssign, maxWork, escalationlevel, escalationLevel2Role,
@@ -228,8 +216,7 @@ public class SupportWorkerLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static double getAssignedWork(long userId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public static double getAssignedWork(long userId) {
 		return getService().getAssignedWork(userId);
 	}
 
@@ -244,8 +231,7 @@ public class SupportWorkerLocalServiceUtil {
 
 	public static int getSupportWorkersCountBySupportLaborId(
 		long supportLaborId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .getSupportWorkersCountBySupportLaborId(supportLaborId);
 	}
@@ -254,15 +240,13 @@ public class SupportWorkerLocalServiceUtil {
 		java.lang.String firstName, java.lang.String middleName,
 		java.lang.String lastName, java.lang.String screenName,
 		java.lang.String emailAddress, java.lang.String supportTeamName,
-		boolean andSearch)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		boolean andSearch) {
 		return getService()
 				   .searchCount(supportLaborId, firstName, middleName,
 			lastName, screenName, emailAddress, supportTeamName, andSearch);
 	}
 
-	public static int searchCount(long supportLaborId, java.lang.String keywords)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public static int searchCount(long supportLaborId, java.lang.String keywords) {
 		return getService().searchCount(supportLaborId, keywords);
 	}
 
@@ -349,40 +333,35 @@ public class SupportWorkerLocalServiceUtil {
 
 	public static java.util.List<com.liferay.osb.model.SupportWorker> getSupportWorkersBySupportLaborId(
 		long supportLaborId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getSupportWorkersBySupportLaborId(supportLaborId);
 	}
 
 	public static java.util.List<com.liferay.osb.model.SupportWorker> getSupportWorkersBySupportRegionId(
 		long supportRegionId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getSupportWorkersBySupportRegionId(supportRegionId);
 	}
 
 	public static java.util.List<com.liferay.osb.model.SupportWorker> getTeamSupportWorkers(
-		long supportTeamId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long supportTeamId) {
 		return getService().getTeamSupportWorkers(supportTeamId);
 	}
 
 	public static java.util.List<com.liferay.osb.model.SupportWorker> getUserSupportTeamManagers(
 		long userId, java.lang.Integer supportTeamType)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getUserSupportTeamManagers(userId, supportTeamType);
 	}
 
 	public static java.util.List<com.liferay.osb.model.SupportWorker> getUserSupportWorkers(
-		long userId) throws com.liferay.portal.kernel.exception.SystemException {
+		long userId) {
 		return getService().getUserSupportWorkers(userId);
 	}
 
 	public static java.util.List<com.liferay.osb.model.SupportWorker> search(
 		java.lang.Boolean overUtilization, int escalationLevel,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params) {
 		return getService().search(overUtilization, escalationLevel, params);
 	}
 
@@ -391,8 +370,7 @@ public class SupportWorkerLocalServiceUtil {
 		java.lang.String middleName, java.lang.String lastName,
 		java.lang.String screenName, java.lang.String emailAddress,
 		java.lang.String supportTeamName, boolean andSearch, int start,
-		int end, com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int end, com.liferay.portal.kernel.util.OrderByComparator obc) {
 		return getService()
 				   .search(supportLaborId, firstName, middleName, lastName,
 			screenName, emailAddress, supportTeamName, andSearch, start, end,
@@ -401,8 +379,7 @@ public class SupportWorkerLocalServiceUtil {
 
 	public static java.util.List<com.liferay.osb.model.SupportWorker> search(
 		long supportLaborId, java.lang.String keywords, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.portal.kernel.util.OrderByComparator obc) {
 		return getService().search(supportLaborId, keywords, start, end, obc);
 	}
 
@@ -433,48 +410,42 @@ public class SupportWorkerLocalServiceUtil {
 	public static void addSupportWorkers(long[] userIds, long supportTeamId,
 		double[] maxWork, int[] escalationLevels, int[] roles,
 		int[] notifications)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService()
 			.addSupportWorkers(userIds, supportTeamId, maxWork,
 			escalationLevels, roles, notifications);
 	}
 
 	public static void clockInOut(long supportWorkerId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().clockInOut(supportWorkerId);
 	}
 
-	public static void decreaseAssignedWork(long userId, double work)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public static void decreaseAssignedWork(long userId, double work) {
 		getService().decreaseAssignedWork(userId, work);
 	}
 
 	public static void decreaseTicketEntryAssignedWork(long ticketEntryId,
-		double work) throws com.liferay.portal.kernel.exception.SystemException {
+		double work) {
 		getService().decreaseTicketEntryAssignedWork(ticketEntryId, work);
 	}
 
 	public static void deleteSupportWorkers(long userId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().deleteSupportWorkers(userId);
 	}
 
 	public static void deleteSupportWorkers(long[] userIds, long supportTeamId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().deleteSupportWorkers(userIds, supportTeamId);
 	}
 
-	public static void increaseAssignedWork(long userId, double work)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public static void increaseAssignedWork(long userId, double work) {
 		getService().increaseAssignedWork(userId, work);
 	}
 
 	public static void increaseTicketEntryAssignedWork(long ticketEntryId,
-		double work) throws com.liferay.portal.kernel.exception.SystemException {
+		double work) {
 		getService().increaseTicketEntryAssignedWork(ticketEntryId, work);
 	}
 

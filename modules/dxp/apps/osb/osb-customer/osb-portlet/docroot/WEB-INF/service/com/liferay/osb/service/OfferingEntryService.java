@@ -58,10 +58,10 @@ public interface OfferingEntryService extends BaseService, InvokableService {
 		int version, boolean licenses, long licenseLifetime,
 		long maxConcurrentUsers, long maxUsers, boolean supportTickets,
 		long supportLifetime, int sizing, int quantity)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public OfferingEntry updateStatus(long offeringEntryId, int status)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
@@ -77,9 +77,9 @@ public interface OfferingEntryService extends BaseService, InvokableService {
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<OfferingEntry> getAccountEntryOfferingEntries(
-		long accountEntryId) throws PortalException, SystemException;
+		long accountEntryId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<OfferingEntry> getOrderEntryOfferingEntries(long orderEntryId)
-		throws PortalException, SystemException;
+		throws PortalException;
 }

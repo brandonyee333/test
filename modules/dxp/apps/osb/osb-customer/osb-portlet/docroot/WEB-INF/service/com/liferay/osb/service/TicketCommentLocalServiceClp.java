@@ -220,8 +220,7 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 
 	@Override
 	public boolean hasVisibility(long userId, long ticketEntryId, int visibility)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -234,10 +233,6 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -255,8 +250,7 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 	@Override
 	public com.liferay.osb.model.TicketComment addAwayMessageTicketComment(
 		long userId, long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -269,10 +263,6 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -317,8 +307,7 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 		long ticketEntryId, java.lang.String body, int type, int visibility,
 		int status, long ticketCannedResponseId, int[] pendingTypes,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -349,10 +338,6 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -448,8 +433,7 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 	@Override
 	public com.liferay.osb.model.TicketComment deleteTicketComment(
 		long userId, com.liferay.osb.model.TicketComment ticketComment)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -468,10 +452,6 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
 			}
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -487,8 +467,7 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 	@Override
 	public com.liferay.osb.model.TicketComment deleteTicketComment(
 		long userId, long ticketCommentId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -501,10 +480,6 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -522,8 +497,7 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 	@Override
 	public com.liferay.osb.model.TicketComment fetchLastTicketComment(
 		long userId, long ticketEntryId, int visibility, int status,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.portal.kernel.util.OrderByComparator obc) {
 		Object returnObj = null;
 
 		try {
@@ -544,10 +518,6 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -563,8 +533,7 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 	@Override
 	public com.liferay.osb.model.TicketComment fetchLastTicketComment(
 		long userId, long ticketEntryId, int visibility, int status, int type,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.portal.kernel.util.OrderByComparator obc) {
 		Object returnObj = null;
 
 		try {
@@ -586,10 +555,6 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -631,8 +596,7 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 	public com.liferay.osb.model.TicketComment getLastTicketComment(
 		long ticketEntryId, int visibility,
 		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -651,10 +615,6 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -729,8 +689,7 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 		java.lang.String body, int visibility, int status,
 		long ticketCannedResponseId, int[] pendingTypes,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -763,10 +722,6 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
 			}
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -782,8 +737,7 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 	@Override
 	public com.liferay.osb.model.TicketComment updateTicketCommentType(
 		long ticketCommentId, int type)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -796,10 +750,6 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -945,8 +895,7 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 
 	@Override
 	public int getOrganizationTicketCommentsCount(long[] organizationIds,
-		long ticketEntryId, int visibility)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long ticketEntryId, int visibility) {
 		Object returnObj = null;
 
 		try {
@@ -962,10 +911,6 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -1004,8 +949,7 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 
 	@Override
 	public int getTicketCommentsCount(long ticketEntryId, int[] visibilities,
-		int[] statuses)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int[] statuses) {
 		Object returnObj = null;
 
 		try {
@@ -1022,10 +966,6 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -1040,8 +980,7 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 
 	@Override
 	public int getTicketCommentsCount(long userId, long ticketEntryId,
-		int[] visibilities, int[] statuses)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int[] visibilities, int[] statuses) {
 		Object returnObj = null;
 
 		try {
@@ -1060,10 +999,6 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -1078,8 +1013,7 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 
 	@Override
 	public int[] getUserVisibilities(long userId, long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -1092,10 +1026,6 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -1258,8 +1188,7 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.TicketComment> getTicketComments(
-		long ticketEntryId, int[] visibilities, int[] statuses)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long ticketEntryId, int[] visibilities, int[] statuses) {
 		Object returnObj = null;
 
 		try {
@@ -1276,10 +1205,6 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -1294,8 +1219,7 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.TicketComment> getTicketComments(
-		long userId, long ticketEntryId, int[] visibilities, int[] statuses)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long userId, long ticketEntryId, int[] visibilities, int[] statuses) {
 		Object returnObj = null;
 
 		try {
@@ -1313,10 +1237,6 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -1386,18 +1306,13 @@ public class TicketCommentLocalServiceClp implements TicketCommentLocalService {
 	}
 
 	@Override
-	public void resetSolutionTicketComment(long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public void resetSolutionTicketComment(long ticketEntryId) {
 		try {
 			_invokableLocalService.invokeMethod(_methodName37,
 				_methodParameterTypes37, new Object[] { ticketEntryId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;

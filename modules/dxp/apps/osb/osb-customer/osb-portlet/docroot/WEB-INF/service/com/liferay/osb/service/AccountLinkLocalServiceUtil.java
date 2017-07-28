@@ -235,8 +235,7 @@ public class AccountLinkLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.osb.model.AccountLink> getAccountLinks(
-		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountEntryId) {
 		return getService().getAccountLinks(accountEntryId);
 	}
 
@@ -266,8 +265,7 @@ public class AccountLinkLocalServiceUtil {
 
 	public static void addAccountLinks(long userId, long accountEntryId,
 		java.lang.String[] urls)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().addAccountLinks(userId, accountEntryId, urls);
 	}
 

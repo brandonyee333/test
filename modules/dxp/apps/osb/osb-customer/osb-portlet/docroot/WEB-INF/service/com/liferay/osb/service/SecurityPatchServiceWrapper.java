@@ -36,8 +36,7 @@ public class SecurityPatchServiceWrapper implements SecurityPatchService,
 	@Override
 	public com.liferay.osb.model.SecurityPatch getSecurityPatch(
 		long securityPatchId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _securityPatchService.getSecurityPatch(securityPatchId);
 	}
 

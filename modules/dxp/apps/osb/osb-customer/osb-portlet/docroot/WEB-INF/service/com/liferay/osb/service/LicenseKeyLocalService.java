@@ -84,7 +84,7 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 		java.lang.String description, java.lang.String[] hostNames,
 		java.lang.String[] ipAddresses, java.lang.String[] macAddresses,
 		java.lang.String[] serverIds, int startDateMonth, int startDateDay,
-		int startDateYear) throws PortalException, SystemException;
+		int startDateYear) throws PortalException;
 
 	public LicenseKey addLicenseKey(long userId, LicenseKeySet licenseKeySet,
 		java.lang.String name, OfferingEntry offeringEntry,
@@ -95,7 +95,7 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 		java.lang.String[] macAddresses, java.lang.String[] serverIds,
 		int startDateMonth, int startDateDay, int startDateYear,
 		java.lang.String additionalInfo, boolean complimentary, boolean active)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public LicenseKey addLicenseKey(long userId, long licenseKeySetId,
 		java.lang.String name, long offeringEntryId, long licenseEntryId,
@@ -105,7 +105,7 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 		java.lang.String[] ipAddresses, java.lang.String[] macAddresses,
 		java.lang.String[] serverIds, int startDateMonth, int startDateDay,
 		int startDateYear, boolean complimentary, boolean active)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public LicenseKey addSingleUseLicenseKey(java.lang.String orderUuid,
 		int productVersion, java.lang.String emailAddress,
@@ -145,7 +145,7 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public LicenseKey getFirstLicenseKey(long accountEntryId,
-		OrderByComparator obc) throws PortalException, SystemException;
+		OrderByComparator obc) throws PortalException;
 
 	/**
 	* Returns the license key with the primary key.
@@ -159,7 +159,7 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 		throws PortalException;
 
 	public LicenseKey renewLicenseKey(long userId, long licenseKeyId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public LicenseKey renewLicenseKey(long userId, long licenseKeyId,
 		Date startDate, int renewTime) throws java.lang.Exception;
@@ -198,8 +198,7 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getAssetReceiptLicenseLicenseKeysCount(
-		long assetReceiptLicenseId, boolean complimentary, boolean active)
-		throws SystemException;
+		long assetReceiptLicenseId, boolean complimentary, boolean active);
 
 	/**
 	* Returns the number of license keies.
@@ -211,27 +210,25 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getOfferingEntryGroupLicenseKeysCount(long[] offeringEntryIds,
-		boolean complimentary, boolean active) throws SystemException;
+		boolean complimentary, boolean active);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getOfferingEntryLicenseKeysCount(long offeringEntryId)
-		throws SystemException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getOfferingEntryLicenseKeysCount(long offeringEntryId,
-		boolean complimentary, boolean active) throws SystemException;
+	public int getOfferingEntryLicenseKeysCount(long offeringEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getOfferingEntryLicenseKeysCount(long offeringEntryId,
-		long clusterId) throws SystemException;
+		boolean complimentary, boolean active);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getOfferingEntryLicenseKeysCount(long offeringEntryId,
-		long clusterId, boolean active) throws SystemException;
+		long clusterId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getUserLicenseKeysCount(long userId, long accountEntryId)
-		throws SystemException;
+	public int getOfferingEntryLicenseKeysCount(long offeringEntryId,
+		long clusterId, boolean active);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getUserLicenseKeysCount(long userId, long accountEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(java.lang.Long createUserId, int createDateGTDay,
@@ -253,12 +250,11 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 		int expirationDateGTYear, int expirationDateLTDay,
 		int expirationDateLTMonth, int expirationDateLTYear,
 		LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andSearch) throws SystemException;
+		boolean andSearch);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(java.lang.String keywords,
-		LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws SystemException;
+		LinkedHashMap<java.lang.String, java.lang.Object> params);
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
@@ -312,17 +308,15 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 		int end, OrderByComparator<T> orderByComparator);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<LicenseKey> getAccountEntryLicenseKeys(long accountEntryId)
-		throws SystemException;
+	public List<LicenseKey> getAccountEntryLicenseKeys(long accountEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getAssetReceiptLicenseLicenseKeys(
-		long assetReceiptLicenseId, boolean active) throws SystemException;
+		long assetReceiptLicenseId, boolean active);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getAssetReceiptLicenseLicenseKeys(
-		long assetReceiptLicenseId, boolean complimentary, boolean active)
-		throws SystemException;
+		long assetReceiptLicenseId, boolean complimentary, boolean active);
 
 	/**
 	* Returns a range of all the license keies.
@@ -339,52 +333,48 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 	public List<LicenseKey> getLicenseKeies(int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<LicenseKey> getLicenseKeySetLicenseKeys(long licenseKeySetId)
-		throws SystemException;
+	public List<LicenseKey> getLicenseKeySetLicenseKeys(long licenseKeySetId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getLicenseKeys(java.lang.String productId,
-		java.lang.String serverId) throws SystemException;
+		java.lang.String serverId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getLicenseKeys(long assetReceiptLicenseId,
 		java.lang.String productId, java.lang.String serverId, boolean active,
-		int start, int end, OrderByComparator obc) throws SystemException;
+		int start, int end, OrderByComparator obc);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getLicenseKeys(long userId,
-		java.lang.String productId) throws SystemException;
+		java.lang.String productId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<LicenseKey> getLicenseKeys(long userId, long accountEntryId)
-		throws SystemException;
+	public List<LicenseKey> getLicenseKeys(long userId, long accountEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getLicenseKeysByName(
 		java.lang.String productEntryName, java.lang.String serverId,
-		boolean active, int start, int end, OrderByComparator obc)
-		throws SystemException;
+		boolean active, int start, int end, OrderByComparator obc);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getOfferingEntryGroupLicenseKeys(
 		long[] offeringEntryIds, boolean complimentary, boolean active,
-		int start, int end, OrderByComparator obc) throws SystemException;
+		int start, int end, OrderByComparator obc);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<LicenseKey> getOfferingEntryLicenseKeys(long offeringEntryId)
-		throws SystemException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<LicenseKey> getOfferingEntryLicenseKeys(long offeringEntryId,
-		boolean complimentary, boolean active) throws SystemException;
+	public List<LicenseKey> getOfferingEntryLicenseKeys(long offeringEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getOfferingEntryLicenseKeys(long offeringEntryId,
-		long clusterId) throws SystemException;
+		boolean complimentary, boolean active);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getOfferingEntryLicenseKeys(long offeringEntryId,
-		long clusterId, boolean active) throws SystemException;
+		long clusterId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<LicenseKey> getOfferingEntryLicenseKeys(long offeringEntryId,
+		long clusterId, boolean active);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> search(java.lang.Long createUserId,
@@ -406,13 +396,12 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 		int expirationDateGTYear, int expirationDateLTDay,
 		int expirationDateLTMonth, int expirationDateLTYear,
 		LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andSearch, int start, int end, OrderByComparator obc)
-		throws SystemException;
+		boolean andSearch, int start, int end, OrderByComparator obc);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> search(java.lang.String keywords,
 		LinkedHashMap<java.lang.String, java.lang.Object> params, int start,
-		int end, OrderByComparator obc) throws SystemException;
+		int end, OrderByComparator obc);
 
 	/**
 	* Returns the number of rows matching the dynamic query.
@@ -433,7 +422,7 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 		Projection projection);
 
 	public void buyLicenseKey(long companyId, long userId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public void sendRegisteredEmail(User user, LicenseKey licenseKey)
 		throws java.lang.Exception;
@@ -443,14 +432,12 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 		throws java.lang.Exception;
 
 	public void updateLicenseKey(long licenseKeyId, long accountEntryId,
-		long offeringEntryId, long orderEntryId)
-		throws PortalException, SystemException;
+		long offeringEntryId, long orderEntryId) throws PortalException;
 
 	public void updateLicenseKey(long userId, long licenseKeyId,
-		long assetReceiptLicenseId, boolean active)
-		throws PortalException, SystemException;
+		long assetReceiptLicenseId, boolean active) throws PortalException;
 
 	public void updateLicenseKey(long userId, long licenseKeyId,
 		long licenseKeySetId, long offeringEntryId, java.lang.String name,
-		boolean active) throws PortalException, SystemException;
+		boolean active) throws PortalException;
 }

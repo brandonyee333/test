@@ -57,8 +57,7 @@ import com.liferay.portal.kernel.util.MethodKey;
 public class AccountProjectServiceHttp {
 	public static com.liferay.osb.model.AccountProject deleteAccountProject(
 		HttpPrincipal httpPrincipal, long accountProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(AccountProjectServiceUtil.class,
 					"deleteAccountProject", _deleteAccountProjectParameterTypes0);
@@ -74,10 +73,6 @@ public class AccountProjectServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
@@ -96,8 +91,7 @@ public class AccountProjectServiceHttp {
 		HttpPrincipal httpPrincipal, long accountProjectId,
 		long accountEntryId, java.lang.String name,
 		java.util.Map<java.lang.Integer, java.lang.String> data)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(AccountProjectServiceUtil.class,
 					"updateAccountProject", _updateAccountProjectParameterTypes1);
@@ -113,10 +107,6 @@ public class AccountProjectServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);

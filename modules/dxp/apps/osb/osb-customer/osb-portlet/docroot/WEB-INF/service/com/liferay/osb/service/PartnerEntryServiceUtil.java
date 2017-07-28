@@ -43,29 +43,25 @@ public class PartnerEntryServiceUtil {
 	 */
 	public static com.liferay.osb.model.PartnerEntry getPartnerEntry(
 		long partnerEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getPartnerEntry(partnerEntryId);
 	}
 
 	public static int searchCount(java.lang.String code, int[] statuses,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().searchCount(code, statuses, params, andOperator);
 	}
 
 	public static int searchCount(java.lang.String keywords)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().searchCount(keywords);
 	}
 
 	public static int searchCount(java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().searchCount(keywords, params);
 	}
 
@@ -88,8 +84,7 @@ public class PartnerEntryServiceUtil {
 		java.lang.String code, int[] statuses,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator, int start, int end)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .search(code, statuses, params, andOperator, start, end);
 	}
@@ -98,8 +93,7 @@ public class PartnerEntryServiceUtil {
 		java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		int start, int end)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().search(keywords, params, start, end);
 	}
 

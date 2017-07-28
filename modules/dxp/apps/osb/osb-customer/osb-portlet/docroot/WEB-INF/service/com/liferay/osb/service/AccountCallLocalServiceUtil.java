@@ -123,8 +123,7 @@ public class AccountCallLocalServiceUtil {
 		int callDateMinute, long callLength, java.lang.String summary,
 		java.lang.String clientsPresent, java.lang.String notes,
 		java.lang.String actionItems)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateAccountCall(userId, accountCallId, accountEntryId,
 			type, callDateMonth, callDateDay, callDateYear, callDateHour,
@@ -250,8 +249,7 @@ public class AccountCallLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.osb.model.AccountCall> getAccountCalls(
-		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountEntryId) {
 		return getService().getAccountCalls(accountEntryId);
 	}
 

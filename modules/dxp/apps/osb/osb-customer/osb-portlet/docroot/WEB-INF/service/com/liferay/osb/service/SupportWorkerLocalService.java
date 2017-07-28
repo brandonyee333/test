@@ -64,28 +64,24 @@ public interface SupportWorkerLocalService extends BaseLocalService,
 	 * Never modify or reference this interface directly. Always use {@link SupportWorkerLocalServiceUtil} to access the support worker local service. Add custom service methods to {@link com.liferay.osb.service.impl.SupportWorkerLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasSupportWorker(long userId, int notRole)
-		throws SystemException;
+	public boolean hasSupportWorker(long userId, int notRole);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public boolean hasSupportWorker(long userId, int role,
-		long locationSupportRegionId, java.lang.Integer supportTeamType)
-		throws SystemException;
+		long locationSupportRegionId, java.lang.Integer supportTeamType);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasSupportWorker(long userId, long supportTeamId)
-		throws SystemException;
+	public boolean hasSupportWorker(long userId, long supportTeamId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasSupportWorkerRole(long userId, int role)
-		throws SystemException;
+	public boolean hasSupportWorkerRole(long userId, int role);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean isClockedIn(long userId) throws SystemException;
+	public boolean isClockedIn(long userId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public boolean isManagerOfWorker(long userId, long workerUserId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	/**
 	* Adds the support worker to the database. Also notifies the appropriate model listeners.
@@ -129,23 +125,23 @@ public interface SupportWorkerLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public SupportWorker getAvailableSupportWorker(TicketEntry ticketEntry)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public SupportWorker getLongestOpenSupportWorker(
 		List<SupportWorker> supportWorkers, TicketEntry ticketEntry)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public SupportWorker getMostAvailableSupportWorker(
 		TicketEntry ticketEntry,
 		LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public SupportWorker getNextOpenSupportWorker(
 		List<SupportWorker> supportWorkers, TicketEntry ticketEntry)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	/**
 	* Returns the support worker with the primary key.
@@ -160,7 +156,7 @@ public interface SupportWorkerLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public SupportWorker getSupportWorker(long userId, long supportTeamId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	/**
 	* Updates the support worker in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
@@ -174,7 +170,7 @@ public interface SupportWorkerLocalService extends BaseLocalService,
 	public SupportWorker updateSupportWorker(long supportWorkerId,
 		long supportTeamId, boolean autoAssign, double maxWork,
 		int escalationlevel, int escalationLevel2Role, int notifications)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -197,7 +193,7 @@ public interface SupportWorkerLocalService extends BaseLocalService,
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public double getAssignedWork(long userId) throws SystemException;
+	public double getAssignedWork(long userId);
 
 	/**
 	* Returns the number of support workers.
@@ -209,18 +205,16 @@ public interface SupportWorkerLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getSupportWorkersCountBySupportLaborId(long supportLaborId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(long supportLaborId, java.lang.String firstName,
 		java.lang.String middleName, java.lang.String lastName,
 		java.lang.String screenName, java.lang.String emailAddress,
-		java.lang.String supportTeamName, boolean andSearch)
-		throws SystemException;
+		java.lang.String supportTeamName, boolean andSearch);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int searchCount(long supportLaborId, java.lang.String keywords)
-		throws SystemException;
+	public int searchCount(long supportLaborId, java.lang.String keywords);
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
@@ -289,43 +283,37 @@ public interface SupportWorkerLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<SupportWorker> getSupportWorkersBySupportLaborId(
-		long supportLaborId) throws PortalException, SystemException;
+		long supportLaborId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<SupportWorker> getSupportWorkersBySupportRegionId(
-		long supportRegionId) throws PortalException, SystemException;
+		long supportRegionId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<SupportWorker> getTeamSupportWorkers(long supportTeamId)
-		throws SystemException;
+	public List<SupportWorker> getTeamSupportWorkers(long supportTeamId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<SupportWorker> getUserSupportTeamManagers(long userId,
-		java.lang.Integer supportTeamType)
-		throws PortalException, SystemException;
+		java.lang.Integer supportTeamType) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<SupportWorker> getUserSupportWorkers(long userId)
-		throws SystemException;
+	public List<SupportWorker> getUserSupportWorkers(long userId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<SupportWorker> search(java.lang.Boolean overUtilization,
 		int escalationLevel,
-		LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws SystemException;
+		LinkedHashMap<java.lang.String, java.lang.Object> params);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<SupportWorker> search(long supportLaborId,
 		java.lang.String firstName, java.lang.String middleName,
 		java.lang.String lastName, java.lang.String screenName,
 		java.lang.String emailAddress, java.lang.String supportTeamName,
-		boolean andSearch, int start, int end, OrderByComparator obc)
-		throws SystemException;
+		boolean andSearch, int start, int end, OrderByComparator obc);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<SupportWorker> search(long supportLaborId,
-		java.lang.String keywords, int start, int end, OrderByComparator obc)
-		throws SystemException;
+		java.lang.String keywords, int start, int end, OrderByComparator obc);
 
 	/**
 	* Returns the number of rows matching the dynamic query.
@@ -347,28 +335,22 @@ public interface SupportWorkerLocalService extends BaseLocalService,
 
 	public void addSupportWorkers(long[] userIds, long supportTeamId,
 		double[] maxWork, int[] escalationLevels, int[] roles,
-		int[] notifications) throws PortalException, SystemException;
+		int[] notifications) throws PortalException;
 
-	public void clockInOut(long supportWorkerId)
-		throws PortalException, SystemException;
+	public void clockInOut(long supportWorkerId) throws PortalException;
 
-	public void decreaseAssignedWork(long userId, double work)
-		throws SystemException;
+	public void decreaseAssignedWork(long userId, double work);
 
-	public void decreaseTicketEntryAssignedWork(long ticketEntryId, double work)
-		throws SystemException;
+	public void decreaseTicketEntryAssignedWork(long ticketEntryId, double work);
 
-	public void deleteSupportWorkers(long userId)
-		throws PortalException, SystemException;
+	public void deleteSupportWorkers(long userId) throws PortalException;
 
 	public void deleteSupportWorkers(long[] userIds, long supportTeamId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
-	public void increaseAssignedWork(long userId, double work)
-		throws SystemException;
+	public void increaseAssignedWork(long userId, double work);
 
-	public void increaseTicketEntryAssignedWork(long ticketEntryId, double work)
-		throws SystemException;
+	public void increaseTicketEntryAssignedWork(long ticketEntryId, double work);
 
 	public void recalculateUtilization();
 }

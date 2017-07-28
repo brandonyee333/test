@@ -56,11 +56,11 @@ public interface AccountAttachmentService extends BaseService, InvokableService 
 	 * Never modify or reference this interface directly. Always use {@link AccountAttachmentServiceUtil} to access the account attachment remote service. Add custom service methods to {@link com.liferay.osb.service.impl.AccountAttachmentServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public AccountAttachment deleteAccountAttachment(long accountAttachmentId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AccountAttachment getAccountAttachment(long accountAttachmentId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
@@ -77,10 +77,9 @@ public interface AccountAttachmentService extends BaseService, InvokableService 
 	public List<AccountAttachment> addAccountAttachments(long accountEntryId,
 		long accountProjectId,
 		List<ObjectValuePair<java.lang.String, File>> files,
-		List<java.lang.Integer> types) throws PortalException, SystemException;
+		List<java.lang.Integer> types) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountAttachment> getAccountAttachments(long accountEntryId,
-		long accountProjectId, int type)
-		throws PortalException, SystemException;
+		long accountProjectId, int type) throws PortalException;
 }

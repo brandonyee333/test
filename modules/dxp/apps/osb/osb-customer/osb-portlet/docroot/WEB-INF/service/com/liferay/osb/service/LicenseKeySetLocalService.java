@@ -72,7 +72,7 @@ public interface LicenseKeySetLocalService extends BaseLocalService,
 	public LicenseKeySet addLicenseKeySet(LicenseKeySet licenseKeySet);
 
 	public LicenseKeySet addLicenseKeySet(long userId, long accountEntryId,
-		java.lang.String name) throws PortalException, SystemException;
+		java.lang.String name) throws PortalException;
 
 	/**
 	* Creates a new license key set with the primary key. Does not add the license key set to the database.
@@ -126,7 +126,7 @@ public interface LicenseKeySetLocalService extends BaseLocalService,
 	public LicenseKeySet updateLicenseKeySet(LicenseKeySet licenseKeySet);
 
 	public LicenseKeySet updateLicenseKeySet(long licenseKeySetId,
-		java.lang.String name) throws PortalException, SystemException;
+		java.lang.String name) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -149,8 +149,7 @@ public interface LicenseKeySetLocalService extends BaseLocalService,
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getAccountEntryLicenseKeySetsCount(long accountEntryId)
-		throws SystemException;
+	public int getAccountEntryLicenseKeySetsCount(long accountEntryId);
 
 	/**
 	* Returns the number of license key sets.
@@ -213,7 +212,7 @@ public interface LicenseKeySetLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKeySet> getAccountEntryLicenseKeySets(
-		long accountEntryId, int start, int end) throws SystemException;
+		long accountEntryId, int start, int end);
 
 	/**
 	* Returns a range of all the license key sets.

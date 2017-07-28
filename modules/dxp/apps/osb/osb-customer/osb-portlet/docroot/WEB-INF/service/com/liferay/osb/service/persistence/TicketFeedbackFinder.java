@@ -22,6 +22,9 @@ import aQute.bnd.annotation.ProviderType;
  */
 @ProviderType
 public interface TicketFeedbackFinder {
+	public int countByKeywords(java.lang.String keywords,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params);
+
 	public int countByAE_CD_MD_S_S_C_S_R_R_R_R(
 		java.lang.String accountEntryName, java.util.Date createDateGT,
 		java.util.Date createDateLT, java.util.Date modifiedDateGT,
@@ -31,18 +34,12 @@ public interface TicketFeedbackFinder {
 		java.lang.Integer[] ratings2, java.lang.Integer[] ratings3,
 		java.lang.Integer[] ratings4,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andOperator)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		boolean andOperator);
 
 	public java.util.List<com.liferay.osb.model.TicketFeedback> findByKeywords(
 		java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException;
-
-	public int countByKeywords(java.lang.String keywords,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc);
 
 	public java.util.List<com.liferay.osb.model.TicketFeedback> findByAE_CD_MD_S_S_C_S_R_R_R_R(
 		java.lang.String accountEntryName, java.util.Date createDateGT,
@@ -54,6 +51,5 @@ public interface TicketFeedbackFinder {
 		java.lang.Integer[] ratings4,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		com.liferay.portal.kernel.util.OrderByComparator obc);
 }

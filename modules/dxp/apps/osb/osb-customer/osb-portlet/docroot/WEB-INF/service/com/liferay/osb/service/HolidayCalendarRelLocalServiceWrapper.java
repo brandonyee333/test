@@ -35,8 +35,7 @@ public class HolidayCalendarRelLocalServiceWrapper
 	}
 
 	@Override
-	public boolean hasHolidayCalendarRel(long holidayCalendarId, long userId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public boolean hasHolidayCalendarRel(long holidayCalendarId, long userId) {
 		return _holidayCalendarRelLocalService.hasHolidayCalendarRel(holidayCalendarId,
 			userId);
 	}
@@ -100,8 +99,7 @@ public class HolidayCalendarRelLocalServiceWrapper
 	@Override
 	public com.liferay.osb.model.HolidayCalendarRel getHolidayCalendarRel(
 		long holidayCalendarId, long userId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _holidayCalendarRelLocalService.getHolidayCalendarRel(holidayCalendarId,
 			userId);
 	}
@@ -265,8 +263,7 @@ public class HolidayCalendarRelLocalServiceWrapper
 
 	@Override
 	public java.util.List<com.liferay.osb.model.HolidayCalendarRel> getHolidayCalendarRels(
-		long holidayCalendarId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long holidayCalendarId) {
 		return _holidayCalendarRelLocalService.getHolidayCalendarRels(holidayCalendarId);
 	}
 
@@ -299,20 +296,17 @@ public class HolidayCalendarRelLocalServiceWrapper
 
 	@Override
 	public void addUsers(long holidayCalendarId, long[] userIds)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		_holidayCalendarRelLocalService.addUsers(holidayCalendarId, userIds);
 	}
 
 	@Override
-	public void deleteHolidayCalendarRels(long holidayCalendarId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public void deleteHolidayCalendarRels(long holidayCalendarId) {
 		_holidayCalendarRelLocalService.deleteHolidayCalendarRels(holidayCalendarId);
 	}
 
 	@Override
-	public void deleteHolidayCalendarRels(long holidayCalendarId, long[] userIds)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public void deleteHolidayCalendarRels(long holidayCalendarId, long[] userIds) {
 		_holidayCalendarRelLocalService.deleteHolidayCalendarRels(holidayCalendarId,
 			userIds);
 	}

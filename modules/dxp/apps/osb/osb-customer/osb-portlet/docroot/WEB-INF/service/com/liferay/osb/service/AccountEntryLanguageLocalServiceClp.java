@@ -629,8 +629,7 @@ public class AccountEntryLanguageLocalServiceClp
 
 	@Override
 	public java.util.List<com.liferay.osb.model.AccountEntryLanguage> getAccountEntryLanguages(
-		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountEntryId) {
 		Object returnObj = null;
 
 		try {
@@ -639,10 +638,6 @@ public class AccountEntryLanguageLocalServiceClp
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -713,8 +708,7 @@ public class AccountEntryLanguageLocalServiceClp
 
 	@Override
 	public void setAccountEntryLanguageIds(long accountEntryId,
-		java.lang.String[] languageIds)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.lang.String[] languageIds) {
 		try {
 			_invokableLocalService.invokeMethod(_methodName22,
 				_methodParameterTypes22,
@@ -726,10 +720,6 @@ public class AccountEntryLanguageLocalServiceClp
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;

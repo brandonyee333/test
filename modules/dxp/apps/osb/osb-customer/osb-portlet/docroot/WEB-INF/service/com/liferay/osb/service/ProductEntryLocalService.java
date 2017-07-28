@@ -74,8 +74,7 @@ public interface ProductEntryLocalService extends BaseLocalService,
 
 	public ProductEntry addProductEntry(long userId, java.lang.String name,
 		int type, int environment, java.lang.String versionsListType,
-		java.lang.String[] dossieraIdMappings)
-		throws PortalException, SystemException;
+		java.lang.String[] dossieraIdMappings) throws PortalException;
 
 	/**
 	* Creates a new product entry with the primary key. Does not add the product entry to the database.
@@ -100,18 +99,16 @@ public interface ProductEntryLocalService extends BaseLocalService,
 	* @param productEntryId the primary key of the product entry
 	* @return the product entry that was removed
 	* @throws PortalException if a product entry with the primary key could not be found
-	* @throws SystemException
 	*/
 	@Indexable(type = IndexableType.DELETE)
 	public ProductEntry deleteProductEntry(long productEntryId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ProductEntry fetchProductEntry(long productEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ProductEntry fetchProductEntryByName(java.lang.String name)
-		throws SystemException;
+	public ProductEntry fetchProductEntryByName(java.lang.String name);
 
 	/**
 	* Returns the product entry with the primary key.
@@ -126,7 +123,7 @@ public interface ProductEntryLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ProductEntry getProductEntryByName(java.lang.String name)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	/**
 	* Updates the product entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
@@ -140,7 +137,7 @@ public interface ProductEntryLocalService extends BaseLocalService,
 	public ProductEntry updateProductEntry(long productEntryId,
 		java.lang.String name, int type, int environment,
 		java.lang.String versionsListType, java.lang.String[] dossieraIdMappings)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -172,8 +169,7 @@ public interface ProductEntryLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(java.lang.String name,
-		LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws SystemException;
+		LinkedHashMap<java.lang.String, java.lang.Object> params);
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
@@ -241,13 +237,12 @@ public interface ProductEntryLocalService extends BaseLocalService,
 	public List<ProductEntry> getProductEntries(int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<ProductEntry> getProductEntries(long accountEntryId)
-		throws SystemException;
+	public List<ProductEntry> getProductEntries(long accountEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<ProductEntry> search(java.lang.String name,
 		LinkedHashMap<java.lang.String, java.lang.Object> params, int start,
-		int end) throws SystemException;
+		int end);
 
 	/**
 	* Returns the number of rows matching the dynamic query.

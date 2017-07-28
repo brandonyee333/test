@@ -58,31 +58,30 @@ public interface TicketAttachmentService extends BaseService, InvokableService {
 	 * Never modify or reference this interface directly. Always use {@link TicketAttachmentServiceUtil} to access the ticket attachment remote service. Add custom service methods to {@link com.liferay.osb.service.impl.TicketAttachmentServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public boolean checkAvailability(long ticketAttachmentId,
-		java.lang.String fileRepositoryId)
-		throws PortalException, SystemException;
+		java.lang.String fileRepositoryId) throws PortalException;
 
 	public TicketAttachment addTicketAttachment(long userId,
 		long ticketEntryId, long ticketSolutionId, java.lang.String fileName,
 		long fileSize, int type, int visibility,
 		java.lang.String fileRepositoryId, int status)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public TicketAttachment deleteTicketAttachment(long ticketAttachmentId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public TicketAttachment getTicketAttachment(long ticketAttachmentId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public TicketAttachment replicateTicketAttachment(long ticketAttachmentId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public TicketAttachment updateDeleteDate(long ticketAttachmentId,
-		Date deleteDate) throws PortalException, SystemException;
+		Date deleteDate) throws PortalException;
 
 	public TicketAttachment updateTicketAttachment(long ticketAttachmentId,
 		long ticketEntryId, int type, int visibility, int[] pendingTypes)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
@@ -98,24 +97,23 @@ public interface TicketAttachmentService extends BaseService, InvokableService {
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public java.lang.String getUploadToken(long ticketEntryId,
-		java.lang.String fileRepositoryId)
-		throws PortalException, SystemException;
+		java.lang.String fileRepositoryId) throws PortalException;
 
 	public List<TicketAttachment> addTicketAttachments(long userId,
 		long ticketEntryId, long ticketSolutionId,
 		List<ObjectValuePair<java.lang.String, File>> files,
 		List<java.lang.Integer> types, int visibility, int status,
-		ServiceContext serviceContext) throws PortalException, SystemException;
+		ServiceContext serviceContext) throws PortalException;
 
 	public List<TicketAttachment> addTicketAttachments(long userId,
 		long ticketEntryId, long ticketSolutionId,
 		List<ObjectValuePair<java.lang.String, File>> files,
 		List<java.lang.Integer> types, int visibility, int status,
 		int[] pendingTypes, ServiceContext serviceContext)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public List<TicketAttachment> updateTicketAttachments(
 		List<java.lang.Long> ticketAttachmentIds, long ticketEntryId,
 		List<java.lang.Integer> types, List<java.lang.Integer> visibilities,
-		int[] pendingTypes) throws PortalException, SystemException;
+		int[] pendingTypes) throws PortalException;
 }

@@ -27,50 +27,50 @@ import java.util.Arrays;
 @ProviderType
 public class OfferingEntryServiceClpInvoker {
 	public OfferingEntryServiceClpInvoker() {
-		_methodName382 = "getOSGiServiceIdentifier";
+		_methodName374 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes382 = new String[] {  };
+		_methodParameterTypes374 = new String[] {  };
 
-		_methodName387 = "getAccountEntryOfferingEntries";
+		_methodName379 = "getAccountEntryOfferingEntries";
 
-		_methodParameterTypes387 = new String[] { "long" };
+		_methodParameterTypes379 = new String[] { "long" };
 
-		_methodName388 = "getOrderEntryOfferingEntries";
+		_methodName380 = "getOrderEntryOfferingEntries";
 
-		_methodParameterTypes388 = new String[] { "long" };
+		_methodParameterTypes380 = new String[] { "long" };
 
-		_methodName389 = "updateOfferingEntry";
+		_methodName381 = "updateOfferingEntry";
 
-		_methodParameterTypes389 = new String[] {
+		_methodParameterTypes381 = new String[] {
 				"long", "long", "long", "long", "long", "java.lang.String",
 				"int", "int", "boolean", "long", "long", "long", "boolean",
 				"long", "int", "int"
 			};
 
-		_methodName390 = "updateStatus";
+		_methodName382 = "updateStatus";
 
-		_methodParameterTypes390 = new String[] { "long", "int" };
+		_methodParameterTypes382 = new String[] { "long", "int" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName382.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes382, parameterTypes)) {
+		if (_methodName374.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes374, parameterTypes)) {
 			return OfferingEntryServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName387.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes387, parameterTypes)) {
+		if (_methodName379.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes379, parameterTypes)) {
 			return OfferingEntryServiceUtil.getAccountEntryOfferingEntries(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName388.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes388, parameterTypes)) {
+		if (_methodName380.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes380, parameterTypes)) {
 			return OfferingEntryServiceUtil.getOrderEntryOfferingEntries(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName389.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes389, parameterTypes)) {
+		if (_methodName381.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes381, parameterTypes)) {
 			return OfferingEntryServiceUtil.updateOfferingEntry(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue(),
@@ -89,8 +89,8 @@ public class OfferingEntryServiceClpInvoker {
 				((Integer)arguments[15]).intValue());
 		}
 
-		if (_methodName390.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes390, parameterTypes)) {
+		if (_methodName382.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes382, parameterTypes)) {
 			return OfferingEntryServiceUtil.updateStatus(((Long)arguments[0]).longValue(),
 				((Integer)arguments[1]).intValue());
 		}
@@ -98,14 +98,14 @@ public class OfferingEntryServiceClpInvoker {
 		throw new UnsupportedOperationException();
 	}
 
+	private String _methodName374;
+	private String[] _methodParameterTypes374;
+	private String _methodName379;
+	private String[] _methodParameterTypes379;
+	private String _methodName380;
+	private String[] _methodParameterTypes380;
+	private String _methodName381;
+	private String[] _methodParameterTypes381;
 	private String _methodName382;
 	private String[] _methodParameterTypes382;
-	private String _methodName387;
-	private String[] _methodParameterTypes387;
-	private String _methodName388;
-	private String[] _methodParameterTypes388;
-	private String _methodName389;
-	private String[] _methodParameterTypes389;
-	private String _methodName390;
-	private String[] _methodParameterTypes390;
 }

@@ -73,7 +73,7 @@ public interface SearchFilterLocalService extends BaseLocalService,
 
 	public SearchFilter addSearchFilter(long userId, long classNameId,
 		java.lang.String name, java.lang.String filter, int visibility)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	/**
 	* Creates a new search filter with the primary key. Does not add the search filter to the database.
@@ -128,7 +128,7 @@ public interface SearchFilterLocalService extends BaseLocalService,
 
 	public SearchFilter updateSearchFilter(long searchFilterId,
 		java.lang.String name, java.lang.String filter, int visibility)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -224,8 +224,7 @@ public interface SearchFilterLocalService extends BaseLocalService,
 	public List<SearchFilter> getSearchFilters(int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<SearchFilter> getSearchFilters(long userId, long classNameId)
-		throws SystemException;
+	public List<SearchFilter> getSearchFilters(long userId, long classNameId);
 
 	/**
 	* Returns the number of rows matching the dynamic query.
@@ -245,5 +244,5 @@ public interface SearchFilterLocalService extends BaseLocalService,
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
 
-	public void deleteSearchFilters(long userId) throws SystemException;
+	public void deleteSearchFilters(long userId);
 }

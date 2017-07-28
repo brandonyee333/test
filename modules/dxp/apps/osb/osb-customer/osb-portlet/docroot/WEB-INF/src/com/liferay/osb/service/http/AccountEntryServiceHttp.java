@@ -57,8 +57,7 @@ import com.liferay.portal.kernel.util.MethodKey;
 public class AccountEntryServiceHttp {
 	public static com.liferay.osb.model.AccountEntry fetchCorpProjectAccountEntry(
 		HttpPrincipal httpPrincipal, long corpProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(AccountEntryServiceUtil.class,
 					"fetchCorpProjectAccountEntry",
@@ -77,10 +76,6 @@ public class AccountEntryServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -95,8 +90,7 @@ public class AccountEntryServiceHttp {
 
 	public static com.liferay.osb.model.AccountEntry getAccountEntry(
 		HttpPrincipal httpPrincipal, long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(AccountEntryServiceUtil.class,
 					"getAccountEntry", _getAccountEntryParameterTypes1);
@@ -114,10 +108,6 @@ public class AccountEntryServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -132,8 +122,7 @@ public class AccountEntryServiceHttp {
 
 	public static com.liferay.osb.model.AccountEntry getAccountEntryByCode(
 		HttpPrincipal httpPrincipal, java.lang.String code)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(AccountEntryServiceUtil.class,
 					"getAccountEntryByCode",
@@ -151,10 +140,6 @@ public class AccountEntryServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -169,8 +154,7 @@ public class AccountEntryServiceHttp {
 
 	public static java.util.List<com.liferay.osb.model.AccountEntry> getSecurityPatchAccountEntries(
 		HttpPrincipal httpPrincipal, java.lang.String portletId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(AccountEntryServiceUtil.class,
 					"getSecurityPatchAccountEntries",
@@ -186,10 +170,6 @@ public class AccountEntryServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
@@ -220,8 +200,7 @@ public class AccountEntryServiceHttp {
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(AccountEntryServiceUtil.class,
 					"search", _searchParameterTypes4);
@@ -246,10 +225,6 @@ public class AccountEntryServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -266,8 +241,7 @@ public class AccountEntryServiceHttp {
 		HttpPrincipal httpPrincipal, java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(AccountEntryServiceUtil.class,
 					"search", _searchParameterTypes5);
@@ -285,10 +259,6 @@ public class AccountEntryServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -304,8 +274,7 @@ public class AccountEntryServiceHttp {
 	public static java.util.List<com.liferay.osb.model.AccountEntry> search(
 		HttpPrincipal httpPrincipal, java.lang.String name,
 		java.lang.String code)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(AccountEntryServiceUtil.class,
 					"search", _searchParameterTypes6);
@@ -321,10 +290,6 @@ public class AccountEntryServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
@@ -354,8 +319,7 @@ public class AccountEntryServiceHttp {
 		java.lang.String city, java.lang.String zip,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(AccountEntryServiceUtil.class,
 					"searchCount", _searchCountParameterTypes7);
@@ -380,10 +344,6 @@ public class AccountEntryServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -399,8 +359,7 @@ public class AccountEntryServiceHttp {
 	public static int searchCount(HttpPrincipal httpPrincipal,
 		java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(AccountEntryServiceUtil.class,
 					"searchCount", _searchCountParameterTypes8);
@@ -416,10 +375,6 @@ public class AccountEntryServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
@@ -444,8 +399,7 @@ public class AccountEntryServiceHttp {
 		long addressId, java.lang.String street1, java.lang.String street2,
 		java.lang.String street3, java.lang.String city, java.lang.String zip,
 		long regionId, long countryId, java.lang.String ewsaDossieraProjectKey)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(AccountEntryServiceUtil.class,
 					"updateAccountEntry", _updateAccountEntryParameterTypes9);
@@ -467,10 +421,6 @@ public class AccountEntryServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -486,8 +436,7 @@ public class AccountEntryServiceHttp {
 	public static com.liferay.osb.model.AccountEntry updateInstructions(
 		HttpPrincipal httpPrincipal, long accountEntryId,
 		java.lang.String instructions)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(AccountEntryServiceUtil.class,
 					"updateInstructions", _updateInstructionsParameterTypes10);
@@ -505,10 +454,6 @@ public class AccountEntryServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -523,8 +468,7 @@ public class AccountEntryServiceHttp {
 
 	public static com.liferay.osb.model.AccountEntry updateTier(
 		HttpPrincipal httpPrincipal, long accountEntryId, int tier)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(AccountEntryServiceUtil.class,
 					"updateTier", _updateTierParameterTypes11);
@@ -540,10 +484,6 @@ public class AccountEntryServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);

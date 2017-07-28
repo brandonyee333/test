@@ -246,8 +246,7 @@ public class AccountLinkLocalServiceWrapper implements AccountLinkLocalService,
 
 	@Override
 	public java.util.List<com.liferay.osb.model.AccountLink> getAccountLinks(
-		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountEntryId) {
 		return _accountLinkLocalService.getAccountLinks(accountEntryId);
 	}
 
@@ -281,8 +280,7 @@ public class AccountLinkLocalServiceWrapper implements AccountLinkLocalService,
 	@Override
 	public void addAccountLinks(long userId, long accountEntryId,
 		java.lang.String[] urls)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		_accountLinkLocalService.addAccountLinks(userId, accountEntryId, urls);
 	}
 

@@ -35,8 +35,7 @@ public class SupportLaborLocalServiceWrapper implements SupportLaborLocalService
 
 	@Override
 	public boolean hasSupportWorker(long supportWorkerId, long supportLaborId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _supportLaborLocalService.hasSupportWorker(supportWorkerId,
 			supportLaborId);
 	}
@@ -60,8 +59,7 @@ public class SupportLaborLocalServiceWrapper implements SupportLaborLocalService
 		int monClose, int tueOpen, int tueClose, int wedOpen, int wedClose,
 		int thuOpen, int thuClose, int friOpen, int friClose, int satOpen,
 		int satClose)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _supportLaborLocalService.addSupportLabor(name, description,
 			timeZoneId, sunOpen, sunClose, monOpen, monClose, tueOpen,
 			tueClose, wedOpen, wedClose, thuOpen, thuClose, friOpen, friClose,
@@ -98,13 +96,11 @@ public class SupportLaborLocalServiceWrapper implements SupportLaborLocalService
 	* @param supportLaborId the primary key of the support labor
 	* @return the support labor that was removed
 	* @throws PortalException if a support labor with the primary key could not be found
-	* @throws SystemException
 	*/
 	@Override
 	public com.liferay.osb.model.SupportLabor deleteSupportLabor(
 		long supportLaborId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _supportLaborLocalService.deleteSupportLabor(supportLaborId);
 	}
 
@@ -147,8 +143,7 @@ public class SupportLaborLocalServiceWrapper implements SupportLaborLocalService
 		int sunClose, int monOpen, int monClose, int tueOpen, int tueClose,
 		int wedOpen, int wedClose, int thuOpen, int thuClose, int friOpen,
 		int friClose, int satOpen, int satClose)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _supportLaborLocalService.updateSupportLabor(supportLaborId,
 			name, description, timeZoneId, sunOpen, sunClose, monOpen,
 			monClose, tueOpen, tueClose, wedOpen, wedClose, thuOpen, thuClose,
@@ -314,16 +309,14 @@ public class SupportLaborLocalServiceWrapper implements SupportLaborLocalService
 
 	@Override
 	public void addSupportWorkers(long[] supportWorkerIds, long supportLaborId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		_supportLaborLocalService.addSupportWorkers(supportWorkerIds,
 			supportLaborId);
 	}
 
 	@Override
 	public void removeSupportWorkers(long[] supportWorkerIds)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		_supportLaborLocalService.removeSupportWorkers(supportWorkerIds);
 	}
 

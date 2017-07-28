@@ -56,8 +56,7 @@ public class TicketCannedResponseLocalServiceUtil {
 	public static com.liferay.osb.model.TicketCannedResponse addTicketCannedResponse(
 		long userId, java.lang.String defaultLanguageId, java.lang.String name,
 		java.lang.String content)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addTicketCannedResponse(userId, defaultLanguageId, name,
 			content);
@@ -131,8 +130,7 @@ public class TicketCannedResponseLocalServiceUtil {
 		long ticketCannedResponseId, java.lang.String defaultLanguageId,
 		java.lang.String languageId, java.lang.String name,
 		java.lang.String content)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateTicketCannedResponse(ticketCannedResponseId,
 			defaultLanguageId, languageId, name, content);
@@ -174,14 +172,12 @@ public class TicketCannedResponseLocalServiceUtil {
 		return getService().getTicketCannedResponsesCount();
 	}
 
-	public static int searchCount(java.lang.String keywords)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public static int searchCount(java.lang.String keywords) {
 		return getService().searchCount(keywords);
 	}
 
 	public static int searchCount(java.lang.String name,
-		java.lang.String content, boolean andSearch)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.lang.String content, boolean andSearch) {
 		return getService().searchCount(name, content, andSearch);
 	}
 
@@ -267,15 +263,13 @@ public class TicketCannedResponseLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.osb.model.TicketCannedResponse> search(
-		java.lang.String keywords, int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.lang.String keywords, int start, int end) {
 		return getService().search(keywords, start, end);
 	}
 
 	public static java.util.List<com.liferay.osb.model.TicketCannedResponse> search(
 		java.lang.String name, java.lang.String content, boolean andSearch,
-		int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int start, int end) {
 		return getService().search(name, content, andSearch, start, end);
 	}
 
@@ -304,15 +298,13 @@ public class TicketCannedResponseLocalServiceUtil {
 	}
 
 	public static void incrementUseCount(long ticketCannedResponseId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().incrementUseCount(ticketCannedResponseId);
 	}
 
 	public static void removeCannedResponseLocale(long ticketCannedResponseId,
 		java.lang.String languageId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService()
 			.removeCannedResponseLocale(ticketCannedResponseId, languageId);
 	}

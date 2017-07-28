@@ -49,8 +49,7 @@ public class ProductEntryLocalServiceWrapper implements ProductEntryLocalService
 	public com.liferay.osb.model.ProductEntry addProductEntry(long userId,
 		java.lang.String name, int type, int environment,
 		java.lang.String versionsListType, java.lang.String[] dossieraIdMappings)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _productEntryLocalService.addProductEntry(userId, name, type,
 			environment, versionsListType, dossieraIdMappings);
 	}
@@ -85,13 +84,11 @@ public class ProductEntryLocalServiceWrapper implements ProductEntryLocalService
 	* @param productEntryId the primary key of the product entry
 	* @return the product entry that was removed
 	* @throws PortalException if a product entry with the primary key could not be found
-	* @throws SystemException
 	*/
 	@Override
 	public com.liferay.osb.model.ProductEntry deleteProductEntry(
 		long productEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _productEntryLocalService.deleteProductEntry(productEntryId);
 	}
 
@@ -103,8 +100,7 @@ public class ProductEntryLocalServiceWrapper implements ProductEntryLocalService
 
 	@Override
 	public com.liferay.osb.model.ProductEntry fetchProductEntryByName(
-		java.lang.String name)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.lang.String name) {
 		return _productEntryLocalService.fetchProductEntryByName(name);
 	}
 
@@ -125,8 +121,7 @@ public class ProductEntryLocalServiceWrapper implements ProductEntryLocalService
 	@Override
 	public com.liferay.osb.model.ProductEntry getProductEntryByName(
 		java.lang.String name)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _productEntryLocalService.getProductEntryByName(name);
 	}
 
@@ -146,8 +141,7 @@ public class ProductEntryLocalServiceWrapper implements ProductEntryLocalService
 	public com.liferay.osb.model.ProductEntry updateProductEntry(
 		long productEntryId, java.lang.String name, int type, int environment,
 		java.lang.String versionsListType, java.lang.String[] dossieraIdMappings)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _productEntryLocalService.updateProductEntry(productEntryId,
 			name, type, environment, versionsListType, dossieraIdMappings);
 	}
@@ -196,8 +190,7 @@ public class ProductEntryLocalServiceWrapper implements ProductEntryLocalService
 
 	@Override
 	public int searchCount(java.lang.String name,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params) {
 		return _productEntryLocalService.searchCount(name, params);
 	}
 
@@ -291,8 +284,7 @@ public class ProductEntryLocalServiceWrapper implements ProductEntryLocalService
 
 	@Override
 	public java.util.List<com.liferay.osb.model.ProductEntry> getProductEntries(
-		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountEntryId) {
 		return _productEntryLocalService.getProductEntries(accountEntryId);
 	}
 
@@ -300,8 +292,7 @@ public class ProductEntryLocalServiceWrapper implements ProductEntryLocalService
 	public java.util.List<com.liferay.osb.model.ProductEntry> search(
 		java.lang.String name,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int start, int end) {
 		return _productEntryLocalService.search(name, params, start, end);
 	}
 

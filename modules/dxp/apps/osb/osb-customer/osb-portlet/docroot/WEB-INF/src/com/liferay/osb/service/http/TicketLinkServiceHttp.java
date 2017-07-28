@@ -60,8 +60,7 @@ public class TicketLinkServiceHttp {
 		long ticketSolutionId, java.lang.String[] urls,
 		java.lang.Integer[] types, int visibility,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketLinkServiceUtil.class,
 					"addTicketLink", _addTicketLinkParameterTypes0);
@@ -80,10 +79,6 @@ public class TicketLinkServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -98,8 +93,7 @@ public class TicketLinkServiceHttp {
 
 	public static void deleteTicketLink(HttpPrincipal httpPrincipal,
 		long ticketLinkId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketLinkServiceUtil.class,
 					"deleteTicketLink", _deleteTicketLinkParameterTypes1);
@@ -113,10 +107,6 @@ public class TicketLinkServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);

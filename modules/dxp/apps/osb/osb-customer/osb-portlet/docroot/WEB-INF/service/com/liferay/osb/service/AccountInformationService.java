@@ -67,5 +67,5 @@ public interface AccountInformationService extends BaseService, InvokableService
 	public List<AccountInformation> updateAccountInformation(
 		long accountEntryId, long accountProjectId,
 		Map<java.lang.Integer, java.lang.String> data)
-		throws PortalException, SystemException;
+		throws PortalException;
 }

@@ -55,11 +55,9 @@ public interface SupportRegion extends SupportRegionModel, PersistedModel {
 			}
 		};
 
-	public com.liferay.portal.kernel.model.User getManagerUser()
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public com.liferay.portal.kernel.model.User getManagerUser();
 
-	public java.util.List<SupportTeam> getSupportTeams()
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public java.util.List<SupportTeam> getSupportTeams();
 
 	public java.util.TimeZone getTimeZone();
 }

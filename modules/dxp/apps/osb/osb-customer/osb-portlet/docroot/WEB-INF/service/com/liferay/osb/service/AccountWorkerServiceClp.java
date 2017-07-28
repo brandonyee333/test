@@ -75,8 +75,7 @@ public class AccountWorkerServiceClp implements AccountWorkerService {
 	@Override
 	public void addAccountWorkers(long[] userIds, long accountEntryId,
 		int[] roles, int[] notifications)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableService.invokeMethod(_methodName2,
 				_methodParameterTypes2,
@@ -97,10 +96,6 @@ public class AccountWorkerServiceClp implements AccountWorkerService {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
 			}
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -113,8 +108,7 @@ public class AccountWorkerServiceClp implements AccountWorkerService {
 
 	@Override
 	public void deleteAccountWorkers(long[] userIds, long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableService.invokeMethod(_methodName3,
 				_methodParameterTypes3,
@@ -129,10 +123,6 @@ public class AccountWorkerServiceClp implements AccountWorkerService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {

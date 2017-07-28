@@ -191,15 +191,13 @@ public class TicketAttachmentWrapper implements TicketAttachment,
 
 	@Override
 	public TicketEntry getTicketEntry()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketAttachment.getTicketEntry();
 	}
 
 	@Override
 	public boolean fileExists()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketAttachment.fileExists();
 	}
 

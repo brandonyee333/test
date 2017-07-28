@@ -329,8 +329,7 @@ public class ProductEntryWrapper implements ProductEntry,
 	}
 
 	@Override
-	public java.lang.String[] getDossieraIdMappings()
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public java.lang.String[] getDossieraIdMappings() {
 		return _productEntry.getDossieraIdMappings();
 	}
 
@@ -355,20 +354,17 @@ public class ProductEntryWrapper implements ProductEntry,
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.kernel.model.ListType> getAllVersionsListTypes()
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public java.util.List<com.liferay.portal.kernel.model.ListType> getAllVersionsListTypes() {
 		return _productEntry.getAllVersionsListTypes();
 	}
 
 	@Override
-	public java.util.List<LicenseEntry> getLicenseEntries()
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public java.util.List<LicenseEntry> getLicenseEntries() {
 		return _productEntry.getLicenseEntries();
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.kernel.model.ListType> getVersionsListTypes()
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public java.util.List<com.liferay.portal.kernel.model.ListType> getVersionsListTypes() {
 		return _productEntry.getVersionsListTypes();
 	}
 

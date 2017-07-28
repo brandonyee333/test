@@ -164,8 +164,7 @@ public class TicketFlagLocalServiceClp implements TicketFlagLocalService {
 	}
 
 	@Override
-	public boolean hasTicketFlag(long ticketEntryId, int type, int flag)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public boolean hasTicketFlag(long ticketEntryId, int type, int flag) {
 		Object returnObj = null;
 
 		try {
@@ -175,10 +174,6 @@ public class TicketFlagLocalServiceClp implements TicketFlagLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -194,8 +189,7 @@ public class TicketFlagLocalServiceClp implements TicketFlagLocalService {
 
 	@Override
 	public boolean hasTicketFlag(long userId, long accountEntryId,
-		long ticketEntryId, int type, int flag)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long ticketEntryId, int type, int flag) {
 		Object returnObj = null;
 
 		try {
@@ -215,10 +209,6 @@ public class TicketFlagLocalServiceClp implements TicketFlagLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -412,8 +402,7 @@ public class TicketFlagLocalServiceClp implements TicketFlagLocalService {
 	@Override
 	public com.liferay.osb.model.TicketFlag updateTicketFlag(long userId,
 		long accountEntryId, long ticketEntryId, int type, int flag)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -436,10 +425,6 @@ public class TicketFlagLocalServiceClp implements TicketFlagLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -607,8 +592,7 @@ public class TicketFlagLocalServiceClp implements TicketFlagLocalService {
 	}
 
 	@Override
-	public int getTicketFlagsCount(long ticketEntryId, int type, int flag)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public int getTicketFlagsCount(long ticketEntryId, int type, int flag) {
 		Object returnObj = null;
 
 		try {
@@ -618,10 +602,6 @@ public class TicketFlagLocalServiceClp implements TicketFlagLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -636,8 +616,7 @@ public class TicketFlagLocalServiceClp implements TicketFlagLocalService {
 	}
 
 	@Override
-	public int[] getTicketFlagTypes(long ticketEntryId, int[] types, int flag)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public int[] getTicketFlagTypes(long ticketEntryId, int[] types, int flag) {
 		Object returnObj = null;
 
 		try {
@@ -653,10 +632,6 @@ public class TicketFlagLocalServiceClp implements TicketFlagLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -818,8 +793,7 @@ public class TicketFlagLocalServiceClp implements TicketFlagLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.TicketFlag> getTicketFlags(
-		long ticketEntryId, int type, int flag)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long ticketEntryId, int type, int flag) {
 		Object returnObj = null;
 
 		try {
@@ -829,10 +803,6 @@ public class TicketFlagLocalServiceClp implements TicketFlagLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -848,8 +818,7 @@ public class TicketFlagLocalServiceClp implements TicketFlagLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.TicketFlag> getTicketFlags(
-		long ticketEntryId, int[] types, int flag)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long ticketEntryId, int[] types, int flag) {
 		Object returnObj = null;
 
 		try {
@@ -865,10 +834,6 @@ public class TicketFlagLocalServiceClp implements TicketFlagLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -940,8 +905,7 @@ public class TicketFlagLocalServiceClp implements TicketFlagLocalService {
 	@Override
 	public void deleteTicketFlag(long userId, long accountEntryId,
 		long ticketEntryId, int type)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName28,
 				_methodParameterTypes28,
@@ -952,10 +916,6 @@ public class TicketFlagLocalServiceClp implements TicketFlagLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -969,8 +929,7 @@ public class TicketFlagLocalServiceClp implements TicketFlagLocalService {
 	}
 
 	@Override
-	public void deleteTicketFlags(long ticketEntryId, int type, int flag)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public void deleteTicketFlags(long ticketEntryId, int type, int flag) {
 		try {
 			_invokableLocalService.invokeMethod(_methodName29,
 				_methodParameterTypes29,
@@ -978,10 +937,6 @@ public class TicketFlagLocalServiceClp implements TicketFlagLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;

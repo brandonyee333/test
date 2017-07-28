@@ -60,9 +60,8 @@ public interface AccountWorkerService extends BaseService, InvokableService {
 	public java.lang.String getOSGiServiceIdentifier();
 
 	public void addAccountWorkers(long[] userIds, long accountEntryId,
-		int[] roles, int[] notifications)
-		throws PortalException, SystemException;
+		int[] roles, int[] notifications) throws PortalException;
 
 	public void deleteAccountWorkers(long[] userIds, long accountEntryId)
-		throws PortalException, SystemException;
+		throws PortalException;
 }

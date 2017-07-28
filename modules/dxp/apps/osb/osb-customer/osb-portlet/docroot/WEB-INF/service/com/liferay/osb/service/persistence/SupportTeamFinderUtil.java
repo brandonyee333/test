@@ -25,34 +25,29 @@ import com.liferay.portal.kernel.util.ReferenceRegistry;
  */
 @ProviderType
 public class SupportTeamFinderUtil {
-	public static int countByKeywords(java.lang.String keywords)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public static int countByKeywords(java.lang.String keywords) {
 		return getFinder().countByKeywords(keywords);
 	}
 
 	public static int countByN_T(java.lang.String name, java.lang.Integer type,
-		boolean andOperator)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		boolean andOperator) {
 		return getFinder().countByN_T(name, type, andOperator);
 	}
 
 	public static java.util.List<com.liferay.osb.model.SupportTeam> findByKeywords(
 		java.lang.String keywords, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.portal.kernel.util.OrderByComparator obc) {
 		return getFinder().findByKeywords(keywords, start, end, obc);
 	}
 
 	public static java.util.List<com.liferay.osb.model.SupportTeam> findByN_T(
 		java.lang.String name, java.lang.Integer type, boolean andOperator,
-		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc) {
 		return getFinder().findByN_T(name, type, andOperator, start, end, obc);
 	}
 
 	public static java.util.List<com.liferay.osb.model.SupportTeam> findByU_R(
-		long userId, int role)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long userId, int role) {
 		return getFinder().findByU_R(userId, role);
 	}
 

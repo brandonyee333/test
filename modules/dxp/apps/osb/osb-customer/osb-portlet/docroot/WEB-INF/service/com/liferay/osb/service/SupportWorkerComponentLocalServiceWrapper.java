@@ -250,8 +250,7 @@ public class SupportWorkerComponentLocalServiceWrapper
 
 	@Override
 	public java.util.List<com.liferay.osb.model.SupportWorkerComponent> getSupportWorkerComponents(
-		long supportWorkerId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long supportWorkerId) {
 		return _supportWorkerComponentLocalService.getSupportWorkerComponents(supportWorkerId);
 	}
 
@@ -284,8 +283,7 @@ public class SupportWorkerComponentLocalServiceWrapper
 
 	@Override
 	public void setSupportWorkerComponents(long supportWorkerId,
-		int[] components)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int[] components) {
 		_supportWorkerComponentLocalService.setSupportWorkerComponents(supportWorkerId,
 			components);
 	}

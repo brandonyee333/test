@@ -75,8 +75,7 @@ public interface HolidayEntryLocalService extends BaseLocalService,
 
 	public HolidayEntry addHolidayEntry(long holidayCalendarId,
 		java.lang.String name, java.lang.String description, Date startDate,
-		Date endDate, boolean repeatYearly)
-		throws PortalException, SystemException;
+		Date endDate, boolean repeatYearly) throws PortalException;
 
 	/**
 	* Creates a new holiday entry with the primary key. Does not add the holiday entry to the database.
@@ -132,7 +131,7 @@ public interface HolidayEntryLocalService extends BaseLocalService,
 	public HolidayEntry updateHolidayEntry(long holidayEntryId,
 		long holidayCalendarId, java.lang.String name,
 		java.lang.String description, Date startDate, Date endDate,
-		boolean repeatYearly) throws PortalException, SystemException;
+		boolean repeatYearly) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -163,8 +162,7 @@ public interface HolidayEntryLocalService extends BaseLocalService,
 	public int getHolidayEntriesCount();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getHolidayEntriesCount(long userId, Date date)
-		throws SystemException;
+	public int getHolidayEntriesCount(long userId, Date date);
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
@@ -232,13 +230,11 @@ public interface HolidayEntryLocalService extends BaseLocalService,
 	public List<HolidayEntry> getHolidayEntries(int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<HolidayEntry> getHolidayEntries(long holidayCalendarId)
-		throws SystemException;
+	public List<HolidayEntry> getHolidayEntries(long holidayCalendarId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<HolidayEntry> getHolidayEntriesBetween(long userId,
-		Date startDate, Date endDate, TimeZone timeZone)
-		throws SystemException;
+		Date startDate, Date endDate, TimeZone timeZone);
 
 	/**
 	* Returns the number of rows matching the dynamic query.

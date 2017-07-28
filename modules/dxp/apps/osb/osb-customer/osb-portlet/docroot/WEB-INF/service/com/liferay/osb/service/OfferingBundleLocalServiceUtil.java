@@ -67,8 +67,7 @@ public class OfferingBundleLocalServiceUtil {
 
 	public static com.liferay.osb.model.OfferingBundle addOfferingBundle(
 		long userId, java.lang.String name, long[] offeringDefinitionIds)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addOfferingBundle(userId, name, offeringDefinitionIds);
 	}
@@ -140,8 +139,7 @@ public class OfferingBundleLocalServiceUtil {
 	public static com.liferay.osb.model.OfferingBundle updateOfferingBundle(
 		long offeringBundleId, java.lang.String name,
 		long[] offeringDefinitionIds)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateOfferingBundle(offeringBundleId, name,
 			offeringDefinitionIds);

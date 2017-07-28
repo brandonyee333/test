@@ -66,27 +66,26 @@ public interface TicketEntryService extends BaseService, InvokableService {
 		int systemStatus, int status, int weight, int escalationLevel,
 		int component, int subcomponent,
 		Map<java.lang.Long, java.lang.String> ticketInformationFieldsMap,
-		List<TicketAttachment> ticketAttachments)
-		throws PortalException, SystemException;
+		List<TicketAttachment> ticketAttachments) throws PortalException;
 
 	public TicketEntry forwardTicketEntry(long ticketEntryId,
-		java.lang.String commentBody) throws PortalException, SystemException;
+		java.lang.String commentBody) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public TicketEntry getTicketEntry(long accountEntryId, long ticketId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public TicketEntry getTicketEntry(long ticketEntryId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public TicketEntry updatePendingTypes(long ticketEntryId, int[] pendingTypes)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public TicketEntry updateTicketEntry(long userId, long ticketEntryId,
 		long assigneeUserId, long supportRegionId, int dueDateMonth,
 		int dueDateDay, int dueDateYear, int dueDateHour, int dueDateMinute)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public TicketEntry updateTicketEntry(long userId, long ticketEntryId,
 		long reportedByUserId, long offeringEntryId, long supportRegionId,
@@ -98,13 +97,13 @@ public interface TicketEntryService extends BaseService, InvokableService {
 		int dueDateHour, int dueDateMinute, boolean ignoreDueDate,
 		Map<java.lang.Long, java.lang.String> ticketInformationFieldsMap,
 		int[] pendingTypes, List<TicketAttachment> ticketAttachments,
-		ServiceContext serviceContext) throws PortalException, SystemException;
+		ServiceContext serviceContext) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Hits search(long reportedByUserId, long accountEntryId,
 		java.lang.String keywords,
 		LinkedHashMap<java.lang.String, java.lang.Object> params, int start,
-		int end, Sort[] sorts) throws PortalException, SystemException;
+		int end, Sort[] sorts) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Hits search(long reportedByUserId, long accountEntryId,
@@ -117,15 +116,14 @@ public interface TicketEntryService extends BaseService, InvokableService {
 		Date dueDateLT,
 		LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andSearch, int start, int end, Sort[] sorts)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getTicketEntriesCount(long accountEntryId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int searchCount(java.lang.String keywords)
-		throws PortalException, SystemException;
+	public int searchCount(java.lang.String keywords) throws PortalException;
 
 	@JSONWebService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -142,7 +140,7 @@ public interface TicketEntryService extends BaseService, InvokableService {
 		int dueDateGTDay, int dueDateGTMonth, int dueDateGTYear,
 		int dueDateLTDay, int dueDateLTMonth, int dueDateLTYear,
 		LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andSearch) throws PortalException, SystemException;
+		boolean andSearch) throws PortalException;
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
@@ -158,11 +156,11 @@ public interface TicketEntryService extends BaseService, InvokableService {
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TicketEntry> getTicketEntries(long accountEntryId, int start,
-		int end, OrderByComparator obc) throws PortalException, SystemException;
+		int end, OrderByComparator obc) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TicketEntry> search(java.lang.String keywords, int start,
-		int end, OrderByComparator obc) throws PortalException, SystemException;
+		int end, OrderByComparator obc) throws PortalException;
 
 	@JSONWebService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -181,11 +179,11 @@ public interface TicketEntryService extends BaseService, InvokableService {
 		int dueDateLTMonth, int dueDateLTYear,
 		LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andSearch, int start, int end, OrderByComparator obc)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public void closeTicketEntry(long ticketEntryId, int resolution,
-		java.lang.String body) throws PortalException, SystemException;
+		java.lang.String body) throws PortalException;
 
 	public void escalateTicketEntry(long ticketEntryId)
-		throws PortalException, SystemException;
+		throws PortalException;
 }

@@ -182,8 +182,7 @@ public class ExternalIdMapperLocalServiceClp
 
 	@Override
 	public com.liferay.osb.model.ExternalIdMapper addExternalIdMapper(
-		long classNameId, long classPK, int type, java.lang.String externalId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long classNameId, long classPK, int type, java.lang.String externalId) {
 		Object returnObj = null;
 
 		try {
@@ -201,10 +200,6 @@ public class ExternalIdMapperLocalServiceClp
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -380,8 +375,7 @@ public class ExternalIdMapperLocalServiceClp
 	public com.liferay.osb.model.ExternalIdMapper updateExternalIdMapper(
 		long externalIdMapperId, long classNameId, long classPK, int type,
 		java.lang.String externalId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -404,10 +398,6 @@ public class ExternalIdMapperLocalServiceClp
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -722,8 +712,7 @@ public class ExternalIdMapperLocalServiceClp
 
 	@Override
 	public java.util.List<com.liferay.osb.model.ExternalIdMapper> getExternalIdMappers(
-		long classNameId, int type, java.lang.String externalId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long classNameId, int type, java.lang.String externalId) {
 		Object returnObj = null;
 
 		try {
@@ -740,10 +729,6 @@ public class ExternalIdMapperLocalServiceClp
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -758,8 +743,7 @@ public class ExternalIdMapperLocalServiceClp
 
 	@Override
 	public java.util.List<com.liferay.osb.model.ExternalIdMapper> getExternalIdMappers(
-		long classNameId, long classPK, int type)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long classNameId, long classPK, int type) {
 		Object returnObj = null;
 
 		try {
@@ -769,10 +753,6 @@ public class ExternalIdMapperLocalServiceClp
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -842,8 +822,7 @@ public class ExternalIdMapperLocalServiceClp
 	}
 
 	@Override
-	public void deleteExternalIdMapper(long classNameId, long classPK, int type)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public void deleteExternalIdMapper(long classNameId, long classPK, int type) {
 		try {
 			_invokableLocalService.invokeMethod(_methodName25,
 				_methodParameterTypes25,
@@ -851,10 +830,6 @@ public class ExternalIdMapperLocalServiceClp
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;

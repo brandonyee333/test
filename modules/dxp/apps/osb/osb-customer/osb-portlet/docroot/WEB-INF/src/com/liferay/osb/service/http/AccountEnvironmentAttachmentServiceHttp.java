@@ -57,8 +57,7 @@ import com.liferay.portal.kernel.util.MethodKey;
 public class AccountEnvironmentAttachmentServiceHttp {
 	public static com.liferay.osb.model.AccountEnvironmentAttachment getAccountEnvironmentAttachment(
 		HttpPrincipal httpPrincipal, long accountEnvironmentAttachmentId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(AccountEnvironmentAttachmentServiceUtil.class,
 					"getAccountEnvironmentAttachment",
@@ -75,10 +74,6 @@ public class AccountEnvironmentAttachmentServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);

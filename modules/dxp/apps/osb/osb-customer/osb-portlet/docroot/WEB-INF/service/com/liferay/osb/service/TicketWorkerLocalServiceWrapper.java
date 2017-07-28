@@ -34,8 +34,7 @@ public class TicketWorkerLocalServiceWrapper implements TicketWorkerLocalService
 	}
 
 	@Override
-	public boolean hasTicketWorker(long userId, long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public boolean hasTicketWorker(long userId, long ticketEntryId) {
 		return _ticketWorkerLocalService.hasTicketWorker(userId, ticketEntryId);
 	}
 
@@ -91,16 +90,14 @@ public class TicketWorkerLocalServiceWrapper implements TicketWorkerLocalService
 
 	@Override
 	public com.liferay.osb.model.TicketWorker fetchLatestTicketWorker(
-		long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long ticketEntryId) {
 		return _ticketWorkerLocalService.fetchLatestTicketWorker(ticketEntryId);
 	}
 
 	@Override
 	public com.liferay.osb.model.TicketWorker fetchPrimaryTicketWorker(
 		long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketWorkerLocalService.fetchPrimaryTicketWorker(ticketEntryId);
 	}
 
@@ -112,8 +109,7 @@ public class TicketWorkerLocalServiceWrapper implements TicketWorkerLocalService
 
 	@Override
 	public com.liferay.osb.model.TicketWorker fetchTicketWorker(long userId,
-		long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long ticketEntryId) {
 		return _ticketWorkerLocalService.fetchTicketWorker(userId, ticketEntryId);
 	}
 
@@ -134,8 +130,7 @@ public class TicketWorkerLocalServiceWrapper implements TicketWorkerLocalService
 	@Override
 	public com.liferay.osb.model.TicketWorker getTicketWorker(long userId,
 		long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketWorkerLocalService.getTicketWorker(userId, ticketEntryId);
 	}
 
@@ -194,8 +189,7 @@ public class TicketWorkerLocalServiceWrapper implements TicketWorkerLocalService
 	}
 
 	@Override
-	public int getUserTicketWorkersCount(long userId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public int getUserTicketWorkersCount(long userId) {
 		return _ticketWorkerLocalService.getUserTicketWorkersCount(userId);
 	}
 
@@ -222,8 +216,7 @@ public class TicketWorkerLocalServiceWrapper implements TicketWorkerLocalService
 		long userId, long[] userIds, long ticketEntryId,
 		long[] sourceClassNameIds, long[] sourceClassPKs, int[] roles,
 		long primaryUserId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketWorkerLocalService.addTicketWorkers(userId, userIds,
 			ticketEntryId, sourceClassNameIds, sourceClassPKs, roles,
 			primaryUserId);
@@ -301,22 +294,20 @@ public class TicketWorkerLocalServiceWrapper implements TicketWorkerLocalService
 
 	@Override
 	public java.util.List<com.liferay.osb.model.TicketWorker> getTicketWorkers(
-		long sourceClassNameId, long sourceClassPK)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long sourceClassNameId, long sourceClassPK) {
 		return _ticketWorkerLocalService.getTicketWorkers(sourceClassNameId,
 			sourceClassPK);
 	}
 
 	@Override
 	public java.util.List<com.liferay.osb.model.TicketWorker> getTicketWorkers(
-		long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long ticketEntryId) {
 		return _ticketWorkerLocalService.getTicketWorkers(ticketEntryId);
 	}
 
 	@Override
 	public java.util.List<com.liferay.osb.model.TicketWorker> getUserTicketWorkers(
-		long userId) throws com.liferay.portal.kernel.exception.SystemException {
+		long userId) {
 		return _ticketWorkerLocalService.getUserTicketWorkers(userId);
 	}
 
@@ -349,16 +340,14 @@ public class TicketWorkerLocalServiceWrapper implements TicketWorkerLocalService
 
 	@Override
 	public void deleteTicketWorkers(long userId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		_ticketWorkerLocalService.deleteTicketWorkers(userId);
 	}
 
 	@Override
 	public void deleteTicketWorkers(long userId, long[] userIds,
 		long ticketEntryId, long primaryUserId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		_ticketWorkerLocalService.deleteTicketWorkers(userId, userIds,
 			ticketEntryId, primaryUserId);
 	}

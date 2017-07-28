@@ -250,8 +250,7 @@ public class AccountEntryLanguageLocalServiceWrapper
 
 	@Override
 	public java.util.List<com.liferay.osb.model.AccountEntryLanguage> getAccountEntryLanguages(
-		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountEntryId) {
 		return _accountEntryLanguageLocalService.getAccountEntryLanguages(accountEntryId);
 	}
 
@@ -284,8 +283,7 @@ public class AccountEntryLanguageLocalServiceWrapper
 
 	@Override
 	public void setAccountEntryLanguageIds(long accountEntryId,
-		java.lang.String[] languageIds)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.lang.String[] languageIds) {
 		_accountEntryLanguageLocalService.setAccountEntryLanguageIds(accountEntryId,
 			languageIds);
 	}

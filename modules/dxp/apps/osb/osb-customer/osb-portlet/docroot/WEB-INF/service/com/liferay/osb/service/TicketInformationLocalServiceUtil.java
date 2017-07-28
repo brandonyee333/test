@@ -55,8 +55,7 @@ public class TicketInformationLocalServiceUtil {
 
 	public static com.liferay.osb.model.TicketInformation addTicketInformation(
 		long ticketEntryId, long fieldId, java.lang.String data)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().addTicketInformation(ticketEntryId, fieldId, data);
 	}
 
@@ -167,8 +166,7 @@ public class TicketInformationLocalServiceUtil {
 	}
 
 	public static java.lang.String getData(long ticketEntryId, long fieldId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getData(ticketEntryId, fieldId);
 	}
 
@@ -232,8 +230,7 @@ public class TicketInformationLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.osb.model.TicketInformation> getTicketInformationList(
-		long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long ticketEntryId) {
 		return getService().getTicketInformationList(ticketEntryId);
 	}
 
@@ -256,8 +253,7 @@ public class TicketInformationLocalServiceUtil {
 	public static java.util.List<com.liferay.osb.model.TicketInformation> updateTicketInformation(
 		long ticketEntryId,
 		java.util.Map<java.lang.Long, java.lang.String> fieldsMap)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updateTicketInformation(ticketEntryId, fieldsMap);
 	}
 
@@ -265,16 +261,14 @@ public class TicketInformationLocalServiceUtil {
 		long userId, java.lang.String userName, long ticketEntryId,
 		java.util.Map<java.lang.Long, java.lang.String> fieldsMap,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateTicketInformation(userId, userName, ticketEntryId,
 			fieldsMap, serviceContext);
 	}
 
 	public static java.util.Map<java.lang.Long, java.lang.String> getFieldsMap(
-		long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long ticketEntryId) {
 		return getService().getFieldsMap(ticketEntryId);
 	}
 

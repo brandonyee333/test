@@ -70,8 +70,7 @@ public class AccountInformationServiceClp implements AccountInformationService {
 	public java.util.List<com.liferay.osb.model.AccountInformation> updateAccountInformation(
 		long accountEntryId, long accountProjectId,
 		java.util.Map<java.lang.Integer, java.lang.String> data)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -90,10 +89,6 @@ public class AccountInformationServiceClp implements AccountInformationService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {

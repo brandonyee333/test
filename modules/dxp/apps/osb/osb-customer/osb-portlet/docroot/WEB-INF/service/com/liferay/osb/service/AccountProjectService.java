@@ -52,12 +52,12 @@ public interface AccountProjectService extends BaseService, InvokableService {
 	 * Never modify or reference this interface directly. Always use {@link AccountProjectServiceUtil} to access the account project remote service. Add custom service methods to {@link com.liferay.osb.service.impl.AccountProjectServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public AccountProject deleteAccountProject(long accountProjectId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public AccountProject updateAccountProject(long accountProjectId,
 		long accountEntryId, java.lang.String name,
 		Map<java.lang.Integer, java.lang.String> data)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,

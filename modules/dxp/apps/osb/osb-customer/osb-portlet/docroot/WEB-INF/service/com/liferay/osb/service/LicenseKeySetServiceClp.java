@@ -55,8 +55,7 @@ public class LicenseKeySetServiceClp implements LicenseKeySetService {
 	@Override
 	public com.liferay.osb.model.LicenseKeySet addLicenseKeySet(long userId,
 		long accountEntryId, java.lang.String name)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -77,10 +76,6 @@ public class LicenseKeySetServiceClp implements LicenseKeySetService {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
 			}
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -96,8 +91,7 @@ public class LicenseKeySetServiceClp implements LicenseKeySetService {
 	@Override
 	public com.liferay.osb.model.LicenseKeySet deleteLicenseKeySet(
 		long licenseKeySetId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -109,10 +103,6 @@ public class LicenseKeySetServiceClp implements LicenseKeySetService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -130,8 +120,7 @@ public class LicenseKeySetServiceClp implements LicenseKeySetService {
 	@Override
 	public com.liferay.osb.model.LicenseKeySet getLicenseKeySet(
 		long licenseKeySetId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -143,10 +132,6 @@ public class LicenseKeySetServiceClp implements LicenseKeySetService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -164,8 +149,7 @@ public class LicenseKeySetServiceClp implements LicenseKeySetService {
 	@Override
 	public com.liferay.osb.model.LicenseKeySet updateLicenseKeySet(
 		long licenseKeySetId, java.lang.String name)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -182,10 +166,6 @@ public class LicenseKeySetServiceClp implements LicenseKeySetService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {

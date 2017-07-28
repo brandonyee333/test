@@ -54,31 +54,27 @@ public class AccountCustomerServiceWrapper implements AccountCustomerService,
 	@Override
 	public java.util.List<java.lang.String> getCorpProjectAccountCustomerUUIDs(
 		long corpProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountCustomerService.getCorpProjectAccountCustomerUUIDs(corpProjectId);
 	}
 
 	@Override
 	public void addAccountCustomers(long[] userIds, long accountEntryId,
 		int[] roles, int[] notifications)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		_accountCustomerService.addAccountCustomers(userIds, accountEntryId,
 			roles, notifications);
 	}
 
 	@Override
 	public void deleteAccountCustomers(long[] userIds, long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		_accountCustomerService.deleteAccountCustomers(userIds, accountEntryId);
 	}
 
 	@Override
 	public void toggleNotifications(long accountCustomerId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		_accountCustomerService.toggleNotifications(accountCustomerId);
 	}
 

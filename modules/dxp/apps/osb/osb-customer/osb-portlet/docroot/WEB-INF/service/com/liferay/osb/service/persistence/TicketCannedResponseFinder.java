@@ -22,19 +22,15 @@ import aQute.bnd.annotation.ProviderType;
  */
 @ProviderType
 public interface TicketCannedResponseFinder {
-	public int countByKeywords(java.lang.String keywords)
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public int countByKeywords(java.lang.String keywords);
 
 	public int countByN_C(java.lang.String name, java.lang.String content,
-		boolean andOperator)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		boolean andOperator);
+
+	public java.util.List<com.liferay.osb.model.TicketCannedResponse> findByKeywords(
+		java.lang.String keywords, int start, int end);
 
 	public java.util.List<com.liferay.osb.model.TicketCannedResponse> findByN_C(
 		java.lang.String name, java.lang.String content, boolean andOperator,
-		int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException;
-
-	public java.util.List<com.liferay.osb.model.TicketCannedResponse> findByKeywords(
-		java.lang.String keywords, int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		int start, int end);
 }

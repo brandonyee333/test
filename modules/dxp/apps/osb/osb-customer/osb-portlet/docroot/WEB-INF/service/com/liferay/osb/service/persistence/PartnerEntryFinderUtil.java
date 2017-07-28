@@ -26,31 +26,27 @@ import com.liferay.portal.kernel.util.ReferenceRegistry;
 @ProviderType
 public class PartnerEntryFinderUtil {
 	public static int countByKeywords(java.lang.String keywords,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params) {
 		return getFinder().countByKeywords(keywords, params);
 	}
 
 	public static int countByC_S(java.lang.String code, int[] statuses,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andOperator)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		boolean andOperator) {
 		return getFinder().countByC_S(code, statuses, params, andOperator);
 	}
 
 	public static java.util.List<com.liferay.osb.model.PartnerEntry> findByKeywords(
 		java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int start, int end) {
 		return getFinder().findByKeywords(keywords, params, start, end);
 	}
 
 	public static java.util.List<com.liferay.osb.model.PartnerEntry> findByC_S(
 		java.lang.String code, int[] statuses,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andOperator, int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		boolean andOperator, int start, int end) {
 		return getFinder()
 				   .findByC_S(code, statuses, params, andOperator, start, end);
 	}

@@ -58,29 +58,25 @@ public class AccountCustomerServiceUtil {
 
 	public static java.util.List<java.lang.String> getCorpProjectAccountCustomerUUIDs(
 		long corpProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getCorpProjectAccountCustomerUUIDs(corpProjectId);
 	}
 
 	public static void addAccountCustomers(long[] userIds, long accountEntryId,
 		int[] roles, int[] notifications)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService()
 			.addAccountCustomers(userIds, accountEntryId, roles, notifications);
 	}
 
 	public static void deleteAccountCustomers(long[] userIds,
 		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().deleteAccountCustomers(userIds, accountEntryId);
 	}
 
 	public static void toggleNotifications(long accountCustomerId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().toggleNotifications(accountCustomerId);
 	}
 

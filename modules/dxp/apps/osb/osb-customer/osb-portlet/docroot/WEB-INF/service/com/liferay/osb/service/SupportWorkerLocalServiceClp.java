@@ -291,8 +291,7 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 	}
 
 	@Override
-	public boolean hasSupportWorker(long userId, int notRole)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public boolean hasSupportWorker(long userId, int notRole) {
 		Object returnObj = null;
 
 		try {
@@ -301,10 +300,6 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -320,8 +315,7 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 
 	@Override
 	public boolean hasSupportWorker(long userId, int role,
-		long locationSupportRegionId, java.lang.Integer supportTeamType)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long locationSupportRegionId, java.lang.Integer supportTeamType) {
 		Object returnObj = null;
 
 		try {
@@ -340,10 +334,6 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -357,8 +347,7 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 	}
 
 	@Override
-	public boolean hasSupportWorker(long userId, long supportTeamId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public boolean hasSupportWorker(long userId, long supportTeamId) {
 		Object returnObj = null;
 
 		try {
@@ -369,10 +358,6 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -386,8 +371,7 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 	}
 
 	@Override
-	public boolean hasSupportWorkerRole(long userId, int role)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public boolean hasSupportWorkerRole(long userId, int role) {
 		Object returnObj = null;
 
 		try {
@@ -397,10 +381,6 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -414,8 +394,7 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 	}
 
 	@Override
-	public boolean isClockedIn(long userId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public boolean isClockedIn(long userId) {
 		Object returnObj = null;
 
 		try {
@@ -424,10 +403,6 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -443,8 +418,7 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 
 	@Override
 	public boolean isManagerOfWorker(long userId, long workerUserId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -457,10 +431,6 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -605,8 +575,7 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 	@Override
 	public com.liferay.osb.model.SupportWorker getAvailableSupportWorker(
 		com.liferay.osb.model.TicketEntry ticketEntry)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -619,10 +588,6 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -641,8 +606,7 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 	public com.liferay.osb.model.SupportWorker getLongestOpenSupportWorker(
 		java.util.List<com.liferay.osb.model.SupportWorker> supportWorkers,
 		com.liferay.osb.model.TicketEntry ticketEntry)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -661,10 +625,6 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
 			}
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -681,8 +641,7 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 	public com.liferay.osb.model.SupportWorker getMostAvailableSupportWorker(
 		com.liferay.osb.model.TicketEntry ticketEntry,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -701,10 +660,6 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
 			}
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -721,8 +676,7 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 	public com.liferay.osb.model.SupportWorker getNextOpenSupportWorker(
 		java.util.List<com.liferay.osb.model.SupportWorker> supportWorkers,
 		com.liferay.osb.model.TicketEntry ticketEntry)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -739,10 +693,6 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -789,8 +739,7 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 	@Override
 	public com.liferay.osb.model.SupportWorker getSupportWorker(long userId,
 		long supportTeamId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -803,10 +752,6 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -851,8 +796,7 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 		long supportWorkerId, long supportTeamId, boolean autoAssign,
 		double maxWork, int escalationlevel, int escalationLevel2Role,
 		int notifications)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -879,10 +823,6 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -1027,8 +967,7 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 	}
 
 	@Override
-	public double getAssignedWork(long userId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public double getAssignedWork(long userId) {
 		Object returnObj = null;
 
 		try {
@@ -1037,10 +976,6 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -1079,8 +1014,7 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 
 	@Override
 	public int getSupportWorkersCountBySupportLaborId(long supportLaborId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -1092,10 +1026,6 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -1114,8 +1044,7 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 	public int searchCount(long supportLaborId, java.lang.String firstName,
 		java.lang.String middleName, java.lang.String lastName,
 		java.lang.String screenName, java.lang.String emailAddress,
-		java.lang.String supportTeamName, boolean andSearch)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.lang.String supportTeamName, boolean andSearch) {
 		Object returnObj = null;
 
 		try {
@@ -1142,10 +1071,6 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -1159,8 +1084,7 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 	}
 
 	@Override
-	public int searchCount(long supportLaborId, java.lang.String keywords)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public int searchCount(long supportLaborId, java.lang.String keywords) {
 		Object returnObj = null;
 
 		try {
@@ -1174,10 +1098,6 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -1340,8 +1260,7 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 	@Override
 	public java.util.List<com.liferay.osb.model.SupportWorker> getSupportWorkersBySupportLaborId(
 		long supportLaborId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -1353,10 +1272,6 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -1374,8 +1289,7 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 	@Override
 	public java.util.List<com.liferay.osb.model.SupportWorker> getSupportWorkersBySupportRegionId(
 		long supportRegionId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -1387,10 +1301,6 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -1407,8 +1317,7 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.SupportWorker> getTeamSupportWorkers(
-		long supportTeamId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long supportTeamId) {
 		Object returnObj = null;
 
 		try {
@@ -1417,10 +1326,6 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -1437,8 +1342,7 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 	@Override
 	public java.util.List<com.liferay.osb.model.SupportWorker> getUserSupportTeamManagers(
 		long userId, java.lang.Integer supportTeamType)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -1457,10 +1361,6 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
 			}
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -1475,7 +1375,7 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.SupportWorker> getUserSupportWorkers(
-		long userId) throws com.liferay.portal.kernel.exception.SystemException {
+		long userId) {
 		Object returnObj = null;
 
 		try {
@@ -1484,10 +1384,6 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -1504,8 +1400,7 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 	@Override
 	public java.util.List<com.liferay.osb.model.SupportWorker> search(
 		java.lang.Boolean overUtilization, int escalationLevel,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params) {
 		Object returnObj = null;
 
 		try {
@@ -1521,10 +1416,6 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -1544,8 +1435,7 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 		java.lang.String middleName, java.lang.String lastName,
 		java.lang.String screenName, java.lang.String emailAddress,
 		java.lang.String supportTeamName, boolean andSearch, int start,
-		int end, com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int end, com.liferay.portal.kernel.util.OrderByComparator obc) {
 		Object returnObj = null;
 
 		try {
@@ -1578,10 +1468,6 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -1597,8 +1483,7 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 	@Override
 	public java.util.List<com.liferay.osb.model.SupportWorker> search(
 		long supportLaborId, java.lang.String keywords, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.portal.kernel.util.OrderByComparator obc) {
 		Object returnObj = null;
 
 		try {
@@ -1618,10 +1503,6 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -1694,8 +1575,7 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 	public void addSupportWorkers(long[] userIds, long supportTeamId,
 		double[] maxWork, int[] escalationLevels, int[] roles,
 		int[] notifications)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName45,
 				_methodParameterTypes45,
@@ -1720,10 +1600,6 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
 			}
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -1736,8 +1612,7 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 
 	@Override
 	public void clockInOut(long supportWorkerId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName46,
 				_methodParameterTypes46, new Object[] { supportWorkerId });
@@ -1749,10 +1624,6 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
 			}
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -1764,8 +1635,7 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 	}
 
 	@Override
-	public void decreaseAssignedWork(long userId, double work)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public void decreaseAssignedWork(long userId, double work) {
 		try {
 			_invokableLocalService.invokeMethod(_methodName47,
 				_methodParameterTypes47, new Object[] { userId, work });
@@ -1773,10 +1643,6 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -1788,18 +1654,13 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 	}
 
 	@Override
-	public void decreaseTicketEntryAssignedWork(long ticketEntryId, double work)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public void decreaseTicketEntryAssignedWork(long ticketEntryId, double work) {
 		try {
 			_invokableLocalService.invokeMethod(_methodName48,
 				_methodParameterTypes48, new Object[] { ticketEntryId, work });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -1813,8 +1674,7 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 
 	@Override
 	public void deleteSupportWorkers(long userId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName49,
 				_methodParameterTypes49, new Object[] { userId });
@@ -1824,10 +1684,6 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -1842,8 +1698,7 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 
 	@Override
 	public void deleteSupportWorkers(long[] userIds, long supportTeamId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName50,
 				_methodParameterTypes50,
@@ -1860,10 +1715,6 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
 			}
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -1875,8 +1726,7 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 	}
 
 	@Override
-	public void increaseAssignedWork(long userId, double work)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public void increaseAssignedWork(long userId, double work) {
 		try {
 			_invokableLocalService.invokeMethod(_methodName51,
 				_methodParameterTypes51, new Object[] { userId, work });
@@ -1884,10 +1734,6 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -1899,18 +1745,13 @@ public class SupportWorkerLocalServiceClp implements SupportWorkerLocalService {
 	}
 
 	@Override
-	public void increaseTicketEntryAssignedWork(long ticketEntryId, double work)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public void increaseTicketEntryAssignedWork(long ticketEntryId, double work) {
 		try {
 			_invokableLocalService.invokeMethod(_methodName52,
 				_methodParameterTypes52, new Object[] { ticketEntryId, work });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;

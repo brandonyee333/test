@@ -191,8 +191,7 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 		long ticketEntryId, long ticketSolutionId, java.lang.String[] urls,
 		java.lang.Integer[] types, int visibility,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -219,10 +218,6 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -542,8 +537,7 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 	}
 
 	@Override
-	public int getTicketLinksCount(long ticketEntryId, int visibility)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public int getTicketLinksCount(long ticketEntryId, int visibility) {
 		Object returnObj = null;
 
 		try {
@@ -553,10 +547,6 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -571,8 +561,7 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 	}
 
 	@Override
-	public int getTicketLinksCount(long ticketEntryId, int[] visibilities)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public int getTicketLinksCount(long ticketEntryId, int[] visibilities) {
 		Object returnObj = null;
 
 		try {
@@ -586,10 +575,6 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -751,8 +736,7 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.TicketLink> getTicketLinks(
-		long ticketEntryId, int visibility)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long ticketEntryId, int visibility) {
 		Object returnObj = null;
 
 		try {
@@ -762,10 +746,6 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -781,8 +761,7 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.TicketLink> getTicketLinks(
-		long ticketEntryId, int[] visibilities)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long ticketEntryId, int[] visibilities) {
 		Object returnObj = null;
 
 		try {
@@ -797,10 +776,6 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -815,8 +790,7 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.TicketLink> getTicketLinks(
-		long ticketEntryId, long ticketSolutionId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long ticketEntryId, long ticketSolutionId) {
 		Object returnObj = null;
 
 		try {
@@ -826,10 +800,6 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -901,8 +871,7 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 	@Override
 	public void deleteTicketLink(long userId,
 		com.liferay.osb.model.TicketLink ticketLink)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName27,
 				_methodParameterTypes27,
@@ -913,10 +882,6 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -931,8 +896,7 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 
 	@Override
 	public void deleteTicketLink(long userId, long ticketLinkId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName28,
 				_methodParameterTypes28, new Object[] { userId, ticketLinkId });
@@ -942,10 +906,6 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {

@@ -171,8 +171,7 @@ public class SupportRegionWrapper implements SupportRegion,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.User getManagerUser()
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public com.liferay.portal.kernel.model.User getManagerUser() {
 		return _supportRegion.getManagerUser();
 	}
 
@@ -287,8 +286,7 @@ public class SupportRegionWrapper implements SupportRegion,
 	}
 
 	@Override
-	public java.util.List<SupportTeam> getSupportTeams()
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public java.util.List<SupportTeam> getSupportTeams() {
 		return _supportRegion.getSupportTeams();
 	}
 

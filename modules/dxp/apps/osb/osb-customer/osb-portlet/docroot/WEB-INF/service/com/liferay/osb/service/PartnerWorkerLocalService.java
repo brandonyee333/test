@@ -62,15 +62,13 @@ public interface PartnerWorkerLocalService extends BaseLocalService,
 	 * Never modify or reference this interface directly. Always use {@link PartnerWorkerLocalServiceUtil} to access the partner worker local service. Add custom service methods to {@link com.liferay.osb.service.impl.PartnerWorkerLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasPartnerWorker(long userId) throws SystemException;
+	public boolean hasPartnerWorker(long userId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasPartnerWorker(long userId, long partnerEntryId)
-		throws SystemException;
+	public boolean hasPartnerWorker(long userId, long partnerEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasPartnerWorkerRole(long userId, int role)
-		throws SystemException;
+	public boolean hasPartnerWorkerRole(long userId, int role);
 
 	/**
 	* Adds the partner worker to the database. Also notifies the appropriate model listeners.
@@ -113,8 +111,7 @@ public interface PartnerWorkerLocalService extends BaseLocalService,
 	public PartnerWorker fetchPartnerWorker(long partnerWorkerId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PartnerWorker fetchPartnerWorker(long userId, long partnerEntryId)
-		throws SystemException;
+	public PartnerWorker fetchPartnerWorker(long userId, long partnerEntryId);
 
 	/**
 	* Returns the partner worker with the primary key.
@@ -129,7 +126,7 @@ public interface PartnerWorkerLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PartnerWorker getPartnerWorker(long userId, long partnerEntryId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	/**
 	* Updates the partner worker in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
@@ -234,16 +231,13 @@ public interface PartnerWorkerLocalService extends BaseLocalService,
 	public List<PartnerWorker> getPartnerWorkers(int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<PartnerWorker> getPartnerWorkers(long partnerEntryId)
-		throws SystemException;
+	public List<PartnerWorker> getPartnerWorkers(long partnerEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<PartnerWorker> getPartnerWorkers(long partnerEntryId, int role)
-		throws SystemException;
+	public List<PartnerWorker> getPartnerWorkers(long partnerEntryId, int role);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<PartnerWorker> getUserPartnerWorkers(long userId)
-		throws SystemException;
+	public List<PartnerWorker> getUserPartnerWorkers(long userId);
 
 	/**
 	* Returns the number of rows matching the dynamic query.
@@ -264,12 +258,10 @@ public interface PartnerWorkerLocalService extends BaseLocalService,
 		Projection projection);
 
 	public void addPartnerWorkers(long[] userIds, long partnerEntryId,
-		int[] roles, int[] notifications)
-		throws PortalException, SystemException;
+		int[] roles, int[] notifications) throws PortalException;
 
-	public void deletePartnerWorkers(long userId)
-		throws PortalException, SystemException;
+	public void deletePartnerWorkers(long userId) throws PortalException;
 
 	public void deletePartnerWorkers(long[] userIds, long partnerEntryId)
-		throws PortalException, SystemException;
+		throws PortalException;
 }

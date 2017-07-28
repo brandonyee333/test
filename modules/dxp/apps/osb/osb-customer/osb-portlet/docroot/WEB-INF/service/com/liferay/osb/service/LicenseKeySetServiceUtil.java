@@ -43,29 +43,25 @@ public class LicenseKeySetServiceUtil {
 	 */
 	public static com.liferay.osb.model.LicenseKeySet addLicenseKeySet(
 		long userId, long accountEntryId, java.lang.String name)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().addLicenseKeySet(userId, accountEntryId, name);
 	}
 
 	public static com.liferay.osb.model.LicenseKeySet deleteLicenseKeySet(
 		long licenseKeySetId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteLicenseKeySet(licenseKeySetId);
 	}
 
 	public static com.liferay.osb.model.LicenseKeySet getLicenseKeySet(
 		long licenseKeySetId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getLicenseKeySet(licenseKeySetId);
 	}
 
 	public static com.liferay.osb.model.LicenseKeySet updateLicenseKeySet(
 		long licenseKeySetId, java.lang.String name)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updateLicenseKeySet(licenseKeySetId, name);
 	}
 

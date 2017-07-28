@@ -22,46 +22,38 @@ import aQute.bnd.annotation.ProviderType;
  */
 @ProviderType
 public interface SupportWorkerFinder {
-	public int countByKeywords(long supportLaborId, java.lang.String keywords)
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public int countByKeywords(long supportLaborId, java.lang.String keywords);
+
+	public int countByU_E(java.lang.Boolean overUtilization,
+		int escalationLevel,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params);
 
 	public int countBySL_FN_MN_LN_SN_EA_STN(long supportLaborId,
 		java.lang.String[] firstNames, java.lang.String[] middleNames,
 		java.lang.String[] lastNames, java.lang.String[] screenNames,
 		java.lang.String[] emailAddresses, java.lang.String[] supportTeamNames,
-		boolean andOperator)
-		throws com.liferay.portal.kernel.exception.SystemException;
-
-	public int countByU_E(java.lang.Boolean overUtilization,
-		int escalationLevel,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		boolean andOperator);
 
 	public java.util.List<com.liferay.osb.model.SupportWorker> findByKeywords(
 		long supportLaborId, java.lang.String keywords, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		com.liferay.portal.kernel.util.OrderByComparator obc);
+
+	public java.util.List<com.liferay.osb.model.SupportWorker> findBySupportTeamId(
+		long supportTeamId);
+
+	public java.util.List<com.liferay.osb.model.SupportWorker> findByU_E(
+		java.lang.Boolean overUtilization, int escalationLevel,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params);
 
 	public java.util.List<com.liferay.osb.model.SupportWorker> findByR_STT_SRI(
 		int role, java.lang.Integer supportTeamType, long supportRegionId,
 		java.lang.String roleComparator, boolean filterByAutoAssign,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params);
 
 	public java.util.List<com.liferay.osb.model.SupportWorker> findBySL_FN_MN_LN_SN_EA_STN(
 		long supportLaborId, java.lang.String[] firstNames,
 		java.lang.String[] middleNames, java.lang.String[] lastNames,
 		java.lang.String[] screenNames, java.lang.String[] emailAddresses,
 		java.lang.String[] supportTeamNames, boolean andOperator, int start,
-		int end, com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException;
-
-	public java.util.List<com.liferay.osb.model.SupportWorker> findBySupportTeamId(
-		long supportTeamId)
-		throws com.liferay.portal.kernel.exception.SystemException;
-
-	public java.util.List<com.liferay.osb.model.SupportWorker> findByU_E(
-		java.lang.Boolean overUtilization, int escalationLevel,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		int end, com.liferay.portal.kernel.util.OrderByComparator obc);
 }

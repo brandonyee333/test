@@ -75,7 +75,7 @@ public interface TicketLinkLocalService extends BaseLocalService,
 	public TicketLink addTicketLink(long userId, long ticketEntryId,
 		long ticketSolutionId, java.lang.String[] urls,
 		java.lang.Integer[] types, int visibility, ServiceContext serviceContext)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	/**
 	* Creates a new ticket link with the primary key. Does not add the ticket link to the database.
@@ -157,12 +157,10 @@ public interface TicketLinkLocalService extends BaseLocalService,
 	public int getTicketLinksCount();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getTicketLinksCount(long ticketEntryId, int visibility)
-		throws SystemException;
+	public int getTicketLinksCount(long ticketEntryId, int visibility);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getTicketLinksCount(long ticketEntryId, int[] visibilities)
-		throws SystemException;
+	public int getTicketLinksCount(long ticketEntryId, int[] visibilities);
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
@@ -230,16 +228,15 @@ public interface TicketLinkLocalService extends BaseLocalService,
 	public List<TicketLink> getTicketLinks(int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<TicketLink> getTicketLinks(long ticketEntryId, int visibility)
-		throws SystemException;
+	public List<TicketLink> getTicketLinks(long ticketEntryId, int visibility);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TicketLink> getTicketLinks(long ticketEntryId,
-		int[] visibilities) throws SystemException;
+		int[] visibilities);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TicketLink> getTicketLinks(long ticketEntryId,
-		long ticketSolutionId) throws SystemException;
+		long ticketSolutionId);
 
 	/**
 	* Returns the number of rows matching the dynamic query.
@@ -260,8 +257,8 @@ public interface TicketLinkLocalService extends BaseLocalService,
 		Projection projection);
 
 	public void deleteTicketLink(long userId, TicketLink ticketLink)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public void deleteTicketLink(long userId, long ticketLinkId)
-		throws PortalException, SystemException;
+		throws PortalException;
 }

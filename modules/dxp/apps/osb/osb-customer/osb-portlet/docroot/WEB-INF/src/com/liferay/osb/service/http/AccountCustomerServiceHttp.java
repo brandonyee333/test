@@ -57,8 +57,7 @@ import com.liferay.portal.kernel.util.MethodKey;
 public class AccountCustomerServiceHttp {
 	public static void addAccountCustomers(HttpPrincipal httpPrincipal,
 		long[] userIds, long accountEntryId, int[] roles, int[] notifications)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(AccountCustomerServiceUtil.class,
 					"addAccountCustomers", _addAccountCustomersParameterTypes0);
@@ -74,10 +73,6 @@ public class AccountCustomerServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 		}
@@ -90,8 +85,7 @@ public class AccountCustomerServiceHttp {
 
 	public static void deleteAccountCustomers(HttpPrincipal httpPrincipal,
 		long[] userIds, long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(AccountCustomerServiceUtil.class,
 					"deleteAccountCustomers",
@@ -108,10 +102,6 @@ public class AccountCustomerServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 		}
@@ -124,8 +114,7 @@ public class AccountCustomerServiceHttp {
 
 	public static java.util.List<java.lang.String> getCorpProjectAccountCustomerUUIDs(
 		HttpPrincipal httpPrincipal, long corpProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(AccountCustomerServiceUtil.class,
 					"getCorpProjectAccountCustomerUUIDs",
@@ -144,10 +133,6 @@ public class AccountCustomerServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -162,8 +147,7 @@ public class AccountCustomerServiceHttp {
 
 	public static void toggleNotifications(HttpPrincipal httpPrincipal,
 		long accountCustomerId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(AccountCustomerServiceUtil.class,
 					"toggleNotifications", _toggleNotificationsParameterTypes3);
@@ -177,10 +161,6 @@ public class AccountCustomerServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);

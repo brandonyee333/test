@@ -46,8 +46,7 @@ public class TicketCommentServiceUtil {
 		int visibility, int status, long ticketCannedResponseId,
 		int[] pendingTypes,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addTicketComment(userId, ticketEntryId, body, type,
 			visibility, status, ticketCannedResponseId, pendingTypes,
@@ -61,8 +60,7 @@ public class TicketCommentServiceUtil {
 		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
 		java.util.List<java.lang.Integer> types,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addTicketComment(userId, ticketEntryId, body, type,
 			visibility, status, ticketCannedResponseId, pendingTypes, files,
@@ -71,8 +69,7 @@ public class TicketCommentServiceUtil {
 
 	public static com.liferay.osb.model.TicketComment deleteTicketComment(
 		long ticketCommentId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteTicketComment(ticketCommentId);
 	}
 
@@ -82,8 +79,7 @@ public class TicketCommentServiceUtil {
 		long ticketCannedResponseId, int[] pendingTypes,
 		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
 		java.util.List<java.lang.Integer> types)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateTicketComment(userId, ticketCommentId, ticketEntryId,
 			body, visibility, status, ticketCannedResponseId, pendingTypes,
@@ -92,8 +88,7 @@ public class TicketCommentServiceUtil {
 
 	public static com.liferay.osb.model.TicketComment updateTicketCommentType(
 		long ticketCommentId, int type)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updateTicketCommentType(ticketCommentId, type);
 	}
 

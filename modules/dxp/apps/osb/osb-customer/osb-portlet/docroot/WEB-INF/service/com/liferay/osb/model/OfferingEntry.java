@@ -57,59 +57,47 @@ public interface OfferingEntry extends OfferingEntryModel, PersistedModel {
 
 	@com.liferay.portal.kernel.json.JSON()
 	public AccountEntry getAccountEntry()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 
 	@com.liferay.portal.kernel.json.JSON()
 	public java.util.Date getActualStartDate()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public int getAvailableServers()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 
 	@com.liferay.portal.kernel.json.JSON()
 	public java.lang.String getKey()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 
 	@com.liferay.portal.kernel.json.JSON()
-	public java.util.List<LicenseKey> getLicenseKeys()
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public java.util.List<LicenseKey> getLicenseKeys();
 
 	@com.liferay.portal.kernel.json.JSON()
-	public int getLicenseKeysCount()
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public int getLicenseKeysCount();
 
 	public OfferingEntryGroup getOfferingEntryGroup()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public OrderEntry getOrderEntry()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public ProductEntry getProductEntry()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public java.lang.String getSizingLabel();
 
 	@com.liferay.portal.kernel.json.JSON()
 	public java.util.Date getStartDate()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public java.lang.String getStatusLabel();
 
 	public SupportResponse getSupportResponse()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 
 	@com.liferay.portal.kernel.json.JSON()
-	public int getTicketEntriesCount()
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public int getTicketEntriesCount();
 
 	public java.lang.String getTypeLabel();
 }

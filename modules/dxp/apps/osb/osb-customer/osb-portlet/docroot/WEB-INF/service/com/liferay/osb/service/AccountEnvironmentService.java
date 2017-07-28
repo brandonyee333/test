@@ -60,21 +60,21 @@ public interface AccountEnvironmentService extends BaseService, InvokableService
 		long productEntryId, java.lang.String name, int envOS,
 		java.lang.String envOSCustom, int envDB, int envJVM, int envAS,
 		int envLFR, List<ObjectValuePair<java.lang.String, File>> files,
-		List<java.lang.Integer> types) throws PortalException, SystemException;
+		List<java.lang.Integer> types) throws PortalException;
 
 	public AccountEnvironment deleteAccountEnvironment(
-		long accountEnvironmentId) throws PortalException, SystemException;
+		long accountEnvironmentId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AccountEnvironment getAccountEnvironment(long accountEnvironmentId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public AccountEnvironment updateAccountEnvironment(
 		long accountEnvironmentId, long productEntryId, java.lang.String name,
 		int envOS, java.lang.String envOSCustom, int envDB, int envJVM,
 		int envAS, int envLFR,
 		List<ObjectValuePair<java.lang.String, File>> files,
-		List<java.lang.Integer> types) throws PortalException, SystemException;
+		List<java.lang.Integer> types) throws PortalException;
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
@@ -90,9 +90,9 @@ public interface AccountEnvironmentService extends BaseService, InvokableService
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountEnvironment> getAccountEnvironments(long accountEntryId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Map<java.lang.String, List<AccountEnvironment>> getAccountEnvironmentsMap(
-		long accountEntryId) throws PortalException, SystemException;
+		long accountEntryId) throws PortalException;
 }

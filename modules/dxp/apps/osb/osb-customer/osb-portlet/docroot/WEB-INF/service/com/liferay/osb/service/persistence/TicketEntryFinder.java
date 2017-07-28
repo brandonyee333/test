@@ -23,8 +23,7 @@ import aQute.bnd.annotation.ProviderType;
 @ProviderType
 public interface TicketEntryFinder {
 	public int countByKeywords(java.lang.String keywords,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params);
 
 	public int countByU_A_S_C_S_D_T_S_S_W_E_E_C_R_C_D_C_W(
 		long reportedByUserId, java.lang.String name, int[] accountEntryTiers,
@@ -40,14 +39,12 @@ public interface TicketEntryFinder {
 		java.util.Date workerModifiedDateGT,
 		java.util.Date workerModifiedDateLT,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andOperator)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		boolean andOperator);
 
 	public java.util.List<com.liferay.osb.model.TicketEntry> findByKeywords(
 		java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc);
 
 	public java.util.List<com.liferay.osb.model.TicketEntry> findByU_A_S_C_S_D_T_S_S_W_E_E_C_R_C_D_C_W(
 		long reportedByUserId, java.lang.String name, int[] accountEntryTiers,
@@ -64,6 +61,5 @@ public interface TicketEntryFinder {
 		java.util.Date workerModifiedDateLT,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		com.liferay.portal.kernel.util.OrderByComparator obc);
 }

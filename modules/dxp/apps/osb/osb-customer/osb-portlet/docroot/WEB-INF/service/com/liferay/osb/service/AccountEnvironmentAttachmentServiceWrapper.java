@@ -37,8 +37,7 @@ public class AccountEnvironmentAttachmentServiceWrapper
 	@Override
 	public com.liferay.osb.model.AccountEnvironmentAttachment getAccountEnvironmentAttachment(
 		long accountEnvironmentAttachmentId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountEnvironmentAttachmentService.getAccountEnvironmentAttachment(accountEnvironmentAttachmentId);
 	}
 

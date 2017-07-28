@@ -27,30 +27,30 @@ import java.util.Arrays;
 @ProviderType
 public class AccountWorkerServiceClpInvoker {
 	public AccountWorkerServiceClpInvoker() {
-		_methodName374 = "getOSGiServiceIdentifier";
+		_methodName366 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes374 = new String[] {  };
+		_methodParameterTypes366 = new String[] {  };
 
-		_methodName379 = "addAccountWorkers";
+		_methodName371 = "addAccountWorkers";
 
-		_methodParameterTypes379 = new String[] {
+		_methodParameterTypes371 = new String[] {
 				"long[][]", "long", "int[][]", "int[][]"
 			};
 
-		_methodName380 = "deleteAccountWorkers";
+		_methodName372 = "deleteAccountWorkers";
 
-		_methodParameterTypes380 = new String[] { "long[][]", "long" };
+		_methodParameterTypes372 = new String[] { "long[][]", "long" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName374.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes374, parameterTypes)) {
+		if (_methodName366.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes366, parameterTypes)) {
 			return AccountWorkerServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName379.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes379, parameterTypes)) {
+		if (_methodName371.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes371, parameterTypes)) {
 			AccountWorkerServiceUtil.addAccountWorkers((long[])arguments[0],
 				((Long)arguments[1]).longValue(), (int[])arguments[2],
 				(int[])arguments[3]);
@@ -58,8 +58,8 @@ public class AccountWorkerServiceClpInvoker {
 			return null;
 		}
 
-		if (_methodName380.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes380, parameterTypes)) {
+		if (_methodName372.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes372, parameterTypes)) {
 			AccountWorkerServiceUtil.deleteAccountWorkers((long[])arguments[0],
 				((Long)arguments[1]).longValue());
 
@@ -69,10 +69,10 @@ public class AccountWorkerServiceClpInvoker {
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName374;
-	private String[] _methodParameterTypes374;
-	private String _methodName379;
-	private String[] _methodParameterTypes379;
-	private String _methodName380;
-	private String[] _methodParameterTypes380;
+	private String _methodName366;
+	private String[] _methodParameterTypes366;
+	private String _methodName371;
+	private String[] _methodParameterTypes371;
+	private String _methodName372;
+	private String[] _methodParameterTypes372;
 }

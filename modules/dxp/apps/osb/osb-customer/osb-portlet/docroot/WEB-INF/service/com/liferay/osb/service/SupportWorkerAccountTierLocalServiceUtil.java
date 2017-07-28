@@ -241,8 +241,7 @@ public class SupportWorkerAccountTierLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.osb.model.SupportWorkerAccountTier> getSupportWorkerAccountTiers(
-		long supportWorkerId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long supportWorkerId) {
 		return getService().getSupportWorkerAccountTiers(supportWorkerId);
 	}
 
@@ -271,8 +270,7 @@ public class SupportWorkerAccountTierLocalServiceUtil {
 	}
 
 	public static void setSupportWorkerAccountTiers(long supportWorkerId,
-		int[] accountTiers)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int[] accountTiers) {
 		getService().setSupportWorkerAccountTiers(supportWorkerId, accountTiers);
 	}
 

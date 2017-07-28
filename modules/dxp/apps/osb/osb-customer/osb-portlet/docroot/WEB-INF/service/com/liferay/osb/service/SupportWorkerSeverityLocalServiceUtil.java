@@ -235,8 +235,7 @@ public class SupportWorkerSeverityLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.osb.model.SupportWorkerSeverity> getSupportWorkerSeverities(
-		long supportWorkerId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long supportWorkerId) {
 		return getService().getSupportWorkerSeverities(supportWorkerId);
 	}
 
@@ -265,8 +264,7 @@ public class SupportWorkerSeverityLocalServiceUtil {
 	}
 
 	public static void setSupportWorkerSeverities(long supportWorkerId,
-		int[] severities)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int[] severities) {
 		getService().setSupportWorkerSeverities(supportWorkerId, severities);
 	}
 

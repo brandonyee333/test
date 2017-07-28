@@ -91,10 +91,6 @@
 	<bean class="com.liferay.osb.service.impl.OrderEntryServiceImpl" id="com.liferay.osb.service.OrderEntryService" />
 	<bean class="com.liferay.osb.service.persistence.impl.OrderEntryPersistenceImpl" id="com.liferay.osb.service.persistence.OrderEntryPersistence" parent="basePersistence" />
 	<bean class="com.liferay.osb.service.persistence.impl.OrderEntryFinderImpl" id="com.liferay.osb.service.persistence.OrderEntryFinder" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.impl.OSBCountryLocalServiceImpl" id="com.liferay.osb.service.OSBCountryLocalService" />
-	<bean class="com.liferay.osb.service.impl.OSBCountryServiceImpl" id="com.liferay.osb.service.OSBCountryService" />
-	<bean class="com.liferay.osb.service.impl.OSBRegionLocalServiceImpl" id="com.liferay.osb.service.OSBRegionLocalService" />
-	<bean class="com.liferay.osb.service.impl.OSBRegionServiceImpl" id="com.liferay.osb.service.OSBRegionService" />
 	<bean class="com.liferay.osb.service.impl.PartnerEntryLocalServiceImpl" id="com.liferay.osb.service.PartnerEntryLocalService" />
 	<bean class="com.liferay.osb.service.impl.PartnerEntryServiceImpl" id="com.liferay.osb.service.PartnerEntryService" />
 	<bean class="com.liferay.osb.service.persistence.impl.PartnerEntryPersistenceImpl" id="com.liferay.osb.service.persistence.PartnerEntryPersistence" parent="basePersistence" />

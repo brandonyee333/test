@@ -443,8 +443,7 @@ public class SupportLaborWrapper implements SupportLabor,
 
 	@Override
 	public java.util.List<SupportTeam> getSupportTeams()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _supportLabor.getSupportTeams();
 	}
 

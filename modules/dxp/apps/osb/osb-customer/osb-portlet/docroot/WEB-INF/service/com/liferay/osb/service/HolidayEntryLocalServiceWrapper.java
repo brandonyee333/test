@@ -50,8 +50,7 @@ public class HolidayEntryLocalServiceWrapper implements HolidayEntryLocalService
 		long holidayCalendarId, java.lang.String name,
 		java.lang.String description, java.util.Date startDate,
 		java.util.Date endDate, boolean repeatYearly)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _holidayEntryLocalService.addHolidayEntry(holidayCalendarId,
 			name, description, startDate, endDate, repeatYearly);
 	}
@@ -131,8 +130,7 @@ public class HolidayEntryLocalServiceWrapper implements HolidayEntryLocalService
 		long holidayEntryId, long holidayCalendarId, java.lang.String name,
 		java.lang.String description, java.util.Date startDate,
 		java.util.Date endDate, boolean repeatYearly)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _holidayEntryLocalService.updateHolidayEntry(holidayEntryId,
 			holidayCalendarId, name, description, startDate, endDate,
 			repeatYearly);
@@ -181,8 +179,7 @@ public class HolidayEntryLocalServiceWrapper implements HolidayEntryLocalService
 	}
 
 	@Override
-	public int getHolidayEntriesCount(long userId, java.util.Date date)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public int getHolidayEntriesCount(long userId, java.util.Date date) {
 		return _holidayEntryLocalService.getHolidayEntriesCount(userId, date);
 	}
 
@@ -276,16 +273,14 @@ public class HolidayEntryLocalServiceWrapper implements HolidayEntryLocalService
 
 	@Override
 	public java.util.List<com.liferay.osb.model.HolidayEntry> getHolidayEntries(
-		long holidayCalendarId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long holidayCalendarId) {
 		return _holidayEntryLocalService.getHolidayEntries(holidayCalendarId);
 	}
 
 	@Override
 	public java.util.List<com.liferay.osb.model.HolidayEntry> getHolidayEntriesBetween(
 		long userId, java.util.Date startDate, java.util.Date endDate,
-		java.util.TimeZone timeZone)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.util.TimeZone timeZone) {
 		return _holidayEntryLocalService.getHolidayEntriesBetween(userId,
 			startDate, endDate, timeZone);
 	}

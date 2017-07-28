@@ -50,7 +50,7 @@ public interface AccountLinkService extends BaseService, InvokableService {
 	 * Never modify or reference this interface directly. Always use {@link AccountLinkServiceUtil} to access the account link remote service. Add custom service methods to {@link com.liferay.osb.service.impl.AccountLinkServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public AccountLink deleteAccountLink(long accountLinkId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
@@ -65,5 +65,5 @@ public interface AccountLinkService extends BaseService, InvokableService {
 	public java.lang.String getOSGiServiceIdentifier();
 
 	public void addAccountLinks(long accountEntryId, java.lang.String[] urls)
-		throws PortalException, SystemException;
+		throws PortalException;
 }

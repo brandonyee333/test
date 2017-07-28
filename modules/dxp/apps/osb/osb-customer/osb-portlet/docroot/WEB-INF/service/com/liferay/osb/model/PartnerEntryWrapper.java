@@ -167,8 +167,7 @@ public class PartnerEntryWrapper implements PartnerEntry,
 	}
 
 	@Override
-	public SupportRegion getSupportRegion()
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public SupportRegion getSupportRegion() {
 		return _partnerEntry.getSupportRegion();
 	}
 
@@ -194,8 +193,7 @@ public class PartnerEntryWrapper implements PartnerEntry,
 
 	@Override
 	public PartnerEntry getParentPartnerEntry()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _partnerEntry.getParentPartnerEntry();
 	}
 
@@ -340,21 +338,18 @@ public class PartnerEntryWrapper implements PartnerEntry,
 	}
 
 	@Override
-	public java.util.List<AccountEntry> getAccountEntries()
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public java.util.List<AccountEntry> getAccountEntries() {
 		return _partnerEntry.getAccountEntries();
 	}
 
 	@Override
 	public java.util.List<PartnerEntry> getChildPartnerEntries(
-		boolean recursive)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		boolean recursive) {
 		return _partnerEntry.getChildPartnerEntries(recursive);
 	}
 
 	@Override
-	public java.util.List<PartnerWorker> getPartnerWorkers()
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public java.util.List<PartnerWorker> getPartnerWorkers() {
 		return _partnerEntry.getPartnerWorkers();
 	}
 
@@ -419,8 +414,7 @@ public class PartnerEntryWrapper implements PartnerEntry,
 	}
 
 	@Override
-	public long[] getSupportRegionIds()
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public long[] getSupportRegionIds() {
 		return _partnerEntry.getSupportRegionIds();
 	}
 

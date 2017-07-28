@@ -101,8 +101,7 @@ public class PartnerWorkerWrapper implements PartnerWorker,
 
 	@Override
 	public PartnerEntry getPartnerEntry()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _partnerWorker.getPartnerEntry();
 	}
 
@@ -118,8 +117,7 @@ public class PartnerWorkerWrapper implements PartnerWorker,
 
 	@Override
 	public boolean isActive()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _partnerWorker.isActive();
 	}
 

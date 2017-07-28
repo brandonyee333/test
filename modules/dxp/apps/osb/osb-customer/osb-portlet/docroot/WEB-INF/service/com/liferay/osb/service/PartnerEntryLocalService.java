@@ -81,7 +81,7 @@ public interface PartnerEntryLocalService extends BaseLocalService,
 	public PartnerEntry addPartnerEntry(long userId, long parentPartnerEntryId,
 		java.lang.String dossieraAccountKey, java.lang.String code,
 		java.lang.String notes, long[] supportRegionIds)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	/**
 	* Creates a new partner entry with the primary key. Does not add the partner entry to the database.
@@ -106,15 +106,13 @@ public interface PartnerEntryLocalService extends BaseLocalService,
 	* @param partnerEntryId the primary key of the partner entry
 	* @return the partner entry that was removed
 	* @throws PortalException if a partner entry with the primary key could not be found
-	* @throws SystemException
 	*/
 	@Indexable(type = IndexableType.DELETE)
 	public PartnerEntry deletePartnerEntry(long partnerEntryId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PartnerEntry fetchPartnerEntry(java.lang.String dossieraAccountKey)
-		throws SystemException;
+	public PartnerEntry fetchPartnerEntry(java.lang.String dossieraAccountKey);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PartnerEntry fetchPartnerEntry(long partnerEntryId);
@@ -125,15 +123,14 @@ public interface PartnerEntryLocalService extends BaseLocalService,
 	* @param partnerEntryId the primary key of the partner entry
 	* @return the partner entry
 	* @throws PortalException if a partner entry with the primary key could not be found
-	* @throws SystemException
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PartnerEntry getPartnerEntry(long partnerEntryId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PartnerEntry getPartnerEntryByCode(java.lang.String code)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	/**
 	* Updates the partner entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
@@ -147,7 +144,7 @@ public interface PartnerEntryLocalService extends BaseLocalService,
 	public PartnerEntry updatePartnerEntry(long userId, long partnerEntryId,
 		java.lang.String dossieraAccountKey, java.lang.String code,
 		java.lang.String notes, int status, long[] supportRegionIds)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -183,12 +180,11 @@ public interface PartnerEntryLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(java.lang.String code, int[] statuses,
 		LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andOperator) throws SystemException;
+		boolean andOperator);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(java.lang.String keywords,
-		LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws SystemException;
+		LinkedHashMap<java.lang.String, java.lang.Object> params);
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
@@ -243,7 +239,7 @@ public interface PartnerEntryLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<PartnerEntry> getChildPartnerEntries(long partnerEntryId,
-		boolean recursive) throws SystemException;
+		boolean recursive);
 
 	/**
 	* Returns a range of all the partner entries.
@@ -274,17 +270,17 @@ public interface PartnerEntryLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<PartnerEntry> getUserPartnerEntries(long userId, int start,
-		int end) throws SystemException;
+		int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<PartnerEntry> search(java.lang.String code, int[] statuses,
 		LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andOperator, int start, int end) throws SystemException;
+		boolean andOperator, int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<PartnerEntry> search(java.lang.String keywords,
 		LinkedHashMap<java.lang.String, java.lang.Object> params, int start,
-		int end) throws SystemException;
+		int end);
 
 	/**
 	* Returns the number of rows matching the dynamic query.

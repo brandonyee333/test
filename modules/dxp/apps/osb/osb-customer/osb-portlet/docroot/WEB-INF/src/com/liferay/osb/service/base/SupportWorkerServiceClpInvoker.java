@@ -27,24 +27,24 @@ import java.util.Arrays;
 @ProviderType
 public class SupportWorkerServiceClpInvoker {
 	public SupportWorkerServiceClpInvoker() {
-		_methodName374 = "getOSGiServiceIdentifier";
+		_methodName366 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes374 = new String[] {  };
+		_methodParameterTypes366 = new String[] {  };
 
-		_methodName379 = "clockInOut";
+		_methodName371 = "clockInOut";
 
-		_methodParameterTypes379 = new String[] { "long" };
+		_methodParameterTypes371 = new String[] { "long" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName374.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes374, parameterTypes)) {
+		if (_methodName366.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes366, parameterTypes)) {
 			return SupportWorkerServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName379.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes379, parameterTypes)) {
+		if (_methodName371.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes371, parameterTypes)) {
 			SupportWorkerServiceUtil.clockInOut(((Long)arguments[0]).longValue());
 
 			return null;
@@ -53,8 +53,8 @@ public class SupportWorkerServiceClpInvoker {
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName374;
-	private String[] _methodParameterTypes374;
-	private String _methodName379;
-	private String[] _methodParameterTypes379;
+	private String _methodName366;
+	private String[] _methodParameterTypes366;
+	private String _methodName371;
+	private String[] _methodParameterTypes371;
 }

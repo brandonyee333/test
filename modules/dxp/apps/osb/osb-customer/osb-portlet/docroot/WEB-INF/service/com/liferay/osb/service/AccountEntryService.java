@@ -57,16 +57,16 @@ public interface AccountEntryService extends BaseService, InvokableService {
 	@JSONWebService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AccountEntry fetchCorpProjectAccountEntry(long corpProjectId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AccountEntry getAccountEntry(long accountEntryId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@JSONWebService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AccountEntry getAccountEntryByCode(java.lang.String code)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public AccountEntry updateAccountEntry(long accountEntryId,
 		long corpProjectId, java.lang.String corpEntryName,
@@ -78,13 +78,13 @@ public interface AccountEntryService extends BaseService, InvokableService {
 		java.lang.String street2, java.lang.String street3,
 		java.lang.String city, java.lang.String zip, long regionId,
 		long countryId, java.lang.String ewsaDossieraProjectKey)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public AccountEntry updateInstructions(long accountEntryId,
-		java.lang.String instructions) throws PortalException, SystemException;
+		java.lang.String instructions) throws PortalException;
 
 	public AccountEntry updateTier(long accountEntryId, int tier)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(java.lang.Long createUserId, int createDateGTDay,
@@ -100,12 +100,12 @@ public interface AccountEntryService extends BaseService, InvokableService {
 		java.lang.Long countryId, java.lang.Long regionId,
 		java.lang.String city, java.lang.String zip,
 		LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andOperator) throws PortalException, SystemException;
+		boolean andOperator) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(java.lang.String keywords,
 		LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
@@ -121,7 +121,7 @@ public interface AccountEntryService extends BaseService, InvokableService {
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountEntry> getSecurityPatchAccountEntries(
-		java.lang.String portletId) throws PortalException, SystemException;
+		java.lang.String portletId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountEntry> search(java.lang.Long createUserId,
@@ -138,14 +138,14 @@ public interface AccountEntryService extends BaseService, InvokableService {
 		java.lang.String city, java.lang.String zip,
 		LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator, int start, int end, OrderByComparator obc)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountEntry> search(java.lang.String keywords,
 		LinkedHashMap<java.lang.String, java.lang.Object> params, int start,
-		int end, OrderByComparator obc) throws PortalException, SystemException;
+		int end, OrderByComparator obc) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountEntry> search(java.lang.String name,
-		java.lang.String code) throws PortalException, SystemException;
+		java.lang.String code) throws PortalException;
 }

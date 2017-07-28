@@ -26,22 +26,19 @@ import com.liferay.portal.kernel.util.ReferenceRegistry;
 @ProviderType
 public class ProductEntryFinderUtil {
 	public static int countByName(java.lang.String name,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params) {
 		return getFinder().countByName(name, params);
 	}
 
 	public static java.util.List<com.liferay.osb.model.ProductEntry> findByAccountEntry(
-		long accountEntryId, int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountEntryId, int start, int end) {
 		return getFinder().findByAccountEntry(accountEntryId, start, end);
 	}
 
 	public static java.util.List<com.liferay.osb.model.ProductEntry> findByName(
 		java.lang.String name,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int start, int end) {
 		return getFinder().findByName(name, params, start, end);
 	}
 

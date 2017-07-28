@@ -26,8 +26,7 @@ import com.liferay.portal.kernel.util.ReferenceRegistry;
 @ProviderType
 public class TicketCommentFinderUtil {
 	public static int countByTEI_V_S_O(long ticketEntryId, int visibility,
-		int[] statuses, long[] organizationIds)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int[] statuses, long[] organizationIds) {
 		return getFinder()
 				   .countByTEI_V_S_O(ticketEntryId, visibility, statuses,
 			organizationIds);

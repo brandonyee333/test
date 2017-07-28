@@ -95,11 +95,10 @@ public interface AccountProjectLocalService extends BaseLocalService,
 	* @param accountProjectId the primary key of the account project
 	* @return the account project that was removed
 	* @throws PortalException if a account project with the primary key could not be found
-	* @throws SystemException
 	*/
 	@Indexable(type = IndexableType.DELETE)
 	public AccountProject deleteAccountProject(long accountProjectId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AccountProject fetchAccountProject(long accountProjectId);
@@ -110,11 +109,10 @@ public interface AccountProjectLocalService extends BaseLocalService,
 	* @param accountProjectId the primary key of the account project
 	* @return the account project
 	* @throws PortalException if a account project with the primary key could not be found
-	* @throws SystemException
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AccountProject getAccountProject(long accountProjectId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	/**
 	* Updates the account project in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
@@ -128,7 +126,7 @@ public interface AccountProjectLocalService extends BaseLocalService,
 	public AccountProject updateAccountProject(long userId,
 		long accountProjectId, long accountEntryId, java.lang.String name,
 		Map<java.lang.Integer, java.lang.String> data)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -224,8 +222,7 @@ public interface AccountProjectLocalService extends BaseLocalService,
 	public List<AccountProject> getAccountProjects(int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AccountProject> getAccountProjects(long accountEntryId)
-		throws SystemException;
+	public List<AccountProject> getAccountProjects(long accountEntryId);
 
 	/**
 	* Returns the number of rows matching the dynamic query.

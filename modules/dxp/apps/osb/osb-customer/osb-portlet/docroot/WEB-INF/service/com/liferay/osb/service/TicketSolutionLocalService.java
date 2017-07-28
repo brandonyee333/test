@@ -80,8 +80,7 @@ public interface TicketSolutionLocalService extends BaseLocalService,
 		java.lang.String ticketEntrySubcomponentCustom,
 		List<java.lang.String> ticketLinkURLs,
 		List<java.lang.Integer> ticketLinkTypes,
-		List<TicketAttachment> ticketAttachments)
-		throws PortalException, SystemException;
+		List<TicketAttachment> ticketAttachments) throws PortalException;
 
 	/**
 	* Creates a new ticket solution with the primary key. Does not add the ticket solution to the database.
@@ -115,8 +114,7 @@ public interface TicketSolutionLocalService extends BaseLocalService,
 	public TicketSolution fetchTicketSolution(long ticketSolutionId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public TicketSolution getActiveTicketSolution(long ticketEntryId)
-		throws SystemException;
+	public TicketSolution getActiveTicketSolution(long ticketEntryId);
 
 	/**
 	* Returns the ticket solution with the primary key.
@@ -141,7 +139,7 @@ public interface TicketSolutionLocalService extends BaseLocalService,
 	public TicketSolution updateTicketSolution(long ticketSolutionId,
 		long ticketEntryId, int status, long statusByUserId,
 		java.lang.String statusMessage, int statusReason)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -237,8 +235,7 @@ public interface TicketSolutionLocalService extends BaseLocalService,
 	public List<TicketSolution> getTicketSolutions(int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<TicketSolution> getTicketSolutions(long ticketEntryId)
-		throws SystemException;
+	public List<TicketSolution> getTicketSolutions(long ticketEntryId);
 
 	/**
 	* Returns the number of rows matching the dynamic query.
@@ -259,5 +256,5 @@ public interface TicketSolutionLocalService extends BaseLocalService,
 		Projection projection);
 
 	public void updateStatus(long ticketEntryId, int ticketEntryStatus,
-		int resolution) throws SystemException;
+		int resolution);
 }

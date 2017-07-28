@@ -23,8 +23,7 @@ import aQute.bnd.annotation.ProviderType;
 @ProviderType
 public interface OrderEntryFinder {
 	public int countByKeywords(java.lang.String keywords,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params);
 
 	public int countByU_CD_MU_MD_AE_PO_S_SD_P_ASD(java.lang.Long createUserId,
 		java.util.Date createDateGT, java.util.Date createDateLT,
@@ -35,8 +34,12 @@ public interface OrderEntryFinder {
 		java.lang.Boolean prorated, java.util.Date actualStartDateGT,
 		java.util.Date actualStartDateLT,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andOperator)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		boolean andOperator);
+
+	public java.util.List<com.liferay.osb.model.OrderEntry> findByKeywords(
+		java.lang.String keywords,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc);
 
 	public java.util.List<com.liferay.osb.model.OrderEntry> findByU_CD_MU_MD_AE_PO_S_SD_P_ASD(
 		java.lang.Long createUserId, java.util.Date createDateGT,
@@ -48,12 +51,5 @@ public interface OrderEntryFinder {
 		java.util.Date actualStartDateLT,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException;
-
-	public java.util.List<com.liferay.osb.model.OrderEntry> findByKeywords(
-		java.lang.String keywords,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		com.liferay.portal.kernel.util.OrderByComparator obc);
 }

@@ -57,8 +57,7 @@ import com.liferay.portal.kernel.util.MethodKey;
 public class SupportWorkerServiceHttp {
 	public static void clockInOut(HttpPrincipal httpPrincipal,
 		long supportWorkerId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(SupportWorkerServiceUtil.class,
 					"clockInOut", _clockInOutParameterTypes0);
@@ -72,10 +71,6 @@ public class SupportWorkerServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);

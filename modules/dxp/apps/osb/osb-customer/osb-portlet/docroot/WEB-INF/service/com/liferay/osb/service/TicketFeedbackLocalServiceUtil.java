@@ -55,8 +55,7 @@ public class TicketFeedbackLocalServiceUtil {
 
 	public static com.liferay.osb.model.TicketFeedback addTicketFeedback(
 		long userId, long ticketEntryId, int subject, int satisfied)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addTicketFeedback(userId, ticketEntryId, subject, satisfied);
 	}
@@ -97,8 +96,7 @@ public class TicketFeedbackLocalServiceUtil {
 	}
 
 	public static com.liferay.osb.model.TicketFeedback fetchFirstOpenTicketFeedback(
-		long userId, long ticketEntryId, int subject)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long userId, long ticketEntryId, int subject) {
 		return getService()
 				   .fetchFirstOpenTicketFeedback(userId, ticketEntryId, subject);
 	}
@@ -136,8 +134,7 @@ public class TicketFeedbackLocalServiceUtil {
 		long userId, long ticketFeedbackId, int satisfied, int answer1,
 		int answer2, int answer3, int rating1, int rating2, int rating3,
 		int rating4, java.lang.String comments)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateTicketFeedback(userId, ticketFeedbackId, satisfied,
 			answer1, answer2, answer3, rating1, rating2, rating3, rating4,
@@ -181,8 +178,7 @@ public class TicketFeedbackLocalServiceUtil {
 	}
 
 	public static int searchCount(java.lang.String keywords,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params) {
 		return getService().searchCount(keywords, params);
 	}
 
@@ -195,8 +191,7 @@ public class TicketFeedbackLocalServiceUtil {
 		java.lang.Integer[] ratings1, java.lang.Integer[] ratings2,
 		java.lang.Integer[] ratings3, java.lang.Integer[] ratings4,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andSearch)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		boolean andSearch) {
 		return getService()
 				   .searchCount(name, createdGTDay, createdGTMonth,
 			createdGTYear, createdLTDay, createdLTMonth, createdLTYear,
@@ -287,22 +282,19 @@ public class TicketFeedbackLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.osb.model.TicketFeedback> getTicketFeedbacks(
-		long ticketEntryId, int subject)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long ticketEntryId, int subject) {
 		return getService().getTicketFeedbacks(ticketEntryId, subject);
 	}
 
 	public static java.util.List<com.liferay.osb.model.TicketFeedback> getTicketFeedbacks(
-		long ticketEntryId, int subject, int status)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long ticketEntryId, int subject, int status) {
 		return getService().getTicketFeedbacks(ticketEntryId, subject, status);
 	}
 
 	public static java.util.List<com.liferay.osb.model.TicketFeedback> search(
 		java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc) {
 		return getService().search(keywords, params, start, end, obc);
 	}
 
@@ -317,8 +309,7 @@ public class TicketFeedbackLocalServiceUtil {
 		java.lang.Integer[] ratings3, java.lang.Integer[] ratings4,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andSearch, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.portal.kernel.util.OrderByComparator obc) {
 		return getService()
 				   .search(name, createdGTDay, createdGTMonth, createdGTYear,
 			createdLTDay, createdLTMonth, createdLTYear, modifiedGTDay,

@@ -283,8 +283,7 @@ public class AccountEntryWrapper implements AccountEntry,
 
 	@Override
 	public PartnerEntry getPartnerEntry()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountEntry.getPartnerEntry();
 	}
 
@@ -409,8 +408,7 @@ public class AccountEntryWrapper implements AccountEntry,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.Address getAddress()
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public com.liferay.portal.kernel.model.Address getAddress() {
 		return _accountEntry.getAddress();
 	}
 
@@ -510,8 +508,7 @@ public class AccountEntryWrapper implements AccountEntry,
 	}
 
 	@Override
-	public java.lang.String getEWSADossieraProjectKey()
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public java.lang.String getEWSADossieraProjectKey() {
 		return _accountEntry.getEWSADossieraProjectKey();
 	}
 
@@ -641,8 +638,7 @@ public class AccountEntryWrapper implements AccountEntry,
 	}
 
 	@Override
-	public java.lang.String[] getLanguageIds()
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public java.lang.String[] getLanguageIds() {
 		return _accountEntry.getLanguageIds();
 	}
 
@@ -688,38 +684,32 @@ public class AccountEntryWrapper implements AccountEntry,
 
 	@Override
 	public java.util.List<AccountAttachment> getAccountAttachments(
-		long accountProjectId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountProjectId) {
 		return _accountEntry.getAccountAttachments(accountProjectId);
 	}
 
 	@Override
-	public java.util.List<AccountCustomer> getAccountCustomers()
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public java.util.List<AccountCustomer> getAccountCustomers() {
 		return _accountEntry.getAccountCustomers();
 	}
 
 	@Override
-	public java.util.List<AccountWorker> getAccountWorkers()
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public java.util.List<AccountWorker> getAccountWorkers() {
 		return _accountEntry.getAccountWorkers();
 	}
 
 	@Override
-	public java.util.List<OfferingEntry> getOfferingEntries()
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public java.util.List<OfferingEntry> getOfferingEntries() {
 		return _accountEntry.getOfferingEntries();
 	}
 
 	@Override
-	public java.util.List<OrderEntry> getOrderEntries()
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public java.util.List<OrderEntry> getOrderEntries() {
 		return _accountEntry.getOrderEntries();
 	}
 
 	@Override
-	public java.util.List<SupportRegion> getSupportRegions()
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public java.util.List<SupportRegion> getSupportRegions() {
 		return _accountEntry.getSupportRegions();
 	}
 
@@ -834,8 +824,7 @@ public class AccountEntryWrapper implements AccountEntry,
 	}
 
 	@Override
-	public long[] getSupportRegionIds()
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public long[] getSupportRegionIds() {
 		return _accountEntry.getSupportRegionIds();
 	}
 

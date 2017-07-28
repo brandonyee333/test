@@ -23,6 +23,5 @@ import aQute.bnd.annotation.ProviderType;
 @ProviderType
 public interface TicketCommentFinder {
 	public int countByTEI_V_S_O(long ticketEntryId, int visibility,
-		int[] statuses, long[] organizationIds)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		int[] statuses, long[] organizationIds);
 }

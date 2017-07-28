@@ -41,13 +41,11 @@ public class AccountWorkerLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.AccountWorkerLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static boolean hasAccountWorker(long userId, long accountEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public static boolean hasAccountWorker(long userId, long accountEntryId) {
 		return getService().hasAccountWorker(userId, accountEntryId);
 	}
 
-	public static boolean hasAccountWorkerRole(long userId, int role)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public static boolean hasAccountWorkerRole(long userId, int role) {
 		return getService().hasAccountWorkerRole(userId, role);
 	}
 
@@ -117,8 +115,7 @@ public class AccountWorkerLocalServiceUtil {
 
 	public static com.liferay.osb.model.AccountWorker getAccountWorker(
 		long userId, long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getAccountWorker(userId, accountEntryId);
 	}
 
@@ -251,19 +248,17 @@ public class AccountWorkerLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.osb.model.AccountWorker> getAccountWorkers(
-		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountEntryId) {
 		return getService().getAccountWorkers(accountEntryId);
 	}
 
 	public static java.util.List<com.liferay.osb.model.AccountWorker> getAccountWorkers(
-		long accountEntryId, int role)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountEntryId, int role) {
 		return getService().getAccountWorkers(accountEntryId, role);
 	}
 
 	public static java.util.List<com.liferay.osb.model.AccountWorker> getUserAccountWorkers(
-		long userId) throws com.liferay.portal.kernel.exception.SystemException {
+		long userId) {
 		return getService().getUserAccountWorkers(userId);
 	}
 
@@ -293,29 +288,25 @@ public class AccountWorkerLocalServiceUtil {
 
 	public static void addAccountWorkers(long userId, long[] userIds,
 		long accountEntryId, int[] roles, int[] notifications)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService()
 			.addAccountWorkers(userId, userIds, accountEntryId, roles,
 			notifications);
 	}
 
 	public static void deleteAccountEntryAccountWorkers(long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().deleteAccountEntryAccountWorkers(accountEntryId);
 	}
 
 	public static void deleteAccountWorkers(long userId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().deleteAccountWorkers(userId);
 	}
 
 	public static void deleteAccountWorkers(long userId, long[] userIds,
 		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().deleteAccountWorkers(userId, userIds, accountEntryId);
 	}
 

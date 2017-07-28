@@ -44,8 +44,7 @@ public class SearchFilterServiceUtil {
 	public static com.liferay.osb.model.SearchFilter addSearchFilter(
 		long userId, long classNameId, java.lang.String name,
 		java.lang.String filter, int visibility)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addSearchFilter(userId, classNameId, name, filter,
 			visibility);
@@ -53,16 +52,14 @@ public class SearchFilterServiceUtil {
 
 	public static com.liferay.osb.model.SearchFilter getSearchFilter(
 		long searchFilterId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getSearchFilter(searchFilterId);
 	}
 
 	public static com.liferay.osb.model.SearchFilter updateSearchFilter(
 		long searchFilterId, java.lang.String name, java.lang.String filter,
 		int visibility)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateSearchFilter(searchFilterId, name, filter, visibility);
 	}
@@ -83,8 +80,7 @@ public class SearchFilterServiceUtil {
 	}
 
 	public static void deleteSearchFilter(long searchFilterId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().deleteSearchFilter(searchFilterId);
 	}
 

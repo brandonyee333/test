@@ -66,5 +66,5 @@ public interface OrderEntryService extends BaseService, InvokableService {
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<OrderEntry> getOrderEntries(long corpProjectId)
-		throws PortalException, SystemException;
+		throws PortalException;
 }

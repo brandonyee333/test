@@ -55,14 +55,11 @@ public interface OrderEntry extends OrderEntryModel, PersistedModel {
 		};
 
 	public AccountEntry getAccountEntry()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public java.util.List<OfferingEntry> getOfferingEntries()
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public java.util.List<OfferingEntry> getOfferingEntries();
 
-	public java.lang.String getSalesforceOpportunityKey()
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public java.lang.String getSalesforceOpportunityKey();
 
 	public java.lang.String getStatusLabel();
 

@@ -27,8 +27,7 @@ import com.liferay.portal.kernel.util.ReferenceRegistry;
 public class SupportResponseFinderUtil {
 	public static com.liferay.osb.model.SupportResponse fetchByAccountEntry(
 		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getFinder().fetchByAccountEntry(accountEntryId);
 	}
 

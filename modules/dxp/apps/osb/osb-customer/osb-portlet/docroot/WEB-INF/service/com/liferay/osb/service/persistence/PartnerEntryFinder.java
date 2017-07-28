@@ -23,23 +23,19 @@ import aQute.bnd.annotation.ProviderType;
 @ProviderType
 public interface PartnerEntryFinder {
 	public int countByKeywords(java.lang.String keywords,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params);
 
 	public int countByC_S(java.lang.String code, int[] statuses,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andOperator)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		boolean andOperator);
 
 	public java.util.List<com.liferay.osb.model.PartnerEntry> findByKeywords(
 		java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		int start, int end);
 
 	public java.util.List<com.liferay.osb.model.PartnerEntry> findByC_S(
 		java.lang.String code, int[] statuses,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andOperator, int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		boolean andOperator, int start, int end);
 }

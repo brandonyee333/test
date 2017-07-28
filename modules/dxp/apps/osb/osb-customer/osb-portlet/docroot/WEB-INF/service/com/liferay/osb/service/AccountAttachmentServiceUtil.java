@@ -43,15 +43,13 @@ public class AccountAttachmentServiceUtil {
 	 */
 	public static com.liferay.osb.model.AccountAttachment deleteAccountAttachment(
 		long accountAttachmentId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteAccountAttachment(accountAttachmentId);
 	}
 
 	public static com.liferay.osb.model.AccountAttachment getAccountAttachment(
 		long accountAttachmentId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getAccountAttachment(accountAttachmentId);
 	}
 
@@ -74,8 +72,7 @@ public class AccountAttachmentServiceUtil {
 		long accountEntryId, long accountProjectId,
 		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
 		java.util.List<java.lang.Integer> types)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addAccountAttachments(accountEntryId, accountProjectId,
 			files, types);
@@ -83,8 +80,7 @@ public class AccountAttachmentServiceUtil {
 
 	public static java.util.List<com.liferay.osb.model.AccountAttachment> getAccountAttachments(
 		long accountEntryId, long accountProjectId, int type)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .getAccountAttachments(accountEntryId, accountProjectId, type);
 	}

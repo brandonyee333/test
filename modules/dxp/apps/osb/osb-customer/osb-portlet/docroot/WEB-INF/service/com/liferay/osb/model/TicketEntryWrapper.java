@@ -354,43 +354,37 @@ public class TicketEntryWrapper implements TicketEntry,
 
 	@Override
 	public AccountEntry getAccountEntry()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketEntry.getAccountEntry();
 	}
 
 	@Override
 	public OfferingEntry getOfferingEntry()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketEntry.getOfferingEntry();
 	}
 
 	@Override
 	public OrderEntry getOrderEntry()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketEntry.getOrderEntry();
 	}
 
 	@Override
 	public ProductEntry getProductEntry()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketEntry.getProductEntry();
 	}
 
 	@Override
 	public SupportRegion getSupportRegion()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketEntry.getSupportRegion();
 	}
 
 	@Override
 	public SupportResponse getSupportResponse()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketEntry.getSupportResponse();
 	}
 
@@ -416,8 +410,7 @@ public class TicketEntryWrapper implements TicketEntry,
 
 	@Override
 	public boolean hasParticipant(long userId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketEntry.hasParticipant(userId);
 	}
 
@@ -447,20 +440,17 @@ public class TicketEntryWrapper implements TicketEntry,
 	}
 
 	@Override
-	public boolean isPendingCustomer()
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public boolean isPendingCustomer() {
 		return _ticketEntry.isPendingCustomer();
 	}
 
 	@Override
-	public boolean isPendingLiferay()
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public boolean isPendingLiferay() {
 		return _ticketEntry.isPendingLiferay();
 	}
 
 	@Override
-	public boolean isPendingPartner()
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public boolean isPendingPartner() {
 		return _ticketEntry.isPendingPartner();
 	}
 
@@ -475,8 +465,7 @@ public class TicketEntryWrapper implements TicketEntry,
 	}
 
 	@Override
-	public double getWork()
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public double getWork() {
 		return _ticketEntry.getWork();
 	}
 
@@ -487,8 +476,7 @@ public class TicketEntryWrapper implements TicketEntry,
 
 	@Override
 	public int getAccountTier()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketEntry.getAccountTier();
 	}
 
@@ -623,8 +611,7 @@ public class TicketEntryWrapper implements TicketEntry,
 	}
 
 	@Override
-	public int getTicketAttachmentsCount(int[] visibilities)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public int getTicketAttachmentsCount(int[] visibilities) {
 		return _ticketEntry.getTicketAttachmentsCount(visibilities);
 	}
 
@@ -675,8 +662,7 @@ public class TicketEntryWrapper implements TicketEntry,
 
 	@Override
 	public java.lang.String getDisplayId()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketEntry.getDisplayId();
 	}
 
@@ -941,28 +927,24 @@ public class TicketEntryWrapper implements TicketEntry,
 	}
 
 	@Override
-	public java.util.List<TicketAttachment> getTicketAttachments()
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public java.util.List<TicketAttachment> getTicketAttachments() {
 		return _ticketEntry.getTicketAttachments();
 	}
 
 	@Override
 	public java.util.List<TicketAttachment> getTicketAttachments(int[] types,
-		int[] visibilities)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int[] visibilities) {
 		return _ticketEntry.getTicketAttachments(types, visibilities);
 	}
 
 	@Override
-	public java.util.List<TicketInformation> getTicketInformationList()
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public java.util.List<TicketInformation> getTicketInformationList() {
 		return _ticketEntry.getTicketInformationList();
 	}
 
 	@Override
 	public Map<java.lang.Long, java.lang.String> getTicketInformationFieldsMap()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketEntry.getTicketInformationFieldsMap();
 	}
 

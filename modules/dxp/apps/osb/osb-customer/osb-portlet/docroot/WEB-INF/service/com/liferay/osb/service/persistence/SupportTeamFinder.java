@@ -22,24 +22,19 @@ import aQute.bnd.annotation.ProviderType;
  */
 @ProviderType
 public interface SupportTeamFinder {
-	public int countByKeywords(java.lang.String keywords)
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public int countByKeywords(java.lang.String keywords);
 
 	public int countByN_T(java.lang.String name, java.lang.Integer type,
-		boolean andOperator)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		boolean andOperator);
 
 	public java.util.List<com.liferay.osb.model.SupportTeam> findByKeywords(
 		java.lang.String keywords, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		com.liferay.portal.kernel.util.OrderByComparator obc);
 
 	public java.util.List<com.liferay.osb.model.SupportTeam> findByN_T(
 		java.lang.String name, java.lang.Integer type, boolean andOperator,
-		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc);
 
 	public java.util.List<com.liferay.osb.model.SupportTeam> findByU_R(
-		long userId, int role)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		long userId, int role);
 }

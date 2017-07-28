@@ -47,8 +47,7 @@ public class AccountCallServiceClp implements AccountCallService {
 	@Override
 	public com.liferay.osb.model.AccountCall deleteAccountCall(
 		long accountCallId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -60,10 +59,6 @@ public class AccountCallServiceClp implements AccountCallService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -85,8 +80,7 @@ public class AccountCallServiceClp implements AccountCallService {
 		int callDateMinute, long callLength, java.lang.String summary,
 		java.lang.String clientsPresent, java.lang.String notes,
 		java.lang.String actionItems)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -125,10 +119,6 @@ public class AccountCallServiceClp implements AccountCallService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {

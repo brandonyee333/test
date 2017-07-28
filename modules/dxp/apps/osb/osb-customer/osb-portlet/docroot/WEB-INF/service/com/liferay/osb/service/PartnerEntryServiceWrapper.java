@@ -35,8 +35,7 @@ public class PartnerEntryServiceWrapper implements PartnerEntryService,
 	@Override
 	public com.liferay.osb.model.PartnerEntry getPartnerEntry(
 		long partnerEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _partnerEntryService.getPartnerEntry(partnerEntryId);
 	}
 
@@ -44,24 +43,21 @@ public class PartnerEntryServiceWrapper implements PartnerEntryService,
 	public int searchCount(java.lang.String code, int[] statuses,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _partnerEntryService.searchCount(code, statuses, params,
 			andOperator);
 	}
 
 	@Override
 	public int searchCount(java.lang.String keywords)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _partnerEntryService.searchCount(keywords);
 	}
 
 	@Override
 	public int searchCount(java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _partnerEntryService.searchCount(keywords, params);
 	}
 
@@ -87,8 +83,7 @@ public class PartnerEntryServiceWrapper implements PartnerEntryService,
 		java.lang.String code, int[] statuses,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator, int start, int end)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _partnerEntryService.search(code, statuses, params, andOperator,
 			start, end);
 	}
@@ -98,8 +93,7 @@ public class PartnerEntryServiceWrapper implements PartnerEntryService,
 		java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		int start, int end)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _partnerEntryService.search(keywords, params, start, end);
 	}
 

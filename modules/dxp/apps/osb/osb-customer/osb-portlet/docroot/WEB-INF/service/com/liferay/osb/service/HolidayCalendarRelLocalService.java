@@ -62,8 +62,7 @@ public interface HolidayCalendarRelLocalService extends BaseLocalService,
 	 * Never modify or reference this interface directly. Always use {@link HolidayCalendarRelLocalServiceUtil} to access the holiday calendar rel local service. Add custom service methods to {@link com.liferay.osb.service.impl.HolidayCalendarRelLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasHolidayCalendarRel(long holidayCalendarId, long userId)
-		throws SystemException;
+	public boolean hasHolidayCalendarRel(long holidayCalendarId, long userId);
 
 	/**
 	* Adds the holiday calendar rel to the database. Also notifies the appropriate model listeners.
@@ -110,7 +109,7 @@ public interface HolidayCalendarRelLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public HolidayCalendarRel getHolidayCalendarRel(long holidayCalendarId,
-		long userId) throws PortalException, SystemException;
+		long userId) throws PortalException;
 
 	/**
 	* Returns the holiday calendar rel with the primary key.
@@ -228,7 +227,7 @@ public interface HolidayCalendarRelLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<HolidayCalendarRel> getHolidayCalendarRels(
-		long holidayCalendarId) throws SystemException;
+		long holidayCalendarId);
 
 	/**
 	* Returns the number of rows matching the dynamic query.
@@ -249,11 +248,9 @@ public interface HolidayCalendarRelLocalService extends BaseLocalService,
 		Projection projection);
 
 	public void addUsers(long holidayCalendarId, long[] userIds)
-		throws PortalException, SystemException;
+		throws PortalException;
 
-	public void deleteHolidayCalendarRels(long holidayCalendarId)
-		throws SystemException;
+	public void deleteHolidayCalendarRels(long holidayCalendarId);
 
-	public void deleteHolidayCalendarRels(long holidayCalendarId, long[] userIds)
-		throws SystemException;
+	public void deleteHolidayCalendarRels(long holidayCalendarId, long[] userIds);
 }

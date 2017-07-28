@@ -26,43 +26,49 @@ import com.liferay.portal.kernel.util.ReferenceRegistry;
 @ProviderType
 public class SupportWorkerFinderUtil {
 	public static int countByKeywords(long supportLaborId,
-		java.lang.String keywords)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.lang.String keywords) {
 		return getFinder().countByKeywords(supportLaborId, keywords);
+	}
+
+	public static int countByU_E(java.lang.Boolean overUtilization,
+		int escalationLevel,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params) {
+		return getFinder().countByU_E(overUtilization, escalationLevel, params);
 	}
 
 	public static int countBySL_FN_MN_LN_SN_EA_STN(long supportLaborId,
 		java.lang.String[] firstNames, java.lang.String[] middleNames,
 		java.lang.String[] lastNames, java.lang.String[] screenNames,
 		java.lang.String[] emailAddresses, java.lang.String[] supportTeamNames,
-		boolean andOperator)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		boolean andOperator) {
 		return getFinder()
 				   .countBySL_FN_MN_LN_SN_EA_STN(supportLaborId, firstNames,
 			middleNames, lastNames, screenNames, emailAddresses,
 			supportTeamNames, andOperator);
 	}
 
-	public static int countByU_E(java.lang.Boolean overUtilization,
-		int escalationLevel,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.SystemException {
-		return getFinder().countByU_E(overUtilization, escalationLevel, params);
-	}
-
 	public static java.util.List<com.liferay.osb.model.SupportWorker> findByKeywords(
 		long supportLaborId, java.lang.String keywords, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.portal.kernel.util.OrderByComparator obc) {
 		return getFinder()
 				   .findByKeywords(supportLaborId, keywords, start, end, obc);
+	}
+
+	public static java.util.List<com.liferay.osb.model.SupportWorker> findBySupportTeamId(
+		long supportTeamId) {
+		return getFinder().findBySupportTeamId(supportTeamId);
+	}
+
+	public static java.util.List<com.liferay.osb.model.SupportWorker> findByU_E(
+		java.lang.Boolean overUtilization, int escalationLevel,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params) {
+		return getFinder().findByU_E(overUtilization, escalationLevel, params);
 	}
 
 	public static java.util.List<com.liferay.osb.model.SupportWorker> findByR_STT_SRI(
 		int role, java.lang.Integer supportTeamType, long supportRegionId,
 		java.lang.String roleComparator, boolean filterByAutoAssign,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params) {
 		return getFinder()
 				   .findByR_STT_SRI(role, supportTeamType, supportRegionId,
 			roleComparator, filterByAutoAssign, params);
@@ -73,25 +79,11 @@ public class SupportWorkerFinderUtil {
 		java.lang.String[] middleNames, java.lang.String[] lastNames,
 		java.lang.String[] screenNames, java.lang.String[] emailAddresses,
 		java.lang.String[] supportTeamNames, boolean andOperator, int start,
-		int end, com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int end, com.liferay.portal.kernel.util.OrderByComparator obc) {
 		return getFinder()
 				   .findBySL_FN_MN_LN_SN_EA_STN(supportLaborId, firstNames,
 			middleNames, lastNames, screenNames, emailAddresses,
 			supportTeamNames, andOperator, start, end, obc);
-	}
-
-	public static java.util.List<com.liferay.osb.model.SupportWorker> findBySupportTeamId(
-		long supportTeamId)
-		throws com.liferay.portal.kernel.exception.SystemException {
-		return getFinder().findBySupportTeamId(supportTeamId);
-	}
-
-	public static java.util.List<com.liferay.osb.model.SupportWorker> findByU_E(
-		java.lang.Boolean overUtilization, int escalationLevel,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.SystemException {
-		return getFinder().findByU_E(overUtilization, escalationLevel, params);
 	}
 
 	public static SupportWorkerFinder getFinder() {

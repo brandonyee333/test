@@ -49,8 +49,7 @@ public class FeedbackEntryLocalServiceWrapper
 	@Override
 	public com.liferay.osb.model.FeedbackEntry addFeedbackEntry(long userId,
 		long classNameId, long classPK, int satisfied, java.lang.String pageURL)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _feedbackEntryLocalService.addFeedbackEntry(userId, classNameId,
 			classPK, satisfied, pageURL);
 	}
@@ -128,8 +127,7 @@ public class FeedbackEntryLocalServiceWrapper
 	@Override
 	public com.liferay.osb.model.FeedbackEntry updateFeedbackEntry(
 		long feedbackEntryId, java.lang.String comments)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _feedbackEntryLocalService.updateFeedbackEntry(feedbackEntryId,
 			comments);
 	}

@@ -190,8 +190,7 @@ public class SecurityPatchLocalServiceClp implements SecurityPatchLocalService {
 		long accountEntryId, long ticketAttachmentId,
 		java.lang.String portletId, int envLFR, java.lang.String name,
 		java.lang.String fileName)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -220,10 +219,6 @@ public class SecurityPatchLocalServiceClp implements SecurityPatchLocalService {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
 			}
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -240,8 +235,7 @@ public class SecurityPatchLocalServiceClp implements SecurityPatchLocalService {
 	public com.liferay.osb.model.SecurityPatch addSecurityPatch(long userId,
 		long ticketAttachmentId, java.lang.String portletId, int envLFR,
 		java.lang.String fileName)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -264,10 +258,6 @@ public class SecurityPatchLocalServiceClp implements SecurityPatchLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -441,8 +431,7 @@ public class SecurityPatchLocalServiceClp implements SecurityPatchLocalService {
 	@Override
 	public com.liferay.osb.model.SecurityPatch updateSecurityPatch(
 		long securityPatchId, java.lang.String name)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -459,10 +448,6 @@ public class SecurityPatchLocalServiceClp implements SecurityPatchLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -782,8 +767,7 @@ public class SecurityPatchLocalServiceClp implements SecurityPatchLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.SecurityPatch> getSecurityPatches(
-		long accountEntryId, java.lang.String portletId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountEntryId, java.lang.String portletId) {
 		Object returnObj = null;
 
 		try {
@@ -797,10 +781,6 @@ public class SecurityPatchLocalServiceClp implements SecurityPatchLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -894,8 +874,7 @@ public class SecurityPatchLocalServiceClp implements SecurityPatchLocalService {
 	}
 
 	@Override
-	public void deleteSecurityPatches(java.lang.String portletId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public void deleteSecurityPatches(java.lang.String portletId) {
 		try {
 			_invokableLocalService.invokeMethod(_methodName26,
 				_methodParameterTypes26,
@@ -903,10 +882,6 @@ public class SecurityPatchLocalServiceClp implements SecurityPatchLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;

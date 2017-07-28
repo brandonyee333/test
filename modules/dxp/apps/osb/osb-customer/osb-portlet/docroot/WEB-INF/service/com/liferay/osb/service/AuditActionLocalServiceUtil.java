@@ -118,8 +118,7 @@ public class AuditActionLocalServiceUtil {
 	}
 
 	public static com.liferay.osb.model.AuditAction updateAuditAction(
-		long classNameId, long classPK, long mappingClassPK, int action)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long classNameId, long classPK, long mappingClassPK, int action) {
 		return getService()
 				   .updateAuditAction(classNameId, classPK, mappingClassPK,
 			action);
@@ -244,7 +243,7 @@ public class AuditActionLocalServiceUtil {
 
 	public static java.util.List<com.liferay.osb.model.AuditAction> getAuditActions(
 		java.util.Date modifiedDate, long classNameId, boolean mapping,
-		int action) throws com.liferay.portal.kernel.exception.SystemException {
+		int action) {
 		return getService()
 				   .getAuditActions(modifiedDate, classNameId, mapping, action);
 	}
@@ -273,8 +272,7 @@ public class AuditActionLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static void deleteAuditActions(java.util.Date modifiedDate)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public static void deleteAuditActions(java.util.Date modifiedDate) {
 		getService().deleteAuditActions(modifiedDate);
 	}
 

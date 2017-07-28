@@ -629,8 +629,7 @@ public class SupportWorkerSeverityLocalServiceClp
 
 	@Override
 	public java.util.List<com.liferay.osb.model.SupportWorkerSeverity> getSupportWorkerSeverities(
-		long supportWorkerId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long supportWorkerId) {
 		Object returnObj = null;
 
 		try {
@@ -639,10 +638,6 @@ public class SupportWorkerSeverityLocalServiceClp
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -713,8 +708,7 @@ public class SupportWorkerSeverityLocalServiceClp
 
 	@Override
 	public void setSupportWorkerSeverities(long supportWorkerId,
-		int[] severities)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int[] severities) {
 		try {
 			_invokableLocalService.invokeMethod(_methodName22,
 				_methodParameterTypes22,
@@ -726,10 +720,6 @@ public class SupportWorkerSeverityLocalServiceClp
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;

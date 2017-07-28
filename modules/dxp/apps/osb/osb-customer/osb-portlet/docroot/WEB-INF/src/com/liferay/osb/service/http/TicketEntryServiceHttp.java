@@ -63,8 +63,7 @@ public class TicketEntryServiceHttp {
 		int component, int subcomponent,
 		java.util.Map<java.lang.Long, java.lang.String> ticketInformationFieldsMap,
 		java.util.List<com.liferay.osb.model.TicketAttachment> ticketAttachments)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketEntryServiceUtil.class,
 					"addTicketEntry", _addTicketEntryParameterTypes0);
@@ -85,10 +84,6 @@ public class TicketEntryServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -103,8 +98,7 @@ public class TicketEntryServiceHttp {
 
 	public static void closeTicketEntry(HttpPrincipal httpPrincipal,
 		long ticketEntryId, int resolution, java.lang.String body)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketEntryServiceUtil.class,
 					"closeTicketEntry", _closeTicketEntryParameterTypes1);
@@ -120,10 +114,6 @@ public class TicketEntryServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 		}
@@ -136,8 +126,7 @@ public class TicketEntryServiceHttp {
 
 	public static void escalateTicketEntry(HttpPrincipal httpPrincipal,
 		long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketEntryServiceUtil.class,
 					"escalateTicketEntry", _escalateTicketEntryParameterTypes2);
@@ -153,10 +142,6 @@ public class TicketEntryServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 		}
@@ -170,8 +155,7 @@ public class TicketEntryServiceHttp {
 	public static com.liferay.osb.model.TicketEntry forwardTicketEntry(
 		HttpPrincipal httpPrincipal, long ticketEntryId,
 		java.lang.String commentBody)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketEntryServiceUtil.class,
 					"forwardTicketEntry", _forwardTicketEntryParameterTypes3);
@@ -189,10 +173,6 @@ public class TicketEntryServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -208,8 +188,7 @@ public class TicketEntryServiceHttp {
 	public static java.util.List<com.liferay.osb.model.TicketEntry> getTicketEntries(
 		HttpPrincipal httpPrincipal, long accountEntryId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketEntryServiceUtil.class,
 					"getTicketEntries", _getTicketEntriesParameterTypes4);
@@ -227,10 +206,6 @@ public class TicketEntryServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -245,8 +220,7 @@ public class TicketEntryServiceHttp {
 
 	public static int getTicketEntriesCount(HttpPrincipal httpPrincipal,
 		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketEntryServiceUtil.class,
 					"getTicketEntriesCount",
@@ -265,10 +239,6 @@ public class TicketEntryServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -283,8 +253,7 @@ public class TicketEntryServiceHttp {
 
 	public static com.liferay.osb.model.TicketEntry getTicketEntry(
 		HttpPrincipal httpPrincipal, long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketEntryServiceUtil.class,
 					"getTicketEntry", _getTicketEntryParameterTypes6);
@@ -302,10 +271,6 @@ public class TicketEntryServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -320,8 +285,7 @@ public class TicketEntryServiceHttp {
 
 	public static com.liferay.osb.model.TicketEntry getTicketEntry(
 		HttpPrincipal httpPrincipal, long accountEntryId, long ticketId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketEntryServiceUtil.class,
 					"getTicketEntry", _getTicketEntryParameterTypes7);
@@ -337,10 +301,6 @@ public class TicketEntryServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
@@ -368,8 +328,7 @@ public class TicketEntryServiceHttp {
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andSearch, int start, int end,
 		com.liferay.portal.kernel.search.Sort[] sorts)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketEntryServiceUtil.class,
 					"search", _searchParameterTypes8);
@@ -392,10 +351,6 @@ public class TicketEntryServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -413,8 +368,7 @@ public class TicketEntryServiceHttp {
 		long accountEntryId, java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		int start, int end, com.liferay.portal.kernel.search.Sort[] sorts)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketEntryServiceUtil.class,
 					"search", _searchParameterTypes9);
@@ -431,10 +385,6 @@ public class TicketEntryServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
@@ -466,8 +416,7 @@ public class TicketEntryServiceHttp {
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andSearch, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketEntryServiceUtil.class,
 					"search", _searchParameterTypes10);
@@ -494,10 +443,6 @@ public class TicketEntryServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -513,8 +458,7 @@ public class TicketEntryServiceHttp {
 	public static java.util.List<com.liferay.osb.model.TicketEntry> search(
 		HttpPrincipal httpPrincipal, java.lang.String keywords, int start,
 		int end, com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketEntryServiceUtil.class,
 					"search", _searchParameterTypes11);
@@ -530,10 +474,6 @@ public class TicketEntryServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
@@ -563,8 +503,7 @@ public class TicketEntryServiceHttp {
 		int dueDateLTMonth, int dueDateLTYear,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andSearch)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketEntryServiceUtil.class,
 					"searchCount", _searchCountParameterTypes12);
@@ -591,10 +530,6 @@ public class TicketEntryServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -609,8 +544,7 @@ public class TicketEntryServiceHttp {
 
 	public static int searchCount(HttpPrincipal httpPrincipal,
 		java.lang.String keywords)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketEntryServiceUtil.class,
 					"searchCount", _searchCountParameterTypes13);
@@ -627,10 +561,6 @@ public class TicketEntryServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -645,8 +575,7 @@ public class TicketEntryServiceHttp {
 
 	public static com.liferay.osb.model.TicketEntry updatePendingTypes(
 		HttpPrincipal httpPrincipal, long ticketEntryId, int[] pendingTypes)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketEntryServiceUtil.class,
 					"updatePendingTypes", _updatePendingTypesParameterTypes14);
@@ -662,10 +591,6 @@ public class TicketEntryServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
@@ -684,8 +609,7 @@ public class TicketEntryServiceHttp {
 		HttpPrincipal httpPrincipal, long userId, long ticketEntryId,
 		long assigneeUserId, long supportRegionId, int dueDateMonth,
 		int dueDateDay, int dueDateYear, int dueDateHour, int dueDateMinute)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketEntryServiceUtil.class,
 					"updateTicketEntry", _updateTicketEntryParameterTypes15);
@@ -703,10 +627,6 @@ public class TicketEntryServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
@@ -734,8 +654,7 @@ public class TicketEntryServiceHttp {
 		int[] pendingTypes,
 		java.util.List<com.liferay.osb.model.TicketAttachment> ticketAttachments,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketEntryServiceUtil.class,
 					"updateTicketEntry", _updateTicketEntryParameterTypes16);
@@ -758,10 +677,6 @@ public class TicketEntryServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);

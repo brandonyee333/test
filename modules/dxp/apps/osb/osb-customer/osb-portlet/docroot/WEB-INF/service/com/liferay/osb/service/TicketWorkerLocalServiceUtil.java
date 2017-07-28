@@ -41,8 +41,7 @@ public class TicketWorkerLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.TicketWorkerLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static boolean hasTicketWorker(long userId, long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public static boolean hasTicketWorker(long userId, long ticketEntryId) {
 		return getService().hasTicketWorker(userId, ticketEntryId);
 	}
 
@@ -93,15 +92,13 @@ public class TicketWorkerLocalServiceUtil {
 	}
 
 	public static com.liferay.osb.model.TicketWorker fetchLatestTicketWorker(
-		long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long ticketEntryId) {
 		return getService().fetchLatestTicketWorker(ticketEntryId);
 	}
 
 	public static com.liferay.osb.model.TicketWorker fetchPrimaryTicketWorker(
 		long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().fetchPrimaryTicketWorker(ticketEntryId);
 	}
 
@@ -111,8 +108,7 @@ public class TicketWorkerLocalServiceUtil {
 	}
 
 	public static com.liferay.osb.model.TicketWorker fetchTicketWorker(
-		long userId, long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long userId, long ticketEntryId) {
 		return getService().fetchTicketWorker(userId, ticketEntryId);
 	}
 
@@ -131,8 +127,7 @@ public class TicketWorkerLocalServiceUtil {
 
 	public static com.liferay.osb.model.TicketWorker getTicketWorker(
 		long userId, long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getTicketWorker(userId, ticketEntryId);
 	}
 
@@ -183,8 +178,7 @@ public class TicketWorkerLocalServiceUtil {
 		return getService().getTicketWorkersCount();
 	}
 
-	public static int getUserTicketWorkersCount(long userId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public static int getUserTicketWorkersCount(long userId) {
 		return getService().getUserTicketWorkersCount(userId);
 	}
 
@@ -207,8 +201,7 @@ public class TicketWorkerLocalServiceUtil {
 		long userId, long[] userIds, long ticketEntryId,
 		long[] sourceClassNameIds, long[] sourceClassPKs, int[] roles,
 		long primaryUserId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addTicketWorkers(userId, userIds, ticketEntryId,
 			sourceClassNameIds, sourceClassPKs, roles, primaryUserId);
@@ -281,19 +274,17 @@ public class TicketWorkerLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.osb.model.TicketWorker> getTicketWorkers(
-		long sourceClassNameId, long sourceClassPK)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long sourceClassNameId, long sourceClassPK) {
 		return getService().getTicketWorkers(sourceClassNameId, sourceClassPK);
 	}
 
 	public static java.util.List<com.liferay.osb.model.TicketWorker> getTicketWorkers(
-		long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long ticketEntryId) {
 		return getService().getTicketWorkers(ticketEntryId);
 	}
 
 	public static java.util.List<com.liferay.osb.model.TicketWorker> getUserTicketWorkers(
-		long userId) throws com.liferay.portal.kernel.exception.SystemException {
+		long userId) {
 		return getService().getUserTicketWorkers(userId);
 	}
 
@@ -322,15 +313,13 @@ public class TicketWorkerLocalServiceUtil {
 	}
 
 	public static void deleteTicketWorkers(long userId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().deleteTicketWorkers(userId);
 	}
 
 	public static void deleteTicketWorkers(long userId, long[] userIds,
 		long ticketEntryId, long primaryUserId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService()
 			.deleteTicketWorkers(userId, userIds, ticketEntryId, primaryUserId);
 	}

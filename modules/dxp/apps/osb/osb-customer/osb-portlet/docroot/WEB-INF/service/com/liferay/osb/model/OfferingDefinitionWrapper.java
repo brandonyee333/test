@@ -175,15 +175,13 @@ public class OfferingDefinitionWrapper implements OfferingDefinition,
 
 	@Override
 	public ProductEntry getProductEntry()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _offeringDefinition.getProductEntry();
 	}
 
 	@Override
 	public SupportResponse getSupportResponse()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _offeringDefinition.getSupportResponse();
 	}
 

@@ -199,8 +199,7 @@ public class OrderEntryWrapper implements OrderEntry, ModelWrapper<OrderEntry> {
 
 	@Override
 	public AccountEntry getAccountEntry()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _orderEntry.getAccountEntry();
 	}
 
@@ -410,8 +409,7 @@ public class OrderEntryWrapper implements OrderEntry, ModelWrapper<OrderEntry> {
 	}
 
 	@Override
-	public java.lang.String getSalesforceOpportunityKey()
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public java.lang.String getSalesforceOpportunityKey() {
 		return _orderEntry.getSalesforceOpportunityKey();
 	}
 
@@ -541,8 +539,7 @@ public class OrderEntryWrapper implements OrderEntry, ModelWrapper<OrderEntry> {
 	}
 
 	@Override
-	public java.util.List<OfferingEntry> getOfferingEntries()
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public java.util.List<OfferingEntry> getOfferingEntries() {
 		return _orderEntry.getOfferingEntries();
 	}
 

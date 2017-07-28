@@ -183,8 +183,7 @@ public class TicketWorkerLocalServiceClp implements TicketWorkerLocalService {
 	}
 
 	@Override
-	public boolean hasTicketWorker(long userId, long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public boolean hasTicketWorker(long userId, long ticketEntryId) {
 		Object returnObj = null;
 
 		try {
@@ -194,10 +193,6 @@ public class TicketWorkerLocalServiceClp implements TicketWorkerLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -316,8 +311,7 @@ public class TicketWorkerLocalServiceClp implements TicketWorkerLocalService {
 
 	@Override
 	public com.liferay.osb.model.TicketWorker fetchLatestTicketWorker(
-		long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long ticketEntryId) {
 		Object returnObj = null;
 
 		try {
@@ -326,10 +320,6 @@ public class TicketWorkerLocalServiceClp implements TicketWorkerLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -346,8 +336,7 @@ public class TicketWorkerLocalServiceClp implements TicketWorkerLocalService {
 	@Override
 	public com.liferay.osb.model.TicketWorker fetchPrimaryTicketWorker(
 		long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -359,10 +348,6 @@ public class TicketWorkerLocalServiceClp implements TicketWorkerLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -403,8 +388,7 @@ public class TicketWorkerLocalServiceClp implements TicketWorkerLocalService {
 
 	@Override
 	public com.liferay.osb.model.TicketWorker fetchTicketWorker(long userId,
-		long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long ticketEntryId) {
 		Object returnObj = null;
 
 		try {
@@ -414,10 +398,6 @@ public class TicketWorkerLocalServiceClp implements TicketWorkerLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -463,8 +443,7 @@ public class TicketWorkerLocalServiceClp implements TicketWorkerLocalService {
 	@Override
 	public com.liferay.osb.model.TicketWorker getTicketWorker(long userId,
 		long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -477,10 +456,6 @@ public class TicketWorkerLocalServiceClp implements TicketWorkerLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -673,8 +648,7 @@ public class TicketWorkerLocalServiceClp implements TicketWorkerLocalService {
 	}
 
 	@Override
-	public int getUserTicketWorkersCount(long userId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public int getUserTicketWorkersCount(long userId) {
 		Object returnObj = null;
 
 		try {
@@ -683,10 +657,6 @@ public class TicketWorkerLocalServiceClp implements TicketWorkerLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -735,8 +705,7 @@ public class TicketWorkerLocalServiceClp implements TicketWorkerLocalService {
 		long userId, long[] userIds, long ticketEntryId,
 		long[] sourceClassNameIds, long[] sourceClassPKs, int[] roles,
 		long primaryUserId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -763,10 +732,6 @@ public class TicketWorkerLocalServiceClp implements TicketWorkerLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -899,8 +864,7 @@ public class TicketWorkerLocalServiceClp implements TicketWorkerLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.TicketWorker> getTicketWorkers(
-		long sourceClassNameId, long sourceClassPK)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long sourceClassNameId, long sourceClassPK) {
 		Object returnObj = null;
 
 		try {
@@ -910,10 +874,6 @@ public class TicketWorkerLocalServiceClp implements TicketWorkerLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -929,8 +889,7 @@ public class TicketWorkerLocalServiceClp implements TicketWorkerLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.TicketWorker> getTicketWorkers(
-		long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long ticketEntryId) {
 		Object returnObj = null;
 
 		try {
@@ -939,10 +898,6 @@ public class TicketWorkerLocalServiceClp implements TicketWorkerLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -958,7 +913,7 @@ public class TicketWorkerLocalServiceClp implements TicketWorkerLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.TicketWorker> getUserTicketWorkers(
-		long userId) throws com.liferay.portal.kernel.exception.SystemException {
+		long userId) {
 		Object returnObj = null;
 
 		try {
@@ -967,10 +922,6 @@ public class TicketWorkerLocalServiceClp implements TicketWorkerLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -1041,8 +992,7 @@ public class TicketWorkerLocalServiceClp implements TicketWorkerLocalService {
 
 	@Override
 	public void deleteTicketWorkers(long userId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName31,
 				_methodParameterTypes31, new Object[] { userId });
@@ -1052,10 +1002,6 @@ public class TicketWorkerLocalServiceClp implements TicketWorkerLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -1071,8 +1017,7 @@ public class TicketWorkerLocalServiceClp implements TicketWorkerLocalService {
 	@Override
 	public void deleteTicketWorkers(long userId, long[] userIds,
 		long ticketEntryId, long primaryUserId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName32,
 				_methodParameterTypes32,
@@ -1091,10 +1036,6 @@ public class TicketWorkerLocalServiceClp implements TicketWorkerLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {

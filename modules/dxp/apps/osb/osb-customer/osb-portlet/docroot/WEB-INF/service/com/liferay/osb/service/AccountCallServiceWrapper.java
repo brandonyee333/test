@@ -35,8 +35,7 @@ public class AccountCallServiceWrapper implements AccountCallService,
 	@Override
 	public com.liferay.osb.model.AccountCall deleteAccountCall(
 		long accountCallId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountCallService.deleteAccountCall(accountCallId);
 	}
 
@@ -47,8 +46,7 @@ public class AccountCallServiceWrapper implements AccountCallService,
 		int callDateMinute, long callLength, java.lang.String summary,
 		java.lang.String clientsPresent, java.lang.String notes,
 		java.lang.String actionItems)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountCallService.updateAccountCall(accountCallId,
 			accountEntryId, type, callDateMonth, callDateDay, callDateYear,
 			callDateHour, callDateMinute, callLength, summary, clientsPresent,

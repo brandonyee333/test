@@ -52,15 +52,15 @@ public interface SearchFilterService extends BaseService, InvokableService {
 	 */
 	public SearchFilter addSearchFilter(long userId, long classNameId,
 		java.lang.String name, java.lang.String filter, int visibility)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public SearchFilter getSearchFilter(long searchFilterId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public SearchFilter updateSearchFilter(long searchFilterId,
 		java.lang.String name, java.lang.String filter, int visibility)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
@@ -75,5 +75,5 @@ public interface SearchFilterService extends BaseService, InvokableService {
 	public java.lang.String getOSGiServiceIdentifier();
 
 	public void deleteSearchFilter(long searchFilterId)
-		throws PortalException, SystemException;
+		throws PortalException;
 }

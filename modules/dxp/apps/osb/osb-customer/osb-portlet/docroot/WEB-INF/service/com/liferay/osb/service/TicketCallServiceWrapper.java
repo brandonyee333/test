@@ -38,8 +38,7 @@ public class TicketCallServiceWrapper implements TicketCallService,
 		int callDateHour, int callDateMinute, long callLength,
 		java.lang.String customerName, java.lang.String customerContact,
 		java.lang.String confirmation, java.lang.String instructions)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketCallService.addTicketCall(ticketEntryId, type,
 			callDateMonth, callDateDay, callDateYear, callDateHour,
 			callDateMinute, callLength, customerName, customerContact,

@@ -41,8 +41,7 @@ public class OfferingEntryServiceWrapper implements OfferingEntryService,
 		boolean licenses, long licenseLifetime, long maxConcurrentUsers,
 		long maxUsers, boolean supportTickets, long supportLifetime,
 		int sizing, int quantity)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _offeringEntryService.updateOfferingEntry(offeringEntryId,
 			accountEntryId, orderEntryId, productEntryId, supportResponseId,
 			productDescription, type, version, licenses, licenseLifetime,
@@ -53,8 +52,7 @@ public class OfferingEntryServiceWrapper implements OfferingEntryService,
 	@Override
 	public com.liferay.osb.model.OfferingEntry updateStatus(
 		long offeringEntryId, int status)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _offeringEntryService.updateStatus(offeringEntryId, status);
 	}
 
@@ -79,16 +77,14 @@ public class OfferingEntryServiceWrapper implements OfferingEntryService,
 	@Override
 	public java.util.List<com.liferay.osb.model.OfferingEntry> getAccountEntryOfferingEntries(
 		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _offeringEntryService.getAccountEntryOfferingEntries(accountEntryId);
 	}
 
 	@Override
 	public java.util.List<com.liferay.osb.model.OfferingEntry> getOrderEntryOfferingEntries(
 		long orderEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _offeringEntryService.getOrderEntryOfferingEntries(orderEntryId);
 	}
 

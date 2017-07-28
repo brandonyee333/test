@@ -29,8 +29,7 @@ public class OfferingEntryFinderUtil {
 		long accountEntryId, long productEntryId, int[] types, int[] statuses,
 		java.util.Date supportEndDateGT, java.util.Date supportEndDateLT,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andOperator)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		boolean andOperator) {
 		return getFinder()
 				   .countByU_AEI_PEI_T_S_SED(userId, accountEntryId,
 			productEntryId, types, statuses, supportEndDateGT,
@@ -43,8 +42,7 @@ public class OfferingEntryFinderUtil {
 		java.util.Date supportEndDateLT,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.portal.kernel.util.OrderByComparator obc) {
 		return getFinder()
 				   .findByU_AEI_PEI_T_S_SED(userId, accountEntryId,
 			productEntryId, types, statuses, supportEndDateGT,

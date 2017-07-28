@@ -250,8 +250,7 @@ public class SupportTeamLanguageLocalServiceWrapper
 
 	@Override
 	public java.util.List<com.liferay.osb.model.SupportTeamLanguage> getSupportTeamLanguages(
-		long supportTeamId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long supportTeamId) {
 		return _supportTeamLanguageLocalService.getSupportTeamLanguages(supportTeamId);
 	}
 
@@ -284,8 +283,7 @@ public class SupportTeamLanguageLocalServiceWrapper
 
 	@Override
 	public void setSupportTeamLanguageIds(long supportTeamId,
-		java.lang.String[] languageIds)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.lang.String[] languageIds) {
 		_supportTeamLanguageLocalService.setSupportTeamLanguageIds(supportTeamId,
 			languageIds);
 	}

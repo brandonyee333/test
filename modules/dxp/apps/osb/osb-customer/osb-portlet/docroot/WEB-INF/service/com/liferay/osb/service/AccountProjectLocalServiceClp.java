@@ -216,8 +216,7 @@ public class AccountProjectLocalServiceClp implements AccountProjectLocalService
 	@Override
 	public com.liferay.osb.model.AccountProject deleteAccountProject(
 		long accountProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -229,10 +228,6 @@ public class AccountProjectLocalServiceClp implements AccountProjectLocalService
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -274,8 +269,7 @@ public class AccountProjectLocalServiceClp implements AccountProjectLocalService
 	@Override
 	public com.liferay.osb.model.AccountProject getAccountProject(
 		long accountProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -287,10 +281,6 @@ public class AccountProjectLocalServiceClp implements AccountProjectLocalService
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -335,8 +325,7 @@ public class AccountProjectLocalServiceClp implements AccountProjectLocalService
 		long userId, long accountProjectId, long accountEntryId,
 		java.lang.String name,
 		java.util.Map<java.lang.Integer, java.lang.String> data)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -359,10 +348,6 @@ public class AccountProjectLocalServiceClp implements AccountProjectLocalService
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -677,8 +662,7 @@ public class AccountProjectLocalServiceClp implements AccountProjectLocalService
 
 	@Override
 	public java.util.List<com.liferay.osb.model.AccountProject> getAccountProjects(
-		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountEntryId) {
 		Object returnObj = null;
 
 		try {
@@ -687,10 +671,6 @@ public class AccountProjectLocalServiceClp implements AccountProjectLocalService
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;

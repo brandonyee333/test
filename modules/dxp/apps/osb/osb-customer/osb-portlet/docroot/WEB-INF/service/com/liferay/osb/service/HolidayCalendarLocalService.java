@@ -74,7 +74,7 @@ public interface HolidayCalendarLocalService extends BaseLocalService,
 
 	public HolidayCalendar addHolidayCalendar(java.lang.String name,
 		java.lang.String description, List<HolidayEntry> holidayEntries)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	/**
 	* Creates a new holiday calendar with the primary key. Does not add the holiday calendar to the database.
@@ -100,11 +100,10 @@ public interface HolidayCalendarLocalService extends BaseLocalService,
 	* @param holidayCalendarId the primary key of the holiday calendar
 	* @return the holiday calendar that was removed
 	* @throws PortalException if a holiday calendar with the primary key could not be found
-	* @throws SystemException
 	*/
 	@Indexable(type = IndexableType.DELETE)
 	public HolidayCalendar deleteHolidayCalendar(long holidayCalendarId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public HolidayCalendar fetchHolidayCalendar(long holidayCalendarId);
@@ -132,8 +131,7 @@ public interface HolidayCalendarLocalService extends BaseLocalService,
 
 	public HolidayCalendar updateHolidayCalendar(long holidayCalendarId,
 		java.lang.String name, java.lang.String description,
-		List<HolidayEntry> holidayEntries)
-		throws PortalException, SystemException;
+		List<HolidayEntry> holidayEntries) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();

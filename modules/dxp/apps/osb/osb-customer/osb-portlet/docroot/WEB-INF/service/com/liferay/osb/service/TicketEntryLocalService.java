@@ -71,16 +71,15 @@ public interface TicketEntryLocalService extends BaseLocalService,
 	 * Never modify or reference this interface directly. Always use {@link TicketEntryLocalServiceUtil} to access the ticket entry local service. Add custom service methods to {@link com.liferay.osb.service.impl.TicketEntryLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasParticipant(long userId, TicketEntry ticketEntry)
-		throws SystemException;
+	public boolean hasParticipant(long userId, TicketEntry ticketEntry);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public boolean hasParticipant(long userId, long ticketEntryId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public boolean hasVisibility(long userId, long ticketEntryId, int visibility)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	/**
 	* Adds the ticket entry to the database. Also notifies the appropriate model listeners.
@@ -97,8 +96,7 @@ public interface TicketEntryLocalService extends BaseLocalService,
 		int systemStatus, int status, int weight, int escalationLevel,
 		int component, int subcomponent,
 		Map<java.lang.Long, java.lang.String> ticketInformationFieldsMap,
-		List<TicketAttachment> ticketAttachments)
-		throws PortalException, SystemException;
+		List<TicketAttachment> ticketAttachments) throws PortalException;
 
 	/**
 	* Creates a new ticket entry with the primary key. Does not add the ticket entry to the database.
@@ -114,11 +112,10 @@ public interface TicketEntryLocalService extends BaseLocalService,
 	* @param ticketEntry the ticket entry
 	* @return the ticket entry that was removed
 	* @throws PortalException
-	* @throws SystemException
 	*/
 	@Indexable(type = IndexableType.DELETE)
 	public TicketEntry deleteTicketEntry(TicketEntry ticketEntry)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	/**
 	* Deletes the ticket entry with the primary key from the database. Also notifies the appropriate model listeners.
@@ -135,11 +132,11 @@ public interface TicketEntryLocalService extends BaseLocalService,
 	public TicketEntry fetchTicketEntry(long ticketEntryId);
 
 	public TicketEntry forwardTicketEntry(long userId, long ticketEntryId,
-		java.lang.String commentBody) throws PortalException, SystemException;
+		java.lang.String commentBody) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public TicketEntry getTicketEntry(long accountEntryId, long ticketId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	/**
 	* Returns the ticket entry with the primary key.
@@ -154,10 +151,10 @@ public interface TicketEntryLocalService extends BaseLocalService,
 
 	public TicketEntry updateCustomerModifiedDate(long userId,
 		long ticketEntryId, Date customerModifiedDate)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public TicketEntry updatePendingTypes(long userId, long ticketEntryId,
-		int[] pendingTypes) throws PortalException, SystemException;
+		int[] pendingTypes) throws PortalException;
 
 	/**
 	* Updates the ticket entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
@@ -171,7 +168,7 @@ public interface TicketEntryLocalService extends BaseLocalService,
 	public TicketEntry updateTicketEntry(long userId, long ticketEntryId,
 		long assigneeUserId, long supportRegionId, int dueDateMonth,
 		int dueDateDay, int dueDateYear, int dueDateHour, int dueDateMinute)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public TicketEntry updateTicketEntry(long userId, long ticketEntryId,
 		long reportedByUserId, long offeringEntryId, long supportRegionId,
@@ -183,13 +180,13 @@ public interface TicketEntryLocalService extends BaseLocalService,
 		int dueDateHour, int dueDateMinute, boolean ignoreDueDate,
 		Map<java.lang.Long, java.lang.String> ticketInformationFieldsMap,
 		int[] pendingTypes, List<TicketAttachment> ticketAttachments,
-		ServiceContext serviceContext) throws PortalException, SystemException;
+		ServiceContext serviceContext) throws PortalException;
 
 	public TicketEntry updateTicketId(long ticketEntryId, long ticketId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public TicketEntry updateWorkerModifiedDate(long ticketEntryId,
-		Date workerModifiedDate) throws PortalException, SystemException;
+		Date workerModifiedDate) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -215,7 +212,7 @@ public interface TicketEntryLocalService extends BaseLocalService,
 	public Hits search(long searchUserId, long reportedByUserId,
 		long accountEntryId, java.lang.String keywords,
 		LinkedHashMap<java.lang.String, java.lang.Object> params, int start,
-		int end, Sort[] sorts) throws SystemException;
+		int end, Sort[] sorts);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Hits search(long searchUserId, long reportedByUserId,
@@ -227,12 +224,10 @@ public interface TicketEntryLocalService extends BaseLocalService,
 		int[] resolution, Date closedDateGT, Date closedDateLT, Date dueDateGT,
 		Date dueDateLT,
 		LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andSearch, int start, int end, Sort[] sorts)
-		throws SystemException;
+		boolean andSearch, int start, int end, Sort[] sorts);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public Tuple getTicketEntries(Hits hits)
-		throws PortalException, SystemException;
+	public Tuple getTicketEntries(Hits hits) throws PortalException;
 
 	/**
 	* Returns the number of ticket entries.
@@ -243,21 +238,17 @@ public interface TicketEntryLocalService extends BaseLocalService,
 	public int getTicketEntriesCount();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getTicketEntriesCount(Date modifiedDate)
-		throws SystemException;
+	public int getTicketEntriesCount(Date modifiedDate);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getTicketEntriesCount(long accountEntryId)
-		throws SystemException;
+	public int getTicketEntriesCount(long accountEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getValidTicketEntriesCount(long offeringEntryId)
-		throws SystemException;
+	public int getValidTicketEntriesCount(long offeringEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(java.lang.String keywords,
-		LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws SystemException;
+		LinkedHashMap<java.lang.String, java.lang.Object> params);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(long reportedByUserId, java.lang.String name,
@@ -273,11 +264,11 @@ public interface TicketEntryLocalService extends BaseLocalService,
 		int dueDateGTDay, int dueDateGTMonth, int dueDateGTYear,
 		int dueDateLTDay, int dueDateLTMonth, int dueDateLTYear,
 		LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andSearch) throws SystemException;
+		boolean andSearch);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int[] getUserVisibilities(long userId, long ticketEntryId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
@@ -346,29 +337,27 @@ public interface TicketEntryLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TicketEntry> getTicketEntries(Date modifiedDate, int start,
-		int end) throws SystemException;
+		int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<TicketEntry> getTicketEntries(long accountEntryId)
-		throws SystemException;
+	public List<TicketEntry> getTicketEntries(long accountEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TicketEntry> getTicketEntries(long accountEntryId, int start,
-		int end, OrderByComparator obc) throws SystemException;
+		int end, OrderByComparator obc);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TicketEntry> getTicketFeedbackTicketEntries(long userId,
 		int createdGTDay, int createdGTMonth, int createdGTYear, int status)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<TicketEntry> getValidTicketEntries(long offeringEntryId)
-		throws SystemException;
+	public List<TicketEntry> getValidTicketEntries(long offeringEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TicketEntry> search(java.lang.String keywords,
 		LinkedHashMap<java.lang.String, java.lang.Object> params, int start,
-		int end, OrderByComparator obc) throws SystemException;
+		int end, OrderByComparator obc);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TicketEntry> search(long reportedByUserId,
@@ -385,8 +374,7 @@ public interface TicketEntryLocalService extends BaseLocalService,
 		int dueDateGTMonth, int dueDateGTYear, int dueDateLTDay,
 		int dueDateLTMonth, int dueDateLTYear,
 		LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andSearch, int start, int end, OrderByComparator obc)
-		throws SystemException;
+		boolean andSearch, int start, int end, OrderByComparator obc);
 
 	/**
 	* Returns the number of rows matching the dynamic query.
@@ -411,10 +399,10 @@ public interface TicketEntryLocalService extends BaseLocalService,
 	public void checkOnHoldTicketEntries() throws java.lang.Exception;
 
 	public void deleteTicketEntries(long accountEntryId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public void escalateTicketEntry(long userId, long ticketEntryId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public void reindexTicketEntry(TicketEntry ticketEntry)
@@ -422,16 +410,15 @@ public interface TicketEntryLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public void reindexTicketEntry(long ticketEntryId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public void sendEmail(long userId, TicketEntry ticketEntry,
 		TicketComment ticketComment, java.lang.String action)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public void sendEmail(long userId, long ticketEntryId,
 		TicketComment ticketComment, java.lang.String action)
-		throws PortalException, SystemException;
+		throws PortalException;
 
-	public void syncToJIRA(long ticketEntryId)
-		throws PortalException, SystemException;
+	public void syncToJIRA(long ticketEntryId) throws PortalException;
 }

@@ -53,7 +53,7 @@ public interface TicketCallService extends BaseService, InvokableService {
 		int callDateMonth, int callDateDay, int callDateYear, int callDateHour,
 		int callDateMinute, long callLength, java.lang.String customerName,
 		java.lang.String customerContact, java.lang.String confirmation,
-		java.lang.String instructions) throws PortalException, SystemException;
+		java.lang.String instructions) throws PortalException;
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,

@@ -27,21 +27,21 @@ import java.util.Arrays;
 @ProviderType
 public class TicketFlagServiceClpInvoker {
 	public TicketFlagServiceClpInvoker() {
-		_methodName374 = "getOSGiServiceIdentifier";
+		_methodName366 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes374 = new String[] {  };
+		_methodParameterTypes366 = new String[] {  };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName374.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes374, parameterTypes)) {
+		if (_methodName366.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes366, parameterTypes)) {
 			return TicketFlagServiceUtil.getOSGiServiceIdentifier();
 		}
 
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName374;
-	private String[] _methodParameterTypes374;
+	private String _methodName366;
+	private String[] _methodParameterTypes366;
 }

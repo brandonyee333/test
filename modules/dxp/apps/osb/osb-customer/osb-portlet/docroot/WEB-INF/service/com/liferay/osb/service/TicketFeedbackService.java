@@ -55,30 +55,29 @@ public interface TicketFeedbackService extends BaseService, InvokableService {
 	 * Never modify or reference this interface directly. Always use {@link TicketFeedbackServiceUtil} to access the ticket feedback remote service. Add custom service methods to {@link com.liferay.osb.service.impl.TicketFeedbackServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public TicketFeedback addTicketFeedback(long ticketEntryId, int subject,
-		int satisfied) throws PortalException, SystemException;
+		int satisfied) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public TicketFeedback fetchFirstOpenTicketFeedback(long userId,
-		long ticketEntryId, int subject)
-		throws PortalException, SystemException;
+		long ticketEntryId, int subject) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public TicketFeedback fetchFirstTicketFeedback(long ticketEntryId,
-		int subject) throws PortalException, SystemException;
+		int subject) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public TicketFeedback getTicketFeedback(long ticketFeedbackId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public TicketFeedback updateTicketFeedback(long ticketFeedbackId,
 		int satisfied, int answer1, int answer2, int answer3, int rating1,
 		int rating2, int rating3, int rating4, java.lang.String comments)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(java.lang.String keywords,
 		LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(java.lang.String name, int createdGTDay,
@@ -90,7 +89,7 @@ public interface TicketFeedbackService extends BaseService, InvokableService {
 		java.lang.Integer[] ratings1, java.lang.Integer[] ratings2,
 		java.lang.Integer[] ratings3, java.lang.Integer[] ratings4,
 		LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andSearch) throws PortalException, SystemException;
+		boolean andSearch) throws PortalException;
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
@@ -106,12 +105,12 @@ public interface TicketFeedbackService extends BaseService, InvokableService {
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TicketFeedback> getTicketFeedbacks(long ticketEntryId,
-		int subject) throws PortalException, SystemException;
+		int subject) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TicketFeedback> search(java.lang.String keywords,
 		LinkedHashMap<java.lang.String, java.lang.Object> params, int start,
-		int end, OrderByComparator obc) throws PortalException, SystemException;
+		int end, OrderByComparator obc) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TicketFeedback> search(java.lang.String name, int createdGTDay,
@@ -124,5 +123,5 @@ public interface TicketFeedbackService extends BaseService, InvokableService {
 		java.lang.Integer[] ratings3, java.lang.Integer[] ratings4,
 		LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andSearch, int start, int end, OrderByComparator obc)
-		throws PortalException, SystemException;
+		throws PortalException;
 }

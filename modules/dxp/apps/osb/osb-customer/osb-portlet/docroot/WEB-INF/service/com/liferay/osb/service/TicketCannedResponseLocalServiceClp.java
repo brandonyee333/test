@@ -203,8 +203,7 @@ public class TicketCannedResponseLocalServiceClp
 	public com.liferay.osb.model.TicketCannedResponse addTicketCannedResponse(
 		long userId, java.lang.String defaultLanguageId, java.lang.String name,
 		java.lang.String content)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -225,10 +224,6 @@ public class TicketCannedResponseLocalServiceClp
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -412,8 +407,7 @@ public class TicketCannedResponseLocalServiceClp
 		long ticketCannedResponseId, java.lang.String defaultLanguageId,
 		java.lang.String languageId, java.lang.String name,
 		java.lang.String content)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -436,10 +430,6 @@ public class TicketCannedResponseLocalServiceClp
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -607,8 +597,7 @@ public class TicketCannedResponseLocalServiceClp
 	}
 
 	@Override
-	public int searchCount(java.lang.String keywords)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public int searchCount(java.lang.String keywords) {
 		Object returnObj = null;
 
 		try {
@@ -618,10 +607,6 @@ public class TicketCannedResponseLocalServiceClp
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -637,8 +622,7 @@ public class TicketCannedResponseLocalServiceClp
 
 	@Override
 	public int searchCount(java.lang.String name, java.lang.String content,
-		boolean andSearch)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		boolean andSearch) {
 		Object returnObj = null;
 
 		try {
@@ -654,10 +638,6 @@ public class TicketCannedResponseLocalServiceClp
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -819,8 +799,7 @@ public class TicketCannedResponseLocalServiceClp
 
 	@Override
 	public java.util.List<com.liferay.osb.model.TicketCannedResponse> search(
-		java.lang.String keywords, int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.lang.String keywords, int start, int end) {
 		Object returnObj = null;
 
 		try {
@@ -837,10 +816,6 @@ public class TicketCannedResponseLocalServiceClp
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -856,8 +831,7 @@ public class TicketCannedResponseLocalServiceClp
 	@Override
 	public java.util.List<com.liferay.osb.model.TicketCannedResponse> search(
 		java.lang.String name, java.lang.String content, boolean andSearch,
-		int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int start, int end) {
 		Object returnObj = null;
 
 		try {
@@ -877,10 +851,6 @@ public class TicketCannedResponseLocalServiceClp
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -951,8 +921,7 @@ public class TicketCannedResponseLocalServiceClp
 
 	@Override
 	public void incrementUseCount(long ticketCannedResponseId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName27,
 				_methodParameterTypes27, new Object[] { ticketCannedResponseId });
@@ -962,10 +931,6 @@ public class TicketCannedResponseLocalServiceClp
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -981,8 +946,7 @@ public class TicketCannedResponseLocalServiceClp
 	@Override
 	public void removeCannedResponseLocale(long ticketCannedResponseId,
 		java.lang.String languageId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName28,
 				_methodParameterTypes28,
@@ -997,10 +961,6 @@ public class TicketCannedResponseLocalServiceClp
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {

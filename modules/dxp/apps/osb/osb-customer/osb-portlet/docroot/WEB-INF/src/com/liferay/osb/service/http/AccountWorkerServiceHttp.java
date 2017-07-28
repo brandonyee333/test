@@ -57,8 +57,7 @@ import com.liferay.portal.kernel.util.MethodKey;
 public class AccountWorkerServiceHttp {
 	public static void addAccountWorkers(HttpPrincipal httpPrincipal,
 		long[] userIds, long accountEntryId, int[] roles, int[] notifications)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(AccountWorkerServiceUtil.class,
 					"addAccountWorkers", _addAccountWorkersParameterTypes0);
@@ -74,10 +73,6 @@ public class AccountWorkerServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 		}
@@ -90,8 +85,7 @@ public class AccountWorkerServiceHttp {
 
 	public static void deleteAccountWorkers(HttpPrincipal httpPrincipal,
 		long[] userIds, long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(AccountWorkerServiceUtil.class,
 					"deleteAccountWorkers", _deleteAccountWorkersParameterTypes1);
@@ -105,10 +99,6 @@ public class AccountWorkerServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);

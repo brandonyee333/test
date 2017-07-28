@@ -59,8 +59,7 @@ public class TicketAttachmentServiceHttp {
 		HttpPrincipal httpPrincipal, long userId, long ticketEntryId,
 		long ticketSolutionId, java.lang.String fileName, long fileSize,
 		int type, int visibility, java.lang.String fileRepositoryId, int status)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketAttachmentServiceUtil.class,
 					"addTicketAttachment", _addTicketAttachmentParameterTypes0);
@@ -77,10 +76,6 @@ public class TicketAttachmentServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
@@ -102,8 +97,7 @@ public class TicketAttachmentServiceHttp {
 		java.util.List<java.lang.Integer> types, int visibility, int status,
 		int[] pendingTypes,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketAttachmentServiceUtil.class,
 					"addTicketAttachments", _addTicketAttachmentsParameterTypes1);
@@ -120,10 +114,6 @@ public class TicketAttachmentServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
@@ -144,8 +134,7 @@ public class TicketAttachmentServiceHttp {
 		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
 		java.util.List<java.lang.Integer> types, int visibility, int status,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketAttachmentServiceUtil.class,
 					"addTicketAttachments", _addTicketAttachmentsParameterTypes2);
@@ -164,10 +153,6 @@ public class TicketAttachmentServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -182,8 +167,7 @@ public class TicketAttachmentServiceHttp {
 
 	public static boolean checkAvailability(HttpPrincipal httpPrincipal,
 		long ticketAttachmentId, java.lang.String fileRepositoryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketAttachmentServiceUtil.class,
 					"checkAvailability", _checkAvailabilityParameterTypes3);
@@ -201,10 +185,6 @@ public class TicketAttachmentServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -219,8 +199,7 @@ public class TicketAttachmentServiceHttp {
 
 	public static com.liferay.osb.model.TicketAttachment deleteTicketAttachment(
 		HttpPrincipal httpPrincipal, long ticketAttachmentId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketAttachmentServiceUtil.class,
 					"deleteTicketAttachment",
@@ -239,10 +218,6 @@ public class TicketAttachmentServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -257,8 +232,7 @@ public class TicketAttachmentServiceHttp {
 
 	public static com.liferay.osb.model.TicketAttachment getTicketAttachment(
 		HttpPrincipal httpPrincipal, long ticketAttachmentId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketAttachmentServiceUtil.class,
 					"getTicketAttachment", _getTicketAttachmentParameterTypes5);
@@ -276,10 +250,6 @@ public class TicketAttachmentServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -294,8 +264,7 @@ public class TicketAttachmentServiceHttp {
 
 	public static java.lang.String getUploadToken(HttpPrincipal httpPrincipal,
 		long ticketEntryId, java.lang.String fileRepositoryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketAttachmentServiceUtil.class,
 					"getUploadToken", _getUploadTokenParameterTypes6);
@@ -313,10 +282,6 @@ public class TicketAttachmentServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -331,8 +296,7 @@ public class TicketAttachmentServiceHttp {
 
 	public static com.liferay.osb.model.TicketAttachment replicateTicketAttachment(
 		HttpPrincipal httpPrincipal, long ticketAttachmentId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketAttachmentServiceUtil.class,
 					"replicateTicketAttachment",
@@ -351,10 +315,6 @@ public class TicketAttachmentServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -370,8 +330,7 @@ public class TicketAttachmentServiceHttp {
 	public static com.liferay.osb.model.TicketAttachment updateDeleteDate(
 		HttpPrincipal httpPrincipal, long ticketAttachmentId,
 		java.util.Date deleteDate)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketAttachmentServiceUtil.class,
 					"updateDeleteDate", _updateDeleteDateParameterTypes8);
@@ -389,10 +348,6 @@ public class TicketAttachmentServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -408,8 +363,7 @@ public class TicketAttachmentServiceHttp {
 	public static com.liferay.osb.model.TicketAttachment updateTicketAttachment(
 		HttpPrincipal httpPrincipal, long ticketAttachmentId,
 		long ticketEntryId, int type, int visibility, int[] pendingTypes)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketAttachmentServiceUtil.class,
 					"updateTicketAttachment",
@@ -429,10 +383,6 @@ public class TicketAttachmentServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -450,8 +400,7 @@ public class TicketAttachmentServiceHttp {
 		java.util.List<java.lang.Long> ticketAttachmentIds, long ticketEntryId,
 		java.util.List<java.lang.Integer> types,
 		java.util.List<java.lang.Integer> visibilities, int[] pendingTypes)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketAttachmentServiceUtil.class,
 					"updateTicketAttachments",
@@ -469,10 +418,6 @@ public class TicketAttachmentServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);

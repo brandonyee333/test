@@ -58,8 +58,7 @@ public class SearchFilterServiceHttp {
 	public static com.liferay.osb.model.SearchFilter addSearchFilter(
 		HttpPrincipal httpPrincipal, long userId, long classNameId,
 		java.lang.String name, java.lang.String filter, int visibility)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(SearchFilterServiceUtil.class,
 					"addSearchFilter", _addSearchFilterParameterTypes0);
@@ -77,10 +76,6 @@ public class SearchFilterServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -95,8 +90,7 @@ public class SearchFilterServiceHttp {
 
 	public static void deleteSearchFilter(HttpPrincipal httpPrincipal,
 		long searchFilterId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(SearchFilterServiceUtil.class,
 					"deleteSearchFilter", _deleteSearchFilterParameterTypes1);
@@ -112,10 +106,6 @@ public class SearchFilterServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 		}
@@ -128,8 +118,7 @@ public class SearchFilterServiceHttp {
 
 	public static com.liferay.osb.model.SearchFilter getSearchFilter(
 		HttpPrincipal httpPrincipal, long searchFilterId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(SearchFilterServiceUtil.class,
 					"getSearchFilter", _getSearchFilterParameterTypes2);
@@ -147,10 +136,6 @@ public class SearchFilterServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -166,8 +151,7 @@ public class SearchFilterServiceHttp {
 	public static com.liferay.osb.model.SearchFilter updateSearchFilter(
 		HttpPrincipal httpPrincipal, long searchFilterId,
 		java.lang.String name, java.lang.String filter, int visibility)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(SearchFilterServiceUtil.class,
 					"updateSearchFilter", _updateSearchFilterParameterTypes3);
@@ -183,10 +167,6 @@ public class SearchFilterServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);

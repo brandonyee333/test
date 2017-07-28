@@ -59,8 +59,7 @@ public class TicketWorkerServiceHttp {
 		HttpPrincipal httpPrincipal, long[] userIds, long ticketEntryId,
 		long[] sourceClassNameIds, long[] sourceClassPKs, int[] roles,
 		long primaryUserId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketWorkerServiceUtil.class,
 					"addTicketWorkers", _addTicketWorkersParameterTypes0);
@@ -79,10 +78,6 @@ public class TicketWorkerServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -97,8 +92,7 @@ public class TicketWorkerServiceHttp {
 
 	public static void deleteTicketWorkers(HttpPrincipal httpPrincipal,
 		long[] userIds, long ticketEntryId, long primaryUserId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketWorkerServiceUtil.class,
 					"deleteTicketWorkers", _deleteTicketWorkersParameterTypes1);
@@ -112,10 +106,6 @@ public class TicketWorkerServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
@@ -132,8 +122,7 @@ public class TicketWorkerServiceHttp {
 		HttpPrincipal httpPrincipal, long[] addUserIds, int[] addRoles,
 		long[] removeUserIds, long ticketEntryId, long[] sourceClassNameIds,
 		long[] sourceClassPKs, long primaryUserId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketWorkerServiceUtil.class,
 					"updateTicketWorkers", _updateTicketWorkersParameterTypes2);
@@ -150,10 +139,6 @@ public class TicketWorkerServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);

@@ -127,7 +127,7 @@ public interface AccountCallLocalService extends BaseLocalService,
 		int callDateYear, int callDateHour, int callDateMinute,
 		long callLength, java.lang.String summary,
 		java.lang.String clientsPresent, java.lang.String notes,
-		java.lang.String actionItems) throws PortalException, SystemException;
+		java.lang.String actionItems) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -223,8 +223,7 @@ public interface AccountCallLocalService extends BaseLocalService,
 	public List<AccountCall> getAccountCalls(int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AccountCall> getAccountCalls(long accountEntryId)
-		throws SystemException;
+	public List<AccountCall> getAccountCalls(long accountEntryId);
 
 	/**
 	* Returns the number of rows matching the dynamic query.

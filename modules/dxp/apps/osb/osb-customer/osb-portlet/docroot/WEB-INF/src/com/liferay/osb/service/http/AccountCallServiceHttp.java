@@ -57,8 +57,7 @@ import com.liferay.portal.kernel.util.MethodKey;
 public class AccountCallServiceHttp {
 	public static com.liferay.osb.model.AccountCall deleteAccountCall(
 		HttpPrincipal httpPrincipal, long accountCallId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(AccountCallServiceUtil.class,
 					"deleteAccountCall", _deleteAccountCallParameterTypes0);
@@ -74,10 +73,6 @@ public class AccountCallServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
@@ -98,8 +93,7 @@ public class AccountCallServiceHttp {
 		int callDateHour, int callDateMinute, long callLength,
 		java.lang.String summary, java.lang.String clientsPresent,
 		java.lang.String notes, java.lang.String actionItems)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(AccountCallServiceUtil.class,
 					"updateAccountCall", _updateAccountCallParameterTypes1);
@@ -117,10 +111,6 @@ public class AccountCallServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);

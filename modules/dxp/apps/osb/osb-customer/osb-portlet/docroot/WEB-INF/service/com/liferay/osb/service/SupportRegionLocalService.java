@@ -93,7 +93,7 @@ public interface SupportRegionLocalService extends BaseLocalService,
 
 	public SupportRegion addSupportRegion(long userId, java.lang.String name,
 		java.lang.String description, java.lang.String timeZoneId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	/**
 	* Creates a new support region with the primary key. Does not add the support region to the database.
@@ -118,18 +118,16 @@ public interface SupportRegionLocalService extends BaseLocalService,
 	* @param supportRegionId the primary key of the support region
 	* @return the support region that was removed
 	* @throws PortalException if a support region with the primary key could not be found
-	* @throws SystemException
 	*/
 	@Indexable(type = IndexableType.DELETE)
 	public SupportRegion deleteSupportRegion(long supportRegionId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public SupportRegion fetchSupportRegion(long supportRegionId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public SupportRegion fetchSupportRegionByName(java.lang.String name)
-		throws SystemException;
+	public SupportRegion fetchSupportRegionByName(java.lang.String name);
 
 	/**
 	* Returns the support region with the primary key.
@@ -154,7 +152,7 @@ public interface SupportRegionLocalService extends BaseLocalService,
 	public SupportRegion updateSupportRegion(long supportRegionId,
 		java.lang.String name, java.lang.String description,
 		java.lang.String timeZoneId, long[] supportTeamIds)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -244,12 +242,9 @@ public interface SupportRegionLocalService extends BaseLocalService,
 	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
 		int end, OrderByComparator<T> orderByComparator);
 
-	/**
-	* @throws SystemException
-	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<SupportRegion> getAccountEntrySupportRegions(
-		long accountEntryId) throws SystemException;
+		long accountEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<SupportRegion> getAccountEntrySupportRegions(

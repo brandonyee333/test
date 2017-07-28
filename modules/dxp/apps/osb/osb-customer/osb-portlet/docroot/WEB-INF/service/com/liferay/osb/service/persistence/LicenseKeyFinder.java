@@ -23,12 +23,10 @@ import aQute.bnd.annotation.ProviderType;
 @ProviderType
 public interface LicenseKeyFinder {
 	public int countByKeywords(java.lang.String keywords,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params);
 
 	public int countByCPI_K_A(long corpProjectId, java.lang.String key,
-		boolean active)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		boolean active);
 
 	public int countByU_C_M_M_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
 		java.lang.Long createUserId, java.util.Date createDateGT,
@@ -44,8 +42,12 @@ public interface LicenseKeyFinder {
 		java.lang.String serverId, java.lang.String key,
 		java.util.Date expirationDateGT, java.util.Date expirationDateLT,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andOperator)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		boolean andOperator);
+
+	public java.util.List<com.liferay.osb.model.LicenseKey> findByKeywords(
+		java.lang.String keywords,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc);
 
 	public java.util.List<com.liferay.osb.model.LicenseKey> findByU_C_M_M_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
 		java.lang.Long createUserId, java.util.Date createDateGT,
@@ -62,12 +64,5 @@ public interface LicenseKeyFinder {
 		java.util.Date expirationDateGT, java.util.Date expirationDateLT,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException;
-
-	public java.util.List<com.liferay.osb.model.LicenseKey> findByKeywords(
-		java.lang.String keywords,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		com.liferay.portal.kernel.util.OrderByComparator obc);
 }

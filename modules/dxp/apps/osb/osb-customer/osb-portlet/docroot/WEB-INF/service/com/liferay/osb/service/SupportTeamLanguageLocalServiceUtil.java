@@ -235,8 +235,7 @@ public class SupportTeamLanguageLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.osb.model.SupportTeamLanguage> getSupportTeamLanguages(
-		long supportTeamId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long supportTeamId) {
 		return getService().getSupportTeamLanguages(supportTeamId);
 	}
 
@@ -265,8 +264,7 @@ public class SupportTeamLanguageLocalServiceUtil {
 	}
 
 	public static void setSupportTeamLanguageIds(long supportTeamId,
-		java.lang.String[] languageIds)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.lang.String[] languageIds) {
 		getService().setSupportTeamLanguageIds(supportTeamId, languageIds);
 	}
 

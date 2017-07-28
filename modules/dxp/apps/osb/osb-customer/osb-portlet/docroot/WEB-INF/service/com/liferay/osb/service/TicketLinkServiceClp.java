@@ -49,8 +49,7 @@ public class TicketLinkServiceClp implements TicketLinkService {
 		long ticketEntryId, long ticketSolutionId, java.lang.String[] urls,
 		java.lang.Integer[] types, int visibility,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -77,10 +76,6 @@ public class TicketLinkServiceClp implements TicketLinkService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -127,8 +122,7 @@ public class TicketLinkServiceClp implements TicketLinkService {
 
 	@Override
 	public void deleteTicketLink(long ticketLinkId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableService.invokeMethod(_methodName3,
 				_methodParameterTypes3, new Object[] { ticketLinkId });
@@ -138,10 +132,6 @@ public class TicketLinkServiceClp implements TicketLinkService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {

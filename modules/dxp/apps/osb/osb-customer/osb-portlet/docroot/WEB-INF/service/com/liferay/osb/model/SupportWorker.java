@@ -55,40 +55,31 @@ public interface SupportWorker extends SupportWorkerModel, PersistedModel {
 			}
 		};
 
-	public java.util.List<java.lang.Integer> getAccountTiers()
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public java.util.List<java.lang.Integer> getAccountTiers();
 
-	public java.util.List<java.lang.Integer> getComponents()
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public java.util.List<java.lang.Integer> getComponents();
 
 	public java.lang.String getNotificationsLabel();
 
 	public java.lang.String getRoleLabel();
 
-	public java.util.List<java.lang.Integer> getSeverities()
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public java.util.List<java.lang.Integer> getSeverities();
 
 	public SupportLabor getSupportLabor()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public SupportTeam getSupportTeam()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public java.lang.Long getTimeUntilClose()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public java.lang.Long getTimeUntilOpen()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public boolean isActive()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public boolean isAvailable()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 }

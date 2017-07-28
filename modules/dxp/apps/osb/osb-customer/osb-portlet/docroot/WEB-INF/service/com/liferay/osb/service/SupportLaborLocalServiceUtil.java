@@ -43,8 +43,7 @@ public class SupportLaborLocalServiceUtil {
 	 */
 	public static boolean hasSupportWorker(long supportWorkerId,
 		long supportLaborId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().hasSupportWorker(supportWorkerId, supportLaborId);
 	}
 
@@ -65,8 +64,7 @@ public class SupportLaborLocalServiceUtil {
 		int monClose, int tueOpen, int tueClose, int wedOpen, int wedClose,
 		int thuOpen, int thuClose, int friOpen, int friClose, int satOpen,
 		int satClose)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addSupportLabor(name, description, timeZoneId, sunOpen,
 			sunClose, monOpen, monClose, tueOpen, tueClose, wedOpen, wedClose,
@@ -101,12 +99,10 @@ public class SupportLaborLocalServiceUtil {
 	* @param supportLaborId the primary key of the support labor
 	* @return the support labor that was removed
 	* @throws PortalException if a support labor with the primary key could not be found
-	* @throws SystemException
 	*/
 	public static com.liferay.osb.model.SupportLabor deleteSupportLabor(
 		long supportLaborId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteSupportLabor(supportLaborId);
 	}
 
@@ -145,8 +141,7 @@ public class SupportLaborLocalServiceUtil {
 		int sunClose, int monOpen, int monClose, int tueOpen, int tueClose,
 		int wedOpen, int wedClose, int thuOpen, int thuClose, int friOpen,
 		int friClose, int satOpen, int satClose)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateSupportLabor(supportLaborId, name, description,
 			timeZoneId, sunOpen, sunClose, monOpen, monClose, tueOpen,
@@ -297,14 +292,12 @@ public class SupportLaborLocalServiceUtil {
 
 	public static void addSupportWorkers(long[] supportWorkerIds,
 		long supportLaborId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().addSupportWorkers(supportWorkerIds, supportLaborId);
 	}
 
 	public static void removeSupportWorkers(long[] supportWorkerIds)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().removeSupportWorkers(supportWorkerIds);
 	}
 

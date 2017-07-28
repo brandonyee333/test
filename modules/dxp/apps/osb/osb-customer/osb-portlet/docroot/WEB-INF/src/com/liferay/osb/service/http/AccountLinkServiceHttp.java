@@ -57,8 +57,7 @@ import com.liferay.portal.kernel.util.MethodKey;
 public class AccountLinkServiceHttp {
 	public static void addAccountLinks(HttpPrincipal httpPrincipal,
 		long accountEntryId, java.lang.String[] urls)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(AccountLinkServiceUtil.class,
 					"addAccountLinks", _addAccountLinksParameterTypes0);
@@ -74,10 +73,6 @@ public class AccountLinkServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 		}
@@ -90,8 +85,7 @@ public class AccountLinkServiceHttp {
 
 	public static com.liferay.osb.model.AccountLink deleteAccountLink(
 		HttpPrincipal httpPrincipal, long accountLinkId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(AccountLinkServiceUtil.class,
 					"deleteAccountLink", _deleteAccountLinkParameterTypes1);
@@ -107,10 +101,6 @@ public class AccountLinkServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);

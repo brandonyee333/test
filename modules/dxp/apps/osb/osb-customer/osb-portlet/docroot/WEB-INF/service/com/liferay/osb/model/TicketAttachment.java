@@ -56,8 +56,7 @@ public interface TicketAttachment extends TicketAttachmentModel, PersistedModel 
 		};
 
 	public boolean fileExists()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public java.util.Set<java.lang.String> getAvailableFileRepositoryIdsSet();
 
@@ -70,8 +69,7 @@ public interface TicketAttachment extends TicketAttachmentModel, PersistedModel 
 	public java.lang.String getKey();
 
 	public TicketEntry getTicketEntry()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public java.lang.String getTypeLabel();
 

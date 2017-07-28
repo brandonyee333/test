@@ -50,8 +50,7 @@ public class TicketCannedResponseLocalServiceWrapper
 	public com.liferay.osb.model.TicketCannedResponse addTicketCannedResponse(
 		long userId, java.lang.String defaultLanguageId, java.lang.String name,
 		java.lang.String content)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketCannedResponseLocalService.addTicketCannedResponse(userId,
 			defaultLanguageId, name, content);
 	}
@@ -131,8 +130,7 @@ public class TicketCannedResponseLocalServiceWrapper
 		long ticketCannedResponseId, java.lang.String defaultLanguageId,
 		java.lang.String languageId, java.lang.String name,
 		java.lang.String content)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketCannedResponseLocalService.updateTicketCannedResponse(ticketCannedResponseId,
 			defaultLanguageId, languageId, name, content);
 	}
@@ -180,15 +178,13 @@ public class TicketCannedResponseLocalServiceWrapper
 	}
 
 	@Override
-	public int searchCount(java.lang.String keywords)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public int searchCount(java.lang.String keywords) {
 		return _ticketCannedResponseLocalService.searchCount(keywords);
 	}
 
 	@Override
 	public int searchCount(java.lang.String name, java.lang.String content,
-		boolean andSearch)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		boolean andSearch) {
 		return _ticketCannedResponseLocalService.searchCount(name, content,
 			andSearch);
 	}
@@ -285,16 +281,14 @@ public class TicketCannedResponseLocalServiceWrapper
 
 	@Override
 	public java.util.List<com.liferay.osb.model.TicketCannedResponse> search(
-		java.lang.String keywords, int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.lang.String keywords, int start, int end) {
 		return _ticketCannedResponseLocalService.search(keywords, start, end);
 	}
 
 	@Override
 	public java.util.List<com.liferay.osb.model.TicketCannedResponse> search(
 		java.lang.String name, java.lang.String content, boolean andSearch,
-		int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int start, int end) {
 		return _ticketCannedResponseLocalService.search(name, content,
 			andSearch, start, end);
 	}
@@ -328,16 +322,14 @@ public class TicketCannedResponseLocalServiceWrapper
 
 	@Override
 	public void incrementUseCount(long ticketCannedResponseId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		_ticketCannedResponseLocalService.incrementUseCount(ticketCannedResponseId);
 	}
 
 	@Override
 	public void removeCannedResponseLocale(long ticketCannedResponseId,
 		java.lang.String languageId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		_ticketCannedResponseLocalService.removeCannedResponseLocale(ticketCannedResponseId,
 			languageId);
 	}

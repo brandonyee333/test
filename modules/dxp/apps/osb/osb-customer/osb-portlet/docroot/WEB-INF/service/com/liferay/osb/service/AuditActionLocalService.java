@@ -124,7 +124,7 @@ public interface AuditActionLocalService extends BaseLocalService,
 	public AuditAction updateAuditAction(AuditAction auditAction);
 
 	public AuditAction updateAuditAction(long classNameId, long classPK,
-		long mappingClassPK, int action) throws SystemException;
+		long mappingClassPK, int action);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -221,8 +221,7 @@ public interface AuditActionLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AuditAction> getAuditActions(Date modifiedDate,
-		long classNameId, boolean mapping, int action)
-		throws SystemException;
+		long classNameId, boolean mapping, int action);
 
 	/**
 	* Returns the number of rows matching the dynamic query.
@@ -242,5 +241,5 @@ public interface AuditActionLocalService extends BaseLocalService,
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
 
-	public void deleteAuditActions(Date modifiedDate) throws SystemException;
+	public void deleteAuditActions(Date modifiedDate);
 }

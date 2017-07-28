@@ -54,22 +54,16 @@ public interface SupportTeam extends SupportTeamModel, PersistedModel {
 			}
 		};
 
-	public java.util.List<AccountEntry> getAccountEntries()
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public java.util.List<AccountEntry> getAccountEntries();
 
-	public java.util.List<SupportTeam> getChildSupportTeams()
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public java.util.List<SupportTeam> getChildSupportTeams();
 
-	public java.util.List<SupportTeam> getChildSupportTeams(boolean recursive)
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public java.util.List<SupportTeam> getChildSupportTeams(boolean recursive);
 
-	public java.util.List<java.lang.String> getLanguageIds()
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public java.util.List<java.lang.String> getLanguageIds();
 
 	public SupportTeam getParentSupportTeam()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public java.util.List<SupportRegion> getSupportRegions()
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public java.util.List<SupportRegion> getSupportRegions();
 }

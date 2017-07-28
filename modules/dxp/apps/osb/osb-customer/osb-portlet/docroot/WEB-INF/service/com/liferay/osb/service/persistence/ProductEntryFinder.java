@@ -23,16 +23,13 @@ import aQute.bnd.annotation.ProviderType;
 @ProviderType
 public interface ProductEntryFinder {
 	public int countByName(java.lang.String name,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params);
 
 	public java.util.List<com.liferay.osb.model.ProductEntry> findByAccountEntry(
-		long accountEntryId, int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		long accountEntryId, int start, int end);
 
 	public java.util.List<com.liferay.osb.model.ProductEntry> findByName(
 		java.lang.String name,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		int start, int end);
 }

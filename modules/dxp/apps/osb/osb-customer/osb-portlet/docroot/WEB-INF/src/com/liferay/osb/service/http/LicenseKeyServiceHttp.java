@@ -63,8 +63,7 @@ public class LicenseKeyServiceHttp {
 		java.lang.String ipAddresses, java.lang.String macAddresses,
 		java.lang.String serverId, int startDateMonth, int startDateDay,
 		int startDateYear)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
 					"addLicenseKey", _addLicenseKeyParameterTypes0);
@@ -83,10 +82,6 @@ public class LicenseKeyServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
@@ -110,8 +105,7 @@ public class LicenseKeyServiceHttp {
 		java.lang.String[] ipAddresses, java.lang.String[] macAddresses,
 		java.lang.String[] serverIds, int startDateMonth, int startDateDay,
 		int startDateYear, boolean complimentary, boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
 					"addLicenseKey", _addLicenseKeyParameterTypes1);
@@ -133,10 +127,6 @@ public class LicenseKeyServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -155,8 +145,7 @@ public class LicenseKeyServiceHttp {
 		java.lang.String[] hostNames, java.lang.String[] ipAddresses,
 		java.lang.String[] macAddresses, java.lang.String[] serverIds,
 		int startDateMonth, int startDateDay, int startDateYear)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
 					"addLicenseKey", _addLicenseKeyParameterTypes2);
@@ -174,10 +163,6 @@ public class LicenseKeyServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
@@ -225,8 +210,7 @@ public class LicenseKeyServiceHttp {
 
 	public static com.liferay.osb.model.LicenseKey getLicenseKey(
 		HttpPrincipal httpPrincipal, long licenseKeyId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
 					"getLicenseKey", _getLicenseKeyParameterTypes4);
@@ -244,10 +228,6 @@ public class LicenseKeyServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -262,8 +242,7 @@ public class LicenseKeyServiceHttp {
 
 	public static java.util.List<com.liferay.osb.model.LicenseKey> getLicenseKeys(
 		HttpPrincipal httpPrincipal, long userId, java.lang.String productId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
 					"getLicenseKeys", _getLicenseKeysParameterTypes5);
@@ -281,10 +260,6 @@ public class LicenseKeyServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -299,8 +274,7 @@ public class LicenseKeyServiceHttp {
 
 	public static java.util.List<com.liferay.osb.model.LicenseKey> getLicenseKeySetLicenseKeys(
 		HttpPrincipal httpPrincipal, long licenseKeySetId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
 					"getLicenseKeySetLicenseKeys",
@@ -319,10 +293,6 @@ public class LicenseKeyServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -339,8 +309,7 @@ public class LicenseKeyServiceHttp {
 		HttpPrincipal httpPrincipal, long[] offeringEntryIds,
 		boolean complimentary, boolean active, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
 					"getOfferingEntryGroupLicenseKeys",
@@ -359,10 +328,6 @@ public class LicenseKeyServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -378,8 +343,7 @@ public class LicenseKeyServiceHttp {
 	public static int getOfferingEntryGroupLicenseKeysCount(
 		HttpPrincipal httpPrincipal, long[] offeringEntryIds,
 		boolean complimentary, boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
 					"getOfferingEntryGroupLicenseKeysCount",
@@ -398,10 +362,6 @@ public class LicenseKeyServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -416,8 +376,7 @@ public class LicenseKeyServiceHttp {
 
 	public static boolean isActive(HttpPrincipal httpPrincipal,
 		long corpProjectId, java.lang.String key)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
 					"isActive", _isActiveParameterTypes9);
@@ -435,10 +394,6 @@ public class LicenseKeyServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -453,8 +408,7 @@ public class LicenseKeyServiceHttp {
 
 	public static com.liferay.osb.model.LicenseKey renewLicenseKey(
 		HttpPrincipal httpPrincipal, long licenseKeyId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
 					"renewLicenseKey", _renewLicenseKeyParameterTypes10);
@@ -470,10 +424,6 @@ public class LicenseKeyServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
@@ -542,8 +492,7 @@ public class LicenseKeyServiceHttp {
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andSearch, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
 					"search", _searchParameterTypes12);
@@ -574,10 +523,6 @@ public class LicenseKeyServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -594,8 +539,7 @@ public class LicenseKeyServiceHttp {
 		HttpPrincipal httpPrincipal, java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
 					"search", _searchParameterTypes13);
@@ -611,10 +555,6 @@ public class LicenseKeyServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
@@ -650,8 +590,7 @@ public class LicenseKeyServiceHttp {
 		int expirationDateLTMonth, int expirationDateLTYear,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andSearch)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
 					"searchCount", _searchCountParameterTypes14);
@@ -682,10 +621,6 @@ public class LicenseKeyServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -701,8 +636,7 @@ public class LicenseKeyServiceHttp {
 	public static int searchCount(HttpPrincipal httpPrincipal,
 		java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
 					"searchCount", _searchCountParameterTypes15);
@@ -720,10 +654,6 @@ public class LicenseKeyServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -738,8 +668,7 @@ public class LicenseKeyServiceHttp {
 
 	public static void updateLicenseKey(HttpPrincipal httpPrincipal,
 		long licenseKeyId, boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
 					"updateLicenseKey", _updateLicenseKeyParameterTypes16);
@@ -755,10 +684,6 @@ public class LicenseKeyServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 		}
@@ -772,8 +697,7 @@ public class LicenseKeyServiceHttp {
 	public static void updateLicenseKey(HttpPrincipal httpPrincipal,
 		long userId, long licenseKeyId, long assetReceiptLicenseId,
 		boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
 					"updateLicenseKey", _updateLicenseKeyParameterTypes17);
@@ -789,10 +713,6 @@ public class LicenseKeyServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 		}
@@ -806,8 +726,7 @@ public class LicenseKeyServiceHttp {
 	public static void updateLicenseKey(HttpPrincipal httpPrincipal,
 		long userId, long licenseKeyId, long licenseKeySetId,
 		long offeringEntryId, java.lang.String name, boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
 					"updateLicenseKey", _updateLicenseKeyParameterTypes18);
@@ -821,10 +740,6 @@ public class LicenseKeyServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);

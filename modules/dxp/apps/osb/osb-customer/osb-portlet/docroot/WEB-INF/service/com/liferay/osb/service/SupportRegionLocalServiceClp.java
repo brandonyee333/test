@@ -545,8 +545,7 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 	public com.liferay.osb.model.SupportRegion addSupportRegion(long userId,
 		java.lang.String name, java.lang.String description,
 		java.lang.String timeZoneId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -567,10 +566,6 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -637,8 +632,7 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 	@Override
 	public com.liferay.osb.model.SupportRegion deleteSupportRegion(
 		long supportRegionId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -650,10 +644,6 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -694,8 +684,7 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 
 	@Override
 	public com.liferay.osb.model.SupportRegion fetchSupportRegionByName(
-		java.lang.String name)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.lang.String name) {
 		Object returnObj = null;
 
 		try {
@@ -705,10 +694,6 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -781,8 +766,7 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 		long supportRegionId, java.lang.String name,
 		java.lang.String description, java.lang.String timeZoneId,
 		long[] supportTeamIds)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -805,10 +789,6 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -1168,8 +1148,7 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.SupportRegion> getAccountEntrySupportRegions(
-		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountEntryId) {
 		Object returnObj = null;
 
 		try {
@@ -1178,10 +1157,6 @@ public class SupportRegionLocalServiceClp implements SupportRegionLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;

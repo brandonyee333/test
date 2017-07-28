@@ -178,8 +178,7 @@ public class SearchFilterLocalServiceClp implements SearchFilterLocalService {
 	public com.liferay.osb.model.SearchFilter addSearchFilter(long userId,
 		long classNameId, java.lang.String name, java.lang.String filter,
 		int visibility)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -202,10 +201,6 @@ public class SearchFilterLocalServiceClp implements SearchFilterLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -380,8 +375,7 @@ public class SearchFilterLocalServiceClp implements SearchFilterLocalService {
 	public com.liferay.osb.model.SearchFilter updateSearchFilter(
 		long searchFilterId, java.lang.String name, java.lang.String filter,
 		int visibility)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -402,10 +396,6 @@ public class SearchFilterLocalServiceClp implements SearchFilterLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -720,8 +710,7 @@ public class SearchFilterLocalServiceClp implements SearchFilterLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.SearchFilter> getSearchFilters(
-		long userId, long classNameId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long userId, long classNameId) {
 		Object returnObj = null;
 
 		try {
@@ -731,10 +720,6 @@ public class SearchFilterLocalServiceClp implements SearchFilterLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -804,18 +789,13 @@ public class SearchFilterLocalServiceClp implements SearchFilterLocalService {
 	}
 
 	@Override
-	public void deleteSearchFilters(long userId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public void deleteSearchFilters(long userId) {
 		try {
 			_invokableLocalService.invokeMethod(_methodName24,
 				_methodParameterTypes24, new Object[] { userId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;

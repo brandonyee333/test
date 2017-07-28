@@ -55,20 +55,17 @@ public interface TicketEntry extends TicketEntryModel, PersistedModel {
 		};
 
 	public AccountEntry getAccountEntry()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public int getAccountTier()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public java.lang.String getComponentIcon();
 
 	public java.lang.String getComponentLabel();
 
 	public java.lang.String getDisplayId()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public java.lang.String getEnvASLabel();
 
@@ -91,16 +88,13 @@ public interface TicketEntry extends TicketEntryModel, PersistedModel {
 	public java.lang.String getLanguageLabel();
 
 	public OfferingEntry getOfferingEntry()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public OrderEntry getOrderEntry()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public ProductEntry getProductEntry()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public java.lang.String getResolutionLabel();
 
@@ -113,46 +107,34 @@ public interface TicketEntry extends TicketEntryModel, PersistedModel {
 	public java.lang.String getSupportPhaseLabel();
 
 	public SupportRegion getSupportRegion()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public SupportResponse getSupportResponse()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public java.util.List<TicketAttachment> getTicketAttachments()
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public java.util.List<TicketAttachment> getTicketAttachments();
 
 	public java.util.List<TicketAttachment> getTicketAttachments(int[] types,
-		int[] visibilities)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		int[] visibilities);
 
-	public int getTicketAttachmentsCount(int[] visibilities)
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public int getTicketAttachmentsCount(int[] visibilities);
 
 	public java.util.Map<java.lang.Long, java.lang.String> getTicketInformationFieldsMap()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 
 	@com.liferay.portal.kernel.json.JSON()
-	public java.util.List<TicketInformation> getTicketInformationList()
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public java.util.List<TicketInformation> getTicketInformationList();
 
 	public java.lang.String getWeightLabel();
 
-	public double getWork()
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public double getWork();
 
 	public boolean hasParticipant(long userId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public boolean isPendingCustomer()
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public boolean isPendingCustomer();
 
-	public boolean isPendingLiferay()
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public boolean isPendingLiferay();
 
-	public boolean isPendingPartner()
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public boolean isPendingPartner();
 }

@@ -155,8 +155,7 @@ public class HolidayCalendarRelLocalServiceClp
 	}
 
 	@Override
-	public boolean hasHolidayCalendarRel(long holidayCalendarId, long userId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public boolean hasHolidayCalendarRel(long holidayCalendarId, long userId) {
 		Object returnObj = null;
 
 		try {
@@ -166,10 +165,6 @@ public class HolidayCalendarRelLocalServiceClp
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -320,8 +315,7 @@ public class HolidayCalendarRelLocalServiceClp
 	@Override
 	public com.liferay.osb.model.HolidayCalendarRel getHolidayCalendarRel(
 		long holidayCalendarId, long userId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -334,10 +328,6 @@ public class HolidayCalendarRelLocalServiceClp
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -709,8 +699,7 @@ public class HolidayCalendarRelLocalServiceClp
 
 	@Override
 	public java.util.List<com.liferay.osb.model.HolidayCalendarRel> getHolidayCalendarRels(
-		long holidayCalendarId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long holidayCalendarId) {
 		Object returnObj = null;
 
 		try {
@@ -719,10 +708,6 @@ public class HolidayCalendarRelLocalServiceClp
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -793,8 +778,7 @@ public class HolidayCalendarRelLocalServiceClp
 
 	@Override
 	public void addUsers(long holidayCalendarId, long[] userIds)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName24,
 				_methodParameterTypes24,
@@ -811,10 +795,6 @@ public class HolidayCalendarRelLocalServiceClp
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
 			}
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -826,8 +806,7 @@ public class HolidayCalendarRelLocalServiceClp
 	}
 
 	@Override
-	public void deleteHolidayCalendarRels(long holidayCalendarId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public void deleteHolidayCalendarRels(long holidayCalendarId) {
 		try {
 			_invokableLocalService.invokeMethod(_methodName25,
 				_methodParameterTypes25, new Object[] { holidayCalendarId });
@@ -835,10 +814,6 @@ public class HolidayCalendarRelLocalServiceClp
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -850,8 +825,7 @@ public class HolidayCalendarRelLocalServiceClp
 	}
 
 	@Override
-	public void deleteHolidayCalendarRels(long holidayCalendarId, long[] userIds)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public void deleteHolidayCalendarRels(long holidayCalendarId, long[] userIds) {
 		try {
 			_invokableLocalService.invokeMethod(_methodName26,
 				_methodParameterTypes26,
@@ -863,10 +837,6 @@ public class HolidayCalendarRelLocalServiceClp
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;

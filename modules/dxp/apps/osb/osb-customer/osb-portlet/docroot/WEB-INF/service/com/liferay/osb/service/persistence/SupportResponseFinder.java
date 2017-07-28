@@ -24,6 +24,5 @@ import aQute.bnd.annotation.ProviderType;
 public interface SupportResponseFinder {
 	public com.liferay.osb.model.SupportResponse fetchByAccountEntry(
 		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 }

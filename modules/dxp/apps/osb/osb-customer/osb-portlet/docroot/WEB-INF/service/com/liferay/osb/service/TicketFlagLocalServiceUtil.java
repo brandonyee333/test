@@ -41,14 +41,12 @@ public class TicketFlagLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.TicketFlagLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static boolean hasTicketFlag(long ticketEntryId, int type, int flag)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public static boolean hasTicketFlag(long ticketEntryId, int type, int flag) {
 		return getService().hasTicketFlag(ticketEntryId, type, flag);
 	}
 
 	public static boolean hasTicketFlag(long userId, long accountEntryId,
-		long ticketEntryId, int type, int flag)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long ticketEntryId, int type, int flag) {
 		return getService()
 				   .hasTicketFlag(userId, accountEntryId, ticketEntryId, type,
 			flag);
@@ -131,8 +129,7 @@ public class TicketFlagLocalServiceUtil {
 
 	public static com.liferay.osb.model.TicketFlag updateTicketFlag(
 		long userId, long accountEntryId, long ticketEntryId, int type, int flag)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateTicketFlag(userId, accountEntryId, ticketEntryId,
 			type, flag);
@@ -174,13 +171,12 @@ public class TicketFlagLocalServiceUtil {
 		return getService().getTicketFlagsCount();
 	}
 
-	public static int getTicketFlagsCount(long ticketEntryId, int type, int flag)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public static int getTicketFlagsCount(long ticketEntryId, int type, int flag) {
 		return getService().getTicketFlagsCount(ticketEntryId, type, flag);
 	}
 
 	public static int[] getTicketFlagTypes(long ticketEntryId, int[] types,
-		int flag) throws com.liferay.portal.kernel.exception.SystemException {
+		int flag) {
 		return getService().getTicketFlagTypes(ticketEntryId, types, flag);
 	}
 
@@ -266,14 +262,12 @@ public class TicketFlagLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.osb.model.TicketFlag> getTicketFlags(
-		long ticketEntryId, int type, int flag)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long ticketEntryId, int type, int flag) {
 		return getService().getTicketFlags(ticketEntryId, type, flag);
 	}
 
 	public static java.util.List<com.liferay.osb.model.TicketFlag> getTicketFlags(
-		long ticketEntryId, int[] types, int flag)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long ticketEntryId, int[] types, int flag) {
 		return getService().getTicketFlags(ticketEntryId, types, flag);
 	}
 
@@ -303,14 +297,12 @@ public class TicketFlagLocalServiceUtil {
 
 	public static void deleteTicketFlag(long userId, long accountEntryId,
 		long ticketEntryId, int type)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService()
 			.deleteTicketFlag(userId, accountEntryId, ticketEntryId, type);
 	}
 
-	public static void deleteTicketFlags(long ticketEntryId, int type, int flag)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public static void deleteTicketFlags(long ticketEntryId, int type, int flag) {
 		getService().deleteTicketFlags(ticketEntryId, type, flag);
 	}
 

@@ -75,11 +75,11 @@ public interface SecurityPatchLocalService extends BaseLocalService,
 	public SecurityPatch addSecurityPatch(long userId, long accountEntryId,
 		long ticketAttachmentId, java.lang.String portletId, int envLFR,
 		java.lang.String name, java.lang.String fileName)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public SecurityPatch addSecurityPatch(long userId, long ticketAttachmentId,
 		java.lang.String portletId, int envLFR, java.lang.String fileName)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	/**
 	* Creates a new security patch with the primary key. Does not add the security patch to the database.
@@ -133,7 +133,7 @@ public interface SecurityPatchLocalService extends BaseLocalService,
 	public SecurityPatch updateSecurityPatch(SecurityPatch securityPatch);
 
 	public SecurityPatch updateSecurityPatch(long securityPatchId,
-		java.lang.String name) throws PortalException, SystemException;
+		java.lang.String name) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -220,7 +220,7 @@ public interface SecurityPatchLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<SecurityPatch> getSecurityPatches(long accountEntryId,
-		java.lang.String portletId) throws SystemException;
+		java.lang.String portletId);
 
 	/**
 	* Returns a range of all the security patchs.
@@ -254,6 +254,5 @@ public interface SecurityPatchLocalService extends BaseLocalService,
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
 
-	public void deleteSecurityPatches(java.lang.String portletId)
-		throws SystemException;
+	public void deleteSecurityPatches(java.lang.String portletId);
 }

@@ -43,22 +43,19 @@ public class AccountEntryServiceUtil {
 	 */
 	public static com.liferay.osb.model.AccountEntry fetchCorpProjectAccountEntry(
 		long corpProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().fetchCorpProjectAccountEntry(corpProjectId);
 	}
 
 	public static com.liferay.osb.model.AccountEntry getAccountEntry(
 		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getAccountEntry(accountEntryId);
 	}
 
 	public static com.liferay.osb.model.AccountEntry getAccountEntryByCode(
 		java.lang.String code)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getAccountEntryByCode(code);
 	}
 
@@ -72,8 +69,7 @@ public class AccountEntryServiceUtil {
 		long addressId, java.lang.String street1, java.lang.String street2,
 		java.lang.String street3, java.lang.String city, java.lang.String zip,
 		long regionId, long countryId, java.lang.String ewsaDossieraProjectKey)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateAccountEntry(accountEntryId, corpProjectId,
 			corpEntryName, name, code, type, industry, partnerEntryId,
@@ -84,15 +80,13 @@ public class AccountEntryServiceUtil {
 
 	public static com.liferay.osb.model.AccountEntry updateInstructions(
 		long accountEntryId, java.lang.String instructions)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updateInstructions(accountEntryId, instructions);
 	}
 
 	public static com.liferay.osb.model.AccountEntry updateTier(
 		long accountEntryId, int tier)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updateTier(accountEntryId, tier);
 	}
 
@@ -110,8 +104,7 @@ public class AccountEntryServiceUtil {
 		java.lang.String city, java.lang.String zip,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .searchCount(createUserId, createDateGTDay,
 			createDateGTMonth, createDateGTYear, createDateLTDay,
@@ -125,8 +118,7 @@ public class AccountEntryServiceUtil {
 
 	public static int searchCount(java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().searchCount(keywords, params);
 	}
 
@@ -147,8 +139,7 @@ public class AccountEntryServiceUtil {
 
 	public static java.util.List<com.liferay.osb.model.AccountEntry> getSecurityPatchAccountEntries(
 		java.lang.String portletId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getSecurityPatchAccountEntries(portletId);
 	}
 
@@ -168,8 +159,7 @@ public class AccountEntryServiceUtil {
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .search(createUserId, createDateGTDay, createDateGTMonth,
 			createDateGTYear, createDateLTDay, createDateLTMonth,
@@ -185,15 +175,13 @@ public class AccountEntryServiceUtil {
 		java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().search(keywords, params, start, end, obc);
 	}
 
 	public static java.util.List<com.liferay.osb.model.AccountEntry> search(
 		java.lang.String name, java.lang.String code)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().search(name, code);
 	}
 

@@ -121,8 +121,7 @@ public class AccountCallLocalServiceWrapper implements AccountCallLocalService,
 		int callDateMinute, long callLength, java.lang.String summary,
 		java.lang.String clientsPresent, java.lang.String notes,
 		java.lang.String actionItems)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountCallLocalService.updateAccountCall(userId,
 			accountCallId, accountEntryId, type, callDateMonth, callDateDay,
 			callDateYear, callDateHour, callDateMinute, callLength, summary,
@@ -261,8 +260,7 @@ public class AccountCallLocalServiceWrapper implements AccountCallLocalService,
 
 	@Override
 	public java.util.List<com.liferay.osb.model.AccountCall> getAccountCalls(
-		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountEntryId) {
 		return _accountCallLocalService.getAccountCalls(accountEntryId);
 	}
 

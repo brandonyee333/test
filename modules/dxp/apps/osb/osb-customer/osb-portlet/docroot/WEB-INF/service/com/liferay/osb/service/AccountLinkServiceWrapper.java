@@ -35,8 +35,7 @@ public class AccountLinkServiceWrapper implements AccountLinkService,
 	@Override
 	public com.liferay.osb.model.AccountLink deleteAccountLink(
 		long accountLinkId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountLinkService.deleteAccountLink(accountLinkId);
 	}
 
@@ -59,8 +58,7 @@ public class AccountLinkServiceWrapper implements AccountLinkService,
 
 	@Override
 	public void addAccountLinks(long accountEntryId, java.lang.String[] urls)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		_accountLinkService.addAccountLinks(accountEntryId, urls);
 	}
 

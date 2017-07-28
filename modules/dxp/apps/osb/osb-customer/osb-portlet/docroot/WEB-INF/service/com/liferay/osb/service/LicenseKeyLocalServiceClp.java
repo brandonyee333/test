@@ -383,8 +383,7 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		java.lang.String[] hostNames, java.lang.String[] ipAddresses,
 		java.lang.String[] macAddresses, java.lang.String[] serverIds,
 		int startDateMonth, int startDateDay, int startDateYear)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -421,10 +420,6 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
 			}
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -450,8 +445,7 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		java.lang.String[] macAddresses, java.lang.String[] serverIds,
 		int startDateMonth, int startDateDay, int startDateYear,
 		java.lang.String additionalInfo, boolean complimentary, boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -510,10 +504,6 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
 			}
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -536,8 +526,7 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		java.lang.String[] macAddresses, java.lang.String[] serverIds,
 		int startDateMonth, int startDateDay, int startDateYear,
 		boolean complimentary, boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -592,10 +581,6 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -754,8 +739,7 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 	public com.liferay.osb.model.LicenseKey getFirstLicenseKey(
 		long accountEntryId,
 		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -772,10 +756,6 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -821,8 +801,7 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 	@Override
 	public com.liferay.osb.model.LicenseKey renewLicenseKey(long userId,
 		long licenseKeyId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -835,10 +814,6 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -1075,8 +1050,7 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 
 	@Override
 	public int getAssetReceiptLicenseLicenseKeysCount(
-		long assetReceiptLicenseId, boolean complimentary, boolean active)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long assetReceiptLicenseId, boolean complimentary, boolean active) {
 		Object returnObj = null;
 
 		try {
@@ -1086,10 +1060,6 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -1128,8 +1098,7 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 
 	@Override
 	public int getOfferingEntryGroupLicenseKeysCount(long[] offeringEntryIds,
-		boolean complimentary, boolean active)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		boolean complimentary, boolean active) {
 		Object returnObj = null;
 
 		try {
@@ -1146,10 +1115,6 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -1163,8 +1128,7 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 	}
 
 	@Override
-	public int getOfferingEntryLicenseKeysCount(long offeringEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public int getOfferingEntryLicenseKeysCount(long offeringEntryId) {
 		Object returnObj = null;
 
 		try {
@@ -1173,10 +1137,6 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -1192,8 +1152,7 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 
 	@Override
 	public int getOfferingEntryLicenseKeysCount(long offeringEntryId,
-		boolean complimentary, boolean active)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		boolean complimentary, boolean active) {
 		Object returnObj = null;
 
 		try {
@@ -1204,10 +1163,6 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -1222,8 +1177,7 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 
 	@Override
 	public int getOfferingEntryLicenseKeysCount(long offeringEntryId,
-		long clusterId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long clusterId) {
 		Object returnObj = null;
 
 		try {
@@ -1234,10 +1188,6 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -1252,8 +1202,7 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 
 	@Override
 	public int getOfferingEntryLicenseKeysCount(long offeringEntryId,
-		long clusterId, boolean active)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long clusterId, boolean active) {
 		Object returnObj = null;
 
 		try {
@@ -1263,10 +1212,6 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -1281,8 +1226,7 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 	}
 
 	@Override
-	public int getUserLicenseKeysCount(long userId, long accountEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public int getUserLicenseKeysCount(long userId, long accountEntryId) {
 		Object returnObj = null;
 
 		try {
@@ -1292,10 +1236,6 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -1329,8 +1269,7 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		int expirationDateGTYear, int expirationDateLTDay,
 		int expirationDateLTMonth, int expirationDateLTYear,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andSearch)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		boolean andSearch) {
 		Object returnObj = null;
 
 		try {
@@ -1425,10 +1364,6 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -1443,8 +1378,7 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 
 	@Override
 	public int searchCount(java.lang.String keywords,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params) {
 		Object returnObj = null;
 
 		try {
@@ -1458,10 +1392,6 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -1599,8 +1529,7 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.LicenseKey> getAccountEntryLicenseKeys(
-		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountEntryId) {
 		Object returnObj = null;
 
 		try {
@@ -1609,10 +1538,6 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -1628,8 +1553,7 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.LicenseKey> getAssetReceiptLicenseLicenseKeys(
-		long assetReceiptLicenseId, boolean active)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long assetReceiptLicenseId, boolean active) {
 		Object returnObj = null;
 
 		try {
@@ -1640,10 +1564,6 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -1658,8 +1578,7 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.LicenseKey> getAssetReceiptLicenseLicenseKeys(
-		long assetReceiptLicenseId, boolean complimentary, boolean active)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long assetReceiptLicenseId, boolean complimentary, boolean active) {
 		Object returnObj = null;
 
 		try {
@@ -1669,10 +1588,6 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -1712,8 +1627,7 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.LicenseKey> getLicenseKeySetLicenseKeys(
-		long licenseKeySetId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long licenseKeySetId) {
 		Object returnObj = null;
 
 		try {
@@ -1722,10 +1636,6 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -1741,8 +1651,7 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.LicenseKey> getLicenseKeys(
-		java.lang.String productId, java.lang.String serverId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.lang.String productId, java.lang.String serverId) {
 		Object returnObj = null;
 
 		try {
@@ -1756,10 +1665,6 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -1777,8 +1682,7 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 	public java.util.List<com.liferay.osb.model.LicenseKey> getLicenseKeys(
 		long assetReceiptLicenseId, java.lang.String productId,
 		java.lang.String serverId, boolean active, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.portal.kernel.util.OrderByComparator obc) {
 		Object returnObj = null;
 
 		try {
@@ -1803,10 +1707,6 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -1821,8 +1721,7 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.LicenseKey> getLicenseKeys(
-		long userId, java.lang.String productId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long userId, java.lang.String productId) {
 		Object returnObj = null;
 
 		try {
@@ -1834,10 +1733,6 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -1852,8 +1747,7 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.LicenseKey> getLicenseKeys(
-		long userId, long accountEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long userId, long accountEntryId) {
 		Object returnObj = null;
 
 		try {
@@ -1863,10 +1757,6 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -1884,8 +1774,7 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 	public java.util.List<com.liferay.osb.model.LicenseKey> getLicenseKeysByName(
 		java.lang.String productEntryName, java.lang.String serverId,
 		boolean active, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.portal.kernel.util.OrderByComparator obc) {
 		Object returnObj = null;
 
 		try {
@@ -1908,10 +1797,6 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -1927,8 +1812,7 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 	@Override
 	public java.util.List<com.liferay.osb.model.LicenseKey> getOfferingEntryGroupLicenseKeys(
 		long[] offeringEntryIds, boolean complimentary, boolean active,
-		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc) {
 		Object returnObj = null;
 
 		try {
@@ -1951,10 +1835,6 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -1969,8 +1849,7 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.LicenseKey> getOfferingEntryLicenseKeys(
-		long offeringEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long offeringEntryId) {
 		Object returnObj = null;
 
 		try {
@@ -1980,10 +1859,6 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -1998,8 +1873,7 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.LicenseKey> getOfferingEntryLicenseKeys(
-		long offeringEntryId, boolean complimentary, boolean active)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long offeringEntryId, boolean complimentary, boolean active) {
 		Object returnObj = null;
 
 		try {
@@ -2010,10 +1884,6 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -2028,8 +1898,7 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.LicenseKey> getOfferingEntryLicenseKeys(
-		long offeringEntryId, long clusterId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long offeringEntryId, long clusterId) {
 		Object returnObj = null;
 
 		try {
@@ -2040,10 +1909,6 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -2058,8 +1923,7 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.LicenseKey> getOfferingEntryLicenseKeys(
-		long offeringEntryId, long clusterId, boolean active)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long offeringEntryId, long clusterId, boolean active) {
 		Object returnObj = null;
 
 		try {
@@ -2069,10 +1933,6 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -2108,8 +1968,7 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		int expirationDateLTMonth, int expirationDateLTYear,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andSearch, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.portal.kernel.util.OrderByComparator obc) {
 		Object returnObj = null;
 
 		try {
@@ -2210,10 +2069,6 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -2230,8 +2085,7 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 	public java.util.List<com.liferay.osb.model.LicenseKey> search(
 		java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc) {
 		Object returnObj = null;
 
 		try {
@@ -2251,10 +2105,6 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -2325,8 +2175,7 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 
 	@Override
 	public void buyLicenseKey(long companyId, long userId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName54,
 				_methodParameterTypes54, new Object[] { companyId, userId });
@@ -2336,10 +2185,6 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -2414,8 +2259,7 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 	@Override
 	public void updateLicenseKey(long licenseKeyId, long accountEntryId,
 		long offeringEntryId, long orderEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName57,
 				_methodParameterTypes57,
@@ -2436,10 +2280,6 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
 			}
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -2453,8 +2293,7 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 	@Override
 	public void updateLicenseKey(long userId, long licenseKeyId,
 		long assetReceiptLicenseId, boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName58,
 				_methodParameterTypes58,
@@ -2465,10 +2304,6 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -2485,8 +2320,7 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 	public void updateLicenseKey(long userId, long licenseKeyId,
 		long licenseKeySetId, long offeringEntryId, java.lang.String name,
 		boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName59,
 				_methodParameterTypes59,
@@ -2509,10 +2343,6 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {

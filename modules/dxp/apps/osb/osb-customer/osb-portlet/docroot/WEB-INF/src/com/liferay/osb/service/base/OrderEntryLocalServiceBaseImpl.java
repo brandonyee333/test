@@ -171,12 +171,11 @@ public abstract class OrderEntryLocalServiceBaseImpl
 	 * @param orderEntryId the primary key of the order entry
 	 * @return the order entry that was removed
 	 * @throws PortalException if a order entry with the primary key could not be found
-	 * @throws SystemException
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public OrderEntry deleteOrderEntry(long orderEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 		return orderEntryPersistence.remove(orderEntryId);
 	}
 
@@ -186,12 +185,11 @@ public abstract class OrderEntryLocalServiceBaseImpl
 	 * @param orderEntry the order entry
 	 * @return the order entry that was removed
 	 * @throws PortalException
-	 * @throws SystemException
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public OrderEntry deleteOrderEntry(OrderEntry orderEntry)
-		throws PortalException, SystemException {
+		throws PortalException {
 		return orderEntryPersistence.remove(orderEntry);
 	}
 
@@ -1575,44 +1573,6 @@ public abstract class OrderEntryLocalServiceBaseImpl
 	 */
 	public void setOrderEntryFinder(OrderEntryFinder orderEntryFinder) {
 		this.orderEntryFinder = orderEntryFinder;
-	}
-
-	/**
-	 * Returns the osb country local service.
-	 *
-	 * @return the osb country local service
-	 */
-	public com.liferay.osb.service.OSBCountryLocalService getOSBCountryLocalService() {
-		return osbCountryLocalService;
-	}
-
-	/**
-	 * Sets the osb country local service.
-	 *
-	 * @param osbCountryLocalService the osb country local service
-	 */
-	public void setOSBCountryLocalService(
-		com.liferay.osb.service.OSBCountryLocalService osbCountryLocalService) {
-		this.osbCountryLocalService = osbCountryLocalService;
-	}
-
-	/**
-	 * Returns the osb region local service.
-	 *
-	 * @return the osb region local service
-	 */
-	public com.liferay.osb.service.OSBRegionLocalService getOSBRegionLocalService() {
-		return osbRegionLocalService;
-	}
-
-	/**
-	 * Sets the osb region local service.
-	 *
-	 * @param osbRegionLocalService the osb region local service
-	 */
-	public void setOSBRegionLocalService(
-		com.liferay.osb.service.OSBRegionLocalService osbRegionLocalService) {
-		this.osbRegionLocalService = osbRegionLocalService;
 	}
 
 	/**
@@ -3083,10 +3043,6 @@ public abstract class OrderEntryLocalServiceBaseImpl
 	protected OrderEntryPersistence orderEntryPersistence;
 	@BeanReference(type = OrderEntryFinder.class)
 	protected OrderEntryFinder orderEntryFinder;
-	@BeanReference(type = com.liferay.osb.service.OSBCountryLocalService.class)
-	protected com.liferay.osb.service.OSBCountryLocalService osbCountryLocalService;
-	@BeanReference(type = com.liferay.osb.service.OSBRegionLocalService.class)
-	protected com.liferay.osb.service.OSBRegionLocalService osbRegionLocalService;
 	@BeanReference(type = com.liferay.osb.service.PartnerEntryLocalService.class)
 	protected com.liferay.osb.service.PartnerEntryLocalService partnerEntryLocalService;
 	@BeanReference(type = PartnerEntryPersistence.class)

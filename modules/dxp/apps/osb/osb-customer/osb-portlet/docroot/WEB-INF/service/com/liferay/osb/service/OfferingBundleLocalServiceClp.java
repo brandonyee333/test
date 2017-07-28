@@ -294,8 +294,7 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 	@Override
 	public com.liferay.osb.model.OfferingBundle addOfferingBundle(long userId,
 		java.lang.String name, long[] offeringDefinitionIds)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -314,10 +313,6 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -492,8 +487,7 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 	public com.liferay.osb.model.OfferingBundle updateOfferingBundle(
 		long offeringBundleId, java.lang.String name,
 		long[] offeringDefinitionIds)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -512,10 +506,6 @@ public class OfferingBundleLocalServiceClp implements OfferingBundleLocalService
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {

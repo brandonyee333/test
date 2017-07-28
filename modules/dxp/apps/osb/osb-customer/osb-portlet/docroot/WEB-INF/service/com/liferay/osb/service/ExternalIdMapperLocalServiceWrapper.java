@@ -48,8 +48,7 @@ public class ExternalIdMapperLocalServiceWrapper
 
 	@Override
 	public com.liferay.osb.model.ExternalIdMapper addExternalIdMapper(
-		long classNameId, long classPK, int type, java.lang.String externalId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long classNameId, long classPK, int type, java.lang.String externalId) {
 		return _externalIdMapperLocalService.addExternalIdMapper(classNameId,
 			classPK, type, externalId);
 	}
@@ -128,8 +127,7 @@ public class ExternalIdMapperLocalServiceWrapper
 	public com.liferay.osb.model.ExternalIdMapper updateExternalIdMapper(
 		long externalIdMapperId, long classNameId, long classPK, int type,
 		java.lang.String externalId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _externalIdMapperLocalService.updateExternalIdMapper(externalIdMapperId,
 			classNameId, classPK, type, externalId);
 	}
@@ -267,16 +265,14 @@ public class ExternalIdMapperLocalServiceWrapper
 
 	@Override
 	public java.util.List<com.liferay.osb.model.ExternalIdMapper> getExternalIdMappers(
-		long classNameId, int type, java.lang.String externalId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long classNameId, int type, java.lang.String externalId) {
 		return _externalIdMapperLocalService.getExternalIdMappers(classNameId,
 			type, externalId);
 	}
 
 	@Override
 	public java.util.List<com.liferay.osb.model.ExternalIdMapper> getExternalIdMappers(
-		long classNameId, long classPK, int type)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long classNameId, long classPK, int type) {
 		return _externalIdMapperLocalService.getExternalIdMappers(classNameId,
 			classPK, type);
 	}
@@ -309,8 +305,7 @@ public class ExternalIdMapperLocalServiceWrapper
 	}
 
 	@Override
-	public void deleteExternalIdMapper(long classNameId, long classPK, int type)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public void deleteExternalIdMapper(long classNameId, long classPK, int type) {
 		_externalIdMapperLocalService.deleteExternalIdMapper(classNameId,
 			classPK, type);
 	}

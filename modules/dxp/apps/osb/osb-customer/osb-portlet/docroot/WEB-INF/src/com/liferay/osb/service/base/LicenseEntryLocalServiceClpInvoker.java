@@ -123,36 +123,36 @@ public class LicenseEntryLocalServiceClpInvoker {
 				"com.liferay.osb.model.LicenseEntry"
 			};
 
-		_methodName286 = "getOSGiServiceIdentifier";
+		_methodName282 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes286 = new String[] {  };
+		_methodParameterTypes282 = new String[] {  };
 
-		_methodName291 = "addLicenseEntry";
+		_methodName287 = "addLicenseEntry";
 
-		_methodParameterTypes291 = new String[] {
+		_methodParameterTypes287 = new String[] {
 				"long", "long", "java.lang.String", "java.lang.String", "int",
 				"int"
 			};
 
-		_methodName292 = "deleteLicenseEntry";
+		_methodName288 = "deleteLicenseEntry";
 
-		_methodParameterTypes292 = new String[] { "long" };
+		_methodParameterTypes288 = new String[] { "long" };
 
-		_methodName293 = "getLicenseEntries";
+		_methodName289 = "getLicenseEntries";
 
-		_methodParameterTypes293 = new String[] { "long" };
+		_methodParameterTypes289 = new String[] { "long" };
 
-		_methodName294 = "getLicenseEntries";
+		_methodName290 = "getLicenseEntries";
 
-		_methodParameterTypes294 = new String[] { "long", "int" };
+		_methodParameterTypes290 = new String[] { "long", "int" };
 
-		_methodName295 = "getLicenseEntry";
+		_methodName291 = "getLicenseEntry";
 
-		_methodParameterTypes295 = new String[] { "long", "java.lang.String" };
+		_methodParameterTypes291 = new String[] { "long", "java.lang.String" };
 
-		_methodName296 = "updateLicenseEntry";
+		_methodName292 = "updateLicenseEntry";
 
-		_methodParameterTypes296 = new String[] {
+		_methodParameterTypes292 = new String[] {
 				"long", "long", "java.lang.String", "java.lang.String", "int",
 				"int"
 			};
@@ -262,13 +262,13 @@ public class LicenseEntryLocalServiceClpInvoker {
 			return LicenseEntryLocalServiceUtil.updateLicenseEntry((com.liferay.osb.model.LicenseEntry)arguments[0]);
 		}
 
-		if (_methodName286.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes286, parameterTypes)) {
+		if (_methodName282.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes282, parameterTypes)) {
 			return LicenseEntryLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName291.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes291, parameterTypes)) {
+		if (_methodName287.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes287, parameterTypes)) {
 			return LicenseEntryLocalServiceUtil.addLicenseEntry(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				(java.lang.String)arguments[2], (java.lang.String)arguments[3],
@@ -276,30 +276,30 @@ public class LicenseEntryLocalServiceClpInvoker {
 				((Integer)arguments[5]).intValue());
 		}
 
-		if (_methodName292.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes292, parameterTypes)) {
+		if (_methodName288.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes288, parameterTypes)) {
 			return LicenseEntryLocalServiceUtil.deleteLicenseEntry(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName293.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes293, parameterTypes)) {
+		if (_methodName289.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes289, parameterTypes)) {
 			return LicenseEntryLocalServiceUtil.getLicenseEntries(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName294.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes294, parameterTypes)) {
+		if (_methodName290.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes290, parameterTypes)) {
 			return LicenseEntryLocalServiceUtil.getLicenseEntries(((Long)arguments[0]).longValue(),
 				((Integer)arguments[1]).intValue());
 		}
 
-		if (_methodName295.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes295, parameterTypes)) {
+		if (_methodName291.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes291, parameterTypes)) {
 			return LicenseEntryLocalServiceUtil.getLicenseEntry(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1]);
 		}
 
-		if (_methodName296.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes296, parameterTypes)) {
+		if (_methodName292.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes292, parameterTypes)) {
 			return LicenseEntryLocalServiceUtil.updateLicenseEntry(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				(java.lang.String)arguments[2], (java.lang.String)arguments[3],
@@ -348,18 +348,18 @@ public class LicenseEntryLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName286;
-	private String[] _methodParameterTypes286;
+	private String _methodName282;
+	private String[] _methodParameterTypes282;
+	private String _methodName287;
+	private String[] _methodParameterTypes287;
+	private String _methodName288;
+	private String[] _methodParameterTypes288;
+	private String _methodName289;
+	private String[] _methodParameterTypes289;
+	private String _methodName290;
+	private String[] _methodParameterTypes290;
 	private String _methodName291;
 	private String[] _methodParameterTypes291;
 	private String _methodName292;
 	private String[] _methodParameterTypes292;
-	private String _methodName293;
-	private String[] _methodParameterTypes293;
-	private String _methodName294;
-	private String[] _methodParameterTypes294;
-	private String _methodName295;
-	private String[] _methodParameterTypes295;
-	private String _methodName296;
-	private String[] _methodParameterTypes296;
 }

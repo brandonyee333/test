@@ -45,8 +45,7 @@ public class TicketLinkServiceUtil {
 		long ticketEntryId, long ticketSolutionId, java.lang.String[] urls,
 		java.lang.Integer[] types, int visibility,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addTicketLink(userId, ticketEntryId, ticketSolutionId,
 			urls, types, visibility, serviceContext);
@@ -68,8 +67,7 @@ public class TicketLinkServiceUtil {
 	}
 
 	public static void deleteTicketLink(long ticketLinkId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().deleteTicketLink(ticketLinkId);
 	}
 

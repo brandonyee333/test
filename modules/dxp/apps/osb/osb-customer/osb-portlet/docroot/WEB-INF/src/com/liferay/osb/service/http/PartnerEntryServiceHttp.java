@@ -57,8 +57,7 @@ import com.liferay.portal.kernel.util.MethodKey;
 public class PartnerEntryServiceHttp {
 	public static com.liferay.osb.model.PartnerEntry getPartnerEntry(
 		HttpPrincipal httpPrincipal, long partnerEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(PartnerEntryServiceUtil.class,
 					"getPartnerEntry", _getPartnerEntryParameterTypes0);
@@ -74,10 +73,6 @@ public class PartnerEntryServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
@@ -96,8 +91,7 @@ public class PartnerEntryServiceHttp {
 		HttpPrincipal httpPrincipal, java.lang.String code, int[] statuses,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator, int start, int end)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(PartnerEntryServiceUtil.class,
 					"search", _searchParameterTypes1);
@@ -113,10 +107,6 @@ public class PartnerEntryServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
@@ -135,8 +125,7 @@ public class PartnerEntryServiceHttp {
 		HttpPrincipal httpPrincipal, java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		int start, int end)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(PartnerEntryServiceUtil.class,
 					"search", _searchParameterTypes2);
@@ -154,10 +143,6 @@ public class PartnerEntryServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -172,8 +157,7 @@ public class PartnerEntryServiceHttp {
 
 	public static int searchCount(HttpPrincipal httpPrincipal,
 		java.lang.String keywords)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(PartnerEntryServiceUtil.class,
 					"searchCount", _searchCountParameterTypes3);
@@ -190,8 +174,37 @@ public class PartnerEntryServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
+			}
+
+			return ((Integer)returnObj).intValue();
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
+
+			throw se;
+		}
+	}
+
+	public static int searchCount(HttpPrincipal httpPrincipal,
+		java.lang.String keywords,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		try {
+			MethodKey methodKey = new MethodKey(PartnerEntryServiceUtil.class,
+					"searchCount", _searchCountParameterTypes4);
+
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					keywords, params);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
@@ -210,11 +223,10 @@ public class PartnerEntryServiceHttp {
 		java.lang.String code, int[] statuses,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(PartnerEntryServiceUtil.class,
-					"searchCount", _searchCountParameterTypes4);
+					"searchCount", _searchCountParameterTypes5);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, code,
 					statuses, params, andOperator);
@@ -227,48 +239,6 @@ public class PartnerEntryServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
-			}
-
-			return ((Integer)returnObj).intValue();
-		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
-
-			throw se;
-		}
-	}
-
-	public static int searchCount(HttpPrincipal httpPrincipal,
-		java.lang.String keywords,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
-		try {
-			MethodKey methodKey = new MethodKey(PartnerEntryServiceUtil.class,
-					"searchCount", _searchCountParameterTypes5);
-
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					keywords, params);
-
-			Object returnObj = null;
-
-			try {
-				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
-			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
@@ -299,10 +269,10 @@ public class PartnerEntryServiceHttp {
 			java.lang.String.class
 		};
 	private static final Class<?>[] _searchCountParameterTypes4 = new Class[] {
-			java.lang.String.class, int[].class, java.util.LinkedHashMap.class,
-			boolean.class
+			java.lang.String.class, java.util.LinkedHashMap.class
 		};
 	private static final Class<?>[] _searchCountParameterTypes5 = new Class[] {
-			java.lang.String.class, java.util.LinkedHashMap.class
+			java.lang.String.class, int[].class, java.util.LinkedHashMap.class,
+			boolean.class
 		};
 }

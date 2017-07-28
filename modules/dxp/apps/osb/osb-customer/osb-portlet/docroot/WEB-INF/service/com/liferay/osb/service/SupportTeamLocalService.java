@@ -87,7 +87,7 @@ public interface SupportTeamLocalService extends BaseLocalService,
 	public SupportTeam addSupportTeam(long userId, long parentSupportTeamId,
 		long supportLaborId, long locationSupportRegionId,
 		java.lang.String name, java.lang.String description, int type)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	/**
 	* Creates a new support team with the primary key. Does not add the support team to the database.
@@ -112,11 +112,10 @@ public interface SupportTeamLocalService extends BaseLocalService,
 	* @param supportTeamId the primary key of the support team
 	* @return the support team that was removed
 	* @throws PortalException if a support team with the primary key could not be found
-	* @throws SystemException
 	*/
 	@Indexable(type = IndexableType.DELETE)
 	public SupportTeam deleteSupportTeam(long supportTeamId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public SupportTeam fetchSupportTeam(long supportTeamId);
@@ -145,7 +144,7 @@ public interface SupportTeamLocalService extends BaseLocalService,
 		long parentSupportTeamId, long supportLaborId,
 		long locationSupportRegionId, java.lang.String name,
 		java.lang.String description, int type, long[] accountEntryIds,
-		long[] supportRegionIds) throws PortalException, SystemException;
+		long[] supportRegionIds) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -182,11 +181,11 @@ public interface SupportTeamLocalService extends BaseLocalService,
 	public int getSupportTeamsCount();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int searchCount(java.lang.String keywords) throws SystemException;
+	public int searchCount(java.lang.String keywords);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(java.lang.String name, java.lang.Integer type,
-		boolean andOperator) throws SystemException;
+		boolean andOperator);
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
@@ -252,11 +251,10 @@ public interface SupportTeamLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<SupportTeam> getChildSupportTeams(long supportTeamId,
-		boolean recursive) throws SystemException;
+		boolean recursive);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<SupportTeam> getSupportLaborSupportTeams(long supportLaborId)
-		throws SystemException;
+	public List<SupportTeam> getSupportLaborSupportTeams(long supportLaborId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<SupportTeam> getSupportRegionSupportTeams(long supportRegionId);
@@ -286,20 +284,19 @@ public interface SupportTeamLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<SupportTeam> getSupportTeams(int start, int end,
-		OrderByComparator obc) throws SystemException;
+		OrderByComparator obc);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<SupportTeam> getUserRoleSupportTeams(long userId, int role)
-		throws SystemException;
+	public List<SupportTeam> getUserRoleSupportTeams(long userId, int role);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<SupportTeam> search(java.lang.String keywords, int start,
-		int end, OrderByComparator obc) throws SystemException;
+		int end, OrderByComparator obc);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<SupportTeam> search(java.lang.String name,
 		java.lang.Integer type, boolean andSearch, int start, int end,
-		OrderByComparator obc) throws SystemException;
+		OrderByComparator obc);
 
 	/**
 	* Returns the number of rows matching the dynamic query.
@@ -393,10 +390,10 @@ public interface SupportTeamLocalService extends BaseLocalService,
 		long[] supportTeamIds);
 
 	public void setChildSupportTeams(long parentSupportTeamId,
-		long[] childSupportTeamIds) throws PortalException, SystemException;
+		long[] childSupportTeamIds) throws PortalException;
 
 	public void setSupportLaborId(long supportLaborId, long[] supportTeamIds)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public void setSupportRegionSupportTeams(long supportRegionId,
 		long[] supportTeamIds);

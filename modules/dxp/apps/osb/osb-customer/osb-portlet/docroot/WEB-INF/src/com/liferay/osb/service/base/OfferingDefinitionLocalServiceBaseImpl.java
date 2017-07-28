@@ -172,12 +172,11 @@ public abstract class OfferingDefinitionLocalServiceBaseImpl
 	 * @param offeringDefinitionId the primary key of the offering definition
 	 * @return the offering definition that was removed
 	 * @throws PortalException if a offering definition with the primary key could not be found
-	 * @throws SystemException
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public OfferingDefinition deleteOfferingDefinition(
-		long offeringDefinitionId) throws PortalException, SystemException {
+		long offeringDefinitionId) throws PortalException {
 		return offeringDefinitionPersistence.remove(offeringDefinitionId);
 	}
 
@@ -1727,44 +1726,6 @@ public abstract class OfferingDefinitionLocalServiceBaseImpl
 	}
 
 	/**
-	 * Returns the osb country local service.
-	 *
-	 * @return the osb country local service
-	 */
-	public com.liferay.osb.service.OSBCountryLocalService getOSBCountryLocalService() {
-		return osbCountryLocalService;
-	}
-
-	/**
-	 * Sets the osb country local service.
-	 *
-	 * @param osbCountryLocalService the osb country local service
-	 */
-	public void setOSBCountryLocalService(
-		com.liferay.osb.service.OSBCountryLocalService osbCountryLocalService) {
-		this.osbCountryLocalService = osbCountryLocalService;
-	}
-
-	/**
-	 * Returns the osb region local service.
-	 *
-	 * @return the osb region local service
-	 */
-	public com.liferay.osb.service.OSBRegionLocalService getOSBRegionLocalService() {
-		return osbRegionLocalService;
-	}
-
-	/**
-	 * Sets the osb region local service.
-	 *
-	 * @param osbRegionLocalService the osb region local service
-	 */
-	public void setOSBRegionLocalService(
-		com.liferay.osb.service.OSBRegionLocalService osbRegionLocalService) {
-		this.osbRegionLocalService = osbRegionLocalService;
-	}
-
-	/**
 	 * Returns the partner entry local service.
 	 *
 	 * @return the partner entry local service
@@ -3195,10 +3156,6 @@ public abstract class OfferingDefinitionLocalServiceBaseImpl
 	protected OrderEntryPersistence orderEntryPersistence;
 	@BeanReference(type = OrderEntryFinder.class)
 	protected OrderEntryFinder orderEntryFinder;
-	@BeanReference(type = com.liferay.osb.service.OSBCountryLocalService.class)
-	protected com.liferay.osb.service.OSBCountryLocalService osbCountryLocalService;
-	@BeanReference(type = com.liferay.osb.service.OSBRegionLocalService.class)
-	protected com.liferay.osb.service.OSBRegionLocalService osbRegionLocalService;
 	@BeanReference(type = com.liferay.osb.service.PartnerEntryLocalService.class)
 	protected com.liferay.osb.service.PartnerEntryLocalService partnerEntryLocalService;
 	@BeanReference(type = PartnerEntryPersistence.class)

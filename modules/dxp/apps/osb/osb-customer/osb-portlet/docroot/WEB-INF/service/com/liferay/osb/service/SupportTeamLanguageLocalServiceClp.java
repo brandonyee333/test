@@ -629,8 +629,7 @@ public class SupportTeamLanguageLocalServiceClp
 
 	@Override
 	public java.util.List<com.liferay.osb.model.SupportTeamLanguage> getSupportTeamLanguages(
-		long supportTeamId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long supportTeamId) {
 		Object returnObj = null;
 
 		try {
@@ -639,10 +638,6 @@ public class SupportTeamLanguageLocalServiceClp
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -713,8 +708,7 @@ public class SupportTeamLanguageLocalServiceClp
 
 	@Override
 	public void setSupportTeamLanguageIds(long supportTeamId,
-		java.lang.String[] languageIds)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.lang.String[] languageIds) {
 		try {
 			_invokableLocalService.invokeMethod(_methodName22,
 				_methodParameterTypes22,
@@ -726,10 +720,6 @@ public class SupportTeamLanguageLocalServiceClp
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;

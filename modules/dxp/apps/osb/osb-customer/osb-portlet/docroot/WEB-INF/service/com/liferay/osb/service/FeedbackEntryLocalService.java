@@ -73,7 +73,7 @@ public interface FeedbackEntryLocalService extends BaseLocalService,
 
 	public FeedbackEntry addFeedbackEntry(long userId, long classNameId,
 		long classPK, int satisfied, java.lang.String pageURL)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	/**
 	* Creates a new feedback entry with the primary key. Does not add the feedback entry to the database.
@@ -127,7 +127,7 @@ public interface FeedbackEntryLocalService extends BaseLocalService,
 	public FeedbackEntry updateFeedbackEntry(FeedbackEntry feedbackEntry);
 
 	public FeedbackEntry updateFeedbackEntry(long feedbackEntryId,
-		java.lang.String comments) throws PortalException, SystemException;
+		java.lang.String comments) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();

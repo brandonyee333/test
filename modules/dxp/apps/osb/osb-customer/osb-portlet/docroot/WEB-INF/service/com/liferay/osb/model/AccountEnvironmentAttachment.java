@@ -58,8 +58,7 @@ public interface AccountEnvironmentAttachment
 		};
 
 	public boolean fileExists()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public int getContentLength();
 

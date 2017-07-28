@@ -26,8 +26,7 @@ import com.liferay.portal.kernel.util.ReferenceRegistry;
 @ProviderType
 public class OrderEntryFinderUtil {
 	public static int countByKeywords(java.lang.String keywords,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params) {
 		return getFinder().countByKeywords(keywords, params);
 	}
 
@@ -40,14 +39,20 @@ public class OrderEntryFinderUtil {
 		java.lang.Boolean prorated, java.util.Date actualStartDateGT,
 		java.util.Date actualStartDateLT,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andOperator)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		boolean andOperator) {
 		return getFinder()
 				   .countByU_CD_MU_MD_AE_PO_S_SD_P_ASD(createUserId,
 			createDateGT, createDateLT, modifiedUserId, modifiedDateGT,
 			modifiedDateLT, accountEntryId, purchaseOrderKey, statuses,
 			startDateGT, startDateLT, prorated, actualStartDateGT,
 			actualStartDateLT, params, andOperator);
+	}
+
+	public static java.util.List<com.liferay.osb.model.OrderEntry> findByKeywords(
+		java.lang.String keywords,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc) {
+		return getFinder().findByKeywords(keywords, params, start, end, obc);
 	}
 
 	public static java.util.List<com.liferay.osb.model.OrderEntry> findByU_CD_MU_MD_AE_PO_S_SD_P_ASD(
@@ -60,22 +65,13 @@ public class OrderEntryFinderUtil {
 		java.util.Date actualStartDateLT,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.portal.kernel.util.OrderByComparator obc) {
 		return getFinder()
 				   .findByU_CD_MU_MD_AE_PO_S_SD_P_ASD(createUserId,
 			createDateGT, createDateLT, modifiedUserId, modifiedDateGT,
 			modifiedDateLT, accountEntryId, purchaseOrderKey, statuses,
 			startDateGT, startDateLT, prorated, actualStartDateGT,
 			actualStartDateLT, params, andOperator, start, end, obc);
-	}
-
-	public static java.util.List<com.liferay.osb.model.OrderEntry> findByKeywords(
-		java.lang.String keywords,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException {
-		return getFinder().findByKeywords(keywords, params, start, end, obc);
 	}
 
 	public static OrderEntryFinder getFinder() {

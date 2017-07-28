@@ -74,8 +74,7 @@ public class SupportTeamLocalServiceWrapper implements SupportTeamLocalService,
 		long parentSupportTeamId, long supportLaborId,
 		long locationSupportRegionId, java.lang.String name,
 		java.lang.String description, int type)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _supportTeamLocalService.addSupportTeam(userId,
 			parentSupportTeamId, supportLaborId, locationSupportRegionId, name,
 			description, type);
@@ -111,13 +110,11 @@ public class SupportTeamLocalServiceWrapper implements SupportTeamLocalService,
 	* @param supportTeamId the primary key of the support team
 	* @return the support team that was removed
 	* @throws PortalException if a support team with the primary key could not be found
-	* @throws SystemException
 	*/
 	@Override
 	public com.liferay.osb.model.SupportTeam deleteSupportTeam(
 		long supportTeamId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _supportTeamLocalService.deleteSupportTeam(supportTeamId);
 	}
 
@@ -158,8 +155,7 @@ public class SupportTeamLocalServiceWrapper implements SupportTeamLocalService,
 		long locationSupportRegionId, java.lang.String name,
 		java.lang.String description, int type, long[] accountEntryIds,
 		long[] supportRegionIds)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _supportTeamLocalService.updateSupportTeam(supportTeamId,
 			parentSupportTeamId, supportLaborId, locationSupportRegionId, name,
 			description, type, accountEntryIds, supportRegionIds);
@@ -218,15 +214,13 @@ public class SupportTeamLocalServiceWrapper implements SupportTeamLocalService,
 	}
 
 	@Override
-	public int searchCount(java.lang.String keywords)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public int searchCount(java.lang.String keywords) {
 		return _supportTeamLocalService.searchCount(keywords);
 	}
 
 	@Override
 	public int searchCount(java.lang.String name, java.lang.Integer type,
-		boolean andOperator)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		boolean andOperator) {
 		return _supportTeamLocalService.searchCount(name, type, andOperator);
 	}
 
@@ -324,16 +318,14 @@ public class SupportTeamLocalServiceWrapper implements SupportTeamLocalService,
 
 	@Override
 	public java.util.List<com.liferay.osb.model.SupportTeam> getChildSupportTeams(
-		long supportTeamId, boolean recursive)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long supportTeamId, boolean recursive) {
 		return _supportTeamLocalService.getChildSupportTeams(supportTeamId,
 			recursive);
 	}
 
 	@Override
 	public java.util.List<com.liferay.osb.model.SupportTeam> getSupportLaborSupportTeams(
-		long supportLaborId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long supportLaborId) {
 		return _supportTeamLocalService.getSupportLaborSupportTeams(supportLaborId);
 	}
 
@@ -377,31 +369,27 @@ public class SupportTeamLocalServiceWrapper implements SupportTeamLocalService,
 
 	@Override
 	public java.util.List<com.liferay.osb.model.SupportTeam> getSupportTeams(
-		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc) {
 		return _supportTeamLocalService.getSupportTeams(start, end, obc);
 	}
 
 	@Override
 	public java.util.List<com.liferay.osb.model.SupportTeam> getUserRoleSupportTeams(
-		long userId, int role)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long userId, int role) {
 		return _supportTeamLocalService.getUserRoleSupportTeams(userId, role);
 	}
 
 	@Override
 	public java.util.List<com.liferay.osb.model.SupportTeam> search(
 		java.lang.String keywords, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.portal.kernel.util.OrderByComparator obc) {
 		return _supportTeamLocalService.search(keywords, start, end, obc);
 	}
 
 	@Override
 	public java.util.List<com.liferay.osb.model.SupportTeam> search(
 		java.lang.String name, java.lang.Integer type, boolean andSearch,
-		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc) {
 		return _supportTeamLocalService.search(name, type, andSearch, start,
 			end, obc);
 	}
@@ -587,16 +575,14 @@ public class SupportTeamLocalServiceWrapper implements SupportTeamLocalService,
 	@Override
 	public void setChildSupportTeams(long parentSupportTeamId,
 		long[] childSupportTeamIds)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		_supportTeamLocalService.setChildSupportTeams(parentSupportTeamId,
 			childSupportTeamIds);
 	}
 
 	@Override
 	public void setSupportLaborId(long supportLaborId, long[] supportTeamIds)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		_supportTeamLocalService.setSupportLaborId(supportLaborId,
 			supportTeamIds);
 	}

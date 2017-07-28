@@ -337,8 +337,7 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 	public com.liferay.osb.model.PartnerEntry addPartnerEntry(long userId,
 		long parentPartnerEntryId, java.lang.String dossieraAccountKey,
 		java.lang.String code, java.lang.String notes, long[] supportRegionIds)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -363,10 +362,6 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -433,8 +428,7 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 	@Override
 	public com.liferay.osb.model.PartnerEntry deletePartnerEntry(
 		long partnerEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -446,10 +440,6 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -466,8 +456,7 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 
 	@Override
 	public com.liferay.osb.model.PartnerEntry fetchPartnerEntry(
-		java.lang.String dossieraAccountKey)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.lang.String dossieraAccountKey) {
 		Object returnObj = null;
 
 		try {
@@ -479,10 +468,6 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -523,8 +508,7 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 	@Override
 	public com.liferay.osb.model.PartnerEntry getPartnerEntry(
 		long partnerEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -536,10 +520,6 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -557,8 +537,7 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 	@Override
 	public com.liferay.osb.model.PartnerEntry getPartnerEntryByCode(
 		java.lang.String code)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -571,10 +550,6 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -619,8 +594,7 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		long partnerEntryId, java.lang.String dossieraAccountKey,
 		java.lang.String code, java.lang.String notes, int status,
 		long[] supportRegionIds)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -647,10 +621,6 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -843,8 +813,7 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 	@Override
 	public int searchCount(java.lang.String code, int[] statuses,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andOperator)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		boolean andOperator) {
 		Object returnObj = null;
 
 		try {
@@ -863,10 +832,6 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -881,8 +846,7 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 
 	@Override
 	public int searchCount(java.lang.String keywords,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params) {
 		Object returnObj = null;
 
 		try {
@@ -896,10 +860,6 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -1037,8 +997,7 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.PartnerEntry> getChildPartnerEntries(
-		long partnerEntryId, boolean recursive)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long partnerEntryId, boolean recursive) {
 		Object returnObj = null;
 
 		try {
@@ -1048,10 +1007,6 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -1174,8 +1129,7 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.PartnerEntry> getUserPartnerEntries(
-		long userId, int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long userId, int start, int end) {
 		Object returnObj = null;
 
 		try {
@@ -1184,10 +1138,6 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -1205,8 +1155,7 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 	public java.util.List<com.liferay.osb.model.PartnerEntry> search(
 		java.lang.String code, int[] statuses,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andOperator, int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		boolean andOperator, int start, int end) {
 		Object returnObj = null;
 
 		try {
@@ -1229,10 +1178,6 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -1249,8 +1194,7 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 	public java.util.List<com.liferay.osb.model.PartnerEntry> search(
 		java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int start, int end) {
 		Object returnObj = null;
 
 		try {
@@ -1268,10 +1212,6 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;

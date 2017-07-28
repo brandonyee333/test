@@ -58,8 +58,7 @@ public class OrderEntryServiceUtil {
 
 	public static java.util.List<com.liferay.osb.model.OrderEntry> getOrderEntries(
 		long corpProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getOrderEntries(corpProjectId);
 	}
 

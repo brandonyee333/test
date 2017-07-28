@@ -43,8 +43,7 @@ public class AccountCallServiceUtil {
 	 */
 	public static com.liferay.osb.model.AccountCall deleteAccountCall(
 		long accountCallId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteAccountCall(accountCallId);
 	}
 
@@ -54,8 +53,7 @@ public class AccountCallServiceUtil {
 		int callDateMinute, long callLength, java.lang.String summary,
 		java.lang.String clientsPresent, java.lang.String notes,
 		java.lang.String actionItems)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateAccountCall(accountCallId, accountEntryId, type,
 			callDateMonth, callDateDay, callDateYear, callDateHour,

@@ -49,8 +49,7 @@ public class SearchFilterLocalServiceWrapper implements SearchFilterLocalService
 	public com.liferay.osb.model.SearchFilter addSearchFilter(long userId,
 		long classNameId, java.lang.String name, java.lang.String filter,
 		int visibility)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _searchFilterLocalService.addSearchFilter(userId, classNameId,
 			name, filter, visibility);
 	}
@@ -129,8 +128,7 @@ public class SearchFilterLocalServiceWrapper implements SearchFilterLocalService
 	public com.liferay.osb.model.SearchFilter updateSearchFilter(
 		long searchFilterId, java.lang.String name, java.lang.String filter,
 		int visibility)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _searchFilterLocalService.updateSearchFilter(searchFilterId,
 			name, filter, visibility);
 	}
@@ -267,8 +265,7 @@ public class SearchFilterLocalServiceWrapper implements SearchFilterLocalService
 
 	@Override
 	public java.util.List<com.liferay.osb.model.SearchFilter> getSearchFilters(
-		long userId, long classNameId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long userId, long classNameId) {
 		return _searchFilterLocalService.getSearchFilters(userId, classNameId);
 	}
 
@@ -300,8 +297,7 @@ public class SearchFilterLocalServiceWrapper implements SearchFilterLocalService
 	}
 
 	@Override
-	public void deleteSearchFilters(long userId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public void deleteSearchFilters(long userId) {
 		_searchFilterLocalService.deleteSearchFilters(userId);
 	}
 

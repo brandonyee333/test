@@ -187,8 +187,7 @@ public class HolidayEntryLocalServiceClp implements HolidayEntryLocalService {
 		long holidayCalendarId, java.lang.String name,
 		java.lang.String description, java.util.Date startDate,
 		java.util.Date endDate, boolean repeatYearly)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -213,10 +212,6 @@ public class HolidayEntryLocalServiceClp implements HolidayEntryLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -392,8 +387,7 @@ public class HolidayEntryLocalServiceClp implements HolidayEntryLocalService {
 		long holidayEntryId, long holidayCalendarId, java.lang.String name,
 		java.lang.String description, java.util.Date startDate,
 		java.util.Date endDate, boolean repeatYearly)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -420,10 +414,6 @@ public class HolidayEntryLocalServiceClp implements HolidayEntryLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -591,8 +581,7 @@ public class HolidayEntryLocalServiceClp implements HolidayEntryLocalService {
 	}
 
 	@Override
-	public int getHolidayEntriesCount(long userId, java.util.Date date)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public int getHolidayEntriesCount(long userId, java.util.Date date) {
 		Object returnObj = null;
 
 		try {
@@ -602,10 +591,6 @@ public class HolidayEntryLocalServiceClp implements HolidayEntryLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -767,8 +752,7 @@ public class HolidayEntryLocalServiceClp implements HolidayEntryLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.HolidayEntry> getHolidayEntries(
-		long holidayCalendarId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long holidayCalendarId) {
 		Object returnObj = null;
 
 		try {
@@ -777,10 +761,6 @@ public class HolidayEntryLocalServiceClp implements HolidayEntryLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -797,8 +777,7 @@ public class HolidayEntryLocalServiceClp implements HolidayEntryLocalService {
 	@Override
 	public java.util.List<com.liferay.osb.model.HolidayEntry> getHolidayEntriesBetween(
 		long userId, java.util.Date startDate, java.util.Date endDate,
-		java.util.TimeZone timeZone)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.util.TimeZone timeZone) {
 		Object returnObj = null;
 
 		try {
@@ -816,10 +795,6 @@ public class HolidayEntryLocalServiceClp implements HolidayEntryLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;

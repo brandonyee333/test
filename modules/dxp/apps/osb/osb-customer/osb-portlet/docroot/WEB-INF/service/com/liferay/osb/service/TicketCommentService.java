@@ -58,26 +58,26 @@ public interface TicketCommentService extends BaseService, InvokableService {
 	public TicketComment addTicketComment(long userId, long ticketEntryId,
 		java.lang.String body, int type, int visibility, int status,
 		long ticketCannedResponseId, int[] pendingTypes,
-		ServiceContext serviceContext) throws PortalException, SystemException;
+		ServiceContext serviceContext) throws PortalException;
 
 	public TicketComment addTicketComment(long userId, long ticketEntryId,
 		java.lang.String body, int type, int visibility, int status,
 		long ticketCannedResponseId, int[] pendingTypes,
 		List<ObjectValuePair<java.lang.String, File>> files,
 		List<java.lang.Integer> types, ServiceContext serviceContext)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public TicketComment deleteTicketComment(long ticketCommentId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public TicketComment updateTicketComment(long userId, long ticketCommentId,
 		long ticketEntryId, java.lang.String body, int visibility, int status,
 		long ticketCannedResponseId, int[] pendingTypes,
 		List<ObjectValuePair<java.lang.String, File>> files,
-		List<java.lang.Integer> types) throws PortalException, SystemException;
+		List<java.lang.Integer> types) throws PortalException;
 
 	public TicketComment updateTicketCommentType(long ticketCommentId, int type)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,

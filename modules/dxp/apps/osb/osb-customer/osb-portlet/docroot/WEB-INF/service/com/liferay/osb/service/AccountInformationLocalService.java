@@ -130,7 +130,7 @@ public interface AccountInformationLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AccountInformationDisplay getAccountInformationDisplay(
-		long accountEntryId) throws PortalException, SystemException;
+		long accountEntryId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -213,11 +213,11 @@ public interface AccountInformationLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountInformation> getAccountEntryAccountInformation(
-		long accountEntryId) throws SystemException;
+		long accountEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountInformation> getAccountInformation(long accountEntryId,
-		long accountProjectId) throws SystemException;
+		long accountProjectId);
 
 	/**
 	* Returns a range of all the account informations.
@@ -236,7 +236,7 @@ public interface AccountInformationLocalService extends BaseLocalService,
 	public List<AccountInformation> updateAccountInformation(long userId,
 		long accountEntryId, long accountProjectId,
 		Map<java.lang.Integer, java.lang.String> data)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	/**
 	* Returns the number of rows matching the dynamic query.
@@ -257,5 +257,5 @@ public interface AccountInformationLocalService extends BaseLocalService,
 		Projection projection);
 
 	public void deleteAccountInformation(long accountEntryId,
-		long accountProjectId) throws SystemException;
+		long accountProjectId);
 }

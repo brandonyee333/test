@@ -187,8 +187,7 @@ public class AccountCustomerLocalServiceClp
 	}
 
 	@Override
-	public boolean hasAccountCustomer(long userId, long accountEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public boolean hasAccountCustomer(long userId, long accountEntryId) {
 		Object returnObj = null;
 
 		try {
@@ -198,10 +197,6 @@ public class AccountCustomerLocalServiceClp
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -321,8 +316,7 @@ public class AccountCustomerLocalServiceClp
 	@Override
 	public com.liferay.osb.model.AccountCustomer deleteAccountCustomer(
 		long userId, com.liferay.osb.model.AccountCustomer accountCustomer)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -339,10 +333,6 @@ public class AccountCustomerLocalServiceClp
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -383,8 +373,7 @@ public class AccountCustomerLocalServiceClp
 
 	@Override
 	public com.liferay.osb.model.AccountCustomer fetchAccountCustomer(
-		long userId, long accountEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long userId, long accountEntryId) {
 		Object returnObj = null;
 
 		try {
@@ -394,10 +383,6 @@ public class AccountCustomerLocalServiceClp
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -443,8 +428,7 @@ public class AccountCustomerLocalServiceClp
 	@Override
 	public com.liferay.osb.model.AccountCustomer getAccountCustomer(
 		long userId, long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -457,10 +441,6 @@ public class AccountCustomerLocalServiceClp
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -800,8 +780,7 @@ public class AccountCustomerLocalServiceClp
 
 	@Override
 	public java.util.List<com.liferay.osb.model.AccountCustomer> getAccountCustomers(
-		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountEntryId) {
 		Object returnObj = null;
 
 		try {
@@ -810,10 +789,6 @@ public class AccountCustomerLocalServiceClp
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -829,8 +804,7 @@ public class AccountCustomerLocalServiceClp
 
 	@Override
 	public java.util.List<com.liferay.osb.model.AccountCustomer> getAccountCustomers(
-		long accountEntryId, int role)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountEntryId, int role) {
 		Object returnObj = null;
 
 		try {
@@ -841,10 +815,6 @@ public class AccountCustomerLocalServiceClp
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -859,7 +829,7 @@ public class AccountCustomerLocalServiceClp
 
 	@Override
 	public java.util.List<com.liferay.osb.model.AccountCustomer> getUserAccountCustomers(
-		long userId) throws com.liferay.portal.kernel.exception.SystemException {
+		long userId) {
 		Object returnObj = null;
 
 		try {
@@ -869,10 +839,6 @@ public class AccountCustomerLocalServiceClp
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -887,8 +853,7 @@ public class AccountCustomerLocalServiceClp
 
 	@Override
 	public java.util.List<com.liferay.osb.model.AccountCustomer> getUserAccountCustomers(
-		long userId, int[] roles)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long userId, int[] roles) {
 		Object returnObj = null;
 
 		try {
@@ -898,10 +863,6 @@ public class AccountCustomerLocalServiceClp
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -973,8 +934,7 @@ public class AccountCustomerLocalServiceClp
 	@Override
 	public void addAccountCustomers(long userId, long[] userIds,
 		long accountEntryId, int[] roles, int[] notifications)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName29,
 				_methodParameterTypes29,
@@ -997,10 +957,6 @@ public class AccountCustomerLocalServiceClp
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
 			}
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -1013,8 +969,7 @@ public class AccountCustomerLocalServiceClp
 
 	@Override
 	public void deleteAccountCustomers(long userId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName30,
 				_methodParameterTypes30, new Object[] { userId });
@@ -1024,10 +979,6 @@ public class AccountCustomerLocalServiceClp
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -1043,8 +994,7 @@ public class AccountCustomerLocalServiceClp
 	@Override
 	public void deleteAccountCustomers(long userId, long[] userIds,
 		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName31,
 				_methodParameterTypes31,
@@ -1063,10 +1013,6 @@ public class AccountCustomerLocalServiceClp
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
 			}
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -1079,8 +1025,7 @@ public class AccountCustomerLocalServiceClp
 
 	@Override
 	public void deleteAccountEntryAccountCustomers(long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName32,
 				_methodParameterTypes32, new Object[] { accountEntryId });
@@ -1090,10 +1035,6 @@ public class AccountCustomerLocalServiceClp
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -1108,8 +1049,7 @@ public class AccountCustomerLocalServiceClp
 
 	@Override
 	public void toggleNotifications(long accountCustomerId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName33,
 				_methodParameterTypes33, new Object[] { accountCustomerId });
@@ -1119,10 +1059,6 @@ public class AccountCustomerLocalServiceClp
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {

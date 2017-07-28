@@ -85,8 +85,7 @@ public interface OrderEntryLocalService extends BaseLocalService,
 		int actualStartDateMonth, int actualStartDateDay,
 		int actualStartDateYear, int status,
 		java.lang.String salesforceOpportunityKey,
-		List<OfferingEntry> offeringEntries)
-		throws PortalException, SystemException;
+		List<OfferingEntry> offeringEntries) throws PortalException;
 
 	/**
 	* Creates a new order entry with the primary key. Does not add the order entry to the database.
@@ -102,11 +101,10 @@ public interface OrderEntryLocalService extends BaseLocalService,
 	* @param orderEntry the order entry
 	* @return the order entry that was removed
 	* @throws PortalException
-	* @throws SystemException
 	*/
 	@Indexable(type = IndexableType.DELETE)
 	public OrderEntry deleteOrderEntry(OrderEntry orderEntry)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	/**
 	* Deletes the order entry with the primary key from the database. Also notifies the appropriate model listeners.
@@ -114,18 +112,17 @@ public interface OrderEntryLocalService extends BaseLocalService,
 	* @param orderEntryId the primary key of the order entry
 	* @return the order entry that was removed
 	* @throws PortalException if a order entry with the primary key could not be found
-	* @throws SystemException
 	*/
 	@Indexable(type = IndexableType.DELETE)
 	public OrderEntry deleteOrderEntry(long orderEntryId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public OrderEntry fetchOrderEntry(long orderEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public OrderEntry getOrderEntry(java.lang.String uuid)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	/**
 	* Returns the order entry with the primary key.
@@ -139,7 +136,7 @@ public interface OrderEntryLocalService extends BaseLocalService,
 		throws PortalException;
 
 	public OrderEntry renewOrderEntry(long userId, long orderEntryId,
-		int renewCount) throws PortalException, SystemException;
+		int renewCount) throws PortalException;
 
 	/**
 	* Updates the order entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
@@ -155,11 +152,10 @@ public interface OrderEntryLocalService extends BaseLocalService,
 		int startDateMonth, int startDateDay, int startDateYear,
 		boolean prorated, int actualStartDateMonth, int actualStartDateDay,
 		int actualStartDateYear, java.lang.String salesforceOpportunityKey,
-		List<OfferingEntry> offeringEntries)
-		throws PortalException, SystemException;
+		List<OfferingEntry> offeringEntries) throws PortalException;
 
 	public OrderEntry updateStatus(long userId, long orderEntryId, int status,
-		ServiceContext serviceContext) throws PortalException, SystemException;
+		ServiceContext serviceContext) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -204,12 +200,11 @@ public interface OrderEntryLocalService extends BaseLocalService,
 		int actualStartDateGTYear, int actualStartDateLTDay,
 		int actualStartDateLTMonth, int actualStartDateLTYear,
 		LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andOperator) throws SystemException;
+		boolean andOperator);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(java.lang.String keywords,
-		LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws SystemException;
+		LinkedHashMap<java.lang.String, java.lang.Object> params);
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
@@ -227,7 +222,7 @@ public interface OrderEntryLocalService extends BaseLocalService,
 		java.lang.String salesforceOpportunityKey, AccountEntry accountEntry,
 		CorpProject corpProject, PartnerEntry partnerEntry, Address address,
 		AccountWorker accountWorker, List<OrderEntry> orderEntries,
-		ServiceContext serviceContext) throws PortalException, SystemException;
+		ServiceContext serviceContext) throws PortalException;
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -269,8 +264,7 @@ public interface OrderEntryLocalService extends BaseLocalService,
 		int end, OrderByComparator<T> orderByComparator);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<OrderEntry> getAccountEntryOrderEntries(long accountEntryId)
-		throws SystemException;
+	public List<OrderEntry> getAccountEntryOrderEntries(long accountEntryId);
 
 	/**
 	* Returns a range of all the order entries.
@@ -301,13 +295,12 @@ public interface OrderEntryLocalService extends BaseLocalService,
 		int actualStartDateGTYear, int actualStartDateLTDay,
 		int actualStartDateLTMonth, int actualStartDateLTYear,
 		LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andOperator, int start, int end, OrderByComparator obc)
-		throws SystemException;
+		boolean andOperator, int start, int end, OrderByComparator obc);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<OrderEntry> search(java.lang.String keywords,
 		LinkedHashMap<java.lang.String, java.lang.Object> params, int start,
-		int end, OrderByComparator obc) throws SystemException;
+		int end, OrderByComparator obc);
 
 	/**
 	* Returns the number of rows matching the dynamic query.

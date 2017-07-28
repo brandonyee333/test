@@ -54,25 +54,19 @@ public interface PartnerEntry extends PartnerEntryModel, PersistedModel {
 			}
 		};
 
-	public java.util.List<AccountEntry> getAccountEntries()
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public java.util.List<AccountEntry> getAccountEntries();
 
 	public java.util.List<PartnerEntry> getChildPartnerEntries(
-		boolean recursive)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		boolean recursive);
 
 	public PartnerEntry getParentPartnerEntry()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public java.util.List<PartnerWorker> getPartnerWorkers()
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public java.util.List<PartnerWorker> getPartnerWorkers();
 
 	public java.lang.String getStatusLabel();
 
-	public SupportRegion getSupportRegion()
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public SupportRegion getSupportRegion();
 
-	public long[] getSupportRegionIds()
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public long[] getSupportRegionIds();
 }

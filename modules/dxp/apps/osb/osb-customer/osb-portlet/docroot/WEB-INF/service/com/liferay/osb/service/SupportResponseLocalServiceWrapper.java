@@ -51,8 +51,7 @@ public class SupportResponseLocalServiceWrapper
 		long userId, java.lang.String name, int supportLevel,
 		int severity1Response, int severity1Resolution, int severity2Response,
 		int severity2Resolution, int severity3Response, int severity3Resolution)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _supportResponseLocalService.addSupportResponse(userId, name,
 			supportLevel, severity1Response, severity1Resolution,
 			severity2Response, severity2Resolution, severity3Response,
@@ -89,13 +88,11 @@ public class SupportResponseLocalServiceWrapper
 	* @param supportResponseId the primary key of the support response
 	* @return the support response that was removed
 	* @throws PortalException if a support response with the primary key could not be found
-	* @throws SystemException
 	*/
 	@Override
 	public com.liferay.osb.model.SupportResponse deleteSupportResponse(
 		long supportResponseId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _supportResponseLocalService.deleteSupportResponse(supportResponseId);
 	}
 
@@ -107,8 +104,7 @@ public class SupportResponseLocalServiceWrapper
 
 	@Override
 	public com.liferay.osb.model.SupportResponse fetchSupportResponseByName(
-		java.lang.String name)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.lang.String name) {
 		return _supportResponseLocalService.fetchSupportResponseByName(name);
 	}
 
@@ -129,8 +125,7 @@ public class SupportResponseLocalServiceWrapper
 	@Override
 	public com.liferay.osb.model.SupportResponse getSupportResponseByName(
 		java.lang.String name)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _supportResponseLocalService.getSupportResponseByName(name);
 	}
 
@@ -151,8 +146,7 @@ public class SupportResponseLocalServiceWrapper
 		long supportResponseId, java.lang.String name, int supportLevel,
 		int severity1Response, int severity1Resolution, int severity2Response,
 		int severity2Resolution, int severity3Response, int severity3Resolution)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _supportResponseLocalService.updateSupportResponse(supportResponseId,
 			name, supportLevel, severity1Response, severity1Resolution,
 			severity2Response, severity2Resolution, severity3Response,

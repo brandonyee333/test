@@ -325,8 +325,7 @@ public class AuditActionLocalServiceClp implements AuditActionLocalService {
 
 	@Override
 	public com.liferay.osb.model.AuditAction updateAuditAction(
-		long classNameId, long classPK, long mappingClassPK, int action)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long classNameId, long classPK, long mappingClassPK, int action) {
 		Object returnObj = null;
 
 		try {
@@ -336,10 +335,6 @@ public class AuditActionLocalServiceClp implements AuditActionLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -654,7 +649,7 @@ public class AuditActionLocalServiceClp implements AuditActionLocalService {
 	@Override
 	public java.util.List<com.liferay.osb.model.AuditAction> getAuditActions(
 		java.util.Date modifiedDate, long classNameId, boolean mapping,
-		int action) throws com.liferay.portal.kernel.exception.SystemException {
+		int action) {
 		Object returnObj = null;
 
 		try {
@@ -672,10 +667,6 @@ public class AuditActionLocalServiceClp implements AuditActionLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -745,8 +736,7 @@ public class AuditActionLocalServiceClp implements AuditActionLocalService {
 	}
 
 	@Override
-	public void deleteAuditActions(java.util.Date modifiedDate)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public void deleteAuditActions(java.util.Date modifiedDate) {
 		try {
 			_invokableLocalService.invokeMethod(_methodName23,
 				_methodParameterTypes23,
@@ -754,10 +744,6 @@ public class AuditActionLocalServiceClp implements AuditActionLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;

@@ -78,7 +78,7 @@ public interface AccountAttachmentLocalService extends BaseLocalService,
 	public AccountAttachment addAccountAttachment(long userId,
 		long accountEntryId, long accountProjectId,
 		ObjectValuePair<java.lang.String, File> fileOVP, int type)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	/**
 	* Creates a new account attachment with the primary key. Does not add the account attachment to the database.
@@ -94,12 +94,10 @@ public interface AccountAttachmentLocalService extends BaseLocalService,
 	* @param accountAttachment the account attachment
 	* @return the account attachment that was removed
 	* @throws PortalException
-	* @throws SystemException
 	*/
 	@Indexable(type = IndexableType.DELETE)
 	public AccountAttachment deleteAccountAttachment(
-		AccountAttachment accountAttachment)
-		throws PortalException, SystemException;
+		AccountAttachment accountAttachment) throws PortalException;
 
 	/**
 	* Deletes the account attachment with the primary key from the database. Also notifies the appropriate model listeners.
@@ -107,11 +105,10 @@ public interface AccountAttachmentLocalService extends BaseLocalService,
 	* @param accountAttachmentId the primary key of the account attachment
 	* @return the account attachment that was removed
 	* @throws PortalException if a account attachment with the primary key could not be found
-	* @throws SystemException
 	*/
 	@Indexable(type = IndexableType.DELETE)
 	public AccountAttachment deleteAccountAttachment(long accountAttachmentId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AccountAttachment fetchAccountAttachment(long accountAttachmentId);
@@ -167,7 +164,7 @@ public interface AccountAttachmentLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public InputStream getFileAsStream(AccountAttachment accountAttachment)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
@@ -184,7 +181,7 @@ public interface AccountAttachmentLocalService extends BaseLocalService,
 	public List<AccountAttachment> addAccountAttachments(long userId,
 		long accountEntryId, long accountProjectId,
 		List<ObjectValuePair<java.lang.String, File>> files,
-		List<java.lang.Integer> types) throws PortalException, SystemException;
+		List<java.lang.Integer> types) throws PortalException;
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -240,16 +237,15 @@ public interface AccountAttachmentLocalService extends BaseLocalService,
 	public List<AccountAttachment> getAccountAttachments(int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AccountAttachment> getAccountAttachments(long accountEntryId)
-		throws SystemException;
+	public List<AccountAttachment> getAccountAttachments(long accountEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountAttachment> getAccountAttachments(long accountEntryId,
-		long accountProjectId) throws SystemException;
+		long accountProjectId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountAttachment> getAccountAttachments(long accountEntryId,
-		long accountProjectId, int type) throws SystemException;
+		long accountProjectId, int type);
 
 	/**
 	* Returns the number of rows matching the dynamic query.
@@ -270,9 +266,8 @@ public interface AccountAttachmentLocalService extends BaseLocalService,
 		Projection projection);
 
 	public void deleteAccountAttachments(long accountEntryId,
-		long accountProjectId) throws PortalException, SystemException;
+		long accountProjectId) throws PortalException;
 
 	public void deleteAccountAttachments(long accountEntryId,
-		long accountProjectId, int type)
-		throws PortalException, SystemException;
+		long accountProjectId, int type) throws PortalException;
 }

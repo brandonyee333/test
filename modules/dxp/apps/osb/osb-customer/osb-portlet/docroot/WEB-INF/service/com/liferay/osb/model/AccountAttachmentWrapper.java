@@ -140,8 +140,7 @@ public class AccountAttachmentWrapper implements AccountAttachment,
 
 	@Override
 	public boolean fileExists()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountAttachment.fileExists();
 	}
 

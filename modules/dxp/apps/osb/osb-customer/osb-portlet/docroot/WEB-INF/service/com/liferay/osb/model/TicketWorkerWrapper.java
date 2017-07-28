@@ -115,8 +115,7 @@ public class TicketWorkerWrapper implements TicketWorker,
 
 	@Override
 	public TicketEntry getTicketEntry()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketWorker.getTicketEntry();
 	}
 

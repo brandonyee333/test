@@ -55,8 +55,7 @@ public class LicenseKeySetLocalServiceUtil {
 
 	public static com.liferay.osb.model.LicenseKeySet addLicenseKeySet(
 		long userId, long accountEntryId, java.lang.String name)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().addLicenseKeySet(userId, accountEntryId, name);
 	}
 
@@ -126,8 +125,7 @@ public class LicenseKeySetLocalServiceUtil {
 
 	public static com.liferay.osb.model.LicenseKeySet updateLicenseKeySet(
 		long licenseKeySetId, java.lang.String name)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updateLicenseKeySet(licenseKeySetId, name);
 	}
 
@@ -158,8 +156,7 @@ public class LicenseKeySetLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static int getAccountEntryLicenseKeySetsCount(long accountEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public static int getAccountEntryLicenseKeySetsCount(long accountEntryId) {
 		return getService().getAccountEntryLicenseKeySetsCount(accountEntryId);
 	}
 
@@ -238,8 +235,7 @@ public class LicenseKeySetLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.osb.model.LicenseKeySet> getAccountEntryLicenseKeySets(
-		long accountEntryId, int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountEntryId, int start, int end) {
 		return getService()
 				   .getAccountEntryLicenseKeySets(accountEntryId, start, end);
 	}

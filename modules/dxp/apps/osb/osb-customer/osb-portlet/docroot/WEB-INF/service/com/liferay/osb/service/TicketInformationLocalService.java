@@ -75,8 +75,7 @@ public interface TicketInformationLocalService extends BaseLocalService,
 		TicketInformation ticketInformation);
 
 	public TicketInformation addTicketInformation(long ticketEntryId,
-		long fieldId, java.lang.String data)
-		throws PortalException, SystemException;
+		long fieldId, java.lang.String data) throws PortalException;
 
 	/**
 	* Creates a new ticket information with the primary key. Does not add the ticket information to the database.
@@ -166,7 +165,7 @@ public interface TicketInformationLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public java.lang.String getData(long ticketEntryId, long fieldId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	/**
 	* Returns the OSGi service identifier.
@@ -215,8 +214,7 @@ public interface TicketInformationLocalService extends BaseLocalService,
 		int end, OrderByComparator<T> orderByComparator);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<TicketInformation> getTicketInformationList(long ticketEntryId)
-		throws SystemException;
+	public List<TicketInformation> getTicketInformationList(long ticketEntryId);
 
 	/**
 	* Returns a range of all the ticket informations.
@@ -234,16 +232,16 @@ public interface TicketInformationLocalService extends BaseLocalService,
 
 	public List<TicketInformation> updateTicketInformation(long ticketEntryId,
 		Map<java.lang.Long, java.lang.String> fieldsMap)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public List<TicketInformation> updateTicketInformation(long userId,
 		java.lang.String userName, long ticketEntryId,
 		Map<java.lang.Long, java.lang.String> fieldsMap,
-		ServiceContext serviceContext) throws PortalException, SystemException;
+		ServiceContext serviceContext) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Map<java.lang.Long, java.lang.String> getFieldsMap(
-		long ticketEntryId) throws SystemException;
+		long ticketEntryId);
 
 	/**
 	* Returns the number of rows matching the dynamic query.

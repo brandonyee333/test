@@ -237,8 +237,7 @@ public class SupportWorkerComponentLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.osb.model.SupportWorkerComponent> getSupportWorkerComponents(
-		long supportWorkerId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long supportWorkerId) {
 		return getService().getSupportWorkerComponents(supportWorkerId);
 	}
 
@@ -267,8 +266,7 @@ public class SupportWorkerComponentLocalServiceUtil {
 	}
 
 	public static void setSupportWorkerComponents(long supportWorkerId,
-		int[] components)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int[] components) {
 		getService().setSupportWorkerComponents(supportWorkerId, components);
 	}
 

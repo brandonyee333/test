@@ -469,8 +469,7 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 		long parentSupportTeamId, long supportLaborId,
 		long locationSupportRegionId, java.lang.String name,
 		java.lang.String description, int type)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -497,10 +496,6 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -567,8 +562,7 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 	@Override
 	public com.liferay.osb.model.SupportTeam deleteSupportTeam(
 		long supportTeamId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -580,10 +574,6 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -681,8 +671,7 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 		long locationSupportRegionId, java.lang.String name,
 		java.lang.String description, int type, long[] accountEntryIds,
 		long[] supportRegionIds)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -713,10 +702,6 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -930,8 +915,7 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 	}
 
 	@Override
-	public int searchCount(java.lang.String keywords)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public int searchCount(java.lang.String keywords) {
 		Object returnObj = null;
 
 		try {
@@ -941,10 +925,6 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -960,8 +940,7 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 
 	@Override
 	public int searchCount(java.lang.String name, java.lang.Integer type,
-		boolean andOperator)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		boolean andOperator) {
 		Object returnObj = null;
 
 		try {
@@ -977,10 +956,6 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -1201,8 +1176,7 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.SupportTeam> getChildSupportTeams(
-		long supportTeamId, boolean recursive)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long supportTeamId, boolean recursive) {
 		Object returnObj = null;
 
 		try {
@@ -1212,10 +1186,6 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -1231,8 +1201,7 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.SupportTeam> getSupportLaborSupportTeams(
-		long supportLaborId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long supportLaborId) {
 		Object returnObj = null;
 
 		try {
@@ -1241,10 +1210,6 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -1367,8 +1332,7 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.SupportTeam> getSupportTeams(
-		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc) {
 		Object returnObj = null;
 
 		try {
@@ -1378,10 +1342,6 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -1397,8 +1357,7 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.SupportTeam> getUserRoleSupportTeams(
-		long userId, int role)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long userId, int role) {
 		Object returnObj = null;
 
 		try {
@@ -1407,10 +1366,6 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -1427,8 +1382,7 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 	@Override
 	public java.util.List<com.liferay.osb.model.SupportTeam> search(
 		java.lang.String keywords, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.portal.kernel.util.OrderByComparator obc) {
 		Object returnObj = null;
 
 		try {
@@ -1447,10 +1401,6 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -1466,8 +1416,7 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 	@Override
 	public java.util.List<com.liferay.osb.model.SupportTeam> search(
 		java.lang.String name, java.lang.Integer type, boolean andSearch,
-		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc) {
 		Object returnObj = null;
 
 		try {
@@ -1489,10 +1438,6 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -2057,8 +2002,7 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 	@Override
 	public void setChildSupportTeams(long parentSupportTeamId,
 		long[] childSupportTeamIds)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName64,
 				_methodParameterTypes64,
@@ -2075,10 +2019,6 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
 			}
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -2091,8 +2031,7 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 
 	@Override
 	public void setSupportLaborId(long supportLaborId, long[] supportTeamIds)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName65,
 				_methodParameterTypes65,
@@ -2107,10 +2046,6 @@ public class SupportTeamLocalServiceClp implements SupportTeamLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {

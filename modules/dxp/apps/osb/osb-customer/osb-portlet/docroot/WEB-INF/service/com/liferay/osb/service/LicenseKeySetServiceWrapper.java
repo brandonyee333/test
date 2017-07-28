@@ -36,8 +36,7 @@ public class LicenseKeySetServiceWrapper implements LicenseKeySetService,
 	@Override
 	public com.liferay.osb.model.LicenseKeySet addLicenseKeySet(long userId,
 		long accountEntryId, java.lang.String name)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _licenseKeySetService.addLicenseKeySet(userId, accountEntryId,
 			name);
 	}
@@ -45,24 +44,21 @@ public class LicenseKeySetServiceWrapper implements LicenseKeySetService,
 	@Override
 	public com.liferay.osb.model.LicenseKeySet deleteLicenseKeySet(
 		long licenseKeySetId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _licenseKeySetService.deleteLicenseKeySet(licenseKeySetId);
 	}
 
 	@Override
 	public com.liferay.osb.model.LicenseKeySet getLicenseKeySet(
 		long licenseKeySetId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _licenseKeySetService.getLicenseKeySet(licenseKeySetId);
 	}
 
 	@Override
 	public com.liferay.osb.model.LicenseKeySet updateLicenseKeySet(
 		long licenseKeySetId, java.lang.String name)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _licenseKeySetService.updateLicenseKeySet(licenseKeySetId, name);
 	}
 

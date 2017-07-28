@@ -59,8 +59,7 @@ public class TicketWorkerServiceUtil {
 	public static java.util.List<com.liferay.osb.model.TicketWorker> addTicketWorkers(
 		long[] userIds, long ticketEntryId, long[] sourceClassNameIds,
 		long[] sourceClassPKs, int[] roles, long primaryUserId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addTicketWorkers(userIds, ticketEntryId,
 			sourceClassNameIds, sourceClassPKs, roles, primaryUserId);
@@ -70,8 +69,7 @@ public class TicketWorkerServiceUtil {
 		long[] addUserIds, int[] addRoles, long[] removeUserIds,
 		long ticketEntryId, long[] sourceClassNameIds, long[] sourceClassPKs,
 		long primaryUserId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateTicketWorkers(addUserIds, addRoles, removeUserIds,
 			ticketEntryId, sourceClassNameIds, sourceClassPKs, primaryUserId);
@@ -79,8 +77,7 @@ public class TicketWorkerServiceUtil {
 
 	public static void deleteTicketWorkers(long[] userIds, long ticketEntryId,
 		long primaryUserId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().deleteTicketWorkers(userIds, ticketEntryId, primaryUserId);
 	}
 

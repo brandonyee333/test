@@ -151,15 +151,13 @@ public class SupportWorkerWrapper implements SupportWorker,
 
 	@Override
 	public SupportLabor getSupportLabor()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _supportWorker.getSupportLabor();
 	}
 
 	@Override
 	public SupportTeam getSupportTeam()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _supportWorker.getSupportTeam();
 	}
 
@@ -195,8 +193,7 @@ public class SupportWorkerWrapper implements SupportWorker,
 
 	@Override
 	public boolean isActive()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _supportWorker.isActive();
 	}
 
@@ -212,8 +209,7 @@ public class SupportWorkerWrapper implements SupportWorker,
 
 	@Override
 	public boolean isAvailable()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _supportWorker.isAvailable();
 	}
 
@@ -329,15 +325,13 @@ public class SupportWorkerWrapper implements SupportWorker,
 
 	@Override
 	public java.lang.Long getTimeUntilClose()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _supportWorker.getTimeUntilClose();
 	}
 
 	@Override
 	public java.lang.Long getTimeUntilOpen()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _supportWorker.getTimeUntilOpen();
 	}
 
@@ -377,20 +371,17 @@ public class SupportWorkerWrapper implements SupportWorker,
 	}
 
 	@Override
-	public java.util.List<java.lang.Integer> getAccountTiers()
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public java.util.List<java.lang.Integer> getAccountTiers() {
 		return _supportWorker.getAccountTiers();
 	}
 
 	@Override
-	public java.util.List<java.lang.Integer> getComponents()
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public java.util.List<java.lang.Integer> getComponents() {
 		return _supportWorker.getComponents();
 	}
 
 	@Override
-	public java.util.List<java.lang.Integer> getSeverities()
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public java.util.List<java.lang.Integer> getSeverities() {
 		return _supportWorker.getSeverities();
 	}
 

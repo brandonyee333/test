@@ -42,8 +42,7 @@ public class LicenseKeyServiceUtil {
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.LicenseKeyServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static boolean isActive(long corpProjectId, java.lang.String key)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().isActive(corpProjectId, key);
 	}
 
@@ -93,8 +92,7 @@ public class LicenseKeyServiceUtil {
 		java.lang.String ipAddresses, java.lang.String macAddresses,
 		java.lang.String serverId, int startDateMonth, int startDateDay,
 		int startDateYear)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addLicenseKey(licenseKeySetId, offeringEntryId,
 			licenseEntryId, productVersion, owner, maxHttpSessions,
@@ -108,8 +106,7 @@ public class LicenseKeyServiceUtil {
 		java.lang.String[] ipAddresses, java.lang.String[] macAddresses,
 		java.lang.String[] serverIds, int startDateMonth, int startDateDay,
 		int startDateYear)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addLicenseKey(userId, assetReceiptLicenseId, owner,
 			description, hostNames, ipAddresses, macAddresses, serverIds,
@@ -125,8 +122,7 @@ public class LicenseKeyServiceUtil {
 		java.lang.String[] macAddresses, java.lang.String[] serverIds,
 		int startDateMonth, int startDateDay, int startDateYear,
 		boolean complimentary, boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addLicenseKey(userId, licenseKeySetId, name,
 			offeringEntryId, licenseEntryId, productEntryId, productVersion,
@@ -137,15 +133,13 @@ public class LicenseKeyServiceUtil {
 
 	public static com.liferay.osb.model.LicenseKey getLicenseKey(
 		long licenseKeyId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getLicenseKey(licenseKeyId);
 	}
 
 	public static com.liferay.osb.model.LicenseKey renewLicenseKey(
 		long licenseKeyId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().renewLicenseKey(licenseKeyId);
 	}
 
@@ -157,8 +151,7 @@ public class LicenseKeyServiceUtil {
 
 	public static int getOfferingEntryGroupLicenseKeysCount(
 		long[] offeringEntryIds, boolean complimentary, boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .getOfferingEntryGroupLicenseKeysCount(offeringEntryIds,
 			complimentary, active);
@@ -184,8 +177,7 @@ public class LicenseKeyServiceUtil {
 		int expirationDateLTMonth, int expirationDateLTYear,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andSearch)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .searchCount(createUserId, createDateGTDay,
 			createDateGTMonth, createDateGTYear, createDateLTDay,
@@ -204,8 +196,7 @@ public class LicenseKeyServiceUtil {
 
 	public static int searchCount(java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().searchCount(keywords, params);
 	}
 
@@ -231,23 +222,20 @@ public class LicenseKeyServiceUtil {
 
 	public static java.util.List<com.liferay.osb.model.LicenseKey> getLicenseKeySetLicenseKeys(
 		long licenseKeySetId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getLicenseKeySetLicenseKeys(licenseKeySetId);
 	}
 
 	public static java.util.List<com.liferay.osb.model.LicenseKey> getLicenseKeys(
 		long userId, java.lang.String productId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getLicenseKeys(userId, productId);
 	}
 
 	public static java.util.List<com.liferay.osb.model.LicenseKey> getOfferingEntryGroupLicenseKeys(
 		long[] offeringEntryIds, boolean complimentary, boolean active,
 		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .getOfferingEntryGroupLicenseKeys(offeringEntryIds,
 			complimentary, active, start, end, obc);
@@ -275,8 +263,7 @@ public class LicenseKeyServiceUtil {
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andSearch, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .search(createUserId, createDateGTDay, createDateGTMonth,
 			createDateGTYear, createDateLTDay, createDateLTMonth,
@@ -297,21 +284,18 @@ public class LicenseKeyServiceUtil {
 		java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().search(keywords, params, start, end, obc);
 	}
 
 	public static void updateLicenseKey(long licenseKeyId, boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().updateLicenseKey(licenseKeyId, active);
 	}
 
 	public static void updateLicenseKey(long userId, long licenseKeyId,
 		long assetReceiptLicenseId, boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService()
 			.updateLicenseKey(userId, licenseKeyId, assetReceiptLicenseId,
 			active);
@@ -320,8 +304,7 @@ public class LicenseKeyServiceUtil {
 	public static void updateLicenseKey(long userId, long licenseKeyId,
 		long licenseKeySetId, long offeringEntryId, java.lang.String name,
 		boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService()
 			.updateLicenseKey(userId, licenseKeyId, licenseKeySetId,
 			offeringEntryId, name, active);

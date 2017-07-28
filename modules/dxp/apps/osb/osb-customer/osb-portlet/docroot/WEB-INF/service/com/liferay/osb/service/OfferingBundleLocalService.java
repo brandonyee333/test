@@ -79,7 +79,7 @@ public interface OfferingBundleLocalService extends BaseLocalService,
 	public OfferingBundle addOfferingBundle(OfferingBundle offeringBundle);
 
 	public OfferingBundle addOfferingBundle(long userId, java.lang.String name,
-		long[] offeringDefinitionIds) throws PortalException, SystemException;
+		long[] offeringDefinitionIds) throws PortalException;
 
 	/**
 	* Creates a new offering bundle with the primary key. Does not add the offering bundle to the database.
@@ -134,7 +134,7 @@ public interface OfferingBundleLocalService extends BaseLocalService,
 
 	public OfferingBundle updateOfferingBundle(long offeringBundleId,
 		java.lang.String name, long[] offeringDefinitionIds)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();

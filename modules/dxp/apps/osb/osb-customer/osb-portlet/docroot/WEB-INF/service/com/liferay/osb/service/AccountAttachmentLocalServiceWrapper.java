@@ -50,9 +50,7 @@ public class AccountAttachmentLocalServiceWrapper
 	public com.liferay.osb.model.AccountAttachment addAccountAttachment(
 		long userId, long accountEntryId, long accountProjectId,
 		com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File> fileOVP,
-		int type)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		int type) throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountAttachmentLocalService.addAccountAttachment(userId,
 			accountEntryId, accountProjectId, fileOVP, type);
 	}
@@ -75,13 +73,11 @@ public class AccountAttachmentLocalServiceWrapper
 	* @param accountAttachment the account attachment
 	* @return the account attachment that was removed
 	* @throws PortalException
-	* @throws SystemException
 	*/
 	@Override
 	public com.liferay.osb.model.AccountAttachment deleteAccountAttachment(
 		com.liferay.osb.model.AccountAttachment accountAttachment)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountAttachmentLocalService.deleteAccountAttachment(accountAttachment);
 	}
 
@@ -91,13 +87,11 @@ public class AccountAttachmentLocalServiceWrapper
 	* @param accountAttachmentId the primary key of the account attachment
 	* @return the account attachment that was removed
 	* @throws PortalException if a account attachment with the primary key could not be found
-	* @throws SystemException
 	*/
 	@Override
 	public com.liferay.osb.model.AccountAttachment deleteAccountAttachment(
 		long accountAttachmentId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountAttachmentLocalService.deleteAccountAttachment(accountAttachmentId);
 	}
 
@@ -178,8 +172,7 @@ public class AccountAttachmentLocalServiceWrapper
 	@Override
 	public java.io.InputStream getFileAsStream(
 		com.liferay.osb.model.AccountAttachment accountAttachment)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountAttachmentLocalService.getFileAsStream(accountAttachment);
 	}
 
@@ -206,8 +199,7 @@ public class AccountAttachmentLocalServiceWrapper
 		long userId, long accountEntryId, long accountProjectId,
 		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
 		java.util.List<java.lang.Integer> types)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountAttachmentLocalService.addAccountAttachments(userId,
 			accountEntryId, accountProjectId, files, types);
 	}
@@ -285,23 +277,20 @@ public class AccountAttachmentLocalServiceWrapper
 
 	@Override
 	public java.util.List<com.liferay.osb.model.AccountAttachment> getAccountAttachments(
-		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountEntryId) {
 		return _accountAttachmentLocalService.getAccountAttachments(accountEntryId);
 	}
 
 	@Override
 	public java.util.List<com.liferay.osb.model.AccountAttachment> getAccountAttachments(
-		long accountEntryId, long accountProjectId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountEntryId, long accountProjectId) {
 		return _accountAttachmentLocalService.getAccountAttachments(accountEntryId,
 			accountProjectId);
 	}
 
 	@Override
 	public java.util.List<com.liferay.osb.model.AccountAttachment> getAccountAttachments(
-		long accountEntryId, long accountProjectId, int type)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountEntryId, long accountProjectId, int type) {
 		return _accountAttachmentLocalService.getAccountAttachments(accountEntryId,
 			accountProjectId, type);
 	}
@@ -336,8 +325,7 @@ public class AccountAttachmentLocalServiceWrapper
 	@Override
 	public void deleteAccountAttachments(long accountEntryId,
 		long accountProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		_accountAttachmentLocalService.deleteAccountAttachments(accountEntryId,
 			accountProjectId);
 	}
@@ -345,8 +333,7 @@ public class AccountAttachmentLocalServiceWrapper
 	@Override
 	public void deleteAccountAttachments(long accountEntryId,
 		long accountProjectId, int type)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		_accountAttachmentLocalService.deleteAccountAttachments(accountEntryId,
 			accountProjectId, type);
 	}

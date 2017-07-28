@@ -53,8 +53,7 @@ public interface AccountEnvironmentAttachmentService extends BaseService,
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AccountEnvironmentAttachment getAccountEnvironmentAttachment(
-		long accountEnvironmentAttachmentId)
-		throws PortalException, SystemException;
+		long accountEnvironmentAttachmentId) throws PortalException;
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,

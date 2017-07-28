@@ -41,18 +41,15 @@ public class PartnerWorkerLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.PartnerWorkerLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static boolean hasPartnerWorker(long userId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public static boolean hasPartnerWorker(long userId) {
 		return getService().hasPartnerWorker(userId);
 	}
 
-	public static boolean hasPartnerWorker(long userId, long partnerEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public static boolean hasPartnerWorker(long userId, long partnerEntryId) {
 		return getService().hasPartnerWorker(userId, partnerEntryId);
 	}
 
-	public static boolean hasPartnerWorkerRole(long userId, int role)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public static boolean hasPartnerWorkerRole(long userId, int role) {
 		return getService().hasPartnerWorkerRole(userId, role);
 	}
 
@@ -108,8 +105,7 @@ public class PartnerWorkerLocalServiceUtil {
 	}
 
 	public static com.liferay.osb.model.PartnerWorker fetchPartnerWorker(
-		long userId, long partnerEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long userId, long partnerEntryId) {
 		return getService().fetchPartnerWorker(userId, partnerEntryId);
 	}
 
@@ -128,8 +124,7 @@ public class PartnerWorkerLocalServiceUtil {
 
 	public static com.liferay.osb.model.PartnerWorker getPartnerWorker(
 		long userId, long partnerEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getPartnerWorker(userId, partnerEntryId);
 	}
 
@@ -262,19 +257,17 @@ public class PartnerWorkerLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.osb.model.PartnerWorker> getPartnerWorkers(
-		long partnerEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long partnerEntryId) {
 		return getService().getPartnerWorkers(partnerEntryId);
 	}
 
 	public static java.util.List<com.liferay.osb.model.PartnerWorker> getPartnerWorkers(
-		long partnerEntryId, int role)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long partnerEntryId, int role) {
 		return getService().getPartnerWorkers(partnerEntryId, role);
 	}
 
 	public static java.util.List<com.liferay.osb.model.PartnerWorker> getUserPartnerWorkers(
-		long userId) throws com.liferay.portal.kernel.exception.SystemException {
+		long userId) {
 		return getService().getUserPartnerWorkers(userId);
 	}
 
@@ -304,21 +297,18 @@ public class PartnerWorkerLocalServiceUtil {
 
 	public static void addPartnerWorkers(long[] userIds, long partnerEntryId,
 		int[] roles, int[] notifications)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService()
 			.addPartnerWorkers(userIds, partnerEntryId, roles, notifications);
 	}
 
 	public static void deletePartnerWorkers(long userId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().deletePartnerWorkers(userId);
 	}
 
 	public static void deletePartnerWorkers(long[] userIds, long partnerEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().deletePartnerWorkers(userIds, partnerEntryId);
 	}
 

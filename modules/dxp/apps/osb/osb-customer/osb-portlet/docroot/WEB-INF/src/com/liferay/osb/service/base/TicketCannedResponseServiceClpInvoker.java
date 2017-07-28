@@ -27,58 +27,58 @@ import java.util.Arrays;
 @ProviderType
 public class TicketCannedResponseServiceClpInvoker {
 	public TicketCannedResponseServiceClpInvoker() {
-		_methodName374 = "getOSGiServiceIdentifier";
+		_methodName366 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes374 = new String[] {  };
+		_methodParameterTypes366 = new String[] {  };
 
-		_methodName379 = "incrementUseCount";
+		_methodName371 = "incrementUseCount";
 
-		_methodParameterTypes379 = new String[] { "long" };
+		_methodParameterTypes371 = new String[] { "long" };
 
-		_methodName380 = "search";
+		_methodName372 = "search";
 
-		_methodParameterTypes380 = new String[] { "java.lang.String", "int", "int" };
+		_methodParameterTypes372 = new String[] { "java.lang.String", "int", "int" };
 
-		_methodName381 = "search";
+		_methodName373 = "search";
 
-		_methodParameterTypes381 = new String[] {
+		_methodParameterTypes373 = new String[] {
 				"java.lang.String", "java.lang.String", "boolean", "int", "int"
 			};
 
-		_methodName382 = "searchCount";
+		_methodName374 = "searchCount";
 
-		_methodParameterTypes382 = new String[] { "java.lang.String" };
+		_methodParameterTypes374 = new String[] { "java.lang.String" };
 
-		_methodName383 = "searchCount";
+		_methodName375 = "searchCount";
 
-		_methodParameterTypes383 = new String[] {
+		_methodParameterTypes375 = new String[] {
 				"java.lang.String", "java.lang.String", "boolean"
 			};
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName374.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes374, parameterTypes)) {
+		if (_methodName366.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes366, parameterTypes)) {
 			return TicketCannedResponseServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName379.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes379, parameterTypes)) {
+		if (_methodName371.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes371, parameterTypes)) {
 			TicketCannedResponseServiceUtil.incrementUseCount(((Long)arguments[0]).longValue());
 
 			return null;
 		}
 
-		if (_methodName380.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes380, parameterTypes)) {
+		if (_methodName372.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes372, parameterTypes)) {
 			return TicketCannedResponseServiceUtil.search((java.lang.String)arguments[0],
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue());
 		}
 
-		if (_methodName381.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes381, parameterTypes)) {
+		if (_methodName373.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes373, parameterTypes)) {
 			return TicketCannedResponseServiceUtil.search((java.lang.String)arguments[0],
 				(java.lang.String)arguments[1],
 				((Boolean)arguments[2]).booleanValue(),
@@ -86,13 +86,13 @@ public class TicketCannedResponseServiceClpInvoker {
 				((Integer)arguments[4]).intValue());
 		}
 
-		if (_methodName382.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes382, parameterTypes)) {
+		if (_methodName374.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes374, parameterTypes)) {
 			return TicketCannedResponseServiceUtil.searchCount((java.lang.String)arguments[0]);
 		}
 
-		if (_methodName383.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes383, parameterTypes)) {
+		if (_methodName375.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes375, parameterTypes)) {
 			return TicketCannedResponseServiceUtil.searchCount((java.lang.String)arguments[0],
 				(java.lang.String)arguments[1],
 				((Boolean)arguments[2]).booleanValue());
@@ -101,16 +101,16 @@ public class TicketCannedResponseServiceClpInvoker {
 		throw new UnsupportedOperationException();
 	}
 
+	private String _methodName366;
+	private String[] _methodParameterTypes366;
+	private String _methodName371;
+	private String[] _methodParameterTypes371;
+	private String _methodName372;
+	private String[] _methodParameterTypes372;
+	private String _methodName373;
+	private String[] _methodParameterTypes373;
 	private String _methodName374;
 	private String[] _methodParameterTypes374;
-	private String _methodName379;
-	private String[] _methodParameterTypes379;
-	private String _methodName380;
-	private String[] _methodParameterTypes380;
-	private String _methodName381;
-	private String[] _methodParameterTypes381;
-	private String _methodName382;
-	private String[] _methodParameterTypes382;
-	private String _methodName383;
-	private String[] _methodParameterTypes383;
+	private String _methodName375;
+	private String[] _methodParameterTypes375;
 }

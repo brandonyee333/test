@@ -35,21 +35,18 @@ public class PartnerWorkerLocalServiceWrapper
 	}
 
 	@Override
-	public boolean hasPartnerWorker(long userId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public boolean hasPartnerWorker(long userId) {
 		return _partnerWorkerLocalService.hasPartnerWorker(userId);
 	}
 
 	@Override
-	public boolean hasPartnerWorker(long userId, long partnerEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public boolean hasPartnerWorker(long userId, long partnerEntryId) {
 		return _partnerWorkerLocalService.hasPartnerWorker(userId,
 			partnerEntryId);
 	}
 
 	@Override
-	public boolean hasPartnerWorkerRole(long userId, int role)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public boolean hasPartnerWorkerRole(long userId, int role) {
 		return _partnerWorkerLocalService.hasPartnerWorkerRole(userId, role);
 	}
 
@@ -111,8 +108,7 @@ public class PartnerWorkerLocalServiceWrapper
 
 	@Override
 	public com.liferay.osb.model.PartnerWorker fetchPartnerWorker(long userId,
-		long partnerEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long partnerEntryId) {
 		return _partnerWorkerLocalService.fetchPartnerWorker(userId,
 			partnerEntryId);
 	}
@@ -134,8 +130,7 @@ public class PartnerWorkerLocalServiceWrapper
 	@Override
 	public com.liferay.osb.model.PartnerWorker getPartnerWorker(long userId,
 		long partnerEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _partnerWorkerLocalService.getPartnerWorker(userId,
 			partnerEntryId);
 	}
@@ -284,21 +279,19 @@ public class PartnerWorkerLocalServiceWrapper
 
 	@Override
 	public java.util.List<com.liferay.osb.model.PartnerWorker> getPartnerWorkers(
-		long partnerEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long partnerEntryId) {
 		return _partnerWorkerLocalService.getPartnerWorkers(partnerEntryId);
 	}
 
 	@Override
 	public java.util.List<com.liferay.osb.model.PartnerWorker> getPartnerWorkers(
-		long partnerEntryId, int role)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long partnerEntryId, int role) {
 		return _partnerWorkerLocalService.getPartnerWorkers(partnerEntryId, role);
 	}
 
 	@Override
 	public java.util.List<com.liferay.osb.model.PartnerWorker> getUserPartnerWorkers(
-		long userId) throws com.liferay.portal.kernel.exception.SystemException {
+		long userId) {
 		return _partnerWorkerLocalService.getUserPartnerWorkers(userId);
 	}
 
@@ -332,23 +325,20 @@ public class PartnerWorkerLocalServiceWrapper
 	@Override
 	public void addPartnerWorkers(long[] userIds, long partnerEntryId,
 		int[] roles, int[] notifications)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		_partnerWorkerLocalService.addPartnerWorkers(userIds, partnerEntryId,
 			roles, notifications);
 	}
 
 	@Override
 	public void deletePartnerWorkers(long userId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		_partnerWorkerLocalService.deletePartnerWorkers(userId);
 	}
 
 	@Override
 	public void deletePartnerWorkers(long[] userIds, long partnerEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		_partnerWorkerLocalService.deletePartnerWorkers(userIds, partnerEntryId);
 	}
 

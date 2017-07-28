@@ -56,8 +56,7 @@ public class SearchFilterServiceClp implements SearchFilterService {
 	public com.liferay.osb.model.SearchFilter addSearchFilter(long userId,
 		long classNameId, java.lang.String name, java.lang.String filter,
 		int visibility)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -82,10 +81,6 @@ public class SearchFilterServiceClp implements SearchFilterService {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
 			}
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -101,8 +96,7 @@ public class SearchFilterServiceClp implements SearchFilterService {
 	@Override
 	public com.liferay.osb.model.SearchFilter getSearchFilter(
 		long searchFilterId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -114,10 +108,6 @@ public class SearchFilterServiceClp implements SearchFilterService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -136,8 +126,7 @@ public class SearchFilterServiceClp implements SearchFilterService {
 	public com.liferay.osb.model.SearchFilter updateSearchFilter(
 		long searchFilterId, java.lang.String name, java.lang.String filter,
 		int visibility)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -158,10 +147,6 @@ public class SearchFilterServiceClp implements SearchFilterService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -208,8 +193,7 @@ public class SearchFilterServiceClp implements SearchFilterService {
 
 	@Override
 	public void deleteSearchFilter(long searchFilterId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableService.invokeMethod(_methodName5,
 				_methodParameterTypes5, new Object[] { searchFilterId });
@@ -219,10 +203,6 @@ public class SearchFilterServiceClp implements SearchFilterService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {

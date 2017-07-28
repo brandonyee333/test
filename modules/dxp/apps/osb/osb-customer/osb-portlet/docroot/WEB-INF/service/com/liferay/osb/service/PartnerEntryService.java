@@ -55,21 +55,20 @@ public interface PartnerEntryService extends BaseService, InvokableService {
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PartnerEntry getPartnerEntry(long partnerEntryId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(java.lang.String code, int[] statuses,
 		LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andOperator) throws PortalException, SystemException;
+		boolean andOperator) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int searchCount(java.lang.String keywords)
-		throws PortalException, SystemException;
+	public int searchCount(java.lang.String keywords) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(java.lang.String keywords,
 		LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
@@ -86,11 +85,10 @@ public interface PartnerEntryService extends BaseService, InvokableService {
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<PartnerEntry> search(java.lang.String code, int[] statuses,
 		LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andOperator, int start, int end)
-		throws PortalException, SystemException;
+		boolean andOperator, int start, int end) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<PartnerEntry> search(java.lang.String keywords,
 		LinkedHashMap<java.lang.String, java.lang.Object> params, int start,
-		int end) throws PortalException, SystemException;
+		int end) throws PortalException;
 }

@@ -599,8 +599,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	}
 
 	@Override
-	public boolean hasValidLicenseAccountEntry(long userId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public boolean hasValidLicenseAccountEntry(long userId) {
 		Object returnObj = null;
 
 		try {
@@ -609,10 +608,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -627,8 +622,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	}
 
 	@Override
-	public boolean hasValidSupportAccountEntry(long userId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public boolean hasValidSupportAccountEntry(long userId) {
 		Object returnObj = null;
 
 		try {
@@ -637,10 +631,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -690,8 +680,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		java.lang.String street2, java.lang.String street3,
 		java.lang.String city, java.lang.String zip, long regionId,
 		long countryId, java.lang.String ewsaDossieraProjectKey)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -752,10 +741,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
 			}
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -779,8 +764,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		java.util.List<com.liferay.osb.model.OrderEntry> orderEntries,
 		java.util.ArrayList<com.liferay.portal.kernel.model.User> users,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -811,10 +795,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -881,8 +861,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	@Override
 	public com.liferay.osb.model.AccountEntry deleteAccountEntry(
 		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -894,10 +873,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -938,8 +913,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 	@Override
 	public com.liferay.osb.model.AccountEntry fetchCorpProjectAccountEntry(
-		long corpProjectId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long corpProjectId) {
 		Object returnObj = null;
 
 		try {
@@ -948,10 +922,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -967,7 +937,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 	@Override
 	public com.liferay.osb.model.AccountEntry fetchUserTrialAccountEntry(
-		long userId) throws com.liferay.portal.kernel.exception.SystemException {
+		long userId) {
 		Object returnObj = null;
 
 		try {
@@ -976,10 +946,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -996,8 +962,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	@Override
 	public com.liferay.osb.model.AccountEntry getAccountEntry(
 		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -1009,10 +974,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -1030,8 +991,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	@Override
 	public com.liferay.osb.model.AccountEntry getAccountEntryByCode(
 		java.lang.String code)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -1044,10 +1004,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -1065,8 +1021,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	@Override
 	public com.liferay.osb.model.AccountEntry getAccountEntryByName(
 		java.lang.String name)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -1079,10 +1034,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -1133,8 +1084,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		long addressId, java.lang.String street1, java.lang.String street2,
 		java.lang.String street3, java.lang.String city, java.lang.String zip,
 		long regionId, long countryId, java.lang.String ewsaDossieraProjectKey)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -1199,10 +1149,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
 			}
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -1218,8 +1164,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	@Override
 	public com.liferay.osb.model.AccountEntry updateCorpProject(
 		long accountEntryId, long corpProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -1232,10 +1177,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -1253,8 +1194,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	@Override
 	public com.liferay.osb.model.AccountEntry updateInstructions(long userId,
 		long accountEntryId, java.lang.String instructions)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -1275,10 +1215,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
 			}
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -1295,8 +1231,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	public com.liferay.osb.model.AccountEntry updateStatus(long userId,
 		long accountEntryId, int status,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -1319,10 +1254,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
 			}
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -1340,8 +1271,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		long accountEntryId, java.lang.String salesforceOpportunityKey,
 		int status,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -1366,10 +1296,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
 			}
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -1385,8 +1311,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	@Override
 	public com.liferay.osb.model.AccountEntry updateTier(long userId,
 		long accountEntryId, int tier)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -1399,10 +1324,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -1616,8 +1537,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	}
 
 	@Override
-	public int getUserAccountEntriesCount(long userId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public int getUserAccountEntriesCount(long userId) {
 		Object returnObj = null;
 
 		try {
@@ -1626,10 +1546,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -1657,8 +1573,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		java.lang.Long countryId, java.lang.Long regionId,
 		java.lang.String city, java.lang.String zip,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andOperator)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		boolean andOperator) {
 		Object returnObj = null;
 
 		try {
@@ -1729,10 +1644,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -1747,8 +1658,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 	@Override
 	public int searchCount(java.lang.String keywords,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params) {
 		Object returnObj = null;
 
 		try {
@@ -1762,10 +1672,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -1927,8 +1833,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.AccountEntry> getAccountEntries(
-		int[] notTypes, int[] statuses, int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int[] notTypes, int[] statuses, int start, int end) {
 		Object returnObj = null;
 
 		try {
@@ -1947,10 +1852,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -1965,8 +1866,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.AccountEntry> getAccountEntries(
-		int[] statuses, int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int[] statuses, int start, int end) {
 		Object returnObj = null;
 
 		try {
@@ -1983,10 +1883,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -2001,8 +1897,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.AccountEntry> getActiveAccountEntries(
-		int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int start, int end) {
 		Object returnObj = null;
 
 		try {
@@ -2011,10 +1906,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -2030,8 +1921,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.AccountEntry> getPartnerAccountEntries(
-		long partnerEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long partnerEntryId) {
 		Object returnObj = null;
 
 		try {
@@ -2040,10 +1930,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -2059,8 +1945,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.AccountEntry> getRedirectAccountEntries(
-		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountEntryId) {
 		Object returnObj = null;
 
 		try {
@@ -2069,10 +1954,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -2089,8 +1970,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	@Override
 	public java.util.List<com.liferay.osb.model.AccountEntry> getSecurityPatchAccountEntries(
 		java.lang.String portletId,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params) {
 		Object returnObj = null;
 
 		try {
@@ -2104,10 +1984,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -2289,8 +2165,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.AccountEntry> getUserAccountEntries(
-		long userId, int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long userId, int start, int end) {
 		Object returnObj = null;
 
 		try {
@@ -2299,10 +2174,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -2318,8 +2189,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 	@Override
 	public java.util.List<java.lang.Long> getUserAccountEntryIds(long userId,
-		int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int start, int end) {
 		Object returnObj = null;
 
 		try {
@@ -2328,10 +2198,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -2347,9 +2213,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 	@Override
 	public java.util.List<java.lang.String> getUserAccountEntryNames(
-		long userId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		long userId) throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -2361,10 +2225,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -2381,8 +2241,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.AccountEntry> getUserActiveAccountEntries(
-		long userId, int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long userId, int start, int end) {
 		Object returnObj = null;
 
 		try {
@@ -2391,10 +2250,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -2424,8 +2279,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		java.lang.String city, java.lang.String zip,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.portal.kernel.util.OrderByComparator obc) {
 		Object returnObj = null;
 
 		try {
@@ -2502,10 +2356,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -2522,8 +2372,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	public java.util.List<com.liferay.osb.model.AccountEntry> search(
 		java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc) {
 		Object returnObj = null;
 
 		try {
@@ -2544,10 +2393,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -2562,8 +2407,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.AccountEntry> search(
-		java.lang.String name, java.lang.String code)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.lang.String name, java.lang.String code) {
 		Object returnObj = null;
 
 		try {
@@ -2577,10 +2421,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -2914,8 +2754,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 	@Override
 	public void auditAccountEntries()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName74,
 				_methodParameterTypes74, new Object[] {  });
@@ -2925,10 +2764,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -2943,8 +2778,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 	@Override
 	public void auditAccountEntry(long userId, long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName75,
 				_methodParameterTypes75, new Object[] { userId, accountEntryId });
@@ -2954,10 +2788,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -3202,8 +3032,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 	@Override
 	public void recalculateHighestSupportResponse(long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName86,
 				_methodParameterTypes86, new Object[] { accountEntryId });
@@ -3213,10 +3042,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -3231,8 +3056,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 	@Override
 	public void reindexAccountEntry(long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName87,
 				_methodParameterTypes87, new Object[] { accountEntryId });
@@ -3242,10 +3066,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -3316,8 +3136,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		com.liferay.portal.kernel.model.Address address,
 		java.util.List<com.liferay.osb.model.OrderEntry> orderEntries,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName90,
 				_methodParameterTypes90,
@@ -3342,10 +3161,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
 			}
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -3359,8 +3174,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	@Override
 	public void updateLastAuditDate(long userId, long accountEntryId,
 		java.lang.String auditLabel, java.lang.String auditValue)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName91,
 				_methodParameterTypes91,
@@ -3381,10 +3195,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
 			}
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -3397,8 +3207,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 	@Override
 	public void updateStatus(long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName92,
 				_methodParameterTypes92, new Object[] { accountEntryId });
@@ -3408,10 +3217,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -3426,8 +3231,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 	@Override
 	public void validate(com.liferay.osb.model.AccountEntry accountEntry)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName93,
 				_methodParameterTypes93,
@@ -3438,10 +3242,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {

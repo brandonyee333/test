@@ -176,8 +176,7 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 	}
 
 	@Override
-	public boolean hasPartnerWorker(long userId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public boolean hasPartnerWorker(long userId) {
 		Object returnObj = null;
 
 		try {
@@ -186,10 +185,6 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -204,8 +199,7 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 	}
 
 	@Override
-	public boolean hasPartnerWorker(long userId, long partnerEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public boolean hasPartnerWorker(long userId, long partnerEntryId) {
 		Object returnObj = null;
 
 		try {
@@ -216,10 +210,6 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -233,8 +223,7 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 	}
 
 	@Override
-	public boolean hasPartnerWorkerRole(long userId, int role)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public boolean hasPartnerWorkerRole(long userId, int role) {
 		Object returnObj = null;
 
 		try {
@@ -243,10 +232,6 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -389,8 +374,7 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 
 	@Override
 	public com.liferay.osb.model.PartnerWorker fetchPartnerWorker(long userId,
-		long partnerEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long partnerEntryId) {
 		Object returnObj = null;
 
 		try {
@@ -400,10 +384,6 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -449,8 +429,7 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 	@Override
 	public com.liferay.osb.model.PartnerWorker getPartnerWorker(long userId,
 		long partnerEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -463,10 +442,6 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -806,8 +781,7 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.PartnerWorker> getPartnerWorkers(
-		long partnerEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long partnerEntryId) {
 		Object returnObj = null;
 
 		try {
@@ -816,10 +790,6 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -835,8 +805,7 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.PartnerWorker> getPartnerWorkers(
-		long partnerEntryId, int role)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long partnerEntryId, int role) {
 		Object returnObj = null;
 
 		try {
@@ -846,10 +815,6 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -865,7 +830,7 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.PartnerWorker> getUserPartnerWorkers(
-		long userId) throws com.liferay.portal.kernel.exception.SystemException {
+		long userId) {
 		Object returnObj = null;
 
 		try {
@@ -874,10 +839,6 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -949,8 +910,7 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 	@Override
 	public void addPartnerWorkers(long[] userIds, long partnerEntryId,
 		int[] roles, int[] notifications)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName29,
 				_methodParameterTypes29,
@@ -971,10 +931,6 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
 			}
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -987,8 +943,7 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 
 	@Override
 	public void deletePartnerWorkers(long userId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName30,
 				_methodParameterTypes30, new Object[] { userId });
@@ -998,10 +953,6 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -1016,8 +967,7 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 
 	@Override
 	public void deletePartnerWorkers(long[] userIds, long partnerEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName31,
 				_methodParameterTypes31,
@@ -1032,10 +982,6 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {

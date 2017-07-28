@@ -171,8 +171,7 @@ public class HolidayCalendarLocalServiceClp
 	public com.liferay.osb.model.HolidayCalendar addHolidayCalendar(
 		java.lang.String name, java.lang.String description,
 		java.util.List<com.liferay.osb.model.HolidayEntry> holidayEntries)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -191,10 +190,6 @@ public class HolidayCalendarLocalServiceClp
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -261,8 +256,7 @@ public class HolidayCalendarLocalServiceClp
 	@Override
 	public com.liferay.osb.model.HolidayCalendar deleteHolidayCalendar(
 		long holidayCalendarId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -274,10 +268,6 @@ public class HolidayCalendarLocalServiceClp
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -375,8 +365,7 @@ public class HolidayCalendarLocalServiceClp
 		long holidayCalendarId, java.lang.String name,
 		java.lang.String description,
 		java.util.List<com.liferay.osb.model.HolidayEntry> holidayEntries)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -397,10 +386,6 @@ public class HolidayCalendarLocalServiceClp
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {

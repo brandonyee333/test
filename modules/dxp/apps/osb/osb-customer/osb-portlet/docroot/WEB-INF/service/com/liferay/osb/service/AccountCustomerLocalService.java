@@ -62,8 +62,7 @@ public interface AccountCustomerLocalService extends BaseLocalService,
 	 * Never modify or reference this interface directly. Always use {@link AccountCustomerLocalServiceUtil} to access the account customer local service. Add custom service methods to {@link com.liferay.osb.service.impl.AccountCustomerLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasAccountCustomer(long userId, long accountEntryId)
-		throws SystemException;
+	public boolean hasAccountCustomer(long userId, long accountEntryId);
 
 	/**
 	* Adds the account customer to the database. Also notifies the appropriate model listeners.
@@ -104,15 +103,13 @@ public interface AccountCustomerLocalService extends BaseLocalService,
 		throws PortalException;
 
 	public AccountCustomer deleteAccountCustomer(long userId,
-		AccountCustomer accountCustomer)
-		throws PortalException, SystemException;
+		AccountCustomer accountCustomer) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AccountCustomer fetchAccountCustomer(long accountCustomerId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AccountCustomer fetchAccountCustomer(long userId, long accountEntryId)
-		throws SystemException;
+	public AccountCustomer fetchAccountCustomer(long userId, long accountEntryId);
 
 	/**
 	* Returns the account customer with the primary key.
@@ -127,7 +124,7 @@ public interface AccountCustomerLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AccountCustomer getAccountCustomer(long userId, long accountEntryId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	/**
 	* Updates the account customer in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
@@ -233,20 +230,18 @@ public interface AccountCustomerLocalService extends BaseLocalService,
 	public List<AccountCustomer> getAccountCustomers(int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AccountCustomer> getAccountCustomers(long accountEntryId)
-		throws SystemException;
+	public List<AccountCustomer> getAccountCustomers(long accountEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountCustomer> getAccountCustomers(long accountEntryId,
-		int role) throws SystemException;
+		int role);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AccountCustomer> getUserAccountCustomers(long userId)
-		throws SystemException;
+	public List<AccountCustomer> getUserAccountCustomers(long userId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountCustomer> getUserAccountCustomers(long userId,
-		int[] roles) throws SystemException;
+		int[] roles);
 
 	/**
 	* Returns the number of rows matching the dynamic query.
@@ -268,17 +263,16 @@ public interface AccountCustomerLocalService extends BaseLocalService,
 
 	public void addAccountCustomers(long userId, long[] userIds,
 		long accountEntryId, int[] roles, int[] notifications)
-		throws PortalException, SystemException;
+		throws PortalException;
 
-	public void deleteAccountCustomers(long userId)
-		throws PortalException, SystemException;
+	public void deleteAccountCustomers(long userId) throws PortalException;
 
 	public void deleteAccountCustomers(long userId, long[] userIds,
-		long accountEntryId) throws PortalException, SystemException;
+		long accountEntryId) throws PortalException;
 
 	public void deleteAccountEntryAccountCustomers(long accountEntryId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public void toggleNotifications(long accountCustomerId)
-		throws PortalException, SystemException;
+		throws PortalException;
 }

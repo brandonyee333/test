@@ -57,9 +57,7 @@ public class AccountEnvironmentAttachmentLocalServiceUtil {
 	public static com.liferay.osb.model.AccountEnvironmentAttachment addAccountEnvironmentAttachment(
 		long userId, long accountEnvironmentId,
 		com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File> fileOVP,
-		int type)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		int type) throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addAccountEnvironmentAttachment(userId,
 			accountEnvironmentId, fileOVP, type);
@@ -83,12 +81,10 @@ public class AccountEnvironmentAttachmentLocalServiceUtil {
 	* @param accountEnvironmentAttachment the account environment attachment
 	* @return the account environment attachment that was removed
 	* @throws PortalException
-	* @throws SystemException
 	*/
 	public static com.liferay.osb.model.AccountEnvironmentAttachment deleteAccountEnvironmentAttachment(
 		com.liferay.osb.model.AccountEnvironmentAttachment accountEnvironmentAttachment)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .deleteAccountEnvironmentAttachment(accountEnvironmentAttachment);
 	}
@@ -114,8 +110,7 @@ public class AccountEnvironmentAttachmentLocalServiceUtil {
 	}
 
 	public static com.liferay.osb.model.AccountEnvironmentAttachment fetchAccountEnvironmentAttachment(
-		long accountEnvironmentId, int type)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountEnvironmentId, int type) {
 		return getService()
 				   .fetchAccountEnvironmentAttachment(accountEnvironmentId, type);
 	}
@@ -149,9 +144,7 @@ public class AccountEnvironmentAttachmentLocalServiceUtil {
 	public static com.liferay.osb.model.AccountEnvironmentAttachment updateAccountEnvironmentAttachment(
 		long accountEnvironmentAttachmentId, long accountEnvironmentId,
 		com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File> fileOVP,
-		int type)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		int type) throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateAccountEnvironmentAttachment(accountEnvironmentAttachmentId,
 			accountEnvironmentId, fileOVP, type);
@@ -195,15 +188,13 @@ public class AccountEnvironmentAttachmentLocalServiceUtil {
 
 	public static java.io.File getFile(
 		com.liferay.osb.model.AccountEnvironmentAttachment accountEnvironmentAttachment)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getFile(accountEnvironmentAttachment);
 	}
 
 	public static java.io.InputStream getFileAsStream(
 		com.liferay.osb.model.AccountEnvironmentAttachment accountEnvironmentAttachment)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getFileAsStream(accountEnvironmentAttachment);
 	}
 
@@ -289,8 +280,7 @@ public class AccountEnvironmentAttachmentLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.osb.model.AccountEnvironmentAttachment> getAccountEnvironmentAttachments(
-		long accountEnvironmentId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountEnvironmentId) {
 		return getService()
 				   .getAccountEnvironmentAttachments(accountEnvironmentId);
 	}
@@ -323,8 +313,7 @@ public class AccountEnvironmentAttachmentLocalServiceUtil {
 		long accountEnvironmentId,
 		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
 		java.util.List<java.lang.Integer> types)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService()
 			.addAccountEnvironmentAttachments(userId, accountEnvironmentId,
 			files, types);
@@ -334,8 +323,7 @@ public class AccountEnvironmentAttachmentLocalServiceUtil {
 		long accountEnvironmentId,
 		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
 		java.util.List<java.lang.Integer> types)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService()
 			.updateAccountEnvironmentAttachments(userId, accountEnvironmentId,
 			files, types);

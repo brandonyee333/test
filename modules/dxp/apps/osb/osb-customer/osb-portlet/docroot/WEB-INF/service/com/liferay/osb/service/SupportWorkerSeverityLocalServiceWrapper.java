@@ -250,8 +250,7 @@ public class SupportWorkerSeverityLocalServiceWrapper
 
 	@Override
 	public java.util.List<com.liferay.osb.model.SupportWorkerSeverity> getSupportWorkerSeverities(
-		long supportWorkerId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long supportWorkerId) {
 		return _supportWorkerSeverityLocalService.getSupportWorkerSeverities(supportWorkerId);
 	}
 
@@ -284,8 +283,7 @@ public class SupportWorkerSeverityLocalServiceWrapper
 
 	@Override
 	public void setSupportWorkerSeverities(long supportWorkerId,
-		int[] severities)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int[] severities) {
 		_supportWorkerSeverityLocalService.setSupportWorkerSeverities(supportWorkerId,
 			severities);
 	}

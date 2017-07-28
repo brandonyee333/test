@@ -116,8 +116,7 @@ public class AuditActionLocalServiceWrapper implements AuditActionLocalService,
 
 	@Override
 	public com.liferay.osb.model.AuditAction updateAuditAction(
-		long classNameId, long classPK, long mappingClassPK, int action)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long classNameId, long classPK, long mappingClassPK, int action) {
 		return _auditActionLocalService.updateAuditAction(classNameId, classPK,
 			mappingClassPK, action);
 	}
@@ -255,7 +254,7 @@ public class AuditActionLocalServiceWrapper implements AuditActionLocalService,
 	@Override
 	public java.util.List<com.liferay.osb.model.AuditAction> getAuditActions(
 		java.util.Date modifiedDate, long classNameId, boolean mapping,
-		int action) throws com.liferay.portal.kernel.exception.SystemException {
+		int action) {
 		return _auditActionLocalService.getAuditActions(modifiedDate,
 			classNameId, mapping, action);
 	}
@@ -288,8 +287,7 @@ public class AuditActionLocalServiceWrapper implements AuditActionLocalService,
 	}
 
 	@Override
-	public void deleteAuditActions(java.util.Date modifiedDate)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public void deleteAuditActions(java.util.Date modifiedDate) {
 		_auditActionLocalService.deleteAuditActions(modifiedDate);
 	}
 

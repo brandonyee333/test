@@ -62,8 +62,7 @@ public class OfferingBundleLocalServiceWrapper
 	@Override
 	public com.liferay.osb.model.OfferingBundle addOfferingBundle(long userId,
 		java.lang.String name, long[] offeringDefinitionIds)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _offeringBundleLocalService.addOfferingBundle(userId, name,
 			offeringDefinitionIds);
 	}
@@ -142,8 +141,7 @@ public class OfferingBundleLocalServiceWrapper
 	public com.liferay.osb.model.OfferingBundle updateOfferingBundle(
 		long offeringBundleId, java.lang.String name,
 		long[] offeringDefinitionIds)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _offeringBundleLocalService.updateOfferingBundle(offeringBundleId,
 			name, offeringDefinitionIds);
 	}

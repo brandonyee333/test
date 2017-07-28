@@ -83,8 +83,7 @@ public class TicketWorkerServiceClp implements TicketWorkerService {
 	public java.util.List<com.liferay.osb.model.TicketWorker> addTicketWorkers(
 		long[] userIds, long ticketEntryId, long[] sourceClassNameIds,
 		long[] sourceClassPKs, int[] roles, long primaryUserId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -111,10 +110,6 @@ public class TicketWorkerServiceClp implements TicketWorkerService {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
 			}
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -132,8 +127,7 @@ public class TicketWorkerServiceClp implements TicketWorkerService {
 		long[] addUserIds, int[] addRoles, long[] removeUserIds,
 		long ticketEntryId, long[] sourceClassNameIds, long[] sourceClassPKs,
 		long primaryUserId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -162,10 +156,6 @@ public class TicketWorkerServiceClp implements TicketWorkerService {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
 			}
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -181,8 +171,7 @@ public class TicketWorkerServiceClp implements TicketWorkerService {
 	@Override
 	public void deleteTicketWorkers(long[] userIds, long ticketEntryId,
 		long primaryUserId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableService.invokeMethod(_methodName4,
 				_methodParameterTypes4,
@@ -199,10 +188,6 @@ public class TicketWorkerServiceClp implements TicketWorkerService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {

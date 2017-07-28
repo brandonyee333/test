@@ -35,8 +35,7 @@ public class OfferingEntryLocalServiceWrapper
 	}
 
 	@Override
-	public boolean hasActiveTrialOfferingEntry(long userId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public boolean hasActiveTrialOfferingEntry(long userId) {
 		return _offeringEntryLocalService.hasActiveTrialOfferingEntry(userId);
 	}
 
@@ -59,8 +58,7 @@ public class OfferingEntryLocalServiceWrapper
 		int version, boolean licenses, long licenseLifetime,
 		long maxConcurrentUsers, long maxUsers, boolean supportTickets,
 		long supportLifetime, int sizing, int quantity, int status)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _offeringEntryLocalService.addOfferingEntry(userId,
 			accountEntryId, orderEntryId, productEntryId, supportResponseId,
 			productDescription, type, version, licenses, licenseLifetime,
@@ -86,13 +84,11 @@ public class OfferingEntryLocalServiceWrapper
 	* @param offeringEntry the offering entry
 	* @return the offering entry that was removed
 	* @throws PortalException
-	* @throws SystemException
 	*/
 	@Override
 	public com.liferay.osb.model.OfferingEntry deleteOfferingEntry(
 		com.liferay.osb.model.OfferingEntry offeringEntry)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _offeringEntryLocalService.deleteOfferingEntry(offeringEntry);
 	}
 
@@ -102,20 +98,17 @@ public class OfferingEntryLocalServiceWrapper
 	* @param offeringEntryId the primary key of the offering entry
 	* @return the offering entry that was removed
 	* @throws PortalException if a offering entry with the primary key could not be found
-	* @throws SystemException
 	*/
 	@Override
 	public com.liferay.osb.model.OfferingEntry deleteOfferingEntry(
 		long offeringEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _offeringEntryLocalService.deleteOfferingEntry(offeringEntryId);
 	}
 
 	@Override
 	public com.liferay.osb.model.OfferingEntry fetchOfferingEntry(
-		long offeringEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long offeringEntryId) {
 		return _offeringEntryLocalService.fetchOfferingEntry(offeringEntryId);
 	}
 
@@ -153,8 +146,7 @@ public class OfferingEntryLocalServiceWrapper
 		boolean licenses, long licenseLifetime, long maxConcurrentUsers,
 		long maxUsers, boolean supportTickets, long supportLifetime,
 		int sizing, int quantity)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _offeringEntryLocalService.updateOfferingEntry(userId,
 			offeringEntryId, accountEntryId, orderEntryId, productEntryId,
 			supportResponseId, productDescription, type, version, licenses,
@@ -165,8 +157,7 @@ public class OfferingEntryLocalServiceWrapper
 	@Override
 	public com.liferay.osb.model.OfferingEntry updateStatus(long userId,
 		long offeringEntryId, int status)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _offeringEntryLocalService.updateStatus(userId, offeringEntryId,
 			status);
 	}
@@ -204,8 +195,7 @@ public class OfferingEntryLocalServiceWrapper
 	}
 
 	@Override
-	public int getAccountEntryOfferingEntriesCount(long accountEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public int getAccountEntryOfferingEntriesCount(long accountEntryId) {
 		return _offeringEntryLocalService.getAccountEntryOfferingEntriesCount(accountEntryId);
 	}
 
@@ -225,8 +215,7 @@ public class OfferingEntryLocalServiceWrapper
 		int supportEndDateGTYear, int supportEndDateLTDay,
 		int supportEndDateLTMonth, int supportEndDateLTYear,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andSearch)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		boolean andSearch) {
 		return _offeringEntryLocalService.searchCount(userId, accountEntryId,
 			types, statuses, supportEndDateGTDay, supportEndDateGTMonth,
 			supportEndDateGTYear, supportEndDateLTDay, supportEndDateLTMonth,
@@ -306,8 +295,7 @@ public class OfferingEntryLocalServiceWrapper
 
 	@Override
 	public java.util.List<com.liferay.osb.model.OfferingEntry> getAccountEntryOfferingEntries(
-		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountEntryId) {
 		return _offeringEntryLocalService.getAccountEntryOfferingEntries(accountEntryId);
 	}
 
@@ -330,8 +318,7 @@ public class OfferingEntryLocalServiceWrapper
 
 	@Override
 	public java.util.List<com.liferay.osb.model.OfferingEntry> getOrderEntryOfferingEntries(
-		long orderEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long orderEntryId) {
 		return _offeringEntryLocalService.getOrderEntryOfferingEntries(orderEntryId);
 	}
 
@@ -343,8 +330,7 @@ public class OfferingEntryLocalServiceWrapper
 		int supportEndDateLTMonth, int supportEndDateLTYear,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andSearch, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.portal.kernel.util.OrderByComparator obc) {
 		return _offeringEntryLocalService.search(userId, accountEntryId, types,
 			statuses, supportEndDateGTDay, supportEndDateGTMonth,
 			supportEndDateGTYear, supportEndDateLTDay, supportEndDateLTMonth,

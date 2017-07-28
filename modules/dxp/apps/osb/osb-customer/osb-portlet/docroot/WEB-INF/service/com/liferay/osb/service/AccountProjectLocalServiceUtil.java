@@ -81,12 +81,10 @@ public class AccountProjectLocalServiceUtil {
 	* @param accountProjectId the primary key of the account project
 	* @return the account project that was removed
 	* @throws PortalException if a account project with the primary key could not be found
-	* @throws SystemException
 	*/
 	public static com.liferay.osb.model.AccountProject deleteAccountProject(
 		long accountProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteAccountProject(accountProjectId);
 	}
 
@@ -101,12 +99,10 @@ public class AccountProjectLocalServiceUtil {
 	* @param accountProjectId the primary key of the account project
 	* @return the account project
 	* @throws PortalException if a account project with the primary key could not be found
-	* @throws SystemException
 	*/
 	public static com.liferay.osb.model.AccountProject getAccountProject(
 		long accountProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getAccountProject(accountProjectId);
 	}
 
@@ -125,8 +121,7 @@ public class AccountProjectLocalServiceUtil {
 		long userId, long accountProjectId, long accountEntryId,
 		java.lang.String name,
 		java.util.Map<java.lang.Integer, java.lang.String> data)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateAccountProject(userId, accountProjectId,
 			accountEntryId, name, data);
@@ -250,8 +245,7 @@ public class AccountProjectLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.osb.model.AccountProject> getAccountProjects(
-		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountEntryId) {
 		return getService().getAccountProjects(accountEntryId);
 	}
 

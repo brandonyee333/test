@@ -56,8 +56,7 @@ public class HolidayCalendarLocalServiceUtil {
 	public static com.liferay.osb.model.HolidayCalendar addHolidayCalendar(
 		java.lang.String name, java.lang.String description,
 		java.util.List<com.liferay.osb.model.HolidayEntry> holidayEntries)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().addHolidayCalendar(name, description, holidayEntries);
 	}
 
@@ -89,12 +88,10 @@ public class HolidayCalendarLocalServiceUtil {
 	* @param holidayCalendarId the primary key of the holiday calendar
 	* @return the holiday calendar that was removed
 	* @throws PortalException if a holiday calendar with the primary key could not be found
-	* @throws SystemException
 	*/
 	public static com.liferay.osb.model.HolidayCalendar deleteHolidayCalendar(
 		long holidayCalendarId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteHolidayCalendar(holidayCalendarId);
 	}
 
@@ -131,8 +128,7 @@ public class HolidayCalendarLocalServiceUtil {
 		long holidayCalendarId, java.lang.String name,
 		java.lang.String description,
 		java.util.List<com.liferay.osb.model.HolidayEntry> holidayEntries)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateHolidayCalendar(holidayCalendarId, name, description,
 			holidayEntries);

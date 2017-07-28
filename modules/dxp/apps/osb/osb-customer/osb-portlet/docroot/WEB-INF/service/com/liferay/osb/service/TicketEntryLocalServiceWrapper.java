@@ -35,22 +35,19 @@ public class TicketEntryLocalServiceWrapper implements TicketEntryLocalService,
 
 	@Override
 	public boolean hasParticipant(long userId,
-		com.liferay.osb.model.TicketEntry ticketEntry)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.osb.model.TicketEntry ticketEntry) {
 		return _ticketEntryLocalService.hasParticipant(userId, ticketEntry);
 	}
 
 	@Override
 	public boolean hasParticipant(long userId, long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketEntryLocalService.hasParticipant(userId, ticketEntryId);
 	}
 
 	@Override
 	public boolean hasVisibility(long userId, long ticketEntryId, int visibility)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketEntryLocalService.hasVisibility(userId, ticketEntryId,
 			visibility);
 	}
@@ -75,8 +72,7 @@ public class TicketEntryLocalServiceWrapper implements TicketEntryLocalService,
 		int escalationLevel, int component, int subcomponent,
 		java.util.Map<java.lang.Long, java.lang.String> ticketInformationFieldsMap,
 		java.util.List<com.liferay.osb.model.TicketAttachment> ticketAttachments)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketEntryLocalService.addTicketEntry(userId, offeringEntryId,
 			supportRegionId, languageId, ticketId, subject, description,
 			systemStatus, status, weight, escalationLevel, component,
@@ -101,13 +97,11 @@ public class TicketEntryLocalServiceWrapper implements TicketEntryLocalService,
 	* @param ticketEntry the ticket entry
 	* @return the ticket entry that was removed
 	* @throws PortalException
-	* @throws SystemException
 	*/
 	@Override
 	public com.liferay.osb.model.TicketEntry deleteTicketEntry(
 		com.liferay.osb.model.TicketEntry ticketEntry)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketEntryLocalService.deleteTicketEntry(ticketEntry);
 	}
 
@@ -134,8 +128,7 @@ public class TicketEntryLocalServiceWrapper implements TicketEntryLocalService,
 	@Override
 	public com.liferay.osb.model.TicketEntry forwardTicketEntry(long userId,
 		long ticketEntryId, java.lang.String commentBody)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketEntryLocalService.forwardTicketEntry(userId,
 			ticketEntryId, commentBody);
 	}
@@ -143,8 +136,7 @@ public class TicketEntryLocalServiceWrapper implements TicketEntryLocalService,
 	@Override
 	public com.liferay.osb.model.TicketEntry getTicketEntry(
 		long accountEntryId, long ticketId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketEntryLocalService.getTicketEntry(accountEntryId, ticketId);
 	}
 
@@ -164,8 +156,7 @@ public class TicketEntryLocalServiceWrapper implements TicketEntryLocalService,
 	@Override
 	public com.liferay.osb.model.TicketEntry updateCustomerModifiedDate(
 		long userId, long ticketEntryId, java.util.Date customerModifiedDate)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketEntryLocalService.updateCustomerModifiedDate(userId,
 			ticketEntryId, customerModifiedDate);
 	}
@@ -173,8 +164,7 @@ public class TicketEntryLocalServiceWrapper implements TicketEntryLocalService,
 	@Override
 	public com.liferay.osb.model.TicketEntry updatePendingTypes(long userId,
 		long ticketEntryId, int[] pendingTypes)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketEntryLocalService.updatePendingTypes(userId,
 			ticketEntryId, pendingTypes);
 	}
@@ -196,8 +186,7 @@ public class TicketEntryLocalServiceWrapper implements TicketEntryLocalService,
 		long ticketEntryId, long assigneeUserId, long supportRegionId,
 		int dueDateMonth, int dueDateDay, int dueDateYear, int dueDateHour,
 		int dueDateMinute)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketEntryLocalService.updateTicketEntry(userId,
 			ticketEntryId, assigneeUserId, supportRegionId, dueDateMonth,
 			dueDateDay, dueDateYear, dueDateHour, dueDateMinute);
@@ -217,8 +206,7 @@ public class TicketEntryLocalServiceWrapper implements TicketEntryLocalService,
 		int[] pendingTypes,
 		java.util.List<com.liferay.osb.model.TicketAttachment> ticketAttachments,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketEntryLocalService.updateTicketEntry(userId,
 			ticketEntryId, reportedByUserId, offeringEntryId, supportRegionId,
 			languageId, subject, description, reproductionSteps, severity,
@@ -232,16 +220,14 @@ public class TicketEntryLocalServiceWrapper implements TicketEntryLocalService,
 	@Override
 	public com.liferay.osb.model.TicketEntry updateTicketId(
 		long ticketEntryId, long ticketId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketEntryLocalService.updateTicketId(ticketEntryId, ticketId);
 	}
 
 	@Override
 	public com.liferay.osb.model.TicketEntry updateWorkerModifiedDate(
 		long ticketEntryId, java.util.Date workerModifiedDate)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketEntryLocalService.updateWorkerModifiedDate(ticketEntryId,
 			workerModifiedDate);
 	}
@@ -282,8 +268,7 @@ public class TicketEntryLocalServiceWrapper implements TicketEntryLocalService,
 	public com.liferay.portal.kernel.search.Hits search(long searchUserId,
 		long reportedByUserId, long accountEntryId, java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		int start, int end, com.liferay.portal.kernel.search.Sort[] sorts)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int start, int end, com.liferay.portal.kernel.search.Sort[] sorts) {
 		return _ticketEntryLocalService.search(searchUserId, reportedByUserId,
 			accountEntryId, keywords, params, start, end, sorts);
 	}
@@ -300,8 +285,7 @@ public class TicketEntryLocalServiceWrapper implements TicketEntryLocalService,
 		java.util.Date dueDateGT, java.util.Date dueDateLT,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andSearch, int start, int end,
-		com.liferay.portal.kernel.search.Sort[] sorts)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.portal.kernel.search.Sort[] sorts) {
 		return _ticketEntryLocalService.search(searchUserId, reportedByUserId,
 			accountEntryId, name, accountEntryTiers, satisfiedDueDate,
 			createDateGT, createDateLT, content, status, severity,
@@ -313,8 +297,7 @@ public class TicketEntryLocalServiceWrapper implements TicketEntryLocalService,
 	@Override
 	public com.liferay.portal.kernel.util.Tuple getTicketEntries(
 		com.liferay.portal.kernel.search.Hits hits)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketEntryLocalService.getTicketEntries(hits);
 	}
 
@@ -329,27 +312,23 @@ public class TicketEntryLocalServiceWrapper implements TicketEntryLocalService,
 	}
 
 	@Override
-	public int getTicketEntriesCount(java.util.Date modifiedDate)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public int getTicketEntriesCount(java.util.Date modifiedDate) {
 		return _ticketEntryLocalService.getTicketEntriesCount(modifiedDate);
 	}
 
 	@Override
-	public int getTicketEntriesCount(long accountEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public int getTicketEntriesCount(long accountEntryId) {
 		return _ticketEntryLocalService.getTicketEntriesCount(accountEntryId);
 	}
 
 	@Override
-	public int getValidTicketEntriesCount(long offeringEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public int getValidTicketEntriesCount(long offeringEntryId) {
 		return _ticketEntryLocalService.getValidTicketEntriesCount(offeringEntryId);
 	}
 
 	@Override
 	public int searchCount(java.lang.String keywords,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params) {
 		return _ticketEntryLocalService.searchCount(keywords, params);
 	}
 
@@ -367,8 +346,7 @@ public class TicketEntryLocalServiceWrapper implements TicketEntryLocalService,
 		int dueDateGTDay, int dueDateGTMonth, int dueDateGTYear,
 		int dueDateLTDay, int dueDateLTMonth, int dueDateLTYear,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andSearch)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		boolean andSearch) {
 		return _ticketEntryLocalService.searchCount(reportedByUserId, name,
 			accountEntryTiers, satisfiedDueDate, createDateGTDay,
 			createDateGTMonth, createDateGTYear, createDateLTDay,
@@ -383,8 +361,7 @@ public class TicketEntryLocalServiceWrapper implements TicketEntryLocalService,
 
 	@Override
 	public int[] getUserVisibilities(long userId, long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketEntryLocalService.getUserVisibilities(userId,
 			ticketEntryId);
 	}
@@ -479,24 +456,21 @@ public class TicketEntryLocalServiceWrapper implements TicketEntryLocalService,
 
 	@Override
 	public java.util.List<com.liferay.osb.model.TicketEntry> getTicketEntries(
-		java.util.Date modifiedDate, int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.util.Date modifiedDate, int start, int end) {
 		return _ticketEntryLocalService.getTicketEntries(modifiedDate, start,
 			end);
 	}
 
 	@Override
 	public java.util.List<com.liferay.osb.model.TicketEntry> getTicketEntries(
-		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountEntryId) {
 		return _ticketEntryLocalService.getTicketEntries(accountEntryId);
 	}
 
 	@Override
 	public java.util.List<com.liferay.osb.model.TicketEntry> getTicketEntries(
 		long accountEntryId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.portal.kernel.util.OrderByComparator obc) {
 		return _ticketEntryLocalService.getTicketEntries(accountEntryId, start,
 			end, obc);
 	}
@@ -504,17 +478,14 @@ public class TicketEntryLocalServiceWrapper implements TicketEntryLocalService,
 	@Override
 	public java.util.List<com.liferay.osb.model.TicketEntry> getTicketFeedbackTicketEntries(
 		long userId, int createdGTDay, int createdGTMonth, int createdGTYear,
-		int status)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		int status) throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketEntryLocalService.getTicketFeedbackTicketEntries(userId,
 			createdGTDay, createdGTMonth, createdGTYear, status);
 	}
 
 	@Override
 	public java.util.List<com.liferay.osb.model.TicketEntry> getValidTicketEntries(
-		long offeringEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long offeringEntryId) {
 		return _ticketEntryLocalService.getValidTicketEntries(offeringEntryId);
 	}
 
@@ -522,8 +493,7 @@ public class TicketEntryLocalServiceWrapper implements TicketEntryLocalService,
 	public java.util.List<com.liferay.osb.model.TicketEntry> search(
 		java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc) {
 		return _ticketEntryLocalService.search(keywords, params, start, end, obc);
 	}
 
@@ -543,8 +513,7 @@ public class TicketEntryLocalServiceWrapper implements TicketEntryLocalService,
 		int dueDateLTMonth, int dueDateLTYear,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andSearch, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.portal.kernel.util.OrderByComparator obc) {
 		return _ticketEntryLocalService.search(reportedByUserId, name,
 			accountEntryTiers, satisfiedDueDate, createDateGTDay,
 			createDateGTMonth, createDateGTYear, createDateLTDay,
@@ -596,15 +565,13 @@ public class TicketEntryLocalServiceWrapper implements TicketEntryLocalService,
 
 	@Override
 	public void deleteTicketEntries(long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		_ticketEntryLocalService.deleteTicketEntries(accountEntryId);
 	}
 
 	@Override
 	public void escalateTicketEntry(long userId, long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		_ticketEntryLocalService.escalateTicketEntry(userId, ticketEntryId);
 	}
 
@@ -617,8 +584,7 @@ public class TicketEntryLocalServiceWrapper implements TicketEntryLocalService,
 
 	@Override
 	public void reindexTicketEntry(long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		_ticketEntryLocalService.reindexTicketEntry(ticketEntryId);
 	}
 
@@ -627,8 +593,7 @@ public class TicketEntryLocalServiceWrapper implements TicketEntryLocalService,
 		com.liferay.osb.model.TicketEntry ticketEntry,
 		com.liferay.osb.model.TicketComment ticketComment,
 		java.lang.String action)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		_ticketEntryLocalService.sendEmail(userId, ticketEntry, ticketComment,
 			action);
 	}
@@ -637,16 +602,14 @@ public class TicketEntryLocalServiceWrapper implements TicketEntryLocalService,
 	public void sendEmail(long userId, long ticketEntryId,
 		com.liferay.osb.model.TicketComment ticketComment,
 		java.lang.String action)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		_ticketEntryLocalService.sendEmail(userId, ticketEntryId,
 			ticketComment, action);
 	}
 
 	@Override
 	public void syncToJIRA(long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		_ticketEntryLocalService.syncToJIRA(ticketEntryId);
 	}
 

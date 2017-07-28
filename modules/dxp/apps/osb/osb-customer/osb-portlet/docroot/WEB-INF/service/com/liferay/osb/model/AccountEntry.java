@@ -55,43 +55,32 @@ public interface AccountEntry extends AccountEntryModel, PersistedModel {
 		};
 
 	public java.util.List<AccountAttachment> getAccountAttachments(
-		long accountProjectId)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		long accountProjectId);
 
-	public java.util.List<AccountCustomer> getAccountCustomers()
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public java.util.List<AccountCustomer> getAccountCustomers();
 
-	public java.util.List<AccountWorker> getAccountWorkers()
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public java.util.List<AccountWorker> getAccountWorkers();
 
-	public com.liferay.portal.kernel.model.Address getAddress()
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public com.liferay.portal.kernel.model.Address getAddress();
 
-	public java.lang.String getEWSADossieraProjectKey()
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public java.lang.String getEWSADossieraProjectKey();
 
 	public java.lang.String getIndustryLabel();
 
-	public java.lang.String[] getLanguageIds()
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public java.lang.String[] getLanguageIds();
 
-	public java.util.List<OfferingEntry> getOfferingEntries()
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public java.util.List<OfferingEntry> getOfferingEntries();
 
-	public java.util.List<OrderEntry> getOrderEntries()
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public java.util.List<OrderEntry> getOrderEntries();
 
 	public PartnerEntry getPartnerEntry()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public java.lang.String getStatusLabel();
 
-	public long[] getSupportRegionIds()
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public long[] getSupportRegionIds();
 
-	public java.util.List<SupportRegion> getSupportRegions()
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public java.util.List<SupportRegion> getSupportRegions();
 
 	public java.lang.String getTypeLabel();
 

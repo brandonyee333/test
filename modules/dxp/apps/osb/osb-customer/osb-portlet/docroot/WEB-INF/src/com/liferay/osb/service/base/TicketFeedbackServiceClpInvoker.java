@@ -27,33 +27,33 @@ import java.util.Arrays;
 @ProviderType
 public class TicketFeedbackServiceClpInvoker {
 	public TicketFeedbackServiceClpInvoker() {
-		_methodName388 = "getOSGiServiceIdentifier";
+		_methodName380 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes388 = new String[] {  };
+		_methodParameterTypes380 = new String[] {  };
 
-		_methodName393 = "addTicketFeedback";
+		_methodName385 = "addTicketFeedback";
 
-		_methodParameterTypes393 = new String[] { "long", "int", "int" };
+		_methodParameterTypes385 = new String[] { "long", "int", "int" };
 
-		_methodName394 = "fetchFirstOpenTicketFeedback";
+		_methodName386 = "fetchFirstOpenTicketFeedback";
 
-		_methodParameterTypes394 = new String[] { "long", "long", "int" };
+		_methodParameterTypes386 = new String[] { "long", "long", "int" };
 
-		_methodName395 = "fetchFirstTicketFeedback";
+		_methodName387 = "fetchFirstTicketFeedback";
 
-		_methodParameterTypes395 = new String[] { "long", "int" };
+		_methodParameterTypes387 = new String[] { "long", "int" };
 
-		_methodName396 = "getTicketFeedback";
+		_methodName388 = "getTicketFeedback";
 
-		_methodParameterTypes396 = new String[] { "long" };
+		_methodParameterTypes388 = new String[] { "long" };
 
-		_methodName397 = "getTicketFeedbacks";
+		_methodName389 = "getTicketFeedbacks";
 
-		_methodParameterTypes397 = new String[] { "long", "int" };
+		_methodParameterTypes389 = new String[] { "long", "int" };
 
-		_methodName398 = "search";
+		_methodName390 = "search";
 
-		_methodParameterTypes398 = new String[] {
+		_methodParameterTypes390 = new String[] {
 				"java.lang.String", "int", "int", "int", "int", "int", "int",
 				"int", "int", "int", "int", "int", "int", "java.lang.Integer",
 				"java.lang.String", "java.lang.Integer", "java.lang.Integer[][]",
@@ -62,16 +62,16 @@ public class TicketFeedbackServiceClpInvoker {
 				"int", "int", "com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName399 = "search";
+		_methodName391 = "search";
 
-		_methodParameterTypes399 = new String[] {
+		_methodParameterTypes391 = new String[] {
 				"java.lang.String", "java.util.LinkedHashMap", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName400 = "searchCount";
+		_methodName392 = "searchCount";
 
-		_methodParameterTypes400 = new String[] {
+		_methodParameterTypes392 = new String[] {
 				"java.lang.String", "int", "int", "int", "int", "int", "int",
 				"int", "int", "int", "int", "int", "int", "java.lang.Integer",
 				"java.lang.String", "java.lang.Integer", "java.lang.Integer[][]",
@@ -79,15 +79,15 @@ public class TicketFeedbackServiceClpInvoker {
 				"java.lang.Integer[][]", "java.util.LinkedHashMap", "boolean"
 			};
 
-		_methodName401 = "searchCount";
+		_methodName393 = "searchCount";
 
-		_methodParameterTypes401 = new String[] {
+		_methodParameterTypes393 = new String[] {
 				"java.lang.String", "java.util.LinkedHashMap"
 			};
 
-		_methodName402 = "updateTicketFeedback";
+		_methodName394 = "updateTicketFeedback";
 
-		_methodParameterTypes402 = new String[] {
+		_methodParameterTypes394 = new String[] {
 				"long", "int", "int", "int", "int", "int", "int", "int", "int",
 				"java.lang.String"
 			};
@@ -95,44 +95,44 @@ public class TicketFeedbackServiceClpInvoker {
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName388.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes388, parameterTypes)) {
+		if (_methodName380.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes380, parameterTypes)) {
 			return TicketFeedbackServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName393.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes393, parameterTypes)) {
+		if (_methodName385.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes385, parameterTypes)) {
 			return TicketFeedbackServiceUtil.addTicketFeedback(((Long)arguments[0]).longValue(),
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue());
 		}
 
-		if (_methodName394.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes394, parameterTypes)) {
+		if (_methodName386.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes386, parameterTypes)) {
 			return TicketFeedbackServiceUtil.fetchFirstOpenTicketFeedback(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Integer)arguments[2]).intValue());
 		}
 
-		if (_methodName395.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes395, parameterTypes)) {
+		if (_methodName387.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes387, parameterTypes)) {
 			return TicketFeedbackServiceUtil.fetchFirstTicketFeedback(((Long)arguments[0]).longValue(),
 				((Integer)arguments[1]).intValue());
 		}
 
-		if (_methodName396.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes396, parameterTypes)) {
+		if (_methodName388.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes388, parameterTypes)) {
 			return TicketFeedbackServiceUtil.getTicketFeedback(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName397.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes397, parameterTypes)) {
+		if (_methodName389.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes389, parameterTypes)) {
 			return TicketFeedbackServiceUtil.getTicketFeedbacks(((Long)arguments[0]).longValue(),
 				((Integer)arguments[1]).intValue());
 		}
 
-		if (_methodName398.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes398, parameterTypes)) {
+		if (_methodName390.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes390, parameterTypes)) {
 			return TicketFeedbackServiceUtil.search((java.lang.String)arguments[0],
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue(),
@@ -160,8 +160,8 @@ public class TicketFeedbackServiceClpInvoker {
 				(com.liferay.portal.kernel.util.OrderByComparator)arguments[24]);
 		}
 
-		if (_methodName399.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes399, parameterTypes)) {
+		if (_methodName391.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes391, parameterTypes)) {
 			return TicketFeedbackServiceUtil.search((java.lang.String)arguments[0],
 				(java.util.LinkedHashMap<java.lang.String, java.lang.Object>)arguments[1],
 				((Integer)arguments[2]).intValue(),
@@ -169,8 +169,8 @@ public class TicketFeedbackServiceClpInvoker {
 				(com.liferay.portal.kernel.util.OrderByComparator)arguments[4]);
 		}
 
-		if (_methodName400.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes400, parameterTypes)) {
+		if (_methodName392.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes392, parameterTypes)) {
 			return TicketFeedbackServiceUtil.searchCount((java.lang.String)arguments[0],
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue(),
@@ -195,14 +195,14 @@ public class TicketFeedbackServiceClpInvoker {
 				((Boolean)arguments[21]).booleanValue());
 		}
 
-		if (_methodName401.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes401, parameterTypes)) {
+		if (_methodName393.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes393, parameterTypes)) {
 			return TicketFeedbackServiceUtil.searchCount((java.lang.String)arguments[0],
 				(java.util.LinkedHashMap<java.lang.String, java.lang.Object>)arguments[1]);
 		}
 
-		if (_methodName402.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes402, parameterTypes)) {
+		if (_methodName394.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes394, parameterTypes)) {
 			return TicketFeedbackServiceUtil.updateTicketFeedback(((Long)arguments[0]).longValue(),
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue(),
@@ -218,26 +218,26 @@ public class TicketFeedbackServiceClpInvoker {
 		throw new UnsupportedOperationException();
 	}
 
+	private String _methodName380;
+	private String[] _methodParameterTypes380;
+	private String _methodName385;
+	private String[] _methodParameterTypes385;
+	private String _methodName386;
+	private String[] _methodParameterTypes386;
+	private String _methodName387;
+	private String[] _methodParameterTypes387;
 	private String _methodName388;
 	private String[] _methodParameterTypes388;
+	private String _methodName389;
+	private String[] _methodParameterTypes389;
+	private String _methodName390;
+	private String[] _methodParameterTypes390;
+	private String _methodName391;
+	private String[] _methodParameterTypes391;
+	private String _methodName392;
+	private String[] _methodParameterTypes392;
 	private String _methodName393;
 	private String[] _methodParameterTypes393;
 	private String _methodName394;
 	private String[] _methodParameterTypes394;
-	private String _methodName395;
-	private String[] _methodParameterTypes395;
-	private String _methodName396;
-	private String[] _methodParameterTypes396;
-	private String _methodName397;
-	private String[] _methodParameterTypes397;
-	private String _methodName398;
-	private String[] _methodParameterTypes398;
-	private String _methodName399;
-	private String[] _methodParameterTypes399;
-	private String _methodName400;
-	private String[] _methodParameterTypes400;
-	private String _methodName401;
-	private String[] _methodParameterTypes401;
-	private String _methodName402;
-	private String[] _methodParameterTypes402;
 }

@@ -58,8 +58,7 @@ public class TicketFeedbackServiceHttp {
 	public static com.liferay.osb.model.TicketFeedback addTicketFeedback(
 		HttpPrincipal httpPrincipal, long ticketEntryId, int subject,
 		int satisfied)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketFeedbackServiceUtil.class,
 					"addTicketFeedback", _addTicketFeedbackParameterTypes0);
@@ -77,10 +76,6 @@ public class TicketFeedbackServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -95,9 +90,7 @@ public class TicketFeedbackServiceHttp {
 
 	public static com.liferay.osb.model.TicketFeedback fetchFirstOpenTicketFeedback(
 		HttpPrincipal httpPrincipal, long userId, long ticketEntryId,
-		int subject)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		int subject) throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketFeedbackServiceUtil.class,
 					"fetchFirstOpenTicketFeedback",
@@ -116,10 +109,6 @@ public class TicketFeedbackServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -134,8 +123,7 @@ public class TicketFeedbackServiceHttp {
 
 	public static com.liferay.osb.model.TicketFeedback fetchFirstTicketFeedback(
 		HttpPrincipal httpPrincipal, long ticketEntryId, int subject)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketFeedbackServiceUtil.class,
 					"fetchFirstTicketFeedback",
@@ -154,10 +142,6 @@ public class TicketFeedbackServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -172,8 +156,7 @@ public class TicketFeedbackServiceHttp {
 
 	public static com.liferay.osb.model.TicketFeedback getTicketFeedback(
 		HttpPrincipal httpPrincipal, long ticketFeedbackId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketFeedbackServiceUtil.class,
 					"getTicketFeedback", _getTicketFeedbackParameterTypes3);
@@ -191,10 +174,6 @@ public class TicketFeedbackServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -209,8 +188,7 @@ public class TicketFeedbackServiceHttp {
 
 	public static java.util.List<com.liferay.osb.model.TicketFeedback> getTicketFeedbacks(
 		HttpPrincipal httpPrincipal, long ticketEntryId, int subject)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketFeedbackServiceUtil.class,
 					"getTicketFeedbacks", _getTicketFeedbacksParameterTypes4);
@@ -226,10 +204,6 @@ public class TicketFeedbackServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
@@ -256,8 +230,7 @@ public class TicketFeedbackServiceHttp {
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andSearch, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketFeedbackServiceUtil.class,
 					"search", _searchParameterTypes5);
@@ -280,10 +253,6 @@ public class TicketFeedbackServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -300,8 +269,7 @@ public class TicketFeedbackServiceHttp {
 		HttpPrincipal httpPrincipal, java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketFeedbackServiceUtil.class,
 					"search", _searchParameterTypes6);
@@ -317,10 +285,6 @@ public class TicketFeedbackServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
@@ -346,8 +310,7 @@ public class TicketFeedbackServiceHttp {
 		java.lang.Integer[] ratings3, java.lang.Integer[] ratings4,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andSearch)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketFeedbackServiceUtil.class,
 					"searchCount", _searchCountParameterTypes7);
@@ -370,10 +333,6 @@ public class TicketFeedbackServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -389,8 +348,7 @@ public class TicketFeedbackServiceHttp {
 	public static int searchCount(HttpPrincipal httpPrincipal,
 		java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketFeedbackServiceUtil.class,
 					"searchCount", _searchCountParameterTypes8);
@@ -406,10 +364,6 @@ public class TicketFeedbackServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
@@ -428,8 +382,7 @@ public class TicketFeedbackServiceHttp {
 		HttpPrincipal httpPrincipal, long ticketFeedbackId, int satisfied,
 		int answer1, int answer2, int answer3, int rating1, int rating2,
 		int rating3, int rating4, java.lang.String comments)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketFeedbackServiceUtil.class,
 					"updateTicketFeedback", _updateTicketFeedbackParameterTypes9);
@@ -446,10 +399,6 @@ public class TicketFeedbackServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);

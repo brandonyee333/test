@@ -54,8 +54,7 @@ public class ExternalIdMapperLocalServiceUtil {
 	}
 
 	public static com.liferay.osb.model.ExternalIdMapper addExternalIdMapper(
-		long classNameId, long classPK, int type, java.lang.String externalId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long classNameId, long classPK, int type, java.lang.String externalId) {
 		return getService()
 				   .addExternalIdMapper(classNameId, classPK, type, externalId);
 	}
@@ -127,8 +126,7 @@ public class ExternalIdMapperLocalServiceUtil {
 	public static com.liferay.osb.model.ExternalIdMapper updateExternalIdMapper(
 		long externalIdMapperId, long classNameId, long classPK, int type,
 		java.lang.String externalId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateExternalIdMapper(externalIdMapperId, classNameId,
 			classPK, type, externalId);
@@ -252,14 +250,12 @@ public class ExternalIdMapperLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.osb.model.ExternalIdMapper> getExternalIdMappers(
-		long classNameId, int type, java.lang.String externalId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long classNameId, int type, java.lang.String externalId) {
 		return getService().getExternalIdMappers(classNameId, type, externalId);
 	}
 
 	public static java.util.List<com.liferay.osb.model.ExternalIdMapper> getExternalIdMappers(
-		long classNameId, long classPK, int type)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long classNameId, long classPK, int type) {
 		return getService().getExternalIdMappers(classNameId, classPK, type);
 	}
 
@@ -288,7 +284,7 @@ public class ExternalIdMapperLocalServiceUtil {
 	}
 
 	public static void deleteExternalIdMapper(long classNameId, long classPK,
-		int type) throws com.liferay.portal.kernel.exception.SystemException {
+		int type) {
 		getService().deleteExternalIdMapper(classNameId, classPK, type);
 	}
 

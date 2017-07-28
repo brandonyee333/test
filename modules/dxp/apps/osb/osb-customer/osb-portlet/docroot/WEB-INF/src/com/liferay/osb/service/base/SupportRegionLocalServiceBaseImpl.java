@@ -170,12 +170,11 @@ public abstract class SupportRegionLocalServiceBaseImpl
 	 * @param supportRegionId the primary key of the support region
 	 * @return the support region that was removed
 	 * @throws PortalException if a support region with the primary key could not be found
-	 * @throws SystemException
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public SupportRegion deleteSupportRegion(long supportRegionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 		return supportRegionPersistence.remove(supportRegionId);
 	}
 
@@ -469,11 +468,10 @@ public abstract class SupportRegionLocalServiceBaseImpl
 	}
 
 	/**
-	 * @throws SystemException
 	 */
 	@Override
 	public List<SupportRegion> getAccountEntrySupportRegions(
-		long accountEntryId) throws SystemException {
+		long accountEntryId) {
 		return accountEntryPersistence.getSupportRegions(accountEntryId);
 	}
 
@@ -2009,44 +2007,6 @@ public abstract class SupportRegionLocalServiceBaseImpl
 	}
 
 	/**
-	 * Returns the osb country local service.
-	 *
-	 * @return the osb country local service
-	 */
-	public com.liferay.osb.service.OSBCountryLocalService getOSBCountryLocalService() {
-		return osbCountryLocalService;
-	}
-
-	/**
-	 * Sets the osb country local service.
-	 *
-	 * @param osbCountryLocalService the osb country local service
-	 */
-	public void setOSBCountryLocalService(
-		com.liferay.osb.service.OSBCountryLocalService osbCountryLocalService) {
-		this.osbCountryLocalService = osbCountryLocalService;
-	}
-
-	/**
-	 * Returns the osb region local service.
-	 *
-	 * @return the osb region local service
-	 */
-	public com.liferay.osb.service.OSBRegionLocalService getOSBRegionLocalService() {
-		return osbRegionLocalService;
-	}
-
-	/**
-	 * Sets the osb region local service.
-	 *
-	 * @param osbRegionLocalService the osb region local service
-	 */
-	public void setOSBRegionLocalService(
-		com.liferay.osb.service.OSBRegionLocalService osbRegionLocalService) {
-		this.osbRegionLocalService = osbRegionLocalService;
-	}
-
-	/**
 	 * Returns the partner entry local service.
 	 *
 	 * @return the partner entry local service
@@ -3477,10 +3437,6 @@ public abstract class SupportRegionLocalServiceBaseImpl
 	protected OrderEntryPersistence orderEntryPersistence;
 	@BeanReference(type = OrderEntryFinder.class)
 	protected OrderEntryFinder orderEntryFinder;
-	@BeanReference(type = com.liferay.osb.service.OSBCountryLocalService.class)
-	protected com.liferay.osb.service.OSBCountryLocalService osbCountryLocalService;
-	@BeanReference(type = com.liferay.osb.service.OSBRegionLocalService.class)
-	protected com.liferay.osb.service.OSBRegionLocalService osbRegionLocalService;
 	@BeanReference(type = com.liferay.osb.service.PartnerEntryLocalService.class)
 	protected com.liferay.osb.service.PartnerEntryLocalService partnerEntryLocalService;
 	@BeanReference(type = PartnerEntryPersistence.class)

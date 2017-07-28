@@ -27,56 +27,56 @@ import java.util.Arrays;
 @ProviderType
 public class AccountAttachmentServiceClpInvoker {
 	public AccountAttachmentServiceClpInvoker() {
-		_methodName380 = "getOSGiServiceIdentifier";
+		_methodName372 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes380 = new String[] {  };
+		_methodParameterTypes372 = new String[] {  };
 
-		_methodName385 = "addAccountAttachments";
+		_methodName377 = "addAccountAttachments";
 
-		_methodParameterTypes385 = new String[] {
+		_methodParameterTypes377 = new String[] {
 				"long", "long", "java.util.List", "java.util.List"
 			};
 
-		_methodName386 = "deleteAccountAttachment";
+		_methodName378 = "deleteAccountAttachment";
 
-		_methodParameterTypes386 = new String[] { "long" };
+		_methodParameterTypes378 = new String[] { "long" };
 
-		_methodName387 = "getAccountAttachment";
+		_methodName379 = "getAccountAttachment";
 
-		_methodParameterTypes387 = new String[] { "long" };
+		_methodParameterTypes379 = new String[] { "long" };
 
-		_methodName388 = "getAccountAttachments";
+		_methodName380 = "getAccountAttachments";
 
-		_methodParameterTypes388 = new String[] { "long", "long", "int" };
+		_methodParameterTypes380 = new String[] { "long", "long", "int" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName380.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes380, parameterTypes)) {
+		if (_methodName372.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes372, parameterTypes)) {
 			return AccountAttachmentServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName385.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes385, parameterTypes)) {
+		if (_methodName377.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes377, parameterTypes)) {
 			return AccountAttachmentServiceUtil.addAccountAttachments(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				(java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>>)arguments[2],
 				(java.util.List<java.lang.Integer>)arguments[3]);
 		}
 
-		if (_methodName386.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes386, parameterTypes)) {
+		if (_methodName378.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes378, parameterTypes)) {
 			return AccountAttachmentServiceUtil.deleteAccountAttachment(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName387.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes387, parameterTypes)) {
+		if (_methodName379.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes379, parameterTypes)) {
 			return AccountAttachmentServiceUtil.getAccountAttachment(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName388.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes388, parameterTypes)) {
+		if (_methodName380.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes380, parameterTypes)) {
 			return AccountAttachmentServiceUtil.getAccountAttachments(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Integer)arguments[2]).intValue());
@@ -85,14 +85,14 @@ public class AccountAttachmentServiceClpInvoker {
 		throw new UnsupportedOperationException();
 	}
 
+	private String _methodName372;
+	private String[] _methodParameterTypes372;
+	private String _methodName377;
+	private String[] _methodParameterTypes377;
+	private String _methodName378;
+	private String[] _methodParameterTypes378;
+	private String _methodName379;
+	private String[] _methodParameterTypes379;
 	private String _methodName380;
 	private String[] _methodParameterTypes380;
-	private String _methodName385;
-	private String[] _methodParameterTypes385;
-	private String _methodName386;
-	private String[] _methodParameterTypes386;
-	private String _methodName387;
-	private String[] _methodParameterTypes387;
-	private String _methodName388;
-	private String[] _methodParameterTypes388;
 }

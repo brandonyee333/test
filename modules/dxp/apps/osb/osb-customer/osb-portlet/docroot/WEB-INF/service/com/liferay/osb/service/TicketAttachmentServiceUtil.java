@@ -43,8 +43,7 @@ public class TicketAttachmentServiceUtil {
 	 */
 	public static boolean checkAvailability(long ticketAttachmentId,
 		java.lang.String fileRepositoryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .checkAvailability(ticketAttachmentId, fileRepositoryId);
 	}
@@ -53,8 +52,7 @@ public class TicketAttachmentServiceUtil {
 		long userId, long ticketEntryId, long ticketSolutionId,
 		java.lang.String fileName, long fileSize, int type, int visibility,
 		java.lang.String fileRepositoryId, int status)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addTicketAttachment(userId, ticketEntryId,
 			ticketSolutionId, fileName, fileSize, type, visibility,
@@ -63,37 +61,32 @@ public class TicketAttachmentServiceUtil {
 
 	public static com.liferay.osb.model.TicketAttachment deleteTicketAttachment(
 		long ticketAttachmentId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteTicketAttachment(ticketAttachmentId);
 	}
 
 	public static com.liferay.osb.model.TicketAttachment getTicketAttachment(
 		long ticketAttachmentId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getTicketAttachment(ticketAttachmentId);
 	}
 
 	public static com.liferay.osb.model.TicketAttachment replicateTicketAttachment(
 		long ticketAttachmentId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().replicateTicketAttachment(ticketAttachmentId);
 	}
 
 	public static com.liferay.osb.model.TicketAttachment updateDeleteDate(
 		long ticketAttachmentId, java.util.Date deleteDate)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updateDeleteDate(ticketAttachmentId, deleteDate);
 	}
 
 	public static com.liferay.osb.model.TicketAttachment updateTicketAttachment(
 		long ticketAttachmentId, long ticketEntryId, int type, int visibility,
 		int[] pendingTypes)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateTicketAttachment(ticketAttachmentId, ticketEntryId,
 			type, visibility, pendingTypes);
@@ -116,8 +109,7 @@ public class TicketAttachmentServiceUtil {
 
 	public static java.lang.String getUploadToken(long ticketEntryId,
 		java.lang.String fileRepositoryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getUploadToken(ticketEntryId, fileRepositoryId);
 	}
 
@@ -126,8 +118,7 @@ public class TicketAttachmentServiceUtil {
 		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
 		java.util.List<java.lang.Integer> types, int visibility, int status,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addTicketAttachments(userId, ticketEntryId,
 			ticketSolutionId, files, types, visibility, status, serviceContext);
@@ -139,8 +130,7 @@ public class TicketAttachmentServiceUtil {
 		java.util.List<java.lang.Integer> types, int visibility, int status,
 		int[] pendingTypes,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addTicketAttachments(userId, ticketEntryId,
 			ticketSolutionId, files, types, visibility, status, pendingTypes,
@@ -151,8 +141,7 @@ public class TicketAttachmentServiceUtil {
 		java.util.List<java.lang.Long> ticketAttachmentIds, long ticketEntryId,
 		java.util.List<java.lang.Integer> types,
 		java.util.List<java.lang.Integer> visibilities, int[] pendingTypes)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateTicketAttachments(ticketAttachmentIds, ticketEntryId,
 			types, visibilities, pendingTypes);

@@ -65,15 +65,14 @@ public interface AccountCustomerService extends BaseService, InvokableService {
 	@JSONWebService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<java.lang.String> getCorpProjectAccountCustomerUUIDs(
-		long corpProjectId) throws PortalException, SystemException;
+		long corpProjectId) throws PortalException;
 
 	public void addAccountCustomers(long[] userIds, long accountEntryId,
-		int[] roles, int[] notifications)
-		throws PortalException, SystemException;
+		int[] roles, int[] notifications) throws PortalException;
 
 	public void deleteAccountCustomers(long[] userIds, long accountEntryId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public void toggleNotifications(long accountCustomerId)
-		throws PortalException, SystemException;
+		throws PortalException;
 }

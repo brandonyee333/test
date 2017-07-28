@@ -49,8 +49,7 @@ public class LicenseEntryLocalServiceWrapper implements LicenseEntryLocalService
 	public com.liferay.osb.model.LicenseEntry addLicenseEntry(long userId,
 		long productEntryId, java.lang.String name, java.lang.String type,
 		int portalVersionMin, int portalVersionMax)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _licenseEntryLocalService.addLicenseEntry(userId,
 			productEntryId, name, type, portalVersionMin, portalVersionMax);
 	}
@@ -85,13 +84,11 @@ public class LicenseEntryLocalServiceWrapper implements LicenseEntryLocalService
 	* @param licenseEntryId the primary key of the license entry
 	* @return the license entry that was removed
 	* @throws PortalException if a license entry with the primary key could not be found
-	* @throws SystemException
 	*/
 	@Override
 	public com.liferay.osb.model.LicenseEntry deleteLicenseEntry(
 		long licenseEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _licenseEntryLocalService.deleteLicenseEntry(licenseEntryId);
 	}
 
@@ -118,8 +115,7 @@ public class LicenseEntryLocalServiceWrapper implements LicenseEntryLocalService
 	@Override
 	public com.liferay.osb.model.LicenseEntry getLicenseEntry(
 		long productEntryId, java.lang.String type)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _licenseEntryLocalService.getLicenseEntry(productEntryId, type);
 	}
 
@@ -139,8 +135,7 @@ public class LicenseEntryLocalServiceWrapper implements LicenseEntryLocalService
 	public com.liferay.osb.model.LicenseEntry updateLicenseEntry(
 		long licenseEntryId, long productEntryId, java.lang.String name,
 		java.lang.String type, int portalVersionMin, int portalVersionMax)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _licenseEntryLocalService.updateLicenseEntry(licenseEntryId,
 			productEntryId, name, type, portalVersionMin, portalVersionMax);
 	}
@@ -277,15 +272,13 @@ public class LicenseEntryLocalServiceWrapper implements LicenseEntryLocalService
 
 	@Override
 	public java.util.List<com.liferay.osb.model.LicenseEntry> getLicenseEntries(
-		long productEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long productEntryId) {
 		return _licenseEntryLocalService.getLicenseEntries(productEntryId);
 	}
 
 	@Override
 	public java.util.List<com.liferay.osb.model.LicenseEntry> getLicenseEntries(
-		long productEntryId, int portalVersion)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long productEntryId, int portalVersion) {
 		return _licenseEntryLocalService.getLicenseEntries(productEntryId,
 			portalVersion);
 	}

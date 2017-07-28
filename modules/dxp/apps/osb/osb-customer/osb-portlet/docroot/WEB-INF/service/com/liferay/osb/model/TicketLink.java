@@ -57,8 +57,7 @@ public interface TicketLink extends TicketLinkModel, PersistedModel {
 	public java.lang.String getKey();
 
 	public TicketEntry getTicketEntry()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public java.lang.String getVisibilityLabel();
 }

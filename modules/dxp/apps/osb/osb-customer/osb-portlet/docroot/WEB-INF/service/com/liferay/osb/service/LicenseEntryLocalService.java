@@ -73,7 +73,7 @@ public interface LicenseEntryLocalService extends BaseLocalService,
 
 	public LicenseEntry addLicenseEntry(long userId, long productEntryId,
 		java.lang.String name, java.lang.String type, int portalVersionMin,
-		int portalVersionMax) throws PortalException, SystemException;
+		int portalVersionMax) throws PortalException;
 
 	/**
 	* Creates a new license entry with the primary key. Does not add the license entry to the database.
@@ -98,11 +98,10 @@ public interface LicenseEntryLocalService extends BaseLocalService,
 	* @param licenseEntryId the primary key of the license entry
 	* @return the license entry that was removed
 	* @throws PortalException if a license entry with the primary key could not be found
-	* @throws SystemException
 	*/
 	@Indexable(type = IndexableType.DELETE)
 	public LicenseEntry deleteLicenseEntry(long licenseEntryId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public LicenseEntry fetchLicenseEntry(long licenseEntryId);
@@ -120,7 +119,7 @@ public interface LicenseEntryLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public LicenseEntry getLicenseEntry(long productEntryId,
-		java.lang.String type) throws PortalException, SystemException;
+		java.lang.String type) throws PortalException;
 
 	/**
 	* Updates the license entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
@@ -133,8 +132,7 @@ public interface LicenseEntryLocalService extends BaseLocalService,
 
 	public LicenseEntry updateLicenseEntry(long licenseEntryId,
 		long productEntryId, java.lang.String name, java.lang.String type,
-		int portalVersionMin, int portalVersionMax)
-		throws PortalException, SystemException;
+		int portalVersionMin, int portalVersionMax) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -230,12 +228,11 @@ public interface LicenseEntryLocalService extends BaseLocalService,
 	public List<LicenseEntry> getLicenseEntries(int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<LicenseEntry> getLicenseEntries(long productEntryId)
-		throws SystemException;
+	public List<LicenseEntry> getLicenseEntries(long productEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseEntry> getLicenseEntries(long productEntryId,
-		int portalVersion) throws SystemException;
+		int portalVersion);
 
 	/**
 	* Returns the number of rows matching the dynamic query.

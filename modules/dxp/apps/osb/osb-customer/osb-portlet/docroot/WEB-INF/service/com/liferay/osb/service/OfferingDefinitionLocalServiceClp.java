@@ -318,8 +318,7 @@ public class OfferingDefinitionLocalServiceClp
 		java.lang.String productDescription, boolean licenses,
 		boolean unlimitedLicenses, long maxConcurrentUsers, long maxUsers,
 		boolean supportTickets)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -350,10 +349,6 @@ public class OfferingDefinitionLocalServiceClp
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -423,8 +418,7 @@ public class OfferingDefinitionLocalServiceClp
 	@Override
 	public com.liferay.osb.model.OfferingDefinition deleteOfferingDefinition(
 		long offeringDefinitionId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -437,10 +431,6 @@ public class OfferingDefinitionLocalServiceClp
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -543,8 +533,7 @@ public class OfferingDefinitionLocalServiceClp
 		java.lang.String productDescription, boolean licenses,
 		boolean unlimitedLicenses, long maxConcurrentUsers, long maxUsers,
 		boolean supportTickets)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -575,10 +564,6 @@ public class OfferingDefinitionLocalServiceClp
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -770,8 +755,7 @@ public class OfferingDefinitionLocalServiceClp
 
 	@Override
 	public int getOfferingDefinitionsCount(long[] productEntryIds,
-		long[] supportResponseIds)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long[] supportResponseIds) {
 		Object returnObj = null;
 
 		try {
@@ -785,10 +769,6 @@ public class OfferingDefinitionLocalServiceClp
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -1033,8 +1013,7 @@ public class OfferingDefinitionLocalServiceClp
 
 	@Override
 	public java.util.List<com.liferay.osb.model.OfferingDefinition> getOfferingDefinitions(
-		long[] productEntryIds, long[] supportResponseIds, int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long[] productEntryIds, long[] supportResponseIds, int start, int end) {
 		Object returnObj = null;
 
 		try {
@@ -1053,10 +1032,6 @@ public class OfferingDefinitionLocalServiceClp
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -1071,8 +1046,7 @@ public class OfferingDefinitionLocalServiceClp
 
 	@Override
 	public java.util.List<com.liferay.osb.model.OfferingDefinition> getProductEntryOfferingDefinitions(
-		long productEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long productEntryId) {
 		Object returnObj = null;
 
 		try {
@@ -1081,10 +1055,6 @@ public class OfferingDefinitionLocalServiceClp
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -1100,8 +1070,7 @@ public class OfferingDefinitionLocalServiceClp
 
 	@Override
 	public java.util.List<com.liferay.osb.model.OfferingDefinition> getSupportResponseOfferingDefinitions(
-		long supportResponseId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long supportResponseId) {
 		Object returnObj = null;
 
 		try {
@@ -1110,10 +1079,6 @@ public class OfferingDefinitionLocalServiceClp
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;

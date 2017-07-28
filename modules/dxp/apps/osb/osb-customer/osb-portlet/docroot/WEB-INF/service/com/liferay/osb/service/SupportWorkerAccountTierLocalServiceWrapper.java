@@ -250,8 +250,7 @@ public class SupportWorkerAccountTierLocalServiceWrapper
 
 	@Override
 	public java.util.List<com.liferay.osb.model.SupportWorkerAccountTier> getSupportWorkerAccountTiers(
-		long supportWorkerId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long supportWorkerId) {
 		return _supportWorkerAccountTierLocalService.getSupportWorkerAccountTiers(supportWorkerId);
 	}
 
@@ -284,8 +283,7 @@ public class SupportWorkerAccountTierLocalServiceWrapper
 
 	@Override
 	public void setSupportWorkerAccountTiers(long supportWorkerId,
-		int[] accountTiers)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int[] accountTiers) {
 		_supportWorkerAccountTierLocalService.setSupportWorkerAccountTiers(supportWorkerId,
 			accountTiers);
 	}

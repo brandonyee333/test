@@ -57,8 +57,7 @@ import com.liferay.portal.kernel.util.MethodKey;
 public class OrderEntryServiceHttp {
 	public static java.util.List<com.liferay.osb.model.OrderEntry> getOrderEntries(
 		HttpPrincipal httpPrincipal, long corpProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(OrderEntryServiceUtil.class,
 					"getOrderEntries", _getOrderEntriesParameterTypes0);
@@ -74,10 +73,6 @@ public class OrderEntryServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);

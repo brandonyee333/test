@@ -41,8 +41,7 @@ public class AccountEnvironmentServiceWrapper
 		int envAS, int envLFR,
 		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
 		java.util.List<java.lang.Integer> types)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountEnvironmentService.addAccountEnvironment(accountEntryId,
 			productEntryId, name, envOS, envOSCustom, envDB, envJVM, envAS,
 			envLFR, files, types);
@@ -51,16 +50,14 @@ public class AccountEnvironmentServiceWrapper
 	@Override
 	public com.liferay.osb.model.AccountEnvironment deleteAccountEnvironment(
 		long accountEnvironmentId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountEnvironmentService.deleteAccountEnvironment(accountEnvironmentId);
 	}
 
 	@Override
 	public com.liferay.osb.model.AccountEnvironment getAccountEnvironment(
 		long accountEnvironmentId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountEnvironmentService.getAccountEnvironment(accountEnvironmentId);
 	}
 
@@ -71,8 +68,7 @@ public class AccountEnvironmentServiceWrapper
 		int envAS, int envLFR,
 		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
 		java.util.List<java.lang.Integer> types)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountEnvironmentService.updateAccountEnvironment(accountEnvironmentId,
 			productEntryId, name, envOS, envOSCustom, envDB, envJVM, envAS,
 			envLFR, files, types);
@@ -99,16 +95,14 @@ public class AccountEnvironmentServiceWrapper
 	@Override
 	public java.util.List<com.liferay.osb.model.AccountEnvironment> getAccountEnvironments(
 		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountEnvironmentService.getAccountEnvironments(accountEntryId);
 	}
 
 	@Override
 	public java.util.Map<java.lang.String, java.util.List<com.liferay.osb.model.AccountEnvironment>> getAccountEnvironmentsMap(
 		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountEnvironmentService.getAccountEnvironmentsMap(accountEntryId);
 	}
 

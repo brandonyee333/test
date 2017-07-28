@@ -26,8 +26,7 @@ public interface OfferingEntryFinder {
 		long productEntryId, int[] types, int[] statuses,
 		java.util.Date supportEndDateGT, java.util.Date supportEndDateLT,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andOperator)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		boolean andOperator);
 
 	public java.util.List<com.liferay.osb.model.OfferingEntry> findByU_AEI_PEI_T_S_SED(
 		long userId, long accountEntryId, long productEntryId, int[] types,
@@ -35,6 +34,5 @@ public interface OfferingEntryFinder {
 		java.util.Date supportEndDateLT,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		com.liferay.portal.kernel.util.OrderByComparator obc);
 }

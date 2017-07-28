@@ -26,8 +26,7 @@ import com.liferay.portal.kernel.util.ReferenceRegistry;
 @ProviderType
 public class TicketEntryFinderUtil {
 	public static int countByKeywords(java.lang.String keywords,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params) {
 		return getFinder().countByKeywords(keywords, params);
 	}
 
@@ -45,8 +44,7 @@ public class TicketEntryFinderUtil {
 		java.util.Date workerModifiedDateGT,
 		java.util.Date workerModifiedDateLT,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andOperator)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		boolean andOperator) {
 		return getFinder()
 				   .countByU_A_S_C_S_D_T_S_S_W_E_E_C_R_C_D_C_W(reportedByUserId,
 			name, accountEntryTiers, satisfiedDueDate, createDateGT,
@@ -60,8 +58,7 @@ public class TicketEntryFinderUtil {
 	public static java.util.List<com.liferay.osb.model.TicketEntry> findByKeywords(
 		java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc) {
 		return getFinder().findByKeywords(keywords, params, start, end, obc);
 	}
 
@@ -80,8 +77,7 @@ public class TicketEntryFinderUtil {
 		java.util.Date workerModifiedDateLT,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		com.liferay.portal.kernel.util.OrderByComparator obc) {
 		return getFinder()
 				   .findByU_A_S_C_S_D_T_S_S_W_E_E_C_R_C_D_C_W(reportedByUserId,
 			name, accountEntryTiers, satisfiedDueDate, createDateGT,

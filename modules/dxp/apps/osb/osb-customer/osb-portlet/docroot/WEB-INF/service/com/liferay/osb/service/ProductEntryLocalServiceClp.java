@@ -196,8 +196,7 @@ public class ProductEntryLocalServiceClp implements ProductEntryLocalService {
 	public com.liferay.osb.model.ProductEntry addProductEntry(long userId,
 		java.lang.String name, int type, int environment,
 		java.lang.String versionsListType, java.lang.String[] dossieraIdMappings)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -222,10 +221,6 @@ public class ProductEntryLocalServiceClp implements ProductEntryLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -292,8 +287,7 @@ public class ProductEntryLocalServiceClp implements ProductEntryLocalService {
 	@Override
 	public com.liferay.osb.model.ProductEntry deleteProductEntry(
 		long productEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -305,10 +299,6 @@ public class ProductEntryLocalServiceClp implements ProductEntryLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -349,8 +339,7 @@ public class ProductEntryLocalServiceClp implements ProductEntryLocalService {
 
 	@Override
 	public com.liferay.osb.model.ProductEntry fetchProductEntryByName(
-		java.lang.String name)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.lang.String name) {
 		Object returnObj = null;
 
 		try {
@@ -360,10 +349,6 @@ public class ProductEntryLocalServiceClp implements ProductEntryLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -409,8 +394,7 @@ public class ProductEntryLocalServiceClp implements ProductEntryLocalService {
 	@Override
 	public com.liferay.osb.model.ProductEntry getProductEntryByName(
 		java.lang.String name)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -423,10 +407,6 @@ public class ProductEntryLocalServiceClp implements ProductEntryLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -470,8 +450,7 @@ public class ProductEntryLocalServiceClp implements ProductEntryLocalService {
 	public com.liferay.osb.model.ProductEntry updateProductEntry(
 		long productEntryId, java.lang.String name, int type, int environment,
 		java.lang.String versionsListType, java.lang.String[] dossieraIdMappings)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -496,10 +475,6 @@ public class ProductEntryLocalServiceClp implements ProductEntryLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -668,8 +643,7 @@ public class ProductEntryLocalServiceClp implements ProductEntryLocalService {
 
 	@Override
 	public int searchCount(java.lang.String name,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params) {
 		Object returnObj = null;
 
 		try {
@@ -683,10 +657,6 @@ public class ProductEntryLocalServiceClp implements ProductEntryLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -848,8 +818,7 @@ public class ProductEntryLocalServiceClp implements ProductEntryLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.ProductEntry> getProductEntries(
-		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountEntryId) {
 		Object returnObj = null;
 
 		try {
@@ -858,10 +827,6 @@ public class ProductEntryLocalServiceClp implements ProductEntryLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -879,8 +844,7 @@ public class ProductEntryLocalServiceClp implements ProductEntryLocalService {
 	public java.util.List<com.liferay.osb.model.ProductEntry> search(
 		java.lang.String name,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int start, int end) {
 		Object returnObj = null;
 
 		try {
@@ -898,10 +862,6 @@ public class ProductEntryLocalServiceClp implements ProductEntryLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;

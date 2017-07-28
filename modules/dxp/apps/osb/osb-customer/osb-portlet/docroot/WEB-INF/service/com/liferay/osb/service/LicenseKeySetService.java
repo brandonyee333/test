@@ -51,17 +51,17 @@ public interface LicenseKeySetService extends BaseService, InvokableService {
 	 * Never modify or reference this interface directly. Always use {@link LicenseKeySetServiceUtil} to access the license key set remote service. Add custom service methods to {@link com.liferay.osb.service.impl.LicenseKeySetServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public LicenseKeySet addLicenseKeySet(long userId, long accountEntryId,
-		java.lang.String name) throws PortalException, SystemException;
+		java.lang.String name) throws PortalException;
 
 	public LicenseKeySet deleteLicenseKeySet(long licenseKeySetId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public LicenseKeySet getLicenseKeySet(long licenseKeySetId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public LicenseKeySet updateLicenseKeySet(long licenseKeySetId,
-		java.lang.String name) throws PortalException, SystemException;
+		java.lang.String name) throws PortalException;
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,

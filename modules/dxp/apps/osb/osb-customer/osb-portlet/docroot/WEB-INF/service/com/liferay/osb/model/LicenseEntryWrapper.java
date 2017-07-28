@@ -147,8 +147,7 @@ public class LicenseEntryWrapper implements LicenseEntry,
 
 	@Override
 	public ProductEntry getProductEntry()
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _licenseEntry.getProductEntry();
 	}
 

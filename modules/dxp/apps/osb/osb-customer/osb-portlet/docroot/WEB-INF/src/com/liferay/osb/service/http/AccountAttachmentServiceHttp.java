@@ -60,8 +60,7 @@ public class AccountAttachmentServiceHttp {
 		long accountProjectId,
 		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
 		java.util.List<java.lang.Integer> types)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(AccountAttachmentServiceUtil.class,
 					"addAccountAttachments",
@@ -80,10 +79,6 @@ public class AccountAttachmentServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -98,8 +93,7 @@ public class AccountAttachmentServiceHttp {
 
 	public static com.liferay.osb.model.AccountAttachment deleteAccountAttachment(
 		HttpPrincipal httpPrincipal, long accountAttachmentId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(AccountAttachmentServiceUtil.class,
 					"deleteAccountAttachment",
@@ -118,10 +112,6 @@ public class AccountAttachmentServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -136,8 +126,7 @@ public class AccountAttachmentServiceHttp {
 
 	public static com.liferay.osb.model.AccountAttachment getAccountAttachment(
 		HttpPrincipal httpPrincipal, long accountAttachmentId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(AccountAttachmentServiceUtil.class,
 					"getAccountAttachment", _getAccountAttachmentParameterTypes2);
@@ -155,10 +144,6 @@ public class AccountAttachmentServiceHttp {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -174,8 +159,7 @@ public class AccountAttachmentServiceHttp {
 	public static java.util.List<com.liferay.osb.model.AccountAttachment> getAccountAttachments(
 		HttpPrincipal httpPrincipal, long accountEntryId,
 		long accountProjectId, int type)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(AccountAttachmentServiceUtil.class,
 					"getAccountAttachments",
@@ -192,10 +176,6 @@ public class AccountAttachmentServiceHttp {
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
 					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				if (e instanceof com.liferay.portal.kernel.exception.SystemException) {
-					throw (com.liferay.portal.kernel.exception.SystemException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);

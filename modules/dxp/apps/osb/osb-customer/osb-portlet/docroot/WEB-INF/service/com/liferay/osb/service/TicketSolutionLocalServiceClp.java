@@ -192,8 +192,7 @@ public class TicketSolutionLocalServiceClp implements TicketSolutionLocalService
 		java.util.List<java.lang.String> ticketLinkURLs,
 		java.util.List<java.lang.Integer> ticketLinkTypes,
 		java.util.List<com.liferay.osb.model.TicketAttachment> ticketAttachments)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -240,10 +239,6 @@ public class TicketSolutionLocalServiceClp implements TicketSolutionLocalService
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -362,8 +357,7 @@ public class TicketSolutionLocalServiceClp implements TicketSolutionLocalService
 
 	@Override
 	public com.liferay.osb.model.TicketSolution getActiveTicketSolution(
-		long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long ticketEntryId) {
 		Object returnObj = null;
 
 		try {
@@ -372,10 +366,6 @@ public class TicketSolutionLocalServiceClp implements TicketSolutionLocalService
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -447,8 +437,7 @@ public class TicketSolutionLocalServiceClp implements TicketSolutionLocalService
 	public com.liferay.osb.model.TicketSolution updateTicketSolution(
 		long ticketSolutionId, long ticketEntryId, int status,
 		long statusByUserId, java.lang.String statusMessage, int statusReason)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -473,10 +462,6 @@ public class TicketSolutionLocalServiceClp implements TicketSolutionLocalService
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -791,8 +776,7 @@ public class TicketSolutionLocalServiceClp implements TicketSolutionLocalService
 
 	@Override
 	public java.util.List<com.liferay.osb.model.TicketSolution> getTicketSolutions(
-		long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long ticketEntryId) {
 		Object returnObj = null;
 
 		try {
@@ -801,10 +785,6 @@ public class TicketSolutionLocalServiceClp implements TicketSolutionLocalService
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -875,8 +855,7 @@ public class TicketSolutionLocalServiceClp implements TicketSolutionLocalService
 
 	@Override
 	public void updateStatus(long ticketEntryId, int ticketEntryStatus,
-		int resolution)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		int resolution) {
 		try {
 			_invokableLocalService.invokeMethod(_methodName25,
 				_methodParameterTypes25,
@@ -884,10 +863,6 @@ public class TicketSolutionLocalServiceClp implements TicketSolutionLocalService
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;

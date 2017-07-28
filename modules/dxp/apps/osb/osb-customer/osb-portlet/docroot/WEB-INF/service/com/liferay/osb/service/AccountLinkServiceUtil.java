@@ -43,8 +43,7 @@ public class AccountLinkServiceUtil {
 	 */
 	public static com.liferay.osb.model.AccountLink deleteAccountLink(
 		long accountLinkId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteAccountLink(accountLinkId);
 	}
 
@@ -65,8 +64,7 @@ public class AccountLinkServiceUtil {
 
 	public static void addAccountLinks(long accountEntryId,
 		java.lang.String[] urls)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().addAccountLinks(accountEntryId, urls);
 	}
 

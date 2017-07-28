@@ -86,8 +86,7 @@ public class SupportRegionLocalServiceWrapper
 	public com.liferay.osb.model.SupportRegion addSupportRegion(long userId,
 		java.lang.String name, java.lang.String description,
 		java.lang.String timeZoneId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _supportRegionLocalService.addSupportRegion(userId, name,
 			description, timeZoneId);
 	}
@@ -122,13 +121,11 @@ public class SupportRegionLocalServiceWrapper
 	* @param supportRegionId the primary key of the support region
 	* @return the support region that was removed
 	* @throws PortalException if a support region with the primary key could not be found
-	* @throws SystemException
 	*/
 	@Override
 	public com.liferay.osb.model.SupportRegion deleteSupportRegion(
 		long supportRegionId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _supportRegionLocalService.deleteSupportRegion(supportRegionId);
 	}
 
@@ -140,8 +137,7 @@ public class SupportRegionLocalServiceWrapper
 
 	@Override
 	public com.liferay.osb.model.SupportRegion fetchSupportRegionByName(
-		java.lang.String name)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.lang.String name) {
 		return _supportRegionLocalService.fetchSupportRegionByName(name);
 	}
 
@@ -176,8 +172,7 @@ public class SupportRegionLocalServiceWrapper
 		long supportRegionId, java.lang.String name,
 		java.lang.String description, java.lang.String timeZoneId,
 		long[] supportTeamIds)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _supportRegionLocalService.updateSupportRegion(supportRegionId,
 			name, description, timeZoneId, supportTeamIds);
 	}
@@ -310,13 +305,9 @@ public class SupportRegionLocalServiceWrapper
 			end, orderByComparator);
 	}
 
-	/**
-	* @throws SystemException
-	*/
 	@Override
 	public java.util.List<com.liferay.osb.model.SupportRegion> getAccountEntrySupportRegions(
-		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long accountEntryId) {
 		return _supportRegionLocalService.getAccountEntrySupportRegions(accountEntryId);
 	}
 

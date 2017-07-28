@@ -63,7 +63,7 @@ public interface SupportLaborLocalService extends BaseLocalService,
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public boolean hasSupportWorker(long supportWorkerId, long supportLaborId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	/**
 	* Adds the support labor to the database. Also notifies the appropriate model listeners.
@@ -78,8 +78,7 @@ public interface SupportLaborLocalService extends BaseLocalService,
 		java.lang.String description, java.lang.String timeZoneId, int sunOpen,
 		int sunClose, int monOpen, int monClose, int tueOpen, int tueClose,
 		int wedOpen, int wedClose, int thuOpen, int thuClose, int friOpen,
-		int friClose, int satOpen, int satClose)
-		throws PortalException, SystemException;
+		int friClose, int satOpen, int satClose) throws PortalException;
 
 	/**
 	* Creates a new support labor with the primary key. Does not add the support labor to the database.
@@ -104,11 +103,10 @@ public interface SupportLaborLocalService extends BaseLocalService,
 	* @param supportLaborId the primary key of the support labor
 	* @return the support labor that was removed
 	* @throws PortalException if a support labor with the primary key could not be found
-	* @throws SystemException
 	*/
 	@Indexable(type = IndexableType.DELETE)
 	public SupportLabor deleteSupportLabor(long supportLaborId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public SupportLabor fetchSupportLabor(long supportLaborId);
@@ -138,7 +136,7 @@ public interface SupportLaborLocalService extends BaseLocalService,
 		java.lang.String timeZoneId, int sunOpen, int sunClose, int monOpen,
 		int monClose, int tueOpen, int tueClose, int wedOpen, int wedClose,
 		int thuOpen, int thuClose, int friOpen, int friClose, int satOpen,
-		int satClose) throws PortalException, SystemException;
+		int satClose) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -252,8 +250,8 @@ public interface SupportLaborLocalService extends BaseLocalService,
 		Projection projection);
 
 	public void addSupportWorkers(long[] supportWorkerIds, long supportLaborId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public void removeSupportWorkers(long[] supportWorkerIds)
-		throws PortalException, SystemException;
+		throws PortalException;
 }

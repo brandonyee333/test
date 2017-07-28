@@ -221,8 +221,7 @@ public interface SupportTeamLanguageLocalService extends BaseLocalService,
 	public List<SupportTeamLanguage> getSupportTeamLanguages(int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<SupportTeamLanguage> getSupportTeamLanguages(long supportTeamId)
-		throws SystemException;
+	public List<SupportTeamLanguage> getSupportTeamLanguages(long supportTeamId);
 
 	/**
 	* Returns the number of rows matching the dynamic query.
@@ -243,5 +242,5 @@ public interface SupportTeamLanguageLocalService extends BaseLocalService,
 		Projection projection);
 
 	public void setSupportTeamLanguageIds(long supportTeamId,
-		java.lang.String[] languageIds) throws SystemException;
+		java.lang.String[] languageIds);
 }

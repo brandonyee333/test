@@ -74,7 +74,7 @@ public interface TicketCannedResponseLocalService extends BaseLocalService,
 
 	public TicketCannedResponse addTicketCannedResponse(long userId,
 		java.lang.String defaultLanguageId, java.lang.String name,
-		java.lang.String content) throws PortalException, SystemException;
+		java.lang.String content) throws PortalException;
 
 	/**
 	* Creates a new ticket canned response with the primary key. Does not add the ticket canned response to the database.
@@ -134,7 +134,7 @@ public interface TicketCannedResponseLocalService extends BaseLocalService,
 	public TicketCannedResponse updateTicketCannedResponse(
 		long ticketCannedResponseId, java.lang.String defaultLanguageId,
 		java.lang.String languageId, java.lang.String name,
-		java.lang.String content) throws PortalException, SystemException;
+		java.lang.String content) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -165,11 +165,11 @@ public interface TicketCannedResponseLocalService extends BaseLocalService,
 	public int getTicketCannedResponsesCount();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int searchCount(java.lang.String keywords) throws SystemException;
+	public int searchCount(java.lang.String keywords);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(java.lang.String name, java.lang.String content,
-		boolean andSearch) throws SystemException;
+		boolean andSearch);
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
@@ -239,12 +239,11 @@ public interface TicketCannedResponseLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TicketCannedResponse> search(java.lang.String keywords,
-		int start, int end) throws SystemException;
+		int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TicketCannedResponse> search(java.lang.String name,
-		java.lang.String content, boolean andSearch, int start, int end)
-		throws SystemException;
+		java.lang.String content, boolean andSearch, int start, int end);
 
 	/**
 	* Returns the number of rows matching the dynamic query.
@@ -265,8 +264,8 @@ public interface TicketCannedResponseLocalService extends BaseLocalService,
 		Projection projection);
 
 	public void incrementUseCount(long ticketCannedResponseId)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	public void removeCannedResponseLocale(long ticketCannedResponseId,
-		java.lang.String languageId) throws PortalException, SystemException;
+		java.lang.String languageId) throws PortalException;
 }

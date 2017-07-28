@@ -68,8 +68,7 @@ public class SupportWorkerServiceClp implements SupportWorkerService {
 
 	@Override
 	public void clockInOut(long supportWorkerId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableService.invokeMethod(_methodName2,
 				_methodParameterTypes2, new Object[] { supportWorkerId });
@@ -79,10 +78,6 @@ public class SupportWorkerServiceClp implements SupportWorkerService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {

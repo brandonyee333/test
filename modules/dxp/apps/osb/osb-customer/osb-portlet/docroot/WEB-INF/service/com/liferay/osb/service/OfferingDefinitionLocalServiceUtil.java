@@ -70,8 +70,7 @@ public class OfferingDefinitionLocalServiceUtil {
 		java.lang.String productDescription, boolean licenses,
 		boolean unlimitedLicenses, long maxConcurrentUsers, long maxUsers,
 		boolean supportTickets)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addOfferingDefinition(userId, productEntryId,
 			supportResponseId, productDescription, licenses, unlimitedLicenses,
@@ -106,12 +105,10 @@ public class OfferingDefinitionLocalServiceUtil {
 	* @param offeringDefinitionId the primary key of the offering definition
 	* @return the offering definition that was removed
 	* @throws PortalException if a offering definition with the primary key could not be found
-	* @throws SystemException
 	*/
 	public static com.liferay.osb.model.OfferingDefinition deleteOfferingDefinition(
 		long offeringDefinitionId)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteOfferingDefinition(offeringDefinitionId);
 	}
 
@@ -149,8 +146,7 @@ public class OfferingDefinitionLocalServiceUtil {
 		java.lang.String productDescription, boolean licenses,
 		boolean unlimitedLicenses, long maxConcurrentUsers, long maxUsers,
 		boolean supportTickets)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateOfferingDefinition(offeringDefinitionId,
 			productEntryId, supportResponseId, productDescription, licenses,
@@ -200,8 +196,7 @@ public class OfferingDefinitionLocalServiceUtil {
 	}
 
 	public static int getOfferingDefinitionsCount(long[] productEntryIds,
-		long[] supportResponseIds)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long[] supportResponseIds) {
 		return getService()
 				   .getOfferingDefinitionsCount(productEntryIds,
 			supportResponseIds);
@@ -310,22 +305,19 @@ public class OfferingDefinitionLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.osb.model.OfferingDefinition> getOfferingDefinitions(
-		long[] productEntryIds, long[] supportResponseIds, int start, int end)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long[] productEntryIds, long[] supportResponseIds, int start, int end) {
 		return getService()
 				   .getOfferingDefinitions(productEntryIds, supportResponseIds,
 			start, end);
 	}
 
 	public static java.util.List<com.liferay.osb.model.OfferingDefinition> getProductEntryOfferingDefinitions(
-		long productEntryId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long productEntryId) {
 		return getService().getProductEntryOfferingDefinitions(productEntryId);
 	}
 
 	public static java.util.List<com.liferay.osb.model.OfferingDefinition> getSupportResponseOfferingDefinitions(
-		long supportResponseId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long supportResponseId) {
 		return getService()
 				   .getSupportResponseOfferingDefinitions(supportResponseId);
 	}

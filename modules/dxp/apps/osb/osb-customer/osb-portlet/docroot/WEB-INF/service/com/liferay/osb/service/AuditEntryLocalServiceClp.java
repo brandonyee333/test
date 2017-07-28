@@ -202,8 +202,7 @@ public class AuditEntryLocalServiceClp implements AuditEntryLocalService {
 		long fieldClassPK, int action, int field, int visibility,
 		java.lang.String oldLabel, java.lang.String oldValue,
 		java.lang.String newLabel, java.lang.String newValue)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -248,10 +247,6 @@ public class AuditEntryLocalServiceClp implements AuditEntryLocalService {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
 			}
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -272,8 +267,7 @@ public class AuditEntryLocalServiceClp implements AuditEntryLocalService {
 		java.lang.String oldLabel, java.lang.String oldValue,
 		java.lang.String newLabel, java.lang.String newValue, boolean i18n,
 		boolean trackChange)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -320,10 +314,6 @@ public class AuditEntryLocalServiceClp implements AuditEntryLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
 				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -467,8 +457,7 @@ public class AuditEntryLocalServiceClp implements AuditEntryLocalService {
 
 	@Override
 	public com.liferay.osb.model.AuditEntry getLastAuditEntry(
-		long classNameId, long classPK, int field, int action)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long classNameId, long classPK, int field, int action) {
 		Object returnObj = null;
 
 		try {
@@ -478,10 +467,6 @@ public class AuditEntryLocalServiceClp implements AuditEntryLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -497,8 +482,7 @@ public class AuditEntryLocalServiceClp implements AuditEntryLocalService {
 
 	@Override
 	public com.liferay.osb.model.AuditEntry getLastAuditEntry(
-		long fieldClassNameId, long fieldClassPK, int field)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long fieldClassNameId, long fieldClassPK, int field) {
 		Object returnObj = null;
 
 		try {
@@ -508,10 +492,6 @@ public class AuditEntryLocalServiceClp implements AuditEntryLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -850,8 +830,7 @@ public class AuditEntryLocalServiceClp implements AuditEntryLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.AuditEntry> getAuditEntries(
-		java.util.Date createDate, long classNameId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		java.util.Date createDate, long classNameId) {
 		Object returnObj = null;
 
 		try {
@@ -865,10 +844,6 @@ public class AuditEntryLocalServiceClp implements AuditEntryLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -884,8 +859,7 @@ public class AuditEntryLocalServiceClp implements AuditEntryLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.AuditEntry> getAuditEntries(
-		long classNameId, long classPK, int[] visibilities)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long classNameId, long classPK, int[] visibilities) {
 		Object returnObj = null;
 
 		try {
@@ -902,10 +876,6 @@ public class AuditEntryLocalServiceClp implements AuditEntryLocalService {
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -920,8 +890,7 @@ public class AuditEntryLocalServiceClp implements AuditEntryLocalService {
 
 	@Override
 	public java.util.List<java.util.List<com.liferay.osb.model.AuditEntry>> getAuditEntrySets(
-		long classNameId, long classPK, int[] visibilities)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		long classNameId, long classPK, int[] visibilities) {
 		Object returnObj = null;
 
 		try {
@@ -937,10 +906,6 @@ public class AuditEntryLocalServiceClp implements AuditEntryLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -1010,8 +975,7 @@ public class AuditEntryLocalServiceClp implements AuditEntryLocalService {
 	}
 
 	@Override
-	public long getNextAuditSetId(java.lang.String className, long classPK)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public long getNextAuditSetId(java.lang.String className, long classPK) {
 		Object returnObj = null;
 
 		try {
@@ -1026,10 +990,6 @@ public class AuditEntryLocalServiceClp implements AuditEntryLocalService {
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -1043,8 +1003,7 @@ public class AuditEntryLocalServiceClp implements AuditEntryLocalService {
 	}
 
 	@Override
-	public long getNextAuditSetId(long classNameId, long classPK)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public long getNextAuditSetId(long classNameId, long classPK) {
 		Object returnObj = null;
 
 		try {
@@ -1054,10 +1013,6 @@ public class AuditEntryLocalServiceClp implements AuditEntryLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
