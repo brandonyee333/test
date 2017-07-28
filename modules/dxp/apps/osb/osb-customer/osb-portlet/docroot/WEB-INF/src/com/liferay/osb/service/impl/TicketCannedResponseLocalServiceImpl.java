@@ -14,17 +14,16 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.LocalizationUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.exception.TicketCannedResponseContentException;
 import com.liferay.osb.exception.TicketCannedResponseNameException;
 import com.liferay.osb.model.TicketCannedResponse;
 import com.liferay.osb.service.base.TicketCannedResponseLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.LocalizationUtil;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Date;
 import java.util.List;
@@ -37,7 +36,7 @@ public class TicketCannedResponseLocalServiceImpl
 
 	public TicketCannedResponse addTicketCannedResponse(
 			long userId, String defaultLanguageId, String name, String content)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		Date now = new Date();
@@ -63,18 +62,19 @@ public class TicketCannedResponseLocalServiceImpl
 		ticketCannedResponse.setModifiedDate(now);
 		ticketCannedResponse.setName(nameXml);
 		ticketCannedResponse.setContent(contentXml);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
-		ticketCannedResponsePersistence.update(ticketCannedResponse, serviceContext);
+		ticketCannedResponsePersistence.update(
+			ticketCannedResponse, serviceContext);
 
 		return ticketCannedResponse;
 	}
 
 	public void incrementUseCount(long ticketCannedResponseId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketCannedResponse ticketCannedResponse =
 			ticketCannedResponsePersistence.findByPrimaryKey(
@@ -83,17 +83,18 @@ public class TicketCannedResponseLocalServiceImpl
 		int useCount = ticketCannedResponse.getUseCount();
 
 		ticketCannedResponse.setUseCount(useCount + 1);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
-		ticketCannedResponsePersistence.update(ticketCannedResponse, serviceContext);
+		ticketCannedResponsePersistence.update(
+			ticketCannedResponse, serviceContext);
 	}
 
 	public void removeCannedResponseLocale(
 			long ticketCannedResponseId, String languageId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketCannedResponse ticketCannedResponse =
 			ticketCannedResponsePersistence.findByPrimaryKey(
@@ -116,43 +117,40 @@ public class TicketCannedResponseLocalServiceImpl
 		ticketCannedResponse.setModifiedDate(new Date());
 		ticketCannedResponse.setName(nameXml);
 		ticketCannedResponse.setContent(contentXml);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
-		ticketCannedResponsePersistence.update(ticketCannedResponse, serviceContext);
+		ticketCannedResponsePersistence.update(
+			ticketCannedResponse, serviceContext);
 	}
 
 	public List<TicketCannedResponse> search(
-			String keywords, int start, int end)
-		throws SystemException {
+		String keywords, int start, int end) {
 
 		return ticketCannedResponseFinder.findByKeywords(keywords, start, end);
 	}
 
 	public List<TicketCannedResponse> search(
-			String name, String content, boolean andSearch, int start, int end)
-		throws SystemException {
+		String name, String content, boolean andSearch, int start, int end) {
 
 		return ticketCannedResponseFinder.findByN_C(
 			name, content, andSearch, start, end);
 	}
 
-	public int searchCount(String keywords) throws SystemException {
+	public int searchCount(String keywords) {
 		return ticketCannedResponseFinder.countByKeywords(keywords);
 	}
 
-	public int searchCount(String name, String content, boolean andSearch)
-		throws SystemException {
-
+	public int searchCount(String name, String content, boolean andSearch) {
 		return ticketCannedResponseFinder.countByN_C(name, content, andSearch);
 	}
 
 	public TicketCannedResponse updateTicketCannedResponse(
 			long ticketCannedResponseId, String defaultLanguageId,
 			String languageId, String name, String content)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (Validator.isNull(defaultLanguageId)) {
 			defaultLanguageId = languageId;
@@ -175,12 +173,13 @@ public class TicketCannedResponseLocalServiceImpl
 		ticketCannedResponse.setModifiedDate(new Date());
 		ticketCannedResponse.setName(nameXml);
 		ticketCannedResponse.setContent(contentXml);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
-		ticketCannedResponsePersistence.update(ticketCannedResponse, serviceContext);
+		ticketCannedResponsePersistence.update(
+			ticketCannedResponse, serviceContext);
 
 		return ticketCannedResponse;
 	}

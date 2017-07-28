@@ -72,7 +72,7 @@
 				'<portlet:actionURL name="updateFeedbackEntry" />',
 				{
 					data: {
-						<portlet:namespace />satisfied: satisfied,
+						<portlet:namespace />satisfied: satisfied
 					},
 					dataType: 'json',
 					method: 'post',

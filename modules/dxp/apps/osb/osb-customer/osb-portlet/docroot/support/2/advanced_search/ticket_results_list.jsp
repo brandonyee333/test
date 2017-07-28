@@ -127,7 +127,7 @@ if (!mvcPath.endsWith("search.jsp")) {
 									<div class="row">
 										<div class="column ticket-column severity v<%= ticketEntry.getSeverity() %>"></div>
 
-										<div class="column ticket-column img" <%= columnJS %>>
+										<div class="column img ticket-column" <%= columnJS %>>
 											<div>
 												<span title="<%= LanguageUtil.get(pageContext, ticketEntry.getComponentLabel()) %>">
 													<img class="ticket-img" src="<%= PortalUtil.getPathContext(request) %>/images/<%= ticketEntry.getComponentIcon() %>" />
@@ -143,7 +143,7 @@ if (!mvcPath.endsWith("search.jsp")) {
 											</div>
 										</div>
 
-										<div class="column ticket-column subject" <%= columnJS %>>
+										<div class="column subject ticket-column" <%= columnJS %>>
 											<div class="search-detail">
 												<span title="<%= HtmlUtil.escapeAttribute(ticketEntry.getSubject()) %>">
 													<%= HtmlUtil.escape(ticketEntry.getSubject()) %>
@@ -167,27 +167,27 @@ if (!mvcPath.endsWith("search.jsp")) {
 											</div>
 										</div>
 
-										<div class="column ticket-column created" <%= columnJS %>>
+										<div class="column created ticket-column" <%= columnJS %>>
 											<div class="ticket-created-date">
 												<%= shortDateFormatDate.format(ticketEntry.getCreateDate()) %>
 											</div>
 										</div>
 
-										<div class="column ticket-column last-updated" <%= columnJS %>>
+										<div class="column last-updated ticket-column" <%= columnJS %>>
 											<div class="ticket-last-updated-date">
 												<%= shortDateFormatDate.format(ticketEntry.getModifiedDate()) %>
 											</div>
 										</div>
 
 										<c:if test="<%= liferayIncOrg %>">
-											<div class="column ticket-column due-date" <%= columnJS %>>
+											<div class="column due-date ticket-column" <%= columnJS %>>
 												<div class="ticket-due-date">
 													<%= shortDateFormatDate.format(ticketEntry.getDueDate()) %>
 												</div>
 											</div>
 										</c:if>
 
-										<div class="column ticket-column status" <%= columnJS %>>
+										<div class="column status ticket-column" <%= columnJS %>>
 											<div class="ticket-status">
 
 												<%
@@ -196,8 +196,8 @@ if (!mvcPath.endsWith("search.jsp")) {
 												sb.append(LanguageUtil.get(pageContext, ticketEntry.getStatusLabel()));
 
 												if (ticketEntry.getResolution() > 0) {
-													 sb.append(" : ");
-													 sb.append(LanguageUtil.get(pageContext, ticketEntry.getResolutionLabel()));
+													sb.append(" : ");
+													sb.append(LanguageUtil.get(pageContext, ticketEntry.getResolutionLabel()));
 												}
 												%>
 
@@ -207,7 +207,7 @@ if (!mvcPath.endsWith("search.jsp")) {
 											</div>
 										</div>
 
-										<div class="column ticket-column files">
+										<div class="column files ticket-column">
 											<div>
 
 												<%

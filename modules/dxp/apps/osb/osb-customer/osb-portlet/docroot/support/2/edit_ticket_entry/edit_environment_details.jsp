@@ -98,7 +98,7 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 				%>
 
 				<div class="field-align">
-					<select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(pageContext,"please-select-a-valid-liferay-version") %>' id="<portlet:namespace />envLFR" name="<portlet:namespace />envLFR" onChange="<%= envLFROnChangeSB.toString() %>">
+					<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(pageContext, "please-select-a-valid-liferay-version") %>" id="<portlet:namespace />envLFR" name="<portlet:namespace />envLFR" onChange="<%= envLFROnChangeSB.toString() %>">
 
 						<%
 						for (ListType envLFRType : envLFRTypes) {
@@ -189,9 +189,9 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 					<label id="<portlet:namespace />envOSLabel"><liferay-ui:message key="operating-system" /></label>
 
 					<div class="field-align">
-						<select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(pageContext,"please-select-a-valid-operating-system") %>' id="<portlet:namespace />envOS" name="<portlet:namespace />envOS" onChange="<portlet:namespace />selectEnvOS(this.value);">
+						<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(pageContext, "please-select-a-valid-operating-system") %>" id="<portlet:namespace />envOS" name="<portlet:namespace />envOS" onChange="<portlet:namespace />selectEnvOS(this.value);">
 							<c:if test="<%= envOS != 0 %>">
-								<option selected value="<%= envOS %>"><%= LanguageUtil.get(locale, TicketEntryConstants.getEnvLabel(envOS)) %></option>
+								<option selected value="<%= envOS %>"><%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envOS)) %></option>
 							</c:if>
 						</select>
 
@@ -205,9 +205,9 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 					<label id="<portlet:namespace />envASLabel"><liferay-ui:message key="application-server" /></label>
 
 					<div class="field-align">
-						<select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(pageContext,"please-select-a-valid-application-server") %>' id="<portlet:namespace />envAS" name="<portlet:namespace />envAS">
+						<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(pageContext, "please-select-a-valid-application-server") %>" id="<portlet:namespace />envAS" name="<portlet:namespace />envAS">
 							<c:if test="<%= envAS != 0 %>">
-								<option selected value="<%= envAS %>"><%= LanguageUtil.get(locale, TicketEntryConstants.getEnvLabel(envAS)) %></option>
+								<option selected value="<%= envAS %>"><%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envAS)) %></option>
 							</c:if>
 						</select>
 					</div>
@@ -216,9 +216,9 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 				<div class="field-group">
 					<label id="<portlet:namespace />envJVMLabel"><liferay-ui:message key="java-virtual-machine" /></label>
 
-					<select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(pageContext,"please-select-a-valid-java-virtual-machine") %>' id="<portlet:namespace />envJVM" name="<portlet:namespace />envJVM">
+					<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(pageContext, "please-select-a-valid-java-virtual-machine") %>" id="<portlet:namespace />envJVM" name="<portlet:namespace />envJVM">
 						<c:if test="<%= envJVM != 0 %>">
-							<option selected value="<%= envJVM %>"><%= LanguageUtil.get(locale, TicketEntryConstants.getEnvLabel(envJVM)) %></option>
+							<option selected value="<%= envJVM %>"><%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envJVM)) %></option>
 						</c:if>
 					</select>
 				</div>
@@ -227,9 +227,9 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 					<label id="<portlet:namespace />envDBLabel"><liferay-ui:message key="database" /></label>
 
 					<div class="field-align">
-						<select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(pageContext,"please-select-a-valid-database") %>' id="<portlet:namespace />envDB" name="<portlet:namespace />envDB">
+						<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(pageContext, "please-select-a-valid-database") %>" id="<portlet:namespace />envDB" name="<portlet:namespace />envDB">
 							<c:if test="<%= envDB != 0 %>">
-								<option selected value="<%= envDB %>"><%= LanguageUtil.get(locale, TicketEntryConstants.getEnvLabel(envDB)) %></option>
+								<option selected value="<%= envDB %>"><%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envDB)) %></option>
 							</c:if>
 						</select>
 					</div>
@@ -240,7 +240,7 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 
 					<select id="<portlet:namespace />envBrowser" name="<portlet:namespace />envBrowser" onChange="<portlet:namespace />selectBrowser(this.value);">
 						<c:if test="<%= envBrowser != 0 %>">
-							<option selected value="<%= envBrowser %>"><%= LanguageUtil.get(locale, TicketEntryConstants.getEnvLabel(envBrowser)) %></option>
+							<option selected value="<%= envBrowser %>"><%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envBrowser)) %></option>
 						</c:if>
 					</select>
 
@@ -502,7 +502,7 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 				'<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="earlierLFRVersions" />',
 				{
 					data: {
-						<portlet:namespace />envLFR: envLFR,
+						<portlet:namespace />envLFR: envLFR
 					},
 					dataType: 'json',
 					method: 'post',

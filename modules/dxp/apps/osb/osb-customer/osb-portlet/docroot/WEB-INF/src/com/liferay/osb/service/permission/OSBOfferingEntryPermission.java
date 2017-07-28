@@ -24,7 +24,6 @@ import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
 import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
@@ -37,7 +36,7 @@ public class OSBOfferingEntryPermission {
 	public static void check(
 			PermissionChecker permissionChecker, long offeringEntryId,
 			String actionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (!contains(permissionChecker, offeringEntryId, actionId)) {
 			throw new PrincipalException();
@@ -47,7 +46,7 @@ public class OSBOfferingEntryPermission {
 	public static void check(
 			PermissionChecker permissionChecker, OfferingEntry offeringEntry,
 			String actionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (!contains(permissionChecker, offeringEntry, actionId)) {
 			throw new PrincipalException();
@@ -57,7 +56,7 @@ public class OSBOfferingEntryPermission {
 	public static boolean contains(
 			PermissionChecker permissionChecker, long offeringEntryId,
 			String actionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OfferingEntry offeringEntry =
 			OfferingEntryLocalServiceUtil.getOfferingEntry(offeringEntryId);
@@ -66,9 +65,8 @@ public class OSBOfferingEntryPermission {
 	}
 
 	public static boolean contains(
-			PermissionChecker permissionChecker, OfferingEntry offeringEntry,
-			String actionId)
-		throws SystemException {
+		PermissionChecker permissionChecker, OfferingEntry offeringEntry,
+		String actionId) {
 
 		if (RoleLocalServiceUtil.hasUserRole(
 				permissionChecker.getUserId(),

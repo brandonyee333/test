@@ -65,29 +65,26 @@ public class AccountInformationConstants {
 
 	public static final int[] SECTION_ADVOCACY_SPECIALIST_FIELD_IDS = {
 		FIELD_REASONS_FOR_STRATEGIC, FIELD_PROJECT_OVERVIEW,
-		FIELD_CONTACT_OVERVIEW, FIELD_MAJOR_MILESTONES, FIELD_OTHER_INFO,
+		FIELD_CONTACT_OVERVIEW, FIELD_MAJOR_MILESTONES, FIELD_OTHER_INFO
 	};
 
 	public static final String SECTION_CALL_LOG = "call-log";
 
 	public static final String SECTION_ON_BOARDING = "on-boarding-contact";
 
-	public static final int[] SECTION_ON_BOARDING_FIELD_IDS = {
-		FIELD_CONTACT_INFO
-	};
+	public static final int[] SECTION_ON_BOARDING_FIELD_IDS =
+		{FIELD_CONTACT_INFO};
 
 	public static final String SECTION_SALES = "sales-information";
 
-	public static final int[] SECTION_SALES_FIELD_IDS = {
-		FIELD_LICENSE_INFO, FIELD_SALESFORCE_URL, FIELD_TRAININGS_ATTENDED
-	};
+	public static final int[] SECTION_SALES_FIELD_IDS =
+		{FIELD_LICENSE_INFO, FIELD_SALESFORCE_URL, FIELD_TRAININGS_ATTENDED};
 
 	public static final String SECTION_SATISFACTION_METER =
 		"satisfaction-meter";
 
-	public static final int[] SECTION_SATISFACTION_METER_FIELD_IDS = {
-		FIELD_FEEDBACK
-	};
+	public static final int[] SECTION_SATISFACTION_METER_FIELD_IDS =
+		{FIELD_FEEDBACK};
 
 	public static final String[] SECTIONS_CUSTOMER_INFO = {
 		SECTION_ON_BOARDING, SECTION_ADVOCACY_SPECIALIST, SECTION_SALES,

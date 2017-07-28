@@ -14,11 +14,11 @@
 
 package com.liferay.osb.hook.upgrade;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.osb.hook.upgrade.v1_9_0.UpgradeAccountEntry;
 import com.liferay.osb.hook.upgrade.v1_9_0.UpgradeAppEntry;
 import com.liferay.osb.hook.upgrade.v1_9_0.UpgradeAppPricing;
 import com.liferay.osb.hook.upgrade.v1_9_0.UpgradeAppVersion;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
 /**
  * @author Lin Cui

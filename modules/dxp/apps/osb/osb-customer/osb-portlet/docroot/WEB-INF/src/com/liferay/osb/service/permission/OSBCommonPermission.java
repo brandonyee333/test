@@ -14,13 +14,12 @@
 
 package com.liferay.osb.service.permission;
 
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.PartnerEntry;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.permission.CommonPermission;
+import com.liferay.portal.kernel.util.PortalUtil;
 
 /**
  * @author Amos Fong
@@ -35,7 +34,7 @@ public class OSBCommonPermission implements CommonPermission {
 	public void check(
 			PermissionChecker permissionChecker, long classNameId, long classPK,
 			String actionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		String className = PortalUtil.getClassName(classNameId);
 
@@ -54,7 +53,7 @@ public class OSBCommonPermission implements CommonPermission {
 	public void check(
 			PermissionChecker permissionChecker, String className, long classPK,
 			String actionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (className.equals(AccountEntry.class.getName())) {
 			return;
@@ -71,6 +70,6 @@ public class OSBCommonPermission implements CommonPermission {
 		return _commonPermission;
 	}
 
-	private CommonPermission _commonPermission;
+	private final CommonPermission _commonPermission;
 
 }

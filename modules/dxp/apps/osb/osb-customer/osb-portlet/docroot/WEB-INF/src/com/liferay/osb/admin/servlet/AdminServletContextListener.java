@@ -14,32 +14,20 @@
 
 package com.liferay.osb.admin.servlet;
 
-import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.osb.hook.auth.OSBAuthToken;
-import com.liferay.osb.license.messaging.RegisterTrialLicenseMessageListener;
 import com.liferay.osb.model.TicketEntry;
 import com.liferay.osb.model.TicketEntryConstants;
 import com.liferay.osb.service.permission.OSBCommonPermission;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.PortletPropsValues;
-import com.liferay.portal.kernel.exception.NoSuchOrganizationException;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
+import com.liferay.portal.kernel.exception.NoSuchOrganizationException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Destination;
-import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.messaging.MessageListener;
-import com.liferay.portal.kernel.messaging.SerialDestination;
-import com.liferay.portal.kernel.search.SearchEngineUtil;
-import com.liferay.portal.kernel.util.BasePortalLifecycle;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
@@ -50,7 +38,6 @@ import com.liferay.portal.kernel.model.OrganizationConstants;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.security.auth.AuthToken;
 import com.liferay.portal.kernel.security.auth.AuthTokenUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
@@ -61,6 +48,11 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.service.permission.CommonPermission;
 import com.liferay.portal.kernel.service.permission.CommonPermissionUtil;
+import com.liferay.portal.kernel.util.BasePortalLifecycle;
+import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 /* TODO update rabbitMQ integration
 import com.liferay.osb.rabbitmq.RabbitMQConsumerRouter;
 import com.liferay.rabbitmq.consumer.RabbitMQConsumer;
@@ -93,9 +85,7 @@ public class AdminServletContextListener
 		registerPortalLifecycle();
 	}
 
-	protected void addAdministratorRole(long roleId)
-		throws PortalException, SystemException {
-
+	protected void addAdministratorRole(long roleId) throws PortalException {
 		Role role = RoleLocalServiceUtil.getRole(
 			OSBConstants.COMPANY_ID, RoleConstants.ADMINISTRATOR);
 
@@ -122,7 +112,8 @@ public class AdminServletContextListener
 
 	@Override
 	protected void doPortalDestroy() {
-		/* TODO deploy error, need to fix when we figure out how to set up trial licenses
+		/* TODO deploy error,
+		need to fix when we figure out how to set up trial licenses
 			_registerTrialLicenseDestination.unregister(
 			_registerTrialLicenseMessageListener);
 
@@ -144,6 +135,7 @@ public class AdminServletContextListener
 		// Common permission
 
 		// TODO fix cast from CommonPermission to OSBCommonPermission
+
 		/*CommonPermissionUtil commonPermissionUtil =
 			(CommonPermissionUtil)PortalBeanLocatorUtil.locate(
 				CommonPermissionUtil.class.getName());
@@ -155,11 +147,14 @@ public class AdminServletContextListener
 			osbCommonPermission.getCommonPermission());*/
 
 		// RabbitMQ
+
 /* TODO update rabbitMQ integration
+
 		if (Validator.isNotNull(_rabbitMQConsumerKey)) {
 			ConsumerManagerLocalServiceUtil.unregisterConsumer(
 				_rabbitMQConsumerKey);
 		}
+
 */
 	}
 
@@ -169,8 +164,9 @@ public class AdminServletContextListener
 
 		// Messaging
 
-		/* TODO deploy error, need to fix when we figure out how to set up trial licenses
- 		
+		/* TODO deploy error,
+		need to fix when we figure out how to set up trial licenses
+
 		SerialDestination serialDestination = new SerialDestination();
 
 		serialDestination.setName("liferay/osb_portlet_license");
@@ -196,6 +192,7 @@ public class AdminServletContextListener
 		// Asset
 
 		// TODO need database for OSBConstants.*_USER_ID calls
+
 		//AdminServletContextListenerAssetHelper.setup();
 
 		// Audit action
@@ -241,7 +238,9 @@ public class AdminServletContextListener
 		commonPermissionUtil.setCommonPermission(osbCommonPermission);
 
 		// RabbitMQ
+
 /* TODO update rabbitMQ integration
+
 		if (Validator.isNotNull(
 				PortletPropsValues.RABBITMQ_MESSAGE_QUEUE_NAME)) {
 
@@ -258,15 +257,18 @@ public class AdminServletContextListener
 				_log.error("Unable to register consumer", e);
 			}
 		}
+
 */
+
 		// Search
 
 		// TODO searchEngineUtil deprecated, need to update
+
 		/*SearchEngineUtil searchEngineUtil =
 			(SearchEngineUtil)PortalBeanLocatorUtil.locate(
 				SearchEngineUtil.class.getName());*/
 
-		List<String> excludedEntryClassNames = new ArrayList<String>(8);
+		List<String> excludedEntryClassNames = new ArrayList<>(8);
 
 		excludedEntryClassNames.add(Organization.class.getName());
 		excludedEntryClassNames.add(TicketEntry.class.getName());
@@ -324,11 +326,11 @@ public class AdminServletContextListener
 			group = GroupLocalServiceUtil.getGroup(
 				OSBConstants.COMPANY_ID, "Customer Portal");
 		}
-		catch (Exception e) {			
+		catch (Exception e) {
 			group = GroupLocalServiceUtil.addGroup(
-				OSBConstants.USER_SUPPORT_PM_USER_ID, 0, null, 0, 0, 
-				"Customer Portal", StringPool.BLANK, 
-				GroupConstants.TYPE_SITE_PRIVATE, false, 0, "/customer", true, 
+				OSBConstants.USER_SUPPORT_PM_USER_ID, 0, null, 0, 0,
+				"Customer Portal", StringPool.BLANK,
+				GroupConstants.TYPE_SITE_PRIVATE, false, 0, "/customer", true,
 				true, null);
 		}
 
@@ -432,8 +434,8 @@ public class AdminServletContextListener
 			customerOrganization = OrganizationLocalServiceUtil.addOrganization(
 				OSBConstants.USER_DEFAULT_USER_ID,
 				OrganizationConstants.DEFAULT_PARENT_ORGANIZATION_ID,
-				"Customer", OrganizationConstants.TYPE_REGULAR_ORGANIZATION,
-				0L, 0L, (long)ListTypeConstants.ORGANIZATION_STATUS_DEFAULT,
+				"Customer", OrganizationConstants.TYPE_REGULAR_ORGANIZATION, 0L,
+				0L, (long)ListTypeConstants.ORGANIZATION_STATUS_DEFAULT,
 				StringPool.BLANK, false, new ServiceContext());
 		}
 
@@ -455,8 +457,8 @@ public class AdminServletContextListener
 					OSBConstants.USER_DEFAULT_USER_ID,
 					OrganizationConstants.DEFAULT_PARENT_ORGANIZATION_ID,
 					"Liferay, Inc.",
-					OrganizationConstants.TYPE_REGULAR_ORGANIZATION, 5L,
-					19L, (long)ListTypeConstants.ORGANIZATION_STATUS_DEFAULT,
+					OrganizationConstants.TYPE_REGULAR_ORGANIZATION, 5L, 19L,
+					(long)ListTypeConstants.ORGANIZATION_STATUS_DEFAULT,
 					StringPool.BLANK, false, new ServiceContext());
 		}
 
@@ -476,8 +478,8 @@ public class AdminServletContextListener
 				OSBConstants.USER_DEFAULT_USER_ID,
 				OrganizationConstants.DEFAULT_PARENT_ORGANIZATION_ID, "Partner",
 				OrganizationConstants.TYPE_REGULAR_ORGANIZATION, 0L, 19L,
-				(long)ListTypeConstants.ORGANIZATION_STATUS_DEFAULT, StringPool.BLANK,
-				false, new ServiceContext());
+				(long)ListTypeConstants.ORGANIZATION_STATUS_DEFAULT,
+				StringPool.BLANK, false, new ServiceContext());
 		}
 
 		OSBConstants.ORGANIZATION_PARTNER_ID =
@@ -648,7 +650,7 @@ public class AdminServletContextListener
 		addListTypes();
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		AdminServletContextListener.class);
 
 	private String _rabbitMQConsumerKey;

@@ -28,7 +28,6 @@ public class AccountEnvironmentAttachmentSizeException extends PortalException {
 	public static final int EXCEEDS_LIMIT = 2;
 
 	public AccountEnvironmentAttachmentSizeException() {
-		super();
 	}
 
 	public AccountEnvironmentAttachmentSizeException(int type) {

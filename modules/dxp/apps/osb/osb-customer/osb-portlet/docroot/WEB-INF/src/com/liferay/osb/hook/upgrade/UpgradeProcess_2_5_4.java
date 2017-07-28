@@ -14,8 +14,8 @@
 
 package com.liferay.osb.hook.upgrade;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.osb.hook.upgrade.v2_5_4.UpgradeAppPricing;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
 /**
  * @author Ryan Park

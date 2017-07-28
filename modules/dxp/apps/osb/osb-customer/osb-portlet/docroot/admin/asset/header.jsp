@@ -45,7 +45,7 @@ Integer salesforceOpportunityType = (Integer)request.getAttribute("header.jsp-sa
 </style>
 
 <h1 class="workflow-task-header">
-	<%= LanguageUtil.get(locale, SalesforceConstants.getOpportunityTaskName(salesforceOpportunityType, salesforceOpportunityAction)) %>
+	<%= LanguageUtil.get(request, SalesforceConstants.getOpportunityTaskName(salesforceOpportunityType, salesforceOpportunityAction)) %>
 </h1>
 
 <liferay-ui:error exception="<%= AccountEntryCodeException.class %>" message="please-enter-a-valid-code" />

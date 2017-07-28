@@ -14,10 +14,10 @@
 
 package com.liferay.osb.remote;
 
+import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.petra.json.web.service.client.BaseJSONWebServiceClientHandler;
 import com.liferay.petra.json.web.service.client.JSONWebServiceClient;
 import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
-import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -42,9 +42,7 @@ public class RemoteDossieraWebServiceImpl
 		return _jsonWebServiceClient;
 	}
 
-	public JSONArray getOpportunitiesJSONArray(String salesforceProjectKey)
-		throws SystemException {
-
+	public JSONArray getOpportunitiesJSONArray(String salesforceProjectKey) {
 		return doGetJSONArray(
 			_URL_API_REST_PURCHASED_PRODUCT + "/opportunities/" +
 				salesforceProjectKey);
@@ -56,8 +54,8 @@ public class RemoteDossieraWebServiceImpl
 		_jsonWebServiceClient = jsonWebServiceClient;
 	}
 
-	protected JSONArray doGetJSONArray(String url) throws SystemException {
-		Map<String, String> headers = new HashMap<String, String>();
+	protected JSONArray doGetJSONArray(String url) {
+		Map<String, String> headers = new HashMap<>();
 
 		headers.put(
 			"Dossiera-API-Token",
@@ -102,7 +100,7 @@ public class RemoteDossieraWebServiceImpl
 	private static final String _URL_API_REST_PURCHASED_PRODUCT =
 		_URL_API_REST + "/purchased-product";
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		RemoteDossieraWebServiceImpl.class);
 
 	private JSONWebServiceClient _jsonWebServiceClient;

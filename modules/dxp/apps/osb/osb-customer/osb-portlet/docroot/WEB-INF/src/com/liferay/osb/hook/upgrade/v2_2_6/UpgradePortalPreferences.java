@@ -16,7 +16,7 @@ package com.liferay.osb.hook.upgrade.v2_2_6;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
-/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+/*import UpgradeProcess;
 import com.liferay.portal.kernel.util.StringBundler;
 
 */
@@ -30,9 +30,7 @@ public class UpgradePortalPreferences extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	protected void doUpgrade() throws Exception {
 		updatePortalPreferences();
 	}
@@ -49,6 +47,7 @@ public class UpgradePortalPreferences extends UpgradeProcess {
 	}
 
 }
+
 */
 
 }

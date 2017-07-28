@@ -45,6 +45,6 @@ public class AccountProjectImpl extends AccountProjectBaseImpl {
 		}
 	}
 
-	private Map<Integer, String> _fieldData = new HashMap<Integer, String>();
+	private Map<Integer, String> _fieldData = new HashMap<>();
 
 }

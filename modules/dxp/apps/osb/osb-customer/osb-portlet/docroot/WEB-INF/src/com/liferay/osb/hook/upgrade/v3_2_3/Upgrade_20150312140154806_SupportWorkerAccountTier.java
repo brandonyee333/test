@@ -40,9 +40,7 @@ public class Upgrade_20150312140154806_SupportWorkerAccountTier
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20150312140154806L;
 	}
@@ -149,6 +147,7 @@ public class Upgrade_20150312140154806_SupportWorkerAccountTier
 	}
 
 }
+
 */
 
 }

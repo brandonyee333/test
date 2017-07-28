@@ -30,9 +30,7 @@ public class Upgrade_20140820112944019_ECAccessKey extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20140820112944019L;
 	}
@@ -59,6 +57,7 @@ public class Upgrade_20140820112944019_ECAccessKey extends UpgradeProcess {
 	}
 
 }
+
 */
 
 }

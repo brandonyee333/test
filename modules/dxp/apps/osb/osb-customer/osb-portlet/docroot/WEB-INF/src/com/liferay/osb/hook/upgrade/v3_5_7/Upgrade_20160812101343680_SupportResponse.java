@@ -29,16 +29,13 @@ import java.util.List;
 /**
  * @author Amos Fong
  */
-public class Upgrade_20160812101343680_SupportResponse
-	extends UpgradeProcess {
+public class Upgrade_20160812101343680_SupportResponse extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20160812101343680L;
 	}
@@ -104,15 +101,16 @@ public class Upgrade_20160812101343680_SupportResponse
 					fromSupportResponseId);
 	}
 
-	private final static long _SUPPORT_RESPONSE_GOLD_ID = 77672072;
+	private static final long _SUPPORT_RESPONSE_GOLD_ID = 77672072;
 
-	private final static long _SUPPORT_RESPONSE_LIMITED_ID = 77672083;
+	private static final long _SUPPORT_RESPONSE_LIMITED_ID = 77672083;
 
-	private final static long _SUPPORT_RESPONSE_PLATINUM_ID = 77672068;
+	private static final long _SUPPORT_RESPONSE_PLATINUM_ID = 77672068;
 
-	private final static long _SUPPORT_RESPONSE_SILVER_ID = 77672086;
+	private static final long _SUPPORT_RESPONSE_SILVER_ID = 77672086;
 
 }
+
 */
 
 }

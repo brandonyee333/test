@@ -18,6 +18,7 @@
 
 <%
 String redirect = ParamUtil.getString(request, "redirect");
+
 String backURL = ParamUtil.getString(request, "backURL", redirect);
 
 long licenseKeyId = ParamUtil.getLong(request, "licenseKeyId");
@@ -182,27 +183,27 @@ String productEntryName = licenseKey.getProductEntryName();
 						</c:when>
 						<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_PRODUCTION) %>">
 							<table class="lfr-table">
-							<tr>
-								<td>
-									<span class="txt-b txt-up"><liferay-ui:message key="mac-addresses" />:</span>
-								</td>
-								<td>
+								<tr>
+									<td>
+										<span class="txt-b txt-up"><liferay-ui:message key="mac-addresses" />:</span>
+									</td>
+									<td>
 
-									<%
-									List<LicenseKey> clusterLicenseKeys = LicenseKeyLocalServiceUtil.getOfferingEntryLicenseKeys(licenseKey.getOfferingEntryId(), licenseKey.getClusterId());
+										<%
+										List<LicenseKey> clusterLicenseKeys = LicenseKeyLocalServiceUtil.getOfferingEntryLicenseKeys(licenseKey.getOfferingEntryId(), licenseKey.getClusterId());
 
-									for (int i = 0; i < clusterLicenseKeys.size(); i++) {
-										LicenseKey clusterLicenseKey = clusterLicenseKeys.get(i);
-									%>
+										for (int i = 0; i < clusterLicenseKeys.size(); i++) {
+											LicenseKey clusterLicenseKey = clusterLicenseKeys.get(i);
+										%>
 
-										<%= clusterLicenseKey.getServerId() %><%= (i + 1) < clusterLicenseKeys.size() ? "<br />" : "" %>
+											<%= clusterLicenseKey.getServerId() %><%= (i + 1) < clusterLicenseKeys.size() ? "<br />" : "" %>
 
-									<%
-									}
-									%>
+										<%
+										}
+										%>
 
-								</td>
-							</tr>
+									</td>
+								</tr>
 							</table>
 						</c:when>
 					</c:choose>
@@ -211,27 +212,27 @@ String productEntryName = licenseKey.getProductEntryName();
 					<c:choose>
 						<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) || licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER) %>">
 							<table class="lfr-table">
-							<tr>
-								<td>
-									<span class="txt-b txt-up"><liferay-ui:message key="mac-addresses" />:</span>
-								</td>
-								<td>
+								<tr>
+									<td>
+										<span class="txt-b txt-up"><liferay-ui:message key="mac-addresses" />:</span>
+									</td>
+									<td>
 
-									<%
-									List<LicenseKey> clusterLicenseKeys = LicenseKeyLocalServiceUtil.getOfferingEntryLicenseKeys(licenseKey.getOfferingEntryId(), licenseKey.getClusterId());
+										<%
+										List<LicenseKey> clusterLicenseKeys = LicenseKeyLocalServiceUtil.getOfferingEntryLicenseKeys(licenseKey.getOfferingEntryId(), licenseKey.getClusterId());
 
-									for (int i = 0; i < clusterLicenseKeys.size(); i++) {
-										LicenseKey clusterLicenseKey = clusterLicenseKeys.get(i);
-									%>
+										for (int i = 0; i < clusterLicenseKeys.size(); i++) {
+											LicenseKey clusterLicenseKey = clusterLicenseKeys.get(i);
+										%>
 
-										<%= clusterLicenseKey.getServerId() %><%= (i + 1) < clusterLicenseKeys.size() ? "<br />" : "" %>
+											<%= clusterLicenseKey.getServerId() %><%= (i + 1) < clusterLicenseKeys.size() ? "<br />" : "" %>
 
-									<%
-									}
-									%>
+										<%
+										}
+										%>
 
-								</td>
-							</tr>
+									</td>
+								</tr>
 							</table>
 						</c:when>
 						<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_PRODUCTION) %>">

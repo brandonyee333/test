@@ -110,10 +110,10 @@ boolean addTicketPermission = OSBAccountEntryPermission.contains(permissionCheck
 			<div class="callout-a">
 				<div class="callout-content">
 					<liferay-ui:search-container
-							delta="<%= 10 %>"
-							headerNames="product,support,start-date,support-end-date,tickets-used"
-							iteratorURL="<%= portletURL %>"
-						>
+						delta="<%= 10 %>"
+						headerNames="product,support,start-date,support-end-date,tickets-used"
+						iteratorURL="<%= portletURL %>"
+					>
 
 						<%
 						LinkedHashMap params = new LinkedHashMap();

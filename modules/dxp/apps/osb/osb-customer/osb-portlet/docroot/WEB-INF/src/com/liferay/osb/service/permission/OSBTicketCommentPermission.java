@@ -27,7 +27,6 @@ import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.osb.util.comparator.TicketCommentCreateDateComparator;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
@@ -43,7 +42,7 @@ public class OSBTicketCommentPermission {
 	public static void check(
 			PermissionChecker permissionChecker, long ticketCommentId,
 			String actionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (!contains(permissionChecker, ticketCommentId, actionId)) {
 			throw new PrincipalException();
@@ -53,7 +52,7 @@ public class OSBTicketCommentPermission {
 	public static void check(
 			PermissionChecker permissionChecker, TicketComment ticketComment,
 			String actionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (!contains(permissionChecker, ticketComment, actionId)) {
 			throw new PrincipalException();
@@ -63,7 +62,7 @@ public class OSBTicketCommentPermission {
 	public static boolean contains(
 			PermissionChecker permissionChecker, long ticketCommentId,
 			String actionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketComment ticketComment =
 			TicketCommentLocalServiceUtil.getTicketComment(ticketCommentId);
@@ -72,11 +71,10 @@ public class OSBTicketCommentPermission {
 	}
 
 	public static boolean contains(
-			PermissionChecker permissionChecker, TicketComment ticketComment,
-			String actionId)
-		throws SystemException {
+		PermissionChecker permissionChecker, TicketComment ticketComment,
+		String actionId) {
 
-		List<SupportWorker> supportWorkers = new ArrayList<SupportWorker>();
+		List<SupportWorker> supportWorkers = new ArrayList<>();
 
 		try {
 			supportWorkers =
@@ -122,7 +120,7 @@ public class OSBTicketCommentPermission {
 				return true;
 			}
 
-			List<PartnerWorker> partnerWorkers = new ArrayList<PartnerWorker>();
+			List<PartnerWorker> partnerWorkers = new ArrayList<>();
 
 			try {
 				partnerWorkers =

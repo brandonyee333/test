@@ -14,12 +14,9 @@
 
 package com.liferay.osb.service.persistence.impl;
 
+import com.liferay.osb.model.LicenseKey;
 import com.liferay.osb.service.persistence.LicenseKeyFinder;
 import com.liferay.osb.service.persistence.LicenseKeyUtil;
-
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.osb.model.LicenseKey;
 import com.liferay.osb.util.OSBCustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.PortalCustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -32,7 +29,8 @@ import com.liferay.portal.kernel.util.CalendarUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.sql.Timestamp;
@@ -65,14 +63,14 @@ public class LicenseKeyFinderImpl
 	public static final String JOIN_BY_ACCOUNT_CUSTOMER =
 		LicenseKeyFinder.class.getName() + ".joinByAccountCustomer";
 
-	public static final String JOIN_BY_ACCOUNT_ENTRY_TYPE =
-		LicenseKeyFinder.class.getName() + ".joinByAccountEntryType";
-
 	public static final String JOIN_BY_ACCOUNT_WORKER =
 		LicenseKeyFinder.class.getName() + ".joinByAccountWorker";
 
 	public static final String JOIN_BY_ACTIVE =
 		LicenseKeyFinder.class.getName() + ".joinByActive";
+
+	public static final String JOIN_BY_ACCOUNT_ENTRY_TYPE =
+		LicenseKeyFinder.class.getName() + ".joinByAccountEntryType";
 
 	public static final String JOIN_BY_ASSET_RECEIPT_ITEM =
 		LicenseKeyFinder.class.getName() + ".joinByAssetReceiptLicense";
@@ -84,8 +82,7 @@ public class LicenseKeyFinderImpl
 		LicenseKeyFinder.class.getName() + ".joinByPartnerWorker";
 
 	public int countByKeywords(
-			String keywords, LinkedHashMap<String, Object> params)
-		throws SystemException {
+		String keywords, LinkedHashMap<String, Object> params) {
 
 		String[] accountEntryNames = null;
 		String[] licenseKeySetNames = null;
@@ -125,9 +122,7 @@ public class LicenseKeyFinderImpl
 			params, andOperator);
 	}
 
-	public int countByCPI_K_A(long corpProjectId, String key, boolean active)
-		throws SystemException {
-
+	public int countByCPI_K_A(long corpProjectId, String key, boolean active) {
 		Session session = null;
 
 		try {
@@ -135,7 +130,7 @@ public class LicenseKeyFinderImpl
 
 			String sql = CustomSQLUtil.get(COUNT_BY_CPI_K_A);
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addScalar(COUNT_COLUMN_NAME, Type.LONG);
 
@@ -166,16 +161,15 @@ public class LicenseKeyFinderImpl
 	}
 
 	public int countByU_C_M_M_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
-			Long createUserId, Date createDateGT, Date createDateLT,
-			Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
-			String accountEntryName, String licenseKeySetName, Date startDateGT,
-			Date startDateLT, long[] licenseEntryIds, long[] productEntryIds,
-			String productEntryName, String productId, int[] productVersions,
-			String owner, String description, String hostName, String ipAddress,
-			String macAddress, String serverId, String key,
-			Date expirationDateGT, Date expirationDateLT,
-			LinkedHashMap<String, Object> params, boolean andOperator)
-		throws SystemException {
+		Long createUserId, Date createDateGT, Date createDateLT,
+		Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
+		String accountEntryName, String licenseKeySetName, Date startDateGT,
+		Date startDateLT, long[] licenseEntryIds, long[] productEntryIds,
+		String productEntryName, String productId, int[] productVersions,
+		String owner, String description, String hostName, String ipAddress,
+		String macAddress, String serverId, String key, Date expirationDateGT,
+		Date expirationDateLT, LinkedHashMap<String, Object> params,
+		boolean andOperator) {
 
 		String[] accountEntryNames = OSBCustomSQLUtil.keywords(
 			accountEntryName);
@@ -199,45 +193,9 @@ public class LicenseKeyFinderImpl
 			params, andOperator);
 	}
 
-	public List<LicenseKey> findByU_C_M_M_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
-			Long createUserId, Date createDateGT, Date createDateLT,
-			Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
-			String accountEntryName, String licenseKeySetName, Date startDateGT,
-			Date startDateLT, long[] licenseEntryIds, long[] productEntryIds,
-			String productEntryName, String productId, int[] productVersions,
-			String owner, String description, String hostName, String ipAddress,
-			String macAddress, String serverId, String key,
-			Date expirationDateGT, Date expirationDateLT,
-			LinkedHashMap<String, Object> params, boolean andOperator,
-			int start, int end, OrderByComparator obc)
-		throws SystemException {
-
-		String[] accountEntryNames = OSBCustomSQLUtil.keywords(
-			accountEntryName);
-		String[] licenseKeySetNames = CustomSQLUtil.keywords(licenseKeySetName);
-		String[] productEntryNames = CustomSQLUtil.keywords(productEntryName);
-		String[] owners = CustomSQLUtil.keywords(owner);
-		String[] descriptions = CustomSQLUtil.keywords(description);
-		String[] hostNames = CustomSQLUtil.keywords(hostName);
-		String[] ipAddresses = CustomSQLUtil.keywords(ipAddress);
-		String[] macAddresses = CustomSQLUtil.keywords(macAddress);
-		String[] serverIds = CustomSQLUtil.keywords(serverId);
-		String[] keys = CustomSQLUtil.keywords(key);
-
-		return findByU_C_M_M_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
-			createUserId, createDateGT, createDateLT, modifiedUserId,
-			modifiedDateGT, modifiedDateLT, accountEntryNames,
-			licenseKeySetNames, createDateGT, createDateLT, licenseEntryIds,
-			productEntryIds, productEntryNames, new String[] {productId},
-			productVersions, owners, descriptions, hostNames, ipAddresses,
-			macAddresses, serverIds, keys, expirationDateGT, expirationDateLT,
-			params, andOperator, start, end, obc);
-	}
-
 	public List<LicenseKey> findByKeywords(
-			String keywords, LinkedHashMap<String, Object> params, int start,
-			int end, OrderByComparator obc)
-		throws SystemException {
+		String keywords, LinkedHashMap<String, Object> params, int start,
+		int end, OrderByComparator obc) {
 
 		String[] accountEntryNames = null;
 		String[] licenseKeySetNames = null;
@@ -277,31 +235,60 @@ public class LicenseKeyFinderImpl
 			params, andOperator, start, end, obc);
 	}
 
+	public List<LicenseKey> findByU_C_M_M_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
+		Long createUserId, Date createDateGT, Date createDateLT,
+		Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
+		String accountEntryName, String licenseKeySetName, Date startDateGT,
+		Date startDateLT, long[] licenseEntryIds, long[] productEntryIds,
+		String productEntryName, String productId, int[] productVersions,
+		String owner, String description, String hostName, String ipAddress,
+		String macAddress, String serverId, String key, Date expirationDateGT,
+		Date expirationDateLT, LinkedHashMap<String, Object> params,
+		boolean andOperator, int start, int end, OrderByComparator obc) {
+
+		String[] accountEntryNames = OSBCustomSQLUtil.keywords(
+			accountEntryName);
+		String[] licenseKeySetNames = CustomSQLUtil.keywords(licenseKeySetName);
+		String[] productEntryNames = CustomSQLUtil.keywords(productEntryName);
+		String[] owners = CustomSQLUtil.keywords(owner);
+		String[] descriptions = CustomSQLUtil.keywords(description);
+		String[] hostNames = CustomSQLUtil.keywords(hostName);
+		String[] ipAddresses = CustomSQLUtil.keywords(ipAddress);
+		String[] macAddresses = CustomSQLUtil.keywords(macAddress);
+		String[] serverIds = CustomSQLUtil.keywords(serverId);
+		String[] keys = CustomSQLUtil.keywords(key);
+
+		return findByU_C_M_M_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
+			createUserId, createDateGT, createDateLT, modifiedUserId,
+			modifiedDateGT, modifiedDateLT, accountEntryNames,
+			licenseKeySetNames, createDateGT, createDateLT, licenseEntryIds,
+			productEntryIds, productEntryNames, new String[] {productId},
+			productVersions, owners, descriptions, hostNames, ipAddresses,
+			macAddresses, serverIds, keys, expirationDateGT, expirationDateLT,
+			params, andOperator, start, end, obc);
+	}
+
 	protected int countByU_C_M_M_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
-			Long createUserId, Date createDateGT, Date createDateLT,
-			Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
-			String[] accountEntryNames, String[] licenseKeySetNames,
-			Date startDateGT, Date startDateLT, long[] licenseEntryIds,
-			long[] productEntryIds, String[] productEntryNames,
-			String[] productIds, int[] productVersions, String[] owners,
-			String[] descriptions, String[] hostNames, String[] ipAddresses,
-			String[] macAddresses, String[] serverIds, String[] keys,
-			Date expirationDateGT, Date expirationDateLT,
-			LinkedHashMap<String, Object> params, boolean andOperator)
-		throws SystemException {
+		Long createUserId, Date createDateGT, Date createDateLT,
+		Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
+		String[] accountEntryNames, String[] licenseKeySetNames,
+		Date startDateGT, Date startDateLT, long[] licenseEntryIds,
+		long[] productEntryIds, String[] productEntryNames, String[] productIds,
+		int[] productVersions, String[] owners, String[] descriptions,
+		String[] hostNames, String[] ipAddresses, String[] macAddresses,
+		String[] serverIds, String[] keys, Date expirationDateGT,
+		Date expirationDateLT, LinkedHashMap<String, Object> params,
+		boolean andOperator) {
 
 		if (params == null) {
-			params = new LinkedHashMap<String, Object>();
+			params = new LinkedHashMap<>();
 		}
 
 		Long userId = (Long)params.remove("accountEntryMembership");
 
-		LinkedHashMap<String, Object> params1 =
-			new LinkedHashMap<String, Object>(params);
-		LinkedHashMap<String, Object> params2 =
-			new LinkedHashMap<String, Object>(params1);
-		LinkedHashMap<String, Object> params3 =
-			new LinkedHashMap<String, Object>(params2);
+		LinkedHashMap<String, Object> params1 = new LinkedHashMap<>(params);
+		LinkedHashMap<String, Object> params2 = new LinkedHashMap<>(params1);
+		LinkedHashMap<String, Object> params3 = new LinkedHashMap<>(params2);
 
 		if (userId != null) {
 			params1.put("accountCustomer", new Long[] {userId, userId});
@@ -357,9 +344,9 @@ public class LicenseKeyFinderImpl
 					productEntryNames, productIds, productVersions, owners,
 					descriptions, hostNames, ipAddresses, macAddresses,
 					serverIds, keys, params2, andOperator));
-			sb.append(")");
+			sb.append(") ");
 
-			sb.append(" UNION (");
+			sb.append("UNION (");
 			sb.append(
 				replaceSQL(
 					sql, createUserId, modifiedUserId, accountEntryNames,
@@ -380,7 +367,7 @@ public class LicenseKeyFinderImpl
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addScalar(COUNT_COLUMN_NAME, Type.LONG);
 
@@ -438,31 +425,26 @@ public class LicenseKeyFinderImpl
 	}
 
 	protected List<LicenseKey> findByU_C_M_M_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
-			Long createUserId, Date createDateGT, Date createDateLT,
-			Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
-			String[] accountEntryNames, String[] licenseKeySetNames,
-			Date startDateGT, Date startDateLT, long[] licenseEntryIds,
-			long[] productEntryIds, String[] productEntryNames,
-			String[] productIds, int[] productVersions, String[] owners,
-			String[] descriptions, String[] hostNames, String[] ipAddresses,
-			String[] macAddresses, String[] serverIds, String[] keys,
-			Date expirationDateGT, Date expirationDateLT,
-			LinkedHashMap<String, Object> params, boolean andOperator,
-			int start, int end, OrderByComparator obc)
-		throws SystemException {
+		Long createUserId, Date createDateGT, Date createDateLT,
+		Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
+		String[] accountEntryNames, String[] licenseKeySetNames,
+		Date startDateGT, Date startDateLT, long[] licenseEntryIds,
+		long[] productEntryIds, String[] productEntryNames, String[] productIds,
+		int[] productVersions, String[] owners, String[] descriptions,
+		String[] hostNames, String[] ipAddresses, String[] macAddresses,
+		String[] serverIds, String[] keys, Date expirationDateGT,
+		Date expirationDateLT, LinkedHashMap<String, Object> params,
+		boolean andOperator, int start, int end, OrderByComparator obc) {
 
 		if (params == null) {
-			params = new LinkedHashMap<String, Object>();
+			params = new LinkedHashMap<>();
 		}
 
 		Long userId = (Long)params.remove("accountEntryMembership");
 
-		LinkedHashMap<String, Object> params1 =
-			new LinkedHashMap<String, Object>(params);
-		LinkedHashMap<String, Object> params2 =
-			new LinkedHashMap<String, Object>(params1);
-		LinkedHashMap<String, Object> params3 =
-			new LinkedHashMap<String, Object>(params2);
+		LinkedHashMap<String, Object> params1 = new LinkedHashMap<>(params);
+		LinkedHashMap<String, Object> params2 = new LinkedHashMap<>(params1);
+		LinkedHashMap<String, Object> params3 = new LinkedHashMap<>(params2);
 
 		if (userId != null) {
 			params1.put("accountCustomer", new Long[] {userId, userId});
@@ -518,9 +500,9 @@ public class LicenseKeyFinderImpl
 					productEntryNames, productIds, productVersions, owners,
 					descriptions, hostNames, ipAddresses, macAddresses,
 					serverIds, keys, params2, andOperator));
-			sb.append(")");
+			sb.append(") ");
 
-			sb.append(" UNION (");
+			sb.append("UNION (");
 			sb.append(
 				replaceSQL(
 					sql, createUserId, modifiedUserId, accountEntryNames,
@@ -540,7 +522,7 @@ public class LicenseKeyFinderImpl
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addScalar("licenseKeyId", Type.LONG);
 
@@ -580,7 +562,7 @@ public class LicenseKeyFinderImpl
 			List<Long> licenseKeyIds = (List<Long>)QueryUtil.list(
 				q, getDialect(), start, end);
 
-			List<LicenseKey> licenseKeys = new ArrayList<LicenseKey>(
+			List<LicenseKey> licenseKeys = new ArrayList<>(
 				licenseKeyIds.size());
 
 			for (Long licenseKeyId : licenseKeyIds) {

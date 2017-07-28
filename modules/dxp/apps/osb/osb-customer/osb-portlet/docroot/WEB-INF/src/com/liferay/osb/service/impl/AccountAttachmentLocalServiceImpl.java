@@ -14,23 +14,22 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.Validator;
+import com.liferay.document.library.kernel.exception.DuplicateDirectoryException;
+import com.liferay.document.library.kernel.exception.DuplicateFileException;
+import com.liferay.document.library.kernel.exception.NoSuchFileException;
+import com.liferay.document.library.kernel.store.DLStoreUtil;
 import com.liferay.osb.exception.AccountAttachmentSizeException;
 import com.liferay.osb.exception.DuplicateAccountAttachmentException;
 import com.liferay.osb.model.AccountAttachment;
 import com.liferay.osb.service.base.AccountAttachmentLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.ObjectValuePair;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.document.library.kernel.exception.DuplicateDirectoryException;
-import com.liferay.document.library.kernel.exception.DuplicateFileException;
-import com.liferay.document.library.kernel.exception.NoSuchFileException;
-import com.liferay.document.library.kernel.store.DLStoreUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.ObjectValuePair;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.io.File;
 import java.io.InputStream;
@@ -48,7 +47,7 @@ public class AccountAttachmentLocalServiceImpl
 	public AccountAttachment addAccountAttachment(
 			long userId, long accountEntryId, long accountProjectId,
 			ObjectValuePair<String, File> fileOVP, int type)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		// Account attachment
 
@@ -72,9 +71,9 @@ public class AccountAttachmentLocalServiceImpl
 		accountAttachment.setFileName(fileName);
 		accountAttachment.setFileSize(file.length());
 		accountAttachment.setType(type);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		accountAttachmentPersistence.update(accountAttachment, serviceContext);
@@ -103,10 +102,9 @@ public class AccountAttachmentLocalServiceImpl
 	public List<AccountAttachment> addAccountAttachments(
 			long userId, long accountEntryId, long accountProjectId,
 			List<ObjectValuePair<String, File>> files, List<Integer> types)
-		throws PortalException, SystemException {
+		throws PortalException {
 
-		List<AccountAttachment> accountAttachments =
-			new ArrayList<AccountAttachment>();
+		List<AccountAttachment> accountAttachments = new ArrayList<>();
 
 		for (int i = 0; i < files.size(); i++) {
 			ObjectValuePair<String, File> ovp = files.get(i);
@@ -129,7 +127,7 @@ public class AccountAttachmentLocalServiceImpl
 	@Override
 	public AccountAttachment deleteAccountAttachment(
 			AccountAttachment accountAttachment)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		// Account attachment
 
@@ -153,7 +151,7 @@ public class AccountAttachmentLocalServiceImpl
 
 	@Override
 	public AccountAttachment deleteAccountAttachment(long accountAttachmentId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		AccountAttachment accountAttachment =
 			accountAttachmentPersistence.fetchByPrimaryKey(accountAttachmentId);
@@ -163,7 +161,7 @@ public class AccountAttachmentLocalServiceImpl
 
 	public void deleteAccountAttachments(
 			long accountEntryId, long accountProjectId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		List<AccountAttachment> accountAttachments = getAccountAttachments(
 			accountEntryId, accountProjectId);
@@ -175,7 +173,7 @@ public class AccountAttachmentLocalServiceImpl
 
 	public void deleteAccountAttachments(
 			long accountEntryId, long accountProjectId, int type)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		List<AccountAttachment> accountAttachments = getAccountAttachments(
 			accountEntryId, accountProjectId, type);
@@ -185,31 +183,27 @@ public class AccountAttachmentLocalServiceImpl
 		}
 	}
 
-	public List<AccountAttachment> getAccountAttachments(long accountEntryId)
-		throws SystemException {
-
+	public List<AccountAttachment> getAccountAttachments(long accountEntryId) {
 		return accountAttachmentPersistence.findByAccountEntryId(
 			accountEntryId);
 	}
 
 	public List<AccountAttachment> getAccountAttachments(
-			long accountEntryId, long accountProjectId)
-		throws SystemException {
+		long accountEntryId, long accountProjectId) {
 
 		return accountAttachmentPersistence.findByAEI_API(
 			accountEntryId, accountProjectId);
 	}
 
 	public List<AccountAttachment> getAccountAttachments(
-			long accountEntryId, long accountProjectId, int type)
-		throws SystemException {
+		long accountEntryId, long accountProjectId, int type) {
 
 		return accountAttachmentPersistence.findByAEI_API_T(
 			accountEntryId, accountProjectId, type);
 	}
 
 	public InputStream getFileAsStream(AccountAttachment accountAttachment)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		String filePath =
 			accountAttachment.getFileDir() + StringPool.SLASH +
@@ -222,7 +216,7 @@ public class AccountAttachmentLocalServiceImpl
 	protected void validate(
 			long accountEntryId, long accountProjectId, String fileName,
 			File file, int type)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		accountEntryPersistence.findByPrimaryKey(accountEntryId);
 

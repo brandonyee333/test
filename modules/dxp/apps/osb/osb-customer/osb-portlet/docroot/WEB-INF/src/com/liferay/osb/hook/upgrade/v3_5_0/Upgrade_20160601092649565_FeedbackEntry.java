@@ -24,16 +24,13 @@ import com.liferay.osb.model.impl.FeedbackEntryModelImpl;
 /**
  * @author Kyle Bischof
  */
-public class Upgrade_20160601092649565_FeedbackEntry
-	extends UpgradeProcess {
+public class Upgrade_20160601092649565_FeedbackEntry extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20160601092649565L;
 	}
@@ -46,6 +43,7 @@ public class Upgrade_20160601092649565_FeedbackEntry
 	}
 
 }
+
 */
 
 }

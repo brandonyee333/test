@@ -140,7 +140,7 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 	%>
 
 		<c:if test="<%= !licenseKey.isActive() && (inactiveLicensesCount == 1) %>">
-			<div class="lfr-panel lfr-collapsible lfr-extended" id="<portlet:namespace />inactiveLicenses">
+			<div class="lfr-collapsible lfr-extended lfr-panel" id="<portlet:namespace />inactiveLicenses">
 				<div class="lfr-panel-titlebar">
 					<div class="lfr-panel-title">
 						<span>

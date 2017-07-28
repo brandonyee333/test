@@ -20,21 +20,21 @@
 	id="toggle_id_ticket_canned_response_search"
 >
 	<table class="lfr-table">
-	<tr>
-		<td>
-			<liferay-ui:message key="name" />
-		</td>
-		<td>
-			<liferay-ui:message key="content" />
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<input id="<portlet:namespace /><%= displayTerms.NAME %>" name="<portlet:namespace /><%= displayTerms.NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getName()) %>" />
-		</td>
-		<td>
-			<input id="<portlet:namespace /><%= displayTerms.CONTENT %>" name="<portlet:namespace /><%= displayTerms.CONTENT %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getContent()) %>" />
-		</td>
-	</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="name" />
+			</td>
+			<td>
+				<liferay-ui:message key="content" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<input id="<portlet:namespace /><%= displayTerms.NAME %>" name="<portlet:namespace /><%= displayTerms.NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getName()) %>" />
+			</td>
+			<td>
+				<input id="<portlet:namespace /><%= displayTerms.CONTENT %>" name="<portlet:namespace /><%= displayTerms.CONTENT %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getContent()) %>" />
+			</td>
+		</tr>
 	</table>
 </liferay-ui:search-toggle>

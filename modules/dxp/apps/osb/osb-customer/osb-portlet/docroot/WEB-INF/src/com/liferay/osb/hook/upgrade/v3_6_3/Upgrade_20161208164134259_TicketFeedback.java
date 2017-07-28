@@ -36,28 +36,23 @@ import java.util.List;
 /**
  * @author Kyle Bischof
  */
-public class Upgrade_20161208164134259_TicketFeedback
-	extends UpgradeProcess {
+public class Upgrade_20161208164134259_TicketFeedback extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20161208164134259L;
 	}
 
-	protected void deleteDuplicateTicketFeedbacks(long ticketEntryId)
-		throws SystemException {
+	protected void deleteDuplicateTicketFeedbacks(long ticketEntryId) {
 
-		List<TicketFeedback> ticketFeedbacks =
-			ListUtil.copy(
-				TicketFeedbackLocalServiceUtil.getTicketFeedbacks(
-					ticketEntryId, TicketFeedbackConstants.SUBJECT_LIFERAY,
-					TicketFeedbackConstants.STATUS_ANSWERED));
+		List<TicketFeedback> ticketFeedbacks = ListUtil.copy(
+			TicketFeedbackLocalServiceUtil.getTicketFeedbacks(
+				ticketEntryId, TicketFeedbackConstants.SUBJECT_LIFERAY,
+				TicketFeedbackConstants.STATUS_ANSWERED));
 
 		if (!ticketFeedbacks.isEmpty()) {
 			ticketFeedbacks.remove(0);
@@ -106,6 +101,7 @@ public class Upgrade_20161208164134259_TicketFeedback
 	}
 
 }
+
 */
 
 }

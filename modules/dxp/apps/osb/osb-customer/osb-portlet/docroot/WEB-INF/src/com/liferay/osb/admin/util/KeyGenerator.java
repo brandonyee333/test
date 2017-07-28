@@ -14,13 +14,10 @@
 
 package com.liferay.osb.admin.util;
 
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.model.LicenseEntryConstants;
 import com.liferay.osb.model.LicenseKey;
 import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.service.LicenseKeyLocalServiceUtil;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Base64;
@@ -28,6 +25,8 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.util.Encryptor;
 
 import java.security.Key;
@@ -77,9 +76,7 @@ public class KeyGenerator {
 		return _instance._encrypt(properties);
 	}
 
-	public static Map<String, String> getProperties(LicenseKey licenseKey)
-		throws SystemException {
-
+	public static Map<String, String> getProperties(LicenseKey licenseKey) {
 		String[] serverIds = new String[1];
 
 		if (licenseKey.getLicenseVersion() >= 3) {
@@ -151,7 +148,7 @@ public class KeyGenerator {
 
 		long lifetime = expirationDate.getTime() - startDate.getTime();
 
-		Map<String, String> properties = new HashMap<String, String>();
+		Map<String, String> properties = new HashMap<>();
 
 		properties.put("version", String.valueOf(licenseVersion));
 
@@ -159,13 +156,13 @@ public class KeyGenerator {
 			properties.put("startDate", String.valueOf(startDate.getTime()));
 		}
 
-		properties.put("type", licenseEntryType);
-		properties.put("owner", owner);
 		properties.put("description", description);
+		properties.put("owner", owner);
+		properties.put("type", licenseEntryType);
 
 		if (licenseVersion == 1) {
-			properties.put("productVersion", productVersionLabel);
 			properties.put("lifetime", String.valueOf(lifetime));
+			properties.put("productVersion", productVersionLabel);
 
 			if (licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) ||
 				licenseEntryType.equals(
@@ -187,10 +184,10 @@ public class KeyGenerator {
 			}
 		}
 		else if (licenseVersion == 2) {
-			properties.put("productVersion", productVersionLabel);
 			properties.put("accountEntryName", accountEntryName);
 			properties.put("licenseEntryName", licenseEntryName);
 			properties.put("productEntryName", productEntryName);
+			properties.put("productVersion", productVersionLabel);
 
 			if (licenseEntryType.equals(LicenseEntryConstants.TYPE_TRIAL)) {
 				properties.put("lifetime", String.valueOf(lifetime));
@@ -230,24 +227,24 @@ public class KeyGenerator {
 		}
 		else if (licenseVersion >= 3) {
 			if (productId.equals(ProductEntryConstants.PRODUCT_ID_PORTAL)) {
-				properties.put("productVersion", productVersionLabel);
 				properties.put("accountEntryName", accountEntryName);
 				properties.put("licenseEntryName", licenseEntryName);
+				properties.put("productVersion", productVersionLabel);
 			}
 			else {
 				properties.put("productId", productId);
 				properties.put("productVersion", productVersionLabel);
 			}
 
-			properties.put("productEntryName", productEntryName);
 			properties.put(
 				"expirationDate", String.valueOf(expirationDate.getTime()));
+			properties.put("productEntryName", productEntryName);
 
 			if (licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) ||
 				((licenseVersion >= 4) &&
 				 (licenseEntryType.equals(LicenseEntryConstants.TYPE_LIMITED) ||
 				  licenseEntryType.equals(
-					LicenseEntryConstants.TYPE_PRODUCTION)))) {
+					  LicenseEntryConstants.TYPE_PRODUCTION)))) {
 
 				properties.put("maxServers", String.valueOf(maxServers));
 			}
@@ -397,11 +394,11 @@ public class KeyGenerator {
 			String productId, Map<String, String> properties)
 		throws Exception {
 
-		List<String> keys = new ArrayList<String>(properties.keySet());
+		List<String> keys = new ArrayList<>(properties.keySet());
 
 		Collections.sort(keys);
 
-		List<String> digests = new ArrayList<String>(properties.size());
+		List<String> digests = new ArrayList<>(properties.size());
 
 		for (int i = 0; i < keys.size(); i++) {
 			String text = properties.get(keys.get(i));
@@ -524,7 +521,7 @@ public class KeyGenerator {
 			groupSize++;
 		}
 
-		List<String> shortenedDigests = new ArrayList<String>(4);
+		List<String> shortenedDigests = new ArrayList<>(4);
 
 		StringBuilder sb = new StringBuilder();
 
@@ -547,9 +544,8 @@ public class KeyGenerator {
 		return shortenedDigests;
 	}
 
-	private static final String[] _ALGORITHMS = {
-		"MD5", "SHA-1", "SHA-256", "SHA-512"
-	};
+	private static final String[] _ALGORITHMS =
+		{"MD5", "SHA-1", "SHA-256", "SHA-512"};
 
 	private static final char[] _HEX_CHARACTERS = {
 		'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd',

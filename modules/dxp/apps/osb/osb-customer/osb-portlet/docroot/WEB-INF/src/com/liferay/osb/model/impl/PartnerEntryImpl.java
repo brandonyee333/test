@@ -24,7 +24,6 @@ import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
 import com.liferay.osb.service.SupportRegionLocalServiceUtil;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 
 import java.util.List;
 
@@ -36,21 +35,17 @@ public class PartnerEntryImpl extends PartnerEntryBaseImpl {
 	public PartnerEntryImpl() {
 	}
 
-	public List<AccountEntry> getAccountEntries() throws SystemException {
+	public List<AccountEntry> getAccountEntries() {
 		return AccountEntryLocalServiceUtil.getPartnerAccountEntries(
 			getPartnerEntryId());
 	}
 
-	public List<PartnerEntry> getChildPartnerEntries(boolean recursive)
-		throws SystemException {
-
+	public List<PartnerEntry> getChildPartnerEntries(boolean recursive) {
 		return PartnerEntryLocalServiceUtil.getChildPartnerEntries(
 			getPartnerEntryId(), recursive);
 	}
 
-	public PartnerEntry getParentPartnerEntry()
-		throws PortalException, SystemException {
-
+	public PartnerEntry getParentPartnerEntry() throws PortalException {
 		if (getParentPartnerEntryId() <= 0) {
 			return null;
 		}
@@ -59,7 +54,7 @@ public class PartnerEntryImpl extends PartnerEntryBaseImpl {
 			getParentPartnerEntryId());
 	}
 
-	public List<PartnerWorker> getPartnerWorkers() throws SystemException {
+	public List<PartnerWorker> getPartnerWorkers() {
 		return PartnerWorkerLocalServiceUtil.getPartnerWorkers(
 			getPartnerEntryId());
 	}
@@ -68,7 +63,7 @@ public class PartnerEntryImpl extends PartnerEntryBaseImpl {
 		return WorkflowConstants.getStatusLabel(getStatus());
 	}
 
-	public SupportRegion getSupportRegion() throws SystemException {
+	public SupportRegion getSupportRegion() {
 		List<SupportRegion> supportRegions =
 			SupportRegionLocalServiceUtil.getPartnerEntrySupportRegions(
 				getPartnerEntryId());
@@ -80,7 +75,7 @@ public class PartnerEntryImpl extends PartnerEntryBaseImpl {
 		return null;
 	}
 
-	public long[] getSupportRegionIds() throws SystemException {
+	public long[] getSupportRegionIds() {
 		List<SupportRegion> supportRegions =
 			SupportRegionLocalServiceUtil.getPartnerEntrySupportRegions(
 				getPartnerEntryId());

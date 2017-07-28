@@ -14,9 +14,9 @@
 
 package com.liferay.osb.admin.search;
 
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.osb.model.PartnerEntry;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
+import com.liferay.portal.kernel.util.ArrayUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,8 +31,8 @@ import javax.portlet.PortletURL;
  */
 public class PartnerEntrySearch extends SearchContainer<PartnerEntry> {
 
-	static List<String> headerNames = new ArrayList<String>();
-	static Map<String, String> orderableHeaders = new HashMap<String, String>();
+	static List<String> headerNames = new ArrayList<>();
+	static Map<String, String> orderableHeaders = new HashMap<>();
 
 	static {
 		headerNames.add("code");

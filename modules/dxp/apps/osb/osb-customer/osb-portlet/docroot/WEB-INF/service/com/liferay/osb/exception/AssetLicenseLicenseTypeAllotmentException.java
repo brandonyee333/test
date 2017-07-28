@@ -30,7 +30,9 @@ public class AssetLicenseLicenseTypeAllotmentException extends PortalException {
 		super(msg);
 	}
 
-	public AssetLicenseLicenseTypeAllotmentException(String msg, Throwable cause) {
+	public AssetLicenseLicenseTypeAllotmentException(
+		String msg, Throwable cause) {
+
 		super(msg, cause);
 	}
 

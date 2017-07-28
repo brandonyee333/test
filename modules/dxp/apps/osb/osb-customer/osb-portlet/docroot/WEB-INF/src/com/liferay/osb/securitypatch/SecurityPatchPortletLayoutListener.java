@@ -51,7 +51,7 @@ public class SecurityPatchPortletLayoutListener
 
 	@Override
 	public void updatePropertiesOnRemoveFromLayout(
-			String portletId, UnicodeProperties typeSettingsProperties) {
+		String portletId, UnicodeProperties typeSettingsProperties) {
 	}
 
 }

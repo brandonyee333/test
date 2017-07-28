@@ -14,13 +14,13 @@
 
 package com.liferay.osb.hook.upgrade;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.osb.hook.upgrade.v2_0_7.UpgradeAccountEntry;
 import com.liferay.osb.hook.upgrade.v2_0_7.UpgradeTrainingCustomer;
 import com.liferay.osb.hook.upgrade.v2_0_7.UpgradeTrainingExam;
 import com.liferay.osb.hook.upgrade.v2_0_7.UpgradeTrainingExamResult;
 import com.liferay.osb.hook.upgrade.v2_0_7.UpgradeTrainingExamResultItem;
 import com.liferay.osb.hook.upgrade.v2_0_7.UpgradeTrainingExamResultSection;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
 /**
  * @author Lin Cui

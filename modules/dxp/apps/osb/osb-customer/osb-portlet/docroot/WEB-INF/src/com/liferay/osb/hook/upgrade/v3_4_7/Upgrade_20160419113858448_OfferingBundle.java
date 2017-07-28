@@ -24,16 +24,13 @@ import com.liferay.osb.model.impl.OfferingBundleModelImpl;
 /**
  * @author Amos Fong
  */
-public class Upgrade_20160419113858448_OfferingBundle
-	extends UpgradeProcess {
+public class Upgrade_20160419113858448_OfferingBundle extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20160419113858448L;
 	}
@@ -44,7 +41,8 @@ public class Upgrade_20160419113858448_OfferingBundle
 
 		runSQL("create unique index IX_DC1ECDCE on OSB_OfferingBundle (name)");
 
-		runSQL(OfferingBundleModelImpl.MAPPING_TABLE_OSB_OFFERINGBUNDLES_OFFERINGDEFINITIONS_SQL_CREATE);
+		runSQL(
+			OfferingBundleModelImpl.MAPPING_TABLE_OSB_OFFERINGBUNDLES_OFFERINGDEFINITIONS_SQL_CREATE);
 
 		runSQL(
 			"create index IX_480DB8E2 on " +
@@ -56,6 +54,7 @@ public class Upgrade_20160419113858448_OfferingBundle
 	}
 
 }
+
 */
 
 }

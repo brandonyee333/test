@@ -14,24 +14,14 @@
 
 package com.liferay.osb.hook.events;
 
-import com.liferay.portal.kernel.util.PortalUtil;
 /* TODO update ecommerce integration
-import com.liferay.ecommerce.model.ECDocumentEntry;
-import com.liferay.ecommerce.service.ECDocumentEntryLocalServiceUtil;
-import com.liferay.osb.marketplace.util.ECDocumentEntryExtraSettings;
 */
 /* TODO update assetReceipt integration
-import com.liferay.osb.model.AssetReceiptRedeemToken;
-import com.liferay.osb.service.AssetReceiptRedeemTokenLocalServiceUtil;
 */
 /* TODO update corp integration
-import com.liferay.osb.service.CorpProjectLocalServiceUtil;
 */
-import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.events.Action;
 import com.liferay.portal.kernel.events.ActionException;
-import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -82,11 +72,11 @@ public class OSBLoginPostAction extends Action {
 
 			AssetReceiptRedeemTokenLocalServiceUtil.
 				redeemAssetReceiptRedeemToken(user.getEmailAddress());
-
 		}
 		catch (Exception e) {
 			throw new ActionException(e);
 		}
+
 */
 	}
 

@@ -19,7 +19,6 @@ import com.liferay.osb.service.base.SearchFilterServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
@@ -35,12 +34,11 @@ public class SearchFilterServiceImpl extends SearchFilterServiceBaseImpl {
 	public SearchFilter addSearchFilter(
 			long userId, long classNameId, String name, String filter,
 			int visibility)
-		throws PortalException, SystemException {
+		throws PortalException {
 
-		LinkedHashMap<String, Object> userParams =
-			new LinkedHashMap<String, Object>();
+		LinkedHashMap<String, Object> userParams = new LinkedHashMap<>();
 
-		userParams.put("partnerWorker", new Long(getUserId()));
+		userParams.put("partnerWorker", Long.valueOf(getUserId()));
 
 		if ((accountEntryLocalService.searchCount(null, userParams) <= 0) &&
 			!organizationLocalService.hasUserOrganization(
@@ -53,9 +51,7 @@ public class SearchFilterServiceImpl extends SearchFilterServiceBaseImpl {
 			userId, classNameId, name, filter, visibility);
 	}
 
-	public void deleteSearchFilter(long searchFilterId)
-		throws PortalException, SystemException {
-
+	public void deleteSearchFilter(long searchFilterId) throws PortalException {
 		SearchFilter searchFilter = searchFilterLocalService.getSearchFilter(
 			searchFilterId);
 
@@ -67,7 +63,7 @@ public class SearchFilterServiceImpl extends SearchFilterServiceBaseImpl {
 	}
 
 	public SearchFilter getSearchFilter(long searchFilterId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		SearchFilter searchFilter = searchFilterLocalService.getSearchFilter(
 			searchFilterId);
@@ -83,7 +79,7 @@ public class SearchFilterServiceImpl extends SearchFilterServiceBaseImpl {
 
 	public SearchFilter updateSearchFilter(
 			long searchFilterId, String name, String filter, int visibility)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		SearchFilter searchFilter = searchFilterLocalService.getSearchFilter(
 			searchFilterId);

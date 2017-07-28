@@ -29,7 +29,7 @@ import javax.portlet.PortletURL;
 public class TicketCannedResponseSearch
 	extends SearchContainer<TicketCannedResponse> {
 
-	static List<String> headerNames = new ArrayList<String>();
+	static List<String> headerNames = new ArrayList<>();
 
 	static {
 		headerNames.add("name");

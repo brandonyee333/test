@@ -16,7 +16,7 @@ package com.liferay.osb.hook.upgrade.v2_4_3;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
-/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+/*import UpgradeProcess;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.model.User;
@@ -39,9 +39,7 @@ public class UpgradeExpando extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	protected void doUpgrade() throws Exception {
 		long companyId = OSBConstants.COMPANY_ID;
 
@@ -74,6 +72,7 @@ public class UpgradeExpando extends UpgradeProcess {
 	private static final String _EXPANDO_COLUMN_NAME = "osbNickname";
 
 }
+
 */
 
 }

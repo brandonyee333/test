@@ -14,19 +14,15 @@
 
 package com.liferay.osb.servlet;
 
-import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
+import com.liferay.osb.admin.util.KeyGenerator;
 import com.liferay.osb.exception.LicenseKeyRegistrationException;
 import com.liferay.osb.exception.LicenseKeyServerIdException;
 import com.liferay.osb.exception.MaximumLicenseKeyException;
 import com.liferay.osb.exception.NoSuchAssetReceiptLicenseException;
 import com.liferay.osb.exception.NoSuchOrderEntryException;
 import com.liferay.osb.exception.OfferingEntryStatusException;
-import com.liferay.osb.admin.util.KeyGenerator;
 import com.liferay.osb.license.util.LicenseUtil;
 import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.AssetLicense;
 import com.liferay.osb.model.AssetReceiptLicense;
 import com.liferay.osb.model.LicenseEntry;
 import com.liferay.osb.model.LicenseEntryConstants;
@@ -44,7 +40,6 @@ import com.liferay.osb.service.LicenseKeyLocalServiceUtil;
 import com.liferay.osb.service.OrderEntryLocalServiceUtil;
 import com.liferay.osb.util.comparator.LicenseKeyExpirationDateComparator;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
@@ -52,9 +47,11 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.asset.kernel.model.AssetEntry;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.util.Encryptor;
 /* TODO check dependency import
 import com.liferay.osb.model.AssetLicenseConstants;
@@ -146,7 +143,7 @@ public class LicenseServlet extends HttpServlet {
 				"errorMessage",
 				"Server Id matching failed. Please clear your license folder.");
 		}
-		catch (NoSuchAssetReceiptLicenseException nsare) {
+		catch (NoSuchAssetReceiptLicenseException nsarle) {
 			responseJSONObject.put(
 				"errorMessage", "Order does not exist. Please check your ID.");
 		}
@@ -184,7 +181,7 @@ public class LicenseServlet extends HttpServlet {
 	protected LicenseKey addClusterLicenseKey(
 			long offeringEntryId, long clusterId, String hostName,
 			String ipAddresses, String macAddresses, String serverId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		List<LicenseKey> clusterLicenseKeys =
 			LicenseKeyLocalServiceUtil.getOfferingEntryLicenseKeys(
@@ -215,10 +212,9 @@ public class LicenseServlet extends HttpServlet {
 			OrderEntry orderEntry, String productEntryName, boolean cluster,
 			int liferayVersion, int maxServers, String hostName,
 			String ipAddresses, String macAddresses, String serverId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
-		List<OfferingEntry> availableOfferingEntries =
-			new ArrayList<OfferingEntry>();
+		List<OfferingEntry> availableOfferingEntries = new ArrayList<>();
 
 		List<OfferingEntry> offeringEntries = orderEntry.getOfferingEntries();
 
@@ -281,8 +277,7 @@ public class LicenseServlet extends HttpServlet {
 	}
 
 	protected String calculateLicensesLeft(
-			OfferingEntry offeringEntry, String curLicensesLeft)
-		throws SystemException {
+		OfferingEntry offeringEntry, String curLicensesLeft) {
 
 		if (curLicensesLeft.equals("unlimited")) {
 			return curLicensesLeft;
@@ -431,8 +426,8 @@ public class LicenseServlet extends HttpServlet {
 		return response.getBytes();
 	}
 
-	protected long getLicenseEntryId(ProductEntry productEntry, boolean cluster)
-		throws SystemException {
+	protected long getLicenseEntryId(
+		ProductEntry productEntry, boolean cluster) {
 
 		List<LicenseEntry> licenseEntries = productEntry.getLicenseEntries();
 
@@ -509,6 +504,7 @@ public class LicenseServlet extends HttpServlet {
 			int licenseEntryType = assetReceiptLicense.getLicenseType();
 
 			/* TODO check License/Marketplace dependency
+
 			if (licenseEntryType ==
 					AssetLicenseConstants.LICENSE_TYPE_PER_USER) {
 
@@ -520,6 +516,7 @@ public class LicenseServlet extends HttpServlet {
 					continue;
 				}
 			}
+
 			**/
 
 			if (productVersion > 0) {
@@ -579,9 +576,9 @@ public class LicenseServlet extends HttpServlet {
 
 			responseJSONObject.put("orderUuid", assetReceiptLicense.getUuid());
 		}
-		catch (NoSuchAssetReceiptLicenseException nsare) {
+		catch (NoSuchAssetReceiptLicenseException nsarle) {
 			if (!isEEVersion(jsonObject)) {
-				throw nsare;
+				throw nsarle;
 			}
 		}
 	}
@@ -616,13 +613,14 @@ public class LicenseServlet extends HttpServlet {
 
 	protected JSONObject getProductsJSONObject(
 			AssetReceiptLicense assetReceiptLicense)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		JSONObject productsJsonObject = JSONFactoryUtil.createJSONObject();
 
 		String licensesLeft = StringPool.BLANK;
 
 		/* TODO AssetReceiptLicense placeholder methods missing
+
 		if (assetReceiptLicense.hasUnlimitedServers()) {
 			licensesLeft = "unlimited";
 		}
@@ -651,7 +649,7 @@ public class LicenseServlet extends HttpServlet {
 	}
 
 	protected JSONObject getProductsJSONObject(OrderEntry orderEntry)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		JSONObject productsJsonObject = JSONFactoryUtil.createJSONObject();
 
@@ -736,11 +734,8 @@ public class LicenseServlet extends HttpServlet {
 		return null;
 	}
 
-	protected boolean isActive(String serverId, String productId, String key)
-		throws SystemException {
-
-		LinkedHashMap<String, Object> params =
-			new LinkedHashMap<String, Object>();
+	protected boolean isActive(String serverId, String productId, String key) {
+		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
 		params.put("active", true);
 
@@ -794,11 +789,12 @@ public class LicenseServlet extends HttpServlet {
 
 			return;
 		}
-		catch (NoSuchAssetReceiptLicenseException nsare) {
+		catch (NoSuchAssetReceiptLicenseException nsarle) {
 			if (!isEEVersion(jsonObject)) {
-				throw nsare;
+				throw nsarle;
 			}
 		}
+
 		**/
 
 		OrderEntry orderEntry = OrderEntryLocalServiceUtil.getOrderEntry(
@@ -839,11 +835,12 @@ public class LicenseServlet extends HttpServlet {
 
 			return;
 		}
-		catch (NoSuchAssetReceiptLicenseException nsare) {
+		catch (NoSuchAssetReceiptLicenseException nsarle) {
 			if (!isEEVersion(jsonObject)) {
-				throw nsare;
+				throw nsarle;
 			}
 		}
+
 		**/
 
 		OrderEntry orderEntry = OrderEntryLocalServiceUtil.getOrderEntry(
@@ -911,6 +908,7 @@ public class LicenseServlet extends HttpServlet {
 		LicenseKey licenseKey = null;
 
 		/* TODO AssetReceiptLicense placeholder methods missing
+
 		if (licenseKeys.isEmpty()) {
 			licenseKey = LicenseKeyLocalServiceUtil.addLicenseKey(
 				assetReceiptLicense.getUserId(), assetReceiptLicense,
@@ -923,6 +921,7 @@ public class LicenseServlet extends HttpServlet {
 		else {
 			licenseKey = licenseKeys.get(0);
 		}
+
 		**/
 
 		responseJSONObject.put(
@@ -981,8 +980,7 @@ public class LicenseServlet extends HttpServlet {
 	}
 
 	protected void validate(
-			JSONObject jsonObject, JSONObject responseJSONObject)
-		throws SystemException {
+		JSONObject jsonObject, JSONObject responseJSONObject) {
 
 		String serverId = jsonObject.getString("serverId");
 		String productId = jsonObject.getString("productId");
@@ -1051,7 +1049,7 @@ public class LicenseServlet extends HttpServlet {
 		return _keys;
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(LicenseServlet.class);
+	private static final Log _log = LogFactoryUtil.getLog(LicenseServlet.class);
 
 	private Key[] _keys;
 	private PrivateKey _privateKey;

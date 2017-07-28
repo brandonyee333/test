@@ -72,8 +72,8 @@
 			</div>
 
 			<div class="aui-helper-clearfix">
-				<input class="fl btn" id="<portlet:namespace />lesaFeedbackCancelButton" type="button" value="<liferay-ui:message key="cancel" />" />
-				<input class="fr btn" id="<portlet:namespace />lesaFeedbackSubmitButton" type="button" value="<liferay-ui:message key="submit" />" />
+				<input class="btn fl" id="<portlet:namespace />lesaFeedbackCancelButton" type="button" value="<liferay-ui:message key="cancel" />" />
+				<input class="btn fr" id="<portlet:namespace />lesaFeedbackSubmitButton" type="button" value="<liferay-ui:message key="submit" />" />
 			</div>
 		</div>
 	</div>

@@ -19,7 +19,7 @@
 <%
 LinkedHashMap<String, Object> userParams = new LinkedHashMap<String, Object>();
 
-userParams.put("partnerWorker", new Long(user.getUserId()));
+userParams.put("partnerWorker", Long.valueOf(user.getUserId()));
 userParams.put("status", AccountEntryConstants.STATUSES_ACTIVE);
 
 boolean ticketWorker = liferayIncOrg || (AccountEntryLocalServiceUtil.searchCount(null, userParams) > 0);

@@ -128,7 +128,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 						</div>
 
 						<div class="aui-w85 content-column ticket-value">
-							<div class="content-column-content right-column txt-b txt-up txt-h1-12 txt-h1-9 txt-h3-6 txt-h3-4">
+							<div class="content-column-content right-column txt-b txt-h1-12 txt-h1-9 txt-h3-4 txt-h3-6 txt-up">
 								<%= accountEntry.getCode() %>
 							</div>
 						</div>
@@ -158,7 +158,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 							</div>
 
 							<div class="aui-w85 content-column ticket-value">
-								<div class="content-column-content right-column txt-b txt-up txt-h1-12 txt-h1-9 txt-h3-6 txt-h3-4">
+								<div class="content-column-content right-column txt-b txt-h1-12 txt-h1-9 txt-h3-4 txt-h3-6 txt-up">
 									<div class="<%= (!screenShareMode && liferayIncOrg && (accountEntry.getTier() != AccountEntryConstants.TIER_REGULAR)) ? "tier-" + AccountEntryConstants.getTierLabel(accountEntry.getTier()) + "-text" : StringPool.BLANK %>" id="<portlet:namespace />tierDisplay">
 										<%= LanguageUtil.get(pageContext, AccountEntryConstants.getTierLabel(accountEntry.getTier())) %>
 									</div>
@@ -401,14 +401,14 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 					%>
 
 					<table class="additional-attachments">
-					<tr>
-						<td>
-							<a href="<%= accountAttachmentURL.toString() %>" target="_blank"><%= HtmlUtil.escape(accountAttachment.getFileName()) %></a>
-						</td>
-						<td>
-							<liferay-ui:message key="<%= accountAttachment.getTypeLabel() %>" />
-						</td>
-					</tr>
+						<tr>
+							<td>
+								<a href="<%= accountAttachmentURL.toString() %>" target="_blank"><%= HtmlUtil.escape(accountAttachment.getFileName()) %></a>
+							</td>
+							<td>
+								<liferay-ui:message key="<%= accountAttachment.getTypeLabel() %>" />
+							</td>
+						</tr>
 					</table>
 				</div>
 			</div>

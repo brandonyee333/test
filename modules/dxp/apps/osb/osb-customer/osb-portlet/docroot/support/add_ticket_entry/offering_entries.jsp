@@ -46,7 +46,7 @@ List<OfferingEntryGroup> offeringEntryGroups = SupportUtil.getOfferingEntryGroup
 <div class="offering-entries" id="<portlet:namespace />offeringEntriesContainer">
 	<div class="callout-a">
 		<div class="callout-content">
-			<div class="portlet-msg-info aui-helper-hidden" id="<portlet:namespace />supportMessageDisplay">
+			<div class="aui-helper-hidden portlet-msg-info" id="<portlet:namespace />supportMessageDisplay">
 				<span>
 					<liferay-ui:message key="important" />
 				</span>
@@ -62,6 +62,7 @@ List<OfferingEntryGroup> offeringEntryGroups = SupportUtil.getOfferingEntryGroup
 				<table class="taglib-search-iterator">
 				<tr class="portlet-section-header results-header">
 					<th class="col-1 first" />
+
 					<th class="col-2">
 						<liferay-ui:message key="product" />
 					</th>
@@ -240,7 +241,7 @@ List<OfferingEntryGroup> offeringEntryGroups = SupportUtil.getOfferingEntryGroup
 								String updateURL = sb.toString();
 								%>
 
-								<input class="aui-button-input create-ticket-button" <%= (availableOfferingEntryId == offeringEntryId) ? "disabled" : StringPool.BLANK %> id="<%= availableOfferingEntryId %>" onClick="<%= (availableOfferingEntryId == offeringEntryId) ? updateURL : rowHREF %>" type="button" value="<%= (availableOfferingEntryId == offeringEntryId) ? LanguageUtil.get(locale, "selected") : LanguageUtil.get(locale, "choose") %>">
+								<input class="aui-button-input create-ticket-button" <%= (availableOfferingEntryId == offeringEntryId) ? "disabled" : StringPool.BLANK %> id="<%= availableOfferingEntryId %>" onClick="<%= (availableOfferingEntryId == offeringEntryId) ? updateURL : rowHREF %>" type="button" value="<%= (availableOfferingEntryId == offeringEntryId) ? LanguageUtil.get(request, "selected") : LanguageUtil.get(request, "choose") %>">
 							</c:if>
 						</td>
 					</tr>

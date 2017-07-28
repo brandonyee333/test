@@ -70,6 +70,6 @@ public class UserHolidayCalendarChecker extends RowChecker {
 	private static Log _log = LogFactoryUtil.getLog(
 		UserHolidayCalendarChecker.class);
 
-	private HolidayCalendar _holidayCalendar;
+	private final HolidayCalendar _holidayCalendar;
 
 }

@@ -56,7 +56,6 @@ String redirect = ParamUtil.getString(request, "redirect");
 						<label class="field-label" for="<portlet:namespace />emailAddress" id="<portlet:namespace />emailAddressLabel"><liferay-ui:message key="email-address" /><span class="field-required-label">*</span></label>
 					</span>
 				</span>
-
 				<span class="unit">
 					<span class="unit-content">
 						<liferay-ui:input-field cssClass="field-input field-input-text fl" field="emailAddress" model="<%= User.class %>" />
@@ -80,7 +79,6 @@ String redirect = ParamUtil.getString(request, "redirect");
 						<label class="field-label" for="<portlet:namespace />firstName" id="<portlet:namespace />firstNameLabel"><liferay-ui:message key="first-name" /><span class="field-required-label">*</span></label>
 					</span>
 				</span>
-
 				<span class="unit">
 					<span class="unit-content">
 						<liferay-ui:input-field cssClass="field-input field-input-text" field="firstName" model="<%= Contact.class %>" />
@@ -96,7 +94,6 @@ String redirect = ParamUtil.getString(request, "redirect");
 						<label class="field-label" for="<portlet:namespace />lastName" id="<portlet:namespace />lastNameLabel"><liferay-ui:message key="last-name" /><span class="field-required-label">*</span></label>
 					</span>
 				</span>
-
 				<span class="unit">
 					<span class="unit-content">
 						<liferay-ui:input-field cssClass="field-input field-input-text" field="lastName" model="<%= Contact.class %>" />
@@ -217,35 +214,30 @@ String redirect = ParamUtil.getString(request, "redirect");
 						<label class="field-label" for="<portlet:namespace />number"><liferay-ui:message key="phone-number" /></label>
 					</span>
 				</span>
-
 				<span class="unit">
 					<span class="unit-content">
 						<liferay-ui:input-field cssClass="field-input field-input-text" field="number" model="<%= Phone.class %>" />
 					</span>
 				</span>
 			</span>
-
 			<span class="field field-text">
 				<span class="unit">
 					<span class="unit-content">
 						<label class="field-label" for="<portlet:namespace />number"><liferay-ui:message key="extension" /></label>
 					</span>
 				</span>
-
 				<span class="unit">
 					<span class="unit-content">
 						<liferay-ui:input-field cssClass="field-input field-input-text" field="extension" model="<%= Phone.class %>" />
 					</span>
 				</span>
 			</span>
-
 			<span class="field field-text">
 				<span class="unit">
 					<span class="unit-content">
 						<label class="field-label" for="<portlet:namespace />number"><liferay-ui:message key="type" /></label>
 					</span>
 				</span>
-
 				<span class="unit">
 					<span class="unit-content">
 						<select name="<portlet:namespace />typeId">

@@ -16,9 +16,9 @@ package com.liferay.osb.admin.portlet;
 
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.model.Portlet;
+import com.liferay.portal.kernel.portlet.BaseControlPanelEntry;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
-import com.liferay.portal.kernel.portlet.BaseControlPanelEntry;
 
 /**
  * @author Amos Fong

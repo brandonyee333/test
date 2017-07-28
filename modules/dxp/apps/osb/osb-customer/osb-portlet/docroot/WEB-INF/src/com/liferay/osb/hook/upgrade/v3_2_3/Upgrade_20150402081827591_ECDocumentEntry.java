@@ -32,16 +32,13 @@ import com.liferay.portal.kernel.model.User;
 /**
  * @author Joan Kim
  */
-public class Upgrade_20150402081827591_ECDocumentEntry
-	extends UpgradeProcess {
+public class Upgrade_20150402081827591_ECDocumentEntry extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20150402081827591L;
 	}
@@ -171,6 +168,7 @@ public class Upgrade_20150402081827591_ECDocumentEntry
 	}
 
 }
+
 */
 
 }

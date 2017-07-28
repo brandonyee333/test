@@ -14,9 +14,9 @@
 
 package com.liferay.osb.hook.upgrade;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.osb.hook.upgrade.v2_0_3.UpgradeAccountEntry;
 import com.liferay.osb.hook.upgrade.v2_0_3.UpgradeAuditEntry;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
 /**
  * @author Alan Zhang

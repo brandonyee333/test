@@ -14,11 +14,10 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.osb.model.SupportWorkerSeverity;
 import com.liferay.osb.service.base.SupportWorkerSeverityLocalServiceBaseImpl;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.ArrayUtil;
 
 import java.util.List;
 
@@ -29,16 +28,14 @@ public class SupportWorkerSeverityLocalServiceImpl
 	extends SupportWorkerSeverityLocalServiceBaseImpl {
 
 	public List<SupportWorkerSeverity> getSupportWorkerSeverities(
-			long supportWorkerId)
-		throws SystemException {
+		long supportWorkerId) {
 
 		return supportWorkerSeverityPersistence.findBySupportWorkerId(
 			supportWorkerId);
 	}
 
 	public void setSupportWorkerSeverities(
-			long supportWorkerId, int[] severities)
-		throws SystemException {
+		long supportWorkerId, int[] severities) {
 
 		List<SupportWorkerSeverity> supportWorkerSeverities =
 			supportWorkerSeverityPersistence.findBySupportWorkerId(
@@ -66,9 +63,9 @@ public class SupportWorkerSeverityLocalServiceImpl
 
 			supportWorkerSeverity.setSupportWorkerId(supportWorkerId);
 			supportWorkerSeverity.setSeverity(severity);
-			
+
 			//TODO implement serviceContext how needed
-			
+
 			ServiceContext serviceContext = new ServiceContext();
 
 			supportWorkerSeverityPersistence.update(

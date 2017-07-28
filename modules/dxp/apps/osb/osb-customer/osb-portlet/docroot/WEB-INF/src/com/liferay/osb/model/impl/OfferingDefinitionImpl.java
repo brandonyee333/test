@@ -21,7 +21,6 @@ import com.liferay.osb.model.SupportResponse;
 import com.liferay.osb.service.ProductEntryLocalServiceUtil;
 import com.liferay.osb.service.SupportResponseLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.util.StringPool;
 
@@ -53,9 +52,7 @@ public class OfferingDefinitionImpl extends OfferingDefinitionBaseImpl {
 	}
 
 	@JSON
-	public ProductEntry getProductEntry()
-		throws PortalException, SystemException {
-
+	public ProductEntry getProductEntry() throws PortalException {
 		return ProductEntryLocalServiceUtil.getProductEntry(
 			getProductEntryId());
 	}
@@ -69,9 +66,7 @@ public class OfferingDefinitionImpl extends OfferingDefinitionBaseImpl {
 		}
 	}
 
-	public SupportResponse getSupportResponse()
-		throws PortalException, SystemException {
-
+	public SupportResponse getSupportResponse() throws PortalException {
 		return SupportResponseLocalServiceUtil.getSupportResponse(
 			getSupportResponseId());
 	}

@@ -14,9 +14,6 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.exception.DuplicateProductEntryException;
 import com.liferay.osb.exception.ProductEntryEnvironmentException;
 import com.liferay.osb.exception.ProductEntryNameException;
@@ -27,9 +24,11 @@ import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.service.base.ProductEntryLocalServiceBaseImpl;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -45,7 +44,7 @@ public class ProductEntryLocalServiceImpl
 	public ProductEntry addProductEntry(
 			long userId, String name, int type, int environment,
 			String versionsListType, String[] dossieraIdMappings)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		Date now = new Date();
@@ -65,9 +64,9 @@ public class ProductEntryLocalServiceImpl
 		productEntry.setType(type);
 		productEntry.setEnvironment(environment);
 		productEntry.setVersionsListType(versionsListType);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		productEntryPersistence.update(productEntry, serviceContext);
@@ -85,7 +84,7 @@ public class ProductEntryLocalServiceImpl
 
 	@Override
 	public ProductEntry deleteProductEntry(long productEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (licenseEntryPersistence.countByProductEntryId(productEntryId) > 0) {
 			throw new RequiredProductEntryException();
@@ -112,43 +111,35 @@ public class ProductEntryLocalServiceImpl
 		return productEntry;
 	}
 
-	public ProductEntry fetchProductEntryByName(String name)
-		throws SystemException {
-
+	public ProductEntry fetchProductEntryByName(String name) {
 		return productEntryPersistence.fetchByName(name);
 	}
 
-	public List<ProductEntry> getProductEntries(long accountEntryId)
-		throws SystemException {
-
+	public List<ProductEntry> getProductEntries(long accountEntryId) {
 		return productEntryFinder.findByAccountEntry(
 			accountEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 	}
 
 	public ProductEntry getProductEntryByName(String name)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		return productEntryPersistence.findByName(name);
 	}
 
 	public List<ProductEntry> search(
-			String name, LinkedHashMap<String, Object> params, int start,
-			int end)
-		throws SystemException {
+		String name, LinkedHashMap<String, Object> params, int start, int end) {
 
 		return productEntryFinder.findByName(name, params, start, end);
 	}
 
-	public int searchCount(String name, LinkedHashMap<String, Object> params)
-		throws SystemException {
-
+	public int searchCount(String name, LinkedHashMap<String, Object> params) {
 		return productEntryFinder.countByName(name, params);
 	}
 
 	public ProductEntry updateProductEntry(
 			long productEntryId, String name, int type, int environment,
 			String versionsListType, String[] dossieraIdMappings)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		validate(productEntryId, name, environment);
 
@@ -160,9 +151,9 @@ public class ProductEntryLocalServiceImpl
 		productEntry.setType(type);
 		productEntry.setEnvironment(environment);
 		productEntry.setVersionsListType(versionsListType);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		productEntryPersistence.update(productEntry, serviceContext);
@@ -197,7 +188,7 @@ public class ProductEntryLocalServiceImpl
 	}
 
 	protected void validate(long productEntryId, String name, int environment)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (Validator.isNull(name)) {
 			throw new ProductEntryNameException();

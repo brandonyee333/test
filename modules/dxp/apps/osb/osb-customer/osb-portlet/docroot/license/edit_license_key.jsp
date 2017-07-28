@@ -18,6 +18,7 @@
 
 <%
 String redirect = ParamUtil.getString(request, "redirect");
+
 String backURL = ParamUtil.getString(request, "backURL", redirect);
 
 long licenseKeySetId = ParamUtil.getLong(request, "licenseKeySetId");
@@ -270,7 +271,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 						if (accountEntry != null) {
 							LinkedHashMap params = new LinkedHashMap();
 
-							params.put("licenseOfferingEntries", new Long(accountEntry.getAccountEntryId()));
+							params.put("licenseOfferingEntries", Long.valueOf(accountEntry.getAccountEntryId()));
 
 							List<ProductEntry> productEntries = ProductEntryLocalServiceUtil.search(null, params, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 

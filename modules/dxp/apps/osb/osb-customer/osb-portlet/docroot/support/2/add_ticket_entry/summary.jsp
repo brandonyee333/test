@@ -35,7 +35,7 @@ else {
 %>
 
 <c:if test="<%= !windowState.equals(LiferayWindowState.POP_UP) %>">
-	<h2 class="section-heading create-ticket-title">
+	<h2 class="create-ticket-title section-heading">
 		<liferay-ui:message key="create-a-ticket" />
 	</h2>
 
@@ -206,7 +206,7 @@ if (accountEntry != null) {
 								<liferay-ui:message key="subcomponent" />:
 							</h2>
 
-							<select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(pageContext, "please-select-a-valid-subcomponent") %>' id="<portlet:namespace />subcomponent" name="<portlet:namespace />subcomponent" onChange="<portlet:namespace />validateSubcomponent();">
+							<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(pageContext, "please-select-a-valid-subcomponent") %>" id="<portlet:namespace />subcomponent" name="<portlet:namespace />subcomponent" onChange="<portlet:namespace />validateSubcomponent();">
 								<option value=""></option>
 
 								<%
@@ -240,7 +240,7 @@ if (accountEntry != null) {
 			</c:if>
 
 			<div>
-				<select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(pageContext, "please-select-a-valid-environment-configuration") %>' id="<portlet:namespace />accountEnvironmentId" name="<portlet:namespace />accountEnvironmentId" onChange="<portlet:namespace />selectAccountEnvironment(this);">
+				<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(pageContext, "please-select-a-valid-environment-configuration") %>" id="<portlet:namespace />accountEnvironmentId" name="<portlet:namespace />accountEnvironmentId" onChange="<portlet:namespace />selectAccountEnvironment(this);">
 					<option value="0"></option>
 					<option <%= (accountEnvironmentId == -1) ? "selected" : "" %> value="-1"><liferay-ui:message key="select-new-configuration" /></option>
 
@@ -273,7 +273,7 @@ if (accountEntry != null) {
 				</h2>
 
 				<div>
-					<select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(pageContext, "please-select-a-valid-system-status") %>' name="<portlet:namespace />systemStatus">
+					<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(pageContext, "please-select-a-valid-system-status") %>" name="<portlet:namespace />systemStatus">
 						<option value=""></option>
 
 						<%

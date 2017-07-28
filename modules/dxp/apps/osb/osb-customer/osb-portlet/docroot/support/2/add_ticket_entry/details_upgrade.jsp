@@ -74,7 +74,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 </liferay-ui:error>
 
 <div>
-	<h2 class="section-heading component-title">
+	<h2 class="component-title section-heading">
 		<liferay-ui:message key="upgrade-details" />
 	</h2>
 
@@ -216,7 +216,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 			for (int curDocLibPersistence : TicketEntryConstants.DOC_LIB_PERSISTENCES) {
 			%>
 
-				<option <%= (curDocLibPersistence == docLibPersistence) ? "selected" : StringPool.BLANK %> value="<%= curDocLibPersistence %>"><%= LanguageUtil.get(locale, TicketEntryConstants.getDocLibPersistenceLabel(curDocLibPersistence)) %></option>
+				<option <%= (curDocLibPersistence == docLibPersistence) ? "selected" : StringPool.BLANK %> value="<%= curDocLibPersistence %>"><%= LanguageUtil.get(request, TicketEntryConstants.getDocLibPersistenceLabel(curDocLibPersistence)) %></option>
 
 			<%
 			}

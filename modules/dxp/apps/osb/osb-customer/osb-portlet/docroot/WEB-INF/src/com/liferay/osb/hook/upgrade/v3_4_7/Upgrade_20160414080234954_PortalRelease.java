@@ -24,16 +24,13 @@ import com.liferay.osb.service.PortalReleaseLocalServiceUtil;
 /**
  * @author Yury Butrymovich
  */
-public class Upgrade_20160414080234954_PortalRelease
-	extends UpgradeProcess {
+public class Upgrade_20160414080234954_PortalRelease extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20160414080234954L;
 	}
@@ -42,7 +39,7 @@ public class Upgrade_20160414080234954_PortalRelease
 	protected void doUpgrade() throws Exception {
 		PortalReleaseLocalServiceUtil.addPortalRelease(
 			"Liferay Portal 6.1 CE GA2", 6101, false, true, false, false,
-				false);
+			false);
 		PortalReleaseLocalServiceUtil.addPortalRelease(
 			"Liferay Portal 6.1 CE GA3", 6102, false, true, false, true, false);
 		PortalReleaseLocalServiceUtil.addPortalRelease(
@@ -71,6 +68,7 @@ public class Upgrade_20160414080234954_PortalRelease
 	}
 
 }
+
 */
 
 }

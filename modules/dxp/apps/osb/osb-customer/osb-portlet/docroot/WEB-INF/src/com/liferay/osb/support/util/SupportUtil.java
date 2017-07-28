@@ -14,15 +14,6 @@
 
 package com.liferay.osb.support.util;
 
-import com.liferay.portal.kernel.servlet.HttpHeaders;
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.HttpUtil;
-import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.LocalizationUtil;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountCustomerConstants;
 import com.liferay.osb.model.AccountEntry;
@@ -80,31 +71,40 @@ import com.liferay.osb.util.comparator.TicketEntryModifiedDateComparator;
 import com.liferay.osb.util.comparator.TicketEntryStatusComparator;
 import com.liferay.osb.util.comparator.TicketEntrySubjectComparator;
 import com.liferay.osb.util.comparator.TicketEntryTicketWorkerComparator;
-import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
-import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HtmlUtil;
-import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.UnicodeProperties;
-import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.service.ListTypeServiceUtil;
 import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
 import com.liferay.portal.kernel.service.PortletPreferencesLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.LocalizationUtil;
+import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
-import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnicodeProperties;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.util.ContentUtil;
 import com.liferay.util.portlet.PortletProps;
 
@@ -140,7 +140,7 @@ public class SupportUtil {
 
 	public static String createJIRAIssueURL(
 			HttpServletRequest request, TicketEntry ticketEntry)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
 			WebKeys.THEME_DISPLAY);
@@ -195,10 +195,9 @@ public class SupportUtil {
 
 		sb.append("&customfield_10731=");
 
-		String encodedTicketEntryURL =
-			HttpUtil.encodeURL(
-				getFriendlyTicketEntryURL(
-					request, ticketEntry.getTicketEntryId()), true);
+		String encodedTicketEntryURL = HttpUtil.encodeURL(
+			getFriendlyTicketEntryURL(
+				request, ticketEntry.getTicketEntryId()), true);
 
 		sb.append(encodedTicketEntryURL);
 
@@ -260,9 +259,7 @@ public class SupportUtil {
 		return sb.toString();
 	}
 
-	public static String[] getAccountWorkerKeys(long accountEntryId)
-		throws SystemException {
-
+	public static String[] getAccountWorkerKeys(long accountEntryId) {
 		List<AccountWorker> accountWorkers =
 			AccountWorkerLocalServiceUtil.getAccountWorkers(accountEntryId);
 
@@ -278,7 +275,7 @@ public class SupportUtil {
 	}
 
 	public static String getAccountWorkers(long accountEntryId, int role)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		List<User> users = getUsers(accountEntryId, role);
 
@@ -318,7 +315,7 @@ public class SupportUtil {
 		return map;
 	}
 
-	public static String[] getAttachmentKeywords() throws SystemException {
+	public static String[] getAttachmentKeywords() {
 		PortletPreferences portletPreferences = getPortletPreferences();
 
 		String[] attachmentKeywords = StringUtil.split(
@@ -335,7 +332,7 @@ public class SupportUtil {
 			int supportEndDateGTYear, int supportEndDateLTDay,
 			int supportEndDateLTMonth, int supportEndDateLTYear,
 			LinkedHashMap<String, Object> params, boolean andSearch)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		List<OfferingEntryGroup> availableOfferingEntryGroups =
 			new ArrayList<OfferingEntryGroup> ();
@@ -749,7 +746,7 @@ public class SupportUtil {
 		return map;
 	}
 
-	public static String getEscalationDetails() throws SystemException {
+	public static String getEscalationDetails() {
 		PortletPreferences portletPreferences = getPortletPreferences();
 
 		Map<Locale, String> map = LocalizationUtil.getLocalizationMap(
@@ -768,9 +765,7 @@ public class SupportUtil {
 		return escalationDetails;
 	}
 
-	public static List<FileRepository> getFileRepositories()
-		throws SystemException {
-
+	public static List<FileRepository> getFileRepositories() {
 		List<FileRepository> fileRepositoryList =
 			new ArrayList<FileRepository> ();
 
@@ -806,9 +801,7 @@ public class SupportUtil {
 		return fileRepositoryList;
 	}
 
-	public static FileRepository getFileRepository(String fileRepositoryId)
-		throws SystemException {
-
+	public static FileRepository getFileRepository(String fileRepositoryId) {
 		if (Validator.isNull(fileRepositoryId)) {
 			return null;
 		}
@@ -834,9 +827,7 @@ public class SupportUtil {
 		}
 	}
 
-	public static FileRepository getFileRepository(TicketEntry ticketEntry)
-		throws SystemException {
-
+	public static FileRepository getFileRepository(TicketEntry ticketEntry) {
 		FileRepository defaultFileRepository = null;
 
 		for (FileRepository fileRepository : getFileRepositories()) {
@@ -857,8 +848,7 @@ public class SupportUtil {
 	}
 
 	public static FileRepository getFirstActiveFileRepository(
-			Set<String> fileRepositoryIdsSet)
-		throws SystemException {
+		Set<String> fileRepositoryIdsSet) {
 
 		if (fileRepositoryIdsSet.isEmpty()) {
 			return null;
@@ -877,7 +867,7 @@ public class SupportUtil {
 
 	public static String getFriendlySearchFilterURL(
 			HttpServletRequest request, long searchFilterId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		long customerPlid = PortalUtil.getPlidFromPortletId(
 			OSBConstants.GROUP_CUSTOMER_ID, OSBPortletKeys.OSB_SUPPORT);
@@ -896,7 +886,7 @@ public class SupportUtil {
 
 	public static String getFriendlyTicketEntryURL(
 			HttpServletRequest request, long ticketEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		long customerPlid = PortalUtil.getPlidFromPortletId(
 			OSBConstants.GROUP_CUSTOMER_ID, OSBPortletKeys.OSB_SUPPORT);
@@ -933,8 +923,7 @@ public class SupportUtil {
 	}
 
 	public static int getListTypeIdFromName(
-			String type, String name, boolean translate)
-		throws SystemException {
+		String type, String name, boolean translate) {
 
 		List<ListType> listTypes = ListTypeServiceUtil.getListTypes(type);
 
@@ -959,7 +948,7 @@ public class SupportUtil {
 			int supportEndDateGTYear, int supportEndDateLTDay,
 			int supportEndDateLTMonth, int supportEndDateLTYear,
 			LinkedHashMap<String, Object> params, boolean andSearch)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		return getOfferingEntryGroups(
 			userId, accountEntryId, types, statuses, supportEndDateGTDay,
@@ -975,7 +964,7 @@ public class SupportUtil {
 			int supportEndDateLTMonth, int supportEndDateLTYear,
 			LinkedHashMap<String, Object> params, boolean andSearch, int start,
 			int end)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		List<OfferingEntry> offeringEntries =
 			OfferingEntryLocalServiceUtil.search(
@@ -989,12 +978,11 @@ public class SupportUtil {
 			OfferingEntryGroupFactoryUtil.createOfferingEntryGroupMap(
 				offeringEntries);
 
-		return new ArrayList<OfferingEntryGroup>(
-			offeringEntryGroupMap.values());
+		return new ArrayList<>(offeringEntryGroupMap.values());
 	}
 
 	public static String getOtherAssigneesUserNames(long ticketEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketWorker primaryTicketWorker =
 			TicketWorkerLocalServiceUtil.fetchPrimaryTicketWorker(
@@ -1031,9 +1019,7 @@ public class SupportUtil {
 		return sb.toString();
 	}
 
-	public static long[] getPartnerEntryIds(long partnerEntryId)
-		throws SystemException {
-
+	public static long[] getPartnerEntryIds(long partnerEntryId) {
 		List<PartnerEntry> childPartnerEntries =
 			PartnerEntryLocalServiceUtil.getChildPartnerEntries(
 				partnerEntryId, true);
@@ -1052,8 +1038,7 @@ public class SupportUtil {
 	}
 
 	public static List<ListType> getPortalEnvListTypes(
-			int envLFR, String envListType)
-		throws SystemException {
+		int envLFR, String envListType) {
 
 		List<ListType> listTypes = ListTypeServiceUtil.getListTypes(
 			envListType);
@@ -1063,8 +1048,8 @@ public class SupportUtil {
 		int[] envListTypeIds = TicketEntryConstants.getEnvListTypeIds(
 			envLFR, envListType);
 
-		long[] listTypeIds = 
-			Arrays.stream(envListTypeIds).asLongStream().toArray();
+		long[] listTypeIds = Arrays.stream(
+			envListTypeIds).asLongStream().toArray();
 
 		Iterator<ListType> itr = listTypes.iterator();
 
@@ -1079,9 +1064,7 @@ public class SupportUtil {
 		return listTypes;
 	}
 
-	public static PortletPreferences getPortletPreferences()
-		throws SystemException {
-
+	public static PortletPreferences getPortletPreferences() {
 		long ownerId = OSBConstants.COMPANY_ID;
 		int ownerType = PortletKeys.PREFS_OWNER_TYPE_COMPANY;
 		long plid = PortletKeys.PREFS_PLID_SHARED;
@@ -1093,15 +1076,12 @@ public class SupportUtil {
 			defaultPreferences);
 	}
 
-	public static String getPreferenceValue(Locale locale, String key)
-		throws SystemException {
-
+	public static String getPreferenceValue(Locale locale, String key) {
 		return getPreferenceValue(getPortletPreferences(), locale, key);
 	}
 
 	public static String getPreferenceValue(
-			PortletPreferences portletPreferences, Locale locale, String key)
-		throws SystemException {
+		PortletPreferences portletPreferences, Locale locale, String key) {
 
 		if (portletPreferences == null) {
 			portletPreferences = getPortletPreferences();
@@ -1121,14 +1101,14 @@ public class SupportUtil {
 		return value;
 	}
 
-	public static String getPreferenceValue(String key) throws SystemException {
+	public static String getPreferenceValue(String key) {
 		PortletPreferences portletPreferences = getPortletPreferences();
 
 		return portletPreferences.getValue(key, StringPool.BLANK);
 	}
 
 	public static String getPrimaryAssigneeUserName(long ticketEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketWorker ticketWorker =
 			TicketWorkerLocalServiceUtil.fetchPrimaryTicketWorker(
@@ -1150,11 +1130,9 @@ public class SupportUtil {
 	}
 
 	public static Map<Integer, List<SupportWorker>> getSupportWorkerMap(
-			long supportTeamId)
-		throws SystemException {
+		long supportTeamId) {
 
-		Map<Integer, List<SupportWorker>> supportWorkerMap =
-			new HashMap<Integer, List<SupportWorker>>();
+		Map<Integer, List<SupportWorker>> supportWorkerMap = new HashMap<>();
 
 		List<SupportWorker> supportWorkers =
 			SupportWorkerLocalServiceUtil.getTeamSupportWorkers(supportTeamId);
@@ -1172,7 +1150,7 @@ public class SupportUtil {
 			List<SupportWorker> supportWorkerList = supportWorkerMap.get(role);
 
 			if (supportWorkerList == null) {
-				supportWorkerList = new ArrayList<SupportWorker>();
+				supportWorkerList = new ArrayList<>();
 
 				supportWorkerMap.put(role, supportWorkerList);
 			}
@@ -1184,7 +1162,7 @@ public class SupportUtil {
 	}
 
 	public static TicketEntry getTicketEntry(String ticketDisplayId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		Matcher matcher = _ticketDisplayIdPattern.matcher(ticketDisplayId);
 
@@ -1204,8 +1182,7 @@ public class SupportUtil {
 	}
 
 	public static String[] getTicketEntryComments(
-			long ticketEntryId, int visibility)
-		throws SystemException {
+		long ticketEntryId, int visibility) {
 
 		List<TicketComment> ticketComments =
 			TicketCommentLocalServiceUtil.getTicketComments(
@@ -1224,12 +1201,11 @@ public class SupportUtil {
 	}
 
 	public static List<TicketEntryDiscussion> getTicketEntryDiscussions(
-			long userId, long ticketEntryId, int[] visibilities,
-			boolean orderByAsc)
-		throws SystemException {
+		long userId, long ticketEntryId, int[] visibilities,
+		boolean orderByAsc) {
 
 		Map<String, TicketEntryDiscussion> ticketEntryDiscussionMap =
-			new HashMap<String, TicketEntryDiscussion>();
+			new HashMap<>();
 
 		// Ticket attachments
 
@@ -1304,9 +1280,8 @@ public class SupportUtil {
 			}
 		}
 
-		List<TicketEntryDiscussion> ticketEntryDiscussions =
-			new ArrayList<TicketEntryDiscussion>(
-				ticketEntryDiscussionMap.values());
+		List<TicketEntryDiscussion> ticketEntryDiscussions = new ArrayList<>(
+			ticketEntryDiscussionMap.values());
 
 		Collections.sort(
 			ticketEntryDiscussions,
@@ -1390,12 +1365,12 @@ public class SupportUtil {
 
 	public static long[] getTicketFeedbackUserIds(
 			long ticketEntryId, int subject)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketEntry ticketEntry = TicketEntryLocalServiceUtil.getTicketEntry(
 			ticketEntryId);
 
-		List<Long> ticketFeedbackUserIds = new ArrayList<Long>();
+		List<Long> ticketFeedbackUserIds = new ArrayList<>();
 
 		if (subject == TicketFeedbackConstants.SUBJECT_LIFERAY) {
 			List<AccountCustomer> accountCustomers =
@@ -1423,13 +1398,11 @@ public class SupportUtil {
 		return ArrayUtil.toLongArray(ticketFeedbackUserIds);
 	}
 
-	public static long[] getTicketWorkerUserIds(long ticketEntryId)
-		throws SystemException {
-
+	public static long[] getTicketWorkerUserIds(long ticketEntryId) {
 		List<TicketWorker> ticketWorkers =
 			TicketWorkerLocalServiceUtil.getTicketWorkers(ticketEntryId);
 
-		List<Long> ticketWorkerUserIds = new ArrayList<Long>();
+		List<Long> ticketWorkerUserIds = new ArrayList<>();
 
 		for (int i = 0; i < ticketWorkers.size(); i++) {
 			TicketWorker ticketWorker = ticketWorkers.get(i);
@@ -1440,9 +1413,7 @@ public class SupportUtil {
 		return ArrayUtil.toArray(ticketWorkerUserIds.toArray(new Long[0]));
 	}
 
-	public static PortletPreferences getUserPreferences(long userId)
-		throws SystemException {
-
+	public static PortletPreferences getUserPreferences(long userId) {
 		int ownerType = PortletKeys.PREFS_OWNER_TYPE_USER;
 		long plid = PortletKeys.PREFS_PLID_SHARED;
 		String portletId = OSBPortletKeys.OSB_SUPPORT;
@@ -1453,22 +1424,20 @@ public class SupportUtil {
 			defaultPreferences);
 	}
 
-	public static boolean getUserPreferenceValue(long userId, String key)
-		throws SystemException {
-
+	public static boolean getUserPreferenceValue(long userId, String key) {
 		PortletPreferences portletPreferences = getUserPreferences(userId);
 
 		return GetterUtil.getBoolean(portletPreferences.getValue(key, null));
 	}
 
 	public static List<User> getUsers(long accountEntryId, int role)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		List<AccountWorker> accountWorkers =
 			AccountWorkerLocalServiceUtil.getAccountWorkers(
 				accountEntryId, role);
 
-		List<User> users = new ArrayList<User>();
+		List<User> users = new ArrayList<>();
 
 		for (AccountWorker accountWorker : accountWorkers) {
 			try {
@@ -1702,11 +1671,8 @@ public class SupportUtil {
 		return false;
 	}
 
-	public static String serialize(List<OrderEntry> orderEntries)
-		throws SystemException {
-
-		List<Map<String, Object>> orderEntriesList =
-			new ArrayList<Map<String, Object>>();
+	public static String serialize(List<OrderEntry> orderEntries) {
+		List<Map<String, Object>> orderEntriesList = new ArrayList<>();
 
 		for (OrderEntry orderEntry : orderEntries) {
 			Map<String, Object> orderEntryAttributes = getOrderEntryAttributes(
@@ -1718,9 +1684,7 @@ public class SupportUtil {
 		return JSONFactoryUtil.looseSerializeDeep(orderEntriesList);
 	}
 
-	public static String serialize(OrderEntry orderEntry)
-		throws SystemException {
-
+	public static String serialize(OrderEntry orderEntry) {
 		Map<String, Object> orderEntryAttributes = getOrderEntryAttributes(
 			orderEntry);
 
@@ -1728,8 +1692,7 @@ public class SupportUtil {
 	}
 
 	protected static List<FileRepository> getDefaultFileRepositories() {
-		List<FileRepository> fileRepositoryList =
-			new ArrayList<FileRepository>();
+		List<FileRepository> fileRepositoryList = new ArrayList<>();
 
 		for (String fileRepositoryId : PortletPropsValues.FILE_REPOSITORY_IDS) {
 			fileRepositoryList.add(getDefaultFileRepository(fileRepositoryId));
@@ -1801,14 +1764,12 @@ public class SupportUtil {
 	}
 
 	protected static Map<String, Object> getOrderEntryAttributes(
-			OrderEntry orderEntry)
-		throws SystemException {
+		OrderEntry orderEntry) {
 
 		Map<String, Object> orderEntryAttributes =
 			orderEntry.getModelAttributes();
 
-		List<Map<String, Object>> offeringEntriesList =
-			new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> offeringEntriesList = new ArrayList<>();
 
 		List<OfferingEntry> offeringEntries = orderEntry.getOfferingEntries();
 
@@ -1869,30 +1830,29 @@ public class SupportUtil {
 
 	private static final SimpleBBCodeParser _bbCodeParser =
 		new SimpleBBCodeParser();
+	private static final Map<Integer, Integer> _jiraComponentMapping =
+		new HashMap<>();
+	private static final Map<Integer, Integer> _jiraEnvASMapping =
+		new HashMap<>();
+	private static final Map<Integer, Integer> _jiraEnvBrowserMapping =
+		new HashMap<>();
+	private static final Map<Integer, Integer> _jiraEnvCSMapping =
+		new HashMap<>();
+	private static final Map<Integer, Integer> _jiraEnvDBMapping =
+		new HashMap<>();
+	private static final Map<Integer, Integer> _jiraEnvJVMMapping =
+		new HashMap<>();
+	private static final Map<Integer, Integer> _jiraEnvLFRMapping =
+		new HashMap<>();
+	private static final Map<Integer, Integer> _jiraEnvOSMapping =
+		new HashMap<>();
+	private static final Map<Integer, Integer> _jiraEnvSearchMapping =
+		new HashMap<>();
+	private static final Map<String, String> _jiraRegionMapping =
+		new HashMap<>();
 	private static final PlainTextParser _plainTextParser =
 		new PlainTextParser();
-
-	private static Map<Integer, Integer> _jiraComponentMapping =
-		new HashMap<Integer, Integer>();
-	private static Map<Integer, Integer> _jiraEnvASMapping =
-		new HashMap<Integer, Integer>();
-	private static Map<Integer, Integer> _jiraEnvBrowserMapping =
-		new HashMap<Integer, Integer>();
-	private static Map<Integer, Integer> _jiraEnvCSMapping =
-		new HashMap<Integer, Integer>();
-	private static Map<Integer, Integer> _jiraEnvDBMapping =
-		new HashMap<Integer, Integer>();
-	private static Map<Integer, Integer> _jiraEnvJVMMapping =
-		new HashMap<Integer, Integer>();
-	private static Map<Integer, Integer> _jiraEnvLFRMapping =
-		new HashMap<Integer, Integer>();
-	private static Map<Integer, Integer> _jiraEnvOSMapping =
-		new HashMap<Integer, Integer>();
-	private static Map<Integer, Integer> _jiraEnvSearchMapping =
-		new HashMap<Integer, Integer>();
-	private static Map<String, String> _jiraRegionMapping =
-		new HashMap<String, String>();
-	private static Pattern _ticketDisplayIdPattern = Pattern.compile(
+	private static final Pattern _ticketDisplayIdPattern = Pattern.compile(
 		"^([a-zA-Z0-9]{1,15})-([0-9]+)$");
 
 	static {

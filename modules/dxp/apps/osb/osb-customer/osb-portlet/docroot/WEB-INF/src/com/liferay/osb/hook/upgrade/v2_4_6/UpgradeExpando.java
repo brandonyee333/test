@@ -16,7 +16,7 @@ package com.liferay.osb.hook.upgrade.v2_4_6;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
-/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+/*import UpgradeProcess;
 import com.liferay.osb.model.CorpEntry;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.expando.kernel.exception.NoSuchTableException;
@@ -37,9 +37,7 @@ public class UpgradeExpando extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	protected void doUpgrade() throws Exception {
 		long companyId = OSBConstants.COMPANY_ID;
 
@@ -73,6 +71,7 @@ public class UpgradeExpando extends UpgradeProcess {
 	}
 
 }
+
 */
 
 }

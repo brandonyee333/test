@@ -22,14 +22,13 @@ PartnerEntryDisplayTerms displayTerms = new PartnerEntryDisplayTerms(renderReque
 
 <div class="advanced-search partner">
 	<div>
-		<span class="search-param first-line-support" onclick="<portlet:namespace />toggleSelected(this);" searchParam="managingSupport">
+		<span class="first-line-support search-param" onclick="<portlet:namespace />toggleSelected(this);" searchParam="managingSupport">
 			<liferay-ui:message key="first-line-support" />
 
 			<svg height="8" viewBox="0 0 8 8" width="8">
 				<path d="M 0, 0 4, 4 8, 0" />
 			</svg>
 		</span>
-
 		<span class="search-param status" onclick="<portlet:namespace />toggleSelected(this);" searchParam="status">
 			<liferay-ui:message key="status" />
 
@@ -37,7 +36,6 @@ PartnerEntryDisplayTerms displayTerms = new PartnerEntryDisplayTerms(renderReque
 				<path d="M 0, 0 4, 4 8, 0" />
 			</svg>
 		</span>
-
 		<span class="search-param support-region" onclick="<portlet:namespace />toggleSelected(this);" searchParam="supportRegion">
 			<liferay-ui:message key="support-region" />
 
@@ -48,7 +46,7 @@ PartnerEntryDisplayTerms displayTerms = new PartnerEntryDisplayTerms(renderReque
 	</div>
 
 	<div class="aui-helper-clearfix search-param-config">
-		<div class="search-param-dropdown first-line-support" id="<portlet:namespace />managingSupport">
+		<div class="first-line-support search-param-dropdown" id="<portlet:namespace />managingSupport">
 			<select id="<portlet:namespace /><%= displayTerms.MANAGING_SUPPORT %>" name="<portlet:namespace /><%= displayTerms.MANAGING_SUPPORT %>">
 				<option <%= !displayTerms.hasManagingSupport() ? "selected" : StringPool.BLANK %> value=""></option>
 				<option <%= (displayTerms.hasManagingSupport() && displayTerms.isManagingSupport()) ? "selected" : StringPool.BLANK %> value="1"><liferay-ui:message key="yes" /></option>

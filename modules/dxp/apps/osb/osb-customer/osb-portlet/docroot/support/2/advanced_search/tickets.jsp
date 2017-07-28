@@ -40,7 +40,7 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 
 <div class="advanced-search ticket">
 	<div>
-		<span class="search-param account" onclick="<portlet:namespace />toggleSelected(this);" searchParam="account">
+		<span class="account search-param" onclick="<portlet:namespace />toggleSelected(this);" searchParam="account">
 			<liferay-ui:message key="project" />
 
 			<svg height="8" viewBox="0 0 8 8" width="8">
@@ -49,7 +49,7 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 		</span>
 
 		<c:if test="<%= ticketWorker %>">
-			<span class="search-param assignee" onclick="<portlet:namespace />toggleSelected(this);" searchParam="assignee">
+			<span class="assignee search-param" onclick="<portlet:namespace />toggleSelected(this);" searchParam="assignee">
 				<liferay-ui:message key="assignee" />
 
 				<svg height="8" viewBox="0 0 8 8" width="8">
@@ -58,38 +58,34 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 			</span>
 		</c:if>
 
-		<span class="search-param component" onclick="<portlet:namespace />toggleSelected(this);" searchParam="component">
+		<span class="component search-param" onclick="<portlet:namespace />toggleSelected(this);" searchParam="component">
 			<liferay-ui:message key="component" />
 
 			<svg height="8" viewBox="0 0 8 8" width="8">
 				<path d="M 0, 0 4, 4 8, 0" />
 			</svg>
 		</span>
-
-		<span class="search-param date" onclick="<portlet:namespace />toggleSelected(this);" searchParam="date">
+		<span class="date search-param" onclick="<portlet:namespace />toggleSelected(this);" searchParam="date">
 			<liferay-ui:message key="date" />
 
 			<svg height="8" viewBox="0 0 8 8" width="8">
 				<path d="M 0, 0 4, 4 8, 0" />
 			</svg>
 		</span>
-
-		<span class="search-param environment" onclick="<portlet:namespace />toggleSelected(this);" searchParam="environment">
+		<span class="environment search-param" onclick="<portlet:namespace />toggleSelected(this);" searchParam="environment">
 			<liferay-ui:message key="environment" />
 
 			<svg height="8" viewBox="0 0 8 8" width="8">
 				<path d="M 0, 0 4, 4 8, 0" />
 			</svg>
 		</span>
-
-		<span class="search-param pending" onclick="<portlet:namespace />toggleSelected(this);" searchParam="pending">
+		<span class="pending search-param" onclick="<portlet:namespace />toggleSelected(this);" searchParam="pending">
 			<liferay-ui:message key="pending" />
 
 			<svg height="8" viewBox="0 0 8 8" width="8">
 				<path d="M 0, 0 4, 4 8, 0" />
 			</svg>
 		</span>
-
 		<span class="search-param severity" onclick="<portlet:namespace />toggleSelected(this);" searchParam="severity">
 			<liferay-ui:message key="severity" />
 
@@ -97,7 +93,6 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 				<path d="M 0, 0 4, 4 8, 0" />
 			</svg>
 		</span>
-
 		<span class="search-param status" onclick="<portlet:namespace />toggleSelected(this);" searchParam="status">
 			<liferay-ui:message key="status" />
 
@@ -174,7 +169,7 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 									sb.append("<a href=\"javascript:;\" onClick=\"");
 									sb.append(curOnClick);
 									sb.append("\">");
-									sb.append(LanguageUtil.get(locale, curLabel));
+									sb.append(LanguageUtil.get(request, curLabel));
 									sb.append("</a>");
 								%>
 
@@ -321,7 +316,6 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 				%>
 
 			</span>
-
 			<span class="list" id="<portlet:namespace />supportTeamIdsList">
 
 				<%
@@ -336,7 +330,6 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 				%>
 
 			</span>
-
 			<span class="list" id="<portlet:namespace />partnerEntryIdsList">
 
 				<%
@@ -351,7 +344,6 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 				%>
 
 			</span>
-
 			<span class="list" id="<portlet:namespace />accountWorkersList">
 
 				<%
@@ -361,7 +353,7 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 					String roleLabel = AccountWorkerConstants.getRoleLabel(accountWorkerRoles[i]);
 				%>
 
-					<span id='<%= accountWorkerUserIds[i] + ":" + accountWorkerRoles[i] %>' onclick="<portlet:namespace />removeAccountWorker(this);"><%= LanguageUtil.get(locale, roleLabel) %>: <%= HtmlUtil.escape(curUser.getFullName()) %></span>
+					<span id="<%= accountWorkerUserIds[i] + ":" + accountWorkerRoles[i] %>" onclick="<portlet:namespace />removeAccountWorker(this);"><%= LanguageUtil.get(request, roleLabel) %>: <%= HtmlUtil.escape(curUser.getFullName()) %></span>
 
 				<%
 				}
@@ -566,7 +558,7 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 		</div>
 
 		<div class="environment search-param-dropdown" id="<portlet:namespace />environment">
-			<div class="section first" id="<portlet:namespace />product">
+			<div class="first section" id="<portlet:namespace />product">
 				<h2 class="inline-block support-input-heading">
 					<liferay-ui:message key="product" />
 				</h2>
@@ -726,7 +718,7 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 		</div>
 
 		<div class="search-param-dropdown severity" id="<portlet:namespace />severity">
-			<div class="section first">
+			<div class="first section">
 				<h2 class="support-input-heading">
 					<liferay-ui:message key="severity" />
 				</h2>
@@ -768,7 +760,7 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 		</div>
 
 		<div class="search-param-dropdown status" id="<portlet:namespace />status">
-			<div class="section first" id="<portlet:namespace />statusCheckboxes">
+			<div class="first section" id="<portlet:namespace />statusCheckboxes">
 				<h2 class="inline-block support-input-heading">
 					<liferay-ui:message key="status" />
 				</h2>
@@ -840,7 +832,7 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 
 <div class="search-results">
 	<c:if test="<%= supportManager %>">
-		<div class='<%= bulkEdit ? "" : "aui-helper-hidden" %>' id="<portlet:namespace />bulkEdit">
+		<div class="<%= bulkEdit ? "" : "aui-helper-hidden" %>" id="<portlet:namespace />bulkEdit">
 			<div class="multiple-ticket-select" id="<portlet:namespace />multipleTicketSelect">
 				<div>
 					<div class="multiple-ticket-checkbox">
@@ -860,7 +852,6 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 					<li onClick="<portlet:namespace />multipleTicketSelect('all');">
 						<liferay-ui:message key="select-all" />
 					</li>
-
 					<li onClick="<portlet:namespace />multipleTicketSelect('none');">
 						<liferay-ui:message key="select-none" />
 					</li>

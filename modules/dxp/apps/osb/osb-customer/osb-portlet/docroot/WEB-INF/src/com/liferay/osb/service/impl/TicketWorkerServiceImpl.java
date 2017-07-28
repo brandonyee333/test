@@ -14,16 +14,15 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.osb.exception.RequiredTicketWorkerException;
 import com.liferay.osb.model.TicketWorker;
 import com.liferay.osb.service.base.TicketWorkerServiceBaseImpl;
 import com.liferay.osb.service.permission.OSBTicketEntryPermission;
 import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
+import com.liferay.portal.kernel.util.ArrayUtil;
 
 import java.util.List;
 
@@ -36,7 +35,7 @@ public class TicketWorkerServiceImpl extends TicketWorkerServiceBaseImpl {
 	public List<TicketWorker> addTicketWorkers(
 			long[] userIds, long ticketEntryId, long[] sourceClassNameIds,
 			long[] sourceClassPKs, int[] roles, long primaryUserId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OSBTicketEntryPermission.check(
 			getPermissionChecker(), ticketEntryId,
@@ -49,7 +48,7 @@ public class TicketWorkerServiceImpl extends TicketWorkerServiceBaseImpl {
 
 	public void deleteTicketWorkers(
 			long[] userIds, long ticketEntryId, long primaryUserId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OSBTicketEntryPermission.check(
 			getPermissionChecker(), ticketEntryId,
@@ -63,7 +62,7 @@ public class TicketWorkerServiceImpl extends TicketWorkerServiceBaseImpl {
 			long[] addUserIds, int[] addRoles, long[] removeUserIds,
 			long ticketEntryId, long[] sourceClassNameIds,
 			long[] sourceClassPKs, long primaryUserId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (addUserIds.length == 0) {
 			boolean hasTicketWorkers = false;

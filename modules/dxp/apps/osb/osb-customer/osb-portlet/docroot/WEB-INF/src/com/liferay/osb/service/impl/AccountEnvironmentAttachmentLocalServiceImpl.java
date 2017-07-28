@@ -14,19 +14,18 @@
 
 package com.liferay.osb.service.impl;
 
+import com.liferay.document.library.kernel.store.DLStoreUtil;
 import com.liferay.osb.exception.AccountEnvironmentAttachmentSizeException;
 import com.liferay.osb.exception.DuplicateAccountEnvironmentAttachmentException;
 import com.liferay.osb.model.AccountEnvironmentAttachment;
 import com.liferay.osb.service.base.AccountEnvironmentAttachmentLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.ObjectValuePair;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.document.library.kernel.store.DLStoreUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.ObjectValuePair;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.File;
 import java.io.InputStream;
@@ -43,7 +42,7 @@ public class AccountEnvironmentAttachmentLocalServiceImpl
 	public AccountEnvironmentAttachment addAccountEnvironmentAttachment(
 			long userId, long accountEnvironmentId,
 			ObjectValuePair<String, File> fileOVP, int type)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		String fileName = fileOVP.getKey();
@@ -67,9 +66,9 @@ public class AccountEnvironmentAttachmentLocalServiceImpl
 		accountEnvironmentAttachment.setFileName(fileName);
 		accountEnvironmentAttachment.setFileSize(file.length());
 		accountEnvironmentAttachment.setType(type);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		accountEnvironmentAttachmentPersistence.update(
@@ -85,7 +84,7 @@ public class AccountEnvironmentAttachmentLocalServiceImpl
 	public void addAccountEnvironmentAttachments(
 			long userId, long accountEnvironmentId,
 			List<ObjectValuePair<String, File>> files, List<Integer> types)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		for (int i = 0; i < files.size(); i++) {
 			addAccountEnvironmentAttachment(
@@ -95,7 +94,7 @@ public class AccountEnvironmentAttachmentLocalServiceImpl
 
 	public AccountEnvironmentAttachment deleteAccountEnvironmentAttachment(
 			AccountEnvironmentAttachment accountEnvironmentAttachment)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		accountEnvironmentAttachmentPersistence.remove(
 			accountEnvironmentAttachment);
@@ -108,16 +107,14 @@ public class AccountEnvironmentAttachmentLocalServiceImpl
 	}
 
 	public AccountEnvironmentAttachment fetchAccountEnvironmentAttachment(
-			long accountEnvironmentId, int type)
-		throws SystemException {
+		long accountEnvironmentId, int type) {
 
 		return accountEnvironmentAttachmentPersistence.fetchByAEI_T(
 			accountEnvironmentId, type);
 	}
 
 	public List<AccountEnvironmentAttachment> getAccountEnvironmentAttachments(
-			long accountEnvironmentId)
-		throws SystemException {
+		long accountEnvironmentId) {
 
 		return
 			accountEnvironmentAttachmentPersistence.findByAccountEnvironmentId(
@@ -126,7 +123,7 @@ public class AccountEnvironmentAttachmentLocalServiceImpl
 
 	public File getFile(
 			AccountEnvironmentAttachment accountEnvironmentAttachment)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		String filePath =
 			accountEnvironmentAttachment.getFileDir() + StringPool.SLASH +
@@ -138,7 +135,7 @@ public class AccountEnvironmentAttachmentLocalServiceImpl
 
 	public InputStream getFileAsStream(
 			AccountEnvironmentAttachment accountEnvironmentAttachment)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		String filePath =
 			accountEnvironmentAttachment.getFileDir() + StringPool.SLASH +
@@ -151,7 +148,7 @@ public class AccountEnvironmentAttachmentLocalServiceImpl
 	public AccountEnvironmentAttachment updateAccountEnvironmentAttachment(
 			long accountEnvironmentAttachmentId, long accountEnvironmentId,
 			ObjectValuePair<String, File> fileOVP, int type)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		String fileName = fileOVP.getKey();
 		File file = fileOVP.getValue();
@@ -170,9 +167,9 @@ public class AccountEnvironmentAttachmentLocalServiceImpl
 		accountEnvironmentAttachment.setFileName(fileName);
 		accountEnvironmentAttachment.setFileSize(file.length());
 		accountEnvironmentAttachment.setType(type);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		accountEnvironmentAttachmentPersistence.update(
@@ -188,7 +185,7 @@ public class AccountEnvironmentAttachmentLocalServiceImpl
 	public void updateAccountEnvironmentAttachments(
 			long userId, long accountEnvironmentId,
 			List<ObjectValuePair<String, File>> files, List<Integer> types)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		for (int i = 0; i < types.size(); i++) {
 			AccountEnvironmentAttachment accountEnvironmentAttachment =
@@ -209,7 +206,7 @@ public class AccountEnvironmentAttachmentLocalServiceImpl
 	}
 
 	protected void addFile(String fileDir, String fileName, File file)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (!DLStoreUtil.hasDirectory(
 				OSBConstants.COMPANY_ID, CompanyConstants.SYSTEM, fileDir)) {
@@ -224,7 +221,7 @@ public class AccountEnvironmentAttachmentLocalServiceImpl
 	}
 
 	protected void deleteFile(String fileDir, String fileName)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		String filePath = fileDir + StringPool.SLASH + fileName;
 
@@ -239,7 +236,7 @@ public class AccountEnvironmentAttachmentLocalServiceImpl
 	protected void validate(
 			long accountEnvironmentAttachmentId, long accountEnvironmentId,
 			String fileName, File file)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		DLStoreUtil.validate(fileName, false);
 

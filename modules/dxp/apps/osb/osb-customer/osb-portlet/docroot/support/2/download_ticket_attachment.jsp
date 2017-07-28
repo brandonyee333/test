@@ -43,7 +43,7 @@ List<FileRepository> fileRepositories = SupportUtil.getFileRepositories();
 			boolean available = availableFileRepositoryIds.contains(fileRepository.getFileRepositoryId());
 		%>
 
-			<div class="aui-w20 attachment-download-server">
+			<div class="attachment-download-server aui-w20">
 				<div>
 					<%= HtmlUtil.escape(fileRepository.getFileRepositoryId()) %>
 				</div>
@@ -53,10 +53,10 @@ List<FileRepository> fileRepositories = SupportUtil.getFileRepositories();
 					<portlet:param name="fileRepositoryId" value="<%= fileRepository.getFileRepositoryId() %>" />
 				</liferay-portlet:resourceURL>
 
-				<input class='<%= available ? "" : "aui-helper-hidden" %> aui-button-input' id="<portlet:namespace/><%= fileRepository.getFileRepositoryId() %>download" onclick="location.href = '<%= ticketAttachmentURL.toString() %>'" type="button" value="<liferay-ui:message key="download" />" />
+				<input class="<%= available ? "" : "aui-helper-hidden" %> aui-button-input" id="<portlet:namespace/><%= fileRepository.getFileRepositoryId() %>download" onclick="location.href = '<%= ticketAttachmentURL.toString() %>'" type="button" value="<liferay-ui:message key="download" />" />
 
 				<c:if test="<%= !available %>">
-					<div class="aui-button-input attachment-syncing" id="<portlet:namespace/><%= fileRepository.getFileRepositoryId() %>waiting">
+					<div class="attachment-syncing aui-button-input" id="<portlet:namespace/><%= fileRepository.getFileRepositoryId() %>waiting">
 						<liferay-ui:message key="syncing" />
 					</div>
 				</c:if>

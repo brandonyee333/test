@@ -14,7 +14,6 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.LCSSubscriptionEntry;
 import com.liferay.osb.model.LCSSubscriptionEntryConstants;
@@ -32,11 +31,11 @@ import com.liferay.osb.remote.RemoteLCSWebServiceUtil;
 import com.liferay.osb.service.base.LCSSubscriptionEntryLocalServiceBaseImpl;
 import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.ArrayList;
@@ -53,10 +52,10 @@ public class LCSSubscriptionEntryLocalServiceImpl
 
 	public List<LCSSubscriptionEntry> getLCSSubscriptionEntries(
 			long corpProjectId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		Map<String, LCSSubscriptionEntry> lcsSubscriptionEntriesMap =
-			new HashMap<String, LCSSubscriptionEntry>();
+			new HashMap<>();
 
 		AccountEntry accountEntry = accountEntryPersistence.findByCorpProjectId(
 			corpProjectId);
@@ -92,13 +91,10 @@ public class LCSSubscriptionEntryLocalServiceImpl
 			lcsSubscriptionEntriesMap.put(key, lcsSubscriptionEntry);
 		}
 
-		return new ArrayList<LCSSubscriptionEntry>(
-			lcsSubscriptionEntriesMap.values());
+		return new ArrayList<>(lcsSubscriptionEntriesMap.values());
 	}
 
-	public void syncToLCS(long corpProjectId)
-		throws PortalException, SystemException {
-
+	public void syncToLCS(long corpProjectId) throws PortalException {
 		if (!PortletPropsValues.REMOTE_JSON_SERVICE_API_LCS_ENABLED) {
 			return;
 		}
@@ -115,7 +111,7 @@ public class LCSSubscriptionEntryLocalServiceImpl
 
 	protected LCSSubscriptionEntry createLCSSubscriptionEntry(
 			OfferingEntry offeringEntry)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OrderEntry orderEntry = offeringEntry.getOrderEntry();
 

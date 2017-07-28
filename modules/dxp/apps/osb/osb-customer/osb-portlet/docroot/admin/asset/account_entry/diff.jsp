@@ -27,37 +27,37 @@ Map<String, String> oldAccountEntryAttributes = (TreeMap<String, String>)request
 	</h3>
 
 	<table class="results-grid taglib-search-iterator">
-	<tr class="results-header">
-		<th>
-			<liferay-ui:message key="field" />
-		</th>
-		<th>
-			<liferay-ui:message key="old-value" />
-		</th>
-		<th>
-			<liferay-ui:message key="new-value" />
-		</th>
-	</tr>
-
-	<%
-	for (String field : oldAccountEntryAttributes.keySet()) {
-	%>
-
-		<tr class="results-row">
-			<td>
-				<%= _getFieldLabel(locale, field) %>
-			</td>
-			<td>
-				<%= _getValueLabel(request, themeDisplay, field, oldAccountEntryAttributes.get(field)) %>
-			</td>
-			<td>
-				<%= _getValueLabel(request, themeDisplay, field, newAccountEntryAttributes.get(field)) %>
-			</td>
+		<tr class="results-header">
+			<th>
+				<liferay-ui:message key="field" />
+			</th>
+			<th>
+				<liferay-ui:message key="old-value" />
+			</th>
+			<th>
+				<liferay-ui:message key="new-value" />
+			</th>
 		</tr>
 
-	<%
-	}
-	%>
+		<%
+		for (String field : oldAccountEntryAttributes.keySet()) {
+		%>
+
+			<tr class="results-row">
+				<td>
+					<%= _getFieldLabel(locale, field) %>
+				</td>
+				<td>
+					<%= _getValueLabel(request, themeDisplay, field, oldAccountEntryAttributes.get(field)) %>
+				</td>
+				<td>
+					<%= _getValueLabel(request, themeDisplay, field, newAccountEntryAttributes.get(field)) %>
+				</td>
+			</tr>
+
+		<%
+		}
+		%>
 
 	</table>
 </c:if>
@@ -79,7 +79,7 @@ private String _getFieldLabel(Locale locale, String field) {
 		label = "support-regions";
 	}
 
-	return LanguageUtil.get(locale, label);
+	return LanguageUtil.get(request, label);
 }
 
 private String _getValueLabel(HttpServletRequest request, ThemeDisplay themeDisplay, String field, String value) throws Exception {

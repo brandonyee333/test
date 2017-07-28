@@ -14,7 +14,6 @@
 
 package com.liferay.osb.remote;
 
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
 
 /**
@@ -22,7 +21,6 @@ import com.liferay.portal.kernel.json.JSONArray;
  */
 public interface RemoteDossieraWebService {
 
-	public JSONArray getOpportunitiesJSONArray(String salesforceProjectKey)
-		throws SystemException;
+	public JSONArray getOpportunitiesJSONArray(String salesforceProjectKey);
 
 }

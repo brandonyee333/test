@@ -14,18 +14,17 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.model.AuditEntry;
 import com.liferay.osb.model.AuditEntryConstants;
 import com.liferay.osb.service.base.AuditEntryLocalServiceBaseImpl;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -43,7 +42,7 @@ public class AuditEntryLocalServiceImpl extends AuditEntryLocalServiceBaseImpl {
 			long classPK, long auditSetId, long fieldClassNameId,
 			long fieldClassPK, int action, int field, int visibility,
 			String oldLabel, String oldValue, String newLabel, String newValue)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		boolean i18n = isI18n(field);
 
@@ -59,7 +58,7 @@ public class AuditEntryLocalServiceImpl extends AuditEntryLocalServiceBaseImpl {
 			long fieldClassPK, int action, int field, int visibility,
 			String oldLabel, String oldValue, String newLabel, String newValue,
 			boolean i18n, boolean trackChange)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		long previousAuditEntryId = 0;
 
@@ -102,9 +101,9 @@ public class AuditEntryLocalServiceImpl extends AuditEntryLocalServiceBaseImpl {
 		auditEntry.setNewLabel(newLabel);
 		auditEntry.setNewValue(newValue);
 		auditEntry.setI18n(i18n);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		auditEntryPersistence.update(auditEntry, serviceContext);
@@ -112,15 +111,12 @@ public class AuditEntryLocalServiceImpl extends AuditEntryLocalServiceBaseImpl {
 		return auditEntry;
 	}
 
-	public List<AuditEntry> getAuditEntries(Date createDate, long classNameId)
-		throws SystemException {
-
+	public List<AuditEntry> getAuditEntries(Date createDate, long classNameId) {
 		return auditEntryPersistence.findByGtCD_C(createDate, classNameId);
 	}
 
 	public List<AuditEntry> getAuditEntries(
-			long classNameId, long classPK, int[] visibilities)
-		throws SystemException {
+		long classNameId, long classPK, int[] visibilities) {
 
 		return auditEntryPersistence.findByC_C_V(
 			classNameId, classPK, visibilities, QueryUtil.ALL_POS,
@@ -128,11 +124,9 @@ public class AuditEntryLocalServiceImpl extends AuditEntryLocalServiceBaseImpl {
 	}
 
 	public List<List<AuditEntry>> getAuditEntrySets(
-			long classNameId, long classPK, int[] visibilities)
-		throws SystemException {
+		long classNameId, long classPK, int[] visibilities) {
 
-		Map<Long, List<AuditEntry>> auditEntrySets =
-			new LinkedHashMap<Long, List<AuditEntry>>();
+		Map<Long, List<AuditEntry>> auditEntrySets = new LinkedHashMap<>();
 
 		List<AuditEntry> auditEntries = getAuditEntries(
 			classNameId, classPK, visibilities);
@@ -145,7 +139,7 @@ public class AuditEntryLocalServiceImpl extends AuditEntryLocalServiceBaseImpl {
 				auditEntrySet.add(auditEntry);
 			}
 			else {
-				auditEntrySet = new ArrayList<AuditEntry>();
+				auditEntrySet = new ArrayList<>();
 
 				auditEntrySet.add(auditEntry);
 
@@ -153,28 +147,24 @@ public class AuditEntryLocalServiceImpl extends AuditEntryLocalServiceBaseImpl {
 			}
 		}
 
-		return new ArrayList<List<AuditEntry>>(auditEntrySets.values());
+		return new ArrayList<>(auditEntrySets.values());
 	}
 
 	public AuditEntry getLastAuditEntry(
-			long fieldClassNameId, long fieldClassPK, int field)
-		throws SystemException {
+		long fieldClassNameId, long fieldClassPK, int field) {
 
 		return auditEntryPersistence.fetchByFC_FC_F_Last(
 			fieldClassNameId, fieldClassPK, field, null);
 	}
 
 	public AuditEntry getLastAuditEntry(
-			long classNameId, long classPK, int field, int action)
-		throws SystemException {
+		long classNameId, long classPK, int field, int action) {
 
 		return auditEntryPersistence.fetchByC_C_F_A_Last(
 			classNameId, classPK, field, action, null);
 	}
 
-	public long getNextAuditSetId(long classNameId, long classPK)
-		throws SystemException {
-
+	public long getNextAuditSetId(long classNameId, long classPK) {
 		StringBundler sb = new StringBundler(5);
 
 		sb.append(AuditEntry.class.getName());
@@ -186,9 +176,7 @@ public class AuditEntryLocalServiceImpl extends AuditEntryLocalServiceBaseImpl {
 		return counterLocalService.increment(sb.toString());
 	}
 
-	public long getNextAuditSetId(String className, long classPK)
-		throws SystemException {
-
+	public long getNextAuditSetId(String className, long classPK) {
 		long classNameId = PortalUtil.getClassNameId(className);
 
 		return getNextAuditSetId(classNameId, classPK);

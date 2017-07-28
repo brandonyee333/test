@@ -18,7 +18,6 @@ import com.liferay.osb.model.PartnerWorker;
 import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
@@ -32,7 +31,7 @@ public class OSBPartnerEntryPermission {
 	public static void check(
 			PermissionChecker permissionChecker, long partnerEntryId,
 			String actionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (!contains(permissionChecker, partnerEntryId, actionId)) {
 			throw new PrincipalException();
@@ -40,9 +39,8 @@ public class OSBPartnerEntryPermission {
 	}
 
 	public static boolean contains(
-			PermissionChecker permissionChecker, long partnerEntryId,
-			String actionId)
-		throws SystemException {
+		PermissionChecker permissionChecker, long partnerEntryId,
+		String actionId) {
 
 		if (RoleLocalServiceUtil.hasUserRole(
 				permissionChecker.getUserId(),

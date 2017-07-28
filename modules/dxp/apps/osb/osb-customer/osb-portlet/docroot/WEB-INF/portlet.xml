@@ -74,7 +74,7 @@
 			<role-name>user</role-name>
 		</security-role-ref>
 	</portlet>
- 	<portlet>
+	<portlet>
 		<portlet-name>3</portlet-name>
 		<display-name>Downloads</display-name>
 		<portlet-class>com.liferay.osb.downloads.portlet.DownloadsPortlet</portlet-class>

@@ -14,22 +14,20 @@
 
 package com.liferay.osb.support.messaging;
 
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.LicenseKey;
 import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.AccountWorkerLocalServiceUtil;
-import com.liferay.osb.service.CorpProjectLocalServiceUtil;
 import com.liferay.osb.service.LicenseKeyLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.comparator.LicenseKeyExpirationDateComparator;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
+import com.liferay.portal.kernel.util.Time;
 
 import java.util.Date;
 import java.util.List;
@@ -41,7 +39,7 @@ public class CheckStatusAccountEntriesMessageListener
 	extends BaseMessageListener {
 
 	protected void checkTrialAccountEntry(AccountEntry accountEntry)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		LicenseKey licenseKey = LicenseKeyLocalServiceUtil.getFirstLicenseKey(
 			accountEntry.getAccountEntryId(),
@@ -65,7 +63,7 @@ public class CheckStatusAccountEntriesMessageListener
 			/* TODO add in CorpProject integration
 			CorpProjectLocalServiceUtil.deleteUserCorpProjectRoles(
 				accountEntry.getUserId(), accountEntry.getCorpProjectId(),
-				new long[]{accountEntry.getUserId()},
+				new long[] {accountEntry.getUserId()},
 				OSBConstants.ROLE_OSB_CORP_LCS_USER_ID);
 
 			CorpProjectLocalServiceUtil.deleteCorpProject(

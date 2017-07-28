@@ -24,16 +24,13 @@ import com.liferay.osb.util.WorkflowConstants;
 /**
  * @author Joan Kim
  */
-public class Upgrade_20140818160702396_DeveloperEntry
-	extends UpgradeProcess {
+public class Upgrade_20140818160702396_DeveloperEntry extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20140818160702396L;
 	}
@@ -62,6 +59,7 @@ public class Upgrade_20140818160702396_DeveloperEntry
 	}
 
 }
+
 */
 
 }

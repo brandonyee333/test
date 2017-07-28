@@ -14,12 +14,9 @@
 
 package com.liferay.osb.service.persistence.impl;
 
-import com.liferay.osb.service.persistence.TicketCannedResponseFinder;
-import com.liferay.osb.service.persistence.TicketCannedResponseUtil;
-
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.model.TicketCannedResponse;
 import com.liferay.osb.model.impl.TicketCannedResponseImpl;
+import com.liferay.osb.service.persistence.TicketCannedResponseFinder;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
@@ -27,7 +24,7 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.Type;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.util.Iterator;
@@ -46,7 +43,7 @@ public class TicketCannedResponseFinderImpl
 	public static final String FIND_BY_N_C =
 		TicketCannedResponseFinder.class.getName() + ".findByN_C";
 
-	public int countByKeywords(String keywords) throws SystemException {
+	public int countByKeywords(String keywords) {
 		String[] names = null;
 		String[] contents = null;
 		boolean andOperator = false;
@@ -62,48 +59,42 @@ public class TicketCannedResponseFinderImpl
 		return countByN_C(names, contents, andOperator);
 	}
 
-	public int countByN_C(String name, String content, boolean andOperator)
-		throws SystemException {
-
+	public int countByN_C(String name, String content, boolean andOperator) {
 		String[] names = CustomSQLUtil.keywords(name);
 		String[] contents = CustomSQLUtil.keywords(content);
 
 		return countByN_C(names, contents, andOperator);
 	}
 
-	public List<TicketCannedResponse> findByN_C(
-			String name, String content, boolean andOperator, int start,
-			int end)
-		throws SystemException {
+	public List<TicketCannedResponse> findByKeywords(
+		String keywords, int start, int end) {
 
-		String[] names = CustomSQLUtil.keywords(name);
-		String[] contents = CustomSQLUtil.keywords(content);
+		String[] names = null;
+		String[] contents = null;
+		boolean andOperator = false;
+
+		if (Validator.isNotNull(keywords)) {
+			names = CustomSQLUtil.keywords(keywords);
+			contents = CustomSQLUtil.keywords(keywords);
+		}
+		else {
+			andOperator = true;
+		}
 
 		return findByN_C(names, contents, andOperator, start, end);
 	}
 
-	public List<TicketCannedResponse> findByKeywords(
-			String keywords, int start, int end)
-		throws SystemException {
+	public List<TicketCannedResponse> findByN_C(
+		String name, String content, boolean andOperator, int start, int end) {
 
-		String[] names = null;
-		String[] contents = null;
-		boolean andOperator = false;
-
-		if (Validator.isNotNull(keywords)) {
-			names = CustomSQLUtil.keywords(keywords);
-			contents = CustomSQLUtil.keywords(keywords);
-		}
-		else {
-			andOperator = true;
-		}
+		String[] names = CustomSQLUtil.keywords(name);
+		String[] contents = CustomSQLUtil.keywords(content);
 
 		return findByN_C(names, contents, andOperator, start, end);
 	}
 
 	protected int countByN_C(
-			String[] names, String[] contents, boolean andOperator)
-		throws SystemException {
+		String[] names, String[] contents, boolean andOperator) {
 
 		names = CustomSQLUtil.keywords(names);
 		contents = CustomSQLUtil.keywords(contents);
@@ -123,7 +114,7 @@ public class TicketCannedResponseFinderImpl
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addScalar(COUNT_COLUMN_NAME, Type.LONG);
 
@@ -153,9 +144,8 @@ public class TicketCannedResponseFinderImpl
 	}
 
 	protected List<TicketCannedResponse> findByN_C(
-			String[] names, String[] contents, boolean andOperator, int start,
-			int end)
-		throws SystemException {
+		String[] names, String[] contents, boolean andOperator, int start,
+		int end) {
 
 		names = CustomSQLUtil.keywords(names);
 		contents = CustomSQLUtil.keywords(contents);
@@ -175,7 +165,7 @@ public class TicketCannedResponseFinderImpl
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addEntity(
 				"OSB_TicketCannedResponse", TicketCannedResponseImpl.class);

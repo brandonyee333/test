@@ -16,7 +16,7 @@ package com.liferay.osb.hook.upgrade.v2_0_4;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
-/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+/*import UpgradeProcess;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -35,9 +35,7 @@ public class UpgradeAppPricing extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	protected void doUpgrade() throws Exception {
 		upgradeAppPricing();
 	}
@@ -90,6 +88,7 @@ public class UpgradeAppPricing extends UpgradeProcess {
 	private static Log _log = LogFactoryUtil.getLog(UpgradeAppPricing.class);
 
 }
+
 */
 
 }

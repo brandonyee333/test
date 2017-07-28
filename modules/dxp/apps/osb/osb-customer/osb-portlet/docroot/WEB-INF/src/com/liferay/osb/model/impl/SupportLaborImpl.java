@@ -18,7 +18,6 @@ import com.liferay.osb.model.SupportLaborConstants;
 import com.liferay.osb.model.SupportTeam;
 import com.liferay.osb.service.SupportTeamLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 
@@ -86,9 +85,7 @@ public class SupportLaborImpl extends SupportLaborBaseImpl {
 		return sb.toString();
 	}
 
-	public List<SupportTeam> getSupportTeams()
-		throws PortalException, SystemException {
-
+	public List<SupportTeam> getSupportTeams() throws PortalException {
 		return SupportTeamLocalServiceUtil.getSupportLaborSupportTeams(
 			getSupportLaborId());
 	}

@@ -56,7 +56,7 @@ String stepsToUpgrade = ParamUtil.getString(request, "stepsToUpgrade", GetterUti
 						for (int curDocLibPersistence : TicketEntryConstants.DOC_LIB_PERSISTENCES) {
 						%>
 
-							<option <%= (curDocLibPersistence == docLibPersistence) ? "selected" : StringPool.BLANK %> value="<%= curDocLibPersistence %>"><%= LanguageUtil.get(locale, TicketEntryConstants.getDocLibPersistenceLabel(curDocLibPersistence)) %></option>
+							<option <%= (curDocLibPersistence == docLibPersistence) ? "selected" : StringPool.BLANK %> value="<%= curDocLibPersistence %>"><%= LanguageUtil.get(request, TicketEntryConstants.getDocLibPersistenceLabel(curDocLibPersistence)) %></option>
 
 						<%
 						}
@@ -160,7 +160,7 @@ String stepsToUpgrade = ParamUtil.getString(request, "stepsToUpgrade", GetterUti
 						for (int curUploadMethod : TicketEntryConstants.UPLOAD_METHODS) {
 						%>
 
-							<option <%= databaseUploadMethod == curUploadMethod ? "selected" : StringPool.BLANK %> value="<%= curUploadMethod %>"><%= LanguageUtil.get(locale, TicketEntryConstants.getUploadMethodLabel(curUploadMethod)) %></option>
+							<option <%= databaseUploadMethod == curUploadMethod ? "selected" : StringPool.BLANK %> value="<%= curUploadMethod %>"><%= LanguageUtil.get(request, TicketEntryConstants.getUploadMethodLabel(curUploadMethod)) %></option>
 
 						<%
 						}
@@ -169,7 +169,7 @@ String stepsToUpgrade = ParamUtil.getString(request, "stepsToUpgrade", GetterUti
 					</select>
 				</c:when>
 				<c:otherwise>
-					<%= LanguageUtil.get(locale, TicketEntryConstants.getUploadMethodLabel(databaseUploadMethod)) %>
+					<%= LanguageUtil.get(request, TicketEntryConstants.getUploadMethodLabel(databaseUploadMethod)) %>
 
 					<input name="<portlet:namespace />databaseUploadMethod" type="hidden" value="<%= databaseUploadMethod %>" />
 				</c:otherwise>
@@ -210,7 +210,7 @@ String stepsToUpgrade = ParamUtil.getString(request, "stepsToUpgrade", GetterUti
 						for (int curUploadMethod : TicketEntryConstants.UPLOAD_METHODS) {
 						%>
 
-							<option <%= dataFolderUploadMethod == curUploadMethod ? "selected" : StringPool.BLANK %> value="<%= curUploadMethod%>"><%= LanguageUtil.get(locale, TicketEntryConstants.getUploadMethodLabel(curUploadMethod)) %></option>
+							<option <%= dataFolderUploadMethod == curUploadMethod ? "selected" : StringPool.BLANK %> value="<%= curUploadMethod %>"><%= LanguageUtil.get(request, TicketEntryConstants.getUploadMethodLabel(curUploadMethod)) %></option>
 
 						<%
 						}
@@ -219,7 +219,7 @@ String stepsToUpgrade = ParamUtil.getString(request, "stepsToUpgrade", GetterUti
 					</select>
 				</c:when>
 				<c:otherwise>
-					<%= LanguageUtil.get(locale, TicketEntryConstants.getUploadMethodLabel(dataFolderUploadMethod)) %>
+					<%= LanguageUtil.get(request, TicketEntryConstants.getUploadMethodLabel(dataFolderUploadMethod)) %>
 
 					<input name="<portlet:namespace />dataFolderUploadMethod" type="hidden" value="<%= dataFolderUploadMethod %>" />
 				</c:otherwise>

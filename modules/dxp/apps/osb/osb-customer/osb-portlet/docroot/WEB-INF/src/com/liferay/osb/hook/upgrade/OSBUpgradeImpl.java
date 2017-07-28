@@ -15,33 +15,16 @@
 package com.liferay.osb.hook.upgrade;
 
 /* TODO update rabbitMQ integration
-import com.liferay.osb.tools.BaseUpgradeImpl;
 */
-import com.liferay.osb.util.OSBConstants;
-import com.liferay.osb.util.PortletPropsValues;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.Release;
-import com.liferay.portal.kernel.service.ReleaseLocalServiceUtil;
-import com.liferay.expando.kernel.exception.DuplicateColumnNameException;
-import com.liferay.expando.kernel.exception.NoSuchTableException;
-import com.liferay.expando.kernel.model.ExpandoColumnConstants;
-import com.liferay.expando.kernel.model.ExpandoTable;
-import com.liferay.expando.kernel.model.ExpandoTableConstants;
-import com.liferay.expando.kernel.service.ExpandoColumnLocalServiceUtil;
-import com.liferay.expando.kernel.service.ExpandoTableLocalServiceUtil;
-import com.liferay.expando.kernel.service.ExpandoValueLocalServiceUtil;
 
 /**
  * @author Amos Fong
  */
-public class OSBUpgradeImpl { // extends BaseUpgradeImpl {
+public class OSBUpgradeImpl {// extends BaseUpgradeImpl {
+
 /* TODO update custom upgrade class
 	@Override
-	public int[] getDeveloperBuildNumbers(String servletContextName)
-		throws SystemException {
+	public int[] getDeveloperBuildNumbers(String servletContextName) {
 
 		try {
 			Release release = ReleaseLocalServiceUtil.getRelease(
@@ -59,8 +42,7 @@ public class OSBUpgradeImpl { // extends BaseUpgradeImpl {
 	}
 
 	@Override
-	public boolean hasRun(long classPK)
-		throws PortalException, SystemException {
+	public boolean hasRun(long classPK) throws PortalException {
 
 		long runTime = ExpandoValueLocalServiceUtil.getData(
 			OSBConstants.COMPANY_ID, BaseUpgradeProcess.class.getName(),
@@ -94,7 +76,7 @@ public class OSBUpgradeImpl { // extends BaseUpgradeImpl {
 	}
 
 	@Override
-	public void setUp() throws PortalException, SystemException {
+	public void setUp() throws PortalException {
 		ExpandoTable table = null;
 
 		try {

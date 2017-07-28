@@ -45,9 +45,7 @@ public class Upgrade_20160602105202547_OfferingDefinition
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20160602105202547L;
 	}
@@ -94,8 +92,7 @@ public class Upgrade_20160602105202547_OfferingDefinition
 
 	protected boolean isPreferred(
 			OfferingDefinition offeringDefinition,
-			OfferingDefinition offeringDefinition2)
-		throws SystemException {
+			OfferingDefinition offeringDefinition2) {
 
 		if (offeringDefinition.getOfferingDefinitionId() ==
 				OSBConstants.OFFERING_DEFINITION_TRIAL_ID) {
@@ -228,9 +225,10 @@ public class Upgrade_20160602105202547_OfferingDefinition
 		Upgrade_20160602105202547_OfferingDefinition.class);
 
 	private Map<String, OfferingDefinition> _offeringDefinitionsMap =
-		new HashMap<String, OfferingDefinition>();
+		new HashMap<>();
 
 }
+
 */
 
 }

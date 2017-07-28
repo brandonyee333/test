@@ -34,8 +34,8 @@ long regionId = BeanParamUtil.getLong(address, request, "regionId");
 	<div class="field-group">
 		<label id="<portlet:namespace />street1Label"><liferay-ui:message key="address-line" /></label>
 
-		<div class="field-align" field-required-message='<%= LanguageUtil.get(pageContext,"please-enter-a-valid-address-line") %>'>
-			<span class="long-field inline">
+		<div class="field-align" field-required-message="<%= LanguageUtil.get(pageContext, "please-enter-a-valid-address-line") %>">
+			<span class="inline long-field">
 				<aui:input bean="<%= address %>" data-field-required-status="<%= false %>" field="street1" label="" model="<%= Address.class %>" name="street1" type="text" />
 			</span>
 		</div>
@@ -56,8 +56,8 @@ long regionId = BeanParamUtil.getLong(address, request, "regionId");
 	<div class="field-group">
 		<label id="<portlet:namespace />cityLabel"><liferay-ui:message key="city" /></label>
 
-		<div class="field-align" field-required-message='<%= LanguageUtil.get(pageContext,"please-enter-a-valid-city") %>'>
-			<span class="long-field inline">
+		<div class="field-align" field-required-message="<%= LanguageUtil.get(pageContext, "please-enter-a-valid-city") %>">
+			<span class="inline long-field">
 				<aui:input bean="<%= address %>" data-field-required-status="<%= false %>" field="city" label="" model="<%= Address.class %>" name="city" type="text" />
 			</span>
 		</div>
@@ -66,8 +66,8 @@ long regionId = BeanParamUtil.getLong(address, request, "regionId");
 	<div class="field-group">
 		<label id="<portlet:namespace />zipLabel"><liferay-ui:message key="postal-code" /></label>
 
-		<div class="field-align" field-required-message='<%= LanguageUtil.get(pageContext,"please-enter-a-valid-postal-code") %>'>
-			<span class="long-field inline">
+		<div class="field-align" field-required-message="<%= LanguageUtil.get(pageContext, "please-enter-a-valid-postal-code") %>">
+			<span class="inline long-field">
 				<aui:input bean="<%= address %>" data-field-required-status="<%= false %>" field="zip" label="" model="<%= Address.class %>" name="zip" type="text" />
 			</span>
 		</div>

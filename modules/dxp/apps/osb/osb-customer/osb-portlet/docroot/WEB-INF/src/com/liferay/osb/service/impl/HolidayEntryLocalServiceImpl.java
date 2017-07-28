@@ -21,9 +21,8 @@ import com.liferay.osb.model.HolidayEntry;
 import com.liferay.osb.model.impl.HolidayEntryImpl;
 import com.liferay.osb.service.base.HolidayEntryLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.DateUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -41,7 +40,7 @@ public class HolidayEntryLocalServiceImpl
 	public HolidayEntry addHolidayEntry(
 			long holidayCalendarId, String name, String description,
 			Date startDate, Date endDate, boolean repeatYearly)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		validate(holidayCalendarId, name, description, startDate, endDate);
 
@@ -56,9 +55,9 @@ public class HolidayEntryLocalServiceImpl
 		holidayEntry.setStartDate(startDate);
 		holidayEntry.setEndDate(endDate);
 		holidayEntry.setRepeatYearly(repeatYearly);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		holidayEntryPersistence.update(holidayEntry, serviceContext);
@@ -66,15 +65,12 @@ public class HolidayEntryLocalServiceImpl
 		return holidayEntry;
 	}
 
-	public List<HolidayEntry> getHolidayEntries(long holidayCalendarId)
-		throws SystemException {
-
+	public List<HolidayEntry> getHolidayEntries(long holidayCalendarId) {
 		return holidayEntryPersistence.findByHolidayCalendar(holidayCalendarId);
 	}
 
 	public List<HolidayEntry> getHolidayEntriesBetween(
-			long userId, Date startDate, Date endDate, TimeZone timeZone)
-		throws SystemException {
+		long userId, Date startDate, Date endDate, TimeZone timeZone) {
 
 		List<HolidayEntry> holidayEntries = holidayEntryFinder.findByU_RY_SD_ED(
 			userId, false, startDate, endDate);
@@ -86,9 +82,7 @@ public class HolidayEntryLocalServiceImpl
 		return holidayEntries;
 	}
 
-	public int getHolidayEntriesCount(long userId, Date date)
-		throws SystemException {
-
+	public int getHolidayEntriesCount(long userId, Date date) {
 		List<HolidayEntry> holidayEntries = getHolidayEntriesBetween(
 			userId, date, date, null);
 
@@ -99,7 +93,7 @@ public class HolidayEntryLocalServiceImpl
 			long holidayEntryId, long holidayCalendarId, String name,
 			String description, Date startDate, Date endDate,
 			boolean repeatYearly)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		validate(holidayCalendarId, name, description, startDate, endDate);
 
@@ -112,9 +106,9 @@ public class HolidayEntryLocalServiceImpl
 		holidayEntry.setStartDate(startDate);
 		holidayEntry.setEndDate(endDate);
 		holidayEntry.setRepeatYearly(repeatYearly);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		holidayEntryPersistence.update(holidayEntry, serviceContext);
@@ -123,8 +117,7 @@ public class HolidayEntryLocalServiceImpl
 	}
 
 	protected List<HolidayEntry> getCurrentRepeatYearlyHolidayEntries(
-			long userId, Date startDate, Date endDate, TimeZone timeZone)
-		throws SystemException {
+		long userId, Date startDate, Date endDate, TimeZone timeZone) {
 
 		if (startDate.after(endDate)) {
 			return Collections.EMPTY_LIST;
@@ -144,8 +137,7 @@ public class HolidayEntryLocalServiceImpl
 			timeZoneOffset = timeZone.getRawOffset();
 		}
 
-		List<HolidayEntry> currentHolidayEntries =
-			new ArrayList<HolidayEntry>();
+		List<HolidayEntry> currentHolidayEntries = new ArrayList<>();
 
 		List<HolidayEntry> holidayEntries = holidayEntryFinder.findByU_RY(
 			userId, true);
@@ -201,7 +193,7 @@ public class HolidayEntryLocalServiceImpl
 	protected void validate(
 			long holidayCalendarId, String name, String description,
 			Date startDate, Date endDate)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		holidayCalendarPersistence.findByPrimaryKey(holidayCalendarId);
 

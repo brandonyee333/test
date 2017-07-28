@@ -30,9 +30,7 @@ public class Upgrade_20170626110801105_ProductEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20170626110801105L;
 	}
@@ -41,7 +39,7 @@ public class Upgrade_20170626110801105_ProductEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 		runSQL(
 			"update ListType set name = 'mobile-device-detection' where " +
-				"listTypeId = " + 
+				"listTypeId = " +
 					TicketEntryConstants.COMPONENT_MOBILE_DEVICE_DETECTION);
 
 		runSQL(
@@ -51,6 +49,7 @@ public class Upgrade_20170626110801105_ProductEntry extends UpgradeProcess {
 	}
 
 }
+
 */
 
 }

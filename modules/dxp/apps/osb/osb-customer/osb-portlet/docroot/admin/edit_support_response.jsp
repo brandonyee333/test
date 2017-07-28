@@ -18,6 +18,7 @@
 
 <%
 String redirect = ParamUtil.getString(request, "redirect");
+
 String backURL = ParamUtil.getString(request, "backURL", redirect);
 
 long supportResponseId = ParamUtil.getLong(request, "supportResponseId");
@@ -59,186 +60,186 @@ String languageId = BeanParamUtil.getString(supportResponse, request, "languageI
 	<liferay-ui:error exception="<%= SupportResponseSupportLevelException.class %>" message="please-enter-a-valid-service-level-agreement" />
 
 	<table class="lfr-table">
-	<tr>
-		<td>
-			<liferay-ui:message key="name" />
-		</td>
-		<td>
-			<liferay-ui:input-field bean="<%= supportResponse %>" field="name" model="<%= SupportResponse.class %>" />
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="service-level-agreement" />
-		</td>
-		<td>
-			<select name="<portlet:namespace />supportLevel">
+		<tr>
+			<td>
+				<liferay-ui:message key="name" />
+			</td>
+			<td>
+				<liferay-ui:input-field bean="<%= supportResponse %>" field="name" model="<%= SupportResponse.class %>" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="service-level-agreement" />
+			</td>
+			<td>
+				<select name="<portlet:namespace />supportLevel">
 
-				<%
-				for (int curSupportLevel : SupportResponseConstants.SUPPORT_LEVELS) {
-				%>
+					<%
+					for (int curSupportLevel : SupportResponseConstants.SUPPORT_LEVELS) {
+					%>
 
-					<option <%= (curSupportLevel == supportLevel) ? "selected" : StringPool.BLANK %> value="<%= curSupportLevel %>"><liferay-ui:message key="<%= SupportResponseConstants.getSupportLevelLabel(curSupportLevel) %>" /></option>
+						<option <%= (curSupportLevel == supportLevel) ? "selected" : StringPool.BLANK %> value="<%= curSupportLevel %>"><liferay-ui:message key="<%= SupportResponseConstants.getSupportLevelLabel(curSupportLevel) %>" /></option>
 
-				<%
-				}
-				%>
+					<%
+					}
+					%>
 
-			</select>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2">
-			<br />
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="severity-1" />
-		</td>
-		<td>
-			<table class="lfr-table">
-			<tr>
-				<td>
-					<liferay-ui:message key="response" />
-				</td>
-				<td>
-					<select name="<portlet:namespace />severity1Response">
-						<option></option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<br />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="severity-1" />
+			</td>
+			<td>
+				<table class="lfr-table">
+					<tr>
+						<td>
+							<liferay-ui:message key="response" />
+						</td>
+						<td>
+							<select name="<portlet:namespace />severity1Response">
+								<option></option>
 
-						<%
-						for (int severityResponse : _SEVERITY_RESPONSES) {
-						%>
+								<%
+								for (int severityResponse : _SEVERITY_RESPONSES) {
+								%>
 
-							<option <%= (severity1Response == severityResponse) ? "selected" : "" %> value="<%= severityResponse %>"><%= LanguageUtil.format(pageContext, "x-hours", severityResponse) %></option>
+									<option <%= (severity1Response == severityResponse) ? "selected" : "" %> value="<%= severityResponse %>"><%= LanguageUtil.format(pageContext, "x-hours", severityResponse) %></option>
 
-						<%
-						}
-						%>
+								<%
+								}
+								%>
 
-					</select>
-				</td>
-				<td>
-					<liferay-ui:message key="resolution" />
-				</td>
-				<td>
-					<select name="<portlet:namespace />severity1Resolution">
-						<option></option>
+							</select>
+						</td>
+						<td>
+							<liferay-ui:message key="resolution" />
+						</td>
+						<td>
+							<select name="<portlet:namespace />severity1Resolution">
+								<option></option>
 
-						<%
-						for (int severityResolution : _SEVERITY_RESOLUTIONS) {
-						%>
+								<%
+								for (int severityResolution : _SEVERITY_RESOLUTIONS) {
+								%>
 
-							<option <%= (severity1Resolution == severityResolution) ? "selected" : "" %> value="<%= severityResolution %>"><%= LanguageUtil.format(pageContext, "x-days", severityResolution) %></option>
+									<option <%= (severity1Resolution == severityResolution) ? "selected" : "" %> value="<%= severityResolution %>"><%= LanguageUtil.format(pageContext, "x-days", severityResolution) %></option>
 
-						<%
-						}
-						%>
+								<%
+								}
+								%>
 
-					</select>
-				</td>
-			</tr>
-			</table>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="severity-2" />
-		</td>
-		<td>
-			<table class="lfr-table">
-			<tr>
-				<td>
-					<liferay-ui:message key="response" />
-				</td>
-				<td>
-					<select name="<portlet:namespace />severity2Response">
-						<option></option>
+							</select>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="severity-2" />
+			</td>
+			<td>
+				<table class="lfr-table">
+					<tr>
+						<td>
+							<liferay-ui:message key="response" />
+						</td>
+						<td>
+							<select name="<portlet:namespace />severity2Response">
+								<option></option>
 
-						<%
-						for (int severityResponse : _SEVERITY_RESPONSES) {
-						%>
+								<%
+								for (int severityResponse : _SEVERITY_RESPONSES) {
+								%>
 
-							<option <%= (severity2Response == severityResponse) ? "selected" : "" %> value="<%= severityResponse %>"><%= LanguageUtil.format(pageContext, "x-hours", severityResponse) %></option>
+									<option <%= (severity2Response == severityResponse) ? "selected" : "" %> value="<%= severityResponse %>"><%= LanguageUtil.format(pageContext, "x-hours", severityResponse) %></option>
 
-						<%
-						}
-						%>
+								<%
+								}
+								%>
 
-					</select>
-				</td>
-				<td>
-					<liferay-ui:message key="resolution" />
-				</td>
-				<td>
-					<select name="<portlet:namespace />severity2Resolution">
-						<option></option>
+							</select>
+						</td>
+						<td>
+							<liferay-ui:message key="resolution" />
+						</td>
+						<td>
+							<select name="<portlet:namespace />severity2Resolution">
+								<option></option>
 
-						<%
-						for (int severityResolution : _SEVERITY_RESOLUTIONS) {
-						%>
+								<%
+								for (int severityResolution : _SEVERITY_RESOLUTIONS) {
+								%>
 
-							<option <%= (severity2Resolution == severityResolution) ? "selected" : "" %> value="<%= severityResolution %>"><%= LanguageUtil.format(pageContext, "x-days", severityResolution) %></option>
+									<option <%= (severity2Resolution == severityResolution) ? "selected" : "" %> value="<%= severityResolution %>"><%= LanguageUtil.format(pageContext, "x-days", severityResolution) %></option>
 
-						<%
-						}
-						%>
+								<%
+								}
+								%>
 
-					</select>
-				</td>
-			</tr>
-			</table>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="severity-3" />
-		</td>
-		<td>
-			<table class="lfr-table">
-			<tr>
-				<td>
-					<liferay-ui:message key="response" />
-				</td>
-				<td>
-					<select name="<portlet:namespace />severity3Response">
-						<option></option>
+							</select>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="severity-3" />
+			</td>
+			<td>
+				<table class="lfr-table">
+					<tr>
+						<td>
+							<liferay-ui:message key="response" />
+						</td>
+						<td>
+							<select name="<portlet:namespace />severity3Response">
+								<option></option>
 
-						<%
-						for (int severityResponse : _SEVERITY_RESPONSES) {
-						%>
+								<%
+								for (int severityResponse : _SEVERITY_RESPONSES) {
+								%>
 
-							<option <%= (severity3Response == severityResponse) ? "selected" : "" %> value="<%= severityResponse %>"><%= LanguageUtil.format(pageContext, "x-hours", severityResponse) %></option>
+									<option <%= (severity3Response == severityResponse) ? "selected" : "" %> value="<%= severityResponse %>"><%= LanguageUtil.format(pageContext, "x-hours", severityResponse) %></option>
 
-						<%
-						}
-						%>
+								<%
+								}
+								%>
 
-					</select>
-				</td>
-				<td>
-					<liferay-ui:message key="resolution" />
-				</td>
-				<td>
-					<select name="<portlet:namespace />severity3Resolution">
-						<option></option>
+							</select>
+						</td>
+						<td>
+							<liferay-ui:message key="resolution" />
+						</td>
+						<td>
+							<select name="<portlet:namespace />severity3Resolution">
+								<option></option>
 
-						<%
-						for (int severityResolution : _SEVERITY_RESOLUTIONS) {
-						%>
+								<%
+								for (int severityResolution : _SEVERITY_RESOLUTIONS) {
+								%>
 
-							<option <%= (severity3Resolution == severityResolution) ? "selected" : "" %> value="<%= severityResolution %>"><%= LanguageUtil.format(pageContext, "x-days", severityResolution) %></option>
+									<option <%= (severity3Resolution == severityResolution) ? "selected" : "" %> value="<%= severityResolution %>"><%= LanguageUtil.format(pageContext, "x-days", severityResolution) %></option>
 
-						<%
-						}
-						%>
+								<%
+								}
+								%>
 
-					</select>
-				</td>
-			</tr>
-			</table>
-		</td>
-	</tr>
+							</select>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
 	</table>
 
 	<br />

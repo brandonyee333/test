@@ -20,7 +20,6 @@ import com.liferay.osb.model.TicketLink;
 import com.liferay.osb.model.TicketSolutionConstants;
 import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 
@@ -34,7 +33,7 @@ public class OSBTicketLinkPermission {
 	public static void check(
 			PermissionChecker permissionChecker, TicketLink ticketLink,
 			String actionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (!contains(permissionChecker, ticketLink, actionId)) {
 			throw new PrincipalException();
@@ -44,7 +43,7 @@ public class OSBTicketLinkPermission {
 	public static boolean contains(
 			PermissionChecker permissionChecker, TicketLink ticketLink,
 			String actionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketEntry ticketEntry = ticketLink.getTicketEntry();
 

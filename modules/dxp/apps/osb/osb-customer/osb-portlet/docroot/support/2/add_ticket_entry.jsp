@@ -60,7 +60,7 @@ if (offeringEntryId > 0) {
 		RequiredFieldException rfe = (RequiredFieldException)errorException;
 		%>
 
-		<liferay-ui:message arguments="<%= LanguageUtil.get(locale, rfe.getLabelId()) %>" key="please-upload-a-x-file" />
+		<liferay-ui:message arguments="<%= LanguageUtil.get(request, rfe.getLabelId()) %>" key="please-upload-a-x-file" />
 	</liferay-ui:error>
 
 	<portlet:actionURL name="updateTicketEntry" var="updateTicketEntryURL">

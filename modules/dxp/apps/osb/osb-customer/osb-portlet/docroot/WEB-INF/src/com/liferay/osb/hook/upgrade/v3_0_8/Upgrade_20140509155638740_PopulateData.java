@@ -36,9 +36,7 @@ public class Upgrade_20140509155638740_PopulateData extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20140509155638740L;
 	}
@@ -371,9 +369,8 @@ public class Upgrade_20140509155638740_PopulateData extends UpgradeProcess {
 			return;
 		}
 
-		String[] supportRegionNames = {
-			"US", "Hungary", "India", "China", "Spain", "Brazil"
-		};
+		String[] supportRegionNames =
+			{"US", "Hungary", "India", "China", "Spain", "Brazil"};
 
 		for (int i = 0; i < supportRegionNames.length; i++) {
 			long supportRegionId = increment();
@@ -439,9 +436,8 @@ public class Upgrade_20140509155638740_PopulateData extends UpgradeProcess {
 			long supportRegionId, int i)
 		throws Exception {
 
-		String[][] regions = {
-			{"US", "er"}, {"HU"}, {"In"}, {"CN", "AU"}, {"ES"}, {"BR"}
-		};
+		String[][] regions =
+			{{"US", "er"}, {"HU"}, {"In"}, {"CN", "AU"}, {"ES"}, {"BR"}};
 
 		for (String region : regions[i]) {
 			StringBundler sb = new StringBundler(7);
@@ -529,6 +525,7 @@ public class Upgrade_20140509155638740_PopulateData extends UpgradeProcess {
 	}
 
 }
+
 */
 
 }

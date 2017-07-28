@@ -29,7 +29,7 @@ import javax.portlet.PortletURL;
  */
 public class SupportTeamSearch extends SearchContainer<SupportTeam> {
 
-	static List<String> headerNames = new ArrayList<String>();
+	static List<String> headerNames = new ArrayList<>();
 
 	static {
 		headerNames.add("name");

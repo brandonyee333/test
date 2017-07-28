@@ -37,7 +37,7 @@ String footerText = GetterUtil.getString(portletPreferences.getValue("footerText
 		<liferay-ui:message key="<%= ve.getMessage() %>" />
 	</liferay-ui:error>
 
-	<div class="aui-w95 unit security-patch-configuration">
+	<div class="aui-w95 security-patch-configuration unit">
 		<div class="unit-content">
 			<div class="callout-a">
 				<div class="callout-content cleared">

@@ -14,8 +14,6 @@
 
 package com.liferay.osb.rabbitmq;
 
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.osb.admin.util.AdminUtil;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AuditEntryConstants;
@@ -26,14 +24,15 @@ import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.OrderEntryLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Address;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.model.Address;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,9 +50,7 @@ public class ProvisioningAuditRabbitMQConsumer
 	public ProvisioningAuditRabbitMQConsumer() {
 	}
 
-	public void doParse(JSONObject jsonObject)
-		throws PortalException, SystemException {
-
+	public void doParse(JSONObject jsonObject) throws PortalException {
 		long accountEntryId = jsonObject.getLong("accountEntryId");
 		JSONArray jsonArray = jsonObject.getJSONArray("opportunities");
 		long userId = jsonObject.getLong("userId");
@@ -106,9 +103,9 @@ public class ProvisioningAuditRabbitMQConsumer
 	}
 
 	protected Map<String, Integer> getOfferingEntriesMap(JSONArray jsonArray)
-		throws PortalException, SystemException {
+		throws PortalException {
 
-		List<OrderEntry> orderEntries = new ArrayList<OrderEntry>();
+		List<OrderEntry> orderEntries = new ArrayList<>();
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -120,11 +117,9 @@ public class ProvisioningAuditRabbitMQConsumer
 	}
 
 	protected Map<String, Integer> getOfferingEntriesMap(
-			List<OrderEntry> orderEntries)
-		throws SystemException {
+		List<OrderEntry> orderEntries) {
 
-		Map<String, Integer> offeringEntriesMap =
-			new HashMap<String, Integer>();
+		Map<String, Integer> offeringEntriesMap = new HashMap<>();
 
 		for (OrderEntry orderEntry : orderEntries) {
 			List<OfferingEntry> offeringEntries =
@@ -149,9 +144,7 @@ public class ProvisioningAuditRabbitMQConsumer
 		return offeringEntriesMap;
 	}
 
-	protected Map<String, Integer> getOfferingEntriesMap(long accountEntryId)
-		throws SystemException {
-
+	protected Map<String, Integer> getOfferingEntriesMap(long accountEntryId) {
 		List<OrderEntry> orderEntries =
 			OrderEntryLocalServiceUtil.getAccountEntryOrderEntries(
 				accountEntryId);
@@ -161,9 +154,9 @@ public class ProvisioningAuditRabbitMQConsumer
 
 	protected int[] getOutOfSyncFields(
 			AccountEntry existingAccountEntry, JSONArray jsonArray)
-		throws PortalException, SystemException {
+		throws PortalException {
 
-		List<Integer> outOfDateFields = new ArrayList<Integer>();
+		List<Integer> outOfDateFields = new ArrayList<>();
 
 		// Offerings
 

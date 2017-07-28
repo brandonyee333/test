@@ -18,7 +18,6 @@ import com.liferay.osb.model.SecurityPatch;
 import com.liferay.osb.service.base.SecurityPatchServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
@@ -30,7 +29,7 @@ import com.liferay.portal.kernel.security.auth.PrincipalException;
 public class SecurityPatchServiceImpl extends SecurityPatchServiceBaseImpl {
 
 	public SecurityPatch getSecurityPatch(long securityPatchId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		SecurityPatch securityPatch =
 			securityPatchLocalService.getSecurityPatch(securityPatchId);
@@ -40,9 +39,7 @@ public class SecurityPatchServiceImpl extends SecurityPatchServiceBaseImpl {
 		return securityPatch;
 	}
 
-	protected void checkPermission(long accountEntryId)
-		throws PortalException, SystemException {
-
+	protected void checkPermission(long accountEntryId) throws PortalException {
 		if (organizationLocalService.hasUserOrganization(
 				getUserId(), OSBConstants.ORGANIZATION_LIFERAY_INC_ID)) {
 
@@ -56,4 +53,4 @@ public class SecurityPatchServiceImpl extends SecurityPatchServiceBaseImpl {
 		}
 	}
 
-} 
+}

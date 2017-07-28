@@ -14,8 +14,6 @@
 
 package com.liferay.osb.hook.auth;
 
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -25,14 +23,13 @@ import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceActionsManagerUtil
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
-import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.PropsUtil;
-import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.security.auth.AuthToken;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.WebKeys;
 
 import java.lang.reflect.Method;
 
@@ -51,12 +48,36 @@ public class OSBAuthToken implements AuthToken {
 	}
 
 	@Override
+	public void addCSRFToken(
+		HttpServletRequest request, LiferayPortletURL liferayPortletURL) {
+
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void addPortletInvocationToken(
+		HttpServletRequest request, LiferayPortletURL liferayPortletURL) {
+
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
 	public void check(HttpServletRequest request) throws PortalException {
 		if (isIgnoreAction(request)) {
 			return;
 		}
 
 		_authToken.check(request);
+	}
+
+	@Override
+	public void checkCSRFToken(HttpServletRequest request, String origin)
+		throws PrincipalException {
+
+		// TODO Auto-generated method stub
+
 	}
 
 	public AuthToken getAuthToken() {
@@ -73,6 +94,24 @@ public class OSBAuthToken implements AuthToken {
 		HttpServletRequest request, long plid, String portletId) {
 
 		return _authToken.getToken(request, plid, portletId);
+	}
+
+	@Override
+	public boolean isValidPortletInvocationToken(
+		HttpServletRequest request, Layout layout, Portlet portlet) {
+
+		// TODO Auto-generated method stub
+
+		return false;
+	}
+
+	@Override
+	public boolean isValidPortletInvocationToken(HttpServletRequest request, long plid, String portletId,
+			String strutsAction, String tokenValue) {
+
+		// TODO Auto-generated method stub
+
+		return false;
 	}
 
 	protected boolean isIgnoreAction(HttpServletRequest request) {
@@ -108,6 +147,7 @@ public class OSBAuthToken implements AuthToken {
 
 					return true;
 				}
+
 				**/
 			}
 			catch (Exception e) {
@@ -147,37 +187,6 @@ public class OSBAuthToken implements AuthToken {
 
 	private static final String _JSON_WEB_SERVICE_SERVLET_PATH = "/api/jsonws";
 
-	private AuthToken _authToken;
-
-	@Override
-	public void addCSRFToken(HttpServletRequest request, LiferayPortletURL liferayPortletURL) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void addPortletInvocationToken(HttpServletRequest request, LiferayPortletURL liferayPortletURL) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void checkCSRFToken(HttpServletRequest request, String origin) throws PrincipalException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public boolean isValidPortletInvocationToken(HttpServletRequest request, Layout layout, Portlet portlet) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isValidPortletInvocationToken(HttpServletRequest request, long plid, String portletId,
-			String strutsAction, String tokenValue) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	private final AuthToken _authToken;
 
 }

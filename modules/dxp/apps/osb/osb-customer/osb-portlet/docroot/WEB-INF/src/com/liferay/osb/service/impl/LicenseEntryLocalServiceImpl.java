@@ -14,16 +14,15 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.exception.LicenseEntryNameException;
 import com.liferay.osb.exception.LicenseEntryPortalVersionException;
 import com.liferay.osb.model.LicenseEntry;
 import com.liferay.osb.service.base.LicenseEntryLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Date;
 import java.util.Iterator;
@@ -39,7 +38,7 @@ public class LicenseEntryLocalServiceImpl
 	public LicenseEntry addLicenseEntry(
 			long userId, long productEntryId, String name, String type,
 			int portalVersionMin, int portalVersionMax)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		Date now = new Date();
@@ -60,9 +59,9 @@ public class LicenseEntryLocalServiceImpl
 		licenseEntry.setType(type);
 		licenseEntry.setPortalVersionMin(portalVersionMin);
 		licenseEntry.setPortalVersionMax(portalVersionMax);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		licenseEntryPersistence.update(licenseEntry, serviceContext);
@@ -72,20 +71,17 @@ public class LicenseEntryLocalServiceImpl
 
 	@Override
 	public LicenseEntry deleteLicenseEntry(long licenseEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		return licenseEntryPersistence.remove(licenseEntryId);
 	}
 
-	public List<LicenseEntry> getLicenseEntries(long productEntryId)
-		throws SystemException {
-
+	public List<LicenseEntry> getLicenseEntries(long productEntryId) {
 		return licenseEntryPersistence.findByProductEntryId(productEntryId);
 	}
 
 	public List<LicenseEntry> getLicenseEntries(
-			long productEntryId, int portalVersion)
-		throws SystemException {
+		long productEntryId, int portalVersion) {
 
 		List<LicenseEntry> licenseEntries =
 			licenseEntryPersistence.findByPEI_PV(productEntryId, portalVersion);
@@ -108,7 +104,7 @@ public class LicenseEntryLocalServiceImpl
 	}
 
 	public LicenseEntry getLicenseEntry(long productEntryId, String type)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		return licenseEntryPersistence.findByPEI_T(productEntryId, type);
 	}
@@ -116,7 +112,7 @@ public class LicenseEntryLocalServiceImpl
 	public LicenseEntry updateLicenseEntry(
 			long licenseEntryId, long productEntryId, String name, String type,
 			int portalVersionMin, int portalVersionMax)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		validate(name, portalVersionMin, portalVersionMax);
 
@@ -129,9 +125,9 @@ public class LicenseEntryLocalServiceImpl
 		licenseEntry.setType(type);
 		licenseEntry.setPortalVersionMin(portalVersionMin);
 		licenseEntry.setPortalVersionMax(portalVersionMax);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		licenseEntryPersistence.update(licenseEntry, serviceContext);

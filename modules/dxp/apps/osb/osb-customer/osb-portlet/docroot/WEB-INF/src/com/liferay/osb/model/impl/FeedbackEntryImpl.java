@@ -22,4 +22,4 @@ public class FeedbackEntryImpl extends FeedbackEntryBaseImpl {
 	public FeedbackEntryImpl() {
 	}
 
-} 
+}

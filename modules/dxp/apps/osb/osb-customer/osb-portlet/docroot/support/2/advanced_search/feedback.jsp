@@ -22,15 +22,14 @@ TicketFeedbackDisplayTerms displayTerms = new TicketFeedbackDisplayTerms(renderR
 
 <div class="advanced-search feedback">
 	<div>
-		<span class="search-param assignee" onClick="<portlet:namespace />toggleSelected(this);" searchParam="assignee">
+		<span class="assignee search-param" onClick="<portlet:namespace />toggleSelected(this);" searchParam="assignee">
 			<liferay-ui:message key="assignee" />
 
 			<svg height="8" viewBox="0 0 8 8" width="8">
 				<path d="M 0, 0 4, 4 8, 0" />
 			</svg>
 		</span>
-
-		<span class="search-param date" onClick="<portlet:namespace />toggleSelected(this);" searchParam="date">
+		<span class="date search-param" onClick="<portlet:namespace />toggleSelected(this);" searchParam="date">
 			<liferay-ui:message key="date" />
 
 			<svg height="8" viewBox="0 0 8 8" width="8">
@@ -63,7 +62,6 @@ TicketFeedbackDisplayTerms displayTerms = new TicketFeedbackDisplayTerms(renderR
 				%>
 
 			</span>
-
 			<span class="list" id="<portlet:namespace />supportTeamIdsList">
 
 				<%
@@ -78,7 +76,6 @@ TicketFeedbackDisplayTerms displayTerms = new TicketFeedbackDisplayTerms(renderR
 				%>
 
 			</span>
-
 			<span class="list" id="<portlet:namespace />partnerEntryIdsList">
 
 				<%

@@ -21,7 +21,8 @@ import com.liferay.portal.kernel.exception.PortalException;
  * @author Brian Wing Shun Chan
  */
 @ProviderType
-public class TicketAttachmentAvailableFileRepositoryIdsException extends PortalException {
+public class TicketAttachmentAvailableFileRepositoryIdsException
+	extends PortalException {
 
 	public TicketAttachmentAvailableFileRepositoryIdsException() {
 	}
@@ -30,11 +31,15 @@ public class TicketAttachmentAvailableFileRepositoryIdsException extends PortalE
 		super(msg);
 	}
 
-	public TicketAttachmentAvailableFileRepositoryIdsException(String msg, Throwable cause) {
+	public TicketAttachmentAvailableFileRepositoryIdsException(
+		String msg, Throwable cause) {
+
 		super(msg, cause);
 	}
 
-	public TicketAttachmentAvailableFileRepositoryIdsException(Throwable cause) {
+	public TicketAttachmentAvailableFileRepositoryIdsException(
+		Throwable cause) {
+
 		super(cause);
 	}
 

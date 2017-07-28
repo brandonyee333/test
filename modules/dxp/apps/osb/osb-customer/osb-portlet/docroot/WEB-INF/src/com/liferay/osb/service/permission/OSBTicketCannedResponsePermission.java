@@ -17,7 +17,6 @@ package com.liferay.osb.service.permission;
 import com.liferay.osb.service.TicketWorkerLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
@@ -29,7 +28,7 @@ public class OSBTicketCannedResponsePermission {
 
 	public static void check(
 			PermissionChecker permissionChecker, String actionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (!contains(permissionChecker, actionId)) {
 			throw new PrincipalException();
@@ -37,8 +36,7 @@ public class OSBTicketCannedResponsePermission {
 	}
 
 	public static boolean contains(
-			PermissionChecker permissionChecker, String actionId)
-		throws SystemException {
+		PermissionChecker permissionChecker, String actionId) {
 
 		if (TicketWorkerLocalServiceUtil.getUserTicketWorkersCount(
 				permissionChecker.getUserId()) > 0) {

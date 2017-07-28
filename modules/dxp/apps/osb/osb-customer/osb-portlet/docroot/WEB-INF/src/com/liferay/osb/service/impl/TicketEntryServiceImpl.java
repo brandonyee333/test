@@ -14,7 +14,6 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.exception.TicketEntryStatusException;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.TicketAttachment;
@@ -31,15 +30,15 @@ import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBMailActionKeys;
 import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.Sort;
-import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -60,7 +59,7 @@ public class TicketEntryServiceImpl extends TicketEntryServiceBaseImpl {
 			int escalationLevel, int component, int subcomponent,
 			Map<Long, String> ticketInformationFieldsMap,
 			List<TicketAttachment> ticketAttachments)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OfferingEntry offeringEntry = offeringEntryPersistence.findByPrimaryKey(
 			offeringEntryId);
@@ -84,7 +83,7 @@ public class TicketEntryServiceImpl extends TicketEntryServiceBaseImpl {
 
 	public void closeTicketEntry(
 			long ticketEntryId, int resolution, String body)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketEntry ticketEntry = ticketEntryPersistence.fetchByPrimaryKey(
 			ticketEntryId);
@@ -128,9 +127,7 @@ public class TicketEntryServiceImpl extends TicketEntryServiceBaseImpl {
 			getUserId(), ticketEntry, ticketComment, OSBMailActionKeys.CLOSED);
 	}
 
-	public void escalateTicketEntry(long ticketEntryId)
-		throws PortalException, SystemException {
-
+	public void escalateTicketEntry(long ticketEntryId) throws PortalException {
 		OSBTicketEntryPermission.check(
 			getPermissionChecker(), ticketEntryId, OSBActionKeys.ESCALATE);
 
@@ -139,7 +136,7 @@ public class TicketEntryServiceImpl extends TicketEntryServiceBaseImpl {
 
 	public TicketEntry forwardTicketEntry(
 			long ticketEntryId, String commentBody)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OSBTicketEntryPermission.check(
 			getPermissionChecker(), ticketEntryId, OSBActionKeys.FORWARD);
@@ -150,7 +147,7 @@ public class TicketEntryServiceImpl extends TicketEntryServiceBaseImpl {
 
 	public List<TicketEntry> getTicketEntries(
 			long accountEntryId, int start, int end, OrderByComparator obc)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OSBAccountEntryPermission.check(
 			getPermissionChecker(), accountEntryId, OSBActionKeys.VIEW);
@@ -160,7 +157,7 @@ public class TicketEntryServiceImpl extends TicketEntryServiceBaseImpl {
 	}
 
 	public int getTicketEntriesCount(long accountEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OSBAccountEntryPermission.check(
 			getPermissionChecker(), accountEntryId, OSBActionKeys.VIEW);
@@ -169,7 +166,7 @@ public class TicketEntryServiceImpl extends TicketEntryServiceBaseImpl {
 	}
 
 	public TicketEntry getTicketEntry(long ticketEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketEntry ticketEntry = ticketEntryLocalService.getTicketEntry(
 			ticketEntryId);
@@ -181,7 +178,7 @@ public class TicketEntryServiceImpl extends TicketEntryServiceBaseImpl {
 	}
 
 	public TicketEntry getTicketEntry(long accountEntryId, long ticketId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketEntry ticketEntry = ticketEntryLocalService.getTicketEntry(
 			accountEntryId, ticketId);
@@ -201,7 +198,7 @@ public class TicketEntryServiceImpl extends TicketEntryServiceBaseImpl {
 			Date closedDateGT, Date closedDateLT, Date dueDateGT,
 			Date dueDateLT, LinkedHashMap<String, Object> params,
 			boolean andSearch, int start, int end, Sort[] sorts)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		addAccountMembershipParams(params);
 
@@ -217,7 +214,7 @@ public class TicketEntryServiceImpl extends TicketEntryServiceBaseImpl {
 			long reportedByUserId, long accountEntryId, String keywords,
 			LinkedHashMap<String, Object> params, int start, int end,
 			Sort[] sorts)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		addAccountMembershipParams(params);
 
@@ -241,7 +238,7 @@ public class TicketEntryServiceImpl extends TicketEntryServiceBaseImpl {
 			int dueDateGTYear, int dueDateLTDay, int dueDateLTMonth,
 			int dueDateLTYear, LinkedHashMap<String, Object> params,
 			boolean andSearch, int start, int end, OrderByComparator obc)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		addAccountMembershipParams(params);
 
@@ -259,10 +256,9 @@ public class TicketEntryServiceImpl extends TicketEntryServiceBaseImpl {
 
 	public List<TicketEntry> search(
 			String keywords, int start, int end, OrderByComparator obc)
-		throws PortalException, SystemException {
+		throws PortalException {
 
-		LinkedHashMap<String, Object> params =
-			new LinkedHashMap<String, Object>();
+		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
 		addAccountMembershipParams(params);
 
@@ -285,7 +281,7 @@ public class TicketEntryServiceImpl extends TicketEntryServiceBaseImpl {
 			int dueDateGTYear, int dueDateLTDay, int dueDateLTMonth,
 			int dueDateLTYear, LinkedHashMap<String, Object> params,
 			boolean andSearch)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		addAccountMembershipParams(params);
 
@@ -301,11 +297,8 @@ public class TicketEntryServiceImpl extends TicketEntryServiceBaseImpl {
 			dueDateLTYear, params, andSearch);
 	}
 
-	public int searchCount(String keywords)
-		throws PortalException, SystemException {
-
-		LinkedHashMap<String, Object> params =
-			new LinkedHashMap<String, Object>();
+	public int searchCount(String keywords) throws PortalException {
+		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
 		addAccountMembershipParams(params);
 
@@ -314,7 +307,7 @@ public class TicketEntryServiceImpl extends TicketEntryServiceBaseImpl {
 
 	public TicketEntry updatePendingTypes(
 			long ticketEntryId, int[] pendingTypes)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketEntry ticketEntry = ticketEntryPersistence.fetchByPrimaryKey(
 			ticketEntryId);
@@ -330,7 +323,7 @@ public class TicketEntryServiceImpl extends TicketEntryServiceBaseImpl {
 			long userId, long ticketEntryId, long assigneeUserId,
 			long supportRegionId, int dueDateMonth, int dueDateDay,
 			int dueDateYear, int dueDateHour, int dueDateMinute)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketEntry ticketEntry = ticketEntryPersistence.fetchByPrimaryKey(
 			ticketEntryId);
@@ -354,7 +347,7 @@ public class TicketEntryServiceImpl extends TicketEntryServiceBaseImpl {
 			Map<Long, String> ticketInformationFieldsMap, int[] pendingTypes,
 			List<TicketAttachment> ticketAttachments,
 			ServiceContext serviceContext)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketEntry ticketEntry = ticketEntryPersistence.fetchByPrimaryKey(
 			ticketEntryId);
@@ -402,11 +395,11 @@ public class TicketEntryServiceImpl extends TicketEntryServiceBaseImpl {
 				 (ticketEntry.getComponent() != component) ||
 				 (ticketEntry.getSubcomponent() != subcomponent) ||
 				 !ticketInformationFieldsMap.equals(
-					ticketEntry.getTicketInformationFieldsMap()) ||
+					 ticketEntry.getTicketInformationFieldsMap()) ||
 				 ((ticketEntry.getResolution() != resolution) &&
 				  (ticketEntry.getStatus() == status) &&
 				  (ticketEntry.getStatus() ==
-				  	TicketEntryConstants.STATUS_CLOSED))) {
+					  TicketEntryConstants.STATUS_CLOSED))) {
 
 			OSBTicketEntryPermission.check(
 				getPermissionChecker(), ticketEntry,
@@ -435,7 +428,7 @@ public class TicketEntryServiceImpl extends TicketEntryServiceBaseImpl {
 
 	protected void addAccountMembershipParams(
 			LinkedHashMap<String, Object> params)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (!organizationLocalService.hasUserOrganization(
 				getUserId(), OSBConstants.ORGANIZATION_LIFERAY_INC_ID)) {
@@ -446,7 +439,7 @@ public class TicketEntryServiceImpl extends TicketEntryServiceBaseImpl {
 
 	protected void checkOfferingEntry(
 			TicketEntry ticketEntry, long offeringEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OfferingEntry offeringEntry = offeringEntryPersistence.findByPrimaryKey(
 			offeringEntryId);

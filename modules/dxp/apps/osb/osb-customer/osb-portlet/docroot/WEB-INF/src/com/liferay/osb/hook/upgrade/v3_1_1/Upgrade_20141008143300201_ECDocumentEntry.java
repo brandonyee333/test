@@ -24,16 +24,13 @@ import com.liferay.portal.kernel.util.StringBundler;
 /**
  * @author Ryan Park
  */
-public class Upgrade_20141008143300201_ECDocumentEntry
-	extends UpgradeProcess {
+public class Upgrade_20141008143300201_ECDocumentEntry extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20141008143300201L;
 	}
@@ -56,6 +53,7 @@ public class Upgrade_20141008143300201_ECDocumentEntry
 	private static final long _MALFORMED_EC_DOCUMENT_ENTRY_ID = 124003;
 
 }
+
 */
 
 }

@@ -16,7 +16,6 @@ package com.liferay.osb.model.impl;
 
 import com.liferay.osb.model.OfferingDefinition;
 import com.liferay.osb.service.OfferingDefinitionLocalServiceUtil;
-import com.liferay.portal.kernel.exception.SystemException;
 
 import java.util.List;
 
@@ -28,12 +27,9 @@ public class OfferingBundleImpl extends OfferingBundleBaseImpl {
 	public OfferingBundleImpl() {
 	}
 
-	public List<OfferingDefinition> getOfferingDefinitions()
-		throws SystemException {
-
-		return
-			OfferingDefinitionLocalServiceUtil.
-				getOfferingBundleOfferingDefinitions(getOfferingBundleId());
+	public List<OfferingDefinition> getOfferingDefinitions() {
+		return OfferingDefinitionLocalServiceUtil.
+			getOfferingBundleOfferingDefinitions(getOfferingBundleId());
 	}
 
 }

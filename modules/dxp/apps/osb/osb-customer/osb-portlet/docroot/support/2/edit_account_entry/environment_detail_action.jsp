@@ -96,7 +96,7 @@ if (OSBAccountEnvironmentPermission.contains(permissionChecker, accountEntry.get
 					sb.append("<a href=\"javascript:;\" onClick=\"");
 					sb.append(curOnClick);
 					sb.append("\">");
-					sb.append(LanguageUtil.get(locale, curLabel));
+					sb.append(LanguageUtil.get(request, curLabel));
 					sb.append("</a>");
 				%>
 

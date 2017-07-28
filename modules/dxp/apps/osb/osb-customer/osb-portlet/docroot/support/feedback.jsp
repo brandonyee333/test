@@ -21,7 +21,7 @@ String filter = ParamUtil.getString(request, "filter");
 
 LinkedHashMap<String, Object> userParams = new LinkedHashMap<String, Object>();
 
-userParams.put("partnerWorker", new Long(user.getUserId()));
+userParams.put("partnerWorker", Long.valueOf(user.getUserId()));
 userParams.put("status", AccountEntryConstants.STATUSES_ACTIVE);
 
 boolean ticketWorker = liferayIncOrg || (AccountEntryLocalServiceUtil.searchCount(null, userParams) > 0);
@@ -54,14 +54,14 @@ pageContext.setAttribute("searchURL", searchURL);
 <div class="aui-helper-clearfix aui-w100">
 	<div class="aui-w50 content-column">
 		<div class="content-column-content left-column">
-			<a class="display-b callout-a paragraph" href="<%= waitingURL.toString() %>">
+			<a class="callout-a display-b paragraph" href="<%= waitingURL.toString() %>">
 				<div class="callout-content ha-c">
 					<div class="display-ib">
 						<div class="txt-b">
 							<liferay-ui:message key="waiting" />
 						</div>
 
-						<div class="txt-h1 txt-b">
+						<div class="txt-b txt-h1">
 
 							<%
 							Calendar cal = Calendar.getInstance();
@@ -79,14 +79,14 @@ pageContext.setAttribute("searchURL", searchURL);
 
 	<div class="aui-w50 content-column">
 		<div class="content-column-content right-column">
-			<a class="display-b callout-a paragraph" href="<%= allFeedbackURL.toString() %>">
+			<a class="callout-a display-b paragraph" href="<%= allFeedbackURL.toString() %>">
 				<div class="callout-content ha-c">
 					<div class="display-ib">
 						<div class="txt-b">
 							<liferay-ui:message key="all-feedback" />
 						</div>
 
-						<div class="txt-h1 txt-b">
+						<div class="txt-b txt-h1">
 							<%= TicketFeedbackServiceUtil.searchCount(null, new LinkedHashMap<String, Object>()) %>
 						</div>
 					</div>

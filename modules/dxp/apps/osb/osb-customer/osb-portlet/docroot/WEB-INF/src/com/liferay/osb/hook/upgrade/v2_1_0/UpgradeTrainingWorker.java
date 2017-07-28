@@ -16,7 +16,7 @@ package com.liferay.osb.hook.upgrade.v2_1_0;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
-/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+/*import UpgradeProcess;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.model.TrainingEvent;
 
@@ -31,9 +31,7 @@ public class UpgradeTrainingWorker extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	protected void doUpgrade() throws Exception {
 		updateTrainingWorker();
 	}
@@ -70,6 +68,7 @@ public class UpgradeTrainingWorker extends UpgradeProcess {
 	}
 
 }
+
 */
 
 }

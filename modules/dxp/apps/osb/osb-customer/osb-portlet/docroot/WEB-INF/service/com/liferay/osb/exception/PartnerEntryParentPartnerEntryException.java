@@ -30,7 +30,9 @@ public class PartnerEntryParentPartnerEntryException extends PortalException {
 		super(msg);
 	}
 
-	public PartnerEntryParentPartnerEntryException(String msg, Throwable cause) {
+	public PartnerEntryParentPartnerEntryException(
+		String msg, Throwable cause) {
+
 		super(msg, cause);
 	}
 

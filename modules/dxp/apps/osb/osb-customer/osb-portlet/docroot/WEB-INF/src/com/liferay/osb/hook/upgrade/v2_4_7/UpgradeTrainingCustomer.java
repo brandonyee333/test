@@ -16,7 +16,7 @@ package com.liferay.osb.hook.upgrade.v2_4_7;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
-/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+/*import UpgradeProcess;
 import com.liferay.osb.model.TrainingCustomerConstants;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 
@@ -35,9 +35,7 @@ public class UpgradeTrainingCustomer extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	protected void doUpgrade() throws Exception {
 		updateTrainingCustomer();
 	}
@@ -77,6 +75,7 @@ public class UpgradeTrainingCustomer extends UpgradeProcess {
 	}
 
 }
+
 */
 
 }

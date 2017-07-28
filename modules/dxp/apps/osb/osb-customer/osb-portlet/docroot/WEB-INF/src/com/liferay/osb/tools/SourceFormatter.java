@@ -14,14 +14,14 @@
 
 package com.liferay.osb.tools;
 
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CharPool;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -206,7 +206,7 @@ public class SourceFormatter {
 	}
 
 	protected Collection<String> getRemoteServiceJavaFiles() {
-		Collection<String> fileNames = new TreeSet<String>();
+		Collection<String> fileNames = new TreeSet<>();
 
 		String[] excludes = new String[] {
 			"**\\com\\liferay\\osb\\service\\impl\\*LocalServiceImpl.java"
@@ -221,7 +221,7 @@ public class SourceFormatter {
 	}
 
 	protected Collection<String> getUpgradeJavaFiles() {
-		Collection<String> fileNames = new TreeSet<String>();
+		Collection<String> fileNames = new TreeSet<>();
 
 		String[] includes = new String[] {
 			"**\\com\\liferay\\osb\\hook\\upgrade\\v3*\\Upgrade_*_*.java"

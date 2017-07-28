@@ -14,9 +14,9 @@
 
 package com.liferay.osb.model;
 
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 
 /**
@@ -35,7 +35,7 @@ public class FileRepository {
 		_name = fileRepositoryProperties.get("name");
 		_status = GetterUtil.getInteger(fileRepositoryProperties.get("status"));
 		_supportRegionIds = StringUtil.split(
-				fileRepositoryProperties.get("supportRegionIds"), 0L);
+			fileRepositoryProperties.get("supportRegionIds"), 0L);
 	}
 
 	public FileRepository(
@@ -73,10 +73,10 @@ public class FileRepository {
 		return _supportRegionIds;
 	}
 
-	private String _fileRepositoryId;
-	private String _host;
-	private String _name;
-	private int _status;
-	private long[] _supportRegionIds;
+	private final String _fileRepositoryId;
+	private final String _host;
+	private final String _name;
+	private final int _status;
+	private final long[] _supportRegionIds;
 
 }

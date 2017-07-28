@@ -115,7 +115,7 @@ else {
 			<div class="content">
 				<c:choose>
 					<c:when test="<%= (auditEntry.getFieldClassNameId() == PortalUtil.getClassNameId(TicketCall.class)) || (auditEntry.getFieldClassNameId() == PortalUtil.getClassNameId(TicketComment.class)) %>">
-						<div class="aui-w100 content-column ticket-comment comment-collapsed" id="<portlet:namespace />commentContainer<%= auditEntry.getAuditEntryId() %>">
+						<div class="aui-w100 comment-collapsed content-column ticket-comment" id="<portlet:namespace />commentContainer<%= auditEntry.getAuditEntryId() %>">
 							<div class="comment">
 								<div class="comment-body <%= (auditEntry.getAction() == AuditEntryConstants.ACTION_SOLUTION_REJECTED) ? "rejected-comment-body" : "" %>">
 

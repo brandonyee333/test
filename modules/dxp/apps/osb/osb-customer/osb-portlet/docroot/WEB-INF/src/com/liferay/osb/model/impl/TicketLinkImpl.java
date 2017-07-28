@@ -18,7 +18,6 @@ import com.liferay.osb.model.TicketEntry;
 import com.liferay.osb.service.TicketEntryLocalServiceUtil;
 import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 
@@ -48,9 +47,7 @@ public class TicketLinkImpl extends TicketLinkBaseImpl {
 		return sb.toString();
 	}
 
-	public TicketEntry getTicketEntry()
-		throws PortalException, SystemException {
-
+	public TicketEntry getTicketEntry() throws PortalException {
 		return TicketEntryLocalServiceUtil.getTicketEntry(getTicketEntryId());
 	}
 

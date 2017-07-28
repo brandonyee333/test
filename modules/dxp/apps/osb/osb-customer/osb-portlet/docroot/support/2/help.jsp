@@ -35,7 +35,6 @@ boolean osbAdmin = RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstan
 <aui:form action="<%= updateUserGuidesURL %>" enctype="multipart/form-data" method="post" name="fm">
 	<div class="user-guide">
 		<div id="<portlet:namespace />helpDisplay">
-
 			<br />
 
 			<c:if test="<%= osbAdmin %>">
@@ -84,7 +83,6 @@ boolean osbAdmin = RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstan
 		<c:if test="<%= osbAdmin %>">
 			<div class="aui-helper-hidden help-edit-display" id="<portlet:namespace />helpEditDisplay">
 				<div class="aui-helper-clearfix callout-content">
-
 					<br />
 
 					<div class="aui-w30 content-column">

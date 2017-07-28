@@ -19,7 +19,6 @@ import com.liferay.osb.model.PartnerWorkerConstants;
 import com.liferay.osb.service.PartnerEntryLocalServiceUtil;
 import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 
@@ -35,9 +34,7 @@ public class PartnerWorkerImpl extends PartnerWorkerBaseImpl {
 		return PartnerWorkerConstants.getNotificationsLabel(getNotifications());
 	}
 
-	public PartnerEntry getPartnerEntry()
-		throws PortalException, SystemException {
-
+	public PartnerEntry getPartnerEntry() throws PortalException {
 		return PartnerEntryLocalServiceUtil.getPartnerEntry(
 			getPartnerEntryId());
 	}
@@ -46,7 +43,7 @@ public class PartnerWorkerImpl extends PartnerWorkerBaseImpl {
 		return PartnerWorkerConstants.getRoleLabel(getRole());
 	}
 
-	public boolean isActive() throws PortalException, SystemException {
+	public boolean isActive() throws PortalException {
 		try {
 			User user = UserLocalServiceUtil.getUser(getUserId());
 

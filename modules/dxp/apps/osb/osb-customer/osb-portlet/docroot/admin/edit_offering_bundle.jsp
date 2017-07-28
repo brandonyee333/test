@@ -18,6 +18,7 @@
 
 <%
 String redirect = ParamUtil.getString(request, "redirect");
+
 String backURL = ParamUtil.getString(request, "backURL", redirect);
 
 long offeringBundleId = ParamUtil.getLong(request, "offeringBundleId");
@@ -58,14 +59,14 @@ if (offeringBundle != null) {
 	<liferay-ui:error exception="<%= OfferingBundleNameException.class %>" message="please-enter-a-valid-name" />
 
 	<table class="lfr-table">
-	<tr>
-		<td>
-			<liferay-ui:message key="name" />
-		</td>
-		<td>
-			<liferay-ui:input-field bean="<%= offeringBundle %>" field="name" model="<%= OfferingBundle.class %>" />
-		</td>
-	</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="name" />
+			</td>
+			<td>
+				<liferay-ui:input-field bean="<%= offeringBundle %>" field="name" model="<%= OfferingBundle.class %>" />
+			</td>
+		</tr>
 	</table>
 
 	<br />

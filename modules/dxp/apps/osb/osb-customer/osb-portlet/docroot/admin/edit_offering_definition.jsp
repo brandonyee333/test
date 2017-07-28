@@ -18,6 +18,7 @@
 
 <%
 String redirect = ParamUtil.getString(request, "redirect");
+
 String backURL = ParamUtil.getString(request, "backURL", redirect);
 
 long offeringDefinitionId = ParamUtil.getLong(request, "offeringDefinitionId");
@@ -57,112 +58,111 @@ boolean supportTickets = BeanParamUtil.getBoolean(offeringDefinition, request, "
 	<liferay-ui:error exception="<%= RequiredOfferingDefinitionException.class %>" message="you-cannot-modify-this-offering" />
 
 	<table class="lfr-table">
+		<c:if test="<%= offeringDefinition != null %>">
+			<tr>
+				<td>
+					<liferay-ui:message key="created-by" />
+				</td>
+				<td>
+					<%= HtmlUtil.escape(PortalUtil.getUserName(offeringDefinition.getUserId(), offeringDefinition.getUserName())) %>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<liferay-ui:message key="last-modified" />
+				</td>
+				<td>
+					<%= longDateFormatDateTime.format(offeringDefinition.getModifiedDate()) %>
+				</td>
+			</tr>
+		</c:if>
 
-	<c:if test="<%= offeringDefinition != null %>">
 		<tr>
 			<td>
-				<liferay-ui:message key="created-by" />
+				<liferay-ui:message key="product" />
 			</td>
 			<td>
-				<%= HtmlUtil.escape(PortalUtil.getUserName(offeringDefinition.getUserId(), offeringDefinition.getUserName())) %>
+				<select name="<portlet:namespace />productEntryId">
+
+					<%
+					List<ProductEntry> productEntries = ProductEntryLocalServiceUtil.getProductEntries(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+
+					for (ProductEntry productEntry : productEntries) {
+					%>
+
+						<option <%= (productEntryId == productEntry.getProductEntryId()) ? "selected" : "" %> value="<%= productEntry.getProductEntryId() %>"><%= HtmlUtil.escape(productEntry.getName()) %></option>
+
+					<%
+					}
+					%>
+
+				</select>
 			</td>
 		</tr>
 		<tr>
 			<td>
-				<liferay-ui:message key="last-modified" />
+				<liferay-ui:message key="product-description" />
 			</td>
 			<td>
-				<%= longDateFormatDateTime.format(offeringDefinition.getModifiedDate()) %>
+				<liferay-ui:input-field bean="<%= offeringDefinition %>" field="productDescription" model="<%= OfferingDefinition.class %>" />
 			</td>
 		</tr>
-	</c:if>
-
-	<tr>
-		<td>
-			<liferay-ui:message key="product" />
-		</td>
-		<td>
-			<select name="<portlet:namespace />productEntryId">
+		<tr>
+			<td>
+				<liferay-ui:message key="licenses" />
+			</td>
+			<td>
 
 				<%
-				List<ProductEntry> productEntries = ProductEntryLocalServiceUtil.getProductEntries(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-
-				for (ProductEntry productEntry : productEntries) {
+				String taglibLicensesOnClick = renderResponse.getNamespace() + "disableInput('unlimitedLicensesCheckbox', !this.checked);";
 				%>
 
-					<option <%= (productEntryId == productEntry.getProductEntryId()) ? "selected" : "" %> value="<%= productEntry.getProductEntryId() %>"><%= HtmlUtil.escape(productEntry.getName()) %></option>
+				<liferay-ui:input-checkbox defaultValue="<%= licenses %>" onClick="<%= taglibLicensesOnClick %>" param="licenses" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="unlimited-licenses" />
+			</td>
+			<td>
+				<liferay-ui:input-checkbox defaultValue="<%= unlimitedLicenses %>" disabled="<%= !licenses %>" param="unlimitedLicenses" />
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<br />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="sla" />
+			</td>
+			<td>
+				<select name="<portlet:namespace />supportResponseId">
 
-				<%
-				}
-				%>
+					<%
+					List<SupportResponse> supportResponses = SupportResponseLocalServiceUtil.getSupportResponses(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
-			</select>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="product-description" />
-		</td>
-		<td>
-			<liferay-ui:input-field bean="<%= offeringDefinition %>" field="productDescription" model="<%= OfferingDefinition.class %>" />
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="licenses" />
-		</td>
-		<td>
+					for (SupportResponse supportResponse : supportResponses) {
+					%>
 
-			<%
-			String taglibLicensesOnClick = renderResponse.getNamespace() + "disableInput('unlimitedLicensesCheckbox', !this.checked);";
-			%>
+						<option <%= (supportResponseId == supportResponse.getSupportResponseId()) ? "selected" : "" %> value="<%= supportResponse.getSupportResponseId() %>"><%= HtmlUtil.escape(supportResponse.getName()) %></option>
 
-			<liferay-ui:input-checkbox defaultValue="<%= licenses %>" onClick="<%= taglibLicensesOnClick %>" param="licenses" />
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="unlimited-licenses" />
-		</td>
-		<td>
-			<liferay-ui:input-checkbox defaultValue="<%= unlimitedLicenses %>" disabled="<%= !licenses %>" param="unlimitedLicenses" />
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2">
-			<br />
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="sla" />
-		</td>
-		<td>
-			<select name="<portlet:namespace />supportResponseId">
+					<%
+					}
+					%>
 
-				<%
-				List<SupportResponse> supportResponses = SupportResponseLocalServiceUtil.getSupportResponses(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-
-				for (SupportResponse supportResponse : supportResponses) {
-				%>
-
-					<option <%= (supportResponseId == supportResponse.getSupportResponseId()) ? "selected" : "" %> value="<%= supportResponse.getSupportResponseId() %>"><%= HtmlUtil.escape(supportResponse.getName()) %></option>
-
-				<%
-				}
-				%>
-
-			</select>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="support-tickets" />
-		</td>
-		<td>
-			<liferay-ui:input-field bean="<%= offeringDefinition %>" field="supportTickets" model="<%= OfferingDefinition.class %>" />
-		</td>
-	</tr>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="support-tickets" />
+			</td>
+			<td>
+				<liferay-ui:input-field bean="<%= offeringDefinition %>" field="supportTickets" model="<%= OfferingDefinition.class %>" />
+			</td>
+		</tr>
 	</table>
 
 	<br />

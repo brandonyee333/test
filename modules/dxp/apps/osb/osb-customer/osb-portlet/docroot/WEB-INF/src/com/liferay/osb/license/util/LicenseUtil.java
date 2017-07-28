@@ -14,11 +14,6 @@
 
 package com.liferay.osb.license.util;
 
-import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.LocalizationUtil;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.admin.util.KeyGenerator;
 import com.liferay.osb.model.LicenseEntryConstants;
 import com.liferay.osb.model.LicenseKey;
@@ -31,20 +26,24 @@ import com.liferay.osb.util.OSBPortletKeys;
 import com.liferay.osb.util.comparator.LicenseKeyExpirationDateComparator;
 import com.liferay.osb.util.comparator.LicenseKeyStartDateComparator;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.service.PortletPreferencesLocalServiceUtil;
 import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
-import com.liferay.portal.kernel.service.PortletPreferencesLocalServiceUtil;
-import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.util.ContentUtil;
 import com.liferay.util.xml.DocUtil;
 
@@ -154,9 +153,9 @@ public class LicenseUtil {
 
 		Element rootElement = document.getRootElement();
 
-		List<String> hostNames = new ArrayList<String>();
-		List<String> ipAddresses = new ArrayList<String>();
-		List<String> macAddresses = new ArrayList<String>();
+		List<String> hostNames = new ArrayList<>();
+		List<String> ipAddresses = new ArrayList<>();
+		List<String> macAddresses = new ArrayList<>();
 
 		Element serversElement = rootElement.addElement("servers");
 
@@ -196,8 +195,8 @@ public class LicenseUtil {
 		return document.formattedString();
 	}
 
-	public static Map<Locale, String> getEmailNotificationTrialLicenseBodyMap()
-		throws SystemException {
+	public static Map<Locale, String>
+	getEmailNotificationTrialLicenseBodyMap() {
 
 		Map<Locale, String> map = LocalizationUtil.getLocalizationMap(
 			getPortletPreferences(), "emailNotificationTrialLicenseBody");
@@ -220,8 +219,7 @@ public class LicenseUtil {
 	}
 
 	public static Map<Locale, String>
-			getEmailNotificationTrialLicenseSubjectMap()
-		throws SystemException {
+			getEmailNotificationTrialLicenseSubjectMap() {
 
 		Map<Locale, String> map = LocalizationUtil.getLocalizationMap(
 			getPortletPreferences(), "emailNotificationTrialLicenseSubject");
@@ -243,9 +241,7 @@ public class LicenseUtil {
 		return map;
 	}
 
-	public static Map<Locale, String> getEmailRegisteredTrialLicenseBodyMap()
-		throws SystemException {
-
+	public static Map<Locale, String> getEmailRegisteredTrialLicenseBodyMap() {
 		Map<Locale, String> map = LocalizationUtil.getLocalizationMap(
 			getPortletPreferences(), "emailRegisteredTrialLicenseBody");
 
@@ -266,8 +262,8 @@ public class LicenseUtil {
 		return map;
 	}
 
-	public static Map<Locale, String> getEmailRegisteredTrialLicenseSubjectMap()
-		throws SystemException {
+	public static Map<Locale, String>
+	getEmailRegisteredTrialLicenseSubjectMap() {
 
 		Map<Locale, String> map = LocalizationUtil.getLocalizationMap(
 			getPortletPreferences(), "emailRegisteredTrialLicenseSubject");
@@ -346,9 +342,7 @@ public class LicenseUtil {
 		return orderByComparator;
 	}
 
-	public static PortletPreferences getPortletPreferences()
-		throws SystemException {
-
+	public static PortletPreferences getPortletPreferences() {
 		long ownerId = OSBConstants.COMPANY_ID;
 		int ownerType = PortletKeys.PREFS_OWNER_TYPE_COMPANY;
 		long plid = PortletKeys.PREFS_PLID_SHARED;
@@ -361,7 +355,7 @@ public class LicenseUtil {
 	}
 
 	public static boolean isAggregate(long licenseKeySetId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		List<LicenseKey> licenseKeys =
 			LicenseKeyLocalServiceUtil.getLicenseKeySetLicenseKeys(
@@ -442,7 +436,7 @@ public class LicenseUtil {
 	}
 
 	public static boolean isRenewAggregate(long licenseKeySetId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (!isAggregate(licenseKeySetId)) {
 			return false;
@@ -689,7 +683,7 @@ public class LicenseUtil {
 			((licenseVersion >= 4) &&
 			 (licenseEntryType.equals(LicenseEntryConstants.TYPE_LIMITED) ||
 			  licenseEntryType.equals(
-				LicenseEntryConstants.TYPE_PRODUCTION)))) {
+				  LicenseEntryConstants.TYPE_PRODUCTION)))) {
 
 			DocUtil.add(
 				rootElement, "max-servers", properties.get("maxServers"));

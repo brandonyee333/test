@@ -37,11 +37,11 @@ public class TicketEntryThreadLocal {
 		_syncToJIRA.set(syncToJIRA);
 	}
 
-	private static ThreadLocal<Boolean> _reindex =
-		new InitialThreadLocal<Boolean>(
+	private static final ThreadLocal<Boolean> _reindex =
+		new InitialThreadLocal<>(
 			TicketEntryThreadLocal.class + "._reindex", true);
-	private static ThreadLocal<Boolean> _syncToJIRA =
-		new InitialThreadLocal<Boolean>(
+	private static final ThreadLocal<Boolean> _syncToJIRA =
+		new InitialThreadLocal<>(
 			TicketEntryThreadLocal.class + "._syncToJIRA", true);
 
 }

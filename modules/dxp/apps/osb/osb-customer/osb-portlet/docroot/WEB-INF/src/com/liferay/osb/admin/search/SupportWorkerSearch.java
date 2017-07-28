@@ -14,16 +14,16 @@
 
 package com.liferay.osb.admin.search;
 
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.model.SupportWorker;
 import com.liferay.osb.util.OSBPortletKeys;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.portlet.PortalPreferences;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
+import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.users.admin.kernel.util.UsersAdminUtil;
 
 import java.util.ArrayList;
@@ -39,20 +39,8 @@ import javax.portlet.PortletURL;
  */
 public class SupportWorkerSearch extends SearchContainer<SupportWorker> {
 
-	static List<String> headerNames = new ArrayList<String>();
-	static Map<String, String> orderableHeaders = new HashMap<String, String>();
-
-	static {
-		headerNames.add("first-name");
-		headerNames.add("last-name");
-		headerNames.add("screen-name");
-		headerNames.add("email-address");
-
-		orderableHeaders.put("first-name", "first-name");
-		orderableHeaders.put("last-name", "last-name");
-		orderableHeaders.put("screen-name", "screen-name");
-		orderableHeaders.put("email-address", "email-address");
-	}
+	static List<String> headerNames = new ArrayList<>();
+	static Map<String, String> orderableHeaders = new HashMap<>();
 
 	public static final String EMPTY_RESULTS_MESSAGE =
 		"no-support-workers-were-found";
@@ -133,5 +121,17 @@ public class SupportWorkerSearch extends SearchContainer<SupportWorker> {
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(SupportWorkerSearch.class);
+
+	static {
+		headerNames.add("first-name");
+		headerNames.add("last-name");
+		headerNames.add("screen-name");
+		headerNames.add("email-address");
+
+		orderableHeaders.put("email-address", "email-address");
+		orderableHeaders.put("first-name", "first-name");
+		orderableHeaders.put("last-name", "last-name");
+		orderableHeaders.put("screen-name", "screen-name");
+	}
 
 }

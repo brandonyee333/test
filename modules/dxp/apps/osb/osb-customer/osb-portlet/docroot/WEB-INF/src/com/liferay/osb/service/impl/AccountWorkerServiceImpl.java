@@ -18,7 +18,6 @@ import com.liferay.osb.service.base.AccountWorkerServiceBaseImpl;
 import com.liferay.osb.service.permission.OSBAccountEntryPermission;
 import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 
@@ -31,7 +30,7 @@ public class AccountWorkerServiceImpl extends AccountWorkerServiceBaseImpl {
 	public void addAccountWorkers(
 			long[] userIds, long accountEntryId, int[] roles,
 			int[] notifications)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OSBAccountEntryPermission.check(
 			getPermissionChecker(), accountEntryId,
@@ -42,7 +41,7 @@ public class AccountWorkerServiceImpl extends AccountWorkerServiceBaseImpl {
 	}
 
 	public void deleteAccountWorkers(long[] userIds, long accountEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OSBAccountEntryPermission.check(
 			getPermissionChecker(), accountEntryId,

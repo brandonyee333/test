@@ -38,22 +38,19 @@ import java.sql.ResultSet;
 /**
  * @author Kyle Bischof
  */
-public class Upgrade_20170616160207742_AccountCustomer
-	extends UpgradeProcess {
+public class Upgrade_20170616160207742_AccountCustomer extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20170616160207742L;
 	}
 
 	protected void addAccountCustomer(long userId, long accountEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		AccountCustomerLocalServiceUtil.addAccountCustomers(
 			OSBConstants.USER_DEFAULT_USER_ID, new long[] {userId},
@@ -123,6 +120,7 @@ public class Upgrade_20170616160207742_AccountCustomer
 	}
 
 }
+
 */
 
 }

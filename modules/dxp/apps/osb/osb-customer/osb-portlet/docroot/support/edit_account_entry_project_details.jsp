@@ -99,160 +99,161 @@ Format accountCallFormat = FastDateFormatFactoryUtil.getSimpleDateFormat("yyyy-M
 									<div class="account-calls" id="<portlet:namespace />accountCallsContainer">
 										<div class="callout-content">
 											<table class="taglib-search-iterator">
-											<tr class="portlet-section-header results-header">
-												<th class="col-1 first" />
-												<th class="col-2">
-													<liferay-ui:message key="date" />
-												</th>
-												<th class="col-3">
-													<liferay-ui:message key="summary" />
-												</th>
-											</tr>
+												<tr class="portlet-section-header results-header">
+													<th class="col-1 first" />
 
-											<%
-											for (AccountCall accountCall : accountCalls) {
-												StringBuilder sb = new StringBuilder();
-
-												sb.append("javascript:");
-												sb.append(renderResponse.getNamespace());
-												sb.append("toggleAccountCall('");
-												sb.append(accountCall.getAccountCallId());
-												sb.append("');");
-
-												String rowHREF = sb.toString();
-											%>
-
-												<tr class="collapsed" id="<portlet:namespace />accountCall_<%= accountCall.getAccountCallId() %>">
-													<td class="col col-1 first">
-														<liferay-ui:icon
-															cssClass="down"
-															image="../arrows/05_down"
-															label="<%= false %>"
-															url="<%= rowHREF %>"
-														/>
-
-														<liferay-ui:icon
-															cssClass="up"
-															image="../arrows/05_up"
-															label="<%= false %>"
-															url="<%= rowHREF %>"
-														/>
-													</td>
-													<td class="col col-2">
-														<a href="<%= rowHREF %>"><%= accountCallFormat.format(accountCall.getCallDate()) %></a>
-													</td>
-													<td class="col col-3">
-														<a href="<%= rowHREF %>"><%= HtmlUtil.escape(StringUtil.shorten(accountCall.getSummary(), 115)) %></a>
-													</td>
-												</tr>
-												<tr class="account-calls collapsed" id="<portlet:namespace />accountCallDetails_<%= accountCall.getAccountCallId() %>">
-													<td class="panel" colspan="3">
-														<div class="callout-a">
-															<div class="aui-helper-clearfix callout-content">
-																<div class="aui-w33 content-column">
-																	<div class="customer-info-label">
-																		<liferay-ui:message key="call-type" />
-																	</div>
-
-																	<%= accountCall.getTypeLabel() %>
-																</div>
-
-																<div class="aui-w33 content-column">
-																	<div class="customer-info-label">
-																		<liferay-ui:message key="call-date" />
-																	</div>
-
-																	<%= accountCallFormat.format(accountCall.getCallDate()) %>
-																</div>
-
-																<div class="aui-w33 content-column">
-																	<div class="customer-info-label">
-																		<liferay-ui:message key="call-length" />
-																	</div>
-
-																	<%= accountCall.getCallLengthLabel() %>
-																</div>
-															</div>
-
-															<div class="aui-helper-clearfix callout-content">
-																<div class="aui-w15 content-column customer-info-label">
-																	<liferay-ui:message key="summary" />
-																</div>
-
-																<div class="aui-w85 content-column customer-info">
-																	<div class="customer-info-display">
-																		<pre><%= HtmlUtil.escape(accountCall.getSummary()) %></pre>
-																	</div>
-																</div>
-															</div>
-
-															<div class="aui-helper-clearfix callout-content">
-																<div class="aui-w15 content-column customer-info-label">
-																	<liferay-ui:message key="clients-present" />
-																</div>
-
-																<div class="aui-w85 content-column customer-info">
-																	<div class="customer-info-display">
-																		<pre><%= HtmlUtil.escape(accountCall.getClientsPresent()) %></pre>
-																	</div>
-																</div>
-															</div>
-
-															<div class="aui-helper-clearfix callout-content">
-																<div class="aui-w15 content-column customer-info-label">
-																	<liferay-ui:message key="notes" />
-																</div>
-
-																<div class="aui-w85 content-column customer-info">
-																	<div class="customer-info-display">
-																		<pre><%= HtmlUtil.escape(accountCall.getNotes()) %></pre>
-																	</div>
-																</div>
-															</div>
-
-															<div class="aui-helper-clearfix callout-content">
-																<div class="aui-w15 content-column customer-info-label">
-																	<liferay-ui:message key="action-items" />
-																</div>
-
-																<div class="aui-w85 content-column customer-info">
-																	<div class="customer-info-display">
-																		<pre><%= HtmlUtil.escape(accountCall.getActionItems()) %></pre>
-																	</div>
-																</div>
-															</div>
-
-															<c:if test="<%= hasUpdateAccountInfoPermission %>">
-																<div class="aui-helper-clearfix">
-																	<div class="callout-content fr">
-
-																		<%
-																		PortletURL editAccountCallURL = renderResponse.createRenderURL();
-
-																		editAccountCallURL.setParameter("mvcPath", "/support/edit_account_call.jsp");
-																		editAccountCallURL.setParameter("accountCallId", String.valueOf(accountCall.getAccountCallId()));
-																		editAccountCallURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
-																		editAccountCallURL.setWindowState(LiferayWindowState.POP_UP);
-																		%>
-
-																		<input class="aui-button-input" onClick="<portlet:namespace />openDialog('<liferay-ui:message key="edit-project-call" />', '<%= editAccountCallURL.toString() %>', '<portlet:namespace />updateAccountCall')" type="button" value="<liferay-ui:message key="edit" />" />
-
-																		<portlet:actionURL name="deleteAccountCall" var="deleteAccountCallURL">
-																			<portlet:param name="redirect" value="<%= currentURL %>" />
-																			<portlet:param name="accountCallId" value="<%= String.valueOf(accountCall.getAccountCallId()) %>" />
-																		</portlet:actionURL>
-
-																		<input class="aui-button-input" onClick="javascript:if (confirm('<%= UnicodeLanguageUtil.get(pageContext, "are-you-sure-you-want-to-delete-this-call-log") %>')) { location.href='<%= deleteAccountCallURL %>'; } else { self.focus(); }" type="button" value="<liferay-ui:message key="delete" />" />
-																	</div>
-																</div>
-															</c:if>
-														</div>
-													</td>
+													<th class="col-2">
+														<liferay-ui:message key="date" />
+													</th>
+													<th class="col-3">
+														<liferay-ui:message key="summary" />
+													</th>
 												</tr>
 
-											<%
-											}
-											%>
+												<%
+												for (AccountCall accountCall : accountCalls) {
+													StringBuilder sb = new StringBuilder();
+
+													sb.append("javascript:");
+													sb.append(renderResponse.getNamespace());
+													sb.append("toggleAccountCall('");
+													sb.append(accountCall.getAccountCallId());
+													sb.append("');");
+
+													String rowHREF = sb.toString();
+												%>
+
+													<tr class="collapsed" id="<portlet:namespace />accountCall_<%= accountCall.getAccountCallId() %>">
+														<td class="col col-1 first">
+															<liferay-ui:icon
+																cssClass="down"
+																image="../arrows/05_down"
+																label="<%= false %>"
+																url="<%= rowHREF %>"
+															/>
+
+															<liferay-ui:icon
+																cssClass="up"
+																image="../arrows/05_up"
+																label="<%= false %>"
+																url="<%= rowHREF %>"
+															/>
+														</td>
+														<td class="col col-2">
+															<a href="<%= rowHREF %>"><%= accountCallFormat.format(accountCall.getCallDate()) %></a>
+														</td>
+														<td class="col col-3">
+															<a href="<%= rowHREF %>"><%= HtmlUtil.escape(StringUtil.shorten(accountCall.getSummary(), 115)) %></a>
+														</td>
+													</tr>
+													<tr class="account-calls collapsed" id="<portlet:namespace />accountCallDetails_<%= accountCall.getAccountCallId() %>">
+														<td class="panel" colspan="3">
+															<div class="callout-a">
+																<div class="aui-helper-clearfix callout-content">
+																	<div class="aui-w33 content-column">
+																		<div class="customer-info-label">
+																			<liferay-ui:message key="call-type" />
+																		</div>
+
+																		<%= accountCall.getTypeLabel() %>
+																	</div>
+
+																	<div class="aui-w33 content-column">
+																		<div class="customer-info-label">
+																			<liferay-ui:message key="call-date" />
+																		</div>
+
+																		<%= accountCallFormat.format(accountCall.getCallDate()) %>
+																	</div>
+
+																	<div class="aui-w33 content-column">
+																		<div class="customer-info-label">
+																			<liferay-ui:message key="call-length" />
+																		</div>
+
+																		<%= accountCall.getCallLengthLabel() %>
+																	</div>
+																</div>
+
+																<div class="aui-helper-clearfix callout-content">
+																	<div class="aui-w15 content-column customer-info-label">
+																		<liferay-ui:message key="summary" />
+																	</div>
+
+																	<div class="aui-w85 content-column customer-info">
+																		<div class="customer-info-display">
+																			<pre><%= HtmlUtil.escape(accountCall.getSummary()) %></pre>
+																		</div>
+																	</div>
+																</div>
+
+																<div class="aui-helper-clearfix callout-content">
+																	<div class="aui-w15 content-column customer-info-label">
+																		<liferay-ui:message key="clients-present" />
+																	</div>
+
+																	<div class="aui-w85 content-column customer-info">
+																		<div class="customer-info-display">
+																			<pre><%= HtmlUtil.escape(accountCall.getClientsPresent()) %></pre>
+																		</div>
+																	</div>
+																</div>
+
+																<div class="aui-helper-clearfix callout-content">
+																	<div class="aui-w15 content-column customer-info-label">
+																		<liferay-ui:message key="notes" />
+																	</div>
+
+																	<div class="aui-w85 content-column customer-info">
+																		<div class="customer-info-display">
+																			<pre><%= HtmlUtil.escape(accountCall.getNotes()) %></pre>
+																		</div>
+																	</div>
+																</div>
+
+																<div class="aui-helper-clearfix callout-content">
+																	<div class="aui-w15 content-column customer-info-label">
+																		<liferay-ui:message key="action-items" />
+																	</div>
+
+																	<div class="aui-w85 content-column customer-info">
+																		<div class="customer-info-display">
+																			<pre><%= HtmlUtil.escape(accountCall.getActionItems()) %></pre>
+																		</div>
+																	</div>
+																</div>
+
+																<c:if test="<%= hasUpdateAccountInfoPermission %>">
+																	<div class="aui-helper-clearfix">
+																		<div class="callout-content fr">
+
+																			<%
+																			PortletURL editAccountCallURL = renderResponse.createRenderURL();
+
+																			editAccountCallURL.setParameter("mvcPath", "/support/edit_account_call.jsp");
+																			editAccountCallURL.setParameter("accountCallId", String.valueOf(accountCall.getAccountCallId()));
+																			editAccountCallURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
+																			editAccountCallURL.setWindowState(LiferayWindowState.POP_UP);
+																			%>
+
+																			<input class="aui-button-input" onClick="<portlet:namespace />openDialog('<liferay-ui:message key="edit-project-call" />', '<%= editAccountCallURL.toString() %>', '<portlet:namespace />updateAccountCall')" type="button" value="<liferay-ui:message key="edit" />" />
+
+																			<portlet:actionURL name="deleteAccountCall" var="deleteAccountCallURL">
+																				<portlet:param name="redirect" value="<%= currentURL %>" />
+																				<portlet:param name="accountCallId" value="<%= String.valueOf(accountCall.getAccountCallId()) %>" />
+																			</portlet:actionURL>
+
+																			<input class="aui-button-input" onClick="javascript:if (confirm('<%= UnicodeLanguageUtil.get(pageContext, "are-you-sure-you-want-to-delete-this-call-log") %>')) { location.href='<%= deleteAccountCallURL %>'; } else { self.focus(); }" type="button" value="<liferay-ui:message key="delete" />" />
+																		</div>
+																	</div>
+																</c:if>
+															</div>
+														</td>
+													</tr>
+
+												<%
+												}
+												%>
 
 											</table>
 										</div>
@@ -288,7 +289,7 @@ Format accountCallFormat = FastDateFormatFactoryUtil.getSimpleDateFormat("yyyy-M
 							int[] sectionFieldIds = AccountInformationConstants.getSectionFieldIds(section);
 							%>
 
-							<div id='<%= renderResponse.getNamespace() + "sectionDisplay_" + section %>'>
+							<div id="<%= renderResponse.getNamespace() + "sectionDisplay_" + section %>">
 
 								<%
 								for (int fieldId : sectionFieldIds) {
@@ -324,7 +325,7 @@ Format accountCallFormat = FastDateFormatFactoryUtil.getSimpleDateFormat("yyyy-M
 							</div>
 
 							<c:if test="<%= hasUpdateAccountInfoPermission %>">
-								<div class="aui-helper-hidden" id='<%= renderResponse.getNamespace() + "sectionEditDisplay_" + section %>'>
+								<div class="aui-helper-hidden" id="<%= renderResponse.getNamespace() + "sectionEditDisplay_" + section %>">
 
 									<%
 									for (int fieldId : sectionFieldIds) {

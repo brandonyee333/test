@@ -14,23 +14,18 @@
 
 package com.liferay.osb.remote;
 
-import com.liferay.portal.kernel.exception.SystemException;
-
 /**
  * @author Amos Fong
  */
 public interface RemoteLCSWebService {
 
-	public void deleteLCSMessage(long corpProjectId, long corpProjectMessageId)
-		throws SystemException;
+	public void deleteLCSMessage(long corpProjectId, long corpProjectMessageId);
 
 	public void sendLCSMessage(
-			long corpProjectId, long corpProjectMessageId, String content,
-			int severityLevel, String title, int type)
-		throws SystemException;
+		long corpProjectId, long corpProjectMessageId, String content,
+		int severityLevel, String title, int type);
 
 	public void sendLCSSubscriptionEntries(
-			long corpProjectId, String lcsSubscriptionEntriesJSON)
-		throws SystemException;
+		long corpProjectId, String lcsSubscriptionEntriesJSON);
 
 }

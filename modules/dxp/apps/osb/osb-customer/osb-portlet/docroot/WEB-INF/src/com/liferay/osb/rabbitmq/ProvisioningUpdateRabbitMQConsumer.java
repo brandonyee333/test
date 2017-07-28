@@ -14,7 +14,6 @@
 
 package com.liferay.osb.rabbitmq;
 
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.CorpProject;
 import com.liferay.osb.model.ExternalIdMapper;
@@ -24,10 +23,10 @@ import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.util.List;
 
@@ -40,9 +39,7 @@ public class ProvisioningUpdateRabbitMQConsumer
 	public ProvisioningUpdateRabbitMQConsumer() {
 	}
 
-	protected void doParse(JSONObject jsonObject)
-		throws PortalException, SystemException {
-
+	protected void doParse(JSONObject jsonObject) throws PortalException {
 		String salesforceOpportunityKey = jsonObject.getString(
 			"_salesforceOpportunityKey");
 

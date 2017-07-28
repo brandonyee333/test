@@ -193,7 +193,7 @@ int type = ParamUtil.getInteger(request, "type", GetterUtil.getInteger(ticketInf
 					for (int curDocLibPersistence : TicketEntryConstants.DOC_LIB_PERSISTENCES) {
 					%>
 
-						<option <%= (curDocLibPersistence == docLibPersistence) ? "selected" : StringPool.BLANK %> value="<%= curDocLibPersistence %>"><%= LanguageUtil.get(locale, TicketEntryConstants.getDocLibPersistenceLabel(curDocLibPersistence)) %></option>
+						<option <%= (curDocLibPersistence == docLibPersistence) ? "selected" : StringPool.BLANK %> value="<%= curDocLibPersistence %>"><%= LanguageUtil.get(request, TicketEntryConstants.getDocLibPersistenceLabel(curDocLibPersistence)) %></option>
 
 					<%
 					}

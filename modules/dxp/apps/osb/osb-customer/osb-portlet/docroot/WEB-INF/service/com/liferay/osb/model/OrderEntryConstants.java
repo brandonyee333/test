@@ -21,8 +21,7 @@ import com.liferay.osb.util.WorkflowConstants;
  */
 public class OrderEntryConstants {
 
-	public static final int[] STATUSES = {
-		WorkflowConstants.STATUS_APPROVED, WorkflowConstants.STATUS_PENDING
-	};
+	public static final int[] STATUSES =
+		{WorkflowConstants.STATUS_APPROVED, WorkflowConstants.STATUS_PENDING};
 
 }

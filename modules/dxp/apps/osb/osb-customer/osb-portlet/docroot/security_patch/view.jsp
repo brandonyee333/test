@@ -30,13 +30,13 @@ String footerText = GetterUtil.getString(portletPreferences.getValue("footerText
 </h2>
 
 <div class="unit-content">
-	<div class="callout-download callout-a cleared">
+	<div class="callout-a callout-download cleared">
 		<div class="sub-grid">
-			<div class="unit u-img">
+			<div class="u-img unit">
 				<img src="<%= PortalUtil.getPathContext(request) %>/images/security.png" />
 			</div>
 
-			<div class="unit u-nfo">
+			<div class="u-nfo unit">
 				<h1 class="section-heading">
 					<liferay-ui:message key="liferay-portal" />
 				</h1>
@@ -59,7 +59,7 @@ String footerText = GetterUtil.getString(portletPreferences.getValue("footerText
 			%>
 
 			<c:if test="<%= !accountEntries.isEmpty() %>">
-				<div class="unit u-dld">
+				<div class="u-dld unit">
 					<p>
 						<liferay-ui:message key="choose-project" />
 
@@ -90,7 +90,7 @@ String footerText = GetterUtil.getString(portletPreferences.getValue("footerText
 						</select>
 					</p>
 
-					<a class="btn aui-helper-hidden" href="" id="<portlet:namespace />downloadLink"><liferay-ui:message key="download" /></a>
+					<a class="aui-helper-hidden btn" href="" id="<portlet:namespace />downloadLink"><liferay-ui:message key="download" /></a>
 				</div>
 			</c:if>
 		</div>

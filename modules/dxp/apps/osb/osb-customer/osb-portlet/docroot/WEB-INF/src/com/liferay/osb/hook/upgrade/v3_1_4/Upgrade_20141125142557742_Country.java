@@ -29,9 +29,7 @@ public class Upgrade_20141125142557742_Country extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20141125142557742L;
 	}
@@ -42,6 +40,7 @@ public class Upgrade_20141125142557742_Country extends UpgradeProcess {
 	}
 
 }
+
 */
 
 }

@@ -14,74 +14,11 @@
 
 package com.liferay.osb.support.util;
 
-import com.liferay.osb.model.AccountCustomer;
-import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.AccountWorkerConstants;
-import com.liferay.osb.model.PartnerWorker;
-import com.liferay.osb.model.SupportWorker;
-import com.liferay.osb.model.SupportWorkerConstants;
-import com.liferay.osb.model.TicketAttachment;
-import com.liferay.osb.model.TicketAttachmentConstants;
-import com.liferay.osb.model.TicketEntry;
-import com.liferay.osb.model.TicketEntryConstants;
-import com.liferay.osb.model.TicketFeedbackConstants;
-import com.liferay.osb.model.TicketFlagConstants;
-import com.liferay.osb.model.TicketWorker;
-import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
-import com.liferay.osb.service.AccountEntryLocalServiceUtil;
-import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
-import com.liferay.osb.service.SupportWorkerLocalServiceUtil;
-import com.liferay.osb.service.TicketAttachmentLocalServiceUtil;
-import com.liferay.osb.service.TicketEntryLocalServiceUtil;
-import com.liferay.osb.service.TicketFlagLocalServiceUtil;
-import com.liferay.osb.service.TicketWorkerLocalServiceUtil;
-import com.liferay.osb.util.OSBConstants;
-import com.liferay.osb.util.OSBPortletKeys;
-import com.liferay.osb.util.PortletPropsValues;
-import com.liferay.osb.util.VisibilityConstants;
-import com.liferay.portal.kernel.dao.orm.DynamicQuery;
-import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.Subscription;
-import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.BaseIndexer;
-import com.liferay.portal.kernel.search.BooleanClauseOccur;
-import com.liferay.portal.kernel.search.BooleanQuery;
-import com.liferay.portal.kernel.search.BooleanQueryFactoryUtil;
 import com.liferay.portal.kernel.search.Document;
-import com.liferay.portal.kernel.search.DocumentImpl;
-import com.liferay.portal.kernel.search.Field;
-import com.liferay.portal.kernel.search.ParseException;
-import com.liferay.portal.kernel.search.SearchContext;
-import com.liferay.portal.kernel.search.SearchEngineUtil;
-import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.search.Summary;
-import com.liferay.portal.kernel.security.auth.PrincipalException;
-import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
-import com.liferay.portal.kernel.service.SubscriptionLocalServiceUtil;
-import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
-import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 
-import java.io.InputStream;
-import java.text.Format;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
@@ -93,50 +30,58 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 
 	@Override
 	public String getClassName() {
+
 		// TODO Auto-generated method stub
+
 		return null;
 	}
 
 	@Override
 	protected void doDelete(T object) throws Exception {
+
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	protected Document doGetDocument(T object) throws Exception {
+
 		// TODO Auto-generated method stub
+
 		return null;
 	}
 
 	@Override
 	protected Summary doGetSummary(Document document, Locale locale, String snippet, PortletRequest portletRequest,
 			PortletResponse portletResponse) throws Exception {
+
 		// TODO Auto-generated method stub
+
 		return null;
 	}
 
 	@Override
 	protected void doReindex(String className, long classPK) throws Exception {
+
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	protected void doReindex(String[] ids) throws Exception {
+
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	protected void doReindex(T object) throws Exception {
+
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	/*public static final String[] CLASS_NAMES = {
-		TicketEntry.class.getName()
-	};
+	/*public static final String[] CLASS_NAMES = {TicketEntry.class.getName()};
 
 	public static final String PORTLET_ID = OSBPortletKeys.OSB_SUPPORT;
 
@@ -249,7 +194,7 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 			BooleanQuery accountCustomerQuery = BooleanQueryFactoryUtil.create(
 				searchContext);
 
-			Set<Long> accountCustomerAccountEntryIds = new HashSet<Long>();
+			Set<Long> accountCustomerAccountEntryIds = new HashSet<>();
 
 			for (long accountCustomerUserId : accountCustomerUserIds) {
 				List<AccountCustomer> accountCustomers =
@@ -740,8 +685,8 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 		List<TicketAttachment> ticketAttachments =
 			ticketEntry.getTicketAttachments();
 
-		List<String> ticketAttachmentContents = new ArrayList<String>();
-		List<String> ticketAttachmentFileNames = new ArrayList<String>();
+		List<String> ticketAttachmentContents = new ArrayList<>();
+		List<String> ticketAttachmentFileNames = new ArrayList<>();
 
 		long indexMaxSize =
 			PortletPropsValues.TICKET_ATTACHMENT_INDEXING_MAX_SIZE;
@@ -802,10 +747,9 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 
 		document.addNumber("ticketId", ticketEntry.getTicketId());
 
-		long[] ticketFeedbackUserIds =
-			SupportUtil.getTicketFeedbackUserIds(
-				ticketEntry.getTicketEntryId(),
-				TicketFeedbackConstants.SUBJECT_LIFERAY);
+		long[] ticketFeedbackUserIds = SupportUtil.getTicketFeedbackUserIds(
+			ticketEntry.getTicketEntryId(),
+			TicketFeedbackConstants.SUBJECT_LIFERAY);
 
 		document.addKeyword("ticketFeedbackUserIds", ticketFeedbackUserIds);
 
@@ -860,8 +804,7 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 		return document;
 	}
 
-	protected boolean isOrganizationLiferayInc(long userId)
-		throws SystemException {
+	protected boolean isOrganizationLiferayInc(long userId) {
 
 		if (OrganizationLocalServiceUtil.hasUserOrganization(
 				userId, OSBConstants.ORGANIZATION_LIFERAY_INC_ID)) {
@@ -873,8 +816,7 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 		}
 	}
 
-	protected void reindexEntries(long companyId)
-		throws PortalException, SystemException {
+	protected void reindexEntries(long companyId) throws PortalException {
 
 		IndexableActionableDynamicQuery actionableDynamicQuery =
 			new IndexableActionableDynamicQuery() {
@@ -884,12 +826,12 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 			}
 
 			@Override
-			protected void performAction(Object object)
-				throws PortalException, SystemException {
+			protected void performAction(Object object) throws PortalException {
 
 				TicketEntry ticketEntry = (TicketEntry)object;
 
 				// TODO refactor document object
+
 				Document document = getDocument(ticketEntry);
 
 				addDocuments(document);
@@ -907,6 +849,7 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 		throws SearchException {
 
 		// TODO refactor document object
+
 		Document document = getDocument(ticketEntry);
 
 		SearchEngineUtil.updateDocument(
@@ -982,7 +925,7 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 
 			boolean organizationLiferayInc = isOrganizationLiferayInc(userId);
 
-			List<AccountEntry> accountEntries = new ArrayList<AccountEntry>();
+			List<AccountEntry> accountEntries = new ArrayList<>();
 
 			if (!organizationLiferayInc) {
 				List<PartnerWorker> partnerWorkers =
@@ -1146,7 +1089,7 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 
 	private void _addViewableAccountEntriesQuery(
 			BooleanQuery searchQuery, SearchContext searchContext)
-		throws ParseException, PrincipalException, SystemException {
+		throws ParseException, PrincipalException {
 
 		LinkedHashMap<String, Object> params =
 			(LinkedHashMap<String, Object>)searchContext.getAttribute("params");

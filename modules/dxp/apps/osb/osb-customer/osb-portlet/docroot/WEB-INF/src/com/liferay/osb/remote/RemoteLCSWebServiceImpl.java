@@ -14,10 +14,10 @@
 
 package com.liferay.osb.remote;
 
-import com.liferay.petra.json.web.service.client.BaseJSONWebServiceClientHandler;
-import com.liferay.petra.json.web.service.client.JSONWebServiceClient;
 import com.liferay.osb.util.PortletPropsKeys;
 import com.liferay.osb.util.PortletPropsValues;
+import com.liferay.petra.json.web.service.client.BaseJSONWebServiceClientHandler;
+import com.liferay.petra.json.web.service.client.JSONWebServiceClient;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -35,10 +35,10 @@ import java.util.Map;
 public class RemoteLCSWebServiceImpl
 	extends BaseJSONWebServiceClientHandler implements RemoteLCSWebService {
 
-	public void deleteLCSMessage(long corpProjectId, long corpProjectMessageId)
-		throws SystemException {
+	public void deleteLCSMessage(
+		long corpProjectId, long corpProjectMessageId) {
 
-		Map<String, String> parameters = new HashMap<String, String>();
+		Map<String, String> parameters = new HashMap<>();
 
 		parameters.put("corpProjectId", String.valueOf(corpProjectId));
 		parameters.put("sourceMessageId", String.valueOf(corpProjectMessageId));
@@ -52,11 +52,10 @@ public class RemoteLCSWebServiceImpl
 	}
 
 	public void sendLCSMessage(
-			long corpProjectId, long corpProjectMessageId, String content,
-			int severityLevel, String title, int type)
-		throws SystemException {
+		long corpProjectId, long corpProjectMessageId, String content,
+		int severityLevel, String title, int type) {
 
-		Map<String, String> parameters = new HashMap<String, String>();
+		Map<String, String> parameters = new HashMap<>();
 
 		parameters.put("content", content);
 		parameters.put("corpProjectId", String.valueOf(corpProjectId));
@@ -69,10 +68,9 @@ public class RemoteLCSWebServiceImpl
 	}
 
 	public void sendLCSSubscriptionEntries(
-			long corpProjectId, String lcsSubscriptionEntriesJSON)
-		throws SystemException {
+		long corpProjectId, String lcsSubscriptionEntriesJSON) {
 
-		Map<String, String> parameters = new HashMap<String, String>();
+		Map<String, String> parameters = new HashMap<>();
 
 		parameters.put("corpProjectId", String.valueOf(corpProjectId));
 		parameters.put("lcsSubscriptionEntries", lcsSubscriptionEntriesJSON);
@@ -88,10 +86,8 @@ public class RemoteLCSWebServiceImpl
 		_jsonWebServiceClient = jsonWebServiceClient;
 	}
 
-	protected void doPost(String url, Map<String, String> parameters)
-		throws SystemException {
-
-		Map<String, String> headers = new HashMap<String, String>();
+	protected void doPost(String url, Map<String, String> parameters) {
+		Map<String, String> headers = new HashMap<>();
 
 		headers.put(
 			"OSB_LCS_API_Token",
@@ -131,7 +127,7 @@ public class RemoteLCSWebServiceImpl
 	private static final String _URL_API_JSONWS_LCS_GATEWAY =
 		_URL_API_JSONWS + "/lcsgateway";
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		RemoteLCSWebServiceImpl.class);
 
 	private JSONWebServiceClient _jsonWebServiceClient;

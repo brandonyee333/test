@@ -14,7 +14,6 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.exception.NoSuchSupportWorkerException;
 import com.liferay.osb.exception.SupportLaborHourException;
 import com.liferay.osb.exception.SupportLaborNameException;
@@ -22,8 +21,8 @@ import com.liferay.osb.model.SupportLabor;
 import com.liferay.osb.model.SupportWorker;
 import com.liferay.osb.service.base.SupportLaborLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.List;
 
@@ -38,7 +37,7 @@ public class SupportLaborLocalServiceImpl
 			int sunClose, int monOpen, int monClose, int tueOpen, int tueClose,
 			int wedOpen, int wedClose, int thuOpen, int thuClose, int friOpen,
 			int friClose, int satOpen, int satClose)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		validate(
 			name, sunOpen, sunClose, monOpen, monClose, tueOpen, tueClose,
@@ -67,9 +66,9 @@ public class SupportLaborLocalServiceImpl
 		supportLabor.setFriClose(friClose);
 		supportLabor.setSatOpen(satOpen);
 		supportLabor.setSatClose(satClose);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		supportLaborPersistence.update(supportLabor, serviceContext);
@@ -78,10 +77,10 @@ public class SupportLaborLocalServiceImpl
 	}
 
 	public void addSupportWorkers(long[] supportWorkerIds, long supportLaborId)
-		throws PortalException, SystemException {
-		
+		throws PortalException {
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		for (long supportWorkerId : supportWorkerIds) {
@@ -96,16 +95,16 @@ public class SupportLaborLocalServiceImpl
 
 	@Override
 	public SupportLabor deleteSupportLabor(long supportLaborId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		SupportLabor supportLabor = supportLaborPersistence.remove(
 			supportLaborId);
 
 		List<SupportWorker> supportWorkers =
 			supportWorkerPersistence.findBySupportLaborId(supportLaborId);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		for (SupportWorker supportWorker : supportWorkers) {
@@ -118,7 +117,7 @@ public class SupportLaborLocalServiceImpl
 	}
 
 	public boolean hasSupportWorker(long supportWorkerId, long supportLaborId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		SupportWorker supportWorker = supportWorkerPersistence.findByPrimaryKey(
 			supportWorkerId);
@@ -131,10 +130,10 @@ public class SupportLaborLocalServiceImpl
 	}
 
 	public void removeSupportWorkers(long[] supportWorkerIds)
-		throws PortalException, SystemException {
-		
+		throws PortalException {
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		for (long supportWorkerId : supportWorkerIds) {
@@ -157,7 +156,7 @@ public class SupportLaborLocalServiceImpl
 			int monClose, int tueOpen, int tueClose, int wedOpen, int wedClose,
 			int thuOpen, int thuClose, int friOpen, int friClose, int satOpen,
 			int satClose)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		validate(
 			name, sunOpen, sunClose, monOpen, monClose, tueOpen, tueClose,
@@ -184,9 +183,9 @@ public class SupportLaborLocalServiceImpl
 		supportLabor.setFriClose(friClose);
 		supportLabor.setSatOpen(satOpen);
 		supportLabor.setSatClose(satClose);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		supportLaborPersistence.update(supportLabor, serviceContext);

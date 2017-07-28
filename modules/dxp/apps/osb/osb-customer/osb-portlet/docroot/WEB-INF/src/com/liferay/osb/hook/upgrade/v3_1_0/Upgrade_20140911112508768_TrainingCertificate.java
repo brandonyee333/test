@@ -30,9 +30,7 @@ public class Upgrade_20140911112508768_TrainingCertificate
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20140911112508768L;
 	}
@@ -51,6 +49,7 @@ public class Upgrade_20140911112508768_TrainingCertificate
 	}
 
 }
+
 */
 
 }

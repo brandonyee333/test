@@ -136,114 +136,114 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 	<aui:model-context bean="<%= supportTeam %>" model="<%= SupportTeam.class %>" />
 
 	<table class="lfr-table">
-	<tr>
-		<td>
-			<liferay-ui:message key="parent-team" />
-		</td>
-		<td>
-			<aui:select label="" name="parentSupportTeamId">
-				<aui:option value="0"></aui:option>
+		<tr>
+			<td>
+				<liferay-ui:message key="parent-team" />
+			</td>
+			<td>
+				<aui:select label="" name="parentSupportTeamId">
+					<aui:option value="0"></aui:option>
 
-				<%
-				List<SupportTeam> supportTeams = SupportTeamLocalServiceUtil.getSupportTeams(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+					<%
+					List<SupportTeam> supportTeams = SupportTeamLocalServiceUtil.getSupportTeams(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
-				for (SupportTeam curSupportTeam : supportTeams) {
-					if (curSupportTeam.getSupportTeamId() == supportTeamId) {
-						continue;
+					for (SupportTeam curSupportTeam : supportTeams) {
+						if (curSupportTeam.getSupportTeamId() == supportTeamId) {
+							continue;
+						}
+					%>
+
+						<aui:option selected="<%= parentSupportTeamId == curSupportTeam.getSupportTeamId() %>" value="<%= curSupportTeam.getSupportTeamId() %>"><%= HtmlUtil.escape(curSupportTeam.getName()) %></aui:option>
+
+					<%
 					}
-				%>
+					%>
 
-					<aui:option selected="<%= parentSupportTeamId == curSupportTeam.getSupportTeamId() %>" value="<%= curSupportTeam.getSupportTeamId() %>"><%= HtmlUtil.escape(curSupportTeam.getName()) %></aui:option>
+				</aui:select>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="name" />
+			</td>
+			<td>
+				<aui:input label="" name="name" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="description" />
+			</td>
+			<td>
+				<aui:input label="" name="description" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="type" />
+			</td>
+			<td>
+				<aui:select label="" name="type">
+					<aui:option value="0"><liferay-ui:message key="normal" /></aui:option>
 
-				<%
-				}
-				%>
+					<%
+					int type = 0;
 
-			</aui:select>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="name" />
-		</td>
-		<td>
-			<aui:input label="" name="name" />
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="description" />
-		</td>
-		<td>
-			<aui:input label="" name="description" />
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="type" />
-		</td>
-		<td>
-			<aui:select label="" name="type">
-				<aui:option value="0"><liferay-ui:message key="normal" /></aui:option>
+					if (supportTeam != null) {
+						type = supportTeam.getType();
+					}
+					%>
 
-				<%
-				int type = 0;
+					<aui:option selected="<%= type == SupportTeamConstants.TYPE_PLATINUM_CRITICAL %>" value="1"><liferay-ui:message key="platinum-critical" /></aui:option>
+				</aui:select>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="labor-hours" />
+			</td>
+			<td>
+				<aui:select label="" name="supportLaborId">
+					<aui:option value="0"></aui:option>
 
-				if (supportTeam != null) {
-					type = supportTeam.getType();
-				}
-				%>
+					<%
+					List<SupportLabor> supportLabors = SupportLaborLocalServiceUtil.getSupportLabors(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
-				<aui:option selected="<%= type == SupportTeamConstants.TYPE_PLATINUM_CRITICAL %>" value="1"><liferay-ui:message key="platinum-critical" /></aui:option>
-			</aui:select>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="labor-hours" />
-		</td>
-		<td>
-			<aui:select label="" name="supportLaborId">
-				<aui:option value="0"></aui:option>
+					for (SupportLabor supportLabor : supportLabors) {
+					%>
 
-				<%
-				List<SupportLabor> supportLabors = SupportLaborLocalServiceUtil.getSupportLabors(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+						<aui:option selected="<%= supportLaborId == supportLabor.getSupportLaborId() %>" value="<%= supportLabor.getSupportLaborId() %>"><%= HtmlUtil.escape(supportLabor.getName()) %></aui:option>
 
-				for (SupportLabor supportLabor : supportLabors) {
-				%>
+					<%
+					}
+					%>
 
-					<aui:option selected="<%= supportLaborId == supportLabor.getSupportLaborId() %>" value="<%= supportLabor.getSupportLaborId() %>"><%= HtmlUtil.escape(supportLabor.getName()) %></aui:option>
+				</aui:select>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="physical-location-support-region" />
+			</td>
+			<td>
+				<aui:select label="" name="locationSupportRegionId">
+					<aui:option value="0"></aui:option>
 
-				<%
-				}
-				%>
+					<%
+					List<SupportRegion> supportRegions = SupportRegionLocalServiceUtil.getSupportRegions(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
-			</aui:select>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="physical-location-support-region" />
-		</td>
-		<td>
-			<aui:select label="" name="locationSupportRegionId">
-				<aui:option value="0"></aui:option>
+					for (SupportRegion curSupportRegion : supportRegions) {
+					%>
 
-				<%
-				List<SupportRegion> supportRegions = SupportRegionLocalServiceUtil.getSupportRegions(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+						<aui:option selected="<%= locationSupportRegionId == curSupportRegion.getSupportRegionId() %>" value="<%= curSupportRegion.getSupportRegionId() %>"><%= HtmlUtil.escape(curSupportRegion.getName()) %></aui:option>
 
-				for (SupportRegion curSupportRegion : supportRegions) {
-				%>
+					<%
+					}
+					%>
 
-					<aui:option selected="<%= locationSupportRegionId == curSupportRegion.getSupportRegionId() %>" value="<%= curSupportRegion.getSupportRegionId() %>"><%= HtmlUtil.escape(curSupportRegion.getName()) %></aui:option>
-
-				<%
-				}
-				%>
-
-			</aui:select>
-		</td>
-	</tr>
+				</aui:select>
+			</td>
+		</tr>
 	</table>
 
 	<br />

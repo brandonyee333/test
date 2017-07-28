@@ -14,7 +14,6 @@
 
 package com.liferay.osb.model.impl;
 
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.OfferingEntry;
@@ -40,11 +39,11 @@ import com.liferay.osb.service.TicketFlagLocalServiceUtil;
 import com.liferay.osb.service.TicketInformationLocalServiceUtil;
 import com.liferay.osb.support.util.SupportUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +57,7 @@ import javax.portlet.PortletPreferences;
  */
 public class TicketEntryImpl extends TicketEntryBaseImpl {
 
-	public static double getWork(int weight) throws SystemException {
+	public static double getWork(int weight) {
 		if (weight == TicketEntryConstants.WEIGHT_NORMAL) {
 			return 1;
 		}
@@ -73,14 +72,12 @@ public class TicketEntryImpl extends TicketEntryBaseImpl {
 	public TicketEntryImpl() {
 	}
 
-	public AccountEntry getAccountEntry()
-		throws PortalException, SystemException {
-
+	public AccountEntry getAccountEntry() throws PortalException {
 		return AccountEntryLocalServiceUtil.getAccountEntry(
 			getAccountEntryId());
 	}
 
-	public int getAccountTier() throws PortalException, SystemException {
+	public int getAccountTier() throws PortalException {
 		AccountEntry accountEntry = getAccountEntry();
 
 		return accountEntry.getTier();
@@ -105,7 +102,7 @@ public class TicketEntryImpl extends TicketEntryBaseImpl {
 		return TicketEntryConstants.getComponentLabel(getComponent());
 	}
 
-	public String getDisplayId() throws PortalException, SystemException {
+	public String getDisplayId() throws PortalException {
 		AccountEntry accountEntry = getAccountEntry();
 
 		return accountEntry.getCode().concat(StringPool.DASH).concat(
@@ -201,7 +198,7 @@ public class TicketEntryImpl extends TicketEntryBaseImpl {
 		int[] envSearches = StringUtil.split(
 			getEnvSearch(), StringPool.NEW_LINE, 0);
 
-		List<String> envSearchLabels = new ArrayList<String>();
+		List<String> envSearchLabels = new ArrayList<>();
 
 		for (int envSearch : envSearches) {
 			envSearchLabels.add(TicketEntryConstants.getEnvLabel(envSearch));
@@ -219,20 +216,16 @@ public class TicketEntryImpl extends TicketEntryBaseImpl {
 		return AccountEntryConstants.getLanguageLabel(getLanguageId());
 	}
 
-	public OfferingEntry getOfferingEntry()
-		throws PortalException, SystemException {
-
+	public OfferingEntry getOfferingEntry() throws PortalException {
 		return OfferingEntryLocalServiceUtil.getOfferingEntry(
 			getOfferingEntryId());
 	}
 
-	public OrderEntry getOrderEntry() throws PortalException, SystemException {
+	public OrderEntry getOrderEntry() throws PortalException {
 		return OrderEntryLocalServiceUtil.getOrderEntry(getOrderEntryId());
 	}
 
-	public ProductEntry getProductEntry()
-		throws PortalException, SystemException {
-
+	public ProductEntry getProductEntry() throws PortalException {
 		return ProductEntryLocalServiceUtil.getProductEntry(
 			getProductEntryId());
 	}
@@ -257,44 +250,35 @@ public class TicketEntryImpl extends TicketEntryBaseImpl {
 		return ProductEntryConstants.getSupportPhaseLabel(getEnvLFR());
 	}
 
-	public SupportRegion getSupportRegion()
-		throws PortalException, SystemException {
-
+	public SupportRegion getSupportRegion() throws PortalException {
 		return SupportRegionLocalServiceUtil.getSupportRegion(
 			getSupportRegionId());
 	}
 
-	public SupportResponse getSupportResponse()
-		throws PortalException, SystemException {
-
+	public SupportResponse getSupportResponse() throws PortalException {
 		return SupportResponseLocalServiceUtil.getSupportResponse(
 			getSupportResponseId());
 	}
 
-	public List<TicketAttachment> getTicketAttachments()
-		throws SystemException {
-
+	public List<TicketAttachment> getTicketAttachments() {
 		return TicketAttachmentLocalServiceUtil.getTicketAttachments(
 			getTicketEntryId());
 	}
 
 	public List<TicketAttachment> getTicketAttachments(
-			int[] types, int[] visibilities)
-		throws SystemException {
+		int[] types, int[] visibilities) {
 
 		return TicketAttachmentLocalServiceUtil.getTicketAttachments(
 			getTicketEntryId(), types, visibilities);
 	}
 
-	public int getTicketAttachmentsCount(int[] visibilities)
-		throws SystemException {
-
+	public int getTicketAttachmentsCount(int[] visibilities) {
 		return TicketAttachmentLocalServiceUtil.getTicketAttachmentsCount(
 			getTicketEntryId(), visibilities);
 	}
 
 	public Map<Long, String> getTicketInformationFieldsMap()
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (_ticketInformationFieldsMap == null) {
 			_ticketInformationFieldsMap =
@@ -306,9 +290,7 @@ public class TicketEntryImpl extends TicketEntryBaseImpl {
 	}
 
 	@JSON
-	public List<TicketInformation> getTicketInformationList()
-		throws SystemException {
-
+	public List<TicketInformation> getTicketInformationList() {
 		return TicketInformationLocalServiceUtil.getTicketInformationList(
 			getTicketEntryId());
 	}
@@ -317,18 +299,16 @@ public class TicketEntryImpl extends TicketEntryBaseImpl {
 		return TicketEntryConstants.getWeightLabel(getWeight());
 	}
 
-	public double getWork() throws SystemException {
+	public double getWork() {
 		return getWork(getWeight());
 	}
 
-	public boolean hasParticipant(long userId)
-		throws PortalException, SystemException {
-
+	public boolean hasParticipant(long userId) throws PortalException {
 		return TicketEntryLocalServiceUtil.hasParticipant(
 			userId, getTicketEntryId());
 	}
 
-	public boolean isPendingCustomer() throws SystemException {
+	public boolean isPendingCustomer() {
 		if (TicketFlagLocalServiceUtil.getTicketFlagsCount(
 				getTicketEntryId(), TicketFlagConstants.TYPE_PENDING_CUSTOMER,
 				TicketFlagConstants.FLAG_TRUE) > 0) {
@@ -340,7 +320,7 @@ public class TicketEntryImpl extends TicketEntryBaseImpl {
 		}
 	}
 
-	public boolean isPendingLiferay() throws SystemException {
+	public boolean isPendingLiferay() {
 		if (TicketFlagLocalServiceUtil.getTicketFlagsCount(
 				getTicketEntryId(), TicketFlagConstants.TYPE_PENDING_LIFERAY,
 				TicketFlagConstants.FLAG_TRUE) > 0) {
@@ -352,7 +332,7 @@ public class TicketEntryImpl extends TicketEntryBaseImpl {
 		}
 	}
 
-	public boolean isPendingPartner() throws SystemException {
+	public boolean isPendingPartner() {
 		if (TicketFlagLocalServiceUtil.getTicketFlagsCount(
 				getTicketEntryId(), TicketFlagConstants.TYPE_PENDING_PARTNER,
 				TicketFlagConstants.FLAG_TRUE) > 0) {

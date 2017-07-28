@@ -54,40 +54,40 @@
 	<div class="aui-helper-hidden" id="<portlet:namespace />addAttachments">
 		<fieldset class="block-labels">
 			<table class="lfr-table">
-			<tr>
-				<th>
-					<strong><liferay-ui:message key="upload-files" /></strong>
-				</th>
-
-				<c:if test="<%= ticketWorker %>">
-					<th>
-						<strong><liferay-ui:message key="hotfix" /></strong>
-					</th>
-				</c:if>
-			</tr>
-
-			<%
-			for (int i = 1; i <= 3; i++) {
-				String fileSuffix = 0 + StringPool.UNDERLINE + i;
-			%>
-
 				<tr>
-					<td>
-						<label for="<portlet:namespace />file<%= fileSuffix %>"><liferay-ui:message key="file" /> <%= i %></label>
-
-						<input id="<portlet:namespace />file<%= fileSuffix %>" name="<portlet:namespace />file<%= fileSuffix %>" onChange="<portlet:namespace />checkAttachment(this);" type="file" />
-					</td>
+					<th>
+						<strong><liferay-ui:message key="upload-files" /></strong>
+					</th>
 
 					<c:if test="<%= ticketWorker %>">
-						<td>
-							<aui:input label="" name='<%= "hotfix" + fileSuffix %>' type="checkbox" />
-						</td>
+						<th>
+							<strong><liferay-ui:message key="hotfix" /></strong>
+						</th>
 					</c:if>
 				</tr>
 
-			<%
-			}
-			%>
+				<%
+				for (int i = 1; i <= 3; i++) {
+					String fileSuffix = 0 + StringPool.UNDERLINE + i;
+				%>
+
+					<tr>
+						<td>
+							<label for="<portlet:namespace />file<%= fileSuffix %>"><liferay-ui:message key="file" /> <%= i %></label>
+
+							<input id="<portlet:namespace />file<%= fileSuffix %>" name="<portlet:namespace />file<%= fileSuffix %>" onChange="<portlet:namespace />checkAttachment(this);" type="file" />
+						</td>
+
+						<c:if test="<%= ticketWorker %>">
+							<td>
+								<aui:input label="" name='<%= "hotfix" + fileSuffix %>' type="checkbox" />
+							</td>
+						</c:if>
+					</tr>
+
+				<%
+				}
+				%>
 
 			</table>
 		</fieldset>

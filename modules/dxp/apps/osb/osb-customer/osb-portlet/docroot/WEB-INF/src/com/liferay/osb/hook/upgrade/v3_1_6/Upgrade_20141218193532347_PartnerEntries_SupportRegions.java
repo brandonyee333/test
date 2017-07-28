@@ -31,9 +31,7 @@ public class Upgrade_20141218193532347_PartnerEntries_SupportRegions
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20141218193532347L;
 	}
@@ -99,7 +97,6 @@ public class Upgrade_20141218193532347_PartnerEntries_SupportRegions
 
 			runSQL(sb.toString());
 		}
-
 	}
 
 	private final long _ASSET_CATEGORY_BRAZIL_ID = 21343273;
@@ -117,6 +114,7 @@ public class Upgrade_20141218193532347_PartnerEntries_SupportRegions
 	private final long _PARTNER_ENTRY_CLASS_NAME_ID = 4840271;
 
 }
+
 */
 
 }

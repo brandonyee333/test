@@ -10,20 +10,20 @@
 
 	<!-- Destinations -->
 
-	<bean id="destination.osb_asset_receipt" class="com.liferay.portal.kernel.messaging.ParallelDestination">
+	<bean class="com.liferay.portal.kernel.messaging.ParallelDestination" id="destination.osb_asset_receipt">
 		<property name="name" value="liferay/osb_asset_receipt" />
 	</bean>
-	<bean id="destination.osb_synchronize_jira" class="com.liferay.portal.kernel.messaging.ParallelDestination">
+	<bean class="com.liferay.portal.kernel.messaging.ParallelDestination" id="destination.osb_synchronize_jira">
 		<property name="name" value="liferay/osb_synchronize_jira" />
 	</bean>
 
 	<!-- Listeners -->
 
-	<bean id="messageListener.osb_synchronize_jira" class="com.liferay.osb.admin.messaging.SynchronizeJIRAMessageListener" />
+	<bean class="com.liferay.osb.admin.messaging.SynchronizeJIRAMessageListener" id="messageListener.osb_synchronize_jira" />
 
 	<!-- Configurator -->
 
-	<bean id="messagingConfigurator" class="com.liferay.portal.kernel.messaging.config.PluginMessagingConfigurator">
+	<bean class="com.liferay.portal.kernel.messaging.config.PluginMessagingConfigurator" id="messagingConfigurator">
 		<property name="destinations">
 			<list>
 				<ref bean="destination.osb_asset_receipt" />

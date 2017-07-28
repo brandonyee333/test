@@ -83,7 +83,7 @@ String name = BeanParamUtil.getString(accountProject, request, "name");
 </c:if>
 
 <aui:script>
-	<c:if test='<%= SessionMessages.contains(renderRequest, "request_processed") %>'>
+	<c:if test='<%= SessionMessages.contains(renderRequest, "requestProcessed") %>'>
 		Liferay.Util.getWindow().close();
 	</c:if>
 </aui:script>

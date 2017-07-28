@@ -14,14 +14,9 @@
 
 package com.liferay.osb.service.persistence.impl;
 
+import com.liferay.osb.model.TicketEntry;
 import com.liferay.osb.service.persistence.TicketEntryFinder;
 import com.liferay.osb.service.persistence.TicketEntryUtil;
-
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.osb.model.TicketEntry;
 import com.liferay.osb.util.OSBCustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.PortalCustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -30,11 +25,14 @@ import com.liferay.portal.kernel.dao.orm.SQLQuery;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.Type;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CalendarUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.sql.Timestamp;
@@ -56,21 +54,21 @@ public class TicketEntryFinderImpl
 		TicketEntryFinder.class.getName() +
 			".countByU_A_S_C_S_D_T_S_S_W_E_E_C_R_C_D_C_W";
 
+	public static final String FILTER_BY_ACCOUNT_ENTRY =
+		TicketEntryFinder.class.getName() + ".filterByAccountEntry";
+
+	public static final String FIND_BY_TICKET_COMMENT =
+		TicketEntryFinder.class.getName() + ".findByTicketComment";
+
 	public static final String FIND_BY_U_A_S_C_S_D_T_S_S_W_E_E_C_R_C_D_C_W =
 		TicketEntryFinder.class.getName() +
 			".findByU_A_S_C_S_D_T_S_S_W_E_E_C_R_C_D_C_W";
-
-	public static final String FILTER_BY_ACCOUNT_ENTRY =
-		TicketEntryFinder.class.getName() + ".filterByAccountEntry";
 
 	public static final String JOIN_BY_ACCOUNT_CUSTOMER =
 		TicketEntryFinder.class.getName() + ".joinByAccountCustomer";
 
 	public static final String JOIN_BY_ACCOUNT_CUSTOMER_VISIBILITY =
 		TicketEntryFinder.class.getName() + ".joinByAccountCustomerVisibility";
-
-	public static final String FIND_BY_TICKET_COMMENT =
-		TicketEntryFinder.class.getName() + ".findByTicketComment";
 
 	public static final String JOIN_BY_ACCOUNT_WORKER =
 		TicketEntryFinder.class.getName() + ".joinByAccountWorker";
@@ -106,8 +104,7 @@ public class TicketEntryFinderImpl
 		TicketEntryFinder.class.getName() + ".joinByTicketWorkerCount";
 
 	public int countByKeywords(
-			String keywords, LinkedHashMap<String, Object> params)
-		throws SystemException {
+		String keywords, LinkedHashMap<String, Object> params) {
 
 		String[] names = null;
 		String[] subjects = null;
@@ -134,18 +131,16 @@ public class TicketEntryFinderImpl
 	}
 
 	public int countByU_A_S_C_S_D_T_S_S_W_E_E_C_R_C_D_C_W(
-			long reportedByUserId, String name, int[] accountEntryTiers,
-			Boolean satisfiedDueDate, Date createDateGT, Date createDateLT,
-			String subject, String description, String body, int[] statuses,
-			int[] severities, int[] weights, int[] escalationLevels,
-			long[] envOS, long[] envDB, long[] envJVM, long[] envAS,
-			long[] envLFR, int[] components, int[] resolutions,
-			Date closedDateGT, Date closedDateLT, Date dueDateGT,
-			Date dueDateLT, Date customerModifiedDateGT,
-			Date customerModifiedDateLT, Date workerModifiedDateGT,
-			Date workerModifiedDateLT, LinkedHashMap<String, Object> params,
-			boolean andOperator)
-		throws SystemException {
+		long reportedByUserId, String name, int[] accountEntryTiers,
+		Boolean satisfiedDueDate, Date createDateGT, Date createDateLT,
+		String subject, String description, String body, int[] statuses,
+		int[] severities, int[] weights, int[] escalationLevels, long[] envOS,
+		long[] envDB, long[] envJVM, long[] envAS, long[] envLFR,
+		int[] components, int[] resolutions, Date closedDateGT,
+		Date closedDateLT, Date dueDateGT, Date dueDateLT,
+		Date customerModifiedDateGT, Date customerModifiedDateLT,
+		Date workerModifiedDateGT, Date workerModifiedDateLT,
+		LinkedHashMap<String, Object> params, boolean andOperator) {
 
 		String[] names = OSBCustomSQLUtil.keywords(name);
 		String[] subjects = CustomSQLUtil.keywords(subject);
@@ -163,9 +158,8 @@ public class TicketEntryFinderImpl
 	}
 
 	public List<TicketEntry> findByKeywords(
-			String keywords, LinkedHashMap<String, Object> params, int start,
-			int end, OrderByComparator obc)
-		throws SystemException {
+		String keywords, LinkedHashMap<String, Object> params, int start,
+		int end, OrderByComparator obc) {
 
 		String[] names = null;
 		String[] subjects = null;
@@ -192,18 +186,17 @@ public class TicketEntryFinderImpl
 	}
 
 	public List<TicketEntry> findByU_A_S_C_S_D_T_S_S_W_E_E_C_R_C_D_C_W(
-			long reportedByUserId, String name, int[] accountEntryTiers,
-			Boolean satisfiedDueDate, Date createDateGT, Date createDateLT,
-			String subject, String description, String body, int[] statuses,
-			int[] severities, int[] weights, int[] escalationLevels,
-			long[] envOS, long[] envDB, long[] envJVM, long[] envAS,
-			long[] envLFR, int[] components, int[] resolutions,
-			Date closedDateGT, Date closedDateLT, Date dueDateGT,
-			Date dueDateLT, Date customerModifiedDateGT,
-			Date customerModifiedDateLT, Date workerModifiedDateGT,
-			Date workerModifiedDateLT, LinkedHashMap<String, Object> params,
-			boolean andOperator, int start, int end, OrderByComparator obc)
-		throws SystemException {
+		long reportedByUserId, String name, int[] accountEntryTiers,
+		Boolean satisfiedDueDate, Date createDateGT, Date createDateLT,
+		String subject, String description, String body, int[] statuses,
+		int[] severities, int[] weights, int[] escalationLevels, long[] envOS,
+		long[] envDB, long[] envJVM, long[] envAS, long[] envLFR,
+		int[] components, int[] resolutions, Date closedDateGT,
+		Date closedDateLT, Date dueDateGT, Date dueDateLT,
+		Date customerModifiedDateGT, Date customerModifiedDateLT,
+		Date workerModifiedDateGT, Date workerModifiedDateLT,
+		LinkedHashMap<String, Object> params, boolean andOperator, int start,
+		int end, OrderByComparator obc) {
 
 		String[] names = OSBCustomSQLUtil.keywords(name);
 		String[] subjects = CustomSQLUtil.keywords(subject);
@@ -221,29 +214,25 @@ public class TicketEntryFinderImpl
 	}
 
 	protected int countByU_A_S_C_S_D_T_S_S_W_E_E_C_R_C_D_C_W(
-			long reportedByUserId, String[] names, int[] accountEntryTiers,
-			Boolean satisfiedDueDate, Date createDateGT, Date createDateLT,
-			String[] subjects, String[] descriptions, String[] bodies,
-			int[] statuses, int[] severities, int[] weights,
-			int[] escalationLevels, long[] envOS, long[] envDB, long[] envJVM,
-			long[] envAS, long[] envLFR, int[] components, int[] resolutions,
-			Date closedDateGT, Date closedDateLT, Date dueDateGT,
-			Date dueDateLT, Date customerModifiedDateGT,
-			Date customerModifiedDateLT, Date workerModifiedDateGT,
-			Date workerModifiedDateLT, LinkedHashMap<String, Object> params,
-			boolean andOperator)
-		throws SystemException {
+		long reportedByUserId, String[] names, int[] accountEntryTiers,
+		Boolean satisfiedDueDate, Date createDateGT, Date createDateLT,
+		String[] subjects, String[] descriptions, String[] bodies,
+		int[] statuses, int[] severities, int[] weights, int[] escalationLevels,
+		long[] envOS, long[] envDB, long[] envJVM, long[] envAS, long[] envLFR,
+		int[] components, int[] resolutions, Date closedDateGT,
+		Date closedDateLT, Date dueDateGT, Date dueDateLT,
+		Date customerModifiedDateGT, Date customerModifiedDateLT,
+		Date workerModifiedDateGT, Date workerModifiedDateLT,
+		LinkedHashMap<String, Object> params, boolean andOperator) {
 
 		if (params == null) {
-			params = new LinkedHashMap<String, Object>();
+			params = new LinkedHashMap<>();
 		}
 
 		Long userId = (Long)params.remove("accountEntryMembership");
 
-		LinkedHashMap<String, Object> params1 =
-			new LinkedHashMap<String, Object>(params);
-		LinkedHashMap<String, Object> params2 =
-			new LinkedHashMap<String, Object>(params1);
+		LinkedHashMap<String, Object> params1 = new LinkedHashMap<>(params);
+		LinkedHashMap<String, Object> params2 = new LinkedHashMap<>(params1);
 
 		if (userId != null) {
 			params1.put("accountCustomerUserIds", new long[] {userId});
@@ -308,7 +297,7 @@ public class TicketEntryFinderImpl
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addScalar(COUNT_COLUMN_NAME, Type.LONG);
 
@@ -356,29 +345,26 @@ public class TicketEntryFinderImpl
 	}
 
 	protected List<TicketEntry> findByU_A_S_C_S_D_T_S_S_W_E_E_C_R_C_D_C_W(
-			long reportedByUserId, String[] names, int[] accountEntryTiers,
-			Boolean satisfiedDueDate, Date createDateGT, Date createDateLT,
-			String[] subjects, String[] descriptions, String[] bodies,
-			int[] statuses, int[] severities, int[] weights,
-			int[] escalationLevels, long[] envOS, long[] envDB, long[] envJVM,
-			long[] envAS, long[] envLFR, int[] components, int[] resolutions,
-			Date closedDateGT, Date closedDateLT, Date dueDateGT,
-			Date dueDateLT, Date customerModifiedDateGT,
-			Date customerModifiedDateLT, Date workerModifiedDateGT,
-			Date workerModifiedDateLT, LinkedHashMap<String, Object> params,
-			boolean andOperator, int start, int end, OrderByComparator obc)
-		throws SystemException {
+		long reportedByUserId, String[] names, int[] accountEntryTiers,
+		Boolean satisfiedDueDate, Date createDateGT, Date createDateLT,
+		String[] subjects, String[] descriptions, String[] bodies,
+		int[] statuses, int[] severities, int[] weights, int[] escalationLevels,
+		long[] envOS, long[] envDB, long[] envJVM, long[] envAS, long[] envLFR,
+		int[] components, int[] resolutions, Date closedDateGT,
+		Date closedDateLT, Date dueDateGT, Date dueDateLT,
+		Date customerModifiedDateGT, Date customerModifiedDateLT,
+		Date workerModifiedDateGT, Date workerModifiedDateLT,
+		LinkedHashMap<String, Object> params, boolean andOperator, int start,
+		int end, OrderByComparator obc) {
 
 		if (params == null) {
-			params = new LinkedHashMap<String, Object>();
+			params = new LinkedHashMap<>();
 		}
 
 		Long userId = (Long)params.remove("accountEntryMembership");
 
-		LinkedHashMap<String, Object> params1 =
-			new LinkedHashMap<String, Object>(params);
-		LinkedHashMap<String, Object> params2 =
-			new LinkedHashMap<String, Object>(params1);
+		LinkedHashMap<String, Object> params1 = new LinkedHashMap<>(params);
+		LinkedHashMap<String, Object> params2 = new LinkedHashMap<>(params1);
 
 		if (userId != null) {
 			params1.put("accountCustomerUserIds", new long[] {userId});
@@ -442,7 +428,7 @@ public class TicketEntryFinderImpl
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addScalar("ticketEntryId", Type.LONG);
 
@@ -472,7 +458,7 @@ public class TicketEntryFinderImpl
 			List<Long> ticketEntryIds = (List<Long>)QueryUtil.list(
 				q, getDialect(), start, end);
 
-			List<TicketEntry> ticketEntries = new ArrayList<TicketEntry>(
+			List<TicketEntry> ticketEntries = new ArrayList<>(
 				ticketEntryIds.size());
 
 			for (Long ticketEntryId : ticketEntryIds) {

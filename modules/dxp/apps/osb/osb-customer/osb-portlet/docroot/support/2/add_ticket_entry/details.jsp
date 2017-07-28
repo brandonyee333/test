@@ -33,7 +33,7 @@ String description = ParamUtil.getString(request, "description");
 		</h2>
 
 		<div>
-			<input data-field-required-status="<%= false %>" field-required-message='<%= HtmlUtil.escapeAttribute(LanguageUtil.get(pageContext,"please-enter-a-summary-of-the-issue")) %>' maxLength='<%= ModelHintsUtil.getMaxLength(TicketEntry.class.getName(), "subject") %>' name="<portlet:namespace />subject" type="text" value="<%= HtmlUtil.escape(subject) %>" />
+			<input data-field-required-status="<%= false %>" field-required-message="<%= HtmlUtil.escapeAttribute(LanguageUtil.get(pageContext, "please-enter-a-summary-of-the-issue")) %>" maxLength="<%= ModelHintsUtil.getMaxLength(TicketEntry.class.getName(), "subject") %>" name="<portlet:namespace />subject" type="text" value="<%= HtmlUtil.escape(subject) %>" />
 		</div>
 	</div>
 

@@ -23,7 +23,6 @@ import com.liferay.osb.service.SupportRegionLocalServiceUtil;
 import com.liferay.osb.service.SupportTeamLanguageLocalServiceUtil;
 import com.liferay.osb.service.SupportTeamLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,29 +35,26 @@ public class SupportTeamImpl extends SupportTeamBaseImpl {
 	public SupportTeamImpl() {
 	}
 
-	public List<AccountEntry> getAccountEntries() throws SystemException {
+	public List<AccountEntry> getAccountEntries() {
 		return AccountEntryLocalServiceUtil.getSupportTeamAccountEntries(
 			getSupportTeamId());
 	}
 
-	public List<SupportTeam> getChildSupportTeams() throws SystemException {
+	public List<SupportTeam> getChildSupportTeams() {
 		return getChildSupportTeams(false);
 	}
 
-	public List<SupportTeam> getChildSupportTeams(boolean recursive)
-		throws SystemException {
-
+	public List<SupportTeam> getChildSupportTeams(boolean recursive) {
 		return SupportTeamLocalServiceUtil.getChildSupportTeams(
 			getSupportTeamId(), recursive);
 	}
 
-	public List<String> getLanguageIds() throws SystemException {
+	public List<String> getLanguageIds() {
 		List<SupportTeamLanguage> supportTeamLanguages =
 			SupportTeamLanguageLocalServiceUtil.getSupportTeamLanguages(
 				getSupportTeamId());
 
-		List<String> languages = new ArrayList<String>(
-			supportTeamLanguages.size());
+		List<String> languages = new ArrayList<>(supportTeamLanguages.size());
 
 		for (SupportTeamLanguage supportTeamLanguage : supportTeamLanguages) {
 			languages.add(supportTeamLanguage.getLanguageId());
@@ -67,9 +63,7 @@ public class SupportTeamImpl extends SupportTeamBaseImpl {
 		return languages;
 	}
 
-	public SupportTeam getParentSupportTeam()
-		throws PortalException, SystemException {
-
+	public SupportTeam getParentSupportTeam() throws PortalException {
 		if (getParentSupportTeamId() <= 0) {
 			return null;
 		}
@@ -78,7 +72,7 @@ public class SupportTeamImpl extends SupportTeamBaseImpl {
 			getParentSupportTeamId());
 	}
 
-	public List<SupportRegion> getSupportRegions() throws SystemException {
+	public List<SupportRegion> getSupportRegions() {
 		return SupportRegionLocalServiceUtil.getSupportTeamSupportRegions(
 			getSupportTeamId());
 	}

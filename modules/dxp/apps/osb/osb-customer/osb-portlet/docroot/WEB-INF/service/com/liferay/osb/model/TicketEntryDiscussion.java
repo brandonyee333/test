@@ -140,7 +140,7 @@ public class TicketEntryDiscussion {
 	}
 
 	public String getUserPortraitURL(ThemeDisplay themeDisplay)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (_user != null) {
 			return _user.getPortraitURL(themeDisplay);
@@ -184,7 +184,7 @@ public class TicketEntryDiscussion {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		TicketEntryDiscussion.class);
 
 	private Date _createDate;
@@ -192,10 +192,9 @@ public class TicketEntryDiscussion {
 	private String _discussionType;
 	private String _key;
 	private int _status;
-	private List<TicketAttachment> _ticketAttachments =
-		new ArrayList<TicketAttachment>();
+	private List<TicketAttachment> _ticketAttachments = new ArrayList<>();
 	private TicketComment _ticketComment;
-	private List<TicketLink> _ticketLinks = new ArrayList<TicketLink>();
+	private List<TicketLink> _ticketLinks = new ArrayList<>();
 	private User _user;
 	private long _userId;
 	private String _userName;

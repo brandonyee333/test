@@ -14,7 +14,6 @@
 
 package com.liferay.osb.license.search;
 
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.license.util.LicenseUtil;
 import com.liferay.osb.model.LicenseKey;
 import com.liferay.osb.util.OSBPortletKeys;
@@ -23,10 +22,11 @@ import com.liferay.portal.kernel.dao.search.DisplayTerms;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.portlet.PortalPreferences;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
+import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,20 +42,8 @@ import javax.portlet.PortletURL;
  */
 public class LicenseKeySearch extends SearchContainer<LicenseKey> {
 
-	static List<String> headerNames = new ArrayList<String>();
-	static Map<String, String> orderableHeaders = new HashMap<String, String>();
-
-	static {
-		headerNames.add("account");
-		headerNames.add("name");
-		headerNames.add("product");
-		headerNames.add("version");
-		headerNames.add("start-date");
-		headerNames.add("expiration-date");
-
-		orderableHeaders.put("start-date", "start-date");
-		orderableHeaders.put("expiration-date", "expiration-date");
-	}
+	static List<String> headerNames = new ArrayList<>();
+	static Map<String, String> orderableHeaders = new HashMap<>();
 
 	public static final String EMPTY_RESULTS_MESSAGE =
 		"no-license-keys-were-found";
@@ -175,5 +163,17 @@ public class LicenseKeySearch extends SearchContainer<LicenseKey> {
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(LicenseKeySearch.class);
+
+	static {
+		headerNames.add("account");
+		headerNames.add("name");
+		headerNames.add("product");
+		headerNames.add("version");
+		headerNames.add("start-date");
+		headerNames.add("expiration-date");
+
+		orderableHeaders.put("expiration-date", "expiration-date");
+		orderableHeaders.put("start-date", "start-date");
+	}
 
 }

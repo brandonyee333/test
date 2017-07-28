@@ -30,9 +30,7 @@ public class UpgradeTicketEnvironment extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	protected void doUpgrade() throws Exception {
 		insertListType(
 			TicketEntryConstants.ENV_AS_TCSERVER_2_6, "tcServer-2.6",
@@ -50,6 +48,7 @@ public class UpgradeTicketEnvironment extends UpgradeProcess {
 			TicketEntryConstants.ENV_OS_UBUNTU_11, "ubuntu-11",
 			"com.liferay.osb.model.TicketEntry.envOS");
 	}
+
 }
 
 */

@@ -21,7 +21,7 @@ long accountEntryId = ParamUtil.getLong(request, "accountEntryId");
 %>
 
 <c:choose>
-	<c:when test='<%= SessionMessages.contains(renderRequest, "request_processed") %>'>
+	<c:when test='<%= SessionMessages.contains(renderRequest, "requestProcessed") %>'>
 		<aui:script>
 			parent.location.reload();
 		</aui:script>

@@ -19,7 +19,6 @@ import com.liferay.osb.service.base.AccountProjectServiceBaseImpl;
 import com.liferay.osb.service.permission.OSBAccountEntryPermission;
 import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 
@@ -32,7 +31,7 @@ import java.util.Map;
 public class AccountProjectServiceImpl extends AccountProjectServiceBaseImpl {
 
 	public AccountProject deleteAccountProject(long accountProjectId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		AccountProject accountProject =
 			accountProjectLocalService.getAccountProject(accountProjectId);
@@ -48,7 +47,7 @@ public class AccountProjectServiceImpl extends AccountProjectServiceBaseImpl {
 	public AccountProject updateAccountProject(
 			long accountProjectId, long accountEntryId, String name,
 			Map<Integer, String> data)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OSBAccountEntryPermission.check(
 			getPermissionChecker(), accountEntryId,

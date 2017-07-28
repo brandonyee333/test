@@ -14,7 +14,6 @@
 
 package com.liferay.osb.model.impl;
 
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.LicenseEntry;
 import com.liferay.osb.model.LicenseKeySet;
@@ -28,7 +27,7 @@ import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
 import com.liferay.osb.service.OrderEntryLocalServiceUtil;
 import com.liferay.osb.service.ProductEntryLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.Time;
 
 import java.util.Date;
 
@@ -41,7 +40,7 @@ public class LicenseKeyImpl extends LicenseKeyBaseImpl {
 	public LicenseKeyImpl() {
 	}
 
-	public boolean canRenew() throws PortalException, SystemException {
+	public boolean canRenew() throws PortalException {
 		if (!isActive()) {
 			return false;
 		}
@@ -59,41 +58,31 @@ public class LicenseKeyImpl extends LicenseKeyBaseImpl {
 		return true;
 	}
 
-	public AccountEntry getAccountEntry()
-		throws PortalException, SystemException {
-
+	public AccountEntry getAccountEntry() throws PortalException {
 		return AccountEntryLocalServiceUtil.getAccountEntry(
 			getAccountEntryId());
 	}
 
-	public LicenseEntry getLicenseEntry()
-		throws PortalException, SystemException {
-
+	public LicenseEntry getLicenseEntry() throws PortalException {
 		return LicenseEntryLocalServiceUtil.getLicenseEntry(
 			getLicenseEntryId());
 	}
 
-	public LicenseKeySet getLicenseKeySet()
-		throws PortalException, SystemException {
-
+	public LicenseKeySet getLicenseKeySet() throws PortalException {
 		return LicenseKeySetLocalServiceUtil.getLicenseKeySet(
 			getLicenseKeySetId());
 	}
 
-	public OfferingEntry getOfferingEntry()
-		throws PortalException, SystemException {
-
+	public OfferingEntry getOfferingEntry() throws PortalException {
 		return OfferingEntryLocalServiceUtil.getOfferingEntry(
 			getOfferingEntryId());
 	}
 
-	public OrderEntry getOrderEntry() throws PortalException, SystemException {
+	public OrderEntry getOrderEntry() throws PortalException {
 		return OrderEntryLocalServiceUtil.getOrderEntry(getOrderEntryId());
 	}
 
-	public ProductEntry getProductEntry()
-		throws PortalException, SystemException {
-
+	public ProductEntry getProductEntry() throws PortalException {
 		return ProductEntryLocalServiceUtil.getProductEntry(
 			getProductEntryId());
 	}

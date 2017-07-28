@@ -57,7 +57,7 @@ for (OfferingEntryGroup offeringEntryGroup : offeringEntryGroups) {
 
 			<div class="aui-helper-clearfix callout-content">
 				<div class="aui-w33 content-column">
-					<div class="left-column content-column-content">
+					<div class="content-column-content left-column">
 						<span class="txt-b txt-up"><liferay-ui:message key="liferay-version" />:</span>
 
 						<%= LanguageUtil.get(pageContext, accountEnvironment.getEnvLFRLabel()) %>
@@ -79,7 +79,7 @@ for (OfferingEntryGroup offeringEntryGroup : offeringEntryGroups) {
 				</div>
 
 				<div class="aui-w33 content-column">
-					<div class="middle-column content-column-content">
+					<div class="content-column-content middle-column">
 						<span class="txt-b txt-up"><liferay-ui:message key="application-server" />:</span>
 
 						<%= LanguageUtil.get(pageContext, accountEnvironment.getEnvASLabel()) %>

@@ -24,16 +24,13 @@ import com.liferay.osb.model.DeveloperEntryConstants;
 /**
  * @author Ryan Park
  */
-public class Upgrade_20170327102815917_DeveloperEntry
-	extends UpgradeProcess {
+public class Upgrade_20170327102815917_DeveloperEntry extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20170327102815917L;
 	}
@@ -73,6 +70,7 @@ public class Upgrade_20170327102815917_DeveloperEntry
 	private static final long _CLASS_NAME_USER_ID = 9;
 
 }
+
 */
 
 }

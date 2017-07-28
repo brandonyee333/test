@@ -134,7 +134,7 @@ List<TicketAttachment> ticketAttachments = TicketAttachmentLocalServiceUtil.getT
 						<portlet:param name="ticketEntryId" value="<%= String.valueOf(ticketEntry.getTicketEntryId()) %>" />
 					</portlet:resourceURL>
 
-					<div class="fr download-all">
+					<div class="download-all fr">
 						<a href="<%= ticketAttachmentsZipFileURL %>"><liferay-ui:message key="download-all" /></a>
 					</div>
 				</c:if>

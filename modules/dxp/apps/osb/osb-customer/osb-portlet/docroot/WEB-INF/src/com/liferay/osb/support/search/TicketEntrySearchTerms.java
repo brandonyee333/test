@@ -14,18 +14,17 @@
 
 package com.liferay.osb.support.search;
 
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.model.SupportTeam;
 import com.liferay.osb.model.TicketEntryConstants;
 import com.liferay.osb.model.TicketFlagConstants;
 import com.liferay.osb.service.SupportTeamLocalServiceUtil;
 import com.liferay.osb.support.util.SupportUtil;
-import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -141,9 +140,8 @@ public class TicketEntrySearchTerms extends TicketEntryDisplayTerms {
 		return sb.toString();
 	}
 
-	public LinkedHashMap<String, Object> getParams() throws SystemException {
-		LinkedHashMap<String, Object> params =
-			new LinkedHashMap<String, Object>();
+	public LinkedHashMap<String, Object> getParams() {
+		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
 		if (!isAdvancedSearch()) {
 			return params;

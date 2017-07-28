@@ -14,14 +14,13 @@
 
 package com.liferay.osb.util;
 
-import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.osb.model.HolidayEntry;
 import com.liferay.osb.model.SupportLabor;
 import com.liferay.osb.model.SupportWorker;
 import com.liferay.osb.service.HolidayEntryLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.TimeZoneUtil;
 
 import java.util.Calendar;
@@ -81,7 +80,7 @@ public class OSBDateUtil {
 
 	public static long getHolidayTime(
 			SupportWorker supportWorker, Date startDate, Date endDate)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		SupportLabor supportLabor = supportWorker.getSupportLabor();
 

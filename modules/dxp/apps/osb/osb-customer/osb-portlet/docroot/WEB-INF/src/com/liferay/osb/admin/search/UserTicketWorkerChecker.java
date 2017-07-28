@@ -70,6 +70,6 @@ public class UserTicketWorkerChecker extends RowChecker {
 	private static Log _log = LogFactoryUtil.getLog(
 		UserTicketWorkerChecker.class);
 
-	private TicketEntry _ticketEntry;
+	private final TicketEntry _ticketEntry;
 
 }

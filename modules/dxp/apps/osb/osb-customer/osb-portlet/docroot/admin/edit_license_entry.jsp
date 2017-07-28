@@ -18,6 +18,7 @@
 
 <%
 String redirect = ParamUtil.getString(request, "redirect");
+
 String backURL = ParamUtil.getString(request, "backURL", redirect);
 
 long licenseEntryId = ParamUtil.getLong(request, "licenseEntryId");
@@ -54,115 +55,115 @@ int portalVersionMax = BeanParamUtil.getInteger(licenseEntry, request, "portalVe
 	<liferay-ui:error exception="<%= LicenseEntryPortalVersionException.class %>" message="please-enter-a-valid-portal-version-range" />
 
 	<table class="lfr-table">
-	<tr>
-		<td>
-			<liferay-ui:message key="name" />
-		</td>
-		<td>
-			<liferay-ui:input-field bean="<%= licenseEntry %>" field="name" model="<%= LicenseEntry.class %>" />
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="product" />
-		</td>
-		<td>
-			<select name="<portlet:namespace />productEntryId">
-				<option value=""></option>
+		<tr>
+			<td>
+				<liferay-ui:message key="name" />
+			</td>
+			<td>
+				<liferay-ui:input-field bean="<%= licenseEntry %>" field="name" model="<%= LicenseEntry.class %>" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="product" />
+			</td>
+			<td>
+				<select name="<portlet:namespace />productEntryId">
+					<option value=""></option>
 
-				<%
-				List<ProductEntry> productEntries = ProductEntryLocalServiceUtil.getProductEntries(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+					<%
+					List<ProductEntry> productEntries = ProductEntryLocalServiceUtil.getProductEntries(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
-				for (ProductEntry productEntry : productEntries) {
-				%>
+					for (ProductEntry productEntry : productEntries) {
+					%>
 
-					<option <%= (productEntry.getProductEntryId() == productEntryId) ? "selected" : "" %> value="<%= productEntry.getProductEntryId() %>"><%= HtmlUtil.escape(productEntry.getName()) %></option>
+						<option <%= (productEntry.getProductEntryId() == productEntryId) ? "selected" : "" %> value="<%= productEntry.getProductEntryId() %>"><%= HtmlUtil.escape(productEntry.getName()) %></option>
 
-				<%
-				}
-				%>
-
-			</select>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="type" />
-		</td>
-		<td>
-			<select id="<portlet:namespace />type" name="<portlet:namespace />type">
-
-				<%
-				for (String curType : LicenseEntryConstants.TYPES) {
-				%>
-
-					<option <%= type.equals(curType) ? "selected" : "" %> value="<%= curType %>"><liferay-ui:message key="<%= curType %>" /></option>
-
-				<%
-				}
-				%>
-
-			</select>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="portal-version-range-minimum" />
-		</td>
-		<td>
-			<select name="<portlet:namespace />portalVersionMin">
-
-				<%
-				List<ListType> portalVersionTypes = ListTypeServiceUtil.getListTypes(ProductEntryConstants.LIST_TYPE_PORTAL_ALL_VERSIONS);
-
-				String previousNamePrefix = StringPool.BLANK;
-
-				for (ListType portalVersionType : portalVersionTypes) {
-					if (portalVersionType.getListTypeId() == ProductEntryConstants.PORTAL_VERSION_OTHER) {
-						continue;
+					<%
 					}
+					%>
 
-					String name = portalVersionType.getName();
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="type" />
+			</td>
+			<td>
+				<select id="<portlet:namespace />type" name="<portlet:namespace />type">
 
-					String namePrefix = name.substring(0, 3);
-				%>
+					<%
+					for (String curType : LicenseEntryConstants.TYPES) {
+					%>
 
-					<c:if test="<%= Validator.isNotNull(previousNamePrefix) && !previousNamePrefix.equals(namePrefix) %>">
-						<option disabled>--------</option>
-					</c:if>
+						<option <%= type.equals(curType) ? "selected" : "" %> value="<%= curType %>"><liferay-ui:message key="<%= curType %>" /></option>
 
-					<option <%= (portalVersionType.getListTypeId() == portalVersionMin) ? "selected" : "" %> value="<%= portalVersionType.getListTypeId() %>"><%= LanguageUtil.get(pageContext, portalVersionType.getName()) %></option>
+					<%
+					}
+					%>
 
-				<%
-					previousNamePrefix = namePrefix;
-				}
-				%>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="portal-version-range-minimum" />
+			</td>
+			<td>
+				<select name="<portlet:namespace />portalVersionMin">
 
-			</select>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="portal-version-range-maximum" />
-		</td>
-		<td>
-			<select name="<portlet:namespace />portalVersionMax">
+					<%
+					List<ListType> portalVersionTypes = ListTypeServiceUtil.getListTypes(ProductEntryConstants.LIST_TYPE_PORTAL_ALL_VERSIONS);
 
-				<%
-				ListType lastVersionType = portalVersionTypes.get(portalVersionTypes.size() - 2);
+					String previousNamePrefix = StringPool.BLANK;
 
-				for (ListType portalVersionType : portalVersionTypes) {
-				%>
+					for (ListType portalVersionType : portalVersionTypes) {
+						if (portalVersionType.getListTypeId() == ProductEntryConstants.PORTAL_VERSION_OTHER) {
+							continue;
+						}
 
-					<option <%= (portalVersionType.getListTypeId() == portalVersionMax) ? "selected" : "" %> value="<%= portalVersionType.getListTypeId() %>"><%= (portalVersionType.getListTypeId() == ProductEntryConstants.PORTAL_VERSION_OTHER) ? LanguageUtil.get(pageContext, lastVersionType.getName()) + StringPool.PLUS : LanguageUtil.get(pageContext, portalVersionType.getName()) %></option>
+						String name = portalVersionType.getName();
 
-				<%
-				}
-				%>
+						String namePrefix = name.substring(0, 3);
+					%>
 
-			</select>
-		</td>
-	</tr>
+						<c:if test="<%= Validator.isNotNull(previousNamePrefix) && !previousNamePrefix.equals(namePrefix) %>">
+							<option disabled>--------</option>
+						</c:if>
+
+						<option <%= (portalVersionType.getListTypeId() == portalVersionMin) ? "selected" : "" %> value="<%= portalVersionType.getListTypeId() %>"><%= LanguageUtil.get(pageContext, portalVersionType.getName()) %></option>
+
+					<%
+						previousNamePrefix = namePrefix;
+					}
+					%>
+
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="portal-version-range-maximum" />
+			</td>
+			<td>
+				<select name="<portlet:namespace />portalVersionMax">
+
+					<%
+					ListType lastVersionType = portalVersionTypes.get(portalVersionTypes.size() - 2);
+
+					for (ListType portalVersionType : portalVersionTypes) {
+					%>
+
+						<option <%= (portalVersionType.getListTypeId() == portalVersionMax) ? "selected" : "" %> value="<%= portalVersionType.getListTypeId() %>"><%= (portalVersionType.getListTypeId() == ProductEntryConstants.PORTAL_VERSION_OTHER) ? LanguageUtil.get(pageContext, lastVersionType.getName()) + StringPool.PLUS : LanguageUtil.get(pageContext, portalVersionType.getName()) %></option>
+
+					<%
+					}
+					%>
+
+				</select>
+			</td>
+		</tr>
 	</table>
 
 	<br />

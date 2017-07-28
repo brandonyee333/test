@@ -22,7 +22,7 @@ import com.liferay.portal.kernel.messaging.Message;
  * @author Mate Thurzo
  */
 public class CustomerFeedbackNotificationMessageListener
-		extends BaseMessageListener {
+	extends BaseMessageListener {
 
 	@Override
 	protected void doReceive(Message message) throws Exception {

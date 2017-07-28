@@ -14,8 +14,6 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.osb.exception.NoSuchSupportTeamException;
 import com.liferay.osb.exception.NoSuchSupportWorkerException;
 import com.liferay.osb.exception.SupportWorkerMaxWorkException;
@@ -32,15 +30,16 @@ import com.liferay.osb.model.impl.TicketEntryImpl;
 import com.liferay.osb.service.base.SupportWorkerLocalServiceBaseImpl;
 import com.liferay.osb.support.util.SupportUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Time;
 import com.liferay.util.dao.orm.CustomSQLUtil;
-import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -56,13 +55,13 @@ public class SupportWorkerLocalServiceImpl
 	public void addSupportWorkers(
 			long[] userIds, long supportTeamId, double[] maxWork,
 			int[] escalationLevels, int[] roles, int[] notifications)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		SupportTeam supportTeam = supportTeamPersistence.findByPrimaryKey(
 			supportTeamId);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		for (int i = 0; i < userIds.length; i++) {
@@ -118,18 +117,16 @@ public class SupportWorkerLocalServiceImpl
 		}
 	}
 
-	public void clockInOut(long supportWorkerId)
-		throws PortalException, SystemException {
-
+	public void clockInOut(long supportWorkerId) throws PortalException {
 		SupportWorker supportWorker = getSupportWorker(supportWorkerId);
 
 		List<SupportWorker> supportWorkers =
 			supportWorkerPersistence.findByUserId(supportWorker.getUserId());
 
 		Boolean clockIn = null;
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		for (SupportWorker curSupportWorker : supportWorkers) {
@@ -143,15 +140,13 @@ public class SupportWorkerLocalServiceImpl
 		}
 	}
 
-	public void decreaseAssignedWork(long userId, double work)
-		throws SystemException {
-
+	public void decreaseAssignedWork(long userId, double work) {
 		try {
 			List<SupportWorker> supportWorkers =
 				supportWorkerPersistence.findByUserId(userId);
-			
+
 			//TODO implement serviceContext how needed
-			
+
 			ServiceContext serviceContext = new ServiceContext();
 
 			for (SupportWorker supportWorker : supportWorkers) {
@@ -174,8 +169,8 @@ public class SupportWorkerLocalServiceImpl
 		}
 	}
 
-	public void decreaseTicketEntryAssignedWork(long ticketEntryId, double work)
-		throws SystemException {
+	public void decreaseTicketEntryAssignedWork(
+		long ticketEntryId, double work) {
 
 		List<TicketWorker> ticketWorkers =
 			ticketWorkerPersistence.findByTicketEntryId(ticketEntryId);
@@ -187,9 +182,7 @@ public class SupportWorkerLocalServiceImpl
 		}
 	}
 
-	public void deleteSupportWorkers(long userId)
-		throws PortalException, SystemException {
-
+	public void deleteSupportWorkers(long userId) throws PortalException {
 		List<SupportWorker> supportWorkers = getUserSupportWorkers(userId);
 
 		for (SupportWorker supportWorker : supportWorkers) {
@@ -200,7 +193,7 @@ public class SupportWorkerLocalServiceImpl
 	}
 
 	public void deleteSupportWorkers(long[] userIds, long supportTeamId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		SupportTeam supportTeam = supportTeamPersistence.findByPrimaryKey(
 			supportTeamId);
@@ -224,25 +217,24 @@ public class SupportWorkerLocalServiceImpl
 				supportWorkerSeverityPersistence.removeBySupportWorkerId(
 					supportWorker.getSupportWorkerId());
 			}
-			catch (NoSuchSupportWorkerException nswe) {
+			catch (NoSuchSupportWorkerException nsswe) {
 			}
 		}
 
 		supportTeam.setAssignedWork(supportTeamAssignedWork);
 		supportTeam.setMaxWork(supportTeamMaxWork);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		supportTeamPersistence.update(supportTeam, serviceContext);
 	}
 
-	public double getAssignedWork(long userId) throws SystemException {
+	public double getAssignedWork(long userId) {
 		double assignedWork = 0;
 
-		LinkedHashMap<String, Object> params =
-			new LinkedHashMap<String, Object>();
+		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
 		params.put("primaryTicketWorker", new Object[] {userId, true});
 
@@ -263,7 +255,7 @@ public class SupportWorkerLocalServiceImpl
 	}
 
 	public SupportWorker getAvailableSupportWorker(TicketEntry ticketEntry)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		SupportResponse supportResponse = ticketEntry.getSupportResponse();
 
@@ -289,8 +281,7 @@ public class SupportWorkerLocalServiceImpl
 			}
 		}
 
-		LinkedHashMap<String, Object> params =
-			new LinkedHashMap<String, Object>();
+		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
 		params.put("accountTier", ticketEntry.getAccountTier());
 		params.put("component", ticketEntry.getComponent());
@@ -323,7 +314,7 @@ public class SupportWorkerLocalServiceImpl
 
 	public SupportWorker getLongestOpenSupportWorker(
 			List<SupportWorker> supportWorkers, TicketEntry ticketEntry)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		SupportWorker supportWorker = null;
 
@@ -367,7 +358,7 @@ public class SupportWorkerLocalServiceImpl
 
 	public SupportWorker getMostAvailableSupportWorker(
 			TicketEntry ticketEntry, LinkedHashMap<String, Object> params)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		double utilizationWeight = GetterUtil.getDouble(
 			SupportUtil.getPreferenceValue(
@@ -443,7 +434,7 @@ public class SupportWorkerLocalServiceImpl
 
 	public SupportWorker getNextOpenSupportWorker(
 			List<SupportWorker> supportWorkers, TicketEntry ticketEntry)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		SupportWorker supportWorker = null;
 
@@ -522,46 +513,43 @@ public class SupportWorkerLocalServiceImpl
 	}
 
 	public SupportWorker getSupportWorker(long userId, long supportTeamId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		return supportWorkerPersistence.findByU_STI(userId, supportTeamId);
 	}
 
 	public List<SupportWorker> getSupportWorkersBySupportLaborId(
 			long supportLaborId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		return supportWorkerPersistence.findBySupportLaborId(supportLaborId);
 	}
 
 	public List<SupportWorker> getSupportWorkersBySupportRegionId(
 			long supportRegionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		return supportWorkerFinder.findByR_STT_SRI(
 			-1, null, supportRegionId, StringPool.NOT_EQUAL, false, null);
 	}
 
 	public int getSupportWorkersCountBySupportLaborId(long supportLaborId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		return supportWorkerPersistence.countBySupportLaborId(supportLaborId);
 	}
 
-	public List<SupportWorker> getTeamSupportWorkers(long supportTeamId)
-		throws SystemException {
-
+	public List<SupportWorker> getTeamSupportWorkers(long supportTeamId) {
 		return supportWorkerFinder.findBySupportTeamId(supportTeamId);
 	}
 
 	public List<SupportWorker> getUserSupportTeamManagers(
 			long userId, Integer supportTeamType)
-		throws PortalException, SystemException {
+		throws PortalException {
 
-		List<SupportWorker> supportWorkers = new ArrayList<SupportWorker>();
+		List<SupportWorker> supportWorkers = new ArrayList<>();
 
-		LinkedHashMap<String, Object> params =
-			new LinkedHashMap<String, Object>();
+		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
 		params.put("supportTeamType", supportTeamType);
 		params.put("userId", userId);
@@ -570,7 +558,7 @@ public class SupportWorkerLocalServiceImpl
 			null, 0, params);
 
 		for (SupportWorker userSupportWorker : userSupportWorkers) {
-			params = new LinkedHashMap<String, Object>();
+			params = new LinkedHashMap<>();
 
 			SupportTeam supportTeam = userSupportWorker.getSupportTeam();
 
@@ -589,15 +577,11 @@ public class SupportWorkerLocalServiceImpl
 		return supportWorkers;
 	}
 
-	public List<SupportWorker> getUserSupportWorkers(long userId)
-		throws SystemException {
-
+	public List<SupportWorker> getUserSupportWorkers(long userId) {
 		return supportWorkerPersistence.findByUserId(userId);
 	}
 
-	public boolean hasSupportWorker(long userId, int notRole)
-		throws SystemException {
-
+	public boolean hasSupportWorker(long userId, int notRole) {
 		List<SupportWorker> supportWorkers = getUserSupportWorkers(userId);
 
 		for (SupportWorker supportWorker : supportWorkers) {
@@ -610,12 +594,10 @@ public class SupportWorkerLocalServiceImpl
 	}
 
 	public boolean hasSupportWorker(
-			long userId, int role, long locationSupportRegionId,
-			Integer supportTeamType)
-		throws SystemException {
+		long userId, int role, long locationSupportRegionId,
+		Integer supportTeamType) {
 
-		LinkedHashMap<String, Object> params =
-			new LinkedHashMap<String, Object>();
+		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
 		params.put("locationSupportRegion", locationSupportRegionId);
 		params.put("userId", userId);
@@ -632,9 +614,7 @@ public class SupportWorkerLocalServiceImpl
 		}
 	}
 
-	public boolean hasSupportWorker(long userId, long supportTeamId)
-		throws SystemException {
-
+	public boolean hasSupportWorker(long userId, long supportTeamId) {
 		SupportWorker supportWorker = supportWorkerPersistence.fetchByU_STI(
 			userId, supportTeamId);
 
@@ -646,9 +626,7 @@ public class SupportWorkerLocalServiceImpl
 		}
 	}
 
-	public boolean hasSupportWorkerRole(long userId, int role)
-		throws SystemException {
-
+	public boolean hasSupportWorkerRole(long userId, int role) {
 		List<SupportWorker> supportWorkers = getUserSupportWorkers(userId);
 
 		for (SupportWorker supportWorker : supportWorkers) {
@@ -660,15 +638,13 @@ public class SupportWorkerLocalServiceImpl
 		return false;
 	}
 
-	public void increaseAssignedWork(long userId, double work)
-		throws SystemException {
-
+	public void increaseAssignedWork(long userId, double work) {
 		try {
 			List<SupportWorker> supportWorkers =
 				supportWorkerPersistence.findByUserId(userId);
-			
+
 			//TODO implement serviceContext how needed
-			
+
 			ServiceContext serviceContext = new ServiceContext();
 
 			for (SupportWorker supportWorker : supportWorkers) {
@@ -691,8 +667,8 @@ public class SupportWorkerLocalServiceImpl
 		}
 	}
 
-	public void increaseTicketEntryAssignedWork(long ticketEntryId, double work)
-		throws SystemException {
+	public void increaseTicketEntryAssignedWork(
+		long ticketEntryId, double work) {
 
 		List<TicketWorker> ticketWorkers =
 			ticketWorkerPersistence.findByTicketEntryId(ticketEntryId);
@@ -704,7 +680,7 @@ public class SupportWorkerLocalServiceImpl
 		}
 	}
 
-	public boolean isClockedIn(long userId) throws SystemException {
+	public boolean isClockedIn(long userId) {
 		List<SupportWorker> supportWorkers =
 			supportWorkerPersistence.findByUserId(userId);
 
@@ -718,7 +694,7 @@ public class SupportWorkerLocalServiceImpl
 	}
 
 	public boolean isManagerOfWorker(long userId, long workerUserId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		List<SupportWorker> supportWorkers = getUserSupportTeamManagers(
 			workerUserId, SupportTeamConstants.TYPE_PLATINUM_CRITICAL);
@@ -746,10 +722,7 @@ public class SupportWorkerLocalServiceImpl
 				String sql = CustomSQLUtil.get(_COUNT_TICKET_ENTRY);
 
 				sql = StringUtil.replace(
-					sql,
-					new String[] {
-						"[$STATUS_INACTIVE$]", "[$WEIGHT$]"
-					},
+					sql, new String[] {"[$STATUS_INACTIVE$]", "[$WEIGHT$]"},
 					new String[] {
 						String.valueOf(TicketEntryConstants.STATUS_INACTIVE),
 						String.valueOf(weight)
@@ -782,29 +755,26 @@ public class SupportWorkerLocalServiceImpl
 	}
 
 	public List<SupportWorker> search(
-			Boolean overUtilization, int escalationLevel,
-			LinkedHashMap<String, Object> params)
-		throws SystemException {
+		Boolean overUtilization, int escalationLevel,
+		LinkedHashMap<String, Object> params) {
 
 		return supportWorkerFinder.findByU_E(
 			overUtilization, escalationLevel, params);
 	}
 
 	public List<SupportWorker> search(
-			long supportLaborId, String keywords, int start, int end,
-			OrderByComparator obc)
-		throws SystemException {
+		long supportLaborId, String keywords, int start, int end,
+		OrderByComparator obc) {
 
 		return supportWorkerFinder.findByKeywords(
 			supportLaborId, keywords, start, end, obc);
 	}
 
 	public List<SupportWorker> search(
-			long supportLaborId, String firstName, String middleName,
-			String lastName, String screenName, String emailAddress,
-			String supportTeamName, boolean andSearch, int start, int end,
-			OrderByComparator obc)
-		throws SystemException {
+		long supportLaborId, String firstName, String middleName,
+		String lastName, String screenName, String emailAddress,
+		String supportTeamName, boolean andSearch, int start, int end,
+		OrderByComparator obc) {
 
 		return supportWorkerFinder.findBySL_FN_MN_LN_SN_EA_STN(
 			supportLaborId, new String[] {firstName}, new String[] {middleName},
@@ -813,17 +783,14 @@ public class SupportWorkerLocalServiceImpl
 			andSearch, start, end, obc);
 	}
 
-	public int searchCount(long supportLaborId, String keywords)
-		throws SystemException {
-
+	public int searchCount(long supportLaborId, String keywords) {
 		return supportWorkerFinder.countByKeywords(supportLaborId, keywords);
 	}
 
 	public int searchCount(
-			long supportLaborId, String firstName, String middleName,
-			String lastName, String screenName, String emailAddress,
-			String supportTeamName, boolean andSearch)
-		throws SystemException {
+		long supportLaborId, String firstName, String middleName,
+		String lastName, String screenName, String emailAddress,
+		String supportTeamName, boolean andSearch) {
 
 		return supportWorkerFinder.countBySL_FN_MN_LN_SN_EA_STN(
 			supportLaborId, new String[] {firstName}, new String[] {middleName},
@@ -836,7 +803,7 @@ public class SupportWorkerLocalServiceImpl
 			long supportWorkerId, long supportTeamId, boolean autoAssign,
 			double maxWork, int escalationlevel, int escalationLevel2Role,
 			int notifications)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		validate(maxWork);
 
@@ -845,9 +812,9 @@ public class SupportWorkerLocalServiceImpl
 
 		SupportWorker supportWorker = supportWorkerPersistence.findByPrimaryKey(
 			supportWorkerId);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		if (supportTeamId != supportWorker.getSupportTeamId()) {
@@ -904,8 +871,7 @@ public class SupportWorkerLocalServiceImpl
 	}
 
 	private static final String _COUNT_TICKET_ENTRY =
-		SupportWorkerLocalServiceImpl.class.getName() +
-			".countTicketEntry";
+		SupportWorkerLocalServiceImpl.class.getName() + ".countTicketEntry";
 
 	private static final String _UPDATE_SUPPORT_TEAM_ASSIGNED_WORK =
 		SupportWorkerLocalServiceImpl.class.getName() +
@@ -915,7 +881,7 @@ public class SupportWorkerLocalServiceImpl
 		SupportWorkerLocalServiceImpl.class.getName() +
 			".updateSupportTeamMaxWork";
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		SupportWorkerLocalServiceImpl.class);
 
 }

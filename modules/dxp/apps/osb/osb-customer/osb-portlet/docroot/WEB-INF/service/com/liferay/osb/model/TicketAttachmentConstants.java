@@ -57,13 +57,10 @@ public class TicketAttachmentConstants {
 		TYPE_SCREEN_SHOT, TYPE_SERVER_LOG, TYPE_SOCIAL_OFFICE_PLUGIN
 	};
 
-	public static final int[] TYPES_HOTFIX = {
-		TYPE_HOTFIX, TYPE_LARGE_HOTFIX
-	};
+	public static final int[] TYPES_HOTFIX = {TYPE_HOTFIX, TYPE_LARGE_HOTFIX};
 
-	public static final int[] TYPES_LARGE = {
-		TYPE_LARGE_FILE, TYPE_LARGE_HOTFIX
-	};
+	public static final int[] TYPES_LARGE =
+		{TYPE_LARGE_FILE, TYPE_LARGE_HOTFIX};
 
 	public static String getTypeLabel(int type) {
 		if (type == TYPE_DATA_FOLDER) {

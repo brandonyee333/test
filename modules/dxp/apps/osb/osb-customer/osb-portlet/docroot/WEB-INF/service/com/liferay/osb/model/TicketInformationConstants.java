@@ -14,10 +14,10 @@
 
 package com.liferay.osb.model;
 
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -172,7 +172,7 @@ public class TicketInformationConstants {
 		else if (fieldId == FIELD_ENV_SEARCH) {
 			int[] values = StringUtil.split(data, StringPool.NEW_LINE, 0);
 
-			List<String> labels = new ArrayList<String>();
+			List<String> labels = new ArrayList<>();
 
 			for (int searchValue : values) {
 				labels.add(TicketEntryConstants.getEnvLabel(searchValue));

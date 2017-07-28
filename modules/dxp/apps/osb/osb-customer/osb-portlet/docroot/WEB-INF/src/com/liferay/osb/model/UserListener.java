@@ -23,10 +23,8 @@ import com.liferay.osb.service.TicketWorkerLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.Role;
@@ -35,6 +33,7 @@ import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 
 import java.util.List;
 
@@ -132,9 +131,7 @@ public class UserListener extends BaseModelListener<User> {
 		}
 	}
 
-	protected void assignOrganizations(long userId)
-		throws PortalException, SystemException {
-
+	protected void assignOrganizations(long userId) throws PortalException {
 		List<AccountCustomer> accountCustomers =
 			AccountCustomerLocalServiceUtil.getUserAccountCustomers(userId);
 
@@ -175,6 +172,6 @@ public class UserListener extends BaseModelListener<User> {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(UserListener.class);
+	private static final Log _log = LogFactoryUtil.getLog(UserListener.class);
 
 }

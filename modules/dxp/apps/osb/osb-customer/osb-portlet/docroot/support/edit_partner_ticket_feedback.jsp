@@ -91,13 +91,13 @@ if (liferayIncOrg && OSBTicketFeedbackPermission.contains(permissionChecker, tic
 
 		<div class="callout-a">
 			<div class="callout-content cleared">
-				<div class="unit-content txt-i">
+				<div class="txt-i unit-content">
 					<liferay-ui:message key="star-indicates-required-field" />
 				</div>
 
 				<br />
 
-				<div class="unit-content txt-b">
+				<div class="txt-b unit-content">
 					<liferay-ui:message key="was-the-issue-reproduced-when-escalated" /> *
 				</div>
 
@@ -109,7 +109,7 @@ if (liferayIncOrg && OSBTicketFeedbackPermission.contains(permissionChecker, tic
 
 				<br />
 
-				<div class="unit-content txt-b">
+				<div class="txt-b unit-content">
 					<liferay-ui:message key="was-the-issue-escalated-in-a-timely-manner" /> *
 				</div>
 
@@ -121,7 +121,7 @@ if (liferayIncOrg && OSBTicketFeedbackPermission.contains(permissionChecker, tic
 
 				<br />
 
-				<div class="unit-content txt-b">
+				<div class="txt-b unit-content">
 					<liferay-ui:message key="was-the-issue-escalated-properly" /> *
 				</div>
 
@@ -133,7 +133,7 @@ if (liferayIncOrg && OSBTicketFeedbackPermission.contains(permissionChecker, tic
 
 				<br />
 
-				<div class="unit-content txt-b">
+				<div class="txt-b unit-content">
 					<liferay-ui:message key="response-time" /> *
 				</div>
 
@@ -147,7 +147,7 @@ if (liferayIncOrg && OSBTicketFeedbackPermission.contains(permissionChecker, tic
 
 				<br />
 
-				<div class="unit-content txt-b">
+				<div class="txt-b unit-content">
 					<liferay-ui:message key="technical-knowledge" /> *
 				</div>
 
@@ -161,7 +161,7 @@ if (liferayIncOrg && OSBTicketFeedbackPermission.contains(permissionChecker, tic
 
 				<br />
 
-				<div class="unit-content txt-b">
+				<div class="txt-b unit-content">
 					<liferay-ui:message key="professionalism" /> *
 				</div>
 
@@ -175,7 +175,7 @@ if (liferayIncOrg && OSBTicketFeedbackPermission.contains(permissionChecker, tic
 
 				<br />
 
-				<div class="unit-content txt-b">
+				<div class="txt-b unit-content">
 					<liferay-ui:message key="additional-comments" />
 				</div>
 

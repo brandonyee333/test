@@ -23,4 +23,4 @@ import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
  */
 @JSONWebService(mode = JSONWebServiceMode.MANUAL)
 public class FeedbackEntryServiceImpl extends FeedbackEntryServiceBaseImpl {
-} 
+}

@@ -29,7 +29,7 @@
 
 	<aui:form action="<%= portletURL.toString() %>" method="post" name="<portlet:namespace />fm" onSubmit="submitForm(this); return false;">
 		<div class="unit">
-			<div class="unit-content table-report">
+			<div class="table-report unit-content">
 				<liferay-ui:tabs
 					names="advocacy-specialist,managed-services,sales"
 					param="tabs1"

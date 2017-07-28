@@ -14,13 +14,13 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.exception.LicenseKeyExportException;
 import com.liferay.osb.exception.LicenseKeyVersionException;
 import com.liferay.osb.license.util.LicenseUtil;
 import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.AccountWorkerConstants;
+import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.Validator;
 /* TODO implement assetReceipt
 import com.liferay.osb.model.AssetReceipt;
 */
@@ -105,7 +105,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			String description, String hostName, String ipAddresses,
 			String macAddresses, String serverId, int startDateMonth,
 			int startDateDay, int startDateYear)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		validateJSONWebServicePermissions();
 
@@ -137,7 +137,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			String[] ipAddresses, String[] macAddresses, String[] serverIds,
 			int startDateMonth, int startDateDay, int startDateYear,
 			boolean complimentary, boolean active)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OfferingEntry offeringEntry =
 			offeringEntryLocalService.getOfferingEntry(offeringEntryId);
@@ -154,7 +154,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		if ((LicenseKeyConstants.getLicenseVersion(productVersion) >= 3) &&
 			(licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER) ||
 			 licenseEntryType.equals(
-				LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER)) &&
+				 LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER)) &&
 			(maxHttpSessions != 5)) {
 
 			if (!roleLocalService.hasUserRole(
@@ -191,7 +191,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			String description, String[] hostNames, String[] ipAddresses,
 			String[] macAddresses, String[] serverIds, int startDateMonth,
 			int startDateDay, int startDateYear)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		AssetReceiptLicense assetReceiptLicense =
 			assetReceiptLicensePersistence.findByPrimaryKey(
@@ -226,9 +226,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		return LicenseUtil.exportToXML(licenseKey);
 	}
 
-	public LicenseKey getLicenseKey(long licenseKeyId)
-		throws PortalException, SystemException {
-
+	public LicenseKey getLicenseKey(long licenseKeyId) throws PortalException {
 		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKey(
 			licenseKeyId);
 
@@ -255,7 +253,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	}
 
 	public List<LicenseKey> getLicenseKeys(long userId, String productId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		List<LicenseKey> licenseKeys = licenseKeyLocalService.getLicenseKeys(
 			userId, productId);
@@ -264,7 +262,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	}
 
 	public List<LicenseKey> getLicenseKeySetLicenseKeys(long licenseKeySetId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		List<LicenseKey> licenseKeys =
 			licenseKeyPersistence.findByLicenseKeySetId(licenseKeySetId);
@@ -275,7 +273,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	public List<LicenseKey> getOfferingEntryGroupLicenseKeys(
 			long[] offeringEntryIds, boolean complimentary, boolean active,
 			int start, int end, OrderByComparator obc)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (!isAccountAdmin(getUserId()) &&
 			!roleLocalService.hasUserRole(
@@ -290,7 +288,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 	public int getOfferingEntryGroupLicenseKeysCount(
 			long[] offeringEntryIds, boolean complimentary, boolean active)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (!isAccountAdmin(getUserId()) &&
 			!roleLocalService.hasUserRole(
@@ -305,7 +303,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 	@JSONWebService
 	public boolean isActive(long corpProjectId, String key)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		validateJSONWebServicePermissions();
 
@@ -318,7 +316,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	}
 
 	public LicenseKey renewLicenseKey(long licenseKeyId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKey(
 			licenseKeyId);
@@ -371,7 +369,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			int expirationDateLTMonth, int expirationDateLTYear,
 			LinkedHashMap<String, Object> params, boolean andSearch, int start,
 			int end, OrderByComparator obc)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		addPermissionParams(params);
 
@@ -393,7 +391,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	public List<LicenseKey> search(
 			String keywords, LinkedHashMap<String, Object> params, int start,
 			int end, OrderByComparator obc)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		addPermissionParams(params);
 
@@ -417,7 +415,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			int expirationDateGTYear, int expirationDateLTDay,
 			int expirationDateLTMonth, int expirationDateLTYear,
 			LinkedHashMap<String, Object> params, boolean andSearch)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		addPermissionParams(params);
 
@@ -437,7 +435,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 	public int searchCount(
 			String keywords, LinkedHashMap<String, Object> params)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		addPermissionParams(params);
 
@@ -446,7 +444,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 	@JSONWebService
 	public void updateLicenseKey(long licenseKeyId, boolean active)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		validateJSONWebServicePermissions();
 
@@ -461,7 +459,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	public void updateLicenseKey(
 			long userId, long licenseKeyId, long assetReceiptLicenseId,
 			boolean active)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKey(
 			licenseKeyId);
@@ -503,7 +501,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	public void updateLicenseKey(
 			long userId, long licenseKeyId, long licenseKeySetId,
 			long offeringEntryId, String name, boolean active)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKey(
 			licenseKeyId);
@@ -528,7 +526,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	}
 
 	protected void addPermissionParams(LinkedHashMap<String, Object> params)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (isAccountAdmin(getUserId())) {
 			return;
@@ -542,7 +540,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			return;
 		}
 
-		params.put("accountEntryMembership", new Long(getUserId()));
+		params.put("accountEntryMembership", Long.valueOf(getUserId()));
 
 		if (accountWorkerLocalService.hasAccountWorkerRole(
 				getUserId(), AccountWorkerConstants.ROLE_SALES)) {
@@ -554,7 +552,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	}
 
 	protected List<LicenseKey> filterLicenseKeys(List<LicenseKey> licenseKeys)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		List<LicenseKey> filteredLicenseKeys = ListUtil.copy(licenseKeys);
 
@@ -573,7 +571,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		return filteredLicenseKeys;
 	}
 
-	protected boolean isAccountAdmin(long userId) throws SystemException {
+	protected boolean isAccountAdmin(long userId) {
 		if (roleLocalService.hasUserRole(
 				userId, OSBConstants.ROLE_OSB_ACCOUNT_ADMIN_ID)) {
 
@@ -589,9 +587,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		return false;
 	}
 
-	protected void validateJSONWebServicePermissions()
-		throws PortalException, SystemException {
-
+	protected void validateJSONWebServicePermissions() throws PortalException {
 		if (!roleLocalService.hasUserRole(
 				getUserId(), OSBConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
 

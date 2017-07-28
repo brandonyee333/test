@@ -16,7 +16,7 @@ package com.liferay.osb.hook.upgrade.v1_0_0;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
-/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+/*import UpgradeProcess;
 import com.liferay.osb.model.AppEntry;
 import com.liferay.osb.model.AssetAudit;
 import com.liferay.osb.model.AssetAuditConstants;
@@ -46,9 +46,7 @@ public class UpgradeAssetStatsDay extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	protected void doUpgrade() throws Exception {
 		updateAssetStatsDays();
 	}
@@ -124,8 +122,7 @@ public class UpgradeAssetStatsDay extends UpgradeProcess {
 	}
 
 	protected void updateAssetStatsDays(
-			String className, long classPK, Calendar calendar, Date now)
-		throws SystemException {
+			String className, long classPK, Calendar calendar, Date now) {
 
 		Calendar startCalendar = (Calendar)calendar.clone();
 
@@ -161,6 +158,7 @@ public class UpgradeAssetStatsDay extends UpgradeProcess {
 	private static final int _DEFAULT_INTERVAL = 200;
 
 }
+
 */
 
 }

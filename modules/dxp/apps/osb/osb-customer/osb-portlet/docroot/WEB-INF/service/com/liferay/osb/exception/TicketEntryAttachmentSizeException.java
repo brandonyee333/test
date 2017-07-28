@@ -28,7 +28,6 @@ public class TicketEntryAttachmentSizeException extends PortalException {
 	public static final int EXCEEDS_LIMIT = 2;
 
 	public TicketEntryAttachmentSizeException() {
-		super();
 	}
 
 	public TicketEntryAttachmentSizeException(int type) {

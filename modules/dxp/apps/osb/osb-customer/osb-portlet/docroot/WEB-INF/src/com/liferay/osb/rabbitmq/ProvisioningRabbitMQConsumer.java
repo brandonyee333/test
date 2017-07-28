@@ -14,11 +14,6 @@
 
 package com.liferay.osb.rabbitmq;
 
-import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Time;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.exception.NoSuchCorpProjectException;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
@@ -42,7 +37,6 @@ import com.liferay.osb.model.impl.CorpProjectImpl;
 import com.liferay.osb.model.impl.OfferingEntryImpl;
 import com.liferay.osb.model.impl.OrderEntryImpl;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
-import com.liferay.osb.service.CorpProjectLocalServiceUtil;
 import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.osb.service.PartnerEntryLocalServiceUtil;
 import com.liferay.osb.service.ProductEntryLocalServiceUtil;
@@ -54,19 +48,11 @@ import com.liferay.osb.util.PortletPropsKeys;
 import com.liferay.osb.util.SalesforceConstants;
 import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.AutoResetThreadLocal;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.StackTraceUtil;
-import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.model.ListType;
@@ -78,7 +64,18 @@ import com.liferay.portal.kernel.service.CountryServiceUtil;
 import com.liferay.portal.kernel.service.RegionServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.util.AutoResetThreadLocal;
+import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StackTraceUtil;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SubscriptionSender;
+import com.liferay.portal.kernel.util.Time;
+import com.liferay.portal.kernel.util.Validator;
 /* TODO update rabbitMQ integration
 import com.liferay.rabbitmq.consumer.RabbitMQConsumer;
 */
@@ -99,7 +96,9 @@ import java.util.TreeMap;
  * @author Amos Fong
  */
 public abstract class ProvisioningRabbitMQConsumer {
+
 	// implements RabbitMQConsumer {
+
 /* TODO update rabbitMQ integration
 	public int parse(
 		String routingKey, String message, Map<String, Object> properties) {
@@ -121,6 +120,7 @@ public abstract class ProvisioningRabbitMQConsumer {
 			return RESPONSE_REJECT;
 		}
 	}
+
 */
 	protected ServiceContext createServiceContext(JSONObject jsonObject) {
 		ServiceContext serviceContext = new ServiceContext();
@@ -143,11 +143,11 @@ public abstract class ProvisioningRabbitMQConsumer {
 	}
 
 	protected abstract void doParse(JSONObject jsonObject)
-		throws PortalException, SystemException;
+		throws PortalException;
 
 	protected SupportResponse fetchSupportResponse(
 			JSONArray bundledProductsJSONArray)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		boolean unlimitedEnterpriseWide = false;
 
@@ -181,9 +181,7 @@ public abstract class ProvisioningRabbitMQConsumer {
 		}
 	}
 
-	protected SupportResponse fetchSupportResponse(String name)
-		throws SystemException {
-
+	protected SupportResponse fetchSupportResponse(String name) {
 		if (Validator.isNull(name)) {
 			return null;
 		}
@@ -217,14 +215,14 @@ public abstract class ProvisioningRabbitMQConsumer {
 					countryName);
 
 				address.setCountryId(country.getCountryId());
-				
+
 				List<Region> regions = RegionServiceUtil.getRegions(
 					country.getCountryId());
-				
+
 				for (Region region : regions) {
 					if (regionName.equals(region.getName())) {
 						address.setRegionId(region.getRegionId());
-						
+
 						break;
 					}
 				}
@@ -268,9 +266,7 @@ public abstract class ProvisioningRabbitMQConsumer {
 		return address;
 	}
 
-	protected int getIndustry(JSONObject accountJSONObject)
-		throws SystemException {
-
+	protected int getIndustry(JSONObject accountJSONObject) {
 		String industry = accountJSONObject.getString("_industry");
 
 		int industryListTypeId = SupportUtil.getListTypeIdFromName(
@@ -380,10 +376,9 @@ public abstract class ProvisioningRabbitMQConsumer {
 
 	protected String getNotes(
 			JSONObject jsonObject, List<OrderEntry> orderEntries)
-		throws PortalException, SystemException {
+		throws PortalException {
 
-		Map<String, Map<String, Integer>> subscriptionsMap =
-			new TreeMap<String, Map<String, Integer>>();
+		Map<String, Map<String, Integer>> subscriptionsMap = new TreeMap<>();
 
 		for (OrderEntry orderEntry : orderEntries) {
 			for (OfferingEntry offeringEntry :
@@ -394,7 +389,7 @@ public abstract class ProvisioningRabbitMQConsumer {
 				Map<String, Integer> productsMap = subscriptionsMap.get(key);
 
 				if (productsMap == null) {
-					productsMap = new TreeMap<String, Integer>();
+					productsMap = new TreeMap<>();
 
 					subscriptionsMap.put(key, productsMap);
 				}
@@ -466,7 +461,7 @@ public abstract class ProvisioningRabbitMQConsumer {
 	}
 
 	protected String getNotesProductName(OfferingEntry offeringEntry)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		StringBundler sb = new StringBundler(7);
 
@@ -507,9 +502,7 @@ public abstract class ProvisioningRabbitMQConsumer {
 		}
 	}
 
-	protected ProductEntry getProductEntry(String name)
-		throws PortalException, SystemException {
-
+	protected ProductEntry getProductEntry(String name) throws PortalException {
 		long classNameId = PortalUtil.getClassNameId(ProductEntry.class);
 
 		List<ExternalIdMapper> externalIdMappers =
@@ -545,9 +538,8 @@ public abstract class ProvisioningRabbitMQConsumer {
 		else if (salesforceOpportunityTypeName.equalsIgnoreCase(
 					"New Project Existing Business")) {
 
-			return
-				SalesforceConstants.
-					OPPORTUNITY_TYPE_NEW_PROJECT_EXISTING_BUSINESS;
+			return SalesforceConstants.
+				OPPORTUNITY_TYPE_NEW_PROJECT_EXISTING_BUSINESS;
 		}
 		else {
 			return 0;
@@ -581,9 +573,7 @@ public abstract class ProvisioningRabbitMQConsumer {
 		return 0;
 	}
 
-	protected long[] getSupportRegionIds(JSONObject jsonObject)
-		throws SystemException {
-
+	protected long[] getSupportRegionIds(JSONObject jsonObject) {
 		String soldBy = jsonObject.getString("_salesforceOpportunitySoldBy");
 		String territory = jsonObject.getString(
 			"_salesforceOpportunityTerritory");
@@ -673,7 +663,7 @@ public abstract class ProvisioningRabbitMQConsumer {
 		return true;
 	}
 
-	protected int getVersion(ProductEntry productEntry) throws SystemException {
+	protected int getVersion(ProductEntry productEntry) {
 		if (Validator.isNull(productEntry.getVersionsListType())) {
 			return 0;
 		}
@@ -690,7 +680,7 @@ public abstract class ProvisioningRabbitMQConsumer {
 	}
 
 	protected boolean hasUnlimitedEnterpriseWide(List<OrderEntry> orderEntries)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		for (OrderEntry orderEntry : orderEntries) {
 			List<OfferingEntry> offeringEntries =
@@ -711,7 +701,7 @@ public abstract class ProvisioningRabbitMQConsumer {
 	protected AccountEntry parseAccountEntry(
 			JSONObject jsonObject, CorpProject corpProject,
 			List<OrderEntry> orderEntries)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		JSONObject accountJSONObject = jsonObject.getJSONObject("_account");
 
@@ -761,8 +751,7 @@ public abstract class ProvisioningRabbitMQConsumer {
 	}
 
 	protected AccountWorker parseAccountWorker(
-			JSONObject jsonObject, AccountEntry accountEntry)
-		throws SystemException {
+		JSONObject jsonObject, AccountEntry accountEntry) {
 
 		JSONObject ownerJSONObject = jsonObject.getJSONObject("_owner");
 
@@ -818,7 +807,7 @@ public abstract class ProvisioningRabbitMQConsumer {
 	}
 
 	protected CorpProject parseCorpProject(JSONObject jsonObject)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		int salesforceOpportunityType = getSalesforceOpportunityType(
 			jsonObject.getString("_salesforceOpportunityType"));
@@ -834,7 +823,9 @@ public abstract class ProvisioningRabbitMQConsumer {
 		String name = projectJSONObject.getString("_name");
 
 		name = StringUtil.shorten(name, 150);
+
 // TODO remove CorpProject null initialization
+
 		CorpProject corpProject = null;
 /* TODO add in CorpProject integration
 		CorpProject corpProject = CorpProjectLocalServiceUtil.fetchCorpProject(
@@ -895,12 +886,12 @@ public abstract class ProvisioningRabbitMQConsumer {
 	protected List<OfferingEntry> parseOfferingEntries(
 			int salesforceOpportunityType, Date startDate, Date endDate,
 			JSONArray purchasedProductsJSONArray)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		SupportResponse supportResponse = fetchSupportResponse(
 			purchasedProductsJSONArray);
 
-		List<OfferingEntry> offeringEntries = new ArrayList<OfferingEntry>();
+		List<OfferingEntry> offeringEntries = new ArrayList<>();
 
 		for (int i = 0; i < purchasedProductsJSONArray.length(); i++) {
 			JSONObject purchasedProductJSONObject =
@@ -992,7 +983,7 @@ public abstract class ProvisioningRabbitMQConsumer {
 	}
 
 	protected List<OrderEntry> parseOrderEntries(JSONObject jsonObject)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		JSONArray bundledProductsJSONArray = jsonObject.getJSONArray(
 			"_bundledProducts");
@@ -1004,7 +995,7 @@ public abstract class ProvisioningRabbitMQConsumer {
 		int salesforceOpportunityType = getSalesforceOpportunityType(
 			jsonObject.getString("_salesforceOpportunityType"));
 
-		Map<Long, OrderEntry> orderEntries = new HashMap<Long, OrderEntry>();
+		Map<Long, OrderEntry> orderEntries = new HashMap<>();
 
 		for (int i = 0; i < bundledProductsJSONArray.length(); i++) {
 			JSONObject bundledProductJSONObject =
@@ -1057,12 +1048,10 @@ public abstract class ProvisioningRabbitMQConsumer {
 			}
 		}
 
-		return new ArrayList<OrderEntry>(orderEntries.values());
+		return new ArrayList<>(orderEntries.values());
 	}
 
-	protected PartnerEntry parsePartnerEntry(JSONObject jsonObject)
-		throws SystemException {
-
+	protected PartnerEntry parsePartnerEntry(JSONObject jsonObject) {
 		JSONObject partnerAccountJSONObject = jsonObject.getJSONObject(
 			"_partnerAccount");
 
@@ -1086,18 +1075,16 @@ public abstract class ProvisioningRabbitMQConsumer {
 		return partnerEntry;
 	}
 
-	protected ArrayList<User> parseUsers(JSONObject jsonObject)
-		throws SystemException {
-
+	protected ArrayList<User> parseUsers(JSONObject jsonObject) {
 		JSONArray contactsJSONArray = jsonObject.getJSONArray("_contacts");
 
 		if (contactsJSONArray == null) {
 			_logWarning("No contacts were found");
 
-			return new ArrayList<User>();
+			return new ArrayList<>();
 		}
 
-		ArrayList<User> users = new ArrayList<User>(contactsJSONArray.length());
+		ArrayList<User> users = new ArrayList<>(contactsJSONArray.length());
 
 		for (int i = 0; i < contactsJSONArray.length(); i++) {
 			JSONObject contactJSONObject = contactsJSONArray.getJSONObject(i);
@@ -1191,15 +1178,15 @@ public abstract class ProvisioningRabbitMQConsumer {
 		warningMessages.add(s);
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		ProvisioningRabbitMQConsumer.class);
 
-	private static ThreadLocal<ArrayList<String>> _warningMessagesThreadLocal =
-		new AutoResetThreadLocal<ArrayList<String>>(
+	private static final ThreadLocal<ArrayList<String>> _warningMessagesThreadLocal =
+		new AutoResetThreadLocal<>(
 			ProvisioningRabbitMQConsumer.class + "._warningMessagesThreadLocal",
 			new ArrayList<String>());
 
-	private Format _dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
-		"yyyy/MM/dd");
+	private final Format _dateFormat =
+		FastDateFormatFactoryUtil.getSimpleDateFormat("yyyy/MM/dd");
 
 }

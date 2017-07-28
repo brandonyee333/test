@@ -14,16 +14,15 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.exception.DuplicateSupportRegionException;
 import com.liferay.osb.exception.RequiredSupportRegionException;
 import com.liferay.osb.exception.SupportRegionNameException;
 import com.liferay.osb.model.SupportRegion;
 import com.liferay.osb.service.base.SupportRegionLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Date;
 import java.util.List;
@@ -36,7 +35,7 @@ public class SupportRegionLocalServiceImpl
 
 	public SupportRegion addSupportRegion(
 			long userId, String name, String description, String timeZoneId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		Date now = new Date();
@@ -55,9 +54,9 @@ public class SupportRegionLocalServiceImpl
 		supportRegion.setName(name);
 		supportRegion.setDescription(description);
 		supportRegion.setTimeZoneId(timeZoneId);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		supportRegionPersistence.update(supportRegion, serviceContext);
@@ -67,7 +66,7 @@ public class SupportRegionLocalServiceImpl
 
 	@Override
 	public SupportRegion deleteSupportRegion(long supportRegionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (accountEntryLocalService.getSupportRegionAccountEntriesCount(
 				supportRegionId) > 0) {
@@ -90,15 +89,12 @@ public class SupportRegionLocalServiceImpl
 		return supportRegionPersistence.remove(supportRegionId);
 	}
 
-	public SupportRegion fetchSupportRegionByName(String name)
-		throws SystemException {
-
+	public SupportRegion fetchSupportRegionByName(String name) {
 		return supportRegionPersistence.fetchByName(name);
 	}
 
 	public List<SupportRegion> getAccountEntrySupportRegions(
-			long accountEntryId)
-		throws SystemException {
+		long accountEntryId) {
 
 		return accountEntryPersistence.getSupportRegions(accountEntryId);
 	}
@@ -106,7 +102,7 @@ public class SupportRegionLocalServiceImpl
 	public SupportRegion updateSupportRegion(
 			long supportRegionId, String name, String description,
 			String timeZoneId, long[] supportTeamIds)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		validate(supportRegionId, name);
 
@@ -117,9 +113,9 @@ public class SupportRegionLocalServiceImpl
 		supportRegion.setName(name);
 		supportRegion.setDescription(description);
 		supportRegion.setTimeZoneId(timeZoneId);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		supportRegionPersistence.update(supportRegion, serviceContext);
@@ -133,7 +129,7 @@ public class SupportRegionLocalServiceImpl
 	}
 
 	protected void validate(long supportRegionId, String name)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (Validator.isNull(name)) {
 			throw new SupportRegionNameException();

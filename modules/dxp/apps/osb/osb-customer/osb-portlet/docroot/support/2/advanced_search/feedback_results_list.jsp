@@ -35,41 +35,41 @@ boolean paginate = ParamUtil.getBoolean(request, "paginate");
 		<div class="section-title <%= HtmlUtil.escapeAttribute(id) %>" id="<portlet:namespace /><%= HtmlUtil.escapeAttribute(id) %>">
 			<div class="table">
 				<div class="row">
-					<div class="column search-results-header ticket-feedback-column severity"></div>
+					<div class="column search-results-header severity ticket-feedback-column"></div>
 
 					<div class="column search-results-header ticket-feedback-column ticket-number">
 						<liferay-ui:message key="ticket-number" />
 					</div>
 
-					<div class="column search-results-header ticket-feedback-column created">
+					<div class="column created search-results-header ticket-feedback-column">
 						<liferay-ui:message key="created" />
 					</div>
 
-					<div class="column search-results-header ticket-feedback-column assignee">
+					<div class="assignee column search-results-header ticket-feedback-column">
 						<liferay-ui:message key="assignee" />
 					</div>
 
-					<div class="column search-results-header ticket-feedback-column satisfied">
+					<div class="column satisfied search-results-header ticket-feedback-column">
 						<liferay-ui:message key="satisfied" />
 					</div>
 
-					<div class="column search-results-header ticket-feedback-column final-resolution">
+					<div class="column final-resolution search-results-header ticket-feedback-column">
 						<liferay-ui:message key="final-resolution" />
 					</div>
 
-					<div class="column search-results-header ticket-feedback-column technical-knowledge">
+					<div class="column search-results-header technical-knowledge ticket-feedback-column">
 						<liferay-ui:message key="technical-knowledge" />
 					</div>
 
-					<div class="column search-results-header ticket-feedback-column response-time">
+					<div class="column response-time search-results-header ticket-feedback-column">
 						<liferay-ui:message key="response-time" />
 					</div>
 
-					<div class="column search-results-header ticket-feedback-column professionalism">
+					<div class="column professionalism search-results-header ticket-feedback-column">
 						<liferay-ui:message key="professionalism" />
 					</div>
 
-					<div class="column search-results-header ticket-feedback-column average">
+					<div class="average column search-results-header ticket-feedback-column">
 						<liferay-ui:message key="average" />
 					</div>
 				</div>
@@ -135,7 +135,7 @@ boolean paginate = ParamUtil.getBoolean(request, "paginate");
 							</div>
 						</div>
 
-						<div class="column ticket-feedback-column created" <%= columnJS %>>
+						<div class="column created ticket-feedback-column" <%= columnJS %>>
 							<div class="search-detail">
 								<span title="<%= HtmlUtil.escapeAttribute(ticketEntry.getDisplayId()) %>">
 									<%= longDateFormatDate.format(ticketFeedback.getCreateDate()) %>
@@ -143,7 +143,7 @@ boolean paginate = ParamUtil.getBoolean(request, "paginate");
 							</div>
 						</div>
 
-						<div class="column ticket-feedback-column assignee" <%= columnJS %>>
+						<div class="assignee column ticket-feedback-column" <%= columnJS %>>
 							<div class="ticket-assignee-wrapper">
 								<span title="<%= HtmlUtil.escapeAttribute(ticketEntry.getDisplayId()) %>">
 									<c:if test="<%= ticketWorkerUser != null %>">
@@ -161,7 +161,7 @@ boolean paginate = ParamUtil.getBoolean(request, "paginate");
 							</div>
 						</div>
 
-						<div class="column ticket-feedback-column satisfied" <%= columnJS %>>
+						<div class="column satisfied ticket-feedback-column" <%= columnJS %>>
 							<div class="search-detail">
 								<span title="<%= HtmlUtil.escapeAttribute(ticketEntry.getDisplayId()) %>">
 									<%= LanguageUtil.get(pageContext, ticketFeedback.getSatisfiedLabel()) %>
@@ -169,7 +169,7 @@ boolean paginate = ParamUtil.getBoolean(request, "paginate");
 							</div>
 						</div>
 
-						<div class="column ticket-feedback-column final-resolution" <%= columnJS %>>
+						<div class="column final-resolution ticket-feedback-column" <%= columnJS %>>
 							<div class="search-detail">
 								<span title="<%= HtmlUtil.escapeAttribute(ticketEntry.getDisplayId()) %>">
 									<%= ticketFeedback.getRating1() + " - " + LanguageUtil.get(pageContext, ticketFeedback.getRating1Label()) %>
@@ -177,7 +177,7 @@ boolean paginate = ParamUtil.getBoolean(request, "paginate");
 							</div>
 						</div>
 
-						<div class="column ticket-feedback-column technical-knowledge" <%= columnJS %>>
+						<div class="column technical-knowledge ticket-feedback-column" <%= columnJS %>>
 							<div class="search-detail">
 								<span title="<%= HtmlUtil.escapeAttribute(ticketEntry.getDisplayId()) %>">
 									<%= ticketFeedback.getRating3() + " - " + LanguageUtil.get(pageContext, ticketFeedback.getRating3Label()) %>
@@ -185,7 +185,7 @@ boolean paginate = ParamUtil.getBoolean(request, "paginate");
 							</div>
 						</div>
 
-						<div class="column ticket-feedback-column response-time" <%= columnJS %>>
+						<div class="column response-time ticket-feedback-column" <%= columnJS %>>
 							<div class="search-detail">
 								<span title="<%= HtmlUtil.escapeAttribute(ticketEntry.getDisplayId()) %>">
 									<%= ticketFeedback.getRating2() + " - " + LanguageUtil.get(pageContext, ticketFeedback.getRating2Label()) %>
@@ -193,7 +193,7 @@ boolean paginate = ParamUtil.getBoolean(request, "paginate");
 							</div>
 						</div>
 
-						<div class="column ticket-feedback-column professionalism" <%= columnJS %>>
+						<div class="column professionalism ticket-feedback-column" <%= columnJS %>>
 							<div class="search-detail">
 								<span title="<%= HtmlUtil.escapeAttribute(ticketEntry.getDisplayId()) %>">
 									<%= ticketFeedback.getRating4() + " - " + LanguageUtil.get(pageContext, ticketFeedback.getRating4Label()) %>
@@ -201,7 +201,7 @@ boolean paginate = ParamUtil.getBoolean(request, "paginate");
 							</div>
 						</div>
 
-						<div class="column ticket-feedback-column average" <%= columnJS %>>
+						<div class="average column ticket-feedback-column" <%= columnJS %>>
 							<div class="search-detail">
 								<span title="<%= HtmlUtil.escapeAttribute(ticketEntry.getDisplayId()) %>">
 									<%= ticketFeedback.getAverageRating() %>

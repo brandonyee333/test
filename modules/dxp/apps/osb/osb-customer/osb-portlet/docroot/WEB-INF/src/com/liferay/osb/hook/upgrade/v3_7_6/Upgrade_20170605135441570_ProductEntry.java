@@ -29,9 +29,7 @@ public class Upgrade_20170605135441570_ProductEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20170605135441570L;
 	}
@@ -83,6 +81,7 @@ public class Upgrade_20170605135441570_ProductEntry extends UpgradeProcess {
 	private static final long _PRODUCT_ENTRY_PORTAL_NON_PROD_ID = 5968274;
 
 }
+
 */
 
 }

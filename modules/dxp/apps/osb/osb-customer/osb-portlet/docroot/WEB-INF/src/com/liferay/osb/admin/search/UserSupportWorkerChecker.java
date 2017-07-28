@@ -70,6 +70,6 @@ public class UserSupportWorkerChecker extends RowChecker {
 	private static Log _log = LogFactoryUtil.getLog(
 		UserSupportWorkerChecker.class);
 
-	private SupportTeam _supportTeam;
+	private final SupportTeam _supportTeam;
 
 }

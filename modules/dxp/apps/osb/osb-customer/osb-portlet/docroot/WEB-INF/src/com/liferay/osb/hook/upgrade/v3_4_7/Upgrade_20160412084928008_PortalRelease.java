@@ -24,16 +24,13 @@ import com.liferay.osb.model.impl.PortalReleaseBaseImpl;
 /**
  * @author Yury Butrymovich
  */
-public class Upgrade_20160412084928008_PortalRelease
-	extends UpgradeProcess {
+public class Upgrade_20160412084928008_PortalRelease extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20160412084928008L;
 	}
@@ -44,6 +41,7 @@ public class Upgrade_20160412084928008_PortalRelease
 	}
 
 }
+
 */
 
 }

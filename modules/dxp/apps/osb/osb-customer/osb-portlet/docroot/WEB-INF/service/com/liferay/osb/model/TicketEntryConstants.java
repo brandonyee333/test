@@ -14,9 +14,9 @@
 
 package com.liferay.osb.model;
 
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.service.ListTypeServiceUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -214,7 +214,7 @@ public class TicketEntryConstants {
 		COMPONENT_PERFORMANCE, COMPONENT_PORTAL_CONFIGURATION,
 		COMPONENT_PORTAL_SERVICES, COMPONENT_SEARCH_INDEXING,
 		COMPONENT_SECURITY, COMPONENT_UI_INFRASTRUCTURE_ACCESSIBILITY,
-		COMPONENT_UPGRADE, COMPONENT_USER_MEMBERSHIP_ROLE_MANAGEMENT,
+		COMPONENT_UPGRADE, COMPONENT_USER_MEMBERSHIP_ROLE_MANAGEMENT
 	};
 
 	public static final int[] COMPONENTS_DE_PROJECT_MANAGEMENT = {
@@ -242,9 +242,8 @@ public class TicketEntryConstants {
 		COMPONENT_LIFERAY_FACES, COMPONENT_LIFERAY_WORKSPACE, COMPONENT_MAVEN
 	};
 
-	public static final int[] COMPONENTS_MANAGEMENT_TOOLS = {
-		COMPONENT_LCS_CLIENT, COMPONENT_LIFERAY_CONNECTED_SERVICES
-	};
+	public static final int[] COMPONENTS_MANAGEMENT_TOOLS =
+		{COMPONENT_LCS_CLIENT, COMPONENT_LIFERAY_CONNECTED_SERVICES};
 
 	public static final int[] COMPONENTS_MOBILE_EXPERIENCE = {
 		COMPONENT_LIFERAY_MOBILE_SDK, COMPONENT_LIFERAY_PUSH,
@@ -739,9 +738,8 @@ public class TicketEntryConstants {
 
 	public static final int STATUS_SOLUTION_PROPOSED = 33009;
 
-	public static final int[] STATUSES_ACTIVE = {
-		STATUS_INCIDENT_REPORTED, STATUS_INVESTIGATING, STATUS_REOPENED
-	};
+	public static final int[] STATUSES_ACTIVE =
+		{STATUS_INCIDENT_REPORTED, STATUS_INVESTIGATING, STATUS_REOPENED};
 
 	public static final int[] STATUSES_CLOSED = {
 		STATUS_CLOSED, STATUS_RESOLVED, STATUS_RESOLVED_IN_PRODUCTION,
@@ -758,9 +756,8 @@ public class TicketEntryConstants {
 		STATUS_RESOLVED_IN_PRODUCTION, STATUS_SOLUTION_DELIVERED
 	};
 
-	public static final int[] STATUSES_ON_HOLD = {
-		STATUS_ON_HOLD, STATUS_SOLUTION_PROPOSED
-	};
+	public static final int[] STATUSES_ON_HOLD =
+		{STATUS_ON_HOLD, STATUS_SOLUTION_PROPOSED};
 
 	public static final int[] STATUSES_OPEN = {
 		STATUS_BUILDING_PATCH, STATUS_ENGINEER_ANALYZING, STATUS_INACTIVE,
@@ -920,13 +917,10 @@ public class TicketEntryConstants {
 		SUBCOMPONENT_LOCAL_STAGING, SUBCOMPONENT_REMOTE_STAGING
 	};
 
-	public static final int[] SUBCOMPONENTS_LICENSE = {
-		SUBCOMPONENT_LICENSE
-	};
+	public static final int[] SUBCOMPONENTS_LICENSE = {SUBCOMPONENT_LICENSE};
 
-	public static final int[] SUBCOMPONENTS_LIFERAY_API = {
-		SUBCOMPONENT_GENERAL_IMPLEMENTATION, SUBCOMPONENT_WEB_SERVICES
-	};
+	public static final int[] SUBCOMPONENTS_LIFERAY_API =
+		{SUBCOMPONENT_GENERAL_IMPLEMENTATION, SUBCOMPONENT_WEB_SERVICES};
 
 	public static final int[] SUBCOMPONENTS_LIFERAY_CONNECTED_SERVICES = {
 		SUBCOMPONENT_USER_MANAGEMENT_PERMISSIONS,
@@ -934,31 +928,27 @@ public class TicketEntryConstants {
 		SUBCOMPONENT_ENVIRONMENT_SERVER_MANAGEMENT, SUBCOMPONENT_NOTIFICATIONS
 	};
 
-	public static final int[] SUBCOMPONENTS_LIFERAY_SYNC = {
-		SUBCOMPONENT_DESKTOP, SUBCOMPONENT_MOBILE
-	};
+	public static final int[] SUBCOMPONENTS_LIFERAY_SYNC =
+		{SUBCOMPONENT_DESKTOP, SUBCOMPONENT_MOBILE};
 
 	public static final int[] SUBCOMPONENTS_PORTAL_ADMINISTRATION = {
 		SUBCOMPONENT_PORTAL_SETTINGS, SUBCOMPONENT_ROLES_PERMISSIONS,
 		SUBCOMPONENT_SITE_PAGE_TEMPLATES, SUBCOMPONENT_SITES_ORGANIZATIONS
 	};
 
-	public static final int[] SUBCOMPONENTS_PORTAL_DEPLOYMENT = {
-		SUBCOMPONENT_LIFERAY_INSTALLATION, SUBCOMPONENT_PLUGINS_CUSTOM
-	};
+	public static final int[] SUBCOMPONENTS_PORTAL_DEPLOYMENT =
+		{SUBCOMPONENT_LIFERAY_INSTALLATION, SUBCOMPONENT_PLUGINS_CUSTOM};
 
-	public static final int[] SUBCOMPONENTS_SEARCH_INDEXING = {
-		SUBCOMPONENT_LUCENE, SUBCOMPONENT_SOLR
-	};
+	public static final int[] SUBCOMPONENTS_SEARCH_INDEXING =
+		{SUBCOMPONENT_LUCENE, SUBCOMPONENT_SOLR};
 
 	public static final int[] SUBCOMPONENTS_SECURITY = {
 		SUBCOMPONENT_COOKIES, SUBCOMPONENT_LSVS, SUBCOMPONENT_PERMISSIONS,
 		SUBCOMPONENT_XSS
 	};
 
-	public static final int[] SUBCOMPONENTS_SOCIAL_OFFICE = {
-		SUBCOMPONENT_SO_APPS, SUBCOMPONENT_SO_HOOKS
-	};
+	public static final int[] SUBCOMPONENTS_SOCIAL_OFFICE =
+		{SUBCOMPONENT_SO_APPS, SUBCOMPONENT_SO_HOOKS};
 
 	public static final int[] SUBCOMPONENTS_UI = {
 		SUBCOMPONENT_ACCESSIBILITY_COMPLIANCE, SUBCOMPONENT_ALLOY_UI,
@@ -993,9 +983,8 @@ public class TicketEntryConstants {
 
 	public static final int UPLOAD_METHOD_HERE = 2;
 
-	public static final int[] UPLOAD_METHODS = {
-		UPLOAD_METHOD_FTP, UPLOAD_METHOD_HERE
-	};
+	public static final int[] UPLOAD_METHODS =
+		{UPLOAD_METHOD_FTP, UPLOAD_METHOD_HERE};
 
 	public static final int WEIGHT_HEAVY = 2;
 
@@ -1003,9 +992,8 @@ public class TicketEntryConstants {
 
 	public static final int WEIGHT_NORMAL = 1;
 
-	public static final int[] WEIGHTS = {
-		WEIGHT_LIGHT, WEIGHT_NORMAL, WEIGHT_HEAVY
-	};
+	public static final int[] WEIGHTS =
+		{WEIGHT_LIGHT, WEIGHT_NORMAL, WEIGHT_HEAVY};
 
 	public static String getClusterServerCommunicationTypeLabel(
 		int serverCommuncationType) {
@@ -1091,14 +1079,14 @@ public class TicketEntryConstants {
 		else if ((envLFR >=
 					ProductEntryConstants.SOCIAL_OFFICE_VERSION_2_0_3) &&
 				 (envLFR <=
-				 	ProductEntryConstants.SOCIAL_OFFICE_VERSION_2_1_0)) {
+					 ProductEntryConstants.SOCIAL_OFFICE_VERSION_2_1_0)) {
 
 			return _ENV_SOCIAL_OFFICE_VERSION_2.get(envListType);
 		}
 		else if ((envLFR >=
 					ProductEntryConstants.SOCIAL_OFFICE_VERSION_3_0_0) &&
 				 (envLFR <=
-				 	ProductEntryConstants.SOCIAL_OFFICE_VERSION_3_1_1)) {
+					 ProductEntryConstants.SOCIAL_OFFICE_VERSION_3_1_1)) {
 
 			return _ENV_SOCIAL_OFFICE_VERSION_3.get(envListType);
 		}
@@ -1712,24 +1700,21 @@ public class TicketEntryConstants {
 	};
 
 	private static final Map<String, int[]>
-		_ENV_DIGITAL_ENTERPRISE_VERSION_7_0 = new HashMap<String, int[]>();
+		_ENV_DIGITAL_ENTERPRISE_VERSION_7_0 = new HashMap<>();
 
-	private static final int[] _ENV_JVM_DIGITAL_ENTERPRISE_VERSION_7_0 = {
-		ENV_JVM_IBM_JDK_8, ENV_JVM_JAVA_8
-	};
+	private static final int[] _ENV_JVM_DIGITAL_ENTERPRISE_VERSION_7_0 =
+		{ENV_JVM_IBM_JDK_8, ENV_JVM_JAVA_8};
 
-	private static final int[] _ENV_JVM_PORTAL_VERSION_6_1 = {
-		ENV_JVM_JAVA_5, ENV_JVM_JAVA_6, ENV_JVM_JAVA_7, ENV_JVM_JAVA_8
-	};
+	private static final int[] _ENV_JVM_PORTAL_VERSION_6_1 =
+		{ENV_JVM_JAVA_5, ENV_JVM_JAVA_6, ENV_JVM_JAVA_7, ENV_JVM_JAVA_8};
 
 	private static final int[] _ENV_JVM_PORTAL_VERSION_6_2 = {
 		ENV_JVM_IBM_JDK_6, ENV_JVM_IBM_JDK_7, ENV_JVM_IBM_JDK_8, ENV_JVM_JAVA_6,
 		ENV_JVM_JAVA_7, ENV_JVM_JAVA_8, ENV_JVM_JROCKET_JDK_6
 	};
 
-	private static final int[] _ENV_JVM_PORTAL_VERSION_OTHER = {
-		ENV_JVM_JAVA_5, ENV_JVM_JAVA_6, ENV_JVM_JAVA_7
-	};
+	private static final int[] _ENV_JVM_PORTAL_VERSION_OTHER =
+		{ENV_JVM_JAVA_5, ENV_JVM_JAVA_6, ENV_JVM_JAVA_7};
 
 	private static final int[] _ENV_OS_DIGITAL_ENTERPRISE_VERSION_7_0 = {
 		ENV_OS_AIX_7_1, ENV_OS_CENTOS_6, ENV_OS_CENTOS_7, ENV_OS_DEBIAN_7,
@@ -1787,19 +1772,19 @@ public class TicketEntryConstants {
 	};
 
 	private static final Map<String, int[]> _ENV_PORTAL_VERSION_5_2 =
-		new HashMap<String, int[]>();
+		new HashMap<>();
 
 	private static final Map<String, int[]> _ENV_PORTAL_VERSION_6_0 =
-		new HashMap<String, int[]>();
+		new HashMap<>();
 
 	private static final Map<String, int[]> _ENV_PORTAL_VERSION_6_1 =
-		new HashMap<String, int[]>();
+		new HashMap<>();
 
 	private static final Map<String, int[]> _ENV_PORTAL_VERSION_6_2 =
-		new HashMap<String, int[]>();
+		new HashMap<>();
 
 	private static final Map<String, int[]> _ENV_PORTAL_VERSION_OTHER =
-		new HashMap<String, int[]>();
+		new HashMap<>();
 
 	private static final int[] _ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_0 = {
 		ENV_SEARCH_ELASTICSEARCH, ENV_SEARCH_KIBANA_4_4, ENV_SEARCH_MARVEL_2_2,
@@ -1807,19 +1792,18 @@ public class TicketEntryConstants {
 	};
 
 	private static final Map<String, int[]> _ENV_SOCIAL_OFFICE_VERSION_2 =
-		new HashMap<String, int[]>();
+		new HashMap<>();
 
 	private static final Map<String, int[]> _ENV_SOCIAL_OFFICE_VERSION_3 =
-		new HashMap<String, int[]>();
+		new HashMap<>();
 
 	private static final int[] _LICENSE_PURPOSES = {
 		LICENSE_PURPOSE_PERMANENT_KEY, LICENSE_PURPOSE_ELASTIC_MONTHLY_KEY,
 		LICENSE_PURPOSE_TEMPORARY_KEY
 	};
 
-	private static final int[] _LICENSE_TYPES = {
-		LICENSE_TYPE_STANDALONE, LICENSE_TYPE_CLUSTER, LICENSE_TYPE_DEVELOPER
-	};
+	private static final int[] _LICENSE_TYPES =
+		{LICENSE_TYPE_STANDALONE, LICENSE_TYPE_CLUSTER, LICENSE_TYPE_DEVELOPER};
 
 	private static final int[] _SYSTEM_STATUS_GENERIC = {
 		SYSTEM_STATUS_INOPERABLE, SYSTEM_STATUS_LIMITED, SYSTEM_STATUS_MINOR,

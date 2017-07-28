@@ -30,9 +30,7 @@ public class Upgrade_20140513113816789_AccountEnvironment
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20140513113816789L;
 	}
@@ -51,6 +49,7 @@ public class Upgrade_20140513113816789_AccountEnvironment
 	}
 
 }
+
 */
 
 }

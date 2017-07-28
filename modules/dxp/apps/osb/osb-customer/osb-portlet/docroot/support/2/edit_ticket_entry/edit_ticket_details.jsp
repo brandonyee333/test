@@ -65,7 +65,7 @@ if (liferayIncOrg || partnerWorker) {
 			<label id="<portlet:namespace />subjectLabel"><liferay-ui:message key="subject" /></label>
 
 			<div class="field-align" field-required-message="<%= LanguageUtil.get(pageContext, "please-enter-a-valid-subject") %>">
-				<span class="long-field inline">
+				<span class="inline long-field">
 					<aui:input bean="<%= ticketEntry %>" data-field-required-status="<%= false %>" id="subject" label="" maxLength='<%= ModelHintsUtil.getMaxLength(TicketEntry.class.getName(), "subject") %>' model="<%= TicketEntry.class %>" name="subject" type="text" />
 				</span>
 			</div>
@@ -183,7 +183,7 @@ if (liferayIncOrg || partnerWorker) {
 				for (int curSubcomponent : subcomponents) {
 				%>
 
-					<option <%= (curSubcomponent == subcomponent) ? "selected" : StringPool.BLANK %> value="<%= curSubcomponent %>"><%= LanguageUtil.get(locale, TicketEntryConstants.getSubcomponentLabel(curSubcomponent)) %></option>
+					<option <%= (curSubcomponent == subcomponent) ? "selected" : StringPool.BLANK %> value="<%= curSubcomponent %>"><%= LanguageUtil.get(request, TicketEntryConstants.getSubcomponentLabel(curSubcomponent)) %></option>
 
 				<%
 				}
@@ -247,7 +247,7 @@ if (liferayIncOrg || partnerWorker) {
 		<div class="field-group" id="<portlet:namespace />severityDetails" style="display: none;">
 			<label class="field-modified" id="<portlet:namespace />severityDetailsLabel"><liferay-ui:message key="severity-details" /></label>
 
-			<span class="long-field field-input-align inline">
+			<span class="field-input-align inline long-field">
 				<liferay-ui:message key="what-is-the-reason-for-changing-the-ticket-severity" />
 
 				<div class="inline">
@@ -296,7 +296,7 @@ if (liferayIncOrg || partnerWorker) {
 			<label id="<portlet:namespace />resolutionLabel"><liferay-ui:message key="resolution" /></label>
 
 			<div class="field-align">
-				<select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(pageContext,"please-select-a-valid-resolution") %>' id="<portlet:namespace />resolution" name="<portlet:namespace />resolution">
+				<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(pageContext, "please-select-a-valid-resolution") %>" id="<portlet:namespace />resolution" name="<portlet:namespace />resolution">
 					<option value="0"></option>
 
 					<%

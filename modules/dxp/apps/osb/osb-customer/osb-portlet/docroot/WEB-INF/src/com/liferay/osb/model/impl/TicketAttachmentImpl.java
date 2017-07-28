@@ -14,19 +14,18 @@
 
 package com.liferay.osb.model.impl;
 
-import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.document.library.kernel.store.DLStoreUtil;
 import com.liferay.osb.model.TicketAttachmentConstants;
 import com.liferay.osb.model.TicketEntry;
 import com.liferay.osb.service.TicketEntryLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.model.CompanyConstants;
-import com.liferay.document.library.kernel.store.DLStoreUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.File;
 
@@ -44,7 +43,7 @@ public class TicketAttachmentImpl extends TicketAttachmentBaseImpl {
 	public TicketAttachmentImpl() {
 	}
 
-	public boolean fileExists() throws PortalException, SystemException {
+	public boolean fileExists() throws PortalException {
 		if ((_file != null) && _file.exists()) {
 			return true;
 		}
@@ -97,9 +96,7 @@ public class TicketAttachmentImpl extends TicketAttachmentBaseImpl {
 		return sb.toString();
 	}
 
-	public TicketEntry getTicketEntry()
-		throws PortalException, SystemException {
-
+	public TicketEntry getTicketEntry() throws PortalException {
 		return TicketEntryLocalServiceUtil.getTicketEntry(getTicketEntryId());
 	}
 

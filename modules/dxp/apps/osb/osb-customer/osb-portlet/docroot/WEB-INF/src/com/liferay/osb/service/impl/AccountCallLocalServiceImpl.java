@@ -14,9 +14,6 @@
 
 package com.liferay.osb.service.impl;
 
-import java.util.Date;
-import java.util.List;
-
 import com.liferay.osb.exception.AccountCallDateException;
 import com.liferay.osb.exception.AccountCallLengthException;
 import com.liferay.osb.exception.AccountCallSummaryException;
@@ -26,11 +23,13 @@ import com.liferay.osb.service.base.AccountCallLocalServiceBaseImpl;
 import com.liferay.osb.util.comparator.AccountCallCreateDateComparator;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Alan Zhang
@@ -38,9 +37,7 @@ import com.liferay.portal.kernel.util.Validator;
 public class AccountCallLocalServiceImpl
 	extends AccountCallLocalServiceBaseImpl {
 
-	public List<AccountCall> getAccountCalls(long accountEntryId)
-		throws SystemException {
-
+	public List<AccountCall> getAccountCalls(long accountEntryId) {
 		return accountCallPersistence.findByAccountEntryId(
 			accountEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
 			new AccountCallCreateDateComparator());
@@ -52,9 +49,10 @@ public class AccountCallLocalServiceImpl
 			int callDateHour, int callDateMinute, long callLength,
 			String summary, String clientsPresent, String notes,
 			String actionItems)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
+
 		Date callDate = PortalUtil.getDate(
 			callDateMonth, callDateDay, callDateYear, callDateHour,
 			callDateMinute, user.getTimeZone(),
@@ -90,9 +88,9 @@ public class AccountCallLocalServiceImpl
 		accountCall.setClientsPresent(clientsPresent);
 		accountCall.setNotes(notes);
 		accountCall.setActionItems(actionItems);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		accountCallPersistence.update(accountCall, serviceContext);

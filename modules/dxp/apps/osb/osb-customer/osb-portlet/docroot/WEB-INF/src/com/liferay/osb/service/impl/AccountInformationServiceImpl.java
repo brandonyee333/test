@@ -19,7 +19,6 @@ import com.liferay.osb.service.base.AccountInformationServiceBaseImpl;
 import com.liferay.osb.service.permission.OSBAccountEntryPermission;
 import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 
@@ -36,7 +35,7 @@ public class AccountInformationServiceImpl
 	public List<AccountInformation> updateAccountInformation(
 			long accountEntryId, long accountProjectId,
 			Map<Integer, String> data)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OSBAccountEntryPermission.check(
 			getPermissionChecker(), accountEntryId,

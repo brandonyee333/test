@@ -14,9 +14,11 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.document.library.kernel.exception.DuplicateDirectoryException;
+import com.liferay.document.library.kernel.exception.DuplicateFileException;
+import com.liferay.document.library.kernel.exception.NoSuchFileException;
+import com.liferay.document.library.kernel.store.DLStoreUtil;
+import com.liferay.document.library.kernel.store.Store;
 import com.liferay.osb.exception.DuplicateTicketAttachmentException;
 import com.liferay.osb.exception.TicketAttachmentAvailableFileRepositoryIdsException;
 import com.liferay.osb.exception.TicketAttachmentVisibilityException;
@@ -39,27 +41,19 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.ObjectValuePair;
-import com.liferay.portal.kernel.util.StreamUtil;
-import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.xml.Document;
-import com.liferay.portal.kernel.xml.Element;
-import com.liferay.portal.kernel.xml.SAXReaderUtil;
-import com.liferay.portal.kernel.zip.ZipReader;
-import com.liferay.portal.kernel.zip.ZipReaderFactoryUtil;
-import com.liferay.portal.kernel.zip.ZipWriter;
-import com.liferay.portal.kernel.zip.ZipWriterFactoryUtil;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.document.library.kernel.exception.DuplicateDirectoryException;
-import com.liferay.document.library.kernel.exception.DuplicateFileException;
-import com.liferay.document.library.kernel.exception.NoSuchFileException;
-import com.liferay.document.library.kernel.store.DLStoreUtil;
-import com.liferay.document.library.kernel.store.Store;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.ObjectValuePair;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.zip.ZipWriter;
+import com.liferay.portal.kernel.zip.ZipWriterFactoryUtil;
 /* TODO implement releaseNotes portlet
 import com.liferay.releasenotes.model.ReleaseNotes;
 import com.liferay.releasenotes.service.ReleaseNotesLocalServiceUtil;
@@ -85,7 +79,7 @@ public class TicketAttachmentLocalServiceImpl
 			long userId, long ticketEntryId, long ticketSolutionId,
 			String fileName, long fileSize, int type, int visibility,
 			String fileRepositoryId, int status)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 
@@ -122,15 +116,14 @@ public class TicketAttachmentLocalServiceImpl
 		ticketAttachment.setVisibility(visibility);
 		ticketAttachment.setAvailableFileRepositoryIds(fileRepositoryId);
 		ticketAttachment.setReplicate(replicate);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		ticketAttachmentPersistence.update(ticketAttachment, serviceContext);
 
-		List<TicketAttachment> ticketAttachments =
-			new ArrayList<TicketAttachment>();
+		List<TicketAttachment> ticketAttachments = new ArrayList<>();
 
 		ticketAttachments.add(ticketAttachment);
 
@@ -149,13 +142,12 @@ public class TicketAttachmentLocalServiceImpl
 			long userId, long ticketEntryId, long ticketSolutionId,
 			List<ObjectValuePair<String, File>> files, List<Integer> types,
 			int visibility, int status, ServiceContext serviceContext)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		Date now = serviceContext.getCreateDate(new Date());
 
-		List<TicketAttachment> ticketAttachments =
-			new ArrayList<TicketAttachment>();
+		List<TicketAttachment> ticketAttachments = new ArrayList<>();
 
 		for (int i = 0; i < files.size(); i++) {
 
@@ -206,10 +198,11 @@ public class TicketAttachmentLocalServiceImpl
 			ticketAttachment.setFileSize(file.length());
 			ticketAttachment.setType(type);
 			ticketAttachment.setVisibility(visibility);
-			
+
 			//TODO implement serviceContext how needed
 
-			ticketAttachmentPersistence.update(ticketAttachment, serviceContext);
+			ticketAttachmentPersistence.update(
+				ticketAttachment, serviceContext);
 
 			ticketAttachments.add(ticketAttachment);
 
@@ -251,7 +244,7 @@ public class TicketAttachmentLocalServiceImpl
 
 	public boolean checkAvailability(
 			long ticketAttachmentId, String fileRepositoryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketAttachment ticketAttachment =
 			ticketAttachmentPersistence.fetchByPrimaryKey(ticketAttachmentId);
@@ -261,9 +254,9 @@ public class TicketAttachmentLocalServiceImpl
 
 		Set<String> availableFileRepositoryIds =
 			ticketAttachment.getAvailableFileRepositoryIdsSet();
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		if (url != null) {
@@ -272,7 +265,8 @@ public class TicketAttachmentLocalServiceImpl
 			ticketAttachment.setAvailableFileRepositoryIdsSet(
 				availableFileRepositoryIds);
 
-			ticketAttachmentPersistence.update(ticketAttachment, serviceContext);
+			ticketAttachmentPersistence.update(
+				ticketAttachment, serviceContext);
 
 			return true;
 		}
@@ -282,15 +276,14 @@ public class TicketAttachmentLocalServiceImpl
 			ticketAttachment.setAvailableFileRepositoryIdsSet(
 				availableFileRepositoryIds);
 
-			ticketAttachmentPersistence.update(ticketAttachment, serviceContext);
+			ticketAttachmentPersistence.update(
+				ticketAttachment, serviceContext);
 
 			return false;
 		}
 	}
 
-	public void cleanTicketAttachments()
-		throws PortalException, SystemException {
-
+	public void cleanTicketAttachments() throws PortalException {
 		deleteInactiveTicketAttachments();
 
 		deleteOrphanTicketAttachments();
@@ -298,7 +291,7 @@ public class TicketAttachmentLocalServiceImpl
 
 	public TicketAttachment deleteTicketAttachment(
 			long userId, long ticketAttachmentId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketAttachment ticketAttachment =
 			ticketAttachmentPersistence.fetchByPrimaryKey(ticketAttachmentId);
@@ -308,7 +301,7 @@ public class TicketAttachmentLocalServiceImpl
 
 	public void deleteTicketAttachment(
 			long userId, long ticketEntryId, int type)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		List<TicketAttachment> ticketAttachments =
 			ticketAttachmentPersistence.findByTEI_T_S(
@@ -321,7 +314,7 @@ public class TicketAttachmentLocalServiceImpl
 
 	public TicketAttachment deleteTicketAttachment(
 			long userId, TicketAttachment ticketAttachment)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		// Ticket attachment
 
@@ -374,6 +367,7 @@ public class TicketAttachmentLocalServiceImpl
 			}
 			catch (Exception e) {
 			}
+
 			*/
 		}
 
@@ -399,8 +393,8 @@ public class TicketAttachmentLocalServiceImpl
 		return ticketAttachment;
 	}
 
-	public TicketAttachment fetchTicketAttachment(long ticketEntryId, int type)
-		throws SystemException {
+	public TicketAttachment fetchTicketAttachment(
+		long ticketEntryId, int type) {
 
 		return ticketAttachmentPersistence.fetchByTEI_T_S_First(
 			ticketEntryId, type, WorkflowConstants.STATUS_APPROVED,
@@ -408,15 +402,14 @@ public class TicketAttachmentLocalServiceImpl
 	}
 
 	public TicketAttachment fetchTicketAttachment(
-			long ticketEntryId, String fileName, int visibility, int status)
-		throws SystemException {
+		long ticketEntryId, String fileName, int visibility, int status) {
 
 		return ticketAttachmentPersistence.fetchByTEI_FN_V_S(
 			ticketEntryId, fileName, visibility, status);
 	}
 
 	public InputStream getFileAsStream(TicketAttachment ticketAttachment)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		return DLStoreUtil.getFileAsStream(
 			OSBConstants.COMPANY_ID, CompanyConstants.SYSTEM,
@@ -424,28 +417,22 @@ public class TicketAttachmentLocalServiceImpl
 	}
 
 	public List<TicketAttachment> getTicketAttachments(
-			Date createDate, int type)
-		throws SystemException {
+		Date createDate, int type) {
 
 		return ticketAttachmentPersistence.findByCD_T(createDate, type);
 	}
 
-	public List<TicketAttachment> getTicketAttachments(int[] types)
-		throws SystemException {
-
+	public List<TicketAttachment> getTicketAttachments(int[] types) {
 		return ticketAttachmentPersistence.findByType(types);
 	}
 
-	public List<TicketAttachment> getTicketAttachments(long ticketEntryId)
-		throws SystemException {
-
+	public List<TicketAttachment> getTicketAttachments(long ticketEntryId) {
 		return ticketAttachmentPersistence.findByTEI_S(
 			ticketEntryId, WorkflowConstants.STATUS_APPROVED);
 	}
 
 	public List<TicketAttachment> getTicketAttachments(
-			long ticketEntryId, int[] visibilities, int status)
-		throws SystemException {
+		long ticketEntryId, int[] visibilities, int status) {
 
 		int[] types = new int[] {
 			TicketAttachmentConstants.TYPE_HOTFIX,
@@ -458,8 +445,7 @@ public class TicketAttachmentLocalServiceImpl
 	}
 
 	public List<TicketAttachment> getTicketAttachments(
-			long ticketEntryId, int[] types, int[] visibilities)
-		throws SystemException {
+		long ticketEntryId, int[] types, int[] visibilities) {
 
 		return getTicketAttachments(
 			ticketEntryId, types, visibilities,
@@ -467,31 +453,28 @@ public class TicketAttachmentLocalServiceImpl
 	}
 
 	public List<TicketAttachment> getTicketAttachments(
-			long ticketEntryId, int[] types, int[] visibilities, int status)
-		throws SystemException {
+		long ticketEntryId, int[] types, int[] visibilities, int status) {
 
 		return ticketAttachmentPersistence.findByTEI_T_V_S(
 			ticketEntryId, types, visibilities, status);
 	}
 
 	public List<TicketAttachment> getTicketAttachments(
-			long ticketEntryId, long ticketSolutionId)
-		throws SystemException {
+		long ticketEntryId, long ticketSolutionId) {
 
 		return ticketAttachmentPersistence.findByTEI_TSI(
 			ticketEntryId, ticketSolutionId);
 	}
 
 	public List<TicketAttachment> getTicketAttachments(
-			long userId, long ticketEntryId, int visibility, int status)
-		throws SystemException {
+		long userId, long ticketEntryId, int visibility, int status) {
 
 		return ticketAttachmentPersistence.findByU_TEI_V_S(
 			userId, ticketEntryId, visibility, status);
 	}
 
-	public int getTicketAttachmentsCount(long ticketEntryId, int[] visibilities)
-		throws SystemException {
+	public int getTicketAttachmentsCount(
+		long ticketEntryId, int[] visibilities) {
 
 		int[] types = new int[] {
 			TicketAttachmentConstants.TYPE_HOTFIX,
@@ -504,8 +487,7 @@ public class TicketAttachmentLocalServiceImpl
 	}
 
 	public int getTicketAttachmentsCount(
-			long ticketEntryId, int[] types, int[] visibilities)
-		throws SystemException {
+		long ticketEntryId, int[] types, int[] visibilities) {
 
 		return ticketAttachmentPersistence.countByTEI_T_V_S(
 			ticketEntryId, types, visibilities,
@@ -514,7 +496,7 @@ public class TicketAttachmentLocalServiceImpl
 
 	public File getTicketAttachmentsZipFile(
 			long ticketEntryId, int[] visibilities)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		List<TicketAttachment> ticketAttachments = getTicketAttachments(
 			ticketEntryId, TicketAttachmentConstants.TYPES, visibilities,
@@ -538,7 +520,7 @@ public class TicketAttachmentLocalServiceImpl
 
 	public TicketAttachment replicateTicketAttachment(
 			long userId, long ticketAttachmentId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 
@@ -553,9 +535,9 @@ public class TicketAttachmentLocalServiceImpl
 		}
 
 		ticketAttachment.setReplicate(true);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		ticketAttachmentPersistence.update(ticketAttachment, serviceContext);
@@ -584,7 +566,7 @@ public class TicketAttachmentLocalServiceImpl
 
 	public TicketAttachment updateDeleteDate(
 			long userId, long ticketAttachmentId, Date deleteDate)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 
@@ -592,9 +574,9 @@ public class TicketAttachmentLocalServiceImpl
 			ticketAttachmentPersistence.findByPrimaryKey(ticketAttachmentId);
 
 		ticketAttachment.setDeleteDate(deleteDate);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		ticketAttachmentPersistence.update(ticketAttachment, serviceContext);
@@ -613,19 +595,18 @@ public class TicketAttachmentLocalServiceImpl
 		return ticketAttachment;
 	}
 
-	public void updateExtractedText(TicketAttachment ticketAttachment)
-		throws SystemException {
-
+	public void updateExtractedText(TicketAttachment ticketAttachment) {
 		try {
 			String extractedText = extractText(ticketAttachment);
 
 			ticketAttachment.setExtractedText(extractedText);
-			
+
 			//TODO implement serviceContext how needed
-			
+
 			ServiceContext serviceContext = new ServiceContext();
 
-			ticketAttachmentPersistence.update(ticketAttachment, serviceContext);
+			ticketAttachmentPersistence.update(
+				ticketAttachment, serviceContext);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -635,12 +616,12 @@ public class TicketAttachmentLocalServiceImpl
 	public void updateStatus(
 			User user, List<TicketAttachment> ticketAttachments,
 			long ticketEntryId, int status, ServiceContext serviceContext)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		// Ticket attachment
 
 		Date now = serviceContext.getCreateDate(new Date());
-		
+
 		//TODO implement serviceContext how needed
 
 		for (TicketAttachment ticketAttachment : ticketAttachments) {
@@ -666,13 +647,15 @@ public class TicketAttachmentLocalServiceImpl
 						ticketAttachment.setReleaseNotesId(
 							releaseNotes.getReleaseNotesId());
 					}
+
 					*/
 				}
 			}
 
 			ticketAttachment.setStatus(status);
 
-			ticketAttachmentPersistence.update(ticketAttachment, serviceContext);
+			ticketAttachmentPersistence.update(
+				ticketAttachment, serviceContext);
 		}
 
 		if ((status != WorkflowConstants.STATUS_APPROVED) ||
@@ -734,7 +717,7 @@ public class TicketAttachmentLocalServiceImpl
 	public TicketAttachment updateTicketAttachment(
 			long ticketAttachmentId, long ticketEntryId, int type,
 			int visibility)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketAttachment ticketAttachment =
 			ticketAttachmentPersistence.findByPrimaryKey(ticketAttachmentId);
@@ -747,7 +730,7 @@ public class TicketAttachmentLocalServiceImpl
 	public TicketAttachment updateTicketAttachment(
 			long ticketAttachmentId, long ticketEntryId, long ticketSolutionId,
 			int type, int visibility)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketAttachment ticketAttachment =
 			ticketAttachmentPersistence.findByPrimaryKey(ticketAttachmentId);
@@ -775,6 +758,7 @@ public class TicketAttachmentLocalServiceImpl
 			releaseNotes = addReleaseNotes(
 				ticketAttachment.getUserId(), ticketAttachment.getFilePath());
 		}
+
 		*/
 
 		ticketAttachment.setTicketEntryId(ticketEntryId);
@@ -784,14 +768,16 @@ public class TicketAttachmentLocalServiceImpl
 		ticketAttachment.setStatus(WorkflowConstants.STATUS_APPROVED);
 
 		/* TODO implement releaseNotes portlet
+
 		if (releaseNotes != null) {
 			ticketAttachment.setReleaseNotesId(
 				releaseNotes.getReleaseNotesId());
 		}
+
 		*/
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		ticketAttachmentPersistence.update(ticketAttachment, serviceContext);
@@ -805,7 +791,7 @@ public class TicketAttachmentLocalServiceImpl
 		try {
 			DLStoreUtil.addDirectory(companyId, repositoryId, newDirName);
 		}
-		catch (PortalException e) {
+		catch (PortalException pe) {
 		}
 
 		String newFilePath =
@@ -824,10 +810,9 @@ public class TicketAttachmentLocalServiceImpl
 	public List<TicketAttachment> updateTicketAttachments(
 			List<Long> ticketAttachmentIds, long ticketEntryId,
 			List<Integer> types, List<Integer> visibilities)
-		throws PortalException, SystemException {
+		throws PortalException {
 
-		List<TicketAttachment> ticketAttachments =
-			new ArrayList<TicketAttachment>();
+		List<TicketAttachment> ticketAttachments = new ArrayList<>();
 
 		for (int i = 0; i < ticketAttachmentIds.size(); i++) {
 			TicketAttachment ticketAttachment = updateTicketAttachment(
@@ -880,11 +865,10 @@ public class TicketAttachmentLocalServiceImpl
 
 		return null;
 	}
+
 	*/
 
-	protected void deleteInactiveTicketAttachments()
-		throws PortalException, SystemException {
-
+	protected void deleteInactiveTicketAttachments() throws PortalException {
 		List<TicketAttachment> ticketAttachments =
 			ticketAttachmentPersistence.findByT_DD(
 				TicketAttachmentConstants.TYPES_LARGE, new Date());
@@ -895,9 +879,7 @@ public class TicketAttachmentLocalServiceImpl
 		}
 	}
 
-	protected void deleteOrphanTicketAttachments()
-		throws PortalException, SystemException {
-
+	protected void deleteOrphanTicketAttachments() throws PortalException {
 		Calendar calendar = Calendar.getInstance();
 
 		calendar.add(Calendar.DATE, -1);
@@ -970,7 +952,7 @@ public class TicketAttachmentLocalServiceImpl
 	protected void validate(
 			long ticketEntryId, String fileName, long fileSize, int type,
 			int visibility)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if ((ticketEntryId > 0) &&
 			ticketAttachmentPersistence.countByTEI_FN_V_S(
@@ -992,7 +974,7 @@ public class TicketAttachmentLocalServiceImpl
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		TicketAttachmentLocalServiceImpl.class);
 
 }

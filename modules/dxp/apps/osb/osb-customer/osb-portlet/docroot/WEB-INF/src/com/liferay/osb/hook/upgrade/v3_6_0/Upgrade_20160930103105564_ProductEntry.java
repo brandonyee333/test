@@ -50,14 +50,12 @@ public class Upgrade_20160930103105564_ProductEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20160930103105564L;
 	}
 
-	protected void addLicenseEntries() throws PortalException, SystemException {
+	protected void addLicenseEntries() throws PortalException {
 		LicenseEntryLocalServiceUtil.addLicenseEntry(
 			OSBConstants.USER_AMOS_FONG_USER_ID, _deBackupProductEntryId,
 			"Digital Enterprise Backup", LicenseEntryConstants.TYPE_BACKUP,
@@ -97,7 +95,7 @@ public class Upgrade_20160930103105564_ProductEntry extends UpgradeProcess {
 			ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7_0_10, 0);
 	}
 
-	protected void addProductEntries() throws PortalException, SystemException {
+	protected void addProductEntries() throws PortalException {
 		_deBackupProductEntryId = addProductEntry(
 			"Digital Enterprise Backup",
 			ProductEntryConstants.ENVIRONMENT_BACKUP);
@@ -121,7 +119,7 @@ public class Upgrade_20160930103105564_ProductEntry extends UpgradeProcess {
 	}
 
 	protected long addProductEntry(String name, int environment)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		ProductEntry productEntry = null;
 
@@ -434,9 +432,8 @@ public class Upgrade_20160930103105564_ProductEntry extends UpgradeProcess {
 		runSQL(sb.toString());
 	}
 
-	private static final long[] _BACKUP_PRODUCT_ENTRY_IDS = {
-		5968272, 10034376, 27012869, 24577955, 63869128, 73043190
-	};
+	private static final long[] _BACKUP_PRODUCT_ENTRY_IDS =
+		{5968272, 10034376, 27012869, 24577955, 63869128, 73043190};
 
 	private static final long[] _DEVELOPMENT_PRODUCT_ENTRY_IDS = {6135009};
 
@@ -451,9 +448,8 @@ public class Upgrade_20160930103105564_ProductEntry extends UpgradeProcess {
 
 	private static final long[] _OEM_PRODUCT_ENTRY_IDS = {7491306};
 
-	private static final long[] _PRODUCTION_PRODUCT_ENTRY_IDS = {
-		5968276, 27012837, 24576026, 44966204, 10034374
-	};
+	private static final long[] _PRODUCTION_PRODUCT_ENTRY_IDS =
+		{5968276, 27012837, 24576026, 44966204, 10034374};
 
 	private static Log _log = LogFactoryUtil.getLog(
 		Upgrade_20160930103105564_ProductEntry.class);
@@ -467,6 +463,7 @@ public class Upgrade_20160930103105564_ProductEntry extends UpgradeProcess {
 	private long _deProductionProductEntryId;
 
 }
+
 */
 
 }

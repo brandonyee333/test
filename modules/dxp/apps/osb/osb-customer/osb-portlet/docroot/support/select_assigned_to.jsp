@@ -33,7 +33,7 @@ if (liferayIncOrg) {
 
 <aui:form action="<%= portletURL.toString() %>" method="post" name="fm" onSubmit="submitForm(this); return false;">
 	<div class="unit">
-		<div class="unit-content table-report">
+		<div class="table-report unit-content">
 			<liferay-ui:tabs
 				names="<%= tabsNames %>"
 				param="tabs1"
@@ -147,7 +147,6 @@ if (liferayIncOrg) {
 											url='<%= "javascript:" + renderResponse.getNamespace() + "toggleAccountEntries(" + supportTeam.getSupportTeamId() + ", true);" %>'
 										/>
 									</span>
-
 									<span class="aui-helper-hidden collapse" id="<portlet:namespace />collapse_<%= supportTeam.getSupportTeamId() %>">
 										<liferay-ui:icon
 											image="../arrows/01_minus"

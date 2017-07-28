@@ -14,14 +14,13 @@
 
 package com.liferay.osb.service.impl;
 
-import java.util.Date;
-
 import com.liferay.osb.model.FeedbackEntry;
 import com.liferay.osb.service.base.FeedbackEntryLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
+
+import java.util.Date;
 
 /**
  * @author Jenny Chen
@@ -33,7 +32,7 @@ public class FeedbackEntryLocalServiceImpl
 	public FeedbackEntry addFeedbackEntry(
 			long userId, long classNameId, long classPK, int satisfied,
 			String pageURL)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		Date now = new Date();
@@ -50,9 +49,9 @@ public class FeedbackEntryLocalServiceImpl
 		feedbackEntry.setClassPK(classPK);
 		feedbackEntry.setSatisfied(satisfied);
 		feedbackEntry.setPageURL(pageURL);
-		
+
 		//TODO implement serviceContext as needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		feedbackEntryPersistence.update(feedbackEntry, serviceContext);
@@ -62,15 +61,15 @@ public class FeedbackEntryLocalServiceImpl
 
 	public FeedbackEntry updateFeedbackEntry(
 			long feedbackEntryId, String comments)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		FeedbackEntry feedbackEntry = feedbackEntryPersistence.findByPrimaryKey(
 			feedbackEntryId);
 
 		feedbackEntry.setComments(comments);
-		
+
 		//TODO implement serviceContext as needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		feedbackEntryPersistence.update(feedbackEntry, serviceContext);

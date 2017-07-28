@@ -56,7 +56,6 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_account_entry.jsp
 
 					<span class="txt-sb"><%= HtmlUtil.escape(ListUtil.toString(accountEntry.getSupportRegions(), "name")) %></span>
 				</span>
-
 				<span class="spacer"></span>
 
 				<span class="<%= !liferayIncOrg ? "last" : "" %> segment">
@@ -102,7 +101,6 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_account_entry.jsp
 							<input class="aui-button-input" id="<portlet:namespace />tierCancel" onclick="<portlet:namespace />toggleForm('<portlet:namespace/>tierDropDown', '<portlet:namespace />tierDisplay');" type="button" value="<liferay-ui:message key="cancel" />" />
 						</div>
 					</span>
-
 					<span class="spacer"></span>
 
 					<%

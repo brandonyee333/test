@@ -51,9 +51,7 @@ public class Upgrade_20160811141901211_AccountEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20160811141901211L;
 	}
@@ -126,11 +124,11 @@ public class Upgrade_20160811141901211_AccountEntry extends UpgradeProcess {
 	}
 
 	protected void updateAccountEntry(long accountEntryId) throws Exception {
-		Set<String> languageIds = new HashSet<String>();
-		Set<Long> supportRegionIds = new HashSet<Long>();
+		Set<String> languageIds = new HashSet<>();
+		Set<Long> supportRegionIds = new HashSet<>();
 
-		Set<String> inactiveLanguageIds = new HashSet<String>();
-		Set<Long> inactiveSupportRegionIds = new HashSet<Long>();
+		Set<String> inactiveLanguageIds = new HashSet<>();
+		Set<Long> inactiveSupportRegionIds = new HashSet<>();
 
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -215,6 +213,7 @@ public class Upgrade_20160811141901211_AccountEntry extends UpgradeProcess {
 	private static final long _SUPPORT_REGION_NOT_AVAILABLE_ID = 78237012;
 
 }
+
 */
 
 }

@@ -39,7 +39,7 @@
 		RequiredFieldException rfe = (RequiredFieldException)errorException;
 		%>
 
-		<liferay-ui:message arguments="<%= LanguageUtil.get(locale, rfe.getLabelId()) %>" key="please-upload-a-x-file" />
+		<liferay-ui:message arguments="<%= LanguageUtil.get(request, rfe.getLabelId()) %>" key="please-upload-a-x-file" />
 	</liferay-ui:error>
 
 	<liferay-ui:error exception="<%= TicketAttachmentVisibilityException.class %>" message="please-enter-a-valid-visibility" />

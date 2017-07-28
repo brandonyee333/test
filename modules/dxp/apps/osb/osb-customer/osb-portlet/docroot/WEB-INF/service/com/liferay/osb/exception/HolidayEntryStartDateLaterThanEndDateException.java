@@ -21,7 +21,8 @@ import com.liferay.portal.kernel.exception.PortalException;
  * @author Brian Wing Shun Chan
  */
 @ProviderType
-public class HolidayEntryStartDateLaterThanEndDateException extends PortalException {
+public class HolidayEntryStartDateLaterThanEndDateException
+	extends PortalException {
 
 	public HolidayEntryStartDateLaterThanEndDateException() {
 	}
@@ -30,7 +31,9 @@ public class HolidayEntryStartDateLaterThanEndDateException extends PortalExcept
 		super(msg);
 	}
 
-	public HolidayEntryStartDateLaterThanEndDateException(String msg, Throwable cause) {
+	public HolidayEntryStartDateLaterThanEndDateException(
+		String msg, Throwable cause) {
+
 		super(msg, cause);
 	}
 

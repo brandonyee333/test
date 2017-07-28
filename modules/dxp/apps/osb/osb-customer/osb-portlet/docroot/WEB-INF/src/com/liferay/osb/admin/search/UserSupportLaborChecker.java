@@ -71,6 +71,6 @@ public class UserSupportLaborChecker extends RowChecker {
 	private static Log _log = LogFactoryUtil.getLog(
 		UserSupportLaborChecker.class);
 
-	private SupportLabor _supportLabor;
+	private final SupportLabor _supportLabor;
 
 }

@@ -16,7 +16,7 @@ package com.liferay.osb.hook.upgrade.v2_0_0;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
-/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+/*import UpgradeProcess;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.model.Company;
@@ -43,9 +43,7 @@ public class UpgradeExpando extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	protected void doUpgrade() throws Exception {
 		long companyId = OSBConstants.COMPANY_ID;
 
@@ -150,6 +148,7 @@ public class UpgradeExpando extends UpgradeProcess {
 	}
 
 }
+
 */
 
 }

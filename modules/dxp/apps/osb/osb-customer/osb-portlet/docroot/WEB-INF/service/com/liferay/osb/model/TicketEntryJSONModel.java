@@ -30,8 +30,7 @@ public class TicketEntryJSONModel extends TicketEntryClp {
 	public void setTicketInformationList(
 		List<TicketInformationClp> ticketInformationList) {
 
-		_ticketInformationList = new ArrayList<TicketInformation>(
-			ticketInformationList);
+		_ticketInformationList = new ArrayList<>(ticketInformationList);
 	}
 
 	private List<TicketInformation> _ticketInformationList;

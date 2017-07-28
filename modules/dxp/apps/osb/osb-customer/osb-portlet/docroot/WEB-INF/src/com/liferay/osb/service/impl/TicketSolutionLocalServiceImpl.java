@@ -14,9 +14,6 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.exception.TicketEntrySubcomponentException;
 import com.liferay.osb.exception.TicketLinkTypeException;
 import com.liferay.osb.exception.TicketSolutionBodyException;
@@ -39,14 +36,16 @@ import com.liferay.osb.util.OSBMailActionKeys;
 import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.io.File;
 
@@ -68,7 +67,7 @@ public class TicketSolutionLocalServiceImpl
 			int ticketEntrySubcomponent, String ticketEntrySubcomponentCustom,
 			List<String> ticketLinkURLs, List<Integer> ticketLinkTypes,
 			List<TicketAttachment> ticketAttachments)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		// Ticket solution
 
@@ -82,9 +81,9 @@ public class TicketSolutionLocalServiceImpl
 			userId, summary, useCustomerSummary, solution, status, null,
 			ticketEntrySubcomponent, ticketEntrySubcomponentCustom,
 			ticketEntry.getComponent(), ticketLinkURLs, ticketLinkTypes);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		if (ticketEntry.getStatus() ==
@@ -93,11 +92,12 @@ public class TicketSolutionLocalServiceImpl
 			TicketSolution ticketSolution = getActiveTicketSolution(
 				ticketEntryId);
 
-			if (ticketSolution != null ) {
+			if (ticketSolution != null) {
 				ticketSolution.setStatus(
 					TicketSolutionConstants.STATUS_INVALID);
 
-				ticketSolutionPersistence.update(ticketSolution, serviceContext);
+				ticketSolutionPersistence.update(
+					ticketSolution, serviceContext);
 
 				ticketCommentLocalService.resetSolutionTicketComment(
 					ticketEntryId);
@@ -143,10 +143,9 @@ public class TicketSolutionLocalServiceImpl
 
 		// Ticket attachment
 
-		List<ObjectValuePair<String, File>> fileList =
-			new ArrayList<ObjectValuePair<String, File>>();
+		List<ObjectValuePair<String, File>> fileList = new ArrayList<>();
 
-		List<Integer> fileTypeList = new ArrayList<Integer>();
+		List<Integer> fileTypeList = new ArrayList<>();
 
 		for (TicketAttachment ticketAttachment : ticketAttachments) {
 			if (ticketAttachment.getTicketAttachmentId() > 0) {
@@ -156,10 +155,8 @@ public class TicketSolutionLocalServiceImpl
 					ticketAttachment.getType(), VisibilityConstants.PUBLIC);
 			}
 			else {
-				ObjectValuePair<String, File> ovp =
-					new ObjectValuePair<String, File>(
-						ticketAttachment.getFileName(),
-						ticketAttachment.getFile());
+				ObjectValuePair<String, File> ovp = new ObjectValuePair<>(
+					ticketAttachment.getFileName(), ticketAttachment.getFile());
 
 				fileList.add(ovp);
 
@@ -236,9 +233,7 @@ public class TicketSolutionLocalServiceImpl
 		return ticketSolution;
 	}
 
-	public TicketSolution getActiveTicketSolution(long ticketEntryId)
-		throws SystemException {
-
+	public TicketSolution getActiveTicketSolution(long ticketEntryId) {
 		List<TicketSolution> ticketSolutions =
 			ticketSolutionPersistence.findByTicketEntryId(ticketEntryId);
 
@@ -258,22 +253,19 @@ public class TicketSolutionLocalServiceImpl
 		return null;
 	}
 
-	public List<TicketSolution> getTicketSolutions(long ticketEntryId)
-		throws SystemException {
-
+	public List<TicketSolution> getTicketSolutions(long ticketEntryId) {
 		return ticketSolutionPersistence.findByTicketEntryId(ticketEntryId);
 	}
 
 	public void updateStatus(
-			long ticketEntryId, int ticketEntryStatus, int resolution)
-		throws SystemException {
+		long ticketEntryId, int ticketEntryStatus, int resolution) {
 
 		if ((ticketEntryStatus ==
 				TicketEntryConstants.STATUS_SOLUTION_DELIVERED) ||
 			(ticketEntryStatus == TicketEntryConstants.STATUS_ON_HOLD) ||
 			((ticketEntryStatus == TicketEntryConstants.STATUS_CLOSED) &&
 			 (resolution ==
-			 	TicketEntryConstants.RESOLUTION_PENDING_CUSTOMER))) {
+				 TicketEntryConstants.RESOLUTION_PENDING_CUSTOMER))) {
 
 			return;
 		}
@@ -317,9 +309,9 @@ public class TicketSolutionLocalServiceImpl
 			ticketFlagPersistence.removeByTEI_T(
 				ticketEntryId, TicketFlagConstants.TYPE_READ_SOLUTION);
 		}
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		ticketSolutionPersistence.update(ticketSolution, serviceContext);
@@ -328,7 +320,7 @@ public class TicketSolutionLocalServiceImpl
 	public TicketSolution updateTicketSolution(
 			long ticketSolutionId, long ticketEntryId, int status,
 			long statusByUserId, String statusMessage, int statusReason)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		// Ticket solution
 
@@ -345,9 +337,9 @@ public class TicketSolutionLocalServiceImpl
 		ticketSolution.setStatusDate(new Date());
 		ticketSolution.setStatusMessage(statusMessage);
 		ticketSolution.setStatusReason(statusReason);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		ticketSolutionPersistence.update(ticketSolution, serviceContext);
@@ -465,7 +457,7 @@ public class TicketSolutionLocalServiceImpl
 			int ticketEntrySubcomponent, String ticketEntrySubcomponentCustom,
 			int ticketEntryComponent, List<String> ticketLinkURLs,
 			List<Integer> ticketLinkTypes)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (Validator.isNull(summary) && !useCustomerSummary) {
 			throw new TicketSolutionSummaryException();

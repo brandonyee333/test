@@ -67,7 +67,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 
 	if (tabs2.equals("current")) {
 		userParams.put("status", WorkflowConstants.STATUS_ANY);
-		userParams.put("usersAccountWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinByAccountWorker"), new Long(accountEntry.getAccountEntryId())));
+		userParams.put("usersAccountWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinByAccountWorker"), Long.valueOf(accountEntry.getAccountEntryId())));
 	}
 	%>
 

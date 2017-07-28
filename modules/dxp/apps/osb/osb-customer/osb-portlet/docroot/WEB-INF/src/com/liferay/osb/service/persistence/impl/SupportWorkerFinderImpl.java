@@ -14,13 +14,9 @@
 
 package com.liferay.osb.service.persistence.impl;
 
-import com.liferay.osb.service.persistence.SupportWorkerFinder;
-import com.liferay.osb.service.persistence.SupportWorkerUtil;
-
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.model.SupportWorker;
 import com.liferay.osb.model.impl.SupportWorkerImpl;
+import com.liferay.osb.service.persistence.SupportWorkerFinder;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
@@ -30,7 +26,8 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.util.Iterator;
@@ -51,17 +48,17 @@ public class SupportWorkerFinderImpl
 	public static final String COUNT_BY_SL_FN_MN_LN_SN_EA_STN =
 		SupportWorkerFinder.class.getName() + ".countBySL_FN_MN_LN_SN_EA_STN";
 
-	public static final String FIND_BY_R_STT_SRI =
-		SupportWorkerFinder.class.getName() + ".findByR_STT_SRI";
-
-	public static final String FIND_BY_SL_FN_MN_LN_SN_EA_STN =
-		SupportWorkerFinder.class.getName() + ".findBySL_FN_MN_LN_SN_EA_STN";
-
 	public static final String FIND_BY_SUPPORT_TEAM_ID =
 		SupportWorkerFinder.class.getName() + ".findBySupportTeamId";
 
 	public static final String FIND_BY_U_E =
 		SupportWorkerFinder.class.getName() + ".findByU_E";
+
+	public static final String FIND_BY_R_STT_SRI =
+		SupportWorkerFinder.class.getName() + ".findByR_STT_SRI";
+
+	public static final String FIND_BY_SL_FN_MN_LN_SN_EA_STN =
+		SupportWorkerFinder.class.getName() + ".findBySL_FN_MN_LN_SN_EA_STN";
 
 	public static final String JOIN_BY_ACCOUNT_TIER =
 		SupportWorkerFinder.class.getName() + ".joinByAccountTier";
@@ -93,9 +90,7 @@ public class SupportWorkerFinderImpl
 	public static final String JOIN_BY_USER_ID =
 		SupportWorkerFinder.class.getName() + ".joinByUserId";
 
-	public int countByKeywords(long supportLaborId, String keywords)
-		throws SystemException {
-
+	public int countByKeywords(long supportLaborId, String keywords) {
 		String[] emailAddresses = null;
 		String[] firstNames = null;
 		String[] middleNames = null;
@@ -121,11 +116,69 @@ public class SupportWorkerFinderImpl
 			emailAddresses, supportTeamNames, andOperator);
 	}
 
+	public int countByU_E(
+		Boolean overUtilization, int escalationLevel,
+		LinkedHashMap<String, Object> params) {
+
+		String sql = CustomSQLUtil.get(COUNT_BY_U_E);
+
+		if (overUtilization == null) {
+			sql = StringUtil.replace(sql, _UTILIZATION_SQL, StringPool.BLANK);
+		}
+		else {
+			if (overUtilization) {
+				sql = StringUtil.replace(
+					sql, "[$UTILIZATION_COMPARATOR$]", ">=");
+			}
+			else {
+				sql = StringUtil.replace(
+					sql, "[$UTILIZATION_COMPARATOR$]", "<");
+			}
+		}
+
+		sql = StringUtil.replace(sql, "[$JOIN$]", getJoin(params));
+		sql = StringUtil.replace(sql, "[$WHERE$]", getWhere(params));
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
+
+			q.addScalar(COUNT_COLUMN_NAME, Type.LONG);
+
+			QueryPos qPos = QueryPos.getInstance(q);
+
+			setJoin(qPos, params);
+
+			qPos.add(escalationLevel);
+			qPos.add(escalationLevel);
+
+			Iterator<Long> itr = q.iterate();
+
+			if (itr.hasNext()) {
+				Long count = itr.next();
+
+				if (count != null) {
+					return count.intValue();
+				}
+			}
+
+			return 0;
+		}
+		catch (Exception e) {
+			throw new SystemException(e);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
 	public int countBySL_FN_MN_LN_SN_EA_STN(
-			long supportLaborId, String[] firstNames, String[] middleNames,
-			String[] lastNames, String[] screenNames, String[] emailAddresses,
-			String[] supportTeamNames, boolean andOperator)
-		throws SystemException {
+		long supportLaborId, String[] firstNames, String[] middleNames,
+		String[] lastNames, String[] screenNames, String[] emailAddresses,
+		String[] supportTeamNames, boolean andOperator) {
 
 		emailAddresses = CustomSQLUtil.keywords(emailAddresses);
 		firstNames = CustomSQLUtil.keywords(firstNames);
@@ -160,7 +213,7 @@ public class SupportWorkerFinderImpl
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addScalar(COUNT_COLUMN_NAME, Type.LONG);
 
@@ -195,70 +248,9 @@ public class SupportWorkerFinderImpl
 		}
 	}
 
-	public int countByU_E(
-			Boolean overUtilization, int escalationLevel,
-			LinkedHashMap<String, Object> params)
-		throws SystemException {
-
-		String sql = CustomSQLUtil.get(COUNT_BY_U_E);
-
-		if (overUtilization == null) {
-			sql = StringUtil.replace(sql, _UTILIZATION_SQL, StringPool.BLANK);
-		}
-		else {
-			if (overUtilization) {
-				sql = StringUtil.replace(
-					sql, "[$UTILIZATION_COMPARATOR$]", ">=");
-			}
-			else {
-				sql = StringUtil.replace(
-					sql, "[$UTILIZATION_COMPARATOR$]", "<");
-			}
-		}
-
-		sql = StringUtil.replace(sql, "[$JOIN$]", getJoin(params));
-		sql = StringUtil.replace(sql, "[$WHERE$]", getWhere(params));
-
-		Session session = null;
-
-		try {
-			session = openSession();
-
-			SQLQuery q = session.createSQLQuery(sql);
-
-			q.addScalar(COUNT_COLUMN_NAME, Type.LONG);
-
-			QueryPos qPos = QueryPos.getInstance(q);
-
-			setJoin(qPos, params);
-
-			qPos.add(escalationLevel);
-			qPos.add(escalationLevel);
-
-			Iterator<Long> itr = q.iterate();
-
-			if (itr.hasNext()) {
-				Long count = itr.next();
-
-				if (count != null) {
-					return count.intValue();
-				}
-			}
-
-			return 0;
-		}
-		catch (Exception e) {
-			throw new SystemException(e);
-		}
-		finally {
-			closeSession(session);
-		}
-	}
-
 	public List<SupportWorker> findByKeywords(
-			long supportLaborId, String keywords, int start, int end,
-			OrderByComparator obc)
-		throws SystemException {
+		long supportLaborId, String keywords, int start, int end,
+		OrderByComparator obc) {
 
 		String[] emailAddresses = null;
 		String[] firstNames = null;
@@ -285,11 +277,85 @@ public class SupportWorkerFinderImpl
 			emailAddresses, supportTeamNames, andOperator, start, end, obc);
 	}
 
+	public List<SupportWorker> findBySupportTeamId(long supportTeamId) {
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			String sql = CustomSQLUtil.get(FIND_BY_SUPPORT_TEAM_ID);
+
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
+
+			q.addEntity("OSB_SupportWorker", SupportWorkerImpl.class);
+
+			QueryPos qPos = QueryPos.getInstance(q);
+
+			qPos.add(supportTeamId);
+
+			return q.list(true);
+		}
+		catch (Exception e) {
+			throw new SystemException(e);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	public List<SupportWorker> findByU_E(
+		Boolean overUtilization, int escalationLevel,
+		LinkedHashMap<String, Object> params) {
+
+		String sql = CustomSQLUtil.get(FIND_BY_U_E);
+
+		if (overUtilization == null) {
+			sql = StringUtil.replace(sql, _UTILIZATION_SQL, StringPool.BLANK);
+		}
+		else {
+			if (overUtilization) {
+				sql = StringUtil.replace(
+					sql, "[$UTILIZATION_COMPARATOR$]", ">=");
+			}
+			else {
+				sql = StringUtil.replace(
+					sql, "[$UTILIZATION_COMPARATOR$]", "<");
+			}
+		}
+
+		sql = StringUtil.replace(sql, "[$JOIN$]", getJoin(params));
+		sql = StringUtil.replace(sql, "[$WHERE$]", getWhere(params));
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
+
+			q.addEntity("OSB_SupportWorker", SupportWorkerImpl.class);
+
+			QueryPos qPos = QueryPos.getInstance(q);
+
+			setJoin(qPos, params);
+
+			qPos.add(escalationLevel);
+			qPos.add(escalationLevel);
+
+			return q.list();
+		}
+		catch (Exception e) {
+			throw new SystemException(e);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
 	public List<SupportWorker> findByR_STT_SRI(
-			int role, Integer supportTeamType, long supportRegionId,
-			String roleComparator, boolean filterByAutoAssign,
-			LinkedHashMap<String, Object> params)
-		throws SystemException {
+		int role, Integer supportTeamType, long supportRegionId,
+		String roleComparator, boolean filterByAutoAssign,
+		LinkedHashMap<String, Object> params) {
 
 		String sql = CustomSQLUtil.get(FIND_BY_R_STT_SRI);
 
@@ -316,7 +382,7 @@ public class SupportWorkerFinderImpl
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addEntity("OSB_SupportWorker", SupportWorkerImpl.class);
 
@@ -344,11 +410,10 @@ public class SupportWorkerFinderImpl
 	}
 
 	public List<SupportWorker> findBySL_FN_MN_LN_SN_EA_STN(
-			long supportLaborId, String[] firstNames, String[] middleNames,
-			String[] lastNames, String[] screenNames, String[] emailAddresses,
-			String[] supportTeamNames, boolean andOperator, int start, int end,
-			OrderByComparator obc)
-		throws SystemException {
+		long supportLaborId, String[] firstNames, String[] middleNames,
+		String[] lastNames, String[] screenNames, String[] emailAddresses,
+		String[] supportTeamNames, boolean andOperator, int start, int end,
+		OrderByComparator obc) {
 
 		emailAddresses = CustomSQLUtil.keywords(emailAddresses);
 		firstNames = CustomSQLUtil.keywords(firstNames);
@@ -386,7 +451,7 @@ public class SupportWorkerFinderImpl
 			sql = CustomSQLUtil.replaceAndOperator(sql, andOperator);
 			sql = CustomSQLUtil.replaceOrderBy(sql, obc);
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addEntity("OSB_SupportWorker", SupportWorkerImpl.class);
 
@@ -403,84 +468,6 @@ public class SupportWorkerFinderImpl
 
 			return (List<SupportWorker>)QueryUtil.list(
 				q, getDialect(), start, end);
-		}
-		catch (Exception e) {
-			throw new SystemException(e);
-		}
-		finally {
-			closeSession(session);
-		}
-	}
-
-	public List<SupportWorker> findBySupportTeamId(long supportTeamId)
-		throws SystemException {
-
-		Session session = null;
-
-		try {
-			session = openSession();
-
-			String sql = CustomSQLUtil.get(FIND_BY_SUPPORT_TEAM_ID);
-
-			SQLQuery q = session.createSQLQuery(sql);
-
-			q.addEntity("OSB_SupportWorker", SupportWorkerImpl.class);
-
-			QueryPos qPos = QueryPos.getInstance(q);
-
-			qPos.add(supportTeamId);
-
-			return q.list(true);
-		}
-		catch (Exception e) {
-			throw new SystemException(e);
-		}
-		finally {
-			closeSession(session);
-		}
-	}
-
-	public List<SupportWorker> findByU_E(
-			Boolean overUtilization, int escalationLevel,
-			LinkedHashMap<String, Object> params)
-		throws SystemException {
-
-		String sql = CustomSQLUtil.get(FIND_BY_U_E);
-
-		if (overUtilization == null) {
-			sql = StringUtil.replace(sql, _UTILIZATION_SQL, StringPool.BLANK);
-		}
-		else {
-			if (overUtilization) {
-				sql = StringUtil.replace(
-					sql, "[$UTILIZATION_COMPARATOR$]", ">=");
-			}
-			else {
-				sql = StringUtil.replace(
-					sql, "[$UTILIZATION_COMPARATOR$]", "<");
-			}
-		}
-
-		sql = StringUtil.replace(sql, "[$JOIN$]", getJoin(params));
-		sql = StringUtil.replace(sql, "[$WHERE$]", getWhere(params));
-
-		Session session = null;
-
-		try {
-			session = openSession();
-
-			SQLQuery q = session.createSQLQuery(sql);
-
-			q.addEntity("OSB_SupportWorker", SupportWorkerImpl.class);
-
-			QueryPos qPos = QueryPos.getInstance(q);
-
-			setJoin(qPos, params);
-
-			qPos.add(escalationLevel);
-			qPos.add(escalationLevel);
-
-			return q.list();
 		}
 		catch (Exception e) {
 			throw new SystemException(e);

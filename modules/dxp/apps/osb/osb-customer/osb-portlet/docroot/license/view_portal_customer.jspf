@@ -18,13 +18,13 @@
 boolean osbTrialPurchased = ExpandoValueLocalServiceUtil.getData(themeDisplay.getCompanyId(), User.class.getName(), "OSB", "osbTrialPurchased", user.getUserId(), false);
 %>
 
-<c:if test='<%= SessionMessages.contains(portletSession, "license_key_sent") %>'>
+<c:if test='<%= SessionMessages.contains(portletSession, "licenseKeySent") %>'>
 	<div class="portlet-msg-success">
-		<%= LanguageUtil.format(pageContext, "your-license-key-was-sent-to-x", SessionMessages.get(portletSession, "license_key_sent")) %>
+		<%= LanguageUtil.format(pageContext, "your-license-key-was-sent-to-x", SessionMessages.get(portletSession, "licenseKeySent")) %>
 	</div>
 </c:if>
 
-<c:if test='<%= SessionMessages.contains(portletSession, "sales_notified") %>'>
+<c:if test='<%= SessionMessages.contains(portletSession, "salesNotified") %>'>
 	<liferay-util:include page="/common/dialog.jsp" servletContext="<%= application %>">
 		<liferay-util:param name="border" value="<%= Boolean.TRUE.toString() %>" />
 		<liferay-util:param name="centered" value="<%= Boolean.TRUE.toString() %>" />
@@ -58,12 +58,12 @@ boolean osbTrialPurchased = ExpandoValueLocalServiceUtil.getData(themeDisplay.ge
 
 <div class="callout-d cleared">
 	<div class="content">
-		<div class="unit u-img">
+		<div class="u-img unit">
 			<img src="<%= PortalUtil.getPathContext(request) %>/images/liferay_portal_ee.png" />
 		</div>
 
 		<div class="callout-content m-lr-10-20">
-			<p class="u-nfo-c m-0">
+			<p class="m-0 u-nfo-c">
 				Liferay Portal EE
 			</p>
 
@@ -76,7 +76,7 @@ boolean osbTrialPurchased = ExpandoValueLocalServiceUtil.getData(themeDisplay.ge
 					<portlet:param name="redirect" value="<%= currentURL %>" />
 				</portlet:actionURL>
 
-				<a class='btn large-btn <%= osbTrialPurchased ? "disabled-btn" : "" %>' href="<%= buyLicenseKeyURL.toString() %>" <%= osbTrialPurchased ? "onClick=\'return false;'" : "" %>><liferay-ui:message key="buy" /></a>
+				<a class="btn large-btn <%= osbTrialPurchased ? "disabled-btn" : "" %>" href="<%= buyLicenseKeyURL.toString() %>" <%= osbTrialPurchased ? "onClick=\'return false;'" : "" %>><liferay-ui:message key="buy" /></a>
 
 				<c:if test="<%= osbTrialPurchased %>">
 					<span class="info">

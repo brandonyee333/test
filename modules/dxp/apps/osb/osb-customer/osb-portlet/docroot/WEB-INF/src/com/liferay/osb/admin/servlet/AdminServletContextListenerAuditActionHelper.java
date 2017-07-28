@@ -14,15 +14,15 @@
 
 package com.liferay.osb.admin.servlet;
 
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.model.AuditBaseModelListener;
 import com.liferay.osb.util.PortletPropsKeys;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.service.persistence.BasePersistence;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.util.portlet.PortletProps;
 
 /**

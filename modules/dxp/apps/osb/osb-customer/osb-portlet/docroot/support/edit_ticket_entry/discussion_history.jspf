@@ -32,7 +32,7 @@
 
 <div class="separator"><!-- --></div>
 
-<div class="history aui-helper-clearfix aui-w100">
+<div class="aui-helper-clearfix aui-w100 history">
 
 	<%
 	int[] visibilities = userVisibilities;
@@ -90,7 +90,7 @@
 		<c:choose>
 			<c:when test="<%= (auditEntry.getFieldClassNameId() == PortalUtil.getClassNameId(TicketCall.class)) || (auditEntry.getFieldClassNameId() == PortalUtil.getClassNameId(TicketComment.class)) %>">
 				<div class="aui-w100 content-column">
-					<div class="content-column-content comment-collapsed comment" id="<portlet:namespace />comment<%= auditEntry.getAuditEntryId() %>">
+					<div class="comment comment-collapsed content-column-content" id="<portlet:namespace />comment<%= auditEntry.getAuditEntryId() %>">
 						<div class="callout-a comment-body <%= (auditEntry.getAction() == AuditEntryConstants.ACTION_SOLUTION_REJECTED) ? "rejected-comment-body" : "" %>" onClick="<portlet:namespace />toggleComment(event, <%= auditEntry.getAuditEntryId() %>);" onmousemove="<portlet:namespace />toggleCommentStyle(event, this);">
 
 							<%

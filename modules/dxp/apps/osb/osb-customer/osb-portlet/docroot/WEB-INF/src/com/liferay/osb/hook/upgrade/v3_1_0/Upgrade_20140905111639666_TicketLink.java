@@ -29,9 +29,7 @@ public class Upgrade_20140905111639666_TicketLink extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20140905111639666L;
 	}
@@ -48,6 +46,7 @@ public class Upgrade_20140905111639666_TicketLink extends UpgradeProcess {
 	}
 
 }
+
 */
 
 }

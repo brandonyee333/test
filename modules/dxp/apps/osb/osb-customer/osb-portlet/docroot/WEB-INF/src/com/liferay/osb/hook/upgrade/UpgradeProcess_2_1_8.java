@@ -14,8 +14,8 @@
 
 package com.liferay.osb.hook.upgrade;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.osb.hook.upgrade.v2_1_8.UpgradeTicketSeverity;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
 /**
  * @author Lin Cui

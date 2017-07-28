@@ -28,10 +28,10 @@ portletURL.setParameter("tabs1", tabs1);
 %>
 
 <c:if test="<%= windowState.equals(WindowState.MAXIMIZED) %>">
-	<a class="portlet-icon-back fr" href="<%= PortalUtil.getLayoutURL(themeDisplay) %>"><liferay-ui:message key="return-to-full-page" /></a>
+	<a class="fr portlet-icon-back" href="<%= PortalUtil.getLayoutURL(themeDisplay) %>"><liferay-ui:message key="return-to-full-page" /></a>
 </c:if>
 
-<h1 class="section-heading nm">
+<h1 class="nm section-heading">
 	<liferay-ui:message key="support" />
 </h1>
 

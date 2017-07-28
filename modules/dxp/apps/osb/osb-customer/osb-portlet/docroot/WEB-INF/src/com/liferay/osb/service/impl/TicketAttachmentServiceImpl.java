@@ -21,13 +21,12 @@ import com.liferay.osb.service.permission.OSBTicketEntryPermission;
 import com.liferay.osb.support.util.FileRepositoryUtil;
 import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
-import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.ObjectValuePair;
 
 import java.io.File;
 
@@ -45,7 +44,7 @@ public class TicketAttachmentServiceImpl
 			long userId, long ticketEntryId, long ticketSolutionId,
 			String fileName, long fileSize, int type, int visibility,
 			String fileRepositoryId, int status)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OSBTicketEntryPermission.check(
 			getPermissionChecker(), ticketEntryId, ActionKeys.ADD_ATTACHMENT);
@@ -62,7 +61,7 @@ public class TicketAttachmentServiceImpl
 			List<ObjectValuePair<String, File>> files, List<Integer> types,
 			int visibility, int status, int[] pendingTypes,
 			ServiceContext serviceContext)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		List<TicketAttachment> ticketAttachments = addTicketAttachments(
 			userId, ticketEntryId, ticketSolutionId, files, types, visibility,
@@ -80,7 +79,7 @@ public class TicketAttachmentServiceImpl
 			long userId, long ticketEntryId, long ticketSolutionId,
 			List<ObjectValuePair<String, File>> files, List<Integer> types,
 			int visibility, int status, ServiceContext serviceContext)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OSBTicketEntryPermission.check(
 			getPermissionChecker(), ticketEntryId, ActionKeys.ADD_ATTACHMENT);
@@ -94,7 +93,7 @@ public class TicketAttachmentServiceImpl
 
 	public boolean checkAvailability(
 			long ticketAttachmentId, String fileRepositoryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketAttachment ticketAttachment =
 			ticketAttachmentLocalService.getTicketAttachment(
@@ -108,7 +107,7 @@ public class TicketAttachmentServiceImpl
 	}
 
 	public TicketAttachment deleteTicketAttachment(long ticketAttachmentId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketAttachment ticketAttachment =
 			ticketAttachmentLocalService.getTicketAttachment(
@@ -126,7 +125,7 @@ public class TicketAttachmentServiceImpl
 	}
 
 	public TicketAttachment getTicketAttachment(long ticketAttachmentId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketAttachment ticketAttachment =
 			ticketAttachmentLocalService.getTicketAttachment(
@@ -143,7 +142,7 @@ public class TicketAttachmentServiceImpl
 	}
 
 	public String getUploadToken(long ticketEntryId, String fileRepositoryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OSBTicketEntryPermission.check(
 			getPermissionChecker(), ticketEntryId, ActionKeys.ADD_ATTACHMENT);
@@ -152,7 +151,7 @@ public class TicketAttachmentServiceImpl
 	}
 
 	public TicketAttachment replicateTicketAttachment(long ticketAttachmentId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketAttachment ticketAttachment =
 			ticketAttachmentLocalService.getTicketAttachment(
@@ -171,7 +170,7 @@ public class TicketAttachmentServiceImpl
 
 	public TicketAttachment updateDeleteDate(
 			long ticketAttachmentId, Date deleteDate)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketAttachment ticketAttachment =
 			ticketAttachmentLocalService.getTicketAttachment(
@@ -191,7 +190,7 @@ public class TicketAttachmentServiceImpl
 	public TicketAttachment updateTicketAttachment(
 			long ticketAttachmentId, long ticketEntryId, int type,
 			int visibility, int[] pendingTypes)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketAttachment ticketAttachment =
 			ticketAttachmentLocalService.getTicketAttachment(
@@ -224,7 +223,7 @@ public class TicketAttachmentServiceImpl
 	public List<TicketAttachment> updateTicketAttachments(
 			List<Long> ticketAttachmentIds, long ticketEntryId,
 			List<Integer> types, List<Integer> visibilities, int[] pendingTypes)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		for (long ticketAttachmentId : ticketAttachmentIds) {
 			TicketAttachment ticketAttachment =
@@ -259,7 +258,7 @@ public class TicketAttachmentServiceImpl
 
 	protected void checkVisibility(
 			long userId, long ticketEntryId, int visibility)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (!ticketEntryLocalService.hasVisibility(
 				userId, ticketEntryId, visibility)) {

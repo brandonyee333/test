@@ -134,27 +134,27 @@
 
 					<div>
 						<table class="lfr-table">
-						<tr>
-							<th>
-								<strong><liferay-ui:message key="upload-files" /></strong>
-							</th>
-						</tr>
-
-						<%
-						for (int i = 1; i <= 3; i++) {
-						%>
-
 							<tr>
-								<td>
-									<label for="<portlet:namespace />file<%= i %>"><liferay-ui:message key="file" /> <%= i %></label>
-
-									<input id="<portlet:namespace />file<%= i %>" name="<portlet:namespace />file<%= i %>" type="file" />
-								</td>
+								<th>
+									<strong><liferay-ui:message key="upload-files" /></strong>
+								</th>
 							</tr>
 
-						<%
-						}
-						%>
+							<%
+							for (int i = 1; i <= 3; i++) {
+							%>
+
+								<tr>
+									<td>
+										<label for="<portlet:namespace />file<%= i %>"><liferay-ui:message key="file" /> <%= i %></label>
+
+										<input id="<portlet:namespace />file<%= i %>" name="<portlet:namespace />file<%= i %>" type="file" />
+									</td>
+								</tr>
+
+							<%
+							}
+							%>
 
 						</table>
 

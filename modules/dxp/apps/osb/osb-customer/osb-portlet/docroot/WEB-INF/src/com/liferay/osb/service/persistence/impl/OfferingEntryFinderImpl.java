@@ -14,13 +14,9 @@
 
 package com.liferay.osb.service.persistence.impl;
 
-import com.liferay.osb.service.persistence.OfferingEntryFinder;
-import com.liferay.osb.service.persistence.OfferingEntryUtil;
-
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.impl.OfferingEntryImpl;
+import com.liferay.osb.service.persistence.OfferingEntryFinder;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
@@ -31,7 +27,8 @@ import com.liferay.portal.kernel.util.CalendarUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.sql.Timestamp;
@@ -67,10 +64,9 @@ public class OfferingEntryFinderImpl
 		OfferingEntryFinder.class.getName() + ".joinByValidTicket";
 
 	public int countByU_AEI_PEI_T_S_SED(
-			long userId, long accountEntryId, long productEntryId, int[] types,
-			int[] statuses, Date supportEndDateGT, Date supportEndDateLT,
-			LinkedHashMap<String, Object> params, boolean andOperator)
-		throws SystemException {
+		long userId, long accountEntryId, long productEntryId, int[] types,
+		int[] statuses, Date supportEndDateGT, Date supportEndDateLT,
+		LinkedHashMap<String, Object> params, boolean andOperator) {
 
 		Timestamp supportEndDateGT_TS = CalendarUtil.getTimestamp(
 			supportEndDateGT);
@@ -104,7 +100,7 @@ public class OfferingEntryFinderImpl
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addScalar(COUNT_COLUMN_NAME, Type.LONG);
 
@@ -152,11 +148,10 @@ public class OfferingEntryFinderImpl
 	}
 
 	public List<OfferingEntry> findByU_AEI_PEI_T_S_SED(
-			long userId, long accountEntryId, long productEntryId, int[] types,
-			int[] statuses, Date supportEndDateGT, Date supportEndDateLT,
-			LinkedHashMap<String, Object> params, boolean andOperator,
-			int start, int end, OrderByComparator obc)
-		throws SystemException {
+		long userId, long accountEntryId, long productEntryId, int[] types,
+		int[] statuses, Date supportEndDateGT, Date supportEndDateLT,
+		LinkedHashMap<String, Object> params, boolean andOperator, int start,
+		int end, OrderByComparator obc) {
 
 		Timestamp supportEndDateGT_TS = CalendarUtil.getTimestamp(
 			supportEndDateGT);
@@ -191,7 +186,7 @@ public class OfferingEntryFinderImpl
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addEntity("OSB_OfferingEntry", OfferingEntryImpl.class);
 

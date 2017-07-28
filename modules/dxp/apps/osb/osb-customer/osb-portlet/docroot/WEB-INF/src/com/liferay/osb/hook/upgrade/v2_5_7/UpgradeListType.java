@@ -16,7 +16,7 @@ package com.liferay.osb.hook.upgrade.v2_5_7;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
-/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+/*import UpgradeProcess;
 
 */
 
@@ -29,9 +29,7 @@ public class UpgradeListType extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	protected void doUpgrade() throws Exception {
 		updateListType();
 	}
@@ -43,6 +41,7 @@ public class UpgradeListType extends UpgradeProcess {
 	}
 
 }
+
 */
 
 }

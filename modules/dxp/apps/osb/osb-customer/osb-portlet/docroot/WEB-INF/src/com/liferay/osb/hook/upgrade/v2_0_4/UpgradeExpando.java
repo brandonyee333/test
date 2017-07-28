@@ -16,7 +16,7 @@ package com.liferay.osb.hook.upgrade.v2_0_4;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
-/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+/*import UpgradeProcess;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.dao.orm.ORMException;
@@ -51,9 +51,7 @@ public class UpgradeExpando extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	protected void deleteExpandoColumn(long companyId, String expandoColumnName)
+/*protected void deleteExpandoColumn(long companyId, String expandoColumnName)
 		throws Exception {
 
 		ExpandoTable expandoTable = null;
@@ -291,23 +289,22 @@ public class UpgradeExpando extends UpgradeProcess {
 		{"agreed-to-contact-sales", "agreedToContactSales"},
 		{"agreed-to-contact-trainings", "agreedToContactTrainings"},
 		{"agreed-to-contact-trial-licenses", "agreedToContactTrialLicenses"},
-		{"company-role", "companyRole"},
-		{"display-badges", "displayBadges"},
+		{"company-role", "companyRole"}, {"display-badges", "displayBadges"},
 		{"how-did-you-hear-about-liferay", "howDidYouHearAboutLiferay"},
 		{"liferay-sync-eula", "liferaySyncEULA"},
 		{"marketplace-country-id", "marketplaceCountryId"},
-		{"phone-number", "phoneNumber"},
-		{"studio-eula", "studioEULA"},
+		{"phone-number", "phoneNumber"}, {"studio-eula", "studioEULA"},
 		{"trial-eula", "trialEULA"},
 		{
 			"what-solution-are-you-currently-using",
 			"whatSolutionAreYouCurrentlyUsing"
-		},
+		}
 	};
 
 	private static Log _log = LogFactoryUtil.getLog(UpgradeExpando.class);
 
 }
+
 */
 
 }

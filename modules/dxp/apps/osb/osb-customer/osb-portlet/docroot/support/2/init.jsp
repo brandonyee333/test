@@ -29,7 +29,7 @@ boolean supportPartnerWorker = false;
 
 LinkedHashMap<String, Object> partnerWorkerParams = new LinkedHashMap<String, Object>();
 
-partnerWorkerParams.put("partnerWorker", new Long(user.getUserId()));
+partnerWorkerParams.put("partnerWorker", Long.valueOf(user.getUserId()));
 partnerWorkerParams.put("status", AccountEntryConstants.STATUSES_ACTIVE);
 
 if (AccountEntryLocalServiceUtil.searchCount(null, partnerWorkerParams) > 0) {

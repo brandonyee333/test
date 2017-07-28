@@ -14,7 +14,6 @@
 
 package com.liferay.osb.service.permission;
 
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.SupportWorker;
 import com.liferay.osb.model.SupportWorkerConstants;
@@ -31,11 +30,11 @@ import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,7 +48,7 @@ public class OSBTicketAttachmentPermission {
 	public static void check(
 			PermissionChecker permissionChecker,
 			TicketAttachment ticketAttachment, String actionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (!contains(permissionChecker, ticketAttachment, actionId)) {
 			throw new PrincipalException();
@@ -59,7 +58,7 @@ public class OSBTicketAttachmentPermission {
 	public static boolean contains(
 			PermissionChecker permissionChecker,
 			TicketAttachment ticketAttachment, String actionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (ticketAttachment.getTicketEntryId() <= 0) {
 			return isOwner(permissionChecker, ticketAttachment);
@@ -81,7 +80,7 @@ public class OSBTicketAttachmentPermission {
 	public static boolean containsLargeFile(
 			PermissionChecker permissionChecker,
 			TicketAttachment ticketAttachment, String actionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (RoleLocalServiceUtil.hasUserRole(
 				permissionChecker.getUserId(),
@@ -90,7 +89,7 @@ public class OSBTicketAttachmentPermission {
 			return true;
 		}
 
-		List<SupportWorker> supportWorkers = new ArrayList<SupportWorker>();
+		List<SupportWorker> supportWorkers = new ArrayList<>();
 
 		try {
 			supportWorkers =
@@ -157,7 +156,7 @@ public class OSBTicketAttachmentPermission {
 	public static boolean containsRegular(
 			PermissionChecker permissionChecker,
 			TicketAttachment ticketAttachment, String actionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (RoleLocalServiceUtil.hasUserRole(
 				permissionChecker.getUserId(),

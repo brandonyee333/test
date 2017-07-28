@@ -35,19 +35,19 @@ boolean paginate = ParamUtil.getBoolean(request, "paginate");
 		<div class="section-title <%= HtmlUtil.escapeAttribute(id) %>" id="<portlet:namespace /><%= HtmlUtil.escapeAttribute(id) %>">
 			<div class="table">
 				<div class="row">
-					<div class="column search-results-header partner-column name">
+					<div class="column name partner-column search-results-header">
 						<liferay-ui:message key="name" />
 					</div>
 
-					<div class="column search-results-header partner-column first-line-support">
+					<div class="column first-line-support partner-column search-results-header">
 						<liferay-ui:message key="first-line-support" />
 					</div>
 
-					<div class="column search-results-header partner-column support-region">
+					<div class="column partner-column search-results-header support-region">
 						<liferay-ui:message key="support-region" />
 					</div>
 
-					<div class="column search-results-header partner-column status">
+					<div class="column partner-column search-results-header status">
 						<liferay-ui:message key="status" />
 					</div>
 				</div>
@@ -107,7 +107,7 @@ boolean paginate = ParamUtil.getBoolean(request, "paginate");
 					</liferay-portlet:renderURL>
 
 					<a class="row-url search-row" draggable="false" href="<%= rowURL %>" <%= rowJS %>>
-						<div class="column partner-column name" <%= columnJS %>>
+						<div class="column name partner-column" <%= columnJS %>>
 							<div class="search-title">
 								<span title="<%= HtmlUtil.escapeAttribute(partnerEntry.getCode()) %>">
 									<%= HtmlUtil.escape(partnerEntry.getCode()) %>
@@ -115,7 +115,7 @@ boolean paginate = ParamUtil.getBoolean(request, "paginate");
 							</div>
 						</div>
 
-						<div class="column partner-column first-line-support" <%= columnJS %>>
+						<div class="column first-line-support partner-column" <%= columnJS %>>
 							<div class="search-detail">
 								<span title="<%= HtmlUtil.escapeAttribute(partnerEntry.getCode()) %>">
 									<%= isManagingSupport ? LanguageUtil.get(pageContext, "yes") : LanguageUtil.get(pageContext, "no") %>

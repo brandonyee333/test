@@ -16,7 +16,6 @@ package com.liferay.osb.service.impl;
 
 import com.liferay.osb.model.AuditAction;
 import com.liferay.osb.service.base.AuditActionLocalServiceBaseImpl;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.Date;
@@ -28,13 +27,12 @@ import java.util.List;
 public class AuditActionLocalServiceImpl
 	extends AuditActionLocalServiceBaseImpl {
 
-	public void deleteAuditActions(Date modifiedDate) throws SystemException {
+	public void deleteAuditActions(Date modifiedDate) {
 		auditActionPersistence.removeByLtModifiedDate(modifiedDate);
 	}
 
 	public List<AuditAction> getAuditActions(
-			Date modifiedDate, long classNameId, boolean mapping, int action)
-		throws SystemException {
+		Date modifiedDate, long classNameId, boolean mapping, int action) {
 
 		if (mapping) {
 			return auditActionPersistence.findByGtMD_C_GtMC_A(
@@ -47,8 +45,7 @@ public class AuditActionLocalServiceImpl
 	}
 
 	public AuditAction updateAuditAction(
-			long classNameId, long classPK, long mappingClassPK, int action)
-		throws SystemException {
+		long classNameId, long classPK, long mappingClassPK, int action) {
 
 		AuditAction auditAction = auditActionPersistence.fetchByC_C_MC(
 			classNameId, classPK, mappingClassPK);
@@ -65,9 +62,9 @@ public class AuditActionLocalServiceImpl
 
 		auditAction.setModifiedDate(new Date());
 		auditAction.setAction(action);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		auditActionPersistence.update(auditAction, serviceContext);

@@ -48,18 +48,17 @@ if (ticketEntry != null) {
 						<span class="txt-b txt-up">
 							<liferay-ui:message key="reproducible" />:
 						</span>
-
 						<span>
-							 <%= LanguageUtil.get(pageContext, ticketFeedback.getAnswer1Label()) %>
+							<%= LanguageUtil.get(pageContext, ticketFeedback.getAnswer1Label()) %>
 						</span>
 					</div>
 				</div>
+
 				<div class="aui-w50 content-column">
 					<div class="content-column-content right-column">
 						<span class="txt-b txt-up">
 							<liferay-ui:message key="timely-escalated" />:
 						</span>
-
 						<span>
 							<%= LanguageUtil.get(pageContext, ticketFeedback.getAnswer2Label()) %>
 						</span>
@@ -73,7 +72,6 @@ if (ticketEntry != null) {
 						<span class="txt-b txt-up">
 							<liferay-ui:message key="escalated-properly" />:
 						</span>
-
 						<span>
 							<%= LanguageUtil.get(pageContext, ticketFeedback.getAnswer3Label()) %>
 						</span>
@@ -83,7 +81,6 @@ if (ticketEntry != null) {
 						<span class="txt-b txt-up">
 							<liferay-ui:message key="response-time" />:
 						</span>
-
 						<span>
 							<%= ticketFeedback.getRating1() %> - <%= LanguageUtil.get(pageContext, ticketFeedback.getRating1Label()) %>
 						</span>
@@ -95,7 +92,6 @@ if (ticketEntry != null) {
 						<span class="txt-b txt-up">
 							<liferay-ui:message key="technical-knowledge" />:
 						</span>
-
 						<span>
 							<%= ticketFeedback.getRating2() %> - <%= LanguageUtil.get(pageContext, ticketFeedback.getRating2Label()) %>
 						</span>
@@ -105,7 +101,6 @@ if (ticketEntry != null) {
 						<span class="txt-b txt-up">
 							<liferay-ui:message key="professionalism" />:
 						</span>
-
 						<span>
 							<%= ticketFeedback.getRating3() %> - <%= LanguageUtil.get(pageContext, ticketFeedback.getRating3Label()) %>
 						</span>

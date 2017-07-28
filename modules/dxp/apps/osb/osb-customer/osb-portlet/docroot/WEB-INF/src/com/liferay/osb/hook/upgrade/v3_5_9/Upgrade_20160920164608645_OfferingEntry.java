@@ -24,16 +24,13 @@ import com.liferay.portal.kernel.util.StringBundler;
 /**
  * @author Amos Fong
  */
-public class Upgrade_20160920164608645_OfferingEntry
-	extends UpgradeProcess {
+public class Upgrade_20160920164608645_OfferingEntry extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20160920164608645L;
 	}
@@ -139,6 +136,7 @@ public class Upgrade_20160920164608645_OfferingEntry
 	}
 
 }
+
 */
 
 }

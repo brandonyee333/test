@@ -14,9 +14,9 @@
 
 package com.liferay.osb.admin.search;
 
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.LinkedHashMap;
 
@@ -53,8 +53,7 @@ public class PartnerEntrySearchTerms extends PartnerEntryDisplayTerms {
 	}
 
 	public LinkedHashMap<String, Object> getParams() {
-		LinkedHashMap<String, Object> params =
-			new LinkedHashMap<String, Object>();
+		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
 		if (!isAdvancedSearch()) {
 			return params;

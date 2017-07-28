@@ -19,7 +19,6 @@ import com.liferay.osb.service.base.TicketCallServiceBaseImpl;
 import com.liferay.osb.service.permission.OSBTicketEntryPermission;
 import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 
@@ -34,7 +33,7 @@ public class TicketCallServiceImpl extends TicketCallServiceBaseImpl {
 			int callDateYear, int callDateHour, int callDateMinute,
 			long callLength, String customerName, String customerContact,
 			String confirmation, String instructions)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OSBTicketEntryPermission.check(
 			getPermissionChecker(), ticketEntryId,

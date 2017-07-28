@@ -49,9 +49,7 @@ public class Upgrade_20140507135124536_Expando extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20140507135124536L;
 	}
@@ -62,9 +60,9 @@ public class Upgrade_20140507135124536_Expando extends UpgradeProcess {
 	}
 
 	protected void setPermissions(long companyId, ExpandoColumn expandoColumn)
-		throws PortalException, SystemException {
+		throws PortalException {
 
-		Map<Long, String[]> roleIdsToActionIds = new HashMap<Long, String[]>();
+		Map<Long, String[]> roleIdsToActionIds = new HashMap<>();
 
 		String[] actionIds = {ActionKeys.UPDATE, ActionKeys.VIEW};
 		Role guestRole = RoleLocalServiceUtil.getRole(
@@ -121,6 +119,7 @@ public class Upgrade_20140507135124536_Expando extends UpgradeProcess {
 	};
 
 }
+
 */
 
 }

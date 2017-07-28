@@ -15,9 +15,9 @@
 package com.liferay.osb.support.search;
 
 import com.liferay.portal.kernel.dao.search.SearchContainer;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.comparator.UserEmailAddressComparator;
 import com.liferay.portal.kernel.util.comparator.UserFirstNameComparator;
 import com.liferay.portal.kernel.util.comparator.UserLastNameComparator;
@@ -36,8 +36,8 @@ import javax.portlet.PortletURL;
  */
 public class OSBUserSearch extends SearchContainer<User> {
 
-	static List<String> headerNames = new ArrayList<String>();
-	static Map<String, String> orderableHeaders = new HashMap<String, String>();
+	static List<String> headerNames = new ArrayList<>();
+	static Map<String, String> orderableHeaders = new HashMap<>();
 
 	static {
 		headerNames.add("first-name");
@@ -45,9 +45,9 @@ public class OSBUserSearch extends SearchContainer<User> {
 		headerNames.add("email-address");
 		headerNames.add("type");
 
+		orderableHeaders.put("email-address", "email-address");
 		orderableHeaders.put("first-name", "first-name");
 		orderableHeaders.put("last-name", "last-name");
-		orderableHeaders.put("email-address", "email-address");
 	}
 
 	public static final String EMPTY_RESULTS_MESSAGE = "no-students-were-found";

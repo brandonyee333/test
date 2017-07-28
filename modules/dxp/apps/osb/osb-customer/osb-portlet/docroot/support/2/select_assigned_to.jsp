@@ -147,7 +147,6 @@ if (liferayIncOrg) {
 											url='<%= "javascript:" + renderResponse.getNamespace() + "toggleAccountEntries(" + supportTeam.getSupportTeamId() + ", true);" %>'
 										/>
 									</span>
-
 									<span class="aui-helper-hidden collapse" id="<portlet:namespace />collapse_<%= supportTeam.getSupportTeamId() %>">
 										<liferay-ui:icon
 											image="../arrows/01_minus"

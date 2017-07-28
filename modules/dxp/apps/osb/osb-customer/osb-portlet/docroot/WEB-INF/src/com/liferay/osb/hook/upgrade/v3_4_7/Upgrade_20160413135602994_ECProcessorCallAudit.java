@@ -31,9 +31,7 @@ public class Upgrade_20160413135602994_ECProcessorCallAudit
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20160413135602994L;
 	}
@@ -57,6 +55,7 @@ public class Upgrade_20160413135602994_ECProcessorCallAudit
 	}
 
 }
+
 */
 
 }

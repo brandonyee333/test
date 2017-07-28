@@ -14,13 +14,12 @@
 
 package com.liferay.osb.model.impl;
 
+import com.liferay.document.library.kernel.store.DLStoreUtil;
 import com.liferay.osb.model.AccountAttachmentConstants;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.model.CompanyConstants;
-import com.liferay.document.library.kernel.store.DLStoreUtil;
+import com.liferay.portal.kernel.util.StringPool;
 
 /**
  * @author Brent Krone-Schmidt
@@ -30,7 +29,7 @@ public class AccountAttachmentImpl extends AccountAttachmentBaseImpl {
 	public AccountAttachmentImpl() {
 	}
 
-	public boolean fileExists() throws PortalException, SystemException {
+	public boolean fileExists() throws PortalException {
 		String filePath = getFileDir() + StringPool.SLASH + getFileName();
 
 		return DLStoreUtil.hasFile(

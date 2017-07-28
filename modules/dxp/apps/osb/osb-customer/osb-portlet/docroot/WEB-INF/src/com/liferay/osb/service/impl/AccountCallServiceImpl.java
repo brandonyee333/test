@@ -19,7 +19,6 @@ import com.liferay.osb.service.base.AccountCallServiceBaseImpl;
 import com.liferay.osb.service.permission.OSBAccountEntryPermission;
 import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 
@@ -30,7 +29,7 @@ import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 public class AccountCallServiceImpl extends AccountCallServiceBaseImpl {
 
 	public AccountCall deleteAccountCall(long accountCallId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		AccountCall accountCall = accountCallLocalService.getAccountCall(
 			accountCallId);
@@ -48,7 +47,7 @@ public class AccountCallServiceImpl extends AccountCallServiceBaseImpl {
 			int callDateHour, int callDateMinute, long callLength,
 			String summary, String clientsPresent, String notes,
 			String actionItems)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OSBAccountEntryPermission.check(
 			getPermissionChecker(), accountEntryId,

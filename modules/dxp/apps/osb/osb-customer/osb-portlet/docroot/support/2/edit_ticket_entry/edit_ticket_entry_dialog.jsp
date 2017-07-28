@@ -74,19 +74,15 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 					<span class="first selected" id="<portlet:namespace />ticketDetails" onClick="<portlet:namespace />revealDialogTab('ticketDetails');">
 						<liferay-ui:message key="ticket-details" />
 					</span>
-
 					<span id="<portlet:namespace />environmentDetails" onClick="<portlet:namespace />revealDialogTab('environmentDetails');">
 						<liferay-ui:message key="environment-details" />
 					</span>
-
 					<span class="aui-helper-hidden component-tab" id="<portlet:namespace />clusteringDetails" onClick="<portlet:namespace />revealDialogTab('clusteringDetails');">
 						<liferay-ui:message key="clustering-details" />
 					</span>
-
 					<span class="aui-helper-hidden component-tab" id="<portlet:namespace />activationKeyDetails" onClick="<portlet:namespace />revealDialogTab('activationKeyDetails');">
 						<liferay-ui:message key="activation-key-details" />
 					</span>
-
 					<span class="aui-helper-hidden component-tab" id="<portlet:namespace />upgradeDetails" onClick="<portlet:namespace />revealDialogTab('upgradeDetails');">
 						<liferay-ui:message key="upgrade-details" />
 					</span>

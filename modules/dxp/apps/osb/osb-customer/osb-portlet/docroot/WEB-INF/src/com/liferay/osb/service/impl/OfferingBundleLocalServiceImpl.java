@@ -14,15 +14,14 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.exception.DuplicateOfferingBundleException;
 import com.liferay.osb.exception.OfferingBundleNameException;
 import com.liferay.osb.model.OfferingBundle;
 import com.liferay.osb.service.base.OfferingBundleLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Date;
 
@@ -34,7 +33,7 @@ public class OfferingBundleLocalServiceImpl
 
 	public OfferingBundle addOfferingBundle(
 			long userId, String name, long[] offeringDefinitionIds)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 
@@ -49,9 +48,9 @@ public class OfferingBundleLocalServiceImpl
 		offeringBundle.setUserName(user.getFullName());
 		offeringBundle.setCreateDate(new Date());
 		offeringBundle.setName(name);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		offeringBundlePersistence.update(offeringBundle, serviceContext);
@@ -64,7 +63,7 @@ public class OfferingBundleLocalServiceImpl
 
 	public OfferingBundle updateOfferingBundle(
 			long offeringBundleId, String name, long[] offeringDefinitionIds)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		validate(offeringBundleId, name);
 
@@ -72,9 +71,9 @@ public class OfferingBundleLocalServiceImpl
 			offeringBundlePersistence.findByPrimaryKey(offeringBundleId);
 
 		offeringBundle.setName(name);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		offeringBundlePersistence.update(offeringBundle, serviceContext);
@@ -86,7 +85,7 @@ public class OfferingBundleLocalServiceImpl
 	}
 
 	protected void validate(long offeringBundleId, String name)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (Validator.isNull(name)) {
 			throw new OfferingBundleNameException();

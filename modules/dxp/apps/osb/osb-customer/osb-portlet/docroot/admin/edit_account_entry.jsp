@@ -127,7 +127,6 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 
 				<span class="txt-sb"><%= HtmlUtil.escape(PortalUtil.getUserName(accountEntry.getUserId(), accountEntry.getUserName())) %></span>
 			</span>
-
 			<span class="spacer"></span>
 
 			<span class="segment">
@@ -135,7 +134,6 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 
 				<span class="txt-sb"><%= HtmlUtil.escape(PortalUtil.getUserName(accountEntry.getModifiedUserId(), accountEntry.getModifiedUserName())) %> <liferay-ui:message key="on" /> <%= longDateFormatDateTime.format(accountEntry.getModifiedDate()) %></span>
 			</span>
-
 			<span class="spacer"></span>
 
 			<span class="segment">
@@ -161,7 +159,6 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 					</c:choose>
 				</span>
 			</span>
-
 			<span class="spacer"></span>
 
 			<%
@@ -263,338 +260,337 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 	</c:if>
 
 	<table class="lfr-table">
-
-	<c:if test="<%= accountEntry != null %>">
-		<tr>
-			<td>
-				<liferay-ui:message key="dossiera-account-name" />
-			</td>
-			<td>
-				<%= HtmlUtil.escape(accountEntry.getCorpEntryName()) %>
-			</td>
-		</tr>
-	</c:if>
-
-	<tr>
-		<td>
-			<liferay-ui:message key="project-name" />
-		</td>
-		<td>
-			<aui:input label="" name="name" />
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="code" />
-		</td>
-		<td>
-			<aui:input label="" name="code" />
-		</td>
-	</tr>
-
-	<c:if test="<%= accountEntry != null %>">
-
-		<%
-		List<AccountEntry> redirectAccountEntries = AccountEntryLocalServiceUtil.getRedirectAccountEntries(accountEntry.getAccountEntryId());
-		%>
-
-		<c:if test="<%= !redirectAccountEntries.isEmpty() %>">
+		<c:if test="<%= accountEntry != null %>">
 			<tr>
 				<td>
-					<liferay-ui:message key="redirect-codes" />
+					<liferay-ui:message key="dossiera-account-name" />
 				</td>
 				<td>
-					<table>
-
-						<%
-						for (AccountEntry redirectAccountEntry : redirectAccountEntries) {
-						%>
-
-							<tr>
-								<td>
-									<%= redirectAccountEntry.getCode() %>
-								</td>
-								<td>
-									<portlet:actionURL name="deleteAccountEntry" var="deleteURL">
-										<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
-										<portlet:param name="accountEntryId" value="<%= String.valueOf(redirectAccountEntry.getAccountEntryId()) %>" />
-									</portlet:actionURL>
-
-									<liferay-ui:icon-delete label="<%= true %>" url="<%= deleteURL %>" />
-								</td>
-							</tr>
-
-						<%
-						}
-						%>
-
-					</table>
+					<%= HtmlUtil.escape(accountEntry.getCorpEntryName()) %>
 				</td>
 			</tr>
 		</c:if>
-	</c:if>
 
-	<tr>
-		<td>
-			<liferay-ui:message key="corp-project" />
-		</td>
-		<td>
+		<tr>
+			<td>
+				<liferay-ui:message key="project-name" />
+			</td>
+			<td>
+				<aui:input label="" name="name" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="code" />
+			</td>
+			<td>
+				<aui:input label="" name="code" />
+			</td>
+		</tr>
 
-			<%
-			CorpProject corpProject = CorpProjectLocalServiceUtil.fetchCorpProject(corpProjectId);
-			%>
-
-			<span id="<portlet:namespace />corpProjectName">
-				<c:if test="<%= corpProject != null %>">
-					<liferay-portlet:renderURL portletName="<%= OSBPortletKeys.OSB_CORP_PROJECT_ADMIN %>" var="corpProjectURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
-						<portlet:param name="mvcPath" value="/corp_project_admin/view_corp_project.jsp" />
-						<portlet:param name="backURL" value="<%= currentURL %>" />
-						<portlet:param name="corpProjectId" value="<%= String.valueOf(corpProject.getCorpProjectId()) %>" />
-					</liferay-portlet:renderURL>
-
-					<a href="<%= corpProjectURL.toString() %>" target="_blank">
-						<%= HtmlUtil.escape(corpProject.getName()) %>
-					</a>
-				</c:if>
-			</span>
-
-			<input onClick="var corpProjectWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/admin/select_corp_project.jsp" /><portlet:param name="callback" value="selectCorpProject" /></portlet:renderURL>', 'corp-project', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); corpProjectWindow.focus();" type="button" value="<liferay-ui:message key="select" />" />
-
-			<input onClick="<portlet:namespace />removeCorpProject();" type="button" value="<liferay-ui:message key="remove" />" />
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="ewsa-dossiera-project-key" />
-		</td>
-		<td>
-			<input name="ewsaDossieraProjectKey" type="text" value="<%= HtmlUtil.escapeAttribute(ewsaDossieraProjectKey) %>" />
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="type" />
-		</td>
-		<td>
-			<aui:select label="" name="type">
-
-				<%
-				for (int i = 1; i <= 4; i++) {
-				%>
-
-					<aui:option label="<%= AccountEntryConstants.getTypeLabel(i) %>" selected="<%= type == i %>" value="<%= i %>" />
-
-				<%
-				}
-				%>
-
-			</aui:select>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="industry" />
-		</td>
-		<td>
-			<aui:select label="" name="industry">
-				<aui:option value="" />
-
-				<%
-				List<ListType> industryTypes = ListTypeServiceUtil.getListTypes(AccountEntryConstants.LIST_TYPE_INDUSTRY);
-
-				for (ListType industryType : industryTypes) {
-				%>
-
-					<aui:option label="<%= industryType.getName() %>" selected="<%= industryType.getListTypeId() == industry %>" value="<%= industryType.getListTypeId() %>" />
-
-				<%
-				}
-				%>
-
-			</aui:select>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="partner" />
-		</td>
-		<td>
+		<c:if test="<%= accountEntry != null %>">
 
 			<%
-			String partnerEntryCode = StringPool.BLANK;
-
-			try {
-				PartnerEntry partnerEntry = PartnerEntryLocalServiceUtil.getPartnerEntry(partnerEntryId);
-
-				partnerEntryCode = partnerEntry.getCode();
-			}
-			catch (NoSuchPartnerEntryException nspe) {
-			}
+			List<AccountEntry> redirectAccountEntries = AccountEntryLocalServiceUtil.getRedirectAccountEntries(accountEntry.getAccountEntryId());
 			%>
 
-			<span id="<portlet:namespace />partnerEntryCode">
-				<c:choose>
-					<c:when test="<%= RoleLocalServiceUtil.hasUserRole(permissionChecker.getUserId(), OSBConstants.ROLE_OSB_ADMINISTRATOR_ID) && (partnerEntryId > 0) %>">
-						<a href="<portlet:renderURL windowState="<%= WindowState.MAXIMIZED.toString() %>"><portlet:param name="mvcPath" value="/admin/edit_partner_entry.jsp" /><portlet:param name="redirect" value="<%= portletURL.toString() %>" /><portlet:param name="partnerEntryId" value="<%= String.valueOf(partnerEntryId) %>" /></portlet:renderURL>">
-							<%= partnerEntryCode %>
+			<c:if test="<%= !redirectAccountEntries.isEmpty() %>">
+				<tr>
+					<td>
+						<liferay-ui:message key="redirect-codes" />
+					</td>
+					<td>
+						<table>
+
+							<%
+							for (AccountEntry redirectAccountEntry : redirectAccountEntries) {
+							%>
+
+								<tr>
+									<td>
+										<%= redirectAccountEntry.getCode() %>
+									</td>
+									<td>
+										<portlet:actionURL name="deleteAccountEntry" var="deleteURL">
+											<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
+											<portlet:param name="accountEntryId" value="<%= String.valueOf(redirectAccountEntry.getAccountEntryId()) %>" />
+										</portlet:actionURL>
+
+										<liferay-ui:icon-delete label="<%= true %>" url="<%= deleteURL %>" />
+									</td>
+								</tr>
+
+							<%
+							}
+							%>
+
+						</table>
+					</td>
+				</tr>
+			</c:if>
+		</c:if>
+
+		<tr>
+			<td>
+				<liferay-ui:message key="corp-project" />
+			</td>
+			<td>
+
+				<%
+				CorpProject corpProject = CorpProjectLocalServiceUtil.fetchCorpProject(corpProjectId);
+				%>
+
+				<span id="<portlet:namespace />corpProjectName">
+					<c:if test="<%= corpProject != null %>">
+						<liferay-portlet:renderURL portletName="<%= OSBPortletKeys.OSB_CORP_PROJECT_ADMIN %>" var="corpProjectURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+							<portlet:param name="mvcPath" value="/corp_project_admin/view_corp_project.jsp" />
+							<portlet:param name="backURL" value="<%= currentURL %>" />
+							<portlet:param name="corpProjectId" value="<%= String.valueOf(corpProject.getCorpProjectId()) %>" />
+						</liferay-portlet:renderURL>
+
+						<a href="<%= corpProjectURL.toString() %>" target="_blank">
+							<%= HtmlUtil.escape(corpProject.getName()) %>
 						</a>
-					</c:when>
-					<c:otherwise>
-						<%= partnerEntryCode %>
-					</c:otherwise>
-				</c:choose>
-			</span>
+					</c:if>
+				</span>
 
-			<input onClick="var partnerEntryWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/admin/select_partner_entry.jsp" /></portlet:renderURL>', 'partner', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); partnerEntryWindow.focus();" type="button" value="<liferay-ui:message key="select" />" />
+				<input onClick="var corpProjectWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/admin/select_corp_project.jsp" /><portlet:param name="callback" value="selectCorpProject" /></portlet:renderURL>', 'corp-project', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); corpProjectWindow.focus();" type="button" value="<liferay-ui:message key="select" />" />
 
-			<input id="<portlet:namespace />removePartnerEntryButton" onClick="<portlet:namespace />removePartnerEntry();" type="button" value="<liferay-ui:message key="remove" />" />
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="partner-first-line-support" />
-		</td>
-		<td>
-			<liferay-ui:input-field bean="<%= accountEntry %>" disabled="<%= partnerEntryId <= 0 %>" field="partnerManagedSupport" model="<%= AccountEntry.class %>" />
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="tier" />
-		</td>
-		<td>
-			<aui:select label="" name="tier">
+				<input onClick="<portlet:namespace />removeCorpProject();" type="button" value="<liferay-ui:message key="remove" />" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="ewsa-dossiera-project-key" />
+			</td>
+			<td>
+				<input name="ewsaDossieraProjectKey" type="text" value="<%= HtmlUtil.escapeAttribute(ewsaDossieraProjectKey) %>" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="type" />
+			</td>
+			<td>
+				<aui:select label="" name="type">
+
+					<%
+					for (int i = 1; i <= 4; i++) {
+					%>
+
+						<aui:option label="<%= AccountEntryConstants.getTypeLabel(i) %>" selected="<%= type == i %>" value="<%= i %>" />
+
+					<%
+					}
+					%>
+
+				</aui:select>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="industry" />
+			</td>
+			<td>
+				<aui:select label="" name="industry">
+					<aui:option value="" />
+
+					<%
+					List<ListType> industryTypes = ListTypeServiceUtil.getListTypes(AccountEntryConstants.LIST_TYPE_INDUSTRY);
+
+					for (ListType industryType : industryTypes) {
+					%>
+
+						<aui:option label="<%= industryType.getName() %>" selected="<%= industryType.getListTypeId() == industry %>" value="<%= industryType.getListTypeId() %>" />
+
+					<%
+					}
+					%>
+
+				</aui:select>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="partner" />
+			</td>
+			<td>
 
 				<%
-				for (int curTier : AccountEntryConstants.TIERS) {
+				String partnerEntryCode = StringPool.BLANK;
+
+				try {
+					PartnerEntry partnerEntry = PartnerEntryLocalServiceUtil.getPartnerEntry(partnerEntryId);
+
+					partnerEntryCode = partnerEntry.getCode();
+				}
+				catch (NoSuchPartnerEntryException nspe) {
+				}
 				%>
 
-					<aui:option label="<%= AccountEntryConstants.getTierLabel(curTier) %>" selected="<%= tier == curTier %>" value="<%= curTier %>" />
+				<span id="<portlet:namespace />partnerEntryCode">
+					<c:choose>
+						<c:when test="<%= RoleLocalServiceUtil.hasUserRole(permissionChecker.getUserId(), OSBConstants.ROLE_OSB_ADMINISTRATOR_ID) && (partnerEntryId > 0) %>">
+							<a href="<portlet:renderURL windowState="<%= WindowState.MAXIMIZED.toString() %>"><portlet:param name="mvcPath" value="/admin/edit_partner_entry.jsp" /><portlet:param name="redirect" value="<%= portletURL.toString() %>" /><portlet:param name="partnerEntryId" value="<%= String.valueOf(partnerEntryId) %>" /></portlet:renderURL>">
+								<%= partnerEntryCode %>
+							</a>
+						</c:when>
+						<c:otherwise>
+							<%= partnerEntryCode %>
+						</c:otherwise>
+					</c:choose>
+				</span>
+
+				<input onClick="var partnerEntryWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/admin/select_partner_entry.jsp" /></portlet:renderURL>', 'partner', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); partnerEntryWindow.focus();" type="button" value="<liferay-ui:message key="select" />" />
+
+				<input id="<portlet:namespace />removePartnerEntryButton" onClick="<portlet:namespace />removePartnerEntry();" type="button" value="<liferay-ui:message key="remove" />" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="partner-first-line-support" />
+			</td>
+			<td>
+				<liferay-ui:input-field bean="<%= accountEntry %>" disabled="<%= partnerEntryId <= 0 %>" field="partnerManagedSupport" model="<%= AccountEntry.class %>" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="tier" />
+			</td>
+			<td>
+				<aui:select label="" name="tier">
+
+					<%
+					for (int curTier : AccountEntryConstants.TIERS) {
+					%>
+
+						<aui:option label="<%= AccountEntryConstants.getTierLabel(curTier) %>" selected="<%= tier == curTier %>" value="<%= curTier %>" />
+
+					<%
+					}
+					%>
+
+				</aui:select>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="maximum-contacts" />
+			</td>
+			<td>
+				<aui:input label="" name="maxCustomers" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="special-instructions" />
+			</td>
+			<td>
+				<aui:input label="" name="instructions" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="oem-instructions" />
+			</td>
+			<td>
+
+				<%
+				List<AccountAttachment> accountAttachments = AccountAttachmentServiceUtil.getAccountAttachments(accountEntryId, AccountProjectConstants.DEFAULT_ACCOUNT_PROJECT_ID, AccountAttachmentConstants.TYPE_OEM_INSTRUCTIONS);
+
+				AccountAttachment accountAttachment = null;
+
+				if (!accountAttachments.isEmpty()) {
+					accountAttachment = accountAttachments.get(0);
+
+					LiferayPortletURL accountAttachmentURL = PortletURLFactoryUtil.create(request, portletDisplay.getId(), layout.getPlid(), PortletRequest.RESOURCE_PHASE);
+
+					accountAttachmentURL.setCopyCurrentRenderParameters(false);
+					accountAttachmentURL.setParameter("accountAttachmentId", String.valueOf(accountAttachment.getAccountAttachmentId()));
+					accountAttachmentURL.setResourceID("accountAttachment");
+				%>
+
+					<div id="<portlet:namespace />accountAttachment">
+						<aui:input name="accountAttachmentId" type="hidden" value="<%= accountAttachment.getAccountAttachmentId() %>" />
+						<aui:input name="deleteAccountAttachment" type="hidden" />
+
+						<a href="<%= accountAttachmentURL.toString() %>" target="_blank"><%= HtmlUtil.escape(accountAttachment.getFileName()) %></a>
+
+						<input onClick="<portlet:namespace />removeAccountAttachment();" type="button" value="<liferay-ui:message key="remove" />" />
+					</div>
 
 				<%
 				}
 				%>
 
-			</aui:select>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="maximum-contacts" />
-		</td>
-		<td>
-			<aui:input label="" name="maxCustomers" />
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="special-instructions" />
-		</td>
-		<td>
-			<aui:input label="" name="instructions" />
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="oem-instructions" />
-		</td>
-		<td>
-
-			<%
-			List<AccountAttachment> accountAttachments = AccountAttachmentServiceUtil.getAccountAttachments(accountEntryId, AccountProjectConstants.DEFAULT_ACCOUNT_PROJECT_ID, AccountAttachmentConstants.TYPE_OEM_INSTRUCTIONS);
-
-			AccountAttachment accountAttachment = null;
-
-			if (!accountAttachments.isEmpty()) {
-				accountAttachment = accountAttachments.get(0);
-
-				LiferayPortletURL accountAttachmentURL = PortletURLFactoryUtil.create(request, portletDisplay.getId(), layout.getPlid(), PortletRequest.RESOURCE_PHASE);
-
-				accountAttachmentURL.setCopyCurrentRenderParameters(false);
-				accountAttachmentURL.setParameter("accountAttachmentId", String.valueOf(accountAttachment.getAccountAttachmentId()));
-				accountAttachmentURL.setResourceID("accountAttachment");
-			%>
-
-				<div id="<portlet:namespace />accountAttachment">
-					<aui:input name="accountAttachmentId" type="hidden" value="<%= accountAttachment.getAccountAttachmentId() %>" />
-					<aui:input name="deleteAccountAttachment" type="hidden" />
-
-					<a href="<%= accountAttachmentURL.toString() %>" target="_blank"><%= HtmlUtil.escape(accountAttachment.getFileName()) %></a>
-
-					<input onClick="<portlet:namespace />removeAccountAttachment();" type="button" value="<liferay-ui:message key="remove" />" />
-				</div>
-
-			<%
-			}
-			%>
-
-			<aui:input id="accountAttachmentField" inputCssClass='<%= (accountAttachment != null) ? "aui-helper-hidden" : "" %>' label="" name="accountAttachment" type="file" />
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="additional-notes" />
-		</td>
-		<td>
-			<aui:input label="" name="notes" />
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="street1" />
-		</td>
-		<td>
-			<aui:input bean="<%= address %>" field="street1" inputCssClass="lfr-input-text" label="" model="<%= Address.class %>" name="street1" />
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="street2" />
-		</td>
-		<td>
-			<aui:input bean="<%= address %>" field="street2" inputCssClass="lfr-input-text" label="" model="<%= Address.class %>" name="street2" />
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="street3" />
-		</td>
-		<td>
-			<aui:input bean="<%= address %>" field="street3" inputCssClass="lfr-input-text" label="" model="<%= Address.class %>" name="street3" />
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="country" />
-		</td>
-		<td>
-			<aui:select bean="<%= address %>" field="countryId" label="" name="countryId" />
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="state-province" />
-		</td>
-		<td>
-			<aui:select bean="<%= address %>" field="regionId" label="" name="regionId" />
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="city" />
-		</td>
-		<td>
-			<aui:input bean="<%= address %>" field="city" inputCssClass="lfr-input-text" label="" model="<%= Address.class %>" name="city" />
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="postal-code" />
-		</td>
-		<td>
-			<aui:input bean="<%= address %>" field="zip" inputCssClass="lfr-input-text" label="" model="<%= Address.class %>" name="zip" />
-		</td>
-	</tr>
+				<aui:input id="accountAttachmentField" inputCssClass='<%= (accountAttachment != null) ? "aui-helper-hidden" : "" %>' label="" name="accountAttachment" type="file" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="additional-notes" />
+			</td>
+			<td>
+				<aui:input label="" name="notes" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="street1" />
+			</td>
+			<td>
+				<aui:input bean="<%= address %>" field="street1" inputCssClass="lfr-input-text" label="" model="<%= Address.class %>" name="street1" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="street2" />
+			</td>
+			<td>
+				<aui:input bean="<%= address %>" field="street2" inputCssClass="lfr-input-text" label="" model="<%= Address.class %>" name="street2" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="street3" />
+			</td>
+			<td>
+				<aui:input bean="<%= address %>" field="street3" inputCssClass="lfr-input-text" label="" model="<%= Address.class %>" name="street3" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="country" />
+			</td>
+			<td>
+				<aui:select bean="<%= address %>" field="countryId" label="" name="countryId" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="state-province" />
+			</td>
+			<td>
+				<aui:select bean="<%= address %>" field="regionId" label="" name="regionId" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="city" />
+			</td>
+			<td>
+				<aui:input bean="<%= address %>" field="city" inputCssClass="lfr-input-text" label="" model="<%= Address.class %>" name="city" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="postal-code" />
+			</td>
+			<td>
+				<aui:input bean="<%= address %>" field="zip" inputCssClass="lfr-input-text" label="" model="<%= Address.class %>" name="zip" />
+			</td>
+		</tr>
 	</table>
 
 	<br />

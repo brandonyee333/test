@@ -14,8 +14,6 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.Time;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.exception.NoSuchAccountEntryException;
 import com.liferay.osb.exception.OfferingEntryQuantityException;
 import com.liferay.osb.exception.OfferingEntrySizingException;
@@ -32,11 +30,12 @@ import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.osb.util.comparator.OfferingEntrySupportEndDateComparator;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Time;
 
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -56,12 +55,14 @@ public class OfferingEntryLocalServiceImpl
 			long licenseLifetime, long maxConcurrentUsers, long maxUsers,
 			boolean supportTickets, long supportLifetime, int sizing,
 			int quantity, int status)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		OrderEntry orderEntry = orderEntryPersistence.findByPrimaryKey(
 			orderEntryId);
+
 		Date startDate = orderEntry.getStartDate();
+
 		Date supportEndDate = new Date(
 			startDate.getTime() + supportLifetime +
 				(Time.YEAR * orderEntry.getRenewCount()));
@@ -95,9 +96,9 @@ public class OfferingEntryLocalServiceImpl
 		offeringEntry.setSizing(sizing);
 		offeringEntry.setQuantity(quantity);
 		offeringEntry.setStatus(status);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		offeringEntryPersistence.update(offeringEntry, serviceContext);
@@ -144,7 +145,7 @@ public class OfferingEntryLocalServiceImpl
 
 	@Override
 	public OfferingEntry deleteOfferingEntry(long offeringEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OfferingEntry offeringEntry = offeringEntryPersistence.findByPrimaryKey(
 			offeringEntryId);
@@ -156,7 +157,7 @@ public class OfferingEntryLocalServiceImpl
 
 	@Override
 	public OfferingEntry deleteOfferingEntry(OfferingEntry offeringEntry)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (licenseKeyPersistence.countByOEI_C_A(
 				offeringEntry.getOfferingEntryId(), false, true) > 0) {
@@ -181,34 +182,25 @@ public class OfferingEntryLocalServiceImpl
 		return offeringEntry;
 	}
 
-	public OfferingEntry fetchOfferingEntry(long offeringEntryId)
-		throws SystemException {
-
+	public OfferingEntry fetchOfferingEntry(long offeringEntryId) {
 		return offeringEntryPersistence.fetchByPrimaryKey(offeringEntryId);
 	}
 
 	public List<OfferingEntry> getAccountEntryOfferingEntries(
-			long accountEntryId)
-		throws SystemException {
+		long accountEntryId) {
 
 		return offeringEntryPersistence.findByAccountEntryId(accountEntryId);
 	}
 
-	public int getAccountEntryOfferingEntriesCount(long accountEntryId)
-		throws SystemException {
-
+	public int getAccountEntryOfferingEntriesCount(long accountEntryId) {
 		return offeringEntryPersistence.countByAccountEntryId(accountEntryId);
 	}
 
-	public List<OfferingEntry> getOrderEntryOfferingEntries(long orderEntryId)
-		throws SystemException {
-
+	public List<OfferingEntry> getOrderEntryOfferingEntries(long orderEntryId) {
 		return offeringEntryPersistence.findByOrderEntryId(orderEntryId);
 	}
 
-	public boolean hasActiveTrialOfferingEntry(long userId)
-		throws SystemException {
-
+	public boolean hasActiveTrialOfferingEntry(long userId) {
 		AccountEntry accountEntry =
 			accountEntryLocalService.fetchUserTrialAccountEntry(userId);
 
@@ -230,13 +222,12 @@ public class OfferingEntryLocalServiceImpl
 	}
 
 	public List<OfferingEntry> search(
-			long userId, long accountEntryId, int[] types, int[] statuses,
-			int supportEndDateGTDay, int supportEndDateGTMonth,
-			int supportEndDateGTYear, int supportEndDateLTDay,
-			int supportEndDateLTMonth, int supportEndDateLTYear,
-			LinkedHashMap<String, Object> params, boolean andSearch, int start,
-			int end, OrderByComparator obc)
-		throws SystemException {
+		long userId, long accountEntryId, int[] types, int[] statuses,
+		int supportEndDateGTDay, int supportEndDateGTMonth,
+		int supportEndDateGTYear, int supportEndDateLTDay,
+		int supportEndDateLTMonth, int supportEndDateLTYear,
+		LinkedHashMap<String, Object> params, boolean andSearch, int start,
+		int end, OrderByComparator obc) {
 
 		Date supportEndDateGT = PortalUtil.getDate(
 			supportEndDateGTMonth, supportEndDateGTDay, supportEndDateGTYear);
@@ -249,12 +240,11 @@ public class OfferingEntryLocalServiceImpl
 	}
 
 	public int searchCount(
-			long userId, long accountEntryId, int[] types, int[] statuses,
-			int supportEndDateGTDay, int supportEndDateGTMonth,
-			int supportEndDateGTYear, int supportEndDateLTDay,
-			int supportEndDateLTMonth, int supportEndDateLTYear,
-			LinkedHashMap<String, Object> params, boolean andSearch)
-		throws SystemException {
+		long userId, long accountEntryId, int[] types, int[] statuses,
+		int supportEndDateGTDay, int supportEndDateGTMonth,
+		int supportEndDateGTYear, int supportEndDateLTDay,
+		int supportEndDateLTMonth, int supportEndDateLTYear,
+		LinkedHashMap<String, Object> params, boolean andSearch) {
 
 		Date supportEndDateGT = PortalUtil.getDate(
 			supportEndDateGTMonth, supportEndDateGTDay, supportEndDateGTYear);
@@ -273,11 +263,13 @@ public class OfferingEntryLocalServiceImpl
 			long licenseLifetime, long maxConcurrentUsers, long maxUsers,
 			boolean supportTickets, long supportLifetime, int sizing,
 			int quantity)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OrderEntry orderEntry = orderEntryPersistence.findByPrimaryKey(
 			orderEntryId);
+
 		Date startDate = orderEntry.getStartDate();
+
 		Date supportEndDate = new Date(
 			startDate.getTime() + supportLifetime +
 				(Time.YEAR * orderEntry.getRenewCount()));
@@ -304,9 +296,9 @@ public class OfferingEntryLocalServiceImpl
 		offeringEntry.setSupportEndDate(supportEndDate);
 		offeringEntry.setSizing(sizing);
 		offeringEntry.setQuantity(quantity);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		return offeringEntryPersistence.update(offeringEntry, serviceContext);
@@ -314,7 +306,7 @@ public class OfferingEntryLocalServiceImpl
 
 	public OfferingEntry updateStatus(
 			long userId, long offeringEntryId, int status)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		Date now = new Date();
@@ -327,9 +319,9 @@ public class OfferingEntryLocalServiceImpl
 		}
 
 		offeringEntry.setStatus(status);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		offeringEntryPersistence.update(offeringEntry, serviceContext);
@@ -358,7 +350,7 @@ public class OfferingEntryLocalServiceImpl
 	}
 
 	protected boolean isLatestActiveOfferingEntry(OfferingEntry offeringEntry)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		List<OfferingEntry> offeringEntries =
 			offeringEntryFinder.findByU_AEI_PEI_T_S_SED(
@@ -386,7 +378,7 @@ public class OfferingEntryLocalServiceImpl
 
 	protected void validate(
 			long accountEntryId, long productEntryId, int sizing, int quantity)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
 			accountEntryId);

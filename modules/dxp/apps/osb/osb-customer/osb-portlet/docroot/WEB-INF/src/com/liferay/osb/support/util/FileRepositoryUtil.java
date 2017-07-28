@@ -14,16 +14,15 @@
 
 package com.liferay.osb.support.util;
 
-import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.osb.exception.FileRepositoryNotAvailableException;
 import com.liferay.osb.model.FileRepository;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 
@@ -57,7 +56,7 @@ public class FileRepositoryUtil {
 
 	public static String deleteFile(
 			String fileRepositoryId, String filePath, boolean replicate)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		String deleteURL = getFileRepositoryURL(fileRepositoryId, PATH_ADMIN);
 
@@ -70,7 +69,7 @@ public class FileRepositoryUtil {
 
 	public static String getDownloadURL(
 			String fileRepositoryId, String filePath)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		String fileRepositoryURL = getFileRepositoryURL(
 			fileRepositoryId, PATH_DOWNLOAD);
@@ -93,7 +92,7 @@ public class FileRepositoryUtil {
 
 	public static String getFileRepositoryURL(
 			String fileRepositoryId, String action)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		FileRepository fileRepository = SupportUtil.getFileRepository(
 			fileRepositoryId);
@@ -102,7 +101,7 @@ public class FileRepositoryUtil {
 	}
 
 	public static String getToken(String fileRepositoryId, long ticketEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		String tokenURL = getFileRepositoryURL(fileRepositoryId, PATH_TOKEN);
 
@@ -116,7 +115,7 @@ public class FileRepositoryUtil {
 	public static String renameFile(
 			String fileRepositoryId, long ticketEntryId, String fileName,
 			String filePath, boolean replicate, boolean delete)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		String updateURL = getFileRepositoryURL(fileRepositoryId, PATH_ADMIN);
 
@@ -135,7 +134,7 @@ public class FileRepositoryUtil {
 	}
 
 	public static String replicateFile(String fileRepositoryId, String filePath)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		String updateURL = getFileRepositoryURL(fileRepositoryId, PATH_ADMIN);
 
@@ -148,7 +147,7 @@ public class FileRepositoryUtil {
 	public static String updateFile(
 			String fileRepositoryId, long ticketEntryId, String fileName,
 			String filePath, boolean replicate)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		String updateURL = getFileRepositoryURL(fileRepositoryId, PATH_ADMIN);
 
@@ -198,6 +197,7 @@ public class FileRepositoryUtil {
 		return null;
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(FileRepositoryUtil.class);
+	private static final Log _log = LogFactoryUtil.getLog(
+		FileRepositoryUtil.class);
 
 }

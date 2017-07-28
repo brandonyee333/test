@@ -14,18 +14,19 @@
 
 package com.liferay.osb.downloads.portlet;
 
-import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.HttpUtil;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.util.bridges.mvc.MVCPortlet;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.osb.downloads.util.DownloadsUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.util.bridges.mvc.MVCPortlet;
+
+import java.io.IOException;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 /* TODO update OSBUtil integration
 import com.liferay.osb.shared.util.OSBUtil;
 */
@@ -122,9 +123,8 @@ public class DownloadsPortlet extends MVCPortlet {
 	}
 
 	protected boolean isCustomerAccess(
-			ThemeDisplay themeDisplay, PortletPreferences preferences,
-			String fileName)
-		throws SystemException {
+		ThemeDisplay themeDisplay, PortletPreferences preferences,
+		String fileName) {
 
 		if (themeDisplay.getScopeGroupId() ==
 				OSBConstants.GROUP_CUSTOMER_ID) {
@@ -287,7 +287,7 @@ public class DownloadsPortlet extends MVCPortlet {
 	protected boolean isTrial(
 			ThemeDisplay themeDisplay, PortletPreferences preferences,
 			String fileName)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		String trialPatternString = preferences.getValue("trialPattern", null);
 
@@ -310,6 +310,7 @@ public class DownloadsPortlet extends MVCPortlet {
 		}
 
 /* TODO update OSBUtil integration
+
 		if (fileName.startsWith("/trial/sync/")) {
 			if (OSBUtil.isLiferaySyncEULA(
 					themeDisplay.getCompanyId(), themeDisplay.getUserId())) {
@@ -324,7 +325,9 @@ public class DownloadsPortlet extends MVCPortlet {
 				return true;
 			}
 		}
+
 */
+
 		return false;
 	}
 
@@ -424,7 +427,8 @@ public class DownloadsPortlet extends MVCPortlet {
 
 	private static final String _URL_PREFIX = "http://downloads.liferay.com";
 
-	private static Log _log = LogFactoryUtil.getLog(DownloadsPortlet.class);
+	private static final Log _log = LogFactoryUtil.getLog(
+		DownloadsPortlet.class);
 
 	private static Pattern _customerAccessPattern;
 	private static String _customerAccessPatternString;

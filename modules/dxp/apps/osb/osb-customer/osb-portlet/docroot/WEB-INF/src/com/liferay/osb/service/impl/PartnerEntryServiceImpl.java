@@ -19,7 +19,6 @@ import com.liferay.osb.service.base.PartnerEntryServiceBaseImpl;
 import com.liferay.osb.service.permission.OSBPartnerEntryPermission;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
@@ -34,7 +33,7 @@ import java.util.List;
 public class PartnerEntryServiceImpl extends PartnerEntryServiceBaseImpl {
 
 	public PartnerEntry getPartnerEntry(long partnerEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OSBPartnerEntryPermission.check(
 			getPermissionChecker(), partnerEntryId, ActionKeys.VIEW);
@@ -45,7 +44,7 @@ public class PartnerEntryServiceImpl extends PartnerEntryServiceBaseImpl {
 	public List<PartnerEntry> search(
 			String code, int[] statuses, LinkedHashMap<String, Object> params,
 			boolean andOperator, int start, int end)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		addAccountMembershipParams(params);
 
@@ -56,18 +55,23 @@ public class PartnerEntryServiceImpl extends PartnerEntryServiceBaseImpl {
 	public List<PartnerEntry> search(
 			String keywords, LinkedHashMap<String, Object>params, int start,
 			int end)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		addAccountMembershipParams(params);
 
 		return partnerEntryLocalService.search(keywords, params, start, end);
 	}
 
-	public int searchCount(String keywords)
-		throws PortalException, SystemException {
+	public int searchCount(String keywords) throws PortalException {
+		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
-		LinkedHashMap<String, Object> params =
-			new LinkedHashMap<String, Object>();
+		addAccountMembershipParams(params);
+
+		return partnerEntryLocalService.searchCount(keywords, params);
+	}
+
+	public int searchCount(String keywords, LinkedHashMap<String, Object>params)
+		throws PortalException {
 
 		addAccountMembershipParams(params);
 
@@ -77,7 +81,7 @@ public class PartnerEntryServiceImpl extends PartnerEntryServiceBaseImpl {
 	public int searchCount(
 			String code, int[] statuses, LinkedHashMap<String, Object> params,
 			boolean andOperator)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		addAccountMembershipParams(params);
 
@@ -85,22 +89,14 @@ public class PartnerEntryServiceImpl extends PartnerEntryServiceBaseImpl {
 			code, statuses, params, andOperator);
 	}
 
-	public int searchCount(String keywords, LinkedHashMap<String, Object>params)
-		throws PortalException, SystemException {
-
-		addAccountMembershipParams(params);
-
-		return partnerEntryLocalService.searchCount(keywords, params);
-	}
-
 	protected void addAccountMembershipParams(
 			LinkedHashMap<String, Object> params)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (!organizationLocalService.hasUserOrganization(
 				getUserId(), OSBConstants.ORGANIZATION_LIFERAY_INC_ID)) {
 
-			params.put("accountEntryMembership", new Long(getUserId()));
+			params.put("accountEntryMembership", Long.valueOf(getUserId()));
 		}
 	}
 

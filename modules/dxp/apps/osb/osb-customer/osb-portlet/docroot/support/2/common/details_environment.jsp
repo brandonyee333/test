@@ -68,7 +68,7 @@ if (productEntry != null) {
 	<div class="configuration">
 		<c:choose>
 			<c:when test="<%= !edit %>">
-				<div class="single-line fl">
+				<div class="fl single-line">
 					<div class="aui-w50 content-column">
 						<div class="content-column-content env">
 							<span class="field-label txt-b"><%= edit ? "*" : "" %><liferay-ui:message key="name" />:</span>
@@ -93,16 +93,16 @@ if (productEntry != null) {
 			</c:otherwise>
 		</c:choose>
 
-		<div class="single-line fl">
+		<div class="fl single-line">
 			<div class="aui-w33 content-column">
 				<div class="content-column-content env">
 					<div>
 						<c:choose>
 							<c:when test="<%= socialOffice %>">
-								<span class="field-label txt-b" title='<liferay-ui:message key="social-office" />'><%= edit ? "*" : "" %><liferay-ui:message key="so" />:</span>
+								<span class="field-label txt-b" title="<liferay-ui:message key="social-office" />"><%= edit ? "*" : "" %><liferay-ui:message key="so" />:</span>
 							</c:when>
 							<c:otherwise>
-								<span class="field-label txt-b" title='<liferay-ui:message key="liferay-version" />'><%= edit ? "*" : "" %><liferay-ui:message key="lr" />:</span>
+								<span class="field-label txt-b" title="<liferay-ui:message key="liferay-version" />"><%= edit ? "*" : "" %><liferay-ui:message key="lr" />:</span>
 							</c:otherwise>
 						</c:choose>
 
@@ -130,7 +130,7 @@ if (productEntry != null) {
 								}
 								%>
 
-								<select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.format(pageContext,"invalid-value-provided-for-x", "liferay-version") %>' id="<portlet:namespace />envLFR" name="<%= envLFRName %>" onChange="<%= envLFROnChange %>">
+								<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.format(pageContext, "invalid-value-provided-for-x", "liferay-version") %>" id="<portlet:namespace />envLFR" name="<%= envLFRName %>" onChange="<%= envLFROnChange %>">
 									<option value="0"></option>
 
 									<%
@@ -164,7 +164,7 @@ if (productEntry != null) {
 								</select>
 							</c:when>
 							<c:otherwise>
-								 <%= LanguageUtil.get(pageContext, accountEnvironment.getEnvLFRLabel()) %>
+								<%= LanguageUtil.get(pageContext, accountEnvironment.getEnvLFRLabel()) %>
 							</c:otherwise>
 						</c:choose>
 					</div>
@@ -173,11 +173,11 @@ if (productEntry != null) {
 
 			<div class="aui-w33 content-column">
 				<div class="content-column-content env">
-					<span class="field-label txt-b" title='<liferay-ui:message key="operating-system" />'><%= edit ? "*" : "" %><liferay-ui:message key="os" />:</span>
+					<span class="field-label txt-b" title="<liferay-ui:message key="operating-system" />"><%= edit ? "*" : "" %><liferay-ui:message key="os" />:</span>
 
 					<c:choose>
 						<c:when test="<%= edit %>">
-							<select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.format(pageContext, "invalid-value-provided-for-x", "operating-system") %>' id="<portlet:namespace />envOS" name="<portlet:namespace />envOS" onChange="<portlet:namespace />selectEnvOS(this.value);">
+							<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.format(pageContext, "invalid-value-provided-for-x", "operating-system") %>" id="<portlet:namespace />envOS" name="<portlet:namespace />envOS" onChange="<portlet:namespace />selectEnvOS(this.value);">
 							</select>
 
 							<br />
@@ -193,11 +193,11 @@ if (productEntry != null) {
 
 			<div class="aui-w33 content-column">
 				<div class="content-column-content env">
-					<span class="field-label txt-b" title='<liferay-ui:message key="java-virtual-machine" />'><%= edit ? "*" : "" %><liferay-ui:message key="jvm" />:</span>
+					<span class="field-label txt-b" title="<liferay-ui:message key="java-virtual-machine" />"><%= edit ? "*" : "" %><liferay-ui:message key="jvm" />:</span>
 
 					<c:choose>
 						<c:when test="<%= edit %>">
-							<select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.format(pageContext, "invalid-value-provided-for-x", "jvm") %>' id="<portlet:namespace />envJVM" name="<portlet:namespace />envJVM">
+							<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.format(pageContext, "invalid-value-provided-for-x", "jvm") %>" id="<portlet:namespace />envJVM" name="<portlet:namespace />envJVM">
 							</select>
 						</c:when>
 						<c:otherwise>
@@ -208,13 +208,13 @@ if (productEntry != null) {
 			</div>
 		</div>
 
-		<div class="single-line fl">
+		<div class="fl single-line">
 			<div class="aui-w33 content-column">
 				<div class="content-column-content env">
-					<span class="field-label txt-b" title='<liferay-ui:message key="application-server" />'><%= edit ? "*" : "" %><liferay-ui:message key="as" />:</span>
+					<span class="field-label txt-b" title="<liferay-ui:message key="application-server" />"><%= edit ? "*" : "" %><liferay-ui:message key="as" />:</span>
 					<c:choose>
 						<c:when test="<%= edit %>">
-							<select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.format(pageContext, "invalid-value-provided-for-x", "application-server") %>' id="<portlet:namespace />envAS" name="<portlet:namespace />envAS">
+							<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.format(pageContext, "invalid-value-provided-for-x", "application-server") %>" id="<portlet:namespace />envAS" name="<portlet:namespace />envAS">
 							</select>
 						</c:when>
 						<c:otherwise>
@@ -226,11 +226,11 @@ if (productEntry != null) {
 
 			<div class="aui-w33 content-column">
 				<div class="content-column-content env">
-					<span class="field-label txt-b" title='<liferay-ui:message key="database" />'><%= edit ? "*" : "" %><liferay-ui:message key="db" />:</span>
+					<span class="field-label txt-b" title="<liferay-ui:message key="database" />"><%= edit ? "*" : "" %><liferay-ui:message key="db" />:</span>
 
 					<c:choose>
 						<c:when test="<%= edit %>">
-							<select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.format(pageContext, "invalid-value-provided-for-x", "database") %>' id="<portlet:namespace />envDB" name="<portlet:namespace />envDB">
+							<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.format(pageContext, "invalid-value-provided-for-x", "database") %>" id="<portlet:namespace />envDB" name="<portlet:namespace />envDB">
 							</select>
 						</c:when>
 						<c:otherwise>
@@ -243,7 +243,7 @@ if (productEntry != null) {
 			<c:if test="<%= edit %>">
 				<div class="aui-w33 content-column">
 					<div class="content-column-content env">
-						<span class="field-label txt-b" title='<liferay-ui:message key="browser" />'><liferay-ui:message key="br" />:</span>
+						<span class="field-label txt-b" title="<liferay-ui:message key="browser" />"><liferay-ui:message key="br" />:</span>
 
 						<select id="<portlet:namespace />envBrowser" name="<portlet:namespace />envBrowser" onChange="<portlet:namespace />selectBrowser(this.value);">
 							<c:if test="<%= accountEnvironment != null %>">
@@ -274,10 +274,10 @@ if (productEntry != null) {
 
 		<c:choose>
 			<c:when test="<%= edit %>">
-				<div class="single-line fl">
+				<div class="fl single-line">
 					<div class="aui-w33 content-column">
 						<div class="aui-helper-hidden content-column-content env" id="<portlet:namespace />envCSColumn">
-							<span class="field-label txt-b" title='<liferay-ui:message key="cloud-services" />'><liferay-ui:message key="cs" />:</span>
+							<span class="field-label txt-b" title="<liferay-ui:message key="cloud-services" />"><liferay-ui:message key="cs" />:</span>
 
 							<select id="<portlet:namespace />envCS" name="<portlet:namespace />envCS">
 							</select>
@@ -286,7 +286,7 @@ if (productEntry != null) {
 
 					<div class="aui-w66 content-column">
 						<div class="aui-helper-hidden content-column-content env" id="<portlet:namespace />envSearchColumn">
-							<span class="field-label txt-b" title='<liferay-ui:message key="search" />'>
+							<span class="field-label txt-b" title="<liferay-ui:message key="search" />">
 								<liferay-ui:message key="sh" />:
 
 								<liferay-ui:icon-help message="you-may-select-multiple-options" />
@@ -333,7 +333,7 @@ if (productEntry != null) {
 				</div>
 			</c:when>
 			<c:otherwise>
-				<div class="single-line fl">
+				<div class="fl single-line">
 					<span class="field-label txt-b"><liferay-ui:message key="portal-ext" />:</span>
 
 					<span id="<portlet:namespace />portalExtFilename">
@@ -357,7 +357,7 @@ if (productEntry != null) {
 					</span>
 				</div>
 
-				<div class="single-line fl">
+				<div class="fl single-line">
 					<span class="field-label txt-b"><liferay-ui:message key="patch-level" />:</span>
 
 					<span id="<portlet:namespace />patchLevelFilename">
@@ -384,7 +384,7 @@ if (productEntry != null) {
 		</c:choose>
 
 		<c:if test="<%= edit %>">
-			<input id="<portlet:namespace />name" type="hidden" value='<%= (accountEnvironment != null) ? HtmlUtil.escapeAttribute(accountEnvironment.getName()) : "" %>' />
+			<input id="<portlet:namespace />name" type="hidden" value="<%= (accountEnvironment != null) ? HtmlUtil.escapeAttribute(accountEnvironment.getName()) : "" %>" />
 			<input id="<portlet:namespace />productEntryId" type="hidden" value="<%= productEntry.getProductEntryId() %>" />
 
 			<div class="create-env-button">

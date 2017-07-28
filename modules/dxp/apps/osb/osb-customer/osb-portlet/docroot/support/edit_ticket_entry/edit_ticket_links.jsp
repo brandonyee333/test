@@ -18,6 +18,7 @@
 
 <%
 String redirect = ParamUtil.getString(request, "redirect");
+
 String backURL = ParamUtil.getString(request, "backURL", redirect);
 
 TicketEntry ticketEntry = (TicketEntry)request.getAttribute(OSBWebKeys.OSB_TICKET_ENTRY);
@@ -109,50 +110,50 @@ request.setAttribute("view.jsp-portletURL", portletURL);
 					<legend><liferay-ui:message key="add-link" /></legend>
 
 					<table class="lfr-table">
-					<tr>
-						<td>
-							<liferay-ui:message key="url" /> 1
-						</td>
-						<td>
-							<input class="lfr-input-text" name="<portlet:namespace />url1" style="width: 350px;" type="text" value="<%= HtmlUtil.escapeAttribute(url1) %>" />
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<liferay-ui:message key="url" /> 2
-						</td>
-						<td>
-							<input class="lfr-input-text" name="<portlet:namespace />url2" style="width: 350px;" type="text" value="<%= HtmlUtil.escapeAttribute(url2) %>" />
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<liferay-ui:message key="url" /> 3
-						</td>
-						<td>
-							<input class="lfr-input-text" name="<portlet:namespace />url3" style="width: 350px;" type="text" value="<%= HtmlUtil.escapeAttribute(url3) %>" />
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<liferay-ui:message key="visibility" />
-						</td>
-						<td>
-							<select name="<portlet:namespace />visibility">
+						<tr>
+							<td>
+								<liferay-ui:message key="url" /> 1
+							</td>
+							<td>
+								<input class="lfr-input-text" name="<portlet:namespace />url1" style="width: 350px;" type="text" value="<%= HtmlUtil.escapeAttribute(url1) %>" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<liferay-ui:message key="url" /> 2
+							</td>
+							<td>
+								<input class="lfr-input-text" name="<portlet:namespace />url2" style="width: 350px;" type="text" value="<%= HtmlUtil.escapeAttribute(url2) %>" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<liferay-ui:message key="url" /> 3
+							</td>
+							<td>
+								<input class="lfr-input-text" name="<portlet:namespace />url3" style="width: 350px;" type="text" value="<%= HtmlUtil.escapeAttribute(url3) %>" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<liferay-ui:message key="visibility" />
+							</td>
+							<td>
+								<select name="<portlet:namespace />visibility">
 
-								<%
-								for (int curVisibility : userVisibilities) {
-								%>
+									<%
+									for (int curVisibility : userVisibilities) {
+									%>
 
-									<option <%= (curVisibility == visibility) ? "selected" : "" %> value="<%= curVisibility %>"><%= LanguageUtil.get(pageContext, VisibilityConstants.toLabel(curVisibility)) %></option>
+										<option <%= (curVisibility == visibility) ? "selected" : "" %> value="<%= curVisibility %>"><%= LanguageUtil.get(pageContext, VisibilityConstants.toLabel(curVisibility)) %></option>
 
-								<%
-								}
-								%>
+									<%
+									}
+									%>
 
-							</select>
-						</td>
-					</tr>
+								</select>
+							</td>
+						</tr>
 					</table>
 				</fieldset>
 

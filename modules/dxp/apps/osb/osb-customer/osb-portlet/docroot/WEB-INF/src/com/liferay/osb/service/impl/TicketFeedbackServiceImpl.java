@@ -21,11 +21,10 @@ import com.liferay.osb.service.permission.OSBTicketFeedbackPermission;
 import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
-import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -40,7 +39,7 @@ public class TicketFeedbackServiceImpl extends TicketFeedbackServiceBaseImpl {
 
 	public TicketFeedback addTicketFeedback(
 			long ticketEntryId, int subject, int satisfied)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (subject == TicketFeedbackConstants.SUBJECT_LIFERAY) {
 			OSBTicketFeedbackPermission.checkSubjectLiferay(
@@ -56,7 +55,7 @@ public class TicketFeedbackServiceImpl extends TicketFeedbackServiceBaseImpl {
 
 	public TicketFeedback fetchFirstOpenTicketFeedback(
 			long userId, long ticketEntryId, int subject)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketFeedback ticketFeedback =
 			ticketFeedbackLocalService.fetchFirstOpenTicketFeedback(
@@ -72,7 +71,7 @@ public class TicketFeedbackServiceImpl extends TicketFeedbackServiceBaseImpl {
 
 	public TicketFeedback fetchFirstTicketFeedback(
 			long ticketEntryId, int subject)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketFeedback ticketFeedback =
 			ticketFeedbackPersistence.fetchByTEI_S_First(
@@ -87,7 +86,7 @@ public class TicketFeedbackServiceImpl extends TicketFeedbackServiceBaseImpl {
 	}
 
 	public TicketFeedback getTicketFeedback(long ticketFeedbackId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketFeedback ticketFeedback =
 			ticketFeedbackLocalService.getTicketFeedback(ticketFeedbackId);
@@ -100,7 +99,7 @@ public class TicketFeedbackServiceImpl extends TicketFeedbackServiceBaseImpl {
 
 	public List<TicketFeedback> getTicketFeedbacks(
 			long ticketEntryId, int subject)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		List<TicketFeedback> ticketFeedbacks =
 			ticketFeedbackLocalService.getTicketFeedbacks(
@@ -124,7 +123,7 @@ public class TicketFeedbackServiceImpl extends TicketFeedbackServiceBaseImpl {
 			Integer[] ratings3, Integer[] ratings4,
 			LinkedHashMap<String, Object> params, boolean andSearch, int start,
 			int end, OrderByComparator obc)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		addAccountEntryMembershipParams(params);
 
@@ -139,7 +138,7 @@ public class TicketFeedbackServiceImpl extends TicketFeedbackServiceBaseImpl {
 	public List<TicketFeedback> search(
 			String keywords, LinkedHashMap<String, Object> params, int start,
 			int end, OrderByComparator obc)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		addAccountEntryMembershipParams(params);
 
@@ -156,7 +155,7 @@ public class TicketFeedbackServiceImpl extends TicketFeedbackServiceBaseImpl {
 			Integer status, Integer[] ratings1, Integer[] ratings2,
 			Integer[] ratings3, Integer[] ratings4,
 			LinkedHashMap<String, Object> params, boolean andSearch)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		addAccountEntryMembershipParams(params);
 
@@ -170,7 +169,7 @@ public class TicketFeedbackServiceImpl extends TicketFeedbackServiceBaseImpl {
 
 	public int searchCount(
 			String keywords, LinkedHashMap<String, Object> params)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		addAccountEntryMembershipParams(params);
 
@@ -181,7 +180,7 @@ public class TicketFeedbackServiceImpl extends TicketFeedbackServiceBaseImpl {
 			long ticketFeedbackId, int satisfied, int answer1, int answer2,
 			int answer3, int rating1, int rating2, int rating3, int rating4,
 			String comments)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OSBTicketFeedbackPermission.check(
 			getPermissionChecker(), ticketFeedbackId, OSBActionKeys.UPDATE);
@@ -193,7 +192,7 @@ public class TicketFeedbackServiceImpl extends TicketFeedbackServiceBaseImpl {
 
 	protected void addAccountEntryMembershipParams(
 			LinkedHashMap<String, Object> params)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (!organizationLocalService.hasUserOrganization(
 				getUserId(), OSBConstants.ORGANIZATION_LIFERAY_INC_ID)) {

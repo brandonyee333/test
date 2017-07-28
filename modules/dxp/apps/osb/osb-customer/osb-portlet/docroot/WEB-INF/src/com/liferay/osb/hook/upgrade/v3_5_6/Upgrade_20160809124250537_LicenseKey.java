@@ -35,9 +35,7 @@ public class Upgrade_20160809124250537_LicenseKey extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20160809124250537L;
 	}
@@ -129,9 +127,10 @@ public class Upgrade_20160809124250537_LicenseKey extends UpgradeProcess {
 	private static Log _log = LogFactoryUtil.getLog(
 		Upgrade_20160809124250537_LicenseKey.class);
 
-	private Map<String, Date> _existingTrialUsers = new HashMap<String, Date>();
+	private Map<String, Date> _existingTrialUsers = new HashMap<>();
 
 }
+
 */
 
 }

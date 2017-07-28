@@ -27,16 +27,13 @@ import com.liferay.portal.kernel.util.StringBundler;
 /**
  * @author Haote Chou
  */
-public class Upgrade_20170320114635448_ECDocumentEntry
-	extends UpgradeProcess {
+public class Upgrade_20170320114635448_ECDocumentEntry extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20170320114635448L;
 	}
@@ -74,6 +71,7 @@ public class Upgrade_20170320114635448_ECDocumentEntry
 	}
 
 }
+
 */
 
 }

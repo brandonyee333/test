@@ -30,9 +30,7 @@ public class Upgrade_20160920173413713_LicenseKey extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20160920173413713L;
 	}
@@ -68,6 +66,7 @@ public class Upgrade_20160920173413713_LicenseKey extends UpgradeProcess {
 	}
 
 }
+
 */
 
 }

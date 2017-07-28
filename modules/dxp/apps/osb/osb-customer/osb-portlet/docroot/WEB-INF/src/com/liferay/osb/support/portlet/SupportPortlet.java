@@ -14,16 +14,8 @@
 
 package com.liferay.osb.support.portlet;
 
-import com.liferay.portal.kernel.portlet.PortletResponseUtil;
-import com.liferay.portal.kernel.servlet.HttpHeaders;
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.HttpUtil;
-import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Time;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.util.bridges.mvc.MVCPortlet;
+import com.liferay.document.library.kernel.exception.FileNameException;
+import com.liferay.document.library.kernel.store.DLStoreUtil;
 import com.liferay.osb.exception.AccountAttachmentSizeException;
 import com.liferay.osb.exception.AccountCallDateException;
 import com.liferay.osb.exception.AccountCallLengthException;
@@ -168,26 +160,39 @@ import com.liferay.osb.util.OSBWebKeys;
 import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.osb.util.WorkflowConstants;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.AddressCityException;
 import com.liferay.portal.kernel.exception.AddressStreetException;
 import com.liferay.portal.kernel.exception.AddressZipException;
-import com.liferay.portal.kernel.exception.RequiredFieldException;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.exception.RequiredFieldException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.LayoutConstants;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.portlet.PortletResponseUtil;
+import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.search.Hits;
+import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
+import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContextFactory;
+import com.liferay.portal.kernel.service.SubscriptionLocalServiceUtil;
 import com.liferay.portal.kernel.servlet.BrowserSnifferUtil;
+import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CSVUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.DateUtil;
@@ -195,30 +200,22 @@ import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Tuple;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.kernel.model.Group;
-import com.liferay.portal.kernel.model.Layout;
-import com.liferay.portal.kernel.model.LayoutConstants;
-import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.security.auth.PrincipalException;
-import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
-import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
-import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
-import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.service.ServiceContextFactory;
-import com.liferay.portal.kernel.service.SubscriptionLocalServiceUtil;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SubscriptionSender;
-import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
-import com.liferay.document.library.kernel.exception.FileNameException;
-import com.liferay.document.library.kernel.store.DLStoreUtil;
+import com.liferay.portal.kernel.util.Time;
+import com.liferay.portal.kernel.util.Tuple;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.util.ContentUtil;
+import com.liferay.util.bridges.mvc.MVCPortlet;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -272,10 +269,9 @@ public class SupportPortlet extends MVCPortlet {
 			long accountProjectId = ParamUtil.getLong(
 				uploadPortletRequest, "accountProjectId");
 
-			List<ObjectValuePair<String, File>> files =
-				new ArrayList<ObjectValuePair<String, File>>();
+			List<ObjectValuePair<String, File>> files = new ArrayList<>();
 
-			List<Integer> types = new ArrayList<Integer>();
+			List<Integer> types = new ArrayList<>();
 
 			for (int i = 1; i <= 3; i++) {
 				String fileName = uploadPortletRequest.getFileName("file" + i);
@@ -286,8 +282,8 @@ public class SupportPortlet extends MVCPortlet {
 					continue;
 				}
 
-				ObjectValuePair<String, File> ovp =
-					new ObjectValuePair<String, File>(fileName, file);
+				ObjectValuePair<String, File> ovp = new ObjectValuePair<>(
+					fileName, file);
 
 				files.add(ovp);
 
@@ -498,8 +494,8 @@ public class SupportPortlet extends MVCPortlet {
 		String ticketEntrySubcomponentCustom = ParamUtil.getString(
 			uploadPortletRequest, "ticketEntrySubcomponentCustom");
 
-		List<String> ticketLinkURLs = new ArrayList<String>();
-		List<Integer> ticketLinkTypes = new ArrayList<Integer>();
+		List<String> ticketLinkURLs = new ArrayList<>();
+		List<Integer> ticketLinkTypes = new ArrayList<>();
 
 		for (int i = 1; i <= 3; i++) {
 			String ticketLinkURL = ParamUtil.getString(
@@ -524,10 +520,9 @@ public class SupportPortlet extends MVCPortlet {
 			type = TicketSolutionConstants.TYPE_SERVICE;
 		}
 
-		List<TicketAttachment> ticketAttachments =
-			new ArrayList<TicketAttachment>();
+		List<TicketAttachment> ticketAttachments = new ArrayList<>();
 
-		List<String> fileNames = new ArrayList<String>();
+		List<String> fileNames = new ArrayList<>();
 
 		try {
 			for (int i = 1; i <= 3; i++) {
@@ -769,7 +764,7 @@ public class SupportPortlet extends MVCPortlet {
 
 	public void extendTicketAttachmentDeleteDate(
 			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		long ticketAttachmentId = ParamUtil.getLong(
 			actionRequest, "ticketAttachmentId");
@@ -1250,7 +1245,7 @@ public class SupportPortlet extends MVCPortlet {
 
 	public void updateAccountEntryInstructions(
 			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		long accountEntryId = ParamUtil.getInteger(
 			actionRequest, "accountEntryId");
@@ -1291,10 +1286,9 @@ public class SupportPortlet extends MVCPortlet {
 
 		boolean ajax = ParamUtil.getBoolean(actionRequest, "ajax");
 
-		List<ObjectValuePair<String, File>> files =
-			new ArrayList<ObjectValuePair<String, File>>();
+		List<ObjectValuePair<String, File>> files = new ArrayList<>();
 
-		List<Integer> types = new ArrayList<Integer>();
+		List<Integer> types = new ArrayList<>();
 
 		String[] uploadFileNames = new String[] {"patchLevel", "portalExt"};
 
@@ -1318,8 +1312,8 @@ public class SupportPortlet extends MVCPortlet {
 						AccountEnvironmentAttachmentSizeException.EMPTY_FILE);
 				}
 
-				ObjectValuePair<String, File> ovp =
-					new ObjectValuePair<String, File>(fileName, file);
+				ObjectValuePair<String, File> ovp = new ObjectValuePair<>(
+					fileName, file);
 
 				files.add(ovp);
 
@@ -1385,8 +1379,7 @@ public class SupportPortlet extends MVCPortlet {
 						SessionMessages.KEY_SUFFIX_REFRESH_PORTLET,
 					OSBPortletKeys.OSB_SUPPORT);
 
-				Map<String, String> refreshPortletData =
-					new HashMap<String, String>();
+				Map<String, String> refreshPortletData = new HashMap<>();
 
 				refreshPortletData.put(
 					actionResponse.getNamespace() + "productEntryId",
@@ -1411,7 +1404,7 @@ public class SupportPortlet extends MVCPortlet {
 		long accountEntryId = ParamUtil.getLong(
 			actionRequest, "accountEntryId");
 
-		Map<Integer, String> data = new HashMap<Integer, String>();
+		Map<Integer, String> data = new HashMap<>();
 
 		String section = ParamUtil.getString(actionRequest, "section");
 
@@ -1442,7 +1435,7 @@ public class SupportPortlet extends MVCPortlet {
 			actionRequest, "accountEntryId");
 		String name = ParamUtil.getString(actionRequest, "name");
 
-		Map<Integer, String> data = new HashMap<Integer, String>();
+		Map<Integer, String> data = new HashMap<>();
 
 		Enumeration<String> enu = actionRequest.getParameterNames();
 
@@ -1471,7 +1464,7 @@ public class SupportPortlet extends MVCPortlet {
 
 	public void updateAccountTier(
 			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		long accountEntryId = ParamUtil.getInteger(
 			actionRequest, "accountEntryId");
@@ -1644,9 +1637,8 @@ public class SupportPortlet extends MVCPortlet {
 			int[] pendingTypes = ParamUtil.getIntegerValues(
 				uploadPortletRequest, "pendingTypes" + suffix);
 
-			List<ObjectValuePair<String, File>> files =
-				new ArrayList<ObjectValuePair<String, File>>();
-			List<Integer> fileTypes = new ArrayList<Integer>();
+			List<ObjectValuePair<String, File>> files = new ArrayList<>();
+			List<Integer> fileTypes = new ArrayList<>();
 
 			String fileParam = "file" + suffix + StringPool.UNDERLINE;
 			String hotfixParam = "hotfix" + suffix + StringPool.UNDERLINE;
@@ -1661,8 +1653,8 @@ public class SupportPortlet extends MVCPortlet {
 					continue;
 				}
 
-				ObjectValuePair<String, File> ovp =
-					new ObjectValuePair<String, File>(fileName, file);
+				ObjectValuePair<String, File> ovp = new ObjectValuePair<>(
+					fileName, file);
 
 				files.add(ovp);
 
@@ -1914,10 +1906,10 @@ public class SupportPortlet extends MVCPortlet {
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
+		jsonObject.put("satisfied", Integer.toString(satisfied));
 		jsonObject.put(
 			"ticketFeedbackId",
 			Long.toString(ticketFeedback.getTicketFeedbackId()));
-		jsonObject.put("satisfied", Integer.toString(satisfied));
 
 		writeJSON(actionRequest, actionResponse, jsonObject);
 	}
@@ -2020,9 +2012,8 @@ public class SupportPortlet extends MVCPortlet {
 			PortletPreferences portletPreferences =
 				SupportUtil.getPortletPreferences();
 
-			String[] userGuideTypes = new String[] {
-				"customer", "liferay", "partner"
-			};
+			String[] userGuideTypes =
+				new String[] {"customer", "liferay", "partner"};
 
 			for (String userGuideType : userGuideTypes) {
 				File file = uploadPortletRequest.getFile(
@@ -2164,10 +2155,9 @@ public class SupportPortlet extends MVCPortlet {
 		int[] pendingTypes = ParamUtil.getIntegerValues(
 			uploadPortletRequest, "pendingTypes");
 
-		List<ObjectValuePair<String, File>> files =
-			new ArrayList<ObjectValuePair<String, File>>();
+		List<ObjectValuePair<String, File>> files = new ArrayList<>();
 
-		List<Integer> types = new ArrayList<Integer>();
+		List<Integer> types = new ArrayList<>();
 
 		for (int i = 1; i <= 3; i++) {
 			String fileName = uploadPortletRequest.getFileName("file" + i);
@@ -2187,8 +2177,8 @@ public class SupportPortlet extends MVCPortlet {
 					TicketEntryAttachmentSizeException.EMPTY_FILE);
 			}
 
-			ObjectValuePair<String, File> ovp =
-				new ObjectValuePair<String, File>(fileName, file);
+			ObjectValuePair<String, File> ovp = new ObjectValuePair<>(
+				fileName, file);
 
 			files.add(ovp);
 
@@ -2217,9 +2207,9 @@ public class SupportPortlet extends MVCPortlet {
 		long ticketEntryId = ParamUtil.getLong(
 			uploadPortletRequest, "ticketEntryId");
 
-		List<Long> ticketAttachmentIds = new ArrayList<Long>();
-		List<Integer> types = new ArrayList<Integer>();
-		List<Integer> visibilities = new ArrayList<Integer>();
+		List<Long> ticketAttachmentIds = new ArrayList<>();
+		List<Integer> types = new ArrayList<>();
+		List<Integer> visibilities = new ArrayList<>();
 
 		for (int i = 1; i <= 3; i++) {
 			String file = ParamUtil.getString(uploadPortletRequest, "file" + i);
@@ -2353,7 +2343,7 @@ public class SupportPortlet extends MVCPortlet {
 
 				include(
 					"/support/2/advanced_search.jsp", renderRequest,
-						renderResponse);
+					renderResponse);
 			}
 			else {
 				SessionErrors.add(renderRequest, e.getClass().getName(), e);
@@ -2483,6 +2473,7 @@ public class SupportPortlet extends MVCPortlet {
 			actionRequest, "searchFilterId");
 
 		User user = themeDisplay.getUser();
+
 		Group group = user.getGroup();
 
 		long plid = PortalUtil.getPlidFromPortletId(
@@ -2592,8 +2583,7 @@ public class SupportPortlet extends MVCPortlet {
 			}
 			catch (Exception e) {
 				liferayPortletURL.setParameter(
-					"mvcPath",
-					getMVCPath(actionRequest, "/support/view.jsp"));
+					"mvcPath", getMVCPath(actionRequest, "/support/view.jsp"));
 			}
 		}
 		else {
@@ -2676,11 +2666,10 @@ public class SupportPortlet extends MVCPortlet {
 			(ThemeDisplay)uploadPortletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
 
-		List<TicketAttachment> ticketAttachments =
-			new ArrayList<TicketAttachment>();
+		List<TicketAttachment> ticketAttachments = new ArrayList<>();
 
-		List<String> fileNames = new ArrayList<String>();
-		List<Integer> types = new ArrayList<Integer>();
+		List<String> fileNames = new ArrayList<>();
+		List<Integer> types = new ArrayList<>();
 
 		Enumeration<String> enu = uploadPortletRequest.getParameterNames();
 
@@ -2883,7 +2872,7 @@ public class SupportPortlet extends MVCPortlet {
 	protected String getTicketEntryCSV(
 			TicketEntry ticketEntry, boolean exportDetails,
 			boolean exportEnvironment)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		StringBundler sb = new StringBundler(22);
 
@@ -2998,8 +2987,7 @@ public class SupportPortlet extends MVCPortlet {
 	protected Map<Long, String> getTicketInformationFieldsMap(
 		UploadPortletRequest uploadPortletRequest, int component) {
 
-		HashMap<Long, String> ticketInformationFieldsMap =
-			new HashMap<Long, String>();
+		HashMap<Long, String> ticketInformationFieldsMap = new HashMap<>();
 
 		ticketInformationFieldsMap.put(
 			TicketInformationConstants.FIELD_ENV_LFR,
@@ -3120,7 +3108,7 @@ public class SupportPortlet extends MVCPortlet {
 
 		StringBundler sb = new StringBundler((ticketEntries.size() * 2) + 2);
 
-		List<String> headers = new ArrayList<String>();
+		List<String> headers = new ArrayList<>();
 
 		headers.add("Account");
 		headers.add("Ticket Number");
@@ -3285,8 +3273,7 @@ public class SupportPortlet extends MVCPortlet {
 	protected boolean isVersion2Enabled(long userId) {
 		try {
 			if (SupportUtil.isVersion2Enabled(userId) &&
-				SupportUtil.getUserPreferenceValue(
-					userId, "version2Enabled")) {
+				SupportUtil.getUserPreferenceValue(userId, "version2Enabled")) {
 
 				return true;
 			}
@@ -3324,7 +3311,7 @@ public class SupportPortlet extends MVCPortlet {
 
 	protected void serveAccountAttachment(
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
-		throws IOException, PortalException, SystemException {
+		throws IOException, PortalException {
 
 		long accountAttachmentId = ParamUtil.getLong(
 			resourceRequest, "accountAttachmentId");
@@ -3371,7 +3358,7 @@ public class SupportPortlet extends MVCPortlet {
 
 	protected void serveAccountEnvironment(
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
-		throws IOException, SystemException {
+		throws IOException {
 
 		long accountEnvironmentId = ParamUtil.getLong(
 			resourceRequest, "accountEnvironmentId");
@@ -3403,7 +3390,7 @@ public class SupportPortlet extends MVCPortlet {
 
 	protected void serveAccountEnvironmentAttachment(
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
-		throws IOException, PortalException, SystemException {
+		throws IOException, PortalException {
 
 		long accountEnvironmentAttachmentId = ParamUtil.getLong(
 			resourceRequest, "accountEnvironmentAttachmentId");
@@ -3455,9 +3442,8 @@ public class SupportPortlet extends MVCPortlet {
 					null, null, new ServiceContext());
 			}
 			else {
-				ticketComment =
-					TicketCommentLocalServiceUtil.getTicketComment(
-						ticketCommentId);
+				ticketComment = TicketCommentLocalServiceUtil.getTicketComment(
+					ticketCommentId);
 
 				if (ticketComment.getStatus() ==
 						WorkflowConstants.STATUS_APPROVED) {
@@ -3531,15 +3517,14 @@ public class SupportPortlet extends MVCPortlet {
 				(ThemeDisplay)uploadPortletRequest.getAttribute(
 					WebKeys.THEME_DISPLAY);
 
-			List<ObjectValuePair<String, File>> files =
-				new ArrayList<ObjectValuePair<String, File>>();
+			List<ObjectValuePair<String, File>> files = new ArrayList<>();
 
 			String fileName = uploadPortletRequest.getParameter(
 				"resumableFilename");
 			File file = uploadPortletRequest.getFile("file");
 
-			ObjectValuePair<String, File> ovp =
-				new ObjectValuePair<String, File>(fileName, file);
+			ObjectValuePair<String, File> ovp = new ObjectValuePair<>(
+				fileName, file);
 
 			files.add(ovp);
 
@@ -3581,7 +3566,7 @@ public class SupportPortlet extends MVCPortlet {
 
 	protected void serveTicketAttachment(
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
-		throws IOException, PortalException, SystemException {
+		throws IOException, PortalException {
 
 		long ticketAttachmentId = ParamUtil.getLong(
 			resourceRequest, "ticketAttachmentId");
@@ -3669,7 +3654,7 @@ public class SupportPortlet extends MVCPortlet {
 
 	protected void serveTicketAttachmentsZipFile(
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
-		throws IOException, PortalException, SystemException {
+		throws IOException, PortalException {
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)resourceRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
@@ -3732,8 +3717,8 @@ public class SupportPortlet extends MVCPortlet {
 			jsonObject.put("message", "success");
 		}
 		catch (Exception e) {
-			jsonObject.put("message", "fail");
 			jsonObject.put("exception", e.getClass().getName());
+			jsonObject.put("message", "fail");
 		}
 
 		writeJSON(resourceRequest, resourceResponse, jsonObject);
@@ -4027,7 +4012,7 @@ public class SupportPortlet extends MVCPortlet {
 	protected TicketEntry updateStatus(
 			long userId, TicketEntry ticketEntry, int status,
 			String reproductionSteps, int resolution)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		Map<Long, String> ticketInformationFieldsMap =
 			TicketInformationLocalServiceUtil.getFieldsMap(
@@ -4157,12 +4142,13 @@ public class SupportPortlet extends MVCPortlet {
 			int oldStatus = ticketEntry.getStatus();
 
 			int[] pendingTypes = ParamUtil.getIntegerValues(
-					uploadPortletRequest, "pendingTypes");
+				uploadPortletRequest, "pendingTypes");
 
 			ServiceContext serviceContext = ServiceContextFactory.getInstance(
 				uploadPortletRequest);
 
-			serviceContext.setAttribute("updateTicketSolutionStatus", true);
+			serviceContext.setAttribute(
+				"updateTicketSolutionStatus", Boolean.TRUE);
 
 			ticketEntry = TicketEntryServiceUtil.updateTicketEntry(
 				themeDisplay.getUserId(), ticketEntryId, reportedByUserId,
@@ -4188,6 +4174,6 @@ public class SupportPortlet extends MVCPortlet {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(SupportPortlet.class);
+	private static final Log _log = LogFactoryUtil.getLog(SupportPortlet.class);
 
 }

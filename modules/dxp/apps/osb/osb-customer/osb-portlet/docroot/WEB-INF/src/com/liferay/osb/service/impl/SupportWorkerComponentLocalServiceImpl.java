@@ -14,11 +14,10 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.osb.model.SupportWorkerComponent;
 import com.liferay.osb.service.base.SupportWorkerComponentLocalServiceBaseImpl;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.ArrayUtil;
 
 import java.util.List;
 
@@ -29,16 +28,14 @@ public class SupportWorkerComponentLocalServiceImpl
 	extends SupportWorkerComponentLocalServiceBaseImpl {
 
 	public List<SupportWorkerComponent> getSupportWorkerComponents(
-			long supportWorkerId)
-		throws SystemException {
+		long supportWorkerId) {
 
 		return supportWorkerComponentPersistence.findBySupportWorkerId(
 			supportWorkerId);
 	}
 
 	public void setSupportWorkerComponents(
-			long supportWorkerId, int[] components)
-		throws SystemException {
+		long supportWorkerId, int[] components) {
 
 		List<SupportWorkerComponent> supportWorkerComponents =
 			supportWorkerComponentPersistence.findBySupportWorkerId(
@@ -67,9 +64,9 @@ public class SupportWorkerComponentLocalServiceImpl
 
 			supportWorkerComponent.setSupportWorkerId(supportWorkerId);
 			supportWorkerComponent.setComponent(component);
-			
+
 			//TODO implement serviceContext as needed
-			
+
 			ServiceContext serviceContext = new ServiceContext();
 
 			supportWorkerComponentPersistence.update(

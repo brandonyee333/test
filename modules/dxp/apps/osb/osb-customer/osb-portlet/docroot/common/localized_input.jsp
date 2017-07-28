@@ -56,11 +56,10 @@ if (availableLocales.length > 1) {
 			<%= HtmlUtil.escape(label) %>
 		</label>
 	</span>
-
 	<span class="current-language-container<%= localized ? StringPool.BLANK : " aui-helper-hidden" %>">
 		<span><%= currentLocale.getDisplayName(locale) %></span>
 
-		<a class="remove-translation aui-helper-hidden" href="javascript:;"><liferay-ui:message key="remove" /></a>
+		<a class="aui-helper-hidden remove-translation" href="javascript:;"><liferay-ui:message key="remove" /></a>
 	</span>
 
 	<c:choose>
@@ -90,7 +89,7 @@ if (availableLocales.length > 1) {
 				</aui:select>
 			</c:when>
 			<c:otherwise>
-				<input class="default-language-id-input" name='<portlet:namespace /><%= name + "DefaultLanguageId" %>' type="hidden" value="<%= HtmlUtil.escape(defaultLanguageId) %>" />
+				<input class="default-language-id-input" name="<portlet:namespace /><%= name + "DefaultLanguageId" %>" type="hidden" value="<%= HtmlUtil.escape(defaultLanguageId) %>" />
 			</c:otherwise>
 		</c:choose>
 

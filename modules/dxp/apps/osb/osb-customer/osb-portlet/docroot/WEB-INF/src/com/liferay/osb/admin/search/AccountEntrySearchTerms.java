@@ -14,9 +14,9 @@
 
 package com.liferay.osb.admin.search;
 
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.LinkedHashMap;
 
@@ -62,7 +62,7 @@ public class AccountEntrySearchTerms extends AccountEntryDisplayTerms {
 			return null;
 		}
 		else {
-			return new Long(countryId);
+			return Long.valueOf(countryId);
 		}
 	}
 
@@ -71,7 +71,7 @@ public class AccountEntrySearchTerms extends AccountEntryDisplayTerms {
 			return null;
 		}
 		else {
-			return new Long(createUserId);
+			return Long.valueOf(createUserId);
 		}
 	}
 
@@ -80,13 +80,12 @@ public class AccountEntrySearchTerms extends AccountEntryDisplayTerms {
 			return null;
 		}
 		else {
-			return new Long(modifiedUserId);
+			return Long.valueOf(modifiedUserId);
 		}
 	}
 
 	public LinkedHashMap<String, Object> getParams() {
-		LinkedHashMap<String, Object> params =
-			new LinkedHashMap<String, Object>();
+		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
 		if (!isAdvancedSearch()) {
 			return params;
@@ -180,7 +179,7 @@ public class AccountEntrySearchTerms extends AccountEntryDisplayTerms {
 			return null;
 		}
 		else {
-			return new Long(regionId);
+			return Long.valueOf(regionId);
 		}
 	}
 

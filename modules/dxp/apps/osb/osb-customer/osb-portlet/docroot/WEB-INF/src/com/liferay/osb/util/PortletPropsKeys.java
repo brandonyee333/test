@@ -21,19 +21,25 @@ package com.liferay.osb.util;
  */
 public interface PortletPropsKeys {
 
-	public static final String ASSET_LICENSE_TRIAL_MAX_SERVERS = "asset.license.trial.max.servers";
+	public static final String ASSET_LICENSE_TRIAL_MAX_SERVERS =
+		"asset.license.trial.max.servers";
 
-	public static final String ASSET_LICENSE_TRIAL_MAX_USERS = "asset.license.trial.max.servers";
+	public static final String ASSET_LICENSE_TRIAL_MAX_USERS =
+		"asset.license.trial.max.servers";
 
 	public static final String AUDIT_ACTION_MODELS = "audit.action.models";
 
-	public static final String DEVELOPER_MODE_ENABLED = "developer.mode.enabled";
+	public static final String DEVELOPER_MODE_ENABLED =
+		"developer.mode.enabled";
 
-	public static final String DEVELOPER_PATHS_ENABLED = "developer.paths.enabled";
+	public static final String DEVELOPER_PATHS_ENABLED =
+		"developer.paths.enabled";
 
-	public static final String DEVELOPER_UPGRADE_ENABLED = "developer.upgrade.enabled";
+	public static final String DEVELOPER_UPGRADE_ENABLED =
+		"developer.upgrade.enabled";
 
-	public static final String ELASTICSEARCH_SEARCH_ENGINE_ID = "elasticsearch.search.engine.id";
+	public static final String ELASTICSEARCH_SEARCH_ENGINE_ID =
+		"elasticsearch.search.engine.id";
 
 	public static final String FILE_REPOSITORY_HOST = "file.repository.host";
 
@@ -41,49 +47,69 @@ public interface PortletPropsKeys {
 
 	public static final String FILE_REPOSITORY_NAME = "file.repository.name";
 
-	public static final String FILE_REPOSITORY_SUPPORT_REGION_IDS = "file.repository.support.region.ids";
+	public static final String FILE_REPOSITORY_SUPPORT_REGION_IDS =
+		"file.repository.support.region.ids";
 
 	public static final String JIRA_BROWSE_URL = "jira.browse.url";
 
-	public static final String KRYTERION_SECURITY_TOKEN = "kryterion.security.token";
+	public static final String KRYTERION_SECURITY_TOKEN =
+		"kryterion.security.token";
 
 	public static final String KRYTERION_URL = "kryterion.url";
 
-	public static final String PROVISIONING_EMAIL_ADDRESS = "provisioning.email.address";
+	public static final String PROVISIONING_EMAIL_ADDRESS =
+		"provisioning.email.address";
 
-	public static final String RABBITMQ_MESSAGE_DEAD_LETTER_QUEUE_NAME = "rabbitmq.message.dead.letter.queue.name";
+	public static final String RABBITMQ_MESSAGE_DEAD_LETTER_QUEUE_NAME =
+		"rabbitmq.message.dead.letter.queue.name";
 
-	public static final String RABBITMQ_MESSAGE_QUEUE_NAME = "rabbitmq.message.queue.name";
+	public static final String RABBITMQ_MESSAGE_QUEUE_NAME =
+		"rabbitmq.message.queue.name";
 
-	public static final String REMOTE_JSON_SERVICE_API_LCS_ENABLED = "remote.json.service.api.lcs.enabled";
+	public static final String REMOTE_JSON_SERVICE_API_LCS_ENABLED =
+		"remote.json.service.api.lcs.enabled";
 
-	public static final String REMOTE_JSON_SERVICE_API_LCS_HOST = "remote.json.service.api.lcs.host";
+	public static final String REMOTE_JSON_SERVICE_API_LCS_HOST =
+		"remote.json.service.api.lcs.host";
 
-	public static final String REMOTE_JSON_SERVICE_API_LCS_PORT = "remote.json.service.api.lcs.port";
+	public static final String REMOTE_JSON_SERVICE_API_LCS_PORT =
+		"remote.json.service.api.lcs.port";
 
-	public static final String REMOTE_JSON_SERVICE_API_LCS_PROTOCOL = "remote.json.service.api.lcs.protocol";
+	public static final String REMOTE_JSON_SERVICE_API_LCS_PROTOCOL =
+		"remote.json.service.api.lcs.protocol";
 
-	public static final String REMOTE_JSON_SERVICE_API_LCS_TOKEN = "remote.json.service.api.lcs.token";
+	public static final String REMOTE_JSON_SERVICE_API_LCS_TOKEN =
+		"remote.json.service.api.lcs.token";
 
-	public static final String REMOTE_REST_SERVICE_API_DOSSIERA_ENABLED = "remote.rest.service.api.dossiera.enabled";
+	public static final String REMOTE_REST_SERVICE_API_DOSSIERA_ENABLED =
+		"remote.rest.service.api.dossiera.enabled";
 
-	public static final String REMOTE_REST_SERVICE_API_DOSSIERA_HOST = "remote.rest.service.api.dossiera.host";
+	public static final String REMOTE_REST_SERVICE_API_DOSSIERA_HOST =
+		"remote.rest.service.api.dossiera.host";
 
-	public static final String REMOTE_REST_SERVICE_API_DOSSIERA_PORT = "remote.rest.service.api.dossiera.port";
+	public static final String REMOTE_REST_SERVICE_API_DOSSIERA_PORT =
+		"remote.rest.service.api.dossiera.port";
 
-	public static final String REMOTE_REST_SERVICE_API_DOSSIERA_PROTOCOL = "remote.rest.service.api.dossiera.protocol";
+	public static final String REMOTE_REST_SERVICE_API_DOSSIERA_PROTOCOL =
+		"remote.rest.service.api.dossiera.protocol";
 
-	public static final String REMOTE_REST_SERVICE_API_DOSSIERA_TOKEN = "remote.rest.service.api.dossiera.token";
+	public static final String REMOTE_REST_SERVICE_API_DOSSIERA_TOKEN =
+		"remote.rest.service.api.dossiera.token";
 
-	public static final String SUPPORT_EMAIL_ADDRESS_FROM = "support.email.address.from";
+	public static final String SUPPORT_EMAIL_ADDRESS_FROM =
+		"support.email.address.from";
 
-	public static final String SUPPORT_VERSION_2_EMAIL_ADDRESS_FEEDBACK = "support.version.2.email.address.feedback";
+	public static final String SUPPORT_VERSION_2_EMAIL_ADDRESS_FEEDBACK =
+		"support.version.2.email.address.feedback";
 
-	public static final String TICKET_ATTACHMENT_INDEXING_EXTENSIONS = "ticket.attachment.indexing.extensions";
+	public static final String TICKET_ATTACHMENT_INDEXING_EXTENSIONS =
+		"ticket.attachment.indexing.extensions";
 
-	public static final String TICKET_ATTACHMENT_INDEXING_MAX_SIZE = "ticket.attachment.indexing.max.size";
+	public static final String TICKET_ATTACHMENT_INDEXING_MAX_SIZE =
+		"ticket.attachment.indexing.max.size";
 
-	public static final String TICKET_ATTACHMENT_PREVIEW_EXTENSIONS = "ticket.attachment.preview.extensions";
+	public static final String TICKET_ATTACHMENT_PREVIEW_EXTENSIONS =
+		"ticket.attachment.preview.extensions";
 
 	public static final String VERIFY_USER_API_TOKEN = "verify.user.api.token";
 

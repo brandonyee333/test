@@ -70,6 +70,6 @@ public class UserAccountCustomerChecker extends RowChecker {
 	private static Log _log = LogFactoryUtil.getLog(
 		UserAccountCustomerChecker.class);
 
-	private AccountEntry _accountEntry;
+	private final AccountEntry _accountEntry;
 
 }

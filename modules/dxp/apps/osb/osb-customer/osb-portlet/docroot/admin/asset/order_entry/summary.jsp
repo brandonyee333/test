@@ -46,127 +46,127 @@ Date startDate = new Date(jsonObject.getLong("startDate"));
 <br /><br />
 
 <table class="results-grid taglib-search-iterator">
-<tr class="results-header">
-	<th>
-		<liferay-ui:message key="product" />
-	</th>
-	<th>
-		<liferay-ui:message key="licenses" />
-	</th>
-	<th>
-		<liferay-ui:message key="license-lifetime" />
-	</th>
-	<th>
-		<liferay-ui:message key="support-tickets" />
-	</th>
-	<th>
-		<liferay-ui:message key="sla" />
-	</th>
-	<th>
-		<liferay-ui:message key="support-lifetime" />
-	</th>
-	<th>
-		<liferay-ui:message key="support-end-date" />
-	</th>
-	<th>
-		<liferay-ui:message key="version" />
-	</th>
-	<th>
-		<liferay-ui:message key="sizing" />
-	</th>
-	<th>
-		<liferay-ui:message key="quantity" />
-	</th>
-</tr>
-
-<%
-JSONArray jsonArray = jsonObject.getJSONArray("offeringEntries");
-
-for (int i = 0; i < jsonArray.length(); i++) {
-	JSONObject offeringEntryJSONObject = jsonArray.getJSONObject(i);
-
-	ProductEntry productEntry = ProductEntryLocalServiceUtil.getProductEntry(offeringEntryJSONObject.getLong("productEntryId"));
-	SupportResponse supportResponse = SupportResponseLocalServiceUtil.getSupportResponse(offeringEntryJSONObject.getLong("supportResponseId"));
-%>
-
-	<tr class="results-row">
-		<td>
-			<%= HtmlUtil.escape(productEntry.getName()) %>
-
-			<c:if test='<%= Validator.isNotNull(offeringEntryJSONObject.getString("productDescription")) %>'>
-				- <%= offeringEntryJSONObject.getString("productDescription") %>
-			</c:if>
-		</td>
-		<td>
-			<%= LanguageUtil.get(locale, offeringEntryJSONObject.getString("licenses")) %>
-		</td>
-		<td>
-
-			<%
-			long licenseLifetime = offeringEntryJSONObject.getLong("licenseLifetime");
-
-			String licenseLifetimeLabel = OfferingDefinitionConstants.getLifetimeLabel(licenseLifetime);
-
-			if (Validator.isNull(licenseLifetimeLabel)) {
-				licenseLifetimeLabel = OfferingDefinitionConstants.getCustomLifetimeLabel(licenseLifetime);
-			}
-			%>
-
-			<%= LanguageUtil.get(locale, licenseLifetimeLabel) %>
-		</td>
-		<td>
-			<%= LanguageUtil.get(locale, offeringEntryJSONObject.getString("supportTickets")) %>
-		</td>
-		<td>
-			<%= HtmlUtil.escape(supportResponse.getName()) %>
-		</td>
-		<td>
-
-			<%
-			long supportLifetime = offeringEntryJSONObject.getLong("supportLifetime");
-
-			String supportLifetimeLabel = OfferingDefinitionConstants.getLifetimeLabel(supportLifetime);
-
-			if (Validator.isNull(supportLifetimeLabel)) {
-				supportLifetimeLabel = OfferingDefinitionConstants.getCustomLifetimeLabel(supportLifetime);
-			}
-			%>
-
-			<%= LanguageUtil.get(locale, supportLifetimeLabel) %>
-		</td>
-		<td>
-
-			<%
-			Date supportEndDate = new Date(offeringEntryJSONObject.getLong("supportEndDate"));
-			%>
-
-			<%= longDateFormatDateTime.format(supportEndDate) %>
-		</td>
-		<td>
-
-			<%
-			int version = offeringEntryJSONObject.getInt("version");
-			%>
-
-			<c:if test="<%= version > 0 %>">
-
-				<%
-				ListType listType = ListTypeServiceUtil.getListType(version);
-				%>
-
-				<%= LanguageUtil.get(locale, listType.getName()) %>
-			</c:if>
-		</td>
-		<td>
-			<%= LanguageUtil.get(locale, OfferingEntryConstants.getSizingLabel(offeringEntryJSONObject.getInt("sizing"))) %>
-		</td>
-		<td>
-			<%= offeringEntryJSONObject.getString("quantity") %>
-		</td>
+	<tr class="results-header">
+		<th>
+			<liferay-ui:message key="product" />
+		</th>
+		<th>
+			<liferay-ui:message key="licenses" />
+		</th>
+		<th>
+			<liferay-ui:message key="license-lifetime" />
+		</th>
+		<th>
+			<liferay-ui:message key="support-tickets" />
+		</th>
+		<th>
+			<liferay-ui:message key="sla" />
+		</th>
+		<th>
+			<liferay-ui:message key="support-lifetime" />
+		</th>
+		<th>
+			<liferay-ui:message key="support-end-date" />
+		</th>
+		<th>
+			<liferay-ui:message key="version" />
+		</th>
+		<th>
+			<liferay-ui:message key="sizing" />
+		</th>
+		<th>
+			<liferay-ui:message key="quantity" />
+		</th>
 	</tr>
 
-<%
-}
-%>
+	<%
+	JSONArray jsonArray = jsonObject.getJSONArray("offeringEntries");
+
+	for (int i = 0; i < jsonArray.length(); i++) {
+		JSONObject offeringEntryJSONObject = jsonArray.getJSONObject(i);
+
+		ProductEntry productEntry = ProductEntryLocalServiceUtil.getProductEntry(offeringEntryJSONObject.getLong("productEntryId"));
+		SupportResponse supportResponse = SupportResponseLocalServiceUtil.getSupportResponse(offeringEntryJSONObject.getLong("supportResponseId"));
+	%>
+
+		<tr class="results-row">
+			<td>
+				<%= HtmlUtil.escape(productEntry.getName()) %>
+
+				<c:if test='<%= Validator.isNotNull(offeringEntryJSONObject.getString("productDescription")) %>'>
+					- <%= offeringEntryJSONObject.getString("productDescription") %>
+				</c:if>
+			</td>
+			<td>
+				<%= LanguageUtil.get(request, offeringEntryJSONObject.getString("licenses")) %>
+			</td>
+			<td>
+
+				<%
+				long licenseLifetime = offeringEntryJSONObject.getLong("licenseLifetime");
+
+				String licenseLifetimeLabel = OfferingDefinitionConstants.getLifetimeLabel(licenseLifetime);
+
+				if (Validator.isNull(licenseLifetimeLabel)) {
+					licenseLifetimeLabel = OfferingDefinitionConstants.getCustomLifetimeLabel(licenseLifetime);
+				}
+				%>
+
+				<%= LanguageUtil.get(request, licenseLifetimeLabel) %>
+			</td>
+			<td>
+				<%= LanguageUtil.get(request, offeringEntryJSONObject.getString("supportTickets")) %>
+			</td>
+			<td>
+				<%= HtmlUtil.escape(supportResponse.getName()) %>
+			</td>
+			<td>
+
+				<%
+				long supportLifetime = offeringEntryJSONObject.getLong("supportLifetime");
+
+				String supportLifetimeLabel = OfferingDefinitionConstants.getLifetimeLabel(supportLifetime);
+
+				if (Validator.isNull(supportLifetimeLabel)) {
+					supportLifetimeLabel = OfferingDefinitionConstants.getCustomLifetimeLabel(supportLifetime);
+				}
+				%>
+
+				<%= LanguageUtil.get(request, supportLifetimeLabel) %>
+			</td>
+			<td>
+
+				<%
+				Date supportEndDate = new Date(offeringEntryJSONObject.getLong("supportEndDate"));
+				%>
+
+				<%= longDateFormatDateTime.format(supportEndDate) %>
+			</td>
+			<td>
+
+				<%
+				int version = offeringEntryJSONObject.getInt("version");
+				%>
+
+				<c:if test="<%= version > 0 %>">
+
+					<%
+					ListType listType = ListTypeServiceUtil.getListType(version);
+					%>
+
+					<%= LanguageUtil.get(request, listType.getName()) %>
+				</c:if>
+			</td>
+			<td>
+				<%= LanguageUtil.get(request, OfferingEntryConstants.getSizingLabel(offeringEntryJSONObject.getInt("sizing"))) %>
+			</td>
+			<td>
+				<%= offeringEntryJSONObject.getString("quantity") %>
+			</td>
+		</tr>
+
+	<%
+	}
+	%>
 
 </table>

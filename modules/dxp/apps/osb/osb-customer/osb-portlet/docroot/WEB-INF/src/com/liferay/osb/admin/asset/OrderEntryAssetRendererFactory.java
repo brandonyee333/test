@@ -14,12 +14,11 @@
 
 package com.liferay.osb.admin.asset;
 
+import com.liferay.asset.kernel.model.AssetRenderer;
 import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.service.OrderEntryLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.asset.kernel.model.AssetRenderer;
 
 /**
  * @author Amos Fong
@@ -32,7 +31,7 @@ public class OrderEntryAssetRendererFactory
 	public static final String TYPE = "order";
 
 	public AssetRenderer getAssetRenderer(long classPK, int type)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OrderEntry orderEntry = OrderEntryLocalServiceUtil.getOrderEntry(
 			classPK);

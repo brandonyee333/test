@@ -16,7 +16,7 @@ package com.liferay.osb.hook.upgrade.v2_4_4;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
-/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+/*import UpgradeProcess;
 import com.liferay.osb.model.TicketAttachment;
 import com.liferay.osb.model.TicketAttachmentConstants;
 import com.liferay.osb.service.TicketAttachmentLocalServiceUtil;
@@ -44,10 +44,8 @@ public class UpgradeTicketAttachment extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	protected void deleteTicketAttachments(long ticketEntryId)
-		throws PortalException, SystemException {
+/*protected void deleteTicketAttachments(long ticketEntryId)
+		throws PortalException {
 
 		TicketAttachment patchLevelTicketAttachment =
 			TicketAttachmentLocalServiceUtil.fetchTicketAttachment(
@@ -138,6 +136,7 @@ public class UpgradeTicketAttachment extends UpgradeProcess {
 	}
 
 }
+
 */
 
 }

@@ -14,10 +14,6 @@
 
 package com.liferay.osb.util;
 
-import com.liferay.portal.kernel.portlet.PortletResponseUtil;
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.ProductEntryConstants;
@@ -25,25 +21,22 @@ import com.liferay.osb.model.TicketEntryConstants;
 import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
 import com.liferay.osb.support.util.SupportUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
-import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.StreamUtil;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.service.ListTypeServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.document.library.kernel.exception.NoSuchDirectoryException;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.WebKeys;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -65,15 +58,14 @@ import javax.servlet.http.HttpServletResponse;
 public class OSBRequestUtil {
 
 	public static JSONArray getEarlierEnvLFRTypes(
-			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
-		throws SystemException {
+		ResourceRequest resourceRequest, ResourceResponse resourceResponse) {
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)resourceRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
 		int envLFR = ParamUtil.getInteger(resourceRequest, "envLFR");
 
-		List<ListType> envLFRTypes = new ArrayList<ListType>();
+		List<ListType> envLFRTypes = new ArrayList<>();
 
 		envLFRTypes.addAll(
 			ListTypeServiceUtil.getListTypes(
@@ -85,7 +77,7 @@ public class OSBRequestUtil {
 
 		Iterator<ListType> itr = envLFRTypes.iterator();
 
-		long[] listTypesDeprecated = 
+		long[] listTypesDeprecated =
 			Arrays.stream(ProductEntryConstants.LIST_TYPES_DEPRECATED).
 				asLongStream().toArray();
 
@@ -105,7 +97,7 @@ public class OSBRequestUtil {
 
 	public static JSONArray getLaterEnvLFRTypes(
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)resourceRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
@@ -114,7 +106,7 @@ public class OSBRequestUtil {
 		int offeringEntryId = ParamUtil.getInteger(
 			resourceRequest, "offeringEntryId");
 
-		List<ListType> envLFRTypes = new ArrayList<ListType>();
+		List<ListType> envLFRTypes = new ArrayList<>();
 
 		if (offeringEntryId > 0) {
 			OfferingEntry offeringEntry =
@@ -225,6 +217,7 @@ public class OSBRequestUtil {
 		try {
 			OfferingEntry offeringEntry =
 				OfferingEntryLocalServiceUtil.getOfferingEntry(offeringEntryId);
+
 			ProductEntry productEntry = offeringEntry.getProductEntry();
 
 			List<ListType> envLFRTypes = ListUtil.copy(
@@ -232,7 +225,7 @@ public class OSBRequestUtil {
 
 			Iterator<ListType> itr = envLFRTypes.iterator();
 
-			long[] listTypesDeprecated = 
+			long[] listTypesDeprecated =
 				Arrays.stream(ProductEntryConstants.LIST_TYPES_DEPRECATED).
 					asLongStream().toArray();
 
@@ -278,9 +271,9 @@ public class OSBRequestUtil {
 		for (ListType listType : listTypes) {
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-			jsonObject.put("value", String.valueOf(listType.getListTypeId()));
 			jsonObject.put(
 				"name", LanguageUtil.get(locale, listType.getName()));
+			jsonObject.put("value", String.valueOf(listType.getListTypeId()));
 
 			jsonArray.put(jsonObject);
 		}
@@ -288,6 +281,6 @@ public class OSBRequestUtil {
 		return jsonArray;
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(OSBRequestUtil.class);
+	private static final Log _log = LogFactoryUtil.getLog(OSBRequestUtil.class);
 
 }

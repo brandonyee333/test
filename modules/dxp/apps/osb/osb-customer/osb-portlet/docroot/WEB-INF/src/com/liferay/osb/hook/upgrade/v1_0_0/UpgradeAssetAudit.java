@@ -16,7 +16,7 @@ package com.liferay.osb.hook.upgrade.v1_0_0;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
-/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+/*import UpgradeProcess;
 
 */
 
@@ -29,9 +29,7 @@ public class UpgradeAssetAudit extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	protected void doUpgrade() throws Exception {
 		runSQL("delete from OSB_AssetAudit where type_ = " + _TYPE_SYSTEM);
 	}
@@ -39,6 +37,7 @@ public class UpgradeAssetAudit extends UpgradeProcess {
 	private static final int _TYPE_SYSTEM = 1;
 
 }
+
 */
 
 }

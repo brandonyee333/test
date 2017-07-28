@@ -37,27 +37,27 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 		<div class="section-title <%= HtmlUtil.escapeAttribute(id) %>" id="<portlet:namespace /><%= HtmlUtil.escapeAttribute(id) %>">
 			<div class="table">
 				<div class="row">
-					<div class="column search-results-header account-column code">
+					<div class="account-column code column search-results-header">
 						<liferay-ui:message key="code" />
 					</div>
 
-					<div class="column search-results-header account-column project-name">
+					<div class="account-column column project-name search-results-header">
 						<liferay-ui:message key="project-name" />
 					</div>
 
-					<div class="column search-results-header account-column partner">
+					<div class="account-column column partner search-results-header">
 						<liferay-ui:message key="partner" />
 					</div>
 
-					<div class="column search-results-header account-column tier">
+					<div class="account-column column search-results-header tier">
 						<liferay-ui:message key="tier" />
 					</div>
 
-					<div class="column search-results-header account-column support-end-date">
+					<div class="account-column column search-results-header support-end-date">
 						<liferay-ui:message key="support-end-date" />
 					</div>
 
-					<div class="column search-results-header account-column status">
+					<div class="account-column column search-results-header status">
 						<liferay-ui:message key="status" />
 					</div>
 				</div>
@@ -113,7 +113,7 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 					</liferay-portlet:renderURL>
 
 					<a class="row-url search-row" draggable="false" href="<%= rowURL %>" <%= rowJS %>>
-						<div class="column account-column code" <%= columnJS %>>
+						<div class="account-column code column" <%= columnJS %>>
 							<div class="search-title">
 								<span title="<%= HtmlUtil.escapeAttribute(accountEntry.getName()) %>">
 									<%= accountEntry.getCode() %>
@@ -121,7 +121,7 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 							</div>
 						</div>
 
-						<div class="column account-column project-name" <%= columnJS %>>
+						<div class="account-column column project-name" <%= columnJS %>>
 							<div class="search-detail">
 								<span title="<%= HtmlUtil.escapeAttribute(accountEntry.getName()) %>">
 									<%= HtmlUtil.escape(accountEntry.getName()) %>
@@ -129,7 +129,7 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 							</div>
 						</div>
 
-						<div class="column account-column partner" <%= columnJS %>>
+						<div class="account-column column partner" <%= columnJS %>>
 							<div class="search-detail">
 								<span title="<%= HtmlUtil.escapeAttribute(accountEntry.getName()) %>">
 									<c:choose>
@@ -144,7 +144,7 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 							</div>
 						</div>
 
-						<div class="column account-column tier" <%= columnJS %>>
+						<div class="account-column column tier" <%= columnJS %>>
 							<div class="search-detail">
 								<span title="<%= HtmlUtil.escapeAttribute(accountEntry.getName()) %>">
 									<%= LanguageUtil.get(pageContext, AccountEntryConstants.getTierLabel(accountEntry.getTier())) %>
@@ -152,7 +152,7 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 							</div>
 						</div>
 
-						<div class="column account-column support-end-date" <%= columnJS %>>
+						<div class="account-column column support-end-date" <%= columnJS %>>
 							<div class="account-support-end-date">
 								<span title="<%= HtmlUtil.escapeAttribute(accountEntry.getName()) %>">
 									<c:if test="<%= offeringEntry != null %>">
@@ -162,7 +162,7 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 							</div>
 						</div>
 
-						<div class="column account-column status" <%= columnJS %>>
+						<div class="account-column column status" <%= columnJS %>>
 							<div class="search-detail">
 								<span title="<%= HtmlUtil.escapeAttribute(accountEntry.getName()) %>">
 									<%= LanguageUtil.get(pageContext, accountEntry.getStatusLabel()) %>

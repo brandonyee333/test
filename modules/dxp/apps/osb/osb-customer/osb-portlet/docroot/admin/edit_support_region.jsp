@@ -18,6 +18,7 @@
 
 <%
 String redirect = ParamUtil.getString(request, "redirect");
+
 String backURL = ParamUtil.getString(request, "backURL", redirect);
 
 long supportRegionId = ParamUtil.getLong(request, "supportRegionId");
@@ -69,56 +70,56 @@ if (supportRegion != null) {
 	<aui:model-context bean="<%= supportRegion %>" model="<%= SupportRegion.class %>" />
 
 	<table class="lfr-table">
-	<tr>
-		<td>
-			<liferay-ui:message key="name" />
-		</td>
-		<td>
-			<aui:input label="" name="name" />
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="description" />
-		</td>
-		<td>
-			<aui:input label="" name="description" />
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="time-zone" />
-		</td>
-		<td>
-			<aui:select label="" name="timeZoneId">
-				<aui:option label="" value="0" />
+		<tr>
+			<td>
+				<liferay-ui:message key="name" />
+			</td>
+			<td>
+				<aui:input label="" name="name" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="description" />
+			</td>
+			<td>
+				<aui:input label="" name="description" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="time-zone" />
+			</td>
+			<td>
+				<aui:select label="" name="timeZoneId">
+					<aui:option label="" value="0" />
 
-				<%
-				String[] timeZoneIds = PropsUtil.getArray("time.zones");
+					<%
+					String[] timeZoneIds = PropsUtil.getArray("time.zones");
 
-				for (String curTimeZoneId : timeZoneIds) {
-					TimeZone curTimeZone = TimeZone.getTimeZone(curTimeZoneId);
-				%>
+					for (String curTimeZoneId : timeZoneIds) {
+						TimeZone curTimeZone = TimeZone.getTimeZone(curTimeZoneId);
+					%>
 
-					<aui:option label="<%= curTimeZone.getDisplayName() %>" selected="<%= curTimeZoneId.equals(timeZoneId) %>" value="<%= curTimeZoneId %>" />
+						<aui:option label="<%= curTimeZone.getDisplayName() %>" selected="<%= curTimeZoneId.equals(timeZoneId) %>" value="<%= curTimeZoneId %>" />
 
-				<%
-				}
-				%>
+					<%
+					}
+					%>
 
-			</aui:select>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="manager" />
-		</td>
-		<td>
-			<c:if test="<%= managerUser != null %>">
-				<%= HtmlUtil.escape(managerUser.getFullName()) %>
-			</c:if>
-		</td>
-	</tr>
+				</aui:select>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="manager" />
+			</td>
+			<td>
+				<c:if test="<%= managerUser != null %>">
+					<%= HtmlUtil.escape(managerUser.getFullName()) %>
+				</c:if>
+			</td>
+		</tr>
 	</table>
 
 	<br />

@@ -18,7 +18,6 @@ import com.liferay.osb.model.TicketEntry;
 import com.liferay.osb.model.TicketWorkerConstants;
 import com.liferay.osb.service.TicketEntryLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 
 /**
  * @author Brian Wing Shun Chan
@@ -33,9 +32,7 @@ public class TicketWorkerImpl extends TicketWorkerBaseImpl {
 		return TicketWorkerConstants.getRoleLabel(getRole());
 	}
 
-	public TicketEntry getTicketEntry()
-		throws PortalException, SystemException {
-
+	public TicketEntry getTicketEntry() throws PortalException {
 		return TicketEntryLocalServiceUtil.getTicketEntry(getTicketEntryId());
 	}
 

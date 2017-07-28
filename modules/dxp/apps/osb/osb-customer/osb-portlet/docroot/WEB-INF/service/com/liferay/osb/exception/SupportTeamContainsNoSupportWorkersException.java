@@ -21,7 +21,8 @@ import com.liferay.portal.kernel.exception.PortalException;
  * @author Brian Wing Shun Chan
  */
 @ProviderType
-public class SupportTeamContainsNoSupportWorkersException extends PortalException {
+public class SupportTeamContainsNoSupportWorkersException
+	extends PortalException {
 
 	public SupportTeamContainsNoSupportWorkersException() {
 	}
@@ -30,7 +31,9 @@ public class SupportTeamContainsNoSupportWorkersException extends PortalExceptio
 		super(msg);
 	}
 
-	public SupportTeamContainsNoSupportWorkersException(String msg, Throwable cause) {
+	public SupportTeamContainsNoSupportWorkersException(
+		String msg, Throwable cause) {
+
 		super(msg, cause);
 	}
 

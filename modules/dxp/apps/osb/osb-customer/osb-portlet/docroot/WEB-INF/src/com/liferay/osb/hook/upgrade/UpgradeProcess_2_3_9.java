@@ -14,8 +14,8 @@
 
 package com.liferay.osb.hook.upgrade;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.osb.hook.upgrade.v2_3_9.UpgradeCurrencyEntry;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
 /**
  * @author Douglas Wong

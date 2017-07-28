@@ -253,7 +253,6 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 						<span class="select-all select-clear-toggle">
 							<liferay-ui:message key="select-all" />
 						</span>
-
 						<span class="divider">&nbsp;|&nbsp;</span>
 
 						<span class="clear-all select-clear-toggle">
@@ -285,7 +284,6 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 						<span class="select-all select-clear-toggle">
 							<liferay-ui:message key="select-all" />
 						</span>
-
 						<span class="divider">&nbsp;|&nbsp;</span>
 
 						<span class="clear-all select-clear-toggle">
@@ -596,21 +594,19 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 							}
 							%>
 
-							<span class='filter-actions <%= (searchFilter != null) ? "" : "aui-helper-hidden" %>' id="<portlet:namespace />filterActions">
+							<span class="filter-actions <%= (searchFilter != null) ? "" : "aui-helper-hidden" %>" id="<portlet:namespace />filterActions">
 								<span class="custom-filter-button" onClick="<portlet:namespace />deleteSearchFilter();">
 									<liferay-ui:icon
 										image="delete"
 									/>
 								</span>
-
-								<span class="custom-filter-button" onClick='<portlet:namespace />toggleForm("<portlet:namespace />filterDisplay", "<portlet:namespace />editFilter"); document.<portlet:namespace />fm.<portlet:namespace />editFilterName.focus();'>
+								<span class="custom-filter-button" onClick="<portlet:namespace />toggleForm("<portlet:namespace />filterDisplay", "<portlet:namespace />editFilter"); document.<portlet:namespace />fm.<portlet:namespace />editFilterName.focus();">
 									<liferay-ui:icon
 										image="edit"
 									/>
 								</span>
 							</span>
-
-							<span class="custom-filter-button" onClick='<portlet:namespace />toggleForm("<portlet:namespace />filterDisplay", "<portlet:namespace />addFilter"); document.<portlet:namespace />fm.<portlet:namespace />addFilterName.focus();'>
+							<span class="custom-filter-button" onClick="<portlet:namespace />toggleForm("<portlet:namespace />filterDisplay", "<portlet:namespace />addFilter"); document.<portlet:namespace />fm.<portlet:namespace />addFilterName.focus();">
 								<liferay-ui:icon
 									image="add"
 								/>
@@ -629,7 +625,7 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 
 							<input class="aui-button-input" id="<portlet:namespace />addFilterButton" onClick="<portlet:namespace />addSearchFilter();" type="button" value="<liferay-ui:message key="add-new-filter" />" />
 
-							<input class="aui-button-input" onClick='<portlet:namespace />toggleForm("<portlet:namespace />addFilter", "<portlet:namespace />filterDisplay");' type="button" value="<liferay-ui:message key="cancel" />" />
+							<input class="aui-button-input" onClick="<portlet:namespace />toggleForm("<portlet:namespace />addFilter", "<portlet:namespace />filterDisplay");" type="button" value="<liferay-ui:message key="cancel" />" />
 						</div>
 
 						<div id="<portlet:namespace />editFilter" style="display: none;">
@@ -642,7 +638,7 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 
 							<input class="aui-button-input" id="<portlet:namespace />updateFilterButton" onClick="<portlet:namespace />updateSearchFilter();" type="button" value="<liferay-ui:message key="update-filter" />" />
 
-							<input class="aui-button-input" onClick='<portlet:namespace />toggleForm("<portlet:namespace />editFilter", "<portlet:namespace />filterDisplay");' type="button" value="<liferay-ui:message key="cancel" />" />
+							<input class="aui-button-input" onClick="<portlet:namespace />toggleForm("<portlet:namespace />editFilter", "<portlet:namespace />filterDisplay");" type="button" value="<liferay-ui:message key="cancel" />" />
 						</div>
 					</div>
 				</div>

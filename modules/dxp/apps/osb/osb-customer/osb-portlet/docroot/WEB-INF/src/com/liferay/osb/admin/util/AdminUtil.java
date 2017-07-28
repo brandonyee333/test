@@ -14,51 +14,32 @@
 
 package com.liferay.osb.admin.util;
 
-import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.LocalizationUtil;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.model.FileRepository;
 import com.liferay.osb.model.TicketEntry;
 import com.liferay.osb.service.TicketEntryLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.search.Indexer;
-import com.liferay.portal.kernel.search.IndexerRegistryUtil;
-import com.liferay.portal.kernel.util.HtmlUtil;
-import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.model.Region;
-import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.PortletPreferencesLocalServiceUtil;
-import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.UnicodeProperties;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.util.ContentUtil;
-
-import java.net.URL;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 
 import javax.portlet.PortletPreferences;
-import javax.portlet.PortletRequest;
 
 /**
  * @author Peter Shin
@@ -208,11 +189,8 @@ public class AdminUtil {
 		return map;
 	}
 
-	public static List<FileRepository> getFileRepositories()
-		throws SystemException {
-
-		List<FileRepository> fileRepositoryList =
-			new ArrayList<FileRepository>();
+	public static List<FileRepository> getFileRepositories() {
+		List<FileRepository> fileRepositoryList = new ArrayList<>();
 
 		String fileRepositories = getPortletPreferences().getValue(
 			"fileRepositories", null);
@@ -232,9 +210,7 @@ public class AdminUtil {
 		return fileRepositoryList;
 	}
 
-	public static FileRepository getFileRepository(String fileRepositoryId)
-		throws SystemException {
-
+	public static FileRepository getFileRepository(String fileRepositoryId) {
 		String fileRepositories = getPortletPreferences().getValue(
 			"fileRepositories", null);
 
@@ -249,9 +225,7 @@ public class AdminUtil {
 		return new FileRepository(fileRepositoryProperties);
 	}
 
-	public static PortletPreferences getPortletPreferences()
-		throws SystemException {
-
+	public static PortletPreferences getPortletPreferences() {
 		long ownerId = OSBConstants.COMPANY_ID;
 		int ownerType = PortletKeys.PREFS_OWNER_TYPE_COMPANY;
 		long plid = PortletKeys.PREFS_PLID_SHARED;
@@ -277,7 +251,7 @@ public class AdminUtil {
 	}
 
 	public static void reindex(String portletId, long modifiedDateOffset)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (portletId.equals(OSBPortletKeys.OSB_SUPPORT)) {
 			Date date = new Date(

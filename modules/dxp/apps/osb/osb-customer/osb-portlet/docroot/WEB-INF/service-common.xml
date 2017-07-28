@@ -2,11 +2,11 @@
 <!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 6.0.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_6_0_0.dtd">
 
 <service-builder>
-	<entity name="AuditAction" local-service="true" remote-service="true">
+	<entity local-service="true" name="AuditAction" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="auditActionId" type="long" primary="true" />
+		<column name="auditActionId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -22,7 +22,7 @@
 		<!-- Finder methods -->
 
 		<finder name="LtModifiedDate" return-type="Collection">
-			<finder-column name="modifiedDate" comparator="&lt;" />
+			<finder-column comparator="&lt;" name="modifiedDate" />
 		</finder>
 		<finder name="C_C_MC" return-type="AuditAction">
 			<finder-column name="classNameId" />
@@ -49,11 +49,11 @@
 			<finder-column name="action" />
 		</finder>
 	</entity>
-	<entity name="FeedbackEntry" local-service="true" remote-service="true">
+	<entity local-service="true" name="FeedbackEntry" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="feedbackEntryId" type="long" primary="true" />
+		<column name="feedbackEntryId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -69,11 +69,11 @@
 		<column name="comments" type="String" />
 		<column name="pageURL" type="String" />
 	</entity>
-	<entity name="LCSSubscriptionEntry" local-service="true" remote-service="true">
+	<entity local-service="true" name="LCSSubscriptionEntry" remote-service="true">
 
 		<!-- PK fields -->
 
-		<column name="lcsSubscriptionEntryId" type="long" primary="true" />
+		<column name="lcsSubscriptionEntryId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -99,7 +99,7 @@
 
 		<!-- References -->
 
-		<reference package-path="com.liferay.portal" entity="Role" />
+		<reference entity="Role" package-path="com.liferay.portal" />
 	</entity>
 	<exceptions>
 		<exception>UnverifiedUser</exception>

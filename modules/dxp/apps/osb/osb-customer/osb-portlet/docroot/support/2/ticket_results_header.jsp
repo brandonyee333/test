@@ -51,9 +51,9 @@ if (banner) {
 					<div class="column search-results-header ticket-column select toggle-bulk-edit <%= bulkEdit ? "" : "aui-helper-hidden" %>"></div>
 				</c:if>
 
-				<div class="column search-results-header ticket-column severity"></div>
+				<div class="column search-results-header severity ticket-column"></div>
 
-				<div class="column search-results-header ticket-column img"></div>
+				<div class="column img search-results-header ticket-column"></div>
 
 				<div class="column search-results-header ticket-column number toggle-bulk <%= bulkEdit ? "bulk-edit" : "" %> <%= _getCSSClass("display-id", orderByCol, orderByType) %>">
 					<c:if test='<%= ArrayUtil.contains(orderableColumns, "display-id") %>'>
@@ -141,7 +141,7 @@ if (banner) {
 					</c:if>
 				</div>
 
-				<div class="column search-results-header ticket-column files">
+				<div class="column files search-results-header ticket-column">
 					<liferay-ui:message key="files" />
 				</div>
 			</div>
@@ -160,9 +160,9 @@ if (banner) {
 		<c:if test="<%= (!advancedSearch && (count > 0)) || ((results != null) && !results.isEmpty()) %>">
 			<div class="table <%= liferayIncOrg ? "view-liferay" : "" %>">
 				<div class="row">
-					<div class="column search-results-header ticket-column severity"></div>
+					<div class="column search-results-header severity ticket-column"></div>
 
-					<div class="column search-results-header ticket-column img"></div>
+					<div class="column img search-results-header ticket-column"></div>
 
 					<div class="column search-results-header ticket-column number <%= _getCSSClass("display-id", orderByCol, orderByType) %>">
 						<c:if test='<%= ArrayUtil.contains(orderableColumns, "display-id") %>'>
@@ -250,7 +250,7 @@ if (banner) {
 						</c:if>
 					</div>
 
-					<div class="column search-results-header ticket-column files">
+					<div class="column files search-results-header ticket-column">
 						<liferay-ui:message key="files" />
 					</div>
 				</div>

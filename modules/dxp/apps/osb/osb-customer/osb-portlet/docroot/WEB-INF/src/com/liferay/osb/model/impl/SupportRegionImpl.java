@@ -14,12 +14,11 @@
 
 package com.liferay.osb.model.impl;
 
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.model.SupportTeam;
 import com.liferay.osb.service.SupportTeamLocalServiceUtil;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.List;
 import java.util.TimeZone;
@@ -32,11 +31,11 @@ public class SupportRegionImpl extends SupportRegionBaseImpl {
 	public SupportRegionImpl() {
 	}
 
-	public User getManagerUser() throws SystemException {
+	public User getManagerUser() {
 		return UserLocalServiceUtil.fetchUser(getManagerUserId());
 	}
 
-	public List<SupportTeam> getSupportTeams() throws SystemException {
+	public List<SupportTeam> getSupportTeams() {
 		return SupportTeamLocalServiceUtil.getSupportRegionSupportTeams(
 			getSupportRegionId());
 	}

@@ -14,7 +14,6 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.osb.exception.NoSuchAccountEntryException;
 import com.liferay.osb.exception.TicketFlagTypeException;
 import com.liferay.osb.model.AccountEntry;
@@ -22,8 +21,8 @@ import com.liferay.osb.model.TicketFlag;
 import com.liferay.osb.model.TicketFlagConstants;
 import com.liferay.osb.service.base.TicketFlagLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.ArrayUtil;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -37,7 +36,7 @@ public class TicketFlagLocalServiceImpl extends TicketFlagLocalServiceBaseImpl {
 
 	public void deleteTicketFlag(
 			long userId, long accountEntryId, long ticketEntryId, int type)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketFlag ticketFlag = ticketFlagPersistence.fetchByU_AEI_TEI_T(
 			userId, accountEntryId, ticketEntryId, type);
@@ -47,36 +46,28 @@ public class TicketFlagLocalServiceImpl extends TicketFlagLocalServiceBaseImpl {
 		}
 	}
 
-	public void deleteTicketFlags(long ticketEntryId, int type, int flag)
-		throws SystemException {
-
+	public void deleteTicketFlags(long ticketEntryId, int type, int flag) {
 		ticketFlagPersistence.removeByTEI_T_F(ticketEntryId, type, flag);
 	}
 
 	public List<TicketFlag> getTicketFlags(
-			long ticketEntryId, int type, int flag)
-		throws SystemException {
+		long ticketEntryId, int type, int flag) {
 
 		return ticketFlagPersistence.findByTEI_T_F(ticketEntryId, type, flag);
 	}
 
 	public List<TicketFlag> getTicketFlags(
-			long ticketEntryId, int[] types, int flag)
-		throws SystemException {
+		long ticketEntryId, int[] types, int flag) {
 
 		return ticketFlagPersistence.findByTEI_T_F(ticketEntryId, types, flag);
 	}
 
-	public int getTicketFlagsCount(long ticketEntryId, int type, int flag)
-		throws SystemException {
-
+	public int getTicketFlagsCount(long ticketEntryId, int type, int flag) {
 		return ticketFlagPersistence.countByTEI_T_F(ticketEntryId, type, flag);
 	}
 
-	public int[] getTicketFlagTypes(long ticketEntryId, int[] types, int flag)
-		throws SystemException {
-
-		Set<Integer> ticketFlagTypes = new HashSet<Integer>();
+	public int[] getTicketFlagTypes(long ticketEntryId, int[] types, int flag) {
+		Set<Integer> ticketFlagTypes = new HashSet<>();
 
 		List<TicketFlag> ticketFlags = ticketFlagPersistence.findByTEI_T_F(
 			ticketEntryId, types, flag);
@@ -88,11 +79,9 @@ public class TicketFlagLocalServiceImpl extends TicketFlagLocalServiceBaseImpl {
 		return ArrayUtil.toArray(ticketFlagTypes.toArray(new Integer[0]));
 	}
 
-	public boolean hasTicketFlag(long ticketEntryId, int type, int flag)
-		throws SystemException {
-
-		if (ticketFlagPersistence.countByTEI_T_F(
-				ticketEntryId, type, flag) > 0) {
+	public boolean hasTicketFlag(long ticketEntryId, int type, int flag) {
+		if (ticketFlagPersistence.countByTEI_T_F(ticketEntryId, type, flag) >
+				0) {
 
 			return true;
 		}
@@ -102,9 +91,8 @@ public class TicketFlagLocalServiceImpl extends TicketFlagLocalServiceBaseImpl {
 	}
 
 	public boolean hasTicketFlag(
-			long userId, long accountEntryId, long ticketEntryId, int type,
-			int flag)
-		throws SystemException {
+		long userId, long accountEntryId, long ticketEntryId, int type,
+		int flag) {
 
 		TicketFlag ticketFlag = ticketFlagPersistence.fetchByU_AEI_TEI_T(
 			userId, accountEntryId, ticketEntryId, type);
@@ -124,7 +112,7 @@ public class TicketFlagLocalServiceImpl extends TicketFlagLocalServiceBaseImpl {
 	public TicketFlag updateTicketFlag(
 			long userId, long accountEntryId, long ticketEntryId, int type,
 			int flag)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		validate(userId, accountEntryId, ticketEntryId, type);
 
@@ -143,9 +131,9 @@ public class TicketFlagLocalServiceImpl extends TicketFlagLocalServiceBaseImpl {
 		ticketFlag.setTicketEntryId(ticketEntryId);
 		ticketFlag.setType(type);
 		ticketFlag.setFlag(flag);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		ticketFlagPersistence.update(ticketFlag, serviceContext);
@@ -155,7 +143,7 @@ public class TicketFlagLocalServiceImpl extends TicketFlagLocalServiceBaseImpl {
 
 	protected void validate(
 			long userId, long accountEntryId, long ticketEntryId, int type)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		userPersistence.findByPrimaryKey(userId);
 

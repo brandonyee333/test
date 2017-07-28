@@ -21,119 +21,119 @@ List<SupportTeam> supportTeams = SupportTeamLocalServiceUtil.getUserRoleSupportT
 %>
 
 <c:if test="<%= !supportTeams.isEmpty() %>">
-	<div class="aui-w100 aui-helper-clearfix manager-dashboard">
+	<div class="aui-helper-clearfix aui-w100 manager-dashboard">
 		<table class="lfr-table">
-		<tr>
+			<tr>
 
-			<%
-			int teamIterator = 0;
+				<%
+				int teamIterator = 0;
 
-			int rows = supportTeams.size() / 3;
+				int rows = supportTeams.size() / 3;
 
-			if ((supportTeams.size() % 3) != 0) {
-				rows++;
-			}
+				if ((supportTeams.size() % 3) != 0) {
+					rows++;
+				}
 
-			for (int i = 0; i < 3; i++) {
-			%>
+				for (int i = 0; i < 3; i++) {
+				%>
 
-				<td class="aui-w33 manager-dashboard-col <%= (teamIterator == supportTeams.size()) ? "empty" : "" %>">
+					<td class="aui-w33 manager-dashboard-col <%= (teamIterator == supportTeams.size()) ? "empty" : "" %>">
 
-					<%
-					if (teamIterator < supportTeams.size()) {
-						for (int j = 0; j < rows; j++) {
-							SupportTeam supportTeam = supportTeams.get(teamIterator);
+						<%
+						if (teamIterator < supportTeams.size()) {
+							for (int j = 0; j < rows; j++) {
+								SupportTeam supportTeam = supportTeams.get(teamIterator);
 
-							String cssClass = StringPool.BLANK;
+								String cssClass = StringPool.BLANK;
 
-							if ((j == (rows - 1)) || (teamIterator == (supportTeams.size() - 1)) || (i == 1) && (j == (rows - 2)) && (((supportTeams.size() - teamIterator) - 1) < rows)) {
-								cssClass = "last";
-							}
-					%>
+								if ((j == (rows - 1)) || (teamIterator == (supportTeams.size() - 1)) || (i == 1) && (j == (rows - 2)) && (((supportTeams.size() - teamIterator) - 1) < rows)) {
+									cssClass = "last";
+								}
+						%>
 
-							<div class="aui-w100 left-column content-column content-column-content manager-dashboard-team <%= cssClass %>">
-								<div class="team-title">
-									<%= HtmlUtil.escape(supportTeam.getName()) %>
+								<div class="aui-w100 left-column content-column content-column-content manager-dashboard-team <%= cssClass %>">
+									<div class="team-title">
+										<%= HtmlUtil.escape(supportTeam.getName()) %>
+									</div>
+
+									<table class="lfr-table">
+
+										<%
+										Map<Integer, List<SupportWorker>> supportWorkerMap = SupportUtil.getSupportWorkerMap(supportTeam.getSupportTeamId());
+
+										for (int role : SupportWorkerConstants.ROLES) {
+											List<SupportWorker> managedSupportWorkers = supportWorkerMap.get(role);
+
+											if (managedSupportWorkers == null) {
+												continue;
+											}
+
+											for (SupportWorker managedSupportWorker : managedSupportWorkers) {
+												User managedSupportWorkerUser = UserLocalServiceUtil.getUser(managedSupportWorker.getUserId());
+										%>
+
+												<tr>
+													<td class="switch">
+														<c:if test="<%= managedSupportWorker.getRole() != SupportWorkerConstants.ROLE_WATCHER %>">
+															<portlet:actionURL name="clockInOut" var="clockInOutURL">
+																<portlet:param name="redirect" value="<%= currentURL %>" />
+																<portlet:param name="supportWorkerId" value="<%= StringUtil.valueOf(managedSupportWorker.getSupportWorkerId()) %>" />
+															</portlet:actionURL>
+
+															<div class="toggle-on-off-switch">
+																<a class="toggle-on-off-switch-ctrl <%= managedSupportWorker.isClockedIn() ? "on" : "off" %>" href="<%= clockInOutURL %>">
+																	<span class="toggle-on-off-switch-inner">
+																		<span class="toggle-on-off-switch-on txt-b"><liferay-ui:message key="in" /></span>
+
+																		<span class="toggle-on-off-switch-off txt-b"><liferay-ui:message key="on-pto" /></span>
+																	</span>
+																</a>
+															</div>
+														</c:if>
+													</td>
+													<td class="role-icon">
+														<c:choose>
+															<c:when test="<%= managedSupportWorker.getRole() == SupportWorkerConstants.ROLE_MANAGER %>">
+																<span class="m">M</span>
+															</c:when>
+															<c:when test="<%= managedSupportWorker.getRole() == SupportWorkerConstants.ROLE_WATCHER %>">
+																<span class="w">W</span>
+															</c:when>
+															<c:otherwise>
+																<span class="d">D</span>
+															</c:otherwise>
+														</c:choose>
+													</td>
+													<td class="user-name">
+														<%= HtmlUtil.escape(managedSupportWorkerUser.getFullName()) %>
+													</td>
+												</tr>
+
+										<%
+											}
+										}
+										%>
+
+									</table>
 								</div>
 
-								<table class="lfr-table">
+						<%
+								teamIterator++;
 
-									<%
-									Map<Integer, List<SupportWorker>> supportWorkerMap = SupportUtil.getSupportWorkerMap(supportTeam.getSupportTeamId());
-
-									for (int role : SupportWorkerConstants.ROLES) {
-										List<SupportWorker> managedSupportWorkers = supportWorkerMap.get(role);
-
-										if (managedSupportWorkers == null) {
-											continue;
-										}
-
-										for (SupportWorker managedSupportWorker : managedSupportWorkers) {
-											User managedSupportWorkerUser = UserLocalServiceUtil.getUser(managedSupportWorker.getUserId());
-									%>
-
-											<tr>
-												<td class="switch">
-													<c:if test="<%= managedSupportWorker.getRole() != SupportWorkerConstants.ROLE_WATCHER %>">
-														<portlet:actionURL name="clockInOut" var="clockInOutURL">
-															<portlet:param name="redirect" value="<%= currentURL %>" />
-															<portlet:param name="supportWorkerId" value="<%= StringUtil.valueOf(managedSupportWorker.getSupportWorkerId()) %>" />
-														</portlet:actionURL>
-
-														<div class="toggle-on-off-switch">
-															<a class="toggle-on-off-switch-ctrl <%= managedSupportWorker.isClockedIn() ? "on" : "off" %>" href="<%= clockInOutURL %>">
-																<span class="toggle-on-off-switch-inner">
-																	<span class="toggle-on-off-switch-on txt-b"><liferay-ui:message key="in" /></span>
-
-																	<span class="toggle-on-off-switch-off txt-b"><liferay-ui:message key="on-pto" /></span>
-																</span>
-															</a>
-														</div>
-													</c:if>
-												</td>
-												<td class="role-icon">
-													<c:choose>
-														<c:when test="<%= managedSupportWorker.getRole() == SupportWorkerConstants.ROLE_MANAGER %>">
-															<span class="m">M</span>
-														</c:when>
-														<c:when test="<%= managedSupportWorker.getRole() == SupportWorkerConstants.ROLE_WATCHER %>">
-															<span class="w">W</span>
-														</c:when>
-														<c:otherwise>
-															<span class="d">D</span>
-														</c:otherwise>
-													</c:choose>
-												</td>
-												<td class="user-name">
-													<%= HtmlUtil.escape(managedSupportWorkerUser.getFullName()) %>
-												</td>
-											</tr>
-
-									<%
-										}
-									}
-									%>
-
-								</table>
-							</div>
-
-					<%
-							teamIterator++;
-
-							if (cssClass.equals("last")) {
-								break;
+								if (cssClass.equals("last")) {
+									break;
+								}
 							}
 						}
-					}
-					%>
+						%>
 
-				</td>
+					</td>
 
-			<%
-			}
-			%>
+				<%
+				}
+				%>
 
-		</tr>
+			</tr>
 		</table>
 	</div>
 </c:if>

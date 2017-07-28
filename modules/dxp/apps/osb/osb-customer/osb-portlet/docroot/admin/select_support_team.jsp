@@ -139,7 +139,6 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 					<span class="expand" id="<portlet:namespace />expand_<%= supportTeam.getSupportTeamId() %>_supportRegions">
 						<liferay-ui:icon image="../arrows/01_plus" label="<%= true %>" message="expand" url='<%= "javascript:" + renderResponse.getNamespace() + "toggleSupportRegions(" + supportTeam.getSupportTeamId() + ", true);" %>' />
 					</span>
-
 					<span class="aui-helper-hidden collapse" id="<portlet:namespace />collapse_<%= supportTeam.getSupportTeamId() %>_supportRegions">
 						<liferay-ui:icon image="../arrows/01_minus" label="<%= true %>" message="collapse" url='<%= "javascript:" + renderResponse.getNamespace() + "toggleSupportRegions(" + supportTeam.getSupportTeamId() + ", false);" %>' />
 					</span>
@@ -184,7 +183,6 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 					<span class="expand" id="<portlet:namespace />expand_<%= supportTeam.getSupportTeamId() %>_accountEntries">
 						<liferay-ui:icon image="../arrows/01_plus" label="<%= true %>" message="expand" url='<%= "javascript:" + renderResponse.getNamespace() + "toggleAccountEntries(" + supportTeam.getSupportTeamId() + ", true);" %>' />
 					</span>
-
 					<span class="aui-helper-hidden collapse" id="<portlet:namespace />collapse_<%= supportTeam.getSupportTeamId() %>_accountEntries">
 						<liferay-ui:icon image="../arrows/01_minus" label="<%= true %>" message="collapse" url='<%= "javascript:" + renderResponse.getNamespace() + "toggleAccountEntries(" + supportTeam.getSupportTeamId() + ", false);" %>' />
 					</span>

@@ -41,12 +41,9 @@ public class Upgrade_20140626163336549_Address extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	public Address addAddress(
+/*public Address addAddress(
 			long userId, String userName, String className, long classPK,
-			long countryId)
-		throws SystemException {
+			long countryId) {
 
 		long classNameId = PortalUtil.getClassNameId(className);
 		Date now = new Date();
@@ -98,6 +95,7 @@ public class Upgrade_20140626163336549_Address extends UpgradeProcess {
 	}
 
 }
+
 */
 
 }

@@ -24,16 +24,13 @@ import com.liferay.osb.service.PortalReleaseLocalServiceUtil;
 /**
  * @author Yury Butrymovich
  */
-public class Upgrade_20160519114642271_PortalRelease
-	extends UpgradeProcess {
+public class Upgrade_20160519114642271_PortalRelease extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20160519114642271L;
 	}
@@ -45,6 +42,7 @@ public class Upgrade_20160519114642271_PortalRelease
 	}
 
 }
+
 */
 
 }

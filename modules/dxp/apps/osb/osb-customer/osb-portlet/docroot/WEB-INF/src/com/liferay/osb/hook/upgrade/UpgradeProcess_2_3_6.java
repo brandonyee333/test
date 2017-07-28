@@ -14,9 +14,9 @@
 
 package com.liferay.osb.hook.upgrade;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.osb.hook.upgrade.v2_3_6.UpgradeAssetReceipt;
 import com.liferay.osb.hook.upgrade.v2_3_6.UpgradeAssetReceiptSupport;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
 /**
  * @author Joan Kim

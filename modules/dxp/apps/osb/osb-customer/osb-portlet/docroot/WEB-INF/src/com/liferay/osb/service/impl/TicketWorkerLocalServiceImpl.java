@@ -14,8 +14,6 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.exception.NoSuchTicketWorkerException;
 import com.liferay.osb.model.AuditEntryConstants;
 import com.liferay.osb.model.TicketEntry;
@@ -29,10 +27,11 @@ import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.osb.util.comparator.TicketWorkerTicketWorkerIdComparator;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,7 +48,7 @@ public class TicketWorkerLocalServiceImpl
 			long userId, long[] userIds, long ticketEntryId,
 			long[] sourceClassNameIds, long[] sourceClassPKs, int[] roles,
 			long primaryUserId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		Date now = new Date();
@@ -57,16 +56,16 @@ public class TicketWorkerLocalServiceImpl
 		TicketEntry ticketEntry = ticketEntryPersistence.fetchByPrimaryKey(
 			ticketEntryId);
 
-		List<TicketWorker> ticketWorkers = new ArrayList<TicketWorker>();
+		List<TicketWorker> ticketWorkers = new ArrayList<>();
 
 		long auditSetId = auditEntryLocalService.getNextAuditSetId(
 			TicketEntry.class.getName(), ticketEntryId);
 
 		long classNameId = PortalUtil.getClassNameId(TicketEntry.class);
 		long fieldClassNameId = PortalUtil.getClassNameId(TicketWorker.class);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		for (int i = 0; i < userIds.length; i++) {
@@ -170,9 +169,7 @@ public class TicketWorkerLocalServiceImpl
 		return ticketWorkers;
 	}
 
-	public void deleteTicketWorkers(long userId)
-		throws PortalException, SystemException {
-
+	public void deleteTicketWorkers(long userId) throws PortalException {
 		List<TicketWorker> ticketWorkers = ticketWorkerPersistence.findByUserId(
 			userId);
 
@@ -205,7 +202,7 @@ public class TicketWorkerLocalServiceImpl
 
 	public void deleteTicketWorkers(
 			long userId, long[] userIds, long ticketEntryId, long primaryUserId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		Date now = new Date();
@@ -265,9 +262,9 @@ public class TicketWorkerLocalServiceImpl
 		// Ticket entry
 
 		ticketEntry.setModifiedDate(now);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		ticketEntryPersistence.update(ticketEntry, serviceContext);
@@ -277,9 +274,7 @@ public class TicketWorkerLocalServiceImpl
 		ticketEntryLocalService.syncToJIRA(ticketEntryId);
 	}
 
-	public TicketWorker fetchLatestTicketWorker(long ticketEntryId)
-		throws SystemException {
-
+	public TicketWorker fetchLatestTicketWorker(long ticketEntryId) {
 		List<TicketWorker> ticketWorkers =
 			ticketWorkerPersistence.findByTicketEntryId(
 				ticketEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
@@ -293,7 +288,7 @@ public class TicketWorkerLocalServiceImpl
 	}
 
 	public TicketWorker fetchPrimaryTicketWorker(long ticketEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketWorker ticketWorker = ticketWorkerPersistence.fetchByTEI_P(
 			ticketEntryId, true);
@@ -319,45 +314,36 @@ public class TicketWorkerLocalServiceImpl
 		return ticketWorker;
 	}
 
-	public TicketWorker fetchTicketWorker(long userId, long ticketEntryId)
-		throws SystemException {
-
+	public TicketWorker fetchTicketWorker(long userId, long ticketEntryId) {
 		return ticketWorkerPersistence.fetchByU_TEI(userId, ticketEntryId);
 	}
 
 	public TicketWorker getTicketWorker(long userId, long ticketEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		return ticketWorkerPersistence.findByU_TEI(userId, ticketEntryId);
 	}
 
-	public List<TicketWorker> getTicketWorkers(long ticketEntryId)
-		throws SystemException {
-
+	public List<TicketWorker> getTicketWorkers(long ticketEntryId) {
 		return ticketWorkerPersistence.findByTicketEntryId(ticketEntryId);
 	}
 
 	public List<TicketWorker> getTicketWorkers(
-			long sourceClassNameId, long sourceClassPK)
-		throws SystemException {
+		long sourceClassNameId, long sourceClassPK) {
 
 		return ticketWorkerPersistence.findBySCNI_SCPK(
 			sourceClassNameId, sourceClassPK);
 	}
 
-	public List<TicketWorker> getUserTicketWorkers(long userId)
-		throws SystemException {
-
+	public List<TicketWorker> getUserTicketWorkers(long userId) {
 		return ticketWorkerPersistence.findByUserId(userId);
 	}
 
-	public int getUserTicketWorkersCount(long userId) throws SystemException {
+	public int getUserTicketWorkersCount(long userId) {
 		return ticketWorkerPersistence.countByUserId(userId);
 	}
 
-	public boolean hasTicketWorker(long userId, long ticketEntryId)
-		throws SystemException {
-
+	public boolean hasTicketWorker(long userId, long ticketEntryId) {
 		TicketWorker ticketWorker = ticketWorkerPersistence.fetchByU_TEI(
 			userId, ticketEntryId);
 
@@ -372,7 +358,7 @@ public class TicketWorkerLocalServiceImpl
 	protected TicketWorker setPrimaryTicketWorker(
 			User user, Date now, long ticketEntryId, int status,
 			long primaryUserId, double work, long auditSetId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketWorker primaryTicketWorker = ticketWorkerPersistence.fetchByU_TEI(
 			primaryUserId, ticketEntryId);
@@ -445,8 +431,7 @@ public class TicketWorkerLocalServiceImpl
 	}
 
 	protected void updateAssignedWork(
-			int status, long userId, double work, boolean assign)
-		throws SystemException {
+		int status, long userId, double work, boolean assign) {
 
 		if (ArrayUtil.contains(
 				TicketEntryConstants.STATUSES_INACTIVE, status)) {
@@ -463,14 +448,13 @@ public class TicketWorkerLocalServiceImpl
 	}
 
 	private TicketWorker doRemovePrimaryTicketWorker(
-			long ticketEntryId, int status, TicketWorker primaryTicketWorker,
-			double work)
-		throws SystemException {
+		long ticketEntryId, int status, TicketWorker primaryTicketWorker,
+		double work) {
 
 		primaryTicketWorker.setPrimary(false);
-		
+
 		//TODO implement serviceContext as needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		primaryTicketWorker = ticketWorkerPersistence.update(
@@ -483,14 +467,13 @@ public class TicketWorkerLocalServiceImpl
 	}
 
 	private TicketWorker doSetPrimaryTicketWorker(
-			long ticketEntryId, int status, TicketWorker primaryTicketWorker,
-			double work)
-		throws SystemException {
+		long ticketEntryId, int status, TicketWorker primaryTicketWorker,
+		double work) {
 
 		primaryTicketWorker.setPrimary(true);
-		
+
 		//TODO implement serviceContext as needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		primaryTicketWorker = ticketWorkerPersistence.update(

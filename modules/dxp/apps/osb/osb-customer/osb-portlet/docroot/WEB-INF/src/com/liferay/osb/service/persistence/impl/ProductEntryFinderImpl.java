@@ -14,13 +14,9 @@
 
 package com.liferay.osb.service.persistence.impl;
 
-import com.liferay.osb.service.persistence.ProductEntryFinder;
-import com.liferay.osb.service.persistence.ProductEntryUtil;
-
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.impl.ProductEntryImpl;
+import com.liferay.osb.service.persistence.ProductEntryFinder;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
@@ -29,7 +25,8 @@ import com.liferay.portal.kernel.dao.orm.Type;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.util.Iterator;
@@ -55,9 +52,7 @@ public class ProductEntryFinderImpl
 	public static final String FIND_BY_NAME =
 		ProductEntryFinder.class.getName() + ".findByName";
 
-	public int countByName(String name, LinkedHashMap<String, Object> params)
-		throws SystemException {
-
+	public int countByName(String name, LinkedHashMap<String, Object> params) {
 		Session session = null;
 
 		try {
@@ -68,7 +63,7 @@ public class ProductEntryFinderImpl
 			sql = StringUtil.replace(sql, "[$JOIN$]", getJoin(params));
 			sql = StringUtil.replace(sql, "[$WHERE$]", getWhere(params));
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addScalar(COUNT_COLUMN_NAME, Type.LONG);
 
@@ -100,8 +95,7 @@ public class ProductEntryFinderImpl
 	}
 
 	public List<ProductEntry> findByAccountEntry(
-			long accountEntryId, int start, int end)
-		throws SystemException {
+		long accountEntryId, int start, int end) {
 
 		Session session = null;
 
@@ -110,7 +104,7 @@ public class ProductEntryFinderImpl
 
 			String sql = CustomSQLUtil.get(FIND_BY_ACCOUNT_ENTRY);
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addEntity("OSB_ProductEntry", ProductEntryImpl.class);
 
@@ -130,9 +124,7 @@ public class ProductEntryFinderImpl
 	}
 
 	public List<ProductEntry> findByName(
-			String name, LinkedHashMap<String, Object> params, int start,
-			int end)
-		throws SystemException {
+		String name, LinkedHashMap<String, Object> params, int start, int end) {
 
 		Session session = null;
 
@@ -144,7 +136,7 @@ public class ProductEntryFinderImpl
 			sql = StringUtil.replace(sql, "[$JOIN$]", getJoin(params));
 			sql = StringUtil.replace(sql, "[$WHERE$]", getWhere(params));
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addEntity("OSB_ProductEntry", ProductEntryImpl.class);
 

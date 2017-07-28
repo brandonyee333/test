@@ -14,18 +14,15 @@
 
 package com.liferay.osb.service.persistence.impl;
 
-import com.liferay.osb.service.persistence.SupportResponseFinder;
-import com.liferay.osb.service.persistence.SupportResponseUtil;
-
 import com.liferay.osb.model.SupportResponse;
 import com.liferay.osb.model.impl.SupportResponseImpl;
+import com.liferay.osb.service.persistence.SupportResponseFinder;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.util.List;
@@ -34,14 +31,13 @@ import java.util.List;
  * @author Lin Cui
  */
 public class SupportResponseFinderImpl
-	extends SupportResponseFinderBaseImpl
-	implements SupportResponseFinder {
+	extends SupportResponseFinderBaseImpl implements SupportResponseFinder {
 
 	public static final String FIND_BY_ACCOUNT_ENTRY =
 		SupportResponseFinder.class.getName() + ".findByAccountEntry";
 
 	public SupportResponse fetchByAccountEntry(long accountEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		String sql = CustomSQLUtil.get(FIND_BY_ACCOUNT_ENTRY);
 
@@ -50,7 +46,7 @@ public class SupportResponseFinderImpl
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addEntity("OSB_SupportResponse", SupportResponseImpl.class);
 

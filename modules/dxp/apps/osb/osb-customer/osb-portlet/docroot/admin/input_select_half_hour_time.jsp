@@ -20,8 +20,8 @@
 String name = ParamUtil.getString(request, "name");
 int value = ParamUtil.getInteger(request, "value");
 
-String am = LanguageUtil.get(locale, "am");
-String pm = LanguageUtil.get(locale, "pm");
+String am = LanguageUtil.get(request, "am");
+String pm = LanguageUtil.get(request, "pm");
 %>
 
 <aui:select label="" name="<%= name %>">

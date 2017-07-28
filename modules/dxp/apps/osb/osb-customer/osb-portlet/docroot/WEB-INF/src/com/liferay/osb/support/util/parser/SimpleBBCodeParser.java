@@ -14,10 +14,10 @@
 
 package com.liferay.osb.support.util.parser;
 
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Stack;
 import java.util.regex.Matcher;
@@ -32,7 +32,7 @@ public class SimpleBBCodeParser {
 	public String parse(String text) {
 		StringBundler sb = new StringBundler();
 
-		Stack<String> tags = new Stack<String>();
+		Stack<String> tags = new Stack<>();
 
 		int previousTagEnd = 0;
 
@@ -233,7 +233,7 @@ public class SimpleBBCodeParser {
 		return true;
 	}
 
-	private static Pattern _pattern = Pattern.compile(
+	private static final Pattern _pattern = Pattern.compile(
 		"\\[(/?(?:b|i|u|code|quote|(?:(url=https?://[-\\p{L}0-9~!@#%&()_+=|:;" +
 			",.?/]+)|url)))\\]",
 		Pattern.CASE_INSENSITIVE);

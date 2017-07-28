@@ -121,54 +121,54 @@ Locale[] locales = LanguageUtil.getAvailableLocales();
 			<c:choose>
 				<c:when test='<%= tabs2.equals("assignment-ratio") %>'>
 					<table class="lfr-table">
-					<tr>
-						<td>
-							<liferay-ui:message key="support-region" />
-						</td>
-						<td>
-							<select name="<portlet:namespace />supportRegionId" onChange="<portlet:namespace />updateForm();">
+						<tr>
+							<td>
+								<liferay-ui:message key="support-region" />
+							</td>
+							<td>
+								<select name="<portlet:namespace />supportRegionId" onChange="<portlet:namespace />updateForm();">
 
-								<%
-								List<SupportRegion> supportRegions = SupportRegionLocalServiceUtil.getSupportRegions(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+									<%
+									List<SupportRegion> supportRegions = SupportRegionLocalServiceUtil.getSupportRegions(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
-								SupportRegion firstSupportRegion = supportRegions.get(0);
+									SupportRegion firstSupportRegion = supportRegions.get(0);
 
-								long supportRegionId = PrefsParamUtil.getLong(portletPreferences, request, "supportRegionId", firstSupportRegion.getSupportRegionId());
+									long supportRegionId = PrefsParamUtil.getLong(portletPreferences, request, "supportRegionId", firstSupportRegion.getSupportRegionId());
 
-								for (SupportRegion supportRegion : supportRegions) {
-								%>
+									for (SupportRegion supportRegion : supportRegions) {
+									%>
 
-									<option <%= (supportRegionId == supportRegion.getSupportRegionId()) ? "selected" : StringPool.BLANK %> value="<%= supportRegion.getSupportRegionId() %>"><%= supportRegion.getName() %></option>
+										<option <%= (supportRegionId == supportRegion.getSupportRegionId()) ? "selected" : StringPool.BLANK %> value="<%= supportRegion.getSupportRegionId() %>"><%= supportRegion.getName() %></option>
 
-								<%
-								}
-								%>
+									<%
+									}
+									%>
 
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<liferay-ui:message key="ticket-logic-assignment-ratio" />
-						</td>
-						<td>
-							<select name="<portlet:namespace />ratio">
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<liferay-ui:message key="ticket-logic-assignment-ratio" />
+							</td>
+							<td>
+								<select name="<portlet:namespace />ratio">
 
-								<%
-								double ratio = GetterUtil.getDouble(portletPreferences.getValue(supportRegionId + "_assignmentRatio", "0.75"));
+									<%
+									double ratio = GetterUtil.getDouble(portletPreferences.getValue(supportRegionId + "_assignmentRatio", "0.75"));
 
-								for (int i = 0; i <= 20; i++) {
-								%>
+									for (int i = 0; i <= 20; i++) {
+									%>
 
-									<option <%= (ratio == ((((double)i) * 5) / 100)) ? "selected" : "" %> value="<%= (((double)i) * 5) / 100 %>"><%= i * 5 %>% <liferay-ui:message key="utilization" /> / <%= 100 - (i * 5) %>% <liferay-ui:message key="business-hours-left" /></option>
+										<option <%= (ratio == ((((double)i) * 5) / 100)) ? "selected" : "" %> value="<%= (((double)i) * 5) / 100 %>"><%= i * 5 %>% <liferay-ui:message key="utilization" /> / <%= 100 - (i * 5) %>% <liferay-ui:message key="business-hours-left" /></option>
 
-								<%
-								}
-								%>
+									<%
+									}
+									%>
 
-							</select>
-						</td>
-					</tr>
+								</select>
+							</td>
+						</tr>
 					</table>
 				</c:when>
 				<c:when test='<%= tabs2.equals("attachment-keywords") %>'>
@@ -236,31 +236,31 @@ Locale[] locales = LanguageUtil.getAvailableLocales();
 					%>
 
 					<table class="lfr-table">
-					<tr>
-						<td>
-							<liferay-ui:message key="language" />
-						</td>
-						<td>
-							<select name="<portlet:namespace />languageId" onChange="<portlet:namespace />updateForm();">
+						<tr>
+							<td>
+								<liferay-ui:message key="language" />
+							</td>
+							<td>
+								<select name="<portlet:namespace />languageId" onChange="<portlet:namespace />updateForm();">
 
-								<%
-								for (int i = 0; i < locales.length; i++) {
-									String optionStyle = StringPool.BLANK;
+									<%
+									for (int i = 0; i < locales.length; i++) {
+										String optionStyle = StringPool.BLANK;
 
-									if (Validator.isNotNull(portletPreferences.getValue("announcementTitle_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK))) {
-										optionStyle = "style=\"font-weight: bold;\"";
+										if (Validator.isNotNull(portletPreferences.getValue("announcementTitle_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK))) {
+											optionStyle = "style=\"font-weight: bold;\"";
+										}
+									%>
+
+										<option <%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) ? "selected" : "" %> <%= optionStyle %> value="<%= LocaleUtil.toLanguageId(locales[i]) %>"><%= locales[i].getDisplayName(locale) %></option>
+
+									<%
 									}
-								%>
+									%>
 
-									<option <%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) ? "selected" : "" %> <%= optionStyle %> value="<%= LocaleUtil.toLanguageId(locales[i]) %>"><%= locales[i].getDisplayName(locale) %></option>
-
-								<%
-								}
-								%>
-
-							</select>
-						</td>
-					</tr>
+								</select>
+							</td>
+						</tr>
 					</table>
 
 					<aui:fieldset>
@@ -270,66 +270,66 @@ Locale[] locales = LanguageUtil.getAvailableLocales();
 					</aui:fieldset>
 
 					<table class="lfr-table">
-					<tr>
-						<td>
-							<liferay-ui:message key="display-date" /> (GMT)
-						</td>
-						<td>
-							<liferay-ui:input-date
-								dayNullable="<%= false %>"
-								dayParam="announcementDisplayDateDay"
-								dayValue="<%= announcementDisplayCal.get(Calendar.DAY_OF_MONTH) %>"
-								monthNullable="<%= false %>"
-								monthParam="announcementDisplayDateMonth"
-								monthValue="<%= announcementDisplayCal.get(Calendar.MONTH) %>"
-								yearNullable="<%= false %>"
-								yearParam="announcementDisplayDateYear"
-								yearRangeEnd="<%= announcementDisplayCal.get(Calendar.YEAR) + 2 %>"
-								yearRangeStart="<%= announcementDisplayCal.get(Calendar.YEAR) - 2 %>"
-								yearValue="<%= announcementDisplayCal.get(Calendar.YEAR) %>"
-							/>
+						<tr>
+							<td>
+								<liferay-ui:message key="display-date" /> (GMT)
+							</td>
+							<td>
+								<liferay-ui:input-date
+									dayNullable="<%= false %>"
+									dayParam="announcementDisplayDateDay"
+									dayValue="<%= announcementDisplayCal.get(Calendar.DAY_OF_MONTH) %>"
+									monthNullable="<%= false %>"
+									monthParam="announcementDisplayDateMonth"
+									monthValue="<%= announcementDisplayCal.get(Calendar.MONTH) %>"
+									yearNullable="<%= false %>"
+									yearParam="announcementDisplayDateYear"
+									yearRangeEnd="<%= announcementDisplayCal.get(Calendar.YEAR) + 2 %>"
+									yearRangeStart="<%= announcementDisplayCal.get(Calendar.YEAR) - 2 %>"
+									yearValue="<%= announcementDisplayCal.get(Calendar.YEAR) %>"
+								/>
 
-							<liferay-ui:input-time
-								amPmParam="announcementDisplayDateAmPm"
-								amPmValue="<%= announcementDisplayCal.get(Calendar.AM_PM) %>"
-								hourParam="announcementDisplayDateHour"
-								hourValue="<%= announcementDisplayCal.get(Calendar.HOUR) %>"
-								minuteInterval="<%= 1 %>"
-								minuteParam="announcementDisplayDateMinute"
-								minuteValue="<%= announcementDisplayCal.get(Calendar.MINUTE) %>"
-							/>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<liferay-ui:message key="expiration-date" /> (GMT)
-						</td>
-						<td>
-							<liferay-ui:input-date
-								dayNullable="<%= false %>"
-								dayParam="announcementExpirationDateDay"
-								dayValue="<%= announcementExpirationCal.get(Calendar.DAY_OF_MONTH) %>"
-								monthNullable="<%= false %>"
-								monthParam="announcementExpirationDateMonth"
-								monthValue="<%= announcementExpirationCal.get(Calendar.MONTH) %>"
-								yearNullable="<%= false %>"
-								yearParam="announcementExpirationDateYear"
-								yearRangeEnd="<%= announcementExpirationCal.get(Calendar.YEAR) + 2 %>"
-								yearRangeStart="<%= announcementExpirationCal.get(Calendar.YEAR) - 2 %>"
-								yearValue="<%= announcementExpirationCal.get(Calendar.YEAR) %>"
-							/>
+								<liferay-ui:input-time
+									amPmParam="announcementDisplayDateAmPm"
+									amPmValue="<%= announcementDisplayCal.get(Calendar.AM_PM) %>"
+									hourParam="announcementDisplayDateHour"
+									hourValue="<%= announcementDisplayCal.get(Calendar.HOUR) %>"
+									minuteInterval="<%= 1 %>"
+									minuteParam="announcementDisplayDateMinute"
+									minuteValue="<%= announcementDisplayCal.get(Calendar.MINUTE) %>"
+								/>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<liferay-ui:message key="expiration-date" /> (GMT)
+							</td>
+							<td>
+								<liferay-ui:input-date
+									dayNullable="<%= false %>"
+									dayParam="announcementExpirationDateDay"
+									dayValue="<%= announcementExpirationCal.get(Calendar.DAY_OF_MONTH) %>"
+									monthNullable="<%= false %>"
+									monthParam="announcementExpirationDateMonth"
+									monthValue="<%= announcementExpirationCal.get(Calendar.MONTH) %>"
+									yearNullable="<%= false %>"
+									yearParam="announcementExpirationDateYear"
+									yearRangeEnd="<%= announcementExpirationCal.get(Calendar.YEAR) + 2 %>"
+									yearRangeStart="<%= announcementExpirationCal.get(Calendar.YEAR) - 2 %>"
+									yearValue="<%= announcementExpirationCal.get(Calendar.YEAR) %>"
+								/>
 
-							<liferay-ui:input-time
-								amPmParam="announcementExpirationDateAmPm"
-								amPmValue="<%= announcementExpirationCal.get(Calendar.AM_PM) %>"
-								hourParam="announcementExpirationDateHour"
-								hourValue="<%= announcementExpirationCal.get(Calendar.HOUR) %>"
-								minuteInterval="<%= 1 %>"
-								minuteParam="announcementExpirationDateMinute"
-								minuteValue="<%= announcementExpirationCal.get(Calendar.MINUTE) %>"
-							/>
-						</td>
-					</tr>
+								<liferay-ui:input-time
+									amPmParam="announcementExpirationDateAmPm"
+									amPmValue="<%= announcementExpirationCal.get(Calendar.AM_PM) %>"
+									hourParam="announcementExpirationDateHour"
+									hourValue="<%= announcementExpirationCal.get(Calendar.HOUR) %>"
+									minuteInterval="<%= 1 %>"
+									minuteParam="announcementExpirationDateMinute"
+									minuteValue="<%= announcementExpirationCal.get(Calendar.MINUTE) %>"
+								/>
+							</td>
+						</tr>
 					</table>
 				</c:when>
 				<c:when test='<%= tabs2.equals("component-messages") %>'>
@@ -340,85 +340,85 @@ Locale[] locales = LanguageUtil.getAvailableLocales();
 					%>
 
 					<table class="lfr-table">
-					<tr>
-						<td>
-							<liferay-ui:message key="language" />
-						</td>
-						<td>
-							<select name="<portlet:namespace />languageId" onChange="<portlet:namespace />updateForm();">
+						<tr>
+							<td>
+								<liferay-ui:message key="language" />
+							</td>
+							<td>
+								<select name="<portlet:namespace />languageId" onChange="<portlet:namespace />updateForm();">
 
-								<%
-								for (int i = 0; i < locales.length; i++) {
-								%>
+									<%
+									for (int i = 0; i < locales.length; i++) {
+									%>
 
-									<option <%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) ? "selected" : "" %> value="<%= LocaleUtil.toLanguageId(locales[i]) %>"><%= locales[i].getDisplayName(locale) %></option>
+										<option <%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) ? "selected" : "" %> value="<%= LocaleUtil.toLanguageId(locales[i]) %>"><%= locales[i].getDisplayName(locale) %></option>
 
-								<%
-								}
-								%>
+									<%
+									}
+									%>
 
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<liferay-ui:message key="product" />
-						</td>
-						<td>
-							<select name="<portlet:namespace />productDisplayName" onChange="<portlet:namespace />updateForm();">
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<liferay-ui:message key="product" />
+							</td>
+							<td>
+								<select name="<portlet:namespace />productDisplayName" onChange="<portlet:namespace />updateForm();">
 
-								<%
-								for (String curProductDisplayName : ProductEntryConstants.DISPLAY_NAMES) {
-								%>
+									<%
+									for (String curProductDisplayName : ProductEntryConstants.DISPLAY_NAMES) {
+									%>
 
-									<option <%= (curProductDisplayName.equals(productDisplayName)) ? "selected" : "" %> value="<%= HtmlUtil.escape(curProductDisplayName) %>"><%= LanguageUtil.get(pageContext, curProductDisplayName) %></option>
+										<option <%= (curProductDisplayName.equals(productDisplayName)) ? "selected" : "" %> value="<%= HtmlUtil.escape(curProductDisplayName) %>"><%= LanguageUtil.get(pageContext, curProductDisplayName) %></option>
 
-								<%
-								}
-								%>
+									<%
+									}
+									%>
 
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<liferay-ui:message key="component" />
-						</td>
-						<td>
-							<select name="<portlet:namespace />component" onChange="<portlet:namespace />updateForm();">
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<liferay-ui:message key="component" />
+							</td>
+							<td>
+								<select name="<portlet:namespace />component" onChange="<portlet:namespace />updateForm();">
 
-								<%
-								int[] components = TicketEntryConstants.getProductDisplayNameComponents(productDisplayName);
+									<%
+									int[] components = TicketEntryConstants.getProductDisplayNameComponents(productDisplayName);
 
-								if (!ArrayUtil.contains(components, component)) {
-									component = components[0];
-								}
-
-								for (int curComponent : components) {
-									if (ArrayUtil.contains(TicketEntryConstants.COMPONENTS_DEPRECATED, curComponent)) {
-										continue;
+									if (!ArrayUtil.contains(components, component)) {
+										component = components[0];
 									}
 
-									String optionStyle = StringPool.BLANK;
+									for (int curComponent : components) {
+										if (ArrayUtil.contains(TicketEntryConstants.COMPONENTS_DEPRECATED, curComponent)) {
+											continue;
+										}
 
-									String componentMessageKey = AdminUtil.getComponentPreferenceKey("componentMessage_", productDisplayName, String.valueOf(curComponent), currentLanguageId);
+										String optionStyle = StringPool.BLANK;
 
-									String componentMessage = portletPreferences.getValue(componentMessageKey, StringPool.BLANK);
+										String componentMessageKey = AdminUtil.getComponentPreferenceKey("componentMessage_", productDisplayName, String.valueOf(curComponent), currentLanguageId);
 
-									if (Validator.isNotNull(componentMessage)) {
-										optionStyle = "style=\"font-weight: bold;\"";
+										String componentMessage = portletPreferences.getValue(componentMessageKey, StringPool.BLANK);
+
+										if (Validator.isNotNull(componentMessage)) {
+											optionStyle = "style=\"font-weight: bold;\"";
+										}
+									%>
+
+										<option <%= (curComponent == component) ? "selected" : "" %> <%= optionStyle %> value="<%= curComponent %>"><%= LanguageUtil.get(pageContext, TicketEntryConstants.getComponentLabel(curComponent)) %></option>
+
+									<%
 									}
-								%>
+									%>
 
-									<option <%= (curComponent == component) ? "selected" : "" %> <%= optionStyle %> value="<%= curComponent %>"><%= LanguageUtil.get(pageContext, TicketEntryConstants.getComponentLabel(curComponent)) %></option>
-
-								<%
-								}
-								%>
-
-							</select>
-						</td>
-					</tr>
+								</select>
+							</td>
+						</tr>
 					</table>
 
 					<%
@@ -469,31 +469,31 @@ Locale[] locales = LanguageUtil.getAvailableLocales();
 					%>
 
 					<table class="lfr-table">
-					<tr>
-						<td>
-							<liferay-ui:message key="language" />
-						</td>
-						<td>
-							<select name="<portlet:namespace />languageId" onChange="<portlet:namespace />updateForm();">
+						<tr>
+							<td>
+								<liferay-ui:message key="language" />
+							</td>
+							<td>
+								<select name="<portlet:namespace />languageId" onChange="<portlet:namespace />updateForm();">
 
-								<%
-								for (int i = 0; i < locales.length; i++) {
-									String optionStyle = StringPool.BLANK;
+									<%
+									for (int i = 0; i < locales.length; i++) {
+										String optionStyle = StringPool.BLANK;
 
-									if (Validator.isNotNull(portletPreferences.getValue("escalationDetails_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK))) {
-										optionStyle = "style=\"font-weight: bold;\"";
+										if (Validator.isNotNull(portletPreferences.getValue("escalationDetails_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK))) {
+											optionStyle = "style=\"font-weight: bold;\"";
+										}
+									%>
+
+										<option <%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) ? "selected" : "" %> <%= optionStyle %> value="<%= LocaleUtil.toLanguageId(locales[i]) %>"><%= locales[i].getDisplayName(locale) %></option>
+
+									<%
 									}
-								%>
+									%>
 
-									<option <%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) ? "selected" : "" %> <%= optionStyle %> value="<%= LocaleUtil.toLanguageId(locales[i]) %>"><%= locales[i].getDisplayName(locale) %></option>
-
-								<%
-								}
-								%>
-
-							</select>
-						</td>
-					</tr>
+								</select>
+							</td>
+						</tr>
 					</table>
 
 					<aui:fieldset>
@@ -522,7 +522,7 @@ Locale[] locales = LanguageUtil.getAvailableLocales();
 								%>
 
 								<span class="aui-field-row">
-									<label class="aui-w15 aui-field-inline aui-field-label-inline-label">
+									<label class="aui-field-inline aui-field-label-inline-label aui-w15">
 										<liferay-ui:message key="file-repository-id" />
 									</label>
 
@@ -537,25 +537,22 @@ Locale[] locales = LanguageUtil.getAvailableLocales();
 										</c:otherwise>
 									</c:choose>
 								</span>
-
 								<span class="aui-field-row">
-									<label class="aui-w15 aui-field-inline aui-field-label-inline-label">
+									<label class="aui-field-inline aui-field-label-inline-label aui-w15">
 										<liferay-ui:message key="server-name" />
 									</label>
 
 									<aui:input inlineField="<%= true %>" inlineLabel="left" label="" name="name" value="<%= name %>" />
 								</span>
-
 								<span class="aui-field-row">
-									<label class="aui-w15 aui-field-inline aui-field-label-inline-label">
+									<label class="aui-field-inline aui-field-label-inline-label aui-w15">
 										<liferay-ui:message key="host" />
 									</label>
 
 									<aui:input inlineField="<%= true %>" inlineLabel="left" label="" name="host" value="<%= fileRepository.getHost() %>" />
 								</span>
-
 								<span class="aui-field-row">
-									<label class="aui-w15 aui-field-inline aui-field-label-inline-label">
+									<label class="aui-field-inline aui-field-label-inline-label aui-w15">
 										<liferay-ui:message key="status" />
 									</label>
 
@@ -564,9 +561,8 @@ Locale[] locales = LanguageUtil.getAvailableLocales();
 										<aui:option label="inactive" selected="<%= status == WorkflowConstants.STATUS_INACTIVE %>" value="<%= WorkflowConstants.STATUS_INACTIVE %>" />
 									</aui:select>
 								</span>
-
 								<span class="aui-field-row">
-									<label class="aui-w15 aui-field-inline aui-field-label-inline-label">
+									<label class="aui-field-inline aui-field-label-inline-label aui-w15">
 										<liferay-ui:message key="support-regions" />
 									</label>
 
@@ -667,26 +663,26 @@ Locale[] locales = LanguageUtil.getAvailableLocales();
 					%>
 
 					<table class="lfr-table">
-					<tr>
-						<td>
-							<liferay-ui:message key="product" />
-						</td>
-						<td>
-							<select name="<portlet:namespace />productEntryDisplayName" onChange="<portlet:namespace />updateForm();">
+						<tr>
+							<td>
+								<liferay-ui:message key="product" />
+							</td>
+							<td>
+								<select name="<portlet:namespace />productEntryDisplayName" onChange="<portlet:namespace />updateForm();">
 
-								<%
-								for (String curProductEntryDisplayName : ProductEntryConstants.DISPLAY_NAMES_DXP) {
-								%>
+									<%
+									for (String curProductEntryDisplayName : ProductEntryConstants.DISPLAY_NAMES_DXP) {
+									%>
 
-									<option <%= productEntryDisplayName.equals(curProductEntryDisplayName) ? "selected" : StringPool.BLANK %> value="<%= curProductEntryDisplayName %>"><%= LanguageUtil.get(pageContext, curProductEntryDisplayName) %></option>
+										<option <%= productEntryDisplayName.equals(curProductEntryDisplayName) ? "selected" : StringPool.BLANK %> value="<%= curProductEntryDisplayName %>"><%= LanguageUtil.get(pageContext, curProductEntryDisplayName) %></option>
 
-								<%
-								}
-								%>
+									<%
+									}
+									%>
 
-							</select>
-						</td>
-					</tr>
+								</select>
+							</td>
+						</tr>
 					</table>
 
 					<%
@@ -704,55 +700,55 @@ Locale[] locales = LanguageUtil.getAvailableLocales();
 					%>
 
 					<table class="lfr-table">
-					<tr>
-						<td>
-							<liferay-ui:message key="language" />
-						</td>
-						<td>
-							<select name="<portlet:namespace />languageId" onChange="<portlet:namespace />updateForm();">
+						<tr>
+							<td>
+								<liferay-ui:message key="language" />
+							</td>
+							<td>
+								<select name="<portlet:namespace />languageId" onChange="<portlet:namespace />updateForm();">
 
-								<%
-								for (int i = 0; i < locales.length; i++) {
-								%>
+									<%
+									for (int i = 0; i < locales.length; i++) {
+									%>
 
-									<option <%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) ? "selected" : "" %> value="<%= LocaleUtil.toLanguageId(locales[i]) %>"><%= locales[i].getDisplayName(locale) %></option>
+										<option <%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) ? "selected" : "" %> value="<%= LocaleUtil.toLanguageId(locales[i]) %>"><%= locales[i].getDisplayName(locale) %></option>
 
-								<%
-								}
-								%>
-
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<liferay-ui:message key="status" />
-						</td>
-						<td>
-							<select name="<portlet:namespace />status" onChange="<portlet:namespace />updateForm();">
-
-								<%
-								for (int curStatus : TicketEntryConstants.STATUSES_WORKFLOW_ORDER) {
-									String optionStyle = StringPool.BLANK;
-
-									String statusMessageKey = AdminUtil.getPreferenceKey("statusMessage_", String.valueOf(curStatus), currentLanguageId);
-
-									String statusMessage = portletPreferences.getValue(statusMessageKey, StringPool.BLANK);
-
-									if (Validator.isNotNull(statusMessage)) {
-										optionStyle = "style=\"font-weight: bold;\"";
+									<%
 									}
-								%>
+									%>
 
-									<option <%= (curStatus == status) ? "selected" : "" %> <%= optionStyle %> value="<%= curStatus %>"><%= LanguageUtil.get(pageContext, TicketEntryConstants.getStatusLabel(curStatus)) %></option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<liferay-ui:message key="status" />
+							</td>
+							<td>
+								<select name="<portlet:namespace />status" onChange="<portlet:namespace />updateForm();">
 
-								<%
-								}
-								%>
+									<%
+									for (int curStatus : TicketEntryConstants.STATUSES_WORKFLOW_ORDER) {
+										String optionStyle = StringPool.BLANK;
 
-							</select>
-						</td>
-					</tr>
+										String statusMessageKey = AdminUtil.getPreferenceKey("statusMessage_", String.valueOf(curStatus), currentLanguageId);
+
+										String statusMessage = portletPreferences.getValue(statusMessageKey, StringPool.BLANK);
+
+										if (Validator.isNotNull(statusMessage)) {
+											optionStyle = "style=\"font-weight: bold;\"";
+										}
+									%>
+
+										<option <%= (curStatus == status) ? "selected" : "" %> <%= optionStyle %> value="<%= curStatus %>"><%= LanguageUtil.get(pageContext, TicketEntryConstants.getStatusLabel(curStatus)) %></option>
+
+									<%
+									}
+									%>
+
+								</select>
+							</td>
+						</tr>
 					</table>
 
 					<%
@@ -785,55 +781,55 @@ Locale[] locales = LanguageUtil.getAvailableLocales();
 					%>
 
 					<table class="lfr-table">
-					<tr>
-						<td>
-							<liferay-ui:message key="language" />
-						</td>
-						<td>
-							<select name="<portlet:namespace />languageId" onChange="<portlet:namespace />updateForm();">
+						<tr>
+							<td>
+								<liferay-ui:message key="language" />
+							</td>
+							<td>
+								<select name="<portlet:namespace />languageId" onChange="<portlet:namespace />updateForm();">
 
-								<%
-								for (int i = 0; i < locales.length; i++) {
-								%>
+									<%
+									for (int i = 0; i < locales.length; i++) {
+									%>
 
-									<option <%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) ? "selected" : "" %> value="<%= LocaleUtil.toLanguageId(locales[i]) %>"><%= locales[i].getDisplayName(locale) %></option>
+										<option <%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) ? "selected" : "" %> value="<%= LocaleUtil.toLanguageId(locales[i]) %>"><%= locales[i].getDisplayName(locale) %></option>
 
-								<%
-								}
-								%>
-
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<liferay-ui:message key="tier" />
-						</td>
-						<td>
-							<select name="<portlet:namespace />tier" onChange="<portlet:namespace />updateForm();">
-
-								<%
-								for (int curTier : AccountEntryConstants.TIERS) {
-									String tierMessageKey = AdminUtil.getPreferenceKey("tierMessage_", String.valueOf(curTier), currentLanguageId);
-
-									String tierMessage = portletPreferences.getValue(tierMessageKey, StringPool.BLANK);
-
-									String optionStyle = StringPool.BLANK;
-
-									if (Validator.isNotNull(tierMessage)) {
-										optionStyle = "style=\"font-weight: bold;\"";
+									<%
 									}
-								%>
+									%>
 
-									<option <%= (curTier == tier) ? "selected" : "" %> <%= optionStyle %> value="<%= curTier %>"><%= LanguageUtil.get(pageContext, AccountEntryConstants.getTierLabel(curTier)) %></option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<liferay-ui:message key="tier" />
+							</td>
+							<td>
+								<select name="<portlet:namespace />tier" onChange="<portlet:namespace />updateForm();">
 
-								<%
-								}
-								%>
+									<%
+									for (int curTier : AccountEntryConstants.TIERS) {
+										String tierMessageKey = AdminUtil.getPreferenceKey("tierMessage_", String.valueOf(curTier), currentLanguageId);
 
-							</select>
-						</td>
-					</tr>
+										String tierMessage = portletPreferences.getValue(tierMessageKey, StringPool.BLANK);
+
+										String optionStyle = StringPool.BLANK;
+
+										if (Validator.isNotNull(tierMessage)) {
+											optionStyle = "style=\"font-weight: bold;\"";
+										}
+									%>
+
+										<option <%= (curTier == tier) ? "selected" : "" %> <%= optionStyle %> value="<%= curTier %>"><%= LanguageUtil.get(pageContext, AccountEntryConstants.getTierLabel(curTier)) %></option>
+
+									<%
+									}
+									%>
+
+								</select>
+							</td>
+						</tr>
 					</table>
 
 					<%
@@ -860,33 +856,33 @@ Locale[] locales = LanguageUtil.getAvailableLocales();
 					%>
 
 					<table class="lfr-table">
-					<tr>
-						<td>
-							<liferay-ui:message key="language" />
-						</td>
-						<td>
-							<select name="<portlet:namespace />languageId" onChange="<portlet:namespace />updateForm();">
+						<tr>
+							<td>
+								<liferay-ui:message key="language" />
+							</td>
+							<td>
+								<select name="<portlet:namespace />languageId" onChange="<portlet:namespace />updateForm();">
 
-								<%
-								for (int i = 0; i < locales.length; i++) {
-									String optionStyle = StringPool.BLANK;
+									<%
+									for (int i = 0; i < locales.length; i++) {
+										String optionStyle = StringPool.BLANK;
 
-									String curCommentKey = AdminUtil.getCommentPreferenceKey(tabs3, LocaleUtil.toLanguageId(locales[i]));
+										String curCommentKey = AdminUtil.getCommentPreferenceKey(tabs3, LocaleUtil.toLanguageId(locales[i]));
 
-									if (Validator.isNotNull(portletPreferences.getValue(curCommentKey, StringPool.BLANK))) {
-										optionStyle = "style=\"font-weight: bold;\"";
+										if (Validator.isNotNull(portletPreferences.getValue(curCommentKey, StringPool.BLANK))) {
+											optionStyle = "style=\"font-weight: bold;\"";
+										}
+									%>
+
+										<option <%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) ? "selected" : "" %> <%= optionStyle %> value="<%= LocaleUtil.toLanguageId(locales[i]) %>"><%= locales[i].getDisplayName(locale) %></option>
+
+									<%
 									}
-								%>
+									%>
 
-									<option <%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) ? "selected" : "" %> <%= optionStyle %> value="<%= LocaleUtil.toLanguageId(locales[i]) %>"><%= locales[i].getDisplayName(locale) %></option>
-
-								<%
-								}
-								%>
-
-							</select>
-						</td>
-					</tr>
+								</select>
+							</td>
+						</tr>
 					</table>
 
 					<aui:fieldset>
@@ -958,11 +954,11 @@ Locale[] locales = LanguageUtil.getAvailableLocales();
 							if (envLFRType.getListTypeId() == ProductEntryConstants.PORTAL_VERSION_OTHER) {
 								continue;
 							}
-						%>
+					%>
 
 							<aui:option label="<%= envLFRType.getName() %>" selected="<%= envLFRType.getListTypeId() == trialLiferayVersion %>" value="<%= envLFRType.getListTypeId() %>" />
 
-						<%
+					<%
 						}
 					}
 					%>
@@ -1001,33 +997,33 @@ Locale[] locales = LanguageUtil.getAvailableLocales();
 			<c:choose>
 				<c:when test='<%= tabs2.equals("liferay-feedback") %>'>
 					<table class="lfr-table">
-					<tr>
-						<td>
-							<liferay-ui:message key="language" />
-						</td>
-						<td>
-							<select name="<portlet:namespace />languageId" onChange="<portlet:namespace />updateForm();">
+						<tr>
+							<td>
+								<liferay-ui:message key="language" />
+							</td>
+							<td>
+								<select name="<portlet:namespace />languageId" onChange="<portlet:namespace />updateForm();">
 
-								<%
-								for (int i = 0; i < locales.length; i++) {
-									String optionStyle = StringPool.BLANK;
+									<%
+									for (int i = 0; i < locales.length; i++) {
+										String optionStyle = StringPool.BLANK;
 
-									if (Validator.isNotNull(portletPreferences.getValue("emailCustomerFeedbackSubject_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK)) ||
-										Validator.isNotNull(portletPreferences.getValue("emailCustomerFeedbackBody_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK))) {
+										if (Validator.isNotNull(portletPreferences.getValue("emailCustomerFeedbackSubject_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK)) ||
+											Validator.isNotNull(portletPreferences.getValue("emailCustomerFeedbackBody_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK))) {
 
-										optionStyle = "style=\"font-weight: bold;\"";
+											optionStyle = "style=\"font-weight: bold;\"";
+										}
+									%>
+
+										<option <%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) ? "selected" : "" %> <%= optionStyle %> value="<%= LocaleUtil.toLanguageId(locales[i]) %>"><%= locales[i].getDisplayName(locale) %></option>
+
+									<%
 									}
-								%>
+									%>
 
-									<option <%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) ? "selected" : "" %> <%= optionStyle %> value="<%= LocaleUtil.toLanguageId(locales[i]) %>"><%= locales[i].getDisplayName(locale) %></option>
-
-								<%
-								}
-								%>
-
-							</select>
-						</td>
-					</tr>
+								</select>
+							</td>
+						</tr>
 					</table>
 
 					<aui:fieldset>
@@ -1071,33 +1067,33 @@ Locale[] locales = LanguageUtil.getAvailableLocales();
 				</c:when>
 				<c:when test='<%= tabs2.equals("provisioning-create-account") %>'>
 					<table class="lfr-table">
-					<tr>
-						<td>
-							<liferay-ui:message key="language" />
-						</td>
-						<td>
-							<select name="<portlet:namespace />languageId" onChange="<portlet:namespace />updateForm();">
+						<tr>
+							<td>
+								<liferay-ui:message key="language" />
+							</td>
+							<td>
+								<select name="<portlet:namespace />languageId" onChange="<portlet:namespace />updateForm();">
 
-								<%
-								for (int i = 0; i < locales.length; i++) {
-									String optionStyle = StringPool.BLANK;
+									<%
+									for (int i = 0; i < locales.length; i++) {
+										String optionStyle = StringPool.BLANK;
 
-									if (Validator.isNotNull(portletPreferences.getValue("emailProvisioningCreateAccountSubject_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK)) ||
-										Validator.isNotNull(portletPreferences.getValue("emailProvisioningCreateAccountBody_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK))) {
+										if (Validator.isNotNull(portletPreferences.getValue("emailProvisioningCreateAccountSubject_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK)) ||
+											Validator.isNotNull(portletPreferences.getValue("emailProvisioningCreateAccountBody_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK))) {
 
-										optionStyle = "style=\"font-weight: bold;\"";
+											optionStyle = "style=\"font-weight: bold;\"";
+										}
+									%>
+
+										<option <%= (currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i]))) ? "selected" : "" %> <%= optionStyle %> value="<%= LocaleUtil.toLanguageId(locales[i]) %>"><%= locales[i].getDisplayName(locale) %></option>
+
+									<%
 									}
-								%>
+									%>
 
-									<option <%= (currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i]))) ? "selected" : "" %> <%= optionStyle %> value="<%= LocaleUtil.toLanguageId(locales[i]) %>"><%= locales[i].getDisplayName(locale) %></option>
-
-								<%
-								}
-								%>
-
-							</select>
-						</td>
-					</tr>
+								</select>
+							</td>
+						</tr>
 					</table>
 
 					<aui:fieldset>
@@ -1123,33 +1119,33 @@ Locale[] locales = LanguageUtil.getAvailableLocales();
 				</c:when>
 				<c:when test='<%= tabs2.equals("ticket-notification") %>'>
 					<table class="lfr-table">
-					<tr>
-						<td>
-							<liferay-ui:message key="language" />
-						</td>
-						<td>
-							<select name="<portlet:namespace />languageId" onChange="<portlet:namespace />updateForm();">
+						<tr>
+							<td>
+								<liferay-ui:message key="language" />
+							</td>
+							<td>
+								<select name="<portlet:namespace />languageId" onChange="<portlet:namespace />updateForm();">
 
-								<%
-								for (int i = 0; i < locales.length; i++) {
-									String optionStyle = StringPool.BLANK;
+									<%
+									for (int i = 0; i < locales.length; i++) {
+										String optionStyle = StringPool.BLANK;
 
-									if (Validator.isNotNull(portletPreferences.getValue("emailTicketEntrySubject_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK)) ||
-										Validator.isNotNull(portletPreferences.getValue("emailTicketEntryBody_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK))) {
+										if (Validator.isNotNull(portletPreferences.getValue("emailTicketEntrySubject_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK)) ||
+											Validator.isNotNull(portletPreferences.getValue("emailTicketEntryBody_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK))) {
 
-										optionStyle = "style=\"font-weight: bold;\"";
+											optionStyle = "style=\"font-weight: bold;\"";
+										}
+									%>
+
+										<option <%= (currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i]))) ? "selected" : "" %> <%= optionStyle %> value="<%= LocaleUtil.toLanguageId(locales[i]) %>"><%= locales[i].getDisplayName(locale) %></option>
+
+									<%
 									}
-								%>
+									%>
 
-									<option <%= (currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i]))) ? "selected" : "" %> <%= optionStyle %> value="<%= LocaleUtil.toLanguageId(locales[i]) %>"><%= locales[i].getDisplayName(locale) %></option>
-
-								<%
-								}
-								%>
-
-							</select>
-						</td>
-					</tr>
+								</select>
+							</td>
+						</tr>
 					</table>
 
 					<aui:fieldset>

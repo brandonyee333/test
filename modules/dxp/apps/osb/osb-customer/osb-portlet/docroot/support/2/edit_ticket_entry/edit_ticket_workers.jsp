@@ -22,6 +22,7 @@ String tabs2 = ParamUtil.getString(request, "tabs2", "current");
 int cur = ParamUtil.getInteger(request, "cur");
 
 String redirect = ParamUtil.getString(request, "redirect");
+
 String backURL = ParamUtil.getString(request, "backURL", redirect);
 
 long ticketEntryId = ParamUtil.getLong(request, "ticketEntryId");
@@ -71,16 +72,16 @@ portletURL.setParameter("ticketEntryId", String.valueOf(ticketEntryId));
 
 			if (tabs2.equals("current")) {
 				userParams.put("status", WorkflowConstants.STATUS_ANY);
-				userParams.put("usersTicketWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinByTicketWorkerEntries"), new Long(ticketEntry.getTicketEntryId())));
+				userParams.put("usersTicketWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinByTicketWorkerEntries"), Long.valueOf(ticketEntry.getTicketEntryId())));
 			}
 			else if (liferayIncOrg) {
-				userParams.put("availableTicketWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinByAvailableTicketWorkers"), new Long(OSBConstants.ORGANIZATION_LIFERAY_INC_ID)));
+				userParams.put("availableTicketWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinByAvailableTicketWorkers"), Long.valueOf(OSBConstants.ORGANIZATION_LIFERAY_INC_ID)));
 			}
 			else {
 				AccountEntry accountEntry = ticketEntry.getAccountEntry();
 
 				if (accountEntry.isPartnerManagedSupport()) {
-					userParams.put("usersPartnerWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinByPartnerWorker"), new Long(accountEntry.getPartnerEntryId())));
+					userParams.put("usersPartnerWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinByPartnerWorker"), Long.valueOf(accountEntry.getPartnerEntryId())));
 				}
 			}
 			%>

@@ -290,7 +290,7 @@ if (!screenShareMode) {
 					sb.append("<a href=\"javascript:;\" onClick=\"");
 					sb.append(curOnClick);
 					sb.append("\">");
-					sb.append(LanguageUtil.get(locale, curLabel));
+					sb.append(LanguageUtil.get(request, curLabel));
 					sb.append("</a>");
 				%>
 
@@ -319,11 +319,11 @@ if (!screenShareMode) {
 							bodyContent:
 								'<div style="text-align: center;">' +
 									'<br />' +
-									'<input class="aui-button-input" issueType="3" type="button" value="<%= UnicodeLanguageUtil.get(locale, "task") %>" />' +
+									'<input class="aui-button-input" issueType="3" type="button" value="<%= UnicodeLanguageUtil.get(request, "task") %>" />' +
 									'<br /><br />' +
-									'<input class="aui-button-input" issueType="11" type="button" value="<%= UnicodeLanguageUtil.get(locale, "patch") %>" />' +
+									'<input class="aui-button-input" issueType="11" type="button" value="<%= UnicodeLanguageUtil.get(request, "patch") %>" />' +
 									'<br /><br />' +
-									'<input class="aui-button-input" issueType="46" type="button" value="<%= UnicodeLanguageUtil.get(locale, "l1-escalation") %>" />' +
+									'<input class="aui-button-input" issueType="46" type="button" value="<%= UnicodeLanguageUtil.get(request, "l1-escalation") %>" />' +
 									'<br /><br />' +
 								'</div>',
 							centered: true,

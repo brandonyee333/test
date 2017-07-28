@@ -21,7 +21,8 @@ import com.liferay.portal.kernel.exception.PortalException;
  * @author Brian Wing Shun Chan
  */
 @ProviderType
-public class DuplicateAccountEnvironmentAttachmentException extends PortalException {
+public class DuplicateAccountEnvironmentAttachmentException
+	extends PortalException {
 
 	public DuplicateAccountEnvironmentAttachmentException() {
 	}
@@ -30,7 +31,9 @@ public class DuplicateAccountEnvironmentAttachmentException extends PortalExcept
 		super(msg);
 	}
 
-	public DuplicateAccountEnvironmentAttachmentException(String msg, Throwable cause) {
+	public DuplicateAccountEnvironmentAttachmentException(
+		String msg, Throwable cause) {
+
 		super(msg, cause);
 	}
 

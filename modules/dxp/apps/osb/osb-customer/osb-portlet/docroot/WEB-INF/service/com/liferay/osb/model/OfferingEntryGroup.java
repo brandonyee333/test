@@ -15,7 +15,6 @@
 package com.liferay.osb.model;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,7 +32,7 @@ public class OfferingEntryGroup {
 	}
 
 	public void addOfferingEntry(OfferingEntry offeringEntry)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (_offeringEntries.isEmpty()) {
 			initCommon(offeringEntry);
@@ -199,7 +198,7 @@ public class OfferingEntryGroup {
 	}
 
 	protected void initCommon(OfferingEntry offeringEntry)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		_accountEntry = offeringEntry.getAccountEntry();
 		_key = offeringEntry.getKey();
@@ -218,17 +217,16 @@ public class OfferingEntryGroup {
 	private AccountEntry _accountEntry;
 	private Date _actualStartDate;
 	private List<OfferingEntry> _availableLicenseOfferingEntries =
-		new ArrayList<OfferingEntry>();
+		new ArrayList<>();
 	private OfferingEntry _availableLicenseOfferingEntry;
 	private List<OfferingEntry> _availableSupportOfferingEntries =
-		new ArrayList<OfferingEntry>();
+		new ArrayList<>();
 	private OfferingEntry _availableSupportOfferingEntry;
 	private String _key;
 	private int _licenseKeysCount;
 	private long _licenseLifetime;
-	private List<OfferingEntry> _offeringEntries =
-		new ArrayList<OfferingEntry>();
-	private Set<Long> _offeringEntryIds = new HashSet<Long>();
+	private List<OfferingEntry> _offeringEntries = new ArrayList<>();
+	private Set<Long> _offeringEntryIds = new HashSet<>();
 	private ProductEntry _productEntry;
 	private int _quantity;
 	private Date _startDate;

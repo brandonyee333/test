@@ -14,11 +14,10 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.osb.model.SupportWorkerAccountTier;
 import com.liferay.osb.service.base.SupportWorkerAccountTierLocalServiceBaseImpl;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.ArrayUtil;
 
 import java.util.List;
 
@@ -29,16 +28,14 @@ public class SupportWorkerAccountTierLocalServiceImpl
 	extends SupportWorkerAccountTierLocalServiceBaseImpl {
 
 	public List<SupportWorkerAccountTier> getSupportWorkerAccountTiers(
-			long supportWorkerId)
-		throws SystemException {
+		long supportWorkerId) {
 
 		return supportWorkerAccountTierPersistence.findBySupportWorkerId(
 			supportWorkerId);
 	}
 
 	public void setSupportWorkerAccountTiers(
-			long supportWorkerId, int[] accountTiers)
-		throws SystemException {
+		long supportWorkerId, int[] accountTiers) {
 
 		List<SupportWorkerAccountTier> supportWorkerAccountTiers =
 			supportWorkerAccountTierPersistence.findBySupportWorkerId(
@@ -67,9 +64,9 @@ public class SupportWorkerAccountTierLocalServiceImpl
 
 			supportWorkerAccountTier.setSupportWorkerId(supportWorkerId);
 			supportWorkerAccountTier.setAccountTier(accountTier);
-			
+
 			//TODO implement serviceContext how needed
-			
+
 			ServiceContext serviceContext = new ServiceContext();
 
 			supportWorkerAccountTierPersistence.update(

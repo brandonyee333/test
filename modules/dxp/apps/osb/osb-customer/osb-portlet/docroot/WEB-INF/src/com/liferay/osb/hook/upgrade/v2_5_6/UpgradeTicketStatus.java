@@ -16,7 +16,7 @@ package com.liferay.osb.hook.upgrade.v2_5_6;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
-/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+/*import UpgradeProcess;
 import com.liferay.osb.model.TicketEntryConstants;
 import com.liferay.osb.model.TicketFlagConstants;
 import com.liferay.osb.util.OSBConstants;
@@ -45,9 +45,7 @@ public class UpgradeTicketStatus extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	public static final int STATUS_CUSTOMER_TESTING = 33015;
+/*public static final int STATUS_CUSTOMER_TESTING = 33015;
 
 	public static final int STATUS_INVESTIGATING = 33003;
 
@@ -88,7 +86,7 @@ public class UpgradeTicketStatus extends UpgradeProcess {
 
 			rs = ps.executeQuery();
 
-			List<long[]> results = new ArrayList<long[]>();
+			List<long[]> results = new ArrayList<>();
 
 			while (rs.next()) {
 				long[] ticketEntryData = new long[4];
@@ -173,6 +171,7 @@ public class UpgradeTicketStatus extends UpgradeProcess {
 	}
 
 }
+
 */
 
 }

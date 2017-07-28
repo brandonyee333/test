@@ -18,6 +18,7 @@
 
 <%
 String redirect = ParamUtil.getString(request, "redirect");
+
 String backURL = ParamUtil.getString(request, "backURL", redirect);
 
 long ticketEntryId = ParamUtil.getLong(request, "ticketEntryId");
@@ -259,7 +260,6 @@ portletURL.setParameter("ticketEntryId", String.valueOf(ticketEntryId));
 										<span class="txt-b">
 											<liferay-ui:message key="file" />:
 										</span>
-
 										<span class="file-name"></span>
 									</div>
 
@@ -328,7 +328,7 @@ portletURL.setParameter("ticketEntryId", String.valueOf(ticketEntryId));
 						</div>
 					</div>
 
-					<div class="lfr-fallback-container aui-helper-hidden" id="<portlet:namespace />fallbackContainer">
+					<div class="aui-helper-hidden lfr-fallback-container" id="<portlet:namespace />fallbackContainer">
 						<c:choose>
 							<c:when test="<%= userVisibilities.length > 1 %>">
 								<div class="aui-helper-clearfix">
@@ -361,39 +361,39 @@ portletURL.setParameter("ticketEntryId", String.valueOf(ticketEntryId));
 						</c:choose>
 
 						<table class="lfr-table">
-						<tr>
-							<th>
-								<strong><liferay-ui:message key="upload-files" /></strong>
-							</th>
-
-							<c:if test="<%= ticketWorker %>">
-								<th>
-									<strong><liferay-ui:message key="hotfix" /></strong>
-								</th>
-							</c:if>
-						</tr>
-
-						<%
-						for (int i = 1; i <= 3; i++) {
-						%>
-
 							<tr>
-								<td>
-									<label for="<portlet:namespace />file<%= i %>"><liferay-ui:message key="file" /> <%= i %></label>
-
-									<input id="<portlet:namespace />file<%= i %>" name="<portlet:namespace />file<%= i %>" onChange="AUI().one('#<portlet:namespace />saveButton').show();" type="file" />
-								</td>
+								<th>
+									<strong><liferay-ui:message key="upload-files" /></strong>
+								</th>
 
 								<c:if test="<%= ticketWorker %>">
-									<td>
-										<aui:input label="" name='<%= "hotfix" + i %>' type="checkbox" />
-									</td>
+									<th>
+										<strong><liferay-ui:message key="hotfix" /></strong>
+									</th>
 								</c:if>
 							</tr>
 
-						<%
-						}
-						%>
+							<%
+							for (int i = 1; i <= 3; i++) {
+							%>
+
+								<tr>
+									<td>
+										<label for="<portlet:namespace />file<%= i %>"><liferay-ui:message key="file" /> <%= i %></label>
+
+										<input id="<portlet:namespace />file<%= i %>" name="<portlet:namespace />file<%= i %>" onChange="AUI().one('#<portlet:namespace />saveButton').show();" type="file" />
+									</td>
+
+									<c:if test="<%= ticketWorker %>">
+										<td>
+											<aui:input label="" name='<%= "hotfix" + i %>' type="checkbox" />
+										</td>
+									</c:if>
+								</tr>
+
+							<%
+							}
+							%>
 
 						</table>
 					</div>
@@ -704,7 +704,7 @@ portletURL.setParameter("ticketEntryId", String.valueOf(ticketEntryId));
 					data: {
 						<portlet:namespace />fileName: file.fileName,
 						<portlet:namespace />ticketEntryId: <%= ticketEntryId %>,
-						<portlet:namespace />validateDuplicate: <%= ticketWorker ? String.valueOf(Boolean.FALSE) : String.valueOf(Boolean.TRUE) %>,
+						<portlet:namespace />validateDuplicate: <%= ticketWorker ? String.valueOf(Boolean.FALSE) : String.valueOf(Boolean.TRUE) %>
 					},
 					dataType: 'json',
 					method: 'post',

@@ -47,16 +47,13 @@ import java.util.Date;
 /**
  * @author Douglas Wong
  */
-public class Upgrade_20160104174603752_ContractEntry
-	extends UpgradeProcess {
+public class Upgrade_20160104174603752_ContractEntry extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20160104174603752L;
 	}
@@ -371,6 +368,7 @@ public class Upgrade_20160104174603752_ContractEntry
 		Upgrade_20160104174603752_ContractEntry.class);
 
 }
+
 */
 
 }

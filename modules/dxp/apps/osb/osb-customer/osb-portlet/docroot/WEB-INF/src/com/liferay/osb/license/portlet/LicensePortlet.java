@@ -14,12 +14,6 @@
 
 package com.liferay.osb.license.portlet;
 
-import com.liferay.portal.kernel.portlet.PortletResponseUtil;
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.util.bridges.mvc.MVCPortlet;
 import com.liferay.osb.exception.DuplicateHostNameException;
 import com.liferay.osb.exception.DuplicateIPAddressException;
 import com.liferay.osb.exception.DuplicateMACAddressException;
@@ -50,18 +44,24 @@ import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.portlet.LiferayPortletURL;
-import com.liferay.portal.kernel.servlet.SessionMessages;
-import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.portlet.LiferayPortletURL;
+import com.liferay.portal.kernel.portlet.PortletResponseUtil;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
+import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
+import com.liferay.portal.kernel.servlet.SessionMessages;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.ContentTypes;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.util.bridges.mvc.MVCPortlet;
 
 import java.io.IOException;
 
@@ -245,13 +245,13 @@ public class LicensePortlet extends MVCPortlet {
 				"sales@liferay.com", accountEntry.getAccountEntryId());
 
 			SessionMessages.add(
-				actionRequest, "sales_notified", "sales@liferay.com");
+				actionRequest, "salesNotified", "sales@liferay.com");
 		}
 		else {
 			LicenseKeyLocalServiceUtil.renewTrialLicenseKey(user.getUserId());
 
 			SessionMessages.add(
-				actionRequest, "license_key_sent", user.getEmailAddress());
+				actionRequest, "licenseKeySent", user.getEmailAddress());
 		}
 	}
 
@@ -272,7 +272,7 @@ public class LicensePortlet extends MVCPortlet {
 		LicenseKeyLocalServiceUtil.sendRegisteredEmail(user, licenseKey);
 
 		SessionMessages.add(
-			actionRequest, "license_key_sent", user.getEmailAddress());
+			actionRequest, "licenseKeySent", user.getEmailAddress());
 	}
 
 	@Override
@@ -333,9 +333,9 @@ public class LicensePortlet extends MVCPortlet {
 			actionRequest, "startDateYear");
 		boolean active = ParamUtil.getBoolean(actionRequest, "active");
 
-		List<String> hostNames = new ArrayList<String>();
-		List<String> ipAddresses = new ArrayList<String>();
-		List<String> macAddresses = new ArrayList<String>();
+		List<String> hostNames = new ArrayList<>();
+		List<String> ipAddresses = new ArrayList<>();
+		List<String> macAddresses = new ArrayList<>();
 
 		int[] serverIdsIndexes = StringUtil.split(
 			ParamUtil.getString(actionRequest, "serverIdsIndexes"), 0);
@@ -391,11 +391,11 @@ public class LicensePortlet extends MVCPortlet {
 					false, true);
 
 				actionRequest.setAttribute(
+					"clusterId", licenseKey.getClusterId());
+				actionRequest.setAttribute(
 					"licenseKeySetId", licenseKey.getLicenseKeySetId());
 				actionRequest.setAttribute(
 					"offeringEntryId", licenseKey.getOfferingEntryId());
-				actionRequest.setAttribute(
-					"clusterId", licenseKey.getClusterId());
 			}
 		}
 		else {
@@ -492,6 +492,7 @@ public class LicensePortlet extends MVCPortlet {
 			actionRequest, "offeringEntryId");
 
 		User user = themeDisplay.getUser();
+
 		Group group = user.getGroup();
 
 		long plid = PortalUtil.getPlidFromPortletId(
@@ -657,6 +658,6 @@ public class LicensePortlet extends MVCPortlet {
 			ContentTypes.TEXT_XML);
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(LicensePortlet.class);
+	private static final Log _log = LogFactoryUtil.getLog(LicensePortlet.class);
 
 }

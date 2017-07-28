@@ -30,9 +30,7 @@ public class Upgrade_20160407123247805_OSB_TrainingEvent
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20160407123247805L;
 	}
@@ -45,6 +43,7 @@ public class Upgrade_20160407123247805_OSB_TrainingEvent
 	}
 
 }
+
 */
 
 }

@@ -21,7 +21,8 @@ import com.liferay.portal.kernel.exception.NoSuchModelException;
  * @author Brian Wing Shun Chan
  */
 @ProviderType
-public class NoSuchSupportWorkerAccountTierException extends NoSuchModelException {
+public class NoSuchSupportWorkerAccountTierException
+	extends NoSuchModelException {
 
 	public NoSuchSupportWorkerAccountTierException() {
 	}
@@ -30,7 +31,9 @@ public class NoSuchSupportWorkerAccountTierException extends NoSuchModelExceptio
 		super(msg);
 	}
 
-	public NoSuchSupportWorkerAccountTierException(String msg, Throwable cause) {
+	public NoSuchSupportWorkerAccountTierException(
+		String msg, Throwable cause) {
+
 		super(msg, cause);
 	}
 

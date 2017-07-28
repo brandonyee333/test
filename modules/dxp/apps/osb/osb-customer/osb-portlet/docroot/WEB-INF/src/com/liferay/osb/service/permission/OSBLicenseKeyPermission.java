@@ -14,7 +14,6 @@
 
 package com.liferay.osb.service.permission;
 
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
@@ -49,7 +48,7 @@ public class OSBLicenseKeyPermission {
 	public static void check(
 			PermissionChecker permissionChecker, LicenseKey licenseKey,
 			String actionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (!contains(permissionChecker, licenseKey, actionId)) {
 			throw new PrincipalException();
@@ -59,7 +58,7 @@ public class OSBLicenseKeyPermission {
 	public static void check(
 			PermissionChecker permissionChecker, long licenseKeyId,
 			String actionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (!contains(permissionChecker, licenseKeyId, actionId)) {
 			throw new PrincipalException();
@@ -67,9 +66,8 @@ public class OSBLicenseKeyPermission {
 	}
 
 	public static boolean contains(
-			PermissionChecker permissionChecker, LicenseKey licenseKey,
-			String actionId)
-		throws SystemException {
+		PermissionChecker permissionChecker, LicenseKey licenseKey,
+		String actionId) {
 
 		if (RoleLocalServiceUtil.hasUserRole(
 				permissionChecker.getUserId(),
@@ -121,12 +119,12 @@ public class OSBLicenseKeyPermission {
 		}
 
 		if (actionId.equals(OSBActionKeys.UPDATE_ADVANCED)) {
-			
+
 			/* TODO update app license integration
+
 			if (RoleLocalServiceUtil.hasUserRole(
 					permissionChecker.getUserId(),
 					OSBConstants.ROLE_OSB_MARKETPLACE_ADMIN_ID)) {
-
 
 				AssetReceiptLicense assetReceiptLicense =
 					AssetReceiptLicenseLocalServiceUtil.
@@ -151,6 +149,7 @@ public class OSBLicenseKeyPermission {
 					return true;
 				}
 			}
+
 			*/
 
 			return false;
@@ -189,7 +188,7 @@ public class OSBLicenseKeyPermission {
 	public static boolean contains(
 			PermissionChecker permissionChecker, long licenseKeyId,
 			String actionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		LicenseKey licenseKey = LicenseKeyLocalServiceUtil.getLicenseKey(
 			licenseKeyId);

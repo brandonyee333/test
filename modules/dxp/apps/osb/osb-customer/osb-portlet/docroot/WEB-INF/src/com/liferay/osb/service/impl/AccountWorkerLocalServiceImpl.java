@@ -14,7 +14,6 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.exception.NoSuchAccountEntryException;
 import com.liferay.osb.exception.NoSuchAccountWorkerException;
 import com.liferay.osb.model.AccountEntry;
@@ -24,10 +23,10 @@ import com.liferay.osb.model.AuditEntryConstants;
 import com.liferay.osb.service.base.AccountWorkerLocalServiceBaseImpl;
 import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.Date;
 import java.util.List;
@@ -42,7 +41,7 @@ public class AccountWorkerLocalServiceImpl
 	public void addAccountWorkers(
 			long userId, long[] userIds, long accountEntryId, int[] roles,
 			int[] notifications)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		Date now = new Date();
@@ -75,9 +74,9 @@ public class AccountWorkerLocalServiceImpl
 				accountWorker.setAccountEntryId(accountEntryId);
 				accountWorker.setRole(roles[i]);
 				accountWorker.setNotifications(notifications[i]);
-				
+
 				//TODO implement serviceContext how needed
-				
+
 				ServiceContext serviceContext = new ServiceContext();
 
 				accountWorkerPersistence.update(accountWorker, serviceContext);
@@ -110,9 +109,9 @@ public class AccountWorkerLocalServiceImpl
 
 				accountWorker.setRole(roles[i]);
 				accountWorker.setNotifications(notifications[i]);
-				
+
 				//TODO implement serviceContext how needed
-				
+
 				ServiceContext serviceContext = new ServiceContext();
 
 				accountWorkerPersistence.update(accountWorker, serviceContext);
@@ -136,7 +135,7 @@ public class AccountWorkerLocalServiceImpl
 	}
 
 	public void deleteAccountEntryAccountWorkers(long accountEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		List<AccountWorker> accountWorkers =
 			accountWorkerPersistence.findByAccountEntryId(accountEntryId);
@@ -148,9 +147,7 @@ public class AccountWorkerLocalServiceImpl
 		accountEntryLocalService.reindexAccountEntry(accountEntryId);
 	}
 
-	public void deleteAccountWorkers(long userId)
-		throws PortalException, SystemException {
-
+	public void deleteAccountWorkers(long userId) throws PortalException {
 		List<AccountWorker> accountWorkers =
 			accountWorkerPersistence.findByUserId(userId);
 
@@ -164,7 +161,7 @@ public class AccountWorkerLocalServiceImpl
 
 	public void deleteAccountWorkers(
 			long userId, long[] userIds, long accountEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		Date now = new Date();
@@ -204,7 +201,7 @@ public class AccountWorkerLocalServiceImpl
 					String.valueOf(accountWorker.getRole()), StringPool.BLANK,
 					StringPool.BLANK);
 			}
-			catch (NoSuchAccountWorkerException nstwe) {
+			catch (NoSuchAccountWorkerException nsawe) {
 			}
 		}
 
@@ -212,32 +209,26 @@ public class AccountWorkerLocalServiceImpl
 	}
 
 	public AccountWorker getAccountWorker(long userId, long accountEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		return accountWorkerPersistence.findByU_AEI(userId, accountEntryId);
 	}
 
-	public List<AccountWorker> getAccountWorkers(long accountEntryId)
-		throws SystemException {
-
+	public List<AccountWorker> getAccountWorkers(long accountEntryId) {
 		return accountWorkerPersistence.findByAccountEntryId(accountEntryId);
 	}
 
-	public List<AccountWorker> getAccountWorkers(long accountEntryId, int role)
-		throws SystemException {
+	public List<AccountWorker> getAccountWorkers(
+		long accountEntryId, int role) {
 
 		return accountWorkerPersistence.findByAEI_R(accountEntryId, role);
 	}
 
-	public List<AccountWorker> getUserAccountWorkers(long userId)
-		throws SystemException {
-
+	public List<AccountWorker> getUserAccountWorkers(long userId) {
 		return accountWorkerPersistence.findByUserId(userId);
 	}
 
-	public boolean hasAccountWorker(long userId, long accountEntryId)
-		throws SystemException {
-
+	public boolean hasAccountWorker(long userId, long accountEntryId) {
 		AccountWorker accountWorker = accountWorkerPersistence.fetchByU_AEI(
 			userId, accountEntryId);
 
@@ -249,9 +240,7 @@ public class AccountWorkerLocalServiceImpl
 		}
 	}
 
-	public boolean hasAccountWorkerRole(long userId, int role)
-		throws SystemException {
-
+	public boolean hasAccountWorkerRole(long userId, int role) {
 		List<AccountWorker> accountWorkers = accountWorkerPersistence.findByU_R(
 			userId, role);
 
@@ -263,9 +252,7 @@ public class AccountWorkerLocalServiceImpl
 		}
 	}
 
-	protected void validate(long accountEntryId)
-		throws PortalException, SystemException {
-
+	protected void validate(long accountEntryId) throws PortalException {
 		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
 			accountEntryId);
 

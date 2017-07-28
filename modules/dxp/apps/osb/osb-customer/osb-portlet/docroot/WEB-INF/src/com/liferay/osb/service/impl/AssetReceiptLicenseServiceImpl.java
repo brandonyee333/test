@@ -15,26 +15,13 @@
 package com.liferay.osb.service.impl;
 
 import com.liferay.osb.service.base.AssetReceiptLicenseServiceBaseImpl;
+import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
+import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 
 /**
- * The implementation of the asset receipt license remote service.
- *
- * <p>
- * All custom service methods should be put in this class. Whenever methods are added, rerun ServiceBuilder to copy their definitions into the {@link com.liferay.osb.service.AssetReceiptLicenseService} interface.
- *
- * <p>
- * This is a remote service. Methods of this service are expected to have security checks based on the propagated JAAS credentials because this service can be accessed remotely.
- * </p>
- *
  * @author Brian Wing Shun Chan
- * @see AssetReceiptLicenseServiceBaseImpl
- * @see com.liferay.osb.service.AssetReceiptLicenseServiceUtil
  */
+@JSONWebService(mode = JSONWebServiceMode.MANUAL)
 public class AssetReceiptLicenseServiceImpl
 	extends AssetReceiptLicenseServiceBaseImpl {
-	/*
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never reference this class directly. Always use {@link com.liferay.osb.service.AssetReceiptLicenseServiceUtil} to access the asset receipt license remote service.
-	 */
 }

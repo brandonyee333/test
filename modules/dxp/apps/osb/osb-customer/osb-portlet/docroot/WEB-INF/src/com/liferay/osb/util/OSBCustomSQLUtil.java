@@ -14,10 +14,10 @@
 
 package com.liferay.osb.util;
 
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class OSBCustomSQLUtil {
 			!keywords.startsWith(StringPool.QUOTE) ||
 			!keywords.endsWith(StringPool.QUOTE)) {
 
-			List<String> keywordsList = new ArrayList<String>();
+			List<String> keywordsList = new ArrayList<>();
 
 			String[] keywordsArray = CustomSQLUtil.keywords(keywords);
 

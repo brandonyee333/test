@@ -18,6 +18,7 @@
 
 <%
 String redirect = ParamUtil.getString(request, "redirect");
+
 String backURL = ParamUtil.getString(request, "backURL", redirect);
 
 long ticketCannedResponseId = ParamUtil.getLong(request, "ticketCannedResponseId");
@@ -83,7 +84,7 @@ if (ticketCannedResponse != null) {
 			<liferay-ui:message key='<%= (ticketCannedResponse != null) ? "language" : "default-language" %>' />
 		</td>
 		<td>
-			<select name="<portlet:namespace />languageId" onChange='<%= (ticketCannedResponse != null) ? (renderResponse.getNamespace() + "updateLanguage(this.value);") : "" %>'>
+			<select name="<portlet:namespace />languageId" onChange="<%= (ticketCannedResponse != null) ? (renderResponse.getNamespace() + "updateLanguage(this.value);") : "" %>">
 
 				<%
 				Locale[] locales = LanguageUtil.getAvailableLocales();

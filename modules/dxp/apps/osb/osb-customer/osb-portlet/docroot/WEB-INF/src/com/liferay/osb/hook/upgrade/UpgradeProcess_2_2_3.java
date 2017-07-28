@@ -14,10 +14,10 @@
 
 package com.liferay.osb.hook.upgrade;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.osb.hook.upgrade.v2_2_3.UpgradeMarketingEvent;
 import com.liferay.osb.hook.upgrade.v2_2_3.UpgradeSearchFilter;
 import com.liferay.osb.hook.upgrade.v2_2_3.UpgradeSupportWorker;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
 /**
  * @author Brent Krone-Schmidt

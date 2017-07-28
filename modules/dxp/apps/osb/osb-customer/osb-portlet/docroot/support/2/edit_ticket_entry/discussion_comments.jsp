@@ -187,7 +187,7 @@ boolean hasMarkAsSolutionPermission = OSBTicketCommentPermission.contains(permis
 						}
 						%>
 
-						<span class="three-dot comment-menu">
+						<span class="comment-menu three-dot">
 							<c:if test="<%= !menuOptions.isEmpty() %>">
 								<span class="three-dot-icon">
 									<span style="top: 2px"></span>
@@ -472,7 +472,7 @@ boolean hasMarkAsSolutionPermission = OSBTicketCommentPermission.contains(permis
 														<span id="<portlet:namespace />fileName<%= draftSuffix %>"><%= ticketAttachment.getFileName().substring(ticketAttachment.getFileName().indexOf(StringPool.DASH) + 1) %></span>
 													</c:if>
 
-													<input class='<%= (ticketAttachment != null) ? "aui-helper-hidden" : "" %>' id='<portlet:namespace /><%= "file" + draftSuffix %>' name='<portlet:namespace /><%= "file" + draftSuffix %>' type="file" />
+													<input class="<%= (ticketAttachment != null) ? "aui-helper-hidden" : "" %>" id="<portlet:namespace /><%= "file" + draftSuffix %>" name="<portlet:namespace /><%= "file" + draftSuffix %>" type="file" />
 												</td>
 
 												<c:if test="<%= ticketWorker %>">
@@ -483,7 +483,7 @@ boolean hasMarkAsSolutionPermission = OSBTicketCommentPermission.contains(permis
 
 												<c:if test="<%= ticketAttachment != null %>">
 													<td>
-														<input class="aui-button-input" id='<portlet:namespace /><%= "deleteTicketAttachment" + draftSuffix %>' onClick="<portlet:namespace />deleteTicketAttachment(<%= i %>, <%= ticketAttachment.getTicketAttachmentId() %>, <%= j %>);" type="button" value="<liferay-ui:message key="delete" />" />
+														<input class="aui-button-input" id="<portlet:namespace /><%= "deleteTicketAttachment" + draftSuffix %>" onClick="<portlet:namespace />deleteTicketAttachment(<%= i %>, <%= ticketAttachment.getTicketAttachmentId() %>, <%= j %>);" type="button" value="<liferay-ui:message key="delete" />" />
 													</td>
 												</c:if>
 											</tr>
@@ -498,7 +498,7 @@ boolean hasMarkAsSolutionPermission = OSBTicketCommentPermission.contains(permis
 
 								<br />
 
-								<div class="fr comment-buttons">
+								<div class="comment-buttons fr">
 									<input class="aui-button-input" id="<portlet:namespace />editCommentButton<%= i %>" onClick="<portlet:namespace />updateComment(<%= i %>, <%= ticketComment.getStatus() %>);" type="button" value="<liferay-ui:message key="update" />" />
 
 									<c:if test="<%= (ticketComment.getStatus() == WorkflowConstants.STATUS_DRAFT) && ((ticketEntry.getStatus() != TicketEntryConstants.STATUS_CLOSED) || liferayIncOrg || partnerWorker) %>">

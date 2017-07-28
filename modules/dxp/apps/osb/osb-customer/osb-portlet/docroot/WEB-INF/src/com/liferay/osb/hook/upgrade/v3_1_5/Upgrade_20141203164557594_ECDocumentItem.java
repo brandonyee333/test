@@ -30,16 +30,13 @@ import java.util.List;
 /**
  * @author Douglas Wong
  */
-public class Upgrade_20141203164557594_ECDocumentItem
-	extends UpgradeProcess {
+public class Upgrade_20141203164557594_ECDocumentItem extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20141203164557594L;
 	}
@@ -90,6 +87,7 @@ public class Upgrade_20141203164557594_ECDocumentItem
 	}
 
 }
+
 */
 
 }

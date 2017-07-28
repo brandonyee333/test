@@ -21,7 +21,8 @@ import com.liferay.portal.kernel.exception.NoSuchModelException;
  * @author Brian Wing Shun Chan
  */
 @ProviderType
-public class NoSuchSupportWorkerComponentException extends NoSuchModelException {
+public class NoSuchSupportWorkerComponentException
+	extends NoSuchModelException {
 
 	public NoSuchSupportWorkerComponentException() {
 	}

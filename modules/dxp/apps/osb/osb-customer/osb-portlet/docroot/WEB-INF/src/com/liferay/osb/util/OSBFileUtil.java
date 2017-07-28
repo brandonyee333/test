@@ -14,12 +14,12 @@
 
 package com.liferay.osb.util;
 
-import com.liferay.portal.kernel.util.Time;
+import com.liferay.document.library.kernel.store.DLStoreUtil;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
-import com.liferay.document.library.kernel.store.DLStoreUtil;
+import com.liferay.portal.kernel.util.Time;
 
 import java.io.File;
 
@@ -108,8 +108,7 @@ public class OSBFileUtil {
 	}
 
 	private static final String _OSB_DIR =
-		PropsUtil.get(PropsKeys.LIFERAY_HOME) + "/data/" +
-			OSBConstants.OSB_DIR;
+		PropsUtil.get(PropsKeys.LIFERAY_HOME) + "/data/" + OSBConstants.OSB_DIR;
 
 	private static final String _TEMP_DIR =
 		PropsUtil.get(PropsKeys.LIFERAY_HOME) + "/data/" +

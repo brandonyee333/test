@@ -16,7 +16,7 @@ package com.liferay.osb.hook.upgrade.v2_4_0;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
-/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+/*import UpgradeProcess;
 
 */
 
@@ -29,9 +29,7 @@ public class UpgradeTrainingCustomer extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	protected void doUpgrade() throws Exception {
 		updateTrainingCustomer();
 	}
@@ -44,11 +42,10 @@ public class UpgradeTrainingCustomer extends UpgradeProcess {
 		}
 	}
 
-	private static final long[] _TRAINING_CUSTOMER_IDS = {
-		34875606, 34875618
-	};
+	private static final long[] _TRAINING_CUSTOMER_IDS = {34875606, 34875618};
 
 }
+
 */
 
 }

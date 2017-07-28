@@ -32,14 +32,14 @@ pageContext.setAttribute("searchURL", searchURL);
 <div class="aui-helper-clearfix">
 	<div class="aui-w33 content-column">
 		<div class="content-column-content left-column">
-			<a class="display-b callout-a paragraph">
+			<a class="callout-a display-b paragraph">
 				<div class="callout-content ha-c">
 					<div class="display-ib">
 						<div class="txt-b">
 							&nbsp;
 						</div>
 
-						<div class="txt-h1 txt-b">
+						<div class="txt-b txt-h1">
 							&nbsp;
 						</div>
 					</div>
@@ -50,14 +50,14 @@ pageContext.setAttribute("searchURL", searchURL);
 
 	<div class="aui-w33 content-column">
 		<div class="content-column-content middle-column">
-			<a class="display-b callout-a paragraph">
+			<a class="callout-a display-b paragraph">
 				<div class="callout-content ha-c">
 					<div class="display-ib">
 						<div class="txt-b">
 							&nbsp;
 						</div>
 
-						<div class="txt-h1 txt-b">
+						<div class="txt-b txt-h1">
 							&nbsp;
 						</div>
 					</div>
@@ -73,14 +73,14 @@ pageContext.setAttribute("searchURL", searchURL);
 
 	<div class="aui-w33 content-column">
 		<div class="content-column-content right-column">
-			<a class="display-b callout-a paragraph" href="<%= addLicenseKeyURL %>">
+			<a class="callout-a display-b paragraph" href="<%= addLicenseKeyURL %>">
 				<div class="callout-content ha-c">
 					<div class="display-ib">
 						<div class="txt-b">
 							<liferay-ui:message key="generate-new-license" />
 						</div>
 
-						<div class="txt-h1 txt-b">
+						<div class="txt-b txt-h1">
 							+
 						</div>
 					</div>
@@ -151,7 +151,7 @@ pageContext.setAttribute("searchURL", searchURL);
 					String cssClass = "v-active";
 
 					if (licenseKey.isExpired()) {
-						cssClass= "v-expired";
+						cssClass = "v-expired";
 					}
 					else if (!licenseKey.isActive()) {
 						cssClass = "v-inactive";

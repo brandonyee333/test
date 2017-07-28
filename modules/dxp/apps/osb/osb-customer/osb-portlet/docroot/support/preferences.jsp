@@ -40,28 +40,28 @@ List<AccountCustomer> accountCustomers = AccountCustomerLocalServiceUtil.getUser
 
 		<div>
 			<table class="lfr-table">
-			<tr>
-				<td>
-					<liferay-ui:message key="notify-me-when-tickets-are-updated" />:
-				</td>
-				<td class="switch">
-					<portlet:actionURL name="toggleNotifications" var="toggleNotificationsURL">
-						<portlet:param name="tabs1" value="preferences" />
-						<portlet:param name="redirect" value="<%= currentURL %>" />
-						<portlet:param name="accountCustomerId" value="<%= StringUtil.valueOf(accountCustomer.getAccountCustomerId()) %>" />
-					</portlet:actionURL>
+				<tr>
+					<td>
+						<liferay-ui:message key="notify-me-when-tickets-are-updated" />:
+					</td>
+					<td class="switch">
+						<portlet:actionURL name="toggleNotifications" var="toggleNotificationsURL">
+							<portlet:param name="tabs1" value="preferences" />
+							<portlet:param name="redirect" value="<%= currentURL %>" />
+							<portlet:param name="accountCustomerId" value="<%= StringUtil.valueOf(accountCustomer.getAccountCustomerId()) %>" />
+						</portlet:actionURL>
 
-					<div class="toggle-on-off-switch">
-						<a class="toggle-on-off-switch-ctrl <%= accountCustomer.hasNotificationsOn() ? "on" : "off" %>" href="<%= toggleNotificationsURL %>">
-							<span class="toggle-on-off-switch-inner">
-								<span class="toggle-on-off-switch-on txt-b"><liferay-ui:message key="on" /></span>
+						<div class="toggle-on-off-switch">
+							<a class="toggle-on-off-switch-ctrl <%= accountCustomer.hasNotificationsOn() ? "on" : "off" %>" href="<%= toggleNotificationsURL %>">
+								<span class="toggle-on-off-switch-inner">
+									<span class="toggle-on-off-switch-on txt-b"><liferay-ui:message key="on" /></span>
 
-								<span class="toggle-on-off-switch-off txt-b"><liferay-ui:message key="off" /></span>
-							</span>
-						</a>
-					</div>
-				</td>
-			</tr>
+									<span class="toggle-on-off-switch-off txt-b"><liferay-ui:message key="off" /></span>
+								</span>
+							</a>
+						</div>
+					</td>
+				</tr>
 			</table>
 		</div>
 
@@ -119,7 +119,7 @@ List<AccountCustomer> accountCustomers = AccountCustomerLocalServiceUtil.getUser
 			</div>
 
 			<div class="aui-helper-clearfix aui-w75">
-				<div class="away-message-start-date aui-w50">
+				<div class="aui-w50 away-message-start-date">
 					<div>
 						<liferay-ui:message key="start-date" />
 					</div>
@@ -139,7 +139,7 @@ List<AccountCustomer> accountCustomers = AccountCustomerLocalServiceUtil.getUser
 					/>
 				</div>
 
-				<div class="away-message-end-date aui-w50">
+				<div class="aui-w50 away-message-end-date">
 					<div>
 						<liferay-ui:message key="end-date-optional" />
 					</div>
@@ -185,52 +185,52 @@ List<AccountCustomer> accountCustomers = AccountCustomerLocalServiceUtil.getUser
 				<br />
 
 				<table class="screen-share-mode-description">
-				<tr>
-					<td class="aui-w50">
-						<ul>
-							<li>
-								<liferay-ui:message key="due-date" />
-							</li>
-							<li>
-								<liferay-ui:message key="special-instructions" />
-							</li>
-							<li>
-								<liferay-ui:message key="reproduction-steps" />
-							</li>
-							<li>
-								<liferay-ui:message key="edit-button" />
-							</li>
-							<li>
-								<liferay-ui:message key="manage-links-button" />
-							</li>
-							<li>
-								<liferay-ui:message key="escalate-button" />
-							</li>
-						</ul>
-					</td>
-					<td class="aui-w50">
-						<ul>
-							<li>
-								<liferay-ui:message key="workers-tab" />
-							</li>
-							<li>
-								<liferay-ui:message key="liferay-tab" />
-							</li>
-							<li>
-								<liferay-ui:message key="all-comments-tab" />
-							</li>
-							<li>
-								<liferay-ui:message key="history-tab" />
-							</li>
-							<li>
-								<liferay-ui:message key="attachments-that-are-visible-to-workers-or-liferay" />
-							</li>
-							<li>
-								<liferay-ui:message key="links-that-are-visible-to-workers-or-liferay" />
-							</li>
-						</ul>
-					</td>
-				</tr>
+					<tr>
+						<td class="aui-w50">
+							<ul>
+								<li>
+									<liferay-ui:message key="due-date" />
+								</li>
+								<li>
+									<liferay-ui:message key="special-instructions" />
+								</li>
+								<li>
+									<liferay-ui:message key="reproduction-steps" />
+								</li>
+								<li>
+									<liferay-ui:message key="edit-button" />
+								</li>
+								<li>
+									<liferay-ui:message key="manage-links-button" />
+								</li>
+								<li>
+									<liferay-ui:message key="escalate-button" />
+								</li>
+							</ul>
+						</td>
+						<td class="aui-w50">
+							<ul>
+								<li>
+									<liferay-ui:message key="workers-tab" />
+								</li>
+								<li>
+									<liferay-ui:message key="liferay-tab" />
+								</li>
+								<li>
+									<liferay-ui:message key="all-comments-tab" />
+								</li>
+								<li>
+									<liferay-ui:message key="history-tab" />
+								</li>
+								<li>
+									<liferay-ui:message key="attachments-that-are-visible-to-workers-or-liferay" />
+								</li>
+								<li>
+									<liferay-ui:message key="links-that-are-visible-to-workers-or-liferay" />
+								</li>
+							</ul>
+						</td>
+					</tr>
 				</table>
 			</div>
 		</div>

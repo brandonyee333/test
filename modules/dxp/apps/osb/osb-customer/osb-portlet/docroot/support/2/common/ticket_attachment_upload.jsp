@@ -145,7 +145,7 @@ if ((accountEnvironmentAttachment != null) || (ticketAttachment != null)) {
 			<c:when test="<%= ticketEntry == null %>">
 				<c:if test="<%= confirm %>">
 					<div class="attachment-text fl">
-						*<liferay-ui:message arguments="<%= LanguageUtil.get(locale, TicketAttachmentConstants.getTypeLabel(ticketAttachmentType)) %>" key="this-x-is-current" />
+						*<liferay-ui:message arguments="<%= LanguageUtil.get(request, TicketAttachmentConstants.getTypeLabel(ticketAttachmentType)) %>" key="this-x-is-current" />
 
 						<input <%= ((accountEnvironmentAttachment == null) && (ticketAttachment == null)) ? "disabled" : "" %> <%= confirmCheckbox ? "checked" : "" %> id="<portlet:namespace /><%= HtmlUtil.escapeAttribute(fieldName) %>Checkbox" name="<portlet:namespace /><%= HtmlUtil.escapeAttribute(fieldName) %>Checkbox" onclick="<portlet:namespace />validateFiles();" type="checkbox" />
 					</div>

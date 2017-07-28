@@ -23,7 +23,6 @@ import com.liferay.osb.service.permission.OSBLicenseKeySetPermission;
 import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
@@ -37,7 +36,7 @@ public class LicenseKeySetServiceImpl extends LicenseKeySetServiceBaseImpl {
 
 	public LicenseKeySet addLicenseKeySet(
 			long userId, long accountEntryId, String name)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OSBAccountEntryPermission.check(
 			getPermissionChecker(), accountEntryId,
@@ -48,7 +47,7 @@ public class LicenseKeySetServiceImpl extends LicenseKeySetServiceBaseImpl {
 	}
 
 	public LicenseKeySet deleteLicenseKeySet(long licenseKeySetId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		LicenseKeySet licenseKeySet =
 			licenseKeySetLocalService.getLicenseKeySet(licenseKeySetId);
@@ -79,7 +78,7 @@ public class LicenseKeySetServiceImpl extends LicenseKeySetServiceBaseImpl {
 	}
 
 	public LicenseKeySet getLicenseKeySet(long licenseKeySetId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		LicenseKeySet licenseKeySet =
 			licenseKeySetLocalService.getLicenseKeySet(licenseKeySetId);
@@ -91,7 +90,7 @@ public class LicenseKeySetServiceImpl extends LicenseKeySetServiceBaseImpl {
 	}
 
 	public LicenseKeySet updateLicenseKeySet(long licenseKeySetId, String name)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OSBLicenseKeySetPermission.check(
 			getPermissionChecker(), licenseKeySetId, ActionKeys.UPDATE);

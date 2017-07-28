@@ -28,12 +28,12 @@ String commentBody = ParamUtil.getString(request, "commentBody0");
 		<liferay-util:param name="editorId" value="editor0" />
 		<liferay-util:param name="name" value="commentBody0" />
 		<liferay-util:param name="onFocus" value='<%= renderResponse.getNamespace() + "initDraftCommentMessage(" + hasMaximumDraftTicketComment + ")" %>' />
-		<liferay-util:param name="placeholder" value='<%= LanguageUtil.get(locale, "compose-your-" + discussionTab + "-message-here") %>' />
+		<liferay-util:param name="placeholder" value='<%= LanguageUtil.get(request, "compose-your-" + discussionTab + "-message-here") %>' />
 		<liferay-util:param name="resize" value="vertical" />
 	</liferay-util:include>
 
 	<c:if test='<%= !discussionTab.equals("liferay") && ticketWorker && (ticketEntry.getStatus() != TicketEntryConstants.STATUS_CLOSED) && (ticketEntry.getStatus() != TicketEntryConstants.STATUS_RESOLVED_IN_PRODUCTION) %>'>
-		<div class="fr comment-pending">
+		<div class="comment-pending fr">
 			<liferay-ui:message key="need-response-from" />:
 
 			<c:if test='<%= discussionTab.equals("public") %>'>
@@ -60,45 +60,45 @@ String commentBody = ParamUtil.getString(request, "commentBody0");
 
 	<div class="aui-helper-hidden" id="<portlet:namespace />addAttachments">
 		<table class="lfr-table">
-		<tr>
-			<th>
-				<strong><liferay-ui:message key="upload-files" /></strong>
-			</th>
-
-			<c:if test="<%= ticketWorker %>">
-				<th>
-					<strong><liferay-ui:message key="hotfix" /></strong>
-				</th>
-			</c:if>
-		</tr>
-
-		<%
-		for (int i = 1; i <= 3; i++) {
-			String fileSuffix = 0 + StringPool.UNDERLINE + i;
-		%>
-
 			<tr>
-				<td>
-					<label for="<portlet:namespace />file<%= fileSuffix %>"><liferay-ui:message key="file" /> <%= i %></label>
-
-					<input id="<portlet:namespace />file<%= fileSuffix %>" name="<portlet:namespace />file<%= fileSuffix %>" onChange="<portlet:namespace />checkAttachment(this);" type="file" />
-				</td>
+				<th>
+					<strong><liferay-ui:message key="upload-files" /></strong>
+				</th>
 
 				<c:if test="<%= ticketWorker %>">
-					<td>
-						<aui:input label="" name='<%= "hotfix" + fileSuffix %>' type="checkbox" />
-					</td>
+					<th>
+						<strong><liferay-ui:message key="hotfix" /></strong>
+					</th>
 				</c:if>
 			</tr>
 
-		<%
-		}
-		%>
+			<%
+			for (int i = 1; i <= 3; i++) {
+				String fileSuffix = 0 + StringPool.UNDERLINE + i;
+			%>
+
+				<tr>
+					<td>
+						<label for="<portlet:namespace />file<%= fileSuffix %>"><liferay-ui:message key="file" /> <%= i %></label>
+
+						<input id="<portlet:namespace />file<%= fileSuffix %>" name="<portlet:namespace />file<%= fileSuffix %>" onChange="<portlet:namespace />checkAttachment(this);" type="file" />
+					</td>
+
+					<c:if test="<%= ticketWorker %>">
+						<td>
+							<aui:input label="" name='<%= "hotfix" + fileSuffix %>' type="checkbox" />
+						</td>
+					</c:if>
+				</tr>
+
+			<%
+			}
+			%>
 
 		</table>
 	</div>
 
-	<div class="fr comment-buttons">
+	<div class="comment-buttons fr">
 		<c:if test='<%= discussionTab.equals("liferay") %>'>
 			<input class="aui-button-input aui-helper-hidden" id="<portlet:namespace />postGamePlanButton" onClick="<portlet:namespace />addComment(0);" type="button" value="<liferay-ui:message key="post-game-plan" />" />
 

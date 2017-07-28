@@ -53,183 +53,184 @@ long accountProjectId = ParamUtil.getLong(request, "accountProjectId");
 				<div class="account-projects" id="<portlet:namespace />accountProjectsContainer">
 					<div class="callout-content">
 						<table class="taglib-search-iterator">
-						<tr class="portlet-section-header results-header">
-							<th class="col-1 first" />
-							<th class="col-2">
-								<liferay-ui:message key="project-name" />
-							</th>
-							<th class="col-3">
-								<liferay-ui:message key="last-modified" />
-							</th>
-						</tr>
+							<tr class="portlet-section-header results-header">
+								<th class="col-1 first" />
 
-						<%
-						for (AccountProject accountProject : accountProjects) {
-							StringBuilder sb = new StringBuilder();
-
-							sb.append("javascript:");
-							sb.append(renderResponse.getNamespace());
-							sb.append("toggleAccountProject('");
-							sb.append(accountProject.getAccountProjectId());
-							sb.append("');");
-
-							String rowHREF = sb.toString();
-						%>
-
-							<tr class="collapsed" id="<portlet:namespace />accountProject_<%= accountProject.getAccountProjectId() %>">
-								<td class="col col-1 first">
-									<liferay-ui:icon
-										cssClass="down"
-										image="../arrows/05_down"
-										label="<%= false %>"
-										url="<%= rowHREF %>"
-									/>
-
-									<liferay-ui:icon
-										cssClass="up"
-										image="../arrows/05_up"
-										label="<%= false %>"
-										url="<%= rowHREF %>"
-									/>
-								</td>
-								<td class="col col-2">
-									<a href="<%= rowHREF %>"><%= HtmlUtil.escape(accountProject.getName()) %></a>
-								</td>
-								<td class="col col-3">
-									<a href="<%= rowHREF %>"><liferay-ui:message arguments="<%= new Object[] {accountProject.getModifiedUserName(), fullDateFormatDateTime.format(accountProject.getModifiedDate())} %>" key="x-on-x" /></a>
-								</td>
+								<th class="col-2">
+									<liferay-ui:message key="project-name" />
+								</th>
+								<th class="col-3">
+									<liferay-ui:message key="last-modified" />
+								</th>
 							</tr>
-							<tr class="account-projects collapsed" id="<portlet:namespace />accountProjectDetail_<%= accountProject.getAccountProjectId() %>">
-								<td class="panel" colspan="3">
-									<div class="callout-a">
-										<div class="aui-helper-clearfix callout-content">
-											<div class="aui-w20 content-column customer-info-label">
-												<liferay-ui:message key="project-name" />
-											</div>
 
-											<div class="aui-w80 content-column customer-info">
-												<div class="customer-info-display">
-													<%= HtmlUtil.escape(accountProject.getName()) %>
-												</div>
-											</div>
-										</div>
+							<%
+							for (AccountProject accountProject : accountProjects) {
+								StringBuilder sb = new StringBuilder();
 
-										<%
-										for (int fieldId : AccountInformationConstants.ACCOUNT_PROJECT_FIELD_IDS) {
-										%>
+								sb.append("javascript:");
+								sb.append(renderResponse.getNamespace());
+								sb.append("toggleAccountProject('");
+								sb.append(accountProject.getAccountProjectId());
+								sb.append("');");
 
+								String rowHREF = sb.toString();
+							%>
+
+								<tr class="collapsed" id="<portlet:namespace />accountProject_<%= accountProject.getAccountProjectId() %>">
+									<td class="col col-1 first">
+										<liferay-ui:icon
+											cssClass="down"
+											image="../arrows/05_down"
+											label="<%= false %>"
+											url="<%= rowHREF %>"
+										/>
+
+										<liferay-ui:icon
+											cssClass="up"
+											image="../arrows/05_up"
+											label="<%= false %>"
+											url="<%= rowHREF %>"
+										/>
+									</td>
+									<td class="col col-2">
+										<a href="<%= rowHREF %>"><%= HtmlUtil.escape(accountProject.getName()) %></a>
+									</td>
+									<td class="col col-3">
+										<a href="<%= rowHREF %>"><liferay-ui:message arguments="<%= new Object[] {accountProject.getModifiedUserName(), fullDateFormatDateTime.format(accountProject.getModifiedDate())} %>" key="x-on-x" /></a>
+									</td>
+								</tr>
+								<tr class="account-projects collapsed" id="<portlet:namespace />accountProjectDetail_<%= accountProject.getAccountProjectId() %>">
+									<td class="panel" colspan="3">
+										<div class="callout-a">
 											<div class="aui-helper-clearfix callout-content">
 												<div class="aui-w20 content-column customer-info-label">
-													<liferay-ui:message key="<%= AccountInformationConstants.getFieldLabel(fieldId) %>" />
+													<liferay-ui:message key="project-name" />
 												</div>
 
 												<div class="aui-w80 content-column customer-info">
 													<div class="customer-info-display">
-														<pre><%= HtmlUtil.escape(accountProject.getData(fieldId)) %></pre>
+														<%= HtmlUtil.escape(accountProject.getName()) %>
 													</div>
 												</div>
 											</div>
 
-										<%
-										}
+											<%
+											for (int fieldId : AccountInformationConstants.ACCOUNT_PROJECT_FIELD_IDS) {
+											%>
 
-										List<AccountAttachment> accountAttachments = AccountAttachmentLocalServiceUtil.getAccountAttachments(accountEntryId, accountProject.getAccountProjectId());
-										%>
+												<div class="aui-helper-clearfix callout-content">
+													<div class="aui-w20 content-column customer-info-label">
+														<liferay-ui:message key="<%= AccountInformationConstants.getFieldLabel(fieldId) %>" />
+													</div>
 
-										<c:if test="<%= !accountAttachments.isEmpty() %>">
-											<div class="aui-helper-clearfix callout-content">
-												<table class="lfr-table">
-												<tr>
-													<td>
-														<strong><liferay-ui:message key="attachments" />:</strong>
-													</td>
-													<td class="stretch">
-
-														<%
-														for (int i = 0; i < accountAttachments.size(); i++) {
-															AccountAttachment accountAttachment = accountAttachments.get(i);
-
-															String fileName = accountAttachment.getFileName();
-														%>
-
-															<div class="attachment cleared">
-																<div class="fl">
-
-																	<%
-																	LiferayPortletURL accountAttachmentURL = PortletURLFactoryUtil.create(request, portletDisplay.getId(), layout.getPlid(), PortletRequest.RESOURCE_PHASE);
-
-																	accountAttachmentURL.setCopyCurrentRenderParameters(false);
-																	accountAttachmentURL.setParameter("accountAttachmentId", String.valueOf(accountAttachment.getAccountAttachmentId()));
-																	accountAttachmentURL.setResourceID("accountAttachment");
-																	%>
-
-																	<a href="<%= accountAttachmentURL.toString() %>" target="_blank"><%= HtmlUtil.escape(fileName) %></a> (<%= TextFormatter.formatKB((double)accountAttachment.getFileSize(), locale) %>k)
-
-																	<c:if test="<%= SupportUtil.hasAttachmentPreview(fileName) %>">
-
-																		<%
-																		accountAttachmentURL.setParameter("preview", String.valueOf(Boolean.TRUE));
-																		%>
-
-																		<span>
-																			<liferay-ui:icon
-																				image="preview"
-																				target="_blank"
-																				url="<%= accountAttachmentURL.toString() %>"
-																			/>
-																		</span>
-																	</c:if>
-																</div>
-
-																<div class="fr">
-																	<%= HtmlUtil.escape(accountAttachment.getUserName()) %> on <%= fullDateFormatDateTime.format(accountAttachment.getCreateDate()) %>
-																</div>
-
-																<%= (i < (accountAttachments.size() - 1)) ? "<br />" : "" %>
-															</div>
-
-														<%
-														}
-														%>
-
-													</td>
-												</tr>
-												</table>
-											</div>
-										</c:if>
-
-										<c:if test="<%= hasUpdateAccountInfoPermission %>">
-											<div class="aui-helper-clearfix">
-												<div class="callout-content fr">
-													<input class="aui-button-input" onClick="var manageAttachmentsWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/support/edit_account_attachments.jsp" /><portlet:param name="accountEntryId" value="<%= String.valueOf(accountEntryId) %>" /><portlet:param name="accountProjectId" value="<%= String.valueOf(accountProject.getAccountProjectId()) %>" /></portlet:renderURL>', 'manage-attachments', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=800'); void(''); manageAttachmentsWindow.focus();" type="button" value="<liferay-ui:message key="manage-attachments" />" />
-
-													<%
-													PortletURL editAccountProjectURL = renderResponse.createRenderURL();
-
-													editAccountProjectURL.setParameter("mvcPath", "/support/edit_account_project.jsp");
-													editAccountProjectURL.setParameter("accountProjectId", String.valueOf(accountProject.getAccountProjectId()));
-													editAccountProjectURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
-													editAccountProjectURL.setWindowState(LiferayWindowState.POP_UP);
-													%>
-
-													<input class="aui-button-input" onClick="<portlet:namespace />openDialog('<liferay-ui:message key="edit-project" />', '<%= editAccountProjectURL.toString() %>', '<portlet:namespace />updateAccountProject')" type="button" value="<liferay-ui:message key="edit" />" />
-
-													<portlet:actionURL name="deleteAccountProject" var="deleteAccountProjectURL">
-														<portlet:param name="redirect" value="<%= currentURL %>" />
-														<portlet:param name="accountProjectId" value="<%= String.valueOf(accountProject.getAccountProjectId()) %>" />
-													</portlet:actionURL>
-
-													<input class="aui-button-input" onClick="javascript:if (confirm('<%= UnicodeLanguageUtil.get(pageContext, "are-you-sure-you-want-to-delete-this-project") %>')) { location.href='<%= deleteAccountProjectURL %>'; } else { self.focus(); }" type="button" value="<liferay-ui:message key="delete" />" />
+													<div class="aui-w80 content-column customer-info">
+														<div class="customer-info-display">
+															<pre><%= HtmlUtil.escape(accountProject.getData(fieldId)) %></pre>
+														</div>
+													</div>
 												</div>
-											</div>
-										</c:if>
-									</div>
-								</td>
-							</tr>
 
-						<%
-						}
-						%>
+											<%
+											}
+
+											List<AccountAttachment> accountAttachments = AccountAttachmentLocalServiceUtil.getAccountAttachments(accountEntryId, accountProject.getAccountProjectId());
+											%>
+
+											<c:if test="<%= !accountAttachments.isEmpty() %>">
+												<div class="aui-helper-clearfix callout-content">
+													<table class="lfr-table">
+														<tr>
+															<td>
+																<strong><liferay-ui:message key="attachments" />:</strong>
+															</td>
+															<td class="stretch">
+
+																<%
+																for (int i = 0; i < accountAttachments.size(); i++) {
+																	AccountAttachment accountAttachment = accountAttachments.get(i);
+
+																	String fileName = accountAttachment.getFileName();
+																%>
+
+																	<div class="attachment cleared">
+																		<div class="fl">
+
+																			<%
+																			LiferayPortletURL accountAttachmentURL = PortletURLFactoryUtil.create(request, portletDisplay.getId(), layout.getPlid(), PortletRequest.RESOURCE_PHASE);
+
+																			accountAttachmentURL.setCopyCurrentRenderParameters(false);
+																			accountAttachmentURL.setParameter("accountAttachmentId", String.valueOf(accountAttachment.getAccountAttachmentId()));
+																			accountAttachmentURL.setResourceID("accountAttachment");
+																			%>
+
+																			<a href="<%= accountAttachmentURL.toString() %>" target="_blank"><%= HtmlUtil.escape(fileName) %></a> (<%= TextFormatter.formatKB((double)accountAttachment.getFileSize(), locale) %>k)
+
+																			<c:if test="<%= SupportUtil.hasAttachmentPreview(fileName) %>">
+
+																				<%
+																				accountAttachmentURL.setParameter("preview", String.valueOf(Boolean.TRUE));
+																				%>
+
+																				<span>
+																					<liferay-ui:icon
+																						image="preview"
+																						target="_blank"
+																						url="<%= accountAttachmentURL.toString() %>"
+																					/>
+																				</span>
+																			</c:if>
+																		</div>
+
+																		<div class="fr">
+																			<%= HtmlUtil.escape(accountAttachment.getUserName()) %> on <%= fullDateFormatDateTime.format(accountAttachment.getCreateDate()) %>
+																		</div>
+
+																		<%= (i < (accountAttachments.size() - 1)) ? "<br />" : "" %>
+																	</div>
+
+																<%
+																}
+																%>
+
+															</td>
+														</tr>
+													</table>
+												</div>
+											</c:if>
+
+											<c:if test="<%= hasUpdateAccountInfoPermission %>">
+												<div class="aui-helper-clearfix">
+													<div class="callout-content fr">
+														<input class="aui-button-input" onClick="var manageAttachmentsWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/support/edit_account_attachments.jsp" /><portlet:param name="accountEntryId" value="<%= String.valueOf(accountEntryId) %>" /><portlet:param name="accountProjectId" value="<%= String.valueOf(accountProject.getAccountProjectId()) %>" /></portlet:renderURL>', 'manage-attachments', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=800'); void(''); manageAttachmentsWindow.focus();" type="button" value="<liferay-ui:message key="manage-attachments" />" />
+
+														<%
+														PortletURL editAccountProjectURL = renderResponse.createRenderURL();
+
+														editAccountProjectURL.setParameter("mvcPath", "/support/edit_account_project.jsp");
+														editAccountProjectURL.setParameter("accountProjectId", String.valueOf(accountProject.getAccountProjectId()));
+														editAccountProjectURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
+														editAccountProjectURL.setWindowState(LiferayWindowState.POP_UP);
+														%>
+
+														<input class="aui-button-input" onClick="<portlet:namespace />openDialog('<liferay-ui:message key="edit-project" />', '<%= editAccountProjectURL.toString() %>', '<portlet:namespace />updateAccountProject')" type="button" value="<liferay-ui:message key="edit" />" />
+
+														<portlet:actionURL name="deleteAccountProject" var="deleteAccountProjectURL">
+															<portlet:param name="redirect" value="<%= currentURL %>" />
+															<portlet:param name="accountProjectId" value="<%= String.valueOf(accountProject.getAccountProjectId()) %>" />
+														</portlet:actionURL>
+
+														<input class="aui-button-input" onClick="javascript:if (confirm('<%= UnicodeLanguageUtil.get(pageContext, "are-you-sure-you-want-to-delete-this-project") %>')) { location.href='<%= deleteAccountProjectURL %>'; } else { self.focus(); }" type="button" value="<liferay-ui:message key="delete" />" />
+													</div>
+												</div>
+											</c:if>
+										</div>
+									</td>
+								</tr>
+
+							<%
+							}
+							%>
 
 						</table>
 					</div>
@@ -270,61 +271,61 @@ long accountProjectId = ParamUtil.getLong(request, "accountProjectId");
 
 	<c:if test="<%= !accountAttachments.isEmpty() %>">
 		<table class="lfr-table">
-		<tr>
-			<td>
-				<strong><liferay-ui:message key="attachments" />:</strong>
-			</td>
-			<td class="stretch">
+			<tr>
+				<td>
+					<strong><liferay-ui:message key="attachments" />:</strong>
+				</td>
+				<td class="stretch">
 
-				<%
-				for (int i = 0; i < accountAttachments.size(); i++) {
-					AccountAttachment accountAttachment = accountAttachments.get(i);
+					<%
+					for (int i = 0; i < accountAttachments.size(); i++) {
+						AccountAttachment accountAttachment = accountAttachments.get(i);
 
-					String fileName = accountAttachment.getFileName();
-				%>
+						String fileName = accountAttachment.getFileName();
+					%>
 
-					<div class="attachment cleared">
-						<div class="fl">
-
-							<%
-							LiferayPortletURL accountAttachmentURL = PortletURLFactoryUtil.create(request, portletDisplay.getId(), layout.getPlid(), PortletRequest.RESOURCE_PHASE);
-
-							accountAttachmentURL.setCopyCurrentRenderParameters(false);
-							accountAttachmentURL.setParameter("accountAttachmentId", String.valueOf(accountAttachment.getAccountAttachmentId()));
-							accountAttachmentURL.setResourceID("accountAttachment");
-							%>
-
-							<a href="<%= accountAttachmentURL.toString() %>" target="_blank"><%= HtmlUtil.escape(fileName) %></a> (<%= TextFormatter.formatKB((double)accountAttachment.getFileSize(), locale) %>k)
-
-							<c:if test="<%= SupportUtil.hasAttachmentPreview(fileName) %>">
+						<div class="attachment cleared">
+							<div class="fl">
 
 								<%
-								accountAttachmentURL.setParameter("preview", String.valueOf(Boolean.TRUE));
+								LiferayPortletURL accountAttachmentURL = PortletURLFactoryUtil.create(request, portletDisplay.getId(), layout.getPlid(), PortletRequest.RESOURCE_PHASE);
+
+								accountAttachmentURL.setCopyCurrentRenderParameters(false);
+								accountAttachmentURL.setParameter("accountAttachmentId", String.valueOf(accountAttachment.getAccountAttachmentId()));
+								accountAttachmentURL.setResourceID("accountAttachment");
 								%>
 
-								<span>
-									<liferay-ui:icon
-										image="preview"
-										target="_blank"
-										url="<%= accountAttachmentURL.toString() %>"
-									/>
-								</span>
-							</c:if>
+								<a href="<%= accountAttachmentURL.toString() %>" target="_blank"><%= HtmlUtil.escape(fileName) %></a> (<%= TextFormatter.formatKB((double)accountAttachment.getFileSize(), locale) %>k)
+
+								<c:if test="<%= SupportUtil.hasAttachmentPreview(fileName) %>">
+
+									<%
+									accountAttachmentURL.setParameter("preview", String.valueOf(Boolean.TRUE));
+									%>
+
+									<span>
+										<liferay-ui:icon
+											image="preview"
+											target="_blank"
+											url="<%= accountAttachmentURL.toString() %>"
+										/>
+									</span>
+								</c:if>
+							</div>
+
+							<div class="fr">
+								<%= HtmlUtil.escape(accountAttachment.getUserName()) %> on <%= fullDateFormatDateTime.format(accountAttachment.getCreateDate()) %>
+							</div>
+
+							<%= (i < (accountAttachments.size() - 1)) ? "<br />" : "" %>
 						</div>
 
-						<div class="fr">
-							<%= HtmlUtil.escape(accountAttachment.getUserName()) %> on <%= fullDateFormatDateTime.format(accountAttachment.getCreateDate()) %>
-						</div>
+					<%
+					}
+					%>
 
-						<%= (i < (accountAttachments.size() - 1)) ? "<br />" : "" %>
-					</div>
-
-				<%
-				}
-				%>
-
-			</td>
-		</tr>
+				</td>
+			</tr>
 		</table>
 	</c:if>
 
@@ -334,26 +335,26 @@ long accountProjectId = ParamUtil.getLong(request, "accountProjectId");
 
 	<c:if test="<%= !accountLinks.isEmpty() %>">
 		<table class="lfr-table">
-		<tr>
-			<td>
-				<strong><liferay-ui:message key="links" />:</strong>
-			</td>
-			<td class="stretch">
+			<tr>
+				<td>
+					<strong><liferay-ui:message key="links" />:</strong>
+				</td>
+				<td class="stretch">
 
-				<%
-				for (AccountLink accountLink : accountLinks) {
-				%>
+					<%
+					for (AccountLink accountLink : accountLinks) {
+					%>
 
-					<div>
-						<a href="<%= accountLink.getUrl() %>"><%= HtmlUtil.escape(StringUtil.shorten(accountLink.getUrl(), 115)) %></a>
-					</div>
+						<div>
+							<a href="<%= accountLink.getUrl() %>"><%= HtmlUtil.escape(StringUtil.shorten(accountLink.getUrl(), 115)) %></a>
+						</div>
 
-				<%
-				}
-				%>
+					<%
+					}
+					%>
 
-			</td>
-		</tr>
+				</td>
+			</tr>
 		</table>
 
 		<br />

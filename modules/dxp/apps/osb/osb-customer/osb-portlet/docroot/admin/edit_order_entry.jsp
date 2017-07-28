@@ -18,6 +18,7 @@
 
 <%
 String redirect = ParamUtil.getString(request, "redirect");
+
 String backURL = ParamUtil.getString(request, "backURL", redirect);
 
 long orderEntryId = ParamUtil.getLong(request, "orderEntryId");
@@ -212,7 +213,6 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 
 				<span class="txt-sb"><%= orderEntry.getUuid() %></span>
 			</span>
-
 			<span class="spacer"></span>
 
 			<span class="segment">
@@ -220,7 +220,6 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 
 				<span class="txt-sb"><%= HtmlUtil.escape(PortalUtil.getUserName(orderEntry.getUserId(), orderEntry.getUserName())) %> <liferay-ui:message key="on" /> <%= longDateFormatDateTime.format(orderEntry.getCreateDate()) %></span>
 			</span>
-
 			<span class="spacer"></span>
 
 			<span class="segment">
@@ -228,7 +227,6 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 
 				<span class="txt-sb"><%= HtmlUtil.escape(PortalUtil.getUserName(orderEntry.getModifiedUserId(), orderEntry.getModifiedUserName())) %> <liferay-ui:message key="on" /> <%= longDateFormatDateTime.format(orderEntry.getModifiedDate()) %></span>
 			</span>
-
 			<span class="spacer"></span>
 
 			<span class="last segment">
@@ -274,117 +272,116 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 	</c:if>
 
 	<table class="lfr-table">
-	<tr>
-		<td>
-			<liferay-ui:message key="project" />
-		</td>
-		<td>
-			<c:choose>
-				<c:when test="<%= orderEntry == null %>">
-					<select name="<portlet:namespace />accountEntryId">
-						<option></option>
-
-						<%
-						List<AccountEntry> accountEntries = AccountEntryLocalServiceUtil.getAccountEntries(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-
-						for (AccountEntry accountEntry : accountEntries) {
-						%>
-
-							<option <%= (accountEntryId == accountEntry.getAccountEntryId()) ? "selected" : "" %> value="<%= accountEntry.getAccountEntryId() %>"><%= accountEntry.getName() %></option>
-
-						<%
-						}
-						%>
-
-					</select>
-				</c:when>
-				<c:otherwise>
-					<input name="<portlet:namespace />accountEntryId" type="hidden" value="<%= accountEntryId %>" />
-
-					<%
-					AccountEntry accountEntry = AccountEntryLocalServiceUtil.getAccountEntry(accountEntryId);
-					%>
-
-					<a href="<portlet:renderURL windowState="<%= WindowState.MAXIMIZED.toString() %>"><portlet:param name="mvcPath" value="/admin/edit_account_entry.jsp" /><portlet:param name="redirect" value="<%= portletURL.toString() %>" /><portlet:param name="accountEntryId" value="<%= String.valueOf(accountEntryId) %>" /></portlet:renderURL>"><%= accountEntry.getName() %></a>
-				</c:otherwise>
-			</c:choose>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="salesforce-opportunity-key" />
-		</td>
-		<td>
-			<c:choose>
-				<c:when test="<%= (orderEntry != null) && (orderEntry.getUserId() == OSBConstants.USER_DEFAULT_USER_ID) %>">
-					<%= HtmlUtil.escape(salesforceOpportunityKey) %>
-
-					<aui:input hidden="<%= true %>" label="" name="salesforceOpportunityKey" value="<%= salesforceOpportunityKey %>" />
-				</c:when>
-				<c:otherwise>
-					<aui:input label="" name="salesforceOpportunityKey" value="<%= salesforceOpportunityKey %>" />
-				</c:otherwise>
-			</c:choose>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="purchase-order" />
-		</td>
-		<td>
-			<liferay-ui:input-field bean="<%= orderEntry %>" field="purchaseOrderKey" model="<%= OrderEntry.class %>" />
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2">
-			<br />
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="start-date" />
-		</td>
-		<td>
-			<table class="lfr-table">
-			<tr>
-				<td>
-					<liferay-ui:input-field bean="<%= orderEntry %>" defaultValue="<%= startCal %>" field="startDate" model="<%= OrderEntry.class %>" />
-				</td>
-				<td>
-					<liferay-ui:message key="prorated" />
-				</td>
-				<td>
-					<input <%= prorated ? "checked" : "" %> id="<portlet:namespace />prorated" name="<portlet:namespace />prorated" onClick="document.getElementById('<portlet:namespace />actualStartDate').style.display = this.checked ? '' : 'none';" type="checkbox" />
-				</td>
-			</tr>
-			</table>
-		</td>
-	</tr>
-	<tr id="<portlet:namespace />actualStartDate" style="display: <%= prorated ? "" : "none" %>;">
-		<td>
-			<liferay-ui:message key="actual-start-date" />
-		</td>
-		<td>
-			<liferay-ui:input-field bean="<%= orderEntry %>" defaultValue="<%= actualStartCal %>" field="actualStartDate" model="<%= OrderEntry.class %>" />
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2">
-			<br />
-		</td>
-	</tr>
-
-	<c:if test="<%= orderEntry != null %>">
 		<tr>
 			<td>
-				<liferay-ui:message key="renewed-count" />
+				<liferay-ui:message key="project" />
 			</td>
 			<td>
-				<%= renewCount %>
+				<c:choose>
+					<c:when test="<%= orderEntry == null %>">
+						<select name="<portlet:namespace />accountEntryId">
+							<option></option>
+
+							<%
+							List<AccountEntry> accountEntries = AccountEntryLocalServiceUtil.getAccountEntries(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+
+							for (AccountEntry accountEntry : accountEntries) {
+							%>
+
+								<option <%= (accountEntryId == accountEntry.getAccountEntryId()) ? "selected" : "" %> value="<%= accountEntry.getAccountEntryId() %>"><%= accountEntry.getName() %></option>
+
+							<%
+							}
+							%>
+
+						</select>
+					</c:when>
+					<c:otherwise>
+						<input name="<portlet:namespace />accountEntryId" type="hidden" value="<%= accountEntryId %>" />
+
+						<%
+						AccountEntry accountEntry = AccountEntryLocalServiceUtil.getAccountEntry(accountEntryId);
+						%>
+
+						<a href="<portlet:renderURL windowState="<%= WindowState.MAXIMIZED.toString() %>"><portlet:param name="mvcPath" value="/admin/edit_account_entry.jsp" /><portlet:param name="redirect" value="<%= portletURL.toString() %>" /><portlet:param name="accountEntryId" value="<%= String.valueOf(accountEntryId) %>" /></portlet:renderURL>"><%= accountEntry.getName() %></a>
+					</c:otherwise>
+				</c:choose>
 			</td>
 		</tr>
-	</c:if>
+		<tr>
+			<td>
+				<liferay-ui:message key="salesforce-opportunity-key" />
+			</td>
+			<td>
+				<c:choose>
+					<c:when test="<%= (orderEntry != null) && (orderEntry.getUserId() == OSBConstants.USER_DEFAULT_USER_ID) %>">
+						<%= HtmlUtil.escape(salesforceOpportunityKey) %>
 
+						<aui:input hidden="<%= true %>" label="" name="salesforceOpportunityKey" value="<%= salesforceOpportunityKey %>" />
+					</c:when>
+					<c:otherwise>
+						<aui:input label="" name="salesforceOpportunityKey" value="<%= salesforceOpportunityKey %>" />
+					</c:otherwise>
+				</c:choose>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="purchase-order" />
+			</td>
+			<td>
+				<liferay-ui:input-field bean="<%= orderEntry %>" field="purchaseOrderKey" model="<%= OrderEntry.class %>" />
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<br />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="start-date" />
+			</td>
+			<td>
+				<table class="lfr-table">
+					<tr>
+						<td>
+							<liferay-ui:input-field bean="<%= orderEntry %>" defaultValue="<%= startCal %>" field="startDate" model="<%= OrderEntry.class %>" />
+						</td>
+						<td>
+							<liferay-ui:message key="prorated" />
+						</td>
+						<td>
+							<input <%= prorated ? "checked" : "" %> id="<portlet:namespace />prorated" name="<portlet:namespace />prorated" onClick="document.getElementById('<portlet:namespace />actualStartDate').style.display = this.checked ? '' : 'none';" type="checkbox" />
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr id="<portlet:namespace />actualStartDate" style="display: <%= prorated ? "" : "none" %>;">
+			<td>
+				<liferay-ui:message key="actual-start-date" />
+			</td>
+			<td>
+				<liferay-ui:input-field bean="<%= orderEntry %>" defaultValue="<%= actualStartCal %>" field="actualStartDate" model="<%= OrderEntry.class %>" />
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<br />
+			</td>
+		</tr>
+
+		<c:if test="<%= orderEntry != null %>">
+			<tr>
+				<td>
+					<liferay-ui:message key="renewed-count" />
+				</td>
+				<td>
+					<%= renewCount %>
+				</td>
+			</tr>
+		</c:if>
 	</table>
 
 	<br />
@@ -557,7 +554,7 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 					<%
 					List<ListType> productEntryVersionsTypes = productEntry.getVersionsListTypes();
 
-					for (int i = productEntryVersionsTypes.size() - 1; i >= 0 ; i--) {
+					for (int i = productEntryVersionsTypes.size() - 1; i >= 0; i--) {
 						ListType productEntryVersionsType = productEntryVersionsTypes.get(i);
 					%>
 

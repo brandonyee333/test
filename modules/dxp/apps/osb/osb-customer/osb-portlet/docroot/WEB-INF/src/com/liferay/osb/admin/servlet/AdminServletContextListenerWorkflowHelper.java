@@ -18,6 +18,8 @@ import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.NoSuchWorkflowDefinitionLinkException;
+import com.liferay.portal.kernel.model.WorkflowDefinitionLink;
+import com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalServiceUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StreamUtil;
@@ -26,8 +28,6 @@ import com.liferay.portal.kernel.workflow.WorkflowDefinitionManagerUtil;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
-import com.liferay.portal.kernel.model.WorkflowDefinitionLink;
-import com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalServiceUtil;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;

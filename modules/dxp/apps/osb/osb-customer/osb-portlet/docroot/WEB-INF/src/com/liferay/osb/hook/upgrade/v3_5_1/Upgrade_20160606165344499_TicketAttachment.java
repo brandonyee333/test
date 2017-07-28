@@ -29,16 +29,13 @@ import java.util.List;
 /**
  * @author Kyle Bischof
  */
-public class Upgrade_20160606165344499_TicketAttachment
-	extends UpgradeProcess {
+public class Upgrade_20160606165344499_TicketAttachment extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20160606165344499L;
 	}
@@ -58,7 +55,7 @@ public class Upgrade_20160606165344499_TicketAttachment
 		updateTicketAttachments();
 	}
 
-	protected void updateTicketAttachments() throws SystemException {
+	protected void updateTicketAttachments() {
 		int[] types = {
 			TicketAttachmentConstants.TYPE_NEW_PATCH_LEVEL,
 			TicketAttachmentConstants.TYPE_NEW_PORTAL_EXT,
@@ -76,6 +73,7 @@ public class Upgrade_20160606165344499_TicketAttachment
 	}
 
 }
+
 */
 
 }

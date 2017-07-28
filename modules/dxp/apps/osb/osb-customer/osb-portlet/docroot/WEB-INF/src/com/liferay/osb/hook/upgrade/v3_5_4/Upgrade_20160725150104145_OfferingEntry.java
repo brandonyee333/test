@@ -29,16 +29,13 @@ import java.sql.ResultSet;
 /**
  * @author Jeremy Fu
  */
-public class Upgrade_20160725150104145_OfferingEntry
-	extends UpgradeProcess {
+public class Upgrade_20160725150104145_OfferingEntry extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20160725150104145L;
 	}
@@ -82,6 +79,7 @@ public class Upgrade_20160725150104145_OfferingEntry
 	}
 
 }
+
 */
 
 }

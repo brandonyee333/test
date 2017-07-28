@@ -19,7 +19,6 @@ import com.liferay.osb.service.base.AccountEnvironmentServiceBaseImpl;
 import com.liferay.osb.service.permission.OSBAccountEnvironmentPermission;
 import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 import com.liferay.portal.kernel.util.ObjectValuePair;
@@ -40,7 +39,7 @@ public class AccountEnvironmentServiceImpl
 			long accountEntryId, long productEntryId, String name, int envOS,
 			String envOSCustom, int envDB, int envJVM, int envAS, int envLFR,
 			List<ObjectValuePair<String, File>> files, List<Integer> types)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OSBAccountEnvironmentPermission.check(
 			getPermissionChecker(), accountEntryId,
@@ -53,7 +52,7 @@ public class AccountEnvironmentServiceImpl
 
 	public AccountEnvironment deleteAccountEnvironment(
 			long accountEnvironmentId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		AccountEnvironment accountEnvironment =
 			accountEnvironmentLocalService.getAccountEnvironment(
@@ -68,7 +67,7 @@ public class AccountEnvironmentServiceImpl
 	}
 
 	public AccountEnvironment getAccountEnvironment(long accountEnvironmentId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		AccountEnvironment accountEnvironment =
 			accountEnvironmentLocalService.getAccountEnvironment(
@@ -82,7 +81,7 @@ public class AccountEnvironmentServiceImpl
 	}
 
 	public List<AccountEnvironment> getAccountEnvironments(long accountEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OSBAccountEnvironmentPermission.check(
 			getPermissionChecker(), accountEntryId, OSBActionKeys.VIEW);
@@ -93,7 +92,7 @@ public class AccountEnvironmentServiceImpl
 
 	public Map<String, List<AccountEnvironment>> getAccountEnvironmentsMap(
 			long accountEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OSBAccountEnvironmentPermission.check(
 			getPermissionChecker(), accountEntryId, OSBActionKeys.VIEW);
@@ -107,7 +106,7 @@ public class AccountEnvironmentServiceImpl
 			int envOS, String envOSCustom, int envDB, int envJVM, int envAS,
 			int envLFR, List<ObjectValuePair<String, File>> files,
 			List<Integer> types)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		AccountEnvironment accountEnvironment =
 			accountEnvironmentLocalService.getAccountEnvironment(

@@ -111,7 +111,7 @@ TicketSolution ticketSolution = TicketSolutionLocalServiceUtil.getTicketSolution
 		</div>
 
 		<div class="solution-confirm-answer">
-			<input class="btn solution-confirm-btn btn-yes" onClick="<portlet:namespace />rejectTicketSolution();" type="button" value="<liferay-ui:message key="send" />" />
+			<input class="btn btn-yes solution-confirm-btn" onClick="<portlet:namespace />rejectTicketSolution();" type="button" value="<liferay-ui:message key="send" />" />
 
 			<input class="btn solution-confirm-btn style-a" onClick="window.location.reload();" type="button" value="<liferay-ui:message key="cancel" />" />
 		</div>

@@ -18,7 +18,6 @@ import com.liferay.osb.model.SupportWorker;
 import com.liferay.osb.service.base.SupportWorkerServiceBaseImpl;
 import com.liferay.osb.service.permission.OSBSupportTeamPermission;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 
@@ -29,9 +28,7 @@ import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 @JSONWebService(mode = JSONWebServiceMode.MANUAL)
 public class SupportWorkerServiceImpl extends SupportWorkerServiceBaseImpl {
 
-	public void clockInOut(long supportWorkerId)
-		throws PortalException, SystemException {
-
+	public void clockInOut(long supportWorkerId) throws PortalException {
 		SupportWorker supportWorker =
 			supportWorkerLocalService.getSupportWorker(supportWorkerId);
 

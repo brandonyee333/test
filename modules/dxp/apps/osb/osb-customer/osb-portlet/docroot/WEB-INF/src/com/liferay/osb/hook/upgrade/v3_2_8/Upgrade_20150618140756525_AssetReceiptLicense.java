@@ -42,9 +42,7 @@ public class Upgrade_20150618140756525_AssetReceiptLicense
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20150618140756525L;
 	}
@@ -70,6 +68,7 @@ public class Upgrade_20150618140756525_AssetReceiptLicense
 			rs = ps.executeQuery();
 
 			Date startDate = new Date();
+
 			Date endDate = new Date(
 				startDate.getTime() + AssetLicenseConstants.LIFETIME_TRIAL);
 
@@ -105,6 +104,7 @@ public class Upgrade_20150618140756525_AssetReceiptLicense
 	}
 
 }
+
 */
 
 }

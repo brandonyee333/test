@@ -197,7 +197,7 @@
 	}
 
 	.attachment-syncing {
-		border: 1px solid #f49b45;
+		border: 1px solid #F49B45;
 	}
 
 	.aui-button-input-export, .aui-button-input-reset {
@@ -679,8 +679,8 @@
 			display: inline-block;
 			height: 0;
 			margin-left: 5px;
-			width: 0;
 			vertical-align: middle;
+			width: 0;
 		}
 
 		.aui-button-input-export:hover:after, .aui-button-input-export:active:after {
@@ -1729,7 +1729,7 @@
 				&.progress-message {
 					background: url(@theme_image_path@/application/loading_indicator.gif) no-repeat 5px #D3E8F1;
 					border-color: #38F;
-					color: #34404f;
+					color: #34404F;
 				}
 
 				&.success-message {
@@ -1741,7 +1741,7 @@
 				&.warn-message {
 					background: url("/html/themes/classic/images/messages/info.png") no-repeat 5px #D3E8F1;
 					border-color: #38F;
-					color: #34404f;
+					color: #34404F;
 				}
 			}
 		}
@@ -1798,7 +1798,7 @@
 				}
 
 				&.dragging {
-					background-color: #a7cedf;
+					background-color: #A7CEDF;
 					transform: scale(0.9);
 				}
 			}
@@ -2044,7 +2044,7 @@
 	}
 }
 
-/* -------- Extras -------- */
+/* ---------- Extras ---------- */
 
 .osb-portlet-support {
 	#toggle_id_account_entry_searchbasic, #toggle_id_partner_entry_searchbasic, #toggle_id_ticket_entry_searchbasic, #toggle_id_ticket_feedback_searchbasic input, .temp-flag {

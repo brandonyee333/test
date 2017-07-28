@@ -36,16 +36,14 @@ public class Upgrade_20160315105316316_Organization extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20160315105316316L;
 	}
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		List<Long> inactiveUserIds = new ArrayList<Long>();
+		List<Long> inactiveUserIds = new ArrayList<>();
 
 		List<User> users = UserLocalServiceUtil.getOrganizationUsers(
 			OSBConstants.ORGANIZATION_LIFERAY_INC_ID);
@@ -62,6 +60,7 @@ public class Upgrade_20160315105316316_Organization extends UpgradeProcess {
 	}
 
 }
+
 */
 
 }

@@ -32,7 +32,7 @@ public class LicenseKeySearchTerms extends LicenseKeyDisplayTerms {
 			return null;
 		}
 		else {
-			return new Long(createUserId);
+			return Long.valueOf(createUserId);
 		}
 	}
 
@@ -41,13 +41,12 @@ public class LicenseKeySearchTerms extends LicenseKeyDisplayTerms {
 			return null;
 		}
 		else {
-			return new Long(modifiedUserId);
+			return Long.valueOf(modifiedUserId);
 		}
 	}
 
 	public LinkedHashMap<String, Object> getParams() {
-		LinkedHashMap<String, Object> params =
-			new LinkedHashMap<String, Object>();
+		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
 		if (_assetReceiptLicense) {
 			params.put("assetReceiptLicense", 1L);

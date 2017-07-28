@@ -30,9 +30,7 @@ public class UpgradeTicketSeverity extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	protected void doUpgrade() throws Exception {
 		insertListType(
 			AuditEntryConstants.FIELD_SEVERITY_REASON, "severity-reason",

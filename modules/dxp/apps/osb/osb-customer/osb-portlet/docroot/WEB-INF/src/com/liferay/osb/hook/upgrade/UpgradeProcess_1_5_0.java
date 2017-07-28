@@ -14,8 +14,8 @@
 
 package com.liferay.osb.hook.upgrade;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.osb.hook.upgrade.v1_5_0.UpgradeMarketplace;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
 /**
  * @author Douglas Wong

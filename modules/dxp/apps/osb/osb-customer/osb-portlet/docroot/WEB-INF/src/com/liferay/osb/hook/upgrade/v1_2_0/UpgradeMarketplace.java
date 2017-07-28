@@ -16,7 +16,7 @@ package com.liferay.osb.hook.upgrade.v1_2_0;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
-/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+/*import UpgradeProcess;
 
 */
 
@@ -29,9 +29,7 @@ public class UpgradeMarketplace extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	protected void doUpgrade() throws Exception {
 		updateAppEntry();
 		updateAppVersion();
@@ -66,6 +64,7 @@ public class UpgradeMarketplace extends UpgradeProcess {
 	}
 
 }
+
 */
 
 }

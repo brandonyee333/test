@@ -31,7 +31,6 @@ import com.liferay.osb.service.SupportWorkerLocalServiceUtil;
 import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
@@ -47,7 +46,7 @@ public class OSBAccountEntryPermission {
 	public static void check(
 			PermissionChecker permissionChecker, long accountEntryId,
 			String actionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (!contains(permissionChecker, accountEntryId, actionId)) {
 			throw new PrincipalException();
@@ -55,9 +54,8 @@ public class OSBAccountEntryPermission {
 	}
 
 	public static boolean contains(
-			PermissionChecker permissionChecker, long accountEntryId,
-			String actionId)
-		throws SystemException {
+		PermissionChecker permissionChecker, long accountEntryId,
+		String actionId) {
 
 		if (RoleLocalServiceUtil.hasUserRole(
 				permissionChecker.getUserId(),

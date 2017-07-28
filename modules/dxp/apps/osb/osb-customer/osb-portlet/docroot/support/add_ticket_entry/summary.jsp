@@ -70,7 +70,7 @@ long offeringEntryId = ParamUtil.getLong(request, "offeringEntryId");
 							}
 						%>
 
-						<option <%= (curAccountEntry.getAccountEntryId() == accountEntryId) ? "selected" : "" %> value="<%= curAccountEntry.getAccountEntryId() %>"><%= HtmlUtil.escape(curAccountEntry.getName()) %></option>
+							<option <%= (curAccountEntry.getAccountEntryId() == accountEntryId) ? "selected" : "" %> value="<%= curAccountEntry.getAccountEntryId() %>"><%= HtmlUtil.escape(curAccountEntry.getName()) %></option>
 
 						<%
 						}
@@ -149,9 +149,9 @@ long offeringEntryId = ParamUtil.getLong(request, "offeringEntryId");
 					</c:choose>
 				</select>
 
-				<span class="component-link aui-helper-hidden" id="<portlet:namespace />componentLinkDisplay"></span>
+				<span class="aui-helper-hidden component-link" id="<portlet:namespace />componentLinkDisplay"></span>
 
-				<div class="portlet-msg-info component-message aui-helper-hidden" id="<portlet:namespace />componentMessageDisplay"></div>
+				<div class="aui-helper-hidden component-message portlet-msg-info" id="<portlet:namespace />componentMessageDisplay"></div>
 			</div>
 		</div>
 
@@ -196,7 +196,7 @@ long offeringEntryId = ParamUtil.getLong(request, "offeringEntryId");
 			function(item, index, collection) {
 				item.set('disabled', false);
 
-				item.val('<%= LanguageUtil.get(locale, "choose") %>');
+				item.val('<%= LanguageUtil.get(request, "choose") %>');
 
 				item.attr('onClick', '');
 				item.detachAll();
@@ -218,7 +218,7 @@ long offeringEntryId = ParamUtil.getLong(request, "offeringEntryId");
 
 		var createTicketButton = offeringEntry.one('.create-ticket-button');
 
-		createTicketButton.val('<%= LanguageUtil.get(locale, "confirm") %>');
+		createTicketButton.val('<%= LanguageUtil.get(request, "confirm") %>');
 
 		createTicketButton.attr('onClick', '');
 		createTicketButton.detachAll();

@@ -29,9 +29,7 @@ public class Upgrade_20160404162800323_AppVersion extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20160404162800323L;
 	}
@@ -48,6 +46,7 @@ public class Upgrade_20160404162800323_AppVersion extends UpgradeProcess {
 	}
 
 }
+
 */
 
 }

@@ -14,10 +14,10 @@
 
 package com.liferay.osb.support.search;
 
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.osb.model.TicketFeedback;
 import com.liferay.osb.util.comparator.TicketFeedbackCreateDateComparator;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
+import com.liferay.portal.kernel.util.ArrayUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,8 +32,8 @@ import javax.portlet.PortletURL;
  */
 public class TicketFeedbackSearch extends SearchContainer<TicketFeedback> {
 
-	static List<String> headerNames = new ArrayList<String>();
-	static Map<String, String> orderableHeaders = new HashMap<String, String>();
+	static List<String> headerNames = new ArrayList<>();
+	static Map<String, String> orderableHeaders = new HashMap<>();
 
 	static {
 		headerNames.add("feedback");

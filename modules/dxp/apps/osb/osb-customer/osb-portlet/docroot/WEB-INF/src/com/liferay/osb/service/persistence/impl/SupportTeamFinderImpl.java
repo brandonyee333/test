@@ -14,14 +14,10 @@
 
 package com.liferay.osb.service.persistence.impl;
 
-import com.liferay.osb.service.persistence.SupportTeamFinder;
-import com.liferay.osb.service.persistence.SupportTeamUtil;
-
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.model.SupportTeam;
 import com.liferay.osb.model.SupportTeamConstants;
 import com.liferay.osb.model.impl.SupportTeamImpl;
+import com.liferay.osb.service.persistence.SupportTeamFinder;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
@@ -30,7 +26,8 @@ import com.liferay.portal.kernel.dao.orm.Type;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.util.Iterator;
@@ -51,7 +48,7 @@ public class SupportTeamFinderImpl
 	public static final String FIND_BY_U_R =
 		SupportTeamFinder.class.getName() + ".findByU_R";
 
-	public int countByKeywords(String keywords) throws SystemException {
+	public int countByKeywords(String keywords) {
 		String name = null;
 		Integer type = null;
 		boolean andOperator = false;
@@ -79,9 +76,7 @@ public class SupportTeamFinderImpl
 		return countByN_T(name, type, andOperator);
 	}
 
-	public int countByN_T(String name, Integer type, boolean andOperator)
-		throws SystemException {
-
+	public int countByN_T(String name, Integer type, boolean andOperator) {
 		if (name != null) {
 			name = StringUtil.replace(
 				name, StringPool.SPACE, StringPool.PERCENT);
@@ -109,7 +104,7 @@ public class SupportTeamFinderImpl
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addScalar(COUNT_COLUMN_NAME, Type.LONG);
 
@@ -140,8 +135,7 @@ public class SupportTeamFinderImpl
 	}
 
 	public List<SupportTeam> findByKeywords(
-			String keywords, int start, int end, OrderByComparator obc)
-		throws SystemException {
+		String keywords, int start, int end, OrderByComparator obc) {
 
 		String name = null;
 		Integer type = null;
@@ -171,9 +165,8 @@ public class SupportTeamFinderImpl
 	}
 
 	public List<SupportTeam> findByN_T(
-			String name, Integer type, boolean andOperator, int start, int end,
-			OrderByComparator obc)
-		throws SystemException {
+		String name, Integer type, boolean andOperator, int start, int end,
+		OrderByComparator obc) {
 
 		if (name != null) {
 			name = StringUtil.replace(
@@ -204,7 +197,7 @@ public class SupportTeamFinderImpl
 			sql = CustomSQLUtil.replaceAndOperator(sql, andOperator);
 			sql = CustomSQLUtil.replaceOrderBy(sql, obc);
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addEntity("OSB_SupportTeam", SupportTeamImpl.class);
 
@@ -225,9 +218,7 @@ public class SupportTeamFinderImpl
 		}
 	}
 
-	public List<SupportTeam> findByU_R(long userId, int role)
-		throws SystemException {
-
+	public List<SupportTeam> findByU_R(long userId, int role) {
 		Session session = null;
 
 		try {
@@ -235,7 +226,7 @@ public class SupportTeamFinderImpl
 
 			String sql = CustomSQLUtil.get(FIND_BY_U_R);
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addEntity("OSB_SupportTeam", SupportTeamImpl.class);
 

@@ -17,7 +17,6 @@ package com.liferay.osb.admin.asset;
 import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.util.OSBPortletKeys;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -33,7 +32,7 @@ import javax.portlet.RenderResponse;
 public class OrderEntryAssetRenderer extends AccountEntryAssetRenderer {
 
 	public OrderEntryAssetRenderer(OrderEntry orderEntry)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		super(orderEntry.getAccountEntry());
 
@@ -83,6 +82,6 @@ public class OrderEntryAssetRenderer extends AccountEntryAssetRenderer {
 		return themeDisplay.getPathThemeImages() + "/shopping/cart.png";
 	}
 
-	private OrderEntry _orderEntry;
+	private final OrderEntry _orderEntry;
 
 }

@@ -30,9 +30,7 @@ public class Upgrade_20140926152055704_SalesPartnershipTerritory
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20140926152055704L;
 	}
@@ -47,6 +45,7 @@ public class Upgrade_20140926152055704_SalesPartnershipTerritory
 	}
 
 }
+
 */
 
 }

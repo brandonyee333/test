@@ -35,30 +35,30 @@ String tabs3 = ParamUtil.getString(request, "tabs3", "license");
 
 		<aui:form action="<%= debugRabbitMQURL %>" method="post" name="fm">
 			<table class="lfr-table">
-			<tr>
-				<td>
-					<liferay-ui:message key="routing-key" />
-				</td>
-				<td>
-					<input name="<portlet:namespace />routingKey" type="text" />
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<liferay-ui:message key="message" />
-				</td>
-				<td>
-					<textarea class="lfr-textarea" name="<portlet:namespace />message"></textarea>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<liferay-ui:message key="properties" />
-				</td>
-				<td>
-					<textarea class="lfr-textarea" name="<portlet:namespace />properties"></textarea>
-				</td>
-			</tr>
+				<tr>
+					<td>
+						<liferay-ui:message key="routing-key" />
+					</td>
+					<td>
+						<input name="<portlet:namespace />routingKey" type="text" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<liferay-ui:message key="message" />
+					</td>
+					<td>
+						<textarea class="lfr-textarea" name="<portlet:namespace />message"></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<liferay-ui:message key="properties" />
+					</td>
+					<td>
+						<textarea class="lfr-textarea" name="<portlet:namespace />properties"></textarea>
+					</td>
+				</tr>
 			</table>
 
 			<input class="aui-button-input" type="submit" value="<liferay-ui:message key="submit" />" />

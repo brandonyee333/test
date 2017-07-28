@@ -18,7 +18,6 @@ import com.liferay.osb.model.LCSSubscriptionEntry;
 import com.liferay.osb.service.base.LCSSubscriptionEntryServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
@@ -35,7 +34,7 @@ public class LCSSubscriptionEntryServiceImpl
 	@JSONWebService
 	public List<LCSSubscriptionEntry> getLCSSubscriptionEntries(
 			long corpProjectId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (!roleLocalService.hasUserRole(
 				getUserId(), OSBConstants.ROLE_OSB_ADMINISTRATOR_ID)) {

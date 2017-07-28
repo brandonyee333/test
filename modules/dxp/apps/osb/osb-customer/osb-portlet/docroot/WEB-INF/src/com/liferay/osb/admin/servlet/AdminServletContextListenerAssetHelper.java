@@ -14,21 +14,16 @@
 
 package com.liferay.osb.admin.servlet;
 
-import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.osb.util.OSBConstants;
-import com.liferay.osb.util.PortletPropsValues;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.asset.kernel.exception.NoSuchVocabularyException;
 import com.liferay.asset.kernel.model.AssetCategory;
-import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.asset.kernel.service.AssetCategoryLocalServiceUtil;
 import com.liferay.asset.kernel.service.AssetVocabularyLocalServiceUtil;
+import com.liferay.osb.util.OSBConstants;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.LocaleUtil;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -44,7 +39,7 @@ public class AdminServletContextListenerAssetHelper {
 				OSBConstants.GROUP_GLOBAL_ID, "Support-Regions");
 		}
 		catch (NoSuchVocabularyException nsve) {
-			Map<Locale, String> titleMap = new HashMap<Locale, String>();
+			Map<Locale, String> titleMap = new HashMap<>();
 
 			titleMap.put(LocaleUtil.getDefault(), "Support-Regions");
 
@@ -54,9 +49,10 @@ public class AdminServletContextListenerAssetHelper {
 			serviceContext.setScopeGroupId(OSBConstants.GROUP_GLOBAL_ID);
 
 			// TODO need database to grab OSBConstants.USER_SUPPORT_PM_USER_ID
+
 			/*AssetVocabulary assetVocabulary =
 				AssetVocabularyLocalServiceUtil.addVocabulary(
-					OSBConstants.USER_SUPPORT_PM_USER_ID, 0L, StringPool.BLANK, 
+					OSBConstants.USER_SUPPORT_PM_USER_ID, 0L, StringPool.BLANK,
 					titleMap, null, StringPool.BLANK, serviceContext);
 
 			addAssetCategory(assetVocabulary.getVocabularyId(), 0, "Brazil");
@@ -71,9 +67,9 @@ public class AdminServletContextListenerAssetHelper {
 
 	protected static AssetCategory addAssetCategory(
 			long vocabularyId, long parentCategoryId, String title)
-		throws PortalException, SystemException {
+		throws PortalException {
 
-		Map<Locale, String> titleMap = new HashMap<Locale, String>();
+		Map<Locale, String> titleMap = new HashMap<>();
 
 		Locale defaultLocale = LocaleUtil.getDefault();
 
@@ -86,8 +82,8 @@ public class AdminServletContextListenerAssetHelper {
 		serviceContext.setScopeGroupId(OSBConstants.GROUP_GUEST_ID);
 
 		return AssetCategoryLocalServiceUtil.addCategory(
-			OSBConstants.USER_SUPPORT_PM_USER_ID, OSBConstants.GROUP_GUEST_ID, 
-			parentCategoryId, titleMap, null, vocabularyId, null, 
+			OSBConstants.USER_SUPPORT_PM_USER_ID, OSBConstants.GROUP_GUEST_ID,
+			parentCategoryId, titleMap, null, vocabularyId, null,
 			serviceContext);
 	}
 

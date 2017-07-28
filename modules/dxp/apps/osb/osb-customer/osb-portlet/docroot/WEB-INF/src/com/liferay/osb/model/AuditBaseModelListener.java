@@ -14,21 +14,21 @@
 
 package com.liferay.osb.model;
 
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.blogs.kernel.model.BlogsEntry;
+import com.liferay.expando.kernel.model.ExpandoValue;
 import com.liferay.osb.downloads.portlet.DownloadsPortlet;
 import com.liferay.osb.securitypatch.portlet.SecurityPatchPortlet;
 import com.liferay.osb.service.AuditActionLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.ModelListenerException;
-import com.liferay.portal.security.audit.AuditEvent;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.BaseModelListener;
-import com.liferay.blogs.kernel.model.BlogsEntry;
-import com.liferay.expando.kernel.model.ExpandoValue;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.security.audit.AuditEvent;
 
 import java.util.Map;
 
@@ -141,7 +141,7 @@ public class AuditBaseModelListener<T extends BaseModel<T>>
 		OSBConstants.EXPANDO_OSB_COUNTRY_COLUMN_ID
 	};
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		AuditBaseModelListener.class);
 
 }

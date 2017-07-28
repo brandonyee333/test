@@ -88,7 +88,6 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 							</c:if>
 						</c:if>
 					</span>
-
 					<span class="spacer"></span>
 
 					<span class="segment">
@@ -125,7 +124,6 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 							<input class="aui-button-input" id="<portlet:namespace />severityCancel" onclick="<portlet:namespace />toggleForm('<portlet:namespace/>severityDropDown', '<portlet:namespace />severityDisplay');" type="button" value="<liferay-ui:message key="cancel" />" />
 						</div>
 					</span>
-
 					<span class="spacer"></span>
 
 					<c:if test="<%= !screenShareMode && (ticketEntry.getStatus() != TicketEntryConstants.STATUS_CLOSED) %>">
@@ -201,7 +199,6 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 								</div>
 							</c:if>
 						</span>
-
 						<span class="spacer"></span>
 					</c:if>
 
@@ -210,7 +207,6 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 
 						<span class="txt-sb"><%= ticketEntry.getEscalationLevelLabel() %></span>
 					</span>
-
 					<span class="spacer"></span>
 
 					<span class="segment">
@@ -228,7 +224,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 
 							<span class="txt-sb" id="<portlet:namespace />statusLabel"><%= LanguageUtil.get(pageContext, ticketEntry.getStatusLabel()) %></span>
 
-							<span class='<%= (resolution == 0) ? "aui-helper-hidden" : "txt-sb" %>' id="<portlet:namespace />resolutionLabel">(<%= LanguageUtil.get(pageContext, ticketEntry.getResolutionLabel()) %>)</span>
+							<span class="<%= (resolution == 0) ? "aui-helper-hidden" : "txt-sb" %>" id="<portlet:namespace />resolutionLabel">(<%= LanguageUtil.get(pageContext, ticketEntry.getResolutionLabel()) %>)</span>
 
 							<%
 							String statusMessage = HtmlUtil.escape(SupportUtil.getPreferenceValue(locale, "statusMessage_" + status));

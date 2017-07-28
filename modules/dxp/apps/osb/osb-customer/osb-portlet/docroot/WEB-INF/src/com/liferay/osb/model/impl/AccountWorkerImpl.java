@@ -18,7 +18,6 @@ import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountWorkerConstants;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 
 /**
  * @author Brian Wing Shun Chan
@@ -29,9 +28,7 @@ public class AccountWorkerImpl extends AccountWorkerBaseImpl {
 	public AccountWorkerImpl() {
 	}
 
-	public AccountEntry getAccountEntry()
-		throws PortalException, SystemException {
-
+	public AccountEntry getAccountEntry() throws PortalException {
 		return AccountEntryLocalServiceUtil.getAccountEntry(
 			getAccountEntryId());
 	}

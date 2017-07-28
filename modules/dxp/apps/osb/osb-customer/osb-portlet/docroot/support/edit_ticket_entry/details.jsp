@@ -85,7 +85,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 	RequiredFieldException rfe = (RequiredFieldException)errorException;
 	%>
 
-	<liferay-ui:message arguments="<%= LanguageUtil.get(locale, rfe.getLabelId()) %>" key="please-upload-a-x-file" />
+	<liferay-ui:message arguments="<%= LanguageUtil.get(request, rfe.getLabelId()) %>" key="please-upload-a-x-file" />
 </liferay-ui:error>
 
 <liferay-ui:error exception="<%= TicketCommentPendingTypeException.class %>" message="please-select-a-valid-need-response-from" />
@@ -218,12 +218,12 @@ TicketSolution ticketSolution = TicketSolutionLocalServiceUtil.getActiveTicketSo
 				</div>
 
 				<div class="solution-confirm-answer">
-					<a class="btn solution-confirm-btn btn-yes" href="javascript:;" onClick='<portlet:namespace />updateTicketSolution(<%= (ticketSolution.getStatus() == TicketSolutionConstants.STATUS_TESTING) ? TicketSolutionConstants.STATUS_RESOLVED : TicketSolutionConstants.STATUS_RESOLVED_IN_PRODUCTION %>, "", "");'><liferay-ui:message key="yes" /></a>
+					<a class="btn btn-yes solution-confirm-btn" href="javascript:;" onClick="<portlet:namespace />updateTicketSolution(<%= (ticketSolution.getStatus() == TicketSolutionConstants.STATUS_TESTING) ? TicketSolutionConstants.STATUS_RESOLVED : TicketSolutionConstants.STATUS_RESOLVED_IN_PRODUCTION %>, "", "");"><liferay-ui:message key="yes" /></a>
 
-					<a class="btn solution-confirm-btn btn-no"><liferay-ui:message key="no" /></a>
+					<a class="btn btn-no solution-confirm-btn"><liferay-ui:message key="no" /></a>
 
 					<c:if test="<%= (ticketSolution.getStatus() == TicketSolutionConstants.STATUS_RESOLVED) || (ticketSolution.getStatus() == TicketSolutionConstants.STATUS_TESTING) %>">
-						<a class="btn solution-confirm-btn style-a btn-not-applicable" href="javascript:;" onClick='<portlet:namespace />updateTicketSolution(<%= (ticketSolution.getStatus() == TicketSolutionConstants.STATUS_TESTING) ? TicketSolutionConstants.STATUS_UNABLE_TO_TEST : TicketSolutionConstants.STATUS_RESOLVED_IN_PRODUCTION %>, "", "");'><liferay-ui:message key="not-applicable" /></a>
+						<a class="btn btn-not-applicable solution-confirm-btn style-a" href="javascript:;" onClick="<portlet:namespace />updateTicketSolution(<%= (ticketSolution.getStatus() == TicketSolutionConstants.STATUS_TESTING) ? TicketSolutionConstants.STATUS_UNABLE_TO_TEST : TicketSolutionConstants.STATUS_RESOLVED_IN_PRODUCTION %>, "", "");"><liferay-ui:message key="not-applicable" /></a>
 					</c:if>
 				</div>
 			</div>
@@ -297,7 +297,7 @@ TicketSolution ticketSolution = TicketSolutionLocalServiceUtil.getActiveTicketSo
 					</div>
 
 					<div class="aui-w85 content-column ticket-value">
-						<div class="content-column-content right-column txt-b txt-up txt-h1-12 txt-h1-9 txt-h3-6 txt-h3-4">
+						<div class="content-column-content right-column txt-b txt-h1-12 txt-h1-9 txt-h3-4 txt-h3-6 txt-up">
 							<c:if test="<%= !edit || !hasUpdateAdvanced %>">
 								<div id="<portlet:namespace />statusDisplay">
 									<%= LanguageUtil.get(pageContext, ticketEntry.getStatusLabel()) %>
@@ -347,7 +347,7 @@ TicketSolution ticketSolution = TicketSolutionLocalServiceUtil.getActiveTicketSo
 					</div>
 
 					<div class="aui-w70 content-column ticket-value">
-						<div class="content-column-content right-column txt-b txt-up txt-h1-12 txt-h1-9 txt-h3-6 txt-h3-4">
+						<div class="content-column-content right-column txt-b txt-h1-12 txt-h1-9 txt-h3-4 txt-h3-6 txt-up">
 							<c:choose>
 								<c:when test="<%= edit && hasUpdateAdvanced %>">
 
@@ -400,7 +400,7 @@ TicketSolution ticketSolution = TicketSolutionLocalServiceUtil.getActiveTicketSo
 					</div>
 
 					<div class="aui-w80 content-column ticket-value">
-						<div class="content-column-content right-column txt-b txt-up txt-h1-12 txt-h1-9 txt-h3-6 txt-h3-4">
+						<div class="content-column-content right-column txt-b txt-h1-12 txt-h1-9 txt-h3-4 txt-h3-6 txt-up">
 							<c:if test="<%= !edit || !hasUpdateAdvanced %>">
 								<div id="<portlet:namespace />resolutionLabel">
 									<%= LanguageUtil.get(pageContext, ticketEntry.getResolutionLabel()) %>
@@ -449,11 +449,10 @@ TicketSolution ticketSolution = TicketSolutionLocalServiceUtil.getActiveTicketSo
 						<div class="content-column-content left-column txt-b txt-up">
 							<liferay-ui:message key="pending" />
 						</div>
-
 					</div>
 
 					<div class="aui-w70 content-column pending ticket-value" id="<portlet:namespace />pendingLabel">
-						<div class="content-column-content right-column pending-content txt-b txt-up txt-h3-12 txt-h3-9 txt-h3-6 txt-h3-4">
+						<div class="content-column-content pending-content right-column txt-b txt-h3-12 txt-h3-4 txt-h3-6 txt-h3-9 txt-up">
 
 							<%
 							for (int i = 0; i < pendingTypes.length; i++) {
@@ -484,7 +483,7 @@ TicketSolution ticketSolution = TicketSolutionLocalServiceUtil.getActiveTicketSo
 					</div>
 
 					<div class="aui-w60 content-column ticket-value">
-						<div class="content-column-content right-column txt-b txt-up txt-h1-12 txt-h1-9 txt-h3-6 txt-h3-4">
+						<div class="content-column-content right-column txt-b txt-h1-12 txt-h1-9 txt-h3-4 txt-h3-6 txt-up">
 							<c:choose>
 								<c:when test="<%= edit && hasUpdateAdvanced %>">
 									<select name="<portlet:namespace />escalationLevel">
@@ -521,7 +520,6 @@ TicketSolution ticketSolution = TicketSolutionLocalServiceUtil.getActiveTicketSo
 			<span class="txt-b txt-up">
 				<liferay-ui:message key="need-response-from" />:
 			</span>
-
 			<span>
 
 				<%
@@ -720,7 +718,6 @@ TicketSolution ticketSolution = TicketSolutionLocalServiceUtil.getActiveTicketSo
 
 		<c:choose>
 			<c:when test="<%= hasUpdateAdmin %>">
-
 				<div class="aui-w33 content-column">
 					<div class="content-column-content <%= ((columnCount == 1) || (columnCount == 4)) ? "middle-column" : "right-column" %>">
 						<span class="txt-b txt-up"><liferay-ui:message key="weight" />:</span>
@@ -942,13 +939,13 @@ TicketSolution ticketSolution = TicketSolutionLocalServiceUtil.getActiveTicketSo
 
 <c:if test="<%= !screenShareMode && liferayIncOrg && Validator.isNotNull(accountEntry.getInstructions()) && !TicketFlagLocalServiceUtil.hasTicketFlag(user.getUserId(), accountEntry.getAccountEntryId(), ticketEntry.getTicketEntryId(), TicketFlagConstants.TYPE_READ_INSTRUCTIONS, TicketFlagConstants.FLAG_TRUE) %>">
 	<div id="<portlet:namespace />specialInstructions">
-		<h2 class="section-heading fl">
+		<h2 class="fl section-heading">
 			<liferay-ui:message key="special-instructions" />
 		</h2>
 
-		<a class="mark-as-read" href="javascript:;" onClick='<portlet:namespace />markAsRead(<%= TicketFlagConstants.TYPE_READ_INSTRUCTIONS %>, "<portlet:namespace />specialInstructions");'><liferay-ui:message key="mark-as-read" /></a>
+		<a class="mark-as-read" href="javascript:;" onClick="<portlet:namespace />markAsRead(<%= TicketFlagConstants.TYPE_READ_INSTRUCTIONS %>, "<portlet:namespace />specialInstructions");"><liferay-ui:message key="mark-as-read" /></a>
 
-		<div class="callout-a instructions cleared">
+		<div class="callout-a cleared instructions">
 			<div class="callout-content">
 				<pre><%= SupportUtil.getHTML(accountEntry.getInstructions()) %></pre>
 			</div>
@@ -1042,7 +1039,7 @@ TicketSolution ticketSolution = TicketSolutionLocalServiceUtil.getActiveTicketSo
 								for (int curSubcomponent : subcomponents) {
 								%>
 
-									<option <%= (curSubcomponent == subcomponent) ? "selected" : StringPool.BLANK %> value="<%= curSubcomponent %>"><%= LanguageUtil.get(locale, TicketEntryConstants.getSubcomponentLabel(curSubcomponent)) %></option>
+									<option <%= (curSubcomponent == subcomponent) ? "selected" : StringPool.BLANK %> value="<%= curSubcomponent %>"><%= LanguageUtil.get(request, TicketEntryConstants.getSubcomponentLabel(curSubcomponent)) %></option>
 
 								<%
 								}
@@ -1095,7 +1092,7 @@ TicketSolution ticketSolution = TicketSolutionLocalServiceUtil.getActiveTicketSo
 </div>
 
 <c:if test="<%= !screenShareMode && liferayIncOrg %>">
-	<div id="<portlet:namespace />reproductionStepsLabel" style='<%= Validator.isNotNull(reproductionSteps) ? "" : "display: none;" %>'>
+	<div id="<portlet:namespace />reproductionStepsLabel" style="<%= Validator.isNotNull(reproductionSteps) ? "" : "display: none;" %>">
 		<h2 class="section-heading">
 			<liferay-ui:message key="reproduction-steps" />
 		</h2>

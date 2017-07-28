@@ -45,9 +45,7 @@ public class Upgrade_20141008095901231_TrainingCertificate
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20141008095901231L;
 	}
@@ -101,10 +99,9 @@ public class Upgrade_20141008095901231_TrainingCertificate
 				TrainingEventLocalServiceUtil.getTrainingEvent(
 					trainingCustomer.getClassPK());
 
-			List<DDLRecord> ddlRecords =
-				DDLRecordLocalServiceUtil.getRecords(
-					trainingEvent.getDDLRecordSetId(),
-					trainingCustomer.getUserId());
+			List<DDLRecord> ddlRecords = DDLRecordLocalServiceUtil.getRecords(
+				trainingEvent.getDDLRecordSetId(),
+				trainingCustomer.getUserId());
 
 			if (!ddlRecords.isEmpty()) {
 				updateTrainingCertificateSurveyStatus(
@@ -136,6 +133,7 @@ public class Upgrade_20141008095901231_TrainingCertificate
 	}
 
 }
+
 */
 
 }

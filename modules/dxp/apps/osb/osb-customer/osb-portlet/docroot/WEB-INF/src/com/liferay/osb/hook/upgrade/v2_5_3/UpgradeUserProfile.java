@@ -16,7 +16,7 @@ package com.liferay.osb.hook.upgrade.v2_5_3;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
-/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+/*import UpgradeProcess;
 
 */
 
@@ -29,9 +29,7 @@ public class UpgradeUserProfile extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	protected void doUpgrade() throws Exception {
 		updateUserProfile();
 	}
@@ -44,11 +42,10 @@ public class UpgradeUserProfile extends UpgradeProcess {
 		}
 	}
 
-	private static final long[] _USER_PROFILE_IDS = {
-		31476208, 36271003
-	};
+	private static final long[] _USER_PROFILE_IDS = {31476208, 36271003};
 
 }
+
 */
 
 }

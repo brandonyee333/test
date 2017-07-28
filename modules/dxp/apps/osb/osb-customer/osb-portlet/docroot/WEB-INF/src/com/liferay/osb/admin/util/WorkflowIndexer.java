@@ -15,40 +15,13 @@
 package com.liferay.osb.admin.util;
 
 import com.liferay.portal.kernel.search.BaseIndexer;
-import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.OrderEntry;
-import com.liferay.osb.service.AccountEntryLocalServiceUtil;
-import com.liferay.osb.service.OrderEntryLocalServiceUtil;
-import com.liferay.osb.util.OSBConstants;
-import com.liferay.osb.util.OSBPortletKeys;
-import com.liferay.osb.util.SalesforceConstants;
-import com.liferay.osb.util.WorkflowConstants;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.Document;
-import com.liferay.portal.kernel.search.DocumentImpl;
-import com.liferay.portal.kernel.search.Field;
-import com.liferay.portal.kernel.search.Indexer;
-import com.liferay.portal.kernel.search.SearchContext;
-import com.liferay.portal.kernel.search.SearchEngineHelperUtil;
-import com.liferay.portal.kernel.search.SearchEngineUtil;
 import com.liferay.portal.kernel.search.Summary;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.workflow.WorkflowTask;
-import com.liferay.portal.kernel.workflow.WorkflowTaskAssignee;
-import com.liferay.portal.kernel.workflow.WorkflowTaskManagerUtil;
 
-import java.io.Serializable;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
-import javax.portlet.PortletURL;
 
 /**
  * @author Amos Fong
@@ -57,50 +30,58 @@ public class WorkflowIndexer<T> extends BaseIndexer<T> {
 
 	@Override
 	public String getClassName() {
+
 		// TODO Auto-generated method stub
+
 		return null;
 	}
 
 	@Override
 	protected void doDelete(T object) throws Exception {
+
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	protected Document doGetDocument(T object) throws Exception {
+
 		// TODO Auto-generated method stub
+
 		return null;
 	}
 
 	@Override
 	protected Summary doGetSummary(Document document, Locale locale, String snippet, PortletRequest portletRequest,
 			PortletResponse portletResponse) throws Exception {
+
 		// TODO Auto-generated method stub
+
 		return null;
 	}
 
 	@Override
 	protected void doReindex(String className, long classPK) throws Exception {
+
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	protected void doReindex(String[] ids) throws Exception {
+
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	protected void doReindex(T object) throws Exception {
+
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	/*public static final String[] CLASS_NAMES = {
-		WorkflowTask.class.getName()
-	};
+	/*public static final String[] CLASS_NAMES = {WorkflowTask.class.getName()};
 
 	public static final String PORTLET_ID = OSBPortletKeys.OSB_ADMIN;
 
@@ -122,11 +103,9 @@ public class WorkflowIndexer<T> extends BaseIndexer<T> {
 			PORTLET_ID, WorkflowTask.class.getName(),
 			String.valueOf(workflowTask.getWorkflowTaskId()));
 
-		String searchEngineId = SearchEngineHelperUtil.getSearchEngineId(
-			document);
-
 		SearchEngineUtil.deleteDocument(
-			searchEngineId, OSBConstants.COMPANY_ID, document.get(Field.UID));
+			getSearchEngineId(), OSBConstants.COMPANY_ID,
+			document.get(Field.UID));
 	}
 
 	@Override
@@ -215,8 +194,8 @@ public class WorkflowIndexer<T> extends BaseIndexer<T> {
 
 	@Override
 	protected Summary doGetSummary(
-			Document document, Locale locale, String snippet, 
-			PortletRequest portletRequest, PortletResponse portletResponse) 
+			Document document, Locale locale, String snippet,
+			PortletRequest portletRequest, PortletResponse portletResponse)
 		throws Exception {
 
 		return null;
@@ -274,7 +253,7 @@ public class WorkflowIndexer<T> extends BaseIndexer<T> {
 			return;
 		}
 
-		Collection<Document> documents = new ArrayList<Document>();
+		Collection<Document> documents = new ArrayList<>();
 
 		for (WorkflowTask workflowTask : workflowTasks) {
 			try {
@@ -287,17 +266,17 @@ public class WorkflowIndexer<T> extends BaseIndexer<T> {
 			}
 		}
 
-		String searchEngineId = SearchEngineHelperUtil.getSearchEngineId(
-			documents);
-
-		SearchEngineUtil.updateDocuments(searchEngineId, companyId, documents);
+		SearchEngineUtil.updateDocuments(
+			getSearchEngineId(), companyId, documents);
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(WorkflowIndexer.class);
 
 	@Override
 	public String getClassName() {
+
 		// TODO Auto-generated method stub
+
 		return null;
 	}
 

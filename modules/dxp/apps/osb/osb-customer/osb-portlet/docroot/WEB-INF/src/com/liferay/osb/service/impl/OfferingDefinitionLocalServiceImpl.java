@@ -20,7 +20,6 @@ import com.liferay.osb.model.OfferingDefinition;
 import com.liferay.osb.service.base.OfferingDefinitionLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -39,7 +38,7 @@ public class OfferingDefinitionLocalServiceImpl
 			String productDescription, boolean licenses,
 			boolean unlimitedLicenses, long maxConcurrentUsers, long maxUsers,
 			boolean supportTickets)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		Date now = new Date();
@@ -65,12 +64,13 @@ public class OfferingDefinitionLocalServiceImpl
 		offeringDefinition.setMaxConcurrentUsers(maxConcurrentUsers);
 		offeringDefinition.setMaxUsers(maxUsers);
 		offeringDefinition.setSupportTickets(supportTickets);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
-		offeringDefinitionPersistence.update(offeringDefinition, serviceContext);
+		offeringDefinitionPersistence.update(
+			offeringDefinition, serviceContext);
 
 		return offeringDefinition;
 	}
@@ -78,7 +78,7 @@ public class OfferingDefinitionLocalServiceImpl
 	@Override
 	public OfferingDefinition deleteOfferingDefinition(
 			long offeringDefinitionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (offeringDefinitionId == OSBConstants.OFFERING_DEFINITION_TRIAL_ID) {
 			throw new RequiredOfferingDefinitionException();
@@ -94,9 +94,7 @@ public class OfferingDefinitionLocalServiceImpl
 	}
 
 	public List<OfferingDefinition> getOfferingDefinitions(
-			long[] productEntryIds, long[] supportResponseIds, int start,
-			int end)
-		throws SystemException {
+		long[] productEntryIds, long[] supportResponseIds, int start, int end) {
 
 		if ((productEntryIds.length <= 0) && (supportResponseIds.length <= 0)) {
 			return offeringDefinitionPersistence.findAll(start, end);
@@ -108,8 +106,7 @@ public class OfferingDefinitionLocalServiceImpl
 	}
 
 	public int getOfferingDefinitionsCount(
-			long[] productEntryIds, long[] supportResponseIds)
-		throws SystemException {
+		long[] productEntryIds, long[] supportResponseIds) {
 
 		if ((productEntryIds.length <= 0) && (supportResponseIds.length <= 0)) {
 			return offeringDefinitionPersistence.countAll();
@@ -121,16 +118,14 @@ public class OfferingDefinitionLocalServiceImpl
 	}
 
 	public List<OfferingDefinition> getProductEntryOfferingDefinitions(
-			long productEntryId)
-		throws SystemException {
+		long productEntryId) {
 
 		return offeringDefinitionPersistence.findByProductEntryId(
 			productEntryId);
 	}
 
 	public List<OfferingDefinition> getSupportResponseOfferingDefinitions(
-			long supportResponseId)
-		throws SystemException {
+		long supportResponseId) {
 
 		return offeringDefinitionPersistence.findBySupportResponseId(
 			supportResponseId);
@@ -141,7 +136,7 @@ public class OfferingDefinitionLocalServiceImpl
 			long supportResponseId, String productDescription, boolean licenses,
 			boolean unlimitedLicenses, long maxConcurrentUsers, long maxUsers,
 			boolean supportTickets)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		validate(
 			offeringDefinitionId, productEntryId, supportResponseId,
@@ -160,12 +155,13 @@ public class OfferingDefinitionLocalServiceImpl
 		offeringDefinition.setMaxConcurrentUsers(maxConcurrentUsers);
 		offeringDefinition.setMaxUsers(maxUsers);
 		offeringDefinition.setSupportTickets(supportTickets);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
-		offeringDefinitionPersistence.update(offeringDefinition, serviceContext);
+		offeringDefinitionPersistence.update(
+			offeringDefinition, serviceContext);
 
 		return offeringDefinition;
 	}
@@ -174,7 +170,7 @@ public class OfferingDefinitionLocalServiceImpl
 			long offeringDefinitionId, long productEntryId,
 			long supportResponseId, String productDescription, boolean licenses,
 			boolean unlimitedLicenses, boolean supportTickets)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (offeringDefinitionId == OSBConstants.OFFERING_DEFINITION_TRIAL_ID) {
 			throw new RequiredOfferingDefinitionException();

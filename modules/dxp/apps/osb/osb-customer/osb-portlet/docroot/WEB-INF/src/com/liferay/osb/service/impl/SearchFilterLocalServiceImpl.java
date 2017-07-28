@@ -14,14 +14,13 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.exception.SearchFilterNameException;
 import com.liferay.osb.model.SearchFilter;
 import com.liferay.osb.service.base.SearchFilterLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Date;
 import java.util.List;
@@ -35,7 +34,7 @@ public class SearchFilterLocalServiceImpl
 	public SearchFilter addSearchFilter(
 			long userId, long classNameId, String name, String filter,
 			int visibility)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		Date now = new Date();
@@ -55,9 +54,9 @@ public class SearchFilterLocalServiceImpl
 		searchFilter.setName(name);
 		searchFilter.setFilter(filter);
 		searchFilter.setVisibility(visibility);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		searchFilterPersistence.update(searchFilter, serviceContext);
@@ -65,19 +64,17 @@ public class SearchFilterLocalServiceImpl
 		return searchFilter;
 	}
 
-	public void deleteSearchFilters(long userId) throws SystemException {
+	public void deleteSearchFilters(long userId) {
 		searchFilterPersistence.removeByUserId(userId);
 	}
 
-	public List<SearchFilter> getSearchFilters(long userId, long classNameId)
-		throws SystemException {
-
+	public List<SearchFilter> getSearchFilters(long userId, long classNameId) {
 		return searchFilterPersistence.findByU_C(userId, classNameId);
 	}
 
 	public SearchFilter updateSearchFilter(
 			long searchFilterId, String name, String filter, int visibility)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		validate(name);
 
@@ -88,9 +85,9 @@ public class SearchFilterLocalServiceImpl
 		searchFilter.setName(name);
 		searchFilter.setFilter(filter);
 		searchFilter.setVisibility(visibility);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		searchFilterPersistence.update(searchFilter, serviceContext);

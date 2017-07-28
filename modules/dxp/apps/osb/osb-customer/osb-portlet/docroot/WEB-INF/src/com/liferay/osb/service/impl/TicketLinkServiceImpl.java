@@ -20,7 +20,6 @@ import com.liferay.osb.service.permission.OSBTicketEntryPermission;
 import com.liferay.osb.service.permission.OSBTicketLinkPermission;
 import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
@@ -36,7 +35,7 @@ public class TicketLinkServiceImpl extends TicketLinkServiceBaseImpl {
 			long userId, long ticketEntryId, long ticketSolutionId,
 			String[] urls, Integer[] types, int visibility,
 			ServiceContext serviceContext)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OSBTicketEntryPermission.check(
 			getPermissionChecker(), ticketEntryId, OSBActionKeys.ADD_LINK);
@@ -48,9 +47,7 @@ public class TicketLinkServiceImpl extends TicketLinkServiceBaseImpl {
 			serviceContext);
 	}
 
-	public void deleteTicketLink(long ticketLinkId)
-		throws PortalException, SystemException {
-
+	public void deleteTicketLink(long ticketLinkId) throws PortalException {
 		TicketLink ticketLink = ticketLinkPersistence.findByPrimaryKey(
 			ticketLinkId);
 
@@ -62,7 +59,7 @@ public class TicketLinkServiceImpl extends TicketLinkServiceBaseImpl {
 
 	protected void checkVisibility(
 			long userId, long ticketEntryId, int visibility)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (!ticketEntryLocalService.hasVisibility(
 				userId, ticketEntryId, visibility)) {

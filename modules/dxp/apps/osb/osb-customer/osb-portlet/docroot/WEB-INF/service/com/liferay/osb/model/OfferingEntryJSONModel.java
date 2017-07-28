@@ -71,7 +71,7 @@ public class OfferingEntryJSONModel extends OfferingEntryClp {
 	}
 
 	public void setLicenseKeys(List<LicenseKeyClp> licenseKeys) {
-		_licenseKeys = new ArrayList<LicenseKey>(licenseKeys);
+		_licenseKeys = new ArrayList<>(licenseKeys);
 	}
 
 	public void setLicenseKeysCount(int licenseKeysCount) {

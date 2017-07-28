@@ -14,15 +14,14 @@
 
 package com.liferay.osb.util.comparator;
 
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.service.ProductEntryLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.Comparator;
 import java.util.Map;
@@ -90,7 +89,7 @@ public class OfferingEntryGroupComparator implements Comparator<String> {
 	}
 
 	public int compareProductEntry(long productEntryId, long productEntryId2)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		ProductEntry productEntry =
 			ProductEntryLocalServiceUtil.getProductEntry(productEntryId);
@@ -147,13 +146,13 @@ public class OfferingEntryGroupComparator implements Comparator<String> {
 		return 0;
 	}
 
-	private int[] _orderedStatuses = {
+	private final int[] _orderedStatuses = {
 		OfferingEntryConstants.STATUS_ACTIVE,
 		OfferingEntryConstants.STATUS_PENDING,
 		OfferingEntryConstants.STATUS_ON_HOLD,
 		OfferingEntryConstants.STATUS_CLOSED
 	};
-	private int[] _orderedTypes = {
+	private final int[] _orderedTypes = {
 		OfferingEntryConstants.TYPE_REGULAR, OfferingEntryConstants.TYPE_TRIAL
 	};
 

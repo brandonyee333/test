@@ -1321,8 +1321,8 @@ div.table {
 
 		.environment {
 			border: 1px solid $medium-gray;
-			padding: 15px 15px 40px 15px;
 			margin-bottom: 20px;
+			padding: 15px 15px 40px 15px;
 
 			.configuration {
 				margin: 0 5px 5px 5px;
@@ -1374,8 +1374,8 @@ div.table {
 			display: inline-block;
 			height: 0;
 			margin-left: 5px;
-			width: 0;
 			vertical-align: middle;
+			width: 0;
 		}
 
 		.aui-button-input-export:hover:after, .aui-button-input-export:active:after {
@@ -3863,7 +3863,7 @@ div.table {
 	}
 }
 
-/* -------- Extras -------- */
+/* ---------- Extras ---------- */
 
 .osb-portlet-support {
 	#toggle_id_account_entry_searchbasic, #toggle_id_partner_entry_searchbasic, #toggle_id_ticket_entry_searchbasic, #toggle_id_ticket_feedback_searchbasic input, .temp-flag {

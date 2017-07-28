@@ -14,16 +14,11 @@
 
 package com.liferay.osb.service.persistence.impl;
 
-import com.liferay.osb.service.persistence.AccountEntryFinder;
-import com.liferay.osb.service.persistence.AccountEntryUtil;
-
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Time;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.impl.AccountEntryImpl;
+import com.liferay.osb.service.persistence.AccountEntryFinder;
+import com.liferay.osb.service.persistence.AccountEntryUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBCustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.PortalCustomSQLUtil;
@@ -35,9 +30,12 @@ import com.liferay.portal.kernel.dao.orm.Type;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.CalendarUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Time;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.sql.Timestamp;
@@ -83,15 +81,6 @@ public class AccountEntryFinderImpl
 	public static final String JOIN_BY_ACCOUNT_CUSTOMER =
 		AccountEntryFinder.class.getName() + ".joinByAccountCustomer";
 
-	public static final String JOIN_BY_ACCOUNT_WORKER =
-		AccountEntryFinder.class.getName() + ".joinByAccountWorker";
-
-	public static final String JOIN_BY_ACTIVE_LICENSE =
-		AccountEntryFinder.class.getName() + ".joinByActiveLicense";
-
-	public static final String JOIN_BY_ACTIVE_SUPPORT =
-		AccountEntryFinder.class.getName() + ".joinByActiveSupport";
-
 	public static final String JOIN_BY_ACCOUNT_ENVIRONMENT =
 		AccountEntryFinder.class.getName() + ".joinByAccountEnvironment";
 
@@ -109,6 +98,15 @@ public class AccountEntryFinderImpl
 
 	public static final String JOIN_BY_ACCOUNT_ENVIRONMENT_ENV_OS =
 		AccountEntryFinder.class.getName() + ".joinByAccountEnvironmentEnvOS";
+
+	public static final String JOIN_BY_ACCOUNT_WORKER =
+		AccountEntryFinder.class.getName() + ".joinByAccountWorker";
+
+	public static final String JOIN_BY_ACTIVE_LICENSE =
+		AccountEntryFinder.class.getName() + ".joinByActiveLicense";
+
+	public static final String JOIN_BY_ACTIVE_SUPPORT =
+		AccountEntryFinder.class.getName() + ".joinByActiveSupport";
 
 	public static final String JOIN_BY_EXPIRED_SUPPORT =
 		AccountEntryFinder.class.getName() + ".joinByExpiredSupport";
@@ -135,8 +133,7 @@ public class AccountEntryFinderImpl
 		AccountEntryFinder.class.getName() + ".joinByTicketSupport";
 
 	public int countByKeywords(
-			String keywords, LinkedHashMap<String, Object> params)
-		throws SystemException {
+		String keywords, LinkedHashMap<String, Object> params) {
 
 		String[] names = null;
 		String[] codes = null;
@@ -169,15 +166,13 @@ public class AccountEntryFinderImpl
 	}
 
 	public int countByU_CD_MU_MD_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(
-			Long createUserId, Date createDateGT, Date createDateLT,
-			Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
-			String name, String code, int[] industries,
-			Boolean partnerManagedSupport, int[] tiers, int[] statuses,
-			String instructions, String notes, String partnerEntryCode,
-			String street, Long countryId, Long regionId, String city,
-			String zip, LinkedHashMap<String, Object> params,
-			boolean andOperator)
-		throws SystemException {
+		Long createUserId, Date createDateGT, Date createDateLT,
+		Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
+		String name, String code, int[] industries,
+		Boolean partnerManagedSupport, int[] tiers, int[] statuses,
+		String instructions, String notes, String partnerEntryCode,
+		String street, Long countryId, Long regionId, String city, String zip,
+		LinkedHashMap<String, Object> params, boolean andOperator) {
 
 		String[] names = OSBCustomSQLUtil.keywords(name);
 		String[] codes = CustomSQLUtil.keywords(code);
@@ -196,38 +191,9 @@ public class AccountEntryFinderImpl
 			zips, params, andOperator);
 	}
 
-	public List<AccountEntry> findByU_CD_MU_MD_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(
-			Long createUserId, Date createDateGT, Date createDateLT,
-			Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
-			String name, String code, int[] industries,
-			Boolean partnerManagedSupport, int[] tiers, int[] statuses,
-			String instructions, String notes, String partnerEntryCode,
-			String street, Long countryId, Long regionId, String city,
-			String zip, LinkedHashMap<String, Object> params,
-			boolean andOperator, int start, int end, OrderByComparator obc)
-		throws SystemException {
-
-		String[] names = OSBCustomSQLUtil.keywords(name);
-		String[] codes = CustomSQLUtil.keywords(code);
-		String[] instructionsArray = CustomSQLUtil.keywords(instructions);
-		String[] notesArray = CustomSQLUtil.keywords(notes);
-		String[] partnerEntryCodes = CustomSQLUtil.keywords(partnerEntryCode);
-		String[] streets = CustomSQLUtil.keywords(street);
-		String[] cities = CustomSQLUtil.keywords(city);
-		String[] zips = CustomSQLUtil.keywords(zip);
-
-		return findByU_CD_MU_MD_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(
-			createUserId, createDateGT, createDateLT, modifiedUserId,
-			modifiedDateGT, modifiedDateLT, names, codes, industries,
-			partnerManagedSupport, tiers, statuses, instructionsArray,
-			notesArray, partnerEntryCodes, streets, countryId, regionId, cities,
-			zips, params, andOperator, start, end, obc);
-	}
-
 	public List<AccountEntry> findByKeywords(
-			String keywords, LinkedHashMap<String, Object> params, int start,
-			int end, OrderByComparator obc)
-		throws SystemException {
+		String keywords, LinkedHashMap<String, Object> params, int start,
+		int end, OrderByComparator obc) {
 
 		String[] names = null;
 		String[] codes = null;
@@ -261,8 +227,7 @@ public class AccountEntryFinderImpl
 	}
 
 	public List<AccountEntry> findBySecurityPatch(
-			String portletId, LinkedHashMap<String, Object> params)
-		throws SystemException {
+		String portletId, LinkedHashMap<String, Object> params) {
 
 		Long userId = (Long)params.remove("accountEntryMembership");
 
@@ -280,7 +245,7 @@ public class AccountEntryFinderImpl
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addEntity("OSB_AccountEntry", AccountEntryImpl.class);
 
@@ -300,11 +265,8 @@ public class AccountEntryFinderImpl
 		}
 	}
 
-	public List<AccountEntry> findBySupportResponse(long supportResponseId)
-		throws SystemException {
-
-		LinkedHashMap<String, Object> params =
-			new LinkedHashMap<String, Object>();
+	public List<AccountEntry> findBySupportResponse(long supportResponseId) {
+		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
 		params.put("supportResponseIds", new long[] {supportResponseId});
 
@@ -315,19 +277,45 @@ public class AccountEntryFinderImpl
 			true, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
+	public List<AccountEntry> findByU_CD_MU_MD_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(
+		Long createUserId, Date createDateGT, Date createDateLT,
+		Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
+		String name, String code, int[] industries,
+		Boolean partnerManagedSupport, int[] tiers, int[] statuses,
+		String instructions, String notes, String partnerEntryCode,
+		String street, Long countryId, Long regionId, String city, String zip,
+		LinkedHashMap<String, Object> params, boolean andOperator, int start,
+		int end, OrderByComparator obc) {
+
+		String[] names = OSBCustomSQLUtil.keywords(name);
+		String[] codes = CustomSQLUtil.keywords(code);
+		String[] instructionsArray = CustomSQLUtil.keywords(instructions);
+		String[] notesArray = CustomSQLUtil.keywords(notes);
+		String[] partnerEntryCodes = CustomSQLUtil.keywords(partnerEntryCode);
+		String[] streets = CustomSQLUtil.keywords(street);
+		String[] cities = CustomSQLUtil.keywords(city);
+		String[] zips = CustomSQLUtil.keywords(zip);
+
+		return findByU_CD_MU_MD_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(
+			createUserId, createDateGT, createDateLT, modifiedUserId,
+			modifiedDateGT, modifiedDateLT, names, codes, industries,
+			partnerManagedSupport, tiers, statuses, instructionsArray,
+			notesArray, partnerEntryCodes, streets, countryId, regionId, cities,
+			zips, params, andOperator, start, end, obc);
+	}
+
 	protected int countByU_CD_MU_MD_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(
-			Long createUserId, Date createDateGT, Date createDateLT,
-			Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
-			String[] names, String[] codes, int[] industries,
-			Boolean partnerManagedSupport, int[] tiers, int[] statuses,
-			String[] instructions, String[] notes, String[] partnerEntryCodes,
-			String[] streets, Long countryId, Long regionId, String[] cities,
-			String[] zips, LinkedHashMap<String, Object> params,
-			boolean andOperator)
-		throws SystemException {
+		Long createUserId, Date createDateGT, Date createDateLT,
+		Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
+		String[] names, String[] codes, int[] industries,
+		Boolean partnerManagedSupport, int[] tiers, int[] statuses,
+		String[] instructions, String[] notes, String[] partnerEntryCodes,
+		String[] streets, Long countryId, Long regionId, String[] cities,
+		String[] zips, LinkedHashMap<String, Object> params,
+		boolean andOperator) {
 
 		if (params == null) {
-			params = new LinkedHashMap<String, Object>();
+			params = new LinkedHashMap<>();
 		}
 		else if (params.containsKey("activeSupport") ||
 				 params.containsKey("expiredSupport") ||
@@ -349,10 +337,8 @@ public class AccountEntryFinderImpl
 
 		Long userId = (Long)params.remove("accountEntryMembership");
 
-		LinkedHashMap<String, Object> params1 =
-			new LinkedHashMap<String, Object>(params);
-		LinkedHashMap<String, Object> params2 =
-			new LinkedHashMap<String, Object>(params1);
+		LinkedHashMap<String, Object> params1 = new LinkedHashMap<>(params);
+		LinkedHashMap<String, Object> params2 = new LinkedHashMap<>(params1);
 
 		if (userId != null) {
 			params1.put("accountCustomer", userId);
@@ -407,7 +393,7 @@ public class AccountEntryFinderImpl
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addScalar(COUNT_COLUMN_NAME, Type.LONG);
 
@@ -450,18 +436,17 @@ public class AccountEntryFinderImpl
 	}
 
 	protected List<AccountEntry> findByU_CD_MU_MD_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(
-			Long createUserId, Date createDateGT, Date createDateLT,
-			Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
-			String[] names, String[] codes, int[] industries,
-			Boolean partnerManagedSupport, int[] tiers, int[] statuses,
-			String[] instructions, String[] notes, String[] partnerEntryCodes,
-			String[] streets, Long countryId, Long regionId, String[] cities,
-			String[] zips, LinkedHashMap<String, Object> params,
-			boolean andOperator, int start, int end, OrderByComparator obc)
-		throws SystemException {
+		Long createUserId, Date createDateGT, Date createDateLT,
+		Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
+		String[] names, String[] codes, int[] industries,
+		Boolean partnerManagedSupport, int[] tiers, int[] statuses,
+		String[] instructions, String[] notes, String[] partnerEntryCodes,
+		String[] streets, Long countryId, Long regionId, String[] cities,
+		String[] zips, LinkedHashMap<String, Object> params,
+		boolean andOperator, int start, int end, OrderByComparator obc) {
 
 		if (params == null) {
-			params = new LinkedHashMap<String, Object>();
+			params = new LinkedHashMap<>();
 		}
 		else if (params.containsKey("activeSupport") ||
 				 params.containsKey("expiredSupport") ||
@@ -483,10 +468,8 @@ public class AccountEntryFinderImpl
 
 		Long userId = (Long)params.remove("accountEntryMembership");
 
-		LinkedHashMap<String, Object> params1 =
-			new LinkedHashMap<String, Object>(params);
-		LinkedHashMap<String, Object> params2 =
-			new LinkedHashMap<String, Object>(params1);
+		LinkedHashMap<String, Object> params1 = new LinkedHashMap<>(params);
+		LinkedHashMap<String, Object> params2 = new LinkedHashMap<>(params1);
 
 		if (userId != null) {
 			params1.put("accountCustomer", userId);
@@ -540,7 +523,7 @@ public class AccountEntryFinderImpl
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addScalar("accountEntryId", Type.LONG);
 
@@ -565,7 +548,7 @@ public class AccountEntryFinderImpl
 			List<Long> accountEntryIds = (List<Long>)QueryUtil.list(
 				q, getDialect(), start, end);
 
-			List<AccountEntry> accountEntries = new ArrayList<AccountEntry>(
+			List<AccountEntry> accountEntries = new ArrayList<>(
 				accountEntryIds.size());
 
 			for (Long accountEntryId : accountEntryIds) {

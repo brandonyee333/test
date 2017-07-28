@@ -53,10 +53,8 @@ public class AccountInformationDisplay {
 		return GetterUtil.getString(_fieldModifiedUserNames.get(fieldId));
 	}
 
-	private Map<Integer, String> _fieldData = new HashMap<Integer, String>();
-	private Map<Integer, Date> _fieldModifiedDates =
-		new HashMap<Integer, Date>();
-	private Map<Integer, String> _fieldModifiedUserNames =
-		new HashMap<Integer, String>();
+	private Map<Integer, String> _fieldData = new HashMap<>();
+	private Map<Integer, Date> _fieldModifiedDates = new HashMap<>();
+	private Map<Integer, String> _fieldModifiedUserNames = new HashMap<>();
 
 }

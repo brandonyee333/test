@@ -14,8 +14,6 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.exception.DuplicatePartnerEntryCodeException;
 import com.liferay.osb.exception.DuplicatePartnerEntryDossieraAccountKeyException;
 import com.liferay.osb.exception.NoSuchPartnerEntryException;
@@ -29,9 +27,10 @@ import com.liferay.osb.service.base.PartnerEntryLocalServiceBaseImpl;
 import com.liferay.osb.support.util.SupportUtil;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,7 +47,7 @@ public class PartnerEntryLocalServiceImpl
 	public PartnerEntry addPartnerEntry(
 			long userId, long parentPartnerEntryId, String dossieraAccountKey,
 			String code, String notes, long[] supportRegionIds)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		Date now = new Date();
@@ -73,9 +72,9 @@ public class PartnerEntryLocalServiceImpl
 		partnerEntry.setCode(code);
 		partnerEntry.setNotes(notes);
 		partnerEntry.setStatus(WorkflowConstants.STATUS_APPROVED);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		partnerEntryPersistence.update(partnerEntry, serviceContext);
@@ -90,7 +89,7 @@ public class PartnerEntryLocalServiceImpl
 
 	@Override
 	public PartnerEntry deletePartnerEntry(long partnerEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (accountEntryPersistence.countByPartnerEntryId(partnerEntryId) > 0) {
 			throw new RequiredPartnerEntryException(
@@ -104,8 +103,8 @@ public class PartnerEntryLocalServiceImpl
 				RequiredPartnerEntryException.REFERENCED_PARTNER_ENTRY);
 		}
 
-		if (partnerWorkerPersistence.countByPartnerEntryId(
-				partnerEntryId) > 0) {
+		if (partnerWorkerPersistence.countByPartnerEntryId(partnerEntryId) >
+				0) {
 
 			throw new RequiredPartnerEntryException(
 				RequiredPartnerEntryException.REFERENCED_PARTNER_WORKER);
@@ -114,16 +113,13 @@ public class PartnerEntryLocalServiceImpl
 		return partnerEntryPersistence.remove(partnerEntryId);
 	}
 
-	public PartnerEntry fetchPartnerEntry(String dossieraAccountKey)
-		throws SystemException {
-
+	public PartnerEntry fetchPartnerEntry(String dossieraAccountKey) {
 		return partnerEntryPersistence.fetchByDossieraAccountKey(
 			dossieraAccountKey);
 	}
 
 	public List<PartnerEntry> getChildPartnerEntries(
-			long partnerEntryId, boolean recursive)
-		throws SystemException {
+		long partnerEntryId, boolean recursive) {
 
 		List<PartnerEntry> childPartnerEntries =
 			partnerEntryPersistence.findByParentPartnerEntryId(partnerEntryId);
@@ -132,7 +128,7 @@ public class PartnerEntryLocalServiceImpl
 			return childPartnerEntries;
 		}
 
-		List<PartnerEntry> partnerEntries = new ArrayList<PartnerEntry>();
+		List<PartnerEntry> partnerEntries = new ArrayList<>();
 
 		for (PartnerEntry childPartnerEntry : childPartnerEntries) {
 			partnerEntries.add(childPartnerEntry);
@@ -146,58 +142,52 @@ public class PartnerEntryLocalServiceImpl
 
 	@Override
 	public PartnerEntry getPartnerEntry(long partnerEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		return partnerEntryPersistence.findByPrimaryKey(partnerEntryId);
 	}
 
 	public PartnerEntry getPartnerEntryByCode(String code)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		return partnerEntryPersistence.findByCode(code);
 	}
 
 	public List<PartnerEntry> getUserPartnerEntries(
-			long userId, int start, int end)
-		throws SystemException {
+		long userId, int start, int end) {
 
-		LinkedHashMap<String, Object> params =
-			new LinkedHashMap<String, Object>();
+		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
-		params.put("accountEntryMembership", new Long(userId));
+		params.put("accountEntryMembership", Long.valueOf(userId));
 
 		return partnerEntryFinder.findByKeywords(null, params, start, end);
 	}
 
 	public List<PartnerEntry> search(
-			String code, int[] statuses, LinkedHashMap<String, Object> params,
-			boolean andOperator, int start, int end)
-		throws SystemException {
+		String code, int[] statuses, LinkedHashMap<String, Object> params,
+		boolean andOperator, int start, int end) {
 
 		return partnerEntryFinder.findByC_S(
 			code, statuses, params, andOperator, start, end);
 	}
 
 	public List<PartnerEntry> search(
-			String keywords, LinkedHashMap<String, Object> params, int start,
-			int end)
-		throws SystemException {
+		String keywords, LinkedHashMap<String, Object> params, int start,
+		int end) {
 
 		return partnerEntryFinder.findByKeywords(keywords, params, start, end);
 	}
 
 	public int searchCount(
-			String code, int[] statuses, LinkedHashMap<String, Object> params,
-			boolean andOperator)
-		throws SystemException {
+		String code, int[] statuses, LinkedHashMap<String, Object> params,
+		boolean andOperator) {
 
 		return partnerEntryFinder.countByC_S(
 			code, statuses, params, andOperator);
 	}
 
 	public int searchCount(
-			String keywords, LinkedHashMap<String, Object> params)
-		throws SystemException {
+		String keywords, LinkedHashMap<String, Object> params) {
 
 		return partnerEntryFinder.countByKeywords(keywords, params);
 	}
@@ -205,7 +195,7 @@ public class PartnerEntryLocalServiceImpl
 	public PartnerEntry updatePartnerEntry(
 			long userId, long partnerEntryId, String dossieraAccountKey,
 			String code, String notes, int status, long[] supportRegionIds)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		Date now = new Date();
@@ -224,9 +214,9 @@ public class PartnerEntryLocalServiceImpl
 		partnerEntry.setCode(code);
 		partnerEntry.setNotes(notes);
 		partnerEntry.setStatus(status);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		partnerEntryPersistence.update(partnerEntry, serviceContext);
@@ -246,7 +236,7 @@ public class PartnerEntryLocalServiceImpl
 	}
 
 	protected void closePartnerEntry(User user, long partnerEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		List<AccountEntry> accountEntries =
 			accountEntryPersistence.findByPartnerEntryId(partnerEntryId);
@@ -257,9 +247,9 @@ public class PartnerEntryLocalServiceImpl
 			accountEntry.setModifiedDate(new Date());
 			accountEntry.setPartnerEntryId(partnerEntryId);
 			accountEntry.setPartnerManagedSupport(false);
-			
+
 			//TODO implement serviceContext how needed
-			
+
 			ServiceContext serviceContext = new ServiceContext();
 
 			accountEntryPersistence.update(accountEntry, serviceContext);
@@ -280,7 +270,7 @@ public class PartnerEntryLocalServiceImpl
 	protected void validate(
 			long partnerEntryId, long parentPartnerEntryId,
 			String dossieraAccountKey, String code, int status)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (partnerEntryId > 0) {
 			PartnerEntry partnerEntry =
@@ -289,8 +279,7 @@ public class PartnerEntryLocalServiceImpl
 			if ((status == WorkflowConstants.STATUS_INACTIVE) &&
 				(status != partnerEntry.getStatus())) {
 
-				LinkedHashMap<String, Object> params =
-					new LinkedHashMap<String, Object>();
+				LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
 				long[] childPartnerEntryIds = SupportUtil.getPartnerEntryIds(
 					partnerEntryId);

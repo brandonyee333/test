@@ -79,7 +79,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 
 	if (tabs3.equals("current")) {
 		userParams.put("status", WorkflowConstants.STATUS_ANY);
-		userParams.put("usersSupportWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinBySupportWorkerTeam"), new Long(supportTeam.getSupportTeamId())));
+		userParams.put("usersSupportWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinBySupportWorkerTeam"), Long.valueOf(supportTeam.getSupportTeamId())));
 	}
 	%>
 

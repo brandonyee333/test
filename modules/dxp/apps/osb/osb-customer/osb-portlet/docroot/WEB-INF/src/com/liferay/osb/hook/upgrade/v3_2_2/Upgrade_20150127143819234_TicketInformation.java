@@ -39,9 +39,7 @@ public class Upgrade_20150127143819234_TicketInformation
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20150127143819234L;
 	}
@@ -191,6 +189,7 @@ public class Upgrade_20150127143819234_TicketInformation
 	}
 
 }
+
 */
 
 }

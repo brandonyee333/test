@@ -28,50 +28,50 @@ Map<Integer, List<CorpProjectMessage>> corpProjectMessagesMap = CorpProjectMessa
 	<c:choose>
 		<c:when test="<%= !corpProjectMessagesMap.isEmpty() %>">
 
-				<%
-				for (Map.Entry<Integer, List<CorpProjectMessage>> entry : corpProjectMessagesMap.entrySet()) {
-					List<CorpProjectMessage> corpProjectMessages = entry.getValue();
+			<%
+			for (Map.Entry<Integer, List<CorpProjectMessage>> entry : corpProjectMessagesMap.entrySet()) {
+				List<CorpProjectMessage> corpProjectMessages = entry.getValue();
 
-					CorpProjectMessage firstCorpProjectMessage = corpProjectMessages.get(0);
+				CorpProjectMessage firstCorpProjectMessage = corpProjectMessages.get(0);
 
-					String severityLevelLabel = firstCorpProjectMessage.getSeverityLevelLabel();
-				%>
+				String severityLevelLabel = firstCorpProjectMessage.getSeverityLevelLabel();
+			%>
 
-					<liferay-ui:panel-container id="<%= severityLevelLabel %>" persistState="<%= true %>">
-						<h2 class="section-title">
-							<liferay-ui:message arguments="<%= corpProjectMessages.size() %>" key='<%= severityLevelLabel + "-messages-x" %>' />
-						</h2>
+				<liferay-ui:panel-container id="<%= severityLevelLabel %>" persistState="<%= true %>">
+					<h2 class="section-title">
+						<liferay-ui:message arguments="<%= corpProjectMessages.size() %>" key='<%= severityLevelLabel + "-messages-x" %>' />
+					</h2>
 
-						<%
-						for (int i = 0; i < corpProjectMessages.size(); i++) {
-							CorpProjectMessage corpProjectMessage = corpProjectMessages.get(i);
+					<%
+					for (int i = 0; i < corpProjectMessages.size(); i++) {
+						CorpProjectMessage corpProjectMessage = corpProjectMessages.get(i);
 
-							AccountEntry accountEntry = corpProjectMessage.getAccountEntry();
+						AccountEntry accountEntry = corpProjectMessage.getAccountEntry();
 
-							String title = corpProjectMessage.getTitle();
+						String title = corpProjectMessage.getTitle();
 
-							if (Validator.isNull(title)) {
-								title = corpProjectMessage.getContent();
-							}
-
-							String panelTitle = HtmlUtil.escape(accountEntry.getName() + ": " + title);
-						%>
-
-							<liferay-ui:panel collapsible="<%= true %>" cssClass="<%= severityLevelLabel %>" defaultState="closed" id="<%= severityLevelLabel + corpProjectMessage.getCorpProjectMessageId() %>" persistState="<%= true %>" title="<%= panelTitle %>">
-								<div class="inline">
-									<%= HtmlUtil.escape(corpProjectMessage.getContent()) %>
-								</div>
-							</liferay-ui:panel>
-
-						<%
+						if (Validator.isNull(title)) {
+							title = corpProjectMessage.getContent();
 						}
-						%>
 
-					</liferay-ui:panel-container>
+						String panelTitle = HtmlUtil.escape(accountEntry.getName() + ": " + title);
+					%>
 
-				<%
-				}
-				%>
+						<liferay-ui:panel collapsible="<%= true %>" cssClass="<%= severityLevelLabel %>" defaultState="closed" id="<%= severityLevelLabel + corpProjectMessage.getCorpProjectMessageId() %>" persistState="<%= true %>" title="<%= panelTitle %>">
+							<div class="inline">
+								<%= HtmlUtil.escape(corpProjectMessage.getContent()) %>
+							</div>
+						</liferay-ui:panel>
+
+					<%
+					}
+					%>
+
+				</liferay-ui:panel-container>
+
+			<%
+			}
+			%>
 
 		</c:when>
 		<c:otherwise>

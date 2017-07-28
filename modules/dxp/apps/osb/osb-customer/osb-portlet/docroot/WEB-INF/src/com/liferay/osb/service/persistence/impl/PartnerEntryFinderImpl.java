@@ -14,15 +14,9 @@
 
 package com.liferay.osb.service.persistence.impl;
 
-import com.liferay.osb.service.persistence.PartnerEntryFinder;
-import com.liferay.osb.service.persistence.PartnerEntryUtil;
-
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.model.impl.PartnerEntryImpl;
+import com.liferay.osb.service.persistence.PartnerEntryFinder;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -30,9 +24,12 @@ import com.liferay.portal.kernel.dao.orm.SQLQuery;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.Type;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.util.Iterator;
@@ -68,8 +65,7 @@ public class PartnerEntryFinderImpl
 		PartnerEntryFinder.class.getName() + ".joinBySupportRegion";
 
 	public int countByKeywords(
-			String keywords, LinkedHashMap<String, Object> params)
-		throws SystemException {
+		String keywords, LinkedHashMap<String, Object> params) {
 
 		String[] codes = null;
 
@@ -82,9 +78,8 @@ public class PartnerEntryFinderImpl
 	}
 
 	public int countByC_S(
-			String code, int[] statuses, LinkedHashMap<String, Object> params,
-			boolean andOperator)
-		throws SystemException {
+		String code, int[] statuses, LinkedHashMap<String, Object> params,
+		boolean andOperator) {
 
 		String[] codes = CustomSQLUtil.keywords(code);
 
@@ -92,9 +87,8 @@ public class PartnerEntryFinderImpl
 	}
 
 	public List<PartnerEntry> findByKeywords(
-			String keywords, LinkedHashMap<String, Object> params, int start,
-			int end)
-		throws SystemException {
+		String keywords, LinkedHashMap<String, Object> params, int start,
+		int end) {
 
 		String[] codes = null;
 
@@ -107,10 +101,18 @@ public class PartnerEntryFinderImpl
 			start, end);
 	}
 
+	public List<PartnerEntry> findByC_S(
+		String code, int[] statuses, LinkedHashMap<String, Object> params,
+		boolean andOperator, int start, int end) {
+
+		String[] codes = CustomSQLUtil.keywords(code);
+
+		return findByC_S(codes, statuses, params, andOperator, start, end);
+	}
+
 	protected int countByC_S(
-			String[] codes, int[] statuses,
-			LinkedHashMap<String, Object> params, boolean andOperator)
-		throws SystemException {
+		String[] codes, int[] statuses, LinkedHashMap<String, Object> params,
+		boolean andOperator) {
 
 		Long userId = (Long)params.remove("accountEntryMembership");
 
@@ -147,7 +149,7 @@ public class PartnerEntryFinderImpl
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addScalar(COUNT_COLUMN_NAME, Type.LONG);
 
@@ -183,21 +185,9 @@ public class PartnerEntryFinderImpl
 		}
 	}
 
-	public List<PartnerEntry> findByC_S(
-			String code, int[] statuses, LinkedHashMap<String, Object> params,
-			boolean andOperator, int start, int end)
-		throws SystemException {
-
-		String[] codes = CustomSQLUtil.keywords(code);
-
-		return findByC_S(codes, statuses, params, andOperator, start, end);
-	}
-
 	protected List<PartnerEntry> findByC_S(
-			String[] codes, int[] statuses,
-			LinkedHashMap<String, Object> params, boolean andOperator,
-			int start, int end)
-		throws SystemException {
+		String[] codes, int[] statuses, LinkedHashMap<String, Object> params,
+		boolean andOperator, int start, int end) {
 
 		Long userId = (Long)params.remove("accountEntryMembership");
 
@@ -233,7 +223,7 @@ public class PartnerEntryFinderImpl
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addEntity("OSB_PartnerEntry", PartnerEntryImpl.class);
 

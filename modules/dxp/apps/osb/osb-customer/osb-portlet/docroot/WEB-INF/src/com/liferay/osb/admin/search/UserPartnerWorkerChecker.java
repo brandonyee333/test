@@ -70,6 +70,6 @@ public class UserPartnerWorkerChecker extends RowChecker {
 	private static Log _log = LogFactoryUtil.getLog(
 		UserPartnerWorkerChecker.class);
 
-	private PartnerEntry _partnerEntry;
+	private final PartnerEntry _partnerEntry;
 
 }

@@ -16,7 +16,7 @@ package com.liferay.osb.hook.upgrade.v2_0_1;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
-/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+/*import UpgradeProcess;
 import com.liferay.osb.model.impl.AssetReceiptSupportModelImpl;
 
 */
@@ -30,9 +30,7 @@ public class UpgradeAssetReceiptSupport extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	protected void doUpgrade() throws Exception {
 		updateAssetReceiptSupport();
 	}
@@ -48,6 +46,7 @@ public class UpgradeAssetReceiptSupport extends UpgradeProcess {
 	}
 
 }
+
 */
 
 }

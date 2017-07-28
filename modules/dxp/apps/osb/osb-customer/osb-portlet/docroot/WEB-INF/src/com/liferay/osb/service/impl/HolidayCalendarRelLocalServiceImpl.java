@@ -18,7 +18,6 @@ import com.liferay.osb.exception.NoSuchHolidayCalendarRelException;
 import com.liferay.osb.model.HolidayCalendarRel;
 import com.liferay.osb.service.base.HolidayCalendarRelLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
@@ -30,7 +29,7 @@ public class HolidayCalendarRelLocalServiceImpl
 	extends HolidayCalendarRelLocalServiceBaseImpl {
 
 	public void addUsers(long holidayCalendarId, long[] userIds)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		for (long userId : userIds) {
 			HolidayCalendarRel holidayCalendarRel =
@@ -48,25 +47,23 @@ public class HolidayCalendarRelLocalServiceImpl
 
 			holidayCalendarRel.setHolidayCalendarId(holidayCalendarId);
 			holidayCalendarRel.setUserId(userId);
-			
+
 			//TODO implement serviceContext how needed
-			
+
 			ServiceContext serviceContext = new ServiceContext();
 
-			holidayCalendarRelPersistence.update(holidayCalendarRel, serviceContext);
+			holidayCalendarRelPersistence.update(
+				holidayCalendarRel, serviceContext);
 		}
 	}
 
-	public void deleteHolidayCalendarRels(long holidayCalendarId)
-		throws SystemException {
-
+	public void deleteHolidayCalendarRels(long holidayCalendarId) {
 		holidayCalendarRelPersistence.removeByHolidayCalendarId(
 			holidayCalendarId);
 	}
 
 	public void deleteHolidayCalendarRels(
-			long holidayCalendarId, long[] userIds)
-		throws SystemException {
+		long holidayCalendarId, long[] userIds) {
 
 		for (long userId : userIds) {
 			try {
@@ -80,23 +77,20 @@ public class HolidayCalendarRelLocalServiceImpl
 
 	public HolidayCalendarRel getHolidayCalendarRel(
 			long holidayCalendarId, long userId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		return holidayCalendarRelPersistence.findByHC_U(
 			holidayCalendarId, userId);
 	}
 
 	public List<HolidayCalendarRel> getHolidayCalendarRels(
-			long holidayCalendarId)
-		throws SystemException {
+		long holidayCalendarId) {
 
 		return holidayCalendarRelPersistence.findByHolidayCalendarId(
 			holidayCalendarId);
 	}
 
-	public boolean hasHolidayCalendarRel(long holidayCalendarId, long userId)
-		throws SystemException {
-
+	public boolean hasHolidayCalendarRel(long holidayCalendarId, long userId) {
 		int count = holidayCalendarRelPersistence.countByHC_U(
 			holidayCalendarId, userId);
 

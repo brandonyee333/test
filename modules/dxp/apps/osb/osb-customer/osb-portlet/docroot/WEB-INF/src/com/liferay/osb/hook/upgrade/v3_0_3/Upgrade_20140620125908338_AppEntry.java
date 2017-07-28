@@ -37,9 +37,7 @@ public class Upgrade_20140620125908338_AppEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20140620125908338L;
 	}
@@ -107,11 +105,11 @@ public class Upgrade_20140620125908338_AppEntry extends UpgradeProcess {
 		}
 }
 
-	private static final long[] _MALFORMED_APP_ENTRY_IDS = {
-		17109010, 27269710, 27269788, 27269997
-	};
+	private static final long[] _MALFORMED_APP_ENTRY_IDS =
+		{17109010, 27269710, 27269788, 27269997};
 
 }
+
 */
 
 }

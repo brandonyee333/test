@@ -31,9 +31,7 @@ public class Upgrade_20160208153736735_CorpProjectMessage
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20160208153736735L;
 	}
@@ -51,6 +49,7 @@ public class Upgrade_20160208153736735_CorpProjectMessage
 	}
 
 }
+
 */
 
 }

@@ -34,7 +34,6 @@ import com.liferay.osb.service.TicketEntryLocalServiceUtil;
 import com.liferay.osb.util.comparator.OfferingEntryPKComparator;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.util.StringBundler;
 
@@ -53,26 +52,24 @@ public class OfferingEntryImpl extends OfferingEntryBaseImpl {
 	}
 
 	@JSON
-	public AccountEntry getAccountEntry()
-		throws PortalException, SystemException {
-
+	public AccountEntry getAccountEntry() throws PortalException {
 		return AccountEntryLocalServiceUtil.getAccountEntry(
 			getAccountEntryId());
 	}
 
 	@JSON
-	public Date getActualStartDate() throws PortalException, SystemException {
+	public Date getActualStartDate() throws PortalException {
 		OrderEntry orderEntry = getOrderEntry();
 
 		return orderEntry.getActualStartDate();
 	}
 
-	public int getAvailableServers() throws PortalException, SystemException {
+	public int getAvailableServers() throws PortalException {
 		return getQuantity() - getLicenseKeysCount();
 	}
 
 	@JSON
-	public String getKey() throws PortalException, SystemException {
+	public String getKey() throws PortalException {
 		StringBundler sb = new StringBundler(18);
 
 		sb.append("supportEndDate=");
@@ -107,28 +104,25 @@ public class OfferingEntryImpl extends OfferingEntryBaseImpl {
 	}
 
 	@JSON
-	public List<LicenseKey> getLicenseKeys() throws SystemException {
+	public List<LicenseKey> getLicenseKeys() {
 		return LicenseKeyLocalServiceUtil.getOfferingEntryLicenseKeys(
 			getOfferingEntryId());
 	}
 
 	@JSON
-	public int getLicenseKeysCount() throws SystemException {
+	public int getLicenseKeysCount() {
 		return LicenseKeyLocalServiceUtil.getOfferingEntryLicenseKeysCount(
 			getOfferingEntryId(), false, true);
 	}
 
-	public OfferingEntryGroup getOfferingEntryGroup()
-		throws PortalException, SystemException {
-
+	public OfferingEntryGroup getOfferingEntryGroup() throws PortalException {
 		long userId = 0;
 
 		if (getType() == OfferingEntryConstants.TYPE_TRIAL) {
 			userId = getUserId();
 		}
 
-		LinkedHashMap<String, Object> params =
-			new LinkedHashMap<String, Object>();
+		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
 		params.put(
 			"validLicense",
@@ -148,13 +142,11 @@ public class OfferingEntryImpl extends OfferingEntryBaseImpl {
 		return offeringEntryGroupMap.get(getKey());
 	}
 
-	public OrderEntry getOrderEntry() throws PortalException, SystemException {
+	public OrderEntry getOrderEntry() throws PortalException {
 		return OrderEntryLocalServiceUtil.getOrderEntry(getOrderEntryId());
 	}
 
-	public ProductEntry getProductEntry()
-		throws PortalException, SystemException {
-
+	public ProductEntry getProductEntry() throws PortalException {
 		return ProductEntryLocalServiceUtil.getProductEntry(
 			getProductEntryId());
 	}
@@ -164,7 +156,7 @@ public class OfferingEntryImpl extends OfferingEntryBaseImpl {
 	}
 
 	@JSON
-	public Date getStartDate() throws PortalException, SystemException {
+	public Date getStartDate() throws PortalException {
 		OrderEntry orderEntry = getOrderEntry();
 
 		return orderEntry.getStartDate();
@@ -174,15 +166,13 @@ public class OfferingEntryImpl extends OfferingEntryBaseImpl {
 		return OfferingEntryConstants.getStatusLabel(getStatus());
 	}
 
-	public SupportResponse getSupportResponse()
-		throws PortalException, SystemException {
-
+	public SupportResponse getSupportResponse() throws PortalException {
 		return SupportResponseLocalServiceUtil.getSupportResponse(
 			getSupportResponseId());
 	}
 
 	@JSON
-	public int getTicketEntriesCount() throws SystemException {
+	public int getTicketEntriesCount() {
 		return TicketEntryLocalServiceUtil.getValidTicketEntriesCount(
 			getOfferingEntryId());
 	}

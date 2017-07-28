@@ -14,7 +14,6 @@
 
 package com.liferay.osb.model.impl;
 
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.osb.exception.NoSuchSupportLaborException;
 import com.liferay.osb.model.SupportLabor;
 import com.liferay.osb.model.SupportLaborConstants;
@@ -31,9 +30,9 @@ import com.liferay.osb.service.SupportWorkerComponentLocalServiceUtil;
 import com.liferay.osb.service.SupportWorkerSeverityLocalServiceUtil;
 import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.util.Time;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -51,12 +50,12 @@ public class SupportWorkerImpl extends SupportWorkerBaseImpl {
 	public SupportWorkerImpl() {
 	}
 
-	public List<Integer> getAccountTiers() throws SystemException {
+	public List<Integer> getAccountTiers() {
 		List<SupportWorkerAccountTier> supportWorkerAccountTiers =
 			SupportWorkerAccountTierLocalServiceUtil.
 				getSupportWorkerAccountTiers(getSupportWorkerId());
 
-		List<Integer> accountTiers = new ArrayList<Integer>(
+		List<Integer> accountTiers = new ArrayList<>(
 			supportWorkerAccountTiers.size());
 
 		for (SupportWorkerAccountTier supportWorkerAccountTier :
@@ -68,12 +67,12 @@ public class SupportWorkerImpl extends SupportWorkerBaseImpl {
 		return accountTiers;
 	}
 
-	public List<Integer> getComponents() throws SystemException {
+	public List<Integer> getComponents() {
 		List<SupportWorkerComponent> supportWorkerComponents =
 			SupportWorkerComponentLocalServiceUtil.getSupportWorkerComponents(
 				getSupportWorkerId());
 
-		List<Integer> components = new ArrayList<Integer>(
+		List<Integer> components = new ArrayList<>(
 			supportWorkerComponents.size());
 
 		for (SupportWorkerComponent supportWorkerComponent :
@@ -93,12 +92,12 @@ public class SupportWorkerImpl extends SupportWorkerBaseImpl {
 		return SupportWorkerConstants.getRoleLabel(getRole());
 	}
 
-	public List<Integer> getSeverities() throws SystemException {
+	public List<Integer> getSeverities() {
 		List<SupportWorkerSeverity> supportWorkerSeverities =
 			SupportWorkerSeverityLocalServiceUtil.getSupportWorkerSeverities(
 				getSupportWorkerId());
 
-		List<Integer> severities = new ArrayList<Integer>(
+		List<Integer> severities = new ArrayList<>(
 			supportWorkerSeverities.size());
 
 		for (SupportWorkerSeverity supportWorkerSeverity :
@@ -110,9 +109,7 @@ public class SupportWorkerImpl extends SupportWorkerBaseImpl {
 		return severities;
 	}
 
-	public SupportLabor getSupportLabor()
-		throws PortalException, SystemException {
-
+	public SupportLabor getSupportLabor() throws PortalException {
 		try {
 			return SupportLaborLocalServiceUtil.getSupportLabor(
 				getSupportLaborId());
@@ -125,13 +122,11 @@ public class SupportWorkerImpl extends SupportWorkerBaseImpl {
 		}
 	}
 
-	public SupportTeam getSupportTeam()
-		throws PortalException, SystemException {
-
+	public SupportTeam getSupportTeam() throws PortalException {
 		return SupportTeamLocalServiceUtil.getSupportTeam(getSupportTeamId());
 	}
 
-	public Long getTimeUntilClose() throws PortalException, SystemException {
+	public Long getTimeUntilClose() throws PortalException {
 		SupportLabor supportLabor = getSupportLabor();
 
 		Calendar now = Calendar.getInstance(
@@ -199,7 +194,7 @@ public class SupportWorkerImpl extends SupportWorkerBaseImpl {
 		return null;
 	}
 
-	public Long getTimeUntilOpen() throws PortalException, SystemException {
+	public Long getTimeUntilOpen() throws PortalException {
 		SupportLabor supportLabor = getSupportLabor();
 
 		Calendar now = Calendar.getInstance(
@@ -254,7 +249,7 @@ public class SupportWorkerImpl extends SupportWorkerBaseImpl {
 		return null;
 	}
 
-	public boolean isActive() throws PortalException, SystemException {
+	public boolean isActive() throws PortalException {
 		try {
 			User user = UserLocalServiceUtil.getUser(getUserId());
 
@@ -268,7 +263,7 @@ public class SupportWorkerImpl extends SupportWorkerBaseImpl {
 		return false;
 	}
 
-	public boolean isAvailable() throws PortalException, SystemException {
+	public boolean isAvailable() throws PortalException {
 		Date now = new Date();
 
 		if (hasHoliday(now)) {
@@ -286,9 +281,7 @@ public class SupportWorkerImpl extends SupportWorkerBaseImpl {
 		return true;
 	}
 
-	protected boolean hasHoliday(Date date)
-		throws PortalException, SystemException {
-
+	protected boolean hasHoliday(Date date) throws PortalException {
 		SupportLabor supportLabor = null;
 
 		try {
@@ -318,9 +311,7 @@ public class SupportWorkerImpl extends SupportWorkerBaseImpl {
 		}
 	}
 
-	protected boolean isOpen(Date date)
-		throws PortalException, SystemException {
-
+	protected boolean isOpen(Date date) throws PortalException {
 		SupportLabor supportLabor = null;
 
 		try {

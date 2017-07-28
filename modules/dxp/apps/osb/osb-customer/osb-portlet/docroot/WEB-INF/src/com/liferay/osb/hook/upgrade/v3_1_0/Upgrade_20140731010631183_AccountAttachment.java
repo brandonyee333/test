@@ -30,9 +30,7 @@ public class Upgrade_20140731010631183_AccountAttachment
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20140731010631183L;
 	}
@@ -61,6 +59,7 @@ public class Upgrade_20140731010631183_AccountAttachment
 	}
 
 }
+
 */
 
 }

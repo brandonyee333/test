@@ -18,7 +18,6 @@ import com.liferay.osb.model.TicketCannedResponse;
 import com.liferay.osb.service.base.TicketCannedResponseServiceBaseImpl;
 import com.liferay.osb.service.permission.OSBTicketCannedResponsePermission;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
@@ -33,7 +32,7 @@ public class TicketCannedResponseServiceImpl
 	extends TicketCannedResponseServiceBaseImpl {
 
 	public void incrementUseCount(long ticketCannedResponseId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OSBTicketCannedResponsePermission.check(
 			getPermissionChecker(), ActionKeys.UPDATE);
@@ -44,7 +43,7 @@ public class TicketCannedResponseServiceImpl
 
 	public List<TicketCannedResponse> search(
 			String keywords, int start, int end)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OSBTicketCannedResponsePermission.check(
 			getPermissionChecker(), ActionKeys.VIEW);
@@ -54,7 +53,7 @@ public class TicketCannedResponseServiceImpl
 
 	public List<TicketCannedResponse> search(
 			String name, String content, boolean andSearch, int start, int end)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OSBTicketCannedResponsePermission.check(
 			getPermissionChecker(), ActionKeys.VIEW);
@@ -63,9 +62,7 @@ public class TicketCannedResponseServiceImpl
 			name, content, andSearch, start, end);
 	}
 
-	public int searchCount(String keywords)
-		throws PortalException, SystemException {
-
+	public int searchCount(String keywords) throws PortalException {
 		OSBTicketCannedResponsePermission.check(
 			getPermissionChecker(), ActionKeys.VIEW);
 
@@ -73,7 +70,7 @@ public class TicketCannedResponseServiceImpl
 	}
 
 	public int searchCount(String name, String content, boolean andSearch)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OSBTicketCannedResponsePermission.check(
 			getPermissionChecker(), ActionKeys.VIEW);

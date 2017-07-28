@@ -14,13 +14,6 @@
 
 package com.liferay.osb.securitypatch.portlet;
 
-import java.io.IOException;
-import java.util.List;
-
-import com.liferay.portal.kernel.util.HttpUtil;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.util.bridges.mvc.MVCPortlet;
 import com.liferay.osb.model.SecurityPatch;
 import com.liferay.osb.model.TicketAttachment;
 import com.liferay.osb.service.SecurityPatchLocalServiceUtil;
@@ -30,7 +23,6 @@ import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.audit.AuditMessage;
 import com.liferay.portal.kernel.audit.AuditRouterUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -39,9 +31,17 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.util.bridges.mvc.MVCPortlet;
+
+import java.io.IOException;
+
+import java.util.List;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -99,7 +99,7 @@ public class SecurityPatchPortlet extends MVCPortlet {
 	}
 
 	protected String getSecurityPatchName(SecurityPatch securityPatch)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (Validator.isNotNull(securityPatch.getName())) {
 			return securityPatch.getName();
@@ -186,6 +186,7 @@ public class SecurityPatchPortlet extends MVCPortlet {
 
 	private static final String _URL_PREFIX = "http://downloads.liferay.com";
 
-	private static Log _log = LogFactoryUtil.getLog(SecurityPatchPortlet.class);
+	private static final Log _log = LogFactoryUtil.getLog(
+		SecurityPatchPortlet.class);
 
 }

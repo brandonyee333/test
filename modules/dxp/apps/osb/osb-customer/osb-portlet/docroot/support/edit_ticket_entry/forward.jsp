@@ -41,7 +41,7 @@ if (Validator.isNull(backURL)) {
 			<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
 		</portlet:actionURL>
 
-		<aui:form action="<%= forwardTicketEntryURL %>" class="uni-form forward-form" method="post" name="forwardFm">
+		<aui:form action="<%= forwardTicketEntryURL %>" class="forward-form uni-form" method="post" name="forwardFm">
 			<input name="<portlet:namespace />redirect" type="hidden" value="<%= portletURL.toString() %>" />
 			<input name="<portlet:namespace />backURL" type="hidden" value="<%= HtmlUtil.escape(backURL) %>" />
 			<input name="<portlet:namespace />ticketEntryId" type="hidden" value="<%= ticketEntry.getTicketEntryId() %>" />

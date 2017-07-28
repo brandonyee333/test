@@ -20,6 +20,7 @@
 themeDisplay.setIncludeServiceJs(true);
 
 String redirect = ParamUtil.getString(request, "redirect");
+
 String backURL = ParamUtil.getString(request, "backURL", redirect);
 
 long partnerEntryId = ParamUtil.getLong(request, "partnerEntryId");
@@ -99,142 +100,141 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 	<aui:model-context bean="<%= partnerEntry %>" model="<%= PartnerEntry.class %>" />
 
 	<table class="lfr-table">
+		<c:if test="<%= parentPartnerEntry != null %>">
+			<tr>
+				<td>
+					<liferay-ui:message key="parent-partner" />
+				</td>
+				<td>
+					<strong><%= HtmlUtil.escape(parentPartnerEntry.getCode()) %></strong>
+				</td>
+			</tr>
+		</c:if>
 
-	<c:if test="<%= parentPartnerEntry != null %>">
+		<c:if test="<%= parentPartnerEntry == null %>">
+			<tr>
+				<td>
+					<liferay-ui:message key="dossiera-account-key" />
+				</td>
+				<td>
+					<aui:input label="" name="dossieraAccountKey" />
+				</td>
+			</tr>
+		</c:if>
+
 		<tr>
 			<td>
-				<liferay-ui:message key="parent-partner" />
+				<liferay-ui:message key="code" />
 			</td>
 			<td>
-				<strong><%= HtmlUtil.escape(parentPartnerEntry.getCode()) %></strong>
+				<aui:input label="" name="code" />
 			</td>
 		</tr>
-	</c:if>
 
-	<c:if test="<%= parentPartnerEntry == null %>">
+		<c:if test="<%= partnerEntry != null %>">
+			<tr>
+				<td colspan="2">
+					<div class="aui-helper-hidden portlet-msg-info" id="<portlet:namespace />statusMessageDisplay">
+						<liferay-ui:message key="there-are-child-partner-accounts-that-are-open" />
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<liferay-ui:message key="status" />
+				</td>
+				<td>
+
+					<%
+					String taglibOnChange = StringPool.BLANK;
+
+					if (!childPartnerEntries.isEmpty()) {
+						taglibOnChange = renderResponse.getNamespace() + "toggleMessage(this.value);";
+					}
+					%>
+
+					<aui:select label="" name="status" onChange="<%= taglibOnChange %>">
+						<aui:option label="active" selected="<%= partnerEntry.getStatus() == WorkflowConstants.STATUS_APPROVED %>" value="<%= WorkflowConstants.STATUS_APPROVED %>" />
+						<aui:option label="inactive" selected="<%= partnerEntry.getStatus() == WorkflowConstants.STATUS_INACTIVE %>" value="<%= WorkflowConstants.STATUS_INACTIVE %>" />
+					</aui:select>
+				</td>
+			</tr>
+		</c:if>
+
+		<c:if test="<%= partnerEntry != null %>">
+			<tr>
+				<td>
+					<liferay-ui:message key="created-by" />
+				</td>
+				<td>
+					<%= HtmlUtil.escape(PortalUtil.getUserName(partnerEntry.getUserId(), partnerEntry.getUserName())) %>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<liferay-ui:message key="last-modified" />
+				</td>
+				<td>
+					<%= HtmlUtil.escape(PortalUtil.getUserName(partnerEntry.getModifiedUserId(), partnerEntry.getModifiedUserName())) %> <liferay-ui:message key="on" /> <%= longDateFormatDateTime.format(partnerEntry.getModifiedDate()) %>
+				</td>
+			</tr>
+		</c:if>
+
 		<tr>
 			<td>
-				<liferay-ui:message key="dossiera-account-key" />
+				<liferay-ui:message key="additional-notes" />
 			</td>
 			<td>
-				<aui:input label="" name="dossieraAccountKey" />
+				<aui:input label="" name="notes" />
 			</td>
 		</tr>
-	</c:if>
+		<tr>
+			<td>
+				<liferay-ui:message key="support-region" />
+			</td>
+			<td>
+				<aui:select label="" name="supportRegionId">
+					<aui:option value="" />
 
-	<tr>
-		<td>
-			<liferay-ui:message key="code" />
-		</td>
-		<td>
-			<aui:input label="" name="code" />
-		</td>
-	</tr>
+					<%
+					for (SupportRegion curSupportRegion : SupportRegionLocalServiceUtil.getSupportRegions(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
+					%>
 
-	<c:if test="<%= partnerEntry != null %>">
+						<aui:option label="<%= curSupportRegion.getName() %>" selected="<%= supportRegionId == curSupportRegion.getSupportRegionId() %>" value="<%= curSupportRegion.getSupportRegionId() %>" />
+
+					<%
+					}
+					%>
+
+				</aui:select>
+			</td>
+		</tr>
 		<tr>
 			<td colspan="2">
-				<div class="portlet-msg-info aui-helper-hidden" id="<portlet:namespace />statusMessageDisplay">
-					<liferay-ui:message key="there-are-child-partner-accounts-that-are-open" />
+
+				<%
+				request.setAttribute("phones.className", PartnerEntry.class.getName());
+				request.setAttribute("phones.classPK", partnerEntryId);
+				%>
+
+				<div id="<portlet:namespace />phoneNumbers">
+					<liferay-util:include page="/html/portlet/users_admin/common/phone_numbers.jsp" />
 				</div>
 			</td>
 		</tr>
 		<tr>
-			<td>
-				<liferay-ui:message key="status" />
-			</td>
-			<td>
+			<td colspan="2">
 
 				<%
-				String taglibOnChange = StringPool.BLANK;
-
-				if (!childPartnerEntries.isEmpty()) {
-					taglibOnChange = renderResponse.getNamespace() + "toggleMessage(this.value);";
-				}
+				request.setAttribute("addresses.className", PartnerEntry.class.getName());
+				request.setAttribute("addresses.classPK", partnerEntryId);
 				%>
 
-				<aui:select label="" name="status" onChange="<%= taglibOnChange %>">
-					<aui:option label="active" selected="<%= partnerEntry.getStatus() == WorkflowConstants.STATUS_APPROVED %>" value="<%= WorkflowConstants.STATUS_APPROVED %>" />
-					<aui:option label="inactive" selected="<%= partnerEntry.getStatus() == WorkflowConstants.STATUS_INACTIVE %>" value="<%= WorkflowConstants.STATUS_INACTIVE %>" />
-				</aui:select>
+				<div id="<portlet:namespace />addresses">
+					<liferay-util:include page="/html/portlet/users_admin/common/addresses.jsp" />
+				</div>
 			</td>
 		</tr>
-	</c:if>
-
-	<c:if test="<%= partnerEntry != null %>">
-		<tr>
-			<td>
-				<liferay-ui:message key="created-by" />
-			</td>
-			<td>
-				<%= HtmlUtil.escape(PortalUtil.getUserName(partnerEntry.getUserId(), partnerEntry.getUserName())) %>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<liferay-ui:message key="last-modified" />
-			</td>
-			<td>
-				<%= HtmlUtil.escape(PortalUtil.getUserName(partnerEntry.getModifiedUserId(), partnerEntry.getModifiedUserName())) %> <liferay-ui:message key="on" /> <%= longDateFormatDateTime.format(partnerEntry.getModifiedDate()) %>
-			</td>
-		</tr>
-	</c:if>
-
-	<tr>
-		<td>
-			<liferay-ui:message key="additional-notes" />
-		</td>
-		<td>
-			<aui:input label="" name="notes" />
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="support-region" />
-		</td>
-		<td>
-			<aui:select label="" name="supportRegionId">
-				<aui:option value="" />
-
-				<%
-				for (SupportRegion curSupportRegion : SupportRegionLocalServiceUtil.getSupportRegions(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
-				%>
-
-					<aui:option label="<%= curSupportRegion.getName() %>" selected="<%= supportRegionId == curSupportRegion.getSupportRegionId() %>" value="<%= curSupportRegion.getSupportRegionId() %>" />
-
-				<%
-				}
-				%>
-
-			</aui:select>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2">
-
-			<%
-			request.setAttribute("phones.className", PartnerEntry.class.getName());
-			request.setAttribute("phones.classPK", partnerEntryId);
-			%>
-
-			<div id="<portlet:namespace />phoneNumbers">
-				<liferay-util:include page="/html/portlet/users_admin/common/phone_numbers.jsp" />
-			</div>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2">
-
-			<%
-			request.setAttribute("addresses.className", PartnerEntry.class.getName());
-			request.setAttribute("addresses.classPK", partnerEntryId);
-			%>
-
-			<div id="<portlet:namespace />addresses">
-				<liferay-util:include page="/html/portlet/users_admin/common/addresses.jsp" />
-			</div>
-		</td>
-	</tr>
 	</table>
 
 	<br />

@@ -21,7 +21,8 @@ import com.liferay.portal.kernel.exception.PortalException;
  * @author Brian Wing Shun Chan
  */
 @ProviderType
-public class DuplicatePartnerEntryDossieraAccountKeyException extends PortalException {
+public class DuplicatePartnerEntryDossieraAccountKeyException
+	extends PortalException {
 
 	public DuplicatePartnerEntryDossieraAccountKeyException() {
 	}
@@ -30,7 +31,9 @@ public class DuplicatePartnerEntryDossieraAccountKeyException extends PortalExce
 		super(msg);
 	}
 
-	public DuplicatePartnerEntryDossieraAccountKeyException(String msg, Throwable cause) {
+	public DuplicatePartnerEntryDossieraAccountKeyException(
+		String msg, Throwable cause) {
+
 		super(msg, cause);
 	}
 

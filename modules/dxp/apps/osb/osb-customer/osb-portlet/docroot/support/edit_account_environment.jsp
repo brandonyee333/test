@@ -70,6 +70,7 @@
 			<input name="<portlet:namespace />accountEntryId" type="hidden" value="<%= accountEntryId %>" />
 
 			<liferay-ui:error exception="<%= AccountEnvironmentAttachmentException.class %>" message="please-upload-a-portal-ext-and-patch-level-file" />
+
 			<liferay-ui:error exception="<%= AccountEnvironmentAttachmentSizeException.class %>">
 
 				<%
@@ -97,184 +98,184 @@
 				<aui:model-context bean="<%= accountEnvironment %>" model="<%= AccountEnvironment.class %>" />
 
 				<table class="lfr-table">
-				<tr>
-					<td>
-						<span class="txt-b txt-up">* <liferay-ui:message key="name" />:</span>
+					<tr>
+						<td>
+							<span class="txt-b txt-up">* <liferay-ui:message key="name" />:</span>
 
-						<aui:input inlineField="<%= true %>" label="" name="name" />
-					</td>
-					<td>
-						<span class="txt-b txt-up"><%= (accountEnvironment != null) ? "" : "* " %><liferay-ui:message key="product" />:</span>
+							<aui:input inlineField="<%= true %>" label="" name="name" />
+						</td>
+						<td>
+							<span class="txt-b txt-up"><%= (accountEnvironment != null) ? "" : "* " %><liferay-ui:message key="product" />:</span>
 
-						<select <%= (productEntryId > 0) ? "disabled" : "" %> id="<portlet:namespace />offeringEntryId" name="<portlet:namespace />offeringEntryId" onChange="<portlet:namespace />selectProductEntry(this.value);">
-							<option value="0"><liferay-ui:message key="select" /></option>
-
-							<%
-							LinkedHashMap params = new LinkedHashMap();
-
-							params.put("validTicket", StringPool.BLANK);
-
-							List<OfferingEntryGroup> offeringEntryGroups = SupportUtil.getOfferingEntryGroups(0, accountEntryId, new int[0], new int[] {OfferingEntryConstants.STATUS_ACTIVE, OfferingEntryConstants.STATUS_ON_HOLD}, 0, 0, 0, 0, 0, 0, params, true);
-
-							for (OfferingEntryGroup offeringEntryGroup : offeringEntryGroups) {
-								ProductEntry curProductEntry = offeringEntryGroup.getProductEntry();
-								OfferingEntry curOfferingEntry = offeringEntryGroup.getAvailableSupportOfferingEntry();
-							%>
-
-								<option <%= (curProductEntry.getProductEntryId() == productEntryId) ? "selected" : "" %> value="<%= curOfferingEntry.getOfferingEntryId() %>"><%= HtmlUtil.escape(LanguageUtil.get(pageContext, curProductEntry.getName())) %></option>
-
-							<%
-							}
-							%>
-
-						</select>
-
-						<c:if test="<%= productEntryId > 0 %>">
-							<input name="<portlet:namespace />offeringEntryId" type="hidden" value="<%= offeringEntryId %>" />
-						</c:if>
-					</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>
-						<span class="txt-b txt-up">* <liferay-ui:message key="liferay-version" />:</span>
-
-						<select id="<portlet:namespace />envLFR" name="<portlet:namespace />envLFR" onChange="<portlet:namespace />selectPortalVersion(this.value, 0, '', 0, '', 0, '', 0, ''); <portlet:namespace />updateSupportMessage(this.value);">
-							<c:if test="<%= productEntry != null %>">
+							<select <%= (productEntryId > 0) ? "disabled" : "" %> id="<portlet:namespace />offeringEntryId" name="<portlet:namespace />offeringEntryId" onChange="<portlet:namespace />selectProductEntry(this.value);">
 								<option value="0"><liferay-ui:message key="select" /></option>
 
 								<%
-								List<ListType> envLFRTypes = productEntry.getAllVersionsListTypes();
+								LinkedHashMap params = new LinkedHashMap();
 
-								String previousNamePrefix = StringPool.BLANK;
+								params.put("validTicket", StringPool.BLANK);
 
-								for (ListType envLFRType : envLFRTypes) {
-									if ((envLFR != envLFRType.getListTypeId()) && ArrayUtil.contains(ProductEntryConstants.LIST_TYPES_DEPRECATED, envLFRType.getListTypeId())) {
-										continue;
-									}
+								List<OfferingEntryGroup> offeringEntryGroups = SupportUtil.getOfferingEntryGroups(0, accountEntryId, new int[0], new int[] {OfferingEntryConstants.STATUS_ACTIVE, OfferingEntryConstants.STATUS_ON_HOLD}, 0, 0, 0, 0, 0, 0, params, true);
 
-									String name = envLFRType.getName();
-
-									String namePrefix = name.substring(0, 3);
+								for (OfferingEntryGroup offeringEntryGroup : offeringEntryGroups) {
+									ProductEntry curProductEntry = offeringEntryGroup.getProductEntry();
+									OfferingEntry curOfferingEntry = offeringEntryGroup.getAvailableSupportOfferingEntry();
 								%>
 
-									<c:if test="<%= Validator.isNotNull(previousNamePrefix) && !previousNamePrefix.equals(namePrefix) %>">
-										<option disabled>--------</option>
-									</c:if>
-
-									<option <%= (envLFRType.getListTypeId() == envLFR) ? "selected" : "" %> value="<%= envLFRType.getListTypeId() %>"><%= LanguageUtil.get(pageContext, envLFRType.getName()) %></option>
+									<option <%= (curProductEntry.getProductEntryId() == productEntryId) ? "selected" : "" %> value="<%= curOfferingEntry.getOfferingEntryId() %>"><%= HtmlUtil.escape(LanguageUtil.get(pageContext, curProductEntry.getName())) %></option>
 
 								<%
-									previousNamePrefix = namePrefix;
 								}
 								%>
 
-							</c:if>
-						</select>
-					</td>
-					<td>
-						<span class="txt-b txt-up">* <liferay-ui:message key="application-server" />:</span>
-
-						<select id="<portlet:namespace />envAS" name="<portlet:namespace />envAS">
-							<option value="0"></option>
-						</select>
-					</td>
-					<td>
-						<span class="txt-b txt-up">* <liferay-ui:message key="database" />:</span>
-
-						<select id="<portlet:namespace />envDB" name="<portlet:namespace />envDB">
-							<option value="0"></option>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<span class="fl txt-b txt-up">* <liferay-ui:message key="operating-system" />:</span>
-
-						<div class="fl">
-							<select id="<portlet:namespace />envOS" name="<portlet:namespace />envOS" onChange="<portlet:namespace />selectEnvOS(this.value);">
-								<option value="0"></option>
 							</select>
 
-							<br />
+							<c:if test="<%= productEntryId > 0 %>">
+								<input name="<portlet:namespace />offeringEntryId" type="hidden" value="<%= offeringEntryId %>" />
+							</c:if>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<span class="txt-b txt-up">* <liferay-ui:message key="liferay-version" />:</span>
 
-							<input class="<%= (envOS == TicketEntryConstants.ENV_OS_OTHER) ? "" : "aui-helper-hidden" %>" id="<portlet:namespace />envOSCustom" maxLength="<%= TicketInformationConstants.getMaxLength(TicketInformationConstants.FIELD_ENV_OS_CUSTOM) %>" name="<portlet:namespace />envOSCustom" type="text" value="<%= HtmlUtil.escapeAttribute(envOSCustom) %>" />
-						</div>
-					</td>
-					<td>
-						<span class="txt-b txt-up">* <liferay-ui:message key="java-virtual-machine" />:</span>
+							<select id="<portlet:namespace />envLFR" name="<portlet:namespace />envLFR" onChange="<portlet:namespace />selectPortalVersion(this.value, 0, '', 0, '', 0, '', 0, ''); <portlet:namespace />updateSupportMessage(this.value);">
+								<c:if test="<%= productEntry != null %>">
+									<option value="0"><liferay-ui:message key="select" /></option>
 
-						<select id="<portlet:namespace />envJVM" name="<portlet:namespace />envJVM">
-							<option value="0"></option>
-						</select>
-					</td>
-					<td />
-				</tr>
-				<tr>
-					<td colspan="3">
-						<span class="txt-b txt-up">* <liferay-ui:message key="portal-ext" /><a class="help-link" href="/group/customer/kbase/-/knowledge_base/article/33142855" target="_blank"><img src="<%= themeDisplay.getPathThemeImages() + "/common/help.png" %>" /></a>:</span>
+									<%
+									List<ListType> envLFRTypes = productEntry.getAllVersionsListTypes();
 
-						<span id="<portlet:namespace />portalExtFilename">
+									String previousNamePrefix = StringPool.BLANK;
 
-							<%
-							AccountEnvironmentAttachment portalExtAccountEnvironmentAttachment = null;
+									for (ListType envLFRType : envLFRTypes) {
+										if ((envLFR != envLFRType.getListTypeId()) && ArrayUtil.contains(ProductEntryConstants.LIST_TYPES_DEPRECATED, envLFRType.getListTypeId())) {
+											continue;
+										}
 
-							if (accountEnvironment != null) {
-								portalExtAccountEnvironmentAttachment = AccountEnvironmentAttachmentLocalServiceUtil.fetchAccountEnvironmentAttachment(accountEnvironmentId, AccountEnvironmentAttachmentConstants.TYPE_PORTAL_EXT);
-							}
-							%>
+										String name = envLFRType.getName();
 
-							<c:if test="<%= portalExtAccountEnvironmentAttachment != null %>">
+										String namePrefix = name.substring(0, 3);
+									%>
+
+										<c:if test="<%= Validator.isNotNull(previousNamePrefix) && !previousNamePrefix.equals(namePrefix) %>">
+											<option disabled>--------</option>
+										</c:if>
+
+										<option <%= (envLFRType.getListTypeId() == envLFR) ? "selected" : "" %> value="<%= envLFRType.getListTypeId() %>"><%= LanguageUtil.get(pageContext, envLFRType.getName()) %></option>
+
+									<%
+										previousNamePrefix = namePrefix;
+									}
+									%>
+
+								</c:if>
+							</select>
+						</td>
+						<td>
+							<span class="txt-b txt-up">* <liferay-ui:message key="application-server" />:</span>
+
+							<select id="<portlet:namespace />envAS" name="<portlet:namespace />envAS">
+								<option value="0"></option>
+							</select>
+						</td>
+						<td>
+							<span class="txt-b txt-up">* <liferay-ui:message key="database" />:</span>
+
+							<select id="<portlet:namespace />envDB" name="<portlet:namespace />envDB">
+								<option value="0"></option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<span class="fl txt-b txt-up">* <liferay-ui:message key="operating-system" />:</span>
+
+							<div class="fl">
+								<select id="<portlet:namespace />envOS" name="<portlet:namespace />envOS" onChange="<portlet:namespace />selectEnvOS(this.value);">
+									<option value="0"></option>
+								</select>
+
+								<br />
+
+								<input class="<%= (envOS == TicketEntryConstants.ENV_OS_OTHER) ? "" : "aui-helper-hidden" %>" id="<portlet:namespace />envOSCustom" maxLength="<%= TicketInformationConstants.getMaxLength(TicketInformationConstants.FIELD_ENV_OS_CUSTOM) %>" name="<portlet:namespace />envOSCustom" type="text" value="<%= HtmlUtil.escapeAttribute(envOSCustom) %>" />
+							</div>
+						</td>
+						<td>
+							<span class="txt-b txt-up">* <liferay-ui:message key="java-virtual-machine" />:</span>
+
+							<select id="<portlet:namespace />envJVM" name="<portlet:namespace />envJVM">
+								<option value="0"></option>
+							</select>
+						</td>
+						<td />
+					</tr>
+					<tr>
+						<td colspan="3">
+							<span class="txt-b txt-up">* <liferay-ui:message key="portal-ext" /><a class="help-link" href="/group/customer/kbase/-/knowledge_base/article/33142855" target="_blank"><img src="<%= themeDisplay.getPathThemeImages() + "/common/help.png" %>" /></a>:</span>
+
+							<span id="<portlet:namespace />portalExtFilename">
 
 								<%
-								LiferayPortletURL accountEnvironmentAttachmentURL = PortletURLFactoryUtil.create(request, portletDisplay.getId(), layout.getPlid(), PortletRequest.RESOURCE_PHASE);
+								AccountEnvironmentAttachment portalExtAccountEnvironmentAttachment = null;
 
-								accountEnvironmentAttachmentURL.setCopyCurrentRenderParameters(false);
-								accountEnvironmentAttachmentURL.setParameter("accountEnvironmentAttachmentId", String.valueOf(portalExtAccountEnvironmentAttachment.getAccountEnvironmentAttachmentId()));
-								accountEnvironmentAttachmentURL.setResourceID("accountEnvironmentAttachment");
+								if (accountEnvironment != null) {
+									portalExtAccountEnvironmentAttachment = AccountEnvironmentAttachmentLocalServiceUtil.fetchAccountEnvironmentAttachment(accountEnvironmentId, AccountEnvironmentAttachmentConstants.TYPE_PORTAL_EXT);
+								}
 								%>
 
-								<a href="<%= accountEnvironmentAttachmentURL.toString() %>" target="_blank"><%= HtmlUtil.escape(portalExtAccountEnvironmentAttachment.getFileName()) %></a>
-							</c:if>
-						</span>
+								<c:if test="<%= portalExtAccountEnvironmentAttachment != null %>">
 
-						<input id="<portlet:namespace />portalExt" name="<portlet:namespace />portalExt" type="file" value="upload" />
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-						<span class="txt-b txt-up">* <liferay-ui:message key="patch-level" /><a class="help-link" href="/group/customer/kbase/-/knowledge_base/article/33142925" target="_blank"><img src="<%= themeDisplay.getPathThemeImages() + "/common/help.png" %>" /></a>:</span>
+									<%
+									LiferayPortletURL accountEnvironmentAttachmentURL = PortletURLFactoryUtil.create(request, portletDisplay.getId(), layout.getPlid(), PortletRequest.RESOURCE_PHASE);
 
-						<span id="<portlet:namespace />patchLevelFilename">
+									accountEnvironmentAttachmentURL.setCopyCurrentRenderParameters(false);
+									accountEnvironmentAttachmentURL.setParameter("accountEnvironmentAttachmentId", String.valueOf(portalExtAccountEnvironmentAttachment.getAccountEnvironmentAttachmentId()));
+									accountEnvironmentAttachmentURL.setResourceID("accountEnvironmentAttachment");
+									%>
 
-							<%
-							AccountEnvironmentAttachment patchLevelAccountEnvironmentAttachment = null;
+									<a href="<%= accountEnvironmentAttachmentURL.toString() %>" target="_blank"><%= HtmlUtil.escape(portalExtAccountEnvironmentAttachment.getFileName()) %></a>
+								</c:if>
+							</span>
 
-							if (accountEnvironment != null) {
-								patchLevelAccountEnvironmentAttachment = AccountEnvironmentAttachmentLocalServiceUtil.fetchAccountEnvironmentAttachment(accountEnvironmentId, AccountEnvironmentAttachmentConstants.TYPE_PATCH_LEVEL);
-							}
-							%>
+							<input id="<portlet:namespace />portalExt" name="<portlet:namespace />portalExt" type="file" value="upload" />
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<span class="txt-b txt-up">* <liferay-ui:message key="patch-level" /><a class="help-link" href="/group/customer/kbase/-/knowledge_base/article/33142925" target="_blank"><img src="<%= themeDisplay.getPathThemeImages() + "/common/help.png" %>" /></a>:</span>
 
-							<c:if test="<%= patchLevelAccountEnvironmentAttachment != null %>">
+							<span id="<portlet:namespace />patchLevelFilename">
 
 								<%
-								LiferayPortletURL accountEnvironmentAttachmentURL = PortletURLFactoryUtil.create(request, portletDisplay.getId(), layout.getPlid(), PortletRequest.RESOURCE_PHASE);
+								AccountEnvironmentAttachment patchLevelAccountEnvironmentAttachment = null;
 
-								accountEnvironmentAttachmentURL.setCopyCurrentRenderParameters(false);
-								accountEnvironmentAttachmentURL.setParameter("accountEnvironmentAttachmentId", String.valueOf(patchLevelAccountEnvironmentAttachment.getAccountEnvironmentAttachmentId()));
-								accountEnvironmentAttachmentURL.setResourceID("accountEnvironmentAttachment");
+								if (accountEnvironment != null) {
+									patchLevelAccountEnvironmentAttachment = AccountEnvironmentAttachmentLocalServiceUtil.fetchAccountEnvironmentAttachment(accountEnvironmentId, AccountEnvironmentAttachmentConstants.TYPE_PATCH_LEVEL);
+								}
 								%>
 
-								<a href="<%= accountEnvironmentAttachmentURL.toString() %>" target="_blank"><%= HtmlUtil.escape(patchLevelAccountEnvironmentAttachment.getFileName()) %></a>
-							</c:if>
-						</span>
+								<c:if test="<%= patchLevelAccountEnvironmentAttachment != null %>">
 
-						<input id="<portlet:namespace />patchLevel" name="<portlet:namespace />patchLevel" type="file" value="upload" />
-					</td>
-					<td align="right">
-						<input class="aui-button-input" onClick="javascript:<portlet:namespace />submit();" type="button" value="<liferay-ui:message key="save" />" />
-					</td>
-				</tr>
+									<%
+									LiferayPortletURL accountEnvironmentAttachmentURL = PortletURLFactoryUtil.create(request, portletDisplay.getId(), layout.getPlid(), PortletRequest.RESOURCE_PHASE);
+
+									accountEnvironmentAttachmentURL.setCopyCurrentRenderParameters(false);
+									accountEnvironmentAttachmentURL.setParameter("accountEnvironmentAttachmentId", String.valueOf(patchLevelAccountEnvironmentAttachment.getAccountEnvironmentAttachmentId()));
+									accountEnvironmentAttachmentURL.setResourceID("accountEnvironmentAttachment");
+									%>
+
+									<a href="<%= accountEnvironmentAttachmentURL.toString() %>" target="_blank"><%= HtmlUtil.escape(patchLevelAccountEnvironmentAttachment.getFileName()) %></a>
+								</c:if>
+							</span>
+
+							<input id="<portlet:namespace />patchLevel" name="<portlet:namespace />patchLevel" type="file" value="upload" />
+						</td>
+						<td align="right">
+							<input class="aui-button-input" onClick="javascript:<portlet:namespace />submit();" type="button" value="<liferay-ui:message key="save" />" />
+						</td>
+					</tr>
 				</table>
 			</div>
 		</aui:form>

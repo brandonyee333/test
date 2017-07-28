@@ -75,6 +75,7 @@
 				<input name="<portlet:namespace />accountEntryId" type="hidden" value="<%= accountEntryId %>" />
 
 				<liferay-ui:error exception="<%= AccountEnvironmentAttachmentException.class %>" message="please-upload-a-portal-ext-and-patch-level-file" />
+
 				<liferay-ui:error exception="<%= AccountEnvironmentAttachmentSizeException.class %>">
 
 					<%
@@ -102,12 +103,12 @@
 
 				<div class="edit-account-environment">
 					<div class="aui-helper-clearfix">
-						<div class="single-line fl">
+						<div class="fl single-line">
 							<div class="aui-w50 content-column">
 								<div class="content-column-content">
 									<span class="txt-b">*<liferay-ui:message key="name" />:</span>
 
-									<input id="<portlet:namespace />name" maxLength='<%= ModelHintsUtil.getMaxLength(AccountEnvironment.class.getName(), "name") %>' name="<portlet:namespace />name" type="text" value="<%= (accountEnvironment != null) ? HtmlUtil.escapeAttribute(accountEnvironment.getName()) : "" %>" />
+									<input id="<portlet:namespace />name" maxLength="<%= ModelHintsUtil.getMaxLength(AccountEnvironment.class.getName(), "name") %>" name="<portlet:namespace />name" type="text" value="<%= (accountEnvironment != null) ? HtmlUtil.escapeAttribute(accountEnvironment.getName()) : "" %>" />
 								</div>
 							</div>
 
@@ -157,10 +158,10 @@
 
 						<br />
 
-						<div class="single-line fl">
+						<div class="fl single-line">
 							<div class="aui-w33 content-column">
 								<div class="content-column-content">
-									<span class="txt-b" id="<portlet:namespace />portalVersion" title='<liferay-ui:message key="liferay-version" />'>*<liferay-ui:message key="lr" />:</span>
+									<span class="txt-b" id="<portlet:namespace />portalVersion" title="<liferay-ui:message key="liferay-version" />">*<liferay-ui:message key="lr" />:</span>
 
 									<select id="<portlet:namespace />envLFR" name="<portlet:namespace />envLFR" onChange="<portlet:namespace />selectPortalVersion(this.value, 0, '', 0, '', 0, '', 0, ''); <portlet:namespace />updateSupportMessage(this.value);">
 										<c:if test="<%= productEntry != null %>">
@@ -199,7 +200,7 @@
 
 							<div class="aui-w33 content-column">
 								<div class="content-column-content">
-									<span class="txt-b" title='<liferay-ui:message key="operating-system" />'>*<liferay-ui:message key="os" />:</span>
+									<span class="txt-b" title="<liferay-ui:message key="operating-system" />">*<liferay-ui:message key="os" />:</span>
 
 									<select id="<portlet:namespace />envOS" name="<portlet:namespace />envOS" onChange="<portlet:namespace />selectEnvOS(this.value);">
 										<option value="0"></option>
@@ -211,7 +212,7 @@
 
 							<div class="aui-w33 content-column">
 								<div class="content-column-content">
-									<span class="txt-b" title='<liferay-ui:message key="java-virtual-machine" />'>*<liferay-ui:message key="jvm" />:</span>
+									<span class="txt-b" title="<liferay-ui:message key="java-virtual-machine" />">*<liferay-ui:message key="jvm" />:</span>
 
 									<select id="<portlet:namespace />envJVM" name="<portlet:namespace />envJVM">
 										<option value="0"></option>
@@ -220,10 +221,10 @@
 							</div>
 						</div>
 
-						<div class="single-line fl">
+						<div class="fl single-line">
 							<div class="aui-w33 content-column">
 								<div class="content-column-content">
-									<span class="txt-b" title='<liferay-ui:message key="application-server" />'>*<liferay-ui:message key="as" />:</span>
+									<span class="txt-b" title="<liferay-ui:message key="application-server" />">*<liferay-ui:message key="as" />:</span>
 
 									<select id="<portlet:namespace />envAS" name="<portlet:namespace />envAS">
 										<option value="0"></option>
@@ -233,7 +234,7 @@
 
 							<div class="aui-w33 content-column">
 								<div class="content-column-content">
-									<span class="txt-b" title='<liferay-ui:message key="database" />'>*<liferay-ui:message key="db" />:</span>
+									<span class="txt-b" title="<liferay-ui:message key="database" />">*<liferay-ui:message key="db" />:</span>
 
 									<select id="<portlet:namespace />envDB" name="<portlet:namespace />envDB">
 										<option value="0"></option>
@@ -244,7 +245,7 @@
 
 						<br />
 
-						<div class="single-line fl">
+						<div class="fl single-line">
 							<div class="aui-w100 content-column">
 								<div class="content-column-content">
 									<span class="txt-b">*<liferay-ui:message key="portal-ext" /><a class="help-link" href="/group/customer/kbase/-/knowledge_base/article/33142855" target="_blank"><img src="<%= themeDisplay.getPathThemeImages() + "/common/help.png" %>" /></a>:</span>
@@ -278,7 +279,7 @@
 							</div>
 						</div>
 
-						<div class="single-line fl">
+						<div class="fl single-line">
 							<div class="aui-w100 content-column">
 								<div class="content-column-content">
 									<span class="txt-b">*<liferay-ui:message key="patch-level" /><a class="help-link" href="/group/customer/kbase/-/knowledge_base/article/33142925" target="_blank"><img src="<%= themeDisplay.getPathThemeImages() + "/common/help.png" %>" /></a>:</span>
@@ -312,7 +313,7 @@
 							</div>
 						</div>
 
-						<div class="single-line fl foot-details">
+						<div class="fl foot-details single-line">
 							<input class="aui-button-input fl" onClick="javascript:<portlet:namespace />cancel();" type="button" value="<liferay-ui:message key="cancel" />" />
 
 							<input class="aui-button-input fr" onClick="javascript:<portlet:namespace />submit();" type="button" value="<liferay-ui:message key='<%= (accountEnvironmentId == 0) ? "create" : "update" %>' />" />

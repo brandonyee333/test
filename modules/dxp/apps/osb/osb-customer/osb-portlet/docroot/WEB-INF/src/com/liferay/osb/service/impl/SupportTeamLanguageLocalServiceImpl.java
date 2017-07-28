@@ -14,12 +14,11 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.osb.model.SupportTeam;
 import com.liferay.osb.model.SupportTeamLanguage;
 import com.liferay.osb.service.base.SupportTeamLanguageLocalServiceBaseImpl;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.ArrayUtil;
 
 import java.util.List;
 
@@ -29,16 +28,15 @@ import java.util.List;
 public class SupportTeamLanguageLocalServiceImpl
 	extends SupportTeamLanguageLocalServiceBaseImpl {
 
-	public List<SupportTeamLanguage> getSupportTeamLanguages(long supportTeamId)
-		throws SystemException {
+	public List<SupportTeamLanguage> getSupportTeamLanguages(
+		long supportTeamId) {
 
 		return supportTeamLanguagePersistence.findBySupportTeamId(
 			supportTeamId);
 	}
 
 	public void setSupportTeamLanguageIds(
-			long supportTeamId, String[] languageIds)
-		throws SystemException {
+		long supportTeamId, String[] languageIds) {
 
 		List<SupportTeam> childSupportTeams =
 			supportTeamPersistence.findByParentSupportTeamId(supportTeamId);
@@ -61,9 +59,9 @@ public class SupportTeamLanguageLocalServiceImpl
 				supportTeamLanguagePersistence.remove(supportTeamLanguage);
 			}
 		}
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		for (String languageId : languageIds) {
@@ -75,7 +73,8 @@ public class SupportTeamLanguageLocalServiceImpl
 			supportTeamLanguage.setSupportTeamId(supportTeamId);
 			supportTeamLanguage.setLanguageId(languageId);
 
-			supportTeamLanguagePersistence.update(supportTeamLanguage, serviceContext);
+			supportTeamLanguagePersistence.update(
+				supportTeamLanguage, serviceContext);
 		}
 	}
 

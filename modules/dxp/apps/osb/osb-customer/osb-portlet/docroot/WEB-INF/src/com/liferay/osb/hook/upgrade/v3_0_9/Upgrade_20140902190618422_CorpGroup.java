@@ -30,9 +30,7 @@ public class Upgrade_20140902190618422_CorpGroup extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20140902190618422L;
 	}
@@ -59,6 +57,7 @@ public class Upgrade_20140902190618422_CorpGroup extends UpgradeProcess {
 	}
 
 }
+
 */
 
 }

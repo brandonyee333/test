@@ -14,16 +14,6 @@
 
 package com.liferay.osb.admin.servlet;
 
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.osb.util.OSBConstants;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.Base64;
-import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.model.Address;
-import com.liferay.portal.kernel.model.Company;
-import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.expando.kernel.exception.DuplicateColumnNameException;
 import com.liferay.expando.kernel.exception.NoSuchTableException;
 import com.liferay.expando.kernel.model.ExpandoColumn;
@@ -32,7 +22,15 @@ import com.liferay.expando.kernel.model.ExpandoTable;
 import com.liferay.expando.kernel.model.ExpandoTableConstants;
 import com.liferay.expando.kernel.service.ExpandoColumnLocalServiceUtil;
 import com.liferay.expando.kernel.service.ExpandoTableLocalServiceUtil;
-import com.liferay.expando.kernel.service.ExpandoValueLocalServiceUtil;
+import com.liferay.osb.util.OSBConstants;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Address;
+import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
+import com.liferay.portal.kernel.util.Base64;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.util.Encryptor;
 
 import java.security.SecureRandom;
@@ -289,7 +287,7 @@ public class AdminServletContextListenerExpandoHelper {
 	}
 
 	protected static String getOSBClientIdKey(long companyId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		try {
 			Security.addProvider(Encryptor.getProvider());

@@ -37,7 +37,6 @@ import com.liferay.osb.service.TicketWorkerLocalServiceUtil;
 import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
@@ -53,7 +52,7 @@ public class OSBTicketEntryPermission {
 	public static void check(
 			PermissionChecker permissionChecker, long ticketEntryId,
 			String actionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketEntry ticketEntry = TicketEntryLocalServiceUtil.getTicketEntry(
 			ticketEntryId);
@@ -64,7 +63,7 @@ public class OSBTicketEntryPermission {
 	public static void check(
 			PermissionChecker permissionChecker, TicketEntry ticketEntry,
 			String actionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		int type = getType(permissionChecker, ticketEntry, actionId);
 
@@ -76,7 +75,7 @@ public class OSBTicketEntryPermission {
 	public static boolean contains(
 			PermissionChecker permissionChecker, long ticketEntryId,
 			String actionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketEntry ticketEntry = TicketEntryLocalServiceUtil.getTicketEntry(
 			ticketEntryId);
@@ -85,9 +84,8 @@ public class OSBTicketEntryPermission {
 	}
 
 	public static boolean contains(
-			PermissionChecker permissionChecker, TicketEntry ticketEntry,
-			String actionId)
-		throws SystemException {
+		PermissionChecker permissionChecker, TicketEntry ticketEntry,
+		String actionId) {
 
 		int type = getType(permissionChecker, ticketEntry, actionId);
 
@@ -99,11 +97,10 @@ public class OSBTicketEntryPermission {
 	}
 
 	protected static int getType(
-			PermissionChecker permissionChecker, TicketEntry ticketEntry,
-			String actionId)
-		throws SystemException {
+		PermissionChecker permissionChecker, TicketEntry ticketEntry,
+		String actionId) {
 
-		List<SupportWorker> supportWorkers = new ArrayList<SupportWorker>();
+		List<SupportWorker> supportWorkers = new ArrayList<>();
 
 		try {
 			supportWorkers =

@@ -45,9 +45,7 @@ public class Upgrade_20160927140533746_LicenseKey extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20160927140533746L;
 	}
@@ -115,7 +113,7 @@ public class Upgrade_20160927140533746_LicenseKey extends UpgradeProcess {
 		if (!licenseKeys.isEmpty()) {
 			long firstLicenseKeySetId = licenseKeys.get(0).getLicenseKeySetId();
 
-			List<Long> licenseKeySetIds = new ArrayList<Long>();
+			List<Long> licenseKeySetIds = new ArrayList<>();
 
 			for (LicenseKey licenseKey : licenseKeys) {
 				boolean updateLicenseKey = false;
@@ -220,6 +218,7 @@ public class Upgrade_20160927140533746_LicenseKey extends UpgradeProcess {
 	}
 
 }
+
 */
 
 }

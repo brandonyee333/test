@@ -153,14 +153,14 @@ pageContext.setAttribute("searchURL", searchURL);
 	<c:if test="<%= consultantWorker %>">
 		<div class="aui-w25 content-column">
 			<div class="content-column-content left-column">
-				<a class="display-b callout-a paragraph" href="javascript:<portlet:namespace />searchTickets('myReported');">
+				<a class="callout-a display-b paragraph" href="javascript:<portlet:namespace />searchTickets('myReported');">
 					<div class="callout-content ha-c">
 						<div class="display-ib">
 							<div class="txt-b">
 								<liferay-ui:message key="my-reported-tickets" />
 							</div>
 
-							<div class="txt-h1 txt-b">
+							<div class="txt-b txt-h1">
 								<%= myReportedTicketsCount %>
 							</div>
 						</div>
@@ -172,14 +172,14 @@ pageContext.setAttribute("searchURL", searchURL);
 
 	<div class="aui-w<%= consultantWorker ? "25" : "33" %> content-column">
 		<div class="content-column-content <%= consultantWorker ? "middle" : "left" %>-column">
-			<a class="display-b callout-a paragraph" href="javascript:<portlet:namespace />searchTickets('<%= ticketWorker ? "myOpen" : "open" %>');">
+			<a class="callout-a display-b paragraph" href="javascript:<portlet:namespace />searchTickets('<%= ticketWorker ? "myOpen" : "open" %>');">
 				<div class="callout-content ha-c">
 					<div class="display-ib">
 						<div class="txt-b">
 							<liferay-ui:message key="my-open-tickets" />
 						</div>
 
-						<div class="txt-h1 txt-b">
+						<div class="txt-b txt-h1">
 							<%= openTicketsCount %>
 						</div>
 					</div>
@@ -190,14 +190,14 @@ pageContext.setAttribute("searchURL", searchURL);
 
 	<div class="aui-w<%= consultantWorker ? "25" : "33" %> content-column">
 		<div class="content-column-content middle-column">
-			<a class="display-b callout-a paragraph" href="javascript:<portlet:namespace />searchTickets('<%= ticketWorker ? "myNeedResponse" : "answered" %>');">
+			<a class="callout-a display-b paragraph" href="javascript:<portlet:namespace />searchTickets('<%= ticketWorker ? "myNeedResponse" : "answered" %>');">
 				<div class="callout-content ha-c">
 					<div class="display-ib">
 						<div class="txt-b">
 							<liferay-ui:message key="need-response" />
 						</div>
 
-						<div class="txt-h1 txt-b">
+						<div class="txt-b txt-h1">
 							<%= needResponseCount %>
 						</div>
 					</div>
@@ -210,14 +210,14 @@ pageContext.setAttribute("searchURL", searchURL);
 		<div class="content-column-content right-column">
 			<c:choose>
 				<c:when test="<%= ticketWorker %>">
-					<a class="display-b callout-a paragraph" href="javascript:<portlet:namespace />searchTickets('inProgress');">
+					<a class="callout-a display-b paragraph" href="javascript:<portlet:namespace />searchTickets('inProgress');">
 						<div class="callout-content ha-c">
 							<div class="display-ib">
 								<div class="txt-b">
 									<liferay-ui:message key="in-progress" />
 								</div>
 
-								<div class="txt-h1 txt-b">
+								<div class="txt-b txt-h1">
 									<%= inProgressCount %>
 								</div>
 							</div>
@@ -225,14 +225,14 @@ pageContext.setAttribute("searchURL", searchURL);
 					</a>
 				</c:when>
 				<c:otherwise>
-					<a class="display-b callout-a paragraph" href="javascript:<portlet:namespace />searchTickets('feedbacksWaiting');">
+					<a class="callout-a display-b paragraph" href="javascript:<portlet:namespace />searchTickets('feedbacksWaiting');">
 						<div class="callout-content ha-c">
 							<div class="display-ib">
 								<div class="txt-b">
 									<liferay-ui:message key="feedback-waiting" />
 								</div>
 
-								<div class="txt-h1 txt-b">
+								<div class="txt-b txt-h1">
 									<%= feedbacksWaitingCount %>
 								</div>
 							</div>
@@ -332,7 +332,6 @@ pageContext.setAttribute("searchURL", searchURL);
 				<liferay-ui:search-container-column-text
 					cssClass='<%= rowCssClass + " ticket-icon" %>'
 				>
-
 					<c:choose>
 						<c:when test="<%= ticketEntry.getStatus() == TicketEntryConstants.STATUS_CLOSED %>">
 
@@ -443,7 +442,6 @@ pageContext.setAttribute("searchURL", searchURL);
 								<span class="ticket-label">
 									<liferay-ui:message key="due" />:
 								</span>
-
 								<span>
 									<c:choose>
 										<c:when test="<%= ticketEntry.getComponent() != TicketEntryConstants.COMPONENT_LIFERAY_DEVELOPER_STUDIO %>">
@@ -461,7 +459,6 @@ pageContext.setAttribute("searchURL", searchURL);
 								<span class="ticket-label">
 									<liferay-ui:message key="created" />:
 								</span>
-
 								<span>
 									<%= shortDateFormatDate.format(ticketEntry.getCreateDate()) %>
 								</span>
@@ -477,7 +474,7 @@ pageContext.setAttribute("searchURL", searchURL);
 
 					<%
 					int[] userVisibilities = TicketEntryLocalServiceUtil.getUserVisibilities(user.getUserId(), ticketEntry.getTicketEntryId());
-		 			%>
+					%>
 
 					<c:if test="<%= ticketEntry.getTicketAttachmentsCount(userVisibilities) > 0 %>">
 						<liferay-ui:icon

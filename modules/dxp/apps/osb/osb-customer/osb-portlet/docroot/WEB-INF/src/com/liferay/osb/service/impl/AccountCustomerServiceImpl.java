@@ -20,7 +20,6 @@ import com.liferay.osb.service.base.AccountCustomerServiceBaseImpl;
 import com.liferay.osb.service.permission.OSBAccountEntryPermission;
 import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 import com.liferay.portal.kernel.model.User;
@@ -39,7 +38,7 @@ public class AccountCustomerServiceImpl extends AccountCustomerServiceBaseImpl {
 	public void addAccountCustomers(
 			long[] userIds, long accountEntryId, int[] roles,
 			int[] notifications)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OSBAccountEntryPermission.check(
 			getPermissionChecker(), accountEntryId,
@@ -50,7 +49,7 @@ public class AccountCustomerServiceImpl extends AccountCustomerServiceBaseImpl {
 	}
 
 	public void deleteAccountCustomers(long[] userIds, long accountEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OSBAccountEntryPermission.check(
 			getPermissionChecker(), accountEntryId,
@@ -62,7 +61,7 @@ public class AccountCustomerServiceImpl extends AccountCustomerServiceBaseImpl {
 
 	@JSONWebService
 	public List<String> getCorpProjectAccountCustomerUUIDs(long corpProjectId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		AccountEntry accountEntry =
 			accountEntryPersistence.fetchByCorpProjectId(corpProjectId);
@@ -79,7 +78,7 @@ public class AccountCustomerServiceImpl extends AccountCustomerServiceBaseImpl {
 			accountCustomerPersistence.findByAccountEntryId(
 				accountEntry.getAccountEntryId());
 
-		List<String> uuids = new ArrayList<String>(accountCustomers.size());
+		List<String> uuids = new ArrayList<>(accountCustomers.size());
 
 		for (AccountCustomer accountCustomer : accountCustomers) {
 			User user = userLocalService.getUser(accountCustomer.getUserId());
@@ -91,7 +90,7 @@ public class AccountCustomerServiceImpl extends AccountCustomerServiceBaseImpl {
 	}
 
 	public void toggleNotifications(long accountCustomerId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		AccountCustomer accountCustomer =
 			accountCustomerLocalService.getAccountCustomer(accountCustomerId);

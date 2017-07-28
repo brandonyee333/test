@@ -14,15 +14,14 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.exception.AccountProjectNameException;
 import com.liferay.osb.model.AccountInformation;
 import com.liferay.osb.model.AccountProject;
 import com.liferay.osb.service.base.AccountProjectLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -36,7 +35,7 @@ public class AccountProjectLocalServiceImpl
 	extends AccountProjectLocalServiceBaseImpl {
 
 	public AccountProject deleteAccountProject(long accountProjectId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		// Account project
 
@@ -57,7 +56,7 @@ public class AccountProjectLocalServiceImpl
 	}
 
 	public AccountProject getAccountProject(long accountProjectId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		AccountProject accountProject =
 			accountProjectPersistence.findByPrimaryKey(accountProjectId);
@@ -71,14 +70,11 @@ public class AccountProjectLocalServiceImpl
 		return accountProject;
 	}
 
-	public List<AccountProject> getAccountProjects(long accountEntryId)
-		throws SystemException {
-
+	public List<AccountProject> getAccountProjects(long accountEntryId) {
 		List<AccountProject> accountProjects =
 			accountProjectPersistence.findByAccountEntryId(accountEntryId);
 
-		Map<Long, AccountProject> accountProjectsMap =
-			new HashMap<Long, AccountProject>();
+		Map<Long, AccountProject> accountProjectsMap = new HashMap<>();
 
 		for (AccountProject accountProject : accountProjects) {
 			accountProjectsMap.put(
@@ -106,7 +102,7 @@ public class AccountProjectLocalServiceImpl
 	public AccountProject updateAccountProject(
 			long userId, long accountProjectId, long accountEntryId,
 			String name, Map<Integer, String> data)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 
@@ -131,9 +127,9 @@ public class AccountProjectLocalServiceImpl
 		accountProject.setModifiedDate(new Date());
 		accountProject.setAccountEntryId(accountEntryId);
 		accountProject.setName(name);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		accountProjectPersistence.update(accountProject, serviceContext);

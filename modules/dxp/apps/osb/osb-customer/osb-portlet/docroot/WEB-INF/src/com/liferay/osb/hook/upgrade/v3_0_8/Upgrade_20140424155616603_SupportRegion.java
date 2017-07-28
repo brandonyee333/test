@@ -24,16 +24,13 @@ import com.liferay.osb.model.impl.SupportRegionModelImpl;
 /**
  * @author Brent Krone-Schmidt
  */
-public class Upgrade_20140424155616603_SupportRegion
-	extends UpgradeProcess {
+public class Upgrade_20140424155616603_SupportRegion extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20140424155616603L;
 	}
@@ -85,6 +82,7 @@ public class Upgrade_20140424155616603_SupportRegion
 	}
 
 }
+
 */
 
 }

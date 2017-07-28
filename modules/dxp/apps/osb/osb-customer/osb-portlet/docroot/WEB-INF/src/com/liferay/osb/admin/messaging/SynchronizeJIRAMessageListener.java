@@ -14,9 +14,9 @@
 
 package com.liferay.osb.admin.messaging;
 
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.PortalUtil;
 /* TODO update JIRA integration
 import com.liferay.jira.service.JIRATicketLocalServiceUtil;
 */
@@ -60,6 +60,7 @@ public class SynchronizeJIRAMessageListener extends BaseMessageListener {
 		String status = _getStatus(message);
 
 // TODO remove temporary JIRA integration
+
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 		if (Validator.isNotNull(jiraTicketKey)) {
@@ -196,7 +197,7 @@ public class SynchronizeJIRAMessageListener extends BaseMessageListener {
 	}
 
 	private Map<String, Object> _getCustomFields(Message message) {
-		Map<String, Object> customFields = new HashMap<String, Object>();
+		Map<String, Object> customFields = new HashMap<>();
 
 		customFields.put("components", _getComponents(message));
 
@@ -225,9 +226,7 @@ public class SynchronizeJIRAMessageListener extends BaseMessageListener {
 		return customFields;
 	}
 
-	private String _getDescription(Message message)
-		throws PortalException, SystemException {
-
+	private String _getDescription(Message message) throws PortalException {
 		String displayId = message.getString("displayId");
 
 		String layoutFullURL = PortalUtil.getLayoutFullURL(
@@ -274,7 +273,7 @@ public class SynchronizeJIRAMessageListener extends BaseMessageListener {
 		else if ((escalationLevel ==
 					TicketEntryConstants.ESCALATION_LEVEL_P1) &&
 				 (supportResponseSupportLevel ==
-				 	SupportResponseConstants.SUPPORT_LEVEL_PLATINUM)) {
+					 SupportResponseConstants.SUPPORT_LEVEL_PLATINUM)) {
 
 			return "Partner - Platinum LESA Ticket";
 		}
@@ -311,11 +310,13 @@ public class SynchronizeJIRAMessageListener extends BaseMessageListener {
 		sb.append(" | REOPENED')");
 
 // TODO remove temporary JIRA integration
+
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 /* TODO update JIRA integration
 		JSONObject jsonObject = JIRATicketLocalServiceUtil.getJIRATickets(
 			sb.toString());
+
 */
 
 		JSONArray jsonArray = jsonObject.getJSONArray("issues");
@@ -374,6 +375,7 @@ public class SynchronizeJIRAMessageListener extends BaseMessageListener {
 
 	private String _getStatus(JSONObject jsonObject, String status) {
 		JSONObject fieldsJSONObject = jsonObject.getJSONObject("fields");
+
 		JSONObject statusJSONObject = fieldsJSONObject.getJSONObject("status");
 
 		String curStatus = statusJSONObject.getString("name");
@@ -438,6 +440,7 @@ public class SynchronizeJIRAMessageListener extends BaseMessageListener {
 
 	private String _getSummary(JSONObject jsonObject, String status) {
 		JSONObject fieldsJSONObject = jsonObject.getJSONObject("fields");
+
 		JSONObject statusJSONObject = fieldsJSONObject.getJSONObject("status");
 
 		String curStatus = statusJSONObject.getString("name");
@@ -489,7 +492,7 @@ public class SynchronizeJIRAMessageListener extends BaseMessageListener {
 		return jsonArray;
 	}
 
-	private static Format _dateFormat =
+	private static final Format _dateFormat =
 		FastDateFormatFactoryUtil.getSimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
 
 }

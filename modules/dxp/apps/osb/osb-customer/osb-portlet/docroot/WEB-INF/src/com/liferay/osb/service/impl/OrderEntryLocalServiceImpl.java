@@ -14,10 +14,6 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.Time;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.exception.NoSuchAccountEntryException;
 import com.liferay.osb.exception.NoSuchOrderEntryException;
 import com.liferay.osb.exception.OrderEntryActualStartDateException;
@@ -40,17 +36,20 @@ import com.liferay.osb.util.SalesforceConstants;
 import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
 import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.Constants;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Time;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
 
 import java.io.Serializable;
 
@@ -73,7 +72,7 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 			CorpProject corpProject, PartnerEntry partnerEntry, Address address,
 			AccountWorker accountWorker, List<OrderEntry> orderEntries,
 			ServiceContext serviceContext)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		AccountEntry oldAccountEntry = accountEntryPersistence.findByPrimaryKey(
 			accountEntry.getAccountEntryId());
@@ -118,12 +117,14 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 			oldAccountEntry.getEWSADossieraProjectKey());
 
 		/* TODO implement corp project dependency
+
 		// Corp project
 
 		if (corpProject != null) {
 			corpProjectLocalService.updateCorpProject(
 				corpProject.getCorpProjectId(), corpProject.getName());
 		}
+
 		**/
 
 		// Account worker
@@ -139,7 +140,7 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 
 		// Order entries
 
-		List<OrderEntry> addedOrderEntries = new ArrayList<OrderEntry>();
+		List<OrderEntry> addedOrderEntries = new ArrayList<>();
 
 		for (OrderEntry orderEntry : orderEntries) {
 			Calendar startCal = Calendar.getInstance();
@@ -158,17 +159,14 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 
 		// Workflow
 
-		HashMap<String, Serializable> workflowContext =
-			new HashMap<String, Serializable>();
+		HashMap<String, Serializable> workflowContext = new HashMap<>();
 
 		workflowContext.put(
 			WorkflowConstants.CONTEXT_ACCOUNT_ENTRY_NAME,
 			accountEntry.getName());
 
-		TreeMap<String, String> oldAccountEntryAttributes =
-			new TreeMap<String, String>();
-		TreeMap<String, String> newAccountEntryAttributes =
-			new TreeMap<String, String>();
+		TreeMap<String, String> oldAccountEntryAttributes = new TreeMap<>();
+		TreeMap<String, String> newAccountEntryAttributes = new TreeMap<>();
 
 		if (partnerEntry != null) {
 			if (oldAccountEntry.getPartnerEntryId() !=
@@ -277,7 +275,7 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 			int actualStartDateYear, int status,
 			String salesforceOpportunityKey,
 			List<OfferingEntry> offeringEntries)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		// Order entry
 
@@ -315,9 +313,9 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 		orderEntry.setProrated(prorated);
 		orderEntry.setActualStartDate(actualStartDate);
 		orderEntry.setStatus(status);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		orderEntryPersistence.update(orderEntry, serviceContext);
@@ -356,7 +354,7 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 
 	@Override
 	public OrderEntry deleteOrderEntry(long orderEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OrderEntry orderEntry = orderEntryPersistence.findByPrimaryKey(
 			orderEntryId);
@@ -366,7 +364,7 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 
 	@Override
 	public OrderEntry deleteOrderEntry(OrderEntry orderEntry)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		// Order entry
 
@@ -393,15 +391,11 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 		return orderEntry;
 	}
 
-	public List<OrderEntry> getAccountEntryOrderEntries(long accountEntryId)
-		throws SystemException {
-
+	public List<OrderEntry> getAccountEntryOrderEntries(long accountEntryId) {
 		return orderEntryPersistence.findByAccountEntryId(accountEntryId);
 	}
 
-	public OrderEntry getOrderEntry(String uuid)
-		throws PortalException, SystemException {
-
+	public OrderEntry getOrderEntry(String uuid) throws PortalException {
 		List<OrderEntry> orderEntries = orderEntryPersistence.findByUuid(uuid);
 
 		if (orderEntries.isEmpty()) {
@@ -414,7 +408,7 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 
 	public OrderEntry renewOrderEntry(
 			long userId, long orderEntryId, int renewCount)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		Date now = new Date();
@@ -423,9 +417,9 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 			orderEntryId);
 
 		orderEntry.setRenewCount(renewCount);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		orderEntryPersistence.update(orderEntry, serviceContext);
@@ -480,21 +474,19 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 	}
 
 	public List<OrderEntry> search(
-			Long createUserId, int createDateGTDay, int createDateGTMonth,
-			int createDateGTYear, int createDateLTDay, int createDateLTMonth,
-			int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
-			int modifiedDateGTMonth, int modifiedDateGTYear,
-			int modifiedDateLTDay, int modifiedDateLTMonth,
-			int modifiedDateLTYear, Long accountEntryId,
-			String purchaseOrderKey, int[] statuses, int startDateGTDay,
-			int startDateGTMonth, int startDateGTYear, int startDateLTDay,
-			int startDateLTMonth, int startDateLTYear, Boolean prorated,
-			int actualStartDateGTDay, int actualStartDateGTMonth,
-			int actualStartDateGTYear, int actualStartDateLTDay,
-			int actualStartDateLTMonth, int actualStartDateLTYear,
-			LinkedHashMap<String, Object> params, boolean andOperator,
-			int start, int end, OrderByComparator obc)
-		throws SystemException {
+		Long createUserId, int createDateGTDay, int createDateGTMonth,
+		int createDateGTYear, int createDateLTDay, int createDateLTMonth,
+		int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
+		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
+		int modifiedDateLTMonth, int modifiedDateLTYear, Long accountEntryId,
+		String purchaseOrderKey, int[] statuses, int startDateGTDay,
+		int startDateGTMonth, int startDateGTYear, int startDateLTDay,
+		int startDateLTMonth, int startDateLTYear, Boolean prorated,
+		int actualStartDateGTDay, int actualStartDateGTMonth,
+		int actualStartDateGTYear, int actualStartDateLTDay,
+		int actualStartDateLTMonth, int actualStartDateLTYear,
+		LinkedHashMap<String, Object> params, boolean andOperator, int start,
+		int end, OrderByComparator obc) {
 
 		Date createDateGT = PortalUtil.getDate(
 			createDateGTMonth, createDateGTDay, createDateGTYear);
@@ -523,29 +515,26 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 	}
 
 	public List<OrderEntry> search(
-			String keywords, LinkedHashMap<String, Object> params, int start,
-			int end, OrderByComparator obc)
-		throws SystemException {
+		String keywords, LinkedHashMap<String, Object> params, int start,
+		int end, OrderByComparator obc) {
 
 		return orderEntryFinder.findByKeywords(
 			keywords, params, start, end, obc);
 	}
 
 	public int searchCount(
-			Long createUserId, int createDateGTDay, int createDateGTMonth,
-			int createDateGTYear, int createDateLTDay, int createDateLTMonth,
-			int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
-			int modifiedDateGTMonth, int modifiedDateGTYear,
-			int modifiedDateLTDay, int modifiedDateLTMonth,
-			int modifiedDateLTYear, Long accountEntryId,
-			String purchaseOrderKey, int[] statuses, int startDateGTDay,
-			int startDateGTMonth, int startDateGTYear, int startDateLTDay,
-			int startDateLTMonth, int startDateLTYear, Boolean prorated,
-			int actualStartDateGTDay, int actualStartDateGTMonth,
-			int actualStartDateGTYear, int actualStartDateLTDay,
-			int actualStartDateLTMonth, int actualStartDateLTYear,
-			LinkedHashMap<String, Object> params, boolean andOperator)
-		throws SystemException {
+		Long createUserId, int createDateGTDay, int createDateGTMonth,
+		int createDateGTYear, int createDateLTDay, int createDateLTMonth,
+		int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
+		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
+		int modifiedDateLTMonth, int modifiedDateLTYear, Long accountEntryId,
+		String purchaseOrderKey, int[] statuses, int startDateGTDay,
+		int startDateGTMonth, int startDateGTYear, int startDateLTDay,
+		int startDateLTMonth, int startDateLTYear, Boolean prorated,
+		int actualStartDateGTDay, int actualStartDateGTMonth,
+		int actualStartDateGTYear, int actualStartDateLTDay,
+		int actualStartDateLTMonth, int actualStartDateLTYear,
+		LinkedHashMap<String, Object> params, boolean andOperator) {
 
 		Date createDateGT = PortalUtil.getDate(
 			createDateGTMonth, createDateGTDay, createDateGTYear);
@@ -574,8 +563,7 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 	}
 
 	public int searchCount(
-			String keywords, LinkedHashMap<String, Object> params)
-		throws SystemException {
+		String keywords, LinkedHashMap<String, Object> params) {
 
 		return orderEntryFinder.countByKeywords(keywords, params);
 	}
@@ -587,7 +575,7 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 			int actualStartDateDay, int actualStartDateYear,
 			String salesforceOpportunityKey,
 			List<OfferingEntry> offeringEntries)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 
@@ -616,9 +604,9 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 		orderEntry.setStartDate(startDate);
 		orderEntry.setProrated(prorated);
 		orderEntry.setActualStartDate(actualStartDate);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		orderEntryPersistence.update(orderEntry, serviceContext);
@@ -717,7 +705,7 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 	public OrderEntry updateStatus(
 			long userId, long orderEntryId, int status,
 			ServiceContext serviceContext)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		Date now = new Date();
@@ -732,7 +720,7 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 		orderEntry.setStatusByUserId(userId);
 		orderEntry.setStatusByUserName(user.getFullName());
 		orderEntry.setStatusDate(serviceContext.getModifiedDate(now));
-		
+
 		//TODO implement serviceContext how needed
 
 		orderEntry = orderEntryPersistence.update(orderEntry, serviceContext);
@@ -782,7 +770,7 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 	protected void validate(
 			long orderEntryId, long accountEntryId,
 			String salesforceOpportunityKey)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (orderEntryId > 0) {
 			OrderEntry orderEntry = orderEntryPersistence.findByPrimaryKey(

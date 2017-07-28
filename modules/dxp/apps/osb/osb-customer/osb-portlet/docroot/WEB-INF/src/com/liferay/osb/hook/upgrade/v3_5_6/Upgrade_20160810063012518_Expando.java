@@ -41,9 +41,7 @@ public class Upgrade_20160810063012518_Expando extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20160810063012518L;
 	}
@@ -104,6 +102,7 @@ public class Upgrade_20160810063012518_Expando extends UpgradeProcess {
 	}
 
 }
+
 */
 
 }

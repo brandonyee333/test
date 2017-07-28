@@ -84,7 +84,7 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 	<liferay-ui:error exception="<%= TicketSolutionBodyException.class %>" message="please-enter-a-valid-issue-solution" />
 	<liferay-ui:error exception="<%= TicketSolutionSummaryException.class %>" message="please-enter-a-valid-issue-summary" />
 
-	<div class="aui-w100 unit solution-details">
+	<div class="aui-w100 solution-details unit">
 		<h1>
 			<liferay-ui:message key="solution-proposed-details" />
 		</h1>
@@ -125,7 +125,7 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 						<liferay-util:include page="/support/2/common/ticket_attachment_upload.jsp" servletContext="<%= application %>">
 							<liferay-util:param name="cssClass" value="aui-helper-clearfix file-container" />
 							<liferay-util:param name="fieldName" value='<%= "file" + fileIndex %>' />
-							<liferay-util:param name="label" value='<%= LanguageUtil.get(locale, "file") + StringPool.SPACE + fileIndex %>' />
+							<liferay-util:param name="label" value='<%= LanguageUtil.get(request, "file") + StringPool.SPACE + fileIndex %>' />
 							<liferay-util:param name="ticketAttachmentId" value="<%= String.valueOf(fileAttachmentIds[fileIndex - 1]) %>" />
 							<liferay-util:param name="translate" value="<%= String.valueOf(Boolean.FALSE) %>" />
 						</liferay-util:include>
@@ -216,7 +216,7 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 						for (int curSubcomponent : subcomponents) {
 						%>
 
-							<option <%= (curSubcomponent == subcomponent) ? "selected" : StringPool.BLANK %> value="<%= curSubcomponent %>"><%= LanguageUtil.get(locale, TicketEntryConstants.getSubcomponentLabel(curSubcomponent)) %></option>
+							<option <%= (curSubcomponent == subcomponent) ? "selected" : StringPool.BLANK %> value="<%= curSubcomponent %>"><%= LanguageUtil.get(request, TicketEntryConstants.getSubcomponentLabel(curSubcomponent)) %></option>
 
 						<%
 						}

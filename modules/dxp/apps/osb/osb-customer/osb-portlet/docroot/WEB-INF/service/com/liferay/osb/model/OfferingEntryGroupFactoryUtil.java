@@ -16,7 +16,6 @@ package com.liferay.osb.model;
 
 import com.liferay.osb.util.comparator.OfferingEntryGroupComparator;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,7 +30,7 @@ public class OfferingEntryGroupFactoryUtil {
 
 	public static OfferingEntryGroup createOfferingEntryGroup(
 			List<OfferingEntry> offeringEntries)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OfferingEntryGroup offeringEntryGroup = new OfferingEntryGroup();
 
@@ -44,11 +43,10 @@ public class OfferingEntryGroupFactoryUtil {
 
 	public static Map<String, OfferingEntryGroup> createOfferingEntryGroupMap(
 			List<OfferingEntry> offeringEntries)
-		throws PortalException, SystemException {
+		throws PortalException {
 
-		Map<String, OfferingEntryGroup> offeringEntryGroupsMap =
-			new TreeMap<String, OfferingEntryGroup>(
-				new OfferingEntryGroupComparator());
+		Map<String, OfferingEntryGroup> offeringEntryGroupsMap = new TreeMap<>(
+			new OfferingEntryGroupComparator());
 
 		processOfferingEntries(offeringEntryGroupsMap, offeringEntries);
 
@@ -57,24 +55,23 @@ public class OfferingEntryGroupFactoryUtil {
 
 	public static List<OfferingEntryGroup> createOfferingEntryGroups(
 			List<OrderEntry> orderEntries)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		Map<String, OfferingEntryGroup> offeringEntryGroupsMap =
-			new HashMap<String, OfferingEntryGroup>();
+			new HashMap<>();
 
 		for (OrderEntry orderEntry : orderEntries) {
 			processOfferingEntries(
 				offeringEntryGroupsMap, orderEntry.getOfferingEntries());
 		}
 
-		return new ArrayList<OfferingEntryGroup>(
-			offeringEntryGroupsMap.values());
+		return new ArrayList<>(offeringEntryGroupsMap.values());
 	}
 
 	protected static void processOfferingEntries(
 			Map<String, OfferingEntryGroup> offeringEntryGroupsMap,
 			List<OfferingEntry> offeringEntries)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		for (OfferingEntry offeringEntry : offeringEntries) {
 			String key = offeringEntry.getKey();

@@ -14,14 +14,13 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.exception.AccountLinkURLException;
 import com.liferay.osb.model.AccountLink;
 import com.liferay.osb.service.base.AccountLinkLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Date;
 import java.util.List;
@@ -33,7 +32,7 @@ public class AccountLinkLocalServiceImpl
 	extends AccountLinkLocalServiceBaseImpl {
 
 	public void addAccountLinks(long userId, long accountEntryId, String[] urls)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		Date now = new Date();
@@ -52,23 +51,21 @@ public class AccountLinkLocalServiceImpl
 			accountLink.setCreateDate(now);
 			accountLink.setAccountEntryId(accountEntryId);
 			accountLink.setUrl(url);
-			
+
 			//TODO implement serviceContext how needed
-			
+
 			ServiceContext serviceContext = new ServiceContext();
 
 			accountLinkPersistence.update(accountLink, serviceContext);
 		}
 	}
 
-	public List<AccountLink> getAccountLinks(long accountEntryId)
-		throws SystemException {
-
+	public List<AccountLink> getAccountLinks(long accountEntryId) {
 		return accountLinkPersistence.findByAccountEntryId(accountEntryId);
 	}
 
 	protected void validate(long accountEntryId, String[] urls)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		accountEntryPersistence.findByPrimaryKey(accountEntryId);
 

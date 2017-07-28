@@ -154,17 +154,17 @@ if (!supportTeams.isEmpty() || RoleLocalServiceUtil.hasUserRole(user.getUserId()
 
 	function <portlet:namespace />columnSort(orderByCol, curOrderByCol, orderByType) {
 		if (orderByCol != curOrderByCol) {
-			 document.getElementById('<portlet:namespace />orderByCol').value = orderByCol;
-			 document.getElementById('<portlet:namespace />orderByType').value = 'asc';
+			document.getElementById('<portlet:namespace />orderByCol').value = orderByCol;
+			document.getElementById('<portlet:namespace />orderByType').value = 'asc';
 		}
 		else {
 			if (orderByType == 'asc') {
 				document.getElementById('<portlet:namespace />orderByCol').value = orderByCol;
-			 	document.getElementById('<portlet:namespace />orderByType').value = 'desc';
+				document.getElementById('<portlet:namespace />orderByType').value = 'desc';
 			}
 			else {
 				document.getElementById('<portlet:namespace />orderByCol').value = '';
-			 	document.getElementById('<portlet:namespace />orderByType').value = '';
+				document.getElementById('<portlet:namespace />orderByType').value = '';
 			}
 		}
 

@@ -36,9 +36,7 @@ public class Upgrade_20141024135500277_DDLRecordSet extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20141024135500277L;
 	}
@@ -90,6 +88,7 @@ public class Upgrade_20141024135500277_DDLRecordSet extends UpgradeProcess {
 			"[0-9]{4})";
 
 }
+
 */
 
 }

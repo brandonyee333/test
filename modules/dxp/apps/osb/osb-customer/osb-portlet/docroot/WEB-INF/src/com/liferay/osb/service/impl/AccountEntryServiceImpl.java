@@ -21,11 +21,10 @@ import com.liferay.osb.service.permission.OSBAccountEntryPermission;
 import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
-import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -38,7 +37,7 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 
 	@JSONWebService
 	public AccountEntry fetchCorpProjectAccountEntry(long corpProjectId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		AccountEntry accountEntry =
 			accountEntryPersistence.fetchByCorpProjectId(corpProjectId);
@@ -55,7 +54,7 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 	}
 
 	public AccountEntry getAccountEntry(long accountEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OSBAccountEntryPermission.check(
 			getPermissionChecker(), accountEntryId, ActionKeys.VIEW);
@@ -65,7 +64,7 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 
 	@JSONWebService
 	public AccountEntry getAccountEntryByCode(String code)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		AccountEntry accountEntry =
 			accountEntryLocalService.getAccountEntryByCode(code);
@@ -78,10 +77,9 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 	}
 
 	public List<AccountEntry> getSecurityPatchAccountEntries(String portletId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
-		LinkedHashMap<String, Object> params =
-			new LinkedHashMap<String, Object>();
+		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
 		addAccountMembershipParams(params);
 
@@ -101,7 +99,7 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 			String street, Long countryId, Long regionId, String city,
 			String zip, LinkedHashMap<String, Object> params,
 			boolean andOperator, int start, int end, OrderByComparator obc)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		addAccountMembershipParams(params);
 
@@ -119,7 +117,7 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 	public List<AccountEntry> search(
 			String keywords, LinkedHashMap<String, Object> params, int start,
 			int end, OrderByComparator obc)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		addAccountMembershipParams(params);
 
@@ -128,7 +126,7 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 	}
 
 	public List<AccountEntry> search(String name, String code)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (organizationLocalService.hasUserOrganization(
 				getUserId(), OSBConstants.ORGANIZATION_LIFERAY_INC_ID)) {
@@ -152,7 +150,7 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 			String street, Long countryId, Long regionId, String city,
 			String zip, LinkedHashMap<String, Object> params,
 			boolean andOperator)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		addAccountMembershipParams(params);
 
@@ -168,7 +166,7 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 
 	public int searchCount(
 			String keywords, LinkedHashMap<String, Object> params)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		addAccountMembershipParams(params);
 
@@ -184,7 +182,7 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 			String street1, String street2, String street3, String city,
 			String zip, long regionId, long countryId,
 			String ewsaDossieraProjectKey)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OSBAccountEntryPermission.check(
 			getPermissionChecker(), accountEntryId,
@@ -200,7 +198,7 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 
 	public AccountEntry updateInstructions(
 			long accountEntryId, String instructions)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OSBAccountEntryPermission.check(
 			getPermissionChecker(), accountEntryId,
@@ -211,7 +209,7 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 	}
 
 	public AccountEntry updateTier(long accountEntryId, int tier)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OSBAccountEntryPermission.check(
 			getPermissionChecker(), accountEntryId,
@@ -223,12 +221,12 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 
 	protected void addAccountMembershipParams(
 			LinkedHashMap<String, Object> params)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (!organizationLocalService.hasUserOrganization(
 				getUserId(), OSBConstants.ORGANIZATION_LIFERAY_INC_ID)) {
 
-			params.put("accountEntryMembership", new Long(getUserId()));
+			params.put("accountEntryMembership", Long.valueOf(getUserId()));
 			params.put("status", AccountEntryConstants.STATUSES_ACTIVE);
 		}
 	}

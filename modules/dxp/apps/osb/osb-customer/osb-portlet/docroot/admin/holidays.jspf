@@ -57,7 +57,6 @@
 				<span class="expand" id="<portlet:namespace />expand_<%= holidayCalendar.getHolidayCalendarId() %>">
 					<liferay-ui:icon image="../arrows/01_plus" label="<%= true %>" message="expand" url='<%= "javascript:" + renderResponse.getNamespace() + "toggleHolidayEntries(" + holidayCalendar.getHolidayCalendarId() + ", true);" %>' />
 				</span>
-
 				<span class="aui-helper-hidden collapse" id="<portlet:namespace />collapse_<%= holidayCalendar.getHolidayCalendarId() %>">
 					<liferay-ui:icon image="../arrows/01_minus" label="<%= true %>" message="collapse" url='<%= "javascript:" + renderResponse.getNamespace() + "toggleHolidayEntries(" + holidayCalendar.getHolidayCalendarId() + ", false);" %>' />
 				</span>
@@ -93,7 +92,6 @@
 				<span class="expand" id="<portlet:namespace />expand_<%= holidayCalendar.getHolidayCalendarId() %>_users">
 					<liferay-ui:icon image="../arrows/01_plus" label="<%= true %>" message="expand" url='<%= "javascript:" + renderResponse.getNamespace() + "toggleUsers(" + holidayCalendar.getHolidayCalendarId() + ", true);" %>' />
 				</span>
-
 				<span class="aui-helper-hidden collapse" id="<portlet:namespace />collapse_<%= holidayCalendar.getHolidayCalendarId() %>_users">
 					<liferay-ui:icon image="../arrows/01_minus" label="<%= true %>" message="collapse" url='<%= "javascript:" + renderResponse.getNamespace() + "toggleUsers(" + holidayCalendar.getHolidayCalendarId() + ", false);" %>' />
 				</span>

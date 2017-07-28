@@ -14,8 +14,6 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.exception.TicketLinkTypeException;
 import com.liferay.osb.exception.TicketLinkURLException;
 import com.liferay.osb.exception.TicketLinkVisibilityException;
@@ -25,11 +23,12 @@ import com.liferay.osb.model.TicketLink;
 import com.liferay.osb.service.base.TicketLinkLocalServiceBaseImpl;
 import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Date;
 import java.util.List;
@@ -43,7 +42,7 @@ public class TicketLinkLocalServiceImpl extends TicketLinkLocalServiceBaseImpl {
 			long userId, long ticketEntryId, long ticketSolutionId,
 			String[] urls, Integer[] types, int visibility,
 			ServiceContext serviceContext)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		Date now = serviceContext.getCreateDate(new Date());
@@ -80,7 +79,7 @@ public class TicketLinkLocalServiceImpl extends TicketLinkLocalServiceBaseImpl {
 			ticketLink.setUrl(urls[i]);
 			ticketLink.setType(types[i]);
 			ticketLink.setVisibility(visibility);
-			
+
 			//TODO implement serviceContext as needed
 
 			ticketLinkPersistence.update(ticketLink, serviceContext);
@@ -99,7 +98,7 @@ public class TicketLinkLocalServiceImpl extends TicketLinkLocalServiceBaseImpl {
 	}
 
 	public void deleteTicketLink(long userId, long ticketLinkId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketLink ticketLink = ticketLinkPersistence.findByPrimaryKey(
 			ticketLinkId);
@@ -108,7 +107,7 @@ public class TicketLinkLocalServiceImpl extends TicketLinkLocalServiceBaseImpl {
 	}
 
 	public void deleteTicketLink(long userId, TicketLink ticketLink)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 
@@ -125,42 +124,34 @@ public class TicketLinkLocalServiceImpl extends TicketLinkLocalServiceBaseImpl {
 			StringPool.BLANK);
 	}
 
-	public List<TicketLink> getTicketLinks(long ticketEntryId, int visibility)
-		throws SystemException {
-
+	public List<TicketLink> getTicketLinks(long ticketEntryId, int visibility) {
 		return ticketLinkPersistence.findByTEI_V(ticketEntryId, visibility);
 	}
 
 	public List<TicketLink> getTicketLinks(
-			long ticketEntryId, int[] visibilities)
-		throws SystemException {
+		long ticketEntryId, int[] visibilities) {
 
 		return ticketLinkPersistence.findByTEI_V(ticketEntryId, visibilities);
 	}
 
 	public List<TicketLink> getTicketLinks(
-			long ticketEntryId, long ticketSolutionId)
-		throws SystemException {
+		long ticketEntryId, long ticketSolutionId) {
 
 		return ticketLinkPersistence.findByTEI_TSI(
 			ticketEntryId, ticketSolutionId);
 	}
 
-	public int getTicketLinksCount(long ticketEntryId, int visibility)
-		throws SystemException {
-
+	public int getTicketLinksCount(long ticketEntryId, int visibility) {
 		return ticketLinkPersistence.countByTEI_V(ticketEntryId, visibility);
 	}
 
-	public int getTicketLinksCount(long ticketEntryId, int[] visibilities)
-		throws SystemException {
-
+	public int getTicketLinksCount(long ticketEntryId, int[] visibilities) {
 		return ticketLinkPersistence.countByTEI_V(ticketEntryId, visibilities);
 	}
 
 	protected void validate(
 			long ticketEntryId, String[] urls, Integer[] types, int visibility)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		for (int i = 0; i < urls.length; i++) {
 			if (!Validator.isUrl(urls[i])) {

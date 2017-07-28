@@ -24,12 +24,12 @@ import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 public class UpgradeProcess_3_4_8 extends UpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
+	public int getThreshold() {
+		return 348;
 	}
 
 	@Override
-	public int getThreshold() {
-		return 348;
+	protected void doUpgrade() throws Exception {
 	}
 
 }

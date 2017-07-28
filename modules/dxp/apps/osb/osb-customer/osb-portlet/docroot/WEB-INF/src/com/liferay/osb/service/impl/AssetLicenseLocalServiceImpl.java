@@ -17,24 +17,8 @@ package com.liferay.osb.service.impl;
 import com.liferay.osb.service.base.AssetLicenseLocalServiceBaseImpl;
 
 /**
- * The implementation of the asset license local service.
- *
- * <p>
- * All custom service methods should be put in this class. Whenever methods are added, rerun ServiceBuilder to copy their definitions into the {@link com.liferay.osb.service.AssetLicenseLocalService} interface.
- *
- * <p>
- * This is a local service. Methods of this service will not have security checks based on the propagated JAAS credentials because this service can only be accessed from within the same VM.
- * </p>
- *
  * @author Brian Wing Shun Chan
- * @see AssetLicenseLocalServiceBaseImpl
- * @see com.liferay.osb.service.AssetLicenseLocalServiceUtil
  */
 public class AssetLicenseLocalServiceImpl
 	extends AssetLicenseLocalServiceBaseImpl {
-	/*
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never reference this class directly. Always use {@link com.liferay.osb.service.AssetLicenseLocalServiceUtil} to access the asset license local service.
-	 */
 }

@@ -29,8 +29,8 @@ public class TicketEntryModifiedDateComparator extends OrderByComparator {
 	public static final String ORDER_BY_DESC =
 		"OSB_TicketEntry.modifiedDate DESC";
 
-	public static final String[] ORDER_BY_FIELDS = {
-		"OSB_TicketEntry.modifiedDate"};
+	public static final String[] ORDER_BY_FIELDS =
+		{"OSB_TicketEntry.modifiedDate"};
 
 	public TicketEntryModifiedDateComparator() {
 		this(false);

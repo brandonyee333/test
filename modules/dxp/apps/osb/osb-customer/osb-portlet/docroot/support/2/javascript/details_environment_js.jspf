@@ -248,7 +248,7 @@
 				'<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="earlierLFRVersions" />',
 				{
 					data: {
-						<portlet:namespace />envLFR: envLFR,
+						<portlet:namespace />envLFR: envLFR
 					},
 					dataType: 'json',
 					method: 'post',

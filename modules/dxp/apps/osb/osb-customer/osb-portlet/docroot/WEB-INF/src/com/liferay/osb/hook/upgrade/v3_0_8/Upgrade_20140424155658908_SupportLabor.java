@@ -30,9 +30,7 @@ public class Upgrade_20140424155658908_SupportLabor extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20140424155658908L;
 	}
@@ -49,6 +47,7 @@ public class Upgrade_20140424155658908_SupportLabor extends UpgradeProcess {
 	}
 
 }
+
 */
 
 }

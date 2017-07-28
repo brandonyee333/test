@@ -28,7 +28,7 @@ AccountEntry accountEntry = (AccountEntry)request.getAttribute("summary.jsp-acco
 
 <br />
 
-<strong><liferay-ui:message key="industry" />:</strong> <%= LanguageUtil.get(locale, accountEntry.getIndustryLabel()) %>
+<strong><liferay-ui:message key="industry" />:</strong> <%= LanguageUtil.get(request, accountEntry.getIndustryLabel()) %>
 
 <br />
 
@@ -42,7 +42,7 @@ AccountEntry accountEntry = (AccountEntry)request.getAttribute("summary.jsp-acco
 
 	<br />
 
-	<strong><liferay-ui:message key="partner-first-line-support" />:</strong> <%= LanguageUtil.get(locale, String.valueOf(accountEntry.getPartnerManagedSupport())) %>
+	<strong><liferay-ui:message key="partner-first-line-support" />:</strong> <%= LanguageUtil.get(request, String.valueOf(accountEntry.getPartnerManagedSupport())) %>
 
 	<br />
 </c:if>
@@ -59,7 +59,7 @@ String[] languageIds = accountEntry.getLanguageIds();
 for (int i = 0; i < languageIds.length; i++) {
 %>
 
-	<%= LanguageUtil.get(locale, AccountEntryConstants.getLanguageLabel(languageIds[i])) %><%= (i < (languageIds.length - 1)) ? StringPool.COMMA_AND_SPACE : "" %>
+	<%= LanguageUtil.get(request, AccountEntryConstants.getLanguageLabel(languageIds[i])) %><%= (i < (languageIds.length - 1)) ? StringPool.COMMA_AND_SPACE : "" %>
 
 <%
 }

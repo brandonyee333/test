@@ -25,16 +25,13 @@ import com.liferay.osb.model.impl.HolidayCalendarRelImpl;
 /**
  * @author Brent Krone-Schmidt
  */
-public class Upgrade_20140424154131198_HolidayCalendar
-	extends UpgradeProcess {
+public class Upgrade_20140424154131198_HolidayCalendar extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20140424154131198L;
 	}
@@ -67,6 +64,7 @@ public class Upgrade_20140424154131198_HolidayCalendar
 	}
 
 }
+
 */
 
 }

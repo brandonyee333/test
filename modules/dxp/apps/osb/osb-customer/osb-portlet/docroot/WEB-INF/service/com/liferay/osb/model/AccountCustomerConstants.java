@@ -31,9 +31,8 @@ public class AccountCustomerConstants {
 
 	public static final int ROLE_WATCHER = 4;
 
-	public static final int[] ROLES = {
-		ROLE_DEVELOPER, ROLE_MANAGER, ROLE_SALES, ROLE_WATCHER
-	};
+	public static final int[] ROLES =
+		{ROLE_DEVELOPER, ROLE_MANAGER, ROLE_SALES, ROLE_WATCHER};
 
 	public static String getNotificationsLabel(int notifications) {
 		if (notifications == NOTIFICATIONS_ALL) {

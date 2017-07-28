@@ -14,29 +14,29 @@
 
 package com.liferay.osb.licenseform.portlet;
 
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.util.bridges.mvc.MVCPortlet;
 import com.liferay.osb.exception.LicenseKeySingleUseException;
 import com.liferay.osb.service.LicenseKeyLocalServiceUtil;
 import com.liferay.osb.util.CMDConstants;
-import com.liferay.portal.kernel.exception.RequiredFieldException;
-import com.liferay.portal.kernel.exception.ReservedUserEmailAddressException;
-import com.liferay.portal.kernel.exception.UserEmailAddressException;
 import com.liferay.portal.kernel.captcha.CaptchaTextException;
 import com.liferay.portal.kernel.captcha.CaptchaUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.RequiredFieldException;
+import com.liferay.portal.kernel.exception.ReservedUserEmailAddressException;
+import com.liferay.portal.kernel.exception.UserEmailAddressException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.servlet.SessionMessages;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
+import com.liferay.util.bridges.mvc.MVCPortlet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,8 +118,7 @@ public class LicenseFormPortlet extends MVCPortlet {
 		String redirect = ParamUtil.getString(actionRequest, "redirect");
 
 		if (Validator.isNull(redirect)) {
-			SessionMessages.add(
-				actionRequest, "license_key_sent", emailAddress);
+			SessionMessages.add(actionRequest, "licenseKeySent", emailAddress);
 		}
 	}
 
@@ -144,8 +143,8 @@ public class LicenseFormPortlet extends MVCPortlet {
 
 		String[] requiredFields = getRequiredFields();
 
-		List<String> blankParams = new ArrayList<String>();
-		List<String> blankLabels = new ArrayList<String>();
+		List<String> blankParams = new ArrayList<>();
+		List<String> blankLabels = new ArrayList<>();
 
 		for (String field : requiredFields) {
 			String[] fieldArray = StringUtil.split(field);
@@ -188,22 +187,22 @@ public class LicenseFormPortlet extends MVCPortlet {
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-		jsonObject.put("firstName", firstName);
-		jsonObject.put("lastName", lastName);
-		jsonObject.put("company", company);
-		jsonObject.put("department", department);
-		jsonObject.put("role", role);
-		jsonObject.put("industry", industry);
-		jsonObject.put("country", country);
-		jsonObject.put("number", number);
-		jsonObject.put("extension", extension);
-		jsonObject.put("typeId", typeId);
 		jsonObject.put("agreedToContactEvents", agreedToContactEvents);
 		jsonObject.put("agreedToContactSales", agreedToContactSales);
 		jsonObject.put("agreedToContactTrainings", agreedToContactTrainings);
-		jsonObject.put("agreedToTermsOfUse", agreedToTermsOfUse);
 		jsonObject.put(
 			"agreedToContactTrialLicenses", agreedToContactTrialLicenses);
+		jsonObject.put("agreedToTermsOfUse", agreedToTermsOfUse);
+		jsonObject.put("company", company);
+		jsonObject.put("country", country);
+		jsonObject.put("department", department);
+		jsonObject.put("extension", extension);
+		jsonObject.put("firstName", firstName);
+		jsonObject.put("industry", industry);
+		jsonObject.put("lastName", lastName);
+		jsonObject.put("number", number);
+		jsonObject.put("role", role);
+		jsonObject.put("typeId", typeId);
 
 		return jsonObject.toString();
 	}
@@ -258,6 +257,7 @@ public class LicenseFormPortlet extends MVCPortlet {
 		"ExpandoAttribute--osbCountry--,countryLabel,array"
 	};
 
-	private static Log _log = LogFactoryUtil.getLog(LicenseFormPortlet.class);
+	private static final Log _log = LogFactoryUtil.getLog(
+		LicenseFormPortlet.class);
 
 }

@@ -24,93 +24,93 @@
 	<div class="callout-a">
 		<div class="callout-content">
 			<table>
-			<tr>
-				<th class="first">
-					<strong><liferay-ui:message key="bbcode" /></strong>
-				</th>
-				<th>
-					<strong><liferay-ui:message key="shortcut" /></strong>
-				</th>
-				<th>
-					<strong><liferay-ui:message key="rendering" /></strong>
-				</th>
-			</tr>
-			<tr>
-				<td>
-					[b]bolded text[/b]
-				</td>
-				<td class="col-2">
-					ctrl+b
-				</td>
-				<td>
-					<strong>bolded text</strong>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					[i]italicized text[/i]
-				</td>
-				<td class="col-2">
-					ctrl+i
-				</td>
-				<td>
-					<em>italicized text</em>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					[u]underlined text[/u]
-				</td>
-				<td class="col-2">
-					ctrl+u
-				</td>
-				<td>
-					<u>underlined text</u>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					[url=https://www.liferay.com]Hyperlinked Text[/url]
-				</td>
-				<td class="col-2">
-					ctrl+k
-				</td>
-				<td>
-					<a href="https://www.liferay.com" target="_blank">Hyperlinked Text</a>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					[quote]quoted text[/quote]
-				</td>
-				<td class="col-2">
-					ctrl+q
-				</td>
-				<td>
-					<div class="quote">
-						<div class="quote-content">
-							quoted text
+				<tr>
+					<th class="first">
+						<strong><liferay-ui:message key="bbcode" /></strong>
+					</th>
+					<th>
+						<strong><liferay-ui:message key="shortcut" /></strong>
+					</th>
+					<th>
+						<strong><liferay-ui:message key="rendering" /></strong>
+					</th>
+				</tr>
+				<tr>
+					<td>
+						[b]bolded text[/b]
+					</td>
+					<td class="col-2">
+						ctrl+b
+					</td>
+					<td>
+						<strong>bolded text</strong>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						[i]italicized text[/i]
+					</td>
+					<td class="col-2">
+						ctrl+i
+					</td>
+					<td>
+						<em>italicized text</em>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						[u]underlined text[/u]
+					</td>
+					<td class="col-2">
+						ctrl+u
+					</td>
+					<td>
+						<u>underlined text</u>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						[url=https://www.liferay.com]Hyperlinked Text[/url]
+					</td>
+					<td class="col-2">
+						ctrl+k
+					</td>
+					<td>
+						<a href="https://www.liferay.com" target="_blank">Hyperlinked Text</a>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						[quote]quoted text[/quote]
+					</td>
+					<td class="col-2">
+						ctrl+q
+					</td>
+					<td>
+						<div class="quote">
+							<div class="quote-content">
+								quoted text
+							</div>
 						</div>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					[code]coded text line one<br />
-					coded text line two<br />
-					coded text line three[/code]
-				</td>
-				<td class="col-2">
-					ctrl+o
-				</td>
-				<td>
-					<div class="code">
-						<span class="code-lines">1</span>coded text line one<br />
-						<span class="code-lines">2</span>coded text line two<br />
-						<span class="code-lines">3</span>coded text line three
-					</div>
-				</td>
-			</tr>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						[code]coded text line one<br />
+						coded text line two<br />
+						coded text line three[/code]
+					</td>
+					<td class="col-2">
+						ctrl+o
+					</td>
+					<td>
+						<div class="code">
+							<span class="code-lines">1</span>coded text line one<br />
+							<span class="code-lines">2</span>coded text line two<br />
+							<span class="code-lines">3</span>coded text line three
+						</div>
+					</td>
+				</tr>
 			</table>
 		</div>
 	</div>

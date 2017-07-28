@@ -19,7 +19,6 @@ import com.liferay.osb.model.AccountInformationDisplay;
 import com.liferay.osb.model.AccountProjectConstants;
 import com.liferay.osb.service.base.AccountInformationLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -35,24 +34,21 @@ public class AccountInformationLocalServiceImpl
 	extends AccountInformationLocalServiceBaseImpl {
 
 	public void deleteAccountInformation(
-			long accountEntryId, long accountProjectId)
-		throws SystemException {
+		long accountEntryId, long accountProjectId) {
 
 		accountInformationPersistence.removeByAEI_API(
 			accountEntryId, accountProjectId);
 	}
 
 	public List<AccountInformation> getAccountEntryAccountInformation(
-			long accountEntryId)
-		throws SystemException {
+		long accountEntryId) {
 
 		return accountInformationPersistence.findByAEI_NotAPI(
 			accountEntryId, AccountProjectConstants.DEFAULT_ACCOUNT_PROJECT_ID);
 	}
 
 	public List<AccountInformation> getAccountInformation(
-			long accountEntryId, long accountProjectId)
-		throws SystemException {
+		long accountEntryId, long accountProjectId) {
 
 		return accountInformationPersistence.findByAEI_API(
 			accountEntryId, accountProjectId);
@@ -60,7 +56,7 @@ public class AccountInformationLocalServiceImpl
 
 	public AccountInformationDisplay getAccountInformationDisplay(
 			long accountEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		List<AccountInformation> accountInformationList =
 			accountInformationPersistence.findByAEI_API(
@@ -73,13 +69,13 @@ public class AccountInformationLocalServiceImpl
 	public List<AccountInformation> updateAccountInformation(
 			long userId, long accountEntryId, long accountProjectId,
 			Map<Integer, String> data)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		Date now = new Date();
 
-		List<AccountInformation> accountInformationList =
-			new ArrayList<AccountInformation>(data.size());
+		List<AccountInformation> accountInformationList = new ArrayList<>(
+			data.size());
 
 		for (int fieldId : data.keySet()) {
 			AccountInformation accountInformation =
@@ -100,12 +96,13 @@ public class AccountInformationLocalServiceImpl
 			accountInformation.setAccountProjectId(accountProjectId);
 			accountInformation.setFieldId(fieldId);
 			accountInformation.setData(data.get(fieldId));
-			
+
 			//TODO implement serviceContext how needed
-			
+
 			ServiceContext serviceContext = new ServiceContext();
 
-			accountInformationPersistence.update(accountInformation, serviceContext);
+			accountInformationPersistence.update(
+				accountInformation, serviceContext);
 
 			accountInformationList.add(accountInformation);
 		}

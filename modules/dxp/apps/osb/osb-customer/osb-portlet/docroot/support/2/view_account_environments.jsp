@@ -49,7 +49,7 @@ for (String productEntryName : accountEnvironmentsMap.keySet()) {
 
 			<div class="aui-helper-clearfix">
 				<div class="aui-w33 content-column">
-					<div class="left-column content-column-content">
+					<div class="content-column-content left-column">
 						<span class="txt-b txt-up"><liferay-ui:message key="liferay-version" />:</span>
 
 						<%= LanguageUtil.get(pageContext, accountEnvironment.getEnvLFRLabel()) %>
@@ -71,7 +71,7 @@ for (String productEntryName : accountEnvironmentsMap.keySet()) {
 				</div>
 
 				<div class="aui-w33 content-column">
-					<div class="middle-column content-column-content">
+					<div class="content-column-content middle-column">
 						<span class="txt-b txt-up"><liferay-ui:message key="application-server" />:</span>
 
 						<%= LanguageUtil.get(pageContext, accountEnvironment.getEnvASLabel()) %>

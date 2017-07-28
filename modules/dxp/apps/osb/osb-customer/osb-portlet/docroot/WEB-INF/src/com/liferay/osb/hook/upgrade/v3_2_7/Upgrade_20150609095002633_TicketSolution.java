@@ -24,16 +24,13 @@ import com.liferay.osb.model.impl.TicketSolutionImpl;
 /**
  * @author Brent Krone-Schmidt
  */
-public class Upgrade_20150609095002633_TicketSolution
-	extends UpgradeProcess {
+public class Upgrade_20150609095002633_TicketSolution extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20150609095002633L;
 	}
@@ -52,6 +49,7 @@ public class Upgrade_20150609095002633_TicketSolution
 	}
 
 }
+
 */
 
 }

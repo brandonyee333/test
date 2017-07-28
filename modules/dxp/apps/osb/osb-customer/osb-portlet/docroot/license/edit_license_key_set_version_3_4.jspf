@@ -254,24 +254,24 @@
 					<div class="aui-w33 content-column">
 						<div class="content-column-content middle-column">
 							<table class="lfr-table">
-							<tr>
-								<td>
-									<span class="txt-b txt-up"><liferay-ui:message key="ip-addresses" />:</span>
-								</td>
-								<td>
+								<tr>
+									<td>
+										<span class="txt-b txt-up"><liferay-ui:message key="ip-addresses" />:</span>
+									</td>
+									<td>
 
-									<%
-									for (String ipAddress : StringUtil.split(clusterLicenseKey.getIpAddresses())) {
-									%>
+										<%
+										for (String ipAddress : StringUtil.split(clusterLicenseKey.getIpAddresses())) {
+										%>
 
-										<%= ipAddress %><br />
+											<%= ipAddress %><br />
 
-									<%
-									}
-									%>
+										<%
+										}
+										%>
 
-								</td>
-							</tr>
+									</td>
+								</tr>
 							</table>
 						</div>
 					</div>
@@ -279,24 +279,24 @@
 					<div class="aui-w33 content-column">
 						<div class="content-column-content right-column">
 							<table class="lfr-table">
-							<tr>
-								<td>
-									<span class="txt-b txt-up"><liferay-ui:message key="mac-addresses" />:</span>
-								</td>
-								<td>
+								<tr>
+									<td>
+										<span class="txt-b txt-up"><liferay-ui:message key="mac-addresses" />:</span>
+									</td>
+									<td>
 
-									<%
-									for (String macAddress : StringUtil.split(clusterLicenseKey.getMacAddresses())) {
-									%>
+										<%
+										for (String macAddress : StringUtil.split(clusterLicenseKey.getMacAddresses())) {
+										%>
 
-										<%= macAddress %><br />
+											<%= macAddress %><br />
 
-									<%
-									}
-									%>
+										<%
+										}
+										%>
 
-								</td>
-							</tr>
+									</td>
+								</tr>
 							</table>
 						</div>
 					</div>
@@ -385,24 +385,24 @@
 					<div class="aui-w33 content-column">
 						<div class="content-column-content middle-column">
 							<table class="lfr-table">
-							<tr>
-								<td>
-									<span class="txt-b txt-up"><liferay-ui:message key="ip-addresses" />:</span>
-								</td>
-								<td>
+								<tr>
+									<td>
+										<span class="txt-b txt-up"><liferay-ui:message key="ip-addresses" />:</span>
+									</td>
+									<td>
 
-									<%
-									for (String ipAddress : StringUtil.split(licenseKey.getIpAddresses())) {
-									%>
+										<%
+										for (String ipAddress : StringUtil.split(licenseKey.getIpAddresses())) {
+										%>
 
-										<%= ipAddress %><br />
+											<%= ipAddress %><br />
 
-									<%
-									}
-									%>
+										<%
+										}
+										%>
 
-								</td>
-							</tr>
+									</td>
+								</tr>
 							</table>
 						</div>
 					</div>
@@ -410,24 +410,24 @@
 					<div class="aui-w33 content-column">
 						<div class="content-column-content right-column">
 							<table class="lfr-table">
-							<tr>
-								<td>
-									<span class="txt-b txt-up"><liferay-ui:message key="mac-addresses" />:</span>
-								</td>
-								<td>
+								<tr>
+									<td>
+										<span class="txt-b txt-up"><liferay-ui:message key="mac-addresses" />:</span>
+									</td>
+									<td>
 
-									<%
-									for (String macAddress : StringUtil.split(licenseKey.getMacAddresses())) {
-									%>
+										<%
+										for (String macAddress : StringUtil.split(licenseKey.getMacAddresses())) {
+										%>
 
-										<%= macAddress %><br />
+											<%= macAddress %><br />
 
-									<%
-									}
-									%>
+										<%
+										}
+										%>
 
-								</td>
-							</tr>
+									</td>
+								</tr>
 							</table>
 						</div>
 					</div>
@@ -559,7 +559,7 @@
 									</aui:select>
 								</c:when>
 								<c:otherwise>
-									<input name='<%= "renewTime_" + licenseKey.getLicenseKeyId() %>' type="hidden" value="30" />
+									<input name="<%= "renewTime_" + licenseKey.getLicenseKeyId() %>" type="hidden" value="30" />
 								</c:otherwise>
 							</c:choose>
 

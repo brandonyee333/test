@@ -21,7 +21,8 @@ import com.liferay.portal.kernel.exception.NoSuchModelException;
  * @author Brian Wing Shun Chan
  */
 @ProviderType
-public class NoSuchAccountEnvironmentAttachmentException extends NoSuchModelException {
+public class NoSuchAccountEnvironmentAttachmentException
+	extends NoSuchModelException {
 
 	public NoSuchAccountEnvironmentAttachmentException() {
 	}
@@ -30,7 +31,9 @@ public class NoSuchAccountEnvironmentAttachmentException extends NoSuchModelExce
 		super(msg);
 	}
 
-	public NoSuchAccountEnvironmentAttachmentException(String msg, Throwable cause) {
+	public NoSuchAccountEnvironmentAttachmentException(
+		String msg, Throwable cause) {
+
 		super(msg, cause);
 	}
 

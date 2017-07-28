@@ -14,14 +14,13 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.exception.HolidayCalendarNameException;
 import com.liferay.osb.model.HolidayCalendar;
 import com.liferay.osb.model.HolidayEntry;
 import com.liferay.osb.service.base.HolidayCalendarLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.HashSet;
 import java.util.List;
@@ -35,7 +34,7 @@ public class HolidayCalendarLocalServiceImpl
 
 	public HolidayCalendar addHolidayCalendar(
 			String name, String description, List<HolidayEntry> holidayEntries)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		// Holiday calendar
 
@@ -48,9 +47,9 @@ public class HolidayCalendarLocalServiceImpl
 
 		holidayCalendar.setName(name);
 		holidayCalendar.setDescription(description);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		holidayCalendarPersistence.update(holidayCalendar, serviceContext);
@@ -64,7 +63,7 @@ public class HolidayCalendarLocalServiceImpl
 
 	@Override
 	public HolidayCalendar deleteHolidayCalendar(long holidayCalendarId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		// Holiday calendar
 
@@ -91,7 +90,7 @@ public class HolidayCalendarLocalServiceImpl
 	public HolidayCalendar updateHolidayCalendar(
 			long holidayCalendarId, String name, String description,
 			List<HolidayEntry> holidayEntries)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		validate(name);
 
@@ -102,9 +101,9 @@ public class HolidayCalendarLocalServiceImpl
 
 		holidayCalendar.setName(name);
 		holidayCalendar.setDescription(description);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		holidayCalendarPersistence.update(holidayCalendar, serviceContext);
@@ -118,9 +117,9 @@ public class HolidayCalendarLocalServiceImpl
 
 	protected void setHolidayEntries(
 			long holidayCalendarId, List<HolidayEntry> holidayEntries)
-		throws PortalException, SystemException {
+		throws PortalException {
 
-		Set<Long> holidayEntryIds = new HashSet<Long>();
+		Set<Long> holidayEntryIds = new HashSet<>();
 
 		for (HolidayEntry holidayEntry : holidayEntries) {
 			long holidayEntryId = holidayEntry.getHolidayEntryId();

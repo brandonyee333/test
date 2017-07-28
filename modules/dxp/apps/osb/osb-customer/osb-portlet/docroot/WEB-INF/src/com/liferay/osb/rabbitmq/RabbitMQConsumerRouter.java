@@ -26,7 +26,10 @@ import java.util.Map;
 /**
  * @author Amos Fong
  */
-public class RabbitMQConsumerRouter { // implements RabbitMQConsumer {
+public class RabbitMQConsumerRouter {
+
+	// implements RabbitMQConsumer {
+
 /* TODO update rabbitMQ integration
 	public RabbitMQConsumerRouter() {
 		_rabbitMQConsumersMap.put(
@@ -54,13 +57,14 @@ public class RabbitMQConsumerRouter { // implements RabbitMQConsumer {
 			return RESPONSE_ACK;
 		}
 	}
+
 */
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		RabbitMQConsumerRouter.class);
 
 /* TODO update rabbitMQ integration
 	private Map<String, RabbitMQConsumer> _rabbitMQConsumersMap =
-		new HashMap<String, RabbitMQConsumer>();
+		new HashMap<>();
 */
 
 }

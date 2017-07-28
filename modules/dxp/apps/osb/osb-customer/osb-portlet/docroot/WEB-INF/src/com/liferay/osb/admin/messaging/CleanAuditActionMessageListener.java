@@ -14,10 +14,10 @@
 
 package com.liferay.osb.admin.messaging;
 
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.osb.service.AuditActionLocalServiceUtil;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
+import com.liferay.portal.kernel.util.Time;
 
 import java.util.Date;
 

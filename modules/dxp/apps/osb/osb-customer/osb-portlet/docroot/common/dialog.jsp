@@ -50,13 +50,13 @@ if (width > 0) {
 %>
 
 <c:if test="<%= modal %>">
-	<div class="dialog-overlay" id='<%= renderResponse.getNamespace() + "dialogOverlay" + dialogId %>'></div>
+	<div class="dialog-overlay" id="<%= renderResponse.getNamespace() + "dialogOverlay" + dialogId %>"></div>
 </c:if>
 
-<div class="dialog <%= cssClass %>" id='<%= renderResponse.getNamespace() + "dialog" + dialogId %>'>
-	<div class='<%= border ? "border" : "" %> <%= shadow ? "shadow" : "" %>'>
+<div class="dialog <%= cssClass %>" id="<%= renderResponse.getNamespace() + "dialog" + dialogId %>">
+	<div class="<%= border ? "border" : "" %> <%= shadow ? "shadow" : "" %>">
 		<c:if test="<%= close || draggable || Validator.isNotNull(title) %>">
-			<div class="titlebar" id='<%= renderResponse.getNamespace() + "titlebar" + dialogId %>'>
+			<div class="titlebar" id="<%= renderResponse.getNamespace() + "titlebar" + dialogId %>">
 				<c:if test="<%= Validator.isNotNull(title) %>">
 					<div class="title" style="<%= (width > 0) ? "max-width: " + (width - 45) + "px" : "" %>"><%= HtmlUtil.escape(title) %></div>
 				</c:if>
@@ -67,7 +67,7 @@ if (width > 0) {
 			</div>
 		</c:if>
 
-		<div class="content" id='<%= renderResponse.getNamespace() + "dialogContent" + dialogId %>' style="<%= contentStyleSB.toString() %>">
+		<div class="content" id="<%= renderResponse.getNamespace() + "dialogContent" + dialogId %>" style="<%= contentStyleSB.toString() %>">
 			<c:if test="<%= Validator.isNotNull(mvcPath) %>">
 				<liferay-util:include page="<%= mvcPath %>" servletContext="<%= application %>">
 					<c:if test="<%= paramNames.length == paramValues.length %>">

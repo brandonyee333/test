@@ -19,7 +19,6 @@ import com.liferay.osb.service.base.AccountLinkServiceBaseImpl;
 import com.liferay.osb.service.permission.OSBAccountEntryPermission;
 import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 
@@ -30,7 +29,7 @@ import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 public class AccountLinkServiceImpl extends AccountLinkServiceBaseImpl {
 
 	public void addAccountLinks(long accountEntryId, String[] urls)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OSBAccountEntryPermission.check(
 			getPermissionChecker(), accountEntryId,
@@ -41,7 +40,7 @@ public class AccountLinkServiceImpl extends AccountLinkServiceBaseImpl {
 	}
 
 	public AccountLink deleteAccountLink(long accountLinkId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		AccountLink accountLink = accountLinkLocalService.getAccountLink(
 			accountLinkId);

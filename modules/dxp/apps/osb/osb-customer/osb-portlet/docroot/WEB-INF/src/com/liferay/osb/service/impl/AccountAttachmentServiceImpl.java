@@ -20,11 +20,10 @@ import com.liferay.osb.service.permission.OSBAccountEntryPermission;
 import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
-import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.util.ObjectValuePair;
 
 import java.io.File;
 
@@ -40,7 +39,7 @@ public class AccountAttachmentServiceImpl
 	public List<AccountAttachment> addAccountAttachments(
 			long accountEntryId, long accountProjectId,
 			List<ObjectValuePair<String, File>> files, List<Integer> types)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OSBAccountEntryPermission.check(
 			getPermissionChecker(), accountEntryId,
@@ -51,7 +50,7 @@ public class AccountAttachmentServiceImpl
 	}
 
 	public AccountAttachment deleteAccountAttachment(long accountAttachmentId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		AccountAttachment accountAttachment =
 			accountAttachmentLocalService.getAccountAttachment(
@@ -66,7 +65,7 @@ public class AccountAttachmentServiceImpl
 	}
 
 	public AccountAttachment getAccountAttachment(long accountAttachmentId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		checkPermissions();
 
@@ -76,7 +75,7 @@ public class AccountAttachmentServiceImpl
 
 	public List<AccountAttachment> getAccountAttachments(
 			long accountEntryId, long accountProjectId, int type)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		checkPermissions();
 
@@ -84,7 +83,7 @@ public class AccountAttachmentServiceImpl
 			accountEntryId, accountProjectId, type);
 	}
 
-	protected void checkPermissions() throws PortalException, SystemException {
+	protected void checkPermissions() throws PortalException {
 		if (!organizationLocalService.hasUserOrganization(
 				getUserId(), OSBConstants.ORGANIZATION_LIFERAY_INC_ID)) {
 

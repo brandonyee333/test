@@ -28,16 +28,13 @@ import java.util.List;
 /**
  * @author Alan Zhang
  */
-public class Upgrade_20150109184444735_SupportResponse
-	extends UpgradeProcess {
+public class Upgrade_20150109184444735_SupportResponse extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20150109184444735L;
 	}
@@ -61,9 +58,7 @@ public class Upgrade_20150109184444735_SupportResponse
 	}
 
 	protected void updateSupportResponse() throws Exception {
-		int[][] supportLevelMaps = {
-			{20, 2}, {40, 4}, {10, 1}, {30, 3}
-		};
+		int[][] supportLevelMaps = {{20, 2}, {40, 4}, {10, 1}, {30, 3}};
 
 		for (int[] supportLevelMap : supportLevelMaps) {
 			doUpdateSupportResponse(supportLevelMap[0], supportLevelMap[1]);
@@ -80,6 +75,7 @@ public class Upgrade_20150109184444735_SupportResponse
 	}
 
 }
+
 */
 
 }

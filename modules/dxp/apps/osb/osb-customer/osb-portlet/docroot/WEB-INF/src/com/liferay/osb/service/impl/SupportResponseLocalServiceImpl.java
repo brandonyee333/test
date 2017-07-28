@@ -14,7 +14,6 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.exception.DuplicateSupportResponseException;
 import com.liferay.osb.exception.RequiredSupportResponseException;
 import com.liferay.osb.exception.SupportResponseNameException;
@@ -23,9 +22,9 @@ import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.SupportResponse;
 import com.liferay.osb.service.base.SupportResponseLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Date;
 import java.util.List;
@@ -42,7 +41,7 @@ public class SupportResponseLocalServiceImpl
 			int severity1Resolution, int severity2Response,
 			int severity2Resolution, int severity3Response,
 			int severity3Resolution)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		Date now = new Date();
@@ -66,9 +65,9 @@ public class SupportResponseLocalServiceImpl
 		supportResponse.setSeverity2Resolution(severity2Resolution);
 		supportResponse.setSeverity3Response(severity3Response);
 		supportResponse.setSeverity3Resolution(severity3Resolution);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		supportResponsePersistence.update(supportResponse, serviceContext);
@@ -80,7 +79,7 @@ public class SupportResponseLocalServiceImpl
 
 	@Override
 	public SupportResponse deleteSupportResponse(long supportResponseId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (offeringDefinitionPersistence.countBySupportResponseId(
 				supportResponseId) > 0) {
@@ -96,14 +95,12 @@ public class SupportResponseLocalServiceImpl
 		return supportResponse;
 	}
 
-	public SupportResponse fetchSupportResponseByName(String name)
-		throws SystemException {
-
+	public SupportResponse fetchSupportResponseByName(String name) {
 		return supportResponsePersistence.fetchByName(name);
 	}
 
 	public SupportResponse getSupportResponseByName(String name)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		return supportResponsePersistence.findByName(name);
 	}
@@ -113,7 +110,7 @@ public class SupportResponseLocalServiceImpl
 			int severity1Response, int severity1Resolution,
 			int severity2Response, int severity2Resolution,
 			int severity3Response, int severity3Resolution)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		validate(supportResponseId, name, supportLevel);
 
@@ -129,9 +126,9 @@ public class SupportResponseLocalServiceImpl
 		supportResponse.setSeverity2Resolution(severity2Resolution);
 		supportResponse.setSeverity3Response(severity3Response);
 		supportResponse.setSeverity3Resolution(severity3Resolution);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		supportResponsePersistence.update(supportResponse, serviceContext);
@@ -142,7 +139,7 @@ public class SupportResponseLocalServiceImpl
 	}
 
 	protected void recalculateHighestSupportResponses(long supportResponseId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		List<AccountEntry> accountEntries =
 			accountEntryFinder.findBySupportResponse(supportResponseId);
@@ -155,7 +152,7 @@ public class SupportResponseLocalServiceImpl
 
 	protected void validate(
 			long supportResponseId, String name, int supportLevel)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (Validator.isNull(name)) {
 			throw new SupportResponseNameException();

@@ -14,9 +14,9 @@
 
 package com.liferay.osb.admin.search;
 
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.osb.model.OfferingDefinition;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
+import com.liferay.portal.kernel.util.ArrayUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ import javax.portlet.PortletURL;
 public class OfferingDefinitionSearch
 	extends SearchContainer<OfferingDefinition> {
 
-	static List<String> headerNames = new ArrayList<String>();
+	static List<String> headerNames = new ArrayList<>();
 
 	static {
 		headerNames.add("product");

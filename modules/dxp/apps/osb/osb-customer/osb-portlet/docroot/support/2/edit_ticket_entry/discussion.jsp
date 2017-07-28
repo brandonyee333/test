@@ -60,15 +60,15 @@ else {
 
 	if (!screenShareMode) {
 		if (discussionTabValues.length > 1) {
-			discussionTabNames = ArrayUtil.append(discussionTabNames, LanguageUtil.get(locale, "all-comments"));
+			discussionTabNames = ArrayUtil.append(discussionTabNames, LanguageUtil.get(request, "all-comments"));
 			discussionTabValues = ArrayUtil.append(discussionTabValues, "all-comments");
 		}
 
 		if (ticketWorker) {
-			discussionTabNames = ArrayUtil.append(discussionTabNames, LanguageUtil.get(locale, "history"));
+			discussionTabNames = ArrayUtil.append(discussionTabNames, LanguageUtil.get(request, "history"));
 			discussionTabValues = ArrayUtil.append(discussionTabValues, "history");
 
-			discussionTabNames = ArrayUtil.append(discussionTabNames, LanguageUtil.get(locale, "solutions"));
+			discussionTabNames = ArrayUtil.append(discussionTabNames, LanguageUtil.get(request, "solutions"));
 			discussionTabValues = ArrayUtil.append(discussionTabValues, "solutions");
 		}
 	}

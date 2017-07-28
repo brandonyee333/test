@@ -28,7 +28,7 @@ import javax.portlet.PortletURL;
  */
 public class OrderEntrySearch extends SearchContainer<OrderEntry> {
 
-	static List<String> headerNames = new ArrayList<String>();
+	static List<String> headerNames = new ArrayList<>();
 
 	static {
 		headerNames.add("uuid");

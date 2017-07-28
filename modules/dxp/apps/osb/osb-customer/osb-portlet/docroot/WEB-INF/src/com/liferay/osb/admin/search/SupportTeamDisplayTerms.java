@@ -14,10 +14,10 @@
 
 package com.liferay.osb.admin.search;
 
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.dao.search.DisplayTerms;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import javax.portlet.PortletRequest;
 

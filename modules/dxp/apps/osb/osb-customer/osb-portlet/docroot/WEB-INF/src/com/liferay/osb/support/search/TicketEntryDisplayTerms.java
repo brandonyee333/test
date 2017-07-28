@@ -14,9 +14,6 @@
 
 package com.liferay.osb.support.search;
 
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.portal.kernel.dao.search.DisplayTerms;
@@ -24,9 +21,12 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -286,7 +286,7 @@ public class TicketEntryDisplayTerms extends DisplayTerms {
 				jsonObject.getString(ASSIGNED_NAME));
 			assignedPartnerEntryIds = _getLongValues(
 				jsonObject, ASSIGNED_PARTNER_ENTRY_IDS);
-			assignedSupportTeamIds =_getLongValues(
+			assignedSupportTeamIds = _getLongValues(
 				jsonObject, ASSIGNED_SUPPORT_TEAM_IDS);
 			assignedTo = GetterUtil.getString(
 				jsonObject.getString(ASSIGNED_TO));
@@ -1025,8 +1025,7 @@ public class TicketEntryDisplayTerms extends DisplayTerms {
 		JSONArray jsonArray = jsonObject.getJSONArray(key);
 
 		if (jsonArray != null) {
-			List<Integer> integerValues = new ArrayList<Integer>(
-				jsonArray.length());
+			List<Integer> integerValues = new ArrayList<>(jsonArray.length());
 
 			for (int i = 0; i < jsonArray.length(); i++) {
 				int intValue = GetterUtil.getInteger(jsonArray.getInt(i));
@@ -1046,7 +1045,7 @@ public class TicketEntryDisplayTerms extends DisplayTerms {
 		JSONArray jsonArray = jsonObject.getJSONArray(key);
 
 		if (jsonArray != null) {
-			List<Long> longValues = new ArrayList<Long>(jsonArray.length());
+			List<Long> longValues = new ArrayList<>(jsonArray.length());
 
 			for (int i = 0; i < jsonArray.length(); i++) {
 				long longValue = GetterUtil.getLong(jsonArray.getLong(i));
@@ -1072,8 +1071,7 @@ public class TicketEntryDisplayTerms extends DisplayTerms {
 		JSONArray jsonArray = jsonObject.getJSONArray(key);
 
 		if (jsonArray != null) {
-			List<String> stringValues = new ArrayList<String>(
-				jsonArray.length());
+			List<String> stringValues = new ArrayList<>(jsonArray.length());
 
 			for (int i = 0; i < jsonArray.length(); i++) {
 				String value = GetterUtil.getString(jsonArray.getString(i));

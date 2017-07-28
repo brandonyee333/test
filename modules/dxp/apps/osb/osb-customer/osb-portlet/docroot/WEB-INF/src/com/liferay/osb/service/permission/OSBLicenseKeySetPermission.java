@@ -25,7 +25,6 @@ import com.liferay.osb.service.LicenseKeySetLocalServiceUtil;
 import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
@@ -38,7 +37,7 @@ public class OSBLicenseKeySetPermission {
 	public static void check(
 			PermissionChecker permissionChecker, LicenseKeySet licenseKeySet,
 			String actionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (!contains(permissionChecker, licenseKeySet, actionId)) {
 			throw new PrincipalException();
@@ -48,7 +47,7 @@ public class OSBLicenseKeySetPermission {
 	public static void check(
 			PermissionChecker permissionChecker, long licenseKeySetId,
 			String actionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (!contains(permissionChecker, licenseKeySetId, actionId)) {
 			throw new PrincipalException();
@@ -56,9 +55,8 @@ public class OSBLicenseKeySetPermission {
 	}
 
 	public static boolean contains(
-			PermissionChecker permissionChecker, LicenseKeySet licenseKeySet,
-			String actionId)
-		throws SystemException {
+		PermissionChecker permissionChecker, LicenseKeySet licenseKeySet,
+		String actionId) {
 
 		if (RoleLocalServiceUtil.hasUserRole(
 				permissionChecker.getUserId(),
@@ -123,7 +121,7 @@ public class OSBLicenseKeySetPermission {
 	public static boolean contains(
 			PermissionChecker permissionChecker, long licenseKeySetId,
 			String actionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		LicenseKeySet licenseKeySet =
 			LicenseKeySetLocalServiceUtil.getLicenseKeySet(licenseKeySetId);

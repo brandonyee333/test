@@ -21,7 +21,6 @@ import com.liferay.osb.model.SupportWorkerConstants;
 import com.liferay.osb.service.SupportWorkerLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
@@ -33,7 +32,7 @@ public class OSBSupportTeamPermission {
 
 	public static void check(
 			PermissionChecker permissionChecker, SupportTeam supportTeam)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (!contains(permissionChecker, supportTeam)) {
 			throw new PrincipalException();
@@ -42,7 +41,7 @@ public class OSBSupportTeamPermission {
 
 	public static boolean contains(
 			PermissionChecker permissionChecker, SupportTeam supportTeam)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (RoleLocalServiceUtil.hasUserRole(
 				permissionChecker.getUserId(),

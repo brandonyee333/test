@@ -16,52 +16,52 @@
 
 <div>
 	<table class="lfr-table">
-	<tr>
-		<td>
-			<liferay-ui:message key="product" />
-		</td>
-		<td>
-			<liferay-ui:message key="service-level-agreement" />
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<select class="multiple-select" multiple name="<portlet:namespace /><%= displayTerms.PRODUCT_ENTRY_IDS %>">
-				<option value=""><liferay-ui:message key="any" /></option>
+		<tr>
+			<td>
+				<liferay-ui:message key="product" />
+			</td>
+			<td>
+				<liferay-ui:message key="service-level-agreement" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<select class="multiple-select" multiple name="<portlet:namespace /><%= displayTerms.PRODUCT_ENTRY_IDS %>">
+					<option value=""><liferay-ui:message key="any" /></option>
 
-				<%
-				List<ProductEntry> productEntries = ProductEntryLocalServiceUtil.getProductEntries(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+					<%
+					List<ProductEntry> productEntries = ProductEntryLocalServiceUtil.getProductEntries(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
-				for (ProductEntry productEntry : productEntries) {
-				%>
+					for (ProductEntry productEntry : productEntries) {
+					%>
 
-					<option <%= ArrayUtil.contains(displayTerms.getProductEntryIds(), productEntry.getProductEntryId()) ? "selected" : "" %> value="<%= productEntry.getProductEntryId() %>"><%= HtmlUtil.escape(productEntry.getName()) %></option>
+						<option <%= ArrayUtil.contains(displayTerms.getProductEntryIds(), productEntry.getProductEntryId()) ? "selected" : "" %> value="<%= productEntry.getProductEntryId() %>"><%= HtmlUtil.escape(productEntry.getName()) %></option>
 
-				<%
-				}
-				%>
+					<%
+					}
+					%>
 
-			</select>
-		</td>
-		<td>
-			<select class="multiple-select" multiple name="<portlet:namespace /><%= displayTerms.SUPPORT_RESPONSE_IDS %>">
-				<option value=""><liferay-ui:message key="any" /></option>
+				</select>
+			</td>
+			<td>
+				<select class="multiple-select" multiple name="<portlet:namespace /><%= displayTerms.SUPPORT_RESPONSE_IDS %>">
+					<option value=""><liferay-ui:message key="any" /></option>
 
-				<%
-				List<SupportResponse> supportResponses = SupportResponseLocalServiceUtil.getSupportResponses(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+					<%
+					List<SupportResponse> supportResponses = SupportResponseLocalServiceUtil.getSupportResponses(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
-				for (SupportResponse supportResponse : supportResponses) {
-				%>
+					for (SupportResponse supportResponse : supportResponses) {
+					%>
 
-					<option <%= ArrayUtil.contains(displayTerms.getSupportResponseIds(), supportResponse.getSupportResponseId()) ? "selected" : "" %> value="<%= supportResponse.getSupportResponseId() %>"><%= HtmlUtil.escape(supportResponse.getName()) %></option>
+						<option <%= ArrayUtil.contains(displayTerms.getSupportResponseIds(), supportResponse.getSupportResponseId()) ? "selected" : "" %> value="<%= supportResponse.getSupportResponseId() %>"><%= HtmlUtil.escape(supportResponse.getName()) %></option>
 
-				<%
-				}
-				%>
+					<%
+					}
+					%>
 
-			</select>
-		</td>
-	</tr>
+				</select>
+			</td>
+		</tr>
 	</table>
 
 	<aui:button type="submit" value="search" />

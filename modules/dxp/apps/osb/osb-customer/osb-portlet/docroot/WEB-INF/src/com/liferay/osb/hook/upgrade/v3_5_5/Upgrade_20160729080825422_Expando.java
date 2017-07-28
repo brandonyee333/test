@@ -30,9 +30,7 @@ public class Upgrade_20160729080825422_Expando extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20160729080825422L;
 	}
@@ -253,6 +251,7 @@ public class Upgrade_20160729080825422_Expando extends UpgradeProcess {
 	private static final long _OSB_INDUSTRY_EXPANDO_COLUMN_ID = 29224281;
 
 }
+
 */
 
 }

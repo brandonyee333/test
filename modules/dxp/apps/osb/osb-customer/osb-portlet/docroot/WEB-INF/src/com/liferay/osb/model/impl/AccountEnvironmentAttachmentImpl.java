@@ -14,12 +14,11 @@
 
 package com.liferay.osb.model.impl;
 
+import com.liferay.document.library.kernel.store.DLStoreUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.model.CompanyConstants;
-import com.liferay.document.library.kernel.store.DLStoreUtil;
+import com.liferay.portal.kernel.util.StringPool;
 
 /**
  * @author Lin Cui
@@ -30,7 +29,7 @@ public class AccountEnvironmentAttachmentImpl
 	public AccountEnvironmentAttachmentImpl() {
 	}
 
-	public boolean fileExists() throws PortalException, SystemException {
+	public boolean fileExists() throws PortalException {
 		String filePath = getFileDir() + StringPool.SLASH + getFileName();
 
 		return DLStoreUtil.hasFile(
@@ -47,9 +46,8 @@ public class AccountEnvironmentAttachmentImpl
 	}
 
 	public String getFileDir() {
-		return
-			OSBConstants.ATTACHMENTS_DIR_ACCOUNT_ENVIRONMENT +
-				getAccountEnvironmentId();
+		return OSBConstants.ATTACHMENTS_DIR_ACCOUNT_ENVIRONMENT +
+			getAccountEnvironmentId();
 	}
 
 }

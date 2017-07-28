@@ -32,7 +32,7 @@ public class OrderEntrySearchTerms extends OrderEntryDisplayTerms {
 			return null;
 		}
 		else {
-			return new Long(accountEntryId);
+			return Long.valueOf(accountEntryId);
 		}
 	}
 
@@ -41,7 +41,7 @@ public class OrderEntrySearchTerms extends OrderEntryDisplayTerms {
 			return null;
 		}
 		else {
-			return new Long(createUserId);
+			return Long.valueOf(createUserId);
 		}
 	}
 
@@ -50,13 +50,12 @@ public class OrderEntrySearchTerms extends OrderEntryDisplayTerms {
 			return null;
 		}
 		else {
-			return new Long(modifiedUserId);
+			return Long.valueOf(modifiedUserId);
 		}
 	}
 
 	public LinkedHashMap<String, Object> getParams() {
-		LinkedHashMap<String, Object> params =
-			new LinkedHashMap<String, Object>();
+		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
 		if (!isAdvancedSearch()) {
 			return params;

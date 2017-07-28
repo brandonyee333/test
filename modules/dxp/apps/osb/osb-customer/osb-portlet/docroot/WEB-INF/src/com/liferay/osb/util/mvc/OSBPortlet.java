@@ -14,13 +14,13 @@
 
 package com.liferay.osb.util.mvc;
 
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.util.bridges.mvc.MVCPortlet;
 import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.portal.kernel.portlet.LiferayPortletMode;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.util.bridges.mvc.MVCPortlet;
 
 import java.io.IOException;
 
@@ -96,9 +96,8 @@ public class OSBPortlet extends MVCPortlet {
 	protected String getDeveloperPath(String path) {
 		String[] pathParts = StringUtil.split(path, CharPool.PERIOD);
 
-		return
-			pathParts[0] + _DEVELOPER_PATH_POSTFIX + CharPool.PERIOD +
-				pathParts[1];
+		return pathParts[0] + _DEVELOPER_PATH_POSTFIX + CharPool.PERIOD +
+			pathParts[1];
 	}
 
 	protected boolean hasDeveloperPath(String path) {

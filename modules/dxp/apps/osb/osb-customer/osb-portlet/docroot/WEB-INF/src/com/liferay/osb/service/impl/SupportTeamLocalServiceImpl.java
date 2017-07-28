@@ -14,8 +14,6 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.exception.DuplicateSupportTeamException;
 import com.liferay.osb.exception.RequiredSupportTeamException;
 import com.liferay.osb.exception.SupportTeamLocationException;
@@ -27,11 +25,12 @@ import com.liferay.osb.model.SupportTeamLanguage;
 import com.liferay.osb.service.base.SupportTeamLocalServiceBaseImpl;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.SetUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Date;
 import java.util.List;
@@ -47,7 +46,7 @@ public class SupportTeamLocalServiceImpl
 			long userId, long parentSupportTeamId, long supportLaborId,
 			long locationSupportRegionId, String name, String description,
 			int type)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		Date now = new Date();
@@ -96,9 +95,9 @@ public class SupportTeamLocalServiceImpl
 			supportTeamPersistence.setSupportRegions(
 				supportTeamId, supportRegions);
 		}
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		supportTeamPersistence.update(supportTeam, serviceContext);
@@ -108,10 +107,10 @@ public class SupportTeamLocalServiceImpl
 
 	@Override
 	public SupportTeam deleteSupportTeam(long supportTeamId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
-		if (supportTeamPersistence.countByParentSupportTeamId(
-				supportTeamId) > 0) {
+		if (supportTeamPersistence.countByParentSupportTeamId(supportTeamId) >
+				0) {
 
 			throw new RequiredSupportTeamException();
 		}
@@ -124,8 +123,7 @@ public class SupportTeamLocalServiceImpl
 	}
 
 	public List<SupportTeam> getChildSupportTeams(
-			long supportTeamId, boolean recursive)
-		throws SystemException {
+		long supportTeamId, boolean recursive) {
 
 		List<SupportTeam> childSupportTeams =
 			supportTeamPersistence.findByParentSupportTeamId(supportTeamId);
@@ -145,54 +143,45 @@ public class SupportTeamLocalServiceImpl
 		return supportTeams;
 	}
 
-	public List<SupportTeam> getSupportLaborSupportTeams(long supportLaborId)
-		throws SystemException {
-
+	public List<SupportTeam> getSupportLaborSupportTeams(long supportLaborId) {
 		return supportTeamPersistence.findBySupportLaborId(supportLaborId);
 	}
 
 	public List<SupportTeam> getSupportTeams(
-			int start, int end, OrderByComparator obc)
-		throws SystemException {
+		int start, int end, OrderByComparator obc) {
 
 		return supportTeamPersistence.findAll(start, end, obc);
 	}
 
-	public List<SupportTeam> getUserRoleSupportTeams(long userId, int role)
-		throws SystemException {
-
+	public List<SupportTeam> getUserRoleSupportTeams(long userId, int role) {
 		return supportTeamFinder.findByU_R(userId, role);
 	}
 
 	public List<SupportTeam> search(
-			String keywords, int start, int end, OrderByComparator obc)
-		throws SystemException {
+		String keywords, int start, int end, OrderByComparator obc) {
 
 		return supportTeamFinder.findByKeywords(keywords, start, end, obc);
 	}
 
 	public List<SupportTeam> search(
-			String name, Integer type, boolean andSearch, int start, int end,
-			OrderByComparator obc)
-		throws SystemException {
+		String name, Integer type, boolean andSearch, int start, int end,
+		OrderByComparator obc) {
 
 		return supportTeamFinder.findByN_T(
 			name, type, andSearch, start, end, obc);
 	}
 
-	public int searchCount(String keywords) throws SystemException {
+	public int searchCount(String keywords) {
 		return supportTeamFinder.countByKeywords(keywords);
 	}
 
-	public int searchCount(String name, Integer type, boolean andOperator)
-		throws SystemException {
-
+	public int searchCount(String name, Integer type, boolean andOperator) {
 		return supportTeamFinder.countByN_T(name, type, andOperator);
 	}
 
 	public void setChildSupportTeams(
 			long parentSupportTeamId, long[] childSupportTeamIds)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		Set<Long> childSupportTeamIdsSet = SetUtil.fromArray(
 			childSupportTeamIds);
@@ -200,9 +189,9 @@ public class SupportTeamLocalServiceImpl
 		List<SupportTeam> supportTeams =
 			supportTeamPersistence.findByParentSupportTeamId(
 				parentSupportTeamId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		for (SupportTeam supportTeam : supportTeams) {
@@ -225,10 +214,10 @@ public class SupportTeamLocalServiceImpl
 	}
 
 	public void setSupportLaborId(long supportLaborId, long[] supportTeamIds)
-		throws PortalException, SystemException {
-		
+		throws PortalException {
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		for (long supportTeamId : supportTeamIds) {
@@ -248,7 +237,7 @@ public class SupportTeamLocalServiceImpl
 			long supportTeamId, long parentSupportTeamId, long supportLaborId,
 			long locationSupportRegionId, String name, String description,
 			int type, long[] accountEntryIds, long[] supportRegionIds)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		validate(
 			supportTeamId, 0, name, supportLaborId, locationSupportRegionId);
@@ -263,9 +252,9 @@ public class SupportTeamLocalServiceImpl
 		supportTeam.setName(name);
 		supportTeam.setDescription(description);
 		supportTeam.setType(type);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		supportTeamPersistence.update(supportTeam, serviceContext);
@@ -282,7 +271,7 @@ public class SupportTeamLocalServiceImpl
 	protected void validate(
 			long supportTeamId, long parentSupportTeamId, String name,
 			long supportLaborId, long locationSupportRegionId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		SupportTeam supportTeam = supportTeamPersistence.fetchByName(name);
 

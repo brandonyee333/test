@@ -29,9 +29,7 @@ public class Upgrade_20140522110500102_ListType extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20140522110500102L;
 	}
@@ -44,6 +42,7 @@ public class Upgrade_20140522110500102_ListType extends UpgradeProcess {
 	}
 
 }
+
 */
 
 }

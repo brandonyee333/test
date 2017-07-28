@@ -20,7 +20,6 @@ import com.liferay.osb.service.base.AccountEnvironmentAttachmentServiceBaseImpl;
 import com.liferay.osb.service.permission.OSBAccountEnvironmentPermission;
 import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 
@@ -33,7 +32,7 @@ public class AccountEnvironmentAttachmentServiceImpl
 
 	public AccountEnvironmentAttachment getAccountEnvironmentAttachment(
 			long accountEnvironmentAttachmentId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		AccountEnvironmentAttachment accountEnvironmentAttachment =
 			accountEnvironmentAttachmentLocalService.
@@ -47,9 +46,8 @@ public class AccountEnvironmentAttachmentServiceImpl
 			getPermissionChecker(), accountEnvironment.getAccountEntryId(),
 			OSBActionKeys.VIEW);
 
-		return
-			accountEnvironmentAttachmentLocalService.
-				getAccountEnvironmentAttachment(accountEnvironmentAttachmentId);
+		return accountEnvironmentAttachmentLocalService.
+			getAccountEnvironmentAttachment(accountEnvironmentAttachmentId);
 	}
 
 }

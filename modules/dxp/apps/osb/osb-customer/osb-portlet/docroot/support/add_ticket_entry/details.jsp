@@ -18,6 +18,7 @@
 
 <%
 String redirect = ParamUtil.getString(request, "redirect");
+
 String backURL = ParamUtil.getString(request, "backURL", redirect);
 
 if (Validator.isNull(backURL)) {
@@ -65,7 +66,7 @@ int subcomponent = ParamUtil.getInteger(request, "subcomponent");
 	RequiredFieldException rfe = (RequiredFieldException)errorException;
 	%>
 
-	<liferay-ui:message arguments="<%= LanguageUtil.get(locale, rfe.getLabelId()) %>" key="please-upload-a-x-file" />
+	<liferay-ui:message arguments="<%= LanguageUtil.get(request, rfe.getLabelId()) %>" key="please-upload-a-x-file" />
 </liferay-ui:error>
 
 <input name="<portlet:namespace />accountEntryId" type="hidden" value="<%= accountEntry.getAccountEntryId() %>" />

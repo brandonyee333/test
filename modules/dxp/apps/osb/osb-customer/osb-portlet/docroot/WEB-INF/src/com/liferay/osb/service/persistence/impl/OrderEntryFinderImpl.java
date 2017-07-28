@@ -14,13 +14,9 @@
 
 package com.liferay.osb.service.persistence.impl;
 
-import com.liferay.osb.service.persistence.OrderEntryFinder;
-import com.liferay.osb.service.persistence.OrderEntryUtil;
-
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.model.impl.OrderEntryImpl;
+import com.liferay.osb.service.persistence.OrderEntryFinder;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
@@ -31,7 +27,8 @@ import com.liferay.portal.kernel.util.CalendarUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.sql.Timestamp;
@@ -60,8 +57,7 @@ public class OrderEntryFinderImpl
 		OrderEntryFinder.class.getName() + ".joinByProductEntry";
 
 	public int countByKeywords(
-			String keywords, LinkedHashMap<String, Object> params)
-		throws SystemException {
+		String keywords, LinkedHashMap<String, Object> params) {
 
 		String[] purchaseOrderKeys = null;
 		boolean andOperator = false;
@@ -79,13 +75,12 @@ public class OrderEntryFinderImpl
 	}
 
 	public int countByU_CD_MU_MD_AE_PO_S_SD_P_ASD(
-			Long createUserId, Date createDateGT, Date createDateLT,
-			Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
-			Long accountEntryId, String purchaseOrderKey, int[] statuses,
-			Date startDateGT, Date startDateLT, Boolean prorated,
-			Date actualStartDateGT, Date actualStartDateLT,
-			LinkedHashMap<String, Object> params, boolean andOperator)
-		throws SystemException {
+		Long createUserId, Date createDateGT, Date createDateLT,
+		Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
+		Long accountEntryId, String purchaseOrderKey, int[] statuses,
+		Date startDateGT, Date startDateLT, Boolean prorated,
+		Date actualStartDateGT, Date actualStartDateLT,
+		LinkedHashMap<String, Object> params, boolean andOperator) {
 
 		String[] purchaseOrderKeys = CustomSQLUtil.keywords(purchaseOrderKey);
 
@@ -96,29 +91,9 @@ public class OrderEntryFinderImpl
 			actualStartDateLT, params, andOperator);
 	}
 
-	public List<OrderEntry> findByU_CD_MU_MD_AE_PO_S_SD_P_ASD(
-			Long createUserId, Date createDateGT, Date createDateLT,
-			Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
-			Long accountEntryId, String purchaseOrderKey, int[] statuses,
-			Date startDateGT, Date startDateLT, Boolean prorated,
-			Date actualStartDateGT, Date actualStartDateLT,
-			LinkedHashMap<String, Object> params, boolean andOperator,
-			int start, int end, OrderByComparator obc)
-		throws SystemException {
-
-		String[] purchaseOrderKeys = CustomSQLUtil.keywords(purchaseOrderKey);
-
-		return findByU_CD_MU_MD_AE_PO_S_SD_P_ASD(
-			createUserId, createDateGT, createDateLT, modifiedUserId,
-			modifiedDateGT, modifiedDateLT, accountEntryId, purchaseOrderKeys,
-			statuses, startDateGT, startDateLT, prorated, actualStartDateGT,
-			actualStartDateLT, params, andOperator, start, end, obc);
-	}
-
 	public List<OrderEntry> findByKeywords(
-			String keywords, LinkedHashMap<String, Object> params, int start,
-			int end, OrderByComparator obc)
-		throws SystemException {
+		String keywords, LinkedHashMap<String, Object> params, int start,
+		int end, OrderByComparator obc) {
 
 		String[] purchaseOrderKeys = null;
 		boolean andOperator = false;
@@ -136,17 +111,34 @@ public class OrderEntryFinderImpl
 			start, end, obc);
 	}
 
+	public List<OrderEntry> findByU_CD_MU_MD_AE_PO_S_SD_P_ASD(
+		Long createUserId, Date createDateGT, Date createDateLT,
+		Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
+		Long accountEntryId, String purchaseOrderKey, int[] statuses,
+		Date startDateGT, Date startDateLT, Boolean prorated,
+		Date actualStartDateGT, Date actualStartDateLT,
+		LinkedHashMap<String, Object> params, boolean andOperator, int start,
+		int end, OrderByComparator obc) {
+
+		String[] purchaseOrderKeys = CustomSQLUtil.keywords(purchaseOrderKey);
+
+		return findByU_CD_MU_MD_AE_PO_S_SD_P_ASD(
+			createUserId, createDateGT, createDateLT, modifiedUserId,
+			modifiedDateGT, modifiedDateLT, accountEntryId, purchaseOrderKeys,
+			statuses, startDateGT, startDateLT, prorated, actualStartDateGT,
+			actualStartDateLT, params, andOperator, start, end, obc);
+	}
+
 	protected int countByU_CD_MU_MD_AE_PO_S_SD_P_ASD(
-			Long createUserId, Date createDateGT, Date createDateLT,
-			Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
-			Long accountEntryId, String[] purchaseOrderKeys, int[] statuses,
-			Date startDateGT, Date startDateLT, Boolean prorated,
-			Date actualStartDateGT, Date actualStartDateLT,
-			LinkedHashMap<String, Object> params, boolean andOperator)
-		throws SystemException {
+		Long createUserId, Date createDateGT, Date createDateLT,
+		Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
+		Long accountEntryId, String[] purchaseOrderKeys, int[] statuses,
+		Date startDateGT, Date startDateLT, Boolean prorated,
+		Date actualStartDateGT, Date actualStartDateLT,
+		LinkedHashMap<String, Object> params, boolean andOperator) {
 
 		if (params == null) {
-			params = new LinkedHashMap<String, Object>();
+			params = new LinkedHashMap<>();
 		}
 
 		Timestamp createDateGT_TS = CalendarUtil.getTimestamp(createDateGT);
@@ -176,7 +168,7 @@ public class OrderEntryFinderImpl
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addScalar(COUNT_COLUMN_NAME, Type.LONG);
 
@@ -210,17 +202,16 @@ public class OrderEntryFinderImpl
 	}
 
 	protected List<OrderEntry> findByU_CD_MU_MD_AE_PO_S_SD_P_ASD(
-			Long createUserId, Date createDateGT, Date createDateLT,
-			Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
-			Long accountEntryId, String[] purchaseOrderKeys, int[] statuses,
-			Date startDateGT, Date startDateLT, Boolean prorated,
-			Date actualStartDateGT, Date actualStartDateLT,
-			LinkedHashMap<String, Object> params, boolean andOperator,
-			int start, int end, OrderByComparator obc)
-		throws SystemException {
+		Long createUserId, Date createDateGT, Date createDateLT,
+		Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
+		Long accountEntryId, String[] purchaseOrderKeys, int[] statuses,
+		Date startDateGT, Date startDateLT, Boolean prorated,
+		Date actualStartDateGT, Date actualStartDateLT,
+		LinkedHashMap<String, Object> params, boolean andOperator, int start,
+		int end, OrderByComparator obc) {
 
 		if (params == null) {
-			params = new LinkedHashMap<String, Object>();
+			params = new LinkedHashMap<>();
 		}
 
 		Timestamp createDateGT_TS = CalendarUtil.getTimestamp(createDateGT);
@@ -251,7 +242,7 @@ public class OrderEntryFinderImpl
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addEntity("OSB_OrderEntry", OrderEntryImpl.class);
 

@@ -17,7 +17,6 @@ package com.liferay.osb.service.impl;
 import com.liferay.osb.model.ExternalIdMapper;
 import com.liferay.osb.service.base.ExternalIdMapperLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.Date;
@@ -30,8 +29,7 @@ public class ExternalIdMapperLocalServiceImpl
 	extends ExternalIdMapperLocalServiceBaseImpl {
 
 	public ExternalIdMapper addExternalIdMapper(
-			long classNameId, long classPK, int type, String externalId)
-		throws SystemException {
+		long classNameId, long classPK, int type, String externalId) {
 
 		Date now = new Date();
 
@@ -46,9 +44,9 @@ public class ExternalIdMapperLocalServiceImpl
 		externalIdMapper.setClassPK(classPK);
 		externalIdMapper.setType(type);
 		externalIdMapper.setExternalId(externalId);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		externalIdMapperPersistence.update(externalIdMapper, serviceContext);
@@ -56,23 +54,21 @@ public class ExternalIdMapperLocalServiceImpl
 		return externalIdMapper;
 	}
 
-	public void deleteExternalIdMapper(long classNameId, long classPK, int type)
-		throws SystemException {
+	public void deleteExternalIdMapper(
+		long classNameId, long classPK, int type) {
 
 		externalIdMapperPersistence.removeByC_C_T(classNameId, classPK, type);
 	}
 
 	public List<ExternalIdMapper> getExternalIdMappers(
-			long classNameId, int type, String externalId)
-		throws SystemException {
+		long classNameId, int type, String externalId) {
 
 		return externalIdMapperPersistence.findByC_T_EI(
 			classNameId, type, externalId);
 	}
 
 	public List<ExternalIdMapper> getExternalIdMappers(
-			long classNameId, long classPK, int type)
-		throws SystemException {
+		long classNameId, long classPK, int type) {
 
 		return externalIdMapperPersistence.findByC_C_T(
 			classNameId, classPK, type);
@@ -81,7 +77,7 @@ public class ExternalIdMapperLocalServiceImpl
 	public ExternalIdMapper updateExternalIdMapper(
 			long externalIdMapperId, long classNameId, long classPK, int type,
 			String externalId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		ExternalIdMapper externalIdMapper =
 			externalIdMapperPersistence.findByPrimaryKey(externalIdMapperId);
@@ -91,9 +87,9 @@ public class ExternalIdMapperLocalServiceImpl
 		externalIdMapper.setClassPK(classPK);
 		externalIdMapper.setType(type);
 		externalIdMapper.setExternalId(externalId);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		externalIdMapperPersistence.update(externalIdMapper, serviceContext);

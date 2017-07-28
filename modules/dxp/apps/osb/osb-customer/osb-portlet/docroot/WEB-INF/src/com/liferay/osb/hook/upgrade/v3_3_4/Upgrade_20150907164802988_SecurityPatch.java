@@ -24,16 +24,13 @@ import com.liferay.osb.model.impl.SecurityPatchImpl;
 /**
  * @author Alan Zhang
  */
-public class Upgrade_20150907164802988_SecurityPatch
-	extends UpgradeProcess {
+public class Upgrade_20150907164802988_SecurityPatch extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20150907164802988L;
 	}
@@ -50,6 +47,7 @@ public class Upgrade_20150907164802988_SecurityPatch
 	}
 
 }
+
 */
 
 }

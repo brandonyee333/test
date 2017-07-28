@@ -14,13 +14,13 @@
 
 package com.liferay.osb.admin.messaging;
 
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.admin.util.AdminUtil;
 import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
+import com.liferay.portal.kernel.util.Validator;
 
 /* TODO update rabbitMQ integration
 import com.liferay.osb.rabbitmq.DeadLetterFilterRabbitMQConsumer;
@@ -65,10 +65,11 @@ public class DeadLetterFilterMessageListener extends BaseMessageListener {
 		catch (Exception e) {
 			_log.error(e, e);
 		}
+
 */
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		DeadLetterFilterMessageListener.class);
 
 }

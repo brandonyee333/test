@@ -56,7 +56,7 @@ long toPatchLevelTicketAttachmentId = ParamUtil.getLong(request, "toPatchLevelTi
 </liferay-ui:error>
 
 <div>
-	<h2 class="section-heading component-title">
+	<h2 class="component-title section-heading">
 		<liferay-ui:message key="clustering-details" />
 	</h2>
 
@@ -71,7 +71,7 @@ long toPatchLevelTicketAttachmentId = ParamUtil.getLong(request, "toPatchLevelTi
 	<div class="aui-w45 fl">
 		<span class="section-heading"><liferay-ui:message key="server-communication-type" />:</span>
 
-		<select data-field-required-status="<%= false %>" field-required-message='<%= HtmlUtil.escapeAttribute(LanguageUtil.format(pageContext, "invalid-value-provided-for-x", "server-communication-type")) %>' id="<portlet:namespace />serverCommunicationType" name="<portlet:namespace />serverCommunicationType">
+		<select data-field-required-status="<%= false %>" field-required-message="<%= HtmlUtil.escapeAttribute(LanguageUtil.format(pageContext, "invalid-value-provided-for-x", "server-communication-type")) %>" id="<portlet:namespace />serverCommunicationType" name="<portlet:namespace />serverCommunicationType">
 			<option value=""></option>
 
 			<%

@@ -23,14 +23,13 @@ import com.liferay.osb.service.permission.OSBTicketEntryPermission;
 import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
-import com.liferay.portal.kernel.util.ObjectValuePair;
-import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.ObjectValuePair;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.io.File;
 
@@ -48,7 +47,7 @@ public class TicketCommentServiceImpl extends TicketCommentServiceBaseImpl {
 			int visibility, int status, long ticketCannedResponseId,
 			int[] pendingTypes, List<ObjectValuePair<String, File>> files,
 			List<Integer> types, ServiceContext serviceContext)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if ((files != null) && !files.isEmpty()) {
 			OSBTicketEntryPermission.check(
@@ -74,7 +73,7 @@ public class TicketCommentServiceImpl extends TicketCommentServiceBaseImpl {
 			long userId, long ticketEntryId, String body, int type,
 			int visibility, int status, long ticketCannedResponseId,
 			int[] pendingTypes, ServiceContext serviceContext)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		validateAddTicketComment(ticketEntryId, status, visibility);
 
@@ -88,7 +87,7 @@ public class TicketCommentServiceImpl extends TicketCommentServiceBaseImpl {
 	}
 
 	public TicketComment deleteTicketComment(long ticketCommentId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketComment ticketComment =
 			ticketCommentLocalService.getTicketComment(ticketCommentId);
@@ -105,7 +104,7 @@ public class TicketCommentServiceImpl extends TicketCommentServiceBaseImpl {
 			int visibility, int status, long ticketCannedResponseId,
 			int[] pendingTypes, List<ObjectValuePair<String, File>> files,
 			List<Integer> types)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketComment ticketComment =
 			ticketCommentLocalService.getTicketComment(ticketCommentId);
@@ -151,7 +150,7 @@ public class TicketCommentServiceImpl extends TicketCommentServiceBaseImpl {
 	}
 
 	public TicketComment updateTicketCommentType(long ticketCommentId, int type)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OSBTicketCommentPermission.check(
 			getPermissionChecker(), null, OSBActionKeys.MARK_AS_SOLUTION);
@@ -168,7 +167,7 @@ public class TicketCommentServiceImpl extends TicketCommentServiceBaseImpl {
 
 	protected void validateAddTicketComment(
 			long ticketEntryId, int status, int visibility)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (status != WorkflowConstants.STATUS_DRAFT) {
 			if (visibility == VisibilityConstants.LIFERAY_INC) {

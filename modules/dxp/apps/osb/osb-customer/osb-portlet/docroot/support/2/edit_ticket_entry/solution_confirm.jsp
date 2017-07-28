@@ -13,6 +13,7 @@
  * details.
  */
 --%>
+
 <%@ include file="/support/2/init.jsp" %>
 
 <%
@@ -133,12 +134,12 @@ boolean hasUpdateTicketSolution = accountCustomer || (partnerWorker && PartnerWo
 			</div>
 
 			<div class="solution-confirm-answer">
-				<a class="btn solution-confirm-btn btn-yes" href="javascript:;" onClick='<portlet:namespace />updateTicketSolution(<%= (ticketSolution.getStatus() == TicketSolutionConstants.STATUS_TESTING) ? TicketSolutionConstants.STATUS_RESOLVED : TicketSolutionConstants.STATUS_RESOLVED_IN_PRODUCTION %>, "", "");'><liferay-ui:message key="yes" /></a>
+				<a class="btn btn-yes solution-confirm-btn" href="javascript:;" onClick="<portlet:namespace />updateTicketSolution(<%= (ticketSolution.getStatus() == TicketSolutionConstants.STATUS_TESTING) ? TicketSolutionConstants.STATUS_RESOLVED : TicketSolutionConstants.STATUS_RESOLVED_IN_PRODUCTION %>, "", "");"><liferay-ui:message key="yes" /></a>
 
-				<a class="btn solution-confirm-btn btn-no"><liferay-ui:message key="no" /></a>
+				<a class="btn btn-no solution-confirm-btn"><liferay-ui:message key="no" /></a>
 
 				<c:if test="<%= (ticketSolution.getStatus() == TicketSolutionConstants.STATUS_RESOLVED) || (ticketSolution.getStatus() == TicketSolutionConstants.STATUS_TESTING) %>">
-					<a class="btn solution-confirm-btn style-a btn-not-applicable" href="javascript:;" onClick='<portlet:namespace />updateTicketSolution(<%= (ticketSolution.getStatus() == TicketSolutionConstants.STATUS_TESTING) ? TicketSolutionConstants.STATUS_UNABLE_TO_TEST : TicketSolutionConstants.STATUS_RESOLVED_IN_PRODUCTION %>, "", "");'><liferay-ui:message key="not-applicable" /></a>
+					<a class="btn btn-not-applicable solution-confirm-btn style-a" href="javascript:;" onClick="<portlet:namespace />updateTicketSolution(<%= (ticketSolution.getStatus() == TicketSolutionConstants.STATUS_TESTING) ? TicketSolutionConstants.STATUS_UNABLE_TO_TEST : TicketSolutionConstants.STATUS_RESOLVED_IN_PRODUCTION %>, "", "");"><liferay-ui:message key="not-applicable" /></a>
 				</c:if>
 			</div>
 		</div>

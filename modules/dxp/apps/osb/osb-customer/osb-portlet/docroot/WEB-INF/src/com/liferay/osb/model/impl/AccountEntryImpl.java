@@ -14,7 +14,6 @@
 
 package com.liferay.osb.model.impl;
 
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.model.AccountAttachment;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountEntry;
@@ -39,10 +38,10 @@ import com.liferay.osb.service.SupportRegionLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.service.AddressLocalServiceUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.List;
 
@@ -80,24 +79,24 @@ public class AccountEntryImpl extends AccountEntryBaseImpl {
 		return accountEntry;
 	}
 
-	public List<AccountAttachment> getAccountAttachments(long accountProjectId)
-		throws SystemException {
+	public List<AccountAttachment> getAccountAttachments(
+		long accountProjectId) {
 
 		return AccountAttachmentLocalServiceUtil.getAccountAttachments(
 			getAccountEntryId(), accountProjectId);
 	}
 
-	public List<AccountCustomer> getAccountCustomers() throws SystemException {
+	public List<AccountCustomer> getAccountCustomers() {
 		return AccountCustomerLocalServiceUtil.getAccountCustomers(
 			getAccountEntryId());
 	}
 
-	public List<AccountWorker> getAccountWorkers() throws SystemException {
+	public List<AccountWorker> getAccountWorkers() {
 		return AccountWorkerLocalServiceUtil.getAccountWorkers(
 			getAccountEntryId());
 	}
 
-	public Address getAddress() throws SystemException {
+	public Address getAddress() {
 		if (_address != null) {
 			return _address;
 		}
@@ -113,7 +112,7 @@ public class AccountEntryImpl extends AccountEntryBaseImpl {
 		return null;
 	}
 
-	public String getEWSADossieraProjectKey() throws SystemException {
+	public String getEWSADossieraProjectKey() {
 		long classNameId = PortalUtil.getClassNameId(
 			AccountEntry.class.getName());
 
@@ -136,7 +135,7 @@ public class AccountEntryImpl extends AccountEntryBaseImpl {
 		return AccountEntryConstants.getIndustryLabel(getIndustry());
 	}
 
-	public String[] getLanguageIds() throws SystemException {
+	public String[] getLanguageIds() {
 		if (_languageIds != null) {
 			return _languageIds;
 		}
@@ -157,19 +156,17 @@ public class AccountEntryImpl extends AccountEntryBaseImpl {
 		return languageIds;
 	}
 
-	public List<OfferingEntry> getOfferingEntries() throws SystemException {
+	public List<OfferingEntry> getOfferingEntries() {
 		return OfferingEntryLocalServiceUtil.getAccountEntryOfferingEntries(
 			getAccountEntryId());
 	}
 
-	public List<OrderEntry> getOrderEntries() throws SystemException {
+	public List<OrderEntry> getOrderEntries() {
 		return OrderEntryLocalServiceUtil.getAccountEntryOrderEntries(
 			getAccountEntryId());
 	}
 
-	public PartnerEntry getPartnerEntry()
-		throws PortalException, SystemException {
-
+	public PartnerEntry getPartnerEntry() throws PortalException {
 		if (getPartnerEntryId() == 0) {
 			return null;
 		}
@@ -182,7 +179,7 @@ public class AccountEntryImpl extends AccountEntryBaseImpl {
 		return WorkflowConstants.getStatusLabel(getStatus());
 	}
 
-	public long[] getSupportRegionIds() throws SystemException {
+	public long[] getSupportRegionIds() {
 		if (_supportRegionIds != null) {
 			return _supportRegionIds;
 		}
@@ -202,7 +199,7 @@ public class AccountEntryImpl extends AccountEntryBaseImpl {
 		return supportRegionIds;
 	}
 
-	public List<SupportRegion> getSupportRegions() throws SystemException {
+	public List<SupportRegion> getSupportRegions() {
 		return SupportRegionLocalServiceUtil.getAccountEntrySupportRegions(
 			getAccountEntryId());
 	}

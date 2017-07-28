@@ -39,16 +39,13 @@ import java.util.Map;
 /**
  * @author Alan Zhang
  */
-public class Upgrade_20150807173716016_TicketAttachment
-	extends UpgradeProcess {
+public class Upgrade_20150807173716016_TicketAttachment extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20150807173716016L;
 	}
@@ -60,8 +57,7 @@ public class Upgrade_20150807173716016_TicketAttachment
 		renameFiles();
 	}
 
-	private void doRenameFiles(List<TicketAttachment> ticketAttachments)
-		throws SystemException {
+	private void doRenameFiles(List<TicketAttachment> ticketAttachments) {
 
 		for (int i = 0; i < ticketAttachments.size(); i++) {
 			TicketAttachment ticketAttachment = ticketAttachments.get(i);
@@ -120,20 +116,20 @@ public class Upgrade_20150807173716016_TicketAttachment
 		}
 	}
 
-	private void renameFiles() throws SystemException {
+	private void renameFiles() {
 		List<TicketAttachment> ticketAttachments =
 			TicketAttachmentLocalServiceUtil.getTicketAttachments(
 				new Date(), TicketAttachmentConstants.TYPE_LARGE_FILE);
 
 		Map<String, ArrayList<TicketAttachment>> ticketAttachmentGroup =
-			new HashMap<String, ArrayList<TicketAttachment>>();
+			new HashMap<>();
 
 		for (TicketAttachment ticketAttachment : ticketAttachments) {
 			ArrayList<TicketAttachment> ticketAttachmentList =
 				ticketAttachmentGroup.get(ticketAttachment.getFileName());
 
 			if (ticketAttachmentList == null) {
-				ticketAttachmentList = new ArrayList<TicketAttachment>();
+				ticketAttachmentList = new ArrayList<>();
 
 				ticketAttachmentGroup.put(
 					ticketAttachment.getFileName(), ticketAttachmentList);
@@ -159,6 +155,7 @@ public class Upgrade_20150807173716016_TicketAttachment
 		Upgrade_20150807173716016_TicketAttachment.class);
 
 }
+
 */
 
 }

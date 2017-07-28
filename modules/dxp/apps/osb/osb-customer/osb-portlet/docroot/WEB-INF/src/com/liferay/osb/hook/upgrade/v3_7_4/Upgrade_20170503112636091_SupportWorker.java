@@ -24,16 +24,13 @@ import com.liferay.osb.service.SupportWorkerLocalServiceUtil;
 /**
  * @author Kyle Bischof
  */
-public class Upgrade_20170503112636091_SupportWorker
-	extends UpgradeProcess {
+public class Upgrade_20170503112636091_SupportWorker extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20170503112636091L;
 	}
@@ -53,6 +50,7 @@ public class Upgrade_20170503112636091_SupportWorker
 	}
 
 }
+
 */
 
 }

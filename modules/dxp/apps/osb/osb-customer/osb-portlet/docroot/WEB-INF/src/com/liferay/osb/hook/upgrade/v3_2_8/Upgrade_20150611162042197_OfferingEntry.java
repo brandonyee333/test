@@ -36,16 +36,13 @@ import java.util.Map;
 /**
  * @author Amos Fong
  */
-public class Upgrade_20150611162042197_OfferingEntry
-	extends UpgradeProcess {
+public class Upgrade_20150611162042197_OfferingEntry extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20150611162042197L;
 	}
@@ -103,8 +100,7 @@ public class Upgrade_20150611162042197_OfferingEntry
 	}
 
 	protected void mergeOfferingEntries(long orderEntryId) throws Exception {
-		Map<String, OfferingEntry> mergedOfferingEntries =
-			new HashMap<String, OfferingEntry>();
+		Map<String, OfferingEntry> mergedOfferingEntries = new HashMap<>();
 
 		List<OfferingEntry> offeringEntries =
 			OfferingEntryLocalServiceUtil.getOrderEntryOfferingEntries(
@@ -174,6 +170,7 @@ public class Upgrade_20150611162042197_OfferingEntry
 	}
 
 }
+
 */
 
 }

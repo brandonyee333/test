@@ -18,6 +18,7 @@
 
 <%
 String redirect = ParamUtil.getString(request, "redirect");
+
 String backURL = ParamUtil.getString(request, "backURL", redirect);
 
 long productEntryId = ParamUtil.getLong(request, "productEntryId");
@@ -53,86 +54,86 @@ if ((productEntry != null) && Validator.isNull(dossieraIdMappings)) {
 	<liferay-ui:error exception="<%= ProductEntryNameException.class %>" message="please-enter-a-valid-name" />
 
 	<table class="lfr-table">
-	<tr>
-		<td>
-			<liferay-ui:message key="name" />
-		</td>
-		<td>
-			<liferay-ui:input-field bean="<%= productEntry %>" field="name" model="<%= ProductEntry.class %>" />
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="type" />
-		</td>
-		<td>
-			<select name="<portlet:namespace />type">
-				<option value=""></option>
-
-				<%
-				for (int curType : ProductEntryConstants.TYPES) {
-				%>
-
-					<option <%= (type == curType) ? "selected" : "" %> value="<%= curType %>"><%= LanguageUtil.get(pageContext, ProductEntryConstants.getTypeLabel(curType)) %></option>
-
-				<%
-				}
-				%>
-
-			</select>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="environment" />
-		</td>
-		<td>
-			<select name="<portlet:namespace />environment">
-				<option value=""></option>
-
-				<%
-				for (int i = 1; i <= 6; i++) {
-				%>
-
-					<option <%= (environment == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(pageContext, ProductEntryConstants.getEnvironmentLabel(i)) %></option>
-
-				<%
-				}
-				%>
-
-			</select>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="version-list-type" />
-		</td>
-		<td>
-			<input name="<portlet:namespace />versionsListType" type="text" value="<%= HtmlUtil.escapeAttribute(versionsListType) %>" />
-		</td>
-	</tr>
-
-	<c:if test="<%= (productEntry != null) && Validator.isNotNull(versionsListType) %>">
 		<tr>
 			<td>
-				<liferay-ui:message key="versions" />
+				<liferay-ui:message key="name" />
 			</td>
 			<td>
-				<%= ListUtil.toString(productEntry.getVersionsListTypes(), "name") %>
+				<liferay-ui:input-field bean="<%= productEntry %>" field="name" model="<%= ProductEntry.class %>" />
 			</td>
 		</tr>
-	</c:if>
+		<tr>
+			<td>
+				<liferay-ui:message key="type" />
+			</td>
+			<td>
+				<select name="<portlet:namespace />type">
+					<option value=""></option>
 
-	<tr>
-		<td>
-			<liferay-ui:message key="dossiera-id-mappings" />
-		</td>
-		<td>
-			<aui:fieldset>
-				<aui:input cssClass="lfr-textarea-container" label="" name="dossieraIdMappings" style="width: 500px;" type="textarea" value="<%= dossieraIdMappings %>" />
-			</aui:fieldset>
-		</td>
-	</tr>
+					<%
+					for (int curType : ProductEntryConstants.TYPES) {
+					%>
+
+						<option <%= (type == curType) ? "selected" : "" %> value="<%= curType %>"><%= LanguageUtil.get(pageContext, ProductEntryConstants.getTypeLabel(curType)) %></option>
+
+					<%
+					}
+					%>
+
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="environment" />
+			</td>
+			<td>
+				<select name="<portlet:namespace />environment">
+					<option value=""></option>
+
+					<%
+					for (int i = 1; i <= 6; i++) {
+					%>
+
+						<option <%= (environment == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(pageContext, ProductEntryConstants.getEnvironmentLabel(i)) %></option>
+
+					<%
+					}
+					%>
+
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="version-list-type" />
+			</td>
+			<td>
+				<input name="<portlet:namespace />versionsListType" type="text" value="<%= HtmlUtil.escapeAttribute(versionsListType) %>" />
+			</td>
+		</tr>
+
+		<c:if test="<%= (productEntry != null) && Validator.isNotNull(versionsListType) %>">
+			<tr>
+				<td>
+					<liferay-ui:message key="versions" />
+				</td>
+				<td>
+					<%= ListUtil.toString(productEntry.getVersionsListTypes(), "name") %>
+				</td>
+			</tr>
+		</c:if>
+
+		<tr>
+			<td>
+				<liferay-ui:message key="dossiera-id-mappings" />
+			</td>
+			<td>
+				<aui:fieldset>
+					<aui:input cssClass="lfr-textarea-container" label="" name="dossieraIdMappings" style="width: 500px;" type="textarea" value="<%= dossieraIdMappings %>" />
+				</aui:fieldset>
+			</td>
+		</tr>
 	</table>
 
 	<br />

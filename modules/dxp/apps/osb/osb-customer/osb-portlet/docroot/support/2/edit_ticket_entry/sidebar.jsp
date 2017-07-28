@@ -34,7 +34,7 @@ int component = BeanParamUtil.getInteger(ticketEntry, request, "component");
 %>
 
 <div class="sidebar">
-	<div class="sidebar-account-detail section">
+	<div class="section sidebar-account-detail">
 		<c:choose>
 			<c:when test="<%= ticketWorker %>">
 
@@ -116,12 +116,12 @@ int component = BeanParamUtil.getInteger(ticketEntry, request, "component");
 		accountEntryTicketSearchURL.setParameter("statuses", ArrayUtil.toStringArray(TicketEntryConstants.STATUSES_OPEN));
 		%>
 
-		<div class="sub-section sidebar-account-detail txt-up">
+		<div class="sidebar-account-detail sub-section txt-up">
 			<a href="<%= accountEntryTicketSearchURL.toString() %>" target="_blank"><liferay-ui:message arguments="<%= accountEntryOpenTickets %>" key='<%= (accountEntryOpenTickets == 1) ? "x-ticket-open" : "x-tickets-open" %>' /></a>
 		</div>
 	</div>
 
-	<div class="section last">
+	<div class="last section">
 		<div class="heading">
 			<liferay-ui:message key="ticket-details" />
 		</div>
@@ -270,7 +270,7 @@ int component = BeanParamUtil.getInteger(ticketEntry, request, "component");
 		}
 		%>
 
-		<div class="sub-section last">
+		<div class="last sub-section">
 			<c:if test="<%= envLFR != 0 %>">
 				<div>
 					<span class="txt-up"><liferay-ui:message key="lr" />:</span>

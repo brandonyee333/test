@@ -14,12 +14,12 @@
 
 package com.liferay.osb.support.util.parser;
 
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.TicketEntryLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -109,9 +109,9 @@ public class PlainTextParser {
 	private static final String _LIFERAY_TICKET_URL =
 		"http://www.liferay.com/group/customer/support/-/support/ticket/";
 
-	private static Pattern _ticketPattern = Pattern.compile(
+	private static final Pattern _ticketPattern = Pattern.compile(
 		"([/=]?)(([A-Z0-9]+)-([0-9]+))");
-	private static Pattern _urlPattern = Pattern.compile(
+	private static final Pattern _urlPattern = Pattern.compile(
 		"((?<!href=\")https?://[-\\p{L}0-9~!@#%&()_+=|:;,.?/]+(?<![,.]))",
 		Pattern.CASE_INSENSITIVE);
 

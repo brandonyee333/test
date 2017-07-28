@@ -366,7 +366,7 @@ boolean hasMarkAsSolutionPermission = OSBTicketCommentPermission.contains(permis
 											String updateTicketCommentTypeURL = "javascript:" + renderResponse.getNamespace() + "updateTicketCommentType(" + ticketComment.getTicketCommentId() + ", " + TicketCommentConstants.TYPE_SOLUTION + ");";
 											%>
 
-											<td class='solution-button <%= ((ticketComment.getType() == TicketCommentConstants.TYPE_NORMAL) && (ticketComment.getStatus() == WorkflowConstants.STATUS_APPROVED)) ? "" : "aui-helper-hidden" %>' id="<portlet:namespace />solutionFlagButton_<%= ticketComment.getTicketCommentId() %>">
+											<td class="solution-button <%= ((ticketComment.getType() == TicketCommentConstants.TYPE_NORMAL) && (ticketComment.getStatus() == WorkflowConstants.STATUS_APPROVED)) ? "" : "aui-helper-hidden" %>" id="<portlet:namespace />solutionFlagButton_<%= ticketComment.getTicketCommentId() %>">
 												<liferay-ui:icon
 													image="checked"
 													label="true"
@@ -497,7 +497,7 @@ boolean hasMarkAsSolutionPermission = OSBTicketCommentPermission.contains(permis
 													<span id="<portlet:namespace />fileName<%= draftSuffix %>"><%= ticketAttachment.getFileName().substring(ticketAttachment.getFileName().indexOf(StringPool.DASH) + 1) %></span>
 												</c:if>
 
-												<input class='<%= (ticketAttachment != null) ? "aui-helper-hidden" : "" %>' id='<portlet:namespace /><%= "file" + draftSuffix %>' name='<portlet:namespace /><%= "file" + draftSuffix %>' type="file" />
+												<input class="<%= (ticketAttachment != null) ? "aui-helper-hidden" : "" %>" id="<portlet:namespace /><%= "file" + draftSuffix %>" name="<portlet:namespace /><%= "file" + draftSuffix %>" type="file" />
 											</td>
 
 											<c:if test="<%= ticketWorker %>">
@@ -508,7 +508,7 @@ boolean hasMarkAsSolutionPermission = OSBTicketCommentPermission.contains(permis
 
 											<c:if test="<%= ticketAttachment != null %>">
 												<td>
-													<input class="aui-button-input" id='<portlet:namespace /><%= "deleteTicketAttachment" + draftSuffix %>' onClick="<portlet:namespace />deleteTicketAttachment(<%= i %>, <%= ticketAttachment.getTicketAttachmentId() %>, <%= j %>);" type="button" value="<liferay-ui:message key="delete" />" />
+													<input class="aui-button-input" id="<portlet:namespace /><%= "deleteTicketAttachment" + draftSuffix %>" onClick="<portlet:namespace />deleteTicketAttachment(<%= i %>, <%= ticketAttachment.getTicketAttachmentId() %>, <%= j %>);" type="button" value="<liferay-ui:message key="delete" />" />
 												</td>
 											</c:if>
 										</tr>

@@ -14,17 +14,16 @@
 
 package com.liferay.osb.admin.asset;
 
+import com.liferay.asset.kernel.model.BaseAssetRenderer;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.asset.kernel.model.BaseAssetRenderer;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.Locale;
 
@@ -33,6 +32,7 @@ import javax.portlet.PortletResponse;
 import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -49,6 +49,22 @@ public class AccountEntryAssetRenderer extends BaseAssetRenderer {
 		return _accountEntry;
 	}
 
+	@Override
+	public Object getAssetObject() {
+
+		// TODO Auto-generated method stub
+
+		return null;
+	}
+
+	@Override
+	public String getClassName() {
+
+		// TODO Auto-generated method stub
+
+		return null;
+	}
+
 	public long getClassPK() {
 		return _accountEntry.getAccountEntryId();
 	}
@@ -59,6 +75,15 @@ public class AccountEntryAssetRenderer extends BaseAssetRenderer {
 
 	public String getSummary(Locale locale) {
 		return StringPool.BLANK;
+	}
+
+	@Override
+	public String getSummary(
+		PortletRequest portletRequest, PortletResponse portletResponse) {
+
+		// TODO Auto-generated method stub
+
+		return null;
 	}
 
 	public String getTitle(Locale locale) {
@@ -97,9 +122,7 @@ public class AccountEntryAssetRenderer extends BaseAssetRenderer {
 	}
 
 	@Override
-	public boolean hasEditPermission(PermissionChecker permissionChecker)
-		throws SystemException {
-
+	public boolean hasEditPermission(PermissionChecker permissionChecker) {
 		if (RoleLocalServiceUtil.hasUserRole(
 				permissionChecker.getUserId(),
 				OSBConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
@@ -118,10 +141,19 @@ public class AccountEntryAssetRenderer extends BaseAssetRenderer {
 	}
 
 	@Override
-	public boolean hasViewPermission(PermissionChecker permissionChecker)
-		throws SystemException {
-
+	public boolean hasViewPermission(PermissionChecker permissionChecker) {
 		return hasEditPermission(permissionChecker);
+	}
+
+	@Override
+	public boolean include(
+			HttpServletRequest request, HttpServletResponse response,
+			String template)
+		throws Exception {
+
+		// TODO Auto-generated method stub
+
+		return false;
 	}
 
 	@Override
@@ -145,30 +177,6 @@ public class AccountEntryAssetRenderer extends BaseAssetRenderer {
 		return themeDisplay.getPathThemeImages() + "/trees/page.png";
 	}
 
-	private AccountEntry _accountEntry;
-
-	@Override
-	public Object getAssetObject() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getClassName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getSummary(PortletRequest portletRequest, PortletResponse portletResponse) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean include(HttpServletRequest request, HttpServletResponse response, String template) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	private final AccountEntry _accountEntry;
 
 }

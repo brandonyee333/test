@@ -14,16 +14,11 @@
 
 package com.liferay.osb.admin.portlet;
 
-import com.liferay.portal.kernel.portlet.PortletResponseUtil;
-import com.liferay.portal.kernel.servlet.HttpHeaders;
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.LocalizationUtil;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.util.bridges.mvc.MVCPortlet;
+import com.liferay.document.library.kernel.exception.FileExtensionException;
+import com.liferay.document.library.kernel.exception.FileNameException;
+import com.liferay.document.library.kernel.store.DLStoreUtil;
+import com.liferay.osb.admin.util.AdminUtil;
+import com.liferay.osb.admin.util.KeyGenerator;
 import com.liferay.osb.exception.AccountEntryCodeException;
 import com.liferay.osb.exception.AccountEntryCorpProjectException;
 import com.liferay.osb.exception.AccountEntryIndustryException;
@@ -89,8 +84,6 @@ import com.liferay.osb.exception.SupportTeamSupportLaborException;
 import com.liferay.osb.exception.SupportWorkerMaxWorkException;
 import com.liferay.osb.exception.TicketCannedResponseContentException;
 import com.liferay.osb.exception.TicketCannedResponseNameException;
-import com.liferay.osb.admin.util.AdminUtil;
-import com.liferay.osb.admin.util.KeyGenerator;
 import com.liferay.osb.model.AccountAttachment;
 import com.liferay.osb.model.AccountAttachmentConstants;
 import com.liferay.osb.model.AccountEntry;
@@ -138,10 +131,11 @@ import com.liferay.osb.service.TicketCannedResponseLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
 import com.liferay.osb.util.OSBRequestUtil;
-import com.liferay.osb.util.OSBWebKeys;
-import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.osb.util.WorkflowConstants;
+import com.liferay.portal.kernel.audit.AuditMessage;
+import com.liferay.portal.kernel.audit.AuditRouterUtil;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.AddressCityException;
 import com.liferay.portal.kernel.exception.AddressStreetException;
 import com.liferay.portal.kernel.exception.AddressZipException;
@@ -149,60 +143,46 @@ import com.liferay.portal.kernel.exception.ContactFirstNameException;
 import com.liferay.portal.kernel.exception.ContactLastNameException;
 import com.liferay.portal.kernel.exception.DuplicateUserEmailAddressException;
 import com.liferay.portal.kernel.exception.NoSuchListTypeException;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.ReservedUserEmailAddressException;
 import com.liferay.portal.kernel.exception.UserEmailAddressException;
-import com.liferay.portal.kernel.audit.AuditMessage;
-import com.liferay.portal.kernel.audit.AuditRouterUtil;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.io.Base64InputStream;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.messaging.Message;
-import com.liferay.portal.kernel.messaging.MessageBusUtil;
-import com.liferay.portal.kernel.servlet.SessionMessages;
-import com.liferay.portal.kernel.upload.UploadPortletRequest;
-import com.liferay.portal.kernel.util.Base64;
-import com.liferay.portal.kernel.util.CSVUtil;
-import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
-import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.MapUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
-import com.liferay.portal.kernel.util.ObjectValuePair;
-import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.StreamUtil;
-import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.kernel.xml.Document;
-import com.liferay.portal.kernel.xml.Element;
-import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.Phone;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.portlet.PortletResponseUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portal.kernel.service.AddressLocalServiceUtil;
 import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.service.ServiceContextFactory;
-import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.servlet.HttpHeaders;
+import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
-import com.liferay.document.library.kernel.exception.FileExtensionException;
-import com.liferay.document.library.kernel.exception.FileNameException;
-import com.liferay.document.library.kernel.store.DLStoreUtil;
+import com.liferay.portal.kernel.upload.UploadPortletRequest;
+import com.liferay.portal.kernel.util.Base64;
+import com.liferay.portal.kernel.util.Constants;
+import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.ObjectValuePair;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.users.admin.kernel.util.UsersAdminUtil;
+import com.liferay.util.bridges.mvc.MVCPortlet;
 /* TODO update rabbitMQ integration
 import com.liferay.osb.rabbitmq.RabbitMQConsumerRouter;
 import com.liferay.rabbitmq.consumer.RabbitMQConsumer;
@@ -523,8 +503,7 @@ public class AdminPortlet extends MVCPortlet {
 			long ticketEntryId = GetterUtil.getLong(
 				FileUtil.getShortFileName(attachmentsDir));
 
-			List<ObjectValuePair<String, File>> files =
-				new ArrayList<ObjectValuePair<String, File>>();
+			List<ObjectValuePair<String, File>> files = new ArrayList<>();
 
 			String[] ticketAttachments = DLStoreUtil.getFileNames(
 				OSBConstants.COMPANY_ID, CompanyConstants.SYSTEM,
@@ -537,8 +516,8 @@ public class AdminPortlet extends MVCPortlet {
 					OSBConstants.COMPANY_ID, CompanyConstants.SYSTEM,
 					ticketAttachment);
 
-				ObjectValuePair<String, File> ovp =
-					new ObjectValuePair<String, File>(fileName, file);
+				ObjectValuePair<String, File> ovp = new ObjectValuePair<>(
+					fileName, file);
 
 				files.add(ovp);
 			}
@@ -781,10 +760,9 @@ public class AdminPortlet extends MVCPortlet {
 		int envAS = ParamUtil.getInteger(actionRequest, "envAS");
 		int envLFR = ParamUtil.getInteger(actionRequest, "envLFR");
 
-		List<ObjectValuePair<String, File>> files =
-			new ArrayList<ObjectValuePair<String, File>>();
+		List<ObjectValuePair<String, File>> files = new ArrayList<>();
 
-		List<Integer> types = new ArrayList<Integer>();
+		List<Integer> types = new ArrayList<>();
 
 		String[] uploadFileNames = new String[] {"patch-level", "portal-ext"};
 
@@ -808,8 +786,8 @@ public class AdminPortlet extends MVCPortlet {
 						AccountEnvironmentAttachmentSizeException.EMPTY_FILE);
 				}
 
-				ObjectValuePair<String, File> ovp =
-					new ObjectValuePair<String, File>(fileName, file);
+				ObjectValuePair<String, File> ovp = new ObjectValuePair<>(
+					fileName, file);
 
 				files.add(ovp);
 
@@ -835,8 +813,7 @@ public class AdminPortlet extends MVCPortlet {
 						SessionMessages.KEY_SUFFIX_REFRESH_PORTLET,
 					OSBPortletKeys.OSB_ADMIN);
 
-				Map<String, String> refreshPortletData =
-					new HashMap<String, String>();
+				Map<String, String> refreshPortletData = new HashMap<>();
 
 				refreshPortletData.put(
 					actionResponse.getNamespace() + "productEntryId",
@@ -896,7 +873,7 @@ public class AdminPortlet extends MVCPortlet {
 		int[] holidayEntriesIndexes = StringUtil.split(
 			ParamUtil.getString(actionRequest, "holidayEntriesIndexes"), 0);
 
-		List<HolidayEntry> holidayEntries = new ArrayList<HolidayEntry>();
+		List<HolidayEntry> holidayEntries = new ArrayList<>();
 
 		for (int holidayEntriesIndex : holidayEntriesIndexes) {
 			long holidayEntryId = ParamUtil.getLong(
@@ -924,12 +901,9 @@ public class AdminPortlet extends MVCPortlet {
 				actionRequest,
 				"holidayEntryRepeatYearly" + holidayEntriesIndex);
 
-			if ((holidayEntryStartDay <= 0) ||
-				(holidayEntryStartMonth < 0) ||
-				(holidayEntryStartYear <= 0) ||
-				(holidayEntryEndDay <= 0) ||
-				(holidayEntryEndMonth < 0) ||
-				(holidayEntryEndYear <= 0)) {
+			if ((holidayEntryStartDay <= 0) || (holidayEntryStartMonth < 0) ||
+				(holidayEntryStartYear <= 0) || (holidayEntryEndDay <= 0) ||
+				(holidayEntryEndMonth < 0) || (holidayEntryEndYear <= 0)) {
 
 				continue;
 			}
@@ -1122,7 +1096,7 @@ public class AdminPortlet extends MVCPortlet {
 		int actualStartDateYear = ParamUtil.getInteger(
 			actionRequest, "actualStartDateYear");
 
-		List<OfferingEntry> offeringEntries = new ArrayList<OfferingEntry>();
+		List<OfferingEntry> offeringEntries = new ArrayList<>();
 
 		int offeringEntriesCount = ParamUtil.getInteger(
 			actionRequest, "offeringEntriesCount");
@@ -1789,7 +1763,7 @@ public class AdminPortlet extends MVCPortlet {
 
 	protected void serveAccountAttachment(
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
-		throws IOException, PortalException, SystemException {
+		throws IOException, PortalException {
 
 		long accountAttachmentId = ParamUtil.getLong(
 			resourceRequest, "accountAttachmentId");
@@ -1809,7 +1783,7 @@ public class AdminPortlet extends MVCPortlet {
 
 	protected void serveAccountEntries(
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
-		throws IOException, SystemException {
+		throws IOException {
 
 		String name = ParamUtil.getString(resourceRequest, "name");
 		String code = ParamUtil.getString(resourceRequest, "code");
@@ -1836,7 +1810,7 @@ public class AdminPortlet extends MVCPortlet {
 
 	protected void serveAccountEnvironmentAttachment(
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
-		throws IOException, PortalException, SystemException {
+		throws IOException, PortalException {
 
 		long accountEnvironmentAttachmentId = ParamUtil.getLong(
 			resourceRequest, "accountEnvironmentAttachmentId");
@@ -1914,8 +1888,8 @@ public class AdminPortlet extends MVCPortlet {
 				return;
 			}
 
-			ObjectValuePair<String, File> ovp =
-				new ObjectValuePair<String, File>(fileName, file);
+			ObjectValuePair<String, File> ovp = new ObjectValuePair<>(
+				fileName, file);
 
 			AccountAttachmentLocalServiceUtil.addAccountAttachment(
 				themeDisplay.getUserId(), accountEntryId, accountProjectId, ovp,
@@ -1926,6 +1900,6 @@ public class AdminPortlet extends MVCPortlet {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(AdminPortlet.class);
+	private static final Log _log = LogFactoryUtil.getLog(AdminPortlet.class);
 
 }

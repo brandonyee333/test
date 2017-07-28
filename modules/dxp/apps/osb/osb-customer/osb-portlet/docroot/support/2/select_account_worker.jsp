@@ -82,7 +82,7 @@
 							sb.append("', '");
 							sb.append(role);
 							sb.append("', '");
-							sb.append(LanguageUtil.get(locale, AccountWorkerConstants.getRoleLabel(role)));
+							sb.append(LanguageUtil.get(request, AccountWorkerConstants.getRoleLabel(role)));
 							sb.append("');");
 
 							String rowHREF = sb.toString();

@@ -29,7 +29,7 @@ public class OrderEntryJSONModel extends OrderEntryClp {
 
 	@Override
 	public void setOfferingEntries(List<OfferingEntry> offeringEntries) {
-		_offeringEntries = new ArrayList<OfferingEntry>(offeringEntries);
+		_offeringEntries = new ArrayList<>(offeringEntries);
 	}
 
 	private List<OfferingEntry> _offeringEntries;

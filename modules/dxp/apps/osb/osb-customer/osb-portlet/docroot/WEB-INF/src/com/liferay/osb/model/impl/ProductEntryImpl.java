@@ -14,8 +14,6 @@
 
 package com.liferay.osb.model.impl;
 
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.model.ExternalIdMapper;
 import com.liferay.osb.model.ExternalIdMapperConstants;
 import com.liferay.osb.model.LicenseEntry;
@@ -23,11 +21,12 @@ import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.osb.service.LicenseEntryLocalServiceUtil;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSON;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.service.ListTypeServiceUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.List;
 
@@ -40,7 +39,7 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 	public ProductEntryImpl() {
 	}
 
-	public List<ListType> getAllVersionsListTypes() throws SystemException {
+	public List<ListType> getAllVersionsListTypes() {
 		if (isSocialOffice()) {
 			return ListTypeServiceUtil.getListTypes(
 				ProductEntryConstants.LIST_TYPE_SOCIAL_OFFICE_ALL_VERSIONS);
@@ -70,7 +69,7 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 			ProductEntryConstants.LIST_TYPE_PORTAL_ALL_VERSIONS);
 	}
 
-	public String[] getDossieraIdMappings() throws SystemException {
+	public String[] getDossieraIdMappings() {
 		long classNameId = PortalUtil.getClassNameId(
 			ProductEntry.class.getName());
 
@@ -132,7 +131,7 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 	}
 
 	@JSON
-	public List<LicenseEntry> getLicenseEntries() throws SystemException {
+	public List<LicenseEntry> getLicenseEntries() {
 		return LicenseEntryLocalServiceUtil.getLicenseEntries(
 			getProductEntryId());
 	}
@@ -141,7 +140,7 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 		return ProductEntryConstants.getTypeLabel(getType());
 	}
 
-	public List<ListType> getVersionsListTypes() throws SystemException {
+	public List<ListType> getVersionsListTypes() {
 		String listType =
 			ProductEntry.class.getName() + StringPool.PERIOD +
 				getVersionsListType();

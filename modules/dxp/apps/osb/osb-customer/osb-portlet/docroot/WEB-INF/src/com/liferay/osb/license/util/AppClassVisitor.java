@@ -45,8 +45,8 @@ public class AppClassVisitor extends ClassVisitor {
 			api, methodVisitor, _productId, _productType, _productVersion);
 	}
 
-	private String _productId;
-	private String _productType;
-	private String _productVersion;
+	private final String _productId;
+	private final String _productType;
+	private final String _productVersion;
 
 }

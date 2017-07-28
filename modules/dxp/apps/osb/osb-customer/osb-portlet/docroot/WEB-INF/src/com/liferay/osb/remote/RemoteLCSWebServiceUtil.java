@@ -14,16 +14,13 @@
 
 package com.liferay.osb.remote;
 
-import com.liferay.portal.kernel.exception.SystemException;
-
 /**
  * @author Amos Fong
  */
 public class RemoteLCSWebServiceUtil {
 
 	public static void deleteLCSMessage(
-			long corpProjectId, long corpProjectMessageId)
-		throws SystemException {
+		long corpProjectId, long corpProjectMessageId) {
 
 		getRemoteLCSWebService().deleteLCSMessage(
 			corpProjectId, corpProjectMessageId);
@@ -34,9 +31,8 @@ public class RemoteLCSWebServiceUtil {
 	}
 
 	public static void sendLCSMessage(
-			long corpProjectId, long corpProjectMessageId, String content,
-			int severityLevel, String title, int type)
-		throws SystemException {
+		long corpProjectId, long corpProjectMessageId, String content,
+		int severityLevel, String title, int type) {
 
 		getRemoteLCSWebService().sendLCSMessage(
 			corpProjectId, corpProjectMessageId, content, severityLevel, title,
@@ -44,8 +40,7 @@ public class RemoteLCSWebServiceUtil {
 	}
 
 	public static void sendLCSSubscriptionEntries(
-			long corpProjectId, String lcsSubscriptionEntriesJSON)
-		throws SystemException {
+		long corpProjectId, String lcsSubscriptionEntriesJSON) {
 
 		getRemoteLCSWebService().sendLCSSubscriptionEntries(
 			corpProjectId, lcsSubscriptionEntriesJSON);

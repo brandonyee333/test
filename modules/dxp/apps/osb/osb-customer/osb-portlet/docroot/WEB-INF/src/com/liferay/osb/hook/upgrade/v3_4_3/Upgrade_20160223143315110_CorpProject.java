@@ -44,15 +44,13 @@ public class Upgrade_20160223143315110_CorpProject extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20160223143315110L;
 	}
 
 	protected void addCorpProject(AccountEntry accountEntry)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		CorpProject corpProject = CorpProjectLocalServiceUtil.addCorpProject(
 			OSBConstants.USER_AMOS_FONG_USER_ID, 0, StringPool.BLANK,
@@ -123,6 +121,7 @@ public class Upgrade_20160223143315110_CorpProject extends UpgradeProcess {
 		Upgrade_20160223143315110_CorpProject.class);
 
 }
+
 */
 
 }

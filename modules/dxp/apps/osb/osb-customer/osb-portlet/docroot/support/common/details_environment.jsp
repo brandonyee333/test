@@ -90,7 +90,7 @@ String envSearch = ParamUtil.getString(request, "envSearch", GetterUtil.getStrin
 					<c:when test="<%= edit %>">
 						<span class="txt-b txt-up"><liferay-ui:message key="name" />:</span>
 
-						<input maxLength='<%= ModelHintsUtil.getMaxLength(TicketEntry.class.getName(), "envName") %>' name="<portlet:namespace />envName" type="text" value="<%= HtmlUtil.escapeAttribute(envName) %>" />
+						<input maxLength="<%= ModelHintsUtil.getMaxLength(TicketEntry.class.getName(), "envName") %>" name="<portlet:namespace />envName" type="text" value="<%= HtmlUtil.escapeAttribute(envName) %>" />
 					</c:when>
 					<c:otherwise>
 						<c:if test="<%= Validator.isNotNull(envName) %>">
@@ -105,8 +105,8 @@ String envSearch = ParamUtil.getString(request, "envSearch", GetterUtil.getStrin
 			</div>
 		</div>
 
-		<div class="single-line content-column">
-			<div class="left-column content-column-content">
+		<div class="content-column single-line">
+			<div class="content-column-content left-column">
 
 				<%
 				String envLFRTitle = "liferay-version";
@@ -119,7 +119,7 @@ String envSearch = ParamUtil.getString(request, "envSearch", GetterUtil.getStrin
 				}
 				%>
 
-				<span class="txt-b txt-up"><%= edit ? "*" : "" %><liferay-ui:message key='<%= envLFRTitle %>' />:</span>
+				<span class="txt-b txt-up"><%= edit ? "*" : "" %><liferay-ui:message key="<%= envLFRTitle %>" />:</span>
 
 				<c:choose>
 					<c:when test="<%= edit %>">
@@ -248,7 +248,7 @@ String envSearch = ParamUtil.getString(request, "envSearch", GetterUtil.getStrin
 		</div>
 
 		<div class="aui-w50 content-column">
-			<div class="left-column content-column-content">
+			<div class="content-column-content left-column">
 				<div class="single-line">
 					<span class="txt-b txt-up"><%= edit ? "*" : "" %><liferay-ui:message key="operating-system" />:</span>
 

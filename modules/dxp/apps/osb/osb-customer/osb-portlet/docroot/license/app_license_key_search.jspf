@@ -25,266 +25,266 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 		id="toggle_id_license_key_search"
 	>
 		<table class="lfr-table">
-		<tr>
-			<td>
-				<liferay-ui:message key="product-name" />
-			</td>
-			<td>
-				<liferay-ui:message key="owner" />
-			</td>
-			<td>
-				<liferay-ui:message key="description" />
-			</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>
-				<input id="<portlet:namespace /><%= displayTerms.PRODUCT_ENTRY_NAME %>" name="<portlet:namespace /><%= displayTerms.PRODUCT_ENTRY_NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getProductEntryName()) %>" />
-			</td>
-			<td>
-				<input id="<portlet:namespace /><%= displayTerms.OWNER %>" name="<portlet:namespace /><%= displayTerms.OWNER %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getOwner()) %>" />
-			</td>
-			<td>
-				<input id="<portlet:namespace /><%= displayTerms.DESCRIPTION %>" name="<portlet:namespace /><%= displayTerms.DESCRIPTION %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getDescription()) %>" />
-			</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>
-				<liferay-ui:message key="host-name" />
-			</td>
-			<td>
-				<liferay-ui:message key="ip-address" />
-			</td>
-			<td>
-				<liferay-ui:message key="mac-address" />
-			</td>
-			<td>
-				<liferay-ui:message key="active" />
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<input id="<portlet:namespace /><%= displayTerms.HOST_NAME %>" name="<portlet:namespace /><%= displayTerms.HOST_NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getHostName()) %>" />
-			</td>
-			<td>
-				<input id="<portlet:namespace /><%= displayTerms.IP_ADDRESS %>" name="<portlet:namespace /><%= displayTerms.IP_ADDRESS %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getIpAddress()) %>" />
-			</td>
-			<td>
-				<input id="<portlet:namespace /><%= displayTerms.MAC_ADDRESS %>" name="<portlet:namespace /><%= displayTerms.MAC_ADDRESS %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getMacAddress()) %>" />
-			</td>
-			<td>
-				<select id="<portlet:namespace /><%= displayTerms.ACTIVE %>" name="<portlet:namespace /><%= displayTerms.ACTIVE %>">
-					<option></option>
-					<option <%= (displayTerms.hasActive() && displayTerms.isActive()) ? "selected" : "" %> value="1"><liferay-ui:message key="true" /></option>
-					<option <%= (displayTerms.hasActive() && !displayTerms.isActive()) ? "selected" : "" %> value="0"><liferay-ui:message key="false" /></option>
-				</select>
-			</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td colspan="4">
-				<br />
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<liferay-ui:message key="created-by" />
-			</td>
-			<td colspan="2">
-				<liferay-ui:message key="last-edited-by" />
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<select name="<portlet:namespace /><%= displayTerms.CREATE_USER_ID %>">
-					<option value=""></option>
-					<option <%= (user.getUserId() == displayTerms.getCreateUserId()) ? "selected" : StringPool.BLANK %> value="<%= user.getUserId() %>"><liferay-ui:message key="me" /></option>
+			<tr>
+				<td>
+					<liferay-ui:message key="product-name" />
+				</td>
+				<td>
+					<liferay-ui:message key="owner" />
+				</td>
+				<td>
+					<liferay-ui:message key="description" />
+				</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>
+					<input id="<portlet:namespace /><%= displayTerms.PRODUCT_ENTRY_NAME %>" name="<portlet:namespace /><%= displayTerms.PRODUCT_ENTRY_NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getProductEntryName()) %>" />
+				</td>
+				<td>
+					<input id="<portlet:namespace /><%= displayTerms.OWNER %>" name="<portlet:namespace /><%= displayTerms.OWNER %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getOwner()) %>" />
+				</td>
+				<td>
+					<input id="<portlet:namespace /><%= displayTerms.DESCRIPTION %>" name="<portlet:namespace /><%= displayTerms.DESCRIPTION %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getDescription()) %>" />
+				</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>
+					<liferay-ui:message key="host-name" />
+				</td>
+				<td>
+					<liferay-ui:message key="ip-address" />
+				</td>
+				<td>
+					<liferay-ui:message key="mac-address" />
+				</td>
+				<td>
+					<liferay-ui:message key="active" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input id="<portlet:namespace /><%= displayTerms.HOST_NAME %>" name="<portlet:namespace /><%= displayTerms.HOST_NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getHostName()) %>" />
+				</td>
+				<td>
+					<input id="<portlet:namespace /><%= displayTerms.IP_ADDRESS %>" name="<portlet:namespace /><%= displayTerms.IP_ADDRESS %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getIpAddress()) %>" />
+				</td>
+				<td>
+					<input id="<portlet:namespace /><%= displayTerms.MAC_ADDRESS %>" name="<portlet:namespace /><%= displayTerms.MAC_ADDRESS %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getMacAddress()) %>" />
+				</td>
+				<td>
+					<select id="<portlet:namespace /><%= displayTerms.ACTIVE %>" name="<portlet:namespace /><%= displayTerms.ACTIVE %>">
+						<option></option>
+						<option <%= (displayTerms.hasActive() && displayTerms.isActive()) ? "selected" : "" %> value="1"><liferay-ui:message key="true" /></option>
+						<option <%= (displayTerms.hasActive() && !displayTerms.isActive()) ? "selected" : "" %> value="0"><liferay-ui:message key="false" /></option>
+					</select>
+				</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td colspan="4">
+					<br />
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<liferay-ui:message key="created-by" />
+				</td>
+				<td colspan="2">
+					<liferay-ui:message key="last-edited-by" />
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<select name="<portlet:namespace /><%= displayTerms.CREATE_USER_ID %>">
+						<option value=""></option>
+						<option <%= (user.getUserId() == displayTerms.getCreateUserId()) ? "selected" : StringPool.BLANK %> value="<%= user.getUserId() %>"><liferay-ui:message key="me" /></option>
 
-					<c:if test="<%= ((displayTerms.getCreateUserId() > 0) && (user.getUserId() != displayTerms.getCreateUserId())) %>">
-						<option selected value="<%= displayTerms.getCreateUserId() %>"><%= HtmlUtil.escape(displayTerms.getCreateUserName()) %></option>
-					</c:if>
-				</select>
+						<c:if test="<%= ((displayTerms.getCreateUserId() > 0) && (user.getUserId() != displayTerms.getCreateUserId())) %>">
+							<option selected value="<%= displayTerms.getCreateUserId() %>"><%= HtmlUtil.escape(displayTerms.getCreateUserName()) %></option>
+						</c:if>
+					</select>
 
-				<input name="<portlet:namespace /><%= displayTerms.CREATE_USER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getCreateUserName()) %>" />
+					<input name="<portlet:namespace /><%= displayTerms.CREATE_USER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getCreateUserName()) %>" />
 
-				<input class="aui-button-input" onClick="var createUserWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/license/select_user.jsp" /><portlet:param name="userParam" value="licenseKeyCreateUsers" /><portlet:param name="callback" value="selectCreateUser" /></portlet:renderURL>', 'create_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); createUserWindow.focus();" type="button" value="<liferay-ui:message key="choose" />" />
-			</td>
-			<td colspan="2">
-				<select name="<portlet:namespace /><%= displayTerms.MODIFIED_USER_ID %>">
-					<option value=""></option>
-					<option <%= (user.getUserId() == displayTerms.getModifiedUserId()) ? "selected" : StringPool.BLANK %> value="<%= user.getUserId() %>"><liferay-ui:message key="me" /></option>
+					<input class="aui-button-input" onClick="var createUserWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/license/select_user.jsp" /><portlet:param name="userParam" value="licenseKeyCreateUsers" /><portlet:param name="callback" value="selectCreateUser" /></portlet:renderURL>', 'create_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); createUserWindow.focus();" type="button" value="<liferay-ui:message key="choose" />" />
+				</td>
+				<td colspan="2">
+					<select name="<portlet:namespace /><%= displayTerms.MODIFIED_USER_ID %>">
+						<option value=""></option>
+						<option <%= (user.getUserId() == displayTerms.getModifiedUserId()) ? "selected" : StringPool.BLANK %> value="<%= user.getUserId() %>"><liferay-ui:message key="me" /></option>
 
-					<c:if test="<%= ((displayTerms.getModifiedUserId() > 0) && (user.getUserId() != displayTerms.getModifiedUserId())) %>">
-						<option selected value="<%= displayTerms.getModifiedUserId() %>"><%= HtmlUtil.escape(displayTerms.getModifiedUserName()) %></option>
-					</c:if>
-				</select>
+						<c:if test="<%= ((displayTerms.getModifiedUserId() > 0) && (user.getUserId() != displayTerms.getModifiedUserId())) %>">
+							<option selected value="<%= displayTerms.getModifiedUserId() %>"><%= HtmlUtil.escape(displayTerms.getModifiedUserName()) %></option>
+						</c:if>
+					</select>
 
-				<input name="<portlet:namespace /><%= displayTerms.MODIFIED_USER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getModifiedUserName()) %>" />
+					<input name="<portlet:namespace /><%= displayTerms.MODIFIED_USER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getModifiedUserName()) %>" />
 
-				<input class="aui-button-input" onClick="var modifiedUserWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/license/select_user.jsp" /><portlet:param name="userParam" value="licenseKeyModifiedUsers" /><portlet:param name="callback" value="selectModifiedUser" /></portlet:renderURL>', 'modified_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); modifiedUserWindow.focus();" type="button" value="<liferay-ui:message key="choose" />" />
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<liferay-ui:message key="created-after" />
-			</td>
-			<td colspan="2">
-				<liferay-ui:message key="created-before" />
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<liferay-ui:input-date
-					dayNullable="<%= true %>"
-					dayParam="<%= displayTerms.CREATE_DATE_GT_DAY %>"
-					dayValue="<%= displayTerms.getCreateDateGTDay() %>"
-					monthNullable="<%= true %>"
-					monthParam="<%= displayTerms.CREATE_DATE_GT_MONTH %>"
-					monthValue="<%= displayTerms.getCreateDateGTMonth() %>"
-					yearNullable="<%= true %>"
-					yearParam="<%= displayTerms.CREATE_DATE_GT_YEAR %>"
-					yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
-					yearRangeStart="<%= 2010 %>"
-					yearValue="<%= displayTerms.getCreateDateGTYear() %>"
-				/>
-			</td>
-			<td colspan="2">
-				<liferay-ui:input-date
-					dayNullable="<%= true %>"
-					dayParam="<%= displayTerms.CREATE_DATE_LT_DAY %>"
-					dayValue="<%= displayTerms.getCreateDateLTDay() %>"
-					monthNullable="<%= true %>"
-					monthParam="<%= displayTerms.CREATE_DATE_LT_MONTH %>"
-					monthValue="<%= displayTerms.getCreateDateLTMonth() %>"
-					yearNullable="<%= true %>"
-					yearParam="<%= displayTerms.CREATE_DATE_LT_YEAR %>"
-					yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
-					yearRangeStart="<%= 2010 %>"
-					yearValue="<%= displayTerms.getCreateDateLTYear() %>"
-				/>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<liferay-ui:message key="modified-after" />
-			</td>
-			<td colspan="2">
-				<liferay-ui:message key="modified-before" />
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<liferay-ui:input-date
-					dayNullable="<%= true %>"
-					dayParam="<%= displayTerms.MODIFIED_DATE_GT_DAY %>"
-					dayValue="<%= displayTerms.getModifiedDateGTDay() %>"
-					monthNullable="<%= true %>"
-					monthParam="<%= displayTerms.MODIFIED_DATE_GT_MONTH %>"
-					monthValue="<%= displayTerms.getModifiedDateGTMonth() %>"
-					yearNullable="<%= true %>"
-					yearParam="<%= displayTerms.MODIFIED_DATE_GT_YEAR %>"
-					yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
-					yearRangeStart="<%= 2010 %>"
-					yearValue="<%= displayTerms.getModifiedDateGTYear() %>"
-				/>
-			</td>
-			<td colspan="2">
-				<liferay-ui:input-date
-					dayNullable="<%= true %>"
-					dayParam="<%= displayTerms.MODIFIED_DATE_LT_DAY %>"
-					dayValue="<%= displayTerms.getModifiedDateLTDay() %>"
-					monthNullable="<%= true %>"
-					monthParam="<%= displayTerms.MODIFIED_DATE_LT_MONTH %>"
-					monthValue="<%= displayTerms.getModifiedDateLTMonth() %>"
-					yearNullable="<%= true %>"
-					yearParam="<%= displayTerms.MODIFIED_DATE_LT_YEAR %>"
-					yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
-					yearRangeStart="<%= 2010 %>"
-					yearValue="<%= displayTerms.getModifiedDateLTYear() %>"
-				/>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<liferay-ui:message key="started-after" />
-			</td>
-			<td colspan="2">
-				<liferay-ui:message key="started-before" />
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<liferay-ui:input-date
-					dayNullable="<%= true %>"
-					dayParam="<%= displayTerms.START_DATE_GT_DAY %>"
-					dayValue="<%= displayTerms.getStartDateGTDay() %>"
-					monthNullable="<%= true %>"
-					monthParam="<%= displayTerms.START_DATE_GT_MONTH %>"
-					monthValue="<%= displayTerms.getStartDateGTMonth() %>"
-					yearNullable="<%= true %>"
-					yearParam="<%= displayTerms.START_DATE_GT_YEAR %>"
-					yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
-					yearRangeStart="<%= 2010 %>"
-					yearValue="<%= displayTerms.getStartDateGTYear() %>"
-				/>
-			</td>
-			<td colspan="2">
-				<liferay-ui:input-date
-					dayNullable="<%= true %>"
-					dayParam="<%= displayTerms.START_DATE_LT_DAY %>"
-					dayValue="<%= displayTerms.getStartDateLTDay() %>"
-					monthNullable="<%= true %>"
-					monthParam="<%= displayTerms.START_DATE_LT_MONTH %>"
-					monthValue="<%= displayTerms.getStartDateLTMonth() %>"
-					yearNullable="<%= true %>"
-					yearParam="<%= displayTerms.START_DATE_LT_YEAR %>"
-					yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
-					yearRangeStart="<%= 2010 %>"
-					yearValue="<%= displayTerms.getStartDateLTYear() %>"
-				/>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<liferay-ui:message key="expires-after" />
-			</td>
-			<td colspan="2">
-				<liferay-ui:message key="expires-before" />
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<liferay-ui:input-date
-					dayNullable="<%= true %>"
-					dayParam="<%= displayTerms.EXPIRATION_DATE_GT_DAY %>"
-					dayValue="<%= displayTerms.getExpirationDateGTDay() %>"
-					monthNullable="<%= true %>"
-					monthParam="<%= displayTerms.EXPIRATION_DATE_GT_MONTH %>"
-					monthValue="<%= displayTerms.getExpirationDateGTMonth() %>"
-					yearNullable="<%= true %>"
-					yearParam="<%= displayTerms.EXPIRATION_DATE_GT_YEAR %>"
-					yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
-					yearRangeStart="<%= 2010 %>"
-					yearValue="<%= displayTerms.getExpirationDateGTYear() %>"
-				/>
-			</td>
-			<td colspan="2">
-				<liferay-ui:input-date
-					dayNullable="<%= true %>"
-					dayParam="<%= displayTerms.EXPIRATION_DATE_LT_DAY %>"
-					dayValue="<%= displayTerms.getExpirationDateLTDay() %>"
-					monthNullable="<%= true %>"
-					monthParam="<%= displayTerms.EXPIRATION_DATE_LT_MONTH %>"
-					monthValue="<%= displayTerms.getExpirationDateLTMonth() %>"
-					yearNullable="<%= true %>"
-					yearParam="<%= displayTerms.EXPIRATION_DATE_LT_YEAR %>"
-					yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
-					yearRangeStart="<%= 2010 %>"
-					yearValue="<%= displayTerms.getExpirationDateLTYear() %>"
-				/>
-			</td>
-		</tr>
+					<input class="aui-button-input" onClick="var modifiedUserWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/license/select_user.jsp" /><portlet:param name="userParam" value="licenseKeyModifiedUsers" /><portlet:param name="callback" value="selectModifiedUser" /></portlet:renderURL>', 'modified_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); modifiedUserWindow.focus();" type="button" value="<liferay-ui:message key="choose" />" />
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<liferay-ui:message key="created-after" />
+				</td>
+				<td colspan="2">
+					<liferay-ui:message key="created-before" />
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<liferay-ui:input-date
+						dayNullable="<%= true %>"
+						dayParam="<%= displayTerms.CREATE_DATE_GT_DAY %>"
+						dayValue="<%= displayTerms.getCreateDateGTDay() %>"
+						monthNullable="<%= true %>"
+						monthParam="<%= displayTerms.CREATE_DATE_GT_MONTH %>"
+						monthValue="<%= displayTerms.getCreateDateGTMonth() %>"
+						yearNullable="<%= true %>"
+						yearParam="<%= displayTerms.CREATE_DATE_GT_YEAR %>"
+						yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
+						yearRangeStart="<%= 2010 %>"
+						yearValue="<%= displayTerms.getCreateDateGTYear() %>"
+					/>
+				</td>
+				<td colspan="2">
+					<liferay-ui:input-date
+						dayNullable="<%= true %>"
+						dayParam="<%= displayTerms.CREATE_DATE_LT_DAY %>"
+						dayValue="<%= displayTerms.getCreateDateLTDay() %>"
+						monthNullable="<%= true %>"
+						monthParam="<%= displayTerms.CREATE_DATE_LT_MONTH %>"
+						monthValue="<%= displayTerms.getCreateDateLTMonth() %>"
+						yearNullable="<%= true %>"
+						yearParam="<%= displayTerms.CREATE_DATE_LT_YEAR %>"
+						yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
+						yearRangeStart="<%= 2010 %>"
+						yearValue="<%= displayTerms.getCreateDateLTYear() %>"
+					/>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<liferay-ui:message key="modified-after" />
+				</td>
+				<td colspan="2">
+					<liferay-ui:message key="modified-before" />
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<liferay-ui:input-date
+						dayNullable="<%= true %>"
+						dayParam="<%= displayTerms.MODIFIED_DATE_GT_DAY %>"
+						dayValue="<%= displayTerms.getModifiedDateGTDay() %>"
+						monthNullable="<%= true %>"
+						monthParam="<%= displayTerms.MODIFIED_DATE_GT_MONTH %>"
+						monthValue="<%= displayTerms.getModifiedDateGTMonth() %>"
+						yearNullable="<%= true %>"
+						yearParam="<%= displayTerms.MODIFIED_DATE_GT_YEAR %>"
+						yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
+						yearRangeStart="<%= 2010 %>"
+						yearValue="<%= displayTerms.getModifiedDateGTYear() %>"
+					/>
+				</td>
+				<td colspan="2">
+					<liferay-ui:input-date
+						dayNullable="<%= true %>"
+						dayParam="<%= displayTerms.MODIFIED_DATE_LT_DAY %>"
+						dayValue="<%= displayTerms.getModifiedDateLTDay() %>"
+						monthNullable="<%= true %>"
+						monthParam="<%= displayTerms.MODIFIED_DATE_LT_MONTH %>"
+						monthValue="<%= displayTerms.getModifiedDateLTMonth() %>"
+						yearNullable="<%= true %>"
+						yearParam="<%= displayTerms.MODIFIED_DATE_LT_YEAR %>"
+						yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
+						yearRangeStart="<%= 2010 %>"
+						yearValue="<%= displayTerms.getModifiedDateLTYear() %>"
+					/>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<liferay-ui:message key="started-after" />
+				</td>
+				<td colspan="2">
+					<liferay-ui:message key="started-before" />
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<liferay-ui:input-date
+						dayNullable="<%= true %>"
+						dayParam="<%= displayTerms.START_DATE_GT_DAY %>"
+						dayValue="<%= displayTerms.getStartDateGTDay() %>"
+						monthNullable="<%= true %>"
+						monthParam="<%= displayTerms.START_DATE_GT_MONTH %>"
+						monthValue="<%= displayTerms.getStartDateGTMonth() %>"
+						yearNullable="<%= true %>"
+						yearParam="<%= displayTerms.START_DATE_GT_YEAR %>"
+						yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
+						yearRangeStart="<%= 2010 %>"
+						yearValue="<%= displayTerms.getStartDateGTYear() %>"
+					/>
+				</td>
+				<td colspan="2">
+					<liferay-ui:input-date
+						dayNullable="<%= true %>"
+						dayParam="<%= displayTerms.START_DATE_LT_DAY %>"
+						dayValue="<%= displayTerms.getStartDateLTDay() %>"
+						monthNullable="<%= true %>"
+						monthParam="<%= displayTerms.START_DATE_LT_MONTH %>"
+						monthValue="<%= displayTerms.getStartDateLTMonth() %>"
+						yearNullable="<%= true %>"
+						yearParam="<%= displayTerms.START_DATE_LT_YEAR %>"
+						yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
+						yearRangeStart="<%= 2010 %>"
+						yearValue="<%= displayTerms.getStartDateLTYear() %>"
+					/>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<liferay-ui:message key="expires-after" />
+				</td>
+				<td colspan="2">
+					<liferay-ui:message key="expires-before" />
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<liferay-ui:input-date
+						dayNullable="<%= true %>"
+						dayParam="<%= displayTerms.EXPIRATION_DATE_GT_DAY %>"
+						dayValue="<%= displayTerms.getExpirationDateGTDay() %>"
+						monthNullable="<%= true %>"
+						monthParam="<%= displayTerms.EXPIRATION_DATE_GT_MONTH %>"
+						monthValue="<%= displayTerms.getExpirationDateGTMonth() %>"
+						yearNullable="<%= true %>"
+						yearParam="<%= displayTerms.EXPIRATION_DATE_GT_YEAR %>"
+						yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
+						yearRangeStart="<%= 2010 %>"
+						yearValue="<%= displayTerms.getExpirationDateGTYear() %>"
+					/>
+				</td>
+				<td colspan="2">
+					<liferay-ui:input-date
+						dayNullable="<%= true %>"
+						dayParam="<%= displayTerms.EXPIRATION_DATE_LT_DAY %>"
+						dayValue="<%= displayTerms.getExpirationDateLTDay() %>"
+						monthNullable="<%= true %>"
+						monthParam="<%= displayTerms.EXPIRATION_DATE_LT_MONTH %>"
+						monthValue="<%= displayTerms.getExpirationDateLTMonth() %>"
+						yearNullable="<%= true %>"
+						yearParam="<%= displayTerms.EXPIRATION_DATE_LT_YEAR %>"
+						yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
+						yearRangeStart="<%= 2010 %>"
+						yearValue="<%= displayTerms.getExpirationDateLTYear() %>"
+					/>
+				</td>
+			</tr>
 		</table>
 	</liferay-ui:search-toggle>
 </div>

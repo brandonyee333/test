@@ -39,8 +39,7 @@ long now = System.currentTimeMillis();
 					<span class="announcement-text light-text">
 						<%= announcementTitle %>
 					</span>
-
-					<span class="btn style-b pop-up" data-pop-display="#moreInfo">
+					<span class="btn pop-up style-b" data-pop-display="#moreInfo">
 						<liferay-ui:message key="learn-more" />
 					</span>
 				</p>

@@ -86,14 +86,13 @@ public class OSBCustomSQLParam extends CustomSQLParam {
 				qPos.add(role);
 			}
 		}
-
 		else {
 			super.process(qPos);
 		}
 	}
 
-	private String _key;
-	private String _sql;
-	private Object _value;
+	private final String _key;
+	private final String _sql;
+	private final Object _value;
 
 }

@@ -14,12 +14,12 @@
 
 package com.liferay.osb.model;
 
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.util.WorkflowConstants;
-import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.service.ListTypeServiceUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Locale;
 
@@ -69,9 +69,8 @@ public class AccountEntryConstants {
 
 	public static final int TIER_STRATEGIC = 4;
 
-	public static final int[] TIERS = new int[] {
-		TIER_OEM, TIER_PREMIER, TIER_REGULAR, TIER_STRATEGIC
-	};
+	public static final int[] TIERS =
+		new int[] {TIER_OEM, TIER_PREMIER, TIER_REGULAR, TIER_STRATEGIC};
 
 	public static final int TYPE_GROUP = 1;
 

@@ -17,40 +17,40 @@
 <div class="taglib-search-toggle">
 	<div class="taglib-search-toggle-advanced">
 		<table class="lfr-table">
-		<tr>
-			<td>
-				<liferay-ui:message key="first-name" />
-			</td>
-			<td>
-				<liferay-ui:message key="middle-name" />
-			</td>
-			<td>
-				<liferay-ui:message key="last-name" />
-			</td>
-			<td>
-				<liferay-ui:message key="screen-name" />
-			</td>
-			<td>
-				<liferay-ui:message key="email-address" />
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<input id="<portlet:namespace /><%= displayTerms.FIRST_NAME %>" name="<portlet:namespace /><%= displayTerms.FIRST_NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getFirstName()) %>" />
-			</td>
-			<td>
-				<input id="<portlet:namespace /><%= displayTerms.MIDDLE_NAME %>" name="<portlet:namespace /><%= displayTerms.MIDDLE_NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getMiddleName()) %>" />
-			</td>
-			<td>
-				<input id="<portlet:namespace /><%= displayTerms.LAST_NAME %>" name="<portlet:namespace /><%= displayTerms.LAST_NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getLastName()) %>" />
-			</td>
-			<td>
-				<input id="<portlet:namespace /><%= displayTerms.SCREEN_NAME %>" name="<portlet:namespace /><%= displayTerms.SCREEN_NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getScreenName()) %>" />
-			</td>
-			<td>
-				<input id="<portlet:namespace /><%= displayTerms.EMAIL_ADDRESS %>" name="<portlet:namespace /><%= displayTerms.EMAIL_ADDRESS %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getEmailAddress()) %>" />
-			</td>
-		</tr>
+			<tr>
+				<td>
+					<liferay-ui:message key="first-name" />
+				</td>
+				<td>
+					<liferay-ui:message key="middle-name" />
+				</td>
+				<td>
+					<liferay-ui:message key="last-name" />
+				</td>
+				<td>
+					<liferay-ui:message key="screen-name" />
+				</td>
+				<td>
+					<liferay-ui:message key="email-address" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input id="<portlet:namespace /><%= displayTerms.FIRST_NAME %>" name="<portlet:namespace /><%= displayTerms.FIRST_NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getFirstName()) %>" />
+				</td>
+				<td>
+					<input id="<portlet:namespace /><%= displayTerms.MIDDLE_NAME %>" name="<portlet:namespace /><%= displayTerms.MIDDLE_NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getMiddleName()) %>" />
+				</td>
+				<td>
+					<input id="<portlet:namespace /><%= displayTerms.LAST_NAME %>" name="<portlet:namespace /><%= displayTerms.LAST_NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getLastName()) %>" />
+				</td>
+				<td>
+					<input id="<portlet:namespace /><%= displayTerms.SCREEN_NAME %>" name="<portlet:namespace /><%= displayTerms.SCREEN_NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getScreenName()) %>" />
+				</td>
+				<td>
+					<input id="<portlet:namespace /><%= displayTerms.EMAIL_ADDRESS %>" name="<portlet:namespace /><%= displayTerms.EMAIL_ADDRESS %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getEmailAddress()) %>" />
+				</td>
+			</tr>
 		</table>
 
 		<input onClick="<portlet:namespace/>searchOfferingEntry();" type="button" value="<liferay-ui:message key="search" />" />

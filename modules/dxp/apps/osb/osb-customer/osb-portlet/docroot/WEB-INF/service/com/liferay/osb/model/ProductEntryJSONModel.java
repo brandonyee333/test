@@ -28,7 +28,7 @@ public class ProductEntryJSONModel extends ProductEntryClp {
 	}
 
 	public void setLicenseEntries(List<LicenseEntryClp> licenseEntries) {
-		_licenseEntries = new ArrayList<LicenseEntry>(licenseEntries);
+		_licenseEntries = new ArrayList<>(licenseEntries);
 	}
 
 	private List<LicenseEntry> _licenseEntries;

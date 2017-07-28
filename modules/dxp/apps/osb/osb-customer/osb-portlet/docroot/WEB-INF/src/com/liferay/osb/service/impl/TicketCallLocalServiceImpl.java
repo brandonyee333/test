@@ -14,9 +14,6 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.exception.TicketCallCustomerNameException;
 import com.liferay.osb.exception.TicketCallDateException;
 import com.liferay.osb.exception.TicketCallLengthException;
@@ -31,11 +28,13 @@ import com.liferay.osb.util.OSBMailActionKeys;
 import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.util.ContentUtil;
 
 import java.text.Format;
@@ -52,9 +51,10 @@ public class TicketCallLocalServiceImpl extends TicketCallLocalServiceBaseImpl {
 			int callDateDay, int callDateYear, int callDateHour,
 			int callDateMinute, long callLength, String customerName,
 			String customerContact, String confirmation, String instructions)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
+
 		Date callDate = PortalUtil.getDate(
 			callDateMonth, callDateDay, callDateYear, callDateHour,
 			callDateMinute, user.getTimeZone(),
@@ -80,16 +80,16 @@ public class TicketCallLocalServiceImpl extends TicketCallLocalServiceBaseImpl {
 		ticketCall.setCustomerContact(customerContact);
 		ticketCall.setConfirmation(confirmation);
 		ticketCall.setInstructions(instructions);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		ticketCallPersistence.update(ticketCall, serviceContext);
 
 		// Ticket comments
 
-		serviceContext.setAttribute("auditEnabled", false);
+		serviceContext.setAttribute("auditEnabled", Boolean.FALSE);
 
 		String commentBodyLiferay = getTicketCommentBody(
 			ticketCall, VisibilityConstants.LIFERAY_INC);

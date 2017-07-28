@@ -28,16 +28,13 @@ import java.sql.SQLException;
 /**
  * @author Yury Butrymovich
  */
-public class Upgrade_20161017153308278_DeveloperEntry
-	extends UpgradeProcess {
+public class Upgrade_20161017153308278_DeveloperEntry extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20161017153308278L;
 	}
@@ -77,6 +74,7 @@ public class Upgrade_20161017153308278_DeveloperEntry
 	}
 
 }
+
 */
 
 }

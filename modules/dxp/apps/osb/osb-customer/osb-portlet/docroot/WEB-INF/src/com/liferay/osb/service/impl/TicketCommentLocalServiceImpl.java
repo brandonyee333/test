@@ -14,11 +14,6 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Time;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.exception.MaximumDraftTicketCommentException;
 import com.liferay.osb.exception.TicketCommentBodyException;
 import com.liferay.osb.exception.TicketCommentPendingTypeException;
@@ -43,14 +38,18 @@ import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Time;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowException;
-import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -66,7 +65,7 @@ public class TicketCommentLocalServiceImpl
 
 	public TicketComment addAwayMessageTicketComment(
 			long userId, long ticketEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		Date now = new Date();
 
@@ -121,7 +120,7 @@ public class TicketCommentLocalServiceImpl
 		int awayMessageStartMonth = GetterUtil.getInteger(
 			preferences.getValue("awayMessageStartMonth", null));
 		int awayMessageStartDay = GetterUtil.getInteger(
-			preferences.getValue("awayMessageStartDay",null));
+			preferences.getValue("awayMessageStartDay", null));
 		int awayMessageStartYear = GetterUtil.getInteger(
 			preferences.getValue("awayMessageStartYear", null));
 
@@ -131,7 +130,7 @@ public class TicketCommentLocalServiceImpl
 		int awayMessageEndMonth = GetterUtil.getInteger(
 			preferences.getValue("awayMessageEndMonth", null));
 		int awayMessageEndDay = GetterUtil.getInteger(
-			preferences.getValue("awayMessageEndDay",null));
+			preferences.getValue("awayMessageEndDay", null));
 		int awayMessageEndYear = GetterUtil.getInteger(
 			preferences.getValue("awayMessageEndYear", null));
 
@@ -159,7 +158,7 @@ public class TicketCommentLocalServiceImpl
 			long userId, long ticketEntryId, String body, int type,
 			int visibility, int status, long ticketCannedResponseId,
 			int[] pendingTypes, ServiceContext serviceContext)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		TicketEntry ticketEntry = ticketEntryPersistence.findByPrimaryKey(
@@ -197,7 +196,7 @@ public class TicketCommentLocalServiceImpl
 			ticketComment.setSettingsProperty(
 				"statusReason", String.valueOf(statusReason));
 		}
-		
+
 		//TODO implement serviceContext how needed
 
 		ticketCommentPersistence.update(ticketComment, serviceContext);
@@ -222,7 +221,7 @@ public class TicketCommentLocalServiceImpl
 	}
 
 	public TicketComment deleteTicketComment(long userId, long ticketCommentId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketComment ticketComment = ticketCommentPersistence.findByPrimaryKey(
 			ticketCommentId);
@@ -232,7 +231,7 @@ public class TicketCommentLocalServiceImpl
 
 	public TicketComment deleteTicketComment(
 			long userId, TicketComment ticketComment)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		ticketCommentPersistence.remove(ticketComment);
 
@@ -267,18 +266,16 @@ public class TicketCommentLocalServiceImpl
 	}
 
 	public TicketComment fetchLastTicketComment(
-			long userId, long ticketEntryId, int visibility, int status,
-			int type, OrderByComparator obc)
-		throws SystemException {
+		long userId, long ticketEntryId, int visibility, int status, int type,
+		OrderByComparator obc) {
 
 		return ticketCommentPersistence.fetchByU_TEI_V_S_T_Last(
 			userId, ticketEntryId, visibility, status, type, obc);
 	}
 
 	public TicketComment fetchLastTicketComment(
-			long userId, long ticketEntryId, int visibility, int status,
-			OrderByComparator obc)
-		throws SystemException {
+		long userId, long ticketEntryId, int visibility, int status,
+		OrderByComparator obc) {
 
 		return ticketCommentPersistence.fetchByU_TEI_V_S_Last(
 			userId, ticketEntryId, visibility, status, obc);
@@ -286,15 +283,14 @@ public class TicketCommentLocalServiceImpl
 
 	public TicketComment getLastTicketComment(
 			long ticketEntryId, int visibility, OrderByComparator obc)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		return ticketCommentPersistence.findByTEI_V_S_Last(
 			ticketEntryId, visibility, WorkflowConstants.STATUS_APPROVED, obc);
 	}
 
 	public int getOrganizationTicketCommentsCount(
-			long[] organizationIds, long ticketEntryId, int visibility)
-		throws SystemException {
+		long[] organizationIds, long ticketEntryId, int visibility) {
 
 		return ticketCommentFinder.countByTEI_V_S_O(
 			ticketEntryId, visibility,
@@ -302,41 +298,37 @@ public class TicketCommentLocalServiceImpl
 	}
 
 	public List<TicketComment> getTicketComments(
-			long ticketEntryId, int[] visibilities, int[] statuses)
-		throws SystemException {
+		long ticketEntryId, int[] visibilities, int[] statuses) {
 
 		return ticketCommentPersistence.findByTEI_V_S(
 			ticketEntryId, visibilities, statuses);
 	}
 
 	public List<TicketComment> getTicketComments(
-			long userId, long ticketEntryId, int[] visibilities, int[] statuses)
-		throws SystemException {
+		long userId, long ticketEntryId, int[] visibilities, int[] statuses) {
 
 		return ticketCommentPersistence.findByU_TEI_V_S(
 			userId, ticketEntryId, visibilities, statuses);
 	}
 
 	public int getTicketCommentsCount(
-			long ticketEntryId, int[] visibilities, int[] statuses)
-		throws SystemException {
+		long ticketEntryId, int[] visibilities, int[] statuses) {
 
 		return ticketCommentPersistence.countByTEI_V_S(
 			ticketEntryId, visibilities, statuses);
 	}
 
 	public int getTicketCommentsCount(
-			long userId, long ticketEntryId, int[] visibilities, int[] statuses)
-		throws SystemException {
+		long userId, long ticketEntryId, int[] visibilities, int[] statuses) {
 
 		return ticketCommentPersistence.countByU_TEI_V_S(
 			userId, ticketEntryId, visibilities, statuses);
 	}
 
 	public int[] getUserVisibilities(long userId, long ticketEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
-		List<Integer> userVisibilities = new ArrayList<Integer>();
+		List<Integer> userVisibilities = new ArrayList<>();
 
 		for (int i = 1; i < 4; i++) {
 			if (!hasVisibility(userId, ticketEntryId, i)) {
@@ -351,7 +343,7 @@ public class TicketCommentLocalServiceImpl
 
 	public boolean hasVisibility(
 			long userId, long ticketEntryId, int visibility)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (visibility == VisibilityConstants.PUBLIC) {
 			return true;
@@ -380,17 +372,15 @@ public class TicketCommentLocalServiceImpl
 		return false;
 	}
 
-	public void resetSolutionTicketComment(long ticketEntryId)
-		throws SystemException {
-
+	public void resetSolutionTicketComment(long ticketEntryId) {
 		List<TicketComment> ticketComments =
 			ticketCommentPersistence.findByTEI_T(
 				ticketEntryId, TicketCommentConstants.TYPE_SOLUTION);
 
 		Date now = new Date();
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		for (TicketComment ticketComment : ticketComments) {
@@ -405,7 +395,7 @@ public class TicketCommentLocalServiceImpl
 			long userId, long ticketCommentId, long ticketEntryId, String body,
 			int visibility, int status, long ticketCannedResponseId,
 			int[] pendingTypes, ServiceContext serviceContext)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		EntityCacheUtil.clearLocalCache();
 
@@ -430,7 +420,7 @@ public class TicketCommentLocalServiceImpl
 			ticketComment.setSettingsProperty(
 				"pendingTypes", StringUtil.merge(pendingTypes));
 		}
-		
+
 		//TODO implement serviceContext how needed
 
 		ticketCommentPersistence.update(ticketComment, serviceContext);
@@ -459,7 +449,7 @@ public class TicketCommentLocalServiceImpl
 	}
 
 	public TicketComment updateTicketCommentType(long ticketCommentId, int type)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		Date now = new Date();
 
@@ -472,9 +462,9 @@ public class TicketCommentLocalServiceImpl
 
 		ticketComment.setModifiedDate(now);
 		ticketComment.setType(type);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		return ticketCommentPersistence.update(ticketComment, serviceContext);
@@ -484,7 +474,7 @@ public class TicketCommentLocalServiceImpl
 			User user, TicketComment ticketComment, TicketEntry ticketEntry,
 			int status, long ticketCannedResponseId, int[] pendingTypes,
 			ServiceContext serviceContext)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		Date now = serviceContext.getCreateDate(new Date());
 
@@ -497,7 +487,7 @@ public class TicketCommentLocalServiceImpl
 		}
 
 		ticketComment.setStatus(status);
-		
+
 		//TODO implement serviceContext how needed
 
 		ticketCommentPersistence.update(ticketComment, serviceContext);
@@ -636,7 +626,7 @@ public class TicketCommentLocalServiceImpl
 	protected void validate(
 			TicketEntry ticketEntry, long userId, String body, int type,
 			int visibility, int oldStatus, int status, int[] pendingTypes)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (Validator.isNull(body)) {
 			throw new TicketCommentBodyException();

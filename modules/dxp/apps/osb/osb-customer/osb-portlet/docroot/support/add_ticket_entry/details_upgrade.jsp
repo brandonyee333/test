@@ -102,7 +102,7 @@ long toPortalExtTicketAttachmentId = ParamUtil.getLong(request, "toPortalExtTick
 				for (int curDocLibPersistence : TicketEntryConstants.DOC_LIB_PERSISTENCES) {
 				%>
 
-					<option <%= (curDocLibPersistence == docLibPersistence) ? "selected" : StringPool.BLANK %> value="<%= curDocLibPersistence %>"><%= LanguageUtil.get(locale, TicketEntryConstants.getDocLibPersistenceLabel(curDocLibPersistence)) %></option>
+					<option <%= (curDocLibPersistence == docLibPersistence) ? "selected" : StringPool.BLANK %> value="<%= curDocLibPersistence %>"><%= LanguageUtil.get(request, TicketEntryConstants.getDocLibPersistenceLabel(curDocLibPersistence)) %></option>
 
 				<%
 				}
@@ -161,7 +161,7 @@ long toPortalExtTicketAttachmentId = ParamUtil.getLong(request, "toPortalExtTick
 
 <div class="callout-a">
 	<div class="aui-helper-clearfix callout-content">
-		<div class="txt-b aui-helper-clearfix">*<liferay-ui:message key="please-provide-both-patching-tool-info-files" /><a class="help-link" href="/group/customer/kbase/-/knowledge_base/article/33142925" target="_blank"><img src="<%= themeDisplay.getPathThemeImages() + "/common/help.png" %>" /></a></div>
+		<div class="aui-helper-clearfix txt-b">*<liferay-ui:message key="please-provide-both-patching-tool-info-files" /><a class="help-link" href="/group/customer/kbase/-/knowledge_base/article/33142925" target="_blank"><img src="<%= themeDisplay.getPathThemeImages() + "/common/help.png" %>" /></a></div>
 
 		<div class="aui-helper-clearfix single-line">
 			<liferay-util:include page="/support/common/ticket_attachment_upload.jsp" servletContext="<%= application %>">
@@ -200,7 +200,7 @@ long toPortalExtTicketAttachmentId = ParamUtil.getLong(request, "toPortalExtTick
 				for (int curUploadMethod : TicketEntryConstants.UPLOAD_METHODS) {
 				%>
 
-					<option <%= (databaseUploadMethod == curUploadMethod) ? "selected" : StringPool.BLANK %> value="<%= curUploadMethod %>"><%= LanguageUtil.get(locale, TicketEntryConstants.getUploadMethodLabel(curUploadMethod)) %></option>
+					<option <%= (databaseUploadMethod == curUploadMethod) ? "selected" : StringPool.BLANK %> value="<%= curUploadMethod %>"><%= LanguageUtil.get(request, TicketEntryConstants.getUploadMethodLabel(curUploadMethod)) %></option>
 
 				<%
 				}
@@ -234,7 +234,7 @@ long toPortalExtTicketAttachmentId = ParamUtil.getLong(request, "toPortalExtTick
 				for (int curUploadMethod : TicketEntryConstants.UPLOAD_METHODS) {
 				%>
 
-					<option <%= (dataFolderUploadMethod == curUploadMethod) ? "selected" : StringPool.BLANK %> value="<%= curUploadMethod %>"><%= LanguageUtil.get(locale, TicketEntryConstants.getUploadMethodLabel(curUploadMethod)) %></option>
+					<option <%= (dataFolderUploadMethod == curUploadMethod) ? "selected" : StringPool.BLANK %> value="<%= curUploadMethod %>"><%= LanguageUtil.get(request, TicketEntryConstants.getUploadMethodLabel(curUploadMethod)) %></option>
 
 				<%
 				}

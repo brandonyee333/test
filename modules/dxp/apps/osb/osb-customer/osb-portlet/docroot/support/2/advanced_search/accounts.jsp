@@ -20,7 +20,7 @@
 AccountEntryDisplayTerms displayTerms = new AccountEntryDisplayTerms(renderRequest);
 %>
 
-<div class="advanced-search account">
+<div class="account advanced-search">
 	<div>
 		<span class="search-param tier" onclick="<portlet:namespace />toggleSelected(this);" searchParam="tier">
 			<liferay-ui:message key="tier" />
@@ -29,7 +29,6 @@ AccountEntryDisplayTerms displayTerms = new AccountEntryDisplayTerms(renderReque
 				<path d="M 0, 0 4, 4 8, 0" />
 			</svg>
 		</span>
-
 		<span class="search-param status" onclick="<portlet:namespace />toggleSelected(this);" searchParam="status">
 			<liferay-ui:message key="status" />
 
@@ -37,15 +36,13 @@ AccountEntryDisplayTerms displayTerms = new AccountEntryDisplayTerms(renderReque
 				<path d="M 0, 0 4, 4 8, 0" />
 			</svg>
 		</span>
-
-		<span class="search-param industry" onclick="<portlet:namespace />toggleSelected(this);" searchParam="industry">
+		<span class="industry search-param" onclick="<portlet:namespace />toggleSelected(this);" searchParam="industry">
 			<liferay-ui:message key="industry" />
 
 			<svg height="8" viewBox="0 0 8 8" width="8">
 				<path d="M 0, 0 4, 4 8, 0" />
 			</svg>
 		</span>
-
 		<span class="search-param support-region" onclick="<portlet:namespace />toggleSelected(this);" searchParam="supportRegion">
 			<liferay-ui:message key="support-region" />
 
@@ -56,7 +53,7 @@ AccountEntryDisplayTerms displayTerms = new AccountEntryDisplayTerms(renderReque
 	</div>
 
 	<div class="aui-helper-clearfix search-param-config">
-		<div class="tiers search-param-dropdown" id="<portlet:namespace />tier">
+		<div class="search-param-dropdown tiers" id="<portlet:namespace />tier">
 
 			<%
 			String[] tierLabels = new String[4];

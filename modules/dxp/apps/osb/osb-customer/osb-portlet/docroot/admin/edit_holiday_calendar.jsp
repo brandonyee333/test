@@ -18,6 +18,7 @@
 
 <%
 String redirect = ParamUtil.getString(request, "redirect");
+
 String backURL = ParamUtil.getString(request, "backURL", redirect);
 
 long holidayCalendarId = ParamUtil.getLong(request, "holidayCalendarId");
@@ -76,22 +77,22 @@ int yearRangeEnd = calendar.get(Calendar.YEAR) + 15;
 	<aui:model-context bean="<%= holidayCalendar %>" model="<%= HolidayCalendar.class %>" />
 
 	<table class="lfr-table">
-	<tr>
-		<td>
-			<liferay-ui:message key="name" />
-		</td>
-		<td>
-			<aui:input label="" name="name" />
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="description" />
-		</td>
-		<td>
-			<aui:input label="" name="description" />
-		</td>
-	</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="name" />
+			</td>
+			<td>
+				<aui:input label="" name="name" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="description" />
+			</td>
+			<td>
+				<aui:input label="" name="description" />
+			</td>
+		</tr>
 	</table>
 
 	<br />
@@ -176,48 +177,48 @@ int yearRangeEnd = calendar.get(Calendar.YEAR) + 15;
 						<br />
 
 						<table class="lfr-table">
-						<tr>
-							<td>
-								<strong><liferay-ui:message key="start-date" /></strong>
-							</td>
-							<td>
-								<strong><liferay-ui:message key="end-date" /></strong>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<liferay-ui:input-date
-									cssClass="aui-w100"
-									dayNullable="<%= false %>"
-									dayParam='<%= "holidayEntryStartDay" + holidayEntriesIndex %>'
-									dayValue="<%= holidayEntryStartDay %>"
-									monthNullable="<%= false %>"
-									monthParam='<%= "holidayEntryStartMonth" + holidayEntriesIndex %>'
-									monthValue="<%= holidayEntryStartMonth %>"
-									yearNullable="<%= false %>"
-									yearParam='<%= "holidayEntryStartYear" + holidayEntriesIndex %>'
-									yearRangeEnd="<%= (holidayEntryStartYear > yearRangeEnd) ? holidayEntryStartYear : yearRangeEnd %>"
-									yearRangeStart="<%= (holidayEntryStartYear > yearRangeStart) ? holidayEntryStartYear : yearRangeStart %>"
-									yearValue="<%= holidayEntryStartYear %>"
-								/>
-							</td>
-							<td>
-								<liferay-ui:input-date
-									cssClass="aui-w100"
-									dayNullable="<%= false %>"
-									dayParam='<%= "holidayEntryEndDay" + holidayEntriesIndex %>'
-									dayValue="<%= holidayEntryEndDay %>"
-									monthNullable="<%= false %>"
-									monthParam='<%= "holidayEntryEndMonth" + holidayEntriesIndex %>'
-									monthValue="<%= holidayEntryEndMonth %>"
-									yearNullable="<%= false %>"
-									yearParam='<%= "holidayEntryEndYear" + holidayEntriesIndex %>'
-									yearRangeEnd="<%= (holidayEntryEndYear > yearRangeEnd) ? holidayEntryEndYear : yearRangeEnd %>"
-									yearRangeStart="<%= (holidayEntryEndYear > yearRangeStart) ? holidayEntryEndYear : yearRangeStart %>"
-									yearValue="<%= holidayEntryEndYear %>"
-								/>
-							</td>
-						</tr>
+							<tr>
+								<td>
+									<strong><liferay-ui:message key="start-date" /></strong>
+								</td>
+								<td>
+									<strong><liferay-ui:message key="end-date" /></strong>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<liferay-ui:input-date
+										cssClass="aui-w100"
+										dayNullable="<%= false %>"
+										dayParam='<%= "holidayEntryStartDay" + holidayEntriesIndex %>'
+										dayValue="<%= holidayEntryStartDay %>"
+										monthNullable="<%= false %>"
+										monthParam='<%= "holidayEntryStartMonth" + holidayEntriesIndex %>'
+										monthValue="<%= holidayEntryStartMonth %>"
+										yearNullable="<%= false %>"
+										yearParam='<%= "holidayEntryStartYear" + holidayEntriesIndex %>'
+										yearRangeEnd="<%= (holidayEntryStartYear > yearRangeEnd) ? holidayEntryStartYear : yearRangeEnd %>"
+										yearRangeStart="<%= (holidayEntryStartYear > yearRangeStart) ? holidayEntryStartYear : yearRangeStart %>"
+										yearValue="<%= holidayEntryStartYear %>"
+									/>
+								</td>
+								<td>
+									<liferay-ui:input-date
+										cssClass="aui-w100"
+										dayNullable="<%= false %>"
+										dayParam='<%= "holidayEntryEndDay" + holidayEntriesIndex %>'
+										dayValue="<%= holidayEntryEndDay %>"
+										monthNullable="<%= false %>"
+										monthParam='<%= "holidayEntryEndMonth" + holidayEntriesIndex %>'
+										monthValue="<%= holidayEntryEndMonth %>"
+										yearNullable="<%= false %>"
+										yearParam='<%= "holidayEntryEndYear" + holidayEntriesIndex %>'
+										yearRangeEnd="<%= (holidayEntryEndYear > yearRangeEnd) ? holidayEntryEndYear : yearRangeEnd %>"
+										yearRangeStart="<%= (holidayEntryEndYear > yearRangeStart) ? holidayEntryEndYear : yearRangeStart %>"
+										yearValue="<%= holidayEntryEndYear %>"
+									/>
+								</td>
+							</tr>
 						</table>
 					</div>
 				</div>

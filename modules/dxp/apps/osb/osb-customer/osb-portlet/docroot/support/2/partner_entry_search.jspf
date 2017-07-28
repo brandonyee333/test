@@ -36,7 +36,7 @@ String mvcPath = ParamUtil.getString(renderRequest, "mvcPath");
 			</div>
 
 			<div class="aui-w33 content-column">
-				<div class="content-column-content content-column">
+				<div class="content-column content-column-content">
 					<h2 class="support-assignment support-input-heading">
 						<liferay-ui:message key="first-line-support" />
 					</h2>
@@ -90,7 +90,7 @@ String mvcPath = ParamUtil.getString(renderRequest, "mvcPath");
 
 			<c:if test='<%= mvcPath.equals("/support/2/view.jsp") %>'>
 				<div class="aui-w33 content-column">
-					<div class="content-column-content content-column">
+					<div class="content-column content-column-content">
 						<h2 class="support-assignment support-input-heading">
 							<liferay-ui:message key="status" />
 						</h2>

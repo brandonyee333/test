@@ -27,16 +27,13 @@ import java.sql.SQLException;
 /**
  * @author Yury Butrymovich
  */
-public class Upgrade_20161018101810921_PartnershipEntry
-	extends UpgradeProcess {
+public class Upgrade_20161018101810921_PartnershipEntry extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20161018101810921L;
 	}
@@ -46,8 +43,7 @@ public class Upgrade_20161018101810921_PartnershipEntry
 		if (tableHasColumn("OSBPartnership_PartnershipEntry", "dossieraKey")) {
 			runSQL(
 				"alter table OSBPartnership_PartnershipEntry change column " +
-					"dossieraKey dossieraAccountKey VARCHAR(75) " +
-						"null");
+					"dossieraKey dossieraAccountKey VARCHAR(75) " + "null");
 
 			runSQL(
 				"drop index IX_FE2496CC on OSBPartnership_PartnershipEntry",
@@ -75,6 +71,7 @@ public class Upgrade_20161018101810921_PartnershipEntry
 	}
 
 }
+
 */
 
 }

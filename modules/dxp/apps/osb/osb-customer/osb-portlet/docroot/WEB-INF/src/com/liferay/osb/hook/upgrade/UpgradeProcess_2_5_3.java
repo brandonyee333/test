@@ -14,11 +14,11 @@
 
 package com.liferay.osb.hook.upgrade;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.osb.hook.upgrade.v2_5_3.UpgradeExternalIdMapper;
 import com.liferay.osb.hook.upgrade.v2_5_3.UpgradeTrainingCustomer;
 import com.liferay.osb.hook.upgrade.v2_5_3.UpgradeUserProfile;
 import com.liferay.osb.hook.upgrade.v2_5_3.UpgradeUserProfileHistory;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
 /**
  * @author Calvin Keum

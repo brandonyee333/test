@@ -345,110 +345,111 @@ for (SupportRegion supportRegion : supportRegions) {
 									<li>
 										<div class="data">
 											<table class="lfr-table">
-											<tr>
-												<td colspan="3">
-													<liferay-ui:message key="name" />:
+												<tr>
+													<td colspan="3">
+														<liferay-ui:message key="name" />:
 
-													<span class="field"><%= HtmlUtil.escape(accountEnvironment.getName()) %></span>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<liferay-ui:message key='<%= productEntry.isSocialOffice() ? "social-office-version" : "liferay-version" %>' />:
+														<span class="field"><%= HtmlUtil.escape(accountEnvironment.getName()) %></span>
+													</td>
+												</tr>
+												<tr>
+													<td>
+														<liferay-ui:message key='<%= productEntry.isSocialOffice() ? "social-office-version" : "liferay-version" %>' />:
 
-													<span class="field"><%= LanguageUtil.get(pageContext, accountEnvironment.getEnvLFRLabel()) %></span>
-												</td>
-												<td>
-													<liferay-ui:message key="application-server" />:
+														<span class="field"><%= LanguageUtil.get(pageContext, accountEnvironment.getEnvLFRLabel()) %></span>
+													</td>
+													<td>
+														<liferay-ui:message key="application-server" />:
 
-													<span class="field"><%= LanguageUtil.get(pageContext, accountEnvironment.getEnvASLabel()) %></span>
-												</td>
-												<td>
-													<liferay-ui:message key="database" />:
+														<span class="field"><%= LanguageUtil.get(pageContext, accountEnvironment.getEnvASLabel()) %></span>
+													</td>
+													<td>
+														<liferay-ui:message key="database" />:
 
-													<span class="field"><%= LanguageUtil.get(pageContext, accountEnvironment.getEnvDBLabel()) %></span>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<liferay-ui:message key="operating-system" />:
+														<span class="field"><%= LanguageUtil.get(pageContext, accountEnvironment.getEnvDBLabel()) %></span>
+													</td>
+												</tr>
+												<tr>
+													<td>
+														<liferay-ui:message key="operating-system" />:
 
-													<span class="field">
-														<%= LanguageUtil.get(pageContext, accountEnvironment.getEnvOSLabel()) %>
+														<span class="field">
+															<%= LanguageUtil.get(pageContext, accountEnvironment.getEnvOSLabel()) %>
 
-														<c:if test="<%= Validator.isNotNull(accountEnvironment.getEnvOSCustom()) %>">
-															- <%= HtmlUtil.escape(accountEnvironment.getEnvOSCustom()) %>
+															<c:if test="<%= Validator.isNotNull(accountEnvironment.getEnvOSCustom()) %>">
+																- <%= HtmlUtil.escape(accountEnvironment.getEnvOSCustom()) %>
+															</c:if>
+														</span>
+													</td>
+													<td>
+														<liferay-ui:message key="java-virtual-machine" />:
+
+														<span class="field"><%= LanguageUtil.get(pageContext, accountEnvironment.getEnvJVMLabel()) %></span>
+													</td>
+													<td />
+												</tr>
+												<tr>
+													<td colspan="3">
+														<liferay-ui:message key="portal-ext" />:
+
+														<%
+														AccountEnvironmentAttachment portalExtAccountEnvironmentAttachment = AccountEnvironmentAttachmentLocalServiceUtil.fetchAccountEnvironmentAttachment(accountEnvironment.getAccountEnvironmentId(), AccountEnvironmentAttachmentConstants.TYPE_PORTAL_EXT);
+														%>
+
+														<c:if test="<%= portalExtAccountEnvironmentAttachment != null %>">
+
+															<%
+															LiferayPortletURL accountEnvironmentAttachmentURL = PortletURLFactoryUtil.create(request, portletDisplay.getId(), layout.getPlid(), PortletRequest.RESOURCE_PHASE);
+
+															accountEnvironmentAttachmentURL.setCopyCurrentRenderParameters(false);
+															accountEnvironmentAttachmentURL.setParameter("accountEnvironmentAttachmentId", String.valueOf(portalExtAccountEnvironmentAttachment.getAccountEnvironmentAttachmentId()));
+															accountEnvironmentAttachmentURL.setResourceID("accountEnvironmentAttachment");
+															%>
+
+															<span class="field"><a href="<%= accountEnvironmentAttachmentURL.toString() %>" target="_blank"><%= HtmlUtil.escape(portalExtAccountEnvironmentAttachment.getFileName()) %></a></span>
 														</c:if>
-													</span>
-												</td>
-												<td>
-													<liferay-ui:message key="java-virtual-machine" />:
 
-													<span class="field"><%= LanguageUtil.get(pageContext, accountEnvironment.getEnvJVMLabel()) %></span>
-												</td>
-												<td />
-											</tr>
-											<tr>
-												<td colspan="3">
-													<liferay-ui:message key="portal-ext" />:
-
-													<%
-													AccountEnvironmentAttachment portalExtAccountEnvironmentAttachment = AccountEnvironmentAttachmentLocalServiceUtil.fetchAccountEnvironmentAttachment(accountEnvironment.getAccountEnvironmentId(), AccountEnvironmentAttachmentConstants.TYPE_PORTAL_EXT);
-													%>
-
-													<c:if test="<%= portalExtAccountEnvironmentAttachment != null %>">
+														<br />
+													</td>
+												</tr>
+												<tr>
+													<td>
+														<liferay-ui:message key="patch-level" />:
 
 														<%
-														LiferayPortletURL accountEnvironmentAttachmentURL = PortletURLFactoryUtil.create(request, portletDisplay.getId(), layout.getPlid(), PortletRequest.RESOURCE_PHASE);
-
-														accountEnvironmentAttachmentURL.setCopyCurrentRenderParameters(false);
-														accountEnvironmentAttachmentURL.setParameter("accountEnvironmentAttachmentId", String.valueOf(portalExtAccountEnvironmentAttachment.getAccountEnvironmentAttachmentId()));
-														accountEnvironmentAttachmentURL.setResourceID("accountEnvironmentAttachment");
+														AccountEnvironmentAttachment patchLevelAccountEnvironmentAttachment = AccountEnvironmentAttachmentLocalServiceUtil.fetchAccountEnvironmentAttachment(accountEnvironment.getAccountEnvironmentId(), AccountEnvironmentAttachmentConstants.TYPE_PATCH_LEVEL);
 														%>
 
-														<span class="field"><a href="<%= accountEnvironmentAttachmentURL.toString() %>" target="_blank"><%= HtmlUtil.escape(portalExtAccountEnvironmentAttachment.getFileName()) %></a></span>
-													</c:if>
+														<c:if test="<%= patchLevelAccountEnvironmentAttachment != null %>">
 
-													<br />
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<liferay-ui:message key="patch-level" />:
+															<%
+															LiferayPortletURL accountEnvironmentAttachmentURL = PortletURLFactoryUtil.create(request, portletDisplay.getId(), layout.getPlid(), PortletRequest.RESOURCE_PHASE);
 
-													<%
-													AccountEnvironmentAttachment patchLevelAccountEnvironmentAttachment = AccountEnvironmentAttachmentLocalServiceUtil.fetchAccountEnvironmentAttachment(accountEnvironment.getAccountEnvironmentId(), AccountEnvironmentAttachmentConstants.TYPE_PATCH_LEVEL);
-													%>
+															accountEnvironmentAttachmentURL.setCopyCurrentRenderParameters(false);
+															accountEnvironmentAttachmentURL.setParameter("accountEnvironmentAttachmentId", String.valueOf(patchLevelAccountEnvironmentAttachment.getAccountEnvironmentAttachmentId()));
+															accountEnvironmentAttachmentURL.setResourceID("accountEnvironmentAttachment");
+															%>
 
-													<c:if test="<%= patchLevelAccountEnvironmentAttachment != null %>">
+															<span class="field"><a href="<%= accountEnvironmentAttachmentURL.toString() %>" target="_blank"><%= HtmlUtil.escape(patchLevelAccountEnvironmentAttachment.getFileName()) %></a></span>
+														</c:if>
+													</td>
+													<td />
+
+													<td align="right">
 
 														<%
-														LiferayPortletURL accountEnvironmentAttachmentURL = PortletURLFactoryUtil.create(request, portletDisplay.getId(), layout.getPlid(), PortletRequest.RESOURCE_PHASE);
+														PortletURL editAccountEnvironmentURL = renderResponse.createRenderURL();
 
-														accountEnvironmentAttachmentURL.setCopyCurrentRenderParameters(false);
-														accountEnvironmentAttachmentURL.setParameter("accountEnvironmentAttachmentId", String.valueOf(patchLevelAccountEnvironmentAttachment.getAccountEnvironmentAttachmentId()));
-														accountEnvironmentAttachmentURL.setResourceID("accountEnvironmentAttachment");
+														editAccountEnvironmentURL.setParameter("mvcPath", "/admin/edit_account_environment.jsp");
+														editAccountEnvironmentURL.setParameter("accountEntryId", String.valueOf(accountEntry.getAccountEntryId()));
+														editAccountEnvironmentURL.setParameter("accountEnvironmentId", String.valueOf(accountEnvironment.getAccountEnvironmentId()));
+														editAccountEnvironmentURL.setParameter("productEntryId", String.valueOf(productEntry.getProductEntryId()));
+														editAccountEnvironmentURL.setWindowState(LiferayWindowState.POP_UP);
 														%>
 
-														<span class="field"><a href="<%= accountEnvironmentAttachmentURL.toString() %>" target="_blank"><%= HtmlUtil.escape(patchLevelAccountEnvironmentAttachment.getFileName()) %></a></span>
-													</c:if>
-												</td>
-												<td />
-												<td align="right">
-
-													<%
-													PortletURL editAccountEnvironmentURL = renderResponse.createRenderURL();
-
-													editAccountEnvironmentURL.setParameter("mvcPath", "/admin/edit_account_environment.jsp");
-													editAccountEnvironmentURL.setParameter("accountEntryId", String.valueOf(accountEntry.getAccountEntryId()));
-													editAccountEnvironmentURL.setParameter("accountEnvironmentId", String.valueOf(accountEnvironment.getAccountEnvironmentId()));
-													editAccountEnvironmentURL.setParameter("productEntryId", String.valueOf(productEntry.getProductEntryId()));
-													editAccountEnvironmentURL.setWindowState(LiferayWindowState.POP_UP);
-													%>
-
-													<input onClick="<portlet:namespace />openDialog('<liferay-ui:message key="edit-environment-details" />', '<%= editAccountEnvironmentURL.toString() %>', '<portlet:namespace />updateAccountEnvironment')" type="button" value="<liferay-ui:message key="edit" />" />
-												</td>
-											</tr>
+														<input onClick="<portlet:namespace />openDialog('<liferay-ui:message key="edit-environment-details" />', '<%= editAccountEnvironmentURL.toString() %>', '<portlet:namespace />updateAccountEnvironment')" type="button" value="<liferay-ui:message key="edit" />" />
+													</td>
+												</tr>
 											</table>
 										</div>
 									</li>
@@ -589,19 +590,19 @@ for (SupportRegion supportRegion : supportRegions) {
 
 						<div class="content">
 							<c:if test="<%= auditEntry.getAction() != AuditEntryConstants.ACTION_AUDIT %>">
-								<div class="aui-w20 aui-column txt-sb">
+								<div class="aui-column aui-w20 txt-sb">
 									<div class="content-column-content left-column">
 										<liferay-ui:message key="field" />
 									</div>
 								</div>
 
-								<div class="aui-w40 aui-column txt-sb">
+								<div class="aui-column aui-w40 txt-sb">
 									<div class="content-column-content middle-column">
 										<liferay-ui:message key="original-value" />
 									</div>
 								</div>
 
-								<div class="aui-w40 aui-column txt-sb">
+								<div class="aui-column aui-w40 txt-sb">
 									<div class="content-column-content right-column">
 										<liferay-ui:message key="new-value" />
 									</div>
@@ -659,13 +660,13 @@ for (SupportRegion supportRegion : supportRegions) {
 										</c:choose>
 									</c:when>
 									<c:otherwise>
-										<div class="aui-w20 aui-column txt-sb">
+										<div class="aui-column aui-w20 txt-sb">
 											<div class="content-column-content left-column">
 												<liferay-ui:message key="<%= curAuditEntry.getFieldLabel() %>" />
 											</div>
 										</div>
 
-										<div class="aui-w40 aui-column">
+										<div class="aui-column aui-w40">
 											<div class="content-column-content middle-column">
 												<c:choose>
 													<c:when test="<%= Validator.isNull(oldLabel) %>">
@@ -684,7 +685,7 @@ for (SupportRegion supportRegion : supportRegions) {
 											</div>
 										</div>
 
-										<div class="aui-w40 aui-column">
+										<div class="aui-column aui-w40">
 											<div class="content-column-content right-column">
 												<c:choose>
 													<c:when test="<%= Validator.isNull(newLabel) %>">

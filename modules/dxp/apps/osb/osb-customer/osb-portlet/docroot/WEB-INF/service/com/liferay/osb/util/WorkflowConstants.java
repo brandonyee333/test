@@ -92,6 +92,22 @@ public class WorkflowConstants
 
 	public static final int STATUS_REJECTED = 500;
 
+	public static int getLabelStatus(String label) {
+		if (label.equals(LABEL_INCOMPLETE_TRAINING_REGISTRATION)) {
+			return STATUS_INCOMPLETE_TRAINING_REGISTRATION;
+		}
+		else if (label.equals(LABEL_PENDING_QA)) {
+			return STATUS_PENDING_QA;
+		}
+		else if (label.equals(LABEL_PENDING_VALIDATION)) {
+			return STATUS_PENDING_VALIDATION;
+		}
+		else {
+			return com.liferay.portal.kernel.workflow.WorkflowConstants.
+				getLabelStatus(label);
+		}
+	}
+
 	public static String getStatusLabel(int status) {
 		if (status == STATUS_CLOSED) {
 			return LABEL_CLOSED;
@@ -114,23 +130,6 @@ public class WorkflowConstants
 		else {
 			return com.liferay.portal.kernel.workflow.WorkflowConstants.
 				getStatusLabel(status);
-		}
-	}
-
-	public static int getLabelStatus(String label) {
-		if (label.equals(LABEL_INCOMPLETE_TRAINING_REGISTRATION)) {
-			return STATUS_INCOMPLETE_TRAINING_REGISTRATION;
-		}
-		else if (label.equals(LABEL_PENDING_QA)) {
-			return STATUS_PENDING_QA;
-		}
-		else if (label.equals(LABEL_PENDING_VALIDATION)) {
-			return STATUS_PENDING_VALIDATION;
-		}
-		else {
-			return
-				com.liferay.portal.kernel.workflow.WorkflowConstants.
-					getLabelStatus(label);
 		}
 	}
 

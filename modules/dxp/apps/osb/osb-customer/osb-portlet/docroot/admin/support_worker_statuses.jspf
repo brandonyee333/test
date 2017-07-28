@@ -21,7 +21,7 @@ List<SupportTeam> supportTeams = SupportTeamLocalServiceUtil.getSupportTeams(Que
 <liferay-ui:error exception="<%= PrincipalException.class %>" message="you-do-not-have-the-required-permissions" />
 
 <c:if test="<%= !supportTeams.isEmpty() %>">
-	<div class="aui-w100 aui-helper-clearfix manager-dashboard">
+	<div class="aui-helper-clearfix aui-w100 manager-dashboard">
 		<table class="lfr-table">
 
 			<%
@@ -31,7 +31,7 @@ List<SupportTeam> supportTeams = SupportTeamLocalServiceUtil.getSupportTeams(Que
 
 				<tr>
 					<td class="manager-dashboard-col">
-						<div class="aui-w100 left-column content-column content-column-content manager-dashboard-team">
+						<div class="aui-w100 content-column content-column-content left-column manager-dashboard-team">
 							<div class="team-title">
 								<%= HtmlUtil.escape(supportTeam.getName()) %>
 							</div>
@@ -87,7 +87,6 @@ List<SupportTeam> supportTeams = SupportTeamLocalServiceUtil.getSupportTeams(Que
 												</c:choose>
 											</c:if>
 										</span>
-
 										<span class="role-icon">
 											<c:choose>
 												<c:when test="<%= managedSupportWorker.getRole() == SupportWorkerConstants.ROLE_MANAGER %>">
@@ -101,7 +100,6 @@ List<SupportTeam> supportTeams = SupportTeamLocalServiceUtil.getSupportTeams(Que
 												</c:otherwise>
 											</c:choose>
 										</span>
-
 										<span class="user-name">
 											<%= HtmlUtil.escape(managedSupportWorkerUser.getFullName()) %>
 										</span>

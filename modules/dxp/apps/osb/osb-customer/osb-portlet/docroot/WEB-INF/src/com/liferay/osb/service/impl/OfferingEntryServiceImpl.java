@@ -14,15 +14,14 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.service.base.OfferingEntryServiceBaseImpl;
 import com.liferay.osb.service.permission.OSBOfferingEntryPermission;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.util.ListUtil;
 
 import java.util.Iterator;
 import java.util.List;
@@ -35,7 +34,7 @@ public class OfferingEntryServiceImpl extends OfferingEntryServiceBaseImpl {
 
 	public List<OfferingEntry> getAccountEntryOfferingEntries(
 			long accountEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		List<OfferingEntry> offeringEntries =
 			offeringEntryLocalService.getAccountEntryOfferingEntries(
@@ -45,7 +44,7 @@ public class OfferingEntryServiceImpl extends OfferingEntryServiceBaseImpl {
 	}
 
 	public List<OfferingEntry> getOrderEntryOfferingEntries(long orderEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		List<OfferingEntry> offeringEntries =
 			offeringEntryLocalService.getOrderEntryOfferingEntries(
@@ -61,7 +60,7 @@ public class OfferingEntryServiceImpl extends OfferingEntryServiceBaseImpl {
 			long licenseLifetime, long maxConcurrentUsers, long maxUsers,
 			boolean supportTickets, long supportLifetime, int sizing,
 			int quantity)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OSBOfferingEntryPermission.check(
 			getPermissionChecker(), offeringEntryId, ActionKeys.UPDATE);
@@ -74,7 +73,7 @@ public class OfferingEntryServiceImpl extends OfferingEntryServiceBaseImpl {
 	}
 
 	public OfferingEntry updateStatus(long offeringEntryId, int status)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OSBOfferingEntryPermission.check(
 			getPermissionChecker(), offeringEntryId, ActionKeys.UPDATE);
@@ -85,7 +84,7 @@ public class OfferingEntryServiceImpl extends OfferingEntryServiceBaseImpl {
 
 	protected List<OfferingEntry> filterOfferingEntries(
 			List<OfferingEntry> offeringEntries)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		List<OfferingEntry> filteredOfferingEntries = ListUtil.copy(
 			offeringEntries);

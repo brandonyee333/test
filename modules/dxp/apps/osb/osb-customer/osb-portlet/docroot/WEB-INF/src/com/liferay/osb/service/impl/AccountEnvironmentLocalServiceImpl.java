@@ -14,7 +14,6 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.exception.AccountEnvironmentAttachmentException;
 import com.liferay.osb.exception.AccountEnvironmentEnvASException;
 import com.liferay.osb.exception.AccountEnvironmentEnvDBException;
@@ -30,11 +29,11 @@ import com.liferay.osb.model.TicketEntryConstants;
 import com.liferay.osb.service.base.AccountEnvironmentLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.NoSuchListTypeException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.ObjectValuePair;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.io.File;
 
@@ -55,7 +54,7 @@ public class AccountEnvironmentLocalServiceImpl
 			int envOS, String envOSCustom, int envDB, int envJVM, int envAS,
 			int envLFR, List<ObjectValuePair<String, File>> files,
 			List<Integer> types)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		Date now = new Date();
@@ -82,12 +81,13 @@ public class AccountEnvironmentLocalServiceImpl
 		accountEnvironment.setEnvJVM(envJVM);
 		accountEnvironment.setEnvAS(envAS);
 		accountEnvironment.setEnvLFR(envLFR);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
-		accountEnvironmentPersistence.update(accountEnvironment, serviceContext);
+		accountEnvironmentPersistence.update(
+			accountEnvironment, serviceContext);
 
 		if (!files.isEmpty()) {
 			accountEnvironmentAttachmentLocalService.
@@ -100,7 +100,7 @@ public class AccountEnvironmentLocalServiceImpl
 
 	public AccountEnvironment deleteAccountEnvironment(
 			long accountEnvironmentId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		AccountEnvironment accountEnvironment =
 			accountEnvironmentPersistence.remove(accountEnvironmentId);
@@ -121,23 +121,21 @@ public class AccountEnvironmentLocalServiceImpl
 	}
 
 	public AccountEnvironment fetchAccountEnvironment(
-			long accountEntryId, long productEntryId, String name)
-		throws SystemException {
+		long accountEntryId, long productEntryId, String name) {
 
 		return accountEnvironmentPersistence.fetchByAEI_PEI_N(
 			accountEntryId, productEntryId, name);
 	}
 
 	public List<AccountEnvironment> getAccountEnvironments(long accountEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		return accountEnvironmentPersistence.findByAccountEntryId(
 			accountEntryId);
 	}
 
 	public List<AccountEnvironment> getAccountEnvironments(
-			long accountEntryId, long productEntryId)
-		throws SystemException {
+		long accountEntryId, long productEntryId) {
 
 		return accountEnvironmentPersistence.findByAEI_PEI(
 			accountEntryId, productEntryId);
@@ -145,10 +143,10 @@ public class AccountEnvironmentLocalServiceImpl
 
 	public Map<String, List<AccountEnvironment>> getAccountEnvironmentsMap(
 			long accountEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		Map<String, List<AccountEnvironment>> accountEnvironmentsMap =
-			new TreeMap<String, List<AccountEnvironment>>();
+			new TreeMap<>();
 
 		List<AccountEnvironment> accountEnvironments =
 			accountEnvironmentPersistence.findByAccountEntryId(accountEntryId);
@@ -165,7 +163,7 @@ public class AccountEnvironmentLocalServiceImpl
 					productEntry.getName());
 			}
 			else {
-				accountEnvironmentsList = new ArrayList<AccountEnvironment>();
+				accountEnvironmentsList = new ArrayList<>();
 			}
 
 			accountEnvironmentsList.add(accountEnvironment);
@@ -182,7 +180,7 @@ public class AccountEnvironmentLocalServiceImpl
 			String name, int envOS, String envOSCustom, int envDB, int envJVM,
 			int envAS, int envLFR, List<ObjectValuePair<String, File>> files,
 			List<Integer> types)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		AccountEnvironment accountEnvironment =
 			accountEnvironmentPersistence.findByPrimaryKey(
@@ -201,12 +199,13 @@ public class AccountEnvironmentLocalServiceImpl
 		accountEnvironment.setEnvJVM(envJVM);
 		accountEnvironment.setEnvAS(envAS);
 		accountEnvironment.setEnvLFR(envLFR);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
-		accountEnvironmentPersistence.update(accountEnvironment, serviceContext);
+		accountEnvironmentPersistence.update(
+			accountEnvironment, serviceContext);
 
 		if (!files.isEmpty()) {
 			accountEnvironmentAttachmentLocalService.
@@ -221,7 +220,7 @@ public class AccountEnvironmentLocalServiceImpl
 			long accountEnvironmentId, long accountEntryId, long productEntryId,
 			String name, int envOS, int envDB, int envAS, int envLFR,
 			List<ObjectValuePair<String, File>> files)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (Validator.isNull(name)) {
 			throw new AccountEnvironmentNameException();

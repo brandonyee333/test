@@ -14,16 +14,15 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.model.AuditEntryConstants;
 import com.liferay.osb.model.TicketEntry;
 import com.liferay.osb.model.TicketInformation;
 import com.liferay.osb.model.TicketInformationConstants;
 import com.liferay.osb.service.base.TicketInformationLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,7 +38,7 @@ public class TicketInformationLocalServiceImpl
 
 	public TicketInformation addTicketInformation(
 			long ticketEntryId, long fieldId, String data)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		Date now = new Date();
 
@@ -53,16 +52,17 @@ public class TicketInformationLocalServiceImpl
 		ticketInformation.setTicketEntryId(ticketEntryId);
 		ticketInformation.setFieldId(fieldId);
 		ticketInformation.setData(data);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
-		return ticketInformationPersistence.update(ticketInformation, serviceContext);
+		return ticketInformationPersistence.update(
+			ticketInformation, serviceContext);
 	}
 
 	public String getData(long ticketEntryId, long fieldId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		TicketInformation ticketInformation =
 			ticketInformationPersistence.findByTEI_FI(ticketEntryId, fieldId);
@@ -70,13 +70,11 @@ public class TicketInformationLocalServiceImpl
 		return ticketInformation.getData();
 	}
 
-	public Map<Long, String> getFieldsMap(long ticketEntryId)
-		throws SystemException {
-
+	public Map<Long, String> getFieldsMap(long ticketEntryId) {
 		List<TicketInformation> ticketInformationList =
 			ticketInformationPersistence.findByTicketEntryId(ticketEntryId);
 
-		HashMap<Long, String> fieldsMap = new HashMap<Long, String>();
+		HashMap<Long, String> fieldsMap = new HashMap<>();
 
 		for (TicketInformation ticketInformation : ticketInformationList) {
 			fieldsMap.put(
@@ -86,21 +84,20 @@ public class TicketInformationLocalServiceImpl
 		return fieldsMap;
 	}
 
-	public List<TicketInformation> getTicketInformationList(long ticketEntryId)
-		throws SystemException {
+	public List<TicketInformation> getTicketInformationList(
+		long ticketEntryId) {
 
 		return ticketInformationPersistence.findByTicketEntryId(ticketEntryId);
 	}
 
 	public List<TicketInformation> updateTicketInformation(
 			long ticketEntryId, Map<Long, String> fieldsMap)
-		throws PortalException, SystemException {
+		throws PortalException {
 
-		List<TicketInformation> ticketInformationList =
-			new ArrayList<TicketInformation>();
-		
+		List<TicketInformation> ticketInformationList = new ArrayList<>();
+
 		//TODO implement serviceContext as needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		for (Map.Entry<Long, String> entry : fieldsMap.entrySet()) {
@@ -132,14 +129,13 @@ public class TicketInformationLocalServiceImpl
 	public List<TicketInformation> updateTicketInformation(
 			long userId, String userName, long ticketEntryId,
 			Map<Long, String> fieldsMap, ServiceContext serviceContext)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		Date now = serviceContext.getCreateDate(new Date());
 
 		Map<Long, String> oldfieldsMap = getFieldsMap(ticketEntryId);
 
-		List<TicketInformation> ticketInformationList =
-			new ArrayList<TicketInformation>();
+		List<TicketInformation> ticketInformationList = new ArrayList<>();
 
 		for (Map.Entry<Long, String> entry : fieldsMap.entrySet()) {
 			long fieldId = entry.getKey();
@@ -156,7 +152,7 @@ public class TicketInformationLocalServiceImpl
 			else {
 				ticketInformation.setModifiedDate(now);
 				ticketInformation.setData(data);
-				
+
 				//TODO implement serviceContext as needed
 
 				ticketInformation = ticketInformationPersistence.update(
@@ -179,7 +175,7 @@ public class TicketInformationLocalServiceImpl
 			long userId, String userName, long classPK, Date createDate,
 			Map<Long, String> oldFieldsMap, Map<Long, String> newFieldsMap,
 			ServiceContext serviceContext)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		long classNameId = PortalUtil.getClassNameId(
 			TicketEntry.class.getName());
@@ -227,7 +223,7 @@ public class TicketInformationLocalServiceImpl
 			long userId, String userName, Date createDate, long classNameId,
 			long classPK, long auditSetId, int auditAction,
 			Map<Long, String> oldFieldsMap, Map<Long, String> newFieldsMap)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		String newDatabaseUploadMethod = newFieldsMap.get(
 			TicketInformationConstants.FIELD_DATABASE_UPLOAD_METHOD);

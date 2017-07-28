@@ -64,7 +64,7 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 
 	if (tabs2.equals("current")) {
 		userParams.put("status", WorkflowConstants.STATUS_ANY);
-		userParams.put("usersPartnerWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinByPartnerWorker"), new Long(partnerEntry.getPartnerEntryId())));
+		userParams.put("usersPartnerWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinByPartnerWorker"), Long.valueOf(partnerEntry.getPartnerEntryId())));
 	}
 	%>
 

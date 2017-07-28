@@ -30,7 +30,6 @@ var Resumable = function(opts) {
 				   );
 	if (!this.support) return(false);
 
-
 	// PROPERTIES
 	var $ = this;
 	$.files = [];
@@ -118,7 +117,6 @@ var Resumable = function(opts) {
 	  if (event=='fileerror') $.fire('error', args[2], args[1]);
 	  if (event=='fileprogress') $.fire('progress');
 	};
-
 
 	// INTERNAL HELPER METHODS (handy, but ultimately not part of uploading)
 	var $h = {
@@ -516,7 +514,6 @@ var Resumable = function(opts) {
 		return $._pause;
 	  };
 
-
 	  // Bootstrap and return
 	  $.resumableObj.fire('chunkingStart', $);
 	  $.bootstrap();
@@ -810,7 +807,6 @@ var Resumable = function(opts) {
 	  return(false);
 	};
 
-
 	// PUBLIC METHODS FOR RESUMABLE.JS
 	$.assignBrowse = function(domNodes, isDirectory) {
 	  if (typeof(domNodes.length)=='undefined') domNodes = [domNodes];
@@ -935,7 +931,6 @@ var Resumable = function(opts) {
 
 	return(this);
 };
-
 
 // Node.js-style export for Node and Component
 if (typeof module != 'undefined') {

@@ -14,8 +14,6 @@
 
 package com.liferay.osb.support;
 
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.TicketEntry;
 import com.liferay.osb.model.TicketEntryDiscussion;
@@ -28,6 +26,8 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.util.Encryptor;
 
 import java.util.HashMap;
@@ -265,9 +265,8 @@ public class SupportFriendlyURLMapper extends DefaultFriendlyURLMapper {
 				addParameter(parameters, "searchFilterId", urlFragments[1]);
 			}
 
-			String propertiesAuthenticatonTokenSharedSecret =
-				Encryptor.digest(
-					PropsUtil.get(PropsKeys.AUTH_TOKEN_SHARED_SECRET));
+			String propertiesAuthenticatonTokenSharedSecret = Encryptor.digest(
+				PropsUtil.get(PropsKeys.AUTH_TOKEN_SHARED_SECRET));
 
 			addParameter(
 				parameters, "p_auth_secret",

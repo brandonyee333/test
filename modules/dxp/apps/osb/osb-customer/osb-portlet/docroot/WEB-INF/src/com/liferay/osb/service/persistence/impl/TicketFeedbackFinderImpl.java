@@ -14,15 +14,10 @@
 
 package com.liferay.osb.service.persistence.impl;
 
-import com.liferay.osb.service.persistence.TicketFeedbackFinder;
-import com.liferay.osb.service.persistence.TicketFeedbackUtil;
-
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.model.TicketFeedback;
 import com.liferay.osb.model.TicketFeedbackConstants;
 import com.liferay.osb.model.impl.TicketFeedbackImpl;
+import com.liferay.osb.service.persistence.TicketFeedbackFinder;
 import com.liferay.portal.kernel.dao.orm.PortalCustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -30,11 +25,13 @@ import com.liferay.portal.kernel.dao.orm.SQLQuery;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.Type;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CalendarUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.sql.Timestamp;
@@ -50,8 +47,7 @@ import java.util.Map;
  * @author Amos Fong
  */
 public class TicketFeedbackFinderImpl
-	extends TicketFeedbackFinderBaseImpl
-	implements TicketFeedbackFinder {
+	extends TicketFeedbackFinderBaseImpl implements TicketFeedbackFinder {
 
 	public static final String COUNT_BY_AE_CD_MD_S_S_C_S_R_R_R_R =
 		TicketFeedbackFinder.class.getName() +
@@ -82,14 +78,34 @@ public class TicketFeedbackFinderImpl
 	public static final String JOIN_BY_TICKET_ENTRY_WORKER =
 		TicketFeedbackFinder.class.getName() + ".joinByTicketEntryWorker";
 
+	public int countByKeywords(
+		String keywords, LinkedHashMap<String, Object> params) {
+
+		String[] accountEntryNames = null;
+		String[] commentsArray = null;
+		boolean andOperator = false;
+
+		if (Validator.isNotNull(keywords)) {
+			accountEntryNames = CustomSQLUtil.keywords(keywords);
+			commentsArray = CustomSQLUtil.keywords(keywords);
+		}
+		else {
+			andOperator = true;
+		}
+
+		params.put("subject", TicketFeedbackConstants.SUBJECT_LIFERAY);
+
+		return countByAE_CD_MD_S_S_C_S_R_R_R_R(
+			accountEntryNames, null, null, null, null, null, null,
+			commentsArray, null, null, null, null, null, params, andOperator);
+	}
+
 	public int countByAE_CD_MD_S_S_C_S_R_R_R_R(
-			String accountEntryName, Date createDateGT, Date createDateLT,
-			Date modifiedDateGT, Date modifiedDateLT, Integer subject,
-			Integer satisfied, String comments, Integer status,
-			Integer[] ratings1, Integer[] ratings2, Integer[] ratings3,
-			Integer[] ratings4, LinkedHashMap<String, Object> params,
-			boolean andOperator)
-		throws SystemException {
+		String accountEntryName, Date createDateGT, Date createDateLT,
+		Date modifiedDateGT, Date modifiedDateLT, Integer subject,
+		Integer satisfied, String comments, Integer status, Integer[] ratings1,
+		Integer[] ratings2, Integer[] ratings3, Integer[] ratings4,
+		LinkedHashMap<String, Object> params, boolean andOperator) {
 
 		String[] accountEntryNames = CustomSQLUtil.keywords(accountEntryName);
 		String[] commentsArray = CustomSQLUtil.keywords(comments);
@@ -101,9 +117,8 @@ public class TicketFeedbackFinderImpl
 	}
 
 	public List<TicketFeedback> findByKeywords(
-			String keywords, LinkedHashMap<String, Object> params, int start,
-			int end, OrderByComparator obc)
-		throws SystemException {
+		String keywords, LinkedHashMap<String, Object> params, int start,
+		int end, OrderByComparator obc) {
 
 		String[] accountEntryNames = null;
 		String[] commentsArray = null;
@@ -125,37 +140,13 @@ public class TicketFeedbackFinderImpl
 			start, end, obc);
 	}
 
-	public int countByKeywords(
-			String keywords, LinkedHashMap<String, Object> params)
-		throws SystemException {
-
-		String[] accountEntryNames = null;
-		String[] commentsArray = null;
-		boolean andOperator = false;
-
-		if (Validator.isNotNull(keywords)) {
-			accountEntryNames = CustomSQLUtil.keywords(keywords);
-			commentsArray = CustomSQLUtil.keywords(keywords);
-		}
-		else {
-			andOperator = true;
-		}
-
-		params.put("subject", TicketFeedbackConstants.SUBJECT_LIFERAY);
-
-		return countByAE_CD_MD_S_S_C_S_R_R_R_R(
-			accountEntryNames, null, null, null, null, null, null,
-			commentsArray, null, null, null, null, null, params, andOperator);
-	}
-
 	public List<TicketFeedback> findByAE_CD_MD_S_S_C_S_R_R_R_R(
-			String accountEntryName, Date createDateGT, Date createDateLT,
-			Date modifiedDateGT, Date modifiedDateLT, Integer subject,
-			Integer satisfied, String comments, Integer status,
-			Integer[] ratings1, Integer[] ratings2, Integer[] ratings3,
-			Integer[] ratings4, LinkedHashMap<String, Object> params,
-			boolean andOperator, int start, int end, OrderByComparator obc)
-		throws SystemException {
+		String accountEntryName, Date createDateGT, Date createDateLT,
+		Date modifiedDateGT, Date modifiedDateLT, Integer subject,
+		Integer satisfied, String comments, Integer status, Integer[] ratings1,
+		Integer[] ratings2, Integer[] ratings3, Integer[] ratings4,
+		LinkedHashMap<String, Object> params, boolean andOperator, int start,
+		int end, OrderByComparator obc) {
 
 		String[] accountEntryNames = CustomSQLUtil.keywords(accountEntryName);
 		String[] commentsArray = CustomSQLUtil.keywords(comments);
@@ -167,24 +158,21 @@ public class TicketFeedbackFinderImpl
 	}
 
 	protected int countByAE_CD_MD_S_S_C_S_R_R_R_R(
-			String[] accountEntryNames, Date createDateGT, Date createDateLT,
-			Date modifiedDateGT, Date modifiedDateLT, Integer subject,
-			Integer satisfied, String[] comments, Integer status,
-			Integer[] ratings1, Integer[] ratings2, Integer[] ratings3,
-			Integer[] ratings4, LinkedHashMap<String, Object> params,
-			boolean andOperator)
-		throws SystemException {
+		String[] accountEntryNames, Date createDateGT, Date createDateLT,
+		Date modifiedDateGT, Date modifiedDateLT, Integer subject,
+		Integer satisfied, String[] comments, Integer status,
+		Integer[] ratings1, Integer[] ratings2, Integer[] ratings3,
+		Integer[] ratings4, LinkedHashMap<String, Object> params,
+		boolean andOperator) {
 
 		if (params == null) {
-			params = new LinkedHashMap<String, Object>();
+			params = new LinkedHashMap<>();
 		}
 
 		Long userId = (Long)params.remove("accountEntryMembership");
 
-		LinkedHashMap<String, Object> params1 =
-			new LinkedHashMap<String, Object>(params);
-		LinkedHashMap<String, Object> params2 =
-			new LinkedHashMap<String, Object>(params1);
+		LinkedHashMap<String, Object> params1 = new LinkedHashMap<>(params);
+		LinkedHashMap<String, Object> params2 = new LinkedHashMap<>(params1);
 
 		if (userId != null) {
 			params1.put("accountCustomer", userId);
@@ -226,7 +214,7 @@ public class TicketFeedbackFinderImpl
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addScalar(COUNT_COLUMN_NAME, Type.LONG);
 
@@ -265,24 +253,21 @@ public class TicketFeedbackFinderImpl
 	}
 
 	protected List<TicketFeedback> findByAE_CD_MD_S_S_C_S_R_R_R_R(
-			String[] accountEntryNames, Date createDateGT, Date createDateLT,
-			Date modifiedDateGT, Date modifiedDateLT, Integer subject,
-			Integer satisfied, String[] comments, Integer status,
-			Integer[] ratings1, Integer[] ratings2, Integer[] ratings3,
-			Integer[] ratings4, LinkedHashMap<String, Object> params,
-			boolean andOperator, int start, int end, OrderByComparator obc)
-		throws SystemException {
+		String[] accountEntryNames, Date createDateGT, Date createDateLT,
+		Date modifiedDateGT, Date modifiedDateLT, Integer subject,
+		Integer satisfied, String[] comments, Integer status,
+		Integer[] ratings1, Integer[] ratings2, Integer[] ratings3,
+		Integer[] ratings4, LinkedHashMap<String, Object> params,
+		boolean andOperator, int start, int end, OrderByComparator obc) {
 
 		if (params == null) {
-			params = new LinkedHashMap<String, Object>();
+			params = new LinkedHashMap<>();
 		}
 
 		Long userId = (Long)params.remove("accountEntryMembership");
 
-		LinkedHashMap<String, Object> params1 =
-			new LinkedHashMap<String, Object>(params);
-		LinkedHashMap<String, Object> params2 =
-			new LinkedHashMap<String, Object>(params1);
+		LinkedHashMap<String, Object> params1 = new LinkedHashMap<>(params);
+		LinkedHashMap<String, Object> params2 = new LinkedHashMap<>(params1);
 
 		if (userId != null) {
 			params1.put("accountCustomer", userId);
@@ -325,7 +310,7 @@ public class TicketFeedbackFinderImpl
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addEntity("OSB_TicketFeedback", TicketFeedbackImpl.class);
 

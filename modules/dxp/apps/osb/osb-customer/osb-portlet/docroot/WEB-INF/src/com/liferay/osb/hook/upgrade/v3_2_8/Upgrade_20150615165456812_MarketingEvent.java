@@ -23,16 +23,13 @@ import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 /**
  * @author Rachael Koestartyo
  */
-public class Upgrade_20150615165456812_MarketingEvent
-	extends UpgradeProcess {
+public class Upgrade_20150615165456812_MarketingEvent extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	public long getTimestamp() {
 		return 20150615165456812L;
 	}
@@ -49,6 +46,7 @@ public class Upgrade_20150615165456812_MarketingEvent
 	}
 
 }
+
 */
 
 }

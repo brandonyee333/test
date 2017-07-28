@@ -14,11 +14,8 @@
 
 package com.liferay.osb.hook.filter;
 
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.ip.geocoder.IPGeocoder;
 import com.liferay.ip.geocoder.IPInfo;
-import com.liferay.ip.geocoder.internal.IPGeocoderImpl;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.BaseFilter;
@@ -26,6 +23,8 @@ import com.liferay.portal.kernel.servlet.HttpMethods;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -44,7 +43,7 @@ public class IPGeocoderFilter extends BaseFilter {
 
 	@Override
 	public void init(FilterConfig filterConfig) {
-		_languageIdsMap = new HashMap<String, String>(14);
+		_languageIdsMap = new HashMap<>(14);
 
 		_languageIdsMap.put("AR", "es");
 		_languageIdsMap.put("BR", "pt");
@@ -141,7 +140,8 @@ public class IPGeocoderFilter extends BaseFilter {
 
 		if (redirect == null) {
 			processFilter(
-				IPGeocoderFilter.class.getName(), request, response, filterChain);
+				IPGeocoderFilter.class.getName(), request, response,
+				filterChain);
 
 			return;
 		}
@@ -149,7 +149,8 @@ public class IPGeocoderFilter extends BaseFilter {
 		response.sendRedirect(redirect);
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(IPGeocoderFilter.class);
+	private static final Log _log = LogFactoryUtil.getLog(
+		IPGeocoderFilter.class);
 
 	private static Map<String, String> _languageIdsMap;
 

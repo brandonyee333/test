@@ -16,7 +16,7 @@ package com.liferay.osb.hook.upgrade.v2_4_1;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
-/*import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+/*import UpgradeProcess;
 import com.liferay.osb.model.AppEntry;
 import com.liferay.osb.model.AppVersion;
 import com.liferay.osb.model.AssetLicense;
@@ -48,9 +48,7 @@ public class UpgradeAssetLicense extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*
-
-	@Override
+/*@Override
 	protected void doUpgrade() throws Exception {
 		upgradeAssetLicense();
 	}
@@ -139,6 +137,7 @@ public class UpgradeAssetLicense extends UpgradeProcess {
 	}
 
 }
+
 */
 
 }

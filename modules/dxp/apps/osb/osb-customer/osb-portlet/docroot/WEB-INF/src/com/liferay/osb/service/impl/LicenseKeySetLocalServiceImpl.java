@@ -14,16 +14,15 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.exception.LicenseKeySetNameException;
 import com.liferay.osb.exception.NoSuchAccountEntryException;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.LicenseKeySet;
 import com.liferay.osb.service.base.LicenseKeySetLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Date;
 import java.util.List;
@@ -36,7 +35,7 @@ public class LicenseKeySetLocalServiceImpl
 
 	public LicenseKeySet addLicenseKeySet(
 			long userId, long accountEntryId, String name)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		Date now = new Date();
@@ -54,9 +53,9 @@ public class LicenseKeySetLocalServiceImpl
 		licenseKeySet.setModifiedDate(now);
 		licenseKeySet.setAccountEntryId(accountEntryId);
 		licenseKeySet.setName(name);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		licenseKeySetPersistence.update(licenseKeySet, serviceContext);
@@ -65,21 +64,18 @@ public class LicenseKeySetLocalServiceImpl
 	}
 
 	public List<LicenseKeySet> getAccountEntryLicenseKeySets(
-			long accountEntryId, int start, int end)
-		throws SystemException {
+		long accountEntryId, int start, int end) {
 
 		return licenseKeySetPersistence.findByAccountEntryId(
 			accountEntryId, start, end);
 	}
 
-	public int getAccountEntryLicenseKeySetsCount(long accountEntryId)
-		throws SystemException {
-
+	public int getAccountEntryLicenseKeySetsCount(long accountEntryId) {
 		return licenseKeySetPersistence.countByAccountEntryId(accountEntryId);
 	}
 
 	public LicenseKeySet updateLicenseKeySet(long licenseKeySetId, String name)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		validateName(name);
 
@@ -88,9 +84,9 @@ public class LicenseKeySetLocalServiceImpl
 
 		licenseKeySet.setModifiedDate(new Date());
 		licenseKeySet.setName(name);
-		
+
 		//TODO implement serviceContext how needed
-		
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		licenseKeySetPersistence.update(licenseKeySet, serviceContext);
@@ -99,7 +95,7 @@ public class LicenseKeySetLocalServiceImpl
 	}
 
 	protected void validate(long accountEntryId, String name)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
 			accountEntryId);

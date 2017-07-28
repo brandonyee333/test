@@ -14,12 +14,11 @@
 
 package com.liferay.osb.model.impl;
 
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.osb.model.TicketEntry;
 import com.liferay.osb.model.TicketFeedbackConstants;
 import com.liferay.osb.service.TicketEntryLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.Time;
 
 import java.util.Date;
 
@@ -85,9 +84,7 @@ public class TicketFeedbackImpl extends TicketFeedbackBaseImpl {
 		return TicketFeedbackConstants.getSatisfiedLabel(getSatisfied());
 	}
 
-	public TicketEntry getTicketEntry()
-		throws PortalException, SystemException {
-
+	public TicketEntry getTicketEntry() throws PortalException {
 		return TicketEntryLocalServiceUtil.getTicketEntry(getTicketEntryId());
 	}
 

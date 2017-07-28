@@ -27,7 +27,7 @@ List<PartnerEntry> childPartnerEntries = partnerEntry.getChildPartnerEntries(tru
 List<AccountEntry> accountEntries = partnerEntry.getAccountEntries();
 %>
 
-<div class="partner details tab-view">
+<div class="details partner tab-view">
 	<div class="tabs" id="<portlet:namespace />tabsDetails">
 		<div>
 			<span class="first" id="<portlet:namespace />contacts" onClick="<portlet:namespace />revealDetail('contacts');"><liferay-ui:message key="contacts" />(<%= partnerWorkers.size() %>)</span>

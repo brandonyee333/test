@@ -17,14 +17,14 @@
 <div class="aui-helper-clearfix">
 	<div class="aui-w33 content-column">
 		<div class="content-column-content left-column">
-			<a class="display-b callout-a paragraph">
+			<a class="callout-a display-b paragraph">
 				<div class="callout-content ha-c">
 					<div class="display-ib">
 						<div class="txt-b">
 							&nbsp;
 						</div>
 
-						<div class="txt-h1 txt-b">
+						<div class="txt-b txt-h1">
 							&nbsp;
 						</div>
 					</div>
@@ -35,14 +35,14 @@
 
 	<div class="aui-w33 content-column">
 		<div class="content-column-content middle-column">
-			<a class="display-b callout-a paragraph">
+			<a class="callout-a display-b paragraph">
 				<div class="callout-content ha-c">
 					<div class="display-ib">
 						<div class="txt-b">
 							&nbsp;
 						</div>
 
-						<div class="txt-h1 txt-b">
+						<div class="txt-b txt-h1">
 							&nbsp;
 						</div>
 					</div>
@@ -58,14 +58,14 @@
 
 	<div class="aui-w33 content-column">
 		<div class="content-column-content right-column">
-			<a class="display-b callout-a paragraph" href="<%= addLicenseKeyURL %>">
+			<a class="callout-a display-b paragraph" href="<%= addLicenseKeyURL %>">
 				<div class="callout-content ha-c">
 					<div class="display-ib">
 						<div class="txt-b">
 							<liferay-ui:message key="generate-new-license" />
 						</div>
 
-						<div class="txt-h1 txt-b">
+						<div class="txt-b txt-h1">
 							+
 						</div>
 					</div>
@@ -171,13 +171,13 @@
 				>
 					<c:choose>
 						<c:when test="<%= licenseKey.isExpired() %>">
-							<span class="display-b btn-a v-expired"><liferay-ui:message key="expired" /></span>
+							<span class="btn-a display-b v-expired"><liferay-ui:message key="expired" /></span>
 						</c:when>
 						<c:when test="<%= !licenseKey.isActive() %>">
-							<span class="display-b btn-a v-inactive"><liferay-ui:message key="inactive" /></span>
+							<span class="btn-a display-b v-inactive"><liferay-ui:message key="inactive" /></span>
 						</c:when>
 						<c:otherwise>
-							<span class="display-b btn-a v-active"><liferay-ui:message key="active" /></span>
+							<span class="btn-a display-b v-active"><liferay-ui:message key="active" /></span>
 						</c:otherwise>
 					</c:choose>
 				</liferay-ui:search-container-column-text>
