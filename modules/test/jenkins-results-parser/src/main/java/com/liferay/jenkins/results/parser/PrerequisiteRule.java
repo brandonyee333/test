@@ -14,8 +14,6 @@
 
 package com.liferay.jenkins.results.parser;
 
-import com.liferay.jenkins.results.parser.matcher.BuildMatcher;
-
 import java.util.ArrayList;
 import java.util.List;
 

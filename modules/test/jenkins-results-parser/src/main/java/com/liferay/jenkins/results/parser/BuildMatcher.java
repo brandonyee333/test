@@ -12,9 +12,7 @@
  * details.
  */
 
-package com.liferay.jenkins.results.parser.matcher;
-
-import com.liferay.jenkins.results.parser.Build;
+package com.liferay.jenkins.results.parser;
 
 import java.util.HashMap;
 import java.util.Map;

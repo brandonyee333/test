@@ -17,8 +17,6 @@ package com.liferay.jenkins.results.parser;
 import com.liferay.jenkins.results.parser.exception.EmptyElementTextException;
 import com.liferay.jenkins.results.parser.exception.MissingElementException;
 import com.liferay.jenkins.results.parser.exception.UnknownElementException;
-import com.liferay.jenkins.results.parser.matcher.AxisBuildMatcher;
-import com.liferay.jenkins.results.parser.matcher.BuildMatcher;
 
 import java.io.File;
 import java.io.IOException;
