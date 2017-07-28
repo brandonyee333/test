@@ -90,7 +90,7 @@ String footerText = GetterUtil.getString(portletPreferences.getValue("footerText
 						</select>
 					</p>
 
-					<a class="aui-helper-hidden btn" href="" id="<portlet:namespace />downloadLink"><liferay-ui:message key="download" /></a>
+					<a class="btn hide" href="javascript:;" id="<portlet:namespace />downloadLink"><liferay-ui:message key="download" /></a>
 				</div>
 			</c:if>
 		</div>

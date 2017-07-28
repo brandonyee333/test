@@ -25,7 +25,7 @@ String footerText = GetterUtil.getString(portletPreferences.getValue("footerText
 
 <liferay-portlet:actionURL portletConfiguration="true" var="actionURL" />
 
-<aui:form action="<%= actionURL %>" enctype="multipart/form-data" method="post" name="fm">
+<aui:form action="<%= actionURL %>">
 	<aui:input name="<%= Constants.CMD %>" type="hidden" value="<%= Constants.UPDATE %>" />
 
 	<liferay-ui:error exception="<%= ValidatorException.class %>">
@@ -80,7 +80,7 @@ String footerText = GetterUtil.getString(portletPreferences.getValue("footerText
 							</div>
 						</c:if>
 
-						<input class="lfr-input-text-container <%= Validator.isNull(fileName) ? "" : "aui-helper-hidden" %>" id="<portlet:namespace />file" name="<portlet:namespace />file" onChange="<portlet:namespace />uploadUpdate();" type="file" />
+						<input class="lfr-input-text-container <%= Validator.isNull(fileName) ? "" : "hide" %>" id="<portlet:namespace />file" name="<portlet:namespace />file" onChange="<portlet:namespace />uploadUpdate();" type="file" />
 					</div>
 				</div>
 
