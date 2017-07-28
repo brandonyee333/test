@@ -53,20 +53,18 @@ String redirect = ParamUtil.getString(request, "redirect");
 			<span class="field field-text">
 				<span class="unit w-110">
 					<span class="unit-content">
-						<label class="field-label" for="<portlet:namespace />emailAddress" id="<portlet:namespace />emailAddressLabel"><liferay-ui:message key="email-address" /><span class="field-required-label">*</span></label>
+						<label class="field-label" for="<portlet:namespace />emailAddress" id="<portlet:namespace />emailAddressLabel">
+							<liferay-ui:message key="email-address" /><span class="field-required-label">*</span>
+
+							<liferay-ui:icon-help
+								message="please-enter-a-valid-email-so-we-can-send-you-the-30-day-trial-license-key"
+							/>
+						</label>
 					</span>
 				</span>
 				<span class="unit">
 					<span class="unit-content">
 						<liferay-ui:input-field cssClass="field-input field-input-text fl" field="emailAddress" model="<%= User.class %>" />
-
-						<span class="fl" style="margin-left: 10px;">
-							<liferay-ui:icon
-								image="../messages/info"
-								label="<%= true %>"
-								message="please-enter-a-valid-email-so-we-can-send-you-the-30-day-trial-license-key"
-							/>
-						</span>
 					</span>
 				</span>
 			</span>
@@ -112,7 +110,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 
 				<div class="unit">
 					<div class="unit-content">
-						<liferay-ui:custom-attribute
+						<liferay-expando:custom-attribute
 							className="com.liferay.portal.kernel.model.User"
 							classPK="<%= 0 %>"
 							editable="<%= true %>"
@@ -133,7 +131,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 
 				<div class="unit">
 					<div class="unit-content">
-						<liferay-ui:custom-attribute
+						<liferay-expando:custom-attribute
 							className="com.liferay.portal.kernel.model.User"
 							classPK="<%= 0 %>"
 							editable="<%= true %>"
@@ -154,7 +152,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 
 				<div class="unit">
 					<div class="unit-content">
-						<liferay-ui:custom-attribute
+						<liferay-expando:custom-attribute
 							className="com.liferay.portal.kernel.model.User"
 							classPK="<%= 0 %>"
 							editable="<%= true %>"
@@ -175,7 +173,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 
 				<div class="unit">
 					<div class="unit-content">
-						<liferay-ui:custom-attribute
+						<liferay-expando:custom-attribute
 							className="com.liferay.portal.kernel.model.User"
 							classPK="<%= 0 %>"
 							editable="<%= true %>"
@@ -196,7 +194,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 
 				<div class="unit">
 					<div class="unit-content">
-						<liferay-ui:custom-attribute
+						<liferay-expando:custom-attribute
 							className="com.liferay.portal.kernel.model.User"
 							classPK="<%= 0 %>"
 							editable="<%= true %>"
@@ -268,7 +266,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 					<strong><liferay-ui:message key="liferay-may-send-me-email-regarding-the-following" />:</strong>
 
 					<div class="ctrl-holder">
-						<liferay-ui:custom-attribute
+						<liferay-expando:custom-attribute
 							className="com.liferay.portal.kernel.model.User"
 							classPK="<%= 0 %>"
 							editable="<%= true %>"
@@ -278,7 +276,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 					</div>
 
 					<div class="ctrl-holder">
-						<liferay-ui:custom-attribute
+						<liferay-expando:custom-attribute
 							className="com.liferay.portal.kernel.model.User"
 							classPK="<%= 0 %>"
 							editable="<%= true %>"
@@ -288,7 +286,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 					</div>
 
 					<div class="ctrl-holder">
-						<liferay-ui:custom-attribute
+						<liferay-expando:custom-attribute
 							className="com.liferay.portal.kernel.model.User"
 							classPK="<%= 0 %>"
 							editable="<%= true %>"
@@ -306,24 +304,32 @@ String redirect = ParamUtil.getString(request, "redirect");
 
 		<div class="field-group-grid">
 			<div class="unit">
-				<liferay-ui:input-field field="agreedToTermsOfUse" model="<%= User.class %>" /> <label id="<portlet:namespace />termsOfUseLabel"><liferay-ui:message key="i-understand-and-accept-the-terms-and-conditions-of-the-following-agreements" /></label>:
+				<liferay-ui:input-field field="agreedToTermsOfUse" model="<%= User.class %>" />
+					<label id="<portlet:namespace />termsOfUseLabel"><liferay-ui:message key="i-understand-and-accept-the-terms-and-conditions-of-the-following-agreements" /></label>:
 
-				<a class="txt-u" onClick="var eulaWindow = window.open('/c/portal/register_trial_license?eula=evaluation-license-agreement', 'eula', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=800'); void(''); eulaWindow.focus();">Evaluation License Agreement</a>,
-				<a class="txt-u" onClick="var eulaWindow = window.open('/c/portal/register_trial_license?eula=liferay-developer-studio', 'eula', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=800'); void(''); eulaWindow.focus();">EULA for Liferay Developer Studio</a>,
+					<a class="txt-u" onClick="var eulaWindow = window.open('/c/portal/register_trial_license?eula=evaluation-license-agreement', 'eula', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=800'); void(''); eulaWindow.focus();">
+						<liferay-ui:message key="evaluation-license-agreement" />
+					</a>,
 
-				<%
-				JournalArticle article = null;
+					<a class="txt-u" onClick="var eulaWindow = window.open('/c/portal/register_trial_license?eula=liferay-developer-studio', 'eula', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=800'); void(''); eulaWindow.focus();">
+						<liferay-ui:message key="eula-for-liferay-developer-studio" />
+					</a>,
 
-				try {
-					Group guestGroup = GroupLocalServiceUtil.getGroup(company.getCompanyId(), GroupConstants.GUEST);
+					<%
+					JournalArticle article = null;
 
-					article = JournalArticleLocalServiceUtil.getArticleByUrlTitle(guestGroup.getGroupId(), "about-us-privacy-policy-legal-text-");
-				}
-				catch (Exception e) {
-				}
-				%>
+					try {
+						Group guestGroup = GroupLocalServiceUtil.getGroup(company.getCompanyId(), GroupConstants.GUEST);
 
-				<a class="txt-u" onClick="var eulaWindow = window.open('/c/journal/view_article_content?groupId=<%= article.getGroupId() %>&articleId=<%= article.getArticleId() %>&version=<%= article.getVersion() %>', 'eula', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=800'); void(''); eulaWindow.focus();">Privacy Policy</a>
+						article = JournalArticleLocalServiceUtil.getArticleByUrlTitle(guestGroup.getGroupId(), "about-us-privacy-policy-legal-text");
+					}
+					catch (Exception e) {
+					}
+					%>
+
+					<a class="txt-u" onClick="var eulaWindow = window.open('/c/journal/view_article_content?groupId=<%= article.getGroupId() %>&articleId=<%= article.getArticleId() %>&version=<%= article.getVersion() %>', 'eula', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=800'); void(''); eulaWindow.focus();">
+						<liferay-ui:message key="privacy-policy" />
+					</a>
 			</div>
 		</div>
 
@@ -331,15 +337,11 @@ String redirect = ParamUtil.getString(request, "redirect");
 			<div class="unit">
 				<liferay-ui:input-checkbox param="agreedToContactTrialLicenses" />
 
-				<label id="<portlet:namespace />contactTrialLicensesLabel"><liferay-ui:message key="i-agree-to-allow-liferay-and-its-affiliates-to-contact-me-via-email-and-send-me-a-trial-license-key-to-my-email-address" /></label>
+				<label id="<portlet:namespace />contactTrialLicensesLabel">
+					<liferay-ui:message key="i-agree-to-allow-liferay-and-its-affiliates-to-contact-me-via-email-and-send-me-a-trial-license-key-to-my-email-address" />
+				</label>
 			</div>
 		</div>
-
-		<portlet:resourceURL var="captchaURL">
-			<portlet:param name="<%= CMDConstants.CMD %>" value="<%= CMDConstants.CAPTCHA %>" />
-		</portlet:resourceURL>
-
-		<liferay-ui:captcha url="<%= captchaURL %>" />
 	</fieldset>
 
 	<fieldset class="fieldset">
