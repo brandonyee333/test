@@ -19,6 +19,7 @@ import com.liferay.jenkins.results.parser.Build;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -104,8 +105,7 @@ public class BuildMatcher {
 	}
 
 	protected boolean jobNameMatches(Build build) {
-		java.util.regex.Matcher namePatternMatcher = jobNamePattern.matcher(
-			build.getJobName());
+		Matcher namePatternMatcher = jobNamePattern.matcher(build.getJobName());
 
 		if (!namePatternMatcher.find()) {
 			return false;
@@ -125,7 +125,7 @@ public class BuildMatcher {
 			for (Entry<String, String> parameterEntry : parameters.entrySet()) {
 				Pattern parameterNamePattern = patternEntry.getKey();
 
-				java.util.regex.Matcher parameterNamePatternMatcher =
+				Matcher parameterNamePatternMatcher =
 					parameterNamePattern.matcher(parameterEntry.getKey());
 
 				if (!parameterNamePatternMatcher.find()) {
@@ -134,7 +134,7 @@ public class BuildMatcher {
 
 				Pattern parameterValuePattern = patternEntry.getValue();
 
-				java.util.regex.Matcher parameterValuePatternMatcher =
+				Matcher parameterValuePatternMatcher =
 					parameterValuePattern.matcher(parameterEntry.getValue());
 
 				if (!parameterValuePatternMatcher.find()) {
@@ -161,15 +161,13 @@ public class BuildMatcher {
 			buildResult = "";
 		}
 
-		java.util.regex.Matcher resultMatcher = resultPattern.matcher(
-			buildResult);
+		Matcher resultMatcher = resultPattern.matcher(buildResult);
 
 		return resultMatcher.find();
 	}
 
 	protected boolean statusMatches(Build build) {
-		java.util.regex.Matcher statusMatcher = statusPattern.matcher(
-			build.getStatus());
+		Matcher statusMatcher = statusPattern.matcher(build.getStatus());
 
 		return statusMatcher.find();
 	}
