@@ -1,0 +1,75 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%@ page import="com.liferay.portal.kernel.search.BooleanQuery" %>
+<%@ page import="com.liferay.portal.kernel.search.BooleanQueryFactoryUtil" %>
+<%@ page import="com.liferay.portal.kernel.search.Hits" %>
+<%@ page import="com.liferay.portal.kernel.search.SearchContext" %>
+<%@ page import="com.liferay.portal.kernel.search.SearchEngineUtil" %>
+
+<%
+SearchContext searchContext = new SearchContext();
+
+searchContext.setCompanyId(company.getCompanyId());
+searchContext.setEnd(searchContainer.getEnd());
+searchContext.setStart(searchContainer.getStart());
+
+BooleanQuery fullQuery = BooleanQueryFactoryUtil.create(searchContext);
+
+fullQuery.addRequiredTerm(Field.ENTRY_CLASS_NAME, WorkflowTask.class.getName());
+
+if (Validator.isNotNull(accountEntryCode)) {
+	if (accountEntryCode.startsWith(StringPool.QUOTE) && accountEntryCode.endsWith(StringPool.QUOTE)) {
+		fullQuery.addRequiredTerm("projectCode", StringUtil.unquote(accountEntryCode), false);
+	}
+	else {
+		fullQuery.addRequiredTerm("projectCode", accountEntryCode, true);
+	}
+}
+
+if (Validator.isNotNull(accountEntryName)) {
+	fullQuery.addRequiredTerm("projectName", accountEntryName, true);
+}
+
+if (Validator.isNotNull(assigneeClassName)) {
+	fullQuery.addRequiredTerm("assigneeClassName", assigneeClassName);
+
+	if (assigneeClassName.equals(Role.class.getName())) {
+		if (role != null) {
+			fullQuery.addRequiredTerm("assigneeClassPK", role.getRoleId());
+		}
+
+	}
+	else if (assigneeClassName.equals(User.class.getName())) {
+		if (searchUser != null) {
+			fullQuery.addRequiredTerm("assigneeClassPK", searchUser.getUserId());
+		}
+	}
+}
+
+if (completed != null) {
+	fullQuery.addRequiredTerm("completed", completed);
+}
+
+if (salesforceOpportunityType > 0) {
+	fullQuery.addRequiredTerm("salesforceOpportunityType", salesforceOpportunityType);
+}
+
+Hits hits = SearchEngineUtil.search(searchContext, fullQuery);
+
+pageContext.setAttribute("results", hits.toList());
+pageContext.setAttribute("total", hits.getLength());
+%>
