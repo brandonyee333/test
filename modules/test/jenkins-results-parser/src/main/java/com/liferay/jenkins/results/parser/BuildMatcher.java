@@ -14,7 +14,10 @@
 
 package com.liferay.jenkins.results.parser;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
@@ -30,6 +33,22 @@ public class BuildMatcher {
 
 		parameterNameValuePatterns.put(
 			parameterNamePattern, parameterValuePattern);
+	}
+
+	public List<Build> getMatchingBuilds(List<Build> builds) {
+		if (builds == null) {
+			return Collections.emptyList();
+		}
+
+		List<Build> matchingBuilds = new ArrayList<>(builds.size());
+
+		for (Build build : builds) {
+			if (matches(build)) {
+				matchingBuilds.add(build);
+			}
+		}
+
+		return matchingBuilds;
 	}
 
 	public boolean matches(Build build) {

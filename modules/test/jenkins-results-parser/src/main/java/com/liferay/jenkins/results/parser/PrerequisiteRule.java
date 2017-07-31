@@ -14,7 +14,6 @@
 
 package com.liferay.jenkins.results.parser;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,7 +34,7 @@ public class PrerequisiteRule {
 	}
 
 	public List<Build> getApplicableBuilds(List<Build> builds) {
-		return getMatchingBuilds(builds, assignMatcher);
+		return assignMatcher.getMatchingBuilds(builds);
 	}
 
 	public String getDescription() {
@@ -43,7 +42,7 @@ public class PrerequisiteRule {
 	}
 
 	public List<Build> getPrerequisiteBuilds(List<Build> builds) {
-		return getMatchingBuilds(builds, prerequisiteMatcher);
+		return prerequisiteMatcher.getMatchingBuilds(builds);
 	}
 
 	public Status getStatus(List<Build> prerequisiteBuilds) {
@@ -74,20 +73,6 @@ public class PrerequisiteRule {
 
 		DISCARD, PENDING, INVOKE
 	};
-
-	protected static List<Build> getMatchingBuilds(
-		List<Build> builds, BuildMatcher buildMatcher) {
-
-		List<Build> matchingBuilds = new ArrayList<>();
-
-		for (Build build : builds) {
-			if (buildMatcher.matches(build)) {
-				matchingBuilds.add(build);
-			}
-		}
-
-		return matchingBuilds;
-	}
 
 	protected BuildMatcher assignMatcher;
 	protected String description;
