@@ -33,7 +33,7 @@ public class AxisBuildMatcher extends BuildMatcher {
 		}
 
 		if (axisNumberPattern != null) {
-			if (!axisNumberPatternMatches((AxisBuild)build)) {
+			if (!matchesAxisNumberPattern((AxisBuild)build)) {
 				return false;
 			}
 		}
@@ -49,7 +49,7 @@ public class AxisBuildMatcher extends BuildMatcher {
 	public void setBuildType(Class<? extends Build> clazz) {
 	}
 
-	protected boolean axisNumberPatternMatches(AxisBuild axisBuild) {
+	protected boolean matchesAxisNumberPattern(AxisBuild axisBuild) {
 		Matcher axisNumberMatcher = axisNumberPattern.matcher(
 			axisBuild.getAxisNumber());
 

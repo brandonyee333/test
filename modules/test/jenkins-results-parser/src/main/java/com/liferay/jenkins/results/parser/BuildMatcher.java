@@ -34,35 +34,35 @@ public class BuildMatcher {
 
 	public boolean matches(Build build) {
 		if (clazz != null) {
-			if (!classMatches(build)) {
+			if (!matchesClass(build)) {
 				return false;
 			}
 		}
 
 		if (checkHasDownstreamBuilds) {
-			if (!hasDownstreamBuildsMatches(build)) {
+			if (!matchesHasDownstreamBuilds(build)) {
 				return false;
 			}
 		}
 
 		if (jobNamePattern != null) {
-			if (!jobNameMatches(build)) {
+			if (!matchesJobName(build)) {
 				return false;
 			}
 		}
 
-		if (!parameterNameValueMatches(build)) {
+		if (!matchesParameterNameValues(build)) {
 			return false;
 		}
 
 		if (resultPattern != null) {
-			if (!resultMatches(build)) {
+			if (!matchesResult(build)) {
 				return false;
 			}
 		}
 
 		if (statusPattern != null) {
-			if (!statusMatches(build)) {
+			if (!matchesStatus(build)) {
 				return false;
 			}
 		}
@@ -90,11 +90,11 @@ public class BuildMatcher {
 		this.statusPattern = statusPattern;
 	}
 
-	protected boolean classMatches(Build build) {
+	protected boolean matchesClass(Build build) {
 		return clazz.isInstance(build);
 	}
 
-	protected boolean hasDownstreamBuildsMatches(Build build) {
+	protected boolean matchesHasDownstreamBuilds(Build build) {
 		if (build.getDownstreamBuildCount(null) > 0) {
 			return true;
 		}
@@ -102,7 +102,7 @@ public class BuildMatcher {
 		return false;
 	}
 
-	protected boolean jobNameMatches(Build build) {
+	protected boolean matchesJobName(Build build) {
 		Matcher namePatternMatcher = jobNamePattern.matcher(build.getJobName());
 
 		if (!namePatternMatcher.find()) {
@@ -112,7 +112,7 @@ public class BuildMatcher {
 		return true;
 	}
 
-	protected boolean parameterNameValueMatches(Build build) {
+	protected boolean matchesParameterNameValues(Build build) {
 		for (Entry<Pattern, Pattern> patternEntry :
 				parameterNameValuePatterns.entrySet()) {
 
@@ -152,7 +152,7 @@ public class BuildMatcher {
 		return true;
 	}
 
-	protected boolean resultMatches(Build build) {
+	protected boolean matchesResult(Build build) {
 		String buildResult = build.getResult();
 
 		if (buildResult == null) {
@@ -164,7 +164,7 @@ public class BuildMatcher {
 		return resultMatcher.find();
 	}
 
-	protected boolean statusMatches(Build build) {
+	protected boolean matchesStatus(Build build) {
 		Matcher statusMatcher = statusPattern.matcher(build.getStatus());
 
 		return statusMatcher.find();
