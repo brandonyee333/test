@@ -14,7 +14,7 @@
 
 package com.liferay.jenkins.results.parser;
 
-import com.liferay.jenkins.results.parser.PrerequisiteRule.Status;
+import com.liferay.jenkins.results.parser.PrerequisiteRule.PrerequisiteStatus;
 import com.liferay.jenkins.results.parser.failure.message.generator.FailureMessageGenerator;
 import com.liferay.jenkins.results.parser.failure.message.generator.GenericFailureMessageGenerator;
 
@@ -141,15 +141,15 @@ public abstract class BaseBuild implements Build {
 
 	@Override
 	public void evaluate() {
-		Status prerequisiteStatus = getPrerequisitesStatus();
+		PrerequisiteStatus prerequisiteStatus = getPrerequisitesStatus();
 
 		String status = getStatus();
 
 		if (status.equals("pending")) {
-			if (prerequisiteStatus.equals(Status.INVOKE)) {
+			if (prerequisiteStatus.equals(PrerequisiteStatus.INVOKE)) {
 				invoke();
 			}
-			else if (prerequisiteStatus.equals(Status.DISCARD)) {
+			else if (prerequisiteStatus.equals(PrerequisiteStatus.DISCARD)) {
 				discard();
 			}
 		}
@@ -1809,7 +1809,7 @@ public abstract class BaseBuild implements Build {
 		return prerequisites;
 	}
 
-	protected Status getPrerequisitesStatus() {
+	protected PrerequisiteStatus getPrerequisitesStatus() {
 		TopLevelBuild topLevelBuild = getTopLevelBuild();
 
 		Map<PrerequisiteRule, List<Build>> prerequisites = getPrerequisites(
@@ -1820,17 +1820,17 @@ public abstract class BaseBuild implements Build {
 
 			PrerequisiteRule prerequisiteRule = entry.getKey();
 
-			Status prerequisiteRuleStatus = prerequisiteRule.getStatus(
-				entry.getValue());
+			PrerequisiteStatus prerequisiteRuleStatus =
+				prerequisiteRule.getPrerequisiteStatus(entry.getValue());
 
-			if ((prerequisiteRuleStatus == Status.DISCARD) ||
-				(prerequisiteRuleStatus == Status.INVOKE)) {
+			if ((prerequisiteRuleStatus == PrerequisiteStatus.DISCARD) ||
+				(prerequisiteRuleStatus == PrerequisiteStatus.INVOKE)) {
 
 				return prerequisiteRuleStatus;
 			}
 		}
 
-		return Status.PENDING;
+		return PrerequisiteStatus.PENDING;
 	}
 
 	protected JSONObject getQueueItemJSONObject() throws IOException {
