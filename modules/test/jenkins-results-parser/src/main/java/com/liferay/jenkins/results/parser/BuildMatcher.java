@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
  */
 public class BuildMatcher {
 
-	public void addParameterNameValuePatterns(
+	public void addParameterPatterns(
 		Pattern parameterNamePattern, Pattern parameterValuePattern) {
 
 		parameterNameValuePatterns.put(
@@ -51,7 +51,7 @@ public class BuildMatcher {
 			}
 		}
 
-		if (!matchesParameterNameValues(build)) {
+		if (!matchesParameters(build)) {
 			return false;
 		}
 
@@ -112,7 +112,7 @@ public class BuildMatcher {
 		return true;
 	}
 
-	protected boolean matchesParameterNameValues(Build build) {
+	protected boolean matchesParameters(Build build) {
 		for (Entry<Pattern, Pattern> patternEntry :
 				parameterNameValuePatterns.entrySet()) {
 

@@ -161,7 +161,7 @@ public class PrerequisiteRulesParser {
 				Pattern parameterValuePattern = parseTextElement(
 					parameterValueElement);
 
-				buildMatcher.addParameterNameValuePatterns(
+				buildMatcher.addParameterPatterns(
 					parameterNamePattern, parameterValuePattern);
 			}
 			else if (elementName.equals("has-downstream-jobs") &&
