@@ -14,7 +14,6 @@
 
 package com.liferay.jenkins.results.parser;
 
-import com.liferay.jenkins.results.parser.PrerequisiteRule.PrerequisiteStatus;
 import com.liferay.jenkins.results.parser.failure.message.generator.FailureMessageGenerator;
 import com.liferay.jenkins.results.parser.failure.message.generator.GenericFailureMessageGenerator;
 
@@ -141,15 +140,20 @@ public abstract class BaseBuild implements Build {
 
 	@Override
 	public void evaluate() {
-		PrerequisiteStatus prerequisiteStatus = getPrerequisitesStatus();
+		BaseBuild.PrerequisiteStatus prerequisiteStatus =
+			getPrerequisitesStatus();
 
 		String status = getStatus();
 
 		if (status.equals("pending")) {
-			if (prerequisiteStatus.equals(PrerequisiteStatus.INVOKE)) {
+			if (prerequisiteStatus.equals(
+					BaseBuild.PrerequisiteStatus.INVOKE)) {
+
 				invoke();
 			}
-			else if (prerequisiteStatus.equals(PrerequisiteStatus.DISCARD)) {
+			else if (prerequisiteStatus.equals(
+						BaseBuild.PrerequisiteStatus.DISCARD)) {
+
 				discard();
 			}
 		}
@@ -1820,13 +1824,34 @@ public abstract class BaseBuild implements Build {
 
 			PrerequisiteRule prerequisiteRule = entry.getKey();
 
-			PrerequisiteStatus prerequisiteRuleStatus =
-				prerequisiteRule.getPrerequisiteStatus(entry.getValue());
+			PrerequisiteStatus prerequisiteRuleStatus = getPrerequisiteStatus(
+				entry.getValue(), prerequisiteRule);
 
 			if ((prerequisiteRuleStatus == PrerequisiteStatus.DISCARD) ||
 				(prerequisiteRuleStatus == PrerequisiteStatus.INVOKE)) {
 
 				return prerequisiteRuleStatus;
+			}
+		}
+
+		return PrerequisiteStatus.PENDING;
+	}
+
+	protected PrerequisiteStatus getPrerequisiteStatus(
+		List<Build> prerequisiteBuilds, PrerequisiteRule prerequisiteRule) {
+
+		BuildMatcher discardMatcher = prerequisiteRule.discardMatcher;
+		BuildMatcher invokeMatcher = prerequisiteRule.invokeMatcher;
+
+		for (Build prerequisiteBuild : prerequisiteBuilds) {
+			if (invokeMatcher.matches(prerequisiteBuild)) {
+				return PrerequisiteStatus.INVOKE;
+			}
+
+			if ((discardMatcher != null) &&
+				discardMatcher.matches(prerequisiteBuild)) {
+
+				return PrerequisiteStatus.DISCARD;
 			}
 		}
 
@@ -2254,6 +2279,11 @@ public abstract class BaseBuild implements Build {
 	protected String result;
 	protected long statusModifiedTime;
 	protected Element upstreamJobFailureMessageElement;
+
+	protected enum PrerequisiteStatus {
+
+		DISCARD, PENDING, INVOKE
+	}
 
 	private static final FailureMessageGenerator[] _FAILURE_MESSAGE_GENERATORS =
 		{
