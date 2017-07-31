@@ -67,7 +67,7 @@ public class PrerequisiteRule {
 		return invokeMatcher.matches(build);
 	}
 
-	public enum State {
+	public enum Status {
 
 		DISCARD("discard"), PENDING("pending"), INVOKE("invoke");
 
@@ -76,7 +76,7 @@ public class PrerequisiteRule {
 			return _status;
 		}
 
-		private State(String status) {
+		private Status(String status) {
 			_status = status;
 		}
 

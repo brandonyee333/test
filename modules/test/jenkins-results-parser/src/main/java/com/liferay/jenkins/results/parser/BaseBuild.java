@@ -140,15 +140,15 @@ public abstract class BaseBuild implements Build {
 
 	@Override
 	public void evaluate() {
-		PrerequisiteRule.State prerequisiteState = getPrerequisitesState(this);
+		PrerequisiteRule.Status prerequisiteStatus = getPrerequisitesState(this);
 
 		String status = getStatus();
 
 		if (status.equals("pending")) {
-			if (prerequisiteState.equals(PrerequisiteRule.State.INVOKE)) {
+			if (prerequisiteStatus.equals(PrerequisiteRule.Status.INVOKE)) {
 				invoke();
 			}
-			else if (prerequisiteState.equals(PrerequisiteRule.State.DISCARD)) {
+			else if (prerequisiteStatus.equals(PrerequisiteRule.Status.DISCARD)) {
 				discard();
 			}
 		}
@@ -1811,30 +1811,30 @@ public abstract class BaseBuild implements Build {
 		return prerequisites;
 	}
 
-	protected PrerequisiteRule.State getPrerequisitesState(Build build) {
+	protected PrerequisiteRule.Status getPrerequisitesState(Build build) {
 		TopLevelBuild topLevelBuild = build.getTopLevelBuild();
 
 		Map<Build, PrerequisiteRule> prerequisites = getPrerequisites(
 			build, BuildUtil.getAllBuilds(topLevelBuild));
 
-		PrerequisiteRule.State state = PrerequisiteRule.State.INVOKE;
+		PrerequisiteRule.Status status = PrerequisiteRule.Status.INVOKE;
 
 		for (Build prerequisiteBuild : prerequisites.keySet()) {
 			PrerequisiteRule prerequisiteRule = prerequisites.get(
 				prerequisiteBuild);
 
 			if (prerequisiteRule.shouldDiscard(prerequisiteBuild)) {
-				return PrerequisiteRule.State.DISCARD;
+				return PrerequisiteRule.Status.DISCARD;
 			}
 
 			if (!prerequisiteRule.shouldDiscard(prerequisiteBuild) &&
 				!prerequisiteRule.shouldInvoke(prerequisiteBuild)) {
 
-				state = PrerequisiteRule.State.PENDING;
+				status = PrerequisiteRule.Status.PENDING;
 			}
 		}
 
-		return state;
+		return status;
 	}
 
 	protected JSONObject getQueueItemJSONObject() throws IOException {
