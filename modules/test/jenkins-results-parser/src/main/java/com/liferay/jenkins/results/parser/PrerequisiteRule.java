@@ -46,6 +46,22 @@ public class PrerequisiteRule {
 		return getMatchingBuilds(builds, prerequisiteMatcher);
 	}
 
+	public Status getStatus(List<Build> prerequisiteBuilds) {
+		for (Build prerequisiteBuild : prerequisiteBuilds) {
+			if (invokeMatcher.matches(prerequisiteBuild)) {
+				return Status.INVOKE;
+			}
+
+			if ((discardMatcher != null) &&
+				discardMatcher.matches(prerequisiteBuild)) {
+
+				return Status.DISCARD;
+			}
+		}
+
+		return Status.PENDING;
+	}
+
 	public boolean isApplicable(Build build) {
 		return assignMatcher.matches(build);
 	}
@@ -54,35 +70,10 @@ public class PrerequisiteRule {
 		return prerequisiteMatcher.matches(build);
 	}
 
-	public boolean shouldDiscard(Build build) {
-		if (discardMatcher != null) {
-			return discardMatcher.matches(build);
-		}
-		else {
-			return false;
-		}
-	}
-
-	public boolean shouldInvoke(Build build) {
-		return invokeMatcher.matches(build);
-	}
-
 	public enum Status {
 
-		DISCARD("discard"), PENDING("pending"), INVOKE("invoke");
-
-		@Override
-		public String toString() {
-			return _status;
-		}
-
-		private Status(String status) {
-			_status = status;
-		}
-
-		private final String _status;
-
-	}
+		DISCARD, PENDING, INVOKE
+	};
 
 	protected static List<Build> getMatchingBuilds(
 		List<Build> builds, BuildMatcher buildMatcher) {

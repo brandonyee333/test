@@ -14,6 +14,7 @@
 
 package com.liferay.jenkins.results.parser;
 
+import com.liferay.jenkins.results.parser.PrerequisiteRule.Status;
 import com.liferay.jenkins.results.parser.failure.message.generator.FailureMessageGenerator;
 import com.liferay.jenkins.results.parser.failure.message.generator.GenericFailureMessageGenerator;
 
@@ -140,15 +141,15 @@ public abstract class BaseBuild implements Build {
 
 	@Override
 	public void evaluate() {
-		PrerequisiteRule.Status prerequisiteStatus = getPrerequisitesState(this);
+		Status prerequisiteStatus = getPrerequisitesStatus();
 
 		String status = getStatus();
 
 		if (status.equals("pending")) {
-			if (prerequisiteStatus.equals(PrerequisiteRule.Status.INVOKE)) {
+			if (prerequisiteStatus.equals(Status.INVOKE)) {
 				invoke();
 			}
-			else if (prerequisiteStatus.equals(PrerequisiteRule.Status.DISCARD)) {
+			else if (prerequisiteStatus.equals(Status.DISCARD)) {
 				discard();
 			}
 		}
@@ -1792,49 +1793,44 @@ public abstract class BaseBuild implements Build {
 		return new HashMap<>();
 	}
 
-	protected Map<Build, PrerequisiteRule> getPrerequisites(
-		Build build, List<Build> allBuilds) {
+	protected Map<PrerequisiteRule, List<Build>> getPrerequisites(
+		List<Build> allBuilds) {
 
-		Map<Build, PrerequisiteRule> prerequisites = new HashMap<>();
+		Map<PrerequisiteRule, List<Build>> prerequisites = new HashMap<>();
 
 		for (PrerequisiteRule prerequisiteRule : prerequisiteRules) {
-			if (prerequisiteRule.isApplicable(build)) {
-				List<Build> prerequisiteBuilds =
-					prerequisiteRule.getPrerequisiteBuilds(allBuilds);
-
-				for (Build prerequisiteBuild : prerequisiteBuilds) {
-					prerequisites.put(prerequisiteBuild, prerequisiteRule);
-				}
+			if (prerequisiteRule.isApplicable(this)) {
+				prerequisites.put(
+					prerequisiteRule,
+					prerequisiteRule.getPrerequisiteBuilds(allBuilds));
 			}
 		}
 
 		return prerequisites;
 	}
 
-	protected PrerequisiteRule.Status getPrerequisitesState(Build build) {
-		TopLevelBuild topLevelBuild = build.getTopLevelBuild();
+	protected Status getPrerequisitesStatus() {
+		TopLevelBuild topLevelBuild = getTopLevelBuild();
 
-		Map<Build, PrerequisiteRule> prerequisites = getPrerequisites(
-			build, BuildUtil.getAllBuilds(topLevelBuild));
+		Map<PrerequisiteRule, List<Build>> prerequisites = getPrerequisites(
+			BuildUtil.getAllBuilds(topLevelBuild));
 
-		PrerequisiteRule.Status status = PrerequisiteRule.Status.INVOKE;
+		for (Map.Entry<PrerequisiteRule, List<Build>> entry :
+				prerequisites.entrySet()) {
 
-		for (Build prerequisiteBuild : prerequisites.keySet()) {
-			PrerequisiteRule prerequisiteRule = prerequisites.get(
-				prerequisiteBuild);
+			PrerequisiteRule prerequisiteRule = entry.getKey();
 
-			if (prerequisiteRule.shouldDiscard(prerequisiteBuild)) {
-				return PrerequisiteRule.Status.DISCARD;
-			}
+			Status prerequisiteRuleStatus = prerequisiteRule.getStatus(
+				entry.getValue());
 
-			if (!prerequisiteRule.shouldDiscard(prerequisiteBuild) &&
-				!prerequisiteRule.shouldInvoke(prerequisiteBuild)) {
+			if ((prerequisiteRuleStatus == Status.DISCARD) ||
+				(prerequisiteRuleStatus == Status.INVOKE)) {
 
-				status = PrerequisiteRule.Status.PENDING;
+				return prerequisiteRuleStatus;
 			}
 		}
 
-		return status;
+		return Status.PENDING;
 	}
 
 	protected JSONObject getQueueItemJSONObject() throws IOException {
