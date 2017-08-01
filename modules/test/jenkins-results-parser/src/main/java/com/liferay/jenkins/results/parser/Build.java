@@ -27,11 +27,11 @@ import org.json.JSONObject;
  */
 public interface Build extends BuildEventListener {
 
+	public void addBuildEventListener(BuildEventListener buildEventListener);
+
 	public void addDownstreamBuilds(String... urls);
 
 	public void archive(String archiveName);
-
-	public void deregister(BuildEventListener buildEventListener);
 
 	public void discard();
 
@@ -125,11 +125,11 @@ public interface Build extends BuildEventListener {
 
 	public void invoke();
 
-	public void register(BuildEventListener buildEventListener);
-
 	public void reinvoke();
 
 	public void reinvoke(ReinvokeRule reinvokeRule);
+
+	public void removeBuildEventListener(BuildEventListener buildEventListener);
 
 	public String replaceBuildURL(String text);
 

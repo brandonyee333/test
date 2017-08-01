@@ -49,6 +49,11 @@ import org.json.JSONObject;
 public abstract class BaseBuild implements Build {
 
 	@Override
+	public void addBuildEventListener(BuildEventListener buildEventListener) {
+		buildEventListeners.add(buildEventListener);
+	}
+
+	@Override
 	public void addDownstreamBuilds(String... urls) {
 		for (String url : urls) {
 			try {
@@ -126,11 +131,6 @@ public abstract class BaseBuild implements Build {
 
 		archiveConsoleLog();
 		archiveJSON();
-	}
-
-	@Override
-	public void deregister(BuildEventListener buildEventListener) {
-		buildEventListeners.remove(buildEventListener);
 	}
 
 	@Override
@@ -908,11 +908,6 @@ public abstract class BaseBuild implements Build {
 	}
 
 	@Override
-	public void register(BuildEventListener buildEventListener) {
-		buildEventListeners.add(buildEventListener);
-	}
-
-	@Override
 	public void reinvoke() {
 		reinvoke(null);
 	}
@@ -975,6 +970,13 @@ public abstract class BaseBuild implements Build {
 		System.out.println(getReinvokedMessage());
 
 		reset();
+	}
+
+	@Override
+	public void removeBuildEventListener(
+		BuildEventListener buildEventListener) {
+
+		buildEventListeners.remove(buildEventListener);
 	}
 
 	@Override
@@ -1143,7 +1145,7 @@ public abstract class BaseBuild implements Build {
 			this, BuildUtil.getAllBuilds(getTopLevelBuild()));
 
 		for (Build build : applicableBuilds) {
-			register(build);
+			addBuildEventListener(build);
 		}
 
 		for (Build downstreamBuild : getDownstreamBuilds(null)) {
