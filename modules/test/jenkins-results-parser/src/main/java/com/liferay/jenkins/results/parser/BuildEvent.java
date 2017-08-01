@@ -14,6 +14,9 @@
 
 package com.liferay.jenkins.results.parser;
 
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+
 /**
  * @author Kevin Yen
  */
@@ -51,12 +54,13 @@ public class BuildEvent {
 		sb.append(getNewStatus());
 		sb.append(") ");
 
-		if (_build.getBuildURL() != null) {
+		String buildURL = _build.getBuildURL();
+
+		if (buildURL != null) {
 			try {
-				sb.append(
-					JenkinsResultsParserUtil.encode(_build.getBuildURL()));
+				sb.append(JenkinsResultsParserUtil.encode(buildURL));
 			}
-			catch (Exception e) {
+			catch (MalformedURLException | URISyntaxException e) {
 				throw new RuntimeException(e);
 			}
 		}
