@@ -64,10 +64,10 @@ if (availableLocales.length > 1) {
 
 	<c:choose>
 		<c:when test="<%= textarea %>">
-			<aui:input cssClass="localized-input-field" disabled="<%= disabled %>" label="" name="<%= name %>" type="textarea" value="<%= LocalizationUtil.getLocalization(value, currentLocale.toString(), true) %>" />
+			<aui:input cssClass="localized-input-field" disabled="<%= disabled %>" name="<%= name %>" type="textarea" value="<%= LocalizationUtil.getLocalization(value, currentLocale.toString(), true) %>" />
 		</c:when>
 		<c:otherwise>
-			<aui:input cssClass="localized-input-field" disabled="<%= disabled %>" label="" name="<%= name %>" type="text" value="<%= LocalizationUtil.getLocalization(value, currentLocale.toString(), true) %>" />
+			<aui:input cssClass="localized-input-field" disabled="<%= disabled %>" name="<%= name %>" type="text" value="<%= LocalizationUtil.getLocalization(value, currentLocale.toString(), true) %>" />
 		</c:otherwise>
 	</c:choose>
 
@@ -95,7 +95,6 @@ if (availableLocales.length > 1) {
 
 		<span class="lfr-translation-manager-add-menu">
 			<liferay-ui:icon-menu
-				align="left"
 				cssClass="add-translations-menu"
 				direction="down"
 				disabled="<%= disabled %>"
@@ -112,7 +111,7 @@ if (availableLocales.length > 1) {
 					String cssClassName = "language-id-" + languageId;
 
 					if (ArrayUtil.contains(availableLocales, languageId)) {
-						cssClassName += " aui-helper-hidden";
+						cssClassName += " hide";
 					}
 				%>
 
@@ -120,7 +119,7 @@ if (availableLocales.length > 1) {
 						cssClass="<%= cssClassName %>"
 						image='<%= "../language/" + languageId %>'
 						message="<%= curLocale.getDisplayName(locale) %>"
-						url="javascript:;"
+						onClick="javascript:;"
 					/>
 
 				<%
@@ -142,7 +141,7 @@ if (availableLocales.length > 1) {
 				String cssClassName = "lfr-token language-id-" + languageId;
 
 				if (!ArrayUtil.contains(availableLocales, languageId)) {
-					cssClassName += " aui-helper-hidden";
+					cssClassName += " hide";
 				}
 			%>
 
