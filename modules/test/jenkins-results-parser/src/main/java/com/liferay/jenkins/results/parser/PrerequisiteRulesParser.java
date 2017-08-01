@@ -53,44 +53,31 @@ public class PrerequisiteRulesParser {
 				description = ruleElement.attributeValue("description");
 			}
 
-			Element assignElement = ruleElement.element("assign");
+			Element assignElement = getRequiredChildElement(
+				"assign", ruleElement);
 
-			if (assignElement == null) {
-				throw new MissingElementException("assign");
-			}
+			BuildMatcher assignMatcher = parseJobElement(
+				getRequiredChildElement("job", assignElement));
 
-			Element jobElement = assignElement.element("job");
+			Element prerequisiteElement = getRequiredChildElement(
+				"prerequisite", ruleElement);
 
-			BuildMatcher assignMatcher = parseJobElement(jobElement);
+			BuildMatcher prerequisiteMatcher = parseJobElement(
+				getRequiredChildElement("job", prerequisiteElement));
 
-			Element prerequisiteElement = ruleElement.element("prerequisite");
+			Element invokeElement = getRequiredChildElement(
+				"invoke", ruleElement);
 
-			if (prerequisiteElement == null) {
-				throw new MissingElementException("prerequisite");
-			}
-
-			jobElement = prerequisiteElement.element("job");
-
-			BuildMatcher prerequisiteMatcher = parseJobElement(jobElement);
-
-			Element invokeElement = ruleElement.element("invoke");
-
-			if (invokeElement == null) {
-				throw new MissingElementException("invoke");
-			}
-
-			jobElement = invokeElement.element("job");
-
-			BuildMatcher invokeMatcher = parseJobElement(jobElement);
+			BuildMatcher invokeMatcher = parseJobElement(
+				getRequiredChildElement("job", invokeElement));
 
 			Element discardElement = ruleElement.element("discard");
 
 			BuildMatcher discardBuildMatcher = null;
 
 			if (discardElement != null) {
-				jobElement = discardElement.element("job");
-
-				discardBuildMatcher = parseJobElement(jobElement);
+				discardBuildMatcher = parseJobElement(
+					getRequiredChildElement("job", discardElement));
 			}
 
 			prerequisiteRules.add(
@@ -143,23 +130,11 @@ public class PrerequisiteRulesParser {
 				buildMatcher.setResultPattern(resultPattern);
 			}
 			else if (elementName.equals("parameter")) {
-				Element parameterNameElement = element.element("name");
-
-				if (parameterNameElement == null) {
-					throw new MissingElementException("name");
-				}
-
 				Pattern parameterNamePattern = parseTextElement(
-					parameterNameElement);
-
-				Element parameterValueElement = element.element("value");
-
-				if (parameterValueElement == null) {
-					throw new MissingElementException("value");
-				}
+					getRequiredChildElement("name", element));
 
 				Pattern parameterValuePattern = parseTextElement(
-					parameterValueElement);
+					getRequiredChildElement("value", element));
 
 				buildMatcher.addParameterPatterns(
 					parameterNamePattern, parameterValuePattern);
@@ -238,6 +213,19 @@ public class PrerequisiteRulesParser {
 		}
 
 		return Pattern.compile(sb.toString());
+	}
+
+	protected static Element getRequiredChildElement(
+			String childElementName, Element parentElement)
+		throws MissingElementException {
+
+		Element childElement = parentElement.element(childElementName);
+
+		if (childElement == null) {
+			throw new MissingElementException(childElementName);
+		}
+
+		return childElement;
 	}
 
 }
