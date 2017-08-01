@@ -139,31 +139,6 @@ public abstract class BaseBuild implements Build {
 	}
 
 	@Override
-	public void evaluate() {
-		BaseBuild.PrerequisiteStatus prerequisiteStatus =
-			getPrerequisitesStatus();
-
-		String status = getStatus();
-
-		if (status.equals("pending")) {
-			if (prerequisiteStatus.equals(
-					BaseBuild.PrerequisiteStatus.INVOKE)) {
-
-				invoke();
-			}
-			else if (prerequisiteStatus.equals(
-						BaseBuild.PrerequisiteStatus.DISCARD)) {
-
-				discard();
-			}
-		}
-
-		for (Build build : getDownstreamBuilds("pending")) {
-			build.evaluate();
-		}
-	}
-
-	@Override
 	public String getAppServer() {
 		return null;
 	}
@@ -908,6 +883,31 @@ public abstract class BaseBuild implements Build {
 	}
 
 	@Override
+	public void onBuildEvent(BuildEvent buildEvent) {
+		String status = getStatus();
+
+		if (status.equals("pending")) {
+			BaseBuild.PrerequisiteStatus prerequisitesStatus =
+				getPrerequisitesStatus();
+
+			switch (prerequisitesStatus) {
+				case INVOKE:
+					invoke();
+
+					break;
+
+				case DISCARD:
+					discard();
+
+					break;
+
+				default:
+					break;
+			}
+		}
+	}
+
+	@Override
 	public void register(BuildEventListener buildEventListener) {
 		buildEventListeners.add(buildEventListener);
 	}
@@ -1143,10 +1143,7 @@ public abstract class BaseBuild implements Build {
 			this, BuildUtil.getAllBuilds(getTopLevelBuild()));
 
 		for (Build build : applicableBuilds) {
-			BuildTriggerEventListener buildTriggerEventListener =
-				new BuildTriggerEventListener(build);
-
-			register(buildTriggerEventListener);
+			register(build);
 		}
 
 		for (Build downstreamBuild : getDownstreamBuilds(null)) {
