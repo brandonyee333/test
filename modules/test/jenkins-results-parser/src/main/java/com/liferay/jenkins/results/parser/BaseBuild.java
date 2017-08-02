@@ -687,7 +687,7 @@ public abstract class BaseBuild implements Build {
 		String status = getStatus();
 
 		if (status.equals("discarded")) {
-			sb.append(" was discarded because its prerequisite build failed.");
+			sb.append(" was discarded.");
 
 			return sb.toString();
 		}
