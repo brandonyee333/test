@@ -14,6 +14,8 @@
 
 package com.liferay.jenkins.results.parser.exception;
 
+import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+
 import org.dom4j.Element;
 
 /**
@@ -30,7 +32,8 @@ public class EmptyElementTextException extends RuntimeException {
 	}
 
 	private static String _generateMessage(Element element) {
-		return "Text field of element '" + element.getName() + "' is empty";
+		return JenkinsResultsParserUtil.combine(
+			"Text field of element ", element.getName(), " is empty");
 	}
 
 }

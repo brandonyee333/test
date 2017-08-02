@@ -28,7 +28,7 @@ public class MissingElementException extends RuntimeException {
 	}
 
 	private static String _generateMessage(String elementName) {
-		return "Missing required element '" + elementName + "'";
+		return "Missing required element " + elementName;
 	}
 
 }

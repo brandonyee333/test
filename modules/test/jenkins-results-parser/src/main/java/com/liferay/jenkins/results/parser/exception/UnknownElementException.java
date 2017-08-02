@@ -30,7 +30,7 @@ public class UnknownElementException extends RuntimeException {
 	}
 
 	private static String _generateMessage(Element element) {
-		return "Unknown element '" + element.getName() + "'";
+		return "Unknown element " + element.getName();
 	}
 
 }
