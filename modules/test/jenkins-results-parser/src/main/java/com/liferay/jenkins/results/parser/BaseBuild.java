@@ -66,12 +66,12 @@ public abstract class BaseBuild implements Build {
 			}
 
 			if (!hasBuildURL(url)) {
-				downstreamBuilds.add(BuildFactory.newBuild(url, this));
-			}
-		}
+				Build newBuild = BuildFactory.newBuild(url, this);
 
-		for (Build downstreamBuild : downstreamBuilds) {
-			downstreamBuild.setPrerequisiteRules(prerequisiteRules);
+				downstreamBuilds.add(newBuild);
+
+				newBuild.setPrerequisiteRules(prerequisiteRules);
+			}
 		}
 	}
 
