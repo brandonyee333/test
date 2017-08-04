@@ -270,52 +270,76 @@ public class LPKGBundleTrackerCustomizer
 	public void modifiedBundle(
 		Bundle bundle, BundleEvent bundleEvent, List<Bundle> bundles) {
 
-		if ((bundle.getState() != Bundle.RESOLVED) ||
-			(bundleEvent.getType() != BundleEvent.RESOLVED)) {
+		int type = bundleEvent.getType();
 
-			return;
+		if (type == BundleEvent.UPDATED) {
+			for (Bundle installedBundle : bundles) {
+				if (_log.isInfoEnabled()) {
+					_log.info(
+						"Uninstalling " + installedBundle + " because " +
+							bundle + " was updated");
+				}
+
+				try {
+					installedBundle.uninstall();
+				}
+				catch (BundleException be) {
+					_log.error(
+						"Failed to uninstall " + installedBundle +
+							" while updating " + bundle,
+						be);
+				}
+			}
 		}
 
-		try {
-			List<Bundle> newBundles = addingBundle(bundle, bundleEvent);
+		int state = bundle.getState();
 
-			if (newBundles != null) {
-				bundles.removeAll(newBundles);
-			}
+		if (((type == BundleEvent.RESOLVED) &&
+			 (bundle.getState() == Bundle.RESOLVED)) ||
+			((type == BundleEvent.UPDATED) && (state == Bundle.ACTIVE))) {
 
-			for (Bundle installedBundle : bundles) {
-				if (installedBundle.getState() != Bundle.UNINSTALLED) {
-					installedBundle.uninstall();
+			try {
+				List<Bundle> newBundles = addingBundle(bundle, bundleEvent);
 
-					if (_log.isInfoEnabled()) {
-						_log.info(
-							"Uninstalled " + installedBundle + "because " +
-								bundle + " was updated");
+				if (newBundles != null) {
+					bundles.removeAll(newBundles);
+				}
+
+				for (Bundle installedBundle : bundles) {
+					if (installedBundle.getState() != Bundle.UNINSTALLED) {
+						installedBundle.uninstall();
+
+						if (_log.isInfoEnabled()) {
+							_log.info(
+								"Uninstalled " + installedBundle + "because " +
+									bundle + " was updated");
+						}
+					}
+				}
+
+				bundles.clear();
+
+				if (newBundles != null) {
+					bundles.addAll(newBundles);
+				}
+
+				for (Bundle installedBundle : bundles) {
+					if (installedBundle.getState() == Bundle.RESOLVED) {
+						installedBundle.start();
 					}
 				}
 			}
+			catch (Exception e) {
+				_log.error("Rollback bundle refresh for " + bundles, e);
 
-			bundles.clear();
-
-			if (newBundles != null) {
-				bundles.addAll(newBundles);
-			}
-
-			for (Bundle installedBundle : bundles) {
-				if (installedBundle.getState() == Bundle.RESOLVED) {
-					installedBundle.start();
-				}
-			}
-		}
-		catch (Exception e) {
-			_log.error("Rollback bundle refresh for " + bundles, e);
-
-			for (Bundle newBundle : bundles) {
-				try {
-					newBundle.uninstall();
-				}
-				catch (BundleException be) {
-					_log.error("Unable to uninstall bundle " + newBundle, be);
+				for (Bundle newBundle : bundles) {
+					try {
+						newBundle.uninstall();
+					}
+					catch (BundleException be) {
+						_log.error(
+							"Unable to uninstall bundle " + newBundle, be);
+					}
 				}
 			}
 		}
