@@ -3,16 +3,16 @@
 		margin: 2px;
 	}
 
-	.contact-agreement-notification .ctrl-holder {
-		padding-left: 1em;
-	}
-
 	.aui-field-label {
 		display: inline;
 	}
 
 	.aui-field-wrapper {
 		overflow: visible;
+	}
+
+	.contact-agreement-notification .ctrl-holder {
+		padding-left: 1em;
 	}
 
 	.lfr-input-text {
