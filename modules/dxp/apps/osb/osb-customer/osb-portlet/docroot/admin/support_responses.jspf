@@ -22,7 +22,6 @@
 >
 	<liferay-ui:search-container-results
 		results="<%= SupportResponseLocalServiceUtil.getSupportResponses(searchContainer.getStart(), searchContainer.getEnd()) %>"
-		total="<%= SupportResponseLocalServiceUtil.getSupportResponsesCount() %>"
 	/>
 
 	<liferay-ui:search-container-row

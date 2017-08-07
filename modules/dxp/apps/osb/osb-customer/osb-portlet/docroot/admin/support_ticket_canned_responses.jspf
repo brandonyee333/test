@@ -18,7 +18,7 @@
 String languageId = LanguageUtil.getLanguageId(request);
 %>
 
-<aui:form action="<%= portletURL.toString() %>" method="post" name="fm" onSubmit="submitForm(this); return false;">
+<aui:form action="<%= portletURL.toString() %>" method="post"onSubmit="submitForm(this); return false;">
 	<liferay-ui:search-container
 		searchContainer="<%= new TicketCannedResponseSearch(renderRequest, portletURL) %>"
 	>

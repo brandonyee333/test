@@ -20,7 +20,6 @@
 >
 	<liferay-ui:search-container-results
 		results="<%= SupportLaborLocalServiceUtil.getSupportLabors(searchContainer.getStart(), searchContainer.getEnd()) %>"
-		total="<%= SupportLaborLocalServiceUtil.getSupportLaborsCount() %>"
 	/>
 
 	<liferay-ui:search-container-row
