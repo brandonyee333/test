@@ -23,6 +23,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.startlevel.BundleStartLevel;
+import org.osgi.framework.startlevel.FrameworkStartLevel;
 import org.osgi.service.url.AbstractURLStreamHandlerService;
 import org.osgi.service.url.URLStreamHandlerService;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
@@ -82,12 +83,26 @@ public class URLStreamHandlerServiceServiceTrackerCustomizer
 				newBundle = _bundleContext.installBundle(
 					location, urlConnection.getInputStream());
 
+				Bundle systemBundle = _bundleContext.getBundle(0);
+
+				FrameworkStartLevel frameworkStartLevel = systemBundle.adapt(
+					FrameworkStartLevel.class);
+
+				int frameStartLevel = frameworkStartLevel.getStartLevel();
+
 				BundleStartLevel bundleStartLevel = newBundle.adapt(
 					BundleStartLevel.class);
 
-				bundleStartLevel.setStartLevel(_startLevel);
+				if (frameStartLevel >= _startLevel) {
+					newBundle.start();
 
-				newBundle.start();
+					bundleStartLevel.setStartLevel(_startLevel);
+				}
+				else {
+					bundleStartLevel.setStartLevel(_startLevel);
+
+					newBundle.start();
+				}
 			}
 
 			return newBundle;

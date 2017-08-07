@@ -71,6 +71,7 @@ import org.osgi.framework.FrameworkEvent;
 import org.osgi.framework.FrameworkListener;
 import org.osgi.framework.Version;
 import org.osgi.framework.startlevel.BundleStartLevel;
+import org.osgi.framework.startlevel.FrameworkStartLevel;
 import org.osgi.framework.wiring.FrameworkWiring;
 import org.osgi.service.url.URLConstants;
 import org.osgi.util.tracker.BundleTrackerCustomizer;
@@ -186,19 +187,32 @@ public class LPKGBundleTrackerCustomizer
 					newBundle = _bundleContext.installBundle(
 						location, url.openStream());
 
+					Bundle systemBundle = _bundleContext.getBundle(0);
+
+					FrameworkStartLevel frameworkStartLevel =
+						systemBundle.adapt(FrameworkStartLevel.class);
+
+					int frameStartLevel = frameworkStartLevel.getStartLevel();
+
 					BundleStartLevel bundleStartLevel = newBundle.adapt(
 						BundleStartLevel.class);
 
-					bundleStartLevel.setStartLevel(
-						PropsValues.
-							MODULE_FRAMEWORK_DYNAMIC_INSTALL_START_LEVEL);
+					if (frameStartLevel >=
+							PropsValues.
+								MODULE_FRAMEWORK_DYNAMIC_INSTALL_START_LEVEL) {
 
-					Dictionary<String, String> headers = newBundle.getHeaders();
+						_startBundle(newBundle);
 
-					String fragmentHost = headers.get(Constants.FRAGMENT_HOST);
+						bundleStartLevel.setStartLevel(
+							PropsValues.
+								MODULE_FRAMEWORK_DYNAMIC_INSTALL_START_LEVEL);
+					}
+					else {
+						bundleStartLevel.setStartLevel(
+							PropsValues.
+								MODULE_FRAMEWORK_DYNAMIC_INSTALL_START_LEVEL);
 
-					if (fragmentHost == null) {
-						newBundle.start();
+						_startBundle(newBundle);
 					}
 
 					bundles.add(newBundle);
@@ -237,13 +251,33 @@ public class LPKGBundleTrackerCustomizer
 				newBundle = _bundleContext.installBundle(
 					url.getPath(), _toWARWrapperBundle(bundle, url));
 
+				Bundle systemBundle = _bundleContext.getBundle(0);
+
+				FrameworkStartLevel frameworkStartLevel = systemBundle.adapt(
+					FrameworkStartLevel.class);
+
+				int frameStartLevel = frameworkStartLevel.getStartLevel();
+
 				BundleStartLevel bundleStartLevel = newBundle.adapt(
 					BundleStartLevel.class);
 
-				bundleStartLevel.setStartLevel(
-					PropsValues.MODULE_FRAMEWORK_DYNAMIC_INSTALL_START_LEVEL);
+				if (frameStartLevel >=
+						PropsValues.
+							MODULE_FRAMEWORK_DYNAMIC_INSTALL_START_LEVEL) {
 
-				newBundle.start();
+					_startBundle(newBundle);
+
+					bundleStartLevel.setStartLevel(
+						PropsValues.
+							MODULE_FRAMEWORK_DYNAMIC_INSTALL_START_LEVEL);
+				}
+				else {
+					bundleStartLevel.setStartLevel(
+						PropsValues.
+							MODULE_FRAMEWORK_DYNAMIC_INSTALL_START_LEVEL);
+
+					_startBundle(newBundle);
+				}
 
 				bundles.add(newBundle);
 			}
@@ -540,6 +574,16 @@ public class LPKGBundleTrackerCustomizer
 		}
 
 		return servletContextName;
+	}
+
+	private void _startBundle(Bundle bundle) throws BundleException {
+		Dictionary<String, String> headers = bundle.getHeaders();
+
+		String fragmentHost = headers.get(Constants.FRAGMENT_HOST);
+
+		if (fragmentHost == null) {
+			bundle.start();
+		}
 	}
 
 	private InputStream _toWARWrapperBundle(Bundle bundle, URL url)
