@@ -18,6 +18,10 @@
 themeDisplay.setIncludeServiceJs(true);
 
 Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
+
+Calendar firstEnabledDate = CalendarFactoryUtil.getCalendar(2010, 1, 1);
+
+Calendar lastEnabledDate = calendar.add(Calendar.YEAR, 1);
 %>
 
 <div class="callout-shadowed container">
@@ -342,31 +346,27 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 						<tr>
 							<td colspan="2">
 								<liferay-ui:input-date
-									dayNullable="<%= true %>"
 									dayParam="<%= displayTerms.CREATE_DATE_GT_DAY %>"
 									dayValue="<%= displayTerms.getCreateDateGTDay() %>"
-									monthNullable="<%= true %>"
+									firstEnabledDate="<%= firstEnabledDate %>"
+									lastEnabledDate="<%= lastEnabledDate %>"
 									monthParam="<%= displayTerms.CREATE_DATE_GT_MONTH %>"
 									monthValue="<%= displayTerms.getCreateDateGTMonth() %>"
-									yearNullable="<%= true %>"
+									nullable="<%= true %>"
 									yearParam="<%= displayTerms.CREATE_DATE_GT_YEAR %>"
-									yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
-									yearRangeStart="<%= 2010 %>"
 									yearValue="<%= displayTerms.getCreateDateGTYear() %>"
 								/>
 							</td>
 							<td colspan="2">
 								<liferay-ui:input-date
-									dayNullable="<%= true %>"
 									dayParam="<%= displayTerms.CREATE_DATE_LT_DAY %>"
 									dayValue="<%= displayTerms.getCreateDateLTDay() %>"
-									monthNullable="<%= true %>"
+									firstEnabledDate="<%= firstEnabledDate %>"
+									lastEnabledDate="<%= lastEnabledDate %>"
 									monthParam="<%= displayTerms.CREATE_DATE_LT_MONTH %>"
 									monthValue="<%= displayTerms.getCreateDateLTMonth() %>"
-									yearNullable="<%= true %>"
+									nullable="<%= true %>"
 									yearParam="<%= displayTerms.CREATE_DATE_LT_YEAR %>"
-									yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
-									yearRangeStart="<%= 2010 %>"
 									yearValue="<%= displayTerms.getCreateDateLTYear() %>"
 								/>
 							</td>
@@ -382,31 +382,27 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 						<tr>
 							<td colspan="2">
 								<liferay-ui:input-date
-									dayNullable="<%= true %>"
 									dayParam="<%= displayTerms.MODIFIED_DATE_GT_DAY %>"
 									dayValue="<%= displayTerms.getModifiedDateGTDay() %>"
-									monthNullable="<%= true %>"
+									firstEnabledDate="<%= firstEnabledDate %>"
+									lastEnabledDate="<%= lastEnabledDate %>"
 									monthParam="<%= displayTerms.MODIFIED_DATE_GT_MONTH %>"
 									monthValue="<%= displayTerms.getModifiedDateGTMonth() %>"
-									yearNullable="<%= true %>"
+									nullable="<%= true %>"
 									yearParam="<%= displayTerms.MODIFIED_DATE_GT_YEAR %>"
-									yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
-									yearRangeStart="<%= 2010 %>"
 									yearValue="<%= displayTerms.getModifiedDateGTYear() %>"
 								/>
 							</td>
 							<td colspan="2">
 								<liferay-ui:input-date
-									dayNullable="<%= true %>"
 									dayParam="<%= displayTerms.MODIFIED_DATE_LT_DAY %>"
 									dayValue="<%= displayTerms.getModifiedDateLTDay() %>"
-									monthNullable="<%= true %>"
+									firstEnabledDate="<%= firstEnabledDate %>"
+									lastEnabledDate="<%= lastEnabledDate %>"
 									monthParam="<%= displayTerms.MODIFIED_DATE_LT_MONTH %>"
 									monthValue="<%= displayTerms.getModifiedDateLTMonth() %>"
-									yearNullable="<%= true %>"
+									nullable="<%= true %>"
 									yearParam="<%= displayTerms.MODIFIED_DATE_LT_YEAR %>"
-									yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
-									yearRangeStart="<%= 2010 %>"
 									yearValue="<%= displayTerms.getModifiedDateLTYear() %>"
 								/>
 							</td>

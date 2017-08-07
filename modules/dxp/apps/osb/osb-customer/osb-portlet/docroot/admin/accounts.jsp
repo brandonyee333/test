@@ -20,7 +20,7 @@
 PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 %>
 
-<aui:form action="<%= portletURL.toString() %>" method="post" name="fm" onSubmit="submitForm(this); return false;">
+<aui:form action="<%= portletURL.toString() %>" method="post" onSubmit="submitForm(this); return false;">
 	<liferay-ui:error exception="<%= RequiredAccountEntryException.class %>" message="you-cannot-remove-projects-that-have-users" />
 
 	<liferay-ui:search-container
