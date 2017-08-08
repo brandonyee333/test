@@ -35,7 +35,7 @@ portletURL.setParameter("redirect", redirect);
 portletURL.setParameter("supportLaborId", String.valueOf(supportLaborId));
 %>
 
-<aui:form action="<%= portletURL.toString() %>" method="post" name="fm">
+<aui:form action="<%= portletURL.toString() %>" method="post">
 	<input name="<portlet:namespace />assignmentsRedirect" type="hidden" value="" />
 	<input name="<portlet:namespace />supportLaborId" type="hidden" value="<%= supportLaborId %>" />
 

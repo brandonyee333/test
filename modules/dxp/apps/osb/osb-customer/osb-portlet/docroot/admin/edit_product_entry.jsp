@@ -39,7 +39,7 @@ if ((productEntry != null) && Validator.isNull(dossieraIdMappings)) {
 	<portlet:param name="mvcPath" value="/admin/edit_product_entry.jsp" />
 </portlet:actionURL>
 
-<aui:form action="<%= updateProductEntryURL %>" method="post" name="fm">
+<aui:form action="<%= updateProductEntryURL %>" method="post">
 	<input name="<portlet:namespace />redirect" type="hidden" value="<%= HtmlUtil.escape(redirect) %>" />
 	<input name="<portlet:namespace />backURL" type="hidden" value="<%= HtmlUtil.escape(backURL) %>" />
 	<input name="<portlet:namespace />productEntryId" type="hidden" value="<%= productEntryId %>" />
@@ -130,7 +130,7 @@ if ((productEntry != null) && Validator.isNull(dossieraIdMappings)) {
 			</td>
 			<td>
 				<aui:fieldset>
-					<aui:input cssClass="lfr-textarea-container" label="" name="dossieraIdMappings" style="width: 500px;" type="textarea" value="<%= dossieraIdMappings %>" />
+					<aui:input cssClass="lfr-textarea-container" name="dossieraIdMappings" style="width: 500px;" type="textarea" value="<%= dossieraIdMappings %>" />
 				</aui:fieldset>
 			</td>
 		</tr>

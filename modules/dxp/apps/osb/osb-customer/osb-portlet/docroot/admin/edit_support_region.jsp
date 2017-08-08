@@ -54,7 +54,7 @@ if (supportRegion != null) {
 	<portlet:param name="mvcPath" value="/admin/edit_support_region.jsp" />
 </portlet:actionURL>
 
-<aui:form action="<%= updateSupportRegionURL %>" method="post" name="fm">
+<aui:form action="<%= updateSupportRegionURL %>" method="post">
 	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 	<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
 	<aui:input name="supportRegionId" type="hidden" value="<%= supportRegionId %>" />
@@ -75,7 +75,7 @@ if (supportRegion != null) {
 				<liferay-ui:message key="name" />
 			</td>
 			<td>
-				<aui:input label="" name="name" />
+				<aui:input name="name" />
 			</td>
 		</tr>
 		<tr>
@@ -83,7 +83,7 @@ if (supportRegion != null) {
 				<liferay-ui:message key="description" />
 			</td>
 			<td>
-				<aui:input label="" name="description" />
+				<aui:input name="description" />
 			</td>
 		</tr>
 		<tr>
@@ -91,7 +91,7 @@ if (supportRegion != null) {
 				<liferay-ui:message key="time-zone" />
 			</td>
 			<td>
-				<aui:select label="" name="timeZoneId">
+				<aui:select name="timeZoneId">
 					<aui:option label="" value="0" />
 
 					<%

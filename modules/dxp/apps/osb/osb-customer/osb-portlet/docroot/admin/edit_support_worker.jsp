@@ -64,7 +64,7 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 	<portlet:param name="mvcPath" value="/admin/edit_support_worker.jsp" />
 </portlet:actionURL>
 
-<aui:form action="<%= updateSupportWorkerURL %>" method="post" name="fm">
+<aui:form action="<%= updateSupportWorkerURL %>" method="post">
 	<aui:input name="redirect" type="hidden" />
 	<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
 	<aui:input name="supportWorkerId" type="hidden" value="<%= supportWorkerId %>" />
@@ -367,7 +367,6 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 
 		<liferay-ui:search-container-results
 			results="<%= userSupportWorkers %>"
-			total="<%= userSupportWorkers.size() %>"
 		/>
 
 		<liferay-ui:search-container-row
@@ -514,7 +513,6 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 	>
 		<liferay-ui:search-container-results
 			results="<%= supportWorkerSeverities %>"
-			total="<%= supportWorkerSeverities.size() %>"
 		/>
 
 		<liferay-ui:search-container-row
@@ -553,7 +551,6 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 	>
 		<liferay-ui:search-container-results
 			results="<%= supportWorkerComponents %>"
-			total="<%= supportWorkerComponents.size() %>"
 		/>
 
 		<liferay-ui:search-container-row
@@ -592,7 +589,6 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 	>
 		<liferay-ui:search-container-results
 			results="<%= supportWorkerAccountTiers %>"
-			total="<%= supportWorkerAccountTiers.size() %>"
 		/>
 
 		<liferay-ui:search-container-row

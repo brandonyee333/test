@@ -70,7 +70,7 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 	<portlet:param name="mvcPath" value="/admin/edit_partner_entry.jsp" />
 </portlet:actionURL>
 
-<aui:form action="<%= updatePartnerEntryURL %>" method="post" name="fm">
+<aui:form action="<%= updatePartnerEntryURL %>" method="post">
 	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 	<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
 	<aui:input name="partnerEntryId" type="hidden" value="<%= partnerEntryId %>" />
@@ -117,7 +117,7 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 					<liferay-ui:message key="dossiera-account-key" />
 				</td>
 				<td>
-					<aui:input label="" name="dossieraAccountKey" />
+					<aui:input name="dossieraAccountKey" />
 				</td>
 			</tr>
 		</c:if>
@@ -127,7 +127,7 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 				<liferay-ui:message key="code" />
 			</td>
 			<td>
-				<aui:input label="" name="code" />
+				<aui:input name="code" />
 			</td>
 		</tr>
 
@@ -153,7 +153,7 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 					}
 					%>
 
-					<aui:select label="" name="status" onChange="<%= taglibOnChange %>">
+					<aui:select name="status" onChange="<%= taglibOnChange %>">
 						<aui:option label="active" selected="<%= partnerEntry.getStatus() == WorkflowConstants.STATUS_APPROVED %>" value="<%= WorkflowConstants.STATUS_APPROVED %>" />
 						<aui:option label="inactive" selected="<%= partnerEntry.getStatus() == WorkflowConstants.STATUS_INACTIVE %>" value="<%= WorkflowConstants.STATUS_INACTIVE %>" />
 					</aui:select>
@@ -185,7 +185,7 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 				<liferay-ui:message key="additional-notes" />
 			</td>
 			<td>
-				<aui:input label="" name="notes" />
+				<aui:input name="notes" />
 			</td>
 		</tr>
 		<tr>
@@ -193,7 +193,7 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 				<liferay-ui:message key="support-region" />
 			</td>
 			<td>
-				<aui:select label="" name="supportRegionId">
+				<aui:select name="supportRegionId">
 					<aui:option value="" />
 
 					<%
@@ -273,7 +273,6 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 		<liferay-ui:search-container>
 			<liferay-ui:search-container-results
 				results="<%= accountEntries %>"
-				total="<%= accountEntries.size() %>"
 			/>
 
 			<liferay-ui:search-container-row

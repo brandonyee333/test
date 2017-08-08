@@ -50,7 +50,7 @@ String timeZoneId = BeanParamUtil.getString(supportLabor, request, "timeZoneId")
 	<portlet:param name="mvcPath" value="/admin/edit_support_labor.jsp" />
 </portlet:actionURL>
 
-<aui:form action="<%= updateSupportLaborURL %>" method="post" name="fm">
+<aui:form action="<%= updateSupportLaborURL %>" method="post">
 	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 	<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
 	<aui:input name="supportLaborId" type="hidden" value="<%= supportLaborId %>" />
@@ -73,7 +73,7 @@ String timeZoneId = BeanParamUtil.getString(supportLabor, request, "timeZoneId")
 			<liferay-ui:message key="name" />
 		</td>
 		<td>
-			<aui:input label="" name="name" />
+			<aui:input name="name" />
 		</td>
 	</tr>
 	<tr>
@@ -81,7 +81,7 @@ String timeZoneId = BeanParamUtil.getString(supportLabor, request, "timeZoneId")
 			<liferay-ui:message key="description" />
 		</td>
 		<td>
-			<aui:input label="" name="description" />
+			<aui:input name="description" />
 		</td>
 	</tr>
 	<tr>
@@ -89,7 +89,7 @@ String timeZoneId = BeanParamUtil.getString(supportLabor, request, "timeZoneId")
 			<liferay-ui:message key="time-zone" />
 		</td>
 		<td>
-			<aui:select label="" name="timeZoneId">
+			<aui:select name="timeZoneId">
 				<aui:option label="" value="0" />
 
 				<%
@@ -147,7 +147,6 @@ String timeZoneId = BeanParamUtil.getString(supportLabor, request, "timeZoneId")
 		>
 			<liferay-ui:search-container-results
 				results="<%= supportTeams %>"
-				total="<%= supportTeams.size() %>"
 			/>
 
 			<liferay-ui:search-container-row

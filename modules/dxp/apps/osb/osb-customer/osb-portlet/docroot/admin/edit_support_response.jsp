@@ -45,7 +45,7 @@ String languageId = BeanParamUtil.getString(supportResponse, request, "languageI
 	<portlet:param name="mvcPath" value="/admin/edit_support_response.jsp" />
 </portlet:actionURL>
 
-<aui:form action="<%= updateSupportResponseURL %>" method="post" name="fm">
+<aui:form action="<%= updateSupportResponseURL %>" method="post">
 	<input name="<portlet:namespace />redirect" type="hidden" value="<%= HtmlUtil.escape(redirect) %>" />
 	<input name="<portlet:namespace />backURL" type="hidden" value="<%= HtmlUtil.escape(backURL) %>" />
 	<input name="<portlet:namespace />supportResponseId" type="hidden" value="<%= supportResponseId %>" />

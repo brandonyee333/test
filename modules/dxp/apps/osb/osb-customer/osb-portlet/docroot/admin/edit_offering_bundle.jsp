@@ -44,7 +44,7 @@ if (offeringBundle != null) {
 	<portlet:param name="mvcPath" value="/admin/edit_offering_bundle.jsp" />
 </portlet:actionURL>
 
-<aui:form action="<%= updateOfferingBundleURL %>" method="post" name="fm">
+<aui:form action="<%= updateOfferingBundleURL %>" method="post">
 	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 	<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
 	<aui:input name="offeringBundleId" type="hidden" value="<%= offeringBundleId %>" />
@@ -87,7 +87,6 @@ if (offeringBundle != null) {
 	>
 		<liferay-ui:search-container-results
 			results="<%= offeringDefinitions %>"
-			total="<%= offeringDefinitions.size() %>"
 		/>
 
 		<liferay-ui:search-container-row

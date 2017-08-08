@@ -43,7 +43,7 @@ boolean supportTickets = BeanParamUtil.getBoolean(offeringDefinition, request, "
 	<portlet:param name="mvcPath" value="/admin/edit_offering_definition.jsp" />
 </portlet:actionURL>
 
-<aui:form action="<%= updateOfferingDefinitionURL %>" method="post" name="fm">
+<aui:form action="<%= updateOfferingDefinitionURL %>" method="post">
 	<input name="<portlet:namespace />redirect" type="hidden" value="<%= HtmlUtil.escape(redirect) %>" />
 	<input name="<portlet:namespace />backURL" type="hidden" value="<%= HtmlUtil.escape(backURL) %>" />
 	<input name="<portlet:namespace />offeringDefinitionId" type="hidden" value="<%= offeringDefinitionId %>" />

@@ -41,7 +41,7 @@ int portalVersionMax = BeanParamUtil.getInteger(licenseEntry, request, "portalVe
 	<portlet:param name="mvcPath" value="/admin/edit_license_entry.jsp" />
 </portlet:actionURL>
 
-<aui:form action="<%= updateLicenseEntryURL %>" method="post" name="fm">
+<aui:form action="<%= updateLicenseEntryURL %>" method="post">
 	<input name="<portlet:namespace />redirect" type="hidden" value="<%= HtmlUtil.escape(redirect) %>" />
 	<input name="<portlet:namespace />backURL" type="hidden" value="<%= HtmlUtil.escape(backURL) %>" />
 	<input name="<portlet:namespace />licenseEntryId" type="hidden" value="<%= licenseEntryId %>" />

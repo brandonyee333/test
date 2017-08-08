@@ -51,17 +51,16 @@ if (holidayEntries.isEmpty()) {
 	holidayEntriesIndexes = new int[] {0};
 }
 
-Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
+Calendar firstEnabledDate = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
 
-int yearRangeStart = calendar.get(Calendar.YEAR);
-int yearRangeEnd = calendar.get(Calendar.YEAR) + 15;
+Calendar lastEnabledDate = firstEnabledDate.add(Calendar.YEAR, 15);
 %>
 
 <portlet:actionURL name="updateHolidayCalendar" var="updateHolidayCalendarURL">
 	<portlet:param name="mvcPath" value="/admin/edit_holiday_calendar.jsp" />
 </portlet:actionURL>
 
-<aui:form action="<%= updateHolidayCalendarURL %>" method="post" name="fm">
+<aui:form action="<%= updateHolidayCalendarURL %>" method="post">
 	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 	<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
 	<aui:input name="holidayCalendarId" type="hidden" value="<%= holidayCalendarId %>" />
@@ -82,7 +81,7 @@ int yearRangeEnd = calendar.get(Calendar.YEAR) + 15;
 				<liferay-ui:message key="name" />
 			</td>
 			<td>
-				<aui:input label="" name="name" />
+				<aui:input name="name" />
 			</td>
 		</tr>
 		<tr>
@@ -90,7 +89,7 @@ int yearRangeEnd = calendar.get(Calendar.YEAR) + 15;
 				<liferay-ui:message key="description" />
 			</td>
 			<td>
-				<aui:input label="" name="description" />
+				<aui:input name="description" />
 			</td>
 		</tr>
 	</table>
@@ -189,32 +188,28 @@ int yearRangeEnd = calendar.get(Calendar.YEAR) + 15;
 								<td>
 									<liferay-ui:input-date
 										cssClass="aui-w100"
-										dayNullable="<%= false %>"
 										dayParam='<%= "holidayEntryStartDay" + holidayEntriesIndex %>'
 										dayValue="<%= holidayEntryStartDay %>"
-										monthNullable="<%= false %>"
+										firstEnabledDate="<%= (holidayEntryStartCal > firstEnabledDate) ? holidayEntryStartCal : firstEnabledDate %>"
+										lastEnabledDate="<%= (holidayEntryStartCal > lastEnabledDate) ? holidayEntryStartCal : lastEnabledDate %>"
 										monthParam='<%= "holidayEntryStartMonth" + holidayEntriesIndex %>'
 										monthValue="<%= holidayEntryStartMonth %>"
-										yearNullable="<%= false %>"
+										nullable="<%= false %>"
 										yearParam='<%= "holidayEntryStartYear" + holidayEntriesIndex %>'
-										yearRangeEnd="<%= (holidayEntryStartYear > yearRangeEnd) ? holidayEntryStartYear : yearRangeEnd %>"
-										yearRangeStart="<%= (holidayEntryStartYear > yearRangeStart) ? holidayEntryStartYear : yearRangeStart %>"
 										yearValue="<%= holidayEntryStartYear %>"
 									/>
 								</td>
 								<td>
 									<liferay-ui:input-date
 										cssClass="aui-w100"
-										dayNullable="<%= false %>"
 										dayParam='<%= "holidayEntryEndDay" + holidayEntriesIndex %>'
 										dayValue="<%= holidayEntryEndDay %>"
-										monthNullable="<%= false %>"
+										firstEnabledDate="<%= (holidayEntryEndCal > firstEnabledDate) ? holidayEntryEndCal : firstEnabledDate %>"
+										lastEnabledDate="<%= (holidayEntryEndCal > lastEnabledDate) ? holidayEntryEndCal : lastEnabledDate %>"
 										monthParam='<%= "holidayEntryEndMonth" + holidayEntriesIndex %>'
 										monthValue="<%= holidayEntryEndMonth %>"
-										yearNullable="<%= false %>"
+										nullable="<%= false %>"
 										yearParam='<%= "holidayEntryEndYear" + holidayEntriesIndex %>'
-										yearRangeEnd="<%= (holidayEntryEndYear > yearRangeEnd) ? holidayEntryEndYear : yearRangeEnd %>"
-										yearRangeStart="<%= (holidayEntryEndYear > yearRangeStart) ? holidayEntryEndYear : yearRangeStart %>"
 										yearValue="<%= holidayEntryEndYear %>"
 									/>
 								</td>

@@ -46,7 +46,7 @@ portletURL.setParameter("redirect", redirect);
 portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 %>
 
-<aui:form action="<%= portletURL.toString() %>" method="post" name="fm">
+<aui:form action="<%= portletURL.toString() %>" method="post">
 	<input name="<portlet:namespace />assignmentsRedirect" type="hidden" value="" />
 	<input name="<portlet:namespace />supportTeamId" type="hidden" value="<%= supportTeamId %>" />
 
@@ -100,7 +100,6 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 		>
 			<liferay-ui:search-container-results
 				results="<%= userSearchContainer.getResults() %>"
-				total="<%= userSearchContainer.getTotal() %>"
 			/>
 
 			<liferay-ui:search-container-row

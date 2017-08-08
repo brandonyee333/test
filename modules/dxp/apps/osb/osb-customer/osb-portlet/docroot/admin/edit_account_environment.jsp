@@ -42,7 +42,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 	<portlet:param name="mvcPath" value="/admin/edit_account_environment.jsp" />
 </portlet:actionURL>
 
-<aui:form action="<%= updateAccountEnvironmentURL %>" enctype="multipart/form-data" method="post" name="fm">
+<aui:form action="<%= updateAccountEnvironmentURL %>" method="post">
 	<aui:input name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
 	<aui:input name="accountEnvironmentId" type="hidden" value="<%= accountEnvironmentId %>" />
 	<aui:input name="productEntryId" type="hidden" value="<%= productEntryId %>" />

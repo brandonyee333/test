@@ -35,7 +35,7 @@ portletURL.setParameter("redirect", redirect);
 portletURL.setParameter("holidayCalendarId", String.valueOf(holidayCalendarId));
 %>
 
-<aui:form action="<%= portletURL.toString() %>" method="post" name="fm">
+<aui:form action="<%= portletURL.toString() %>" method="post">
 	<input name="<portlet:namespace />assignmentsRedirect" type="hidden" value="" />
 	<input name="<portlet:namespace />holidayCalendarId" type="hidden" value="<%= holidayCalendarId %>" />
 
@@ -81,7 +81,6 @@ portletURL.setParameter("holidayCalendarId", String.valueOf(holidayCalendarId));
 		>
 			<liferay-ui:search-container-results
 				results="<%= userSearchContainer.getResults() %>"
-				total="<%= userSearchContainer.getTotal() %>"
 			/>
 
 			<liferay-ui:search-container-row

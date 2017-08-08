@@ -252,7 +252,6 @@ for (SupportRegion supportRegion : supportRegions) {
 						>
 							<liferay-ui:search-container-results
 								results="<%= corpProjectMessages %>"
-								total="<%= corpProjectMessages.size() %>"
 							/>
 
 							<liferay-ui:search-container-row
@@ -465,7 +464,7 @@ for (SupportRegion supportRegion : supportRegions) {
 			</div>
 		</c:if>
 
-		<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />supportRegionsContent">
+		<div class="hide tab-content-tab" id="<portlet:namespace />supportRegionsContent">
 			<div>
 				<input onClick="var categoryWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/admin/select_support_region.jsp" /><portlet:param name="callback" value="selectSupportRegion" /></portlet:renderURL>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" type="button" value="<liferay-ui:message key="add-support-region" />" />
 			</div>
@@ -478,7 +477,6 @@ for (SupportRegion supportRegion : supportRegions) {
 			>
 				<liferay-ui:search-container-results
 					results="<%= supportRegions %>"
-					total="<%= supportRegions.size() %>"
 				/>
 
 				<liferay-ui:search-container-row
@@ -500,20 +498,17 @@ for (SupportRegion supportRegion : supportRegions) {
 			</liferay-ui:search-container>
 		</div>
 
-		<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />supportLanguagesContent">
-			<div>
-				<input onClick="var supportLanguageWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/admin/select_language.jsp" /></portlet:renderURL>', 'support-language', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); supportLanguageWindow.focus();" type="button" value="<liferay-ui:message key="add-support-language" />" />
-			</div>
+		<div class="hide tab-content-tab" id="<portlet:namespace />supportLanguagesContent">
+			<input onClick="var supportLanguageWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/admin/select_language.jsp" /></portlet:renderURL>', 'support-language', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); supportLanguageWindow.focus();" type="button" value="<liferay-ui:message key="add-support-language" />" />
 
 			<br />
 
 			<liferay-ui:search-container
-				headerNames="language,,"
+				headerNames="language"
 				id="language"
 			>
 				<liferay-ui:search-container-results
 					results="<%= ListUtil.fromArray(languageIds) %>"
-					total="<%= languageIds.length %>"
 				/>
 
 				<liferay-ui:search-container-row
@@ -536,7 +531,7 @@ for (SupportRegion supportRegion : supportRegions) {
 		</div>
 
 		<c:if test="<%= accountEntry != null %>">
-			<div class="aui-helper-hidden history tab-content-tab" id="<portlet:namespace />historyContent">
+			<div class="hide history tab-content-tab" id="<portlet:namespace />historyContent">
 
 				<%
 				List<List<AuditEntry>> auditEntrySets = AuditEntryLocalServiceUtil.getAuditEntrySets(PortalUtil.getClassNameId(AccountEntry.class.getName()), accountEntry.getAccountEntryId(), new int[] {VisibilityConstants.ADMIN, VisibilityConstants.LIFERAY_INC, VisibilityConstants.PUBLIC, VisibilityConstants.WORKERS});

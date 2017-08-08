@@ -185,7 +185,7 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 	<portlet:param name="mvcPath" value="/admin/edit_order_entry.jsp" />
 </portlet:actionURL>
 
-<aui:form action="<%= updateOrderEntryURL %>" method="post" name="fm">
+<aui:form action="<%= updateOrderEntryURL %>" method="post">
 	<input name="<portlet:namespace />redirect" type="hidden" value="<%= HtmlUtil.escape(redirect) %>" />
 	<input name="<portlet:namespace />backURL" type="hidden" value="<%= HtmlUtil.escape(backURL) %>" />
 	<input name="<portlet:namespace />orderEntryId" type="hidden" value="<%= orderEntryId %>" />
@@ -317,10 +317,10 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 					<c:when test="<%= (orderEntry != null) && (orderEntry.getUserId() == OSBConstants.USER_DEFAULT_USER_ID) %>">
 						<%= HtmlUtil.escape(salesforceOpportunityKey) %>
 
-						<aui:input hidden="<%= true %>" label="" name="salesforceOpportunityKey" value="<%= salesforceOpportunityKey %>" />
+						<aui:input hidden="<%= true %>" name="salesforceOpportunityKey" value="<%= salesforceOpportunityKey %>" />
 					</c:when>
 					<c:otherwise>
-						<aui:input label="" name="salesforceOpportunityKey" value="<%= salesforceOpportunityKey %>" />
+						<aui:input name="salesforceOpportunityKey" value="<%= salesforceOpportunityKey %>" />
 					</c:otherwise>
 				</c:choose>
 			</td>
@@ -432,7 +432,6 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 	>
 		<liferay-ui:search-container-results
 			results="<%= offeringEntries %>"
-			total="<%= offeringEntries.size() %>"
 		/>
 
 		<liferay-ui:search-container-row

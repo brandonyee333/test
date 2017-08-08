@@ -50,7 +50,7 @@ if (ticketCannedResponse != null) {
 	<portlet:param name="mvcPath" value="/admin/edit_ticket_canned_response.jsp" />
 </portlet:actionURL>
 
-<aui:form action="<%= updateTicketCannedResponseURL %>" method="post" name="fm">
+<aui:form action="<%= updateTicketCannedResponseURL %>" method="post">
 	<aui:input name="<%= Constants.CMD %>" type="hidden" value="<%= Constants.UPDATE %>" />
 	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 	<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
