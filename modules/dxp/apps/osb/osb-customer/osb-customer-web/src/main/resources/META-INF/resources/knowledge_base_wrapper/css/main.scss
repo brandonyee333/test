@@ -8,6 +8,12 @@
 		padding-left: 15px;
 	}
 
+	.kb-entity-body {
+		ul li {
+			list-style: inherit;
+		}
+	}
+
 	.kb-entity-body img {
 		height: auto;
 		max-width: 100%;
