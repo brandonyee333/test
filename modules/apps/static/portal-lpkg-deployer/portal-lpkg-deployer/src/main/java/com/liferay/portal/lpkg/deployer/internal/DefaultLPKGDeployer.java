@@ -72,6 +72,7 @@ import org.osgi.framework.Constants;
 import org.osgi.framework.FrameworkEvent;
 import org.osgi.framework.FrameworkListener;
 import org.osgi.framework.startlevel.BundleStartLevel;
+import org.osgi.framework.startlevel.FrameworkStartLevel;
 import org.osgi.framework.wiring.FrameworkWiring;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -366,6 +367,8 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 			BundleContext bundleContext, List<File> jarFiles)
 		throws Exception {
 
+		Bundle systemBundle = bundleContext.getBundle(0);
+
 		for (File jarFile : jarFiles) {
 			String location = _LPKG_OVERRIDE_PREFIX.concat(
 				jarFile.getCanonicalPath());
@@ -383,13 +386,28 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 			jarBundle = bundleContext.installBundle(
 				location, new FileInputStream(jarFile));
 
+			FrameworkStartLevel frameworkStartLevel = systemBundle.adapt(
+				FrameworkStartLevel.class);
+
+			int frameStartLevel = frameworkStartLevel.getStartLevel();
+
 			BundleStartLevel bundleStartLevel = jarBundle.adapt(
 				BundleStartLevel.class);
 
-			bundleStartLevel.setStartLevel(
-				PropsValues.MODULE_FRAMEWORK_DYNAMIC_INSTALL_START_LEVEL);
+			if (frameStartLevel >=
+					PropsValues.MODULE_FRAMEWORK_DYNAMIC_INSTALL_START_LEVEL) {
 
-			_startBundle(jarBundle);
+				_startBundle(jarBundle);
+
+				bundleStartLevel.setStartLevel(
+					PropsValues.MODULE_FRAMEWORK_DYNAMIC_INSTALL_START_LEVEL);
+			}
+			else {
+				bundleStartLevel.setStartLevel(
+					PropsValues.MODULE_FRAMEWORK_DYNAMIC_INSTALL_START_LEVEL);
+
+				_startBundle(jarBundle);
+			}
 
 			if (_log.isInfoEnabled()) {
 				_log.info("Installed override JAR bundle " + location);
