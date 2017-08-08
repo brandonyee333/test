@@ -25,7 +25,7 @@ portletURL.setParameter("mvcPath", "/admin/select_corp_project.jsp");
 portletURL.setParameter("callback", callback);
 %>
 
-<aui:form method="post" name="fm">
+<aui:form method="post">
 	<liferay-ui:tabs names="projects" />
 
 	<liferay-ui:search-container
@@ -46,7 +46,6 @@ portletURL.setParameter("callback", callback);
 
 		<liferay-ui:search-container-results
 			results="<%= CorpProjectLocalServiceUtil.getCorpProjects(searchTerms.getName(), searchContainer.getStart(), searchContainer.getEnd(), searchContainer.getOrderByComparator()) %>"
-			total="<%= CorpProjectLocalServiceUtil.getCorpProjectsCount(searchTerms.getName()) %>"
 		/>
 
 		<liferay-ui:search-container-row

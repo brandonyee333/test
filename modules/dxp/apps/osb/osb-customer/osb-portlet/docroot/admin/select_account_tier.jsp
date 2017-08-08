@@ -37,7 +37,6 @@ String selectAll = "javascript:";
 	>
 		<liferay-ui:search-container-results
 			results="<%= accountTiers %>"
-			total="<%= accountTiers.size() %>"
 		/>
 
 		<liferay-ui:search-container-row

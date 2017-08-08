@@ -25,7 +25,7 @@ portletURL.setParameter("mvcPath", "/admin/select_offering_bundle.jsp");
 portletURL.setParameter("callback", callback);
 %>
 
-<aui:form method="post" name="fm">
+<aui:form method="post">
 	<liferay-ui:tabs names="offering-bundles" />
 
 	<liferay-ui:search-container
@@ -34,7 +34,6 @@ portletURL.setParameter("callback", callback);
 	>
 		<liferay-ui:search-container-results
 			results="<%= OfferingBundleLocalServiceUtil.getOfferingBundles(searchContainer.getStart(), searchContainer.getEnd()) %>"
-			total="<%= OfferingBundleLocalServiceUtil.getOfferingBundlesCount() %>"
 		/>
 
 		<liferay-ui:search-container-row

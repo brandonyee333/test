@@ -37,7 +37,6 @@ String selectAll = "javascript:";
 	>
 		<liferay-ui:search-container-results
 			results="<%= ListUtil.fromArray(severities) %>"
-			total="<%= severities.length %>"
 		/>
 
 		<liferay-ui:search-container-row

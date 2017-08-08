@@ -36,7 +36,7 @@ while (itr.hasNext()) {
 String selectAll = "javascript:";
 %>
 
-<aui:form method="post" name="fm">
+<aui:form method="post">
 	<liferay-ui:tabs
 		names="components"
 	/>
@@ -47,7 +47,6 @@ String selectAll = "javascript:";
 	>
 		<liferay-ui:search-container-results
 			results="<%= componentTypes %>"
-			total="<%= componentTypes.size() %>"
 		/>
 
 		<liferay-ui:search-container-row

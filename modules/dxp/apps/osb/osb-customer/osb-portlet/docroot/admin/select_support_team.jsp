@@ -27,7 +27,7 @@ portletURL.setParameter("callback", callback);
 portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 %>
 
-<aui:form method="post" name="fm">
+<aui:form method="post">
 	<liferay-ui:tabs
 		names="support-teams"
 	/>
@@ -143,7 +143,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 						<liferay-ui:icon image="../arrows/01_minus" label="<%= true %>" message="collapse" url='<%= "javascript:" + renderResponse.getNamespace() + "toggleSupportRegions(" + supportTeam.getSupportTeamId() + ", false);" %>' />
 					</span>
 
-					<div class="aui-helper-hidden" id="<portlet:namespace />supportRegions_<%= supportTeam.getSupportTeamId() %>">
+					<div class="hide" id="<portlet:namespace />supportRegions_<%= supportTeam.getSupportTeamId() %>">
 
 						<%
 						for (int i = 0; i < supportRegions.size(); i++) {
