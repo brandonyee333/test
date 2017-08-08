@@ -17,12 +17,11 @@
 <%
 themeDisplay.setIncludeServiceJs(true);
 
-Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
-
 Calendar firstEnabledDate = CalendarFactoryUtil.getCalendar(2010, 1, 1);
 
-Calendar lastEnabledDate = calendar.add(Calendar.YEAR, 1);
+Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
 
+Calendar lastEnabledDate = calendar.add(Calendar.YEAR, 1);
 %>
 
 <div class="callout-shadowed container">
