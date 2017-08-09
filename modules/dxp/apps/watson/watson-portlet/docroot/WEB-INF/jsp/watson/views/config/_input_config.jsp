@@ -101,7 +101,7 @@
 				},
 				relationshipObjectOptions: {
 					addresses: {
-						key : '${ClassNameLocalService.getClassNameId(WatsonAddress.class)}',
+						key: '${ClassNameLocalService.getClassNameId(WatsonAddress.class)}',
 							label: '${AlloyLanguageUtil.formatUnicode("addresses")}',
 							options: {
 							<c:set value='${WatsonListType.getWatsonListTypes(WatsonRelationship.modelClassName.concat(".addressActivityRelationshipTypes"))}' var="addressActivityTypes" />

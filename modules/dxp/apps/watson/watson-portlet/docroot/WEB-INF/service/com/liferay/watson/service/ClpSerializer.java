@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.util.ClassLoaderObjectInputStream;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.Validator;
-
 import com.liferay.watson.model.WatsonActivityClp;
 import com.liferay.watson.model.WatsonAddressClp;
 import com.liferay.watson.model.WatsonHistoryClp;
@@ -50,6 +49,7 @@ import java.util.List;
  */
 @ProviderType
 public class ClpSerializer {
+
 	public static String getServletContextName() {
 		if (Validator.isNotNull(_servletContextName)) {
 			return _servletContextName;
@@ -64,13 +64,13 @@ public class ClpSerializer {
 				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
 
 				Class<?> portletPropsClass = classLoader.loadClass(
-						"com.liferay.util.portlet.PortletProps");
+					"com.liferay.util.portlet.PortletProps");
 
 				Method getMethod = portletPropsClass.getMethod("get",
-						new Class<?>[] { String.class });
+					new Class<?>[] {String.class});
 
 				String portletPropsServletContextName = (String)getMethod.invoke(null,
-						"watson-portlet-deployment-context");
+					"watson-portlet-deployment-context");
 
 				if (Validator.isNotNull(portletPropsServletContextName)) {
 					_servletContextName = portletPropsServletContextName;
@@ -86,7 +86,7 @@ public class ClpSerializer {
 			if (Validator.isNull(_servletContextName)) {
 				try {
 					String propsUtilServletContextName = PropsUtil.get(
-							"watson-portlet-deployment-context");
+						"watson-portlet-deployment-context");
 
 					if (Validator.isNotNull(propsUtilServletContextName)) {
 						_servletContextName = propsUtilServletContextName;
@@ -161,7 +161,7 @@ public class ClpSerializer {
 	}
 
 	public static Object translateInput(List<Object> oldList) {
-		List<Object> newList = new ArrayList<Object>(oldList.size());
+		List<Object> newList = new ArrayList<>(oldList.size());
 
 		for (int i = 0; i < oldList.size(); i++) {
 			Object curObj = oldList.get(i);
@@ -170,6 +170,18 @@ public class ClpSerializer {
 		}
 
 		return newList;
+	}
+
+	public static Object translateInput(Object obj) {
+		if (obj instanceof BaseModel<?>) {
+			return translateInput((BaseModel<?>)obj);
+		}
+		else if (obj instanceof List<?>) {
+			return translateInput((List<Object>)obj);
+		}
+		else {
+			return obj;
+		}
 	}
 
 	public static Object translateInputWatsonActivity(BaseModel<?> oldModel) {
@@ -212,7 +224,9 @@ public class ClpSerializer {
 		return newModel;
 	}
 
-	public static Object translateInputWatsonIncidentRel(BaseModel<?> oldModel) {
+	public static Object translateInputWatsonIncidentRel(
+		BaseModel<?> oldModel) {
+
 		WatsonIncidentRelClp oldClpModel = (WatsonIncidentRelClp)oldModel;
 
 		BaseModel<?> newModel = oldClpModel.getWatsonIncidentRelRemoteModel();
@@ -232,7 +246,9 @@ public class ClpSerializer {
 		return newModel;
 	}
 
-	public static Object translateInputWatsonListTypeRel(BaseModel<?> oldModel) {
+	public static Object translateInputWatsonListTypeRel(
+		BaseModel<?> oldModel) {
+
 		WatsonListTypeRelClp oldClpModel = (WatsonListTypeRelClp)oldModel;
 
 		BaseModel<?> newModel = oldClpModel.getWatsonListTypeRelRemoteModel();
@@ -252,7 +268,9 @@ public class ClpSerializer {
 		return newModel;
 	}
 
-	public static Object translateInputWatsonRelationship(BaseModel<?> oldModel) {
+	public static Object translateInputWatsonRelationship(
+		BaseModel<?> oldModel) {
+
 		WatsonRelationshipClp oldClpModel = (WatsonRelationshipClp)oldModel;
 
 		BaseModel<?> newModel = oldClpModel.getWatsonRelationshipRemoteModel();
@@ -282,25 +300,14 @@ public class ClpSerializer {
 		return newModel;
 	}
 
-	public static Object translateInput(Object obj) {
-		if (obj instanceof BaseModel<?>) {
-			return translateInput((BaseModel<?>)obj);
-		}
-		else if (obj instanceof List<?>) {
-			return translateInput((List<Object>)obj);
-		}
-		else {
-			return obj;
-		}
-	}
-
 	public static Object translateOutput(BaseModel<?> oldModel) {
 		Class<?> oldModelClass = oldModel.getClass();
 
 		String oldModelClassName = oldModelClass.getName();
 
 		if (oldModelClassName.equals(
-					"com.liferay.watson.model.impl.WatsonActivityImpl")) {
+				"com.liferay.watson.model.impl.WatsonActivityImpl")) {
+
 			return translateOutputWatsonActivity(oldModel);
 		}
 		else if (oldModelClassName.endsWith("Clp")) {
@@ -308,24 +315,26 @@ public class ClpSerializer {
 				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
 
 				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
+					"getClpSerializerClass");
 
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
+				Class<?> oldClpSerializerClass =
+					(Class<?>)getClpSerializerClassMethod.invoke(oldModel);
 
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
+				Class<?> newClpSerializerClass = classLoader.loadClass(
+					oldClpSerializerClass.getName());
 
 				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
+					BaseModel.class);
 
 				Class<?> oldModelModelClass = oldModel.getModelClass();
 
 				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
+					oldModelModelClass.getSimpleName() + "RemoteModel");
 
 				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
 
 				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
+					oldRemoteModel);
 
 				return newModel;
 			}
@@ -337,7 +346,8 @@ public class ClpSerializer {
 		}
 
 		if (oldModelClassName.equals(
-					"com.liferay.watson.model.impl.WatsonAddressImpl")) {
+				"com.liferay.watson.model.impl.WatsonAddressImpl")) {
+
 			return translateOutputWatsonAddress(oldModel);
 		}
 		else if (oldModelClassName.endsWith("Clp")) {
@@ -345,24 +355,26 @@ public class ClpSerializer {
 				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
 
 				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
+					"getClpSerializerClass");
 
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
+				Class<?> oldClpSerializerClass =
+					(Class<?>)getClpSerializerClassMethod.invoke(oldModel);
 
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
+				Class<?> newClpSerializerClass = classLoader.loadClass(
+					oldClpSerializerClass.getName());
 
 				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
+					BaseModel.class);
 
 				Class<?> oldModelModelClass = oldModel.getModelClass();
 
 				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
+					oldModelModelClass.getSimpleName() + "RemoteModel");
 
 				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
 
 				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
+					oldRemoteModel);
 
 				return newModel;
 			}
@@ -374,7 +386,8 @@ public class ClpSerializer {
 		}
 
 		if (oldModelClassName.equals(
-					"com.liferay.watson.model.impl.WatsonHistoryImpl")) {
+				"com.liferay.watson.model.impl.WatsonHistoryImpl")) {
+
 			return translateOutputWatsonHistory(oldModel);
 		}
 		else if (oldModelClassName.endsWith("Clp")) {
@@ -382,24 +395,26 @@ public class ClpSerializer {
 				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
 
 				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
+					"getClpSerializerClass");
 
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
+				Class<?> oldClpSerializerClass =
+					(Class<?>)getClpSerializerClassMethod.invoke(oldModel);
 
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
+				Class<?> newClpSerializerClass = classLoader.loadClass(
+					oldClpSerializerClass.getName());
 
 				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
+					BaseModel.class);
 
 				Class<?> oldModelModelClass = oldModel.getModelClass();
 
 				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
+					oldModelModelClass.getSimpleName() + "RemoteModel");
 
 				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
 
 				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
+					oldRemoteModel);
 
 				return newModel;
 			}
@@ -411,7 +426,8 @@ public class ClpSerializer {
 		}
 
 		if (oldModelClassName.equals(
-					"com.liferay.watson.model.impl.WatsonIncidentImpl")) {
+				"com.liferay.watson.model.impl.WatsonIncidentImpl")) {
+
 			return translateOutputWatsonIncident(oldModel);
 		}
 		else if (oldModelClassName.endsWith("Clp")) {
@@ -419,24 +435,26 @@ public class ClpSerializer {
 				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
 
 				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
+					"getClpSerializerClass");
 
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
+				Class<?> oldClpSerializerClass =
+					(Class<?>)getClpSerializerClassMethod.invoke(oldModel);
 
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
+				Class<?> newClpSerializerClass = classLoader.loadClass(
+					oldClpSerializerClass.getName());
 
 				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
+					BaseModel.class);
 
 				Class<?> oldModelModelClass = oldModel.getModelClass();
 
 				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
+					oldModelModelClass.getSimpleName() + "RemoteModel");
 
 				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
 
 				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
+					oldRemoteModel);
 
 				return newModel;
 			}
@@ -448,7 +466,8 @@ public class ClpSerializer {
 		}
 
 		if (oldModelClassName.equals(
-					"com.liferay.watson.model.impl.WatsonIncidentRelImpl")) {
+				"com.liferay.watson.model.impl.WatsonIncidentRelImpl")) {
+
 			return translateOutputWatsonIncidentRel(oldModel);
 		}
 		else if (oldModelClassName.endsWith("Clp")) {
@@ -456,24 +475,26 @@ public class ClpSerializer {
 				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
 
 				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
+					"getClpSerializerClass");
 
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
+				Class<?> oldClpSerializerClass =
+					(Class<?>)getClpSerializerClassMethod.invoke(oldModel);
 
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
+				Class<?> newClpSerializerClass = classLoader.loadClass(
+					oldClpSerializerClass.getName());
 
 				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
+					BaseModel.class);
 
 				Class<?> oldModelModelClass = oldModel.getModelClass();
 
 				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
+					oldModelModelClass.getSimpleName() + "RemoteModel");
 
 				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
 
 				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
+					oldRemoteModel);
 
 				return newModel;
 			}
@@ -485,7 +506,8 @@ public class ClpSerializer {
 		}
 
 		if (oldModelClassName.equals(
-					"com.liferay.watson.model.impl.WatsonListTypeImpl")) {
+				"com.liferay.watson.model.impl.WatsonListTypeImpl")) {
+
 			return translateOutputWatsonListType(oldModel);
 		}
 		else if (oldModelClassName.endsWith("Clp")) {
@@ -493,24 +515,26 @@ public class ClpSerializer {
 				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
 
 				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
+					"getClpSerializerClass");
 
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
+				Class<?> oldClpSerializerClass =
+					(Class<?>)getClpSerializerClassMethod.invoke(oldModel);
 
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
+				Class<?> newClpSerializerClass = classLoader.loadClass(
+					oldClpSerializerClass.getName());
 
 				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
+					BaseModel.class);
 
 				Class<?> oldModelModelClass = oldModel.getModelClass();
 
 				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
+					oldModelModelClass.getSimpleName() + "RemoteModel");
 
 				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
 
 				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
+					oldRemoteModel);
 
 				return newModel;
 			}
@@ -522,7 +546,8 @@ public class ClpSerializer {
 		}
 
 		if (oldModelClassName.equals(
-					"com.liferay.watson.model.impl.WatsonListTypeRelImpl")) {
+				"com.liferay.watson.model.impl.WatsonListTypeRelImpl")) {
+
 			return translateOutputWatsonListTypeRel(oldModel);
 		}
 		else if (oldModelClassName.endsWith("Clp")) {
@@ -530,24 +555,26 @@ public class ClpSerializer {
 				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
 
 				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
+					"getClpSerializerClass");
 
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
+				Class<?> oldClpSerializerClass =
+					(Class<?>)getClpSerializerClassMethod.invoke(oldModel);
 
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
+				Class<?> newClpSerializerClass = classLoader.loadClass(
+					oldClpSerializerClass.getName());
 
 				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
+					BaseModel.class);
 
 				Class<?> oldModelModelClass = oldModel.getModelClass();
 
 				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
+					oldModelModelClass.getSimpleName() + "RemoteModel");
 
 				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
 
 				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
+					oldRemoteModel);
 
 				return newModel;
 			}
@@ -559,7 +586,8 @@ public class ClpSerializer {
 		}
 
 		if (oldModelClassName.equals(
-					"com.liferay.watson.model.impl.WatsonPersonImpl")) {
+				"com.liferay.watson.model.impl.WatsonPersonImpl")) {
+
 			return translateOutputWatsonPerson(oldModel);
 		}
 		else if (oldModelClassName.endsWith("Clp")) {
@@ -567,24 +595,26 @@ public class ClpSerializer {
 				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
 
 				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
+					"getClpSerializerClass");
 
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
+				Class<?> oldClpSerializerClass =
+					(Class<?>)getClpSerializerClassMethod.invoke(oldModel);
 
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
+				Class<?> newClpSerializerClass = classLoader.loadClass(
+					oldClpSerializerClass.getName());
 
 				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
+					BaseModel.class);
 
 				Class<?> oldModelModelClass = oldModel.getModelClass();
 
 				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
+					oldModelModelClass.getSimpleName() + "RemoteModel");
 
 				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
 
 				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
+					oldRemoteModel);
 
 				return newModel;
 			}
@@ -596,7 +626,8 @@ public class ClpSerializer {
 		}
 
 		if (oldModelClassName.equals(
-					"com.liferay.watson.model.impl.WatsonRelationshipImpl")) {
+				"com.liferay.watson.model.impl.WatsonRelationshipImpl")) {
+
 			return translateOutputWatsonRelationship(oldModel);
 		}
 		else if (oldModelClassName.endsWith("Clp")) {
@@ -604,24 +635,26 @@ public class ClpSerializer {
 				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
 
 				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
+					"getClpSerializerClass");
 
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
+				Class<?> oldClpSerializerClass =
+					(Class<?>)getClpSerializerClassMethod.invoke(oldModel);
 
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
+				Class<?> newClpSerializerClass = classLoader.loadClass(
+					oldClpSerializerClass.getName());
 
 				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
+					BaseModel.class);
 
 				Class<?> oldModelModelClass = oldModel.getModelClass();
 
 				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
+					oldModelModelClass.getSimpleName() + "RemoteModel");
 
 				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
 
 				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
+					oldRemoteModel);
 
 				return newModel;
 			}
@@ -633,7 +666,8 @@ public class ClpSerializer {
 		}
 
 		if (oldModelClassName.equals(
-					"com.liferay.watson.model.impl.WatsonResourceImpl")) {
+				"com.liferay.watson.model.impl.WatsonResourceImpl")) {
+
 			return translateOutputWatsonResource(oldModel);
 		}
 		else if (oldModelClassName.endsWith("Clp")) {
@@ -641,24 +675,26 @@ public class ClpSerializer {
 				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
 
 				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
+					"getClpSerializerClass");
 
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
+				Class<?> oldClpSerializerClass =
+					(Class<?>)getClpSerializerClassMethod.invoke(oldModel);
 
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
+				Class<?> newClpSerializerClass = classLoader.loadClass(
+					oldClpSerializerClass.getName());
 
 				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
+					BaseModel.class);
 
 				Class<?> oldModelModelClass = oldModel.getModelClass();
 
 				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
+					oldModelModelClass.getSimpleName() + "RemoteModel");
 
 				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
 
 				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
+					oldRemoteModel);
 
 				return newModel;
 			}
@@ -670,7 +706,8 @@ public class ClpSerializer {
 		}
 
 		if (oldModelClassName.equals(
-					"com.liferay.watson.model.impl.WatsonVehicleImpl")) {
+				"com.liferay.watson.model.impl.WatsonVehicleImpl")) {
+
 			return translateOutputWatsonVehicle(oldModel);
 		}
 		else if (oldModelClassName.endsWith("Clp")) {
@@ -678,24 +715,26 @@ public class ClpSerializer {
 				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
 
 				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
+					"getClpSerializerClass");
 
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
+				Class<?> oldClpSerializerClass =
+					(Class<?>)getClpSerializerClassMethod.invoke(oldModel);
 
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
+				Class<?> newClpSerializerClass = classLoader.loadClass(
+					oldClpSerializerClass.getName());
 
 				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
+					BaseModel.class);
 
 				Class<?> oldModelModelClass = oldModel.getModelClass();
 
 				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
+					oldModelModelClass.getSimpleName() + "RemoteModel");
 
 				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
 
 				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
+					oldRemoteModel);
 
 				return newModel;
 			}
@@ -710,7 +749,7 @@ public class ClpSerializer {
 	}
 
 	public static Object translateOutput(List<Object> oldList) {
-		List<Object> newList = new ArrayList<Object>(oldList.size());
+		List<Object> newList = new ArrayList<>(oldList.size());
 
 		for (int i = 0; i < oldList.size(); i++) {
 			Object curObj = oldList.get(i);
@@ -733,28 +772,147 @@ public class ClpSerializer {
 		}
 	}
 
+	public static Object translateOutputWatsonActivity(BaseModel<?> oldModel) {
+		WatsonActivityClp newModel = new WatsonActivityClp();
+
+		newModel.setModelAttributes(oldModel.getModelAttributes());
+
+		newModel.setWatsonActivityRemoteModel(oldModel);
+
+		return newModel;
+	}
+
+	public static Object translateOutputWatsonAddress(BaseModel<?> oldModel) {
+		WatsonAddressClp newModel = new WatsonAddressClp();
+
+		newModel.setModelAttributes(oldModel.getModelAttributes());
+
+		newModel.setWatsonAddressRemoteModel(oldModel);
+
+		return newModel;
+	}
+
+	public static Object translateOutputWatsonHistory(BaseModel<?> oldModel) {
+		WatsonHistoryClp newModel = new WatsonHistoryClp();
+
+		newModel.setModelAttributes(oldModel.getModelAttributes());
+
+		newModel.setWatsonHistoryRemoteModel(oldModel);
+
+		return newModel;
+	}
+
+	public static Object translateOutputWatsonIncident(BaseModel<?> oldModel) {
+		WatsonIncidentClp newModel = new WatsonIncidentClp();
+
+		newModel.setModelAttributes(oldModel.getModelAttributes());
+
+		newModel.setWatsonIncidentRemoteModel(oldModel);
+
+		return newModel;
+	}
+
+	public static Object translateOutputWatsonIncidentRel(
+		BaseModel<?> oldModel) {
+
+		WatsonIncidentRelClp newModel = new WatsonIncidentRelClp();
+
+		newModel.setModelAttributes(oldModel.getModelAttributes());
+
+		newModel.setWatsonIncidentRelRemoteModel(oldModel);
+
+		return newModel;
+	}
+
+	public static Object translateOutputWatsonListType(BaseModel<?> oldModel) {
+		WatsonListTypeClp newModel = new WatsonListTypeClp();
+
+		newModel.setModelAttributes(oldModel.getModelAttributes());
+
+		newModel.setWatsonListTypeRemoteModel(oldModel);
+
+		return newModel;
+	}
+
+	public static Object translateOutputWatsonListTypeRel(
+		BaseModel<?> oldModel) {
+
+		WatsonListTypeRelClp newModel = new WatsonListTypeRelClp();
+
+		newModel.setModelAttributes(oldModel.getModelAttributes());
+
+		newModel.setWatsonListTypeRelRemoteModel(oldModel);
+
+		return newModel;
+	}
+
+	public static Object translateOutputWatsonPerson(BaseModel<?> oldModel) {
+		WatsonPersonClp newModel = new WatsonPersonClp();
+
+		newModel.setModelAttributes(oldModel.getModelAttributes());
+
+		newModel.setWatsonPersonRemoteModel(oldModel);
+
+		return newModel;
+	}
+
+	public static Object translateOutputWatsonRelationship(
+		BaseModel<?> oldModel) {
+
+		WatsonRelationshipClp newModel = new WatsonRelationshipClp();
+
+		newModel.setModelAttributes(oldModel.getModelAttributes());
+
+		newModel.setWatsonRelationshipRemoteModel(oldModel);
+
+		return newModel;
+	}
+
+	public static Object translateOutputWatsonResource(BaseModel<?> oldModel) {
+		WatsonResourceClp newModel = new WatsonResourceClp();
+
+		newModel.setModelAttributes(oldModel.getModelAttributes());
+
+		newModel.setWatsonResourceRemoteModel(oldModel);
+
+		return newModel;
+	}
+
+	public static Object translateOutputWatsonVehicle(BaseModel<?> oldModel) {
+		WatsonVehicleClp newModel = new WatsonVehicleClp();
+
+		newModel.setModelAttributes(oldModel.getModelAttributes());
+
+		newModel.setWatsonVehicleRemoteModel(oldModel);
+
+		return newModel;
+	}
+
 	public static Throwable translateThrowable(Throwable throwable) {
 		if (_useReflectionToTranslateThrowable) {
 			ObjectInputStream objectInputStream = null;
 			ObjectOutputStream objectOutputStream = null;
 
 			try {
-				UnsyncByteArrayOutputStream unsyncByteArrayOutputStream = new UnsyncByteArrayOutputStream();
-				objectOutputStream = new ObjectOutputStream(unsyncByteArrayOutputStream);
+				UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
+					new UnsyncByteArrayOutputStream();
+				objectOutputStream = new ObjectOutputStream(
+					unsyncByteArrayOutputStream);
 
 				objectOutputStream.writeObject(throwable);
 
 				objectOutputStream.flush();
 
 				UnsyncByteArrayInputStream unsyncByteArrayInputStream = new UnsyncByteArrayInputStream(unsyncByteArrayOutputStream.unsafeGetByteArray(),
-						0, unsyncByteArrayOutputStream.size());
+					0, unsyncByteArrayOutputStream.size());
 
 				Thread currentThread = Thread.currentThread();
 
-				ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+				ClassLoader contextClassLoader =
+					currentThread.getContextClassLoader();
 
 				objectInputStream = new ClassLoaderObjectInputStream(unsyncByteArrayInputStream,
-						contextClassLoader);
+					contextClassLoader);
 
 				throwable = (Throwable)objectInputStream.readObject();
 
@@ -809,67 +967,78 @@ public class ClpSerializer {
 		String className = clazz.getName();
 
 		if (className.equals(
-					"com.liferay.watson.exception.NoSuchActivityException")) {
+				"com.liferay.watson.exception.NoSuchActivityException")) {
+
 			return new com.liferay.watson.exception.NoSuchActivityException(throwable.getMessage(),
 				throwable.getCause());
 		}
 
 		if (className.equals(
-					"com.liferay.watson.exception.NoSuchAddressException")) {
+				"com.liferay.watson.exception.NoSuchAddressException")) {
+
 			return new com.liferay.watson.exception.NoSuchAddressException(throwable.getMessage(),
 				throwable.getCause());
 		}
 
 		if (className.equals(
-					"com.liferay.watson.exception.NoSuchHistoryException")) {
+				"com.liferay.watson.exception.NoSuchHistoryException")) {
+
 			return new com.liferay.watson.exception.NoSuchHistoryException(throwable.getMessage(),
 				throwable.getCause());
 		}
 
 		if (className.equals(
-					"com.liferay.watson.exception.NoSuchIncidentException")) {
+				"com.liferay.watson.exception.NoSuchIncidentException")) {
+
 			return new com.liferay.watson.exception.NoSuchIncidentException(throwable.getMessage(),
 				throwable.getCause());
 		}
 
 		if (className.equals(
-					"com.liferay.watson.exception.NoSuchIncidentRelException")) {
+				"com.liferay.watson.exception.NoSuchIncidentRelException")) {
+
 			return new com.liferay.watson.exception.NoSuchIncidentRelException(throwable.getMessage(),
 				throwable.getCause());
 		}
 
 		if (className.equals(
-					"com.liferay.watson.exception.NoSuchListTypeException")) {
+				"com.liferay.watson.exception.NoSuchListTypeException")) {
+
 			return new com.liferay.watson.exception.NoSuchListTypeException(throwable.getMessage(),
 				throwable.getCause());
 		}
 
 		if (className.equals(
-					"com.liferay.watson.exception.NoSuchListTypeRelException")) {
+				"com.liferay.watson.exception.NoSuchListTypeRelException")) {
+
 			return new com.liferay.watson.exception.NoSuchListTypeRelException(throwable.getMessage(),
 				throwable.getCause());
 		}
 
 		if (className.equals(
-					"com.liferay.watson.exception.NoSuchPersonException")) {
+				"com.liferay.watson.exception.NoSuchPersonException")) {
+
 			return new com.liferay.watson.exception.NoSuchPersonException(throwable.getMessage(),
 				throwable.getCause());
 		}
 
 		if (className.equals(
-					"com.liferay.watson.exception.NoSuchRelationshipException")) {
+				"com.liferay.watson.exception.NoSuchRelationshipException")) {
+
 			return new com.liferay.watson.exception.NoSuchRelationshipException(throwable.getMessage(),
 				throwable.getCause());
 		}
 
 		if (className.equals(
-					"com.liferay.watson.exception.NoSuchResourceException")) {
+				"com.liferay.watson.exception.NoSuchResourceException")) {
+
 			return new com.liferay.watson.exception.NoSuchResourceException(throwable.getMessage(),
 				throwable.getCause());
 		}
 
 		if (className.equals(
-					"com.liferay.watson.exception.NoSuchVehicleException")) {
+				"com.liferay.watson.exception.NoSuchVehicleException")) {
+
 			return new com.liferay.watson.exception.NoSuchVehicleException(throwable.getMessage(),
 				throwable.getCause());
 		}
@@ -877,118 +1046,9 @@ public class ClpSerializer {
 		return throwable;
 	}
 
-	public static Object translateOutputWatsonActivity(BaseModel<?> oldModel) {
-		WatsonActivityClp newModel = new WatsonActivityClp();
+	private static final Log _log = LogFactoryUtil.getLog(ClpSerializer.class);
 
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setWatsonActivityRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	public static Object translateOutputWatsonAddress(BaseModel<?> oldModel) {
-		WatsonAddressClp newModel = new WatsonAddressClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setWatsonAddressRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	public static Object translateOutputWatsonHistory(BaseModel<?> oldModel) {
-		WatsonHistoryClp newModel = new WatsonHistoryClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setWatsonHistoryRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	public static Object translateOutputWatsonIncident(BaseModel<?> oldModel) {
-		WatsonIncidentClp newModel = new WatsonIncidentClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setWatsonIncidentRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	public static Object translateOutputWatsonIncidentRel(BaseModel<?> oldModel) {
-		WatsonIncidentRelClp newModel = new WatsonIncidentRelClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setWatsonIncidentRelRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	public static Object translateOutputWatsonListType(BaseModel<?> oldModel) {
-		WatsonListTypeClp newModel = new WatsonListTypeClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setWatsonListTypeRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	public static Object translateOutputWatsonListTypeRel(BaseModel<?> oldModel) {
-		WatsonListTypeRelClp newModel = new WatsonListTypeRelClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setWatsonListTypeRelRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	public static Object translateOutputWatsonPerson(BaseModel<?> oldModel) {
-		WatsonPersonClp newModel = new WatsonPersonClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setWatsonPersonRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	public static Object translateOutputWatsonRelationship(
-		BaseModel<?> oldModel) {
-		WatsonRelationshipClp newModel = new WatsonRelationshipClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setWatsonRelationshipRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	public static Object translateOutputWatsonResource(BaseModel<?> oldModel) {
-		WatsonResourceClp newModel = new WatsonResourceClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setWatsonResourceRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	public static Object translateOutputWatsonVehicle(BaseModel<?> oldModel) {
-		WatsonVehicleClp newModel = new WatsonVehicleClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setWatsonVehicleRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	private static Log _log = LogFactoryUtil.getLog(ClpSerializer.class);
 	private static String _servletContextName;
 	private static boolean _useReflectionToTranslateThrowable = true;
+
 }

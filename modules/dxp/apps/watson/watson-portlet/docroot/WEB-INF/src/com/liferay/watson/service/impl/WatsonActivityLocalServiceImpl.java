@@ -14,14 +14,11 @@
 
 package com.liferay.watson.service.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.watson.service.base.WatsonActivityLocalServiceBaseImpl;
 
 /**
  * @author Eddie Olson
  */
-@ProviderType
 public class WatsonActivityLocalServiceImpl
 	extends WatsonActivityLocalServiceBaseImpl {
 }

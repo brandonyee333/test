@@ -15,9 +15,7 @@
 --%>
 
 <%@ page import="com.liferay.alloy.mvc.AlloyController" %><%@
-page import="com.liferay.alloy.mvc.AlloyException" %><%@
 page import="com.liferay.alloy.mvc.AlloyPermission" %><%@
-page import="com.liferay.alloy.mvc.AlloyServiceInvoker" %><%@
 page import="com.liferay.alloy.mvc.BaseAlloyControllerImpl" %><%@
 page import="com.liferay.alloy.mvc.BaseAlloyIndexer" %><%@
 page import="com.liferay.counter.kernel.service.CounterLocalServiceUtil" %><%@
@@ -109,17 +107,9 @@ page import="com.liferay.portal.kernel.util.StringPool" %><%@
 page import="com.liferay.portal.kernel.util.StringUtil" %><%@
 page import="com.liferay.portal.kernel.util.UnicodeProperties" %><%@
 page import="com.liferay.portal.kernel.util.Validator" %><%@
-page import="com.liferay.watson.model.WatsonAddressWrapper" %><%@
 page import="com.liferay.watson.model.WatsonIncident" %><%@
-page import="com.liferay.watson.model.WatsonIncidentWrapper" %><%@
 page import="com.liferay.watson.model.WatsonListType" %><%@
 page import="com.liferay.watson.model.WatsonListTypeRel" %><%@
-page import="com.liferay.watson.model.WatsonListTypeRelWrapper" %><%@
-page import="com.liferay.watson.model.WatsonListTypeWrapper" %><%@
-page import="com.liferay.watson.model.WatsonPersonWrapper" %><%@
-page import="com.liferay.watson.model.WatsonRelationshipWrapper" %><%@
-page import="com.liferay.watson.model.WatsonResourceWrapper" %><%@
-page import="com.liferay.watson.model.WatsonVehicleWrapper" %><%@
 page import="com.liferay.watson.util.PortletKeys" %><%@
 page import="com.liferay.watson.util.RoleConstants" %>
 

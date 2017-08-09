@@ -18,7 +18,6 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
-
 import com.liferay.watson.service.ClpSerializer;
 import com.liferay.watson.service.WatsonActivityLocalServiceUtil;
 import com.liferay.watson.service.WatsonAddressLocalServiceUtil;
@@ -37,6 +36,7 @@ import com.liferay.watson.service.WatsonVehicleLocalServiceUtil;
  */
 @ProviderType
 public class ClpMessageListener extends BaseMessageListener {
+
 	public static String getServletContextName() {
 		return ClpSerializer.getServletContextName();
 	}
@@ -47,7 +47,8 @@ public class ClpMessageListener extends BaseMessageListener {
 		String servletContextName = message.getString("servletContextName");
 
 		if (command.equals("undeploy") &&
-				servletContextName.equals(getServletContextName())) {
+			servletContextName.equals(getServletContextName())) {
+
 			WatsonActivityLocalServiceUtil.clearService();
 
 			WatsonAddressLocalServiceUtil.clearService();
@@ -71,4 +72,5 @@ public class ClpMessageListener extends BaseMessageListener {
 			WatsonVehicleLocalServiceUtil.clearService();
 		}
 	}
+
 }
