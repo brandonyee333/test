@@ -82,7 +82,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 
 	headerNames.add(StringPool.BLANK);
 
-	int[] types = new int[] {TicketAttachmentConstants.TYPE_HOTFIX, TicketAttachmentConstants.TYPE_LARGE_FILE, TicketAttachmentConstants.TYPE_LARGE_HOTFIX, TicketAttachmentConstants.TYPE_NONE};
+	int[] types = {TicketAttachmentConstants.TYPE_HOTFIX, TicketAttachmentConstants.TYPE_LARGE_FILE, TicketAttachmentConstants.TYPE_LARGE_HOTFIX, TicketAttachmentConstants.TYPE_NONE};
 
 	if (OSBTicketEntryPermission.contains(permissionChecker, ticketEntry, OSBActionKeys.UPDATE_BASIC)) {
 		types = ArrayUtil.append(TicketAttachmentConstants.TYPES, TicketAttachmentConstants.TYPES_LARGE);

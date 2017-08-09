@@ -2634,7 +2634,7 @@ public class TicketEntryLocalServiceImpl
 		else if ((oldStatus != TicketEntryConstants.STATUS_REOPENED) &&
 				 (status == TicketEntryConstants.STATUS_REOPENED)) {
 
-			int[] pendingTypes = new int[] {
+			int[] pendingTypes = {
 				TicketFlagConstants.TYPE_PENDING_LIFERAY,
 				TicketFlagConstants.TYPE_PENDING_PARTNER
 			};
@@ -3589,7 +3589,7 @@ public class TicketEntryLocalServiceImpl
 			long ticketEntryId, Date deleteDate)
 		throws PortalException {
 
-		int[] visibilities = new int[] {
+		int[] visibilities = {
 			VisibilityConstants.LIFERAY_INC, VisibilityConstants.PUBLIC,
 			VisibilityConstants.WORKERS
 		};

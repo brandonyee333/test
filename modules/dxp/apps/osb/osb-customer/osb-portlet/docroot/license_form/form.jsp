@@ -305,31 +305,31 @@ String redirect = ParamUtil.getString(request, "redirect");
 		<div class="field-group-grid">
 			<div class="unit">
 				<liferay-ui:input-field field="agreedToTermsOfUse" model="<%= User.class %>" />
-					<label id="<portlet:namespace />termsOfUseLabel"><liferay-ui:message key="i-understand-and-accept-the-terms-and-conditions-of-the-following-agreements" /></label>:
+				<label id="<portlet:namespace />termsOfUseLabel"><liferay-ui:message key="i-understand-and-accept-the-terms-and-conditions-of-the-following-agreements" /></label>:
 
-					<a class="txt-u" onClick="var eulaWindow = window.open('/c/portal/register_trial_license?eula=evaluation-license-agreement', 'eula', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=800'); void(''); eulaWindow.focus();">
-						<liferay-ui:message key="evaluation-license-agreement" />
-					</a>,
+				<a class="txt-u" onClick="var eulaWindow = window.open('/c/portal/register_trial_license?eula=evaluation-license-agreement', 'eula', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=800'); void(''); eulaWindow.focus();">
+					<liferay-ui:message key="evaluation-license-agreement" />
+				</a>,
 
-					<a class="txt-u" onClick="var eulaWindow = window.open('/c/portal/register_trial_license?eula=liferay-developer-studio', 'eula', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=800'); void(''); eulaWindow.focus();">
-						<liferay-ui:message key="eula-for-liferay-developer-studio" />
-					</a>,
+				<a class="txt-u" onClick="var eulaWindow = window.open('/c/portal/register_trial_license?eula=liferay-developer-studio', 'eula', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=800'); void(''); eulaWindow.focus();">
+					<liferay-ui:message key="eula-for-liferay-developer-studio" />
+				</a>,
 
-					<%
-					JournalArticle article = null;
+				<%
+				JournalArticle article = null;
 
-					try {
-						Group guestGroup = GroupLocalServiceUtil.getGroup(company.getCompanyId(), GroupConstants.GUEST);
+				try {
+					Group guestGroup = GroupLocalServiceUtil.getGroup(company.getCompanyId(), GroupConstants.GUEST);
 
-						article = JournalArticleLocalServiceUtil.getArticleByUrlTitle(guestGroup.getGroupId(), "about-us-privacy-policy-legal-text");
-					}
-					catch (Exception e) {
-					}
-					%>
+					article = JournalArticleLocalServiceUtil.getArticleByUrlTitle(guestGroup.getGroupId(), "about-us-privacy-policy-legal-text");
+				}
+				catch (Exception e) {
+				}
+				%>
 
-					<a class="txt-u" onClick="var eulaWindow = window.open('/c/journal/view_article_content?groupId=<%= article.getGroupId() %>&articleId=<%= article.getArticleId() %>&version=<%= article.getVersion() %>', 'eula', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=800'); void(''); eulaWindow.focus();">
-						<liferay-ui:message key="privacy-policy" />
-					</a>
+				<a class="txt-u" onClick="var eulaWindow = window.open('/c/journal/view_article_content?groupId=<%= article.getGroupId() %>&articleId=<%= article.getArticleId() %>&version=<%= article.getVersion() %>', 'eula', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=800'); void(''); eulaWindow.focus();">
+					<liferay-ui:message key="privacy-policy" />
+				</a>
 			</div>
 		</div>
 

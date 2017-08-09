@@ -26,8 +26,6 @@ String tabs3 = ParamUtil.getString(request, "tabs3");
 String redirect = ParamUtil.getString(request, "redirect");
 
 String currentLanguageId = LanguageUtil.getLanguageId(request);
-Locale defaultLocale = LocaleUtil.getDefault();
-String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
 
 Locale[] locales = LanguageUtil.getAvailableLocales();
 %>

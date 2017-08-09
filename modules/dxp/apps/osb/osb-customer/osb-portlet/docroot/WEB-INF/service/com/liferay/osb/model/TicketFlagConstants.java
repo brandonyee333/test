@@ -33,9 +33,8 @@ public class TicketFlagConstants {
 
 	public static final int TYPE_READ_SOLUTION = 5;
 
-	public static final int[] TYPES_PENDING = new int[] {
-		TYPE_PENDING_CUSTOMER, TYPE_PENDING_LIFERAY, TYPE_PENDING_PARTNER
-	};
+	public static final int[] TYPES_PENDING =
+		{TYPE_PENDING_CUSTOMER, TYPE_PENDING_LIFERAY, TYPE_PENDING_PARTNER};
 
 	public static String getTypeLabel(int type) {
 		if (type == TYPE_LIFERAY_COMMENT_UNREAD) {

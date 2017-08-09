@@ -70,7 +70,7 @@ public class AccountEntryConstants {
 	public static final int TIER_STRATEGIC = 4;
 
 	public static final int[] TIERS =
-		new int[] {TIER_OEM, TIER_PREMIER, TIER_REGULAR, TIER_STRATEGIC};
+		{TIER_OEM, TIER_PREMIER, TIER_REGULAR, TIER_STRATEGIC};
 
 	public static final int TYPE_GROUP = 1;
 

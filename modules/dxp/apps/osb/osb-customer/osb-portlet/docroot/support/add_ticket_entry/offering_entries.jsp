@@ -93,7 +93,6 @@ List<OfferingEntryGroup> offeringEntryGroups = SupportUtil.getOfferingEntryGroup
 				List<SupportRegion> supportRegions = accountEntry.getSupportRegions();
 
 				for (OfferingEntryGroup offeringEntryGroup : offeringEntryGroups) {
-					AccountEntry curAccountEntry = offeringEntryGroup.getAccountEntry();
 					ProductEntry curProductEntry = offeringEntryGroup.getProductEntry();
 					SupportResponse curSupportResponse = offeringEntryGroup.getSupportResponse();
 

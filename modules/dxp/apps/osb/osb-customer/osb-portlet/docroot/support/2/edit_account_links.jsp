@@ -33,8 +33,6 @@
 		String url2 = ParamUtil.getString(request, "url2");
 		String url3 = ParamUtil.getString(request, "url3");
 
-		PortletURL portletURL = renderResponse.createRenderURL();
-
 		List<AccountLink> accountLinks = AccountLinkLocalServiceUtil.getAccountLinks(accountEntryId);
 		%>
 

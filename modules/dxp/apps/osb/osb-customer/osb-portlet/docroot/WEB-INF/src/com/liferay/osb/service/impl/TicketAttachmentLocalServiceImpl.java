@@ -434,7 +434,7 @@ public class TicketAttachmentLocalServiceImpl
 	public List<TicketAttachment> getTicketAttachments(
 		long ticketEntryId, int[] visibilities, int status) {
 
-		int[] types = new int[] {
+		int[] types = {
 			TicketAttachmentConstants.TYPE_HOTFIX,
 			TicketAttachmentConstants.TYPE_LARGE_FILE,
 			TicketAttachmentConstants.TYPE_LARGE_HOTFIX,
@@ -476,7 +476,7 @@ public class TicketAttachmentLocalServiceImpl
 	public int getTicketAttachmentsCount(
 		long ticketEntryId, int[] visibilities) {
 
-		int[] types = new int[] {
+		int[] types = {
 			TicketAttachmentConstants.TYPE_HOTFIX,
 			TicketAttachmentConstants.TYPE_LARGE_FILE,
 			TicketAttachmentConstants.TYPE_LARGE_HOTFIX,

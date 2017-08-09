@@ -764,7 +764,7 @@ public class AdminPortlet extends MVCPortlet {
 
 		List<Integer> types = new ArrayList<>();
 
-		String[] uploadFileNames = new String[] {"patch-level", "portal-ext"};
+		String[] uploadFileNames = {"patch-level", "portal-ext"};
 
 		try {
 			for (String uploadFileName : uploadFileNames) {

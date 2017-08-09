@@ -1290,7 +1290,7 @@ public class SupportPortlet extends MVCPortlet {
 
 		List<Integer> types = new ArrayList<>();
 
-		String[] uploadFileNames = new String[] {"patchLevel", "portalExt"};
+		String[] uploadFileNames = {"patchLevel", "portalExt"};
 
 		try {
 			for (String uploadFileName : uploadFileNames) {
@@ -2012,8 +2012,7 @@ public class SupportPortlet extends MVCPortlet {
 			PortletPreferences portletPreferences =
 				SupportUtil.getPortletPreferences();
 
-			String[] userGuideTypes =
-				new String[] {"customer", "liferay", "partner"};
+			String[] userGuideTypes = {"customer", "liferay", "partner"};
 
 			for (String userGuideType : userGuideTypes) {
 				File file = uploadPortletRequest.getFile(

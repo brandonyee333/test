@@ -57,8 +57,8 @@ PartnerEntryDisplayTerms displayTerms = new PartnerEntryDisplayTerms(renderReque
 		<div class="search-param-dropdown status" id="<portlet:namespace />status">
 
 			<%
-			String[] statusLabels = new String[] {WorkflowConstants.getStatusLabel(WorkflowConstants.STATUS_APPROVED), WorkflowConstants.getStatusLabel(WorkflowConstants.STATUS_INACTIVE)};
-			int[] statusValues = new int[] {WorkflowConstants.STATUS_APPROVED, WorkflowConstants.STATUS_INACTIVE};
+			String[] statusLabels = {WorkflowConstants.getStatusLabel(WorkflowConstants.STATUS_APPROVED), WorkflowConstants.getStatusLabel(WorkflowConstants.STATUS_INACTIVE)};
+			int[] statusValues = {WorkflowConstants.STATUS_APPROVED, WorkflowConstants.STATUS_INACTIVE};
 			%>
 
 			<liferay-util:include page="/support/2/advanced_search/multiple_select_checkboxes.jsp" servletContext="<%= application %>">

@@ -21,8 +21,6 @@ long offeringEntryId = ParamUtil.getLong(request, "offeringEntryId");
 
 OfferingEntry offeringEntry = OfferingEntryLocalServiceUtil.getOfferingEntry(offeringEntryId);
 
-ProductEntry productEntry = offeringEntry.getProductEntry();
-
 int envLFR = ParamUtil.getInteger(request, "envLFR");
 int type = ParamUtil.getInteger(request, "type");
 int purpose = ParamUtil.getInteger(request, "purpose");

@@ -59,7 +59,7 @@ public class Upgrade_20150326091908799_AuditEntry extends UpgradeProcess {
 		long classNameId = ClassNameLocalServiceUtil.getClassNameId(
 			TicketEntry.class.getName());
 
-		int[] visibilities = new int[] {
+		int[] visibilities = {
 			VisibilityConstants.ADMIN, VisibilityConstants.LIFERAY_INC,
 			VisibilityConstants.PUBLIC, VisibilityConstants.WORKERS
 		};

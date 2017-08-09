@@ -1596,7 +1596,7 @@ public class AccountEntryLocalServiceImpl
 				ExternalIdMapperConstants.TYPE_SALESFORCE,
 				salesforceOpportunityKey);
 
-		int[] orderEntryStatuses = new int[] {
+		int[] orderEntryStatuses = {
 			WorkflowConstants.STATUS_PENDING,
 			WorkflowConstants.STATUS_PENDING_VALIDATION
 		};

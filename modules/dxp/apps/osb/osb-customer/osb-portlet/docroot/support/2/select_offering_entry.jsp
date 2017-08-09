@@ -137,8 +137,6 @@ boolean addTicketPermission = OSBAccountEntryPermission.contains(permissionCheck
 
 						String rowHREF = null;
 
-						Date now = new Date();
-
 						String key = offeringEntryGroup.getKey();
 
 						if (!key.equals(offeringEntry.getKey()) && offeringEntryGroup.hasAvailableSupportTickets()) {

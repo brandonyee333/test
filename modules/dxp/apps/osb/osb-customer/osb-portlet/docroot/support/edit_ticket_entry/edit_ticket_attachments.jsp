@@ -124,7 +124,7 @@ portletURL.setParameter("ticketEntryId", String.valueOf(ticketEntryId));
 
 			SearchContainer searchContainer = new SearchContainer(renderRequest, null, null, SearchContainer.DEFAULT_CUR_PARAM, SearchContainer.DEFAULT_DELTA, portletURL, headerNames, "this-support-ticket-does-not-have-any-file-attachments");
 
-			int[] types = new int[] {TicketAttachmentConstants.TYPE_HOTFIX, TicketAttachmentConstants.TYPE_LARGE_FILE, TicketAttachmentConstants.TYPE_LARGE_HOTFIX, TicketAttachmentConstants.TYPE_NONE};
+			int[] types = {TicketAttachmentConstants.TYPE_HOTFIX, TicketAttachmentConstants.TYPE_LARGE_FILE, TicketAttachmentConstants.TYPE_LARGE_HOTFIX, TicketAttachmentConstants.TYPE_NONE};
 
 			if (OSBTicketEntryPermission.contains(permissionChecker, ticketEntry, OSBActionKeys.UPDATE_BASIC)) {
 				types = ArrayUtil.append(TicketAttachmentConstants.TYPES, TicketAttachmentConstants.TYPES_LARGE);

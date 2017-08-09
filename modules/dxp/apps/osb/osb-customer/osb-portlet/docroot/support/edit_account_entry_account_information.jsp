@@ -29,7 +29,6 @@ long accountEntryId = ParamUtil.getLong(request, "accountEntryId");
 AccountEntry accountEntry = AccountEntryServiceUtil.getAccountEntry(accountEntryId);
 
 PartnerEntry partnerEntry = accountEntry.getPartnerEntry();
-boolean partnerManagedSupport = accountEntry.isPartnerManagedSupport();
 
 boolean ticketWorker = false;
 

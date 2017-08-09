@@ -95,7 +95,7 @@
 					</div>
 				</c:when>
 				<c:otherwise>
-					<liferay-ui:icon cssClass="txt-c labor-hours-warning" id='<%= renderResponse.getNamespace() + "laborHoursWarning_" + supportTeam.getSupportTeamId() %>' image="../messages/alert" />
+					<liferay-ui:icon cssClass="labor-hours-warning txt-c" id='<%= renderResponse.getNamespace() + "laborHoursWarning_" + supportTeam.getSupportTeamId() %>' image="../messages/alert" />
 				</c:otherwise>
 			</c:choose>
 		</liferay-ui:search-container-column-text>
@@ -135,7 +135,7 @@
 					</div>
 				</c:when>
 				<c:otherwise>
-					<liferay-ui:icon cssClass="txt-c assigned-support-regions-warning" id='<%= renderResponse.getNamespace() + "supportRegionsWarning_" + supportTeam.getSupportTeamId() %>' image="../messages/alert" />
+					<liferay-ui:icon cssClass="assigned-support-regions-warning txt-c" id='<%= renderResponse.getNamespace() + "supportRegionsWarning_" + supportTeam.getSupportTeamId() %>' image="../messages/alert" />
 				</c:otherwise>
 			</c:choose>
 		</liferay-ui:search-container-column-text>
@@ -213,7 +213,7 @@
 			%>
 
 			<c:if test="<%= languageIds.isEmpty() %>">
-				<liferay-ui:icon cssClass="txt-c languages-warning" id='<%= renderResponse.getNamespace() + "languagesWarning_" + supportTeam.getSupportTeamId() %>' image="../messages/alert" />
+				<liferay-ui:icon cssClass="languages-warning txt-c" id='<%= renderResponse.getNamespace() + "languagesWarning_" + supportTeam.getSupportTeamId() %>' image="../messages/alert" />
 			</c:if>
 		</liferay-ui:search-container-column-text>
 
@@ -274,7 +274,7 @@
 					</div>
 				</c:when>
 				<c:otherwise>
-					<liferay-ui:icon cssClass="txt-c support-workers-warning" id='<%= renderResponse.getNamespace() + "supportWorkersWarning_" + supportTeam.getSupportTeamId() %>' image="../messages/alert" />
+					<liferay-ui:icon cssClass="support-workers-warning txt-c" id='<%= renderResponse.getNamespace() + "supportWorkersWarning_" + supportTeam.getSupportTeamId() %>' image="../messages/alert" />
 				</c:otherwise>
 			</c:choose>
 		</liferay-ui:search-container-column-text>

@@ -21,8 +21,6 @@ ResultRow row = (ResultRow)request.getAttribute(WebKeys.SEARCH_CONTAINER_RESULT_
 
 OfferingDefinition offeringDefinition = (OfferingDefinition)row.getObject();
 
-ProductEntry productEntry = offeringDefinition.getProductEntry();
-
 PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 %>
 

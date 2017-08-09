@@ -26,7 +26,7 @@ public class OfferingDefinitionConstants {
 	public static final long LIFETIME_INDEFINITE_VALUE =
 		36500 * 1440 * Time.MINUTE;
 
-	public static final Object[][] LIFETIME_VALUES_ARRAY = new Object[][] {
+	public static final Object[][] LIFETIME_VALUES_ARRAY = {
 		new Object[] {1, "1-minute"}, new Object[] {30 * 1440, "30-days"},
 		new Object[] {60 * 1440, "60-days"},
 		new Object[] {90 * 1440, "90-days"},
