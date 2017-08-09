@@ -206,7 +206,7 @@ public class KBArticleInfo {
 		return _assetCategoryDisplay.renderVocabularyCategories(vocabularyId);
 	}
 
-	private static final String[] _fields = new String[] {
+	private static final String[] _fields = {
 		FIELD_SECTION, FIELD_SUBSECTION, FIELD_TITLE, FIELD_URL_TITLE,
 		FIELD_AUDIENCE, FIELD_TAG
 	};
