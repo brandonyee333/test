@@ -1,5 +1,5 @@
-node_modules
-build
-dist
-liferay-theme.json
-.yo-rc.json
+*.lar
+/.web_bundle_build
+/build_gradle
+/dist
+/liferay-theme.json
