@@ -120,7 +120,9 @@ page import="com.liferay.watson.model.WatsonListTypeWrapper" %><%@
 page import="com.liferay.watson.model.WatsonPersonWrapper" %><%@
 page import="com.liferay.watson.model.WatsonRelationshipWrapper" %><%@
 page import="com.liferay.watson.model.WatsonResourceWrapper" %><%@
-page import="com.liferay.watson.model.WatsonVehicleWrapper" %>
+page import="com.liferay.watson.model.WatsonVehicleWrapper" %><%@
+page import="com.liferay.watson.util.PortletKeys" %><%@
+page import="com.liferay.watson.util.RoleConstants" %>
 
 <%@ page import="java.awt.Rectangle" %><%@
 page import="java.awt.geom.AffineTransform" %><%@
@@ -152,8 +154,7 @@ page import="java.util.Set" %>
 
 <%@ page import="javax.mail.internet.InternetAddress" %>
 
-<%@ page import="javax.portlet.PortletMode" %><%@
-page import="javax.portlet.PortletRequest" %><%@
+<%@ page import="javax.portlet.PortletRequest" %><%@
 page import="javax.portlet.PortletResponse" %><%@
 page import="javax.portlet.PortletURL" %><%@
 page import="javax.portlet.WindowState" %>
@@ -164,8 +165,6 @@ page import="org.apache.commons.csv.CSVRecord" %>
 
 <%@ include file="/WEB-INF/jsp/util/file_uploader_util.jspf" %>
 <%@ include file="/WEB-INF/jsp/util/migration_util.jspf" %>
-<%@ include file="/WEB-INF/jsp/util/portlet_keys.jspf" %>
-<%@ include file="/WEB-INF/jsp/util/role_constants.jspf" %>
 <%@ include file="/WEB-INF/jsp/util/watson_alloy_controller_impl.jspf" %>
 <%@ include file="/WEB-INF/jsp/util/watson_permission.jspf" %>
 <%@ include file="/WEB-INF/jsp/util/watson_util.jspf" %>
