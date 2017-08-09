@@ -54,7 +54,7 @@ List<OfferingEntryGroup> offeringEntryGroups = SupportUtil.getOfferingEntryGroup
 				<br />
 
 				<span class="txt-n">
-					<liferay-ui:message arguments='<%= "/group/customer/products/portal/support/service-life" %>' key="the-end-of-service-life-for-liferay-portal-6.0-ee-will-be-on-september-10-2017" />
+					<liferay-ui:message arguments='<%= new Object[] {"<a href=\"/group/customer/products/portal/support/service-life\">", "</a>"} %>' key="the-end-of-service-life-for-liferay-portal-6.0-ee-will-be-on-september-10-2017" />
 				</span>
 			</div>
 

@@ -119,7 +119,7 @@ String productLink = GetterUtil.getString(preferences.getValue("productLink_" + 
 
 		<br />
 
-		<span><liferay-ui:message arguments="<%= new String[] {LanguageUtil.get(pageContext, productEntryLESADisplayName), productLink} %>" key="known-issues-message" /></span>
+		<span><liferay-ui:message arguments='<%= new String[] {LanguageUtil.get(pageContext, productEntryLESADisplayName), "<a href=\"" + productLink + "\" target=\"_blank\">", "</a>"} %>' key="known-issues-message" /></span>
 	</div>
 </c:if>
 

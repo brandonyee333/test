@@ -37,7 +37,7 @@ boolean osbTrialPurchased = ExpandoValueLocalServiceUtil.getData(themeDisplay.ge
 	</liferay-util:include>
 </c:if>
 
-<liferay-ui:success key="purchased" message='<%= LanguageUtil.format(pageContext, "a-sales-representative-will-contact-you-shortly-if-you-are-not-contacted-in-a-few-days-please-contact-sales", "mailto:sales@liferay.com") %>' translateMessage="<%= false %>" />
+<liferay-ui:success key="purchased" message='<%= LanguageUtil.format(pageContext, "a-sales-representative-will-contact-you-shortly-if-you-are-not-contacted-in-a-few-days-please-contact-sales", new String[] {"<a href=\"mailto:sales@liferay.com\">, "</a>"}) %>' translateMessage="<%= false %>" />
 
 <liferay-ui:error exception="<%= LicenseKeyRegistrationException.class %>" message='<%= LanguageUtil.format(pageContext, "you-must-agree-to-allow-liferay-to-contact-you-regarding-your-ee-trial-key", themeDisplay.getURLMyAccount() + "#_LFR_FN__2_notifications") %>' />
 <liferay-ui:error exception="<%= OfferingEntryStatusException.class %>" message="you-have-reached-the-maximum-allowed-number-of-trial-keys" />
@@ -49,7 +49,7 @@ boolean osbTrialPurchased = ExpandoValueLocalServiceUtil.getData(themeDisplay.ge
 				<p>
 					<strong><%= LanguageUtil.format(pageContext, "welcome-x", StringPool.SPACE + HtmlUtil.escape(user.getFullName())) %></strong>
 
-					<%= LanguageUtil.format(pageContext, "license-management-help", "mailto:sales@liferay.com") %>
+					<%= LanguageUtil.format(pageContext, "license-management-help", "<a href=\"mailto:sales@liferay.com\">", "</a>") %>
 				</p>
 			</div>
 		</div>

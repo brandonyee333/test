@@ -196,7 +196,7 @@ if (accountEntry != null) {
 
 					<c:if test="<%= Validator.isNotNull(componentLink) %>">
 						<span class="component-link" id="<portlet:namespace />componentLinkDisplay">
-							<%= LanguageUtil.format(pageContext, "creating-x-tickets", new Object[] {componentLink, TicketEntryConstants.getComponentLabel(component)}) %>
+							<%= LanguageUtil.format(pageContext, "creating-x-tickets", new Object[] {"<a href=\"" + componentLink + "\" target=\"_blank\">", TicketEntryConstants.getComponentLabel(component), "</a>"}) %>
 						</span>
 					</c:if>
 
