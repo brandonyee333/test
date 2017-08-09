@@ -1,6 +1,30 @@
 @import url(../../common/css/dialog.css);
 
 .osb-portlet-license {
+	#toggle_id_license_key_searchadvanced {
+		padding-top: 10px;
+	}
+
+	#toggle_id_license_key_searchbasic input {
+		-moz-border-radius: 2px;
+		-webkit-border-radius: 2px;
+		border-radius: 2px;
+		font: 20px/1.33 Arial;
+		height: 32px;
+		padding: 1px;
+
+		&.aui-button-input-submit {
+			height: 34px;
+			width: 160px;
+		}
+
+		&.aui-field-input {
+			border: 1px solid #BBB;
+			margin: 0 20px 0 0;
+			width: 488px;
+		}
+	}
+
 	.callout-a {
 		background-color: #FFF;
 	}
@@ -34,10 +58,10 @@
 		font-size: 10px;
 		padding: 10px;
 		vertical-align: bottom;
-	}
 
-	.info a {
-		vertical-align: bottom;
+		a {
+			vertical-align: bottom;
+		}
 	}
 
 	.large-btn {
@@ -53,25 +77,26 @@
 		width: auto;
 	}
 
-	.license-customer .results-grid {
-		margin: 50px 50px 0 50px;
-	}
+	.license-customer {
+		.results-grid {
+			margin: 50px 50px 0 50px;
+		}
 
-	.license-customer .results-header {
-		background-color: #D1D6DC;
-	}
+		.results-header {
+			background-color: #D1D6DC;
+		}
 
-	.license-customer .taglib-search-iterator {
-		border-collapse: separate;
-		*border-collapse: expression('separate', cellSpacing=0);
-		margin: 0 0 18px;
-	}
+		.taglib-search-iterator {
+			*border-collapse: expression('separate', cellSpacing=0);
+			border-collapse: separate;
+			margin: 0 0 18px;
 
-	.license-customer .taglib-search-iterator td,
-	.license-customer .taglib-search-iterator th {
-		border-bottom: none;
-		border-top: 1px solid #BABEC2;
-		padding: 8px 10px 9px;
+			td, th {
+				border-bottom-width: 0;
+				border-top: 1px solid #BABEC2;
+				padding: 8px 10px 9px;
+			}
+		}
 	}
 
 	.license-input-heading {
@@ -113,57 +138,33 @@
 
 	.taglib-search-iterator {
 		background: none;
-		border: 0;
-	}
+		border-width: 0;
 
-	.taglib-search-iterator a {
-		text-decoration: none;
-	}
+		a {
+			text-decoration: none;
 
-	.taglib-search-iterator a.btn-a {
-		color: #FFF;
-	}
+			&.btn-a {
+				color: #FFF;
+			}
+		}
 
-	.taglib-search-iterator .greyout {
-		color: #C7C8C8;
-	}
+		td {
+			border-bottom: 1px solid #BABEC2;
+			padding: 10px;
+		}
 
-	.taglib-search-iterator td {
-		border-bottom: 1px solid #BABEC2;
-		padding: 10px;
-	}
+		th {
+			border-bottom: 1px solid #BABEC1;
+			font-weight: bold;
+		}
 
-	.taglib-search-iterator th {
-		border-bottom: 1px solid #BABEC1;
-		font-weight: bold;
+		.greyout {
+			color: #C7C8C8;
+		}
 	}
 
 	.taglib-search-toggle {
 		padding: 0 20px;
-	}
-
-	#toggle_id_license_key_searchadvanced {
-		padding-top: 10px;
-	}
-
-	#toggle_id_license_key_searchbasic input {
-		border-radius: 2px;
-		-moz-border-radius: 2px;
-		-webkit-border-radius: 2px;
-		font: 20px/1.33 Arial;
-		height: 32px;
-		padding: 1px;
-	}
-
-	#toggle_id_license_key_searchbasic input.aui-button-input-submit {
-		height: 34px;
-		width: 160px;
-	}
-
-	#toggle_id_license_key_searchbasic input.aui-field-input {
-		border: 1px solid #BBBBBB;
-		margin: 0 20px 0 0;
-		width: 488px;
 	}
 
 	.u-nfo-c {
@@ -175,10 +176,6 @@
 
 	.content-column-content {
 		word-wrap: break-word;
-	}
-
-	.v-active {
-		background: #00ADEF;
 	}
 
 	.v-active {
