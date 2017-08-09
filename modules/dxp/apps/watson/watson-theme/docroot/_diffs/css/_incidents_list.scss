@@ -1,0 +1,79 @@
+.incidents-index {
+	height: calc(100vh - #{$headerHeight});
+	width: 100%;
+
+	.incidents-list {
+		border: 1px solid $neutralLighter;
+		box-sizing: border-box;
+		height: calc(100% - #{$contentHeaderHeight});
+		overflow: hidden;
+		overflow-y: auto;
+		width: 100%;
+
+		.incident-row {
+			background-color: $lightest;
+			border-bottom: 1px solid $neutralLighter;
+			height: 146px;
+			padding: 0 20px;
+			position: relative;
+
+			&:last-child {
+				border-bottom-width: 0;
+			}
+
+			.row-header-container, .row-body-container, .row-footer-container {
+				display: inline-block;
+				vertical-align: top;
+			}
+
+			.row-header-container {
+				width: calc(433px - 24px);
+
+				.row-header, .row-header-detail {
+					display: inline-block;
+				}
+
+				.row-reported-by, .row-sub-header {
+					display: block;
+				}
+
+				.row-header {
+					margin-top: 24px;
+
+					@include row-header-text;
+				}
+
+				.row-header-detail {
+					margin-left: 8px;
+
+					@include row-header-detail-text;
+				}
+
+				.row-sub-header {
+					@include row-sub-header-text;
+				}
+
+				.row-reported-by {
+					margin-top: 29px;
+
+					@include small-info-text;
+				}
+			}
+
+			.row-body-container {
+				padding-top: 34px;
+
+				.row-content {
+					display: block;
+					margin-bottom: 12px;
+
+					.row-content-info, .row-content-label {
+						display: inline-block;
+
+						@include small-info-text;
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,50 @@
+#root {
+	height: calc(100vh - #{$headerHeight});
+	width: 100%;
+}
+
+.positive {
+	color: $positiveMedium;
+}
+
+.header-container {
+	.main-header {
+		@include main-header;
+
+		margin: 0 0 20px;
+	}
+
+	.sub-header {
+		margin: 0 0 20px;
+
+		@include sub-header;
+	}
+}
+
+.content-container, .sidebar {
+	vertical-align: top;
+}
+
+.content-container {
+	box-sizing: border-box;
+	display: inline-block;
+	height: 100%;
+	overflow: hidden;
+	width: calc(100% - #{$sidebarWidth});
+
+	.content-header {
+		border-bottom: 1px solid $neutralDarker;
+
+		@include content-header;
+
+		margin: 80px 0 48px;
+		padding: 0 0 10px;
+	}
+}
+
+.sidebar {
+	box-sizing: border-box;
+	display: inline-block;
+	padding: 64px 20px 0 0;
+	width: $sidebarWidth;
+}

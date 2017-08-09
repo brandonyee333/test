@@ -1,0 +1,111 @@
+/* ---------- DXP styling ---------- */
+
+html body {
+	&.site {
+		padding-bottom: 0;
+	}
+
+	#wrapper.hide-dockbar {
+		margin: 0;
+		overflow: hidden;
+		padding: 0;
+
+		.portlet {
+			margin-bottom: 0;
+
+			&#portlet_new-password, &#portlet_password-reminder {
+				box-shadow: $mediumShadow;
+				margin: calc(50vh - 325px) auto 30px;
+				max-width: 512px;
+				min-width: 320px;
+				padding: 50px 0;
+
+				.portlet-content {
+					margin: 0 auto;
+					width: 285px;
+
+					label {
+						color: $neutralLight;
+						font-size: 12px;
+						font-weight: 500;
+						letter-spacing: 0.15em;
+						margin-bottom: 14px;
+					}
+
+					.btn {
+						padding: 14px 90px 16px;
+
+						@include default-button;
+					}
+
+					.button-holder {
+						display: flex;
+						justify-content: center;
+						margin: 30px 0 20px;
+					}
+
+					.form-control {
+						border-color: $neutralLight;
+						border-radius: $standardBorderRadius;
+						color: $neutralLight;
+						font-size: 18px;
+						height: auto;
+						padding: 14px 18px;
+
+						&:focus {
+							border-color: $neutralDarker;
+							box-shadow: none;
+							color: $neutralDarker;
+						}
+
+						.has-error &, .has-success & {
+							box-shadow: none;
+						}
+					}
+
+					.has-error {
+						.control-label, .help-block {
+							color: $negativeMedium;
+						}
+
+						.form-control {
+							border-color: $negativeMedium;
+							box-shadow: none;
+						}
+					}
+
+					.help-block {
+						font-size: 12px;
+						font-weight: 500;
+					}
+				}
+			}
+
+			.portlet-topper {
+				display: none;
+			}
+
+			.portlet-content {
+				padding: 0;
+			}
+		}
+	}
+}
+
+.container-fluid {
+	display: none;
+
+	&.hide-dockbar {
+		display: block;
+	}
+}
+
+.control-menu {
+	height: 10px;
+	overflow: hidden;
+	transition: height 0.3s;
+
+	&:hover {
+		height: 65px;
+	}
+}

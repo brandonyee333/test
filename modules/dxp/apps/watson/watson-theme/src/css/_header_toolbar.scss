@@ -1,0 +1,67 @@
+.watson-header-toolbar {
+	background-color: $lightest;
+	border-bottom: 1px solid $neutralLighter;
+	height: 60px;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 500;
+
+	.watson-header-toolbar-content {
+		align-items: center;
+		display: flex;
+		height: 100%;
+		margin: 0 auto;
+		max-width: $contentWidth;
+		width: 100%;
+
+		.watson-logo-link {
+			.watson-logo {
+				background: url(../images/zoe_logo.png) no-repeat;
+				background-size: cover;
+				content: '';
+				height: 40px;
+				width: 86px;
+			}
+		}
+
+		.watson-logout {
+			color: $neutralLight;
+			font-family: $primaryFontStack;
+			font-size: 15px;
+			max-height: 55px;
+			min-width: 125px;
+			transition: color 0.2s $transitionSoft;
+
+			.dropdown {
+				color: $neutralLight;
+
+				&:focus, &:hover {
+					color: $neutralDark;
+					text-decoration: none;
+				}
+
+				a {
+					color: $neutralLight;
+
+					&:focus, &:hover {
+						color: $neutralDark;
+					}
+				}
+			}
+		}
+	}
+
+	.watson-toggle {
+		&.language-toggle {
+			margin-left: auto;
+			margin-right: 15px;
+		}
+	}
+}
+
+@media print {
+	.watson-header-toolbar {
+		display: none;
+	}
+}

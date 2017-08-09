@@ -1,0 +1,158 @@
+.sidebar {
+	border-right: 1px solid $neutralLighter;
+	box-sizing: border-box;
+	height: calc(100vh - 40px);
+	max-width: $sidebarWidth;
+	overflow-x: hidden;
+	overflow-y: auto;
+	padding: 20px 24px 0 10px;
+	position: fixed;
+	top: 60px;
+	width: 100%;
+
+	.watson-button.primary, .watson-button {
+		height: 57px;
+		width: 253px;
+	}
+
+	.button {
+		height: 50px;
+		margin: 20px 0 30px;
+	}
+
+	.header-container {
+		margin: -8px 0 35px;
+
+		.main-header {
+			@include main-header;
+
+			margin: 0 0 10px;
+		}
+
+		.meta-header {
+			@include meta-header;
+		}
+
+		.sub-header {
+			margin: 0 0 10px;
+
+			@include sub-header;
+		}
+	}
+
+	.metal-react-container {
+		max-width: 270px;
+		width: 100%;
+	}
+
+	.watson-nav {
+		color: $neutralLight;
+		font-family: $primaryFontStack;
+		font-size: 15px;
+
+		ul > ul > li.watson-nav-entry {
+			&:hover .watson-nav-link:before {
+				border-top-color: $neutralDarker;
+			}
+
+			.watson-nav-link {
+				width: calc(100% - 40px);
+
+				&:before {
+					border-top: 1px solid $neutralLight;
+					content: '';
+					display: inline-block;
+					margin-right: 10px;
+					padding-bottom: 0.25em;
+					transition: border-color 0.2s $transitionSoft;
+					width: 15px;
+				}
+			}
+		}
+
+		ul.collapsible {
+			overflow: hidden;
+
+			&.collapsed {
+				height: 0;
+			}
+		}
+
+		.watson-nav-entry {
+			margin: 0 0 22px;
+			transition: color 0.2s $transitionSoft, border-color 0.15s $transitionSoft;
+			width: 100%;
+
+			&:hover, &.selected {
+				color: $neutralDarker;
+			}
+
+			&.collapsible a:first-child {
+				width: calc(100% - 40px);
+			}
+
+			&.selected {
+				.collapse-arrow, .watson-nav-link {
+					border-bottom-color: $neutralDarker;
+				}
+
+				.collapse-arrow a {
+					border-left-color: $neutralDarker;
+
+					&:before {
+						color: $neutralDarker;
+					}
+				}
+			}
+
+			.collapse-arrow {
+				border-bottom: 1px solid transparent;
+				display: inline-block;
+				transition: border-color 0.15s $transitionSoft;
+				width: 40px;
+
+				a {
+					border-left: 1px solid $neutralLight;
+					margin-left: 5px;
+					position: relative;
+					transition: border-color 0.15s $transitionSoft;
+
+					&:hover {
+						border-left-color: $neutralDarker;
+
+						&:before {
+							color: $neutralDarker;
+						}
+					}
+
+					&:before {
+						content: $downCaret;
+						cursor: pointer;
+						padding-left: 6px;
+						padding-right: 10px;
+						position: absolute;
+						transition: color 0.2s $transitionSoft;
+
+						@include fontAwesomeIcon;
+					}
+				}
+
+				&.collapsed a:before {
+					content: $leftCaret;
+				}
+			}
+
+			.watson-nav-link {
+				border-bottom: 1px solid transparent;
+				color: inherit;
+				cursor: pointer;
+				display: inline-block;
+				width: 100%;
+
+				&:focus, &:hover {
+					text-decoration: none;
+				}
+			}
+		}
+	}
+}

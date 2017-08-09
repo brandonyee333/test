@@ -1,0 +1,97 @@
+.incidents-metrics {
+	height: 100%;
+	width: 100%;
+
+	.content {
+		display: block;
+		margin-top: 15px;
+
+		.map-wrapper {
+			height: 500px;
+			max-height: 900px;
+			max-width: 900px;
+			min-height: 200px;
+			min-width: 200px;
+			width: 100%;
+
+			.map-container {
+				box-shadow: $mapShadow;
+				height: 100%;
+				width: 100%;
+
+				.metal-react-container {
+					height: 100%;
+					width: 100%;
+
+					.infoWindow {
+						a {
+							color: $neutralDark;
+							font-size: 17px;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.sidebar {
+		.filter-header {
+			align-items: center;
+			color: $neutralMedium;
+			display: flex;
+			font-family: $primaryFontStack;
+			font-size: 15px;
+			font-weight: 200;
+			height: 40px;
+			justify-content: flex-start;
+			letter-spacing: 0.07em;
+			line-height: 1.6em;
+			margin: 40px 0 0;
+			width: 256px;
+		}
+
+		.filter-input {
+			padding: 0 0 20px;
+
+			.dynamic-select-input-group {
+				.metal-react-container {
+					max-width: 180px;
+					width: 100%;
+
+					&:nth-child(2) .Select-control {
+						height: 48px;
+						width: 164px;
+
+						.Select-arrow-zone:before {
+							padding-top: 2px;
+						}
+
+						.Select-input {
+							padding: 3px 0;
+						}
+
+						.Select-value {
+							padding: 7px 15px;
+						}
+					}
+				}
+
+				.watson-button.remove-button {
+					left: unset;
+					right: 16px;
+					top: 6px;
+				}
+			}
+		}
+
+		.metal-react-container .Select-control, input {
+			width: 100%;
+		}
+
+		.watson-button.primary, .watson-button {
+			height: 57px;
+			max-width: 270px;
+			width: 100%;
+		}
+	}
+}
