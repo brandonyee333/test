@@ -27,7 +27,6 @@
 
 	<liferay-ui:search-container-results
 		results="<%= portlets %>"
-		total="<%= portlets.size() %>"
 	/>
 
 	<liferay-ui:search-container-row

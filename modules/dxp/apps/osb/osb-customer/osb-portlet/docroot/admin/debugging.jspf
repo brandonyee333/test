@@ -33,7 +33,7 @@ String tabs3 = ParamUtil.getString(request, "tabs3", "license");
 			<portlet:param name="tabs3" value="rabbitmq" />
 		</portlet:actionURL>
 
-		<aui:form action="<%= debugRabbitMQURL %>" method="post" name="fm">
+		<aui:form action="<%= debugRabbitMQURL %>" method="post">
 			<table class="lfr-table">
 				<tr>
 					<td>
@@ -136,7 +136,7 @@ String tabs3 = ParamUtil.getString(request, "tabs3", "license");
 			<portlet:param name="tabs3" value="license" />
 		</portlet:actionURL>
 
-		<aui:form action="<%= debugLicenseFilesURL %>" enctype="multipart/form-data" method="post" name="fm">
+		<aui:form action="<%= debugLicenseFilesURL %>" enctype="multipart/form-data" method="post">
 			<div class="ctrl-holder">
 				<label for="<portlet:namespace />license"><liferay-ui:message key="license-file" /></label>
 

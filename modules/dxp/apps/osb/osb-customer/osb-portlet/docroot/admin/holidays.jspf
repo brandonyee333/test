@@ -20,7 +20,6 @@
 >
 	<liferay-ui:search-container-results
 		results="<%= HolidayCalendarLocalServiceUtil.getHolidayCalendars(searchContainer.getStart(), searchContainer.getEnd()) %>"
-		total="<%= HolidayCalendarLocalServiceUtil.getHolidayCalendarsCount() %>"
 	/>
 
 	<liferay-ui:search-container-row

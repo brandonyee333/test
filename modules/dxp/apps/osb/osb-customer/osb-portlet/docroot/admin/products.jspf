@@ -22,7 +22,6 @@
 >
 	<liferay-ui:search-container-results
 		results="<%= ProductEntryLocalServiceUtil.getProductEntries(searchContainer.getStart(), searchContainer.getEnd()) %>"
-		total="<%= ProductEntryLocalServiceUtil.getProductEntriesCount() %>"
 	/>
 
 	<liferay-ui:search-container-row

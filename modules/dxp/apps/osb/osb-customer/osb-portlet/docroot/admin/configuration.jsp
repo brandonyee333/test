@@ -46,7 +46,7 @@ Locale[] locales = LanguageUtil.getAvailableLocales();
 
 <liferay-portlet:actionURL portletConfiguration="true" var="configurationURL" />
 
-<aui:form action="<%= configurationURL %>" method="post" name="fm">
+<aui:form action="<%= configurationURL %>" method="post">
 	<aui:input name="<%= Constants.CMD %>" type="hidden" value="<%= Constants.UPDATE %>" />
 	<aui:input name="tabs1" type="hidden" value="<%= tabs1 %>" />
 	<aui:input name="tabs2" type="hidden" value="<%= tabs2 %>" />
@@ -274,16 +274,14 @@ Locale[] locales = LanguageUtil.getAvailableLocales();
 							</td>
 							<td>
 								<liferay-ui:input-date
-									dayNullable="<%= false %>"
 									dayParam="announcementDisplayDateDay"
 									dayValue="<%= announcementDisplayCal.get(Calendar.DAY_OF_MONTH) %>"
-									monthNullable="<%= false %>"
+									firstEnabledDate="<%= announcementDisplayCal.add(Calendar.YEAR, -2) %>"
+									lastEnabledDate="<%= announcementDisplayCal.add(Calendar.YEAR, 2) %>"
 									monthParam="announcementDisplayDateMonth"
 									monthValue="<%= announcementDisplayCal.get(Calendar.MONTH) %>"
-									yearNullable="<%= false %>"
+									nullable="<%= false %>"
 									yearParam="announcementDisplayDateYear"
-									yearRangeEnd="<%= announcementDisplayCal.get(Calendar.YEAR) + 2 %>"
-									yearRangeStart="<%= announcementDisplayCal.get(Calendar.YEAR) - 2 %>"
 									yearValue="<%= announcementDisplayCal.get(Calendar.YEAR) %>"
 								/>
 
@@ -304,16 +302,14 @@ Locale[] locales = LanguageUtil.getAvailableLocales();
 							</td>
 							<td>
 								<liferay-ui:input-date
-									dayNullable="<%= false %>"
 									dayParam="announcementExpirationDateDay"
 									dayValue="<%= announcementExpirationCal.get(Calendar.DAY_OF_MONTH) %>"
-									monthNullable="<%= false %>"
+									firstEnabledDate="<%= announcementExpirationCal.add(Calendar.YEAR, -2) %>"
+									lastEnabledDate="<%= announcementExpirationCal.add(Calendar.YEAR, 2) %>"
 									monthParam="announcementExpirationDateMonth"
 									monthValue="<%= announcementExpirationCal.get(Calendar.MONTH) %>"
-									yearNullable="<%= false %>"
+									nullable="<%= false %>"
 									yearParam="announcementExpirationDateYear"
-									yearRangeEnd="<%= announcementExpirationCal.get(Calendar.YEAR) + 2 %>"
-									yearRangeStart="<%= announcementExpirationCal.get(Calendar.YEAR) - 2 %>"
 									yearValue="<%= announcementExpirationCal.get(Calendar.YEAR) %>"
 								/>
 
@@ -526,12 +522,12 @@ Locale[] locales = LanguageUtil.getAvailableLocales();
 
 									<c:choose>
 										<c:when test="<%= fileRepositoryId.equals(StringPool.BLANK) %>">
-											<aui:input inlineField="<%= true %>" inlineLabel="left" label="" name="fileRepositoryId" type="text" />
+											<aui:input inlineField="<%= true %>" inlineLabel="left" name="fileRepositoryId" type="text" />
 										</c:when>
 										<c:otherwise>
 											<aui:input name="fileRepositoryId" type="hidden" value="<%= fileRepositoryId %>" />
 
-											<aui:input disabled="<%= true %>" inlineField="<%= true %>" inlineLabel="left" label="" name="fileRepositoryIdLabel" type="text" value="<%= fileRepositoryId %>" />
+											<aui:input disabled="<%= true %>" inlineField="<%= true %>" inlineLabel="left" name="fileRepositoryIdLabel" type="text" value="<%= fileRepositoryId %>" />
 										</c:otherwise>
 									</c:choose>
 								</span>
@@ -540,21 +536,21 @@ Locale[] locales = LanguageUtil.getAvailableLocales();
 										<liferay-ui:message key="server-name" />
 									</label>
 
-									<aui:input inlineField="<%= true %>" inlineLabel="left" label="" name="name" value="<%= name %>" />
+									<aui:input inlineField="<%= true %>" inlineLabel="left" name="name" value="<%= name %>" />
 								</span>
 								<span class="aui-field-row">
 									<label class="aui-field-inline aui-field-label-inline-label aui-w15">
 										<liferay-ui:message key="host" />
 									</label>
 
-									<aui:input inlineField="<%= true %>" inlineLabel="left" label="" name="host" value="<%= fileRepository.getHost() %>" />
+									<aui:input inlineField="<%= true %>" inlineLabel="left" name="host" value="<%= fileRepository.getHost() %>" />
 								</span>
 								<span class="aui-field-row">
 									<label class="aui-field-inline aui-field-label-inline-label aui-w15">
 										<liferay-ui:message key="status" />
 									</label>
 
-									<aui:select inlineField="<%= true %>" inlineLabel="left" label="" name="status">
+									<aui:select inlineField="<%= true %>" inlineLabel="left" name="status">
 										<aui:option label="active" selected="<%= status == WorkflowConstants.STATUS_APPROVED %>" value="<%= WorkflowConstants.STATUS_APPROVED %>" />
 										<aui:option label="inactive" selected="<%= status == WorkflowConstants.STATUS_INACTIVE %>" value="<%= WorkflowConstants.STATUS_INACTIVE %>" />
 									</aui:select>
@@ -1369,7 +1365,7 @@ Locale[] locales = LanguageUtil.getAvailableLocales();
 					<aui:fieldset>
 						<label class="aui-field-label">[$DUE_DATE_TEMPLATE$]</label>
 
-						<aui:input cssClass="lfr-textarea-container" label="" name='<%= "emailTicketEntryDueDateTemplate_" + currentLanguageId %>' type="textarea" value="<%= emailTicketEntryDueDateTemplate %>" />
+						<aui:input cssClass="lfr-textarea-container" name='<%= "emailTicketEntryDueDateTemplate_" + currentLanguageId %>' type="textarea" value="<%= emailTicketEntryDueDateTemplate %>" />
 					</aui:fieldset>
 
 					<div class="definition-of-terms">

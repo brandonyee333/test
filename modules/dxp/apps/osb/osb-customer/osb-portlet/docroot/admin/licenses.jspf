@@ -22,7 +22,6 @@
 >
 	<liferay-ui:search-container-results
 		results="<%= LicenseEntryLocalServiceUtil.getLicenseEntries(searchContainer.getStart(), searchContainer.getEnd()) %>"
-		total="<%= LicenseEntryLocalServiceUtil.getLicenseEntriesCount() %>"
 	/>
 
 	<liferay-ui:search-container-row
