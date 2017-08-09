@@ -18,8 +18,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Ticket;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.TicketLocalServiceUtil;
-import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.service.TicketLocalService;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.servlet.BaseFilter;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
@@ -35,6 +35,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brent Krone-Schmidt
@@ -91,10 +92,10 @@ public class WatsonFilter extends BaseFilter {
 			String ticketKey = request.getParameter("ticketKey");
 
 			if (Validator.isNotNull(ticketKey)) {
-				Ticket ticket = TicketLocalServiceUtil.fetchTicket(ticketKey);
+				Ticket ticket = _ticketLocalService.fetchTicket(ticketKey);
 
 				if (ticket != null) {
-					User ticketUser = UserLocalServiceUtil.fetchUser(
+					User ticketUser = _userLocalService.fetchUser(
 						ticket.getClassPK());
 
 					if (ticketUser != null) {
@@ -113,6 +114,21 @@ public class WatsonFilter extends BaseFilter {
 		filterChain.doFilter(request, response);
 	}
 
+	@Reference(unbind = "-")
+	protected void setTicketLocalService(
+		TicketLocalService ticketLocalService) {
+
+		_ticketLocalService = ticketLocalService;
+	}
+
+	@Reference(unbind = "-")
+	protected void setUserLocalService(UserLocalService userLocalService) {
+		_userLocalService = userLocalService;
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(WatsonFilter.class);
+
+	private TicketLocalService _ticketLocalService;
+	private UserLocalService _userLocalService;
 
 }
