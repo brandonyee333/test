@@ -16,8 +16,5 @@
 
 <%!
 public static class PortletKeys {
-
-	public static final String WATSON = "1_WAR_watsonportlet";
-
 }
 %>

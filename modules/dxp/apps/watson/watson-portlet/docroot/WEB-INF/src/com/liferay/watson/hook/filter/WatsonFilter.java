@@ -113,6 +113,6 @@ public class WatsonFilter extends BaseFilter {
 		filterChain.doFilter(request, response);
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(WatsonFilter.class);
+	private static final Log _log = LogFactoryUtil.getLog(WatsonFilter.class);
 
 }
