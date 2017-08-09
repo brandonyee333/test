@@ -22,8 +22,8 @@ public static class WatsonUtil {
 
 		watsonUserJSONObject.put("languageId", user.getLanguageId());
 		watsonUserJSONObject.put("portalAdmin", WatsonPermission.hasPermission(user, RoleConstants.ADMINISTRATOR));
-		watsonUserJSONObject.put("translator", WatsonPermission.hasPermission(user, WatsonRoleConstants.TRANSLATOR));
-		watsonUserJSONObject.put("watsonAdmin", WatsonPermission.hasPermission(user, WatsonRoleConstants.ADMIN));
+		watsonUserJSONObject.put("translator", WatsonPermission.hasPermission(user, RoleConstants.TRANSLATOR));
+		watsonUserJSONObject.put("watsonAdmin", WatsonPermission.hasPermission(user, RoleConstants.ADMIN));
 
 		return watsonUserJSONObject;
 	}

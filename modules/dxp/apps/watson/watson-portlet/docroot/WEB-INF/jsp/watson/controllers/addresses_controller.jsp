@@ -129,7 +129,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
-		if (WatsonPermission.hasPermission(user, WatsonRoleConstants.TRANSLATOR)) {
+		if (WatsonPermission.hasPermission(user, RoleConstants.TRANSLATOR)) {
 			long watsonAddressId = ParamUtil.getLong(request, "id");
 
 			WatsonAddress watsonAddress = WatsonAddress.fetch(watsonAddressId);
@@ -301,7 +301,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
-		if (WatsonPermission.hasPermission(user, WatsonRoleConstants.TRANSLATOR)) {
+		if (WatsonPermission.hasPermission(user, RoleConstants.TRANSLATOR)) {
 			long watsonAddressId = ParamUtil.getLong(request, "id");
 
 			WatsonAddress watsonAddress = WatsonAddress.fetch(watsonAddressId);

@@ -57,7 +57,6 @@ page import="com.liferay.portal.kernel.model.ClassName" %><%@
 page import="com.liferay.portal.kernel.model.Country" %><%@
 page import="com.liferay.portal.kernel.model.Repository" %><%@
 page import="com.liferay.portal.kernel.model.Role" %><%@
-page import="com.liferay.portal.kernel.model.RoleConstants" %><%@
 page import="com.liferay.portal.kernel.model.User" %><%@
 page import="com.liferay.portal.kernel.portlet.LiferayWindowState" %><%@
 page import="com.liferay.portal.kernel.portlet.PortletURLFactoryUtil" %><%@
