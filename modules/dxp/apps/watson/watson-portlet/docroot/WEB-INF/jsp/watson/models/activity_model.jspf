@@ -1,0 +1,308 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%!
+public static class WatsonActivity extends WatsonActivityBaseModel {
+
+	WatsonActivity() {
+		super(new com.liferay.watson.model.impl.WatsonActivityImpl());
+	}
+
+	WatsonActivity(com.liferay.watson.model.WatsonActivity watsonActivity) {
+		super(watsonActivity);
+	}
+
+	WatsonActivity(WatsonActivity watsonActivity) {
+		super(watsonActivity);
+	}
+
+	WatsonActivity(WatsonActivityBaseModel watsonActivity) {
+		super(watsonActivity);
+	}
+
+	public static JSONObject getAsJSONDataArray(List<WatsonActivity> watsonActivities, long count) throws Exception {
+		JSONObject returnJSONObject = JSONFactoryUtil.createJSONObject();
+
+		JSONArray watsonActivitiesJSONArray = JSONFactoryUtil.createJSONArray();
+
+		for (WatsonActivity watsonActivity : watsonActivities) {
+			watsonActivitiesJSONArray.put(getAsJSONObject(watsonActivity));
+		}
+
+		returnJSONObject.put("count", count);
+		returnJSONObject.put("items", watsonActivitiesJSONArray);
+
+		return returnJSONObject;
+	}
+
+	public static JSONObject getAsJSONObject(WatsonActivity watsonActivity) throws Exception {
+		return getAsJSONObject(watsonActivity, null, LocaleUtil.getMostRelevantLocale());
+	}
+
+	public static JSONObject getAsJSONObject(WatsonActivity watsonActivity, Locale locale) throws Exception {
+		return getAsJSONObject(watsonActivity, null, locale);
+	}
+
+	public static JSONObject getAsJSONObject(WatsonActivity watsonActivity, List<WatsonRelationship> watsonRelationships) throws Exception {
+		return getAsJSONObject(watsonActivity, watsonRelationships, LocaleUtil.getMostRelevantLocale());
+	}
+
+	public static JSONObject getAsJSONObject(WatsonActivity watsonActivity, List<WatsonRelationship> watsonRelationships, Locale locale) throws Exception {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put("createDate", getFormattedDate(watsonActivity.getCreateDate(), locale));
+		jsonObject.put("editable", hasEditableStatus(watsonActivity.getUserId()));
+		jsonObject.put("id", watsonActivity.getPrimaryKey());
+		jsonObject.put("incidentName", WatsonIncident.getIncidentName(watsonActivity.getWatsonIncidentId()));
+
+		Date modifiedDate = watsonActivity.getModifiedDate();
+
+		jsonObject.put("modifiedDate", getFormattedDate(modifiedDate, locale));
+		jsonObject.put("modifiedDateTimeStamp", modifiedDate.getTime());
+		jsonObject.put("modifiedUserName", WatsonHistory.fetchLastModifiedUserName(watsonActivity));
+		jsonObject.put("name", watsonActivity.getName(locale));
+		jsonObject.put("narrative", watsonActivity.getNarrative(locale));
+		jsonObject.put("reportDate", getFormattedDate(watsonActivity.getReportDate(), locale));
+		jsonObject.put("reportedBy", watsonActivity.getUserName());
+		jsonObject.put("startDate", getFormattedDate(watsonActivity.getStartDate(), locale));
+		jsonObject.put("typeWatsonListTypeId", watsonActivity.getTypeWatsonListTypeId());
+		jsonObject.put("watsonActivityId", watsonActivity.getWatsonActivityId());
+		jsonObject.put("watsonIncidentId", watsonActivity.getWatsonIncidentId());
+
+		if (Validator.isNotNull(watsonRelationships)) {
+			jsonObject.put("watsonRelationships", WatsonRelationship.getWatsonRelationshipsAsJSONArray(watsonActivity.getWatsonActivityId(), watsonRelationships));
+		}
+		else {
+			jsonObject.put("watsonRelationships", WatsonRelationship.getWatsonRelationshipsAsJSONArray(watsonActivity));
+		}
+
+		return jsonObject;
+	}
+
+	public static String getFormattedDate(Date date, Locale locale) {
+		if (date != null) {
+			return DateUtil.getDate(date, "yyyy-MM-dd", locale);
+		}
+		else {
+			return StringPool.BLANK;
+		}
+	}
+
+	public static JSONArray getIdJSONArray(long watsonIncidentId) throws Exception {
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+
+		List<WatsonActivity> watsonActivities = query("watsonIncidentId", watsonIncidentId);
+
+		Locale locale = LocaleUtil.getMostRelevantLocale();
+
+		for (WatsonActivity watsonActivity : watsonActivities) {
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+			jsonObject.put("id", watsonActivity.getWatsonActivityId());
+			jsonObject.put("name", watsonActivity.getName(locale));
+
+			jsonArray.put(jsonObject);
+		}
+
+		return jsonArray;
+	}
+
+	public static boolean hasEditableStatus(long currentUserId, long createdUserId) throws Exception {
+		User user = UserLocalServiceUtil.fetchUser(currentUserId);
+
+		if (Validator.isNotNull(user)) {
+			boolean hasAdminRole = RoleLocalServiceUtil.hasUserRole(user.getUserId(), user.getCompanyId(), WatsonRoleConstants.ADMIN, true);
+
+			if (hasAdminRole) {
+				return true;
+			}
+		}
+
+		return (currentUserId == createdUserId);
+	}
+
+	public static boolean hasEditableStatus(long createdUserId) throws Exception {
+		ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
+
+		return hasEditableStatus(serviceContext.getUserId(), createdUserId);
+	}
+
+	public static KeyValuePair validateWatsonActivityIncident(long watsonIncidentId) throws Exception {
+		if (WatsonIncident.fetch(watsonIncidentId) == null) {
+			return new KeyValuePair("watsonIncidentId", "the-activity-incident-is-invalid");
+		}
+
+		return null;
+	}
+
+	public static KeyValuePair validateWatsonActivityNarrative(String narrative) {
+		String plainText = HtmlUtil.stripHtml(narrative);
+
+		plainText = HtmlUtil.extractText(plainText);
+
+		if (Validator.isNull(HtmlUtil.extractText(plainText))) {
+			return new KeyValuePair("narrative", "the-narrative-is-required");
+		}
+
+		return null;
+	}
+
+	public static KeyValuePair validateWatsonActivityRelationships(List<WatsonRelationship> watsonRelationships) throws Exception{
+		if (Validator.isNotNull(watsonRelationships)) {
+			for (WatsonRelationship watsonRelationship : watsonRelationships) {
+				if (!watsonRelationship.isValid()) {
+					return new KeyValuePair("watsonRelationships", "the-relationships-were-invalid");
+				}
+			}
+		}
+
+		return null;
+	}
+
+	public static KeyValuePair validateWatsonActivityReportDate(Date reportDate) {
+		if (reportDate == null) {
+			return new KeyValuePair("reportDate", "the-report-date-is-invalid");
+		}
+
+		if (reportDate.after(new Date())) {
+			return new KeyValuePair("reportDate", "the-report-date-cannot-be-in-the-future");
+		}
+
+		if (reportDate.before(new Date(0))) {
+			return new KeyValuePair("reportDate", "the-report-date-is-too-long-ago");
+		}
+
+		return null;
+	}
+
+	public static KeyValuePair validateWatsonActivityStartDate(Date startDate) {
+		if (startDate == null) {
+			return new KeyValuePair("startDate", "the-start-date-is-invalid");
+		}
+
+		if (startDate.after(new Date())) {
+			return new KeyValuePair("startDate", "the-start-date-cannot-be-in-the-future");
+		}
+
+		if (startDate.before(new Date(0))) {
+			return new KeyValuePair("startDate", "the-start-date-is-too-long-ago");
+		}
+
+		return null;
+	}
+
+	public static KeyValuePair validateWatsonActivityType(long typeWatsonListTypeId) throws Exception {
+		if (typeWatsonListTypeId <= 0) {
+			return new KeyValuePair("typeWatsonListTypeId", "the-activity-type-is-invalid");
+		}
+
+		if (WatsonListType.fetch(typeWatsonListTypeId) == null) {
+			return new KeyValuePair("typeWatsonListTypeId", "the-activity-type-is-invalid");
+		}
+
+		return null;
+	}
+
+	public static WatsonActivity add(long watsonIncidentId, HttpServletRequest request) throws Exception {
+		WatsonActivity watsonActivity = WatsonActivity.create(request);
+
+		watsonActivity.setWatsonIncidentId(watsonIncidentId);
+
+		StringBundler sb = new StringBundler(8);
+
+		sb.append(StringPool.LESS_THAN);
+		sb.append("p");
+		sb.append(StringPool.GREATER_THAN);
+		sb.append(ParamUtil.getString(request, "description"));
+		sb.append(StringPool.LESS_THAN);
+		sb.append(StringPool.FORWARD_SLASH);
+		sb.append("p");
+		sb.append(StringPool.GREATER_THAN);
+
+		String narrative = sb.toString();
+
+		watsonActivity.setNarrative(narrative);
+
+		List<WatsonListType> watsonListTypes = WatsonListType.query("type", WatsonActivity.getBaseModelClass().getName().concat(".type"));
+
+		WatsonListType watsonListType = watsonListTypes.get(0);
+
+		watsonActivity.setTypeWatsonListTypeId(watsonListType.getWatsonListTypeId());
+
+		watsonActivity = add(watsonActivity);
+
+		WatsonHistory.add(watsonActivity.getWatsonIncidentId(), watsonActivity, request, WatsonHistory.HISTORY_TYPE_CREATED);
+
+		return watsonActivity;
+	}
+
+	public JSONObject getActivityFormErrors() {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		for (Map.Entry<String, String> errorEntry : errors.entrySet()) {
+			jsonObject.put(errorEntry.getKey(), LanguageUtil.format(LocaleUtil.getMostRelevantLocale(), errorEntry.getValue(), new Object[0]));
+		}
+
+		return jsonObject;
+	}
+
+	public String getName(Locale locale) throws Exception {
+		String activityName = getFormattedDate(getReportDate(), locale);
+
+		WatsonListType watsonListType = WatsonListType.fetch(getTypeWatsonListTypeId());
+
+		if (watsonListType != null) {
+			StringBundler sb = new StringBundler(5);
+
+			sb.append(watsonListType.getName(locale));
+			sb.append(StringPool.SPACE);
+			sb.append(StringPool.DASH);
+			sb.append(StringPool.SPACE);
+			sb.append(activityName);
+
+			activityName = sb.toString();
+		}
+
+		return activityName;
+	}
+
+	public boolean isValid(List<WatsonRelationship> watsonRelationships) throws Exception {
+		pushError(validateWatsonActivityIncident(getWatsonIncidentId()));
+		pushError(validateWatsonActivityNarrative(getNarrative()));
+		pushError(validateWatsonActivityRelationships(watsonRelationships));
+		pushError(validateWatsonActivityReportDate(getReportDate()));
+		pushError(validateWatsonActivityStartDate(getStartDate()));
+		pushError(validateWatsonActivityType(getTypeWatsonListTypeId()));
+
+		return errors.isEmpty();
+	}
+
+	public void pushError(KeyValuePair keyValuePair) {
+		if (keyValuePair != null) {
+			errors.put(keyValuePair.getKey(), keyValuePair.getValue());
+		}
+	}
+
+	public WatsonActivity updateTranslations(HttpServletRequest request, Locale locale) throws Exception {
+		BaseAlloyControllerImpl.setLocalizedProperties(this, request, locale);
+
+		return update(this);
+	}
+
+	protected HashMap<String, String> errors = new HashMap<>();
+
+}
+%>

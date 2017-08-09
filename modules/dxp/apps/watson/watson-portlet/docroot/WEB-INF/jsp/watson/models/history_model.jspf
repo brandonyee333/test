@@ -1,0 +1,190 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%!
+public static class WatsonHistory extends WatsonHistoryBaseModel {
+
+	WatsonHistory() {
+		super(new com.liferay.watson.model.impl.WatsonHistoryImpl());
+	}
+
+	WatsonHistory(com.liferay.watson.model.WatsonHistory watsonHistory) {
+		super(watsonHistory);
+	}
+
+	WatsonHistory(WatsonHistory watsonHistory) {
+		super(watsonHistory);
+	}
+
+	WatsonHistory(WatsonHistoryBaseModel watsonHistory) {
+		super(watsonHistory);
+	}
+
+	public static final String HISTORY_TYPE_LABEL_CREATED = "created";
+
+	public static final String HISTORY_TYPE_LABEL_DELETED = "deleted";
+
+	public static final String HISTORY_TYPE_LABEL_UPDATED = "updated";
+
+	public static final int HISTORY_TYPE_CREATED = 0;
+
+	public static final int HISTORY_TYPE_DELETED = 1;
+
+	public static final int HISTORY_TYPE_UPDATED = 2;
+
+	public static String fetchLastModifiedUserName(AuditedModel auditedModel) throws Exception {
+		long classNameId = PortalUtil.getClassNameId(auditedModel.getModelClassName());
+
+		DynamicQuery watsonHistoryDynamicQuery = baseModelAlloyServiceInvoker.buildDynamicQuery(new Object[] {"classNameId", classNameId, "classPK", auditedModel.getPrimaryKeyObj(), "status", WorkflowConstants.STATUS_APPROVED});
+
+		Order createDateOrder = OrderFactoryUtil.desc("createDate");
+
+		watsonHistoryDynamicQuery.addOrder(createDateOrder);
+
+		List<WatsonHistory> watsonHistories = getAlloyModels(baseModelAlloyServiceInvoker.executeDynamicQuery(watsonHistoryDynamicQuery));
+
+		if (!watsonHistories.isEmpty()) {
+			WatsonHistory watsonHistory = watsonHistories.get(0);
+
+			return watsonHistory.getUserName();
+		}
+
+		return auditedModel.getUserName();
+	}
+
+	public static JSONArray getAsJSONArray(List<WatsonHistory> watsonHistories) throws Exception {
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+
+		for (WatsonHistory watsonHistory : watsonHistories) {
+			jsonArray.put(getAsJSONObject(watsonHistory));
+		}
+
+		return jsonArray;
+	}
+
+	public static JSONObject getAsJSONObject(WatsonHistory watsonHistory) throws Exception {
+		return getAsJSONObject(watsonHistory, LocaleUtil.getMostRelevantLocale());
+	}
+
+	public static JSONObject getAsJSONObject(WatsonHistory watsonHistory, Locale locale) throws Exception {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put("classPK", watsonHistory.getClassPK());
+
+		Date createDate = watsonHistory.getCreateDate();
+
+		jsonObject.put("createDate", getFormattedDate(createDate, locale));
+		jsonObject.put("id", watsonHistory.getPrimaryKey());
+		jsonObject.put("incidentName", WatsonIncident.getIncidentName(watsonHistory.getWatsonIncidentId()));
+
+		Date modifiedDate = watsonHistory.getModifiedDate();
+
+		jsonObject.put("modifiedDate", getFormattedDate(modifiedDate, locale));
+		jsonObject.put("modifiedDateTimeStamp", modifiedDate.getTime());
+		jsonObject.put("reportedBy", watsonHistory.getUserName());
+		jsonObject.put("timeStamp", createDate.getTime());
+		jsonObject.put("type", watsonHistory.getType());
+		jsonObject.put("typeLabel", getHistoryTypeLabel(watsonHistory.getType()));
+		jsonObject.put("watsonHistoryId", watsonHistory.getWatsonHistoryId());
+		jsonObject.put("watsonIncidentId", watsonHistory.getWatsonIncidentId());
+
+		String watsonModel = WatsonAlloyControllerImpl.getControllerName(watsonHistory.getClassNameId());
+
+		jsonObject.put("watsonModel", watsonModel);
+
+		return jsonObject;
+	}
+
+	public static String getHistoryTypeLabel(int historyType) {
+		if (historyType == HISTORY_TYPE_CREATED) {
+			return HISTORY_TYPE_LABEL_CREATED;
+		}
+		else if (historyType == HISTORY_TYPE_DELETED) {
+			return HISTORY_TYPE_LABEL_DELETED;
+		}
+
+		return HISTORY_TYPE_LABEL_UPDATED;
+	}
+
+	public static String getFormattedDate(Date date, Locale locale) {
+		if (date != null) {
+			return DateUtil.getDate(date, "yyyy-MM-dd", locale);
+		}
+		else {
+			return StringPool.BLANK;
+		}
+	}
+
+	public static KeyValuePair validateWatsonHistoryIncident(long watsonIncidentId) throws Exception {
+		if (WatsonIncident.fetch(watsonIncidentId) == null) {
+			return new KeyValuePair("watsonIncidentId", "the-history-incident-is-invalid");
+		}
+
+		return null;
+	}
+
+	public static KeyValuePair validateWatsonHistoryType(int type) throws Exception {
+		if ((type != HISTORY_TYPE_CREATED) && (type != HISTORY_TYPE_DELETED) && (type != HISTORY_TYPE_UPDATED)) {
+			return new KeyValuePair("type", "the-history-type-is-invalid");
+		}
+
+		return null;
+	}
+
+	public static WatsonHistory add(long watsonIncidentId, AuditedModel ownerModel, HttpServletRequest request, int type) throws Exception {
+		WatsonHistory watsonHistory = WatsonHistory.create(request);
+
+		watsonHistory.setClassName(ownerModel.getModelClassName());
+		watsonHistory.setClassPK((long)ownerModel.getPrimaryKeyObj());
+		watsonHistory.setType(type);
+		watsonHistory.setWatsonIncidentId(watsonIncidentId);
+
+		return add(watsonHistory);
+	}
+
+	public JSONObject getHistoryFormErrors() {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		for (Map.Entry<String, String> errorEntry : errors.entrySet()) {
+			jsonObject.put(errorEntry.getKey(), LanguageUtil.format(LocaleUtil.getMostRelevantLocale(), errorEntry.getValue(), new Object[0]));
+		}
+
+		return jsonObject;
+	}
+
+	public WatsonHistory updateTranslations(HttpServletRequest request, Locale locale) throws Exception {
+		BaseAlloyControllerImpl.setLocalizedProperties(this, request, locale);
+
+		return update(this);
+	}
+
+	public boolean isValid() throws Exception {
+		pushError(validateWatsonHistoryIncident(getWatsonIncidentId()));
+		pushError(validateWatsonHistoryType(getType()));
+
+		return errors.isEmpty();
+	}
+
+	public void pushError(KeyValuePair keyValuePair) {
+		if (keyValuePair != null) {
+			errors.put(keyValuePair.getKey(), keyValuePair.getValue());
+		}
+	}
+
+	protected HashMap<String, String> errors = new HashMap<>();
+
+}
+%>

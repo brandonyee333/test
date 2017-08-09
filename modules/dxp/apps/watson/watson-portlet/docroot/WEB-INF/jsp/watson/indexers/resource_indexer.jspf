@@ -1,0 +1,55 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%!
+public static class WatsonResourceIndexer extends BaseAlloyIndexer {
+
+	public static WatsonResourceIndexer getInstance() {
+		return _instance;
+	}
+
+	@Override
+	protected Document doGetDocument(BaseModel<?> object) throws Exception {
+		WatsonResource watsonResource = new WatsonResource((com.liferay.watson.model.WatsonResource)object);
+
+		Document document = getBaseModelDocument(PortletKeys.WATSON, watsonResource);
+
+		document.addLocalizedText("description", watsonResource.getDescriptionMap());
+		document.addKeyword("id", watsonResource.getPrimaryKey());
+		document.addDate("modifiedDate", watsonResource.getModifiedDate());
+		document.addLocalizedKeyword("name", watsonResource.getNameMap());
+		document.addDate("reportDate", watsonResource.getCreateDate());
+		document.addKeyword("reportedBy", watsonResource.getUserName());
+		document.addKeyword("status", watsonResource.getStatus());
+		document.addKeyword("typeWatsonListTypeId", watsonResource.getTypeWatsonListTypeId());
+		document.addKeyword("watsonIncidentId", watsonResource.getWatsonIncidentId());
+		document.addKeyword("watsonResourceId", watsonResource.getWatsonResourceId());
+
+		return document;
+	}
+
+	protected Summary doGetSummary(Document document, Locale locale, String snippet, PortletRequest portletRequest, PortletResponse portletResponse) throws Exception {
+		return createSummary(document);
+	}
+
+	private WatsonResourceIndexer() {
+		setClassName(WatsonResource.baseModelClass.getName());
+	}
+
+	private static WatsonResourceIndexer _instance = new WatsonResourceIndexer();
+
+}
+%>

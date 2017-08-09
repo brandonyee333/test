@@ -1,0 +1,625 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%!
+public static class WatsonIncident extends WatsonIncidentBaseModel {
+
+	WatsonIncident() {
+		super(new com.liferay.watson.model.impl.WatsonIncidentImpl());
+	}
+
+	WatsonIncident(com.liferay.watson.model.WatsonIncident watsonIncident) {
+		super(watsonIncident);
+	}
+
+	WatsonIncident(WatsonIncident watsonIncident) {
+		super(watsonIncident);
+	}
+
+	WatsonIncident(WatsonIncidentBaseModel watsonIncident) {
+		super(watsonIncident);
+	}
+
+	public static final int INCIDENT_STATUS_CLOSED = 2;
+
+	public static final int INCIDENT_STATUS_INACTIVE = 1;
+
+	public static final String INCIDENT_STATUS_LABEL_CLOSED = "closed";
+
+	public static final String INCIDENT_STATUS_LABEL_INACTIVE = "inactive";
+
+	public static final String INCIDENT_STATUS_LABEL_OPEN = "open";
+
+	public static final int INCIDENT_STATUS_OPEN = 0;
+
+	public static final int MAX_FIELD_LENGTH_TEXTAREA = 4000;
+
+	public static void clearWatsonIncidentChildren(long watsonIncidentId) throws Exception {
+		List<WatsonActivity> watsonActivities = WatsonActivity.queryAll("watsonIncidentId", watsonIncidentId);
+
+		for (WatsonActivity watsonActivity : watsonActivities) {
+			watsonActivity.delete();
+		}
+
+		List<WatsonAddress> watsonAddresses = WatsonAddress.queryAll("watsonIncidentId", watsonIncidentId);
+
+		for (WatsonAddress watsonAddress : watsonAddresses) {
+			watsonAddress.delete();
+		}
+
+		List<WatsonPerson> watsonPeople = WatsonPerson.queryAll("watsonIncidentId", watsonIncidentId);
+
+		for (WatsonPerson watsonPerson : watsonPeople) {
+			watsonPerson.delete();
+		}
+
+		List<WatsonResource> watsonResources = WatsonResource.queryAll("watsonIncidentId", watsonIncidentId);
+
+		for (WatsonResource watsonResource : watsonResources) {
+			watsonResource.delete();
+		}
+
+		List<WatsonVehicle> watsonVehicles = WatsonVehicle.queryAll("watsonIncidentId", watsonIncidentId);
+
+		for (WatsonVehicle watsonVehicle : watsonVehicles) {
+			watsonVehicle.delete();
+		}
+	}
+
+	public static JSONObject getAsJSONDataArray(List<WatsonIncident> watsonIncidents, long count) throws Exception {
+		JSONObject returnJSONObject = JSONFactoryUtil.createJSONObject();
+
+		JSONArray watsonIncidentsJSONArray = JSONFactoryUtil.createJSONArray();
+
+		for (WatsonIncident watsonIncident : watsonIncidents) {
+			watsonIncidentsJSONArray.put(getAsJSONObject(watsonIncident));
+		}
+
+		returnJSONObject.put("count", count);
+		returnJSONObject.put("items", watsonIncidentsJSONArray);
+
+		return returnJSONObject;
+	}
+
+	public static JSONObject getAsJSONObject(WatsonIncident watsonIncident) throws Exception {
+		return getAsJSONObject(watsonIncident, null, null, LocaleUtil.getMostRelevantLocale());
+	}
+
+	public static JSONObject getAsJSONObject(WatsonIncident watsonIncident, Locale locale) throws Exception {
+		return getAsJSONObject(watsonIncident, null, null, locale);
+	}
+
+	public static JSONObject getAsJSONObject(WatsonIncident watsonIncident, List<WatsonListTypeRel> natures, List<WatsonIncidentRel> watsonIncidentRels) throws Exception {
+		return getAsJSONObject(watsonIncident, natures, watsonIncidentRels, LocaleUtil.getMostRelevantLocale());
+	}
+
+	public static JSONObject getAsJSONObject(WatsonIncident watsonIncident, List<WatsonListTypeRel> natures, List<WatsonIncidentRel> watsonIncidentRels, Locale locale) throws Exception {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put("activities", WatsonActivity.getIdJSONArray(watsonIncident.getWatsonIncidentId()));
+		jsonObject.put("addresses", WatsonAddress.getIdJSONArray(watsonIncident.getWatsonIncidentId()));
+		jsonObject.put("createDate", getFormattedDate(watsonIncident.getCreateDate(), locale));
+		jsonObject.put("description", watsonIncident.getDescription(locale));
+		jsonObject.put("disabled", hasDisabled(watsonIncident.getIncidentStatus()));
+		jsonObject.put("endDate", getFormattedDate(watsonIncident.getEndDate(), locale));
+		jsonObject.put("histories", JSONFactoryUtil.createJSONArray());
+		jsonObject.put("id", watsonIncident.getPrimaryKey());
+		jsonObject.put("incidentName", watsonIncident.getName());
+		jsonObject.put("incidentStatus", String.valueOf(watsonIncident.getIncidentStatus()));
+		jsonObject.put("incidentStatusLabel", getIncidentStatusLabel(watsonIncident.getIncidentStatus()));
+
+		Date modifiedDate = watsonIncident.getModifiedDate();
+
+		jsonObject.put("modifiedDate", getFormattedDate(modifiedDate, locale));
+		jsonObject.put("modifiedDateTimeStamp", modifiedDate.getTime());
+		jsonObject.put("modifiedUserName", WatsonHistory.fetchLastModifiedUserName(watsonIncident));
+		jsonObject.put("name", watsonIncident.getName());
+
+		if (Validator.isNotNull(natures) && (natures.size() > 0)) {
+			List<Long> natureIds = new ArrayList<>();
+
+			for (WatsonListTypeRel nature : natures) {
+				natureIds.add(nature.getWatsonListTypeId());
+			}
+
+			jsonObject.put("natureWatsonListType", natureIds.toArray());
+		}
+		else {
+			jsonObject.put("natureWatsonListType", getIncidentNatureIds(watsonIncident.getWatsonIncidentId()).toArray());
+		}
+
+		jsonObject.put("people", WatsonPerson.getIdJSONArray(watsonIncident.getWatsonIncidentId()));
+		jsonObject.put("relationships", JSONFactoryUtil.createJSONArray());
+		jsonObject.put("reportDate", getFormattedDate(watsonIncident.getReportDate(), locale));
+		jsonObject.put("reportedBy", watsonIncident.getUserName());
+		jsonObject.put("resources", WatsonResource.getIdJSONArray(watsonIncident.getWatsonIncidentId()));
+		jsonObject.put("sourceWatsonListTypeId", watsonIncident.getSourceWatsonListTypeId());
+		jsonObject.put("startDate", getFormattedDate(watsonIncident.getStartDate(), locale));
+
+		WatsonListType watsonListType = WatsonListType.fetch(watsonIncident.getSubtypeWatsonListTypeId());
+
+		if (watsonListType != null) {
+			jsonObject.put("subtypeLabel", watsonListType.getName(locale));
+		}
+
+		jsonObject.put("subtypeWatsonListTypeId", watsonIncident.getSubtypeWatsonListTypeId());
+
+		watsonListType = WatsonListType.fetch(watsonIncident.getTypeWatsonListTypeId());
+
+		if (watsonListType != null) {
+			jsonObject.put("typeLabel", watsonListType.getName(locale));
+		}
+
+		jsonObject.put("typeWatsonListTypeId", watsonIncident.getTypeWatsonListTypeId());
+		jsonObject.put("vehicles", WatsonVehicle.getIdJSONArray(watsonIncident.getWatsonIncidentId()));
+		jsonObject.put("watsonIncidentId", watsonIncident.getWatsonIncidentId());
+
+		if (Validator.isNotNull(watsonIncidentRels)) {
+			jsonObject.put("watsonIncidentRelIds", WatsonIncidentRel.getWatsonIncidentRelClassPKs(watsonIncident.getWatsonIncidentId(), watsonIncidentRels).toArray());
+			jsonObject.put("watsonIncidentRels", WatsonIncidentRel.getWatsonIncidentRelsAsJSONObject(watsonIncident.getWatsonIncidentId(), watsonIncidentRels));
+		}
+		else {
+			jsonObject.put("watsonIncidentRelIds", WatsonIncidentRel.getWatsonIncidentRelClassPKs(watsonIncident.getWatsonIncidentId()));
+			jsonObject.put("watsonIncidentRels", WatsonIncidentRel.getWatsonIncidentRelsAsJSONObject(watsonIncident));
+		}
+
+		return jsonObject;
+	}
+
+	public static String getIncidentName(long watsonIncidentId) throws Exception {
+		if (watsonIncidentId > 0) {
+			WatsonIncident watsonIncident = WatsonIncident.fetch(watsonIncidentId);
+
+			return watsonIncident.getName();
+		}
+
+		return StringPool.BLANK;
+	}
+
+	public static long getIncidentStatus(long watsonIncidentId) throws Exception {
+		if (watsonIncidentId > 0) {
+			WatsonIncident watsonIncident = WatsonIncident.fetch(watsonIncidentId);
+
+			return watsonIncident.getIncidentStatus();
+		}
+
+		return INCIDENT_STATUS_CLOSED;
+	}
+
+	public static String getFormattedDate(Date date, Locale locale) throws Exception {
+		if (date != null) {
+			return DateUtil.getDate(date, "yyyy-MM-dd", locale);
+		}
+		else {
+			return StringPool.BLANK;
+		}
+	}
+
+	public static List<Long> getIncidentNatureIds(long watsonIncidentId) throws Exception {
+		return WatsonListTypeRel.getWatsonListTypeIds(watsonIncidentId, getBaseModelClass().getName() + ".nature");
+	}
+
+	public String getIncidentNatures() throws Exception {
+		List<Long> incidentNatureIds = getIncidentNatureIds(getWatsonIncidentId());
+
+		StringBundler sb = new StringBundler(incidentNatureIds.size() * 2);
+
+		for (long incidentNatureId : incidentNatureIds) {
+			sb.append(incidentNatureId);
+			sb.append(StringPool.SPACE);
+		}
+
+		return sb.toString();
+	}
+
+	public static String getIncidentStatusLabel(int incidentStatus) {
+		if (incidentStatus == INCIDENT_STATUS_CLOSED) {
+			return INCIDENT_STATUS_LABEL_CLOSED;
+		}
+		else if (incidentStatus == INCIDENT_STATUS_INACTIVE) {
+			return INCIDENT_STATUS_LABEL_INACTIVE;
+		}
+
+		return INCIDENT_STATUS_LABEL_OPEN;
+	}
+
+	public static List<WatsonActivity> getWatsonActivities(long watsonIncidentId, boolean includeInactive, String sort, int start, int end) throws Exception {
+		if (watsonIncidentId > 0) {
+			if (includeInactive) {
+				return WatsonActivity.queryAll("watsonIncidentId", watsonIncidentId);
+			}
+			else {
+				return WatsonActivity.queryRange(sort, start, end, "watsonIncidentId", watsonIncidentId);
+			}
+		}
+		else {
+			return WatsonActivity.get(start, end);
+		}
+	}
+
+	public static List<WatsonAddress> getWatsonAddresses(long watsonIncidentId, boolean includeInactive, String sort, int start, int end) throws Exception {
+		if (watsonIncidentId > 0) {
+			if (includeInactive) {
+				return WatsonAddress.queryAll("watsonIncidentId", watsonIncidentId);
+			}
+			else {
+				return WatsonAddress.queryRange(sort, start, end, "watsonIncidentId", watsonIncidentId);
+			}
+		}
+		else {
+			return WatsonAddress.get(start, end);
+		}
+	}
+
+	public static List<WatsonHistory> getWatsonHistories(long watsonIncidentId, boolean includeInactive, String sort, int start, int end) throws Exception {
+		if (watsonIncidentId > 0) {
+			if (includeInactive) {
+				return WatsonHistory.queryAll("watsonIncidentId", watsonIncidentId);
+			}
+			else {
+				return WatsonHistory.queryRange(sort, start, end, "watsonIncidentId", watsonIncidentId);
+			}
+		}
+		else {
+			return WatsonHistory.get(start, end);
+		}
+	}
+
+	public static List<WatsonPerson> getWatsonPeople(long watsonIncidentId, boolean includeInactive, String sort, int start, int end) throws Exception {
+		if (watsonIncidentId > 0) {
+			if (includeInactive) {
+				return WatsonPerson.queryAll("watsonIncidentId", watsonIncidentId);
+			}
+			else {
+				return WatsonPerson.queryRange(sort, start, end, "watsonIncidentId", watsonIncidentId);
+			}
+		}
+		else {
+			return WatsonPerson.get(start, end);
+		}
+	}
+
+	public static List<WatsonRelationship> getWatsonRelationships(long watsonIncidentId, boolean includeInactive, String sort, int start, int end) throws Exception {
+		if (watsonIncidentId > 0) {
+			if (includeInactive) {
+				return WatsonRelationship.queryAll("watsonIncidentId", watsonIncidentId);
+			}
+			else {
+				return WatsonRelationship.queryRange(sort, start, end, "watsonIncidentId", watsonIncidentId);
+			}
+		}
+		else {
+			return WatsonRelationship.get(start, end);
+		}
+	}
+
+	public static List<WatsonResource> getWatsonResources(long watsonIncidentId, boolean includeInactive, String sort, int start, int end) throws Exception {
+		if (watsonIncidentId > 0) {
+			if (includeInactive) {
+				return WatsonResource.queryAll("watsonIncidentId", watsonIncidentId);
+			}
+			else {
+				return WatsonResource.queryRange(sort, start, end, "watsonIncidentId", watsonIncidentId);
+			}
+		}
+		else {
+			return WatsonResource.get(start, end);
+		}
+	}
+
+	public static List<WatsonVehicle> getWatsonVehicles(long watsonIncidentId, boolean includeInactive, String sort, int start, int end) throws Exception {
+		if (watsonIncidentId > 0) {
+			if (includeInactive) {
+				return WatsonVehicle.queryAll("watsonIncidentId", watsonIncidentId);
+			}
+			else {
+				return WatsonVehicle.queryRange(sort, start, end, "watsonIncidentId", watsonIncidentId);
+			}
+		}
+		else {
+			return WatsonVehicle.get(start, end);
+		}
+	}
+
+	public static long getWatsonActivitiesCount(long watsonIncidentId) throws Exception {
+		if (watsonIncidentId > 0) {
+			return WatsonActivity.count("watsonIncidentId", watsonIncidentId, "status", WorkflowConstants.STATUS_APPROVED);
+		}
+		else {
+			return WatsonActivity.count("status", WorkflowConstants.STATUS_APPROVED);
+		}
+	}
+
+	public static long getWatsonAddressesCount(long watsonIncidentId) throws Exception {
+		if (watsonIncidentId > 0) {
+			return WatsonAddress.count("watsonIncidentId", watsonIncidentId, "status", WorkflowConstants.STATUS_APPROVED);
+		}
+		else {
+			return WatsonAddress.count("status", WorkflowConstants.STATUS_APPROVED);
+		}
+	}
+
+	public static long getWatsonHistoriesCount(long watsonIncidentId) throws Exception {
+		if (watsonIncidentId > 0) {
+			return WatsonHistory.count("watsonIncidentId", watsonIncidentId, "status", WorkflowConstants.STATUS_APPROVED);
+		}
+		else {
+			return WatsonHistory.count("status", WorkflowConstants.STATUS_APPROVED);
+		}
+	}
+
+	public static long getWatsonPeopleCount(long watsonIncidentId) throws Exception {
+		if (watsonIncidentId > 0) {
+			return WatsonPerson.count("watsonIncidentId", watsonIncidentId, "status", WorkflowConstants.STATUS_APPROVED);
+		}
+		else {
+			return WatsonPerson.count("status", WorkflowConstants.STATUS_APPROVED);
+		}
+	}
+
+	public static long getWatsonRelationshipsCount(long watsonIncidentId) throws Exception {
+		if (watsonIncidentId > 0) {
+			return WatsonRelationship.count("watsonIncidentId", watsonIncidentId, "status", WorkflowConstants.STATUS_APPROVED);
+		}
+		else {
+			return WatsonRelationship.count("status", WorkflowConstants.STATUS_APPROVED);
+		}
+	}
+
+	public static long getWatsonResourcesCount(long watsonIncidentId) throws Exception {
+		if (watsonIncidentId > 0) {
+			return WatsonResource.count("watsonIncidentId", watsonIncidentId, "status", WorkflowConstants.STATUS_APPROVED);
+		}
+		else {
+			return WatsonResource.count("status", WorkflowConstants.STATUS_APPROVED);
+		}
+	}
+
+	public static long getWatsonVehiclesCount(long watsonIncidentId) throws Exception {
+		if (watsonIncidentId > 0) {
+			return WatsonVehicle.count("watsonIncidentId", watsonIncidentId, "status", WorkflowConstants.STATUS_APPROVED);
+		}
+		else {
+			return WatsonVehicle.count("status", WorkflowConstants.STATUS_APPROVED);
+		}
+	}
+
+	public static boolean hasDisabled(long currentUserId, long incidentStatus) throws Exception {
+		ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
+
+		User user = UserLocalServiceUtil.fetchUser(currentUserId);
+
+		if (Validator.isNotNull(user)) {
+			boolean hasAdminRole = RoleLocalServiceUtil.hasUserRole(user.getUserId(), user.getCompanyId(), WatsonRoleConstants.ADMIN, true);
+
+			if (hasAdminRole) {
+				return false;
+			}
+		}
+
+		return (incidentStatus == INCIDENT_STATUS_CLOSED);
+	}
+
+	public static boolean hasDisabled(long incidentStatus) throws Exception {
+		ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
+
+		return hasDisabled(serviceContext.getUserId(), incidentStatus);
+	}
+
+	public static KeyValuePair validateWatsonIncidentDescription(String description) {
+		if (Validator.isNull(description)) {
+			return new KeyValuePair("description", "description-is-required");
+		}
+
+		if (description.length() >= MAX_FIELD_LENGTH_TEXTAREA) {
+			return new KeyValuePair("description", "the-description-exceeded-the-maximum-allowed-length");
+		}
+
+		return null;
+	}
+
+	public static KeyValuePair validateWatsonIncidentIncidentStatus(int incidentStatus) {
+		if ((incidentStatus != INCIDENT_STATUS_OPEN) && (incidentStatus != INCIDENT_STATUS_CLOSED) && (incidentStatus != INCIDENT_STATUS_INACTIVE)) {
+			return new KeyValuePair("incidentStatus", "the-incident-status-is-invalid");
+		}
+
+		return null;
+	}
+
+	public static KeyValuePair validateWatsonIncidentNatures(List<WatsonListTypeRel> natures, boolean newIncident) throws Exception {
+		if (natures.isEmpty()) {
+			return new KeyValuePair("natureWatsonListType", "at-least-one-incident-nature-is-required");
+		}
+
+		for (WatsonListTypeRel watsonListTypeRel : natures) {
+			if (!newIncident && (watsonListTypeRel.getClassPK() <= 0)) {
+				return new KeyValuePair("natureWatsonListType", "the-incident-natures-were-invalid");
+			}
+
+			if (Validator.isNull(watsonListTypeRel.getType())) {
+				return new KeyValuePair("natureWatsonListType", "the-incident-natures-were-invalid");
+			}
+
+			if (watsonListTypeRel.getWatsonListTypeId() <= 0) {
+				return new KeyValuePair("natureWatsonListType", "the-incident-natures-were-invalid");
+			}
+
+			if (WatsonListType.fetch(watsonListTypeRel.getWatsonListTypeId()) == null) {
+				return new KeyValuePair("natureWatsonListType", "the-incident-natures-were-invalid");
+			}
+		}
+
+		return null;
+	}
+
+	public static KeyValuePair validateWatsonIncidentOccurrenceDates(Date startDate, Date endDate) {
+		if (startDate == null) {
+			return new KeyValuePair("startDate", "the-start-date-is-invalid");
+		}
+
+		if (startDate.after(new Date())) {
+			return new KeyValuePair("startDate", "the-start-date-cannot-be-in-the-future");
+		}
+
+		if (startDate.before(new Date(0))) {
+			return new KeyValuePair("startDate", "the-start-date-is-too-long-ago");
+		}
+
+		if (endDate != null) {
+			if (startDate.after(endDate)) {
+				return new KeyValuePair("startDate", "the-start-date-cannot-be-after-the-end-date");
+			}
+
+			if (endDate.after(new Date())) {
+				return new KeyValuePair("endDate", "the-end-date-cannot-be-in-the-future");
+			}
+
+			if (endDate.before(new Date(0))) {
+				return new KeyValuePair("endDate", "the-end-date-is-too-long-ago");
+			}
+		}
+
+		return null;
+	}
+
+	public static KeyValuePair validateWatsonIncidentReportDate(Date reportDate) {
+		if (reportDate == null) {
+			return new KeyValuePair("reportDate", "the-report-date-is-invalid");
+		}
+
+		if (reportDate.after(new Date())) {
+			return new KeyValuePair("reportDate", "the-report-date-cannot-be-in-the-future");
+		}
+
+		if (reportDate.before(new Date(0))) {
+			return new KeyValuePair("reportDate", "the-report-date-is-too-long-ago");
+		}
+
+		return null;
+	}
+
+	public static KeyValuePair validateWatsonIncidentSource(long sourceWatsonListTypeId) throws Exception {
+		if (sourceWatsonListTypeId <= 0) {
+			return new KeyValuePair("sourceWatsonListTypeId", "the-incident-source-is-invalid");
+		}
+
+		if (WatsonListType.fetch(sourceWatsonListTypeId) == null) {
+			return new KeyValuePair("sourceWatsonListTypeId", "the-incident-source-is-invalid");
+		}
+
+		return null;
+	}
+
+	public static KeyValuePair validateWatsonIncidentType(long typeWatsonListTypeId) throws Exception {
+		if (typeWatsonListTypeId <= 0) {
+			return new KeyValuePair("typeWatsonListTypeId", "the-report-type-is-invalid");
+		}
+
+		if (WatsonListType.fetch(typeWatsonListTypeId) == null) {
+			return new KeyValuePair("typeWatsonListTypeId", "the-report-type-is-invalid");
+		}
+
+		return null;
+	}
+
+	public static KeyValuePair validateWatsonIncidentSubtype(long subtypeWatsonListTypeId) throws Exception {
+		if (subtypeWatsonListTypeId <= 0) {
+			return new KeyValuePair("subtypeWatsonListTypeId", "the-report-type-is-invalid");
+		}
+
+		if (WatsonListType.fetch(subtypeWatsonListTypeId) == null) {
+			return new KeyValuePair("subtypeWatsonListTypeId", "the-report-type-is-invalid");
+		}
+
+		return null;
+	}
+
+	public static KeyValuePair validateWatsonIncidentRels(List<WatsonIncidentRel> watsonIncidentRels) throws Exception{
+		if (Validator.isNotNull(watsonIncidentRels)) {
+			for (WatsonIncidentRel watsonIncidentRel : watsonIncidentRels) {
+				if (!watsonIncidentRel.isValid()) {
+					return new KeyValuePair("watsonIncidentRels", "the-relationships-were-invalid");
+				}
+			}
+		}
+
+		return null;
+	}
+
+	public static WatsonIncident queryFirst(Object... properties) throws Exception {
+		List<WatsonIncident> watsonIncidents = WatsonIncident.query(properties);
+
+		if (watsonIncidents.size() > 0) {
+			return watsonIncidents.get(0);
+		}
+
+		return null;
+	}
+
+	public WatsonIncident add() throws Exception {
+		Calendar calendar = CalendarFactoryUtil.getCalendar();
+
+		String year = String.valueOf(calendar.get(Calendar.YEAR));
+
+		setName(year + StringPool.DASH + _increment(year));
+
+		return add(this);
+	}
+
+	public WatsonIncident updateTranslations(HttpServletRequest request, Locale locale) throws Exception {
+		BaseAlloyControllerImpl.setLocalizedProperties(this, request, locale);
+
+		return update(this);
+	}
+
+	public JSONObject getIncidentFormErrors() {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		for (Map.Entry<String, String> errorEntry : errors.entrySet()) {
+			jsonObject.put(errorEntry.getKey(), LanguageUtil.format(LocaleUtil.getMostRelevantLocale(), errorEntry.getValue(), new Object[0]));
+		}
+
+		return jsonObject;
+	}
+
+	public boolean isValid(List<WatsonListTypeRel> natures, List<WatsonIncidentRel> watsonIncidentRels) throws Exception {
+		pushError(validateWatsonIncidentDescription(getDescription()));
+		pushError(validateWatsonIncidentIncidentStatus(getIncidentStatus()));
+		pushError(validateWatsonIncidentNatures(natures, this.isNew()));
+		pushError(validateWatsonIncidentOccurrenceDates(getStartDate(), getEndDate()));
+		pushError(validateWatsonIncidentReportDate(getReportDate()));
+		pushError(validateWatsonIncidentSource(getSourceWatsonListTypeId()));
+		pushError(validateWatsonIncidentType(getTypeWatsonListTypeId()));
+		pushError(validateWatsonIncidentSubtype(getSubtypeWatsonListTypeId()));
+		pushError(validateWatsonIncidentRels(watsonIncidentRels));
+
+		return errors.isEmpty();
+	}
+
+	public void pushError(KeyValuePair keyValuePair) {
+		if (keyValuePair != null) {
+			errors.put(keyValuePair.getKey(), keyValuePair.getValue());
+		}
+	}
+
+	protected HashMap<String, String> errors = new HashMap<String, String>();
+
+	private static long _increment(String year) throws Exception {
+		return CounterLocalServiceUtil.increment(getBaseModelClass().getName() + StringPool.POUND + year);
+	}
+
+}
+%>

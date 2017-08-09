@@ -1,0 +1,398 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%@ page import="com.liferay.alloy.mvc.AlloyException" %>
+<%@ page import="com.liferay.alloy.mvc.AlloyServiceInvoker" %>
+<%@ page import="com.liferay.alloy.mvc.BaseAlloyControllerImpl" %>
+<%@ page import="com.liferay.counter.kernel.service.CounterLocalServiceUtil" %>
+<%@ page import="com.liferay.portal.kernel.bean.BeanPropertiesUtil" %>
+<%@ page import="com.liferay.portal.kernel.model.ModelHintsUtil" %>
+<%@ page import="com.liferay.portal.kernel.util.Validator" %>
+<%@ page import="com.liferay.portal.kernel.workflow.WorkflowConstants" %>
+<%@ page import="com.liferay.watson.model.WatsonRelationshipWrapper" %>
+
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.List" %>
+
+<%!
+public static class WatsonRelationshipBaseModel extends WatsonRelationshipWrapper {
+
+	WatsonRelationshipBaseModel() {
+		super(new com.liferay.watson.model.impl.WatsonRelationshipImpl());
+	}
+
+	WatsonRelationshipBaseModel(com.liferay.watson.model.WatsonRelationship watsonRelationship) {
+		super(watsonRelationship);
+	}
+
+	public static WatsonRelationship add(HttpServletRequest request) throws Exception {
+		WatsonRelationship watsonRelationship = WatsonRelationshipBaseModel.create();
+
+		return add(watsonRelationship, request, false);
+	}
+
+	public static WatsonRelationship add(WatsonRelationship watsonRelationship) throws Exception {
+		return add(watsonRelationship, null, true);
+	}
+
+	public static WatsonRelationship add(WatsonRelationship watsonRelationship, HttpServletRequest request) throws Exception {
+		return add(watsonRelationship, request, false);
+	}
+
+	public static WatsonRelationship add(WatsonRelationship watsonRelationship, HttpServletRequest request, boolean ignoreRequest) throws Exception {
+		if ((request != null) && !ignoreRequest) {
+			BeanPropertiesUtil.setProperties(watsonRelationship, request, watsonRelationship.getLocalizedProperties());
+
+			BaseAlloyControllerImpl.setLocalizedProperties(watsonRelationship, request, request.getLocale());
+		}
+
+		BaseAlloyControllerImpl.setAuditedModel(watsonRelationship, request);
+
+		validateAdd(watsonRelationship);
+
+		watsonRelationship.setStatus(WorkflowConstants.STATUS_APPROVED);
+
+		if (watsonRelationship.getWatsonRelationshipId() <= 0) {
+			long watsonRelationshipId = CounterLocalServiceUtil.increment();
+
+			watsonRelationship.setWatsonRelationshipId(watsonRelationshipId);
+		}
+
+		return new WatsonRelationship((com.liferay.watson.model.WatsonRelationship)baseModelAlloyServiceInvoker.addModel(watsonRelationship));
+	}
+
+	public static List<WatsonRelationship> batchAdd(List<WatsonRelationship> watsonRelationships) throws Exception {
+		List<WatsonRelationship> resultWatsonRelationships = new ArrayList<>();
+
+		for (WatsonRelationship watsonRelationship : watsonRelationships) {
+			long watsonRelationshipId = watsonRelationship.getWatsonRelationshipId();
+
+			if (watsonRelationshipId > 0) {
+				resultWatsonRelationships.add(add(watsonRelationship));
+			}
+			else {
+				watsonRelationshipId = CounterLocalServiceUtil.increment();
+
+				watsonRelationship.setWatsonRelationshipId(watsonRelationshipId);
+
+				resultWatsonRelationships.add(add(watsonRelationship));
+			}
+		}
+
+		return resultWatsonRelationships;
+	}
+
+	public static List<WatsonRelationship> batchDelete(List<WatsonRelationship> watsonRelationships) throws Exception {
+		List<WatsonRelationship> resultWatsonRelationships = new ArrayList<>();
+
+		for (WatsonRelationship watsonRelationship : watsonRelationships) {
+			resultWatsonRelationships.add(delete(watsonRelationship));
+		}
+
+		return resultWatsonRelationships;
+	}
+
+	public static List<WatsonRelationship> batchUpdate(List<WatsonRelationship> watsonRelationships) throws Exception {
+		List<WatsonRelationship> resultWatsonRelationships = new ArrayList<>();
+
+		for (WatsonRelationship watsonRelationship : watsonRelationships) {
+			long watsonRelationshipId = watsonRelationship.getWatsonRelationshipId();
+
+			if (watsonRelationshipId > 0) {
+				resultWatsonRelationships.add(update(watsonRelationship));
+			}
+			else {
+				watsonRelationshipId = CounterLocalServiceUtil.increment();
+
+				watsonRelationship.setWatsonRelationshipId(watsonRelationshipId);
+
+				resultWatsonRelationships.add(add(watsonRelationship));
+			}
+		}
+
+		return resultWatsonRelationships;
+	}
+
+	public static long count(Object... properties) throws Exception {
+		return baseModelAlloyServiceInvoker.executeDynamicQueryCount(properties);
+	}
+
+	public static long countAll() throws Exception {
+		return (long)baseModelAlloyServiceInvoker.getModelsCount();
+	}
+
+	public static WatsonRelationship create() throws Exception {
+		long watsonRelationshipId = CounterLocalServiceUtil.increment();
+
+		return create(watsonRelationshipId);
+	}
+
+	public static WatsonRelationship create(HttpServletRequest request) throws Exception {
+		WatsonRelationship watsonRelationship = WatsonRelationshipBaseModel.create();
+
+		if (request != null) {
+			BeanPropertiesUtil.setProperties(watsonRelationship, request, watsonRelationship.getLocalizedProperties());
+
+			BaseAlloyControllerImpl.setLocalizedProperties(watsonRelationship, request, request.getLocale());
+		}
+
+		BaseAlloyControllerImpl.setAuditedModel(watsonRelationship, request);
+
+		return watsonRelationship;
+	}
+
+	public static WatsonRelationship create(long watsonRelationshipId) throws Exception {
+		return new WatsonRelationship((com.liferay.watson.model.WatsonRelationship)baseModelAlloyServiceInvoker.createModel(watsonRelationshipId));
+	}
+
+	public static WatsonRelationship create(long watsonRelationshipId, HttpServletRequest request) throws Exception {
+		WatsonRelationship watsonRelationship = WatsonRelationshipBaseModel.create(watsonRelationshipId);
+
+		BaseAlloyControllerImpl.setAuditedModel(watsonRelationship, request);
+
+		return watsonRelationship;
+	}
+
+	public static WatsonRelationship createFromJSON(String jsonDataString, HttpServletRequest request) throws Exception {
+		WatsonRelationship watsonRelationship = JSONFactoryUtil.looseDeserialize(jsonDataString, WatsonRelationship.class);
+
+		watsonRelationship.setNew(true);
+
+		BaseAlloyControllerImpl.setAuditedModel(watsonRelationship, request);
+
+		watsonRelationship.setWatsonRelationshipId(CounterLocalServiceUtil.increment());
+
+		return new WatsonRelationship(watsonRelationship);
+	}
+
+	public static WatsonRelationship delete(long watsonRelationshipId) throws Exception {
+		WatsonRelationship watsonRelationship = fetch(watsonRelationshipId);
+
+		return delete(watsonRelationship);
+	}
+
+	public static WatsonRelationship delete(WatsonRelationship watsonRelationship) throws Exception {
+		validateDelete(watsonRelationship);
+
+		watsonRelationship.setStatus(WorkflowConstants.STATUS_INACTIVE);
+
+		return new WatsonRelationship((com.liferay.watson.model.WatsonRelationship)baseModelAlloyServiceInvoker.updateModel(watsonRelationship));
+	}
+
+	public static WatsonRelationship fetch(long watsonRelationshipId) throws Exception {
+		WatsonRelationship watsonRelationship = new WatsonRelationship((com.liferay.watson.model.WatsonRelationship)baseModelAlloyServiceInvoker.fetchModel(watsonRelationshipId));
+
+		validateFetch(watsonRelationship);
+
+		return watsonRelationship;
+	}
+
+	public static List<WatsonRelationship> get(int start, int end) throws Exception {
+		List<com.liferay.watson.model.WatsonRelationship> watsonRelationships = (List<com.liferay.watson.model.WatsonRelationship>)baseModelAlloyServiceInvoker.getModels(start, end);
+
+		return getAlloyModels(watsonRelationships);
+	}
+
+	public static List<WatsonRelationship> getAlloyModels(List<com.liferay.watson.model.WatsonRelationship> watsonRelationships) throws Exception {
+		return getAlloyModels(watsonRelationships, false);
+	}
+
+	public static List<WatsonRelationship> getAlloyModels(List<com.liferay.watson.model.WatsonRelationship> watsonRelationships, boolean includeInactive) throws Exception {
+		List<WatsonRelationship> alloyWatsonRelationships = new ArrayList<>();
+
+		for (com.liferay.watson.model.WatsonRelationship watsonRelationship : watsonRelationships) {
+			if (includeInactive || (watsonRelationship.getStatus() == WorkflowConstants.STATUS_APPROVED)) {
+				alloyWatsonRelationships.add(new WatsonRelationship(watsonRelationship));
+			}
+		}
+
+		return alloyWatsonRelationships;
+	}
+
+	public static Class<?> getBaseModelClass() throws Exception {
+		return baseModelClass;
+	}
+
+	public String[] getLocalizedProperties() throws Exception {
+		if (localizedProperties.length < 1) {
+			List<String> localizedPropertiesList = new ArrayList<>();
+
+			Map<String, Object> modelAttributes = this.getModelAttributes();
+
+			for (String propertyName : modelAttributes.keySet()) {
+				boolean localized = ModelHintsUtil.isLocalized(this.getModelClassName(), propertyName);
+
+				if (localized) {
+					localizedPropertiesList.add(propertyName);
+				}
+			}
+
+			localizedProperties = ArrayUtil.toStringArray(localizedPropertiesList);
+		}
+
+		return localizedProperties;
+	}
+
+	public static List<WatsonRelationship> query(Object... properties) throws Exception {
+		List<com.liferay.watson.model.WatsonRelationship> watsonRelationships = (List<com.liferay.watson.model.WatsonRelationship>)baseModelAlloyServiceInvoker.executeDynamicQuery(properties);
+
+		return getAlloyModels(watsonRelationships);
+	}
+
+	public static List<WatsonRelationship> queryAll(Object... properties) throws Exception {
+		List<com.liferay.watson.model.WatsonRelationship> watsonRelationships = (List<com.liferay.watson.model.WatsonRelationship>)baseModelAlloyServiceInvoker.executeDynamicQuery(properties);
+
+		return getAlloyModels(watsonRelationships, true);
+	}
+
+	public static List<WatsonRelationship> queryRange(String order, int start, int end, Object... properties) throws Exception {
+		DynamicQuery sortedDynamicQuery = baseModelAlloyServiceInvoker.buildDynamicQuery(properties);
+
+		if (Validator.isNotNull(order)) {
+			Order sortedOrder = OrderFactoryUtil.desc(order);
+
+			sortedDynamicQuery.addOrder(sortedOrder);
+		}
+
+		List<com.liferay.watson.model.WatsonRelationship> watsonRelationships = (List<com.liferay.watson.model.WatsonRelationship>)baseModelAlloyServiceInvoker.executeDynamicQuery(sortedDynamicQuery, start, end);
+
+		return getAlloyModels(watsonRelationships);
+	}
+
+	public static WatsonRelationship setFields(WatsonRelationship watsonRelationship, HttpServletRequest request) throws Exception {
+		if (request != null) {
+			BeanPropertiesUtil.setProperties(watsonRelationship, request, watsonRelationship.getLocalizedProperties());
+
+			BaseAlloyControllerImpl.setLocalizedProperties(watsonRelationship, request, request.getLocale());
+		}
+
+		BaseAlloyControllerImpl.setAuditedModel(watsonRelationship, request);
+
+		return watsonRelationship;
+	}
+
+	public static WatsonRelationship setFields(WatsonRelationship watsonRelationship, HttpServletRequest request, Object... properties) throws Exception {
+		BaseAlloyControllerImpl.setAuditedModel(watsonRelationship, request);
+
+		WatsonAlloyControllerImpl.setBaseModelProperties(watsonRelationship, properties);
+
+		return watsonRelationship;
+	}
+
+	public static WatsonRelationship updateStatus(long watsonRelationshipId, int status) throws Exception {
+		WatsonRelationship watsonRelationship = new WatsonRelationship((com.liferay.watson.model.WatsonRelationship)baseModelAlloyServiceInvoker.fetchModel(watsonRelationshipId));
+
+		return updateStatus(watsonRelationship, status);
+	}
+
+	public static WatsonRelationship updateStatus(WatsonRelationship watsonRelationship, int status) throws Exception {
+		watsonRelationship.setStatus(status);
+
+		return new WatsonRelationship((com.liferay.watson.model.WatsonRelationship)baseModelAlloyServiceInvoker.updateModel(watsonRelationship));
+	}
+
+	public static WatsonRelationship update(long watsonRelationshipId, HttpServletRequest request) throws Exception {
+		WatsonRelationship watsonRelationship = fetch(watsonRelationshipId);
+
+		return update(watsonRelationship, request);
+	}
+
+	public static WatsonRelationship update(WatsonRelationship watsonRelationship) throws Exception {
+		return update(watsonRelationship, null);
+	}
+
+	public static WatsonRelationship update(WatsonRelationship watsonRelationship, HttpServletRequest request) throws Exception {
+		if (request != null) {
+			BeanPropertiesUtil.setProperties(watsonRelationship, request, watsonRelationship.getLocalizedProperties());
+
+			BaseAlloyControllerImpl.setLocalizedProperties(watsonRelationship, request, request.getLocale());
+		}
+
+		BaseAlloyControllerImpl.setAuditedModel(watsonRelationship, request);
+
+		validateUpdate(watsonRelationship);
+
+		return new WatsonRelationship((com.liferay.watson.model.WatsonRelationship)baseModelAlloyServiceInvoker.updateModel(watsonRelationship));
+	}
+
+	public static void validateAdd(WatsonRelationshipBaseModel watsonRelationship) throws AlloyException {
+		validateAdd(watsonRelationship, null);
+	}
+
+	public static void validateAdd(WatsonRelationshipBaseModel watsonRelationship, HttpServletRequest request) throws AlloyException {
+		validateWatsonRelationshipBaseModel(watsonRelationship);
+	}
+
+	public static void validateDelete(WatsonRelationshipBaseModel watsonRelationship) throws AlloyException {
+		validateWatsonRelationshipBaseModel(watsonRelationship);
+	}
+
+	public static void validateFetch(WatsonRelationshipBaseModel watsonRelationship) throws AlloyException {
+		validateWatsonRelationshipBaseModel(watsonRelationship);
+		validateWatsonRelationshipBaseModelIsNotInactive(watsonRelationship);
+	}
+
+	public static void validateUpdate(WatsonRelationshipBaseModel watsonRelationship) throws AlloyException {
+		validateUpdate(watsonRelationship, null);
+	}
+
+	public static void validateUpdate(WatsonRelationshipBaseModel watsonRelationship, HttpServletRequest request) throws AlloyException {
+		validateWatsonRelationshipBaseModel(watsonRelationship);
+		validateWatsonRelationshipBaseModelIsNotInactive(watsonRelationship);
+	}
+
+	public static void validateWatsonRelationshipBaseModel(WatsonRelationshipBaseModel watsonRelationship) throws AlloyException {
+		if (Validator.isNull(watsonRelationship) || Validator.isNull(watsonRelationship.getWrappedModel())) {
+			throw new AlloyException("the-relationship-is-invalid");
+		}
+	}
+
+	public static void validateWatsonRelationshipBaseModelIsNotInactive(WatsonRelationshipBaseModel watsonRelationship) throws AlloyException {
+		if (watsonRelationship.getStatus() == WorkflowConstants.STATUS_INACTIVE) {
+			throw new AlloyException("the-relationship-is-inactive");
+		}
+	}
+
+	public WatsonRelationship add() throws Exception {
+		return add((WatsonRelationship)this);
+	}
+
+	public WatsonRelationship delete() throws Exception {
+		return delete((WatsonRelationship)this);
+	}
+
+	public WatsonRelationship setFields(HttpServletRequest request) throws Exception {
+		return setFields((WatsonRelationship)this, request);
+	}
+
+	public WatsonRelationship setFields(HttpServletRequest request, Object... properties) throws Exception {
+		return setFields((WatsonRelationship)this, request, properties);
+	}
+
+	public WatsonRelationship update() throws Exception {
+		return update((WatsonRelationship)this);
+	}
+
+	public WatsonRelationship update(HttpServletRequest request) throws Exception {
+		return update((WatsonRelationship)this, request);
+	}
+
+	protected static AlloyServiceInvoker baseModelAlloyServiceInvoker = new AlloyServiceInvoker(com.liferay.watson.model.WatsonRelationship.class.getName());
+	protected static Class<?> baseModelClass = com.liferay.watson.model.WatsonRelationship.class;
+	protected static String[] localizedProperties = new String[0];
+
+}
+%>

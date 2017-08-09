@@ -1,0 +1,398 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%@ page import="com.liferay.alloy.mvc.AlloyException" %>
+<%@ page import="com.liferay.alloy.mvc.AlloyServiceInvoker" %>
+<%@ page import="com.liferay.alloy.mvc.BaseAlloyControllerImpl" %>
+<%@ page import="com.liferay.counter.kernel.service.CounterLocalServiceUtil" %>
+<%@ page import="com.liferay.portal.kernel.bean.BeanPropertiesUtil" %>
+<%@ page import="com.liferay.portal.kernel.model.ModelHintsUtil" %>
+<%@ page import="com.liferay.portal.kernel.util.Validator" %>
+<%@ page import="com.liferay.portal.kernel.workflow.WorkflowConstants" %>
+<%@ page import="com.liferay.watson.model.WatsonListTypeWrapper" %>
+
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.List" %>
+
+<%!
+public static class WatsonListTypeBaseModel extends WatsonListTypeWrapper {
+
+	WatsonListTypeBaseModel() {
+		super(new com.liferay.watson.model.impl.WatsonListTypeImpl());
+	}
+
+	WatsonListTypeBaseModel(com.liferay.watson.model.WatsonListType watsonListType) {
+		super(watsonListType);
+	}
+
+	public static WatsonListType add(HttpServletRequest request) throws Exception {
+		WatsonListType watsonListType = WatsonListTypeBaseModel.create();
+
+		return add(watsonListType, request, false);
+	}
+
+	public static WatsonListType add(WatsonListType watsonListType) throws Exception {
+		return add(watsonListType, null, true);
+	}
+
+	public static WatsonListType add(WatsonListType watsonListType, HttpServletRequest request) throws Exception {
+		return add(watsonListType, request, false);
+	}
+
+	public static WatsonListType add(WatsonListType watsonListType, HttpServletRequest request, boolean ignoreRequest) throws Exception {
+		if ((request != null) && !ignoreRequest) {
+			BeanPropertiesUtil.setProperties(watsonListType, request, watsonListType.getLocalizedProperties());
+
+			BaseAlloyControllerImpl.setLocalizedProperties(watsonListType, request, request.getLocale());
+		}
+
+		BaseAlloyControllerImpl.setAuditedModel(watsonListType, request);
+
+		validateAdd(watsonListType);
+
+		watsonListType.setStatus(WorkflowConstants.STATUS_APPROVED);
+
+		if (watsonListType.getWatsonListTypeId() <= 0) {
+			long watsonListTypeId = CounterLocalServiceUtil.increment();
+
+			watsonListType.setWatsonListTypeId(watsonListTypeId);
+		}
+
+		return new WatsonListType((com.liferay.watson.model.WatsonListType)baseModelAlloyServiceInvoker.addModel(watsonListType));
+	}
+
+	public static List<WatsonListType> batchAdd(List<WatsonListType> watsonListTypes) throws Exception {
+		List<WatsonListType> resultWatsonListTypes = new ArrayList<>();
+
+		for (WatsonListType watsonListType : watsonListTypes) {
+			long watsonListTypeId = watsonListType.getWatsonListTypeId();
+
+			if (watsonListTypeId > 0) {
+				resultWatsonListTypes.add(add(watsonListType));
+			}
+			else {
+				watsonListTypeId = CounterLocalServiceUtil.increment();
+
+				watsonListType.setWatsonListTypeId(watsonListTypeId);
+
+				resultWatsonListTypes.add(add(watsonListType));
+			}
+		}
+
+		return resultWatsonListTypes;
+	}
+
+	public static List<WatsonListType> batchDelete(List<WatsonListType> watsonListTypes) throws Exception {
+		List<WatsonListType> resultWatsonListTypes = new ArrayList<>();
+
+		for (WatsonListType watsonListType : watsonListTypes) {
+			resultWatsonListTypes.add(delete(watsonListType));
+		}
+
+		return resultWatsonListTypes;
+	}
+
+	public static List<WatsonListType> batchUpdate(List<WatsonListType> watsonListTypes) throws Exception {
+		List<WatsonListType> resultWatsonListTypes = new ArrayList<>();
+
+		for (WatsonListType watsonListType : watsonListTypes) {
+			long watsonListTypeId = watsonListType.getWatsonListTypeId();
+
+			if (watsonListTypeId > 0) {
+				resultWatsonListTypes.add(update(watsonListType));
+			}
+			else {
+				watsonListTypeId = CounterLocalServiceUtil.increment();
+
+				watsonListType.setWatsonListTypeId(watsonListTypeId);
+
+				resultWatsonListTypes.add(add(watsonListType));
+			}
+		}
+
+		return resultWatsonListTypes;
+	}
+
+	public static long count(Object... properties) throws Exception {
+		return baseModelAlloyServiceInvoker.executeDynamicQueryCount(properties);
+	}
+
+	public static long countAll() throws Exception {
+		return (long)baseModelAlloyServiceInvoker.getModelsCount();
+	}
+
+	public static WatsonListType create() throws Exception {
+		long watsonListTypeId = CounterLocalServiceUtil.increment();
+
+		return create(watsonListTypeId);
+	}
+
+	public static WatsonListType create(HttpServletRequest request) throws Exception {
+		WatsonListType watsonListType = WatsonListTypeBaseModel.create();
+
+		if (request != null) {
+			BeanPropertiesUtil.setProperties(watsonListType, request, watsonListType.getLocalizedProperties());
+
+			BaseAlloyControllerImpl.setLocalizedProperties(watsonListType, request, request.getLocale());
+		}
+
+		BaseAlloyControllerImpl.setAuditedModel(watsonListType, request);
+
+		return watsonListType;
+	}
+
+	public static WatsonListType create(long watsonListTypeId) throws Exception {
+		return new WatsonListType((com.liferay.watson.model.WatsonListType)baseModelAlloyServiceInvoker.createModel(watsonListTypeId));
+	}
+
+	public static WatsonListType create(long watsonListTypeId, HttpServletRequest request) throws Exception {
+		WatsonListType watsonListType = WatsonListTypeBaseModel.create(watsonListTypeId);
+
+		BaseAlloyControllerImpl.setAuditedModel(watsonListType, request);
+
+		return watsonListType;
+	}
+
+	public static WatsonListType createFromJSON(String jsonDataString, HttpServletRequest request) throws Exception {
+		WatsonListType watsonListType = JSONFactoryUtil.looseDeserialize(jsonDataString, WatsonListType.class);
+
+		watsonListType.setNew(true);
+
+		BaseAlloyControllerImpl.setAuditedModel(watsonListType, request);
+
+		watsonListType.setWatsonListTypeId(CounterLocalServiceUtil.increment());
+
+		return new WatsonListType(watsonListType);
+	}
+
+	public static WatsonListType delete(long watsonListTypeId) throws Exception {
+		WatsonListType watsonListType = fetch(watsonListTypeId);
+
+		return delete(watsonListType);
+	}
+
+	public static WatsonListType delete(WatsonListType watsonListType) throws Exception {
+		validateDelete(watsonListType);
+
+		watsonListType.setStatus(WorkflowConstants.STATUS_INACTIVE);
+
+		return new WatsonListType((com.liferay.watson.model.WatsonListType)baseModelAlloyServiceInvoker.updateModel(watsonListType));
+	}
+
+	public static WatsonListType fetch(long watsonListTypeId) throws Exception {
+		WatsonListType watsonListType = new WatsonListType((com.liferay.watson.model.WatsonListType)baseModelAlloyServiceInvoker.fetchModel(watsonListTypeId));
+
+		validateFetch(watsonListType);
+
+		return watsonListType;
+	}
+
+	public static List<WatsonListType> get(int start, int end) throws Exception {
+		List<com.liferay.watson.model.WatsonListType> watsonListTypes = (List<com.liferay.watson.model.WatsonListType>)baseModelAlloyServiceInvoker.getModels(start, end);
+
+		return getAlloyModels(watsonListTypes);
+	}
+
+	public static List<WatsonListType> getAlloyModels(List<com.liferay.watson.model.WatsonListType> watsonListTypes) throws Exception {
+		return getAlloyModels(watsonListTypes, false);
+	}
+
+	public static List<WatsonListType> getAlloyModels(List<com.liferay.watson.model.WatsonListType> watsonListTypes, boolean includeInactive) throws Exception {
+		List<WatsonListType> alloyWatsonListTypes = new ArrayList<>();
+
+		for (com.liferay.watson.model.WatsonListType watsonListType : watsonListTypes) {
+			if (includeInactive || (watsonListType.getStatus() == WorkflowConstants.STATUS_APPROVED)) {
+				alloyWatsonListTypes.add(new WatsonListType(watsonListType));
+			}
+		}
+
+		return alloyWatsonListTypes;
+	}
+
+	public static Class<?> getBaseModelClass() throws Exception {
+		return baseModelClass;
+	}
+
+	public String[] getLocalizedProperties() throws Exception {
+		if (localizedProperties.length < 1) {
+			List<String> localizedPropertiesList = new ArrayList<>();
+
+			Map<String, Object> modelAttributes = this.getModelAttributes();
+
+			for (String propertyName : modelAttributes.keySet()) {
+				boolean localized = ModelHintsUtil.isLocalized(this.getModelClassName(), propertyName);
+
+				if (localized) {
+					localizedPropertiesList.add(propertyName);
+				}
+			}
+
+			localizedProperties = ArrayUtil.toStringArray(localizedPropertiesList);
+		}
+
+		return localizedProperties;
+	}
+
+	public static List<WatsonListType> query(Object... properties) throws Exception {
+		List<com.liferay.watson.model.WatsonListType> watsonListTypes = (List<com.liferay.watson.model.WatsonListType>)baseModelAlloyServiceInvoker.executeDynamicQuery(properties);
+
+		return getAlloyModels(watsonListTypes);
+	}
+
+	public static List<WatsonListType> queryAll(Object... properties) throws Exception {
+		List<com.liferay.watson.model.WatsonListType> watsonListTypes = (List<com.liferay.watson.model.WatsonListType>)baseModelAlloyServiceInvoker.executeDynamicQuery(properties);
+
+		return getAlloyModels(watsonListTypes, true);
+	}
+
+	public static List<WatsonListType> queryRange(String order, int start, int end, Object... properties) throws Exception {
+		DynamicQuery sortedDynamicQuery = baseModelAlloyServiceInvoker.buildDynamicQuery(properties);
+
+		if (Validator.isNotNull(order)) {
+			Order sortedOrder = OrderFactoryUtil.desc(order);
+
+			sortedDynamicQuery.addOrder(sortedOrder);
+		}
+
+		List<com.liferay.watson.model.WatsonListType> watsonListTypes = (List<com.liferay.watson.model.WatsonListType>)baseModelAlloyServiceInvoker.executeDynamicQuery(sortedDynamicQuery, start, end);
+
+		return getAlloyModels(watsonListTypes);
+	}
+
+	public static WatsonListType setFields(WatsonListType watsonListType, HttpServletRequest request) throws Exception {
+		if (request != null) {
+			BeanPropertiesUtil.setProperties(watsonListType, request, watsonListType.getLocalizedProperties());
+
+			BaseAlloyControllerImpl.setLocalizedProperties(watsonListType, request, request.getLocale());
+		}
+
+		BaseAlloyControllerImpl.setAuditedModel(watsonListType, request);
+
+		return watsonListType;
+	}
+
+	public static WatsonListType setFields(WatsonListType watsonListType, HttpServletRequest request, Object... properties) throws Exception {
+		BaseAlloyControllerImpl.setAuditedModel(watsonListType, request);
+
+		WatsonAlloyControllerImpl.setBaseModelProperties(watsonListType, properties);
+
+		return watsonListType;
+	}
+
+	public static WatsonListType updateStatus(long watsonListTypeId, int status) throws Exception {
+		WatsonListType watsonListType = new WatsonListType((com.liferay.watson.model.WatsonListType)baseModelAlloyServiceInvoker.fetchModel(watsonListTypeId));
+
+		return updateStatus(watsonListType, status);
+	}
+
+	public static WatsonListType updateStatus(WatsonListType watsonListType, int status) throws Exception {
+		watsonListType.setStatus(status);
+
+		return new WatsonListType((com.liferay.watson.model.WatsonListType)baseModelAlloyServiceInvoker.updateModel(watsonListType));
+	}
+
+	public static WatsonListType update(long watsonListTypeId, HttpServletRequest request) throws Exception {
+		WatsonListType watsonListType = fetch(watsonListTypeId);
+
+		return update(watsonListType, request);
+	}
+
+	public static WatsonListType update(WatsonListType watsonListType) throws Exception {
+		return update(watsonListType, null);
+	}
+
+	public static WatsonListType update(WatsonListType watsonListType, HttpServletRequest request) throws Exception {
+		if (request != null) {
+			BeanPropertiesUtil.setProperties(watsonListType, request, watsonListType.getLocalizedProperties());
+
+			BaseAlloyControllerImpl.setLocalizedProperties(watsonListType, request, request.getLocale());
+		}
+
+		BaseAlloyControllerImpl.setAuditedModel(watsonListType, request);
+
+		validateUpdate(watsonListType);
+
+		return new WatsonListType((com.liferay.watson.model.WatsonListType)baseModelAlloyServiceInvoker.updateModel(watsonListType));
+	}
+
+	public static void validateAdd(WatsonListTypeBaseModel watsonListType) throws AlloyException {
+		validateAdd(watsonListType, null);
+	}
+
+	public static void validateAdd(WatsonListTypeBaseModel watsonListType, HttpServletRequest request) throws AlloyException {
+		validateWatsonListTypeBaseModel(watsonListType);
+	}
+
+	public static void validateDelete(WatsonListTypeBaseModel watsonListType) throws AlloyException {
+		validateWatsonListTypeBaseModel(watsonListType);
+	}
+
+	public static void validateFetch(WatsonListTypeBaseModel watsonListType) throws AlloyException {
+		validateWatsonListTypeBaseModel(watsonListType);
+		validateWatsonListTypeBaseModelIsNotInactive(watsonListType);
+	}
+
+	public static void validateUpdate(WatsonListTypeBaseModel watsonListType) throws AlloyException {
+		validateUpdate(watsonListType, null);
+	}
+
+	public static void validateUpdate(WatsonListTypeBaseModel watsonListType, HttpServletRequest request) throws AlloyException {
+		validateWatsonListTypeBaseModel(watsonListType);
+		validateWatsonListTypeBaseModelIsNotInactive(watsonListType);
+	}
+
+	public static void validateWatsonListTypeBaseModel(WatsonListTypeBaseModel watsonListType) throws AlloyException {
+		if (Validator.isNull(watsonListType) || Validator.isNull(watsonListType.getWrappedModel())) {
+			throw new AlloyException("the-list-type-is-invalid");
+		}
+	}
+
+	public static void validateWatsonListTypeBaseModelIsNotInactive(WatsonListTypeBaseModel watsonListType) throws AlloyException {
+		if (watsonListType.getStatus() == WorkflowConstants.STATUS_INACTIVE) {
+			throw new AlloyException("the-list-type-is-inactive");
+		}
+	}
+
+	public WatsonListType add() throws Exception {
+		return add((WatsonListType)this);
+	}
+
+	public WatsonListType delete() throws Exception {
+		return delete((WatsonListType)this);
+	}
+
+	public WatsonListType setFields(HttpServletRequest request) throws Exception {
+		return setFields((WatsonListType)this, request);
+	}
+
+	public WatsonListType setFields(HttpServletRequest request, Object... properties) throws Exception {
+		return setFields((WatsonListType)this, request, properties);
+	}
+
+	public WatsonListType update() throws Exception {
+		return update((WatsonListType)this);
+	}
+
+	public WatsonListType update(HttpServletRequest request) throws Exception {
+		return update((WatsonListType)this, request);
+	}
+
+	protected static AlloyServiceInvoker baseModelAlloyServiceInvoker = new AlloyServiceInvoker(com.liferay.watson.model.WatsonListType.class.getName());
+	protected static Class<?> baseModelClass = com.liferay.watson.model.WatsonListType.class;
+	protected static String[] localizedProperties = new String[0];
+
+}
+%>

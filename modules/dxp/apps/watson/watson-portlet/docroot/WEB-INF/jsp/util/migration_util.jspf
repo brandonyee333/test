@@ -1,0 +1,439 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%!
+public static class WatsonDataMigrationUtil {
+
+	public static boolean importIncidentCSV(File file, String fileName, Locale locale, HttpServletRequest request) throws Exception {
+		if (file.length() == 0) {
+			return false;
+		}
+
+		CSVFormat csvFormat = CSVFormat.DEFAULT;
+
+		CSVParser csvParser = CSVParser.parse(file, StandardCharsets.UTF_8, csvFormat.withFirstRecordAsHeader());
+
+		if (fileName.contains("activities")) {
+			importWatsonActivities(csvParser, locale, request);
+		}
+		else if (fileName.contains("addresses")) {
+			importWatsonAddresses(csvParser, locale, request);
+		}
+		else if (fileName.contains("incidents")) {
+			importWatsonIncidents(csvParser, locale, request);
+		}
+		else if (fileName.contains("suspects")) {
+			importWatsonSuspects(csvParser, locale, request);
+		}
+		else if (fileName.contains("vehicles")) {
+			importWatsonVehicles(csvParser, locale, request);
+		}
+		else if (fileName.contains("victims")) {
+			importWatsonVictims(csvParser, locale, request);
+		}
+		else {
+			return false;
+		}
+
+		return true;
+	}
+
+	protected static void addWatsonListTypeRel(long classNameId, long classPK, boolean force, boolean primary, HttpServletRequest request, String type, String value, long watsonListTypeId) throws Exception {
+		if (Validator.isNotNull(value) || force) {
+			WatsonListTypeRel watsonListTypeRel = WatsonListTypeRel.create(request);
+
+			watsonListTypeRel.setWatsonListTypeId(watsonListTypeId);
+			watsonListTypeRel.setClassNameId(classNameId);
+			watsonListTypeRel.setClassPK(classPK);
+			watsonListTypeRel.setPrimary(primary);
+			watsonListTypeRel.setValue(value);
+			watsonListTypeRel.setType(type);
+
+			watsonListTypeRel.update();
+		}
+	}
+
+	protected static String getIncidentNameFromString(String incidentName) {
+		if (Validator.isNull(incidentName)) {
+			return StringPool.BLANK;
+		}
+
+		incidentName = StringUtil.shorten(incidentName, 20, StringPool.BLANK);
+
+		incidentName = incidentName.replaceAll("\\D+", "");
+
+		if (incidentName.length() > 4) {
+			incidentName = incidentName.substring(0, 4) + StringPool.DASH + incidentName.substring(4, incidentName.length());
+		}
+
+		return incidentName;
+	}
+
+	protected static void importWatsonActivities(CSVParser csvParser, Locale locale, HttpServletRequest request) throws Exception {
+		for (CSVRecord csvRecord : csvParser) {
+			String incidentName = getIncidentNameFromString(csvRecord.get("incidentName"));
+
+			WatsonIncident watsonIncident = WatsonIncident.queryFirst("name", incidentName);
+
+			if (watsonIncident == null) {
+				continue;
+			}
+
+			WatsonActivity watsonActivity = WatsonActivity.create(request);
+
+			watsonActivity.setTypeWatsonListTypeId(2);
+			watsonActivity.setWatsonIncidentId(watsonIncident.getWatsonIncidentId());
+
+			StringBundler sb = new StringBundler(8);
+
+			sb.append(StringPool.LESS_THAN);
+			sb.append("p");
+			sb.append(StringPool.GREATER_THAN);
+			sb.append(StringUtil.replace(csvRecord.get("description"), CharPool.TAB, StringPool.SPACE));
+			sb.append(StringPool.LESS_THAN);
+			sb.append(StringPool.FORWARD_SLASH);
+			sb.append("p");
+			sb.append(StringPool.GREATER_THAN);
+
+			watsonActivity.setNarrative(sb.toString(), locale);
+
+			Date reportDate = DateUtil.parseDate(csvRecord.get("reportDate"), locale);
+
+			watsonActivity.setReportDate(reportDate);
+			watsonActivity.setStartDate(reportDate);
+
+			watsonActivity.update();
+		}
+	}
+
+	protected static void importWatsonAddresses(CSVParser csvParser, Locale locale, HttpServletRequest request) throws Exception {
+		for (CSVRecord csvRecord : csvParser) {
+			String incidentName = getIncidentNameFromString(csvRecord.get("incidentName"));
+
+			WatsonIncident watsonIncident = WatsonIncident.queryFirst("name", incidentName);
+
+			if (watsonIncident == null) {
+				continue;
+			}
+
+			WatsonAddress watsonAddress = WatsonAddress.create(request);
+
+			watsonAddress.setTypeWatsonListTypeId(0);
+			watsonAddress.setWatsonIncidentId(watsonIncident.getWatsonIncidentId());
+			watsonAddress.setDescription(csvRecord.get("description"), locale);
+
+			watsonAddress.update();
+		}
+	}
+
+	protected static void importWatsonIncidents(CSVParser csvParser, Locale locale, HttpServletRequest request) throws Exception {
+		for (CSVRecord csvRecord : csvParser) {
+			WatsonIncident watsonIncident = WatsonIncident.create(request);
+
+			watsonIncident.setSourceWatsonListTypeId(9373);
+			watsonIncident.setSubtypeWatsonListTypeId(10463);
+			watsonIncident.setTypeWatsonListTypeId(10460);
+
+			String incidentName = getIncidentNameFromString(csvRecord.get("incidentName"));
+
+			watsonIncident.setName(incidentName);
+
+			watsonIncident.setDescription(csvRecord.get("description"), locale);
+
+			Date reportDate = DateUtil.parseDate(csvRecord.get("reportDate"), locale);
+
+			watsonIncident.setReportDate(reportDate);
+			watsonIncident.setStartDate(reportDate);
+			watsonIncident.setEndDate(reportDate);
+
+			boolean incidentClosed = GetterUtil.getBoolean(csvRecord.get("incidentStatus"));
+
+			int status = WatsonIncident.INCIDENT_STATUS_OPEN;
+
+			if (incidentClosed) {
+				status = WatsonIncident.INCIDENT_STATUS_CLOSED;
+			}
+
+			watsonIncident.setIncidentStatus(status);
+
+			watsonIncident.update();
+
+			importWatsonResource(csvRecord, locale, request, watsonIncident.getWatsonIncidentId());
+		}
+	}
+
+	protected static void importWatsonResource(CSVRecord csvRecord, Locale locale, HttpServletRequest request, long watsonIncidentId) throws Exception {
+		WatsonResource watsonResource = WatsonResource.create(request);
+
+		watsonResource.setTypeWatsonListTypeId(9561);
+		watsonResource.setWatsonIncidentId(watsonIncidentId);
+		watsonResource.setDescription(csvRecord.get("resource"), locale);
+		watsonResource.setName("Google Drive Folder", locale);
+
+		watsonResource.update();
+	}
+
+	protected static void importWatsonSuspects(CSVParser csvParser, Locale locale, HttpServletRequest request) throws Exception {
+		for (CSVRecord csvRecord : csvParser) {
+			String fullIncidentNames = csvRecord.get("incidentName");
+
+			String year = fullIncidentNames.substring(0, 4);
+
+			String incidentsWithoutYear = fullIncidentNames.substring(4, fullIncidentNames.length());
+
+			String[] multipleIncidentNameParts = incidentsWithoutYear.split(StringPool.COMMA_AND_SPACE);
+
+			for (String incidentNamePart : multipleIncidentNameParts) {
+				String incidentName = getIncidentNameFromString(year + incidentNamePart);
+
+				WatsonIncident watsonIncident = WatsonIncident.queryFirst("name", incidentName);
+
+				if (watsonIncident == null) {
+					continue;
+				}
+
+				WatsonPerson watsonPerson = WatsonPerson.create(request);
+
+				watsonPerson.setCountryWatsonListTypeId(0);
+				watsonPerson.setEthnicityWatsonListTypeId(0);
+				watsonPerson.setTypeWatsonListTypeId(9497);
+				watsonPerson.setWatsonIncidentId(watsonIncident.getWatsonIncidentId());
+
+				StringBundler sb = new StringBundler(32);
+
+				sb.append("Description: ");
+				sb.append(fullIncidentNames);
+				sb.append("\nCharges: ");
+				sb.append(csvRecord.get("charges"));
+				sb.append("\nFighting the Case: ");
+				sb.append(csvRecord.get("fightingCase"));
+				sb.append("\nDenying All Charges: ");
+				sb.append(csvRecord.get("denyingAllCharges"));
+				sb.append("\nAccepting All Charges: ");
+				sb.append(csvRecord.get("acceptingAllCharges"));
+				sb.append("\nAccepting some charges: ");
+				sb.append(csvRecord.get("acceptingSomeCharges"));
+				sb.append("\nJailed: ");
+				sb.append(csvRecord.get("jailed"));
+				sb.append("\nBailed: ");
+				sb.append(csvRecord.get("bailed"));
+				sb.append("\nEscaped: ");
+				sb.append(csvRecord.get("escaped"));
+				sb.append("\nIs Dead: ");
+				sb.append(csvRecord.get("isDead"));
+				sb.append("\nIs Guilty All Charges: ");
+				sb.append(csvRecord.get("isGuiltyAllCharges"));
+				sb.append("\nIs Guilty Some Charges: ");
+				sb.append(csvRecord.get("isGuiltySomeCharges"));
+				sb.append("\nIs Innocent: ");
+				sb.append(csvRecord.get("isInnocent"));
+				sb.append("\nIs Prison Penalty: ");
+				sb.append(csvRecord.get("isPrisonPenalty"));
+				sb.append("\nIs Fined Penalty: ");
+				sb.append(csvRecord.get("isFinedPenalty"));
+				sb.append("\nIs Paying Damage Compensation: ");
+				sb.append(csvRecord.get("isPayingDamageCompensation"));
+				sb.append("\nIs Mediated Settlement: ");
+				sb.append(csvRecord.get("isMediatedSettlement"));
+
+				watsonPerson.setDescription(sb.toString(), locale);
+
+				long personClassNameId = PortalUtil.getClassNameId(WatsonPerson.baseModelClass);
+				String personListTypeRelType = WatsonPerson.baseModelClass.getName() + ".nameType";
+
+				addWatsonListTypeRel(personClassNameId, watsonPerson.getWatsonPersonId(), false, true, request, personListTypeRelType, csvRecord.get("nameEnglish"), 9481);
+				addWatsonListTypeRel(personClassNameId, watsonPerson.getWatsonPersonId(), false, false, request, personListTypeRelType, csvRecord.get("nameThai"), 9481);
+
+				watsonPerson.update();
+			}
+		}
+	}
+
+	protected static void importWatsonVehicles(CSVParser csvParser, Locale locale, HttpServletRequest request) throws Exception {
+		for (CSVRecord csvRecord : csvParser) {
+			String incidentName = getIncidentNameFromString(csvRecord.get("incidentName"));
+
+			WatsonIncident watsonIncident = WatsonIncident.queryFirst("name", incidentName);
+
+			if (watsonIncident == null) {
+				continue;
+			}
+
+			WatsonVehicle watsonVehicle = WatsonVehicle.create(request);
+
+			watsonVehicle.setTypeWatsonListTypeId(0);
+			watsonVehicle.setWatsonIncidentId(watsonIncident.getWatsonIncidentId());
+			watsonVehicle.setDescription(csvRecord.get("description"), locale);
+
+			watsonVehicle.update();
+		}
+	}
+
+	protected static void importWatsonVictims(CSVParser csvParser, Locale locale, HttpServletRequest request) throws Exception {
+		for (CSVRecord csvRecord : csvParser) {
+			String incidentName = getIncidentNameFromString(csvRecord.get("incidentName"));
+
+			WatsonIncident watsonIncident = WatsonIncident.queryFirst("name", incidentName);
+
+			if (watsonIncident == null) {
+				continue;
+			}
+
+			WatsonPerson watsonPerson = WatsonPerson.create(request);
+
+			long ethnicityWatsonListTypeId = 0;
+
+			long countryWatsonListTypeId = 9475;
+
+			String countryName = StringUtil.toLowerCase(csvRecord.get("country"));
+
+			if (countryName.contains("laos")) {
+				countryWatsonListTypeId = 9454;
+			}
+			else if (countryName.contains("myanmar")) {
+				countryWatsonListTypeId = 9435;
+			}
+			else if (countryName.contains("thai")) {
+				countryWatsonListTypeId = 9421;
+			}
+
+			if (countryWatsonListTypeId != 9475) {
+				String ethnicityName = StringUtil.toLowerCase(csvRecord.get("ethnicity"));
+
+				List<WatsonListType> watsonListTypes = WatsonListType.query("parentWatsonListTypeId", countryWatsonListTypeId, "type", WatsonPerson.baseModelClass.getName() + ".ethnicityRegion");
+
+				for (WatsonListType watsonListType : watsonListTypes) {
+					String listTypeName = watsonListType.getName();
+
+					if (listTypeName.contains(ethnicityName)) {
+						ethnicityWatsonListTypeId = watsonListType.getWatsonListTypeId();
+					}
+				}
+			}
+
+			watsonPerson.setCountryWatsonListTypeId(countryWatsonListTypeId);
+			watsonPerson.setEthnicityWatsonListTypeId(ethnicityWatsonListTypeId);
+
+			long sexListTypeId = 9495;
+
+			boolean sex = GetterUtil.getBoolean(csvRecord.get("male"));
+
+			if (sex) {
+				sexListTypeId = 9494;
+			}
+
+			watsonPerson.setSexWatsonListTypeId(sexListTypeId);
+			watsonPerson.setTypeWatsonListTypeId(9500);
+			watsonPerson.setWatsonIncidentId(watsonIncident.getWatsonIncidentId());
+
+			StringBundler sb = new StringBundler(54);
+
+			sb.append("Case Manager: ");
+			sb.append(csvRecord.get("caseManager"));
+			sb.append("\nCase Opened Age: ");
+			sb.append(csvRecord.get("caseOpenedAge"));
+			sb.append("\nEducation: ");
+			sb.append(csvRecord.get("education"));
+			sb.append("\nIs Sexual Abuse: ");
+			sb.append(csvRecord.get("sexualAbuse"));
+			sb.append("\nIs Physical Abuse: ");
+			sb.append(csvRecord.get("physicalAbuse"));
+			sb.append("\nIs Emotional Abuse: ");
+			sb.append(csvRecord.get("caseOpenedAge"));
+			sb.append("\nIs Orphaned: ");
+			sb.append(csvRecord.get("orphaned"));
+			sb.append("\nDead Father: ");
+			sb.append(csvRecord.get("deadFather"));
+			sb.append("\nDead Mother: ");
+			sb.append(csvRecord.get("deadMother"));
+			sb.append("\nIs Missing: ");
+			sb.append(csvRecord.get("missing"));
+			sb.append("\nIs Abandoned: ");
+			sb.append(csvRecord.get("abandoned"));
+			sb.append("\nFather Abandoned: ");
+			sb.append(csvRecord.get("fatherAbandoned"));
+			sb.append("\nMother Abandoned: ");
+			sb.append(csvRecord.get("motherAbandoned"));
+			sb.append("\nIs Neglected: ");
+			sb.append(csvRecord.get("neglected"));
+			sb.append("\nIs Homeless: ");
+			sb.append(csvRecord.get("homeless"));
+			sb.append("\nIs Wandering: ");
+			sb.append(csvRecord.get("wandering"));
+			sb.append("\nParents Separated: ");
+			sb.append(csvRecord.get("parentsSeparated"));
+			sb.append("\nIs Drug Abuse: ");
+			sb.append(csvRecord.get("drugAbuse"));
+			sb.append("\nHad Unwanted Pregnancy: ");
+			sb.append(csvRecord.get("unwantedPregnancy"));
+			sb.append("\nHad Abortion: ");
+			sb.append(csvRecord.get("abortion"));
+			sb.append("\nIs Disabled: ");
+			sb.append(csvRecord.get("disabled"));
+			sb.append("\nIs HIV Positive: ");
+			sb.append(csvRecord.get("hivPositive"));
+			sb.append("\nOther: ");
+			sb.append(csvRecord.get("other"));
+			sb.append("\nReceived From: ");
+			sb.append(csvRecord.get("receivedFrom"));
+			sb.append("\nLegal Guardian: ");
+			sb.append(csvRecord.get("legalGuardian"));
+
+			watsonPerson.setDescription(sb.toString(), locale);
+
+			String birthDateString = csvRecord.get("birthDate");
+
+			if (Validator.isNotNull(birthDateString)) {
+				Date birthDate = DateUtil.parseDate(birthDateString, locale);
+
+				watsonPerson.setBirthDate(birthDate);
+			}
+
+			watsonPerson.setAccepted(Boolean.parseBoolean(csvRecord.get("acceptedToZOE")));
+
+			String dateAcceptedZOE = csvRecord.get("dateAcceptedZOE");
+
+			if (Validator.isNotNull(dateAcceptedZOE)) {
+				Date dateAccepted = DateUtil.parseDate(dateAcceptedZOE, locale);
+
+				watsonPerson.setDateAccepted(dateAccepted);
+			}
+
+			long personClassNameId = PortalUtil.getClassNameId(WatsonPerson.baseModelClass);
+			String personListTypeRelType = WatsonPerson.baseModelClass.getName() + ".nameType";
+
+			addWatsonListTypeRel(personClassNameId, watsonPerson.getWatsonPersonId(), false, false, request, personListTypeRelType, csvRecord.get("aliasEnglish"), 9483);
+			addWatsonListTypeRel(personClassNameId, watsonPerson.getWatsonPersonId(), false, false, request, personListTypeRelType, csvRecord.get("aliasThai"), 9483);
+			addWatsonListTypeRel(personClassNameId, watsonPerson.getWatsonPersonId(), false, true, request, personListTypeRelType, csvRecord.get("nameEnglish"), 9481);
+			addWatsonListTypeRel(personClassNameId, watsonPerson.getWatsonPersonId(), false, false, request, personListTypeRelType, csvRecord.get("nameThai"), 9481);
+			addWatsonListTypeRel(personClassNameId, watsonPerson.getWatsonPersonId(), false, false, request, personListTypeRelType, csvRecord.get("nameOther"), 9484);
+			addWatsonListTypeRel(personClassNameId, watsonPerson.getWatsonPersonId(), false, false, request, personListTypeRelType, csvRecord.get("nicknameEnglish"), 9482);
+			addWatsonListTypeRel(personClassNameId, watsonPerson.getWatsonPersonId(), false, false, request, personListTypeRelType, csvRecord.get("nicknameThai"), 9482);
+
+			long incidentClassNameId = PortalUtil.getClassNameId(WatsonPerson.baseModelClass);
+			String natureListTypeRelType = WatsonIncident.baseModelClass.getName() + ".nature";
+
+			addWatsonListTypeRel(incidentClassNameId, watsonIncident.getWatsonIncidentId(), GetterUtil.getBoolean(csvRecord.get("sexTrafficking")), false, request, natureListTypeRelType, null, 9383);
+			addWatsonListTypeRel(incidentClassNameId, watsonIncident.getWatsonIncidentId(), GetterUtil.getBoolean(csvRecord.get("laborTrafficking")), false, request, natureListTypeRelType, null, 9384);
+			addWatsonListTypeRel(incidentClassNameId, watsonIncident.getWatsonIncidentId(), GetterUtil.getBoolean(csvRecord.get("beggingTrafficking")), false, request, natureListTypeRelType, null, 9385);
+			addWatsonListTypeRel(incidentClassNameId, watsonIncident.getWatsonIncidentId(), GetterUtil.getBoolean(csvRecord.get("beggingTrafficking2")), false, request, natureListTypeRelType, null, 9385);
+
+			watsonPerson.update();
+		}
+	}
+
+}
+%>

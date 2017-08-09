@@ -1,0 +1,60 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%!
+public static class WatsonRelationshipIndexer extends BaseAlloyIndexer {
+
+	public static WatsonRelationshipIndexer getInstance() {
+		return _instance;
+	}
+
+	@Override
+	protected Document doGetDocument(BaseModel<?> object) throws Exception {
+		WatsonRelationship watsonRelationship = new WatsonRelationship((com.liferay.watson.model.WatsonRelationship)object);
+
+		Document document = getBaseModelDocument(PortletKeys.WATSON, watsonRelationship);
+
+		document.addKeyword("classNameId2", watsonRelationship.getClassNameId1());
+		document.addKeyword("classPK2", watsonRelationship.getClassPK1());
+		document.addText("description", watsonRelationship.getDescription());
+
+		String selectedModel = WatsonAlloyControllerImpl.getControllerName(watsonRelationship.getClassNameId1());
+
+		document.addKeyword("selectedModel2", selectedModel);
+		document.addKeyword("status", watsonRelationship.getStatus());
+
+		WatsonListType watsonListType = WatsonListType.fetch(watsonRelationship.getTypeWatsonListTypeId());
+
+		document.addLocalizedKeyword("typeLabel", watsonListType.getNameMap());
+
+		document.addKeyword("typeWatsonListTypeId", watsonRelationship.getTypeWatsonListTypeId());
+		document.addKeyword("watsonRelationshipId", watsonRelationship.getWatsonRelationshipId());
+
+		return document;
+	}
+
+	protected Summary doGetSummary(Document document, Locale locale, String snippet, PortletRequest portletRequest, PortletResponse portletResponse) throws Exception {
+		return createSummary(document);
+	}
+
+	private WatsonRelationshipIndexer() {
+		setClassName(WatsonRelationship.baseModelClass.getName());
+	}
+
+	private static WatsonRelationshipIndexer _instance = new WatsonRelationshipIndexer();
+
+}
+%>

@@ -1,0 +1,203 @@
+create table WatsonActivity (
+	watsonActivityId LONG not null primary key,
+	companyId LONG,
+	userId LONG,
+	userName VARCHAR(75) null,
+	createDate DATE null,
+	modifiedDate DATE null,
+	typeWatsonListTypeId LONG,
+	watsonIncidentId LONG,
+	narrative STRING null,
+	reportDate DATE null,
+	startDate DATE null,
+	status INTEGER
+);
+
+create table WatsonAddress (
+	watsonAddressId LONG not null primary key,
+	companyId LONG,
+	userId LONG,
+	userName VARCHAR(75) null,
+	createDate DATE null,
+	modifiedDate DATE null,
+	countryId LONG,
+	districtWatsonListTypeId LONG,
+	originalWatsonAddressId LONG,
+	provinceWatsonListTypeId LONG,
+	subDistrictWatsonListTypeId LONG,
+	typeWatsonListTypeId LONG,
+	watsonIncidentId LONG,
+	name STRING null,
+	postalCode VARCHAR(75) null,
+	region VARCHAR(75) null,
+	street VARCHAR(75) null,
+	number_ VARCHAR(75) null,
+	building STRING null,
+	floor VARCHAR(75) null,
+	room VARCHAR(75) null,
+	description STRING null,
+	imagePayload TEXT null,
+	lastSeenDate DATE null,
+	latitude DOUBLE,
+	longitude DOUBLE,
+	status INTEGER
+);
+
+create table WatsonHistory (
+	watsonHistoryId LONG not null primary key,
+	companyId LONG,
+	userId LONG,
+	userName VARCHAR(75) null,
+	createDate DATE null,
+	modifiedDate DATE null,
+	watsonIncidentId LONG,
+	classNameId LONG,
+	classPK LONG,
+	type_ INTEGER,
+	status INTEGER
+);
+
+create table WatsonIncident (
+	watsonIncidentId LONG not null primary key,
+	companyId LONG,
+	userId LONG,
+	userName VARCHAR(75) null,
+	createDate DATE null,
+	modifiedDate DATE null,
+	sourceWatsonListTypeId LONG,
+	typeWatsonListTypeId LONG,
+	subtypeWatsonListTypeId LONG,
+	name VARCHAR(75) null,
+	description STRING null,
+	reportDate DATE null,
+	startDate DATE null,
+	endDate DATE null,
+	incidentStatus INTEGER,
+	status INTEGER
+);
+
+create table WatsonIncidentRel (
+	watsonIncidentRelId LONG not null primary key,
+	companyId LONG,
+	userId LONG,
+	userName VARCHAR(75) null,
+	createDate DATE null,
+	modifiedDate DATE null,
+	watsonIncidentId1 LONG,
+	watsonIncidentId2 LONG,
+	type_ VARCHAR(75) null,
+	status INTEGER
+);
+
+create table WatsonListType (
+	watsonListTypeId LONG not null primary key,
+	companyId LONG,
+	userId LONG,
+	userName VARCHAR(75) null,
+	createDate DATE null,
+	modifiedDate DATE null,
+	parentWatsonListTypeId LONG,
+	name STRING null,
+	type_ VARCHAR(100) null,
+	status INTEGER
+);
+
+create table WatsonListTypeRel (
+	watsonListTypeRelId LONG not null primary key,
+	companyId LONG,
+	userId LONG,
+	userName VARCHAR(75) null,
+	createDate DATE null,
+	modifiedDate DATE null,
+	watsonListTypeId LONG,
+	classNameId LONG,
+	classPK LONG,
+	primary_ BOOLEAN,
+	value STRING null,
+	type_ VARCHAR(75) null,
+	status INTEGER
+);
+
+create table WatsonPerson (
+	watsonPersonId LONG not null primary key,
+	companyId LONG,
+	userId LONG,
+	userName VARCHAR(75) null,
+	createDate DATE null,
+	modifiedDate DATE null,
+	birthCountryId LONG,
+	citizenshipWatsonListTypeId LONG,
+	countryWatsonListTypeId LONG,
+	ethnicityWatsonListTypeId LONG,
+	eyesWatsonListTypeId LONG,
+	hairWatsonListTypeId LONG,
+	originalWatsonPersonId LONG,
+	sexWatsonListTypeId LONG,
+	typeWatsonListTypeId LONG,
+	watsonIncidentId LONG,
+	description STRING null,
+	imagePayload TEXT null,
+	birthDate DATE null,
+	dateAccepted DATE null,
+	startAge VARCHAR(75) null,
+	endAge VARCHAR(75) null,
+	occupation STRING null,
+	height VARCHAR(75) null,
+	weight VARCHAR(75) null,
+	accepted BOOLEAN,
+	status INTEGER
+);
+
+create table WatsonRelationship (
+	watsonRelationshipId LONG not null primary key,
+	companyId LONG,
+	userId LONG,
+	userName VARCHAR(75) null,
+	createDate DATE null,
+	modifiedDate DATE null,
+	watsonIncidentId LONG,
+	typeWatsonListTypeId LONG,
+	classNameId1 LONG,
+	classPK1 LONG,
+	classNameId2 LONG,
+	classPK2 LONG,
+	description STRING null,
+	status INTEGER
+);
+
+create table WatsonResource (
+	watsonResourceId LONG not null primary key,
+	companyId LONG,
+	userId LONG,
+	userName VARCHAR(75) null,
+	createDate DATE null,
+	modifiedDate DATE null,
+	originalWatsonResourceId LONG,
+	typeWatsonListTypeId LONG,
+	watsonIncidentId LONG,
+	name STRING null,
+	description STRING null,
+	imagePayload TEXT null,
+	status INTEGER
+);
+
+create table WatsonVehicle (
+	watsonVehicleId LONG not null primary key,
+	companyId LONG,
+	userId LONG,
+	userName VARCHAR(75) null,
+	createDate DATE null,
+	modifiedDate DATE null,
+	colorWatsonListTypeId LONG,
+	makeWatsonListTypeId LONG,
+	modelWatsonListTypeId LONG,
+	originalWatsonVehicleId LONG,
+	typeWatsonListTypeId LONG,
+	yearWatsonListTypeId LONG,
+	watsonIncidentId LONG,
+	year INTEGER,
+	description STRING null,
+	imagePayload TEXT null,
+	licensePlate VARCHAR(75) null,
+	status INTEGER
+);

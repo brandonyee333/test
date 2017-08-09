@@ -1,0 +1,166 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+package com.liferay.watson.service.persistence;
+
+import aQute.bnd.annotation.ProviderType;
+
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
+
+import com.liferay.watson.exception.NoSuchListTypeException;
+import com.liferay.watson.model.WatsonListType;
+
+/**
+ * The persistence interface for the watson list type service.
+ *
+ * <p>
+ * Caching information and settings can be found in <code>portal.properties</code>
+ * </p>
+ *
+ * @author Eddie Olson
+ * @see com.liferay.watson.service.persistence.impl.WatsonListTypePersistenceImpl
+ * @see WatsonListTypeUtil
+ * @generated
+ */
+@ProviderType
+public interface WatsonListTypePersistence extends BasePersistence<WatsonListType> {
+	/*
+	 * NOTE FOR DEVELOPERS:
+	 *
+	 * Never modify or reference this interface directly. Always use {@link WatsonListTypeUtil} to access the watson list type persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
+	 */
+
+	/**
+	* Caches the watson list type in the entity cache if it is enabled.
+	*
+	* @param watsonListType the watson list type
+	*/
+	public void cacheResult(WatsonListType watsonListType);
+
+	/**
+	* Caches the watson list types in the entity cache if it is enabled.
+	*
+	* @param watsonListTypes the watson list types
+	*/
+	public void cacheResult(java.util.List<WatsonListType> watsonListTypes);
+
+	/**
+	* Creates a new watson list type with the primary key. Does not add the watson list type to the database.
+	*
+	* @param watsonListTypeId the primary key for the new watson list type
+	* @return the new watson list type
+	*/
+	public WatsonListType create(long watsonListTypeId);
+
+	/**
+	* Removes the watson list type with the primary key from the database. Also notifies the appropriate model listeners.
+	*
+	* @param watsonListTypeId the primary key of the watson list type
+	* @return the watson list type that was removed
+	* @throws NoSuchListTypeException if a watson list type with the primary key could not be found
+	*/
+	public WatsonListType remove(long watsonListTypeId)
+		throws NoSuchListTypeException;
+
+	public WatsonListType updateImpl(WatsonListType watsonListType);
+
+	/**
+	* Returns the watson list type with the primary key or throws a {@link NoSuchListTypeException} if it could not be found.
+	*
+	* @param watsonListTypeId the primary key of the watson list type
+	* @return the watson list type
+	* @throws NoSuchListTypeException if a watson list type with the primary key could not be found
+	*/
+	public WatsonListType findByPrimaryKey(long watsonListTypeId)
+		throws NoSuchListTypeException;
+
+	/**
+	* Returns the watson list type with the primary key or returns <code>null</code> if it could not be found.
+	*
+	* @param watsonListTypeId the primary key of the watson list type
+	* @return the watson list type, or <code>null</code> if a watson list type with the primary key could not be found
+	*/
+	public WatsonListType fetchByPrimaryKey(long watsonListTypeId);
+
+	@Override
+	public java.util.Map<java.io.Serializable, WatsonListType> fetchByPrimaryKeys(
+		java.util.Set<java.io.Serializable> primaryKeys);
+
+	/**
+	* Returns all the watson list types.
+	*
+	* @return the watson list types
+	*/
+	public java.util.List<WatsonListType> findAll();
+
+	/**
+	* Returns a range of all the watson list types.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WatsonListTypeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of watson list types
+	* @param end the upper bound of the range of watson list types (not inclusive)
+	* @return the range of watson list types
+	*/
+	public java.util.List<WatsonListType> findAll(int start, int end);
+
+	/**
+	* Returns an ordered range of all the watson list types.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WatsonListTypeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of watson list types
+	* @param end the upper bound of the range of watson list types (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of watson list types
+	*/
+	public java.util.List<WatsonListType> findAll(int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<WatsonListType> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the watson list types.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WatsonListTypeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of watson list types
+	* @param end the upper bound of the range of watson list types (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to retrieve from the finder cache
+	* @return the ordered range of watson list types
+	*/
+	public java.util.List<WatsonListType> findAll(int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<WatsonListType> orderByComparator,
+		boolean retrieveFromCache);
+
+	/**
+	* Removes all the watson list types from the database.
+	*/
+	public void removeAll();
+
+	/**
+	* Returns the number of watson list types.
+	*
+	* @return the number of watson list types
+	*/
+	public int countAll();
+
+	@Override
+	public java.util.Set<java.lang.String> getBadColumnNames();
+}

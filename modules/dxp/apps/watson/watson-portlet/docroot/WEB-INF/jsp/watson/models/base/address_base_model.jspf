@@ -1,0 +1,398 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%@ page import="com.liferay.alloy.mvc.AlloyException" %>
+<%@ page import="com.liferay.alloy.mvc.AlloyServiceInvoker" %>
+<%@ page import="com.liferay.alloy.mvc.BaseAlloyControllerImpl" %>
+<%@ page import="com.liferay.counter.kernel.service.CounterLocalServiceUtil" %>
+<%@ page import="com.liferay.portal.kernel.bean.BeanPropertiesUtil" %>
+<%@ page import="com.liferay.portal.kernel.model.ModelHintsUtil" %>
+<%@ page import="com.liferay.portal.kernel.util.Validator" %>
+<%@ page import="com.liferay.portal.kernel.workflow.WorkflowConstants" %>
+<%@ page import="com.liferay.watson.model.WatsonAddressWrapper" %>
+
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.List" %>
+
+<%!
+public static class WatsonAddressBaseModel extends WatsonAddressWrapper {
+
+	WatsonAddressBaseModel() {
+		super(new com.liferay.watson.model.impl.WatsonAddressImpl());
+	}
+
+	WatsonAddressBaseModel(com.liferay.watson.model.WatsonAddress watsonAddress) {
+		super(watsonAddress);
+	}
+
+	public static WatsonAddress add(HttpServletRequest request) throws Exception {
+		WatsonAddress watsonAddress = WatsonAddressBaseModel.create();
+
+		return add(watsonAddress, request, false);
+	}
+
+	public static WatsonAddress add(WatsonAddress watsonAddress) throws Exception {
+		return add(watsonAddress, null, true);
+	}
+
+	public static WatsonAddress add(WatsonAddress watsonAddress, HttpServletRequest request) throws Exception {
+		return add(watsonAddress, request, false);
+	}
+
+	public static WatsonAddress add(WatsonAddress watsonAddress, HttpServletRequest request, boolean ignoreRequest) throws Exception {
+		if ((request != null) && !ignoreRequest) {
+			BeanPropertiesUtil.setProperties(watsonAddress, request, watsonAddress.getLocalizedProperties());
+
+			BaseAlloyControllerImpl.setLocalizedProperties(watsonAddress, request, request.getLocale());
+		}
+
+		BaseAlloyControllerImpl.setAuditedModel(watsonAddress, request);
+
+		validateAdd(watsonAddress);
+
+		watsonAddress.setStatus(WorkflowConstants.STATUS_APPROVED);
+
+		if (watsonAddress.getWatsonAddressId() <= 0) {
+			long watsonAddressId = CounterLocalServiceUtil.increment();
+
+			watsonAddress.setWatsonAddressId(watsonAddressId);
+		}
+
+		return new WatsonAddress((com.liferay.watson.model.WatsonAddress)baseModelAlloyServiceInvoker.addModel(watsonAddress));
+	}
+
+	public static List<WatsonAddress> batchAdd(List<WatsonAddress> watsonAddresses) throws Exception {
+		List<WatsonAddress> resultWatsonAddresses = new ArrayList<>();
+
+		for (WatsonAddress watsonAddress : watsonAddresses) {
+			long watsonAddressId = watsonAddress.getWatsonAddressId();
+
+			if (watsonAddressId > 0) {
+				resultWatsonAddresses.add(add(watsonAddress));
+			}
+			else {
+				watsonAddressId = CounterLocalServiceUtil.increment();
+
+				watsonAddress.setWatsonAddressId(watsonAddressId);
+
+				resultWatsonAddresses.add(add(watsonAddress));
+			}
+		}
+
+		return resultWatsonAddresses;
+	}
+
+	public static List<WatsonAddress> batchDelete(List<WatsonAddress> watsonAddresses) throws Exception {
+		List<WatsonAddress> resultWatsonAddresses = new ArrayList<>();
+
+		for (WatsonAddress watsonAddress : watsonAddresses) {
+			resultWatsonAddresses.add(delete(watsonAddress));
+		}
+
+		return resultWatsonAddresses;
+	}
+
+	public static List<WatsonAddress> batchUpdate(List<WatsonAddress> watsonAddresses) throws Exception {
+		List<WatsonAddress> resultWatsonAddresses = new ArrayList<>();
+
+		for (WatsonAddress watsonAddress : watsonAddresses) {
+			long watsonAddressId = watsonAddress.getWatsonAddressId();
+
+			if (watsonAddressId > 0) {
+				resultWatsonAddresses.add(update(watsonAddress));
+			}
+			else {
+				watsonAddressId = CounterLocalServiceUtil.increment();
+
+				watsonAddress.setWatsonAddressId(watsonAddressId);
+
+				resultWatsonAddresses.add(add(watsonAddress));
+			}
+		}
+
+		return resultWatsonAddresses;
+	}
+
+	public static long count(Object... properties) throws Exception {
+		return baseModelAlloyServiceInvoker.executeDynamicQueryCount(properties);
+	}
+
+	public static long countAll() throws Exception {
+		return (long)baseModelAlloyServiceInvoker.getModelsCount();
+	}
+
+	public static WatsonAddress create() throws Exception {
+		long watsonAddressId = CounterLocalServiceUtil.increment();
+
+		return create(watsonAddressId);
+	}
+
+	public static WatsonAddress create(HttpServletRequest request) throws Exception {
+		WatsonAddress watsonAddress = WatsonAddressBaseModel.create();
+
+		if (request != null) {
+			BeanPropertiesUtil.setProperties(watsonAddress, request, watsonAddress.getLocalizedProperties());
+
+			BaseAlloyControllerImpl.setLocalizedProperties(watsonAddress, request, request.getLocale());
+		}
+
+		BaseAlloyControllerImpl.setAuditedModel(watsonAddress, request);
+
+		return watsonAddress;
+	}
+
+	public static WatsonAddress create(long watsonAddressId) throws Exception {
+		return new WatsonAddress((com.liferay.watson.model.WatsonAddress)baseModelAlloyServiceInvoker.createModel(watsonAddressId));
+	}
+
+	public static WatsonAddress create(long watsonAddressId, HttpServletRequest request) throws Exception {
+		WatsonAddress watsonAddress = WatsonAddressBaseModel.create(watsonAddressId);
+
+		BaseAlloyControllerImpl.setAuditedModel(watsonAddress, request);
+
+		return watsonAddress;
+	}
+
+	public static WatsonAddress createFromJSON(String jsonDataString, HttpServletRequest request) throws Exception {
+		WatsonAddress watsonAddress = JSONFactoryUtil.looseDeserialize(jsonDataString, WatsonAddress.class);
+
+		watsonAddress.setNew(true);
+
+		BaseAlloyControllerImpl.setAuditedModel(watsonAddress, request);
+
+		watsonAddress.setWatsonAddressId(CounterLocalServiceUtil.increment());
+
+		return new WatsonAddress(watsonAddress);
+	}
+
+	public static WatsonAddress delete(long watsonAddressId) throws Exception {
+		WatsonAddress watsonAddress = fetch(watsonAddressId);
+
+		return delete(watsonAddress);
+	}
+
+	public static WatsonAddress delete(WatsonAddress watsonAddress) throws Exception {
+		validateDelete(watsonAddress);
+
+		watsonAddress.setStatus(WorkflowConstants.STATUS_INACTIVE);
+
+		return new WatsonAddress((com.liferay.watson.model.WatsonAddress)baseModelAlloyServiceInvoker.updateModel(watsonAddress));
+	}
+
+	public static WatsonAddress fetch(long watsonAddressId) throws Exception {
+		WatsonAddress watsonAddress = new WatsonAddress((com.liferay.watson.model.WatsonAddress)baseModelAlloyServiceInvoker.fetchModel(watsonAddressId));
+
+		validateFetch(watsonAddress);
+
+		return watsonAddress;
+	}
+
+	public static List<WatsonAddress> get(int start, int end) throws Exception {
+		List<com.liferay.watson.model.WatsonAddress> watsonAddresses = (List<com.liferay.watson.model.WatsonAddress>)baseModelAlloyServiceInvoker.getModels(start, end);
+
+		return getAlloyModels(watsonAddresses);
+	}
+
+	public static List<WatsonAddress> getAlloyModels(List<com.liferay.watson.model.WatsonAddress> watsonAddresses) throws Exception {
+		return getAlloyModels(watsonAddresses, false);
+	}
+
+	public static List<WatsonAddress> getAlloyModels(List<com.liferay.watson.model.WatsonAddress> watsonAddresses, boolean includeInactive) throws Exception {
+		List<WatsonAddress> alloyWatsonAddresses = new ArrayList<>();
+
+		for (com.liferay.watson.model.WatsonAddress watsonAddress : watsonAddresses) {
+			if (includeInactive || (watsonAddress.getStatus() == WorkflowConstants.STATUS_APPROVED)) {
+				alloyWatsonAddresses.add(new WatsonAddress(watsonAddress));
+			}
+		}
+
+		return alloyWatsonAddresses;
+	}
+
+	public static Class<?> getBaseModelClass() throws Exception {
+		return baseModelClass;
+	}
+
+	public String[] getLocalizedProperties() throws Exception {
+		if (localizedProperties.length < 1) {
+			List<String> localizedPropertiesList = new ArrayList<>();
+
+			Map<String, Object> modelAttributes = this.getModelAttributes();
+
+			for (String propertyName : modelAttributes.keySet()) {
+				boolean localized = ModelHintsUtil.isLocalized(this.getModelClassName(), propertyName);
+
+				if (localized) {
+					localizedPropertiesList.add(propertyName);
+				}
+			}
+
+			localizedProperties = ArrayUtil.toStringArray(localizedPropertiesList);
+		}
+
+		return localizedProperties;
+	}
+
+	public static List<WatsonAddress> query(Object... properties) throws Exception {
+		List<com.liferay.watson.model.WatsonAddress> watsonAddresses = (List<com.liferay.watson.model.WatsonAddress>)baseModelAlloyServiceInvoker.executeDynamicQuery(properties);
+
+		return getAlloyModels(watsonAddresses);
+	}
+
+	public static List<WatsonAddress> queryAll(Object... properties) throws Exception {
+		List<com.liferay.watson.model.WatsonAddress> watsonAddresses = (List<com.liferay.watson.model.WatsonAddress>)baseModelAlloyServiceInvoker.executeDynamicQuery(properties);
+
+		return getAlloyModels(watsonAddresses, true);
+	}
+
+	public static List<WatsonAddress> queryRange(String order, int start, int end, Object... properties) throws Exception {
+		DynamicQuery sortedDynamicQuery = baseModelAlloyServiceInvoker.buildDynamicQuery(properties);
+
+		if (Validator.isNotNull(order)) {
+			Order sortedOrder = OrderFactoryUtil.desc(order);
+
+			sortedDynamicQuery.addOrder(sortedOrder);
+		}
+
+		List<com.liferay.watson.model.WatsonAddress> watsonAddresses = (List<com.liferay.watson.model.WatsonAddress>)baseModelAlloyServiceInvoker.executeDynamicQuery(sortedDynamicQuery, start, end);
+
+		return getAlloyModels(watsonAddresses);
+	}
+
+	public static WatsonAddress setFields(WatsonAddress watsonAddress, HttpServletRequest request) throws Exception {
+		if (request != null) {
+			BeanPropertiesUtil.setProperties(watsonAddress, request, watsonAddress.getLocalizedProperties());
+
+			BaseAlloyControllerImpl.setLocalizedProperties(watsonAddress, request, request.getLocale());
+		}
+
+		BaseAlloyControllerImpl.setAuditedModel(watsonAddress, request);
+
+		return watsonAddress;
+	}
+
+	public static WatsonAddress setFields(WatsonAddress watsonAddress, HttpServletRequest request, Object... properties) throws Exception {
+		BaseAlloyControllerImpl.setAuditedModel(watsonAddress, request);
+
+		WatsonAlloyControllerImpl.setBaseModelProperties(watsonAddress, properties);
+
+		return watsonAddress;
+	}
+
+	public static WatsonAddress updateStatus(long watsonAddressId, int status) throws Exception {
+		WatsonAddress watsonAddress = new WatsonAddress((com.liferay.watson.model.WatsonAddress)baseModelAlloyServiceInvoker.fetchModel(watsonAddressId));
+
+		return updateStatus(watsonAddress, status);
+	}
+
+	public static WatsonAddress updateStatus(WatsonAddress watsonAddress, int status) throws Exception {
+		watsonAddress.setStatus(status);
+
+		return new WatsonAddress((com.liferay.watson.model.WatsonAddress)baseModelAlloyServiceInvoker.updateModel(watsonAddress));
+	}
+
+	public static WatsonAddress update(long watsonAddressId, HttpServletRequest request) throws Exception {
+		WatsonAddress watsonAddress = fetch(watsonAddressId);
+
+		return update(watsonAddress, request);
+	}
+
+	public static WatsonAddress update(WatsonAddress watsonAddress) throws Exception {
+		return update(watsonAddress, null);
+	}
+
+	public static WatsonAddress update(WatsonAddress watsonAddress, HttpServletRequest request) throws Exception {
+		if (request != null) {
+			BeanPropertiesUtil.setProperties(watsonAddress, request, watsonAddress.getLocalizedProperties());
+
+			BaseAlloyControllerImpl.setLocalizedProperties(watsonAddress, request, request.getLocale());
+		}
+
+		BaseAlloyControllerImpl.setAuditedModel(watsonAddress, request);
+
+		validateUpdate(watsonAddress);
+
+		return new WatsonAddress((com.liferay.watson.model.WatsonAddress)baseModelAlloyServiceInvoker.updateModel(watsonAddress));
+	}
+
+	public static void validateAdd(WatsonAddressBaseModel watsonAddress) throws AlloyException {
+		validateAdd(watsonAddress, null);
+	}
+
+	public static void validateAdd(WatsonAddressBaseModel watsonAddress, HttpServletRequest request) throws AlloyException {
+		validateWatsonAddressBaseModel(watsonAddress);
+	}
+
+	public static void validateDelete(WatsonAddressBaseModel watsonAddress) throws AlloyException {
+		validateWatsonAddressBaseModel(watsonAddress);
+	}
+
+	public static void validateFetch(WatsonAddressBaseModel watsonAddress) throws AlloyException {
+		validateWatsonAddressBaseModel(watsonAddress);
+		validateWatsonAddressBaseModelIsNotInactive(watsonAddress);
+	}
+
+	public static void validateUpdate(WatsonAddressBaseModel watsonAddress) throws AlloyException {
+		validateUpdate(watsonAddress, null);
+	}
+
+	public static void validateUpdate(WatsonAddressBaseModel watsonAddress, HttpServletRequest request) throws AlloyException {
+		validateWatsonAddressBaseModel(watsonAddress);
+		validateWatsonAddressBaseModelIsNotInactive(watsonAddress);
+	}
+
+	public static void validateWatsonAddressBaseModel(WatsonAddressBaseModel watsonAddress) throws AlloyException {
+		if (Validator.isNull(watsonAddress) || Validator.isNull(watsonAddress.getWrappedModel())) {
+			throw new AlloyException("the-address-is-invalid");
+		}
+	}
+
+	public static void validateWatsonAddressBaseModelIsNotInactive(WatsonAddressBaseModel watsonAddress) throws AlloyException {
+		if (watsonAddress.getStatus() == WorkflowConstants.STATUS_INACTIVE) {
+			throw new AlloyException("the-address-is-inactive");
+		}
+	}
+
+	public WatsonAddress add() throws Exception {
+		return add((WatsonAddress)this);
+	}
+
+	public WatsonAddress delete() throws Exception {
+		return delete((WatsonAddress)this);
+	}
+
+	public WatsonAddress setFields(HttpServletRequest request) throws Exception {
+		return setFields((WatsonAddress)this, request);
+	}
+
+	public WatsonAddress setFields(HttpServletRequest request, Object... properties) throws Exception {
+		return setFields((WatsonAddress)this, request, properties);
+	}
+
+	public WatsonAddress update() throws Exception {
+		return update((WatsonAddress)this);
+	}
+
+	public WatsonAddress update(HttpServletRequest request) throws Exception {
+		return update((WatsonAddress)this, request);
+	}
+
+	protected static AlloyServiceInvoker baseModelAlloyServiceInvoker = new AlloyServiceInvoker(com.liferay.watson.model.WatsonAddress.class.getName());
+	protected static Class<?> baseModelClass = com.liferay.watson.model.WatsonAddress.class;
+	protected static String[] localizedProperties = new String[0];
+
+}
+%>

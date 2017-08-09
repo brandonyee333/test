@@ -1,0 +1,113 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%!
+public static class WatsonPeopleIndexer extends BaseAlloyIndexer {
+
+	public static WatsonPeopleIndexer getInstance() {
+		return _instance;
+	}
+
+	@Override
+	protected Document doGetDocument(BaseModel<?> object) throws Exception {
+		WatsonPerson watsonPerson = new WatsonPerson((com.liferay.watson.model.WatsonPerson)object);
+
+		Document document = getBaseModelDocument(PortletKeys.WATSON, watsonPerson);
+
+		document.addKeyword("accepted", watsonPerson.getAccepted());
+		document.addKeyword("birthCountryId", watsonPerson.getBirthCountryId());
+		document.addDate("birthDate", watsonPerson.getBirthDate());
+		document.addKeyword("citizenshipWatsonListTypeId", watsonPerson.getCitizenshipWatsonListTypeId());
+
+		WatsonListType watsonListType = WatsonListType.fetch(watsonPerson.getCountryWatsonListTypeId());
+
+		if (watsonListType != null) {
+			document.addLocalizedKeyword("country", watsonListType.getNameMap());
+		}
+
+		document.addKeyword("countryWatsonListTypeId", watsonPerson.getCountryWatsonListTypeId());
+		document.addDate("acceptedDate", watsonPerson.getDateAccepted());
+		document.addLocalizedText("description", watsonPerson.getDescriptionMap());
+		document.addKeyword("endAge", watsonPerson.getEndAge());
+
+		watsonListType = WatsonListType.fetch(watsonPerson.getEthnicityWatsonListTypeId());
+
+		if (watsonListType != null) {
+			document.addLocalizedKeyword("ethnicity", watsonListType.getNameMap());
+		}
+
+		document.addKeyword("ethnicityWatsonListTypeId", watsonPerson.getEthnicityWatsonListTypeId());
+
+		watsonListType = WatsonListType.fetch(watsonPerson.getEyesWatsonListTypeId());
+
+		if (watsonListType != null) {
+			document.addLocalizedKeyword("eyes", watsonListType.getNameMap());
+		}
+
+		document.addKeyword("eyesWatsonListTypeId", watsonPerson.getEyesWatsonListTypeId());
+
+		watsonListType = WatsonListType.fetch(watsonPerson.getHairWatsonListTypeId());
+
+		if (watsonListType != null) {
+			document.addLocalizedKeyword("hair", watsonListType.getNameMap());
+		}
+
+		document.addKeyword("hairWatsonListTypeId", watsonPerson.getHairWatsonListTypeId());
+		document.addKeyword("height", watsonPerson.getHeight());
+		document.addKeyword("id", watsonPerson.getPrimaryKey());
+		document.addDate("modifiedDate", watsonPerson.getModifiedDate());
+		document.addKeyword("nameWatsonListTypeRelString", watsonPerson.getNamesString());
+		document.addLocalizedKeyword("occupation", watsonPerson.getOccupationMap());
+		document.addKeyword("primaryNameString", watsonPerson.getPrimaryName());
+		document.addDate("reportDate", watsonPerson.getCreateDate());
+		document.addKeyword("reportedBy", watsonPerson.getUserName());
+
+		watsonListType = WatsonListType.fetch(watsonPerson.getSexWatsonListTypeId());
+
+		if (watsonListType != null) {
+			document.addLocalizedKeyword("sex", watsonListType.getNameMap());
+		}
+
+		document.addKeyword("sexWatsonListTypeId", watsonPerson.getSexWatsonListTypeId());
+		document.addKeyword("startAge", watsonPerson.getStartAge());
+
+		watsonListType = WatsonListType.fetch(watsonPerson.getTypeWatsonListTypeId());
+
+		if (watsonListType != null) {
+			document.addLocalizedKeyword("type", watsonListType.getNameMap());
+		}
+
+		document.addKeyword("status", watsonPerson.getStatus());
+		document.addKeyword("typeWatsonListTypeId", watsonPerson.getTypeWatsonListTypeId());
+		document.addKeyword("watsonIncidentId", watsonPerson.getWatsonIncidentId());
+		document.addKeyword("watsonPersonId", watsonPerson.getWatsonPersonId());
+		document.addKeyword("weight", watsonPerson.getWeight());
+
+		return document;
+	}
+
+	protected Summary doGetSummary(Document document, Locale locale, String snippet, PortletRequest portletRequest, PortletResponse portletResponse) throws Exception {
+		return createSummary(document);
+	}
+
+	private WatsonPeopleIndexer() {
+		setClassName(WatsonPerson.baseModelClass.getName());
+	}
+
+	private static WatsonPeopleIndexer _instance = new WatsonPeopleIndexer();
+
+}
+%>

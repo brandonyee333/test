@@ -1,0 +1,267 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%!
+public static class WatsonAlloyControllerImpl extends BaseAlloyControllerImpl {
+
+	public static String getControllerName(long classNameId) throws Exception {
+		ClassName className = ClassNameLocalServiceUtil.fetchClassName(classNameId);
+
+		String classNameString = className.getClassName();
+
+		return getControllerName(classNameString);
+	}
+
+	public static String getControllerName(String classNameString) throws Exception {
+		String controllerName = StringPool.BLANK;
+
+		if (Validator.isNotNull(classNameString)) {
+			if (classNameString.contains("Activity")) {
+				controllerName = "activities";
+			}
+			else if (classNameString.contains("Address")) {
+				controllerName = "addresses";
+			}
+			else if (classNameString.contains("History")) {
+				controllerName = "histories";
+			}
+			else if (classNameString.contains("Incident")) {
+				controllerName = "incidents";
+			}
+			else if (classNameString.contains("Relationship")) {
+				controllerName = "relationships";
+			}
+			else if (classNameString.contains("Resource")) {
+				controllerName = "resources";
+			}
+			else if (classNameString.contains("Person")) {
+				controllerName = "people";
+			}
+			else if (classNameString.contains("Vehicle")) {
+				controllerName = "vehicles";
+			}
+		}
+
+		return controllerName;
+	}
+
+	public static String getModelProperName(Class clazz, Locale locale) throws Exception {
+		return getModelProperName(getControllerName(clazz.getSimpleName()), locale);
+	}
+
+	public static String getModelProperName(String controllerName, Locale locale) throws Exception {
+		String properName = StringPool.BLANK;
+
+		if (Validator.isNotNull(controllerName)) {
+			if (controllerName.contains("activities")) {
+				properName = "activity";
+			}
+			else if (controllerName.contains("addresses")) {
+				properName = "address";
+			}
+			else if (controllerName.contains("histories")) {
+				properName = "history";
+			}
+			else if (controllerName.contains("incidents")) {
+				properName = "incident";
+			}
+			else if (controllerName.contains("relationships")) {
+				properName = "relationship";
+			}
+			else if (controllerName.contains("resources")) {
+				properName = "resource";
+			}
+			else if (controllerName.contains("people")) {
+				properName = "person";
+			}
+			else if (controllerName.contains("vehicles")) {
+				properName = "vehicle";
+			}
+		}
+
+		return LanguageUtil.format(locale, properName, new Object[0]);
+	}
+
+	public static void setBaseModelProperties(BaseModel<?> baseModel, Object... properties) throws Exception {
+		if ((properties.length % 2) != 0) {
+			throw new IllegalArgumentException("Properties length is not an even number");
+		}
+
+		Map<String, Object> modelAttributes = baseModel.getModelAttributes();
+
+		for (int i = 0; i < properties.length; i += 2) {
+			String propertyName = String.valueOf(properties[i]);
+			Object propertyValue = properties[i + 1];
+
+			if (modelAttributes.containsKey(propertyName)) {
+				BeanPropertiesUtil.setProperty(baseModel, propertyName, propertyValue);
+			}
+		}
+	}
+
+	@Override
+	protected void executeResource(Method method) throws Exception {
+		Class<?> tempClass = clazz;
+
+		clazz = clazz.getSuperclass();
+
+		super.executeResource(method);
+
+		clazz = tempClass;
+
+		if (lifecycle.equals(PortletRequest.ACTION_PHASE) && !viewPath.equals(VIEW_PATH_ERROR)) {
+			String redirect = ParamUtil.getString(request, "redirect");
+
+			redirectTo(redirect);
+		}
+		else if (lifecycle.equals(PortletRequest.RENDER_PHASE)) {
+			renderRequest.setAttribute("controller", controllerPath);
+		}
+	}
+
+	protected Document[] getDocuments(SearchContext searchContext) throws Exception {
+		Hits hits = indexer.search(searchContext);
+
+		if (searchContext.getStart() > hits.getLength()) {
+			return new Document[0];
+		}
+
+		return hits.getDocs();
+	}
+
+	protected SearchContext getPopulatedSearchContext(Class modelClass) throws Exception {
+		SearchContext searchContext = getSearchContext(modelClass);
+
+		BooleanClause<Query>[] booleanClauseArray = searchContext.getBooleanClauses();
+
+		String[] fields = ParamUtil.getStringValues(request, "fields");
+
+		String[] keywords = ParamUtil.getStringValues(request, "keywords");
+
+		for (int i = 0; i < fields.length; i++) {
+			String fieldName = fields[i];
+			String keyword = keywords[i];
+
+			if (Validator.isNotNull(fieldName) && Validator.isNotNull(keyword)) {
+				BooleanClause keywordsBooleanClause = null;
+
+				if (keyword.contains(StringPool.STAR) || keyword.contains(StringPool.QUESTION)) {
+					WildcardQuery wildcardQuery = new WildcardQueryImpl(fieldName, keyword);
+
+					keywordsBooleanClause = BooleanClauseFactoryUtil.create(wildcardQuery, BooleanClauseOccur.MUST.getName());
+				}
+				else if (fieldName.equals("watsonIncidentId") || fieldName.contains("ListTypeId")) {
+					BooleanQuery keywordQuery = new BooleanQueryImpl();
+
+					keywordQuery.addTerm(fieldName, keyword);
+
+					keywordsBooleanClause = BooleanClauseFactoryUtil.create(keywordQuery, BooleanClauseOccur.MUST.getName());
+				}
+				else if (fieldName.contains("Date")) {
+					try {
+						String[] dateRangeParts = keyword.split(StringPool.DASH);
+
+						String lowerBoundString = String.valueOf(dateRangeParts[0]);
+
+						String upperBoundString = String.valueOf(dateRangeParts[1]);
+
+						TermRangeQuery dateTermRangeQuery = new TermRangeQueryImpl((fieldName + "_sortable"), lowerBoundString, upperBoundString, true, true);
+
+						keywordsBooleanClause = BooleanClauseFactoryUtil.create(dateTermRangeQuery, BooleanClauseOccur.MUST.getName());
+					}
+					catch (Exception e) {
+					}
+				}
+				else {
+					MatchQuery matchQuery = new MatchQuery(fieldName, keyword);
+
+					matchQuery.setLenient(true);
+					matchQuery.setOperator(MatchQuery.Operator.AND);
+					matchQuery.setSlop(10);
+
+					keywordsBooleanClause = BooleanClauseFactoryUtil.create(matchQuery, BooleanClauseOccur.MUST.getName());
+				}
+
+				if (Validator.isNotNull(keywordsBooleanClause)) {
+					booleanClauseArray = ArrayUtil.append(booleanClauseArray, keywordsBooleanClause);
+				}
+			}
+		}
+
+		searchContext.setBooleanClauses(booleanClauseArray);
+
+		return searchContext;
+	}
+
+	protected SearchContext getSearchContext(Class modelClass) throws Exception {
+		SearchContext searchContext = new SearchContext();
+
+		BooleanClause<Query> statusApprovedClause = BooleanClauseFactoryUtil.create("status", String.valueOf(WorkflowConstants.STATUS_APPROVED), BooleanClauseOccur.MUST.getName());
+		BooleanClause<Query> watsonClassNameClause = BooleanClauseFactoryUtil.create("entryClassName", modelClass.getName(), BooleanClauseOccur.MUST.getName());
+
+		BooleanClause<Query>[] booleanClauseArray = new BooleanClause[] {statusApprovedClause, watsonClassNameClause};
+
+		searchContext.setBooleanClauses(booleanClauseArray);
+		searchContext.setCompanyId(themeDisplay.getCompanyId());
+
+		int end = ParamUtil.getInteger(request, "end", 15);
+
+		searchContext.setEnd(end);
+		searchContext.setEntryClassNames(new String[] {modelClass.getName()});
+		searchContext.setLike(true);
+		searchContext.setPortletIds(new String[] {PortletKeys.WATSON});
+
+		String sort = ParamUtil.getString(request, "sortBy", null);
+
+		if (Validator.isNotNull(sort)) {
+			searchContext.setSorts(new Sort(sort, true));
+		}
+		else {
+			searchContext.setSorts(new Sort(Field.CREATE_DATE, true));
+		}
+
+		int start = ParamUtil.getInteger(request, "start", 0);
+
+		searchContext.setStart(start);
+
+		return searchContext;
+	}
+
+	protected long getTotalHits(SearchContext searchContext) throws Exception {
+		searchContext.setStart(-1);
+		searchContext.setEnd(-1);
+
+		Hits hits = indexer.search(searchContext);
+
+		return hits.getLength();
+	}
+
+	@Override
+	protected void initThemeDisplayVariables() {
+		super.initThemeDisplayVariables();
+
+		themeDisplay.setRequest(request);
+
+		try {
+			request.setAttribute("currentWatsonUser", WatsonUtil.getCompositeUser(user));
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+}
+%>

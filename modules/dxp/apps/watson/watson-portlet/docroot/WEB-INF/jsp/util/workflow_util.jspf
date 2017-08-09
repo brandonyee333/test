@@ -1,0 +1,160 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%!
+public static class WatsonWorkflowUtil {
+	public static void sendAddressEmail(User fromUser, WatsonAddress watsonAddress, boolean sendFullAddress, boolean sendCoordinates, String description, String toEmailAddress) throws Exception {
+		Locale locale = LocaleUtil.getMostRelevantLocale();
+
+		String subject = LanguageUtil.format(locale, "x-has-sent-you-information-about-a-location", new String[] {fromUser.getFullName()});
+
+		StringBundler email = new StringBundler();
+
+		email.append(LanguageUtil.format(locale, "x-has-sent-you-the-following-information-about-location-x", new String[] {fromUser.getFullName(), watsonAddress.getName(locale)}));
+		email.append("<br />");
+
+		if (sendFullAddress) {
+			StringBundler address = new StringBundler();
+
+			Country country = CountryServiceUtil.fetchCountry(watsonAddress.getCountryId());
+
+			String countryA2 = country.getA2();
+
+			if (countryA2.equals("TH")) {
+				address.append(watsonAddress.getNumber());
+				address.append(StringPool.SPACE);
+				address.append(watsonAddress.getBuilding(locale));
+				address.append("<br />");
+				address.append(watsonAddress.getStreet());
+				address.append("<br />");
+
+				WatsonListType watsonListType = WatsonListType.fetch(watsonAddress.getSubDistrictWatsonListTypeId());
+
+				address.append(watsonListType.getName(locale));
+				address.append(StringPool.COMMA_AND_SPACE);
+
+				watsonListType = watsonListType.fetch(watsonAddress.getDistrictWatsonListTypeId());
+
+				address.append(watsonListType.getName(locale));
+				address.append("<br />");
+
+				watsonListType = watsonListType.fetch(watsonAddress.getProvinceWatsonListTypeId());
+
+				address.append(watsonListType.getName(locale));
+				address.append(StringPool.SPACE);
+				address.append(watsonAddress.getPostalCode());
+				address.append("<br />");
+				address.append(LanguageUtil.format(locale, country.getName(), new String[0]));
+				address.append("<br />");
+			}
+			else {
+				address.append(watsonAddress.getNumber());
+				address.append(StringPool.SPACE);
+				address.append(watsonAddress.getStreet());
+				address.append(StringPool.SPACE);
+				address.append(watsonAddress.getBuilding(locale));
+				address.append("<br />");
+				address.append(watsonAddress.getRegion());
+				address.append(StringPool.COMMA);
+				address.append(watsonAddress.getPostalCode());
+				address.append("<br />");
+				address.append(LanguageUtil.format(locale, country.getName(), new String[0]));
+				address.append("<br />");
+			}
+
+			email.append(address.toString());
+			email.append("<br />");
+		}
+
+		if (sendCoordinates) {
+			email.append(LanguageUtil.format(locale, "coordinates-x-x", new Object[] {watsonAddress.getLatitude(), watsonAddress.getLongitude()}));
+			email.append("<br />");
+		}
+
+		StringBundler mapsLink = new StringBundler();
+
+		mapsLink.append("https://www.google.com/maps/search/?api=1&query=");
+		mapsLink.append(watsonAddress.getLatitude());
+		mapsLink.append(StringPool.COMMA);
+		mapsLink.append(watsonAddress.getLongitude());
+
+		email.append(LanguageUtil.format(locale, "link-to-map-x", new String[] {mapsLink.toString()}));
+		email.append("<br />");
+
+		email.append(LanguageUtil.format(locale, "notes", new String[0]));
+		email.append("<br />");
+		email.append(description);
+
+		MailMessage mailMessage = new MailMessage();
+
+		mailMessage.setBody(email.toString());
+
+		InternetAddress from = new InternetAddress(
+			fromUser.getEmailAddress(), fromUser.getFullName());
+
+		mailMessage.setFrom(from);
+		mailMessage.setHTMLFormat(true);
+		mailMessage.setSubject(subject);
+
+		InternetAddress to = new InternetAddress(
+			toEmailAddress, StringPool.BLANK);
+
+		mailMessage.setTo(to);
+
+		MailServiceUtil.sendEmail(mailMessage);
+	}
+
+	public static void sendTranslationEmail(User fromUser, String model, String name, String url) throws Exception {
+		Role role = RoleLocalServiceUtil.getRole(fromUser.getCompanyId(), WatsonRoleConstants.TRANSLATOR);
+
+		List<User> translationUsers = UserLocalServiceUtil.getRoleUsers(role.getRoleId());
+
+		for (User translationUser : translationUsers) {
+			String subject = LanguageUtil.format(translationUser.getLocale(), "a-translation-has-been-requested", new Object[0]);
+
+			StringBundler sb = new StringBundler(7);
+
+			sb.append(LanguageUtil.format(translationUser.getLocale(), "dear-x", new String[] {translationUser.getFullName()}));
+			sb.append("<br /><br />");
+			sb.append(LanguageUtil.format(translationUser.getLocale(), "please-translate-x-x-at-x", new String[] {model, name, url}));
+			sb.append("<br /><br />");
+			sb.append(LanguageUtil.format(translationUser.getLocale(), "sincerely", new String[0]));
+			sb.append("<br />");
+			sb.append(fromUser.getFullName());
+
+			MailMessage mailMessage = new MailMessage();
+
+			mailMessage.setBody(sb.toString());
+
+			InternetAddress from = new InternetAddress(
+				fromUser.getEmailAddress(), fromUser.getFullName());
+
+			mailMessage.setFrom(from);
+			mailMessage.setHTMLFormat(true);
+			mailMessage.setSubject(subject);
+
+			InternetAddress to = new InternetAddress(
+				translationUser.getEmailAddress(),
+				translationUser.getFullName());
+
+			mailMessage.setTo(to);
+
+			MailServiceUtil.sendEmail(mailMessage);
+		}
+	}
+
+}
+%>

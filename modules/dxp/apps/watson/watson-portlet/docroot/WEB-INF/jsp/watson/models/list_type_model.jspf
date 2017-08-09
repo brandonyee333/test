@@ -1,0 +1,81 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%!
+public static class WatsonListType extends WatsonListTypeBaseModel {
+
+	WatsonListType() {
+		super(new com.liferay.watson.model.impl.WatsonListTypeImpl());
+	}
+
+	WatsonListType(com.liferay.watson.model.WatsonListType watsonListType) {
+		super(watsonListType);
+	}
+
+	WatsonListType(WatsonListType watsonListType) {
+		super(watsonListType);
+	}
+
+	WatsonListType(WatsonListTypeBaseModel watsonListType) {
+		super(watsonListType);
+	}
+
+	public static WatsonListType fetch(long watsonListTypeId) throws Exception {
+		WatsonListType watsonListType = create(0);
+
+		if (watsonListTypeId > 0) {
+			try {
+				watsonListType = WatsonListTypeBaseModel.fetch(watsonListTypeId);
+			}
+			catch (Exception e) {
+			}
+		}
+
+		return watsonListType;
+	}
+
+	public static List<WatsonListType> getWatsonListTypes(String type) throws Exception {
+		return query("type", type);
+	}
+
+	private static JSONObject getAsJSONDataArray(List<WatsonListType> watsonListTypes, long count) throws Exception {
+		JSONObject returnJSONObject = JSONFactoryUtil.createJSONObject();
+
+		JSONObject watsonListTypesJSONOject = JSONFactoryUtil.createJSONObject();
+
+		for (WatsonListType watsonListType : watsonListTypes) {
+			watsonListTypesJSONOject.put(String.valueOf(watsonListType.getWatsonListTypeId()), getAsJSONObject(watsonListType));
+		}
+
+		returnJSONObject.put("count", count);
+		returnJSONObject.put("items", watsonListTypesJSONOject);
+
+		return returnJSONObject;
+	}
+
+	private static JSONObject getAsJSONObject(WatsonListType watsonListType) throws Exception {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put("name", watsonListType.getName(LocaleUtil.getMostRelevantLocale()));
+		jsonObject.put("parentWatsonListTypeId", watsonListType.getParentWatsonListTypeId());
+		jsonObject.put("type", watsonListType.getType());
+		jsonObject.put("watsonListTypeId", watsonListType.getWatsonListTypeId());
+
+		return jsonObject;
+	}
+
+}
+%>
