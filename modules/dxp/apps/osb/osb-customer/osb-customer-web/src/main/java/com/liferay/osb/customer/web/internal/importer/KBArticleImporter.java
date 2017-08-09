@@ -260,7 +260,7 @@ public class KBArticleImporter {
 
 	private static final Pattern _delimiter = Pattern.compile(
 		",(?=(?:[^\"]*\"[^\"]*\"[^\"]*)*$|[^\"]*$)", Pattern.CASE_INSENSITIVE);
-	private static final String[] _specialAssetCategoryNames = new String[] {
+	private static final String[] _specialAssetCategoryNames = {
 		"Alerts, Announcements", "Categories, Tags, Vocabularies",
 		"Deployment, Environments", "Staging, Export/Import",
 		"UI Infrastructure, Accessibility",

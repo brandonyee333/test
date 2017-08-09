@@ -19,7 +19,7 @@ WorkflowTaskDisplayTerms searchTerms = (WorkflowTaskDisplayTerms)searchContainer
 
 searchContainer.setEmptyResultsMessage("there-are-no-pending-tasks");
 
-String[] assetTypes = new String[] {JournalArticle.class.getName()};
+String[] assetTypes = {JournalArticle.class.getName()};
 
 total = WorkflowTaskManagerUtil.searchCount(company.getCompanyId(), 0, searchTerms.getKeywords(), assetTypes, false, null);
 

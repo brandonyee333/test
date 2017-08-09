@@ -21,8 +21,7 @@ import java.util.Locale;
  */
 public class OSBJournalArticleConstants {
 
-	public static final Locale[] LOCALES =
-		new Locale[] {Locale.JAPAN, Locale.US};
+	public static final Locale[] LOCALES = {Locale.JAPAN, Locale.US};
 
 	public static final long PERMISSION_TYPE_EXTERNAL = 2;
 
