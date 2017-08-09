@@ -65,7 +65,7 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 	<portlet:param name="mvcPath" value="/license/edit_license_key_set.jsp" />
 </portlet:actionURL>
 
-<aui:form action="<%= updateLicenseKeySetURL %>" class="uni-form" method="post" name="fm" onSubmit="submitForm(this); return false;">
+<aui:form action="<%= updateLicenseKeySetURL %>" class="uni-form" method="post" onSubmit="submitForm(this); return false;">
 	<input name="<portlet:namespace />redirect" type="hidden" value="<%= HtmlUtil.escape(redirect) %>" />
 	<input name="<portlet:namespace />backURL" type="hidden" value="<%= HtmlUtil.escape(backURL) %>" />
 	<input name="<portlet:namespace />licenseKeySetId" type="hidden" value="<%= licenseKeySetId %>" />
@@ -467,17 +467,17 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 									<liferay-ui:input-date
 										dayParam='<%= "startDay_" + licenseKey.getLicenseKeyId() %>'
 										dayValue="<%= 0 %>"
+										firstEnabledDate="<%= calendar.add(Calendar.YEAR, -1) %>"
+										lastEnabledDate="<%= calendar.add(Calendar.YEAR, 3) %>"
 										monthParam='<%= "startMonth_" + licenseKey.getLicenseKeyId() %>'
 										monthValue="<%= -1 %>"
 										yearParam='<%= "startYear_" + licenseKey.getLicenseKeyId() %>'
-										yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 3 %>"
-										yearRangeStart="<%= calendar.get(Calendar.YEAR) - 1 %>"
 										yearValue="<%= 0 %>"
 									/>
 
 									<liferay-ui:message key="duration" />:
 
-									<aui:select inlineField="<%= true %>" label="" name='<%= "renewTime_" + licenseKey.getLicenseKeyId() %>'>
+									<aui:select inlineField="<%= true %>" name='<%= "renewTime_" + licenseKey.getLicenseKeyId() %>'>
 										<aui:option label="2-weeks" value="14" />
 										<aui:option label="30-days" value="30" />
 										<aui:option label="60-days" value="60" />
@@ -530,17 +530,17 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 					<liferay-ui:input-date
 						dayParam="aggregateStartDay"
 						dayValue="<%= 0 %>"
+						firstEnabledDate="<%= calendar.add(Calendar.YEAR, -1) %>"
+						lastEnabledDate="<%= calendar.add(Calendar.YEAR, 3) %>"
 						monthParam="aggregateStartMonth"
 						monthValue="<%= -1 %>"
 						yearParam="aggregateStartYear"
-						yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 3 %>"
-						yearRangeStart="<%= calendar.get(Calendar.YEAR) - 1 %>"
 						yearValue="<%= 0 %>"
 					/>
 
 					<liferay-ui:message key="duration" />:
 
-					<aui:select inlineField="<%= true %>" label="" name="aggregateRenewTime">
+					<aui:select inlineField="<%= true %>" name="aggregateRenewTime">
 						<aui:option label="2-weeks" value="14" />
 						<aui:option label="30-days" value="30" />
 						<aui:option label="60-days" value="60" />

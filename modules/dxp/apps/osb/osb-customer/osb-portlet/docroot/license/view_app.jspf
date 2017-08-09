@@ -77,7 +77,7 @@
 
 <div class="license-tabs"></div>
 
-<aui:form action="<%= portletURL.toString() %>" method="post" name="fm" onSubmit="submitForm(this); return false;">
+<aui:form action="<%= portletURL.toString() %>" method="post" onSubmit="submitForm(this); return false;">
 	<liferay-portlet:renderURLParams varImpl="portletURL" />
 
 	<div class="license-worker">

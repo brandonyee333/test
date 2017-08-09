@@ -89,6 +89,7 @@ boolean osbTrialPurchased = ExpandoValueLocalServiceUtil.getData(themeDisplay.ge
 		<div class="license-customer">
 			<liferay-ui:search-container
 				searchContainer="<%= new LicenseKeySearch(renderRequest, portletURL) %>"
+				total="<%= licenseKeys.size() %>"
 			>
 
 				<%
@@ -103,7 +104,6 @@ boolean osbTrialPurchased = ExpandoValueLocalServiceUtil.getData(themeDisplay.ge
 
 				<liferay-ui:search-container-results
 					results="<%= licenseKeys %>"
-					total="<%= licenseKeys.size() %>"
 				/>
 
 				<liferay-ui:search-container-row

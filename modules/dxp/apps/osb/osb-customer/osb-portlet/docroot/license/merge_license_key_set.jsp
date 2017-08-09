@@ -44,7 +44,7 @@ portletURL.setParameter("licenseKeySetId", String.valueOf(licenseKeySetId));
 	<portlet:param name="mvcPath" value="/license/merge_license_key_set.jsp" />
 </portlet:actionURL>
 
-<aui:form action="<%= mergeLicenseKeySetURL %>" class="uni-form" method="post" name="fm">
+<aui:form action="<%= mergeLicenseKeySetURL %>" class="uni-form" method="post">
 	<input name="<portlet:namespace />redirect" type="hidden" value="<%= HtmlUtil.escape(redirect) %>" />
 	<input name="<portlet:namespace />backURL" type="hidden" value="<%= HtmlUtil.escape(backURL) %>" />
 	<input name="<portlet:namespace />toLicenseKeySetId" type="hidden" value="<%= licenseKeySetId %>" />
@@ -69,10 +69,10 @@ portletURL.setParameter("licenseKeySetId", String.valueOf(licenseKeySetId));
 			<liferay-ui:search-container
 				headerNames="name"
 				iteratorURL="<%= portletURL %>"
+				total="<%= LicenseKeySetLocalServiceUtil.getAccountEntryLicenseKeySetsCount(licenseKeySet.getAccountEntryId()) %>"
 			>
 				<liferay-ui:search-container-results
 					results="<%= LicenseKeySetLocalServiceUtil.getAccountEntryLicenseKeySets(licenseKeySet.getAccountEntryId(), searchContainer.getStart(), searchContainer.getEnd()) %>"
-					total="<%= LicenseKeySetLocalServiceUtil.getAccountEntryLicenseKeySetsCount(licenseKeySet.getAccountEntryId()) %>"
 				/>
 
 				<liferay-ui:search-container-row

@@ -92,7 +92,7 @@ pageContext.setAttribute("searchURL", searchURL);
 
 <div class="license-tabs"></div>
 
-<aui:form action="<%= searchURL.toString() %>" method="post" name="fm" onSubmit="submitForm(this); return false;">
+<aui:form action="<%= searchURL.toString() %>" method="post" onSubmit="submitForm(this); return false;">
 	<liferay-portlet:renderURLParams varImpl="searchURL" />
 
 	<div class="license-worker">

@@ -46,7 +46,7 @@ portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 	<portlet:param name="mvcPath" value="/license/move_license_key.jsp" />
 </portlet:actionURL>
 
-<aui:form action="<%= updateLicenseKeyURL %>" class="uni-form" method="post" name="fm">
+<aui:form action="<%= updateLicenseKeyURL %>" class="uni-form" method="post">
 	<input name="<portlet:namespace />redirect" type="hidden" value="<%= HtmlUtil.escape(redirect) %>" />
 	<input name="<portlet:namespace />backURL" type="hidden" value="<%= HtmlUtil.escape(backURL) %>" />
 	<input name="<portlet:namespace />licenseKeyId" type="hidden" value="<%= String.valueOf(licenseKey.getLicenseKeyId()) %>" />
@@ -72,6 +72,7 @@ portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 				delta="<%= 10 %>"
 				headerNames="name,type,start-date,lifetime,license-keys-available"
 				iteratorURL="<%= portletURL %>"
+				total="<%= offeringEntryGroups.size() %>"
 			>
 
 				<%
@@ -84,7 +85,6 @@ portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 
 				<liferay-ui:search-container-results
 					results="<%= ListUtil.subList(offeringEntryGroups, searchContainer.getStart(), searchContainer.getEnd()) %>"
-					total="<%= offeringEntryGroups.size() %>"
 				/>
 
 				<liferay-ui:search-container-row

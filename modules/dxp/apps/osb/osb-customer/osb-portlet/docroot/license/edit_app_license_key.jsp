@@ -107,7 +107,7 @@ portletURL.setParameter("appEntryId", String.valueOf(appEntryId));
 	<portlet:param name="mvcPath" value="/license/edit_app_license_key.jsp" />
 </portlet:actionURL>
 
-<aui:form action="<%= updateLicenseKeyURL %>" class="uni-form" method="post" name="fm" onSubmit='<%= "submitForm(document." + renderResponse.getNamespace() + "fm);" %>'>
+<aui:form action="<%= updateLicenseKeyURL %>" class="uni-form" method="post" onSubmit='<%= "submitForm(document." + renderResponse.getNamespace() + "fm);" %>'>
 	<input name="<portlet:namespace />redirect" type="hidden" value="<%= HtmlUtil.escape(redirect) %>" />
 	<input name="<portlet:namespace />backURL" type="hidden" value="<%= HtmlUtil.escape(backURL) %>" />
 	<input name="<portlet:namespace />assetReceiptLicenseId" type="hidden" value="<%= assetReceiptLicenseId %>" />
@@ -445,6 +445,7 @@ portletURL.setParameter("appEntryId", String.valueOf(appEntryId));
 						delta="<%= 10 %>"
 						headerNames="start-date,lifetime,license-keys-available"
 						iteratorURL="<%= portletURL %>"
+						total="<%= assetReceiptLicensesCount %>"
 					>
 
 						<%
@@ -459,7 +460,6 @@ portletURL.setParameter("appEntryId", String.valueOf(appEntryId));
 
 						<liferay-ui:search-container-results
 							results="<%= assetReceiptLicenses %>"
-							total="<%= assetReceiptLicensesCount %>"
 						/>
 
 						<liferay-ui:search-container-row
@@ -503,13 +503,13 @@ portletURL.setParameter("appEntryId", String.valueOf(appEntryId));
 										<liferay-ui:input-date
 											dayParam='<%= curAssetReceiptLicense.getAssetReceiptLicenseId() + "startDateDay" %>'
 											dayValue="<%= cal.get(Calendar.DAY_OF_MONTH) %>"
+											firstEnabledDate="<%= cal.set(2010, 1, 1) %>"
 											firstDayOfWeek="<%= cal.getFirstDayOfWeek() %>"
 											formName='<%= "fm" %>'
+											lastEnabledDate="<%= cal.set(2050, 1, 1) %>"
 											monthParam='<%= curAssetReceiptLicense.getAssetReceiptLicenseId() + "startDateMonth" %>'
 											monthValue="<%= cal.get(Calendar.MONTH) %>"
 											yearParam='<%= curAssetReceiptLicense.getAssetReceiptLicenseId() + "startDateYear" %>'
-											yearRangeEnd="<%= 2050 %>"
-											yearRangeStart="<%= 2010 %>"
 											yearValue="<%= cal.get(Calendar.YEAR) %>"
 										/>
 									</c:when>

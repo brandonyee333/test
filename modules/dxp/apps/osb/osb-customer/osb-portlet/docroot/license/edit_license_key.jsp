@@ -156,7 +156,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 	<portlet:param name="mvcPath" value="/license/edit_license_key.jsp" />
 </portlet:actionURL>
 
-<aui:form action="<%= updateLicenseKeyURL %>" method="post" name="fm" onSubmit='<%= "submitForm(document." + renderResponse.getNamespace() + "fm);" %>'>
+<aui:form action="<%= updateLicenseKeyURL %>" method="post" onSubmit='<%= "submitForm(document." + renderResponse.getNamespace() + "fm);" %>'>
 	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 	<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
 	<aui:input name="licenseKeySetId" type="hidden" value="<%= licenseKeySetId %>" />
@@ -234,7 +234,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 							String taglibOnChange = renderResponse.getNamespace() + "updateLicenseKey('', '', '', 0);";
 							%>
 
-							<aui:select label="" name="accountEntryId" onChange="<%= taglibOnChange %>">
+							<aui:select name="accountEntryId" onChange="<%= taglibOnChange %>">
 								<aui:option value="" />
 
 								<%
@@ -264,7 +264,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 					String taglibOnChange = renderResponse.getNamespace() + "updateLicenseKey(this.value, '', '', 0);";
 					%>
 
-					<aui:select id="productEntryId" label="" name="productEntryId" onChange="<%= taglibOnChange %>">
+					<aui:select id="productEntryId" name="productEntryId" onChange="<%= taglibOnChange %>">
 						<aui:option value="" />
 
 						<%
@@ -303,7 +303,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 								taglibOnChange = renderResponse.getNamespace() + "updateLicenseKey(document." + renderResponse.getNamespace() + "fm." + renderResponse.getNamespace() + "productEntryId.value, this.value, '', 0);";
 								%>
 
-								<aui:select id="productVersion" label="" name="productVersion" onChange="<%= taglibOnChange %>">
+								<aui:select id="productVersion" name="productVersion" onChange="<%= taglibOnChange %>">
 									<aui:option value="" />
 
 									<%
@@ -353,7 +353,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 								taglibOnChange = renderResponse.getNamespace() + "updateLicenseKey(document." + renderResponse.getNamespace() + "fm." + renderResponse.getNamespace() + "productEntryId.value, document." + renderResponse.getNamespace() + "fm." + renderResponse.getNamespace() + "productVersion.value, this.value, 0);";
 								%>
 
-								<aui:select id="licenseEntryId" label="" name="licenseEntryId" onChange="<%= taglibOnChange %>">
+								<aui:select id="licenseEntryId" name="licenseEntryId" onChange="<%= taglibOnChange %>">
 									<aui:option value="" />
 
 									<%
@@ -387,6 +387,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 						delta="<%= 10 %>"
 						headerNames="start-date,lifetime,license-keys-available"
 						iteratorURL="<%= portletURL %>"
+						total="<%= offeringEntryGroups.size() %>"
 					>
 
 						<%
@@ -404,7 +405,6 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 
 						<liferay-ui:search-container-results
 							results="<%= ListUtil.subList(offeringEntryGroups, searchContainer.getStart(), searchContainer.getEnd()) %>"
-							total="<%= offeringEntryGroups.size() %>"
 						/>
 
 						<liferay-ui:search-container-row
@@ -447,12 +447,12 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 											dayParam='<%= availableOfferingEntry.getOfferingEntryId() + "startDateDay" %>'
 											dayValue="<%= cal.get(Calendar.DAY_OF_MONTH) %>"
 											firstDayOfWeek="<%= cal.getFirstDayOfWeek() %>"
+											firstEnabledDate="<%= cal.set(2010, 1, 1) %>"
 											formName='<%= "fm" %>'
+											lastEnabledDate="<%= cal.set(2050, 1, 1) %>"
 											monthParam='<%= availableOfferingEntry.getOfferingEntryId() + "startDateMonth" %>'
 											monthValue="<%= cal.get(Calendar.MONTH) %>"
 											yearParam='<%= availableOfferingEntry.getOfferingEntryId() + "startDateYear" %>'
-											yearRangeEnd="<%= 2050 %>"
-											yearRangeStart="<%= 2010 %>"
 											yearValue="<%= cal.get(Calendar.YEAR) %>"
 										/>
 									</c:when>
@@ -532,7 +532,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 							<strong><%= HtmlUtil.escape(licenseKeySet.getName()) %></strong>
 						</c:when>
 						<c:otherwise>
-							<aui:input bean="<%= licenseKeySet %>" label="" model="<%= LicenseKeySet.class %>" name="name" value="<%= accountEntry.getName() %>" />
+							<aui:input bean="<%= licenseKeySet %>" model="<%= LicenseKeySet.class %>" name="name" value="<%= accountEntry.getName() %>" />
 						</c:otherwise>
 					</c:choose>
 				</div>
@@ -547,7 +547,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 
 						<div class="callout-a">
 							<div class="callout-content">
-								<aui:input label="" model="<%= LicenseKey.class %>" name="owner" value="<%= accountEntry.getName() %>" />
+								<aui:input model="<%= LicenseKey.class %>" name="owner" value="<%= accountEntry.getName() %>" />
 							</div>
 						</div>
 					</div>
@@ -561,7 +561,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 
 						<div class="callout-a">
 							<div class="callout-content">
-								<aui:input label="" model="<%= LicenseKey.class %>" name="description" value="<%= accountEntry.getName() %>" />
+								<aui:input model="<%= LicenseKey.class %>" name="description" value="<%= accountEntry.getName() %>" />
 							</div>
 						</div>
 					</div>
@@ -657,7 +657,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 							<div class="callout-content">
 								<c:choose>
 									<c:when test="<%= RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstants.ROLE_OSB_ACCOUNT_ADMIN_ID) || RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstants.ROLE_OSB_ADMINISTRATOR_ID) %>">
-										<aui:select label="" name="maxHttpSessions">
+										<aui:select name="maxHttpSessions">
 											<aui:option value="5">5</aui:option>
 											<aui:option value="6">6</aui:option>
 											<aui:option value="7">7</aui:option>

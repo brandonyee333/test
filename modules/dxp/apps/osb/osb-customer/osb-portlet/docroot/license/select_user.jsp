@@ -29,7 +29,7 @@ portletURL.setParameter("callback", callback);
 %>
 
 <c:if test="<%= OrganizationLocalServiceUtil.hasUserOrganization(user.getUserId(), OSBConstants.ORGANIZATION_LIFERAY_INC_ID) %>">
-	<aui:form action="<%= portletURL.toString() %>" method="post" name="fm" onSubmit="submitForm(this); return false;">
+	<aui:form action="<%= portletURL.toString() %>" method="post" onSubmit="submitForm(this); return false;">
 		<div class="unit">
 			<div class="unit-content">
 				<liferay-ui:tabs names="users" />
@@ -57,10 +57,10 @@ portletURL.setParameter("callback", callback);
 					<liferay-ui:search-container
 						headerNames="name,screen-name,email-address"
 						searchContainer="<%= userSearchContainer %>"
+						total="<%= userSearchContainer.getTotal() %>"
 					>
 						<liferay-ui:search-container-results
 							results="<%= userSearchContainer.getResults() %>"
-							total="<%= userSearchContainer.getTotal() %>"
 						/>
 
 						<liferay-ui:search-container-row
