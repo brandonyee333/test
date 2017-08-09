@@ -34,6 +34,7 @@ String selectAll = "javascript:";
 	<liferay-ui:search-container
 		headerNames="severity"
 		iteratorURL="<%= portletURL %>"
+		total="<%= severities.length %>"
 	>
 		<liferay-ui:search-container-results
 			results="<%= ListUtil.fromArray(severities) %>"

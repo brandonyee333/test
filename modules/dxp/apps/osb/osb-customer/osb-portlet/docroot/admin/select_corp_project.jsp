@@ -31,6 +31,7 @@ portletURL.setParameter("callback", callback);
 	<liferay-ui:search-container
 		headerNames="name"
 		searchContainer="<%= new CorpProjectSearch(renderRequest, portletURL) %>"
+		total="<%= CorpProjectLocalServiceUtil.getCorpProjectsCount(searchTerms.getName()) %>"
 	>
 
 		<%

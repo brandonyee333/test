@@ -19,6 +19,7 @@
 <liferay-ui:search-container
 	headerNames="name,severity-1,severity-2,severity-3"
 	iteratorURL="<%= portletURL %>"
+	total="<%= SupportResponseLocalServiceUtil.getSupportResponsesCount() %>"
 >
 	<liferay-ui:search-container-results
 		results="<%= SupportResponseLocalServiceUtil.getSupportResponses(searchContainer.getStart(), searchContainer.getEnd()) %>"

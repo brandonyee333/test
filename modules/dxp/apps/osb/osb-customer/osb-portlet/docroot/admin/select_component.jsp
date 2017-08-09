@@ -44,6 +44,7 @@ String selectAll = "javascript:";
 	<liferay-ui:search-container
 		headerNames="component"
 		iteratorURL="<%= portletURL %>"
+		total="<%= componentTypes.size() %>"
 	>
 		<liferay-ui:search-container-results
 			results="<%= componentTypes %>"

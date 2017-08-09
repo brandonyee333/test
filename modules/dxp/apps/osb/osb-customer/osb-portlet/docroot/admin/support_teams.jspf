@@ -19,6 +19,7 @@
 <liferay-ui:search-container
 	headerNames="name,utilization,accounts,languages"
 	iteratorURL="<%= portletURL %>"
+	total="<%= SupportTeamLocalServiceUtil.getSupportTeamsCount() %>"
 >
 	<liferay-ui:search-container-results
 		results="<%= SupportTeamLocalServiceUtil.getSupportTeams(searchContainer.getStart(), searchContainer.getEnd()) %>"

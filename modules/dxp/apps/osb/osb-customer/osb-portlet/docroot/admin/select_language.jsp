@@ -34,6 +34,7 @@ String selectAll = "javascript:";
 	<liferay-ui:search-container
 		headerNames="language"
 		iteratorURL="<%= portletURL %>"
+		total="<%= languageIds.length %>"
 	>
 		<liferay-ui:search-container-results
 			results="<%= ListUtil.fromArray(languageIds) %>"

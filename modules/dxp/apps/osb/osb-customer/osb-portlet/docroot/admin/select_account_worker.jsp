@@ -57,6 +57,7 @@
 					<liferay-ui:search-container
 						headerNames="name,screen-name,email-address"
 						searchContainer="<%= userSearchContainer %>"
+						total="<%= userSearchContainer.getTotal() %>"
 					>
 						<liferay-ui:search-container-results
 							results="<%= userSearchContainer.getResults() %>"

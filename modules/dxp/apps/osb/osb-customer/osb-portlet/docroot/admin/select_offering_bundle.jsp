@@ -31,6 +31,7 @@ portletURL.setParameter("callback", callback);
 	<liferay-ui:search-container
 		headerNames="name"
 		iteratorURL="<%= portletURL %>"
+		total="<%= OfferingBundleLocalServiceUtil.getOfferingBundlesCount() %>"
 	>
 		<liferay-ui:search-container-results
 			results="<%= OfferingBundleLocalServiceUtil.getOfferingBundles(searchContainer.getStart(), searchContainer.getEnd()) %>"

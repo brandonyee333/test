@@ -30,6 +30,7 @@ portletURL.setParameter("mvcPath", "/admin/select_support_region.jsp");
 	<liferay-ui:search-container
 		headerNames="name,description"
 		iteratorURL="<%= portletURL %>"
+		total="<%= SupportRegionLocalServiceUtil.getSupportRegionsCount() %>"
 	>
 		<liferay-ui:search-container-results
 			results="<%= SupportRegionLocalServiceUtil.getSupportRegions(searchContainer.getStart(), searchContainer.getEnd()) %>"

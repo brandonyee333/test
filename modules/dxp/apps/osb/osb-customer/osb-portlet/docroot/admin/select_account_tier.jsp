@@ -34,6 +34,7 @@ String selectAll = "javascript:";
 	<liferay-ui:search-container
 		headerNames="project-tier"
 		iteratorURL="<%= portletURL %>"
+		total="<%= accountTiers.size() %>"
 	>
 		<liferay-ui:search-container-results
 			results="<%= accountTiers %>"
