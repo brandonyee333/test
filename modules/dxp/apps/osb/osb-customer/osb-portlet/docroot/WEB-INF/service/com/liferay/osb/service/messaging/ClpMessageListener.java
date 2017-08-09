@@ -123,6 +123,7 @@ import com.liferay.osb.service.TicketSolutionLocalServiceUtil;
 import com.liferay.osb.service.TicketSolutionServiceUtil;
 import com.liferay.osb.service.TicketWorkerLocalServiceUtil;
 import com.liferay.osb.service.TicketWorkerServiceUtil;
+
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
 
@@ -131,7 +132,6 @@ import com.liferay.portal.kernel.messaging.Message;
  */
 @ProviderType
 public class ClpMessageListener extends BaseMessageListener {
-
 	public static String getServletContextName() {
 		return ClpSerializer.getServletContextName();
 	}
@@ -142,8 +142,7 @@ public class ClpMessageListener extends BaseMessageListener {
 		String servletContextName = message.getString("servletContextName");
 
 		if (command.equals("undeploy") &&
-			servletContextName.equals(getServletContextName())) {
-
+				servletContextName.equals(getServletContextName())) {
 			AccountAttachmentLocalServiceUtil.clearService();
 
 			AccountAttachmentServiceUtil.clearService();
@@ -306,5 +305,4 @@ public class ClpMessageListener extends BaseMessageListener {
 			TicketWorkerServiceUtil.clearService();
 		}
 	}
-
 }
