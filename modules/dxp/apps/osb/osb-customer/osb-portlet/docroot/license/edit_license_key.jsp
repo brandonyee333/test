@@ -443,13 +443,19 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 							>
 								<c:choose>
 									<c:when test="<%= (availableOfferingEntry != null) && hasUpdateAdmin %>">
+
+										<%
+										Date firstEnabledDate = CalendarFactoryUtil.getCalendar(2010, 1, 1);
+										Date lastEnabledDate = CalendarFactoryUtil.getCalendar(2050, 1, 1);
+										%>
+
 										<liferay-ui:input-date
 											dayParam='<%= availableOfferingEntry.getOfferingEntryId() + "startDateDay" %>'
 											dayValue="<%= cal.get(Calendar.DAY_OF_MONTH) %>"
 											firstDayOfWeek="<%= cal.getFirstDayOfWeek() %>"
-											firstEnabledDate="<%= cal.set(2010, 1, 1) %>"
+											firstEnabledDate="<%= firstEnabledDate %>"
 											formName='<%= "fm" %>'
-											lastEnabledDate="<%= cal.set(2050, 1, 1) %>"
+											lastEnabledDate="<%= lastEnabledDate %>"
 											monthParam='<%= availableOfferingEntry.getOfferingEntryId() + "startDateMonth" %>'
 											monthValue="<%= cal.get(Calendar.MONTH) %>"
 											yearParam='<%= availableOfferingEntry.getOfferingEntryId() + "startDateYear" %>'

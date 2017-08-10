@@ -536,11 +536,21 @@
 								<liferay-ui:message key="start-date" />:
 							</div>
 
+							<%
+							Date firstEnabledDate = calendar.clone();
+
+							firstEnabledDate.add(Calendar.YEAR, -1)
+
+							Date lastEnabledDate = calendar.clone();
+
+							lastEnabledDate.add(Calendar.YEAR, 3)
+							%>
+
 							<liferay-ui:input-date
 								dayParam='<%= "startDay_" + licenseKey.getLicenseKeyId() %>'
 								dayValue="<%= 0 %>"
-								firstEnabledDate="<%= calendar.add(Calendar.YEAR, -1) %>"
-								lastEnabledDate="<%= calendar.add(Calendar.YEAR, 3) %>"
+								firstEnabledDate="<%= firstEnabledDate %>"
+								lastEnabledDate="<%= lastEnabledDate %>"
 								monthParam='<%= "startMonth_" + licenseKey.getLicenseKeyId() %>'
 								monthValue="<%= -1 %>"
 								yearParam='<%= "startYear_" + licenseKey.getLicenseKeyId() %>'

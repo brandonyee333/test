@@ -19,9 +19,9 @@ themeDisplay.setIncludeServiceJs(true);
 
 Calendar firstEnabledDate = CalendarFactoryUtil.getCalendar(2010, 1, 1);
 
-Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
+Calendar lastEnabledDate = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
 
-Calendar lastEnabledDate = calendar.add(Calendar.YEAR, 1);
+lastEnabledDate.add(Calendar.YEAR, 1);
 %>
 
 <div class="callout-shadowed container">

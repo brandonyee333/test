@@ -500,13 +500,19 @@ portletURL.setParameter("appEntryId", String.valueOf(appEntryId));
 							>
 								<c:choose>
 									<c:when test="<%= (rowHREF != null) && hasUpdateAdmin %>">
+
+										<%
+										Date firstEnabledDate = CalendarFactoryUtil.getCalendar(2010, 1, 1);
+										Date lastEnabledDate = CalendarFactoryUtil.getCalendar(2050, 1, 1);
+										%>
+
 										<liferay-ui:input-date
 											dayParam='<%= curAssetReceiptLicense.getAssetReceiptLicenseId() + "startDateDay" %>'
 											dayValue="<%= cal.get(Calendar.DAY_OF_MONTH) %>"
-											firstEnabledDate="<%= cal.set(2010, 1, 1) %>"
 											firstDayOfWeek="<%= cal.getFirstDayOfWeek() %>"
+											firstEnabledDate="<%= firstEnabledDate %>"
 											formName='<%= "fm" %>'
-											lastEnabledDate="<%= cal.set(2050, 1, 1) %>"
+											lastEnabledDate="<%= lastEnabledDate %>"
 											monthParam='<%= curAssetReceiptLicense.getAssetReceiptLicenseId() + "startDateMonth" %>'
 											monthValue="<%= cal.get(Calendar.MONTH) %>"
 											yearParam='<%= curAssetReceiptLicense.getAssetReceiptLicenseId() + "startDateYear" %>'

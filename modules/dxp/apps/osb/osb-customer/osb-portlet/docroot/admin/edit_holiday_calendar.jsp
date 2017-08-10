@@ -53,7 +53,9 @@ if (holidayEntries.isEmpty()) {
 
 Calendar firstEnabledDate = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
 
-Calendar lastEnabledDate = firstEnabledDate.add(Calendar.YEAR, 15);
+Calendar lastEnabledDate = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
+
+lastEnabledDate.add(Calendar.YEAR, 15);
 %>
 
 <portlet:actionURL name="updateHolidayCalendar" var="updateHolidayCalendarURL">

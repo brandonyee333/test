@@ -38,7 +38,13 @@ List<LicenseKey> licenseKeys = LicenseKeyServiceUtil.getLicenseKeySetLicenseKeys
 long offeringEntryId = ParamUtil.getLong(request, "offeringEntryId");
 long clusterId = ParamUtil.getLong(request, "clusterId");
 
-Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
+Calendar firstEnabledDate = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
+
+firstEnabledDate.add(Calendar.YEAR, -1);
+
+Calendar lastEnabledDate = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
+
+lastEnabledDate.add(Calendar.YEAR, 3);
 
 PortletURL portletURL = renderResponse.createRenderURL();
 
@@ -467,8 +473,8 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 									<liferay-ui:input-date
 										dayParam='<%= "startDay_" + licenseKey.getLicenseKeyId() %>'
 										dayValue="<%= 0 %>"
-										firstEnabledDate="<%= calendar.add(Calendar.YEAR, -1) %>"
-										lastEnabledDate="<%= calendar.add(Calendar.YEAR, 3) %>"
+										firstEnabledDate="<%= firstEnabledDate %>"
+										lastEnabledDate="<%= lastEnabledDate %>"
 										monthParam='<%= "startMonth_" + licenseKey.getLicenseKeyId() %>'
 										monthValue="<%= -1 %>"
 										yearParam='<%= "startYear_" + licenseKey.getLicenseKeyId() %>'
@@ -530,8 +536,8 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 					<liferay-ui:input-date
 						dayParam="aggregateStartDay"
 						dayValue="<%= 0 %>"
-						firstEnabledDate="<%= calendar.add(Calendar.YEAR, -1) %>"
-						lastEnabledDate="<%= calendar.add(Calendar.YEAR, 3) %>"
+						firstEnabledDate="<%= firstEnabledDate %>"
+						lastEnabledDate="<%= lastEnabledDate %>"
 						monthParam="aggregateStartMonth"
 						monthValue="<%= -1 %>"
 						yearParam="aggregateStartYear"

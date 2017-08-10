@@ -301,11 +301,22 @@ Locale[] locales = LanguageUtil.getAvailableLocales();
 								<liferay-ui:message key="expiration-date" /> (GMT)
 							</td>
 							<td>
+
+								<%
+								Date firstEnabledDate = announcementExpirationCal.clone();
+
+								firstEnabledDate.add(Calendar.YEAR, -2);
+
+								Date lastEnabledDate = announcementExpirationCal.clone();
+
+								lastEnabledDate.add(Calendar.YEAR, 2);
+								%>
+
 								<liferay-ui:input-date
 									dayParam="announcementExpirationDateDay"
 									dayValue="<%= announcementExpirationCal.get(Calendar.DAY_OF_MONTH) %>"
-									firstEnabledDate="<%= announcementExpirationCal.add(Calendar.YEAR, -2) %>"
-									lastEnabledDate="<%= announcementExpirationCal.add(Calendar.YEAR, 2) %>"
+									firstEnabledDate="<%= firstEnabledDate %>"
+									lastEnabledDate="<%= lastEnabledDate %>"
 									monthParam="announcementExpirationDateMonth"
 									monthValue="<%= announcementExpirationCal.get(Calendar.MONTH) %>"
 									nullable="<%= false %>"
