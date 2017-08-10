@@ -28,6 +28,7 @@ import com.liferay.osb.util.comparator.LicenseKeyStartDateComparator;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.PortletPreferencesLocalServiceUtil;
 import com.liferay.portal.kernel.util.Base64;
+import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -312,9 +313,9 @@ public class LicenseUtil {
 		sb.append(".xml");
 
 		String fileName = StringUtil.replace(
-			sb.toString(), StringPool.SPACE, StringPool.BLANK);
+			sb.toString(), CharPool.SPACE, StringPool.BLANK);
 
-		return fileName.toLowerCase();
+		return StringUtil.toLowerCase(fileName);
 	}
 
 	public static OrderByComparator getLicenseKeyOrderByComparator(

@@ -79,6 +79,7 @@ public class SourceFormatter {
 		String newContent = content;
 
 		int importX = newContent.lastIndexOf("import com.liferay");
+
 		int importY = newContent.indexOf(CharPool.NEW_LINE, importX) + 1;
 
 		StringBundler sb = new StringBundler(7);
@@ -98,6 +99,7 @@ public class SourceFormatter {
 		int pos = newContent.indexOf("\npublic class ");
 
 		sb.append(newContent.substring(0, pos));
+
 		sb.append("\n@JSONWebService(mode = JSONWebServiceMode.MANUAL)");
 		sb.append(newContent.substring(pos));
 
@@ -106,7 +108,7 @@ public class SourceFormatter {
 		System.out.println(
 			"Adding JSON annotations to " +
 				StringUtil.replace(
-					fileName, StringPool.BACK_SLASH, StringPool.SLASH));
+					fileName, CharPool.BACK_SLASH, CharPool.SLASH));
 
 		FileWriter fileWriter = new FileWriter(file, false);
 
@@ -124,6 +126,7 @@ public class SourceFormatter {
 		String upgradePrefix = "Upgrade_";
 
 		int x = fileName.indexOf(upgradePrefix);
+
 		int y = fileName.indexOf(
 			StringPool.UNDERLINE, x + upgradePrefix.length());
 
@@ -136,6 +139,7 @@ public class SourceFormatter {
 		String timestampMethod = "getTimestamp() {\n\t\treturn ";
 
 		x = content.indexOf(timestampMethod);
+
 		y = content.indexOf("L;", x);
 
 		if ((x == -1) || (y == -1)) {
@@ -160,7 +164,7 @@ public class SourceFormatter {
 		System.out.println(
 			"Syncing getTimestamp() return value for " +
 				StringUtil.replace(
-					fileName, StringPool.BACK_SLASH, StringPool.SLASH));
+					fileName, CharPool.BACK_SLASH, CharPool.SLASH));
 
 		FileWriter fileWriter = new FileWriter(file, false);
 

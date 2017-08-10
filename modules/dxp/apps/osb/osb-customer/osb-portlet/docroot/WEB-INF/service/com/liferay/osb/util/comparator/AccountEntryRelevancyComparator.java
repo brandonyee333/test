@@ -27,7 +27,7 @@ import com.liferay.portal.kernel.util.Validator;
 public class AccountEntryRelevancyComparator extends OrderByComparator {
 
 	public AccountEntryRelevancyComparator(String keywords) {
-		keywords = keywords.toLowerCase();
+		keywords = StringUtil.toLowerCase(keywords);
 
 		_keywords = keywords.trim();
 
@@ -39,13 +39,13 @@ public class AccountEntryRelevancyComparator extends OrderByComparator {
 		AccountEntry accountEntry1 = (AccountEntry)obj1;
 		AccountEntry accountEntry2 = (AccountEntry)obj2;
 
-		String name1 = accountEntry1.getName().toLowerCase();
+		String name1 = StringUtil.toLowerCase(accountEntry1.getName());
 
 		if (name1.equals(_keywords)) {
 			return 1;
 		}
 
-		String name2 = accountEntry2.getName().toLowerCase();
+		String name2 = StringUtil.toLowerCase(accountEntry2.getName());
 
 		if (name2.equals(_keywords)) {
 			return -1;

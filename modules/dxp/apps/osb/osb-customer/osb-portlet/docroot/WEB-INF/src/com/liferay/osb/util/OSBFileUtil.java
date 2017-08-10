@@ -32,7 +32,7 @@ import java.util.Date;
 public class OSBFileUtil {
 
 	public static void cleanUpDir(String dirName, Date date) throws Exception {
-		long timeInterval = (System.currentTimeMillis() - Time.DAY);
+		long timeInterval = System.currentTimeMillis() - Time.DAY;
 
 		if (date != null) {
 			timeInterval = date.getTime();

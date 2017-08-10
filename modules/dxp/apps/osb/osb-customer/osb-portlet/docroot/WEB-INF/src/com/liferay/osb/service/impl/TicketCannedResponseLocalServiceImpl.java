@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Date;
@@ -102,7 +103,7 @@ public class TicketCannedResponseLocalServiceImpl
 
 		String defaultLanguageId = ticketCannedResponse.getDefaultLocale();
 
-		if (languageId.equalsIgnoreCase(defaultLanguageId)) {
+		if (StringUtil.equalsIgnoreCase(languageId, defaultLanguageId)) {
 			throw new TicketCannedResponseNameException();
 		}
 

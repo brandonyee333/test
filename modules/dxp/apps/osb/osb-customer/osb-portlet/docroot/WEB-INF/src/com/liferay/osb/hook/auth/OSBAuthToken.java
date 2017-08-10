@@ -106,8 +106,9 @@ public class OSBAuthToken implements AuthToken {
 	}
 
 	@Override
-	public boolean isValidPortletInvocationToken(HttpServletRequest request, long plid, String portletId,
-			String strutsAction, String tokenValue) {
+	public boolean isValidPortletInvocationToken(
+		HttpServletRequest request, long plid, String portletId,
+		String strutsAction, String tokenValue) {
 
 		// TODO Auto-generated method stub
 
@@ -138,7 +139,8 @@ public class OSBAuthToken implements AuthToken {
 					actionMethodName = actionMethod.getName();
 				}
 
-				/* TODO Need to test JSON Web Service without the PropsKeys, see LPS-28844
+				/* TODO Need to test JSON Web Service without the PropsKeys,
+				 * see LPS-28844
 				String[] jsonWebServicePublicMethods = PropsUtil.getArray(
 					PropsKeys.JSONWS_WEB_SERVICE_PUBLIC_METHODS);
 

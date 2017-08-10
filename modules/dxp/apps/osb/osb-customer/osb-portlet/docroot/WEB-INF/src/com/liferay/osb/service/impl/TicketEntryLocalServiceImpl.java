@@ -2772,33 +2772,11 @@ public class TicketEntryLocalServiceImpl
 	}
 
 	protected String getValidateType(boolean isNew, long userId) {
-		boolean version2Enabled = false;
-
-		try {
-			if (SupportUtil.isVersion2Enabled(userId) &&
-				SupportUtil.getUserPreferenceValue(userId, "version2Enabled")) {
-
-				version2Enabled = true;
-			}
-		}
-		catch (SystemException se) {
-		}
-
 		if (isNew) {
-			if (version2Enabled) {
-				return "add_v2";
-			}
-			else {
-				return "add";
-			}
+			return "add";
 		}
 		else {
-			if (version2Enabled) {
-				return "update_v2";
-			}
-			else {
-				return "update";
-			}
+			return "update";
 		}
 	}
 

@@ -21,6 +21,7 @@ import com.liferay.osb.service.LicenseKeyLocalServiceUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Base64;
+import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -170,9 +171,9 @@ public class KeyGenerator {
 
 				for (int i = 0; i < serverIds.length; i++) {
 					String serverId = StringUtil.replace(
-						serverIds[i], StringPool.DASH, StringPool.COLON);
+						serverIds[i], CharPool.DASH, CharPool.COLON);
 
-					serverId = serverId.trim().toLowerCase();
+					serverId = StringUtil.toLowerCase(serverId.trim());
 
 					properties.put("macAddress." + i, serverId);
 				}
@@ -218,9 +219,9 @@ public class KeyGenerator {
 
 				String serverIdsList = StringUtil.merge(serverIds);
 
-				serverIdsList = serverIdsList.toLowerCase();
+				serverIdsList = StringUtil.toLowerCase(serverIdsList);
 				serverIdsList = StringUtil.replace(
-					serverIdsList, StringPool.DASH, StringPool.COLON);
+					serverIdsList, CharPool.DASH, CharPool.COLON);
 
 				properties.put("serverIds", serverIdsList);
 			}
@@ -280,7 +281,7 @@ public class KeyGenerator {
 				properties.put(
 					"macAddresses",
 					StringUtil.replace(
-						macAddresses, StringPool.DASH, StringPool.COLON));
+						macAddresses, CharPool.DASH, CharPool.COLON));
 
 				if (serverIds.length > 0) {
 					properties.put("serverIds", StringUtil.merge(serverIds));
@@ -454,7 +455,7 @@ public class KeyGenerator {
 			serverIdProperties.put(
 				"macAddresses",
 				StringUtil.replace(
-					macAddresses, StringPool.DASH, StringPool.COLON));
+					macAddresses, CharPool.DASH, CharPool.COLON));
 			serverIdProperties.put("salt", UUID.randomUUID().toString());
 
 			String propertiesString = PropertiesUtil.toString(

@@ -186,7 +186,6 @@ import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.service.SubscriptionLocalServiceUtil;
-import com.liferay.portal.kernel.servlet.BrowserSnifferUtil;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
@@ -239,7 +238,6 @@ import javax.portlet.ActionResponse;
 import javax.portlet.PortletException;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
 import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
@@ -417,9 +415,7 @@ public class SupportPortlet extends MVCPortlet {
 			actionRequest, OSBPortletKeys.OSB_SUPPORT, themeDisplay.getPlid(),
 			PortletRequest.RENDER_PHASE);
 
-		portletURL.setParameter(
-			"mvcPath",
-			getMVCPath(actionRequest, "/support/edit_ticket_call.jsp"));
+		portletURL.setParameter("mvcPath", "/support/2/edit_ticket_call.jsp");
 		portletURL.setParameter(
 			"ticketCallId", String.valueOf(ticketCall.getTicketCallId()));
 		portletURL.setWindowState(LiferayWindowState.POP_UP);
@@ -956,32 +952,22 @@ public class SupportPortlet extends MVCPortlet {
 
 			if (ticketEntry != null) {
 				portletURL.setParameter(
-					"mvcPath",
-					getMVCPath(
-						actionRequest, "/support/edit_ticket_entry.jsp"));
+					"mvcPath", "/support/2/edit_ticket_entry.jsp");
 				portletURL.setParameter(
 					"ticketEntryId",
 					String.valueOf(ticketEntry.getTicketEntryId()));
 				portletURL.setWindowState(LiferayWindowState.MAXIMIZED);
 			}
-			else if (isVersion2Enabled(themeDisplay.getUserId())) {
+			else {
 				portletURL.setParameter(
 					"mvcPath", "/support/2/advanced_search.jsp");
 				portletURL.setParameter("keywords", keywords);
-			}
-			else {
-				return;
 			}
 		}
 		catch (Exception e) {
-			if (isVersion2Enabled(themeDisplay.getUserId())) {
-				portletURL.setParameter(
-					"mvcPath", "/support/2/advanced_search.jsp");
-				portletURL.setParameter("keywords", keywords);
-			}
-			else {
-				return;
-			}
+			portletURL.setParameter(
+				"mvcPath", "/support/2/advanced_search.jsp");
+			portletURL.setParameter("keywords", keywords);
 		}
 
 		actionResponse.sendRedirect(portletURL.toString());
@@ -1358,10 +1344,7 @@ public class SupportPortlet extends MVCPortlet {
 						themeDisplay.getPlid(), PortletRequest.RENDER_PHASE);
 
 					portletURL.setParameter(
-						"mvcPath",
-						getMVCPath(
-							actionRequest,
-							"/support/edit_account_environment.jsp"));
+						"mvcPath", "/support/2/edit_account_environment.jsp");
 					portletURL.setParameter(
 						"accountEnvironmentId",
 						String.valueOf(
@@ -1586,8 +1569,7 @@ public class SupportPortlet extends MVCPortlet {
 				themeDisplay.getPlid(), PortletRequest.RENDER_PHASE);
 
 			portletURL.setParameter(
-				"mvcPath",
-				getMVCPath(actionRequest, "/support/2/advanced_search.jsp"));
+				"mvcPath", "/support/2/advanced_search.jsp");
 			portletURL.setParameter(
 				"searchFilterId",
 				String.valueOf(searchFilter.getSearchFilterId()));
@@ -2282,18 +2264,6 @@ public class SupportPortlet extends MVCPortlet {
 	}
 
 	@Override
-	protected void checkPath(String path) throws PortletException {
-		super.checkPath(path);
-
-		if (!SupportUtil.isVersion2Enabled()) {
-			if (Validator.isNotNull(path) && path.startsWith("/support/2/")) {
-				throw new PortletException(
-					"Path " + path + " is not accessible by this portlet");
-			}
-		}
-	}
-
-	@Override
 	protected void doDispatch(
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws IOException, PortletException {
@@ -2334,8 +2304,7 @@ public class SupportPortlet extends MVCPortlet {
 			}
 		}
 		catch (Exception e) {
-			if (isVersion2Enabled(themeDisplay.getUserId()) &&
-				Validator.isNotNull(ticketDisplayId) &&
+			if (Validator.isNotNull(ticketDisplayId) &&
 				(e instanceof NoSuchAccountEntryException ||
 				 e instanceof NoSuchTicketEntryException ||
 				 e instanceof PrincipalException)) {
@@ -2347,70 +2316,13 @@ public class SupportPortlet extends MVCPortlet {
 			else {
 				SessionErrors.add(renderRequest, e.getClass().getName(), e);
 
-				if (isVersion2Enabled(themeDisplay.getUserId())) {
-					include(
-						"/support/2/error.jsp", renderRequest, renderResponse);
-				}
-				else {
-					include(
-						"/support/error.jsp", renderRequest, renderResponse);
-				}
+				include("/support/2/error.jsp", renderRequest, renderResponse);
 			}
 
 			return;
 		}
 
 		super.doDispatch(renderRequest, renderResponse);
-	}
-
-	protected String getMVCPath(PortletRequest portletRequest, String mvcPath) {
-		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		boolean version2Enabled = isVersion2Enabled(themeDisplay.getUserId());
-
-		if (version2Enabled) {
-			HttpServletRequest request = PortalUtil.getHttpServletRequest(
-				portletRequest);
-
-			if (BrowserSnifferUtil.isMobile(request)) {
-				version2Enabled = false;
-			}
-		}
-
-		StringBundler sb = new StringBundler(3);
-
-		sb.append("/support/");
-
-		if (version2Enabled) {
-			sb.append("2/");
-		}
-
-		if (Validator.isNull(mvcPath)) {
-			sb.append("view.jsp");
-		}
-		else if (mvcPath.startsWith("/support/2/")) {
-			if (version2Enabled) {
-				sb.append(mvcPath.substring(11));
-			}
-			else {
-				sb.append("view.jsp");
-			}
-		}
-		else if (mvcPath.startsWith("/support/")) {
-			sb.append(mvcPath.substring(9));
-		}
-
-		return sb.toString();
-	}
-
-	@Override
-	protected String getPath(
-		PortletRequest portletRequest, PortletResponse portletResponse) {
-
-		String mvcPath = super.getPath(portletRequest, portletResponse);
-
-		return getMVCPath(portletRequest, mvcPath);
 	}
 
 	@Override
@@ -2494,17 +2406,11 @@ public class SupportPortlet extends MVCPortlet {
 					TicketFeedbackConstants.SUBJECT_PARTNER) {
 
 				liferayPortletURL.setParameter(
-					"mvcPath",
-					getMVCPath(
-						actionRequest,
-						"/support/edit_partner_ticket_feedback.jsp"));
+					"mvcPath", "/support/2/edit_partner_ticket_feedback.jsp");
 			}
 			else {
 				liferayPortletURL.setParameter(
-					"mvcPath",
-					getMVCPath(
-						actionRequest,
-						"/support/edit_liferay_ticket_feedback.jsp"));
+					"mvcPath", "/support/2/edit_liferay_ticket_feedback.jsp");
 			}
 
 			liferayPortletURL.setParameter(
@@ -2512,8 +2418,7 @@ public class SupportPortlet extends MVCPortlet {
 			liferayPortletURL.setWindowState(LiferayWindowState.MAXIMIZED);
 		}
 		else if (searchFilterId > 0) {
-			liferayPortletURL.setParameter(
-				"mvcPath", getMVCPath(actionRequest, "/support/view.jsp"));
+			liferayPortletURL.setParameter("mvcPath", "/support/2/view.jsp");
 
 			try {
 				SearchFilter searchFilter =
@@ -2557,8 +2462,7 @@ public class SupportPortlet extends MVCPortlet {
 			}
 		}
 		else if (Validator.isNull(ticketDisplayId)) {
-			liferayPortletURL.setParameter(
-				"mvcPath", getMVCPath(actionRequest, "/support/view.jsp"));
+			liferayPortletURL.setParameter("mvcPath", "/support/2/view.jsp");
 		}
 		else if (ticketDisplayId.indexOf(StringPool.DASH) == -1) {
 			try {
@@ -2567,9 +2471,7 @@ public class SupportPortlet extends MVCPortlet {
 						ticketDisplayId);
 
 				liferayPortletURL.setParameter(
-					"mvcPath",
-					getMVCPath(
-						actionRequest, "/support/edit_account_entry.jsp"));
+					"mvcPath", "/support/2/edit_account_entry.jsp");
 
 				String tabs1 = ParamUtil.getString(actionRequest, "tabs1");
 
@@ -2582,13 +2484,12 @@ public class SupportPortlet extends MVCPortlet {
 			}
 			catch (Exception e) {
 				liferayPortletURL.setParameter(
-					"mvcPath", getMVCPath(actionRequest, "/support/view.jsp"));
+					"mvcPath", "/support/2/view.jsp");
 			}
 		}
 		else {
 			liferayPortletURL.setParameter(
-				"mvcPath",
-				getMVCPath(actionRequest, "/support/edit_ticket_entry.jsp"));
+				"mvcPath", "/support/2/edit_ticket_entry.jsp");
 			liferayPortletURL.setParameter("ticketDisplayId", ticketDisplayId);
 			liferayPortletURL.setWindowState(LiferayWindowState.MAXIMIZED);
 		}
@@ -3269,20 +3170,6 @@ public class SupportPortlet extends MVCPortlet {
 		return false;
 	}
 
-	protected boolean isVersion2Enabled(long userId) {
-		try {
-			if (SupportUtil.isVersion2Enabled(userId) &&
-				SupportUtil.getUserPreferenceValue(userId, "version2Enabled")) {
-
-				return true;
-			}
-		}
-		catch (Exception e) {
-		}
-
-		return false;
-	}
-
 	protected void sendTicketEntryRedirect(
 			ActionRequest actionRequest, ActionResponse actionResponse,
 			long plid, long ticketEntryId)
@@ -3296,8 +3183,7 @@ public class SupportPortlet extends MVCPortlet {
 				PortletRequest.RENDER_PHASE);
 
 			portletURL.setParameter(
-				"mvcPath",
-				getMVCPath(actionRequest, "/support/edit_ticket_entry.jsp"));
+				"mvcPath", "/support/2/edit_ticket_entry.jsp");
 			portletURL.setParameter(
 				"ticketEntryId", String.valueOf(ticketEntryId));
 			portletURL.setWindowState(LiferayWindowState.MAXIMIZED);

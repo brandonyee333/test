@@ -273,7 +273,7 @@ public abstract class ProvisioningRabbitMQConsumer {
 			AccountEntryConstants.LIST_TYPE_INDUSTRY, industry, true);
 
 		if (industryListTypeId > 0) {
-			if (industry.equalsIgnoreCase("other")) {
+			if (StringUtil.equalsIgnoreCase(industry, "other")) {
 				_logWarning("Industry is Other");
 			}
 
@@ -489,7 +489,7 @@ public abstract class ProvisioningRabbitMQConsumer {
 	}
 
 	protected String getProductDescription(String name) {
-		name = name.toLowerCase();
+		name = StringUtil.toLowerCase(name);
 
 		if (name.contains("additional jvm")) {
 			return "Additional JVM";
@@ -522,20 +522,23 @@ public abstract class ProvisioningRabbitMQConsumer {
 	protected int getSalesforceOpportunityType(
 		String salesforceOpportunityTypeName) {
 
-		if (salesforceOpportunityTypeName.equalsIgnoreCase(
-				"Existing Business")) {
+		if (StringUtil.equalsIgnoreCase(
+				salesforceOpportunityTypeName, "Existing Business")) {
 
 			return SalesforceConstants.OPPORTUNITY_TYPE_EXISTING_BUSINESS;
 		}
-		else if (salesforceOpportunityTypeName.equalsIgnoreCase(
-					"New Business")) {
+		else if (StringUtil.equalsIgnoreCase(
+					salesforceOpportunityTypeName, "New Business")) {
 
 			return SalesforceConstants.OPPORTUNITY_TYPE_NEW_BUSINESS;
 		}
-		else if (salesforceOpportunityTypeName.equalsIgnoreCase("Renewal")) {
+		else if (StringUtil.equalsIgnoreCase(
+					salesforceOpportunityTypeName, "Renewal")) {
+
 			return SalesforceConstants.OPPORTUNITY_TYPE_RENEWAL;
 		}
-		else if (salesforceOpportunityTypeName.equalsIgnoreCase(
+		else if (StringUtil.equalsIgnoreCase(
+					salesforceOpportunityTypeName,
 					"New Project Existing Business")) {
 
 			return SalesforceConstants.

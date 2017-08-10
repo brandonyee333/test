@@ -16,6 +16,7 @@ package com.liferay.osb.util.comparator;
 
 import com.liferay.osb.model.LicenseKey;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.StringUtil;
 
 /**
  * @author Joan Kim
@@ -44,8 +45,10 @@ public class LicenseKeyHostNameComparator extends OrderByComparator {
 		LicenseKey licenseKey1 = (LicenseKey)obj1;
 		LicenseKey licenseKey2 = (LicenseKey)obj2;
 
-		int value = licenseKey1.getHostName().toLowerCase().compareTo(
-			licenseKey2.getHostName().toLowerCase());
+		String hostName1 = StringUtil.toLowerCase(licenseKey1.getHostName());
+		String hostName2 = StringUtil.toLowerCase(licenseKey2.getHostName());
+
+		int value = hostName1.compareTo(hostName2);
 
 		if (_asc) {
 			return value;

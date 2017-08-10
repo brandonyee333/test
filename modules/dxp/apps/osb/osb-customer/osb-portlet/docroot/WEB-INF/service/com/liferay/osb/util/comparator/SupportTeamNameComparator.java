@@ -16,6 +16,7 @@ package com.liferay.osb.util.comparator;
 
 import com.liferay.osb.model.SupportTeam;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.StringUtil;
 
 /**
  * @author Brent Krone-Schmidt
@@ -41,8 +42,10 @@ public class SupportTeamNameComparator extends OrderByComparator {
 		SupportTeam supportTeam1 = (SupportTeam)obj1;
 		SupportTeam supportTeam2 = (SupportTeam)obj2;
 
-		int value = supportTeam1.getName().toLowerCase().compareTo(
-			supportTeam2.getName().toLowerCase());
+		String name1 = StringUtil.toLowerCase(supportTeam1.getName());
+		String name2 = StringUtil.toLowerCase(supportTeam2.getName());
+
+		int value = name1.compareTo(name2);
 
 		if (_asc) {
 			return value;

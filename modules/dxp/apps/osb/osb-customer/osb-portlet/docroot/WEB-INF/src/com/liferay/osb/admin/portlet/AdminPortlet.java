@@ -147,6 +147,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.ReservedUserEmailAddressException;
 import com.liferay.portal.kernel.exception.UserEmailAddressException;
 import com.liferay.portal.kernel.io.Base64InputStream;
+import com.liferay.portal.kernel.io.ProtectedObjectInputStream;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -168,6 +169,7 @@ import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.Base64;
+import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -268,7 +270,7 @@ public class AdminPortlet extends MVCPortlet {
 			if ((licenseFile != null) && (licenseFile.length() > 0)) {
 				fileInputStream = new FileInputStream(licenseFile);
 
-				objectInputStream = new ObjectInputStream(
+				objectInputStream = new ProtectedObjectInputStream(
 					new Base64InputStream(fileInputStream));
 
 				int licenseVersion = objectInputStream.readInt();
@@ -346,7 +348,7 @@ public class AdminPortlet extends MVCPortlet {
 			StringPool.NEW_LINE);
 
 		message = StringUtil.replace(
-			message, StringPool.NEW_LINE, StringPool.BLANK);
+			message, CharPool.NEW_LINE, StringPool.BLANK);
 
 		Map<String, Object> propertiesMap = MapUtil.toLinkedHashMap(properties);
 /* TODO update rabbitMQ integration

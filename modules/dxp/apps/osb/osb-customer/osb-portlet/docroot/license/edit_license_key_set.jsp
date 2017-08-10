@@ -388,7 +388,7 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 						</c:if>
 
 						<div>
-							<c:if test="<%= licenseKey.isActive() && ((licenseKey.getLicenseVersion() >= 2) || (licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) || licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER))) %>">
+							<c:if test="<%= licenseKey.isActive() && ((licenseKey.getLicenseVersion() >= 2) || licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) || licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER)) %>">
 								<portlet:resourceURL id="licenseKey" var="downloadLicenseFileURL">
 									<portlet:param name="mvcPath" value="/license/edit_license_key_set.jsp" />
 									<portlet:param name="redirect" value="<%= currentURL %>" />

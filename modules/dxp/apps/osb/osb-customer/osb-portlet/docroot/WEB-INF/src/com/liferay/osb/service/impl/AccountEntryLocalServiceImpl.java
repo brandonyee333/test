@@ -374,7 +374,7 @@ public class AccountEntryLocalServiceImpl
 		String code = getCode(
 			accountEntry.getCorpEntryName(), accountEntry.getName());
 
-		if (!code.equalsIgnoreCase(accountEntry.getCode())) {
+		if (!StringUtil.equalsIgnoreCase(code, accountEntry.getCode())) {
 			warningMessages.add("Project code is already taken");
 		}
 
@@ -1009,7 +1009,7 @@ public class AccountEntryLocalServiceImpl
 		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
-		code = code.toUpperCase();
+		code = StringUtil.toUpperCase(code);
 
 		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
 			accountEntryId);
@@ -1754,7 +1754,7 @@ public class AccountEntryLocalServiceImpl
 			code = getCode(corpEntryName, name);
 
 			if (!isDuplicateCode(code)) {
-				return code.toUpperCase();
+				return StringUtil.toUpperCase(code);
 			}
 
 			int max = (int)Math.pow(10, (15 - code.length()));
@@ -1763,7 +1763,7 @@ public class AccountEntryLocalServiceImpl
 				String tempCode = code + i;
 
 				if (!isDuplicateCode(tempCode)) {
-					return tempCode.toUpperCase();
+					return StringUtil.toUpperCase(tempCode);
 				}
 			}
 
@@ -1772,7 +1772,7 @@ public class AccountEntryLocalServiceImpl
 			code = getCode(corpEntryName, code, null);
 		}
 
-		return code.toUpperCase();
+		return StringUtil.toUpperCase(code);
 	}
 
 	protected int getLatestProductVersion(

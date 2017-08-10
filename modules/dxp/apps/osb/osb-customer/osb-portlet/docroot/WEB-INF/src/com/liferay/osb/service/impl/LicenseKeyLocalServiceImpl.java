@@ -1772,7 +1772,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		throws PortalException {
 
 		String curMacAddress = StringUtil.replace(
-			macAddress, StringPool.DASH, StringPool.COLON);
+			macAddress, CharPool.DASH, CharPool.COLON);
 
 		String[] octets = StringUtil.split(curMacAddress, StringPool.COLON);
 

@@ -37,8 +37,6 @@ portletURL.setParameter("tabs1", tabs1);
 
 <liferay-util:include page="/support/banner.jsp" servletContext="<%= application %>" />
 
-<liferay-util:include page="/support/banner_lesa_2.jsp" servletContext="<%= application %>" />
-
 <c:choose>
 	<c:when test="<%= liferayIncOrg %>">
 		<c:choose>
@@ -73,22 +71,11 @@ portletURL.setParameter("tabs1", tabs1);
 		/>
 	</c:when>
 	<c:otherwise>
-		<c:choose>
-			<c:when test="<%= SupportUtil.isVersion2Enabled(user.getUserId()) %>">
-				<liferay-ui:tabs
-					names="tickets,environment-details,preferences"
-					param="tabs1"
-					url="<%= portletURL.toString() %>"
-				/>
-			</c:when>
-			<c:otherwise>
-				<liferay-ui:tabs
-					names="tickets,environment-details"
-					param="tabs1"
-					url="<%= portletURL.toString() %>"
-				/>
-			</c:otherwise>
-		</c:choose>
+		<liferay-ui:tabs
+			names="tickets,environment-details,preferences"
+			param="tabs1"
+			url="<%= portletURL.toString() %>"
+		/>
 	</c:otherwise>
 </c:choose>
 

@@ -240,23 +240,5 @@ List<AccountCustomer> accountCustomers = AccountCustomerLocalServiceUtil.getUser
 		</aui:fieldset>
 	</c:if>
 
-	<c:if test="<%= SupportUtil.isVersion2Enabled(user.getUserId()) %>">
-		<aui:fieldset>
-			<c:choose>
-				<c:when test="<%= SupportUtil.isMobile(request) %>">
-					<liferay-ui:message key="the-new-lesa-redesign-is-currently-unavailable-on-mobile-devices" />
-				</c:when>
-				<c:otherwise>
-
-					<%
-					boolean version2Enabled = SupportUtil.getUserPreferenceValue(user.getUserId(), "version2Enabled");
-					%>
-
-					<aui:input helpMessage="the-new-lesa-redesign-is-currently-unavailable-on-mobile-devices" ignoreRequestValue="<%= true %>" label="view-the-new-changes-to-lesa" name="version2Enabled" type="checkbox" value="<%= version2Enabled %>" />
-				</c:otherwise>
-			</c:choose>
-		</aui:fieldset>
-	</c:if>
-
 	<input class="aui-button-input" type="submit" value="<liferay-ui:message key="save" />" />
 </aui:form>

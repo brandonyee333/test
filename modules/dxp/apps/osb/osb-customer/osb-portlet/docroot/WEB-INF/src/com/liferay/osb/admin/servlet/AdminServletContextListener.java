@@ -14,7 +14,6 @@
 
 package com.liferay.osb.admin.servlet;
 
-import com.liferay.osb.model.TicketEntry;
 import com.liferay.osb.model.TicketEntryConstants;
 import com.liferay.osb.service.permission.OSBCommonPermission;
 import com.liferay.osb.util.OSBConstants;
@@ -259,24 +258,6 @@ public class AdminServletContextListener
 		}
 
 */
-
-		// Search
-
-		// TODO searchEngineUtil deprecated, need to update
-
-		/*SearchEngineUtil searchEngineUtil =
-			(SearchEngineUtil)PortalBeanLocatorUtil.locate(
-				SearchEngineUtil.class.getName());*/
-
-		List<String> excludedEntryClassNames = new ArrayList<>(8);
-
-		excludedEntryClassNames.add(Organization.class.getName());
-		excludedEntryClassNames.add(TicketEntry.class.getName());
-		excludedEntryClassNames.add(User.class.getName());
-
-		/* TODO need to set via a configuration per SearchEngineHelperConfiguration
-		searchEngineUtil.setExcludedEntryClassNames(excludedEntryClassNames);
-		*/
 	}
 
 	protected void setupDeveloperMode() throws Exception {

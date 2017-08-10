@@ -36,7 +36,7 @@ public class SimpleBBCodeParser {
 
 		int previousTagEnd = 0;
 
-		boolean isCodeTag = false;
+		boolean codeTag = false;
 		boolean hasEndTag = false;
 
 		Matcher matcher = _pattern.matcher(text);
@@ -47,7 +47,7 @@ public class SimpleBBCodeParser {
 			int start = matcher.start();
 			int end = matcher.end();
 
-			handleData(sb, text, start, previousTagEnd, isCodeTag);
+			handleData(sb, text, start, previousTagEnd, codeTag);
 
 			if (isOpen(tag)) {
 				while (matcher.find()) {
@@ -58,7 +58,7 @@ public class SimpleBBCodeParser {
 						(tag.startsWith("url=") && endTag.equals("/url"))) {
 
 						if (tag.equals("code")) {
-							isCodeTag = true;
+							codeTag = true;
 
 							handleTagStart(text, sb, matcher, tag, end);
 
@@ -78,7 +78,7 @@ public class SimpleBBCodeParser {
 				}
 
 				if (!hasEndTag) {
-					handleData(sb, text, start, end, isCodeTag);
+					handleData(sb, text, start, end, codeTag);
 				}
 			}
 			else {
@@ -88,19 +88,19 @@ public class SimpleBBCodeParser {
 					tags.remove(tag);
 				}
 				else {
-					handleData(sb, text, start, end, isCodeTag);
+					handleData(sb, text, start, end, codeTag);
 				}
 			}
 
-			if (!isCodeTag) {
+			if (!codeTag) {
 				previousTagEnd = end;
 			}
 
-			isCodeTag = false;
+			codeTag = false;
 			hasEndTag = false;
 		}
 
-		handleData(sb, text, text.length(), previousTagEnd, isCodeTag);
+		handleData(sb, text, text.length(), previousTagEnd, codeTag);
 
 		return sb.toString();
 	}
@@ -149,9 +149,9 @@ public class SimpleBBCodeParser {
 
 	protected void handleData(
 		StringBundler sb, String text, int curTagStart, int previousTagEnd,
-		boolean isCodeTag) {
+		boolean codeTag) {
 
-		if ((curTagStart > previousTagEnd) && !isCodeTag) {
+		if ((curTagStart > previousTagEnd) && !codeTag) {
 			sb.append(text.substring(previousTagEnd, curTagStart));
 		}
 		else if (curTagStart < previousTagEnd) {

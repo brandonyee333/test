@@ -126,9 +126,7 @@ public class DownloadsPortlet extends MVCPortlet {
 		ThemeDisplay themeDisplay, PortletPreferences preferences,
 		String fileName) {
 
-		if (themeDisplay.getScopeGroupId() ==
-				OSBConstants.GROUP_CUSTOMER_ID) {
-
+		if (themeDisplay.getScopeGroupId() == OSBConstants.GROUP_CUSTOMER_ID) {
 			return true;
 		}
 

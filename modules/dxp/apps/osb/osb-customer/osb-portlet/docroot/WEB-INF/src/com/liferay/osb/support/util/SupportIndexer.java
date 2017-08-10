@@ -99,16 +99,6 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 	}
 
 	@Override
-	public String getSearchEngineId() {
-		if (SupportUtil.isElasticsearchEnabled()) {
-			return PortletPropsValues.ELASTICSEARCH_SEARCH_ENGINE_ID;
-		}
-		else {
-			return super.getSearchEngineId();
-		}
-	}
-
-	@Override
 	public void postProcessSearchQuery(
 			BooleanQuery searchQuery, SearchContext searchContext)
 		throws Exception {
@@ -511,11 +501,7 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 			sortFieldName = "ticketId";
 		}
 
-		if (SupportUtil.isElasticsearchEnabled()) {
-			sortFieldName = DocumentImpl.getSortableFieldName(sortFieldName);
-		}
-
-		return sortFieldName;
+		return DocumentImpl.getSortableFieldName(sortFieldName);
 	}
 
 	@Override
@@ -767,39 +753,35 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 
 		document.addText("workersTicketComments", workersTicketComments);
 
-		if (SupportUtil.isElasticsearchEnabled()) {
-			addSortableField(
-				document, "accountEntryCode", accountEntry.getCode());
+		addSortableField(document, "accountEntryCode", accountEntry.getCode());
 
-			String assignee = StringPool.BLANK;
+		String assignee = StringPool.BLANK;
 
-			if (primaryTicketWorker != null) {
-				User assigneeUser = UserLocalServiceUtil.fetchUserById(
-					primaryTicketWorker.getUserId());
+		if (primaryTicketWorker != null) {
+			User assigneeUser = UserLocalServiceUtil.fetchUserById(
+				primaryTicketWorker.getUserId());
 
-				assignee = assigneeUser.getFullName();
-			}
-
-			addSortableField(document, "assignee", assignee);
-
-			Date createDate = ticketEntry.getCreateDate();
-
-			addSortableField(document, "createDate", createDate.getTime());
-
-			Date dueDate = ticketEntry.getDueDate();
-
-			addSortableField(document, "dueDate", dueDate.getTime());
-
-			Date modifiedDate = ticketEntry.getModifiedDate();
-
-			addSortableField(document, "modifiedDate", modifiedDate.getTime());
-
-			addSortableField(
-				document, "resolution", ticketEntry.getResolution());
-			addSortableField(document, "status", ticketEntry.getStatus());
-			addSortableField(document, "subject", ticketEntry.getSubject());
-			addSortableField(document, "ticketId", ticketEntry.getTicketId());
+			assignee = assigneeUser.getFullName();
 		}
+
+		addSortableField(document, "assignee", assignee);
+
+		Date createDate = ticketEntry.getCreateDate();
+
+		addSortableField(document, "createDate", createDate.getTime());
+
+		Date dueDate = ticketEntry.getDueDate();
+
+		addSortableField(document, "dueDate", dueDate.getTime());
+
+		Date modifiedDate = ticketEntry.getModifiedDate();
+
+		addSortableField(document, "modifiedDate", modifiedDate.getTime());
+
+		addSortableField(document, "resolution", ticketEntry.getResolution());
+		addSortableField(document, "status", ticketEntry.getStatus());
+		addSortableField(document, "subject", ticketEntry.getSubject());
+		addSortableField(document, "ticketId", ticketEntry.getTicketId());
 
 		return document;
 	}

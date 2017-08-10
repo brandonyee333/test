@@ -39,7 +39,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import java.io.IOException;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -77,9 +76,8 @@ public class OSBRequestUtil {
 
 		Iterator<ListType> itr = envLFRTypes.iterator();
 
-		long[] listTypesDeprecated =
-			Arrays.stream(ProductEntryConstants.LIST_TYPES_DEPRECATED).
-				asLongStream().toArray();
+		Long[] listTypesDeprecated = ArrayUtil.toLongArray(
+			ProductEntryConstants.LIST_TYPES_DEPRECATED);
 
 		while (itr.hasNext()) {
 			ListType listType = itr.next();
@@ -92,7 +90,7 @@ public class OSBRequestUtil {
 			}
 		}
 
-		return getJsonArray(envLFRTypes, themeDisplay.getLocale());
+		return getJSONArray(envLFRTypes, themeDisplay.getLocale());
 	}
 
 	public static JSONArray getLaterEnvLFRTypes(
@@ -127,7 +125,7 @@ public class OSBRequestUtil {
 			}
 		}
 
-		return getJsonArray(envLFRTypes, themeDisplay.getLocale());
+		return getJSONArray(envLFRTypes, themeDisplay.getLocale());
 	}
 
 	public static JSONObject getTicketEnvironment(
@@ -145,7 +143,7 @@ public class OSBRequestUtil {
 			envLFR, TicketEntryConstants.LIST_TYPE_ENV_AS);
 
 		jsonObject.put(
-			"ENV_AS", getJsonArray(envASListTypes, themeDisplay.getLocale()));
+			"ENV_AS", getJSONArray(envASListTypes, themeDisplay.getLocale()));
 		jsonObject.put("ENV_AS#key", envASListTypes.hashCode());
 
 		List<ListType> envBrowserListTypes = SupportUtil.getPortalEnvListTypes(
@@ -153,7 +151,7 @@ public class OSBRequestUtil {
 
 		jsonObject.put(
 			"ENV_Browser",
-			getJsonArray(envBrowserListTypes, themeDisplay.getLocale()));
+			getJSONArray(envBrowserListTypes, themeDisplay.getLocale()));
 		jsonObject.put("ENV_Browser#key", envBrowserListTypes.hashCode());
 
 		if (ProductEntryConstants.isPortalVersion6_2(envLFR) ||
@@ -164,7 +162,7 @@ public class OSBRequestUtil {
 
 			jsonObject.put(
 				"ENV_CS",
-				getJsonArray(envCSListTypes, themeDisplay.getLocale()));
+				getJSONArray(envCSListTypes, themeDisplay.getLocale()));
 			jsonObject.put("ENV_CS#key", envCSListTypes.hashCode());
 		}
 
@@ -172,21 +170,21 @@ public class OSBRequestUtil {
 			envLFR, TicketEntryConstants.LIST_TYPE_ENV_DB);
 
 		jsonObject.put(
-			"ENV_DB", getJsonArray(envDBListTypes, themeDisplay.getLocale()));
+			"ENV_DB", getJSONArray(envDBListTypes, themeDisplay.getLocale()));
 		jsonObject.put("ENV_DB#key", envDBListTypes.hashCode());
 
 		List<ListType> envJVMListTypes = SupportUtil.getPortalEnvListTypes(
 			envLFR, TicketEntryConstants.LIST_TYPE_ENV_JVM);
 
 		jsonObject.put(
-			"ENV_JVM", getJsonArray(envJVMListTypes, themeDisplay.getLocale()));
+			"ENV_JVM", getJSONArray(envJVMListTypes, themeDisplay.getLocale()));
 		jsonObject.put("ENV_JVM#key", envJVMListTypes.hashCode());
 
 		List<ListType> envOSListTypes = SupportUtil.getPortalEnvListTypes(
 			envLFR, TicketEntryConstants.LIST_TYPE_ENV_OS);
 
 		jsonObject.put(
-			"ENV_OS", getJsonArray(envOSListTypes, themeDisplay.getLocale()));
+			"ENV_OS", getJSONArray(envOSListTypes, themeDisplay.getLocale()));
 		jsonObject.put("ENV_OS#key", envOSListTypes.hashCode());
 
 		if (ProductEntryConstants.isDigitalEnterpriseVersion7_0(envLFR)) {
@@ -196,7 +194,7 @@ public class OSBRequestUtil {
 
 			jsonObject.put(
 				"ENV_Search",
-				getJsonArray(envSearchListTypes, themeDisplay.getLocale()));
+				getJSONArray(envSearchListTypes, themeDisplay.getLocale()));
 			jsonObject.put("ENV_Search#key", envSearchListTypes.hashCode());
 		}
 
@@ -225,9 +223,8 @@ public class OSBRequestUtil {
 
 			Iterator<ListType> itr = envLFRTypes.iterator();
 
-			long[] listTypesDeprecated =
-				Arrays.stream(ProductEntryConstants.LIST_TYPES_DEPRECATED).
-					asLongStream().toArray();
+			Long[] listTypesDeprecated = ArrayUtil.toLongArray(
+				ProductEntryConstants.LIST_TYPES_DEPRECATED);
 
 			while (itr.hasNext()) {
 				ListType envLFRType = itr.next();
@@ -240,7 +237,7 @@ public class OSBRequestUtil {
 			}
 
 			jsonObject.put(
-				"ENV_LFR", getJsonArray(envLFRTypes, themeDisplay.getLocale()));
+				"ENV_LFR", getJSONArray(envLFRTypes, themeDisplay.getLocale()));
 			jsonObject.put("ENV_LFR#key", envLFRTypes.hashCode());
 			jsonObject.put("portal", !productEntry.isSocialOffice());
 		}
@@ -263,7 +260,7 @@ public class OSBRequestUtil {
 		PortalUtil.sendError(status, exception, request, response);
 	}
 
-	protected static JSONArray getJsonArray(
+	protected static JSONArray getJSONArray(
 		List<ListType> listTypes, Locale locale) {
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();

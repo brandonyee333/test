@@ -279,17 +279,6 @@ portletURL.setParameter("mvcPath", "/support/2/preferences.jsp");
 					<aui:input helpMessage="choose-this-option-if-you-wish-to-show-newest-comments-first" ignoreRequestValue="<%= true %>" label="reverse-comment-order" name="reverseCommentOrder" type="checkbox" value="<%= reverseCommentOrder %>" />
 				</aui:fieldset>
 
-				<c:if test="<%= SupportUtil.isVersion2Enabled(user.getUserId()) %>">
-
-					<%
-					boolean version2Enabled = SupportUtil.getUserPreferenceValue(user.getUserId(), "version2Enabled");
-					%>
-
-					<aui:fieldset>
-						<aui:input helpMessage="unchecking-this-box-will-revert-to-the-classic-lesa-view.-the-new-lesa-redesign-is-currently-unavailable-on-mobile-devices" ignoreRequestValue="<%= true %>" label="view-the-new-changes-to-lesa" name="version2Enabled" type="checkbox" value="<%= version2Enabled %>" />
-					</aui:fieldset>
-				</c:if>
-
 				<input class="aui-button-input" type="submit" value="<liferay-ui:message key="save" />" />
 			</aui:form>
 		</c:otherwise>

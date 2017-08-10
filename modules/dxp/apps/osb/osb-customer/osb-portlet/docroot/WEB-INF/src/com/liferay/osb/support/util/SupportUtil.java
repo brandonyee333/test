@@ -17,7 +17,6 @@ package com.liferay.osb.support.util;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountCustomerConstants;
 import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.AccountWorker;
 import com.liferay.osb.model.FileRepository;
 import com.liferay.osb.model.OfferingEntry;
@@ -75,14 +74,12 @@ import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.service.ListTypeServiceUtil;
-import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
 import com.liferay.portal.kernel.service.PortletPreferencesLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
@@ -113,7 +110,6 @@ import java.net.URL;
 import java.text.Format;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -309,8 +305,8 @@ public class SupportUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
-				"com/liferay/osb/support/dependencies/" +
-					"action_information_body.tmpl"));
+				"com/liferay/osb/support/dependencies" +
+					"/action_information_body.tmpl"));
 
 		return map;
 	}
@@ -335,7 +331,7 @@ public class SupportUtil {
 		throws PortalException {
 
 		List<OfferingEntryGroup> availableOfferingEntryGroups =
-			new ArrayList<OfferingEntryGroup> ();
+			new ArrayList<>();
 
 		List<OfferingEntryGroup> offeringEntryGroups = getOfferingEntryGroups(
 			userId, accountEntryId, types, statuses, supportEndDateGTDay,
@@ -368,8 +364,8 @@ public class SupportUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
-				"com/liferay/osb/support/dependencies/" +
-					"comment_game_plan_body.tmpl"));
+				"com/liferay/osb/support/dependencies" +
+					"/comment_game_plan_body.tmpl"));
 
 		return map;
 	}
@@ -391,8 +387,8 @@ public class SupportUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
-				"com/liferay/osb/support/dependencies/" +
-					"comment_ticket_entry_inactive_body.tmpl"));
+				"com/liferay/osb/support/dependencies" +
+					"/comment_ticket_entry_inactive_body.tmpl"));
 
 		return map;
 	}
@@ -414,8 +410,8 @@ public class SupportUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
-				"com/liferay/osb/support/dependencies/" +
-					"comment_ticket_entry_notice_body.tmpl"));
+				"com/liferay/osb/support/dependencies" +
+					"/comment_ticket_entry_notice_body.tmpl"));
 
 		return map;
 	}
@@ -437,8 +433,8 @@ public class SupportUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
-				"com/liferay/osb/support/dependencies/" +
-					"email_account_entry_tier_body.tmpl"));
+				"com/liferay/osb/support/dependencies" +
+					"/email_account_entry_tier_body.tmpl"));
 
 		return map;
 	}
@@ -460,8 +456,8 @@ public class SupportUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
-				"com/liferay/osb/support/dependencies/" +
-					"email_account_entry_tier_subject.tmpl"));
+				"com/liferay/osb/support/dependencies" +
+					"/email_account_entry_tier_subject.tmpl"));
 
 		return map;
 	}
@@ -533,8 +529,8 @@ public class SupportUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
-				"com/liferay/osb/support/dependencies/" +
-					"email_partner_feedback_reminder_body.tmpl"));
+				"com/liferay/osb/support/dependencies" +
+					"/email_partner_feedback_reminder_body.tmpl"));
 
 		return map;
 	}
@@ -556,8 +552,8 @@ public class SupportUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
-				"com/liferay/osb/support/dependencies/" +
-					"email_partner_feedback_reminder_subject.tmpl"));
+				"com/liferay/osb/support/dependencies" +
+					"/email_partner_feedback_reminder_subject.tmpl"));
 
 		return map;
 	}
@@ -578,9 +574,9 @@ public class SupportUtil {
 
 		map.put(
 			defaultLocale,
-				ContentUtil.get(
-					"com/liferay/osb/support/dependencies/" +
-						"email_team_feedback_body.tmpl"));
+			ContentUtil.get(
+				"com/liferay/osb/support/dependencies" +
+					"/email_team_feedback_body.tmpl"));
 
 		return map;
 	}
@@ -602,8 +598,8 @@ public class SupportUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
-				"com/liferay/osb/support/dependencies/" +
-					"email_team_feedback_subject.tmpl"));
+				"com/liferay/osb/support/dependencies" +
+					"/email_team_feedback_subject.tmpl"));
 
 		return map;
 	}
@@ -625,8 +621,8 @@ public class SupportUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
-				"com/liferay/osb/support/dependencies/" +
-					"email_ticket_entry_body.tmpl"));
+				"com/liferay/osb/support/dependencies" +
+					"/email_ticket_entry_body.tmpl"));
 
 		return map;
 	}
@@ -648,8 +644,8 @@ public class SupportUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
-				"com/liferay/osb/support/dependencies/" +
-					"email_ticket_entry_comment.tmpl"));
+				"com/liferay/osb/support/dependencies" +
+					"/email_ticket_entry_comment.tmpl"));
 
 		return map;
 	}
@@ -671,8 +667,8 @@ public class SupportUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
-				"com/liferay/osb/support/dependencies/" +
-					"email_ticket_entry_due_date.tmpl"));
+				"com/liferay/osb/support/dependencies" +
+					"/email_ticket_entry_due_date.tmpl"));
 
 		return map;
 	}
@@ -694,8 +690,8 @@ public class SupportUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
-				"com/liferay/osb/support/dependencies/" +
-					"email_ticket_entry_subject.tmpl"));
+				"com/liferay/osb/support/dependencies" +
+					"/email_ticket_entry_subject.tmpl"));
 
 		return map;
 	}
@@ -717,8 +713,8 @@ public class SupportUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
-				"com/liferay/osb/support/dependencies/" +
-					"email_worker_feedback_body.tmpl"));
+				"com/liferay/osb/support/dependencies" +
+					"/email_worker_feedback_body.tmpl"));
 
 		return map;
 	}
@@ -739,9 +735,9 @@ public class SupportUtil {
 
 		map.put(
 			defaultLocale,
-				ContentUtil.get(
-					"com/liferay/osb/support/dependencies/" +
-						"email_worker_feedback_subject.tmpl"));
+			ContentUtil.get(
+				"com/liferay/osb/support/dependencies" +
+					"/email_worker_feedback_subject.tmpl"));
 
 		return map;
 	}
@@ -758,16 +754,15 @@ public class SupportUtil {
 
 		if (Validator.isNull(escalationDetails)) {
 			escalationDetails = ContentUtil.get(
-				"com/liferay/osb/support/dependencies/" +
-					"message_escalation_details_body.tmpl");
+				"com/liferay/osb/support/dependencies" +
+					"/message_escalation_details_body.tmpl");
 		}
 
 		return escalationDetails;
 	}
 
 	public static List<FileRepository> getFileRepositories() {
-		List<FileRepository> fileRepositoryList =
-			new ArrayList<FileRepository> ();
+		List<FileRepository> fileRepositoryList = new ArrayList<>();
 
 		PortletPreferences portletPreferences = getPortletPreferences();
 
@@ -1048,8 +1043,7 @@ public class SupportUtil {
 		int[] envListTypeIds = TicketEntryConstants.getEnvListTypeIds(
 			envLFR, envListType);
 
-		long[] listTypeIds = Arrays.stream(
-			envListTypeIds).asLongStream().toArray();
+		Long[] listTypeIds = ArrayUtil.toLongArray(envListTypeIds);
 
 		Iterator<ListType> itr = listTypes.iterator();
 
@@ -1463,179 +1457,6 @@ public class SupportUtil {
 		}
 	}
 
-	public static boolean isElasticsearchEnabled() {
-		try {
-			PortletPreferences preferences = getPortletPreferences();
-
-			if (GetterUtil.getBoolean(
-					preferences.getValue("elasticsearchEnabled", null))) {
-
-				return true;
-			}
-		}
-		catch (SystemException se) {
-		}
-
-		return false;
-	}
-
-	public static boolean isMobile(HttpServletRequest request) {
-		String userAgent = getUserAgent(request);
-
-		if (userAgent.contains("mobile") ||
-			(userAgent.contains("android") && userAgent.contains("nexus"))) {
-
-			return true;
-		}
-
-		return false;
-	}
-
-	public static boolean isVersion2CustomerAnnouncementEnabled() {
-		try {
-			PortletPreferences preferences = getPortletPreferences();
-
-			if (GetterUtil.getBoolean(
-					preferences.getValue(
-						"support2CustomerAnnouncement", null))) {
-
-				return true;
-			}
-		}
-		catch (SystemException se) {
-		}
-
-		return false;
-	}
-
-	public static boolean isVersion2Enabled() {
-		try {
-			PortletPreferences preferences = getPortletPreferences();
-
-			if (GetterUtil.getBoolean(
-					preferences.getValue("support2Enabled", null))) {
-
-				return true;
-			}
-		}
-		catch (SystemException se) {
-		}
-
-		return false;
-	}
-
-	public static boolean isVersion2Enabled(long userId) {
-		try {
-			PortletPreferences preferences = getPortletPreferences();
-
-			if (!GetterUtil.getBoolean(
-					preferences.getValue("support2Enabled", null))) {
-
-				return false;
-			}
-
-			if (OrganizationLocalServiceUtil.hasUserOrganization(
-					userId, OSBConstants.ORGANIZATION_LIFERAY_INC_ID)) {
-
-				return true;
-			}
-
-			if (GetterUtil.getBoolean(
-					preferences.getValue("support2Partners", null))) {
-
-				List<PartnerWorker> partnerWorkers =
-					PartnerWorkerLocalServiceUtil.getUserPartnerWorkers(userId);
-
-				if (!partnerWorkers.isEmpty()) {
-					return true;
-				}
-			}
-
-			String enabledPartners = GetterUtil.getString(
-				preferences.getValue("support2EnabledPartners", null));
-
-			String[] enabledPartnersArray = StringUtil.split(
-				enabledPartners.toLowerCase());
-
-			List<PartnerEntry> partnerEntries =
-				PartnerEntryLocalServiceUtil.getUserPartnerEntries(
-					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-
-			for (PartnerEntry partnerEntry : partnerEntries) {
-				String code = partnerEntry.getCode();
-
-				if (ArrayUtil.contains(
-						enabledPartnersArray, code.toLowerCase())) {
-
-					return true;
-				}
-			}
-
-			String enabledAccounts = GetterUtil.getString(
-				preferences.getValue("support2EnabledAccounts", null));
-
-			String[] enabledAccountsArray = StringUtil.split(
-				enabledAccounts.toLowerCase());
-
-			List<AccountEntry> accountEntries =
-				AccountEntryLocalServiceUtil.getUserAccountEntries(
-					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-
-			for (AccountEntry accountEntry : accountEntries) {
-				int tier = accountEntry.getTier();
-
-				if (((tier == AccountEntryConstants.TIER_OEM) &&
-					 GetterUtil.getBoolean(
-						preferences.getValue(
-							"support2OEMAccountTier", null))) ||
-					((tier == AccountEntryConstants.TIER_PREMIER) &&
-					 GetterUtil.getBoolean(
-						preferences.getValue(
-							"support2PremierAccountTier", null))) ||
-					((tier == AccountEntryConstants.TIER_REGULAR) &&
-					 GetterUtil.getBoolean(
-						preferences.getValue(
-							"support2RegularAccountTier", null))) ||
-					((tier == AccountEntryConstants.TIER_STRATEGIC) &&
-					 GetterUtil.getBoolean(
-						preferences.getValue(
-							"support2StrategicAccountTier", null)))) {
-
-					return true;
-				}
-
-				String code = accountEntry.getCode();
-
-				if (ArrayUtil.contains(
-						enabledAccountsArray, code.toLowerCase())) {
-
-					return true;
-				}
-			}
-		}
-		catch (SystemException se) {
-		}
-
-		return false;
-	}
-
-	public static boolean isVersion2LiferayAnnouncementEnabled() {
-		try {
-			PortletPreferences preferences = getPortletPreferences();
-
-			if (GetterUtil.getBoolean(
-					preferences.getValue(
-						"support2LiferayAnnouncement", null))) {
-
-				return true;
-			}
-		}
-		catch (SystemException se) {
-		}
-
-		return false;
-	}
-
 	public static boolean isWatcher(long accountEntryId, long userId) {
 		try {
 			AccountEntry accountEntry =
@@ -1799,7 +1620,7 @@ public class SupportUtil {
 		userAgent = request.getHeader(HttpHeaders.USER_AGENT);
 
 		if (userAgent != null) {
-			userAgent = userAgent.toLowerCase();
+			userAgent = StringUtil.toLowerCase(userAgent);
 		}
 		else {
 			userAgent = StringPool.BLANK;

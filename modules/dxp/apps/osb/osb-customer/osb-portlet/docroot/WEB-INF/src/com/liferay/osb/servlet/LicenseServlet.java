@@ -347,7 +347,7 @@ public class LicenseServlet extends HttpServlet {
 			serverIdProperties.getProperty("hostName"));
 
 		if (Validator.isNotNull(hostName) &&
-			serverIdHostName.equalsIgnoreCase(hostName)) {
+			StringUtil.equalsIgnoreCase(serverIdHostName, hostName)) {
 
 			return serverId;
 		}

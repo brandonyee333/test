@@ -16,6 +16,7 @@ package com.liferay.osb.util.comparator;
 
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.StringUtil;
 
 /**
  * @author Amos Fong
@@ -41,8 +42,10 @@ public class AccountEntryNameComparator extends OrderByComparator {
 		AccountEntry accountEntry1 = (AccountEntry)obj1;
 		AccountEntry accountEntry2 = (AccountEntry)obj2;
 
-		int value = accountEntry1.getName().toLowerCase().compareTo(
-			accountEntry2.getName().toLowerCase());
+		String name1 = StringUtil.toLowerCase(accountEntry1.getName());
+		String name2 = StringUtil.toLowerCase(accountEntry2.getName());
+
+		int value = name1.compareTo(name2);
 
 		if (_asc) {
 			return value;

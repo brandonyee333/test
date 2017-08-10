@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.dao.orm.SQLQuery;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.Type;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -58,7 +59,7 @@ public class SupportTeamFinderImpl
 
 			name = StringUtil.merge(names);
 
-			keywords = keywords.toLowerCase();
+			keywords = StringUtil.toLowerCase(keywords);
 
 			if (keywords.contains("critical") ||
 				keywords.contains("platinum")) {
@@ -78,8 +79,7 @@ public class SupportTeamFinderImpl
 
 	public int countByN_T(String name, Integer type, boolean andOperator) {
 		if (name != null) {
-			name = StringUtil.replace(
-				name, StringPool.SPACE, StringPool.PERCENT);
+			name = StringUtil.replace(name, CharPool.SPACE, CharPool.PERCENT);
 
 			if (!name.endsWith(StringPool.PERCENT)) {
 				name += StringPool.PERCENT;
@@ -146,7 +146,7 @@ public class SupportTeamFinderImpl
 
 			name = StringUtil.merge(names);
 
-			keywords = keywords.toLowerCase();
+			keywords = StringUtil.toLowerCase(keywords);
 
 			if (keywords.contains("critical") ||
 				keywords.contains("platinum")) {
@@ -169,8 +169,7 @@ public class SupportTeamFinderImpl
 		OrderByComparator obc) {
 
 		if (name != null) {
-			name = StringUtil.replace(
-				name, StringPool.SPACE, StringPool.PERCENT);
+			name = StringUtil.replace(name, CharPool.SPACE, CharPool.PERCENT);
 
 			if (!name.endsWith(StringPool.PERCENT)) {
 				name += StringPool.PERCENT;
