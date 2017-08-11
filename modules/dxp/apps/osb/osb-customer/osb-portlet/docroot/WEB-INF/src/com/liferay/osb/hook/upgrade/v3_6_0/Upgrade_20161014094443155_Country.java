@@ -29,7 +29,7 @@ public class Upgrade_20161014094443155_Country extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20161014094443155L;
 	}
@@ -43,8 +43,6 @@ public class Upgrade_20161014094443155_Country extends UpgradeProcess {
 			"update Country set a2 = 'RS', a3 = 'SRB' where countryId = 189");
 	}
 
-}
-
-*/
+	 */
 
 }

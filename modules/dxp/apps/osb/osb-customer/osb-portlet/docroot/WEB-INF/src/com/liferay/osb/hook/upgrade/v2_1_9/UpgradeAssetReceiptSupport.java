@@ -29,7 +29,7 @@ public class UpgradeAssetReceiptSupport extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		upgradeAssetReceiptSupport();
 	}
@@ -48,8 +48,6 @@ public class UpgradeAssetReceiptSupport extends UpgradeProcess {
 		runSQL("alter table OSB_AssetReceiptSupport drop column actualPrice");
 	}
 
-}
-
-*/
+	 */
 
 }

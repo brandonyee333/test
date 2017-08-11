@@ -29,7 +29,7 @@ public class Upgrade_20140710095549126_ListType extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20140710095549126L;
 	}
@@ -43,8 +43,6 @@ public class Upgrade_20140710095549126_ListType extends UpgradeProcess {
 		runSQL("delete from ListType where listTypeId = 23043");
 	}
 
-}
-
-*/
+	 */
 
 }

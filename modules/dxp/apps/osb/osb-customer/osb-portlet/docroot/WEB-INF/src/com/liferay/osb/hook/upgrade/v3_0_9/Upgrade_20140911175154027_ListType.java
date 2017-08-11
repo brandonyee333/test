@@ -29,7 +29,7 @@ public class Upgrade_20140911175154027_ListType extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20140911175154027L;
 	}
@@ -44,8 +44,6 @@ public class Upgrade_20140911175154027_ListType extends UpgradeProcess {
 			"com.liferay.osb.model.ProductEntry.socialOfficeMinorVersions");
 	}
 
-}
-
-*/
+	 */
 
 }

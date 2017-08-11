@@ -29,7 +29,7 @@ public class Upgrade_20141021161047483_ECDocumentEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20141021161047483L;
 	}
@@ -43,8 +43,6 @@ public class Upgrade_20141021161047483_ECDocumentEntry extends UpgradeProcess {
 		runSQL("alter table ECommerce_ECDocumentEntry add ecAccessKeyId LONG");
 	}
 
-}
-
-*/
+	 */
 
 }

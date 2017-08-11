@@ -45,7 +45,7 @@ public class UpgradeTicketStatus extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*public static final int STATUS_CUSTOMER_TESTING = 33015;
+	/*public static final int STATUS_CUSTOMER_TESTING = 33015;
 
 	public static final int STATUS_INVESTIGATING = 33003;
 
@@ -170,8 +170,6 @@ public class UpgradeTicketStatus extends UpgradeProcess {
 		}
 	}
 
-}
-
-*/
+	 */
 
 }

@@ -29,7 +29,7 @@ public class Upgrade_20140606083940977_ECDocumentEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20140606083940977L;
 	}
@@ -49,8 +49,6 @@ public class Upgrade_20140606083940977_ECDocumentEntry extends UpgradeProcess {
 				"VARCHAR(75)");
 	}
 
-}
-
-*/
+	 */
 
 }

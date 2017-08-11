@@ -30,7 +30,7 @@ public class Upgrade_20160519114642271_PortalRelease extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20160519114642271L;
 	}
@@ -41,8 +41,6 @@ public class Upgrade_20160519114642271_PortalRelease extends UpgradeProcess {
 			"Liferay CE Portal 7.0 GA2", 7001, false, true, true, true, true);
 	}
 
-}
-
-*/
+	 */
 
 }

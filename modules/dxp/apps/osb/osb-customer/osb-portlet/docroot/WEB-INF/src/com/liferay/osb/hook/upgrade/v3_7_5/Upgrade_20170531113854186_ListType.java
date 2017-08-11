@@ -29,7 +29,7 @@ public class Upgrade_20170531113854186_ListType extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20170531113854186L;
 	}
@@ -40,8 +40,6 @@ public class Upgrade_20170531113854186_ListType extends UpgradeProcess {
 			27059, "tomcat-8.5", "com.liferay.osb.model.TicketEntry.envAS");
 	}
 
-}
-
-*/
+	 */
 
 }

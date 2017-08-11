@@ -30,7 +30,7 @@ public class UpgradeMarketingEvent extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateMarketingEvent();
 	}
@@ -46,8 +46,6 @@ public class UpgradeMarketingEvent extends UpgradeProcess {
 		runSQL("create index IX_EED5EFA6 on OSB_MarketingEvent (globalRegion)");
 	}
 
-}
-
-*/
+	 */
 
 }

@@ -29,7 +29,7 @@ public class Upgrade_20150105174823791_AccountEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20150105174823791L;
 	}
@@ -45,8 +45,6 @@ public class Upgrade_20150105174823791_AccountEntry extends UpgradeProcess {
 		runSQL("create index IX_6AA361CE on OSB_AccountEntry (corpProjectId)");
 	}
 
-}
-
-*/
+	 */
 
 }

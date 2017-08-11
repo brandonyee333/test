@@ -47,7 +47,7 @@ public class Upgrade_20141022153815429_ECDocumentEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20141022153815429L;
 	}
@@ -168,8 +168,6 @@ public class Upgrade_20141022153815429_ECDocumentEntry extends UpgradeProcess {
 			ecDocumentEntryId, extraSettingsProperties.toString());
 	}
 
-}
-
-*/
+	 */
 
 }

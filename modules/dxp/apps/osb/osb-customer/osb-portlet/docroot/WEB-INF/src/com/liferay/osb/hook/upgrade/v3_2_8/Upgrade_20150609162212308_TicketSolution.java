@@ -30,7 +30,7 @@ public class Upgrade_20150609162212308_TicketSolution extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20150609162212308L;
 	}
@@ -50,8 +50,6 @@ public class Upgrade_20150609162212308_TicketSolution extends UpgradeProcess {
 		}
 	}
 
-}
-
-*/
+	 */
 
 }

@@ -29,14 +29,12 @@ public class UpgradeTicketEnvironment extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		insertListType(
 			29002, "java-7", "com.liferay.osb.model.TicketEntry.envJVM");
 	}
 
-}
-
-*/
+	 */
 
 }

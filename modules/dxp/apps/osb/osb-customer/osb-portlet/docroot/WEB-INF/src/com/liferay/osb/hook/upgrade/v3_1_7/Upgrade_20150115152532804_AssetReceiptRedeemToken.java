@@ -31,7 +31,7 @@ public class Upgrade_20150115152532804_AssetReceiptRedeemToken
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20150115152532804L;
 	}
@@ -52,8 +52,6 @@ public class Upgrade_20150115152532804_AssetReceiptRedeemToken
 				"(token)");
 	}
 
-}
-
-*/
+	 */
 
 }

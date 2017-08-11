@@ -30,7 +30,7 @@ public class Upgrade_20140424155644227_SupportTeamLanguage
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20140424155644227L;
 	}
@@ -91,8 +91,6 @@ public class Upgrade_20140424155644227_SupportTeamLanguage
 				"languageId = '4'");
 	}
 
-}
-
-*/
+	 */
 
 }

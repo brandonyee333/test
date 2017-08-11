@@ -30,7 +30,7 @@ public class Upgrade_20140618102747018_CorpProject extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20140618102747018L;
 	}
@@ -48,8 +48,6 @@ public class Upgrade_20140618102747018_CorpProject extends UpgradeProcess {
 		runSQL(CorpProjectModelImpl.TABLE_SQL_CREATE);
 	}
 
-}
-
-*/
+	 */
 
 }

@@ -29,7 +29,7 @@ public class Upgrade_20150116093802297_AssetAttachment extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20150116093802297L;
 	}
@@ -45,8 +45,6 @@ public class Upgrade_20150116093802297_AssetAttachment extends UpgradeProcess {
 				"integer default 0");
 	}
 
-}
-
-*/
+	 */
 
 }

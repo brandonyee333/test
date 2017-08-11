@@ -29,7 +29,7 @@ public class Upgrade_20140424155654192_SupportWorker extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20140424155654192L;
 	}
@@ -58,8 +58,6 @@ public class Upgrade_20140424155654192_SupportWorker extends UpgradeProcess {
 		addSupportLaborId();
 	}
 
-}
-
-*/
+	 */
 
 }

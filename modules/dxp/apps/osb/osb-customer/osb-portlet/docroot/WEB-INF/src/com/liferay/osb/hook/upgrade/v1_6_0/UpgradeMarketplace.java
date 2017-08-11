@@ -29,7 +29,7 @@ public class UpgradeMarketplace extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateAppEntry();
 	}
@@ -38,8 +38,6 @@ public class UpgradeMarketplace extends UpgradeProcess {
 		runSQL("update OSB_AppEntry set licenseType = -1");
 	}
 
-}
-
-*/
+	 */
 
 }

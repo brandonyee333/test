@@ -30,7 +30,7 @@ public class Upgrade_20150720112412210_TicketEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20150720112412210L;
 	}
@@ -46,8 +46,6 @@ public class Upgrade_20150720112412210_TicketEntry extends UpgradeProcess {
 				"subcomponentCustom VARCHAR(150)");
 	}
 
-}
-
-*/
+	 */
 
 }

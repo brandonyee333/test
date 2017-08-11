@@ -29,7 +29,7 @@ public class Upgrade_20170131150512687_SupportResponse extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20170131150512687L;
 	}
@@ -44,8 +44,6 @@ public class Upgrade_20170131150512687_SupportResponse extends UpgradeProcess {
 		runSQL("alter table OSB_SupportResponse drop column timeZoneType");
 	}
 
-}
-
-*/
+	 */
 
 }

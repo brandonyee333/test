@@ -29,7 +29,7 @@ public class Upgrade_20160705112809820_PortalRelease extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20160705112809820L;
 	}
@@ -44,8 +44,6 @@ public class Upgrade_20160705112809820_PortalRelease extends UpgradeProcess {
 			"alter table OSB_PortalRelease add column fixPackName VARCHAR(75)");
 	}
 
-}
-
-*/
+	 */
 
 }

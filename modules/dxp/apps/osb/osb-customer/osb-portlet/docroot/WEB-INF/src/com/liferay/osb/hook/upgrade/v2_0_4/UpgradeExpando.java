@@ -51,7 +51,7 @@ public class UpgradeExpando extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*protected void deleteExpandoColumn(long companyId, String expandoColumnName)
+	/*protected void deleteExpandoColumn(long companyId, String expandoColumnName)
 		throws Exception {
 
 		ExpandoTable expandoTable = null;
@@ -303,8 +303,6 @@ public class UpgradeExpando extends UpgradeProcess {
 
 	private static Log _log = LogFactoryUtil.getLog(UpgradeExpando.class);
 
-}
-
-*/
+	 */
 
 }

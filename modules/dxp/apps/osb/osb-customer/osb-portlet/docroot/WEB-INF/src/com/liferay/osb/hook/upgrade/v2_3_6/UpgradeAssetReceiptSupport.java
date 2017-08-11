@@ -29,7 +29,7 @@ public class UpgradeAssetReceiptSupport extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateAssetReceiptSupport();
 	}
@@ -40,8 +40,6 @@ public class UpgradeAssetReceiptSupport extends UpgradeProcess {
 				"(assetReceiptId)");
 	}
 
-}
-
-*/
+	 */
 
 }

@@ -29,7 +29,7 @@ public class UpgradeTicketLink extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateTicketLink();
 	}
@@ -49,8 +49,6 @@ public class UpgradeTicketLink extends UpgradeProcess {
 		runSQL("update OSB_TicketLink set ticketSolutionId = 0");
 	}
 
-}
-
-*/
+	 */
 
 }

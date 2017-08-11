@@ -29,7 +29,7 @@ public class Upgrade_20170209115537083_AuditEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20170209115537083L;
 	}
@@ -40,8 +40,6 @@ public class Upgrade_20170209115537083_AuditEntry extends UpgradeProcess {
 		runSQL("alter table OSB_AuditEntry modify newLabel VARCHAR(255)");
 	}
 
-}
-
-*/
+	 */
 
 }

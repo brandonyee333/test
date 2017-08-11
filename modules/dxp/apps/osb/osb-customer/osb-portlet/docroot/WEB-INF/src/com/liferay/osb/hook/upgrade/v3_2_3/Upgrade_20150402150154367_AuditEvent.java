@@ -29,7 +29,7 @@ public class Upgrade_20150402150154367_AuditEvent extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20150402150154367L;
 	}
@@ -47,8 +47,6 @@ public class Upgrade_20150402150154367_AuditEvent extends UpgradeProcess {
 					"'com.liferay.osb.downloads.portlet.DownloadsPortlet'");
 	}
 
-}
-
-*/
+	 */
 
 }

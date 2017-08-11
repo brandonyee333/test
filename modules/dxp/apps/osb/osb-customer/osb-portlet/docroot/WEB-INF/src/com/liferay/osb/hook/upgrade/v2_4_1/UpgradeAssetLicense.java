@@ -48,7 +48,7 @@ public class UpgradeAssetLicense extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		upgradeAssetLicense();
 	}
@@ -136,8 +136,6 @@ public class UpgradeAssetLicense extends UpgradeProcess {
 		}
 	}
 
-}
-
-*/
+	 */
 
 }

@@ -46,7 +46,7 @@ public class UpgradeAssetStatsMonth extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateAssetStatsMonths();
 	}
@@ -164,8 +164,6 @@ public class UpgradeAssetStatsMonth extends UpgradeProcess {
 
 	private static final int _DEFAULT_INTERVAL = 200;
 
-}
-
-*/
+	 */
 
 }

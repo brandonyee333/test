@@ -29,7 +29,7 @@ public class Upgrade_20141007114019342_SearchFilter extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20141007114019342L;
 	}
@@ -43,8 +43,6 @@ public class Upgrade_20141007114019342_SearchFilter extends UpgradeProcess {
 		runSQL("alter table OSB_SearchFilter add column visibility INTEGER");
 	}
 
-}
-
-*/
+	 */
 
 }

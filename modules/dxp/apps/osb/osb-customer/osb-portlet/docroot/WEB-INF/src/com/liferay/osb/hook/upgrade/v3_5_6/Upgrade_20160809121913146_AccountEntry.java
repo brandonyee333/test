@@ -30,7 +30,7 @@ public class Upgrade_20160809121913146_AccountEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20160809121913146L;
 	}
@@ -60,8 +60,6 @@ public class Upgrade_20160809121913146_AccountEntry extends UpgradeProcess {
 		}
 	}
 
-}
-
-*/
+	 */
 
 }

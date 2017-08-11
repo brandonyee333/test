@@ -29,7 +29,7 @@ public class UpgradeCountryAppPricing extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		upgradeCountryAppPricing();
 	}
@@ -38,8 +38,6 @@ public class UpgradeCountryAppPricing extends UpgradeProcess {
 		runSQL("create index IX_CBEE1A21 on OSB_CountryAppPricing (countryId)");
 	}
 
-}
-
-*/
+	 */
 
 }

@@ -29,7 +29,7 @@ public class Upgrade_20170224111014941_AccountEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20170224111014941L;
 	}
@@ -44,8 +44,6 @@ public class Upgrade_20170224111014941_AccountEntry extends UpgradeProcess {
 		runSQL("alter table OSB_AccountEntry drop column renewalContactUserId");
 	}
 
-}
-
-*/
+	 */
 
 }

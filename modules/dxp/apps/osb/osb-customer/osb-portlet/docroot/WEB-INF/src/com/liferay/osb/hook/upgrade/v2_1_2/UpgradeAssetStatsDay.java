@@ -29,7 +29,7 @@ public class UpgradeAssetStatsDay extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateAssetStatsDay();
 	}
@@ -40,8 +40,6 @@ public class UpgradeAssetStatsDay extends UpgradeProcess {
 				"currencyCodeRevenues VARCHAR(500)");
 	}
 
-}
-
-*/
+	 */
 
 }

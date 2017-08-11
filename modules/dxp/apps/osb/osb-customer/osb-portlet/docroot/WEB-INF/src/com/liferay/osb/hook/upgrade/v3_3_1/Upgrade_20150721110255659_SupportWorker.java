@@ -31,7 +31,7 @@ public class Upgrade_20150721110255659_SupportWorker extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20150721110255659L;
 	}
@@ -54,8 +54,6 @@ public class Upgrade_20150721110255659_SupportWorker extends UpgradeProcess {
 					SupportWorkerConstants.ESCALATION_LEVEL_2_ROLE_PRIMARY);
 	}
 
-}
-
-*/
+	 */
 
 }

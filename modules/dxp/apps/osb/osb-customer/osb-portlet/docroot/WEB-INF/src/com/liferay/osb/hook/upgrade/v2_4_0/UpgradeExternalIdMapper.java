@@ -29,7 +29,7 @@ public class UpgradeExternalIdMapper extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateExternalIdMapper();
 	}
@@ -40,8 +40,6 @@ public class UpgradeExternalIdMapper extends UpgradeProcess {
 				"externalIdMapperId = 34875619");
 	}
 
-}
-
-*/
+	 */
 
 }

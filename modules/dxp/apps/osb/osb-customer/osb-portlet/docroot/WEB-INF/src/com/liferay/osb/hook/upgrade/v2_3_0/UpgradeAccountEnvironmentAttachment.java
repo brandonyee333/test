@@ -29,7 +29,7 @@ public class UpgradeAccountEnvironmentAttachment extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateAccountEnvironmentAttachment();
 	}
@@ -40,8 +40,6 @@ public class UpgradeAccountEnvironmentAttachment extends UpgradeProcess {
 				"(accountEnvironmentId, fileName)");
 	}
 
-}
-
-*/
+	 */
 
 }

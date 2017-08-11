@@ -29,7 +29,7 @@ public class Upgrade_20140711094646258_MarketingEvent extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20140711094646258L;
 	}
@@ -47,8 +47,6 @@ public class Upgrade_20140711094646258_MarketingEvent extends UpgradeProcess {
 		}
 	}
 
-}
-
-*/
+	 */
 
 }

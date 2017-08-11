@@ -29,7 +29,7 @@ public class UpgradeTrainingExamResultItem extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateTrainingExamResultItem();
 	}
@@ -40,8 +40,6 @@ public class UpgradeTrainingExamResultItem extends UpgradeProcess {
 				"STRING null");
 	}
 
-}
-
-*/
+	 */
 
 }

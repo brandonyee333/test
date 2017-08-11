@@ -29,7 +29,7 @@ public class Upgrade_20141008135107584_PartnerEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20141008135107584L;
 	}
@@ -49,8 +49,6 @@ public class Upgrade_20141008135107584_PartnerEntry extends UpgradeProcess {
 		runSQL("update OSB_PartnerEntry set status = 0");
 	}
 
-}
-
-*/
+	 */
 
 }

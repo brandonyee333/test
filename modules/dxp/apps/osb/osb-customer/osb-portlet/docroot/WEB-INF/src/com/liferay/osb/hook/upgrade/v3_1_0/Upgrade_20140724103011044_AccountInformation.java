@@ -31,7 +31,7 @@ public class Upgrade_20140724103011044_AccountInformation
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20140724103011044L;
 	}
@@ -52,8 +52,6 @@ public class Upgrade_20140724103011044_AccountInformation
 				"accountEntryId, accountProjectId, fieldId)");
 	}
 
-}
-
-*/
+	 */
 
 }

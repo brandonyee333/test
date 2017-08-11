@@ -30,7 +30,7 @@ public class Upgrade_20150907164802988_SecurityPatch extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20150907164802988L;
 	}
@@ -46,8 +46,6 @@ public class Upgrade_20150907164802988_SecurityPatch extends UpgradeProcess {
 				"VARCHAR(150)");
 	}
 
-}
-
-*/
+	 */
 
 }

@@ -31,7 +31,7 @@ public class Upgrade_20150319142022444_TrainingCertificate
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20150319142022444L;
 	}
@@ -44,8 +44,6 @@ public class Upgrade_20150319142022444_TrainingCertificate
 					" where surveyStatus is null");
 	}
 
-}
-
-*/
+	 */
 
 }

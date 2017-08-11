@@ -36,7 +36,7 @@ public class Upgrade_20140509155638740_PopulateData extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20140509155638740L;
 	}
@@ -524,8 +524,6 @@ public class Upgrade_20140509155638740_PopulateData extends UpgradeProcess {
 		runSQL(sb.toString());
 	}
 
-}
-
-*/
+	 */
 
 }

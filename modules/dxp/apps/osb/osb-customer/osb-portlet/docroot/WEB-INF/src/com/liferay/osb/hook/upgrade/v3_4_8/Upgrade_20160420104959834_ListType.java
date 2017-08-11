@@ -30,7 +30,7 @@ public class Upgrade_20160420104959834_ListType extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20160420104959834L;
 	}
@@ -186,8 +186,6 @@ public class Upgrade_20160420104959834_ListType extends UpgradeProcess {
 					TicketEntryConstants.COMPONENT_PROJECT_ADMINISTRATION);
 	}
 
-}
-
-*/
+	 */
 
 }

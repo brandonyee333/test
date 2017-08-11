@@ -38,7 +38,7 @@ public class Upgrade_20150617144546039_ObsoleteData extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20150617144546039L;
 	}
@@ -152,8 +152,6 @@ public class Upgrade_20150617144546039_ObsoleteData extends UpgradeProcess {
 		runSQL("drop table WSRPProducer");
 	}
 
-}
-
-*/
+	 */
 
 }

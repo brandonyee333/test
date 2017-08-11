@@ -29,7 +29,7 @@ public class UpgradeUserProfile extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateUserProfile();
 	}
@@ -40,8 +40,6 @@ public class UpgradeUserProfile extends UpgradeProcess {
 				"= 34875616");
 	}
 
-}
-
-*/
+	 */
 
 }

@@ -30,7 +30,7 @@ public class UpgradeAssetReceiptSupport extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateAssetReceiptSupport();
 	}
@@ -45,8 +45,6 @@ public class UpgradeAssetReceiptSupport extends UpgradeProcess {
 		runSQL("create index IX_D261FB68 on OSB_AssetReceiptSupport (uuid_)");
 	}
 
-}
-
-*/
+	 */
 
 }

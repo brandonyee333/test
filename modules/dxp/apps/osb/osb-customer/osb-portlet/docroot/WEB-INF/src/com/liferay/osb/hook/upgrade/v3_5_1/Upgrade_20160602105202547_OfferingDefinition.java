@@ -45,7 +45,7 @@ public class Upgrade_20160602105202547_OfferingDefinition
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20160602105202547L;
 	}
@@ -227,8 +227,6 @@ public class Upgrade_20160602105202547_OfferingDefinition
 	private Map<String, OfferingDefinition> _offeringDefinitionsMap =
 		new HashMap<>();
 
-}
-
-*/
+	 */
 
 }

@@ -29,7 +29,7 @@ public class Upgrade_20150921155804447_ProductEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20150921155804447L;
 	}
@@ -47,8 +47,6 @@ public class Upgrade_20150921155804447_ProductEntry extends UpgradeProcess {
 				ProductEntryConstants.PLATFORM_LIFERAY_PORTAL + "'");
 	}
 
-}
-
-*/
+	 */
 
 }

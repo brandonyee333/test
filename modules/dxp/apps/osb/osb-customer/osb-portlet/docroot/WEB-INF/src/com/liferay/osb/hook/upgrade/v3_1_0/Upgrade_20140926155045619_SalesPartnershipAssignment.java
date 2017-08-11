@@ -30,7 +30,7 @@ public class Upgrade_20140926155045619_SalesPartnershipAssignment
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20140926155045619L;
 	}
@@ -60,8 +60,6 @@ public class Upgrade_20140926155045619_SalesPartnershipAssignment
 					"salesPartnershipCountryId)");
 	}
 
-}
-
-*/
+	 */
 
 }

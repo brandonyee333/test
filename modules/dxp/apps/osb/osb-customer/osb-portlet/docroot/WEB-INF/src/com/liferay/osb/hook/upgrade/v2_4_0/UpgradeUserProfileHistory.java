@@ -29,7 +29,7 @@ public class UpgradeUserProfileHistory extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateUserProfileHistory();
 	}
@@ -40,8 +40,6 @@ public class UpgradeUserProfileHistory extends UpgradeProcess {
 				"userProfileHistoryId = 34875617");
 	}
 
-}
-
-*/
+	 */
 
 }

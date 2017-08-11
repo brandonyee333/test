@@ -30,7 +30,7 @@ public class Upgrade_20150701153725117_ListType extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20150701153725117L;
 	}
@@ -43,8 +43,6 @@ public class Upgrade_20150701153725117_ListType extends UpgradeProcess {
 			27053, "jboss-eap-6.4", TicketEntry.class.getName() + ".envAS");
 	}
 
-}
-
-*/
+	 */
 
 }

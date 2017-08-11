@@ -31,7 +31,7 @@ public class Upgrade_20150310143110488_ECDocumentItem extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20150310143110488L;
 	}
@@ -49,8 +49,6 @@ public class Upgrade_20150310143110488_ECDocumentItem extends UpgradeProcess {
 		runSQL(sb.toString());
 	}
 
-}
-
-*/
+	 */
 
 }

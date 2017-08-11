@@ -46,7 +46,7 @@ public class UpgradeAssetStatsWeek extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateAssetStatsWeeks();
 	}
@@ -165,8 +165,6 @@ public class UpgradeAssetStatsWeek extends UpgradeProcess {
 
 	private static final int _DEFAULT_INTERVAL = 200;
 
-}
-
-*/
+	 */
 
 }

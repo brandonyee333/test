@@ -30,7 +30,7 @@ public class UpgradeTicketEnvAS extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateTicketEnvAS();
 	}
@@ -41,8 +41,6 @@ public class UpgradeTicketEnvAS extends UpgradeProcess {
 				TicketEntryConstants.ENV_AS_JBOSS_5_1);
 	}
 
-}
-
-*/
+	 */
 
 }

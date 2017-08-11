@@ -30,7 +30,7 @@ public class Upgrade_20141006143530720_TrainingCustomer extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20141006143530720L;
 	}
@@ -54,8 +54,6 @@ public class Upgrade_20141006143530720_TrainingCustomer extends UpgradeProcess {
 				"'tungls1@gmail.com' where userProfileHistoryId = 43538561");
 	}
 
-}
-
-*/
+	 */
 
 }

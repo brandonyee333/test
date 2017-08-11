@@ -29,7 +29,7 @@ public class Upgrade_20160926113236542_SocialActivity extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20160926113236542L;
 	}
@@ -41,8 +41,6 @@ public class Upgrade_20160926113236542_SocialActivity extends UpgradeProcess {
 				"classPK not in (select messageId from MBMessage)");
 	}
 
-}
-
-*/
+	 */
 
 }

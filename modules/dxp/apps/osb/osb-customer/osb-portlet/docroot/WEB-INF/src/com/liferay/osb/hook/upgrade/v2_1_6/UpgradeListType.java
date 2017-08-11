@@ -29,7 +29,7 @@ public class UpgradeListType extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateListType();
 	}
@@ -39,8 +39,6 @@ public class UpgradeListType extends UpgradeProcess {
 			26023, "calendar", "com.liferay.osb.model.TicketEntry.component");
 	}
 
-}
-
-*/
+	 */
 
 }

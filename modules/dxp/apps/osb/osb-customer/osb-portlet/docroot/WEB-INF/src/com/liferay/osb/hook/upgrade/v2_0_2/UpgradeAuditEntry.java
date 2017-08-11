@@ -29,7 +29,7 @@ public class UpgradeAuditEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateAuditEntry();
 	}
@@ -78,8 +78,6 @@ public class UpgradeAuditEntry extends UpgradeProcess {
 					"(listTypeId >= 34001) and (listTypeId <= 34099)");
 	}
 
-}
-
-*/
+	 */
 
 }

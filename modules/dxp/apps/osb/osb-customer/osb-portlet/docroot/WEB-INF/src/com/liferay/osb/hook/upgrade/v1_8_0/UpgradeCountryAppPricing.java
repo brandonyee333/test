@@ -29,7 +29,7 @@ public class UpgradeCountryAppPricing extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		upgradeCountryAppPricing();
 	}
@@ -42,8 +42,6 @@ public class UpgradeCountryAppPricing extends UpgradeProcess {
 		runSQL("alter table OSB_CountryAppPricing add column name STRING");
 	}
 
-}
-
-*/
+	 */
 
 }

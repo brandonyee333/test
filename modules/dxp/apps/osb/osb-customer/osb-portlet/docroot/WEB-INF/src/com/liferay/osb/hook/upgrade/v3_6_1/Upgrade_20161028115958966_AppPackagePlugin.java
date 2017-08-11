@@ -29,7 +29,7 @@ public class Upgrade_20161028115958966_AppPackagePlugin extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20161028115958966L;
 	}
@@ -42,8 +42,6 @@ public class Upgrade_20161028115958966_AppPackagePlugin extends UpgradeProcess {
 			"alter table OSB_AppPackagePlugin modify contextName VARCHAR(255)");
 	}
 
-}
-
-*/
+	 */
 
 }

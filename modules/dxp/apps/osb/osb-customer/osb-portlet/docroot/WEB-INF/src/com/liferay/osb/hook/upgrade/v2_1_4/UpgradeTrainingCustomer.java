@@ -29,7 +29,7 @@ public class UpgradeTrainingCustomer extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateTrainingCustomer();
 	}
@@ -62,8 +62,6 @@ public class UpgradeTrainingCustomer extends UpgradeProcess {
 		{31561881, 31456864, 31456878, 31456892}
 	};
 
-}
-
-*/
+	 */
 
 }

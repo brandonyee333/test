@@ -30,7 +30,7 @@ public class UpgradePortalPreferences extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updatePortalPreferences();
 	}
@@ -46,8 +46,6 @@ public class UpgradePortalPreferences extends UpgradeProcess {
 		runSQL(sb.toString());
 	}
 
-}
-
-*/
+	 */
 
 }

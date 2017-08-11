@@ -53,7 +53,7 @@ public class Upgrade_20160104174603752_ContractEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20160104174603752L;
 	}
@@ -367,8 +367,6 @@ public class Upgrade_20160104174603752_ContractEntry extends UpgradeProcess {
 	private static Log _log = LogFactoryUtil.getLog(
 		Upgrade_20160104174603752_ContractEntry.class);
 
-}
-
-*/
+	 */
 
 }

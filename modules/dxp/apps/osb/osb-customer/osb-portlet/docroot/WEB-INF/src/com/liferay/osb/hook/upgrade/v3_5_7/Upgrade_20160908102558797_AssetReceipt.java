@@ -40,7 +40,7 @@ public class Upgrade_20160908102558797_AssetReceipt extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20160908102558797L;
 	}
@@ -102,8 +102,6 @@ public class Upgrade_20160908102558797_AssetReceipt extends UpgradeProcess {
 		return appEntryIds;
 	}
 
-}
-
-*/
+	 */
 
 }

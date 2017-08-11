@@ -31,7 +31,7 @@ public class Upgrade_20140424154131198_HolidayCalendar extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20140424154131198L;
 	}
@@ -63,8 +63,6 @@ public class Upgrade_20140424154131198_HolidayCalendar extends UpgradeProcess {
 		createHolidayCalendarRel();
 	}
 
-}
-
-*/
+	 */
 
 }

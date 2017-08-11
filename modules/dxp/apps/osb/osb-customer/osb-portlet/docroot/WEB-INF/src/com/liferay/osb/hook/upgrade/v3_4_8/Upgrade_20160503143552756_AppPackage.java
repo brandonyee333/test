@@ -29,7 +29,7 @@ public class Upgrade_20160503143552756_AppPackage extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20160503143552756L;
 	}
@@ -41,8 +41,6 @@ public class Upgrade_20160503143552756_AppPackage extends UpgradeProcess {
 				"BOOLEAN");
 	}
 
-}
-
-*/
+	 */
 
 }

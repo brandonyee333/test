@@ -29,7 +29,7 @@ public class Upgrade_20140821113329596_ListType extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20140821113329596L;
 	}
@@ -49,8 +49,6 @@ public class Upgrade_20140821113329596_ListType extends UpgradeProcess {
 			"com.liferay.osb.model.TicketEntry.component");
 	}
 
-}
-
-*/
+	 */
 
 }

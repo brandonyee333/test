@@ -31,7 +31,7 @@ public class UpgradeAssetReceipt extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateAssetReceipt();
 	}
@@ -53,8 +53,6 @@ public class UpgradeAssetReceipt extends UpgradeProcess {
 
 	private static Log _log = LogFactoryUtil.getLog(UpgradeAssetReceipt.class);
 
-}
-
-*/
+	 */
 
 }

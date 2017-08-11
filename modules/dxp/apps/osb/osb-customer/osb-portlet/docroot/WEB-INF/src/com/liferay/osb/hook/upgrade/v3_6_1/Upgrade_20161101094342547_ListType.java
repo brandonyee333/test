@@ -29,7 +29,7 @@ public class Upgrade_20161101094342547_ListType extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20161101094342547L;
 	}
@@ -39,8 +39,6 @@ public class Upgrade_20161101094342547_ListType extends UpgradeProcess {
 		runSQL("update ListType set name = '7.0' where listTypeId = 41000");
 	}
 
-}
-
-*/
+	 */
 
 }

@@ -45,7 +45,7 @@ public class Upgrade_20150807173716016_TicketAttachment extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20150807173716016L;
 	}
@@ -154,8 +154,6 @@ public class Upgrade_20150807173716016_TicketAttachment extends UpgradeProcess {
 	private static Log _log = LogFactoryUtil.getLog(
 		Upgrade_20150807173716016_TicketAttachment.class);
 
-}
-
-*/
+	 */
 
 }

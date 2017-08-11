@@ -29,7 +29,7 @@ public class UpgradeTicketComment extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateTicketComment();
 	}
@@ -44,8 +44,6 @@ public class UpgradeTicketComment extends UpgradeProcess {
 		runSQL("update OSB_TicketComment set type_ = 0");
 	}
 
-}
-
-*/
+	 */
 
 }

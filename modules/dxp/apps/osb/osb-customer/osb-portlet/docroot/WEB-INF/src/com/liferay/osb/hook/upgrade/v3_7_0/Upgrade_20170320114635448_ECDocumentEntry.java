@@ -33,7 +33,7 @@ public class Upgrade_20170320114635448_ECDocumentEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20170320114635448L;
 	}
@@ -70,8 +70,6 @@ public class Upgrade_20170320114635448_ECDocumentEntry extends UpgradeProcess {
 		runSQL(sb.toString());
 	}
 
-}
-
-*/
+	 */
 
 }

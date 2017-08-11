@@ -30,7 +30,7 @@ public class Upgrade_20160412084928008_PortalRelease extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20160412084928008L;
 	}
@@ -40,8 +40,6 @@ public class Upgrade_20160412084928008_PortalRelease extends UpgradeProcess {
 		runSQL(PortalReleaseBaseImpl.TABLE_SQL_CREATE);
 	}
 
-}
-
-*/
+	 */
 
 }

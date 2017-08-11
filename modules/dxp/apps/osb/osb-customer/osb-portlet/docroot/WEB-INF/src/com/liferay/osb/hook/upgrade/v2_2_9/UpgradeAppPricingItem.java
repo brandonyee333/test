@@ -29,7 +29,7 @@ public class UpgradeAppPricingItem extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		upgradeAppPricingItem();
 	}
@@ -42,8 +42,6 @@ public class UpgradeAppPricingItem extends UpgradeProcess {
 				"OSB_AppPricingItem (appPricingId, assetLicenseId)");
 	}
 
-}
-
-*/
+	 */
 
 }

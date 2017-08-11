@@ -29,7 +29,7 @@ public class Upgrade_20150617143131437_TicketAttachment extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20150617143131437L;
 	}
@@ -43,8 +43,6 @@ public class Upgrade_20150617143131437_TicketAttachment extends UpgradeProcess {
 		runSQL("alter table OSB_TicketAttachment add releaseNotesId LONG");
 	}
 
-}
-
-*/
+	 */
 
 }

@@ -29,7 +29,7 @@ public class Upgrade_20160225105737649_TicketAttachment extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20160225105737649L;
 	}
@@ -56,8 +56,6 @@ public class Upgrade_20160225105737649_TicketAttachment extends UpgradeProcess {
 				"ticketEntryId, visibility, status)");
 	}
 
-}
-
-*/
+	 */
 
 }

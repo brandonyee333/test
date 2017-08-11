@@ -29,7 +29,7 @@ public class Upgrade_20140603160516832_DeveloperEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20140603160516832L;
 	}
@@ -49,8 +49,6 @@ public class Upgrade_20140603160516832_DeveloperEntry extends UpgradeProcess {
 		runSQL("update OSB_DeveloperEntry set fatcaWithholdingPercentage = -1");
 	}
 
-}
-
-*/
+	 */
 
 }

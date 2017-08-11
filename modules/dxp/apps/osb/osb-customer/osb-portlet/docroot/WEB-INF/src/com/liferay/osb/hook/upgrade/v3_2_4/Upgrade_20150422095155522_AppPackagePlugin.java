@@ -29,7 +29,7 @@ public class Upgrade_20150422095155522_AppPackagePlugin extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20150422095155522L;
 	}
@@ -43,8 +43,6 @@ public class Upgrade_20150422095155522_AppPackagePlugin extends UpgradeProcess {
 		runSQL("alter table OSB_AppPackagePlugin drop column paclProperties");
 	}
 
-}
-
-*/
+	 */
 
 }

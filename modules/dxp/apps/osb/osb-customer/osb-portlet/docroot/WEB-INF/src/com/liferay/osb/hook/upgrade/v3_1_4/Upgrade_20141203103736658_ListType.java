@@ -29,7 +29,7 @@ public class Upgrade_20141203103736658_ListType extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20141203103736658L;
 	}
@@ -45,8 +45,6 @@ public class Upgrade_20141203103736658_ListType extends UpgradeProcess {
 			34033, "pending-partner", "com.liferay.osb.model.AuditEntry.field");
 	}
 
-}
-
-*/
+	 */
 
 }

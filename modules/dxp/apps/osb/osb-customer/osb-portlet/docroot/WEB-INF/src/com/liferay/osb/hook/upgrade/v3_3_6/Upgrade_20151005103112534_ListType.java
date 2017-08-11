@@ -31,7 +31,7 @@ public class Upgrade_20151005103112534_ListType extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20151005103112534L;
 	}
@@ -43,8 +43,6 @@ public class Upgrade_20151005103112534_ListType extends UpgradeProcess {
 			TicketEntry.class.getName() + ".envDB");
 	}
 
-}
-
-*/
+	 */
 
 }

@@ -29,7 +29,7 @@ public class Upgrade_20170330140516645_DeveloperEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20170330140516645L;
 	}
@@ -51,8 +51,6 @@ public class Upgrade_20170330140516645_DeveloperEntry extends UpgradeProcess {
 				"profileWebsite STRING");
 	}
 
-}
-
-*/
+	 */
 
 }

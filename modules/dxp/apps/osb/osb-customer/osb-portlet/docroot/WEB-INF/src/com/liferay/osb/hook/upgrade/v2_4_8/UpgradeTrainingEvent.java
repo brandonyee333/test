@@ -38,7 +38,7 @@ public class UpgradeTrainingEvent extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateTrainingEvent();
 	}
@@ -73,8 +73,6 @@ public class UpgradeTrainingEvent extends UpgradeProcess {
 		}
 	}
 
-}
-
-*/
+	 */
 
 }

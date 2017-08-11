@@ -29,7 +29,7 @@ public class UpgradeECProductEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateECProductEntry();
 	}
@@ -40,8 +40,6 @@ public class UpgradeECProductEntry extends UpgradeProcess {
 				"(ecProductTypeId, name)");
 	}
 
-}
-
-*/
+	 */
 
 }

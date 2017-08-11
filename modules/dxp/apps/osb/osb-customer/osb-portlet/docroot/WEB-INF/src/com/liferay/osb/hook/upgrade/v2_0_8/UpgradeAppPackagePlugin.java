@@ -29,7 +29,7 @@ public class UpgradeAppPackagePlugin extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		upgradeAppPackagePlugin();
 	}
@@ -42,8 +42,6 @@ public class UpgradeAppPackagePlugin extends UpgradeProcess {
 		runSQL("alter table OSB_AppPackagePlugin add column relengHash STRING");
 	}
 
-}
-
-*/
+	 */
 
 }

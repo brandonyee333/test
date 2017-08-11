@@ -41,7 +41,7 @@ public class UpgradeAssetReceiptLicense extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*protected DynamicQuery buildDynamicQuery() {
+	/*protected DynamicQuery buildDynamicQuery() {
 		Junction junction = RestrictionsFactoryUtil.conjunction();
 
 		Property typeProperty = PropertyFactoryUtil.forName(
@@ -79,8 +79,6 @@ public class UpgradeAssetReceiptLicense extends UpgradeProcess {
 		}
 	}
 
-}
-
-*/
+	 */
 
 }

@@ -29,7 +29,7 @@ public class UpgradeDeveloperEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		upgradeDeveloperEntry();
 	}
@@ -42,8 +42,6 @@ public class UpgradeDeveloperEntry extends UpgradeProcess {
 		runSQL("alter table OSB_DeveloperEntry add column countryId LONG");
 	}
 
-}
-
-*/
+	 */
 
 }

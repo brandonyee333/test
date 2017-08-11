@@ -29,7 +29,7 @@ public class UpgradeTicketAttachment extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateTicketAttachment();
 	}
@@ -45,8 +45,6 @@ public class UpgradeTicketAttachment extends UpgradeProcess {
 		runSQL("drop index IX_CD5BBA41 on OSB_TicketAttachment");
 	}
 
-}
-
-*/
+	 */
 
 }

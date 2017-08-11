@@ -29,7 +29,7 @@ public class Upgrade_20150721101423620_TicketAttachment extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20150721101423620L;
 	}
@@ -45,8 +45,6 @@ public class Upgrade_20150721101423620_TicketAttachment extends UpgradeProcess {
 				"replace(availableFileRepositoryIds, 'united-states', 'us-1')");
 	}
 
-}
-
-*/
+	 */
 
 }

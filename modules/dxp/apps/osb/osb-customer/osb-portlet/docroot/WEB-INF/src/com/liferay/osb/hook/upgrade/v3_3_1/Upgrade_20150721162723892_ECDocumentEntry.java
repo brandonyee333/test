@@ -41,7 +41,7 @@ public class Upgrade_20150721162723892_ECDocumentEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20150721162723892L;
 	}
@@ -92,8 +92,6 @@ public class Upgrade_20150721162723892_ECDocumentEntry extends UpgradeProcess {
 		}
 	}
 
-}
-
-*/
+	 */
 
 }

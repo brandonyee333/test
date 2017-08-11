@@ -29,7 +29,7 @@ public class Upgrade_20150617144450823_ReleaseNotes extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20150617144450823L;
 	}
@@ -41,8 +41,6 @@ public class Upgrade_20150617144450823_ReleaseNotes extends UpgradeProcess {
 				"varchar(20000)");
 	}
 
-}
-
-*/
+	 */
 
 }

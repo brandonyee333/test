@@ -29,7 +29,7 @@ public class UpgradeMarketplace extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateAppEntry();
 		updateAppVersion();
@@ -63,8 +63,6 @@ public class UpgradeMarketplace extends UpgradeProcess {
 		runSQL("update OSB_AppVersion set statusDate = createDate");
 	}
 
-}
-
-*/
+	 */
 
 }

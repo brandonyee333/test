@@ -50,7 +50,7 @@ public class Upgrade_20161121170428345_Expando extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20161121170428345L;
 	}
@@ -122,8 +122,6 @@ public class Upgrade_20161121170428345_Expando extends UpgradeProcess {
 		"hsCampaignName", "hsCampaignSource", "hsPreviousPagePath", "osbRegion"
 	};
 
-}
-
-*/
+	 */
 
 }

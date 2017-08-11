@@ -30,7 +30,7 @@ public class Upgrade_20141027180937731_AccountEnvironmentAttachment
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20141027180937731L;
 	}
@@ -42,8 +42,6 @@ public class Upgrade_20141027180937731_AccountEnvironmentAttachment
 				"fileSize LONG");
 	}
 
-}
-
-*/
+	 */
 
 }

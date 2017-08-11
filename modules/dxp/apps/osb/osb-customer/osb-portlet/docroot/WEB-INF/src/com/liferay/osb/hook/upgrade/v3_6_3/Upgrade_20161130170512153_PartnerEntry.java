@@ -29,7 +29,7 @@ public class Upgrade_20161130170512153_PartnerEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20161130170512153L;
 	}
@@ -47,8 +47,6 @@ public class Upgrade_20161130170512153_PartnerEntry extends UpgradeProcess {
 			"create index IX_B1E34FE4 on OSB_CorpProject (dossieraProjectKey)");
 	}
 
-}
-
-*/
+	 */
 
 }

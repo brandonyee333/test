@@ -29,7 +29,7 @@ public class Upgrade_20160517163112737_DeveloperEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20160517163112737L;
 	}
@@ -42,8 +42,6 @@ public class Upgrade_20160517163112737_DeveloperEntry extends UpgradeProcess {
 		runSQL("alter table OSB_DeveloperEntry add column website VARCHAR(75)");
 	}
 
-}
-
-*/
+	 */
 
 }

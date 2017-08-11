@@ -31,7 +31,7 @@ public class Upgrade_20150316165503668_TrainingLinkedUser
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20150316165503668L;
 	}
@@ -52,8 +52,6 @@ public class Upgrade_20150316165503668_TrainingLinkedUser
 				"(userId)");
 	}
 
-}
-
-*/
+	 */
 
 }

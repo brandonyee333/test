@@ -44,7 +44,7 @@ public class Upgrade_20170616160207742_AccountCustomer extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20170616160207742L;
 	}
@@ -119,8 +119,6 @@ public class Upgrade_20170616160207742_AccountCustomer extends UpgradeProcess {
 		}
 	}
 
-}
-
-*/
+	 */
 
 }

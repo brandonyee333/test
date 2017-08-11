@@ -29,7 +29,7 @@ public class Upgrade_20141208163052068_UserProfile extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20141208163052068L;
 	}
@@ -45,8 +45,6 @@ public class Upgrade_20141208163052068_UserProfile extends UpgradeProcess {
 				"'cnukvd100@gmail.com' where userProfileHistoryId = 46313415");
 	}
 
-}
-
-*/
+	 */
 
 }

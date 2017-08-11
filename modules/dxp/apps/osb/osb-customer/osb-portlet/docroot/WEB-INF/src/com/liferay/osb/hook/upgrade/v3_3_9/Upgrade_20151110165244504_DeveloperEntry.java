@@ -29,7 +29,7 @@ public class Upgrade_20151110165244504_DeveloperEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20151110165244504L;
 	}
@@ -41,8 +41,6 @@ public class Upgrade_20151110165244504_DeveloperEntry extends UpgradeProcess {
 				"'2116-01-01' where subscriptionExpirationDate is not null");
 	}
 
-}
-
-*/
+	 */
 
 }

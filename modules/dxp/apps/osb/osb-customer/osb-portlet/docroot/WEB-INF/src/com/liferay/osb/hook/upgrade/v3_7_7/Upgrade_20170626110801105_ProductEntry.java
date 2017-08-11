@@ -30,7 +30,7 @@ public class Upgrade_20170626110801105_ProductEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20170626110801105L;
 	}
@@ -48,8 +48,6 @@ public class Upgrade_20170626110801105_ProductEntry extends UpgradeProcess {
 					"Enterprise')");
 	}
 
-}
-
-*/
+	 */
 
 }

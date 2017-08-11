@@ -38,7 +38,7 @@ public class Upgrade_20141218102834000_AssetReceiptLicense
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20141218102834000L;
 	}
@@ -85,8 +85,6 @@ public class Upgrade_20141218102834000_AssetReceiptLicense
 		}
 	}
 
-}
-
-*/
+	 */
 
 }

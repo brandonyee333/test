@@ -30,7 +30,7 @@ public class Upgrade_20161117112922258_AccountEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20161117112922258L;
 	}
@@ -82,8 +82,6 @@ public class Upgrade_20161117112922258_AccountEntry extends UpgradeProcess {
 			"com.liferay.osb.model.AuditEntry.field");
 	}
 
-}
-
-*/
+	 */
 
 }

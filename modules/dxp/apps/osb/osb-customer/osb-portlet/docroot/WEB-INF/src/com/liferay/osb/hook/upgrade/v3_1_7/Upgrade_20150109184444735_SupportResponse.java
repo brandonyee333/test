@@ -34,7 +34,7 @@ public class Upgrade_20150109184444735_SupportResponse extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20150109184444735L;
 	}
@@ -74,8 +74,6 @@ public class Upgrade_20150109184444735_SupportResponse extends UpgradeProcess {
 				" where supportLevel = " + deprecatedSupportLevel);
 	}
 
-}
-
-*/
+	 */
 
 }

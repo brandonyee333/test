@@ -29,7 +29,7 @@ public class UpgradeAppEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateAppEntry();
 	}
@@ -40,8 +40,6 @@ public class UpgradeAppEntry extends UpgradeProcess {
 		runSQL("update OSB_AppEntry set statusVersionDate = statusDate");
 	}
 
-}
-
-*/
+	 */
 
 }

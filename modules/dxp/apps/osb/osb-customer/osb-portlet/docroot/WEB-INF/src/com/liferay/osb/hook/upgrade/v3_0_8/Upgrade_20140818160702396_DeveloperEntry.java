@@ -30,7 +30,7 @@ public class Upgrade_20140818160702396_DeveloperEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20140818160702396L;
 	}
@@ -58,8 +58,6 @@ public class Upgrade_20140818160702396_DeveloperEntry extends UpgradeProcess {
 				WorkflowConstants.STATUS_EXPIRED, false);
 	}
 
-}
-
-*/
+	 */
 
 }

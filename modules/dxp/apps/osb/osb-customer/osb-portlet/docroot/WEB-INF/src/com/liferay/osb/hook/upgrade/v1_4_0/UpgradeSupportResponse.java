@@ -29,7 +29,7 @@ public class UpgradeSupportResponse extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateSupportResponse();
 	}
@@ -46,8 +46,6 @@ public class UpgradeSupportResponse extends UpgradeProcess {
 		runSQL("update OSB_SupportResponse set supportLevel = 0");
 	}
 
-}
-
-*/
+	 */
 
 }

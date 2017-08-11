@@ -30,7 +30,7 @@ public class Upgrade_20140424155616603_SupportRegion extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20140424155616603L;
 	}
@@ -81,8 +81,6 @@ public class Upgrade_20140424155616603_SupportRegion extends UpgradeProcess {
 		createSupportRegion();
 	}
 
-}
-
-*/
+	 */
 
 }

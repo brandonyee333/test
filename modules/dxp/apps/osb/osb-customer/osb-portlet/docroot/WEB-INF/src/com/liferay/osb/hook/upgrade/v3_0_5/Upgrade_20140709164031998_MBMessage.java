@@ -43,7 +43,7 @@ public class Upgrade_20140709164031998_MBMessage extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20140709164031998L;
 	}
@@ -299,8 +299,6 @@ public class Upgrade_20140709164031998_MBMessage extends UpgradeProcess {
 	private static final long _MB_CATEGORY_DEVELOPER_PORTAL_DEVELOPERS_ID =
 		33575418;
 
-}
-
-*/
+	 */
 
 }

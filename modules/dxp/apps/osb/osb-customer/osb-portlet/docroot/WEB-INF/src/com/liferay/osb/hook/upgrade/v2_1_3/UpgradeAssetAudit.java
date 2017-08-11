@@ -30,7 +30,7 @@ public class UpgradeAssetAudit extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateAssetAudit();
 	}
@@ -51,8 +51,6 @@ public class UpgradeAssetAudit extends UpgradeProcess {
 		runSQL(sb.toString());
 	}
 
-}
-
-*/
+	 */
 
 }

@@ -29,7 +29,7 @@ public class Upgrade_20160115135320671_OfferingEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20160115135320671L;
 	}
@@ -39,8 +39,6 @@ public class Upgrade_20160115135320671_OfferingEntry extends UpgradeProcess {
 		runSQL("update OSB_OfferingEntry set processorCoresAllowed = 8");
 	}
 
-}
-
-*/
+	 */
 
 }

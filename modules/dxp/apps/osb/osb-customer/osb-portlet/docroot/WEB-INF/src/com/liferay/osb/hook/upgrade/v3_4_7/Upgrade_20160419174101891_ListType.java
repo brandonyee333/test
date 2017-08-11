@@ -30,7 +30,7 @@ public class Upgrade_20160419174101891_ListType extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20160419174101891L;
 	}
@@ -44,8 +44,6 @@ public class Upgrade_20160419174101891_ListType extends UpgradeProcess {
 			21002, "7", ProductEntry.class.getName() + ".portalMajorVersions");
 	}
 
-}
-
-*/
+	 */
 
 }

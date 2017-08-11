@@ -29,7 +29,7 @@ public class Upgrade_20161102150010569_TrainingEvent extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20161102150010569L;
 	}
@@ -61,8 +61,6 @@ public class Upgrade_20161102150010569_TrainingEvent extends UpgradeProcess {
 				"where portalMinorVersion = 22005");
 	}
 
-}
-
-*/
+	 */
 
 }

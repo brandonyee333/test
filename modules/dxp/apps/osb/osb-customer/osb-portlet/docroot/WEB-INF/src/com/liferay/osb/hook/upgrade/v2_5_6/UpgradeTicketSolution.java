@@ -30,7 +30,7 @@ public class UpgradeTicketSolution extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateTicketSolution();
 	}
@@ -49,8 +49,6 @@ public class UpgradeTicketSolution extends UpgradeProcess {
 				"status)");
 	}
 
-}
-
-*/
+	 */
 
 }

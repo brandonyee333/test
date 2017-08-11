@@ -30,7 +30,7 @@ public class Upgrade_20160915150633097_OfferingDefinition
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20160915150633097L;
 	}
@@ -104,8 +104,6 @@ public class Upgrade_20160915150633097_OfferingDefinition
 		}
 	}
 
-}
-
-*/
+	 */
 
 }

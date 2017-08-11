@@ -29,7 +29,7 @@ public class Upgrade_20161028115935722_AssetAttachment extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20161028115935722L;
 	}
@@ -39,8 +39,6 @@ public class Upgrade_20161028115935722_AssetAttachment extends UpgradeProcess {
 		runSQL("alter table OSB_AssetAttachment modify fileName VARCHAR(255)");
 	}
 
-}
-
-*/
+	 */
 
 }

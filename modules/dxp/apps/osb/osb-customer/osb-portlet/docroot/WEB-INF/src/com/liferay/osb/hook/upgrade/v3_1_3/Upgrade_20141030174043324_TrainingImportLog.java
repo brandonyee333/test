@@ -31,7 +31,7 @@ public class Upgrade_20141030174043324_TrainingImportLog
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20141030174043324L;
 	}
@@ -47,8 +47,6 @@ public class Upgrade_20141030174043324_TrainingImportLog
 		runSQL("create index IX_FE8EC56B on OSB_TrainingImportLog (type_)");
 	}
 
-}
-
-*/
+	 */
 
 }

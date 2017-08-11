@@ -29,7 +29,7 @@ public class Upgrade_20150807104817584_TickeAttachment extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20150807104817584L;
 	}
@@ -43,8 +43,6 @@ public class Upgrade_20150807104817584_TickeAttachment extends UpgradeProcess {
 		}
 	}
 
-}
-
-*/
+	 */
 
 }

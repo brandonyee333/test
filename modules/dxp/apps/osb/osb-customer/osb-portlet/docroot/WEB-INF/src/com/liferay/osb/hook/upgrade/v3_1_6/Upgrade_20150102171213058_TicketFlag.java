@@ -29,7 +29,7 @@ public class Upgrade_20150102171213058_TicketFlag extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20150102171213058L;
 	}
@@ -47,8 +47,6 @@ public class Upgrade_20150102171213058_TicketFlag extends UpgradeProcess {
 		runSQL("create index IX_A43C0D2 on OSB_TicketFlag (ticketEntryId)");
 	}
 
-}
-
-*/
+	 */
 
 }

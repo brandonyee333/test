@@ -29,7 +29,7 @@ public class Upgrade_20160510101437296_SalesPartnership extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20160510101437296L;
 	}
@@ -41,8 +41,6 @@ public class Upgrade_20160510101437296_SalesPartnership extends UpgradeProcess {
 		runSQL("drop table OSB_SalesPartnershipCountry");
 	}
 
-}
-
-*/
+	 */
 
 }

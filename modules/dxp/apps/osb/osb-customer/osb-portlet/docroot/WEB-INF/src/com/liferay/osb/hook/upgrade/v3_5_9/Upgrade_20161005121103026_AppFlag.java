@@ -30,7 +30,7 @@ public class Upgrade_20161005121103026_AppFlag extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20161005121103026L;
 	}
@@ -40,8 +40,6 @@ public class Upgrade_20161005121103026_AppFlag extends UpgradeProcess {
 		runSQL(AppFlagModelImpl.TABLE_SQL_CREATE);
 	}
 
-}
-
-*/
+	 */
 
 }

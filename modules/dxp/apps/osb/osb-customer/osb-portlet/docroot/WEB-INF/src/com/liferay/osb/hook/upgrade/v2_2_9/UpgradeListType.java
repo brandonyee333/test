@@ -29,7 +29,7 @@ public class UpgradeListType extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		upgradeListTypes();
 	}
@@ -38,8 +38,6 @@ public class UpgradeListType extends UpgradeProcess {
 		runSQL("update ListType set name = '6.2 EE' where listTypeId = 20080");
 	}
 
-}
-
-*/
+	 */
 
 }

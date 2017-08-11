@@ -29,7 +29,7 @@ public class Upgrade_20141027181038250_TicketAttachment extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20141027181038250L;
 	}
@@ -40,8 +40,6 @@ public class Upgrade_20141027181038250_TicketAttachment extends UpgradeProcess {
 			"alter table OSB_TicketAttachment change fileSize fileSize LONG");
 	}
 
-}
-
-*/
+	 */
 
 }

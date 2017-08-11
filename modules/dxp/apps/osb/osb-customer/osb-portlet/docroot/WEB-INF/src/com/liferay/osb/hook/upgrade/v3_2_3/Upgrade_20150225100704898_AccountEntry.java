@@ -29,7 +29,7 @@ public class Upgrade_20150225100704898_AccountEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20150225100704898L;
 	}
@@ -47,8 +47,6 @@ public class Upgrade_20150225100704898_AccountEntry extends UpgradeProcess {
 		runSQL("update OSB_AccountEntry set tier = 1 where tier = 0");
 	}
 
-}
-
-*/
+	 */
 
 }

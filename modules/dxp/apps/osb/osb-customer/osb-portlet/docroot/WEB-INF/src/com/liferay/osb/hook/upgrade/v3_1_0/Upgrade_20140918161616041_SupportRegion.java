@@ -29,7 +29,7 @@ public class Upgrade_20140918161616041_SupportRegion extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20140918161616041L;
 	}
@@ -73,8 +73,6 @@ public class Upgrade_20140918161616041_SupportRegion extends UpgradeProcess {
 				"where name = 'US'");
 	}
 
-}
-
-*/
+	 */
 
 }

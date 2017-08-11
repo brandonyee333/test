@@ -29,7 +29,7 @@ public class Upgrade_20150325162957223_TrainingCustomer extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20150325162957223L;
 	}
@@ -49,8 +49,6 @@ public class Upgrade_20150325162957223_TrainingCustomer extends UpgradeProcess {
 				"trainingCustomerId = 31476210");
 	}
 
-}
-
-*/
+	 */
 
 }

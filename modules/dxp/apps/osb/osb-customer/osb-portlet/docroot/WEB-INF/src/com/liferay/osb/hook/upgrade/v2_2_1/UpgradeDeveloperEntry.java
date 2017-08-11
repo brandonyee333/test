@@ -29,7 +29,7 @@ public class UpgradeDeveloperEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		upgradeDeveloperEntry();
 	}
@@ -44,8 +44,6 @@ public class UpgradeDeveloperEntry extends UpgradeProcess {
 				"add column paymentEmailAddress STRING");
 	}
 
-}
-
-*/
+	 */
 
 }

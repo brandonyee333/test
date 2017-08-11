@@ -22,7 +22,7 @@ package com.liferay.osb.hook.upgrade;
  */
 public class OSBUpgradeImpl {// extends BaseUpgradeImpl {
 
-/* TODO update custom upgrade class
+	/* TODO update custom upgrade class
 	@Override
 	public int[] getDeveloperBuildNumbers(String servletContextName) {
 
@@ -102,5 +102,6 @@ public class OSBUpgradeImpl {// extends BaseUpgradeImpl {
 	private static final String _EXPANDO_COLUMN_NAME = "runTime";
 
 	private static Log _log = LogFactoryUtil.getLog(OSBUpgradeImpl.class);
-*/
+	 */
+
 }

@@ -29,7 +29,7 @@ public class UpgradeTicketEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateTicketEntry();
 	}
@@ -38,8 +38,6 @@ public class UpgradeTicketEntry extends UpgradeProcess {
 		runSQL("alter table OSB_TicketEntry add column envName STRING");
 	}
 
-}
-
-*/
+	 */
 
 }

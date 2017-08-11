@@ -29,7 +29,7 @@ public class Upgrade_20160607171721488_AppVersion extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20160607171721488L;
 	}
@@ -43,8 +43,6 @@ public class Upgrade_20160607171721488_AppVersion extends UpgradeProcess {
 		runSQL("alter table OSB_AppVersion add column orderURL longtext");
 	}
 
-}
-
-*/
+	 */
 
 }

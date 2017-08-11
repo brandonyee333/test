@@ -29,7 +29,7 @@ public class UpgradeAppPricing extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateAppPricing();
 	}
@@ -42,8 +42,6 @@ public class UpgradeAppPricing extends UpgradeProcess {
 		runSQL("alter table OSB_AppPricing add column supportPrice DOUBLE");
 	}
 
-}
-
-*/
+	 */
 
 }

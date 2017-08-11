@@ -29,7 +29,7 @@ public class UpgradeAppPricing extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		upgradeAppPricing();
 	}
@@ -56,8 +56,6 @@ public class UpgradeAppPricing extends UpgradeProcess {
 		runSQL("alter table OSB_AppPricing drop column supportPrice");
 	}
 
-}
-
-*/
+	 */
 
 }

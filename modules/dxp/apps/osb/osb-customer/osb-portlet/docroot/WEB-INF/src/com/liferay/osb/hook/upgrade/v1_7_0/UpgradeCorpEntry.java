@@ -49,7 +49,7 @@ public class UpgradeCorpEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateCorpEntries();
 	}
@@ -114,8 +114,6 @@ public class UpgradeCorpEntry extends UpgradeProcess {
 		CorpEntryLocalServiceUtil.updateCorpEntry(corpEntry);
 	}
 
-}
-
-*/
+	 */
 
 }

@@ -38,7 +38,7 @@ public class UpgradeTicketAttachment extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateTicketAttachmentIndex();
 		updateTicketAttachments();
@@ -85,8 +85,6 @@ public class UpgradeTicketAttachment extends UpgradeProcess {
 		}
 	}
 
-}
-
-*/
+	 */
 
 }

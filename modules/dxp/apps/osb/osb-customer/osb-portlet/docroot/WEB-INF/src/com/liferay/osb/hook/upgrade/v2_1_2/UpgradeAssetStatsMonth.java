@@ -29,7 +29,7 @@ public class UpgradeAssetStatsMonth extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateAssetStatsMonth();
 	}
@@ -40,8 +40,6 @@ public class UpgradeAssetStatsMonth extends UpgradeProcess {
 				"currencyCodeRevenues VARCHAR(500)");
 	}
 
-}
-
-*/
+	 */
 
 }

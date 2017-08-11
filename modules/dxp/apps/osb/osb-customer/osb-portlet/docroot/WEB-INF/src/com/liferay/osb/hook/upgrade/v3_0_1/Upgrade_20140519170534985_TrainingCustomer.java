@@ -29,7 +29,7 @@ public class Upgrade_20140519170534985_TrainingCustomer extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20140519170534985L;
 	}
@@ -54,8 +54,6 @@ public class Upgrade_20140519170534985_TrainingCustomer extends UpgradeProcess {
 					"userProfileHistoryId = 37707228");
 	}
 
-}
-
-*/
+	 */
 
 }

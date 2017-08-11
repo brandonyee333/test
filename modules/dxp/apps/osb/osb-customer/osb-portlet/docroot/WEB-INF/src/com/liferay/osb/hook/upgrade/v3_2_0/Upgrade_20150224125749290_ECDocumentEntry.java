@@ -29,7 +29,7 @@ public class Upgrade_20150224125749290_ECDocumentEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20150224125749290L;
 	}
@@ -50,8 +50,6 @@ public class Upgrade_20150224125749290_ECDocumentEntry extends UpgradeProcess {
 				"where type_ = 1");
 	}
 
-}
-
-*/
+	 */
 
 }

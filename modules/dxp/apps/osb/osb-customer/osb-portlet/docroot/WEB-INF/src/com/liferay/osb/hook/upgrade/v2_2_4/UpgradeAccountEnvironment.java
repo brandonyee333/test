@@ -30,7 +30,7 @@ public class UpgradeAccountEnvironment extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateAccountEnvironment();
 	}
@@ -50,8 +50,6 @@ public class UpgradeAccountEnvironment extends UpgradeProcess {
 				"(accountEntryId, productEntryId)");
 	}
 
-}
-
-*/
+	 */
 
 }

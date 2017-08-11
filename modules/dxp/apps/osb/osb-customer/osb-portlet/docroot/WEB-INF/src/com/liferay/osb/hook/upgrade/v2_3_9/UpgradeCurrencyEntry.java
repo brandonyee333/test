@@ -30,7 +30,7 @@ public class UpgradeCurrencyEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		upgradeCurrencyEntry();
 	}
@@ -44,8 +44,6 @@ public class UpgradeCurrencyEntry extends UpgradeProcess {
 		runSQL("alter table OSB_CurrencyEntry add marketplaceMinPrice DOUBLE");
 	}
 
-}
-
-*/
+	 */
 
 }

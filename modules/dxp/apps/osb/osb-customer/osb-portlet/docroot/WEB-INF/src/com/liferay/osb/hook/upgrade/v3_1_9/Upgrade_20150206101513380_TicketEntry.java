@@ -29,7 +29,7 @@ public class Upgrade_20150206101513380_TicketEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20150206101513380L;
 	}
@@ -43,8 +43,6 @@ public class Upgrade_20150206101513380_TicketEntry extends UpgradeProcess {
 		runSQL("create index IX_E0167256 on OSB_TicketEntry (modifiedDate)");
 	}
 
-}
-
-*/
+	 */
 
 }

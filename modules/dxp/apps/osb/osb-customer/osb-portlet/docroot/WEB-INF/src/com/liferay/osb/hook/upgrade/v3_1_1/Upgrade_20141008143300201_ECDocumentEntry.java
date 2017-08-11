@@ -30,7 +30,7 @@ public class Upgrade_20141008143300201_ECDocumentEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20141008143300201L;
 	}
@@ -52,8 +52,6 @@ public class Upgrade_20141008143300201_ECDocumentEntry extends UpgradeProcess {
 
 	private static final long _MALFORMED_EC_DOCUMENT_ENTRY_ID = 124003;
 
-}
-
-*/
+	 */
 
 }

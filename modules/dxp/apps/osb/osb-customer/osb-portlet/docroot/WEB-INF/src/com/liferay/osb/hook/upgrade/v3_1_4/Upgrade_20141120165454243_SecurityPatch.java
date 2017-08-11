@@ -30,7 +30,7 @@ public class Upgrade_20141120165454243_SecurityPatch extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20141120165454243L;
 	}
@@ -49,8 +49,6 @@ public class Upgrade_20141120165454243_SecurityPatch extends UpgradeProcess {
 		runSQL("create index IX_36A4B1D8 on OSB_SecurityPatch (portletId)");
 	}
 
-}
-
-*/
+	 */
 
 }

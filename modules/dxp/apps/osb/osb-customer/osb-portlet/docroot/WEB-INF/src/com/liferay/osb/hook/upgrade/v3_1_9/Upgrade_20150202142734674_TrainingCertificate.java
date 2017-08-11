@@ -31,7 +31,7 @@ public class Upgrade_20150202142734674_TrainingCertificate
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20150202142734674L;
 	}
@@ -58,8 +58,6 @@ public class Upgrade_20150202142734674_TrainingCertificate
 					"44998419, 44998423, 44998433)");
 	}
 
-}
-
-*/
+	 */
 
 }

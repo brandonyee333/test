@@ -31,7 +31,7 @@ public class Upgrade_20151127163927683_ListType extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20151127163927683L;
 	}
@@ -90,8 +90,6 @@ public class Upgrade_20151127163927683_ListType extends UpgradeProcess {
 			TicketEntry.class.getName() + ".field");
 	}
 
-}
-
-*/
+	 */
 
 }

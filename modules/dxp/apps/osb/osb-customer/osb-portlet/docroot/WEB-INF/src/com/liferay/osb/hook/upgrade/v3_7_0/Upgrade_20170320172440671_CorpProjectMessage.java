@@ -30,7 +30,7 @@ public class Upgrade_20170320172440671_CorpProjectMessage
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20170320172440671L;
 	}
@@ -44,8 +44,6 @@ public class Upgrade_20170320172440671_CorpProjectMessage
 		runSQL("create index IX_73BC3756 on OSB_CorpProjectMessage (type_)");
 	}
 
-}
-
-*/
+	 */
 
 }

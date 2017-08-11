@@ -29,7 +29,7 @@ public class UpgradeTrainingExamResultSection extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateTrainingExamResultSection();
 	}
@@ -67,8 +67,6 @@ public class UpgradeTrainingExamResultSection extends UpgradeProcess {
 		}
 	}
 
-}
-
-*/
+	 */
 
 }

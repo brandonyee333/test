@@ -49,7 +49,7 @@ public class Upgrade_20150407162519339_Expando extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20150407162519339L;
 	}
@@ -106,8 +106,6 @@ public class Upgrade_20150407162519339_Expando extends UpgradeProcess {
 
 	private static final String _EXPANDO_COLUMN_NAME = "osbDisplayCertificates";
 
-}
-
-*/
+	 */
 
 }

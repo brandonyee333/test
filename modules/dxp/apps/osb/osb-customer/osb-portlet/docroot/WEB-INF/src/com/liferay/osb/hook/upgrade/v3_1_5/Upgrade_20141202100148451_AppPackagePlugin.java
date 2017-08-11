@@ -37,7 +37,7 @@ public class Upgrade_20141202100148451_AppPackagePlugin extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20141202100148451L;
 	}
@@ -77,8 +77,6 @@ public class Upgrade_20141202100148451_AppPackagePlugin extends UpgradeProcess {
 		}
 	}
 
-}
-
-*/
+	 */
 
 }

@@ -29,7 +29,7 @@ public class UpgradeUserProfile extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateUserProfile();
 	}
@@ -44,8 +44,6 @@ public class UpgradeUserProfile extends UpgradeProcess {
 
 	private static final long[] _USER_PROFILE_IDS = {31476208, 36271003};
 
-}
-
-*/
+	 */
 
 }

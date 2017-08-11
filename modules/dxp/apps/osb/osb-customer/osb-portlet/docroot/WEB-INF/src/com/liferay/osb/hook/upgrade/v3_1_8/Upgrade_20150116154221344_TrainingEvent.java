@@ -29,7 +29,7 @@ public class Upgrade_20150116154221344_TrainingEvent extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20150116154221344L;
 	}
@@ -45,8 +45,6 @@ public class Upgrade_20150116154221344_TrainingEvent extends UpgradeProcess {
 		runSQL("update OSB_TrainingEvent set localizedSlides = 1");
 	}
 
-}
-
-*/
+	 */
 
 }

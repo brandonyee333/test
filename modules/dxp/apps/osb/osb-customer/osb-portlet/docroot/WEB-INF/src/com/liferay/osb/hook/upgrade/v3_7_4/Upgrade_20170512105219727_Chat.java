@@ -29,7 +29,7 @@ public class Upgrade_20170512105219727_Chat extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20170512105219727L;
 	}
@@ -45,8 +45,6 @@ public class Upgrade_20170512105219727_Chat extends UpgradeProcess {
 		}
 	}
 
-}
-
-*/
+	 */
 
 }

@@ -30,7 +30,7 @@ public class UpgradeAccountAttachment extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateAccountAttachment();
 	}
@@ -49,8 +49,6 @@ public class UpgradeAccountAttachment extends UpgradeProcess {
 				"(accountEntryId, fileName, type_)");
 	}
 
-}
-
-*/
+	 */
 
 }

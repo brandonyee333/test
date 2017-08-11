@@ -29,7 +29,7 @@ public class Upgrade_20141001094701602_TrainingEvent extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20141001094701602L;
 	}
@@ -47,8 +47,6 @@ public class Upgrade_20141001094701602_TrainingEvent extends UpgradeProcess {
 		runSQL("alter table OSB_TrainingEvent add emailAddress VARCHAR(75)");
 	}
 
-}
-
-*/
+	 */
 
 }

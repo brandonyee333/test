@@ -29,7 +29,7 @@ public class UpgradeSupportWorker extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		upgradeSupportWorkerComponent();
 
@@ -50,8 +50,6 @@ public class UpgradeSupportWorker extends UpgradeProcess {
 					"(select supportWorkerId from OSB_SupportWorker)");
 	}
 
-}
-
-*/
+	 */
 
 }

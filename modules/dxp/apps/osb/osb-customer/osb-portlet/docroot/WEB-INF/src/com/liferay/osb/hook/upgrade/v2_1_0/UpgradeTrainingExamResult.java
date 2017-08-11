@@ -29,7 +29,7 @@ public class UpgradeTrainingExamResult extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateTrainingExamResult();
 	}
@@ -44,8 +44,6 @@ public class UpgradeTrainingExamResult extends UpgradeProcess {
 		runSQL("alter table OSB_TrainingExamResult drop column userId");
 	}
 
-}
-
-*/
+	 */
 
 }

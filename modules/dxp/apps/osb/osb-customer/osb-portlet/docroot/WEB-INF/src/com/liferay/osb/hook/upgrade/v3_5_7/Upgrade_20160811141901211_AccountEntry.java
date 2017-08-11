@@ -51,7 +51,7 @@ public class Upgrade_20160811141901211_AccountEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20160811141901211L;
 	}
@@ -212,8 +212,6 @@ public class Upgrade_20160811141901211_AccountEntry extends UpgradeProcess {
 
 	private static final long _SUPPORT_REGION_NOT_AVAILABLE_ID = 78237012;
 
-}
-
-*/
+	 */
 
 }

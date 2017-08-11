@@ -44,7 +44,7 @@ public class Upgrade_20160629110621057_Expando extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20160629110621057L;
 	}
@@ -107,8 +107,6 @@ public class Upgrade_20160629110621057_Expando extends UpgradeProcess {
 	private static Log _log = LogFactoryUtil.getLog(
 		Upgrade_20160629110621057_Expando.class);
 
-}
-
-*/
+	 */
 
 }

@@ -40,7 +40,7 @@ public class Upgrade_20140625121344898_CorpProject extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20140625121344898L;
 	}
@@ -306,8 +306,6 @@ public class Upgrade_20140625121344898_CorpProject extends UpgradeProcess {
 		}
 	}
 
-}
-
-*/
+	 */
 
 }

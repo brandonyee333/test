@@ -29,7 +29,7 @@ public class UpgradeAssetReceiptLicense extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		upgradeAssetReceiptLicense();
 	}
@@ -50,8 +50,6 @@ public class UpgradeAssetReceiptLicense extends UpgradeProcess {
 				"(assetReceiptId, endDate)");
 	}
 
-}
-
-*/
+	 */
 
 }

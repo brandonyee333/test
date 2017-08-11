@@ -29,7 +29,7 @@ public class UpgradeTrainingCertificateTemplate extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateTrainingCertificateTemplate();
 	}
@@ -50,8 +50,6 @@ public class UpgradeTrainingCertificateTemplate extends UpgradeProcess {
 		runSQL("update OSB_TrainingCertificateTemplate set type_ = 0");
 	}
 
-}
-
-*/
+	 */
 
 }

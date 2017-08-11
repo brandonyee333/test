@@ -44,7 +44,7 @@ public class UpgradeTicketAttachment extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*protected void deleteTicketAttachments(long ticketEntryId)
+	/*protected void deleteTicketAttachments(long ticketEntryId)
 		throws PortalException {
 
 		TicketAttachment patchLevelTicketAttachment =
@@ -135,8 +135,6 @@ public class UpgradeTicketAttachment extends UpgradeProcess {
 		}
 	}
 
-}
-
-*/
+	 */
 
 }

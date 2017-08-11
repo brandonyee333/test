@@ -29,7 +29,7 @@ public class UpgradeAppVersion extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateAppVersion();
 	}
@@ -48,8 +48,6 @@ public class UpgradeAppVersion extends UpgradeProcess {
 		runSQL("alter table OSB_AppVersion drop column licenseSupportPercent");
 	}
 
-}
-
-*/
+	 */
 
 }

@@ -29,7 +29,7 @@ public class UpgradeECDocumentItem extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		upgradeECDocumentItem();
 	}
@@ -40,8 +40,6 @@ public class UpgradeECDocumentItem extends UpgradeProcess {
 				"(ecDocumentEntryId, classNameId)");
 	}
 
-}
-
-*/
+	 */
 
 }

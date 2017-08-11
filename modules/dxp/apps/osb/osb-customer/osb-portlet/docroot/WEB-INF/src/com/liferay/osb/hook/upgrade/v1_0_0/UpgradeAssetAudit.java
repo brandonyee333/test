@@ -29,15 +29,13 @@ public class UpgradeAssetAudit extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		runSQL("delete from OSB_AssetAudit where type_ = " + _TYPE_SYSTEM);
 	}
 
 	private static final int _TYPE_SYSTEM = 1;
 
-}
-
-*/
+	 */
 
 }

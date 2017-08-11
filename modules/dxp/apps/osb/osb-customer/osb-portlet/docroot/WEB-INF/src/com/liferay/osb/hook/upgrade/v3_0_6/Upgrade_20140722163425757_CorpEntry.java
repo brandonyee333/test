@@ -33,7 +33,7 @@ public class Upgrade_20140722163425757_CorpEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20140722163425757L;
 	}
@@ -89,8 +89,6 @@ public class Upgrade_20140722163425757_CorpEntry extends UpgradeProcess {
 		runSQL(sb.toString());
 	}
 
-}
-
-*/
+	 */
 
 }

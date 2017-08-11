@@ -29,7 +29,7 @@ public class Upgrade_20160112110226150_TicketFeedback extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20160112110226150L;
 	}
@@ -45,8 +45,6 @@ public class Upgrade_20160112110226150_TicketFeedback extends UpgradeProcess {
 		runSQL("update OSB_TicketFeedback set satisfied = 3");
 	}
 
-}
-
-*/
+	 */
 
 }

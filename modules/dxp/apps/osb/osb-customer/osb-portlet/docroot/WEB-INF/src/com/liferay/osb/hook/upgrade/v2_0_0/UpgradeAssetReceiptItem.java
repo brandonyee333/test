@@ -29,7 +29,7 @@ public class UpgradeAssetReceiptItem extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateAssetReceiptItem();
 		updateAssetReceiptLicense();
@@ -60,8 +60,6 @@ public class UpgradeAssetReceiptItem extends UpgradeProcess {
 		runSQL("update OSB_AssetReceiptLicense set startDate = createDate");
 	}
 
-}
-
-*/
+	 */
 
 }

@@ -29,7 +29,7 @@ public class Upgrade_20160203171140535_OfferingEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20160203171140535L;
 	}
@@ -43,8 +43,6 @@ public class Upgrade_20160203171140535_OfferingEntry extends UpgradeProcess {
 		runSQL("update OSB_OfferingEntry set instanceSize = 1");
 	}
 
-}
-
-*/
+	 */
 
 }

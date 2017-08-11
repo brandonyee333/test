@@ -29,13 +29,11 @@ public class UpgradeSearchFilter extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		runSQL("create index IX_889263E1 on OSB_SearchFilter (userId)");
 	}
 
-}
-
-*/
+	 */
 
 }

@@ -35,7 +35,7 @@ public class Upgrade_20160812101343680_SupportResponse extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20160812101343680L;
 	}
@@ -109,8 +109,6 @@ public class Upgrade_20160812101343680_SupportResponse extends UpgradeProcess {
 
 	private static final long _SUPPORT_RESPONSE_SILVER_ID = 77672086;
 
-}
-
-*/
+	 */
 
 }

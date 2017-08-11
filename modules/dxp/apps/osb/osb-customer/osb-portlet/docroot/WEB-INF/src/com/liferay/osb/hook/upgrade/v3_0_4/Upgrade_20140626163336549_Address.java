@@ -41,7 +41,7 @@ public class Upgrade_20140626163336549_Address extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*public Address addAddress(
+	/*public Address addAddress(
 			long userId, String userName, String className, long classPK,
 			long countryId) {
 
@@ -94,8 +94,6 @@ public class Upgrade_20140626163336549_Address extends UpgradeProcess {
 		}
 	}
 
-}
-
-*/
+	 */
 
 }

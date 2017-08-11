@@ -29,7 +29,7 @@ public class UpgradeTrainingCertificate extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateTrainingCertificate();
 	}
@@ -106,8 +106,6 @@ public class UpgradeTrainingCertificate extends UpgradeProcess {
 		"140203614100109", "140208614100116", "140210614100117"
 	};
 
-}
-
-*/
+	 */
 
 }

@@ -30,7 +30,7 @@ public class Upgrade_20160419113858448_OfferingBundle extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 	}
 
-/*@Override
+	/*@Override
 	public long getTimestamp() {
 		return 20160419113858448L;
 	}
@@ -53,8 +53,6 @@ public class Upgrade_20160419113858448_OfferingBundle extends UpgradeProcess {
 					"(offeringDefinitionId)");
 	}
 
-}
-
-*/
+	 */
 
 }
