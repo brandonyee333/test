@@ -91,7 +91,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 
 <br />
 
-<div class="aui-helper-clearfix">
+<div class="clearfix">
 	<liferay-util:include page="/support/2/common/eosl_environment_liferay.jsp" servletContext="<%= application %>">
 		<portlet:param name="envLFR" value="<%= String.valueOf(toEnvLFR) %>" />
 		<portlet:param name="idPrefix" value="supportUpgradeMessageDisplay" />
@@ -108,16 +108,18 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 	%>
 
 	<div class="aui-w45 fl">
-		<span class="section-heading"><liferay-ui:message key="from-liferay-version" />:</span>
+		<div class="section-heading">
+			<liferay-ui:message key="from-liferay-version" />:
 
-		<c:if test="<%= !productEntry.isDigitalEnterprise() %>">
-			<liferay-ui:icon-help message="please-update-this-field-from-the-above-lr-field-under-environment-configuration" />
-		</c:if>
+			<c:if test="<%= !productEntry.isDigitalEnterprise() %>">
+				<liferay-ui:icon-help message="please-update-this-field-from-the-above-lr-field-under-environment-configuration" />
+			</c:if>
+		</div>
 
 		<c:choose>
 			<c:when test="<%= productEntry.isDigitalEnterprise() %>">
-				<select id="<portlet:namespace />fromEnvLFR" name="<portlet:namespace />envLFR" onChange="<portlet:namespace />updateSupportMessage(this.value, 'Upgrade');">
-					<option value="0"></option>
+				<aui:select id="<portlet:namespace />fromEnvLFR" name="<portlet:namespace />envLFR" onChange="<portlet:namespace />updateSupportMessage(this.value, 'Upgrade');">
+					<aui:option value="0" />
 
 					<%
 					String previousNamePrefix = StringPool.BLANK;
@@ -125,38 +127,40 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 					for (ListType envLFRType : envLFRTypes) {
 					%>
 
-						<option <%= (envLFRType.getListTypeId() == toEnvLFR) ? "selected" : "" %> value="<%= envLFRType.getListTypeId() %>"><%= LanguageUtil.get(pageContext, envLFRType.getName()) %></option>
+						<aui:option label="<%= LanguageUtil.get(pageContext, envLFRType.getName()) %>" selected="<%= envLFRType.getListTypeId() == toEnvLFR %>" value="<%= envLFRType.getListTypeId() %>" />
 
 					<%
 					}
 					%>
 
-				</select>
+				</aui:select>
 			</c:when>
 			<c:otherwise>
-				<select disabled="disabled" id="<portlet:namespace />fromEnvLFR">
-					<option><%= LanguageUtil.get(pageContext, TicketEntryConstants.getEnvLabel(envLFR)) %><%= limited ? " (" + LanguageUtil.get(pageContext, "limited") + ")" : StringPool.BLANK %></option>
-				</select>
+				<aui:select disabled="disabled" id="<portlet:namespace />fromEnvLFR">
+					<aui:option label="<%= LanguageUtil.get(pageContext, TicketEntryConstants.getEnvLabel(envLFR)) %><%= limited ? " (" + LanguageUtil.get(pageContext, "limited") + ")" : StringPool.BLANK %>" />
+				</aui:select>
 			</c:otherwise>
 		</c:choose>
 	</div>
 
 	<div class="aui-w45 fr">
-		<span class="section-heading"><liferay-ui:message key="to-liferay-version" />:</span>
+		<div class="section-heading">
+			<liferay-ui:message key="to-liferay-version" />:
 
-		<c:if test="<%= productEntry.isDigitalEnterprise() %>">
-			<liferay-ui:icon-help message="please-update-this-field-from-the-above-lr-field-under-environment-configuration" />
-		</c:if>
+			<c:if test="<%= productEntry.isDigitalEnterprise() %>">
+				<liferay-ui:icon-help message="please-update-this-field-from-the-above-lr-field-under-environment-configuration" />
+			</c:if>
+		</div>
 
 		<c:choose>
 			<c:when test="<%= productEntry.isDigitalEnterprise() %>">
-				<select disabled="disabled" id="<portlet:namespace />toEnvLFR">
-					<option><%= LanguageUtil.get(pageContext, TicketEntryConstants.getEnvLabel(envLFR)) %><%= limited ? " (" + LanguageUtil.get(pageContext, "limited") + ")" : StringPool.BLANK %></option>
-				</select>
+				<aui:select disabled="<%= true %>" id="<portlet:namespace />toEnvLFR">
+					<aui:option label="<%= LanguageUtil.get(pageContext, TicketEntryConstants.getEnvLabel(envLFR)) %><%= limited ? " (" + LanguageUtil.get(pageContext, "limited") + ")" : StringPool.BLANK %>" />
+				</aui:select>
 			</c:when>
 			<c:otherwise>
-				<select id="<portlet:namespace />toEnvLFR" name="<portlet:namespace />toEnvLFR" onChange="<portlet:namespace />updateSupportMessage(this.value, 'Upgrade');">
-					<option value="0"></option>
+				<aui:select id="<portlet:namespace />toEnvLFR" name="<portlet:namespace />toEnvLFR" onChange="<portlet:namespace />updateSupportMessage(this.value, 'Upgrade');">
+					<aui:option value="0" />
 
 					<c:if test="<%= TicketEntryConstants.getEnvLabel(envLFR) != TicketEntryConstants.NOT_AVAILABLE %>">
 
@@ -185,10 +189,10 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 
 							<c:if test="<%= envLFRType.getListTypeId() > envLFR %>">
 								<c:if test="<%= Validator.isNotNull(previousNamePrefix) && !previousNamePrefix.equals(namePrefix) %>">
-									<option disabled>--------</option>
+									<aui:option disabled="<%= true %>" />
 								</c:if>
 
-								<option <%= (envLFRType.getListTypeId() == toEnvLFR) ? "selected" : "" %> value="<%= envLFRType.getListTypeId() %>"><%= LanguageUtil.get(pageContext, envLFRType.getName()) %><%= toEnvLFRLimited ? " (" + LanguageUtil.get(pageContext, "limited") + ")" : StringPool.BLANK %></option>
+								<aui:option label="<%= LanguageUtil.get(pageContext, envLFRType.getName()) %><%= toEnvLFRLimited ? " (" + LanguageUtil.get(pageContext, "limited") + ")" : StringPool.BLANK %>" selected="<%= envLFRType.getListTypeId() == toEnvLFR %>" value="<%= envLFRType.getListTypeId() %>" />
 							</c:if>
 
 						<%
@@ -197,7 +201,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 						%>
 
 					</c:if>
-				</select>
+				</aui:select>
 			</c:otherwise>
 		</c:choose>
 	</div>
@@ -209,20 +213,20 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 	</h2>
 
 	<div>
-		<select id="<portlet:namespace />docLibPersistence" name="<portlet:namespace />docLibPersistence">
-			<option value="0"></option>
+		<aui:select id="<portlet:namespace />docLibPersistence" name="<portlet:namespace />docLibPersistence">
+			<aui:option value="0" />
 
 			<%
 			for (int curDocLibPersistence : TicketEntryConstants.DOC_LIB_PERSISTENCES) {
 			%>
 
-				<option <%= (curDocLibPersistence == docLibPersistence) ? "selected" : StringPool.BLANK %> value="<%= curDocLibPersistence %>"><%= LanguageUtil.get(request, TicketEntryConstants.getDocLibPersistenceLabel(curDocLibPersistence)) %></option>
+				<aui:option label="<%= LanguageUtil.get(request, TicketEntryConstants.getDocLibPersistenceLabel(curDocLibPersistence)) %>" selected="<%= curDocLibPersistence == docLibPersistence %>" value="<%= curDocLibPersistence %>" />
 
 			<%
 			}
 			%>
 
-		</select>
+		</aui:select>
 	</div>
 </div>
 
@@ -247,7 +251,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 
 		<liferay-util:include page="/support/2/common/ticket_attachment_upload.jsp" servletContext="<%= application %>">
 			<liferay-util:param name="confirm" value="<%= String.valueOf(Boolean.TRUE) %>" />
-			<liferay-util:param name="cssClass" value="aui-helper-clearfix file-container" />
+			<liferay-util:param name="cssClass" value="clearfix file-container" />
 			<liferay-util:param name="kBaseArticleId" value="33142855" />
 			<liferay-util:param name="label" value="new-liferay-server" />
 			<liferay-util:param name="ticketAttachmentId" value="<%= String.valueOf(toPortalExtTicketAttachmentId) %>" />
@@ -262,7 +266,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 
 		<liferay-util:include page="/support/2/common/ticket_attachment_upload.jsp" servletContext="<%= application %>">
 			<liferay-util:param name="confirm" value="<%= String.valueOf(Boolean.TRUE) %>" />
-			<liferay-util:param name="cssClass" value="aui-helper-clearfix file-container" />
+			<liferay-util:param name="cssClass" value="clearfix file-container" />
 			<liferay-util:param name="kBaseArticleId" value="33142855" />
 			<liferay-util:param name="label" value="new-liferay-server" />
 			<liferay-util:param name="ticketAttachmentId" value="<%= String.valueOf(toPatchLevelTicketAttachmentId) %>" />
@@ -277,7 +281,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 	</h2>
 
 	<liferay-util:include page="/support/2/common/ticket_attachment_upload.jsp" servletContext="<%= application %>">
-		<liferay-util:param name="cssClass" value="aui-helper-clearfix file-container" />
+		<liferay-util:param name="cssClass" value="clearfix file-container" />
 		<liferay-util:param name="label" value="log-file-or-zip-file" />
 		<liferay-util:param name="ticketAttachmentId" value="<%= String.valueOf(serverLogTicketAttachmentId) %>" />
 		<liferay-util:param name="ticketAttachmentType" value="<%= String.valueOf(TicketAttachmentConstants.TYPE_SERVER_LOG) %>" />

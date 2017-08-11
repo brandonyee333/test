@@ -25,7 +25,7 @@ long socialOfficePluginTicketAttachmentId = ParamUtil.getLong(request, "socialOf
 		<liferay-ui:message key="please-provide-a-copy-of-the-social-office-plugin" />
 	</h2>
 
-	<div class="aui-helper-clearfix">
+	<div class="clearfix">
 		<liferay-util:include page="/support/2/common/ticket_attachment_upload.jsp" servletContext="<%= application %>">
 			<liferay-util:param name="edit" value="<%= String.valueOf(Boolean.TRUE) %>" />
 			<liferay-util:param name="label" value="social-office-plugin" />

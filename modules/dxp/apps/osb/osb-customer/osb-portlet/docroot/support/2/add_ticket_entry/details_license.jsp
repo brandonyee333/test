@@ -42,12 +42,12 @@ String additionalComments = ParamUtil.getString(request, "additionalComments");
 
 <br />
 
-<div class="aui-helper-clearfix">
+<div class="clearfix">
 	<div class="aui-w45 fl">
 		<span class="section-heading"><liferay-ui:message key="type-of-key" />:</span>
 
-		<select data-field-required-status="<%= false %>" field-required-message="<%= HtmlUtil.escapeAttribute(LanguageUtil.format(pageContext, "invalid-value-provided-for-x", "type-of-key")) %>" name="<portlet:namespace />type">
-			<option value="0"></option>
+		<aui:select data-field-required-status="<%= false %>" field-required-message="<%= HtmlUtil.escapeAttribute(LanguageUtil.format(pageContext, "invalid-value-provided-for-x", "type-of-key")) %>" name="<portlet:namespace />type">
+			<aui:option value="0" />
 
 			<%
 			int[] types = TicketEntryConstants.getLicenseTypes();
@@ -55,20 +55,20 @@ String additionalComments = ParamUtil.getString(request, "additionalComments");
 			for (int curType : types) {
 			%>
 
-				<option <%= (curType == type) ? "selected" : "" %> value="<%= curType %>"><%= LanguageUtil.get(pageContext, TicketEntryConstants.getLicenseTypeLabel(curType)) %></option>
+				<aui:option label="<%= LanguageUtil.get(pageContext, TicketEntryConstants.getLicenseTypeLabel(curType)) %>" selected="<%= curType == type %>" value="<%= curType %>" />
 
 			<%
 			}
 			%>
 
-		</select>
+		</aui:select>
 	</div>
 
 	<div class="aui-w45 fr">
-		<span class="section-heading"><liferay-ui:message key="purpose" />:</span>
+		<div class="section-heading"><liferay-ui:message key="purpose" />:</div>
 
-		<select data-field-required-status="<%= false %>" field-required-message="<%= HtmlUtil.escapeAttribute(LanguageUtil.format(pageContext, "invalid-value-provided-for-x", "purpose")) %>" name="<portlet:namespace />purpose">
-			<option value="0"></option>
+		<aui:select data-field-required-status="<%= false %>" field-required-message="<%= HtmlUtil.escapeAttribute(LanguageUtil.format(pageContext, "invalid-value-provided-for-x", "purpose")) %>" name="<portlet:namespace />purpose">
+			<aui:option value="0" />
 
 			<%
 			int[] purposes = TicketEntryConstants.getLicensePurposes();
@@ -76,13 +76,13 @@ String additionalComments = ParamUtil.getString(request, "additionalComments");
 			for (int curPurpose : purposes) {
 			%>
 
-				<option <%= (curPurpose == purpose) ? "selected" : "" %> value="<%= curPurpose %>"><%= LanguageUtil.get(pageContext, TicketEntryConstants.getLicensePurposeLabel(curPurpose)) %></option>
+				<aui:option label="<%= LanguageUtil.get(pageContext, TicketEntryConstants.getLicensePurposeLabel(curPurpose)) %>" selected="<%= curPurpose == purpose %>" value="<%= curPurpose %>" />
 
 			<%
 			}
 			%>
 
-		</select>
+		</aui:select>
 	</div>
 </div>
 

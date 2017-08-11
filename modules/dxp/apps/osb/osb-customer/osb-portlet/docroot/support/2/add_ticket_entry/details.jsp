@@ -33,7 +33,7 @@ String description = ParamUtil.getString(request, "description");
 		</h2>
 
 		<div>
-			<input data-field-required-status="<%= false %>" field-required-message="<%= HtmlUtil.escapeAttribute(LanguageUtil.get(pageContext, "please-enter-a-summary-of-the-issue")) %>" maxLength="<%= ModelHintsUtil.getMaxLength(TicketEntry.class.getName(), "subject") %>" name="<portlet:namespace />subject" type="text" value="<%= HtmlUtil.escape(subject) %>" />
+			<aui:input data-field-required-status="<%= false %>" field-required-message="<%= HtmlUtil.escapeAttribute(LanguageUtil.get(pageContext, "please-enter-a-summary-of-the-issue")) %>" maxLength="<%= ModelHintsUtil.getMaxLength(TicketEntry.class.getName(), "subject") %>" name="<portlet:namespace />subject" type="text" value="<%= HtmlUtil.escape(subject) %>" />
 		</div>
 	</div>
 
@@ -80,9 +80,9 @@ String description = ParamUtil.getString(request, "description");
 			<portlet:param name="mvcPath" value="/support/2/view.jsp" />
 		</portlet:renderURL>
 
-		<input class="aui-button-input fl" onClick="location.href = '<%= HtmlUtil.escape(cancelURL.toString()) %>';" type="button" value="<liferay-ui:message key="cancel" />" />
+		<aui:input class="aui-button-input fl" onClick="location.href = '<%= HtmlUtil.escape(cancelURL.toString()) %>';" type="button" value="<liferay-ui:message key="cancel" />" />
 
-		<input class="aui-button-input fr" onClick="<portlet:namespace />submit();" type="button" value="<liferay-ui:message key="create" />" />
+		<aui:input class="aui-button-input fr" onClick="<portlet:namespace />submit();" type="button" value="<liferay-ui:message key="create" />" />
 	</div>
 </div>
 

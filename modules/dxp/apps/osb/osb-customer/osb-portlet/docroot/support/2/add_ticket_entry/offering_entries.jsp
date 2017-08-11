@@ -57,7 +57,7 @@ request.setAttribute("add_ticket_entry.jsp-productEntryLESADisplayNames", produc
 
 		<span><%= LanguageUtil.get(pageContext, productEntryLESADisplayName) %></span>
 
-		<input id="<portlet:namespace />productEntryLESADisplayName" name="<portlet:namespace />productEntryLESADisplayName" type="hidden" value="<%= HtmlUtil.escapeAttribute(productEntryLESADisplayName) %>">
+		<aui:input id="<portlet:namespace />productEntryLESADisplayName" name="<portlet:namespace />productEntryLESADisplayName" type="hidden" value="<%= HtmlUtil.escapeAttribute(productEntryLESADisplayName) %>" />
 	</c:when>
 	<c:when test="<%= productEntryLESADisplayNames.size() > 1 %>">
 		<c:if test='<%= productEntryLESADisplayNames.contains("digital-enterprise") %>'>
@@ -66,20 +66,20 @@ request.setAttribute("add_ticket_entry.jsp-productEntryLESADisplayNames", produc
 			</div>
 		</c:if>
 
-		<select id="<portlet:namespace />productEntryLESADisplayName" name="<portlet:namespace />productEntryLESADisplayName" onChange="<portlet:namespace />selectProductEntry();">
-			<option value=""></option>
+		<aui:select id="<portlet:namespace />productEntryLESADisplayName" name="<portlet:namespace />productEntryLESADisplayName" onChange="<portlet:namespace />selectProductEntry();">
+			<aui:option value="" />
 
 			<%
 			for (String curProductEntryLESADisplayName : productEntryLESADisplayNames) {
 			%>
 
-				<option <%= productEntryLESADisplayName.equals(curProductEntryLESADisplayName) ? "selected" : "" %> value="<%= curProductEntryLESADisplayName %>"><%= LanguageUtil.get(pageContext, curProductEntryLESADisplayName) %></option>
+				<aui:option label="<%= LanguageUtil.get(pageContext, curProductEntryLESADisplayName) %>" selected="<%= productEntryLESADisplayName.equals(curProductEntryLESADisplayName) %> value="<%= curProductEntryLESADisplayName %>" />
 
 			<%
 			}
 			%>
 
-		</select>
+		</aui:select>
 	</c:when>
 </c:choose>
 
@@ -100,8 +100,8 @@ PortletPreferences preferences = SupportUtil.getPortletPreferences();
 		</div>
 	</div>
 
-	<div class="aui-helper-hidden page-pop-up" data-overlay="true" id="<portlet:namespace />dxpMessage">
-		<div class="close-pop-up">&nbsp;</div>
+	<div class="hide page-pop-up" data-overlay="true" id="<portlet:namespace />dxpMessage">
+		<div class="close-pop-up"></div>
 
 		<div class="pop-up-content">
 			<%= HtmlUtil.escape(dxpMessage) %>
@@ -115,11 +115,9 @@ String productLink = GetterUtil.getString(preferences.getValue("productLink_" + 
 
 <c:if test="<%= Validator.isNotNull(productLink) %>">
 	<div class="portlet-msg-info">
-		<span class="txt-b"><liferay-ui:message arguments="<%= productEntryLESADisplayName %>" key="known-issues" translateArguments="true" /></span>
+		<div class="txt-b"><liferay-ui:message arguments="<%= productEntryLESADisplayName %>" key="known-issues" translateArguments="true" /></div>
 
-		<br />
-
-		<span><liferay-ui:message arguments='<%= new String[] {LanguageUtil.get(pageContext, productEntryLESADisplayName), "<a href=\"" + productLink + "\" target=\"_blank\">", "</a>"} %>' key="known-issues-message" /></span>
+		<div><liferay-ui:message arguments='<%= new String[] {LanguageUtil.get(pageContext, productEntryLESADisplayName), "<a href=\"" + productLink + "\" target=\"_blank\">", "</a>"} %>' key="known-issues-message" /></div>
 	</div>
 </c:if>
 
@@ -165,24 +163,25 @@ String productLink = GetterUtil.getString(preferences.getValue("productLink_" + 
 
 					<liferay-ui:message key="<%= entry.getKey() %>" />
 
-					<input id="<portlet:namespace />offeringEntryId" name="<portlet:namespace />offeringEntryId" type="hidden" value="<%= entry.getValue() %>" />
+					<aui:input id="<portlet:namespace />offeringEntryId" name="<portlet:namespace />offeringEntryId" type="hidden" value="<%= entry.getValue() %>" />
 				</c:when>
 				<c:when test="<%= productEntryEnvironments.size() > 1 %>">
 					<div>
-						<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(pageContext, "please-select-a-valid-server") %>" id="<portlet:namespace />offeringEntryId" name="<portlet:namespace />offeringEntryId" onChange="<portlet:namespace />selectServerComponent();">
-							<option value="0"></option>
+						<aui:select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(pageContext, "please-select-a-valid-server") %>" id="<portlet:namespace />offeringEntryId" name="<portlet:namespace />offeringEntryId" onChange="<portlet:namespace />selectServerComponent();">
+							<aui:option value="0" />
 
 							<%
 							for (Map.Entry<String, Long> entry : productEntryEnvironments.entrySet()) {
 							%>
 
-								<option <%= ((offeringEntry != null) && (entry.getValue() == offeringEntry.getOfferingEntryId())) ? "selected" : "" %> value="<%= entry.getValue() %>"><%= LanguageUtil.get(pageContext, entry.getKey()) %></option>
+								<aui:option label="<%= LanguageUtil.get(pageContext, entry.getKey()) %>" selected="
+								<%= (offeringEntry != null) && (entry.getValue() == offeringEntry.getOfferingEntryId()) %>" value="<%= entry.getValue() %>" />
 
 							<%
 							}
 							%>
 
-						</select>
+						</aui:select>
 					</div>
 				</c:when>
 			</c:choose>
@@ -202,7 +201,7 @@ String productLink = GetterUtil.getString(preferences.getValue("productLink_" + 
 			request.setAttribute("add_ticket_entry.jsp-productEntry", offeringEntry.getProductEntry());
 			%>
 
-			<input id="<portlet:namespace />offeringEntryId" name="<portlet:namespace />offeringEntryId" type="hidden" value="<%= offeringEntry.getOfferingEntryId() %>" />
+			<aui:input id="<portlet:namespace />offeringEntryId" name="<portlet:namespace />offeringEntryId" type="hidden" value="<%= offeringEntry.getOfferingEntryId() %>" />
 		</c:otherwise>
 	</c:choose>
 </c:if>

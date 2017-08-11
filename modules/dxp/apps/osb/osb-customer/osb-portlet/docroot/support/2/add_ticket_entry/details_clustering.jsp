@@ -67,12 +67,12 @@ long toPatchLevelTicketAttachmentId = ParamUtil.getLong(request, "toPatchLevelTi
 
 <br />
 
-<div class="aui-helper-clearfix">
+<div class="clearfix">
 	<div class="aui-w45 fl">
-		<span class="section-heading"><liferay-ui:message key="server-communication-type" />:</span>
+		<div class="section-heading"><liferay-ui:message key="server-communication-type" />:</div>
 
-		<select data-field-required-status="<%= false %>" field-required-message="<%= HtmlUtil.escapeAttribute(LanguageUtil.format(pageContext, "invalid-value-provided-for-x", "server-communication-type")) %>" id="<portlet:namespace />serverCommunicationType" name="<portlet:namespace />serverCommunicationType">
-			<option value=""></option>
+		<aui:select data-field-required-status="<%= false %>" field-required-message="<%= HtmlUtil.escapeAttribute(LanguageUtil.format(pageContext, "invalid-value-provided-for-x", "server-communication-type")) %>" id="<portlet:namespace />serverCommunicationType" name="<portlet:namespace />serverCommunicationType">
+			<aui:option value="" />
 
 			<%
 			for (int curServerCommunicationType : TicketEntryConstants.CLUSTER_SERVER_COMMUNICATION_TYPES) {
@@ -84,23 +84,23 @@ long toPatchLevelTicketAttachmentId = ParamUtil.getLong(request, "toPatchLevelTi
 			}
 			%>
 
-		</select>
+		</aui:select>
 	</div>
 
 	<div class="aui-w45 fr">
-		<span class="section-heading"><liferay-ui:message key="number-of-nodes" />:</span>
+		<div class="section-heading"><liferay-ui:message key="number-of-nodes" />:</div>
 
-		<select id="<portlet:namespace />numberOfNodes" name="<portlet:namespace />numberOfNodes">
-			<option value="0"></option>
-			<option <%= (numberOfNodes == 1) ? "selected" : StringPool.BLANK %> value="1">1</option>
-			<option <%= (numberOfNodes == 2) ? "selected" : StringPool.BLANK %> value="2">2</option>
-			<option <%= (numberOfNodes == 3) ? "selected" : StringPool.BLANK %> value="3">3</option>
-			<option <%= (numberOfNodes == 4) ? "selected" : StringPool.BLANK %> value="4">4</option>
-			<option <%= (numberOfNodes == 5) ? "selected" : StringPool.BLANK %> value="5">5</option>
-			<option <%= (numberOfNodes == 6) ? "selected" : StringPool.BLANK %> value="6">6</option>
-			<option <%= (numberOfNodes == 7) ? "selected" : StringPool.BLANK %> value="7">7</option>
-			<option <%= (numberOfNodes == 8) ? "selected" : StringPool.BLANK %> value="8">8+</option>
-		</select>
+		<aui:select id="<portlet:namespace />numberOfNodes" name="<portlet:namespace />numberOfNodes">
+			<aui:option value="0" />
+			<aui:option label="1" selected="<%= numberOfNodes == 1 %>" value="1" />
+			<aui:option label="2" selected="<%= numberOfNodes == 2 %>" value="2" />
+			<aui:option label="3" selected="<%= numberOfNodes == 3 %>" value="3" />
+			<aui:option label="4" selected="<%= numberOfNodes == 4 %>" value="4" />
+			<aui:option label="5" selected="<%= numberOfNodes == 5 %>" value="5" />
+			<aui:option label="6" selected="<%= numberOfNodes == 6 %>" value="6" />
+			<aui:option label="7" selected="<%= numberOfNodes == 7 %>" value="7" />
+			<aui:option label="8+" selected="<%= numberOfNodes == 8 %>" value="8" />
+		</aui:select>
 	</div>
 </div>
 
@@ -122,7 +122,7 @@ long toPatchLevelTicketAttachmentId = ParamUtil.getLong(request, "toPatchLevelTi
 		<liferay-ui:message key="please-provide-all-portal-ext-files-from-all-nodes-within-the-cluster" />:
 	</h2>
 
-	<div class="aui-helper-clearfix">
+	<div class="clearfix">
 		<liferay-util:include page="/support/2/common/ticket_attachment_upload.jsp" servletContext="<%= application %>">
 			<liferay-util:param name="kBaseArticleId" value="33142855" />
 			<liferay-util:param name="label" value="zip-file-containing-portal-ext-files" />
@@ -138,7 +138,7 @@ long toPatchLevelTicketAttachmentId = ParamUtil.getLong(request, "toPatchLevelTi
 		<liferay-ui:message key="please-provide-all-patching-tool-info-files-from-all-nodes-within-the-cluster" />:
 	</h2>
 
-	<div class="aui-helper-clearfix">
+	<div class="clearfix">
 		<liferay-util:include page="/support/2/common/ticket_attachment_upload.jsp" servletContext="<%= application %>">
 			<liferay-util:param name="kBaseArticleId" value="33142925" />
 			<liferay-util:param name="label" value="zip-file-containing-patching-tool-info-files" />

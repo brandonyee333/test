@@ -55,23 +55,23 @@ else {
 
 				<strong><%= HtmlUtil.escape(accountEntry.getName()) %></strong>
 
-				<input id="<portlet:namespace />accountEntryId" name="<portlet:namespace />accountEntryId" type="hidden" value="<%= accountEntry.getAccountEntryId() %>" />
+				<aui:input id="<portlet:namespace />accountEntryId" name="<portlet:namespace />accountEntryId" type="hidden" value="<%= accountEntry.getAccountEntryId() %>" />
 			</c:when>
 			<c:otherwise>
-				<select id="<portlet:namespace />accountEntryId" name="<portlet:namespace />accountEntryId" onChange="<portlet:namespace />selectAccountEntry();">
-					<option value=""></option>
+				<aui:select id="<portlet:namespace />accountEntryId" name="<portlet:namespace />accountEntryId" onChange="<portlet:namespace />selectAccountEntry();">
+					<aui:option value=""></option>
 
 					<%
 					for (AccountEntry curAccountEntry : accountEntries) {
 					%>
 
-						<option <%= ((accountEntry != null) && (curAccountEntry.getAccountEntryId() == accountEntry.getAccountEntryId())) ? "selected" : "" %> value="<%= curAccountEntry.getAccountEntryId() %>"><%= HtmlUtil.escape(curAccountEntry.getName()) %></option>
+						<aui:option label="<%= HtmlUtil.escape(curAccountEntry.getName()) %>" selected="<%= (accountEntry != null) && (curAccountEntry.getAccountEntryId() == accountEntry.getAccountEntryId()) %>" value="<%= curAccountEntry.getAccountEntryId() %>" />
 
 					<%
 					}
 					%>
 
-				</select>
+				</aui:select>
 			</c:otherwise>
 		</c:choose>
 	</div>
@@ -117,7 +117,7 @@ if (accountEntry != null) {
 			String componentMessageLink = supportPortletPreferences.getValue("componentMessageLink_" + productEntry.getLESADisplayName() + StringPool.UNDERLINE + component, StringPool.BLANK);
 			%>
 
-			<div class="portlet-msg-info component-message <%= Validator.isNotNull(componentMessage) ? StringPool.BLANK : "aui-helper-hidden" %>" id="<portlet:namespace />componentMessageDisplay">
+			<div class="portlet-msg-info component-message <%= Validator.isNotNull(componentMessage) ? StringPool.BLANK : "hide" %>" id="<portlet:namespace />componentMessageDisplay">
 				<c:choose>
 					<c:when test="<%= Validator.isNotNull(componentMessageLink) %>">
 						<a href="<%= HtmlUtil.escapeAttribute(componentMessageLink) %>" target="_blank"><%= HtmlUtil.escape(componentMessage) %></a>
@@ -135,8 +135,8 @@ if (accountEntry != null) {
 			</h2>
 
 			<div>
-				<select id="<portlet:namespace />component" name="<portlet:namespace />component" onChange="<portlet:namespace />selectServerComponent();">
-					<option <%= (component == 0) ? "selected" : "" %> value="0"></option>
+				<aui:select id="<portlet:namespace />component" name="<portlet:namespace />component" onChange="<portlet:namespace />selectServerComponent();">
+					<aui:option <%= (component == 0) ? "selected" : "" %> value="0"></option>
 
 					<c:choose>
 						<c:when test="<%= productEntry.isDigitalEnterprise() %>">
@@ -151,7 +151,7 @@ if (accountEntry != null) {
 									for (int curComponent : TicketEntryConstants.getGroupComponents(componentGroup)) {
 									%>
 
-										<option <%= (curComponent == component) ? "selected" : "" %> value="<%= curComponent %>"><%= LanguageUtil.get(pageContext, TicketEntryConstants.getComponentLabel(curComponent)) %></option>
+										<aui:option label="<%= LanguageUtil.get(pageContext, TicketEntryConstants.getComponentLabel(curComponent)) %>" selected="<%= (curComponent == component) %>" value="<%= curComponent %>"> />
 
 									<%
 									}
@@ -178,7 +178,7 @@ if (accountEntry != null) {
 								int curComponent = componentEntry.getValue();
 							%>
 
-								<option <%= (curComponent == component) ? "selected" : "" %> value="<%= curComponent %>"><%= LanguageUtil.get(pageContext, curComponentLabel) %></option>
+								<aui:option label="<%= LanguageUtil.get(pageContext, curComponentLabel) %>" selected="<%= curComponent == component) %>" value="<%= curComponent %>"> />
 
 							<%
 							}
@@ -186,7 +186,7 @@ if (accountEntry != null) {
 
 						</c:otherwise>
 					</c:choose>
-				</select>
+				</aui:select>
 
 				<c:if test="<%= component > 0 %>">
 
@@ -206,8 +206,8 @@ if (accountEntry != null) {
 								<liferay-ui:message key="subcomponent" />:
 							</h2>
 
-							<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(pageContext, "please-select-a-valid-subcomponent") %>" id="<portlet:namespace />subcomponent" name="<portlet:namespace />subcomponent" onChange="<portlet:namespace />validateSubcomponent();">
-								<option value=""></option>
+							<aui:select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(pageContext, "please-select-a-valid-subcomponent") %>" id="<portlet:namespace />subcomponent" name="<portlet:namespace />subcomponent" onChange="<portlet:namespace />validateSubcomponent();">
+								<aui:option value="" />
 
 								<%
 								int[] subcomponents = TicketEntryConstants.getSubcomponents(component);
@@ -215,13 +215,13 @@ if (accountEntry != null) {
 								for (int curSubcomponent : subcomponents) {
 								%>
 
-									<option <%= (curSubcomponent == subcomponent) ? "selected" : "" %> value="<%= curSubcomponent %>"><%= LanguageUtil.get(pageContext, TicketEntryConstants.getSubcomponentLabel(curSubcomponent)) %></option>
+									<aui:option label="<%= LanguageUtil.get(pageContext, TicketEntryConstants.getSubcomponentLabel(curSubcomponent)) %>" selected="<%= curSubcomponent == subcomponent %>" value="<%= curSubcomponent %>" />
 
 								<%
 								}
 								%>
 
-							</select>
+							</aui:select>
 						</div>
 					</c:if>
 				</c:if>
@@ -240,9 +240,9 @@ if (accountEntry != null) {
 			</c:if>
 
 			<div>
-				<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(pageContext, "please-select-a-valid-environment-configuration") %>" id="<portlet:namespace />accountEnvironmentId" name="<portlet:namespace />accountEnvironmentId" onChange="<portlet:namespace />selectAccountEnvironment(this);">
-					<option value="0"></option>
-					<option <%= (accountEnvironmentId == -1) ? "selected" : "" %> value="-1"><liferay-ui:message key="select-new-configuration" /></option>
+				<aui:select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(pageContext, "please-select-a-valid-environment-configuration") %>" id="<portlet:namespace />accountEnvironmentId" name="<portlet:namespace />accountEnvironmentId" onChange="<portlet:namespace />selectAccountEnvironment(this);">
+					<aui:option value="0" />
+					<aui:option label="select-new-configuration" selected="<%= accountEnvironmentId == -1 %>" value="-1" />
 
 					<%
 					List<AccountEnvironment> accountEnvironments = AccountEnvironmentLocalServiceUtil.getAccountEnvironments(accountEntry.getAccountEntryId(), productEntry.getProductEntryId());
@@ -250,7 +250,7 @@ if (accountEntry != null) {
 					for (AccountEnvironment curAccountEnvironment : accountEnvironments) {
 					%>
 
-						<option <%= (curAccountEnvironment.getAccountEnvironmentId() == accountEnvironmentId) ? "selected" : "" %> value="<%= curAccountEnvironment.getAccountEnvironmentId() %>"><%= HtmlUtil.escape(curAccountEnvironment.getName()) %></option>
+						<aui:option label="<%= HtmlUtil.escape(curAccountEnvironment.getName()) %>" selected="<%= curAccountEnvironment.getAccountEnvironmentId() == accountEnvironmentId) %>" value="<%= curAccountEnvironment.getAccountEnvironmentId() %>" />
 
 					<%
 					}
@@ -258,7 +258,7 @@ if (accountEntry != null) {
 
 				</select>
 
-				<div class="<%= (accountEnvironmentId == 0) ? "aui-helper-hidden" : StringPool.BLANK %> component-detail-environment" id="<portlet:namespace />componentDetailEnvironment">
+				<div class="<%= (accountEnvironmentId == 0) ? "hide" : StringPool.BLANK %> component-detail-environment" id="<portlet:namespace />componentDetailEnvironment">
 					<div class="environment-detail" id="<portlet:namespace />environmentDetail">
 						<liferay-util:include page="/support/2/common/details_environment.jsp" servletContext="<%= application %>">
 							<portlet:param name="edit" value="<%= Boolean.TRUE.toString() %>" />
@@ -273,20 +273,20 @@ if (accountEntry != null) {
 				</h2>
 
 				<div>
-					<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(pageContext, "please-select-a-valid-system-status") %>" name="<portlet:namespace />systemStatus">
-						<option value=""></option>
+					<aui:select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(pageContext, "please-select-a-valid-system-status") %>" name="<portlet:namespace />systemStatus">
+						<aui:option value="" />
 
 						<%
 						for (Integer curSystemStatus : TicketEntryConstants.getSystemStatuses(component)) {
 						%>
 
-							<option <%= (curSystemStatus == systemStatus) ? "selected" : "" %> value="<%= curSystemStatus %>"><%= LanguageUtil.get(pageContext, TicketEntryConstants.getSystemStatusLabel(curSystemStatus)) %></option>
+							<aui:option label="<%= LanguageUtil.get(pageContext, TicketEntryConstants.getSystemStatusLabel(curSystemStatus)) %>" selected="<%= curSystemStatus == systemStatus %>" value="<%= curSystemStatus %>" />
 
 						<%
 						}
 						%>
 
-					</select>
+					</aui:select>
 				</div>
 			</c:if>
 		</c:if>
