@@ -39,8 +39,7 @@ public class DefaultScreenNameValidator implements ScreenNameValidator {
 	@Override
 	public String getDescription(Locale locale) {
 		return LanguageUtil.format(
-			locale,
-			"the-screen-name-cannot-be-an-email-address-or-a-reserved-word",
+			locale, "the-screen-name-cannot-be-a-reserved-word",
 			new String[] {POSTFIX, getSpecialChars()}, false);
 	}
 
