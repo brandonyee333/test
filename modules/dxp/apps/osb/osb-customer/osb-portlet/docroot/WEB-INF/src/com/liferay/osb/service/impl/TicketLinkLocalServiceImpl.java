@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -86,9 +85,9 @@ public class TicketLinkLocalServiceImpl extends TicketLinkLocalServiceBaseImpl {
 
 			auditEntryLocalService.addAuditEntry(
 				userId, user.getFullName(), now,
-				PortalUtil.getClassNameId(TicketEntry.class.getName()),
+				classNameLocalService.getClassNameId(TicketEntry.class.getName()),
 				ticketEntryId, auditSetId,
-				PortalUtil.getClassNameId(TicketLink.class.getName()),
+				classNameLocalService.getClassNameId(TicketLink.class.getName()),
 				ticketLink.getTicketLinkId(), auditAction,
 				AuditEntryConstants.FIELD_URL, visibility, StringPool.BLANK,
 				StringPool.BLANK, StringPool.BLANK, urls[i]);
@@ -115,9 +114,9 @@ public class TicketLinkLocalServiceImpl extends TicketLinkLocalServiceBaseImpl {
 
 		auditEntryLocalService.addAuditEntry(
 			userId, user.getFullName(), new Date(),
-			PortalUtil.getClassNameId(TicketEntry.class.getName()),
+			classNameLocalService.getClassNameId(TicketEntry.class.getName()),
 			ticketLink.getTicketEntryId(), 0,
-			PortalUtil.getClassNameId(TicketLink.class.getName()),
+			classNameLocalService.getClassNameId(TicketLink.class.getName()),
 			ticketLink.getTicketLinkId(), AuditEntryConstants.ACTION_DELETE,
 			AuditEntryConstants.FIELD_URL, ticketLink.getVisibility(),
 			StringPool.BLANK, ticketLink.getUrl(), StringPool.BLANK,

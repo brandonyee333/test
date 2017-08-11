@@ -34,7 +34,6 @@ public class ArticleSearch extends SearchContainer<Document> {
 	public static final String EMPTY_RESULTS_MESSAGE = "no-articles-were-found";
 
 	public static List<String> headerNames = new ArrayList<>();
-	public static Map<String, String> orderableHeaders = new HashMap<>();
 
 	public ArticleSearch(
 		PortletRequest portletRequest, int cur, int delta,

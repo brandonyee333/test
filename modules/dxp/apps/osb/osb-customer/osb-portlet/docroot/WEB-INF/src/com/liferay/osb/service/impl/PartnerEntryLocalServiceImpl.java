@@ -16,7 +16,6 @@ package com.liferay.osb.service.impl;
 
 import com.liferay.osb.exception.DuplicatePartnerEntryCodeException;
 import com.liferay.osb.exception.DuplicatePartnerEntryDossieraAccountKeyException;
-import com.liferay.osb.exception.NoSuchPartnerEntryException;
 import com.liferay.osb.exception.PartnerEntryCodeException;
 import com.liferay.osb.exception.PartnerEntryParentPartnerEntryException;
 import com.liferay.osb.exception.RequiredPartnerEntryException;
@@ -306,10 +305,10 @@ public class PartnerEntryLocalServiceImpl
 				throw new PartnerEntryParentPartnerEntryException();
 			}
 
-			try {
+			PartnerEntry parentPartnerEntry =
 				partnerEntryPersistence.findByPrimaryKey(parentPartnerEntryId);
-			}
-			catch (NoSuchPartnerEntryException nspee) {
+
+			if (parentPartnerEntry == null) {
 				throw new PartnerEntryParentPartnerEntryException();
 			}
 		}

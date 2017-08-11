@@ -395,7 +395,7 @@ public class SupportPortlet extends MVCPortlet {
 
 		long callLength =
 			(callLengthHours * Time.HOUR) + (callLengthMinutes * Time.MINUTE) +
-			(callLengthSeconds * Time.SECOND);
+				(callLengthSeconds * Time.SECOND);
 
 		String customerName = ParamUtil.getString(
 			actionRequest, "customerName");
@@ -820,8 +820,8 @@ public class SupportPortlet extends MVCPortlet {
 		}
 
 		String commentBody = ContentUtil.get(
-			"com/liferay/osb/support/dependencies/" +
-				"comment_ticket_entry_forward_body.tmpl");
+			"com/liferay/osb/support/dependencies" +
+				"/comment_ticket_entry_forward_body.tmpl");
 
 		commentBody = StringUtil.replace(
 			commentBody,
@@ -1168,7 +1168,7 @@ public class SupportPortlet extends MVCPortlet {
 
 		long callLength =
 			(callLengthHours * Time.HOUR) + (callLengthMinutes * Time.MINUTE) +
-			(callLengthSeconds * Time.SECOND);
+				(callLengthSeconds * Time.SECOND);
 
 		String summary = ParamUtil.getString(actionRequest, "summary");
 		String clientsPresent = ParamUtil.getString(
@@ -1604,9 +1604,12 @@ public class SupportPortlet extends MVCPortlet {
 
 			long ticketEntryId = ParamUtil.getLong(
 				uploadPortletRequest, "ticketEntryId");
+
 			String suffix = ParamUtil.getString(uploadPortletRequest, "suffix");
+
 			String commentBody = ParamUtil.getString(
 				uploadPortletRequest, "commentBody" + suffix);
+
 			int visibility = ParamUtil.getInteger(
 				uploadPortletRequest, "visibility");
 			int status = ParamUtil.getInteger(
@@ -2314,7 +2317,9 @@ public class SupportPortlet extends MVCPortlet {
 					renderResponse);
 			}
 			else {
-				SessionErrors.add(renderRequest, e.getClass().getName(), e);
+				Class<?> clazz = e.getClass();
+
+				SessionErrors.add(renderRequest, clazz.getName(), e);
 
 				include("/support/2/error.jsp", renderRequest, renderResponse);
 			}
@@ -2779,6 +2784,7 @@ public class SupportPortlet extends MVCPortlet {
 		AccountEntry accountEntry = ticketEntry.getAccountEntry();
 
 		sb.append(CSVUtil.encode(accountEntry.getName()));
+
 		sb.append(StringPool.COMMA);
 		sb.append(CSVUtil.encode(ticketEntry.getDisplayId()));
 		sb.append(StringPool.COMMA);
@@ -2789,6 +2795,7 @@ public class SupportPortlet extends MVCPortlet {
 
 			sb.append(
 				CSVUtil.encode(dateFormat.format(ticketEntry.getCreateDate())));
+
 			sb.append(StringPool.COMMA);
 
 			if (ticketEntry.getClosedDate() != null) {
@@ -2867,6 +2874,7 @@ public class SupportPortlet extends MVCPortlet {
 			ProductEntry productEntry = ticketEntry.getProductEntry();
 
 			sb.append(CSVUtil.encode(productEntry.getName()));
+
 			sb.append(StringPool.COMMA);
 			sb.append(CSVUtil.encode(ticketEntry.getEnvLFRLabel()));
 			sb.append(StringPool.COMMA);
@@ -3102,14 +3110,14 @@ public class SupportPortlet extends MVCPortlet {
 			cause instanceof AccountLinkURLException ||
 			cause instanceof AccountProjectNameException ||
 			cause instanceof AddressCityException ||
-			cause instanceof AddressStreetException||
+			cause instanceof AddressStreetException ||
 			cause instanceof AddressZipException ||
 			cause instanceof AwayMessageDateException ||
 			cause instanceof AwayMessageMessageException ||
 			cause instanceof DuplicateAccountAttachmentException ||
 			cause instanceof DuplicateAccountEntryException ||
-			cause instanceof DuplicateAccountEnvironmentException ||
 			cause instanceof DuplicateAccountEnvironmentAttachmentException ||
+			cause instanceof DuplicateAccountEnvironmentException ||
 			cause instanceof DuplicateTicketAttachmentException ||
 			cause instanceof FileNameException ||
 			cause instanceof FileRepositoryNotAvailableException ||
@@ -3439,7 +3447,10 @@ public class SupportPortlet extends MVCPortlet {
 		catch (Exception e) {
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-			jsonObject.put("exception", e.getClass().getName());
+			Class<?> clazz = e.getClass();
+
+			jsonObject.put("exception", clazz.getName());
+
 			jsonObject.put("message", "fail");
 
 			writeJSON(resourceRequest, resourceResponse, jsonObject);
@@ -3602,7 +3613,10 @@ public class SupportPortlet extends MVCPortlet {
 			jsonObject.put("message", "success");
 		}
 		catch (Exception e) {
-			jsonObject.put("exception", e.getClass().getName());
+			Class<?> clazz = e.getClass();
+
+			jsonObject.put("exception", clazz.getName());
+
 			jsonObject.put("message", "fail");
 		}
 

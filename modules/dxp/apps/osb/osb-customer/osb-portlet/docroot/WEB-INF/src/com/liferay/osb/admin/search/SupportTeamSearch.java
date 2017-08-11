@@ -29,15 +29,15 @@ import javax.portlet.PortletURL;
  */
 public class SupportTeamSearch extends SearchContainer<SupportTeam> {
 
-	static List<String> headerNames = new ArrayList<>();
+	public static final String EMPTY_RESULTS_MESSAGE =
+		"no-support-teams-were-found";
+
+	public static List<String> headerNames = new ArrayList<>();
 
 	static {
 		headerNames.add("name");
 		headerNames.add("type");
 	}
-
-	public static final String EMPTY_RESULTS_MESSAGE =
-		"no-support-teams-were-found";
 
 	public SupportTeamSearch(
 		PortletRequest portletRequest, PortletURL iteratorURL) {

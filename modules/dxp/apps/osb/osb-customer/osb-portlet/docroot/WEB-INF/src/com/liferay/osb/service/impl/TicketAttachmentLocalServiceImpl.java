@@ -48,7 +48,6 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
@@ -377,9 +376,9 @@ public class TicketAttachmentLocalServiceImpl
 
 		auditEntryLocalService.addAuditEntry(
 			userId, user.getFullName(), new Date(),
-			PortalUtil.getClassNameId(TicketEntry.class.getName()),
+			classNameLocalService.getClassNameId(TicketEntry.class.getName()),
 			ticketAttachment.getTicketEntryId(), 0,
-			PortalUtil.getClassNameId(TicketAttachment.class.getName()),
+			classNameLocalService.getClassNameId(TicketAttachment.class.getName()),
 			ticketAttachment.getTicketAttachmentId(),
 			AuditEntryConstants.ACTION_DELETE, AuditEntryConstants.FIELD_FILE,
 			VisibilityConstants.PUBLIC, StringPool.BLANK,
@@ -552,9 +551,9 @@ public class TicketAttachmentLocalServiceImpl
 
 		auditEntryLocalService.addAuditEntry(
 			userId, user.getFullName(), new Date(),
-			PortalUtil.getClassNameId(TicketEntry.class.getName()),
+			classNameLocalService.getClassNameId(TicketEntry.class.getName()),
 			ticketAttachment.getTicketEntryId(), 0,
-			PortalUtil.getClassNameId(TicketAttachment.class.getName()),
+			classNameLocalService.getClassNameId(TicketAttachment.class.getName()),
 			ticketAttachment.getTicketAttachmentId(),
 			AuditEntryConstants.ACTION_UPDATE,
 			AuditEntryConstants.FIELD_REPLICATE, VisibilityConstants.WORKERS,
@@ -583,9 +582,9 @@ public class TicketAttachmentLocalServiceImpl
 
 		auditEntryLocalService.addAuditEntry(
 			userId, user.getFullName(), new Date(),
-			PortalUtil.getClassNameId(TicketEntry.class.getName()),
+			classNameLocalService.getClassNameId(TicketEntry.class.getName()),
 			ticketAttachment.getTicketEntryId(), 0,
-			PortalUtil.getClassNameId(TicketAttachment.class.getName()),
+			classNameLocalService.getClassNameId(TicketAttachment.class.getName()),
 			ticketAttachment.getTicketAttachmentId(),
 			AuditEntryConstants.ACTION_UPDATE,
 			AuditEntryConstants.FIELD_DELETE_DATE, VisibilityConstants.WORKERS,
@@ -693,9 +692,9 @@ public class TicketAttachmentLocalServiceImpl
 			auditAction = AuditEntryConstants.ACTION_ADD;
 		}
 
-		long classNameId = PortalUtil.getClassNameId(
+		long classNameId = classNameLocalService.getClassNameId(
 			TicketEntry.class.getName());
-		long fieldClassNameId = PortalUtil.getClassNameId(
+		long fieldClassNameId = classNameLocalService.getClassNameId(
 			TicketAttachment.class.getName());
 
 		for (TicketAttachment ticketAttachment : ticketAttachments) {
@@ -791,7 +790,7 @@ public class TicketAttachmentLocalServiceImpl
 		try {
 			DLStoreUtil.addDirectory(companyId, repositoryId, newDirName);
 		}
-		catch (PortalException pe) {
+		catch (Exception e) {
 		}
 
 		String newFilePath =

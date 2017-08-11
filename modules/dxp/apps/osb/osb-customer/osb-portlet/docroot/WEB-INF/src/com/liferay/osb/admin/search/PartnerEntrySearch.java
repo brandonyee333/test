@@ -19,9 +19,7 @@ import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.util.ArrayUtil;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
@@ -32,7 +30,6 @@ import javax.portlet.PortletURL;
 public class PartnerEntrySearch extends SearchContainer<PartnerEntry> {
 
 	static List<String> headerNames = new ArrayList<>();
-	static Map<String, String> orderableHeaders = new HashMap<>();
 
 	static {
 		headerNames.add("code");

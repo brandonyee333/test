@@ -198,7 +198,7 @@ public class TicketEntrySearchTerms extends TicketEntryDisplayTerms {
 		}
 
 		if ((assignedPartnerEntryIds.length > 0) ||
-			(assignedSupportTeamIds.length> 0) ||
+			(assignedSupportTeamIds.length > 0) ||
 			(assignedUserIds.length > 0)) {
 
 			if (assignedPartnerEntryIds.length > 0) {

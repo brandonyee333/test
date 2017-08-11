@@ -397,13 +397,12 @@ public class OrderEntryFinderImpl
 	}
 
 	protected void setJoin(
-		QueryPos qPos, Long createUserId, Timestamp createDateGT_TS,
-		Timestamp createDateLT_TS, Long modifiedUserId,
-		Timestamp modifiedDateGT_TS, Timestamp modifiedDateLT_TS,
-		Long accountEntryId, String[] purchaseOrderKeys, int[] statuses,
-		Timestamp startDateGT_TS, Timestamp startDateLT_TS, Boolean prorated,
-		Timestamp actualStartDateGT_TS, Timestamp actualStartDateLT_TS,
-		LinkedHashMap<String, Object> params) {
+		QueryPos qPos, Long createUserId, Timestamp createDateGT,
+		Timestamp createDateLT, Long modifiedUserId, Timestamp modifiedDateGT,
+		Timestamp modifiedDateLT, Long accountEntryId,
+		String[] purchaseOrderKeys, int[] statuses, Timestamp startDateGT,
+		Timestamp startDateLT, Boolean prorated, Timestamp actualStartDateGT,
+		Timestamp actualStartDateLT, LinkedHashMap<String, Object> params) {
 
 		setJoin(qPos, params);
 
@@ -411,19 +410,19 @@ public class OrderEntryFinderImpl
 			qPos.add(createUserId);
 		}
 
-		qPos.add(createDateGT_TS);
-		qPos.add(createDateGT_TS);
-		qPos.add(createDateLT_TS);
-		qPos.add(createDateLT_TS);
+		qPos.add(createDateGT);
+		qPos.add(createDateGT);
+		qPos.add(createDateLT);
+		qPos.add(createDateLT);
 
 		if (modifiedUserId != null) {
 			qPos.add(modifiedUserId);
 		}
 
-		qPos.add(modifiedDateGT_TS);
-		qPos.add(modifiedDateGT_TS);
-		qPos.add(modifiedDateLT_TS);
-		qPos.add(modifiedDateLT_TS);
+		qPos.add(modifiedDateGT);
+		qPos.add(modifiedDateGT);
+		qPos.add(modifiedDateLT);
+		qPos.add(modifiedDateLT);
 
 		if (accountEntryId != null) {
 			qPos.add(accountEntryId);
@@ -431,19 +430,19 @@ public class OrderEntryFinderImpl
 
 		qPos.add(purchaseOrderKeys, 2);
 		qPos.add(statuses);
-		qPos.add(startDateGT_TS);
-		qPos.add(startDateGT_TS);
-		qPos.add(startDateLT_TS);
-		qPos.add(startDateLT_TS);
+		qPos.add(startDateGT);
+		qPos.add(startDateGT);
+		qPos.add(startDateLT);
+		qPos.add(startDateLT);
 
 		if (prorated != null) {
 			qPos.add(prorated);
 		}
 
-		qPos.add(actualStartDateGT_TS);
-		qPos.add(actualStartDateGT_TS);
-		qPos.add(actualStartDateLT_TS);
-		qPos.add(actualStartDateLT_TS);
+		qPos.add(actualStartDateGT);
+		qPos.add(actualStartDateGT);
+		qPos.add(actualStartDateLT);
+		qPos.add(actualStartDateLT);
 	}
 
 	private static final String _ACCOUNT_ENTRY_ID_SQL =

@@ -87,7 +87,6 @@ import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
-import com.liferay.portal.kernel.exception.NoSuchListTypeException;
 import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.RequiredFieldException;
@@ -249,7 +248,7 @@ public class TicketEntryLocalServiceImpl
 					supportWorkerLocalService.getUserSupportWorkers(
 						ticketWorker.getUserId());
 
-				if (supportWorkers.size() > 0) {
+				if (!supportWorkers.isEmpty()) {
 					diff -= OSBDateUtil.getHolidayTime(
 						supportWorkers.get(0), workerModifiedDate, now);
 				}
@@ -301,9 +300,9 @@ public class TicketEntryLocalServiceImpl
 			}
 			else if ((diff > (2 * Time.DAY)) && (diff < (3 * Time.DAY))) {
 				Date newCustomerModifiedDate = OSBDateUtil.subtractWeekdayTime(
-					now, (4 * Time.DAY), timeZone);
+					now, 4 * Time.DAY, timeZone);
 				Date newWorkerModifiedDate = OSBDateUtil.subtractWeekdayTime(
-					now, (3 * Time.DAY), timeZone);
+					now, 3 * Time.DAY, timeZone);
 
 				ticketEntry.setModifiedDate(now);
 				ticketEntry.setDueDate(
@@ -318,9 +317,9 @@ public class TicketEntryLocalServiceImpl
 				auditEntryLocalService.addAuditEntry(
 					OSBConstants.USER_DEFAULT_USER_ID, StringPool.BLANK,
 					new Date(),
-					PortalUtil.getClassNameId(TicketEntry.class.getName()),
+					classNameLocalService.getClassNameId(TicketEntry.class.getName()),
 					ticketEntry.getTicketEntryId(), 0,
-					PortalUtil.getClassNameId(TicketEntry.class.getName()),
+					classNameLocalService.getClassNameId(TicketEntry.class.getName()),
 					ticketEntry.getTicketEntryId(),
 					AuditEntryConstants.ACTION_UPDATE,
 					AuditEntryConstants.FIELD_DUE_DATE,
@@ -503,9 +502,9 @@ public class TicketEntryLocalServiceImpl
 
 		auditEntryLocalService.addAuditEntry(
 			user.getUserId(), user.getFullName(), new Date(),
-			PortalUtil.getClassNameId(TicketEntry.class.getName()),
+			classNameLocalService.getClassNameId(TicketEntry.class.getName()),
 			ticketEntryId, 0,
-			PortalUtil.getClassNameId(TicketEntry.class.getName()),
+			classNameLocalService.getClassNameId(TicketEntry.class.getName()),
 			ticketEntryId, AuditEntryConstants.ACTION_ESCALATE,
 			AuditEntryConstants.FIELD_ESCALATION_LEVEL,
 			VisibilityConstants.PUBLIC,
@@ -530,7 +529,7 @@ public class TicketEntryLocalServiceImpl
 			ticketWorkerLocalService.addTicketWorkers(
 				OSBConstants.USER_DEFAULT_USER_ID,
 				new long[] {supportWorker.getUserId()}, ticketEntryId,
-				new long[] {PortalUtil.getClassNameId(SupportWorker.class)},
+				new long[] {classNameLocalService.getClassNameId(SupportWorker.class)},
 				new long[] {supportWorker.getSupportWorkerId()},
 				new int[] {TicketWorkerConstants.ROLE_ESCALATED_DEVELOPER},
 				newPrimaryUserId);
@@ -595,7 +594,7 @@ public class TicketEntryLocalServiceImpl
 			OSBConstants.USER_DEFAULT_USER_ID,
 			new long[] {supportWorker.getUserId()},
 			ticketEntry.getTicketEntryId(),
-			new long[] {PortalUtil.getClassNameId(SupportWorker.class)},
+			new long[] {classNameLocalService.getClassNameId(SupportWorker.class)},
 			new long[] {supportWorker.getSupportWorkerId()},
 			new int[] {TicketWorkerConstants.ROLE_DEVELOPER},
 			supportWorker.getUserId());
@@ -621,7 +620,7 @@ public class TicketEntryLocalServiceImpl
 
 		// Audit entry
 
-		long classNameId = PortalUtil.getClassNameId(
+		long classNameId = classNameLocalService.getClassNameId(
 			TicketEntry.class.getName());
 
 		SupportTeam supportTeam = supportTeamLocalService.getSupportTeam(
@@ -634,7 +633,7 @@ public class TicketEntryLocalServiceImpl
 			SupportWorker oldSupportWorker = null;
 
 			if (oldTicketWorker.getSourceClassNameId() ==
-					PortalUtil.getClassNameId(SupportWorker.class)) {
+					classNameLocalService.getClassNameId(SupportWorker.class)) {
 
 				oldSupportWorker = supportWorkerLocalService.fetchSupportWorker(
 					oldTicketWorker.getSourceClassPK());
@@ -662,7 +661,7 @@ public class TicketEntryLocalServiceImpl
 		auditEntryLocalService.addAuditEntry(
 			ticketEntry.getUserId(), user.getFullName(), new Date(),
 			classNameId, ticketEntryId, 0,
-			PortalUtil.getClassNameId(SupportTeam.class.getName()),
+			classNameLocalService.getClassNameId(SupportTeam.class.getName()),
 			supportTeam.getSupportTeamId(), AuditEntryConstants.ACTION_ASSIGN,
 			AuditEntryConstants.FIELD_SUPPORT_TEAM,
 			VisibilityConstants.LIFERAY_INC, oldLabel, oldValue,
@@ -672,7 +671,7 @@ public class TicketEntryLocalServiceImpl
 		auditEntryLocalService.addAuditEntry(
 			user.getUserId(), user.getFullName(), new Date(), classNameId,
 			ticketEntryId, 0,
-			PortalUtil.getClassNameId(TicketComment.class.getName()),
+			classNameLocalService.getClassNameId(TicketComment.class.getName()),
 			ticketComment.getTicketCommentId(),
 			AuditEntryConstants.ACTION_FORWARD, AuditEntryConstants.FIELD_BODY,
 			ticketComment.getVisibility(), StringPool.BLANK, StringPool.BLANK,
@@ -1152,7 +1151,8 @@ public class TicketEntryLocalServiceImpl
 
 		message.put("escalationLevel", ticketEntry.getEscalationLevel());
 
-		long classNameId = PortalUtil.getClassNameId(TicketEntry.class);
+		long classNameId = classNameLocalService.getClassNameId(
+			TicketEntry.class);
 
 		ExternalIdMapper externalIdMapper =
 			externalIdMapperPersistence.fetchByC_C_T_First(
@@ -1275,7 +1275,7 @@ public class TicketEntryLocalServiceImpl
 
 			long auditSetId = auditEntryLocalService.getNextAuditSetId(
 				TicketEntry.class.getName(), ticketEntryId);
-			long classNameId = PortalUtil.getClassNameId(
+			long classNameId = classNameLocalService.getClassNameId(
 				TicketEntry.class.getName());
 
 			auditEntryLocalService.addAuditEntry(
@@ -1461,7 +1461,8 @@ public class TicketEntryLocalServiceImpl
 			}
 
 			userId = partnerWorker.getUserId();
-			sourceClassNameId = PortalUtil.getClassNameId(PartnerWorker.class);
+			sourceClassNameId = classNameLocalService.getClassNameId(
+				PartnerWorker.class);
 			sourceClassPK = partnerWorker.getPartnerWorkerId();
 		}
 		else {
@@ -1481,9 +1482,9 @@ public class TicketEntryLocalServiceImpl
 
 			auditEntryLocalService.addAuditEntry(
 				user.getUserId(), user.getFullName(), new Date(),
-				PortalUtil.getClassNameId(TicketEntry.class.getName()),
+				classNameLocalService.getClassNameId(TicketEntry.class.getName()),
 				ticketEntry.getTicketEntryId(), 0,
-				PortalUtil.getClassNameId(SupportTeam.class.getName()),
+				classNameLocalService.getClassNameId(SupportTeam.class.getName()),
 				supportTeam.getSupportTeamId(),
 				AuditEntryConstants.ACTION_ASSIGN,
 				AuditEntryConstants.FIELD_SUPPORT_TEAM,
@@ -1492,7 +1493,8 @@ public class TicketEntryLocalServiceImpl
 				StringUtil.valueOf(supportTeam.getSupportTeamId()));
 
 			userId = supportWorker.getUserId();
-			sourceClassNameId = PortalUtil.getClassNameId(SupportWorker.class);
+			sourceClassNameId = classNameLocalService.getClassNameId(
+				SupportWorker.class);
 			sourceClassPK = supportWorker.getSupportWorkerId();
 		}
 
@@ -1528,6 +1530,7 @@ public class TicketEntryLocalServiceImpl
 			offeringEntryId);
 
 		ProductEntry productEntry = offeringEntry.getProductEntry();
+
 		Date now = new Date();
 
 		int severity = getSeverity(systemStatus, productEntry.getEnvironment());
@@ -1684,7 +1687,7 @@ public class TicketEntryLocalServiceImpl
 			User managerUser = supportRegion.getManagerUser();
 
 			if (managerUser != null) {
-				long sourceClassNameId = PortalUtil.getClassNameId(
+				long sourceClassNameId = classNameLocalService.getClassNameId(
 					SupportRegion.class);
 
 				ticketWorkerLocalService.addTicketWorkers(
@@ -1723,7 +1726,7 @@ public class TicketEntryLocalServiceImpl
 
 		// Audit entry
 
-		long classNameId = PortalUtil.getClassNameId(
+		long classNameId = classNameLocalService.getClassNameId(
 			TicketEntry.class.getName());
 
 		auditEntryLocalService.addAuditEntry(
@@ -1778,11 +1781,11 @@ public class TicketEntryLocalServiceImpl
 			accountEntry.getAccountEntryId(),
 			AccountWorkerConstants.ROLE_ADVOCACY_SPECIALIST);
 
-		String actionInformation = StringPool.BLANK;
+		String actionInformation = action;
 
 		if (action.equals(OSBMailActionKeys.FORWARDED)) {
 			AuditEntry auditEntry = auditEntryPersistence.findByC_C_F_A_Last(
-				PortalUtil.getClassNameId(TicketEntry.class.getName()),
+				classNameLocalService.getClassNameId(TicketEntry.class.getName()),
 				ticketEntry.getTicketEntryId(),
 				AuditEntryConstants.FIELD_SUPPORT_TEAM,
 				AuditEntryConstants.ACTION_ASSIGN, null);
@@ -1853,9 +1856,7 @@ public class TicketEntryLocalServiceImpl
 				new String[] {
 					accountEntry.getName(), accountEntrySalesReps,
 					accountEntrySalesRepsLabel, accountEntrySpecialists,
-					accountEntrySpecialistsLabel,
-					action.equals(OSBMailActionKeys.FORWARDED) ?
-						actionInformation : action,
+					accountEntrySpecialistsLabel, actionInformation,
 					LanguageUtil.get(locale, ticketEntry.getEnvASLabel()),
 					envBrowserLabel,
 					LanguageUtil.get(locale, ticketEntry.getComponentLabel()),
@@ -1944,9 +1945,7 @@ public class TicketEntryLocalServiceImpl
 				new String[] {
 					accountEntry.getName(), accountEntrySalesReps,
 					accountEntrySalesRepsLabel, accountEntrySpecialists,
-					accountEntrySpecialistsLabel,
-					action.equals(OSBMailActionKeys.FORWARDED) ?
-						actionInformation : action,
+					accountEntrySpecialistsLabel, actionInformation,
 					LanguageUtil.get(locale, ticketEntry.getEnvASLabel()),
 					envBrowserLabel,
 					LanguageUtil.get(locale, ticketEntry.getComponentLabel()),
@@ -2008,6 +2007,7 @@ public class TicketEntryLocalServiceImpl
 		Date dueDate = PortalUtil.getDate(
 			dueDateMonth, dueDateDay, dueDateYear, dueDateHour, dueDateMinute,
 			user.getTimeZone(), (Class<? extends PortalException>)null);
+
 		Date now = new Date();
 
 		if (((assigneeUserId != 0) && (supportRegionId != 0)) ||
@@ -2051,7 +2051,7 @@ public class TicketEntryLocalServiceImpl
 
 			ticketWorkerLocalService.addTicketWorkers(
 				userId, new long[] {supportWorker.getUserId()}, ticketEntryId,
-				new long[] {PortalUtil.getClassNameId(SupportWorker.class)},
+				new long[] {classNameLocalService.getClassNameId(SupportWorker.class)},
 				new long[] {supportWorker.getSupportWorkerId()},
 				new int[] {TicketWorkerConstants.ROLE_DEVELOPER},
 				supportWorker.getUserId());
@@ -2071,9 +2071,9 @@ public class TicketEntryLocalServiceImpl
 			if (oldDueDate.getTime() != dueDate.getTime()) {
 				auditEntryLocalService.addAuditEntry(
 					userId, user.getFullName(), now,
-					PortalUtil.getClassNameId(TicketEntry.class.getName()),
+					classNameLocalService.getClassNameId(TicketEntry.class.getName()),
 					ticketEntryId, 0,
-					PortalUtil.getClassNameId(TicketEntry.class.getName()),
+					classNameLocalService.getClassNameId(TicketEntry.class.getName()),
 					ticketEntryId, AuditEntryConstants.ACTION_UPDATE,
 					AuditEntryConstants.FIELD_DUE_DATE,
 					VisibilityConstants.WORKERS, String.valueOf(oldDueDate),
@@ -2105,6 +2105,7 @@ public class TicketEntryLocalServiceImpl
 			offeringEntryId);
 
 		ProductEntry productEntry = offeringEntry.getProductEntry();
+
 		Date dueDate = PortalUtil.getDate(
 			dueDateMonth, dueDateDay, dueDateYear, dueDateHour, dueDateMinute,
 			user.getTimeZone(), (Class<? extends PortalException>)null);
@@ -2220,6 +2221,7 @@ public class TicketEntryLocalServiceImpl
 			TicketEntry.class.getName(), ticketEntryId);
 
 		serviceContext.setAttribute("auditSetId", auditSetId);
+
 		serviceContext.setCreateDate(now);
 
 		// Ticket information
@@ -2550,7 +2552,7 @@ public class TicketEntryLocalServiceImpl
 			severity);
 
 		return OSBDateUtil.addWeekdayTime(
-			createDate, (severityResolution * Time.DAY), timeZone);
+			createDate, severityResolution * Time.DAY, timeZone);
 	}
 
 	protected String getDueDateTemplate(
@@ -2888,7 +2890,7 @@ public class TicketEntryLocalServiceImpl
 		AccountEntry accountEntry = ticketEntry.getAccountEntry();
 
 		if (accountEntry.isPartnerManagedSupport()) {
-			List<PartnerWorker>partnerWorkers =
+			List<PartnerWorker> partnerWorkers =
 				partnerWorkerPersistence.findByPEI_NotN(
 					accountEntry.getPartnerEntryId(),
 					PartnerWorkerConstants.NOTIFICATIONS_NONE);
@@ -3017,6 +3019,24 @@ public class TicketEntryLocalServiceImpl
 		}
 
 		return false;
+	}
+
+	protected boolean isValidListType(int listTypeId, String listTypeType) {
+		if (listTypeId <= 0) {
+			return false;
+		}
+
+		ListType listType = listTypeLocalService.fetchListType(listTypeId);
+
+		if (listType == null) {
+			return false;
+		}
+
+		if (!listTypeType.equals(listType.getType())) {
+			return false;
+		}
+
+		return true;
 	}
 
 	protected void sendMail(
@@ -3186,7 +3206,7 @@ public class TicketEntryLocalServiceImpl
 
 		int auditAction = AuditEntryConstants.ACTION_UPDATE;
 
-		long classNameId = PortalUtil.getClassNameId(
+		long classNameId = classNameLocalService.getClassNameId(
 			TicketEntry.class.getName());
 
 		if (oldTicketEntry.getUserId() != ticketEntry.getUserId()) {
@@ -3429,11 +3449,11 @@ public class TicketEntryLocalServiceImpl
 		User user = userLocalService.getUser(userId);
 		Date now = new Date();
 
-		long classNameId = PortalUtil.getClassNameId(
+		long classNameId = classNameLocalService.getClassNameId(
 			TicketEntry.class.getName());
 		long auditSetId = auditEntryLocalService.getNextAuditSetId(
 			TicketEntry.class.getName(), ticketEntry.getTicketEntryId());
-		long fieldClassNameId = PortalUtil.getClassNameId(
+		long fieldClassNameId = classNameLocalService.getClassNameId(
 			TicketFlag.class.getName());
 
 		Set<Integer> previousPendingTypes = new HashSet<>();
@@ -3649,42 +3669,26 @@ public class TicketEntryLocalServiceImpl
 			throw new TicketEntryWeightException();
 		}
 
-		try {
-			listTypeLocalService.validate(
-				status, TicketEntryConstants.LIST_TYPE_STATUS);
-		}
-		catch (NoSuchListTypeException nslte) {
+		if (!isValidListType(status, TicketEntryConstants.LIST_TYPE_STATUS)) {
 			throw new TicketEntryStatusException();
 		}
 
 		if (status == TicketEntryConstants.STATUS_CLOSED) {
-			try {
-				listTypeLocalService.validate(
-					resolution, TicketEntryConstants.LIST_TYPE_RESOLUTION);
-			}
-			catch (NoSuchListTypeException nslte) {
-				throw new TicketEntryResolutionException();
-			}
-		}
-		else {
-			try {
-				listTypeLocalService.validate(
-					resolution, TicketEntryConstants.LIST_TYPE_RESOLUTION);
+			if (!isValidListType(
+					resolution, TicketEntryConstants.LIST_TYPE_RESOLUTION)) {
 
 				throw new TicketEntryResolutionException();
 			}
-			catch (NoSuchListTypeException nslte) {
-			}
+		}
+		else if (resolution > 0) {
+			throw new TicketEntryResolutionException();
 		}
 
-		try {
-			listTypeLocalService.validate(
-				component, TicketEntryConstants.LIST_TYPE_COMPONENT);
-		}
-		catch (NoSuchListTypeException nslte) {
-			if (!productEntry.isSocialOffice()) {
-				throw new TicketEntryComponentException();
-			}
+		if (!productEntry.isSocialOffice() &&
+			!isValidListType(
+				component, TicketEntryConstants.LIST_TYPE_COMPONENT)) {
+
+			throw new TicketEntryComponentException();
 		}
 
 		if ((component ==
@@ -3836,15 +3840,7 @@ public class TicketEntryLocalServiceImpl
 			String envSearch)
 		throws PortalException {
 
-		if (envOS <= 0) {
-			throw new TicketInformationException("operating-system");
-		}
-
-		try {
-			listTypeLocalService.validate(
-				envOS, TicketEntryConstants.LIST_TYPE_ENV_OS);
-		}
-		catch (NoSuchListTypeException nslte) {
+		if (!isValidListType(envOS, TicketEntryConstants.LIST_TYPE_ENV_OS)) {
 			throw new TicketInformationException("operating-system");
 		}
 
@@ -3862,82 +3858,54 @@ public class TicketEntryLocalServiceImpl
 			}
 		}
 
-		if (envDB <= 0) {
+		if (!isValidListType(envDB, TicketEntryConstants.LIST_TYPE_ENV_DB)) {
 			throw new TicketInformationException("database");
 		}
 
-		try {
-			listTypeLocalService.validate(
-				envDB, TicketEntryConstants.LIST_TYPE_ENV_DB);
-		}
-		catch (NoSuchListTypeException nslte) {
-			throw new TicketInformationException("database");
-		}
-
-		if (envAS <= 0) {
+		if (!isValidListType(envAS, TicketEntryConstants.LIST_TYPE_ENV_AS)) {
 			throw new TicketInformationException("application-server");
-		}
-
-		try {
-			listTypeLocalService.validate(
-				envAS, TicketEntryConstants.LIST_TYPE_ENV_AS);
-		}
-		catch (NoSuchListTypeException nslte) {
-			throw new TicketInformationException("application-server");
-		}
-
-		if (envLFR <= 0) {
-			throw new TicketInformationException("liferay-version");
 		}
 
 		if (productEntry.isSocialOffice()) {
-			try {
-				listTypeLocalService.validate(
+			if (!isValidListType(
 					envLFR,
-					ProductEntryConstants.LIST_TYPE_SOCIAL_OFFICE_ALL_VERSIONS);
-			}
-			catch (NoSuchListTypeException nslte) {
+					ProductEntryConstants.
+						LIST_TYPE_SOCIAL_OFFICE_ALL_VERSIONS)) {
+
 				throw new TicketInformationException("social-office-version");
 			}
 		}
 		else {
-			try {
-				ListType listType = listTypeLocalService.getListType(envLFR);
-
-				String type = listType.getType();
-
-				if (!type.equals(
-						ProductEntryConstants.LIST_TYPE_PORTAL_ALL_VERSIONS) &&
-					!type.equals(
-						ProductEntryConstants.
-							LIST_TYPE_DIGITAL_ENTERPRISE_ALL_VERSIONS)) {
-
-					throw new TicketInformationException("liferay-version");
-				}
+			if (envLFR <= 0) {
+				throw new TicketInformationException("liferay-version");
 			}
-			catch (NoSuchListTypeException nslte) {
+
+			ListType listType = listTypeLocalService.fetchListType(envLFR);
+
+			if (listType == null) {
+				throw new TicketInformationException("liferay-version");
+			}
+
+			String type = listType.getType();
+
+			if (!type.equals(
+					ProductEntryConstants.LIST_TYPE_PORTAL_ALL_VERSIONS) &&
+				!type.equals(
+					ProductEntryConstants.
+						LIST_TYPE_DIGITAL_ENTERPRISE_ALL_VERSIONS)) {
+
 				throw new TicketInformationException("liferay-version");
 			}
 		}
 
-		if (envJVM <= 0) {
-			throw new TicketInformationException("jvm");
-		}
-
-		try {
-			listTypeLocalService.validate(
-				envJVM, TicketEntryConstants.LIST_TYPE_ENV_JVM);
-		}
-		catch (NoSuchListTypeException nslte) {
+		if (!isValidListType(envJVM, TicketEntryConstants.LIST_TYPE_ENV_JVM)) {
 			throw new TicketInformationException("jvm");
 		}
 
 		if (envBrowser > 0) {
-			try {
-				listTypeLocalService.validate(
-					envBrowser, TicketEntryConstants.LIST_TYPE_ENV_BROWSER);
-			}
-			catch (NoSuchListTypeException nslte) {
+			if (!isValidListType(
+					envBrowser, TicketEntryConstants.LIST_TYPE_ENV_BROWSER)) {
+
 				throw new TicketInformationException("browser");
 			}
 
@@ -3957,11 +3925,9 @@ public class TicketEntryLocalServiceImpl
 		}
 
 		if (envCS > 0) {
-			try {
-				listTypeLocalService.validate(
-					envCS, TicketEntryConstants.LIST_TYPE_ENV_CS);
-			}
-			catch (NoSuchListTypeException nslte) {
+			if (!isValidListType(
+					envCS, TicketEntryConstants.LIST_TYPE_ENV_CS)) {
+
 				throw new TicketInformationException("cloud-services");
 			}
 
@@ -3973,17 +3939,16 @@ public class TicketEntryLocalServiceImpl
 		}
 
 		if (Validator.isNotNull(envSearch)) {
-			try {
-				int[] envSearchesList = StringUtil.split(
-					envSearch, StringPool.NEW_LINE, 0);
+			int[] envSearchesList = StringUtil.split(
+				envSearch, StringPool.NEW_LINE, 0);
 
-				for (int envSearches : envSearchesList) {
-					listTypeLocalService.validate(
-						envSearches, TicketEntryConstants.LIST_TYPE_ENV_SEARCH);
+			for (int curEnvSearch : envSearchesList) {
+				if (!isValidListType(
+						curEnvSearch,
+						TicketEntryConstants.LIST_TYPE_ENV_SEARCH)) {
+
+					throw new TicketInformationException("search");
 				}
-			}
-			catch (NoSuchListTypeException nslte) {
-				throw new TicketInformationException("search");
 			}
 
 			if (!ProductEntryConstants.isDigitalEnterpriseVersion7_0(envLFR)) {
@@ -4055,22 +4020,20 @@ public class TicketEntryLocalServiceImpl
 				"to-upgrading-to-liferay-version");
 		}
 
-		try {
-			ListType listType = listTypeLocalService.getListType(toEnvLFR);
+		ListType listType = listTypeLocalService.fetchListType(toEnvLFR);
 
-			String type = listType.getType();
-
-			if (!type.equals(
-					ProductEntryConstants.LIST_TYPE_PORTAL_ALL_VERSIONS) &&
-				!type.equals(
-					ProductEntryConstants.
-						LIST_TYPE_DIGITAL_ENTERPRISE_ALL_VERSIONS)) {
-
-				throw new TicketInformationException(
-					"to-upgrading-to-liferay-version");
-			}
+		if (listType == null) {
+			throw new TicketInformationException(
+				"to-upgrading-to-liferay-version");
 		}
-		catch (NoSuchListTypeException nslte) {
+
+		String type = listType.getType();
+
+		if (!type.equals(ProductEntryConstants.LIST_TYPE_PORTAL_ALL_VERSIONS) &&
+			!type.equals(
+				ProductEntryConstants.
+					LIST_TYPE_DIGITAL_ENTERPRISE_ALL_VERSIONS)) {
+
 			throw new TicketInformationException(
 				"to-upgrading-to-liferay-version");
 		}

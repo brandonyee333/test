@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.ArrayList;
@@ -61,8 +60,10 @@ public class TicketWorkerLocalServiceImpl
 		long auditSetId = auditEntryLocalService.getNextAuditSetId(
 			TicketEntry.class.getName(), ticketEntryId);
 
-		long classNameId = PortalUtil.getClassNameId(TicketEntry.class);
-		long fieldClassNameId = PortalUtil.getClassNameId(TicketWorker.class);
+		long classNameId = classNameLocalService.getClassNameId(
+			TicketEntry.class);
+		long fieldClassNameId = classNameLocalService.getClassNameId(
+			TicketWorker.class);
 
 		//TODO implement serviceContext how needed
 
@@ -213,8 +214,10 @@ public class TicketWorkerLocalServiceImpl
 		long auditSetId = auditEntryLocalService.getNextAuditSetId(
 			TicketEntry.class.getName(), ticketEntryId);
 
-		long classNameId = PortalUtil.getClassNameId(TicketEntry.class);
-		long fieldClassNameId = PortalUtil.getClassNameId(TicketWorker.class);
+		long classNameId = classNameLocalService.getClassNameId(
+			TicketEntry.class);
+		long fieldClassNameId = classNameLocalService.getClassNameId(
+			TicketWorker.class);
 
 		for (long curUserId : userIds) {
 			try {
@@ -355,6 +358,43 @@ public class TicketWorkerLocalServiceImpl
 		}
 	}
 
+	protected TicketWorker removePrimaryTicketWorker(
+		long ticketEntryId, int status, TicketWorker primaryTicketWorker,
+		double work) {
+
+		primaryTicketWorker.setPrimary(false);
+
+		//TODO implement serviceContext as needed
+
+		ServiceContext serviceContext = new ServiceContext();
+
+		primaryTicketWorker = ticketWorkerPersistence.update(
+			primaryTicketWorker, serviceContext);
+
+		updateAssignedWork(
+			status, primaryTicketWorker.getUserId(), work, false);
+
+		return primaryTicketWorker;
+	}
+
+	protected TicketWorker setPrimaryTicketWorker(
+		long ticketEntryId, int status, TicketWorker primaryTicketWorker,
+		double work) {
+
+		primaryTicketWorker.setPrimary(true);
+
+		//TODO implement serviceContext as needed
+
+		ServiceContext serviceContext = new ServiceContext();
+
+		primaryTicketWorker = ticketWorkerPersistence.update(
+			primaryTicketWorker, serviceContext);
+
+		updateAssignedWork(status, primaryTicketWorker.getUserId(), work, true);
+
+		return primaryTicketWorker;
+	}
+
 	protected TicketWorker setPrimaryTicketWorker(
 			User user, Date now, long ticketEntryId, int status,
 			long primaryUserId, double work, long auditSetId)
@@ -390,13 +430,14 @@ public class TicketWorkerLocalServiceImpl
 				return primaryTicketWorker;
 			}
 
-			primaryTicketWorker = doSetPrimaryTicketWorker(
+			primaryTicketWorker = setPrimaryTicketWorker(
 				ticketEntryId, status, primaryTicketWorker, work);
+
+			newPrimaryUserId = primaryTicketWorker.getUserId();
 
 			User newPrimaryUser = userLocalService.getUser(
 				primaryTicketWorker.getUserId());
 
-			newPrimaryUserId = primaryTicketWorker.getUserId();
 			newPrimaryUserName = newPrimaryUser.getFullName();
 		}
 
@@ -404,7 +445,7 @@ public class TicketWorkerLocalServiceImpl
 		String oldPrimaryUserName = StringPool.BLANK;
 
 		if (oldPrimaryTicketWorker != null) {
-			oldPrimaryTicketWorker = doRemovePrimaryTicketWorker(
+			oldPrimaryTicketWorker = removePrimaryTicketWorker(
 				ticketEntryId, status, oldPrimaryTicketWorker, work);
 
 			User oldPrimaryUser = userLocalService.getUser(
@@ -416,8 +457,10 @@ public class TicketWorkerLocalServiceImpl
 
 		// Audit entry
 
-		long classNameId = PortalUtil.getClassNameId(TicketEntry.class);
-		long fieldClassNameId = PortalUtil.getClassNameId(TicketWorker.class);
+		long classNameId = classNameLocalService.getClassNameId(
+			TicketEntry.class);
+		long fieldClassNameId = classNameLocalService.getClassNameId(
+			TicketWorker.class);
 
 		auditEntryLocalService.addAuditEntry(
 			user.getUserId(), user.getFullName(), now, classNameId,
@@ -445,43 +488,6 @@ public class TicketWorkerLocalServiceImpl
 		else {
 			supportWorkerLocalService.decreaseAssignedWork(userId, work);
 		}
-	}
-
-	private TicketWorker doRemovePrimaryTicketWorker(
-		long ticketEntryId, int status, TicketWorker primaryTicketWorker,
-		double work) {
-
-		primaryTicketWorker.setPrimary(false);
-
-		//TODO implement serviceContext as needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		primaryTicketWorker = ticketWorkerPersistence.update(
-			primaryTicketWorker, serviceContext);
-
-		updateAssignedWork(
-			status, primaryTicketWorker.getUserId(), work, false);
-
-		return primaryTicketWorker;
-	}
-
-	private TicketWorker doSetPrimaryTicketWorker(
-		long ticketEntryId, int status, TicketWorker primaryTicketWorker,
-		double work) {
-
-		primaryTicketWorker.setPrimary(true);
-
-		//TODO implement serviceContext as needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		primaryTicketWorker = ticketWorkerPersistence.update(
-			primaryTicketWorker, serviceContext);
-
-		updateAssignedWork(status, primaryTicketWorker.getUserId(), work, true);
-
-		return primaryTicketWorker;
 	}
 
 }

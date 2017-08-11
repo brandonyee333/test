@@ -59,6 +59,7 @@ public class TicketCallLocalServiceImpl extends TicketCallLocalServiceBaseImpl {
 			callDateMonth, callDateDay, callDateYear, callDateHour,
 			callDateMinute, user.getTimeZone(),
 			(Class<? extends PortalException>)null);
+
 		Date now = new Date();
 
 		// Ticket call
@@ -124,9 +125,9 @@ public class TicketCallLocalServiceImpl extends TicketCallLocalServiceBaseImpl {
 
 		auditEntryLocalService.addAuditEntry(
 			user.getUserId(), user.getFullName(), now,
-			PortalUtil.getClassNameId(TicketEntry.class.getName()),
+			classNameLocalService.getClassNameId(TicketEntry.class.getName()),
 			ticketEntryId, 0,
-			PortalUtil.getClassNameId(TicketCall.class.getName()),
+			classNameLocalService.getClassNameId(TicketCall.class.getName()),
 			ticketCall.getTicketCallId(), AuditEntryConstants.ACTION_ADD,
 			AuditEntryConstants.FIELD_TICKET_CALL,
 			VisibilityConstants.LIFERAY_INC, StringPool.BLANK, StringPool.BLANK,
@@ -142,13 +143,13 @@ public class TicketCallLocalServiceImpl extends TicketCallLocalServiceBaseImpl {
 
 		if (visibility == VisibilityConstants.LIFERAY_INC) {
 			commentBody = ContentUtil.get(
-				"com/liferay/osb/support/dependencies/" +
-					"comment_ticket_call_liferay_body.tmpl");
+				"com/liferay/osb/support/dependencies" +
+					"/comment_ticket_call_liferay_body.tmpl");
 		}
 		else if (visibility == VisibilityConstants.PUBLIC) {
 			commentBody = ContentUtil.get(
-				"com/liferay/osb/support/dependencies/" +
-					"comment_ticket_call_public_body.tmpl");
+				"com/liferay/osb/support/dependencies" +
+					"/comment_ticket_call_public_body.tmpl");
 		}
 
 		Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(

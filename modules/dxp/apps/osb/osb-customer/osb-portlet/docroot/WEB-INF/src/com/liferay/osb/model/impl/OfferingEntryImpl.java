@@ -77,6 +77,7 @@ public class OfferingEntryImpl extends OfferingEntryBaseImpl {
 		Date supportEndDate = getSupportEndDate();
 
 		sb.append(supportEndDate.getTime());
+
 		sb.append(",productEntryId=");
 		sb.append(getProductEntryId());
 		sb.append(",supportResponseId=");

@@ -111,6 +111,7 @@ public class RemoteLCSWebServiceImpl
 				sb.append(url);
 
 				_log.debug("Sending request to: " + sb.toString());
+
 				_log.debug("Parameters: " + MapUtil.toString(parameters));
 			}
 

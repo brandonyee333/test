@@ -25,7 +25,6 @@ import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.Date;
@@ -49,9 +48,9 @@ public class AccountWorkerLocalServiceImpl
 		long auditSetId = auditEntryLocalService.getNextAuditSetId(
 			AccountEntry.class.getName(), accountEntryId);
 
-		long classNameId = PortalUtil.getClassNameId(
+		long classNameId = classNameLocalService.getClassNameId(
 			AccountEntry.class.getName());
-		long fieldClassNameId = PortalUtil.getClassNameId(
+		long fieldClassNameId = classNameLocalService.getClassNameId(
 			AccountWorker.class.getName());
 
 		for (int i = 0; i < userIds.length; i++) {
@@ -169,9 +168,9 @@ public class AccountWorkerLocalServiceImpl
 		long auditSetId = auditEntryLocalService.getNextAuditSetId(
 			AccountEntry.class.getName(), accountEntryId);
 
-		long classNameId = PortalUtil.getClassNameId(
+		long classNameId = classNameLocalService.getClassNameId(
 			AccountEntry.class.getName());
-		long fieldClassNameId = PortalUtil.getClassNameId(
+		long fieldClassNameId = classNameLocalService.getClassNameId(
 			AccountWorker.class.getName());
 
 		for (long curUserId : userIds) {

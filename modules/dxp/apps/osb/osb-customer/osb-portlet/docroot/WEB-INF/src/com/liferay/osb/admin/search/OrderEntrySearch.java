@@ -28,15 +28,15 @@ import javax.portlet.PortletURL;
  */
 public class OrderEntrySearch extends SearchContainer<OrderEntry> {
 
-	static List<String> headerNames = new ArrayList<>();
+	public static final String EMPTY_RESULTS_MESSAGE = "no-orders-were-found";
+
+	public static List<String> headerNames = new ArrayList<>();
 
 	static {
 		headerNames.add("uuid");
 		headerNames.add("account");
 		headerNames.add("start-date");
 	}
-
-	public static final String EMPTY_RESULTS_MESSAGE = "no-orders-were-found";
 
 	public OrderEntrySearch(
 		PortletRequest portletRequest, PortletURL iteratorURL) {

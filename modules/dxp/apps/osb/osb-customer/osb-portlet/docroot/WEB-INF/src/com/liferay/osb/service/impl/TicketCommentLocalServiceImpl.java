@@ -240,9 +240,9 @@ public class TicketCommentLocalServiceImpl
 
 			auditEntryLocalService.addAuditEntry(
 				userId, user.getFullName(), new Date(),
-				PortalUtil.getClassNameId(TicketEntry.class.getName()),
+				classNameLocalService.getClassNameId(TicketEntry.class.getName()),
 				ticketComment.getTicketEntryId(), 0,
-				PortalUtil.getClassNameId(TicketComment.class.getName()),
+				classNameLocalService.getClassNameId(TicketComment.class.getName()),
 				ticketComment.getTicketCommentId(),
 				AuditEntryConstants.ACTION_DELETE,
 				AuditEntryConstants.FIELD_BODY, ticketComment.getVisibility(),
@@ -595,9 +595,9 @@ public class TicketCommentLocalServiceImpl
 
 			auditEntryLocalService.addAuditEntry(
 				user.getUserId(), user.getFullName(), now,
-				PortalUtil.getClassNameId(TicketEntry.class.getName()),
+				classNameLocalService.getClassNameId(TicketEntry.class.getName()),
 				ticketComment.getTicketEntryId(), auditSetId,
-				PortalUtil.getClassNameId(TicketComment.class.getName()),
+				classNameLocalService.getClassNameId(TicketComment.class.getName()),
 				ticketComment.getTicketCommentId(), auditAction,
 				AuditEntryConstants.FIELD_BODY, ticketComment.getVisibility(),
 				StringPool.BLANK, StringPool.BLANK, StringPool.BLANK,

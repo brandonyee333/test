@@ -197,7 +197,7 @@ public class LicenseUtil {
 	}
 
 	public static Map<Locale, String>
-	getEmailNotificationTrialLicenseBodyMap() {
+		getEmailNotificationTrialLicenseBodyMap() {
 
 		Map<Locale, String> map = LocalizationUtil.getLocalizationMap(
 			getPortletPreferences(), "emailNotificationTrialLicenseBody");
@@ -213,14 +213,14 @@ public class LicenseUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
-				"com/liferay/osb/license/dependencies/" +
-					"email_notification_trial_license_body.tmpl"));
+				"com/liferay/osb/license/dependencies" +
+					"/email_notification_trial_license_body.tmpl"));
 
 		return map;
 	}
 
 	public static Map<Locale, String>
-			getEmailNotificationTrialLicenseSubjectMap() {
+		getEmailNotificationTrialLicenseSubjectMap() {
 
 		Map<Locale, String> map = LocalizationUtil.getLocalizationMap(
 			getPortletPreferences(), "emailNotificationTrialLicenseSubject");
@@ -236,8 +236,8 @@ public class LicenseUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
-				"com/liferay/osb/license/dependencies/" +
-					"email_notification_trial_license_subject.tmpl"));
+				"com/liferay/osb/license/dependencies" +
+					"/email_notification_trial_license_subject.tmpl"));
 
 		return map;
 	}
@@ -257,14 +257,14 @@ public class LicenseUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
-				"com/liferay/osb/license/dependencies/" +
-					"email_registered_trial_license_body.tmpl"));
+				"com/liferay/osb/license/dependencies" +
+					"/email_registered_trial_license_body.tmpl"));
 
 		return map;
 	}
 
 	public static Map<Locale, String>
-	getEmailRegisteredTrialLicenseSubjectMap() {
+		getEmailRegisteredTrialLicenseSubjectMap() {
 
 		Map<Locale, String> map = LocalizationUtil.getLocalizationMap(
 			getPortletPreferences(), "emailRegisteredTrialLicenseSubject");
@@ -280,8 +280,8 @@ public class LicenseUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
-				"com/liferay/osb/license/dependencies/" +
-					"email_registered_trial_license_subject.tmpl"));
+				"com/liferay/osb/license/dependencies" +
+					"/email_registered_trial_license_subject.tmpl"));
 
 		return map;
 	}

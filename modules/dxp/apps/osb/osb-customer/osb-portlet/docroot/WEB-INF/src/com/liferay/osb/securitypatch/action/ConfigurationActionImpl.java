@@ -89,7 +89,7 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 				actionRequest,
 				liferayPortletConfig.getPortletId() +
 					SessionMessages.KEY_SUFFIX_REFRESH_PORTLET,
-					portletResource);
+				portletResource);
 
 			SessionMessages.add(
 				actionRequest,
@@ -136,7 +136,9 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 			}
 		}
 		catch (NoSuchListTypeException nslte) {
-			throw new ValidatorException(nslte.getClass().getName(), null);
+			Class<?> clazz = nslte.getClass();
+
+			throw new ValidatorException(clazz.getName(), null);
 		}
 		catch (NoSuchTicketAttachmentException nstae) {
 			throw new ValidatorException(nstae.getMessage(), null);

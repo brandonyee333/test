@@ -383,10 +383,10 @@ public class LicenseServlet extends HttpServlet {
 		try {
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(json);
 
-			String encryptedJson = jsonObject.getString("content");
+			String encryptedJSON = jsonObject.getString("content");
 
 			return Encryptor.decryptUnencodedAsString(
-				secretKey, (byte[])Base64.stringToObject(encryptedJson));
+				secretKey, (byte[])Base64.stringToObject(encryptedJSON));
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -615,7 +615,7 @@ public class LicenseServlet extends HttpServlet {
 			AssetReceiptLicense assetReceiptLicense)
 		throws PortalException {
 
-		JSONObject productsJsonObject = JSONFactoryUtil.createJSONObject();
+		JSONObject productsJSONObject = JSONFactoryUtil.createJSONObject();
 
 		String licensesLeft = StringPool.BLANK;
 
@@ -642,16 +642,16 @@ public class LicenseServlet extends HttpServlet {
 
 		AssetEntry assetEntry = assetReceiptLicense.getAssetEntry();
 
-		productsJsonObject.put(assetEntry.getTitle(), licensesLeft);
+		productsJSONObject.put(assetEntry.getTitle(), licensesLeft);
 		**/
 
-		return productsJsonObject;
+		return productsJSONObject;
 	}
 
 	protected JSONObject getProductsJSONObject(OrderEntry orderEntry)
 		throws PortalException {
 
-		JSONObject productsJsonObject = JSONFactoryUtil.createJSONObject();
+		JSONObject productsJSONObject = JSONFactoryUtil.createJSONObject();
 
 		List<OfferingEntry> offeringEntries = orderEntry.getOfferingEntries();
 
@@ -667,20 +667,20 @@ public class LicenseServlet extends HttpServlet {
 				continue;
 			}
 
-			String licensesLeft = productsJsonObject.getString(
+			String licensesLeft = productsJSONObject.getString(
 				productEntry.getName());
 
 			licensesLeft = calculateLicensesLeft(offeringEntry, licensesLeft);
 
-			productsJsonObject.put(productEntry.getName(), licensesLeft);
+			productsJSONObject.put(productEntry.getName(), licensesLeft);
 		}
 
-		Iterator<String> itr = productsJsonObject.keys();
+		Iterator<String> itr = productsJSONObject.keys();
 
 		while (itr.hasNext()) {
 			String key = itr.next();
 
-			String licensesLeft = productsJsonObject.getString(key);
+			String licensesLeft = productsJSONObject.getString(key);
 
 			if (!licensesLeft.equals("unlimited") &&
 				(GetterUtil.getInteger(licensesLeft) <= 0)) {
@@ -689,12 +689,12 @@ public class LicenseServlet extends HttpServlet {
 			}
 		}
 
-		if (productsJsonObject.length() <= 0) {
+		if (productsJSONObject.length() <= 0) {
 			throw new LicenseKeyRegistrationException(
 				"Your order does not have any available license keys.");
 		}
 
-		return productsJsonObject;
+		return productsJSONObject;
 	}
 
 	protected int getProductVersion(int liferayVersion) {
@@ -782,10 +782,10 @@ public class LicenseServlet extends HttpServlet {
 			responseJSONObject.put(
 				"productId", assetReceiptLicense.getProductId());
 
-			JSONObject productsJsonObject = getProductsJSONObject(
+			JSONObject productsJSONObject = getProductsJSONObject(
 				assetReceiptLicense);
 
-			responseJSONObject.put("productsJSONObject", productsJsonObject);
+			responseJSONObject.put("productsJSONObject", productsJSONObject);
 
 			return;
 		}
@@ -802,9 +802,9 @@ public class LicenseServlet extends HttpServlet {
 
 		responseJSONObject.put("productId", orderEntry.getUuid());
 
-		JSONObject productsJsonObject = getProductsJSONObject(orderEntry);
+		JSONObject productsJSONObject = getProductsJSONObject(orderEntry);
 
-		responseJSONObject.put("productsJSONObject", productsJsonObject);
+		responseJSONObject.put("productsJSONObject", productsJSONObject);
 	}
 
 	protected void register(
@@ -826,10 +826,10 @@ public class LicenseServlet extends HttpServlet {
 			responseJSONObject.put(
 				"productId", assetReceiptLicense.getProductId());
 
-			JSONObject productsJsonObject = getProductsJSONObject(
+			JSONObject productsJSONObject = getProductsJSONObject(
 				assetReceiptLicense);
 
-			responseJSONObject.put("productsJSONObject", productsJsonObject);
+			responseJSONObject.put("productsJSONObject", productsJSONObject);
 
 			registerApp(jsonObject, responseJSONObject, assetReceiptLicense);
 
@@ -848,9 +848,9 @@ public class LicenseServlet extends HttpServlet {
 
 		responseJSONObject.put("productId", orderEntry.getUuid());
 
-		JSONObject productsJsonObject = getProductsJSONObject(orderEntry);
+		JSONObject productsJSONObject = getProductsJSONObject(orderEntry);
 
-		responseJSONObject.put("productsJSONObject", productsJsonObject);
+		responseJSONObject.put("productsJSONObject", productsJSONObject);
 
 		registerServer(jsonObject, responseJSONObject, orderEntry);
 	}
@@ -1031,7 +1031,9 @@ public class LicenseServlet extends HttpServlet {
 		_keys = new Key[3];
 
 		try {
-			ClassLoader classLoader = getClass().getClassLoader();
+			Class<?> clazz = getClass();
+
+			ClassLoader classLoader = clazz.getClassLoader();
 
 			String[] keys = StringUtil.split(
 				StringUtil.read(

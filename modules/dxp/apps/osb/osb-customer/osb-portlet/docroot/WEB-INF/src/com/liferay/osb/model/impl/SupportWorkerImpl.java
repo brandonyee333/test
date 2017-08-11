@@ -45,7 +45,7 @@ import java.util.TimeZone;
  */
 public class SupportWorkerImpl extends SupportWorkerBaseImpl {
 
-	public static int END_OF_DAY_MINUTES = 1439;
+	public static final int END_OF_DAY_MINUTES = 1439;
 
 	public SupportWorkerImpl() {
 	}
@@ -110,16 +110,17 @@ public class SupportWorkerImpl extends SupportWorkerBaseImpl {
 	}
 
 	public SupportLabor getSupportLabor() throws PortalException {
-		try {
-			return SupportLaborLocalServiceUtil.getSupportLabor(
-				getSupportLaborId());
-		}
-		catch (PortalException pe) {
+		SupportLabor supportLabor =
+			SupportLaborLocalServiceUtil.getSupportLabor(getSupportLaborId());
+
+		if (supportLabor == null) {
 			SupportTeam supportTeam = getSupportTeam();
 
-			return SupportLaborLocalServiceUtil.getSupportLabor(
+			supportLabor = SupportLaborLocalServiceUtil.getSupportLabor(
 				supportTeam.getSupportLaborId());
 		}
+
+		return supportLabor;
 	}
 
 	public SupportTeam getSupportTeam() throws PortalException {

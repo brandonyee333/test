@@ -338,6 +338,7 @@ public class AccountEntryFinderImpl
 		Long userId = (Long)params.remove("accountEntryMembership");
 
 		LinkedHashMap<String, Object> params1 = new LinkedHashMap<>(params);
+
 		LinkedHashMap<String, Object> params2 = new LinkedHashMap<>(params1);
 
 		if (userId != null) {
@@ -469,6 +470,7 @@ public class AccountEntryFinderImpl
 		Long userId = (Long)params.remove("accountEntryMembership");
 
 		LinkedHashMap<String, Object> params1 = new LinkedHashMap<>(params);
+
 		LinkedHashMap<String, Object> params2 = new LinkedHashMap<>(params1);
 
 		if (userId != null) {
@@ -985,14 +987,14 @@ public class AccountEntryFinderImpl
 	}
 
 	protected void setJoin(
-		QueryPos qPos, Long createUserId, Timestamp createDateGT_TS,
-		Timestamp createDateLT_TS, Long modifiedUserId,
-		Timestamp modifiedDateGT_TS, Timestamp modifiedDateLT_TS,
-		String[] names, String[] codes, int[] industries,
-		Boolean partnerManagedSupport, int[] tiers, int[] statuses,
-		String[] instructions, String[] notes, String[] partnerEntryCodes,
-		String[] streets, Long countryId, Long regionId, String[] cities,
-		String[] zips, LinkedHashMap<String, Object> params) {
+		QueryPos qPos, Long createUserId, Timestamp createDateGT,
+		Timestamp createDateLT, Long modifiedUserId, Timestamp modifiedDateGT,
+		Timestamp modifiedDateLT, String[] names, String[] codes,
+		int[] industries, Boolean partnerManagedSupport, int[] tiers,
+		int[] statuses, String[] instructions, String[] notes,
+		String[] partnerEntryCodes, String[] streets, Long countryId,
+		Long regionId, String[] cities, String[] zips,
+		LinkedHashMap<String, Object> params) {
 
 		qPos.add(OSBConstants.COMPANY_ID);
 
@@ -1002,19 +1004,19 @@ public class AccountEntryFinderImpl
 			qPos.add(createUserId);
 		}
 
-		qPos.add(createDateGT_TS);
-		qPos.add(createDateGT_TS);
-		qPos.add(createDateLT_TS);
-		qPos.add(createDateLT_TS);
+		qPos.add(createDateGT);
+		qPos.add(createDateGT);
+		qPos.add(createDateLT);
+		qPos.add(createDateLT);
 
 		if (modifiedUserId != null) {
 			qPos.add(modifiedUserId);
 		}
 
-		qPos.add(modifiedDateGT_TS);
-		qPos.add(modifiedDateGT_TS);
-		qPos.add(modifiedDateLT_TS);
-		qPos.add(modifiedDateLT_TS);
+		qPos.add(modifiedDateGT);
+		qPos.add(modifiedDateGT);
+		qPos.add(modifiedDateLT);
+		qPos.add(modifiedDateLT);
 		qPos.add(names, 2);
 		qPos.add(codes, 2);
 		qPos.add(industries);

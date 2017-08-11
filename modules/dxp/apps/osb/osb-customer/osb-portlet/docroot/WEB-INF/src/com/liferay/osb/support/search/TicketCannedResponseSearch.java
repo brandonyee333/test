@@ -29,16 +29,16 @@ import javax.portlet.PortletURL;
 public class TicketCannedResponseSearch
 	extends SearchContainer<TicketCannedResponse> {
 
-	static List<String> headerNames = new ArrayList<>();
+	public static final String EMPTY_RESULTS_MESSAGE =
+		"no-canned-responses-were-found";
+
+	public static List<String> headerNames = new ArrayList<>();
 
 	static {
 		headerNames.add("name");
 		headerNames.add("modified-date");
 		headerNames.add("use-count");
 	}
-
-	public static final String EMPTY_RESULTS_MESSAGE =
-		"no-canned-responses-were-found";
 
 	public TicketCannedResponseSearch(
 		PortletRequest portletRequest, PortletURL iteratorURL) {

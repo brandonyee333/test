@@ -52,8 +52,10 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 	}
 
 	@Override
-	protected Summary doGetSummary(Document document, Locale locale, String snippet, PortletRequest portletRequest,
-			PortletResponse portletResponse) throws Exception {
+	protected Summary doGetSummary(
+			Document document, Locale locale, String snippet,
+			PortletRequest portletRequest, PortletResponse portletResponse)
+		throws Exception {
 
 		// TODO Auto-generated method stub
 
@@ -1124,5 +1126,6 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 
 	private Format _dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
 		"yyyyMMddHHmmss");
-*/
+	 */
+
 }

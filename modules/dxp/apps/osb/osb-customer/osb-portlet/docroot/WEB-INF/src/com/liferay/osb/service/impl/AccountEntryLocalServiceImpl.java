@@ -26,7 +26,6 @@ import com.liferay.osb.exception.AccountEntryPartnerEntryException;
 import com.liferay.osb.exception.AccountEntrySupportRegionException;
 import com.liferay.osb.exception.DuplicateAccountEntryException;
 import com.liferay.osb.exception.NoSuchOrderEntryException;
-import com.liferay.osb.exception.NoSuchPartnerEntryException;
 import com.liferay.osb.exception.RequiredAccountEntryException;
 import com.liferay.osb.model.AccountAttachment;
 import com.liferay.osb.model.AccountCustomerConstants;
@@ -618,14 +617,15 @@ public class AccountEntryLocalServiceImpl
 			jsonObject.put("accountEntryId", accountEntryId);
 			jsonObject.put("opportunities", jsonArray);
 			jsonObject.put("userId", userId);
-/* TODO update rabbitMQ integration
+
+			/* TODO update rabbitMQ integration
 			ProvisioningAuditRabbitMQConsumer
 				provisioningAuditRabbitMQConsumer =
 					new ProvisioningAuditRabbitMQConsumer();
 
 			provisioningAuditRabbitMQConsumer.parse(
 				StringPool.BLANK, jsonObject.toString(), null);
-*/
+			 */
 		}
 		catch (Exception e) {
 			_log.error(
@@ -679,7 +679,7 @@ public class AccountEntryLocalServiceImpl
 
 		// External ids
 
-		long classNameId = PortalUtil.getClassNameId(
+		long classNameId = classNameLocalService.getClassNameId(
 			AccountEntry.class.getName());
 
 		externalIdMapperPersistence.removeByC_C(classNameId, accountEntryId);
@@ -1108,7 +1108,7 @@ public class AccountEntryLocalServiceImpl
 			List<OrderEntry> orderEntries, ServiceContext serviceContext)
 		throws PortalException {
 
-		long classNameId = PortalUtil.getClassNameId(
+		long classNameId = classNameLocalService.getClassNameId(
 			OrderEntry.class.getName());
 
 		List<ExternalIdMapper> externalIdMappers =
@@ -1214,6 +1214,7 @@ public class AccountEntryLocalServiceImpl
 		Address oldAddress = oldAccountEntry.getAddress();
 
 		String oldAddressString = AdminUtil.formatAddress(oldAddress);
+
 		String addressString = AdminUtil.formatAddress(address);
 
 		if (!oldAddressString.equals(addressString)) {
@@ -1411,7 +1412,7 @@ public class AccountEntryLocalServiceImpl
 
 		accountEntryPersistence.update(accountEntry, serviceContext);
 
-		long classNameId = PortalUtil.getClassNameId(
+		long classNameId = classNameLocalService.getClassNameId(
 			AccountEntry.class.getName());
 
 		auditEntryLocalService.addAuditEntry(
@@ -1445,7 +1446,7 @@ public class AccountEntryLocalServiceImpl
 		if ((oldStatus != accountEntry.getStatus()) &&
 			(accountEntry.getStatus() == WorkflowConstants.STATUS_CLOSED)) {
 
-			long classNameId = PortalUtil.getClassNameId(
+			long classNameId = classNameLocalService.getClassNameId(
 				AccountEntry.class.getName());
 
 			auditEntryLocalService.addAuditEntry(
@@ -1592,7 +1593,7 @@ public class AccountEntryLocalServiceImpl
 
 		List<ExternalIdMapper> externalIdMappers =
 			externalIdMapperLocalService.getExternalIdMappers(
-				PortalUtil.getClassNameId(OrderEntry.class),
+				classNameLocalService.getClassNameId(OrderEntry.class),
 				ExternalIdMapperConstants.TYPE_SALESFORCE,
 				salesforceOpportunityKey);
 
@@ -1757,7 +1758,7 @@ public class AccountEntryLocalServiceImpl
 				return StringUtil.toUpperCase(code);
 			}
 
-			int max = (int)Math.pow(10, (15 - code.length()));
+			int max = (int)Math.pow(10, 15 - code.length());
 
 			for (int i = 1; i < max; i++) {
 				String tempCode = code + i;
@@ -1767,7 +1768,7 @@ public class AccountEntryLocalServiceImpl
 				}
 			}
 
-			code = code.substring(0, (code.length() - 1));
+			code = code.substring(0, code.length() - 1);
 
 			code = getCode(corpEntryName, code, null);
 		}
@@ -2052,7 +2053,7 @@ public class AccountEntryLocalServiceImpl
 
 		long classPK = accountEntry.getAccountEntryId();
 		Date createDate = accountEntry.getModifiedDate();
-		long classNameId = PortalUtil.getClassNameId(
+		long classNameId = classNameLocalService.getClassNameId(
 			AccountEntry.class.getName());
 		long auditSetId = auditEntryLocalService.getNextAuditSetId(
 			AccountEntry.class.getName(), classPK);
@@ -2320,7 +2321,8 @@ public class AccountEntryLocalServiceImpl
 			long accountEntryId, String ewsaDossieraProjectKey)
 		throws PortalException {
 
-		long classNameId = PortalUtil.getClassNameId(AccountEntry.class);
+		long classNameId = classNameLocalService.getClassNameId(
+			AccountEntry.class);
 
 		List<ExternalIdMapper> externalIdMappers =
 			externalIdMapperLocalService.getExternalIdMappers(
@@ -2402,26 +2404,31 @@ public class AccountEntryLocalServiceImpl
 			}
 		}
 
-		try {
-			listTypeLocalService.validate(
-				industry, AccountEntryConstants.LIST_TYPE_INDUSTRY);
+		if (industry <= 0) {
+			throw new AccountEntryIndustryException();
 		}
-		catch (NoSuchListTypeException nslte) {
+
+		ListType listType = listTypeLocalService.fetchListType(industry);
+
+		if (listType == null) {
+			throw new AccountEntryIndustryException();
+		}
+
+		if (!StringUtil.equals(
+				listType.getType(), AccountEntryConstants.LIST_TYPE_INDUSTRY)) {
+
 			throw new AccountEntryIndustryException();
 		}
 
 		if (partnerEntryId > 0) {
-			try {
-				PartnerEntry partnerEntry =
-					partnerEntryLocalService.getPartnerEntry(partnerEntryId);
+			PartnerEntry partnerEntry =
+				partnerEntryLocalService.fetchPartnerEntry(partnerEntryId);
 
-				if (partnerEntry.getStatus() ==
-						WorkflowConstants.STATUS_INACTIVE) {
-
-					throw new AccountEntryPartnerEntryException();
-				}
+			if (partnerEntry == null) {
+				throw new AccountEntryPartnerEntryException();
 			}
-			catch (NoSuchPartnerEntryException nspee) {
+
+			if (partnerEntry.getStatus() == WorkflowConstants.STATUS_INACTIVE) {
 				throw new AccountEntryPartnerEntryException();
 			}
 		}
@@ -2465,13 +2472,14 @@ public class AccountEntryLocalServiceImpl
 
 	protected void validateTrial(long userId) throws PortalException {
 
-/* TODO update OSBUtil integration
+		/* TODO update OSBUtil integration
 
 		if (!OSBUtil.isTrialEULA(OSBConstants.COMPANY_ID, userId)) {
 			throw new PrincipalException();
 		}
 
-*/
+		 */
+
 		if (accountEntryPersistence.countByU_T(
 				userId, AccountEntryConstants.TYPE_TRIAL) > 0) {
 

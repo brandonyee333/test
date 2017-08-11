@@ -27,7 +27,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Date;
@@ -71,7 +70,8 @@ public class ProductEntryLocalServiceImpl
 
 		productEntryPersistence.update(productEntry, serviceContext);
 
-		long classNameId = PortalUtil.getClassNameId(ProductEntry.class);
+		long classNameId = classNameLocalService.getClassNameId(
+			ProductEntry.class);
 
 		for (String dossieraIdMapping : dossieraIdMappings) {
 			externalIdMapperLocalService.addExternalIdMapper(
@@ -103,7 +103,7 @@ public class ProductEntryLocalServiceImpl
 
 		// External ids
 
-		long classNameId = PortalUtil.getClassNameId(
+		long classNameId = classNameLocalService.getClassNameId(
 			ProductEntry.class.getName());
 
 		externalIdMapperPersistence.removeByC_C(classNameId, productEntryId);
@@ -158,7 +158,8 @@ public class ProductEntryLocalServiceImpl
 
 		productEntryPersistence.update(productEntry, serviceContext);
 
-		long classNameId = PortalUtil.getClassNameId(ProductEntry.class);
+		long classNameId = classNameLocalService.getClassNameId(
+			ProductEntry.class);
 
 		List<ExternalIdMapper> externalIdMappers =
 			externalIdMapperLocalService.getExternalIdMappers(

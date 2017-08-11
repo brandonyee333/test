@@ -30,7 +30,7 @@ public class RabbitMQConsumerRouter {
 
 	// implements RabbitMQConsumer {
 
-/* TODO update rabbitMQ integration
+	/* TODO update rabbitMQ integration
 	public RabbitMQConsumerRouter() {
 		_rabbitMQConsumersMap.put(
 			"dossiera.provisioning.create",
@@ -58,13 +58,13 @@ public class RabbitMQConsumerRouter {
 		}
 	}
 
-*/
+	*/
 	private static final Log _log = LogFactoryUtil.getLog(
 		RabbitMQConsumerRouter.class);
 
-/* TODO update rabbitMQ integration
+	/* TODO update rabbitMQ integration
 	private Map<String, RabbitMQConsumer> _rabbitMQConsumersMap =
 		new HashMap<>();
-*/
+	*/
 
 }

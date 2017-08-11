@@ -20,9 +20,7 @@ import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.util.ArrayUtil;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
@@ -32,8 +30,9 @@ import javax.portlet.PortletURL;
  */
 public class TicketFeedbackSearch extends SearchContainer<TicketFeedback> {
 
-	static List<String> headerNames = new ArrayList<>();
-	static Map<String, String> orderableHeaders = new HashMap<>();
+	public static final String EMPTY_RESULTS_MESSAGE = "no-feedback-was-found";
+
+	public static List<String> headerNames = new ArrayList<>();
 
 	static {
 		headerNames.add("feedback");
@@ -43,8 +42,6 @@ public class TicketFeedbackSearch extends SearchContainer<TicketFeedback> {
 		headerNames.add("comments");
 		headerNames.add("status");
 	}
-
-	public static final String EMPTY_RESULTS_MESSAGE = "no-feedback-was-found";
 
 	public TicketFeedbackSearch(
 		PortletRequest portletRequest, PortletURL iteratorURL) {

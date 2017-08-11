@@ -287,7 +287,9 @@ public class LicenseKeyFinderImpl
 		Long userId = (Long)params.remove("accountEntryMembership");
 
 		LinkedHashMap<String, Object> params1 = new LinkedHashMap<>(params);
+
 		LinkedHashMap<String, Object> params2 = new LinkedHashMap<>(params1);
+
 		LinkedHashMap<String, Object> params3 = new LinkedHashMap<>(params2);
 
 		if (userId != null) {
@@ -443,7 +445,9 @@ public class LicenseKeyFinderImpl
 		Long userId = (Long)params.remove("accountEntryMembership");
 
 		LinkedHashMap<String, Object> params1 = new LinkedHashMap<>(params);
+
 		LinkedHashMap<String, Object> params2 = new LinkedHashMap<>(params1);
+
 		LinkedHashMap<String, Object> params3 = new LinkedHashMap<>(params2);
 
 		if (userId != null) {
@@ -817,16 +821,15 @@ public class LicenseKeyFinderImpl
 
 	protected void setJoin(
 		QueryPos qPos, LinkedHashMap<String, Object> params, Long createUserId,
-		Timestamp createDateGT_TS, Timestamp createDateLT_TS,
-		Long modifiedUserId, Timestamp modifiedDateGT_TS,
-		Timestamp modifiedDateLT_TS, String[] accountEntryNames,
-		String[] licenseKeySetNames, Timestamp startDateGT_TS,
-		Timestamp startDateLT_TS, long[] licenseEntryIds,
+		Timestamp createDateGT, Timestamp createDateLT, Long modifiedUserId,
+		Timestamp modifiedDateGT, Timestamp modifiedDateLT,
+		String[] accountEntryNames, String[] licenseKeySetNames,
+		Timestamp startDateGT, Timestamp startDateLT, long[] licenseEntryIds,
 		long[] productEntryIds, String[] productEntryNames, String[] productIds,
 		int[] productVersions, String[] owners, String[] descriptions,
 		String[] hostNames, String[] ipAddresses, String[] macAddresses,
-		String[] serverIds, String[] keys, Timestamp expirationDateGT_TS,
-		Timestamp expirationDateLT_TS) {
+		String[] serverIds, String[] keys, Timestamp expirationDateGT,
+		Timestamp expirationDateLT) {
 
 		setJoin(qPos, params);
 
@@ -834,26 +837,26 @@ public class LicenseKeyFinderImpl
 			qPos.add(createUserId);
 		}
 
-		qPos.add(createDateGT_TS);
-		qPos.add(createDateGT_TS);
-		qPos.add(createDateLT_TS);
-		qPos.add(createDateLT_TS);
+		qPos.add(createDateGT);
+		qPos.add(createDateGT);
+		qPos.add(createDateLT);
+		qPos.add(createDateLT);
 
 		if (modifiedUserId != null) {
 			qPos.add(modifiedUserId);
 		}
 
-		qPos.add(modifiedDateGT_TS);
-		qPos.add(modifiedDateGT_TS);
-		qPos.add(modifiedDateLT_TS);
-		qPos.add(modifiedDateLT_TS);
+		qPos.add(modifiedDateGT);
+		qPos.add(modifiedDateGT);
+		qPos.add(modifiedDateLT);
+		qPos.add(modifiedDateLT);
 		qPos.add(accountEntryNames, 2);
 		qPos.add(accountEntryNames, 2);
 		qPos.add(licenseKeySetNames, 2);
-		qPos.add(startDateGT_TS);
-		qPos.add(startDateGT_TS);
-		qPos.add(startDateLT_TS);
-		qPos.add(startDateLT_TS);
+		qPos.add(startDateGT);
+		qPos.add(startDateGT);
+		qPos.add(startDateLT);
+		qPos.add(startDateLT);
 		qPos.add(licenseEntryIds);
 		qPos.add(productEntryIds);
 		qPos.add(productEntryNames, 2);
@@ -866,10 +869,10 @@ public class LicenseKeyFinderImpl
 		qPos.add(macAddresses, 2);
 		qPos.add(serverIds, 2);
 		qPos.add(keys, 2);
-		qPos.add(expirationDateGT_TS);
-		qPos.add(expirationDateGT_TS);
-		qPos.add(expirationDateLT_TS);
-		qPos.add(expirationDateLT_TS);
+		qPos.add(expirationDateGT);
+		qPos.add(expirationDateGT);
+		qPos.add(expirationDateLT);
+		qPos.add(expirationDateLT);
 	}
 
 	private static final String _MODIFIED_USER_ID_SQL =

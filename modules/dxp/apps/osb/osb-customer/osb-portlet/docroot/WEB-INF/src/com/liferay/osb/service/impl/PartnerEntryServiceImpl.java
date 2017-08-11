@@ -53,7 +53,7 @@ public class PartnerEntryServiceImpl extends PartnerEntryServiceBaseImpl {
 	}
 
 	public List<PartnerEntry> search(
-			String keywords, LinkedHashMap<String, Object>params, int start,
+			String keywords, LinkedHashMap<String, Object> params, int start,
 			int end)
 		throws PortalException {
 
@@ -70,14 +70,6 @@ public class PartnerEntryServiceImpl extends PartnerEntryServiceBaseImpl {
 		return partnerEntryLocalService.searchCount(keywords, params);
 	}
 
-	public int searchCount(String keywords, LinkedHashMap<String, Object>params)
-		throws PortalException {
-
-		addAccountMembershipParams(params);
-
-		return partnerEntryLocalService.searchCount(keywords, params);
-	}
-
 	public int searchCount(
 			String code, int[] statuses, LinkedHashMap<String, Object> params,
 			boolean andOperator)
@@ -87,6 +79,15 @@ public class PartnerEntryServiceImpl extends PartnerEntryServiceBaseImpl {
 
 		return partnerEntryLocalService.searchCount(
 			code, statuses, params, andOperator);
+	}
+
+	public int searchCount(
+			String keywords, LinkedHashMap<String, Object> params)
+		throws PortalException {
+
+		addAccountMembershipParams(params);
+
+		return partnerEntryLocalService.searchCount(keywords, params);
 	}
 
 	protected void addAccountMembershipParams(

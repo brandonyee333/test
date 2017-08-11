@@ -61,6 +61,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.service.CountryServiceUtil;
 import com.liferay.portal.kernel.service.ListTypeServiceUtil;
@@ -123,7 +124,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		String productClassName = PortalUtil.getClassName(
 			assetReceiptLicense.getProductClassNameId());
-/* TODO update app license integration
+
+		/* TODO update app license integration
 
 		if (productClassName.equals(AppVersion.class.getName())) {
 			long productClassPK = assetReceiptLicense.getProductClassPK();
@@ -134,7 +136,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			productVersion = appVersion.getVersionId();
 		}
 
-*/
+		*/
+
 		Date startDate = getLicenseKeyStartDate(
 			startDateMonth, startDateDay, startDateYear, user.getTimeZone(),
 			assetReceiptLicense.getStartDate());
@@ -178,13 +181,14 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				serverId = serverIds[i];
 			}
 
-// TODO remove temp update app license integration
+			// TODO remove temp update app license integration
 
 			String licenseType = StringPool.BLANK;
-/* TODO update app license integration
+
+			/* TODO update app license integration
 			String licenseKeyType = AssetLicenseConstants.getLicenseKeyType(
 				assetReceiptLicense.getLicenseType());
-*/
+			*/
 
 			/* TODO AssetReceiptLicense dependency
 			String key = KeyGenerator.generate(
@@ -1516,7 +1520,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				offeringDefinition.getProductEntryId(),
 				offeringDefinition.getSupportResponseId(), "Trial",
 				OfferingEntryConstants.TYPE_TRIAL, majorProductVersion,
-				offeringDefinition.isLicenses(), 2592000000l,
+				offeringDefinition.isLicenses(), 2592000000L,
 				offeringDefinition.getMaxConcurrentUsers(),
 				offeringDefinition.getMaxUsers(),
 				offeringDefinition.isSupportTickets(), 60000,
@@ -1664,15 +1668,21 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			throw new OfferingEntryStatusException();
 		}
 
-		try {
-			String listType =
-				ProductEntry.class.getName() + StringPool.PERIOD +
-					productEntry.getVersionsListType();
-
-			listTypeLocalService.validate(
-				productVersion, ProductEntryConstants.getAllListType(listType));
+		if (productVersion <= 0) {
+			throw new LicenseKeyProductVersionException();
 		}
-		catch (Exception e) {
+
+		ListType listType = listTypeLocalService.fetchListType(productVersion);
+
+		if (listType == null) {
+			throw new LicenseKeyProductVersionException();
+		}
+
+		String listTypeType = ProductEntryConstants.getAllListType(
+			ProductEntry.class.getName() + StringPool.PERIOD +
+				productEntry.getVersionsListType());
+
+		if (listTypeType.equals(listType.getType())) {
 			throw new LicenseKeyProductVersionException();
 		}
 

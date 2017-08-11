@@ -22,7 +22,6 @@ import com.liferay.osb.service.base.TicketInformationLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -177,7 +176,7 @@ public class TicketInformationLocalServiceImpl
 			ServiceContext serviceContext)
 		throws PortalException {
 
-		long classNameId = PortalUtil.getClassNameId(
+		long classNameId = classNameLocalService.getClassNameId(
 			TicketEntry.class.getName());
 
 		long auditSetId = GetterUtil.getLong(

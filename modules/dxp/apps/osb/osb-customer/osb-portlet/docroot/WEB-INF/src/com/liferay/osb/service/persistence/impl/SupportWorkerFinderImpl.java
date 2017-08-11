@@ -359,10 +359,14 @@ public class SupportWorkerFinderImpl
 
 		String sql = CustomSQLUtil.get(FIND_BY_R_STT_SRI);
 
-		sql = StringUtil.replace(
-			sql, "[$ROLE_COMPARATOR$]",
-			roleComparator.equals(StringPool.EQUAL) ?
-				StringPool.EQUAL : StringPool.NOT_EQUAL);
+		if (roleComparator.equals(StringPool.EQUAL)) {
+			sql = StringUtil.replace(
+				sql, "[$ROLE_COMPARATOR$]", StringPool.EQUAL);
+		}
+		else {
+			sql = StringUtil.replace(
+				sql, "[$ROLE_COMPARATOR$]", StringPool.NOT_EQUAL);
+		}
 
 		if (supportTeamType == null) {
 			sql = StringUtil.replace(

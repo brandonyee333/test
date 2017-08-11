@@ -917,14 +917,13 @@ public class TicketEntryDisplayTerms extends DisplayTerms {
 	protected Boolean ticketWorker;
 
 	private JSONObject _convertToLESA2(JSONObject jsonObject) {
-		String accountEntryName = jsonObject.getString(ACCOUNT_ENTRY_NAME);
+		String accountEntryName = StringUtil.unquote(
+			jsonObject.getString(ACCOUNT_ENTRY_NAME));
 
 		if (Validator.isNotNull(accountEntryName) &&
 			!jsonObject.has(ACCOUNT_ENTRY_IDS)) {
 
 			try {
-				accountEntryName = StringUtil.unquote(accountEntryName);
-
 				AccountEntry accountEntry =
 					AccountEntryLocalServiceUtil.getAccountEntryByName(
 						accountEntryName);

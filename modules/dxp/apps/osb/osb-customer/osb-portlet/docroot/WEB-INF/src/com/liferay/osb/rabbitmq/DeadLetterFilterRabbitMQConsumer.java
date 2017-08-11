@@ -36,7 +36,7 @@ public class DeadLetterFilterRabbitMQConsumer {
 		_script = script;
 	}
 
-/* TODO update rabbitMQ integration
+	/* TODO update rabbitMQ integration
 
 	public int parse(
 		String routingKey, String message, Map<String, Object> properties) {
@@ -83,7 +83,7 @@ public class DeadLetterFilterRabbitMQConsumer {
 		return RESPONSE_REPUBLISH;
 	}
 
-*/
+	*/
 
 	private static Log _log = LogFactoryUtil.getLog(
 		DeadLetterFilterRabbitMQConsumer.class);

@@ -66,6 +66,7 @@ public class OfferingEntryLocalServiceImpl
 		Date supportEndDate = new Date(
 			startDate.getTime() + supportLifetime +
 				(Time.YEAR * orderEntry.getRenewCount()));
+
 		Date now = new Date();
 
 		validate(accountEntryId, productEntryId, sizing, quantity);
@@ -332,9 +333,9 @@ public class OfferingEntryLocalServiceImpl
 		accountEntryLocalService.updateStatus(
 			offeringEntry.getAccountEntryId());
 
-		long classNameId = PortalUtil.getClassNameId(
+		long classNameId = classNameLocalService.getClassNameId(
 			AccountEntry.class.getName());
-		long fieldClassNameId = PortalUtil.getClassNameId(
+		long fieldClassNameId = classNameLocalService.getClassNameId(
 			OfferingEntry.class.getName());
 
 		auditEntryLocalService.addAuditEntry(

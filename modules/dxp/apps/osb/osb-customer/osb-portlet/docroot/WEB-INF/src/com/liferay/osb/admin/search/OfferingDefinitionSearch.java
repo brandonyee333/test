@@ -30,7 +30,10 @@ import javax.portlet.PortletURL;
 public class OfferingDefinitionSearch
 	extends SearchContainer<OfferingDefinition> {
 
-	static List<String> headerNames = new ArrayList<>();
+	public static final String EMPTY_RESULTS_MESSAGE =
+		"no-offering-definitions-were-found";
+
+	public static List<String> headerNames = new ArrayList<>();
 
 	static {
 		headerNames.add("product");
@@ -38,9 +41,6 @@ public class OfferingDefinitionSearch
 		headerNames.add("licenses");
 		headerNames.add("tickets");
 	}
-
-	public static final String EMPTY_RESULTS_MESSAGE =
-		"no-offering-definitions-were-found";
 
 	public OfferingDefinitionSearch(
 		PortletRequest portletRequest, PortletURL iteratorURL) {

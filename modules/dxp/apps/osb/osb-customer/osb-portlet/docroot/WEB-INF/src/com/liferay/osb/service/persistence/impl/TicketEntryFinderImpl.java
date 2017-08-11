@@ -232,6 +232,7 @@ public class TicketEntryFinderImpl
 		Long userId = (Long)params.remove("accountEntryMembership");
 
 		LinkedHashMap<String, Object> params1 = new LinkedHashMap<>(params);
+
 		LinkedHashMap<String, Object> params2 = new LinkedHashMap<>(params1);
 
 		if (userId != null) {
@@ -364,6 +365,7 @@ public class TicketEntryFinderImpl
 		Long userId = (Long)params.remove("accountEntryMembership");
 
 		LinkedHashMap<String, Object> params1 = new LinkedHashMap<>(params);
+
 		LinkedHashMap<String, Object> params2 = new LinkedHashMap<>(params1);
 
 		if (userId != null) {
@@ -889,15 +891,14 @@ public class TicketEntryFinderImpl
 	protected void setJoin(
 		QueryPos qPos, LinkedHashMap<String, Object> params,
 		long reportedByUserId, String[] names, int[] accountEntryTiers,
-		Timestamp createDateGT_TS, Timestamp createDateLT_TS, String[] subjects,
+		Timestamp createDateGT, Timestamp createDateLT, String[] subjects,
 		String[] descriptions, String[] bodies, int[] statuses,
 		int[] severities, int[] weights, int[] escalationLevels, long[] envOS,
 		long[] envDB, long[] envJVM, long[] envAS, long[] envLFR,
-		int[] components, int[] resolutions, Timestamp closedDateGT_TS,
-		Timestamp closedDateLT_TS, Timestamp dueDateGT_TS,
-		Timestamp dueDateLT_TS, Timestamp customerModifiedDateGT_TS,
-		Timestamp customerModifiedDateLT_TS, Timestamp workerModifiedDateGT_TS,
-		Timestamp workerModifiedDateLT_TS) {
+		int[] components, int[] resolutions, Timestamp closedDateGT,
+		Timestamp closedDateLT, Timestamp dueDateGT, Timestamp dueDateLT,
+		Timestamp customerModifiedDateGT, Timestamp customerModifiedDateLT,
+		Timestamp workerModifiedDateGT, Timestamp workerModifiedDateLT) {
 
 		setJoin(qPos, params);
 
@@ -906,10 +907,10 @@ public class TicketEntryFinderImpl
 		qPos.add(accountEntryTiers);
 		qPos.add(reportedByUserId);
 		qPos.add(reportedByUserId);
-		qPos.add(createDateGT_TS);
-		qPos.add(createDateGT_TS);
-		qPos.add(createDateLT_TS);
-		qPos.add(createDateLT_TS);
+		qPos.add(createDateGT);
+		qPos.add(createDateGT);
+		qPos.add(createDateLT);
+		qPos.add(createDateLT);
 		setTicketComment(qPos, bodies, params);
 		qPos.add(subjects, 2);
 		qPos.add(descriptions, 2);
@@ -924,22 +925,22 @@ public class TicketEntryFinderImpl
 		qPos.add(envLFR);
 		qPos.add(components);
 		qPos.add(resolutions);
-		qPos.add(closedDateGT_TS);
-		qPos.add(closedDateGT_TS);
-		qPos.add(closedDateLT_TS);
-		qPos.add(closedDateLT_TS);
-		qPos.add(dueDateGT_TS);
-		qPos.add(dueDateGT_TS);
-		qPos.add(dueDateLT_TS);
-		qPos.add(dueDateLT_TS);
-		qPos.add(customerModifiedDateGT_TS);
-		qPos.add(customerModifiedDateGT_TS);
-		qPos.add(customerModifiedDateLT_TS);
-		qPos.add(customerModifiedDateLT_TS);
-		qPos.add(workerModifiedDateGT_TS);
-		qPos.add(workerModifiedDateGT_TS);
-		qPos.add(workerModifiedDateLT_TS);
-		qPos.add(workerModifiedDateLT_TS);
+		qPos.add(closedDateGT);
+		qPos.add(closedDateGT);
+		qPos.add(closedDateLT);
+		qPos.add(closedDateLT);
+		qPos.add(dueDateGT);
+		qPos.add(dueDateGT);
+		qPos.add(dueDateLT);
+		qPos.add(dueDateLT);
+		qPos.add(customerModifiedDateGT);
+		qPos.add(customerModifiedDateGT);
+		qPos.add(customerModifiedDateLT);
+		qPos.add(customerModifiedDateLT);
+		qPos.add(workerModifiedDateGT);
+		qPos.add(workerModifiedDateGT);
+		qPos.add(workerModifiedDateLT);
+		qPos.add(workerModifiedDateLT);
 	}
 
 	protected void setTicketComment(
@@ -965,8 +966,8 @@ public class TicketEntryFinderImpl
 	}
 
 	private static final String _PENDING_CUSTOMER_SQL =
-		"((OSB_TicketEntry.status = 33000) AND " +
-			"(OSB_TicketEntry.resolution = 32003))";
+		"((OSB_TicketEntry.status = 33000) AND (OSB_TicketEntry.resolution = " +
+			"32003))";
 
 	private static final String _SATISFIED_DUE_DATE_SQL =
 		"(OSB_TicketEntry.closedDate [$SATISFIED_DUE_DATE_COMPARATOR$] " +

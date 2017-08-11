@@ -172,6 +172,7 @@ public class TicketFeedbackFinderImpl
 		Long userId = (Long)params.remove("accountEntryMembership");
 
 		LinkedHashMap<String, Object> params1 = new LinkedHashMap<>(params);
+
 		LinkedHashMap<String, Object> params2 = new LinkedHashMap<>(params1);
 
 		if (userId != null) {
@@ -267,6 +268,7 @@ public class TicketFeedbackFinderImpl
 		Long userId = (Long)params.remove("accountEntryMembership");
 
 		LinkedHashMap<String, Object> params1 = new LinkedHashMap<>(params);
+
 		LinkedHashMap<String, Object> params2 = new LinkedHashMap<>(params1);
 
 		if (userId != null) {
@@ -636,9 +638,9 @@ public class TicketFeedbackFinderImpl
 
 	protected void setJoin(
 		QueryPos qPos, LinkedHashMap<String, Object> params, String[] names,
-		Timestamp createDateGT_TS, Timestamp createDateLT_TS,
-		Timestamp modifiedDateGT_TS, Timestamp modifiedDateLT_TS,
-		Integer subject, Integer satisfied, String[] comments, Integer status,
+		Timestamp createDateGT, Timestamp createDateLT,
+		Timestamp modifiedDateGT, Timestamp modifiedDateLT, Integer subject,
+		Integer satisfied, String[] comments, Integer status,
 		Integer[] ratings1, Integer[] ratings2, Integer[] ratings3,
 		Integer[] ratings4) {
 
@@ -646,14 +648,14 @@ public class TicketFeedbackFinderImpl
 
 		qPos.add(names, 2);
 		qPos.add(names, 2);
-		qPos.add(createDateGT_TS);
-		qPos.add(createDateGT_TS);
-		qPos.add(createDateLT_TS);
-		qPos.add(createDateLT_TS);
-		qPos.add(modifiedDateGT_TS);
-		qPos.add(modifiedDateGT_TS);
-		qPos.add(modifiedDateLT_TS);
-		qPos.add(modifiedDateLT_TS);
+		qPos.add(createDateGT);
+		qPos.add(createDateGT);
+		qPos.add(createDateLT);
+		qPos.add(createDateLT);
+		qPos.add(modifiedDateGT);
+		qPos.add(modifiedDateGT);
+		qPos.add(modifiedDateLT);
+		qPos.add(modifiedDateLT);
 		qPos.add(subject);
 		qPos.add(subject);
 		qPos.add(satisfied);

@@ -57,6 +57,7 @@ public class AccountCallLocalServiceImpl
 			callDateMonth, callDateDay, callDateYear, callDateHour,
 			callDateMinute, user.getTimeZone(),
 			(Class<? extends PortalException>)null);
+
 		Date now = new Date();
 
 		validate(type, callDate, callLength, summary);

@@ -99,7 +99,7 @@ public abstract class ProvisioningRabbitMQConsumer {
 
 	// implements RabbitMQConsumer {
 
-/* TODO update rabbitMQ integration
+	/* TODO update rabbitMQ integration
 	public int parse(
 		String routingKey, String message, Map<String, Object> properties) {
 
@@ -121,7 +121,8 @@ public abstract class ProvisioningRabbitMQConsumer {
 		}
 	}
 
-*/
+	*/
+
 	protected ServiceContext createServiceContext(JSONObject jsonObject) {
 		ServiceContext serviceContext = new ServiceContext();
 
@@ -468,11 +469,13 @@ public abstract class ProvisioningRabbitMQConsumer {
 		SupportResponse supportResponse = offeringEntry.getSupportResponse();
 
 		sb.append(supportResponse.getName());
+
 		sb.append(StringPool.SPACE);
 
 		ProductEntry productEntry = offeringEntry.getProductEntry();
 
 		sb.append(productEntry.getName());
+
 		sb.append(StringPool.SPACE);
 
 		if (Validator.isNotNull(offeringEntry.getSizingLabel())) {
@@ -827,13 +830,13 @@ public abstract class ProvisioningRabbitMQConsumer {
 
 		name = StringUtil.shorten(name, 150);
 
-// TODO remove CorpProject null initialization
+		// TODO remove CorpProject null initialization
 
 		CorpProject corpProject = null;
-/* TODO add in CorpProject integration
+		/* TODO add in CorpProject integration
 		CorpProject corpProject = CorpProjectLocalServiceUtil.fetchCorpProject(
 			Long.valueOf(dossieraProjectKey));
-*/
+		*/
 
 		if (corpProject == null) {
 			if ((salesforceOpportunityType ==

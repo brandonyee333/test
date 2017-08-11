@@ -322,7 +322,8 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 
 		// External ids
 
-		long classNameId = PortalUtil.getClassNameId(OrderEntry.class);
+		long classNameId = classNameLocalService.getClassNameId(
+			OrderEntry.class);
 
 		if (Validator.isNotNull(salesforceOpportunityKey)) {
 			externalIdMapperLocalService.addExternalIdMapper(
@@ -372,7 +373,7 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 
 		// External ids
 
-		long classNameId = PortalUtil.getClassNameId(
+		long classNameId = classNameLocalService.getClassNameId(
 			OrderEntry.class.getName());
 
 		externalIdMapperPersistence.removeByC_C(
@@ -454,9 +455,9 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 
 		// Audit entry
 
-		long classNameId = PortalUtil.getClassNameId(
+		long classNameId = classNameLocalService.getClassNameId(
 			AccountEntry.class.getName());
-		long fieldClassNameId = PortalUtil.getClassNameId(
+		long fieldClassNameId = classNameLocalService.getClassNameId(
 			OrderEntry.class.getName());
 
 		long auditSetId = auditEntryLocalService.getNextAuditSetId(
@@ -613,7 +614,8 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 
 		// External ids
 
-		long classNameId = PortalUtil.getClassNameId(OrderEntry.class);
+		long classNameId = classNameLocalService.getClassNameId(
+			OrderEntry.class);
 
 		List<ExternalIdMapper> externalIdMappers =
 			externalIdMapperLocalService.getExternalIdMappers(

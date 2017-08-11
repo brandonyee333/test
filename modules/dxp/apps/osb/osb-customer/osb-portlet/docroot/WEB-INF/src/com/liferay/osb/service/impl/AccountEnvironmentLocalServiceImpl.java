@@ -27,7 +27,6 @@ import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.model.TicketEntryConstants;
 import com.liferay.osb.service.base.AccountEnvironmentLocalServiceBaseImpl;
-import com.liferay.portal.kernel.exception.NoSuchListTypeException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.User;
@@ -216,6 +215,24 @@ public class AccountEnvironmentLocalServiceImpl
 		return accountEnvironment;
 	}
 
+	protected boolean isValidListType(int listTypeId, String listTypeType) {
+		if (listTypeId <= 0) {
+			return false;
+		}
+
+		ListType listType = listTypeLocalService.fetchListType(listTypeId);
+
+		if (listType == null) {
+			return false;
+		}
+
+		if (!listTypeType.equals(listType.getType())) {
+			return false;
+		}
+
+		return true;
+	}
+
 	protected void validate(
 			long accountEnvironmentId, long accountEntryId, long productEntryId,
 			String name, int envOS, int envDB, int envAS, int envLFR,
@@ -247,27 +264,15 @@ public class AccountEnvironmentLocalServiceImpl
 			throw new DuplicateAccountEnvironmentException();
 		}
 
-		try {
-			listTypeLocalService.validate(
-				envAS, TicketEntryConstants.LIST_TYPE_ENV_AS);
-		}
-		catch (NoSuchListTypeException nslte) {
+		if (!isValidListType(envAS, TicketEntryConstants.LIST_TYPE_ENV_AS)) {
 			throw new AccountEnvironmentEnvASException();
 		}
 
-		try {
-			listTypeLocalService.validate(
-				envDB, TicketEntryConstants.LIST_TYPE_ENV_DB);
-		}
-		catch (NoSuchListTypeException nslte) {
+		if (!isValidListType(envDB, TicketEntryConstants.LIST_TYPE_ENV_DB)) {
 			throw new AccountEnvironmentEnvDBException();
 		}
 
-		try {
-			listTypeLocalService.validate(
-				envOS, TicketEntryConstants.LIST_TYPE_ENV_OS);
-		}
-		catch (NoSuchListTypeException nslte) {
+		if (!isValidListType(envOS, TicketEntryConstants.LIST_TYPE_ENV_OS)) {
 			throw new AccountEnvironmentEnvOSException();
 		}
 
@@ -275,31 +280,33 @@ public class AccountEnvironmentLocalServiceImpl
 			productEntryId);
 
 		if (productEntry.isSocialOffice()) {
-			try {
-				listTypeLocalService.validate(
+			if (!isValidListType(
 					envLFR,
-					ProductEntryConstants.LIST_TYPE_SOCIAL_OFFICE_ALL_VERSIONS);
-			}
-			catch (NoSuchListTypeException nslte) {
+					ProductEntryConstants.
+						LIST_TYPE_SOCIAL_OFFICE_ALL_VERSIONS)) {
+
 				throw new AccountEnvironmentEnvLFRException();
 			}
 		}
 		else {
-			try {
-				ListType listType = listTypeLocalService.getListType(envLFR);
-
-				String type = listType.getType();
-
-				if (!type.equals(
-						ProductEntryConstants.LIST_TYPE_PORTAL_ALL_VERSIONS) &&
-					!type.equals(
-						ProductEntryConstants.
-							LIST_TYPE_DIGITAL_ENTERPRISE_ALL_VERSIONS)) {
-
-					throw new AccountEnvironmentEnvLFRException();
-				}
+			if (envLFR <= 0) {
+				throw new AccountEnvironmentEnvLFRException();
 			}
-			catch (NoSuchListTypeException nslte) {
+
+			ListType listType = listTypeLocalService.fetchListType(envLFR);
+
+			if (listType == null) {
+				throw new AccountEnvironmentEnvLFRException();
+			}
+
+			String type = listType.getType();
+
+			if (!type.equals(
+					ProductEntryConstants.LIST_TYPE_PORTAL_ALL_VERSIONS) &&
+				!type.equals(
+					ProductEntryConstants.
+						LIST_TYPE_DIGITAL_ENTERPRISE_ALL_VERSIONS)) {
+
 				throw new AccountEnvironmentEnvLFRException();
 			}
 		}
