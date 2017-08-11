@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Locale;
 
@@ -47,8 +46,7 @@ public class DefaultScreenNameValidator implements ScreenNameValidator {
 
 	@Override
 	public boolean validate(long companyId, String screenName) {
-		if (Validator.isEmailAddress(screenName) ||
-			StringUtil.equalsIgnoreCase(screenName, POSTFIX) ||
+		if (StringUtil.equalsIgnoreCase(screenName, POSTFIX) ||
 			hasInvalidChars(screenName)) {
 
 			return false;
