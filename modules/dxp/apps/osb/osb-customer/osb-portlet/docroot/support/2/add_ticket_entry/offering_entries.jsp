@@ -206,7 +206,7 @@ String productLink = GetterUtil.getString(preferences.getValue("productLink_" + 
 	</c:choose>
 </c:if>
 
-<aui:script use="aui-overlay-mask,node">
+<aui:script use="aui-base,aui-overlay-mask">
 	var centerOnPage = function(node) {
 		var WIN = A.getWin();
 
@@ -259,7 +259,7 @@ String productLink = GetterUtil.getString(preferences.getValue("productLink_" + 
 	};
 
 	var displayPopUp = function(node) {
-		node.removeClass('aui-helper-hidden');
+		node.removeClass('hide');
 
 		centerOnPage(node);
 
@@ -278,7 +278,7 @@ String productLink = GetterUtil.getString(preferences.getValue("productLink_" + 
 					overlayMask.remove();
 				}
 
-				node.addClass('aui-helper-hidden');
+				node.addClass('hide');
 
 				popUpContent.detach('clickoutside');
 			}

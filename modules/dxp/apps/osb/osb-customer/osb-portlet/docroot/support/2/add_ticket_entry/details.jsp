@@ -87,31 +87,37 @@ String description = ParamUtil.getString(request, "description");
 </div>
 
 <aui:script>
-	function <portlet:namespace />submit() {
-		var firstNode = <portlet:namespace />validateFiles();
+	Liferay.provide(
+		window,
+		'<portlet:namespace />submit',
+		function() {
 
-		var requiredFields = AUI().all("#<portlet:namespace />createTicket input[data-field-required-status='false'], #<portlet:namespace />createTicket select[data-field-required-status='false'], #<portlet:namespace />createTicket textarea[data-field-required-status='false']");
+			var firstNode = <portlet:namespace />validateFiles();
 
-		if (requiredFields.size() > 0) {
-			requiredFields.each(
-				function(requiredField) {
-					<portlet:namespace />validateRequiredField(requiredField);
+			var requiredFields = AUI().all("#<portlet:namespace />createTicket input[data-field-required-status='false'], #<portlet:namespace />createTicket select[data-field-required-status='false'], #<portlet:namespace />createTicket textarea[data-field-required-status='false']");
+
+			if (requiredFields.size() > 0) {
+				requiredFields.each(
+					function(requiredField) {
+						<portlet:namespace />validateRequiredField(requiredField);
+					}
+				)
+
+				if (!firstNode) {
+					firstNode = requiredFields.first();
 				}
-			)
+			}
 
 			if (!firstNode) {
-				firstNode = requiredFields.first();
+				document.<portlet:namespace />fm.encoding="multipart/form-data";
+
+				submitForm(document.<portlet:namespace />fm);
 			}
-		}
+			else {
+				firstNode.scrollIntoView();
+			}
 
-		if (firstNode) {
-			firstNode.scrollIntoView();
-
-			return false;
-		}
-
-		document.<portlet:namespace />fm.encoding="multipart/form-data";
-
-		submitForm(document.<portlet:namespace />fm);
-	}
+		},
+		['aui-base']
+	);
 </aui:script>

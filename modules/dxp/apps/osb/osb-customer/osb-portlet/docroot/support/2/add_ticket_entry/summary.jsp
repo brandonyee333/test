@@ -314,44 +314,43 @@ if (accountEntry != null) {
 	}
 
 	function <portlet:namespace />clearAccountEnvironment() {
-		var envAS = A.one('#<portlet:namespace />envAS');
+		var ids = [
+			'envAS',
+			'envBrowser',
+			'envDB',
+			'envJVM',
+			'envLFR',
+			'envOS'
+		];
 
-		envAS.set('value', '');
+		ids.forEach(
+			function(id) {
+				var node = A.one('#<portlet:namespace />' + id);
 
-		var envBrowser = A.one('#<portlet:namespace />envBrowser');
-
-		envBrowser.set('value', '');
+				if (node) {
+					node.val('');
+				}
+			}
+		);
 
 		var envBrowserCustom = A.one('#<portlet:namespace />envBrowserCustom');
 
-		envBrowserCustom.remove();
-
-		var envDB = A.one('#<portlet:namespace />envDB');
-
-		envDB.set('value', '');
-
-		var envJVM = A.one('#<portlet:namespace />envJVM');
-
-		envJVM.set('value', '');
-
-		var envLFR = A.one('#<portlet:namespace />envLFR');
-
-		envLFR.set('value', '');
-
-		var envOS = A.one('#<portlet:namespace />envOS');
-
-		envOS.set('value', '');
+		if (envBrowserCustom) {
+			envBrowserCustom.remove();
+		}
 
 		var envOSCustom = A.one('#<portlet:namespace />envOSCustom');
 
-		envOSCustom.remove();
+		if(envOSCustom) {
+			envOSCustom.remove();
+		}
 	}
 
 	function <portlet:namespace />selectAccountEntry() {
 		var productEntryDisplayName = A.one('#<portlet:namespace />productEntryDisplayName');
 
 		if (productEntryDisplayName) {
-			productEntryDisplayName.set('value', '');
+			productEntryDisplayName.val('');
 		}
 
 		<portlet:namespace />selectProductEntry();
@@ -361,13 +360,13 @@ if (accountEntry != null) {
 		var offeringEntryId = A.one('#<portlet:namespace />offeringEntryId');
 
 		if (offeringEntryId) {
-			offeringEntryId.set('value', 0);
+			offeringEntryId.val(0);
 		}
 
 		var component = A.one('#<portlet:namespace />component');
 
 		if (component) {
-			component.set('value', 0);
+			component.val(0);
 		}
 
 		<portlet:namespace />selectServerComponent();
@@ -387,15 +386,12 @@ if (accountEntry != null) {
 			<portlet:namespace />validateRequiredField(offeringEntryId);
 		}
 
-		if ((accountEntryId.val() == oldAccountEntryId) && productEntryDisplayName && (productEntryDisplayName.val() == oldProductEntryDisplayName) && component && offeringEntryId && ((component.val() == 0) || (offeringEntryId.val() == 0)) && !accountEnvironmentId) {
-			return;
-		}
-		else {
+		if (!((accountEntryId.val() == oldAccountEntryId) && productEntryDisplayName && (productEntryDisplayName.val() == oldProductEntryDisplayName) && component && offeringEntryId && ((component.val() == 0) || (offeringEntryId.val() == 0)) && !accountEnvironmentId)) {
 			if (accountEnvironmentId && (offeringEntryId.val() != oldOfferingEntryId)) {
-				accountEnvironmentId.set('value', 0);
+				accountEnvironmentId.val(0);
 			}
 
-			document.<portlet:namespace />fm.encoding="application/x-www-form-urlencoded";
+			document.<portlet:namespace />fm.encoding='application/x-www-form-urlencoded';
 
 			submitForm(document.<portlet:namespace />fm, '<portlet:renderURL><portlet:param name="mvcPath" value="/support/2/add_ticket_entry.jsp" /></portlet:renderURL>');
 		}
