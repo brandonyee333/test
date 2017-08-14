@@ -287,19 +287,3 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 		<liferay-util:param name="ticketAttachmentType" value="<%= String.valueOf(TicketAttachmentConstants.TYPE_SERVER_LOG) %>" />
 	</liferay-util:include>
 </div>
-
-<aui:script>
-	function <portlet:namespace />selectUploadMethod(field, method) {
-		var fileDiv = AUI().one('#<portlet:namespace />' + field + 'FileUpload');
-		var ftpDiv = AUI().one('#<portlet:namespace />' + field + 'FileTextBox');
-
-		if (method == <%= TicketEntryConstants.UPLOAD_METHOD_FTP %>) {
-			fileDiv.hide();
-			ftpDiv.show();
-		}
-		else if (method == <%= TicketEntryConstants.UPLOAD_METHOD_HERE %>) {
-			fileDiv.show();
-			ftpDiv.hide();
-		}
-	}
-</aui:script>
