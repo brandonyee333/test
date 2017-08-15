@@ -187,15 +187,16 @@ public class PartnerEntryServiceHttp {
 	}
 
 	public static int searchCount(HttpPrincipal httpPrincipal,
-		java.lang.String keywords,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
+		java.lang.String code, int[] statuses,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+		boolean andOperator)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(PartnerEntryServiceUtil.class,
 					"searchCount", _searchCountParameterTypes4);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					keywords, params);
+			MethodHandler methodHandler = new MethodHandler(methodKey, code,
+					statuses, params, andOperator);
 
 			Object returnObj = null;
 
@@ -220,16 +221,15 @@ public class PartnerEntryServiceHttp {
 	}
 
 	public static int searchCount(HttpPrincipal httpPrincipal,
-		java.lang.String code, int[] statuses,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andOperator)
+		java.lang.String keywords,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(PartnerEntryServiceUtil.class,
 					"searchCount", _searchCountParameterTypes5);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey, code,
-					statuses, params, andOperator);
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					keywords, params);
 
 			Object returnObj = null;
 
@@ -269,10 +269,10 @@ public class PartnerEntryServiceHttp {
 			java.lang.String.class
 		};
 	private static final Class<?>[] _searchCountParameterTypes4 = new Class[] {
-			java.lang.String.class, java.util.LinkedHashMap.class
-		};
-	private static final Class<?>[] _searchCountParameterTypes5 = new Class[] {
 			java.lang.String.class, int[].class, java.util.LinkedHashMap.class,
 			boolean.class
+		};
+	private static final Class<?>[] _searchCountParameterTypes5 = new Class[] {
+			java.lang.String.class, java.util.LinkedHashMap.class
 		};
 }

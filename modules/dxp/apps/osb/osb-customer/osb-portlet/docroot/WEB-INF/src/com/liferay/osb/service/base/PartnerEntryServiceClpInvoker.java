@@ -55,14 +55,14 @@ public class PartnerEntryServiceClpInvoker {
 		_methodName387 = "searchCount";
 
 		_methodParameterTypes387 = new String[] {
-				"java.lang.String", "java.util.LinkedHashMap"
+				"java.lang.String", "int[][]", "java.util.LinkedHashMap",
+				"boolean"
 			};
 
 		_methodName388 = "searchCount";
 
 		_methodParameterTypes388 = new String[] {
-				"java.lang.String", "int[][]", "java.util.LinkedHashMap",
-				"boolean"
+				"java.lang.String", "java.util.LinkedHashMap"
 			};
 	}
 
@@ -104,15 +104,15 @@ public class PartnerEntryServiceClpInvoker {
 		if (_methodName387.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes387, parameterTypes)) {
 			return PartnerEntryServiceUtil.searchCount((java.lang.String)arguments[0],
-				(java.util.LinkedHashMap<java.lang.String, java.lang.Object>)arguments[1]);
+				(int[])arguments[1],
+				(java.util.LinkedHashMap<java.lang.String, java.lang.Object>)arguments[2],
+				((Boolean)arguments[3]).booleanValue());
 		}
 
 		if (_methodName388.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes388, parameterTypes)) {
 			return PartnerEntryServiceUtil.searchCount((java.lang.String)arguments[0],
-				(int[])arguments[1],
-				(java.util.LinkedHashMap<java.lang.String, java.lang.Object>)arguments[2],
-				((Boolean)arguments[3]).booleanValue());
+				(java.util.LinkedHashMap<java.lang.String, java.lang.Object>)arguments[1]);
 		}
 
 		throw new UnsupportedOperationException();
