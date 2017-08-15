@@ -189,7 +189,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 
 							<c:if test="<%= envLFRType.getListTypeId() > envLFR %>">
 								<c:if test="<%= Validator.isNotNull(previousNamePrefix) && !previousNamePrefix.equals(namePrefix) %>">
-									<aui:option disabled="<%= true %>" />
+									<aui:option disabled="<%= true %>" label="--------" />
 								</c:if>
 
 								<aui:option label="<%= LanguageUtil.get(pageContext, envLFRType.getName()) %><%= toEnvLFRLimited ? " (" + LanguageUtil.get(pageContext, "limited") + ")" : StringPool.BLANK %>" selected="<%= envLFRType.getListTypeId() == toEnvLFR %>" value="<%= envLFRType.getListTypeId() %>" />
