@@ -22,13 +22,13 @@ import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.util.Validator;
 
+import javax.portlet.PortletPreferences;
+
 /* TODO update rabbitMQ integration
 import com.liferay.osb.rabbitmq.DeadLetterFilterRabbitMQConsumer;
 import com.liferay.rabbitmq.consumer.RabbitMQConsumer;
 import com.liferay.rabbitmq.service.ConsumerManagerLocalServiceUtil;
 */
-
-import javax.portlet.PortletPreferences;
 
 /**
  * @author Amos Fong

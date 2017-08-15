@@ -53,10 +53,6 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.zip.ZipWriter;
 import com.liferay.portal.kernel.zip.ZipWriterFactoryUtil;
-/* TODO implement releaseNotes portlet
-import com.liferay.releasenotes.model.ReleaseNotes;
-import com.liferay.releasenotes.service.ReleaseNotesLocalServiceUtil;
-*/
 
 import java.io.File;
 import java.io.IOException;
@@ -67,6 +63,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+
+/* TODO implement releaseNotes portlet
+import com.liferay.releasenotes.model.ReleaseNotes;
+import com.liferay.releasenotes.service.ReleaseNotesLocalServiceUtil;
+*/
 
 /**
  * @author Amos Fong

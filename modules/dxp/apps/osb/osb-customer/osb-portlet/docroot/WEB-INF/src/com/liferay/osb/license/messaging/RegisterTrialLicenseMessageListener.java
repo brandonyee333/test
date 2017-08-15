@@ -15,14 +15,14 @@
 package com.liferay.osb.license.messaging;
 
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
-/* TODO update OSBUtil integration
-import com.liferay.osb.shared.util.OSBUtil;
-*/
-import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
+
+/* TODO update OSBUtil integration
+import com.liferay.osb.shared.util.OSBUtil;
+*/
 
 /**
  * @author Amos Fong

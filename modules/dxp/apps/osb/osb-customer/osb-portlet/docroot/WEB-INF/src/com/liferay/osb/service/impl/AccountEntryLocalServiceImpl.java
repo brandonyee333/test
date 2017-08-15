@@ -52,14 +52,8 @@ import com.liferay.osb.model.SupportRegion;
 import com.liferay.osb.model.SupportResponse;
 import com.liferay.osb.model.TicketEntry;
 import com.liferay.osb.model.TicketFlagConstants;
-/* TODO update rabbitMQ integration
-import com.liferay.osb.rabbitmq.ProvisioningAuditRabbitMQConsumer;
-*/
 import com.liferay.osb.remote.RemoteDossieraWebServiceUtil;
 import com.liferay.osb.service.base.AccountEntryLocalServiceBaseImpl;
-/* TODO update OSBUtil integration
-import com.liferay.osb.shared.util.OSBUtil;
-*/
 import com.liferay.osb.support.util.SupportUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.PortletPropsKeys;
@@ -72,9 +66,7 @@ import com.liferay.osb.util.comparator.AccountEntryNameComparator;
 import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.NoSuchCountryException;
-import com.liferay.portal.kernel.exception.NoSuchListTypeException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -88,10 +80,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
-import com.liferay.portal.kernel.service.AddressLocalServiceUtil;
-import com.liferay.portal.kernel.service.AddressServiceUtil;
-import com.liferay.portal.kernel.service.CountryServiceUtil;
-import com.liferay.portal.kernel.service.ListTypeServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Constants;
@@ -111,6 +99,7 @@ import com.liferay.portal.kernel.workflow.WorkflowTaskManagerUtil;
 import com.liferay.util.portlet.PortletProps;
 
 import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -124,6 +113,13 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import javax.portlet.PortletPreferences;
+
+/* TODO update rabbitMQ integration
+import com.liferay.osb.rabbitmq.ProvisioningAuditRabbitMQConsumer;
+
+TODO update OSBUtil integration
+import com.liferay.osb.shared.util.OSBUtil;
+*/
 
 /**
  * @author Brian Wing Shun Chan

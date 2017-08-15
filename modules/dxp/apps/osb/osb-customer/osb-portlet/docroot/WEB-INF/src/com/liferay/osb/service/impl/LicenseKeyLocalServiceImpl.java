@@ -36,10 +36,6 @@ import com.liferay.osb.exception.OfferingEntryStatusException;
 import com.liferay.osb.license.util.LicenseUtil;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
-/* TODO update app license integration
-import com.liferay.osb.model.AppVersion;
-import com.liferay.osb.model.AssetLicenseConstants;
-*/
 import com.liferay.osb.model.AssetReceiptLicense;
 import com.liferay.osb.model.LicenseEntry;
 import com.liferay.osb.model.LicenseEntryConstants;
@@ -58,13 +54,10 @@ import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
 import com.liferay.osb.util.comparator.LicenseKeyExpirationDateComparator;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.Country;
-import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.ListType;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
-import com.liferay.portal.kernel.service.CountryServiceUtil;
-import com.liferay.portal.kernel.service.ListTypeServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CharPool;
@@ -78,6 +71,7 @@ import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.io.File;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -90,6 +84,11 @@ import java.util.Set;
 import java.util.TimeZone;
 
 import org.apache.commons.lang.time.DateUtils;
+
+/* TODO update app license integration
+import com.liferay.osb.model.AppVersion;
+import com.liferay.osb.model.AssetLicenseConstants;
+*/
 
 /**
  * @author Brian Wing Shun Chan

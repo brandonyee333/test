@@ -19,11 +19,6 @@ import com.liferay.osb.exception.LicenseKeyVersionException;
 import com.liferay.osb.license.util.LicenseUtil;
 import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.AccountWorkerConstants;
-import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.Validator;
-/* TODO implement assetReceipt
-import com.liferay.osb.model.AssetReceipt;
-*/
 import com.liferay.osb.model.AssetReceiptLicense;
 import com.liferay.osb.model.LicenseEntry;
 import com.liferay.osb.model.LicenseEntryConstants;
@@ -33,25 +28,30 @@ import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.service.base.LicenseKeyServiceBaseImpl;
 import com.liferay.osb.service.permission.OSBAccountEntryPermission;
-/* TODO implement assetReceipt
-import com.liferay.osb.service.permission.OSBAssetReceiptPermission;
-*/
 import com.liferay.osb.service.permission.OSBLicenseKeyPermission;
 import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
-import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+
+/* TODO implement assetReceipt
+import com.liferay.osb.model.AssetReceipt;
+
+TODO implement assetReceipt
+import com.liferay.osb.service.permission.OSBAssetReceiptPermission;
+*/
 
 /**
  * @author Amos Fong

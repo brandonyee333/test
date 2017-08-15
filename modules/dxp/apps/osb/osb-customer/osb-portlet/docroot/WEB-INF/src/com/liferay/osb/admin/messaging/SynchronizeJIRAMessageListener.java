@@ -14,12 +14,6 @@
 
 package com.liferay.osb.admin.messaging;
 
-import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
-/* TODO update JIRA integration
-import com.liferay.jira.service.JIRATicketLocalServiceUtil;
-*/
 import com.liferay.osb.model.ExternalIdMapperConstants;
 import com.liferay.osb.model.SupportResponseConstants;
 import com.liferay.osb.model.TicketEntry;
@@ -28,22 +22,28 @@ import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.text.Format;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+/* TODO update JIRA integration
+import com.liferay.jira.service.JIRATicketLocalServiceUtil;
+*/
 
 /**
  * @author Amos Fong
