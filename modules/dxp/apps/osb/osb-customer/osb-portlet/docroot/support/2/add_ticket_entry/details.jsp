@@ -80,9 +80,9 @@ String description = ParamUtil.getString(request, "description");
 			<portlet:param name="mvcPath" value="/support/2/view.jsp" />
 		</portlet:renderURL>
 
-		<aui:input class="aui-button-input fl" onClick="location.href = '<%= HtmlUtil.escape(cancelURL.toString()) %>';" type="button" value="<liferay-ui:message key="cancel" />" />
+		<aui:button cssClass="aui-button-input fl" onClick="location.href = '<%= HtmlUtil.escape(cancelURL.toString()) %>';" value="cancel" />
 
-		<aui:input class="aui-button-input fr" onClick="<portlet:namespace />submit();" type="button" value="<liferay-ui:message key="create" />" />
+		<aui:button cssClass="aui-button-input fr" onClick="<portlet:namespace />submit();" value="create" />
 	</div>
 </div>
 

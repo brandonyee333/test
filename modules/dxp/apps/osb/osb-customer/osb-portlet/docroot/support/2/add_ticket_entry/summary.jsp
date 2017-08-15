@@ -151,7 +151,7 @@ if (accountEntry != null) {
 									for (int curComponent : TicketEntryConstants.getGroupComponents(componentGroup)) {
 									%>
 
-										<aui:option label="<%= LanguageUtil.get(pageContext, TicketEntryConstants.getComponentLabel(curComponent)) %>" selected="<%= (curComponent == component) %>" value="<%= curComponent %>"> />
+										<aui:option label="<%= TicketEntryConstants.getComponentLabel(curComponent) %>" selected="<%= (curComponent == component) %>" value="<%= curComponent %>"> />
 
 									<%
 									}
@@ -178,7 +178,7 @@ if (accountEntry != null) {
 								int curComponent = componentEntry.getValue();
 							%>
 
-								<aui:option label="<%= LanguageUtil.get(pageContext, curComponentLabel) %>" selected="<%= curComponent == component) %>" value="<%= curComponent %>"> />
+								<aui:option label="<%= curComponentLabel %>" selected="<%= curComponent == component) %>" value="<%= curComponent %>"> />
 
 							<%
 							}
@@ -215,7 +215,7 @@ if (accountEntry != null) {
 								for (int curSubcomponent : subcomponents) {
 								%>
 
-									<aui:option label="<%= LanguageUtil.get(pageContext, TicketEntryConstants.getSubcomponentLabel(curSubcomponent)) %>" selected="<%= curSubcomponent == subcomponent %>" value="<%= curSubcomponent %>" />
+									<aui:option label="<%= TicketEntryConstants.getSubcomponentLabel(curSubcomponent) %>" selected="<%= curSubcomponent == subcomponent %>" value="<%= curSubcomponent %>" />
 
 								<%
 								}

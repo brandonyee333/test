@@ -55,7 +55,7 @@ String additionalComments = ParamUtil.getString(request, "additionalComments");
 			for (int curType : types) {
 			%>
 
-				<aui:option label="<%= LanguageUtil.get(pageContext, TicketEntryConstants.getLicenseTypeLabel(curType)) %>" selected="<%= curType == type %>" value="<%= curType %>" />
+				<aui:option label="<%= TicketEntryConstants.getLicenseTypeLabel(curType) %>" selected="<%= curType == type %>" value="<%= curType %>" />
 
 			<%
 			}
@@ -76,7 +76,7 @@ String additionalComments = ParamUtil.getString(request, "additionalComments");
 			for (int curPurpose : purposes) {
 			%>
 
-				<aui:option label="<%= LanguageUtil.get(pageContext, TicketEntryConstants.getLicensePurposeLabel(curPurpose)) %>" selected="<%= curPurpose == purpose %>" value="<%= curPurpose %>" />
+				<aui:option label="<%= TicketEntryConstants.getLicensePurposeLabel(curPurpose) %>" selected="<%= curPurpose == purpose %>" value="<%= curPurpose %>" />
 
 			<%
 			}

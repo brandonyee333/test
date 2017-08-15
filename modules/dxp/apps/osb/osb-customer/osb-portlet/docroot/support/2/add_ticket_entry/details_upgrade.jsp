@@ -127,7 +127,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 					for (ListType envLFRType : envLFRTypes) {
 					%>
 
-						<aui:option label="<%= LanguageUtil.get(pageContext, envLFRType.getName()) %>" selected="<%= envLFRType.getListTypeId() == toEnvLFR %>" value="<%= envLFRType.getListTypeId() %>" />
+						<aui:option label="<%= envLFRType.getName() %>" selected="<%= envLFRType.getListTypeId() == toEnvLFR %>" value="<%= envLFRType.getListTypeId() %>" />
 
 					<%
 					}
@@ -137,7 +137,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 			</c:when>
 			<c:otherwise>
 				<aui:select disabled="disabled" id="<portlet:namespace />fromEnvLFR">
-					<aui:option label="<%= LanguageUtil.get(pageContext, TicketEntryConstants.getEnvLabel(envLFR)) %><%= limited ? " (" + LanguageUtil.get(pageContext, "limited") + ")" : StringPool.BLANK %>" />
+					<aui:option label="<%= TicketEntryConstants.getEnvLabel(envLFR) %><%= limited ? " (limited)" : StringPool.BLANK %>" />
 				</aui:select>
 			</c:otherwise>
 		</c:choose>
@@ -155,7 +155,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 		<c:choose>
 			<c:when test="<%= productEntry.isDigitalEnterprise() %>">
 				<aui:select disabled="<%= true %>" id="<portlet:namespace />toEnvLFR">
-					<aui:option label="<%= LanguageUtil.get(pageContext, TicketEntryConstants.getEnvLabel(envLFR)) %><%= limited ? " (" + LanguageUtil.get(pageContext, "limited") + ")" : StringPool.BLANK %>" />
+					<aui:option label="<%= TicketEntryConstants.getEnvLabel(envLFR) %><%= limited ? " (limited)" : StringPool.BLANK %>" />
 				</aui:select>
 			</c:when>
 			<c:otherwise>
@@ -192,7 +192,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 									<aui:option disabled="<%= true %>" label="--------" />
 								</c:if>
 
-								<aui:option label="<%= LanguageUtil.get(pageContext, envLFRType.getName()) %><%= toEnvLFRLimited ? " (" + LanguageUtil.get(pageContext, "limited") + ")" : StringPool.BLANK %>" selected="<%= envLFRType.getListTypeId() == toEnvLFR %>" value="<%= envLFRType.getListTypeId() %>" />
+								<aui:option label="<%= envLFRType.getName() %><%= toEnvLFRLimited ? " (limited)" : StringPool.BLANK %>" selected="<%= envLFRType.getListTypeId() == toEnvLFR %>" value="<%= envLFRType.getListTypeId() %>" />
 							</c:if>
 
 						<%
@@ -220,7 +220,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 			for (int curDocLibPersistence : TicketEntryConstants.DOC_LIB_PERSISTENCES) {
 			%>
 
-				<aui:option label="<%= LanguageUtil.get(request, TicketEntryConstants.getDocLibPersistenceLabel(curDocLibPersistence)) %>" selected="<%= curDocLibPersistence == docLibPersistence %>" value="<%= curDocLibPersistence %>" />
+				<aui:option label="<%= TicketEntryConstants.getDocLibPersistenceLabel(curDocLibPersistence) %>" selected="<%= curDocLibPersistence == docLibPersistence %>" value="<%= curDocLibPersistence %>" />
 
 			<%
 			}

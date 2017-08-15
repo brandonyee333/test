@@ -73,7 +73,7 @@ request.setAttribute("add_ticket_entry.jsp-productEntryLESADisplayNames", produc
 			for (String curProductEntryLESADisplayName : productEntryLESADisplayNames) {
 			%>
 
-				<aui:option label="<%= LanguageUtil.get(pageContext, curProductEntryLESADisplayName) %>" selected="<%= productEntryLESADisplayName.equals(curProductEntryLESADisplayName) %> value="<%= curProductEntryLESADisplayName %>" />
+				<aui:option label="<%= curProductEntryLESADisplayName %>" selected="<%= productEntryLESADisplayName.equals(curProductEntryLESADisplayName) %> value="<%= curProductEntryLESADisplayName %>" />
 
 			<%
 			}
@@ -174,7 +174,7 @@ String productLink = GetterUtil.getString(preferences.getValue("productLink_" + 
 							for (Map.Entry<String, Long> entry : productEntryEnvironments.entrySet()) {
 							%>
 
-								<aui:option label="<%= LanguageUtil.get(pageContext, entry.getKey()) %>" selected="
+								<aui:option label="<%= entry.getKey() %>" selected="
 								<%= (offeringEntry != null) && (entry.getValue() == offeringEntry.getOfferingEntryId()) %>" value="<%= entry.getValue() %>" />
 
 							<%
@@ -259,7 +259,7 @@ String productLink = GetterUtil.getString(preferences.getValue("productLink_" + 
 	};
 
 	var displayPopUp = function(node) {
-		node.removeClass('hide');
+		node.show();
 
 		centerOnPage(node);
 
@@ -278,7 +278,7 @@ String productLink = GetterUtil.getString(preferences.getValue("productLink_" + 
 					overlayMask.remove();
 				}
 
-				node.addClass('hide');
+				node.hide();
 
 				popUpContent.detach('clickoutside');
 			}
