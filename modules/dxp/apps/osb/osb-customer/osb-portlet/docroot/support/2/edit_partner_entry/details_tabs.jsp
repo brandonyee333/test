@@ -48,13 +48,13 @@ List<AccountEntry> accountEntries = partnerEntry.getAccountEntries();
 
 	<div class="tab-content">
 		<div>
-			<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />contentContacts">
+			<div class="hide tab-content-tab" id="<portlet:namespace />contentContacts">
 				<liferay-ui:search-container
 					headerNames="name,email-address,phone-number,role"
+					total="<%= partnerWorkers.size() %>"
 				>
 					<liferay-ui:search-container-results
 						results="<%= partnerWorkers %>"
-						total="<%= partnerWorkers.size() %>"
 					/>
 
 					<liferay-ui:search-container-row
@@ -118,7 +118,7 @@ List<AccountEntry> accountEntries = partnerEntry.getAccountEntries();
 				</liferay-ui:search-container>
 			</div>
 
-			<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />contentPhones">
+			<div class="hide tab-content-tab" id="<portlet:namespace />contentPhones">
 
 				<%
 				request.setAttribute("phones.className", PartnerEntry.class.getName());
@@ -130,7 +130,7 @@ List<AccountEntry> accountEntries = partnerEntry.getAccountEntries();
 				</div>
 			</div>
 
-			<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />contentAddresses">
+			<div class="hide tab-content-tab" id="<portlet:namespace />contentAddresses">
 
 				<%
 				request.setAttribute("addresses.className", PartnerEntry.class.getName());
@@ -142,11 +142,13 @@ List<AccountEntry> accountEntries = partnerEntry.getAccountEntries();
 				</div>
 			</div>
 
-			<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />contentAccounts">
-				<liferay-ui:search-container>
+			<div class="hide tab-content-tab" id="<portlet:namespace />contentAccounts">
+				<liferay-ui:search-container
+					total="<%= accountEntries.size() %>"
+				>
+
 					<liferay-ui:search-container-results
 						results="<%= accountEntries %>"
-						total="<%= accountEntries.size() %>"
 					/>
 
 					<liferay-ui:search-container-row
@@ -179,12 +181,12 @@ List<AccountEntry> accountEntries = partnerEntry.getAccountEntries();
 			</div>
 
 			<c:if test="<%= liferayIncOrg %>">
-				<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />contentAdditionalNotes">
+				<div class="hide tab-content-tab" id="<portlet:namespace />contentAdditionalNotes">
 					<%= SupportUtil.getHTML(partnerEntry.getNotes()) %>
 				</div>
 			</c:if>
 
-			<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />contentChildPartners">
+			<div class="hide tab-content-tab" id="<portlet:namespace />contentChildPartners">
 
 				<%
 				Map<Long, Integer> depthMap = new HashMap<Long, Integer>();
@@ -206,9 +208,9 @@ List<AccountEntry> accountEntries = partnerEntry.getAccountEntries();
 							<portlet:param name="partnerEntryId" value="<%= String.valueOf(childPartnerEntry.getPartnerEntryId()) %>" />
 						</portlet:renderURL>
 
-						<h4>
-							<a href="<%= partnerEntryURL %>"><%= HtmlUtil.escape(childPartnerEntry.getCode()) %></a>
-						</h4>
+						<a href="<%= partnerEntryURL %>">
+							<h4><%= HtmlUtil.escape(childPartnerEntry.getCode()) %></h4>
+						</a>
 
 						<liferay-ui:search-container>
 							<liferay-ui:search-container-results

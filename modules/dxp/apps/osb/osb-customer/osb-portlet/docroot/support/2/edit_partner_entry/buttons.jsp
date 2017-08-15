@@ -26,7 +26,7 @@ partnerEntryTicketSearchURL.setParameter("mvcPath", "/support/2/advanced_search.
 partnerEntryTicketSearchURL.setParameter("assignedPartnerEntryIds", String.valueOf(partnerEntry.getPartnerEntryId()));
 %>
 
-<input class="aui-button-input" onClick="location.href = '<%= partnerEntryTicketSearchURL.toString() %>';" type="button" value="<liferay-ui:message key="view-tickets" />" />
+<aui:button cssClass="aui-button-input" href="<%= partnerEntryTicketSearchURL.toString() %>" value="view-tickets" />
 
 <%
 Map<String, String> dropDownList = new TreeMap<String, String>();
