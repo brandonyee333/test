@@ -46,7 +46,7 @@ String additionalComments = ParamUtil.getString(request, "additionalComments");
 	<div class="aui-w45 fl">
 		<span class="section-heading"><liferay-ui:message key="type-of-key" />:</span>
 
-		<aui:select data-field-required-status="<%= false %>" field-required-message="<%= HtmlUtil.escapeAttribute(LanguageUtil.format(pageContext, "invalid-value-provided-for-x", "type-of-key")) %>" name="<portlet:namespace />type">
+		<aui:select data-field-required-status="<%= false %>" field-required-message="<%= HtmlUtil.escapeAttribute(LanguageUtil.format(pageContext, "invalid-value-provided-for-x", "type-of-key")) %>" name="type">
 			<aui:option value="0" />
 
 			<%
@@ -67,7 +67,7 @@ String additionalComments = ParamUtil.getString(request, "additionalComments");
 	<div class="aui-w45 fr">
 		<div class="section-heading"><liferay-ui:message key="purpose" />:</div>
 
-		<aui:select data-field-required-status="<%= false %>" field-required-message="<%= HtmlUtil.escapeAttribute(LanguageUtil.format(pageContext, "invalid-value-provided-for-x", "purpose")) %>" name="<portlet:namespace />purpose">
+		<aui:select data-field-required-status="<%= false %>" field-required-message="<%= HtmlUtil.escapeAttribute(LanguageUtil.format(pageContext, "invalid-value-provided-for-x", "purpose")) %>" name="purpose">
 			<aui:option value="0" />
 
 			<%

@@ -118,7 +118,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 
 		<c:choose>
 			<c:when test="<%= productEntry.isDigitalEnterprise() %>">
-				<aui:select id="<portlet:namespace />fromEnvLFR" name="<portlet:namespace />envLFR" onChange="<portlet:namespace />updateSupportMessage(this.value, 'Upgrade');">
+				<aui:select id="fromEnvLFR" name="envLFR" onChange="<portlet:namespace />updateSupportMessage(this.value, 'Upgrade');">
 					<aui:option value="0" />
 
 					<%
@@ -136,7 +136,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 				</aui:select>
 			</c:when>
 			<c:otherwise>
-				<aui:select disabled="disabled" id="<portlet:namespace />fromEnvLFR">
+				<aui:select disabled="<%= true %>" id="fromEnvLFR">
 					<aui:option label="<%= TicketEntryConstants.getEnvLabel(envLFR) %><%= limited ? " (limited)" : StringPool.BLANK %>" />
 				</aui:select>
 			</c:otherwise>
@@ -154,12 +154,12 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 
 		<c:choose>
 			<c:when test="<%= productEntry.isDigitalEnterprise() %>">
-				<aui:select disabled="<%= true %>" id="<portlet:namespace />toEnvLFR">
+				<aui:select disabled="<%= true %>" id="toEnvLFR">
 					<aui:option label="<%= TicketEntryConstants.getEnvLabel(envLFR) %><%= limited ? " (limited)" : StringPool.BLANK %>" />
 				</aui:select>
 			</c:when>
 			<c:otherwise>
-				<aui:select id="<portlet:namespace />toEnvLFR" name="<portlet:namespace />toEnvLFR" onChange="<portlet:namespace />updateSupportMessage(this.value, 'Upgrade');">
+				<aui:select id="toEnvLFR" name="toEnvLFR" onChange="<portlet:namespace />updateSupportMessage(this.value, 'Upgrade');">
 					<aui:option value="0" />
 
 					<c:if test="<%= TicketEntryConstants.getEnvLabel(envLFR) != TicketEntryConstants.NOT_AVAILABLE %>">
@@ -213,7 +213,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 	</h2>
 
 	<div>
-		<aui:select id="<portlet:namespace />docLibPersistence" name="<portlet:namespace />docLibPersistence">
+		<aui:select id="docLibPersistence" name="docLibPersistence">
 			<aui:option value="0" />
 
 			<%

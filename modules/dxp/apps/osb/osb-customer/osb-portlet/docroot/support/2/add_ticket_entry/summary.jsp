@@ -55,10 +55,10 @@ else {
 
 				<strong><%= HtmlUtil.escape(accountEntry.getName()) %></strong>
 
-				<aui:input id="<portlet:namespace />accountEntryId" name="<portlet:namespace />accountEntryId" type="hidden" value="<%= accountEntry.getAccountEntryId() %>" />
+				<aui:input id="accountEntryId" name="accountEntryId" type="hidden" value="<%= accountEntry.getAccountEntryId() %>" />
 			</c:when>
 			<c:otherwise>
-				<aui:select id="<portlet:namespace />accountEntryId" name="<portlet:namespace />accountEntryId" onChange="<portlet:namespace />selectAccountEntry();">
+				<aui:select id="accountEntryId" name="accountEntryId" onChange="<portlet:namespace />selectAccountEntry();">
 					<aui:option value=""></option>
 
 					<%
@@ -135,7 +135,7 @@ if (accountEntry != null) {
 			</h2>
 
 			<div>
-				<aui:select id="<portlet:namespace />component" name="<portlet:namespace />component" onChange="<portlet:namespace />selectServerComponent();">
+				<aui:select id="component" name="component" onChange="<portlet:namespace />selectServerComponent();">
 					<aui:option <%= (component == 0) ? "selected" : "" %> value="0"></option>
 
 					<c:choose>
@@ -206,7 +206,7 @@ if (accountEntry != null) {
 								<liferay-ui:message key="subcomponent" />:
 							</h2>
 
-							<aui:select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(pageContext, "please-select-a-valid-subcomponent") %>" id="<portlet:namespace />subcomponent" name="<portlet:namespace />subcomponent" onChange="<portlet:namespace />validateSubcomponent();">
+							<aui:select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(pageContext, "please-select-a-valid-subcomponent") %>" id="subcomponent" name="subcomponent" onChange="<portlet:namespace />validateSubcomponent();">
 								<aui:option value="" />
 
 								<%
@@ -240,7 +240,7 @@ if (accountEntry != null) {
 			</c:if>
 
 			<div>
-				<aui:select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(pageContext, "please-select-a-valid-environment-configuration") %>" id="<portlet:namespace />accountEnvironmentId" name="<portlet:namespace />accountEnvironmentId" onChange="<portlet:namespace />selectAccountEnvironment(this);">
+				<aui:select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(pageContext, "please-select-a-valid-environment-configuration") %>" id="accountEnvironmentId" name="accountEnvironmentId" onChange="<portlet:namespace />selectAccountEnvironment(this);">
 					<aui:option value="0" />
 					<aui:option label="select-new-configuration" selected="<%= accountEnvironmentId == -1 %>" value="-1" />
 
@@ -273,7 +273,7 @@ if (accountEntry != null) {
 				</h2>
 
 				<div>
-					<aui:select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(pageContext, "please-select-a-valid-system-status") %>" name="<portlet:namespace />systemStatus">
+					<aui:select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(pageContext, "please-select-a-valid-system-status") %>" name="systemStatus">
 						<aui:option value="" />
 
 						<%
