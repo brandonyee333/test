@@ -136,7 +136,7 @@ if (accountEntry != null) {
 
 			<div>
 				<aui:select id="component" name="component" onChange="<portlet:namespace />selectServerComponent();">
-					<aui:option <%= (component == 0) ? "selected" : "" %> value="0"></option>
+					<aui:option selected="<%= component == 0 %> value="0" />
 
 					<c:choose>
 						<c:when test="<%= productEntry.isDigitalEnterprise() %>">
@@ -280,7 +280,7 @@ if (accountEntry != null) {
 						for (Integer curSystemStatus : TicketEntryConstants.getSystemStatuses(component)) {
 						%>
 
-							<aui:option label="<%= LanguageUtil.get(pageContext, TicketEntryConstants.getSystemStatusLabel(curSystemStatus)) %>" selected="<%= curSystemStatus == systemStatus %>" value="<%= curSystemStatus %>" />
+							<aui:option label="<%= TicketEntryConstants.getSystemStatusLabel(curSystemStatus) %>" selected="<%= curSystemStatus == systemStatus %>" value="<%= curSystemStatus %>" />
 
 						<%
 						}
