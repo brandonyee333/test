@@ -68,7 +68,7 @@ else {
 				<aui:input id="accountEntryId" name="accountEntryId" type="hidden" value="<%= accountEntry.getAccountEntryId() %>" />
 			</c:when>
 			<c:otherwise>
-				<aui:select id="accountEntryId" name="accountEntryId" onChange="<portlet:namespace />updateForm();">
+				<aui:select id="accountEntryId" name="accountEntryId" onChange="submitForm(document.<portlet:namespace />fm, '<portlet:renderURL><portlet:param name="mvcPath" value="/support/2/preferences.jsp" /></portlet:renderURL>');">
 					<aui:option value="" />
 
 					<%
@@ -214,17 +214,10 @@ else {
 </aui:form>
 
 <aui:script>
-	function <portlet:namespace />deleteEnvironment(deleteAccountEnvironmentURL, envName) {
-		if (confirm(Liferay.Language.get('are-you-sure-you-want-to-delete-your-saved-environment-configuration-x-permanently', envName))) {
-			submitForm(document.<portlet:namespace />fm, deleteAccountEnvironmentURL);
+	function <portlet:namespace />deleteEnvironment(url, name) {
+		if (confirm(Liferay.Language.get('are-you-sure-you-want-to-delete-your-saved-environment-configuration-x-permanently', name))) {
+			submitForm(document.<portlet:namespace />fm, url);
 		}
-		else {
-			return false;
-		}
-	}
-
-	function <portlet:namespace />updateForm() {
-		submitForm(document.<portlet:namespace />fm, '<portlet:renderURL><portlet:param name="mvcPath" value="/support/2/preferences.jsp" /></portlet:renderURL>');
 	}
 
 	Liferay.provide(
