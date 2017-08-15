@@ -106,7 +106,7 @@ public class TicketCommentLocalServiceImpl
 			TicketCommentConstants.TYPE_AUTOMATED, null);
 
 		if ((ticketComment != null) &&
-			DateUtil.getDaysBetween(ticketComment.getCreateDate(), now) < 1) {
+			(DateUtil.getDaysBetween(ticketComment.getCreateDate(), now) < 1)) {
 
 			return null;
 		}
@@ -238,11 +238,14 @@ public class TicketCommentLocalServiceImpl
 		if (ticketComment.getStatus() != WorkflowConstants.STATUS_DRAFT) {
 			User user = userPersistence.findByPrimaryKey(userId);
 
+			long classNameId = classNameLocalService.getClassNameId(
+				TicketEntry.class.getName());
+			long fieldClassNameId = classNameLocalService.getClassNameId(
+				TicketComment.class.getName());
+
 			auditEntryLocalService.addAuditEntry(
-				userId, user.getFullName(), new Date(),
-				classNameLocalService.getClassNameId(TicketEntry.class.getName()),
-				ticketComment.getTicketEntryId(), 0,
-				classNameLocalService.getClassNameId(TicketComment.class.getName()),
+				userId, user.getFullName(), new Date(), classNameId,
+				ticketComment.getTicketEntryId(), 0, fieldClassNameId,
 				ticketComment.getTicketCommentId(),
 				AuditEntryConstants.ACTION_DELETE,
 				AuditEntryConstants.FIELD_BODY, ticketComment.getVisibility(),
@@ -593,11 +596,14 @@ public class TicketCommentLocalServiceImpl
 			int auditAction = GetterUtil.getInteger(
 				serviceContext.getAttribute("auditAction"));
 
+			long classNameId = classNameLocalService.getClassNameId(
+				TicketEntry.class.getName());
+			long fieldClassNameId = classNameLocalService.getClassNameId(
+				TicketComment.class.getName());
+
 			auditEntryLocalService.addAuditEntry(
-				user.getUserId(), user.getFullName(), now,
-				classNameLocalService.getClassNameId(TicketEntry.class.getName()),
-				ticketComment.getTicketEntryId(), auditSetId,
-				classNameLocalService.getClassNameId(TicketComment.class.getName()),
+				user.getUserId(), user.getFullName(), now, classNameId,
+				ticketComment.getTicketEntryId(), auditSetId, fieldClassNameId,
 				ticketComment.getTicketCommentId(), auditAction,
 				AuditEntryConstants.FIELD_BODY, ticketComment.getVisibility(),
 				StringPool.BLANK, StringPool.BLANK, StringPool.BLANK,
@@ -608,9 +614,7 @@ public class TicketCommentLocalServiceImpl
 
 		String action = OSBMailActionKeys.COMMENTED;
 
-		if (ticketComment.getType() ==
-				TicketCommentConstants.TYPE_GAME_PLAN) {
-
+		if (ticketComment.getType() == TicketCommentConstants.TYPE_GAME_PLAN) {
 			action = OSBMailActionKeys.GAME_PLAN_COMMENTED;
 		}
 

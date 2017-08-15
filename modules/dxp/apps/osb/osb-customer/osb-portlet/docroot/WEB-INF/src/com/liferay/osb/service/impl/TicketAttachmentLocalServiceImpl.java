@@ -374,11 +374,14 @@ public class TicketAttachmentLocalServiceImpl
 
 		User user = userPersistence.findByPrimaryKey(userId);
 
+		long classNameId = classNameLocalService.getClassNameId(
+			TicketEntry.class.getName());
+		long fieldClassNameId = classNameLocalService.getClassNameId(
+			TicketAttachment.class.getName());
+
 		auditEntryLocalService.addAuditEntry(
-			userId, user.getFullName(), new Date(),
-			classNameLocalService.getClassNameId(TicketEntry.class.getName()),
-			ticketAttachment.getTicketEntryId(), 0,
-			classNameLocalService.getClassNameId(TicketAttachment.class.getName()),
+			userId, user.getFullName(), new Date(), classNameId,
+			ticketAttachment.getTicketEntryId(), 0, fieldClassNameId,
 			ticketAttachment.getTicketAttachmentId(),
 			AuditEntryConstants.ACTION_DELETE, AuditEntryConstants.FIELD_FILE,
 			VisibilityConstants.PUBLIC, StringPool.BLANK,
@@ -549,11 +552,14 @@ public class TicketAttachmentLocalServiceImpl
 			fileRepository.getFileRepositoryId(),
 			ticketAttachment.getFilePath());
 
+		long classNameId = classNameLocalService.getClassNameId(
+			TicketEntry.class.getName());
+		long fieldClassNameId = classNameLocalService.getClassNameId(
+			TicketAttachment.class.getName());
+
 		auditEntryLocalService.addAuditEntry(
-			userId, user.getFullName(), new Date(),
-			classNameLocalService.getClassNameId(TicketEntry.class.getName()),
-			ticketAttachment.getTicketEntryId(), 0,
-			classNameLocalService.getClassNameId(TicketAttachment.class.getName()),
+			userId, user.getFullName(), new Date(), classNameId,
+			ticketAttachment.getTicketEntryId(), 0, fieldClassNameId,
 			ticketAttachment.getTicketAttachmentId(),
 			AuditEntryConstants.ACTION_UPDATE,
 			AuditEntryConstants.FIELD_REPLICATE, VisibilityConstants.WORKERS,
@@ -580,11 +586,14 @@ public class TicketAttachmentLocalServiceImpl
 
 		ticketAttachmentPersistence.update(ticketAttachment, serviceContext);
 
+		long classNameId = classNameLocalService.getClassNameId(
+			TicketEntry.class.getName());
+		long fieldClassNameId = classNameLocalService.getClassNameId(
+			TicketAttachment.class.getName());
+
 		auditEntryLocalService.addAuditEntry(
-			userId, user.getFullName(), new Date(),
-			classNameLocalService.getClassNameId(TicketEntry.class.getName()),
-			ticketAttachment.getTicketEntryId(), 0,
-			classNameLocalService.getClassNameId(TicketAttachment.class.getName()),
+			userId, user.getFullName(), new Date(), classNameId,
+			ticketAttachment.getTicketEntryId(), 0, fieldClassNameId,
 			ticketAttachment.getTicketAttachmentId(),
 			AuditEntryConstants.ACTION_UPDATE,
 			AuditEntryConstants.FIELD_DELETE_DATE, VisibilityConstants.WORKERS,
@@ -954,9 +963,9 @@ public class TicketAttachmentLocalServiceImpl
 		throws PortalException {
 
 		if ((ticketEntryId > 0) &&
-			ticketAttachmentPersistence.countByTEI_FN_V_S(
+			(ticketAttachmentPersistence.countByTEI_FN_V_S(
 				ticketEntryId, fileName, visibility,
-				WorkflowConstants.STATUS_APPROVED) > 0) {
+				WorkflowConstants.STATUS_APPROVED) > 0)) {
 
 			throw new DuplicateTicketAttachmentException();
 		}

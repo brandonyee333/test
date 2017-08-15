@@ -48,8 +48,8 @@ public class Upgrade_20161017153323794_CorpEntry extends UpgradeProcess {
 						"VARCHAR(75) null");
 
 			runSQL(
-				"drop index IX_CEF79EC on " +
-					CorpEntryModelImpl.TABLE_NAME, false);
+				"drop index IX_CEF79EC on " + CorpEntryModelImpl.TABLE_NAME,
+				false);
 
 			runSQL(
 				"create index IX_ADDCEB29 on " + CorpEntryModelImpl.TABLE_NAME +

@@ -14,9 +14,9 @@
 
 package com.liferay.osb.util;
 
+import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.CustomSQLParam;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
-import com.liferay.util.dao.orm.CustomSQLUtil;
 
 /**
  * @author Alan Zhang

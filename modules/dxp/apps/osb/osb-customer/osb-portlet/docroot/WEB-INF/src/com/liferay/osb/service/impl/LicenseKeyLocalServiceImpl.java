@@ -1012,7 +1012,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		}
 
 		if (licenseKey.getLicenseVersion() >= 3) {
-			if ((!licenseKey.isActive() && active) &&
+			if (!licenseKey.isActive() && active &&
 				type.equals(LicenseEntryConstants.TYPE_CLUSTER)) {
 
 				if (licenseKey.getMaxServers() <= activeClusterCount) {

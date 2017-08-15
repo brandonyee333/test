@@ -35,9 +35,9 @@ public class OSBLoginPostAction extends Action {
 	public void run(HttpServletRequest request, HttpServletResponse response)
 		throws ActionException {
 
-/* TODO update assetReceipt integration
-	TODO update corp integration
-	TODO update ecommerce integration
+		/* TODO update assetReceipt integration
+		TODO update corp integration
+		TODO update ecommerce integration
 		try {
 			User user = PortalUtil.getUser(request);
 
@@ -77,7 +77,7 @@ public class OSBLoginPostAction extends Action {
 			throw new ActionException(e);
 		}
 
-*/
+		*/
 	}
 
 }

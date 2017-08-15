@@ -66,7 +66,8 @@ public class TicketEntryImpl extends TicketEntryBaseImpl {
 
 		return GetterUtil.getDouble(
 			preferences.getValue(
-				TicketEntryConstants.getWeightLabel(weight), null), 1);
+				TicketEntryConstants.getWeightLabel(weight), null),
+			1);
 	}
 
 	public TicketEntryImpl() {

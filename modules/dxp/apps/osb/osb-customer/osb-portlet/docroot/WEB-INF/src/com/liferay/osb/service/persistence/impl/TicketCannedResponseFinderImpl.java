@@ -17,6 +17,7 @@ package com.liferay.osb.service.persistence.impl;
 import com.liferay.osb.model.TicketCannedResponse;
 import com.liferay.osb.model.impl.TicketCannedResponseImpl;
 import com.liferay.osb.service.persistence.TicketCannedResponseFinder;
+import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
@@ -25,7 +26,6 @@ import com.liferay.portal.kernel.dao.orm.Type;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.util.Iterator;
 import java.util.List;
@@ -99,7 +99,7 @@ public class TicketCannedResponseFinderImpl
 		names = CustomSQLUtil.keywords(names);
 		contents = CustomSQLUtil.keywords(contents);
 
-		String sql = CustomSQLUtil.get(COUNT_BY_N_C);
+		String sql = CustomSQLUtil.get(getClass(), COUNT_BY_N_C);
 
 		sql = CustomSQLUtil.replaceKeywords(
 			sql, "lower(OSB_TicketCannedResponse.name)", StringPool.LIKE, false,
@@ -150,7 +150,7 @@ public class TicketCannedResponseFinderImpl
 		names = CustomSQLUtil.keywords(names);
 		contents = CustomSQLUtil.keywords(contents);
 
-		String sql = CustomSQLUtil.get(FIND_BY_N_C);
+		String sql = CustomSQLUtil.get(getClass(), FIND_BY_N_C);
 
 		sql = CustomSQLUtil.replaceKeywords(
 			sql, "lower(OSB_TicketCannedResponse.name)", StringPool.LIKE, false,

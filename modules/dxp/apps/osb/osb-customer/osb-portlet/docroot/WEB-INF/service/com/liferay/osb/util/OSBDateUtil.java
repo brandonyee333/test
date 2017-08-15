@@ -146,7 +146,7 @@ public class OSBDateUtil {
 			weekendCount = weekendCount + 2;
 		}
 
-		return (diff - (weekendCount * Time.DAY));
+		return diff - (weekendCount * Time.DAY);
 	}
 
 	public static Date subtractWeekdayTime(

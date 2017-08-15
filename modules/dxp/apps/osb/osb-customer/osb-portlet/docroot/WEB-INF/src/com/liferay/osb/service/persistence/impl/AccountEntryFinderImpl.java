@@ -21,6 +21,7 @@ import com.liferay.osb.service.persistence.AccountEntryFinder;
 import com.liferay.osb.service.persistence.AccountEntryUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBCustomSQLUtil;
+import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.PortalCustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -36,7 +37,6 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.sql.Timestamp;
 
@@ -235,7 +235,7 @@ public class AccountEntryFinderImpl
 			params.put("accountCustomer", userId);
 		}
 
-		String sql = CustomSQLUtil.get(FIND_BY_SECURITY_PATCH);
+		String sql = CustomSQLUtil.get(getClass(), FIND_BY_SECURITY_PATCH);
 
 		sql = StringUtil.replace(sql, "[$JOIN$]", getJoin(params));
 		sql = StringUtil.replace(sql, "[$WHERE$]", getWhere(params));
@@ -368,6 +368,7 @@ public class AccountEntryFinderImpl
 		sb.append(
 			replaceSQL(
 				CustomSQLUtil.get(
+					getClass(),
 					COUNT_BY_U_CD_MU_MD_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z),
 				createUserId, modifiedUserId, names, codes, industries,
 				partnerManagedSupport, tiers, statuses, instructions, notes,
@@ -379,6 +380,7 @@ public class AccountEntryFinderImpl
 			sb.append(
 				replaceSQL(
 					CustomSQLUtil.get(
+						getClass(),
 						COUNT_BY_U_CD_MU_MD_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z),
 					createUserId, modifiedUserId, names, codes, industries,
 					partnerManagedSupport, tiers, statuses, instructions, notes,
@@ -497,6 +499,7 @@ public class AccountEntryFinderImpl
 		sb.append(
 			replaceSQL(
 				CustomSQLUtil.get(
+					getClass(),
 					FIND_BY_U_CD_MU_MD_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z),
 				createUserId, modifiedUserId, names, codes, industries,
 				partnerManagedSupport, tiers, statuses, instructions, notes,
@@ -508,6 +511,7 @@ public class AccountEntryFinderImpl
 			sb.append(
 				replaceSQL(
 					CustomSQLUtil.get(
+						getClass(),
 						FIND_BY_U_CD_MU_MD_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z),
 					createUserId, modifiedUserId, names, codes, industries,
 					partnerManagedSupport, tiers, statuses, instructions, notes,
@@ -595,46 +599,51 @@ public class AccountEntryFinderImpl
 		String join = StringPool.BLANK;
 
 		if (key.equals("accountCustomer")) {
-			join = CustomSQLUtil.get(JOIN_BY_ACCOUNT_CUSTOMER);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACCOUNT_CUSTOMER);
 		}
 		else if (key.equals("accountEnvironmentEnvASIds")) {
-			join = CustomSQLUtil.get(JOIN_BY_ACCOUNT_ENVIRONMENT_ENV_AS);
+			join = CustomSQLUtil.get(
+				getClass(), JOIN_BY_ACCOUNT_ENVIRONMENT_ENV_AS);
 		}
 		else if (key.equals("accountEnvironmentEnvDBIds")) {
-			join = CustomSQLUtil.get(JOIN_BY_ACCOUNT_ENVIRONMENT_ENV_DB);
+			join = CustomSQLUtil.get(
+				getClass(), JOIN_BY_ACCOUNT_ENVIRONMENT_ENV_DB);
 		}
 		else if (key.equals("accountEnvironmentEnvJVMIds")) {
-			join = CustomSQLUtil.get(JOIN_BY_ACCOUNT_ENVIRONMENT_ENV_JVM);
+			join = CustomSQLUtil.get(
+				getClass(), JOIN_BY_ACCOUNT_ENVIRONMENT_ENV_JVM);
 		}
 		else if (key.equals("accountEnvironmentEnvLFRIds")) {
-			join = CustomSQLUtil.get(JOIN_BY_ACCOUNT_ENVIRONMENT_ENV_LFR);
+			join = CustomSQLUtil.get(
+				getClass(), JOIN_BY_ACCOUNT_ENVIRONMENT_ENV_LFR);
 		}
 		else if (key.equals("accountEnvironmentEnvOSIds")) {
-			join = CustomSQLUtil.get(JOIN_BY_ACCOUNT_ENVIRONMENT_ENV_OS);
+			join = CustomSQLUtil.get(
+				getClass(), JOIN_BY_ACCOUNT_ENVIRONMENT_ENV_OS);
 		}
 		else if (key.equals("accountWorker")) {
-			join = CustomSQLUtil.get(JOIN_BY_ACCOUNT_WORKER);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACCOUNT_WORKER);
 		}
 		else if (key.equals("activeLicense")) {
-			join = CustomSQLUtil.get(JOIN_BY_ACTIVE_LICENSE);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACTIVE_LICENSE);
 		}
 		else if (key.equals("env")) {
-			join = CustomSQLUtil.get(JOIN_BY_ACCOUNT_ENVIRONMENT);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACCOUNT_ENVIRONMENT);
 		}
 		else if (key.equals("offeringEntry")) {
-			join = CustomSQLUtil.get(JOIN_BY_OFFERING);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_OFFERING);
 		}
 		else if (key.equals("partnerWorker")) {
-			join = CustomSQLUtil.get(JOIN_BY_PARTNER_WORKER);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_PARTNER_WORKER);
 		}
 		else if (key.equals("productEntryIds")) {
-			join = CustomSQLUtil.get(JOIN_BY_PRODUCT_ENTRY);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_PRODUCT_ENTRY);
 		}
 		else if (key.equals("supportRegionIds")) {
-			join = CustomSQLUtil.get(JOIN_BY_SUPPORT_REGION);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_SUPPORT_REGION);
 		}
 		else if (key.equals("supportResponseIds")) {
-			join = CustomSQLUtil.get(JOIN_BY_SUPPORT_RESPONSE);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_SUPPORT_RESPONSE);
 		}
 
 		if (Validator.isNotNull(join)) {
@@ -671,46 +680,51 @@ public class AccountEntryFinderImpl
 		String join = StringPool.BLANK;
 
 		if (key.equals("accountCustomer")) {
-			join = CustomSQLUtil.get(JOIN_BY_ACCOUNT_CUSTOMER);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACCOUNT_CUSTOMER);
 		}
 		else if (key.equals("accountEnvironmentEnvASIds")) {
-			join = CustomSQLUtil.get(JOIN_BY_ACCOUNT_ENVIRONMENT_ENV_AS);
+			join = CustomSQLUtil.get(
+				getClass(), JOIN_BY_ACCOUNT_ENVIRONMENT_ENV_AS);
 
 			join = CustomSQLUtil.replaceKeywords(
 				join, "OSB_AccountEnvironment.envAS", true, (long[])value);
 		}
 		else if (key.equals("accountEnvironmentEnvDBIds")) {
-			join = CustomSQLUtil.get(JOIN_BY_ACCOUNT_ENVIRONMENT_ENV_DB);
+			join = CustomSQLUtil.get(
+				getClass(), JOIN_BY_ACCOUNT_ENVIRONMENT_ENV_DB);
 
 			join = CustomSQLUtil.replaceKeywords(
 				join, "OSB_AccountEnvironment.envDB", true, (long[])value);
 		}
 		else if (key.equals("accountEnvironmentEnvJVMIds")) {
-			join = CustomSQLUtil.get(JOIN_BY_ACCOUNT_ENVIRONMENT_ENV_JVM);
+			join = CustomSQLUtil.get(
+				getClass(), JOIN_BY_ACCOUNT_ENVIRONMENT_ENV_JVM);
 
 			join = CustomSQLUtil.replaceKeywords(
 				join, "OSB_AccountEnvironment.envJVM", true, (long[])value);
 		}
 		else if (key.equals("accountEnvironmentEnvLFRIds")) {
-			join = CustomSQLUtil.get(JOIN_BY_ACCOUNT_ENVIRONMENT_ENV_LFR);
+			join = CustomSQLUtil.get(
+				getClass(), JOIN_BY_ACCOUNT_ENVIRONMENT_ENV_LFR);
 
 			join = CustomSQLUtil.replaceKeywords(
 				join, "OSB_AccountEnvironment.envLFR", true, (long[])value);
 		}
 		else if (key.equals("accountEnvironmentEnvOSIds")) {
-			join = CustomSQLUtil.get(JOIN_BY_ACCOUNT_ENVIRONMENT_ENV_OS);
+			join = CustomSQLUtil.get(
+				getClass(), JOIN_BY_ACCOUNT_ENVIRONMENT_ENV_OS);
 
 			join = CustomSQLUtil.replaceKeywords(
 				join, "OSB_AccountEnvironment.envOS", true, (long[])value);
 		}
 		else if (key.equals("accountWorker")) {
-			join = CustomSQLUtil.get(JOIN_BY_ACCOUNT_WORKER);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACCOUNT_WORKER);
 		}
 		else if (key.equals("activeLicense")) {
-			join = CustomSQLUtil.get(JOIN_BY_ACTIVE_LICENSE);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACTIVE_LICENSE);
 		}
 		else if (key.equals("activeSupport")) {
-			join = CustomSQLUtil.get(JOIN_BY_ACTIVE_SUPPORT);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACTIVE_SUPPORT);
 
 			Boolean objectBoolean = (Boolean)value;
 
@@ -724,7 +738,7 @@ public class AccountEntryFinderImpl
 			}
 		}
 		else if (key.equals("expiredSupport")) {
-			join = CustomSQLUtil.get(JOIN_BY_EXPIRED_SUPPORT);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_EXPIRED_SUPPORT);
 
 			if (value instanceof boolean[]) {
 				boolean[] valueArray = (boolean[])value;
@@ -740,51 +754,51 @@ public class AccountEntryFinderImpl
 			}
 		}
 		else if (key.equals("industry")) {
-			join = CustomSQLUtil.get(FILTER_BY_INDUSTRY);
+			join = CustomSQLUtil.get(getClass(), FILTER_BY_INDUSTRY);
 
 			join = CustomSQLUtil.replaceKeywords(
 				join, "OSB_AccountEntry.industry", true, (int[])value);
 		}
 		else if (key.equals("noSupport")) {
-			join = CustomSQLUtil.get(JOIN_BY_NO_SUPPORT);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_NO_SUPPORT);
 		}
 		else if (key.equals("partnerWorker")) {
-			join = CustomSQLUtil.get(JOIN_BY_PARTNER_WORKER);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_PARTNER_WORKER);
 		}
 		else if (key.equals("productEntryIds")) {
-			join = CustomSQLUtil.get(JOIN_BY_PRODUCT_ENTRY);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_PRODUCT_ENTRY);
 
 			join = CustomSQLUtil.replaceKeywords(
 				join, "OSB_OfferingEntry.productEntryId", true, (long[])value);
 		}
 		else if (key.equals("supportRegionIds")) {
-			join = CustomSQLUtil.get(JOIN_BY_SUPPORT_REGION);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_SUPPORT_REGION);
 
 			join = CustomSQLUtil.replaceKeywords(
 				join, "OSB_AccountEntries_SupportRegions.supportRegionId", true,
 				(long[])value);
 		}
 		else if (key.equals("supportResponseIds")) {
-			join = CustomSQLUtil.get(JOIN_BY_SUPPORT_RESPONSE);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_SUPPORT_RESPONSE);
 
 			join = CustomSQLUtil.replaceKeywords(
 				join, "OSB_OfferingEntry.supportResponseId", true,
 				(long[])value);
 		}
 		else if (key.equals("status")) {
-			join = CustomSQLUtil.get(FILTER_BY_STATUS);
+			join = CustomSQLUtil.get(getClass(), FILTER_BY_STATUS);
 
 			join = CustomSQLUtil.replaceKeywords(
 				join, "OSB_AccountEntry.status", true, (int[])value);
 		}
 		else if (key.equals("tier")) {
-			join = CustomSQLUtil.get(FILTER_BY_TIER);
+			join = CustomSQLUtil.get(getClass(), FILTER_BY_TIER);
 
 			join = CustomSQLUtil.replaceKeywords(
 				join, "OSB_AccountEntry.tier", true, (int[])value);
 		}
 		else if (key.equals("ticketSupport")) {
-			join = CustomSQLUtil.get(JOIN_BY_TICKET_SUPPORT);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_TICKET_SUPPORT);
 
 			Boolean objectBoolean = (Boolean)value;
 
@@ -798,7 +812,7 @@ public class AccountEntryFinderImpl
 			}
 		}
 		else if (key.equals("type")) {
-			join = CustomSQLUtil.get(FILTER_BY_TYPE);
+			join = CustomSQLUtil.get(getClass(), FILTER_BY_TYPE);
 
 			join = CustomSQLUtil.replaceKeywords(
 				join, "OSB_AccountEntry.type_", true, (int[])value);

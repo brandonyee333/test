@@ -19,6 +19,7 @@ import com.liferay.osb.model.TicketEntry;
 import com.liferay.osb.service.TicketEntryLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
+import com.liferay.petra.content.ContentUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.Country;
@@ -31,7 +32,6 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.util.ContentUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -159,8 +159,9 @@ public class AdminUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
-				"com/liferay/osb/admin/dependencies/" +
-					"email_provisioning_create_account_body.tmpl"));
+				AdminUtil.class.getClassLoader(),
+				"com/liferay/osb/admin/dependencies" +
+					"/email_provisioning_create_account_body.tmpl"));
 
 		return map;
 	}
@@ -183,8 +184,9 @@ public class AdminUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
-				"com/liferay/osb/admin/dependencies/" +
-					"email_provisioning_create_account_subject.tmpl"));
+				AdminUtil.class.getClassLoader(),
+				"com/liferay/osb/admin/dependencies" +
+					"/email_provisioning_create_account_subject.tmpl"));
 
 		return map;
 	}
@@ -258,10 +260,12 @@ public class AdminUtil {
 				System.currentTimeMillis() - modifiedDateOffset);
 
 			int count = TicketEntryLocalServiceUtil.getTicketEntriesCount(date);
+
 			int pages = count / 5000;
 
 			for (int i = 0; i <= pages; i++) {
 				int start = i * 5000;
+
 				int end = start + 5000;
 
 				List<TicketEntry> ticketEntries =

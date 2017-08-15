@@ -27,6 +27,7 @@ import com.liferay.osb.service.base.TicketCallLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBMailActionKeys;
 import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.osb.util.WorkflowConstants;
+import com.liferay.petra.content.ContentUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -35,7 +36,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.util.ContentUtil;
 
 import java.text.Format;
 
@@ -143,11 +143,13 @@ public class TicketCallLocalServiceImpl extends TicketCallLocalServiceBaseImpl {
 
 		if (visibility == VisibilityConstants.LIFERAY_INC) {
 			commentBody = ContentUtil.get(
+				TicketCallLocalServiceImpl.class.getClassLoader(),
 				"com/liferay/osb/support/dependencies" +
 					"/comment_ticket_call_liferay_body.tmpl");
 		}
 		else if (visibility == VisibilityConstants.PUBLIC) {
 			commentBody = ContentUtil.get(
+				TicketCallLocalServiceImpl.class.getClassLoader(),
 				"com/liferay/osb/support/dependencies" +
 					"/comment_ticket_call_public_body.tmpl");
 		}

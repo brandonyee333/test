@@ -60,7 +60,6 @@ public class Upgrade_20170616160207742_AccountCustomer extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -85,9 +84,7 @@ public class Upgrade_20170616160207742_AccountCustomer extends UpgradeProcess {
 		sb.append(")) and (OSB_AccountCustomer.userId is null)");
 
 		try {
-			con = DataAccess.getConnection();
-
-			ps = con.prepareStatement(sb.toString());
+			ps = connection.prepareStatement(sb.toString());
 
 			rs = ps.executeQuery();
 
@@ -115,7 +112,7 @@ public class Upgrade_20170616160207742_AccountCustomer extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 

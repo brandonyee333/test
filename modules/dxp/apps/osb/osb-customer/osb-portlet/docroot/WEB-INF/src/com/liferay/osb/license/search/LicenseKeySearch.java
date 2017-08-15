@@ -42,11 +42,23 @@ import javax.portlet.PortletURL;
  */
 public class LicenseKeySearch extends SearchContainer<LicenseKey> {
 
-	static List<String> headerNames = new ArrayList<>();
-	static Map<String, String> orderableHeaders = new HashMap<>();
-
 	public static final String EMPTY_RESULTS_MESSAGE =
 		"no-license-keys-were-found";
+
+	public static List<String> headerNames = new ArrayList<>();
+	public static Map<String, String> orderableHeaders = new HashMap<>();
+
+	static {
+		headerNames.add("account");
+		headerNames.add("name");
+		headerNames.add("product");
+		headerNames.add("version");
+		headerNames.add("start-date");
+		headerNames.add("expiration-date");
+
+		orderableHeaders.put("expiration-date", "expiration-date");
+		orderableHeaders.put("start-date", "start-date");
+	}
 
 	public LicenseKeySearch(
 		PortletRequest portletRequest, DisplayTerms displayTerms,
@@ -163,17 +175,5 @@ public class LicenseKeySearch extends SearchContainer<LicenseKey> {
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(LicenseKeySearch.class);
-
-	static {
-		headerNames.add("account");
-		headerNames.add("name");
-		headerNames.add("product");
-		headerNames.add("version");
-		headerNames.add("start-date");
-		headerNames.add("expiration-date");
-
-		orderableHeaders.put("expiration-date", "expiration-date");
-		orderableHeaders.put("start-date", "start-date");
-	}
 
 }

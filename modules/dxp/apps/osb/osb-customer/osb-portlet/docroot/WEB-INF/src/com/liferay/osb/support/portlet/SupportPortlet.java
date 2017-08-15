@@ -160,6 +160,7 @@ import com.liferay.osb.util.OSBWebKeys;
 import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.osb.util.WorkflowConstants;
+import com.liferay.petra.content.ContentUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.AddressCityException;
 import com.liferay.portal.kernel.exception.AddressStreetException;
@@ -213,7 +214,6 @@ import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Tuple;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.util.ContentUtil;
 import com.liferay.util.bridges.mvc.MVCPortlet;
 
 import java.io.File;
@@ -820,6 +820,7 @@ public class SupportPortlet extends MVCPortlet {
 		}
 
 		String commentBody = ContentUtil.get(
+			SupportPortlet.class.getClassLoader(),
 			"com/liferay/osb/support/dependencies" +
 				"/comment_ticket_entry_forward_body.tmpl");
 
@@ -2952,8 +2953,8 @@ public class SupportPortlet extends MVCPortlet {
 				ParamUtil.getString(uploadPortletRequest, "envOSCustom"));
 
 			String envSearchTicketInformation = StringUtil.merge(
-				ParamUtil.getParameterValues(
-					uploadPortletRequest, "envSearch"), StringPool.NEW_LINE);
+				ParamUtil.getParameterValues(uploadPortletRequest, "envSearch"),
+				StringPool.NEW_LINE);
 
 			ticketInformationFieldsMap.put(
 				TicketInformationConstants.FIELD_ENV_SEARCH,

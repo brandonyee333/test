@@ -43,14 +43,11 @@ public class Upgrade_20141024135500277_DDLRecordSet extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"select recordSetId, name, description from DDLRecordSet " +
 					"where scope = " +
 						DDLRecordSetConstants.SCOPE_TRAINING_EVENTS);
@@ -68,7 +65,7 @@ public class Upgrade_20141024135500277_DDLRecordSet extends UpgradeProcess {
 				description = description.replaceAll(
 					_TRAINING_EVENT_DATE_REGEX, StringPool.BLANK);
 
-				ps = con.prepareStatement(
+				ps = connection.prepareStatement(
 					"update DDLRecordSet set name = ?, description = ? where " +
 						"recordSetId = " + recordSetId);
 
@@ -79,7 +76,7 @@ public class Upgrade_20141024135500277_DDLRecordSet extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 

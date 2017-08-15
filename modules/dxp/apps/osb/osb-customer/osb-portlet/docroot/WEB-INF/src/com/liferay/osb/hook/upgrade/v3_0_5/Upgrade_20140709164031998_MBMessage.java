@@ -85,14 +85,11 @@ public class Upgrade_20140709164031998_MBMessage extends UpgradeProcess {
 	}
 
 	protected void upgradeMBMessage() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getConnection();
-
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"select * from MBCategory where categoryId = " +
 					_MB_CATEGORY_COMMUNITY_DEVELOPERS_ID);
 
@@ -134,7 +131,7 @@ public class Upgrade_20140709164031998_MBMessage extends UpgradeProcess {
 
 			// Mailing list
 
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"select * from MBMailingList where groupId = " +
 					OSBConstants.GROUP_GUEST_ID + " and categoryId = " +
 						_MB_CATEGORY_COMMUNITY_DEVELOPERS_ID);
@@ -169,7 +166,7 @@ public class Upgrade_20140709164031998_MBMessage extends UpgradeProcess {
 			sb.append(_MB_CATEGORY_DEVELOPER_PORTAL_DEVELOPERS_ID);
 			sb.append(") group by userId having count(*) > 1");
 
-			ps = con.prepareStatement(sb.toString());
+			ps = connection.prepareStatement(sb.toString());
 
 			rs = ps.executeQuery();
 
@@ -211,21 +208,19 @@ public class Upgrade_20140709164031998_MBMessage extends UpgradeProcess {
 			runSQL(sb.toString(), false);
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 
 	protected void validateMBMessage() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getConnection();
 
 			// Messages
 
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"select count(*) from MBMessage where categoryId = " +
 					_MB_CATEGORY_COMMUNITY_DEVELOPERS_ID);
 
@@ -245,7 +240,7 @@ public class Upgrade_20140709164031998_MBMessage extends UpgradeProcess {
 
 			// Threads
 
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"select count(*) from MBThread where categoryId = " +
 					_MB_CATEGORY_COMMUNITY_DEVELOPERS_ID);
 
@@ -265,7 +260,7 @@ public class Upgrade_20140709164031998_MBMessage extends UpgradeProcess {
 
 			// Subscriptions
 
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"select count(*) from Subscription where classPK = " +
 					_MB_CATEGORY_COMMUNITY_DEVELOPERS_ID);
 
@@ -284,7 +279,7 @@ public class Upgrade_20140709164031998_MBMessage extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 

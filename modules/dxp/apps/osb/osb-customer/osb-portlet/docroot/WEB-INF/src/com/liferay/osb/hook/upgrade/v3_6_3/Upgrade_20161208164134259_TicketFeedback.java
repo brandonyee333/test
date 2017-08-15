@@ -70,7 +70,6 @@ public class Upgrade_20161208164134259_TicketFeedback extends UpgradeProcess {
 	}
 
 	protected void getFeedbackTicketEntryIds() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -83,9 +82,7 @@ public class Upgrade_20161208164134259_TicketFeedback extends UpgradeProcess {
 		sb.append("and datediff(max(createDate), min(createDate)) = 0");
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(sb.toString());
+			ps = connection.prepareStatement(sb.toString());
 
 			rs = ps.executeQuery();
 
@@ -96,7 +93,7 @@ public class Upgrade_20161208164134259_TicketFeedback extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 

@@ -60,20 +60,17 @@ public class Upgrade_20160608141255945_ListType extends UpgradeProcess {
 			long fieldClassPK, int envBrowser, int oldEnvBrowser)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			StringBundler sb = new StringBundler(3);
 
 			sb.append("select auditEntryId from OSB_AuditEntry where (");
 			sb.append("fieldClassPK = ?) and (field = ?) and (");
 			sb.append("oldValue = ? or newValue = ?)");
 
-			ps = con.prepareStatement(sb.toString());
+			ps = connection.prepareStatement(sb.toString());
 
 			ps.setLong(1, fieldClassPK);
 			ps.setInt(2, AuditEntryConstants.FIELD_ENV_BROWSER);
@@ -89,7 +86,7 @@ public class Upgrade_20160608141255945_ListType extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 
@@ -97,12 +94,9 @@ public class Upgrade_20160608141255945_ListType extends UpgradeProcess {
 			long auditEntryId, int envBrowser, int oldEnvBrowser)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			AuditEntry auditEntry = AuditEntryLocalServiceUtil.getAuditEntry(
 				auditEntryId);
 
@@ -113,7 +107,7 @@ public class Upgrade_20160608141255945_ListType extends UpgradeProcess {
 					"update OSB_AuditEntry set oldValue = ? " +
 						"where (auditEntryId = ?) and (oldValue = ?)";
 
-				ps = con.prepareStatement(sql);
+				ps = connection.prepareStatement(sql);
 
 				ps.setString(1, String.valueOf(envBrowser));
 				ps.setLong(2, auditEntryId);
@@ -129,7 +123,7 @@ public class Upgrade_20160608141255945_ListType extends UpgradeProcess {
 					"update OSB_AuditEntry set newValue = ? " +
 						"where (auditEntryId = ?) and (newValue = ?)";
 
-				ps = con.prepareStatement(sql);
+				ps = connection.prepareStatement(sql);
 
 				ps.setString(1, String.valueOf(envBrowser));
 				ps.setLong(2, auditEntryId);
@@ -139,7 +133,7 @@ public class Upgrade_20160608141255945_ListType extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps);
+			DataAccess.cleanUp(ps);
 		}
 	}
 
@@ -279,18 +273,15 @@ public class Upgrade_20160608141255945_ListType extends UpgradeProcess {
 	}
 
 	protected void updateTicketEntry() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			String sql =
 				"select ticketEntryId, envBrowser from OSB_TicketEntry " +
 					"where (envBrowser = ?)";
 
-			ps = con.prepareStatement(sql);
+			ps = connection.prepareStatement(sql);
 
 			ps.setInt(1, 37011);
 
@@ -312,24 +303,21 @@ public class Upgrade_20160608141255945_ListType extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 
 	protected void updateTicketEntryData(long ticketEntryId, int envBrowser)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			String sql =
 				"update OSB_TicketEntry set envBrowser = ? where (" +
 					"ticketEntryId = ?)";
 
-			ps = con.prepareStatement(sql);
+			ps = connection.prepareStatement(sql);
 
 			ps.setInt(1, envBrowser);
 			ps.setLong(2, ticketEntryId);
@@ -337,7 +325,7 @@ public class Upgrade_20160608141255945_ListType extends UpgradeProcess {
 			ps.executeUpdate();
 		}
 		finally {
-			DataAccess.cleanUp(con, ps);
+			DataAccess.cleanUp(ps);
 		}
 	}
 
@@ -355,17 +343,14 @@ public class Upgrade_20160608141255945_ListType extends UpgradeProcess {
 	protected void updateTicketInformation(long ticketEntryId, String data)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			String sql =
 				"update OSB_TicketInformation set data_ = ? where (" +
 					"fieldId = ?) and (ticketEntryId = ?)";
 
-			ps = con.prepareStatement(sql);
+			ps = connection.prepareStatement(sql);
 
 			ps.setString(1, data);
 			ps.setLong(2, TicketInformationConstants.FIELD_ENV_BROWSER);
@@ -374,7 +359,7 @@ public class Upgrade_20160608141255945_ListType extends UpgradeProcess {
 			ps.executeUpdate();
 		}
 		finally {
-			DataAccess.cleanUp(con, ps);
+			DataAccess.cleanUp(ps);
 		}
 	}
 

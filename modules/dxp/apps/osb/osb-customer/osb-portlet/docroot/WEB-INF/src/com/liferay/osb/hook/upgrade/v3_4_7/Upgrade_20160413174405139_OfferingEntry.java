@@ -75,7 +75,6 @@ public class Upgrade_20160413174405139_OfferingEntry extends UpgradeProcess {
 	}
 
 	protected void updateClosedOfferings() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -95,9 +94,7 @@ public class Upgrade_20160413174405139_OfferingEntry extends UpgradeProcess {
 		sb.append("'portalMinorVersions')");
 
 		try {
-			con = DataAccess.getConnection();
-
-			ps = con.prepareStatement(sb.toString());
+			ps = connection.prepareStatement(sb.toString());
 
 			rs = ps.executeQuery();
 
@@ -113,7 +110,7 @@ public class Upgrade_20160413174405139_OfferingEntry extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 

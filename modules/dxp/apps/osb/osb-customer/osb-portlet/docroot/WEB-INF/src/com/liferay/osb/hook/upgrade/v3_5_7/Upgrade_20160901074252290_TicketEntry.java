@@ -51,18 +51,15 @@ public class Upgrade_20160901074252290_TicketEntry extends UpgradeProcess {
 	}
 
 	protected void updateAuditEntry() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			String sql =
 				"select * from OSB_AuditEntry where (field = ?) and " +
 					"(newValue = ?) and (oldValue is not null)";
 
-			ps = con.prepareStatement(sql);
+			ps = connection.prepareStatement(sql);
 
 			ps.setInt(1, AuditEntryConstants.FIELD_REPRODUCTION_STEPS);
 			ps.setString(2, StringPool.BLANK);
@@ -106,7 +103,7 @@ public class Upgrade_20160901074252290_TicketEntry extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 
@@ -114,17 +111,14 @@ public class Upgrade_20160901074252290_TicketEntry extends UpgradeProcess {
 			long ticketEntryId, String reproductionSteps)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			String sql =
 				"update OSB_TicketEntry set reproductionSteps = ? where (" +
 					"ticketEntryId = ?)";
 
-			ps = con.prepareStatement(sql);
+			ps = connection.prepareStatement(sql);
 
 			ps.setString(1, reproductionSteps);
 			ps.setLong(2, ticketEntryId);
@@ -132,7 +126,7 @@ public class Upgrade_20160901074252290_TicketEntry extends UpgradeProcess {
 			ps.executeUpdate();
 		}
 		finally {
-			DataAccess.cleanUp(con, ps);
+			DataAccess.cleanUp(ps);
 		}
 	}
 

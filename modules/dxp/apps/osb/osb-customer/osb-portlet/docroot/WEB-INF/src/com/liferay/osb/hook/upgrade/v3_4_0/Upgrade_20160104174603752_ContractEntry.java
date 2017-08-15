@@ -135,8 +135,8 @@ public class Upgrade_20160104174603752_ContractEntry extends UpgradeProcess {
 		sb.append(", '");
 		sb.append(
 			StringUtil.replace(
-				user.getFullName(), StringPool.APOSTROPHE,
-				StringPool.DOUBLE_APOSTROPHE));
+				user.getFullName(), CharPool.APOSTROPHE,
+				CharPool.DOUBLE_APOSTROPHE));
 		sb.append("', '");
 		sb.append(user.getEmailAddress());
 		sb.append("', '");
@@ -194,7 +194,7 @@ public class Upgrade_20160104174603752_ContractEntry extends UpgradeProcess {
 
 		sb.append(
 			StringUtil.replace(
-				content, StringPool.APOSTROPHE, StringPool.DOUBLE_APOSTROPHE));
+				content, CharPool.APOSTROPHE, CharPool.DOUBLE_APOSTROPHE));
 
 		sb.append("')");
 
@@ -249,14 +249,11 @@ public class Upgrade_20160104174603752_ContractEntry extends UpgradeProcess {
 	}
 
 	protected ContractEntry getTrainingExamEULAContractEntry(String version) {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getConnection();
-
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"select contractEntryId from OSB_ContractEntry where type_ = " +
 					ContractEntryConstants.TYPE_TRAINING_EXAM_EULA +
 						" and version = " + getContractEntryVersion(version));
@@ -276,21 +273,18 @@ public class Upgrade_20160104174603752_ContractEntry extends UpgradeProcess {
 			_log.error(e, e);
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 
 		return null;
 	}
 
 	protected boolean hasTrainingExamEULAContractEntry() {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getConnection();
-
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"select count(*) from OSB_ContractEntry where type_ = " +
 					ContractEntryConstants.TYPE_TRAINING_EXAM_EULA);
 
@@ -308,20 +302,17 @@ public class Upgrade_20160104174603752_ContractEntry extends UpgradeProcess {
 			_log.error(e, e);
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 
 		return false;
 	}
 
 	protected void upgradeContractAudit() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getConnection();
-
 			StringBundler sb = new StringBundler(6);
 
 			sb.append("select ExpandoValue.classNameId, ");
@@ -331,7 +322,7 @@ public class Upgrade_20160104174603752_ContractEntry extends UpgradeProcess {
 			sb.append("ExpandoValue.data_ != '' and ExpandoColumn.name like ");
 			sb.append("'osbTrainingExamEULA';");
 
-			ps = con.prepareStatement(sb.toString());
+			ps = connection.prepareStatement(sb.toString());
 
 			rs = ps.executeQuery();
 
@@ -342,7 +333,7 @@ public class Upgrade_20160104174603752_ContractEntry extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 

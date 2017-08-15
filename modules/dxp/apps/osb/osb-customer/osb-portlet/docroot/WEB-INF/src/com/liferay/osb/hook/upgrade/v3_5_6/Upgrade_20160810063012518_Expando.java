@@ -48,14 +48,11 @@ public class Upgrade_20160810063012518_Expando extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"select classPK from ExpandoValue where ((columnId = ?) or " +
 					"(columnId = ?)) and classPK not in (select userId from " +
 						"OSB_AccountEntry where type_ = 4)");
@@ -81,7 +78,7 @@ public class Upgrade_20160810063012518_Expando extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 

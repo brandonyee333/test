@@ -73,18 +73,15 @@ public class Upgrade_20160927140533746_LicenseKey extends UpgradeProcess {
 	}
 
 	protected void updateLicenseKeys() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			String sql =
 				"select accountEntryId, name from OSB_AccountEntry where " +
 					"(accountEntryId != ?) and (type_ = ?)";
 
-			ps = con.prepareStatement(sql);
+			ps = connection.prepareStatement(sql);
 
 			ps.setLong(1, OSBConstants.ACCOUNT_ENTRY_TRIAL_ID);
 			ps.setInt(2, AccountEntryConstants.TYPE_TRIAL);
@@ -99,7 +96,7 @@ public class Upgrade_20160927140533746_LicenseKey extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 
@@ -118,7 +115,7 @@ public class Upgrade_20160927140533746_LicenseKey extends UpgradeProcess {
 			for (LicenseKey licenseKey : licenseKeys) {
 				boolean updateLicenseKey = false;
 
-				if (!Validator.equals(licenseKey.getAccountEntryName(), name)) {
+				if (!name.equals(licenseKey.getAccountEntryName())) {
 					licenseKey.setAccountEntryName(name);
 
 					updateLicenseKey = true;
@@ -185,18 +182,15 @@ public class Upgrade_20160927140533746_LicenseKey extends UpgradeProcess {
 	}
 
 	protected void updateLicenseKeySets() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			String sql =
 				"select licenseKeySetId from OSB_LicenseKeySet where " +
 					"(accountEntryId = ?)";
 
-			ps = con.prepareStatement(sql);
+			ps = connection.prepareStatement(sql);
 
 			ps.setLong(1, OSBConstants.ACCOUNT_ENTRY_TRIAL_ID);
 
@@ -213,7 +207,7 @@ public class Upgrade_20160927140533746_LicenseKey extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 

@@ -21,15 +21,15 @@ import com.liferay.portal.kernel.util.Constants;
  */
 public class SalesforceConstants {
 
-	public static String OPPORTUNITY_STAGE_CLOSED_WON = "Closed Won";
+	public static final String OPPORTUNITY_STAGE_CLOSED_WON = "Closed Won";
 
-	public static int OPPORTUNITY_TYPE_EXISTING_BUSINESS = 1;
+	public static final int OPPORTUNITY_TYPE_EXISTING_BUSINESS = 1;
 
-	public static int OPPORTUNITY_TYPE_NEW_BUSINESS = 2;
+	public static final int OPPORTUNITY_TYPE_NEW_BUSINESS = 2;
 
-	public static int OPPORTUNITY_TYPE_NEW_PROJECT_EXISTING_BUSINESS = 3;
+	public static final int OPPORTUNITY_TYPE_NEW_PROJECT_EXISTING_BUSINESS = 3;
 
-	public static int OPPORTUNITY_TYPE_RENEWAL = 4;
+	public static final int OPPORTUNITY_TYPE_RENEWAL = 4;
 
 	public static String getOpportunityTaskName(
 		int opportunityType, String action) {

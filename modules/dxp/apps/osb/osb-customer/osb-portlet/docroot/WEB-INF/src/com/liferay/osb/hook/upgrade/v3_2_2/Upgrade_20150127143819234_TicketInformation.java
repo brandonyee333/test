@@ -80,14 +80,11 @@ public class Upgrade_20150127143819234_TicketInformation
 			return;
 		}
 
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement("select * from OSB_TicketEntry");
+			ps = connection.prepareStatement("select * from OSB_TicketEntry");
 
 			rs = ps.executeQuery();
 
@@ -154,7 +151,7 @@ public class Upgrade_20150127143819234_TicketInformation
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 
@@ -162,19 +159,16 @@ public class Upgrade_20150127143819234_TicketInformation
 			long ticketEntryId, long fieldId, String data)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			StringBundler sb = new StringBundler(3);
 
 			sb.append("insert into OSB_TicketInformation ");
 			sb.append("(ticketInformationId, ticketEntryId, fieldId, data_) ");
 			sb.append("values (?, ?, ?, ?)");
 
-			ps = con.prepareStatement(sb.toString());
+			ps = connection.prepareStatement(sb.toString());
 
 			ps.setLong(1, increment());
 			ps.setLong(2, ticketEntryId);
@@ -184,7 +178,7 @@ public class Upgrade_20150127143819234_TicketInformation
 			ps.executeUpdate();
 		}
 		finally {
-			DataAccess.cleanUp(con, ps);
+			DataAccess.cleanUp(ps);
 		}
 	}
 

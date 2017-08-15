@@ -18,6 +18,7 @@ import com.liferay.osb.model.LicenseKey;
 import com.liferay.osb.service.persistence.LicenseKeyFinder;
 import com.liferay.osb.service.persistence.LicenseKeyUtil;
 import com.liferay.osb.util.OSBCustomSQLUtil;
+import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.PortalCustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -31,7 +32,6 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.sql.Timestamp;
 
@@ -128,7 +128,7 @@ public class LicenseKeyFinderImpl
 		try {
 			session = openSession();
 
-			String sql = CustomSQLUtil.get(COUNT_BY_CPI_K_A);
+			String sql = CustomSQLUtil.get(getClass(), COUNT_BY_CPI_K_A);
 
 			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
@@ -327,7 +327,7 @@ public class LicenseKeyFinderImpl
 		StringBundler sb = new StringBundler();
 
 		String sql = CustomSQLUtil.get(
-			COUNT_BY_U_C_M_M_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A);
+			getClass(), COUNT_BY_U_C_M_M_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A);
 
 		sb.append(
 			replaceSQL(
@@ -485,7 +485,7 @@ public class LicenseKeyFinderImpl
 		StringBuilder sb = new StringBuilder();
 
 		String sql = CustomSQLUtil.get(
-			FIND_BY_U_C_M_M_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A);
+			getClass(), FIND_BY_U_C_M_M_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A);
 
 		sb.append(
 			replaceSQL(
@@ -609,19 +609,19 @@ public class LicenseKeyFinderImpl
 		String join = StringPool.BLANK;
 
 		if (key.equals("accountCustomer")) {
-			join = CustomSQLUtil.get(JOIN_BY_ACCOUNT_CUSTOMER);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACCOUNT_CUSTOMER);
 		}
 		else if (key.equals("accountEntryType")) {
-			join = CustomSQLUtil.get(JOIN_BY_ACCOUNT_ENTRY_TYPE);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACCOUNT_ENTRY_TYPE);
 		}
 		else if (key.equals("accountWorker")) {
-			join = CustomSQLUtil.get(JOIN_BY_ACCOUNT_WORKER);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACCOUNT_WORKER);
 		}
 		else if (key.equals("active")) {
-			join = CustomSQLUtil.get(JOIN_BY_ACTIVE);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACTIVE);
 		}
 		else if (key.equals("partnerWorker")) {
-			join = CustomSQLUtil.get(JOIN_BY_PARTNER_WORKER);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_PARTNER_WORKER);
 		}
 
 		if (Validator.isNotNull(join)) {
@@ -658,25 +658,25 @@ public class LicenseKeyFinderImpl
 		String join = StringPool.BLANK;
 
 		if (key.equals("accountCustomer")) {
-			join = CustomSQLUtil.get(JOIN_BY_ACCOUNT_CUSTOMER);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACCOUNT_CUSTOMER);
 		}
 		else if (key.equals("accountEntryType")) {
-			join = CustomSQLUtil.get(JOIN_BY_ACCOUNT_ENTRY_TYPE);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACCOUNT_ENTRY_TYPE);
 		}
 		else if (key.equals("accountWorker")) {
-			join = CustomSQLUtil.get(JOIN_BY_ACCOUNT_WORKER);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACCOUNT_WORKER);
 		}
 		else if (key.equals("active")) {
-			join = CustomSQLUtil.get(JOIN_BY_ACTIVE);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACTIVE);
 		}
 		else if (key.equals("assetReceiptLicense")) {
-			join = CustomSQLUtil.get(JOIN_BY_ASSET_RECEIPT_ITEM);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_ASSET_RECEIPT_ITEM);
 		}
 		else if (key.equals("orderEntry")) {
-			join = CustomSQLUtil.get(JOIN_BY_ORDER_ENTRY);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_ORDER_ENTRY);
 		}
 		else if (key.equals("partnerWorker")) {
-			join = CustomSQLUtil.get(JOIN_BY_PARTNER_WORKER);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_PARTNER_WORKER);
 		}
 
 		if (Validator.isNotNull(join)) {

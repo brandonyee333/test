@@ -130,7 +130,6 @@ public class Upgrade_20160811141901211_AccountEntry extends UpgradeProcess {
 		Set<String> inactiveLanguageIds = new HashSet<>();
 		Set<Long> inactiveSupportRegionIds = new HashSet<>();
 
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -147,9 +146,7 @@ public class Upgrade_20160811141901211_AccountEntry extends UpgradeProcess {
 		sb.append("OSB_OfferingEntry.accountEntryId = ?");
 
 		try {
-			con = DataAccess.getConnection();
-
-			ps = con.prepareStatement(sb.toString());
+			ps = connection.prepareStatement(sb.toString());
 
 			ps.setLong(1, accountEntryId);
 
@@ -179,7 +176,7 @@ public class Upgrade_20160811141901211_AccountEntry extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 
 		if (languageIds.isEmpty()) {

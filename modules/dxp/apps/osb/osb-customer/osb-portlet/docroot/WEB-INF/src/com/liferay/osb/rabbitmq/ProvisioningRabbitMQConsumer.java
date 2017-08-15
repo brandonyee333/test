@@ -995,7 +995,7 @@ public abstract class ProvisioningRabbitMQConsumer {
 			"_bundledProducts");
 
 		if (bundledProductsJSONArray == null) {
-			return Collections.EMPTY_LIST;
+			return Collections.emptyList();
 		}
 
 		int salesforceOpportunityType = getSalesforceOpportunityType(
@@ -1187,8 +1187,8 @@ public abstract class ProvisioningRabbitMQConsumer {
 	private static final Log _log = LogFactoryUtil.getLog(
 		ProvisioningRabbitMQConsumer.class);
 
-	private static final ThreadLocal<ArrayList<String>> _warningMessagesThreadLocal =
-		new AutoResetThreadLocal<>(
+	private static final ThreadLocal<ArrayList<String>>
+		_warningMessagesThreadLocal = new AutoResetThreadLocal<>(
 			ProvisioningRabbitMQConsumer.class + "._warningMessagesThreadLocal",
 			new ArrayList<String>());
 

@@ -96,13 +96,10 @@ public class Upgrade_20140509155638740_PopulateData extends UpgradeProcess {
 			"= 'Support-AU-Lvl1-Jonas'"
 		};
 
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			StringBundler sb = new StringBundler(7);
 
 			sb.append("select distinct User_.userId as userId from User_ ");
@@ -113,7 +110,7 @@ public class Upgrade_20140509155638740_PopulateData extends UpgradeProcess {
 			sb.append("OSB_SupportTeam.name ");
 			sb.append(nameComparisons[i]);
 
-			ps = con.prepareStatement(sb.toString());
+			ps = connection.prepareStatement(sb.toString());
 
 			rs = ps.executeQuery();
 
@@ -134,7 +131,7 @@ public class Upgrade_20140509155638740_PopulateData extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 

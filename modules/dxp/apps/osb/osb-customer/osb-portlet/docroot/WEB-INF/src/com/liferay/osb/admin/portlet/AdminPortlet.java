@@ -351,11 +351,11 @@ public class AdminPortlet extends MVCPortlet {
 			message, CharPool.NEW_LINE, StringPool.BLANK);
 
 		Map<String, Object> propertiesMap = MapUtil.toLinkedHashMap(properties);
-/* TODO update rabbitMQ integration
+		/* TODO update rabbitMQ integration
 		RabbitMQConsumer rabbitMQConsumer = new RabbitMQConsumerRouter();
 
 		rabbitMQConsumer.parse(routingKey, message, propertiesMap);
-*/
+		 */
 	}
 
 	public void deleteAccountEntry(
@@ -1336,6 +1336,7 @@ public class AdminPortlet extends MVCPortlet {
 
 		SupportLaborLocalServiceUtil.addSupportWorkers(
 			addSupportWorkerIds, supportLaborId);
+
 		SupportLaborLocalServiceUtil.removeSupportWorkers(
 			removeSupportWorkerIds);
 	}
@@ -1687,8 +1688,8 @@ public class AdminPortlet extends MVCPortlet {
 			cause instanceof AccountEntryPartnerEntryException ||
 			cause instanceof AccountEntrySupportRegionException ||
 			cause instanceof AccountEnvironmentAttachmentSizeException ||
-			cause instanceof AccountEnvironmentEnvDBException ||
 			cause instanceof AccountEnvironmentEnvASException ||
+			cause instanceof AccountEnvironmentEnvDBException ||
 			cause instanceof AccountEnvironmentEnvLFRException ||
 			cause instanceof AccountEnvironmentEnvOSException ||
 			cause instanceof AccountEnvironmentNameException ||
@@ -1727,9 +1728,9 @@ public class AdminPortlet extends MVCPortlet {
 			cause instanceof NoSuchSupportResponseException ||
 			cause instanceof OfferingBundleNameException ||
 			cause instanceof OrderEntryActualStartDateException ||
-			cause instanceof PrincipalException ||
 			cause instanceof PartnerEntryCodeException ||
 			cause instanceof PartnerEntryParentPartnerEntryException ||
+			cause instanceof PrincipalException ||
 			cause instanceof ProductEntryEnvironmentException ||
 			cause instanceof ProductEntryNameException ||
 			cause instanceof RequiredAccountEntryException ||

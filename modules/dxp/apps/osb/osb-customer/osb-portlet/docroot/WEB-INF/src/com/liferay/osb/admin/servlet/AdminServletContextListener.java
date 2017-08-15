@@ -147,14 +147,14 @@ public class AdminServletContextListener
 
 		// RabbitMQ
 
-/* TODO update rabbitMQ integration
+		/* TODO update rabbitMQ integration
 
 		if (Validator.isNotNull(_rabbitMQConsumerKey)) {
 			ConsumerManagerLocalServiceUtil.unregisterConsumer(
 				_rabbitMQConsumerKey);
 		}
 
-*/
+		*/
 	}
 
 	@Override
@@ -238,7 +238,7 @@ public class AdminServletContextListener
 
 		// RabbitMQ
 
-/* TODO update rabbitMQ integration
+		/* TODO update rabbitMQ integration
 
 		if (Validator.isNotNull(
 				PortletPropsValues.RABBITMQ_MESSAGE_QUEUE_NAME)) {
@@ -257,7 +257,7 @@ public class AdminServletContextListener
 			}
 		}
 
-*/
+		*/
 	}
 
 	protected void setupDeveloperMode() throws Exception {

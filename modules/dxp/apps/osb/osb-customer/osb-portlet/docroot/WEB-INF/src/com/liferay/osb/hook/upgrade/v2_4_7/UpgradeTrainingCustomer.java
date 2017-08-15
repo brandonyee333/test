@@ -46,14 +46,11 @@ public class UpgradeTrainingCustomer extends UpgradeProcess {
 				"alter table OSB_TrainingCustomer add column status INTEGER");
 		}
 
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"select trainingCustomerId from OSB_TrainingCertificate " +
 					"where certifiedDate is not null and trainingCustomerId " +
 						"is not null");
@@ -70,7 +67,7 @@ public class UpgradeTrainingCustomer extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 

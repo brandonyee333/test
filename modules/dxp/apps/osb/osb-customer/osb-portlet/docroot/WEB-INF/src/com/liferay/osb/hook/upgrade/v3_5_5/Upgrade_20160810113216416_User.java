@@ -44,14 +44,11 @@ public class Upgrade_20160810113216416_User extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getConnection();
-
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"select userId, defaultUser, screenName from User_ where " +
 					"(screenName REGEXP '^[0-9]+$') and (status = 0)");
 
@@ -76,7 +73,7 @@ public class Upgrade_20160810113216416_User extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 

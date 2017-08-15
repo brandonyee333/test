@@ -307,7 +307,7 @@ public class DownloadsPortlet extends MVCPortlet {
 			return false;
 		}
 
-/* TODO update OSBUtil integration
+		/* TODO update OSBUtil integration
 
 		if (fileName.startsWith("/trial/sync/")) {
 			if (OSBUtil.isLiferaySyncEULA(
@@ -324,7 +324,7 @@ public class DownloadsPortlet extends MVCPortlet {
 			}
 		}
 
-*/
+		*/
 
 		return false;
 	}

@@ -18,6 +18,7 @@ import com.liferay.osb.model.SupportTeam;
 import com.liferay.osb.model.SupportTeamConstants;
 import com.liferay.osb.model.impl.SupportTeamImpl;
 import com.liferay.osb.service.persistence.SupportTeamFinder;
+import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
@@ -29,7 +30,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.util.Iterator;
 import java.util.List;
@@ -92,7 +92,7 @@ public class SupportTeamFinderImpl
 
 		String[] names = CustomSQLUtil.keywords(name, true);
 
-		String sql = CustomSQLUtil.get(COUNT_BY_N_T);
+		String sql = CustomSQLUtil.get(getClass(), COUNT_BY_N_T);
 
 		sql = CustomSQLUtil.replaceKeywords(
 			sql, "lower(OSB_SupportTeam.name)", StringPool.LIKE, false, names);
@@ -187,7 +187,7 @@ public class SupportTeamFinderImpl
 		try {
 			session = openSession();
 
-			String sql = CustomSQLUtil.get(FIND_BY_N_T);
+			String sql = CustomSQLUtil.get(getClass(), FIND_BY_N_T);
 
 			sql = CustomSQLUtil.replaceKeywords(
 				sql, "lower(OSB_SupportTeam.name)", StringPool.LIKE, false,
@@ -223,7 +223,7 @@ public class SupportTeamFinderImpl
 		try {
 			session = openSession();
 
-			String sql = CustomSQLUtil.get(FIND_BY_U_R);
+			String sql = CustomSQLUtil.get(getClass(), FIND_BY_U_R);
 
 			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 

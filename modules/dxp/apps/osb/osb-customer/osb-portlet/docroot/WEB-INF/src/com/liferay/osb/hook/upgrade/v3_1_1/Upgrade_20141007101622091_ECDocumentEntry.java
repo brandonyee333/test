@@ -56,20 +56,17 @@ public class Upgrade_20141007101622091_ECDocumentEntry extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getConnection();
-
 			StringBundler sb = new StringBundler(3);
 
 			sb.append("select * from ECommerce_ECDocumentEntry where ");
 			sb.append("(status = 1 or status = 2) and extraSettings not like ");
 			sb.append("'%vendorAmount%' collate utf8_bin");
 
-			ps = con.prepareStatement(sb.toString());
+			ps = connection.prepareStatement(sb.toString());
 
 			rs = ps.executeQuery();
 
@@ -86,7 +83,7 @@ public class Upgrade_20141007101622091_ECDocumentEntry extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 

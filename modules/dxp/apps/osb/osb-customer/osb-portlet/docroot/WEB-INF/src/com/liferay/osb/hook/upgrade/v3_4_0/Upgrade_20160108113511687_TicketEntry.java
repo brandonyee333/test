@@ -46,7 +46,6 @@ public class Upgrade_20160108113511687_TicketEntry extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -58,9 +57,7 @@ public class Upgrade_20160108113511687_TicketEntry extends UpgradeProcess {
 		sb1.append("OSB_TicketEntry.offeringEntryId) < 1)");
 
 		try {
-			con = DataAccess.getConnection();
-
-			ps = con.prepareStatement(sb1.toString());
+			ps = connection.prepareStatement(sb1.toString());
 
 			rs = ps.executeQuery();
 
@@ -94,7 +91,7 @@ public class Upgrade_20160108113511687_TicketEntry extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 

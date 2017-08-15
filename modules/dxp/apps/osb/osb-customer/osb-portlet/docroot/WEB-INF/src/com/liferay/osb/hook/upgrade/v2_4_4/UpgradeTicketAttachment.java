@@ -103,7 +103,6 @@ public class UpgradeTicketAttachment extends UpgradeProcess {
 	protected void upgradeTicketAttachments() throws Exception {
 		updateStatus();
 
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -118,9 +117,7 @@ public class UpgradeTicketAttachment extends UpgradeProcess {
 		sb.append("OSB_TicketEntry.ticketEntryId) && (type_ = 4)) > 1);");
 
 		try {
-			con = DataAccess.getConnection();
-
-			ps = con.prepareStatement(sb.toString());
+			ps = connection.prepareStatement(sb.toString());
 
 			rs = ps.executeQuery();
 
@@ -131,7 +128,7 @@ public class UpgradeTicketAttachment extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 

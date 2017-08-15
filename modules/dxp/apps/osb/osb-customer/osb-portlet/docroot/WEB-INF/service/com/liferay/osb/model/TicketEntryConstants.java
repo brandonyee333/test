@@ -1062,36 +1062,36 @@ public class TicketEntryConstants {
 
 	public static int[] getEnvListTypeIds(int envLFR, String envListType) {
 		if (ProductEntryConstants.isPortalVersion5_2(envLFR)) {
-			return _ENV_PORTAL_VERSION_5_2.get(envListType);
+			return _envPortalVersion5_2.get(envListType);
 		}
 		else if (ProductEntryConstants.isPortalVersion6_0(envLFR)) {
-			return _ENV_PORTAL_VERSION_6_0.get(envListType);
+			return _envPortalVersion6_0.get(envListType);
 		}
 		else if (ProductEntryConstants.isPortalVersion6_1(envLFR)) {
-			return _ENV_PORTAL_VERSION_6_1.get(envListType);
+			return _envPortalVersion6_1.get(envListType);
 		}
 		else if (ProductEntryConstants.isPortalVersion6_2(envLFR)) {
-			return _ENV_PORTAL_VERSION_6_2.get(envListType);
+			return _envPortalVersion6_2.get(envListType);
 		}
 		else if (ProductEntryConstants.isDigitalEnterpriseVersion7_0(envLFR)) {
-			return _ENV_DIGITAL_ENTERPRISE_VERSION_7_0.get(envListType);
+			return _envDigitalEnterpriseVersion7_0.get(envListType);
 		}
 		else if ((envLFR >=
 					ProductEntryConstants.SOCIAL_OFFICE_VERSION_2_0_3) &&
 				 (envLFR <=
 					 ProductEntryConstants.SOCIAL_OFFICE_VERSION_2_1_0)) {
 
-			return _ENV_SOCIAL_OFFICE_VERSION_2.get(envListType);
+			return _envSocialOfficeVersion2.get(envListType);
 		}
 		else if ((envLFR >=
 					ProductEntryConstants.SOCIAL_OFFICE_VERSION_3_0_0) &&
 				 (envLFR <=
 					 ProductEntryConstants.SOCIAL_OFFICE_VERSION_3_1_1)) {
 
-			return _ENV_SOCIAL_OFFICE_VERSION_3.get(envListType);
+			return _envSocialOfficeVersion3.get(envListType);
 		}
 		else {
-			return _ENV_PORTAL_VERSION_OTHER.get(envListType);
+			return _envPortalVersionOther.get(envListType);
 		}
 	}
 
@@ -1285,167 +1285,167 @@ public class TicketEntryConstants {
 		}
 	}
 
-	public static String getSubcomponentLabel(int subComponent) {
-		if (subComponent == SUBCOMPONENT_ACCESSIBILITY_COMPLIANCE) {
+	public static String getSubcomponentLabel(int subcomponent) {
+		if (subcomponent == SUBCOMPONENT_ACCESSIBILITY_COMPLIANCE) {
 			return "accessibility-compliance";
 		}
-		else if (subComponent == SUBCOMPONENT_ALLOY_UI) {
+		else if (subcomponent == SUBCOMPONENT_ALLOY_UI) {
 			return "alloy-ui";
 		}
-		else if (subComponent == SUBCOMPONENT_ANNOUNCEMENTS) {
+		else if (subcomponent == SUBCOMPONENT_ANNOUNCEMENTS) {
 			return "announcements";
 		}
-		else if (subComponent == SUBCOMPONENT_BLOGS) {
+		else if (subcomponent == SUBCOMPONENT_BLOGS) {
 			return "blogs";
 		}
-		else if (subComponent == SUBCOMPONENT_BROWSER_SUPPORT) {
+		else if (subcomponent == SUBCOMPONENT_BROWSER_SUPPORT) {
 			return "browser-support";
 		}
-		else if (subComponent == SUBCOMPONENT_CACHE_REPLICATION_CLUSTER_LINK) {
+		else if (subcomponent == SUBCOMPONENT_CACHE_REPLICATION_CLUSTER_LINK) {
 			return "cache-replication-cluster-link";
 		}
-		else if (subComponent == SUBCOMPONENT_CK_EDITOR) {
+		else if (subcomponent == SUBCOMPONENT_CK_EDITOR) {
 			return "ck-editor";
 		}
-		else if (subComponent == SUBCOMPONENT_CONNECTING_TO_LCS) {
+		else if (subcomponent == SUBCOMPONENT_CONNECTING_TO_LCS) {
 			return "connecting-to-lcs";
 		}
-		else if (subComponent == SUBCOMPONENT_COOKIES) {
+		else if (subcomponent == SUBCOMPONENT_COOKIES) {
 			return "cookies";
 		}
-		else if (subComponent == SUBCOMPONENT_DEPENDENCY_JARS_UPGRADE) {
+		else if (subcomponent == SUBCOMPONENT_DEPENDENCY_JARS_UPGRADE) {
 			return "dependency-jars-upgrade";
 		}
-		else if (subComponent == SUBCOMPONENT_DESKTOP) {
+		else if (subcomponent == SUBCOMPONENT_DESKTOP) {
 			return "desktop";
 		}
-		else if (subComponent == SUBCOMPONENT_ENVIRONMENT_SERVER_MANAGEMENT) {
+		else if (subcomponent == SUBCOMPONENT_ENVIRONMENT_SERVER_MANAGEMENT) {
 			return "environment-server-management";
 		}
-		else if (subComponent == SUBCOMPONENT_FACEBOOK) {
+		else if (subcomponent == SUBCOMPONENT_FACEBOOK) {
 			return "facebook";
 		}
-		else if (subComponent == SUBCOMPONENT_GENERAL_IMPLEMENTATION) {
+		else if (subcomponent == SUBCOMPONENT_GENERAL_IMPLEMENTATION) {
 			return "general-implementation";
 		}
-		else if (subComponent == SUBCOMPONENT_JGROUPS) {
+		else if (subcomponent == SUBCOMPONENT_JGROUPS) {
 			return "jgroups";
 		}
-		else if (subComponent == SUBCOMPONENT_LAR_EXPORT) {
+		else if (subcomponent == SUBCOMPONENT_LAR_EXPORT) {
 			return "lar-export";
 		}
-		else if (subComponent == SUBCOMPONENT_LAR_IMPORT) {
+		else if (subcomponent == SUBCOMPONENT_LAR_IMPORT) {
 			return "lar-import";
 		}
-		else if (subComponent == SUBCOMPONENT_LDAP) {
+		else if (subcomponent == SUBCOMPONENT_LDAP) {
 			return "ldap";
 		}
-		else if (subComponent == SUBCOMPONENT_LICENSE) {
+		else if (subcomponent == SUBCOMPONENT_LICENSE) {
 			return "license";
 		}
-		else if (subComponent == SUBCOMPONENT_LIFERAY_AUTHENTICATION) {
+		else if (subcomponent == SUBCOMPONENT_LIFERAY_AUTHENTICATION) {
 			return "liferay-authentication";
 		}
-		else if (subComponent == SUBCOMPONENT_LIFERAY_INSTALLATION) {
+		else if (subcomponent == SUBCOMPONENT_LIFERAY_INSTALLATION) {
 			return "liferay-installation";
 		}
-		else if (subComponent == SUBCOMPONENT_LOCAL_STAGING) {
+		else if (subcomponent == SUBCOMPONENT_LOCAL_STAGING) {
 			return "local-staging";
 		}
-		else if (subComponent == SUBCOMPONENT_LSVS) {
+		else if (subcomponent == SUBCOMPONENT_LSVS) {
 			return "lsvs";
 		}
-		else if (subComponent == SUBCOMPONENT_LUCENE) {
+		else if (subcomponent == SUBCOMPONENT_LUCENE) {
 			return "lucene";
 		}
-		else if (subComponent == SUBCOMPONENT_MESSAGE_BOARDS) {
+		else if (subcomponent == SUBCOMPONENT_MESSAGE_BOARDS) {
 			return "message-boards";
 		}
-		else if (subComponent == SUBCOMPONENT_MOBILE) {
+		else if (subcomponent == SUBCOMPONENT_MOBILE) {
 			return "mobile";
 		}
-		else if (subComponent == SUBCOMPONENT_MULTICAST) {
+		else if (subcomponent == SUBCOMPONENT_MULTICAST) {
 			return "multicast";
 		}
-		else if (subComponent == SUBCOMPONENT_NOTIFICATIONS) {
+		else if (subcomponent == SUBCOMPONENT_NOTIFICATIONS) {
 			return "notifications";
 		}
-		else if (subComponent == SUBCOMPONENT_OPENID) {
+		else if (subcomponent == SUBCOMPONENT_OPENID) {
 			return "openid";
 		}
-		else if (subComponent == SUBCOMPONENT_OTHER) {
+		else if (subcomponent == SUBCOMPONENT_OTHER) {
 			return "other";
 		}
-		else if (subComponent == SUBCOMPONENT_PERMISSIONS) {
+		else if (subcomponent == SUBCOMPONENT_PERMISSIONS) {
 			return "permissions";
 		}
-		else if (subComponent == SUBCOMPONENT_PERMISSIONS_ALGORITHM_MIGRATION) {
+		else if (subcomponent == SUBCOMPONENT_PERMISSIONS_ALGORITHM_MIGRATION) {
 			return "permissions-algorithm-migration";
 		}
-		else if (subComponent == SUBCOMPONENT_PLUGINS) {
+		else if (subcomponent == SUBCOMPONENT_PLUGINS) {
 			return "plugins";
 		}
-		else if (subComponent == SUBCOMPONENT_PLUGINS_CUSTOM) {
+		else if (subcomponent == SUBCOMPONENT_PLUGINS_CUSTOM) {
 			return "plugins-custom";
 		}
-		else if (subComponent == SUBCOMPONENT_PORTAL_SETTINGS) {
+		else if (subcomponent == SUBCOMPONENT_PORTAL_SETTINGS) {
 			return "portal-settings";
 		}
-		else if (subComponent == SUBCOMPONENT_PORTAL_UPGRADE) {
+		else if (subcomponent == SUBCOMPONENT_PORTAL_UPGRADE) {
 			return "portal-upgrade";
 		}
-		else if (subComponent == SUBCOMPONENT_REMOTE_STAGING) {
+		else if (subcomponent == SUBCOMPONENT_REMOTE_STAGING) {
 			return "remote-staging";
 		}
-		else if (subComponent == SUBCOMPONENT_ROLES_PERMISSIONS) {
+		else if (subcomponent == SUBCOMPONENT_ROLES_PERMISSIONS) {
 			return "roles-permissions";
 		}
-		else if (subComponent == SUBCOMPONENT_SAML) {
+		else if (subcomponent == SUBCOMPONENT_SAML) {
 			return "saml";
 		}
-		else if (subComponent == SUBCOMPONENT_SITE_PAGE_TEMPLATES) {
+		else if (subcomponent == SUBCOMPONENT_SITE_PAGE_TEMPLATES) {
 			return "site-page-templates";
 		}
-		else if (subComponent == SUBCOMPONENT_SITES_ORGANIZATIONS) {
+		else if (subcomponent == SUBCOMPONENT_SITES_ORGANIZATIONS) {
 			return "sites-organizations";
 		}
-		else if (subComponent == SUBCOMPONENT_SO_APPS) {
+		else if (subcomponent == SUBCOMPONENT_SO_APPS) {
 			return "so-apps";
 		}
-		else if (subComponent == SUBCOMPONENT_SO_HOOKS) {
+		else if (subcomponent == SUBCOMPONENT_SO_HOOKS) {
 			return "so-hooks";
 		}
-		else if (subComponent == SUBCOMPONENT_SOLR) {
+		else if (subcomponent == SUBCOMPONENT_SOLR) {
 			return "solr";
 		}
-		else if (subComponent == SUBCOMPONENT_SSO) {
+		else if (subcomponent == SUBCOMPONENT_SSO) {
 			return "sso";
 		}
-		else if (subComponent == SUBCOMPONENT_STRUCTURES) {
+		else if (subcomponent == SUBCOMPONENT_STRUCTURES) {
 			return "structures";
 		}
-		else if (subComponent == SUBCOMPONENT_SUBSCRIPTION_MANAGEMENT) {
+		else if (subcomponent == SUBCOMPONENT_SUBSCRIPTION_MANAGEMENT) {
 			return "subscription-management";
 		}
-		else if (subComponent == SUBCOMPONENT_TEMPLATES) {
+		else if (subcomponent == SUBCOMPONENT_TEMPLATES) {
 			return "templates";
 		}
-		else if (subComponent == SUBCOMPONENT_THEMES) {
+		else if (subcomponent == SUBCOMPONENT_THEMES) {
 			return "themes";
 		}
-		else if (subComponent == SUBCOMPONENT_UNICAST) {
+		else if (subcomponent == SUBCOMPONENT_UNICAST) {
 			return "unicast";
 		}
-		else if (subComponent == SUBCOMPONENT_USER_MANAGEMENT_PERMISSIONS) {
+		else if (subcomponent == SUBCOMPONENT_USER_MANAGEMENT_PERMISSIONS) {
 			return "user-management-permissions";
 		}
-		else if (subComponent == SUBCOMPONENT_WEB_SERVICES) {
+		else if (subcomponent == SUBCOMPONENT_WEB_SERVICES) {
 			return "web-services";
 		}
-		else if (subComponent == SUBCOMPONENT_WIKIS) {
+		else if (subcomponent == SUBCOMPONENT_WIKIS) {
 			return "wikis";
 		}
-		else if (subComponent == SUBCOMPONENT_XSS) {
+		else if (subcomponent == SUBCOMPONENT_XSS) {
 			return "xss";
 		}
 
@@ -1699,9 +1699,6 @@ public class TicketEntryConstants {
 		ENV_DB_SYBASE_ASE_15_5
 	};
 
-	private static final Map<String, int[]>
-		_ENV_DIGITAL_ENTERPRISE_VERSION_7_0 = new HashMap<>();
-
 	private static final int[] _ENV_JVM_DIGITAL_ENTERPRISE_VERSION_7_0 =
 		{ENV_JVM_IBM_JDK_8, ENV_JVM_JAVA_8};
 
@@ -1771,31 +1768,10 @@ public class TicketEntryConstants {
 		ENV_OS_WINDOWS_SERVER_2008_R2
 	};
 
-	private static final Map<String, int[]> _ENV_PORTAL_VERSION_5_2 =
-		new HashMap<>();
-
-	private static final Map<String, int[]> _ENV_PORTAL_VERSION_6_0 =
-		new HashMap<>();
-
-	private static final Map<String, int[]> _ENV_PORTAL_VERSION_6_1 =
-		new HashMap<>();
-
-	private static final Map<String, int[]> _ENV_PORTAL_VERSION_6_2 =
-		new HashMap<>();
-
-	private static final Map<String, int[]> _ENV_PORTAL_VERSION_OTHER =
-		new HashMap<>();
-
 	private static final int[] _ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_0 = {
 		ENV_SEARCH_ELASTICSEARCH, ENV_SEARCH_KIBANA_4_4, ENV_SEARCH_MARVEL_2_2,
 		ENV_SEARCH_SHIELD_2_2, ENV_SEARCH_SOLR, ENV_SEARCH_SOLRCLOUD
 	};
-
-	private static final Map<String, int[]> _ENV_SOCIAL_OFFICE_VERSION_2 =
-		new HashMap<>();
-
-	private static final Map<String, int[]> _ENV_SOCIAL_OFFICE_VERSION_3 =
-		new HashMap<>();
 
 	private static final int[] _LICENSE_PURPOSES = {
 		LICENSE_PURPOSE_PERMANENT_KEY, LICENSE_PURPOSE_ELASTIC_MONTHLY_KEY,
@@ -1815,99 +1791,103 @@ public class TicketEntryConstants {
 		SYSTEM_STATUS_NEW_ACTIVATION, SYSTEM_STATUS_UPGRADING
 	};
 
+	private static final Map<String, int[]> _envDigitalEnterpriseVersion7_0 =
+		new HashMap<>();
+	private static final Map<String, int[]> _envPortalVersion5_2 =
+		new HashMap<>();
+	private static final Map<String, int[]> _envPortalVersion6_0 =
+		new HashMap<>();
+	private static final Map<String, int[]> _envPortalVersion6_1 =
+		new HashMap<>();
+	private static final Map<String, int[]> _envPortalVersion6_2 =
+		new HashMap<>();
+	private static final Map<String, int[]> _envPortalVersionOther =
+		new HashMap<>();
+	private static final Map<String, int[]> _envSocialOfficeVersion2 =
+		new HashMap<>();
+	private static final Map<String, int[]> _envSocialOfficeVersion3 =
+		new HashMap<>();
+
 	static {
-		_ENV_PORTAL_VERSION_5_2.put(
-			LIST_TYPE_ENV_AS, _ENV_AS_PORTAL_VERSION_5_2);
-		_ENV_PORTAL_VERSION_5_2.put(
+		_envPortalVersion5_2.put(LIST_TYPE_ENV_AS, _ENV_AS_PORTAL_VERSION_5_2);
+		_envPortalVersion5_2.put(
 			LIST_TYPE_ENV_BROWSER, _ENV_BROWSER_PORTAL_VERSION_OTHER);
-		_ENV_PORTAL_VERSION_5_2.put(
-			LIST_TYPE_ENV_DB, _ENV_DB_PORTAL_VERSION_5_2);
-		_ENV_PORTAL_VERSION_5_2.put(
+		_envPortalVersion5_2.put(LIST_TYPE_ENV_DB, _ENV_DB_PORTAL_VERSION_5_2);
+		_envPortalVersion5_2.put(
 			LIST_TYPE_ENV_JVM, _ENV_JVM_PORTAL_VERSION_OTHER);
-		_ENV_PORTAL_VERSION_5_2.put(
-			LIST_TYPE_ENV_OS, _ENV_OS_PORTAL_VERSION_5_2);
+		_envPortalVersion5_2.put(LIST_TYPE_ENV_OS, _ENV_OS_PORTAL_VERSION_5_2);
 
-		_ENV_PORTAL_VERSION_6_0.put(
-			LIST_TYPE_ENV_AS, _ENV_AS_PORTAL_VERSION_6_0);
-		_ENV_PORTAL_VERSION_6_0.put(
+		_envPortalVersion6_0.put(LIST_TYPE_ENV_AS, _ENV_AS_PORTAL_VERSION_6_0);
+		_envPortalVersion6_0.put(
 			LIST_TYPE_ENV_BROWSER, _ENV_BROWSER_PORTAL_VERSION_OTHER);
-		_ENV_PORTAL_VERSION_6_0.put(
-			LIST_TYPE_ENV_DB, _ENV_DB_PORTAL_VERSION_6_0);
-		_ENV_PORTAL_VERSION_6_0.put(
+		_envPortalVersion6_0.put(LIST_TYPE_ENV_DB, _ENV_DB_PORTAL_VERSION_6_0);
+		_envPortalVersion6_0.put(
 			LIST_TYPE_ENV_JVM, _ENV_JVM_PORTAL_VERSION_OTHER);
-		_ENV_PORTAL_VERSION_6_0.put(
-			LIST_TYPE_ENV_OS, _ENV_OS_PORTAL_VERSION_6_0);
+		_envPortalVersion6_0.put(LIST_TYPE_ENV_OS, _ENV_OS_PORTAL_VERSION_6_0);
 
-		_ENV_PORTAL_VERSION_6_1.put(
-			LIST_TYPE_ENV_AS, _ENV_AS_PORTAL_VERSION_6_1);
-		_ENV_PORTAL_VERSION_6_1.put(
+		_envPortalVersion6_1.put(LIST_TYPE_ENV_AS, _ENV_AS_PORTAL_VERSION_6_1);
+		_envPortalVersion6_1.put(
 			LIST_TYPE_ENV_BROWSER, _ENV_BROWSER_PORTAL_VERSION_OTHER);
-		_ENV_PORTAL_VERSION_6_1.put(
-			LIST_TYPE_ENV_DB, _ENV_DB_PORTAL_VERSION_6_1);
-		_ENV_PORTAL_VERSION_6_1.put(
+		_envPortalVersion6_1.put(LIST_TYPE_ENV_DB, _ENV_DB_PORTAL_VERSION_6_1);
+		_envPortalVersion6_1.put(
 			LIST_TYPE_ENV_JVM, _ENV_JVM_PORTAL_VERSION_6_1);
-		_ENV_PORTAL_VERSION_6_1.put(
-			LIST_TYPE_ENV_OS, _ENV_OS_PORTAL_VERSION_6_1);
+		_envPortalVersion6_1.put(LIST_TYPE_ENV_OS, _ENV_OS_PORTAL_VERSION_6_1);
 
-		_ENV_PORTAL_VERSION_6_2.put(
-			LIST_TYPE_ENV_AS, _ENV_AS_PORTAL_VERSION_6_2);
-		_ENV_PORTAL_VERSION_6_2.put(
+		_envPortalVersion6_2.put(LIST_TYPE_ENV_AS, _ENV_AS_PORTAL_VERSION_6_2);
+		_envPortalVersion6_2.put(
 			LIST_TYPE_ENV_BROWSER, _ENV_BROWSER_PORTAL_VERSION_6_2);
-		_ENV_PORTAL_VERSION_6_2.put(
-			LIST_TYPE_ENV_CS, _ENV_CS_PORTAL_VERSION_ANY);
-		_ENV_PORTAL_VERSION_6_2.put(
-			LIST_TYPE_ENV_DB, _ENV_DB_PORTAL_VERSION_6_2);
-		_ENV_PORTAL_VERSION_6_2.put(
+		_envPortalVersion6_2.put(LIST_TYPE_ENV_CS, _ENV_CS_PORTAL_VERSION_ANY);
+		_envPortalVersion6_2.put(LIST_TYPE_ENV_DB, _ENV_DB_PORTAL_VERSION_6_2);
+		_envPortalVersion6_2.put(
 			LIST_TYPE_ENV_JVM, _ENV_JVM_PORTAL_VERSION_6_2);
-		_ENV_PORTAL_VERSION_6_2.put(
-			LIST_TYPE_ENV_OS, _ENV_OS_PORTAL_VERSION_6_2);
+		_envPortalVersion6_2.put(LIST_TYPE_ENV_OS, _ENV_OS_PORTAL_VERSION_6_2);
 
-		_ENV_DIGITAL_ENTERPRISE_VERSION_7_0.put(
+		_envDigitalEnterpriseVersion7_0.put(
 			LIST_TYPE_ENV_AS, _ENV_AS_DIGITAL_ENTERPRISE_VERSION_7_0);
-		_ENV_DIGITAL_ENTERPRISE_VERSION_7_0.put(
+		_envDigitalEnterpriseVersion7_0.put(
 			LIST_TYPE_ENV_BROWSER, _ENV_BROWSER_DIGITAL_ENTERPRISE_VERSION_7_0);
-		_ENV_DIGITAL_ENTERPRISE_VERSION_7_0.put(
+		_envDigitalEnterpriseVersion7_0.put(
 			LIST_TYPE_ENV_CS, _ENV_CS_PORTAL_VERSION_ANY);
-		_ENV_DIGITAL_ENTERPRISE_VERSION_7_0.put(
+		_envDigitalEnterpriseVersion7_0.put(
 			LIST_TYPE_ENV_DB, _ENV_DB_DIGITAL_ENTERPRISE_VERSION_7_0);
-		_ENV_DIGITAL_ENTERPRISE_VERSION_7_0.put(
+		_envDigitalEnterpriseVersion7_0.put(
 			LIST_TYPE_ENV_JVM, _ENV_JVM_DIGITAL_ENTERPRISE_VERSION_7_0);
-		_ENV_DIGITAL_ENTERPRISE_VERSION_7_0.put(
+		_envDigitalEnterpriseVersion7_0.put(
 			LIST_TYPE_ENV_OS, _ENV_OS_DIGITAL_ENTERPRISE_VERSION_7_0);
-		_ENV_DIGITAL_ENTERPRISE_VERSION_7_0.put(
+		_envDigitalEnterpriseVersion7_0.put(
 			LIST_TYPE_ENV_SEARCH, _ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_0);
 
-		_ENV_PORTAL_VERSION_OTHER.put(
+		_envPortalVersionOther.put(
 			LIST_TYPE_ENV_AS, _ENV_AS_PORTAL_VERSION_OTHER);
-		_ENV_PORTAL_VERSION_OTHER.put(
+		_envPortalVersionOther.put(
 			LIST_TYPE_ENV_BROWSER, _ENV_BROWSER_PORTAL_VERSION_OTHER);
-		_ENV_PORTAL_VERSION_OTHER.put(
+		_envPortalVersionOther.put(
 			LIST_TYPE_ENV_DB, _ENV_DB_PORTAL_VERSION_OTHER);
-		_ENV_PORTAL_VERSION_OTHER.put(
+		_envPortalVersionOther.put(
 			LIST_TYPE_ENV_JVM, _ENV_JVM_PORTAL_VERSION_OTHER);
-		_ENV_PORTAL_VERSION_OTHER.put(
+		_envPortalVersionOther.put(
 			LIST_TYPE_ENV_OS, _ENV_OS_PORTAL_VERSION_OTHER);
 
-		_ENV_SOCIAL_OFFICE_VERSION_2.put(
+		_envSocialOfficeVersion2.put(
 			LIST_TYPE_ENV_AS, _ENV_AS_PORTAL_VERSION_6_1);
-		_ENV_SOCIAL_OFFICE_VERSION_2.put(
+		_envSocialOfficeVersion2.put(
 			LIST_TYPE_ENV_BROWSER, _ENV_BROWSER_PORTAL_VERSION_OTHER);
-		_ENV_SOCIAL_OFFICE_VERSION_2.put(
+		_envSocialOfficeVersion2.put(
 			LIST_TYPE_ENV_DB, _ENV_DB_PORTAL_VERSION_6_1);
-		_ENV_SOCIAL_OFFICE_VERSION_2.put(
+		_envSocialOfficeVersion2.put(
 			LIST_TYPE_ENV_JVM, _ENV_JVM_PORTAL_VERSION_OTHER);
-		_ENV_SOCIAL_OFFICE_VERSION_2.put(
+		_envSocialOfficeVersion2.put(
 			LIST_TYPE_ENV_OS, _ENV_OS_PORTAL_VERSION_6_1);
 
-		_ENV_SOCIAL_OFFICE_VERSION_3.put(
+		_envSocialOfficeVersion3.put(
 			LIST_TYPE_ENV_AS, _ENV_AS_PORTAL_VERSION_6_2);
-		_ENV_SOCIAL_OFFICE_VERSION_3.put(
+		_envSocialOfficeVersion3.put(
 			LIST_TYPE_ENV_BROWSER, _ENV_BROWSER_PORTAL_VERSION_OTHER);
-		_ENV_SOCIAL_OFFICE_VERSION_3.put(
+		_envSocialOfficeVersion3.put(
 			LIST_TYPE_ENV_DB, _ENV_DB_PORTAL_VERSION_6_2);
-		_ENV_SOCIAL_OFFICE_VERSION_3.put(
+		_envSocialOfficeVersion3.put(
 			LIST_TYPE_ENV_JVM, _ENV_JVM_PORTAL_VERSION_OTHER);
-		_ENV_SOCIAL_OFFICE_VERSION_3.put(
+		_envSocialOfficeVersion3.put(
 			LIST_TYPE_ENV_OS, _ENV_OS_PORTAL_VERSION_6_2);
 	}
 

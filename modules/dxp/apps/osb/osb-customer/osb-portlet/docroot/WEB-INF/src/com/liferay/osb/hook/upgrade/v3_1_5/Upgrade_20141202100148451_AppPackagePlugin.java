@@ -44,14 +44,12 @@ public class Upgrade_20141202100148451_AppPackagePlugin extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getConnection();
-
-			ps = con.prepareStatement("select * from OSB_AppPackagePlugin");
+			ps = connection.prepareStatement(
+				"select * from OSB_AppPackagePlugin");
 
 			rs = ps.executeQuery();
 
@@ -73,7 +71,7 @@ public class Upgrade_20141202100148451_AppPackagePlugin extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 

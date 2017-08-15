@@ -71,14 +71,11 @@ public class UpgradeTicketStatus extends UpgradeProcess {
 	}
 
 	private List<long[]> getTicketEntryData(int status) throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getConnection();
-
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"select ticketEntryId, accountEntryId, status, " +
 					"escalationLevel from OSB_TicketEntry where status = ?");
 
@@ -102,7 +99,7 @@ public class UpgradeTicketStatus extends UpgradeProcess {
 			return results;
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 

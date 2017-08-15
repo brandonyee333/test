@@ -17,13 +17,13 @@ package com.liferay.osb.service.persistence.impl;
 import com.liferay.osb.model.SupportResponse;
 import com.liferay.osb.model.impl.SupportResponseImpl;
 import com.liferay.osb.service.persistence.SupportResponseFinder;
+import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.util.List;
 
@@ -39,7 +39,7 @@ public class SupportResponseFinderImpl
 	public SupportResponse fetchByAccountEntry(long accountEntryId)
 		throws PortalException {
 
-		String sql = CustomSQLUtil.get(FIND_BY_ACCOUNT_ENTRY);
+		String sql = CustomSQLUtil.get(getClass(), FIND_BY_ACCOUNT_ENTRY);
 
 		Session session = null;
 

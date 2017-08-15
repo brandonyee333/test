@@ -49,7 +49,8 @@ public class Upgrade_20161017153308278_DeveloperEntry extends UpgradeProcess {
 
 			runSQL(
 				"drop index IX_58B01EA on " +
-					DeveloperEntryModelImpl.TABLE_NAME, false);
+					DeveloperEntryModelImpl.TABLE_NAME,
+				false);
 
 			runSQL(
 				"create index IX_B0F6096B on " +

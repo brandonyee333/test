@@ -25,6 +25,7 @@ import com.liferay.osb.util.OSBFileUtil;
 import com.liferay.osb.util.OSBPortletKeys;
 import com.liferay.osb.util.comparator.LicenseKeyExpirationDateComparator;
 import com.liferay.osb.util.comparator.LicenseKeyStartDateComparator;
+import com.liferay.petra.content.ContentUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.PortletPreferencesLocalServiceUtil;
 import com.liferay.portal.kernel.util.Base64;
@@ -45,7 +46,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
-import com.liferay.util.ContentUtil;
 import com.liferay.util.xml.DocUtil;
 
 import java.io.File;
@@ -78,6 +78,7 @@ public class LicenseUtil {
 		licenseProperties.setProperty("licenseKey", licenseKey.getKey());
 
 		String licenseFileDecoded = PropertiesUtil.toString(licenseProperties);
+
 		String licenseFileEncoded = Base64.objectToString(licenseFileDecoded);
 
 		return licenseFileEncoded;
@@ -213,6 +214,7 @@ public class LicenseUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
+				LicenseUtil.class.getClassLoader(),
 				"com/liferay/osb/license/dependencies" +
 					"/email_notification_trial_license_body.tmpl"));
 
@@ -236,6 +238,7 @@ public class LicenseUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
+				LicenseUtil.class.getClassLoader(),
 				"com/liferay/osb/license/dependencies" +
 					"/email_notification_trial_license_subject.tmpl"));
 
@@ -257,6 +260,7 @@ public class LicenseUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
+				LicenseUtil.class.getClassLoader(),
 				"com/liferay/osb/license/dependencies" +
 					"/email_registered_trial_license_body.tmpl"));
 
@@ -280,6 +284,7 @@ public class LicenseUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
+				LicenseUtil.class.getClassLoader(),
 				"com/liferay/osb/license/dependencies" +
 					"/email_registered_trial_license_subject.tmpl"));
 

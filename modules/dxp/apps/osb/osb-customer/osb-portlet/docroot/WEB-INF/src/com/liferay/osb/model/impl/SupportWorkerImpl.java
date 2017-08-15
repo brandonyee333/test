@@ -328,11 +328,11 @@ public class SupportWorkerImpl extends SupportWorkerBaseImpl {
 		calendar.setTime(date);
 
 		int openTime = supportLabor.getTime(
-			calendar.get(
-				Calendar.DAY_OF_WEEK), SupportLaborConstants.TYPE_OPEN);
+			calendar.get(Calendar.DAY_OF_WEEK),
+			SupportLaborConstants.TYPE_OPEN);
 		int closeTime = supportLabor.getTime(
-			calendar.get(
-				Calendar.DAY_OF_WEEK), SupportLaborConstants.TYPE_CLOSE);
+			calendar.get(Calendar.DAY_OF_WEEK),
+			SupportLaborConstants.TYPE_CLOSE);
 
 		if (openTime == closeTime) {
 			return false;

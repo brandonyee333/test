@@ -44,14 +44,11 @@ public class UpgradeTrainingEvent extends UpgradeProcess {
 	}
 
 	protected void updateTrainingEvent() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"select trainingEventId, languageId from OSB_TrainingEvent");
 
 			rs = ps.executeQuery();
@@ -69,7 +66,7 @@ public class UpgradeTrainingEvent extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 

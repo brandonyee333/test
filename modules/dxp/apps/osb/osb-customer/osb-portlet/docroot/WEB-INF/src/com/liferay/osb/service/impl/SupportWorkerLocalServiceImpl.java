@@ -29,6 +29,7 @@ import com.liferay.osb.model.TicketWorker;
 import com.liferay.osb.model.impl.TicketEntryImpl;
 import com.liferay.osb.service.base.SupportWorkerLocalServiceBaseImpl;
 import com.liferay.osb.support.util.SupportUtil;
+import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -39,7 +40,6 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
-import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -719,7 +719,7 @@ public class SupportWorkerLocalServiceImpl
 			for (int i = 0; i < TicketEntryConstants.WEIGHTS.length; i++) {
 				int weight = TicketEntryConstants.WEIGHTS[i];
 
-				String sql = CustomSQLUtil.get(_COUNT_TICKET_ENTRY);
+				String sql = CustomSQLUtil.get(getClass(), _COUNT_TICKET_ENTRY);
 
 				sql = StringUtil.replace(
 					sql, new String[] {"[$STATUS_INACTIVE$]", "[$WEIGHT$]"},
@@ -742,8 +742,11 @@ public class SupportWorkerLocalServiceImpl
 
 			runSQL(sb.toString());
 
-			runSQL(CustomSQLUtil.get(_UPDATE_SUPPORT_TEAM_ASSIGNED_WORK));
-			runSQL(CustomSQLUtil.get(_UPDATE_SUPPORT_TEAM_MAX_WORK));
+			runSQL(
+				CustomSQLUtil.get(
+					getClass(), _UPDATE_SUPPORT_TEAM_ASSIGNED_WORK));
+			runSQL(
+				CustomSQLUtil.get(getClass(), _UPDATE_SUPPORT_TEAM_MAX_WORK));
 		}
 		catch (Exception e) {
 			_log.error(e, e);

@@ -17,6 +17,7 @@ package com.liferay.osb.service.persistence.impl;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.impl.OfferingEntryImpl;
 import com.liferay.osb.service.persistence.OfferingEntryFinder;
+import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
@@ -29,7 +30,6 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.sql.Timestamp;
 
@@ -73,7 +73,7 @@ public class OfferingEntryFinderImpl
 		Timestamp supportEndDateLT_TS = CalendarUtil.getTimestamp(
 			supportEndDateLT);
 
-		String sql = CustomSQLUtil.get(COUNT_BY_U_AEI_PEI_T_S_SED);
+		String sql = CustomSQLUtil.get(getClass(), COUNT_BY_U_AEI_PEI_T_S_SED);
 
 		if (userId <= 0) {
 			sql = StringUtil.replace(sql, _USER_SQL, StringPool.BLANK);
@@ -158,7 +158,7 @@ public class OfferingEntryFinderImpl
 		Timestamp supportEndDateLT_TS = CalendarUtil.getTimestamp(
 			supportEndDateLT);
 
-		String sql = CustomSQLUtil.get(FIND_BY_U_AEI_PEI_T_S_SED);
+		String sql = CustomSQLUtil.get(getClass(), FIND_BY_U_AEI_PEI_T_S_SED);
 
 		if (userId <= 0) {
 			sql = StringUtil.replace(sql, _USER_SQL, StringPool.BLANK);
@@ -247,16 +247,16 @@ public class OfferingEntryFinderImpl
 		String join = StringPool.BLANK;
 
 		if (key.equals("licenseLifetime")) {
-			join = CustomSQLUtil.get(JOIN_BY_LICENSE_LIFETIME);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_LICENSE_LIFETIME);
 		}
 		else if (key.equals("user")) {
-			join = CustomSQLUtil.get(JOIN_BY_USER);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_USER);
 		}
 		else if (key.equals("validLicense")) {
-			join = CustomSQLUtil.get(JOIN_BY_VALID_LICENSE);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_VALID_LICENSE);
 		}
 		else if (key.equals("validTicket")) {
-			join = CustomSQLUtil.get(JOIN_BY_VALID_TICKET);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_VALID_TICKET);
 		}
 
 		if (Validator.isNotNull(join)) {
@@ -293,16 +293,16 @@ public class OfferingEntryFinderImpl
 		String join = StringPool.BLANK;
 
 		if (key.equals("licenseLifetime")) {
-			join = CustomSQLUtil.get(JOIN_BY_LICENSE_LIFETIME);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_LICENSE_LIFETIME);
 		}
 		else if (key.equals("user")) {
-			join = CustomSQLUtil.get(JOIN_BY_USER);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_USER);
 		}
 		else if (key.equals("validLicense")) {
-			join = CustomSQLUtil.get(JOIN_BY_VALID_LICENSE);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_VALID_LICENSE);
 		}
 		else if (key.equals("validTicket")) {
-			join = CustomSQLUtil.get(JOIN_BY_VALID_TICKET);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_VALID_TICKET);
 		}
 
 		if (Validator.isNotNull(join)) {

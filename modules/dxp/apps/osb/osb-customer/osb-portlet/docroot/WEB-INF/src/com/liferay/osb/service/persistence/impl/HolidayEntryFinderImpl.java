@@ -17,6 +17,7 @@ package com.liferay.osb.service.persistence.impl;
 import com.liferay.osb.model.HolidayEntry;
 import com.liferay.osb.model.impl.HolidayEntryImpl;
 import com.liferay.osb.service.persistence.HolidayEntryFinder;
+import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
 import com.liferay.portal.kernel.dao.orm.Session;
@@ -24,7 +25,6 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.CalendarUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.sql.Timestamp;
 
@@ -44,7 +44,7 @@ public class HolidayEntryFinderImpl
 		HolidayEntryFinder.class.getName() + ".findByU_RY_SD_ED";
 
 	public List<HolidayEntry> findByU_RY(long userId, boolean repeatYearly) {
-		String sql = CustomSQLUtil.get(FIND_BY_U_RY);
+		String sql = CustomSQLUtil.get(getClass(), FIND_BY_U_RY);
 
 		Session session = null;
 
@@ -76,7 +76,7 @@ public class HolidayEntryFinderImpl
 		Timestamp startDate_TS = CalendarUtil.getTimestamp(startDate);
 		Timestamp endDate_TS = CalendarUtil.getTimestamp(endDate);
 
-		String sql = CustomSQLUtil.get(FIND_BY_U_RY_SD_ED);
+		String sql = CustomSQLUtil.get(getClass(), FIND_BY_U_RY_SD_ED);
 
 		if (repeatYearly == null) {
 			sql = StringUtil.replace(

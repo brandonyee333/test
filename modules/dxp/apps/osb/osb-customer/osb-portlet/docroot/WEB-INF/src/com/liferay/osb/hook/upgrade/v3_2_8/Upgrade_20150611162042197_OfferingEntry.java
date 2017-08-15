@@ -67,13 +67,10 @@ public class Upgrade_20150611162042197_OfferingEntry extends UpgradeProcess {
 	}
 
 	protected void mergeOfferingEntries() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getConnection();
-
 			StringBundler sb = new StringBundler(9);
 
 			sb.append("select OSB_OrderEntry.orderEntryId from ");
@@ -86,7 +83,7 @@ public class Upgrade_20150611162042197_OfferingEntry extends UpgradeProcess {
 			sb.append("OSB_OfferingEntry.offeringDefinitionId having ");
 			sb.append("count(*) > 1)");
 
-			ps = con.prepareStatement(sb.toString());
+			ps = connection.prepareStatement(sb.toString());
 
 			rs = ps.executeQuery();
 
@@ -95,7 +92,7 @@ public class Upgrade_20150611162042197_OfferingEntry extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 

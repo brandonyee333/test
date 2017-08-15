@@ -46,14 +46,11 @@ public class Upgrade_20150406084031636_User extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 		Indexer indexer = IndexerRegistryUtil.getIndexer(User.class);
 
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"select distinct userId from OSB_TrainingCustomer");
 
 			rs = ps.executeQuery();
@@ -67,7 +64,7 @@ public class Upgrade_20150406084031636_User extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 

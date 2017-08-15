@@ -79,7 +79,7 @@ public class RemoteDossieraWebServiceImpl
 				_log.debug("Sending GET request to: " + sb.toString());
 			}
 
-			String response = doGet(url, Collections.EMPTY_MAP, headers);
+			String response = doGet(url, Collections.emptyMap(), headers);
 
 			return JSONFactoryUtil.createJSONArray(response);
 		}

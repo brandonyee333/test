@@ -23,9 +23,9 @@ public class TicketCallConstants {
 
 	public static final String NOT_AVAILABLE = "N/A";
 
-	public static int TYPE_INCOMING = 1;
+	public static final int TYPE_INCOMING = 1;
 
-	public static int TYPE_OUTGOING = 2;
+	public static final int TYPE_OUTGOING = 2;
 
 	public static String getTypeLabel(int type) {
 		if (type == TYPE_INCOMING) {

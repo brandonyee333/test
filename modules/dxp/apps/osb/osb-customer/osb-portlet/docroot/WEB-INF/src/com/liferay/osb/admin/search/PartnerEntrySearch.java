@@ -29,14 +29,14 @@ import javax.portlet.PortletURL;
  */
 public class PartnerEntrySearch extends SearchContainer<PartnerEntry> {
 
-	static List<String> headerNames = new ArrayList<>();
+	public static final String EMPTY_RESULTS_MESSAGE = "no-partners-were-found";
+
+	public static List<String> headerNames = new ArrayList<>();
 
 	static {
 		headerNames.add("code");
 		headerNames.add("parent-partner");
 	}
-
-	public static final String EMPTY_RESULTS_MESSAGE = "no-partners-were-found";
 
 	public PartnerEntrySearch(
 		PortletRequest portletRequest, PortletURL iteratorURL) {

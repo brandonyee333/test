@@ -83,14 +83,16 @@ public class TicketLinkLocalServiceImpl extends TicketLinkLocalServiceBaseImpl {
 
 			ticketLinkPersistence.update(ticketLink, serviceContext);
 
+			long classNameId = classNameLocalService.getClassNameId(
+				TicketEntry.class.getName());
+			long fieldClassNameId = classNameLocalService.getClassNameId(
+				TicketLink.class.getName());
+
 			auditEntryLocalService.addAuditEntry(
-				userId, user.getFullName(), now,
-				classNameLocalService.getClassNameId(TicketEntry.class.getName()),
-				ticketEntryId, auditSetId,
-				classNameLocalService.getClassNameId(TicketLink.class.getName()),
-				ticketLink.getTicketLinkId(), auditAction,
-				AuditEntryConstants.FIELD_URL, visibility, StringPool.BLANK,
-				StringPool.BLANK, StringPool.BLANK, urls[i]);
+				userId, user.getFullName(), now, classNameId, ticketEntryId,
+				auditSetId, fieldClassNameId, ticketLink.getTicketLinkId(),
+				auditAction, AuditEntryConstants.FIELD_URL, visibility,
+				StringPool.BLANK, StringPool.BLANK, StringPool.BLANK, urls[i]);
 		}
 
 		return ticketLink;

@@ -294,7 +294,9 @@ public class KeyGenerator {
 
 	private KeyGenerator() {
 		try {
-			ClassLoader classLoader = getClass().getClassLoader();
+			Class<?> clazz = getClass();
+
+			ClassLoader classLoader = clazz.getClassLoader();
 
 			String[] keys = StringUtil.split(
 				StringUtil.read(

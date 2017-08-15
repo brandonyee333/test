@@ -312,15 +312,14 @@ public class TicketEntryLocalServiceImpl
 
 				ticketEntryPersistence.update(ticketEntry, serviceContext);
 
+				long classNameId = classNameLocalService.getClassNameId(
+					TicketEntry.class.getName());
 				Date newDueDate = ticketEntry.getDueDate();
 
 				auditEntryLocalService.addAuditEntry(
 					OSBConstants.USER_DEFAULT_USER_ID, StringPool.BLANK,
-					new Date(),
-					classNameLocalService.getClassNameId(TicketEntry.class.getName()),
-					ticketEntry.getTicketEntryId(), 0,
-					classNameLocalService.getClassNameId(TicketEntry.class.getName()),
-					ticketEntry.getTicketEntryId(),
+					new Date(), classNameId, ticketEntry.getTicketEntryId(), 0,
+					classNameId, ticketEntry.getTicketEntryId(),
 					AuditEntryConstants.ACTION_UPDATE,
 					AuditEntryConstants.FIELD_DUE_DATE,
 					VisibilityConstants.WORKERS, String.valueOf(dueDate),
@@ -526,10 +525,13 @@ public class TicketEntryLocalServiceImpl
 				newPrimaryUserId = 0;
 			}
 
+			long classNameId = classNameLocalService.getClassNameId(
+				SupportWorker.class);
+
 			ticketWorkerLocalService.addTicketWorkers(
 				OSBConstants.USER_DEFAULT_USER_ID,
 				new long[] {supportWorker.getUserId()}, ticketEntryId,
-				new long[] {classNameLocalService.getClassNameId(SupportWorker.class)},
+				new long[] {classNameId},
 				new long[] {supportWorker.getSupportWorkerId()},
 				new int[] {TicketWorkerConstants.ROLE_ESCALATED_DEVELOPER},
 				newPrimaryUserId);
@@ -590,11 +592,13 @@ public class TicketEntryLocalServiceImpl
 			throw new TicketEntryForwardingException();
 		}
 
+		long classNameId = classNameLocalService.getClassNameId(
+			SupportWorker.class);
+
 		ticketWorkerLocalService.addTicketWorkers(
 			OSBConstants.USER_DEFAULT_USER_ID,
 			new long[] {supportWorker.getUserId()},
-			ticketEntry.getTicketEntryId(),
-			new long[] {classNameLocalService.getClassNameId(SupportWorker.class)},
+			ticketEntry.getTicketEntryId(), new long[] {classNameId},
 			new long[] {supportWorker.getSupportWorkerId()},
 			new int[] {TicketWorkerConstants.ROLE_DEVELOPER},
 			supportWorker.getUserId());
@@ -620,7 +624,7 @@ public class TicketEntryLocalServiceImpl
 
 		// Audit entry
 
-		long classNameId = classNameLocalService.getClassNameId(
+		long ticketEntryClassNameId = classNameLocalService.getClassNameId(
 			TicketEntry.class.getName());
 
 		SupportTeam supportTeam = supportTeamLocalService.getSupportTeam(
@@ -660,7 +664,7 @@ public class TicketEntryLocalServiceImpl
 
 		auditEntryLocalService.addAuditEntry(
 			ticketEntry.getUserId(), user.getFullName(), new Date(),
-			classNameId, ticketEntryId, 0,
+			ticketEntryClassNameId, ticketEntryId, 0,
 			classNameLocalService.getClassNameId(SupportTeam.class.getName()),
 			supportTeam.getSupportTeamId(), AuditEntryConstants.ACTION_ASSIGN,
 			AuditEntryConstants.FIELD_SUPPORT_TEAM,
@@ -669,8 +673,8 @@ public class TicketEntryLocalServiceImpl
 			StringUtil.valueOf(supportTeam.getSupportTeamId()));
 
 		auditEntryLocalService.addAuditEntry(
-			user.getUserId(), user.getFullName(), new Date(), classNameId,
-			ticketEntryId, 0,
+			user.getUserId(), user.getFullName(), new Date(),
+			ticketEntryClassNameId, ticketEntryId, 0,
 			classNameLocalService.getClassNameId(TicketComment.class.getName()),
 			ticketComment.getTicketCommentId(),
 			AuditEntryConstants.ACTION_FORWARD, AuditEntryConstants.FIELD_BODY,
@@ -1128,8 +1132,7 @@ public class TicketEntryLocalServiceImpl
 
 		if ((accountEntry.getType() ==
 				AccountEntryConstants.TYPE_INTERNAL_TEST) ||
-			(accountEntry.getType() ==
-				AccountEntryConstants.TYPE_TRIAL)) {
+			(accountEntry.getType() == AccountEntryConstants.TYPE_TRIAL)) {
 
 			return;
 		}
@@ -1480,11 +1483,14 @@ public class TicketEntryLocalServiceImpl
 			SupportTeam supportTeam = supportTeamLocalService.getSupportTeam(
 				supportWorker.getSupportTeamId());
 
+			long classNameId = classNameLocalService.getClassNameId(
+				TicketEntry.class.getName());
+			long fieldClassNameId = classNameLocalService.getClassNameId(
+				SupportTeam.class.getName());
+
 			auditEntryLocalService.addAuditEntry(
-				user.getUserId(), user.getFullName(), new Date(),
-				classNameLocalService.getClassNameId(TicketEntry.class.getName()),
-				ticketEntry.getTicketEntryId(), 0,
-				classNameLocalService.getClassNameId(SupportTeam.class.getName()),
+				user.getUserId(), user.getFullName(), new Date(), classNameId,
+				ticketEntry.getTicketEntryId(), 0, fieldClassNameId,
 				supportTeam.getSupportTeamId(),
 				AuditEntryConstants.ACTION_ASSIGN,
 				AuditEntryConstants.FIELD_SUPPORT_TEAM,
@@ -1784,9 +1790,11 @@ public class TicketEntryLocalServiceImpl
 		String actionInformation = action;
 
 		if (action.equals(OSBMailActionKeys.FORWARDED)) {
+			long classNameId = classNameLocalService.getClassNameId(
+				TicketEntry.class.getName());
+
 			AuditEntry auditEntry = auditEntryPersistence.findByC_C_F_A_Last(
-				classNameLocalService.getClassNameId(TicketEntry.class.getName()),
-				ticketEntry.getTicketEntryId(),
+				classNameId, ticketEntry.getTicketEntryId(),
 				AuditEntryConstants.FIELD_SUPPORT_TEAM,
 				AuditEntryConstants.ACTION_ASSIGN, null);
 
@@ -2049,9 +2057,12 @@ public class TicketEntryLocalServiceImpl
 				supportWorkerLocalService.getMostAvailableSupportWorker(
 					ticketEntry, params);
 
+			long classNameId = classNameLocalService.getClassNameId(
+				SupportWorker.class);
+
 			ticketWorkerLocalService.addTicketWorkers(
 				userId, new long[] {supportWorker.getUserId()}, ticketEntryId,
-				new long[] {classNameLocalService.getClassNameId(SupportWorker.class)},
+				new long[] {classNameId},
 				new long[] {supportWorker.getSupportWorkerId()},
 				new int[] {TicketWorkerConstants.ROLE_DEVELOPER},
 				supportWorker.getUserId());
@@ -2069,12 +2080,13 @@ public class TicketEntryLocalServiceImpl
 			ticketEntryPersistence.update(ticketEntry, serviceContext);
 
 			if (oldDueDate.getTime() != dueDate.getTime()) {
+				long classNameId = classNameLocalService.getClassNameId(
+					TicketEntry.class.getName());
+
 				auditEntryLocalService.addAuditEntry(
-					userId, user.getFullName(), now,
-					classNameLocalService.getClassNameId(TicketEntry.class.getName()),
-					ticketEntryId, 0,
-					classNameLocalService.getClassNameId(TicketEntry.class.getName()),
-					ticketEntryId, AuditEntryConstants.ACTION_UPDATE,
+					userId, user.getFullName(), now, classNameId, ticketEntryId,
+					0, classNameId, ticketEntryId,
+					AuditEntryConstants.ACTION_UPDATE,
 					AuditEntryConstants.FIELD_DUE_DATE,
 					VisibilityConstants.WORKERS, String.valueOf(oldDueDate),
 					String.valueOf(oldDueDate.getTime()),
@@ -2135,8 +2147,8 @@ public class TicketEntryLocalServiceImpl
 			((oldEnvironment == ProductEntryConstants.ENVIRONMENT_ANY) ||
 			 (oldEnvironment ==
 				 ProductEntryConstants.ENVIRONMENT_PRODUCTION)) &&
-			((environment != ProductEntryConstants.ENVIRONMENT_ANY) &&
-			 (environment != ProductEntryConstants.ENVIRONMENT_PRODUCTION))) {
+			(environment != ProductEntryConstants.ENVIRONMENT_ANY) &&
+			(environment != ProductEntryConstants.ENVIRONMENT_PRODUCTION)) {
 
 			severity = SupportResponseConstants.SEVERITY_MAJOR;
 		}

@@ -49,13 +49,10 @@ public class Upgrade_20150618140756525_AssetReceiptLicense
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getConnection();
-
 			StringBundler sb = new StringBundler(4);
 
 			sb.append("select assetReceiptLicenseId from ");
@@ -63,7 +60,7 @@ public class Upgrade_20150618140756525_AssetReceiptLicense
 			sb.append(AssetLicenseConstants.USAGE_TYPE_TRIAL);
 			sb.append(" and datediff(endDate,startDate) > 30");
 
-			ps = con.prepareStatement(sb.toString());
+			ps = connection.prepareStatement(sb.toString());
 
 			rs = ps.executeQuery();
 
@@ -99,7 +96,7 @@ public class Upgrade_20150618140756525_AssetReceiptLicense
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 

@@ -50,7 +50,6 @@ public class Upgrade_20160920131304136_CorpEntry extends UpgradeProcess {
 	}
 
 	protected void upgradeCorpEntry() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -67,9 +66,7 @@ public class Upgrade_20160920131304136_CorpEntry extends UpgradeProcess {
 			sb.append(" and Group_.site = 1 and Layout.privateLayout = 0 ");
 			sb.append("and Layout.friendlyURL = '/profile'");
 
-			con = DataAccess.getConnection();
-
-			ps = con.prepareStatement(sb.toString());
+			ps = connection.prepareStatement(sb.toString());
 
 			rs = ps.executeQuery();
 
@@ -80,7 +77,7 @@ public class Upgrade_20160920131304136_CorpEntry extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 

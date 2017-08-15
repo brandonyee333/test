@@ -70,6 +70,7 @@ import com.liferay.osb.util.comparator.TicketEntryModifiedDateComparator;
 import com.liferay.osb.util.comparator.TicketEntryStatusComparator;
 import com.liferay.osb.util.comparator.TicketEntrySubjectComparator;
 import com.liferay.osb.util.comparator.TicketEntryTicketWorkerComparator;
+import com.liferay.petra.content.ContentUtil;
 import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.NoSuchUserException;
@@ -102,7 +103,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.util.ContentUtil;
 import com.liferay.util.portlet.PortletProps;
 
 import java.net.URL;
@@ -192,8 +192,8 @@ public class SupportUtil {
 		sb.append("&customfield_10731=");
 
 		String encodedTicketEntryURL = HttpUtil.encodeURL(
-			getFriendlyTicketEntryURL(
-				request, ticketEntry.getTicketEntryId()), true);
+			getFriendlyTicketEntryURL(request, ticketEntry.getTicketEntryId()),
+			true);
 
 		sb.append(encodedTicketEntryURL);
 
@@ -305,6 +305,7 @@ public class SupportUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
+				SupportUtil.class.getClassLoader(),
 				"com/liferay/osb/support/dependencies" +
 					"/action_information_body.tmpl"));
 
@@ -364,6 +365,7 @@ public class SupportUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
+				SupportUtil.class.getClassLoader(),
 				"com/liferay/osb/support/dependencies" +
 					"/comment_game_plan_body.tmpl"));
 
@@ -387,6 +389,7 @@ public class SupportUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
+				SupportUtil.class.getClassLoader(),
 				"com/liferay/osb/support/dependencies" +
 					"/comment_ticket_entry_inactive_body.tmpl"));
 
@@ -410,6 +413,7 @@ public class SupportUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
+				SupportUtil.class.getClassLoader(),
 				"com/liferay/osb/support/dependencies" +
 					"/comment_ticket_entry_notice_body.tmpl"));
 
@@ -433,6 +437,7 @@ public class SupportUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
+				SupportUtil.class.getClassLoader(),
 				"com/liferay/osb/support/dependencies" +
 					"/email_account_entry_tier_body.tmpl"));
 
@@ -456,6 +461,7 @@ public class SupportUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
+				SupportUtil.class.getClassLoader(),
 				"com/liferay/osb/support/dependencies" +
 					"/email_account_entry_tier_subject.tmpl"));
 
@@ -529,6 +535,7 @@ public class SupportUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
+				SupportUtil.class.getClassLoader(),
 				"com/liferay/osb/support/dependencies" +
 					"/email_partner_feedback_reminder_body.tmpl"));
 
@@ -552,6 +559,7 @@ public class SupportUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
+				SupportUtil.class.getClassLoader(),
 				"com/liferay/osb/support/dependencies" +
 					"/email_partner_feedback_reminder_subject.tmpl"));
 
@@ -575,6 +583,7 @@ public class SupportUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
+				SupportUtil.class.getClassLoader(),
 				"com/liferay/osb/support/dependencies" +
 					"/email_team_feedback_body.tmpl"));
 
@@ -598,6 +607,7 @@ public class SupportUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
+				SupportUtil.class.getClassLoader(),
 				"com/liferay/osb/support/dependencies" +
 					"/email_team_feedback_subject.tmpl"));
 
@@ -621,6 +631,7 @@ public class SupportUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
+				SupportUtil.class.getClassLoader(),
 				"com/liferay/osb/support/dependencies" +
 					"/email_ticket_entry_body.tmpl"));
 
@@ -644,6 +655,7 @@ public class SupportUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
+				SupportUtil.class.getClassLoader(),
 				"com/liferay/osb/support/dependencies" +
 					"/email_ticket_entry_comment.tmpl"));
 
@@ -667,6 +679,7 @@ public class SupportUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
+				SupportUtil.class.getClassLoader(),
 				"com/liferay/osb/support/dependencies" +
 					"/email_ticket_entry_due_date.tmpl"));
 
@@ -690,6 +703,7 @@ public class SupportUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
+				SupportUtil.class.getClassLoader(),
 				"com/liferay/osb/support/dependencies" +
 					"/email_ticket_entry_subject.tmpl"));
 
@@ -713,6 +727,7 @@ public class SupportUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
+				SupportUtil.class.getClassLoader(),
 				"com/liferay/osb/support/dependencies" +
 					"/email_worker_feedback_body.tmpl"));
 
@@ -736,6 +751,7 @@ public class SupportUtil {
 		map.put(
 			defaultLocale,
 			ContentUtil.get(
+				SupportUtil.class.getClassLoader(),
 				"com/liferay/osb/support/dependencies" +
 					"/email_worker_feedback_subject.tmpl"));
 
@@ -754,6 +770,7 @@ public class SupportUtil {
 
 		if (Validator.isNull(escalationDetails)) {
 			escalationDetails = ContentUtil.get(
+				SupportUtil.class.getClassLoader(),
 				"com/liferay/osb/support/dependencies" +
 					"/message_escalation_details_body.tmpl");
 		}
@@ -1642,10 +1659,14 @@ public class SupportUtil {
 			templateDirName + templateName);
 
 		if (url != null) {
-			return ContentUtil.get(templateDirName + templateName);
+			return ContentUtil.get(
+				SupportUtil.class.getClassLoader(),
+				templateDirName + templateName);
 		}
 		else {
-			return ContentUtil.get(templateDirName + defaultTemplateName);
+			return ContentUtil.get(
+				SupportUtil.class.getClassLoader(),
+				templateDirName + defaultTemplateName);
 		}
 	}
 

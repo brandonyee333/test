@@ -48,13 +48,10 @@ public class Upgrade_20150721162723892_ECDocumentEntry extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getConnection();
-
 			StringBundler sb = new StringBundler(5);
 
 			sb.append("select ecDocumentEntryId from ");
@@ -63,7 +60,7 @@ public class Upgrade_20150721162723892_ECDocumentEntry extends UpgradeProcess {
 			sb.append(" and extraSettings not like ");
 			sb.append("'%marketplaceDeveloperEntryId%'");
 
-			ps = con.prepareStatement(sb.toString());
+			ps = connection.prepareStatement(sb.toString());
 
 			rs = ps.executeQuery();
 
@@ -88,7 +85,7 @@ public class Upgrade_20150721162723892_ECDocumentEntry extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 

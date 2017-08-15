@@ -86,7 +86,9 @@ public class OSBEditWorkflowTaskAction extends BaseStrutsPortletAction {
 				SessionErrors.add(actionRequest, e.getMessage());
 			}
 			else {
-				SessionErrors.add(actionRequest, e.getClass().getName());
+				Class<?> clazz = e.getClass();
+
+				SessionErrors.add(actionRequest, clazz.getName());
 			}
 
 			return;

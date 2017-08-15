@@ -17,6 +17,7 @@ package com.liferay.osb.service.persistence.impl;
 import com.liferay.osb.model.SupportWorker;
 import com.liferay.osb.model.impl.SupportWorkerImpl;
 import com.liferay.osb.service.persistence.SupportWorkerFinder;
+import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
@@ -28,7 +29,6 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -120,7 +120,7 @@ public class SupportWorkerFinderImpl
 		Boolean overUtilization, int escalationLevel,
 		LinkedHashMap<String, Object> params) {
 
-		String sql = CustomSQLUtil.get(COUNT_BY_U_E);
+		String sql = CustomSQLUtil.get(getClass(), COUNT_BY_U_E);
 
 		if (overUtilization == null) {
 			sql = StringUtil.replace(sql, _UTILIZATION_SQL, StringPool.BLANK);
@@ -187,7 +187,8 @@ public class SupportWorkerFinderImpl
 		screenNames = CustomSQLUtil.keywords(screenNames);
 		supportTeamNames = CustomSQLUtil.keywords(supportTeamNames);
 
-		String sql = CustomSQLUtil.get(COUNT_BY_SL_FN_MN_LN_SN_EA_STN);
+		String sql = CustomSQLUtil.get(
+			getClass(), COUNT_BY_SL_FN_MN_LN_SN_EA_STN);
 
 		sql = CustomSQLUtil.replaceKeywords(
 			sql, "lower(User_.emailAddress)", StringPool.LIKE, false,
@@ -283,7 +284,7 @@ public class SupportWorkerFinderImpl
 		try {
 			session = openSession();
 
-			String sql = CustomSQLUtil.get(FIND_BY_SUPPORT_TEAM_ID);
+			String sql = CustomSQLUtil.get(getClass(), FIND_BY_SUPPORT_TEAM_ID);
 
 			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
@@ -307,7 +308,7 @@ public class SupportWorkerFinderImpl
 		Boolean overUtilization, int escalationLevel,
 		LinkedHashMap<String, Object> params) {
 
-		String sql = CustomSQLUtil.get(FIND_BY_U_E);
+		String sql = CustomSQLUtil.get(getClass(), FIND_BY_U_E);
 
 		if (overUtilization == null) {
 			sql = StringUtil.replace(sql, _UTILIZATION_SQL, StringPool.BLANK);
@@ -357,7 +358,7 @@ public class SupportWorkerFinderImpl
 		String roleComparator, boolean filterByAutoAssign,
 		LinkedHashMap<String, Object> params) {
 
-		String sql = CustomSQLUtil.get(FIND_BY_R_STT_SRI);
+		String sql = CustomSQLUtil.get(getClass(), FIND_BY_R_STT_SRI);
 
 		if (roleComparator.equals(StringPool.EQUAL)) {
 			sql = StringUtil.replace(
@@ -431,7 +432,8 @@ public class SupportWorkerFinderImpl
 		try {
 			session = openSession();
 
-			String sql = CustomSQLUtil.get(FIND_BY_SL_FN_MN_LN_SN_EA_STN);
+			String sql = CustomSQLUtil.get(
+				getClass(), FIND_BY_SL_FN_MN_LN_SN_EA_STN);
 
 			sql = CustomSQLUtil.replaceKeywords(
 				sql, "lower(User_.emailAddress)", StringPool.LIKE, false,
@@ -504,25 +506,26 @@ public class SupportWorkerFinderImpl
 		String join = StringPool.BLANK;
 
 		if (key.equals("accountTier")) {
-			join = CustomSQLUtil.get(JOIN_BY_ACCOUNT_TIER);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACCOUNT_TIER);
 		}
 		else if (key.equals("component")) {
-			join = CustomSQLUtil.get(JOIN_BY_COMPONENT);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_COMPONENT);
 		}
 		else if (key.equals("severity")) {
-			join = CustomSQLUtil.get(JOIN_BY_SEVERITY);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_SEVERITY);
 		}
 		else if (key.equals("supportRegion")) {
-			join = CustomSQLUtil.get(JOIN_BY_SUPPORT_REGION);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_SUPPORT_REGION);
 		}
 		else if (key.equals("supportTeamAccountEntry")) {
-			join = CustomSQLUtil.get(JOIN_BY_SUPPORT_TEAM_ACCOUNT_ENTRY);
+			join = CustomSQLUtil.get(
+				getClass(), JOIN_BY_SUPPORT_TEAM_ACCOUNT_ENTRY);
 		}
 		else if (key.equals("supportTeamLanguage")) {
-			join = CustomSQLUtil.get(JOIN_BY_SUPPORT_TEAM_LANGUAGE);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_SUPPORT_TEAM_LANGUAGE);
 		}
 		else if (key.equals("supportTeamType")) {
-			join = CustomSQLUtil.get(JOIN_BY_SUPPORT_TEAM_TYPE);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_SUPPORT_TEAM_TYPE);
 		}
 
 		if (Validator.isNotNull(join)) {
@@ -559,34 +562,36 @@ public class SupportWorkerFinderImpl
 		String join = StringPool.BLANK;
 
 		if (key.equals("accountTier")) {
-			join = CustomSQLUtil.get(JOIN_BY_ACCOUNT_TIER);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACCOUNT_TIER);
 		}
 		else if (key.equals("component")) {
-			join = CustomSQLUtil.get(JOIN_BY_COMPONENT);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_COMPONENT);
 		}
 		else if (key.equals("locationSupportRegion")) {
-			join = CustomSQLUtil.get(JOIN_BY_LOCATION_SUPPORT_REGION);
+			join = CustomSQLUtil.get(
+				getClass(), JOIN_BY_LOCATION_SUPPORT_REGION);
 		}
 		else if (key.equals("severity")) {
-			join = CustomSQLUtil.get(JOIN_BY_SEVERITY);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_SEVERITY);
 		}
 		else if (key.equals("supportRegion")) {
-			join = CustomSQLUtil.get(JOIN_BY_SUPPORT_REGION);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_SUPPORT_REGION);
 		}
 		else if (key.equals("supportTeam")) {
-			join = CustomSQLUtil.get(JOIN_BY_SUPPORT_TEAM);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_SUPPORT_TEAM);
 		}
 		else if (key.equals("supportTeamAccountEntry")) {
-			join = CustomSQLUtil.get(JOIN_BY_SUPPORT_TEAM_ACCOUNT_ENTRY);
+			join = CustomSQLUtil.get(
+				getClass(), JOIN_BY_SUPPORT_TEAM_ACCOUNT_ENTRY);
 		}
 		else if (key.equals("supportTeamLanguage")) {
-			join = CustomSQLUtil.get(JOIN_BY_SUPPORT_TEAM_LANGUAGE);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_SUPPORT_TEAM_LANGUAGE);
 		}
 		else if (key.equals("supportTeamType")) {
-			join = CustomSQLUtil.get(JOIN_BY_SUPPORT_TEAM_TYPE);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_SUPPORT_TEAM_TYPE);
 		}
 		else if (key.equals("userId")) {
-			join = CustomSQLUtil.get(JOIN_BY_USER_ID);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_USER_ID);
 		}
 
 		if (Validator.isNotNull(join)) {

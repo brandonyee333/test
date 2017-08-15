@@ -39,10 +39,10 @@ public class RegisterTrialLicenseMessageListener extends BaseMessageListener {
 			AccountEntryLocalServiceUtil.addTrialAccountEntry(userId, 0);
 		}
 		catch (Exception e) {
-/* TODO update OSBUtil integration
+			/* TODO update OSBUtil integration
 			OSBUtil.setTrialEULA(
 				OSBConstants.COMPANY_ID, userId, new String[0]);
-*/
+			 */
 			_log.error(e, e);
 		}
 	}

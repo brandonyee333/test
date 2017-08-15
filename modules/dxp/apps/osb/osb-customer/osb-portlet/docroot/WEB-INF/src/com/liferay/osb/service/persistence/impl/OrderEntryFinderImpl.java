@@ -17,6 +17,7 @@ package com.liferay.osb.service.persistence.impl;
 import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.model.impl.OrderEntryImpl;
 import com.liferay.osb.service.persistence.OrderEntryFinder;
+import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
@@ -29,7 +30,6 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.sql.Timestamp;
 
@@ -157,7 +157,8 @@ public class OrderEntryFinderImpl
 		Timestamp actualStartDateLT_TS = CalendarUtil.getTimestamp(
 			actualStartDateLT);
 
-		String sql = CustomSQLUtil.get(COUNT_BY_U_CD_MU_MD_AE_PO_S_SD_P_ASD);
+		String sql = CustomSQLUtil.get(
+			getClass(), COUNT_BY_U_CD_MU_MD_AE_PO_S_SD_P_ASD);
 
 		sql = replaceSQL(
 			sql, createUserId, modifiedUserId, accountEntryId,
@@ -230,7 +231,8 @@ public class OrderEntryFinderImpl
 		Timestamp actualStartDateLT_TS = CalendarUtil.getTimestamp(
 			actualStartDateLT);
 
-		String sql = CustomSQLUtil.get(FIND_BY_U_CD_MU_MD_AE_PO_S_SD_P_ASD);
+		String sql = CustomSQLUtil.get(
+			getClass(), FIND_BY_U_CD_MU_MD_AE_PO_S_SD_P_ASD);
 
 		sql = replaceSQL(
 			sql, createUserId, modifiedUserId, accountEntryId,
@@ -289,7 +291,7 @@ public class OrderEntryFinderImpl
 		String join = StringPool.BLANK;
 
 		if (key.equals("productEntryId")) {
-			join = CustomSQLUtil.get(JOIN_BY_PRODUCT_ENTRY);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_PRODUCT_ENTRY);
 		}
 
 		if (Validator.isNotNull(join)) {
@@ -326,7 +328,7 @@ public class OrderEntryFinderImpl
 		String join = StringPool.BLANK;
 
 		if (key.equals("productEntryId")) {
-			join = CustomSQLUtil.get(JOIN_BY_PRODUCT_ENTRY);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_PRODUCT_ENTRY);
 		}
 
 		if (Validator.isNotNull(join)) {

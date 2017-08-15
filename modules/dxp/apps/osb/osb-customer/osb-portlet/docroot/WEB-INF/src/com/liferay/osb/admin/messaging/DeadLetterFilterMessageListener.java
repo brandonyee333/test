@@ -53,7 +53,7 @@ public class DeadLetterFilterMessageListener extends BaseMessageListener {
 			return;
 		}
 
-/* TODO update rabbitMQ integration
+		/* TODO update rabbitMQ integration
 		try {
 			RabbitMQConsumer rabbitMQConsumer =
 				new DeadLetterFilterRabbitMQConsumer(deadLetterFilterScript);
@@ -66,7 +66,7 @@ public class DeadLetterFilterMessageListener extends BaseMessageListener {
 			_log.error(e, e);
 		}
 
-*/
+		*/
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

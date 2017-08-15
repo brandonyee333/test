@@ -14,7 +14,9 @@
 		<dependency name="asm" org="org.ow2.asm" rev="4.0" />
 		<dependency name="ant" org="org.apache.ant" rev="1.8.2" />
 		<dependency name="com.liferay.ip.geocoder" org="com.liferay" rev="2.0.8" />
+		<dependency name="com.liferay.petra.content" org="com.liferay" rev="1.0.0" />
 		<dependency name="com.liferay.petra.json.web.service.client" org="com.liferay" rev="3.0.2" />
+		<dependency name="com.liferay.portal.dao.orm.custom.sql" org="com.liferay" rev="1.0.0" />
 		<dependency name="com.liferay.portal.security.audit.api" org="com.liferay" rev="2.0.1" />
 		<dependency name="commons-lang3" org="org.apache.commons" rev="3.4" />
 

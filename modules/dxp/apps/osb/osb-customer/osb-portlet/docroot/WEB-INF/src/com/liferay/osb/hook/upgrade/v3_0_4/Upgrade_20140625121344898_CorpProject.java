@@ -68,14 +68,11 @@ public class Upgrade_20140625121344898_CorpProject extends UpgradeProcess {
 			"create index IX_14940FF6 on OSB_CorpProject (organizationId)",
 			false);
 
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getConnection();
-
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"select * from OSB_CorpEntry where type_ = 0");
 
 			rs = ps.executeQuery();
@@ -84,7 +81,7 @@ public class Upgrade_20140625121344898_CorpProject extends UpgradeProcess {
 
 				// Corp project
 
-				ps = con.prepareStatement(
+				ps = connection.prepareStatement(
 					"insert into OSB_CorpProject (corpProjectId, userId, " +
 						"userName, createDate, modifiedDate, name, " +
 							"organizationId) values (?, ?, ?, ?, ?, ?, ?)");
@@ -101,7 +98,7 @@ public class Upgrade_20140625121344898_CorpProject extends UpgradeProcess {
 
 				// Organization
 
-				ps = con.prepareStatement(
+				ps = connection.prepareStatement(
 					"update Organization_ set name = ?, parentOrganizationId " +
 						"= ? where organizationId = ?");
 
@@ -167,17 +164,15 @@ public class Upgrade_20140625121344898_CorpProject extends UpgradeProcess {
 			runSQL(sb.toString());
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 
 	protected void validateCorpProject() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getConnection();
 
 			// Corp project
 
@@ -188,7 +183,7 @@ public class Upgrade_20140625121344898_CorpProject extends UpgradeProcess {
 			sb.append("OSB_CorpProject.corpProjectId where type_ = 0 ");
 			sb.append("and (corpProjectId is null or corpProjectId = 0)");
 
-			ps = con.prepareStatement(sb.toString());
+			ps = connection.prepareStatement(sb.toString());
 
 			rs = ps.executeQuery();
 
@@ -212,7 +207,7 @@ public class Upgrade_20140625121344898_CorpProject extends UpgradeProcess {
 			sb.append("ownerClassNameId = ");
 			sb.append(PortalUtil.getClassNameId(CorpEntry.class));
 
-			ps = con.prepareStatement(sb.toString());
+			ps = connection.prepareStatement(sb.toString());
 
 			rs = ps.executeQuery();
 
@@ -236,7 +231,7 @@ public class Upgrade_20140625121344898_CorpProject extends UpgradeProcess {
 			sb.append("ownerClassNameId = ");
 			sb.append(PortalUtil.getClassNameId(CorpEntry.class));
 
-			ps = con.prepareStatement(sb.toString());
+			ps = connection.prepareStatement(sb.toString());
 
 			rs = ps.executeQuery();
 
@@ -260,7 +255,7 @@ public class Upgrade_20140625121344898_CorpProject extends UpgradeProcess {
 			sb.append("ownerClassNameId = ");
 			sb.append(PortalUtil.getClassNameId(CorpEntry.class));
 
-			ps = con.prepareStatement(sb.toString());
+			ps = connection.prepareStatement(sb.toString());
 
 			rs = ps.executeQuery();
 
@@ -285,7 +280,7 @@ public class Upgrade_20140625121344898_CorpProject extends UpgradeProcess {
 			sb.append(PortalUtil.getClassNameId(CorpEntry.class));
 			sb.append("%'");
 
-			ps = con.prepareStatement(sb.toString());
+			ps = connection.prepareStatement(sb.toString());
 
 			rs = ps.executeQuery();
 
@@ -302,7 +297,7 @@ public class Upgrade_20140625121344898_CorpProject extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 

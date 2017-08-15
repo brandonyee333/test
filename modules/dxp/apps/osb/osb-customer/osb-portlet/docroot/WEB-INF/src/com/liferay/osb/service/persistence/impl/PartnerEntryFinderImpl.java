@@ -18,6 +18,7 @@ import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.model.impl.PartnerEntryImpl;
 import com.liferay.osb.service.persistence.PartnerEntryFinder;
 import com.liferay.osb.util.WorkflowConstants;
+import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
@@ -30,7 +31,6 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -122,7 +122,7 @@ public class PartnerEntryFinderImpl
 
 		codes = CustomSQLUtil.keywords(codes);
 
-		String sql = CustomSQLUtil.get(COUNT_BY_C_S);
+		String sql = CustomSQLUtil.get(getClass(), COUNT_BY_C_S);
 
 		sql = CustomSQLUtil.replaceKeywords(
 			sql, "lower(OSB_PartnerEntry.code_)", StringPool.LIKE, false,
@@ -197,7 +197,7 @@ public class PartnerEntryFinderImpl
 
 		codes = CustomSQLUtil.keywords(codes);
 
-		String sql = CustomSQLUtil.get(FIND_BY_C_S);
+		String sql = CustomSQLUtil.get(getClass(), FIND_BY_C_S);
 
 		sql = CustomSQLUtil.replaceKeywords(
 			sql, "lower(OSB_PartnerEntry.code_)", StringPool.LIKE, true, codes);
@@ -273,13 +273,14 @@ public class PartnerEntryFinderImpl
 		String join = StringPool.BLANK;
 
 		if (key.equals("managingSupport")) {
-			join = CustomSQLUtil.get(JOIN_BY_PARTNER_MANAGED_SUPPORT);
+			join = CustomSQLUtil.get(
+				getClass(), JOIN_BY_PARTNER_MANAGED_SUPPORT);
 		}
 		else if (key.equals("partnerWorker")) {
-			join = CustomSQLUtil.get(JOIN_BY_PARTNER_WORKER);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_PARTNER_WORKER);
 		}
 		else if (key.equals("supportRegionIds")) {
-			join = CustomSQLUtil.get(JOIN_BY_SUPPORT_REGION);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_SUPPORT_REGION);
 		}
 
 		if (Validator.isNotNull(join)) {
@@ -316,7 +317,7 @@ public class PartnerEntryFinderImpl
 		String join = StringPool.BLANK;
 
 		if (key.equals("childPartnerEntry")) {
-			join = CustomSQLUtil.get(JOIN_BY_CHILD_PARTNER_ENTRY);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_CHILD_PARTNER_ENTRY);
 
 			Boolean valueBoolean = (Boolean)value;
 
@@ -329,19 +330,20 @@ public class PartnerEntryFinderImpl
 			}
 		}
 		else if (key.equals("managingSupport")) {
-			join = CustomSQLUtil.get(JOIN_BY_PARTNER_MANAGED_SUPPORT);
+			join = CustomSQLUtil.get(
+				getClass(), JOIN_BY_PARTNER_MANAGED_SUPPORT);
 		}
 		else if (key.equals("partnerWorker")) {
-			join = CustomSQLUtil.get(JOIN_BY_PARTNER_WORKER);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_PARTNER_WORKER);
 		}
 		else if (key.equals("status")) {
-			join = CustomSQLUtil.get(FILTER_BY_STATUS);
+			join = CustomSQLUtil.get(getClass(), FILTER_BY_STATUS);
 
 			join = CustomSQLUtil.replaceKeywords(
 				join, "OSB_PartnerEntry.status", true, (int[])value);
 		}
 		else if (key.equals("supportRegionIds")) {
-			join = CustomSQLUtil.get(JOIN_BY_SUPPORT_REGION);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_SUPPORT_REGION);
 
 			join = CustomSQLUtil.replaceKeywords(
 				join, "OSB_PartnerEntries_SupportRegions.supportRegionId", true,

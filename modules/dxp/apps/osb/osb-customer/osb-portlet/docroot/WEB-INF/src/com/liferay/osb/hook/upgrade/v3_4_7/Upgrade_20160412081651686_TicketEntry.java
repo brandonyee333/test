@@ -54,18 +54,15 @@ public class Upgrade_20160412081651686_TicketEntry extends UpgradeProcess {
 	}
 
 	protected void updateAuditEntry() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			String sql =
 				"select * from OSB_AuditEntry where (field = ?) and " +
 					"(newValue = ?) and oldValue is not null";
 
-			ps = con.prepareStatement(sql);
+			ps = connection.prepareStatement(sql);
 
 			int field = AuditEntryConstants.FIELD_ENV_NAME;
 
@@ -111,25 +108,22 @@ public class Upgrade_20160412081651686_TicketEntry extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 
 	protected void updateTicketEntry() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			StringBundler sb = new StringBundler(3);
 
 			sb.append("select ticketEntryId, data_ from ");
 			sb.append("OSB_TicketInformation where data_ is not null and ");
 			sb.append("fieldId = ?");
 
-			ps = con.prepareStatement(sb.toString());
+			ps = connection.prepareStatement(sb.toString());
 
 			ps.setLong(1, TicketInformationConstants.FIELD_ENV_NAME);
 
@@ -143,24 +137,21 @@ public class Upgrade_20160412081651686_TicketEntry extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 
 	protected void updateTicketEntryData(long ticketEntryId, String envName)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			String sql =
 				"update OSB_TicketEntry set envName = ? where (" +
 					"ticketEntryId = ?)";
 
-			ps = con.prepareStatement(sql);
+			ps = connection.prepareStatement(sql);
 
 			ps.setString(1, envName);
 			ps.setLong(2, ticketEntryId);
@@ -168,24 +159,21 @@ public class Upgrade_20160412081651686_TicketEntry extends UpgradeProcess {
 			ps.executeUpdate();
 		}
 		finally {
-			DataAccess.cleanUp(con, ps);
+			DataAccess.cleanUp(ps);
 		}
 	}
 
 	protected void updateTicketInformation(long ticketEntryId, String data)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			String sql =
 				"update OSB_TicketInformation set data_ = ? where (" +
 					"fieldId = ?) and (ticketEntryId = ?)";
 
-			ps = con.prepareStatement(sql);
+			ps = connection.prepareStatement(sql);
 
 			ps.setString(1, data);
 			ps.setLong(2, TicketInformationConstants.FIELD_ENV_NAME);
@@ -194,7 +182,7 @@ public class Upgrade_20160412081651686_TicketEntry extends UpgradeProcess {
 			ps.executeUpdate();
 		}
 		finally {
-			DataAccess.cleanUp(con, ps);
+			DataAccess.cleanUp(ps);
 		}
 	}
 

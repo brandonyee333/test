@@ -18,6 +18,7 @@ import com.liferay.osb.model.TicketEntry;
 import com.liferay.osb.service.persistence.TicketEntryFinder;
 import com.liferay.osb.service.persistence.TicketEntryUtil;
 import com.liferay.osb.util.OSBCustomSQLUtil;
+import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.PortalCustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -33,7 +34,6 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.sql.Timestamp;
 
@@ -272,7 +272,8 @@ public class TicketEntryFinderImpl
 
 		sb.append(
 			replaceSQL(
-				CustomSQLUtil.get(COUNT_BY_U_A_S_C_S_D_T_S_S_W_E_E_C_R_C_D_C_W),
+				CustomSQLUtil.get(
+					getClass(), COUNT_BY_U_A_S_C_S_D_T_S_S_W_E_E_C_R_C_D_C_W),
 				names, accountEntryTiers, satisfiedDueDate, subjects,
 				descriptions, bodies, statuses, severities, weights,
 				escalationLevels, envOS, envDB, envJVM, envAS, envLFR,
@@ -283,6 +284,7 @@ public class TicketEntryFinderImpl
 			sb.append(
 				replaceSQL(
 					CustomSQLUtil.get(
+						getClass(),
 						COUNT_BY_U_A_S_C_S_D_T_S_S_W_E_E_C_R_C_D_C_W),
 					names, accountEntryTiers, satisfiedDueDate, subjects,
 					descriptions, bodies, statuses, severities, weights,
@@ -402,7 +404,8 @@ public class TicketEntryFinderImpl
 
 		sb.append(
 			replaceSQL(
-				CustomSQLUtil.get(FIND_BY_U_A_S_C_S_D_T_S_S_W_E_E_C_R_C_D_C_W),
+				CustomSQLUtil.get(
+					getClass(), FIND_BY_U_A_S_C_S_D_T_S_S_W_E_E_C_R_C_D_C_W),
 				names, accountEntryTiers, satisfiedDueDate, subjects,
 				descriptions, bodies, statuses, severities, weights,
 				escalationLevels, envOS, envDB, envJVM, envAS, envLFR,
@@ -413,6 +416,7 @@ public class TicketEntryFinderImpl
 			sb.append(
 				replaceSQL(
 					CustomSQLUtil.get(
+						getClass(),
 						FIND_BY_U_A_S_C_S_D_T_S_S_W_E_E_C_R_C_D_C_W),
 					names, accountEntryTiers, satisfiedDueDate, subjects,
 					descriptions, bodies, statuses, severities, weights,
@@ -503,34 +507,34 @@ public class TicketEntryFinderImpl
 		String join = StringPool.BLANK;
 
 		if (key.equals("accountCustomerUserIds")) {
-			join = CustomSQLUtil.get(JOIN_BY_ACCOUNT_CUSTOMER);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACCOUNT_CUSTOMER);
 		}
 		else if (key.equals("accountWorkers")) {
-			join = CustomSQLUtil.get(JOIN_BY_ACCOUNT_WORKER);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACCOUNT_WORKER);
 		}
 		else if (key.equals("partnerEntryIds")) {
-			join = CustomSQLUtil.get(JOIN_BY_PARTNER_ENTRY);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_PARTNER_ENTRY);
 		}
 		else if (key.equals("partnerWorkerUserIds")) {
-			join = CustomSQLUtil.get(JOIN_BY_PARTNER_WORKER);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_PARTNER_WORKER);
 		}
 		else if (key.equals("pendingTypes")) {
-			join = CustomSQLUtil.get(JOIN_BY_PENDING_TYPES);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_PENDING_TYPES);
 		}
 		else if (key.equals("primaryTicketWorker")) {
-			join = CustomSQLUtil.get(JOIN_BY_PRIMARY_TICKET_WORKER);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_PRIMARY_TICKET_WORKER);
 		}
 		else if (key.equals("productEntryIds")) {
-			join = CustomSQLUtil.get(JOIN_BY_PRODUCT_ENTRY);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_PRODUCT_ENTRY);
 		}
 		else if (key.equals("subscription")) {
-			join = CustomSQLUtil.get(JOIN_BY_SUBSCRIPTION);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_SUBSCRIPTION);
 		}
 		else if (key.equals("supportTeamIds")) {
-			join = CustomSQLUtil.get(JOIN_BY_SUPPORT_TEAM);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_SUPPORT_TEAM);
 		}
 		else if (key.equals("ticketWorkerUserIds")) {
-			join = CustomSQLUtil.get(JOIN_BY_TICKET_WORKER);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_TICKET_WORKER);
 		}
 
 		if (Validator.isNotNull(join)) {
@@ -581,7 +585,8 @@ public class TicketEntryFinderImpl
 		}
 
 		String sql = "OSB_TicketEntry.ticketEntryId IN (".concat(
-			CustomSQLUtil.get(FIND_BY_TICKET_COMMENT)).concat(") OR ");
+			CustomSQLUtil.get(
+				getClass(), FIND_BY_TICKET_COMMENT)).concat(") OR ");
 
 		String commentVisibility = StringPool.BLANK;
 
@@ -628,19 +633,19 @@ public class TicketEntryFinderImpl
 		String join = StringPool.BLANK;
 
 		if (key.equals("accountCustomerUserIds")) {
-			join = CustomSQLUtil.get(JOIN_BY_ACCOUNT_CUSTOMER);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACCOUNT_CUSTOMER);
 
 			join = CustomSQLUtil.replaceKeywords(
 				join, "OSB_AccountCustomer.userId", true, (long[])value);
 		}
 		else if (key.equals("accountEntryIds")) {
-			join = CustomSQLUtil.get(FILTER_BY_ACCOUNT_ENTRY);
+			join = CustomSQLUtil.get(getClass(), FILTER_BY_ACCOUNT_ENTRY);
 
 			join = CustomSQLUtil.replaceKeywords(
 				join, "OSB_AccountEntry.accountEntryId", true, (long[])value);
 		}
 		else if (key.equals("accountWorkers")) {
-			join = CustomSQLUtil.get(JOIN_BY_ACCOUNT_WORKER);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACCOUNT_WORKER);
 
 			long[][] valueDoubleArray = (long[][])value;
 
@@ -648,55 +653,57 @@ public class TicketEntryFinderImpl
 				join, valueDoubleArray.length);
 		}
 		else if (key.equals("accountCustomerVisibility")) {
-			join = CustomSQLUtil.get(JOIN_BY_ACCOUNT_CUSTOMER_VISIBILITY);
+			join = CustomSQLUtil.get(
+				getClass(), JOIN_BY_ACCOUNT_CUSTOMER_VISIBILITY);
 		}
 		else if (key.equals("partnerEntryIds")) {
-			join = CustomSQLUtil.get(JOIN_BY_PARTNER_ENTRY);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_PARTNER_ENTRY);
 
 			join = CustomSQLUtil.replaceKeywords(
 				join, "OSB_PartnerWorker.partnerEntryId", true, (long[])value);
 		}
 		else if (key.equals("partnerWorkerUserIds")) {
-			join = CustomSQLUtil.get(JOIN_BY_PARTNER_WORKER);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_PARTNER_WORKER);
 
 			join = CustomSQLUtil.replaceKeywords(
 				join, "OSB_PartnerWorker.userId", true, (long[])value);
 		}
 		else if (key.equals("partnerWorkerVisibility")) {
-			join = CustomSQLUtil.get(JOIN_BY_PARTNER_WORKER_VISIBILITY);
+			join = CustomSQLUtil.get(
+				getClass(), JOIN_BY_PARTNER_WORKER_VISIBILITY);
 		}
 		else if (key.equals("pendingTypes")) {
-			join = CustomSQLUtil.get(JOIN_BY_PENDING_TYPES);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_PENDING_TYPES);
 
 			join = CustomSQLUtil.replaceKeywords(
 				join, "OSB_TicketFlag.type_", true, (int[])value);
 		}
 		else if (key.equals("primaryTicketWorker")) {
-			join = CustomSQLUtil.get(JOIN_BY_PRIMARY_TICKET_WORKER);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_PRIMARY_TICKET_WORKER);
 		}
 		else if (key.equals("productEntryIds")) {
-			join = CustomSQLUtil.get(JOIN_BY_PRODUCT_ENTRY);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_PRODUCT_ENTRY);
 
 			join = CustomSQLUtil.replaceKeywords(
 				join, "OSB_TicketEntry.productEntryId", true, (long[])value);
 		}
 		else if (key.equals("subscription")) {
-			join = CustomSQLUtil.get(JOIN_BY_SUBSCRIPTION);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_SUBSCRIPTION);
 		}
 		else if (key.equals("supportTeamIds")) {
-			join = CustomSQLUtil.get(JOIN_BY_SUPPORT_TEAM);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_SUPPORT_TEAM);
 
 			join = CustomSQLUtil.replaceKeywords(
 				join, "OSB_SupportWorker.supportTeamId", true, (long[])value);
 		}
 		else if (key.equals("ticketWorkerUserIds")) {
-			join = CustomSQLUtil.get(JOIN_BY_TICKET_WORKER);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_TICKET_WORKER);
 
 			join = CustomSQLUtil.replaceKeywords(
 				join, "OSB_TicketWorker.userId", true, (long[])value);
 		}
 		else if (key.equals("ticketWorkerCount")) {
-			join = CustomSQLUtil.get(JOIN_BY_TICKET_WORKER_COUNT);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_TICKET_WORKER_COUNT);
 		}
 
 		if (Validator.isNotNull(join)) {

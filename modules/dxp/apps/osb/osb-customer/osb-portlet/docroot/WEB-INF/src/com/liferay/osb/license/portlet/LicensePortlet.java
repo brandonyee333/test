@@ -651,6 +651,7 @@ public class LicensePortlet extends MVCPortlet {
 		LicenseKey licenseKey = licenseKeys.get(0);
 
 		String fileName = LicenseUtil.getLicenseKeyFileName(licenseKey);
+
 		String licenseXML = LicenseUtil.exportToXML(licenseKeySet);
 
 		PortletResponseUtil.sendFile(

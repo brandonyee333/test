@@ -51,11 +51,13 @@ public class Upgrade_20140818160702396_DeveloperEntry extends UpgradeProcess {
 
 		runSQL(
 			"create index IX_4256345C on OSB_DeveloperEntry " +
-				"(domainName, domainStatus)", false);
+				"(domainName, domainStatus)",
+			false);
 
 		runSQL(
 			"update OSB_DeveloperEntry set domainStatus = " +
-				WorkflowConstants.STATUS_EXPIRED, false);
+				WorkflowConstants.STATUS_EXPIRED,
+			false);
 	}
 
 	 */

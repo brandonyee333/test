@@ -48,13 +48,10 @@ public class Upgrade_20160829100938737_OfferingEntry extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getConnection();
-
 			StringBundler sb = new StringBundler(7);
 
 			sb.append("select orderEntryId, offeringEntryId, expirationDate, ");
@@ -65,15 +62,15 @@ public class Upgrade_20160829100938737_OfferingEntry extends UpgradeProcess {
 			sb.append("OSB_AccountEntry.type_ = 4 group by ");
 			sb.append("OSB_LicenseKey.accountEntryId");
 
-			ps = con.prepareStatement(sb.toString());
+			ps = connection.prepareStatement(sb.toString());
 
 			rs = ps.executeQuery();
 
 			while (rs.next()) {
 				long orderEntryId = rs.getLong("orderEntryId");
 				long offeringEntryId = rs.getLong("offeringEntryId");
-				Date expirationDate = rs.getDate("expirationDate");
-				Date createDate = rs.getDate("createDate");
+				Timestamp expirationDate = rs.getTimestamp("expirationDate");
+				Timestamp createDate = rs.getTimestamp("createDate");
 
 				OrderEntry orderEntry =
 					OrderEntryLocalServiceUtil.getOrderEntry(orderEntryId);
@@ -93,7 +90,7 @@ public class Upgrade_20160829100938737_OfferingEntry extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 

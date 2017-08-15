@@ -29,7 +29,9 @@ import javax.portlet.PortletURL;
  */
 public class AccountEntrySearch extends SearchContainer<AccountEntry> {
 
-	static List<String> headerNames = new ArrayList<>();
+	public static final String EMPTY_RESULTS_MESSAGE = "no-projects-were-found";
+
+	public static List<String> headerNames = new ArrayList<>();
 
 	static {
 		headerNames.add("name");
@@ -37,8 +39,6 @@ public class AccountEntrySearch extends SearchContainer<AccountEntry> {
 		headerNames.add("partner");
 		headerNames.add("support-end-date");
 	}
-
-	public static final String EMPTY_RESULTS_MESSAGE = "no-projects-were-found";
 
 	public AccountEntrySearch(
 		PortletRequest portletRequest, PortletURL iteratorURL) {

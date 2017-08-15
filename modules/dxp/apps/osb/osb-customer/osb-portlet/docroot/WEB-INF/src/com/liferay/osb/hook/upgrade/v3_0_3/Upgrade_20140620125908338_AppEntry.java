@@ -57,14 +57,11 @@ public class Upgrade_20140620125908338_AppEntry extends UpgradeProcess {
 			}
 		}
 
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getConnection();
-
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"select count(*) from OSB_AppEntry where " +
 					"developerEntryId is null or developerEntryId = 0");
 
@@ -82,7 +79,7 @@ public class Upgrade_20140620125908338_AppEntry extends UpgradeProcess {
 						" app entries");
 			}
 
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"select count(*) from OSB_AppVersion where " +
 					"developerEntryId is null or developerEntryId = 0");
 
@@ -101,7 +98,7 @@ public class Upgrade_20140620125908338_AppEntry extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 

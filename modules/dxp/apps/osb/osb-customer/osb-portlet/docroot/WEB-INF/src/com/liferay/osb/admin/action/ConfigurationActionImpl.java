@@ -382,6 +382,7 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 					actionRequest, "emailFromName");
 
 				preferences.setValue("emailFromName", emailFromName);
+
 				preferences.setValue("emailFromAddress", emailFromAddress);
 
 				preferences.store();

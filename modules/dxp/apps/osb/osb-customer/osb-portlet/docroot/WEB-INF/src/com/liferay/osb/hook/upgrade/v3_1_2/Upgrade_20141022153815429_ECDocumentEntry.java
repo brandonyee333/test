@@ -127,14 +127,11 @@ public class Upgrade_20141022153815429_ECDocumentEntry extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getConnection();
-
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"select ecDocumentEntryId from ECommerce_ECDocumentEntry " +
 					"where status = 1");
 
@@ -147,7 +144,7 @@ public class Upgrade_20141022153815429_ECDocumentEntry extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 

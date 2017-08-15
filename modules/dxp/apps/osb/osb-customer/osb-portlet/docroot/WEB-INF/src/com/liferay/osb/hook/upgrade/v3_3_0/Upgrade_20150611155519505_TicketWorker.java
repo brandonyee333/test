@@ -49,14 +49,11 @@ public class Upgrade_20150611155519505_TicketWorker extends UpgradeProcess {
 	}
 
 	protected void updateTicketWorker() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"select * from " + TicketWorkerImpl.TABLE_NAME +
 					" where role = 4");
 
@@ -77,7 +74,7 @@ public class Upgrade_20150611155519505_TicketWorker extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 

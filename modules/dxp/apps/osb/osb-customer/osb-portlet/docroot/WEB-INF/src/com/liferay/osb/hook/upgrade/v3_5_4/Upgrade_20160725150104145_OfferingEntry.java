@@ -42,7 +42,6 @@ public class Upgrade_20160725150104145_OfferingEntry extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -58,9 +57,7 @@ public class Upgrade_20160725150104145_OfferingEntry extends UpgradeProcess {
 		sb.append("OSB_OfferingEntry.version = 0");
 
 		try {
-			con = DataAccess.getConnection();
-
-			ps = con.prepareStatement(sb.toString());
+			ps = connection.prepareStatement(sb.toString());
 
 			rs = ps.executeQuery();
 
@@ -74,7 +71,7 @@ public class Upgrade_20160725150104145_OfferingEntry extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 

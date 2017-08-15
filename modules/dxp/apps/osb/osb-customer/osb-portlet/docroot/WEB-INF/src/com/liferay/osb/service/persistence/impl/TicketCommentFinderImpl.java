@@ -15,12 +15,12 @@
 package com.liferay.osb.service.persistence.impl;
 
 import com.liferay.osb.service.persistence.TicketCommentFinder;
+import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.Type;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.util.Iterator;
 
@@ -37,7 +37,7 @@ public class TicketCommentFinderImpl
 		long ticketEntryId, int visibility, int[] statuses,
 		long[] organizationIds) {
 
-		String sql = CustomSQLUtil.get(COUNT_BY_TEI_V_S_O);
+		String sql = CustomSQLUtil.get(getClass(), COUNT_BY_TEI_V_S_O);
 
 		sql = CustomSQLUtil.replaceKeywords(
 			sql, "OSB_TicketComment.status", true, statuses);

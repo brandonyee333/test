@@ -45,14 +45,11 @@ public class Upgrade_20141218102834000_AssetReceiptLicense
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getConnection();
-
-			ps = con.prepareStatement(
+			ps = connection.prepareStatement(
 				"select * from OSB_AssetReceiptLicense where " +
 					"productClassNameId = 0");
 
@@ -81,7 +78,7 @@ public class Upgrade_20141218102834000_AssetReceiptLicense
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 

@@ -182,7 +182,6 @@ public class Upgrade_20160930103105564_ProductEntry extends UpgradeProcess {
 	}
 
 	protected void logStaleTicketEntries() throws SQLException {
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -208,9 +207,7 @@ public class Upgrade_20160930103105564_ProductEntry extends UpgradeProcess {
 		sb.append(_deProductionProductEntryId);
 
 		try {
-			con = DataAccess.getConnection();
-
-			ps = con.prepareStatement(sb.toString());
+			ps = connection.prepareStatement(sb.toString());
 
 			rs = ps.executeQuery();
 
@@ -223,7 +220,7 @@ public class Upgrade_20160930103105564_ProductEntry extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 
@@ -269,7 +266,6 @@ public class Upgrade_20160930103105564_ProductEntry extends UpgradeProcess {
 			int version7)
 		throws Exception {
 
-		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -293,9 +289,7 @@ public class Upgrade_20160930103105564_ProductEntry extends UpgradeProcess {
 		sb.append(")");
 
 		try {
-			con = DataAccess.getConnection();
-
-			ps = con.prepareStatement(sb.toString());
+			ps = connection.prepareStatement(sb.toString());
 
 			ps.setInt(1, 22998);
 
@@ -344,7 +338,7 @@ public class Upgrade_20160930103105564_ProductEntry extends UpgradeProcess {
 			}
 		}
 		finally {
-			DataAccess.cleanUp(con, ps, rs);
+			DataAccess.cleanUp(ps, rs);
 		}
 	}
 

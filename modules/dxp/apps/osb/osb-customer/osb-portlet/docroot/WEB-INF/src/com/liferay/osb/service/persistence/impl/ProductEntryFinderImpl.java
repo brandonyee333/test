@@ -17,6 +17,7 @@ package com.liferay.osb.service.persistence.impl;
 import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.impl.ProductEntryImpl;
 import com.liferay.osb.service.persistence.ProductEntryFinder;
+import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
@@ -27,7 +28,6 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -58,7 +58,7 @@ public class ProductEntryFinderImpl
 		try {
 			session = openSession();
 
-			String sql = CustomSQLUtil.get(COUNT_BY_NAME);
+			String sql = CustomSQLUtil.get(getClass(), COUNT_BY_NAME);
 
 			sql = StringUtil.replace(sql, "[$JOIN$]", getJoin(params));
 			sql = StringUtil.replace(sql, "[$WHERE$]", getWhere(params));
@@ -102,7 +102,7 @@ public class ProductEntryFinderImpl
 		try {
 			session = openSession();
 
-			String sql = CustomSQLUtil.get(FIND_BY_ACCOUNT_ENTRY);
+			String sql = CustomSQLUtil.get(getClass(), FIND_BY_ACCOUNT_ENTRY);
 
 			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
@@ -131,7 +131,7 @@ public class ProductEntryFinderImpl
 		try {
 			session = openSession();
 
-			String sql = CustomSQLUtil.get(FIND_BY_NAME);
+			String sql = CustomSQLUtil.get(getClass(), FIND_BY_NAME);
 
 			sql = StringUtil.replace(sql, "[$JOIN$]", getJoin(params));
 			sql = StringUtil.replace(sql, "[$WHERE$]", getWhere(params));
@@ -181,7 +181,8 @@ public class ProductEntryFinderImpl
 		String join = StringPool.BLANK;
 
 		if (key.equals("licenseOfferingEntries")) {
-			join = CustomSQLUtil.get(FILTER_BY_LICENSE_OFFERING_ENTRIES);
+			join = CustomSQLUtil.get(
+				getClass(), FILTER_BY_LICENSE_OFFERING_ENTRIES);
 		}
 
 		if (Validator.isNotNull(join)) {
@@ -218,7 +219,8 @@ public class ProductEntryFinderImpl
 		String join = StringPool.BLANK;
 
 		if (key.equals("licenseOfferingEntries")) {
-			join = CustomSQLUtil.get(FILTER_BY_LICENSE_OFFERING_ENTRIES);
+			join = CustomSQLUtil.get(
+				getClass(), FILTER_BY_LICENSE_OFFERING_ENTRIES);
 		}
 
 		if (Validator.isNotNull(join)) {

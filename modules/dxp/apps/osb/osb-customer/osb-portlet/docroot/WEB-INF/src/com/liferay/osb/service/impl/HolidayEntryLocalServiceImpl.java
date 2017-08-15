@@ -120,7 +120,7 @@ public class HolidayEntryLocalServiceImpl
 		long userId, Date startDate, Date endDate, TimeZone timeZone) {
 
 		if (startDate.after(endDate)) {
-			return Collections.EMPTY_LIST;
+			return Collections.emptyList();
 		}
 
 		Calendar startCal = Calendar.getInstance();
