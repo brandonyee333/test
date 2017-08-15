@@ -189,7 +189,7 @@
 									<c:when test="<%= curAuditEntry.getI18n() %>">
 										<liferay-ui:message key="<%= HtmlUtil.escape(oldLabel) %>" />
 									</c:when>
-									<c:when test="<%= curAuditEntry.getField() == AuditEntryConstants.FIELD_DESCRIPTION || (curAuditEntry.getField() == AuditEntryConstants.FIELD_REPRODUCTION_STEPS) %>">
+									<c:when test="<%= (curAuditEntry.getField() == AuditEntryConstants.FIELD_DESCRIPTION) || (curAuditEntry.getField() == AuditEntryConstants.FIELD_REPRODUCTION_STEPS) %>">
 										<pre><%= SupportUtil.getHTML(oldLabel) %></pre>
 									</c:when>
 									<c:when test="<%= (curAuditEntry.getField() == AuditEntryConstants.FIELD_ENV_BROWSER) || (curAuditEntry.getField() == AuditEntryConstants.FIELD_ENV_OS) %>">
@@ -224,7 +224,7 @@
 
 										<liferay-ui:message key="<%= TicketEntryConstants.getUploadMethodLabel(oldValue) %>" />
 
-										<c:if test="<%= (oldValue == TicketEntryConstants.UPLOAD_METHOD_FTP) && (Validator.isNotNull(curAuditEntry.getOldLabel())) %>">
+										<c:if test="<%= (oldValue == TicketEntryConstants.UPLOAD_METHOD_FTP) && Validator.isNotNull(curAuditEntry.getOldLabel()) %>">
 											- <%= HtmlUtil.escape(curAuditEntry.getOldLabel()) %>
 										</c:if>
 									</c:when>
@@ -279,7 +279,7 @@
 
 										<liferay-ui:message key="<%= TicketEntryConstants.getUploadMethodLabel(newValue) %>" />
 
-										<c:if test="<%= (newValue == TicketEntryConstants.UPLOAD_METHOD_FTP) && (Validator.isNotNull(curAuditEntry.getNewLabel())) %>">
+										<c:if test="<%= (newValue == TicketEntryConstants.UPLOAD_METHOD_FTP) && Validator.isNotNull(curAuditEntry.getNewLabel()) %>">
 											- <%= HtmlUtil.escape(curAuditEntry.getNewLabel()) %>
 										</c:if>
 									</c:when>

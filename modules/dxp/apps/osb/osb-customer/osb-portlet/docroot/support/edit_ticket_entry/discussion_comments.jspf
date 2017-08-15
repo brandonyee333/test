@@ -200,7 +200,7 @@ boolean hasMarkAsSolutionPermission = OSBTicketCommentPermission.contains(permis
 						<%
 						String cssClass = "comment-expanded";
 
-						if ((ticketEntryDiscussions.size() > 20) && (orderByAsc && (i <= (ticketEntryDiscussions.size() - 5)) || (!orderByAsc && (i > 5))) && (ticketComment.getTicketCommentId() != discussionId)) {
+						if ((ticketEntryDiscussions.size() > 20) && ((orderByAsc && (i <= (ticketEntryDiscussions.size() - 5))) || (!orderByAsc && (i > 5))) && (ticketComment.getTicketCommentId() != discussionId)) {
 							cssClass = "comment-collapsed";
 						}
 						%>

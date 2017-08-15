@@ -222,7 +222,7 @@ if (!closed) {
 		dropDownList.put("close-ticket", "window.open('" + buttonURL.toString() + "', 'solutionDetailsWindow', '" + _POP_UP_WINDOW_PARAMETERS + "').focus();");
 	}
 }
-else if (hasUpdateBasic && accountCustomer && ((status == TicketEntryConstants.STATUS_CLOSED) && (resolution == TicketEntryConstants.RESOLUTION_PENDING_CUSTOMER))) {
+else if (hasUpdateBasic && accountCustomer && (status == TicketEntryConstants.STATUS_CLOSED) && (resolution == TicketEntryConstants.RESOLUTION_PENDING_CUSTOMER)) {
 	PortletURL buttonURL = renderResponse.createActionURL();
 
 	buttonURL.setParameter(ActionRequest.ACTION_NAME, "reopenTicketEntry");

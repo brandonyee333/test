@@ -187,8 +187,8 @@ List<AccountCustomer> accountCustomers = accountEntry.getAccountCustomers();
 
 						String key = offeringEntryGroup.getKey();
 
-						key = StringUtil.replace(key, StringPool.COMMA, StringPool.UNDERLINE);
-						key = StringUtil.replace(key, StringPool.EQUAL, StringPool.UNDERLINE);
+						key = StringUtil.replace(key, CharPool.COMMA, CharPool.UNDERLINE);
+						key = StringUtil.replace(key, CharPool.EQUAL, CharPool.UNDERLINE);
 						%>
 
 						<c:choose>

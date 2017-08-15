@@ -127,7 +127,7 @@ boolean hasMarkAsSolutionPermission = OSBTicketCommentPermission.contains(permis
 
 			String cssClass = "comment-expanded";
 
-			if ((ticketEntryDiscussions.size() > 20) && (orderByAsc && (i <= (ticketEntryDiscussions.size() - 5)) || (!orderByAsc && (i > 5))) && (discussionId != ticketEntryDiscussion.getDiscussionId())) {
+			if ((ticketEntryDiscussions.size() > 20) && ((orderByAsc && (i <= (ticketEntryDiscussions.size() - 5))) || (!orderByAsc && (i > 5))) && (discussionId != ticketEntryDiscussion.getDiscussionId())) {
 				cssClass = "comment-collapsed";
 			}
 			else if (discussionId == ticketEntryDiscussion.getDiscussionId()) {
@@ -363,7 +363,7 @@ boolean hasMarkAsSolutionPermission = OSBTicketCommentPermission.contains(permis
 								cssClass += " visibility-" + ticketEntryDiscussion.getVisibilityLabel();
 							}
 
-							if (discussionTab.equals("public") && ((ticketComment != null) && (ticketComment.getType() == TicketCommentConstants.TYPE_SOLUTION))) {
+							if (discussionTab.equals("public") && (ticketComment != null) && (ticketComment.getType() == TicketCommentConstants.TYPE_SOLUTION)) {
 								cssClass += " type-solution";
 							}
 							%>

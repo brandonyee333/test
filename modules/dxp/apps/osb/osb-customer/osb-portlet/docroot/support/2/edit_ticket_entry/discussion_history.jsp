@@ -215,7 +215,7 @@ else {
 											<c:when test="<%= curAuditEntry.getI18n() %>">
 												<liferay-ui:message key="<%= HtmlUtil.escape(oldLabel) %>" />
 											</c:when>
-											<c:when test="<%= curAuditEntry.getField() == AuditEntryConstants.FIELD_DESCRIPTION || (curAuditEntry.getField() == AuditEntryConstants.FIELD_REPRODUCTION_STEPS) %>">
+											<c:when test="<%= (curAuditEntry.getField() == AuditEntryConstants.FIELD_DESCRIPTION) || (curAuditEntry.getField() == AuditEntryConstants.FIELD_REPRODUCTION_STEPS) %>">
 												<pre><%= SupportUtil.getHTML(oldLabel) %></pre>
 											</c:when>
 											<c:when test="<%= (curAuditEntry.getField() == AuditEntryConstants.FIELD_ENV_BROWSER) || (curAuditEntry.getField() == AuditEntryConstants.FIELD_ENV_OS) %>">
