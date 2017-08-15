@@ -65,23 +65,23 @@ else {
 
 				<strong><%= HtmlUtil.escape(accountEntry.getName()) %></strong>
 
-				<input id="<portlet:namespace />accountEntryId" name="<portlet:namespace />accountEntryId" type="hidden" value="<%= accountEntry.getAccountEntryId() %>" />
+				<aui:input id="accountEntryId" name="accountEntryId" type="hidden" value="<%= accountEntry.getAccountEntryId() %>" />
 			</c:when>
 			<c:otherwise>
-				<select id="<portlet:namespace />accountEntryId" name="<portlet:namespace />accountEntryId" onChange="<portlet:namespace />updateForm();">
-					<option value=""></option>
+				<aui:select id="accountEntryId" name="accountEntryId" onChange="<portlet:namespace />updateForm();">
+					<aui:option value="" />
 
 					<%
 					for (AccountEntry curAccountEntry : accountEntries) {
 					%>
 
-						<option <%= ((accountEntry != null) && (curAccountEntry.getAccountEntryId() == accountEntry.getAccountEntryId())) ? "selected" : "" %> value="<%= curAccountEntry.getAccountEntryId() %>"><%= HtmlUtil.escape(curAccountEntry.getName()) %></option>
+						<aui:option label="<%= HtmlUtil.escape(curAccountEntry.getName()) %>" selected="<%= (accountEntry != null) && (curAccountEntry.getAccountEntryId() == accountEntry.getAccountEntryId()) %>" value="<%= curAccountEntry.getAccountEntryId() %>" />
 
 					<%
 					}
 					%>
 
-				</select>
+				</aui:select>
 			</c:otherwise>
 		</c:choose>
 
@@ -104,7 +104,7 @@ else {
 						%>
 
 						<div class="create-env-button">
-							<input class="aui-button-input fr" onClick="<portlet:namespace />openDialog('<liferay-ui:message key="create-environment-configuration" />', '<%= addAccountEnvironmentURL.toString() %>', '<portlet:namespace />updateAccountEnvironment')" type="button" value="<liferay-ui:message key="create-environment" />" />
+							<aui:button cssClass="aui-button-input fr" onClick="<portlet:namespace />openDialog('<liferay-ui:message key="create-environment-configuration" />', '<%= addAccountEnvironmentURL.toString() %>', '<portlet:namespace />updateAccountEnvironment')" value="create-environment" />
 						</div>
 					</c:if>
 
@@ -121,7 +121,7 @@ else {
 
 						<c:if test="<%= !prevDisplayName.equals(productEntry.getLESADisplayName()) && !prevDisplayName.equals(StringPool.BLANK) && !environments %>">
 							<div class="portlet-msg-info">
-								<span><liferay-ui:message key="there-are-no-saved-environment-configurations-for-this-product" /></span>
+								<liferay-ui:message key="there-are-no-saved-environment-configurations-for-this-product" />
 							</div>
 						</c:if>
 
@@ -171,7 +171,7 @@ else {
 													<portlet:param name="accountEnvironmentId" value="<%= String.valueOf(accountEnvironment.getAccountEnvironmentId()) %>" />
 												</portlet:actionURL>
 
-												<input class="aui-button-input fl" onClick="<portlet:namespace />deleteEnvironment('<%= deleteAccountEnvironmentURL.toString() %>', '<%= accountEnvironment.getName() %>');" type="button" value="<liferay-ui:message key="delete" />" />
+												<aui:button cssClass="aui-button-input fl" onClick="<portlet:namespace />deleteEnvironment('<%= deleteAccountEnvironmentURL.toString() %>', '<%= accountEnvironment.getName() %>');" value="delete" />
 											</c:if>
 
 											<c:if test="<%= OSBAccountEnvironmentPermission.contains(permissionChecker, accountEntry.getAccountEntryId(), OSBActionKeys.UPDATE) %>">
@@ -185,7 +185,7 @@ else {
 												editAccountEnvironmentURL.setWindowState(LiferayWindowState.POP_UP);
 												%>
 
-												<input class="aui-button-input fr" onClick="<portlet:namespace />openDialog('<liferay-ui:message key="edit-environment-configuration" />', '<%= editAccountEnvironmentURL.toString() %>', '<portlet:namespace />updateAccountEnvironment')" type="button" value="<liferay-ui:message key="edit" />" />
+												<aui:button cssClass="aui-button-input fr" onClick="<portlet:namespace />openDialog('<liferay-ui:message key="edit-environment-configuration" />', '<%= editAccountEnvironmentURL.toString() %>', '<portlet:namespace />updateAccountEnvironment')" value="edit" />
 											</c:if>
 										</div>
 									</div>
@@ -204,7 +204,7 @@ else {
 
 					<c:if test="<%= !environments && !productEntries.isEmpty() %>">
 						<div class="portlet-msg-info">
-							<span><liferay-ui:message key="there-are-no-saved-environment-configurations-for-this-product" /></span>
+							<liferay-ui:message key="there-are-no-saved-environment-configurations-for-this-product" />
 						</div>
 					</c:if>
 				</c:if>

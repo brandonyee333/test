@@ -21,7 +21,7 @@ List<SupportTeam> supportTeams = SupportTeamLocalServiceUtil.getUserRoleSupportT
 %>
 
 <c:if test="<%= !supportTeams.isEmpty() %>">
-	<div class="aui-helper-clearfix aui-w100 manager-dashboard">
+	<div class="aui-w100 clearfix manager-dashboard">
 		<table class="lfr-table">
 			<tr>
 
