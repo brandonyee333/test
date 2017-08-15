@@ -85,21 +85,22 @@ if (liferayIncOrg) {
 
 	<aui:script use="aui-base">
 		var threeDotIcon = AUI().one('#<portlet:namespace />threeDotIcon');
-
 		var threeDotMenu = AUI().one('#<portlet:namespace />threeDotMenu');
 
-		threeDotIcon.on(
-			'click',
-			function() {
-				threeDotMenu.toggleClass('open-drop-down');
-			}
-		);
+		if (threeDotIcon && threeDotMenu) {
+			threeDotIcon.on(
+				'click',
+				function() {
+					threeDotMenu.toggleClass('open-drop-down');
+				}
+			);
 
-		threeDotIcon.on(
-			'clickoutside',
-			function() {
-				threeDotMenu.removeClass('open-drop-down');
-			}
-		);
+			threeDotIcon.on(
+				'clickoutside',
+				function() {
+					threeDotMenu.removeClass('open-drop-down');
+				}
+			);
+		}
 	</aui:script>
 </c:if>

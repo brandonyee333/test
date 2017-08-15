@@ -275,8 +275,6 @@ List<AccountEntry> accountEntries = partnerEntry.getAccountEntries();
 
 				A.all('.details .tabs span').removeClass('selected');
 
-				var tab = A.one('.details .tabs #<portlet:namespace />' + id);
-
 				tab.addClass('selected');
 			}
 			else {
