@@ -14,9 +14,6 @@
 
 package com.liferay.osb.hook.upgrade;
 
-import com.liferay.osb.hook.upgrade.v2_4_6.UpgradeDeveloperEntry;
-import com.liferay.osb.hook.upgrade.v2_4_6.UpgradeECDocumentItem;
-import com.liferay.osb.hook.upgrade.v2_4_6.UpgradeExpando;
 import com.liferay.osb.hook.upgrade.v2_4_6.UpgradeListType;
 import com.liferay.osb.hook.upgrade.v2_4_6.UpgradeTicketComment;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
@@ -35,9 +32,6 @@ public class UpgradeProcess_2_4_6 extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		upgrade(UpgradeDeveloperEntry.class);
-		upgrade(UpgradeECDocumentItem.class);
-		upgrade(UpgradeExpando.class);
 		upgrade(UpgradeListType.class);
 		upgrade(UpgradeTicketComment.class);
 	}

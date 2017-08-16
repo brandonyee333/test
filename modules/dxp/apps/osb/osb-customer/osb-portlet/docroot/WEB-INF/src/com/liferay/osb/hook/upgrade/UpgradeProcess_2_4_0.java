@@ -15,10 +15,6 @@
 package com.liferay.osb.hook.upgrade;
 
 import com.liferay.osb.hook.upgrade.v2_4_0.UpgradeExternalIdMapper;
-import com.liferay.osb.hook.upgrade.v2_4_0.UpgradeTrainingCertificate;
-import com.liferay.osb.hook.upgrade.v2_4_0.UpgradeTrainingCustomer;
-import com.liferay.osb.hook.upgrade.v2_4_0.UpgradeUserProfile;
-import com.liferay.osb.hook.upgrade.v2_4_0.UpgradeUserProfileHistory;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
 /**
@@ -34,10 +30,6 @@ public class UpgradeProcess_2_4_0 extends UpgradeProcess {
 	@Override
 	protected void doUpgrade() throws Exception {
 		upgrade(UpgradeExternalIdMapper.class);
-		upgrade(UpgradeUserProfile.class);
-		upgrade(UpgradeUserProfileHistory.class);
-		upgrade(UpgradeTrainingCustomer.class);
-		upgrade(UpgradeTrainingCertificate.class);
 	}
 
 }

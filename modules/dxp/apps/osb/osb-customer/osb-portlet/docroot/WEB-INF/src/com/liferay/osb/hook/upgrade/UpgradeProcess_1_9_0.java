@@ -15,9 +15,6 @@
 package com.liferay.osb.hook.upgrade;
 
 import com.liferay.osb.hook.upgrade.v1_9_0.UpgradeAccountEntry;
-import com.liferay.osb.hook.upgrade.v1_9_0.UpgradeAppEntry;
-import com.liferay.osb.hook.upgrade.v1_9_0.UpgradeAppPricing;
-import com.liferay.osb.hook.upgrade.v1_9_0.UpgradeAppVersion;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
 /**
@@ -34,9 +31,6 @@ public class UpgradeProcess_1_9_0 extends UpgradeProcess {
 	@Override
 	protected void doUpgrade() throws Exception {
 		upgrade(UpgradeAccountEntry.class);
-		upgrade(UpgradeAppEntry.class);
-		upgrade(UpgradeAppPricing.class);
-		upgrade(UpgradeAppVersion.class);
 	}
 
 }

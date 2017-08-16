@@ -15,11 +15,6 @@
 package com.liferay.osb.hook.upgrade;
 
 import com.liferay.osb.hook.upgrade.v2_1_0.UpgradeTicketAttachment;
-import com.liferay.osb.hook.upgrade.v2_1_0.UpgradeTrainingCertificate;
-import com.liferay.osb.hook.upgrade.v2_1_0.UpgradeTrainingCertificateTemplate;
-import com.liferay.osb.hook.upgrade.v2_1_0.UpgradeTrainingCustomer;
-import com.liferay.osb.hook.upgrade.v2_1_0.UpgradeTrainingExamResult;
-import com.liferay.osb.hook.upgrade.v2_1_0.UpgradeTrainingWorker;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
 /**
@@ -36,11 +31,6 @@ public class UpgradeProcess_2_1_0 extends UpgradeProcess {
 	@Override
 	protected void doUpgrade() throws Exception {
 		upgrade(UpgradeTicketAttachment.class);
-		upgrade(UpgradeTrainingCustomer.class);
-		upgrade(UpgradeTrainingCertificate.class);
-		upgrade(UpgradeTrainingCertificateTemplate.class);
-		upgrade(UpgradeTrainingExamResult.class);
-		upgrade(UpgradeTrainingWorker.class);
 	}
 
 }

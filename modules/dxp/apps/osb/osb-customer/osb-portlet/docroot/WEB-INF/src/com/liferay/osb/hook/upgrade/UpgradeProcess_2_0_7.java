@@ -15,11 +15,6 @@
 package com.liferay.osb.hook.upgrade;
 
 import com.liferay.osb.hook.upgrade.v2_0_7.UpgradeAccountEntry;
-import com.liferay.osb.hook.upgrade.v2_0_7.UpgradeTrainingCustomer;
-import com.liferay.osb.hook.upgrade.v2_0_7.UpgradeTrainingExam;
-import com.liferay.osb.hook.upgrade.v2_0_7.UpgradeTrainingExamResult;
-import com.liferay.osb.hook.upgrade.v2_0_7.UpgradeTrainingExamResultItem;
-import com.liferay.osb.hook.upgrade.v2_0_7.UpgradeTrainingExamResultSection;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
 /**
@@ -35,11 +30,6 @@ public class UpgradeProcess_2_0_7 extends UpgradeProcess {
 	@Override
 	protected void doUpgrade() throws Exception {
 		upgrade(UpgradeAccountEntry.class);
-		upgrade(UpgradeTrainingCustomer.class);
-		upgrade(UpgradeTrainingExam.class);
-		upgrade(UpgradeTrainingExamResult.class);
-		upgrade(UpgradeTrainingExamResultItem.class);
-		upgrade(UpgradeTrainingExamResultSection.class);
 	}
 
 }

@@ -14,7 +14,6 @@
 
 package com.liferay.osb.hook.upgrade;
 
-import com.liferay.osb.hook.upgrade.v2_2_3.UpgradeMarketingEvent;
 import com.liferay.osb.hook.upgrade.v2_2_3.UpgradeSearchFilter;
 import com.liferay.osb.hook.upgrade.v2_2_3.UpgradeSupportWorker;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
@@ -32,7 +31,6 @@ public class UpgradeProcess_2_2_3 extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		upgrade(UpgradeMarketingEvent.class);
 		upgrade(UpgradeSearchFilter.class);
 		upgrade(UpgradeSupportWorker.class);
 	}
