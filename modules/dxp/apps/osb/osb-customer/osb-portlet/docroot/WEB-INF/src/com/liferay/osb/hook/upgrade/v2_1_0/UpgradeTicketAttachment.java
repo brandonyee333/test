@@ -28,9 +28,8 @@ public class UpgradeTicketAttachment extends UpgradeProcess {
 
 	protected void updateTicketAttachment() throws Exception {
 		runSQL(
-			"update OSB_TicketAttachment set type_ = 1 " +
-				"where (createDate < '2013-08-19 02:52:46') and " +
-					"(fileName like 'liferay-hotfix%')");
+			"update OSB_TicketAttachment set type_ = 1 where (createDate < " +
+				"'2013-08-19 02:52:46') and (fileName like 'liferay-hotfix%')");
 	}
 
 }

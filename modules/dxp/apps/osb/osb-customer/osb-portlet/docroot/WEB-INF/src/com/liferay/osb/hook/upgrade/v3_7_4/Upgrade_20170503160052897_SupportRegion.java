@@ -54,8 +54,8 @@ public class Upgrade_20170503160052897_SupportRegion
 			"update OSB_SupportRegion set managerUserId = 12791771 where " +
 				"name = 'Japan'");
 		runSQL(
-			"update OSB_SupportRegion set managerUserId = 390865 where name =" +
-				" 'Spain'");
+			"update OSB_SupportRegion set managerUserId = 390865 where name" +
+				"= 'Spain'");
 		runSQL(
 			"update OSB_SupportRegion set managerUserId = 4260579 where name " +
 				"= 'US'");

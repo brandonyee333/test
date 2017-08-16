@@ -200,6 +200,7 @@ public class UpgradeExpando extends UpgradeProcess {
 				newExpandoColumn.getColumnId());
 
 			_log.debug("Updated expando values count: " + count);
+
 			_log.debug("Updated expando column: " + oldExpandoColumnName);
 		}
 	}
@@ -223,7 +224,7 @@ public class UpgradeExpando extends UpgradeProcess {
 		int pages = count / _DEFAULT_INTERVAL;
 
 		for (int i = 0; i <= pages; i++) {
-			int start = (i * _DEFAULT_INTERVAL);
+			int start = i * _DEFAULT_INTERVAL;
 
 			int end = start + _DEFAULT_INTERVAL;
 

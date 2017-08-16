@@ -44,12 +44,12 @@ public class Upgrade_20150807173716016_TicketAttachment
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		upgradeIndex();
+		_upgradeIndex();
 
-		renameFiles();
+		_renameFiles();
 	}
 
-	private void doRenameFiles(List<TicketAttachment> ticketAttachments) {
+	private void _doRenameFiles(List<TicketAttachment> ticketAttachments) {
 		for (int i = 0; i < ticketAttachments.size(); i++) {
 			TicketAttachment ticketAttachment = ticketAttachments.get(i);
 
@@ -107,7 +107,7 @@ public class Upgrade_20150807173716016_TicketAttachment
 		}
 	}
 
-	private void renameFiles() {
+	private void _renameFiles() {
 		List<TicketAttachment> ticketAttachments =
 			TicketAttachmentLocalServiceUtil.getTicketAttachments(
 				new Date(), TicketAttachmentConstants.TYPE_LARGE_FILE);
@@ -130,11 +130,11 @@ public class Upgrade_20150807173716016_TicketAttachment
 		}
 
 		for (String key : ticketAttachmentGroup.keySet()) {
-			doRenameFiles(ticketAttachmentGroup.get(key));
+			_doRenameFiles(ticketAttachmentGroup.get(key));
 		}
 	}
 
-	private void upgradeIndex() throws Exception {
+	private void _upgradeIndex() throws Exception {
 		if (!hasIndex("OSB_TicketAttachment", "IX_C5D75521")) {
 			runSQL(
 				"create index IX_C5D75521 on OSB_TicketAttachment " +

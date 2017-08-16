@@ -58,6 +58,7 @@ public class Upgrade_20160412081651686_TicketEntry extends BaseUpgradeProcess {
 			int field = AuditEntryConstants.FIELD_ENV_NAME;
 
 			ps.setInt(1, field);
+
 			ps.setString(2, StringPool.BLANK);
 
 			rs = ps.executeQuery();

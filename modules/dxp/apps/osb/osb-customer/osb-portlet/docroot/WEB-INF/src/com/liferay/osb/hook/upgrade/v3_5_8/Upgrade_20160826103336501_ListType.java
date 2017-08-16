@@ -30,8 +30,8 @@ public class Upgrade_20160826103336501_ListType extends BaseUpgradeProcess {
 	@Override
 	protected void doUpgrade() throws Exception {
 		runSQL(
-			"update ListType set name = 'enterprise-search' where listTypeId" +
-				" = " + TicketEntryConstants.COMPONENT_ENTERPRISE_SEARCH);
+			"update ListType set name = 'enterprise-search' where listTypeId " +
+				"= " + TicketEntryConstants.COMPONENT_ENTERPRISE_SEARCH);
 	}
 
 }

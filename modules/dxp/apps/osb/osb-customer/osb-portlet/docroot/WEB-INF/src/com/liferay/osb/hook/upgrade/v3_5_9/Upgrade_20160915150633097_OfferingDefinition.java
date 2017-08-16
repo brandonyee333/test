@@ -15,6 +15,7 @@
 package com.liferay.osb.hook.upgrade.v3_5_9;
 
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.util.StringBundler;
 
 /**
  * @author Amos Fong
@@ -77,11 +78,14 @@ public class Upgrade_20160915150633097_OfferingDefinition
 		}
 
 		if (hasColumn("OSB_OfferingDefinition", "servers")) {
-			runSQL(
-				"update OSB_OfferingDefinition set " +
-					"OSB_OfferingDefinition.licenses = true where " +
-						"OSB_OfferingDefinition.servers > 0 or " +
-							"OSB_OfferingDefinition.unlimitedLicenses = true");
+			StringBundler sb = new StringBundler(4);
+
+			sb.append("update OSB_OfferingDefinition set ");
+			sb.append("OSB_OfferingDefinition.licenses = true where ");
+			sb.append("OSB_OfferingDefinition.servers > 0 or ");
+			sb.append("OSB_OfferingDefinition.unlimitedLicenses = true");
+
+			runSQL(sb.toString());
 
 			runSQL("alter table OSB_OfferingDefinition drop column servers");
 		}

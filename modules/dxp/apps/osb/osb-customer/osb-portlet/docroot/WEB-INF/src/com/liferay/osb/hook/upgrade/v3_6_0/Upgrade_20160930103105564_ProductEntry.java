@@ -222,11 +222,15 @@ public class Upgrade_20160930103105564_ProductEntry extends BaseUpgradeProcess {
 			"update OSB_OfferingEntry set version = 22004 where " +
 				"productEntryId = 56880174 and version = 22998");
 
-		runSQL(
-			"update OSB_OfferingEntry set version = " +
-				ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7 +
-					", productEntryId = " + _deDevelopmentProductEntryId +
-						" where type_ = 3");
+		StringBundler sb = new StringBundler(5);
+
+		sb.append("update OSB_OfferingEntry set version = ");
+		sb.append(ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7);
+		sb.append(", productEntryId = ");
+		sb.append(_deDevelopmentProductEntryId);
+		sb.append(" where type_ = 3");
+
+		runSQL(sb.toString());
 
 		splitPortalVersionAnyOfferingEntries(
 			_BACKUP_PRODUCT_ENTRY_IDS, _deBackupProductEntryId, 21001,
@@ -363,11 +367,11 @@ public class Upgrade_20160930103105564_ProductEntry extends BaseUpgradeProcess {
 					"' where productVersion = 20100");
 
 		runSQL(
-			"update OSB_OfferingEntry set version = 21001 where version " +
-				">= 22002 and version <= 22004");
+			"update OSB_OfferingEntry set version = 21001 where version >= " +
+				"22002 and version <= 22004");
 		runSQL(
-			"update OSB_OfferingEntry set version = 21000 where version " +
-				"= 22000 or version = 22001");
+			"update OSB_OfferingEntry set version = 21000 where version = " +
+				"22000 or version = 22001");
 
 		runSQL(
 			"update OSB_ProductEntry set versionsListType = " +

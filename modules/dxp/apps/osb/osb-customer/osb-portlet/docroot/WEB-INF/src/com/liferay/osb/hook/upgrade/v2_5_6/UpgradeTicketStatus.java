@@ -61,7 +61,7 @@ public class UpgradeTicketStatus extends BaseUpgradeProcess {
 		updateTicketStatuses(STATUS_REVIEWING_PATCH, STATUS_INVESTIGATING, now);
 	}
 
-	private List<long[]> getTicketEntryData(int status) throws Exception {
+	protected List<long[]> getTicketEntryData(int status) throws Exception {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -94,7 +94,7 @@ public class UpgradeTicketStatus extends BaseUpgradeProcess {
 		}
 	}
 
-	private void updateTicketPendingType(
+	protected void updateTicketPendingType(
 			int status, int escalation, String modifiedDate,
 			long accountEntryId, long ticketEntryId)
 		throws Exception {
@@ -131,7 +131,7 @@ public class UpgradeTicketStatus extends BaseUpgradeProcess {
 		runSQL(sb.toString());
 	}
 
-	private void updateTicketStatuses(int oldStatus, int status, String now)
+	protected void updateTicketStatuses(int oldStatus, int status, String now)
 		throws Exception {
 
 		List<long[]> ticketEntryData = getTicketEntryData(oldStatus);

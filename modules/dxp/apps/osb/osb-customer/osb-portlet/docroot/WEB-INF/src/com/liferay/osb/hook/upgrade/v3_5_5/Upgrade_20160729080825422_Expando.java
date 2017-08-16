@@ -108,16 +108,14 @@ public class Upgrade_20160729080825422_Expando extends BaseUpgradeProcess {
 			"com.liferay.osb.model.AccountEntry.industry");
 
 		runSQL(
-			"update ListType set name = 'consulting-market-research' " +
-				"where listTypeId = " + _ACCOUNT_ENTRY_INDUSTRY_CONSULTING);
+			"update ListType set name = 'consulting-market-research' where " +
+				"listTypeId = " + _ACCOUNT_ENTRY_INDUSTRY_CONSULTING);
 		runSQL(
-			"update ListType set name = 'media-entertainment' " +
-				"where listTypeId = " +
-					_ACCOUNT_ENTRY_INDUSTRY_MEDIA_MARKETING);
+			"update ListType set name = 'media-entertainment' where " +
+				"listTypeId = " + _ACCOUNT_ENTRY_INDUSTRY_MEDIA_MARKETING);
 		runSQL(
-			"update ListType set name = 'retail-consumer-products' " +
-				"where listTypeId = " +
-					_ACCOUNT_ENTRY_INDUSTRY_CONSUMER_PRODUCTS);
+			"update ListType set name = 'retail-consumer-products' where " +
+				"listTypeId = " + _ACCOUNT_ENTRY_INDUSTRY_CONSUMER_PRODUCTS);
 
 		runSQL(
 			"delete from ListType where listTypeId = " +

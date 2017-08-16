@@ -72,18 +72,18 @@ public class Upgrade_20140509155638740_PopulateData extends BaseUpgradeProcess {
 		throws Exception {
 
 		String[] nameComparisons = {
-			"like 'Support-US%' or OSB_SupportTeam.name like " +
-				"'Platinum Critical US%'",
-			"like 'Support-HU%' or OSB_SupportTeam.name = " +
-				"'Platinum Critical Hungary'",
-			"like 'Support-CN%' or OSB_SupportTeam.name = " +
-				"'Platinum Critical China'",
-			"like 'Support-India%' or OSB_SupportTeam.name = " +
-				"'Platinum Critical India'",
-			"like 'Support-ES%' or OSB_SupportTeam.name = " +
-				"'Platinum Critical Spain'",
-			"like 'Support-BR%' or OSB_SupportTeam.name = " +
-				"'Platinum Critical Brazil'",
+			"like 'Support-US%' or OSB_SupportTeam.name like 'Platinum " +
+				"Critical US%'",
+			"like 'Support-HU%' or OSB_SupportTeam.name = 'Platinum Critical " +
+				"Hungary'",
+			"like 'Support-CN%' or OSB_SupportTeam.name = 'Platinum Critical " +
+				"China'",
+			"like 'Support-India%' or OSB_SupportTeam.name = 'Platinum " +
+				"Critical India'",
+			"like 'Support-ES%' or OSB_SupportTeam.name = 'Platinum Critical " +
+				"Spain'",
+			"like 'Support-BR%' or OSB_SupportTeam.name = 'Platinum Critical " +
+				"Brazil'",
 			"= 'Support-AU-Lvl1-Jonas'"
 		};
 
@@ -161,124 +161,124 @@ public class Upgrade_20140509155638740_PopulateData extends BaseUpgradeProcess {
 
 		String[][] holidayEntrySQL = {
 			{
-				"'New Years Day', '', '2014-01-01 00:00:00', " +
-					"'2014-01-01 23:59:59', true",
-				"'Memorial Day', '', '2014-05-26 00:00:00', " +
-					"'2014-05-26 23:59:59', false",
-				"'Independence Day', '', '2014-07-04 00:00:00', " +
-					"'2014-07-04 23:59:59', true",
-				"'Labor Day', '', '2014-09-01 00:00:00', " +
-					"'2014-09-01 23:59:59', false",
+				"'New Years Day', '', '2014-01-01 00:00:00', '2014-01-01 " +
+					"23:59:59', true",
+				"'Memorial Day', '', '2014-05-26 00:00:00', '2014-05-26 " +
+					"23:59:59', false",
+				"'Independence Day', '', '2014-07-04 00:00:00', '2014-07-04 " +
+					"23:59:59', true",
+				"'Labor Day', '', '2014-09-01 00:00:00', '2014-09-01 " +
+					"23:59:59', false",
 				"'Thanksgiving Holiday', '', '2014-11-27 00:00:00', " +
 					"'2014-11-28 23:59:59', false"
 			},
 			{
-				"'New Years Day', '', '2014-01-01 00:00:00', " +
-					"'2014-01-01 23:59:59', true",
+				"'New Years Day', '', '2014-01-01 00:00:00', '2014-01-01 " +
+					"23:59:59', true",
 				"'Revolution Holiday', '', '2014-03-15 00:00:00', " +
 					"'2014-03-15 23:59:59', true",
-				"'Labor Day', '', '2014-05-01 00:00:00', " +
-					"'2014-05-01 23:59:59', true",
-				"'Whit Monday', '', '2014-06-09 00:00:00', " +
-					"'2014-06-09 23:59:59', false",
-				"'National Holiday', '', '2014-08-20 00:00:00', " +
-					"'2014-08-20 23:59:59', false",
-				"'Heroes Day', '', '2014-10-23 00:00:00', " +
-					"'2014-10-23 23:59:59', true",
-				"'All Saints Day', '', '2014-11-01 00:00:00', " +
-					"'2014-11-01 23:59:59', true",
-				"'Christmas Holiday', '', '2014-12-24 00:00:00', " +
-					"'2014-12-25 23:59:59', false"
+				"'Labor Day', '', '2014-05-01 00:00:00', '2014-05-01 " +
+					"23:59:59', true",
+				"'Whit Monday', '', '2014-06-09 00:00:00', '2014-06-09 " +
+					"23:59:59', false",
+				"'National Holiday', '', '2014-08-20 00:00:00', '2014-08-20 " +
+					"23:59:59', false",
+				"'Heroes Day', '', '2014-10-23 00:00:00', '2014-10-23 " +
+					"23:59:59', true",
+				"'All Saints Day', '', '2014-11-01 00:00:00', '2014-11-01 " +
+					"23:59:59', true",
+				"'Christmas Holiday', '', '2014-12-24 00:00:00', '2014-12-25 " +
+					"23:59:59', false"
 			},
 			{
-				"'New Years Day', '', '2014-01-01 00:00:00', " +
-					"'2014-01-01 23:59:59', true",
-				"'Labor Day', '', '2014-05-01 00:00:00', " +
-					"'2014-05-03 23:59:59', false",
-				"'Youth Day', '', '2014-05-04 00:00:00', " +
-					"'2014-05-04 23:59:59', true",
-				"'Duanwu Festival', '', '2014-05-31 00:00:00', " +
-					"'2014-06-02 23:59:59', false",
+				"'New Years Day', '', '2014-01-01 00:00:00', '2014-01-01 " +
+					"23:59:59', true",
+				"'Labor Day', '', '2014-05-01 00:00:00', '2014-05-03 " +
+					"23:59:59', false",
+				"'Youth Day', '', '2014-05-04 00:00:00', '2014-05-04 " +
+					"23:59:59', true",
+				"'Duanwu Festival', '', '2014-05-31 00:00:00', '2014-06-02 " +
+					"23:59:59', false",
 				"'Mid-Autumn Festival', '', '2014-09-06 00:00:00', " +
 					"'2014-09-08 23:59:59', false",
-				"'National Day', '', '2014-09-29 00:00:00', " +
-					"'2014-10-03 23:59:59', false"
+				"'National Day', '', '2014-09-29 00:00:00', '2014-10-03 " +
+					"23:59:59', false"
 			},
 			{
-				"'New Years Day', '', '2014-01-01 00:00:00', " +
-					"'2014-01-01 23:59:59', true",
-				"'Makar Sankranti', '', '2014-01-14 00:00:00', " +
-					"'2014-01-14 23:59:59', true",
-				"'Labor Day', '', '2014-05-01 00:00:00', " +
-					"'2014-05-01 23:59:59', true",
+				"'New Years Day', '', '2014-01-01 00:00:00', '2014-01-01 " +
+					"23:59:59', true",
+				"'Makar Sankranti', '', '2014-01-14 00:00:00', '2014-01-14 " +
+					"23:59:59', true",
+				"'Labor Day', '', '2014-05-01 00:00:00', '2014-05-01 " +
+					"23:59:59', true",
 				"'Ramzan', '', '2014-08-15 00:00:00', '2014-08-15 23:59:59', " +
 					"false",
-				"'Ganesh Chaturthi', '', '2014-08-29 00:00:00', " +
-					"'2014-08-29 23:59:59', false",
-				"'Gandhi Jayanthi', '', '2014-10-02 00:00:00', " +
-					"'2014-10-02 23:59:59', true",
-				"'Vijayadashami', '', '2014-10-03 00:00:00', " +
-					"'2014-10-03 23:59:59', false",
+				"'Ganesh Chaturthi', '', '2014-08-29 00:00:00', '2014-08-29 " +
+					"23:59:59', false",
+				"'Gandhi Jayanthi', '', '2014-10-02 00:00:00', '2014-10-02 " +
+					"23:59:59', true",
+				"'Vijayadashami', '', '2014-10-03 00:00:00', '2014-10-03 " +
+					"23:59:59', false",
 				"'Bakrid', '', '2014-10-04 00:00:00', '2014-10-05 23:59:59', " +
 					"false",
 				"'Karnataka Rajyosava', '', '2014-11-01 00:00:00', " +
 					"'2014-11-01 23:59:59', true",
-				"'Muharram', '', '2014-11-03 00:00:00', " +
-					"'2014-11-03 23:59:59', false",
-				"'Christmas Day', '', '2014-12-25 00:00:00', " +
-					"'2014-12-25 23:59:59', true"
+				"'Muharram', '', '2014-11-03 00:00:00', '2014-11-03 " +
+					"23:59:59', false",
+				"'Christmas Day', '', '2014-12-25 00:00:00', '2014-12-25 " +
+					"23:59:59', true"
 			},
 			{
-				"'New Years Day', '', '2014-01-01 00:00:00', " +
-					"'2014-01-01 23:59:59', true",
-				"'Labor Day', '', '2014-05-01 00:00:00', " +
-					"'2014-05-01 23:59:59', true",
-				"'Fiesta de la Comunidad de Madrid', '', " +
-					"'2014-05-02 00:00:00', '2014-05-02 23:59:59', true",
-				"'San Isidro', '', '2014-05-15 00:00:00', " +
-					"'2014-05-15 23:59:59', true",
-				"'Assumption Day', '', '2014-08-15 00:00:00', " +
-					"'2014-08-15 23:59:59', true",
+				"'New Years Day', '', '2014-01-01 00:00:00', '2014-01-01 " +
+					"23:59:59', true",
+				"'Labor Day', '', '2014-05-01 00:00:00', '2014-05-01 " +
+					"23:59:59', true",
+				"'Fiesta de la Comunidad de Madrid', '', '2014-05-02 " +
+					"00:00:00', '2014-05-02 23:59:59', true",
+				"'San Isidro', '', '2014-05-15 00:00:00', '2014-05-15 " +
+					"23:59:59', true",
+				"'Assumption Day', '', '2014-08-15 00:00:00', '2014-08-15 " +
+					"23:59:59', true",
 				"'Spanish National Holiday', '', '2014-10-12 00:00:00', " +
 					"'2014-10-12 23:59:59', true",
-				"'All Saints Day', '', '2014-11-01 00:00:00', " +
-					"'2014-11-01 23:59:59', true",
+				"'All Saints Day', '', '2014-11-01 00:00:00', '2014-11-01 " +
+					"23:59:59', true",
 				"'Nuestra Senora de la Almudena', '', '2014-11-09 00:00:00', " +
 					"'2014-11-09 23:59:59', true",
-				"'Christmas Holiday', '', '2014-12-25 00:00:00', " +
-					"'2014-12-25 23:59:59', true"
+				"'Christmas Holiday', '', '2014-12-25 00:00:00', '2014-12-25 " +
+					"23:59:59', true"
 			},
 			{
-				"'New Years Day', '', '2014-01-01 00:00:00', " +
-					"'2014-01-01 23:59:59', true",
-				"'Labor Day', '', '2014-05-01 00:00:00', " +
-					"'2014-05-01 23:59:59', true",
-				"'Sao Joao', '', '2014-06-24 00:00:00', " +
-					"'2014-06-24 23:59:59', true",
+				"'New Years Day', '', '2014-01-01 00:00:00', '2014-01-01 " +
+					"23:59:59', true",
+				"'LaborDay', '', '2014-05-01 00:00:00', '2014-05-01 " +
+					"23:59:59', true",
+				"'Sao Joao', '', '2014-06-24 00:00:00', '2014-06-24 " +
+					"23:59:59', true",
 				"'Nossa Senhora do Carmo', '', '2014-07-16 00:00:00', " +
 					"'2014-07-16 23:59:59', true",
-				"'Independence Day', '', '2014-09-08 00:00:00', " +
-					"'2014-09-08 23:59:59', false",
+				"'Independence Day', '', '2014-09-08 00:00:00', '2014-09-08 " +
+					"23:59:59', false",
 				"'Nossa Senhora da Aparecida', '', '2014-10-13 00:00:00', " +
 					"'2014-10-13 23:59:59', false",
-				"'All Souls Day', '', '2014-11-03 00:00:00', " +
-					"'2014-11-03 23:59:59', false",
-				"'Republic Day', '', '2014-11-14 00:00:00', " +
-					"'2014-11-14 23:59:59', false"
+				"'All Souls Day', '', '2014-11-03 00:00:00', '2014-11-03 " +
+					"23:59:59', false",
+				"'Republic Day', '', '2014-11-14 00:00:00', '2014-11-14 " +
+					"23:59:59', false"
 			},
 			{
-				"'New Years Day', '', '2014-01-01 00:00:00', " +
-					"'2014-01-01 23:59:59', true",
-				"'Queens Birthday', '', '2014-06-09 00:00:00', " +
-					"'2014-06-09 23:59:59', false",
-				"'Bank Holiday', '', '2014-08-04 00:00:00', " +
-					"'2014-08-04 23:59:59', false",
-				"'Labour Day', '', '2014-10-06 00:00:00', " +
-					"'2014-10-06 23:59:59', false",
-				"'Christmas Day', '', '2014-12-25 00:00:00', " +
-					"'2014-12-25 23:59:59', true",
-				"'Boxing Day', '', '2014-12-26 00:00:00', " +
-					"'2014-12-26 23:59:59', true"
+				"'New Years Day', '', '2014-01-01 00:00:00', '2014-01-01 " +
+					"23:59:59', true",
+				"'Queens Birthday', '', '2014-06-09 00:00:00', '2014-06-09 " +
+					"23:59:59', false",
+				"'Bank Holiday', '', '2014-08-04 00:00:00', '2014-08-04 " +
+					"23:59:59', false",
+				"'Labour Day', '', '2014-10-06 00:00:00', '2014-10-06 " +
+					"23:59:59', false",
+				"'Christmas Day', '', '2014-12-25 00:00:00', '2014-12-25 " +
+					"23:59:59', true",
+				"'Boxing Day', '', '2014-12-26 00:00:00', '2014-12-26 " +
+					"23:59:59', true"
 			}
 		};
 

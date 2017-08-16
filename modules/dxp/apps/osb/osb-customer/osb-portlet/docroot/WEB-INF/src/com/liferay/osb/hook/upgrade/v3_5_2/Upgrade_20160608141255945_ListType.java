@@ -95,8 +95,8 @@ public class Upgrade_20160608141255945_ListType extends BaseUpgradeProcess {
 
 			if (!oldValue.equals(StringPool.BLANK)) {
 				String sql =
-					"update OSB_AuditEntry set oldValue = ? " +
-						"where (auditEntryId = ?) and (oldValue = ?)";
+					"update OSB_AuditEntry set oldValue = ? where " +
+						"(auditEntryId = ?) and (oldValue = ?)";
 
 				ps = connection.prepareStatement(sql);
 
@@ -111,8 +111,8 @@ public class Upgrade_20160608141255945_ListType extends BaseUpgradeProcess {
 
 			if (Validator.isNotNull(newValue)) {
 				String sql =
-					"update OSB_AuditEntry set newValue = ? " +
-						"where (auditEntryId = ?) and (newValue = ?)";
+					"update OSB_AuditEntry set newValue = ? where " +
+						"(auditEntryId = ?) and (newValue = ?)";
 
 				ps = connection.prepareStatement(sql);
 
@@ -269,8 +269,8 @@ public class Upgrade_20160608141255945_ListType extends BaseUpgradeProcess {
 
 		try {
 			String sql =
-				"select ticketEntryId, envBrowser from OSB_TicketEntry " +
-					"where (envBrowser = ?)";
+				"select ticketEntryId, envBrowser from OSB_TicketEntry where " +
+					"(envBrowser = ?)";
 
 			ps = connection.prepareStatement(sql);
 
@@ -285,8 +285,10 @@ public class Upgrade_20160608141255945_ListType extends BaseUpgradeProcess {
 				updateAuditEntry(
 					ticketEntryId, TicketEntryConstants.ENV_BROWSER_IOS_SAFARI,
 					envBrowser);
+
 				updateTicketEntryData(
 					ticketEntryId, TicketEntryConstants.ENV_BROWSER_IOS_SAFARI);
+
 				updateTicketInformation(
 					ticketEntryId,
 					String.valueOf(

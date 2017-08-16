@@ -30,8 +30,7 @@ public class Upgrade_20150413155144056_AccountEntry extends BaseUpgradeProcess {
 	protected void doUpgrade() throws Exception {
 		if (!hasColumn("OSB_AccountEntry", "corpEntryName")) {
 			runSQL(
-				"alter table OSB_AccountEntry add corpEntryName " +
-					"VARCHAR(75)");
+				"alter table OSB_AccountEntry add corpEntryName VARCHAR(75)");
 		}
 	}
 

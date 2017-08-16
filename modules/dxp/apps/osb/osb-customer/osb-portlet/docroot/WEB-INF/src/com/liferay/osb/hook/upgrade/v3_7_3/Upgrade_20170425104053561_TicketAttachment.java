@@ -16,6 +16,7 @@ package com.liferay.osb.hook.upgrade.v3_7_3;
 
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.TicketAttachmentConstants;
+import com.liferay.portal.kernel.util.StringBundler;
 
 /**
  * @author Kyle Bischof
@@ -30,11 +31,14 @@ public class Upgrade_20170425104053561_TicketAttachment
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		runSQL(
-			"update OSB_TicketAttachment set type_ = " +
-				TicketAttachmentConstants.TYPE_LARGE_HOTFIX + " where " +
-					"fileName like 'liferay-hotfix%' and type_ = " +
-						TicketAttachmentConstants.TYPE_LARGE_FILE);
+		StringBundler sb = new StringBundler(4);
+
+		sb.append("update OSB_TicketAttachment set type_ = ");
+		sb.append(TicketAttachmentConstants.TYPE_LARGE_HOTFIX);
+		sb.append(" where fileName like 'liferay-hotfix%' and type_ = ");
+		sb.append(TicketAttachmentConstants.TYPE_LARGE_FILE);
+
+		runSQL(sb.toString());
 	}
 
 }

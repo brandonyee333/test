@@ -43,7 +43,9 @@ public class Upgrade_20140813162146667_ListType extends BaseUpgradeProcess {
 			30034, "debian-6.0", "com.liferay.osb.model.TicketEntry.envOS");
 	}
 
-	private void updateListType(int listTypeId, String name) throws Exception {
+	protected void updateListType(int listTypeId, String name)
+		throws Exception {
+
 		StringBundler sb = new StringBundler(4);
 
 		sb.append("update ListType set name = '");

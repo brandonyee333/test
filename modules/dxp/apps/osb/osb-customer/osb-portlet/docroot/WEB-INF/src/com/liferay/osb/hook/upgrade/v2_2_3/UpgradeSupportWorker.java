@@ -30,16 +30,14 @@ public class UpgradeSupportWorker extends UpgradeProcess {
 
 	protected void upgradeSupportWorkerComponent() throws Exception {
 		runSQL(
-			"delete from OSB_SupportWorkerComponent " +
-				"where supportWorkerId not in " +
-					"(select supportWorkerId from OSB_SupportWorker)");
+			"delete from OSB_SupportWorkerComponent where supportWorkerId " +
+				"not in (select supportWorkerId from OSB_SupportWorker)");
 	}
 
 	protected void upgradeSupportWorkerSeverity() throws Exception {
 		runSQL(
-			"delete from OSB_SupportWorkerSeverity " +
-				"where supportWorkerId not in " +
-					"(select supportWorkerId from OSB_SupportWorker)");
+			"delete from OSB_SupportWorkerSeverity where supportWorkerId not " +
+				"in (select supportWorkerId from OSB_SupportWorker)");
 	}
 
 }

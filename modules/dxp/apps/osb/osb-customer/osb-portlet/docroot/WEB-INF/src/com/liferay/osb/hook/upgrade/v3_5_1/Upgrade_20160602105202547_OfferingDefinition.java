@@ -178,27 +178,42 @@ public class Upgrade_20160602105202547_OfferingDefinition
 				continue;
 			}
 
-			runSQL(
-				"update OSB_LicenseKey set offeringDefinitionId = " +
-					curOfferingDefinition.getOfferingDefinitionId() +
-						" where offeringDefinitionId = " +
-							offeringDefinition.getOfferingDefinitionId());
-			runSQL(
-				"update OSB_OfferingEntry set offeringDefinitionId = " +
-					curOfferingDefinition.getOfferingDefinitionId() +
-						" where offeringDefinitionId = " +
-							offeringDefinition.getOfferingDefinitionId());
-			runSQL(
-				"update OSB_TicketEntry set offeringDefinitionId = " +
-					curOfferingDefinition.getOfferingDefinitionId() +
-						" where offeringDefinitionId = " +
-							offeringDefinition.getOfferingDefinitionId());
-			runSQL(
-				"update OSB_OfferingBundles_OfferingDefinitions set " +
-					"offeringDefinitionId = " +
-						curOfferingDefinition.getOfferingDefinitionId() +
-						" where offeringDefinitionId = " +
-							offeringDefinition.getOfferingDefinitionId());
+			StringBundler sb = new StringBundler(5);
+
+			sb.append("update OSB_LicenseKey set offeringDefinitionId = ");
+			sb.append(curOfferingDefinition.getOfferingDefinitionId());
+			sb.append(" where offeringDefinitionId = ");
+			sb.append(offeringDefinition.getOfferingDefinitionId());
+
+			runSQL(sb.toString());
+
+			sb.setIndex(0);
+
+			sb.append("update OSB_OfferingEntry set offeringDefinitionId = ");
+			sb.append(curOfferingDefinition.getOfferingDefinitionId());
+			sb.append(" where offeringDefinitionId = ");
+			sb.append(offeringDefinition.getOfferingDefinitionId());
+
+			runSQL(sb.toString());
+
+			sb.setIndex(0);
+
+			sb.append("update OSB_TicketEntry set offeringDefinitionId = ");
+			sb.append(curOfferingDefinition.getOfferingDefinitionId());
+			sb.append(" where offeringDefinitionId = ");
+			sb.append(offeringDefinition.getOfferingDefinitionId());
+
+			runSQL(sb.toString());
+
+			sb.setIndex(0);
+
+			sb.append("update OSB_OfferingBundles_OfferingDefinitions set ");
+			sb.append("offeringDefinitionId = ");
+			sb.append(curOfferingDefinition.getOfferingDefinitionId());
+			sb.append(" where offeringDefinitionId = ");
+			sb.append(offeringDefinition.getOfferingDefinitionId());
+
+			runSQL(sb.toString());
 
 			CacheRegistryUtil.clear();
 

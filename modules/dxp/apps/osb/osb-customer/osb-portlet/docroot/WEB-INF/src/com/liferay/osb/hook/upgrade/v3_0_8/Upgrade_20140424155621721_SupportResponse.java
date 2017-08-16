@@ -65,17 +65,17 @@ public class Upgrade_20140424155621721_SupportResponse
 
 	protected void updateSupportLevels() throws Exception {
 		runSQL(
-			"update OSB_SupportResponse set supportLevel = 1 where " +
-				"name like '%platinum%'");
+			"update OSB_SupportResponse set supportLevel = 1 where name like " +
+				"'%platinum%'");
 		runSQL(
-			"update OSB_SupportResponse set supportLevel = 2 where " +
-				"name like '%gold%'");
+			"update OSB_SupportResponse set supportLevel = 2 where name like " +
+				"'%gold%'");
 		runSQL(
-			"update OSB_SupportResponse set supportLevel = 3 where " +
-				"name like '%silver%'");
+			"update OSB_SupportResponse set supportLevel = 3 where name like " +
+				"'%silver%'");
 		runSQL(
-			"update OSB_SupportResponse set supportLevel = 4 where " +
-				"(name like '%basic%') or (name like '%limited%')");
+			"update OSB_SupportResponse set supportLevel = 4 where (name " +
+				"like '%basic%') or (name like '%limited%')");
 	}
 
 }

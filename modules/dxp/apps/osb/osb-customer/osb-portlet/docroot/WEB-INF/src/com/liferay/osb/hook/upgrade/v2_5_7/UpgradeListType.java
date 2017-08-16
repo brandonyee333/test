@@ -28,8 +28,8 @@ public class UpgradeListType extends BaseUpgradeProcess {
 
 	protected void updateListType() throws Exception {
 		runSQL(
-			"update ListType set name = 'pending-customer' where " +
-				"listTypeId = 32003");
+			"update ListType set name = 'pending-customer' where listTypeId " +
+				"= 32003");
 	}
 
 }

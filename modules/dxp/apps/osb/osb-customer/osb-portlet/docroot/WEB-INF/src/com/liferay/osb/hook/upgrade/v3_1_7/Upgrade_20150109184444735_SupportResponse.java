@@ -32,6 +32,15 @@ public class Upgrade_20150109184444735_SupportResponse
 		return 20150109184444735L;
 	}
 
+	protected void doUpdateSupportResponse(
+			int supportLevel, int deprecatedSupportLevel)
+		throws Exception {
+
+		runSQL(
+			"update OSB_SupportResponse set supportLevel = " + supportLevel +
+				" where supportLevel = " + deprecatedSupportLevel);
+	}
+
 	@Override
 	protected void doUpgrade() throws Exception {
 		updateSupportResponse();
@@ -56,15 +65,6 @@ public class Upgrade_20150109184444735_SupportResponse
 		for (int[] supportLevelMap : supportLevelMaps) {
 			doUpdateSupportResponse(supportLevelMap[0], supportLevelMap[1]);
 		}
-	}
-
-	private void doUpdateSupportResponse(
-			int supportLevel, int deprecatedSupportLevel)
-		throws Exception {
-
-		runSQL(
-			"update OSB_SupportResponse set supportLevel = " + supportLevel +
-				" where supportLevel = " + deprecatedSupportLevel);
 	}
 
 }

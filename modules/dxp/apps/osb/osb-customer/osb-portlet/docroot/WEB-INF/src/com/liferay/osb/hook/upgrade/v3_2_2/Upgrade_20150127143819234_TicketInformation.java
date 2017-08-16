@@ -95,7 +95,7 @@ public class Upgrade_20150127143819234_TicketInformation
 						String.valueOf(rs.getInt("envBrowser")));
 				}
 
-				if (rs.getInt("envDB")> 0) {
+				if (rs.getInt("envDB") > 0) {
 					updateTicketInformation(
 						ticketEntryId, TicketInformationConstants.FIELD_ENV_DB,
 						String.valueOf(rs.getInt("envDB")));

@@ -52,13 +52,13 @@ public class Upgrade_20160413174405139_OfferingEntry
 	}
 
 	protected int getPortalVersion(long closedTime) {
-		if (closedTime > 1385942400000l) {
+		if (closedTime > 1385942400000L) {
 			return 22004;
 		}
-		else if (closedTime > 1329868800000l) {
+		else if (closedTime > 1329868800000L) {
 			return 22003;
 		}
-		else if (closedTime > 1284076800000l) {
+		else if (closedTime > 1284076800000L) {
 			return 22002;
 		}
 		else {

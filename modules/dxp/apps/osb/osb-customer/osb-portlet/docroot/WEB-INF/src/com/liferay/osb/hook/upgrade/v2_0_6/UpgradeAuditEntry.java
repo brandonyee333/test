@@ -28,8 +28,8 @@ public class UpgradeAuditEntry extends UpgradeProcess {
 
 	protected void updateAuditEntry() throws Exception {
 		runSQL(
-			"create index IX_558935D2 on OSB_AuditEntry " +
-				"(createDate, classNameId)");
+			"create index IX_558935D2 on OSB_AuditEntry (createDate, " +
+				"classNameId)");
 	}
 
 }

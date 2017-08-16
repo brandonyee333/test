@@ -50,17 +50,17 @@ public class Upgrade_20140918161616041_SupportRegion
 			"update OSB_SupportRegion set timeZoneId = 'America/Sao_Paulo' " +
 				"where name = 'Brazil'");
 		runSQL(
-			"update OSB_SupportRegion set timeZoneId = 'Asia/Shanghai' " +
-				"where name = 'China'");
+			"update OSB_SupportRegion set timeZoneId = 'Asia/Shanghai' where " +
+				"name = 'China'");
 		runSQL(
-			"update OSB_SupportRegion set timeZoneId = 'Europe/Paris' " +
-				"where name = 'Hungary'");
+			"update OSB_SupportRegion set timeZoneId = 'Europe/Paris' where " +
+				"name = 'Hungary'");
 		runSQL(
-			"update OSB_SupportRegion set timeZoneId = 'Asia/Calcutta' " +
-				"where name = 'India'");
+			"update OSB_SupportRegion set timeZoneId = 'Asia/Calcutta' where " +
+				"name = 'India'");
 		runSQL(
-			"update OSB_SupportRegion set timeZoneId = 'UTC' " +
-				"where name = 'Spain'");
+			"update OSB_SupportRegion set timeZoneId = 'UTC' where name = " +
+				"'Spain'");
 		runSQL(
 			"update OSB_SupportRegion set timeZoneId = 'America/Los_Angeles' " +
 				"where name = 'US'");

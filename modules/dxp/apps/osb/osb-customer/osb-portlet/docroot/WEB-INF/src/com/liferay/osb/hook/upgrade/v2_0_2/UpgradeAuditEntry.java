@@ -53,11 +53,11 @@ public class UpgradeAuditEntry extends UpgradeProcess {
 		runSQL("drop index IX_71197B83 on OSB_AuditEntry");
 
 		runSQL(
-			"create index IX_6DC23F99 on OSB_AuditEntry " +
-				"(classNameId, classPK, visibility)");
+			"create index IX_6DC23F99 on OSB_AuditEntry (classNameId, " +
+				"classPK, visibility)");
 		runSQL(
-			"create index IX_A70C3087 on OSB_AuditEntry " +
-				"(fieldClassNameId, fieldClassPK, field)");
+			"create index IX_A70C3087 on OSB_AuditEntry (fieldClassNameId, " +
+				"fieldClassPK, field)");
 
 		runSQL(
 			"update Counter set name = replace(name, " +
@@ -66,8 +66,8 @@ public class UpgradeAuditEntry extends UpgradeProcess {
 
 		runSQL(
 			"update ListType set type_ = " +
-				"'com.liferay.osb.model.AuditEntry.field' where " +
-					"(listTypeId >= 34001) and (listTypeId <= 34099)");
+				"'com.liferay.osb.model.AuditEntry.field' where (listTypeId " +
+					">= 34001) and (listTypeId <= 34099)");
 	}
 
 }
