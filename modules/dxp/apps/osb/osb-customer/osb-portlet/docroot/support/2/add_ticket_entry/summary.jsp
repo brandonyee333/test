@@ -117,7 +117,7 @@ if (accountEntry != null) {
 			String componentMessageLink = supportPortletPreferences.getValue("componentMessageLink_" + productEntry.getLESADisplayName() + StringPool.UNDERLINE + component, StringPool.BLANK);
 			%>
 
-			<div class="portlet-msg-info component-message <%= Validator.isNotNull(componentMessage) ? StringPool.BLANK : "hide" %>" id="<portlet:namespace />componentMessageDisplay">
+			<div class="component-message portlet-msg-info <%= Validator.isNotNull(componentMessage) ? StringPool.BLANK : "hide" %>" id="<portlet:namespace />componentMessageDisplay">
 				<c:choose>
 					<c:when test="<%= Validator.isNotNull(componentMessageLink) %>">
 						<a href="<%= HtmlUtil.escapeAttribute(componentMessageLink) %>" target="_blank"><%= HtmlUtil.escape(componentMessage) %></a>
@@ -341,7 +341,7 @@ if (accountEntry != null) {
 
 		var envOSCustom = A.one('#<portlet:namespace />envOSCustom');
 
-		if(envOSCustom) {
+		if (envOSCustom) {
 			envOSCustom.remove();
 		}
 	}
@@ -391,7 +391,7 @@ if (accountEntry != null) {
 				accountEnvironmentId.val(0);
 			}
 
-			document.<portlet:namespace />fm.encoding='application/x-www-form-urlencoded';
+			document.<portlet:namespace />fm.encoding = 'application/x-www-form-urlencoded';
 
 			submitForm(document.<portlet:namespace />fm, '<portlet:renderURL><portlet:param name="mvcPath" value="/support/2/add_ticket_entry.jsp" /></portlet:renderURL>');
 		}
@@ -407,14 +407,14 @@ if (accountEntry != null) {
 		else if (accountEnvironmentId == -1) {
 			<portlet:namespace />clearAccountEnvironment();
 
-			document.<portlet:namespace />fm.encoding="application/x-www-form-urlencoded";
+			document.<portlet:namespace />fm.encoding = 'application/x-www-form-urlencoded';
 
 			submitForm(document.<portlet:namespace />fm, '<portlet:renderURL><portlet:param name="mvcPath" value="/support/2/add_ticket_entry.jsp" /><portlet:param name="validateEnvironment" value="<%= Boolean.FALSE.toString() %>" /></portlet:renderURL>');
 		}
 		else {
 			<portlet:namespace />clearAccountEnvironment();
 
-			document.<portlet:namespace />fm.encoding="application/x-www-form-urlencoded";
+			document.<portlet:namespace />fm.encoding = 'application/x-www-form-urlencoded';
 
 			submitForm(document.<portlet:namespace />fm, '<portlet:renderURL><portlet:param name="mvcPath" value="/support/2/add_ticket_entry.jsp" /><portlet:param name="validateEnvironment" value="<%= Boolean.TRUE.toString() %>" /></portlet:renderURL>');
 		}

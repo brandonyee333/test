@@ -94,14 +94,14 @@ String description = ParamUtil.getString(request, "description");
 
 			var firstNode = <portlet:namespace />validateFiles();
 
-			var requiredFields = AUI().all("#<portlet:namespace />createTicket input[data-field-required-status='false'], #<portlet:namespace />createTicket select[data-field-required-status='false'], #<portlet:namespace />createTicket textarea[data-field-required-status='false']");
+			var requiredFields = AUI().all('#<portlet:namespace />createTicket input[data-field-required-status="false"], #<portlet:namespace />createTicket select[data-field-required-status="false"], #<portlet:namespace />createTicket textarea[data-field-required-status="false"]');
 
 			if (requiredFields.size() > 0) {
 				requiredFields.each(
 					function(requiredField) {
 						<portlet:namespace />validateRequiredField(requiredField);
 					}
-				)
+				);
 
 				if (!firstNode) {
 					firstNode = requiredFields.first();
@@ -109,7 +109,7 @@ String description = ParamUtil.getString(request, "description");
 			}
 
 			if (!firstNode) {
-				document.<portlet:namespace />fm.encoding="multipart/form-data";
+				document.<portlet:namespace />fm.encoding = 'multipart/form-data';
 
 				submitForm(document.<portlet:namespace />fm);
 			}

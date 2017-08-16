@@ -117,7 +117,9 @@ String productLink = GetterUtil.getString(preferences.getValue("productLink_" + 
 	<div class="portlet-msg-info">
 		<div class="txt-b"><liferay-ui:message arguments="<%= productEntryLESADisplayName %>" key="known-issues" translateArguments="true" /></div>
 
-		<div><liferay-ui:message arguments='<%= new String[] {LanguageUtil.get(pageContext, productEntryLESADisplayName), "<a href=\"" + productLink + "\" target=\"_blank\">", "</a>"} %>' key="known-issues-message" /></div>
+		<div>
+			<liferay-ui:message arguments='<%= new String[] {LanguageUtil.get(pageContext, productEntryLESADisplayName), "<a href=\"" + productLink + "\" target=\"_blank\">", "</a>"} %>' key="known-issues-message" />
+		</div>
 	</div>
 </c:if>
 
@@ -309,7 +311,7 @@ String productLink = GetterUtil.getString(preferences.getValue("productLink_" + 
 			function(event) {
 				event.stopPropagation();
 
-				var popDisplay = event.currentTarget.getAttribute("data-pop-display");
+				var popDisplay = event.currentTarget.getAttribute('data-pop-display');
 
 				var popUp = A.one(popDisplay);
 
