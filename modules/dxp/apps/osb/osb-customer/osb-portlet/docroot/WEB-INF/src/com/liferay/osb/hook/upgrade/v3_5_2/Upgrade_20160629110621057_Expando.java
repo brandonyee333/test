@@ -14,9 +14,8 @@
 
 package com.liferay.osb.hook.upgrade.v3_5_2;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.expando.kernel.model.ExpandoValue;
+import com.liferay.expando.kernel.service.ExpandoValueLocalServiceUtil;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -26,25 +25,18 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.expando.kernel.model.ExpandoValue;
-import com.liferay.expando.kernel.service.ExpandoValueLocalServiceUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.List;
-
-*/
 
 /**
  * @author Douglas Wong
  * @author Rachael Koestartyo
  * @author Peter Shin
  */
-public class Upgrade_20160629110621057_Expando extends UpgradeProcess {
+public class Upgrade_20160629110621057_Expando extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20160629110621057L;
 	}
@@ -104,9 +96,7 @@ public class Upgrade_20160629110621057_Expando extends UpgradeProcess {
 
 	private static final String _OLD_FIELD_NAME = "lrEETrialLicenseKeys";
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		Upgrade_20160629110621057_Expando.class);
-
-	 */
 
 }

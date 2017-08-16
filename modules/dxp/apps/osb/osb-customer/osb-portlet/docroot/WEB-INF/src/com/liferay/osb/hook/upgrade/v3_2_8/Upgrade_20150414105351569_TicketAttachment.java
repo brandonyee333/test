@@ -14,46 +14,37 @@
 
 package com.liferay.osb.hook.upgrade.v3_2_8;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
-
-*/
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 
 /**
  * @author Alan Zhang
  */
-public class Upgrade_20150414105351569_TicketAttachment extends UpgradeProcess {
+public class Upgrade_20150414105351569_TicketAttachment
+	extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20150414105351569L;
 	}
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		if (!tableHasColumn("OSB_TicketAttachment", "availableServers")) {
+		if (!hasColumn("OSB_TicketAttachment", "availableServers")) {
 			runSQL(
 				"alter table OSB_TicketAttachment add column " +
 					"availableServers STRING");
 		}
 
-		if (!tableHasColumn("OSB_TicketAttachment", "replicate")) {
+		if (!hasColumn("OSB_TicketAttachment", "replicate")) {
 			runSQL(
 				"alter table OSB_TicketAttachment add column replicate " +
 					"BOOLEAN");
 		}
 
-		if (!tableHasColumn("OSB_TicketAttachment", "deleteDate")) {
+		if (!hasColumn("OSB_TicketAttachment", "deleteDate")) {
 			runSQL(
 				"alter table OSB_TicketAttachment add column deleteDate DATE");
 		}
 	}
-
-	 */
 
 }

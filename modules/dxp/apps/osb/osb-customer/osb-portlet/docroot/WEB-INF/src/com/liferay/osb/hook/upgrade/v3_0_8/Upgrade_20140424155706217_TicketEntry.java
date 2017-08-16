@@ -14,28 +14,20 @@
 
 package com.liferay.osb.hook.upgrade.v3_0_8;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
-
-*/
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 
 /**
  * @author Brent Krone-Schmidt
  */
-public class Upgrade_20140424155706217_TicketEntry extends UpgradeProcess {
+public class Upgrade_20140424155706217_TicketEntry extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20140424155706217L;
 	}
 
 	protected void addSupportRegionId() throws Exception {
-		if (!tableHasColumn("OSB_TicketEntry", "supportRegionId")) {
+		if (!hasColumn("OSB_TicketEntry", "supportRegionId")) {
 			runSQL(
 				"alter table OSB_TicketEntry add column supportRegionId LONG");
 		}
@@ -45,7 +37,5 @@ public class Upgrade_20140424155706217_TicketEntry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 		addSupportRegionId();
 	}
-
-	 */
 
 }

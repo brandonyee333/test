@@ -14,23 +14,15 @@
 
 package com.liferay.osb.hook.upgrade.v2_5_6;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import UpgradeProcess;
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.impl.TicketSolutionImpl;
-
-*/
 
 /**
  * @author Amos Fong
  */
-public class UpgradeTicketSolution extends UpgradeProcess {
+public class UpgradeTicketSolution extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateTicketSolution();
 	}
@@ -48,7 +40,5 @@ public class UpgradeTicketSolution extends UpgradeProcess {
 			"create index IX_A75ED6CB on OSB_TicketSolution (ticketEntryId, " +
 				"status)");
 	}
-
-	 */
 
 }

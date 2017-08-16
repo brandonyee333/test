@@ -14,36 +14,27 @@
 
 package com.liferay.osb.hook.upgrade.v3_6_7;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
-
-*/
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 
 /**
  * @author Kyle Bischof
  */
-public class Upgrade_20170131150512687_SupportResponse extends UpgradeProcess {
+public class Upgrade_20170131150512687_SupportResponse
+	extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20170131150512687L;
 	}
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		if (!tableHasColumn("OSB_SupportResponse", "accessType")) {
+		if (!hasColumn("OSB_SupportResponse", "accessType")) {
 			return;
 		}
 
 		runSQL("alter table OSB_SupportResponse drop column accessType");
 		runSQL("alter table OSB_SupportResponse drop column timeZoneType");
 	}
-
-	 */
 
 }

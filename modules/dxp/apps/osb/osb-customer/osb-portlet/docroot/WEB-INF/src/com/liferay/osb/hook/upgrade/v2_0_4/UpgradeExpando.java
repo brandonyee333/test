@@ -14,17 +14,6 @@
 
 package com.liferay.osb.hook.upgrade.v2_0_4;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import UpgradeProcess;
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.osb.util.OSBConstants;
-import com.liferay.portal.kernel.dao.orm.ORMException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.upgrade.UpgradeException;
-import com.liferay.portal.kernel.model.User;
 import com.liferay.expando.kernel.exception.NoSuchRowException;
 import com.liferay.expando.kernel.exception.NoSuchTableException;
 import com.liferay.expando.kernel.model.ExpandoColumn;
@@ -36,10 +25,17 @@ import com.liferay.expando.kernel.service.ExpandoColumnLocalServiceUtil;
 import com.liferay.expando.kernel.service.ExpandoRowLocalServiceUtil;
 import com.liferay.expando.kernel.service.ExpandoTableLocalServiceUtil;
 import com.liferay.expando.kernel.service.ExpandoValueLocalServiceUtil;
+import com.liferay.osb.util.OSBConstants;
+import com.liferay.portal.kernel.dao.orm.ORMException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.upgrade.UpgradeException;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.kernel.util.ArrayUtil;
 
 import java.util.List;
-
-*/
 
 /**
  * @author Ryan Park
@@ -47,11 +43,6 @@ import java.util.List;
  */
 public class UpgradeExpando extends UpgradeProcess {
 
-	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*
 	protected void deleteExpandoColumn(long companyId, String expandoColumnName)
 		throws Exception {
 
@@ -302,8 +293,6 @@ public class UpgradeExpando extends UpgradeProcess {
 		}
 	};
 
-	private static Log _log = LogFactoryUtil.getLog(UpgradeExpando.class);
-
-	 */
+	private static final Log _log = LogFactoryUtil.getLog(UpgradeExpando.class);
 
 }

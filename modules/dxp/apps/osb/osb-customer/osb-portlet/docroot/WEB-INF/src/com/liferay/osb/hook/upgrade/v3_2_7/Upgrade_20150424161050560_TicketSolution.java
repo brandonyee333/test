@@ -14,54 +14,45 @@
 
 package com.liferay.osb.hook.upgrade.v3_2_7;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
-
-*/
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 
 /**
  * @author Brent Krone-Schmidt
  */
-public class Upgrade_20150424161050560_TicketSolution extends UpgradeProcess {
+public class Upgrade_20150424161050560_TicketSolution
+	extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20150424161050560L;
 	}
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		if (!tableHasColumn("OSB_TicketSolution", "solution")) {
+		if (!hasColumn("OSB_TicketSolution", "solution")) {
 			runSQL(
 				"alter table OSB_TicketSolution change body solution STRING");
 		}
 
-		if (!tableHasColumn("OSB_TicketSolution", "summary")) {
+		if (!hasColumn("OSB_TicketSolution", "summary")) {
 			runSQL("alter table OSB_TicketSolution add summary STRING");
 		}
 
-		if (!tableHasColumn("OSB_TicketSolution", "customerSpecific")) {
+		if (!hasColumn("OSB_TicketSolution", "customerSpecific")) {
 			runSQL(
 				"alter table OSB_TicketSolution add customerSpecific BOOLEAN");
 		}
 
-		if (!tableHasColumn("OSB_TicketSolution", "environmentSpecific")) {
+		if (!hasColumn("OSB_TicketSolution", "environmentSpecific")) {
 			runSQL(
 				"alter table OSB_TicketSolution add environmentSpecific " +
 					"BOOLEAN");
 		}
 
-		if (!tableHasColumn("OSB_TicketSolution", "versionSpecific")) {
+		if (!hasColumn("OSB_TicketSolution", "versionSpecific")) {
 			runSQL(
 				"alter table OSB_TicketSolution add versionSpecific BOOLEAN");
 		}
 	}
-
-	 */
 
 }

@@ -14,36 +14,27 @@
 
 package com.liferay.osb.hook.upgrade.v3_0_4;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.service.AddressLocalServiceUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.util.Date;
 import java.util.List;
 
-*/
-
 /**
  * @author Sharon Li
  */
-public class Upgrade_20140626163336549_Address extends UpgradeProcess {
+public class Upgrade_20140626163336549_Address extends BaseUpgradeProcess {
 
-	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*public Address addAddress(
-			long userId, String userName, String className, long classPK,
-			long countryId) {
+	public Address addAddress(
+		long userId, String userName, String className, long classPK,
+		long countryId) {
 
 		long classNameId = PortalUtil.getClassNameId(className);
 		Date now = new Date();
@@ -65,7 +56,7 @@ public class Upgrade_20140626163336549_Address extends UpgradeProcess {
 		address.setMailing(false);
 		address.setPrimary(true);
 
-		return AddressLocalServiceUtil.updateAddress(address, false);
+		return AddressLocalServiceUtil.updateAddress(address);
 	}
 
 	@Override
@@ -93,7 +84,5 @@ public class Upgrade_20140626163336549_Address extends UpgradeProcess {
 			}
 		}
 	}
-
-	 */
 
 }

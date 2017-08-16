@@ -14,22 +14,14 @@
 
 package com.liferay.osb.hook.upgrade.v2_5_3;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import UpgradeProcess;
-
-*/
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 
 /**
  * @author Calvin Keum
  */
-public class UpgradeExternalIdMapper extends UpgradeProcess {
+public class UpgradeExternalIdMapper extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateExternalIdMapper();
 	}
@@ -39,7 +31,5 @@ public class UpgradeExternalIdMapper extends UpgradeProcess {
 			"update OSB_ExternalIdMapper set classPK = 12309704 where " +
 				"externalIdMapperId = 36271006");
 	}
-
-	 */
 
 }

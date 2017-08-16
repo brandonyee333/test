@@ -14,28 +14,20 @@
 
 package com.liferay.osb.hook.upgrade.v3_0_8;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
-
-*/
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 
 /**
  * @author Brent Krone-Schmidt
  */
-public class Upgrade_20140424155638740_SupportTeam extends UpgradeProcess {
+public class Upgrade_20140424155638740_SupportTeam extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20140424155638740L;
 	}
 
 	protected void addSupportLaborId() throws Exception {
-		if (tableHasColumn("OSB_SupportTeam", "supportLaborId")) {
+		if (hasColumn("OSB_SupportTeam", "supportLaborId")) {
 			return;
 		}
 
@@ -45,7 +37,7 @@ public class Upgrade_20140424155638740_SupportTeam extends UpgradeProcess {
 	}
 
 	protected void addType() throws Exception {
-		if (tableHasColumn("OSB_SupportTeam", "type_")) {
+		if (hasColumn("OSB_SupportTeam", "type_")) {
 			return;
 		}
 
@@ -59,7 +51,5 @@ public class Upgrade_20140424155638740_SupportTeam extends UpgradeProcess {
 		addSupportLaborId();
 		addType();
 	}
-
-	 */
 
 }

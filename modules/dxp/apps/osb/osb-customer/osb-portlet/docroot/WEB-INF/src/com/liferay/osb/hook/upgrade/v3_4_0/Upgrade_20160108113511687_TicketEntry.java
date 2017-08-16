@@ -14,32 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_4_0;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.util.StringBundler;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import java.util.List;
 
-*/
-
 /**
  * @author Jeremy Fu
  */
-public class Upgrade_20160108113511687_TicketEntry extends UpgradeProcess {
+public class Upgrade_20160108113511687_TicketEntry extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20160108113511687L;
 	}
@@ -73,7 +64,7 @@ public class Upgrade_20160108113511687_TicketEntry extends UpgradeProcess {
 					continue;
 				}
 
-				OfferingEntry offeringEntry = offeringEntries.get(0);
+				/*OfferingEntry offeringEntry = offeringEntries.get(0);
 
 				StringBundler sb2 = new StringBundler(8);
 
@@ -87,14 +78,12 @@ public class Upgrade_20160108113511687_TicketEntry extends UpgradeProcess {
 				sb2.append(" where ticketEntryId = ");
 				sb2.append(ticketEntryId);
 
-				runSQL(sb2.toString());
+				runSQL(sb2.toString());*/
 			}
 		}
 		finally {
 			DataAccess.cleanUp(ps, rs);
 		}
 	}
-
-	 */
 
 }

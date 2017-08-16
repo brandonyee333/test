@@ -14,24 +14,14 @@
 
 package com.liferay.osb.hook.upgrade.v3_0_8;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
-import com.liferay.portal.kernel.dao.db.DB;
-import com.liferay.portal.kernel.dao.db.DBManagerUtil;
-
-*/
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 
 /**
  * @author Sharon Li
  */
-public class Upgrade_20140801185959487_Region extends UpgradeProcess {
+public class Upgrade_20140801185959487_Region extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20140801185959487L;
 	}
@@ -42,13 +32,9 @@ public class Upgrade_20140801185959487_Region extends UpgradeProcess {
 	}
 
 	protected void upgradeRegion() throws Exception {
-		DB db = DBManagerUtil.getDB();
-
-		db.runSQLTemplate(
+		runSQLTemplate(
 			"com/liferay/osb/hook/upgrade/v3_0_8/dependencies/region.sql",
 			false);
 	}
-
-	 */
 
 }

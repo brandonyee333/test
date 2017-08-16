@@ -14,28 +14,20 @@
 
 package com.liferay.osb.hook.upgrade.v3_5_4;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.util.StringBundler;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
-*/
 
 /**
  * @author Jeremy Fu
  */
-public class Upgrade_20160725150104145_OfferingEntry extends UpgradeProcess {
+public class Upgrade_20160725150104145_OfferingEntry
+	extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20160725150104145L;
 	}
@@ -64,17 +56,15 @@ public class Upgrade_20160725150104145_OfferingEntry extends UpgradeProcess {
 			while (rs.next()) {
 				long offeringEntryId = rs.getLong("offeringEntryId");
 
-				runSQL(
+				/*runSQL(
 					"update OSB_OfferingEntry set version = '" +
 						ProductEntryConstants.PORTAL_VERSION_ANY + "' where " +
-							"offeringEntryId = " + offeringEntryId);
+							"offeringEntryId = " + offeringEntryId);*/
 			}
 		}
 		finally {
 			DataAccess.cleanUp(ps, rs);
 		}
 	}
-
-	 */
 
 }

@@ -14,29 +14,21 @@
 
 package com.liferay.osb.hook.upgrade.v3_6_2;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
-
-*/
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 
 /**
  * @author Amos Fong
  */
-public class Upgrade_20161115101724070_OrderEntry extends UpgradeProcess {
+public class Upgrade_20161115101724070_OrderEntry extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20161115101724070L;
 	}
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		if (!tableHasColumn("OSB_OrderEntry", "status")) {
+		if (!hasColumn("OSB_OrderEntry", "status")) {
 			runSQL("alter table OSB_OrderEntry add column status INTEGER");
 			runSQL(
 				"alter table OSB_OrderEntry add column statusByUserId BIGINT");
@@ -50,7 +42,5 @@ public class Upgrade_20161115101724070_OrderEntry extends UpgradeProcess {
 			runSQL("update OSB_OrderEntry set status = 0");
 		}
 	}
-
-	 */
 
 }

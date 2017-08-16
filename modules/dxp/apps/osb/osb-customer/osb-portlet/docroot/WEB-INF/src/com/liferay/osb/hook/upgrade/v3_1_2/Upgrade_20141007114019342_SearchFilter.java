@@ -14,35 +14,25 @@
 
 package com.liferay.osb.hook.upgrade.v3_1_2;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
-
-*/
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 
 /**
  * @author Brent Krone-Schmidt
  */
-public class Upgrade_20141007114019342_SearchFilter extends UpgradeProcess {
+public class Upgrade_20141007114019342_SearchFilter extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20141007114019342L;
 	}
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		if (tableHasColumn("OSB_SearchFilter", "visibility")) {
+		if (hasColumn("OSB_SearchFilter", "visibility")) {
 			return;
 		}
 
 		runSQL("alter table OSB_SearchFilter add column visibility INTEGER");
 	}
-
-	 */
 
 }

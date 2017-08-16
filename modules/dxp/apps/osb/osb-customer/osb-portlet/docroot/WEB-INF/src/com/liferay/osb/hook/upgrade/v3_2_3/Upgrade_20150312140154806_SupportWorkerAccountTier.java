@@ -14,9 +14,7 @@
 
 package com.liferay.osb.hook.upgrade.v3_2_3;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.SupportWorker;
 import com.liferay.osb.model.SupportWorkerConstants;
@@ -28,25 +26,19 @@ import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.List;
 
-*/
-
 /**
  * @author Brent Krone-Schmidt
  */
 public class Upgrade_20150312140154806_SupportWorkerAccountTier
-	extends UpgradeProcess {
+	extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20150312140154806L;
 	}
 
 	protected void addSupportWorkerAccountTierRows() throws Exception {
-		if (tableHasData("OSB_SupportWorkerAccountTier")) {
+		if (hasRows("OSB_SupportWorkerAccountTier")) {
 			return;
 		}
 
@@ -145,7 +137,5 @@ public class Upgrade_20150312140154806_SupportWorkerAccountTier
 
 		addSupportWorkerAccountTierRows();
 	}
-
-	 */
 
 }

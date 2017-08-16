@@ -16,10 +16,6 @@ package com.liferay.osb.hook.upgrade.v1_4_0;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
-/*import UpgradeProcess;
-
-*/
-
 /**
  * @author Lin Cui
  */
@@ -27,15 +23,11 @@ public class UpgradeSupportResponse extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
-	protected void doUpgrade() throws Exception {
 		updateSupportResponse();
 	}
 
 	protected void updateSupportResponse() throws Exception {
-		if (tableHasColumn("OSB_SupportResponse", "supportLevel")) {
+		if (hasColumn("OSB_SupportResponse", "supportLevel")) {
 			return;
 		}
 
@@ -45,7 +37,5 @@ public class UpgradeSupportResponse extends UpgradeProcess {
 			"create index IX_21D8E69E on OSB_SupportResponse (supportLevel)");
 		runSQL("update OSB_SupportResponse set supportLevel = 0");
 	}
-
-	 */
 
 }

@@ -14,22 +14,14 @@
 
 package com.liferay.osb.hook.upgrade.v3_0_9;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
-
-*/
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 
 /**
  * @author Amos Fong
  */
-public class Upgrade_20140911175154027_ListType extends UpgradeProcess {
+public class Upgrade_20140911175154027_ListType extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20140911175154027L;
 	}
@@ -43,7 +35,5 @@ public class Upgrade_20140911175154027_ListType extends UpgradeProcess {
 			25005, "3.1",
 			"com.liferay.osb.model.ProductEntry.socialOfficeMinorVersions");
 	}
-
-	 */
 
 }

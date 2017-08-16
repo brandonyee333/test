@@ -14,22 +14,14 @@
 
 package com.liferay.osb.hook.upgrade.v3_0_0;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
-
-*/
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 
 /**
  * @author Sharon Li
  */
-public class Upgrade_20140506163155077_TicketEntry extends UpgradeProcess {
+public class Upgrade_20140506163155077_TicketEntry extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20140506163155077L;
 	}
@@ -40,17 +32,15 @@ public class Upgrade_20140506163155077_TicketEntry extends UpgradeProcess {
 	}
 
 	protected void upgradeTicketEntry() throws Exception {
-		if (!tableHasColumn("OSB_TicketEntry", "envBrowser")) {
+		if (!hasColumn("OSB_TicketEntry", "envBrowser")) {
 			runSQL("alter table OSB_TicketEntry add column envBrowser integer");
 		}
 
-		if (!tableHasColumn("OSB_TicketEntry", "envBrowserCustom")) {
+		if (!hasColumn("OSB_TicketEntry", "envBrowserCustom")) {
 			runSQL(
 				"alter table OSB_TicketEntry add column envBrowserCustom " +
 					"VARCHAR(150)");
 		}
 	}
-
-	 */
 
 }

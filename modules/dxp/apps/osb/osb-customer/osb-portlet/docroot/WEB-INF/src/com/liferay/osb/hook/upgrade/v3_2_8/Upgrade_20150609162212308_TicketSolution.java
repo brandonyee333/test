@@ -14,42 +14,33 @@
 
 package com.liferay.osb.hook.upgrade.v3_2_8;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.impl.TicketSolutionImpl;
-
-*/
 
 /**
  * @author Amos Fong
  */
-public class Upgrade_20150609162212308_TicketSolution extends UpgradeProcess {
+public class Upgrade_20150609162212308_TicketSolution
+	extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20150609162212308L;
 	}
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		if (!tableHasColumn(TicketSolutionImpl.TABLE_NAME, "reviewForKB")) {
+		if (!hasColumn(TicketSolutionImpl.TABLE_NAME, "reviewForKB")) {
 			runSQL(
 				"alter table " + TicketSolutionImpl.TABLE_NAME + " add " +
 					"reviewForKB BOOLEAN");
 		}
 
-		if (!tableHasColumn(TicketSolutionImpl.TABLE_NAME, "issueType")) {
+		if (!hasColumn(TicketSolutionImpl.TABLE_NAME, "issueType")) {
 			runSQL(
 				"alter table " + TicketSolutionImpl.TABLE_NAME + " add " +
 					"issueType INTEGER");
 		}
 	}
-
-	 */
 
 }

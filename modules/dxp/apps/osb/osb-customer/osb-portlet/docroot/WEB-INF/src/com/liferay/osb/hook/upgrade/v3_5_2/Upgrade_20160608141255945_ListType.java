@@ -14,9 +14,6 @@
 
 package com.liferay.osb.hook.upgrade.v3_5_2;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.AuditEntry;
 import com.liferay.osb.model.AuditEntryConstants;
@@ -26,23 +23,17 @@ import com.liferay.osb.service.AuditEntryLocalServiceUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
-*/
 
 /**
  * @author Jenny Chen
  */
-public class Upgrade_20160608141255945_ListType extends UpgradeProcess {
+public class Upgrade_20160608141255945_ListType extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20160608141255945L;
 	}
@@ -330,11 +321,11 @@ public class Upgrade_20160608141255945_ListType extends UpgradeProcess {
 	}
 
 	protected void updateTicketEntryTable() throws Exception {
-		if (!tableHasColumn("OSB_TicketEntry", "envCS")) {
+		if (!hasColumn("OSB_TicketEntry", "envCS")) {
 			runSQL("alter table OSB_TicketEntry add column envCS INTEGER");
 		}
 
-		if (!tableHasColumn("OSB_TicketEntry", "envSearch")) {
+		if (!hasColumn("OSB_TicketEntry", "envSearch")) {
 			runSQL(
 				"alter table OSB_TicketEntry add column envSearch VARCHAR(75)");
 		}
@@ -362,7 +353,5 @@ public class Upgrade_20160608141255945_ListType extends UpgradeProcess {
 			DataAccess.cleanUp(ps);
 		}
 	}
-
-	 */
 
 }

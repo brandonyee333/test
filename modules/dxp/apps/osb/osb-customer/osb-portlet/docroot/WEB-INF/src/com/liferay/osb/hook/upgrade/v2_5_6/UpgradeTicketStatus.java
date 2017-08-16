@@ -14,16 +14,13 @@
 
 package com.liferay.osb.hook.upgrade.v2_5_6;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import UpgradeProcess;
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.TicketEntryConstants;
 import com.liferay.osb.model.TicketFlagConstants;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.util.StringBundler;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -33,19 +30,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-*/
-
 /**
  * @author Alan Zhang
  * @author Sharon Li
  */
-public class UpgradeTicketStatus extends UpgradeProcess {
+public class UpgradeTicketStatus extends BaseUpgradeProcess {
 
-	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*public static final int STATUS_CUSTOMER_TESTING = 33015;
+	public static final int STATUS_CUSTOMER_TESTING = 33015;
 
 	public static final int STATUS_INVESTIGATING = 33003;
 
@@ -166,7 +157,5 @@ public class UpgradeTicketStatus extends UpgradeProcess {
 				curTicketEntryData[1], curTicketEntryData[0]);
 		}
 	}
-
-	 */
 
 }

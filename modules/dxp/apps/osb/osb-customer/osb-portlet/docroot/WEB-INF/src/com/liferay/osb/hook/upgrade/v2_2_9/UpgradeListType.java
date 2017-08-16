@@ -14,22 +14,14 @@
 
 package com.liferay.osb.hook.upgrade.v2_2_9;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import UpgradeProcess;
-
-*/
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 
 /**
  * @author Amos Fong
  */
-public class UpgradeListType extends UpgradeProcess {
+public class UpgradeListType extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	protected void doUpgrade() throws Exception {
 		upgradeListTypes();
 	}
@@ -37,7 +29,5 @@ public class UpgradeListType extends UpgradeProcess {
 	protected void upgradeListTypes() throws Exception {
 		runSQL("update ListType set name = '6.2 EE' where listTypeId = 20080");
 	}
-
-	 */
 
 }

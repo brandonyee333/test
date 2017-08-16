@@ -14,22 +14,14 @@
 
 package com.liferay.osb.hook.upgrade.v3_2_9;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
-
-*/
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 
 /**
  * @author Alan Zhang
  */
-public class Upgrade_20150617144450823_ReleaseNotes extends UpgradeProcess {
+public class Upgrade_20150617144450823_ReleaseNotes extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20150617144450823L;
 	}
@@ -40,7 +32,5 @@ public class Upgrade_20150617144450823_ReleaseNotes extends UpgradeProcess {
 			"alter table RN_ReleaseNotes modify column jiraIssueKeys " +
 				"varchar(20000)");
 	}
-
-	 */
 
 }

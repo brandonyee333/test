@@ -14,23 +14,15 @@
 
 package com.liferay.osb.hook.upgrade.v3_0_8;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
-
-*/
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 
 /**
  * @author Brent Krone-Schmidt
  */
 public class Upgrade_20140424155644227_SupportTeamLanguage
-	extends UpgradeProcess {
+	extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20140424155644227L;
 	}
@@ -44,15 +36,13 @@ public class Upgrade_20140424155644227_SupportTeamLanguage
 	}
 
 	protected void renameColumns() throws Exception {
-		if (!tableHasColumn(
-				"OSB_SupportTeamLanguage", "supportTeamLanguageId")) {
-
+		if (!hasColumn("OSB_SupportTeamLanguage", "supportTeamLanguageId")) {
 			runSQL(
 				"alter table OSB_SupportTeamLanguage change " +
 					"supportTeamLocaleId supportTeamLanguageId LONG");
 		}
 
-		if (!tableHasColumn("OSB_SupportTeamLanguage", "languageId")) {
+		if (!hasColumn("OSB_SupportTeamLanguage", "languageId")) {
 			runSQL(
 				"alter table OSB_SupportTeamLanguage change localeType " +
 					"languageId VARCHAR(75)");
@@ -90,7 +80,5 @@ public class Upgrade_20140424155644227_SupportTeamLanguage
 			"update OSB_SupportTeamLanguage set languageId = 'es_ES' where " +
 				"languageId = '4'");
 	}
-
-	 */
 
 }

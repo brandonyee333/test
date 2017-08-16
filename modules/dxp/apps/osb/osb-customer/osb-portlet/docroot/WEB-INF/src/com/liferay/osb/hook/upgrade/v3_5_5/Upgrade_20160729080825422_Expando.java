@@ -14,23 +14,15 @@
 
 package com.liferay.osb.hook.upgrade.v3_5_5;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.portal.kernel.util.StringBundler;
-
-*/
 
 /**
  * @author Luke Shackelford
  */
-public class Upgrade_20160729080825422_Expando extends UpgradeProcess {
+public class Upgrade_20160729080825422_Expando extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20160729080825422L;
 	}
@@ -249,7 +241,5 @@ public class Upgrade_20160729080825422_Expando extends UpgradeProcess {
 	private static final long _OSB_COUNTRY_EXPANDO_COLUMN_ID = 29224278;
 
 	private static final long _OSB_INDUSTRY_EXPANDO_COLUMN_ID = 29224281;
-
-	 */
 
 }

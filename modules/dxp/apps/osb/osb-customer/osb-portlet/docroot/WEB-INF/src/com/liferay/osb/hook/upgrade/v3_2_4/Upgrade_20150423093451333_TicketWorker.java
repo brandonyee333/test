@@ -14,37 +14,27 @@
 
 package com.liferay.osb.hook.upgrade.v3_2_4;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
-
-*/
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 
 /**
  * @author Brent Krone-Schmidt
  */
-public class Upgrade_20150423093451333_TicketWorker extends UpgradeProcess {
+public class Upgrade_20150423093451333_TicketWorker extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20150423093451333L;
 	}
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		if (!tableHasColumn("OSB_TicketWorker", "sourceClassNameId")) {
+		if (!hasColumn("OSB_TicketWorker", "sourceClassNameId")) {
 			runSQL("alter table OSB_TicketWorker add sourceClassNameId LONG");
 		}
 
-		if (!tableHasColumn("OSB_TicketWorker", "sourceClassPK")) {
+		if (!hasColumn("OSB_TicketWorker", "sourceClassPK")) {
 			runSQL("alter table OSB_TicketWorker add sourceClassPK LONG");
 		}
 	}
-
-	 */
 
 }

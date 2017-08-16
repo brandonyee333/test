@@ -14,23 +14,15 @@
 
 package com.liferay.osb.hook.upgrade.v3_0_6;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.impl.TicketCallImpl;
-
-*/
 
 /**
  * @author Sharon Li
  */
-public class Upgrade_20140708153032147_TicketCall extends UpgradeProcess {
+public class Upgrade_20140708153032147_TicketCall extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20140708153032147L;
 	}
@@ -49,7 +41,5 @@ public class Upgrade_20140708153032147_TicketCall extends UpgradeProcess {
 
 		runSQL("create index IX_9DB04820 on OSB_TicketCall (ticketEntryId)");
 	}
-
-	 */
 
 }

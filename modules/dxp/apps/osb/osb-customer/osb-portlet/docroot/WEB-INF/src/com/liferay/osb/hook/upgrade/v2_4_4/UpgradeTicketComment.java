@@ -16,10 +16,6 @@ package com.liferay.osb.hook.upgrade.v2_4_4;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
-/*import UpgradeProcess;
-
-*/
-
 /**
  * @author Alan Zhang
  */
@@ -27,17 +23,11 @@ public class UpgradeTicketComment extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
-	protected void doUpgrade() throws Exception {
 		updateTicketComment();
 	}
 
 	protected void updateTicketComment() throws Exception {
 		runSQL("update OSB_TicketComment set visibility = 3 where userId = 5");
 	}
-
-	 */
 
 }

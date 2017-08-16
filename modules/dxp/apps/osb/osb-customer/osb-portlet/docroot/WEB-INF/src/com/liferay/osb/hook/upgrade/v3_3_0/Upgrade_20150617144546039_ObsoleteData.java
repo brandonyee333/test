@@ -14,37 +14,27 @@
 
 package com.liferay.osb.hook.upgrade.v3_3_0;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.model.Layout;
 import com.liferay.message.boards.kernel.model.MBDiscussion;
 import com.liferay.message.boards.kernel.service.MBDiscussionLocalServiceUtil;
 import com.liferay.message.boards.kernel.service.MBMessageLocalServiceUtil;
 import com.liferay.message.boards.kernel.service.MBThreadLocalServiceUtil;
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Layout;
 
 import java.util.List;
-
-*/
 
 /**
  * @author Amos Fong
  */
-public class Upgrade_20150617144546039_ObsoleteData extends UpgradeProcess {
+public class Upgrade_20150617144546039_ObsoleteData extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20150617144546039L;
 	}
 
 	protected void deleteLayoutMBDiscussions() throws PortalException {
-
 		List<MBDiscussion> mbDiscussions =
 			MBMessageLocalServiceUtil.getDiscussions(Layout.class.getName());
 
@@ -106,7 +96,7 @@ public class Upgrade_20150617144546039_ObsoleteData extends UpgradeProcess {
 		deleteResourceActions("com.liferay.portlet.tasks.model.TasksProposal");
 		deleteResourceActions("my_summary_portlet_WAR_mysummaryportlet");
 
-		Run in scripting console because it takes too long
+		/*Run in scripting console because it takes too long
 
 		deleteLayoutMBDiscussions();
 
@@ -121,6 +111,7 @@ public class Upgrade_20150617144546039_ObsoleteData extends UpgradeProcess {
 		deleteResourcePermissions("9_WAR_wolportlet");
 		deleteResourcePermissions("10_WAR_wolportlet");
 		deleteResourcePermissions("1_WAR_eloquaportlet");
+		*/
 	}
 
 	protected void dropObsoleteTables() throws Exception {
@@ -151,7 +142,5 @@ public class Upgrade_20150617144546039_ObsoleteData extends UpgradeProcess {
 		runSQL("drop table WSRPPortlet");
 		runSQL("drop table WSRPProducer");
 	}
-
-	 */
 
 }

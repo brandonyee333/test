@@ -14,29 +14,20 @@
 
 package com.liferay.osb.hook.upgrade.v3_0_8;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.SupportTeamConstants;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.util.StringBundler;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
-*/
 
 /**
  * @author Brent Krone-Schmidt
  */
-public class Upgrade_20140509155638740_PopulateData extends UpgradeProcess {
+public class Upgrade_20140509155638740_PopulateData extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20140509155638740L;
 	}
@@ -136,7 +127,7 @@ public class Upgrade_20140509155638740_PopulateData extends UpgradeProcess {
 	}
 
 	protected void populateHolidayCalendars() throws Exception {
-		if (tableHasData("OSB_HolidayCalendar")) {
+		if (hasRows("OSB_HolidayCalendar")) {
 			return;
 		}
 
@@ -311,7 +302,7 @@ public class Upgrade_20140509155638740_PopulateData extends UpgradeProcess {
 	}
 
 	protected void populateSupportLabor() throws Exception {
-		if (tableHasData("OSB_SupportLabor")) {
+		if (hasRows("OSB_SupportLabor")) {
 			return;
 		}
 
@@ -362,7 +353,7 @@ public class Upgrade_20140509155638740_PopulateData extends UpgradeProcess {
 	}
 
 	protected void populateSupportRegions() throws Exception {
-		if (tableHasData("OSB_SupportRegion")) {
+		if (hasRows("OSB_SupportRegion")) {
 			return;
 		}
 
@@ -520,7 +511,5 @@ public class Upgrade_20140509155638740_PopulateData extends UpgradeProcess {
 
 		runSQL(sb.toString());
 	}
-
-	 */
 
 }

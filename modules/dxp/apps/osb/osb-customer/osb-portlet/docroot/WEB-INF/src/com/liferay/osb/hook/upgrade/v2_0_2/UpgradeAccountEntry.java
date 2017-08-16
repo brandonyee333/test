@@ -14,19 +14,15 @@
 
 package com.liferay.osb.hook.upgrade.v2_0_2;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import UpgradeProcess;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.service.AddressLocalServiceUtil;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
 import java.util.List;
-
-*/
 
 /**
  * @author Alan Zhang
@@ -35,15 +31,11 @@ public class UpgradeAccountEntry extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
-	protected void doUpgrade() throws Exception {
 		updateAccountEntry();
 	}
 
 	protected void updateAccountEntry() throws Exception {
-		if (tableHasColumn("OSB_AccountEntry", "countryId")) {
+		if (hasColumn("OSB_AccountEntry", "countryId")) {
 			return;
 		}
 
@@ -74,15 +66,12 @@ public class UpgradeAccountEntry extends UpgradeProcess {
 				}
 			}
 
-			AccountEntryLocalServiceUtil.updateAccountEntry(
-				accountEntry, false);
+			AccountEntryLocalServiceUtil.updateAccountEntry(accountEntry);
 
 			AddressLocalServiceUtil.deleteAddresses(
 				OSBConstants.COMPANY_ID, AccountEntry.class.getName(),
 				accountEntry.getAccountEntryId());
 		}
 	}
-
-	 */
 
 }

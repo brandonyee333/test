@@ -14,35 +14,25 @@
 
 package com.liferay.osb.hook.upgrade.v3_2_4;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
-
-*/
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 
 /**
  * @author Kyle Bischof
  */
-public class Upgrade_20150413155144056_AccountEntry extends UpgradeProcess {
+public class Upgrade_20150413155144056_AccountEntry extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20150413155144056L;
 	}
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		if (!tableHasColumn("OSB_AccountEntry", "corpEntryName")) {
+		if (!hasColumn("OSB_AccountEntry", "corpEntryName")) {
 			runSQL(
 				"alter table OSB_AccountEntry add corpEntryName " +
 					"VARCHAR(75)");
 		}
 	}
-
-	 */
 
 }

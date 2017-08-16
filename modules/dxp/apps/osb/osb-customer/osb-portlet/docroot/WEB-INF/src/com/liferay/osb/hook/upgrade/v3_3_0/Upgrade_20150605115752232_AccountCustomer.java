@@ -14,22 +14,15 @@
 
 package com.liferay.osb.hook.upgrade.v3_3_0;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
-
-*/
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 
 /**
  * @author Jeremy Fu
  */
-public class Upgrade_20150605115752232_AccountCustomer extends UpgradeProcess {
+public class Upgrade_20150605115752232_AccountCustomer
+	extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20150605115752232L;
 	}
@@ -42,7 +35,5 @@ public class Upgrade_20150605115752232_AccountCustomer extends UpgradeProcess {
 					"role)");
 		}
 	}
-
-	 */
 
 }

@@ -14,9 +14,7 @@
 
 package com.liferay.osb.hook.upgrade.v3_5_7;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.SupportResponse;
 import com.liferay.osb.model.SupportResponseConstants;
 import com.liferay.osb.service.SupportResponseLocalServiceUtil;
@@ -24,18 +22,13 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 
 import java.util.List;
 
-*/
-
 /**
  * @author Amos Fong
  */
-public class Upgrade_20160812101343680_SupportResponse extends UpgradeProcess {
+public class Upgrade_20160812101343680_SupportResponse
+	extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20160812101343680L;
 	}
@@ -108,7 +101,5 @@ public class Upgrade_20160812101343680_SupportResponse extends UpgradeProcess {
 	private static final long _SUPPORT_RESPONSE_PLATINUM_ID = 77672068;
 
 	private static final long _SUPPORT_RESPONSE_SILVER_ID = 77672086;
-
-	 */
 
 }

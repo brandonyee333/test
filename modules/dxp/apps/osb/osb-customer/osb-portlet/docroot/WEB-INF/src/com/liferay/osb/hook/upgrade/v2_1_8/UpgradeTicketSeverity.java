@@ -14,23 +14,15 @@
 
 package com.liferay.osb.hook.upgrade.v2_1_8;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.AuditEntryConstants;
-
-*/
 
 /**
  * @author Sharon Li
  */
-public class UpgradeTicketSeverity extends UpgradeProcess {
+public class UpgradeTicketSeverity extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	protected void doUpgrade() throws Exception {
 		insertListType(
 			AuditEntryConstants.FIELD_SEVERITY_REASON, "severity-reason",
@@ -40,7 +32,5 @@ public class UpgradeTicketSeverity extends UpgradeProcess {
 			"severity-reason-comments",
 			"com.liferay.osb.model.AuditEntry.field");
 	}
-
-	 */
 
 }

@@ -14,12 +14,8 @@
 
 package com.liferay.osb.hook.upgrade.v2_3_0;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import UpgradeProcess;
 import com.liferay.osb.model.impl.AccountAttachmentImpl;
-
-*/
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
 /**
  * @author Brent Krone-Schmidt
@@ -27,10 +23,6 @@ import com.liferay.osb.model.impl.AccountAttachmentImpl;
 public class UpgradeAccountAttachment extends UpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateAccountAttachment();
 	}
@@ -48,7 +40,5 @@ public class UpgradeAccountAttachment extends UpgradeProcess {
 			"create index IX_E16F4B91 on OSB_AccountAttachment " +
 				"(accountEntryId, fileName, type_)");
 	}
-
-	 */
 
 }

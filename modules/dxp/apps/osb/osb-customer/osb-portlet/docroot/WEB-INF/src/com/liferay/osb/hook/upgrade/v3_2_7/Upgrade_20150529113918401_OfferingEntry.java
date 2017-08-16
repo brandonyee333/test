@@ -14,33 +14,24 @@
 
 package com.liferay.osb.hook.upgrade.v3_2_7;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.impl.OfferingEntryImpl;
 import com.liferay.portal.kernel.util.StringBundler;
-
-*/
 
 /**
  * @author Brent Krone-Schmidt
  */
-public class Upgrade_20150529113918401_OfferingEntry extends UpgradeProcess {
+public class Upgrade_20150529113918401_OfferingEntry
+	extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20150529113918401L;
 	}
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		if (!tableHasColumn(
-				OfferingEntryImpl.TABLE_NAME, "processorCoresAllowed")) {
-
+		if (!hasColumn(OfferingEntryImpl.TABLE_NAME, "processorCoresAllowed")) {
 			StringBundler sb = new StringBundler(3);
 
 			sb.append("alter table ");
@@ -50,7 +41,5 @@ public class Upgrade_20150529113918401_OfferingEntry extends UpgradeProcess {
 			runSQL(sb.toString());
 		}
 	}
-
-	 */
 
 }

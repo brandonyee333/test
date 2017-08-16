@@ -14,23 +14,15 @@
 
 package com.liferay.osb.hook.upgrade.v3_4_0;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.TicketEntry;
-
-*/
 
 /**
  * @author Jeremy Fu
  */
-public class Upgrade_20160107101931458_ListType extends UpgradeProcess {
+public class Upgrade_20160107101931458_ListType extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20160107101931458L;
 	}
@@ -40,7 +32,5 @@ public class Upgrade_20160107101931458_ListType extends UpgradeProcess {
 		insertListType(
 			28033, "mariadb-10", TicketEntry.class.getName() + ".envDB");
 	}
-
-	 */
 
 }

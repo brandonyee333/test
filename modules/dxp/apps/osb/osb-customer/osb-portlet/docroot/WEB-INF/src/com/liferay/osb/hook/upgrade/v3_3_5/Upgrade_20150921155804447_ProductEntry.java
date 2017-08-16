@@ -14,22 +14,14 @@
 
 package com.liferay.osb.hook.upgrade.v3_3_5;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
-
-*/
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 
 /**
  * @author Amos Fong
  */
-public class Upgrade_20150921155804447_ProductEntry extends UpgradeProcess {
+public class Upgrade_20150921155804447_ProductEntry extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20150921155804447L;
 	}
@@ -42,11 +34,9 @@ public class Upgrade_20150921155804447_ProductEntry extends UpgradeProcess {
 			"alter table OSB_ProductEntry add column platformVersion " +
 				"VARCHAR(75)");
 
-		runSQL(
+		/*runSQL(
 			"update OSB_ProductEntry set platform = '" +
-				ProductEntryConstants.PLATFORM_LIFERAY_PORTAL + "'");
+				ProductEntryConstants.PLATFORM_LIFERAY_PORTAL + "'");*/
 	}
-
-	 */
 
 }

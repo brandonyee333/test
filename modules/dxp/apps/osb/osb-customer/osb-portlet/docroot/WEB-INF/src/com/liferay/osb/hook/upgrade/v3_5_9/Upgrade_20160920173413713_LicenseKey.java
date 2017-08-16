@@ -14,39 +14,31 @@
 
 package com.liferay.osb.hook.upgrade.v3_5_9;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.portal.kernel.util.StringBundler;
-
-*/
 
 /**
  * @author Amos Fong
  */
-public class Upgrade_20160920173413713_LicenseKey extends UpgradeProcess {
+public class Upgrade_20160920173413713_LicenseKey extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20160920173413713L;
 	}
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		if (!tableHasColumn("OSB_LicenseKey", "productEntryId")) {
+		if (!hasColumn("OSB_LicenseKey", "productEntryId")) {
 			runSQL("alter table OSB_LicenseKey add column productEntryId LONG");
 		}
 
-		if (!tableHasColumn("OSB_LicenseKey", "supportResponseId")) {
+		if (!hasColumn("OSB_LicenseKey", "supportResponseId")) {
 			runSQL(
 				"alter table OSB_LicenseKey add column supportResponseId LONG");
 		}
 
-		if (tableHasColumn("OSB_LicenseKey", "offeringDefinitionId")) {
+		if (hasColumn("OSB_LicenseKey", "offeringDefinitionId")) {
 			StringBundler sb = new StringBundler(8);
 
 			sb.append("update OSB_LicenseKey inner join ");
@@ -64,7 +56,5 @@ public class Upgrade_20160920173413713_LicenseKey extends UpgradeProcess {
 				"alter table OSB_LicenseKey drop column offeringDefinitionId");
 		}
 	}
-
-	 */
 
 }

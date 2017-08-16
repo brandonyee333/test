@@ -16,10 +16,6 @@ package com.liferay.osb.hook.upgrade.v2_2_0;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
-/*import UpgradeProcess;
-
-*/
-
 /**
  * @author Sharon Li
  */
@@ -27,15 +23,11 @@ public class UpgradeTicketComment extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
-	protected void doUpgrade() throws Exception {
 		updateTicketComment();
 	}
 
 	protected void updateTicketComment() throws Exception {
-		if (tableHasColumn("OSB_TicketComment", "type_")) {
+		if (hasColumn("OSB_TicketComment", "type_")) {
 			return;
 		}
 
@@ -43,7 +35,5 @@ public class UpgradeTicketComment extends UpgradeProcess {
 
 		runSQL("update OSB_TicketComment set type_ = 0");
 	}
-
-	 */
 
 }

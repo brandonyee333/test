@@ -14,24 +14,16 @@
 
 package com.liferay.osb.hook.upgrade.v3_1_0;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.impl.AccountInformationImpl;
-
-*/
 
 /**
  * @author Alan Zhang
  */
 public class Upgrade_20140724103011044_AccountInformation
-	extends UpgradeProcess {
+	extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20140724103011044L;
 	}
@@ -51,7 +43,5 @@ public class Upgrade_20140724103011044_AccountInformation
 			"create unique index IX_9644DED0 on OSB_AccountInformation (" +
 				"accountEntryId, accountProjectId, fieldId)");
 	}
-
-	 */
 
 }

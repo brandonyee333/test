@@ -14,27 +14,17 @@
 
 package com.liferay.osb.hook.upgrade.v1_7_0;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
-
-*/
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 
 /**
  * @author Alan Zhang
  */
-public class UpgradeTicketEnvironment extends UpgradeProcess {
+public class UpgradeTicketEnvironment extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	protected void doUpgrade() throws Exception {
 		insertListType(
 			29002, "java-7", "com.liferay.osb.model.TicketEntry.envJVM");
 	}
-
-	 */
 
 }

@@ -14,16 +14,13 @@
 
 package com.liferay.osb.hook.upgrade.v3_5_1;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.OfferingDefinition;
 import com.liferay.osb.service.OfferingBundleLocalServiceUtil;
 import com.liferay.osb.service.OfferingDefinitionLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -33,26 +30,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-*/
-
 /**
  * @author Amos Fong
  */
 public class Upgrade_20160602105202547_OfferingDefinition
-	extends UpgradeProcess {
+	extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20160602105202547L;
 	}
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		if (!tableHasColumn("OSB_OfferingDefinition", "productDescription")) {
+		if (!hasColumn("OSB_OfferingDefinition", "productDescription")) {
 			runSQL(
 				"alter table OSB_OfferingDefinition add column " +
 					"productDescription VARCHAR(75)");
@@ -91,8 +82,8 @@ public class Upgrade_20160602105202547_OfferingDefinition
 	}
 
 	protected boolean isPreferred(
-			OfferingDefinition offeringDefinition,
-			OfferingDefinition offeringDefinition2) {
+		OfferingDefinition offeringDefinition,
+		OfferingDefinition offeringDefinition2) {
 
 		if (offeringDefinition.getOfferingDefinitionId() ==
 				OSBConstants.OFFERING_DEFINITION_TRIAL_ID) {
@@ -118,7 +109,7 @@ public class Upgrade_20160602105202547_OfferingDefinition
 			return false;
 		}
 
-		int offeringEntryCount =
+		/*int offeringEntryCount =
 			OfferingEntryLocalServiceUtil.
 				getOfferingDefinitionOfferingEntriesCount(
 					offeringDefinition.getOfferingDefinitionId());
@@ -129,7 +120,7 @@ public class Upgrade_20160602105202547_OfferingDefinition
 
 		if (offeringEntryCount > offeringEntryCount2) {
 			return true;
-		}
+		}*/
 
 		return false;
 	}
@@ -140,7 +131,7 @@ public class Upgrade_20160602105202547_OfferingDefinition
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
 		for (OfferingDefinition offeringDefinition : offeringDefinitions) {
-			int servers = offeringDefinition.getServers();
+			/*int servers = offeringDefinition.getServers();
 
 			if (servers > 1) {
 				List<OfferingEntry> offeringEntries =
@@ -160,7 +151,7 @@ public class Upgrade_20160602105202547_OfferingDefinition
 
 				OfferingDefinitionLocalServiceUtil.updateOfferingDefinition(
 					offeringDefinition, false);
-			}
+			}*/
 
 			String key = getKey(offeringDefinition);
 
@@ -221,12 +212,10 @@ public class Upgrade_20160602105202547_OfferingDefinition
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		Upgrade_20160602105202547_OfferingDefinition.class);
 
-	private Map<String, OfferingDefinition> _offeringDefinitionsMap =
+	private final Map<String, OfferingDefinition> _offeringDefinitionsMap =
 		new HashMap<>();
-
-	 */
 
 }

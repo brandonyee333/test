@@ -14,23 +14,15 @@
 
 package com.liferay.osb.hook.upgrade.v3_5_9;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
-
-*/
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 
 /**
  * @author Amos Fong
  */
 public class Upgrade_20160915150633097_OfferingDefinition
-	extends UpgradeProcess {
+	extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20160915150633097L;
 	}
@@ -45,33 +37,31 @@ public class Upgrade_20160915150633097_OfferingDefinition
 			runSQL("drop index IX_2EE67FDD on OSB_OfferingDefinition");
 		}
 
-		if (tableHasColumn("OSB_OfferingDefinition", "modifiedUserId")) {
+		if (hasColumn("OSB_OfferingDefinition", "modifiedUserId")) {
 			runSQL(
 				"alter table OSB_OfferingDefinition drop column " +
 					"modifiedUserId");
 		}
 
-		if (tableHasColumn("OSB_OfferingDefinition", "modifiedUserName")) {
+		if (hasColumn("OSB_OfferingDefinition", "modifiedUserName")) {
 			runSQL(
 				"alter table OSB_OfferingDefinition drop column " +
 					"modifiedUserName");
 		}
 
-		if (!tableHasColumn("OSB_OfferingDefinition", "licenses")) {
+		if (!hasColumn("OSB_OfferingDefinition", "licenses")) {
 			runSQL(
 				"alter table OSB_OfferingDefinition add column licenses " +
 					"BOOLEAN");
 		}
 
-		if (tableHasColumn("OSB_OfferingDefinition", "unlimitedServers")) {
+		if (hasColumn("OSB_OfferingDefinition", "unlimitedServers")) {
 			runSQL(
 				"alter table OSB_OfferingDefinition change column " +
 					"unlimitedServers unlimitedLicenses BOOLEAN");
 		}
 
-		if (tableHasColumn(
-				"OSB_OfferingDefinition", "unlimitedSupportTickets")) {
-
+		if (hasColumn("OSB_OfferingDefinition", "unlimitedSupportTickets")) {
 			runSQL(
 				"alter table OSB_OfferingDefinition drop column " +
 					"supportTickets");
@@ -80,13 +70,13 @@ public class Upgrade_20160915150633097_OfferingDefinition
 					"unlimitedSupportTickets supportTickets BOOLEAN");
 		}
 
-		if (tableHasColumn("OSB_OfferingDefinition", "trainingCredits")) {
+		if (hasColumn("OSB_OfferingDefinition", "trainingCredits")) {
 			runSQL(
 				"alter table OSB_OfferingDefinition drop column " +
 					"trainingCredits");
 		}
 
-		if (tableHasColumn("OSB_OfferingDefinition", "servers")) {
+		if (hasColumn("OSB_OfferingDefinition", "servers")) {
 			runSQL(
 				"update OSB_OfferingDefinition set " +
 					"OSB_OfferingDefinition.licenses = true where " +
@@ -103,7 +93,5 @@ public class Upgrade_20160915150633097_OfferingDefinition
 						"licenses, unlimitedLicenses, supportTickets)");
 		}
 	}
-
-	 */
 
 }

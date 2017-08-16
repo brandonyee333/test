@@ -14,22 +14,14 @@
 
 package com.liferay.osb.hook.upgrade.v3_7_5;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
-
-*/
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 
 /**
  * @author Kyle Bischof
  */
-public class Upgrade_20170531113854186_ListType extends UpgradeProcess {
+public class Upgrade_20170531113854186_ListType extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20170531113854186L;
 	}
@@ -39,7 +31,5 @@ public class Upgrade_20170531113854186_ListType extends UpgradeProcess {
 		insertListType(
 			27059, "tomcat-8.5", "com.liferay.osb.model.TicketEntry.envAS");
 	}
-
-	 */
 
 }

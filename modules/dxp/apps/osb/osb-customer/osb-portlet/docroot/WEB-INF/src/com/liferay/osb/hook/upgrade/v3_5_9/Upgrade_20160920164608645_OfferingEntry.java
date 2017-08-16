@@ -14,23 +14,16 @@
 
 package com.liferay.osb.hook.upgrade.v3_5_9;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.portal.kernel.util.StringBundler;
-
-*/
 
 /**
  * @author Amos Fong
  */
-public class Upgrade_20160920164608645_OfferingEntry extends UpgradeProcess {
+public class Upgrade_20160920164608645_OfferingEntry
+	extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20160920164608645L;
 	}
@@ -45,50 +38,50 @@ public class Upgrade_20160920164608645_OfferingEntry extends UpgradeProcess {
 			runSQL("drop index IX_2749229A on OSB_OfferingEntry");
 		}
 
-		if (!tableHasColumn("OSB_OfferingEntry", "productEntryId")) {
+		if (!hasColumn("OSB_OfferingEntry", "productEntryId")) {
 			runSQL(
 				"alter table OSB_OfferingEntry add column productEntryId LONG");
 		}
 
-		if (!tableHasColumn("OSB_OfferingEntry", "supportResponseId")) {
+		if (!hasColumn("OSB_OfferingEntry", "supportResponseId")) {
 			runSQL(
 				"alter table OSB_OfferingEntry add column supportResponseId " +
 					"LONG");
 		}
 
-		if (!tableHasColumn("OSB_OfferingEntry", "productDescription")) {
+		if (!hasColumn("OSB_OfferingEntry", "productDescription")) {
 			runSQL(
 				"alter table OSB_OfferingEntry add column productDescription " +
 					"VARCHAR(75)");
 		}
 
-		if (!tableHasColumn("OSB_OfferingEntry", "licenses")) {
+		if (!hasColumn("OSB_OfferingEntry", "licenses")) {
 			runSQL("alter table OSB_OfferingEntry add column licenses BOOLEAN");
 		}
 
-		if (!tableHasColumn("OSB_OfferingEntry", "maxConcurrentUsers")) {
+		if (!hasColumn("OSB_OfferingEntry", "maxConcurrentUsers")) {
 			runSQL(
 				"alter table OSB_OfferingEntry add column maxConcurrentUsers " +
 					"BOOLEAN");
 		}
 
-		if (!tableHasColumn("OSB_OfferingEntry", "maxUsers")) {
+		if (!hasColumn("OSB_OfferingEntry", "maxUsers")) {
 			runSQL("alter table OSB_OfferingEntry add column maxUsers BOOLEAN");
 		}
 
-		if (!tableHasColumn("OSB_OfferingEntry", "supportTickets")) {
+		if (!hasColumn("OSB_OfferingEntry", "supportTickets")) {
 			runSQL(
 				"alter table OSB_OfferingEntry add column supportTickets " +
 					"BOOLEAN");
 		}
 
-		if (tableHasColumn("OSB_OfferingEntry", "instanceSize")) {
+		if (hasColumn("OSB_OfferingEntry", "instanceSize")) {
 			runSQL(
 				"alter table OSB_OfferingEntry change column instanceSize " +
 					"sizing INTEGER");
 		}
 
-		if (tableHasColumn("OSB_OfferingEntry", "offeringDefinitionId")) {
+		if (hasColumn("OSB_OfferingEntry", "offeringDefinitionId")) {
 			StringBundler sb = new StringBundler(18);
 
 			sb.append("update OSB_OfferingEntry inner join ");
@@ -134,7 +127,5 @@ public class Upgrade_20160920164608645_OfferingEntry extends UpgradeProcess {
 					"accountEntryId, orderEntryId, type_)");
 		}
 	}
-
-	 */
 
 }

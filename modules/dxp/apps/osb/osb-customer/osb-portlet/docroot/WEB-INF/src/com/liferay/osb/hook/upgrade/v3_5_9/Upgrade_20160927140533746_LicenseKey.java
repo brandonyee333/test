@@ -14,10 +14,6 @@
 
 package com.liferay.osb.hook.upgrade.v3_5_9;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.LicenseKey;
@@ -26,26 +22,20 @@ import com.liferay.osb.service.LicenseKeyLocalServiceUtil;
 import com.liferay.osb.service.LicenseKeySetLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
+import com.liferay.portal.kernel.util.StringUtil;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import java.util.ArrayList;
 import java.util.List;
 
-*/
-
 /**
  * @author Jenny Chen
  */
-public class Upgrade_20160927140533746_LicenseKey extends UpgradeProcess {
+public class Upgrade_20160927140533746_LicenseKey extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20160927140533746L;
 	}
@@ -210,7 +200,5 @@ public class Upgrade_20160927140533746_LicenseKey extends UpgradeProcess {
 			DataAccess.cleanUp(ps, rs);
 		}
 	}
-
-	 */
 
 }

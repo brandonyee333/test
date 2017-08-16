@@ -14,23 +14,15 @@
 
 package com.liferay.osb.hook.upgrade.v3_6_0;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.TicketEntryConstants;
-
-*/
 
 /**
  * @author Jeremy Fu
  */
-public class Upgrade_20161018174905062_ListType extends UpgradeProcess {
+public class Upgrade_20161018174905062_ListType extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20161018174905062L;
 	}
@@ -41,7 +33,5 @@ public class Upgrade_20161018174905062_ListType extends UpgradeProcess {
 			TicketEntryConstants.ENV_AS_JBOSS_EAP_7_0, "jboss-eap-7.0",
 			TicketEntryConstants.LIST_TYPE_ENV_AS);
 	}
-
-	 */
 
 }

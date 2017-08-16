@@ -14,9 +14,6 @@
 
 package com.liferay.osb.hook.upgrade.v3_2_3;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.AuditEntry;
 import com.liferay.osb.model.AuditEntryConstants;
@@ -26,26 +23,21 @@ import com.liferay.osb.service.TicketEntryLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 
 import java.text.SimpleDateFormat;
 
 import java.util.Date;
 import java.util.List;
 
-*/
-
 /**
  * @author Kyle Bischof
  */
-public class Upgrade_20150326091908799_AuditEntry extends UpgradeProcess {
+public class Upgrade_20150326091908799_AuditEntry extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20150326091908799L;
 	}
@@ -109,7 +101,5 @@ public class Upgrade_20150326091908799_AuditEntry extends UpgradeProcess {
 			runSQL(sb.toString());
 		}
 	}
-
-	 */
 
 }

@@ -14,41 +14,33 @@
 
 package com.liferay.osb.hook.upgrade.v3_5_9;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.portal.kernel.util.StringBundler;
-
-*/
 
 /**
  * @author Amos Fong
  */
-public class Upgrade_20160920173855681_TicketEntry extends UpgradeProcess {
+public class Upgrade_20160920173855681_TicketEntry extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20160920173855681L;
 	}
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		if (!tableHasColumn("OSB_TicketEntry", "productEntryId")) {
+		if (!hasColumn("OSB_TicketEntry", "productEntryId")) {
 			runSQL(
 				"alter table OSB_TicketEntry add column productEntryId LONG");
 		}
 
-		if (!tableHasColumn("OSB_TicketEntry", "supportResponseId")) {
+		if (!hasColumn("OSB_TicketEntry", "supportResponseId")) {
 			runSQL(
 				"alter table OSB_TicketEntry add column supportResponseId " +
 					"LONG");
 		}
 
-		if (tableHasColumn("OSB_TicketEntry", "offeringDefinitionId")) {
+		if (hasColumn("OSB_TicketEntry", "offeringDefinitionId")) {
 			StringBundler sb = new StringBundler(8);
 
 			sb.append("update OSB_TicketEntry inner join ");
@@ -66,7 +58,5 @@ public class Upgrade_20160920173855681_TicketEntry extends UpgradeProcess {
 				"alter table OSB_TicketEntry drop column offeringDefinitionId");
 		}
 	}
-
-	 */
 
 }

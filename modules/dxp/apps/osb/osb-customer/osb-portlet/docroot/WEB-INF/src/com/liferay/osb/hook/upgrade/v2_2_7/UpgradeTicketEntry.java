@@ -16,10 +16,6 @@ package com.liferay.osb.hook.upgrade.v2_2_7;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
-/*import UpgradeProcess;
-
-*/
-
 /**
  * @author Brent Krone-Schmidt
  */
@@ -27,17 +23,11 @@ public class UpgradeTicketEntry extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
-	protected void doUpgrade() throws Exception {
 		updateTicketEntry();
 	}
 
 	protected void updateTicketEntry() throws Exception {
 		runSQL("alter table OSB_TicketEntry add column envName STRING");
 	}
-
-	 */
 
 }

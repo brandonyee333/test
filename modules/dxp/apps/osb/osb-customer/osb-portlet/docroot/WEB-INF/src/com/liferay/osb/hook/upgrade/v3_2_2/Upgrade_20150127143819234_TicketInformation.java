@@ -14,32 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_2_2;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.TicketInformationConstants;
 import com.liferay.osb.model.impl.TicketInformationModelImpl;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.Validator;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
-*/
 
 /**
  * @author Brent Krone-Schmidt
  */
 public class Upgrade_20150127143819234_TicketInformation
-	extends UpgradeProcess {
+	extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20150127143819234L;
 	}
@@ -76,7 +67,7 @@ public class Upgrade_20150127143819234_TicketInformation
 	}
 
 	protected void migrateTicketInformation() throws Exception {
-		if (tableHasData(TicketInformationModelImpl.TABLE_NAME)) {
+		if (hasRows(TicketInformationModelImpl.TABLE_NAME)) {
 			return;
 		}
 
@@ -181,7 +172,5 @@ public class Upgrade_20150127143819234_TicketInformation
 			DataAccess.cleanUp(ps);
 		}
 	}
-
-	 */
 
 }

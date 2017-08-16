@@ -14,30 +14,22 @@
 
 package com.liferay.osb.hook.upgrade.v3_3_1;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.impl.TicketEntryImpl;
-
-*/
 
 /**
  * @author Brent Krone-Schmidt
  */
-public class Upgrade_20150720112412210_TicketEntry extends UpgradeProcess {
+public class Upgrade_20150720112412210_TicketEntry extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20150720112412210L;
 	}
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		if (tableHasColumn(TicketEntryImpl.TABLE_NAME, "subcomponentCustom")) {
+		if (hasColumn(TicketEntryImpl.TABLE_NAME, "subcomponentCustom")) {
 			return;
 		}
 
@@ -45,7 +37,5 @@ public class Upgrade_20150720112412210_TicketEntry extends UpgradeProcess {
 			"alter table " + TicketEntryImpl.TABLE_NAME + " add " +
 				"subcomponentCustom VARCHAR(150)");
 	}
-
-	 */
 
 }

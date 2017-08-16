@@ -14,28 +14,20 @@
 
 package com.liferay.osb.hook.upgrade.v2_5_6;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import UpgradeProcess;
-
-*/
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 
 /**
  * @author Alan Zhang
  */
-public class UpgradeTicketLink extends UpgradeProcess {
+public class UpgradeTicketLink extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateTicketLink();
 	}
 
 	protected void updateTicketLink() throws Exception {
-		if (tableHasColumn("OSB_TicketLink", "ticketSolutionId")) {
+		if (hasColumn("OSB_TicketLink", "ticketSolutionId")) {
 			return;
 		}
 
@@ -48,7 +40,5 @@ public class UpgradeTicketLink extends UpgradeProcess {
 
 		runSQL("update OSB_TicketLink set ticketSolutionId = 0");
 	}
-
-	 */
 
 }

@@ -14,9 +14,7 @@
 
 package com.liferay.osb.hook.upgrade.v3_5_6;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -24,18 +22,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-*/
-
 /**
  * @author Kyle Bischof
  */
-public class Upgrade_20160809124250537_LicenseKey extends UpgradeProcess {
+public class Upgrade_20160809124250537_LicenseKey extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20160809124250537L;
 	}
@@ -65,7 +57,7 @@ public class Upgrade_20160809124250537_LicenseKey extends UpgradeProcess {
 	protected void updateLicenseKeys() throws Exception {
 		long trialAccountEntryId = 8264303;
 
-		List<LicenseKey> licenseKeys =
+		/*List<LicenseKey> licenseKeys =
 			LicenseKeyLocalServiceUtil.getAccountEntryLicenseKeys(
 				trialAccountEntryId, OSBConstants.OFFERING_DEFINITION_TRIAL_ID,
 				ProductEntryConstants.PORTAL_VERSION_7_0_10);
@@ -121,14 +113,12 @@ public class Upgrade_20160809124250537_LicenseKey extends UpgradeProcess {
 				_existingTrialUsers.put(
 					user.getEmailAddress(), licenseKey.getCreateDate());
 			}
-		}
+		}*/
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		Upgrade_20160809124250537_LicenseKey.class);
 
-	private Map<String, Date> _existingTrialUsers = new HashMap<>();
-
-	 */
+	private final Map<String, Date> _existingTrialUsers = new HashMap<>();
 
 }

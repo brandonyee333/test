@@ -14,28 +14,20 @@
 
 package com.liferay.osb.hook.upgrade.v1_9_0;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import UpgradeProcess;
-
-*/
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 
 /**
  * @author Lin Cui
  */
-public class UpgradeAccountEntry extends UpgradeProcess {
+public class UpgradeAccountEntry extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateAccountEntry();
 	}
 
 	protected void updateAccountEntry() throws Exception {
-		if (tableHasColumn("OSB_AccountEntry", "redirectAccountEntryId")) {
+		if (hasColumn("OSB_AccountEntry", "redirectAccountEntryId")) {
 			return;
 		}
 
@@ -49,7 +41,5 @@ public class UpgradeAccountEntry extends UpgradeProcess {
 
 		runSQL("update OSB_AccountEntry set redirectAccountEntryId = 0");
 	}
-
-	 */
 
 }

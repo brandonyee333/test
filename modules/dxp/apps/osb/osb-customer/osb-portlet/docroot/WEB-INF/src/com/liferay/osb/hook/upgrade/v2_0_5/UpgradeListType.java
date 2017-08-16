@@ -14,22 +14,14 @@
 
 package com.liferay.osb.hook.upgrade.v2_0_5;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
-
-*/
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 
 /**
  * @author Lin Cui
  */
-public class UpgradeListType extends UpgradeProcess {
+public class UpgradeListType extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateListType();
 	}
@@ -38,7 +30,5 @@ public class UpgradeListType extends UpgradeProcess {
 		insertListType(
 			34025, "renew-count", "com.liferay.osb.model.AuditEntry.field");
 	}
-
-	 */
 
 }

@@ -14,24 +14,16 @@
 
 package com.liferay.osb.hook.upgrade.v3_3_6;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.TicketEntry;
 import com.liferay.osb.model.TicketEntryConstants;
-
-*/
 
 /**
  * @author Jeremy Fu
  */
-public class Upgrade_20151005103112534_ListType extends UpgradeProcess {
+public class Upgrade_20151005103112534_ListType extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20151005103112534L;
 	}
@@ -42,7 +34,5 @@ public class Upgrade_20151005103112534_ListType extends UpgradeProcess {
 			TicketEntryConstants.ENV_DB_SQL_SERVER_2014, "sql-server-2014",
 			TicketEntry.class.getName() + ".envDB");
 	}
-
-	 */
 
 }

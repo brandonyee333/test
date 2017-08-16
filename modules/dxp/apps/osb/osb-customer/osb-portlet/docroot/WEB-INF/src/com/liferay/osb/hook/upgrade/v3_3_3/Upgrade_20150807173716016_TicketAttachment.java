@@ -14,16 +14,13 @@
 
 package com.liferay.osb.hook.upgrade.v3_3_3;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.FileRepository;
 import com.liferay.osb.model.TicketAttachment;
 import com.liferay.osb.model.TicketAttachmentConstants;
 import com.liferay.osb.service.TicketAttachmentLocalServiceUtil;
 import com.liferay.osb.support.util.FileRepositoryUtil;
 import com.liferay.osb.support.util.SupportUtil;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -34,18 +31,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-*/
-
 /**
  * @author Alan Zhang
  */
-public class Upgrade_20150807173716016_TicketAttachment extends UpgradeProcess {
+public class Upgrade_20150807173716016_TicketAttachment
+	extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20150807173716016L;
 	}
@@ -58,7 +50,6 @@ public class Upgrade_20150807173716016_TicketAttachment extends UpgradeProcess {
 	}
 
 	private void doRenameFiles(List<TicketAttachment> ticketAttachments) {
-
 		for (int i = 0; i < ticketAttachments.size(); i++) {
 			TicketAttachment ticketAttachment = ticketAttachments.get(i);
 
@@ -151,9 +142,7 @@ public class Upgrade_20150807173716016_TicketAttachment extends UpgradeProcess {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		Upgrade_20150807173716016_TicketAttachment.class);
-
-	 */
 
 }

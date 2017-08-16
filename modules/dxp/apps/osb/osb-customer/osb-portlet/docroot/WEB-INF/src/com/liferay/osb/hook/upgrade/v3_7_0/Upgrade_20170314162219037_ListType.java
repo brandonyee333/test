@@ -14,22 +14,14 @@
 
 package com.liferay.osb.hook.upgrade.v3_7_0;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
-
-*/
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 
 /**
  * @author Kyle Bischof
  */
-public class Upgrade_20170314162219037_ListType extends UpgradeProcess {
+public class Upgrade_20170314162219037_ListType extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20170314162219037L;
 	}
@@ -39,7 +31,5 @@ public class Upgrade_20170314162219037_ListType extends UpgradeProcess {
 		insertListType(
 			37018, "safari-10", "com.liferay.osb.model.TicketEntry.envBrowser");
 	}
-
-	 */
 
 }

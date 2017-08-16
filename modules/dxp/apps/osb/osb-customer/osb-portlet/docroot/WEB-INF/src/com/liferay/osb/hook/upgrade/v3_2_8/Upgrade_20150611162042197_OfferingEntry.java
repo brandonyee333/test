@@ -14,16 +14,13 @@
 
 package com.liferay.osb.hook.upgrade.v3_2_8;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.util.StringBundler;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -31,18 +28,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-*/
-
 /**
  * @author Amos Fong
  */
-public class Upgrade_20150611162042197_OfferingEntry extends UpgradeProcess {
+public class Upgrade_20150611162042197_OfferingEntry
+	extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20150611162042197L;
 	}
@@ -57,7 +49,7 @@ public class Upgrade_20150611162042197_OfferingEntry extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		if (!tableHasColumn("OSB_OfferingEntry", "quantity")) {
+		if (!hasColumn("OSB_OfferingEntry", "quantity")) {
 			runSQL("alter table OSB_OfferingEntry add column quantity INTEGER");
 
 			runSQL("update OSB_OfferingEntry set quantity = 1");
@@ -108,7 +100,7 @@ public class Upgrade_20150611162042197_OfferingEntry extends UpgradeProcess {
 				continue;
 			}
 
-			String key =
+			/*String key =
 				offeringEntry.getOfferingDefinitionId() + "#" +
 					offeringEntry.getType();
 
@@ -130,7 +122,7 @@ public class Upgrade_20150611162042197_OfferingEntry extends UpgradeProcess {
 			}
 			else {
 				mergedOfferingEntries.put(key, offeringEntry);
-			}
+			}*/
 		}
 
 		for (OfferingEntry offeringEntry : mergedOfferingEntries.values()) {
@@ -165,7 +157,5 @@ public class Upgrade_20150611162042197_OfferingEntry extends UpgradeProcess {
 
 		runSQL(sb.toString());
 	}
-
-	 */
 
 }

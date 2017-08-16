@@ -14,10 +14,6 @@
 
 package com.liferay.osb.hook.upgrade.v2_0_3;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import UpgradeProcess;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountWorker;
 import com.liferay.osb.model.AuditEntryConstants;
@@ -26,14 +22,14 @@ import com.liferay.osb.service.AuditEntryLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.Date;
 import java.util.List;
-
-*/
 
 /**
  * @author Lin Cui
@@ -41,10 +37,6 @@ import java.util.List;
 public class UpgradeAuditEntry extends UpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateAuditEntry();
 	}
@@ -93,7 +85,5 @@ public class UpgradeAuditEntry extends UpgradeProcess {
 			}
 		}
 	}
-
-	 */
 
 }

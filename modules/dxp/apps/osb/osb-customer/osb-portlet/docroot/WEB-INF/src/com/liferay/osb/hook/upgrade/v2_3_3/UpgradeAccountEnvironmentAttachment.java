@@ -16,20 +16,12 @@ package com.liferay.osb.hook.upgrade.v2_3_3;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
-/*import UpgradeProcess;
-
-*/
-
 /**
  * @author Amos Fong
  */
 public class UpgradeAccountEnvironmentAttachment extends UpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateAccountEnvironmentAttachment();
 	}
@@ -47,7 +39,5 @@ public class UpgradeAccountEnvironmentAttachment extends UpgradeProcess {
 			"alter table OSB_AccountEnvironmentAttachment change " +
 				"accountEnvironmentFileId accountEnvironmentAttachmentId LONG");
 	}
-
-	 */
 
 }

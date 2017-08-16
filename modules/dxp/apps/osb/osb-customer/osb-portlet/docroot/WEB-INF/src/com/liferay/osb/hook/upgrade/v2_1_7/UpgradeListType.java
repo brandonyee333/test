@@ -14,23 +14,15 @@
 
 package com.liferay.osb.hook.upgrade.v2_1_7;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.TicketEntryConstants;
-
-*/
 
 /**
  * @author Lin Cui
  */
-public class UpgradeListType extends UpgradeProcess {
+public class UpgradeListType extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateListType();
 	}
@@ -94,7 +86,5 @@ public class UpgradeListType extends UpgradeProcess {
 			TicketEntryConstants.ENV_OS_SOLARIS_11, "solaris-11",
 			"com.liferay.osb.model.TicketEntry.envOS");
 	}
-
-	 */
 
 }

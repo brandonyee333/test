@@ -14,22 +14,14 @@
 
 package com.liferay.osb.hook.upgrade.v2_4_6;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
-
-*/
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 
 /**
  * @author Sharon Li
  */
-public class UpgradeListType extends UpgradeProcess {
+public class UpgradeListType extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	protected void doUpgrade() throws Exception {
 		upgradeListType();
 	}
@@ -42,7 +34,5 @@ public class UpgradeListType extends UpgradeProcess {
 		insertListType(
 			28030, "oracle-12c", "com.liferay.osb.model.TicketEntry.envDB");
 	}
-
-	 */
 
 }

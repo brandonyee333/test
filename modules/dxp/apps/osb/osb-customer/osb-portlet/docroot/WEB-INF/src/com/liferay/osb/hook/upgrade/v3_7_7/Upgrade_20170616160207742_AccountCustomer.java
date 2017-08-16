@@ -14,9 +14,7 @@
 
 package com.liferay.osb.hook.upgrade.v3_7_7;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.exception.AccountEntryMaximumCustomersException;
+import com.liferay.osb.exception.AccountEntryMaximumCustomersException;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.AccountCustomerConstants;
 import com.liferay.osb.model.AccountEntry;
@@ -26,25 +24,18 @@ import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringBundler;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
-*/
 
 /**
  * @author Kyle Bischof
  */
-public class Upgrade_20170616160207742_AccountCustomer extends UpgradeProcess {
+public class Upgrade_20170616160207742_AccountCustomer
+	extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20170616160207742L;
 	}
@@ -115,7 +106,5 @@ public class Upgrade_20170616160207742_AccountCustomer extends UpgradeProcess {
 			DataAccess.cleanUp(ps, rs);
 		}
 	}
-
-	 */
 
 }

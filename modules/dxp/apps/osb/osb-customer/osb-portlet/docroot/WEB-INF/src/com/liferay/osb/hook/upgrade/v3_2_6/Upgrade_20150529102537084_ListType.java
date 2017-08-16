@@ -14,24 +14,16 @@
 
 package com.liferay.osb.hook.upgrade.v3_2_6;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.TicketEntry;
 import com.liferay.osb.model.TicketEntryConstants;
-
-*/
 
 /**
  * @author Brent Krone-Schmidt
  */
-public class Upgrade_20150529102537084_ListType extends UpgradeProcess {
+public class Upgrade_20150529102537084_ListType extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20150529102537084L;
 	}
@@ -42,7 +34,5 @@ public class Upgrade_20150529102537084_ListType extends UpgradeProcess {
 			TicketEntryConstants.COMPONENT_SOCIAL_OFFICE, "social-office",
 			TicketEntry.class.getName() + ".component");
 	}
-
-	 */
 
 }

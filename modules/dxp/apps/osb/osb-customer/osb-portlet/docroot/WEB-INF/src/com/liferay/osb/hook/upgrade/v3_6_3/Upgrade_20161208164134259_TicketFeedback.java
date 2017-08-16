@@ -14,41 +14,31 @@
 
 package com.liferay.osb.hook.upgrade.v3_6_3;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.TicketFeedback;
 import com.liferay.osb.model.TicketFeedbackConstants;
 import com.liferay.osb.service.TicketFeedbackLocalServiceUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
-import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import java.util.List;
 
-*/
-
 /**
  * @author Kyle Bischof
  */
-public class Upgrade_20161208164134259_TicketFeedback extends UpgradeProcess {
+public class Upgrade_20161208164134259_TicketFeedback
+	extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20161208164134259L;
 	}
 
 	protected void deleteDuplicateTicketFeedbacks(long ticketEntryId) {
-
 		List<TicketFeedback> ticketFeedbacks = ListUtil.copy(
 			TicketFeedbackLocalServiceUtil.getTicketFeedbacks(
 				ticketEntryId, TicketFeedbackConstants.SUBJECT_LIFERAY,
@@ -96,7 +86,5 @@ public class Upgrade_20161208164134259_TicketFeedback extends UpgradeProcess {
 			DataAccess.cleanUp(ps, rs);
 		}
 	}
-
-	 */
 
 }

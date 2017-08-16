@@ -14,29 +14,21 @@
 
 package com.liferay.osb.hook.upgrade.v3_4_5;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-*/
-
 /**
  * @author Amos Fong
  */
-public class Upgrade_20160315105316316_Organization extends UpgradeProcess {
+public class Upgrade_20160315105316316_Organization extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20160315105316316L;
 	}
@@ -58,7 +50,5 @@ public class Upgrade_20160315105316316_Organization extends UpgradeProcess {
 			OSBConstants.ORGANIZATION_LIFERAY_INC_ID,
 			ArrayUtil.toArray(inactiveUserIds.toArray(new Long[0])));
 	}
-
-	 */
 
 }

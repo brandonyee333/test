@@ -14,25 +14,19 @@
 
 package com.liferay.osb.hook.upgrade.v2_4_4;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import UpgradeProcess;
 import com.liferay.osb.model.TicketAttachment;
 import com.liferay.osb.model.TicketAttachmentConstants;
 import com.liferay.osb.service.TicketAttachmentLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.StringBundler;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import java.util.List;
-
-*/
 
 /**
  * @author Brent Krone-Schmidt
@@ -40,11 +34,7 @@ import java.util.List;
  */
 public class UpgradeTicketAttachment extends UpgradeProcess {
 
-	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*protected void deleteTicketAttachments(long ticketEntryId)
+	protected void deleteTicketAttachments(long ticketEntryId)
 		throws PortalException {
 
 		TicketAttachment patchLevelTicketAttachment =
@@ -91,7 +81,7 @@ public class UpgradeTicketAttachment extends UpgradeProcess {
 	}
 
 	protected void updateStatus() throws Exception {
-		if (tableHasColumn("OSB_TicketAttachment", "status")) {
+		if (hasColumn("OSB_TicketAttachment", "status")) {
 			return;
 		}
 
@@ -131,7 +121,5 @@ public class UpgradeTicketAttachment extends UpgradeProcess {
 			DataAccess.cleanUp(ps, rs);
 		}
 	}
-
-	 */
 
 }

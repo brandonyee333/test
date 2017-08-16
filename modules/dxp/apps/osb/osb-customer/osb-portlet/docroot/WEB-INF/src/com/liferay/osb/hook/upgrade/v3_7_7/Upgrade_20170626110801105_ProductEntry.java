@@ -14,23 +14,15 @@
 
 package com.liferay.osb.hook.upgrade.v3_7_7;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.TicketEntryConstants;
-
-*/
 
 /**
  * @author Kyle Bischof
  */
-public class Upgrade_20170626110801105_ProductEntry extends UpgradeProcess {
+public class Upgrade_20170626110801105_ProductEntry extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20170626110801105L;
 	}
@@ -47,7 +39,5 @@ public class Upgrade_20170626110801105_ProductEntry extends UpgradeProcess {
 				"Recognition Provider App', 'Mobile Device Detection " +
 					"Enterprise')");
 	}
-
-	 */
 
 }

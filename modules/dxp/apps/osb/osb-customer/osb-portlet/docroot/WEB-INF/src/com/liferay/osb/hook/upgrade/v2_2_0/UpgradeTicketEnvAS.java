@@ -14,12 +14,8 @@
 
 package com.liferay.osb.hook.upgrade.v2_2_0;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import UpgradeProcess;
 import com.liferay.osb.model.TicketEntryConstants;
-
-*/
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
 /**
  * @author Lin Cui
@@ -27,10 +23,6 @@ import com.liferay.osb.model.TicketEntryConstants;
 public class UpgradeTicketEnvAS extends UpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateTicketEnvAS();
 	}
@@ -40,7 +32,5 @@ public class UpgradeTicketEnvAS extends UpgradeProcess {
 			"update ListType set name = 'jboss-5.1' where listTypeId = " +
 				TicketEntryConstants.ENV_AS_JBOSS_5_1);
 	}
-
-	 */
 
 }

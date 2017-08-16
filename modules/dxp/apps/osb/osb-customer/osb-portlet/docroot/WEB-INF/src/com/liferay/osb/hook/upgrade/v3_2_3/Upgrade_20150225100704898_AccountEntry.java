@@ -14,29 +14,21 @@
 
 package com.liferay.osb.hook.upgrade.v3_2_3;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
-
-*/
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 
 /**
  * @author Jeremy Fu
  */
-public class Upgrade_20150225100704898_AccountEntry extends UpgradeProcess {
+public class Upgrade_20150225100704898_AccountEntry extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20150225100704898L;
 	}
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		if (tableHasColumn("OSB_AccountEntry", "tier")) {
+		if (hasColumn("OSB_AccountEntry", "tier")) {
 			return;
 		}
 
@@ -46,7 +38,5 @@ public class Upgrade_20150225100704898_AccountEntry extends UpgradeProcess {
 		runSQL("update OSB_AccountEntry set tier = 2 where tier = 1");
 		runSQL("update OSB_AccountEntry set tier = 1 where tier = 0");
 	}
-
-	 */
 
 }

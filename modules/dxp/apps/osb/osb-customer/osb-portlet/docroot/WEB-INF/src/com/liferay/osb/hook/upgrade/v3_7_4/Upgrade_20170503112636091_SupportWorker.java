@@ -14,30 +14,23 @@
 
 package com.liferay.osb.hook.upgrade.v3_7_4;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.service.SupportWorkerLocalServiceUtil;
-
-*/
 
 /**
  * @author Kyle Bischof
  */
-public class Upgrade_20170503112636091_SupportWorker extends UpgradeProcess {
+public class Upgrade_20170503112636091_SupportWorker
+	extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20170503112636091L;
 	}
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		if (tableHasColumn("OSB_SupportWorker", "autoAssign")) {
+		if (hasColumn("OSB_SupportWorker", "autoAssign")) {
 			return;
 		}
 
@@ -48,7 +41,5 @@ public class Upgrade_20170503112636091_SupportWorker extends UpgradeProcess {
 
 		SupportWorkerLocalServiceUtil.recalculateUtilization();
 	}
-
-	 */
 
 }

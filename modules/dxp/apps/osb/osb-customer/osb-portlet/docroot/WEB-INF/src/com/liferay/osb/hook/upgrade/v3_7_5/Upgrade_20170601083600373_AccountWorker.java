@@ -14,10 +14,6 @@
 
 package com.liferay.osb.hook.upgrade.v3_7_5;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountWorker;
@@ -28,25 +24,22 @@ import com.liferay.osb.service.AuditEntryLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.Date;
 import java.util.List;
 
-*/
-
 /**
  * @author Kyle Bischof
  */
-public class Upgrade_20170601083600373_AccountWorker extends UpgradeProcess {
+public class Upgrade_20170601083600373_AccountWorker
+	extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20170601083600373L;
 	}
@@ -74,8 +67,7 @@ public class Upgrade_20170601083600373_AccountWorker extends UpgradeProcess {
 
 			accountWorker.setRole(AccountWorkerConstants.ROLE_SALES);
 
-			AccountWorkerLocalServiceUtil.updateAccountWorker(
-				accountWorker, false);
+			AccountWorkerLocalServiceUtil.updateAccountWorker(accountWorker);
 
 			long auditSetId = AuditEntryLocalServiceUtil.getNextAuditSetId(
 				AccountEntry.class.getName(),
@@ -103,7 +95,5 @@ public class Upgrade_20170601083600373_AccountWorker extends UpgradeProcess {
 				String.valueOf(accountWorker.getRole()));
 		}
 	}
-
-	 */
 
 }

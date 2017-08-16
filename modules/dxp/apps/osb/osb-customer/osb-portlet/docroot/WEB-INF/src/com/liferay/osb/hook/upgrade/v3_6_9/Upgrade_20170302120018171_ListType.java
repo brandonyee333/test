@@ -14,23 +14,15 @@
 
 package com.liferay.osb.hook.upgrade.v3_6_9;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.AuditEntryConstants;
-
-*/
 
 /**
  * @author Amos Fong
  */
-public class Upgrade_20170302120018171_ListType extends UpgradeProcess {
+public class Upgrade_20170302120018171_ListType extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20170302120018171L;
 	}
@@ -41,7 +33,5 @@ public class Upgrade_20170302120018171_ListType extends UpgradeProcess {
 			AuditEntryConstants.FIELD_NOT_APPLICABLE, "not-applicable",
 			AuditEntryConstants.LIST_TYPE_FIELD);
 	}
-
-	 */
 
 }

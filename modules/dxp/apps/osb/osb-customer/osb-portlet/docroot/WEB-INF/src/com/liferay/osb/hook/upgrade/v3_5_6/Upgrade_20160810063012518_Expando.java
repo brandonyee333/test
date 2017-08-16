@@ -14,34 +14,25 @@
 
 package com.liferay.osb.hook.upgrade.v3_5_6;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
-import com.liferay.osb.util.OSBConstants;
-import com.liferay.portal.kernel.dao.jdbc.DataAccess;
-import com.liferay.portal.kernel.model.User;
 import com.liferay.expando.kernel.model.ExpandoColumn;
 import com.liferay.expando.kernel.model.ExpandoTableConstants;
 import com.liferay.expando.kernel.model.ExpandoValue;
 import com.liferay.expando.kernel.service.ExpandoColumnLocalServiceUtil;
 import com.liferay.expando.kernel.service.ExpandoValueLocalServiceUtil;
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.osb.util.OSBConstants;
+import com.liferay.portal.kernel.dao.jdbc.DataAccess;
+import com.liferay.portal.kernel.model.User;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
-*/
 
 /**
  * @author Jenny Chen
  */
-public class Upgrade_20160810063012518_Expando extends UpgradeProcess {
+public class Upgrade_20160810063012518_Expando extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20160810063012518L;
 	}
@@ -97,7 +88,5 @@ public class Upgrade_20160810063012518_Expando extends UpgradeProcess {
 			ExpandoValueLocalServiceUtil.deleteValue(trialExpandoValue);
 		}
 	}
-
-	 */
 
 }

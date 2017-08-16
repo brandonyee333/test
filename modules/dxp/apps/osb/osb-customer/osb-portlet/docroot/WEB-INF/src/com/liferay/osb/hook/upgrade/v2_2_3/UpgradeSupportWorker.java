@@ -16,20 +16,12 @@ package com.liferay.osb.hook.upgrade.v2_2_3;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
-/*import UpgradeProcess;
-
-*/
-
 /**
  * @author Brent Krone-Schmidt
  */
 public class UpgradeSupportWorker extends UpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	protected void doUpgrade() throws Exception {
 		upgradeSupportWorkerComponent();
 
@@ -49,7 +41,5 @@ public class UpgradeSupportWorker extends UpgradeProcess {
 				"where supportWorkerId not in " +
 					"(select supportWorkerId from OSB_SupportWorker)");
 	}
-
-	 */
 
 }

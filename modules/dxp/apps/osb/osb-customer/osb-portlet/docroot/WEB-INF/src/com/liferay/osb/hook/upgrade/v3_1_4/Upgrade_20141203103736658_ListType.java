@@ -14,22 +14,14 @@
 
 package com.liferay.osb.hook.upgrade.v3_1_4;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
-
-*/
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 
 /**
  * @author Kyle Bischof
  */
-public class Upgrade_20141203103736658_ListType extends UpgradeProcess {
+public class Upgrade_20141203103736658_ListType extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20141203103736658L;
 	}
@@ -44,7 +36,5 @@ public class Upgrade_20141203103736658_ListType extends UpgradeProcess {
 		insertListType(
 			34033, "pending-partner", "com.liferay.osb.model.AuditEntry.field");
 	}
-
-	 */
 
 }

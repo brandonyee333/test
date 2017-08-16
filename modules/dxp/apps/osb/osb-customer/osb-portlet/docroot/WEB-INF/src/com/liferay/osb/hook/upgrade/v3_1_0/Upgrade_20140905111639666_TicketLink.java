@@ -14,29 +14,21 @@
 
 package com.liferay.osb.hook.upgrade.v3_1_0;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
-
-*/
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 
 /**
  * @author Sharon Li
  */
-public class Upgrade_20140905111639666_TicketLink extends UpgradeProcess {
+public class Upgrade_20140905111639666_TicketLink extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20140905111639666L;
 	}
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		if (tableHasColumn("OSB_TicketLink", "type_")) {
+		if (hasColumn("OSB_TicketLink", "type_")) {
 			return;
 		}
 
@@ -44,7 +36,5 @@ public class Upgrade_20140905111639666_TicketLink extends UpgradeProcess {
 
 		runSQL("update OSB_TicketLink set type_ = 0");
 	}
-
-	 */
 
 }

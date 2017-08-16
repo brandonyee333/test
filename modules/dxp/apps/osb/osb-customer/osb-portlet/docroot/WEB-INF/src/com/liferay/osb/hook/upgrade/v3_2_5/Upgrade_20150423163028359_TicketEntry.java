@@ -14,35 +14,25 @@
 
 package com.liferay.osb.hook.upgrade.v3_2_5;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
-
-*/
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 
 /**
  * @author Brent Krone-Schmidt
  */
-public class Upgrade_20150423163028359_TicketEntry extends UpgradeProcess {
+public class Upgrade_20150423163028359_TicketEntry extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20150423163028359L;
 	}
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		if (tableHasColumn("OSB_TicketEntry", "subcomponent")) {
+		if (hasColumn("OSB_TicketEntry", "subcomponent")) {
 			return;
 		}
 
 		runSQL("alter table OSB_TicketEntry add subcomponent INTEGER");
 	}
-
-	 */
 
 }

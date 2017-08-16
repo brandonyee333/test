@@ -14,43 +14,36 @@
 
 package com.liferay.osb.hook.upgrade.v3_2_4;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
-
-*/
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 
 /**
  * @author Jeremy Fu
  */
-public class Upgrade_20150402102624224_TicketFeedback extends UpgradeProcess {
+public class Upgrade_20150402102624224_TicketFeedback
+	extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20150402102624224L;
 	}
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		if (!tableHasColumn("OSB_TicketFeedback", "subject")) {
+		if (!hasColumn("OSB_TicketFeedback", "subject")) {
 			runSQL("alter table OSB_TicketFeedback add subject INTEGER");
 
 			runSQL("update OSB_TicketFeedback set subject = 1");
 		}
 
-		if (!tableHasColumn("OSB_TicketFeedback", "answer1")) {
+		if (!hasColumn("OSB_TicketFeedback", "answer1")) {
 			runSQL("alter table OSB_TicketFeedback add answer1 INTEGER");
 		}
 
-		if (!tableHasColumn("OSB_TicketFeedback", "answer2")) {
+		if (!hasColumn("OSB_TicketFeedback", "answer2")) {
 			runSQL("alter table OSB_TicketFeedback add answer2 INTEGER");
 		}
 
-		if (!tableHasColumn("OSB_TicketFeedback", "answer3")) {
+		if (!hasColumn("OSB_TicketFeedback", "answer3")) {
 			runSQL("alter table OSB_TicketFeedback add answer3 INTEGER");
 		}
 
@@ -65,7 +58,5 @@ public class Upgrade_20150402102624224_TicketFeedback extends UpgradeProcess {
 					"(ticketEntryId, subject)");
 		}
 	}
-
-	 */
 
 }

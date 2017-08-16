@@ -14,14 +14,12 @@
 
 package com.liferay.osb.hook.upgrade;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
 /**
  * Release Date: 2014-08-22
  *
  * @author Amos Fong
  */
-public class UpgradeProcess_3_0_7 extends UpgradeProcess {
+public class UpgradeProcess_3_0_7 extends BaseUpgradeProcess {
 
 	@Override
 	public int getThreshold() {

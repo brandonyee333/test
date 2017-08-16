@@ -14,22 +14,15 @@
 
 package com.liferay.osb.hook.upgrade.v3_0_8;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
-
-*/
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 
 /**
  * @author Brent Krone-Schmidt
  */
-public class Upgrade_20140424155621721_SupportResponse extends UpgradeProcess {
+public class Upgrade_20140424155621721_SupportResponse
+	extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20140424155621721L;
 	}
@@ -43,7 +36,7 @@ public class Upgrade_20140424155621721_SupportResponse extends UpgradeProcess {
 	}
 
 	protected void renameColumns() throws Exception {
-		if (tableHasColumn("OSB_SupportResponse", "languageId")) {
+		if (hasColumn("OSB_SupportResponse", "languageId")) {
 			return;
 		}
 
@@ -84,7 +77,5 @@ public class Upgrade_20140424155621721_SupportResponse extends UpgradeProcess {
 			"update OSB_SupportResponse set supportLevel = 4 where " +
 				"(name like '%basic%') or (name like '%limited%')");
 	}
-
-	 */
 
 }

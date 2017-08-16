@@ -14,24 +14,16 @@
 
 package com.liferay.osb.hook.upgrade.v3_1_6;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.impl.PartnerEntryModelImpl;
-
-*/
 
 /**
  * @author Sharon Li
  */
 public class Upgrade_20141218193532347_PartnerEntries_SupportRegions
-	extends UpgradeProcess {
+	extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20141218193532347L;
 	}
@@ -64,7 +56,7 @@ public class Upgrade_20141218193532347_PartnerEntries_SupportRegions
 	}
 
 	protected void populatePartnerData() throws Exception {
-
+		/*
 		long[][] supportResponseIds = {
 			{OSBConstants.SUPPORT_REGION_BRAZIL_ID, _ASSET_CATEGORY_BRAZIL_ID},
 			{OSBConstants.SUPPORT_REGION_CHINA_ID, _ASSET_CATEGORY_CHINA_ID},
@@ -96,23 +88,21 @@ public class Upgrade_20141218193532347_PartnerEntries_SupportRegions
 			sb.append(supportResponseId[1]);
 
 			runSQL(sb.toString());
-		}
+		}*/
 	}
 
-	private final long _ASSET_CATEGORY_BRAZIL_ID = 21343273;
+	private static final long _ASSET_CATEGORY_BRAZIL_ID = 21343273;
 
-	private final long _ASSET_CATEGORY_CHINA_ID = 21343274;
+	private static final long _ASSET_CATEGORY_CHINA_ID = 21343274;
 
-	private final long _ASSET_CATEGORY_HUNGARY_ID = 21343275;
+	private static final long _ASSET_CATEGORY_HUNGARY_ID = 21343275;
 
-	private final long _ASSET_CATEGORY_INDIA_ID = 21343276;
+	private static final long _ASSET_CATEGORY_INDIA_ID = 21343276;
 
-	private final long _ASSET_CATEGORY_SPAIN_ID = 21343277;
+	private static final long _ASSET_CATEGORY_SPAIN_ID = 21343277;
 
-	private final long _ASSET_CATEGORY_US_ID = 21343278;
+	private static final long _ASSET_CATEGORY_US_ID = 21343278;
 
-	private final long _PARTNER_ENTRY_CLASS_NAME_ID = 4840271;
-
-	 */
+	private static final long _PARTNER_ENTRY_CLASS_NAME_ID = 4840271;
 
 }

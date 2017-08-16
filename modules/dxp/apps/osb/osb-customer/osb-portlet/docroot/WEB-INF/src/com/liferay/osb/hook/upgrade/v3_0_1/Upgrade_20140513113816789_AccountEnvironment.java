@@ -14,23 +14,15 @@
 
 package com.liferay.osb.hook.upgrade.v3_0_1;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
-
-*/
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 
 /**
  * @author Sharon Li
  */
 public class Upgrade_20140513113816789_AccountEnvironment
-	extends UpgradeProcess {
+	extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20140513113816789L;
 	}
@@ -41,13 +33,11 @@ public class Upgrade_20140513113816789_AccountEnvironment
 	}
 
 	protected void upgradeAccountEnvironment() throws Exception {
-		if (!tableHasColumn("OSB_AccountEnvironment", "envOSCustom")) {
+		if (!hasColumn("OSB_AccountEnvironment", "envOSCustom")) {
 			runSQL(
 				"alter table OSB_AccountEnvironment add column envOSCustom " +
 					"VARCHAR(150)");
 		}
 	}
-
-	 */
 
 }

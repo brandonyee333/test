@@ -14,9 +14,7 @@
 
 package com.liferay.osb.hook.upgrade.v3_6_0;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.exception.NoSuchProductEntryException;
+import com.liferay.osb.exception.NoSuchProductEntryException;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.LicenseEntryConstants;
 import com.liferay.osb.model.OfferingEntry;
@@ -29,28 +27,20 @@ import com.liferay.osb.service.ProductEntryLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-*/
-
 /**
  * @author Amos Fong
  */
-public class Upgrade_20160930103105564_ProductEntry extends UpgradeProcess {
+public class Upgrade_20160930103105564_ProductEntry extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	public long getTimestamp() {
 		return 20160930103105564L;
 	}
@@ -445,7 +435,7 @@ public class Upgrade_20160930103105564_ProductEntry extends UpgradeProcess {
 	private static final long[] _PRODUCTION_PRODUCT_ENTRY_IDS =
 		{5968276, 27012837, 24576026, 44966204, 10034374};
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		Upgrade_20160930103105564_ProductEntry.class);
 
 	private long _deBackupProductEntryId;
@@ -455,7 +445,5 @@ public class Upgrade_20160930103105564_ProductEntry extends UpgradeProcess {
 	private long _deNonProductionProductEntryId;
 	private long _deOEMProductEntryId;
 	private long _deProductionProductEntryId;
-
-	 */
 
 }

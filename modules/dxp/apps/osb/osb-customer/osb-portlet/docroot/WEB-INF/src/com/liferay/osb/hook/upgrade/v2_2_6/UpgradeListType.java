@@ -14,22 +14,14 @@
 
 package com.liferay.osb.hook.upgrade.v2_2_6;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
-
-*/
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 
 /**
  * @author Alan Zhang
  */
-public class UpgradeListType extends UpgradeProcess {
+public class UpgradeListType extends BaseUpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	protected void doUpgrade() throws Exception {
 		updateListType();
 	}
@@ -38,7 +30,5 @@ public class UpgradeListType extends UpgradeProcess {
 		insertListType(
 			33016, "resolved", "com.liferay.osb.model.TicketEntry.status");
 	}
-
-	 */
 
 }

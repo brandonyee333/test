@@ -14,13 +14,6 @@
 
 package com.liferay.osb.hook.upgrade.v2_0_0;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-/*import UpgradeProcess;
-import com.liferay.osb.util.OSBConstants;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
-import com.liferay.portal.kernel.model.Company;
-import com.liferay.portal.kernel.model.User;
 import com.liferay.expando.kernel.exception.NoSuchTableException;
 import com.liferay.expando.kernel.model.ExpandoColumn;
 import com.liferay.expando.kernel.model.ExpandoColumnConstants;
@@ -29,10 +22,13 @@ import com.liferay.expando.kernel.model.ExpandoValue;
 import com.liferay.expando.kernel.service.ExpandoColumnLocalServiceUtil;
 import com.liferay.expando.kernel.service.ExpandoTableLocalServiceUtil;
 import com.liferay.expando.kernel.service.ExpandoValueLocalServiceUtil;
+import com.liferay.osb.util.OSBConstants;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
 import java.util.List;
-
-*/
 
 /**
  * @author Peter Shin
@@ -40,10 +36,6 @@ import java.util.List;
 public class UpgradeExpando extends UpgradeProcess {
 
 	@Override
-	protected void doUpgrade() throws Exception {
-	}
-
-	/*@Override
 	protected void doUpgrade() throws Exception {
 		long companyId = OSBConstants.COMPANY_ID;
 
@@ -146,7 +138,5 @@ public class UpgradeExpando extends UpgradeProcess {
 		ExpandoColumnLocalServiceUtil.deleteColumn(
 			oldExpandoColumn.getColumnId());
 	}
-
-	 */
 
 }
