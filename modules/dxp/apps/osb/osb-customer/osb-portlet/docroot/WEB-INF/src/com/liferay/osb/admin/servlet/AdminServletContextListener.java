@@ -203,6 +203,11 @@ public class AdminServletContextListener
 		// TODO need database for Role values called
 		// AdminServletContextListenerExpandoHelper.setup();
 
+		// Upgrade
+
+		AdminServletContextListenerUpgradeHelper.setup(
+			_servletContext.getServletContextName());
+
 		// Workflow
 
 		//TODO need database for userId values

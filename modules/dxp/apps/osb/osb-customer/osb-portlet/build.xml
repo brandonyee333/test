@@ -18,8 +18,6 @@
 	</target>
 
 	<target name="build-upgrade">
-		<property name="upgrade.impl.class" value="com.liferay.osb.hook.upgrade.OSBUpgradeImpl" />
-
 		<if>
 			<isset property="entity" />
 			<then>
@@ -38,7 +36,7 @@
 			newenvironment="true"
 		>
 			<arg value="${entity.name}" />
-			<jvmarg value="-Dupgrade.impl.class=${upgrade.impl.class}" />
+			<jvmarg value="-Dportal.base.dir=${portal.base.dir}" />
 		</java>
 	</target>
 
