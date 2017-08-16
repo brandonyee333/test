@@ -104,7 +104,7 @@ else {
 						%>
 
 						<div class="create-env-button">
-							<aui:button cssClass="aui-button-input fr" onClick="<portlet:namespace />openDialog('<liferay-ui:message key="create-environment-configuration" />', '<%= addAccountEnvironmentURL.toString() %>', '<portlet:namespace />updateAccountEnvironment')" value="create-environment" />
+							<aui:button cssClass="aui-button-input fr" onClick="<%= renderResponse.getNamespace() %>openDialog('<liferay-ui:message key="create-environment-configuration" />', '<%= addAccountEnvironmentURL.toString() %>', '<portlet:namespace />updateAccountEnvironment')" value="create-environment" />
 						</div>
 					</c:if>
 
@@ -171,7 +171,7 @@ else {
 													<portlet:param name="accountEnvironmentId" value="<%= String.valueOf(accountEnvironment.getAccountEnvironmentId()) %>" />
 												</portlet:actionURL>
 
-												<aui:button cssClass="aui-button-input fl" onClick="<portlet:namespace />deleteEnvironment('<%= deleteAccountEnvironmentURL.toString() %>', '<%= accountEnvironment.getName() %>');" value="delete" />
+												<aui:button cssClass="aui-button-input fl" onClick="<%= renderResponse.getNamespace() %>deleteEnvironment('<%= deleteAccountEnvironmentURL.toString() %>', '<%= accountEnvironment.getName() %>');" value="delete" />
 											</c:if>
 
 											<c:if test="<%= OSBAccountEnvironmentPermission.contains(permissionChecker, accountEntry.getAccountEntryId(), OSBActionKeys.UPDATE) %>">
