@@ -78,7 +78,7 @@ long toPatchLevelTicketAttachmentId = ParamUtil.getLong(request, "toPatchLevelTi
 			for (int curServerCommunicationType : TicketEntryConstants.CLUSTER_SERVER_COMMUNICATION_TYPES) {
 			%>
 
-				<option <%= (curServerCommunicationType == serverCommunicationType) ? "selected" : StringPool.BLANK %> value="<%= curServerCommunicationType %>"><liferay-ui:message key="<%= TicketEntryConstants.getClusterServerCommunicationTypeLabel(curServerCommunicationType) %>" /></option>
+				<aui:option label="<%= TicketEntryConstants.getClusterServerCommunicationTypeLabel(curServerCommunicationType) %>" selected="<%= curServerCommunicationType == serverCommunicationType %>" value="<%= curServerCommunicationType %>" />
 
 			<%
 			}

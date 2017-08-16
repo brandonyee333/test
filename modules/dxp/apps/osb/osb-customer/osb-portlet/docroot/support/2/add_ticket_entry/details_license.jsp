@@ -40,8 +40,6 @@ String additionalComments = ParamUtil.getString(request, "additionalComments");
 	</div>
 </div>
 
-<br />
-
 <div class="clearfix">
 	<div class="aui-w45 fl">
 		<span class="section-heading"><liferay-ui:message key="type-of-key" />:</span>
