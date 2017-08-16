@@ -294,135 +294,185 @@ if (accountEntry != null) {
 </c:choose>
 
 <aui:script>
-	var A = AUI();
+	Liferay.provide(
+		window,
+		'<portlet:namespace />clearAccountEnvironment',
+		function() {
+			var A = AUI();
 
+			var ids = [
+				'envAS',
+				'envBrowser',
+				'envDB',
+				'envJVM',
+				'envLFR',
+				'envOS'
+			];
+
+			ids.forEach(
+				function(id) {
+					var node = A.one('#<portlet:namespace />' + id);
+
+					if (node) {
+						node.val('');
+					}
+				}
+			);
+
+			var envBrowserCustom = A.one('#<portlet:namespace />envBrowserCustom');
+
+			if (envBrowserCustom) {
+				envBrowserCustom.remove();
+			}
+
+			var envOSCustom = A.one('#<portlet:namespace />envOSCustom');
+
+			if (envOSCustom) {
+				envOSCustom.remove();
+			}
+		},
+		['aui-base']
+	);
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />selectAccountEntry',
+		function() {
+			var A = AUI();
+
+			var productEntryDisplayName = A.one('#<portlet:namespace />productEntryDisplayName');
+
+			if (productEntryDisplayName) {
+				productEntryDisplayName.val('');
+			}
+
+			<portlet:namespace />selectProductEntry();
+		},
+		['aui-base']
+	);
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />selectAccountEnvironment',
+		function(accountEnvironment) {
+			var A = AUI();
+
+			var accountEnvironmentId = accountEnvironment.value;
+
+			if (accountEnvironmentId == 0) {
+				var componentDetailEnvironment = A.one('#<portlet:namespace />componentDetailEnvironment');
+
+				if (componentDetailEnvironment) {
+					componentDetailEnvironment.hide();
+				}
+			}
+			else {
+				<portlet:namespace />clearAccountEnvironment();
+
+				document.<portlet:namespace />fm.encoding = 'application/x-www-form-urlencoded';
+
+				var formURL = '<portlet:renderURL><portlet:param name="mvcPath" value="/support/2/add_ticket_entry.jsp" /><portlet:param name="validateEnvironment" value="<%= Boolean.TRUE.toString() %>" /></portlet:renderURL>';
+
+				if (accountEnvironmentId == -1) {
+					formURL = '<portlet:renderURL><portlet:param name="mvcPath" value="/support/2/add_ticket_entry.jsp" /><portlet:param name="validateEnvironment" value="<%= Boolean.FALSE.toString() %>" /></portlet:renderURL>';
+				}
+
+				submitForm(document.<portlet:namespace />fm, formURL);
+			}
+		},
+		['aui-base']
+	);
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />selectProductEntry',
+		function() {
+			var A = AUI();
+
+			var offeringEntryId = A.one('#<portlet:namespace />offeringEntryId');
+
+			if (offeringEntryId) {
+				offeringEntryId.val(0);
+			}
+
+			var component = A.one('#<portlet:namespace />component');
+
+			if (component) {
+				component.val(0);
+			}
+
+			<portlet:namespace />selectServerComponent();
+		},
+		['aui-base']
+	);
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />selectServerComponent',
+		function() {
+			var A = AUI();
+
+			var component = A.one('#<portlet:namespace />component');
+			var offeringEntryId = A.one('#<portlet:namespace />offeringEntryId');
+
+			if (component && offeringEntryId) {
+				<portlet:namespace />validateRequiredField(offeringEntryId);
+			}
+
+			var accountEntryId = A.one('#<portlet:namespace />accountEntryId');
+			var accountEnvironmentId = A.one('#<portlet:namespace />accountEnvironmentId');
+			var productEntryDisplayName = A.one('#<portlet:namespace />productEntryDisplayName');
+
+			var oldAccountEntryId = <%= (accountEntry != null) ? accountEntry.getAccountEntryId() : 0 %>;
+			var oldProductEntryDisplayName = '<%= (productEntry != null) ? HtmlUtil.escapeJS(productEntry.getLESADisplayName()) : "" %>';
+			var oldOfferingEntryId = <%= (offeringEntry != null) ? offeringEntry.getOfferingEntryId() : 0 %>;
+
+			if (!(accountEntryId && (accountEntryId.val() == oldAccountEntryId) && productEntryDisplayName && (productEntryDisplayName.val() == oldProductEntryDisplayName) && component && offeringEntryId && ((component.val() == 0) || (offeringEntryId.val() == 0)) && !accountEnvironmentId)) {
+				if (accountEnvironmentId && (offeringEntryId.val() != oldOfferingEntryId)) {
+					accountEnvironmentId.val(0);
+				}
+
+				document.<portlet:namespace />fm.encoding = 'application/x-www-form-urlencoded';
+
+				submitForm(document.<portlet:namespace />fm, '<portlet:renderURL><portlet:param name="mvcPath" value="/support/2/add_ticket_entry.jsp" /></portlet:renderURL>');
+			}
+		},
+		['aui-base']
+	);
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />validateSubcomponent',
+		function() {
+			var A = AUI();
+
+			var subcomponent = A.one('#<portlet:namespace />subcomponent');
+
+			if (subcomponent && subcomponent.val()) {
+				<portlet:namespace />validateRequiredField(subcomponent);
+			}
+		},
+		['aui-base']
+	);
+</aui:script>
+
+<aui:script use="aui-base">
 	var accountEnvironmentId = A.one('#<portlet:namespace />accountEnvironmentId');
-	var component = A.one('#<portlet:namespace />component');
-	var offeringEntryId = A.one('#<portlet:namespace />offeringEntryId');
-	var subcomponent = A.one('#<portlet:namespace />subcomponent');
-
-	if (component) {
-		<portlet:namespace />validateRequiredField(offeringEntryId);
-	}
 
 	if (accountEnvironmentId && (accountEnvironmentId.val() != 0)) {
 		<portlet:namespace />validateRequiredField(accountEnvironmentId);
 	}
 
+	var component = A.one('#<portlet:namespace />component');
+	var offeringEntryId = A.one('#<portlet:namespace />offeringEntryId');
+
+	if (component && offeringEntryId) {
+		<portlet:namespace />validateRequiredField(offeringEntryId);
+	}
+
+	var subcomponent = A.one('#<portlet:namespace />subcomponent');
+
 	if (subcomponent) {
 		<portlet:namespace />validateSubcomponent();
-	}
-
-	function <portlet:namespace />clearAccountEnvironment() {
-		var ids = [
-			'envAS',
-			'envBrowser',
-			'envDB',
-			'envJVM',
-			'envLFR',
-			'envOS'
-		];
-
-		ids.forEach(
-			function(id) {
-				var node = A.one('#<portlet:namespace />' + id);
-
-				if (node) {
-					node.val('');
-				}
-			}
-		);
-
-		var envBrowserCustom = A.one('#<portlet:namespace />envBrowserCustom');
-
-		if (envBrowserCustom) {
-			envBrowserCustom.remove();
-		}
-
-		var envOSCustom = A.one('#<portlet:namespace />envOSCustom');
-
-		if (envOSCustom) {
-			envOSCustom.remove();
-		}
-	}
-
-	function <portlet:namespace />selectAccountEntry() {
-		var productEntryDisplayName = A.one('#<portlet:namespace />productEntryDisplayName');
-
-		if (productEntryDisplayName) {
-			productEntryDisplayName.val('');
-		}
-
-		<portlet:namespace />selectProductEntry();
-	}
-
-	function <portlet:namespace />selectProductEntry() {
-		var offeringEntryId = A.one('#<portlet:namespace />offeringEntryId');
-
-		if (offeringEntryId) {
-			offeringEntryId.val(0);
-		}
-
-		var component = A.one('#<portlet:namespace />component');
-
-		if (component) {
-			component.val(0);
-		}
-
-		<portlet:namespace />selectServerComponent();
-	}
-
-	function <portlet:namespace />selectServerComponent() {
-		var accountEntryId = A.one('#<portlet:namespace />accountEntryId');
-		var accountEnvironmentId = A.one('#<portlet:namespace />accountEnvironmentId');
-		var component = A.one('#<portlet:namespace />component');
-		var offeringEntryId = A.one('#<portlet:namespace />offeringEntryId');
-		var oldAccountEntryId = <%= (accountEntry != null) ? accountEntry.getAccountEntryId() : 0 %>;
-		var oldProductEntryDisplayName = '<%= (productEntry != null) ? HtmlUtil.escapeJS(productEntry.getLESADisplayName()) : "" %>';
-		var oldOfferingEntryId = <%= (offeringEntry != null) ? offeringEntry.getOfferingEntryId() : 0 %>;
-		var productEntryDisplayName = A.one('#<portlet:namespace />productEntryDisplayName');
-
-		if (component) {
-			<portlet:namespace />validateRequiredField(offeringEntryId);
-		}
-
-		if (!((accountEntryId.val() == oldAccountEntryId) && productEntryDisplayName && (productEntryDisplayName.val() == oldProductEntryDisplayName) && component && offeringEntryId && ((component.val() == 0) || (offeringEntryId.val() == 0)) && !accountEnvironmentId)) {
-			if (accountEnvironmentId && (offeringEntryId.val() != oldOfferingEntryId)) {
-				accountEnvironmentId.val(0);
-			}
-
-			document.<portlet:namespace />fm.encoding = 'application/x-www-form-urlencoded';
-
-			submitForm(document.<portlet:namespace />fm, '<portlet:renderURL><portlet:param name="mvcPath" value="/support/2/add_ticket_entry.jsp" /></portlet:renderURL>');
-		}
-	}
-
-	function <portlet:namespace />selectAccountEnvironment(accountEnvironment) {
-		var accountEnvironmentId = accountEnvironment.value;
-		var componentDetailEnvironment = A.one('#<portlet:namespace />componentDetailEnvironment');
-
-		if (accountEnvironmentId == 0) {
-			componentDetailEnvironment.hide();
-		}
-		else if (accountEnvironmentId == -1) {
-			<portlet:namespace />clearAccountEnvironment();
-
-			document.<portlet:namespace />fm.encoding = 'application/x-www-form-urlencoded';
-
-			submitForm(document.<portlet:namespace />fm, '<portlet:renderURL><portlet:param name="mvcPath" value="/support/2/add_ticket_entry.jsp" /><portlet:param name="validateEnvironment" value="<%= Boolean.FALSE.toString() %>" /></portlet:renderURL>');
-		}
-		else {
-			<portlet:namespace />clearAccountEnvironment();
-
-			document.<portlet:namespace />fm.encoding = 'application/x-www-form-urlencoded';
-
-			submitForm(document.<portlet:namespace />fm, '<portlet:renderURL><portlet:param name="mvcPath" value="/support/2/add_ticket_entry.jsp" /><portlet:param name="validateEnvironment" value="<%= Boolean.TRUE.toString() %>" /></portlet:renderURL>');
-		}
-	}
-
-	function <portlet:namespace />validateSubcomponent() {
-		if (subcomponent.val()) {
-			<portlet:namespace />validateRequiredField(subcomponent);
-		}
 	}
 </aui:script>
