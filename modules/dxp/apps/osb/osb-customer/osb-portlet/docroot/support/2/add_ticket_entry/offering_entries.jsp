@@ -57,7 +57,7 @@ request.setAttribute("add_ticket_entry.jsp-productEntryLESADisplayNames", produc
 
 		<span><%= LanguageUtil.get(pageContext, productEntryLESADisplayName) %></span>
 
-		<aui:input id="productEntryLESADisplayName" name="productEntryLESADisplayName" type="hidden" value="<%= HtmlUtil.escapeAttribute(productEntryLESADisplayName) %>" />
+		<aui:input name="productEntryLESADisplayName" type="hidden" value="<%= HtmlUtil.escapeAttribute(productEntryLESADisplayName) %>" />
 	</c:when>
 	<c:when test="<%= productEntryLESADisplayNames.size() > 1 %>">
 		<c:if test='<%= productEntryLESADisplayNames.contains("digital-enterprise") %>'>
@@ -66,7 +66,7 @@ request.setAttribute("add_ticket_entry.jsp-productEntryLESADisplayNames", produc
 			</div>
 		</c:if>
 
-		<aui:select id="productEntryLESADisplayName" name="productEntryLESADisplayName" onChange="<portlet:namespace />selectProductEntry();">
+		<aui:select name="productEntryLESADisplayName" onChange="<portlet:namespace />selectProductEntry();">
 			<aui:option value="" />
 
 			<%
@@ -100,7 +100,7 @@ PortletPreferences preferences = SupportUtil.getPortletPreferences();
 		</div>
 	</div>
 
-	<div class="hide page-pop-up" data-overlay="true" id="dxpMessage">
+	<div class="hide page-pop-up" data-overlay="true" id="<portlet:namespace />dxpMessage">
 		<div class="close-pop-up"></div>
 
 		<div class="pop-up-content">
@@ -163,11 +163,11 @@ String productLink = GetterUtil.getString(preferences.getValue("productLink_" + 
 
 					<liferay-ui:message key="<%= entry.getKey() %>" />
 
-					<aui:input id="offeringEntryId" name="offeringEntryId" type="hidden" value="<%= entry.getValue() %>" />
+					<aui:input name="offeringEntryId" type="hidden" value="<%= entry.getValue() %>" />
 				</c:when>
 				<c:when test="<%= productEntryEnvironments.size() > 1 %>">
 					<div>
-						<aui:select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(pageContext, "please-select-a-valid-server") %>" id="offeringEntryId" name="offeringEntryId" onChange="<portlet:namespace />selectServerComponent();">
+						<aui:select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(pageContext, "please-select-a-valid-server") %>" name="offeringEntryId" onChange="<portlet:namespace />selectServerComponent();">
 							<aui:option value="0" />
 
 							<%
@@ -201,7 +201,7 @@ String productLink = GetterUtil.getString(preferences.getValue("productLink_" + 
 			request.setAttribute("add_ticket_entry.jsp-productEntry", offeringEntry.getProductEntry());
 			%>
 
-			<aui:input id="offeringEntryId" name="offeringEntryId" type="hidden" value="<%= offeringEntry.getOfferingEntryId() %>" />
+			<aui:input name="offeringEntryId" type="hidden" value="<%= offeringEntry.getOfferingEntryId() %>" />
 		</c:otherwise>
 	</c:choose>
 </c:if>

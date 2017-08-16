@@ -137,7 +137,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 			</c:when>
 			<c:otherwise>
 				<aui:select disabled="<%= true %>" id="fromEnvLFR">
-					<aui:option label="<%= TicketEntryConstants.getEnvLabel(envLFR) %><%= limited ? " (limited)" : StringPool.BLANK %>" />
+					<aui:option label="<%= LanguageUtil.get(pageContext, TicketEntryConstants.getEnvLabel(envLFR)) %><%= limited ? " (" + LanguageUtil.get(pageContext, "limited") + ")" : StringPool.BLANK %>" />
 				</aui:select>
 			</c:otherwise>
 		</c:choose>
@@ -155,11 +155,11 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 		<c:choose>
 			<c:when test="<%= productEntry.isDigitalEnterprise() %>">
 				<aui:select disabled="<%= true %>" id="toEnvLFR">
-					<aui:option label="<%= TicketEntryConstants.getEnvLabel(envLFR) %><%= limited ? " (limited)" : StringPool.BLANK %>" />
+					<aui:option label="<%= LanguageUtil.get(pageContext, TicketEntryConstants.getEnvLabel(envLFR)) %><%= limited ? " (" + LanguageUtil.get(pageContext, "limited") + ")" : StringPool.BLANK %>" />
 				</aui:select>
 			</c:when>
 			<c:otherwise>
-				<aui:select id="toEnvLFR" name="toEnvLFR" onChange="<portlet:namespace />updateSupportMessage(this.value, 'Upgrade');">
+				<aui:select name="toEnvLFR" onChange="<portlet:namespace />updateSupportMessage(this.value, 'Upgrade');">
 					<aui:option value="0" />
 
 					<c:if test="<%= TicketEntryConstants.getEnvLabel(envLFR) != TicketEntryConstants.NOT_AVAILABLE %>">
@@ -192,7 +192,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 									<aui:option disabled="<%= true %>" label="--------" />
 								</c:if>
 
-								<aui:option label="<%= envLFRType.getName() %><%= toEnvLFRLimited ? " (limited)" : StringPool.BLANK %>" selected="<%= envLFRType.getListTypeId() == toEnvLFR %>" value="<%= envLFRType.getListTypeId() %>" />
+								<aui:option label="<%= LanguageUtil.get(pageContext, envLFRType.getName()) %><%= toEnvLFRLimited ? " (" + LanguageUtil.get(pageContext, "limited") + ")" : StringPool.BLANK %>" selected="<%= envLFRType.getListTypeId() == toEnvLFR %>" value="<%= envLFRType.getListTypeId() %>" />
 							</c:if>
 
 						<%
@@ -213,7 +213,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 	</h2>
 
 	<div>
-		<aui:select id="docLibPersistence" name="docLibPersistence">
+		<aui:select name="docLibPersistence">
 			<aui:option value="0" />
 
 			<%
