@@ -49,7 +49,7 @@ List<AccountCustomer> accountCustomers = accountEntry.getAccountCustomers();
 	<div class="tab-content">
 		<div>
 			<c:if test="<%= ticketWorker %>">
-				<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />contentContacts">
+				<div class="hide tab-content-tab" id="<portlet:namespace />contentContacts">
 					<div>
 						<span class="txt-b txt-up"><liferay-ui:message key="maximum-contacts" />:</span>
 
@@ -120,7 +120,7 @@ List<AccountCustomer> accountCustomers = accountEntry.getAccountCustomers();
 				</div>
 			</c:if>
 
-			<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />contentOfferings">
+			<div class="hide tab-content-tab" id="<portlet:namespace />contentOfferings">
 
 				<%
 				PortletURL searchURL = renderResponse.createRenderURL();
@@ -279,19 +279,19 @@ List<AccountCustomer> accountCustomers = accountEntry.getAccountCustomers();
 
 								<div id="<portlet:namespace />status_<%= key %>" style="display: none;">
 									<c:if test="<%= Validator.isNotNull(statusOnClick) %>">
-										<select name="<portlet:namespace />status_<%= key %>" onBlur="<%= statusOnBlur %>" onChange="<portlet:namespace />updateOfferingEntry('<%= key %>', '<%= StringUtil.merge(offeringEntryGroup.getOfferingEntryIds()) %>');">
+										<aui:select name='<%= renderResponse.getNamespace() + "status_" + key %>' onBlur="<%= statusOnBlur %>" onChange='<%= renderResponse.getNamespace() + "updateOfferingEntry('<%= key %>', '<%= StringUtil.merge(offeringEntryGroup.getOfferingEntryIds()) %>');" %>' />
 
 											<%
 											for (int i = 1; i <= 3; i++) {
 											%>
 
-												<option <%= (offeringEntryGroup.getStatus() == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(request, OfferingEntryConstants.getStatusLabel(i)) %></option>
+												<aui:option label="<%= OfferingEntryConstants.getStatusLabel(i) %>" selected="<%= offeringEntryGroup.getStatus() == i %>" value="<%= i %>" />
 
 											<%
 											}
 											%>
 
-										</select>
+										</aui:select>
 									</c:if>
 								</div>
 							</div>
@@ -302,7 +302,7 @@ List<AccountCustomer> accountCustomers = accountEntry.getAccountCustomers();
 				</liferay-ui:search-container>
 			</div>
 
-			<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />contentEnvironmentDetails">
+			<div class="hide tab-content-tab" id="<portlet:namespace />contentEnvironmentDetails">
 				<c:if test="<%= OSBAccountEnvironmentPermission.contains(permissionChecker, accountEntry.getAccountEntryId(), OSBActionKeys.ADD_ACCOUNT_ENVIRONMENT) %>">
 
 					<%
@@ -313,7 +313,7 @@ List<AccountCustomer> accountCustomers = accountEntry.getAccountCustomers();
 					addAccountEnvironmentURL.setWindowState(LiferayWindowState.POP_UP);
 					%>
 
-					<input class="aui-button-input" onClick="<portlet:namespace />openDialog('<liferay-ui:message key="create-environment-configuration" />', '<%= addAccountEnvironmentURL.toString() %>', '<portlet:namespace />updateAccountEnvironment');" type="button" value="<liferay-ui:message key="create-environment" />" />
+					<aui:button cssClass="aui-button-input" onClick='<%= renderResponse.getNamespace() + "openDialog('<liferay-ui:message key="create-environment-configuration" />', '<%= addAccountEnvironmentURL.toString() %>', '<portlet:namespace />updateAccountEnvironment');" %>' value="create-environment" />
 
 					<br /><br />
 				</c:if>
@@ -456,7 +456,7 @@ List<AccountCustomer> accountCustomers = accountEntry.getAccountCustomers();
 			</div>
 
 			<c:if test="<%= liferayIncOrg %>">
-				<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />contentAttachments">
+				<div class="hide tab-content-tab" id="<portlet:namespace />contentAttachments">
 
 					<%
 					List<AccountAttachment> accountAttachments = AccountAttachmentServiceUtil.getAccountAttachments(accountEntry.getAccountEntryId(), AccountProjectConstants.DEFAULT_ACCOUNT_PROJECT_ID, AccountAttachmentConstants.TYPE_OEM_INSTRUCTIONS);
@@ -484,13 +484,13 @@ List<AccountCustomer> accountCustomers = accountEntry.getAccountCustomers();
 				</div>
 			</c:if>
 
-			<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />contentAccountDetails">
+			<div class="hide tab-content-tab" id="<portlet:namespace />contentAccountDetails">
 
 				<%
 				PartnerEntry partnerEntry = accountEntry.getPartnerEntry();
 				%>
 
-				<div class="aui-helper-clearfix">
+				<div class="clearfix">
 					<div class="aui-w33 content-column">
 						<div class="content-column-content left-column">
 							<liferay-ui:message key="advocacy-specialists" />:
@@ -518,7 +518,7 @@ List<AccountCustomer> accountCustomers = accountEntry.getAccountCustomers();
 
 				<br />
 
-				<div class="aui-helper-clearfix">
+				<div class="clearfix">
 					<div class="aui-w33 content-column">
 						<div class="content-column-content left-column">
 							<liferay-ui:message key="industry" />:

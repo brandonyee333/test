@@ -84,23 +84,24 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_account_entry.jsp
 						</div>
 
 						<div id="<portlet:namespace/>tierDropDown" style="display: none;">
-							<select id="<portlet:namespace />tier" name="<portlet:namespace />tier" onChange="<portlet:namespace />updateAccountTier();">
+							<aui:select name='<%= renderResponse.getNamespace() + "tier" %>'onChange='<%= renderResponse.getNamespace() + "updateAccountTier();" %>'>
 
 								<%
 								for (int tier : AccountEntryConstants.TIERS) {
 								%>
 
-									<option <%= (accountEntry.getTier() == tier) ? "selected" : "" %> value="<%= tier %>"><%= LanguageUtil.get(request, AccountEntryConstants.getTierLabel(tier)) %></option>
+									<aui:option label="<%= AccountEntryConstants.getTierLabel(tier) %>" selected="<%= accountEntry.getTier() == tier %>" value="<%= tier %>" />
 
 								<%
 								}
 								%>
 
-							</select>
+							</aui:select>
 
-							<input class="aui-button-input" id="<portlet:namespace />tierCancel" onclick="<portlet:namespace />toggleForm('<portlet:namespace/>tierDropDown', '<portlet:namespace />tierDisplay');" type="button" value="<liferay-ui:message key="cancel" />" />
+							<aui:button cssClass="aui-button-input" id='<%= renderResponse.getNamespace() + "tierCancel" %>' onclick='<%= renderResponse.getNamespace() + "toggleForm('<portlet:namespace/>tierDropDown', '<portlet:namespace />tierDisplay');" %>' value="cancel" />
 						</div>
 					</span>
+
 					<span class="spacer"></span>
 
 					<%

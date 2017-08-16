@@ -40,7 +40,7 @@ long accountEntryId = ParamUtil.getLong(request, "accountEntryId");
 
 		<div class="tab-view-dialog">
 			<aui:form action="<%= updateAccountEntryURL %>" method="post" name="fm">
-				<input id="<portlet:namespace />modified" name="<portlet:namespace />modified" type="hidden" value="false" />
+				<aui:input name="modified" type="hidden" value="false" />
 				<aui:input name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
 
 				<liferay-ui:error exception="<%= AccountEntryCodeException.class %>" message="please-enter-a-valid-code" />
@@ -69,9 +69,9 @@ long accountEntryId = ParamUtil.getLong(request, "accountEntryId");
 				</div>
 
 				<div align="right">
-					<input class="aui-button-input buttons" onClick="<portlet:namespace />submit();" type="button" value="<liferay-ui:message key="save" />" />
+					<aui:button cssClass="aui-button-input buttons" onClick='<%= renderResponse.getNamespace() + "submit();" %>' value="save" />
 
-					<input class="aui-button-input buttons fl" onClick="<portlet:namespace />closePopup();" type="button" value="<liferay-ui:message key="cancel" />" />
+					<aui:button cssClass="aui-button-input buttons fl" onClick='<%= renderResponse.getNamespace() + "closePopup();" %>' value="cancel" />
 				</div>
 			</aui:form>
 		</div>
@@ -90,7 +90,7 @@ long accountEntryId = ParamUtil.getLong(request, "accountEntryId");
 
 		<div class="tab-view-dialog">
 			<aui:form action="<%= updateAccountEntryInstructionsURL %>" method="post" name="fm">
-				<input id="<portlet:namespace />modified" name="<portlet:namespace />modified" type="hidden" value="false" />
+				<aui:input name="modified" type="hidden" value="false" />
 				<aui:input name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
 
 				<div class="field-group">
@@ -100,9 +100,9 @@ long accountEntryId = ParamUtil.getLong(request, "accountEntryId");
 				</div>
 
 				<div align="right">
-					<input class="aui-button-input buttons" onClick="<portlet:namespace />submit();" type="button" value="<liferay-ui:message key="save" />" />
+					<aui:button cssClass="aui-button-input buttons" onClick='<%= renderResponse.getNamespace() + "submit();" %>' type="button" value="save" />
 
-					<input class="aui-button-input buttons fl" onClick="<portlet:namespace />closePopup();" type="button" value="<liferay-ui:message key="cancel" />" />
+					<aui:button cssClass="aui-button-input buttons fl" onClick='<%= renderResponse.getNamespace() + "closePopup();" %>' type="button" value="cancel" />
 				</div>
 			</aui:form>
 		</div>

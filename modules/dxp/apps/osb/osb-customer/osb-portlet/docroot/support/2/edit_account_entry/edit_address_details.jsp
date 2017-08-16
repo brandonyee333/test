@@ -29,47 +29,37 @@ long countryId = BeanParamUtil.getLong(address, request, "countryId");
 long regionId = BeanParamUtil.getLong(address, request, "regionId");
 %>
 
-<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />addressDetails">
+<div class="hide tab-content-tab" id="<portlet:namespace />addressDetails">
 	<aui:input name="addressId" type="hidden" value="<%= addressId %>" />
 
 	<div class="field-group">
-		<label id="<portlet:namespace />street1Label"><liferay-ui:message key="address-line" /></label>
-
 		<div class="field-align" field-required-message="<%= LanguageUtil.get(request, "please-enter-a-valid-address-line") %>">
 			<span class="inline long-field">
-				<aui:input bean="<%= address %>" data-field-required-status="<%= false %>" field="street1" label="" model="<%= Address.class %>" name="street1" type="text" />
+				<aui:input bean="<%= address %>" data-field-required-status="<%= false %>" field="street1" label="address-line" model="<%= Address.class %>" name="street1" type="text" />
 			</span>
 		</div>
 	</div>
 
 	<div class="field-group">
-		<label id="<portlet:namespace />countryIdLabel"><liferay-ui:message key="country" /></label>
-
-		<aui:select bean="<%= address %>" field="countryId" label="" name="countryId" />
+		<aui:select bean="<%= address %>" field="countryId" label="country" name="countryId" />
 	</div>
 
 	<div class="field-group">
-		<label id="<portlet:namespace />regionIdLabel"><liferay-ui:message key="state-province" /></label>
-
-		<aui:select bean="<%= address %>" field="regionId" label="" name="regionId" />
+		<aui:select bean="<%= address %>" field="regionId" label="state-province" name="regionId" />
 	</div>
 
 	<div class="field-group">
-		<label id="<portlet:namespace />cityLabel"><liferay-ui:message key="city" /></label>
-
 		<div class="field-align" field-required-message="<%= LanguageUtil.get(request, "please-enter-a-valid-city") %>">
 			<span class="inline long-field">
-				<aui:input bean="<%= address %>" data-field-required-status="<%= false %>" field="city" label="" model="<%= Address.class %>" name="city" type="text" />
+				<aui:input bean="<%= address %>" data-field-required-status="<%= false %>" field="city" label="city" model="<%= Address.class %>" name="city" type="text" />
 			</span>
 		</div>
 	</div>
 
 	<div class="field-group">
-		<label id="<portlet:namespace />zipLabel"><liferay-ui:message key="postal-code" /></label>
-
 		<div class="field-align" field-required-message="<%= LanguageUtil.get(request, "please-enter-a-valid-postal-code") %>">
 			<span class="inline long-field">
-				<aui:input bean="<%= address %>" data-field-required-status="<%= false %>" field="zip" label="" model="<%= Address.class %>" name="zip" type="text" />
+				<aui:input bean="<%= address %>" data-field-required-status="<%= false %>" field="zip" label="postal-code" model="<%= Address.class %>" name="zip" type="text" />
 			</span>
 		</div>
 	</div>

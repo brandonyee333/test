@@ -21,7 +21,7 @@ AccountEntry accountEntry = (AccountEntry)request.getAttribute("edit_account_ent
 PortletURL portletURL = (PortletURL)request.getAttribute("edit_account_entry.jsp-portletURL");
 %>
 
-<input class="aui-button-input" onClick="location.href = '<portlet:renderURL windowState="<%= WindowState.NORMAL.toString() %>"><portlet:param name="mvcPath" value="/support/2/advanced_search.jsp" /><portlet:param name="accountEntryIds" value="<%= String.valueOf(accountEntry.getAccountEntryId()) %>" /></portlet:renderURL>';" type="button" value="<liferay-ui:message key="view-tickets" />" />
+<aui:button cssClass="aui-button-input" onClick="location.href = '<portlet:renderURL windowState="<%= WindowState.NORMAL.toString() %>"><portlet:param name="mvcPath" value="/support/2/advanced_search.jsp" /><portlet:param name="accountEntryIds" value="<%= String.valueOf(accountEntry.getAccountEntryId()) %>" /></portlet:renderURL>';" value="view-tickets" />
 
 <%
 Map<String, String> dropDownList = new TreeMap<String, String>();

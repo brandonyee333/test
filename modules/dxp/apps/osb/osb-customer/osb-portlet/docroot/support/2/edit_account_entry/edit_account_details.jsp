@@ -26,29 +26,23 @@ int tier = BeanParamUtil.getInteger(accountEntry, request, "tier", AccountEntryC
 
 <div class="tab-content-tab" id="<portlet:namespace />accountDetails">
 	<div class="field-group">
-		<label id="<portlet:namespace />nameLabel"><liferay-ui:message key="project-name" /></label>
-
 		<div class="field-align" field-required-message="<%= LanguageUtil.get(request, "please-enter-a-valid-name") %>">
 			<span class="inline long-field">
-				<aui:input bean="<%= accountEntry %>" data-field-required-status="<%= false %>" label="" model="<%= AccountEntry.class %>" name="name" type="text" />
+				<aui:input bean="<%= accountEntry %>" data-field-required-status="<%= false %>" label="project-name" model="<%= AccountEntry.class %>" name="name" type="text" />
 			</span>
 		</div>
 	</div>
 
 	<div class="field-group">
-		<label id="<portlet:namespace />codeLabel"><liferay-ui:message key="code" /></label>
-
 		<div class="field-align" field-required-message="<%= LanguageUtil.get(request, "please-enter-a-valid-code") %>">
 			<span class="inline long-field">
-				<aui:input bean="<%= accountEntry %>" data-field-required-status="<%= false %>" label="" model="<%= AccountEntry.class %>" name="code" type="text" />
+				<aui:input bean="<%= accountEntry %>" data-field-required-status="<%= false %>" label="code" model="<%= AccountEntry.class %>" name="code" type="text" />
 			</span>
 		</div>
 	</div>
 
 	<div class="field-group">
-		<label id="<portlet:namespace />typeLabel"><liferay-ui:message key="type" /></label>
-
-		<aui:select label="" name="type">
+		<aui:select label="type" name="type">
 
 			<%
 			for (int i = 1; i <= 3; i++) {
@@ -64,10 +58,8 @@ int tier = BeanParamUtil.getInteger(accountEntry, request, "tier", AccountEntryC
 	</div>
 
 	<div class="field-group">
-		<label id="<portlet:namespace />industryLabel"><liferay-ui:message key="industry" /></label>
-
 		<div class="field-align" field-required-message="<%= LanguageUtil.get(request, "please-select-a-valid-industry") %>">
-			<aui:select data-field-required-status="<%= false %>" label="" name="industry">
+			<aui:select data-field-required-status="<%= false %>" label="industry" name="industry">
 				<aui:option value="" />
 
 				<%
@@ -87,9 +79,7 @@ int tier = BeanParamUtil.getInteger(accountEntry, request, "tier", AccountEntryC
 	</div>
 
 	<div class="field-group">
-		<label id="<portlet:namespace />tierLabel"><liferay-ui:message key="tier" /></label>
-
-		<aui:select label="" name="tier">
+		<aui:select label="tier" name="tier">
 
 			<%
 			for (int curTier : AccountEntryConstants.TIERS) {
@@ -105,22 +95,16 @@ int tier = BeanParamUtil.getInteger(accountEntry, request, "tier", AccountEntryC
 	</div>
 
 	<div class="field-group">
-		<label id="<portlet:namespace />maxCustomersLabel"><liferay-ui:message key="maximum-contacts" /></label>
-
 		<span class="inline long-field">
-			<aui:input bean="<%= accountEntry %>" label="" model="<%= AccountEntry.class %>" name="maxCustomers" />
+			<aui:input bean="<%= accountEntry %>" label="maximum-contacts" model="<%= AccountEntry.class %>" name="maxCustomers" />
 		</span>
 	</div>
 
 	<div class="field-group">
-		<label id="<portlet:namespace />instructionsLabel"><liferay-ui:message key="special-instructions" /></label>
-
-		<aui:input bean="<%= accountEntry %>" label="" model="<%= AccountEntry.class %>" name="instructions" />
+		<aui:input bean="<%= accountEntry %>" label="special-instructions" model="<%= AccountEntry.class %>" name="instructions" />
 	</div>
 
 	<div class="field-group">
-		<label id="<portlet:namespace />notesLabel"><liferay-ui:message key="additional-notes" /></label>
-
-		<aui:input bean="<%= accountEntry %>" label="" model="<%= AccountEntry.class %>" name="notes" />
+		<aui:input bean="<%= accountEntry %>" label="additional-notes" model="<%= AccountEntry.class %>" name="notes" />
 	</div>
 </div>

@@ -47,7 +47,7 @@
 
 		<div class="tab-content">
 			<div>
-				<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />contentCallLog">
+				<div class="hide tab-content-tab" id="<portlet:namespace />contentCallLog">
 
 					<%
 					List<AccountCall> accountCalls = AccountCallLocalServiceUtil.getAccountCalls(accountEntry.getAccountEntryId());
@@ -108,8 +108,8 @@
 										</tr>
 										<tr class="account-calls collapsed" id="<portlet:namespace />accountCallDetails_<%= accountCall.getAccountCallId() %>">
 											<td colspan="3">
-												<div class="aui-helper-clearfix tab-section">
-													<div class="aui-helper-clearfix customer-info">
+												<div class="clearfix tab-section">
+													<div class="clearfix customer-info">
 														<div class="aui-w33 fl">
 															<span class="customer-info-label"><liferay-ui:message key="call-type" /></span>:
 
@@ -131,7 +131,7 @@
 
 													<br />
 
-													<div class="aui-helper-clearfix customer-info">
+													<div class="clearfix customer-info">
 														<div class="aui-w15 fl">
 															<span class="customer-info-label"><liferay-ui:message key="summary" />:</span>
 														</div>
@@ -143,7 +143,7 @@
 														</div>
 													</div>
 
-													<div class="aui-helper-clearfix customer-info">
+													<div class="clearfix customer-info">
 														<div class="aui-w15 fl">
 															<span class="customer-info-label"><liferay-ui:message key="clients-present" />:</span>
 														</div>
@@ -155,7 +155,7 @@
 														</div>
 													</div>
 
-													<div class="aui-helper-clearfix customer-info">
+													<div class="clearfix customer-info">
 														<div class="aui-w15 fl">
 															<span class="customer-info-label"><liferay-ui:message key="notes" />:</span>
 														</div>
@@ -167,7 +167,7 @@
 														</div>
 													</div>
 
-													<div class="aui-helper-clearfix customer-info">
+													<div class="clearfix customer-info">
 														<div class="aui-w15 fl">
 															<span class="customer-info-label"><liferay-ui:message key="action-items" />:</span>
 														</div>
@@ -180,7 +180,7 @@
 													</div>
 
 													<c:if test="<%= hasUpdateAccountInfoPermission %>">
-														<div class="aui-helper-clearfix fr">
+														<div class="clearfix fr">
 
 															<%
 															PortletURL editAccountCallURL = renderResponse.createRenderURL();
@@ -191,14 +191,14 @@
 															editAccountCallURL.setWindowState(LiferayWindowState.POP_UP);
 															%>
 
-															<input class="aui-button-input" onClick="<portlet:namespace />openDialog('<liferay-ui:message key="edit-project-call" />', '<%= editAccountCallURL.toString() %>', '<portlet:namespace />updateAccountCall');" type="button" value="<liferay-ui:message key="edit" />" />
+															<aui:button cssClass="aui-button-input" onClick="'<%= renderResponse.getNamespace() + "openDialog('<liferay-ui:message key="edit-project-call" />', '<%= editAccountCallURL.toString() %>', '<portlet:namespace />updateAccountCall');" %>' value="edit" />
 
 															<portlet:actionURL name="deleteAccountCall" var="deleteAccountCallURL">
 																<portlet:param name="redirect" value="<%= currentURL %>" />
 																<portlet:param name="accountCallId" value="<%= String.valueOf(accountCall.getAccountCallId()) %>" />
 															</portlet:actionURL>
 
-															<input class="aui-button-input" onClick="javascript:if (confirm('<%= UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-delete-this-call-log") %>')) { location.href='<%= deleteAccountCallURL %>'; } else { self.focus(); }" type="button" value="<liferay-ui:message key="delete" />" />
+															<aui:button cssClass="aui-button-input" onClick="javascript:if (confirm('<%= UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-delete-this-call-log") %>')) { location.href='<%= deleteAccountCallURL %>'; } else { self.focus(); }" value="delete" />
 														</div>
 													</c:if>
 												</div>
@@ -220,7 +220,7 @@
 					</c:choose>
 
 					<c:if test="<%= hasUpdateAccountInfoPermission %>">
-						<div class="aui-helper-clearfix foot-details">
+						<div class="clearfix foot-details">
 							<div class="fr">
 
 								<%
@@ -231,13 +231,13 @@
 								addAccountCallURL.setWindowState(LiferayWindowState.POP_UP);
 								%>
 
-								<input class="aui-button-input" onClick="<portlet:namespace />openDialog('<liferay-ui:message key="add-call-log" />', '<%= addAccountCallURL.toString() %>', '<portlet:namespace />updateAccountCall')" type="button" value="<liferay-ui:message key="add-call-log" />" />
+								<aui:button cssClass="aui-button-input" onClick='<%= renderResponse.getNamespace() + "openDialog('<liferay-ui:message key="add-call-log" />', '<%= addAccountCallURL.toString() %>', '<portlet:namespace />updateAccountCall');" %>' value="add-call-log" />
 							</div>
 						</div>
 					</c:if>
 				</div>
 
-				<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />contentCasInformation">
+				<div class="hide tab-content-tab" id="<portlet:namespace />contentCasInformation">
 
 					<%
 					String casSectionLabel = "sectionDisplay_" + AccountInformationConstants.SECTION_ADVOCACY_SPECIALIST;
@@ -250,7 +250,7 @@
 						for (int fieldId : AccountInformationConstants.SECTION_ADVOCACY_SPECIALIST_FIELD_IDS) {
 						%>
 
-							<div class="aui-helper-clearfix customer-info">
+							<div class="clearfix customer-info">
 								<div class="aui-w20 customer-info-label fl">
 									<span class="customer-info-label"><liferay-ui:message key="<%= AccountInformationConstants.getFieldLabel(fieldId) %>" />:</span>
 								</div>
@@ -266,33 +266,33 @@
 						}
 						%>
 
-						<div class="aui-helper-clearfix">
+						<div class="clearfix">
 							<div class="fr">
 								<c:if test="<%= accountInformationDisplay.getModifiedDate(AccountInformationConstants.FIELD_REASONS_FOR_STRATEGIC) != null %>">
 									<liferay-ui:message arguments="<%= new Object[] {accountInformationDisplay.getModifiedUserName(AccountInformationConstants.FIELD_REASONS_FOR_STRATEGIC), fullDateFormatDateTime.format(accountInformationDisplay.getModifiedDate(AccountInformationConstants.FIELD_REASONS_FOR_STRATEGIC))} %>" key="x-on-x" />
 								</c:if>
 
 								<c:if test="<%= hasUpdateAccountInfoPermission %>">
-									<input class="aui-button-input" onClick="<portlet:namespace />toggleSection('<%= casSectionLabel %>', '<%= casSectionEditLabel %>');" type="button" value="<liferay-ui:message key="edit" />" />
+									<aui:button cssClass="aui-button-input" onClick="'<%= renderResponse.getNamespace() + "toggleSection('<%= casSectionLabel %>', '<%= casSectionEditLabel %>');" %>' value="edit" />
 								</c:if>
 							</div>
 						</div>
 					</div>
 
 					<c:if test="<%= hasUpdateAccountInfoPermission %>">
-						<div class="aui-helper-hidden" id="<portlet:namespace /><%= casSectionEditLabel %>">
+						<div class="hide" id="<portlet:namespace /><%= casSectionEditLabel %>">
 
 							<%
 							for (int fieldId : AccountInformationConstants.SECTION_ADVOCACY_SPECIALIST_FIELD_IDS) {
 							%>
 
-								<div class="aui-helper-clearfix">
+								<div class="clearfix">
 									<div class="aui-w20 customer-info-label fl">
 										<liferay-ui:message key="<%= AccountInformationConstants.getFieldLabel(fieldId) %>" />
 									</div>
 
 									<div class="aui-w80 customer-info fl">
-										<textarea maxlength="<%= OSBConstants.TEXTAREA_MAX_LENGTH %>" name="<portlet:namespace />field--<%= fieldId %>" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();"><%= HtmlUtil.escape(accountInformationDisplay.getData(fieldId)) %></textarea>
+										<aui:input maxlength="<%= OSBConstants.TEXTAREA_MAX_LENGTH %>" name='<%= renderResponse.getNamespace() + "field--" + fieldId %>' onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" placeholder="<%= HtmlUtil.escape(accountInformationDisplay.getData(fieldId)) %>" type="textarea" />
 									</div>
 								</div>
 
@@ -300,18 +300,18 @@
 							}
 							%>
 
-							<div class="aui-helper-clearfix">
+							<div class="clearfix">
 								<div class="fr">
-									<input class="aui-button-input" onClick="<portlet:namespace />updateAccountInformation('<%= AccountInformationConstants.SECTION_ADVOCACY_SPECIALIST %>', 'casInformation');" type="button" value="<liferay-ui:message key="save" />" />
+									<aui:button cssClass="aui-button-input" onClick="<%= renderResponse.getNamespace() %>updateAccountInformation('<%= AccountInformationConstants.SECTION_ADVOCACY_SPECIALIST %>', 'casInformation');" value="save" />
 
-									<input class="aui-button-input" onClick="<portlet:namespace />toggleSection('<%= casSectionEditLabel %>', '<%= casSectionLabel %>');" type="button" value="<liferay-ui:message key="cancel" />" />
+									<aui:button cssClass="aui-button-input" onClick="<%= renderResponse.getNamespace() %>toggleSection('<%= casSectionEditLabel %>', '<%= casSectionLabel %>');" value="cancel" />
 								</div>
 							</div>
 						</div>
 					</c:if>
 				</div>
 
-				<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />contentSalesInformation">
+				<div class="hide tab-content-tab" id="<portlet:namespace />contentSalesInformation">
 
 					<%
 					String salesSectionLabel = "sectionDisplay_" + AccountInformationConstants.SECTION_SALES;
@@ -340,21 +340,21 @@
 						}
 						%>
 
-						<div class="aui-helper-clearfix">
+						<div class="clearfix">
 							<div class="fr">
 								<c:if test="<%= accountInformationDisplay.getModifiedDate(AccountInformationConstants.FIELD_LICENSE_INFO) != null %>">
 									<liferay-ui:message arguments="<%= new Object[] {accountInformationDisplay.getModifiedUserName(AccountInformationConstants.FIELD_LICENSE_INFO), fullDateFormatDateTime.format(accountInformationDisplay.getModifiedDate(AccountInformationConstants.FIELD_LICENSE_INFO))} %>" key="x-on-x" />
 								</c:if>
 
 								<c:if test="<%= hasUpdateAccountInfoPermission %>">
-									<input class="aui-button-input" onClick="<portlet:namespace />toggleSection('<%= salesSectionLabel %>', '<%= salesSectionEditLabel %>');" type="button" value="<liferay-ui:message key="edit" />" />
+									<aui:button cssClass="aui-button-input" onClick='<%= renderResponse.getNamespace() + "toggleSection('<%= salesSectionLabel %>', '<%= salesSectionEditLabel %>');" %>' value="edit" />
 								</c:if>
 							</div>
 						</div>
 					</div>
 
 					<c:if test="<%= hasUpdateAccountInfoPermission %>">
-						<div class="aui-helper-hidden" id="<portlet:namespace /><%= salesSectionEditLabel %>">
+						<div class="hide" id="<portlet:namespace /><%= salesSectionEditLabel %>">
 
 							<%
 							for (int fieldId : AccountInformationConstants.SECTION_SALES_FIELD_IDS) {
@@ -366,7 +366,7 @@
 									</div>
 
 									<div class="aui-w80 customer-info fl">
-										<textarea maxlength="<%= OSBConstants.TEXTAREA_MAX_LENGTH %>" name="<portlet:namespace />field--<%= fieldId %>" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();"><%= HtmlUtil.escape(accountInformationDisplay.getData(fieldId)) %></textarea>
+										<aui:input maxlength="<%= OSBConstants.TEXTAREA_MAX_LENGTH %>" name="<%= renderResponse.getNamespace() + "field--" +  fieldId %>" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" placeholder="<%= HtmlUtil.escape(accountInformationDisplay.getData(fieldId)) %>" type="textarea" />
 									</div>
 								</div>
 
@@ -374,18 +374,18 @@
 							}
 							%>
 
-							<div class="aui-helper-clearfix">
+							<div class="clearfix">
 								<div class="fr">
-									<input class="aui-button-input" onClick="<portlet:namespace />updateAccountInformation('<%= AccountInformationConstants.SECTION_SALES %>', 'salesInformation');" type="button" value="<liferay-ui:message key="save" />" />
+									<aui:button cssClass="aui-button-input" onClick="'<%= renderResponse.getNamespace() + "updateAccountInformation('<%= AccountInformationConstants.SECTION_SALES %>', 'salesInformation');" %>' value="save" />
 
-									<input class="aui-button-input" onClick="<portlet:namespace />toggleSection('<%= salesSectionEditLabel %>', '<%= salesSectionLabel %>');" type="button" value="<liferay-ui:message key="cancel" />" />
+									<aui:button cssClass="aui-button-input" onClick='<%= renderResponse.getNamespace() + "toggleSection('<%= salesSectionEditLabel %>', '<%= salesSectionLabel %>');" %>' value="cancel" />
 								</div>
 							</div>
 						</div>
 					</c:if>
 				</div>
 
-				<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />contentSupportInstructions">
+				<div class="hide tab-content-tab" id="<portlet:namespace />contentSupportInstructions">
 					<div class="tab-section">
 						<c:choose>
 							<c:when test="<%= Validator.isNotNull(accountEntry.getInstructions()) %>">
@@ -398,7 +398,7 @@
 					</div>
 				</div>
 
-				<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />contentProjectNotes">
+				<div class="hide tab-content-tab" id="<portlet:namespace />contentProjectNotes">
 					<div class="tab-section">
 						<c:choose>
 							<c:when test="<%= Validator.isNotNull(accountEntry.getNotes()) %>">
