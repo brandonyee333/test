@@ -282,7 +282,8 @@ List<AccountEntry> accountEntries = partnerEntry.getAccountEntries();
 			}
 
 			window.scroll(0, 0);
-		}
+		},
+		['aui-base']
 	);
 
 	<portlet:namespace />revealDetail('<%= HtmlUtil.escape(detailTab) %>');
