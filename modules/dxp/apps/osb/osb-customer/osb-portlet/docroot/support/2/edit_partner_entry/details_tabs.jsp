@@ -146,7 +146,6 @@ List<AccountEntry> accountEntries = partnerEntry.getAccountEntries();
 				<liferay-ui:search-container
 					total="<%= accountEntries.size() %>"
 				>
-
 					<liferay-ui:search-container-results
 						results="<%= accountEntries %>"
 					/>

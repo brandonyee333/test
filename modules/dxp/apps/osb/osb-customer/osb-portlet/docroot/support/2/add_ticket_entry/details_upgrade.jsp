@@ -137,7 +137,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 			</c:when>
 			<c:otherwise>
 				<aui:select disabled="<%= true %>" id="fromEnvLFR">
-					<aui:option label="<%= LanguageUtil.get(pageContext, TicketEntryConstants.getEnvLabel(envLFR)) %><%= limited ? " (" + LanguageUtil.get(pageContext, "limited") + ")" : StringPool.BLANK %>" />
+					<aui:option label='<%= LanguageUtil.get(pageContext, TicketEntryConstants.getEnvLabel(envLFR)) %><%= limited ? " (" + LanguageUtil.get(pageContext, "limited") + ")" : StringPool.BLANK %>' />
 				</aui:select>
 			</c:otherwise>
 		</c:choose>
@@ -155,7 +155,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 		<c:choose>
 			<c:when test="<%= productEntry.isDigitalEnterprise() %>">
 				<aui:select disabled="<%= true %>" id="toEnvLFR">
-					<aui:option label="<%= LanguageUtil.get(pageContext, TicketEntryConstants.getEnvLabel(envLFR)) %><%= limited ? " (" + LanguageUtil.get(pageContext, "limited") + ")" : StringPool.BLANK %>" />
+					<aui:option label='<%= LanguageUtil.get(pageContext, TicketEntryConstants.getEnvLabel(envLFR)) %><%= limited ? " (" + LanguageUtil.get(pageContext, "limited") + ")" : StringPool.BLANK %>' />
 				</aui:select>
 			</c:when>
 			<c:otherwise>
@@ -192,7 +192,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 									<aui:option disabled="<%= true %>" label="--------" />
 								</c:if>
 
-								<aui:option label="<%= LanguageUtil.get(pageContext, envLFRType.getName()) %><%= toEnvLFRLimited ? " (" + LanguageUtil.get(pageContext, "limited") + ")" : StringPool.BLANK %>" selected="<%= envLFRType.getListTypeId() == toEnvLFR %>" value="<%= envLFRType.getListTypeId() %>" />
+								<aui:option label='<%= LanguageUtil.get(pageContext, envLFRType.getName()) %><%= toEnvLFRLimited ? " (" + LanguageUtil.get(pageContext, "limited") + ")" : StringPool.BLANK %>' selected="<%= envLFRType.getListTypeId() == toEnvLFR %>" value="<%= envLFRType.getListTypeId() %>" />
 							</c:if>
 
 						<%

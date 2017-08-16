@@ -169,7 +169,7 @@ String productLink = GetterUtil.getString(preferences.getValue("productLink_" + 
 				</c:when>
 				<c:when test="<%= productEntryEnvironments.size() > 1 %>">
 					<div>
-						<aui:select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(pageContext, "please-select-a-valid-server") %>" name="offeringEntryId" onChange="<%= renderResponse.getNamespace() %>selectServerComponent();">
+						<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(pageContext, "please-select-a-valid-server") %>' name="offeringEntryId" onChange="<%= renderResponse.getNamespace() %>selectServerComponent();">
 							<aui:option value="0" />
 
 							<%
@@ -177,7 +177,8 @@ String productLink = GetterUtil.getString(preferences.getValue("productLink_" + 
 							%>
 
 								<aui:option label="<%= entry.getKey() %>" selected="
-								<%= (offeringEntry != null) && (entry.getValue() == offeringEntry.getOfferingEntryId()) %>" value="<%= entry.getValue() %>" />
+								<%= (offeringEntry != null) && (entry.getValue() == offeringEntry.getOfferingEntryId()) %>" value="<%= entry.getValue() %>"
+							/>
 
 							<%
 							}
