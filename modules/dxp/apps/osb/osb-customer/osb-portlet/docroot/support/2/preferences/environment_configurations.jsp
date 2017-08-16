@@ -65,10 +65,10 @@ else {
 
 				<strong><%= HtmlUtil.escape(accountEntry.getName()) %></strong>
 
-				<aui:input id="accountEntryId" name="accountEntryId" type="hidden" value="<%= accountEntry.getAccountEntryId() %>" />
+				<aui:input name="accountEntryId" type="hidden" value="<%= accountEntry.getAccountEntryId() %>" />
 			</c:when>
 			<c:otherwise>
-				<aui:select id="accountEntryId" name="accountEntryId" onChange="submitForm(document.<portlet:namespace />fm, '<portlet:renderURL><portlet:param name="mvcPath" value="/support/2/preferences.jsp" /></portlet:renderURL>');">
+				<aui:select name="accountEntryId" onChange="submitForm(document.<portlet:namespace />fm, '<portlet:renderURL><portlet:param name="mvcPath" value="/support/2/preferences.jsp" /></portlet:renderURL>');">
 					<aui:option value="" />
 
 					<%
@@ -241,6 +241,6 @@ else {
 				}
 			);
 		},
-		['aui-dialog', 'aui-overlay-manager', 'liferay-util-window']
+		['liferay-util-window']
 	);
 </aui:script>
