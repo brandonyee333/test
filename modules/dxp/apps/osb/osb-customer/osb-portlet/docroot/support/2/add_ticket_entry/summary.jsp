@@ -59,7 +59,7 @@ else {
 			</c:when>
 			<c:otherwise>
 				<aui:select name="accountEntryId" onChange="<%= renderResponse.getNamespace() %>selectAccountEntry();">
-					<aui:option value=""></option>
+					<aui:option value=""></aui:option>
 
 					<%
 					for (AccountEntry curAccountEntry : accountEntries) {
@@ -151,7 +151,7 @@ if (accountEntry != null) {
 									for (int curComponent : TicketEntryConstants.getGroupComponents(componentGroup)) {
 									%>
 
-										<aui:option label="<%= TicketEntryConstants.getComponentLabel(curComponent) %>" selected="<%= (curComponent == component) %>" value="<%= curComponent %>"> />
+										<aui:option label="<%= TicketEntryConstants.getComponentLabel(curComponent) %>" selected="<%= (curComponent == component) %>" value="<%= curComponent %>" />
 
 									<%
 									}
@@ -178,7 +178,7 @@ if (accountEntry != null) {
 								int curComponent = componentEntry.getValue();
 							%>
 
-								<aui:option label="<%= curComponentLabel %>" selected="<%= curComponent == component) %>" value="<%= curComponent %>"> />
+								<aui:option label="<%= curComponentLabel %>" selected="<%= curComponent == component) %>" value="<%= curComponent %>" />
 
 							<%
 							}
@@ -256,7 +256,7 @@ if (accountEntry != null) {
 					}
 					%>
 
-				</select>
+				</aui:select>
 
 				<div class="<%= (accountEnvironmentId == 0) ? "hide" : StringPool.BLANK %> component-detail-environment" id="<portlet:namespace />componentDetailEnvironment">
 					<div class="environment-detail" id="<portlet:namespace />environmentDetail">
