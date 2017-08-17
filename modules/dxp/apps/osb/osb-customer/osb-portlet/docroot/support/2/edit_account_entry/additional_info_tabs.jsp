@@ -447,16 +447,14 @@
 		</div>
 	</div>
 
-	<aui:script use="aui-base">
-		<portlet:namespace />revealAdditionalInfo('<%= HtmlUtil.escape(additionalInfoTab) %>');
-	</aui:script>
-
 	<aui:script>
 		Liferay.provide(
 			window,
 			'<portlet:namespace />revealAdditionalInfo',
 			function(id) {
-				var tab = AUI().one('.account-additional-info .tabs #<portlet:namespace />' + id);
+				var A = AUI();
+
+				var tab = A.one('.account-additional-info .tabs #<portlet:namespace />' + id);
 
 				if (tab) {
 					<portlet:namespace />reveal('.account-additional-info', id);
@@ -464,37 +462,9 @@
 				else {
 					<portlet:namespace />reveal('.account-additional-info', 'callLog');
 				}
-			}
+			},
+			['aui-base']
 		);
-
-		function <portlet:namespace />toggleAccountCall(accountCallId) {
-			var A = AUI();
-
-			var accountCall = A.one('#<portlet:namespace />accountCall_' + accountCallId);
-			var accountCallDetails = A.one('#<portlet:namespace />accountCallDetails_' + accountCallId);
-
-			if (accountCall.hasClass('collapsed')) {
-				A.all("#<portlet:namespace />accountCallsContainer tr").each(
-					function(item, index, collection) {
-						item.addClass('collapsed');
-					}
-				);
-
-				accountCall.removeClass('collapsed');
-				accountCallDetails.removeClass('collapsed');
-			}
-			else {
-				accountCall.addClass('collapsed');
-				accountCallDetails.addClass('collapsed');
-			}
-		}
-
-		function <portlet:namespace />toggleSection(hideId, showId) {
-			var A = AUI();
-
-			A.one('#<portlet:namespace />' + hideId).hide();
-			A.one('#<portlet:namespace />' + showId).show();
-		}
 
 		function <portlet:namespace />updateAccountInformation(section, additionalInfoTab) {
 			document.<portlet:namespace />fm1.<portlet:namespace />redirect.value = '<%= portletURL.toString() %>';
@@ -502,6 +472,37 @@
 			document.<portlet:namespace />fm1.<portlet:namespace />section.value = section;
 
 			submitForm(document.<portlet:namespace />fm1);
+		}
+	</aui:script>
+
+	<aui:script use="aui-base">
+		<portlet:namespace />revealAdditionalInfo('<%= HtmlUtil.escape(additionalInfoTab) %>');
+
+		function <portlet:namespace />toggleAccountCall(accountCallId) {
+			var accountCall = A.one('#<portlet:namespace />accountCall_' + accountCallId);
+			var accountCallDetails = A.one('#<portlet:namespace />accountCallDetails_' + accountCallId);
+
+			if (accountCall && accountCallDetails) {
+				if (accountCall.hasClass('collapsed')) {
+					A.all("#<portlet:namespace />accountCallsContainer tr").each(
+						function(item, index, collection) {
+							item.addClass('collapsed');
+						}
+					);
+
+					accountCall.removeClass('collapsed');
+					accountCallDetails.removeClass('collapsed');
+				}
+				else {
+					accountCall.addClass('collapsed');
+					accountCallDetails.addClass('collapsed');
+				}
+			}
+		}
+
+		function <portlet:namespace />toggleSection(hideId, showId) {
+			A.one('#<portlet:namespace />' + hideId).hide();
+			A.one('#<portlet:namespace />' + showId).show();
 		}
 	</aui:script>
 </c:if>

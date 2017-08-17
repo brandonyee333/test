@@ -112,19 +112,21 @@ long accountEntryId = ParamUtil.getLong(request, "accountEntryId");
 <c:if test="<%= OSBAccountEntryPermission.contains(permissionChecker, accountEntryId, OSBActionKeys.UPDATE_ACCOUNT_INFO) || OSBAccountEntryPermission.contains(permissionChecker, accountEntryId, OSBActionKeys.UPDATE_ACCOUNT_INSTRUCTIONS) %>">
 	<%@ include file="/support/2/common/javascript/ticket_entry_validator_js.jspf" %>
 
-	<aui:script use="node">
+	<aui:script use="aui-base">
 		var onChange = function(e) {
 			var name = e.currentTarget.getAttribute('name');
 			var label = A.one('label#' + name + 'Label');
 
+			if (label) {
+				label.addClass('field-modified');
+			}
+
 			var labelAncestor = label.ancestor('.tab-content-tab');
 			var tab = A.one('span#' + labelAncestor.getAttribute('id'));
 
-			label.addClass('field-modified');
-
 			var modified = '(Modified)'.bold();
 
-			if (tab.html().indexOf('Modified') == -1) {
+			if (tab && tab.html().indexOf('Modified') == -1) {
 				tab.append(modified);
 				tab.addClass('field-modified');
 			}
@@ -136,8 +138,12 @@ long accountEntryId = ParamUtil.getLong(request, "accountEntryId");
 			document.getElementById('<portlet:namespace />modified').value = 'true';
 		};
 
-		A.one('#<portlet:namespace />ticketTabContent').delegate('change', onChange, 'input[type=checkbox], select');
-		A.one('#<portlet:namespace />ticketTabContent').delegate('keyup', onChange, 'input[type=text], textarea');
+		var ticketTabContent = A.one('#<portlet:namespace />ticketTabContent');
+
+		if (ticketTabContent) {
+			ticketTabContent.delegate('change', onChange, 'input[type=checkbox], select');
+			ticketTabContent.delegate('keyup', onChange, 'input[type=text], textarea');
+		}
 	</aui:script>
 
 	<aui:script>
@@ -155,23 +161,19 @@ long accountEntryId = ParamUtil.getLong(request, "accountEntryId");
 		function <portlet:namespace />closePopup() {
 			var modified = document.getElementById('<portlet:namespace />modified');
 
-			if (modified.value == 'true') {
-				var cancelEdit = confirm('<%= UnicodeLanguageUtil.get(request, "you-have-unsaved-changes-on-this-project.-are-you-sure-you-want-to-cancel-editing") %>');
+			if (modified && modified.value == 'true') {
+				confirm('<%= UnicodeLanguageUtil.get(request, "you-have-unsaved-changes-on-this-project.-are-you-sure-you-want-to-cancel-editing") %>');
+			}
 
-				if (cancelEdit) {
-					Liferay.Util.getWindow().close();
-				}
-			}
-			else {
-				Liferay.Util.getWindow().close();
-			}
+			Liferay.Util.getWindow().close();
 		}
 
 		function <portlet:namespace />submit() {
 			var firstNode = null;
+
 			var requiredFields = AUI().all('#<portlet:namespace />editAccountDetails input[data-field-required-status="false"], select[data-field-required-status="false"], textarea[data-field-required-status="false"]');
 
-			if (requiredFields.size() > 0) {
+			if (requiredFields.size()) {
 				requiredFields.each(
 					function(requiredField) {
 						if (!<portlet:namespace />validateRequiredField(requiredField) && !firstNode) {
@@ -184,8 +186,6 @@ long accountEntryId = ParamUtil.getLong(request, "accountEntryId");
 					<portlet:namespace />reveal('editAccountDetails');
 
 					firstNode.scrollIntoView();
-
-					return false;
 				}
 			}
 
@@ -198,14 +198,16 @@ long accountEntryId = ParamUtil.getLong(request, "accountEntryId");
 			function(id) {
 				var A = AUI();
 
-				var tab = A.one(".details .tabs #<portlet:namespace />" + id);
+				var tab = A.one('.details .tabs #<portlet:namespace />' + id);
 
 				if (tab) {
-					A.all(".details .tab-content-tab").hide();
+					A.all('.details .tab-content-tab').hide();
 
-					var tabContent = A.one(".details .tab-content #<portlet:namespace />" + id);
+					var tabContent = A.one('.details .tab-content #<portlet:namespace />' + id);
 
-					tabContent.show();
+					if (tabContent) {
+						tabContent.show();
+					}
 
 					A.all(".details .tabs span").removeClass("selected");
 
@@ -219,7 +221,7 @@ long accountEntryId = ParamUtil.getLong(request, "accountEntryId");
 
 				window.scroll(0, 0);
 			},
-			['querystring-util']
+			['aui-base', 'querystring-util']
 		);
 	</aui:script>
 </c:if>

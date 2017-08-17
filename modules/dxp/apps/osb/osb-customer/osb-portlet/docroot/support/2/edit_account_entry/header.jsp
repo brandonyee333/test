@@ -232,12 +232,13 @@ String tierMessage = HtmlUtil.escapeJS(SupportUtil.getPreferenceValue(locale, "t
 
 <aui:script>
 	function <portlet:namespace />toggleForm(hideId, showId) {
-		document.getElementById(showId).style.display = "";
-		document.getElementById(hideId).style.display = "none";
+		document.getElementById(showId).style.display = '';
+		document.getElementById(hideId).style.display = 'none';
 	}
 
 	function <portlet:namespace />updateAccountTier() {
 		document.<portlet:namespace />fm.<portlet:namespace />redirect.value = '<%= portletURL.toString() %>';
+
 		submitForm(document.<portlet:namespace />fm, '<portlet:actionURL name="updateAccountTier"><portlet:param name="mvcPath" value="/support/2/edit_account_entry.jsp" /></portlet:actionURL>');
 	}
 </aui:script>

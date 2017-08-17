@@ -626,9 +626,63 @@ List<AccountCustomer> accountCustomers = accountEntry.getAccountCustomers();
 	</div>
 </div>
 
-<aui:script use="aui-tooltip">
-	<portlet:namespace />revealDetail('<%= HtmlUtil.escape(detailTab) %>');
+<aui:script>
+	function <portlet:namespace />openDialog(title, url, popupId) {
+		Liferay.Util.openWindow(
+			{
+				cache: false,
+				dialog: {
+					align: Liferay.Util.Window.ALIGN_CENTER,
+					centered: true,
+					close: false,
+					cssClass: 'edit-account-dialog',
+					draggable: false,
+					modal: true,
+					resizable: false,
+					width: 760
+				},
+				id: popupId,
+				title: title,
+				uri: url
+			}
+		);
+	}
 
+	function <portlet:namespace />updateOfferingEntry(key, offeringEntryIds) {
+
+		<%
+		String detailTabURL = HttpUtil.addParameter(portletURL.toString(), "detailTab", "offerings");
+		%>
+
+		document.<portlet:namespace />fm.<portlet:namespace />redirect.value = '<%= detailTabURL %>';
+		document.<portlet:namespace />fm.<portlet:namespace />key.value = key;
+		document.<portlet:namespace />fm.<portlet:namespace />offeringEntryIds.value = offeringEntryIds;
+
+		submitForm(document.<portlet:namespace />fm, '<portlet:actionURL name="updateOfferingEntry"><portlet:param name="mvcPath" value="/support/2/edit_account_entry.jsp" /></portlet:actionURL>');
+	}
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />revealDetail',
+		function(id) {
+			var A = AUI();
+
+			var tab = A.one('.details .tabs #<portlet:namespace />' + id);
+
+			if (tab) {
+				<portlet:namespace />reveal('.details', id);
+			}
+			else {
+				<portlet:namespace />reveal('.details', 'contacts');
+			}
+		},
+		['aui-base']
+	);
+
+	<portlet:namespace />revealDetail('<%= HtmlUtil.escape(detailTab) %>');
+</aui:script>
+
+<aui:script use="aui-tooltip">
 	A.all('.status-<%= OfferingEntryConstants.STATUS_PENDING %>').each(
 		function(item, index, collection) {
 			new A.Tooltip(
@@ -645,59 +699,4 @@ List<AccountCustomer> accountCustomers = accountEntry.getAccountCustomers();
 			).render();
 		}
 	);
-</aui:script>
-
-<aui:script>
-	Liferay.provide(
-		window,
-		'<portlet:namespace />openDialog',
-		function(title, url, popupId) {
-			Liferay.Util.openWindow(
-				{
-					cache: false,
-					dialog: {
-						align: Liferay.Util.Window.ALIGN_CENTER,
-						centered: true,
-						close: false,
-						cssClass: 'edit-account-dialog',
-						draggable: false,
-						modal: true,
-						resizable: false,
-						width: 760
-					},
-					id: popupId,
-					title: title,
-					uri: url
-				}
-			);
-		},
-		['aui-dialog', 'aui-overlay-manager', 'liferay-util-window']
-	);
-
-	Liferay.provide(
-		window,
-		'<portlet:namespace />revealDetail',
-		function(id) {
-			var tab = AUI().one('.details .tabs #<portlet:namespace />' + id);
-
-			if (tab) {
-				<portlet:namespace />reveal('.details', id);
-			}
-			else {
-				<portlet:namespace />reveal('.details', 'contacts');
-			}
-		}
-	);
-
-	function <portlet:namespace />updateOfferingEntry(key, offeringEntryIds) {
-
-		<%
-		String detailTabURL = HttpUtil.addParameter(portletURL.toString(), "detailTab", "offerings");
-		%>
-
-		document.<portlet:namespace />fm.<portlet:namespace />redirect.value = '<%= detailTabURL %>';
-		document.<portlet:namespace />fm.<portlet:namespace />key.value = key;
-		document.<portlet:namespace />fm.<portlet:namespace />offeringEntryIds.value = offeringEntryIds;
-		submitForm(document.<portlet:namespace />fm, '<portlet:actionURL name="updateOfferingEntry"><portlet:param name="mvcPath" value="/support/2/edit_account_entry.jsp" /></portlet:actionURL>');
-	}
 </aui:script>
