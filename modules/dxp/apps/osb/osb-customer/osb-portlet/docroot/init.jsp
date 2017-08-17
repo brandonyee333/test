@@ -542,9 +542,5 @@ Format shortDateFormatDate = FastDateFormatFactoryUtil.getDate(DateFormat.SHORT,
 
 Format shortDateFormatTime = FastDateFormatFactoryUtil.getTime(DateFormat.SHORT, locale, timeZone);
 
-DateFormat jFreeChartDateFormatDate = DateFormat.getDateInstance(DateFormat.SHORT, locale);
-
-jFreeChartDateFormatDate.setTimeZone(timeZone);
-
 NumberFormat numberFormat = NumberFormat.getNumberInstance(locale);
 %>

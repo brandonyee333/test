@@ -65,8 +65,6 @@ public class WorkflowConstants
 
 	public static final String LABEL_REJECTED = "rejected";
 
-	public static final int STATUS_APPROVED_HIDDEN = 102;
-
 	public static final int STATUS_CLOSED = 400;
 
 	public static final int STATUS_PENDING_VALIDATION = 100;
