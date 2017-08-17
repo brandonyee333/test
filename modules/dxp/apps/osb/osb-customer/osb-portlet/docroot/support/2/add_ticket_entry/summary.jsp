@@ -58,8 +58,8 @@ else {
 				<aui:input name="accountEntryId" type="hidden" value="<%= accountEntry.getAccountEntryId() %>" />
 			</c:when>
 			<c:otherwise>
-				<aui:select name="accountEntryId" onChange="<%= renderResponse.getNamespace() %>selectAccountEntry();">
-					<aui:option value=""></aui:option>
+				<aui:select name="accountEntryId" onChange='<%= renderResponse.getNamespace() + "selectAccountEntry();" %>'>
+					<aui:option value="" />
 
 					<%
 					for (AccountEntry curAccountEntry : accountEntries) {
@@ -135,7 +135,7 @@ if (accountEntry != null) {
 			</h2>
 
 			<div>
-				<aui:select id="component" name="component" onChange="<%= renderResponse.getNamespace() %>selectServerComponent();">
+				<aui:select id="component" name="component" onChange='<%= renderResponse.getNamespace() + "selectServerComponent();" %>'>
 					<aui:option selected="<%= component == 0 %> value="0" />
 
 					<c:choose>
@@ -206,7 +206,7 @@ if (accountEntry != null) {
 								<liferay-ui:message key="subcomponent" />:
 							</h2>
 
-							<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(pageContext, "please-select-a-valid-subcomponent") %>' name="subcomponent" onChange="<%= renderResponse.getNamespace() %>validateSubcomponent();">
+							<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(pageContext, "please-select-a-valid-subcomponent") %>' name="subcomponent" onChange='<%= renderResponse.getNamespace() + "validateSubcomponent();" %>'>
 								<aui:option value="" />
 
 								<%
@@ -240,7 +240,7 @@ if (accountEntry != null) {
 			</c:if>
 
 			<div>
-				<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(pageContext, "please-select-a-valid-environment-configuration") %>' name="accountEnvironmentId" onChange="<%= renderResponse.getNamespace() %>selectAccountEnvironment(this);">
+				<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(pageContext, "please-select-a-valid-environment-configuration") %>' name="accountEnvironmentId" onChange='<%= renderResponse.getNamespace() + "selectAccountEnvironment(this);" %>'>
 					<aui:option value="0" />
 					<aui:option label="select-new-configuration" selected="<%= accountEnvironmentId == -1 %>" value="-1" />
 
@@ -300,14 +300,7 @@ if (accountEntry != null) {
 		function() {
 			var A = AUI();
 
-			var ids = [
-				'envAS',
-				'envBrowser',
-				'envDB',
-				'envJVM',
-				'envLFR',
-				'envOS'
-			];
+			var ids = ['envAS', 'envBrowser', 'envDB', 'envJVM', 'envLFR', 'envOS'];
 
 			ids.forEach(
 				function(id) {

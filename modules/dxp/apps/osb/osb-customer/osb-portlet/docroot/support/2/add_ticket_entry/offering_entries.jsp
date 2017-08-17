@@ -66,7 +66,7 @@ request.setAttribute("add_ticket_entry.jsp-productEntryLESADisplayNames", produc
 			</div>
 		</c:if>
 
-		<aui:select name="productEntryLESADisplayName" onChange="<%= renderResponse.getNamespace() %>selectProductEntry();">
+		<aui:select name="productEntryLESADisplayName" onChange='<%= renderResponse.getNamespace() + "selectProductEntry();" %>'>
 			<aui:option value="" />
 
 			<%
@@ -169,7 +169,7 @@ String productLink = GetterUtil.getString(preferences.getValue("productLink_" + 
 				</c:when>
 				<c:when test="<%= productEntryEnvironments.size() > 1 %>">
 					<div>
-						<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(pageContext, "please-select-a-valid-server") %>' name="offeringEntryId" onChange="<%= renderResponse.getNamespace() %>selectServerComponent();">
+						<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(pageContext, "please-select-a-valid-server") %>' name="offeringEntryId" onChange='<%= renderResponse.getNamespace() + "selectServerComponent();" %>'>
 							<aui:option value="0" />
 
 							<%

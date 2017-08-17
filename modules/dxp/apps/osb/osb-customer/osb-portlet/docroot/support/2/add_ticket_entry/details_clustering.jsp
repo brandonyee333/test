@@ -69,7 +69,9 @@ long toPatchLevelTicketAttachmentId = ParamUtil.getLong(request, "toPatchLevelTi
 
 <div class="clearfix">
 	<div class="aui-w45 fl">
-		<div class="section-heading"><liferay-ui:message key="server-communication-type" />:</div>
+		<div class="section-heading">
+			<liferay-ui:message key="server-communication-type" />:
+		</div>
 
 		<aui:select data-field-required-status="<%= false %>" field-required-message='<%= HtmlUtil.escapeAttribute(LanguageUtil.format(pageContext, "invalid-value-provided-for-x", "server-communication-type")) %>' name="serverCommunicationType">
 			<aui:option value="" />
@@ -88,7 +90,9 @@ long toPatchLevelTicketAttachmentId = ParamUtil.getLong(request, "toPatchLevelTi
 	</div>
 
 	<div class="aui-w45 fr">
-		<div class="section-heading"><liferay-ui:message key="number-of-nodes" />:</div>
+		<div class="section-heading">
+			<liferay-ui:message key="number-of-nodes" />:
+		</div>
 
 		<aui:select name="numberOfNodes">
 			<aui:option value="0" />

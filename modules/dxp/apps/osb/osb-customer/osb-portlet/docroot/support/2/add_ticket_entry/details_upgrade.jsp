@@ -118,7 +118,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 
 		<c:choose>
 			<c:when test="<%= productEntry.isDigitalEnterprise() %>">
-				<aui:select id="fromEnvLFR" name="envLFR" onChange="<%= renderResponse.getNamespace() %>updateSupportMessage(this.value, 'Upgrade');">
+				<aui:select id="fromEnvLFR" name="envLFR" onChange='<%= renderResponse.getNamespace() + "updateSupportMessage(this.value, 'Upgrade');" %>'>
 					<aui:option value="0" />
 
 					<%
@@ -159,7 +159,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 				</aui:select>
 			</c:when>
 			<c:otherwise>
-				<aui:select name="toEnvLFR" onChange="<%= renderResponse.getNamespace() %>updateSupportMessage(this.value, 'Upgrade');">
+				<aui:select name="toEnvLFR" onChange='<%= renderResponse.getNamespace() + "updateSupportMessage(this.value, 'Upgrade');" %>'>
 					<aui:option value="0" />
 
 					<c:if test="<%= TicketEntryConstants.getEnvLabel(envLFR) != TicketEntryConstants.NOT_AVAILABLE %>">
