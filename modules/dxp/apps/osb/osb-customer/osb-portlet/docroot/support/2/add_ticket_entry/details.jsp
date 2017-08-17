@@ -91,12 +91,13 @@ String description = ParamUtil.getString(request, "description");
 		window,
 		'<portlet:namespace />submit',
 		function() {
+			var A = AUI();
 
 			var firstNode = <portlet:namespace />validateFiles();
 
-			var requiredFields = AUI().all('#<portlet:namespace />createTicket input[data-field-required-status="false"], #<portlet:namespace />createTicket select[data-field-required-status="false"], #<portlet:namespace />createTicket textarea[data-field-required-status="false"]');
+			var requiredFields = A.all('#<portlet:namespace />createTicket input[data-field-required-status="false"], #<portlet:namespace />createTicket select[data-field-required-status="false"], #<portlet:namespace />createTicket textarea[data-field-required-status="false"]');
 
-			if (requiredFields.size() > 0) {
+			if (requiredFields.size()) {
 				requiredFields.each(
 					function(requiredField) {
 						<portlet:namespace />validateRequiredField(requiredField);
@@ -116,7 +117,6 @@ String description = ParamUtil.getString(request, "description");
 			else {
 				firstNode.scrollIntoView();
 			}
-
 		},
 		['aui-base']
 	);

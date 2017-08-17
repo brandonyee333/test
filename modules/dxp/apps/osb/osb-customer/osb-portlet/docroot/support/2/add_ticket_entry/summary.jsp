@@ -371,13 +371,13 @@ if (accountEntry != null) {
 
 				document.<portlet:namespace />fm.encoding = 'application/x-www-form-urlencoded';
 
-				var formURL = '<portlet:renderURL><portlet:param name="mvcPath" value="/support/2/add_ticket_entry.jsp" /><portlet:param name="validateEnvironment" value="<%= Boolean.TRUE.toString() %>" /></portlet:renderURL>';
+				var formUrl = '<portlet:renderURL><portlet:param name="mvcPath" value="/support/2/add_ticket_entry.jsp" /><portlet:param name="validateEnvironment" value="<%= Boolean.TRUE.toString() %>" /></portlet:renderURL>';
 
 				if (accountEnvironmentId == -1) {
-					formURL = '<portlet:renderURL><portlet:param name="mvcPath" value="/support/2/add_ticket_entry.jsp" /><portlet:param name="validateEnvironment" value="<%= Boolean.FALSE.toString() %>" /></portlet:renderURL>';
+					formUrl = '<portlet:renderURL><portlet:param name="mvcPath" value="/support/2/add_ticket_entry.jsp" /><portlet:param name="validateEnvironment" value="<%= Boolean.FALSE.toString() %>" /></portlet:renderURL>';
 				}
 
-				submitForm(document.<portlet:namespace />fm, formURL);
+				submitForm(document.<portlet:namespace />fm, formUrl);
 			}
 		},
 		['aui-base']
@@ -424,11 +424,11 @@ if (accountEntry != null) {
 			var productEntryDisplayName = A.one('#<portlet:namespace />productEntryDisplayName');
 
 			var oldAccountEntryId = <%= (accountEntry != null) ? accountEntry.getAccountEntryId() : 0 %>;
-			var oldProductEntryDisplayName = '<%= (productEntry != null) ? HtmlUtil.escapeJS(productEntry.getLESADisplayName()) : "" %>';
+			var oldProductEntryDisplayName = '<%= (productEntry != null) ? HtmlUtil.escapeJS(productEntry.getDisplayName()) : "" %>';
 			var oldOfferingEntryId = <%= (offeringEntry != null) ? offeringEntry.getOfferingEntryId() : 0 %>;
 
-			if (!(accountEntryId && (accountEntryId.val() == oldAccountEntryId) && productEntryDisplayName && (productEntryDisplayName.val() == oldProductEntryDisplayName) && component && offeringEntryId && ((component.val() == 0) || (offeringEntryId.val() == 0)) && !accountEnvironmentId)) {
-				if (accountEnvironmentId && (offeringEntryId.val() != oldOfferingEntryId)) {
+			if (!((accountEntryId && (accountEntryId.val() == oldAccountEntryId)) && productEntryDisplayName && (productEntryDisplayName.val() == oldProductEntryDisplayName) && component && offeringEntryId && ((component.val() == 0) || (offeringEntryId.val() == 0)) && !accountEnvironmentId)) {
+				if (accountEnvironmentId && offeringEntryId && (offeringEntryId.val() != oldOfferingEntryId)) {
 					accountEnvironmentId.val(0);
 				}
 
