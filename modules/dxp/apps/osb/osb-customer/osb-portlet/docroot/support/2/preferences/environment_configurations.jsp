@@ -220,27 +220,22 @@ else {
 		}
 	}
 
-	Liferay.provide(
-		window,
-		'<portlet:namespace />openDialog',
-		function(title, url, popupId) {
-			Liferay.Util.openWindow(
-				{
-					cache: false,
-					dialog: {
-						align: Liferay.Util.Window.ALIGN_CENTER,
-						centered: true,
-						close: false,
-						draggable: false,
-						modal: true,
-						resizable: false
-					},
-					id: popupId,
-					title: title,
-					uri: url
-				}
-			);
-		},
-		['liferay-util-window']
-	);
+	function <portlet:namespace />openDialog(title, url, popupId) {
+		Liferay.Util.openWindow(
+			{
+				cache: false,
+				dialog: {
+					align: Liferay.Util.Window.ALIGN_CENTER,
+					centered: true,
+					close: false,
+					draggable: false,
+					modal: true,
+					resizable: false
+				},
+				id: popupId,
+				title: title,
+				uri: url
+			}
+		);
+	}
 </aui:script>
