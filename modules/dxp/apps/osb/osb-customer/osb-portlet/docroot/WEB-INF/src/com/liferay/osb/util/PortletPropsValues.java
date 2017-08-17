@@ -24,38 +24,18 @@ import com.liferay.util.portlet.PortletProps;
  */
 public class PortletPropsValues {
 
-	public static final long ASSET_LICENSE_TRIAL_MAX_SERVERS =
-		GetterUtil.getLong(
-			PortletProps.get(PortletPropsKeys.ASSET_LICENSE_TRIAL_MAX_SERVERS));
-
-	public static final long ASSET_LICENSE_TRIAL_MAX_USERS = GetterUtil.getLong(
-		PortletProps.get(PortletPropsKeys.ASSET_LICENSE_TRIAL_MAX_USERS));
-
 	public static final boolean DEVELOPER_MODE_ENABLED = GetterUtil.getBoolean(
 		PortletProps.get(PortletPropsKeys.DEVELOPER_MODE_ENABLED));
-
-	public static final boolean DEVELOPER_PATHS_ENABLED = GetterUtil.getBoolean(
-		PortletProps.get(PortletPropsKeys.DEVELOPER_PATHS_ENABLED));
 
 	public static final boolean DEVELOPER_UPGRADE_ENABLED =
 		GetterUtil.getBoolean(
 			PortletProps.get(PortletPropsKeys.DEVELOPER_UPGRADE_ENABLED));
-
-	public static final String ELASTICSEARCH_SEARCH_ENGINE_ID =
-		GetterUtil.getString(
-			PortletProps.get(PortletPropsKeys.ELASTICSEARCH_SEARCH_ENGINE_ID));
 
 	public static final String[] FILE_REPOSITORY_IDS = PortletProps.getArray(
 		PortletPropsKeys.FILE_REPOSITORY_IDS);
 
 	public static final String JIRA_BROWSE_URL = PortletProps.get(
 		PortletPropsKeys.JIRA_BROWSE_URL);
-
-	public static final String KRYTERION_SECURITY_TOKEN = PortletProps.get(
-		PortletPropsKeys.KRYTERION_SECURITY_TOKEN);
-
-	public static final String KRYTERION_URL = PortletProps.get(
-		PortletPropsKeys.KRYTERION_URL);
 
 	public static final String RABBITMQ_MESSAGE_DEAD_LETTER_QUEUE_NAME =
 		PortletProps.get(
@@ -118,8 +98,5 @@ public class PortletPropsValues {
 	public static final String[] TICKET_ATTACHMENT_PREVIEW_EXTENSIONS =
 		PortletProps.getArray(
 			PortletPropsKeys.TICKET_ATTACHMENT_PREVIEW_EXTENSIONS);
-
-	public static final String VERIFY_USER_API_TOKEN = GetterUtil.getString(
-		PortletProps.get(PortletPropsKeys.VERIFY_USER_API_TOKEN));
 
 }

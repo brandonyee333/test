@@ -5,8 +5,6 @@
 	<property file="build.${user.name}.properties" />
 	<property file="build.properties" />
 
-	<property name="import.shared" value="ecommerce-shared,ip-geocoder-shared,json-web-service-client-shared,osb-restful-shared,osb-shared,osb-tools-shared" />
-
 	<import file="${portal.base.dir}/tools/sdk/portlets/build-common-portlet.xml" />
 
 	<target name="build-lang">

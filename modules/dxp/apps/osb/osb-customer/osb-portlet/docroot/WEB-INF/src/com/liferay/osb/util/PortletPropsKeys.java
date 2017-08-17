@@ -21,19 +21,10 @@ package com.liferay.osb.util;
  */
 public interface PortletPropsKeys {
 
-	public static final String ASSET_LICENSE_TRIAL_MAX_SERVERS =
-		"asset.license.trial.max.servers";
-
-	public static final String ASSET_LICENSE_TRIAL_MAX_USERS =
-		"asset.license.trial.max.servers";
-
 	public static final String AUDIT_ACTION_MODELS = "audit.action.models";
 
 	public static final String DEVELOPER_MODE_ENABLED =
 		"developer.mode.enabled";
-
-	public static final String DEVELOPER_PATHS_ENABLED =
-		"developer.paths.enabled";
 
 	public static final String DEVELOPER_UPGRADE_ENABLED =
 		"developer.upgrade.enabled";
@@ -51,11 +42,6 @@ public interface PortletPropsKeys {
 		"file.repository.support.region.ids";
 
 	public static final String JIRA_BROWSE_URL = "jira.browse.url";
-
-	public static final String KRYTERION_SECURITY_TOKEN =
-		"kryterion.security.token";
-
-	public static final String KRYTERION_URL = "kryterion.url";
 
 	public static final String PROVISIONING_EMAIL_ADDRESS =
 		"provisioning.email.address";
@@ -110,7 +96,5 @@ public interface PortletPropsKeys {
 
 	public static final String TICKET_ATTACHMENT_PREVIEW_EXTENSIONS =
 		"ticket.attachment.preview.extensions";
-
-	public static final String VERIFY_USER_API_TOKEN = "verify.user.api.token";
 
 }

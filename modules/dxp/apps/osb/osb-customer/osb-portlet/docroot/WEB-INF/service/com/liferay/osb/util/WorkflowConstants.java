@@ -61,13 +61,6 @@ public class WorkflowConstants
 
 	public static final String LABEL_CLOSED = "closed";
 
-	public static final String LABEL_INCOMPLETE_TRAINING_REGISTRATION =
-		"incomplete-training-registration";
-
-	public static final String LABEL_PENDING_AUTO_QA = "pending-auto-qa";
-
-	public static final String LABEL_PENDING_QA = "pending-qa";
-
 	public static final String LABEL_PENDING_VALIDATION = "pending-validation";
 
 	public static final String LABEL_REJECTED = "rejected";
@@ -76,30 +69,12 @@ public class WorkflowConstants
 
 	public static final int STATUS_CLOSED = 400;
 
-	public static final int STATUS_INCOMPLETE_TRAINING_REGISTRATION = 200;
-
-	public static final int STATUS_MERGED = 300;
-
-	public static final int STATUS_PENDING_AGREEMENT = 103;
-
-	public static final int STATUS_PENDING_AUTO_QA = 105;
-
-	public static final int STATUS_PENDING_FINAL_REMINDER = 104;
-
-	public static final int STATUS_PENDING_QA = 101;
-
 	public static final int STATUS_PENDING_VALIDATION = 100;
 
 	public static final int STATUS_REJECTED = 500;
 
 	public static int getLabelStatus(String label) {
-		if (label.equals(LABEL_INCOMPLETE_TRAINING_REGISTRATION)) {
-			return STATUS_INCOMPLETE_TRAINING_REGISTRATION;
-		}
-		else if (label.equals(LABEL_PENDING_QA)) {
-			return STATUS_PENDING_QA;
-		}
-		else if (label.equals(LABEL_PENDING_VALIDATION)) {
+		if (label.equals(LABEL_PENDING_VALIDATION)) {
 			return STATUS_PENDING_VALIDATION;
 		}
 		else {
@@ -111,15 +86,6 @@ public class WorkflowConstants
 	public static String getStatusLabel(int status) {
 		if (status == STATUS_CLOSED) {
 			return LABEL_CLOSED;
-		}
-		else if (status == STATUS_INCOMPLETE_TRAINING_REGISTRATION) {
-			return LABEL_INCOMPLETE_TRAINING_REGISTRATION;
-		}
-		else if (status == STATUS_PENDING_AUTO_QA) {
-			return LABEL_PENDING_AUTO_QA;
-		}
-		else if (status == STATUS_PENDING_QA) {
-			return LABEL_PENDING_QA;
 		}
 		else if (status == STATUS_PENDING_VALIDATION) {
 			return LABEL_PENDING_VALIDATION;

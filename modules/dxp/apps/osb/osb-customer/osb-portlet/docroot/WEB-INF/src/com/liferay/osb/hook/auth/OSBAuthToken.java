@@ -176,10 +176,7 @@ public class OSBAuthToken implements AuthToken {
 			String actionName = ParamUtil.getString(
 				request, portletNamespace + ActionRequest.ACTION_NAME);
 
-			if (actionName.equals("addAppEntryMedia") ||
-				actionName.equals("addAppPackagePlugin") ||
-				actionName.equals("addTempTicketAttachment")) {
-
+			if (actionName.equals("addTempTicketAttachment")) {
 				return true;
 			}
 		}

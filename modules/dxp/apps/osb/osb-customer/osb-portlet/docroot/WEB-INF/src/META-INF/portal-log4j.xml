@@ -5,12 +5,4 @@
 	<category name="com.liferay.osb.hook.upgrade">
 		<priority value="ALL" />
 	</category>
-
-	<category name="com.liferay.osb.hook.upgrade.v3_6_0">
-		<priority value="ALL" />
-	</category>
-
-	<category name="com.liferay.osb.hook.upgrade.v3_7_6">
-		<priority value="ALL" />
-	</category>
 </log4j:configuration>

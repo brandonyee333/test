@@ -21,7 +21,6 @@ import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
-import com.liferay.portal.kernel.exception.NoSuchOrganizationException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -188,11 +187,7 @@ public class AdminServletContextListener
 			setupDeveloperMode();
 		}
 
-		// Asset
-
 		// TODO need database for OSBConstants.*_USER_ID calls
-
-		//AdminServletContextListenerAssetHelper.setup();
 
 		// Audit action
 
@@ -336,78 +331,6 @@ public class AdminServletContextListener
 
 		OSBConstants.GROUP_GUEST_ID = guestGroup.getGroupId();
 
-		// Corp organization
-
-		Organization organization = null;
-
-		try {
-			organization = OrganizationLocalServiceUtil.getOrganization(
-				OSBConstants.COMPANY_ID, "Corporation Parent");
-		}
-		catch (NoSuchOrganizationException nsoe) {
-			organization = OrganizationLocalServiceUtil.addOrganization(
-				OSBConstants.USER_SUPPORT_PM_USER_ID, 0L, "Corporation Parent",
-				OrganizationConstants.TYPE_REGULAR_ORGANIZATION, 0L, 0L,
-				(long)OSBConstants.ORGANIZATION_FULL_MEMBER_STATUS_ID,
-				"The parent organization of all corporations", false,
-				new ServiceContext());
-		}
-
-		if (organization != null) {
-			OSBConstants.ORGANIZATION_CORPORATION_PARENT_ID =
-				organization.getOrganizationId();
-		}
-
-		// Corp group organization
-
-		Organization corpGroupOrganization = null;
-
-		try {
-			corpGroupOrganization =
-				OrganizationLocalServiceUtil.getOrganization(
-					OSBConstants.COMPANY_ID, "Corporation Group Parent");
-		}
-		catch (NoSuchOrganizationException nsoe) {
-			corpGroupOrganization =
-				OrganizationLocalServiceUtil.addOrganization(
-					OSBConstants.USER_SUPPORT_PM_USER_ID, 0L,
-					"Corporation Group Parent",
-					OrganizationConstants.TYPE_REGULAR_ORGANIZATION, 0L, 0L,
-					(long)OSBConstants.ORGANIZATION_FULL_MEMBER_STATUS_ID,
-					"The parent organization of all corporation groups", false,
-					new ServiceContext());
-		}
-
-		if (corpGroupOrganization != null) {
-			OSBConstants.ORGANIZATION_CORPORATION_GROUP_PARENT_ID =
-				corpGroupOrganization.getOrganizationId();
-		}
-
-		// Corp project organization
-
-		Organization corpProjectOrganization = null;
-
-		try {
-			corpProjectOrganization =
-				OrganizationLocalServiceUtil.getOrganization(
-					OSBConstants.COMPANY_ID, "Corporation Project Parent");
-		}
-		catch (NoSuchOrganizationException nsoe) {
-			corpProjectOrganization =
-				OrganizationLocalServiceUtil.addOrganization(
-					OSBConstants.USER_SUPPORT_PM_USER_ID, 0L,
-					"Corporation Project Parent",
-					OrganizationConstants.TYPE_REGULAR_ORGANIZATION, 0L, 0L,
-					(long)OSBConstants.ORGANIZATION_FULL_MEMBER_STATUS_ID,
-					"The parent organization of all corporation projects",
-					false, new ServiceContext());
-		}
-
-		if (corpProjectOrganization != null) {
-			OSBConstants.ORGANIZATION_CORPORATION_PROJECT_PARENT_ID =
-				corpProjectOrganization.getOrganizationId();
-		}
-
 		// Customer organization
 
 		Organization customerOrganization = null;
@@ -505,99 +428,6 @@ public class AdminServletContextListener
 
 		addAdministratorRole(OSBConstants.ROLE_OSB_ADMINISTRATOR_ID);
 
-		// OSB Corp Admin role
-
-		try {
-			role = RoleLocalServiceUtil.getRole(
-				OSBConstants.COMPANY_ID, "OSB Corp Admin");
-		}
-		catch (Exception e) {
-			role = RoleLocalServiceUtil.addRole(
-				OSBConstants.USER_DEFAULT_USER_ID, null, 0, "OSB Corp Admin",
-				null, null, RoleConstants.TYPE_ORGANIZATION, null, null);
-		}
-
-		OSBConstants.ROLE_OSB_CORP_ADMIN_ID = role.getRoleId();
-
-		addAdministratorRole(OSBConstants.ROLE_OSB_CORP_ADMIN_ID);
-
-		// OSB Corp Buyer role
-
-		try {
-			role = RoleLocalServiceUtil.getRole(
-				OSBConstants.COMPANY_ID, "OSB Corp Buyer");
-		}
-		catch (Exception e) {
-			role = RoleLocalServiceUtil.addRole(
-				OSBConstants.USER_DEFAULT_USER_ID, null, 0, "OSB Corp Buyer",
-				null, null, RoleConstants.TYPE_ORGANIZATION, null, null);
-		}
-
-		OSBConstants.ROLE_OSB_CORP_BUYER_ID = role.getRoleId();
-
-		addAdministratorRole(OSBConstants.ROLE_OSB_CORP_BUYER_ID);
-
-		// OSB Corp Developer role
-
-		try {
-			role = RoleLocalServiceUtil.getRole(
-				OSBConstants.COMPANY_ID, "OSB Corp Developer");
-		}
-		catch (Exception e) {
-			role = RoleLocalServiceUtil.addRole(
-				OSBConstants.USER_DEFAULT_USER_ID, null, 0,
-				"OSB Corp Developer", null, null,
-				RoleConstants.TYPE_ORGANIZATION, null, null);
-		}
-
-		OSBConstants.ROLE_OSB_CORP_DEVELOPER_ID = role.getRoleId();
-
-		addAdministratorRole(OSBConstants.ROLE_OSB_CORP_DEVELOPER_ID);
-
-		// OSB Corp LCS User role
-
-		try {
-			role = RoleLocalServiceUtil.getRole(
-				OSBConstants.COMPANY_ID, "OSB Corp LCS User");
-		}
-		catch (Exception e) {
-			role = RoleLocalServiceUtil.addRole(
-				OSBConstants.USER_DEFAULT_USER_ID, null, 0, "OSB Corp LCS User",
-				null, null, RoleConstants.TYPE_ORGANIZATION, null, null);
-		}
-
-		OSBConstants.ROLE_OSB_CORP_LCS_USER_ID = role.getRoleId();
-
-		addAdministratorRole(OSBConstants.ROLE_OSB_CORP_LCS_USER_ID);
-
-		// OSB Corp Project Admin role
-
-		try {
-			role = RoleLocalServiceUtil.getRole(
-				OSBConstants.COMPANY_ID, "OSB Corp Project Admin");
-		}
-		catch (Exception e) {
-			role = RoleLocalServiceUtil.addRole(
-				OSBConstants.USER_DEFAULT_USER_ID, null, 0,
-				"OSB Corp Project Admin", null, null,
-				RoleConstants.TYPE_REGULAR, null, null);
-		}
-
-		OSBConstants.ROLE_OSB_CORP_PROJECT_ADMIN_ID = role.getRoleId();
-
-		// OSB Marketing Admin role
-
-		try {
-			role = RoleLocalServiceUtil.getRole(
-				OSBConstants.COMPANY_ID, "OSB Marketing Admin");
-		}
-		catch (Exception e) {
-			role = RoleLocalServiceUtil.addRole(
-				OSBConstants.USER_DEFAULT_USER_ID, null, 0,
-				"OSB Marketing Admin", null, null, RoleConstants.TYPE_REGULAR,
-				null, null);
-		}
-
 		// OSB Support Admin role
 
 		try {
@@ -613,23 +443,6 @@ public class AdminServletContextListener
 		OSBConstants.ROLE_OSB_SUPPORT_ADMIN_ID = role.getRoleId();
 
 		addAdministratorRole(OSBConstants.ROLE_OSB_SUPPORT_ADMIN_ID);
-
-		// OSB Trial License Admin role
-
-		try {
-			role = RoleLocalServiceUtil.getRole(
-				OSBConstants.COMPANY_ID, "OSB Trial License Admin");
-		}
-		catch (Exception e) {
-			role = RoleLocalServiceUtil.addRole(
-				OSBConstants.USER_DEFAULT_USER_ID, null, 0,
-				"OSB Trial License Admin", null, null,
-				RoleConstants.TYPE_REGULAR, null, null);
-		}
-
-		OSBConstants.ROLE_OSB_TRIAL_LICENSE_ADMIN_ID = role.getRoleId();
-
-		addAdministratorRole(OSBConstants.ROLE_OSB_TRIAL_LICENSE_ADMIN_ID);
 
 		// List types
 

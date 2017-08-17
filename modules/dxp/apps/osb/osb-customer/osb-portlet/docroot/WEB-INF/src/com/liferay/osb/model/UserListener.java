@@ -26,12 +26,9 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModelListener;
-import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
-import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 
@@ -50,31 +47,11 @@ public class UserListener extends BaseModelListener<User> {
 		throws ModelListenerException {
 
 		try {
-			if (associationClassName.equals(Organization.class.getName())) {
-				long organizationId = GetterUtil.getLong(associationClassPK);
-
-				if (organizationId ==
-						OSBConstants.ORGANIZATION_LIFERAY_INC_ID) {
-
-					long userId = GetterUtil.getLong(classPK);
-
-					if (!RoleLocalServiceUtil.hasUserRole(
-							userId, OSBConstants.ROLE_VERIFIED_USER_ID)) {
-
-						UserLocalServiceUtil.addRoleUsers(
-							OSBConstants.ROLE_VERIFIED_USER_ID,
-							new long[] {userId});
-					}
-				}
-			}
-			else if (associationClassName.equals(Role.class.getName())) {
+			if (associationClassName.equals(Role.class.getName())) {
 				long userId = GetterUtil.getLong(classPK);
 				long roleId = GetterUtil.getLong(associationClassPK);
 
 				if (roleId == OSBConstants.ROLE_VERIFIED_USER_ID) {
-					GroupLocalServiceUtil.addUserGroups(
-						userId, new long[] {OSBConstants.GROUP_GUEST_ID});
-
 					assignOrganizations(userId);
 				}
 			}
