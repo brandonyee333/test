@@ -51,7 +51,7 @@ List<SupportTeam> supportTeams = SupportTeamLocalServiceUtil.getUserRoleSupportT
 								}
 						%>
 
-								<div class="aui-w100 left-column content-column content-column-content manager-dashboard-team <%= cssClass %>">
+								<div class="aui-w100 content-column content-column-content left-column manager-dashboard-team <%= cssClass %>">
 									<div class="team-title">
 										<%= HtmlUtil.escape(supportTeam.getName()) %>
 									</div>
