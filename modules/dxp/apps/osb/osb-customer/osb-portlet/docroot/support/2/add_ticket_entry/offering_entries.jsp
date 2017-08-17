@@ -176,9 +176,7 @@ String productLink = GetterUtil.getString(preferences.getValue("productLink_" + 
 							for (Map.Entry<String, Long> entry : productEntryEnvironments.entrySet()) {
 							%>
 
-								<aui:option label="<%= entry.getKey() %>" selected="
-								<%= (offeringEntry != null) && (entry.getValue() == offeringEntry.getOfferingEntryId()) %>" value="<%= entry.getValue() %>"
-							/>
+								<aui:option label="<%= entry.getKey() %>" selected="<%= (offeringEntry != null) && (entry.getValue() == offeringEntry.getOfferingEntryId()) %>" value="<%= entry.getValue() %>" />
 
 							<%
 							}
@@ -266,26 +264,28 @@ String productLink = GetterUtil.getString(preferences.getValue("productLink_" + 
 
 		centerOnPage(node);
 
-		var popUpContent = node.one('.pop-up-content');
-
 		if (node.getAttribute('data-overlay')) {
 			createOverlayMask();
 		}
 
-		popUpContent.on(
-			'clickoutside',
-			function(event) {
-				var overlayMask = A.one('.aui-overlaymask');
+		var popUpContent = node.one('.pop-up-content');
 
-				if (overlayMask) {
-					overlayMask.remove();
+		if (popUpContent) {
+			popUpContent.on(
+				'clickoutside',
+				function(event) {
+					var overlayMask = A.one('.aui-overlaymask');
+
+					if (overlayMask) {
+						overlayMask.remove();
+					}
+
+					node.hide();
+
+					popUpContent.detach('clickoutside');
 				}
-
-				node.hide();
-
-				popUpContent.detach('clickoutside');
-			}
-		);
+			);
+		}
 	};
 
 	A.all('.close-announcement').on(
@@ -316,7 +316,9 @@ String productLink = GetterUtil.getString(preferences.getValue("productLink_" + 
 
 				var popUp = A.one(popDisplay);
 
-				displayPopUp(popUp);
+				if (popUp) {
+					displayPopUp(popUp);
+				}
 			}
 		);
 	}
