@@ -82,7 +82,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 		<liferay-ui:message key="please-provide-accurate-upgrade-details-these-details-will-help-us-reproduce-your-issue-and-come-to-a-faster-resolution" />
 	</div>
 
-	<c:if test='<%= !productEntryLESADisplayNames.contains("digital-enterprise") %>'>
+	<c:if test="<%= !productEntryLESADisplayNames.contains(ProductEntryConstants.DISPLAY_NAME_DIGITAL_ENTERPRISE) %>">
 		<div class="portlet-msg-info">
 			<liferay-ui:message key="if-you-require-support-for-a-potential-upgrade-to-dxp-please-contact-you-provisioning-representative-for-further-assistance" />
 		</div>
@@ -137,7 +137,16 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 			</c:when>
 			<c:otherwise>
 				<aui:select disabled="<%= true %>" id="fromEnvLFR">
-					<aui:option label='<%= LanguageUtil.get(pageContext, TicketEntryConstants.getEnvLabel(envLFR)) %><%= limited ? " (" + LanguageUtil.get(pageContext, "limited") + ")" : StringPool.BLANK %>' />
+
+					<%
+					String optionLabel = LanguageUtil.get(pageContext, TicketEntryConstants.getEnvLabel(envLFR));
+
+					if (limited) {
+						optionLabel += " (" + LanguageUtil.get(pageContext, "limited") + ")";
+					}
+					%>
+
+					<aui:option label="<%= optionLabel %>" />
 				</aui:select>
 			</c:otherwise>
 		</c:choose>
@@ -155,7 +164,16 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 		<c:choose>
 			<c:when test="<%= productEntry.isDigitalEnterprise() %>">
 				<aui:select disabled="<%= true %>" id="toEnvLFR">
-					<aui:option label='<%= LanguageUtil.get(pageContext, TicketEntryConstants.getEnvLabel(envLFR)) %><%= limited ? " (" + LanguageUtil.get(pageContext, "limited") + ")" : StringPool.BLANK %>' />
+
+					<%
+					String optionLabel = LanguageUtil.get(pageContext, TicketEntryConstants.getEnvLabel(envLFR));
+
+					if (limited) {
+						optionLabel += " (" + LanguageUtil.get(pageContext, "limited") + ")";
+					}
+					%>
+
+					<aui:option label="<%= optionLabel %>" />
 				</aui:select>
 			</c:when>
 			<c:otherwise>
@@ -192,7 +210,15 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 									<aui:option disabled="<%= true %>" label="--------" />
 								</c:if>
 
-								<aui:option label='<%= LanguageUtil.get(pageContext, envLFRType.getName()) %><%= toEnvLFRLimited ? " (" + LanguageUtil.get(pageContext, "limited") + ")" : StringPool.BLANK %>' selected="<%= envLFRType.getListTypeId() == toEnvLFR %>" value="<%= envLFRType.getListTypeId() %>" />
+								<%
+								String optionLabel = LanguageUtil.get(pageContext, envLFRType.getName());
+
+								if (toEnvLFRLimited) {
+									optionLabel += " (" + LanguageUtil.get(pageContext, "limited") + ")";
+								}
+								%>
+
+								<aui:option label="<%= optionLabel %>" selected="<%= envLFRType.getListTypeId() == toEnvLFR %>" value="<%= envLFRType.getListTypeId() %>" />
 							</c:if>
 
 						<%

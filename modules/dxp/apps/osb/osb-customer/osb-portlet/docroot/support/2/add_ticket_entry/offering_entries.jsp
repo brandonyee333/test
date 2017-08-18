@@ -57,10 +57,10 @@ request.setAttribute("add_ticket_entry.jsp-productEntryLESADisplayNames", produc
 
 		<span><%= LanguageUtil.get(pageContext, productEntryLESADisplayName) %></span>
 
-		<aui:input name="productEntryLESADisplayName" type="hidden" value="<%= HtmlUtil.escapeAttribute(productEntryLESADisplayName) %>" />
+		<aui:input name="productEntryLESADisplayName" type="hidden" value="<%= productEntryLESADisplayName %>" />
 	</c:when>
 	<c:when test="<%= productEntryLESADisplayNames.size() > 1 %>">
-		<c:if test='<%= productEntryLESADisplayNames.contains("digital-enterprise") %>'>
+		<c:if test="<%= productEntryLESADisplayNames.contains(ProductEntryConstants.DISPLAY_NAME_DIGITAL_ENTERPRISE) %>">
 			<div class="portlet-msg-info">
 				<liferay-ui:message key="if-you-require-support-for-a-potential-upgrade-to-dxp-please-choose-digital-enterprise-as-your-product-and-upgrade-as-your-component" />
 			</div>
@@ -73,7 +73,7 @@ request.setAttribute("add_ticket_entry.jsp-productEntryLESADisplayNames", produc
 			for (String curProductEntryLESADisplayName : productEntryLESADisplayNames) {
 			%>
 
-				<aui:option label="<%= curProductEntryLESADisplayName %>" selected="<%= productEntryLESADisplayName.equals(curProductEntryLESADisplayName) %> value="<%= curProductEntryLESADisplayName %>" />
+				<aui:option label="<%= curProductEntryLESADisplayName %>" selected="<%= productEntryLESADisplayName.equals(curProductEntryLESADisplayName) %>" value="<%= curProductEntryLESADisplayName %>" />
 
 			<%
 			}
@@ -115,7 +115,9 @@ String productLink = GetterUtil.getString(preferences.getValue("productLink_" + 
 
 <c:if test="<%= Validator.isNotNull(productLink) %>">
 	<div class="portlet-msg-info">
-		<div class="txt-b"><liferay-ui:message arguments="<%= productEntryLESADisplayName %>" key="known-issues" translateArguments="true" /></div>
+		<div class="txt-b">
+			<liferay-ui:message arguments="<%= productEntryLESADisplayName %>" key="known-issues" translateArguments="true" />
+		</div>
 
 		<div>
 			<liferay-ui:message arguments='<%= new String[] {LanguageUtil.get(pageContext, productEntryLESADisplayName), "<a href=\"" + productLink + "\" target=\"_blank\">", "</a>"} %>' key="known-issues-message" />

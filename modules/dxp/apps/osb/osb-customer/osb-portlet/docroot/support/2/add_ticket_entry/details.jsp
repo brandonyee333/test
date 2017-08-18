@@ -33,7 +33,7 @@ String description = ParamUtil.getString(request, "description");
 		</h2>
 
 		<div>
-			<aui:input data-field-required-status="<%= false %>" field-required-message='<%= HtmlUtil.escapeAttribute(LanguageUtil.get(pageContext, "please-enter-a-summary-of-the-issue")) %>' maxLength='<%= ModelHintsUtil.getMaxLength(TicketEntry.class.getName(), "subject") %>' name="subject" type="text" value="<%= HtmlUtil.escape(subject) %>" />
+			<aui:input data-field-required-status="<%= false %>" field-required-message='<%= HtmlUtil.escapeAttribute(LanguageUtil.get(pageContext, "please-enter-a-summary-of-the-issue")) %>' maxLength='<%= ModelHintsUtil.getMaxLength(TicketEntry.class.getName(), "subject") %>' name="subject" type="text" value="<%= subject %>" />
 		</div>
 	</div>
 
@@ -80,9 +80,9 @@ String description = ParamUtil.getString(request, "description");
 			<portlet:param name="mvcPath" value="/support/2/view.jsp" />
 		</portlet:renderURL>
 
-		<aui:button cssClass="aui-button-input fl" href="<%= HtmlUtil.escape(cancelURL.toString()) %>" value="cancel" />
+		<aui:button cssClass="aui-button-input fl" href="<%= cancelURL.toString() %>" value="cancel" />
 
-		<aui:button cssClass="aui-button-input fr" onClick="<%= renderResponse.getNamespace() %>submit();" value="create" />
+		<aui:button cssClass="aui-button-input fr" onClick='<%= renderResponse.getNamespace() + "submit();" %>' value="create" />
 	</div>
 </div>
 
