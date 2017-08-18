@@ -33,7 +33,6 @@ import com.liferay.osb.exception.AccountEnvironmentEnvDBException;
 import com.liferay.osb.exception.AccountEnvironmentEnvLFRException;
 import com.liferay.osb.exception.AccountEnvironmentEnvOSException;
 import com.liferay.osb.exception.AccountEnvironmentNameException;
-import com.liferay.osb.exception.AccountWorkerPartnerRoleException;
 import com.liferay.osb.exception.DuplicateAccountEntryException;
 import com.liferay.osb.exception.DuplicateAccountEnvironmentException;
 import com.liferay.osb.exception.DuplicateHolidayEntryException;
@@ -42,12 +41,9 @@ import com.liferay.osb.exception.DuplicateOfferingDefinitionException;
 import com.liferay.osb.exception.DuplicatePartnerEntryCodeException;
 import com.liferay.osb.exception.DuplicatePartnerEntryDossieraAccountKeyException;
 import com.liferay.osb.exception.DuplicateProductEntryException;
-import com.liferay.osb.exception.DuplicateSupportLaborException;
 import com.liferay.osb.exception.DuplicateSupportRegionException;
 import com.liferay.osb.exception.DuplicateSupportResponseException;
 import com.liferay.osb.exception.DuplicateSupportTeamException;
-import com.liferay.osb.exception.DuplicateSupportWorkerException;
-import com.liferay.osb.exception.DuplicateTicketCannedResponseException;
 import com.liferay.osb.exception.HolidayCalendarNameException;
 import com.liferay.osb.exception.HolidayEntryDateException;
 import com.liferay.osb.exception.HolidayEntryStartDateLaterThanEndDateException;
@@ -64,7 +60,6 @@ import com.liferay.osb.exception.PartnerEntryParentPartnerEntryException;
 import com.liferay.osb.exception.ProductEntryEnvironmentException;
 import com.liferay.osb.exception.ProductEntryNameException;
 import com.liferay.osb.exception.RequiredAccountEntryException;
-import com.liferay.osb.exception.RequiredLicenseEntryException;
 import com.liferay.osb.exception.RequiredOfferingDefinitionException;
 import com.liferay.osb.exception.RequiredOfferingEntryException;
 import com.liferay.osb.exception.RequiredPartnerEntryException;
@@ -77,7 +72,6 @@ import com.liferay.osb.exception.SupportLaborNameException;
 import com.liferay.osb.exception.SupportRegionNameException;
 import com.liferay.osb.exception.SupportResponseNameException;
 import com.liferay.osb.exception.SupportResponseSupportLevelException;
-import com.liferay.osb.exception.SupportTeamContainsNoSupportWorkersException;
 import com.liferay.osb.exception.SupportTeamLocationException;
 import com.liferay.osb.exception.SupportTeamNameException;
 import com.liferay.osb.exception.SupportTeamSupportLaborException;
@@ -1693,7 +1687,6 @@ public class AdminPortlet extends MVCPortlet {
 			cause instanceof AccountEnvironmentEnvLFRException ||
 			cause instanceof AccountEnvironmentEnvOSException ||
 			cause instanceof AccountEnvironmentNameException ||
-			cause instanceof AccountWorkerPartnerRoleException ||
 			cause instanceof AddressCityException ||
 			cause instanceof AddressStreetException ||
 			cause instanceof AddressZipException ||
@@ -1707,12 +1700,9 @@ public class AdminPortlet extends MVCPortlet {
 			cause instanceof DuplicatePartnerEntryCodeException ||
 			cause instanceof DuplicatePartnerEntryDossieraAccountKeyException ||
 			cause instanceof DuplicateProductEntryException ||
-			cause instanceof DuplicateSupportLaborException ||
 			cause instanceof DuplicateSupportRegionException ||
 			cause instanceof DuplicateSupportResponseException ||
 			cause instanceof DuplicateSupportTeamException ||
-			cause instanceof DuplicateSupportWorkerException ||
-			cause instanceof DuplicateTicketCannedResponseException ||
 			cause instanceof DuplicateUserEmailAddressException ||
 			cause instanceof FileExtensionException ||
 			cause instanceof FileNameException ||
@@ -1734,7 +1724,6 @@ public class AdminPortlet extends MVCPortlet {
 			cause instanceof ProductEntryEnvironmentException ||
 			cause instanceof ProductEntryNameException ||
 			cause instanceof RequiredAccountEntryException ||
-			cause instanceof RequiredLicenseEntryException ||
 			cause instanceof RequiredOfferingDefinitionException ||
 			cause instanceof RequiredOfferingEntryException ||
 			cause instanceof RequiredPartnerEntryException ||
@@ -1748,7 +1737,6 @@ public class AdminPortlet extends MVCPortlet {
 			cause instanceof SupportRegionNameException ||
 			cause instanceof SupportResponseNameException ||
 			cause instanceof SupportResponseSupportLevelException ||
-			cause instanceof SupportTeamContainsNoSupportWorkersException ||
 			cause instanceof SupportTeamLocationException ||
 			cause instanceof SupportTeamNameException ||
 			cause instanceof SupportTeamSupportLaborException ||

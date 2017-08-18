@@ -61,7 +61,6 @@ String timeZoneId = BeanParamUtil.getString(supportLabor, request, "timeZoneId")
 		names="labor-hours"
 	/>
 
-	<liferay-ui:error exception="<%= DuplicateSupportLaborException.class %>" message="please-enter-a-unique-name" />
 	<liferay-ui:error exception="<%= SupportLaborHourException.class %>" message="the-hours-entered-are-invalid" />
 	<liferay-ui:error exception="<%= SupportLaborNameException.class %>" message="please-enter-a-name" />
 

@@ -312,12 +312,6 @@
 		<reference entity="Role" package-path="com.liferay.portal" />
 	</entity>
 	<exceptions>
-		<exception>AssetLicenseClassName</exception>
-		<exception>AssetLicenseLicenseType</exception>
-		<exception>AssetLicenseLicenseTypeAllotment</exception>
-		<exception>AssetLicenseLifetime</exception>
-		<exception>AssetLicenseUsageType</exception>
-		<exception>AssetLicenseStatus</exception>
 		<exception>DuplicateHostName</exception>
 		<exception>DuplicateIPAddress</exception>
 		<exception>DuplicateMACAddress</exception>
@@ -325,7 +319,6 @@
 		<exception>LicenseEntryPortalVersion</exception>
 		<exception>LicenseKeyActive</exception>
 		<exception>LicenseKeyDescription</exception>
-		<exception>LicenseKeyExport</exception>
 		<exception>LicenseKeyHostName</exception>
 		<exception>LicenseKeyIPAddress</exception>
 		<exception>LicenseKeyMACAddress</exception>
@@ -339,19 +332,12 @@
 		<exception>LicenseKeyServerInfo</exception>
 		<exception>LicenseKeySetName</exception>
 		<exception>LicenseKeySingleUse</exception>
-		<exception>LicenseKeyVersion</exception>
-		<exception>MaximumAssetLicense</exception>
 		<exception>MaximumLicenseKey</exception>
-		<exception>MinimumAssetLicense</exception>
-		<exception>RequiredAssetLicense</exception>
-		<exception>RequiredLicenseEntry</exception>
 		<exception>RequiredOfferingDefinition</exception>
 		<exception>RequiredOfferingEntry</exception>
 		<exception>RequiredPartnerEntry</exception>
-		<exception>RequiredPartnerWorker</exception>
 		<exception>RequiredProductEntry</exception>
 		<exception>RequiredSupportResponse</exception>
 		<exception>RequiredSupportTeam</exception>
-		<exception>TrialLicense</exception>
 	</exceptions>
 </service-builder>

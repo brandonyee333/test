@@ -72,7 +72,6 @@ lastEnabledDate.add(Calendar.YEAR, 15);
 		names="holiday-calendar"
 	/>
 
-	<liferay-ui:error exception="<%= DuplicateHolidayCalendarException.class %>" message="please-enter-a-unique-name" />
 	<liferay-ui:error exception="<%= HolidayCalendarNameException.class %>" message="please-enter-a-name" />
 
 	<aui:model-context bean="<%= holidayCalendar %>" model="<%= HolidayCalendar.class %>" />
@@ -123,7 +122,6 @@ lastEnabledDate.add(Calendar.YEAR, 15);
 	<div id="<portlet:namespace />holidayEntries">
 		<liferay-ui:error exception="<%= DuplicateHolidayEntryException.class %>" message="you-have-entered-two-holidays-with-the-same-start-and-end-dates" />
 		<liferay-ui:error exception="<%= HolidayEntryDateException.class %>" message="please-supply-a-valid-date" />
-		<liferay-ui:error exception="<%= HolidayEntryHolidayCalendarException.class %>" message="holiday-must-be-associated-to-a-support-region" />
 		<liferay-ui:error exception="<%= HolidayEntryStartDateLaterThanEndDateException.class %>" message="holiday-end-date-must-be-after-start-date" />
 
 		<aui:fieldset>

@@ -48,7 +48,6 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 		names="users"
 	/>
 
-	<liferay-ui:error exception="<%= AccountWorkerPartnerRoleException.class %>" message="the-user-must-be-a-member-of-the-partner-that-is-assigned-to-this-project" />
 	<liferay-ui:error exception="<%= RequiredPartnerEntryException.class %>" message="this-project-must-be-assigned-a-partner-before-assigning-workers" />
 
 	<input name="<portlet:namespace />addUserIds" type="hidden" value="" />

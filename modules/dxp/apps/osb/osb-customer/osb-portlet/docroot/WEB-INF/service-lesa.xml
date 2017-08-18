@@ -1874,32 +1874,26 @@
 		<exception>AccountEnvironmentName</exception>
 		<exception>AccountLinkURL</exception>
 		<exception>AccountProjectName</exception>
-		<exception>AccountWorkerPartnerRole</exception>
 		<exception>AwayMessageDate</exception>
 		<exception>AwayMessageMessage</exception>
 		<exception>DuplicateAccountAttachment</exception>
 		<exception>DuplicateAccountEntry</exception>
 		<exception>DuplicateAccountEnvironment</exception>
 		<exception>DuplicateAccountEnvironmentAttachment</exception>
-		<exception>DuplicateHolidayCalendar</exception>
 		<exception>DuplicateHolidayEntry</exception>
 		<exception>DuplicateOfferingBundle</exception>
 		<exception>DuplicateOfferingDefinition</exception>
 		<exception>DuplicatePartnerEntryCode</exception>
 		<exception>DuplicatePartnerEntryDossieraAccountKey</exception>
 		<exception>DuplicateProductEntry</exception>
-		<exception>DuplicateSupportLabor</exception>
 		<exception>DuplicateSupportRegion</exception>
 		<exception>DuplicateSupportResponse</exception>
 		<exception>DuplicateSupportTeam</exception>
-		<exception>DuplicateSupportWorker</exception>
 		<exception>DuplicateTicketAttachment</exception>
-		<exception>DuplicateTicketCannedResponse</exception>
 		<exception>DuplicateTicketFeedback</exception>
 		<exception>FileRepositoryNotAvailable</exception>
 		<exception>HolidayCalendarName</exception>
 		<exception>HolidayEntryDate</exception>
-		<exception>HolidayEntryHolidayCalendar</exception>
 		<exception>HolidayEntryStartDateLaterThanEndDate</exception>
 		<exception>MaximumDraftTicketComment</exception>
 		<exception>MaximumTicketEntry</exception>
@@ -1919,13 +1913,11 @@
 		<exception>RequiredSupportRegion</exception>
 		<exception>RequiredTicketWorker</exception>
 		<exception>SearchFilterName</exception>
-		<exception>SecurityPatchEnvLFR</exception>
 		<exception>SupportLaborHour</exception>
 		<exception>SupportLaborName</exception>
 		<exception>SupportRegionName</exception>
 		<exception>SupportResponseName</exception>
 		<exception>SupportResponseSupportLevel</exception>
-		<exception>SupportTeamContainsNoSupportWorkers</exception>
 		<exception>SupportTeamLocation</exception>
 		<exception>SupportTeamName</exception>
 		<exception>SupportTeamSupportLabor</exception>

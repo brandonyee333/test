@@ -59,7 +59,6 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 		names="users"
 	/>
 
-	<liferay-ui:error exception="<%= DuplicateSupportWorkerException.class %>" message="users-can-only-be-assigned-to-one-support-team" />
 	<liferay-ui:error exception="<%= PrincipalException.class %>" message="you-do-not-have-the-required-permissions" />
 	<liferay-ui:error exception="<%= SupportWorkerMaxWorkException.class %>" message="max-work-cannot-equal-0" />
 

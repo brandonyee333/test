@@ -62,7 +62,6 @@ if (ticketCannedResponse != null) {
 		names="canned-response"
 	/>
 
-	<liferay-ui:error exception="<%= DuplicateTicketCannedResponseException.class %>" message="please-enter-a-unique-name" />
 	<liferay-ui:error exception="<%= TicketCannedResponseContentException.class %>" message="please-enter-valid-contents" />
 	<liferay-ui:error exception="<%= TicketCannedResponseNameException.class %>" message="please-enter-a-valid-name" />
 

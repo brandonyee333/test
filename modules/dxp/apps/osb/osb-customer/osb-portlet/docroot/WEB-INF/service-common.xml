@@ -101,7 +101,4 @@
 
 		<reference entity="Role" package-path="com.liferay.portal" />
 	</entity>
-	<exceptions>
-		<exception>UnverifiedUser</exception>
-	</exceptions>
 </service-builder>

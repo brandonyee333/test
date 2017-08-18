@@ -14,8 +14,6 @@
  */
 --%>
 
-<liferay-ui:error exception="<%= RequiredLicenseEntryException.class %>" message="you-cannot-remove-licenses-that-are-used-in-offerings" />
-
 <liferay-ui:search-container
 	headerNames="name,type,product"
 	iteratorURL="<%= portletURL %>"
