@@ -68,10 +68,6 @@ public interface LicenseKeySetService extends BaseService, InvokableService {
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable;
 
-	@JSONWebService
-	public java.lang.String exportToXML(long licenseKeySetId)
-		throws java.lang.Exception;
-
 	/**
 	* Returns the OSGi service identifier.
 	*

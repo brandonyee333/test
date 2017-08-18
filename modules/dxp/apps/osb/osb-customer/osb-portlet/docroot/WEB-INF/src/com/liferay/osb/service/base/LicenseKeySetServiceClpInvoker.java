@@ -41,17 +41,13 @@ public class LicenseKeySetServiceClpInvoker {
 
 		_methodParameterTypes378 = new String[] { "long" };
 
-		_methodName379 = "exportToXML";
+		_methodName379 = "getLicenseKeySet";
 
 		_methodParameterTypes379 = new String[] { "long" };
 
-		_methodName380 = "getLicenseKeySet";
+		_methodName380 = "updateLicenseKeySet";
 
-		_methodParameterTypes380 = new String[] { "long" };
-
-		_methodName381 = "updateLicenseKeySet";
-
-		_methodParameterTypes381 = new String[] { "long", "java.lang.String" };
+		_methodParameterTypes380 = new String[] { "long", "java.lang.String" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -74,16 +70,11 @@ public class LicenseKeySetServiceClpInvoker {
 
 		if (_methodName379.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes379, parameterTypes)) {
-			return LicenseKeySetServiceUtil.exportToXML(((Long)arguments[0]).longValue());
+			return LicenseKeySetServiceUtil.getLicenseKeySet(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName380.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes380, parameterTypes)) {
-			return LicenseKeySetServiceUtil.getLicenseKeySet(((Long)arguments[0]).longValue());
-		}
-
-		if (_methodName381.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes381, parameterTypes)) {
 			return LicenseKeySetServiceUtil.updateLicenseKeySet(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1]);
 		}
@@ -101,6 +92,4 @@ public class LicenseKeySetServiceClpInvoker {
 	private String[] _methodParameterTypes379;
 	private String _methodName380;
 	private String[] _methodParameterTypes380;
-	private String _methodName381;
-	private String[] _methodParameterTypes381;
 }

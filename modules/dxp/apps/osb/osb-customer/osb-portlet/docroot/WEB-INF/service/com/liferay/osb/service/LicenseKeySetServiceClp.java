@@ -43,13 +43,9 @@ public class LicenseKeySetServiceClp implements LicenseKeySetService {
 
 		_methodParameterTypes3 = new String[] { "long", "java.lang.String" };
 
-		_methodName5 = "exportToXML";
+		_methodName5 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes5 = new String[] { "long" };
-
-		_methodName6 = "getOSGiServiceIdentifier";
-
-		_methodParameterTypes6 = new String[] {  };
+		_methodParameterTypes5 = new String[] {  };
 	}
 
 	@Override
@@ -188,40 +184,12 @@ public class LicenseKeySetServiceClp implements LicenseKeySetService {
 	}
 
 	@Override
-	public java.lang.String exportToXML(long licenseKeySetId)
-		throws java.lang.Exception {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableService.invokeMethod(_methodName5,
-					_methodParameterTypes5, new Object[] { licenseKeySetId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof java.lang.Exception) {
-				throw (java.lang.Exception)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (java.lang.String)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
 	public java.lang.String getOSGiServiceIdentifier() {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName6,
-					_methodParameterTypes6, new Object[] {  });
+			returnObj = _invokableService.invokeMethod(_methodName5,
+					_methodParameterTypes5, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -249,6 +217,4 @@ public class LicenseKeySetServiceClp implements LicenseKeySetService {
 	private String[] _methodParameterTypes3;
 	private String _methodName5;
 	private String[] _methodParameterTypes5;
-	private String _methodName6;
-	private String[] _methodParameterTypes6;
 }

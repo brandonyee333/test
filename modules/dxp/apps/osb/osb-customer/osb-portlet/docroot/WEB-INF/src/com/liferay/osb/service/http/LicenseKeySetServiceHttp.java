@@ -120,43 +120,12 @@ public class LicenseKeySetServiceHttp {
 		}
 	}
 
-	public static java.lang.String exportToXML(HttpPrincipal httpPrincipal,
-		long licenseKeySetId) throws java.lang.Exception {
-		try {
-			MethodKey methodKey = new MethodKey(LicenseKeySetServiceUtil.class,
-					"exportToXML", _exportToXMLParameterTypes2);
-
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					licenseKeySetId);
-
-			Object returnObj = null;
-
-			try {
-				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
-			}
-			catch (Exception e) {
-				if (e instanceof java.lang.Exception) {
-					throw (java.lang.Exception)e;
-				}
-
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
-			}
-
-			return (java.lang.String)returnObj;
-		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
-
-			throw se;
-		}
-	}
-
 	public static com.liferay.osb.model.LicenseKeySet getLicenseKeySet(
 		HttpPrincipal httpPrincipal, long licenseKeySetId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LicenseKeySetServiceUtil.class,
-					"getLicenseKeySet", _getLicenseKeySetParameterTypes3);
+					"getLicenseKeySet", _getLicenseKeySetParameterTypes2);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey,
 					licenseKeySetId);
@@ -188,7 +157,7 @@ public class LicenseKeySetServiceHttp {
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LicenseKeySetServiceUtil.class,
-					"updateLicenseKeySet", _updateLicenseKeySetParameterTypes4);
+					"updateLicenseKeySet", _updateLicenseKeySetParameterTypes3);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey,
 					licenseKeySetId, name);
@@ -222,13 +191,10 @@ public class LicenseKeySetServiceHttp {
 	private static final Class<?>[] _deleteLicenseKeySetParameterTypes1 = new Class[] {
 			long.class
 		};
-	private static final Class<?>[] _exportToXMLParameterTypes2 = new Class[] {
+	private static final Class<?>[] _getLicenseKeySetParameterTypes2 = new Class[] {
 			long.class
 		};
-	private static final Class<?>[] _getLicenseKeySetParameterTypes3 = new Class[] {
-			long.class
-		};
-	private static final Class<?>[] _updateLicenseKeySetParameterTypes4 = new Class[] {
+	private static final Class<?>[] _updateLicenseKeySetParameterTypes3 = new Class[] {
 			long.class, java.lang.String.class
 		};
 }

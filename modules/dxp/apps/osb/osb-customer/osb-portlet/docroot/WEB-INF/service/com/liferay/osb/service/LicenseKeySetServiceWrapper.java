@@ -70,12 +70,6 @@ public class LicenseKeySetServiceWrapper implements LicenseKeySetService,
 			arguments);
 	}
 
-	@Override
-	public java.lang.String exportToXML(long licenseKeySetId)
-		throws java.lang.Exception {
-		return _licenseKeySetService.exportToXML(licenseKeySetId);
-	}
-
 	/**
 	* Returns the OSGi service identifier.
 	*

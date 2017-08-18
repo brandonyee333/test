@@ -95,20 +95,6 @@ public class LicenseKeySetServiceSoap {
 		}
 	}
 
-	public static java.lang.String exportToXML(long licenseKeySetId)
-		throws RemoteException {
-		try {
-			java.lang.String returnValue = LicenseKeySetServiceUtil.exportToXML(licenseKeySetId);
-
-			return returnValue;
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			throw new RemoteException(e.getMessage());
-		}
-	}
-
 	public static com.liferay.osb.model.LicenseKeySetSoap getLicenseKeySet(
 		long licenseKeySetId) throws RemoteException {
 		try {

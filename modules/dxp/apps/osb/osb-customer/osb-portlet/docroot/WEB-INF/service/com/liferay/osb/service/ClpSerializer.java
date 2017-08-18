@@ -3188,48 +3188,6 @@ public class ClpSerializer {
 		}
 
 		if (className.equals(
-					"com.liferay.osb.exception.AccountWorkerPartnerRoleException")) {
-			return new com.liferay.osb.exception.AccountWorkerPartnerRoleException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.AssetLicenseClassNameException")) {
-			return new com.liferay.osb.exception.AssetLicenseClassNameException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.AssetLicenseLicenseTypeException")) {
-			return new com.liferay.osb.exception.AssetLicenseLicenseTypeException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.AssetLicenseLicenseTypeAllotmentException")) {
-			return new com.liferay.osb.exception.AssetLicenseLicenseTypeAllotmentException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.AssetLicenseLifetimeException")) {
-			return new com.liferay.osb.exception.AssetLicenseLifetimeException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.AssetLicenseStatusException")) {
-			return new com.liferay.osb.exception.AssetLicenseStatusException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.AssetLicenseUsageTypeException")) {
-			return new com.liferay.osb.exception.AssetLicenseUsageTypeException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
 					"com.liferay.osb.exception.AwayMessageDateException")) {
 			return new com.liferay.osb.exception.AwayMessageDateException(throwable.getMessage(),
 				throwable.getCause());
@@ -3262,12 +3220,6 @@ public class ClpSerializer {
 		if (className.equals(
 					"com.liferay.osb.exception.DuplicateAccountEnvironmentAttachmentException")) {
 			return new com.liferay.osb.exception.DuplicateAccountEnvironmentAttachmentException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.DuplicateHolidayCalendarException")) {
-			return new com.liferay.osb.exception.DuplicateHolidayCalendarException(throwable.getMessage(),
 				throwable.getCause());
 		}
 
@@ -3326,12 +3278,6 @@ public class ClpSerializer {
 		}
 
 		if (className.equals(
-					"com.liferay.osb.exception.DuplicateSupportLaborException")) {
-			return new com.liferay.osb.exception.DuplicateSupportLaborException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
 					"com.liferay.osb.exception.DuplicateSupportRegionException")) {
 			return new com.liferay.osb.exception.DuplicateSupportRegionException(throwable.getMessage(),
 				throwable.getCause());
@@ -3350,20 +3296,8 @@ public class ClpSerializer {
 		}
 
 		if (className.equals(
-					"com.liferay.osb.exception.DuplicateSupportWorkerException")) {
-			return new com.liferay.osb.exception.DuplicateSupportWorkerException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
 					"com.liferay.osb.exception.DuplicateTicketAttachmentException")) {
 			return new com.liferay.osb.exception.DuplicateTicketAttachmentException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.DuplicateTicketCannedResponseException")) {
-			return new com.liferay.osb.exception.DuplicateTicketCannedResponseException(throwable.getMessage(),
 				throwable.getCause());
 		}
 
@@ -3388,12 +3322,6 @@ public class ClpSerializer {
 		if (className.equals(
 					"com.liferay.osb.exception.HolidayEntryDateException")) {
 			return new com.liferay.osb.exception.HolidayEntryDateException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.HolidayEntryHolidayCalendarException")) {
-			return new com.liferay.osb.exception.HolidayEntryHolidayCalendarException(throwable.getMessage(),
 				throwable.getCause());
 		}
 
@@ -3424,12 +3352,6 @@ public class ClpSerializer {
 		if (className.equals(
 					"com.liferay.osb.exception.LicenseKeyDescriptionException")) {
 			return new com.liferay.osb.exception.LicenseKeyDescriptionException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.LicenseKeyExportException")) {
-			return new com.liferay.osb.exception.LicenseKeyExportException(throwable.getMessage(),
 				throwable.getCause());
 		}
 
@@ -3512,18 +3434,6 @@ public class ClpSerializer {
 		}
 
 		if (className.equals(
-					"com.liferay.osb.exception.LicenseKeyVersionException")) {
-			return new com.liferay.osb.exception.LicenseKeyVersionException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.MaximumAssetLicenseException")) {
-			return new com.liferay.osb.exception.MaximumAssetLicenseException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
 					"com.liferay.osb.exception.MaximumDraftTicketCommentException")) {
 			return new com.liferay.osb.exception.MaximumDraftTicketCommentException(throwable.getMessage(),
 				throwable.getCause());
@@ -3538,12 +3448,6 @@ public class ClpSerializer {
 		if (className.equals(
 					"com.liferay.osb.exception.MaximumTicketEntryException")) {
 			return new com.liferay.osb.exception.MaximumTicketEntryException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.MinimumAssetLicenseException")) {
-			return new com.liferay.osb.exception.MinimumAssetLicenseException(throwable.getMessage(),
 				throwable.getCause());
 		}
 
@@ -3625,18 +3529,6 @@ public class ClpSerializer {
 		}
 
 		if (className.equals(
-					"com.liferay.osb.exception.RequiredAssetLicenseException")) {
-			return new com.liferay.osb.exception.RequiredAssetLicenseException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.RequiredLicenseEntryException")) {
-			return new com.liferay.osb.exception.RequiredLicenseEntryException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
 					"com.liferay.osb.exception.RequiredOfferingDefinitionException")) {
 			return new com.liferay.osb.exception.RequiredOfferingDefinitionException(throwable.getMessage(),
 				throwable.getCause());
@@ -3651,12 +3543,6 @@ public class ClpSerializer {
 		if (className.equals(
 					"com.liferay.osb.exception.RequiredPartnerEntryException")) {
 			return new com.liferay.osb.exception.RequiredPartnerEntryException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.RequiredPartnerWorkerException")) {
-			return new com.liferay.osb.exception.RequiredPartnerWorkerException(throwable.getMessage(),
 				throwable.getCause());
 		}
 
@@ -3697,12 +3583,6 @@ public class ClpSerializer {
 		}
 
 		if (className.equals(
-					"com.liferay.osb.exception.SecurityPatchEnvLFRException")) {
-			return new com.liferay.osb.exception.SecurityPatchEnvLFRException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
 					"com.liferay.osb.exception.SupportLaborHourException")) {
 			return new com.liferay.osb.exception.SupportLaborHourException(throwable.getMessage(),
 				throwable.getCause());
@@ -3729,12 +3609,6 @@ public class ClpSerializer {
 		if (className.equals(
 					"com.liferay.osb.exception.SupportResponseSupportLevelException")) {
 			return new com.liferay.osb.exception.SupportResponseSupportLevelException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.SupportTeamContainsNoSupportWorkersException")) {
-			return new com.liferay.osb.exception.SupportTeamContainsNoSupportWorkersException(throwable.getMessage(),
 				throwable.getCause());
 		}
 
@@ -3992,17 +3866,6 @@ public class ClpSerializer {
 		if (className.equals(
 					"com.liferay.osb.exception.TicketSolutionSummaryException")) {
 			return new com.liferay.osb.exception.TicketSolutionSummaryException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals("com.liferay.osb.exception.TrialLicenseException")) {
-			return new com.liferay.osb.exception.TrialLicenseException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.UnverifiedUserException")) {
-			return new com.liferay.osb.exception.UnverifiedUserException(throwable.getMessage(),
 				throwable.getCause());
 		}
 

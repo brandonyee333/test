@@ -71,11 +71,6 @@ public class LicenseKeySetServiceUtil {
 		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
-	public static java.lang.String exportToXML(long licenseKeySetId)
-		throws java.lang.Exception {
-		return getService().exportToXML(licenseKeySetId);
-	}
-
 	/**
 	* Returns the OSGi service identifier.
 	*

@@ -55,59 +55,6 @@ public interface LicenseKeyService extends BaseService, InvokableService {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link LicenseKeyServiceUtil} to access the license key remote service. Add custom service methods to {@link com.liferay.osb.service.impl.LicenseKeyServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	@JSONWebService
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean isActive(long corpProjectId, java.lang.String key)
-		throws PortalException;
-
-	/**
-	* Adds a license key.
-	*
-	* <p>
-	* Only use for adding license keys for 6.1.10 and greater.
-	* </p>
-	*
-	* @param licenseKeySetId the primary key of the license key set for
-	grouping keys together. Use 0 if you are not adding to an
-	existing set.
-	* @param offeringEntryId the primary key of the offering entry
-	* @param licenseEntryId the primary key of the license entry
-	* @param productVersion the listTypeId of product entry's portalAllVersion
-	list type. Values can also be found in ProductEntryConstants.
-	* @param owner the license key's owner, usually the account entry's name
-	* @param maxHttpSessions the max number of IP's that can access the
-	portal. This is only used for developer type license keys.
-	* @param description the license key's description
-	* @param hostName the server's hostname that this license key is valid
-	for. Leave blank for developer, enterprise, and OEM type license
-	keys.
-	* @param ipAddresses a comma delimited list of the server's IP addresses
-	that this license key is valid for. Leave blank for developer,
-	enterprise, and OEM type license keys.
-	* @param macAddresses a comma delimited list of the server's MAC addresses
-	that this license key is valid for. Leave blank for developer,
-	enterprise, and OEM type license keys.
-	* @param serverId the server ID's received from the server that this
-	license key is valid for. The server ID is a encrypted string
-	which includes a random string, and the server's MAC addresses,
-	IP addresses, and hostname. Leave this blank if generating an
-	offline license key.
-	* @param startDateMonth the license key's starting date's month
-	* @param startDateDay the license key's starting date's day
-	* @param startDateYear the license key's starting date's year
-	* @throws PortalException if the offering entry is closed, or if there are
-	no more available license keys left in the offering entry
-	* @throws SystemException if a system exception occurred
-	*/
-	@JSONWebService
-	public LicenseKey addLicenseKey(long licenseKeySetId, long offeringEntryId,
-		long licenseEntryId, int productVersion, java.lang.String owner,
-		int maxHttpSessions, java.lang.String description,
-		java.lang.String hostName, java.lang.String ipAddresses,
-		java.lang.String macAddresses, java.lang.String serverId,
-		int startDateMonth, int startDateDay, int startDateYear)
-		throws PortalException;
-
 	public LicenseKey addLicenseKey(long userId, long assetReceiptLicenseId,
 		java.lang.String owner, java.lang.String description,
 		java.lang.String[] hostNames, java.lang.String[] ipAddresses,
@@ -171,10 +118,6 @@ public interface LicenseKeyService extends BaseService, InvokableService {
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable;
 
-	@JSONWebService
-	public java.lang.String exportToXML(long licenseKeyId)
-		throws java.lang.Exception;
-
 	/**
 	* Returns the OSGi service identifier.
 	*
@@ -222,10 +165,6 @@ public interface LicenseKeyService extends BaseService, InvokableService {
 	public List<LicenseKey> search(java.lang.String keywords,
 		LinkedHashMap<java.lang.String, java.lang.Object> params, int start,
 		int end, OrderByComparator obc) throws PortalException;
-
-	@JSONWebService
-	public void updateLicenseKey(long licenseKeyId, boolean active)
-		throws PortalException;
 
 	public void updateLicenseKey(long userId, long licenseKeyId,
 		long assetReceiptLicenseId, boolean active) throws PortalException;

@@ -30,11 +30,6 @@ public class LicenseKeyFinderUtil {
 		return getFinder().countByKeywords(keywords, params);
 	}
 
-	public static int countByCPI_K_A(long corpProjectId, java.lang.String key,
-		boolean active) {
-		return getFinder().countByCPI_K_A(corpProjectId, key, active);
-	}
-
 	public static int countByU_C_M_M_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
 		java.lang.Long createUserId, java.util.Date createDateGT,
 		java.util.Date createDateLT, java.lang.Long modifiedUserId,
