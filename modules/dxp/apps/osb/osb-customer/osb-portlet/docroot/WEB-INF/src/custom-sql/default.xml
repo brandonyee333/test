@@ -390,21 +390,6 @@
 				)
 		]]>
 	</sql>
-	<sql id="com.liferay.osb.service.persistence.LicenseKeyFinder.countByCPI_K_A">
-		<![CDATA[
-			SELECT
-				COUNT(*) AS COUNT_VALUE
-			FROM
-				OSB_LicenseKey
-			INNER JOIN
-				OSB_AccountEntry ON
-					(OSB_AccountEntry.accountEntryId = OSB_LicenseKey.accountEntryId)
-			WHERE
-				(OSB_AccountEntry.corpProjectId = ?) AND
-				(OSB_LicenseKey.key_ = ?) AND
-				(OSB_LicenseKey.active_ = ?)
-		]]>
-	</sql>
 	<sql id="com.liferay.osb.service.persistence.LicenseKeyFinder.countByU_C_M_M_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A">
 		<![CDATA[
 			SELECT

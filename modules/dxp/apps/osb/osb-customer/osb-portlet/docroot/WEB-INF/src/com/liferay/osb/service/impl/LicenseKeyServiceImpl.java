@@ -14,9 +14,6 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.osb.exception.LicenseKeyExportException;
-import com.liferay.osb.exception.LicenseKeyVersionException;
-import com.liferay.osb.license.util.LicenseUtil;
 import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.AccountWorkerConstants;
 import com.liferay.osb.model.AssetReceiptLicense;
@@ -25,7 +22,6 @@ import com.liferay.osb.model.LicenseEntryConstants;
 import com.liferay.osb.model.LicenseKey;
 import com.liferay.osb.model.LicenseKeyConstants;
 import com.liferay.osb.model.OfferingEntry;
-import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.service.base.LicenseKeyServiceBaseImpl;
 import com.liferay.osb.service.permission.OSBAccountEntryPermission;
 import com.liferay.osb.service.permission.OSBLicenseKeyPermission;
@@ -38,7 +34,6 @@ import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Date;
@@ -58,76 +53,6 @@ import com.liferay.osb.service.permission.OSBAssetReceiptPermission;
  */
 @JSONWebService(mode = JSONWebServiceMode.MANUAL)
 public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
-
-	/**
-	 * Adds a license key.
-	 *
-	 * <p>
-	 * Only use for adding license keys for 6.1.10 and greater.
-	 * </p>
-	 *
-	 * @param  licenseKeySetId the primary key of the license key set for
-	 *         grouping keys together. Use 0 if you are not adding to an
-	 *         existing set.
-	 * @param  offeringEntryId the primary key of the offering entry
-	 * @param  licenseEntryId the primary key of the license entry
-	 * @param  productVersion the listTypeId of product entry's portalAllVersion
-	 *         list type. Values can also be found in ProductEntryConstants.
-	 * @param  owner the license key's owner, usually the account entry's name
-	 * @param  maxHttpSessions the max number of IP's that can access the
-	 *         portal. This is only used for developer type license keys.
-	 * @param  description the license key's description
-	 * @param  hostName the server's hostname that this license key is valid
-	 *         for. Leave blank for developer, enterprise, and OEM type license
-	 *         keys.
-	 * @param  ipAddresses a comma delimited list of the server's IP addresses
-	 *         that this license key is valid for. Leave blank for developer,
-	 *         enterprise, and OEM type license keys.
-	 * @param  macAddresses a comma delimited list of the server's MAC addresses
-	 *         that this license key is valid for. Leave blank for developer,
-	 *         enterprise, and OEM type license keys.
-	 * @param  serverId the server ID's received from the server that this
-	 *         license key is valid for. The server ID is a encrypted string
-	 *         which includes a random string, and the server's MAC addresses,
-	 *         IP addresses, and hostname. Leave this blank if generating an
-	 *         offline license key.
-	 * @param  startDateMonth the license key's starting date's month
-	 * @param  startDateDay the license key's starting date's day
-	 * @param  startDateYear the license key's starting date's year
-	 * @throws PortalException if the offering entry is closed, or if there are
-	 *         no more available license keys left in the offering entry
-	 * @throws SystemException if a system exception occurred
-	 */
-	@JSONWebService
-	public LicenseKey addLicenseKey(
-			long licenseKeySetId, long offeringEntryId, long licenseEntryId,
-			int productVersion, String owner, int maxHttpSessions,
-			String description, String hostName, String ipAddresses,
-			String macAddresses, String serverId, int startDateMonth,
-			int startDateDay, int startDateYear)
-		throws PortalException {
-
-		validateJSONWebServicePermissions();
-
-		if (productVersion < ProductEntryConstants.PORTAL_VERSION_6_1_10) {
-			throw new LicenseKeyVersionException(
-				"Portal version must be greater than 6.1.10");
-		}
-
-		if (Validator.isNull(serverId)) {
-			LicenseEntry licenseEntry =
-				licenseEntryPersistence.findByPrimaryKey(licenseEntryId);
-
-			serverId = LicenseKeyConstants.getServerId(licenseEntry.getType());
-		}
-
-		return licenseKeyLocalService.addLicenseKey(
-			getUserId(), licenseKeySetId, owner, offeringEntryId,
-			licenseEntryId, 0, productVersion, 0, owner, 0, maxHttpSessions,
-			description, new String[] {hostName}, new String[] {ipAddresses},
-			new String[] {macAddresses}, new String[] {serverId},
-			startDateMonth, startDateDay, startDateYear, false, true);
-	}
 
 	public LicenseKey addLicenseKey(
 			long userId, long licenseKeySetId, String name,
@@ -211,21 +136,6 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			startDateYear);
 	}
 
-	@JSONWebService
-	public String exportToXML(long licenseKeyId) throws Exception {
-		validateJSONWebServicePermissions();
-
-		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKey(
-			licenseKeyId);
-
-		if (licenseKey.getLicenseVersion() < 2) {
-			throw new LicenseKeyExportException(
-				"License key version must be greater than 2");
-		}
-
-		return LicenseUtil.exportToXML(licenseKey);
-	}
-
 	public LicenseKey getLicenseKey(long licenseKeyId) throws PortalException {
 		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKey(
 			licenseKeyId);
@@ -299,20 +209,6 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 		return licenseKeyLocalService.getOfferingEntryGroupLicenseKeysCount(
 			offeringEntryIds, complimentary, active);
-	}
-
-	@JSONWebService
-	public boolean isActive(long corpProjectId, String key)
-		throws PortalException {
-
-		validateJSONWebServicePermissions();
-
-		if (licenseKeyFinder.countByCPI_K_A(corpProjectId, key, true) > 0) {
-			return true;
-		}
-		else {
-			return false;
-		}
 	}
 
 	public LicenseKey renewLicenseKey(long licenseKeyId)
@@ -440,20 +336,6 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		addPermissionParams(params);
 
 		return licenseKeyLocalService.searchCount(keywords, params);
-	}
-
-	@JSONWebService
-	public void updateLicenseKey(long licenseKeyId, boolean active)
-		throws PortalException {
-
-		validateJSONWebServicePermissions();
-
-		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKey(
-			licenseKeyId);
-
-		licenseKeyLocalService.updateLicenseKey(
-			getUserId(), licenseKeyId, licenseKey.getLicenseKeySetId(),
-			licenseKey.getOfferingEntryId(), StringPool.BLANK, active);
 	}
 
 	public void updateLicenseKey(
@@ -585,14 +467,6 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		}
 
 		return false;
-	}
-
-	protected void validateJSONWebServicePermissions() throws PortalException {
-		if (!roleLocalService.hasUserRole(
-				getUserId(), OSBConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
-
-			throw new PrincipalException();
-		}
 	}
 
 }

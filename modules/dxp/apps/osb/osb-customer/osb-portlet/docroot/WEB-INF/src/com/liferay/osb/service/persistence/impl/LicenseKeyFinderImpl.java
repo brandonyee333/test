@@ -48,9 +48,6 @@ import java.util.Map;
 public class LicenseKeyFinderImpl
 	extends LicenseKeyFinderBaseImpl implements LicenseKeyFinder {
 
-	public static final String COUNT_BY_CPI_K_A =
-		LicenseKeyFinder.class.getName() + ".countByCPI_K_A";
-
 	public static final String
 		COUNT_BY_U_C_M_M_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A =
 			LicenseKeyFinder.class.getName() +
@@ -120,44 +117,6 @@ public class LicenseKeyFinderImpl
 			productEntryNames, productIds, new int[0], owners, descriptions,
 			hostNames, ipAddresses, macAddresses, serverIds, keys, null, null,
 			params, andOperator);
-	}
-
-	public int countByCPI_K_A(long corpProjectId, String key, boolean active) {
-		Session session = null;
-
-		try {
-			session = openSession();
-
-			String sql = CustomSQLUtil.get(getClass(), COUNT_BY_CPI_K_A);
-
-			SQLQuery q = session.createSynchronizedSQLQuery(sql);
-
-			q.addScalar(COUNT_COLUMN_NAME, Type.LONG);
-
-			QueryPos qPos = QueryPos.getInstance(q);
-
-			qPos.add(corpProjectId);
-			qPos.add(key);
-			qPos.add(active);
-
-			Iterator<Long> itr = q.iterate();
-
-			if (itr.hasNext()) {
-				Long count = itr.next();
-
-				if (count != null) {
-					return count.intValue();
-				}
-			}
-
-			return 0;
-		}
-		catch (Exception e) {
-			throw new SystemException(e);
-		}
-		finally {
-			closeSession(session);
-		}
 	}
 
 	public int countByU_C_M_M_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A(

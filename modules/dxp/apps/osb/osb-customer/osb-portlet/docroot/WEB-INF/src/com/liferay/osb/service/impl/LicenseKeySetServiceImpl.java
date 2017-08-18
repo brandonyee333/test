@@ -14,18 +14,14 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.osb.exception.LicenseKeyExportException;
-import com.liferay.osb.license.util.LicenseUtil;
 import com.liferay.osb.model.LicenseKeySet;
 import com.liferay.osb.service.base.LicenseKeySetServiceBaseImpl;
 import com.liferay.osb.service.permission.OSBAccountEntryPermission;
 import com.liferay.osb.service.permission.OSBLicenseKeySetPermission;
 import com.liferay.osb.util.OSBActionKeys;
-import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
-import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 
 /**
@@ -56,25 +52,6 @@ public class LicenseKeySetServiceImpl extends LicenseKeySetServiceBaseImpl {
 			getPermissionChecker(), licenseKeySet, ActionKeys.DELETE);
 
 		return licenseKeySetLocalService.deleteLicenseKeySet(licenseKeySet);
-	}
-
-	@JSONWebService
-	public String exportToXML(long licenseKeySetId) throws Exception {
-		if (!roleLocalService.hasUserRole(
-				getUserId(), OSBConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
-
-			throw new PrincipalException();
-		}
-
-		if (!LicenseUtil.isAggregate(licenseKeySetId)) {
-			throw new LicenseKeyExportException(
-				"This license key set is not aggregable");
-		}
-
-		LicenseKeySet licenseKeySet =
-			licenseKeySetLocalService.getLicenseKeySet(licenseKeySetId);
-
-		return LicenseUtil.exportToXML(licenseKeySet);
 	}
 
 	public LicenseKeySet getLicenseKeySet(long licenseKeySetId)
