@@ -4,8 +4,8 @@
 [subrepo]
 	autopull = false
 	cmdver = liferay
-	commit = 9a6a16a45efbd28ae8eb78cde31967d1f242302f
+	commit = e1f8fc46c62128de46e9dfa9a784076552604fed
 	mergebuttonmergecommits = false
 	mode = push
-	parent = 0d59847914cf8f15dea9f673210468437f73eec2
+	parent = ef09ce6196997f6fc6e045b4e6300ec627818fb7
 	remote = git@github.com:liferay/com-liferay-fabrica-private.git
