@@ -78,6 +78,8 @@ public class OSBConstants {
 
 	public static long ROLE_OSB_SUPPORT_ADMIN_ID = 11496283;
 
+	public static long ROLE_OSB_TRIAL_LICENSE_ADMIN_ID = 80745250;
+
 	public static long ROLE_VERIFIED_USER_ID = 81492058;
 
 	public static long SUPPORT_REGION_CHINA_ID = 42356502;
