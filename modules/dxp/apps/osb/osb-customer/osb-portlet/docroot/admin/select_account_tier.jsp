@@ -55,7 +55,7 @@ String selectAll = "javascript:";
 			sb.append("', '");
 			sb.append(renderResponse.getNamespace());
 			sb.append("accountTierSearchContainer', ['");
-			sb.append(LanguageUtil.get(pageContext, AccountEntryConstants.getTierLabel(accountTier)));
+			sb.append(LanguageUtil.get(request, AccountEntryConstants.getTierLabel(accountTier)));
 			sb.append("']);");
 
 			selectAll += sb.toString();
@@ -67,7 +67,7 @@ String selectAll = "javascript:";
 				href="<%= rowHREF %>"
 				name="project-tier"
 			>
-				<%= LanguageUtil.get(pageContext, AccountEntryConstants.getTierLabel(accountTier)) %>
+				<%= LanguageUtil.get(request, AccountEntryConstants.getTierLabel(accountTier)) %>
 			</liferay-ui:search-container-column-text>
 		</liferay-ui:search-container-row>
 

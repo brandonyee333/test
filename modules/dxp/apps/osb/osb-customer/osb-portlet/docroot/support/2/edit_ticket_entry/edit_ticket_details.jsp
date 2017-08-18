@@ -64,7 +64,7 @@ if (liferayIncOrg || partnerWorker) {
 		<div class="field-group">
 			<label id="<portlet:namespace />subjectLabel"><liferay-ui:message key="subject" /></label>
 
-			<div class="field-align" field-required-message="<%= LanguageUtil.get(pageContext, "please-enter-a-valid-subject") %>">
+			<div class="field-align" field-required-message="<%= LanguageUtil.get(request, "please-enter-a-valid-subject") %>">
 				<span class="inline long-field">
 					<aui:input bean="<%= ticketEntry %>" data-field-required-status="<%= false %>" id="subject" label="" maxLength='<%= ModelHintsUtil.getMaxLength(TicketEntry.class.getName(), "subject") %>' model="<%= TicketEntry.class %>" name="subject" type="text" />
 				</span>
@@ -80,7 +80,7 @@ if (liferayIncOrg || partnerWorker) {
 				<liferay-util:param name="content" value="<%= description %>" />
 				<liferay-util:param name="editorId" value="description" />
 				<liferay-util:param name="fieldRequired" value="<%= Boolean.TRUE.toString() %>" />
-				<liferay-util:param name="fieldRequiredMessage" value='<%= LanguageUtil.get(pageContext, "please-enter-a-description-of-the-issue") %>' />
+				<liferay-util:param name="fieldRequiredMessage" value='<%= LanguageUtil.get(request, "please-enter-a-description-of-the-issue") %>' />
 				<liferay-util:param name="height" value="150" />
 				<liferay-util:param name="name" value="description" />
 				<liferay-util:param name="showCounter" value="<%= String.valueOf(true) %>" />
@@ -125,13 +125,13 @@ if (liferayIncOrg || partnerWorker) {
 						for (String componentGroup : TicketEntryConstants.COMPONENT_GROUPS_DE) {
 						%>
 
-							<optgroup label="<%= LanguageUtil.get(pageContext, componentGroup) %>">
+							<optgroup label="<%= LanguageUtil.get(request, componentGroup) %>">
 
 								<%
 								for (int curComponent : TicketEntryConstants.getGroupComponents(componentGroup)) {
 								%>
 
-									<option <%= (curComponent == component) ? "selected" : "" %> value="<%= curComponent %>"><%= LanguageUtil.get(pageContext, TicketEntryConstants.getComponentLabel(curComponent)) %></option>
+									<option <%= (curComponent == component) ? "selected" : "" %> value="<%= curComponent %>"><%= LanguageUtil.get(request, TicketEntryConstants.getComponentLabel(curComponent)) %></option>
 
 								<%
 								}
@@ -150,7 +150,7 @@ if (liferayIncOrg || partnerWorker) {
 						for (int curComponent : TicketEntryConstants.getProductComponents(productEntry)) {
 						%>
 
-							<option <%= (curComponent == component) ? "selected" : "" %> value="<%= curComponent %>"><%= LanguageUtil.get(pageContext, TicketEntryConstants.getComponentLabel(curComponent)) %></option>
+							<option <%= (curComponent == component) ? "selected" : "" %> value="<%= curComponent %>"><%= LanguageUtil.get(request, TicketEntryConstants.getComponentLabel(curComponent)) %></option>
 
 						<%
 						}
@@ -205,7 +205,7 @@ if (liferayIncOrg || partnerWorker) {
 				for (ListType escalationLevelType : ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_ESCALATION_LEVEL)) {
 				%>
 
-					<option <%= (escalationLevelType.getListTypeId() == escalationLevel) ? "selected" : "" %> value="<%= escalationLevelType.getListTypeId() %>"><%= LanguageUtil.get(pageContext, escalationLevelType.getName()) %></option>
+					<option <%= (escalationLevelType.getListTypeId() == escalationLevel) ? "selected" : "" %> value="<%= escalationLevelType.getListTypeId() %>"><%= LanguageUtil.get(request, escalationLevelType.getName()) %></option>
 
 				<%
 				}
@@ -233,7 +233,7 @@ if (liferayIncOrg || partnerWorker) {
 				for (int i = 1; i <= 3; i++) {
 				%>
 
-					<option <%= (i == severity) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(pageContext, TicketEntryConstants.getSeverityLabel(i)) %></option>
+					<option <%= (i == severity) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(request, TicketEntryConstants.getSeverityLabel(i)) %></option>
 
 				<%
 				}
@@ -281,7 +281,7 @@ if (liferayIncOrg || partnerWorker) {
 					}
 				%>
 
-					<option <%= (statusId == status) ? "selected" : "" %> value="<%= statusId %>"><%= LanguageUtil.get(pageContext, TicketEntryConstants.getStatusLabel(statusId)) %></option>
+					<option <%= (statusId == status) ? "selected" : "" %> value="<%= statusId %>"><%= LanguageUtil.get(request, TicketEntryConstants.getStatusLabel(statusId)) %></option>
 
 				<%
 				}
@@ -296,14 +296,14 @@ if (liferayIncOrg || partnerWorker) {
 			<label id="<portlet:namespace />resolutionLabel"><liferay-ui:message key="resolution" /></label>
 
 			<div class="field-align">
-				<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(pageContext, "please-select-a-valid-resolution") %>" id="<portlet:namespace />resolution" name="<portlet:namespace />resolution">
+				<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(request, "please-select-a-valid-resolution") %>" id="<portlet:namespace />resolution" name="<portlet:namespace />resolution">
 					<option value="0"></option>
 
 					<%
 					for (ListType resolutionType : ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_RESOLUTION)) {
 					%>
 
-						<option <%= (resolutionType.getListTypeId() == resolution) ? "selected" : "" %> value="<%= resolutionType.getListTypeId() %>"><%= LanguageUtil.get(pageContext, resolutionType.getName()) %></option>
+						<option <%= (resolutionType.getListTypeId() == resolution) ? "selected" : "" %> value="<%= resolutionType.getListTypeId() %>"><%= LanguageUtil.get(request, resolutionType.getName()) %></option>
 
 					<%
 					}
@@ -378,7 +378,7 @@ if (liferayIncOrg || partnerWorker) {
 					for (String curLanguageId : AccountEntryConstants.LANGUAGES) {
 					%>
 
-						<option <%= languageId.equals(curLanguageId) ? "selected" : StringPool.BLANK %> value="<%= curLanguageId %>"><%= LanguageUtil.get(pageContext, AccountEntryConstants.getLanguageLabel(curLanguageId)) %></option>
+						<option <%= languageId.equals(curLanguageId) ? "selected" : StringPool.BLANK %> value="<%= curLanguageId %>"><%= LanguageUtil.get(request, AccountEntryConstants.getLanguageLabel(curLanguageId)) %></option>
 
 					<%
 					}

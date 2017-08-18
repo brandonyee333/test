@@ -249,7 +249,7 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 					<c:when test="<%= !workflowTasks.isEmpty() %>">
 
 						<%
-						PortletURL workflowTaskURL = PortletURLFactoryUtil.create(request, PortletKeys.MY_WORKFLOW_TASKS, themeDisplay.getPlid(), PortletRequest.RENDER_PHASE);
+						PortletURL workflowTaskURL = PortletURLFactoryUtil.create(request, PortletKeys.MY_WORKFLOW_TASK, themeDisplay.getPlid(), PortletRequest.RENDER_PHASE);
 
 						workflowTaskURL.setParameter("struts_action", "/my_workflow_tasks/edit_workflow_task");
 						workflowTaskURL.setParameter("redirect", currentURL);
@@ -259,10 +259,10 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 						workflowTaskURL.setParameter("workflowTaskId", String.valueOf(workflowTask.getWorkflowTaskId()));
 						%>
 
-						<a href="<%= workflowTaskURL.toString() %>" target="_blank"><%= LanguageUtil.get(pageContext, orderEntry.getStatusLabel()) %></a>
+						<a href="<%= workflowTaskURL.toString() %>" target="_blank"><%= LanguageUtil.get(request, orderEntry.getStatusLabel()) %></a>
 					</c:when>
 					<c:otherwise>
-						<span class="txt-sb"><%= LanguageUtil.get(pageContext, orderEntry.getStatusLabel()) %></span>
+						<span class="txt-sb"><%= LanguageUtil.get(request, orderEntry.getStatusLabel()) %></span>
 					</c:otherwise>
 				</c:choose>
 			</span>
@@ -397,7 +397,7 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 				<portlet:param name="renewCount" value="<%= String.valueOf(orderEntry.getRenewCount() + 1) %>" />
 			</portlet:actionURL>
 
-			<input onClick="javascript:if (confirm('<%= UnicodeLanguageUtil.get(pageContext, "are-you-sure-you-want-to-renew-this-order") %>')) { location.href='<%= renewOrderEntryURL %>'; } else { self.focus(); }" type="button" value="<liferay-ui:message key="renew-support" />" />
+			<input onClick="javascript:if (confirm('<%= UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-renew-this-order") %>')) { location.href='<%= renewOrderEntryURL %>'; } else { self.focus(); }" type="button" value="<liferay-ui:message key="renew-support" />" />
 
 			<portlet:actionURL name="renewOrderEntry" var="resetOrderEntryURL">
 				<portlet:param name="mvcPath" value="/admin/edit_order_entry.jsp" />
@@ -405,7 +405,7 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 				<portlet:param name="orderEntryId" value="<%= String.valueOf(orderEntry.getOrderEntryId()) %>" />
 			</portlet:actionURL>
 
-			<input onClick="javascript:if (confirm('<%= UnicodeLanguageUtil.get(pageContext, "are-you-sure-you-want-to-reset-this-order") %>')) { location.href='<%= resetOrderEntryURL %>'; } else { self.focus(); }" type="button" value="<liferay-ui:message key="reset-renewals" />" />
+			<input onClick="javascript:if (confirm('<%= UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-reset-this-order") %>')) { location.href='<%= resetOrderEntryURL %>'; } else { self.focus(); }" type="button" value="<liferay-ui:message key="reset-renewals" />" />
 		</c:if>
 
 		<input onClick="location.href = '<%= HtmlUtil.escape(backURL) %>';" type="button" value="<liferay-ui:message key="cancel" />" />
@@ -488,7 +488,7 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 						String lifetimeLabel = String.valueOf(lifetimeValues[1]);
 					%>
 
-						<option <%= (licenseLifetime == lifetimeValue) ? "selected" : "" %> value="<%= lifetimeValue %>"><%= LanguageUtil.get(pageContext, lifetimeLabel) %></option>
+						<option <%= (licenseLifetime == lifetimeValue) ? "selected" : "" %> value="<%= lifetimeValue %>"><%= LanguageUtil.get(request, lifetimeLabel) %></option>
 
 					<%
 					}
@@ -528,7 +528,7 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 						}
 					%>
 
-						<option <%= (supportLifetime == lifetimeValue) ? "selected" : "" %> value="<%= lifetimeValue %>"><%= LanguageUtil.get(pageContext, lifetimeLabel) %></option>
+						<option <%= (supportLifetime == lifetimeValue) ? "selected" : "" %> value="<%= lifetimeValue %>"><%= LanguageUtil.get(request, lifetimeLabel) %></option>
 
 					<%
 					}

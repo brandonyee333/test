@@ -129,7 +129,7 @@ if ((accountEnvironmentAttachment != null) || (ticketAttachment != null)) {
 				<c:if test="<%= (accountEnvironmentAttachment != null) || (ticketAttachment != null) %>">
 					<c:choose>
 						<c:when test="<%= attachmentResourceURL != null %>">
-							<span class="title"><a href="<%= attachmentResourceURL.toString() %>" target="_blank"><%= HtmlUtil.escape(attachmentFileName) %></a> (<%= TextFormatter.formatKB((double)attachmentFileSize, locale) %>k)</span>
+							<span class="title"><a href="<%= attachmentResourceURL.toString() %>" target="_blank"><%= HtmlUtil.escape(attachmentFileName) %></a> (<%= TextFormatter.formatStorageSize((double)attachmentFileSize, locale) %>k)</span>
 						</c:when>
 						<c:otherwise>
 							<span class="portlet-msg-error" style="display: inline;"><liferay-ui:message arguments="<%= HtmlUtil.escape(attachmentFileName) %>" key='<%= ((accountEnvironmentAttachment != null) && (ticketEntry == null)) ? "file-x-is-missing-and-will-not-be-added-to-the-ticket-please-replace-this-file" : "file-x-is-missing-please-replace-it" %>' /></span>

@@ -86,7 +86,9 @@ if (ticketCannedResponse != null) {
 			<select name="<portlet:namespace />languageId" onChange="<%= (ticketCannedResponse != null) ? (renderResponse.getNamespace() + "updateLanguage(this.value);") : "" %>">
 
 				<%
-				Locale[] locales = LanguageUtil.getAvailableLocales();
+				Set<Locale> localesSet = LanguageUtil.getAvailableLocales();
+
+				Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 
 				for (int i = 0; i < locales.length; i++) {
 				%>

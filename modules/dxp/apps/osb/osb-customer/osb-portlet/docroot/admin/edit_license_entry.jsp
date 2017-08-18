@@ -132,7 +132,7 @@ int portalVersionMax = BeanParamUtil.getInteger(licenseEntry, request, "portalVe
 							<option disabled>--------</option>
 						</c:if>
 
-						<option <%= (portalVersionType.getListTypeId() == portalVersionMin) ? "selected" : "" %> value="<%= portalVersionType.getListTypeId() %>"><%= LanguageUtil.get(pageContext, portalVersionType.getName()) %></option>
+						<option <%= (portalVersionType.getListTypeId() == portalVersionMin) ? "selected" : "" %> value="<%= portalVersionType.getListTypeId() %>"><%= LanguageUtil.get(request, portalVersionType.getName()) %></option>
 
 					<%
 						previousNamePrefix = namePrefix;
@@ -155,7 +155,7 @@ int portalVersionMax = BeanParamUtil.getInteger(licenseEntry, request, "portalVe
 					for (ListType portalVersionType : portalVersionTypes) {
 					%>
 
-						<option <%= (portalVersionType.getListTypeId() == portalVersionMax) ? "selected" : "" %> value="<%= portalVersionType.getListTypeId() %>"><%= (portalVersionType.getListTypeId() == ProductEntryConstants.PORTAL_VERSION_OTHER) ? LanguageUtil.get(pageContext, lastVersionType.getName()) + StringPool.PLUS : LanguageUtil.get(pageContext, portalVersionType.getName()) %></option>
+						<option <%= (portalVersionType.getListTypeId() == portalVersionMax) ? "selected" : "" %> value="<%= portalVersionType.getListTypeId() %>"><%= (portalVersionType.getListTypeId() == ProductEntryConstants.PORTAL_VERSION_OTHER) ? LanguageUtil.get(request, lastVersionType.getName()) + StringPool.PLUS : LanguageUtil.get(request, portalVersionType.getName()) %></option>
 
 					<%
 					}

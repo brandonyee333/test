@@ -140,7 +140,7 @@ request.setAttribute("edit_ticket_entry.jsp-ticketWorker", ticketWorker);
 		<liferay-util:param name="mvcPath" value="/support/2/edit_ticket_entry/edit_ticket_entry_dialog.jsp" />
 		<liferay-util:param name="paramNames" value="redirect, ticketEntryId" />
 		<liferay-util:param name="paramValues" value="<%= currentURL + StringPool.COMMA + String.valueOf(ticketEntry.getTicketEntryId()) %>" />
-		<liferay-util:param name="title" value='<%= LanguageUtil.get(pageContext, "edit-ticket") + StringPool.COLON + StringPool.SPACE + ticketEntry.getDisplayId() %>' />
+		<liferay-util:param name="title" value='<%= LanguageUtil.get(request, "edit-ticket") + StringPool.COLON + StringPool.SPACE + ticketEntry.getDisplayId() %>' />
 		<liferay-util:param name="width" value="760" />
 	</liferay-util:include>
 </c:if>

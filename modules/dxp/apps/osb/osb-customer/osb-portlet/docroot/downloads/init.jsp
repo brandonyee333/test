@@ -16,7 +16,7 @@
 
 <%@ include file="/init.jsp" %>
 
-<%@ page import="com.liferay.portlet.documentlibrary.model.DLFileVersion" %>
+<%@ page import="com.liferay.document.library.kernel.model.DLFileVersion" %>
 
 <%
 String currentLanguageId = LanguageUtil.getLanguageId(request);

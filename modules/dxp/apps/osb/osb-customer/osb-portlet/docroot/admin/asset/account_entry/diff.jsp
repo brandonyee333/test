@@ -79,7 +79,7 @@ private String _getFieldLabel(Locale locale, String field) {
 		label = "support-regions";
 	}
 
-	return LanguageUtil.get(request, label);
+	return LanguageUtil.get(locale, label);
 }
 
 private String _getValueLabel(HttpServletRequest request, ThemeDisplay themeDisplay, String field, String value) throws Exception {

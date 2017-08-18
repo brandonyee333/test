@@ -396,7 +396,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 				<liferay-ui:search-container-column-text
 					name="language"
 				>
-					<%= LanguageUtil.get(pageContext, AccountEntryConstants.getLanguageLabel(languageId)) %>
+					<%= LanguageUtil.get(request, AccountEntryConstants.getLanguageLabel(languageId)) %>
 				</liferay-ui:search-container-column-text>
 
 				<liferay-ui:search-container-column-text>

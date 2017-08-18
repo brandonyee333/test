@@ -17,7 +17,8 @@
 <%@ include file="/support/2/init.jsp" %>
 
 <%
-themeDisplay.setIncludeServiceJs(true);
+//TODO no direct replacement for setIncludeServiceJs
+//themeDisplay.setIncludeServiceJs(true);
 
 AccountEntry accountEntry = (AccountEntry)request.getAttribute("edit_account_entry_dialog.jsp-accountEntry");
 
@@ -34,7 +35,7 @@ long regionId = BeanParamUtil.getLong(address, request, "regionId");
 	<div class="field-group">
 		<label id="<portlet:namespace />street1Label"><liferay-ui:message key="address-line" /></label>
 
-		<div class="field-align" field-required-message="<%= LanguageUtil.get(pageContext, "please-enter-a-valid-address-line") %>">
+		<div class="field-align" field-required-message="<%= LanguageUtil.get(request, "please-enter-a-valid-address-line") %>">
 			<span class="inline long-field">
 				<aui:input bean="<%= address %>" data-field-required-status="<%= false %>" field="street1" label="" model="<%= Address.class %>" name="street1" type="text" />
 			</span>
@@ -56,7 +57,7 @@ long regionId = BeanParamUtil.getLong(address, request, "regionId");
 	<div class="field-group">
 		<label id="<portlet:namespace />cityLabel"><liferay-ui:message key="city" /></label>
 
-		<div class="field-align" field-required-message="<%= LanguageUtil.get(pageContext, "please-enter-a-valid-city") %>">
+		<div class="field-align" field-required-message="<%= LanguageUtil.get(request, "please-enter-a-valid-city") %>">
 			<span class="inline long-field">
 				<aui:input bean="<%= address %>" data-field-required-status="<%= false %>" field="city" label="" model="<%= Address.class %>" name="city" type="text" />
 			</span>
@@ -66,7 +67,7 @@ long regionId = BeanParamUtil.getLong(address, request, "regionId");
 	<div class="field-group">
 		<label id="<portlet:namespace />zipLabel"><liferay-ui:message key="postal-code" /></label>
 
-		<div class="field-align" field-required-message="<%= LanguageUtil.get(pageContext, "please-enter-a-valid-postal-code") %>">
+		<div class="field-align" field-required-message="<%= LanguageUtil.get(request, "please-enter-a-valid-postal-code") %>">
 			<span class="inline long-field">
 				<aui:input bean="<%= address %>" data-field-required-status="<%= false %>" field="zip" label="" model="<%= Address.class %>" name="zip" type="text" />
 			</span>

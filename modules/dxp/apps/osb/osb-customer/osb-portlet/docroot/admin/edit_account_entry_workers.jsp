@@ -84,10 +84,10 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 			headerNames="name,screen-name,email-address,role"
 			rowChecker="<%= rowChecker %>"
 			searchContainer="<%= userSearchContainer %>"
+			total="<%= userSearchContainer.getTotal() %>"
 		>
 			<liferay-ui:search-container-results
 				results="<%= userSearchContainer.getResults() %>"
-				total="<%= userSearchContainer.getTotal() %>"
 			/>
 
 			<liferay-ui:search-container-row
@@ -141,7 +141,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 						for (int i = 1; i <= 4; i++) {
 						%>
 
-							<option <%= (notifications == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(pageContext, AccountWorkerConstants.getNotificationsLabel(i)) %></option>
+							<option <%= (notifications == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(request, AccountWorkerConstants.getNotificationsLabel(i)) %></option>
 
 						<%
 						}
@@ -163,7 +163,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 							}
 						%>
 
-							<option <%= (role == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(pageContext, AccountWorkerConstants.getRoleLabel(i)) %></option>
+							<option <%= (role == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(request, AccountWorkerConstants.getRoleLabel(i)) %></option>
 
 						<%
 						}

@@ -27,7 +27,9 @@ String redirect = ParamUtil.getString(request, "redirect");
 
 String currentLanguageId = LanguageUtil.getLanguageId(request);
 
-Locale[] locales = LanguageUtil.getAvailableLocales();
+Set<Locale> localesSet = LanguageUtil.getAvailableLocales();
+
+Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 %>
 
 <script type="text/javascript">
@@ -267,6 +269,18 @@ Locale[] locales = LanguageUtil.getAvailableLocales();
 						<aui:input cssClass="lfr-textarea-container" ignoreRequestValue="true" label="content" name="announcementContent" type="textarea" value="<%= announcementContent %>" />
 					</aui:fieldset>
 
+					<%
+					Calendar enabledDateCal = announcementExpirationCal;
+
+					enabledDateCal.add(Calendar.YEAR, -2);
+
+					Date firstEnabledDate = enabledDateCal.getTime();
+
+					enabledDateCal.add(Calendar.YEAR, 4);
+
+					Date lastEnabledDate = enabledDateCal.getTime();
+					%>
+
 					<table class="lfr-table">
 						<tr>
 							<td>
@@ -276,8 +290,8 @@ Locale[] locales = LanguageUtil.getAvailableLocales();
 								<liferay-ui:input-date
 									dayParam="announcementDisplayDateDay"
 									dayValue="<%= announcementDisplayCal.get(Calendar.DAY_OF_MONTH) %>"
-									firstEnabledDate="<%= announcementDisplayCal.add(Calendar.YEAR, -2) %>"
-									lastEnabledDate="<%= announcementDisplayCal.add(Calendar.YEAR, 2) %>"
+									firstEnabledDate="<%= firstEnabledDate %>"
+									lastEnabledDate="<%= lastEnabledDate %>"
 									monthParam="announcementDisplayDateMonth"
 									monthValue="<%= announcementDisplayCal.get(Calendar.MONTH) %>"
 									nullable="<%= false %>"
@@ -301,17 +315,6 @@ Locale[] locales = LanguageUtil.getAvailableLocales();
 								<liferay-ui:message key="expiration-date" /> (GMT)
 							</td>
 							<td>
-
-								<%
-								Date firstEnabledDate = announcementExpirationCal.clone();
-
-								firstEnabledDate.add(Calendar.YEAR, -2);
-
-								Date lastEnabledDate = announcementExpirationCal.clone();
-
-								lastEnabledDate.add(Calendar.YEAR, 2);
-								%>
-
 								<liferay-ui:input-date
 									dayParam="announcementExpirationDateDay"
 									dayValue="<%= announcementExpirationCal.get(Calendar.DAY_OF_MONTH) %>"
@@ -376,7 +379,7 @@ Locale[] locales = LanguageUtil.getAvailableLocales();
 									for (String curProductDisplayName : ProductEntryConstants.DISPLAY_NAMES) {
 									%>
 
-										<option <%= (curProductDisplayName.equals(productDisplayName)) ? "selected" : "" %> value="<%= HtmlUtil.escape(curProductDisplayName) %>"><%= LanguageUtil.get(pageContext, curProductDisplayName) %></option>
+										<option <%= (curProductDisplayName.equals(productDisplayName)) ? "selected" : "" %> value="<%= HtmlUtil.escape(curProductDisplayName) %>"><%= LanguageUtil.get(request, curProductDisplayName) %></option>
 
 									<%
 									}
@@ -415,7 +418,7 @@ Locale[] locales = LanguageUtil.getAvailableLocales();
 										}
 									%>
 
-										<option <%= (curComponent == component) ? "selected" : "" %> <%= optionStyle %> value="<%= curComponent %>"><%= LanguageUtil.get(pageContext, TicketEntryConstants.getComponentLabel(curComponent)) %></option>
+										<option <%= (curComponent == component) ? "selected" : "" %> <%= optionStyle %> value="<%= curComponent %>"><%= LanguageUtil.get(request, TicketEntryConstants.getComponentLabel(curComponent)) %></option>
 
 									<%
 									}
@@ -679,7 +682,7 @@ Locale[] locales = LanguageUtil.getAvailableLocales();
 									for (String curProductEntryDisplayName : ProductEntryConstants.DISPLAY_NAMES_DXP) {
 									%>
 
-										<option <%= productEntryDisplayName.equals(curProductEntryDisplayName) ? "selected" : StringPool.BLANK %> value="<%= curProductEntryDisplayName %>"><%= LanguageUtil.get(pageContext, curProductEntryDisplayName) %></option>
+										<option <%= productEntryDisplayName.equals(curProductEntryDisplayName) ? "selected" : StringPool.BLANK %> value="<%= curProductEntryDisplayName %>"><%= LanguageUtil.get(request, curProductEntryDisplayName) %></option>
 
 									<%
 									}
@@ -745,7 +748,7 @@ Locale[] locales = LanguageUtil.getAvailableLocales();
 										}
 									%>
 
-										<option <%= (curStatus == status) ? "selected" : "" %> <%= optionStyle %> value="<%= curStatus %>"><%= LanguageUtil.get(pageContext, TicketEntryConstants.getStatusLabel(curStatus)) %></option>
+										<option <%= (curStatus == status) ? "selected" : "" %> <%= optionStyle %> value="<%= curStatus %>"><%= LanguageUtil.get(request, TicketEntryConstants.getStatusLabel(curStatus)) %></option>
 
 									<%
 									}
@@ -826,7 +829,7 @@ Locale[] locales = LanguageUtil.getAvailableLocales();
 										}
 									%>
 
-										<option <%= (curTier == tier) ? "selected" : "" %> <%= optionStyle %> value="<%= curTier %>"><%= LanguageUtil.get(pageContext, AccountEntryConstants.getTierLabel(curTier)) %></option>
+										<option <%= (curTier == tier) ? "selected" : "" %> <%= optionStyle %> value="<%= curTier %>"><%= LanguageUtil.get(request, AccountEntryConstants.getTierLabel(curTier)) %></option>
 
 									<%
 									}

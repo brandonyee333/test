@@ -77,17 +77,25 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 			<div class="aui-w33 content-column">
 				<strong><liferay-ui:message key="call-date" /></strong>
 
+				<%
+				calendar.set(Calendar.YEAR, 2010);
+
+				Date firstEnabledDate = calendar.getTime();
+
+				calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
+
+				Date lastEnabledDate = calendar.getTime();
+				%>
+
 				<liferay-ui:input-date
-					dayNullable="<%= true %>"
 					dayParam="callDateDay"
 					dayValue="<%= callDateDay %>"
-					monthNullable="<%= true %>"
+					firstEnabledDate="<%= firstEnabledDate %>"
+					lastEnabledDate="<%= lastEnabledDate %>"
 					monthParam="callDateMonth"
 					monthValue="<%= callDateMonth %>"
-					yearNullable="<%= true %>"
+					nullable="<%= true %>"
 					yearParam="callDateYear"
-					yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
-					yearRangeStart="<%= 2010 %>"
 					yearValue="<%= callDateYear %>"
 				/>
 

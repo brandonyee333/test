@@ -30,12 +30,13 @@ portletURL.setParameter("callback", callback);
 
 	<liferay-ui:search-container
 		searchContainer="<%= new OfferingDefinitionSearch(renderRequest, portletURL) %>"
-		total="<%= OfferingDefinitionLocalServiceUtil.getOfferingDefinitionsCount(searchTerms.getProductEntryIds(), searchTerms.getSupportResponseIds()) %>"
 	>
 
 		<%
 		OfferingDefinitionDisplayTerms displayTerms = (OfferingDefinitionDisplayTerms)searchContainer.getDisplayTerms();
 		OfferingDefinitionSearchTerms searchTerms = (OfferingDefinitionSearchTerms)searchContainer.getSearchTerms();
+
+		pageContext.setAttribute("total", OfferingDefinitionLocalServiceUtil.getOfferingDefinitionsCount(searchTerms.getProductEntryIds(), searchTerms.getSupportResponseIds()));
 		%>
 
 		<div>

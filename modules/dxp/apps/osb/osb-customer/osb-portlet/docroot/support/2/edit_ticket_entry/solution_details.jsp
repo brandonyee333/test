@@ -132,7 +132,7 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 
 						<c:if test="<%= ticketEntry.getStatus() != TicketEntryConstants.STATUS_RESOLVED_IN_PRODUCTION %>">
 							<div class="hotfix">
-								<aui:input label='<%= LanguageUtil.get(pageContext, "hotfix") %>' name='<%= "hotfix" + fileIndex %>' type="checkbox" />
+								<aui:input label='<%= LanguageUtil.get(request, "hotfix") %>' name='<%= "hotfix" + fileIndex %>' type="checkbox" />
 							</div>
 						</c:if>
 

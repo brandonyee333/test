@@ -54,7 +54,7 @@ else {
 
 		int ticketCommentCount = TicketCommentLocalServiceUtil.getTicketCommentsCount(ticketEntry.getTicketEntryId(), new int[] {visibility}, new int[] {WorkflowConstants.STATUS_APPROVED});
 
-		discussionTabNames[i] = LanguageUtil.format(pageContext, visibilityLabel + "-x", ticketCommentCount, false);
+		discussionTabNames[i] = LanguageUtil.format(request, visibilityLabel + "-x", ticketCommentCount, false);
 		discussionTabValues[i] = visibilityLabel;
 	}
 
@@ -219,7 +219,7 @@ else {
 			var filesize = ((files[0].size / 1024) / 1024).toFixed(4);
 
 			if (filesize > 100) {
-				alert('<%= UnicodeLanguageUtil.get(pageContext, "attachments-that-are-uploaded-with-comments-cannot-exceed-100-mb") %>');
+				alert('<%= UnicodeLanguageUtil.get(request, "attachments-that-are-uploaded-with-comments-cannot-exceed-100-mb") %>');
 
 				element.value = '';
 			}
@@ -252,7 +252,7 @@ else {
 				var attachmentKeyword = attachmentKeywords[i].toLowerCase();
 
 				if (commentBody.indexOf(attachmentKeyword) != -1) {
-					var confirmationMsg = '<%= UnicodeLanguageUtil.get(pageContext, "no-attachments-confirmation") %>';
+					var confirmationMsg = '<%= UnicodeLanguageUtil.get(request, "no-attachments-confirmation") %>';
 
 					confirmationMsg = A.Lang.sub(confirmationMsg, [attachmentKeyword]);
 
@@ -269,7 +269,7 @@ else {
 		}
 
 		function <portlet:namespace />deleteComment(suffix) {
-			if (!confirm('<%= UnicodeLanguageUtil.get(pageContext, "are-you-sure-you-want-to-delete-this") %>')) {
+			if (!confirm('<%= UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-delete-this") %>')) {
 				return;
 			}
 
@@ -282,7 +282,7 @@ else {
 		function <portlet:namespace />deleteTicketAttachment(suffix, ticketAttachmentId, fileIndex) {
 			var A = AUI();
 
-			if (!confirm('<%= UnicodeLanguageUtil.get(pageContext, "are-you-sure-you-want-to-delete-this") %>')) {
+			if (!confirm('<%= UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-delete-this") %>')) {
 				return;
 			}
 
@@ -382,12 +382,12 @@ else {
 			commentBody.focus();
 
 			if (!hasMaximumDraftTicketComment || isDraft) {
-				var message = '<%= UnicodeLanguageUtil.get(pageContext, "comment-will-be-auto-saved-as-draft-every-30-seconds,-excluding-attachments") %>';
+				var message = '<%= UnicodeLanguageUtil.get(request, "comment-will-be-auto-saved-as-draft-every-30-seconds,-excluding-attachments") %>';
 
 				<portlet:namespace />updateMessageDisplay(suffix, "portlet-msg-info", message);
 			}
 			else {
-				var message = '<%= UnicodeLanguageUtil.get(pageContext, "your-draft-comments-have-reached-maximum-comment-cannot-be-automatically-saved-as-draft") %>';
+				var message = '<%= UnicodeLanguageUtil.get(request, "your-draft-comments-have-reached-maximum-comment-cannot-be-automatically-saved-as-draft") %>';
 
 				<portlet:namespace />updateMessageDisplay(suffix, "portlet-msg-info", message);
 			}
@@ -498,7 +498,7 @@ else {
 						method: 'post',
 						on: {
 							failure: function() {
-								var message = '<%= UnicodeLanguageUtil.get(pageContext, "comment-cannot-be-saved-as-draft-please-save-your-work-before-refreshing") %>';
+								var message = '<%= UnicodeLanguageUtil.get(request, "comment-cannot-be-saved-as-draft-please-save-your-work-before-refreshing") %>';
 
 								<portlet:namespace />updateMessageDisplay(suffix, "portlet-msg-error", message);
 							},
@@ -510,23 +510,23 @@ else {
 								form.<portlet:namespace />draftBody.value = commentBody;
 
 								var className = 'portlet-msg-success';
-								var message = '<%= UnicodeLanguageUtil.get(pageContext, "comment-is-saved-as-draft") %>';
+								var message = '<%= UnicodeLanguageUtil.get(request, "comment-is-saved-as-draft") %>';
 
 								message += A.DataType.Date.format(new Date(), {format:"%X"});
 
 								if (response.commentPublished) {
 									className = 'portlet-msg-error';
-									message = '<%= UnicodeLanguageUtil.get(pageContext, "your-draft-has-already-been-published.-please-refresh-the-page-to-see-the-changes") %>';
+									message = '<%= UnicodeLanguageUtil.get(request, "your-draft-has-already-been-published.-please-refresh-the-page-to-see-the-changes") %>';
 
 									<portlet:namespace />disableAutoUpdateComment();
 								}
 								else if (response.ticketEntryStatus && (response.ticketEntryStatus == <%= TicketEntryConstants.STATUS_CLOSED %>)) {
 									className = 'portlet-msg-error';
-									message = '<%= UnicodeLanguageUtil.get(pageContext, "this-ticket-has-been-closed.-you-may-refresh-the-page-to-update-the-ticket-but-please-note-that-you-already-have-a-saved-draft") %>';
+									message = '<%= UnicodeLanguageUtil.get(request, "this-ticket-has-been-closed.-you-may-refresh-the-page-to-update-the-ticket-but-please-note-that-you-already-have-a-saved-draft") %>';
 								}
 								else if (response.maximumDraftTicketComments) {
 									className = 'portlet-msg-error';
-									message = '<%= UnicodeLanguageUtil.get(pageContext, "the-number-of-draft-comments-has-exceeded-the-maximum-number-of-allowed-draft-comments") %>';
+									message = '<%= UnicodeLanguageUtil.get(request, "the-number-of-draft-comments-has-exceeded-the-maximum-number-of-allowed-draft-comments") %>';
 								}
 
 								<portlet:namespace />updateMessageDisplay(suffix, className, message);

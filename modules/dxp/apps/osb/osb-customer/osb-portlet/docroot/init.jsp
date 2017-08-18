@@ -19,7 +19,6 @@
 <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
 
 <%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %><%@
-taglib uri="http://liferay.com/tld/expando" prefix="liferay-expando" %><%@
 taglib uri="http://liferay.com/tld/portlet" prefix="liferay-portlet" %><%@
 taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %><%@
@@ -373,7 +372,6 @@ page import="com.liferay.portal.kernel.captcha.CaptchaMaxChallengesException" %>
 page import="com.liferay.portal.kernel.captcha.CaptchaTextException" %><%@
 page import="com.liferay.portal.kernel.dao.orm.CustomSQLParam" %><%@
 page import="com.liferay.portal.kernel.dao.orm.QueryUtil" %><%@
-page import="com.liferay.portal.kernel.dao.search.ResultRow" %><%@
 page import="com.liferay.portal.kernel.dao.search.SearchContainer" %><%@
 page import="com.liferay.portal.kernel.exception.AddressCityException" %><%@
 page import="com.liferay.portal.kernel.exception.AddressStreetException" %><%@
@@ -436,6 +434,7 @@ page import="com.liferay.portal.kernel.servlet.SessionMessages" %><%@
 page import="com.liferay.portal.kernel.theme.ThemeDisplay" %><%@
 page import="com.liferay.portal.kernel.util.ArrayUtil" %><%@
 page import="com.liferay.portal.kernel.util.CalendarFactoryUtil" %><%@
+page import="com.liferay.portal.kernel.util.CharPool" %><%@
 page import="com.liferay.portal.kernel.util.Constants" %><%@
 page import="com.liferay.portal.kernel.util.FastDateFormatFactoryUtil" %><%@
 page import="com.liferay.portal.kernel.util.GetterUtil" %><%@
@@ -469,11 +468,12 @@ page import="com.liferay.portal.kernel.workflow.WorkflowInstance" %><%@
 page import="com.liferay.portal.kernel.workflow.WorkflowInstanceManagerUtil" %><%@
 page import="com.liferay.portal.kernel.workflow.WorkflowTask" %><%@
 page import="com.liferay.portal.kernel.workflow.WorkflowTaskAssignee" %><%@
-page import="com.liferay.portal.kernel.workflow.WorkflowTaskManagerUtil" %>
+page import="com.liferay.portal.kernel.workflow.WorkflowTaskManagerUtil" %><%@
+page import="com.liferay.taglib.search.ResultRow" %>
 
 <%-- TODO implement release-notes-portlet
 page import="com.liferay.releasenotes.model.ReleaseNotes" %><%@
-page import="com.liferay.releasenotes.service.ReleaseNotesLocalServiceUtil" %>
+page import="com.liferay.releasenotes.service.ReleaseNotesLocalServiceUtil" %> --%>
 
 <%@ page import="com.liferay.util.dao.orm.CustomSQLUtil" %>
 
@@ -489,7 +489,8 @@ page import="java.text.SimpleDateFormat" %>
 page import="java.util.Calendar" %><%@
 page import="java.util.Collections" %>
 
-<%@ page import="java.util.Date" %><%@
+<%@ page import="java.util.Arrays" %><%@ 
+page import="java.util.Date" %><%@
 page import="java.util.HashMap" %><%@
 page import="java.util.Iterator" %><%@
 page import="java.util.LinkedHashMap" %><%@

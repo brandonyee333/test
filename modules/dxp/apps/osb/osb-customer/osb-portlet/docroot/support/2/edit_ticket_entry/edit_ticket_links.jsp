@@ -38,10 +38,10 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 	<liferay-ui:search-container
 		emptyResultsMessage="there-are-no-links"
 		headerNames="url,visibility"
+		total="<%= ticketLinks.size() %>"
 	>
 		<liferay-ui:search-container-results
 			results="<%= ticketLinks %>"
-			total="<%= ticketLinks.size() %>"
 		/>
 
 		<liferay-ui:search-container-row
@@ -127,7 +127,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 								for (int curVisibility : userVisibilities) {
 								%>
 
-									<option <%= (curVisibility == visibility) ? "selected" : "" %> value="<%= curVisibility %>"><%= LanguageUtil.get(pageContext, VisibilityConstants.toLabel(curVisibility)) %></option>
+									<option <%= (curVisibility == visibility) ? "selected" : "" %> value="<%= curVisibility %>"><%= LanguageUtil.get(request, VisibilityConstants.toLabel(curVisibility)) %></option>
 
 								<%
 								}

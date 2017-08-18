@@ -118,7 +118,7 @@ boolean paginate = ParamUtil.getBoolean(request, "paginate");
 						<div class="column first-line-support partner-column" <%= columnJS %>>
 							<div class="search-detail">
 								<span title="<%= HtmlUtil.escapeAttribute(partnerEntry.getCode()) %>">
-									<%= isManagingSupport ? LanguageUtil.get(pageContext, "yes") : LanguageUtil.get(pageContext, "no") %>
+									<%= isManagingSupport ? LanguageUtil.get(request, "yes") : LanguageUtil.get(request, "no") %>
 								</span>
 							</div>
 						</div>
@@ -134,7 +134,7 @@ boolean paginate = ParamUtil.getBoolean(request, "paginate");
 						<div class="column partner-column status" <%= columnJS %>>
 							<div class="search-detail">
 								<span title="<%= HtmlUtil.escapeAttribute(partnerEntry.getCode()) %>">
-									<%= LanguageUtil.get(pageContext, partnerEntry.getStatusLabel()) %>
+									<%= LanguageUtil.get(request, partnerEntry.getStatusLabel()) %>
 								</span>
 							</div>
 						</div>
@@ -161,7 +161,7 @@ boolean paginate = ParamUtil.getBoolean(request, "paginate");
 
 				<div class="taglib-page-iterator">
 					<div class="search-results">
-						<%= LanguageUtil.format(pageContext, "showing-x-x", new Object[] {numberFormat.format(start + 1), numberFormat.format(end)}) %>
+						<%= LanguageUtil.format(request, "showing-x-x", new Object[] {numberFormat.format(start + 1), numberFormat.format(end)}) %>
 					</div>
 
 					<div class="search-pages">
@@ -199,6 +199,6 @@ boolean paginate = ParamUtil.getBoolean(request, "paginate");
 		</div>
 	</c:when>
 	<c:otherwise>
-		<span class="portlet-msg-info"><%= LanguageUtil.get(pageContext, "no-partners-were-found") %></span>
+		<span class="portlet-msg-info"><%= LanguageUtil.get(request, "no-partners-were-found") %></span>
 	</c:otherwise>
 </c:choose>

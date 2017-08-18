@@ -17,11 +17,15 @@
 <%
 boolean licenseAdmin = AccountWorkerLocalServiceUtil.hasAccountWorkerRole(user.getUserId(), AccountWorkerConstants.ROLE_SALES) || RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstants.ROLE_OSB_ACCOUNT_ADMIN_ID) || RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstants.ROLE_OSB_ADMINISTRATOR_ID) || RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstants.ROLE_OSB_TRIAL_LICENSE_ADMIN_ID);
 
-Calendar firstEnabledDate = CalendarFactoryUtil.getCalendar(2010, 1, 1);
+Calendar calendar = CalendarFactoryUtil.getCalendar(2010, 1, 1);
 
-Calendar lastEnabledDate = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
+Date firstEnabledDate = calendar.getTime();
 
-lastEnabledDate.add(Calendar.YEAR, 1);
+calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
+
+calendar.add(Calendar.YEAR, 1);
+
+Date lastEnabledDate = calendar.getTime();
 %>
 
 <div class="callout-a">

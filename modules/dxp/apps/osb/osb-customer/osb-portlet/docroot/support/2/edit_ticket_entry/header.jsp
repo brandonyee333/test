@@ -80,7 +80,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 
 						<c:if test="<%= liferayIncOrg %>">
 							<c:if test="<%= subcomponent > 0 %>">
-								(<%= LanguageUtil.get(pageContext, ticketEntry.getSubcomponentLabel()) %>)
+								(<%= LanguageUtil.get(request, ticketEntry.getSubcomponentLabel()) %>)
 							</c:if>
 
 							<c:if test="<%= Validator.isNotNull(subcomponentCustom) %>">
@@ -103,7 +103,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 						<div id="<portlet:namespace />severityDisplay" onClick="<%= severityOnClick %>">
 							<liferay-ui:message key="severity" />:
 
-							<span class="txt-sb"><%= LanguageUtil.get(pageContext, ticketEntry.getSeverityLabel()) %></span>
+							<span class="txt-sb"><%= LanguageUtil.get(request, ticketEntry.getSeverityLabel()) %></span>
 						</div>
 
 						<div id="<portlet:namespace />severityDropDown" style="display: none;">
@@ -113,7 +113,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 								for (int i = 1; i <= 3; i++) {
 								%>
 
-									<option <%= (i == severity) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(pageContext, TicketEntryConstants.getSeverityLabel(i)) %></option>
+									<option <%= (i == severity) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(request, TicketEntryConstants.getSeverityLabel(i)) %></option>
 
 								<%
 								}
@@ -222,9 +222,9 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 						<div id="<portlet:namespace />statusDisplay" onClick="<%= statusOnClick %>">
 							<liferay-ui:message key="status" />:
 
-							<span class="txt-sb" id="<portlet:namespace />statusLabel"><%= LanguageUtil.get(pageContext, ticketEntry.getStatusLabel()) %></span>
+							<span class="txt-sb" id="<portlet:namespace />statusLabel"><%= LanguageUtil.get(request, ticketEntry.getStatusLabel()) %></span>
 
-							<span class="<%= (resolution == 0) ? "aui-helper-hidden" : "txt-sb" %>" id="<portlet:namespace />resolutionLabel">(<%= LanguageUtil.get(pageContext, ticketEntry.getResolutionLabel()) %>)</span>
+							<span class="<%= (resolution == 0) ? "aui-helper-hidden" : "txt-sb" %>" id="<portlet:namespace />resolutionLabel">(<%= LanguageUtil.get(request, ticketEntry.getResolutionLabel()) %>)</span>
 
 							<%
 							String statusMessage = HtmlUtil.escape(SupportUtil.getPreferenceValue(locale, "statusMessage_" + status));
@@ -247,7 +247,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 									}
 								%>
 
-									<option <%= (ticketEntry.getStatus() == statusId) ? "selected" : "" %> value="<%= statusId %>"><%= LanguageUtil.get(pageContext, TicketEntryConstants.getStatusLabel(statusId)) %></option>
+									<option <%= (ticketEntry.getStatus() == statusId) ? "selected" : "" %> value="<%= statusId %>"><%= LanguageUtil.get(request, TicketEntryConstants.getStatusLabel(statusId)) %></option>
 
 								<%
 								}
@@ -262,7 +262,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 								for (ListType resolutionType : ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_RESOLUTION)) {
 								%>
 
-									<option <%= (resolutionType.getListTypeId() == resolution) ? "selected" : "" %> value="<%= resolutionType.getListTypeId() %>"><%= LanguageUtil.get(pageContext, resolutionType.getName()) %></option>
+									<option <%= (resolutionType.getListTypeId() == resolution) ? "selected" : "" %> value="<%= resolutionType.getListTypeId() %>"><%= LanguageUtil.get(request, resolutionType.getName()) %></option>
 
 								<%
 								}
@@ -288,7 +288,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 					points: [ 'tl', 'bl' ]
 				},
 				arrow: 'tl',
-				bodyContent: '<%= UnicodeLanguageUtil.get(pageContext, ticketEntry.getComponentLabel()) %>',
+				bodyContent: '<%= UnicodeLanguageUtil.get(request, ticketEntry.getComponentLabel()) %>',
 				hideDelay: 0,
 				trigger: '#<portlet:namespace />componentDisplay'
 			}
@@ -353,7 +353,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 		function <portlet:namespace />updateResolution(resolution) {
 			var A = AUI();
 
-			var oldStatusLabel = '<%= UnicodeLanguageUtil.get(pageContext, ticketEntry.getStatusLabel()) %>';
+			var oldStatusLabel = '<%= UnicodeLanguageUtil.get(request, ticketEntry.getStatusLabel()) %>';
 			var newLabel = A.one('#<portlet:namespace />status option:selected').html() + ' - ' + A.one('#<portlet:namespace />resolution option:selected').html();
 
 			if (!confirm(Liferay.Language.get('are-you-sure-you-want-to-modify-the-status-from-x-to-x', [oldStatusLabel, newLabel]))) {
@@ -376,7 +376,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 		function <portlet:namespace />updateStatus(status) {
 			var A = AUI();
 
-			var oldStatusLabel = '<%= UnicodeLanguageUtil.get(pageContext, ticketEntry.getStatusLabel()) %>';
+			var oldStatusLabel = '<%= UnicodeLanguageUtil.get(request, ticketEntry.getStatusLabel()) %>';
 			var newStatusLabel = A.one('#<portlet:namespace />status option:selected').html();
 
 			if (oldStatusLabel == newStatusLabel) {

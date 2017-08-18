@@ -156,7 +156,7 @@ long accountEntryId = ParamUtil.getLong(request, "accountEntryId");
 			var modified = document.getElementById('<portlet:namespace />modified');
 
 			if (modified.value == 'true') {
-				var cancelEdit = confirm('<%= UnicodeLanguageUtil.get(pageContext, "you-have-unsaved-changes-on-this-project.-are-you-sure-you-want-to-cancel-editing") %>');
+				var cancelEdit = confirm('<%= UnicodeLanguageUtil.get(request, "you-have-unsaved-changes-on-this-project.-are-you-sure-you-want-to-cancel-editing") %>');
 
 				if (cancelEdit) {
 					Liferay.Util.getWindow().close();

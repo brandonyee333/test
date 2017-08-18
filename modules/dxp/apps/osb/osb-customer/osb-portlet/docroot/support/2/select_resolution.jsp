@@ -40,7 +40,7 @@
 				for (ListType resolutionType : resolutionTypes) {
 				%>
 
-					<option value="<%= resolutionType.getListTypeId() %>"><%= LanguageUtil.get(pageContext, resolutionType.getName()) %></option>
+					<option value="<%= resolutionType.getListTypeId() %>"><%= LanguageUtil.get(request, resolutionType.getName()) %></option>
 
 				<%
 				}

@@ -219,7 +219,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 								Integer severity = severities.get(i);
 							%>
 
-								<%= LanguageUtil.get(pageContext, TicketEntryConstants.getSeverityLabel(severity)) %><%= ((i + 1) < severities.size()) ? "<br />" : StringPool.BLANK %>
+								<%= LanguageUtil.get(request, TicketEntryConstants.getSeverityLabel(severity)) %><%= ((i + 1) < severities.size()) ? "<br />" : StringPool.BLANK %>
 
 							<%
 							}
@@ -238,7 +238,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 								Integer component = components.get(i);
 							%>
 
-								<%= LanguageUtil.get(pageContext, TicketEntryConstants.getComponentLabel(component)) %><%= ((i + 1) < components.size()) ? "<br />" : StringPool.BLANK %>
+								<%= LanguageUtil.get(request, TicketEntryConstants.getComponentLabel(component)) %><%= ((i + 1) < components.size()) ? "<br />" : StringPool.BLANK %>
 
 							<%
 							}
@@ -257,7 +257,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 								Integer accountTier = accountTiers.get(i);
 							%>
 
-								<%= LanguageUtil.get(pageContext, AccountEntryConstants.getTierLabel(accountTier)) %><%= ((i + 1) < accountTiers.size()) ? "<br />" : StringPool.BLANK %>
+								<%= LanguageUtil.get(request, AccountEntryConstants.getTierLabel(accountTier)) %><%= ((i + 1) < accountTiers.size()) ? "<br />" : StringPool.BLANK %>
 
 							<%
 							}
@@ -292,7 +292,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 						for (int i = 1; i <= 3; i++) {
 						%>
 
-							<option <%= (notifications == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(pageContext, SupportWorkerConstants.getNotificationsLabel(i)) %></option>
+							<option <%= (notifications == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(request, SupportWorkerConstants.getNotificationsLabel(i)) %></option>
 
 						<%
 						}
@@ -312,7 +312,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 						for (ListType escalationLevelType : escalationLevelTypes) {
 						%>
 
-							<option <%= (escalationLevelType.getListTypeId() == escalationLevel) ? "selected" : "" %> value="<%= escalationLevelType.getListTypeId() %>"><%= LanguageUtil.get(pageContext, escalationLevelType.getName()) %></option>
+							<option <%= (escalationLevelType.getListTypeId() == escalationLevel) ? "selected" : "" %> value="<%= escalationLevelType.getListTypeId() %>"><%= LanguageUtil.get(request, escalationLevelType.getName()) %></option>
 
 						<%
 						}
@@ -331,7 +331,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 						for (int i = 1; i <= 4; i++) {
 						%>
 
-							<option <%= (role == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(pageContext, SupportWorkerConstants.getRoleLabel(i)) %></option>
+							<option <%= (role == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(request, SupportWorkerConstants.getRoleLabel(i)) %></option>
 
 						<%
 						}

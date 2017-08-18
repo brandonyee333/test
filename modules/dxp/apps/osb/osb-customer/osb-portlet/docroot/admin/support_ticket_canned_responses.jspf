@@ -27,10 +27,10 @@ String languageId = LanguageUtil.getLanguageId(request);
 		TicketCannedResponseDisplayTerms displayTerms = (TicketCannedResponseDisplayTerms)searchContainer.getDisplayTerms();
 		%>
 
-		<%@ include file="/support/ticket_canned_response_search.jspf" %>
+		<%@ include file="/admin/ticket_canned_response_search.jspf" %>
 
 		<liferay-ui:search-container-results>
-			<%@ include file="/support/ticket_canned_response_search_results.jspf" %>
+			<%@ include file="/admin/ticket_canned_response_search_results.jspf" %>
 		</liferay-ui:search-container-results>
 
 		<liferay-ui:search-container-row

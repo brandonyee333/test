@@ -46,7 +46,7 @@ String selectAll = "javascript:";
 		>
 
 			<%
-			String severityLabel = LanguageUtil.get(pageContext, TicketEntryConstants.getSeverityLabel(severity));
+			String severityLabel = LanguageUtil.get(request, TicketEntryConstants.getSeverityLabel(severity));
 
 			StringBuilder sb = new StringBuilder();
 

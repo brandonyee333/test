@@ -100,7 +100,7 @@ List<AccountEntry> accountEntries = partnerEntry.getAccountEntries();
 								ListType phoneType = phone.getType();
 							%>
 
-								<%= LanguageUtil.get(pageContext, phoneType.getName()) %>: <%= phone.getNumber() %> <%= phone.getExtension() %> <br />
+								<%= LanguageUtil.get(request, phoneType.getName()) %>: <%= phone.getNumber() %> <%= phone.getExtension() %> <br />
 
 							<%
 							}
@@ -110,7 +110,7 @@ List<AccountEntry> accountEntries = partnerEntry.getAccountEntries();
 
 						<liferay-ui:search-container-column-text
 							name="role"
-							value="<%= LanguageUtil.get(pageContext, PartnerWorkerConstants.getRoleLabel(partnerWorker.getRole())) %>"
+							value="<%= LanguageUtil.get(request, PartnerWorkerConstants.getRoleLabel(partnerWorker.getRole())) %>"
 						/>
 					</liferay-ui:search-container-row>
 
@@ -171,7 +171,7 @@ List<AccountEntry> accountEntries = partnerEntry.getAccountEntries();
 						<liferay-ui:search-container-column-text
 							href="<%= rowURL %>"
 							name="first-line-support"
-							value='<%= accountEntry.isPartnerManagedSupport() ? LanguageUtil.get(pageContext, "yes") : LanguageUtil.get(pageContext, "no") %>'
+							value='<%= accountEntry.isPartnerManagedSupport() ? LanguageUtil.get(request, "yes") : LanguageUtil.get(request, "no") %>'
 						/>
 					</liferay-ui:search-container-row>
 
@@ -237,7 +237,7 @@ List<AccountEntry> accountEntries = partnerEntry.getAccountEntries();
 								<liferay-ui:search-container-column-text
 									href="<%= rowURL %>"
 									name="first-line-support"
-									value='<%= accountEntry.isPartnerManagedSupport() ? LanguageUtil.get(pageContext, "yes") : LanguageUtil.get(pageContext, "no") %>'
+									value='<%= accountEntry.isPartnerManagedSupport() ? LanguageUtil.get(request, "yes") : LanguageUtil.get(request, "no") %>'
 								/>
 							</liferay-ui:search-container-row>
 

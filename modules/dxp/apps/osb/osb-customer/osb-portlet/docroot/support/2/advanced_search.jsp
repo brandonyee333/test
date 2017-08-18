@@ -121,7 +121,7 @@ if (!supportTeams.isEmpty() || RoleLocalServiceUtil.hasUserRole(user.getUserId()
 		<liferay-util:param name="id" value="1" />
 		<liferay-util:param name="modal" value="<%= Boolean.TRUE.toString() %>" />
 		<liferay-util:param name="mvcPath" value="/support/2/advanced_search/bulk_edit_ticket_dialog.jsp" />
-		<liferay-util:param name="title" value='<%= LanguageUtil.get(pageContext, "bulk-edit") %>' />
+		<liferay-util:param name="title" value='<%= LanguageUtil.get(request, "bulk-edit") %>' />
 		<liferay-util:param name="width" value="760" />
 	</liferay-util:include>
 </c:if>

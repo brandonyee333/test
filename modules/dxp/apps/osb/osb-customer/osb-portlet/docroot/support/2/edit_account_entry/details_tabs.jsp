@@ -100,7 +100,7 @@ List<AccountCustomer> accountCustomers = accountEntry.getAccountCustomers();
 								for (Phone phone : phones) {
 								%>
 
-									<%= LanguageUtil.get(pageContext, phone.getType().getName()) %>: <%= phone.getNumber() %> <%= phone.getExtension() %> <br />
+									<%= LanguageUtil.get(request, phone.getType().getName()) %>: <%= phone.getNumber() %> <%= phone.getExtension() %> <br />
 
 								<%
 								}
@@ -111,7 +111,7 @@ List<AccountCustomer> accountCustomers = accountEntry.getAccountCustomers();
 							<liferay-ui:search-container-column-text
 								name="role"
 							>
-								<%= LanguageUtil.get(pageContext, curAccountCustomer.getRoleLabel()) %>
+								<%= LanguageUtil.get(request, curAccountCustomer.getRoleLabel()) %>
 							</liferay-ui:search-container-column-text>
 						</liferay-ui:search-container-row>
 
@@ -230,12 +230,12 @@ List<AccountCustomer> accountCustomers = accountEntry.getAccountCustomers();
 						<liferay-ui:search-container-column-text
 							name="tickets"
 						>
-							<%= offeringEntryGroup.getTicketEntriesCount() %> / <%= offeringEntryGroup.isSupportTickets() ? LanguageUtil.get(pageContext, "unlimited") : "0" %>
+							<%= offeringEntryGroup.getTicketEntriesCount() %> / <%= offeringEntryGroup.isSupportTickets() ? LanguageUtil.get(request, "unlimited") : "0" %>
 						</liferay-ui:search-container-column-text>
 
 						<liferay-ui:search-container-column-text
 							name="type"
-							value="<%= LanguageUtil.get(pageContext, OfferingEntryConstants.getTypeLabel(offeringEntryGroup.getType())) %>"
+							value="<%= LanguageUtil.get(request, OfferingEntryConstants.getTypeLabel(offeringEntryGroup.getType())) %>"
 						/>
 
 						<liferay-ui:search-container-column-text
@@ -274,7 +274,7 @@ List<AccountCustomer> accountCustomers = accountEntry.getAccountCustomers();
 
 							<div onClick="<%= statusOnClick %>">
 								<div class="status-<%= offeringEntryGroup.getStatus() %>" id="<portlet:namespace />statusDisplay_<%= key %>">
-									<%= LanguageUtil.get(pageContext, OfferingEntryConstants.getStatusLabel(offeringEntryGroup.getStatus())) %>
+									<%= LanguageUtil.get(request, OfferingEntryConstants.getStatusLabel(offeringEntryGroup.getStatus())) %>
 								</div>
 
 								<div id="<portlet:namespace />status_<%= key %>" style="display: none;">
@@ -285,7 +285,7 @@ List<AccountCustomer> accountCustomers = accountEntry.getAccountCustomers();
 											for (int i = 1; i <= 3; i++) {
 											%>
 
-												<option <%= (offeringEntryGroup.getStatus() == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(pageContext, OfferingEntryConstants.getStatusLabel(i)) %></option>
+												<option <%= (offeringEntryGroup.getStatus() == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(request, OfferingEntryConstants.getStatusLabel(i)) %></option>
 
 											<%
 											}
@@ -359,27 +359,27 @@ List<AccountCustomer> accountCustomers = accountEntry.getAccountCustomers();
 							<liferay-ui:search-container-column-text
 								name="lr-version"
 							>
-								<%= LanguageUtil.get(pageContext, accountEnvironment.getEnvLFRLabel()) %>
+								<%= LanguageUtil.get(request, accountEnvironment.getEnvLFRLabel()) %>
 
 								<c:if test="<%= Validator.isNotNull(accountEnvironment.getSupportPhaseLabel()) %>">
-									<span class="support-phase-label">(<%= LanguageUtil.get(pageContext, accountEnvironment.getSupportPhaseLabel()) %>)</span>
+									<span class="support-phase-label">(<%= LanguageUtil.get(request, accountEnvironment.getSupportPhaseLabel()) %>)</span>
 								</c:if>
 							</liferay-ui:search-container-column-text>
 
 							<liferay-ui:search-container-column-text
 								name="application-server"
-								value="<%= LanguageUtil.get(pageContext, accountEnvironment.getEnvASLabel()) %>"
+								value="<%= LanguageUtil.get(request, accountEnvironment.getEnvASLabel()) %>"
 							/>
 
 							<liferay-ui:search-container-column-text
 								name="database"
-								value="<%= LanguageUtil.get(pageContext, accountEnvironment.getEnvDBLabel()) %>"
+								value="<%= LanguageUtil.get(request, accountEnvironment.getEnvDBLabel()) %>"
 							/>
 
 							<liferay-ui:search-container-column-text
 								name="operating-system"
 							>
-								<%= LanguageUtil.get(pageContext, accountEnvironment.getEnvOSLabel()) %>
+								<%= LanguageUtil.get(request, accountEnvironment.getEnvOSLabel()) %>
 
 								<c:if test="<%= Validator.isNotNull(accountEnvironment.getEnvOSCustom()) %>">
 									- <%= HtmlUtil.escape(accountEnvironment.getEnvOSCustom()) %>
@@ -388,7 +388,7 @@ List<AccountCustomer> accountCustomers = accountEntry.getAccountCustomers();
 
 							<liferay-ui:search-container-column-text
 								name="java"
-								value="<%= LanguageUtil.get(pageContext, accountEnvironment.getEnvJVMLabel()) %>"
+								value="<%= LanguageUtil.get(request, accountEnvironment.getEnvJVMLabel()) %>"
 							/>
 
 							<liferay-ui:search-container-column-text
@@ -523,7 +523,7 @@ List<AccountCustomer> accountCustomers = accountEntry.getAccountCustomers();
 						<div class="content-column-content left-column">
 							<liferay-ui:message key="industry" />:
 
-							<span class="txt-sb"><%= LanguageUtil.get(pageContext, accountEntry.getIndustryLabel()) %></span>
+							<span class="txt-sb"><%= LanguageUtil.get(request, accountEntry.getIndustryLabel()) %></span>
 						</div>
 					</div>
 

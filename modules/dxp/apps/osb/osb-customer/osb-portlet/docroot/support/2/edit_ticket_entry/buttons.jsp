@@ -163,7 +163,7 @@ if (hasUpdateBasic && (((status == TicketEntryConstants.STATUS_CLOSED) && (!acco
 	buttonURL.setParameter("redirect", portletURL.toString());
 	buttonURL.setParameter("ticketEntryId", String.valueOf(ticketEntry.getTicketEntryId()));
 
-	onClick = "javascript:if (confirm('" + UnicodeLanguageUtil.get(pageContext, "are-you-sure-you-want-to-reopen-this-ticket") + "')) { location.href='" + buttonURL + "'; } else { self.focus(); }";
+	onClick = "javascript:if (confirm('" + UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-reopen-this-ticket") + "')) { location.href='" + buttonURL + "'; } else { self.focus(); }";
 }
 %>
 

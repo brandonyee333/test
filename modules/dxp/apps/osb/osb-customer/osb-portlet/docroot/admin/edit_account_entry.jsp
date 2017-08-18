@@ -17,7 +17,8 @@
 <%@ include file="/init.jsp" %>
 
 <%
-themeDisplay.setIncludeServiceJs(true);
+//TODO no direct replacement for setIncludeServiceJS
+//themeDisplay.setIncludeServiceJs(true);
 
 String detailTab = ParamUtil.getString(request, "detailTab");
 
@@ -151,7 +152,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 							boolean verified = GetterUtil.getBoolean(auditEntry.getNewValue());
 							%>
 
-							<%= verified ? LanguageUtil.get(pageContext, "verified") : LanguageUtil.get(pageContext, "out-of-sync") %> <liferay-ui:message key="on" /> <%= longDateFormatDateTime.format(auditEntry.getCreateDate()) %>
+							<%= verified ? LanguageUtil.get(request, "verified") : LanguageUtil.get(request, "out-of-sync") %> <liferay-ui:message key="on" /> <%= longDateFormatDateTime.format(auditEntry.getCreateDate()) %>
 						</c:when>
 						<c:otherwise>
 							N/A
@@ -188,24 +189,24 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 					<c:when test="<%= workflowTask != null %>">
 
 						<%
-						PortletURL workflowTaskURL = PortletURLFactoryUtil.create(request, PortletKeys.MY_WORKFLOW_TASKS, themeDisplay.getPlid(), PortletRequest.RENDER_PHASE);
+						PortletURL workflowTaskURL = PortletURLFactoryUtil.create(request, PortletKeys.MY_WORKFLOW_TASK, themeDisplay.getPlid(), PortletRequest.RENDER_PHASE);
 
 						workflowTaskURL.setParameter("struts_action", "/my_workflow_tasks/edit_workflow_task");
 						workflowTaskURL.setParameter("redirect", currentURL);
 						workflowTaskURL.setParameter("workflowTaskId", String.valueOf(workflowTask.getWorkflowTaskId()));
 						%>
 
-						<a href="<%= workflowTaskURL.toString() %>" target="_blank"><%= LanguageUtil.get(pageContext, accountEntry.getStatusLabel()) %></a>
+						<a href="<%= workflowTaskURL.toString() %>" target="_blank"><%= LanguageUtil.get(request, accountEntry.getStatusLabel()) %></a>
 					</c:when>
 					<c:otherwise>
-						<span class="txt-sb"><%= LanguageUtil.get(pageContext, accountEntry.getStatusLabel()) %></span>
+						<span class="txt-sb"><%= LanguageUtil.get(request, accountEntry.getStatusLabel()) %></span>
 					</c:otherwise>
 				</c:choose>
 
 				<c:if test="<%= !workflowTasks.isEmpty() %>">
 
 					<%
-					PortletURL workflowTasksURL = PortletURLFactoryUtil.create(request, PortletKeys.MY_WORKFLOW_TASKS, themeDisplay.getPlid(), PortletRequest.RENDER_PHASE);
+					PortletURL workflowTasksURL = PortletURLFactoryUtil.create(request, PortletKeys.MY_WORKFLOW_TASK, themeDisplay.getPlid(), PortletRequest.RENDER_PHASE);
 
 					workflowTasksURL.setParameter("tabs1", "other-assignees");
 					workflowTasksURL.setParameter("accountEntryCode", StringPool.QUOTE + accountEntry.getCode() + StringPool.QUOTE);
@@ -336,7 +337,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 			</td>
 			<td>
 
-				<%
+				<%-- <%
 				CorpProject corpProject = CorpProjectLocalServiceUtil.fetchCorpProject(corpProjectId);
 				%>
 
@@ -352,7 +353,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 							<%= HtmlUtil.escape(corpProject.getName()) %>
 						</a>
 					</c:if>
-				</span>
+				</span> --%>
 
 				<input onClick="var corpProjectWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/admin/select_corp_project.jsp" /><portlet:param name="callback" value="selectCorpProject" /></portlet:renderURL>', 'corp-project', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); corpProjectWindow.focus();" type="button" value="<liferay-ui:message key="select" />" />
 

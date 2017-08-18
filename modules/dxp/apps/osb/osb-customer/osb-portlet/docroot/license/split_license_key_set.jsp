@@ -105,7 +105,7 @@ String productEntryName = licenseKey.getProductEntryName();
 				<div class="content-column-content middle-column">
 					<span class="txt-b txt-up"><liferay-ui:message key="type" />:</span>
 
-					<%= LanguageUtil.get(pageContext, licenseEntryType) %>
+					<%= LanguageUtil.get(request, licenseEntryType) %>
 
 					<br />
 

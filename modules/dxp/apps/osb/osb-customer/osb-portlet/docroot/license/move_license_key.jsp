@@ -68,21 +68,21 @@ portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 
 	<div class="callout-a">
 		<div class="callout-content">
+
+			<%
+			LinkedHashMap params = new LinkedHashMap();
+
+			params.put("validLicense", new Long[] {0L, 0L});
+
+			List<OfferingEntryGroup> offeringEntryGroups = SupportUtil.getOfferingEntryGroups(0, licenseKey.getAccountEntryId(), new int[0], new int[0], 0, 0, 0, 0, 0, 0, params, true);
+			%>
+
 			<liferay-ui:search-container
 				delta="<%= 10 %>"
 				headerNames="name,type,start-date,lifetime,license-keys-available"
 				iteratorURL="<%= portletURL %>"
 				total="<%= offeringEntryGroups.size() %>"
 			>
-
-				<%
-				LinkedHashMap params = new LinkedHashMap();
-
-				params.put("validLicense", new Long[] {0L, 0L});
-
-				List<OfferingEntryGroup> offeringEntryGroups = SupportUtil.getOfferingEntryGroups(0, licenseKey.getAccountEntryId(), new int[0], new int[0], 0, 0, 0, 0, 0, 0, params, true);
-				%>
-
 				<liferay-ui:search-container-results
 					results="<%= ListUtil.subList(offeringEntryGroups, searchContainer.getStart(), searchContainer.getEnd()) %>"
 				/>
@@ -137,7 +137,7 @@ portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 					<liferay-ui:search-container-column-text
 						href="<%= rowHREF %>"
 						name="type"
-						value="<%= LanguageUtil.get(pageContext, OfferingEntryConstants.getTypeLabel(offeringEntryGroup.getType())) %>"
+						value="<%= LanguageUtil.get(request, OfferingEntryConstants.getTypeLabel(offeringEntryGroup.getType())) %>"
 					/>
 
 					<liferay-ui:search-container-column-text

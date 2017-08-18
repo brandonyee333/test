@@ -35,7 +35,7 @@ PartnerEntry partnerEntry = (PartnerEntry)request.getAttribute("edit_partner_ent
 			<div class="page-heading" id="<portlet:namespace/>pageHeading">
 				<span class="partner-code"><%= partnerEntry.getCode() %></span>
 
-				<span>(<%= LanguageUtil.get(pageContext, partnerEntry.getStatusLabel()) %>)</span>
+				<span>(<%= LanguageUtil.get(request, partnerEntry.getStatusLabel()) %>)</span>
 			</div>
 
 			<div class="sub-header">

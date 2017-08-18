@@ -120,7 +120,7 @@ List<TicketSolution> ticketSolutions = TicketSolutionLocalServiceUtil.getTicketS
 								<div>
 									<strong><liferay-ui:message key="attachments" />:</strong>
 
-									<a href="<%= ticketAttachmentURL.toString() %>" target="_blank"><%= HtmlUtil.escape(ticketAttachment.getFileName()) %></a> (<%= TextFormatter.formatKB((double)ticketAttachment.getFileSize(), locale) %>k)
+									<a href="<%= ticketAttachmentURL.toString() %>" target="_blank"><%= HtmlUtil.escape(ticketAttachment.getFileName()) %></a> (<%= TextFormatter.formatStorageSize((double)ticketAttachment.getFileSize(), locale) %>k)
 								</div>
 
 							<%
@@ -219,7 +219,7 @@ List<TicketSolution> ticketSolutions = TicketSolutionLocalServiceUtil.getTicketS
 						<div class="comment-body">
 							<div>
 								<strong>
-									<liferay-ui:message key="solution-rejected" />: <%= LanguageUtil.get(pageContext, TicketSolutionConstants.getStatusReasonLabel(ticketSolution.getStatusReason())) %>
+									<liferay-ui:message key="solution-rejected" />: <%= LanguageUtil.get(request, TicketSolutionConstants.getStatusReasonLabel(ticketSolution.getStatusReason())) %>
 								</strong>
 
 								<pre><%= SupportUtil.getHTML(ticketSolution.getStatusMessage(), TicketCommentConstants.FORMAT_BBCODE) %></pre>

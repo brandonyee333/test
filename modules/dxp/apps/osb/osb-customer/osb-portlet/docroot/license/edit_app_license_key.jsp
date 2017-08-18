@@ -16,6 +16,8 @@
 
 <%@ include file="/init.jsp" %>
 
+<%-- TODO integrate marketplace licensing
+
 <%
 String redirect = ParamUtil.getString(request, "redirect");
 
@@ -69,11 +71,11 @@ if (assetReceiptLicense != null) {
 	startDateYear = ParamUtil.getInteger(request, assetReceiptLicenseId + "startDateYear");
 
 	if ((startDateDay > 0) && (startDateMonth >= 0) && (startDateYear > 0)) {
-		Calendar cal = Calendar.getInstance(timeZone, locale);
+		Calendar calendar = Calendar.getInstance(timeZone, locale);
 
-		cal.set(startDateYear, startDateMonth, startDateDay);
+		calendar.set(startDateYear, startDateMonth, startDateDay);
 
-		startDate = cal.getTime();
+		startDate = calendar.getTime();
 	}
 	else {
 		startDate = assetReceiptLicense.getStartDate();
@@ -197,7 +199,7 @@ portletURL.setParameter("appEntryId", String.valueOf(appEntryId));
 							<div class="content-column-content middle-column">
 								<span class="txt-b txt-up"><liferay-ui:message key="type" />:</span>
 
-								<%= LanguageUtil.get(pageContext, curLicenseType) %>
+								<%= LanguageUtil.get(request, curLicenseType) %>
 
 								<br />
 
@@ -242,7 +244,7 @@ portletURL.setParameter("appEntryId", String.valueOf(appEntryId));
 								<div class="content-column-content left-column">
 									<span class="txt-b txt-up"><liferay-ui:message key="maximum-concurrent-users" />:</span>
 
-									<%= LanguageUtil.get(pageContext, OfferingDefinitionConstants.getMaxConcurrentUsersLabel(curLicenseKey.getMaxConcurrentUsers())) %>
+									<%= LanguageUtil.get(request, OfferingDefinitionConstants.getMaxConcurrentUsersLabel(curLicenseKey.getMaxConcurrentUsers())) %>
 								</div>
 							</div>
 
@@ -250,7 +252,7 @@ portletURL.setParameter("appEntryId", String.valueOf(appEntryId));
 								<div class="content-column-content right-column">
 									<span class="txt-b txt-up"><liferay-ui:message key="maximum-users" />:</span>
 
-									<%= LanguageUtil.get(pageContext, OfferingDefinitionConstants.getMaxUsersLabel(curLicenseKey.getMaxUsers())) %>
+									<%= LanguageUtil.get(request, OfferingDefinitionConstants.getMaxUsersLabel(curLicenseKey.getMaxUsers())) %>
 								</div>
 							</div>
 						</c:if>
@@ -347,10 +349,10 @@ portletURL.setParameter("appEntryId", String.valueOf(appEntryId));
 								String url = "location.href = '" + HttpUtil.encodeURL(activateLicenseKeyURL.toString()) + "'";
 
 								if (curLicenseKey.isActive()) {
-									url = "javascript:if (confirm('" + UnicodeLanguageUtil.get(pageContext, "are-you-sure-you-want-to-deactivate-this-license-key") + "')) { " + url + " } else { self.focus(); }";
+									url = "javascript:if (confirm('" + UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-deactivate-this-license-key") + "')) { " + url + " } else { self.focus(); }";
 								}
 								else {
-									url = "javascript:if (confirm('" + UnicodeLanguageUtil.get(pageContext, "are-you-sure-you-want-to-activate-this-license-key") + "')) { " + url + " } else { self.focus(); }";
+									url = "javascript:if (confirm('" + UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-activate-this-license-key") + "')) { " + url + " } else { self.focus(); }";
 								}
 								%>
 
@@ -543,7 +545,7 @@ portletURL.setParameter("appEntryId", String.valueOf(appEntryId));
 								href="<%= rowHREF %>"
 								name="license-keys-available"
 							>
-								<%= curAssetReceiptLicense.hasUnlimitedServers() ? LanguageUtil.get(pageContext, "unlimited") : curAssetReceiptLicense.getAvailableLicenseKeyCount() %>
+								<%= curAssetReceiptLicense.hasUnlimitedServers() ? LanguageUtil.get(request, "unlimited") : curAssetReceiptLicense.getAvailableLicenseKeyCount() %>
 							</liferay-ui:search-container-column-text>
 
 							<liferay-ui:search-container-column-text
@@ -621,7 +623,7 @@ portletURL.setParameter("appEntryId", String.valueOf(appEntryId));
 						<div class="content-column-content middle-column">
 							<span class="txt-b txt-up"><liferay-ui:message key="type" />:</span>
 
-							<%= HtmlUtil.escape(LanguageUtil.get(pageContext, AssetLicenseConstants.getLicenseTypeLabel(assetReceiptLicense.getLicenseType()))) %>
+							<%= HtmlUtil.escape(LanguageUtil.get(request, AssetLicenseConstants.getLicenseTypeLabel(assetReceiptLicense.getLicenseType()))) %>
 
 							<br />
 
@@ -635,7 +637,7 @@ portletURL.setParameter("appEntryId", String.valueOf(appEntryId));
 						<div class="content-column-content right-column">
 							<span class="txt-b txt-up"><liferay-ui:message key="license-keys-available" />:</span>
 
-							<%= assetReceiptLicense.hasUnlimitedServers() ? LanguageUtil.get(pageContext, "unlimited") : assetReceiptLicense.getAvailableLicenseKeyCount() %>
+							<%= assetReceiptLicense.hasUnlimitedServers() ? LanguageUtil.get(request, "unlimited") : assetReceiptLicense.getAvailableLicenseKeyCount() %>
 						</div>
 					</div>
 
@@ -712,4 +714,4 @@ portletURL.setParameter("appEntryId", String.valueOf(appEntryId));
 
 		submitForm(document.<portlet:namespace />fm, updateURL);
 	}
-</aui:script>
+</aui:script> --%>

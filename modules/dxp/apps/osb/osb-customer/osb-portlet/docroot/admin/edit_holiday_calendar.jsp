@@ -51,11 +51,13 @@ if (holidayEntries.isEmpty()) {
 	holidayEntriesIndexes = new int[] {0};
 }
 
-Calendar firstEnabledDate = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
+Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
 
-Calendar lastEnabledDate = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
+Date firstEnabledDate = calendar.getTime();
 
-lastEnabledDate.add(Calendar.YEAR, 15);
+calendar.add(Calendar.YEAR, 15);
+
+Date lastEnabledDate = calendar.getTime();
 %>
 
 <portlet:actionURL name="updateHolidayCalendar" var="updateHolidayCalendarURL">
@@ -136,10 +138,15 @@ lastEnabledDate.add(Calendar.YEAR, 15);
 				int holidayEntryStartDay = 0;
 				int holidayEntryStartYear = 0;
 
+				Date holidayEntryStartDate = null;
+				Date holidayEntryEndDate = null;
+
 				if (holidayEntry.getStartDate() != null) {
 					Calendar holidayEntryStartCal = Calendar.getInstance();
 
 					holidayEntryStartCal.setTime(holidayEntry.getStartDate());
+
+					holidayEntryStartDate = holidayEntryStartCal.getTime();
 
 					holidayEntryStartMonth = holidayEntryStartCal.get(Calendar.MONTH);
 					holidayEntryStartDay = holidayEntryStartCal.get(Calendar.DATE);
@@ -154,6 +161,8 @@ lastEnabledDate.add(Calendar.YEAR, 15);
 					Calendar holidayEntryEndCal = Calendar.getInstance();
 
 					holidayEntryEndCal.setTime(holidayEntry.getEndDate());
+
+					holidayEntryEndDate = holidayEntryEndCal.getTime();
 
 					holidayEntryEndMonth = holidayEntryEndCal.get(Calendar.MONTH);
 					holidayEntryEndDay = holidayEntryEndCal.get(Calendar.DATE);
@@ -190,8 +199,8 @@ lastEnabledDate.add(Calendar.YEAR, 15);
 										cssClass="aui-w100"
 										dayParam='<%= "holidayEntryStartDay" + holidayEntriesIndex %>'
 										dayValue="<%= holidayEntryStartDay %>"
-										firstEnabledDate="<%= (holidayEntryStartCal > firstEnabledDate) ? holidayEntryStartCal : firstEnabledDate %>"
-										lastEnabledDate="<%= (holidayEntryStartCal > lastEnabledDate) ? holidayEntryStartCal : lastEnabledDate %>"
+										firstEnabledDate="<%= holidayEntryStartDate.after(firstEnabledDate) ? holidayEntryStartDate : firstEnabledDate %>"
+										lastEnabledDate="<%= holidayEntryStartDate.after(lastEnabledDate) ? holidayEntryStartDate : lastEnabledDate %>"
 										monthParam='<%= "holidayEntryStartMonth" + holidayEntriesIndex %>'
 										monthValue="<%= holidayEntryStartMonth %>"
 										nullable="<%= false %>"
@@ -204,8 +213,8 @@ lastEnabledDate.add(Calendar.YEAR, 15);
 										cssClass="aui-w100"
 										dayParam='<%= "holidayEntryEndDay" + holidayEntriesIndex %>'
 										dayValue="<%= holidayEntryEndDay %>"
-										firstEnabledDate="<%= (holidayEntryEndCal > firstEnabledDate) ? holidayEntryEndCal : firstEnabledDate %>"
-										lastEnabledDate="<%= (holidayEntryEndCal > lastEnabledDate) ? holidayEntryEndCal : lastEnabledDate %>"
+										firstEnabledDate="<%= holidayEntryEndDate.after(firstEnabledDate) ? holidayEntryEndDate : firstEnabledDate %>"
+										lastEnabledDate="<%= holidayEntryEndDate.after(lastEnabledDate) ? holidayEntryEndDate : lastEnabledDate %>"
 										monthParam='<%= "holidayEntryEndMonth" + holidayEntriesIndex %>'
 										monthValue="<%= holidayEntryEndMonth %>"
 										nullable="<%= false %>"

@@ -126,13 +126,13 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 			<liferay-ui:search-container-column-text
 				href="<%= rowURL %>"
 				name="size"
-				value='<%= TextFormatter.formatKB((double)ticketAttachment.getFileSize(), locale) + "k" %>'
+				value='<%= TextFormatter.formatStorageSize((double)ticketAttachment.getFileSize(), locale) + "k" %>'
 			/>
 
 			<liferay-ui:search-container-column-text
 				href="<%= rowURL %>"
 				name="type"
-				value="<%= LanguageUtil.get(pageContext, ticketAttachment.getTypeLabel()) %>"
+				value="<%= LanguageUtil.get(request, ticketAttachment.getTypeLabel()) %>"
 			/>
 
 			<liferay-ui:search-container-column-text
@@ -161,7 +161,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 				<liferay-ui:search-container-column-text
 					href="<%= rowURL %>"
 					name="visibility"
-					value="<%= LanguageUtil.get(pageContext, ticketAttachment.getVisibilityLabel()) %>"
+					value="<%= LanguageUtil.get(request, ticketAttachment.getVisibilityLabel()) %>"
 				/>
 			</c:if>
 
@@ -169,7 +169,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 				<liferay-ui:search-container-column-text
 					href="<%= rowURL %>"
 					name="delete-date"
-					value='<%= (ticketAttachment.getDeleteDate() != null) ? longDateFormatDate.format(ticketAttachment.getDeleteDate()) : LanguageUtil.get(pageContext, "n-a") %>'
+					value='<%= (ticketAttachment.getDeleteDate() != null) ? longDateFormatDate.format(ticketAttachment.getDeleteDate()) : LanguageUtil.get(request, "n-a") %>'
 				/>
 			</c:if>
 
@@ -177,7 +177,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 				<liferay-ui:search-container-column-text
 					href="<%= rowURL %>"
 					name="replicate"
-					value='<%= ArrayUtil.contains(TicketAttachmentConstants.TYPES_LARGE, ticketAttachment.getType()) ? String.valueOf(ticketAttachment.getReplicate()) : LanguageUtil.get(pageContext, "n-a") %>'
+					value='<%= ArrayUtil.contains(TicketAttachmentConstants.TYPES_LARGE, ticketAttachment.getType()) ? String.valueOf(ticketAttachment.getReplicate()) : LanguageUtil.get(request, "n-a") %>'
 				/>
 			</c:if>
 
@@ -283,7 +283,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 												for (int userVisibility : userVisibilities) {
 												%>
 
-													<option value="<%= userVisibility %>"><%= LanguageUtil.get(pageContext, VisibilityConstants.toLabel(userVisibility)) %></option>
+													<option value="<%= userVisibility %>"><%= LanguageUtil.get(request, VisibilityConstants.toLabel(userVisibility)) %></option>
 
 												<%
 												}
@@ -334,7 +334,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 										for (int userVisibility : userVisibilities) {
 										%>
 
-											<option value="<%= userVisibility %>"><%= LanguageUtil.get(pageContext, VisibilityConstants.toLabel(userVisibility)) %></option>
+											<option value="<%= userVisibility %>"><%= LanguageUtil.get(request, VisibilityConstants.toLabel(userVisibility)) %></option>
 
 										<%
 										}
@@ -457,7 +457,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 			if ((A.Array.indexOf(validExtensions, '*') == -1) &&
 				(A.Array.indexOf(validExtensions, extension) == -1)) {
 
-				alert('<%= UnicodeLanguageUtil.get(pageContext, "document-names-must-end-with-one-of-the-following-extensions") %> <%= StringUtil.merge(PrefsPropsUtil.getStringArray(PropsKeys.DL_FILE_EXTENSIONS, StringPool.COMMA), StringPool.COMMA_AND_SPACE) %>');
+				alert('<%= UnicodeLanguageUtil.get(request, "document-names-must-end-with-one-of-the-following-extensions") %> <%= StringUtil.merge(PrefsPropsUtil.getStringArray(PropsKeys.DL_FILE_EXTENSIONS, StringPool.COMMA), StringPool.COMMA_AND_SPACE) %>');
 
 				fileField.val('');
 			}

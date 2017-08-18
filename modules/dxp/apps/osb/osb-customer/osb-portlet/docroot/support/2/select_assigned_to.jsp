@@ -98,10 +98,10 @@ if (liferayIncOrg) {
 					<liferay-ui:search-container
 						headerNames="name,accounts,time-zones,locales"
 						iteratorURL="<%= portletURL %>"
+						total="<%= SupportTeamLocalServiceUtil.getSupportTeamsCount() %>"
 					>
 						<liferay-ui:search-container-results
 							results="<%= SupportTeamLocalServiceUtil.getSupportTeams(searchContainer.getStart(), searchContainer.getEnd()) %>"
-							total="<%= SupportTeamLocalServiceUtil.getSupportTeamsCount() %>"
 						/>
 
 						<liferay-ui:search-container-row
@@ -187,7 +187,7 @@ if (liferayIncOrg) {
 									String languageId = languageIds.get(i);
 								%>
 
-									<%= LanguageUtil.get(pageContext, AccountEntryConstants.getLanguageLabel(languageId)) %><%= ((i + 1) < languageIds.size()) ? "<br />" : "" %>
+									<%= LanguageUtil.get(request, AccountEntryConstants.getLanguageLabel(languageId)) %><%= ((i + 1) < languageIds.size()) ? "<br />" : "" %>
 
 								<%
 								}
@@ -224,10 +224,10 @@ if (liferayIncOrg) {
 						<liferay-ui:search-container
 							headerNames="name,screen-name,email-address"
 							searchContainer="<%= userSearchContainer %>"
+							total="<%= userSearchContainer.getTotal() %>"
 						>
 							<liferay-ui:search-container-results
 								results="<%= userSearchContainer.getResults() %>"
-								total="<%= userSearchContainer.getTotal() %>"
 							/>
 
 							<liferay-ui:search-container-row

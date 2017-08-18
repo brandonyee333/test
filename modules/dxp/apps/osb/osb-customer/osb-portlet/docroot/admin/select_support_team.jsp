@@ -218,7 +218,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 					String languageId = languageIds.get(i);
 				%>
 
-					<%= LanguageUtil.get(pageContext, AccountEntryConstants.getLanguageLabel(languageId)) %><%= ((i + 1) < languageIds.size()) ? "<br />" : "" %>
+					<%= LanguageUtil.get(request, AccountEntryConstants.getLanguageLabel(languageId)) %><%= ((i + 1) < languageIds.size()) ? "<br />" : "" %>
 
 				<%
 				}

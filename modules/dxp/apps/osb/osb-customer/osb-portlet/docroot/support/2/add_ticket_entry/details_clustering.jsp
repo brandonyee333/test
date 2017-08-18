@@ -73,7 +73,7 @@ long toPatchLevelTicketAttachmentId = ParamUtil.getLong(request, "toPatchLevelTi
 			<liferay-ui:message key="server-communication-type" />:
 		</div>
 
-		<aui:select data-field-required-status="<%= false %>" field-required-message='<%= HtmlUtil.escapeAttribute(LanguageUtil.format(pageContext, "invalid-value-provided-for-x", "server-communication-type")) %>' name="serverCommunicationType">
+		<aui:select data-field-required-status="<%= false %>" field-required-message='<%= HtmlUtil.escapeAttribute(LanguageUtil.format(request, "invalid-value-provided-for-x", "server-communication-type")) %>' name="serverCommunicationType">
 			<aui:option value="" />
 
 			<%

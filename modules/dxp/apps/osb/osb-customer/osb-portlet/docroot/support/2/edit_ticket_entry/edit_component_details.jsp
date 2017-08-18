@@ -45,7 +45,7 @@ int type = ParamUtil.getInteger(request, "type", GetterUtil.getInteger(ticketInf
 		<div class="field-group">
 			<label id="<portlet:namespace />serverCommunicationTypeLabel"><liferay-ui:message key="server-communication-type" /></label>
 
-			<div class="field-align" field-required-message="<%= LanguageUtil.get(pageContext, "please-select-a-valid-server-communication-type") %>">
+			<div class="field-align" field-required-message="<%= LanguageUtil.get(request, "please-select-a-valid-server-communication-type") %>">
 				<span class="inline">
 					<select data-field-required-status="<%= false %>" id="<portlet:namespace />serverCommunicationType" name="<portlet:namespace />serverCommunicationType">
 						<option value=""></option>
@@ -107,7 +107,7 @@ int type = ParamUtil.getInteger(request, "type", GetterUtil.getInteger(ticketInf
 				for (int curType : types) {
 				%>
 
-					<option <%= (curType == type) ? "selected" : "" %> value="<%= curType %>"><%= LanguageUtil.get(pageContext, TicketEntryConstants.getLicenseTypeLabel(curType)) %></option>
+					<option <%= (curType == type) ? "selected" : "" %> value="<%= curType %>"><%= LanguageUtil.get(request, TicketEntryConstants.getLicenseTypeLabel(curType)) %></option>
 
 				<%
 				}
@@ -126,7 +126,7 @@ int type = ParamUtil.getInteger(request, "type", GetterUtil.getInteger(ticketInf
 				for (int curPurpose : TicketEntryConstants.getLicensePurposes()) {
 				%>
 
-					<option <%= (curPurpose == purpose) ? "selected" : "" %> value="<%= curPurpose %>"><%= LanguageUtil.get(pageContext, TicketEntryConstants.getLicensePurposeLabel(curPurpose)) %></option>
+					<option <%= (curPurpose == purpose) ? "selected" : "" %> value="<%= curPurpose %>"><%= LanguageUtil.get(request, TicketEntryConstants.getLicensePurposeLabel(curPurpose)) %></option>
 
 				<%
 				}

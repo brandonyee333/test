@@ -55,7 +55,7 @@ request.setAttribute("add_ticket_entry.jsp-productEntryLESADisplayNames", produc
 		productEntryLESADisplayName = productEntryLESADisplayNames.first();
 		%>
 
-		<span><%= LanguageUtil.get(pageContext, productEntryLESADisplayName) %></span>
+		<span><%= LanguageUtil.get(request, productEntryLESADisplayName) %></span>
 
 		<aui:input name="productEntryLESADisplayName" type="hidden" value="<%= productEntryLESADisplayName %>" />
 	</c:when>
@@ -120,7 +120,12 @@ String productLink = GetterUtil.getString(preferences.getValue("productLink_" + 
 		</div>
 
 		<div>
-			<liferay-ui:message arguments='<%= new String[] {LanguageUtil.get(pageContext, productEntryLESADisplayName), "<a href=\"" + productLink + "\" target=\"_blank\">", "</a>"} %>' key="known-issues-message" />
+
+			<%
+			String[] arguments = {LanguageUtil.get(request, productEntryLESADisplayName), "<a href=\"" + productLink + "\" target=\"_blank\">", "</a>"};
+			%>
+
+			<liferay-ui:message arguments="<%= arguments %>" key="known-issues-message" />
 		</div>
 	</div>
 </c:if>
@@ -171,7 +176,7 @@ String productLink = GetterUtil.getString(preferences.getValue("productLink_" + 
 				</c:when>
 				<c:when test="<%= productEntryEnvironments.size() > 1 %>">
 					<div>
-						<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(pageContext, "please-select-a-valid-server") %>' name="offeringEntryId" onChange='<%= renderResponse.getNamespace() + "selectServerComponent();" %>'>
+						<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(request, "please-select-a-valid-server") %>' name="offeringEntryId" onChange='<%= renderResponse.getNamespace() + "selectServerComponent();" %>'>
 							<aui:option value="0" />
 
 							<%

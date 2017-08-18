@@ -182,7 +182,7 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 					for (ListType escalationLevelType : escalationLevelTypes) {
 					%>
 
-						<option <%= (escalationLevelType.getListTypeId() == supportWorker.getEscalationLevel()) ? "selected" : "" %> value="<%= escalationLevelType.getListTypeId() %>"><%= LanguageUtil.get(pageContext, escalationLevelType.getName()) %></option>
+						<option <%= (escalationLevelType.getListTypeId() == supportWorker.getEscalationLevel()) ? "selected" : "" %> value="<%= escalationLevelType.getListTypeId() %>"><%= LanguageUtil.get(request, escalationLevelType.getName()) %></option>
 
 					<%
 					}
@@ -213,7 +213,7 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 					for (int i = 1; i <= 3; i++) {
 					%>
 
-						<option <%= (supportWorker.getNotifications() == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(pageContext, SupportWorkerConstants.getNotificationsLabel(i)) %></option>
+						<option <%= (supportWorker.getNotifications() == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(request, SupportWorkerConstants.getNotificationsLabel(i)) %></option>
 
 					<%
 					}
@@ -431,7 +431,7 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 					Integer curSeverity = curSeverities.get(i);
 				%>
 
-					<%= LanguageUtil.get(pageContext, TicketEntryConstants.getSeverityLabel(curSeverity)) %>
+					<%= LanguageUtil.get(request, TicketEntryConstants.getSeverityLabel(curSeverity)) %>
 
 					<%= ((i + 1) < curSeverities.size()) ? "<br />" : StringPool.BLANK %>
 
@@ -453,7 +453,7 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 					Integer curComponent = curComponents.get(i);
 				%>
 
-					<%= LanguageUtil.get(pageContext, TicketEntryConstants.getComponentLabel(curComponent)) %>
+					<%= LanguageUtil.get(request, TicketEntryConstants.getComponentLabel(curComponent)) %>
 
 					<%= ((i + 1) < curComponents.size()) ? "<br />" : StringPool.BLANK %>
 
@@ -475,7 +475,7 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 					Integer curAccountTier = curAccountTiers.get(i);
 				%>
 
-					<%= LanguageUtil.get(pageContext, AccountEntryConstants.getTierLabel(curAccountTier)) %>
+					<%= LanguageUtil.get(request, AccountEntryConstants.getTierLabel(curAccountTier)) %>
 
 					<%= ((i + 1) < curAccountTiers.size()) ? "<br />" : StringPool.BLANK %>
 
@@ -488,7 +488,7 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 			<liferay-ui:search-container-column-text
 				href="<%= rowURL %>"
 				name="role"
-				value="<%= LanguageUtil.get(pageContext, curSupportWorker.getRoleLabel()) %>"
+				value="<%= LanguageUtil.get(request, curSupportWorker.getRoleLabel()) %>"
 			/>
 		</liferay-ui:search-container-row>
 
@@ -522,7 +522,7 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 			<liferay-ui:search-container-column-text
 				name="severity"
 			>
-				<%= LanguageUtil.get(pageContext, TicketEntryConstants.getSeverityLabel(severity)) %>
+				<%= LanguageUtil.get(request, TicketEntryConstants.getSeverityLabel(severity)) %>
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text>
@@ -560,7 +560,7 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 			<liferay-ui:search-container-column-text
 				name="component"
 			>
-				<%= LanguageUtil.get(pageContext, TicketEntryConstants.getComponentLabel(component)) %>
+				<%= LanguageUtil.get(request, TicketEntryConstants.getComponentLabel(component)) %>
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text>
@@ -598,7 +598,7 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 			<liferay-ui:search-container-column-text
 				name="project-tier"
 			>
-				<%= LanguageUtil.get(pageContext, AccountEntryConstants.getTierLabel(accountTier)) %>
+				<%= LanguageUtil.get(request, AccountEntryConstants.getTierLabel(accountTier)) %>
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text>

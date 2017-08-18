@@ -146,8 +146,6 @@ portletURL.setParameter("mvcPath", "/support/2/preferences.jsp");
 					int awayMessageEndDay = GetterUtil.getInteger(preferences.getValue("awayMessageEndDay", null));
 					int awayMessageEndYear = GetterUtil.getInteger(preferences.getValue("awayMessageEndYear", null));
 					String awayMessage = preferences.getValue("awayMessage", StringPool.BLANK);
-
-					Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
 					%>
 
 					<liferay-ui:error exception="<%= AwayMessageDateException.class %>" message="please-enter-valid-dates" />
@@ -165,22 +163,31 @@ portletURL.setParameter("mvcPath", "/support/2/preferences.jsp");
 						</div>
 
 						<div class="aui-helper-clearfix aui-w75">
+
+							<%
+							Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
+
+							Date firstEnabledDate = calendar.getTime();
+
+							calendar.add(Calendar.YEAR, 4);
+
+							Date lastEnabledDate = calendar.getTime();
+							%>
+
 							<div class="aui-w50 away-message-start-date">
 								<div>
 									<liferay-ui:message key="start-date" />
 								</div>
 
 								<liferay-ui:input-date
-									dayNullable="<%= false %>"
 									dayParam="awayMessageStartDay"
 									dayValue="<%= awayMessageStartDay %>"
-									monthNullable="<%= false %>"
+									firstEnabledDate="<%= firstEnabledDate %>"
+									lastEnabledDate="<%= lastEnabledDate %>"
 									monthParam="awayMessageStartMonth"
 									monthValue="<%= awayMessageStartMonth %>"
-									yearNullable="<%= false %>"
+									nullable="<%= false %>"
 									yearParam="awayMessageStartYear"
-									yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 4 %>"
-									yearRangeStart="<%= calendar.get(Calendar.YEAR) %>"
 									yearValue="<%= awayMessageStartYear %>"
 								/>
 							</div>
@@ -191,16 +198,14 @@ portletURL.setParameter("mvcPath", "/support/2/preferences.jsp");
 								</div>
 
 								<liferay-ui:input-date
-									dayNullable="<%= true %>"
 									dayParam="awayMessageEndDay"
 									dayValue="<%= awayMessageEndDay %>"
-									monthNullable="<%= true %>"
+									firstEnabledDate="<%= firstEnabledDate %>"
+									lastEnabledDate="<%= lastEnabledDate %>"
 									monthParam="awayMessageEndMonth"
 									monthValue="<%= awayMessageEndMonth %>"
-									yearNullable="<%= true %>"
+									nullable="<%= true %>"
 									yearParam="awayMessageEndYear"
-									yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 4 %>"
-									yearRangeStart="<%= calendar.get(Calendar.YEAR) %>"
 									yearValue="<%= awayMessageEndYear %>"
 								/>
 							</div>

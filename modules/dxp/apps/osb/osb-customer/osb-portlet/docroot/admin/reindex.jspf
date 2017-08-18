@@ -44,7 +44,7 @@
 		<liferay-ui:search-container-column-text
 			name="active"
 		>
-			<%= LanguageUtil.get(pageContext, (portlet.isActive() ? "yes" : "no")) %>
+			<%= LanguageUtil.get(request, (portlet.isActive() ? "yes" : "no")) %>
 		</liferay-ui:search-container-column-text>
 
 		<liferay-ui:search-container-column-text

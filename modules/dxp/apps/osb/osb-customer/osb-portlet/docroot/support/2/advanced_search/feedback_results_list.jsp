@@ -164,7 +164,7 @@ boolean paginate = ParamUtil.getBoolean(request, "paginate");
 						<div class="column satisfied ticket-feedback-column" <%= columnJS %>>
 							<div class="search-detail">
 								<span title="<%= HtmlUtil.escapeAttribute(ticketEntry.getDisplayId()) %>">
-									<%= LanguageUtil.get(pageContext, ticketFeedback.getSatisfiedLabel()) %>
+									<%= LanguageUtil.get(request, ticketFeedback.getSatisfiedLabel()) %>
 								</span>
 							</div>
 						</div>
@@ -172,7 +172,7 @@ boolean paginate = ParamUtil.getBoolean(request, "paginate");
 						<div class="column final-resolution ticket-feedback-column" <%= columnJS %>>
 							<div class="search-detail">
 								<span title="<%= HtmlUtil.escapeAttribute(ticketEntry.getDisplayId()) %>">
-									<%= ticketFeedback.getRating1() + " - " + LanguageUtil.get(pageContext, ticketFeedback.getRating1Label()) %>
+									<%= ticketFeedback.getRating1() + " - " + LanguageUtil.get(request, ticketFeedback.getRating1Label()) %>
 								</span>
 							</div>
 						</div>
@@ -180,7 +180,7 @@ boolean paginate = ParamUtil.getBoolean(request, "paginate");
 						<div class="column technical-knowledge ticket-feedback-column" <%= columnJS %>>
 							<div class="search-detail">
 								<span title="<%= HtmlUtil.escapeAttribute(ticketEntry.getDisplayId()) %>">
-									<%= ticketFeedback.getRating3() + " - " + LanguageUtil.get(pageContext, ticketFeedback.getRating3Label()) %>
+									<%= ticketFeedback.getRating3() + " - " + LanguageUtil.get(request, ticketFeedback.getRating3Label()) %>
 								</span>
 							</div>
 						</div>
@@ -188,7 +188,7 @@ boolean paginate = ParamUtil.getBoolean(request, "paginate");
 						<div class="column response-time ticket-feedback-column" <%= columnJS %>>
 							<div class="search-detail">
 								<span title="<%= HtmlUtil.escapeAttribute(ticketEntry.getDisplayId()) %>">
-									<%= ticketFeedback.getRating2() + " - " + LanguageUtil.get(pageContext, ticketFeedback.getRating2Label()) %>
+									<%= ticketFeedback.getRating2() + " - " + LanguageUtil.get(request, ticketFeedback.getRating2Label()) %>
 								</span>
 							</div>
 						</div>
@@ -196,7 +196,7 @@ boolean paginate = ParamUtil.getBoolean(request, "paginate");
 						<div class="column professionalism ticket-feedback-column" <%= columnJS %>>
 							<div class="search-detail">
 								<span title="<%= HtmlUtil.escapeAttribute(ticketEntry.getDisplayId()) %>">
-									<%= ticketFeedback.getRating4() + " - " + LanguageUtil.get(pageContext, ticketFeedback.getRating4Label()) %>
+									<%= ticketFeedback.getRating4() + " - " + LanguageUtil.get(request, ticketFeedback.getRating4Label()) %>
 								</span>
 							</div>
 						</div>
@@ -231,7 +231,7 @@ boolean paginate = ParamUtil.getBoolean(request, "paginate");
 
 				<div class="taglib-page-iterator">
 					<div class="search-results">
-						<%= LanguageUtil.format(pageContext, "showing-x-x", new Object[] {numberFormat.format(start + 1), numberFormat.format(end)}) %>
+						<%= LanguageUtil.format(request, "showing-x-x", new Object[] {numberFormat.format(start + 1), numberFormat.format(end)}) %>
 					</div>
 
 					<div class="search-pages">
@@ -269,6 +269,6 @@ boolean paginate = ParamUtil.getBoolean(request, "paginate");
 		</div>
 	</c:when>
 	<c:otherwise>
-		<span class="portlet-msg-info"><%= LanguageUtil.get(pageContext, "no-feedback-was-found") %></span>
+		<span class="portlet-msg-info"><%= LanguageUtil.get(request, "no-feedback-was-found") %></span>
 	</c:otherwise>
 </c:choose>

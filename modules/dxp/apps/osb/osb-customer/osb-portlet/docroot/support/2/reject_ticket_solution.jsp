@@ -54,7 +54,7 @@ TicketSolution ticketSolution = TicketSolutionLocalServiceUtil.getTicketSolution
 			<div class="field-group">
 				<label><liferay-ui:message key="attachments" />:</label>
 
-				<a href="<%= ticketAttachmentURL.toString() %>" target="_blank"><%= HtmlUtil.escape(ticketAttachment.getFileName()) %></a> (<%= TextFormatter.formatKB((double)ticketAttachment.getFileSize(), locale) %>k)
+				<a href="<%= ticketAttachmentURL.toString() %>" target="_blank"><%= HtmlUtil.escape(ticketAttachment.getFileName()) %></a> (<%= TextFormatter.formatStorageSize((double)ticketAttachment.getFileSize(), locale) %>k)
 			</div>
 
 		<%
@@ -84,7 +84,7 @@ TicketSolution ticketSolution = TicketSolutionLocalServiceUtil.getTicketSolution
 				for (int statusReason : TicketSolutionConstants.STATUS_REASONS) {
 				%>
 
-					<option value="<%= statusReason %>"><%= LanguageUtil.get(pageContext, TicketSolutionConstants.getStatusReasonLabel(statusReason)) %></option>
+					<option value="<%= statusReason %>"><%= LanguageUtil.get(request, TicketSolutionConstants.getStatusReasonLabel(statusReason)) %></option>
 
 				<%
 				}

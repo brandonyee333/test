@@ -43,7 +43,7 @@ if (OSBAccountEntryPermission.contains(permissionChecker, accountEntry.getAccoun
 	buttonURL.setParameter("accountEntryId", String.valueOf(accountEntry.getAccountEntryId()));
 	buttonURL.setWindowState(LiferayWindowState.POP_UP);
 
-	dropDownList.put("edit", renderResponse.getNamespace() + "openDialog('" + UnicodeLanguageUtil.get(pageContext, "edit-project") + ": " + HtmlUtil.escapeJS(accountEntry.getName()) + "', '" + buttonURL.toString() + "', '" + renderResponse.getNamespace() + "updateAccountEntry');");
+	dropDownList.put("edit", renderResponse.getNamespace() + "openDialog('" + UnicodeLanguageUtil.get(request, "edit-project") + ": " + HtmlUtil.escapeJS(accountEntry.getName()) + "', '" + buttonURL.toString() + "', '" + renderResponse.getNamespace() + "updateAccountEntry');");
 }
 %>
 

@@ -129,7 +129,7 @@ if (!mvcPath.endsWith("search.jsp")) {
 
 										<div class="column img ticket-column" <%= columnJS %>>
 											<div>
-												<span title="<%= LanguageUtil.get(pageContext, ticketEntry.getComponentLabel()) %>">
+												<span title="<%= LanguageUtil.get(request, ticketEntry.getComponentLabel()) %>">
 													<img class="ticket-img" src="<%= PortalUtil.getPathContext(request) %>/images/<%= ticketEntry.getComponentIcon() %>" />
 												</span>
 											</div>
@@ -193,11 +193,11 @@ if (!mvcPath.endsWith("search.jsp")) {
 												<%
 												StringBundler sb = new StringBundler(3);
 
-												sb.append(LanguageUtil.get(pageContext, ticketEntry.getStatusLabel()));
+												sb.append(LanguageUtil.get(request, ticketEntry.getStatusLabel()));
 
 												if (ticketEntry.getResolution() > 0) {
 													sb.append(" : ");
-													sb.append(LanguageUtil.get(pageContext, ticketEntry.getResolutionLabel()));
+													sb.append(LanguageUtil.get(request, ticketEntry.getResolutionLabel()));
 												}
 												%>
 
@@ -259,7 +259,7 @@ if (!mvcPath.endsWith("search.jsp")) {
 
 				<div class="taglib-page-iterator">
 					<div class="search-results">
-						<%= LanguageUtil.format(pageContext, "showing-x-x", new Object[] {numberFormat.format(start + 1), numberFormat.format(end)}) %>
+						<%= LanguageUtil.format(request, "showing-x-x", new Object[] {numberFormat.format(start + 1), numberFormat.format(end)}) %>
 					</div>
 
 					<div class="search-pages">

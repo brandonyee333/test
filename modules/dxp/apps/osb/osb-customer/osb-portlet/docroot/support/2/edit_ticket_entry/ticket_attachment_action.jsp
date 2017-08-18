@@ -56,7 +56,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 				<%
 				FileRepository fileRepository = SupportUtil.getFirstActiveFileRepository(ticketAttachment.getAvailableFileRepositoryIdsSet());
 
-				String taglibOnClick = "alert('" + UnicodeLanguageUtil.get(pageContext, "file-servers-not-available-please-contact-your-support-manager") + "');";
+				String taglibOnClick = "alert('" + UnicodeLanguageUtil.get(request, "file-servers-not-available-please-contact-your-support-manager") + "');";
 				%>
 
 				<c:if test="<%= OSBTicketAttachmentPermission.contains(permissionChecker, ticketAttachment, OSBActionKeys.DELETE) %>">

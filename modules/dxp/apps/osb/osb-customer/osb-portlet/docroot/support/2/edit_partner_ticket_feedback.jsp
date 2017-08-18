@@ -100,9 +100,9 @@ if (liferayIncOrg && OSBTicketFeedbackPermission.contains(permissionChecker, tic
 
 			<br />
 
-			<aui:input checked="<%= answer1 == TicketFeedbackConstants.ANSWER_YES %>" disabled="<%= !hasUpdate %>" label="<%= LanguageUtil.get(pageContext, TicketFeedbackConstants.getAnswerLabel(TicketFeedbackConstants.ANSWER_YES)) %>" name="answer1" type="radio" value="<%= TicketFeedbackConstants.ANSWER_YES %>" />
-			<aui:input checked="<%= answer1 == TicketFeedbackConstants.ANSWER_NO %>" disabled="<%= !hasUpdate %>" label="<%= LanguageUtil.get(pageContext, TicketFeedbackConstants.getAnswerLabel(TicketFeedbackConstants.ANSWER_NO)) %>" name="answer1" type="radio" value="<%= TicketFeedbackConstants.ANSWER_NO %>" />
-			<aui:input checked="<%= answer1 == TicketFeedbackConstants.ANSWER_NOT_APPLICABLE %>" disabled="<%= !hasUpdate %>" label="<%= LanguageUtil.get(pageContext, TicketFeedbackConstants.getAnswerLabel(TicketFeedbackConstants.ANSWER_NOT_APPLICABLE)) %>" name="answer1" type="radio" value="<%= TicketFeedbackConstants.ANSWER_NOT_APPLICABLE %>" />
+			<aui:input checked="<%= answer1 == TicketFeedbackConstants.ANSWER_YES %>" disabled="<%= !hasUpdate %>" label="<%= LanguageUtil.get(request, TicketFeedbackConstants.getAnswerLabel(TicketFeedbackConstants.ANSWER_YES)) %>" name="answer1" type="radio" value="<%= TicketFeedbackConstants.ANSWER_YES %>" />
+			<aui:input checked="<%= answer1 == TicketFeedbackConstants.ANSWER_NO %>" disabled="<%= !hasUpdate %>" label="<%= LanguageUtil.get(request, TicketFeedbackConstants.getAnswerLabel(TicketFeedbackConstants.ANSWER_NO)) %>" name="answer1" type="radio" value="<%= TicketFeedbackConstants.ANSWER_NO %>" />
+			<aui:input checked="<%= answer1 == TicketFeedbackConstants.ANSWER_NOT_APPLICABLE %>" disabled="<%= !hasUpdate %>" label="<%= LanguageUtil.get(request, TicketFeedbackConstants.getAnswerLabel(TicketFeedbackConstants.ANSWER_NOT_APPLICABLE)) %>" name="answer1" type="radio" value="<%= TicketFeedbackConstants.ANSWER_NOT_APPLICABLE %>" />
 
 			<br />
 
@@ -112,9 +112,9 @@ if (liferayIncOrg && OSBTicketFeedbackPermission.contains(permissionChecker, tic
 
 			<br />
 
-			<aui:input checked="<%= answer2 == TicketFeedbackConstants.ANSWER_YES %>" disabled="<%= !hasUpdate %>" label="<%= LanguageUtil.get(pageContext, TicketFeedbackConstants.getAnswerLabel(TicketFeedbackConstants.ANSWER_YES)) %>" name="answer2" type="radio" value="<%= TicketFeedbackConstants.ANSWER_YES %>" />
-			<aui:input checked="<%= answer2 == TicketFeedbackConstants.ANSWER_NO %>" disabled="<%= !hasUpdate %>" label="<%= LanguageUtil.get(pageContext, TicketFeedbackConstants.getAnswerLabel(TicketFeedbackConstants.ANSWER_NO)) %>" name="answer2" type="radio" value="<%= TicketFeedbackConstants.ANSWER_NO %>" />
-			<aui:input checked="<%= answer2 == TicketFeedbackConstants.ANSWER_NOT_APPLICABLE %>" disabled="<%= !hasUpdate %>" label="<%= LanguageUtil.get(pageContext, TicketFeedbackConstants.getAnswerLabel(TicketFeedbackConstants.ANSWER_NOT_APPLICABLE)) %>" name="answer2" type="radio" value="<%= TicketFeedbackConstants.ANSWER_NOT_APPLICABLE %>" />
+			<aui:input checked="<%= answer2 == TicketFeedbackConstants.ANSWER_YES %>" disabled="<%= !hasUpdate %>" label="<%= LanguageUtil.get(request, TicketFeedbackConstants.getAnswerLabel(TicketFeedbackConstants.ANSWER_YES)) %>" name="answer2" type="radio" value="<%= TicketFeedbackConstants.ANSWER_YES %>" />
+			<aui:input checked="<%= answer2 == TicketFeedbackConstants.ANSWER_NO %>" disabled="<%= !hasUpdate %>" label="<%= LanguageUtil.get(request, TicketFeedbackConstants.getAnswerLabel(TicketFeedbackConstants.ANSWER_NO)) %>" name="answer2" type="radio" value="<%= TicketFeedbackConstants.ANSWER_NO %>" />
+			<aui:input checked="<%= answer2 == TicketFeedbackConstants.ANSWER_NOT_APPLICABLE %>" disabled="<%= !hasUpdate %>" label="<%= LanguageUtil.get(request, TicketFeedbackConstants.getAnswerLabel(TicketFeedbackConstants.ANSWER_NOT_APPLICABLE)) %>" name="answer2" type="radio" value="<%= TicketFeedbackConstants.ANSWER_NOT_APPLICABLE %>" />
 
 			<br />
 
@@ -124,9 +124,9 @@ if (liferayIncOrg && OSBTicketFeedbackPermission.contains(permissionChecker, tic
 
 			<br />
 
-			<aui:input checked="<%= answer3 == TicketFeedbackConstants.ANSWER_YES %>" disabled="<%= !hasUpdate %>" label="<%= LanguageUtil.get(pageContext, TicketFeedbackConstants.getAnswerLabel(TicketFeedbackConstants.ANSWER_YES)) %>" name="answer3" type="radio" value="<%= TicketFeedbackConstants.ANSWER_YES %>" />
-			<aui:input checked="<%= answer3 == TicketFeedbackConstants.ANSWER_NO %>" disabled="<%= !hasUpdate %>" label="<%= LanguageUtil.get(pageContext, TicketFeedbackConstants.getAnswerLabel(TicketFeedbackConstants.ANSWER_NO)) %>" name="answer3" type="radio" value="<%= TicketFeedbackConstants.ANSWER_NO %>" />
-			<aui:input checked="<%= answer3 == TicketFeedbackConstants.ANSWER_NOT_APPLICABLE %>" disabled="<%= !hasUpdate %>" label="<%= LanguageUtil.get(pageContext, TicketFeedbackConstants.getAnswerLabel(TicketFeedbackConstants.ANSWER_NOT_APPLICABLE)) %>" name="answer3" type="radio" value="<%= TicketFeedbackConstants.ANSWER_NOT_APPLICABLE %>" />
+			<aui:input checked="<%= answer3 == TicketFeedbackConstants.ANSWER_YES %>" disabled="<%= !hasUpdate %>" label="<%= LanguageUtil.get(request, TicketFeedbackConstants.getAnswerLabel(TicketFeedbackConstants.ANSWER_YES)) %>" name="answer3" type="radio" value="<%= TicketFeedbackConstants.ANSWER_YES %>" />
+			<aui:input checked="<%= answer3 == TicketFeedbackConstants.ANSWER_NO %>" disabled="<%= !hasUpdate %>" label="<%= LanguageUtil.get(request, TicketFeedbackConstants.getAnswerLabel(TicketFeedbackConstants.ANSWER_NO)) %>" name="answer3" type="radio" value="<%= TicketFeedbackConstants.ANSWER_NO %>" />
+			<aui:input checked="<%= answer3 == TicketFeedbackConstants.ANSWER_NOT_APPLICABLE %>" disabled="<%= !hasUpdate %>" label="<%= LanguageUtil.get(request, TicketFeedbackConstants.getAnswerLabel(TicketFeedbackConstants.ANSWER_NOT_APPLICABLE)) %>" name="answer3" type="radio" value="<%= TicketFeedbackConstants.ANSWER_NOT_APPLICABLE %>" />
 
 			<br />
 
@@ -136,11 +136,11 @@ if (liferayIncOrg && OSBTicketFeedbackPermission.contains(permissionChecker, tic
 
 			<br />
 
-			<aui:input checked="<%= rating1 == 5 %>" disabled="<%= !hasUpdate %>" label='<%= "5 - " + LanguageUtil.get(pageContext, TicketFeedbackConstants.getRatingLabel(5)) %>' name="rating1" type="radio" value="5" />
-			<aui:input checked="<%= rating1 == 4 %>" disabled="<%= !hasUpdate %>" label='<%= "4 - " + LanguageUtil.get(pageContext, TicketFeedbackConstants.getRatingLabel(4)) %>' name="rating1" type="radio" value="4" />
-			<aui:input checked="<%= rating1 == 3 %>" disabled="<%= !hasUpdate %>" label='<%= "3 - " + LanguageUtil.get(pageContext, TicketFeedbackConstants.getRatingLabel(3)) %>' name="rating1" type="radio" value="3" />
-			<aui:input checked="<%= rating1 == 2 %>" disabled="<%= !hasUpdate %>" label='<%= "2 - " + LanguageUtil.get(pageContext, TicketFeedbackConstants.getRatingLabel(2)) %>' name="rating1" type="radio" value="2" />
-			<aui:input checked="<%= rating1 == 1 %>" disabled="<%= !hasUpdate %>" label='<%= "1 - " + LanguageUtil.get(pageContext, TicketFeedbackConstants.getRatingLabel(1)) %>' name="rating1" type="radio" value="1" />
+			<aui:input checked="<%= rating1 == 5 %>" disabled="<%= !hasUpdate %>" label='<%= "5 - " + LanguageUtil.get(request, TicketFeedbackConstants.getRatingLabel(5)) %>' name="rating1" type="radio" value="5" />
+			<aui:input checked="<%= rating1 == 4 %>" disabled="<%= !hasUpdate %>" label='<%= "4 - " + LanguageUtil.get(request, TicketFeedbackConstants.getRatingLabel(4)) %>' name="rating1" type="radio" value="4" />
+			<aui:input checked="<%= rating1 == 3 %>" disabled="<%= !hasUpdate %>" label='<%= "3 - " + LanguageUtil.get(request, TicketFeedbackConstants.getRatingLabel(3)) %>' name="rating1" type="radio" value="3" />
+			<aui:input checked="<%= rating1 == 2 %>" disabled="<%= !hasUpdate %>" label='<%= "2 - " + LanguageUtil.get(request, TicketFeedbackConstants.getRatingLabel(2)) %>' name="rating1" type="radio" value="2" />
+			<aui:input checked="<%= rating1 == 1 %>" disabled="<%= !hasUpdate %>" label='<%= "1 - " + LanguageUtil.get(request, TicketFeedbackConstants.getRatingLabel(1)) %>' name="rating1" type="radio" value="1" />
 
 			<br />
 
@@ -150,11 +150,11 @@ if (liferayIncOrg && OSBTicketFeedbackPermission.contains(permissionChecker, tic
 
 			<br />
 
-			<aui:input checked="<%= rating2 == 5 %>" disabled="<%= !hasUpdate %>" label='<%= "5 - " + LanguageUtil.get(pageContext, TicketFeedbackConstants.getRatingLabel(5)) %>' name="rating2" type="radio" value="5" />
-			<aui:input checked="<%= rating2 == 4 %>" disabled="<%= !hasUpdate %>" label='<%= "4 - " + LanguageUtil.get(pageContext, TicketFeedbackConstants.getRatingLabel(4)) %>' name="rating2" type="radio" value="4" />
-			<aui:input checked="<%= rating2 == 3 %>" disabled="<%= !hasUpdate %>" label='<%= "3 - " + LanguageUtil.get(pageContext, TicketFeedbackConstants.getRatingLabel(3)) %>' name="rating2" type="radio" value="3" />
-			<aui:input checked="<%= rating2 == 2 %>" disabled="<%= !hasUpdate %>" label='<%= "2 - " + LanguageUtil.get(pageContext, TicketFeedbackConstants.getRatingLabel(2)) %>' name="rating2" type="radio" value="2" />
-			<aui:input checked="<%= rating2 == 1 %>" disabled="<%= !hasUpdate %>" label='<%= "1 - " + LanguageUtil.get(pageContext, TicketFeedbackConstants.getRatingLabel(1)) %>' name="rating2" type="radio" value="1" />
+			<aui:input checked="<%= rating2 == 5 %>" disabled="<%= !hasUpdate %>" label='<%= "5 - " + LanguageUtil.get(request, TicketFeedbackConstants.getRatingLabel(5)) %>' name="rating2" type="radio" value="5" />
+			<aui:input checked="<%= rating2 == 4 %>" disabled="<%= !hasUpdate %>" label='<%= "4 - " + LanguageUtil.get(request, TicketFeedbackConstants.getRatingLabel(4)) %>' name="rating2" type="radio" value="4" />
+			<aui:input checked="<%= rating2 == 3 %>" disabled="<%= !hasUpdate %>" label='<%= "3 - " + LanguageUtil.get(request, TicketFeedbackConstants.getRatingLabel(3)) %>' name="rating2" type="radio" value="3" />
+			<aui:input checked="<%= rating2 == 2 %>" disabled="<%= !hasUpdate %>" label='<%= "2 - " + LanguageUtil.get(request, TicketFeedbackConstants.getRatingLabel(2)) %>' name="rating2" type="radio" value="2" />
+			<aui:input checked="<%= rating2 == 1 %>" disabled="<%= !hasUpdate %>" label='<%= "1 - " + LanguageUtil.get(request, TicketFeedbackConstants.getRatingLabel(1)) %>' name="rating2" type="radio" value="1" />
 
 			<br />
 
@@ -164,11 +164,11 @@ if (liferayIncOrg && OSBTicketFeedbackPermission.contains(permissionChecker, tic
 
 			<br />
 
-			<aui:input checked="<%= rating3 == 5 %>" disabled="<%= !hasUpdate %>" label='<%= "5 - " + LanguageUtil.get(pageContext, TicketFeedbackConstants.getRatingLabel(5)) %>' name="rating3" type="radio" value="5" />
-			<aui:input checked="<%= rating3 == 4 %>" disabled="<%= !hasUpdate %>" label='<%= "4 - " + LanguageUtil.get(pageContext, TicketFeedbackConstants.getRatingLabel(4)) %>' name="rating3" type="radio" value="4" />
-			<aui:input checked="<%= rating3 == 3 %>" disabled="<%= !hasUpdate %>" label='<%= "3 - " + LanguageUtil.get(pageContext, TicketFeedbackConstants.getRatingLabel(3)) %>' name="rating3" type="radio" value="3" />
-			<aui:input checked="<%= rating3 == 2 %>" disabled="<%= !hasUpdate %>" label='<%= "2 - " + LanguageUtil.get(pageContext, TicketFeedbackConstants.getRatingLabel(2)) %>' name="rating3" type="radio" value="2" />
-			<aui:input checked="<%= rating3 == 1 %>" disabled="<%= !hasUpdate %>" label='<%= "1 - " + LanguageUtil.get(pageContext, TicketFeedbackConstants.getRatingLabel(1)) %>' name="rating3" type="radio" value="1" />
+			<aui:input checked="<%= rating3 == 5 %>" disabled="<%= !hasUpdate %>" label='<%= "5 - " + LanguageUtil.get(request, TicketFeedbackConstants.getRatingLabel(5)) %>' name="rating3" type="radio" value="5" />
+			<aui:input checked="<%= rating3 == 4 %>" disabled="<%= !hasUpdate %>" label='<%= "4 - " + LanguageUtil.get(request, TicketFeedbackConstants.getRatingLabel(4)) %>' name="rating3" type="radio" value="4" />
+			<aui:input checked="<%= rating3 == 3 %>" disabled="<%= !hasUpdate %>" label='<%= "3 - " + LanguageUtil.get(request, TicketFeedbackConstants.getRatingLabel(3)) %>' name="rating3" type="radio" value="3" />
+			<aui:input checked="<%= rating3 == 2 %>" disabled="<%= !hasUpdate %>" label='<%= "2 - " + LanguageUtil.get(request, TicketFeedbackConstants.getRatingLabel(2)) %>' name="rating3" type="radio" value="2" />
+			<aui:input checked="<%= rating3 == 1 %>" disabled="<%= !hasUpdate %>" label='<%= "1 - " + LanguageUtil.get(request, TicketFeedbackConstants.getRatingLabel(1)) %>' name="rating3" type="radio" value="1" />
 
 			<br />
 

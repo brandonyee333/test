@@ -15,13 +15,18 @@
 --%>
 
 <%
-themeDisplay.setIncludeServiceJs(true);
+//TODO no direct replacement for setIncludeServiceJS
+//themeDisplay.setIncludeServiceJs(true);
 
-Calendar firstEnabledDate = CalendarFactoryUtil.getCalendar(2010, 1, 1);
+Calendar calendar = CalendarFactoryUtil.getCalendar(2010, 1, 1);
 
-Calendar lastEnabledDate = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
+Date firstEnabledDate = calendar.getTime();
 
-lastEnabledDate.add(Calendar.YEAR, 1);
+calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
+
+calendar.add(Calendar.YEAR, 1);
+
+Date lastEnabledDate = calendar.getTime();
 %>
 
 <div class="callout-shadowed container">
@@ -224,9 +229,10 @@ lastEnabledDate.add(Calendar.YEAR, 1);
 									List<ListType> industryTypes = ListTypeServiceUtil.getListTypes(AccountEntryConstants.LIST_TYPE_INDUSTRY);
 
 									for (ListType industryType : industryTypes) {
+										long[] industries = Arrays.stream(displayTerms.getIndustries()).asLongStream().toArray();
 									%>
 
-										<option <%= ArrayUtil.contains(displayTerms.getIndustries(), industryType.getListTypeId()) ? "selected" : "" %> value="<%= industryType.getListTypeId() %>"><%= LanguageUtil.get(pageContext, industryType.getName()) %></option>
+										<option <%= ArrayUtil.contains(industries, industryType.getListTypeId()) ? "selected" : "" %> value="<%= industryType.getListTypeId() %>"><%= LanguageUtil.get(request, industryType.getName()) %></option>
 
 									<%
 									}
@@ -260,7 +266,7 @@ lastEnabledDate.add(Calendar.YEAR, 1);
 									for (int tier : AccountEntryConstants.TIERS) {
 									%>
 
-										<option <%= ArrayUtil.contains(displayTerms.getTiers(), tier) ? "selected" : "" %> value="<%= tier %>"><%= LanguageUtil.get(pageContext, AccountEntryConstants.getTierLabel(tier)) %></option>
+										<option <%= ArrayUtil.contains(displayTerms.getTiers(), tier) ? "selected" : "" %> value="<%= tier %>"><%= LanguageUtil.get(request, AccountEntryConstants.getTierLabel(tier)) %></option>
 
 									<%
 									}
@@ -283,7 +289,7 @@ lastEnabledDate.add(Calendar.YEAR, 1);
 									for (int status : AccountEntryConstants.STATUSES) {
 									%>
 
-										<option <%= ArrayUtil.contains(displayTerms.getStatuses(), status) ? "selected" : "" %> value="<%= status %>"><%= LanguageUtil.get(pageContext, WorkflowConstants.getStatusLabel(status)) %></option>
+										<option <%= ArrayUtil.contains(displayTerms.getStatuses(), status) ? "selected" : "" %> value="<%= status %>"><%= LanguageUtil.get(request, WorkflowConstants.getStatusLabel(status)) %></option>
 
 									<%
 									}
@@ -462,7 +468,7 @@ lastEnabledDate.add(Calendar.YEAR, 1);
 									for (ListType envLFRType : envLFRTypes) {
 									%>
 
-										<option <%= ArrayUtil.contains(displayTerms.getAccountEnvironmentEnvLFRIds(), envLFRType.getListTypeId()) ? "selected" : "" %> value="<%= envLFRType.getListTypeId() %>"><%= LanguageUtil.get(pageContext, envLFRType.getName()) %></option>
+										<option <%= ArrayUtil.contains(displayTerms.getAccountEnvironmentEnvLFRIds(), envLFRType.getListTypeId()) ? "selected" : "" %> value="<%= envLFRType.getListTypeId() %>"><%= LanguageUtil.get(request, envLFRType.getName()) %></option>
 
 									<%
 									}
@@ -480,7 +486,7 @@ lastEnabledDate.add(Calendar.YEAR, 1);
 									for (ListType envOSType : envOSTypes) {
 									%>
 
-										<option <%= ArrayUtil.contains(displayTerms.getAccountEnvironmentEnvOSIds(), envOSType.getListTypeId()) ? "selected" : "" %> value="<%= envOSType.getListTypeId() %>"><%= LanguageUtil.get(pageContext, envOSType.getName()) %></option>
+										<option <%= ArrayUtil.contains(displayTerms.getAccountEnvironmentEnvOSIds(), envOSType.getListTypeId()) ? "selected" : "" %> value="<%= envOSType.getListTypeId() %>"><%= LanguageUtil.get(request, envOSType.getName()) %></option>
 
 									<%
 									}
@@ -508,7 +514,7 @@ lastEnabledDate.add(Calendar.YEAR, 1);
 									for (ListType envJVMType : envJVMTypes) {
 									%>
 
-										<option <%= ArrayUtil.contains(displayTerms.getAccountEnvironmentEnvJVMIds(), envJVMType.getListTypeId()) ? "selected" : "" %> value="<%= envJVMType.getListTypeId() %>"><%= LanguageUtil.get(pageContext, envJVMType.getName()) %></option>
+										<option <%= ArrayUtil.contains(displayTerms.getAccountEnvironmentEnvJVMIds(), envJVMType.getListTypeId()) ? "selected" : "" %> value="<%= envJVMType.getListTypeId() %>"><%= LanguageUtil.get(request, envJVMType.getName()) %></option>
 
 									<%
 									}
@@ -526,7 +532,7 @@ lastEnabledDate.add(Calendar.YEAR, 1);
 									for (ListType envDBType : envDBTypes) {
 									%>
 
-										<option <%= ArrayUtil.contains(displayTerms.getAccountEnvironmentEnvDBIds(), envDBType.getListTypeId()) ? "selected" : "" %> value="<%= envDBType.getListTypeId() %>"><%= LanguageUtil.get(pageContext, envDBType.getName()) %></option>
+										<option <%= ArrayUtil.contains(displayTerms.getAccountEnvironmentEnvDBIds(), envDBType.getListTypeId()) ? "selected" : "" %> value="<%= envDBType.getListTypeId() %>"><%= LanguageUtil.get(request, envDBType.getName()) %></option>
 
 									<%
 									}
@@ -551,7 +557,7 @@ lastEnabledDate.add(Calendar.YEAR, 1);
 									for (ListType envASType : envASTypes) {
 									%>
 
-										<option <%= ArrayUtil.contains(displayTerms.getAccountEnvironmentEnvASIds(), envASType.getListTypeId()) ? "selected" : "" %> value="<%= envASType.getListTypeId() %>"><%= LanguageUtil.get(pageContext, envASType.getName()) %></option>
+										<option <%= ArrayUtil.contains(displayTerms.getAccountEnvironmentEnvASIds(), envASType.getListTypeId()) ? "selected" : "" %> value="<%= envASType.getListTypeId() %>"><%= LanguageUtil.get(request, envASType.getName()) %></option>
 
 									<%
 									}

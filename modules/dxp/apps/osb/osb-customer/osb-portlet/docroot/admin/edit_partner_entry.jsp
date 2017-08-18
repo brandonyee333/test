@@ -17,7 +17,8 @@
 <%@ include file="/init.jsp" %>
 
 <%
-themeDisplay.setIncludeServiceJs(true);
+//TODO no direct replacement for setIncludeServiceJS
+//themeDisplay.setIncludeServiceJs(true);
 
 String redirect = ParamUtil.getString(request, "redirect");
 
@@ -296,7 +297,7 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 				<liferay-ui:search-container-column-text
 					href="<%= rowURL %>"
 					name="first-line-support"
-					value='<%= accountEntry.isPartnerManagedSupport() ? LanguageUtil.get(pageContext, "yes") : LanguageUtil.get(pageContext, "no") %>'
+					value='<%= accountEntry.isPartnerManagedSupport() ? LanguageUtil.get(request, "yes") : LanguageUtil.get(request, "no") %>'
 				/>
 			</liferay-ui:search-container-row>
 
@@ -362,7 +363,7 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 							<liferay-ui:search-container-column-text
 								href="<%= rowURL %>"
 								name="first-line-support"
-								value='<%= accountEntry.isPartnerManagedSupport() ? LanguageUtil.get(pageContext, "yes") : LanguageUtil.get(pageContext, "no") %>'
+								value='<%= accountEntry.isPartnerManagedSupport() ? LanguageUtil.get(request, "yes") : LanguageUtil.get(request, "no") %>'
 							/>
 						</liferay-ui:search-container-row>
 

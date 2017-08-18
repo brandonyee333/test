@@ -40,7 +40,7 @@ if (OSBAccountEnvironmentPermission.contains(permissionChecker, accountEntry.get
 
 	sb.append(renderResponse.getNamespace());
 	sb.append("openDialog('");
-	sb.append(LanguageUtil.get(pageContext, "edit-environment-configuration"));
+	sb.append(LanguageUtil.get(request, "edit-environment-configuration"));
 	sb.append("', '");
 	sb.append(buttonURL.toString());
 	sb.append("', '");
@@ -60,7 +60,7 @@ if (OSBAccountEnvironmentPermission.contains(permissionChecker, accountEntry.get
 	StringBundler sb = new StringBundler(7);
 
 	sb.append("javascript:if (confirm('");
-	sb.append(UnicodeLanguageUtil.get(pageContext, "are-you-sure-you-want-to-delete-this"));
+	sb.append(UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-delete-this"));
 	sb.append("')) { submitForm(document.");
 	sb.append(renderResponse.getNamespace());
 	sb.append("fm, '");

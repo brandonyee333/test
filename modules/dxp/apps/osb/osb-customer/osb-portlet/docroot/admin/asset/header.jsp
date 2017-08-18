@@ -59,7 +59,6 @@ Integer salesforceOpportunityType = (Integer)request.getAttribute("header.jsp-sa
 <liferay-ui:error exception="<%= AddressStreetException.class %>" message="please-enter-a-valid-address-line" />
 <liferay-ui:error exception="<%= AddressZipException.class %>" message="please-enter-a-valid-postal-code" />
 <liferay-ui:error exception="<%= DuplicateAccountEntryException.class %>" message="please-enter-a-unique-code" />
-<liferay-ui:error exception="<%= PartnerTemplateException.class %>" message="a-partner-template-requires-a-renewal-representative" />
 <liferay-ui:error exception="<%= PrincipalException.class %>" message="this-task-is-assigned-to-another-user" />
 <liferay-ui:error exception="<%= RequiredFieldException.class %>" message="please-provide-a-reason-for-rejecting-this-task" />
 
@@ -92,7 +91,7 @@ Integer salesforceOpportunityType = (Integer)request.getAttribute("header.jsp-sa
 		StringBundler sb = new StringBundler((updateWorkflowTasks.size() * 6) - 1);
 
 		for (WorkflowTask workflowTask : updateWorkflowTasks) {
-			PortletURL workflowTaskURL = PortletURLFactoryUtil.create(request, PortletKeys.MY_WORKFLOW_TASKS, themeDisplay.getPlid(), PortletRequest.RENDER_PHASE);
+			PortletURL workflowTaskURL = PortletURLFactoryUtil.create(request, PortletKeys.MY_WORKFLOW_TASK, themeDisplay.getPlid(), PortletRequest.RENDER_PHASE);
 
 			workflowTaskURL.setParameter("struts_action", "/my_workflow_tasks/edit_workflow_task");
 			workflowTaskURL.setParameter("redirect", currentURL);

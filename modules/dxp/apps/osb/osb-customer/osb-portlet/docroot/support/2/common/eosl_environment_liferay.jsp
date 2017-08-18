@@ -28,7 +28,11 @@ idPrefix = renderResponse.getNamespace() + HtmlUtil.escapeAttribute(idPrefix);
 
 	<br />
 
-	<span><liferay-ui:message arguments='<%= new Object[] {"<a href=\"/documents/3133562/8435737/EOV_announcement.pdf\">", "</a>"} %>' key="the-end-of-service-life-for-liferay-portal-5.2-ee-was-on-may-31-2017" /></span>
+	<%
+	Object[] arguments = {"<a href=\"/documents/3133562/8435737/EOV_announcement.pdf\">", "</a>"};
+	%>
+
+	<span><liferay-ui:message arguments="<%= arguments %>" key="the-end-of-service-life-for-liferay-portal-5.2-ee-was-on-may-31-2017" /></span>
 </div>
 
 <div class="portlet-msg-info <%= ProductEntryConstants.isPortalVersion6_0(envLFR) ? StringPool.BLANK : "aui-helper-hidden" %>" id="<%= idPrefix + "_6_0" %>">
@@ -36,7 +40,11 @@ idPrefix = renderResponse.getNamespace() + HtmlUtil.escapeAttribute(idPrefix);
 
 	<br />
 
-	<span><liferay-ui:message arguments='<%= new Object[] {"<a href=\"/group/customer/products/portal/support/service-life\">", "</a>"} %>' key="the-end-of-service-life-for-liferay-portal-6.0-ee-will-be-on-september-10-2017" /></span>
+	<%
+	arguments = new Object[] {"<a href=\"/group/customer/products/portal/support/service-life\">", "</a>"};
+	%>
+
+	<span><liferay-ui:message arguments="<%= arguments %>" key="the-end-of-service-life-for-liferay-portal-6.0-ee-will-be-on-september-10-2017" /></span>
 </div>
 
 <div class="portlet-msg-info <%= ProductEntryConstants.isPortalVersion6_1(envLFR) ? StringPool.BLANK : "aui-helper-hidden" %>" id="<%= idPrefix + "_6_1" %>">
@@ -44,5 +52,9 @@ idPrefix = renderResponse.getNamespace() + HtmlUtil.escapeAttribute(idPrefix);
 
 	<br />
 
-	<span><liferay-ui:message arguments='<%= new Object[] {"<a href=\"/group/customer/products/portal/support/service-life\">", "</a>"} %>' key="liferay-portal-6.1-ee-ga1-6.1-ee-ga2-and-6.1-ee-ga3-are-currently-in-the-limited-support-phase-of-their-lifecycle" /></span>
+	<%
+	arguments = new Object[] {"<a href=\"/group/customer/products/portal/support/service-life\">", "</a>"};
+	%>
+
+	<span><liferay-ui:message arguments="<%= arguments %>" key="liferay-portal-6.1-ee-ga1-6.1-ee-ga2-and-6.1-ee-ga3-are-currently-in-the-limited-support-phase-of-their-lifecycle" /></span>
 </div>

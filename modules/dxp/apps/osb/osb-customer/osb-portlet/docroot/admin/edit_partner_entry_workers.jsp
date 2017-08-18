@@ -138,7 +138,7 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 						for (int i = 1; i <= 2; i++) {
 						%>
 
-							<option <%= (notifications == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(pageContext, PartnerWorkerConstants.getNotificationsLabel(i)) %></option>
+							<option <%= (notifications == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(request, PartnerWorkerConstants.getNotificationsLabel(i)) %></option>
 
 						<%
 						}
@@ -157,7 +157,7 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 						for (int i = 1; i <= 3; i++) {
 						%>
 
-							<option <%= (role == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(pageContext, PartnerWorkerConstants.getRoleLabel(i)) %></option>
+							<option <%= (role == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(request, PartnerWorkerConstants.getRoleLabel(i)) %></option>
 
 						<%
 						}
@@ -169,7 +169,7 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 				<liferay-ui:search-container-column-text
 					name="user-status"
 				>
-					<%= RoleLocalServiceUtil.hasUserRole(curUser.getUserId(), OSBConstants.ROLE_VERIFIED_USER_ID) ? StringPool.BLANK : LanguageUtil.get(pageContext, "unverified") %>
+					<%= RoleLocalServiceUtil.hasUserRole(curUser.getUserId(), OSBConstants.ROLE_VERIFIED_USER_ID) ? StringPool.BLANK : LanguageUtil.get(request, "unverified") %>
 				</liferay-ui:search-container-column-text>
 			</liferay-ui:search-container-row>
 

@@ -88,7 +88,7 @@ int component = BeanParamUtil.getInteger(ticketEntry, request, "component");
 		</c:if>
 
 		<div>
-			<%= LanguageUtil.get(pageContext, ticketEntry.getLanguageLabel()) %>
+			<%= LanguageUtil.get(request, ticketEntry.getLanguageLabel()) %>
 		</div>
 
 		<c:if test="<%= !screenShareMode && liferayIncOrg %>">
@@ -275,16 +275,16 @@ int component = BeanParamUtil.getInteger(ticketEntry, request, "component");
 				<div>
 					<span class="txt-up"><liferay-ui:message key="lr" />:</span>
 
-					<span class="txt-sb"><%= LanguageUtil.get(pageContext, TicketEntryConstants.getEnvLabel(envLFR)) %></span>
+					<span class="txt-sb"><%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envLFR)) %></span>
 
 					<c:if test="<%= component == TicketEntryConstants.COMPONENT_UPGRADE %>">
 						<liferay-ui:message key="to" />
 
-						<span class="txt-sb"><%= LanguageUtil.get(pageContext, TicketEntryConstants.getEnvLabel(toEnvLFR)) %></span>
+						<span class="txt-sb"><%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(toEnvLFR)) %></span>
 					</c:if>
 
 					<c:if test="<%= Validator.isNotNull(supportPhaseLabel) %>">
-						<span class="support-phase-label">(<%= LanguageUtil.get(pageContext, supportPhaseLabel) %>)</span>
+						<span class="support-phase-label">(<%= LanguageUtil.get(request, supportPhaseLabel) %>)</span>
 					</c:if>
 				</div>
 			</c:if>
@@ -298,7 +298,7 @@ int component = BeanParamUtil.getInteger(ticketEntry, request, "component");
 							<span class="txt-sb"><%= HtmlUtil.escape(envOSCustom) %></span>
 						</c:when>
 						<c:otherwise>
-							<span class="txt-sb"><%= LanguageUtil.get(pageContext, TicketEntryConstants.getEnvLabel(envOS)) %></span>
+							<span class="txt-sb"><%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envOS)) %></span>
 						</c:otherwise>
 					</c:choose>
 				</div>
@@ -308,7 +308,7 @@ int component = BeanParamUtil.getInteger(ticketEntry, request, "component");
 				<div>
 					<span class="txt-up"><liferay-ui:message key="as" />:</span>
 
-					<span class="txt-sb"><%= LanguageUtil.get(pageContext, TicketEntryConstants.getEnvLabel(envAS)) %></span>
+					<span class="txt-sb"><%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envAS)) %></span>
 				</div>
 			</c:if>
 
@@ -316,7 +316,7 @@ int component = BeanParamUtil.getInteger(ticketEntry, request, "component");
 				<div>
 					<span class="txt-up"><liferay-ui:message key="jvm" />:</span>
 
-					<span class="txt-sb"><%= LanguageUtil.get(pageContext, TicketEntryConstants.getEnvLabel(envJVM)) %></span>
+					<span class="txt-sb"><%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envJVM)) %></span>
 				</div>
 			</c:if>
 
@@ -324,7 +324,7 @@ int component = BeanParamUtil.getInteger(ticketEntry, request, "component");
 				<div>
 					<span class="txt-up"><liferay-ui:message key="db" />:</span>
 
-					<span class="txt-sb"><%= LanguageUtil.get(pageContext, TicketEntryConstants.getEnvLabel(envDB)) %></span>
+					<span class="txt-sb"><%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envDB)) %></span>
 				</div>
 			</c:if>
 
@@ -337,7 +337,7 @@ int component = BeanParamUtil.getInteger(ticketEntry, request, "component");
 							<span class="txt-sb"><%= HtmlUtil.escape(envBrowserCustom) %></span>
 						</c:when>
 						<c:otherwise>
-							<span class="txt-sb"><%= LanguageUtil.get(pageContext, TicketEntryConstants.getEnvLabel(envBrowser)) %></span>
+							<span class="txt-sb"><%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envBrowser)) %></span>
 						</c:otherwise>
 					</c:choose>
 				</div>
@@ -347,7 +347,7 @@ int component = BeanParamUtil.getInteger(ticketEntry, request, "component");
 				<div>
 					<span class="txt-up"><liferay-ui:message key="cs" />:</span>
 
-					<span class="txt-sb"><%= LanguageUtil.get(pageContext, TicketEntryConstants.getEnvLabel(envCS)) %></span>
+					<span class="txt-sb"><%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envCS)) %></span>
 				</div>
 			</c:if>
 
@@ -361,7 +361,7 @@ int component = BeanParamUtil.getInteger(ticketEntry, request, "component");
 					for (int curEnvSearch : envSearchArray) {
 					%>
 
-						<span class="txt-sb"><%= LanguageUtil.get(pageContext, TicketEntryConstants.getEnvLabel(curEnvSearch)) %></span>
+						<span class="txt-sb"><%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(curEnvSearch)) %></span>
 
 					<%
 					}

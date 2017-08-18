@@ -145,13 +145,13 @@ if (accountEntry != null) {
 							for (String componentGroup : TicketEntryConstants.COMPONENT_GROUPS_DE) {
 							%>
 
-								<optgroup label="<%= LanguageUtil.get(pageContext, componentGroup) %>">
+								<optgroup label="<%= LanguageUtil.get(request, componentGroup) %>">
 
 									<%
 									for (int curComponent : TicketEntryConstants.getGroupComponents(componentGroup)) {
 									%>
 
-										<aui:option label="<%= TicketEntryConstants.getComponentLabel(curComponent) %>" selected="<%= (curComponent == component) %>" value="<%= curComponent %>" />
+										<aui:option label="<%= TicketEntryConstants.getComponentLabel(curComponent) %>" selected="<%= curComponent == component %>" value="<%= curComponent %>" />
 
 									<%
 									}
@@ -178,7 +178,7 @@ if (accountEntry != null) {
 								int curComponent = componentEntry.getValue();
 							%>
 
-								<aui:option label="<%= curComponentLabel %>" selected="<%= curComponent == component) %>" value="<%= curComponent %>" />
+								<aui:option label="<%= curComponentLabel %>" selected="<%= curComponent == component %>" value="<%= curComponent %>" />
 
 							<%
 							}
@@ -196,7 +196,7 @@ if (accountEntry != null) {
 
 					<c:if test="<%= Validator.isNotNull(componentLink) %>">
 						<span class="component-link" id="<portlet:namespace />componentLinkDisplay">
-							<%= LanguageUtil.format(pageContext, "creating-x-tickets", new Object[] {"<a href=\"" + componentLink + "\" target=\"_blank\">", TicketEntryConstants.getComponentLabel(component), "</a>"}) %>
+							<%= LanguageUtil.format(request, "creating-x-tickets", new Object[] {"<a href=\"" + componentLink + "\" target=\"_blank\">", TicketEntryConstants.getComponentLabel(component), "</a>"}) %>
 						</span>
 					</c:if>
 
@@ -206,7 +206,7 @@ if (accountEntry != null) {
 								<liferay-ui:message key="subcomponent" />:
 							</h2>
 
-							<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(pageContext, "please-select-a-valid-subcomponent") %>' name="subcomponent" onChange='<%= renderResponse.getNamespace() + "validateSubcomponent();" %>'>
+							<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(request, "please-select-a-valid-subcomponent") %>' name="subcomponent" onChange='<%= renderResponse.getNamespace() + "validateSubcomponent();" %>'>
 								<aui:option value="" />
 
 								<%
@@ -240,7 +240,7 @@ if (accountEntry != null) {
 			</c:if>
 
 			<div>
-				<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(pageContext, "please-select-a-valid-environment-configuration") %>' name="accountEnvironmentId" onChange='<%= renderResponse.getNamespace() + "selectAccountEnvironment(this);" %>'>
+				<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(request, "please-select-a-valid-environment-configuration") %>' name="accountEnvironmentId" onChange='<%= renderResponse.getNamespace() + "selectAccountEnvironment(this);" %>'>
 					<aui:option value="0" />
 					<aui:option label="select-new-configuration" selected="<%= accountEnvironmentId == -1 %>" value="-1" />
 
@@ -250,7 +250,7 @@ if (accountEntry != null) {
 					for (AccountEnvironment curAccountEnvironment : accountEnvironments) {
 					%>
 
-						<aui:option label="<%= HtmlUtil.escape(curAccountEnvironment.getName()) %>" selected="<%= curAccountEnvironment.getAccountEnvironmentId() == accountEnvironmentId) %>" value="<%= curAccountEnvironment.getAccountEnvironmentId() %>" />
+						<aui:option label="<%= HtmlUtil.escape(curAccountEnvironment.getName()) %>" selected="<%= curAccountEnvironment.getAccountEnvironmentId() == accountEnvironmentId %>" value="<%= curAccountEnvironment.getAccountEnvironmentId() %>" />
 
 					<%
 					}
@@ -273,7 +273,7 @@ if (accountEntry != null) {
 				</h2>
 
 				<div>
-					<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(pageContext, "please-select-a-valid-system-status") %>' name="systemStatus">
+					<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(request, "please-select-a-valid-system-status") %>' name="systemStatus">
 						<aui:option value="" />
 
 						<%
@@ -417,7 +417,7 @@ if (accountEntry != null) {
 			var productEntryDisplayName = A.one('#<portlet:namespace />productEntryDisplayName');
 
 			var oldAccountEntryId = <%= (accountEntry != null) ? accountEntry.getAccountEntryId() : 0 %>;
-			var oldProductEntryDisplayName = '<%= (productEntry != null) ? HtmlUtil.escapeJS(productEntry.getDisplayName()) : "" %>';
+			var oldProductEntryDisplayName = '<%= (productEntry != null) ? HtmlUtil.escapeJS(productEntry.getLESADisplayName()) : "" %>';
 			var oldOfferingEntryId = <%= (offeringEntry != null) ? offeringEntry.getOfferingEntryId() : 0 %>;
 
 			if (!((accountEntryId && (accountEntryId.val() == oldAccountEntryId)) && productEntryDisplayName && (productEntryDisplayName.val() == oldProductEntryDisplayName) && component && offeringEntryId && ((component.val() == 0) || (offeringEntryId.val() == 0)) && !accountEnvironmentId)) {

@@ -383,6 +383,16 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 
 		<%
 		Calendar calendar = Calendar.getInstance();
+
+		calendar.set(Calendar.YEAR, 2006);
+
+		Date firstEnabledDate = calendar.getTime();
+
+		calendar = Calendar.getInstance();
+
+		calendar.add(Calendar.YEAR, 1);
+
+		Date lastEnabledDate = calendar.getTime();
 		%>
 
 		<div class="date search-param-dropdown" id="<portlet:namespace />date">
@@ -398,16 +408,14 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 
 							<liferay-ui:input-date
 								cssClass="aui-w100"
-								dayNullable="<%= true %>"
 								dayParam="<%= displayTerms.CREATE_DATE_GT_DAY %>"
 								dayValue="<%= displayTerms.getCreateDateGTDay() %>"
-								monthNullable="<%= true %>"
+								firstEnabledDate="<%= firstEnabledDate %>"
+								lastEnabledDate="<%= lastEnabledDate %>"
 								monthParam="<%= displayTerms.CREATE_DATE_GT_MONTH %>"
 								monthValue="<%= displayTerms.getCreateDateGTMonth() %>"
-								yearNullable="<%= true %>"
+								nullable="<%= true %>"
 								yearParam="<%= displayTerms.CREATE_DATE_GT_YEAR %>"
-								yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
-								yearRangeStart="<%= 2006 %>"
 								yearValue="<%= displayTerms.getCreateDateGTYear() %>"
 							/>
 						</div>
@@ -417,16 +425,14 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 
 							<liferay-ui:input-date
 								cssClass="aui-w100"
-								dayNullable="<%= true %>"
 								dayParam="<%= displayTerms.CREATE_DATE_LT_DAY %>"
 								dayValue="<%= displayTerms.getCreateDateLTDay() %>"
-								monthNullable="<%= true %>"
+								firstEnabledDate="<%= firstEnabledDate %>"
+								lastEnabledDate="<%= lastEnabledDate %>"
 								monthParam="<%= displayTerms.CREATE_DATE_LT_MONTH %>"
 								monthValue="<%= displayTerms.getCreateDateLTMonth() %>"
-								yearNullable="<%= true %>"
+								nullable="<%= true %>"
 								yearParam="<%= displayTerms.CREATE_DATE_LT_YEAR %>"
-								yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
-								yearRangeStart="<%= 2006 %>"
 								yearValue="<%= displayTerms.getCreateDateLTYear() %>"
 							/>
 						</div>
@@ -444,16 +450,14 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 
 							<liferay-ui:input-date
 								cssClass="aui-w100"
-								dayNullable="<%= true %>"
 								dayParam="<%= displayTerms.CLOSED_DATE_GT_DAY %>"
 								dayValue="<%= displayTerms.getClosedDateGTDay() %>"
-								monthNullable="<%= true %>"
+								firstEnabledDate="<%= firstEnabledDate %>"
+								lastEnabledDate="<%= lastEnabledDate %>"
 								monthParam="<%= displayTerms.CLOSED_DATE_GT_MONTH %>"
 								monthValue="<%= displayTerms.getClosedDateGTMonth() %>"
-								yearNullable="<%= true %>"
+								nullable="<%= true %>"
 								yearParam="<%= displayTerms.CLOSED_DATE_GT_YEAR %>"
-								yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
-								yearRangeStart="<%= 2006 %>"
 								yearValue="<%= displayTerms.getClosedDateGTYear() %>"
 							/>
 						</div>
@@ -463,16 +467,14 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 
 							<liferay-ui:input-date
 								cssClass="aui-w100"
-								dayNullable="<%= true %>"
 								dayParam="<%= displayTerms.CLOSED_DATE_LT_DAY %>"
 								dayValue="<%= displayTerms.getClosedDateLTDay() %>"
-								monthNullable="<%= true %>"
+								firstEnabledDate="<%= firstEnabledDate %>"
+								lastEnabledDate="<%= lastEnabledDate %>"
 								monthParam="<%= displayTerms.CLOSED_DATE_LT_MONTH %>"
 								monthValue="<%= displayTerms.getClosedDateLTMonth() %>"
-								yearNullable="<%= true %>"
+								nullable="<%= true %>"
 								yearParam="<%= displayTerms.CLOSED_DATE_LT_YEAR %>"
-								yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
-								yearRangeStart="<%= 2006 %>"
 								yearValue="<%= displayTerms.getClosedDateLTYear() %>"
 							/>
 						</div>
@@ -491,16 +493,14 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 
 								<liferay-ui:input-date
 									cssClass="aui-w100"
-									dayNullable="<%= true %>"
 									dayParam="<%= displayTerms.DUE_DATE_GT_DAY %>"
 									dayValue="<%= displayTerms.getDueDateGTDay() %>"
-									monthNullable="<%= true %>"
+									firstEnabledDate="<%= firstEnabledDate %>"
+									lastEnabledDate="<%= lastEnabledDate %>"
 									monthParam="<%= displayTerms.DUE_DATE_GT_MONTH %>"
 									monthValue="<%= displayTerms.getDueDateGTMonth() %>"
-									yearNullable="<%= true %>"
+									nullable="<%= true %>"
 									yearParam="<%= displayTerms.DUE_DATE_GT_YEAR %>"
-									yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
-									yearRangeStart="<%= 2006 %>"
 									yearValue="<%= displayTerms.getDueDateGTYear() %>"
 								/>
 							</div>
@@ -510,16 +510,14 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 
 								<liferay-ui:input-date
 									cssClass="aui-w100"
-									dayNullable="<%= true %>"
 									dayParam="<%= displayTerms.DUE_DATE_LT_DAY %>"
 									dayValue="<%= displayTerms.getDueDateLTDay() %>"
-									monthNullable="<%= true %>"
+									firstEnabledDate="<%= firstEnabledDate %>"
+									lastEnabledDate="<%= lastEnabledDate %>"
 									monthParam="<%= displayTerms.DUE_DATE_LT_MONTH %>"
 									monthValue="<%= displayTerms.getDueDateLTMonth() %>"
-									yearNullable="<%= true %>"
+									nullable="<%= true %>"
 									yearParam="<%= displayTerms.DUE_DATE_LT_YEAR %>"
-									yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
-									yearRangeStart="<%= 2006 %>"
 									yearValue="<%= displayTerms.getDueDateLTYear() %>"
 								/>
 							</div>
@@ -858,7 +856,7 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 				</ul>
 			</div>
 
-			<input class="aui-button-input" onClick="<portlet:namespace />openBulkEditDialog(1);" type="button" value="<%= LanguageUtil.get(pageContext, "edit") %>" />
+			<input class="aui-button-input" onClick="<portlet:namespace />openBulkEditDialog(1);" type="button" value="<%= LanguageUtil.get(request, "edit") %>" />
 		</div>
 	</c:if>
 

@@ -61,19 +61,19 @@
 		<liferay-ui:search-container-column-text
 			href="<%= rowURL %>"
 			name="severity-1"
-			value='<%= LanguageUtil.format(pageContext, "x-hours", supportResponse.getSeverity1Response()) + " / " + LanguageUtil.format(pageContext, "x-days", supportResponse.getSeverity1Resolution()) %>'
+			value='<%= LanguageUtil.format(request, "x-hours", supportResponse.getSeverity1Response()) + " / " + LanguageUtil.format(request, "x-days", supportResponse.getSeverity1Resolution()) %>'
 		/>
 
 		<liferay-ui:search-container-column-text
 			href="<%= rowURL %>"
 			name="severity-2"
-			value='<%= LanguageUtil.format(pageContext, "x-hours", supportResponse.getSeverity2Response()) + " / " + LanguageUtil.format(pageContext, "x-days", supportResponse.getSeverity2Resolution()) %>'
+			value='<%= LanguageUtil.format(request, "x-hours", supportResponse.getSeverity2Response()) + " / " + LanguageUtil.format(request, "x-days", supportResponse.getSeverity2Resolution()) %>'
 		/>
 
 		<liferay-ui:search-container-column-text
 			href="<%= rowURL %>"
 			name="severity-3"
-			value='<%= LanguageUtil.format(pageContext, "x-hours", supportResponse.getSeverity3Response()) + " / " + LanguageUtil.format(pageContext, "x-days", supportResponse.getSeverity3Resolution()) %>'
+			value='<%= LanguageUtil.format(request, "x-hours", supportResponse.getSeverity3Response()) + " / " + LanguageUtil.format(request, "x-days", supportResponse.getSeverity3Resolution()) %>'
 		/>
 
 		<c:if test="<%= permissionChecker.isOmniadmin() %>">

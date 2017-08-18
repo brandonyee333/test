@@ -49,7 +49,7 @@ if (ticketEntry != null) {
 							<liferay-ui:message key="reproducible" />:
 						</span>
 						<span>
-							<%= LanguageUtil.get(pageContext, ticketFeedback.getAnswer1Label()) %>
+							<%= LanguageUtil.get(request, ticketFeedback.getAnswer1Label()) %>
 						</span>
 					</div>
 				</div>
@@ -60,7 +60,7 @@ if (ticketEntry != null) {
 							<liferay-ui:message key="timely-escalated" />:
 						</span>
 						<span>
-							<%= LanguageUtil.get(pageContext, ticketFeedback.getAnswer2Label()) %>
+							<%= LanguageUtil.get(request, ticketFeedback.getAnswer2Label()) %>
 						</span>
 					</div>
 				</div>
@@ -73,7 +73,7 @@ if (ticketEntry != null) {
 							<liferay-ui:message key="escalated-properly" />:
 						</span>
 						<span>
-							<%= LanguageUtil.get(pageContext, ticketFeedback.getAnswer3Label()) %>
+							<%= LanguageUtil.get(request, ticketFeedback.getAnswer3Label()) %>
 						</span>
 
 						<br />
@@ -82,7 +82,7 @@ if (ticketEntry != null) {
 							<liferay-ui:message key="response-time" />:
 						</span>
 						<span>
-							<%= ticketFeedback.getRating1() %> - <%= LanguageUtil.get(pageContext, ticketFeedback.getRating1Label()) %>
+							<%= ticketFeedback.getRating1() %> - <%= LanguageUtil.get(request, ticketFeedback.getRating1Label()) %>
 						</span>
 					</div>
 				</div>
@@ -93,7 +93,7 @@ if (ticketEntry != null) {
 							<liferay-ui:message key="technical-knowledge" />:
 						</span>
 						<span>
-							<%= ticketFeedback.getRating2() %> - <%= LanguageUtil.get(pageContext, ticketFeedback.getRating2Label()) %>
+							<%= ticketFeedback.getRating2() %> - <%= LanguageUtil.get(request, ticketFeedback.getRating2Label()) %>
 						</span>
 
 						<br />
@@ -102,7 +102,7 @@ if (ticketEntry != null) {
 							<liferay-ui:message key="professionalism" />:
 						</span>
 						<span>
-							<%= ticketFeedback.getRating3() %> - <%= LanguageUtil.get(pageContext, ticketFeedback.getRating3Label()) %>
+							<%= ticketFeedback.getRating3() %> - <%= LanguageUtil.get(request, ticketFeedback.getRating3Label()) %>
 						</span>
 					</div>
 				</div>

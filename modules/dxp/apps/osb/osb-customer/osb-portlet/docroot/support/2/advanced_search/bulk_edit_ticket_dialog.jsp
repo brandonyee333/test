@@ -104,17 +104,21 @@
 
 			<%
 			Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
+
+			Date firstEnabledDate = calendar.getTime();
+
+			calendar.add(Calendar.YEAR, 4);
+
+			Date lastEnabledDate = calendar.getTime();
 			%>
 
 			<liferay-ui:input-date
-				dayNullable="<%= true %>"
 				dayParam="dueDateDay"
-				monthNullable="<%= true %>"
+				firstEnabledDate="<%= firstEnabledDate %>"
+				lastEnabledDate="<%= lastEnabledDate %>"
 				monthParam="dueDateMonth"
-				yearNullable="<%= true %>"
+				nullable="<%= true %>"
 				yearParam="dueDateYear"
-				yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 4 %>"
-				yearRangeStart="<%= calendar.get(Calendar.YEAR) %>"
 			/>
 
 			<liferay-util:include page="/common/input_time.jsp" servletContext="<%= application %>">

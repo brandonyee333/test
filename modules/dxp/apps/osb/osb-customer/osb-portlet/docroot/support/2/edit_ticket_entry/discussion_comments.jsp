@@ -281,7 +281,7 @@ boolean hasMarkAsSolutionPermission = OSBTicketCommentPermission.contains(permis
 
 										<c:if test="<%= statusReason > 0 %>">
 											<strong>
-												<liferay-ui:message key="solution-rejected" />: <%= LanguageUtil.get(pageContext, TicketSolutionConstants.getStatusReasonLabel(statusReason)) %>
+												<liferay-ui:message key="solution-rejected" />: <%= LanguageUtil.get(request, TicketSolutionConstants.getStatusReasonLabel(statusReason)) %>
 											</strong>
 										</c:if>
 
@@ -321,7 +321,7 @@ boolean hasMarkAsSolutionPermission = OSBTicketCommentPermission.contains(permis
 											</a>
 										</c:if>
 
-										(<%= TextFormatter.formatKB((double)ticketAttachment.getFileSize(), locale) %>k)
+										(<%= TextFormatter.formatStorageSize((double)ticketAttachment.getFileSize(), locale) %>k)
 									</div>
 
 								<%
@@ -385,7 +385,7 @@ boolean hasMarkAsSolutionPermission = OSBTicketCommentPermission.contains(permis
 									</c:when>
 									<c:when test='<%= discussionTab.equals("all-comments") && (ticketComment.getVisibility() != VisibilityConstants.PUBLIC) %>'>
 										<div class="footnote">
-											<%= LanguageUtil.format(pageContext, "visible-to-x", ticketComment.getVisibilityLabel()) %>
+											<%= LanguageUtil.format(request, "visible-to-x", ticketComment.getVisibilityLabel()) %>
 										</div>
 									</c:when>
 								</c:choose>

@@ -38,13 +38,17 @@ List<LicenseKey> licenseKeys = LicenseKeyServiceUtil.getLicenseKeySetLicenseKeys
 long offeringEntryId = ParamUtil.getLong(request, "offeringEntryId");
 long clusterId = ParamUtil.getLong(request, "clusterId");
 
-Calendar firstEnabledDate = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
+Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
 
-firstEnabledDate.add(Calendar.YEAR, -1);
+calendar.add(Calendar.YEAR, -1);
 
-Calendar lastEnabledDate = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
+Date firstEnabledDate = calendar.getTime();
 
-lastEnabledDate.add(Calendar.YEAR, 3);
+calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
+
+calendar.add(Calendar.YEAR, 3);
+
+Date lastEnabledDate = calendar.getTime();
 
 PortletURL portletURL = renderResponse.createRenderURL();
 
@@ -228,7 +232,7 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 							<div class="content-column-content middle-column">
 								<span class="txt-b txt-up"><liferay-ui:message key="type" />:</span>
 
-								<%= LanguageUtil.get(pageContext, licenseEntryType) %>
+								<%= LanguageUtil.get(request, licenseEntryType) %>
 
 								<br />
 
@@ -449,10 +453,10 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 								String url = "location.href = '" + HttpUtil.encodeURL(activateLicenseKeyURL.toString()) + "'";
 
 								if (licenseKey.isActive()) {
-									url = "javascript:if (confirm('" + UnicodeLanguageUtil.get(pageContext, "are-you-sure-you-want-to-deactivate-this-license-key") + "')) { " + url + " } else { self.focus(); }";
+									url = "javascript:if (confirm('" + UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-deactivate-this-license-key") + "')) { " + url + " } else { self.focus(); }";
 								}
 								else {
-									url = "javascript:if (confirm('" + UnicodeLanguageUtil.get(pageContext, "are-you-sure-you-want-to-activate-this-license-key") + "')) { " + url + " } else { self.focus(); }";
+									url = "javascript:if (confirm('" + UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-activate-this-license-key") + "')) { " + url + " } else { self.focus(); }";
 								}
 								%>
 

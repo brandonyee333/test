@@ -92,7 +92,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 				href="<%= rowURL %>"
 				name="status"
 			>
-				<%= LanguageUtil.get(pageContext, WorkflowConstants.getStatusLabel(partnerEntry.getStatus())) %>
+				<%= LanguageUtil.get(request, WorkflowConstants.getStatusLabel(partnerEntry.getStatus())) %>
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-jsp

@@ -157,12 +157,12 @@ for (SupportRegion supportRegion : supportRegions) {
 						<liferay-ui:search-container-column-text
 							name="status"
 						>
-							<%= LanguageUtil.get(pageContext, OfferingEntryConstants.getStatusLabel(offeringEntryGroup.getStatus())) %>
+							<%= LanguageUtil.get(request, OfferingEntryConstants.getStatusLabel(offeringEntryGroup.getStatus())) %>
 						</liferay-ui:search-container-column-text>
 
 						<liferay-ui:search-container-column-text
 							name="type"
-							value="<%= LanguageUtil.get(pageContext, OfferingEntryConstants.getTypeLabel(offeringEntryGroup.getType())) %>"
+							value="<%= LanguageUtil.get(request, OfferingEntryConstants.getTypeLabel(offeringEntryGroup.getType())) %>"
 						/>
 
 						<c:choose>
@@ -216,7 +216,7 @@ for (SupportRegion supportRegion : supportRegions) {
 						<liferay-ui:search-container-column-text
 							name="tickets"
 						>
-							<%= offeringEntryGroup.getTicketEntriesCount() %> / <%= offeringEntryGroup.isSupportTickets() ? LanguageUtil.get(pageContext, "unlimited") : "0" %>
+							<%= offeringEntryGroup.getTicketEntriesCount() %> / <%= offeringEntryGroup.isSupportTickets() ? LanguageUtil.get(request, "unlimited") : "0" %>
 						</liferay-ui:search-container-column-text>
 					</liferay-ui:search-container-row>
 
@@ -227,7 +227,7 @@ for (SupportRegion supportRegion : supportRegions) {
 			</div>
 
 			<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />projectMessagesContent">
-				<c:choose>
+				<%-- <c:choose>
 					<c:when test="<%= corpProjectId > 0 %>">
 						<liferay-portlet:renderURL portletName="<%= OSBPortletKeys.OSB_CORP_PROJECT_ADMIN %>" var="corpProjectURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 							<portlet:param name="mvcPath" value="/corp_project_admin/view_corp_project.jsp" />
@@ -315,7 +315,7 @@ for (SupportRegion supportRegion : supportRegions) {
 							<liferay-ui:message key="this-support-project-is-not-linked-to-a-corp-project" />
 						</div>
 					</c:otherwise>
-				</c:choose>
+				</c:choose> --%>
 			</div>
 
 			<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />environmentDetailsContent">
@@ -355,17 +355,17 @@ for (SupportRegion supportRegion : supportRegions) {
 													<td>
 														<liferay-ui:message key='<%= productEntry.isSocialOffice() ? "social-office-version" : "liferay-version" %>' />:
 
-														<span class="field"><%= LanguageUtil.get(pageContext, accountEnvironment.getEnvLFRLabel()) %></span>
+														<span class="field"><%= LanguageUtil.get(request, accountEnvironment.getEnvLFRLabel()) %></span>
 													</td>
 													<td>
 														<liferay-ui:message key="application-server" />:
 
-														<span class="field"><%= LanguageUtil.get(pageContext, accountEnvironment.getEnvASLabel()) %></span>
+														<span class="field"><%= LanguageUtil.get(request, accountEnvironment.getEnvASLabel()) %></span>
 													</td>
 													<td>
 														<liferay-ui:message key="database" />:
 
-														<span class="field"><%= LanguageUtil.get(pageContext, accountEnvironment.getEnvDBLabel()) %></span>
+														<span class="field"><%= LanguageUtil.get(request, accountEnvironment.getEnvDBLabel()) %></span>
 													</td>
 												</tr>
 												<tr>
@@ -373,7 +373,7 @@ for (SupportRegion supportRegion : supportRegions) {
 														<liferay-ui:message key="operating-system" />:
 
 														<span class="field">
-															<%= LanguageUtil.get(pageContext, accountEnvironment.getEnvOSLabel()) %>
+															<%= LanguageUtil.get(request, accountEnvironment.getEnvOSLabel()) %>
 
 															<c:if test="<%= Validator.isNotNull(accountEnvironment.getEnvOSCustom()) %>">
 																- <%= HtmlUtil.escape(accountEnvironment.getEnvOSCustom()) %>
@@ -383,7 +383,7 @@ for (SupportRegion supportRegion : supportRegions) {
 													<td>
 														<liferay-ui:message key="java-virtual-machine" />:
 
-														<span class="field"><%= LanguageUtil.get(pageContext, accountEnvironment.getEnvJVMLabel()) %></span>
+														<span class="field"><%= LanguageUtil.get(request, accountEnvironment.getEnvJVMLabel()) %></span>
 													</td>
 													<td />
 												</tr>
@@ -518,7 +518,7 @@ for (SupportRegion supportRegion : supportRegions) {
 					<liferay-ui:search-container-column-text
 						name="language"
 					>
-						<%= LanguageUtil.get(pageContext, AccountEntryConstants.getLanguageLabel(languageId)) %>
+						<%= LanguageUtil.get(request, AccountEntryConstants.getLanguageLabel(languageId)) %>
 					</liferay-ui:search-container-column-text>
 
 					<liferay-ui:search-container-column-text>

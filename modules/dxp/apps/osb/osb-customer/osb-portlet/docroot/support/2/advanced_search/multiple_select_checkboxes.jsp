@@ -31,7 +31,7 @@
 			<label>
 				<input <%= ArrayUtil.contains(curValues, values[i]) ? "checked" : "" %> class="aui-field-input-choice" name="<portlet:namespace /><%= HtmlUtil.escapeAttribute(name) %>" onchange="<portlet:namespace />toggleCheckbox(this);" type="checkbox" value="<%= values[i] %>" />
 
-				<span class="checkbox-text"><%= HtmlUtil.escape(LanguageUtil.get(pageContext, labels[i])) %></span>
+				<span class="checkbox-text"><%= HtmlUtil.escape(LanguageUtil.get(request, labels[i])) %></span>
 			</label>
 		</div>
 

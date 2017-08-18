@@ -61,7 +61,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_account_entry.jsp
 				<span class="<%= !liferayIncOrg ? "last" : "" %> segment">
 					<liferay-ui:message key="industry" />:
 
-					<span class="txt-sb"><%= LanguageUtil.get(pageContext, accountEntry.getIndustryLabel()) %></span>
+					<span class="txt-sb"><%= LanguageUtil.get(request, accountEntry.getIndustryLabel()) %></span>
 				</span>
 
 				<c:if test="<%= liferayIncOrg %>">
@@ -80,7 +80,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_account_entry.jsp
 						<div id="<portlet:namespace />tierDisplay" onClick="<%= tierOnClick %>">
 							<liferay-ui:message key="tier" />:
 
-							<span class="txt-sb"><%= LanguageUtil.get(pageContext, AccountEntryConstants.getTierLabel(accountEntry.getTier())) %></span>
+							<span class="txt-sb"><%= LanguageUtil.get(request, AccountEntryConstants.getTierLabel(accountEntry.getTier())) %></span>
 						</div>
 
 						<div id="<portlet:namespace/>tierDropDown" style="display: none;">
@@ -90,7 +90,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_account_entry.jsp
 								for (int tier : AccountEntryConstants.TIERS) {
 								%>
 
-									<option <%= (accountEntry.getTier() == tier) ? "selected" : "" %> value="<%= tier %>"><%= LanguageUtil.get(pageContext, AccountEntryConstants.getTierLabel(tier)) %></option>
+									<option <%= (accountEntry.getTier() == tier) ? "selected" : "" %> value="<%= tier %>"><%= LanguageUtil.get(request, AccountEntryConstants.getTierLabel(tier)) %></option>
 
 								<%
 								}
@@ -134,17 +134,17 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_account_entry.jsp
 
 								long controlPanelPlid = LayoutLocalServiceUtil.getDefaultPlid(controlPanelGroup.getGroupId(), true);
 
-								PortletURL workflowTaskURL = PortletURLFactoryUtil.create(request, PortletKeys.MY_WORKFLOW_TASKS, controlPanelPlid, PortletRequest.RENDER_PHASE);
+								PortletURL workflowTaskURL = PortletURLFactoryUtil.create(request, PortletKeys.MY_WORKFLOW_TASK, controlPanelPlid, PortletRequest.RENDER_PHASE);
 
 								workflowTaskURL.setParameter("struts_action", "/my_workflow_tasks/edit_workflow_task");
 								workflowTaskURL.setParameter("redirect", currentURL);
 								workflowTaskURL.setParameter("workflowTaskId", String.valueOf(workflowTask.getWorkflowTaskId()));
 								%>
 
-								<a href="<%= workflowTaskURL.toString() %>" target="_blank"><%= LanguageUtil.get(pageContext, accountEntry.getStatusLabel()) %></a>
+								<a href="<%= workflowTaskURL.toString() %>" target="_blank"><%= LanguageUtil.get(request, accountEntry.getStatusLabel()) %></a>
 							</c:when>
 							<c:otherwise>
-								<span class="txt-sb"><%= LanguageUtil.get(pageContext, accountEntry.getStatusLabel()) %></span>
+								<span class="txt-sb"><%= LanguageUtil.get(request, accountEntry.getStatusLabel()) %></span>
 							</c:otherwise>
 						</c:choose>
 
@@ -155,7 +155,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_account_entry.jsp
 
 							long controlPanelPlid = LayoutLocalServiceUtil.getDefaultPlid(controlPanelGroup.getGroupId(), true);
 
-							PortletURL workflowTasksURL = PortletURLFactoryUtil.create(request, PortletKeys.MY_WORKFLOW_TASKS, controlPanelPlid, PortletRequest.RENDER_PHASE);
+							PortletURL workflowTasksURL = PortletURLFactoryUtil.create(request, PortletKeys.MY_WORKFLOW_TASK, controlPanelPlid, PortletRequest.RENDER_PHASE);
 
 							workflowTasksURL.setParameter("tabs1", "other-assignees");
 							workflowTasksURL.setParameter("accountEntryCode", StringPool.QUOTE + accountEntry.getCode() + StringPool.QUOTE);

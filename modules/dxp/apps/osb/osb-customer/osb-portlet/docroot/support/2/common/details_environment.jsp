@@ -81,7 +81,7 @@ if (productEntry != null) {
 						<div class="content-column-content env">
 							<span class="field-label txt-b"><%= edit ? "*" : "" %><liferay-ui:message key="product" />:</span>
 
-							<%= LanguageUtil.get(pageContext, productEntry.getName()) %>
+							<%= LanguageUtil.get(request, productEntry.getName()) %>
 						</div>
 					</div>
 				</div>
@@ -130,12 +130,14 @@ if (productEntry != null) {
 								}
 								%>
 
-								<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.format(pageContext, "invalid-value-provided-for-x", "liferay-version") %>" id="<portlet:namespace />envLFR" name="<%= envLFRName %>" onChange="<%= envLFROnChange %>">
+								<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.format(request, "invalid-value-provided-for-x", "liferay-version") %>" id="<portlet:namespace />envLFR" name="<%= envLFRName %>" onChange="<%= envLFROnChange %>">
 									<option value="0"></option>
 
 									<%
+									long[] listTypesDeprecated = Arrays.stream(ProductEntryConstants.LIST_TYPES_DEPRECATED).asLongStream().toArray();
+
 									for (ListType envLFRType : envLFRTypes) {
-										if (((envLFRType.getListTypeId() == ProductEntryConstants.PORTAL_VERSION_OTHER) && (envLFR != ProductEntryConstants.PORTAL_VERSION_OTHER)) || ArrayUtil.contains(ProductEntryConstants.LIST_TYPES_DEPRECATED, envLFRType.getListTypeId())) {
+										if (((envLFRType.getListTypeId() == ProductEntryConstants.PORTAL_VERSION_OTHER) && (envLFR != ProductEntryConstants.PORTAL_VERSION_OTHER)) || ArrayUtil.contains(listTypesDeprecated, envLFRType.getListTypeId())) {
 											continue;
 										}
 
@@ -154,7 +156,7 @@ if (productEntry != null) {
 											<option disabled>--------</option>
 										</c:if>
 
-										<option <%= (envLFRType.getListTypeId() == envLFR) ? "selected" : "" %> value="<%= envLFRType.getListTypeId() %>"><%= LanguageUtil.get(pageContext, envLFRType.getName()) %><%= limited ? " (" + LanguageUtil.get(pageContext, "limited") + ")" : StringPool.BLANK %></option>
+										<option <%= (envLFRType.getListTypeId() == envLFR) ? "selected" : "" %> value="<%= envLFRType.getListTypeId() %>"><%= LanguageUtil.get(request, envLFRType.getName()) %><%= limited ? " (" + LanguageUtil.get(request, "limited") + ")" : StringPool.BLANK %></option>
 
 									<%
 										previousNamePrefix = namePrefix;
@@ -164,7 +166,7 @@ if (productEntry != null) {
 								</select>
 							</c:when>
 							<c:otherwise>
-								<%= LanguageUtil.get(pageContext, accountEnvironment.getEnvLFRLabel()) %>
+								<%= LanguageUtil.get(request, accountEnvironment.getEnvLFRLabel()) %>
 							</c:otherwise>
 						</c:choose>
 					</div>
@@ -177,7 +179,7 @@ if (productEntry != null) {
 
 					<c:choose>
 						<c:when test="<%= edit %>">
-							<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.format(pageContext, "invalid-value-provided-for-x", "operating-system") %>" id="<portlet:namespace />envOS" name="<portlet:namespace />envOS" onChange="<portlet:namespace />selectEnvOS(this.value);">
+							<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.format(request, "invalid-value-provided-for-x", "operating-system") %>" id="<portlet:namespace />envOS" name="<portlet:namespace />envOS" onChange="<portlet:namespace />selectEnvOS(this.value);">
 							</select>
 
 							<br />
@@ -185,7 +187,7 @@ if (productEntry != null) {
 							<input class="<%= (envOS == TicketEntryConstants.ENV_OS_OTHER) ? "" : "aui-helper-hidden" %>" id="<portlet:namespace />envOSCustom" maxLength="<%= TicketInformationConstants.getMaxLength(TicketInformationConstants.FIELD_ENV_OS_CUSTOM) %>" name="<portlet:namespace />envOSCustom" type="text" value="<%= HtmlUtil.escapeAttribute(envOSCustom) %>" />
 						</c:when>
 						<c:otherwise>
-							<%= LanguageUtil.get(pageContext, accountEnvironment.getEnvOSLabel()) %>
+							<%= LanguageUtil.get(request, accountEnvironment.getEnvOSLabel()) %>
 						</c:otherwise>
 					</c:choose>
 				</div>
@@ -197,11 +199,11 @@ if (productEntry != null) {
 
 					<c:choose>
 						<c:when test="<%= edit %>">
-							<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.format(pageContext, "invalid-value-provided-for-x", "jvm") %>" id="<portlet:namespace />envJVM" name="<portlet:namespace />envJVM">
+							<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.format(request, "invalid-value-provided-for-x", "jvm") %>" id="<portlet:namespace />envJVM" name="<portlet:namespace />envJVM">
 							</select>
 						</c:when>
 						<c:otherwise>
-							<%= LanguageUtil.get(pageContext, accountEnvironment.getEnvJVMLabel()) %>
+							<%= LanguageUtil.get(request, accountEnvironment.getEnvJVMLabel()) %>
 						</c:otherwise>
 					</c:choose>
 				</div>
@@ -214,11 +216,11 @@ if (productEntry != null) {
 					<span class="field-label txt-b" title="<liferay-ui:message key="application-server" />"><%= edit ? "*" : "" %><liferay-ui:message key="as" />:</span>
 					<c:choose>
 						<c:when test="<%= edit %>">
-							<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.format(pageContext, "invalid-value-provided-for-x", "application-server") %>" id="<portlet:namespace />envAS" name="<portlet:namespace />envAS">
+							<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.format(request, "invalid-value-provided-for-x", "application-server") %>" id="<portlet:namespace />envAS" name="<portlet:namespace />envAS">
 							</select>
 						</c:when>
 						<c:otherwise>
-							<%= LanguageUtil.get(pageContext, accountEnvironment.getEnvASLabel()) %>
+							<%= LanguageUtil.get(request, accountEnvironment.getEnvASLabel()) %>
 						</c:otherwise>
 					</c:choose>
 				</div>
@@ -230,11 +232,11 @@ if (productEntry != null) {
 
 					<c:choose>
 						<c:when test="<%= edit %>">
-							<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.format(pageContext, "invalid-value-provided-for-x", "database") %>" id="<portlet:namespace />envDB" name="<portlet:namespace />envDB">
+							<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.format(request, "invalid-value-provided-for-x", "database") %>" id="<portlet:namespace />envDB" name="<portlet:namespace />envDB">
 							</select>
 						</c:when>
 						<c:otherwise>
-							<%= LanguageUtil.get(pageContext, accountEnvironment.getEnvDBLabel()) %>
+							<%= LanguageUtil.get(request, accountEnvironment.getEnvDBLabel()) %>
 						</c:otherwise>
 					</c:choose>
 				</div>
@@ -255,7 +257,7 @@ if (productEntry != null) {
 								for (ListType envBrowserType : envBrowserTypes) {
 								%>
 
-									<option <%= (envBrowser == envBrowserType.getListTypeId()) ? "selected" : "" %> value="<%= envBrowserType.getListTypeId() %>"><%= LanguageUtil.get(pageContext, envBrowserType.getName()) %></option>
+									<option <%= (envBrowser == envBrowserType.getListTypeId()) ? "selected" : "" %> value="<%= envBrowserType.getListTypeId() %>"><%= LanguageUtil.get(request, envBrowserType.getName()) %></option>
 
 								<%
 								}

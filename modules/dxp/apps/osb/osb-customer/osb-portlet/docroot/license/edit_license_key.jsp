@@ -103,11 +103,11 @@ if (offeringEntry != null) {
 	startDateYear = ParamUtil.getInteger(request, offeringEntryId + "startDateYear");
 
 	if ((startDateDay > 0) && (startDateMonth >= 0) && (startDateYear > 0)) {
-		Calendar cal = Calendar.getInstance(timeZone, locale);
+		Calendar calendar = Calendar.getInstance(timeZone, locale);
 
-		cal.set(startDateYear, startDateMonth, startDateDay);
+		calendar.set(startDateYear, startDateMonth, startDateDay);
 
-		startDate = cal.getTime();
+		startDate = calendar.getTime();
 	}
 	else if (licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER) || licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER)) {
 		startDate = new Date();
@@ -363,7 +363,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 										for (LicenseEntry curLicenseEntry : licenseEntries) {
 									%>
 
-											<aui:option selected="<%= curLicenseEntry.getLicenseEntryId() == licenseEntryId %>" value="<%= curLicenseEntry.getLicenseEntryId() %>"><%= curLicenseEntry.getName() %> (<%= LanguageUtil.get(pageContext, curLicenseEntry.getType()) %>)</aui:option>
+											<aui:option selected="<%= curLicenseEntry.getLicenseEntryId() == licenseEntryId %>" value="<%= curLicenseEntry.getLicenseEntryId() %>"><%= curLicenseEntry.getName() %> (<%= LanguageUtil.get(request, curLicenseEntry.getType()) %>)</aui:option>
 
 									<%
 										}
@@ -383,26 +383,26 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 
 			<div class="callout-a">
 				<div class="callout-content">
+
+					<%
+					List<OfferingEntryGroup> offeringEntryGroups = new ArrayList<OfferingEntryGroup>();
+
+					if ((accountEntry != null) && (productVersion >= 0) && (productEntry != null) && (licenseEntry != null)) {
+						LinkedHashMap params = new LinkedHashMap();
+
+						params.put("validLicense", new Long[] {productEntryId, productEntryId});
+						params.put("version", ProductEntryConstants.getMajorVersion(productVersion));
+
+						offeringEntryGroups = SupportUtil.getOfferingEntryGroups(0, accountEntryId, new int[] {OfferingEntryConstants.TYPE_REGULAR, OfferingEntryConstants.TYPE_SUBSCRIPTION}, new int[0], 0, 0, 0, 0, 0, 0, params, true);
+					}
+					%>
+
 					<liferay-ui:search-container
 						delta="<%= 10 %>"
 						headerNames="start-date,lifetime,license-keys-available"
 						iteratorURL="<%= portletURL %>"
 						total="<%= offeringEntryGroups.size() %>"
 					>
-
-						<%
-						List<OfferingEntryGroup> offeringEntryGroups = new ArrayList<OfferingEntryGroup>();
-
-						if ((accountEntry != null) && (productVersion >= 0) && (productEntry != null) && (licenseEntry != null)) {
-							LinkedHashMap params = new LinkedHashMap();
-
-							params.put("validLicense", new Long[] {productEntryId, productEntryId});
-							params.put("version", ProductEntryConstants.getMajorVersion(productVersion));
-
-							offeringEntryGroups = SupportUtil.getOfferingEntryGroups(0, accountEntryId, new int[] {OfferingEntryConstants.TYPE_REGULAR, OfferingEntryConstants.TYPE_SUBSCRIPTION}, new int[0], 0, 0, 0, 0, 0, 0, params, true);
-						}
-						%>
-
 						<liferay-ui:search-container-results
 							results="<%= ListUtil.subList(offeringEntryGroups, searchContainer.getStart(), searchContainer.getEnd()) %>"
 						/>
@@ -445,8 +445,13 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 									<c:when test="<%= (availableOfferingEntry != null) && hasUpdateAdmin %>">
 
 										<%
-										Date firstEnabledDate = CalendarFactoryUtil.getCalendar(2010, 1, 1);
-										Date lastEnabledDate = CalendarFactoryUtil.getCalendar(2050, 1, 1);
+										Calendar calendar = CalendarFactoryUtil.getCalendar(2010, 1, 1);
+
+										Date firstEnabledDate = calendar.getTime();
+
+										calendar = CalendarFactoryUtil.getCalendar(2050, 1, 1);
+
+										Date lastEnabledDate = calendar.getTime();
 										%>
 
 										<liferay-ui:input-date
@@ -483,7 +488,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 								<%= (offeringEntryGroup.getLicenseLifetime() / Time.DAY) + " Days" %>
 
 								<c:if test="<%= offeringEntryGroup.getType() == OfferingEntryConstants.TYPE_SUBSCRIPTION %>">
-									- <%= LanguageUtil.get(pageContext, OfferingEntryConstants.getTypeLabel(offeringEntryGroup.getType())) %>
+									- <%= LanguageUtil.get(request, OfferingEntryConstants.getTypeLabel(offeringEntryGroup.getType())) %>
 								</c:if>
 							</liferay-ui:search-container-column-text>
 
@@ -604,7 +609,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 						<div class="content-column-content middle-column">
 							<span class="txt-b txt-up"><liferay-ui:message key="type" />:</span>
 
-							<%= HtmlUtil.escape(LanguageUtil.get(pageContext, licenseEntryType)) %>
+							<%= HtmlUtil.escape(LanguageUtil.get(request, licenseEntryType)) %>
 
 							<aui:input name="licenseEntryId" type="hidden" value="<%= licenseEntryId %>" />
 
@@ -620,7 +625,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 						<div class="content-column-content right-column">
 							<span class="txt-b txt-up"><liferay-ui:message key="version" />:</span>
 
-							<%= LanguageUtil.get(pageContext, LicenseKeyConstants.getProductVersionLabel(productVersion)) %>
+							<%= LanguageUtil.get(request, LicenseKeyConstants.getProductVersionLabel(productVersion)) %>
 
 							<aui:input name="productVersion" type="hidden" value="<%= productVersion %>" />
 
@@ -637,7 +642,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 							<div class="content-column-content left-column">
 								<span class="txt-b txt-up"><liferay-ui:message key="maximum-concurrent-users" />:</span>
 
-								<%= LanguageUtil.get(pageContext, offeringDefinition.getMaxConcurrentUsersLabel()) %>
+								<%= LanguageUtil.get(request, offeringDefinition.getMaxConcurrentUsersLabel()) %>
 							</div>
 						</div>
 
@@ -645,7 +650,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 							<div class="content-column-content right-column">
 								<span class="txt-b txt-up"><liferay-ui:message key="maximum-users" />:</span>
 
-								<%= LanguageUtil.get(pageContext, offeringDefinition.getMaxUsersLabel()) %>
+								<%= LanguageUtil.get(request, offeringDefinition.getMaxUsersLabel()) %>
 							</div>
 						</div>
 					</c:if>

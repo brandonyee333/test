@@ -26,7 +26,7 @@
 		</c:otherwise>
 	</c:choose>
 
-	<portlet:namespace />selectPortalVersion(envLFR, <%= envAS %>, '<%= LanguageUtil.get(pageContext, TicketEntryConstants.getEnvLabel(envAS)) %>', <%= envBrowser %>, '<%= LanguageUtil.get(pageContext, TicketEntryConstants.getEnvLabel(envBrowser)) %>', <%= envCS %>, '<%= LanguageUtil.get(pageContext, TicketEntryConstants.getEnvLabel(envCS)) %>', <%= envDB %>, '<%= LanguageUtil.get(pageContext, TicketEntryConstants.getEnvLabel(envDB)) %>', <%= envJVM %>, '<%= LanguageUtil.get(pageContext, TicketEntryConstants.getEnvLabel(envJVM)) %>', <%= envOS %>, '<%= LanguageUtil.get(pageContext, TicketEntryConstants.getEnvLabel(envOS)) %>', '<%= HtmlUtil.escapeJS(envSearch) %>');
+	<portlet:namespace />selectPortalVersion(envLFR, <%= envAS %>, '<%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envAS)) %>', <%= envBrowser %>, '<%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envBrowser)) %>', <%= envCS %>, '<%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envCS)) %>', <%= envDB %>, '<%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envDB)) %>', <%= envJVM %>, '<%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envJVM)) %>', <%= envOS %>, '<%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envOS)) %>', '<%= HtmlUtil.escapeJS(envSearch) %>');
 </aui:script>
 
 <aui:script>
@@ -192,7 +192,7 @@
 				}
 
 				if (value < <%= ProductEntryConstants.PORTAL_VERSION_6_2_10 %>) {
-					name += ' (' + '<%= LanguageUtil.get(pageContext, "limited") %>' + ')';
+					name += ' (' + '<%= LanguageUtil.get(request, "limited") %>' + ')';
 				}
 
 				selectOptions.push('<option value="' + value + '">' + name + '</option>');

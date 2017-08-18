@@ -54,7 +54,6 @@ boolean supportTickets = BeanParamUtil.getBoolean(offeringDefinition, request, "
 	/>
 
 	<liferay-ui:error exception="<%= DuplicateOfferingDefinitionException.class %>" message="the-offering-already-exists" />
-	<liferay-ui:error exception="<%= NoSuchCurrencyEntryException.class %>" message="please-select-a-currency" />
 	<liferay-ui:error exception="<%= RequiredOfferingDefinitionException.class %>" message="you-cannot-modify-this-offering" />
 
 	<table class="lfr-table">

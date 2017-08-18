@@ -74,7 +74,7 @@ if ((productEntry != null) && Validator.isNull(dossieraIdMappings)) {
 					for (int curType : ProductEntryConstants.TYPES) {
 					%>
 
-						<option <%= (type == curType) ? "selected" : "" %> value="<%= curType %>"><%= LanguageUtil.get(pageContext, ProductEntryConstants.getTypeLabel(curType)) %></option>
+						<option <%= (type == curType) ? "selected" : "" %> value="<%= curType %>"><%= LanguageUtil.get(request, ProductEntryConstants.getTypeLabel(curType)) %></option>
 
 					<%
 					}
@@ -95,7 +95,7 @@ if ((productEntry != null) && Validator.isNull(dossieraIdMappings)) {
 					for (int i = 1; i <= 6; i++) {
 					%>
 
-						<option <%= (environment == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(pageContext, ProductEntryConstants.getEnvironmentLabel(i)) %></option>
+						<option <%= (environment == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(request, ProductEntryConstants.getEnvironmentLabel(i)) %></option>
 
 					<%
 					}

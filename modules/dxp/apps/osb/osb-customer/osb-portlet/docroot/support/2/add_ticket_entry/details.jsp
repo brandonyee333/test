@@ -33,7 +33,7 @@ String description = ParamUtil.getString(request, "description");
 		</h2>
 
 		<div>
-			<aui:input data-field-required-status="<%= false %>" field-required-message='<%= HtmlUtil.escapeAttribute(LanguageUtil.get(pageContext, "please-enter-a-summary-of-the-issue")) %>' maxLength='<%= ModelHintsUtil.getMaxLength(TicketEntry.class.getName(), "subject") %>' name="subject" type="text" value="<%= subject %>" />
+			<aui:input data-field-required-status="<%= false %>" field-required-message='<%= HtmlUtil.escapeAttribute(LanguageUtil.get(request, "please-enter-a-summary-of-the-issue")) %>' maxLength='<%= ModelHintsUtil.getMaxLength(TicketEntry.class.getName(), "subject") %>' name="subject" type="text" value="<%= subject %>" />
 		</div>
 	</div>
 
@@ -51,7 +51,7 @@ String description = ParamUtil.getString(request, "description");
 				<liferay-util:param name="content" value="<%= description %>" />
 				<liferay-util:param name="editorId" value="description" />
 				<liferay-util:param name="fieldRequired" value="<%= Boolean.TRUE.toString() %>" />
-				<liferay-util:param name="fieldRequiredMessage" value='<%= LanguageUtil.get(pageContext, "please-enter-a-description-of-the-issue") %>' />
+				<liferay-util:param name="fieldRequiredMessage" value='<%= LanguageUtil.get(request, "please-enter-a-description-of-the-issue") %>' />
 				<liferay-util:param name="name" value="description" />
 				<liferay-util:param name="height" value='<%= (component != TicketEntryConstants.COMPONENT_LICENSE) ? "300" : "" %>' />
 			</liferay-util:include>

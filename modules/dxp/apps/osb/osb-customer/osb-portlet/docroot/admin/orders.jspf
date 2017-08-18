@@ -86,7 +86,7 @@ String redirect = ParamUtil.getString(request, "redirect", searchURL.toString())
 				href="<%= rowURL %>"
 				name="status"
 			>
-				<%= LanguageUtil.get(pageContext, orderEntry.getStatusLabel()) %>
+				<%= LanguageUtil.get(request, orderEntry.getStatusLabel()) %>
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-jsp

@@ -147,7 +147,7 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 						<div class="account-column column tier" <%= columnJS %>>
 							<div class="search-detail">
 								<span title="<%= HtmlUtil.escapeAttribute(accountEntry.getName()) %>">
-									<%= LanguageUtil.get(pageContext, AccountEntryConstants.getTierLabel(accountEntry.getTier())) %>
+									<%= LanguageUtil.get(request, AccountEntryConstants.getTierLabel(accountEntry.getTier())) %>
 								</span>
 							</div>
 						</div>
@@ -165,7 +165,7 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 						<div class="account-column column status" <%= columnJS %>>
 							<div class="search-detail">
 								<span title="<%= HtmlUtil.escapeAttribute(accountEntry.getName()) %>">
-									<%= LanguageUtil.get(pageContext, accountEntry.getStatusLabel()) %>
+									<%= LanguageUtil.get(request, accountEntry.getStatusLabel()) %>
 								</span>
 							</div>
 						</div>
@@ -192,7 +192,7 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 
 				<div class="taglib-page-iterator">
 					<div class="search-results">
-						<%= LanguageUtil.format(pageContext, "showing-x-x", new Object[] {numberFormat.format(start + 1), numberFormat.format(end)}) %>
+						<%= LanguageUtil.format(request, "showing-x-x", new Object[] {numberFormat.format(start + 1), numberFormat.format(end)}) %>
 					</div>
 
 					<div class="search-pages">
@@ -230,6 +230,6 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 		</div>
 	</c:when>
 	<c:otherwise>
-		<span class="portlet-msg-info"><%= LanguageUtil.get(pageContext, "no-projects-were-found") %></span>
+		<span class="portlet-msg-info"><%= LanguageUtil.get(request, "no-projects-were-found") %></span>
 	</c:otherwise>
 </c:choose>

@@ -141,13 +141,13 @@ if (offeringEntryId > 0) {
 
 		if (!field || (field == 'portalExt')) {
 			if (!<portlet:namespace />validateFile('portalExt')) {
-				portalExtMessage.setContent('<%= UnicodeLanguageUtil.format(pageContext, "please-upload-a-x-file", "portal-ext") %>');
+				portalExtMessage.setContent('<%= UnicodeLanguageUtil.format(request, "please-upload-a-x-file", "portal-ext") %>');
 				portalExtMessage.show();
 
 				node = portalExtMessage;
 			}
 			else if (!<portlet:namespace />validateFileConfirmed('portalExt')) {
-				portalExtMessage.setContent('<%= UnicodeLanguageUtil.format(pageContext, "please-confirm-the-current-x-attachment", "portal-ext") %>');
+				portalExtMessage.setContent('<%= UnicodeLanguageUtil.format(request, "please-confirm-the-current-x-attachment", "portal-ext") %>');
 				portalExtMessage.show();
 
 				node = portalExtMessage;
@@ -159,13 +159,13 @@ if (offeringEntryId > 0) {
 
 		if (!field || (field == 'patchLevel')) {
 			if (!<portlet:namespace />validateFile('patchLevel')) {
-				patchLevelMessage.setContent('<%= UnicodeLanguageUtil.format(pageContext, "please-upload-a-x-file", "patch-level") %>');
+				patchLevelMessage.setContent('<%= UnicodeLanguageUtil.format(request, "please-upload-a-x-file", "patch-level") %>');
 				patchLevelMessage.show();
 
 				node = patchLevelMessage;
 			}
 			else if (!<portlet:namespace />validateFileConfirmed('patchLevel')) {
-				patchLevelMessage.setContent('<%= UnicodeLanguageUtil.format(pageContext, "please-confirm-the-current-x-attachment", "patch-level") %>');
+				patchLevelMessage.setContent('<%= UnicodeLanguageUtil.format(request, "please-confirm-the-current-x-attachment", "patch-level") %>');
 				patchLevelMessage.show();
 
 				node = patchLevelMessage;

@@ -81,7 +81,7 @@
 			<div class="content-column-content middle-column">
 				<span class="txt-b txt-up"><liferay-ui:message key="type" />:</span>
 
-				<%= LanguageUtil.get(pageContext, licenseEntryType) %>
+				<%= LanguageUtil.get(request, licenseEntryType) %>
 
 				<br />
 
@@ -158,7 +158,7 @@
 				<div class="content-column-content left-column">
 					<span class="txt-b txt-up"><liferay-ui:message key="maximum-concurrent-users" />:</span>
 
-					<%= LanguageUtil.get(pageContext, OfferingDefinitionConstants.getMaxConcurrentUsersLabel(licenseKey.getMaxConcurrentUsers())) %>
+					<%= LanguageUtil.get(request, OfferingDefinitionConstants.getMaxConcurrentUsersLabel(licenseKey.getMaxConcurrentUsers())) %>
 				</div>
 			</div>
 
@@ -166,7 +166,7 @@
 				<div class="content-column-content right-column">
 					<span class="txt-b txt-up"><liferay-ui:message key="maximum-users" />:</span>
 
-					<%= LanguageUtil.get(pageContext, OfferingDefinitionConstants.getMaxUsersLabel(licenseKey.getMaxUsers())) %>
+					<%= LanguageUtil.get(request, OfferingDefinitionConstants.getMaxUsersLabel(licenseKey.getMaxUsers())) %>
 				</div>
 			</div>
 		</c:if>
@@ -331,10 +331,10 @@
 						String url = "location.href = '" + HttpUtil.encodeURL(activateLicenseKeyURL.toString()) + "'";
 
 						if (clusterLicenseKey.isActive()) {
-							url = "javascript:if (confirm('" + UnicodeLanguageUtil.get(pageContext, "are-you-sure-you-want-to-deactivate-this-license-key") + "')) { " + url + " } else { self.focus(); }";
+							url = "javascript:if (confirm('" + UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-deactivate-this-license-key") + "')) { " + url + " } else { self.focus(); }";
 						}
 						else {
-							url = "javascript:if (confirm('" + UnicodeLanguageUtil.get(pageContext, "are-you-sure-you-want-to-activate-this-license-key") + "')) { " + url + " } else { self.focus(); }";
+							url = "javascript:if (confirm('" + UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-activate-this-license-key") + "')) { " + url + " } else { self.focus(); }";
 						}
 						%>
 
@@ -452,7 +452,7 @@
 				<br />
 
 				<div>
-					<c:if test="<%= licenseKey.isActive() && (licenseKey.getLicenseVersion() >= 2) || licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) || licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER)) %>">
+					<c:if test="<%= licenseKey.isActive() && (licenseKey.getLicenseVersion() >= 2) || licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) || licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER) %>">
 						<portlet:resourceURL id="licenseKey" var="downloadLicenseFileURL">
 							<portlet:param name="mvcPath" value="/license/edit_license_key_set.jsp" />
 							<portlet:param name="redirect" value="<%= currentURL %>" />
@@ -513,10 +513,10 @@
 						String url = "location.href = '" + HttpUtil.encodeURL(activateLicenseKeyURL.toString()) + "'";
 
 						if (licenseKey.isActive()) {
-							url = "javascript:if (confirm('" + UnicodeLanguageUtil.get(pageContext, "are-you-sure-you-want-to-deactivate-this-license-key") + "')) { " + url + " } else { self.focus(); }";
+							url = "javascript:if (confirm('" + UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-deactivate-this-license-key") + "')) { " + url + " } else { self.focus(); }";
 						}
 						else {
-							url = "javascript:if (confirm('" + UnicodeLanguageUtil.get(pageContext, "are-you-sure-you-want-to-activate-this-license-key") + "')) { " + url + " } else { self.focus(); }";
+							url = "javascript:if (confirm('" + UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-activate-this-license-key") + "')) { " + url + " } else { self.focus(); }";
 						}
 						%>
 
@@ -535,16 +535,6 @@
 							<div class="fl">
 								<liferay-ui:message key="start-date" />:
 							</div>
-
-							<%
-							Date firstEnabledDate = calendar.clone();
-
-							firstEnabledDate.add(Calendar.YEAR, -1)
-
-							Date lastEnabledDate = calendar.clone();
-
-							lastEnabledDate.add(Calendar.YEAR, 3)
-							%>
 
 							<liferay-ui:input-date
 								dayParam='<%= "startDay_" + licenseKey.getLicenseKeyId() %>'

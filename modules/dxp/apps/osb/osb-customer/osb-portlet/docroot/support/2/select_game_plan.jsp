@@ -31,7 +31,9 @@ String gamePlan = GetterUtil.get(gamePlanMap.get(locale), gamePlanMap.get(Locale
 		<aui:select inlineField="true" label="language" name="languageId" onChange='<%= renderResponse.getNamespace() + "updateLanguage(this.value);" %>'>
 
 			<%
-			Locale[] locales = LanguageUtil.getAvailableLocales();
+			Set<Locale> localesSet = LanguageUtil.getAvailableLocales();
+
+			Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 
 			for (int i = 0; i < locales.length; i++) {
 			%>

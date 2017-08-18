@@ -15,13 +15,18 @@
 --%>
 
 <%
-themeDisplay.setIncludeServiceJs(true);
+//TODO no direct replacement for setIncludeServiceJS
+//themeDisplay.setIncludeServiceJs(true);
 
-Calendar firstEnabledDate = CalendarFactoryUtil.getCalendar(2010, 1, 1);
+Calendar calendar = CalendarFactoryUtil.getCalendar(2010, 1, 1);
 
-Calendar lastEnabledDate = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
+Date firstEnabledDate = calendar.getTime();
 
-lastEnabledDate.add(Calendar.YEAR, 1);
+calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
+
+calendar.add(Calendar.YEAR, 1);
+
+Date lastEnabledDate = calendar.getTime();
 %>
 
 <div class="callout-shadowed container">
@@ -88,7 +93,7 @@ lastEnabledDate.add(Calendar.YEAR, 1);
 						for (int status : OrderEntryConstants.STATUSES) {
 						%>
 
-							<option <%= ArrayUtil.contains(displayTerms.getStatuses(), status) ? "selected" : "" %> value="<%= status %>"><%= LanguageUtil.get(pageContext, WorkflowConstants.getStatusLabel(status)) %></option>
+							<option <%= ArrayUtil.contains(displayTerms.getStatuses(), status) ? "selected" : "" %> value="<%= status %>"><%= LanguageUtil.get(request, WorkflowConstants.getStatusLabel(status)) %></option>
 
 						<%
 						}

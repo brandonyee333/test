@@ -59,10 +59,10 @@
 				<liferay-ui:search-container
 					emptyResultsMessage="there-are-no-links"
 					headerNames="url"
+					total="<%= accountLinks.size() %>"
 				>
 					<liferay-ui:search-container-results
 						results="<%= accountLinks %>"
-						total="<%= accountLinks.size() %>"
 					/>
 
 					<liferay-ui:search-container-row

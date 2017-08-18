@@ -46,7 +46,7 @@ String selectAll = "javascript:";
 		>
 
 			<%
-			String languageLabel = LanguageUtil.get(pageContext, AccountEntryConstants.getLanguageLabel(languageId));
+			String languageLabel = LanguageUtil.get(request, AccountEntryConstants.getLanguageLabel(languageId));
 
 			StringBuilder sb = new StringBuilder();
 

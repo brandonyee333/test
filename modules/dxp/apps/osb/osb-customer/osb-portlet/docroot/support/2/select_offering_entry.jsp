@@ -106,23 +106,23 @@ boolean addTicketPermission = OSBAccountEntryPermission.contains(permissionCheck
 			</h2>
 
 			<div>
+
+				<%
+				LinkedHashMap params = new LinkedHashMap();
+
+				params.put("validTicket", StringPool.BLANK);
+
+				List<OfferingEntryGroup> offeringEntryGroups = SupportUtil.getOfferingEntryGroups(0, accountEntryId, new int[0], new int[0], 0, 0, 0, 0, 0, 0, params, true);
+				%>
+
 				<liferay-ui:search-container
 					delta="<%= 10 %>"
 					headerNames="product,support,start-date,support-end-date,tickets-used"
 					iteratorURL="<%= portletURL %>"
+					total="<%= offeringEntryGroups.size() %>"
 				>
-
-					<%
-					LinkedHashMap params = new LinkedHashMap();
-
-					params.put("validTicket", StringPool.BLANK);
-
-					List<OfferingEntryGroup> offeringEntryGroups = SupportUtil.getOfferingEntryGroups(0, accountEntryId, new int[0], new int[0], 0, 0, 0, 0, 0, 0, params, true);
-					%>
-
 					<liferay-ui:search-container-results
 						results="<%= ListUtil.subList(offeringEntryGroups, searchContainer.getStart(), searchContainer.getEnd()) %>"
-						total="<%= offeringEntryGroups.size() %>"
 					/>
 
 					<liferay-ui:search-container-row
@@ -190,7 +190,7 @@ boolean addTicketPermission = OSBAccountEntryPermission.contains(permissionCheck
 							href="<%= rowHREF %>"
 							name="tickets-used"
 						>
-							<%= offeringEntryGroup.getTicketEntriesCount() %> / <%= offeringEntryGroup.isSupportTickets() ? LanguageUtil.get(pageContext, "unlimited") : "0" %>
+							<%= offeringEntryGroup.getTicketEntriesCount() %> / <%= offeringEntryGroup.isSupportTickets() ? LanguageUtil.get(request, "unlimited") : "0" %>
 						</liferay-ui:search-container-column-text>
 
 						<liferay-ui:search-container-column-text

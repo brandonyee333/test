@@ -146,10 +146,10 @@ if (supportRegion != null) {
 		<liferay-ui:search-container
 			headerNames="name"
 			id="supportTeam"
+			total="<%= supportTeams.size() %>"
 		>
 			<liferay-ui:search-container-results
 				results="<%= supportTeams %>"
-				total="<%= supportTeams.size() %>"
 			/>
 
 			<liferay-ui:search-container-row

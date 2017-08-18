@@ -102,11 +102,11 @@
 
 						// Size
 
-						row.addText(TextFormatter.formatKB((double)fileSize, locale) + "k", rowURL.toString());
+						row.addText(TextFormatter.formatStorageSize((double)fileSize, locale) + "k", rowURL.toString());
 
 						// Type
 
-						row.addText(LanguageUtil.get(pageContext, accountAttachment.getTypeLabel()), rowURL.toString());
+						row.addText(LanguageUtil.get(request, accountAttachment.getTypeLabel()), rowURL.toString());
 
 						// Attached by
 
@@ -192,7 +192,7 @@
 						var validExtensions = ['<%= StringUtil.merge(PrefsPropsUtil.getStringArray(PropsKeys.DL_FILE_EXTENSIONS, StringPool.COMMA), "', '") %>'];
 
 						if ((A.Array.indexOf(validExtensions, '*') == -1) && (A.Array.indexOf(validExtensions, extension) == -1)) {
-							alert('<%= UnicodeLanguageUtil.get(pageContext, "document-names-must-end-with-one-of-the-following-extensions") %> <%= StringUtil.merge(PrefsPropsUtil.getStringArray(PropsKeys.DL_FILE_EXTENSIONS, StringPool.COMMA), StringPool.COMMA_AND_SPACE) %>');
+							alert('<%= UnicodeLanguageUtil.get(request, "document-names-must-end-with-one-of-the-following-extensions") %> <%= StringUtil.merge(PrefsPropsUtil.getStringArray(PropsKeys.DL_FILE_EXTENSIONS, StringPool.COMMA), StringPool.COMMA_AND_SPACE) %>');
 
 							fileField.val('');
 						}

@@ -28,7 +28,7 @@ String stepsToUpgrade = ParamUtil.getString(request, "stepsToUpgrade", GetterUti
 <div class="aui-helper-clearfix single-line">
 	<span class="txt-sb"><liferay-ui:message key="how-is-the-document-library-server-persisting-documents" /></span>
 
-	<%= LanguageUtil.get(pageContext, TicketEntryConstants.getDocLibPersistenceLabel(docLibPersistence)) %>
+	<%= LanguageUtil.get(request, TicketEntryConstants.getDocLibPersistenceLabel(docLibPersistence)) %>
 </div>
 
 <div class="single-line">

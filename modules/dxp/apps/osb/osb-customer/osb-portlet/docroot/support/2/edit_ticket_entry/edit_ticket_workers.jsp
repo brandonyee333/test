@@ -100,10 +100,10 @@ portletURL.setParameter("ticketEntryId", String.valueOf(ticketEntryId));
 					headerNames="name,screen-name,email-address,role"
 					rowChecker="<%= rowChecker %>"
 					searchContainer="<%= userSearchContainer %>"
+					total="<%= userSearchContainer.getTotal() %>"
 				>
 					<liferay-ui:search-container-results
 						results="<%= userSearchContainer.getResults() %>"
-						total="<%= userSearchContainer.getTotal() %>"
 					/>
 
 					<liferay-ui:search-container-row
@@ -155,7 +155,7 @@ portletURL.setParameter("ticketEntryId", String.valueOf(ticketEntryId));
 								for (int i = 1; i <= 3; i++) {
 								%>
 
-									<option <%= (role == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(pageContext, TicketWorkerConstants.getRoleLabel(i)) %></option>
+									<option <%= (role == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(request, TicketWorkerConstants.getRoleLabel(i)) %></option>
 
 								<%
 								}

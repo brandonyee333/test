@@ -136,13 +136,13 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 				</aui:select>
 			</c:when>
 			<c:otherwise>
-				<aui:select disabled="<%= true %>" id="fromEnvLFR">
+				<aui:select disabled="<%= true %>" name="fromEnvLFR">
 
 					<%
-					String optionLabel = LanguageUtil.get(pageContext, TicketEntryConstants.getEnvLabel(envLFR));
+					String optionLabel = LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envLFR));
 
 					if (limited) {
-						optionLabel += " (" + LanguageUtil.get(pageContext, "limited") + ")";
+						optionLabel += " (" + LanguageUtil.get(request, "limited") + ")";
 					}
 					%>
 
@@ -163,13 +163,13 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 
 		<c:choose>
 			<c:when test="<%= productEntry.isDigitalEnterprise() %>">
-				<aui:select disabled="<%= true %>" id="toEnvLFR">
+				<aui:select disabled="<%= true %>" name="toEnvLFR">
 
 					<%
-					String optionLabel = LanguageUtil.get(pageContext, TicketEntryConstants.getEnvLabel(envLFR));
+					String optionLabel = LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envLFR));
 
 					if (limited) {
-						optionLabel += " (" + LanguageUtil.get(pageContext, "limited") + ")";
+						optionLabel += " (" + LanguageUtil.get(request, "limited") + ")";
 					}
 					%>
 
@@ -185,8 +185,10 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 						<%
 						String previousNamePrefix = StringPool.BLANK;
 
+						long[] listTypesDeprecated = Arrays.stream(ProductEntryConstants.LIST_TYPES_DEPRECATED).asLongStream().toArray();
+
 						for (ListType envLFRType : envLFRTypes) {
-							if (ArrayUtil.contains(ProductEntryConstants.LIST_TYPES_DEPRECATED, envLFRType.getListTypeId())) {
+							if (ArrayUtil.contains(listTypesDeprecated, envLFRType.getListTypeId())) {
 								continue;
 							}
 
@@ -211,10 +213,10 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 								</c:if>
 
 								<%
-								String optionLabel = LanguageUtil.get(pageContext, envLFRType.getName());
+								String optionLabel = LanguageUtil.get(request, envLFRType.getName());
 
 								if (toEnvLFRLimited) {
-									optionLabel += " (" + LanguageUtil.get(pageContext, "limited") + ")";
+									optionLabel += " (" + LanguageUtil.get(request, "limited") + ")";
 								}
 								%>
 

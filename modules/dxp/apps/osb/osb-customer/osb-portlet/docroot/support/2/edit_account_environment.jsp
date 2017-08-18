@@ -141,7 +141,7 @@
 										for (Map.Entry<String, Long> entry : productEntryEnvironments.entrySet()) {
 										%>
 
-											<option <%= productEntryName.equals(entry.getKey()) ? "selected" : "" %> value="<%= entry.getValue() %>"><%= LanguageUtil.get(pageContext, entry.getKey()) %></option>
+											<option <%= productEntryName.equals(entry.getKey()) ? "selected" : "" %> value="<%= entry.getValue() %>"><%= LanguageUtil.get(request, entry.getKey()) %></option>
 
 										<%
 										}
@@ -172,8 +172,10 @@
 
 											String previousNamePrefix = StringPool.BLANK;
 
+											long[] listTypesDeprecated = Arrays.stream(ProductEntryConstants.LIST_TYPES_DEPRECATED).asLongStream().toArray();
+
 											for (ListType envLFRType : envLFRTypes) {
-												if ((envLFR != envLFRType.getListTypeId()) && ArrayUtil.contains(ProductEntryConstants.LIST_TYPES_DEPRECATED, envLFRType.getListTypeId())) {
+												if ((envLFR != envLFRType.getListTypeId()) && ArrayUtil.contains(listTypesDeprecated, envLFRType.getListTypeId())) {
 													continue;
 												}
 
@@ -186,7 +188,7 @@
 													<option disabled>--------</option>
 												</c:if>
 
-												<option <%= (envLFRType.getListTypeId() == envLFR) ? "selected" : "" %> value="<%= envLFRType.getListTypeId() %>"><%= LanguageUtil.get(pageContext, envLFRType.getName()) %></option>
+												<option <%= (envLFRType.getListTypeId() == envLFR) ? "selected" : "" %> value="<%= envLFRType.getListTypeId() %>"><%= LanguageUtil.get(request, envLFRType.getName()) %></option>
 
 											<%
 												previousNamePrefix = namePrefix;
@@ -324,7 +326,7 @@
 
 			<c:if test="<%= accountEnvironment != null %>">
 				<aui:script use="aui-base,aui-io">
-					<portlet:namespace />selectPortalVersion(<%= envLFR %>, <%= envAS %>, '<%= LanguageUtil.get(pageContext, AccountEnvironmentConstants.getEnvLabel(envAS)) %>', <%= envDB %>, '<%= LanguageUtil.get(pageContext, AccountEnvironmentConstants.getEnvLabel(envDB)) %>', <%= envJVM %>, '<%= LanguageUtil.get(pageContext, AccountEnvironmentConstants.getEnvLabel(envJVM)) %>', <%= envOS %>, '<%= LanguageUtil.get(pageContext, AccountEnvironmentConstants.getEnvLabel(envOS)) %>');
+					<portlet:namespace />selectPortalVersion(<%= envLFR %>, <%= envAS %>, '<%= LanguageUtil.get(request, AccountEnvironmentConstants.getEnvLabel(envAS)) %>', <%= envDB %>, '<%= LanguageUtil.get(request, AccountEnvironmentConstants.getEnvLabel(envDB)) %>', <%= envJVM %>, '<%= LanguageUtil.get(request, AccountEnvironmentConstants.getEnvLabel(envJVM)) %>', <%= envOS %>, '<%= LanguageUtil.get(request, AccountEnvironmentConstants.getEnvLabel(envOS)) %>');
 				</aui:script>
 			</c:if>
 

@@ -198,7 +198,7 @@
 																<portlet:param name="accountCallId" value="<%= String.valueOf(accountCall.getAccountCallId()) %>" />
 															</portlet:actionURL>
 
-															<input class="aui-button-input" onClick="javascript:if (confirm('<%= UnicodeLanguageUtil.get(pageContext, "are-you-sure-you-want-to-delete-this-call-log") %>')) { location.href='<%= deleteAccountCallURL %>'; } else { self.focus(); }" type="button" value="<liferay-ui:message key="delete" />" />
+															<input class="aui-button-input" onClick="javascript:if (confirm('<%= UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-delete-this-call-log") %>')) { location.href='<%= deleteAccountCallURL %>'; } else { self.focus(); }" type="button" value="<liferay-ui:message key="delete" />" />
 														</div>
 													</c:if>
 												</div>

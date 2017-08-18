@@ -221,7 +221,7 @@
 		var comments = document.getElementById('<portlet:namespace />lesaFeedbackComments').value;
 
 		if ((summary != '') || (comments != '')) {
-			var cancelEdit = confirm('<%= UnicodeLanguageUtil.get(pageContext, "are-you-sure-you-want-to-cancel-submitting-feedback") %>');
+			var cancelEdit = confirm('<%= UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-cancel-submitting-feedback") %>');
 
 			if (cancelEdit) {
 				dialog.hide();

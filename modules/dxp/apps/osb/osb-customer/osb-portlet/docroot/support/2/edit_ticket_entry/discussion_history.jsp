@@ -101,7 +101,7 @@ else {
 							&gt;
 
 							<span class="visibility-<%= auditEntry.getVisibilityLabel() %>">
-								<%= LanguageUtil.format(pageContext, "visible-to-x", auditEntry.getVisibilityLabel()) %>
+								<%= LanguageUtil.format(request, "visible-to-x", auditEntry.getVisibilityLabel()) %>
 							</span>
 						</c:if>
 					</c:if>

@@ -18,13 +18,13 @@
 boolean osbTrialPurchased = ExpandoValueLocalServiceUtil.getData(themeDisplay.getCompanyId(), User.class.getName(), "OSB", "osbTrialPurchased", user.getUserId(), false);
 %>
 
-<c:if test='<%= SessionMessages.contains(portletSession, "licenseKeySent") %>'>
+<c:if test='<%= SessionMessages.contains(request, "licenseKeySent") %>'>
 	<div class="portlet-msg-success">
-		<%= LanguageUtil.format(pageContext, "your-license-key-was-sent-to-x", SessionMessages.get(portletSession, "licenseKeySent")) %>
+		<%= LanguageUtil.format(request, "your-license-key-was-sent-to-x", SessionMessages.get(request, "licenseKeySent")) %>
 	</div>
 </c:if>
 
-<c:if test='<%= SessionMessages.contains(portletSession, "salesNotified") %>'>
+<c:if test='<%= SessionMessages.contains(request, "salesNotified") %>'>
 	<liferay-util:include page="/common/dialog.jsp" servletContext="<%= application %>">
 		<liferay-util:param name="border" value="<%= Boolean.TRUE.toString() %>" />
 		<liferay-util:param name="centered" value="<%= Boolean.TRUE.toString() %>" />
@@ -37,9 +37,13 @@ boolean osbTrialPurchased = ExpandoValueLocalServiceUtil.getData(themeDisplay.ge
 	</liferay-util:include>
 </c:if>
 
-<liferay-ui:success key="purchased" message='<%= LanguageUtil.format(pageContext, "a-sales-representative-will-contact-you-shortly-if-you-are-not-contacted-in-a-few-days-please-contact-sales", new String[] {"<a href=\"mailto:sales@liferay.com\">, "</a>"}) %>' translateMessage="<%= false %>" />
+<%
+String message = LanguageUtil.format(request, "a-sales-representative-will-contact-you-shortly-if-you-are-not-contacted-in-a-few-days-please-contact-sales", new String[] {"<a href=\"mailto:sales@liferay.com\">", "</a>"});
+%>
 
-<liferay-ui:error exception="<%= LicenseKeyRegistrationException.class %>" message='<%= LanguageUtil.format(pageContext, "you-must-agree-to-allow-liferay-to-contact-you-regarding-your-ee-trial-key", themeDisplay.getURLMyAccount() + "#_LFR_FN__2_notifications") %>' />
+<liferay-ui:success key="purchased" message="<%= message %>" translateMessage="<%= false %>" />
+
+<liferay-ui:error exception="<%= LicenseKeyRegistrationException.class %>" message='<%= LanguageUtil.format(request, "you-must-agree-to-allow-liferay-to-contact-you-regarding-your-ee-trial-key", themeDisplay.getURLMyAccount() + "#_LFR_FN__2_notifications") %>' />
 <liferay-ui:error exception="<%= OfferingEntryStatusException.class %>" message="you-have-reached-the-maximum-allowed-number-of-trial-keys" />
 
 <div class="callout-a">
@@ -47,9 +51,13 @@ boolean osbTrialPurchased = ExpandoValueLocalServiceUtil.getData(themeDisplay.ge
 		<div class="aui-helper-clearfix">
 			<div class="unit">
 				<p>
-					<strong><%= LanguageUtil.format(pageContext, "welcome-x", StringPool.SPACE + HtmlUtil.escape(user.getFullName())) %></strong>
+					<strong><%= LanguageUtil.format(request, "welcome-x", StringPool.SPACE + HtmlUtil.escape(user.getFullName())) %></strong>
 
-					<%= LanguageUtil.format(pageContext, "license-management-help", "<a href=\"mailto:sales@liferay.com\">", "</a>") %>
+					<%
+					String[] arguments = {"<a href=\"mailto:sales@liferay.com\">", "</a>"};
+					%>
+
+					<%= LanguageUtil.format(request, "license-management-help", arguments) %>
 				</p>
 			</div>
 		</div>
@@ -87,21 +95,21 @@ boolean osbTrialPurchased = ExpandoValueLocalServiceUtil.getData(themeDisplay.ge
 		</div>
 
 		<div class="license-customer">
+
+			<%
+			List<LicenseKey> licenseKeys = new ArrayList<LicenseKey>();
+
+			AccountEntry trialAccountEntry = AccountEntryLocalServiceUtil.fetchUserTrialAccountEntry(user.getUserId());
+
+			if (trialAccountEntry != null) {
+				licenseKeys = LicenseKeyLocalServiceUtil.getAccountEntryLicenseKeys(trialAccountEntry.getAccountEntryId());
+			}
+			%>
+
 			<liferay-ui:search-container
 				searchContainer="<%= new LicenseKeySearch(renderRequest, portletURL) %>"
 				total="<%= licenseKeys.size() %>"
 			>
-
-				<%
-				List<LicenseKey> licenseKeys = new ArrayList<LicenseKey>();
-
-				AccountEntry trialAccountEntry = AccountEntryLocalServiceUtil.fetchUserTrialAccountEntry(user.getUserId());
-
-				if (trialAccountEntry != null) {
-					licenseKeys = LicenseKeyLocalServiceUtil.getAccountEntryLicenseKeys(trialAccountEntry.getAccountEntryId());
-				}
-				%>
-
 				<liferay-ui:search-container-results
 					results="<%= licenseKeys %>"
 				/>

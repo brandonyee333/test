@@ -17,7 +17,7 @@
 <%@ include file="/support/2/init.jsp" %>
 
 <%
-Map<Integer, List<CorpProjectMessage>> corpProjectMessagesMap = CorpProjectMessageLocalServiceUtil.getCorpProjectMessagesMap(user.getUserId(), false, true);
+//Map<Integer, List<CorpProjectMessage>> corpProjectMessagesMap = CorpProjectMessageLocalServiceUtil.getCorpProjectMessagesMap(user.getUserId(), false, true);
 %>
 
 <div class="margin-container subscription-messages">
@@ -25,7 +25,7 @@ Map<Integer, List<CorpProjectMessage>> corpProjectMessagesMap = CorpProjectMessa
 		<liferay-ui:message key="liferay-subscription-messages" />
 	</h1>
 
-	<c:choose>
+	<%-- <c:choose>
 		<c:when test="<%= !corpProjectMessagesMap.isEmpty() %>">
 
 			<%
@@ -79,7 +79,7 @@ Map<Integer, List<CorpProjectMessage>> corpProjectMessagesMap = CorpProjectMessa
 				<liferay-ui:message key="there-are-no-messages-regarding-your-liferay-subscription-at-this-time" />
 			</div>
 		</c:otherwise>
-	</c:choose>
+	</c:choose> --%>
 </div>
 
 <aui:script>

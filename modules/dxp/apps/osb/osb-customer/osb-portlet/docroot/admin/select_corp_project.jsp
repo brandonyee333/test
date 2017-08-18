@@ -28,7 +28,7 @@ portletURL.setParameter("callback", callback);
 <aui:form method="post">
 	<liferay-ui:tabs names="projects" />
 
-	<liferay-ui:search-container
+	<%-- <liferay-ui:search-container
 		headerNames="name"
 		searchContainer="<%= new CorpProjectSearch(renderRequest, portletURL) %>"
 		total="<%= CorpProjectLocalServiceUtil.getCorpProjectsCount(searchTerms.getName()) %>"
@@ -79,5 +79,5 @@ portletURL.setParameter("callback", callback);
 		</liferay-ui:search-container-row>
 
 		<liferay-ui:search-iterator />
-	</liferay-ui:search-container>
+	</liferay-ui:search-container> --%>
 </aui:form>

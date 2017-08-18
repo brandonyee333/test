@@ -64,7 +64,7 @@ portletURL.setParameter("licenseKeySetId", String.valueOf(licenseKeySetId));
 
 	<div class="callout-a">
 		<div class="callout-content">
-			<%= HtmlUtil.escape(LanguageUtil.format(pageContext, "merge-help-x", licenseKeySet.getName())) %>
+			<%= HtmlUtil.escape(LanguageUtil.format(request, "merge-help-x", licenseKeySet.getName())) %>
 
 			<liferay-ui:search-container
 				headerNames="name"

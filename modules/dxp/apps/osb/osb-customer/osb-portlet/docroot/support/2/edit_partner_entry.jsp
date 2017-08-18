@@ -17,7 +17,8 @@
 <%@ include file="/support/2/init.jsp" %>
 
 <%
-themeDisplay.setIncludeServiceJs(true);
+// TODO no direct replacement for setIncludeServiceJs
+//themeDisplay.setIncludeServiceJs(true);
 
 String redirect = ParamUtil.getString(request, "redirect");
 

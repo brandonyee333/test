@@ -52,17 +52,17 @@ for (String productEntryName : accountEnvironmentsMap.keySet()) {
 					<div class="content-column-content left-column">
 						<span class="txt-b txt-up"><liferay-ui:message key="liferay-version" />:</span>
 
-						<%= LanguageUtil.get(pageContext, accountEnvironment.getEnvLFRLabel()) %>
+						<%= LanguageUtil.get(request, accountEnvironment.getEnvLFRLabel()) %>
 
 						<c:if test="<%= Validator.isNotNull(accountEnvironment.getSupportPhaseLabel()) %>">
-							<span class="support-phase-label">(<%= LanguageUtil.get(pageContext, accountEnvironment.getSupportPhaseLabel()) %>)</span>
+							<span class="support-phase-label">(<%= LanguageUtil.get(request, accountEnvironment.getSupportPhaseLabel()) %>)</span>
 						</c:if>
 
 						<br />
 
 						<span class="txt-b txt-up"><liferay-ui:message key="operating-system" />:</span>
 
-						<%= LanguageUtil.get(pageContext, accountEnvironment.getEnvOSLabel()) %>
+						<%= LanguageUtil.get(request, accountEnvironment.getEnvOSLabel()) %>
 
 						<c:if test="<%= Validator.isNotNull(accountEnvironment.getEnvOSCustom()) %>">
 							- <%= HtmlUtil.escape(accountEnvironment.getEnvOSCustom()) %>
@@ -74,13 +74,13 @@ for (String productEntryName : accountEnvironmentsMap.keySet()) {
 					<div class="content-column-content middle-column">
 						<span class="txt-b txt-up"><liferay-ui:message key="application-server" />:</span>
 
-						<%= LanguageUtil.get(pageContext, accountEnvironment.getEnvASLabel()) %>
+						<%= LanguageUtil.get(request, accountEnvironment.getEnvASLabel()) %>
 
 						<br />
 
 						<span class="txt-b txt-up"><liferay-ui:message key="java-virtual-machine" />:</span>
 
-						<%= LanguageUtil.get(pageContext, accountEnvironment.getEnvJVMLabel()) %>
+						<%= LanguageUtil.get(request, accountEnvironment.getEnvJVMLabel()) %>
 					</div>
 				</div>
 
@@ -88,7 +88,7 @@ for (String productEntryName : accountEnvironmentsMap.keySet()) {
 					<div class="content-column-content right-column">
 						<span class="txt-b txt-up"><liferay-ui:message key="database" />:</span>
 
-						<%= LanguageUtil.get(pageContext, accountEnvironment.getEnvDBLabel()) %>
+						<%= LanguageUtil.get(request, accountEnvironment.getEnvDBLabel()) %>
 					</div>
 				</div>
 			</div>
@@ -158,7 +158,7 @@ for (String productEntryName : accountEnvironmentsMap.keySet()) {
 						</portlet:actionURL>
 
 						<%
-						String deleteURL = "javascript:if (confirm('" + UnicodeLanguageUtil.get(pageContext, "are-you-sure-you-want-to-delete-this") +"')) { submitForm(document." + renderResponse.getNamespace() + "fm, '" + deleteAccountEnvironmentURL.toString() + "'); } else { return false; }";
+						String deleteURL = "javascript:if (confirm('" + UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-delete-this") +"')) { submitForm(document." + renderResponse.getNamespace() + "fm, '" + deleteAccountEnvironmentURL.toString() + "'); } else { return false; }";
 						%>
 
 						<input class="aui-button-input edit-button" onClick="<%= deleteURL %>" type="button" value="<liferay-ui:message key="delete" />" />

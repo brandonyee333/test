@@ -25,10 +25,12 @@ List<ListType> componentTypes = ListUtil.copy(ListTypeServiceUtil.getListTypes(T
 
 Iterator<ListType> itr = componentTypes.iterator();
 
+long[] componentsDeprecated = Arrays.stream(TicketEntryConstants.COMPONENTS_DEPRECATED).asLongStream().toArray();
+
 while (itr.hasNext()) {
 	ListType componentType = itr.next();
 
-	if (ArrayUtil.contains(TicketEntryConstants.COMPONENTS_DEPRECATED, componentType.getListTypeId())) {
+	if (ArrayUtil.contains(componentsDeprecated, componentType.getListTypeId())) {
 		itr.remove();
 	}
 }
@@ -65,7 +67,7 @@ String selectAll = "javascript:";
 			sb.append("', '");
 			sb.append(renderResponse.getNamespace());
 			sb.append("componentSearchContainer', ['");
-			sb.append(LanguageUtil.get(pageContext, componentType.getName()));
+			sb.append(LanguageUtil.get(request, componentType.getName()));
 			sb.append("']);");
 
 			selectAll += sb.toString();
@@ -77,7 +79,7 @@ String selectAll = "javascript:";
 				href="<%= rowHREF %>"
 				name="component"
 			>
-				<%= LanguageUtil.get(pageContext, componentType.getName()) %>
+				<%= LanguageUtil.get(request, componentType.getName()) %>
 			</liferay-ui:search-container-column-text>
 		</liferay-ui:search-container-row>
 

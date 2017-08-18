@@ -111,7 +111,7 @@ String languageId = BeanParamUtil.getString(supportResponse, request, "languageI
 								for (int severityResponse : _SEVERITY_RESPONSES) {
 								%>
 
-									<option <%= (severity1Response == severityResponse) ? "selected" : "" %> value="<%= severityResponse %>"><%= LanguageUtil.format(pageContext, "x-hours", severityResponse) %></option>
+									<option <%= (severity1Response == severityResponse) ? "selected" : "" %> value="<%= severityResponse %>"><%= LanguageUtil.format(request, "x-hours", severityResponse) %></option>
 
 								<%
 								}
@@ -130,7 +130,7 @@ String languageId = BeanParamUtil.getString(supportResponse, request, "languageI
 								for (int severityResolution : _SEVERITY_RESOLUTIONS) {
 								%>
 
-									<option <%= (severity1Resolution == severityResolution) ? "selected" : "" %> value="<%= severityResolution %>"><%= LanguageUtil.format(pageContext, "x-days", severityResolution) %></option>
+									<option <%= (severity1Resolution == severityResolution) ? "selected" : "" %> value="<%= severityResolution %>"><%= LanguageUtil.format(request, "x-days", severityResolution) %></option>
 
 								<%
 								}
@@ -160,7 +160,7 @@ String languageId = BeanParamUtil.getString(supportResponse, request, "languageI
 								for (int severityResponse : _SEVERITY_RESPONSES) {
 								%>
 
-									<option <%= (severity2Response == severityResponse) ? "selected" : "" %> value="<%= severityResponse %>"><%= LanguageUtil.format(pageContext, "x-hours", severityResponse) %></option>
+									<option <%= (severity2Response == severityResponse) ? "selected" : "" %> value="<%= severityResponse %>"><%= LanguageUtil.format(request, "x-hours", severityResponse) %></option>
 
 								<%
 								}
@@ -179,7 +179,7 @@ String languageId = BeanParamUtil.getString(supportResponse, request, "languageI
 								for (int severityResolution : _SEVERITY_RESOLUTIONS) {
 								%>
 
-									<option <%= (severity2Resolution == severityResolution) ? "selected" : "" %> value="<%= severityResolution %>"><%= LanguageUtil.format(pageContext, "x-days", severityResolution) %></option>
+									<option <%= (severity2Resolution == severityResolution) ? "selected" : "" %> value="<%= severityResolution %>"><%= LanguageUtil.format(request, "x-days", severityResolution) %></option>
 
 								<%
 								}
@@ -209,7 +209,7 @@ String languageId = BeanParamUtil.getString(supportResponse, request, "languageI
 								for (int severityResponse : _SEVERITY_RESPONSES) {
 								%>
 
-									<option <%= (severity3Response == severityResponse) ? "selected" : "" %> value="<%= severityResponse %>"><%= LanguageUtil.format(pageContext, "x-hours", severityResponse) %></option>
+									<option <%= (severity3Response == severityResponse) ? "selected" : "" %> value="<%= severityResponse %>"><%= LanguageUtil.format(request, "x-hours", severityResponse) %></option>
 
 								<%
 								}
@@ -228,7 +228,7 @@ String languageId = BeanParamUtil.getString(supportResponse, request, "languageI
 								for (int severityResolution : _SEVERITY_RESOLUTIONS) {
 								%>
 
-									<option <%= (severity3Resolution == severityResolution) ? "selected" : "" %> value="<%= severityResolution %>"><%= LanguageUtil.format(pageContext, "x-days", severityResolution) %></option>
+									<option <%= (severity3Resolution == severityResolution) ? "selected" : "" %> value="<%= severityResolution %>"><%= LanguageUtil.format(request, "x-days", severityResolution) %></option>
 
 								<%
 								}
