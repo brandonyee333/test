@@ -82,13 +82,11 @@ public class TicketCallLocalServiceImpl extends TicketCallLocalServiceBaseImpl {
 		ticketCall.setConfirmation(confirmation);
 		ticketCall.setInstructions(instructions);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		ticketCallPersistence.update(ticketCall, serviceContext);
+		ticketCallPersistence.update(ticketCall);
 
 		// Ticket comments
+
+		ServiceContext serviceContext = new ServiceContext();
 
 		serviceContext.setAttribute("auditEnabled", Boolean.FALSE);
 

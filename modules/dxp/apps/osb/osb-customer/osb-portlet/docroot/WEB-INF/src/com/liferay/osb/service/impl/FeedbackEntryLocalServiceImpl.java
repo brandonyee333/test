@@ -18,7 +18,6 @@ import com.liferay.osb.model.FeedbackEntry;
 import com.liferay.osb.service.base.FeedbackEntryLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.Date;
 
@@ -50,13 +49,7 @@ public class FeedbackEntryLocalServiceImpl
 		feedbackEntry.setSatisfied(satisfied);
 		feedbackEntry.setPageURL(pageURL);
 
-		//TODO implement serviceContext as needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		feedbackEntryPersistence.update(feedbackEntry, serviceContext);
-
-		return feedbackEntry;
+		return feedbackEntryPersistence.update(feedbackEntry);
 	}
 
 	public FeedbackEntry updateFeedbackEntry(
@@ -68,13 +61,7 @@ public class FeedbackEntryLocalServiceImpl
 
 		feedbackEntry.setComments(comments);
 
-		//TODO implement serviceContext as needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		feedbackEntryPersistence.update(feedbackEntry, serviceContext);
-
-		return feedbackEntry;
+		return feedbackEntryPersistence.update(feedbackEntry);
 	}
 
 }

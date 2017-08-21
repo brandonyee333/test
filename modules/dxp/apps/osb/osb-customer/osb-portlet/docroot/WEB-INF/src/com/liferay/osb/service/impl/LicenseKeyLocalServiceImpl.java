@@ -58,7 +58,6 @@ import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -238,11 +237,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			licenseKey.setComplimentary(false);
 			licenseKey.setActive(true);
 
-			//TODO implement serviceContext how needed
-
-			ServiceContext serviceContext = new ServiceContext();
-
-			licenseKeyPersistence.update(licenseKey, serviceContext);
+			licenseKeyPersistence.update(licenseKey);
 		}
 
 		return licenseKey;
@@ -614,11 +609,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		licenseKey.setActive(false);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		licenseKeyPersistence.update(licenseKey, serviceContext);
+		licenseKeyPersistence.update(licenseKey);
 
 		AccountEntry accountEntry = licenseKey.getAccountEntry();
 
@@ -654,9 +645,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			offeringEntry.setSupportEndDate(
 				renewedLicenseKey.getExpirationDate());
 
-			//TODO implement serviceContext how needed
-
-			offeringEntryPersistence.update(offeringEntry, serviceContext);
+			offeringEntryPersistence.update(offeringEntry);
 
 			User trialUser = userPersistence.findByPrimaryKey(
 				accountEntry.getUserId());
@@ -695,11 +684,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		lastLicenseKey.setActive(false);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		licenseKeyPersistence.update(lastLicenseKey, serviceContext);
+		licenseKeyPersistence.update(lastLicenseKey);
 
 		LicenseKey licenseKey = addLicenseKey(
 			userId, licenseKeySet, "Trial Licenses", offeringEntry,
@@ -712,7 +697,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		offeringEntry.setSupportEndDate(licenseKey.getExpirationDate());
 
-		offeringEntryPersistence.update(offeringEntry, serviceContext);
+		offeringEntryPersistence.update(offeringEntry);
 
 		sendRegisteredEmail(
 			user.getEmailAddress(), user.getFullName(), licenseKey);
@@ -921,11 +906,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		licenseKey.setAssetReceiptLicenseId(assetReceiptLicenseId);
 		licenseKey.setActive(active);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		licenseKeyPersistence.update(licenseKey, serviceContext);
+		licenseKeyPersistence.update(licenseKey);
 	}
 
 	public void updateLicenseKey(
@@ -940,11 +921,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		licenseKey.setOfferingEntryId(offeringEntryId);
 		licenseKey.setOrderEntryId(orderEntryId);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		licenseKeyPersistence.update(licenseKey, serviceContext);
+		licenseKeyPersistence.update(licenseKey);
 	}
 
 	public void updateLicenseKey(
@@ -1190,11 +1167,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		licenseKey.setComplimentary(complimentary);
 		licenseKey.setActive(active);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		return licenseKeyPersistence.update(licenseKey, serviceContext);
+		return licenseKeyPersistence.update(licenseKey);
 	}
 
 	protected LicenseKey doAddLicenseKeyVersion3_4(
@@ -1376,11 +1349,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			clusterLicenseKey.setClusterId(clusterId);
 			clusterLicenseKey.setActive(active);
 
-			//TODO implement serviceContext how needed
-
-			ServiceContext serviceContext = new ServiceContext();
-
-			licenseKeyPersistence.update(clusterLicenseKey, serviceContext);
+			licenseKeyPersistence.update(clusterLicenseKey);
 		}
 	}
 
@@ -1430,11 +1399,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				offeringEntry.getSupportResponseId());
 			clusterLicenseKey.setClusterId(clusterId);
 
-			//TODO implement serviceContext how needed
-
-			ServiceContext serviceContext = new ServiceContext();
-
-			licenseKeyPersistence.update(clusterLicenseKey, serviceContext);
+			licenseKeyPersistence.update(clusterLicenseKey);
 		}
 	}
 

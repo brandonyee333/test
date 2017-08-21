@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.exception.NoSuchListTypeException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.StringBundler;
 
 import java.util.Date;
@@ -60,13 +59,7 @@ public class SecurityPatchLocalServiceImpl
 		securityPatch.setName(name);
 		securityPatch.setFileName(fileName);
 
-		// TODO implement serviceContext as needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		securityPatchPersistence.update(securityPatch, serviceContext);
-
-		return securityPatch;
+		return securityPatchPersistence.update(securityPatch);
 	}
 
 	public SecurityPatch addSecurityPatch(
@@ -117,11 +110,7 @@ public class SecurityPatchLocalServiceImpl
 
 		securityPatch.setName(name);
 
-		// TODO implement serviceContext as needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		return securityPatchPersistence.update(securityPatch, serviceContext);
+		return securityPatchPersistence.update(securityPatch);
 	}
 
 	protected void validate(int envLFR) throws PortalException {

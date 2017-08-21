@@ -197,9 +197,7 @@ public class TicketCommentLocalServiceImpl
 				"statusReason", String.valueOf(statusReason));
 		}
 
-		//TODO implement serviceContext how needed
-
-		ticketCommentPersistence.update(ticketComment, serviceContext);
+		ticketCommentPersistence.update(ticketComment);
 
 		int auditAction = GetterUtil.getInteger(
 			serviceContext.getAttribute("auditAction"));
@@ -335,15 +333,11 @@ public class TicketCommentLocalServiceImpl
 
 		Date now = new Date();
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
 		for (TicketComment ticketComment : ticketComments) {
 			ticketComment.setModifiedDate(now);
 			ticketComment.setType(TicketCommentConstants.TYPE_NORMAL);
 
-			ticketCommentPersistence.update(ticketComment, serviceContext);
+			ticketCommentPersistence.update(ticketComment);
 		}
 	}
 
@@ -377,9 +371,7 @@ public class TicketCommentLocalServiceImpl
 				"pendingTypes", StringUtil.merge(pendingTypes));
 		}
 
-		//TODO implement serviceContext how needed
-
-		ticketCommentPersistence.update(ticketComment, serviceContext);
+		ticketCommentPersistence.update(ticketComment);
 
 		int auditAction = GetterUtil.getInteger(
 			serviceContext.getAttribute("auditAction"));
@@ -419,11 +411,7 @@ public class TicketCommentLocalServiceImpl
 		ticketComment.setModifiedDate(now);
 		ticketComment.setType(type);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		return ticketCommentPersistence.update(ticketComment, serviceContext);
+		return ticketCommentPersistence.update(ticketComment);
 	}
 
 	protected void updateStatus(
@@ -444,9 +432,7 @@ public class TicketCommentLocalServiceImpl
 
 		ticketComment.setStatus(status);
 
-		//TODO implement serviceContext how needed
-
-		ticketCommentPersistence.update(ticketComment, serviceContext);
+		ticketCommentPersistence.update(ticketComment);
 
 		if (status != WorkflowConstants.STATUS_APPROVED) {
 			return;

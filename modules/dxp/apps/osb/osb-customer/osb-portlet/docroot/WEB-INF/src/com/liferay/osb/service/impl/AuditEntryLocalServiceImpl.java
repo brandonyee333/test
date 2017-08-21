@@ -19,7 +19,6 @@ import com.liferay.osb.model.AuditEntryConstants;
 import com.liferay.osb.service.base.AuditEntryLocalServiceBaseImpl;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -101,13 +100,7 @@ public class AuditEntryLocalServiceImpl extends AuditEntryLocalServiceBaseImpl {
 		auditEntry.setNewValue(newValue);
 		auditEntry.setI18n(i18n);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		auditEntryPersistence.update(auditEntry, serviceContext);
-
-		return auditEntry;
+		return auditEntryPersistence.update(auditEntry);
 	}
 
 	public List<AuditEntry> getAuditEntries(Date createDate, long classNameId) {

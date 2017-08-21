@@ -21,7 +21,6 @@ import com.liferay.osb.model.LicenseKeySet;
 import com.liferay.osb.service.base.LicenseKeySetLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Date;
@@ -54,13 +53,7 @@ public class LicenseKeySetLocalServiceImpl
 		licenseKeySet.setAccountEntryId(accountEntryId);
 		licenseKeySet.setName(name);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		licenseKeySetPersistence.update(licenseKeySet, serviceContext);
-
-		return licenseKeySet;
+		return licenseKeySetPersistence.update(licenseKeySet);
 	}
 
 	public List<LicenseKeySet> getAccountEntryLicenseKeySets(
@@ -85,13 +78,7 @@ public class LicenseKeySetLocalServiceImpl
 		licenseKeySet.setModifiedDate(new Date());
 		licenseKeySet.setName(name);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		licenseKeySetPersistence.update(licenseKeySet, serviceContext);
-
-		return licenseKeySet;
+		return licenseKeySetPersistence.update(licenseKeySet);
 	}
 
 	protected void validate(long accountEntryId, String name)

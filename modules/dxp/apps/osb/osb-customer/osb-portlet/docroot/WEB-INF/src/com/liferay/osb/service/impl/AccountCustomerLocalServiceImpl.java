@@ -28,7 +28,6 @@ import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.Date;
@@ -84,12 +83,7 @@ public class AccountCustomerLocalServiceImpl
 				accountCustomer.setRole(roles[i]);
 				accountCustomer.setNotifications(notifications[i]);
 
-				//TODO implement serviceContext how needed
-
-				ServiceContext serviceContext = new ServiceContext();
-
-				accountCustomerPersistence.update(
-					accountCustomer, serviceContext);
+				accountCustomerPersistence.update(accountCustomer);
 
 				try {
 					if (accountEntry.getType() !=
@@ -137,12 +131,7 @@ public class AccountCustomerLocalServiceImpl
 				accountCustomer.setRole(roles[i]);
 				accountCustomer.setNotifications(notifications[i]);
 
-				//TODO implement serviceContext how needed
-
-				ServiceContext serviceContext = new ServiceContext();
-
-				accountCustomerPersistence.update(
-					accountCustomer, serviceContext);
+				accountCustomerPersistence.update(accountCustomer);
 
 				if (oldRole != roles[i]) {
 					auditEntryLocalService.addAuditEntry(
@@ -283,11 +272,7 @@ public class AccountCustomerLocalServiceImpl
 				AccountCustomerConstants.NOTIFICATIONS_NONE);
 		}
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		accountCustomerPersistence.update(accountCustomer, serviceContext);
+		accountCustomerPersistence.update(accountCustomer);
 	}
 
 	protected void assignOrganizations(long[] userIds, long organizationId)

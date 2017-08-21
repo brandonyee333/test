@@ -18,7 +18,6 @@ import com.liferay.osb.exception.NoSuchHolidayCalendarRelException;
 import com.liferay.osb.model.HolidayCalendarRel;
 import com.liferay.osb.service.base.HolidayCalendarRelLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -48,12 +47,7 @@ public class HolidayCalendarRelLocalServiceImpl
 			holidayCalendarRel.setHolidayCalendarId(holidayCalendarId);
 			holidayCalendarRel.setUserId(userId);
 
-			//TODO implement serviceContext how needed
-
-			ServiceContext serviceContext = new ServiceContext();
-
-			holidayCalendarRelPersistence.update(
-				holidayCalendarRel, serviceContext);
+			holidayCalendarRelPersistence.update(holidayCalendarRel);
 		}
 	}
 

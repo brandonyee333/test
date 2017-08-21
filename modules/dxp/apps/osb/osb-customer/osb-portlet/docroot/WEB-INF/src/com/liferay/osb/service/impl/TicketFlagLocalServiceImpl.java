@@ -21,7 +21,6 @@ import com.liferay.osb.model.TicketFlag;
 import com.liferay.osb.model.TicketFlagConstants;
 import com.liferay.osb.service.base.TicketFlagLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ArrayUtil;
 
 import java.util.Date;
@@ -132,13 +131,7 @@ public class TicketFlagLocalServiceImpl extends TicketFlagLocalServiceBaseImpl {
 		ticketFlag.setType(type);
 		ticketFlag.setFlag(flag);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		ticketFlagPersistence.update(ticketFlag, serviceContext);
-
-		return ticketFlag;
+		return ticketFlagPersistence.update(ticketFlag);
 	}
 
 	protected void validate(

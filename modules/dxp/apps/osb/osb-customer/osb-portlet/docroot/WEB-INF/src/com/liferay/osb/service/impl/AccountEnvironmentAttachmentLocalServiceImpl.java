@@ -23,7 +23,6 @@ import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.StringPool;
 
@@ -67,12 +66,8 @@ public class AccountEnvironmentAttachmentLocalServiceImpl
 		accountEnvironmentAttachment.setFileSize(file.length());
 		accountEnvironmentAttachment.setType(type);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
 		accountEnvironmentAttachmentPersistence.update(
-			accountEnvironmentAttachment, serviceContext);
+			accountEnvironmentAttachment);
 
 		deleteFile(accountEnvironmentAttachment.getFileDir(), fileName);
 
@@ -168,12 +163,8 @@ public class AccountEnvironmentAttachmentLocalServiceImpl
 		accountEnvironmentAttachment.setFileSize(file.length());
 		accountEnvironmentAttachment.setType(type);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
 		accountEnvironmentAttachmentPersistence.update(
-			accountEnvironmentAttachment, serviceContext);
+			accountEnvironmentAttachment);
 
 		deleteFile(accountEnvironmentAttachment.getFileDir(), oldFileName);
 

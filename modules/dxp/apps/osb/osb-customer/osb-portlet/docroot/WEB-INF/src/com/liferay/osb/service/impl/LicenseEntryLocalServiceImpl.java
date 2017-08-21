@@ -20,7 +20,6 @@ import com.liferay.osb.model.LicenseEntry;
 import com.liferay.osb.service.base.LicenseEntryLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -60,13 +59,7 @@ public class LicenseEntryLocalServiceImpl
 		licenseEntry.setPortalVersionMin(portalVersionMin);
 		licenseEntry.setPortalVersionMax(portalVersionMax);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		licenseEntryPersistence.update(licenseEntry, serviceContext);
-
-		return licenseEntry;
+		return licenseEntryPersistence.update(licenseEntry);
 	}
 
 	public List<LicenseEntry> getLicenseEntries(long productEntryId) {
@@ -119,13 +112,7 @@ public class LicenseEntryLocalServiceImpl
 		licenseEntry.setPortalVersionMin(portalVersionMin);
 		licenseEntry.setPortalVersionMax(portalVersionMax);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		licenseEntryPersistence.update(licenseEntry, serviceContext);
-
-		return licenseEntry;
+		return licenseEntryPersistence.update(licenseEntry);
 	}
 
 	protected void validate(

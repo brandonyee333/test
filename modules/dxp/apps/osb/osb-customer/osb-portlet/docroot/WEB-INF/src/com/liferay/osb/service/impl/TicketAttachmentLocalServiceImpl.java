@@ -117,11 +117,7 @@ public class TicketAttachmentLocalServiceImpl
 		ticketAttachment.setAvailableFileRepositoryIds(fileRepositoryId);
 		ticketAttachment.setReplicate(replicate);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		ticketAttachmentPersistence.update(ticketAttachment, serviceContext);
+		ticketAttachmentPersistence.update(ticketAttachment);
 
 		List<TicketAttachment> ticketAttachments = new ArrayList<>();
 
@@ -199,10 +195,7 @@ public class TicketAttachmentLocalServiceImpl
 			ticketAttachment.setType(type);
 			ticketAttachment.setVisibility(visibility);
 
-			//TODO implement serviceContext how needed
-
-			ticketAttachmentPersistence.update(
-				ticketAttachment, serviceContext);
+			ticketAttachmentPersistence.update(ticketAttachment);
 
 			ticketAttachments.add(ticketAttachment);
 
@@ -255,18 +248,13 @@ public class TicketAttachmentLocalServiceImpl
 		Set<String> availableFileRepositoryIds =
 			ticketAttachment.getAvailableFileRepositoryIdsSet();
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
 		if (url != null) {
 			availableFileRepositoryIds.add(fileRepositoryId);
 
 			ticketAttachment.setAvailableFileRepositoryIdsSet(
 				availableFileRepositoryIds);
 
-			ticketAttachmentPersistence.update(
-				ticketAttachment, serviceContext);
+			ticketAttachmentPersistence.update(ticketAttachment);
 
 			return true;
 		}
@@ -276,8 +264,7 @@ public class TicketAttachmentLocalServiceImpl
 			ticketAttachment.setAvailableFileRepositoryIdsSet(
 				availableFileRepositoryIds);
 
-			ticketAttachmentPersistence.update(
-				ticketAttachment, serviceContext);
+			ticketAttachmentPersistence.update(ticketAttachment);
 
 			return false;
 		}
@@ -495,11 +482,7 @@ public class TicketAttachmentLocalServiceImpl
 
 		ticketAttachment.setReplicate(true);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		ticketAttachmentPersistence.update(ticketAttachment, serviceContext);
+		ticketAttachmentPersistence.update(ticketAttachment);
 
 		FileRepository fileRepository =
 			SupportUtil.getFirstActiveFileRepository(
@@ -537,11 +520,7 @@ public class TicketAttachmentLocalServiceImpl
 
 		ticketAttachment.setDeleteDate(deleteDate);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		ticketAttachmentPersistence.update(ticketAttachment, serviceContext);
+		ticketAttachmentPersistence.update(ticketAttachment);
 
 		long classNameId = classNameLocalService.getClassNameId(
 			TicketEntry.class.getName());
@@ -566,12 +545,7 @@ public class TicketAttachmentLocalServiceImpl
 
 			ticketAttachment.setExtractedText(extractedText);
 
-			//TODO implement serviceContext how needed
-
-			ServiceContext serviceContext = new ServiceContext();
-
-			ticketAttachmentPersistence.update(
-				ticketAttachment, serviceContext);
+			ticketAttachmentPersistence.update(ticketAttachment);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -586,8 +560,6 @@ public class TicketAttachmentLocalServiceImpl
 		// Ticket attachment
 
 		Date now = serviceContext.getCreateDate(new Date());
-
-		//TODO implement serviceContext how needed
 
 		for (TicketAttachment ticketAttachment : ticketAttachments) {
 			if (status == WorkflowConstants.STATUS_APPROVED) {
@@ -619,8 +591,7 @@ public class TicketAttachmentLocalServiceImpl
 
 			ticketAttachment.setStatus(status);
 
-			ticketAttachmentPersistence.update(
-				ticketAttachment, serviceContext);
+			ticketAttachmentPersistence.update(ticketAttachment);
 		}
 
 		if ((status != WorkflowConstants.STATUS_APPROVED) ||
@@ -741,11 +712,7 @@ public class TicketAttachmentLocalServiceImpl
 
 		*/
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		ticketAttachmentPersistence.update(ticketAttachment, serviceContext);
+		ticketAttachmentPersistence.update(ticketAttachment);
 
 		// File
 

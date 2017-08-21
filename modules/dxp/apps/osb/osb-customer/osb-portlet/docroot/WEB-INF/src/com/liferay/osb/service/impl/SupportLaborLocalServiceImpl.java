@@ -21,7 +21,6 @@ import com.liferay.osb.model.SupportLabor;
 import com.liferay.osb.model.SupportWorker;
 import com.liferay.osb.service.base.SupportLaborLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.List;
@@ -67,21 +66,11 @@ public class SupportLaborLocalServiceImpl
 		supportLabor.setSatOpen(satOpen);
 		supportLabor.setSatClose(satClose);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		supportLaborPersistence.update(supportLabor, serviceContext);
-
-		return supportLabor;
+		return supportLaborPersistence.update(supportLabor);
 	}
 
 	public void addSupportWorkers(long[] supportWorkerIds, long supportLaborId)
 		throws PortalException {
-
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
 
 		for (long supportWorkerId : supportWorkerIds) {
 			SupportWorker supportWorker =
@@ -89,7 +78,7 @@ public class SupportLaborLocalServiceImpl
 
 			supportWorker.setSupportLaborId(supportLaborId);
 
-			supportWorkerPersistence.update(supportWorker, serviceContext);
+			supportWorkerPersistence.update(supportWorker);
 		}
 	}
 
@@ -103,14 +92,10 @@ public class SupportLaborLocalServiceImpl
 		List<SupportWorker> supportWorkers =
 			supportWorkerPersistence.findBySupportLaborId(supportLaborId);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
 		for (SupportWorker supportWorker : supportWorkers) {
 			supportWorker.setSupportLaborId(0);
 
-			supportWorkerPersistence.update(supportWorker, serviceContext);
+			supportWorkerPersistence.update(supportWorker);
 		}
 
 		return supportLabor;
@@ -132,10 +117,6 @@ public class SupportLaborLocalServiceImpl
 	public void removeSupportWorkers(long[] supportWorkerIds)
 		throws PortalException {
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
 		for (long supportWorkerId : supportWorkerIds) {
 			try {
 				SupportWorker supportWorker =
@@ -143,7 +124,7 @@ public class SupportLaborLocalServiceImpl
 
 				supportWorker.setSupportLaborId(0);
 
-				supportWorkerPersistence.update(supportWorker, serviceContext);
+				supportWorkerPersistence.update(supportWorker);
 			}
 			catch (NoSuchSupportWorkerException nsswe) {
 			}
@@ -184,13 +165,7 @@ public class SupportLaborLocalServiceImpl
 		supportLabor.setSatOpen(satOpen);
 		supportLabor.setSatClose(satClose);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		supportLaborPersistence.update(supportLabor, serviceContext);
-
-		return supportLabor;
+		return supportLaborPersistence.update(supportLabor);
 	}
 
 	protected void validate(

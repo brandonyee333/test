@@ -16,7 +16,6 @@ package com.liferay.osb.service.impl;
 
 import com.liferay.osb.model.AccountEntryLanguage;
 import com.liferay.osb.service.base.AccountEntryLanguageLocalServiceBaseImpl;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ArrayUtil;
 
 import java.util.List;
@@ -63,12 +62,7 @@ public class AccountEntryLanguageLocalServiceImpl
 			accountEntryLanguage.setAccountEntryId(accountEntryId);
 			accountEntryLanguage.setLanguageId(languageId);
 
-			//TODO implement serviceContext how needed
-
-			ServiceContext serviceContext = new ServiceContext();
-
-			accountEntryLanguagePersistence.update(
-				accountEntryLanguage, serviceContext);
+			accountEntryLanguagePersistence.update(accountEntryLanguage);
 		}
 	}
 

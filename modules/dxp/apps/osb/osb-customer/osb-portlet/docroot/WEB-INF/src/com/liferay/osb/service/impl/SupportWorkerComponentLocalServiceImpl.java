@@ -16,7 +16,6 @@ package com.liferay.osb.service.impl;
 
 import com.liferay.osb.model.SupportWorkerComponent;
 import com.liferay.osb.service.base.SupportWorkerComponentLocalServiceBaseImpl;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ArrayUtil;
 
 import java.util.List;
@@ -65,12 +64,7 @@ public class SupportWorkerComponentLocalServiceImpl
 			supportWorkerComponent.setSupportWorkerId(supportWorkerId);
 			supportWorkerComponent.setComponent(component);
 
-			//TODO implement serviceContext as needed
-
-			ServiceContext serviceContext = new ServiceContext();
-
-			supportWorkerComponentPersistence.update(
-				supportWorkerComponent, serviceContext);
+			supportWorkerComponentPersistence.update(supportWorkerComponent);
 		}
 	}
 

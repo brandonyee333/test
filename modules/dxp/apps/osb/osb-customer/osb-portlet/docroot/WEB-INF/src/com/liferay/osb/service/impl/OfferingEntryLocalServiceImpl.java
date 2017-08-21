@@ -31,7 +31,6 @@ import com.liferay.osb.util.comparator.OfferingEntrySupportEndDateComparator;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringPool;
@@ -98,11 +97,7 @@ public class OfferingEntryLocalServiceImpl
 		offeringEntry.setQuantity(quantity);
 		offeringEntry.setStatus(status);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		offeringEntryPersistence.update(offeringEntry, serviceContext);
+		offeringEntryPersistence.update(offeringEntry);
 
 		accountEntryLocalService.recalculateHighestSupportResponse(
 			accountEntryId);
@@ -294,11 +289,7 @@ public class OfferingEntryLocalServiceImpl
 		offeringEntry.setSizing(sizing);
 		offeringEntry.setQuantity(quantity);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		return offeringEntryPersistence.update(offeringEntry, serviceContext);
+		return offeringEntryPersistence.update(offeringEntry);
 	}
 
 	public OfferingEntry updateStatus(
@@ -317,11 +308,7 @@ public class OfferingEntryLocalServiceImpl
 
 		offeringEntry.setStatus(status);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		offeringEntryPersistence.update(offeringEntry, serviceContext);
+		offeringEntryPersistence.update(offeringEntry);
 
 		accountEntryLocalService.recalculateHighestSupportResponse(
 			offeringEntry.getAccountEntryId());

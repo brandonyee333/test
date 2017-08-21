@@ -26,7 +26,6 @@ import com.liferay.osb.service.base.SupportTeamLocalServiceBaseImpl;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -96,13 +95,7 @@ public class SupportTeamLocalServiceImpl
 				supportTeamId, supportRegions);
 		}
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		supportTeamPersistence.update(supportTeam, serviceContext);
-
-		return supportTeam;
+		return supportTeamPersistence.update(supportTeam);
 	}
 
 	@Override
@@ -190,17 +183,13 @@ public class SupportTeamLocalServiceImpl
 			supportTeamPersistence.findByParentSupportTeamId(
 				parentSupportTeamId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
 		for (SupportTeam supportTeam : supportTeams) {
 			if (!childSupportTeamIdsSet.remove(
 					supportTeam.getSupportTeamId())) {
 
 				supportTeam.setParentSupportTeamId(0);
 
-				supportTeamPersistence.update(supportTeam, serviceContext);
+				supportTeamPersistence.update(supportTeam);
 			}
 		}
 
@@ -209,16 +198,12 @@ public class SupportTeamLocalServiceImpl
 
 			supportTeam.setParentSupportTeamId(parentSupportTeamId);
 
-			supportTeamPersistence.update(supportTeam, serviceContext);
+			supportTeamPersistence.update(supportTeam);
 		}
 	}
 
 	public void setSupportLaborId(long supportLaborId, long[] supportTeamIds)
 		throws PortalException {
-
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
 
 		for (long supportTeamId : supportTeamIds) {
 			SupportTeam supportTeam = getSupportTeam(supportTeamId);
@@ -229,7 +214,7 @@ public class SupportTeamLocalServiceImpl
 
 			supportTeam.setSupportLaborId(supportLaborId);
 
-			supportTeamPersistence.update(supportTeam, serviceContext);
+			supportTeamPersistence.update(supportTeam);
 		}
 	}
 
@@ -253,11 +238,7 @@ public class SupportTeamLocalServiceImpl
 		supportTeam.setDescription(description);
 		supportTeam.setType(type);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		supportTeamPersistence.update(supportTeam, serviceContext);
+		supportTeamPersistence.update(supportTeam);
 
 		supportTeamPersistence.setAccountEntries(
 			supportTeamId, accountEntryIds);

@@ -20,7 +20,6 @@ import com.liferay.osb.model.AccountProject;
 import com.liferay.osb.service.base.AccountProjectLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Date;
@@ -128,11 +127,7 @@ public class AccountProjectLocalServiceImpl
 		accountProject.setAccountEntryId(accountEntryId);
 		accountProject.setName(name);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		accountProjectPersistence.update(accountProject, serviceContext);
+		accountProjectPersistence.update(accountProject);
 
 		// Account information
 

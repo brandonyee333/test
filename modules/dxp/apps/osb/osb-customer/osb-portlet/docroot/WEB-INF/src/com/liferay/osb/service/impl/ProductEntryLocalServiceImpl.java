@@ -25,7 +25,6 @@ import com.liferay.osb.service.base.ProductEntryLocalServiceBaseImpl;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -64,11 +63,7 @@ public class ProductEntryLocalServiceImpl
 		productEntry.setEnvironment(environment);
 		productEntry.setVersionsListType(versionsListType);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		productEntryPersistence.update(productEntry, serviceContext);
+		productEntryPersistence.update(productEntry);
 
 		long classNameId = classNameLocalService.getClassNameId(
 			ProductEntry.class);
@@ -152,11 +147,7 @@ public class ProductEntryLocalServiceImpl
 		productEntry.setEnvironment(environment);
 		productEntry.setVersionsListType(versionsListType);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		productEntryPersistence.update(productEntry, serviceContext);
+		productEntryPersistence.update(productEntry);
 
 		long classNameId = classNameLocalService.getClassNameId(
 			ProductEntry.class);

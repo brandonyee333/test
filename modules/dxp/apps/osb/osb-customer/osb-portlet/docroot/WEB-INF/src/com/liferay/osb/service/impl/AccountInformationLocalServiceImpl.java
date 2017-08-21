@@ -20,7 +20,6 @@ import com.liferay.osb.model.AccountProjectConstants;
 import com.liferay.osb.service.base.AccountInformationLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -97,12 +96,7 @@ public class AccountInformationLocalServiceImpl
 			accountInformation.setFieldId(fieldId);
 			accountInformation.setData(data.get(fieldId));
 
-			//TODO implement serviceContext how needed
-
-			ServiceContext serviceContext = new ServiceContext();
-
-			accountInformationPersistence.update(
-				accountInformation, serviceContext);
+			accountInformationPersistence.update(accountInformation);
 
 			accountInformationList.add(accountInformation);
 		}

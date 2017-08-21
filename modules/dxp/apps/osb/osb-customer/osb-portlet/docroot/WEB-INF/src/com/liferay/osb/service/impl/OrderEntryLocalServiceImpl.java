@@ -314,11 +314,7 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 		orderEntry.setActualStartDate(actualStartDate);
 		orderEntry.setStatus(status);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		orderEntryPersistence.update(orderEntry, serviceContext);
+		orderEntryPersistence.update(orderEntry);
 
 		// External ids
 
@@ -419,11 +415,7 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 
 		orderEntry.setRenewCount(renewCount);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		orderEntryPersistence.update(orderEntry, serviceContext);
+		orderEntryPersistence.update(orderEntry);
 
 		// Offering entries
 
@@ -443,7 +435,7 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 				offeringEntry.setStatus(OfferingEntryConstants.STATUS_ACTIVE);
 			}
 
-			offeringEntryPersistence.update(offeringEntry, serviceContext);
+			offeringEntryPersistence.update(offeringEntry);
 		}
 
 		// Account entry
@@ -606,11 +598,7 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 		orderEntry.setProrated(prorated);
 		orderEntry.setActualStartDate(actualStartDate);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		orderEntryPersistence.update(orderEntry, serviceContext);
+		orderEntryPersistence.update(orderEntry);
 
 		// External ids
 
@@ -723,9 +711,7 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 		orderEntry.setStatusByUserName(user.getFullName());
 		orderEntry.setStatusDate(serviceContext.getModifiedDate(now));
 
-		//TODO implement serviceContext how needed
-
-		orderEntry = orderEntryPersistence.update(orderEntry, serviceContext);
+		orderEntry = orderEntryPersistence.update(orderEntry);
 
 		// Offering entries
 

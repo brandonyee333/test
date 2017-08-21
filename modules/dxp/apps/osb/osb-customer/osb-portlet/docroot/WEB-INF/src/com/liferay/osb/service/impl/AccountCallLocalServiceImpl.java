@@ -24,7 +24,6 @@ import com.liferay.osb.util.comparator.AccountCallCreateDateComparator;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -90,13 +89,7 @@ public class AccountCallLocalServiceImpl
 		accountCall.setNotes(notes);
 		accountCall.setActionItems(actionItems);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		accountCallPersistence.update(accountCall, serviceContext);
-
-		return accountCall;
+		return accountCallPersistence.update(accountCall);
 	}
 
 	protected void validate(

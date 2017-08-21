@@ -19,7 +19,6 @@ import com.liferay.osb.model.AccountLink;
 import com.liferay.osb.service.base.AccountLinkLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Date;
@@ -52,11 +51,7 @@ public class AccountLinkLocalServiceImpl
 			accountLink.setAccountEntryId(accountEntryId);
 			accountLink.setUrl(url);
 
-			//TODO implement serviceContext how needed
-
-			ServiceContext serviceContext = new ServiceContext();
-
-			accountLinkPersistence.update(accountLink, serviceContext);
+			accountLinkPersistence.update(accountLink);
 		}
 	}
 

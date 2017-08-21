@@ -21,7 +21,6 @@ import com.liferay.osb.model.HolidayEntry;
 import com.liferay.osb.model.impl.HolidayEntryImpl;
 import com.liferay.osb.service.base.HolidayEntryLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.DateUtil;
 
 import java.util.ArrayList;
@@ -56,13 +55,7 @@ public class HolidayEntryLocalServiceImpl
 		holidayEntry.setEndDate(endDate);
 		holidayEntry.setRepeatYearly(repeatYearly);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		holidayEntryPersistence.update(holidayEntry, serviceContext);
-
-		return holidayEntry;
+		return holidayEntryPersistence.update(holidayEntry);
 	}
 
 	public List<HolidayEntry> getHolidayEntries(long holidayCalendarId) {
@@ -107,13 +100,7 @@ public class HolidayEntryLocalServiceImpl
 		holidayEntry.setEndDate(endDate);
 		holidayEntry.setRepeatYearly(repeatYearly);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		holidayEntryPersistence.update(holidayEntry, serviceContext);
-
-		return holidayEntry;
+		return holidayEntryPersistence.update(holidayEntry);
 	}
 
 	protected List<HolidayEntry> getCurrentRepeatYearlyHolidayEntries(

@@ -79,9 +79,7 @@ public class TicketLinkLocalServiceImpl extends TicketLinkLocalServiceBaseImpl {
 			ticketLink.setType(types[i]);
 			ticketLink.setVisibility(visibility);
 
-			//TODO implement serviceContext as needed
-
-			ticketLinkPersistence.update(ticketLink, serviceContext);
+			ticketLinkPersistence.update(ticketLink);
 
 			long classNameId = classNameLocalService.getClassNameId(
 				TicketEntry.class.getName());

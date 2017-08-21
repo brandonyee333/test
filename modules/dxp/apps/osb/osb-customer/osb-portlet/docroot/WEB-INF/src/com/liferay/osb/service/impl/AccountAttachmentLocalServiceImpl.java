@@ -26,7 +26,6 @@ import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
@@ -72,11 +71,7 @@ public class AccountAttachmentLocalServiceImpl
 		accountAttachment.setFileSize(file.length());
 		accountAttachment.setType(type);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		accountAttachmentPersistence.update(accountAttachment, serviceContext);
+		accountAttachmentPersistence.update(accountAttachment);
 
 		// File
 

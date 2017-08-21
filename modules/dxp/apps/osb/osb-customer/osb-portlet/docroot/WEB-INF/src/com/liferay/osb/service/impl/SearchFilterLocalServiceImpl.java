@@ -19,7 +19,6 @@ import com.liferay.osb.model.SearchFilter;
 import com.liferay.osb.service.base.SearchFilterLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Date;
@@ -55,13 +54,7 @@ public class SearchFilterLocalServiceImpl
 		searchFilter.setFilter(filter);
 		searchFilter.setVisibility(visibility);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		searchFilterPersistence.update(searchFilter, serviceContext);
-
-		return searchFilter;
+		return searchFilterPersistence.update(searchFilter);
 	}
 
 	public void deleteSearchFilters(long userId) {
@@ -86,13 +79,7 @@ public class SearchFilterLocalServiceImpl
 		searchFilter.setFilter(filter);
 		searchFilter.setVisibility(visibility);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		searchFilterPersistence.update(searchFilter, serviceContext);
-
-		return searchFilter;
+		return searchFilterPersistence.update(searchFilter);
 	}
 
 	protected void validate(String name) throws PortalException {

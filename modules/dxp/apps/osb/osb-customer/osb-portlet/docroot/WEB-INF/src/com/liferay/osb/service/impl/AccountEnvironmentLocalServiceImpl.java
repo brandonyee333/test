@@ -30,7 +30,6 @@ import com.liferay.osb.service.base.AccountEnvironmentLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -81,12 +80,7 @@ public class AccountEnvironmentLocalServiceImpl
 		accountEnvironment.setEnvAS(envAS);
 		accountEnvironment.setEnvLFR(envLFR);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		accountEnvironmentPersistence.update(
-			accountEnvironment, serviceContext);
+		accountEnvironmentPersistence.update(accountEnvironment);
 
 		if (!files.isEmpty()) {
 			accountEnvironmentAttachmentLocalService.
@@ -199,12 +193,7 @@ public class AccountEnvironmentLocalServiceImpl
 		accountEnvironment.setEnvAS(envAS);
 		accountEnvironment.setEnvLFR(envLFR);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		accountEnvironmentPersistence.update(
-			accountEnvironment, serviceContext);
+		accountEnvironmentPersistence.update(accountEnvironment);
 
 		if (!files.isEmpty()) {
 			accountEnvironmentAttachmentLocalService.

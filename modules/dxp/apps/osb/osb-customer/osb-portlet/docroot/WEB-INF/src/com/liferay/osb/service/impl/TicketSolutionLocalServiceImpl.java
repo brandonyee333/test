@@ -82,10 +82,6 @@ public class TicketSolutionLocalServiceImpl
 			ticketEntrySubcomponent, ticketEntrySubcomponentCustom,
 			ticketEntry.getComponent(), ticketLinkURLs, ticketLinkTypes);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
 		if (ticketEntry.getStatus() ==
 				TicketEntryConstants.STATUS_RESOLVED_IN_PRODUCTION) {
 
@@ -96,8 +92,7 @@ public class TicketSolutionLocalServiceImpl
 				ticketSolution.setStatus(
 					TicketSolutionConstants.STATUS_INVALID);
 
-				ticketSolutionPersistence.update(
-					ticketSolution, serviceContext);
+				ticketSolutionPersistence.update(ticketSolution);
 
 				ticketCommentLocalService.resetSolutionTicketComment(
 					ticketEntryId);
@@ -129,7 +124,9 @@ public class TicketSolutionLocalServiceImpl
 		ticketSolution.setReviewForKB(reviewForKB);
 		ticketSolution.setStatus(status);
 
-		ticketSolutionPersistence.update(ticketSolution, serviceContext);
+		ticketSolutionPersistence.update(ticketSolution);
+
+		ServiceContext serviceContext = new ServiceContext();
 
 		serviceContext.setCreateDate(now);
 
@@ -310,11 +307,7 @@ public class TicketSolutionLocalServiceImpl
 				ticketEntryId, TicketFlagConstants.TYPE_READ_SOLUTION);
 		}
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		ticketSolutionPersistence.update(ticketSolution, serviceContext);
+		ticketSolutionPersistence.update(ticketSolution);
 	}
 
 	public TicketSolution updateTicketSolution(
@@ -338,11 +331,7 @@ public class TicketSolutionLocalServiceImpl
 		ticketSolution.setStatusMessage(statusMessage);
 		ticketSolution.setStatusReason(statusReason);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		ticketSolutionPersistence.update(ticketSolution, serviceContext);
+		ticketSolutionPersistence.update(ticketSolution);
 
 		if (status == TicketSolutionConstants.STATUS_UNABLE_TO_TEST) {
 			return ticketSolution;
@@ -353,6 +342,8 @@ public class TicketSolutionLocalServiceImpl
 		TicketComment ticketComment = null;
 
 		if (Validator.isNotNull(statusMessage)) {
+			ServiceContext serviceContext = new ServiceContext();
+
 			serviceContext.setAttribute(
 				"auditAction", AuditEntryConstants.ACTION_SOLUTION_REJECTED);
 			serviceContext.setAttribute("statusReason", statusReason);

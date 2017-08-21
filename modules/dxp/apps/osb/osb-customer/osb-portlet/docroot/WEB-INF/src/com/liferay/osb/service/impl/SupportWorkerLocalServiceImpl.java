@@ -33,7 +33,6 @@ import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -59,10 +58,6 @@ public class SupportWorkerLocalServiceImpl
 
 		SupportTeam supportTeam = supportTeamPersistence.findByPrimaryKey(
 			supportTeamId);
-
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
 
 		for (int i = 0; i < userIds.length; i++) {
 			long userId = userIds[i];
@@ -111,9 +106,9 @@ public class SupportWorkerLocalServiceImpl
 			supportWorker.setRole(roles[i]);
 			supportWorker.setNotifications(notifications[i]);
 
-			supportWorkerPersistence.update(supportWorker, serviceContext);
+			supportWorkerPersistence.update(supportWorker);
 
-			supportTeamPersistence.update(supportTeam, serviceContext);
+			supportTeamPersistence.update(supportTeam);
 		}
 	}
 
@@ -125,10 +120,6 @@ public class SupportWorkerLocalServiceImpl
 
 		Boolean clockIn = null;
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
 		for (SupportWorker curSupportWorker : supportWorkers) {
 			if (clockIn == null) {
 				clockIn = !curSupportWorker.getClockedIn();
@@ -136,7 +127,7 @@ public class SupportWorkerLocalServiceImpl
 
 			curSupportWorker.setClockedIn(clockIn);
 
-			supportWorkerPersistence.update(curSupportWorker, serviceContext);
+			supportWorkerPersistence.update(curSupportWorker);
 		}
 	}
 
@@ -145,15 +136,11 @@ public class SupportWorkerLocalServiceImpl
 			List<SupportWorker> supportWorkers =
 				supportWorkerPersistence.findByUserId(userId);
 
-			//TODO implement serviceContext how needed
-
-			ServiceContext serviceContext = new ServiceContext();
-
 			for (SupportWorker supportWorker : supportWorkers) {
 				supportWorker.setAssignedWork(
 					supportWorker.getAssignedWork() - work);
 
-				supportWorkerPersistence.update(supportWorker, serviceContext);
+				supportWorkerPersistence.update(supportWorker);
 
 				SupportTeam supportTeam =
 					supportTeamPersistence.findByPrimaryKey(
@@ -162,7 +149,7 @@ public class SupportWorkerLocalServiceImpl
 				supportTeam.setAssignedWork(
 					supportTeam.getAssignedWork() - work);
 
-				supportTeamPersistence.update(supportTeam, serviceContext);
+				supportTeamPersistence.update(supportTeam);
 			}
 		}
 		catch (NoSuchSupportTeamException nsste) {
@@ -224,11 +211,7 @@ public class SupportWorkerLocalServiceImpl
 		supportTeam.setAssignedWork(supportTeamAssignedWork);
 		supportTeam.setMaxWork(supportTeamMaxWork);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		supportTeamPersistence.update(supportTeam, serviceContext);
+		supportTeamPersistence.update(supportTeam);
 	}
 
 	public double getAssignedWork(long userId) {
@@ -643,15 +626,11 @@ public class SupportWorkerLocalServiceImpl
 			List<SupportWorker> supportWorkers =
 				supportWorkerPersistence.findByUserId(userId);
 
-			//TODO implement serviceContext how needed
-
-			ServiceContext serviceContext = new ServiceContext();
-
 			for (SupportWorker supportWorker : supportWorkers) {
 				supportWorker.setAssignedWork(
 					supportWorker.getAssignedWork() + work);
 
-				supportWorkerPersistence.update(supportWorker, serviceContext);
+				supportWorkerPersistence.update(supportWorker);
 
 				SupportTeam supportTeam =
 					supportTeamPersistence.findByPrimaryKey(
@@ -660,7 +639,7 @@ public class SupportWorkerLocalServiceImpl
 				supportTeam.setAssignedWork(
 					supportTeam.getAssignedWork() + work);
 
-				supportTeamPersistence.update(supportTeam, serviceContext);
+				supportTeamPersistence.update(supportTeam);
 			}
 		}
 		catch (NoSuchSupportTeamException nsste) {
@@ -816,10 +795,6 @@ public class SupportWorkerLocalServiceImpl
 		SupportWorker supportWorker = supportWorkerPersistence.findByPrimaryKey(
 			supportWorkerId);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
 		if (supportTeamId != supportWorker.getSupportTeamId()) {
 			SupportTeam oldSupportTeam = supportWorker.getSupportTeam();
 
@@ -834,7 +809,7 @@ public class SupportWorkerLocalServiceImpl
 					supportWorker.getAssignedWork());
 			supportTeam.setMaxWork(supportTeam.getMaxWork() + maxWork);
 
-			supportTeamPersistence.update(oldSupportTeam, serviceContext);
+			supportTeamPersistence.update(oldSupportTeam);
 		}
 		else {
 			supportTeam.setMaxWork(
@@ -842,7 +817,7 @@ public class SupportWorkerLocalServiceImpl
 					supportWorker.getMaxWork());
 		}
 
-		supportTeamPersistence.update(supportTeam, serviceContext);
+		supportTeamPersistence.update(supportTeam);
 
 		supportWorker.setSupportTeamId(supportTeamId);
 		supportWorker.setAutoAssign(autoAssign);
@@ -862,9 +837,7 @@ public class SupportWorkerLocalServiceImpl
 
 		supportWorker.setNotifications(notifications);
 
-		supportWorkerPersistence.update(supportWorker, serviceContext);
-
-		return supportWorker;
+		return supportWorkerPersistence.update(supportWorker);
 	}
 
 	protected void validate(double maxWork) throws PortalException {

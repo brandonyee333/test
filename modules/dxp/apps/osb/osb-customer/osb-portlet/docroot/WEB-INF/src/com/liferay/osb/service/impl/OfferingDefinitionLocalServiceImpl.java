@@ -21,7 +21,6 @@ import com.liferay.osb.service.base.OfferingDefinitionLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.Date;
 import java.util.List;
@@ -65,14 +64,7 @@ public class OfferingDefinitionLocalServiceImpl
 		offeringDefinition.setMaxUsers(maxUsers);
 		offeringDefinition.setSupportTickets(supportTickets);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		offeringDefinitionPersistence.update(
-			offeringDefinition, serviceContext);
-
-		return offeringDefinition;
+		return offeringDefinitionPersistence.update(offeringDefinition);
 	}
 
 	@Override
@@ -149,14 +141,7 @@ public class OfferingDefinitionLocalServiceImpl
 		offeringDefinition.setMaxUsers(maxUsers);
 		offeringDefinition.setSupportTickets(supportTickets);
 
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		offeringDefinitionPersistence.update(
-			offeringDefinition, serviceContext);
-
-		return offeringDefinition;
+		return offeringDefinitionPersistence.update(offeringDefinition);
 	}
 
 	protected void validate(
