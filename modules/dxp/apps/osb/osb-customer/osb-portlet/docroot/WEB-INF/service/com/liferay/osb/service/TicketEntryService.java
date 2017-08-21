@@ -119,10 +119,6 @@ public interface TicketEntryService extends BaseService, InvokableService {
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getTicketEntriesCount(long accountEntryId)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(java.lang.String keywords) throws PortalException;
 
 	@JSONWebService
@@ -153,10 +149,6 @@ public interface TicketEntryService extends BaseService, InvokableService {
 	* @return the OSGi service identifier
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<TicketEntry> getTicketEntries(long accountEntryId, int start,
-		int end, OrderByComparator obc) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TicketEntry> search(java.lang.String keywords, int start,

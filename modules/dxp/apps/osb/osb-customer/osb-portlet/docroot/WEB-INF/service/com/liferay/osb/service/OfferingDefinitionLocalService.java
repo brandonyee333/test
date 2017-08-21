@@ -265,10 +265,6 @@ public interface OfferingDefinitionLocalService extends BaseLocalService,
 	public List<OfferingDefinition> getProductEntryOfferingDefinitions(
 		long productEntryId);
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<OfferingDefinition> getSupportResponseOfferingDefinitions(
-		long supportResponseId);
-
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*

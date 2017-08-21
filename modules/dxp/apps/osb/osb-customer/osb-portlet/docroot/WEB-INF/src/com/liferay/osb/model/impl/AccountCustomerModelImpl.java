@@ -102,10 +102,9 @@ public class AccountCustomerModelImpl extends BaseModelImpl<AccountCustomer>
 				"value.object.column.bitmask.enabled.com.liferay.osb.model.AccountCustomer"),
 			true);
 	public static final long ACCOUNTENTRYID_COLUMN_BITMASK = 1L;
-	public static final long NOTIFICATIONS_COLUMN_BITMASK = 2L;
-	public static final long ROLE_COLUMN_BITMASK = 4L;
-	public static final long USERID_COLUMN_BITMASK = 8L;
-	public static final long ACCOUNTCUSTOMERID_COLUMN_BITMASK = 16L;
+	public static final long ROLE_COLUMN_BITMASK = 2L;
+	public static final long USERID_COLUMN_BITMASK = 4L;
+	public static final long ACCOUNTCUSTOMERID_COLUMN_BITMASK = 8L;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -339,19 +338,7 @@ public class AccountCustomerModelImpl extends BaseModelImpl<AccountCustomer>
 
 	@Override
 	public void setNotifications(int notifications) {
-		_columnBitmask |= NOTIFICATIONS_COLUMN_BITMASK;
-
-		if (!_setOriginalNotifications) {
-			_setOriginalNotifications = true;
-
-			_originalNotifications = _notifications;
-		}
-
 		_notifications = notifications;
-	}
-
-	public int getOriginalNotifications() {
-		return _originalNotifications;
 	}
 
 	public long getColumnBitmask() {
@@ -464,10 +451,6 @@ public class AccountCustomerModelImpl extends BaseModelImpl<AccountCustomer>
 
 		accountCustomerModelImpl._setOriginalRole = false;
 
-		accountCustomerModelImpl._originalNotifications = accountCustomerModelImpl._notifications;
-
-		accountCustomerModelImpl._setOriginalNotifications = false;
-
 		accountCustomerModelImpl._columnBitmask = 0;
 	}
 
@@ -556,8 +539,6 @@ public class AccountCustomerModelImpl extends BaseModelImpl<AccountCustomer>
 	private int _originalRole;
 	private boolean _setOriginalRole;
 	private int _notifications;
-	private int _originalNotifications;
-	private boolean _setOriginalNotifications;
 	private long _columnBitmask;
 	private AccountCustomer _escapedModel;
 }

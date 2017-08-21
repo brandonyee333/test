@@ -27,46 +27,46 @@ import java.util.Arrays;
 @ProviderType
 public class AccountLinkServiceClpInvoker {
 	public AccountLinkServiceClpInvoker() {
-		_methodName366 = "getOSGiServiceIdentifier";
+		_methodName364 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes366 = new String[] {  };
+		_methodParameterTypes364 = new String[] {  };
 
-		_methodName371 = "addAccountLinks";
+		_methodName369 = "addAccountLinks";
 
-		_methodParameterTypes371 = new String[] { "long", "java.lang.String[][]" };
+		_methodParameterTypes369 = new String[] { "long", "java.lang.String[][]" };
 
-		_methodName372 = "deleteAccountLink";
+		_methodName370 = "deleteAccountLink";
 
-		_methodParameterTypes372 = new String[] { "long" };
+		_methodParameterTypes370 = new String[] { "long" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName366.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes366, parameterTypes)) {
+		if (_methodName364.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes364, parameterTypes)) {
 			return AccountLinkServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName371.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes371, parameterTypes)) {
+		if (_methodName369.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes369, parameterTypes)) {
 			AccountLinkServiceUtil.addAccountLinks(((Long)arguments[0]).longValue(),
 				(java.lang.String[])arguments[1]);
 
 			return null;
 		}
 
-		if (_methodName372.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes372, parameterTypes)) {
+		if (_methodName370.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes370, parameterTypes)) {
 			return AccountLinkServiceUtil.deleteAccountLink(((Long)arguments[0]).longValue());
 		}
 
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName366;
-	private String[] _methodParameterTypes366;
-	private String _methodName371;
-	private String[] _methodParameterTypes371;
-	private String _methodName372;
-	private String[] _methodParameterTypes372;
+	private String _methodName364;
+	private String[] _methodParameterTypes364;
+	private String _methodName369;
+	private String[] _methodParameterTypes369;
+	private String _methodName370;
+	private String[] _methodParameterTypes370;
 }

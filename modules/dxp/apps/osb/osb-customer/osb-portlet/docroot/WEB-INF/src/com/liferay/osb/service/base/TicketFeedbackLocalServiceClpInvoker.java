@@ -139,13 +139,9 @@ public class TicketFeedbackLocalServiceClpInvoker {
 
 		_methodParameterTypes293 = new String[] { "long", "int" };
 
-		_methodName294 = "getTicketFeedbacks";
+		_methodName294 = "search";
 
-		_methodParameterTypes294 = new String[] { "long", "int", "int" };
-
-		_methodName295 = "search";
-
-		_methodParameterTypes295 = new String[] {
+		_methodParameterTypes294 = new String[] {
 				"java.lang.String", "int", "int", "int", "int", "int", "int",
 				"int", "int", "int", "int", "int", "int", "java.lang.Integer",
 				"java.lang.String", "java.lang.Integer", "java.lang.Integer[][]",
@@ -154,16 +150,16 @@ public class TicketFeedbackLocalServiceClpInvoker {
 				"int", "int", "com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName296 = "search";
+		_methodName295 = "search";
 
-		_methodParameterTypes296 = new String[] {
+		_methodParameterTypes295 = new String[] {
 				"java.lang.String", "java.util.LinkedHashMap", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName297 = "searchCount";
+		_methodName296 = "searchCount";
 
-		_methodParameterTypes297 = new String[] {
+		_methodParameterTypes296 = new String[] {
 				"java.lang.String", "int", "int", "int", "int", "int", "int",
 				"int", "int", "int", "int", "int", "int", "java.lang.Integer",
 				"java.lang.String", "java.lang.Integer", "java.lang.Integer[][]",
@@ -171,27 +167,27 @@ public class TicketFeedbackLocalServiceClpInvoker {
 				"java.lang.Integer[][]", "java.util.LinkedHashMap", "boolean"
 			};
 
-		_methodName298 = "searchCount";
+		_methodName297 = "searchCount";
 
-		_methodParameterTypes298 = new String[] {
+		_methodParameterTypes297 = new String[] {
 				"java.lang.String", "java.util.LinkedHashMap"
 			};
 
-		_methodName299 = "sendCustomerNotifications";
+		_methodName298 = "sendCustomerNotifications";
+
+		_methodParameterTypes298 = new String[] {  };
+
+		_methodName299 = "sendLiferayWorkerNotifications";
 
 		_methodParameterTypes299 = new String[] {  };
 
-		_methodName300 = "sendLiferayWorkerNotifications";
+		_methodName300 = "sendSupportTeamNotifications";
 
 		_methodParameterTypes300 = new String[] {  };
 
-		_methodName301 = "sendSupportTeamNotifications";
+		_methodName301 = "updateTicketFeedback";
 
-		_methodParameterTypes301 = new String[] {  };
-
-		_methodName302 = "updateTicketFeedback";
-
-		_methodParameterTypes302 = new String[] {
+		_methodParameterTypes301 = new String[] {
 				"long", "long", "int", "int", "int", "int", "int", "int", "int",
 				"int", "java.lang.String"
 			};
@@ -329,13 +325,6 @@ public class TicketFeedbackLocalServiceClpInvoker {
 
 		if (_methodName294.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes294, parameterTypes)) {
-			return TicketFeedbackLocalServiceUtil.getTicketFeedbacks(((Long)arguments[0]).longValue(),
-				((Integer)arguments[1]).intValue(),
-				((Integer)arguments[2]).intValue());
-		}
-
-		if (_methodName295.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes295, parameterTypes)) {
 			return TicketFeedbackLocalServiceUtil.search((java.lang.String)arguments[0],
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue(),
@@ -363,8 +352,8 @@ public class TicketFeedbackLocalServiceClpInvoker {
 				(com.liferay.portal.kernel.util.OrderByComparator)arguments[24]);
 		}
 
-		if (_methodName296.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes296, parameterTypes)) {
+		if (_methodName295.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes295, parameterTypes)) {
 			return TicketFeedbackLocalServiceUtil.search((java.lang.String)arguments[0],
 				(java.util.LinkedHashMap<java.lang.String, java.lang.Object>)arguments[1],
 				((Integer)arguments[2]).intValue(),
@@ -372,8 +361,8 @@ public class TicketFeedbackLocalServiceClpInvoker {
 				(com.liferay.portal.kernel.util.OrderByComparator)arguments[4]);
 		}
 
-		if (_methodName297.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes297, parameterTypes)) {
+		if (_methodName296.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes296, parameterTypes)) {
 			return TicketFeedbackLocalServiceUtil.searchCount((java.lang.String)arguments[0],
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue(),
@@ -398,35 +387,35 @@ public class TicketFeedbackLocalServiceClpInvoker {
 				((Boolean)arguments[21]).booleanValue());
 		}
 
-		if (_methodName298.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes298, parameterTypes)) {
+		if (_methodName297.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes297, parameterTypes)) {
 			return TicketFeedbackLocalServiceUtil.searchCount((java.lang.String)arguments[0],
 				(java.util.LinkedHashMap<java.lang.String, java.lang.Object>)arguments[1]);
 		}
 
+		if (_methodName298.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes298, parameterTypes)) {
+			TicketFeedbackLocalServiceUtil.sendCustomerNotifications();
+
+			return null;
+		}
+
 		if (_methodName299.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes299, parameterTypes)) {
-			TicketFeedbackLocalServiceUtil.sendCustomerNotifications();
+			TicketFeedbackLocalServiceUtil.sendLiferayWorkerNotifications();
 
 			return null;
 		}
 
 		if (_methodName300.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes300, parameterTypes)) {
-			TicketFeedbackLocalServiceUtil.sendLiferayWorkerNotifications();
+			TicketFeedbackLocalServiceUtil.sendSupportTeamNotifications();
 
 			return null;
 		}
 
 		if (_methodName301.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes301, parameterTypes)) {
-			TicketFeedbackLocalServiceUtil.sendSupportTeamNotifications();
-
-			return null;
-		}
-
-		if (_methodName302.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes302, parameterTypes)) {
 			return TicketFeedbackLocalServiceUtil.updateTicketFeedback(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Integer)arguments[2]).intValue(),
@@ -505,6 +494,4 @@ public class TicketFeedbackLocalServiceClpInvoker {
 	private String[] _methodParameterTypes300;
 	private String _methodName301;
 	private String[] _methodParameterTypes301;
-	private String _methodName302;
-	private String[] _methodParameterTypes302;
 }

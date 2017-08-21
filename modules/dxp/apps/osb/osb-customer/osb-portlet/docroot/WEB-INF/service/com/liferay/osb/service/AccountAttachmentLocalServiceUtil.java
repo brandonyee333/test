@@ -308,13 +308,6 @@ public class AccountAttachmentLocalServiceUtil {
 		getService().deleteAccountAttachments(accountEntryId, accountProjectId);
 	}
 
-	public static void deleteAccountAttachments(long accountEntryId,
-		long accountProjectId, int type)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService()
-			.deleteAccountAttachments(accountEntryId, accountProjectId, type);
-	}
-
 	public static void clearService() {
 		_service = null;
 	}

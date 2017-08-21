@@ -283,11 +283,6 @@ public class TicketWorkerLocalServiceUtil {
 		return getService().getTicketWorkers(ticketEntryId);
 	}
 
-	public static java.util.List<com.liferay.osb.model.TicketWorker> getUserTicketWorkers(
-		long userId) {
-		return getService().getUserTicketWorkers(userId);
-	}
-
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*

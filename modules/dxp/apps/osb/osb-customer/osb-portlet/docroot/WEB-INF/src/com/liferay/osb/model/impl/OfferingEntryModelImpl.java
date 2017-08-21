@@ -142,12 +142,9 @@ public class OfferingEntryModelImpl extends BaseModelImpl<OfferingEntry>
 			true);
 	public static final long ACCOUNTENTRYID_COLUMN_BITMASK = 1L;
 	public static final long ORDERENTRYID_COLUMN_BITMASK = 2L;
-	public static final long STATUS_COLUMN_BITMASK = 4L;
-	public static final long SUPPORTENDDATE_COLUMN_BITMASK = 8L;
-	public static final long TYPE_COLUMN_BITMASK = 16L;
-	public static final long USERID_COLUMN_BITMASK = 32L;
-	public static final long VERSION_COLUMN_BITMASK = 64L;
-	public static final long OFFERINGENTRYID_COLUMN_BITMASK = 128L;
+	public static final long TYPE_COLUMN_BITMASK = 4L;
+	public static final long USERID_COLUMN_BITMASK = 8L;
+	public static final long OFFERINGENTRYID_COLUMN_BITMASK = 16L;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -639,19 +636,7 @@ public class OfferingEntryModelImpl extends BaseModelImpl<OfferingEntry>
 
 	@Override
 	public void setVersion(int version) {
-		_columnBitmask |= VERSION_COLUMN_BITMASK;
-
-		if (!_setOriginalVersion) {
-			_setOriginalVersion = true;
-
-			_originalVersion = _version;
-		}
-
 		_version = version;
-	}
-
-	public int getOriginalVersion() {
-		return _originalVersion;
 	}
 
 	@JSON
@@ -772,17 +757,7 @@ public class OfferingEntryModelImpl extends BaseModelImpl<OfferingEntry>
 
 	@Override
 	public void setSupportEndDate(Date supportEndDate) {
-		_columnBitmask |= SUPPORTENDDATE_COLUMN_BITMASK;
-
-		if (_originalSupportEndDate == null) {
-			_originalSupportEndDate = _supportEndDate;
-		}
-
 		_supportEndDate = supportEndDate;
-	}
-
-	public Date getOriginalSupportEndDate() {
-		return _originalSupportEndDate;
 	}
 
 	@JSON
@@ -815,19 +790,7 @@ public class OfferingEntryModelImpl extends BaseModelImpl<OfferingEntry>
 
 	@Override
 	public void setStatus(int status) {
-		_columnBitmask |= STATUS_COLUMN_BITMASK;
-
-		if (!_setOriginalStatus) {
-			_setOriginalStatus = true;
-
-			_originalStatus = _status;
-		}
-
 		_status = status;
-	}
-
-	public int getOriginalStatus() {
-		return _originalStatus;
 	}
 
 	public long getColumnBitmask() {
@@ -970,16 +933,6 @@ public class OfferingEntryModelImpl extends BaseModelImpl<OfferingEntry>
 		offeringEntryModelImpl._originalType = offeringEntryModelImpl._type;
 
 		offeringEntryModelImpl._setOriginalType = false;
-
-		offeringEntryModelImpl._originalVersion = offeringEntryModelImpl._version;
-
-		offeringEntryModelImpl._setOriginalVersion = false;
-
-		offeringEntryModelImpl._originalSupportEndDate = offeringEntryModelImpl._supportEndDate;
-
-		offeringEntryModelImpl._originalStatus = offeringEntryModelImpl._status;
-
-		offeringEntryModelImpl._setOriginalStatus = false;
 
 		offeringEntryModelImpl._columnBitmask = 0;
 	}
@@ -1276,8 +1229,6 @@ public class OfferingEntryModelImpl extends BaseModelImpl<OfferingEntry>
 	private int _originalType;
 	private boolean _setOriginalType;
 	private int _version;
-	private int _originalVersion;
-	private boolean _setOriginalVersion;
 	private String _platform;
 	private String _platformVersion;
 	private boolean _licenses;
@@ -1287,12 +1238,9 @@ public class OfferingEntryModelImpl extends BaseModelImpl<OfferingEntry>
 	private boolean _supportTickets;
 	private long _supportLifetime;
 	private Date _supportEndDate;
-	private Date _originalSupportEndDate;
 	private int _sizing;
 	private int _quantity;
 	private int _status;
-	private int _originalStatus;
-	private boolean _setOriginalStatus;
 	private long _columnBitmask;
 	private OfferingEntry _escapedModel;
 }

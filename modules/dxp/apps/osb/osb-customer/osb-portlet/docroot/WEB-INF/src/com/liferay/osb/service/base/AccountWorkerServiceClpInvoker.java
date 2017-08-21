@@ -27,52 +27,21 @@ import java.util.Arrays;
 @ProviderType
 public class AccountWorkerServiceClpInvoker {
 	public AccountWorkerServiceClpInvoker() {
-		_methodName366 = "getOSGiServiceIdentifier";
+		_methodName364 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes366 = new String[] {  };
-
-		_methodName371 = "addAccountWorkers";
-
-		_methodParameterTypes371 = new String[] {
-				"long[][]", "long", "int[][]", "int[][]"
-			};
-
-		_methodName372 = "deleteAccountWorkers";
-
-		_methodParameterTypes372 = new String[] { "long[][]", "long" };
+		_methodParameterTypes364 = new String[] {  };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName366.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes366, parameterTypes)) {
+		if (_methodName364.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes364, parameterTypes)) {
 			return AccountWorkerServiceUtil.getOSGiServiceIdentifier();
-		}
-
-		if (_methodName371.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes371, parameterTypes)) {
-			AccountWorkerServiceUtil.addAccountWorkers((long[])arguments[0],
-				((Long)arguments[1]).longValue(), (int[])arguments[2],
-				(int[])arguments[3]);
-
-			return null;
-		}
-
-		if (_methodName372.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes372, parameterTypes)) {
-			AccountWorkerServiceUtil.deleteAccountWorkers((long[])arguments[0],
-				((Long)arguments[1]).longValue());
-
-			return null;
 		}
 
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName366;
-	private String[] _methodParameterTypes366;
-	private String _methodName371;
-	private String[] _methodParameterTypes371;
-	private String _methodName372;
-	private String[] _methodParameterTypes372;
+	private String _methodName364;
+	private String[] _methodParameterTypes364;
 }

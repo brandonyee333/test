@@ -55,70 +55,13 @@ import com.liferay.portal.kernel.util.MethodKey;
  */
 @ProviderType
 public class AccountCustomerServiceHttp {
-	public static void addAccountCustomers(HttpPrincipal httpPrincipal,
-		long[] userIds, long accountEntryId, int[] roles, int[] notifications)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(AccountCustomerServiceUtil.class,
-					"addAccountCustomers", _addAccountCustomersParameterTypes0);
-
-			MethodHandler methodHandler = new MethodHandler(methodKey, userIds,
-					accountEntryId, roles, notifications);
-
-			try {
-				TunnelUtil.invoke(httpPrincipal, methodHandler);
-			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
-			}
-		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
-
-			throw se;
-		}
-	}
-
-	public static void deleteAccountCustomers(HttpPrincipal httpPrincipal,
-		long[] userIds, long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(AccountCustomerServiceUtil.class,
-					"deleteAccountCustomers",
-					_deleteAccountCustomersParameterTypes1);
-
-			MethodHandler methodHandler = new MethodHandler(methodKey, userIds,
-					accountEntryId);
-
-			try {
-				TunnelUtil.invoke(httpPrincipal, methodHandler);
-			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
-			}
-		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
-
-			throw se;
-		}
-	}
-
 	public static java.util.List<java.lang.String> getCorpProjectAccountCustomerUUIDs(
 		HttpPrincipal httpPrincipal, long corpProjectId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(AccountCustomerServiceUtil.class,
 					"getCorpProjectAccountCustomerUUIDs",
-					_getCorpProjectAccountCustomerUUIDsParameterTypes2);
+					_getCorpProjectAccountCustomerUUIDsParameterTypes0);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey,
 					corpProjectId);
@@ -150,7 +93,7 @@ public class AccountCustomerServiceHttp {
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(AccountCustomerServiceUtil.class,
-					"toggleNotifications", _toggleNotificationsParameterTypes3);
+					"toggleNotifications", _toggleNotificationsParameterTypes1);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey,
 					accountCustomerId);
@@ -174,15 +117,9 @@ public class AccountCustomerServiceHttp {
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(AccountCustomerServiceHttp.class);
-	private static final Class<?>[] _addAccountCustomersParameterTypes0 = new Class[] {
-			long[].class, long.class, int[].class, int[].class
-		};
-	private static final Class<?>[] _deleteAccountCustomersParameterTypes1 = new Class[] {
-			long[].class, long.class
-		};
-	private static final Class<?>[] _getCorpProjectAccountCustomerUUIDsParameterTypes2 =
+	private static final Class<?>[] _getCorpProjectAccountCustomerUUIDsParameterTypes0 =
 		new Class[] { long.class };
-	private static final Class<?>[] _toggleNotificationsParameterTypes3 = new Class[] {
+	private static final Class<?>[] _toggleNotificationsParameterTypes1 = new Class[] {
 			long.class
 		};
 }

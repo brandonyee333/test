@@ -163,10 +163,6 @@ public class TicketLinkLocalServiceUtil {
 		return getService().getTicketLinksCount();
 	}
 
-	public static int getTicketLinksCount(long ticketEntryId, int visibility) {
-		return getService().getTicketLinksCount(ticketEntryId, visibility);
-	}
-
 	public static int getTicketLinksCount(long ticketEntryId, int[] visibilities) {
 		return getService().getTicketLinksCount(ticketEntryId, visibilities);
 	}
@@ -250,11 +246,6 @@ public class TicketLinkLocalServiceUtil {
 	public static java.util.List<com.liferay.osb.model.TicketLink> getTicketLinks(
 		int start, int end) {
 		return getService().getTicketLinks(start, end);
-	}
-
-	public static java.util.List<com.liferay.osb.model.TicketLink> getTicketLinks(
-		long ticketEntryId, int visibility) {
-		return getService().getTicketLinks(ticketEntryId, visibility);
 	}
 
 	public static java.util.List<com.liferay.osb.model.TicketLink> getTicketLinks(

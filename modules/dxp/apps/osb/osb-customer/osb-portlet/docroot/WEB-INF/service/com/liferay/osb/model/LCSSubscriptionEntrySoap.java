@@ -23,10 +23,9 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * This class is used by SOAP remote services, specifically {@link com.liferay.osb.service.http.LCSSubscriptionEntryServiceSoap}.
+ * This class is used by SOAP remote services.
  *
  * @author Brian Wing Shun Chan
- * @see com.liferay.osb.service.http.LCSSubscriptionEntryServiceSoap
  * @generated
  */
 @ProviderType

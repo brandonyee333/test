@@ -16,16 +16,9 @@ package com.liferay.osb.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.osb.service.AccountWorkerServiceUtil;
-
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-
-import java.rmi.RemoteException;
-
 /**
  * Provides the SOAP utility for the
- * {@link AccountWorkerServiceUtil} service utility. The
+ * {@link com.liferay.osb.service.AccountWorkerServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it is difficult for SOAP to
  * support certain types.
@@ -60,36 +53,9 @@ import java.rmi.RemoteException;
  * @author Brian Wing Shun Chan
  * @see AccountWorkerServiceHttp
  * @see com.liferay.osb.model.AccountWorkerSoap
- * @see AccountWorkerServiceUtil
+ * @see com.liferay.osb.service.AccountWorkerServiceUtil
  * @generated
  */
 @ProviderType
 public class AccountWorkerServiceSoap {
-	public static void addAccountWorkers(long[] userIds, long accountEntryId,
-		int[] roles, int[] notifications) throws RemoteException {
-		try {
-			AccountWorkerServiceUtil.addAccountWorkers(userIds, accountEntryId,
-				roles, notifications);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			throw new RemoteException(e.getMessage());
-		}
-	}
-
-	public static void deleteAccountWorkers(long[] userIds, long accountEntryId)
-		throws RemoteException {
-		try {
-			AccountWorkerServiceUtil.deleteAccountWorkers(userIds,
-				accountEntryId);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			throw new RemoteException(e.getMessage());
-		}
-	}
-
-	private static Log _log = LogFactoryUtil.getLog(AccountWorkerServiceSoap.class);
 }

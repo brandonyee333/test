@@ -245,9 +245,6 @@ public interface TicketWorkerLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TicketWorker> getTicketWorkers(long ticketEntryId);
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<TicketWorker> getUserTicketWorkers(long userId);
-
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*

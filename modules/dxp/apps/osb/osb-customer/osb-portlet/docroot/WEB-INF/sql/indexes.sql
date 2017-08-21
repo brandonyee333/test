@@ -3,7 +3,6 @@ create index IX_D44EEA51 on OSB_AccountAttachment (accountEntryId, accountProjec
 
 create index IX_B268D724 on OSB_AccountCall (accountEntryId);
 
-create index IX_54FF6074 on OSB_AccountCustomer (accountEntryId, notifications);
 create index IX_B590328E on OSB_AccountCustomer (accountEntryId, role);
 create index IX_F9BEADE on OSB_AccountCustomer (userId, accountEntryId);
 create index IX_A47A5E94 on OSB_AccountCustomer (userId, role);
@@ -18,7 +17,6 @@ create index IX_7AF62D4F on OSB_AccountEntries_SupportTeams (supportTeamId);
 
 create unique index IX_32214056 on OSB_AccountEntry (code_[$COLUMN_LENGTH:75$]);
 create index IX_6AA361CE on OSB_AccountEntry (corpProjectId);
-create index IX_142E34C7 on OSB_AccountEntry (highestSupportResponseId);
 create index IX_2FB47967 on OSB_AccountEntry (name[$COLUMN_LENGTH:500$], code_[$COLUMN_LENGTH:75$], redirectAccountEntryId);
 create index IX_1DCDCBE5 on OSB_AccountEntry (partnerEntryId);
 create index IX_5F5D3902 on OSB_AccountEntry (redirectAccountEntryId, status);
@@ -62,13 +60,11 @@ create index IX_86A7752 on OSB_ExternalIdMapper (classNameId, classPK, type_);
 create index IX_8FBE42CF on OSB_ExternalIdMapper (classNameId, type_, externalId[$COLUMN_LENGTH:75$]);
 
 create index IX_1738CAF1 on OSB_HolidayCalendarRel (holidayCalendarId, userId);
-create index IX_B2BCBD24 on OSB_HolidayCalendarRel (userId);
 
 create index IX_8D6F9B60 on OSB_HolidayEntry (holidayCalendarId);
 
 create index IX_8B5D7FE4 on OSB_LicenseEntry (productEntryId, portalVersionMin);
 create unique index IX_7576438B on OSB_LicenseEntry (productEntryId, type_[$COLUMN_LENGTH:75$]);
-create index IX_12886FD on OSB_LicenseEntry (type_[$COLUMN_LENGTH:75$]);
 
 create index IX_D9E7AC39 on OSB_LicenseKey (accountEntryId);
 create index IX_EB731F6A on OSB_LicenseKey (assetReceiptLicenseId, active_);
@@ -96,12 +92,9 @@ create index IX_5CB2DBB3 on OSB_OfferingBundles_OfferingDefinitions (offeringDef
 create index IX_CFDC51BF on OSB_OfferingDefinition (productEntryId, supportResponseId, productDescription[$COLUMN_LENGTH:75$], licenses, unlimitedLicenses, supportTickets);
 create index IX_99AA46FB on OSB_OfferingDefinition (supportResponseId);
 
-create index IX_ACC7D8EB on OSB_OfferingEntry (accountEntryId, status);
+create index IX_C5126F05 on OSB_OfferingEntry (accountEntryId);
 create index IX_2CFC6FC4 on OSB_OfferingEntry (orderEntryId);
-create index IX_91C36F37 on OSB_OfferingEntry (status);
-create index IX_E0CF6A9F on OSB_OfferingEntry (supportEndDate);
 create index IX_6455D563 on OSB_OfferingEntry (userId, accountEntryId, orderEntryId, type_);
-create index IX_CE314FD7 on OSB_OfferingEntry (version);
 
 create index IX_CF95221F on OSB_OrderEntry (accountEntryId);
 create index IX_9903B2E9 on OSB_OrderEntry (uuid_[$COLUMN_LENGTH:75$]);
@@ -129,7 +122,6 @@ create index IX_36A4B1D8 on OSB_SecurityPatch (portletId[$COLUMN_LENGTH:75$]);
 create unique index IX_DC67F8E7 on OSB_SupportRegion (name[$COLUMN_LENGTH:75$]);
 
 create unique index IX_9A2345B4 on OSB_SupportResponse (name[$COLUMN_LENGTH:75$]);
-create index IX_21D8E69E on OSB_SupportResponse (supportLevel);
 
 create unique index IX_CB537ED0 on OSB_SupportTeam (name[$COLUMN_LENGTH:75$]);
 create index IX_259AEC3C on OSB_SupportTeam (parentSupportTeamId);
@@ -143,7 +135,6 @@ create index IX_E33A26EA on OSB_SupportTeams_SupportRegions (supportTeamId);
 
 create index IX_C3CFE42 on OSB_SupportWorker (supportLaborId);
 create index IX_5B76AC85 on OSB_SupportWorker (supportTeamId);
-create index IX_211496C3 on OSB_SupportWorker (userId, maxWork, role);
 create unique index IX_C4442B0B on OSB_SupportWorker (userId, supportTeamId);
 
 create index IX_749683CF on OSB_SupportWorkerAccountTier (supportWorkerId);

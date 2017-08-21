@@ -331,14 +331,6 @@ public class AccountAttachmentLocalServiceWrapper
 	}
 
 	@Override
-	public void deleteAccountAttachments(long accountEntryId,
-		long accountProjectId, int type)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_accountAttachmentLocalService.deleteAccountAttachments(accountEntryId,
-			accountProjectId, type);
-	}
-
-	@Override
 	public AccountAttachmentLocalService getWrappedService() {
 		return _accountAttachmentLocalService;
 	}

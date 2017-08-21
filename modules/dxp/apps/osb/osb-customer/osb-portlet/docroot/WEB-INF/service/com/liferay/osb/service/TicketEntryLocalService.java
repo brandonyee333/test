@@ -71,14 +71,7 @@ public interface TicketEntryLocalService extends BaseLocalService,
 	 * Never modify or reference this interface directly. Always use {@link TicketEntryLocalServiceUtil} to access the ticket entry local service. Add custom service methods to {@link com.liferay.osb.service.impl.TicketEntryLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasParticipant(long userId, TicketEntry ticketEntry);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public boolean hasParticipant(long userId, long ticketEntryId)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasVisibility(long userId, long ticketEntryId, int visibility)
 		throws PortalException;
 
 	/**
@@ -182,9 +175,6 @@ public interface TicketEntryLocalService extends BaseLocalService,
 		int[] pendingTypes, List<TicketAttachment> ticketAttachments,
 		ServiceContext serviceContext) throws PortalException;
 
-	public TicketEntry updateTicketId(long ticketEntryId, long ticketId)
-		throws PortalException;
-
 	public TicketEntry updateWorkerModifiedDate(long ticketEntryId,
 		Date workerModifiedDate) throws PortalException;
 
@@ -241,9 +231,6 @@ public interface TicketEntryLocalService extends BaseLocalService,
 	public int getTicketEntriesCount(Date modifiedDate);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getTicketEntriesCount(long accountEntryId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getValidTicketEntriesCount(long offeringEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -265,10 +252,6 @@ public interface TicketEntryLocalService extends BaseLocalService,
 		int dueDateLTDay, int dueDateLTMonth, int dueDateLTYear,
 		LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andSearch);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int[] getUserVisibilities(long userId, long ticketEntryId)
-		throws PortalException;
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
@@ -340,19 +323,9 @@ public interface TicketEntryLocalService extends BaseLocalService,
 		int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<TicketEntry> getTicketEntries(long accountEntryId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<TicketEntry> getTicketEntries(long accountEntryId, int start,
-		int end, OrderByComparator obc);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TicketEntry> getTicketFeedbackTicketEntries(long userId,
 		int createdGTDay, int createdGTMonth, int createdGTYear, int status)
 		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<TicketEntry> getValidTicketEntries(long offeringEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TicketEntry> search(java.lang.String keywords,

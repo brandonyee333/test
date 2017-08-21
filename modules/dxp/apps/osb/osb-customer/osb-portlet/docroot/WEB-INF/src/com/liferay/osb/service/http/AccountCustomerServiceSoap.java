@@ -65,32 +65,6 @@ import java.rmi.RemoteException;
  */
 @ProviderType
 public class AccountCustomerServiceSoap {
-	public static void addAccountCustomers(long[] userIds, long accountEntryId,
-		int[] roles, int[] notifications) throws RemoteException {
-		try {
-			AccountCustomerServiceUtil.addAccountCustomers(userIds,
-				accountEntryId, roles, notifications);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			throw new RemoteException(e.getMessage());
-		}
-	}
-
-	public static void deleteAccountCustomers(long[] userIds,
-		long accountEntryId) throws RemoteException {
-		try {
-			AccountCustomerServiceUtil.deleteAccountCustomers(userIds,
-				accountEntryId);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			throw new RemoteException(e.getMessage());
-		}
-	}
-
 	public static java.lang.String[] getCorpProjectAccountCustomerUUIDs(
 		long corpProjectId) throws RemoteException {
 		try {

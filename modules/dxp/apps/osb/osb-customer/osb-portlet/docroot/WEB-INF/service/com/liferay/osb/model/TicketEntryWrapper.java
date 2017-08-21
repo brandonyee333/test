@@ -409,12 +409,6 @@ public class TicketEntryWrapper implements TicketEntry,
 	}
 
 	@Override
-	public boolean hasParticipant(long userId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ticketEntry.hasParticipant(userId);
-	}
-
-	@Override
 	public boolean isCachedModel() {
 		return _ticketEntry.isCachedModel();
 	}

@@ -267,7 +267,4 @@ public interface AccountAttachmentLocalService extends BaseLocalService,
 
 	public void deleteAccountAttachments(long accountEntryId,
 		long accountProjectId) throws PortalException;
-
-	public void deleteAccountAttachments(long accountEntryId,
-		long accountProjectId, int type) throws PortalException;
 }

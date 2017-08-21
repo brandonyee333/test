@@ -305,13 +305,6 @@ public class TicketFeedbackLocalServiceWrapper
 	}
 
 	@Override
-	public java.util.List<com.liferay.osb.model.TicketFeedback> getTicketFeedbacks(
-		long ticketEntryId, int subject, int status) {
-		return _ticketFeedbackLocalService.getTicketFeedbacks(ticketEntryId,
-			subject, status);
-	}
-
-	@Override
 	public java.util.List<com.liferay.osb.model.TicketFeedback> search(
 		java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,

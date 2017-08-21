@@ -286,11 +286,6 @@ public class TicketFeedbackLocalServiceUtil {
 		return getService().getTicketFeedbacks(ticketEntryId, subject);
 	}
 
-	public static java.util.List<com.liferay.osb.model.TicketFeedback> getTicketFeedbacks(
-		long ticketEntryId, int subject, int status) {
-		return getService().getTicketFeedbacks(ticketEntryId, subject, status);
-	}
-
 	public static java.util.List<com.liferay.osb.model.TicketFeedback> search(
 		java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,

@@ -65,7 +65,6 @@
 	<bean class="com.liferay.osb.service.persistence.impl.HolidayEntryPersistenceImpl" id="com.liferay.osb.service.persistence.HolidayEntryPersistence" parent="basePersistence" />
 	<bean class="com.liferay.osb.service.persistence.impl.HolidayEntryFinderImpl" id="com.liferay.osb.service.persistence.HolidayEntryFinder" parent="basePersistence" />
 	<bean class="com.liferay.osb.service.impl.LCSSubscriptionEntryLocalServiceImpl" id="com.liferay.osb.service.LCSSubscriptionEntryLocalService" />
-	<bean class="com.liferay.osb.service.impl.LCSSubscriptionEntryServiceImpl" id="com.liferay.osb.service.LCSSubscriptionEntryService" />
 	<bean class="com.liferay.osb.service.persistence.impl.LCSSubscriptionEntryPersistenceImpl" id="com.liferay.osb.service.persistence.LCSSubscriptionEntryPersistence" parent="basePersistence" />
 	<bean class="com.liferay.osb.service.impl.LicenseEntryLocalServiceImpl" id="com.liferay.osb.service.LicenseEntryLocalService" />
 	<bean class="com.liferay.osb.service.impl.LicenseEntryServiceImpl" id="com.liferay.osb.service.LicenseEntryService" />

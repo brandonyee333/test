@@ -249,12 +249,6 @@ public class TicketAttachmentLocalServiceWrapper
 	}
 
 	@Override
-	public int getTicketAttachmentsCount(long ticketEntryId, int[] visibilities) {
-		return _ticketAttachmentLocalService.getTicketAttachmentsCount(ticketEntryId,
-			visibilities);
-	}
-
-	@Override
 	public java.io.File getTicketAttachmentsZipFile(long ticketEntryId,
 		int[] visibilities)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -372,28 +366,8 @@ public class TicketAttachmentLocalServiceWrapper
 
 	@Override
 	public java.util.List<com.liferay.osb.model.TicketAttachment> getTicketAttachments(
-		int[] types) {
-		return _ticketAttachmentLocalService.getTicketAttachments(types);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.TicketAttachment> getTicketAttachments(
-		java.util.Date createDate, int type) {
-		return _ticketAttachmentLocalService.getTicketAttachments(createDate,
-			type);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.TicketAttachment> getTicketAttachments(
 		long ticketEntryId) {
 		return _ticketAttachmentLocalService.getTicketAttachments(ticketEntryId);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.TicketAttachment> getTicketAttachments(
-		long ticketEntryId, int[] types, int[] visibilities) {
-		return _ticketAttachmentLocalService.getTicketAttachments(ticketEntryId,
-			types, visibilities);
 	}
 
 	@Override
@@ -401,13 +375,6 @@ public class TicketAttachmentLocalServiceWrapper
 		long ticketEntryId, int[] types, int[] visibilities, int status) {
 		return _ticketAttachmentLocalService.getTicketAttachments(ticketEntryId,
 			types, visibilities, status);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.TicketAttachment> getTicketAttachments(
-		long ticketEntryId, int[] visibilities, int status) {
-		return _ticketAttachmentLocalService.getTicketAttachments(ticketEntryId,
-			visibilities, status);
 	}
 
 	@Override

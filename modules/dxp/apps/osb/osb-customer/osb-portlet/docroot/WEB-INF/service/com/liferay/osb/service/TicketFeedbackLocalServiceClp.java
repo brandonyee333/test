@@ -150,20 +150,16 @@ public class TicketFeedbackLocalServiceClp implements TicketFeedbackLocalService
 
 		_methodParameterTypes24 = new String[] { "long", "int" };
 
-		_methodName25 = "getTicketFeedbacks";
+		_methodName25 = "search";
 
-		_methodParameterTypes25 = new String[] { "long", "int", "int" };
-
-		_methodName26 = "search";
-
-		_methodParameterTypes26 = new String[] {
+		_methodParameterTypes25 = new String[] {
 				"java.lang.String", "java.util.LinkedHashMap", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName27 = "search";
+		_methodName26 = "search";
 
-		_methodParameterTypes27 = new String[] {
+		_methodParameterTypes26 = new String[] {
 				"java.lang.String", "int", "int", "int", "int", "int", "int",
 				"int", "int", "int", "int", "int", "int", "java.lang.Integer",
 				"java.lang.String", "java.lang.Integer", "java.lang.Integer[][]",
@@ -172,30 +168,30 @@ public class TicketFeedbackLocalServiceClp implements TicketFeedbackLocalService
 				"int", "int", "com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName28 = "dynamicQueryCount";
+		_methodName27 = "dynamicQueryCount";
 
-		_methodParameterTypes28 = new String[] {
+		_methodParameterTypes27 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
 			};
 
-		_methodName29 = "dynamicQueryCount";
+		_methodName28 = "dynamicQueryCount";
 
-		_methodParameterTypes29 = new String[] {
+		_methodParameterTypes28 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery",
 				"com.liferay.portal.kernel.dao.orm.Projection"
 			};
 
-		_methodName30 = "sendCustomerNotifications";
+		_methodName29 = "sendCustomerNotifications";
+
+		_methodParameterTypes29 = new String[] {  };
+
+		_methodName30 = "sendLiferayWorkerNotifications";
 
 		_methodParameterTypes30 = new String[] {  };
 
-		_methodName31 = "sendLiferayWorkerNotifications";
+		_methodName31 = "sendSupportTeamNotifications";
 
 		_methodParameterTypes31 = new String[] {  };
-
-		_methodName32 = "sendSupportTeamNotifications";
-
-		_methodParameterTypes32 = new String[] {  };
 	}
 
 	@Override
@@ -918,31 +914,6 @@ public class TicketFeedbackLocalServiceClp implements TicketFeedbackLocalService
 	}
 
 	@Override
-	public java.util.List<com.liferay.osb.model.TicketFeedback> getTicketFeedbacks(
-		long ticketEntryId, int subject, int status) {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName25,
-					_methodParameterTypes25,
-					new Object[] { ticketEntryId, subject, status });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (java.util.List<com.liferay.osb.model.TicketFeedback>)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
 	public java.util.List<com.liferay.osb.model.TicketFeedback> search(
 		java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
@@ -950,8 +921,8 @@ public class TicketFeedbackLocalServiceClp implements TicketFeedbackLocalService
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName26,
-					_methodParameterTypes26,
+			returnObj = _invokableLocalService.invokeMethod(_methodName25,
+					_methodParameterTypes25,
 					new Object[] {
 						ClpSerializer.translateInput(keywords),
 						
@@ -995,8 +966,8 @@ public class TicketFeedbackLocalServiceClp implements TicketFeedbackLocalService
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName27,
-					_methodParameterTypes27,
+			returnObj = _invokableLocalService.invokeMethod(_methodName26,
+					_methodParameterTypes26,
 					new Object[] {
 						ClpSerializer.translateInput(name),
 						
@@ -1070,8 +1041,8 @@ public class TicketFeedbackLocalServiceClp implements TicketFeedbackLocalService
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName28,
-					_methodParameterTypes28,
+			returnObj = _invokableLocalService.invokeMethod(_methodName27,
+					_methodParameterTypes27,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -1096,8 +1067,8 @@ public class TicketFeedbackLocalServiceClp implements TicketFeedbackLocalService
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName29,
-					_methodParameterTypes29,
+			returnObj = _invokableLocalService.invokeMethod(_methodName28,
+					_methodParameterTypes28,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -1122,8 +1093,8 @@ public class TicketFeedbackLocalServiceClp implements TicketFeedbackLocalService
 	@Override
 	public void sendCustomerNotifications() throws java.lang.Exception {
 		try {
-			_invokableLocalService.invokeMethod(_methodName30,
-				_methodParameterTypes30, new Object[] {  });
+			_invokableLocalService.invokeMethod(_methodName29,
+				_methodParameterTypes29, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1145,8 +1116,8 @@ public class TicketFeedbackLocalServiceClp implements TicketFeedbackLocalService
 	@Override
 	public void sendLiferayWorkerNotifications() throws java.lang.Exception {
 		try {
-			_invokableLocalService.invokeMethod(_methodName31,
-				_methodParameterTypes31, new Object[] {  });
+			_invokableLocalService.invokeMethod(_methodName30,
+				_methodParameterTypes30, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1168,8 +1139,8 @@ public class TicketFeedbackLocalServiceClp implements TicketFeedbackLocalService
 	@Override
 	public void sendSupportTeamNotifications() throws java.lang.Exception {
 		try {
-			_invokableLocalService.invokeMethod(_methodName32,
-				_methodParameterTypes32, new Object[] {  });
+			_invokableLocalService.invokeMethod(_methodName31,
+				_methodParameterTypes31, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1251,6 +1222,4 @@ public class TicketFeedbackLocalServiceClp implements TicketFeedbackLocalService
 	private String[] _methodParameterTypes30;
 	private String _methodName31;
 	private String[] _methodParameterTypes31;
-	private String _methodName32;
-	private String[] _methodParameterTypes32;
 }

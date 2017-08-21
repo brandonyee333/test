@@ -34,22 +34,9 @@ public class TicketEntryLocalServiceWrapper implements TicketEntryLocalService,
 	}
 
 	@Override
-	public boolean hasParticipant(long userId,
-		com.liferay.osb.model.TicketEntry ticketEntry) {
-		return _ticketEntryLocalService.hasParticipant(userId, ticketEntry);
-	}
-
-	@Override
 	public boolean hasParticipant(long userId, long ticketEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketEntryLocalService.hasParticipant(userId, ticketEntryId);
-	}
-
-	@Override
-	public boolean hasVisibility(long userId, long ticketEntryId, int visibility)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ticketEntryLocalService.hasVisibility(userId, ticketEntryId,
-			visibility);
 	}
 
 	/**
@@ -218,13 +205,6 @@ public class TicketEntryLocalServiceWrapper implements TicketEntryLocalService,
 	}
 
 	@Override
-	public com.liferay.osb.model.TicketEntry updateTicketId(
-		long ticketEntryId, long ticketId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ticketEntryLocalService.updateTicketId(ticketEntryId, ticketId);
-	}
-
-	@Override
 	public com.liferay.osb.model.TicketEntry updateWorkerModifiedDate(
 		long ticketEntryId, java.util.Date workerModifiedDate)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -317,11 +297,6 @@ public class TicketEntryLocalServiceWrapper implements TicketEntryLocalService,
 	}
 
 	@Override
-	public int getTicketEntriesCount(long accountEntryId) {
-		return _ticketEntryLocalService.getTicketEntriesCount(accountEntryId);
-	}
-
-	@Override
 	public int getValidTicketEntriesCount(long offeringEntryId) {
 		return _ticketEntryLocalService.getValidTicketEntriesCount(offeringEntryId);
 	}
@@ -357,13 +332,6 @@ public class TicketEntryLocalServiceWrapper implements TicketEntryLocalService,
 			closedDateLTMonth, closedDateLTYear, dueDateGTDay, dueDateGTMonth,
 			dueDateGTYear, dueDateLTDay, dueDateLTMonth, dueDateLTYear, params,
 			andSearch);
-	}
-
-	@Override
-	public int[] getUserVisibilities(long userId, long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ticketEntryLocalService.getUserVisibilities(userId,
-			ticketEntryId);
 	}
 
 	@Override
@@ -462,31 +430,11 @@ public class TicketEntryLocalServiceWrapper implements TicketEntryLocalService,
 	}
 
 	@Override
-	public java.util.List<com.liferay.osb.model.TicketEntry> getTicketEntries(
-		long accountEntryId) {
-		return _ticketEntryLocalService.getTicketEntries(accountEntryId);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.TicketEntry> getTicketEntries(
-		long accountEntryId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc) {
-		return _ticketEntryLocalService.getTicketEntries(accountEntryId, start,
-			end, obc);
-	}
-
-	@Override
 	public java.util.List<com.liferay.osb.model.TicketEntry> getTicketFeedbackTicketEntries(
 		long userId, int createdGTDay, int createdGTMonth, int createdGTYear,
 		int status) throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketEntryLocalService.getTicketFeedbackTicketEntries(userId,
 			createdGTDay, createdGTMonth, createdGTYear, status);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.TicketEntry> getValidTicketEntries(
-		long offeringEntryId) {
-		return _ticketEntryLocalService.getValidTicketEntries(offeringEntryId);
 	}
 
 	@Override

@@ -67,12 +67,6 @@ public interface AccountCustomerService extends BaseService, InvokableService {
 	public List<java.lang.String> getCorpProjectAccountCustomerUUIDs(
 		long corpProjectId) throws PortalException;
 
-	public void addAccountCustomers(long[] userIds, long accountEntryId,
-		int[] roles, int[] notifications) throws PortalException;
-
-	public void deleteAccountCustomers(long[] userIds, long accountEntryId)
-		throws PortalException;
-
 	public void toggleNotifications(long accountCustomerId)
 		throws PortalException;
 }

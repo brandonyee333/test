@@ -41,12 +41,6 @@ public class TicketCommentLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.TicketCommentLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static boolean hasVisibility(long userId, long ticketEntryId,
-		int visibility)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().hasVisibility(userId, ticketEntryId, visibility);
-	}
-
 	public static com.liferay.osb.model.TicketComment addAwayMessageTicketComment(
 		long userId, long ticketEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -247,11 +241,6 @@ public class TicketCommentLocalServiceUtil {
 		return getService()
 				   .getTicketCommentsCount(userId, ticketEntryId, visibilities,
 			statuses);
-	}
-
-	public static int[] getUserVisibilities(long userId, long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getUserVisibilities(userId, ticketEntryId);
 	}
 
 	public static java.lang.Object invokeMethod(java.lang.String name,

@@ -1963,25 +1963,6 @@ public class TicketEntryClp extends BaseModelImpl<TicketEntry>
 	}
 
 	@Override
-	public boolean hasParticipant(long userId) {
-		try {
-			String methodName = "hasParticipant";
-
-			Class<?>[] parameterTypes = new Class<?>[] { long.class };
-
-			Object[] parameterValues = new Object[] { userId };
-
-			Boolean returnObj = (Boolean)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	@Override
 	public boolean isPendingCustomer() {
 		try {
 			String methodName = "isPendingCustomer";

@@ -1333,25 +1333,6 @@ public abstract class AccountLinkServiceBaseImpl extends BaseServiceImpl
 	}
 
 	/**
-	 * Returns the lcs subscription entry remote service.
-	 *
-	 * @return the lcs subscription entry remote service
-	 */
-	public com.liferay.osb.service.LCSSubscriptionEntryService getLCSSubscriptionEntryService() {
-		return lcsSubscriptionEntryService;
-	}
-
-	/**
-	 * Sets the lcs subscription entry remote service.
-	 *
-	 * @param lcsSubscriptionEntryService the lcs subscription entry remote service
-	 */
-	public void setLCSSubscriptionEntryService(
-		com.liferay.osb.service.LCSSubscriptionEntryService lcsSubscriptionEntryService) {
-		this.lcsSubscriptionEntryService = lcsSubscriptionEntryService;
-	}
-
-	/**
 	 * Returns the lcs subscription entry persistence.
 	 *
 	 * @return the lcs subscription entry persistence
@@ -3764,8 +3745,6 @@ public abstract class AccountLinkServiceBaseImpl extends BaseServiceImpl
 	protected HolidayEntryFinder holidayEntryFinder;
 	@BeanReference(type = com.liferay.osb.service.LCSSubscriptionEntryLocalService.class)
 	protected com.liferay.osb.service.LCSSubscriptionEntryLocalService lcsSubscriptionEntryLocalService;
-	@BeanReference(type = com.liferay.osb.service.LCSSubscriptionEntryService.class)
-	protected com.liferay.osb.service.LCSSubscriptionEntryService lcsSubscriptionEntryService;
 	@BeanReference(type = LCSSubscriptionEntryPersistence.class)
 	protected LCSSubscriptionEntryPersistence lcsSubscriptionEntryPersistence;
 	@BeanReference(type = com.liferay.osb.service.LicenseEntryLocalService.class)

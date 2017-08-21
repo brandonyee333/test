@@ -122,12 +122,6 @@ public class SupportResponseLocalServiceUtil {
 		return getService().getSupportResponse(supportResponseId);
 	}
 
-	public static com.liferay.osb.model.SupportResponse getSupportResponseByName(
-		java.lang.String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getSupportResponseByName(name);
-	}
-
 	/**
 	* Updates the support response in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*

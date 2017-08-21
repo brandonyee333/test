@@ -329,12 +329,6 @@ public class OfferingDefinitionLocalServiceWrapper
 		return _offeringDefinitionLocalService.getProductEntryOfferingDefinitions(productEntryId);
 	}
 
-	@Override
-	public java.util.List<com.liferay.osb.model.OfferingDefinition> getSupportResponseOfferingDefinitions(
-		long supportResponseId) {
-		return _offeringDefinitionLocalService.getSupportResponseOfferingDefinitions(supportResponseId);
-	}
-
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*

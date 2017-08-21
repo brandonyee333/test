@@ -58,7 +58,6 @@ import com.liferay.osb.service.HolidayCalendarServiceUtil;
 import com.liferay.osb.service.HolidayEntryLocalServiceUtil;
 import com.liferay.osb.service.HolidayEntryServiceUtil;
 import com.liferay.osb.service.LCSSubscriptionEntryLocalServiceUtil;
-import com.liferay.osb.service.LCSSubscriptionEntryServiceUtil;
 import com.liferay.osb.service.LicenseEntryLocalServiceUtil;
 import com.liferay.osb.service.LicenseEntryServiceUtil;
 import com.liferay.osb.service.LicenseKeyLocalServiceUtil;
@@ -206,7 +205,6 @@ public class ClpMessageListener extends BaseMessageListener {
 			HolidayEntryServiceUtil.clearService();
 			LCSSubscriptionEntryLocalServiceUtil.clearService();
 
-			LCSSubscriptionEntryServiceUtil.clearService();
 			LicenseEntryLocalServiceUtil.clearService();
 
 			LicenseEntryServiceUtil.clearService();

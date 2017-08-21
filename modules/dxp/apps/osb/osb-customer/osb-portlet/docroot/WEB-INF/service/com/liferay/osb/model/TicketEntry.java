@@ -129,9 +129,6 @@ public interface TicketEntry extends TicketEntryModel, PersistedModel {
 
 	public double getWork();
 
-	public boolean hasParticipant(long userId)
-		throws com.liferay.portal.kernel.exception.PortalException;
-
 	public boolean isPendingCustomer();
 
 	public boolean isPendingLiferay();

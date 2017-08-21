@@ -227,13 +227,9 @@ public class OfferingDefinitionLocalServiceClpInvoker {
 
 		_methodParameterTypes304 = new String[] { "long" };
 
-		_methodName305 = "getSupportResponseOfferingDefinitions";
+		_methodName305 = "updateOfferingDefinition";
 
-		_methodParameterTypes305 = new String[] { "long" };
-
-		_methodName306 = "updateOfferingDefinition";
-
-		_methodParameterTypes306 = new String[] {
+		_methodParameterTypes305 = new String[] {
 				"long", "long", "long", "java.lang.String", "boolean", "boolean",
 				"long", "long", "boolean"
 			};
@@ -506,11 +502,6 @@ public class OfferingDefinitionLocalServiceClpInvoker {
 
 		if (_methodName305.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes305, parameterTypes)) {
-			return OfferingDefinitionLocalServiceUtil.getSupportResponseOfferingDefinitions(((Long)arguments[0]).longValue());
-		}
-
-		if (_methodName306.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes306, parameterTypes)) {
 			return OfferingDefinitionLocalServiceUtil.updateOfferingDefinition(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue(),
@@ -611,6 +602,4 @@ public class OfferingDefinitionLocalServiceClpInvoker {
 	private String[] _methodParameterTypes304;
 	private String _methodName305;
 	private String[] _methodParameterTypes305;
-	private String _methodName306;
-	private String[] _methodParameterTypes306;
 }

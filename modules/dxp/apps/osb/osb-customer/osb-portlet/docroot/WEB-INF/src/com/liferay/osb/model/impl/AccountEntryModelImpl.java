@@ -153,13 +153,12 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 			true);
 	public static final long CODE_COLUMN_BITMASK = 1L;
 	public static final long CORPPROJECTID_COLUMN_BITMASK = 2L;
-	public static final long HIGHESTSUPPORTRESPONSEID_COLUMN_BITMASK = 4L;
-	public static final long NAME_COLUMN_BITMASK = 8L;
-	public static final long PARTNERENTRYID_COLUMN_BITMASK = 16L;
-	public static final long REDIRECTACCOUNTENTRYID_COLUMN_BITMASK = 32L;
-	public static final long STATUS_COLUMN_BITMASK = 64L;
-	public static final long TYPE_COLUMN_BITMASK = 128L;
-	public static final long USERID_COLUMN_BITMASK = 256L;
+	public static final long NAME_COLUMN_BITMASK = 4L;
+	public static final long PARTNERENTRYID_COLUMN_BITMASK = 8L;
+	public static final long REDIRECTACCOUNTENTRYID_COLUMN_BITMASK = 16L;
+	public static final long STATUS_COLUMN_BITMASK = 32L;
+	public static final long TYPE_COLUMN_BITMASK = 64L;
+	public static final long USERID_COLUMN_BITMASK = 128L;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -920,19 +919,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 
 	@Override
 	public void setHighestSupportResponseId(long highestSupportResponseId) {
-		_columnBitmask |= HIGHESTSUPPORTRESPONSEID_COLUMN_BITMASK;
-
-		if (!_setOriginalHighestSupportResponseId) {
-			_setOriginalHighestSupportResponseId = true;
-
-			_originalHighestSupportResponseId = _highestSupportResponseId;
-		}
-
 		_highestSupportResponseId = highestSupportResponseId;
-	}
-
-	public long getOriginalHighestSupportResponseId() {
-		return _originalHighestSupportResponseId;
 	}
 
 	@JSON
@@ -1264,10 +1251,6 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		accountEntryModelImpl._originalPartnerEntryId = accountEntryModelImpl._partnerEntryId;
 
 		accountEntryModelImpl._setOriginalPartnerEntryId = false;
-
-		accountEntryModelImpl._originalHighestSupportResponseId = accountEntryModelImpl._highestSupportResponseId;
-
-		accountEntryModelImpl._setOriginalHighestSupportResponseId = false;
 
 		accountEntryModelImpl._originalStatus = accountEntryModelImpl._status;
 
@@ -1660,8 +1643,6 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 	private String _instructions;
 	private String _notes;
 	private long _highestSupportResponseId;
-	private long _originalHighestSupportResponseId;
-	private boolean _setOriginalHighestSupportResponseId;
 	private Date _lastAuditDate;
 	private int _status;
 	private int _originalStatus;

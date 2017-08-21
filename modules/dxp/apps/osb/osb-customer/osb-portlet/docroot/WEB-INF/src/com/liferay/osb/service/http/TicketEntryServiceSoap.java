@@ -106,37 +106,6 @@ public class TicketEntryServiceSoap {
 		}
 	}
 
-	public static com.liferay.osb.model.TicketEntrySoap[] getTicketEntries(
-		long accountEntryId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws RemoteException {
-		try {
-			java.util.List<com.liferay.osb.model.TicketEntry> returnValue = TicketEntryServiceUtil.getTicketEntries(accountEntryId,
-					start, end, obc);
-
-			return com.liferay.osb.model.TicketEntrySoap.toSoapModels(returnValue);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			throw new RemoteException(e.getMessage());
-		}
-	}
-
-	public static int getTicketEntriesCount(long accountEntryId)
-		throws RemoteException {
-		try {
-			int returnValue = TicketEntryServiceUtil.getTicketEntriesCount(accountEntryId);
-
-			return returnValue;
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			throw new RemoteException(e.getMessage());
-		}
-	}
-
 	public static com.liferay.osb.model.TicketEntrySoap getTicketEntry(
 		long ticketEntryId) throws RemoteException {
 		try {

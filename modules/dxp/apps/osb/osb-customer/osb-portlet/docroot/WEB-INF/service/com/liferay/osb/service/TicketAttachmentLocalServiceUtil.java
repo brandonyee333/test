@@ -231,12 +231,6 @@ public class TicketAttachmentLocalServiceUtil {
 				   .getTicketAttachmentsCount(ticketEntryId, types, visibilities);
 	}
 
-	public static int getTicketAttachmentsCount(long ticketEntryId,
-		int[] visibilities) {
-		return getService()
-				   .getTicketAttachmentsCount(ticketEntryId, visibilities);
-	}
-
 	public static java.io.File getTicketAttachmentsZipFile(long ticketEntryId,
 		int[] visibilities)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -343,24 +337,8 @@ public class TicketAttachmentLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.osb.model.TicketAttachment> getTicketAttachments(
-		int[] types) {
-		return getService().getTicketAttachments(types);
-	}
-
-	public static java.util.List<com.liferay.osb.model.TicketAttachment> getTicketAttachments(
-		java.util.Date createDate, int type) {
-		return getService().getTicketAttachments(createDate, type);
-	}
-
-	public static java.util.List<com.liferay.osb.model.TicketAttachment> getTicketAttachments(
 		long ticketEntryId) {
 		return getService().getTicketAttachments(ticketEntryId);
-	}
-
-	public static java.util.List<com.liferay.osb.model.TicketAttachment> getTicketAttachments(
-		long ticketEntryId, int[] types, int[] visibilities) {
-		return getService()
-				   .getTicketAttachments(ticketEntryId, types, visibilities);
 	}
 
 	public static java.util.List<com.liferay.osb.model.TicketAttachment> getTicketAttachments(
@@ -368,12 +346,6 @@ public class TicketAttachmentLocalServiceUtil {
 		return getService()
 				   .getTicketAttachments(ticketEntryId, types, visibilities,
 			status);
-	}
-
-	public static java.util.List<com.liferay.osb.model.TicketAttachment> getTicketAttachments(
-		long ticketEntryId, int[] visibilities, int status) {
-		return getService()
-				   .getTicketAttachments(ticketEntryId, visibilities, status);
 	}
 
 	public static java.util.List<com.liferay.osb.model.TicketAttachment> getTicketAttachments(

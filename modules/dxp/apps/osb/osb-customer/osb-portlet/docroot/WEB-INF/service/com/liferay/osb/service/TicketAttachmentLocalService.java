@@ -198,9 +198,6 @@ public interface TicketAttachmentLocalService extends BaseLocalService,
 		int[] visibilities);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getTicketAttachmentsCount(long ticketEntryId, int[] visibilities);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public File getTicketAttachmentsZipFile(long ticketEntryId,
 		int[] visibilities) throws PortalException;
 
@@ -280,25 +277,11 @@ public interface TicketAttachmentLocalService extends BaseLocalService,
 	public List<TicketAttachment> getTicketAttachments(int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<TicketAttachment> getTicketAttachments(int[] types);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<TicketAttachment> getTicketAttachments(Date createDate, int type);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TicketAttachment> getTicketAttachments(long ticketEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TicketAttachment> getTicketAttachments(long ticketEntryId,
-		int[] types, int[] visibilities);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<TicketAttachment> getTicketAttachments(long ticketEntryId,
 		int[] types, int[] visibilities, int status);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<TicketAttachment> getTicketAttachments(long ticketEntryId,
-		int[] visibilities, int status);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TicketAttachment> getTicketAttachments(long ticketEntryId,

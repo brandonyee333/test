@@ -92,73 +92,65 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 
 		_methodName14 = "getTicketLinksCount";
 
-		_methodParameterTypes14 = new String[] { "long", "int" };
+		_methodParameterTypes14 = new String[] { "long", "int[][]" };
 
-		_methodName15 = "getTicketLinksCount";
+		_methodName16 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes15 = new String[] { "long", "int[][]" };
+		_methodParameterTypes16 = new String[] {  };
 
-		_methodName17 = "getOSGiServiceIdentifier";
+		_methodName17 = "dynamicQuery";
 
-		_methodParameterTypes17 = new String[] {  };
+		_methodParameterTypes17 = new String[] {
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
+			};
 
 		_methodName18 = "dynamicQuery";
 
 		_methodParameterTypes18 = new String[] {
-				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
 			};
 
 		_methodName19 = "dynamicQuery";
 
 		_methodParameterTypes19 = new String[] {
-				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
-			};
-
-		_methodName20 = "dynamicQuery";
-
-		_methodParameterTypes20 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
+		_methodName20 = "getTicketLinks";
+
+		_methodParameterTypes20 = new String[] { "int", "int" };
+
 		_methodName21 = "getTicketLinks";
 
-		_methodParameterTypes21 = new String[] { "int", "int" };
+		_methodParameterTypes21 = new String[] { "long", "int[][]" };
 
 		_methodName22 = "getTicketLinks";
 
-		_methodParameterTypes22 = new String[] { "long", "int" };
+		_methodParameterTypes22 = new String[] { "long", "long" };
 
-		_methodName23 = "getTicketLinks";
+		_methodName23 = "dynamicQueryCount";
 
-		_methodParameterTypes23 = new String[] { "long", "int[][]" };
-
-		_methodName24 = "getTicketLinks";
-
-		_methodParameterTypes24 = new String[] { "long", "long" };
-
-		_methodName25 = "dynamicQueryCount";
-
-		_methodParameterTypes25 = new String[] {
+		_methodParameterTypes23 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
 			};
 
-		_methodName26 = "dynamicQueryCount";
+		_methodName24 = "dynamicQueryCount";
 
-		_methodParameterTypes26 = new String[] {
+		_methodParameterTypes24 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery",
 				"com.liferay.portal.kernel.dao.orm.Projection"
 			};
 
-		_methodName27 = "deleteTicketLink";
+		_methodName25 = "deleteTicketLink";
 
-		_methodParameterTypes27 = new String[] {
+		_methodParameterTypes25 = new String[] {
 				"long", "com.liferay.osb.model.TicketLink"
 			};
 
-		_methodName28 = "deleteTicketLink";
+		_methodName26 = "deleteTicketLink";
 
-		_methodParameterTypes28 = new String[] { "long", "long" };
+		_methodParameterTypes26 = new String[] { "long", "long" };
 	}
 
 	@Override
@@ -537,36 +529,12 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 	}
 
 	@Override
-	public int getTicketLinksCount(long ticketEntryId, int visibility) {
+	public int getTicketLinksCount(long ticketEntryId, int[] visibilities) {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName14,
 					_methodParameterTypes14,
-					new Object[] { ticketEntryId, visibility });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return ((Integer)returnObj).intValue();
-	}
-
-	@Override
-	public int getTicketLinksCount(long ticketEntryId, int[] visibilities) {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName15,
-					_methodParameterTypes15,
 					new Object[] {
 						ticketEntryId,
 						
@@ -600,8 +568,8 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName17,
-					_methodParameterTypes17, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName16,
+					_methodParameterTypes16, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -624,8 +592,8 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName18,
-					_methodParameterTypes18,
+			returnObj = _invokableLocalService.invokeMethod(_methodName17,
+					_methodParameterTypes17,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -650,8 +618,8 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName19,
-					_methodParameterTypes19,
+			returnObj = _invokableLocalService.invokeMethod(_methodName18,
+					_methodParameterTypes18,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -683,8 +651,8 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName20,
-					_methodParameterTypes20,
+			returnObj = _invokableLocalService.invokeMethod(_methodName19,
+					_methodParameterTypes19,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -716,33 +684,8 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName21,
-					_methodParameterTypes21, new Object[] { start, end });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (java.util.List<com.liferay.osb.model.TicketLink>)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.TicketLink> getTicketLinks(
-		long ticketEntryId, int visibility) {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName22,
-					_methodParameterTypes22,
-					new Object[] { ticketEntryId, visibility });
+			returnObj = _invokableLocalService.invokeMethod(_methodName20,
+					_methodParameterTypes20, new Object[] { start, end });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -765,8 +708,8 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName23,
-					_methodParameterTypes23,
+			returnObj = _invokableLocalService.invokeMethod(_methodName21,
+					_methodParameterTypes21,
 					new Object[] {
 						ticketEntryId,
 						
@@ -794,8 +737,8 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName24,
-					_methodParameterTypes24,
+			returnObj = _invokableLocalService.invokeMethod(_methodName22,
+					_methodParameterTypes22,
 					new Object[] { ticketEntryId, ticketSolutionId });
 		}
 		catch (Throwable t) {
@@ -819,8 +762,8 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName25,
-					_methodParameterTypes25,
+			returnObj = _invokableLocalService.invokeMethod(_methodName23,
+					_methodParameterTypes23,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -845,8 +788,8 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName26,
-					_methodParameterTypes26,
+			returnObj = _invokableLocalService.invokeMethod(_methodName24,
+					_methodParameterTypes24,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -873,8 +816,8 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 		com.liferay.osb.model.TicketLink ticketLink)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
-			_invokableLocalService.invokeMethod(_methodName27,
-				_methodParameterTypes27,
+			_invokableLocalService.invokeMethod(_methodName25,
+				_methodParameterTypes25,
 				new Object[] { userId, ClpSerializer.translateInput(ticketLink) });
 		}
 		catch (Throwable t) {
@@ -898,8 +841,8 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 	public void deleteTicketLink(long userId, long ticketLinkId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
-			_invokableLocalService.invokeMethod(_methodName28,
-				_methodParameterTypes28, new Object[] { userId, ticketLinkId });
+			_invokableLocalService.invokeMethod(_methodName26,
+				_methodParameterTypes26, new Object[] { userId, ticketLinkId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -949,8 +892,8 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 	private String[] _methodParameterTypes13;
 	private String _methodName14;
 	private String[] _methodParameterTypes14;
-	private String _methodName15;
-	private String[] _methodParameterTypes15;
+	private String _methodName16;
+	private String[] _methodParameterTypes16;
 	private String _methodName17;
 	private String[] _methodParameterTypes17;
 	private String _methodName18;
@@ -971,8 +914,4 @@ public class TicketLinkLocalServiceClp implements TicketLinkLocalService {
 	private String[] _methodParameterTypes25;
 	private String _methodName26;
 	private String[] _methodParameterTypes26;
-	private String _methodName27;
-	private String[] _methodParameterTypes27;
-	private String _methodName28;
-	private String[] _methodParameterTypes28;
 }

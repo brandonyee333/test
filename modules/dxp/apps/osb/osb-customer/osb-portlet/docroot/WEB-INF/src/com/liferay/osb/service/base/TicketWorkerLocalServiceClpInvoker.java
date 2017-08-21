@@ -168,17 +168,13 @@ public class TicketWorkerLocalServiceClpInvoker {
 
 		_methodParameterTypes291 = new String[] { "long", "long" };
 
-		_methodName292 = "getUserTicketWorkers";
+		_methodName292 = "getUserTicketWorkersCount";
 
 		_methodParameterTypes292 = new String[] { "long" };
 
-		_methodName293 = "getUserTicketWorkersCount";
+		_methodName293 = "hasTicketWorker";
 
-		_methodParameterTypes293 = new String[] { "long" };
-
-		_methodName294 = "hasTicketWorker";
-
-		_methodParameterTypes294 = new String[] { "long", "long" };
+		_methodParameterTypes293 = new String[] { "long", "long" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -349,16 +345,11 @@ public class TicketWorkerLocalServiceClpInvoker {
 
 		if (_methodName292.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes292, parameterTypes)) {
-			return TicketWorkerLocalServiceUtil.getUserTicketWorkers(((Long)arguments[0]).longValue());
+			return TicketWorkerLocalServiceUtil.getUserTicketWorkersCount(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName293.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes293, parameterTypes)) {
-			return TicketWorkerLocalServiceUtil.getUserTicketWorkersCount(((Long)arguments[0]).longValue());
-		}
-
-		if (_methodName294.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes294, parameterTypes)) {
 			return TicketWorkerLocalServiceUtil.hasTicketWorker(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue());
 		}
@@ -428,6 +419,4 @@ public class TicketWorkerLocalServiceClpInvoker {
 	private String[] _methodParameterTypes292;
 	private String _methodName293;
 	private String[] _methodParameterTypes293;
-	private String _methodName294;
-	private String[] _methodParameterTypes294;
 }

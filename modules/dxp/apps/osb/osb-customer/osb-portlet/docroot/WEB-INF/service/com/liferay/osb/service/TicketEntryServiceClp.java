@@ -88,17 +88,13 @@ public class TicketEntryServiceClp implements TicketEntryService {
 				"int", "com.liferay.portal.kernel.search.Sort[][]"
 			};
 
-		_methodName9 = "getTicketEntriesCount";
+		_methodName9 = "searchCount";
 
-		_methodParameterTypes9 = new String[] { "long" };
+		_methodParameterTypes9 = new String[] { "java.lang.String" };
 
 		_methodName10 = "searchCount";
 
-		_methodParameterTypes10 = new String[] { "java.lang.String" };
-
-		_methodName11 = "searchCount";
-
-		_methodParameterTypes11 = new String[] {
+		_methodParameterTypes10 = new String[] {
 				"long", "java.lang.String", "int[][]", "java.lang.Boolean",
 				"int", "int", "int", "int", "int", "int", "java.lang.String",
 				"java.lang.String", "java.lang.String", "int[][]", "int[][]",
@@ -108,27 +104,20 @@ public class TicketEntryServiceClp implements TicketEntryService {
 				"int", "java.util.LinkedHashMap", "boolean"
 			};
 
-		_methodName13 = "getOSGiServiceIdentifier";
+		_methodName12 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes13 = new String[] {  };
+		_methodParameterTypes12 = new String[] {  };
 
-		_methodName14 = "getTicketEntries";
+		_methodName13 = "search";
 
-		_methodParameterTypes14 = new String[] {
-				"long", "int", "int",
-				"com.liferay.portal.kernel.util.OrderByComparator"
-			};
-
-		_methodName15 = "search";
-
-		_methodParameterTypes15 = new String[] {
+		_methodParameterTypes13 = new String[] {
 				"java.lang.String", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName16 = "search";
+		_methodName14 = "search";
 
-		_methodParameterTypes16 = new String[] {
+		_methodParameterTypes14 = new String[] {
 				"long", "java.lang.String", "int[][]", "java.lang.Boolean",
 				"int", "int", "int", "int", "int", "int", "java.lang.String",
 				"java.lang.String", "java.lang.String", "int[][]", "int[][]",
@@ -139,13 +128,13 @@ public class TicketEntryServiceClp implements TicketEntryService {
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName17 = "closeTicketEntry";
+		_methodName15 = "closeTicketEntry";
 
-		_methodParameterTypes17 = new String[] { "long", "int", "java.lang.String" };
+		_methodParameterTypes15 = new String[] { "long", "int", "java.lang.String" };
 
-		_methodName18 = "escalateTicketEntry";
+		_methodName16 = "escalateTicketEntry";
 
-		_methodParameterTypes18 = new String[] { "long" };
+		_methodParameterTypes16 = new String[] { "long" };
 	}
 
 	@Override
@@ -625,41 +614,13 @@ public class TicketEntryServiceClp implements TicketEntryService {
 	}
 
 	@Override
-	public int getTicketEntriesCount(long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableService.invokeMethod(_methodName9,
-					_methodParameterTypes9, new Object[] { accountEntryId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return ((Integer)returnObj).intValue();
-	}
-
-	@Override
 	public int searchCount(java.lang.String keywords)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName10,
-					_methodParameterTypes10,
+			returnObj = _invokableService.invokeMethod(_methodName9,
+					_methodParameterTypes9,
 					new Object[] { ClpSerializer.translateInput(keywords) });
 		}
 		catch (Throwable t) {
@@ -700,8 +661,8 @@ public class TicketEntryServiceClp implements TicketEntryService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName11,
-					_methodParameterTypes11,
+			returnObj = _invokableService.invokeMethod(_methodName10,
+					_methodParameterTypes10,
 					new Object[] {
 						reportedByUserId,
 						
@@ -811,8 +772,8 @@ public class TicketEntryServiceClp implements TicketEntryService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName13,
-					_methodParameterTypes13, new Object[] {  });
+			returnObj = _invokableService.invokeMethod(_methodName12,
+					_methodParameterTypes12, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -830,45 +791,6 @@ public class TicketEntryServiceClp implements TicketEntryService {
 	}
 
 	@Override
-	public java.util.List<com.liferay.osb.model.TicketEntry> getTicketEntries(
-		long accountEntryId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableService.invokeMethod(_methodName14,
-					_methodParameterTypes14,
-					new Object[] {
-						accountEntryId,
-						
-					start,
-						
-					end,
-						
-					ClpSerializer.translateInput(obc)
-					});
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (java.util.List<com.liferay.osb.model.TicketEntry>)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
 	public java.util.List<com.liferay.osb.model.TicketEntry> search(
 		java.lang.String keywords, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator obc)
@@ -876,8 +798,8 @@ public class TicketEntryServiceClp implements TicketEntryService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName15,
-					_methodParameterTypes15,
+			returnObj = _invokableService.invokeMethod(_methodName13,
+					_methodParameterTypes13,
 					new Object[] {
 						ClpSerializer.translateInput(keywords),
 						
@@ -928,8 +850,8 @@ public class TicketEntryServiceClp implements TicketEntryService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName16,
-					_methodParameterTypes16,
+			returnObj = _invokableService.invokeMethod(_methodName14,
+					_methodParameterTypes14,
 					new Object[] {
 						reportedByUserId,
 						
@@ -1038,8 +960,8 @@ public class TicketEntryServiceClp implements TicketEntryService {
 		java.lang.String body)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
-			_invokableService.invokeMethod(_methodName17,
-				_methodParameterTypes17,
+			_invokableService.invokeMethod(_methodName15,
+				_methodParameterTypes15,
 				new Object[] {
 					ticketEntryId,
 					
@@ -1069,8 +991,8 @@ public class TicketEntryServiceClp implements TicketEntryService {
 	public void escalateTicketEntry(long ticketEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
-			_invokableService.invokeMethod(_methodName18,
-				_methodParameterTypes18, new Object[] { ticketEntryId });
+			_invokableService.invokeMethod(_methodName16,
+				_methodParameterTypes16, new Object[] { ticketEntryId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1112,8 +1034,8 @@ public class TicketEntryServiceClp implements TicketEntryService {
 	private String[] _methodParameterTypes9;
 	private String _methodName10;
 	private String[] _methodParameterTypes10;
-	private String _methodName11;
-	private String[] _methodParameterTypes11;
+	private String _methodName12;
+	private String[] _methodParameterTypes12;
 	private String _methodName13;
 	private String[] _methodParameterTypes13;
 	private String _methodName14;
@@ -1122,8 +1044,4 @@ public class TicketEntryServiceClp implements TicketEntryService {
 	private String[] _methodParameterTypes15;
 	private String _methodName16;
 	private String[] _methodParameterTypes16;
-	private String _methodName17;
-	private String[] _methodParameterTypes17;
-	private String _methodName18;
-	private String[] _methodParameterTypes18;
 }

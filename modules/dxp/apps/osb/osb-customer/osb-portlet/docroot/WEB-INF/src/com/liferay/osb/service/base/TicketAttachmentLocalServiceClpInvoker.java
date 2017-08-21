@@ -181,84 +181,64 @@ public class TicketAttachmentLocalServiceClpInvoker {
 
 		_methodName297 = "getTicketAttachments";
 
-		_methodParameterTypes297 = new String[] { "java.util.Date", "int" };
+		_methodParameterTypes297 = new String[] { "long" };
 
 		_methodName298 = "getTicketAttachments";
 
-		_methodParameterTypes298 = new String[] { "int[][]" };
-
-		_methodName299 = "getTicketAttachments";
-
-		_methodParameterTypes299 = new String[] { "long" };
-
-		_methodName300 = "getTicketAttachments";
-
-		_methodParameterTypes300 = new String[] { "long", "int[][]", "int" };
-
-		_methodName301 = "getTicketAttachments";
-
-		_methodParameterTypes301 = new String[] { "long", "int[][]", "int[][]" };
-
-		_methodName302 = "getTicketAttachments";
-
-		_methodParameterTypes302 = new String[] {
+		_methodParameterTypes298 = new String[] {
 				"long", "int[][]", "int[][]", "int"
 			};
 
-		_methodName303 = "getTicketAttachments";
+		_methodName299 = "getTicketAttachments";
+
+		_methodParameterTypes299 = new String[] { "long", "long" };
+
+		_methodName300 = "getTicketAttachments";
+
+		_methodParameterTypes300 = new String[] { "long", "long", "int", "int" };
+
+		_methodName301 = "getTicketAttachmentsCount";
+
+		_methodParameterTypes301 = new String[] { "long", "int[][]", "int[][]" };
+
+		_methodName302 = "getTicketAttachmentsZipFile";
+
+		_methodParameterTypes302 = new String[] { "long", "int[][]" };
+
+		_methodName303 = "replicateTicketAttachment";
 
 		_methodParameterTypes303 = new String[] { "long", "long" };
 
-		_methodName304 = "getTicketAttachments";
+		_methodName304 = "updateDeleteDate";
 
-		_methodParameterTypes304 = new String[] { "long", "long", "int", "int" };
+		_methodParameterTypes304 = new String[] { "long", "long", "java.util.Date" };
 
-		_methodName305 = "getTicketAttachmentsCount";
+		_methodName305 = "updateExtractedText";
 
-		_methodParameterTypes305 = new String[] { "long", "int[][]" };
-
-		_methodName306 = "getTicketAttachmentsCount";
-
-		_methodParameterTypes306 = new String[] { "long", "int[][]", "int[][]" };
-
-		_methodName307 = "getTicketAttachmentsZipFile";
-
-		_methodParameterTypes307 = new String[] { "long", "int[][]" };
-
-		_methodName308 = "replicateTicketAttachment";
-
-		_methodParameterTypes308 = new String[] { "long", "long" };
-
-		_methodName309 = "updateDeleteDate";
-
-		_methodParameterTypes309 = new String[] { "long", "long", "java.util.Date" };
-
-		_methodName310 = "updateExtractedText";
-
-		_methodParameterTypes310 = new String[] {
+		_methodParameterTypes305 = new String[] {
 				"com.liferay.osb.model.TicketAttachment"
 			};
 
-		_methodName311 = "updateStatus";
+		_methodName306 = "updateStatus";
 
-		_methodParameterTypes311 = new String[] {
+		_methodParameterTypes306 = new String[] {
 				"com.liferay.portal.kernel.model.User", "java.util.List", "long",
 				"int", "com.liferay.portal.kernel.service.ServiceContext"
 			};
 
-		_methodName312 = "updateTicketAttachment";
+		_methodName307 = "updateTicketAttachment";
 
-		_methodParameterTypes312 = new String[] { "long", "long", "int", "int" };
+		_methodParameterTypes307 = new String[] { "long", "long", "int", "int" };
 
-		_methodName313 = "updateTicketAttachment";
+		_methodName308 = "updateTicketAttachment";
 
-		_methodParameterTypes313 = new String[] {
+		_methodParameterTypes308 = new String[] {
 				"long", "long", "long", "int", "int"
 			};
 
-		_methodName314 = "updateTicketAttachments";
+		_methodName309 = "updateTicketAttachments";
 
-		_methodParameterTypes314 = new String[] {
+		_methodParameterTypes309 = new String[] {
 				"java.util.List", "long", "java.util.List", "java.util.List"
 			};
 	}
@@ -452,92 +432,63 @@ public class TicketAttachmentLocalServiceClpInvoker {
 
 		if (_methodName297.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes297, parameterTypes)) {
-			return TicketAttachmentLocalServiceUtil.getTicketAttachments((java.util.Date)arguments[0],
-				((Integer)arguments[1]).intValue());
+			return TicketAttachmentLocalServiceUtil.getTicketAttachments(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName298.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes298, parameterTypes)) {
-			return TicketAttachmentLocalServiceUtil.getTicketAttachments((int[])arguments[0]);
-		}
-
-		if (_methodName299.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes299, parameterTypes)) {
-			return TicketAttachmentLocalServiceUtil.getTicketAttachments(((Long)arguments[0]).longValue());
-		}
-
-		if (_methodName300.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes300, parameterTypes)) {
-			return TicketAttachmentLocalServiceUtil.getTicketAttachments(((Long)arguments[0]).longValue(),
-				(int[])arguments[1], ((Integer)arguments[2]).intValue());
-		}
-
-		if (_methodName301.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes301, parameterTypes)) {
-			return TicketAttachmentLocalServiceUtil.getTicketAttachments(((Long)arguments[0]).longValue(),
-				(int[])arguments[1], (int[])arguments[2]);
-		}
-
-		if (_methodName302.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes302, parameterTypes)) {
 			return TicketAttachmentLocalServiceUtil.getTicketAttachments(((Long)arguments[0]).longValue(),
 				(int[])arguments[1], (int[])arguments[2],
 				((Integer)arguments[3]).intValue());
 		}
 
-		if (_methodName303.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes303, parameterTypes)) {
+		if (_methodName299.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes299, parameterTypes)) {
 			return TicketAttachmentLocalServiceUtil.getTicketAttachments(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue());
 		}
 
-		if (_methodName304.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes304, parameterTypes)) {
+		if (_methodName300.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes300, parameterTypes)) {
 			return TicketAttachmentLocalServiceUtil.getTicketAttachments(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Integer)arguments[2]).intValue(),
 				((Integer)arguments[3]).intValue());
 		}
 
-		if (_methodName305.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes305, parameterTypes)) {
-			return TicketAttachmentLocalServiceUtil.getTicketAttachmentsCount(((Long)arguments[0]).longValue(),
-				(int[])arguments[1]);
-		}
-
-		if (_methodName306.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes306, parameterTypes)) {
+		if (_methodName301.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes301, parameterTypes)) {
 			return TicketAttachmentLocalServiceUtil.getTicketAttachmentsCount(((Long)arguments[0]).longValue(),
 				(int[])arguments[1], (int[])arguments[2]);
 		}
 
-		if (_methodName307.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes307, parameterTypes)) {
+		if (_methodName302.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes302, parameterTypes)) {
 			return TicketAttachmentLocalServiceUtil.getTicketAttachmentsZipFile(((Long)arguments[0]).longValue(),
 				(int[])arguments[1]);
 		}
 
-		if (_methodName308.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes308, parameterTypes)) {
+		if (_methodName303.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes303, parameterTypes)) {
 			return TicketAttachmentLocalServiceUtil.replicateTicketAttachment(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue());
 		}
 
-		if (_methodName309.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes309, parameterTypes)) {
+		if (_methodName304.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes304, parameterTypes)) {
 			return TicketAttachmentLocalServiceUtil.updateDeleteDate(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(), (java.util.Date)arguments[2]);
 		}
 
-		if (_methodName310.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes310, parameterTypes)) {
+		if (_methodName305.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes305, parameterTypes)) {
 			TicketAttachmentLocalServiceUtil.updateExtractedText((com.liferay.osb.model.TicketAttachment)arguments[0]);
 
 			return null;
 		}
 
-		if (_methodName311.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes311, parameterTypes)) {
+		if (_methodName306.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes306, parameterTypes)) {
 			TicketAttachmentLocalServiceUtil.updateStatus((com.liferay.portal.kernel.model.User)arguments[0],
 				(java.util.List<com.liferay.osb.model.TicketAttachment>)arguments[1],
 				((Long)arguments[2]).longValue(),
@@ -547,16 +498,16 @@ public class TicketAttachmentLocalServiceClpInvoker {
 			return null;
 		}
 
-		if (_methodName312.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes312, parameterTypes)) {
+		if (_methodName307.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes307, parameterTypes)) {
 			return TicketAttachmentLocalServiceUtil.updateTicketAttachment(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Integer)arguments[2]).intValue(),
 				((Integer)arguments[3]).intValue());
 		}
 
-		if (_methodName313.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes313, parameterTypes)) {
+		if (_methodName308.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes308, parameterTypes)) {
 			return TicketAttachmentLocalServiceUtil.updateTicketAttachment(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue(),
@@ -564,8 +515,8 @@ public class TicketAttachmentLocalServiceClpInvoker {
 				((Integer)arguments[4]).intValue());
 		}
 
-		if (_methodName314.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes314, parameterTypes)) {
+		if (_methodName309.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes309, parameterTypes)) {
 			return TicketAttachmentLocalServiceUtil.updateTicketAttachments((java.util.List<java.lang.Long>)arguments[0],
 				((Long)arguments[1]).longValue(),
 				(java.util.List<java.lang.Integer>)arguments[2],
@@ -661,14 +612,4 @@ public class TicketAttachmentLocalServiceClpInvoker {
 	private String[] _methodParameterTypes308;
 	private String _methodName309;
 	private String[] _methodParameterTypes309;
-	private String _methodName310;
-	private String[] _methodParameterTypes310;
-	private String _methodName311;
-	private String[] _methodParameterTypes311;
-	private String _methodName312;
-	private String[] _methodParameterTypes312;
-	private String _methodName313;
-	private String[] _methodParameterTypes313;
-	private String _methodName314;
-	private String[] _methodParameterTypes314;
 }

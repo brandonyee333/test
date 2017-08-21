@@ -143,12 +143,6 @@ public class TicketEntryServiceWrapper implements TicketEntryService,
 	}
 
 	@Override
-	public int getTicketEntriesCount(long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ticketEntryService.getTicketEntriesCount(accountEntryId);
-	}
-
-	@Override
 	public int searchCount(java.lang.String keywords)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketEntryService.searchCount(keywords);
@@ -197,15 +191,6 @@ public class TicketEntryServiceWrapper implements TicketEntryService,
 	@Override
 	public java.lang.String getOSGiServiceIdentifier() {
 		return _ticketEntryService.getOSGiServiceIdentifier();
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.TicketEntry> getTicketEntries(
-		long accountEntryId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ticketEntryService.getTicketEntries(accountEntryId, start, end,
-			obc);
 	}
 
 	@Override

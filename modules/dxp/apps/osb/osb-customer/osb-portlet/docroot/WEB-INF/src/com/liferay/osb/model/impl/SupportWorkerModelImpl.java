@@ -115,12 +115,10 @@ public class SupportWorkerModelImpl extends BaseModelImpl<SupportWorker>
 	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
 				"value.object.column.bitmask.enabled.com.liferay.osb.model.SupportWorker"),
 			true);
-	public static final long MAXWORK_COLUMN_BITMASK = 1L;
-	public static final long ROLE_COLUMN_BITMASK = 2L;
-	public static final long SUPPORTLABORID_COLUMN_BITMASK = 4L;
-	public static final long SUPPORTTEAMID_COLUMN_BITMASK = 8L;
-	public static final long USERID_COLUMN_BITMASK = 16L;
-	public static final long SUPPORTWORKERID_COLUMN_BITMASK = 32L;
+	public static final long SUPPORTLABORID_COLUMN_BITMASK = 1L;
+	public static final long SUPPORTTEAMID_COLUMN_BITMASK = 2L;
+	public static final long USERID_COLUMN_BITMASK = 4L;
+	public static final long SUPPORTWORKERID_COLUMN_BITMASK = 8L;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -438,19 +436,7 @@ public class SupportWorkerModelImpl extends BaseModelImpl<SupportWorker>
 
 	@Override
 	public void setMaxWork(double maxWork) {
-		_columnBitmask |= MAXWORK_COLUMN_BITMASK;
-
-		if (!_setOriginalMaxWork) {
-			_setOriginalMaxWork = true;
-
-			_originalMaxWork = _maxWork;
-		}
-
 		_maxWork = maxWork;
-	}
-
-	public double getOriginalMaxWork() {
-		return _originalMaxWork;
 	}
 
 	@JSON
@@ -472,19 +458,7 @@ public class SupportWorkerModelImpl extends BaseModelImpl<SupportWorker>
 
 	@Override
 	public void setRole(int role) {
-		_columnBitmask |= ROLE_COLUMN_BITMASK;
-
-		if (!_setOriginalRole) {
-			_setOriginalRole = true;
-
-			_originalRole = _role;
-		}
-
 		_role = role;
-	}
-
-	public int getOriginalRole() {
-		return _originalRole;
 	}
 
 	@JSON
@@ -643,14 +617,6 @@ public class SupportWorkerModelImpl extends BaseModelImpl<SupportWorker>
 
 		supportWorkerModelImpl._setOriginalSupportLaborId = false;
 
-		supportWorkerModelImpl._originalMaxWork = supportWorkerModelImpl._maxWork;
-
-		supportWorkerModelImpl._setOriginalMaxWork = false;
-
-		supportWorkerModelImpl._originalRole = supportWorkerModelImpl._role;
-
-		supportWorkerModelImpl._setOriginalRole = false;
-
 		supportWorkerModelImpl._columnBitmask = 0;
 	}
 
@@ -797,12 +763,8 @@ public class SupportWorkerModelImpl extends BaseModelImpl<SupportWorker>
 	private boolean _autoAssign;
 	private double _assignedWork;
 	private double _maxWork;
-	private double _originalMaxWork;
-	private boolean _setOriginalMaxWork;
 	private int _escalationLevel;
 	private int _role;
-	private int _originalRole;
-	private boolean _setOriginalRole;
 	private int _escalationLevel2Role;
 	private int _notifications;
 	private boolean _clockedIn;

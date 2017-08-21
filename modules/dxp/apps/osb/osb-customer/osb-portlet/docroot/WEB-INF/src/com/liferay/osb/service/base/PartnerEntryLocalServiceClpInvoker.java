@@ -221,47 +221,43 @@ public class PartnerEntryLocalServiceClpInvoker {
 
 		_methodParameterTypes311 = new String[] { "long", "boolean" };
 
-		_methodName312 = "getPartnerEntry";
+		_methodName312 = "getPartnerEntryByCode";
 
-		_methodParameterTypes312 = new String[] { "long" };
+		_methodParameterTypes312 = new String[] { "java.lang.String" };
 
-		_methodName313 = "getPartnerEntryByCode";
+		_methodName313 = "getUserPartnerEntries";
 
-		_methodParameterTypes313 = new String[] { "java.lang.String" };
+		_methodParameterTypes313 = new String[] { "long", "int", "int" };
 
-		_methodName314 = "getUserPartnerEntries";
+		_methodName314 = "search";
 
-		_methodParameterTypes314 = new String[] { "long", "int", "int" };
-
-		_methodName315 = "search";
-
-		_methodParameterTypes315 = new String[] {
+		_methodParameterTypes314 = new String[] {
 				"java.lang.String", "int[][]", "java.util.LinkedHashMap",
 				"boolean", "int", "int"
 			};
 
-		_methodName316 = "search";
+		_methodName315 = "search";
+
+		_methodParameterTypes315 = new String[] {
+				"java.lang.String", "java.util.LinkedHashMap", "int", "int"
+			};
+
+		_methodName316 = "searchCount";
 
 		_methodParameterTypes316 = new String[] {
-				"java.lang.String", "java.util.LinkedHashMap", "int", "int"
+				"java.lang.String", "int[][]", "java.util.LinkedHashMap",
+				"boolean"
 			};
 
 		_methodName317 = "searchCount";
 
 		_methodParameterTypes317 = new String[] {
-				"java.lang.String", "int[][]", "java.util.LinkedHashMap",
-				"boolean"
-			};
-
-		_methodName318 = "searchCount";
-
-		_methodParameterTypes318 = new String[] {
 				"java.lang.String", "java.util.LinkedHashMap"
 			};
 
-		_methodName319 = "updatePartnerEntry";
+		_methodName318 = "updatePartnerEntry";
 
-		_methodParameterTypes319 = new String[] {
+		_methodParameterTypes318 = new String[] {
 				"long", "long", "java.lang.String", "java.lang.String",
 				"java.lang.String", "int", "long[][]"
 			};
@@ -522,23 +518,18 @@ public class PartnerEntryLocalServiceClpInvoker {
 
 		if (_methodName312.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes312, parameterTypes)) {
-			return PartnerEntryLocalServiceUtil.getPartnerEntry(((Long)arguments[0]).longValue());
+			return PartnerEntryLocalServiceUtil.getPartnerEntryByCode((java.lang.String)arguments[0]);
 		}
 
 		if (_methodName313.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes313, parameterTypes)) {
-			return PartnerEntryLocalServiceUtil.getPartnerEntryByCode((java.lang.String)arguments[0]);
-		}
-
-		if (_methodName314.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes314, parameterTypes)) {
 			return PartnerEntryLocalServiceUtil.getUserPartnerEntries(((Long)arguments[0]).longValue(),
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue());
 		}
 
-		if (_methodName315.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes315, parameterTypes)) {
+		if (_methodName314.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes314, parameterTypes)) {
 			return PartnerEntryLocalServiceUtil.search((java.lang.String)arguments[0],
 				(int[])arguments[1],
 				(java.util.LinkedHashMap<java.lang.String, java.lang.Object>)arguments[2],
@@ -547,30 +538,30 @@ public class PartnerEntryLocalServiceClpInvoker {
 				((Integer)arguments[5]).intValue());
 		}
 
-		if (_methodName316.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes316, parameterTypes)) {
+		if (_methodName315.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes315, parameterTypes)) {
 			return PartnerEntryLocalServiceUtil.search((java.lang.String)arguments[0],
 				(java.util.LinkedHashMap<java.lang.String, java.lang.Object>)arguments[1],
 				((Integer)arguments[2]).intValue(),
 				((Integer)arguments[3]).intValue());
 		}
 
-		if (_methodName317.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes317, parameterTypes)) {
+		if (_methodName316.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes316, parameterTypes)) {
 			return PartnerEntryLocalServiceUtil.searchCount((java.lang.String)arguments[0],
 				(int[])arguments[1],
 				(java.util.LinkedHashMap<java.lang.String, java.lang.Object>)arguments[2],
 				((Boolean)arguments[3]).booleanValue());
 		}
 
-		if (_methodName318.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes318, parameterTypes)) {
+		if (_methodName317.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes317, parameterTypes)) {
 			return PartnerEntryLocalServiceUtil.searchCount((java.lang.String)arguments[0],
 				(java.util.LinkedHashMap<java.lang.String, java.lang.Object>)arguments[1]);
 		}
 
-		if (_methodName319.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes319, parameterTypes)) {
+		if (_methodName318.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes318, parameterTypes)) {
 			return PartnerEntryLocalServiceUtil.updatePartnerEntry(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				(java.lang.String)arguments[2], (java.lang.String)arguments[3],
@@ -677,6 +668,4 @@ public class PartnerEntryLocalServiceClpInvoker {
 	private String[] _methodParameterTypes317;
 	private String _methodName318;
 	private String[] _methodParameterTypes318;
-	private String _methodName319;
-	private String[] _methodParameterTypes319;
 }

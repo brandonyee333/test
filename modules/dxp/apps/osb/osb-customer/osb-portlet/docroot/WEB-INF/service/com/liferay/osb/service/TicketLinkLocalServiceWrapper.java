@@ -164,12 +164,6 @@ public class TicketLinkLocalServiceWrapper implements TicketLinkLocalService,
 	}
 
 	@Override
-	public int getTicketLinksCount(long ticketEntryId, int visibility) {
-		return _ticketLinkLocalService.getTicketLinksCount(ticketEntryId,
-			visibility);
-	}
-
-	@Override
 	public int getTicketLinksCount(long ticketEntryId, int[] visibilities) {
 		return _ticketLinkLocalService.getTicketLinksCount(ticketEntryId,
 			visibilities);
@@ -261,12 +255,6 @@ public class TicketLinkLocalServiceWrapper implements TicketLinkLocalService,
 	public java.util.List<com.liferay.osb.model.TicketLink> getTicketLinks(
 		int start, int end) {
 		return _ticketLinkLocalService.getTicketLinks(start, end);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.TicketLink> getTicketLinks(
-		long ticketEntryId, int visibility) {
-		return _ticketLinkLocalService.getTicketLinks(ticketEntryId, visibility);
 	}
 
 	@Override

@@ -146,11 +146,6 @@ public class TicketEntryServiceUtil {
 			dueDateGT, dueDateLT, params, andSearch, start, end, sorts);
 	}
 
-	public static int getTicketEntriesCount(long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getTicketEntriesCount(accountEntryId);
-	}
-
 	public static int searchCount(java.lang.String keywords)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().searchCount(keywords);
@@ -196,13 +191,6 @@ public class TicketEntryServiceUtil {
 	*/
 	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
-	}
-
-	public static java.util.List<com.liferay.osb.model.TicketEntry> getTicketEntries(
-		long accountEntryId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getTicketEntries(accountEntryId, start, end, obc);
 	}
 
 	public static java.util.List<com.liferay.osb.model.TicketEntry> search(

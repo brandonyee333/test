@@ -27,32 +27,32 @@ import java.util.Arrays;
 @ProviderType
 public class TicketLinkServiceClpInvoker {
 	public TicketLinkServiceClpInvoker() {
-		_methodName372 = "getOSGiServiceIdentifier";
+		_methodName370 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes372 = new String[] {  };
+		_methodParameterTypes370 = new String[] {  };
 
-		_methodName377 = "addTicketLink";
+		_methodName375 = "addTicketLink";
 
-		_methodParameterTypes377 = new String[] {
+		_methodParameterTypes375 = new String[] {
 				"long", "long", "long", "java.lang.String[][]",
 				"java.lang.Integer[][]", "int",
 				"com.liferay.portal.kernel.service.ServiceContext"
 			};
 
-		_methodName378 = "deleteTicketLink";
+		_methodName376 = "deleteTicketLink";
 
-		_methodParameterTypes378 = new String[] { "long" };
+		_methodParameterTypes376 = new String[] { "long" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName372.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes372, parameterTypes)) {
+		if (_methodName370.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes370, parameterTypes)) {
 			return TicketLinkServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName377.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes377, parameterTypes)) {
+		if (_methodName375.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes375, parameterTypes)) {
 			return TicketLinkServiceUtil.addTicketLink(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue(),
@@ -62,8 +62,8 @@ public class TicketLinkServiceClpInvoker {
 				(com.liferay.portal.kernel.service.ServiceContext)arguments[6]);
 		}
 
-		if (_methodName378.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes378, parameterTypes)) {
+		if (_methodName376.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes376, parameterTypes)) {
 			TicketLinkServiceUtil.deleteTicketLink(((Long)arguments[0]).longValue());
 
 			return null;
@@ -72,10 +72,10 @@ public class TicketLinkServiceClpInvoker {
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName372;
-	private String[] _methodParameterTypes372;
-	private String _methodName377;
-	private String[] _methodParameterTypes377;
-	private String _methodName378;
-	private String[] _methodParameterTypes378;
+	private String _methodName370;
+	private String[] _methodParameterTypes370;
+	private String _methodName375;
+	private String[] _methodParameterTypes375;
+	private String _methodName376;
+	private String[] _methodParameterTypes376;
 }

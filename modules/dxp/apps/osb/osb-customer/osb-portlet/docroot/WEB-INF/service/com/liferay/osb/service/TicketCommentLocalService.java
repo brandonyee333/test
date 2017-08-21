@@ -62,10 +62,6 @@ public interface TicketCommentLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link TicketCommentLocalServiceUtil} to access the ticket comment local service. Add custom service methods to {@link com.liferay.osb.service.impl.TicketCommentLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasVisibility(long userId, long ticketEntryId, int visibility)
-		throws PortalException;
-
 	public TicketComment addAwayMessageTicketComment(long userId,
 		long ticketEntryId) throws PortalException;
 
@@ -200,10 +196,6 @@ public interface TicketCommentLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getTicketCommentsCount(long userId, long ticketEntryId,
 		int[] visibilities, int[] statuses);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int[] getUserVisibilities(long userId, long ticketEntryId)
-		throws PortalException;
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,

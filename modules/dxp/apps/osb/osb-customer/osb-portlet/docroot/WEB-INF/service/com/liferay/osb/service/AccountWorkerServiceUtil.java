@@ -56,18 +56,6 @@ public class AccountWorkerServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static void addAccountWorkers(long[] userIds, long accountEntryId,
-		int[] roles, int[] notifications)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService()
-			.addAccountWorkers(userIds, accountEntryId, roles, notifications);
-	}
-
-	public static void deleteAccountWorkers(long[] userIds, long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().deleteAccountWorkers(userIds, accountEntryId);
-	}
-
 	public static void clearService() {
 		_service = null;
 	}

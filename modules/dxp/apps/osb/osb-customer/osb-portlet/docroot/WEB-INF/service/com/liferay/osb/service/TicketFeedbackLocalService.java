@@ -249,10 +249,6 @@ public interface TicketFeedbackLocalService extends BaseLocalService,
 		int subject);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<TicketFeedback> getTicketFeedbacks(long ticketEntryId,
-		int subject, int status);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TicketFeedback> search(java.lang.String keywords,
 		LinkedHashMap<java.lang.String, java.lang.Object> params, int start,
 		int end, OrderByComparator obc);

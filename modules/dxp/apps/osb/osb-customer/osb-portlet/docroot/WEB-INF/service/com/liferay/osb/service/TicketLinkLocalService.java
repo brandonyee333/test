@@ -157,9 +157,6 @@ public interface TicketLinkLocalService extends BaseLocalService,
 	public int getTicketLinksCount();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getTicketLinksCount(long ticketEntryId, int visibility);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getTicketLinksCount(long ticketEntryId, int[] visibilities);
 
 	@Override
@@ -226,9 +223,6 @@ public interface TicketLinkLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TicketLink> getTicketLinks(int start, int end);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<TicketLink> getTicketLinks(long ticketEntryId, int visibility);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TicketLink> getTicketLinks(long ticketEntryId,

@@ -193,28 +193,20 @@ public class TicketCommentLocalServiceClpInvoker {
 				"long", "long", "int[][]", "int[][]"
 			};
 
-		_methodName299 = "getUserVisibilities";
+		_methodName299 = "resetSolutionTicketComment";
 
-		_methodParameterTypes299 = new String[] { "long", "long" };
+		_methodParameterTypes299 = new String[] { "long" };
 
-		_methodName300 = "hasVisibility";
+		_methodName300 = "updateTicketComment";
 
-		_methodParameterTypes300 = new String[] { "long", "long", "int" };
-
-		_methodName301 = "resetSolutionTicketComment";
-
-		_methodParameterTypes301 = new String[] { "long" };
-
-		_methodName302 = "updateTicketComment";
-
-		_methodParameterTypes302 = new String[] {
+		_methodParameterTypes300 = new String[] {
 				"long", "long", "long", "java.lang.String", "int", "int", "long",
 				"int[][]", "com.liferay.portal.kernel.service.ServiceContext"
 			};
 
-		_methodName303 = "updateTicketCommentType";
+		_methodName301 = "updateTicketCommentType";
 
-		_methodParameterTypes303 = new String[] { "long", "int" };
+		_methodParameterTypes301 = new String[] { "long", "int" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -417,26 +409,13 @@ public class TicketCommentLocalServiceClpInvoker {
 
 		if (_methodName299.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes299, parameterTypes)) {
-			return TicketCommentLocalServiceUtil.getUserVisibilities(((Long)arguments[0]).longValue(),
-				((Long)arguments[1]).longValue());
-		}
-
-		if (_methodName300.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes300, parameterTypes)) {
-			return TicketCommentLocalServiceUtil.hasVisibility(((Long)arguments[0]).longValue(),
-				((Long)arguments[1]).longValue(),
-				((Integer)arguments[2]).intValue());
-		}
-
-		if (_methodName301.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes301, parameterTypes)) {
 			TicketCommentLocalServiceUtil.resetSolutionTicketComment(((Long)arguments[0]).longValue());
 
 			return null;
 		}
 
-		if (_methodName302.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes302, parameterTypes)) {
+		if (_methodName300.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes300, parameterTypes)) {
 			return TicketCommentLocalServiceUtil.updateTicketComment(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue(),
@@ -447,8 +426,8 @@ public class TicketCommentLocalServiceClpInvoker {
 				(com.liferay.portal.kernel.service.ServiceContext)arguments[8]);
 		}
 
-		if (_methodName303.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes303, parameterTypes)) {
+		if (_methodName301.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes301, parameterTypes)) {
 			return TicketCommentLocalServiceUtil.updateTicketCommentType(((Long)arguments[0]).longValue(),
 				((Integer)arguments[1]).intValue());
 		}
@@ -526,8 +505,4 @@ public class TicketCommentLocalServiceClpInvoker {
 	private String[] _methodParameterTypes300;
 	private String _methodName301;
 	private String[] _methodParameterTypes301;
-	private String _methodName302;
-	private String[] _methodParameterTypes302;
-	private String _methodName303;
-	private String[] _methodParameterTypes303;
 }

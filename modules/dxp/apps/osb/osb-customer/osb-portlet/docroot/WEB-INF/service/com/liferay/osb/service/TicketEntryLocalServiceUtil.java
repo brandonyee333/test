@@ -41,20 +41,9 @@ public class TicketEntryLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.TicketEntryLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static boolean hasParticipant(long userId,
-		com.liferay.osb.model.TicketEntry ticketEntry) {
-		return getService().hasParticipant(userId, ticketEntry);
-	}
-
 	public static boolean hasParticipant(long userId, long ticketEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().hasParticipant(userId, ticketEntryId);
-	}
-
-	public static boolean hasVisibility(long userId, long ticketEntryId,
-		int visibility)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().hasVisibility(userId, ticketEntryId, visibility);
 	}
 
 	/**
@@ -212,12 +201,6 @@ public class TicketEntryLocalServiceUtil {
 			ticketAttachments, serviceContext);
 	}
 
-	public static com.liferay.osb.model.TicketEntry updateTicketId(
-		long ticketEntryId, long ticketId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().updateTicketId(ticketEntryId, ticketId);
-	}
-
 	public static com.liferay.osb.model.TicketEntry updateWorkerModifiedDate(
 		long ticketEntryId, java.util.Date workerModifiedDate)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -303,10 +286,6 @@ public class TicketEntryLocalServiceUtil {
 		return getService().getTicketEntriesCount(modifiedDate);
 	}
 
-	public static int getTicketEntriesCount(long accountEntryId) {
-		return getService().getTicketEntriesCount(accountEntryId);
-	}
-
 	public static int getValidTicketEntriesCount(long offeringEntryId) {
 		return getService().getValidTicketEntriesCount(offeringEntryId);
 	}
@@ -340,11 +319,6 @@ public class TicketEntryLocalServiceUtil {
 			closedDateGTYear, closedDateLTDay, closedDateLTMonth,
 			closedDateLTYear, dueDateGTDay, dueDateGTMonth, dueDateGTYear,
 			dueDateLTDay, dueDateLTMonth, dueDateLTYear, params, andSearch);
-	}
-
-	public static int[] getUserVisibilities(long userId, long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getUserVisibilities(userId, ticketEntryId);
 	}
 
 	public static java.lang.Object invokeMethod(java.lang.String name,
@@ -433,28 +407,12 @@ public class TicketEntryLocalServiceUtil {
 		return getService().getTicketEntries(modifiedDate, start, end);
 	}
 
-	public static java.util.List<com.liferay.osb.model.TicketEntry> getTicketEntries(
-		long accountEntryId) {
-		return getService().getTicketEntries(accountEntryId);
-	}
-
-	public static java.util.List<com.liferay.osb.model.TicketEntry> getTicketEntries(
-		long accountEntryId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc) {
-		return getService().getTicketEntries(accountEntryId, start, end, obc);
-	}
-
 	public static java.util.List<com.liferay.osb.model.TicketEntry> getTicketFeedbackTicketEntries(
 		long userId, int createdGTDay, int createdGTMonth, int createdGTYear,
 		int status) throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .getTicketFeedbackTicketEntries(userId, createdGTDay,
 			createdGTMonth, createdGTYear, status);
-	}
-
-	public static java.util.List<com.liferay.osb.model.TicketEntry> getValidTicketEntries(
-		long offeringEntryId) {
-		return getService().getValidTicketEntries(offeringEntryId);
 	}
 
 	public static java.util.List<com.liferay.osb.model.TicketEntry> search(

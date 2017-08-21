@@ -185,78 +185,12 @@ public class TicketEntryServiceHttp {
 		}
 	}
 
-	public static java.util.List<com.liferay.osb.model.TicketEntry> getTicketEntries(
-		HttpPrincipal httpPrincipal, long accountEntryId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(TicketEntryServiceUtil.class,
-					"getTicketEntries", _getTicketEntriesParameterTypes4);
-
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					accountEntryId, start, end, obc);
-
-			Object returnObj = null;
-
-			try {
-				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
-			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
-			}
-
-			return (java.util.List<com.liferay.osb.model.TicketEntry>)returnObj;
-		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
-
-			throw se;
-		}
-	}
-
-	public static int getTicketEntriesCount(HttpPrincipal httpPrincipal,
-		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(TicketEntryServiceUtil.class,
-					"getTicketEntriesCount",
-					_getTicketEntriesCountParameterTypes5);
-
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					accountEntryId);
-
-			Object returnObj = null;
-
-			try {
-				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
-			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
-			}
-
-			return ((Integer)returnObj).intValue();
-		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
-
-			throw se;
-		}
-	}
-
 	public static com.liferay.osb.model.TicketEntry getTicketEntry(
 		HttpPrincipal httpPrincipal, long ticketEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketEntryServiceUtil.class,
-					"getTicketEntry", _getTicketEntryParameterTypes6);
+					"getTicketEntry", _getTicketEntryParameterTypes4);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey,
 					ticketEntryId);
@@ -288,7 +222,7 @@ public class TicketEntryServiceHttp {
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketEntryServiceUtil.class,
-					"getTicketEntry", _getTicketEntryParameterTypes7);
+					"getTicketEntry", _getTicketEntryParameterTypes5);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey,
 					accountEntryId, ticketId);
@@ -331,7 +265,7 @@ public class TicketEntryServiceHttp {
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketEntryServiceUtil.class,
-					"search", _searchParameterTypes8);
+					"search", _searchParameterTypes6);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey,
 					reportedByUserId, accountEntryId, name, accountEntryTier,
@@ -371,7 +305,7 @@ public class TicketEntryServiceHttp {
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketEntryServiceUtil.class,
-					"search", _searchParameterTypes9);
+					"search", _searchParameterTypes7);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey,
 					reportedByUserId, accountEntryId, keywords, params, start,
@@ -419,7 +353,7 @@ public class TicketEntryServiceHttp {
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketEntryServiceUtil.class,
-					"search", _searchParameterTypes10);
+					"search", _searchParameterTypes8);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey,
 					reportedByUserId, name, accountEntryTier, satisfiedDueDate,
@@ -461,7 +395,7 @@ public class TicketEntryServiceHttp {
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketEntryServiceUtil.class,
-					"search", _searchParameterTypes11);
+					"search", _searchParameterTypes9);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey,
 					keywords, start, end, obc);
@@ -506,7 +440,7 @@ public class TicketEntryServiceHttp {
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketEntryServiceUtil.class,
-					"searchCount", _searchCountParameterTypes12);
+					"searchCount", _searchCountParameterTypes10);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey,
 					reportedByUserId, name, accountEntryTier, satisfiedDueDate,
@@ -547,7 +481,7 @@ public class TicketEntryServiceHttp {
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketEntryServiceUtil.class,
-					"searchCount", _searchCountParameterTypes13);
+					"searchCount", _searchCountParameterTypes11);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, keywords);
 
@@ -578,7 +512,7 @@ public class TicketEntryServiceHttp {
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketEntryServiceUtil.class,
-					"updatePendingTypes", _updatePendingTypesParameterTypes14);
+					"updatePendingTypes", _updatePendingTypesParameterTypes12);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey,
 					ticketEntryId, pendingTypes);
@@ -612,7 +546,7 @@ public class TicketEntryServiceHttp {
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketEntryServiceUtil.class,
-					"updateTicketEntry", _updateTicketEntryParameterTypes15);
+					"updateTicketEntry", _updateTicketEntryParameterTypes13);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, userId,
 					ticketEntryId, assigneeUserId, supportRegionId,
@@ -657,7 +591,7 @@ public class TicketEntryServiceHttp {
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketEntryServiceUtil.class,
-					"updateTicketEntry", _updateTicketEntryParameterTypes16);
+					"updateTicketEntry", _updateTicketEntryParameterTypes14);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, userId,
 					ticketEntryId, reportedByUserId, offeringEntryId,
@@ -707,20 +641,13 @@ public class TicketEntryServiceHttp {
 	private static final Class<?>[] _forwardTicketEntryParameterTypes3 = new Class[] {
 			long.class, java.lang.String.class
 		};
-	private static final Class<?>[] _getTicketEntriesParameterTypes4 = new Class[] {
-			long.class, int.class, int.class,
-			com.liferay.portal.kernel.util.OrderByComparator.class
-		};
-	private static final Class<?>[] _getTicketEntriesCountParameterTypes5 = new Class[] {
+	private static final Class<?>[] _getTicketEntryParameterTypes4 = new Class[] {
 			long.class
 		};
-	private static final Class<?>[] _getTicketEntryParameterTypes6 = new Class[] {
-			long.class
-		};
-	private static final Class<?>[] _getTicketEntryParameterTypes7 = new Class[] {
+	private static final Class<?>[] _getTicketEntryParameterTypes5 = new Class[] {
 			long.class, long.class
 		};
-	private static final Class<?>[] _searchParameterTypes8 = new Class[] {
+	private static final Class<?>[] _searchParameterTypes6 = new Class[] {
 			long.class, long.class, java.lang.String.class, int[].class,
 			java.lang.Boolean.class, java.util.Date.class, java.util.Date.class,
 			java.lang.String.class, int[].class, int[].class, int[].class,
@@ -730,12 +657,12 @@ public class TicketEntryServiceHttp {
 			java.util.LinkedHashMap.class, boolean.class, int.class, int.class,
 			com.liferay.portal.kernel.search.Sort[].class
 		};
-	private static final Class<?>[] _searchParameterTypes9 = new Class[] {
+	private static final Class<?>[] _searchParameterTypes7 = new Class[] {
 			long.class, long.class, java.lang.String.class,
 			java.util.LinkedHashMap.class, int.class, int.class,
 			com.liferay.portal.kernel.search.Sort[].class
 		};
-	private static final Class<?>[] _searchParameterTypes10 = new Class[] {
+	private static final Class<?>[] _searchParameterTypes8 = new Class[] {
 			long.class, java.lang.String.class, int[].class,
 			java.lang.Boolean.class, int.class, int.class, int.class, int.class,
 			int.class, int.class, java.lang.String.class, java.lang.String.class,
@@ -747,11 +674,11 @@ public class TicketEntryServiceHttp {
 			java.util.LinkedHashMap.class, boolean.class, int.class, int.class,
 			com.liferay.portal.kernel.util.OrderByComparator.class
 		};
-	private static final Class<?>[] _searchParameterTypes11 = new Class[] {
+	private static final Class<?>[] _searchParameterTypes9 = new Class[] {
 			java.lang.String.class, int.class, int.class,
 			com.liferay.portal.kernel.util.OrderByComparator.class
 		};
-	private static final Class<?>[] _searchCountParameterTypes12 = new Class[] {
+	private static final Class<?>[] _searchCountParameterTypes10 = new Class[] {
 			long.class, java.lang.String.class, int[].class,
 			java.lang.Boolean.class, int.class, int.class, int.class, int.class,
 			int.class, int.class, java.lang.String.class, java.lang.String.class,
@@ -762,17 +689,17 @@ public class TicketEntryServiceHttp {
 			int.class, int.class, int.class, int.class,
 			java.util.LinkedHashMap.class, boolean.class
 		};
-	private static final Class<?>[] _searchCountParameterTypes13 = new Class[] {
+	private static final Class<?>[] _searchCountParameterTypes11 = new Class[] {
 			java.lang.String.class
 		};
-	private static final Class<?>[] _updatePendingTypesParameterTypes14 = new Class[] {
+	private static final Class<?>[] _updatePendingTypesParameterTypes12 = new Class[] {
 			long.class, int[].class
 		};
-	private static final Class<?>[] _updateTicketEntryParameterTypes15 = new Class[] {
+	private static final Class<?>[] _updateTicketEntryParameterTypes13 = new Class[] {
 			long.class, long.class, long.class, long.class, int.class, int.class,
 			int.class, int.class, int.class
 		};
-	private static final Class<?>[] _updateTicketEntryParameterTypes16 = new Class[] {
+	private static final Class<?>[] _updateTicketEntryParameterTypes14 = new Class[] {
 			long.class, long.class, long.class, long.class, long.class,
 			java.lang.String.class, java.lang.String.class,
 			java.lang.String.class, java.lang.String.class, int.class, int.class,

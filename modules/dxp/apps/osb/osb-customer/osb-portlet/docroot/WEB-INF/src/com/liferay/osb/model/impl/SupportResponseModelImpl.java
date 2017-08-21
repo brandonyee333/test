@@ -119,7 +119,6 @@ public class SupportResponseModelImpl extends BaseModelImpl<SupportResponse>
 				"value.object.column.bitmask.enabled.com.liferay.osb.model.SupportResponse"),
 			true);
 	public static final long NAME_COLUMN_BITMASK = 1L;
-	public static final long SUPPORTLEVEL_COLUMN_BITMASK = 2L;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -432,19 +431,7 @@ public class SupportResponseModelImpl extends BaseModelImpl<SupportResponse>
 
 	@Override
 	public void setSupportLevel(int supportLevel) {
-		_columnBitmask |= SUPPORTLEVEL_COLUMN_BITMASK;
-
-		if (!_setOriginalSupportLevel) {
-			_setOriginalSupportLevel = true;
-
-			_originalSupportLevel = _supportLevel;
-		}
-
 		_supportLevel = supportLevel;
-	}
-
-	public int getOriginalSupportLevel() {
-		return _originalSupportLevel;
 	}
 
 	@JSON
@@ -620,10 +607,6 @@ public class SupportResponseModelImpl extends BaseModelImpl<SupportResponse>
 		supportResponseModelImpl._setModifiedDate = false;
 
 		supportResponseModelImpl._originalName = supportResponseModelImpl._name;
-
-		supportResponseModelImpl._originalSupportLevel = supportResponseModelImpl._supportLevel;
-
-		supportResponseModelImpl._setOriginalSupportLevel = false;
 
 		supportResponseModelImpl._columnBitmask = 0;
 	}
@@ -801,8 +784,6 @@ public class SupportResponseModelImpl extends BaseModelImpl<SupportResponse>
 	private String _name;
 	private String _originalName;
 	private int _supportLevel;
-	private int _originalSupportLevel;
-	private boolean _setOriginalSupportLevel;
 	private int _severity1Response;
 	private int _severity1Resolution;
 	private int _severity2Response;

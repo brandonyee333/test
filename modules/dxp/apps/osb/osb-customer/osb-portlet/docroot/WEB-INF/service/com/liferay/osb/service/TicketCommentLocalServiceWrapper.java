@@ -35,13 +35,6 @@ public class TicketCommentLocalServiceWrapper
 	}
 
 	@Override
-	public boolean hasVisibility(long userId, long ticketEntryId, int visibility)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ticketCommentLocalService.hasVisibility(userId, ticketEntryId,
-			visibility);
-	}
-
-	@Override
 	public com.liferay.osb.model.TicketComment addAwayMessageTicketComment(
 		long userId, long ticketEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -264,13 +257,6 @@ public class TicketCommentLocalServiceWrapper
 		int[] visibilities, int[] statuses) {
 		return _ticketCommentLocalService.getTicketCommentsCount(userId,
 			ticketEntryId, visibilities, statuses);
-	}
-
-	@Override
-	public int[] getUserVisibilities(long userId, long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ticketCommentLocalService.getUserVisibilities(userId,
-			ticketEntryId);
 	}
 
 	@Override
